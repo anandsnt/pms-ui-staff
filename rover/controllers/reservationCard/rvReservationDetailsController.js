@@ -1134,17 +1134,16 @@ sntRover.controller('reservationDetailsController',
 		// CICO-24426 - multiple authorizations
 		$scope.authData = {
 
-			'authAmount'			: '0.00',
+			'authAmount': '0.00',
 			'manualCCAuthPermission': true,
-			'billData' 				: [],
-			'selectedCardDetails' 	: 		// To keep the selected/active card details.
-				{
-					'name' 			: '',	// card - name
-					'number'		: '',	// card - number
-					'payment_id'	: '',	// card - payment method id
+			'billData': [],
+			'selectedCardDetails': 		// To keep the selected/active card details{
+					'name': '',	// card - name
+					'number': '',	// card - number
+					'payment_id': '',	// card - payment method id
 					'last_auth_date': '',	// card - last autheticated date
-					'bill_no' 		: '',	// bill - number
-					'bill_balance'	: ''	// bill - balance amount
+					'bill_no': '',	// bill - number
+					'bill_balance': ''	// bill - balance amount
 				}
 		};
 
@@ -1167,11 +1166,11 @@ sntRover.controller('reservationDetailsController',
 				if( $scope.authData.billData.length > 0 ) {
 					// Show Multiple Credit card auth popup
 					ngDialog.open({
-						template		: '/assets/partials/authorization/rvManualAuthorizationPopup.html',
-						className		: '',
-						closeByEscape 	: false,
-						closeByDocument : false,
-						scope 			: $scope
+						template: '/assets/partials/authorization/rvManualAuthorizationPopup.html',
+						className: '',
+						closeByEscape: false,
+						closeByDocument: false,
+						scope: $scope
 					});
 					// Default to select the first CC as active one.
 					$scope.selectCCforAuth(0);
@@ -1195,7 +1194,7 @@ sntRover.controller('reservationDetailsController',
 			$scope.hasShownReleaseConfirm = false;
 
 			var data = {
-				"reservation_id":$scope.reservationData.reservation_card.reservation_id
+				"reservation_id": $scope.reservationData.reservation_card.reservation_id
 			};
 
 			$scope.invokeApi(RVCCAuthorizationSrv.fetchCreditCardAuthInfo, data, fetchCreditCardAuthInfoSuccess, fetchCreditCardAuthInfoFaliure);
@@ -1208,12 +1207,12 @@ sntRover.controller('reservationDetailsController',
 		$scope.selectCCforAuth = function( index ) {
 			var selectedCardData = $scope.authData.billData[index];
 			var selectedCardDetails = {
-				'name' 			: selectedCardData.card_name,
-				'number' 		: selectedCardData.card_number,
-				'payment_id' 	: selectedCardData.payment_method_id,
+				'name': selectedCardData.card_name,
+				'number': selectedCardData.card_number,
+				'payment_id': selectedCardData.payment_method_id,
 				'last_auth_date': selectedCardData.last_authorization.date ? selectedCardData.last_authorization.date : '',
-				'bill_no' 		: selectedCardData.number,
-				'bill_balance'	: selectedCardData.balance ? parseFloat(selectedCardData.balance).toFixed(2) : 0.00
+				'bill_no': selectedCardData.number,
+				'bill_balance': selectedCardData.balance ? parseFloat(selectedCardData.balance).toFixed(2) : 0.00
 			};
 
 			$scope.authData.selectedCardDetails = selectedCardDetails;
@@ -1265,8 +1264,8 @@ sntRover.controller('reservationDetailsController',
 			};
 
 			var postData = {
-				"payment_method_id"	: $scope.authData.selectedCardDetails.payment_id,
-				"amount"			: $scope.authData.authAmount
+				"payment_method_id": $scope.authData.selectedCardDetails.payment_id,
+				"amount": $scope.authData.authAmount
 			};
 			$scope.invokeApi(RVCCAuthorizationSrv.manualAuthorization, postData, onAuthorizationSuccess, onAuthorizationFaliure);
 		};
@@ -1347,7 +1346,7 @@ sntRover.controller('reservationDetailsController',
                        //data.expiry_date //unused at this time
                        $scope.$emit('hideLoader');
                    };
-                   $scope.invokeApi(RVReservationCardSrv.checkGiftCardBalance, {'card_number':$scope.num}, fetchGiftCardBalanceSuccess);
+                   $scope.invokeApi(RVReservationCardSrv.checkGiftCardBalance, {'card_number': $scope.num}, fetchGiftCardBalanceSuccess);
               // } else {
               //     $scope.giftCardAmountAvailable = false;
               // }
@@ -1394,7 +1393,7 @@ sntRover.controller('reservationDetailsController',
 			};
 			$scope.errorMessage = "";
 			var postData = {
-				"payment_method_id"	: paymentMethodId
+				"payment_method_id": paymentMethodId
 			};
 			$scope.invokeApi(RVCCAuthorizationSrv.releaseAuthorization, postData, onReleaseAuthorizationSuccess, onReleaseAuthorizationFaliure);
      };

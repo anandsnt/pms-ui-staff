@@ -29,17 +29,17 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 
 		$scope.$emit('showLoader');
 		var params ={
-			data:{
-				"reason":reason,
-				"process":"delete"
+			data: {
+				"reason": reason,
+				"process": "delete"
 			},
-			"id" :$scope.selectedTransaction.id
+			"id": $scope.selectedTransaction.id
 		};
 
 	 	var options = {
-			params: 			params,
-			loader: 			'NONE',
-			successCallBack: 	hideLoaderAndClosePopup
+			params: params,
+			loader: 'NONE',
+			successCallBack: hideLoaderAndClosePopup
 		};
 		$scope.callAPI (rvAccountTransactionsSrv.transactionDelete, options);
 
@@ -70,17 +70,17 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 		$scope.$emit('showLoader');
 		var split_type = isAmountType ? $rootScope.currencySymbol:'%';
 		var splitData = {
-			"id" :$scope.selectedTransaction.id,
-			"data":{
+			"id": $scope.selectedTransaction.id,
+			"data": {
 				"split_type": split_type,
    				"split_value": qty
 			}
 
 		};
 		var options = {
-			params: 			splitData,
-			loader: 			'NONE',
-			successCallBack: 	hideLoaderAndClosePopup
+			params: splitData,
+			loader: 'NONE',
+			successCallBack: hideLoaderAndClosePopup
 		};
 		$scope.callAPI (rvAccountTransactionsSrv.transactionSplit, options);
 
@@ -95,17 +95,17 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 		{
 			"updatedDate":
 						{
-				  			"new_amount":newAmount,
+				  			"new_amount": newAmount,
 				  			"charge_code_id": chargeCode.id,
-				  			"adjustment_reason":adjustmentReason
+				  			"adjustment_reason": adjustmentReason
 						},
-					"id" :$scope.selectedTransaction.id
+					"id": $scope.selectedTransaction.id
 		};
 
 		var options = {
-			params: 			editData,
-			loader: 			'NONE',
-			successCallBack: 	hideLoaderAndClosePopup
+			params: editData,
+			loader: 'NONE',
+			successCallBack: hideLoaderAndClosePopup
 		};
 		$scope.callAPI (rvAccountTransactionsSrv.transactionEdit, options);
 
@@ -124,9 +124,9 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 	    };
 
 		var options = {
-			params: 			editData,
-			loader: 			'NONE',
-			successCallBack: 	hideLoaderAndClosePopup
+			params: editData,
+			loader: 'NONE',
+			successCallBack: hideLoaderAndClosePopup
 		};
 		$scope.callAPI (rvAccountTransactionsSrv.transactionEditChargeDescription, options);
 

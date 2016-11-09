@@ -48,8 +48,8 @@ sntRover.controller('roverController',
     $scope.hotelDetails = hotelDetails;
     //set current hotel details
     $scope.currentHotelData = {
-      "name":"",
-      "id":""
+      "name": "",
+      "id": ""
     };
     angular.forEach($scope.hotelDetails.userHotelsData.hotel_list, function(hotel, index) {
           if($scope.hotelDetails.userHotelsData.current_hotel_id === hotel.hotel_id) {
@@ -92,10 +92,10 @@ sntRover.controller('roverController',
     // CICO-25098 - Flag to enable/disable the billing info code refactoring.
     // Need to be removed finally.
     $rootScope.UPDATED_BI_ENABLED_ON = {
-      'RESERVATION' : false,
-      'CARDS'       : false,
-      'ACCOUNTS'    : false,
-      'ALLOTMENT'   : false
+      'RESERVATION': false,
+      'CARDS': false,
+      'ACCOUNTS': false,
+      'ALLOTMENT': false
     };
     enableBillingInfo = $rootScope.UPDATED_BI_ENABLED_ON; // Need to be removed finally.
 
@@ -480,9 +480,9 @@ sntRover.controller('roverController',
             $scope.$emit('hideLoader');
             ngDialog.open(
             {
-              template      : '/assets/partials/postCharge/rvPostChargeV2.html',
-              controller    : 'RVOutsidePostChargeController',
-              scope         : $scope
+              template: '/assets/partials/postCharge/rvPostChargeV2.html',
+              controller: 'RVOutsidePostChargeController',
+              scope: $scope
             });
         });
     };

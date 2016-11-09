@@ -440,40 +440,40 @@ angular.module('sntRover').service('rvMenuSrv',
 
 		// NOTE:- {key: menuIndex, value: [PERMISSIONS]}
 		var menuPermissions = {
-			'search': 				['SEARCH_RESERVATIONS'],
-			'createReservation': 	['CREATE_EDIT_RESERVATIONS'],
-			'postcharges': 			['ACCESS_POST_CHARGES'],
+			'search': ['SEARCH_RESERVATIONS'],
+			'createReservation': ['CREATE_EDIT_RESERVATIONS'],
+			'postcharges': ['ACCESS_POST_CHARGES'],
 
-			'cashier': 				['ACCESS_CASHIERING'],
-			'endOfDay': 			['ACCESS_RUN_END_OF_DAY'],
-			'rateManager': 			['ACCESS_RATE_MANAGER'],
+			'cashier': ['ACCESS_CASHIERING'],
+			'endOfDay': ['ACCESS_RUN_END_OF_DAY'],
+			'rateManager': ['ACCESS_RATE_MANAGER'],
 
-			'cards': 				['ACCESS_COMPANY_TA_CARDS'],
+			'cards': ['ACCESS_COMPANY_TA_CARDS'],
 			'distribution_manager': ['ACCESS_DISTRIBUTION_MENU'],
-			'roomStatus': 			['HOUSEKEEPING_ROOM_STATUS_ACCESS'],
+			'roomStatus': ['HOUSEKEEPING_ROOM_STATUS_ACCESS'],
 
-			'workManagement': 		['ACCESS_TASK_MANAGEMENT'],
-			'maintanance': 			['ACCESS_TASK_MAINTENANCE'],
-			'journals': 			['ACCESS_JOURNAL'],
-			'ccTransactions':   	['VIEW_CC_TRANSACTIONS'],
+			'workManagement': ['ACCESS_TASK_MANAGEMENT'],
+			'maintanance': ['ACCESS_TASK_MAINTENANCE'],
+			'journals': ['ACCESS_JOURNAL'],
+			'ccTransactions': ['VIEW_CC_TRANSACTIONS'],
 
-			'accountsReceivables': 	['ACCESS_ACCOUNTING_INTERFACE'],
-			'accounting': 			['ACCESS_ACCOUNTING_INTERFACE'],
-			'commisions': 			['ACCESS_COMMISSIONS'],
-			'diaryReservation': 	['CREATE_EDIT_RESERVATIONS'],
-			'nightlyDiaryReservation': 	['ACCESS_ROOM_DIARY'],
+			'accountsReceivables': ['ACCESS_ACCOUNTING_INTERFACE'],
+			'accounting': ['ACCESS_ACCOUNTING_INTERFACE'],
+			'commisions': ['ACCESS_COMMISSIONS'],
+			'diaryReservation': ['CREATE_EDIT_RESERVATIONS'],
+			'nightlyDiaryReservation': ['ACCESS_ROOM_DIARY'],
 
-			'menuGroups': 			[],
-			'menuCreateGroup': 		['GROUP_CREATE'],
-			'menuManageGroup': 		['GROUP_MANAGE'],
+			'menuGroups': [],
+			'menuCreateGroup': ['GROUP_CREATE'],
+			'menuManageGroup': ['GROUP_MANAGE'],
 
-			'menuCreateAllotment': 	['ALLOTMENTS_CREATE'],
-			'menuManageAllotment': 	['ALLOTMENTS_MANAGE'],
+			'menuCreateAllotment': ['ALLOTMENTS_CREATE'],
+			'menuManageAllotment': ['ALLOTMENTS_MANAGE'],
 
-			'accounts':        		['ACCESS_ACCOUNTS'],
+			'accounts': ['ACCESS_ACCOUNTS'],
 
-			'changePassword':       ['SETTINGS_CHANGE_PASSWORD_MENU'],
-			'adminSettings':        ['SETTINGS_ACCESS_TO_HOTEL_ADMIN']
+			'changePassword': ['SETTINGS_CHANGE_PASSWORD_MENU'],
+			'adminSettings': ['SETTINGS_ACCESS_TO_HOTEL_ADMIN']
 
 
 		};

@@ -15,17 +15,17 @@ admin.controller('adDebuggingSetupCtrl', ['$scope', 'adDebuggingSetupSrv', '$sta
 
   $scope.sortByName = function() {
       if($scope.selectedDevice === "") {
-        $scope.tableParams.sorting({'device_name' : $scope.tableParams.isSortBy('device_name', 'asc') ? 'desc' : 'asc'});
+        $scope.tableParams.sorting({'device_name': $scope.tableParams.isSortBy('device_name', 'asc') ? 'desc' : 'asc'});
       }
   };
   $scope.sortByUser = function() {
       if($scope.selectedDevice === "") {
-        $scope.tableParams.sorting({'last_logged_in_user' : $scope.tableParams.isSortBy('last_logged_in_user', 'asc') ? 'desc' : 'asc'});
+        $scope.tableParams.sorting({'last_logged_in_user': $scope.tableParams.isSortBy('last_logged_in_user', 'asc') ? 'desc' : 'asc'});
       }
   };
   $scope.sortByDevice = function() {
       if($scope.selectedDevice === "") {
-        $scope.tableParams.sorting({'device_type' : $scope.tableParams.isSortBy('device_type', 'asc') ? 'desc' : 'asc'});
+        $scope.tableParams.sorting({'device_type': $scope.tableParams.isSortBy('device_type', 'asc') ? 'desc' : 'asc'});
     }
   };
 
@@ -138,7 +138,7 @@ admin.controller('adDebuggingSetupCtrl', ['$scope', 'adDebuggingSetupSrv', '$sta
   var setHoursList = function() {
     $scope.hours = [];
     for(var i = 1; i < 25; i++) {
-      var hour = {'name': i, 'value':i};
+      var hour = {'name': i, 'value': i};
       $scope.hours.push(hour);
     } 
   };

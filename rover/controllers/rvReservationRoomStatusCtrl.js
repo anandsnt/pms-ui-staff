@@ -175,13 +175,13 @@ angular.module('sntRover').controller('reservationRoomStatus',
         $scope.duplicateKeyInit = function() {
             $scope.keyType = 'Duplicate';
             $scope.keyInitPopup();
-            $rootScope.$broadcast('MAKE_KEY_TYPE', {type:'Duplicate'});
+            $rootScope.$broadcast('MAKE_KEY_TYPE', {type: 'Duplicate'});
         };
 
         $scope.newKeyInit = function() {
             $scope.keyType = 'New';
             $scope.keyInitPopup();
-            $rootScope.$broadcast('MAKE_KEY_TYPE', {type:'New'});
+            $rootScope.$broadcast('MAKE_KEY_TYPE', {type: 'New'});
         };
 
 	var openKeyEncodePopup = function() {
@@ -214,7 +214,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
 
 	$scope.goToRoomUpgrades = function() {
         var cannotMoveState   =  $scope.reservationData.reservation_card.cannot_move_room && $scope.reservationData.reservation_card.room_number!=="";
-		$state.go("rover.reservation.staycard.upgrades", {reservation_id:$scope.reservationData.reservation_card.reservation_id, "clickedButton": "upgradeButton", "cannot_move_room" : cannotMoveState});
+		$state.go("rover.reservation.staycard.upgrades", {reservation_id: $scope.reservationData.reservation_card.reservation_id, "clickedButton": "upgradeButton", "cannot_move_room": cannotMoveState});
 	};
 
 	/**
@@ -245,9 +245,9 @@ angular.module('sntRover').controller('reservationRoomStatus',
 			gotToDiaryInEditMode ();
 		} else if($scope.isFutureReservation($scope.reservationData.reservation_card.reservation_status)) {
 
-			$state.go("rover.reservation.staycard.roomassignment", {reservation_id:$scope.reservationData.reservation_card.reservation_id, room_type:$scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton", "upgrade_available" : isUpgradeAvaiable, "cannot_move_room": cannotMoveState});
+			$state.go("rover.reservation.staycard.roomassignment", {reservation_id: $scope.reservationData.reservation_card.reservation_id, room_type: $scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton", "upgrade_available": isUpgradeAvaiable, "cannot_move_room": cannotMoveState});
 		}else if($scope.reservationData.reservation_card.reservation_status==="CHECKEDIN" && $rootScope.isStandAlone) { // As part of CICO-27631 added Check for overlay hotels
-			$state.go("rover.reservation.staycard.roomassignment", {reservation_id:$scope.reservationData.reservation_card.reservation_id, room_type:$scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton", "upgrade_available" : isUpgradeAvaiable, "cannot_move_room": cannotMoveState});
+			$state.go("rover.reservation.staycard.roomassignment", {reservation_id: $scope.reservationData.reservation_card.reservation_id, room_type: $scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton", "upgrade_available": isUpgradeAvaiable, "cannot_move_room": cannotMoveState});
 		}
 
 	};
@@ -266,8 +266,8 @@ angular.module('sntRover').controller('reservationRoomStatus',
         }
 
         var options = {
-            params:             updateParams,
-            successCallBack:    successCallBackOfSaveReservation
+            params: updateParams,
+            successCallBack: successCallBackOfSaveReservation
         };
         $scope.callAPI(RVReservationSummarySrv.updateReservation, options);
     }

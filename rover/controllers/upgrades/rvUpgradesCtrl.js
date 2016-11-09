@@ -187,9 +187,9 @@ angular.module('sntRover').controller('RVUpgradesController',
 			}
 			ngDialog.open(
 			{
-				template 	: '/assets/partials/roomAssignment/rvGroupRoomTypeNotConfigured.html',
-				controller 	: 'rvBorrowRoomTypeCtrl',
-				scope 		: $scope
+				template: '/assets/partials/roomAssignment/rvGroupRoomTypeNotConfigured.html',
+				controller: 'rvBorrowRoomTypeCtrl',
+				scope: $scope
 	        });
 		};
 
@@ -205,15 +205,15 @@ angular.module('sntRover').controller('RVUpgradesController',
 
 			_.extend( $scope.reservationData.reservation_card,
 			{
-				room_number: 			selectedListItem.upgrade_room_number,
-				room_type_description: 	selectedListItem.upgrade_room_type_name,
-				room_type_code: 		selectedListItem.upgrade_room_type,
-				room_status: 			"READY",
-				fo_status: 				"VACANT",
-				room_ready_status: 		"INSPECTED",
+				room_number: selectedListItem.upgrade_room_number,
+				room_type_description: selectedListItem.upgrade_room_type_name,
+				room_type_code: selectedListItem.upgrade_room_type,
+				room_status: "READY",
+				fo_status: "VACANT",
+				room_ready_status: "INSPECTED",
 
 				// CICO-7904 and CICO-9628 : update the upsell availability to staycard
-				is_upsell_available: 	(data.is_upsell_available ? "true" : "false")
+				is_upsell_available: (data.is_upsell_available ? "true" : "false")
 			});
 
 			RVReservationCardSrv
@@ -287,10 +287,10 @@ angular.module('sntRover').controller('RVUpgradesController',
 
 			//yes. ALL set. Go!
 			var options = {
-                params: 					params,
-                successCallBack: 			successCallbackselectUpgrade,
-                failureCallBack: 			failureCallBackSelectUpgrade,
-                successCallBackParameters: 	{ selectedListItem: selectedListItem}
+                params: params,
+                successCallBack: successCallbackselectUpgrade,
+                failureCallBack: failureCallBackSelectUpgrade,
+                successCallBackParameters: { selectedListItem: selectedListItem}
             };
             $scope.callAPI(RVUpgradesSrv.selectUpgrade, options);
 		};

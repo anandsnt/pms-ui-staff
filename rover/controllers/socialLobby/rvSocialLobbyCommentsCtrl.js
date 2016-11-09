@@ -12,7 +12,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
 
         $scope.parentPost = $scope.posts[$scope.$index];
         $scope.comments = [];
-        $scope.commentParams = {'page': 1, 'per_page':10, 'post_id': $scope.parentPost.id};
+        $scope.commentParams = {'page': 1, 'per_page': 10, 'post_id': $scope.parentPost.id};
         $scope.selectedComment = "";
         $scope.newComment = "";
         $scope.middle_page1 = 2, $scope.middle_page2 = 3, $scope.middle_page3 = 4;
@@ -110,7 +110,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
             $scope.$emit("SL_ERROR", "");
             var options = {};
             options.params = {
-                "comment" :{
+                "comment": {
                 "comment_title": "",
                 "comment_text": $scope.newComment
             }};

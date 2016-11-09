@@ -368,7 +368,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 };
             };
 
-            $scope.invokeApi(ADRatesConfigureSrv.rateManagerStatusCheck, {"id":setData.id}, rateManagerCheckSuccsess);
+            $scope.invokeApi(ADRatesConfigureSrv.rateManagerStatusCheck, {"id": setData.id}, rateManagerCheckSuccsess);
         };
 
         //Saves the individual set

@@ -446,8 +446,8 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       };
       var options = {
         params: params,
-        successCallBack : sucessCallbackOfRegistrationCardData,
-        failureCallBack : failureCallbackOfRegistrationCardData
+        successCallBack: sucessCallbackOfRegistrationCardData,
+        failureCallBack: failureCallbackOfRegistrationCardData
       };
       $scope.callAPI(rvAllotmentReservationsListSrv.fetchRegistrationCardPrintData, options);
     };
@@ -458,11 +458,11 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      */
     var openEmailPromptingPopup = function() {
       ngDialog.open({
-        template        : '/assets/partials/allotments/reservations/popups/general/rvAllotmentReservationsListEmailPrompt.html',
-        className       : '',
-        scope           : $scope,
-        closeByDocument : false,
-        closeByEscape   : false
+        template: '/assets/partials/allotments/reservations/popups/general/rvAllotmentReservationsListEmailPrompt.html',
+        className: '',
+        scope: $scope,
+        closeByDocument: false,
+        closeByEscape: false
       });
     };
 
@@ -504,14 +504,14 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      */
     $scope.sendEmail = function(mailTo) {
       var params = {
-        to_address    : mailTo,
-        allotment_id  : $scope.allotmentConfigData.summary.allotment_id
+        to_address: mailTo,
+        allotment_id: $scope.allotmentConfigData.summary.allotment_id
       };
 
       var options = {
-        params          : params,
-        successCallBack : mailSent,
-        failureCallBack : mailFailed,
+        params: params,
+        successCallBack: mailSent,
+        failureCallBack: mailFailed,
       };
 
       $scope.callAPI(rvAllotmentReservationsListSrv.emailInvoice, options);
@@ -523,11 +523,11 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       */
     var openAutoRoomAssignConfirmationPopup = function() {
       ngDialog.open({
-        template          : '/assets/partials/allotments/reservations/popups/autoAssignRooms/rvAllotmentAutoRoomAssignSomeResReadyPopUp.html',
-        className         : '',
-        scope             : $scope,
-        closeByDocument   : false,
-        closeByEscape     : false
+        template: '/assets/partials/allotments/reservations/popups/autoAssignRooms/rvAllotmentAutoRoomAssignSomeResReadyPopUp.html',
+        className: '',
+        scope: $scope,
+        closeByDocument: false,
+        closeByEscape: false
       });
     };
 
@@ -537,11 +537,11 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      */
     var openNoReservationMeetAutoAssignCriteria = function() {
       ngDialog.open({
-        template        : '/assets/partials/allotments/reservations/popups/autoAssignRooms/rvAllotmentAutoRoomAssignNoResMeetCriteria.html',
-        className       : '',
-        scope           : $scope,
-        closeByDocument : false,
-        closeByEscape   : false
+        template: '/assets/partials/allotments/reservations/popups/autoAssignRooms/rvAllotmentAutoRoomAssignNoResMeetCriteria.html',
+        className: '',
+        scope: $scope,
+        closeByDocument: false,
+        closeByEscape: false
       });
     };
 
@@ -585,12 +585,12 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      */
     var openAutoRoomAssignSuccessPopup = function(data) {
       ngDialog.open({
-        template          : '/assets/partials/allotments/reservations/popups/autoAssignRooms/rvAllotmentResAutoRoomAssignmentSuccessPopUp.html',
-        className         : '',
-        scope             : $scope,
-        closeByDocument   : false,
-        closeByEscape     : false,
-        data              : JSON.stringify(data)
+        template: '/assets/partials/allotments/reservations/popups/autoAssignRooms/rvAllotmentResAutoRoomAssignmentSuccessPopUp.html',
+        className: '',
+        scope: $scope,
+        closeByDocument: false,
+        closeByEscape: false,
+        data: JSON.stringify(data)
       });
     };
 
@@ -604,12 +604,12 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       };
 
       ngDialog.open({
-        template        : '/assets/partials/allotments/reservations/popups/autoAssignRooms/rvAllotmentResAutoAssignRoomsFailedPopup.html',
-        className       : '',
-        scope           : $scope,
-        closeByDocument : false,
-        closeByEscape   : false,
-        data            : JSON.stringify(errorMessageForPopup)
+        template: '/assets/partials/allotments/reservations/popups/autoAssignRooms/rvAllotmentResAutoAssignRoomsFailedPopup.html',
+        className: '',
+        scope: $scope,
+        closeByDocument: false,
+        closeByEscape: false,
+        data: JSON.stringify(errorMessageForPopup)
       });
     };
 
@@ -660,14 +660,14 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       $scope.closeDialog();
       $timeout(function() {
         var params = {
-          id                : $scope.allotmentConfigData.summary.allotment_id,
-          reservation_ids   : _.pluck($scope.qualifiedReservations, 'id')
+          id: $scope.allotmentConfigData.summary.allotment_id,
+          reservation_ids: _.pluck($scope.qualifiedReservations, 'id')
         };
 
         var options = {
-          params            : params,
-          successCallBack   : successCallBackOfAutoRoomAssignQualifiedReservations,
-          failureCallBack   : failureCallBackOfAutoRoomAssignQualifiedReservations
+          params: params,
+          successCallBack: successCallBackOfAutoRoomAssignQualifiedReservations,
+          failureCallBack: failureCallBackOfAutoRoomAssignQualifiedReservations
         };
         $scope.callAPI(rvAllotmentReservationsListSrv.performAutoRoomAssignment, options);
       }, 800);
@@ -769,12 +769,12 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      */
     $scope.fetchReservationsForPrintingRoomingList = function() {
       var params = {
-        id      : $scope.allotmentConfigData.summary.allotment_id,
+        id: $scope.allotmentConfigData.summary.allotment_id,
         per_page: 1000 //assuming that there will be max of 1000 res. for an allotment
       };
       var options = {
-        params          : params,
-        successCallBack : successCallBackOfFetchAllReservationsForPrint
+        params: params,
+        successCallBack: successCallBackOfFetchAllReservationsForPrint
       };
       $scope.callAPI(rvAllotmentReservationsListSrv.fetchReservations, options);
     };
@@ -858,9 +858,9 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
     var setScroller = function() {
       //setting scroller things
       var scrollerOptions = {
-        tap             : true,
-        preventDefault  : false,
-        deceleration    : 0.0001,
+        tap: true,
+        preventDefault: false,
+        deceleration: 0.0001,
         shrinkScrollbars: 'clip'
       };
       $scope.setScroller('rooming_list', scrollerOptions);
@@ -948,18 +948,18 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
 
       //API params
       var params = {
-        id            : $scope.allotmentConfigData.summary.allotment_id,
-        room_type_id  : $scope.selectedRoomType,
-        from_date     : $scope.reservationAddFromDate !== '' ? getApiFormattedDate($scope.reservationAddFromDate) : '',
-        to_date       : $scope.reservationAddToDate !== '' ? getApiFormattedDate($scope.reservationAddToDate) : '',
-        occupancy     : $scope.selectedOccupancy,
+        id: $scope.allotmentConfigData.summary.allotment_id,
+        room_type_id: $scope.selectedRoomType,
+        from_date: $scope.reservationAddFromDate !== '' ? getApiFormattedDate($scope.reservationAddFromDate) : '',
+        to_date: $scope.reservationAddToDate !== '' ? getApiFormattedDate($scope.reservationAddToDate) : '',
+        occupancy: $scope.selectedOccupancy,
         no_of_reservations: $scope.numberOfRooms
       };
 
       //
       var options = {
-        params            : params,
-        successCallBack   : successCallBackOfAddReservations
+        params: params,
+        successCallBack: successCallBackOfAddReservations
       };
       $scope.callAPI(rvAllotmentReservationsListSrv.addReservations, options);
 
@@ -1002,11 +1002,11 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      */
     var formParamsForConfiguredRoomTypeFetch = function() {
       return {
-        id          : $scope.allotmentConfigData.summary.allotment_id,
-        from_date   : $scope.reservationAddFromDate ?
+        id: $scope.allotmentConfigData.summary.allotment_id,
+        from_date: $scope.reservationAddFromDate ?
                           getApiFormattedDate($scope.reservationAddFromDate) :
                           getApiFormattedDate($scope.reservationAddToDate),
-        to_date     : $scope.reservationAddToDate ?
+        to_date: $scope.reservationAddToDate ?
                           getApiFormattedDate($scope.reservationAddToDate) :
                           getApiFormattedDate($scope.reservationAddFromDate)
       };
@@ -1028,8 +1028,8 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       var params = formParamsForConfiguredRoomTypeFetch();
 
       var options = {
-        params            : params,
-        successCallBack   : successCallBackOfFetchConfiguredRoomTypeDetails
+        params: params,
+        successCallBack: successCallBackOfFetchConfiguredRoomTypeDetails
       };
       $scope.callAPI(rvAllotmentReservationsListSrv.getRoomTypesConfiguredAgainstGroup, options);
     };
@@ -1086,21 +1086,21 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      */
     var formFetchReservationsParams = function(isSearching) {
       var params = {
-        id : $scope.allotmentConfigData.summary.allotment_id,
-        payLoad : {
-          per_page  : $scope.perPage,
-          page      : $scope.page,
-          sort_by   : $scope.sorting_field,
-          sort_dir  : $scope.sort_dir
+        id: $scope.allotmentConfigData.summary.allotment_id,
+        payLoad: {
+          per_page: $scope.perPage,
+          page: $scope.page,
+          sort_by: $scope.sorting_field,
+          sort_dir: $scope.sort_dir
         }
       };
 
       if (isSearching) {
         _.extend(params.payLoad,
         {
-          start_date  : getApiFormattedDate($scope.reservationSearchFromDate),
-          end_date    : getApiFormattedDate($scope.reservationSearchToDate),
-          query       : $scope.searchQuery
+          start_date: getApiFormattedDate($scope.reservationSearchFromDate),
+          end_date: getApiFormattedDate($scope.reservationSearchToDate),
+          query: $scope.searchQuery
         });
       }
 
@@ -1114,8 +1114,8 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
     $scope.fetchReservations = function(isSearching) {
       var params = formFetchReservationsParams(isSearching);
       var options = {
-        params            : params,
-        successCallBack   : successCallBackOfFetchReservations
+        params: params,
+        successCallBack: successCallBackOfFetchReservations
       };
       $scope.callAPI(rvAllotmentReservationsListSrv.fetchReservations, options);
     };
@@ -1126,11 +1126,11 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      */
     var showNoRoomTypesAttachedPopUp = function(argument) {
       ngDialog.open({
-        template        : '/assets/partials/allotments/reservations/popups/general/rvAllotmentRoomingNoRoomTypeAttachedPopUp.html',
-        className       : '',
-        scope           : $scope,
-        closeByDocument : false,
-        closeByEscape   : false
+        template: '/assets/partials/allotments/reservations/popups/general/rvAllotmentRoomingNoRoomTypeAttachedPopUp.html',
+        className: '',
+        scope: $scope,
+        closeByDocument: false,
+        closeByEscape: false
       });
     };
 
@@ -1339,13 +1339,13 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      */
     $scope.clickedShowRate = function() {
       var params = {
-        'id'        : $scope.allotmentConfigData.summary.allotment_id,
+        'id': $scope.allotmentConfigData.summary.allotment_id,
         'hide_rates': !$scope.allotmentConfigData.summary.hide_rates
       };
       var options = {
-        params          : params,
-        successCallBack : sucessCallbackToggleHideRate,
-        failureCallBack : failureCallbackToggleHideRate
+        params: params,
+        successCallBack: sucessCallbackToggleHideRate,
+        failureCallBack: failureCallbackToggleHideRate
       };
       $scope.callAPI(rvAllotmentReservationsListSrv.toggleHideRate, options);
     };
@@ -1567,13 +1567,13 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
 
       var showEditReservationPopup = function(reservationData) {
         ngDialog.open({
-          template        : '/assets/partials/allotments/reservations/popups/editReservation/rvAllotmentEditRoomingListItem.html',
-          className       : '',
-          scope           : $scope,
-          closeByDocument : false,
-          closeByEscape   : false,
-          controller      : 'rvAllotmentReservationEditCtrl',
-          data            : JSON.stringify(reservationData)
+          template: '/assets/partials/allotments/reservations/popups/editReservation/rvAllotmentEditRoomingListItem.html',
+          className: '',
+          scope: $scope,
+          closeByDocument: false,
+          closeByEscape: false,
+          controller: 'rvAllotmentReservationEditCtrl',
+          data: JSON.stringify(reservationData)
         });
       };
 

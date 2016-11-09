@@ -35,7 +35,7 @@ admin.controller('ADTemplateConfigurationCtrl', ['$scope', '$state', 'ADHotelLis
 		$scope.currentClickedElement = index;
 		$scope.clickedHotel = hotelId;
 
-		var postData = { 'hotel_id' : hotelId };
+		var postData = { 'hotel_id': hotelId };
 		var editHotelConfigurationSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.hotelConfig   = data;
@@ -71,7 +71,7 @@ admin.controller('ADTemplateConfigurationCtrl', ['$scope', '$state', 'ADHotelLis
 
 		var postData = {
 			"hotel_id": $scope.clickedHotel,
-			"hotel_theme" : assignedTheme,
+			"hotel_theme": assignedTheme,
 			"templates": assignedEmailTemplates
 		};
 

@@ -12,16 +12,16 @@ sntRover.controller('rvBillingInfoCardsMainCtrl', ['$scope', '$rootScope', '$fil
         $scope.errorMessage   = '';
 
         $scope.billingInfoFlags = {
-            shouldShowWaiting : false,
-            isReloadNeeded    : false,
-            showChargeCodes   : false,
-            isBillingGroup    : true
+            shouldShowWaiting: false,
+            isReloadNeeded: false,
+            showChargeCodes: false,
+            isBillingGroup: true
         }; 
 
         $scope.saveData = {
-            payment_type             :  "",
-            payment_type_description :  "",
-            newPaymentFormVisible    : false
+            payment_type: "",
+            payment_type_description: "",
+            newPaymentFormVisible: false
         };
 
         setSelectedEntityType();
@@ -99,7 +99,7 @@ sntRover.controller('rvBillingInfoCardsMainCtrl', ['$scope', '$rootScope', '$fil
         $scope.selectedEntity = {
             "attached_charge_codes": [],
             "attached_billing_groups": [],
-            "is_new" : true,
+            "is_new": true,
             "credit_card_details": {}
         };
 
@@ -107,8 +107,8 @@ sntRover.controller('rvBillingInfoCardsMainCtrl', ['$scope', '$rootScope', '$fil
             $scope.selectedEntity.id     = $scope.attachedEntities.company_card.id;
             $scope.selectedEntity.name   = $scope.attachedEntities.company_card.name;
             $scope.selectedEntity.images = [{
-                "is_primary"  : true,
-                "guest_image" : $scope.attachedEntities.company_card.logo
+                "is_primary": true,
+                "guest_image": $scope.attachedEntities.company_card.logo
             }];
             $scope.selectedEntity.entity_type = "COMPANY_CARD";
             $scope.selectedEntity.is_allow_direct_debit = $scope.attachedEntities.company_card.is_allow_direct_debit;
@@ -117,8 +117,8 @@ sntRover.controller('rvBillingInfoCardsMainCtrl', ['$scope', '$rootScope', '$fil
             $scope.selectedEntity.id     = $scope.attachedEntities.travel_agent.id;
             $scope.selectedEntity.name   = $scope.attachedEntities.travel_agent.name;
             $scope.selectedEntity.images = [{
-                "is_primary"  : true,
-                "guest_image" : $scope.attachedEntities.travel_agent.logo
+                "is_primary": true,
+                "guest_image": $scope.attachedEntities.travel_agent.logo
             }];
             $scope.selectedEntity.entity_type = "TRAVEL_AGENT";
             $scope.selectedEntity.is_allow_direct_debit = $scope.attachedEntities.travel_agent.is_allow_direct_debit;

@@ -51,22 +51,22 @@ var Grid = React.createClass({
 				},
 				_.map(this.props.data, function(row, idx) {
 					return React.createElement( GridRow, {
-						key: 				row.key,
-						data: 				row,
-						row_number: 		idx,
-						display: 			display,
-						viewport: 			props.viewport,
-						filter: 			props.filter,
-						meta:               props.meta,
-						edit:               props.edit,
-						iscroll:            props.iscroll,
-						angular_evt: 		props.angular_evt,
-						currentResizeItem:  props.currentResizeItem,
+						key: row.key,
+						data: row,
+						row_number: idx,
+						display: display,
+						viewport: props.viewport,
+						filter: props.filter,
+						meta: props.meta,
+						edit: props.edit,
+						iscroll: props.iscroll,
+						angular_evt: props.angular_evt,
+						currentResizeItem: props.currentResizeItem,
 						currentResizeItemRow: props.currentResizeItemRow,
 						unassignedRoomList: props.unassignedRoomList,
-						__onResizeCommand: 	props.__onResizeCommand,
-						__onDragStart: 		props.__onDragStart,
-						__onDragStop: 		props.__onDragStop
+						__onResizeCommand: props.__onResizeCommand,
+						__onDragStart: props.__onDragStart,
+						__onDragStop: props.__onDragStop
 					});
 				})
 		));

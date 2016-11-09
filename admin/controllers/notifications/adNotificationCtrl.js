@@ -99,8 +99,8 @@ admin.controller('ADNotificationCtrl', ['$scope', '$rootScope', '$state', '$stat
         }       
         if(!!notification.id) {
             var params = {
-                id : $scope.notification.id,
-                params : getParams(notification)
+                id: $scope.notification.id,
+                params: getParams(notification)
             }
             $scope.invokeApi(ADNotificationsListSrv.updateNotification, params, $scope.back, saveFailed);        
         }else{

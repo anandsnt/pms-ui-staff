@@ -109,7 +109,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					{
 						title: "MENU_CREATE_RESERVATION",
 						action: "staff#/staff/staycard/search",
-						standAlone : true
+						standAlone: true
 					}, {
 						title: "MENU_ROOM_DIARY",
 						action: "staff#/staff/diary/",
@@ -313,8 +313,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			//CICO-9816 Bug fix - When moving to /staff, the screen was showing blank content
 			if (item[1].action.split('#')[0] === "staff") {
 				$('body').addClass('no-animation');
-				$('#admin-header').css({'z-index':'0'});
-				$('section.content-scroll').css({'overflow':'visible'});
+				$('#admin-header').css({'z-index': '0'});
+				$('section.content-scroll').css({'overflow': 'visible'});
 			}
 
 			if (item && item[1] && item[1].submenu) {
@@ -626,14 +626,14 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		$scope.goBackToPreviousState = function() {
 
 			    if($rootScope.previousStateParam) {
-			      $state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
+			      $state.go($rootScope.previousState, { menu: $rootScope.previousStateParam});
 			    }
 			    else if($rootScope.previousState) {
 			      $state.go($rootScope.previousState);
 			    }
 			    else
 			    {
-			      $state.go('admin.dashboard', {menu : 0});
+			      $state.go('admin.dashboard', {menu: 0});
 			    }
 
 		  	};

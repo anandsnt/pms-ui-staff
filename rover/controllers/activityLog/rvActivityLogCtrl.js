@@ -21,9 +21,9 @@ sntRover.controller('RVActivityLogCtrl', [
 	$scope.backToStayCard = function() {
 		$state.go("rover.reservation.staycard.reservationcard.reservationdetails",
             {
-                id:$scope.$parent.reservation.reservation_card.reservation_id,
-                confirmationId:$scope.$parent.reservation.reservation_card.confirmation_num,
-                isRefresh:true
+                id: $scope.$parent.reservation.reservation_card.reservation_id,
+                confirmationId: $scope.$parent.reservation.reservation_card.confirmation_num,
+                isRefresh: true
             });
 	};
 

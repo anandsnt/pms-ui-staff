@@ -160,9 +160,9 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
       };
   //Invoke the api only when the statistic block is opened
   var requestParams = {
-    'show_adr' : true,
-    'show_upsell' : true,
-    'show_rate_of_day' : true
+    'show_adr': true,
+    'show_upsell': true,
+    'show_rate_of_day': true
   };
   //CICO-31344
   if(!$scope.isStandAlone) {

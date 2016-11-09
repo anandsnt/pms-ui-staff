@@ -161,11 +161,11 @@ admin.controller('ADRulesRestrictionCtrl', [
             $scope.singleRule = {};
             $scope.singleRule.schedules =[];
                 var newSchedule = {
-                "amount":null,
-                "amount_type":"",
-                "auto_charge_on_due_date":false,
-                "advance_days":null,
-                "post_type_id":null
+                "amount": null,
+                "amount_type": "",
+                "auto_charge_on_due_date": false,
+                "advance_days": null,
+                "post_type_id": null
                 };
             $scope.singleRule.schedules.push(newSchedule);
             $scope.selectedSchedule =  $scope.singleRule.schedules[0];
@@ -248,11 +248,11 @@ admin.controller('ADRulesRestrictionCtrl', [
 
         $scope.addNewSchedule = function() {
             var newSchedule = {
-                "amount":null,
-                "amount_type":"",
-                "auto_charge_on_due_date":false,
-                "advance_days":null,
-                "post_type_id":null
+                "amount": null,
+                "amount_type": "",
+                "auto_charge_on_due_date": false,
+                "advance_days": null,
+                "post_type_id": null
             };
             $scope.singleRule.schedules.push(newSchedule);
              $scope.selectedSchedule = $scope.singleRule.schedules[$scope.singleRule.schedules.length-1];
@@ -349,11 +349,11 @@ admin.controller('ADRulesRestrictionCtrl', [
                 }
             }else{
             var newSchedule = {
-                "amount":null,
-                "amount_type":"",
-                "auto_charge_on_due_date":false,
-                "advance_days":null,
-                "post_type_id":null
+                "amount": null,
+                "amount_type": "",
+                "auto_charge_on_due_date": false,
+                "advance_days": null,
+                "post_type_id": null
                 };
             $scope.singleRule.schedules.push(newSchedule);
             $scope.selectedSchedule = $scope.singleRule.schedules[0];

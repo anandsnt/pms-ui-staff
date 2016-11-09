@@ -4,7 +4,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 		$scope.highchartsNG = {};
 		$scope.contractList = {};
 		$scope.contractData = {};
-		$scope.rateValueTypes = [ { value:"%", name:"percent" }, { value: $rootScope.currencySymbol, name:"amount" } ];
+		$scope.rateValueTypes = [ { value: "%", name: "percent" }, { value: $rootScope.currencySymbol, name: "amount" } ];
 		$scope.addData = {};
 		$scope.contractList.contractSelected = "";
 		$scope.contractList.current_contracts = [];

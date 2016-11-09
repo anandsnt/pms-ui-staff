@@ -113,9 +113,9 @@ sntRover.controller('rvReservationCardHKController',
          */
         var callInitialAPIs = function() {
             var options = {
-                params          : { reservation_id: $scope.reservationData.reservation_card.reservation_id },
-                successCallBack : fetchInitialDataSuccessCallBack,
-                failureCallBack : fetchInitialDataFailureCallBack
+                params: { reservation_id: $scope.reservationData.reservation_card.reservation_id },
+                successCallBack: fetchInitialDataSuccessCallBack,
+                failureCallBack: fetchInitialDataFailureCallBack
             };
 
             $scope.callAPI( rvReservationHouseKeepingSrv.fetch, options );

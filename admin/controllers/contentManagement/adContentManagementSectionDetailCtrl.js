@@ -6,8 +6,8 @@ admin.controller('ADContentManagementSectionDetailCtrl', ['$scope', '$state', 'n
 	$scope.fileName = "Choose file...";
 	$scope.initialIcon = '';
 
-	$scope.delay_timings = [{"name":"1", "value": "1"}, {"name":"2", "value": "2"}, {"name":"3", "value": "3"}, {"name":"4", "value": "4"}, {"name":"5", "value": "5"}, {"name":"6", "value": "6"}, {"name":"7", "value": "7"}, {"name":"8", "value": "8"}, {"name":"9", "value": "9"}, {"name":"10", "value": "10"}];
-	$scope.alignments = [{"name":"Left", "value": "Left"}, {"name":"Center", "value": "Center"}, {"name":"Right", "value": "Right"}];
+	$scope.delay_timings = [{"name": "1", "value": "1"}, {"name": "2", "value": "2"}, {"name": "3", "value": "3"}, {"name": "4", "value": "4"}, {"name": "5", "value": "5"}, {"name": "6", "value": "6"}, {"name": "7", "value": "7"}, {"name": "8", "value": "8"}, {"name": "9", "value": "9"}, {"name": "10", "value": "10"}];
+	$scope.alignments = [{"name": "Left", "value": "Left"}, {"name": "Center", "value": "Center"}, {"name": "Right", "value": "Right"}];
 	/*Initializing data, for adding a new section.
     */
 	$scope.data = {
@@ -15,7 +15,7 @@ admin.controller('ADContentManagementSectionDetailCtrl', ['$scope', '$state', 'n
 	            "status": false,
 	            "name": "",
 	            "icon": '',
-	            "is_description_visible":false,
+	            "is_description_visible": false,
 	            "description_alignment": "Center",
 	            "description": "",
 	            "is_search_enabled": false,
@@ -94,13 +94,13 @@ admin.controller('ADContentManagementSectionDetailCtrl', ['$scope', '$state', 'n
 			ngDialog.open({
 				template: '/assets/partials/contentManagement/adDeleteContent.html',
 				className: '',
-				controller:'adDeleteContentController',
-				scope:$scope,
-				closeByDocument:true
+				controller: 'adDeleteContentController',
+				scope: $scope,
+				closeByDocument: true
 			});
 			$scope.componentIdToDelete = id;
 		};
-		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id':id}, successCallbackFetchDeleteDetails);
+		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id': id}, successCallbackFetchDeleteDetails);
 
 	};
 	/* Listener to know that the current category is deleted.

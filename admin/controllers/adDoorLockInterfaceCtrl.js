@@ -120,7 +120,7 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
 			$scope.data = data;
                         if (!inProd()) {
                             $scope.data.quick_key_systems = [
-                                {value:'Saflok - 6000', name:'Saflok - 6000'}, 
+                                {value: 'Saflok - 6000', name: 'Saflok - 6000'}, 
                                 {value: 'Saflok - ATLAS', name: 'Saflok - ATLAS'}, 
                                 {value: 'Salto - HAMS', name: 'Salto - HAMS'}, 
                                 {value: 'Salto - Space', name: 'Salto - Space'}

@@ -65,7 +65,7 @@ admin.controller('ADChargeGroupsCtrl', ['$scope', 'ADChargeGroupsSrv', '$anchorS
 			$scope.data.name = "";
 			$scope.data.charge_groups.push(data);
 		};
-  		$scope.invokeApi(ADChargeGroupsSrv.save, { 'name' : $scope.data.name }, postSuccess);
+  		$scope.invokeApi(ADChargeGroupsSrv.save, { 'name': $scope.data.name }, postSuccess);
 	};
 	/*
     * To handle save button in edit box.
@@ -92,7 +92,7 @@ admin.controller('ADChargeGroupsCtrl', ['$scope', 'ADChargeGroupsSrv', '$anchorS
 	 			}
  			});
 		};
-		$scope.invokeApi(ADChargeGroupsSrv.deleteItem, {'value':id }, successDeletionCallback);
+		$scope.invokeApi(ADChargeGroupsSrv.deleteItem, {'value': id }, successDeletionCallback);
 	};
 
 }]);

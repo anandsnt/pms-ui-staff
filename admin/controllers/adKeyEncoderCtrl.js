@@ -60,7 +60,7 @@ admin.controller('ADKeyEncoderCtrl', ['$scope', '$state', 'ADRatesSrv', 'ADKeyEn
 		};
 
 		var data = {
-			"id" : id
+			"id": id
 		};
 		$scope.invokeApi(ADKeyEncoderSrv.showEncoderDetails, data, successCallbackEdit);
 	};
@@ -112,8 +112,8 @@ admin.controller('ADKeyEncoderCtrl', ['$scope', '$state', 'ADRatesSrv', 'ADKeyEn
 	$scope.statusToggle = function(index) {
 		$scope.data[index].activated;
 		var data = {
-			'id' : $scope.data[index].id,
-			'status' : !$scope.data[index].enabled
+			'id': $scope.data[index].id,
+			'status': !$scope.data[index].enabled
 		};
 
 		var postSuccess = function() {

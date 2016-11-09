@@ -292,7 +292,7 @@
 							reason: $scope.cancellationData.reason,
 							payment_method_id: parseInt($scope.cancellationData.selectedCard) === -1 ? null : parseInt($scope.cancellationData.selectedCard),
 							id: reservationId,
-							application : "ROVER",
+							application: "ROVER",
 							is_with_penalty: isWithoutPenalty
 						};
 						if ($scope.ngDialogData.isDisplayReference) {
@@ -306,7 +306,7 @@
 						reason: $scope.cancellationData.reason,
 						payment_method_id: parseInt($scope.cancellationData.selectedCard) === -1 ? null : parseInt($scope.cancellationData.selectedCard),
 						id: $scope.reservationData.reservationId || $scope.reservationParentData.reservationId || $scope.passData.reservationId,
-						application : "ROVER",
+						application: "ROVER",
 						is_with_penalty: isWithoutPenalty
 					};
 					if ($scope.ngDialogData.isDisplayReference) {

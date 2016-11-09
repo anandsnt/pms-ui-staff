@@ -51,7 +51,7 @@ admin.controller('ADNotificatinsListCtrl',
 			$scope.$emit('hideLoader');
 		};
 		params = {
-			id :id
+			id: id
 		};
 		$scope.invokeApi(ADNotificationsListSrv.deleteNotification, params, deleteSuccess, deleteFailed);
 	};

@@ -24,10 +24,10 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 				JSON.stringify({
 					rooms: [].concat( options.room_id ),
 					status: {
-						to_date  : options.to_date,
-						end_time : options.end_time,
-						id       : options.room_service_status_id,
-						value    : getValue(options.room_service_status_id)
+						to_date: options.to_date,
+						end_time: options.end_time,
+						id: options.room_service_status_id,
+						value: getValue(options.room_service_status_id)
 					}
 				})
 			);

@@ -46,7 +46,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
 			*/
 			var navListNode = $("#graph-showing-area #nav-listing");
 			var LabelElements = navListNode.find("ul li");
-        	navListNode.css({"left" :plottedChart.plotLeft, "width": plottedChart.plotSizeX});
+        	navListNode.css({"left": plottedChart.plotLeft, "width": plottedChart.plotSizeX});
         	var labelWidthToSet = 0;
         	$scope.graphWidth = getMaxSeriesLengthData() * 75;
         	if(getMaxSeriesLengthData() !== 0) {
@@ -149,7 +149,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
 					plotBackgroundColor: '#F7F7F7',
 					plotBorderColor: '#FFF',
 					plotBorderWidth: 2,
-					marginLeft:4
+					marginLeft: 4
 
 				},
 
@@ -218,12 +218,12 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
 			// Apply the theme
 			var highchartsOptions = Highcharts.setOptions(Highcharts.theme);
 			$scope.availabilityGraphCongif = {
-				options : {
+				options: {
 					chart: {
 						type: 'area'
 					},
-					legend : {
-						enabled : false
+					legend: {
+						enabled: false
 					},
 					tooltip: {
 			            formatter: function () {
@@ -257,14 +257,14 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
 				{
 					showLastLabel: true,
     				endOnTick: true,
-					floor : 0,
-					ceiling : 100,
-					title:{
+					floor: 0,
+					ceiling: 100,
+					title: {
 						text: ''
 					},
 					max: 100,
-					minRange : 100,
-					tickInterval : 10,
+					minRange: 100,
+					tickInterval: 10,
 					labels: {
 						    align: 'left',
                 			x: 0,

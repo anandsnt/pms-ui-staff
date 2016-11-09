@@ -29,18 +29,18 @@
 		};
 
 		$scope.months = [
-							{"id":1, "name":"JAN"},
-							{"id":2, "name":"FEB"},
-							{"id":3, "name":"MAR"},
-							{"id":4, "name":"APR"},
-							{"id":5, "name":"MAY"},
-							{"id":6, "name":"JUN"},
-							{"id":7, "name":"JUL"},
-							{"id":8, "name":"AUG"},
-							{"id":9, "name":"SEP"},
-							{"id":10, "name":"OCT"},
-							{"id":11, "name":"NOV"},
-							{"id":12, "name":"DEC"}
+							{"id": 1, "name": "JAN"},
+							{"id": 2, "name": "FEB"},
+							{"id": 3, "name": "MAR"},
+							{"id": 4, "name": "APR"},
+							{"id": 5, "name": "MAY"},
+							{"id": 6, "name": "JUN"},
+							{"id": 7, "name": "JUL"},
+							{"id": 8, "name": "AUG"},
+							{"id": 9, "name": "SEP"},
+							{"id": 10, "name": "OCT"},
+							{"id": 11, "name": "NOV"},
+							{"id": 12, "name": "DEC"}
 						];
 			
 		for(day=1;day<=31;day++) {

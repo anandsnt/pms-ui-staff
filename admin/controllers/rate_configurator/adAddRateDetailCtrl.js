@@ -30,7 +30,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                     var defaultTask = null;
                     if(!currentSelection && !$scope.is_edit) {
                         defaultTask = _.find(workType.tasks, {
-                            is_default : true
+                            is_default: true
                         });
                     }
 
@@ -232,15 +232,15 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'deposit_policy_id': $scope.rateData.deposit_policy_id,
                 'end_date': $scope.rateData.end_date,
                 'is_hourly_rate': $scope.rateData.is_hourly_rate,
-                'commission_details':commissions,
+                'commission_details': commissions,
                 'is_member': $scope.rateData.is_member_rate ? $scope.rateData.is_member_rate : false,
-                'is_pms_only' : $scope.rateData.is_pms_only,
-                'is_channel_only' : $scope.rateData.is_channel_only,
-                'code':$scope.rateData.code,
+                'is_pms_only': $scope.rateData.is_pms_only,
+                'is_channel_only': $scope.rateData.is_channel_only,
+                'code': $scope.rateData.code,
                 'task_id': $scope.rateData.task_id,
-                'is_copied' : ($scope.rateData.based_on.is_copied == undefined) ? false : $scope.rateData.based_on.is_copied,
-                'booking_origin_id' : $scope.rateData.booking_origin_id,
-                'tasks' : $scope.rateData.tasks
+                'is_copied': ($scope.rateData.based_on.is_copied == undefined) ? false : $scope.rateData.based_on.is_copied,
+                'booking_origin_id': $scope.rateData.booking_origin_id,
+                'tasks': $scope.rateData.tasks
             };
 
             // Save Rate Success Callback

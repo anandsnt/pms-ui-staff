@@ -47,12 +47,12 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
         };
 
         var params = {
-            'query'         : $scope.filterData.searchQuery,
-            'page'          : $scope.filterData.page,
-            'per_page'      : $scope.filterData.perPage,
-            'min_amount'    : $scope.filterData.minAmount,
-            'ageing_days'   : $scope.filterData.ageingDays,
-            'sort_by'       : $scope.filterData.sortBy
+            'query': $scope.filterData.searchQuery,
+            'page': $scope.filterData.page,
+            'per_page': $scope.filterData.perPage,
+            'min_amount': $scope.filterData.minAmount,
+            'ageing_days': $scope.filterData.ageingDays,
+            'sort_by': $scope.filterData.sortBy
         };
         $scope.invokeApi(RVAccountsReceivablesSrv.fetchAccountsReceivables, params, successCallBackFetchAccountsReceivables );
     };
@@ -60,28 +60,28 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
     // Setting filter data set for pagination and filter options..
     $scope.filterData = {
 
-        'page'          : 1,
-        'perPage'       : 50,
-        'searchQuery'   : '',
-        'minAmount'     : '',
-        'sortBy'        : 'NAME_ASC',
-        'ageingDays'    : '',
-        'hideArHeader'	: false,
+        'page': 1,
+        'perPage': 50,
+        'searchQuery': '',
+        'minAmount': '',
+        'sortBy': 'NAME_ASC',
+        'ageingDays': '',
+        'hideArHeader': false,
         
         'ageingDaysList':
         [
-            {   'value' : '',   'name'  : ''    },
-            {   'value' : '30',   'name'  : '30'  },
-            {   'value' : '60',   'name'  : '60'  },
-            {   'value' : '90',   'name'  : '90'  },
-            {   'value' : '120',   'name'  : '120' }
+            {   'value': '',   'name': ''    },
+            {   'value': '30',   'name': '30'  },
+            {   'value': '60',   'name': '60'  },
+            {   'value': '90',   'name': '90'  },
+            {   'value': '120',   'name': '120' }
         ],
-        'sortList'      :
+        'sortList':
         [
-            {   'value' : 'NAME_ASC',   'name':  'NAME ASC'   },
-            {   'value' : 'NAME_DESC',   'name':  'NAME DESC'  },
-            {   'value' : 'AMOUNT_ASC',   'name':  'AMOUNT ASC' },
-            {   'value' : 'AMOUNT_DESC',   'name':  'AMOUNT DESC'}
+            {   'value': 'NAME_ASC',   'name': 'NAME ASC'   },
+            {   'value': 'NAME_DESC',   'name': 'NAME DESC'  },
+            {   'value': 'AMOUNT_ASC',   'name': 'AMOUNT ASC' },
+            {   'value': 'AMOUNT_DESC',   'name': 'AMOUNT DESC'}
         ]
     };
 

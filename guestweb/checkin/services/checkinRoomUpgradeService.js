@@ -22,7 +22,7 @@
 
 	return {
 		responseData: responseData,
-		post : post
+		post: post
 	};
 };
 

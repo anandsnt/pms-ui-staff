@@ -17,7 +17,7 @@ admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$
                 $scope.activityLogData = response;
                 $scope.$emit('hideLoader');
             };
-            $scope.invokeApi(ADRateActivityLogSrv.fetchRateLog, {'id':rateId}, callback);
+            $scope.invokeApi(ADRateActivityLogSrv.fetchRateLog, {'id': rateId}, callback);
         };
         $scope.toggleActivityLogFilterON = false;
         $scope.toggleActivityLogFilter = function() {

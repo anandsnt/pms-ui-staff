@@ -31,13 +31,13 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
 		$scope.errorMessage ="";
 		$scope.currentClickedElement = index;
 		$scope.editId = id;
-		var editID = { 'editID' : id };
+		var editID = { 'editID': id };
 		var editChainSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.editData   = data;
 			$scope.formTitle = 'Edit'+' '+$scope.editData.name;
 			if($scope.editData.lov.length === 0) {
-				$scope.editData.lov.push({'value':'', 'name':''});
+				$scope.editData.lov.push({'value': '', 'name': ''});
 			}
 			$scope.isEditmode = true;
 			$scope.fileName = ($scope.editData.ca_certificate_exists === "true")  ? 'Certificate Attached' :'Choose file ...';
@@ -51,7 +51,7 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
 	$scope.addNew = function() {
 		$scope.editData   = {};
 		$scope.errorMessage ="";
-		$scope.editData.lov  = [{'value':'', 'name':''}];
+		$scope.editData.lov  = [{'value': '', 'name': ''}];
 		$scope.formTitle = 'Add';
 		$scope.isAddmode = true;
 		$scope.isEditmode = false;
@@ -95,7 +95,7 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
  			}
  			//if the length is zero, we are reverting to initial one
  			else{
- 				$scope.editData.lov = [{'value':'', 'name':''}];
+ 				$scope.editData.lov = [{'value': '', 'name': ''}];
  			}
  		};
  		$scope.invokeApi(adChainsSrv.post, $scope.editData, addChainSuccessCallback, addChainFailureCallback);
@@ -115,7 +115,7 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
  			}
  		});
 
- 		var updateData = {'id' : id, 'updateData' :$scope.editData };
+ 		var updateData = {'id': id, 'updateData': $scope.editData };
 
 
 
@@ -129,7 +129,7 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
 			};
 
 			if($scope.editData.lov.length === 0) {
-				$scope.editData.lov = [{'value':'', 'name':''}];
+				$scope.editData.lov = [{'value': '', 'name': ''}];
 			}
 
  		};
@@ -187,7 +187,7 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
 				});
 			}
 			if($scope.newOptionAvailable) {
-				$scope.editData.lov.push({'value':'', 'name':''});
+				$scope.editData.lov.push({'value': '', 'name': ''});
 			}
 		}
 	};

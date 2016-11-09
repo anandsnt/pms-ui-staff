@@ -11,7 +11,7 @@
       templateUrl: '/assets/checkin/partials/ccErrorModal.html',
       controller: ccVerificationModalCtrl,
       resolve: {
-        errorMessage:function() {
+        errorMessage: function() {
           return "Please enter a valid email.";
         }
       }
@@ -23,14 +23,14 @@
       templateUrl: '/assets/checkin/partials/ccErrorModal.html',
       controller: ccVerificationModalCtrl,
       resolve: {
-        errorMessage:function() {
+        errorMessage: function() {
           return "There is a problem saving your email address. Please retry.";
         }
       }
     };
 
 
-    $scope.guestDetails = { "email":""};
+    $scope.guestDetails = { "email": ""};
     $scope.emailUpdated = false;
 
    
@@ -46,7 +46,7 @@
     	}
     	else{
         $scope.isLoading = true;
-        guestDetailsService.postGuestDetails({"email":$scope.guestDetails.email}).then(function(response) {
+        guestDetailsService.postGuestDetails({"email": $scope.guestDetails.email}).then(function(response) {
           $scope.isLoading = false;
           $scope.emailUpdated = true;
           $rootScope.userEmail = $scope.guestDetails.email;

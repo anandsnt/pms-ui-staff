@@ -269,7 +269,7 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 		//If standalone PMS, then the rate configurator wizard should be appeared.
 		}else{
 			$scope.showLoader();
-			$state.go('admin.rateDetails', {rateId : rateId});
+			$state.go('admin.rateDetails', {rateId: rateId});
 		}
 
 	};

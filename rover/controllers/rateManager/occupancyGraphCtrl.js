@@ -6,7 +6,7 @@ angular.module('sntRover').controller('RateMgrOccupancyGraphCtrl', ['$q', '$scop
                 scrollY: false,
                 scrollbars: true,
                 interactiveScrollbars: false,
-                momentum:false,
+                momentum: false,
                 mouseWheel: true,
                 click: true
             }

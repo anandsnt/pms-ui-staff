@@ -1,5 +1,5 @@
 var DailyProductionRevenueToggle = React.createClass({
-  toggleTheRevenue : function() {
+  toggleTheRevenue: function() {
     var toggleRevenue = this.props.toggleRevenue;
     setTimeout(function() {
       toggleRevenue();
@@ -18,13 +18,13 @@ var DailyProductionRevenueToggle = React.createClass({
   render: function() {
 
     return React.DOM.div({
-      className	: 'switch-button ' + (this.props.header.showRevenue ?  'on' : 'disabled'),
-      id 			: 'report-revenue-toggle-parent',
+      className: 'switch-button ' + (this.props.header.showRevenue ?  'on' : 'disabled'),
+      id: 'report-revenue-toggle-parent',
     },
 	React.DOM.input({
-	  name 	: 'report-toggle',
-	  id 		: 'report-availability-toggle',
-	  type 	: 'checkbox'
+	  name: 'report-toggle',
+	  id: 'report-availability-toggle',
+	  type: 'checkbox'
 	}),
 	React.DOM.label({
 	  className: 'data-off'

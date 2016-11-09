@@ -58,7 +58,7 @@ sntRover.controller('rvBillingInfoAddPaymentCtrl', ['$scope', '$rootScope', '$fi
                 $scope.$parent.$emit('hideLoader');
                 $scope.$emit('displayErrorMessage', errorMessage);
             };
-            var paymentParams = {"direct_bill":true};
+            var paymentParams = {"direct_bill": true};
             $scope.invokeApi(RVPaymentSrv.renderPaymentScreen, paymentParams, successCallback, errorCallback);
     };
     $scope.fetchAvailablePaymentTypes();

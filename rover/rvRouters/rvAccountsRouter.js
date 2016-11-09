@@ -30,12 +30,12 @@ angular.module('accountsModule', [])
                         //as per CICO-13899, initially we are looking for groups which has from & to date equal
                         // to business date
                         var params = {
-                            'query'     : '',
-                            'status'    : '',
-                            'per_page'  : rvAccountsSrv.DEFAULT_PER_PAGE,
-                            'page'      : rvAccountsSrv.DEFAULT_PAGE,
-                            'is_non_zero' : true,
-                            'account_type':''
+                            'query': '',
+                            'status': '',
+                            'per_page': rvAccountsSrv.DEFAULT_PER_PAGE,
+                            'page': rvAccountsSrv.DEFAULT_PAGE,
+                            'is_non_zero': true,
+                            'account_type': ''
                         };
                         return rvAccountsSrv.getAccountsList(params);
                     }

@@ -5,7 +5,7 @@
     var fetchLateCheckoutOptions = function() {
 		var deferred = $q.defer();
 		var url = '/guest_web/get_late_checkout_charges.json',
-		parameters = {'reservation_id':$rootScope.reservationID};
+		parameters = {'reservation_id': $rootScope.reservationID};
 		$http.get(url, {
 			params: parameters
 		}).success(function(response) {
@@ -33,7 +33,7 @@
 return {
 	charges: charges,
 	fetchLateCheckoutOptions: fetchLateCheckoutOptions,
-	postNewCheckoutOption:postNewCheckoutOption
+	postNewCheckoutOption: postNewCheckoutOption
 };
 };
 

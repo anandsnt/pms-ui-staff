@@ -58,8 +58,8 @@ sntRover.controller('reservationPaymentController',
 	        }
 
 	        var options = {
-	            params:             updateParams,
-	            successCallBack:    successCallBackOfUpdateAllowPostWithNoCredit
+	            params: updateParams,
+	            successCallBack: successCallBackOfUpdateAllowPostWithNoCredit
 	        };
 	        $scope.callAPI(RVReservationSummarySrv.updateReservation, options);
     	}

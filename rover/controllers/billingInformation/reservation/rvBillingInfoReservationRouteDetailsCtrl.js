@@ -12,11 +12,11 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl', ['$scope', '$roo
         $scope.swipedCardDataToSave = {};
 
         $scope.paymentFlags         = {
-            showPayment              : false,
-            isAddPayment             : false,
-            showPaymentDropDown      : false,
-            isShownExistingCCPayment : false,
-            sixIsManual              : false
+            showPayment: false,
+            isAddPayment: false,
+            showPaymentDropDown: false,
+            isShownExistingCCPayment: false,
+            sixIsManual: false
         };
 
         setCreditCardDetails();
@@ -248,18 +248,18 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl', ['$scope', '$roo
         if (!$rootScope.isManualCCEntryEnabled) {
             $scope.isManualCCEntryEnabled = false;
             var dialog = ngDialog.open({
-                template   : '/assets/partials/payment/rvPaymentModal.html',
-                controller : '',
-                scope      : $scope
+                template: '/assets/partials/payment/rvPaymentModal.html',
+                controller: '',
+                scope: $scope
             });
             return;
         }
 
         $scope.renderAddedPayment = {
-            creditCardType : "",
-            cardExpiry     : "",
-            endingWith     : "",
-            payment_type   : ""
+            creditCardType: "",
+            cardExpiry: "",
+            endingWith: "",
+            payment_type: ""
         };
 
         $scope.paymentFlags.isAddPayment             = true;
@@ -498,7 +498,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl', ['$scope', '$roo
             id = $scope.selectedEntity.id;
         }
 
-        var sendData = { "id" : id, "entity_type" : entity_type };
+        var sendData = { "id": id, "entity_type": entity_type };
         $scope.invokeApi(RVBillinginfoSrv.fetchBillsForReservation, sendData, successCallback, errorCallback);
     };
 
@@ -622,13 +622,13 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl', ['$scope', '$roo
             $scope.selectedEntity.entity_type === "HOUSE") {
 
             var data = {
-                "entity_type" : $scope.selectedEntity.entity_type,
-                "entity_id"   : $scope.selectedEntity.id
+                "entity_type": $scope.selectedEntity.entity_type,
+                "entity_id": $scope.selectedEntity.id
             };
         }
         else {
             var data = {
-                "reservation_id" : $scope.reservationData.reservation_id
+                "reservation_id": $scope.reservationData.reservation_id
             };
         }
 
@@ -712,7 +712,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl', ['$scope', '$roo
 
         var successSixSwipe = function(response) {
             var data = {
-                "token" : response.token,
+                "token": response.token,
                 "is_swiped": true
             };
             data.reservation_id = $scope.reservationData.reservation_id;
@@ -770,7 +770,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl', ['$scope', '$roo
         }
         else {
             var data = {
-                "payment_type"  :   $scope.saveData.payment_type
+                "payment_type": $scope.saveData.payment_type
             };
 
             data.reservation_id = $scope.reservationData.reservation_id;

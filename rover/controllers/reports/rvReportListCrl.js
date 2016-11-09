@@ -71,18 +71,18 @@ sntRover.controller('RVReportListCrl', [
 
                 // to process the filters for this report
                 reportUtils.processFilters(report[i], {
-                    'guaranteeTypes'   : $scope.$parent.guaranteeTypes,
-                    'markets'          : $scope.$parent.markets,
-                    'sources'          : $scope.$parent.sources,
-                    'origins'          : $scope.$parent.origins,
-                    'codeSettings'     : $scope.$parent.codeSettings,
-                    'holdStatus'       : $scope.$parent.holdStatus,
-                    'chargeNAddonGroups' : $scope.$parent.chargeNAddonGroups,
-                    'chargeCodes'      : $scope.$parent.chargeCodes,
-                    'addons'           : $scope.$parent.addons,
+                    'guaranteeTypes': $scope.$parent.guaranteeTypes,
+                    'markets': $scope.$parent.markets,
+                    'sources': $scope.$parent.sources,
+                    'origins': $scope.$parent.origins,
+                    'codeSettings': $scope.$parent.codeSettings,
+                    'holdStatus': $scope.$parent.holdStatus,
+                    'chargeNAddonGroups': $scope.$parent.chargeNAddonGroups,
+                    'chargeCodes': $scope.$parent.chargeCodes,
+                    'addons': $scope.$parent.addons,
                     'reservationStatus': $scope.$parent.reservationStatus,
                     'assigned_departments': $scope.$parent.assigned_departments,
-                    'activeUserList'   : $scope.$parent.activeUserList
+                    'activeUserList': $scope.$parent.activeUserList
                 });
 
                 // to reorder & map the sort_by to report details columns - for this report

@@ -93,15 +93,15 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
 		//forming data to return
 		graphData = {
-			'dates'				: dates,
-			'bookableRooms'		: bookableRooms,
-			'outOfOrderRooms'	: outOfOrderRooms,
-			'reservedRooms'		: reservedRooms,
-			'availableRooms'	: availableRooms,
-			'occupanciesActual'	: occupanciesActual,
-			'occupanciesActual'	: occupanciesActual,
+			'dates': dates,
+			'bookableRooms': bookableRooms,
+			'outOfOrderRooms': outOfOrderRooms,
+			'reservedRooms': reservedRooms,
+			'availableRooms': availableRooms,
+			'occupanciesActual': occupanciesActual,
+			'occupanciesActual': occupanciesActual,
 			'occupanciesTargeted': occupanciesTargeted,
-			'totalRooms'	: totalRoomCount
+			'totalRooms': totalRoomCount
 
 		};
 		return graphData;
@@ -134,11 +134,11 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			//Forms array(temp) of details of groups date wise
 			_.each(element.group_availability, function(ele, ind, list) {
 				var detail ={
-					"id":ele.group_id,
-					"Name":ele.name,
-					"date":element.date,
-					"total_blocked_rooms":ele.total_blocked_rooms,
-					"total_pickedup_rooms":ele.total_pickedup_rooms
+					"id": ele.group_id,
+					"Name": ele.name,
+					"date": element.date,
+					"total_blocked_rooms": ele.total_blocked_rooms,
+					"total_pickedup_rooms": ele.total_pickedup_rooms
 				};
 				temp.push(detail);
 			});
@@ -148,21 +148,21 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		//Forms groupwise Details.
 		_.each(datafromApi.results[0].group_availability, function(element, index, list) {
 			var groupdetail ={
-				"name":element.name,
-				"id":element.group_id,
-				"holdStatusName":getGroupName(element.hold_status_id, datafromApi.hold_status),
-				"details":_.zip.apply(null, groupDetail)[index]
+				"name": element.name,
+				"id": element.group_id,
+				"holdStatusName": getGroupName(element.hold_status_id, datafromApi.hold_status),
+				"details": _.zip.apply(null, groupDetail)[index]
 			};
 			groupDetails.push(groupdetail);
 		});
 
 		gridDataForGroupAvailability = {
-			'dates'	: dates,
+			'dates': dates,
 			'groupTotalRooms': groupTotalRooms,
-			'groupTotalPickedUps':groupTotalPickedUps,
+			'groupTotalPickedUps': groupTotalPickedUps,
 			'holdstatuses': _.zip.apply(null, holdstatus),
-			'groupDetails':groupDetails,
-			'holdStatus':datafromApi.hold_status
+			'groupDetails': groupDetails,
+			'holdStatus': datafromApi.hold_status
 		};
 		return gridDataForGroupAvailability;
 	}
@@ -185,8 +185,8 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		var secondDate 	= (params.to_date);
 
 		var dataForWebservice = {
-			from_date	: firstDate,
-			to_date		: secondDate
+			from_date: firstDate,
+			to_date: secondDate
 		};
 
 		//Webservice calling section
@@ -257,21 +257,21 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		});
 
 		gridData = {
-			'dates'				: dates,
-			'occupancies'		: occupancies,
-			'availableRooms'	: availableRooms,
-			'nonGroupRooms'		: nonGroupRooms,
+			'dates': dates,
+			'occupancies': occupancies,
+			'availableRooms': availableRooms,
+			'nonGroupRooms': nonGroupRooms,
 			'groupAndAllotments': groupAndAllotments,
-			'outOfOrder' 		: outOfOrder,
-			'inventory'			: inventory,
-			'roomTypes'         : roomAvailabilityData['room_types'],
-			'roomToSell'		: roomToSell
+			'outOfOrder': outOfOrder,
+			'inventory': inventory,
+			'roomTypes': roomAvailabilityData['room_types'],
+			'roomToSell': roomToSell
 		};
 		//CICO-13590
 		if (!isHourlyRateOn) {
 			_.extend (gridData,
 			{
-				'bookedRooms' 		: bookedRooms
+				'bookedRooms': bookedRooms
 			});
 		}
 		return gridData;
@@ -298,9 +298,9 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			adultsCount   = item.adults_count || 0;
 			childrenCount = item.children_count || 0;
 			adultsChildrenCounts.push({
-				'bothCount'     : adultsCount + '/' + childrenCount,
-				'isWarning'     : ( 5 >= adultsCount && 5 >= childrenCount ),
-				'isUnavailable' : ( 0 >= adultsCount && 0 >= childrenCount )
+				'bothCount': adultsCount + '/' + childrenCount,
+				'isWarning': ( 5 >= adultsCount && 5 >= childrenCount ),
+				'isUnavailable': ( 0 >= adultsCount && 0 >= childrenCount )
 			});
 
 			//Extracts BAR details
@@ -324,10 +324,10 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
 
 		additionalData ={
-			'roomTypeWiseDetails' 	: 	_.zip.apply(null, roomtypeDetails),
-			'roomTypeNames' 		: 	roomTypeNames,
-			'adultsChildrenCounts'	: 	adultsChildrenCounts,
-			'bestAvailabilityRate'	: 	bestAvailabilityRate
+			'roomTypeWiseDetails': _.zip.apply(null, roomtypeDetails),
+			'roomTypeNames': roomTypeNames,
+			'adultsChildrenCounts': adultsChildrenCounts,
+			'bestAvailabilityRate': bestAvailabilityRate
 		};
 
 		return additionalData;
@@ -340,8 +340,8 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		var secondDate 	= (params.to_date);
 
 		var dataForWebservice = {
-			from_date	: firstDate,
-			to_date		: secondDate
+			from_date: firstDate,
+			to_date: secondDate
 		};
 
 		//Webservice calling section
@@ -401,11 +401,11 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			//Forms array(temp) of details of groups date wise
 			_.each(element.availability, function(ele, ind, list) {
 				var detail ={
-					"id":ele.id,
-					"Name":ele.name,
-					"date":element.date, // is needed, not in API
-					"total_blocked_rooms":ele.total_blocked_rooms,
-					"total_pickedup_rooms":ele.total_pickedup_rooms
+					"id": ele.id,
+					"Name": ele.name,
+					"date": element.date, // is needed, not in API
+					"total_blocked_rooms": ele.total_blocked_rooms,
+					"total_pickedup_rooms": ele.total_pickedup_rooms
 				};
 				temp.push(detail);
 			});
@@ -417,21 +417,21 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		//Forms groupwise Details.
 		_.each(datafromApi.results[0].availability, function(element, index, list) {
 			var groupdetail ={
-				"name":element.name,
-				"id":element.id,
-				"holdStatusName":getAllotmentName(element.hold_status_id, datafromApi.hold_status),
-				"details":_.zip.apply(null, groupDetail)[index]
+				"name": element.name,
+				"id": element.id,
+				"holdStatusName": getAllotmentName(element.hold_status_id, datafromApi.hold_status),
+				"details": _.zip.apply(null, groupDetail)[index]
 			};
 			groupDetails.push(groupdetail);
 		});
 
 		gridDataForAllotmentAvailability = {
-			'dates'	: dates,
+			'dates': dates,
 			'groupTotalRooms': groupTotalRooms,
-			'groupTotalPickedUps':groupTotalPickedUps,
+			'groupTotalPickedUps': groupTotalPickedUps,
 			'holdstatuses': _.zip.apply(null, holdstatus),
-			'groupDetails':groupDetails,
-			'holdStatus':datafromApi.hold_status
+			'groupDetails': groupDetails,
+			'holdStatus': datafromApi.hold_status
 		};
 
 		return gridDataForAllotmentAvailability;
@@ -446,8 +446,8 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		var secondDate 	= params.to_date;
 
 		var dataForWebservice = {
-			from_date	: firstDate,
-			to_date		: secondDate
+			from_date: firstDate,
+			to_date: secondDate
 		};
 
 		//Webservice calling section
@@ -498,9 +498,9 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 	*/
 	this.fetchAvailabilityAdditionalDetails = function(params) {
 		var dataForWebservice = {
-			'from_date'                   : params.from_date,
-			'to_date'	                  : params.to_date,
-			'is_from_availability_screen' : true
+			'from_date': params.from_date,
+			'to_date': params.to_date,
+			'is_from_availability_screen': true
 		};
 
 		//Webservice calling section
@@ -513,8 +513,8 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 				that.fetchOccupancyDetails(params)
 					.then(function(occupancyDataFromAPI) {
 						_.extend(that.data.gridData, {
-							'additionalData'      : formGridAdditionalData( availabilityAdditionalFromAPI ),
-							'additionalGraphData' : formGraphData( availabilityAdditionalFromAPI, occupancyDataFromAPI ),
+							'additionalData': formGridAdditionalData( availabilityAdditionalFromAPI ),
+							'additionalGraphData': formGraphData( availabilityAdditionalFromAPI, occupancyDataFromAPI ),
 						});
 
 						// passing on gridData is a waste, sort of.
@@ -536,8 +536,8 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 	*/
 	this.fetchOccupancyDetails = function(params) {
 		var dataForWebservice = {
-			'from_date' : params.from_date,
-			'to_date'   : params.to_date
+			'from_date': params.from_date,
+			'to_date': params.to_date
 		};
 
 		var deferred = $q.defer();
@@ -723,13 +723,13 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		};
 
 		that.fetchGroupAvailabilityDetails({
-			from_date : params.from_date,
-			to_date   : params.to_date
+			from_date: params.from_date,
+			to_date: params.to_date
 		}).then(success, failed);
 
 		that.fetchAllotmentAvailabilityDetails({
-			from_date : params.from_date,
-			to_date   : params.to_date
+			from_date: params.from_date,
+			to_date: params.to_date
 		}).then(success, failed);
 
 		return deferred.promise;
@@ -772,8 +772,8 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			secondDate 	= (params.to_date);
 
 		var dataForWebservice = {
-			from_date	: firstDate,
-			to_date		: secondDate
+			from_date: firstDate,
+			to_date: secondDate
 		};
 		//Webservice calling section
 		var deferred = $q.defer(),
@@ -811,10 +811,10 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
                     _.each(idsInOrder, function(roomTypeId) {
                     	var roomTypeData = {};
                     	roomTypeData.name = _.find(that.data.gridData.roomTypes, {
-                            id:roomTypeId
+                            id: roomTypeId
                         }).name;
                         roomTypeData.is_suite = _.find(that.data.gridData.roomTypes, {
-                            id:roomTypeId
+                            id: roomTypeId
                         }).is_suite;
                         roomTypeNames.push(roomTypeData)
                     });

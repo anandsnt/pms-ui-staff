@@ -57,11 +57,11 @@ sntRover.controller('RVPostChargeControllerV2',
 		    var searchChargeCodeItems = function() {
 
 		    	var params = {
-					"query" 			: $scope.query ? $scope.query.toLowerCase() : '',
-					"page"				: $scope.fetchedData.pageNo,
-					"per_page" 			: $scope.fetchedData.perPage,
-					"charge_group_id" 	: $scope.chargeGroup !== 'FAV' ? $scope.chargeGroup : '',
-					"is_favorite"		: $scope.chargeGroup === 'FAV' ? 1 : 0
+					"query": $scope.query ? $scope.query.toLowerCase() : '',
+					"page": $scope.fetchedData.pageNo,
+					"per_page": $scope.fetchedData.perPage,
+					"charge_group_id": $scope.chargeGroup !== 'FAV' ? $scope.chargeGroup : '',
+					"is_favorite": $scope.chargeGroup === 'FAV' ? 1 : 0
 				};
 
 		    	var successCallBackFetchChargeCodes = function( data ) {
@@ -557,7 +557,7 @@ sntRover.controller('RVPostChargeControllerV2',
 				else{
 
 					var billData ={
-						"bill_number" : $scope.billNumber
+						"bill_number": $scope.billNumber
 					};
 					//accounts or reservation bill screen check
 					isFromAccounts ? (billData.account_id = $scope.account_id):(billData.reservation_id = $scope.reservation_id);

@@ -349,7 +349,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 		 */
 		var showAlreadyAssignedToReservationsPopup = function(reservationList) {
 			var data = {
-				reservations : reservationList
+				reservations: reservationList
 			};
 
             ngDialog.open({
@@ -404,15 +404,15 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 
 			//for hourly hotels as of now
 			var params = {
-				from_date	: 	getApiFormattedDate($scope.updateService.from_date),
-				to_date		: 	getApiFormattedDate($scope.updateService.to_date),
-				room_id 	: 	$scope.roomDetails.id,
-				begin_time	: 	$scope.updateService.begin_time,
-				end_time	: 	$scope.updateService.end_time
+				from_date: getApiFormattedDate($scope.updateService.from_date),
+				to_date: getApiFormattedDate($scope.updateService.to_date),
+				room_id: $scope.roomDetails.id,
+				begin_time: $scope.updateService.begin_time,
+				end_time: $scope.updateService.end_time
 			};
 
 			var options = {
-				params : params,
+				params: params,
 				successCallBack: successCallbackOfRoomStatusChangePossible,
                 failureCallBack: failureCallbackOfRoomStatusChangePossible
 			};

@@ -49,10 +49,10 @@ angular.module('sntRover').directive('autoCompleteReservations', ['RVSearchSrv',
                     delay: scope.delay ? 600 : parseInt(scope.delay),
                     minLength: scope.minLengthToTrigger ? 0 : parseInt(scope.minLengthToTrigger),
                     position: {
-                        of : el.find("input"),
+                        of: el.find("input"),
                         my: "right top",
                         at: "right bottom",
-                        collision : 'flip',
+                        collision: 'flip',
                         within: 'body'
                     },
                     source: reservationsACSourceHandler,

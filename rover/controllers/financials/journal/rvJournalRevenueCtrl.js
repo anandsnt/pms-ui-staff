@@ -32,10 +32,10 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
 		};
 
         var postData = {
-            "from_date":$scope.data.fromDate,
-            "to_date":$scope.data.toDate,
-            "employee_ids" : $scope.data.selectedEmployeeList,
-            "department_ids" : $scope.data.selectedDepartmentList
+            "from_date": $scope.data.fromDate,
+            "to_date": $scope.data.toDate,
+            "employee_ids": $scope.data.selectedEmployeeList,
+            "department_ids": $scope.data.selectedDepartmentList
         };
 		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, postData, successCallBackFetchRevenueData);
     };
@@ -84,11 +84,11 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
         if(!toggleItem.active) {
 
             var postData = {
-                "from_date":$scope.data.fromDate,
-                "to_date":$scope.data.toDate,
+                "from_date": $scope.data.fromDate,
+                "to_date": $scope.data.toDate,
                 "charge_group_id": toggleItem.id,
-                "employee_ids" : $scope.data.selectedEmployeeList,
-                "department_ids" : $scope.data.selectedDepartmentList
+                "employee_ids": $scope.data.selectedEmployeeList,
+                "department_ids": $scope.data.selectedDepartmentList
             };
             $scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeCodes, postData, successCallBackFetchRevenueDataChargeCodes);
         }
@@ -129,12 +129,12 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
         // Call api only while expanding the tab or on pagination Next/Prev button actions ..
         if(!chargeCodeItem.active || isFromPagination) {
             var postData = {
-                "from_date":$scope.data.fromDate,
-                "to_date":$scope.data.toDate,
-                "charge_code_id":chargeCodeItem.id,
-                "employee_ids" : $scope.data.selectedEmployeeList,
-                "department_ids" : $scope.data.selectedDepartmentList,
-                "page_no" :  chargeCodeItem.page_no,
+                "from_date": $scope.data.fromDate,
+                "to_date": $scope.data.toDate,
+                "charge_code_id": chargeCodeItem.id,
+                "employee_ids": $scope.data.selectedEmployeeList,
+                "department_ids": $scope.data.selectedDepartmentList,
+                "page_no": chargeCodeItem.page_no,
                 "per_page": $scope.data.filterData.perPage
             };
             $scope.invokeApi(RVJournalSrv.fetchRevenueDataByTransactions, postData, successCallBackFetchRevenueDataTransactions);

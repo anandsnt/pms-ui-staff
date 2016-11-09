@@ -9,8 +9,8 @@ var gulp 	  = require('gulp'),
 				},
 	$         = require('gulp-load-plugins')({rename: rename }),
     options   = {
-			        DEST_ROOT_PATH  : '../../public/assets/',
-			        URL_APPENDER    : '/assets',
+			        DEST_ROOT_PATH: '../../public/assets/',
+			        URL_APPENDER: '/assets',
 				    onError: function (error) {
 				    	console.log ('--------GULP TASK FAILED---\n\n');
 				    	

@@ -34,12 +34,12 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
    */
   var fetchNotesForThisGuest = function() {
     var params  = {
-      guestID : guestID
+      guestID: guestID
     };
 
     var options = {
-      params : params,
-      successCallBack : successCallBackOfFetchNotesForThisGuest
+      params: params,
+      successCallBack: successCallBackOfFetchNotesForThisGuest
     };
     $scope.callAPI(rvGuestCardNotesSrv.fetchNotesForGuest, options);
   };
@@ -79,15 +79,15 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
     $scope.errorMessage = '';
 
     var params  = {
-      noteID 	  : noteID,
-      guestID 	: guestID
+      noteID: noteID,
+      guestID: guestID
     };
 
     var options = {
-      params 			: params,
-      successCallBack 	: successCallBackOfFetchDeleteNoteFromGuestCard,
-      failureCallBack   : failureCallBackOfFetchDeleteNoteFromGuestCard,
-      successCallBackParameters : {
+      params: params,
+      successCallBack: successCallBackOfFetchDeleteNoteFromGuestCard,
+      failureCallBack: failureCallBackOfFetchDeleteNoteFromGuestCard,
+      successCallBackParameters: {
         index: deletingIndex
       }
     };
@@ -102,13 +102,13 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
     //we are adding to the list with the response
     var userDetails = RVDashboardSrv.getUserDetails();
     var noteToAdd = {
-      'posted_user_first_name'	: userDetails.first_name,
-      'posted_user_last_name' 	: userDetails.last_name,
-      'posted_user_image_url' 	: userDetails.user_image_url,
-      'text'					: $scope.noteText,
-      'time' 					: data.time,
-      'date' 					: data.date,
-      'id' 						: data.id
+      'posted_user_first_name': userDetails.first_name,
+      'posted_user_last_name': userDetails.last_name,
+      'posted_user_image_url': userDetails.user_image_url,
+      'text': $scope.noteText,
+      'time': data.time,
+      'date': data.date,
+      'id': data.id
     };
     $scope.notes.unshift(0);
     $scope.notes[0] = noteToAdd;
@@ -128,15 +128,15 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
    */
   $scope.createGuestcardNote = function() {
     var params  = {
-      guestID : guestID,
-      text 		: $scope.noteText
+      guestID: guestID,
+      text: $scope.noteText
     };
 
     $scope.errorMessage = '';
 
     var options = {
-      params : params,
-      successCallBack : successCallBackOfCreateNoteFromGuestCard
+      params: params,
+      successCallBack: successCallBackOfCreateNoteFromGuestCard
     };
     $scope.callAPI(rvGuestCardNotesSrv.createNoteFromGuestCard, options);
   };
@@ -169,14 +169,14 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
     $scope.errorMessage = '';
     
     var params  = {
-      noteID 	: $scope.editingNote.id,
-      guestID : guestID,
-      text 		: $scope.noteText
+      noteID: $scope.editingNote.id,
+      guestID: guestID,
+      text: $scope.noteText
     };
 
     var options = {
-      params : params,
-      successCallBack : successCallBackOfFetchUpdateActiveNote
+      params: params,
+      successCallBack: successCallBackOfFetchUpdateActiveNote
     };
     $scope.callAPI(rvGuestCardNotesSrv.updateNoteFromGuestCard, options);  	
   };

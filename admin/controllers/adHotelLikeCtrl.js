@@ -38,7 +38,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
 	    $scope.likeSubtitle ="Like category";
 	    $scope.likeData   = {};
 	    $scope.likeData.type = '';
-	    $scope.likeData.options =[{'name':''}];
+	    $scope.likeData.options =[{'name': ''}];
 	    $scope.isAddmode = true;
 	    $scope.isEditmode = false;
 	    $timeout(function() {
@@ -58,7 +58,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
 
 	  };
 	  $scope.likeList.likes[index].is_active = ($scope.likeList.likes[index].is_active ==='true') ? 'false':'true';
-	  var data = {'id' : $scope.likeList.likes[index].id, 'set_active' : $scope.likeList.likes[index].is_active};
+	  var data = {'id': $scope.likeList.likes[index].id, 'set_active': $scope.likeList.likes[index].is_active};
 	  $scope.invokeApi(ADHotelLikesSrv.toggleSwitch, data, toggleSwitchLikesSuccessCallback);
 	};
 
@@ -142,7 +142,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
     if(rowName === "NEWSPAPER") {
       editID = 5;
     }
-    var editID = { 'editID' : id };
+    var editID = { 'editID': id };
     var editLikeSuccessCallback = function(data) {
       $scope.$emit('hideLoader');
       $scope.likeData = data;
@@ -167,7 +167,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
 	      *add a input box for adding new option
 	      */
 	      if($scope.likeData.newfeature.length !==0) {
-	        $scope.likeData.news_papers.push({'name':$scope.likeData.newfeature, 'is_checked':'true'});
+	        $scope.likeData.news_papers.push({'name': $scope.likeData.newfeature, 'is_checked': 'true'});
 	        $scope.likeData.newfeature ="";
 	      }
 	    }
@@ -192,7 +192,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
 
       if($scope.likeData.newfeature.length !==0) {
 
-        $scope.likeData.news_papers.push({'name':$scope.likeData.newfeature, 'is_checked':'true'});
+        $scope.likeData.news_papers.push({'name': $scope.likeData.newfeature, 'is_checked': 'true'});
         $scope.likeData.newfeature ="";
       }
     }
@@ -221,10 +221,10 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
      $scope.showCheckbox = false;
 
     if($scope.likeData.options.length === 0) {
-      $scope.likeData.options =[{'name':''}, {'name':''}];
+      $scope.likeData.options =[{'name': ''}, {'name': ''}];
     }
     else if($scope.likeData.options.length === 1) {
-      $scope.likeData.options.push({'name':''});
+      $scope.likeData.options.push({'name': ''});
     }
 
    }
@@ -234,7 +234,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
      $scope.showRadio = false;
      $scope.showCheckbox = false;
      if($scope.likeData.options.length === 0) {
-        $scope.likeData.options =[{'name':''}];
+        $scope.likeData.options =[{'name': ''}];
      }
    }
    else{
@@ -243,7 +243,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
      $scope.showRadio = false;
      $scope.showDropDown = false;
      if($scope.likeData.options.length === 0) {
-        $scope.likeData.options =[{'name':''}];
+        $scope.likeData.options =[{'name': ''}];
      }
    }
  });
@@ -263,7 +263,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
               });
             }
             if($scope.newOptionAvailable) {
-              $scope.likeData.options.push({'name':''});
+              $scope.likeData.options.push({'name': ''});
             }
           }
         };
@@ -351,11 +351,11 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
 
       if($scope.likeData.newfeature.length !==0) {
 
-        $scope.likeData.news_papers.push({'name':$scope.likeData.newfeature, 'is_checked':'true'});
+        $scope.likeData.news_papers.push({'name': $scope.likeData.newfeature, 'is_checked': 'true'});
         $scope.likeData.newfeature ="";
       }
 
-      var data = {'custom_likes' : $scope.likeData.news_papers, 'id':$scope.likeData.id};
+      var data = {'custom_likes': $scope.likeData.news_papers, 'id': $scope.likeData.id};
       delete $scope.likeData.newfeature;
 
       var saveCustomLikesSuccessCallback = function(data) {

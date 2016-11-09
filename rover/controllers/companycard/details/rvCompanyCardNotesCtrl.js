@@ -35,12 +35,12 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
     var fetchNotes = function() {
         accountID = $scope.contactInformation.id;
         var params  = {
-            accountID : accountID
+            accountID: accountID
         };
 
         var options = {
-            params : params,
-            successCallBack : successCallBackOfFetchNotes
+            params: params,
+            successCallBack: successCallBackOfFetchNotes
         };
         $scope.callAPI(rvCompanyCardNotesSrv.fetchNotes, options);
     };
@@ -80,15 +80,15 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
         $scope.errorMessage = '';
 
         var params  = {
-            noteID      : noteID,
-            accountID   : accountID
+            noteID: noteID,
+            accountID: accountID
         };
 
         var options = {
-            params            : params,
-            successCallBack   : successCallBackOfDeleteNote,
-            failureCallBack   : failureCallBackOfDeleteNote,
-            successCallBackParameters : {
+            params: params,
+            successCallBack: successCallBackOfDeleteNote,
+            failureCallBack: failureCallBackOfDeleteNote,
+            successCallBackParameters: {
                 index: deletingIndex
             }
         };
@@ -102,12 +102,12 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
     var successCallBackOfCreateNote = function(data) {
         //we are adding to the list with the response
         var noteToAdd = {
-            'user_name'  : data.user_name,
-            'avatar'     : data.avatar,
-            'note'       : data.note,
-            'time'       : data.time,
-            'date'       : data.date,
-            'id'         : data.id
+            'user_name': data.user_name,
+            'avatar': data.avatar,
+            'note': data.note,
+            'time': data.time,
+            'date': data.date,
+            'id': data.id
         };
         $scope.notes.unshift(0);
         $scope.notes[0] = noteToAdd;
@@ -128,15 +128,15 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
     $scope.createNote = function() {
         accountID = $scope.contactInformation.id;
         var params  = {
-            accountID : accountID,
-            text      : $scope.noteText
+            accountID: accountID,
+            text: $scope.noteText
         };
 
         $scope.errorMessage = '';
 
         var options = {
-            params : params,
-            successCallBack : successCallBackOfCreateNote
+            params: params,
+            successCallBack: successCallBackOfCreateNote
         };
         $scope.callAPI(rvCompanyCardNotesSrv.createNote, options);
     };
@@ -169,14 +169,14 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
         $scope.errorMessage = '';
 
         var params  = {
-          noteID    : $scope.editingNote.id,
-          accountID   : accountID,
-          text      : $scope.noteText
+          noteID: $scope.editingNote.id,
+          accountID: accountID,
+          text: $scope.noteText
         };
 
         var options = {
-          params : params,
-          successCallBack : successCallBackOfFetchUpdateActiveNote
+          params: params,
+          successCallBack: successCallBackOfFetchUpdateActiveNote
         };
         $scope.callAPI(rvCompanyCardNotesSrv.updateNote, options);
     };

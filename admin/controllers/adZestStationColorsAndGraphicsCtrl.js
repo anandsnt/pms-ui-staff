@@ -69,7 +69,7 @@ admin.controller('ADZestStationColorsAndGraphicsCtrl', ['$scope', '$rootScope', 
             var dataToSend = {
                                 'kiosk':
                                         {
-                                            "colors":colorData
+                                            "colors": colorData
                                         }
 
                              };

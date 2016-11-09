@@ -120,16 +120,16 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
                                     (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN');
                 cannotMoveState   =  $scope.reservationData.reservation_card.cannot_move_room && $scope.reservationData.reservation_card.room_number!=="";
             $state.go("rover.reservation.staycard.roomassignment", {
-                "reservation_id" : $scope.reservationData.reservation_card.reservation_id,
+                "reservation_id": $scope.reservationData.reservation_card.reservation_id,
                 "room_type": $scope.reservationData.reservation_card.room_type_code,
                 "clickedButton": "checkinButton",
-                "upgrade_available" : isUpgradeAvaiable,
-                "cannot_move_room" : cannotMoveState
+                "upgrade_available": isUpgradeAvaiable,
+                "cannot_move_room": cannotMoveState
             });
         };
         $scope.goToUpgrades = function() {
             $state.go('rover.reservation.staycard.upgrades', {
-                "reservation_id" : $scope.reservationData.reservation_card.reservation_id,
+                "reservation_id": $scope.reservationData.reservation_card.reservation_id,
                 "clickedButton": "checkinButton"
             });
         };

@@ -18,9 +18,9 @@ sntRover.controller('contractedNightsCtrl', ['$scope', 'dateFilter', 'ngDialog',
 		month = my_point - year*12;
 		var obj = {
 				"contracted_occupancy": 0,
-				"year" : year,
+				"year": year,
 				"actual_occupancy": 0,
-				"month" : month_array[month]
+				"month": month_array[month]
 		};
 		new_occupancy.push(obj);
 		my_point +=1;

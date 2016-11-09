@@ -68,8 +68,8 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
    var fetchReleaseNotes = function() {
       //Standard parameters,As of now leave it all null
       var params = {
-        hotel_uuid :null,
-        service_provider_uuid : null,
+        hotel_uuid: null,
+        service_provider_uuid: null,
         is_read: null
       };
       var successReleaseNotesFetch = function(data) {

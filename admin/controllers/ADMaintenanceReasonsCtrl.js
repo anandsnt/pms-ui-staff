@@ -72,8 +72,8 @@ admin.controller('ADMaintenanceReasonsCtrl', ['$scope', 'ADMaintenanceReasonsSrv
 		};
 
 		var params = {
-			'name' : $scope.data.name,
-			'code' : $scope.data.code
+			'name': $scope.data.name,
+			'code': $scope.data.code
 		};
   		$scope.invokeApi(ADMaintenanceReasonsSrv.save, params, postSuccess);
 	};
@@ -102,7 +102,7 @@ admin.controller('ADMaintenanceReasonsCtrl', ['$scope', 'ADMaintenanceReasonsSrv
 	 			}
  			});
 		};
-		$scope.invokeApi(ADMaintenanceReasonsSrv.deleteItem, {'value':id }, successDeletionCallback);
+		$scope.invokeApi(ADMaintenanceReasonsSrv.deleteItem, {'value': id }, successDeletionCallback);
 	};
 
 }]);

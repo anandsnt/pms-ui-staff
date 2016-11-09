@@ -21,7 +21,7 @@ admin.controller('ADZestStationCheckOutCtrl', ['$scope', '$rootScope', '$state',
                 $scope.$emit('hideLoader');
             };
             var dataToSend = {
-                                'kiosk':$scope.zestSettings
+                                'kiosk': $scope.zestSettings
                              };
             $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess, saveFailed);
         };

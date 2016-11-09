@@ -119,9 +119,9 @@ sntRover.run([
 					title = self.fromTitle;
 
 					ret = {
-						'name'  : name,
-						'param' : param,
-						'title' : title
+						'name': name,
+						'param': param,
+						'title': title
 					};
 
 					this.fromState = false;
@@ -143,8 +143,8 @@ sntRover.run([
 
 
 		var $_backTitleDict = {
-			'SHOWING DASHBOARD' : 'DASHBOARD',
-			'RESERVATIONS'      : 'CREATE RESERVATION'
+			'SHOWING DASHBOARD': 'DASHBOARD',
+			'RESERVATIONS': 'CREATE RESERVATION'
 		};
 
 		var $_savePrevStateTitle = function(title) {
@@ -173,20 +173,20 @@ sntRover.run([
 		*	@private
 		*/
 		var $_revAnimList = [{
-			fromState : 'rover.housekeeping.roomDetails',
-			toState   : 'rover.housekeeping.roomStatus'
+			fromState: 'rover.housekeeping.roomDetails',
+			toState: 'rover.housekeeping.roomStatus'
 		}, {
-			fromState : 'rover.reservation.staycard.billcard',
-			toState   : 'rover.reservation.staycard.reservationcard.reservationdetails'
+			fromState: 'rover.reservation.staycard.billcard',
+			toState: 'rover.reservation.staycard.reservationcard.reservationdetails'
 		}, {
-			fromState : 'rover.staycard.nights',
-			toState   : 'rover.reservation.staycard.reservationcard.reservationdetails'
+			fromState: 'rover.staycard.nights',
+			toState: 'rover.reservation.staycard.reservationcard.reservationdetails'
 		}, {
-			fromState : 'rover.companycarddetails',
-			toState   : 'rover.companycardsearch'
+			fromState: 'rover.companycarddetails',
+			toState: 'rover.companycardsearch'
 		}, {
-			fromState : 'rover.reservation.staycard.roomassignment',
-			toState   : 'rover.reservation.staycard.reservationcard.reservationdetails'
+			fromState: 'rover.reservation.staycard.roomassignment',
+			toState: 'rover.reservation.staycard.reservationcard.reservationdetails'
 		}];
 
 

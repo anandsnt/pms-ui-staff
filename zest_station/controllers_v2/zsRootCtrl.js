@@ -614,7 +614,7 @@ sntZestStation.controller('zsRootCtrl', [
 					'is_out_of_order': station.is_out_of_order,
 					'identifier': station.station_identifier,
 					'name': station.name,
-					'rover_device_id':station.rover_device_id,
+					'rover_device_id': station.rover_device_id,
 					'id': station.id
 				},
 				successCallBack: onSuccess,
@@ -728,7 +728,7 @@ sntZestStation.controller('zsRootCtrl', [
 				if (response.ResponseCode === 0 ) {
 					$scope.$broadcast('WS_PRINT_SUCCESS');
 				} else {
-					var errorData = {'error_message':printerErrorMapping[response.ResponseCode]};
+					var errorData = {'error_message': printerErrorMapping[response.ResponseCode]};
 					$scope.$broadcast('WS_PRINT_FAILED', errorData);
 				}
 			}

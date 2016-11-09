@@ -17,7 +17,7 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
 			$scope.errorMessage = errorMessage;
 		};
 
-		var data = {'userID':$scope.$parent.guestCardData.userId};
+		var data = {'userID': $scope.$parent.guestCardData.userId};
 		$scope.invokeApi(RVGuestCardLoyaltySrv.fetchLoyalties, data, loyaltyFetchsuccessCallback, loyaltyFetchErrorCallback, 'NONE');
 	};
         $scope.reloadOnSet = false;

@@ -45,9 +45,9 @@
 
 			return {
 				responseData: responseData,
-				verifyCheckinReservation : verifyCheckinReservation,
-				searchReservation:searchReservation,
-				getToken:getToken
+				verifyCheckinReservation: verifyCheckinReservation,
+				searchReservation: searchReservation,
+				getToken: getToken
 			};
 		};
 

@@ -31,7 +31,7 @@
 
 	if(!$scope.isCheckoutCompleted) {
 		var url = '/guest_web/home/checkout_guest.json';
-		var data = {'reservation_id':$rootScope.reservationID};
+		var data = {'reservation_id': $rootScope.reservationID};
 
 		checkoutNowService.completeCheckout(url, data).then(function(response) {
 			$scope.posted = true;

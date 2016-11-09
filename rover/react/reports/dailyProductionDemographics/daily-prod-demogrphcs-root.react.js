@@ -49,19 +49,19 @@ var DailyProductionByDemographics = React.createClass({
 
   getInitialState: function() {
     var headerProps = {
-      colspan 		: 5,
-      showAvailable : true,
-      showRevenue 	: true
+      colspan: 5,
+      showAvailable: true,
+      showRevenue: true
     };
     var state = {
-      data 	 : this.props.data,
-      header : headerProps,
-      scroll : {
-        left : null,
+      data: this.props.data,
+      header: headerProps,
+      scroll: {
+        left: null,
         right: null
       },
-      toggleRevenue 		: this.toggleRevenue,
-      toggleAvailability 	: this.toggleAvailability
+      toggleRevenue: this.toggleRevenue,
+      toggleAvailability: this.toggleAvailability
     };
     return state;
   },

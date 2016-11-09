@@ -25,8 +25,8 @@ admin.controller('adAfasSetupCtrl', ['$scope', 'afasSetupValues', 'adAfasSetupSr
 			afas: $scope.afas
 		};
         var options = {
-            params 			: params,
-            successCallBack : successCallBackOfSaveAfasSetup
+            params: params,
+            successCallBack: successCallBackOfSaveAfasSetup
         };
         $scope.callAPI(adAfasSetupSrv.saveAfasConfiguration, options);
 	};

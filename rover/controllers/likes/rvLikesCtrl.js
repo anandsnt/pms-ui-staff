@@ -181,8 +181,8 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 
 					if ( prefValue.isChecked ) {
 						updateData.preference.push({
-							'type'  : value.name,
-							'value' : prefValue.details
+							'type': value.name,
+							'value': prefValue.details
 						});
 					};
 				});

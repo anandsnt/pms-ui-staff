@@ -46,8 +46,8 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 			templateUrl: '/assets/partials_v2/zsHomePage.html',
 			controller: 'zsHomeCtrl'
 		}).state('zest_station.speakToStaff', {
-            url         : '/speakToStaff/:message',
-            templateUrl : '/assets/partials_v2/zsSpeakToStaff.html',
+            url: '/speakToStaff/:message',
+            templateUrl: '/assets/partials_v2/zsSpeakToStaff.html',
             controller: 'zsSpeakToStaffCtrl'
         });
 

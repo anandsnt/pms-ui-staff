@@ -235,10 +235,10 @@ angular.module('sntRover').service('rvUtilSrv', [function() {
 
 		/** Method to check if the web app is accessed from a device */
 		this.checkDevice = {
-			any : function() {
+			any: function() {
 				return !!navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i);
 			},
-			iOS : function() {
+			iOS: function() {
 				return !!navigator.userAgent.match(/iPhone|iPad|iPod/i);
 			}, 
 			android: function() {

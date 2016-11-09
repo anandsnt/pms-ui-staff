@@ -32,8 +32,8 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
                 var dateObj = tzIndependentDate(item);
                 var isWeekend = (dateObj.getDay() === 0 || dateObj.getDay() === 6) ? true : false;
                 var itemObj = {
-                    'date' : item,
-                    'isWeekend' : isWeekend
+                    'date': item,
+                    'isWeekend': isWeekend
                 };
                 dateArray.push(itemObj);
             });

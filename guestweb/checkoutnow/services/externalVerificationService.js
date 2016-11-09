@@ -15,8 +15,8 @@ var externalVerificationService = function($q, $http, $rootScope) {
 		};
 
 		return {
-			response:response,
-			verifyUser:verifyUser
+			response: response,
+			verifyUser: verifyUser
 
 		};
 };

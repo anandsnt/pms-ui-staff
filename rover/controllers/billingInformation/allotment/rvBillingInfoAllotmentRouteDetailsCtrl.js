@@ -89,18 +89,18 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
         if (!$rootScope.isManualCCEntryEnabled) {
             $scope.isManualCCEntryEnabled = false;
             var dialog = ngDialog.open({
-                template   : '/assets/partials/payment/rvPaymentModal.html',
-                controller : '',
-                scope      : $scope
+                template: '/assets/partials/payment/rvPaymentModal.html',
+                controller: '',
+                scope: $scope
             });
             return;
         }
 
         $scope.renderAddedPayment = {
-            creditCardType : "",
-            cardExpiry     : "",
-            endingWith     : "",
-            payment_type   : ""
+            creditCardType: "",
+            cardExpiry: "",
+            endingWith: "",
+            payment_type: ""
         };
 
         $scope.paymentFlags.isAddPayment = true;
@@ -377,7 +377,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
         var successSixSwipe = function(response) {
 
             var data = {
-                "token" : response.token,
+                "token": response.token,
                 "is_swiped": true
             };
 
@@ -435,7 +435,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
         }
         else {
             var data = {
-                    "payment_type"  :   $scope.saveData.payment_type
+                    "payment_type": $scope.saveData.payment_type
             };
             data.allotment_id = $scope.allotmentId;
             data.bill_number = $scope.getSelectedBillNumber();
@@ -488,8 +488,8 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
     var setCommonPaymentModelItems = function() {
         $scope.passData = {};
         $scope.passData.details = {
-            firstName : "",
-            lastName  : ""
+            firstName: "",
+            lastName: ""
         };
         $scope.setScroller('cardsList');
     };
@@ -589,10 +589,10 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
         $scope.swipedCardDataToSave = {};
 
         $scope.paymentFlags         = {
-            isAddPayment             : false,
-            showPaymentDropDown      : false,
-            isShownExistingCCPayment : false,
-            sixIsManual              : false
+            isAddPayment: false,
+            showPaymentDropDown: false,
+            isShownExistingCCPayment: false,
+            sixIsManual: false
         };
 
         setCreditCardDetails();

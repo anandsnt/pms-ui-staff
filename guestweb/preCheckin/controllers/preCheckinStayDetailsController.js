@@ -12,7 +12,7 @@
 	      templateUrl: '/assets/preCheckin/partials/preCheckinErrorModal.html',
 	      controller: ccVerificationModalCtrl,
 	      resolve: {
-	        errorMessage:function() {
+	        errorMessage: function() {
 	          return "Please select a valid estimated arrival time";
 	        }
 	      }
@@ -37,9 +37,9 @@
 		 }
 		 hour = (hour <10)?("0"+hour): hour;
 		 var dataTosend = {
-		 	"arrival_time":  hour+":"+$rootScope.stayDetails.minute,
-		 	"comments":$rootScope.stayDetails.comment,
-		 	"mobile":$rootScope.stayDetails.mobile
+		 	"arrival_time": hour+":"+$rootScope.stayDetails.minute,
+		 	"comments": $rootScope.stayDetails.comment,
+		 	"mobile": $rootScope.stayDetails.mobile
 		 };
 
 		preCheckinSrv.postStayDetails(dataTosend).then(function(response) {

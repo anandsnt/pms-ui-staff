@@ -246,13 +246,13 @@ $scope.getSelectedAddonPrice = function() {
 			ngDialog.open({
 				template: '/assets/partials/contentManagement/adDeleteContent.html',
 				className: '',
-				controller:'adDeleteContentController',
-				scope:$scope,
-				closeByDocument:true
+				controller: 'adDeleteContentController',
+				scope: $scope,
+				closeByDocument: true
 			});
 			$scope.componentIdToDelete = id;
 		};
-		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id':id}, successCallbackFetchDeleteDetails);
+		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id': id}, successCallbackFetchDeleteDetails);
 
 	};
 	/* Function to remove the category from selected list*/

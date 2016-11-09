@@ -51,12 +51,12 @@
         highlightFilter_ = highlightFilter;
         return {
             restrict: 'A',
-            scope   : {
-                autoOptions : '=autoCompleteOptions',
-                ngModel     : '=',
-                ulClass     : '@ulClass'
+            scope: {
+                autoOptions: '=autoCompleteOptions',
+                ngModel: '=',
+                ulClass: '@ulClass'
             },
-            link    : autoCompleteLinkFn
+            link: autoCompleteLinkFn
         };
     }]);
 }());

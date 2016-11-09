@@ -101,7 +101,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
 
 
 	 	};
-	 	var data = {"id":id };
+	 	var data = {"id": id };
 	 	$scope.invokeApi(ADRoomTypesSrv.getRoomTypeDetails, data, successCallbackRender);
 	};
 
@@ -148,7 +148,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     		$scope.$emit('hideLoader');
     		$scope.isAddMode = false;
     		$scope.is_image_deleted = false;
-    		$scope.data.room_types.push({'name':$scope.roomTypeData.room_type_name, 'code':$scope.roomTypeData.room_type_code, 'id':data.id});
+    		$scope.data.room_types.push({'name': $scope.roomTypeData.room_type_name, 'code': $scope.roomTypeData.room_type_code, 'id': data.id});
     		$scope.tableParams.reload();
     	};
 
@@ -244,8 +244,8 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
 			"is_suite": "",
 			"image_of_room_type": "",
 			"is_room_type_ows_request_per_status_type": false,
-			"room_class_id":"",
-			"is_image_deleted":""
+			"room_class_id": "",
+			"is_image_deleted": ""
 		};
 		$timeout(function() {
             $location.hash('new-form-holder');
@@ -256,12 +256,12 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
 
 	$scope.sortByName = function() {
 		if($scope.currentClickedElement === -1) {
-		$scope.tableParams.sorting({'name' : $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'});
+		$scope.tableParams.sorting({'name': $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'});
 		}
 	};
 	$scope.sortByCode = function() {
 		if($scope.currentClickedElement === -1) {
-		$scope.tableParams.sorting({'code' : $scope.tableParams.isSortBy('code', 'asc') ? 'desc' : 'asc'});
+		$scope.tableParams.sorting({'code': $scope.tableParams.isSortBy('code', 'asc') ? 'desc' : 'asc'});
 	}
 	};
 	$scope.deleteRoomTypes = function(roomtype_id) {

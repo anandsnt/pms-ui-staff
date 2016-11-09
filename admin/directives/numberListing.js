@@ -22,7 +22,7 @@ admin.directive('numberlisting', function() {
     	restrict: 'AE',
       	scope: {
             start: '@start',
-	        stop : '@stop',
+	        stop: '@stop',
             step: '@step',
             minLength: '@minLength'
 	    },

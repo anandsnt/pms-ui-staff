@@ -297,37 +297,37 @@ sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$fi
         if (type === 'RESERVATIONS') {
         	var data = $scope.searchResults.reservations[index];
         	var selectedEntityDetails = {
-			    "attached_charge_codes"   : [],
-			    "attached_billing_groups" : [],
-                "images"                  : data.images,
-                "reservation_status"      : data.reservation_status,
-                "is_opted_late_checkout"  : data.is_opted_late_checkout,
-                "name"                    : data.firstname + " " + data.lastname,
-                "entity_type"             : "RESERVATION",
-                "has_accompanying_guests" : ( data.images.length >1 ) ? true : false,
-                "bill_no"                 : "",
-                "is_new"                  : true,
-                "credit_card_details"     : {},
-                "id"                      : data.id
+			    "attached_charge_codes": [],
+			    "attached_billing_groups": [],
+                "images": data.images,
+                "reservation_status": data.reservation_status,
+                "is_opted_late_checkout": data.is_opted_late_checkout,
+                "name": data.firstname + " " + data.lastname,
+                "entity_type": "RESERVATION",
+                "has_accompanying_guests": ( data.images.length >1 ) ? true : false,
+                "bill_no": "",
+                "is_new": true,
+                "credit_card_details": {},
+                "id": data.id
 			};
 			$scope.setSelectedEntity(selectedEntityDetails, type);
         }
         else if (type === 'ACCOUNT') {
         	var data = $scope.searchResults.cards[index];
         	var selectedEntityDetails = {
-			    "id"                      : data.id,
-			    "name"                    : data.account_name,
-			    "bill_no"                 : "",
-			    "images"                  : [{
-                                            "is_primary":true,
+			    "id": data.id,
+			    "name": data.account_name,
+			    "bill_no": "",
+			    "images": [{
+                                            "is_primary": true,
 		                                    "guest_image": data.company_logo
 		                                  }],
-			    "attached_charge_codes"   : [],
-			    "attached_billing_groups" : [],
-                "is_new"                  : true,
-                "is_allow_direct_debit"   : data.is_allow_direct_debit,
-                "selected_payment"        : "",
-                "credit_card_details"     : {}
+			    "attached_charge_codes": [],
+			    "attached_billing_groups": [],
+                "is_new": true,
+                "is_allow_direct_debit": data.is_allow_direct_debit,
+                "selected_payment": "",
+                "credit_card_details": {}
 			};
 
     		if (data.account_type === 'COMPANY') {
@@ -349,15 +349,15 @@ sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$fi
             else {
                 var data = $scope.searchResults.posting_accounts[index];
                 var selectedEntityDetails = {
-                    "id"                      : data.id,
-                    "name"                    : data.account_name,
-                    "bill_no"                 : "",
-                    "attached_charge_codes"   : [],
-                    "attached_billing_groups" : [],
-                    "is_new"                  : true,
-                    "selected_payment"        : "",
-                    "credit_card_details"     : {},
-                    "entity_type"             : data.account_type
+                    "id": data.id,
+                    "name": data.account_name,
+                    "bill_no": "",
+                    "attached_charge_codes": [],
+                    "attached_billing_groups": [],
+                    "is_new": true,
+                    "selected_payment": "",
+                    "credit_card_details": {},
+                    "entity_type": data.account_type
                 };
                 $scope.setSelectedEntity(selectedEntityDetails, type);
             }
@@ -377,12 +377,12 @@ sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$fi
         $scope.billingInfoFlags.isInitialPage = false;
 
         var selectedEntityDetails = {
-            "bill_no"                 : "",
-            "has_accompanying_guests" : false,
-            "attached_charge_codes"   : [],
-            "attached_billing_groups" : [],
-            "is_new"                  : true,
-            "credit_card_details"     : {}
+            "bill_no": "",
+            "has_accompanying_guests": false,
+            "attached_charge_codes": [],
+            "attached_billing_groups": [],
+            "is_new": true,
+            "credit_card_details": {}
         };
         $scope.setSelectedEntity(selectedEntityDetails);
 
@@ -395,8 +395,8 @@ sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$fi
        		$scope.selectedEntity.is_opted_late_checkout = $scope.reservationData.is_opted_late_checkout;
 
             $scope.selectedEntity.images = [{
-                "is_primary"  : true,
-                "guest_image" : $scope.attachedEntities.primary_guest_details.avatar
+                "is_primary": true,
+                "guest_image": $scope.attachedEntities.primary_guest_details.avatar
             }];
             $scope.selectedEntity.entity_type = "RESERVATION";
         }
@@ -409,8 +409,8 @@ sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$fi
         	$scope.selectedEntity.is_opted_late_checkout = $scope.reservationData.is_opted_late_checkout;
 
             $scope.selectedEntity.images = [{
-                "is_primary"   : false,
-                "guest_image"  : $scope.attachedEntities.accompanying_guest_details[index].avatar
+                "is_primary": false,
+                "guest_image": $scope.attachedEntities.accompanying_guest_details[index].avatar
             }];
 
             $scope.selectedEntity.has_accompanying_guests = true;
@@ -421,8 +421,8 @@ sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$fi
             $scope.selectedEntity.name = $scope.attachedEntities.company_card.name;
 
             $scope.selectedEntity.images = [{
-                "is_primary"  : true,
-                "guest_image" : $scope.attachedEntities.company_card.logo
+                "is_primary": true,
+                "guest_image": $scope.attachedEntities.company_card.logo
             }];
             $scope.selectedEntity.entity_type = "COMPANY_CARD";
             $scope.selectedEntity.is_allow_direct_debit = $scope.attachedEntities.company_card.is_allow_direct_debit;
@@ -432,7 +432,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$fi
             $scope.selectedEntity.name = $scope.attachedEntities.travel_agent.name;
 
             $scope.selectedEntity.images = [{
-                "is_primary":true,
+                "is_primary": true,
                 "guest_image": $scope.attachedEntities.travel_agent.logo
             }];
             $scope.selectedEntity.entity_type = "TRAVEL_AGENT";

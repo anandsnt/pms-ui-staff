@@ -23,8 +23,8 @@ var DailyProductionRightSide = React.createClass({
   },
   render: function() {
     return React.DOM.div({
-      id      : 'stats-report-content',
-      className   : 'statistics-content scrollable'
+      id: 'stats-report-content',
+      className: 'statistics-content scrollable'
     },
   React.DOM.div({
       className: 'wrapper'

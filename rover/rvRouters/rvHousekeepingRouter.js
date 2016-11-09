@@ -21,15 +21,15 @@ angular.module('housekeepingModule', [])
                 fetchPayload: function(RVHkRoomStatusSrv, $stateParams, $rootScope, housekeepingAssets) {
                     if (!!$stateParams && !!$stateParams.roomStatus) {
                         var filterStatus = {
-                            'INHOUSE_DIRTY'         : ['dirty', 'stayover'],
-                            'INHOUSE_CLEAN'         : ['clean', 'stayover'],
-                            'DEPARTURES_DIRTY'      : ['dueout', 'departed', 'dirty'],
-                            'DEPARTURES_CLEAN'      : ['dueout', 'departed', 'clean'],
-                            'OCCUPIED'              : ['occupied'],
-                            'VACANT_READY'          : ['vacant', 'clean', 'inspected'],
-                            'VACANT_NOT_READY'      : ['vacant', 'dirty', 'pickup'],
-                            'OUTOFORDER_OR_SERVICE' : ['out_of_order', 'out_of_service'],
-                            'QUEUED_ROOMS'          : ['queued']
+                            'INHOUSE_DIRTY': ['dirty', 'stayover'],
+                            'INHOUSE_CLEAN': ['clean', 'stayover'],
+                            'DEPARTURES_DIRTY': ['dueout', 'departed', 'dirty'],
+                            'DEPARTURES_CLEAN': ['dueout', 'departed', 'clean'],
+                            'OCCUPIED': ['occupied'],
+                            'VACANT_READY': ['vacant', 'clean', 'inspected'],
+                            'VACANT_NOT_READY': ['vacant', 'dirty', 'pickup'],
+                            'OUTOFORDER_OR_SERVICE': ['out_of_order', 'out_of_service'],
+                            'QUEUED_ROOMS': ['queued']
                         };
                         var filtersToApply = filterStatus[$stateParams.roomStatus];
                         for (var i = 0; i < filtersToApply.length; i++) {

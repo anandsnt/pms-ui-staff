@@ -853,7 +853,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             };
 
             var postData = {
-                payment_type : {}
+                payment_type: {}
             };
 
             if ($scope.reservationData.paymentType.type.value !== null) {

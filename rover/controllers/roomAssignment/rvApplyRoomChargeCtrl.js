@@ -41,15 +41,15 @@ sntRover.controller('rvApplyRoomChargeCtrl', [
 		choosedNoCharge = false;
 
 		var options = {
-            params : {
+            params: {
 				"reservation_id": $scope.reservationData.reservation_card.reservation_id,
 				"room_no": $scope.assignedRoom.room_number,
 				"upsell_amount": $scope.roomCharge,
 				"forcefully_assign_room": wanted_to_forcefully_assign,
-				"is_preassigned" : $scope.assignedRoom.is_preassigned
+				"is_preassigned": $scope.assignedRoom.is_preassigned
 			},
-            successCallBack : $scope.successCallbackUpgrade,
-            failureCallBack : $scope.failureCallbackUpgrade
+            successCallBack: $scope.successCallbackUpgrade,
+            failureCallBack: $scope.failureCallbackUpgrade
         };
         $scope.callAPI(RVUpgradesSrv.selectUpgrade, options);
 	};
@@ -61,10 +61,10 @@ sntRover.controller('rvApplyRoomChargeCtrl', [
 	var openRoomAlreadyChoosedPopup = function() {
 		ngDialog.open(
 		{
-			template 	: '/assets/partials/roomAssignment/rvRoomHasAutoAssigned.html',
-			controller 	: 'rvRoomAlreadySelectedCtrl',
-			className 	: 'ngdialog-theme-default',
-			scope 		: $scope
+			template: '/assets/partials/roomAssignment/rvRoomHasAutoAssigned.html',
+			controller: 'rvRoomAlreadySelectedCtrl',
+			className: 'ngdialog-theme-default',
+			scope: $scope
         });
 	};
 
@@ -94,7 +94,7 @@ sntRover.controller('rvApplyRoomChargeCtrl', [
 				case 470:
 						var dataToBorrowRoom = {
 							"errorMessage": error.errorMessage[0],
-							"upsell_amount" : $scope.roomCharge
+							"upsell_amount": $scope.roomCharge
 						};
 						wanted_to_forcefully_assign = true;
 						// openWantedToBorrowPopup(error);
@@ -121,19 +121,19 @@ sntRover.controller('rvApplyRoomChargeCtrl', [
 
 		_.extend (dataToUpdate,
 		{
-			room_id 			: assignedRoom.room_id,
-			room_number 		: assignedRoom.room_number,
-			room_status 		: "READY",
-			fo_status 			: "VACANT",
-			room_ready_status	: "INSPECTED",
-			is_upsell_available	: (data.is_upsell_available) ? "true" : "false"  // CICO-7904 and CICO-9628 : update the upsell availability to staycard
+			room_id: assignedRoom.room_id,
+			room_number: assignedRoom.room_number,
+			room_status: "READY",
+			fo_status: "VACANT",
+			room_ready_status: "INSPECTED",
+			is_upsell_available: (data.is_upsell_available) ? "true" : "false"  // CICO-7904 and CICO-9628 : update the upsell availability to staycard
 		});
 
 		if (typeof $scope.selectedRoomType !== 'undefined') {
 			_.extend (dataToUpdate,
 			{
-				room_type_description 	: selectedRoomType.description,
-				room_type_code 			: selectedRoomType.type
+				room_type_description: selectedRoomType.description,
+				room_type_code: selectedRoomType.type
 			});
 		}
 
@@ -156,14 +156,14 @@ sntRover.controller('rvApplyRoomChargeCtrl', [
 	$scope.clickedNoChargeButton = function() {
 		choosedNoCharge = true;
 		var options = {
-            params : {
+            params: {
 				"reservation_id": $scope.reservationData.reservation_card.reservation_id,
 				"room_no": $scope.assignedRoom.room_number,
-				"forcefully_assign_room" : wanted_to_forcefully_assign,
-				"is_preassigned" : $scope.assignedRoom.is_preassigned
+				"forcefully_assign_room": wanted_to_forcefully_assign,
+				"is_preassigned": $scope.assignedRoom.is_preassigned
 			},
-            successCallBack : $scope.successCallbackUpgrade,
-            failureCallBack : $scope.failureCallbackUpgrade
+            successCallBack: $scope.successCallbackUpgrade,
+            failureCallBack: $scope.failureCallbackUpgrade
         };
 
         $scope.callAPI(RVUpgradesSrv.selectUpgrade, options);

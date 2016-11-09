@@ -3,21 +3,21 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
 	var _this = this;
 
 	this.fetch = function() {
-		this.data = {"menus":[
+		this.data = {"menus": [
 							{
-								"menu_id":1,
-								"menu_name":"Hotel & Staff",
-								"header_name":"Hotel & Staff setup",
-								"components":[
+								"menu_id": 1,
+								"menu_name": "Hotel & Staff",
+								"header_name": "Hotel & Staff setup",
+								"components": [
 									{
-										"id":1,
-										"name":"Hotel Details",
+										"id": 1,
+										"name": "Hotel Details",
 										"state": "admin.hoteldetails",
-										"action_path":"/admin/hotels/1/",
-										"is_group":false,
-										"icon_class":"icon-hotel",
-										"sub_components":[],
-										"is_bookmarked":false
+										"action_path": "/admin/hotels/1/",
+										"is_group": false,
+										"icon_class": "icon-hotel",
+										"sub_components": [],
+										"is_bookmarked": false
 									},
 					                {
 					                    "id": 2,
@@ -27,7 +27,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
 					                    "icon_class": "icon-user",
 					                    "sub_components": [],
 					                    "is_bookmarked": false,
-					                    "state":"admin.users"
+					                    "state": "admin.users"
 					                },
 					                {
 					                    "id": 3,
@@ -37,7 +37,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
 					                    "icon_class": "icon-admin-menu icon-departments",
 					                    "sub_components": [],
 					                    "is_bookmarked": false,
-					                    "state":"admin.hoteldetails"
+					                    "state": "admin.hoteldetails"
 					                }
 								]
 							},
@@ -55,7 +55,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
 					                    "icon_class": "icon-admin-menu icon-announcement",
 					                    "sub_components": [],
 					                    "is_bookmarked": false,
-					                    "state":"admin.hoteldetails"
+					                    "state": "admin.hoteldetails"
 					                },
 					                {
 					                    "id": 5,
@@ -65,7 +65,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
 					                    "icon_class": "icon-admin-menu icon-lobby",
 					                    "sub_components": [],
 					                    "is_bookmarked": false,
-					                    "state":"admin.hoteldetails"
+					                    "state": "admin.hoteldetails"
 					                },
 					                {
 					                    "id": 6,
@@ -75,7 +75,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
 					                    "icon_class": "icon-admin-menu icon-reviews",
 					                    "sub_components": [],
 					                    "is_bookmarked": false,
-					                    "state":"admin.hoteldetails"
+					                    "state": "admin.hoteldetails"
 					                },
 					                {
 					                    "id": 7,
@@ -85,7 +85,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
 					                    "icon_class": "icon-admin-menu icon-messages",
 					                    "sub_components": [],
 					                    "is_bookmarked": false,
-					                    "state":"admin.hoteldetails"
+					                    "state": "admin.hoteldetails"
 					                },
 					                {
 					                    "id": 8,
@@ -95,7 +95,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
 					                    "icon_class": "icon-admin-menu icon-check-in",
 					                    "sub_components": [],
 					                    "is_bookmarked": false,
-					                    "state":"admin.hoteldetails"
+					                    "state": "admin.hoteldetails"
 					                },
 					                {
 					                    "id": 9,
@@ -105,7 +105,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
 					                    "icon_class": "icon-admin-menu icon-check-out",
 					                    "sub_components": [],
 					                    "is_bookmarked": false,
-					                    "state":"admin.hoteldetails"
+					                    "state": "admin.hoteldetails"
 					                },
 					                {
 					                    "id": 10,
@@ -115,7 +115,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
 					                    "icon_class": "icon-admin-menu icon-profile",
 					                    "sub_components": [],
 					                    "is_bookmarked": false,
-					                    "state":"admin.hoteldetails"
+					                    "state": "admin.hoteldetails"
 					                }
 					            ]
 					        },
@@ -132,7 +132,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
 					                    "icon_class": "icon-admin-menu icon-upsell-rooms",
 					                    "sub_components": [],
 					                    "is_bookmarked": false,
-					                    "state":"admin.hoteldetails"
+					                    "state": "admin.hoteldetails"
 					                },
 					                {
 					                    "id": 12,
@@ -142,7 +142,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
 					                    "icon_class": "icon-admin-menu icon-upsell-checkout",
 					                    "sub_components": [],
 					                    "is_bookmarked": false,
-					                    "state":"admin.hoteldetails"
+					                    "state": "admin.hoteldetails"
 					                }
 					            ]
 					        },
@@ -159,7 +159,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
 					                    "icon_class": "icon-admin-menu icon-likes",
 					                    "sub_components": [],
 					                    "is_bookmarked": false,
-					                    "state":"admin.hoteldetails"
+					                    "state": "admin.hoteldetails"
 					                },
 					                {
 					                    "id": 14,
@@ -169,7 +169,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
 					                    "icon_class": "icon-admin-menu icon-ffp",
 					                    "sub_components": [],
 					                    "is_bookmarked": false,
-					                    "state":"admin.hoteldetails"
+					                    "state": "admin.hoteldetails"
 					                },
 					                {
 					                    "id": 15,
@@ -179,7 +179,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
 					                    "icon_class": "icon-admin-menu icon-loyalty",
 					                    "sub_components": [],
 					                    "is_bookmarked": false,
-					                    "state":"admin.hoteldetails"
+					                    "state": "admin.hoteldetails"
 					                }
 					            ]
 					        },
@@ -196,7 +196,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
                     "icon_class": "icon-admin-menu icon-room-types",
                     "sub_components": [],
                     "is_bookmarked": false,
-                    "state":"admin.hoteldetails"
+                    "state": "admin.hoteldetails"
                 },
                 {
                     "id": 17,
@@ -206,7 +206,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
                     "icon_class": "icon-room",
                     "sub_components": [],
                     "is_bookmarked": false,
-                    "state":"admin.hoteldetails"
+                    "state": "admin.hoteldetails"
                 },
                 {
                     "id": 18,
@@ -216,7 +216,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
                     "icon_class": " icon-admin-menu icon-key",
                     "sub_components": [],
                     "is_bookmarked": false,
-                    "state":"admin.hoteldetails"
+                    "state": "admin.hoteldetails"
                 }
             ]
         },
@@ -233,7 +233,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
                     "icon_class": "icon-charge-group",
                     "sub_components": [],
                     "is_bookmarked": false,
-                    "state":"admin.hoteldetails"
+                    "state": "admin.hoteldetails"
                 },
                 {
                     "id": 20,
@@ -243,7 +243,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
                     "icon_class": "icon-admin-menu icon-payment",
                     "sub_components": [],
                     "is_bookmarked": false,
-                    "state":"admin.hoteldetails"
+                    "state": "admin.hoteldetails"
                 },
                 {
                     "id": 21,
@@ -253,7 +253,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
                     "icon_class": "icon-charge-code",
                     "sub_components": [],
                     "is_bookmarked": false,
-                    "state":"admin.hoteldetails"
+                    "state": "admin.hoteldetails"
                 },
                 {
                     "id": 22,
@@ -263,7 +263,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
                     "icon_class": "icon-charge",
                     "sub_components": [],
                     "is_bookmarked": false,
-                    "state":"admin.hoteldetails"
+                    "state": "admin.hoteldetails"
                 }
             ]
         },
@@ -280,7 +280,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
                     "icon_class": "icon-admin-menu icon-rate",
                     "sub_components": [],
                     "is_bookmarked": false,
-                    "state":"admin.hoteldetails"
+                    "state": "admin.hoteldetails"
                 },
                 {
                     "id": 24,
@@ -290,7 +290,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
                     "icon_class": "icon-admin-menu icon-rate-types",
                     "sub_components": [],
                     "is_bookmarked": false,
-                    "state":"admin.hoteldetails"
+                    "state": "admin.hoteldetails"
                 }
             ]
         },
@@ -313,7 +313,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
                     "icon_class": "icon-admin-menu icon-external",
                     "sub_components": [],
                     "is_bookmarked": false,
-                    "state":"admin.hoteldetails"
+                    "state": "admin.hoteldetails"
                 },
                 {
                     "id": 61,
@@ -323,7 +323,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
                     "icon_class": "icon-admin-menu icon-external",
                     "sub_components": [],
                     "is_bookmarked": true,
-                    "state":"admin.interfaceMapping"
+                    "state": "admin.interfaceMapping"
                 },
                 {
                     "id": 26,
@@ -333,7 +333,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
                     "icon_class": "icon-pms",
                     "sub_components": [],
                     "is_bookmarked": false,
-                    "state":"admin.hoteldetails"
+                    "state": "admin.hoteldetails"
                 }
             ]
         }
@@ -343,21 +343,21 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
 	};
 
 	this.fetchSNT = function() {
-		this.data = {"menus":[
+		this.data = {"menus": [
 							{
-								"menu_id":1,
-								"menu_name":"Hotels",
-								"header_name":"Hotels",
-								"components":[
+								"menu_id": 1,
+								"menu_name": "Hotels",
+								"header_name": "Hotels",
+								"components": [
 									{
-										"id":1,
-										"name":"Hotels",
+										"id": 1,
+										"name": "Hotels",
 										"state": "admin.hoteldetails",
-										"action_path":"/admin/hotels/1/",
-										"is_group":false,
-										"icon_class":"icon-hotel",
-										"sub_components":[],
-										"is_bookmarked":false
+										"action_path": "/admin/hotels/1/",
+										"is_group": false,
+										"icon_class": "icon-hotel",
+										"sub_components": [],
+										"is_bookmarked": false
 									},
 					                {
 					                    "id": 2,
@@ -367,7 +367,7 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
 					                    "icon_class": "icon-user",
 					                    "sub_components": [],
 					                    "is_bookmarked": false,
-					                    "state":"admin.hoteldetails"
+					                    "state": "admin.hoteldetails"
 					                },
 					                {
 					                    "id": 3,
@@ -377,21 +377,21 @@ admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
 					                    "icon_class": "icon-admin-menu icon-departments",
 					                    "sub_components": [],
 					                    "is_bookmarked": false,
-					                    "state":"admin.hoteldetails"
+					                    "state": "admin.hoteldetails"
 					                }
 								]
 							},
 							{
-								"menu_id":2,
-								"menu_name":"Dashboard",
-								"header_name":"Dashboard",
-								"components":[]
+								"menu_id": 2,
+								"menu_name": "Dashboard",
+								"header_name": "Dashboard",
+								"components": []
 							},
 							{
-								"menu_id":4,
-								"menu_name":"Configuration",
-								"header_name":"Configuration",
-								"components":[]
+								"menu_id": 4,
+								"menu_name": "Configuration",
+								"header_name": "Configuration",
+								"components": []
 							}
 						]
 					};

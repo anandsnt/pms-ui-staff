@@ -76,9 +76,9 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.lastSavedDescription = '';
         $scope.updateActionDescription = function(description_old, description_new) {
             var params = {
-                'reservation_id':$scope.$parent.reservationData.reservation_card.reservation_id,
-                'action_task':{
-                    'id':$scope.selectedAction.id
+                'reservation_id': $scope.$parent.reservationData.reservation_card.reservation_id,
+                'action_task': {
+                    'id': $scope.selectedAction.id
                 }
             };
             
@@ -302,7 +302,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 $scope.refreshing = true;
             }
             
-            var data = {id:$scope.$parent.reservationData.reservation_card.reservation_id};
+            var data = {id: $scope.$parent.reservationData.reservation_card.reservation_id};
             $scope.invokeApi(rvActionTasksSrv.getTasksCount, data, onSuccess, onFailure);
         };
         $scope.departments = [];
@@ -317,7 +317,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 $scope.$parent.$emit('hideLoader');
             };
 
-            var data = {id:$scope.$parent.reservationData.reservation_card.reservation_id};
+            var data = {id: $scope.$parent.reservationData.reservation_card.reservation_id};
             $scope.invokeApi(rvActionTasksSrv.fetchDepartments, data, onSuccess, onFailure);
         };
         $scope.selectAction = function(a) {
@@ -379,7 +379,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             };
             //reservation_id=1616903&action_task[description]=test
             var params = {
-                'reservation_id':$scope.$parent.reservationData.reservation_card.reservation_id,
+                'reservation_id': $scope.$parent.reservationData.reservation_card.reservation_id,
                 'action_task': {
                     'description': $scope.newAction.notes
                 }
@@ -489,9 +489,9 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
 
 
             var params = {
-                'reservation_id':$scope.$parent.reservationData.reservation_card.reservation_id,
-                'action_task':{
-                    'id':$scope.selectedAction.id
+                'reservation_id': $scope.$parent.reservationData.reservation_card.reservation_id,
+                'action_task': {
+                    'id': $scope.selectedAction.id
                 }
             };
             $scope.lastSelectedItemId = $scope.selectedAction.id;
@@ -527,7 +527,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             var spl = dateStr.split(delim);
             day = spl[1]; month = spl[0]; year = spl[2];
 
-            return {day:day, month:month, year:year};
+            return {day: day, month: month, year: year};
         };
         $scope.showSelectCalendar = function() {
             //to ensure same day due to utc hour, set utc hour to 0100
@@ -802,7 +802,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 $scope.refreshing = false;
             };
 
-            var data = {id:$scope.$parent.reservationData.reservation_card.reservation_id};
+            var data = {id: $scope.$parent.reservationData.reservation_card.reservation_id};
             $scope.invokeApi(rvActionTasksSrv.getActionsTasksList, data, onSuccess, onFailure);
 
         };
@@ -937,7 +937,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 $scope.setActionsHeaderInfo();
             };
 
-            var data = {id:$scope.$parent.reservationData.reservation_card.reservation_id};
+            var data = {id: $scope.$parent.reservationData.reservation_card.reservation_id};
             $scope.invokeApi(rvActionTasksSrv.getActionsTasksList, data, onSuccess, onFailure);
         };
 
@@ -1114,8 +1114,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.timeFieldValue = [];
             for (var x in $scope.timeFieldValues) {
                 $scope.timeFieldValue.push({
-                    'value':getFormattedTime($scope.timeFieldValues[x]),
-                    'core_time':$scope.timeFieldValues[x]
+                    'value': getFormattedTime($scope.timeFieldValues[x]),
+                    'core_time': $scope.timeFieldValues[x]
                 });
             }
         };
@@ -1152,7 +1152,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 scope: $scope,
                 closeByDocument: false,
                 closeByEscape: false,
-                preCloseCallback:function() {
+                preCloseCallback: function() {
                     $scope.fetchActionsCount();
                 }
             });
@@ -1261,8 +1261,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
 
         $scope.getBaseParams = function() {
             var params = {
-                'reservation_id':$scope.$parent.reservationData.reservation_card.reservation_id,
-                'action_task':{}
+                'reservation_id': $scope.$parent.reservationData.reservation_card.reservation_id,
+                'action_task': {}
             };
             return params;
         };

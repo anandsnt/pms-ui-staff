@@ -51,8 +51,8 @@
 		return {
 			responseData: responseData,
 			checkin: checkin,
-			fetchNoOfKeysData : fetchNoOfKeysData,
-			saveNoKeys:saveNoKeys
+			fetchNoOfKeysData: fetchNoOfKeysData,
+			saveNoKeys: saveNoKeys
 		};
 	};
 

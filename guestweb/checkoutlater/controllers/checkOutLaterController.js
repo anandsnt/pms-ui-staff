@@ -34,10 +34,10 @@
 		// If CC is not attached to the reservation we need to add CC to proceed to opt an late checkouttime.
 		$scope.gotToNextStep = function(fee, chargeId) {
 			if(!$rootScope.isCCOnFile && !$rootScope.isSixpayments) {
-				$state.go('ccVerification', {'fee':fee, 'message':"Late check-out fee", 'isFromCheckoutNow':false});
+				$state.go('ccVerification', {'fee': fee, 'message': "Late check-out fee", 'isFromCheckoutNow': false});
 			}
 			else{
-				$state.go('checkOutLaterSuccess', {id:chargeId});
+				$state.go('checkOutLaterSuccess', {id: chargeId});
 			}
 
 		};

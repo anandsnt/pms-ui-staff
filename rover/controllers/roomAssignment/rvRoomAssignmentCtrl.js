@@ -280,13 +280,13 @@ sntRover.controller('RVroomAssignmentController', [
 	var openWantedToBorrowPopup = function(dataToBorrowRoom) {
 		$scope.passingParams = {
 			"errorMessage": (typeof dataToBorrowRoom.errorMessage === "object")? dataToBorrowRoom.errorMessage[0] : dataToBorrowRoom.errorMessage,
-			"upsell_amount" : dataToBorrowRoom.upsell_amount
+			"upsell_amount": dataToBorrowRoom.upsell_amount
 		};
 		ngDialog.open(
 		{
-			template 	: '/assets/partials/roomAssignment/rvGroupRoomTypeNotConfigured.html',
-			controller 	: 'rvBorrowRoomTypeCtrl',
-			scope 		: $scope
+			template: '/assets/partials/roomAssignment/rvGroupRoomTypeNotConfigured.html',
+			controller: 'rvBorrowRoomTypeCtrl',
+			scope: $scope
         });
 	};
 
@@ -339,7 +339,7 @@ sntRover.controller('RVroomAssignmentController', [
             });
 		} else {
 			var params = {
-				'reservationId' : parseInt($stateParams.reservation_id, 10)
+				'reservationId': parseInt($stateParams.reservation_id, 10)
 			};
 
 			//success call of un-assigningb rooms
@@ -377,10 +377,10 @@ sntRover.controller('RVroomAssignmentController', [
 	var openRoomAlreadyChoosedPopup = function() {
 		ngDialog.open(
 		{
-			template 	: '/assets/partials/roomAssignment/rvRoomHasAutoAssigned.html',
-			controller 	: 'rvRoomAlreadySelectedCtrl',
-			className 	: 'ngdialog-theme-default',
-			scope 		: $scope
+			template: '/assets/partials/roomAssignment/rvRoomHasAutoAssigned.html',
+			controller: 'rvRoomAlreadySelectedCtrl',
+			className: 'ngdialog-theme-default',
+			scope: $scope
         });
 	};
 
@@ -392,11 +392,11 @@ sntRover.controller('RVroomAssignmentController', [
 	var openPopupForErrorMessageShowing = function(errorMessage) {
 		ngDialog.open(
 		{
-			template 	: '/assets/partials/roomAssignment/rvRoomAssignmentShowErrorMessage.html',
-			controller 	: 'rvRoomAlreadySelectedCtrl',
-			className 	: 'ngdialog-theme-default',
-			scope 		: $scope,
-			data  		: JSON.stringify(errorMessage)
+			template: '/assets/partials/roomAssignment/rvRoomAssignmentShowErrorMessage.html',
+			controller: 'rvRoomAlreadySelectedCtrl',
+			className: 'ngdialog-theme-default',
+			scope: $scope,
+			data: JSON.stringify(errorMessage)
         });
 	};
 
@@ -417,18 +417,18 @@ sntRover.controller('RVroomAssignmentController', [
 
 		_.extend (dataToUpdate,
 		{
-			room_id 			: assignedRoom.room_id,
-			room_status 		: assignedRoom.room_status,
-			fo_status 			: assignedRoom.fo_status,
-			room_ready_status	: assignedRoom.room_ready_status,
-			is_upsell_available	: (data.is_upsell_available) ? "true" : "false"  // CICO-7904 and CICO-9628 : update the upsell availability to staycard
+			room_id: assignedRoom.room_id,
+			room_status: assignedRoom.room_status,
+			fo_status: assignedRoom.fo_status,
+			room_ready_status: assignedRoom.room_ready_status,
+			is_upsell_available: (data.is_upsell_available) ? "true" : "false"  // CICO-7904 and CICO-9628 : update the upsell availability to staycard
 		});
 
 		if (typeof $scope.selectedRoomType !== 'undefined') {
 			_.extend (dataToUpdate,
 			{
-				room_type_description 	: selectedRoomType.description,
-				room_type_code 			: selectedRoomType.type
+				room_type_description: selectedRoomType.description,
+				room_type_code: selectedRoomType.type
 			});
 		}
 
@@ -527,9 +527,9 @@ sntRover.controller('RVroomAssignmentController', [
 		wanted_to_forcefully_assign = false;
 		//yes. ALL set. Go!
 		var options = {
-            params: 			params,
-            successCallBack: 	successCallbackAssignRoom,
-            failureCallBack: 	errorCallbackAssignRoom
+            params: params,
+            successCallBack: successCallbackAssignRoom,
+            failureCallBack: errorCallbackAssignRoom
         };
         $scope.callAPI(RVRoomAssignmentSrv.assignRoom, options);
 	};
@@ -607,7 +607,7 @@ sntRover.controller('RVroomAssignmentController', [
 	* function to go back to reservation details
 	*/
 	$scope.backToStayCard = function() {
-		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {id:$scope.reservationData.reservation_card.reservation_id, confirmationId:$scope.reservationData.reservation_card.confirmation_num, isrefresh: false, isOnlineRoomMove: isOnlineRoomMove, isKeySystemAvailable: isKeySystemAvailable});
+		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {id: $scope.reservationData.reservation_card.reservation_id, confirmationId: $scope.reservationData.reservation_card.confirmation_num, isrefresh: false, isOnlineRoomMove: isOnlineRoomMove, isKeySystemAvailable: isKeySystemAvailable});
 	};
 	/**
 	* function to show and hide the filters view
@@ -939,10 +939,10 @@ sntRover.controller('RVroomAssignmentController', [
 	$scope.displayRoomAssignementError = function(errorMessage) {
 		ngDialog.open(
 		{
-			template 	: '/assets/partials/roomAssignment/rvRoomAssignmentShowErrorMessage.html',
-			className 	: 'ngdialog-theme-default',
-			scope       : $scope,
-			data        : JSON.stringify({
+			template: '/assets/partials/roomAssignment/rvRoomAssignmentShowErrorMessage.html',
+			className: 'ngdialog-theme-default',
+			scope: $scope,
+			data: JSON.stringify({
                                 error: errorMessage
                           })
         });

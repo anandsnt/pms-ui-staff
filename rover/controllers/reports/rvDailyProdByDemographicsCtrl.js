@@ -23,10 +23,10 @@ angular.module('sntRover').controller('rvDailyProdByDemographicsCtrl',
 
   var renderReport = function() {
     var props = {
-      data 				: $scope.results,
-      startedRendering 	: startedRendering,
+      data: $scope.results,
+      startedRendering: startedRendering,
       completedRendering: completedRendering,
-      completedUpdating	: completedUpdating
+      completedUpdating: completedUpdating
     };
     startedRendering();
     ReactDOM.render(

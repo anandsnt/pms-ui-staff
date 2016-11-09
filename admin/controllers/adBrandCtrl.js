@@ -31,7 +31,7 @@ admin.controller('ADBrandCtrl', ['$scope', '$rootScope', 'adBrandsSrv', function
 		$scope.errorMessage ="";
 		$scope.currentClickedElement = index;
 		$scope.editId = id;
-		var editID = { 'editID' : id };
+		var editID = { 'editID': id };
 		var editBrandsSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.brandDetails   = data;

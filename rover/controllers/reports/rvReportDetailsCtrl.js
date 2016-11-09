@@ -410,36 +410,36 @@ sntRover.controller('RVReportDetailsCtrl', [
 					if ( 'Total Check Ins' == totals[0]['label'] ) {
 						if ( totals.length == 10 ) {
 							$scope.$parent.summaryCounts = {
-								'has_both'     : true,
-								'check_ins'      : totals[0]['value'],
-								'ins_via_rover'  : totals[1]['value'],
-								'ins_via_web'    : totals[2]['value'],
-								'ins_via_zest'   : totals[3]['value'],
-								'ins_via_kiosk'  : totals[4]['value'],
-								'check_outs'     : totals[5]['value'],
-								'outs_via_rover' : totals[6]['value'],
-								'outs_via_web'   : totals[7]['value'],
-								'outs_via_zest'  : totals[8]['value'],
-								'outs_via_kiosk' : totals[9]['value']
+								'has_both': true,
+								'check_ins': totals[0]['value'],
+								'ins_via_rover': totals[1]['value'],
+								'ins_via_web': totals[2]['value'],
+								'ins_via_zest': totals[3]['value'],
+								'ins_via_kiosk': totals[4]['value'],
+								'check_outs': totals[5]['value'],
+								'outs_via_rover': totals[6]['value'],
+								'outs_via_web': totals[7]['value'],
+								'outs_via_zest': totals[8]['value'],
+								'outs_via_kiosk': totals[9]['value']
 							};
 						} else {
 							$scope.$parent.summaryCounts = {
-								'has_in'         : true,
-								'check_ins'      : totals[0]['value'],
-								'ins_via_rover'  : totals[1]['value'],
-								'ins_via_web'    : totals[2]['value'],
-								'ins_via_zest'   : totals[3]['value'],
-								'ins_via_kiosk'  : totals[4]['value']
+								'has_in': true,
+								'check_ins': totals[0]['value'],
+								'ins_via_rover': totals[1]['value'],
+								'ins_via_web': totals[2]['value'],
+								'ins_via_zest': totals[3]['value'],
+								'ins_via_kiosk': totals[4]['value']
 							};
 						};
 					} else if ( 'Total Check Outs' == totals[0]['label'] ) {
 						$scope.$parent.summaryCounts = {
-							'has_out'         : true,
-							'check_outs'     : totals[0]['value'],
-							'outs_via_rover' : totals[1]['value'],
-							'outs_via_web'   : totals[2]['value'],
-							'outs_via_zest'  : totals[3]['value'],
-							'outs_via_kiosk' : totals[4]['value']
+							'has_out': true,
+							'check_outs': totals[0]['value'],
+							'outs_via_rover': totals[1]['value'],
+							'outs_via_web': totals[2]['value'],
+							'outs_via_zest': totals[3]['value'],
+							'outs_via_kiosk': totals[4]['value']
 						};
 					};
 					break;
@@ -450,49 +450,49 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportNames['UPSELL']:
 					$scope.$parent.summaryCounts = {
-						'rooms_upsold'   : totals[0]['value'],
-						'upsell_revenue' : totals[1]['value'],
-						'rover_revenue' : totals[2]['value'],
-						'zest_app_revenue' : totals[3]['value'],
-						'zest_station_revenue' : totals[4]['value'],
-						'zest_web_revenue' : totals[5]['value']
+						'rooms_upsold': totals[0]['value'],
+						'upsell_revenue': totals[1]['value'],
+						'rover_revenue': totals[2]['value'],
+						'zest_app_revenue': totals[3]['value'],
+						'zest_station_revenue': totals[4]['value'],
+						'zest_web_revenue': totals[5]['value']
 					};
 					break;
 
 				case reportNames['WEB_CHECK_IN_CONVERSION']:
 					$scope.$parent.summaryCounts = {
-						'emails_sent'   : totals[0]['value'],
-						'up_sell_conv'  : totals[1]['value'],
-						'revenue'       : totals[2]['value'],
-						'conversion'    : totals[4]['value'],
-						'total_checkin' : totals[3]['value']
+						'emails_sent': totals[0]['value'],
+						'up_sell_conv': totals[1]['value'],
+						'revenue': totals[2]['value'],
+						'conversion': totals[4]['value'],
+						'total_checkin': totals[3]['value']
 					};
 					break;
 
 				case reportNames['WEB_CHECK_OUT_CONVERSION']:
 					$scope.$parent.summaryCounts = {
-						'emails_sent'        : totals[0]['value'],
-						'late_checkout_conv' : totals[1]['value'],
-						'revenue'            : totals[2]['value'],
-						'conversion'         : totals[4]['value'],
-						'total_checkout'     : totals[3]['value']
+						'emails_sent': totals[0]['value'],
+						'late_checkout_conv': totals[1]['value'],
+						'revenue': totals[2]['value'],
+						'conversion': totals[4]['value'],
+						'total_checkout': totals[3]['value']
 					};
 					break;
 
 				case reportNames['WEB_CHECK_IN_CONV_BY_DAY']:
 					$scope.$parent.summaryCounts = {
-						'emails_sent'   : totals[0]['value'],
-						'up_sell_conv'  : totals[1]['value'],
-						'revenue'       : totals[2]['value'],
-						'conversion'    : totals[4]['value'],
-						'total_checkin' : totals[3]['value']
+						'emails_sent': totals[0]['value'],
+						'up_sell_conv': totals[1]['value'],
+						'revenue': totals[2]['value'],
+						'conversion': totals[4]['value'],
+						'total_checkin': totals[3]['value']
 					};
 					break;
 
 				case reportNames['LATE_CHECK_OUT']:
 					$scope.$parent.summaryCounts = {
-						'rooms'   : totals[0]['value'],
-						'revenue' : totals[1]['value']
+						'rooms': totals[0]['value'],
+						'revenue': totals[1]['value']
 					};
 					break;
 				default:
@@ -534,11 +534,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// to make sure API that doesnt requires any parsing will be returned with any parse
 			var checkGeneralOptions = (function() {
 				var retObj = {
-					include_actions            : false,
-					include_notes              : false,
-					show_guests                : false,
-					include_cancelled          : false,
-					show_rate_adjustments_only : false
+					include_actions: false,
+					include_notes: false,
+					show_guests: false,
+					include_cancelled: false,
+					show_rate_adjustments_only: false
 				};
 
 				_.each($scope.chosenReport.hasGeneralOptions.data, function(each) {
@@ -562,13 +562,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 				return retObj;
 			})();
 			var parseAPIoptions = {
-				'groupedByKey'    : $scope.$parent.reportGroupedBy,
-				'checkAction'     : checkGeneralOptions.include_actions,
-				'checkNote'       : checkGeneralOptions.include_notes,
-				'checkGuest'      : checkGeneralOptions.show_guests,
-				'checkCancel'     : checkGeneralOptions.include_cancelled,
-				'checkRateAdjust' : checkGeneralOptions.show_rate_adjustments_only,
-				'chosenSortBy'    : $scope.chosenReport.chosenSortBy
+				'groupedByKey': $scope.$parent.reportGroupedBy,
+				'checkAction': checkGeneralOptions.include_actions,
+				'checkNote': checkGeneralOptions.include_notes,
+				'checkGuest': checkGeneralOptions.show_guests,
+				'checkCancel': checkGeneralOptions.include_cancelled,
+				'checkRateAdjust': checkGeneralOptions.show_rate_adjustments_only,
+				'chosenSortBy': $scope.chosenReport.chosenSortBy
 			};
 			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, parseAPIoptions, $scope.$parent.resultsTotalRow) );
 			// if there are any results

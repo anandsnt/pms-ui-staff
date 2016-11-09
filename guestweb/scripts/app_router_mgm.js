@@ -196,7 +196,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		title: 'Checkin options'
 	}).state('earlyCheckinReady', {
 		url: '/earlyCheckinReady',
-		controller:'earlyCheckinReadyController',
+		controller: 'earlyCheckinReadyController',
 		templateUrl: '/assets/checkin/partials/MGM/earlyCheckinReady.html',
 		title: 'Early Check in ready'
 	}).state('roomNotReady', {

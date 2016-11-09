@@ -16,7 +16,7 @@ admin.controller('ADFloorDetailsCtrl',
 	BaseCtrl.call(this, $scope);
 
     $scope.paginationState = {
-        roomsPerPage : 5,
+        roomsPerPage: 5,
         currentPage: 1,
         firstIndex: 0,
         lastIndex: 0,
@@ -373,9 +373,9 @@ admin.controller('ADFloorDetailsCtrl',
 
         //pagination updates
         _.extend($scope.paginationState, {
-            totalRecords : data.total_count,
-            firstIndex :  minIndex,
-            lastIndex : _.min([maxIndex, data.total_count]),
+            totalRecords: data.total_count,
+            firstIndex: minIndex,
+            lastIndex: _.min([maxIndex, data.total_count]),
             maxPages: parseInt((data.total_count + $scope.paginationState.roomsPerPage - 1) / $scope.paginationState.roomsPerPage, 10)
         });
     };
@@ -387,13 +387,13 @@ admin.controller('ADFloorDetailsCtrl',
     $scope.showAllUnassignedRooms = function() {
         $scope.unassignedRooms = [];
 		var params 	= {
-			query: 	'',
+			query: '',
             roomsPerPage: $scope.paginationState.roomsPerPage,
             currentPage: $scope.paginationState.currentPage
 		};
     	var options = {
-    		params: 			params,
-    		successCallBack: 	successCallBackOfFetchAllUnAssignedRoom
+    		params: params,
+    		successCallBack: successCallBackOfFetchAllUnAssignedRoom
         };
         $scope.callAPI(ADFloorSetupSrv.getUnAssignedRooms, options);
     };
@@ -418,8 +418,8 @@ admin.controller('ADFloorDetailsCtrl',
             currentPage: $scope.paginationState.currentPage
 		};
     	var options = {
-    		params: 			params,
-    		successCallBack: 	successCallBackOfFetchAllUnAssignedRoom,
+    		params: params,
+    		successCallBack: successCallBackOfFetchAllUnAssignedRoom,
         };
         $scope.callAPI(ADFloorSetupSrv.getUnAssignedRooms, options);
     };
@@ -475,8 +475,8 @@ admin.controller('ADFloorDetailsCtrl',
             id: floorDetails.id
         };
         var options = {
-            params:             params,
-            successCallBack:    successCallBackOfDeleteFloor
+            params: params,
+            successCallBack: successCallBackOfDeleteFloor
         };
         $scope.callAPI(ADFloorSetupSrv.deleteFloor, options);
     };

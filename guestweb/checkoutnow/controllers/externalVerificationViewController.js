@@ -7,10 +7,10 @@
 	var externalVerificationViewController = function($scope, externalVerificationService, $rootScope, $state, dateFilter, $filter, $modal) {
     
 	$scope.stayDetails 	= 	{
-								"room_number":"",
-								"last_name":"",
-								"arrival_date":"",
-								"email":""
+								"room_number": "",
+								"last_name": "",
+								"arrival_date": "",
+								"email": ""
 						 	};
 
 	$scope.calendarView = false;
@@ -43,11 +43,11 @@
 	$scope.submit = function() {
 
 		var params  = {
-						"room_number":$scope.stayDetails.room_number,
-						"hotel_identifier":$rootScope.hotelIdentifier,
-						"last_name":$scope.stayDetails.last_name,
-						"arrival_date":dateToSend,
-						"email":$scope.stayDetails.email
+						"room_number": $scope.stayDetails.room_number,
+						"hotel_identifier": $rootScope.hotelIdentifier,
+						"last_name": $scope.stayDetails.last_name,
+						"arrival_date": dateToSend,
+						"email": $scope.stayDetails.email
 					  };
 
 		$scope.isLoading = true;

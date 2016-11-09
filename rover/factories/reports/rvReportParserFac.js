@@ -171,36 +171,36 @@ sntRover.factory('RVReportParserFac', [
 
                     if ( 0 === k ) {
                         angular.extend(makeCopy, {
-                            isReport     : true,
-                            rowspan      : l + 1,
-                            charge_type  : type,
-                            amount_class : type === 'Adjustments' ? 'purple' : 'red',
-                            posted_date  : makeCopy.posted.substring(0, 10),
-                            posted_time  : makeCopy.posted.substring(11),
-                            modified_date  : makeCopy.modified.substring(0, 10),
-                            modified_time  : makeCopy.modified.substring(11),
-                            remarkAry    : getRemarksAry( makeCopy.remark )
+                            isReport: true,
+                            rowspan: l + 1,
+                            charge_type: type,
+                            amount_class: type === 'Adjustments' ? 'purple' : 'red',
+                            posted_date: makeCopy.posted.substring(0, 10),
+                            posted_time: makeCopy.posted.substring(11),
+                            modified_date: makeCopy.modified.substring(0, 10),
+                            modified_time: makeCopy.modified.substring(11),
+                            remarkAry: getRemarksAry( makeCopy.remark )
                         });
                         returnAry.push( makeCopy );
                     } else {
                         angular.extend(makeCopy, {
-                            isReport     : true,
-                            amount_class : type === 'Adjustments' ? 'purple' : 'red',
-                            posted_date  : makeCopy.posted.substring(0, 10),
-                            posted_time  : makeCopy.posted.substring(11),
-                            modified_date  : makeCopy.modified.substring(0, 10),
-                            modified_time  : makeCopy.modified.substring(11),
-                            remarkAry    : getRemarksAry( makeCopy.remark )
+                            isReport: true,
+                            amount_class: type === 'Adjustments' ? 'purple' : 'red',
+                            posted_date: makeCopy.posted.substring(0, 10),
+                            posted_time: makeCopy.posted.substring(11),
+                            modified_date: makeCopy.modified.substring(0, 10),
+                            modified_time: makeCopy.modified.substring(11),
+                            remarkAry: getRemarksAry( makeCopy.remark )
                         });
                         returnAry.push( makeCopy );
                     }
 
                     if ( 1 === l - k ) {
                         returnAry.push({
-                            isReportSubTotal : true,
-                            break_class      : 'row-break',
-                            amount_class     : type === 'Adjustments' ? 'purple' : 'red',
-                            total_amount     : totalAmount
+                            isReportSubTotal: true,
+                            break_class: 'row-break',
+                            amount_class: type === 'Adjustments' ? 'purple' : 'red',
+                            total_amount: totalAmount
                         });
                     };
                 }
@@ -308,10 +308,10 @@ sntRover.factory('RVReportParserFac', [
         
         var initPrdDemoGrphcsRow = function(showInBold, displayLabel, keyInAPI) {
             return {
-                'showInBold'    : showInBold,
-                'displayLabel'  : displayLabel,
-                'key-in-api'    : keyInAPI,
-                'valueList'     : []
+                'showInBold': showInBold,
+                'displayLabel': displayLabel,
+                'key-in-api': keyInAPI,
+                'valueList': []
             };
         };
 
@@ -455,25 +455,25 @@ sntRover.factory('RVReportParserFac', [
 
                     if ( checkGuest(makeCopy) ) {
                         angular.extend(guestData, {
-                            isGuestData : true,
-                            guestNames  : angular.copy( makeCopy['accompanying_names'] )
+                            isGuestData: true,
+                            guestNames: angular.copy( makeCopy['accompanying_names'] )
                         });
                     };
 
                     if ( checkCompTrvlGrp(makeCopy) ) {
                         angular.extend(guestData, {
-                            isGuestData       : true,
-                            company_name      : makeCopy.company_name,
-                            travel_agent_name : makeCopy.travel_agent_name,
-                            group_name        : makeCopy.group_name
+                            isGuestData: true,
+                            company_name: makeCopy.company_name,
+                            travel_agent_name: makeCopy.travel_agent_name,
+                            group_name: makeCopy.group_name
                         });
                     };
 
                     if ( checkAddOns(makeCopy) ) {
                         angular.extend(guestData, {
-                            isGuestData  : true,
-                            addOns       : angular.copy( makeCopy['add_ons'] ),
-                            addOnDetails : angular.copy( makeCopy['addon_details'] )
+                            isGuestData: true,
+                            addOns: angular.copy( makeCopy['add_ons'] ),
+                            addOnDetails: angular.copy( makeCopy['addon_details'] )
                         });
                     };
 
@@ -483,8 +483,8 @@ sntRover.factory('RVReportParserFac', [
 
                     if ( checkCancel(makeCopy) ) {
                         cancelData = {
-                            isCancelData : true,
-                            reason       : angular.copy( makeCopy['cancel_reason'] )
+                            isCancelData: true,
+                            reason: angular.copy( makeCopy['cancel_reason'] )
                         };
                         customData.push( cancelData );
                     };
@@ -492,24 +492,24 @@ sntRover.factory('RVReportParserFac', [
 
                     if ( checkNote(makeCopy) ) {
                         noteData = {
-                            isNoteData : true,
-                            notes      : angular.copy( makeCopy['notes'] )
+                            isNoteData: true,
+                            notes: angular.copy( makeCopy['notes'] )
                         };
                         customData.push( noteData );
                     };
 
                     if ( checkAction(makeCopy) ) {
                         actionData = {
-                            isActionData : true,
-                            actions      : angular.copy( makeCopy['actions'] )
+                            isActionData: true,
+                            actions: angular.copy( makeCopy['actions'] )
                         };
                         customData.push( actionData );
                     };
 
                     if ( checkRateAdjust(makeCopy) ) {
                         adjustData = {
-                            isAdjustData : true,
-                            reasons      : angular.copy( makeCopy['rate_adjustment_reasons'] )
+                            isAdjustData: true,
+                            reasons: angular.copy( makeCopy['rate_adjustment_reasons'] )
                         };
                         customData.push( adjustData );
                     };
@@ -670,14 +670,14 @@ sntRover.factory('RVReportParserFac', [
                         // same row as that of the main reservation details
                         if ( k === 0 ) {
                             angular.extend(makeCopy, {
-                                'isReport'        : true,
-                                'rowspan'         : l + 1,
-                                'stay_date'       : stayDates.stay_date,
-                                'original_amount' : stayDates.original_amount,
-                                'adjusted_amount' : stayDates.adjusted_amount,
-                                'variance'        : stayDates.variance,
-                                'reason'          : stayDates.reason,
-                                'adjusted_by'     : stayDates.adjusted_by
+                                'isReport': true,
+                                'rowspan': l + 1,
+                                'stay_date': stayDates.stay_date,
+                                'original_amount': stayDates.original_amount,
+                                'adjusted_amount': stayDates.adjusted_amount,
+                                'variance': stayDates.variance,
+                                'reason': stayDates.reason,
+                                'adjusted_by': stayDates.adjusted_by
                             });
                             returnAry.push( makeCopy );
                         }
@@ -687,13 +687,13 @@ sntRover.factory('RVReportParserFac', [
                         else {
                             customData = {};
                             angular.extend(customData, {
-                                'isSubReport'     : true,
-                                'stay_date'       : stayDates.stay_date,
-                                'original_amount' : stayDates.original_amount,
-                                'adjusted_amount' : stayDates.adjusted_amount,
-                                'variance'        : stayDates.variance,
-                                'reason'          : stayDates.reason,
-                                'adjusted_by'     : stayDates.adjusted_by
+                                'isSubReport': true,
+                                'stay_date': stayDates.stay_date,
+                                'original_amount': stayDates.original_amount,
+                                'adjusted_amount': stayDates.adjusted_amount,
+                                'variance': stayDates.variance,
+                                'reason': stayDates.reason,
+                                'adjusted_by': stayDates.adjusted_by
                             });
                             returnAry.push( customData );
                         };
@@ -708,11 +708,11 @@ sntRover.factory('RVReportParserFac', [
                     customData = {};
 
                     angular.extend(customData, {
-                        'isSubTotal'      : true,
-                        'className'       : 'row-break',
-                        'original_amount' : stayDatesTotal.original_amount,
-                        'adjusted_amount' : stayDatesTotal.adjusted_amount,
-                        'variance'        : stayDatesTotal.variance
+                        'isSubTotal': true,
+                        'className': 'row-break',
+                        'original_amount': stayDatesTotal.original_amount,
+                        'adjusted_amount': stayDatesTotal.adjusted_amount,
+                        'variance': stayDatesTotal.variance
                     });
                     returnAry.push( customData );
                 } else {
@@ -752,16 +752,16 @@ sntRover.factory('RVReportParserFac', [
                         // same row as that of the main group details
                         if ( k === 0 ) {
                             angular.extend(makeCopy, {
-                                'isReport'              : true,
-                                'rowspan'               : l + 1,
-                                'date'                  : groupData.date,
-                                'hold_status'           : groupData.hold_status,
-                                'room_type'             : groupData.room_type,
-                                'rooms_available'       : groupData.rooms_available,
-                                'rooms_held_non_deduct' : groupData.rooms_held_non_deduct,
-                                'rooms_held_deduct'     : groupData.rooms_held_deduct,
-                                'rooms_held_picked_up'  : groupData.rooms_held_picked_up,
-                                'pickup_percentage'     : groupData.pickup_percentage,
+                                'isReport': true,
+                                'rowspan': l + 1,
+                                'date': groupData.date,
+                                'hold_status': groupData.hold_status,
+                                'room_type': groupData.room_type,
+                                'rooms_available': groupData.rooms_available,
+                                'rooms_held_non_deduct': groupData.rooms_held_non_deduct,
+                                'rooms_held_deduct': groupData.rooms_held_deduct,
+                                'rooms_held_picked_up': groupData.rooms_held_picked_up,
+                                'pickup_percentage': groupData.pickup_percentage,
                             });
                             returnAry.push( makeCopy );
                         }
@@ -771,15 +771,15 @@ sntRover.factory('RVReportParserFac', [
                         else {
                             customData = {};
                             angular.extend(customData, {
-                                'isSubReport'           : true,
-                                'date'                  : groupData.date,
-                                'hold_status'           : groupData.hold_status,
-                                'room_type'             : groupData.room_type,
-                                'rooms_available'       : groupData.rooms_available,
-                                'rooms_held_non_deduct' : groupData.rooms_held_non_deduct,
-                                'rooms_held_deduct'     : groupData.rooms_held_deduct,
-                                'rooms_held_picked_up'  : groupData.rooms_held_picked_up,
-                                'pickup_percentage'     : groupData.pickup_percentage,
+                                'isSubReport': true,
+                                'date': groupData.date,
+                                'hold_status': groupData.hold_status,
+                                'room_type': groupData.room_type,
+                                'rooms_available': groupData.rooms_available,
+                                'rooms_held_non_deduct': groupData.rooms_held_non_deduct,
+                                'rooms_held_deduct': groupData.rooms_held_deduct,
+                                'rooms_held_picked_up': groupData.rooms_held_picked_up,
+                                'pickup_percentage': groupData.pickup_percentage,
                             });
                             returnAry.push( customData );
                         };
@@ -788,9 +788,9 @@ sntRover.factory('RVReportParserFac', [
                     hasData = false;
 
                     angular.extend(makeCopy, {
-                        'isReport'  : true,
-                        'rowspan'   : 0,
-                        'className' : 'row-break'
+                        'isReport': true,
+                        'rowspan': 0,
+                        'className': 'row-break'
                     });
                     returnAry.push( makeCopy );
                 };
@@ -800,13 +800,13 @@ sntRover.factory('RVReportParserFac', [
                     groupDataTotal = makeCopy['group_total'];
                     customData = {};
                     angular.extend(customData, {
-                        'isSubTotal'            : true,
-                        'className'             : 'row-break',
-                        'rooms_available'       : groupDataTotal.rooms_available,
-                        'rooms_held_non_deduct' : groupDataTotal.rooms_held_non_deduct,
-                        'rooms_held_deduct'     : groupDataTotal.rooms_held_deduct,
-                        'rooms_held_picked_up'  : groupDataTotal.rooms_held_picked_up,
-                        'pickup_percentage'     : groupDataTotal.pickup_percentage,
+                        'isSubTotal': true,
+                        'className': 'row-break',
+                        'rooms_available': groupDataTotal.rooms_available,
+                        'rooms_held_non_deduct': groupDataTotal.rooms_held_non_deduct,
+                        'rooms_held_deduct': groupDataTotal.rooms_held_deduct,
+                        'rooms_held_picked_up': groupDataTotal.rooms_held_picked_up,
+                        'pickup_percentage': groupDataTotal.pickup_percentage,
                     });
                     returnAry.push( customData );
                 // } else {
@@ -851,13 +851,13 @@ sntRover.factory('RVReportParserFac', [
                         // same row as that of the main reservation details
                         if ( k === 0 ) {
                             angular.extend(makeCopy, {
-                                'isReport'               : true,
-                                'rowspan'                : l + 1,
-                                'deposit_payment_status' : depositData.deposit_payment_status,
-                                'due_date'               : depositData.due_date,
-                                'deposit_due_amount'     : depositData.deposit_due_amount,
-                                'paid_date'              : depositData.paid_date,
-                                'paid_amount'            : depositData.paid_amount
+                                'isReport': true,
+                                'rowspan': l + 1,
+                                'deposit_payment_status': depositData.deposit_payment_status,
+                                'due_date': depositData.due_date,
+                                'deposit_due_amount': depositData.deposit_due_amount,
+                                'paid_date': depositData.paid_date,
+                                'paid_amount': depositData.paid_amount
                             });
                             returnAry.push( makeCopy );
                         }
@@ -867,12 +867,12 @@ sntRover.factory('RVReportParserFac', [
                         else {
                             customData = {};
                             angular.extend(customData, {
-                                'isSubReport'            : true,
-                                'deposit_payment_status' : depositData.deposit_payment_status,
-                                'due_date'               : depositData.due_date,
-                                'deposit_due_amount'     : depositData.deposit_due_amount,
-                                'paid_date'              : depositData.paid_date,
-                                'paid_amount'            : depositData.paid_amount
+                                'isSubReport': true,
+                                'deposit_payment_status': depositData.deposit_payment_status,
+                                'due_date': depositData.due_date,
+                                'deposit_due_amount': depositData.deposit_due_amount,
+                                'paid_date': depositData.paid_date,
+                                'paid_amount': depositData.paid_amount
                             });
                             returnAry.push( customData );
                         };
@@ -884,10 +884,10 @@ sntRover.factory('RVReportParserFac', [
 
                         customData = {};
                         angular.extend(customData, {
-                            'isSubTotal'         : true,
-                            'className'          : 'row-break',
-                            'deposit_due_amount' : depositTotals.deposit_due_amount,
-                            'paid_amount'        : depositTotals.paid_amount
+                            'isSubTotal': true,
+                            'className': 'row-break',
+                            'deposit_due_amount': depositTotals.deposit_due_amount,
+                            'paid_amount': depositTotals.paid_amount
                         });
                         returnAry.push( customData );
                     }
@@ -950,11 +950,11 @@ sntRover.factory('RVReportParserFac', [
 
                 // copy the reservation details and an empty 'stay_dates' array
                 withOutStay = angular.copy({
-                    'guest_name'      : makeCopy.guest_name,
-                    'confirmation_no' : makeCopy.confirmation_no,
-                    'arrival_date'    : makeCopy.arrival_date,
-                    'departure_date'  : makeCopy.departure_date,
-                    'stay_dates'      : []
+                    'guest_name': makeCopy.guest_name,
+                    'confirmation_no': makeCopy.confirmation_no,
+                    'arrival_date': makeCopy.arrival_date,
+                    'departure_date': makeCopy.departure_date,
+                    'stay_dates': []
                 });
 
                 // loop and generate an object

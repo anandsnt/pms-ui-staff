@@ -246,7 +246,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
       		if ($scope.accountSummaryData.newNote) {
 				var onUpdateAccountNoteSuccess = function(data) {
 					$scope.accountSummaryData.editingNote.description = $scope.accountSummaryData.newNote;
-					var noteArrayIndex = _.findIndex($scope.accountConfigData.summary.notes, {note_id : data.note_id});
+					var noteArrayIndex = _.findIndex($scope.accountConfigData.summary.notes, {note_id: data.note_id});
 					$scope.accountConfigData.summary.notes[noteArrayIndex] = $scope.accountSummaryData.editingNote;
 					$scope.refreshScroller("rvAccountSummaryScroller");
 					$scope.cancelEditModeAccountNote();
@@ -392,7 +392,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 					"firstName": "",
 					"lastName": "",
 					"paymentTypes": $scope.paymentTypes,
-					"accountId" : $scope.accountConfigData.summary.posting_account_id
+					"accountId": $scope.accountConfigData.summary.posting_account_id
 				}
 			};
 

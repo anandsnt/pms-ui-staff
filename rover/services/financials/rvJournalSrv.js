@@ -10,7 +10,7 @@ angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2
 
         that.fetchCashiers = function () {
             var url = "/api/cashier_periods",
-            	data = {'date':$rootScope.businessDate};
+            	data = {'date': $rootScope.businessDate};
             BaseWebSrvV2.getJSON(url, data).then(function (data) {
                 that.filterData.cashiers = data.cashiers;
                 that.filterData.selectedCashier = data.current_user_id;

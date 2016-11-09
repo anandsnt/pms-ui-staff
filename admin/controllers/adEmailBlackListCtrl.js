@@ -14,7 +14,7 @@ admin.controller('ADEmailBlackListCtrl', ['$scope', '$state', 'ADEmailBlackListS
 
 		            var tbParams = $scope.calculateGetParams(params);
 
-                    var orderedData = $filter('filter')($scope.emailList, {"email":tbParams.query}, function(actual, expected) {
+                    var orderedData = $filter('filter')($scope.emailList, {"email": tbParams.query}, function(actual, expected) {
                           if(actual.indexOf(expected) > -1) {
                           	return true;
                           }

@@ -310,12 +310,12 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			// show popup
 			if ( checkDateGap() ) {
 				ngDialog.open({
-					controller      : 'RVOccRevPrintPopupCtrl',
-				    template        : '/assets/partials/reports/occupancyRevenueReport/rvOccRevPrintPopup.html',
-				    className       : 'ngdialog-theme-default',
-				    closeByDocument : true,
-				    scope           : $scope,
-				    data            : []
+					controller: 'RVOccRevPrintPopupCtrl',
+				    template: '/assets/partials/reports/occupancyRevenueReport/rvOccRevPrintPopup.html',
+				    className: 'ngdialog-theme-default',
+				    closeByDocument: true,
+				    scope: $scope,
+				    data: []
 				});
 			} else {
 				$scope.$emit( reportMsgs['REPORT_PRE_PRINT_DONE'] );

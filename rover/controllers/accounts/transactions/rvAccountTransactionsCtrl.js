@@ -616,7 +616,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		$scope.openEditChargeDescPopup = function() {
 			ngDialog.open({
 	    		template: '/assets/partials/bill/rvEditChargePopup.html',
-	    		controller:'RVAccountTransactionsPopupCtrl',
+	    		controller: 'RVAccountTransactionsPopupCtrl',
 	    		className: '',
 	    		scope: $scope
 	    	});
@@ -1054,10 +1054,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		var getBillTransactionDetails = function() {
 			var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
 			var params = {
-				'bill_id'	: activebillTab.bill_id,
-				'date'		: activebillTab.activeDate,
-				'page'		: activebillTab.page_no,
-				'per_page'	: $scope.perPage
+				'bill_id': activebillTab.bill_id,
+				'date': activebillTab.activeDate,
+				'page': activebillTab.page_no,
+				'per_page': $scope.perPage
 			};
 			var options = {
 				successCallBack: onBillTransactionFetchSuccess,

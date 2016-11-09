@@ -26,14 +26,14 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 			RIGHT_PANE_SCROLL = 'right-pane-scroll';
 
 		$scope.setScroller(LEFT_PANE_SCROLL, {
-			'preventDefault' : false,
-			'probeType'      : 3
+			'preventDefault': false,
+			'probeType': 3
 		});
 
 		$scope.setScroller(RIGHT_PANE_SCROLL, {
-			'preventDefault' : false,
-			'probeType'      : 3,
-			'scrollX'        : true
+			'preventDefault': false,
+			'probeType': 3,
+			'scrollX': true
 		});
 
 		var refreshScrollers = function() {
@@ -87,8 +87,8 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 
 		// ui filter by default showing both avail. and rev.
 		$scope.uiFilter = {
-			'showAvailability' : true,
-			'showRevenue'      : true
+			'showAvailability': true,
+			'showRevenue': true
 		};
 
 		// cant disable both, when one disabled one the other should be enabled
@@ -189,8 +189,8 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 						};
 						for (; startIndex < endIndex; startIndex++) {
 							$scope.headerBot.push({
-								'name' : SUB_HEADER_NAMES[startIndex],
-								'cls'  : startIndex == triggerIndex ? 'day-end' : ''
+								'name': SUB_HEADER_NAMES[startIndex],
+								'cls': startIndex == triggerIndex ? 'day-end' : ''
 							});
 						};
 
@@ -203,49 +203,49 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 
 					if ( 2 == $scope.colSpan ) {
 						eachDateVal.push({
-							value   : dateObj['total_reservations_count'],
-							isAvail : true
+							value: dateObj['total_reservations_count'],
+							isAvail: true
 						});
 						eachDateVal.push({
-							value   : dateObj['available_rooms_count'],
-							isAvail : true,
-							cls     : 'last-day'
+							value: dateObj['available_rooms_count'],
+							isAvail: true,
+							cls: 'last-day'
 						});
 					} else if ( 3 == $scope.colSpan ) {
 						eachDateVal.push({
-							value : $filter('currency')(dateObj['rate_revenue'], $rootScope.currencySymbol, 2),
-							isRev : true
+							value: $filter('currency')(dateObj['rate_revenue'], $rootScope.currencySymbol, 2),
+							isRev: true
 						});
 						eachDateVal.push({
-							value : $filter('currency')(dateObj['adr'], $rootScope.currencySymbol, 2),
-							isRev : true
+							value: $filter('currency')(dateObj['adr'], $rootScope.currencySymbol, 2),
+							isRev: true
 						});
 						eachDateVal.push({
-							value : $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, 2),
-							isRev : true,
-							cls   : 'last-day'
+							value: $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, 2),
+							isRev: true,
+							cls: 'last-day'
 						});
 					} else if ( 5 == $scope.colSpan ) {
 						eachDateVal.push({
-							value   : dateObj['total_reservations_count'],
-							isAvail : true
+							value: dateObj['total_reservations_count'],
+							isAvail: true
 						});
 						eachDateVal.push({
-							value   : dateObj['available_rooms_count'],
-							isAvail : true
+							value: dateObj['available_rooms_count'],
+							isAvail: true
 						});
 						eachDateVal.push({
-							value : $filter('currency')(dateObj['rate_revenue'], $rootScope.currencySymbol, 2),
-							isRev : true
+							value: $filter('currency')(dateObj['rate_revenue'], $rootScope.currencySymbol, 2),
+							isRev: true
 						});
 						eachDateVal.push({
-							value : $filter('currency')(dateObj['adr'], $rootScope.currencySymbol, 2),
-							isRev : true
+							value: $filter('currency')(dateObj['adr'], $rootScope.currencySymbol, 2),
+							isRev: true
 						});
 						eachDateVal.push({
-							value : $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, 2),
-							isRev : true,
-							cls   : 'last-day'
+							value: $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, 2),
+							isRev: true,
+							cls: 'last-day'
 						});
 					};
 
@@ -269,12 +269,12 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 		function renderReact (args) {
 			var args  = args || {},
 				props = _.extend(args, {
-					'rightPaneWidth' : $scope.rightPaneWidth,
-					'colspan'        : $scope.colSpan,
-					'headerTop'      : $scope.headerTop,
-					'headerBot'      : $scope.headerBot,
-					'reportData'     : $scope.reportData,
-					'isLastRowSum'   : true
+					'rightPaneWidth': $scope.rightPaneWidth,
+					'colspan': $scope.colSpan,
+					'headerTop': $scope.headerTop,
+					'headerBot': $scope.headerBot,
+					'reportData': $scope.reportData,
+					'isLastRowSum': true
  				});
 
 			ReactDOM.render(

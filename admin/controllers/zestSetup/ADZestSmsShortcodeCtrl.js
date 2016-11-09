@@ -17,11 +17,11 @@ admin.controller('ADZestSmsShortcodeCtrl', ['$scope', '$state', 'ADZestShortCode
              "active": true,
              "application": "SMS",
              "guest_web_url_type": "CHECKIN",
-             "name":"SMS URL",
+             "name": "SMS URL",
              "url_suffix": $scope.editData.checkin_static_url
         }
         var options = {
-            params          : data
+            params: data
         };
         $scope.callAPI(adZestCheckinCheckoutSrv.saveNewDirectURL, options);
     };
@@ -40,9 +40,9 @@ admin.controller('ADZestSmsShortcodeCtrl', ['$scope', '$state', 'ADZestShortCode
         console.info('saving', params);
         //params.id = $scope.editData.hotel_id;
         var options = {
-            params 			: params,
-            successCallBack             : $scope.onCallback,
-            failureCallBack             : $scope.onCallback
+            params: params,
+            successCallBack: $scope.onCallback,
+            failureCallBack: $scope.onCallback
         };
         $scope.callAPI(ADZestShortCodeSrv.save, options);
     };
@@ -67,8 +67,8 @@ admin.controller('ADZestSmsShortcodeCtrl', ['$scope', '$state', 'ADZestShortCode
             }
         };
         var options = {
-            successCallBack             : callback,
-            failureCallBack             : callback
+            successCallBack: callback,
+            failureCallBack: callback
         };
         $scope.callAPI(ADZestShortCodeSrv.fetch, options);
     };

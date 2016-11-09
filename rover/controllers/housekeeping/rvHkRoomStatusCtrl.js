@@ -155,11 +155,11 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 		// multiple room status change DS
 		$scope.multiRoomAction = {
-			rooms      : [],
-			indexes    : {},
-			anyChosen  : false,
-			allChosen  : false,
-			hkStatusId : ''
+			rooms: [],
+			indexes: {},
+			anyChosen: false,
+			allChosen: false,
+			hkStatusId: ''
 		};
 		$scope.hkStatusList = hkStatusList;
 		$scope.allRoomIDs   = fetchPayload.roomList['all_room_ids'];
@@ -671,12 +671,12 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 			var params = {
 
-   				from_date			: getApiFormattedDate($scope.updateServiceData.from_date),
-				to_date				: getApiFormattedDate($scope.updateServiceData.to_date),
-				begin_time 			:"",
-				end_time			: "",
-				reason_id			: $scope.updateServiceData.reason_id,
-				comment 			: $scope.updateServiceData.comments,
+   				from_date: getApiFormattedDate($scope.updateServiceData.from_date),
+				to_date: getApiFormattedDate($scope.updateServiceData.to_date),
+				begin_time: "",
+				end_time: "",
+				reason_id: $scope.updateServiceData.reason_id,
+				comment: $scope.updateServiceData.comments,
 				room_service_status_id: $scope.updateServiceData.room_service_status_id
 			};
 
@@ -717,13 +717,13 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 			var params = {
 
-   				from_date			: getApiFormattedDate($scope.updateServiceData.from_date),
-				to_date				: getApiFormattedDate($scope.updateServiceData.to_date),
-				begin_time 			: $scope.updateServiceData.begin_time,
-				end_time			: $scope.updateServiceData.end_time,
-				reason_id			: $scope.updateServiceData.reason_id,
-				comment 			: $scope.updateServiceData.comments,
-				is_move_forcefully  : true,
+   				from_date: getApiFormattedDate($scope.updateServiceData.from_date),
+				to_date: getApiFormattedDate($scope.updateServiceData.to_date),
+				begin_time: $scope.updateServiceData.begin_time,
+				end_time: $scope.updateServiceData.end_time,
+				reason_id: $scope.updateServiceData.reason_id,
+				comment: $scope.updateServiceData.comments,
+				is_move_forcefully: true,
 				room_service_status_id: $scope.updateServiceData.room_service_status_id
 			};
 
@@ -815,8 +815,8 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			};
 
 			_payload = {
-				'room_ids'     : [],
-		    	'hk_status_id' : $scope.multiRoomAction.hkStatusId
+				'room_ids': [],
+		    	'hk_status_id': $scope.multiRoomAction.hkStatusId
 			};
 
 			if ( (1 == $scope.multiRoomAction.rooms.length == $scope.uiTotalCount) &&  $scope.multiRoomAction.allChosen ) {

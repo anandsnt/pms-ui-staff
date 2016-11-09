@@ -43,11 +43,11 @@ sntRover.controller('RVReservationDepositController',
 			viewCardsList: false,
 			existingCard: false,
 			cardId: "",
-			cardNumber:"",
-			expiry_date:"",
-			card_type:"",
-			isDisplayReference:false,
-			referanceText:"",
+			cardNumber: "",
+			expiry_date: "",
+			card_type: "",
+			isDisplayReference: false,
+			referanceText: "",
 			addToGuestCard: false
 		};
 
@@ -94,7 +94,7 @@ sntRover.controller('RVReservationDepositController',
       		 !$scope.hasPermissionToMakePayment());
       	};
 
-		$scope.setScroller('cardsList', {'click':true, 'tap':true});
+		$scope.setScroller('cardsList', {'click': true, 'tap': true});
 		var refreshCardsList = function() {
 			$timeout(function() {
 				$scope.refreshScroller('cardsList');
@@ -441,8 +441,8 @@ sntRover.controller('RVReservationDepositController',
 					"card_name": cardName,
 					"id": $scope.depositData.selectedCard,
 					"isSelected": true,
-					"is_primary":false,
-					"payment_type":"CC",
+					"is_primary": false,
+					"payment_type": "CC",
 					"payment_type_id": 1,
 					"is_credit_card": true
 				};
@@ -453,8 +453,8 @@ sntRover.controller('RVReservationDepositController',
 		if(typeof cardAddedBySixPaySWipe !== "undefined") {
 			var paymentDetails = data.payment_method;
 			$scope.newPaymentInfo = { 
-										"tokenDetails":{
-															"isSixPayment":true
+										"tokenDetails": {
+															"isSixPayment": true
 														}
 									};
 			$scope.depositData.cardNumber = paymentDetails.ending_with;
@@ -539,7 +539,7 @@ sntRover.controller('RVReservationDepositController',
 					"bill_number": 1,
 					"payment_type": $scope.depositData.paymentType,
 					"amount": $scope.reservationData.depositAmount,
-					"payment_type_id":($scope.depositData.paymentType === 'CC' && $scope.depositData.selectedCard !== -1) ? $scope.depositData.selectedCard :null
+					"payment_type_id": ($scope.depositData.paymentType === 'CC' && $scope.depositData.selectedCard !== -1) ? $scope.depositData.selectedCard :null
 				},
 				"reservation_id": $stateParams.id
 			};
@@ -730,9 +730,9 @@ sntRover.controller('RVReservationDepositController',
 		$scope.isSwipedCardSave = true;
 
 		var options = {
-	    		params: 			data,
-	    		successCallBack: 	successSwipePayment,
-	    		successCallBackParameters:  swipedCardDataToSave
+	    		params: data,
+	    		successCallBack: successSwipePayment,
+	    		successCallBackParameters: swipedCardDataToSave
 	    };
 	    $scope.callAPI(RVPaymentSrv.savePaymentDetails, options);
 	 });

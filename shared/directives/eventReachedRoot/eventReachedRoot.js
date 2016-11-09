@@ -1,7 +1,7 @@
 angular.module('eventReachedRootModule', [])
   .directive('eventReachedRoot', ['$window', function($window) {
       return {
-        restrict : 'A',
+        restrict: 'A',
         link: function(scope, element, attrs) {
             if ( ! attrs.ngApp ) {
                 console.warn( "'event-reached-root' must be added to the element where 'ng-app' is declared!" );

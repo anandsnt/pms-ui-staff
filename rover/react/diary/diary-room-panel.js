@@ -39,8 +39,8 @@ var RoomPanel = React.createClass({
 		},
 		React.createElement( Rooms, {
 			display: props.display,
-			meta:    props.meta,
-			data:    props.data
+			meta: props.meta,
+			data: props.data
 		}));
 	}
 });

@@ -32,7 +32,7 @@ admin.controller('ADRoomClassListCtrl', ['$scope', '$state', 'ADRoomClassesSrv',
 	 		$scope.roomClassData = data;
 	 		$scope.$emit('hideLoader');
 	 	};
-	 	var data = {"id":id };
+	 	var data = {"id": id };
 	 	$scope.invokeApi(ADRoomClassesSrv.fetchDetailsOfRoomClass, data, successCallbackRender);
 	};
    /*

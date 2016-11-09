@@ -27,7 +27,7 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
       'VIP': 'DASHBOARD_SEARCH_VIP',
       'NORMAL_SEARCH': 'SEARCH_NORMAL',
       'PRE_CHECKIN': 'PRE_CHECKIN',
-      'MOBILE_CHECKIN' : 'MOBILE_CHECKIN'
+      'MOBILE_CHECKIN': 'MOBILE_CHECKIN'
     };
 
     //Special case: Search by swipe in back navigation. We have to display the card number as well.

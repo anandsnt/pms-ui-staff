@@ -107,7 +107,7 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
         $scope.loadLoyaltyPrograms = function() {
             if ($scope.$parent.$parent.refreshingReservation) {
                 $rootScope.goToReservationCalled = true;
-                $rootScope.$broadcast('reload-loyalty-section-data', {'reload':true});
+                $rootScope.$broadcast('reload-loyalty-section-data', {'reload': true});
             }
         };
         $scope.callSelectLoyaltyAPI = function(id) {

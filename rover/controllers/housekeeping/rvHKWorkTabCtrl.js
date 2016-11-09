@@ -169,7 +169,7 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 			var params = {
 				room_id: $scope.roomDetails.id,
 				work_sheet_id: $scope.currentTask.work_sheet_id,
-				task_id : $scope.currentTask.id
+				task_id: $scope.currentTask.id
 			};
 
 			$scope.invokeApi(RVHkRoomDetailsSrv.postRecordTime, params, callback);
@@ -195,8 +195,8 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 			var params = {
 				room_id: $scope.roomDetails.id,
 				work_sheet_id: $scope.currentTask.work_sheet_id,
-				task_completion_status : $scope.currentTask.task_completion_status_id,
-				task_id : $scope.currentTask.id
+				task_completion_status: $scope.currentTask.task_completion_status_id,
+				task_id: $scope.currentTask.id
 			};
 
 			$scope.invokeApi(RVHkRoomDetailsSrv.postRecordTime, params, callback);

@@ -50,7 +50,7 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 		};
 
 		var data = {
-			"id" : id
+			"id": id
 		};
 		$scope.invokeApi(ADRateTypeSrv.getRateTypesDetails, data, successCallbackRender);
 	};
@@ -85,8 +85,8 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 		//
 		var isActivated = !$scope.data[index].activated;
 		var data = {
-			'id' : $scope.data[index].id,
-			'status' : isActivated
+			'id': $scope.data[index].id,
+			'status': isActivated
 		};
 
 		var postSuccess = function() {

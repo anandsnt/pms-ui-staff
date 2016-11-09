@@ -26,11 +26,11 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
 		};
 
         var postData = {
-            "from_date":$scope.data.fromDate,
-            "to_date":$scope.data.toDate,
-            "employee_ids" : $scope.data.selectedEmployeeList,
-            "department_ids" : $scope.data.selectedDepartmentList,
-            "type" : ($scope.data.activePaymentTab === "" ? "" : ($scope.data.activePaymentTab).toLowerCase())
+            "from_date": $scope.data.fromDate,
+            "to_date": $scope.data.toDate,
+            "employee_ids": $scope.data.selectedEmployeeList,
+            "department_ids": $scope.data.selectedDepartmentList,
+            "type": ($scope.data.activePaymentTab === "" ? "" : ($scope.data.activePaymentTab).toLowerCase())
         };
 		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, postData, successCallBackFetchPaymentData);
 	};
@@ -85,14 +85,14 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
         // Call api only while expanding the tab or on pagination Next/Prev button actions ..
         if(!chargeCodeItem.active || isFromPagination) {
             var postData = {
-                "from_date":$scope.data.fromDate,
-                "to_date":$scope.data.toDate,
-                "charge_code_id":chargeCodeItem.charge_code_id,
-                "employee_ids" : $scope.data.selectedEmployeeList,
-                "department_ids" : $scope.data.selectedDepartmentList,
-                "page_no" :  chargeCodeItem.page_no,
+                "from_date": $scope.data.fromDate,
+                "to_date": $scope.data.toDate,
+                "charge_code_id": chargeCodeItem.charge_code_id,
+                "employee_ids": $scope.data.selectedEmployeeList,
+                "department_ids": $scope.data.selectedDepartmentList,
+                "page_no": chargeCodeItem.page_no,
                 "per_page": $scope.data.filterData.perPage,
-                "type" : ($scope.data.activePaymentTab === "" ? "" : ($scope.data.activePaymentTab).toLowerCase())
+                "type": ($scope.data.activePaymentTab === "" ? "" : ($scope.data.activePaymentTab).toLowerCase())
             };
             $scope.invokeApi(RVJournalSrv.fetchPaymentDataByTransactions, postData, successCallBackFetchPaymentDataTransactions);
         }

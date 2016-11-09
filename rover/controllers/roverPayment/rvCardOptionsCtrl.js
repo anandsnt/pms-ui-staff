@@ -435,7 +435,7 @@ sntRover.controller('RVCardOptionsCtrl',
 
 
             $scope.setCreditCardFromList = function(index) {
-                $scope.$emit('cardSelected', {'index':index});
+                $scope.$emit('cardSelected', {'index': index});
                 $scope.cardselectedIndex = index;
             };
             $scope.setToShowCancelCard = function() {
@@ -515,7 +515,7 @@ sntRover.controller('RVCardOptionsCtrl',
                        //data.expiry_date //unused at this time
                        $scope.$emit('hideLoader');
                    };
-                   $scope.invokeApi(RVReservationCardSrv.checkGiftCardBalance, {'card_number':$scope.num}, fetchGiftCardBalanceSuccess);
+                   $scope.invokeApi(RVReservationCardSrv.checkGiftCardBalance, {'card_number': $scope.num}, fetchGiftCardBalanceSuccess);
                } else {
                    $scope.giftCardAmountAvailable = false;
                }

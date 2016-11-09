@@ -18,7 +18,7 @@
 
 			return {
 				responseData: responseData,
-				resetPassword : resetPassword
+				resetPassword: resetPassword
 			};
 		};
 

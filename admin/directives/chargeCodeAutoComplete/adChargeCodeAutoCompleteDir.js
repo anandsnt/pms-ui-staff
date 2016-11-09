@@ -1,18 +1,18 @@
 admin.directive('adChargeCodeAutoComplete', ['ADChargeCodesSrv', function (ADChargeCodesSrv) {
 	return {
-		restrict 	: 'E',
-		replace 	: true,
-		scope 		: {
-			charge_code_id :'=selectedChargeCodeId',
+		restrict: 'E',
+		replace: true,
+		scope: {
+			charge_code_id: '=selectedChargeCodeId',
 			charge_code_name: '=ngModel',
 			label: '@label',
 			entryDivClass: '@entryDivClass',
 			delay: '@delay',
 			minLengthToTrigger: '@minLengthToTrigger',
-			excludePayments : '@',
+			excludePayments: '@',
 			onlyPayments: '@'
 		},
-		controller : function($scope) {
+		controller: function($scope) {
 			BaseCtrl.call(this, $scope);
 
 			var minLengthToTrigger;
@@ -44,8 +44,8 @@ admin.directive('adChargeCodeAutoComplete', ['ADChargeCodesSrv', function (ADCha
 				}
 
 		        var options = {
-		            params 			: params,
-		            successCallBack : successCallBackOfFetchChargeCodes,
+		            params: params,
+		            successCallBack: successCallBackOfFetchChargeCodes,
 		            successCallBackParameters: {
 						callBackToAutoComplete: callBackToAutoComplete
 					}
@@ -100,15 +100,15 @@ admin.directive('adChargeCodeAutoComplete', ['ADChargeCodesSrv', function (ADCha
 			 */
 			var initializeMe = function() {
 				$scope.chargeCodeAutocompleteOptions = {
-		            delay		: _.isUndefined($scope.delay) ? 600 : parseInt($scope.delay),
-		            minLength	: 0,
-			        position	: {
-			            my 			: "right top",
-			            at 			: "right bottom",
-			            collision	: 'flip'
+		            delay: _.isUndefined($scope.delay) ? 600 : parseInt($scope.delay),
+		            minLength: 0,
+			        position: {
+			            my: "right top",
+			            at: "right bottom",
+			            collision: 'flip'
 			        },
-		            source 		: autoCompleteSourceHandler,
-		            select 		: autoCompleteSelectHandler
+		            source: autoCompleteSourceHandler,
+		            select: autoCompleteSelectHandler
 				};
 
 				$scope.label 			= _.isUndefined($scope.label) ? 'Charge Code' : $scope.label;
@@ -116,6 +116,6 @@ admin.directive('adChargeCodeAutoComplete', ['ADChargeCodesSrv', function (ADCha
 				minLengthToTrigger 		= _.isUndefined($scope.minLengthToTrigger) ? 1 : parseInt($scope.minLengthToTrigger);
 			}();	
 		},
-		templateUrl : '/assets/directives/chargeCodeAutoComplete/adChargeCodeAutoCompleteDir.html',
+		templateUrl: '/assets/directives/chargeCodeAutoComplete/adChargeCodeAutoCompleteDir.html',
 	};
 }]);

@@ -862,17 +862,17 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 			$scope.multiSheetState = $.extend(
 					{}, {
-						'unassigned' : payload.unassignedRoomTasks,
-						'assigned'   : payload.assignedRoomTasks,
-						'allTasks'   : payload.allTasks,
-						'allRooms'   : payload.allRooms,
+						'unassigned': payload.unassignedRoomTasks,
+						'assigned': payload.assignedRoomTasks,
+						'allTasks': payload.allTasks,
+						'allRooms': payload.allRooms,
 					}, {
-						'unassignedFiltered' : [],
-						'_unassignIndexMap'  : {},
+						'unassignedFiltered': [],
+						'_unassignIndexMap': {},
 					}, {
-						'selectedEmployees' : [],
-						'_selectedIndexMap' : {},
-						'_lastSelectedIds'  : []
+						'selectedEmployees': [],
+						'_selectedIndexMap': {},
+						'_lastSelectedIds': []
 					}, {
 						'dndEnabled': true,
 						'selectedDate': $scope.dateSelected || $stateParams.date || $rootScope.businessDate,

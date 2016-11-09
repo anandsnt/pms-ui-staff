@@ -1,7 +1,7 @@
 sntRover.directive('imageLoad', function () {
     return {
-    	scope:{
-    		imageLoaded : '&'
+    	scope: {
+    		imageLoaded: '&'
     	},
         link: function(scope, element, attrs) {
 

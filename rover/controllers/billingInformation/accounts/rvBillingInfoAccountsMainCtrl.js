@@ -123,13 +123,13 @@ sntRover.controller('rvBillingInfoAccountsMainCtrl', ['$scope', '$rootScope', '$
 			    "attached_charge_codes": [],
 			    "attached_billing_groups": [],
                 "images": data.images,
-                "reservation_status" : data.reservation_status,
-                "is_opted_late_checkout" : data.is_opted_late_checkout,
+                "reservation_status": data.reservation_status,
+                "is_opted_late_checkout": data.is_opted_late_checkout,
                 "name": data.firstname + " " + data.lastname,
                 "entity_type": "RESERVATION",
-                "has_accompanying_guests" : ( data.images.length >1 ) ? true : false,
+                "has_accompanying_guests": ( data.images.length >1 ) ? true : false,
                 "bill_no": "",
-                "is_new" : true,
+                "is_new": true,
                 "credit_card_details": {}
 			};
             if ($scope.billingEntity === "ALLOTMENT_DEFAULT_BILLING") {
@@ -155,13 +155,13 @@ sntRover.controller('rvBillingInfoAccountsMainCtrl', ['$scope', '$rootScope', '$
 			    "name": data.account_name,
 			    "bill_no": "",
 			    "images": [{
-                    "is_primary":true,
+                    "is_primary": true,
 		            "guest_image": data.company_logo
 		        }],
 			    "attached_charge_codes": [],
 			    "attached_billing_groups": [],
-                "is_new" : true,
-                "selected_payment" : "",
+                "is_new": true,
+                "selected_payment": "",
                 "credit_card_details": {}
 			};
             if ($scope.billingEntity === "ALLOTMENT_DEFAULT_BILLING") {
@@ -195,8 +195,8 @@ sntRover.controller('rvBillingInfoAccountsMainCtrl', ['$scope', '$rootScope', '$
                     "bill_no": "",
                     "attached_charge_codes": [],
                     "attached_billing_groups": [],
-                    "is_new" : true,
-                    "selected_payment" : "",
+                    "is_new": true,
+                    "selected_payment": "",
                     "credit_card_details": {},
                     "entity_type": data.account_type
                 };
@@ -227,10 +227,10 @@ sntRover.controller('rvBillingInfoAccountsMainCtrl', ['$scope', '$rootScope', '$
 
 
                 "bill_no": "",
-                "has_accompanying_guests" : false,
+                "has_accompanying_guests": false,
                 "attached_charge_codes": [],
                 "attached_billing_groups": [],
-                "is_new" : true,
+                "is_new": true,
                 "credit_card_details": {}
             };
             if($scope.billingEntity !== "TRAVEL_AGENT_DEFAULT_BILLING" &&
@@ -246,7 +246,7 @@ sntRover.controller('rvBillingInfoAccountsMainCtrl', ['$scope', '$rootScope', '$
                 $scope.selectedEntity.guest_id = $scope.attachedEntities.primary_guest_details.id;
                 $scope.selectedEntity.name = $scope.attachedEntities.primary_guest_details.name;
                 $scope.selectedEntity.images = [{
-                    "is_primary":true,
+                    "is_primary": true,
                     "guest_image": $scope.attachedEntities.primary_guest_details.avatar
                 }];
                 $scope.selectedEntity.entity_type = "RESERVATION";
@@ -255,7 +255,7 @@ sntRover.controller('rvBillingInfoAccountsMainCtrl', ['$scope', '$rootScope', '$
                 $scope.selectedEntity.guest_id = $scope.attachedEntities.accompanying_guest_details[index].id;
                 $scope.selectedEntity.name = $scope.attachedEntities.accompanying_guest_details[index].name;
                 $scope.selectedEntity.images = [{
-                    "is_primary":false,
+                    "is_primary": false,
                     "guest_image": $scope.attachedEntities.accompanying_guest_details[index].avatar
                 }];
                 $scope.selectedEntity.has_accompanying_guests = true;
@@ -264,7 +264,7 @@ sntRover.controller('rvBillingInfoAccountsMainCtrl', ['$scope', '$rootScope', '$
                 $scope.selectedEntity.id = $scope.attachedEntities.company_card.id;
                 $scope.selectedEntity.name = $scope.attachedEntities.company_card.name;
                 $scope.selectedEntity.images = [{
-                    "is_primary":true,
+                    "is_primary": true,
                     "guest_image": $scope.attachedEntities.company_card.logo
                 }];
                 $scope.selectedEntity.entity_type = "COMPANY_CARD";
@@ -272,7 +272,7 @@ sntRover.controller('rvBillingInfoAccountsMainCtrl', ['$scope', '$rootScope', '$
                 $scope.selectedEntity.id = $scope.attachedEntities.travel_agent.id;
                 $scope.selectedEntity.name = $scope.attachedEntities.travel_agent.name;
                 $scope.selectedEntity.images = [{
-                    "is_primary":true,
+                    "is_primary": true,
                     "guest_image": $scope.attachedEntities.travel_agent.logo
                 }];
                 $scope.selectedEntity.entity_type = "TRAVEL_AGENT";
@@ -396,21 +396,21 @@ sntRover.controller('rvBillingInfoAccountsMainCtrl', ['$scope', '$rootScope', '$
 
     var setRoutingDateOptions = function () {
         $scope.routeDates = {
-            from : $scope.arrivalDate,
-            to : $scope.departureDate
+            from: $scope.arrivalDate,
+            to: $scope.departureDate
         };
 
         if (!!$scope.reservation) {
             $scope.routingDateFromOptions = {       
                 dateFormat: 'dd-mm-yy',
-                minDate : tzIndependentDate($scope.reservation.reservation_card.arrival_date),
-                maxDate : tzIndependentDate($scope.reservation.reservation_card.departure_date)
+                minDate: tzIndependentDate($scope.reservation.reservation_card.arrival_date),
+                maxDate: tzIndependentDate($scope.reservation.reservation_card.departure_date)
             };
 
             $scope.routingDateToOptions = {       
                 dateFormat: 'dd-mm-yy',
-                minDate : tzIndependentDate($scope.reservation.reservation_card.arrival_date),
-                maxDate : tzIndependentDate($scope.reservation.reservation_card.departure_date)
+                minDate: tzIndependentDate($scope.reservation.reservation_card.arrival_date),
+                maxDate: tzIndependentDate($scope.reservation.reservation_card.departure_date)
             };
         }
     }

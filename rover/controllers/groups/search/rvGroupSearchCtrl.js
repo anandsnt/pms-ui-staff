@@ -415,7 +415,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
         $scope.gotoAddNewGroup = function() {
             $state.go('rover.groups.config', {
                 'id': "NEW_GROUP",
-                'newGroupName' : $scope.query
+                'newGroupName': $scope.query
             });
         };
 

@@ -276,8 +276,8 @@ sntRover.controller('reservationActionsController', [
                             "reservation_id": $scope.reservationData.reservation_card.reservation_id,
                             "room_type": $scope.reservationData.reservation_card.room_type_code,
                             "clickedButton": "checkinButton",
-                            "upgrade_available" : isUpgradeAvaiable,
-                            "cannot_move_room" : cannotMoveState
+                            "upgrade_available": isUpgradeAvaiable,
+                            "cannot_move_room": cannotMoveState
                     });
                 };
                 $scope.goToBillCard = function() {
@@ -292,7 +292,7 @@ sntRover.controller('reservationActionsController', [
                     $state.go('rover.reservation.staycard.upgrades', {
                             "reservation_id": $scope.reservationData.reservation_card.reservation_id,
                             "clickedButton": "checkinButton",
-                            "cannot_move_room" : cannotMoveState
+                            "cannot_move_room": cannotMoveState
                     });
                 };
                 $scope.validateEmailPhone = function() {
@@ -723,7 +723,7 @@ sntRover.controller('reservationActionsController', [
 			$scope.$emit('hideLoader');
 			$scope.depositBalanceData = data;
 			$scope.passData = {
-				"origin" : "STAYCARD",
+				"origin": "STAYCARD",
 				"details": {
 					"firstName": $scope.data.guest_details.first_name,
 					"lastName": $scope.data.guest_details.last_name,
@@ -851,10 +851,10 @@ sntRover.controller('reservationActionsController', [
 			var postData = {
 				"type": "confirmation",
 				"emails": $scope.isEmailAttached() ? [$scope.guestCardData.contactInfo.email] : [$scope.ngData.sendConfirmatonMailTo],
-				"enable_confirmation_custom_text" : $scope.ngData.enable_confirmation_custom_text,
-				"confirmation_custom_title" : $scope.ngData.confirmation_custom_title,
-				"confirmation_custom_text" : $scope.ngData.confirmation_custom_text,
-				"locale" : $scope.ngData.languageData.selected_language_code
+				"enable_confirmation_custom_text": $scope.ngData.enable_confirmation_custom_text,
+				"confirmation_custom_title": $scope.ngData.confirmation_custom_title,
+				"confirmation_custom_text": $scope.ngData.confirmation_custom_text,
+				"locale": $scope.ngData.languageData.selected_language_code
 			};
 			var reservationId = $scope.reservationData.reservation_card.reservation_id;
 
@@ -925,7 +925,7 @@ sntRover.controller('reservationActionsController', [
 				scope: $scope,
 				data: JSON.stringify({
 					isAvailable: isAvailable,
-                    isSuite : isSuite
+                    isSuite: isSuite
 				})
 			});
 		};

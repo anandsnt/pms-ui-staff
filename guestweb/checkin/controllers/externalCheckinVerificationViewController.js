@@ -47,7 +47,7 @@
 	      templateUrl: '/assets/preCheckin/partials/preCheckinErrorModal.html',
 	      controller: ccVerificationModalCtrl,
 	      resolve: {
-	        errorMessage:function() {
+	        errorMessage: function() {
 	          return "Please provide all the required information";
 	        }
 	      }
@@ -56,7 +56,7 @@
 	    //we need a guest token for authentication
 	    //so fetch it with reservation id
 	    var getToken = function(response) {
-	    	var data = {"reservation_id":$rootScope.reservationID};
+	    	var data = {"reservation_id": $rootScope.reservationID};
 		    checkinConfirmationService.getToken(data).then(function(res_data) {
 	    		//set guestweb token
 	    		$rootScope.accessToken 				= res_data.guest_web_token;
@@ -88,7 +88,7 @@
 		$scope.nextButtonClicked = function() {
 			if($scope.lastname.length > 0 && ($scope.confirmationNumber.length > 0 || (typeof $scope.departureDate !== "undefined" && $scope.departureDate.length >0))) {
 				
-				var data = {"hotel_identifier":$rootScope.hotelIdentifier}
+				var data = {"hotel_identifier": $rootScope.hotelIdentifier}
 
 				//check if all fields are filled
 				if($scope.lastname.length >0) {
@@ -146,7 +146,7 @@
 						}
 						//if reservation is early checkin
 						else if(response.results[0].is_too_early) {
-							$state.go('guestCheckinEarly', {"date":response.results[0].available_date_after});
+							$state.go('guestCheckinEarly', {"date": response.results[0].available_date_after});
 						}
 						else{
 							//retrieve token for guest

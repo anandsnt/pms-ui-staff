@@ -16,9 +16,9 @@ sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope',
         //Holds entity search results.
         //includes reservations, travel agent/company cards and accounts
         $scope.searchResults = {
-            reservations     : [],
-            cards            : [],
-            posting_accounts : []
+            reservations: [],
+            cards: [],
+            posting_accounts: []
         };
 
         $scope.bills = [];
@@ -27,20 +27,20 @@ sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope',
         $scope.errorMessage = '';
 
         $scope.billingInfoFlags = {
-            isInAddRoutesMode   : false,
-            isInitialPage       : true,
-            isEntitySelected    : false,
-            shouldShowWaiting   : false,
-            isReloadNeeded      : false,
-            showChargeCodes     : false,
-            isBillingGroup      : true
+            isInAddRoutesMode: false,
+            isInitialPage: true,
+            isEntitySelected: false,
+            shouldShowWaiting: false,
+            isReloadNeeded: false,
+            showChargeCodes: false,
+            isBillingGroup: true
         };
 
         //Payment details
         $scope.saveData = {
-            payment_type             : "",
-            payment_type_description : "",
-            newPaymentFormVisible    : false
+            payment_type: "",
+            payment_type_description: "",
+            newPaymentFormVisible: false
         };
         $scope.fetchRoutes();
     };
@@ -210,15 +210,15 @@ sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope',
      */
     $scope.setRoutingDateOptions = function() {
         $scope.routingDateFromOptions = {       
-            dateFormat : 'dd-mm-yy',
-            minDate    : tzIndependentDate($scope.reservation.reservation_card.arrival_date),
-            maxDate    : tzIndependentDate($scope.reservation.reservation_card.departure_date)
+            dateFormat: 'dd-mm-yy',
+            minDate: tzIndependentDate($scope.reservation.reservation_card.arrival_date),
+            maxDate: tzIndependentDate($scope.reservation.reservation_card.departure_date)
         };
 
         $scope.routingDateToOptions = {       
-            dateFormat : 'dd-mm-yy',
-            minDate    : tzIndependentDate($scope.reservation.reservation_card.arrival_date),
-            maxDate    : tzIndependentDate($scope.reservation.reservation_card.departure_date)
+            dateFormat: 'dd-mm-yy',
+            minDate: tzIndependentDate($scope.reservation.reservation_card.arrival_date),
+            maxDate: tzIndependentDate($scope.reservation.reservation_card.departure_date)
         };
     };
 

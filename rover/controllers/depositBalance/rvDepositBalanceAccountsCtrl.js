@@ -57,7 +57,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	$scope.isAddToGuestCardVisible = false;
 	$scope.isSwipedCardSave = false;
 	$scope.isManual = false;
-	$scope.setScroller('cardsList', {'click':true, 'tap':true});
+	$scope.setScroller('cardsList', {'click': true, 'tap': true});
 	$scope.setScroller('deopositdue');
 
 	var refreshScroll = function () {
@@ -166,8 +166,8 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	    	$scope.depositBalanceMakePaymentData.card_code = getCreditCardType($scope.cardValues.cardDetails.cardType).toLowerCase();
 	    	$scope.depositBalanceMakePaymentData.ending_with = $scope.cardValues.cardDetails.cardNumber.substr($scope.cardValues.cardDetails.cardNumber.length - 4);;
 		    var dataToApiToAddNewCard = {
-		          	"token" : $scope.cardValues.tokenDetails.session,
-		          	"card_name" :$scope.cardValues.cardDetails.userName,
+		          	"token": $scope.cardValues.tokenDetails.session,
+		          	"card_name": $scope.cardValues.cardDetails.userName,
 		          	"card_expiry": cardExpiry,
 		          	"payment_type": "CC"
 		   };
@@ -187,8 +187,8 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 			 $scope.depositBalanceMakePaymentData.ending_with = $scope.cardValues.tokenDetails.token_no.substr($scope.cardValues.tokenDetails.token_no.length - 4);;
 
 		     var dataToApiToAddNewCard = {
-		          	"token" : $scope.cardValues.tokenDetails.token_no,
-		          	"card_name" :$scope.passData.details.firstName+" "+$scope.passData.details.lastName,
+		          	"token": $scope.cardValues.tokenDetails.token_no,
+		          	"card_name": $scope.passData.details.firstName+" "+$scope.passData.details.lastName,
 		          	"card_expiry": cardExpiry,
 		          	"payment_type": "CC"
 		   };

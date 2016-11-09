@@ -197,8 +197,8 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                     }
                     _.each(data.mapping_type[x].extvalues, function(extRef) {
                         $scope.mappingInterface.mappingTypeRefsExt[mTypeName].push({
-                            name:extRef.value,
-                            description:extRef.description
+                            name: extRef.value,
+                            description: extRef.description
                         });
                     });
                 }
@@ -213,11 +213,11 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                 mappingTypeId = mapType.id;
                 $scope.availableMappingTypes.push({
                     "mapping_type": mappingTypeName,
-                    "mapping_description":mappingTypeDesc
+                    "mapping_description": mappingTypeDesc
                 });
                 $scope.editData.mapping_types.push({
                     "name": mappingTypeName,
-                    "description":mappingTypeDesc
+                    "description": mappingTypeDesc
                 });
                 for (var v in mapType.mapping_values) {
                     mv = mapType.mapping_values[v];
@@ -227,7 +227,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                     value = mv.value;
                     dataObj = {
                         "mapping_type": mappingTypeName,
-                        "description":mappingTypeDesc,
+                        "description": mappingTypeDesc,
                         "snt_value": sntVal,
                         "external_value": extVal,
                         "mapping_type_id": value

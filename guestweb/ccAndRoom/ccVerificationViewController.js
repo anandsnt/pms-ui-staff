@@ -101,7 +101,7 @@
       templateUrl: '/assets/checkoutnow/partials/ccVerificationErrorModal.html',
       controller: ccVerificationModalCtrl,
       resolve: {
-        errorMessage:function() {
+        errorMessage: function() {
           return "All fields are required";
         }
       }
@@ -115,7 +115,7 @@
       templateUrl: '/assets/checkoutnow/partials/ccVerificationNumberModal.html',
       controller: ccVerificationModalCtrl,
       resolve: {
-        errorMessage:function() {
+        errorMessage: function() {
           return "";
         }
       }
@@ -129,7 +129,7 @@
 
     $scope.goToNextStep = function() {
         var cardExpiryDate = $scope.yearSelected+"-"+$scope.monthSelected+"-"+"01";
-        var data = {'reservation_id':$rootScope.reservationID, 'token':MLISessionId, 'card_expiry':cardExpiryDate, 'payment_type':"CC"};
+        var data = {'reservation_id': $rootScope.reservationID, 'token': MLISessionId, 'card_expiry': cardExpiryDate, 'payment_type': "CC"};
         ccVerificationService.verifyCC(data).then(function(response) {
         $scope.isFetching = false;
         if(response.status ==="success") {
@@ -140,7 +140,7 @@
               $state.go('checkOutStatus');
             }else{
                $rootScope.ccPaymentSuccessForCheckoutLater = true;
-               $state.go('checkOutLaterSuccess', {id:$scope.fee});
+               $state.go('checkOutLaterSuccess', {id: $scope.fee});
             }
         }
         else{

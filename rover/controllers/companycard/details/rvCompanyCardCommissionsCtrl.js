@@ -171,7 +171,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
     $scope.popupCalendar = function(clickedOn) {
         $scope.clickedOn = clickedOn;
         ngDialog.open({
-            template:'/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
+            template: '/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
             controller: 'RVCommissionsDatePickerController',
             className: '',
             scope: $scope
@@ -290,13 +290,13 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         if($scope.filterData.selectAll) {
            $scope.commissionDetails.forEach(function(commission) {
                 if(commission.commission_data.paid_status != 'Prepaid') {
-                    commissionListToUpdate.push({reservation_id : commission.reservation_id, status : $scope.status.groupPaidStatus});
+                    commissionListToUpdate.push({reservation_id: commission.reservation_id, status: $scope.status.groupPaidStatus});
                 }
            });
         } else {
             $scope.selectedCommissions.forEach(function(commission) {
                 if(commission.commission_data.paid_status != 'Prepaid') {
-                    commissionListToUpdate.push({reservation_id : commission.reservation_id, status : $scope.status.groupPaidStatus});
+                    commissionListToUpdate.push({reservation_id: commission.reservation_id, status: $scope.status.groupPaidStatus});
                 }
             });
         }
@@ -350,28 +350,28 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         $scope.commissionDetails = [];
         $scope.commissionSummary = {};
         $scope.filterData = {
-            fromDate : "",
-            toDate : "",
-            paidStatus : "Unpaid",
-            commissionStatus : "Commissionable",
-            perPage : RVCompanyCardSrv.DEFAULT_PER_PAGE,
-            page : 1,
-            start : 1,
-            selectAll : false
+            fromDate: "",
+            toDate: "",
+            paidStatus: "Unpaid",
+            commissionStatus: "Commissionable",
+            perPage: RVCompanyCardSrv.DEFAULT_PER_PAGE,
+            page: 1,
+            start: 1,
+            selectAll: false
         };
         $scope.accountId = $stateParams.id;
         $scope.isEmpty = util.isEmpty;
         $scope.isEmptyObject = isEmptyObject;
 
         $scope.pagination = {
-          start : 1,
-          end : RVCompanyCardSrv.DEFAULT_PER_PAGE,
-          totalResultCount : 0
+          start: 1,
+          end: RVCompanyCardSrv.DEFAULT_PER_PAGE,
+          totalResultCount: 0
         };
         $scope.selectedCommissions = [];
         $scope.prePaidCommissions = [];
         $scope.status = {
-           groupPaidStatus : ""
+           groupPaidStatus: ""
         };
         $scope.businessDate = $rootScope.businessDate;
         fetchCommissionDetails(true);

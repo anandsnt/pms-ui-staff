@@ -11,7 +11,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         BaseCtrl.call(this, $scope);
 
         $scope.posts = [];
-        $scope.postParams = {'page': 1, 'per_page':20};
+        $scope.postParams = {'page': 1, 'per_page': 20};
         $scope.selectedPost = "";
         $scope.newPost = "";
         $scope.middle_page1 = 2, $scope.middle_page2 = 3, $scope.middle_page3 = 4;
@@ -104,7 +104,7 @@ sntRover.controller('RVSocialLobbyCrl', [
             $scope.errorMessage = "";
             var options = {};
             options.params = {
-                "post" :{
+                "post": {
                 "post_message": $scope.newPost,
                 "body_html": "testtt"
             }};

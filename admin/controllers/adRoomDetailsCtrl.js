@@ -28,7 +28,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
      */
 	$scope.showNewRoomNumber = function() {
 		if($scope.data.suite_rooms.length == 0 || _.last($scope.data.suite_rooms).room_number !== "") {
-			$scope.data.suite_rooms.push({'room_number':'', 'room_type_id': ''});
+			$scope.data.suite_rooms.push({'room_number': '', 'room_type_id': ''});
 		}
 	};
 
@@ -353,10 +353,10 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 	$scope.selectedConfiguredRoom = function(selectedItem, roomTypeId, roomTypeName) {
 
 			if(selectedItem !== "") {
-				$scope.data.suite_rooms.push({'room_number':selectedItem, 'room_type_id': roomTypeId, "room_type_name" : roomTypeName});
+				$scope.data.suite_rooms.push({'room_number': selectedItem, 'room_type_id': roomTypeId, "room_type_name": roomTypeName});
 
 				var selectedRoomTypeIndex = _.findIndex($scope.availableComponentRooms, {id: roomTypeId});
-				$scope.availableComponentRooms[selectedRoomTypeIndex].rooms.splice(_.findIndex($scope.availableComponentRooms[selectedRoomTypeIndex].rooms, {'room_no':selectedItem}), 1)
+				$scope.availableComponentRooms[selectedRoomTypeIndex].rooms.splice(_.findIndex($scope.availableComponentRooms[selectedRoomTypeIndex].rooms, {'room_no': selectedItem}), 1)
 		     	$scope.availableComponentRooms[selectedRoomTypeIndex].selected_room_number = "";
 			}
 

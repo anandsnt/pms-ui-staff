@@ -12,10 +12,10 @@ admin.controller('adDeleteContentController', ['$scope', '$rootScope', 'ADConten
 		var successCallbackdeleteSection = function() {
 			$scope.$emit('hideLoader');
 			ngDialog.close();
-			$rootScope.$broadcast('componentDeleted', {'id':$scope.componentIdToDelete});
+			$rootScope.$broadcast('componentDeleted', {'id': $scope.componentIdToDelete});
 		};
 
-		$scope.invokeApi(ADContentManagementSrv.deleteSection, {'id':$scope.componentIdToDelete}, successCallbackdeleteSection);
+		$scope.invokeApi(ADContentManagementSrv.deleteSection, {'id': $scope.componentIdToDelete}, successCallbackdeleteSection);
     };
 
     $scope.cancelDelete = function() {

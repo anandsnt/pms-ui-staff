@@ -164,15 +164,15 @@ angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', '
 
         if (!!grpCardData.name || !!grpCardData.code) {
             var params = {
-                name        : grpCardData.name,
-                code        : grpCardData.code,
-                from_date   : resData.arrivalDate,
-                to_date     : resData.departureDate
+                name: grpCardData.name,
+                code: grpCardData.code,
+                from_date: resData.arrivalDate,
+                to_date: resData.departureDate
             };
 
             var options = {
-                params          : params,
-                successCallBack : onAllotmentSearchSuccess
+                params: params,
+                successCallBack: onAllotmentSearchSuccess
             };
             $scope.callAPI(rvGroupSrv.searchGroupCard, options);
         } 

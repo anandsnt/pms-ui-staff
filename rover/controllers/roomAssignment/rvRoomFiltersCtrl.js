@@ -26,15 +26,15 @@ sntRover.controller('RVRoomFiltersController', ['$scope', '$state', '$stateParam
 		{
 			$scope.$emit('roomFeaturesUpdated', $scope.roomFeatures);
 			var floorFilterdata ={
-				"isNoFloorSelected":$scope.data.isNoFloorSelected,
-				"selectedFloorId":$scope.data.selectedFloor
+				"isNoFloorSelected": $scope.data.isNoFloorSelected,
+				"selectedFloorId": $scope.data.selectedFloor
 			};
 			$scope.$parent.applyFloorFilter(floorFilterdata);
 		}else{
 			$scope.$emit('roomFeaturesUpdated', $scope.roomFeatures);
 			var floorFilterdata ={
-				"isNoFloorSelected":$scope.data.isNoFloorSelected,
-				"selectedFloorId":''
+				"isNoFloorSelected": $scope.data.isNoFloorSelected,
+				"selectedFloorId": ''
 			};
 			$scope.$parent.applyFloorFilter(floorFilterdata);
 		}

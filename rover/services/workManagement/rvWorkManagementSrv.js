@@ -272,8 +272,8 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 				});
 
 				return {
-					'results' : results,
-					'emp_ids' : emp_ids
+					'results': results,
+					'emp_ids': emp_ids
 				};
 			};
 
@@ -354,10 +354,10 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 					allRooms = compileAllRooms(unassignedRoomsResponse, assignedRoomsResponse);
 
 					this.payload = {
-						'allTasks'            : tasksResponse,
-						'allRooms'            : allRooms,
-						'unassignedRoomTasks' : compileUnassignedRooms(unassignedRoomsResponse, tasksResponse, allRooms),
-						'assignedRoomTasks'   : compileAssignedRooms(assignedRoomsResponse, tasksResponse, allRooms)
+						'allTasks': tasksResponse,
+						'allRooms': allRooms,
+						'unassignedRoomTasks': compileUnassignedRooms(unassignedRoomsResponse, tasksResponse, allRooms),
+						'assignedRoomTasks': compileAssignedRooms(assignedRoomsResponse, tasksResponse, allRooms)
 					};
 
 					deferred.resolve( this.payload );
@@ -457,7 +457,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 
 		function compileUnassignedRooms (unassignedRooms, allTasks, allRooms) {
 			var allTasks        = allTasks || [],
-				unassignedRooms = $.extend({}, { 'rooms' : [], 'room_tasks' : [] }, unassignedRooms);
+				unassignedRooms = $.extend({}, { 'rooms': [], 'room_tasks': [] }, unassignedRooms);
 
 			var rooms     = unassignedRooms.rooms,
 				roomTasks = unassignedRooms.room_tasks;
@@ -521,14 +521,14 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 							{},
 							eachRoomTasks[k],
 							{
-								'task_name'      : thatAllTask.name,
-								'work_type_id'   : thatAllTask.work_type_id,
-								'work_type_name' : thatAllTask.work_type_name,
-								'time_allocated' : getTimeAllocated( thatAllTask, thatRoomTypeId )
+								'task_name': thatAllTask.name,
+								'work_type_id': thatAllTask.work_type_id,
+								'work_type_name': thatAllTask.work_type_name,
+								'time_allocated': getTimeAllocated( thatAllTask, thatRoomTypeId )
 							},
 							{
-								'room_id' : eachRoomId,
-								'room_no' : thatRoomNo
+								'room_id': eachRoomId,
+								'room_no': thatRoomNo
 							}
 						);
 					/**
@@ -553,7 +553,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 
 		function compileAssignedRooms (assignedRooms, allTasks, allRooms) {
 			var allTasks      = allTasks || [],
-				assignedRooms = $.extend({}, { 'employees' : [], 'rooms' : [] }, assignedRooms);
+				assignedRooms = $.extend({}, { 'employees': [], 'rooms': [] }, assignedRooms);
 
 			var employees = assignedRooms.employees,
 				rooms     = assignedRooms.rooms;
@@ -570,10 +570,10 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 				displayName = firstname.charAt(0) + ". " + displayName.join(" ");
 				copyEmployee = $.extend(
 						{},
-						{ 'id' : employees[i].id, 'name' : employees[i].name },
+						{ 'id': employees[i].id, 'name': employees[i].name },
 						{ 'display_name': displayName },
-						{ 'rooms' : [] },
-						{ 'only_tasks' : [] },
+						{ 'rooms': [] },
+						{ 'only_tasks': [] },
 						{ 'touched_work_types': [] },
 						{ 'shift_id': employees[i].shift_id }
 					);
@@ -640,14 +640,14 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 								{},
 								tasksInIt[m],
 								{
-									'task_name'      : thatAllTask.name,
-									'work_type_id'   : thatAllTask.work_type_id,
-									'work_type_name' : thatAllTask.work_type_name,
-									'time_allocated' : getTimeAllocated( thatAllTask, thatRoomTypeId )
+									'task_name': thatAllTask.name,
+									'work_type_id': thatAllTask.work_type_id,
+									'work_type_name': thatAllTask.work_type_name,
+									'time_allocated': getTimeAllocated( thatAllTask, thatRoomTypeId )
 								},
 								{
-									'room_id' : roomTasksInit[k].room_id,
-									'room_no' : thatRoomNo
+									'room_id': roomTasksInit[k].room_id,
+									'room_no': thatRoomNo
 								}
 							);
 						/**
@@ -736,8 +736,8 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		function compileAssignedRoomsParams (assignedRoomTasks, date, shouldSaveOrder) {
 			var complied = $.extend(
 					{},
-					{ 'date'       : date },
-					{ 'work_types' : [] }
+					{ 'date': date },
+					{ 'work_types': [] }
 				);
 
 			// PASS 1
@@ -751,8 +751,8 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 
 					if ( ! hasWorkType ) {
 						newWorkType = {
-							id          : wtid,
-							assignments : []
+							id: wtid,
+							assignments: []
 						}
 
 						complied
@@ -775,8 +775,8 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 					});
 
 					newAssignment = {
-						employee_id : art.id,
-						tasks       : [],
+						employee_id: art.id,
+						tasks: [],
 					}
 
 					if ( !! hasThisWorkType ) {
@@ -784,9 +784,9 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 
 						_.each(allTaskInThisWorkType, function(eachTask, index) {
 							newTask = {
-								id      : eachTask.id,
-								room_id : eachTask.room_id,
-								order   : eachTask.order || null
+								id: eachTask.id,
+								room_id: eachTask.room_id,
+								order: eachTask.order || null
 							}
 
 							newAssignment

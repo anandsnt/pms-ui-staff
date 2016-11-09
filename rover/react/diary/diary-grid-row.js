@@ -43,7 +43,7 @@ var GridRow = React.createClass({
 		/*Create hourly spans across each grid row*/
 		for(var i = 0, len = display.hours; i < len; i++) {
 			hourly_divs.push(React.DOM.span({
-				className: 	'hour',
+				className: 'hour',
 				style: {
 					width: px_per_hr
 				}
@@ -53,36 +53,36 @@ var GridRow = React.createClass({
 		/** Creating in active slots */
 		_.each(props.data[room_meta_inactive], function(inactive_slot) {
 			room_inactives.push(React.createElement(GridRowInactive, {
-				data: 			inactive_slot,
-				display: 		display,
-				viewport:    	props.viewport
+				data: inactive_slot,
+				display: display,
+				viewport: props.viewport
 			}));
 		});
 
 
 		/*Create grid row and insert each occupany item as child into that row*/
 		return React.DOM.li({
-			key: 		props.key,
-			className: 	'grid-row'
+			key: props.key,
+			className: 'grid-row'
 		},
 		hourly_divs,
 		room_inactives,
 		_.map(props.data[room_meta_children], function(occupancy) {
 			return React.createElement( GridRowItem, {
-				key: 			occupancy.key,
-				display: 		display,
-				viewport:    	props.viewport,
-				filter: 		props.filter,
-				edit:           props.edit,
-				iscroll:        props.iscroll,
-				angular_evt: 	props.angular_evt,
-				meta:           props.meta,
-				data: 			occupancy,
-				row_data:       props.data,
-				row_offset: 	props.row_number * (display.row_height + display.row_height_margin),
-				__onDragStart:  props.__onDragStart,
-				__onDragStop: 	props.__onDragStop,
-				__onResizeCommand: 	props.__onResizeCommand,
+				key: occupancy.key,
+				display: display,
+				viewport: props.viewport,
+				filter: props.filter,
+				edit: props.edit,
+				iscroll: props.iscroll,
+				angular_evt: props.angular_evt,
+				meta: props.meta,
+				data: occupancy,
+				row_data: props.data,
+				row_offset: props.row_number * (display.row_height + display.row_height_margin),
+				__onDragStart: props.__onDragStart,
+				__onDragStop: props.__onDragStop,
+				__onResizeCommand: props.__onResizeCommand,
 				currentResizeItem: props.currentResizeItem,
 				currentResizeItemRow: props.currentResizeItemRow,
 				unassignedRoomList: props.unassignedRoomList

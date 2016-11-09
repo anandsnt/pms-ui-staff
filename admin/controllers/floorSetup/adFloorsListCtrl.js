@@ -56,7 +56,7 @@ admin.controller('ADFloorsListCtrl',
     $scope.setUptable = function() {
         $scope.tableParams = new ngTableParams({
            page: 1,            // show first page
-            count:  $scope.data.floors.length,    // count per page - Need to change when on pagination implemntation
+            count: $scope.data.floors.length,    // count per page - Need to change when on pagination implemntation
             sorting: { floor_number: 'asc'     // initial sorting
             }
         }, {
@@ -87,7 +87,7 @@ admin.controller('ADFloorsListCtrl',
 		};
 
         var options = {
-            successCallBack:    successCallbackFetch
+            successCallBack: successCallbackFetch
         };
         $scope.callAPI(ADFloorSetupSrv.fetch, options);
 	};

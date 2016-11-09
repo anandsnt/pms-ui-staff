@@ -133,12 +133,12 @@ admin.controller('ADCheckoutEmailCtrl', ['$scope', 'adCheckinCheckoutSrv', '$sta
          reservations.push(item.reservation_id);
        }
   });
-  	var emailSendingData = {'reservations' : reservations};
+  	var emailSendingData = {'reservations': reservations};
     var sendMailClikedSuccessCallback = function(data) {
         $scope.$emit('hideLoader');
         $scope.successMessage = data.message;
     };
-    $scope.invokeApi(adCheckinCheckoutSrv.sendMail, {'id':'checkout', 'data': emailSendingData}, sendMailClikedSuccessCallback);
+    $scope.invokeApi(adCheckinCheckoutSrv.sendMail, {'id': 'checkout', 'data': emailSendingData}, sendMailClikedSuccessCallback);
 
   };
 

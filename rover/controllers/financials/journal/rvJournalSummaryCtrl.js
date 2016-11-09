@@ -75,9 +75,9 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
             $scope.data.summaryData = responce.data;
 
             // Initializing objetcs for DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE sections.
-            $scope.data.summaryData.deposit_balance = { 'active' : false, 'page_no' : 1, 'start' : 1, 'end' : 1, 'nextAction' : false, 'prevAction' : false };
-            $scope.data.summaryData.guest_balance   = { 'active' : false, 'page_no' : 1, 'start' : 1, 'end' : 1, 'nextAction' : false, 'prevAction' : false };
-            $scope.data.summaryData.ar_balance      = { 'active' : false, 'page_no' : 1, 'start' : 1, 'end' : 1, 'nextAction' : false, 'prevAction' : false };
+            $scope.data.summaryData.deposit_balance = { 'active': false, 'page_no': 1, 'start': 1, 'end': 1, 'nextAction': false, 'prevAction': false };
+            $scope.data.summaryData.guest_balance   = { 'active': false, 'page_no': 1, 'start': 1, 'end': 1, 'nextAction': false, 'prevAction': false };
+            $scope.data.summaryData.ar_balance      = { 'active': false, 'page_no': 1, 'start': 1, 'end': 1, 'nextAction': false, 'prevAction': false };
 
             $scope.errorMessage = "";
             refreshSummaryScroller();
@@ -94,7 +94,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
     $rootScope.$on('summaryDateChanged', function() {
         initSummaryData();
         // CICO-28060 : Update dates for Revenue & Payments upon changing summary dates
-        $rootScope.$broadcast('REFRESH_REVENUE_PAYMENT_DATA', {"date":$scope.data.summaryDate, "origin" :"SUMMARY_DATE_CHANGED"});
+        $rootScope.$broadcast('REFRESH_REVENUE_PAYMENT_DATA', {"date": $scope.data.summaryDate, "origin": "SUMMARY_DATE_CHANGED"});
     });
 
     /* To fetch the details on each balance tab
@@ -159,23 +159,23 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
     
     // Pagination options for GUEST_BALANCE
     $scope.guestPagination = {
-        id      : 'GUEST_BALANCE',
-        api     : [ loadAPIData, 'GUEST_BALANCE' ],
-        perPage : $scope.perPage
+        id: 'GUEST_BALANCE',
+        api: [ loadAPIData, 'GUEST_BALANCE' ],
+        perPage: $scope.perPage
     };
 
     // Pagination options for DEPOSIT_BALANCE
     $scope.depositPagination = {
-        id      : 'DEPOSIT_BALANCE',
-        api     : [ loadAPIData, 'DEPOSIT_BALANCE' ],
-        perPage : $scope.perPage
+        id: 'DEPOSIT_BALANCE',
+        api: [ loadAPIData, 'DEPOSIT_BALANCE' ],
+        perPage: $scope.perPage
     };
 
     // Pagination options for AR_BALANCE
     $scope.arPagination = {
-        id      : 'AR_BALANCE',
-        api     : [ loadAPIData, 'AR_BALANCE' ],
-        perPage : $scope.perPage
+        id: 'AR_BALANCE',
+        api: [ loadAPIData, 'AR_BALANCE' ],
+        perPage: $scope.perPage
     };
 
 }]);

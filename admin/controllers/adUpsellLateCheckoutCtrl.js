@@ -91,13 +91,13 @@ $scope.setUpLateCheckoutArray = function() {
 $scope.startWatching = function() {
     $scope.$watch('upsellData', function(newValue, oldValue) {
         if(!$scope.upsellData.extended_checkout_charge_0) {
-            $scope.upsellData.extended_checkout_charge_0 = { 'time':'HH', 'charge':''};
+            $scope.upsellData.extended_checkout_charge_0 = { 'time': 'HH', 'charge': ''};
         }
         if(!$scope.upsellData.extended_checkout_charge_1) {
-            $scope.upsellData.extended_checkout_charge_1 = { 'time':'HH', 'charge':''};
+            $scope.upsellData.extended_checkout_charge_1 = { 'time': 'HH', 'charge': ''};
         }
         if(!$scope.upsellData.extended_checkout_charge_2) {
-           $scope.upsellData.extended_checkout_charge_2 = { 'time':'HH', 'charge':''};
+           $scope.upsellData.extended_checkout_charge_2 = { 'time': 'HH', 'charge': ''};
         }
        $scope.startWatchingCheckoutcharge0();
        $scope.startWatchingCheckoutcharge1();

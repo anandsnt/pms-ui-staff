@@ -136,7 +136,7 @@ admin.service('ADHotelLikesSrv', ['$q', 'ADBaseWebSrv', function( $q, ADBaseWebS
     * @return {object} status
     */
     this.deleteChecbox = function(id) {
-        var updateData = {'id':id};
+        var updateData = {'id': id};
         var deferred = $q.defer();
         var url = '/admin/hotel_likes/delete_feature';
 

@@ -545,7 +545,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 		$scope.handleCancelAction = function() {
 			if($stateParams.fromState === 'STAY_CARD') {
 				$state.go("rover.reservation.staycard.reservationcard.reservationdetails",
-					{"id" : $scope.reservationData.reservationId, "confirmationId": $scope.reservationData.confirmNum, "isrefresh": true});
+					{"id": $scope.reservationData.reservationId, "confirmationId": $scope.reservationData.confirmNum, "isrefresh": true});
 			} else{
 				$state.go($stateParams.fromState, {});
 			}

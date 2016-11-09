@@ -27,8 +27,8 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 
 		var toggleOn = item.is_active === 'true' ? 'false' : 'true';
 		var data = {
-			'id' : item.id,
-			'set_active' : toggleOn
+			'id': item.id,
+			'set_active': toggleOn
 		};
 		var postSuccess = function() {
 			item.is_active = toggleOn;
@@ -44,8 +44,8 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	$scope.toggleClickedCC = function(index) {
 		var toggleOn = $scope.data.credit_card_types[index].is_active === 'true' ? 'false' : 'true';
 		var data = {
-			'id' : $scope.data.credit_card_types[index].id,
-			'set_active' : toggleOn
+			'id': $scope.data.credit_card_types[index].id,
+			'set_active': toggleOn
 		};
 		var postSuccess = function() {
 			$scope.data.credit_card_types[index].is_active = ($scope.data.credit_card_types[index].is_active === 'true') ? 'false' : 'true';
@@ -78,7 +78,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	 * Render add payment method screen
 	 */
 	$scope.addNew = function() {
-		$scope.addData = {"is_cc":false};
+		$scope.addData = {"is_cc": false};
 		$scope.addData.restrict_post = false;
 		$scope.currentClickedElement = "new";
 		$timeout(function() {

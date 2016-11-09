@@ -4,7 +4,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.highchartsNG = {};
 		$scope.contractList = {};
 		$scope.contractData = {};
-		$scope.rateValueTypes = [ { value:"%", name:"percent" }, { value: $rootScope.currencySymbol, name:"amount" } ];
+		$scope.rateValueTypes = [ { value: "%", name: "percent" }, { value: $rootScope.currencySymbol, name: "amount" } ];
 		$scope.addData = {};
 
 		$scope.contractList.contractSelected = "";

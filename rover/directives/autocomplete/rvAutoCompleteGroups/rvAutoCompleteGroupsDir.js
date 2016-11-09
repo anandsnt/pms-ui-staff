@@ -48,10 +48,10 @@ angular.module('sntRover').directive('autoCompleteGroups', ['RVSearchSrv', 'high
                     delay: scope.delay ? 600 : parseInt(scope.delay),
                     minLength: scope.minLengthToTrigger ? 0 : parseInt(scope.minLengthToTrigger),
                     position: {
-                        of : el.find("input"),
+                        of: el.find("input"),
                         my: "right top",
                         at: "right bottom",
-                        collision : 'flip',
+                        collision: 'flip',
                         within: 'body'
                     },
                     source: groupsACSourceHandler,

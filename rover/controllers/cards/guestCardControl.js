@@ -41,7 +41,7 @@ angular.module('sntRover').controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCa
 		$scope.$on("loyaltyLevelAvailable", function($event, level) {
 			$scope.guestCardData.selectedLoyaltyLevel = level;
 		});
-                $scope.loyaltiesStatus = {'ffp':false, 'hlps':false};
+                $scope.loyaltiesStatus = {'ffp': false, 'hlps': false};
                 $scope.$setLoyaltyStatus = function(data, type) {
                     $scope.loyaltiesStatus[type] = data.active;
                     if ($scope.loyaltiesStatus.ffp || $scope.loyaltiesStatus.hlps) {

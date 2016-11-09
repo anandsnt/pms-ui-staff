@@ -152,8 +152,8 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
             if (fetchingRooms) {
                 for (var i in data.room_type_restrictions[0].room_types) {
                     calendarData.room_types_all.push({
-                        room_type_id:data.room_type_restrictions[0].room_types[i].room_type.id,
-                        name:data.room_type_restrictions[0].room_types[i].room_type.name
+                        room_type_id: data.room_type_restrictions[0].room_types[i].room_type.id,
+                        name: data.room_type_restrictions[0].room_types[i].room_type.name
                     });
 
                 }
@@ -317,9 +317,9 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 
 		   	   	if (rateData === null) {
 		   	   		rateData ={
-   				   				id : rate.room_type.id,
-   				   				name : rate.room_type.name,
-   				   				is_hourly : rate.is_hourly
+   				   				id: rate.room_type.id,
+   				   				name: rate.room_type.name,
+   				   				is_hourly: rate.is_hourly
    				   			};
 		   			roomRateData.push(rateData);
 		   		}
@@ -423,9 +423,9 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 
 		   	   	if (rateData === null) {
 		   			rateData ={
-		   				id : rate.id,
-		   				name : rate.name,
-		   				isHourly : rate.is_hourly
+		   				id: rate.id,
+		   				name: rate.name,
+		   				isHourly: rate.is_hourly
 		   			};
 		   			dailyRatesData.push(rateData);
 		   		};

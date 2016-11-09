@@ -17,7 +17,7 @@ admin.controller('ADMarketsCtrl', ['$scope', 'ADMarketsSrv', '$anchorScroll', '$
     * To handle nable/disable of use markets
     */
 	$scope.clickedUsedMarkets = function() {
-		$scope.invokeApi(ADMarketsSrv.toggleUsedMarkets, {'is_use_markets':$scope.data.is_use_markets });
+		$scope.invokeApi(ADMarketsSrv.toggleUsedMarkets, {'is_use_markets': $scope.data.is_use_markets });
 	};
     /*
     * To render edit screen
@@ -67,7 +67,7 @@ admin.controller('ADMarketsCtrl', ['$scope', 'ADMarketsSrv', '$anchorScroll', '$
 			$scope.data.name = "";
 			$scope.data.markets.push(data);
 		};
-  		$scope.invokeApi(ADMarketsSrv.save, { 'name' : $scope.data.name }, postSuccess);
+  		$scope.invokeApi(ADMarketsSrv.save, { 'name': $scope.data.name }, postSuccess);
 	};
 	/*
     * To handle save button in edit box.
@@ -99,7 +99,7 @@ admin.controller('ADMarketsCtrl', ['$scope', 'ADMarketsSrv', '$anchorScroll', '$
 	 			}
  			});
 		};
-		$scope.invokeApi(ADMarketsSrv.deleteItem, {'value':id }, successDeletionCallback);
+		$scope.invokeApi(ADMarketsSrv.deleteItem, {'value': id }, successDeletionCallback);
 	};
 
 }]);

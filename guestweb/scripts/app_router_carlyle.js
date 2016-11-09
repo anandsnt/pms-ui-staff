@@ -47,22 +47,22 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 	$stateProvider.state('checkinConfirmation', {
 	 	url: '/checkinConfirmation',
 	 	templateUrl: '/assets/checkin/partials/checkInConfirmation.html',
-	 	controller : 'checkInConfirmationViewController',
+	 	controller: 'checkInConfirmationViewController',
 	 	title: 'Check-in'
 	 }).state('checkinReservationDetails', {
 	 	url: '/checkinReservationDetails',
 	 	templateUrl: '/assets/checkin/partials/checkInReservationDetails.html',
-	 	controller : 'checkInReservationDetails',
+	 	controller: 'checkInReservationDetails',
 	 	title: 'Details - Check-in'
 	 }).state('checkinUpgrade', {
 	 	url: '/checkinUpgrade',
 	 	templateUrl: '/assets/checkin/partials/checkinUpgradeRoom.html',
-	 	controller : 'checkinUpgradeRoomController',
+	 	controller: 'checkinUpgradeRoomController',
 	    title: 'Upgrade - Check-in'
 	 }).state('checkinKeys', {
 	 	url: '/checkinKeys',
 	 	templateUrl: '/assets/checkin/partials/checkInKeys.html',
-	 	controller : 'checkInKeysController',
+	 	controller: 'checkInKeysController',
 	 	title: 'Keys - Check-in'
 	 }).state('checkinSuccess', {
 	 	url: '/checkinSuccess',
@@ -70,7 +70,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 	 	title: 'Status - Check-in'
 	 }).state('checkinArrival', {
 	 	url: '/checkinArrival',
-	 	controller:'checkinArrivalDetailsController',
+	 	controller: 'checkinArrivalDetailsController',
 	 	templateUrl: '/assets/checkin/partials/arrivalDetails.html',
 	 	title: 'Arrival Details - Check-in'
 	 });
@@ -81,12 +81,12 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 	 $stateProvider.state('checkoutRoomVerification', {
 	 	url: '/checkoutRoomVerification',
 	 	templateUrl: '/assets/checkoutnow/partials/checkoutRoomVerification.html',
-	 	controller : 'checkoutRoomVerificationViewController',
+	 	controller: 'checkoutRoomVerificationViewController',
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
 	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
 	 	templateUrl: '/assets/checkoutnow/partials/ccVerification.html',
-	 	controller : 'ccVerificationViewController',
+	 	controller: 'ccVerificationViewController',
 	 	title: 'CC verification'
 	 });
 
@@ -95,7 +95,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
     $stateProvider.state('preCheckinStatus', {
 		url: '/preCheckinStatus',
 		templateUrl: '/assets/preCheckin/partials/CARLYLE/preCheckinStatus.html',
-		controller : 'preCheckinStatusController',
+		controller: 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
 	 });
 
@@ -104,14 +104,14 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
     $stateProvider.state('resetPassword', {
     	url: '/resetPassword',
 	 	templateUrl: '/assets/zest/partials/resetPassword.html',
-	 	controller : 'resetPasswordController',
+	 	controller: 'resetPasswordController',
 	 	title: 'Reset Password'
 	});
 
 	$stateProvider.state('emailVerification', {
     	url: '/emailVerification',
 	 	templateUrl: '/assets/zest/partials/emailVerificationStatus.html',
-	 	controller : 'emailVerificationStatusController',
+	 	controller: 'emailVerificationStatusController',
 	 	title: 'Email Verification'
 	});
 

@@ -616,7 +616,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			};
 			var data = {
 				'reservation_id': $scope.reservationData.reservationId,
-				'hide_rates'	: !$scope.reservationData.hide_rates
+				'hide_rates': !$scope.reservationData.hide_rates
 			};
 			$scope.invokeApi(RVBillCardSrv.toggleHideRate, data, sucessCallback, failureCallback);
 		};

@@ -18,7 +18,7 @@ var CardOperation = function() {
           					'RVCardReadTrack2KSN': '950067000000062002AF',
           					'RVCardReadMaskedPAN': '5405220008002226',
           					'RVCardReadCardName': 'Sample Name',
-          					'RVCardReadExpDate':"17012",
+          					'RVCardReadExpDate': "17012",
           					'RVCardReadCardIIN': "002226",
           					'RVCardReadIsEncrypted': 0
 						  };
@@ -242,10 +242,10 @@ var CardOperation = function() {
 	this.retrieveCardInfoDebug = function(options) {
 		//TODO: replace with sample hash
 		var retCardInfo = {
-							"card_uid" : "E3C33C7E",
-							"card_type" : "3",
-							"card_size" : "1024",
-							"cs" : "912D8F4A79C1"
+							"card_uid": "E3C33C7E",
+							"card_type": "3",
+							"card_size": "1024",
+							"cs": "912D8F4A79C1"
 							}; //Sample card info
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 		// we are simulating the process by calling the success call back after some time period

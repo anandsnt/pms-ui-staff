@@ -18,15 +18,15 @@ sntRover.controller('RVPaymentGuestCtrl', ['$rootScope', '$scope', '$state', 'RV
 
 		// NOTE: Need to send payment methods from here
 		$scope.callAPI(RVPaymentSrv.renderPaymentScreen, {
-			params:{"direct_bill": false},
-			onSuccess : function(response) {
+			params: {"direct_bill": false},
+			onSuccess: function(response) {
 				var creditCardPaymentTypeObj = _.find(response, function(obj) { return obj.name === 'CC' });
 				var passData = {
 					"guest_id": $scope.guestCardData.contactInfo.user_id,
 					"isFromGuestCard": true,
-					"details":{
-						"firstName" : $scope.guestCardData.contactInfo.first_name,
-						"lastName" : $scope.guestCardData.contactInfo.last_name
+					"details": {
+						"firstName": $scope.guestCardData.contactInfo.first_name,
+						"lastName": $scope.guestCardData.contactInfo.last_name
 					}
 				};
 				var paymentData = $scope.paymentData;
@@ -46,7 +46,7 @@ sntRover.controller('RVPaymentGuestCtrl', ['$rootScope', '$scope', '$state', 'RV
 		  ngDialog.open({
 	               template: '/assets/partials/payment/rvDeleteSetAsPrimary.html',
 	               controller: 'RVDeleteSetAsPrimaryCtrl',
-	               scope:$scope
+	               scope: $scope
 	          });
   	 };
   	 var scrollerOptions = {preventDefault: false};

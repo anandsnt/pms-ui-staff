@@ -39,7 +39,7 @@ sntRover
             ret = {
                 x_offset: new Date(x_offset),
                 x_origin: new Date(x_origin),
-                x_0:  new Date(x_origin),
+                x_0: new Date(x_origin),
                 x_n: new Date(x_left),
                 x_p: new Date(x_right),
                 toShijuBugStartDate: function(start) {
@@ -324,9 +324,9 @@ sntRover
             __start_date.setHours(0, 0, 0);
 
             return {
-        		'start_date'   : start_date,
-        		'__start_date' : __start_date,
-        		'arrival_time' : (hh < 10 ? '0' + hh : hh) + ':' + (mm === 0 ? '00' : mm)
+        		'start_date': start_date,
+        		'__start_date': __start_date,
+        		'arrival_time': (hh < 10 ? '0' + hh : hh) + ':' + (mm === 0 ? '00' : mm)
         	};
         };
 

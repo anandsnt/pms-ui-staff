@@ -52,7 +52,7 @@ admin.service('ADFloorSetupSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2
 	this.getUnAssignedRooms = function(params) {
 		var deferred = $q.defer();
 		params = _.extend(params, {
-			floor_unassigned:true
+			floor_unassigned: true
 		});
 		var url = '/api/floors/rooms';
 		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {

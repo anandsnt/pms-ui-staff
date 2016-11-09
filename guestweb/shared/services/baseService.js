@@ -40,7 +40,7 @@
 		return {
 			details: details,
 			fetch: fetch,
-			post :post
+			post: post
 		};
 	};
 

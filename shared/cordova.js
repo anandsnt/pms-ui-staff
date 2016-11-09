@@ -173,27 +173,27 @@ function createEvent(type, data) {
 
 
 var cordova = {
-    define:define,
-    require:require,
-    version:PLATFORM_VERSION_BUILD_LABEL,
-    platformVersion:PLATFORM_VERSION_BUILD_LABEL,
-    platformId:platform.id,
+    define: define,
+    require: require,
+    version: PLATFORM_VERSION_BUILD_LABEL,
+    platformVersion: PLATFORM_VERSION_BUILD_LABEL,
+    platformId: platform.id,
     /**
      * Methods to add/remove your own addEventListener hijacking on document + window.
      */
-    addWindowEventHandler:function(event) {
+    addWindowEventHandler: function(event) {
         return (windowEventHandlers[event] = channel.create(event));
     },
-    addStickyDocumentEventHandler:function(event) {
+    addStickyDocumentEventHandler: function(event) {
         return (documentEventHandlers[event] = channel.createSticky(event));
     },
-    addDocumentEventHandler:function(event) {
+    addDocumentEventHandler: function(event) {
         return (documentEventHandlers[event] = channel.create(event));
     },
-    removeWindowEventHandler:function(event) {
+    removeWindowEventHandler: function(event) {
         delete windowEventHandlers[event];
     },
-    removeDocumentEventHandler:function(event) {
+    removeDocumentEventHandler: function(event) {
         delete documentEventHandlers[event];
     },
     /**
@@ -245,7 +245,7 @@ var cordova = {
     // Randomize the starting callbackId to avoid collisions after refreshing or navigating.
     // This way, it's very unlikely that any new callback would get the same callbackId as an old callback.
     callbackId: Math.floor(Math.random() * 2000000000),
-    callbacks:  {},
+    callbacks: {},
     callbackStatus: {
         NO_RESULT: 0,
         OK: 1,
@@ -959,7 +959,7 @@ function iOSExec() {
     if (successCallback || failCallback) {
         callbackId = service + cordova.callbackId++;
         cordova.callbacks[callbackId] =
-            {success:successCallback, fail:failCallback};
+            {success: successCallback, fail: failCallback};
     }
 
     actionArgs = massageArgsJsToNative(actionArgs);
@@ -1129,21 +1129,21 @@ var CommandProxyMap = {};
 module.exports = {
 
     // example: cordova.commandProxy.add("Accelerometer",{getCurrentAcceleration: function(successCallback, errorCallback, options) {...},...);
-    add:function(id, proxyObj) {
+    add: function(id, proxyObj) {
         console.log("adding proxy for " + id);
         CommandProxyMap[id] = proxyObj;
         return proxyObj;
     },
 
     // cordova.commandProxy.remove("Accelerometer");
-    remove:function(id) {
+    remove: function(id) {
         var proxy = CommandProxyMap[id];
         delete CommandProxyMap[id];
         CommandProxyMap[id] = null;
         return proxy;
     },
 
-    get:function(service, action) {
+    get: function(service, action) {
         return ( CommandProxyMap[service] ? CommandProxyMap[service][action] : null );
     }
 };

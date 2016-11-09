@@ -13,7 +13,7 @@
       templateUrl: '/assets/checkin/partials/ccErrorModal.html',
       controller: ccVerificationModalCtrl,
       resolve: {
-        errorMessage:function() {
+        errorMessage: function() {
           return "Please Enter a valid Mobile Number.";
         }
       }
@@ -24,13 +24,13 @@
       templateUrl: '/assets/checkin/partials/ccErrorModal.html',
       controller: ccVerificationModalCtrl,
       resolve: {
-        errorMessage:function() {
+        errorMessage: function() {
           return "There is a problem saving your mobile number. Please retry.";
         }
       }
     };
 
-    $scope.guestDetails = { "mobile":""};
+    $scope.guestDetails = { "mobile": ""};
     $scope.mobileUpdated = false;
     $scope.country_code  = "";
 
@@ -61,7 +61,7 @@
     $scope.mobileSubmitted = function() {
 
     	if(ValidateNo()) {
-        guestDetailsService.postGuestDetails({"mobile":$scope.dial+"-"+$scope.guestDetails.mobile}).then(function(response) {
+        guestDetailsService.postGuestDetails({"mobile": $scope.dial+"-"+$scope.guestDetails.mobile}).then(function(response) {
           $scope.isLoading = false;
           $scope.mobileUpdated = true;
           $rootScope.userMobile = $scope.guestDetails.mobile;

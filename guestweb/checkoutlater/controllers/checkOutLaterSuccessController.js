@@ -76,7 +76,7 @@
 		var reservation_id = $scope.reservationID;
 		var url = '/guest_web/apply_late_checkout';
 		var id  = ($rootScope.ccPaymentSuccessForCheckoutLater)? $scope.lateCheckOut.id:$scope.id ;
-		var checkoutLaterData = {'reservation_id': reservation_id, 'late_checkout_offer_id': id, 'is_cc_attached_from_guest_web':$rootScope.isCcAttachedFromGuestWeb};
+		var checkoutLaterData = {'reservation_id': reservation_id, 'late_checkout_offer_id': id, 'is_cc_attached_from_guest_web': $rootScope.isCcAttachedFromGuestWeb};
 		LateCheckOutChargesService.postNewCheckoutOption(url, checkoutLaterData).then(function(response) {
 			$scope.success = response.status ? true : false;
 		 	if($scope.success === true) {

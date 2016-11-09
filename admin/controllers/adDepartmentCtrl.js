@@ -31,7 +31,7 @@ admin.controller('ADDepartmentListCtrl', ['$scope', '$state', 'ADDepartmentSrv',
 	 		$scope.departmentData = data;
 	 		$scope.$emit('hideLoader');
 	 	};
-	 	var data = {"id":id };
+	 	var data = {"id": id };
 	 	$scope.invokeApi(ADDepartmentSrv.getDepartmentDetails, data, successCallbackRender);
 	};
    /*

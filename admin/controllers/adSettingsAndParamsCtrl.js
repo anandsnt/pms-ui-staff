@@ -37,13 +37,13 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
         };
         var selectedChargeCode = ( typeof $scope.selected_charge_code === 'undefined' ) ? "" : $scope.selected_charge_code;
         var groupChargeCode = ( typeof $scope.selected_group_charge_code === 'undefined' ) ? "" : $scope.selected_group_charge_code;
-        var dataToSend = {	"no_show_charge_code_id" : selectedChargeCode,
-        					"business_date" : $scope.data,
-        					"group_charge_code_id":groupChargeCode,
-        					"cc_batch_processing":$scope.cc_batch_processing,
-        					"cc_auto_settlement_by_eod":$scope.cc_auto_settlement_by_eod,
-                            "email_recipients_for_eod_reports" : $scope.emailRecipientsForEodReports,
-                            "check_guest_auth_for_interface_postings" : $scope.check_guest_auth_for_interface_postings
+        var dataToSend = {	"no_show_charge_code_id": selectedChargeCode,
+        					"business_date": $scope.data,
+        					"group_charge_code_id": groupChargeCode,
+        					"cc_batch_processing": $scope.cc_batch_processing,
+        					"cc_auto_settlement_by_eod": $scope.cc_auto_settlement_by_eod,
+                            "email_recipients_for_eod_reports": $scope.emailRecipientsForEodReports,
+                            "check_guest_auth_for_interface_postings": $scope.check_guest_auth_for_interface_postings
         				};
 
         $scope.invokeApi(settingsAndParamsSrv.saveSettingsAndParamsSrv, dataToSend, saveDetailsSuccessCallback);

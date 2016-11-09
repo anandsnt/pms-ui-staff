@@ -42,8 +42,8 @@ angular.module('sntRover').controller('RVHouseAvailabilityStatusCtrl', [
 
 			var dataForWebservice = {
 				'from_date': $filter('date')(fromDate, $rootScope.dateFormatForAPI),
-				'to_date'  : $filter('date')(toDate, $rootScope.dateFormatForAPI),
-				'business_date' : $rootScope.businessDate
+				'to_date': $filter('date')(toDate, $rootScope.dateFormatForAPI),
+				'business_date': $rootScope.businessDate
 			};
 
 			$scope.invokeApi(rvAvailabilitySrv.fetchHouseStatusDetails, dataForWebservice, houseStatusFetchSuccess);

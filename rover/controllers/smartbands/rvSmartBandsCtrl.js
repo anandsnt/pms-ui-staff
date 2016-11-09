@@ -51,7 +51,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
             "last_name": $scope.smartBandData.lastName,
             "is_fixed": $scope.isFixedAmount,
             "amount": $scope.smartBandData.fixedAmount,
-            "account_number" : data.account_number
+            "account_number": data.account_number
        	};
        	$scope.smartBands.push(that.newBandInfo);
        	$scope.smartBandLength = $scope.smartBands.length;
@@ -75,7 +75,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		};
 		var dataToApi = {
 			'postData': postData,
-			'reservationId':$scope.reservation.reservation_card.reservation_id
+			'reservationId': $scope.reservation.reservation_card.reservation_id
 		};
 		 $scope.invokeApi(RVSmartBandSrv.createSmartBand, dataToApi, $scope.createSmartBandSuccess, $scope.createSmartBandFailure);
 	};
@@ -143,7 +143,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 
 		if($scope.firstTimeClick) {
 			var dataToApi = {
-				'reservationId':$scope.reservation.reservation_card.reservation_id
+				'reservationId': $scope.reservation.reservation_card.reservation_id
 			};
 			$scope.invokeApi(RVSmartBandSrv.listSmartBands, dataToApi, $scope.listSmartBandSuccess);
 		} else {

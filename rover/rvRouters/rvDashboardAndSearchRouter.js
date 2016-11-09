@@ -52,7 +52,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                 dashBoarddata: function(RVDashboardSrv, mappingList) {
                     return RVDashboardSrv.fetchDashboardDetails();
                 },
-                roomTypes : function(RVHkRoomStatusSrv) {
+                roomTypes: function(RVHkRoomStatusSrv) {
                     return RVHkRoomStatusSrv.fetchRoomTypes();
                 }
             }
@@ -66,12 +66,12 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
             url: '/frontoffice',
             templateUrl: '/assets/partials/dashboard/rvFrontDeskDashboard.html',
             controller: 'RVfrontDeskDashboardController',
-            resolve : {
-                statistics : function(RVDashboardSrv) {
+            resolve: {
+                statistics: function(RVDashboardSrv) {
                     var requestParams = {
-                        'show_adr' : false,
-                        'show_upsell' : true,
-                        'show_rate_of_day' : false
+                        'show_adr': false,
+                        'show_upsell': true,
+                        'show_rate_of_day': false
                     };
                     return RVDashboardSrv.fetchStatisticData(requestParams);
                 }
@@ -94,7 +94,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                 dashBoarddata: function(RVDashboardSrv, mappingList) {
                     return RVDashboardSrv.fetchDashboardDetails();
                 },
-                roomTypes : function(RVHkRoomStatusSrv, mappingList) {
+                roomTypes: function(RVHkRoomStatusSrv, mappingList) {
                     return RVHkRoomStatusSrv.fetchRoomTypes();
                 }
             },

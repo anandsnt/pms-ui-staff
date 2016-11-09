@@ -26,7 +26,7 @@
 
 	return {
 		responseData: responseData,
-		fetch : fetch
+		fetch: fetch
 	};
 };
 

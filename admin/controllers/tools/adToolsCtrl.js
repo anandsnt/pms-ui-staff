@@ -40,7 +40,7 @@ admin.controller('ADToolsCtrl',
             $scope.toolsData = data;
             $scope.$emit('hideLoader');
         };
-        var data = {"id":id };
+        var data = {"id": id };
         $scope.invokeApi(ADToolsSrv.getToolsDetails, data, successCallbackRender);
     };
    /*

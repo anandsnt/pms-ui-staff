@@ -1,15 +1,15 @@
 admin.directive("chargeCodeSearch", function() {
 
     return {
-        restrict : 'E',
-        replace : true,
-        scope : {
-            chargeCode : '=chargeCode',
-            chargeCodeName : '=chargeCodeName',
-            isBillingGroup : '@isBillingGroup'
+        restrict: 'E',
+        replace: true,
+        scope: {
+            chargeCode: '=chargeCode',
+            chargeCodeName: '=chargeCodeName',
+            isBillingGroup: '@isBillingGroup'
         },
-        templateUrl : '/assets/directives/chargeCodeSearch/chargeCodeSearch.html',
-        controller : function($scope, ADChargeCodesSrv) {
+        templateUrl: '/assets/directives/chargeCodeSearch/chargeCodeSearch.html',
+        controller: function($scope, ADChargeCodesSrv) {
             $scope.chargeCodeSearchResults = [];
             $scope.showChargeCodes = false;
 

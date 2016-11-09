@@ -178,8 +178,8 @@ angular.module('sntRover').controller('rvAllotmentAvailabilityStatusController',
 					$scope.errorMessage = errorMessage;
 				},
 				params = {
-					allotmentId:$scope.data.clickedHeldRoomDetail.id,
-					date:$scope.data.clickedHeldRoomDetail.date
+					allotmentId: $scope.data.clickedHeldRoomDetail.id,
+					date: $scope.data.clickedHeldRoomDetail.date
 				};
 
 			$scope.$emit( 'showLoader' );

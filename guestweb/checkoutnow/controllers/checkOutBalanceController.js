@@ -51,7 +51,7 @@
 				$state.go('checkOutStatus');
 			}
 			else{
-				$state.go('ccVerification', {'fee':$scope.billData.balance, 'message':"Check-out fee", 'isFromCheckoutNow':true});
+				$state.go('ccVerification', {'fee': $scope.billData.balance, 'message': "Check-out fee", 'isFromCheckoutNow': true});
 			}
 		};
 	}

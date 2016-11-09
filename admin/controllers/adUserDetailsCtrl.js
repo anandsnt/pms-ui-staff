@@ -239,7 +239,7 @@ admin.controller('ADUserDetailsCtrl',
 				setFocusOnPasswordField();
 			}
 		};
-		$scope.invokeApi(ADUserSrv.getUserDetails, {'id':id}, successCallbackRender);
+		$scope.invokeApi(ADUserSrv.getUserDetails, {'id': id}, successCallbackRender);
 	};
 
 	var setFocusOnPasswordField = function() {

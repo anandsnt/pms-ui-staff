@@ -40,13 +40,13 @@ admin.controller('ADContentManagementCtrl', ['$scope', '$state', '$rootScope', '
 			ngDialog.open({
 				template: '/assets/partials/contentManagement/adDeleteContent.html',
 				className: '',
-				controller:'adDeleteContentController',
-				scope:$scope,
-				closeByDocument:true
+				controller: 'adDeleteContentController',
+				scope: $scope,
+				closeByDocument: true
 			});
 			$scope.componentIdToDelete = id;
 		};
-		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id':id}, successCallbackFetchDeleteDetails);
+		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id': id}, successCallbackFetchDeleteDetails);
 
 	};
 
@@ -54,7 +54,7 @@ admin.controller('ADContentManagementCtrl', ['$scope', '$state', '$rootScope', '
     */
    $scope.saveAvailabilityStatus = function(id, status) {
       var successCallbackAvailabilityStatus = function(data) {
-        $rootScope.$broadcast('statusUpdated', {'id':id, 'status':status});
+        $rootScope.$broadcast('statusUpdated', {'id': id, 'status': status});
         $scope.$emit('hideLoader');
       };
       var data = {};

@@ -64,8 +64,8 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
 		}
 
         var options = {
-            params 			: params,
-            successCallBack : successCallBackOfLightSpeedPOSSetup
+            params: params,
+            successCallBack: successCallBackOfLightSpeedPOSSetup
         };
         $scope.callAPI(adLightSpeedPOSSetupSrv.saveLightSpeedPOSConfiguration, options);
 	};

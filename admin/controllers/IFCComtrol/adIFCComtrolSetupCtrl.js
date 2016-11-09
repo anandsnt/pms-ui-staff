@@ -43,8 +43,8 @@ admin.controller('adIFCComtrolSetupCtrl', ['$scope', 'ifcComtrolSetupValues', 'a
 		}
 
 	    var options = {
-	        params 			: params,
-	        successCallBack : successCallBackOfIFCComtrolSetup
+	        params: params,
+	        successCallBack: successCallBackOfIFCComtrolSetup
 	    };
 	    $scope.callAPI(adIFCComtrolSetupSrv.saveIFCComtrolConfiguration, options);
 	};

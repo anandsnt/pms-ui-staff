@@ -73,7 +73,7 @@ angular.module('sntRover').controller('itemInventoryMainController', [
 
 			var dataForWebservice = {
 				'from_date': $filter('date')(tzIndependentDate ($scope.data.selectedDate), $rootScope.dateFormatForAPI),
-				'to_date'  : $filter('date')(tzIndependentDate (dateAfter), $rootScope.dateFormatForAPI)
+				'to_date': $filter('date')(tzIndependentDate (dateAfter), $rootScope.dateFormatForAPI)
 			};
 			$scope.invokeApi(rvAvailabilitySrv.fetchItemInventoryDetails, dataForWebservice, successCallbackOfItemInventoryFetch, failureCallbackOfItemInventoryFetch);
 		}, 0);

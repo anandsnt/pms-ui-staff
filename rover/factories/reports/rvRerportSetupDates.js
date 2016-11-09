@@ -123,8 +123,8 @@ angular.module('reportsModule')
                         report[dateKey] = filter;
 
                         angular.extend(report[dateKey], {
-                            showRemove : true,
-                            fromModel  : fromModel
+                            showRemove: true,
+                            fromModel: fromModel
                         });
 
     					if ( !! untilModel ) {

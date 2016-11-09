@@ -10,77 +10,77 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 	}).state('checkinReservationDetails', {
 	 	url: '/checkinReservationDetails',
 	 	templateUrl: '/assets/partials/checkin/gwCheckinDetails.html',
-	 	controller : 'gwReservationDetailsController',
+	 	controller: 'gwReservationDetailsController',
 	 	data: {
-			pageTitle:'Details - Check-in'
+			pageTitle: 'Details - Check-in'
 		}
 	 }).state('roomUpgrade', {
 	 	url: '/roomUpgrade',
 	 	templateUrl: '/assets/partials/checkin/gwRoomUpgrades.html',
-	 	controller : 'gwRoomUpgradeController',
+	 	controller: 'gwRoomUpgradeController',
 	    data: {
 	    	pageTitle: 'Room - Upgrade'
 	    }
 	 }).state('etaUpdation', {
 	 	url: '/etaUpdation',
 	 	templateUrl: '/assets/partials/checkin/gwArrivalTime.html',
-	 	controller : 'gwETAUpdationController',
+	 	controller: 'gwETAUpdationController',
 	    data: {
-	    	pageTitle:'ETA Updation'
+	    	pageTitle: 'ETA Updation'
 	    }
 	 }).state('termsAndConditions', {
 	 	url: '/termsAndConditions',
 	 	templateUrl: '/assets/partials/checkin/gwTermsAndConditions.html',
-	 	controller : 'gwTermsAndConditionsController',
+	 	controller: 'gwTermsAndConditionsController',
 	    data: {
 	    	pageTitle: 'Terms & Conditions'
 	    }
 	 }).state('autoCheckinFinal', {
 		url: '/autoCheckinFinal',
 		templateUrl: '/assets/partials/checkin/gwAutoCheckinFinal.html',
-		controller : 'gwAutoCheckinController',
+		controller: 'gwAutoCheckinController',
 		data: {
 	    	pageTitle: 'Status - Pre Check-In'
 	    }
 	 }).state('checkinLanding', {
 	 	url: '/checkinLanding',
 	 	templateUrl: '/assets/partials/checkin/gwCheckin.html',
-	 	controller : 'gwCheckinLandingCtrlController',
+	 	controller: 'gwCheckinLandingCtrlController',
 	 	data: {
 	 		title: 'Check-in'
 	 	}
 	 }).state('externalCheckInTurnedOff', {
 	 	url: '/externalCheckInTurnedOff',
 	 	templateUrl: '/assets/partials/checkin/gwExternalCheckInTurnedOff.html',
-	 	controller : 'gwExternalCheckInTurnedOffController',
+	 	controller: 'gwExternalCheckInTurnedOffController',
 	 	data: {
 	 		title: 'Check-in'
 	 	}
 	 }).state('earlyCheckinOptions', {
 	 	url: '/earlyCheckinOptions/:time/:charge/:id',
 	 	templateUrl: '/assets/partials/checkin/gwEarlyCheckinOptions.html',
-	 	controller : 'gwEarlyCheckinOptionsController',
+	 	controller: 'gwEarlyCheckinOptionsController',
 	 	data: {
 	 		title: 'Early Check-in'
 	 	}
 	 }).state('earlyCheckinFinal', {
 	 	url: '/earlyCheckinFinal/:charge',
 	 	templateUrl: '/assets/partials/checkin/gwEarlyCheckinFinal.html',
-	 	controller : 'gwEarlyCheckinFinalController',
+	 	controller: 'gwEarlyCheckinFinalController',
 	 	data: {
 	 		title: 'Early Check-in'
 	 	}
 	 }).state('laterArrival', {
 	 	url: '/laterArrival/:time/:isearlycheckin',
 	 	templateUrl: '/assets/partials/checkin/gwLateArrivalTime.html',
-	 	controller : 'gwLateETAUpdationController',
+	 	controller: 'gwLateETAUpdationController',
 	    data: {
 	 		title: 'Early Check-in'
 	 	}
 	 }).state('updateGuestDetails', {
 	 	url: '/updateGuestDetails',
 	 	templateUrl: '/assets/partials/checkin/gwGuestDetail.html',
-	 	controller : 'gwUpdateGuestDetailsController',
+	 	controller: 'gwUpdateGuestDetailsController',
 	    data: {
 	 		title: 'Guest Details'
 	 	}
@@ -89,12 +89,12 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 	 	templateUrl: '/assets/partials/checkin/gwAlreadyCheckedIn.html',
 	 	controller: 'gwAlreadyCheckedInController',
 	 	data: {
-	 		title:'Status - Check-in'
+	 		title: 'Status - Check-in'
 	 	}
 	 }).state('checkinFinal', {
 	 	url: '/checkinFinal',
 	 	templateUrl: '/assets/partials/checkin/gwCheckinFinal.html',
-	 	controller : 'gwCheckinFinalController',
+	 	controller: 'gwCheckinFinalController',
 	 	data: {
 	 		title: 'Check-in: final'
 	 	}

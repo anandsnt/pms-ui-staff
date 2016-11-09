@@ -50,8 +50,8 @@ admin.controller('adBritePabXSetupCtrl', ['$scope', 'britePabXSetupValues', 'adB
 		}
 
         var options = {
-            params 			: params,
-            successCallBack : successCallBackOfSaveBritePabXSetup
+            params: params,
+            successCallBack: successCallBackOfSaveBritePabXSetup
         };
         $scope.callAPI(adBritePabXSetupSrv.saveBritePabXConfiguration, options);
 	};

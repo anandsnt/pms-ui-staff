@@ -161,8 +161,8 @@ angular.module('sntRover').controller('rvGroupAvailabilityStatusController', [
 				successCallBack: onReleaseRoomsSuccess,
 				failureCallBack: onReleaseRoomsFailure,
 				params: {
-					groupId:$scope.data.clickedHeldRoomDetail.id,
-					date:$scope.data.clickedHeldRoomDetail.date
+					groupId: $scope.data.clickedHeldRoomDetail.id,
+					date: $scope.data.clickedHeldRoomDetail.date
 				}
 			});
 		};

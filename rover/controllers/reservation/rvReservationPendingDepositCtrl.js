@@ -66,7 +66,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 
 		$scope.$on('SET_SCROLL_FOR_EXISTING_CARDS', function() {
 			console.log("set_scroll");
-			$scope.setScroller('cardsList', {'click':true, 'tap':true});
+			$scope.setScroller('cardsList', {'click': true, 'tap': true});
 		});
 
 		//Listen to swipe events
@@ -132,8 +132,8 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 					"card_name": data.cc_details.holder_name,
 					"id": data.cc_details.value,
 					"isSelected": true,
-					"is_primary":false,
-					"payment_type":"CC",
+					"is_primary": false,
+					"payment_type": "CC",
 					"payment_type_id": 1,
 					"is_credit_card": true
 				};

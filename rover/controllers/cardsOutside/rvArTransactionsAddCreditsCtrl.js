@@ -31,8 +31,8 @@ sntRover.controller('RVArTransactionsAddCreditsController', ['$scope', '$rootSco
 
         var params = {
             'id': $scope.filterData.id,
-            'amount' : $scope.addedCreditAmount,
-            'symbol' : $scope.selectedSymbol
+            'amount': $scope.addedCreditAmount,
+            'symbol': $scope.selectedSymbol
         };
 
         $scope.invokeApi(RVCompanyCardSrv.addCreditAmount, params, addCreditAmountSuccess, failure);

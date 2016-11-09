@@ -200,7 +200,7 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 			$scope.gobackToCampaignListing();
 
 		};
-		var params = {"id" : $scope.campaignData.id};
+		var params = {"id": $scope.campaignData.id};
 		$scope.invokeApi(ADCampaignSrv.deleteCampaign, params, deleteSuccess);
 	};
 

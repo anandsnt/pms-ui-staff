@@ -166,7 +166,7 @@ function BaseCtrl($scope) {
     } else if ($rootScope.previousState) {
       $state.go($rootScope.previousState);
     } else {
-      $state.go('admin.dashboard', {menu : 0});
+      $state.go('admin.dashboard', {menu: 0});
     }
 
   };

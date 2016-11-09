@@ -7,8 +7,8 @@ admin.controller('ADSocialLobbySettingsCtrl', ['$scope', '$rootScope', '$state',
 	$scope.errorMessage = '';
 
 	//scope varibales
-	$scope.arrival_grace_days_list = [{'name':'1', 'value': '1'}, {'name':'2', 'value': '2'}, {'name':'3', 'value': '3'}, {'name':'4', 'value': '4'}, {'name':'5', 'value': '5'}];
-	$scope.departure_grace_days_list = [{'name':'1', 'value': '1'}, {'name':'2', 'value': '2'}, {'name':'3', 'value': '3'}, {'name':'4', 'value': '4'}, {'name':'5', 'value': '5'}];
+	$scope.arrival_grace_days_list = [{'name': '1', 'value': '1'}, {'name': '2', 'value': '2'}, {'name': '3', 'value': '3'}, {'name': '4', 'value': '4'}, {'name': '5', 'value': '5'}];
+	$scope.departure_grace_days_list = [{'name': '1', 'value': '1'}, {'name': '2', 'value': '2'}, {'name': '3', 'value': '3'}, {'name': '4', 'value': '4'}, {'name': '5', 'value': '5'}];
 
 
 	/*

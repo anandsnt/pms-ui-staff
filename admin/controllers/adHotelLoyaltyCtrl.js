@@ -33,13 +33,13 @@ admin.controller('ADHotelLoyaltyCtrl', ['$scope', '$state', 'ADHotelLoyaltySrv',
 	 	var successCallbackRender = function(data) {
 	 		$scope.hotelLoyaltyData = data;
 	 		 		if($scope.hotelLoyaltyData.levels.length === 0) {
-						$scope.hotelLoyaltyData.levels.push({'value':'', 'name':''});
+						$scope.hotelLoyaltyData.levels.push({'value': '', 'name': ''});
 					}
 	 		$scope.setLoyaltyLevelEditStatus();
 	 		$scope.$emit('hideLoader');
 	 	};
 
-	 	var data = {"id":id };
+	 	var data = {"id": id };
 	 	$scope.invokeApi(ADHotelLoyaltySrv.getHotelLoyaltyDetails, data, successCallbackRender);
 	};
 	/*
@@ -58,7 +58,7 @@ admin.controller('ADHotelLoyaltyCtrl', ['$scope', '$state', 'ADHotelLoyaltySrv',
 		$scope.hotelLoyaltyData   = {};
 		$scope.hotelLoyaltyData={};
 		$scope.currentClickedElement = "new";
-		$scope.hotelLoyaltyData.levels  = [{'value':'', 'name':'', 'editProgress':false}];
+		$scope.hotelLoyaltyData.levels  = [{'value': '', 'name': '', 'editProgress': false}];
 		$scope.isAddMode = true;
 		$timeout(function() {
             $location.hash('new-form-holder');
@@ -114,7 +114,7 @@ admin.controller('ADHotelLoyaltyCtrl', ['$scope', '$state', 'ADHotelLoyaltySrv',
     		//scroll to top of the page where error message is shown
 			angular.element( document.querySelector('.content')).scrollTop(0);
 			if($scope.hotelLoyaltyData.levels.length === 0) {
-				$scope.hotelLoyaltyData.levels.push({'value':'', 'name':'', 'editProgress':false});
+				$scope.hotelLoyaltyData.levels.push({'value': '', 'name': '', 'editProgress': false});
 			}
     	};
     	if($scope.isAddMode) {
@@ -179,7 +179,7 @@ admin.controller('ADHotelLoyaltyCtrl', ['$scope', '$state', 'ADHotelLoyaltySrv',
 				});
 			}
 			if($scope.newOptionAvailable) {
-				$scope.hotelLoyaltyData.levels.push({'value':'', 'name':'', 'editProgress':false});
+				$scope.hotelLoyaltyData.levels.push({'value': '', 'name': '', 'editProgress': false});
 			}
 		}
 	};

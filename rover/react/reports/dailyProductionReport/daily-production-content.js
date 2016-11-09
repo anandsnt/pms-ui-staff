@@ -3,9 +3,9 @@
 var DPthCell = React.createClass({
 	render: function() {
 		return React.DOM.th({
-			'className' : this.props.className,
-			'colSpan'   : this.props.colspan,
-			'style' : {'whiteSpace' : 'nowrap'}
+			'className': this.props.className,
+			'colSpan': this.props.colspan,
+			'style': {'whiteSpace': 'nowrap'}
 		}, this.props.data);
 	}
 });
@@ -23,8 +23,8 @@ var DPHeadPanel = React.createClass({
 		for(i = 0, j = this.props.headerTop.length; i < j; i++) {
 			topRowCells.push(
 				React.createElement( DPthCell, {
-					'colspan' : this.props.colspanArray && this.props.colspanArray[i] || this.props.colspan,
-					'data'    : this.props.headerTop[i]
+					'colspan': this.props.colspanArray && this.props.colspanArray[i] || this.props.colspan,
+					'data': this.props.headerTop[i]
 				})
 			);
 		};
@@ -34,8 +34,8 @@ var DPHeadPanel = React.createClass({
 		for(i = 0, j = this.props.headerBot.length; i < j; i++) {
 			botRowCells.push(
 					React.createElement( DPthCell, {
-					'className' : this.props.headerBot[i]['cls'],
-					'data'      : this.props.headerBot[i]['name']
+					'className': this.props.headerBot[i]['cls'],
+					'data': this.props.headerBot[i]['name']
 				})
 			);
 		};
@@ -62,7 +62,7 @@ var DPtdCell = React.createClass({
 		};
 
 		return React.DOM.td({
-				'className' : this.props.className
+				'className': this.props.className
 			},
 			React.DOM[tag]({}, this.props.data)
 		);
@@ -78,12 +78,12 @@ var DPBodyRow = React.createClass({
 		for(i = 0, j = this.props.rowData.length; i < j; i++) {
 			cells.push(
 				React.createElement( DPtdCell, {
-					'isLastRow' : this.props.isLastRow,
-					'isAvail'   : this.props.rowData[i]['isAvail'],
-					'isRev'     : this.props.rowData[i]['isRev'],
-					'className' : this.props.rowData[i]['cls'],
-					'data'      : this.props.rowData[i]['value'],
-					'isBold'    : this.props.rowData[i]['isRateType']
+					'isLastRow': this.props.isLastRow,
+					'isAvail': this.props.rowData[i]['isAvail'],
+					'isRev': this.props.rowData[i]['isRev'],
+					'className': this.props.rowData[i]['cls'],
+					'data': this.props.rowData[i]['value'],
+					'isBold': this.props.rowData[i]['isRateType']
 				})
 			);
 		};
@@ -101,8 +101,8 @@ var DPBodyPanel = React.createClass({
 		for(i = 0, j = this.props.reportData.length; i < j; i++) {
 			rows.push(
 				React.createElement( DPBodyRow, {
-					'rowData'   : this.props.reportData[i],
-					'isLastRow' : this.props.isLastRowSum && 1 == j - i
+					'rowData': this.props.reportData[i],
+					'isLastRow': this.props.isLastRowSum && 1 == j - i
 				})
 			);
 		};
@@ -114,18 +114,18 @@ var DPBodyPanel = React.createClass({
 var DPContent = React.createClass({
 	render: function() {
 		return React.DOM.table({
-				'className' : 'statistics-reports',
+				'className': 'statistics-reports',
 				 'style': { 'tableLayout': 'auto'}
 			},
 			React.createElement( DPHeadPanel, {
-				'colspan'    	: this.props.colspan,
-				'headerTop'  	: this.props.headerTop,
-				'headerBot'  	: this.props.headerBot,
-				'colspanArray'  : this.props.colspanArray
+				'colspan': this.props.colspan,
+				'headerTop': this.props.headerTop,
+				'headerBot': this.props.headerBot,
+				'colspanArray': this.props.colspanArray
 			}),
 			React.createElement( DPBodyPanel, {
-				'reportData' : this.props.reportData,
-				'isLastRowSum' : this.props.isLastRowSum
+				'reportData': this.props.reportData,
+				'isLastRowSum': this.props.isLastRowSum
 			})
 		);
 	},

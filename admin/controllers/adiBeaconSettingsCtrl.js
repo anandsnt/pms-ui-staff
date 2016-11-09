@@ -70,7 +70,7 @@ admin.controller('ADiBeaconSettingsCtrl', ['$scope', '$state', 'ngTableParams', 
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = data;
 		};
-		var toggleData = {"id":id, "status":!status};
+		var toggleData = {"id": id, "status": !status};
 
 		$scope.invokeApi(adiBeaconSettingsSrv.toggleBeacon, toggleData, toggleBeaconSuccess, toggleBeaconFailed);
 
@@ -87,7 +87,7 @@ admin.controller('ADiBeaconSettingsCtrl', ['$scope', '$state', 'ngTableParams', 
 			$scope.errorMessage = data;
 		};
 
-		$scope.invokeApi(adiBeaconSettingsSrv.deleteBeacon, {"id":id}, deleteBeaconSuccess, deleteBeaconFailed);
+		$scope.invokeApi(adiBeaconSettingsSrv.deleteBeacon, {"id": id}, deleteBeaconSuccess, deleteBeaconFailed);
 	};
 
 

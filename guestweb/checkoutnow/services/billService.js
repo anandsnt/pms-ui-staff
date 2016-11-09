@@ -7,7 +7,7 @@ var BillService = function($q, baseWebService, $rootScope, $http) {
 	var fetchBillData = function() {
 		var deferred = $q.defer();
 		var url = '/guest_web/home/bill_details.json',
-		parameters = {'reservation_id':$rootScope.reservationID};
+		parameters = {'reservation_id': $rootScope.reservationID};
 		$http.get(url, {
 			params: parameters
 		}).success(function(response) {
@@ -22,8 +22,8 @@ var BillService = function($q, baseWebService, $rootScope, $http) {
 
 	return {
 		bills: bills,
-		billDisplayDetails : billDisplayDetails,
-		fetchBillData :fetchBillData
+		billDisplayDetails: billDisplayDetails,
+		fetchBillData: fetchBillData
 	};
 };
 

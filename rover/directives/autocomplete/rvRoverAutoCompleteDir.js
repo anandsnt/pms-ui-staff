@@ -73,10 +73,10 @@
         highlightFilter_ = highlightFilter;
         return {
             restrict: 'A',
-            scope   : {
-                autoOptions : '=autoCompleteOptions',
-                ngModel     : '=',
-                ulClass     : '@ulClass',
+            scope: {
+                autoOptions: '=autoCompleteOptions',
+                ngModel: '=',
+                ulClass: '@ulClass',
                 processEachItem: '=processEachItem'
             },
             link: autoCompleteLinkFn

@@ -17,7 +17,7 @@ admin.controller('ADServiceProviderUserDetailsCtrl', ['$scope', '$rootScope', '$
     */
 	var fetchUserDetails =  function() {
 		var param = {
-			id :$scope.userDetails.user_id
+			id: $scope.userDetails.user_id
 		};
 		var successCallbackFetch = function(data) {
 			if(data.status === "failure") {
@@ -53,7 +53,7 @@ admin.controller('ADServiceProviderUserDetailsCtrl', ['$scope', '$rootScope', '$
     */
 	$scope.sendInvitation = function(userId) {
 		var data = {"id": userId,
-					"password":$scope.userDetails.password,
+					"password": $scope.userDetails.password,
 					"is_trying_to_unlock": true
 				};
 		var successCallbackOfSendInvitation = function(data) {
@@ -62,7 +62,7 @@ admin.controller('ADServiceProviderUserDetailsCtrl', ['$scope', '$rootScope', '$
 			};
 			$scope.$emit('hideLoader');
 			$state.go('admin.serviceproviderusers', { 'id': $scope.userDetails.service_provider_id,
-				'name':$scope.serviceProviderName });
+				'name': $scope.serviceProviderName });
 		};
 	 	$scope.invokeApi(ADServiceProviderSrv.sendInvitation, data, successCallbackOfSendInvitation);
 	};
@@ -79,7 +79,7 @@ admin.controller('ADServiceProviderUserDetailsCtrl', ['$scope', '$rootScope', '$
 			if(data.status ==="failure") {
 				$scope.errorMessage = data.errors;
 			}else{				
-				$state.go('admin.serviceproviderusers', {'id':$scope.userDetails.service_provider_id, 'name':$scope.serviceProviderName});
+				$state.go('admin.serviceproviderusers', {'id': $scope.userDetails.service_provider_id, 'name': $scope.serviceProviderName});
 			};			
 			$scope.$emit('hideLoader');
 		};

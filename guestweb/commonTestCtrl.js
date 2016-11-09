@@ -209,7 +209,7 @@ $scope.opts = {
 $scope.continueButtonClicked = function() {
 
   var url = '/guest_web/verify_room.json';
-  var data = {'reservation_id':$rootScope.reservationID, "room_number":$scope.roomNumber};
+  var data = {'reservation_id': $rootScope.reservationID, "room_number": $scope.roomNumber};
   $scope.isFetching = true;
 // checkoutRoomVerificationService.verifyRoom(url,data).then(function(response) {
 
@@ -388,7 +388,7 @@ $scope.gotToNextStep = function() {
     $state.go('checkOutStatus');
   }
   else{
-    $state.go('ccVerification', {'fee':$scope.billData.balance, 'message':"Check-out fee", 'isFromCheckoutNow':true});
+    $state.go('ccVerification', {'fee': $scope.billData.balance, 'message': "Check-out fee", 'isFromCheckoutNow': true});
   }
 };
 };
@@ -452,9 +452,9 @@ This is accessed using URL set in admin settings WEB CHECK OUT URL in admin -> z
         $rootScope.accessToken        = response.guest_web_token;
 
       };
-      setReservartionDetails({"guest_web_token":"4c46f2fb42241caf08a3f9675abb11c3", "reservation_id":1333742, "user_name":"d, dfsdff"
-        , "checkout_date":"06/10/2015", "checkout_time":"11:00 PM", "user_city":"", "user_state":"", "room_no":"195"
-        , "is_late_checkout_available":false, "email_address":"resheil@qburst.com", "is_cc_attached":true})
+      setReservartionDetails({"guest_web_token": "4c46f2fb42241caf08a3f9675abb11c3", "reservation_id": 1333742, "user_name": "d, dfsdff"
+        , "checkout_date": "06/10/2015", "checkout_time": "11:00 PM", "user_city": "", "user_state": "", "room_no": "195"
+        , "is_late_checkout_available": false, "email_address": "resheil@qburst.com", "is_cc_attached": true})
       $rootScope.isRoomVerified =  true;
       $scope.isLoading = true;
       $timeout(function() {
@@ -506,17 +506,17 @@ Late checkout option Ctrl where user can opt a later checkout time
 (function() {
   var checkOutLaterController = function($scope, LateCheckOutChargesService, $rootScope, $location, $state) {
 
-    $scope.charges = [{"time":"12", "ap":"PM", "amount":"56", "class":"checkouttime1"}, {"time":"12", "ap":"PM", "amount":"56", "class":"checkouttime2"}, {"time":"12", "ap":"PM", "amount":"56", "class":"checkouttime3"}];
+    $scope.charges = [{"time": "12", "ap": "PM", "amount": "56", "class": "checkouttime1"}, {"time": "12", "ap": "PM", "amount": "56", "class": "checkouttime2"}, {"time": "12", "ap": "PM", "amount": "56", "class": "checkouttime3"}];
     if($scope.charges.length > 0) {
       $scope.optionsAvailable = true;
     }
 // If CC is not attached to the reservation we need to add CC to proceed to opt an late checkouttime.
 $scope.gotToNextStep = function(fee, chargeId) {
   if(!$rootScope.isCCOnFile && !$rootScope.isSixpayments) {
-    $state.go('ccVerification', {'fee':fee, 'message':"Late check-out fee", 'isFromCheckoutNow':false});
+    $state.go('ccVerification', {'fee': fee, 'message': "Late check-out fee", 'isFromCheckoutNow': false});
   }
   else{
-    $state.go('checkOutLaterSuccess', {id:chargeId});
+    $state.go('checkOutLaterSuccess', {id: chargeId});
   }
 
 };
@@ -655,7 +655,7 @@ $scope.errorOpts = {
   templateUrl: '/assets/checkoutnow/partials/ccVerificationErrorModal.html',
   controller: ccVerificationModalCtrl,
   resolve: {
-    errorMessage:function() {
+    errorMessage: function() {
       return "All fields are required";
     }
   }
@@ -669,7 +669,7 @@ $scope.ccvOpts = {
   templateUrl: '/assets/checkoutnow/partials/ccVerificationNumberModal.html',
   controller: ccVerificationModalCtrl,
   resolve: {
-    errorMessage:function() {
+    errorMessage: function() {
       return "";
     }
   }
@@ -690,7 +690,7 @@ $scope.goToNextStep = function() {
     $state.go('checkOutStatus');
   }else{
     $rootScope.ccPaymentSuccessForCheckoutLater = true;
-    $state.go('checkOutLaterSuccess', {id:$scope.fee});
+    $state.go('checkOutLaterSuccess', {id: $scope.fee});
   }
 
 };
@@ -772,25 +772,25 @@ $rootScope.netWorkError  = false;
 
 //next button clicked actions
 $scope.nextButtonClicked = function() {
-  var data = {'departure_date':dateToSend, 'credit_card':$scope.cardDigits, 'reservation_id':$rootScope.reservationID};
+  var data = {'departure_date': dateToSend, 'credit_card': $scope.cardDigits, 'reservation_id': $rootScope.reservationID};
   $scope.isPosting     = true;
 
 //call service
 // checkinConfirmationService.login(data).then(function(response) {
   $scope.isPosting = false;
-  response = {data:{}};
+  response = {data: {}};
   response.data = 
   {
 
-    "arrival_date":"23/23/33",
-    "departure_date":"23/23/33",
-    "room_type":"224e2wwwfwf3f3",
-    "room_rate":"wgewdu3d",
-    "currency":"$",
+    "arrival_date": "23/23/33",
+    "departure_date": "23/23/33",
+    "room_type": "224e2wwwfwf3f3",
+    "room_rate": "wgewdu3d",
+    "currency": "$",
     "is_rate_suppressed": 'false', 
-    "avg_rate" : '0.00',
-    "status" :"fef",
-    "is_upgrades_available":"false"
+    "avg_rate": '0.00',
+    "status": "fef",
+    "is_upgrades_available": "false"
 
   }
   $rootScope.ShowupgradedLabel = true;
@@ -961,11 +961,11 @@ This displays the available rooms for upgrading.
 
 $scope.isFetching     = false;
 $rootScope.netWorkError  = false;
-var data = {'reservation_id':$rootScope.reservationID};
+var data = {'reservation_id': $rootScope.reservationID};
 $scope.slides = [];
 
-var slide = {"upgrade_room_type_name":"room1", "upsell_amount":33, "upsell_amount_id":22, "upgrade_room_description":"<h1>ssss</h1>bvccbebebfbebfbefbebfbfbe"};
-var slide1 = {"upgrade_room_type_name":"room2", "upsell_amount":33, "upsell_amount_id":22, "upgrade_room_description":"<h1>ssss</h1>bvccbebebfbebfbefbebfbfbe"};
+var slide = {"upgrade_room_type_name": "room1", "upsell_amount": 33, "upsell_amount_id": 22, "upgrade_room_description": "<h1>ssss</h1>bvccbebebfbebfbefbebfbfbe"};
+var slide1 = {"upgrade_room_type_name": "room2", "upsell_amount": 33, "upsell_amount_id": 22, "upgrade_room_description": "<h1>ssss</h1>bvccbebebfbebfbefbebfbfbe"};
 $scope.slides.push(slide);
 $scope.slides.push(slide1);
 
@@ -974,7 +974,7 @@ $scope.slides.push(slide1);
 $scope.upgradeClicked = function(upgradeID, roomNumber) {
 
   $scope.isFetching          = true;
-  var data = {'reservation_id':$rootScope.reservationID, 'upsell_amount_id':upgradeID, 'room_no':roomNumber};
+  var data = {'reservation_id': $rootScope.reservationID, 'upsell_amount_id': upgradeID, 'room_no': roomNumber};
   checkinRoomUpgradeService.post(data).then(function(response) {
 
     $scope.isFetching     = false;
@@ -1027,9 +1027,9 @@ sntGuestWeb.directive("description", function ($compile) {
   }
 
   return{
-    restrict:"E",
+    restrict: "E",
     scope: {},
-    link:function (scope, element, attrs) {
+    link: function (scope, element, attrs) {
 
       element.append(createList(attrs.template));
       $compile(element.contents())(scope);
@@ -1081,15 +1081,15 @@ if($rootScope.earlyCheckinRestrictPrimetime === "PM") {
   }
 };
 $scope.stayDetails = {
-  "hour":$rootScope.earlyCheckinRestrictHour,
-  "minute":$rootScope.earlyCheckinRestrictMinute,
-  "primeTime" : $rootScope.earlyCheckinRestrictPrimetime
+  "hour": $rootScope.earlyCheckinRestrictHour,
+  "minute": $rootScope.earlyCheckinRestrictMinute,
+  "primeTime": $rootScope.earlyCheckinRestrictPrimetime
 };
 }else{
   $scope.stayDetails = {
-    "hour":"",
-    "minute":"",
-    "primeTime" : ""
+    "hour": "",
+    "minute": "",
+    "primeTime": ""
   };
 };
 
@@ -1099,7 +1099,7 @@ $scope.errorOpts = {
   templateUrl: '/assets/preCheckin/partials/preCheckinErrorModal.html',
   controller: ccVerificationModalCtrl,
   resolve: {
-    errorMessage:function() {
+    errorMessage: function() {
       return "Please select a valid estimated arrival time";
     }
   }
@@ -1121,8 +1121,8 @@ else if ($scope.stayDetails.primeTime === 'AM' && hour === 12) {
 }
 hour = (hour <10)?("0"+hour): hour;
 var dataTosend = {
-  "arrival_time":  hour+":"+$scope.stayDetails.minute,
-  "comments":$scope.stayDetails.comment
+  "arrival_time": hour+":"+$scope.stayDetails.minute,
+  "comments": $scope.stayDetails.comment
 };
 
 response = {};
@@ -1142,10 +1142,10 @@ response.id = 66;
   $rootScope.earlyCheckinRestrictPrimetime = response.early_checkin_restrict_primetime;
 
   if(response.early_checkin_available && typeof response.early_checkin_offer_id !== "undefined" && !response.bypass_early_checkin) {
-    $state.go('earlyCheckinOptions', {'time':response.checkin_time, 'charge':response.early_checkin_charge, 'id':response.early_checkin_offer_id});
+    $state.go('earlyCheckinOptions', {'time': response.checkin_time, 'charge': response.early_checkin_charge, 'id': response.early_checkin_offer_id});
   }
   else if(response.early_checkin_on && !response.early_checkin_available && !response.bypass_early_checkin) {
-    $state.go('laterArrival', {'time':response.checkin_time, 'isearlycheckin':true});
+    $state.go('laterArrival', {'time': response.checkin_time, 'isearlycheckin': true});
   }
   else{
     $state.go('preCheckinStatus');
@@ -1189,11 +1189,11 @@ There are two options 1) purcahase an early checkin 2) change the arrival time t
       var offerId = $stateParams.id;
 
       $scope.nextButtonClicked = function() {
-        $state.go('earlyCheckinFinal', {'time':$scope.checkinTime, 'charge': $stateParams.charge, 'id':offerId});
+        $state.go('earlyCheckinFinal', {'time': $scope.checkinTime, 'charge': $stateParams.charge, 'id': offerId});
       };
 
       $scope.changeArrivalTime = function() {
-        $state.go('laterArrival', {'time':$scope.checkinTime, 'isearlycheckin':true});
+        $state.go('laterArrival', {'time': $scope.checkinTime, 'isearlycheckin': true});
       };
     }
   };
@@ -1230,7 +1230,7 @@ The early checkin purcahse is done here on entering to this page itself.
       $scope.earlyCheckinCharge = $stateParams.charge;
       var offerId= $stateParams.id;
       $scope.isPosting = true;
-      var dataTosend = {'reservation_id':$rootScope.reservationID, 'early_checkin_offer_id':offerId};
+      var dataTosend = {'reservation_id': $rootScope.reservationID, 'early_checkin_offer_id': offerId};
       $scope.isPosting = false;
       $scope.nextButtonClicked =  function() {
         $state.go('preCheckinStatus');
@@ -1274,16 +1274,16 @@ update the guest details here.
       $scope.months     = [];
       $scope.days       = [];
       $scope.guestDetails = {
-        'day':'',
-        'month':'',
-        'year':'',
-        'postal_code':'',
-        'state':'',
-        'city':'',
-        'street':'',
-        'street2':'',
-        'birthday':'',
-        'country':''
+        'day': '',
+        'month': '',
+        'year': '',
+        'postal_code': '',
+        'state': '',
+        'city': '',
+        'street': '',
+        'street2': '',
+        'birthday': '',
+        'country': ''
       };
 
 
@@ -1379,7 +1379,7 @@ $rootScope.netWorkError  = false;
 $scope.responseData  = [];
 $scope.reservationData = checkinDetailsService.getResponseData();
 var url = '/guest_web/checkin.json';
-var data = {'reservation_id':$rootScope.reservationID};
+var data = {'reservation_id': $rootScope.reservationID};
 $rootScope.isCheckedin = true;
 $scope.responseData =response.data;
 $scope.responseData.delivery_message  = "Please conatct front desk";
@@ -1433,18 +1433,18 @@ Precheckin final Ctrl where the pre checkin API is called
     };
 
     $scope.months = [
-              {"id":1, "name":"JAN"},
-              {"id":2, "name":"FEB"},
-              {"id":3, "name":"MAR"},
-              {"id":4, "name":"APR"},
-              {"id":5, "name":"MAY"},
-              {"id":6, "name":"JUN"},
-              {"id":7, "name":"JUL"},
-              {"id":8, "name":"AUG"},
-              {"id":9, "name":"SEP"},
-              {"id":10, "name":"OCT"},
-              {"id":11, "name":"NOV"},
-              {"id":12, "name":"DEC"}
+              {"id": 1, "name": "JAN"},
+              {"id": 2, "name": "FEB"},
+              {"id": 3, "name": "MAR"},
+              {"id": 4, "name": "APR"},
+              {"id": 5, "name": "MAY"},
+              {"id": 6, "name": "JUN"},
+              {"id": 7, "name": "JUL"},
+              {"id": 8, "name": "AUG"},
+              {"id": 9, "name": "SEP"},
+              {"id": 10, "name": "OCT"},
+              {"id": 11, "name": "NOV"},
+              {"id": 12, "name": "DEC"}
             ];
       
     for(day=1;day<=31;day++) {
@@ -1583,7 +1583,7 @@ sntGuestWeb.controller('birthDateDetailsController', dependencies);
       templateUrl: '/assets/checkin/partials/ccErrorModal.html',
       controller: ccVerificationModalCtrl,
       resolve: {
-        errorMessage:function() {
+        errorMessage: function() {
           return "Please enter a valid email.";
         }
       }
@@ -1595,14 +1595,14 @@ sntGuestWeb.controller('birthDateDetailsController', dependencies);
       templateUrl: '/assets/checkin/partials/ccErrorModal.html',
       controller: ccVerificationModalCtrl,
       resolve: {
-        errorMessage:function() {
+        errorMessage: function() {
            return "Problem saving email address. Please retry.";
         }
       }
     };
 
 
-    $scope.guestDetails = { "email":""};
+    $scope.guestDetails = { "email": ""};
     $scope.emailUpdated = false;
 
    
@@ -1617,7 +1617,7 @@ sntGuestWeb.controller('birthDateDetailsController', dependencies);
         $modal.open(errorOpts);
       }
       else{
-        checkinConfirmationService.updateEmail({"email":$scope.guestDetails.email}).then(function(response) {
+        checkinConfirmationService.updateEmail({"email": $scope.guestDetails.email}).then(function(response) {
           $scope.isLoading = false;
           $scope.emailUpdated = true;
         }, function() {

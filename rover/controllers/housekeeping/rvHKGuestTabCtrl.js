@@ -26,7 +26,7 @@ angular.module('sntRover').controller('RVHKGuestTabCtrl', [
 		*/
 		$scope.checkOutReservation = function() {
 			var Params = {
-				id:$scope.roomDetails.reservation_id
+				id: $scope.roomDetails.reservation_id
 			};
 			$scope.invokeApi(RVHkRoomDetailsSrv.postCheckOutReservation, Params, successCheckout, failureCheckout);
 		};
@@ -92,8 +92,8 @@ angular.module('sntRover').controller('RVHKGuestTabCtrl', [
 			$scope.roomDetails.current_hk_status = _.find($scope.roomDetails.hk_status_list, { id: hkStatusId }).value;
 
 			var data = {
-				'room_no'     : $scope.roomDetails.current_room_no,
-				'hkstatus_id' : hkStatusId
+				'room_no': $scope.roomDetails.current_room_no,
+				'hkstatus_id': hkStatusId
 			};
 
 			$scope.closeDialog();

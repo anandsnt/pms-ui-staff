@@ -304,7 +304,7 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 
 		this.checkGiftCardBalance = function(params) {
                         var data = {
-                            'card_number':params.card_number
+                            'card_number': params.card_number
                         };
 			var deferred = $q.defer(),
 				url = '/api/gift_cards/balance_inquiry';

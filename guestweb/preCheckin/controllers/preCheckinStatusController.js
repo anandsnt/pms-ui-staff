@@ -35,7 +35,7 @@
 	}
 	//collect email
 	else if($rootScope.offerRoomDeliveryOptions && !$rootScope.userEmailEntered && ($rootScope.application ==="SMS" || $rootScope.application ==="EMAIL" || $rootScope.application ==="URL")) {
-		$state.go('emailAddition', {'isFrom':'checkinLater'});// if user has not attached an email
+		$state.go('emailAddition', {'isFrom': 'checkinLater'});// if user has not attached an email
 	}
 	//collect deposit
 	else if($rootScope.enforceDeposit && !$rootScope.skipDeposit) {
@@ -58,7 +58,7 @@
 				else{
 					$scope.responseData =response.data;
 					$rootScope.preckinCompleted =  true;
-					$rootScope.responseData = {"confirmation_message":$scope.responseData.confirmation_message};
+					$rootScope.responseData = {"confirmation_message": $scope.responseData.confirmation_message};
 				};
 			}, function() {
 				$scope.netWorkError = true;

@@ -54,7 +54,7 @@ $scope.updateSettings = function() {
 		 $scope.errorMessage=data;
 	    $scope.$emit('hideLoader');
 	};
-	$scope.invokeApi(RVSettingsSrv.updateUserInfo, {'new_password' :$scope.newPassword}, updateUserInfoSuccessCallback, updateUserInfoFailureCallback);
+	$scope.invokeApi(RVSettingsSrv.updateUserInfo, {'new_password': $scope.newPassword}, updateUserInfoSuccessCallback, updateUserInfoFailureCallback);
 	};
 
 }]);

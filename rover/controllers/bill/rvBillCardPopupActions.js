@@ -33,11 +33,11 @@ sntRover.controller('rvBillCardPopupCtrl',
 
 		var deleteData =
 		{
-			data:{
-				"reason":reason,
-				"process":"delete"
+			data: {
+				"reason": reason,
+				"process": "delete"
 			},
-			"id" :$scope.selectedTransaction.id
+			"id": $scope.selectedTransaction.id
 		};
 		var transactionDeleteSuccessCallback = function(data) {
 			hideLoaderAndClosePopup();
@@ -63,8 +63,8 @@ sntRover.controller('rvBillCardPopupCtrl',
 
 		var split_type = isAmountType ? $rootScope.currencySymbol:'%';
 		var splitData = {
-			"id" :$scope.selectedTransaction.id,
-			"data":{
+			"id": $scope.selectedTransaction.id,
+			"data": {
 				"split_type": split_type,
    				"split_value": qty
 			}
@@ -91,10 +91,10 @@ sntRover.controller('rvBillCardPopupCtrl',
 	$scope.editCharge = function(newAmount, chargeCode, adjustmentReason) {
 		var params = {
 			id: $scope.selectedTransaction.id,
-			updatedData : {
-				new_amount : newAmount || undefined,
-				charge_code_id : chargeCode.id,
-				adjustment_reason : adjustmentReason
+			updatedData: {
+				new_amount: newAmount || undefined,
+				charge_code_id: chargeCode.id,
+				adjustment_reason: adjustmentReason
 			}
 		};
 		$scope.invokeApi(RVBillCardSrv.transactionEdit, params, transactionEditSuccessCallback, failureCallBack);

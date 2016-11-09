@@ -9,11 +9,11 @@ admin.controller('ADDateRangeModalCtrl', ['$scope',
     // CICO-27286
     var maxDate = tzIndependentDate($rootScope.businessDate),
         datePickerDefaults = {
-          minDate : tzIndependentDate($rootScope.businessDate),
-          maxDate :  new Date(maxDate.setFullYear(maxDate.getFullYear() + $rootScope.rateDateRangeLimit)),
-          changeYear : true,
-          changeMonth : true,
-          yearRange : "0:+5"
+          minDate: tzIndependentDate($rootScope.businessDate),
+          maxDate: new Date(maxDate.setFullYear(maxDate.getFullYear() + $rootScope.rateDateRangeLimit)),
+          changeYear: true,
+          changeMonth: true,
+          yearRange: "0:+5"
         };
 
     datePickerDefaults.maxDate.setDate(datePickerDefaults.maxDate.getDate() -1);

@@ -16,7 +16,7 @@ sntRover.controller('contractStartCalendarCtrl', ['$rootScope', '$scope', 'dateF
 	    $scope.dateOptions = {
 		     changeYear: true,
 		     changeMonth: true,
-		     minDate:tzIndependentDate($rootScope.businessDate),
+		     minDate: tzIndependentDate($rootScope.businessDate),
 		     yearRange: "0:+10",
 		     onSelect: function() {
 

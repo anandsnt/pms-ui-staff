@@ -142,10 +142,10 @@ admin.controller('ADTranslationCtrl', ['$scope', '$rootScope', '$state', 'ADTran
         $scope.languages = availableLanguages;
         $scope.menuDetails = menuDetails;
         $scope.filter = {
-            locale : $scope.languages.default_locale,
-            menuOption : $scope.menuDetails.menu_options[0].id,
-            item : $scope.menuDetails.menu_options[0].option_items[0].id,
-            searchText : ""
+            locale: $scope.languages.default_locale,
+            menuOption: $scope.menuDetails.menu_options[0].id,
+            item: $scope.menuDetails.menu_options[0].option_items[0].id,
+            searchText: ""
         };
 
         $scope.items = $scope.menuDetails.menu_options[0].option_items;

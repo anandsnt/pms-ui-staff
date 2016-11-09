@@ -59,7 +59,7 @@ admin.controller('ADHotelListCtrl', ['$scope', '$rootScope', '$state', '$statePa
       	// Toggle OFF action perform without confirm box.
       	if(confirmForReservationImport) {
 	      	var isResImportOn = hotel.is_res_import_on === 'true' ? false : true;
-	      	var data = {'hotel_id' :  hotel.id,  'is_res_import_on': isResImportOn };
+	      	var data = {'hotel_id': hotel.id,  'is_res_import_on': isResImportOn };
 	      	selectedHotel = hotel;
 	      	var postSuccess = function() {
 	      		selectedHotel.is_res_import_on = (selectedHotel.is_res_import_on === 'true') ? 'false' : 'true';

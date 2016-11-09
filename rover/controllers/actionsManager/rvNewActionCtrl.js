@@ -21,19 +21,19 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
                 onSelect: function (date, datePickerObj) {
                     $scope.newAction.dueDate = new tzIndependentDate(rvUtilSrv.get_date_from_date_picker(datePickerObj));
                 },
-                beforeShow:function() {
+                beforeShow: function() {
                     angular.element("#ui-datepicker-div").after(angular.element('<div></div>', {
-                        id :"ui-datepicker-overlay",
+                        id: "ui-datepicker-overlay",
                         class: $scope.ngDialogId ? "transparent" : "" //If a dialog is already open then make overlay transparent
                     }));
                 },
-                onClose:function() {
+                onClose: function() {
                     angular.element("#ui-datepicker-overlay").remove();
                 }
             };
 
             $scope.callAPI(rvActionTasksSrv.fetchCurrentTime, {
-                successCallBack:function(response) {
+                successCallBack: function(response) {
                     $scope.newAction.dueTime = response;
                 }
             });

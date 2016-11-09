@@ -81,12 +81,12 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			var sumryData = $scope.groupConfigData.summary,
 				oldSumryData = summaryMemento,
 				options = {
-					fromDate 		: sumryData.block_from,
-					toDate 			: sumryData.block_to,
-					oldFromDate 	: oldSumryData.block_from,
-					oldToDate 		: oldSumryData.block_to,
-					successCallBack : successCallBackOfMoveButton,
-					failureCallBack : failureCallBackOfMoveButton
+					fromDate: sumryData.block_from,
+					toDate: sumryData.block_to,
+					oldFromDate: oldSumryData.block_from,
+					oldToDate: oldSumryData.block_to,
+					successCallBack: successCallBackOfMoveButton,
+					failureCallBack: failureCallBackOfMoveButton
 				};
 			$scope.changeDatesActions.clickedOnMoveSaveButton (options);
 		};
@@ -148,11 +148,11 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			var sumryData = $scope.groupConfigData.summary,
 				oldSumryData = summaryMemento,
 				options = {
-					fromDate 		: sumryData.block_from,
-					oldFromDate 	: oldSumryData.block_from,
-					successCallBack : successCallBackOfEarlierArrivalDateChange,
-					failureCallBack : failureCallBackOfEarlierArrivalDateChange,
-					cancelPopupCallBack	: cancelCallBackofDateChange
+					fromDate: sumryData.block_from,
+					oldFromDate: oldSumryData.block_from,
+					successCallBack: successCallBackOfEarlierArrivalDateChange,
+					failureCallBack: failureCallBackOfEarlierArrivalDateChange,
+					cancelPopupCallBack: cancelCallBackofDateChange
 				};
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerEarlierArrDateChange (options);
@@ -174,11 +174,11 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			var sumryData = $scope.groupConfigData.summary,
 				oldSumryData = summaryMemento,
 				options = {
-					fromDate 		: sumryData.block_from,
-					oldFromDate 	: oldSumryData.block_from,
-					successCallBack : successCallBackOfLaterArrivalDateChange,
-					failureCallBack : failureCallBackOfLaterArrivalDateChange,
-					cancelPopupCallBack	: cancelCallBackofDateChange
+					fromDate: sumryData.block_from,
+					oldFromDate: oldSumryData.block_from,
+					successCallBack: successCallBackOfLaterArrivalDateChange,
+					failureCallBack: failureCallBackOfLaterArrivalDateChange,
+					cancelPopupCallBack: cancelCallBackofDateChange
 				};
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerLaterArrDateChange (options);
@@ -212,11 +212,11 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			var sumryData = $scope.groupConfigData.summary,
 				oldSumryData = summaryMemento,
 				options = {
-					toDate 			: sumryData.block_to,
-					oldToDate 		: oldSumryData.block_to,
-					successCallBack : successCallBackOfEarlierDepartureDateChange,
-					failureCallBack : failureCallBackOfEarlierDepartureDateChange,
-					cancelPopupCallBack	: cancelCallBackofDateChange
+					toDate: sumryData.block_to,
+					oldToDate: oldSumryData.block_to,
+					successCallBack: successCallBackOfEarlierDepartureDateChange,
+					failureCallBack: failureCallBackOfEarlierDepartureDateChange,
+					cancelPopupCallBack: cancelCallBackofDateChange
 				};
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerEarlierDepDateChange (options);
@@ -247,11 +247,11 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			var sumryData = $scope.groupConfigData.summary,
 				oldSumryData = summaryMemento,
 				options = {
-					toDate 			: sumryData.block_to,
-					oldToDate 		: oldSumryData.block_to,
-					successCallBack : successCallBackOfLaterDepartureDateChange,
-					failureCallBack : failureCallBackOfLaterDepartureDateChange,
-					cancelPopupCallBack	: cancelCallBackofDateChange
+					toDate: sumryData.block_to,
+					oldToDate: oldSumryData.block_to,
+					successCallBack: successCallBackOfLaterDepartureDateChange,
+					failureCallBack: failureCallBackOfLaterDepartureDateChange,
+					cancelPopupCallBack: cancelCallBackofDateChange
 				};
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerLaterDepDateChange (options);
@@ -259,8 +259,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
 		var triggerEarlierDepartureDateChangeInvalidError = function() {
 			var options = {
-				cancelPopupCallBack	: cancelCallBackofDateChange,
-				message 			: "GROUP_EARLIER_DEP_DATE_CHANGE_WARNING"
+				cancelPopupCallBack: cancelCallBackofDateChange,
+				message: "GROUP_EARLIER_DEP_DATE_CHANGE_WARNING"
 			};
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.showDateChangeInvalidWarning(options);
@@ -268,8 +268,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
 		var triggerLaterArrivalDateChangeInvalidError = function() {
 			var options = {
-				cancelPopupCallBack	: cancelCallBackofDateChange,
-				message 			: "GROUP_LATER_ARR_DATE_CHANGE_WARNING"
+				cancelPopupCallBack: cancelCallBackofDateChange,
+				message: "GROUP_LATER_ARR_DATE_CHANGE_WARNING"
 			};
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.showDateChangeInvalidWarning(options);
@@ -902,7 +902,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
 			var params = {
 				group_id: summaryData.group_id,
-				rate_id	: summaryData.rate
+				rate_id: summaryData.rate
 			};
 			var options = {
 				successCallBack: onRateChangeSuccessCallBack,
@@ -1241,7 +1241,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 	      	if ($scope.groupSummaryData.newNote) {
 					var onUpdateGroupNoteSuccess = function(data) {
 						$scope.groupSummaryData.editingNote.description = $scope.groupSummaryData.newNote;
-						var noteArrayIndex = _.findIndex($scope.groupConfigData.summary.notes, {note_id : data.note_id});
+						var noteArrayIndex = _.findIndex($scope.groupConfigData.summary.notes, {note_id: data.note_id});
 						$scope.groupConfigData.summary.notes[noteArrayIndex] = $scope.groupSummaryData.editingNote;
 						$scope.refreshScroller("groupSummaryScroller");
 						$scope.cancelEditModeGroupNote();

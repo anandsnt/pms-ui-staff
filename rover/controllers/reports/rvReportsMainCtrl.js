@@ -191,7 +191,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		// NOTE: 'resetSelf' will be called by the 'ListCtrl', while opening a new report
 		// in which case the old and new report IDs will be different
 		$scope.printOptions = {
-			resetSelf : function () {
+			resetSelf: function () {
 				this.showModal  = undefined;
 				this.afterPrint = undefined;
 			}
@@ -276,7 +276,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			item_42: false,
 			item_43: false,
 			item_44: false,
-			item_45 : false
+			item_45: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( ! $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -1001,7 +1001,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             });
 
             var groupIds = {
-                "addon_group_ids" : selectedIds
+                "addon_group_ids": selectedIds
             };
 
             // this is very crude way of manupulating the data
@@ -1030,9 +1030,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 		function genParams (report, page, perPage, changeAppliedFilter) {
 			var params = {
-				'id'       : report.id,
-				'page'     : page,
-				'per_page' : perPage
+				'id': report.id,
+				'page': page,
+				'per_page': perPage
 			};
 
 			var key         = '',
@@ -1048,28 +1048,28 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			// shown on the report details footer
 			if ( changeAppliedFilter ) {
 				$scope.appliedFilter = {
-					'options'      : [],
-					'display'      : [],
-					'show'         : [],
-					'markets'      : [],
-					'sources'      : [],
-					'origins'      : [],
-					'origin_urls'  : [],
-					'guarantees'   : [],
-					'chargeGroups' : [],
-					'chargeCodes'  : [],
-					'holdStatuses' : [],
-					'addonGroups'  : [],
-					'addons'       : [],
-					'reservationStatus' : [],
+					'options': [],
+					'display': [],
+					'show': [],
+					'markets': [],
+					'sources': [],
+					'origins': [],
+					'origin_urls': [],
+					'guarantees': [],
+					'chargeGroups': [],
+					'chargeCodes': [],
+					'holdStatuses': [],
+					'addonGroups': [],
+					'addons': [],
+					'reservationStatus': [],
 					'guestOrAccount': [],
 					'chargeTypes': [],
 					'users': [],
 					'campaign_types': [],
 					'floorList': [],
-					'rates' : [],
+					'rates': [],
 					'assigned_departments': [],
-					'completion_status' : []
+					'completion_status': []
 				};
 			};
 
@@ -2196,17 +2196,17 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 		$scope.listUserAutoCompleteOptions = angular.extend({
 			position: {
-				'my'        : 'left bottom',
-				'at'        : 'left top',
-				'collision' : 'flip'
+				'my': 'left bottom',
+				'at': 'left top',
+				'collision': 'flip'
 			}
 		}, userAutoCompleteCommon);
 
 		$scope.detailsUserAutoCompleteOptions = angular.extend({
 			position: {
-				'my'        : 'left bottom',
-				'at'        : 'right+20 bottom',
-				'collision' : 'flip'
+				'my': 'left bottom',
+				'at': 'right+20 bottom',
+				'collision': 'flip'
 			}
 		}, userAutoCompleteCommon);
 

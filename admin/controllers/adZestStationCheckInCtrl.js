@@ -28,7 +28,7 @@ admin.controller('ADZestStationCheckInCtrl', ['$scope', '$rootScope', '$state', 
             };
 
             var params = {
-                                'kiosk':$scope.zestSettings
+                                'kiosk': $scope.zestSettings
                              };
             $scope.invokeApi(ADZestStationSrv.save, params, saveSuccess, saveFailed);
         };

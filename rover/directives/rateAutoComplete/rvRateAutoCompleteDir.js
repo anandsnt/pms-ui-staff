@@ -35,8 +35,8 @@
 	            query: $scope.rate_name
 	        };
 	        var options = {
-	            params 			: params,
-	            successCallBack : successCallBackOfFetchRates,
+	            params: params,
+	            successCallBack: successCallBackOfFetchRates,
 	            successCallBackParameters: {
 					callBackToAutoComplete: callBackToAutoComplete
 				}
@@ -117,15 +117,15 @@
 		 */
 		var initializeMe = function() {
 			$scope.rateAutocompleteOptions = {
-	            delay		: _.isUndefined($scope.delay) ? 600 : parseInt($scope.delay),
-	            minLength	: 0,
-		        position	: {
-		            my 			: "left top",
-		            at 			: "left bottom",
-		            collision	: 'flip'		            
+	            delay: _.isUndefined($scope.delay) ? 600 : parseInt($scope.delay),
+	            minLength: 0,
+		        position: {
+		            my: "left top",
+		            at: "left bottom",
+		            collision: 'flip'		            
 		        },
-	            source 		: autoCompleteSourceHandler,
-	            select 		: autoCompleteSelectHandler
+	            source: autoCompleteSourceHandler,
+	            select: autoCompleteSelectHandler
 			};
 			setTimeout(function() {
 				$scope.$apply(function() {					
@@ -146,15 +146,15 @@
         rvCompanyCardSrv = RVCompanyCardSrv,
         highlightFilter_ = highlightFilter;
         return {
-            restrict 	: 'AE',
-			replace 	: true,
-			scope 		: {
-				rate_id  			:'=selectedRateId',
-				rate_name 			: '=ngModel',
-				label 				: '@label',
-				entryDivClass 		: '@entryDivClass',
-				delay 				: '@delay',
-				minLengthToTrigger	: '@minLengthToTrigger'
+            restrict: 'AE',
+			replace: true,
+			scope: {
+				rate_id: '=selectedRateId',
+				rate_name: '=ngModel',
+				label: '@label',
+				entryDivClass: '@entryDivClass',
+				delay: '@delay',
+				minLengthToTrigger: '@minLengthToTrigger'
 			},
 			link: linkFn,
             controller: autoCompleteCtrlFn,

@@ -89,7 +89,7 @@
 	var fetchHotelTime = function() {
 		var deferred = $q.defer();
 		var url = '/guest_web/home/fetch_hotel_time.json';
-		parameters = {'reservation_id':$rootScope.reservationID};
+		parameters = {'reservation_id': $rootScope.reservationID};
 		$http.get(url, {
 			params: parameters
 		}).success(function(response) {
@@ -156,18 +156,18 @@
 	
 
 	return {
-	responseData		: responseData,
-	postGuestDetails 	: postGuestDetails,
-	getGuestDetails		: getGuestDetails,
-	fetchCountryList	: fetchCountryList,
-	postGuestBirthDate	: postGuestBirthDate,
-	fetchCountryCode	: fetchCountryCode,
-	fetchHotelTime 		: fetchHotelTime,
-	fetchDepositDetails	: fetchDepositDetails,
-	submitPayment 		: submitPayment,
-	fetchSortedCountryList : fetchSortedCountryList,
-	fetchSurveyDetails  : fetchSurveyDetails,
-	submitSurvey        : submitSurvey
+	responseData: responseData,
+	postGuestDetails: postGuestDetails,
+	getGuestDetails: getGuestDetails,
+	fetchCountryList: fetchCountryList,
+	postGuestBirthDate: postGuestBirthDate,
+	fetchCountryCode: fetchCountryCode,
+	fetchHotelTime: fetchHotelTime,
+	fetchDepositDetails: fetchDepositDetails,
+	submitPayment: submitPayment,
+	fetchSortedCountryList: fetchSortedCountryList,
+	fetchSurveyDetails: fetchSurveyDetails,
+	submitSurvey: submitSurvey
 	}
 };
 

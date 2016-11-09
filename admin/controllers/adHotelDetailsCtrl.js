@@ -82,7 +82,7 @@ admin.controller('ADHotelDetailsCtrl', [
 
 				setDropdownDefaults();
 			};
-			$scope.invokeApi(ADHotelDetailsSrv.fetchEditData, {'id':$stateParams.id}, fetchSuccess);
+			$scope.invokeApi(ADHotelDetailsSrv.fetchEditData, {'id': $stateParams.id}, fetchSuccess);
 		}
 
 	}
@@ -216,7 +216,7 @@ admin.controller('ADHotelDetailsCtrl', [
 			var postSuccess = function() {
 				$scope.$emit('hideLoader');
 				$state.go('admin.dashboard', {menu: 0});
-				$scope.$emit('hotelNameChanged', {"new_name":$scope.data.hotel_name});
+				$scope.$emit('hotelNameChanged', {"new_name": $scope.data.hotel_name});
 				angular.forEach($scope.data.currency_list, function(item, index) {
 		       		if (item.id === $scope.data.default_currency) {
 		       			$rootScope.currencySymbol = getCurrencySign(item.code);
@@ -304,7 +304,7 @@ admin.controller('ADHotelDetailsCtrl', [
 		if($scope.isAdminSnt) {
 
     		if($scope.previousStateIsDashBoard) {
-    			$state.go("admin.dashboard", {"menu":0});
+    			$state.go("admin.dashboard", {"menu": 0});
     		}
     		else{
     			$state.go("admin.hotels");
@@ -313,14 +313,14 @@ admin.controller('ADHotelDetailsCtrl', [
 		}
 		else {
 			if($rootScope.previousStateParam) {
-				$state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
+				$state.go($rootScope.previousState, { menu: $rootScope.previousStateParam});
 			}
 			else if($rootScope.previousState) {
 				$state.go($rootScope.previousState);
 			}
 			else
 			{
-				$state.go('admin.dashboard', {menu : 0});
+				$state.go('admin.dashboard', {menu: 0});
 			}
 		}
 	};

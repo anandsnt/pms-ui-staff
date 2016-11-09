@@ -15,8 +15,8 @@ var checkoutNowService = function($q, $rootScope, $http) {
 		};
 
 		return {
-			response:response,
-			completeCheckout:completeCheckout
+			response: response,
+			completeCheckout: completeCheckout
 
 		};
 };

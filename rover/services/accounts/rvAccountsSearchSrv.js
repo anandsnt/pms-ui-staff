@@ -17,12 +17,12 @@ angular.module('sntRover').service('rvAccountsSrv',
 				url = '/api/posting_accounts/search';
 
 			var data = {
-				'q'			: params.query,
-				'status'	: params.status,
-				'per_page' 	: params.per_page,
-				'page'  	: params.page,
+				'q': params.query,
+				'status': params.status,
+				'per_page': params.per_page,
+				'page': params.page,
 				'account_type': params.account_type,
-				'is_non_zero' : params.is_non_zero
+				'is_non_zero': params.is_non_zero
 			};
 
 			rvBaseWebSrvV2.getJSON(url, data).then(

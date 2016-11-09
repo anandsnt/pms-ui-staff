@@ -5,8 +5,8 @@ angular.module('sntRover').service('RVValidateCheckinSrv', ['$http', '$q', 'RVBa
 		var url = '/api/guest_details/' + data.user_id;
 		var dataToPost = {
 			"email": data.email,
-			"guest_id":data.guest_id,
-			"phone":data.phone,
+			"guest_id": data.guest_id,
+			"phone": data.phone,
 			"mobile": data.mobile
 		};
 		rvBaseWebSrvV2.putJSON(url, dataToPost).then(function(data) {

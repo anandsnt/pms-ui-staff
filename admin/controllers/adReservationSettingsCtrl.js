@@ -26,8 +26,8 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
       "value": "%",
       "name": "%"
     }, {
-      "value" : "amount",
-      "name"  : $rootScope.currencySymbol
+      "value": "amount",
+      "name": $rootScope.currencySymbol
     }];
     $scope.checkin_types = [{
       "value": "perStay",
@@ -40,8 +40,8 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
       "value": "%",
       "name": "%"
     }, {
-      "value" : "amount",
-      "name"  : $rootScope.currencySymbol
+      "value": "amount",
+      "name": $rootScope.currencySymbol
     }];
     $scope.eod_types = [{
       "value": "perStay",
@@ -52,13 +52,13 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
     }];
 
     $scope.incidentalObj = {
-      'values' : [{
-        "value" : "amount",
-        "name"  : $rootScope.currencySymbol
+      'values': [{
+        "value": "amount",
+        "name": $rootScope.currencySymbol
       }],
-      'types' : [{
-        "value" : "perStay",
-        "name"  : "Per Stay"
+      'types': [{
+        "value": "perStay",
+        "name": "Per Stay"
         }, {
         "value": "perNight",
         "name": "Per Night"

@@ -129,7 +129,7 @@ $scope.loadTable = function() {
          reservations.push(item.reservation_id);
        }
   });
-  	var emailSendingData = {'reservations' : reservations};
+  	var emailSendingData = {'reservations': reservations};
     var sendMailClikedSuccessCallback = function(data) {
         $scope.$emit('hideLoader');
         $scope.successMessage = data.message;

@@ -51,8 +51,8 @@ admin.controller('adGustoPOSSetupCtrl', ['$scope', 'gustoSetupValues', 'adGustoP
 		}
 
         var options = {
-            params 			: params,
-            successCallBack : successCallBackOfgustoPOSSetup
+            params: params,
+            successCallBack: successCallBackOfgustoPOSSetup
         };
         $scope.callAPI(adGustoPOSSetupSrv.saveGustoPOSConfiguration, options);
 	};

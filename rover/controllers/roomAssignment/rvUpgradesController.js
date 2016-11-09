@@ -5,7 +5,7 @@ angular.module('sntRover').controller('RVUpgradesCtrl', ['$scope', '$state', '$s
 	var title = $filter('translate')('ROOM_UPGRADES_TITLE');
 	$scope.setTitle(title);
 
-	var scrollerOptions = {tap:true, click:true};
+	var scrollerOptions = {tap: true, click: true};
 	$scope.setScroller('upgradesView', scrollerOptions);
 	$scope.eventTimestamp = "";
 
@@ -137,9 +137,9 @@ angular.module('sntRover').controller('RVUpgradesCtrl', ['$scope', '$state', '$s
 		}
 		ngDialog.open(
 		{
-			template 	: '/assets/partials/roomAssignment/rvGroupRoomTypeNotConfigured.html',
-			controller 	: 'rvBorrowRoomTypeCtrl',
-			scope 		: $scope
+			template: '/assets/partials/roomAssignment/rvGroupRoomTypeNotConfigured.html',
+			controller: 'rvBorrowRoomTypeCtrl',
+			scope: $scope
         });
 	};
 
@@ -207,19 +207,19 @@ angular.module('sntRover').controller('RVUpgradesCtrl', ['$scope', '$state', '$s
 
 		_.extend($scope.selectedUpgrade,
 		{
-			room_id 		: selectedListItem.room_id,
-			room_no 		: selectedListItem.upgrade_room_number,
-			room_type_name 	: selectedListItem.upgrade_room_type_name,
-			room_type_code 	: selectedListItem.upgrade_room_type,
-			room_type_level	: parseInt(selectedListItem.room_type_level)
+			room_id: selectedListItem.room_id,
+			room_no: selectedListItem.upgrade_room_number,
+			room_type_name: selectedListItem.upgrade_room_type_name,
+			room_type_code: selectedListItem.upgrade_room_type,
+			room_type_level: parseInt(selectedListItem.room_type_level)
 		});
 
 		//yes. ALL set. Go!
 		var options = {
-            params 			: params,
-            successCallBack : successCallbackselectUpgrade,
-            failureCallBack : errorCallbackselectUpgrade,
-            successCallBackParameters: 	{ selectedListItem: selectedListItem}
+            params: params,
+            successCallBack: successCallbackselectUpgrade,
+            failureCallBack: errorCallbackselectUpgrade,
+            successCallBackParameters: { selectedListItem: selectedListItem}
         };
         $scope.callAPI(RVUpgradesSrv.selectUpgrade, options);
 	};

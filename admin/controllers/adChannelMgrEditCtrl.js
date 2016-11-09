@@ -35,7 +35,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                     $scope.excludedRoomTypes = data.room_types;
                 };
                 
-                var params =  {'id':rate_id};
+                var params =  {'id': rate_id};
                 $scope.invokeApi(ADChannelMgrSrv.getRoomTypesByRate, params, onFetchSuccess);
 
             } else {
@@ -83,7 +83,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                     
                 };
                 
-                var params =  {'id':rate_id};
+                var params =  {'id': rate_id};
                 $scope.invokeApi(ADChannelMgrSrv.getRoomTypesByRate, params, onFetchSuccess);
                 
                 

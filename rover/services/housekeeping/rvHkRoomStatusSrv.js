@@ -10,34 +10,34 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 
 		this.initFilters = function() {
 			return {
-				"dirty"                : false,
-				"pickup"               : false,
-				"clean"                : false,
-				"inspected"            : false,
-				"out_of_order"         : false,
-				"out_of_service"       : false,
-				"vacant"               : false,
-				"occupied"             : false,
-				"stayover"             : false,
-				"not_reserved"         : false,
-				"arrival"              : false,
-				"arrived"              : false,
-				"dueout"               : false,
-				"departed"             : false,
-				"dayuse"               : false,
-				"queued"               : false,
-				"lateCheckout"         : false,
-				"pre_checkin"          : false,
-				"floorFilterSingle"    : "",
-				"floorFilterStart"     : "",
-				"floorFilterEnd"       : "",
-				"showAllFloors"        : true,
-				"filterByWorkType"     : false,
-				"filterByEmployeeName" : false,
-				"singleRoomType"       : false,
-				"query"                : "",
-				"page"                 : 1,
-				"perPage"              : $window.innerWidth < 599 ? 25 : 50
+				"dirty": false,
+				"pickup": false,
+				"clean": false,
+				"inspected": false,
+				"out_of_order": false,
+				"out_of_service": false,
+				"vacant": false,
+				"occupied": false,
+				"stayover": false,
+				"not_reserved": false,
+				"arrival": false,
+				"arrived": false,
+				"dueout": false,
+				"departed": false,
+				"dayuse": false,
+				"queued": false,
+				"lateCheckout": false,
+				"pre_checkin": false,
+				"floorFilterSingle": "",
+				"floorFilterStart": "",
+				"floorFilterEnd": "",
+				"showAllFloors": true,
+				"filterByWorkType": false,
+				"filterByEmployeeName": false,
+				"singleRoomType": false,
+				"query": "",
+				"page": 1,
+				"perPage": $window.innerWidth < 599 ? 25 : 50
 			};
 		};
 
@@ -56,8 +56,8 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 				floor_start          = false,
 				floor_end            = false,
 				params               = {
-					'page'     : filter.page,
-					'per_page' : filter.perPage
+					'page': filter.page,
+					'per_page': filter.perPage
 				};
 
 			// if there is a search query, ignore all other filters. Reset page to 1
@@ -230,8 +230,8 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 				fetchedWorkTypes = workTypes;
 
 				var params = {
-					'date'         : $rootScope.businessDate,
-					'employee_ids' : [$rootScope.userId]
+					'date': $rootScope.businessDate,
+					'employee_ids': [$rootScope.userId]
 				};
 
 				this.fetchWorkAssignments( params ).then( _checkHasActiveWorkSheet.bind(this) );
@@ -272,8 +272,8 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 
 			function _resolveData (roomList) {
 				var payload = {
-					'roomList':    roomList,
-					'workTypes':   fetchedWorkTypes,
+					'roomList': roomList,
+					'workTypes': fetchedWorkTypes,
 					'assignments': fetchedAssignments
 				};
 

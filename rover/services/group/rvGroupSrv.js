@@ -74,7 +74,7 @@ angular.module('sntRover').service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
 			var deferred = $q.defer(),
 				url = '/api/reservations/' + params.reservation_id + '/add_group',
 				data = {
-					'group_id' : params.group_id
+					'group_id': params.group_id
 				};
 
 			rvBaseWebSrvV2.postJSON(url, data).then(
@@ -97,7 +97,7 @@ angular.module('sntRover').service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
 			var deferred = $q.defer(),
 				url = '/api/reservations/' + params.reservation_id + '/remove_group',
 				data = {
-					'group_id' : params.group_id
+					'group_id': params.group_id
 				};
 
 			rvBaseWebSrvV2.postJSON(url, data).then(

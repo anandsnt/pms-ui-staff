@@ -49,9 +49,9 @@ sntRover.controller('rvPaginationCtrl', ['$scope', '$attrs', function($scope, $a
     var getPageNoArray = function(currentPage, totalPages, showCount) {
 
         var pageNoList = {
-            firstDelim  : false,
-            lastDelim   : false,
-            numbers     : []
+            firstDelim: false,
+            lastDelim: false,
+            numbers: []
         };
 
         showCount = showCount || 5;     // Maximun number of page number buttons showing. default to 5.

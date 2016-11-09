@@ -17,10 +17,10 @@ var GridRowBackground = React.createClass({
 		/*Create hourly spans across each grid row*/
 		for(var i = 0; i < this.props.display.hours; i++) {
 			hourly_divs.push(React.DOM.span({
-				key: 		'date-time-' + i,
-				className: 	'hour',
+				key: 'date-time-' + i,
+				className: 'hour',
 				style: {
-					width: 	this.props.display.px_per_hr + 'px'
+					width: this.props.display.px_per_hr + 'px'
 				}
 			}));
 		}

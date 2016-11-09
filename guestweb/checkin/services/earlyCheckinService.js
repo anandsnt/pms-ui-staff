@@ -22,7 +22,7 @@
 
 	return {
 		responseData: responseData,
-		applyEarlyCheckin : applyEarlyCheckin
+		applyEarlyCheckin: applyEarlyCheckin
 	};
 };
 

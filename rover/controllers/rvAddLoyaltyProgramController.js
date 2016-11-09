@@ -3,7 +3,7 @@ sntRover.controller('rvAddLoyaltyProgramController', ['$scope', '$rootScope', '$
 
 	$scope.availableFFPS = [];
 	$scope.availableHLPS = [];
-	$scope.loyaltyPrograms = [{name:"Frequent Flyer Program", code:"FFP"}, {name:"Hotel Loyalty Program", code:"HLP"}];
+	$scope.loyaltyPrograms = [{name: "Frequent Flyer Program", code: "FFP"}, {name: "Hotel Loyalty Program", code: "HLP"}];
 	$scope.selectedLoyaltyProgram = "";
 	$scope.selectedLoyaltyType = "";
 	$scope.selectedLevel = "";
@@ -43,11 +43,11 @@ sntRover.controller('rvAddLoyaltyProgramController', ['$scope', '$rootScope', '$
             var use_ffp = $scope.$parent.reservationData.use_ffp,
                 use_hlp = $scope.$parent.reservationData.use_hlp;
             if (use_ffp === true && use_hlp === false) {
-                $scope.loyaltyPrograms = [{name:"Frequent Flyer Program", code:"FFP"}];
+                $scope.loyaltyPrograms = [{name: "Frequent Flyer Program", code: "FFP"}];
             } else if (use_ffp === false && use_hlp === true) {
-                $scope.loyaltyPrograms = [{name:"Hotel Loyalty Program", code:"HLP"}];
+                $scope.loyaltyPrograms = [{name: "Hotel Loyalty Program", code: "HLP"}];
             } else if (use_ffp === true && use_hlp === true) {
-                $scope.loyaltyPrograms = [{name:"Frequent Flyer Program", code:"FFP"}, {name:"Hotel Loyalty Program", code:"HLP"}];
+                $scope.loyaltyPrograms = [{name: "Frequent Flyer Program", code: "FFP"}, {name: "Hotel Loyalty Program", code: "HLP"}];
             } else if (use_ffp === false && use_hlp === false) {
                 $scope.loyaltyPrograms = [];
             }

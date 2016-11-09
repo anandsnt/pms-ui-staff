@@ -60,12 +60,12 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		var isClosedArrivalRestrictionPresent = function(dailyData) {
 
 			    var restriction_list, room_rates, 
-			    filtered_rate = _.findWhere(dailyData.rates, {id:$scope.stateVariables.selectedRate});
+			    filtered_rate = _.findWhere(dailyData.rates, {id: $scope.stateVariables.selectedRate});
 			    
 			    if(!isInBestAvailableMode() && $scope.stateVariables.selectedRoom !== '' && $scope.stateVariables.selectedRate !== '') {
 				      
-                      var filtered_room = typeof filtered_rate !== 'undefined' ? _.findWhere(filtered_rate.room_rates, {room_type_id:$scope.stateVariables.selectedRoom}): undefined ;
-                      if(typeof filtered_room != 'undefined' &&  typeof _.findWhere(filtered_room.restrictions, {restriction_type_id:2}) === 'undefined')
+                      var filtered_room = typeof filtered_rate !== 'undefined' ? _.findWhere(filtered_rate.room_rates, {room_type_id: $scope.stateVariables.selectedRoom}): undefined ;
+                      if(typeof filtered_room != 'undefined' &&  typeof _.findWhere(filtered_room.restrictions, {restriction_type_id: 2}) === 'undefined')
                 	      return false;
                       else 
                 	      return true;
@@ -85,7 +85,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
                  
                  	var restrictions_list = _.pluck (room_rates, "restrictions");
                  	for(var j = 0; j < restrictions_list.length; j++ ) {
-                 	   if(typeof _.findWhere(restrictions_list[j], {restriction_type_id:2}) === 'undefined')
+                 	   if(typeof _.findWhere(restrictions_list[j], {restriction_type_id: 2}) === 'undefined')
                  	   	   return false;
                     }
                  
@@ -138,11 +138,11 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			}else if(!isRoomTypeAvailable(dailyData)) {
                 return (dailyData.room_types[$scope.stateVariables.selectedRoom]).toString();
 			}else if($scope.stateVariables.selectedRate !== "" && $scope.stateVariables.selectedRoom !== "") {
-                var rate = _.findWhere(dailyData.rates, {id:$scope.stateVariables.selectedRate});
-                var room_rate = typeof rate !== "undefined" ? _.findWhere(rate.room_rates, {room_type_id:$scope.stateVariables.selectedRoom}) : undefined;
+                var rate = _.findWhere(dailyData.rates, {id: $scope.stateVariables.selectedRate});
+                var room_rate = typeof rate !== "undefined" ? _.findWhere(rate.room_rates, {room_type_id: $scope.stateVariables.selectedRoom}) : undefined;
 			    return typeof room_rate !== "undefined" ? "" : "undefined";
 			}else if($scope.stateVariables.selectedRate !== "") {
-				var rate = _.findWhere(dailyData.rates, {id:$scope.stateVariables.selectedRate});
+				var rate = _.findWhere(dailyData.rates, {id: $scope.stateVariables.selectedRate});
 				if(rate &&  _.reduce(rate.room_rates, function(a, b) {
 					return b.availability > 0 ? a.concat(b) : a;
 				}, []).length > 0 )
@@ -186,7 +186,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				}),
 				minAvailableRoomRate = 	availableRoomRates[0],		
 				minAmongRate = _.min (_.pluck(firstAvailableRoomRate, 'single')),
-				min_room_rate = _.findWhere(firstAvailableRoomRate, {single:minAmongRate}), 
+				min_room_rate = _.findWhere(firstAvailableRoomRate, {single: minAmongRate}), 
 				minAmongRate = minAmongRate === null ? 0 : minAmongRate,
 				bestAvailableRate = minAmongRate,
 
@@ -200,19 +200,19 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				if (minAmongRate !== null && minAmongRate <=  bestAvailableRate) {
 					bestAvailableRate = minAmongRate;
 					minAvailableRoomRate = availableRoomRates[i];
-					min_room_rate = _.findWhere(eachAvailableRoomRate, {single:minAmongRate});
+					min_room_rate = _.findWhere(eachAvailableRoomRate, {single: minAmongRate});
 				}
 			}
 			bestAvailableRate = bestAvailableRate == Infinity ? "" : bestAvailableRate;
 			var bestRateData = {};
 			bestRateData.bestAvailableRate = bestAvailableRate.toString();
 			if(bestAvailableRate != '') {
-				bestRateData.room_type_name = _.findWhere($scope.stateVariables.rooms, {id:min_room_rate.room_type_id}).name;
+				bestRateData.room_type_name = _.findWhere($scope.stateVariables.rooms, {id: min_room_rate.room_type_id}).name;
 				bestRateData.rate_name = _.findWhere($scope.stateVariables.rates, {id: _.findWhere(availabileRates, {room_rates: minAvailableRoomRate}).id}).name;
 				bestRateData.availability = min_room_rate.availability;
 				_.each(min_room_rate.restrictions, function(restriction) {
 
-				restriction.description = _.findWhere($scope.stateVariables.restriction_types, {id:restriction.restriction_type_id}).description;
+				restriction.description = _.findWhere($scope.stateVariables.restriction_types, {id: restriction.restriction_type_id}).description;
 			});
 			bestRateData.restrictions = min_room_rate.restrictions;
 			}else{
@@ -233,7 +233,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
                 
 				$scope.stateVariables.selectedRoom = $scope.stateVariables.selectedRoom == null? "" : $scope.stateVariables.selectedRoom;
 				
-				if(typeof _.findWhere(room_rate.restrictions, {restriction_type_id:1}) !== 'undefined')
+				if(typeof _.findWhere(room_rate.restrictions, {restriction_type_id: 1}) !== 'undefined')
 					return false;
 				else if(isInRoomTypeSelectedMode() && room_rate.room_type_id !== $scope.stateVariables.selectedRoom && $scope.stateVariables.selectedRoom != "")
 					return false;
@@ -245,7 +245,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				else if(isInRoomTypeSelectedMode() && $scope.stateVariables.selectedRoom === "" && room_rate.availability
 					<= 0)
 					return false;
-				else if(dailyData.date === $scope.reservationData.arrivalDate && typeof _.findWhere(room_rate.restrictions, {restriction_type_id:2}) !== 'undefined')
+				else if(dailyData.date === $scope.reservationData.arrivalDate && typeof _.findWhere(room_rate.restrictions, {restriction_type_id: 2}) !== 'undefined')
 					return false;
 			}
 			return true;
@@ -275,15 +275,15 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			var bestRateData = findBestAvailableRateAgainstDate(dailyData);
 			var title = getTitleAgainstDailyData (dailyData);
 			var eventData = {
-				day 		: new tzIndependentDate(dailyData.date).getDate().toString(),
-				className 	: getClassNameAgainstDailyData (dailyData),
-				start 		: new tzIndependentDate (dailyData.date),
-				end 		: new tzIndependentDate (dailyData.date),
-				editable 	: false,
-				title 		: title == "" || title == 'undefined'? bestRateData.bestAvailableRate.toString() : title,
-				toolTipData : bestRateData,
-				currencySymbol : $scope.currencySymbol,
-				currentCalendar : ''
+				day: new tzIndependentDate(dailyData.date).getDate().toString(),
+				className: getClassNameAgainstDailyData (dailyData),
+				start: new tzIndependentDate (dailyData.date),
+				end: new tzIndependentDate (dailyData.date),
+				editable: false,
+				title: title == "" || title == 'undefined'? bestRateData.bestAvailableRate.toString() : title,
+				toolTipData: bestRateData,
+				currencySymbol: $scope.currencySymbol,
+				currentCalendar: ''
 			};
 
 			return eventData;
@@ -427,7 +427,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				contentHeight: 320,
 				weekMode: 'fixed',
 				ignoreTimezone: false, // For ignoring timezone,
-				dayRender 	: dayRendered
+				dayRender: dayRendered
 			};
 
 			$scope.leftCalendarOptions = _.extend({}, fullCalendarOptions);

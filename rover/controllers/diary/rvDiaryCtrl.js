@@ -58,8 +58,8 @@ angular.module('sntRover')
 		// data for next state
 		$rootScope.setNextState = {
 			data: {
-				'isFromDiary' : true,
-				'useCache'    : true
+				'isFromDiary': true,
+				'useCache': true
 			}
 		};
 
@@ -111,9 +111,9 @@ angular.module('sntRover')
 			 * @constant
 			 */
 			var DEFAULT_STATE = {
-				title : 'DASHBOARD',
-				name  : 'rover.dashboard',
-				param : {}
+				title: 'DASHBOARD',
+				name: 'rover.dashboard',
+				param: {}
 			};
 
 			if ( shouldUseOriginal ) {
@@ -121,16 +121,16 @@ angular.module('sntRover')
 				// if we should go back to a particular state
 				// defined in the diaryState
 				$r.setPrevState = {
-					title : goToThisPrev.title,
-					name  : goToThisPrev.name,
-					param : goToThisPrev.param
+					title: goToThisPrev.title,
+					name: goToThisPrev.name,
+					param: goToThisPrev.param
 				};
 			} else if ( isFlowState() ) {
 
 				// if the back state is part of the flow, just specify the title
 				// back state 'name' and 'param' will be added by internal values in rvApp.js
 				$r.setPrevState = {
-					title : prevTitle
+					title: prevTitle
 				};
 			} else if ( isAllowedState()  ) {
 
@@ -138,9 +138,9 @@ angular.module('sntRover')
 				// the 'params' is set to empty object so that the prevParam object
 				// in rvApp.js is discarded
 				$r.setPrevState = {
-					title : prevTitle,
-					name  : prevName,
-					param : {}
+					title: prevTitle,
+					name: prevName,
+					param: {}
 				};
 			} else {
 				$r.setPrevState = angular.copy( DEFAULT_STATE );
@@ -331,14 +331,14 @@ angular.module('sntRover')
 
 		    */
 			viewport: {
-				hours: 						24,
-				width: 						angular.element($window).width() - 120,
-				height: 					angular.element($window).height() - 230,
-				row_header_right: 			120,
-				timeline_header_height: 	80,
-				timeline_height: 			60,
-				timeline_occupancy_height: 	20,
-				timeline_header_bottom: 	230,
+				hours: 24,
+				width: angular.element($window).width() - 120,
+				height: angular.element($window).height() - 230,
+				row_header_right: 120,
+				timeline_header_height: 80,
+				timeline_height: 60,
+				timeline_occupancy_height: 20,
+				timeline_header_bottom: 230,
 				element: function() {
 					return $('.diary-grid .wrapper');
 				}
@@ -357,34 +357,34 @@ angular.module('sntRover')
 			time span.
 		*/
 			display: {
-				x_offset: 				   isVaultDataSet ? (vaultData.start_date-7200000) : (correctTimeDate.start_date-7200000),
-				x_0: 					   undefined,
-				x_origin:                  isVaultDataSet ? vaultData.start_date : correctTimeDate.start_date,
-				x_n:                       isVaultDataSet ? (vaultData.__start_date) : (correctTimeDate.__start_date),
-				x_n_time:                  isVaultDataSet ? (vaultData.__start_date.toComponents().time.convertToReferenceInterval(15)) : (correctTimeDate.__start_date.toComponents().time.convertToReferenceInterval(15)),
-				x_p: 	                   payload.display.x_p.getTime(),
-				x_p_time:                  (!payload.display.x_p_time ? payload.display.x_p.toComponents().time.convertToReferenceInterval(15) : payload.display.x_p_time),
-				width: 						undefined,
-				height: 					undefined,
-				hours: 						getTotalGridHours( payload.display.x_n ),
-				row_height: 				24, //please set to 60 when default changeed to 12 hour mode
-				row_height_margin: 			0,
-				intervals_per_hour: 		4,
-				ms_15:                      900000,
-				ms_hr: 						3600000,
-				px_per_ms: 					undefined,
-				px_per_int: 				undefined,
-				px_per_hr: 					undefined,
-				currency_symbol:            $rootScope.currencySymbol,
-				min_hours: 					isVaultDataSet ? vaultData.minHours : payload.display.min_hours,
-				property_date_time:  		$scope.adj_property_date_time
+				x_offset: isVaultDataSet ? (vaultData.start_date-7200000) : (correctTimeDate.start_date-7200000),
+				x_0: undefined,
+				x_origin: isVaultDataSet ? vaultData.start_date : correctTimeDate.start_date,
+				x_n: isVaultDataSet ? (vaultData.__start_date) : (correctTimeDate.__start_date),
+				x_n_time: isVaultDataSet ? (vaultData.__start_date.toComponents().time.convertToReferenceInterval(15)) : (correctTimeDate.__start_date.toComponents().time.convertToReferenceInterval(15)),
+				x_p: payload.display.x_p.getTime(),
+				x_p_time: (!payload.display.x_p_time ? payload.display.x_p.toComponents().time.convertToReferenceInterval(15) : payload.display.x_p_time),
+				width: undefined,
+				height: undefined,
+				hours: getTotalGridHours( payload.display.x_n ),
+				row_height: 24, //please set to 60 when default changeed to 12 hour mode
+				row_height_margin: 0,
+				intervals_per_hour: 4,
+				ms_15: 900000,
+				ms_hr: 3600000,
+				px_per_ms: undefined,
+				px_per_int: undefined,
+				px_per_hr: undefined,
+				currency_symbol: $rootScope.currencySymbol,
+				min_hours: isVaultDataSet ? vaultData.minHours : payload.display.min_hours,
+				property_date_time: $scope.adj_property_date_time
 			},
 
 			availability: {
 				resize: {
-					current_arrival_time : null,
+					current_arrival_time: null,
 					current_departure_time: null,
-					last_arrival_time : null,
+					last_arrival_time: null,
 					last_departure_time: null
 				},
 				drag: {
@@ -428,16 +428,16 @@ angular.module('sntRover')
 		   	when the incoming resize model property id matches the existing prop id.
 		*/
 			edit: {
-				active: 					false,
-				passive:                    false,
-				mode:    					undefined,
-				resizing:                   { enabled: false },
-				dragging:     				{ enabled: false, direction: 0x01 },
-				originalItem: 				undefined,
-				originalRowItem: 			undefined,
-				currentResizeItem:          undefined,
-				currentResizeItemRow:       undefined,
-				reset_scroll:               undefined
+				active: false,
+				passive: false,
+				mode: undefined,
+				resizing: { enabled: false },
+				dragging: { enabled: false, direction: 0x01 },
+				originalItem: undefined,
+				originalRowItem: undefined,
+				currentResizeItem: undefined,
+				currentResizeItemRow: undefined,
+				reset_scroll: undefined
 			},
 		/*
 			Filter options found above the React grid.   This section is mainly Angular controlled, however,
@@ -451,16 +451,16 @@ angular.module('sntRover')
 	            4) Grid size display hours
 		*/
 		filter: {
-	    	arrival_date: 				payload.display.x_n,
-	    	arrival_times:              Array.prototype.slice.call(payload.filter.arrival_times),
-	    	arrival_time: 				isVaultDataSet ? payload.filter.arrival_time : correctTimeDate.arrival_time,
-	    	reservation_format: 		'h',
-		    range: 						12,
-	    	rate_type: 					payload.filter.rate_type,
-		    rate:                        undefined,
-	    	room_type: 					(payload.filter.room_type_id) ? rvDiarySrv.data_Store.get('_room_type.values.id')[payload.filter.room_type_id] : undefined,
-	    	room_types:                 payload.filter.room_type,
-		    show_all_rooms: 			'off',
+	    	arrival_date: payload.display.x_n,
+	    	arrival_times: Array.prototype.slice.call(payload.filter.arrival_times),
+	    	arrival_time: isVaultDataSet ? payload.filter.arrival_time : correctTimeDate.arrival_time,
+	    	reservation_format: 'h',
+		    range: 12,
+	    	rate_type: payload.filter.rate_type,
+		    rate: undefined,
+	    	room_type: (payload.filter.room_type_id) ? rvDiarySrv.data_Store.get('_room_type.values.id')[payload.filter.room_type_id] : undefined,
+	    	room_types: payload.filter.room_type,
+		    show_all_rooms: 'off',
 		    toggleHoursDays: function() {
 	    		this.reservation_format = (this.reservation_format === 'h') ? 'd' : 'h';
 
@@ -596,10 +596,10 @@ angular.module('sntRover')
 				};
 
 				apiOptions = {
-					params: 			params,
-					successCallBack: 	success,
-					failureCallBack: 	failureCallBackOfAvailabilityFetching,
-					successCallBackParameters:  params
+					params: params,
+					successCallBack: success,
+					failureCallBack: failureCallBackOfAvailabilityFetching,
+					successCallBackParameters: params
 				};
 				$scope.clearAvailability();
 				$scope.resetEdit();
@@ -722,8 +722,8 @@ angular.module('sntRover')
 				    		x_n.setHours(0, 0, 0);
 				    		var x_origin = row_item_data.arrival;
 				    		$scope.gridProps.edit.reset_scroll = {
-	    						'x_n'      : x_n.getTime(),
-	    						'x_origin' : x_origin
+	    						'x_n': x_n.getTime(),
+	    						'x_origin': x_origin
 	    					};
 
 	    					//setting arrival_time as selected one reservation
@@ -896,11 +896,11 @@ angular.module('sntRover')
 
 	    	$scope.roomXfer = {
 	    		current: {
-		    		room:  originalRow,
+		    		room: originalRow,
 		    		occupancy: originalOccupancy
 		    	},
 		    	next: {
-		    		room:  row_data,
+		    		room: row_data,
 		    		occupancy: row_item_data
 	    		}
 	    	};
@@ -972,13 +972,13 @@ angular.module('sntRover')
 			dataToPassConfirmScreen.departure_time = nextRoom.departureTime;
 			var rooms = {
 				room_id: next.room.id,
-				rateId:  next.room.rate_id,
+				rateId: next.room.rate_id,
 				amount: roomXfer.next.room.new_price,
 				reservation_id: next.occupancy.reservation_id,
 				confirmation_id: next.occupancy.confirmation_number,
 				numAdults: next.occupancy.adults,
-	    		numChildren : next.occupancy.children,
-	    		numInfants 	: next.occupancy.infants,
+	    		numChildren: next.occupancy.children,
+	    		numInfants: next.occupancy.infants,
 	    		guest_card_id: next.occupancy.guest_card_id,
 	    		company_card_id: next.occupancy.company_card_id,
 	    		travel_agent_id: next.occupancy.travel_agent_id,
@@ -997,7 +997,7 @@ angular.module('sntRover')
 			$scope.closeDialog();
 			$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm', {
 				reservation: 'HOURLY',
-				mode:'EDIT_HOURLY'
+				mode: 'EDIT_HOURLY'
 			});
 		};
 
@@ -1145,11 +1145,11 @@ angular.module('sntRover')
 	    var resizeEndForExistingReservation = function (row_data, row_item_data) {
 	    	var params = getEditReservationParams();
 	    	var options = {
-	    		params: 			params,
-	    		successCallBack: 	successCallBackOfResizeExistingReservation,
-	    		failureCallBack: 	failureCallBackOfResizeExistingReservation,
-	    		successCallBackParameters:  {
-					params : params,
+	    		params: params,
+	    		successCallBack: successCallBackOfResizeExistingReservation,
+	    		failureCallBack: failureCallBackOfResizeExistingReservation,
+	    		successCallBackParameters: {
+					params: params,
 					row_data: row_data,
 					row_item_data: row_item_data
 	    		}
@@ -1426,11 +1426,11 @@ angular.module('sntRover')
 			}
 
 			$scope.initPassiveEditMode({
-                start_date:     new Date(row_item_data[meta.occupancy.start_date]),
-                end_date:       new Date(row_item_data[meta.occupancy.end_date]),
+                start_date: new Date(row_item_data[meta.occupancy.start_date]),
+                end_date: new Date(row_item_data[meta.occupancy.end_date]),
 
-                row_item_data:  row_item_data,
-                row_data:       _.findWhere(rvDiarySrv.data_Store.get('room'), { id: row_item_data.room_id })
+                row_item_data: row_item_data,
+                row_data: _.findWhere(rvDiarySrv.data_Store.get('room'), { id: row_item_data.room_id })
             });
 		}
 		else {
@@ -1482,10 +1482,10 @@ angular.module('sntRover')
 			return;
 		}
 		var options = {
-    		params: 			params,
-    		successCallBack: 	successCallBackOfAvailabilityAPI,
-    		failureCallBack: 	failureCallBackOfAvailabilityFetching,
-    		successCallBackParameters:  params
+    		params: params,
+    		successCallBack: successCallBackOfAvailabilityAPI,
+    		failureCallBack: failureCallBackOfAvailabilityFetching,
+    		successCallBackParameters: params
     	};
     	$scope.callAPI(rvDiarySrv.Availability, options);
 	};
@@ -1522,13 +1522,13 @@ angular.module('sntRover')
 		depTime 	= new Date(this.currentResizeItem.departure).toComponents().time;
 		depTime 	= depTime.hours + ":" + depTime.minutes + ":" + depTime.seconds;
         var params = {
-            room_id:            room_id,
-            reservation_id:     reservation_id,
-            begin_date:         start,
-            begin_time:         arrivalTime,
-            end_date:           end,
-            end_time:           depTime,
-            rate_type:          rate_type
+            room_id: room_id,
+            reservation_id: reservation_id,
+            begin_date: start,
+            begin_time: arrivalTime,
+            end_date: end,
+            end_time: depTime,
+            rate_type: rate_type
         };
         if(account_id) {
 			params.account_id = account_id;
@@ -1855,13 +1855,13 @@ angular.module('sntRover')
 
 		//forming the returning params
         var params = {
-            room_id:            room_id,
-            reservation_id:     reservation_id,
-            begin_date:         start_date,
-            begin_time:         start_time,
-            end_date:           end_date,
-            end_time:           end_time,
-            rate_type:          rate_type
+            room_id: room_id,
+            reservation_id: reservation_id,
+            begin_date: start_date,
+            begin_time: start_time,
+            end_date: end_date,
+            end_time: end_time,
+            rate_type: rate_type
         };
         if(account_id) {
 			params.account_id = account_id;
@@ -2023,11 +2023,11 @@ angular.module('sntRover')
 			newValue.getDate() !== current_date.getDate()) {
 			var params = getReservationTransferParams (reservation, newValue);
 			var options = {
-	    		params: 			params,
-	    		successCallBack: 	successCallBackOfDateSelectedInEditMode,
-	    		failureCallBack: 	failureCallBackOfSelectDateInEditMode,
-	    		successCallBackParameters:{
-					chosenDate : newValue,
+	    		params: params,
+	    		successCallBack: successCallBackOfDateSelectedInEditMode,
+	    		failureCallBack: failureCallBackOfSelectDateInEditMode,
+	    		successCallBackParameters: {
+					chosenDate: newValue,
 					oldGridProps: util.deepCopy ($scope.gridProps)
 		    	}
 		    };
@@ -2076,8 +2076,8 @@ angular.module('sntRover')
 				var display_offset = new tzIndependentDate($_resetObj.start_date);
 
 		    	$scope.gridProps.edit.reset_scroll = {
-		    		'x_n'      : propertyDate,
-		    		'x_origin' : $_resetObj.start_date
+		    		'x_n': propertyDate,
+		    		'x_origin': $_resetObj.start_date
 		    	};
 	    		$scope.renderGrid();
 	    		$scope.$emit('hideLoader');
@@ -2135,13 +2135,13 @@ angular.module('sntRover')
 
        _.each(stayDates, function(date) {
             reservationStayDetails.push({
-                date: 			$filter('date')(date, $rootScope.dateFormatForAPI),
-                rate_id: 		roomDetails.rate_id, // In case of the last day, send the first day's occupancy
-                room_type_id: 	roomDetails.room_type_id,
-                adults_count: 	reservation.adults,
+                date: $filter('date')(date, $rootScope.dateFormatForAPI),
+                rate_id: roomDetails.rate_id, // In case of the last day, send the first day's occupancy
+                room_type_id: roomDetails.room_type_id,
+                adults_count: reservation.adults,
                 children_count: reservation.children,
-                infants_count: 	reservation.infants,
-                room_id: 		roomDetails.id
+                infants_count: reservation.infants,
+                room_id: roomDetails.id
             });
         });
         stay.push(reservationStayDetails);
@@ -2149,16 +2149,16 @@ angular.module('sntRover')
     	return {
     		// I dont knw y this require, but for the simplicity of API they force me to add :(
     	 	// even though it is in staydates array
-    		'room_id'		: [roomDetails.id],
-    		'arrival_date'	: arrDate,
-    		'arrival_time'	: arrTime,
+    		'room_id': [roomDetails.id],
+    		'arrival_date': arrDate,
+    		'arrival_time': arrTime,
     		'departure_date': depDate,
     		'departure_time': depTime,
-    		'reservationId' : reservation.reservation_id,
+    		'reservationId': reservation.reservation_id,
     		'stay_dates': stay,
 
     		//CICO-14143: Diary - Move without rate change actually changes rate
-    		'is_move_without_rate_change' : isMoveWithoutRateChange ?  isMoveWithoutRateChange : false
+    		'is_move_without_rate_change': isMoveWithoutRateChange ?  isMoveWithoutRateChange : false
     	};
     };
 
@@ -2169,9 +2169,9 @@ angular.module('sntRover')
 		var params = formReservationParams(reservation, roomDetails, isMoveWithoutRateChange);
 
 		var options = {
-    		params: 			params,
-    		successCallBack: 	successCallBackOfSaveReservation,
-    		failureCallBack: 	failureCallBackOfSaveReservation
+    		params: params,
+    		successCallBack: successCallBackOfSaveReservation,
+    		failureCallBack: failureCallBackOfSaveReservation
 	    };
 	    $scope.callAPI(RVReservationSummarySrv.updateReservation, options);
 	};
@@ -2520,7 +2520,7 @@ angular.module('sntRover')
     $scope.autocompleteOptions = {
         delay: 0,
         position: {
-             my : "right top",
+             my: "right top",
              at: "right bottom",
             collision: 'flip'
         },

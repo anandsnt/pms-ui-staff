@@ -25,7 +25,7 @@
 	}
 	//CICO-34045 we should allow the user to enter their email address if it is not on the database
 	else if($rootScope.offerRoomDeliveryOptions && !$rootScope.userEmailEntered && originsNeedEmailEntering.indexOf($rootScope.application) > -1) {
-		$state.go('emailAddition', {'isFrom':'checkinNow'});// if user has not attached an email
+		$state.go('emailAddition', {'isFrom': 'checkinNow'});// if user has not attached an email
 	}
 	else if($rootScope.isCheckedin) {
 		$state.go('checkinSuccess');
@@ -42,7 +42,7 @@
 	$scope.responseData  = [];
 	$scope.reservationData = checkinDetailsService.getResponseData();
 	var url = '/guest_web/checkin.json';
-	var data = {'reservation_id':$rootScope.reservationID};
+	var data = {'reservation_id': $rootScope.reservationID};
 	checkinKeysService.checkin(url, data).then(function(response) {
 		if(response.status === "failure") {
 			$rootScope.netWorkError  = true;

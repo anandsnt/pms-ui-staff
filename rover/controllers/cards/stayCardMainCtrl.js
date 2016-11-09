@@ -750,7 +750,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 						'cardType': card,
 						'id': cardData.id,
 						'future': typeof future === 'undefined' ? false : future,
-						'useCardRate' : useCardRate
+						'useCardRate': useCardRate
 					}).then(onEachReplaceSuccess));
 				});
 				$q.all(promises).then(onReplaceSuccess, onReplaceFailure);
@@ -761,7 +761,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					'cardType': card,
 					'id': cardData.id,
 					'future': typeof future === 'undefined' ? false : future,
-					'useCardRate' : useCardRate
+					'useCardRate': useCardRate
 				}, onReplaceSuccess, onReplaceFailure);
 			}
 		};

@@ -31,23 +31,23 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 			'showFilterFlag': 'OPEN',
 			'fromDate': '',
 			'toDate': '',
-			'textInQueryBox':'',
+			'textInQueryBox': '',
 			'isShowPaid': false,
 			'start': 1,
-			'pageNo':1,
-			'perPage':50,
+			'pageNo': 1,
+			'perPage': 50,
 			'textInQueryBox': '',
 			'viewFromOutside': false,
-			'transactionType' : 'ALL',
-			'statementEmailAddress' : ''
+			'transactionType': 'ALL',
+			'statementEmailAddress': ''
 		};
 
 		$scope.arTransactionDetails = {
-			'available_credit' : parseFloat("0.00").toFixed(2),
-			'amount_owing' : parseFloat("0.00").toFixed(2),
-			'open_guest_bills' : 0,
+			'available_credit': parseFloat("0.00").toFixed(2),
+			'amount_owing': parseFloat("0.00").toFixed(2),
+			'open_guest_bills': 0,
 			'total_count': 0,
-			'ar_transactions':[]
+			'ar_transactions': []
 		};
 
 		if(typeof $stateParams.type !== 'undefined') {
@@ -59,13 +59,13 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 		var getParamsToSend = function() {
 			var paramsToSend = {
 				"id": $scope.filterData.id,
-				"paid" : $scope.filterData.isShowPaid,
-				"from_date":$scope.filterData.fromDate,
+				"paid": $scope.filterData.isShowPaid,
+				"from_date": $scope.filterData.fromDate,
 				"to_date": $scope.filterData.toDate,
 				"query": $scope.filterData.textInQueryBox,
-				"page_no" : $scope.filterData.pageNo,
+				"page_no": $scope.filterData.pageNo,
 				"per_page": $scope.filterData.perPage,
-				"transaction_type" : $scope.filterData.transactionType
+				"transaction_type": $scope.filterData.transactionType
 			};
 			//CICO-10323. for hotels with single digit search,
 			//If it is a numeric query with less than 3 digits, then lets assume it is room serach.
@@ -175,7 +175,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 		$scope.popupCalendar = function(clickedOn) {
 			$scope.clickedOn = clickedOn;
 	      	ngDialog.open({
-	      		template:'/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
+	      		template: '/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
 		        controller: 'RVArTransactionsDatePickerController',
 		        className: '',
 		        scope: $scope
@@ -388,7 +388,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 	        };
 
 	        var params = {
-	            'id':$scope.filterData.id
+	            'id': $scope.filterData.id
 	        };
 	        $scope.invokeApi(RVCompanyCardSrv.payAll, params, payAllSuccess, failure);
 	    };
@@ -396,7 +396,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 	    // Show add credits amount popup
 		$scope.addCreditAmount = function() {
 			ngDialog.open({
-	      		template:'/assets/partials/companyCard/rvArTransactionsAddCredits.html',
+	      		template: '/assets/partials/companyCard/rvArTransactionsAddCredits.html',
 		        controller: 'RVArTransactionsAddCreditsController',
 		        className: '',
 		        scope: $scope
@@ -406,7 +406,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 		$scope.payAmount = function() {
 			$scope.passData = getPassData();
 			ngDialog.open({
-	      		template:'/assets/partials/companyCard/rvArTransactionsPayCredits.html',
+	      		template: '/assets/partials/companyCard/rvArTransactionsPayCredits.html',
 		        controller: 'RVArTransactionsPayCreditsController',
 		        className: '',
 		        scope: $scope
@@ -529,7 +529,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 				$scope.filterData.statementEmailAddress = data.data.to_address;
 
 				ngDialog.open({
-		      		template:'/assets/partials/companyCard/rvArStatementPopup.html',
+		      		template: '/assets/partials/companyCard/rvArStatementPopup.html',
 			        className: '',
 			        closeByDocument: false,
 			        scope: $scope
@@ -673,7 +673,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 						$scope.errorMessage = errorMessage;
 					};
 					var param = {
-						'bill_id':transaction.bill_id
+						'bill_id': transaction.bill_id
 					};
 					$scope.invokeApi(RVCompanyCardSrv.fetchTransactionDetails, param, transactionFetchSuccess, transactionFetchFailure);
 				}

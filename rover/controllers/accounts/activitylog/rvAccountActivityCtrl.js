@@ -14,10 +14,10 @@ sntRover.controller('rvAccountActivityCtrl', [
 		$scope.init = function() {
 			$scope.selectedGroupOrAccountId =$scope.$parent.accountConfigData.summary.posting_account_id;
 			 var params = {
-			 	"id":$scope.selectedGroupOrAccountId,
-			 	"page":1,
-			 	"type":"account",
-			 	"per_page":50
+			 	"id": $scope.selectedGroupOrAccountId,
+			 	"page": 1,
+			 	"type": "account",
+			 	"per_page": 50
 			 };
 			var fetchCompleted = function(data) {
 				$scope.$broadcast('PopulateLogData', data);

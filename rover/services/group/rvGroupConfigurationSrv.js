@@ -36,8 +36,8 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 		// info while creating a reservation from the Create Reservation module 
 		
 		this.lastFetchedGroup = {
-			group_id : null,
-			demographics : null
+			group_id: null,
+			demographics: null
 		}
 
 		/*----------------------------*/

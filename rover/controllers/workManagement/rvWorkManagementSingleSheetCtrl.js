@@ -392,14 +392,14 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 						});
 
 						$scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, {
-							"date"        : $stateParams.date,
-							"task_id"     : parseInt(key),
-							"order"       : "",
-							"assignments" : [{
-								"shift_id"      : $scope.singleState.workSheet.shift_id,
-								"assignee_id"   : userId,
-								"room_ids"      : assignedRooms,
-								"work_sheet_id" : ""
+							"date": $stateParams.date,
+							"task_id": parseInt(key),
+							"order": "",
+							"assignments": [{
+								"shift_id": $scope.singleState.workSheet.shift_id,
+								"assignee_id": userId,
+								"room_ids": assignedRooms,
+								"work_sheet_id": ""
 							}]
 						}, onSaveSuccess, onSaveFailure);
 
@@ -413,11 +413,11 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 			} else {
 				_.each(worktypesSet, function(set, key) {
 				$scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, {
-							"date"        : $stateParams.date,
-							"task_id"     : parseInt(key),
-							"assignments" : [{
-								"assignee_id"   : userId,
-								"room_ids"      : []
+							"date": $stateParams.date,
+							"task_id": parseInt(key),
+							"assignments": [{
+								"assignee_id": userId,
+								"room_ids": []
 							}]
 						}, onSaveSuccess, onSaveFailure);
 				});
@@ -452,8 +452,8 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 		$scope.$watch('singleState.workSheet.work_type_id', function(newVal, oldVal) {
 			if (newVal !== oldVal) {
 				$scope.saveWorkSheet({
-					oldWorkTypeId  : oldVal,
-					callNextMethod : 'onWorkTypeChange'
+					oldWorkTypeId: oldVal,
+					callNextMethod: 'onWorkTypeChange'
 				});
 			};
 		});
@@ -465,8 +465,8 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 		$scope.$watch('singleState.workSheet.user_id', function(newVal, oldVal) {
 			if (newVal !== oldVal) {
 				$scope.saveWorkSheet({
-					oldUserId      : oldVal,
-					callNextMethod : 'onEmployeeChange'
+					oldUserId: oldVal,
+					callNextMethod: 'onEmployeeChange'
 				});
 			};
 		});

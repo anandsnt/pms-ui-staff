@@ -1904,8 +1904,8 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         $scope.clickedShowRate = function() {
 
             var params = {
-                'group_id'      : $scope.groupConfigData.summary.group_id,
-                'hide_rates'    : !$scope.groupConfigData.summary.hide_rates
+                'group_id': $scope.groupConfigData.summary.group_id,
+                'hide_rates': !$scope.groupConfigData.summary.hide_rates
             };
             $scope.callAPI(rvGroupConfigurationSrv.toggleHideRate, {
                 successCallBack: sucessCallbackToggleHideRate,

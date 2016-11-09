@@ -1254,9 +1254,9 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				});
 
 				_.extend($scope.allotmentConfigData.roomblock, {
-					common_ui_release_days : '',
-					selected_room_types_and_bookings : data.results,
-					selected_room_types_and_occupanies : data.occupancy
+					common_ui_release_days: '',
+					selected_room_types_and_bookings: data.results,
+					selected_room_types_and_occupanies: data.occupancy
 				});
 
 				//our total pickup count may change on coming from other tab (CICO-16835)

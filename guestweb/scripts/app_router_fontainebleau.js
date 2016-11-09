@@ -49,12 +49,12 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 	 $stateProvider.state('checkoutRoomVerification', {
 	 	url: '/checkoutRoomVerification',
 	 	templateUrl: '/assets/checkoutnow/partials/Fontainebleau/checkoutRoomVerification.html',
-	 	controller : 'checkoutRoomVerificationViewController',
+	 	controller: 'checkoutRoomVerificationViewController',
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
 	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
 	 	templateUrl: '/assets/checkoutnow/partials/Fontainebleau/ccVerification.html',
-	 	controller : 'ccVerificationViewController',
+	 	controller: 'ccVerificationViewController',
 	 	title: 'CC verification'
 	 });
 
@@ -64,17 +64,17 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
     $stateProvider.state('preCheckinTripDetails', {
     	url: '/tripDetails',
 	 	templateUrl: '/assets/preCheckin/partials/preCheckinTripDetails.html',
-	 	controller : 'preCheckinTripDetailsController',
+	 	controller: 'preCheckinTripDetailsController',
 	 	title: 'Trip Details'
 	 }).state('preCheckinStayDetails', {
 	 	url: '/stayDetails',
 		templateUrl: '/assets/preCheckin/partials/preCheckinStayDetails.html',
-		controller : 'preCheckinStayDetailsController',
+		controller: 'preCheckinStayDetailsController',
 		title: 'Stay Details'
 	}).state('preCheckinStatus', {
 		url: '/preCheckinStatus',
 		templateUrl: '/assets/preCheckin/partials/preCheckinStatus.html',
-		controller : 'preCheckinStatusController',
+		controller: 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
 	 }).state('preCheckinComleted', {
 		url: '/preCheckinComleted',
@@ -86,12 +86,12 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 	 $stateProvider.state('externalVerification', {
 	 	url: '/externalVerification',
 	 	templateUrl: '/assets/checkoutnow/partials/Fontainebleau/externalVerification.html',
-	 	controller : 'externalVerificationViewController',
+	 	controller: 'externalVerificationViewController',
 	 	title: 'External verification'
 	 }).state('externalVerificationError', {
 	 	url: '/verificationError',
 	 	templateUrl: '/assets/checkoutnow/partials/Fontainebleau/externalVerificationError.html',
-	 	controller:'verificationErrorController',
+	 	controller: 'verificationErrorController',
 	 	title: 'External verification Error'
 	 });
 

@@ -46,7 +46,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 					roomTypeId: '',
 					roomTypeName: '',
 					rateId: '',
-					room_id:'',
+					room_id: '',
 					rateName: '',
 					rateAvg: 0,
 					rateTotal: 0,

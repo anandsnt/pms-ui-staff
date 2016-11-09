@@ -68,9 +68,9 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         $scope.lastSavedDescription = '';
         $scope.updateActionDescription = function(description_old, description_new) {
             var params = {
-                'group_id':$scope.groupConfigData.summary.group_id,
-                'action_task':{
-                    'id':$scope.selectedAction.id
+                'group_id': $scope.groupConfigData.summary.group_id,
+                'action_task': {
+                    'id': $scope.selectedAction.id
                 }
             };
 
@@ -288,7 +288,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                 $scope.refreshing = true;
             }
 
-            var data = {id:$scope.groupConfigData.summary.group_id};
+            var data = {id: $scope.groupConfigData.summary.group_id};
             $scope.invokeApi(rvGroupActionsSrv.getTasksCount, data, onSuccess, onFailure);
         };
         $scope.departments = [];
@@ -303,7 +303,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                 $scope.$emit('hideLoader');
             };
 
-            var data = {id:$scope.groupConfigData.summary.group_id};
+            var data = {id: $scope.groupConfigData.summary.group_id};
             $scope.invokeApi(rvGroupActionsSrv.fetchDepartments, data, onSuccess, onFailure);
         };
         $scope.selectAction = function(a) {
@@ -366,7 +366,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             };
             //group_id=1616903&action_task[description]=test
             var params = {
-                'group_id':$scope.groupConfigData.summary.group_id,
+                'group_id': $scope.groupConfigData.summary.group_id,
                 'action_task': {
                     'description': $scope.newAction.notes
                 }
@@ -478,9 +478,9 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
 
 
             var params = {
-                'group_id':$scope.groupConfigData.summary.group_id,
-                'action_task':{
-                    'id':$scope.selectedAction.id
+                'group_id': $scope.groupConfigData.summary.group_id,
+                'action_task': {
+                    'id': $scope.selectedAction.id
                 }
             };
             $scope.lastSelectedItemId = $scope.selectedAction.id;
@@ -517,7 +517,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             var spl = dateStr.split(delim);
             day = spl[1]; month = spl[0]; year = spl[2];
 
-            return {day:day, month:month, year:year};
+            return {day: day, month: month, year: year};
         };
         $scope.showSelectCalendar = function() {
             //to ensure same day due to utc hour, set utc hour to 0100
@@ -800,7 +800,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                 $scope.refreshing = false;
             };
 
-            var data = {id:$scope.groupConfigData.summary.group_id};
+            var data = {id: $scope.groupConfigData.summary.group_id};
             $scope.invokeApi(rvGroupActionsSrv.getActionsTasksList, data, onSuccess, onFailure);
 
         };
@@ -929,7 +929,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         $scope.fetchActionsList = function() {
             $scope.fetchDepartments();//store this to use in assignments of department
 
-            var data = {id:$scope.groupConfigData.summary.group_id};
+            var data = {id: $scope.groupConfigData.summary.group_id};
             $scope.invokeApi(rvGroupActionsSrv.getActionsTasksList, data, fetchActionListSuccessCallBack, fetchActionListFailureCallBack);
         };
 
@@ -1101,8 +1101,8 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             $scope.timeFieldValue = [];
             for (var x in $scope.timeFieldValues) {
                 $scope.timeFieldValue.push({
-                    'value':getFormattedTime($scope.timeFieldValues[x]),
-                    'core_time':$scope.timeFieldValues[x]
+                    'value': getFormattedTime($scope.timeFieldValues[x]),
+                    'core_time': $scope.timeFieldValues[x]
                 });
             }
         };
@@ -1237,8 +1237,8 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
 
         $scope.getBaseParams = function() {
             var params = {
-                'group_id':$scope.groupConfigData.summary.group_id,
-                'action_task':{}
+                'group_id': $scope.groupConfigData.summary.group_id,
+                'action_task': {}
             };
             return params;
         };

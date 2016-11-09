@@ -36,7 +36,7 @@ function($scope, $rootScope, $state,  $stateParams, ADICareServicesSrv) {
     $scope.saveClick = function() {
     	var unwantedKeys = ["charge_codes"];
         var newData = dclone($scope.icare, unwantedKeys);
-    	var data = { "icare" : newData };
+    	var data = { "icare": newData };
     	$scope.invokeApi(ADICareServicesSrv.saveIcareServices, data, successCallbackSave, failureCallbackSave);
 
     };

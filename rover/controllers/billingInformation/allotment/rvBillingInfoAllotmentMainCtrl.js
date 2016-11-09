@@ -190,21 +190,21 @@ sntRover.controller('rvBillingInfoAllotmentMainCtrl', ['$scope', '$rootScope', '
         //Holds entity search results.
         //includes reservations, travel agent/company cards and accounts
         $scope.searchResults = {
-            reservations     : [],
-            cards            : [],
-            posting_accounts : []
+            reservations: [],
+            cards: [],
+            posting_accounts: []
         };
 
         $scope.billingInfoFlags = {
-            isEntitySelected    : $scope.billingInformationPresent || false,
-            shouldShowWaiting   : false,
-            isReloadNeeded      : false
+            isEntitySelected: $scope.billingInformationPresent || false,
+            shouldShowWaiting: false,
+            isReloadNeeded: false
         };
 
         $scope.saveData = {
-            payment_type :  "",
-            payment_type_description :  "",
-            newPaymentFormVisible : false
+            payment_type: "",
+            payment_type_description: "",
+            newPaymentFormVisible: false
         };
 
     };

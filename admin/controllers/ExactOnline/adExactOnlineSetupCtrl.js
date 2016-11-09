@@ -46,7 +46,7 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
                 params: {
                     enabled: $scope.exactOnlineSetup.enabled,
                     journal_code: $scope.exactOnlineSetup.journal_code,
-                    balancing_account_code : $scope.exactOnlineSetup.balancing_account_code
+                    balancing_account_code: $scope.exactOnlineSetup.balancing_account_code
                 },
                 successCallBack: successCallBackOfExactOnlineSetup
             };

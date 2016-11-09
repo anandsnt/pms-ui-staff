@@ -131,7 +131,7 @@ sntRover.controller('RVMoveChargeCtrl',
     			refreshSearchList();
 			};
 
-			$scope.invokeApi(RVMoveChargeSrv.fetchSearchedItems, {"text_search":$scope.textQuery, "number_search":$scope.numberQuery, "bill_id":$scope.moveChargeData.fromBillId}, fetchSucces);
+			$scope.invokeApi(RVMoveChargeSrv.fetchSearchedItems, {"text_search": $scope.textQuery, "number_search": $scope.numberQuery, "bill_id": $scope.moveChargeData.fromBillId}, fetchSucces);
 		};
 
 		/**
@@ -201,7 +201,7 @@ sntRover.controller('RVMoveChargeCtrl',
 			var params = {
 				 "from_bill": $scope.moveChargeData.fromBillId,
    				 "to_bill": $scope.targetBillId,
-    			 "financial_transaction_ids":$scope.moveChargeData.selectedTransactionIds
+    			 "financial_transaction_ids": $scope.moveChargeData.selectedTransactionIds
 			};
 			var chargesMovedSuccess = function() {
 				$scope.$emit("hideLoader");

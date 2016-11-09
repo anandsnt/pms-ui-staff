@@ -62,7 +62,7 @@ var TimelineResizeGrip = React.createClass({
 			model[direction] = newValue;
 
 			this.setState({
-				currentResizeItem: 	model
+				currentResizeItem: model
 			}, function() {
 				props.__onResizeCommand(model);
 			});
@@ -94,9 +94,9 @@ var TimelineResizeGrip = React.createClass({
 			}, 250);
 
 			this.setState({
-				mouse_down: 		false,
-				resizing: 			false,
-				currentResizeItem: 	model
+				mouse_down: false,
+				resizing: false,
+				currentResizeItem: model
 			}, function() {
 				props.__onResizeEnd(state.row, model);
 
@@ -188,23 +188,23 @@ var TimelineResizeGrip = React.createClass({
 
 				} else {
 					this.setState({
-						mode: 					undefined,
-						currentResizeItem: 		model,
-						currentResizeItemRow: 	nextProps.currentResizeItemRow
+						mode: undefined,
+						currentResizeItem: model,
+						currentResizeItemRow: nextProps.currentResizeItemRow
 					});
 				}
 			} else if(this.props.currentResizeItem && !nextProps.currentResizeItem) {
 				this.setState({
-					mode: 					undefined,
-					currentResizeItem: 		undefined,
-					currentResizeItemRow: 	undefined
+					mode: undefined,
+					currentResizeItem: undefined,
+					currentResizeItemRow: undefined
 				});
 			}
 			else if(this.props.currentResizeItem && nextProps.currentResizeItem) {
 				this.setState({
-					mode: 					undefined,
-					currentResizeItem: 		nextProps.currentResizeItem,
-					currentResizeItemRow: 	nextProps.currentResizeItemRow
+					mode: undefined,
+					currentResizeItem: nextProps.currentResizeItem,
+					currentResizeItemRow: nextProps.currentResizeItemRow
 				});
 			}
 		}

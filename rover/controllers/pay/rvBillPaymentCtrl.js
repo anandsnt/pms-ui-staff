@@ -22,7 +22,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		$scope.passData.details ={};
 		$scope.passData.details.firstName = $scope.guestCardData.contactInfo.first_name;
 		$scope.passData.details.lastName = $scope.guestCardData.contactInfo.last_name;
-		$scope.setScroller('cardsList', {'click':true, 'tap':true});
+		$scope.setScroller('cardsList', {'click': true, 'tap': true});
 		$scope.showCancelCardSelection = true;
 		$scope.renderData.referanceText = "";
 		$scope.swipedCardDataToSave  = {};
@@ -154,11 +154,11 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
         $scope.resetSplitPaymentDetailForGiftCard = function() {//split bill payments hidden for gift cards for now (cico-19009) per priya
 		$scope.splitBillEnabled = false;
 		$scope.splitePaymentDetail = {
-			totalNoOfsplits:1,
-			completedSplitPayments:0,
-			totalAmount:0,
-			splitAmount:0,
-			carryAmount:0
+			totalNoOfsplits: 1,
+			completedSplitPayments: 0,
+			totalAmount: 0,
+			splitAmount: 0,
+			carryAmount: 0
 		};
 		$scope.messageOfSuccessSplitPayment ='';
 		$scope.paymentErrorMessage ='';
@@ -171,11 +171,11 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 	$scope.resetSplitPaymentDetail = function() {
 		$scope.splitBillEnabled = (typeof($scope.splitBillEnabled) === "undefined") ? false : !$scope.splitBillEnabled;
 		$scope.splitePaymentDetail = {
-			totalNoOfsplits:1,
-			completedSplitPayments:0,
-			totalAmount:0,
-			splitAmount:0,
-			carryAmount:0
+			totalNoOfsplits: 1,
+			completedSplitPayments: 0,
+			totalAmount: 0,
+			splitAmount: 0,
+			carryAmount: 0
 		};
 		$scope.messageOfSuccessSplitPayment = '';
 		$scope.paymentErrorMessage ='';
@@ -204,7 +204,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		$scope.referenceTextAvailable = false;
 		$scope.showInitalPaymentScreen = true;
 		// changes for CICO-13763
-		var reservationData = { "reservation_id":$scope.reservationData.reservationId, "is_checkout":$scope.reservationBillData.isCheckout};
+		var reservationData = { "reservation_id": $scope.reservationData.reservationId, "is_checkout": $scope.reservationBillData.isCheckout};
 		var paymentParams = $scope.reservationBillData.isCheckout ? reservationData : {};
 		
 		/*
@@ -379,8 +379,8 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 				"card_name": $scope.newPaymentInfo.cardDetails.userName,
 				"id": paymentFinalDetails.id,
 				"isSelected": true,
-				"is_primary":false,
-				"payment_type":"CC",
+				"is_primary": false,
+				"payment_type": "CC",
 				"payment_type_id": 1
 			};
 			$scope.cardsList.push(dataToGuestList);

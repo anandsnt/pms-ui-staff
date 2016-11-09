@@ -6,7 +6,7 @@ admin.directive('appFilereader', function($q) {
         restrict: 'A'
         , require: '?ngModel'
         , scope: {
-            fileNameKey:'@fileNameKey',
+            fileNameKey: '@fileNameKey',
             emitData: '@emitData'
         }
         , link: function(scope, element, attrs, ngModel) {

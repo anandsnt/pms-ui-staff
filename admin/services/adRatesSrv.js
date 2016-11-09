@@ -137,7 +137,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
              * @return {object} add ons
              */
             that.fetchAddons = function () {
-                var params = {"is_active":true, "is_not_reservation_only":true};
+                var params = {"is_active": true, "is_not_reservation_only": true};
                 var url = "/api/addons";
                 ADBaseWebSrvV2.getJSON(url, params).then(function (data) {
                     that.rateDetails.allAddOns = data.results;

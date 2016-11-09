@@ -3,14 +3,14 @@ angular.module('sntRover').service('RVBillingInfoUtilSrv',
     function($http, $q, BaseWebSrvV2, RVBaseWebSrv) {
 
     var guestStatusMappings = {
-        'RESERVED'       : ['arrival'],
-        'CHECKING_IN'    : ['check-in'],
-        'CHECKEDIN'      : ['inhouse'],
-        'CHECKEDOUT'     : ['departed'],
-        'CHECKING_OUT'   : ['check-out', 'late-check-out'],
-        'CANCELED'       : ['cancel'],
-        'NOSHOW'         : ['no-show'],
-        'NOSHOW_CURRENT' : ['no-show']
+        'RESERVED': ['arrival'],
+        'CHECKING_IN': ['check-in'],
+        'CHECKEDIN': ['inhouse'],
+        'CHECKEDOUT': ['departed'],
+        'CHECKING_OUT': ['check-out', 'late-check-out'],
+        'CANCELED': ['cancel'],
+        'NOSHOW': ['no-show'],
+        'NOSHOW_CURRENT': ['no-show']
     };
 
     /**

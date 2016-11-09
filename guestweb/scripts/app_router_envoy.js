@@ -48,24 +48,24 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 	 $stateProvider.state('checkoutRoomVerification', {
 	 	url: '/checkoutRoomVerification',
 	 	templateUrl: '/assets/checkoutnow/partials/Envoy/checkoutRoomVerification.html',
-	 	controller : 'checkoutRoomVerificationViewController',
+	 	controller: 'checkoutRoomVerificationViewController',
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
 	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
 	 	templateUrl: '/assets/checkoutnow/partials/Envoy/ccVerification.html',
-	 	controller : 'ccVerificationViewController',
+	 	controller: 'ccVerificationViewController',
 	 	title: 'CC verification'
 	 });
 
      $stateProvider.state('externalVerification', {
 	 	url: '/externalVerification',
 	 	templateUrl: '/assets/checkoutnow/partials/Envoy/externalVerification.html',
-	 	controller : 'externalVerificationViewController',
+	 	controller: 'externalVerificationViewController',
 	 	title: 'External verification'
 	 }).state('externalVerificationError', {
 	 	url: '/verificationError',
 	 	templateUrl: '/assets/checkoutnow/partials/Fontainebleau/externalVerificationError.html',
-	 	controller:'verificationErrorController',
+	 	controller: 'verificationErrorController',
 	 	title: 'External verification Error'
 	 });
 

@@ -47,10 +47,10 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
 
             that.fetchAddons = function () {
                 var params = {
-                    "is_active":true,
-                    "is_not_reservation_only":true,
-                    "per_page":1000,
-                    "page":1
+                    "is_active": true,
+                    "is_not_reservation_only": true,
+                    "per_page": 1000,
+                    "page": 1
                 };
                 var url = "/api/addons";
                 ADBaseWebSrvV2.getJSON(url, params).then(function (data) {

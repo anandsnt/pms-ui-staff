@@ -47,7 +47,7 @@ sntRover.controller('RVOutsidePostChargeController',
 			var oldSearchGuestText = '';
 			var oldSearchRoomValue = '';
 
-			$scope.setScroller('result_showing_area_post_charg', {'click':true, 'tap':true});
+			$scope.setScroller('result_showing_area_post_charg', {'click': true, 'tap': true});
 			$scope.roomSearchStatus = false;
 			$scope.guestCompanySearchStatus = false;
 			/**

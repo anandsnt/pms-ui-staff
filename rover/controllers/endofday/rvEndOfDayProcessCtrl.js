@@ -41,7 +41,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope', 'ngDialog', '$root
     */
     $scope.restartFailedProcess = function(process) {
         var data = {           
-            id : process.id
+            id: process.id
         };
         var restartProcessSuccess = function() {
             fetchEodLogOfSelectedDate();

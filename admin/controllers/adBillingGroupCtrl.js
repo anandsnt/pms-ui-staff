@@ -100,9 +100,9 @@ admin.controller('ADBillingGroupCtrl', ['$scope', '$state', 'ADBillingGroupSrv',
     		$scope.currentClickedElement = -1;
 			$scope.isAddMode = $scope.isAddMode ? false : true;
 			$scope.billingGroupData = {
-				"title":"",
-				"name":"",
-				"selected_charge_codes" : []
+				"title": "",
+				"name": "",
+				"selected_charge_codes": []
 			};
     		$scope.billingGroupData.available_charge_codes = data.available_charge_codes;
     		$timeout(function() {

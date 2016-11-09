@@ -50,16 +50,16 @@ admin.controller('ADZestCheckinEmailCtrl', ['$scope', '$state', 'adZestCheckinCh
     
     $scope.fetchEmailSetup = function() {
         $scope.callAPI(adZestCheckinCheckoutSrv.fetchEmailSetup, {
-            params:                 {},
-            successCallBack: 	    $scope.setData,
-            failureCallBack:        $scope.failureCallBack
+            params: {},
+            successCallBack: $scope.setData,
+            failureCallBack: $scope.failureCallBack
         });
     };
     $scope.fetchDirectSetup = function() {
         $scope.callAPI(adZestCheckinCheckoutSrv.fetchDirectSetup, {
-            params:                 {},
-            successCallBack: 	    $scope.setData,
-            failureCallBack:        $scope.failureCallBack
+            params: {},
+            successCallBack: $scope.setData,
+            failureCallBack: $scope.failureCallBack
         });
     };
     var saveNewDirectURLSuccess = function() {
@@ -72,7 +72,7 @@ admin.controller('ADZestCheckinEmailCtrl', ['$scope', '$state', 'adZestCheckinCh
              "active": true,
              "application": "EMAIL",
              "guest_web_url_type": "CHECKIN",
-             "name":"Email URL",
+             "name": "Email URL",
              "url_suffix": $scope.data.zest_email_setup.checkin_static_uri
         }
         $scope.invokeApi(adZestCheckinCheckoutSrv.saveNewDirectURL, data, saveNewDirectURLSuccess);
@@ -85,8 +85,8 @@ admin.controller('ADZestCheckinEmailCtrl', ['$scope', '$state', 'adZestCheckinCh
                 params: {
                     'zest_email_setup': $scope.data.zest_email_setup
                 },
-                successCallBack: 	    onSuccess,
-                failureCallBack:        $scope.failureCallBack
+                successCallBack: onSuccess,
+                failureCallBack: $scope.failureCallBack
             });
     };
     

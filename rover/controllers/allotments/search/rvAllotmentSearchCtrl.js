@@ -416,7 +416,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
         $scope.gotoAddNewAllotment = function() {
             $state.go('rover.allotments.config', {
                 'id': "NEW_ALLOTMENT",
-                'newAllotmentName' : $scope.query
+                'newAllotmentName': $scope.query
             });
         };
 

@@ -43,9 +43,9 @@
 
 			return {
 				responseData: responseData,
-				assignRoom : assignRoom,
-				releaseRoomRoom:releaseRoomRoom,
-				fetchEarlyCheckinData:fetchEarlyCheckinData
+				assignRoom: assignRoom,
+				releaseRoomRoom: releaseRoomRoom,
+				fetchEarlyCheckinData: fetchEarlyCheckinData
 			};
 		};
 

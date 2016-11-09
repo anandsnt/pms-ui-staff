@@ -56,7 +56,7 @@
 				$scope.isPosting = true;
 				var data = {
 					'reservation_id': $rootScope.reservationID,
-					'bypass_verification' : true
+					'bypass_verification': true
 				};
 				checkinConfirmationService.verifyCheckinReservation(data).then(function(response) {
 					if (response.status === 'failure') {

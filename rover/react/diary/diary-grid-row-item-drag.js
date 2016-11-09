@@ -316,9 +316,9 @@ var GridRowItemDrag = React.createClass({
 		this.__roomListingAreaWidth =  120;
 
 		return (React.DOM.div({
-				style:       style,
-				className:   props.className + className,
-				children:    props.children
+				style: style,
+				className: props.className + className,
+				children: props.children
 			}
 		));
 	}

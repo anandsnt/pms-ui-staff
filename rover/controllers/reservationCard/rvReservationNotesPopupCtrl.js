@@ -71,7 +71,7 @@ sntRover.controller('RVReservationNotesPopupCtrl', ['$scope', '$rootScope', func
         if ($scope.reservationnote) {
     			var successCallBackReservationNote = function(data) {
                     $scope.editingNote.text = $scope.reservationnote;
-                    var noteArrayIndex = _.findIndex($scope.$parent.reservationData.reservation_card.notes.reservation_notes, {note_id : data.note_id});
+                    var noteArrayIndex = _.findIndex($scope.$parent.reservationData.reservation_card.notes.reservation_notes, {note_id: data.note_id});
     				$scope.$parent.reservationData.reservation_card.notes.reservation_notes[noteArrayIndex] = $scope.editingNote;
     				$scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
     				refreshScroller();

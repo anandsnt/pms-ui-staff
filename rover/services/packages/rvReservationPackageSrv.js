@@ -62,15 +62,15 @@ angular.module('sntRover').service('RVReservationPackageSrv', ['$http', '$q', 'r
 
 	this.parseRateAddonItem = function(addon) {
 		return   {
-			id : addon.id,
-			quantity : 1, //Rate associated Addons have quantity ONE
-			title : addon.name,
-			totalAmount : addon.amount, //Rate associated Addons have quantity ONE
-			price_per_piece : addon.amount,
-			amount_type : addon.amount_type.description,
-			post_type : addon.post_type.description,
-			is_inclusive : !!addon.is_inclusive,
-			is_rate_addon : true	
+			id: addon.id,
+			quantity: 1, //Rate associated Addons have quantity ONE
+			title: addon.name,
+			totalAmount: addon.amount, //Rate associated Addons have quantity ONE
+			price_per_piece: addon.amount,
+			amount_type: addon.amount_type.description,
+			post_type: addon.post_type.description,
+			is_inclusive: !!addon.is_inclusive,
+			is_rate_addon: true	
 		};
 	}
 

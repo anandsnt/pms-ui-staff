@@ -85,7 +85,7 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
         });
         var data = {
             'room_type_ids': roomIdArray,
-            'id' : $scope.rateData.id
+            'id': $scope.rateData.id
         };
         var saveRoomTypeFailureCallback = function(error) {
             $scope.$emit('hideLoader');

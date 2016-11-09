@@ -35,7 +35,7 @@ $scope.login = function() {
 		$rootScope.$broadcast('hideLoader');
 		$scope.errorMessage = data;
 	};
-	var data = {"password":$scope.password};
+	var data = {"password": $scope.password};
 
 	$scope.invokeApi(RVEndOfDayModalSrv.login, data, loginSuccess, loginFailure);
 

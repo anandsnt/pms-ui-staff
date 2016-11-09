@@ -75,7 +75,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 				successCallBack: onSuccess,
 			};
 			if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
-				onSuccess({"guest_web_token":"4120081e61c6e6abe51258a738ea94d1"});//dummy token
+				onSuccess({"guest_web_token": "4120081e61c6e6abe51258a738ea94d1"});//dummy token
 			}
 			else{
 				$scope.callAPI(GwCheckinSrv.generateAuthToken, options);

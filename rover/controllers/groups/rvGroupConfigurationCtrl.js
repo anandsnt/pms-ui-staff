@@ -189,12 +189,12 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             var showEarlierArrivalDateMoveConfirmationPopup = function (data) {
                 ngDialog.open(
                 {
-                    template        : '/assets/partials/groups/summary/popups/changeDates/arrivalDate/rvConfirmArrivalDateChangeToEarlier.html',
-                    className       : '',
-                    closeByDocument : false,
-                    closeByEscape   : false,
-                    scope           : $scope,
-                    data            : JSON.stringify(data)
+                    template: '/assets/partials/groups/summary/popups/changeDates/arrivalDate/rvConfirmArrivalDateChangeToEarlier.html',
+                    className: '',
+                    closeByDocument: false,
+                    closeByEscape: false,
+                    scope: $scope,
+                    data: JSON.stringify(data)
                 });
             };
 
@@ -206,12 +206,12 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             var showLaterArrivalDateMoveConfirmationPopup = function (data) {
                 ngDialog.open(
                 {
-                    template        : '/assets/partials/groups/summary/popups/changeDates/arrivalDate/rvConfirmArrivalDateChangeLater.html',
-                    className       : '',
-                    closeByDocument : false,
-                    closeByEscape   : false,
-                    scope           : $scope,
-                    data            : JSON.stringify(data)
+                    template: '/assets/partials/groups/summary/popups/changeDates/arrivalDate/rvConfirmArrivalDateChangeLater.html',
+                    className: '',
+                    closeByDocument: false,
+                    closeByEscape: false,
+                    scope: $scope,
+                    data: JSON.stringify(data)
                 });
             };
 
@@ -227,9 +227,9 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 var dataForPopup = {
                     dataset:
                         {
-                            fromDate    : options["fromDate"]   ? options["fromDate"] : null,
-                            oldFromDate : options["oldFromDate"]? options["oldFromDate"] : null,
-                            changeInArr : true
+                            fromDate: options["fromDate"]   ? options["fromDate"] : null,
+                            oldFromDate: options["oldFromDate"]? options["oldFromDate"] : null,
+                            changeInArr: true
                         }
                 };
 
@@ -248,9 +248,9 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 var dataForPopup = {
                     dataset:
                         {
-                            fromDate    : options["fromDate"]   ? options["fromDate"] : null,
-                            oldFromDate : options["oldFromDate"]? options["oldFromDate"] : null,
-                            changeInArr : true
+                            fromDate: options["fromDate"]   ? options["fromDate"] : null,
+                            oldFromDate: options["oldFromDate"]? options["oldFromDate"] : null,
+                            changeInArr: true
                         }
                 };
 
@@ -291,12 +291,12 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             var showEarlierDepartureDateMoveConfirmationPopup = function (data) {
                 ngDialog.open(
                 {
-                    template        : '/assets/partials/groups/summary/popups/changeDates/departureDate/rvConfirmDepartureDateChangeToEarlier.html',
-                    className       : '',
-                    closeByDocument : false,
-                    closeByEscape   : false,
-                    scope           : $scope,
-                    data            : JSON.stringify(data)
+                    template: '/assets/partials/groups/summary/popups/changeDates/departureDate/rvConfirmDepartureDateChangeToEarlier.html',
+                    className: '',
+                    closeByDocument: false,
+                    closeByEscape: false,
+                    scope: $scope,
+                    data: JSON.stringify(data)
                 });
             };
 
@@ -308,12 +308,12 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             var showLaterDepartureDateMoveConfirmationPopup = function (data) {
                 ngDialog.open(
                 {
-                    template        : '/assets/partials/groups/summary/popups/changeDates/departureDate/rvConfirmDepartureDateChangeLater.html',
-                    className       : '',
-                    closeByDocument : false,
-                    closeByEscape   : false,
-                    scope           : $scope,
-                    data            : JSON.stringify(data)
+                    template: '/assets/partials/groups/summary/popups/changeDates/departureDate/rvConfirmDepartureDateChangeLater.html',
+                    className: '',
+                    closeByDocument: false,
+                    closeByEscape: false,
+                    scope: $scope,
+                    data: JSON.stringify(data)
                 });
             };
 
@@ -329,9 +329,9 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 var dataForPopup = {
                     dataset:
                         {
-                            toDate      : options["toDate"]   ? options["toDate"] : null,
-                            oldToDate   : options["oldToDate"]? options["oldToDate"] : null,
-                            changeInDep : true
+                            toDate: options["toDate"]   ? options["toDate"] : null,
+                            oldToDate: options["oldToDate"]? options["oldToDate"] : null,
+                            changeInDep: true
                         }
                 };
 
@@ -350,9 +350,9 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 var dataForPopup = {
                     dataset:
                         {
-                            toDate      : options["toDate"]   ? options["toDate"] : null,
-                            oldToDate   : options["oldToDate"]? options["oldToDate"] : null,
-                            changeInDep : true
+                            toDate: options["toDate"]   ? options["toDate"] : null,
+                            oldToDate: options["oldToDate"]? options["oldToDate"] : null,
+                            changeInDep: true
                         }
                 };
 
@@ -386,12 +386,12 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             var showDateChangeInvalidWarningPopup = function (data) {
                 ngDialog.open(
                 {
-                    template        : '/assets/partials/groups/summary/popups/changeDates/rvGroupChangeDatesInvalidWarningPopup.html',
-                    className       : '',
-                    closeByDocument : false,
-                    closeByEscape   : false,
-                    scope           : $scope,
-                    data            : JSON.stringify(data)
+                    template: '/assets/partials/groups/summary/popups/changeDates/rvGroupChangeDatesInvalidWarningPopup.html',
+                    className: '',
+                    closeByDocument: false,
+                    closeByEscape: false,
+                    scope: $scope,
+                    data: JSON.stringify(data)
                 });
             };
 
@@ -452,11 +452,11 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             var openNoAvailabilityPopup = function () {
                 ngDialog.open(
                 {
-                    template        : '/assets/partials/groups/summary/popups/changeDates/rvGroupChangeDatesNoAvailabilityPopup.html',
-                    className       : '',
-                    closeByDocument : false,
-                    closeByEscape   : false,
-                    scope           : $scope
+                    template: '/assets/partials/groups/summary/popups/changeDates/rvGroupChangeDatesNoAvailabilityPopup.html',
+                    className: '',
+                    closeByDocument: false,
+                    closeByEscape: false,
+                    scope: $scope
                 });
             };
 
@@ -509,30 +509,30 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 lastApiFnParams = _.extend({}, arguments);
 
                 var params = {
-                    group_id                : $scope.groupConfigData.summary.group_id,
+                    group_id: $scope.groupConfigData.summary.group_id,
                     change_reservation_dates: changeReservationDates,
-                    force_fully_over_book   : forcefullyOverbook
+                    force_fully_over_book: forcefullyOverbook
                 };
 
                 if (arrChangeOnly) {
                     conditnalParams = {
-                        from_date               : dataSet["fromDate"] ? formatDateForAPI(dataSet["fromDate"]) : null,
-                        is_change_in_from_date  : true
+                        from_date: dataSet["fromDate"] ? formatDateForAPI(dataSet["fromDate"]) : null,
+                        is_change_in_from_date: true
                     };
                 }
                 else if (depChangeOnly) {
                     conditnalParams = {
-                        to_date                : dataSet["toDate"] ? formatDateForAPI(dataSet["toDate"]) : null,
-                        is_change_in_to_date   : true
+                        to_date: dataSet["toDate"] ? formatDateForAPI(dataSet["toDate"]) : null,
+                        is_change_in_to_date: true
                     };
                 }
 
                 _.extend(params, conditnalParams);
 
                 var options = {
-                    params          : params,
-                    successCallBack : successCallBackOfChangeDatesAPI, //null case will be handled from baseCtrl
-                    failureCallBack : failureCallBackOfChangeDatesAPI //null case will be handled from baseCtrl
+                    params: params,
+                    successCallBack: successCallBackOfChangeDatesAPI, //null case will be handled from baseCtrl
+                    failureCallBack: failureCallBackOfChangeDatesAPI //null case will be handled from baseCtrl
                 };
                 $scope.callAPI(rvGroupConfigurationSrv.changeDates, options);
             };
@@ -561,12 +561,12 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             var showMoveConfirmationPopup = function (data) {
                 ngDialog.open(
                 {
-                    template        : '/assets/partials/groups/summary/popups/changeDates/moveDates/rvGroupMoveDatesConfirmationPopup.html',
-                    className       : '',
-                    closeByDocument : false,
-                    closeByEscape   : false,
-                    scope           : $scope,
-                    data            : JSON.stringify(data)
+                    template: '/assets/partials/groups/summary/popups/changeDates/moveDates/rvGroupMoveDatesConfirmationPopup.html',
+                    className: '',
+                    closeByDocument: false,
+                    closeByEscape: false,
+                    scope: $scope,
+                    data: JSON.stringify(data)
                 });
             };
 
@@ -582,10 +582,10 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 var dataForPopup = {
                     dataset:
                         {
-                            fromDate    : options["fromDate"]   ? options["fromDate"] : null,
-                            toDate      : options["toDate"]     ? options["toDate"] : null,
-                            oldFromDate : options["oldFromDate"]? options["oldFromDate"] : null,
-                            oldToDate   : options["oldToDate"]  ? options["oldToDate"] : null
+                            fromDate: options["fromDate"]   ? options["fromDate"] : null,
+                            toDate: options["toDate"]     ? options["toDate"] : null,
+                            oldFromDate: options["oldFromDate"]? options["oldFromDate"] : null,
+                            oldToDate: options["oldToDate"]  ? options["oldToDate"] : null
                         }
                 };
 
@@ -649,16 +649,16 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 lastApiFnParams = _.extend({}, arguments);
 
                 var params = {
-                    group_id                : sumryData.group_id,
-                    from_date               : newFromDate,
-                    to_date                 : newToDate,
-                    force_fully_over_book   : forcefullyOverbook
+                    group_id: sumryData.group_id,
+                    from_date: newFromDate,
+                    to_date: newToDate,
+                    force_fully_over_book: forcefullyOverbook
                 };
 
                 var options = {
-                    params          : params,
-                    successCallBack : successCallBackOfMoveDatesAPI,
-                    failureCallBack : failureCallBackOfMoveDatesAPI
+                    params: params,
+                    successCallBack: successCallBackOfMoveDatesAPI,
+                    failureCallBack: failureCallBackOfMoveDatesAPI
                 };
                 $scope.callAPI(rvGroupConfigurationSrv.completeMoveGroup, options);
             };
@@ -739,23 +739,23 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
              */
             $scope.getMoveDatesActions = function () {
                 return {
-                    shouldShowMoveButton         : shouldShowMoveButton,
-                    clickedOnMoveButton          : clickedOnMoveButton,
-                    triggerEarlierArrDateChange  : triggerEarlierArrivalDateChange,
-                    triggerLaterArrDateChange    : triggerLaterArrivalDateChange,
-                    arrDateLeftChangeAllowed     : arrDateLeftChangeAllowed,
-                    arrDateRightChangeAllowed    : arrDateRightChangeAllowed,
-                    triggerEarlierDepDateChange  : triggerEarlierDepartureDateChange,
-                    triggerLaterDepDateChange    : triggerLaterDepartureDateChange,
-                    depDateLeftChangeAllowed     : depDateLeftChangeAllowed,
-                    depDateRightChangeAllowed    : depDateRightChangeAllowed,
-                    showDateChangeInvalidWarning : showDateChangeInvalidWarning,
-                    isInCompleteMoveMode         : isInCompleteMoveMode,
-                    isInChangeDatesMode          : isInChangeDatesMode,
-                    clickedOnMoveSaveButton      : clickedOnMoveSaveButton,
-                    cancelMoveAction             : cancelMoveAction,
-                    setToDefaultMode             : setToDefaultMode,
-                    triggerdChangeDateActions    : triggerdChangeDateActions
+                    shouldShowMoveButton: shouldShowMoveButton,
+                    clickedOnMoveButton: clickedOnMoveButton,
+                    triggerEarlierArrDateChange: triggerEarlierArrivalDateChange,
+                    triggerLaterArrDateChange: triggerLaterArrivalDateChange,
+                    arrDateLeftChangeAllowed: arrDateLeftChangeAllowed,
+                    arrDateRightChangeAllowed: arrDateRightChangeAllowed,
+                    triggerEarlierDepDateChange: triggerEarlierDepartureDateChange,
+                    triggerLaterDepDateChange: triggerLaterDepartureDateChange,
+                    depDateLeftChangeAllowed: depDateLeftChangeAllowed,
+                    depDateRightChangeAllowed: depDateRightChangeAllowed,
+                    showDateChangeInvalidWarning: showDateChangeInvalidWarning,
+                    isInCompleteMoveMode: isInCompleteMoveMode,
+                    isInChangeDatesMode: isInChangeDatesMode,
+                    clickedOnMoveSaveButton: clickedOnMoveSaveButton,
+                    cancelMoveAction: cancelMoveAction,
+                    setToDefaultMode: setToDefaultMode,
+                    triggerdChangeDateActions: triggerdChangeDateActions
                 };
             };
         }());
@@ -1297,9 +1297,9 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             };
 
             return {
-                'title' : title,
-                'name'  : name,
-                'param' : param
+                'title': title,
+                'name': name,
+                'param': param
             };
         })( $rootScope );
 
@@ -1316,9 +1316,9 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
         // function to set Back Navigation params
         var setBackNavigation = function() {
             $rootScope.setPrevState = {
-                'title'    : resolvedBackBtn.title,
-                'callback' : 'updateAndBack',
-                'scope'    : $scope
+                'title': resolvedBackBtn.title,
+                'callback': 'updateAndBack',
+                'scope': $scope
             };
 
             // setting title and things

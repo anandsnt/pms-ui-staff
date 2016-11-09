@@ -86,8 +86,8 @@ angular.module('reportsModule')
             };
 
             return {
-                'chargeGroups' : newChargeGroupsAry,
-                'chargeCodes'  : newChargeCodesAry
+                'chargeGroups': newChargeGroupsAry,
+                'chargeCodes': newChargeCodesAry
             };
         };
 
@@ -143,43 +143,43 @@ angular.module('reportsModule')
 
         /** @type {Object} Array of all the filter values, new values added in future can be included here */
         var __optionFilterNames = {
-            'INCLUDE_NOTES'      : true,
-            'VIP_ONLY'           : true,
-            'INCLUDE_VARIANCE'   : true,
-            'INCLUDE_LAST_YEAR'  : true,
-            'INCLUDE_CANCELLED'  : true,
-            'INCLUDE_CANCELED'   : true,
-            'INCLUDE_NO_SHOW'    : true,
-            'SHOW_GUESTS'        : true,
-            'ROVER'              : true,
-            'ZEST'               : true,
-            'ZEST_WEB'           : true,
-            'DEPOSIT_PAID'       : true,
-            'DEPOSIT_DUE'        : true,
-            'DEPOSIT_PAST'       : true,
-            'DUE_IN_ARRIVALS'    : true,
-            'DUE_OUT_DEPARTURES' : true,
-            'INCLUDE_NEW'        : true,
-            'INCLUDE_BOTH'       : true,
-            'EXCLUDE_NON_GTD'    : true,
-            'SHOW_RATE_ADJUSTMENTS_ONLY' : true,
-            'INCLUDE_TAX'        : true,
+            'INCLUDE_NOTES': true,
+            'VIP_ONLY': true,
+            'INCLUDE_VARIANCE': true,
+            'INCLUDE_LAST_YEAR': true,
+            'INCLUDE_CANCELLED': true,
+            'INCLUDE_CANCELED': true,
+            'INCLUDE_NO_SHOW': true,
+            'SHOW_GUESTS': true,
+            'ROVER': true,
+            'ZEST': true,
+            'ZEST_WEB': true,
+            'DEPOSIT_PAID': true,
+            'DEPOSIT_DUE': true,
+            'DEPOSIT_PAST': true,
+            'DUE_IN_ARRIVALS': true,
+            'DUE_OUT_DEPARTURES': true,
+            'INCLUDE_NEW': true,
+            'INCLUDE_BOTH': true,
+            'EXCLUDE_NON_GTD': true,
+            'SHOW_RATE_ADJUSTMENTS_ONLY': true,
+            'INCLUDE_TAX': true,
             'INCLUDE_TAX_RATE': true,
             'INCLUDE_ADDON_RATE': true,
             'INCLUDE_ADDONS': true,
-            'INCLUDE_ADDON_REVENUE' :true,
-            'INCLUDE_ACTIONS'    : true
+            'INCLUDE_ADDON_REVENUE': true,
+            'INCLUDE_ACTIONS': true
         };
 
         var __excludeFilterNames = {
-            'EXCLUDE_TAX' : true
+            'EXCLUDE_TAX': true
         };
 
         var __displayFilterNames = {
-            'INCLUDE_MARKET'  : true,
-            'INCLUDE_SOURCE'  : true,
-            'INCLUDE_ORIGIN'  : true,
-            'INCLUDE_SEGMENT' : true
+            'INCLUDE_MARKET': true,
+            'INCLUDE_SOURCE': true,
+            'INCLUDE_ORIGIN': true,
+            'INCLUDE_SEGMENT': true
         };
 
         var __guestOrAccountFilterNames = {
@@ -217,17 +217,17 @@ angular.module('reportsModule')
                 isRadioOption = false;
 
             var includeCancelled = {
-                        'INCLUDE_CANCELLED' : true,
-                        'INCLUDE_CANCELED'  : true
+                        'INCLUDE_CANCELLED': true,
+                        'INCLUDE_CANCELED': true
                     },
                 dueInDueOut = {
-                        'DUE_IN_ARRIVALS'    : true,
-                        'DUE_OUT_DEPARTURES' : true
+                        'DUE_IN_ARRIVALS': true,
+                        'DUE_OUT_DEPARTURES': true
                     },
                 depositStatus = {
-                        'DEPOSIT_PAID' : true,
-                        'DEPOSIT_DUE'  : true,
-                        'DEPOSIT_PAST' : true
+                        'DEPOSIT_PAID': true,
+                        'DEPOSIT_DUE': true,
+                        'DEPOSIT_PAST': true
                     };
 
             // if filter is this, make it selected by default
@@ -277,12 +277,12 @@ angular.module('reportsModule')
             };
 
             report['hasGeneralOptions']['data'].push({
-                id          : filter.value.toLowerCase(),
-                paramKey    : filter.value.toLowerCase(),
-                description : filter.description,
-                selected    : selected,
-                mustSend    : mustSend,
-                isRadioOption : isRadioOption
+                id: filter.value.toLowerCase(),
+                paramKey: filter.value.toLowerCase(),
+                description: filter.description,
+                selected: selected,
+                mustSend: mustSend,
+                isRadioOption: isRadioOption
             });
 
             // if filter value is either of these, selectAll should be false
@@ -304,9 +304,9 @@ angular.module('reportsModule')
             };
 
             report['hasDisplay']['data'].push({
-                paramKey    : filter.value.toLowerCase(),
-                description : filter.description,
-                selected    : selected
+                paramKey: filter.value.toLowerCase(),
+                description: filter.description,
+                selected: selected
             });
         };
 
@@ -317,25 +317,25 @@ angular.module('reportsModule')
          */
         var __pushGuestOrAccountData = function(report, filter) {
             report['hasGuestOrAccountFilter']['data'].push({
-                paramKey    : filter.value.toLowerCase(),
-                description : filter.description,
-                selected    : true
+                paramKey: filter.value.toLowerCase(),
+                description: filter.description,
+                selected: true
             });
         };
 
         var __pushShowData = function(report, filter) {
             report['hasShow']['data'].push({
-                paramKey    : filter.value.toLowerCase(),
-                description : filter.description,
-                selected    : true
+                paramKey: filter.value.toLowerCase(),
+                description: filter.description,
+                selected: true
             });
         };
 
         var __pushChargeTypeData = function(report, filter) {
             report['hasChargeTypes']['data'].push({
-                paramKey    : filter.value.toLowerCase(),
-                description : filter.description,
-                selected    : true
+                paramKey: filter.value.toLowerCase(),
+                description: filter.description,
+                selected: true
             });
         };
 
@@ -554,9 +554,9 @@ angular.module('reportsModule')
                     };
 
                     report['hasExclusions'].data.push({
-                        paramKey    : filter.value.toLowerCase(),
-                        description : filter.description,
-                        selected    : selected
+                        paramKey: filter.value.toLowerCase(),
+                        description: filter.description,
+                        selected: selected
                     });
                 };
 
@@ -700,7 +700,7 @@ angular.module('reportsModule')
 
                             // along with that fetch addons
                             requested++;
-                            reportsSubSrv.fetchAddons({ 'addon_group_ids' : _.pluck(chargeNAddonGroups, 'id') })
+                            reportsSubSrv.fetchAddons({ 'addon_group_ids': _.pluck(chargeNAddonGroups, 'id') })
                                 .then( fillAGAs.bind(null, chargeNAddonGroups) );
                         });
                 }
@@ -1822,17 +1822,17 @@ angular.module('reportsModule')
                 _date  = parseInt( _dateParts[2] );
 
             var returnObj = {
-                'businessDate' : new Date(_year, _month, _date),
-                'today'        : new Date(_year, _month, _date),
-                'yesterday'    : new Date(_year, _month, _date - 1),
-                'tomorrow'     : new Date(_year, _month, _date + 1),
-                'aWeekAgo'     : new Date(_year, _month, _date - 7),
-                'aWeekAfter'   : new Date(_year, _month, _date + 7),
-                'aMonthAfter'  : new Date(_year, _month, _date + 30),
-                'monthStart'   : new Date(_year, _month, 1),
+                'businessDate': new Date(_year, _month, _date),
+                'today': new Date(_year, _month, _date),
+                'yesterday': new Date(_year, _month, _date - 1),
+                'tomorrow': new Date(_year, _month, _date + 1),
+                'aWeekAgo': new Date(_year, _month, _date - 7),
+                'aWeekAfter': new Date(_year, _month, _date + 7),
+                'aMonthAfter': new Date(_year, _month, _date + 30),
+                'monthStart': new Date(_year, _month, 1),
                 'twentyEightDaysBefore': new Date(_year, _month, _date - 28),
-                'twentyEightDaysAfter' : new Date(_year, _month, _date + 28),
-                'aYearAfter'   : new Date(_year + 1, _month, _date - 1)
+                'twentyEightDaysAfter': new Date(_year, _month, _date + 28),
+                'aYearAfter': new Date(_year + 1, _month, _date - 1)
             };
 
             if ( parseInt(xDays) !== NaN ) {
@@ -1887,8 +1887,8 @@ angular.module('reportsModule')
                 _mm = m < 10 ? '0' + m : m;
 
                 _ret.push({
-                    'value' : _hh + ':' + _mm,
-                    'name'  : _hh + ':' + _mm
+                    'value': _hh + ':' + _mm,
+                    'name': _hh + ':' + _mm
                 });
             };
 

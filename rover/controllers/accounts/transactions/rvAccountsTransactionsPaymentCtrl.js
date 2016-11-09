@@ -377,8 +377,8 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
         // select to which AR account payment has to be done
         $scope.selectArAccount = function(type) {
             $scope.$broadcast("CONTINUE_DIRECT_BILL_PAYMENT", {
-                ar_type : type,
-                arDetails :$scope.ArDetails
+                ar_type: type,
+                arDetails: $scope.ArDetails
             });
             $scope.showArSelection = false;
         };

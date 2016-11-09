@@ -48,8 +48,8 @@ angular.module('reportsModule')
         			INCLUDE_NOTES: true,
         			VIP_ONLY: true,
         			INCLUDE_VARIANCE: true,
-        			INCLUDE_LAST_YEAR : true,
-        			INCLUDE_CANCELLED : true,
+        			INCLUDE_LAST_YEAR: true,
+        			INCLUDE_CANCELLED: true,
         			INCLUDE_CANCELED: true,
         			INCLUDE_NO_SHOW: true,
         			SHOW_GUESTS: true,
@@ -69,7 +69,7 @@ angular.module('reportsModule')
         			INCLUDE_TAX_RATE: true,
         			INCLUDE_ADDON_RATE: true,
         			INCLUDE_ADDONS: true,
-        			INCLUDE_ADDON_REVENUE:true
+        			INCLUDE_ADDON_REVENUE: true
         		}
         	};
 
@@ -160,10 +160,10 @@ angular.module('reportsModule')
         				isOpen: false,
         				selectAll: false,
         				value: 'Select Options',
-        				allValue : 'All Selected',
+        				allValue: 'All Selected',
         				defaultValue: 'Select Options',
-        				valueKey : 'description',
-        				data : []
+        				valueKey: 'description',
+        				data: []
         			}, override);
         		};
 

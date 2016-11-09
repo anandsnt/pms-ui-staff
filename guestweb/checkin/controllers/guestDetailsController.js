@@ -27,16 +27,16 @@
 		$scope.months   	= [];
 		$scope.days      	= [];
 		$scope.guestDetails = {
-								'day':'',
-								'month':'',
-								'year':'',
-								'postal_code':'',
-								'state':'',
-								'city':'',
-								'street':'',
-								'street2':'',
-								'birthday':'',
-								'country':''
+								'day': '',
+								'month': '',
+								'year': '',
+								'postal_code': '',
+								'state': '',
+								'city': '',
+								'street': '',
+								'street2': '',
+								'birthday': '',
+								'country': ''
 							  };
 
 		
@@ -124,7 +124,7 @@
 	      templateUrl: '/assets/preCheckin/partials/preCheckinErrorModal.html',
 	      controller: ccVerificationModalCtrl,
 	      resolve: {
-	        errorMessage:function() {
+	        errorMessage: function() {
 	          return "Please provide all the required information";
 	        }
 	      }

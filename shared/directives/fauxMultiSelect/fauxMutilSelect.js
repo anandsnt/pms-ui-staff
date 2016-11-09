@@ -1,9 +1,9 @@
 angular.module('fauxMultiSelectModule', [])
   .directive('fauxMultiSelect', ['$window', function($window) {
       return {
-        restrict : 'EA',
-        templateUrl : '../../assets/directives/fauxMultiSelect/fauxMultiSelect.html',
-        scope : {
+        restrict: 'EA',
+        templateUrl: '../../assets/directives/fauxMultiSelect/fauxMultiSelect.html',
+        scope: {
         	model: '=ngModel',
         	source: '=fauxSource'
         },

@@ -47,8 +47,8 @@ function($scope, $state, $stateParams, ADFrequentFlyerProgramSrv, ngTableParams,
 		var item = this.item;
 
 		var data = {
-			'id' : item.id,
-			'set_active' : item.is_active ? false : true
+			'id': item.id,
+			'set_active': item.is_active ? false : true
 		};
 
 		var postSuccess = function() {

@@ -334,23 +334,23 @@ admin.controller('ADRatesAddonsCtrl', [
 		// on save add/edit addon
 		$scope.addUpdateAddon = function() {
 			var singleAddonData = {
-				activated : $scope.singleAddon.activated,
-				amount : $scope.singleAddon.amount,
-				amount_type_id : $scope.singleAddon.amount_type_id,
-				bestseller : $scope.singleAddon.bestseller,
-				charge_code_id : $scope.singleAddon.charge_code_id,
-				charge_group_id : $scope.singleAddon.charge_group_id,
-				description : $scope.singleAddon.description,
-				is_reservation_only : $scope.singleAddon.is_reservation_only,
-				inventory_count : parseInt($scope.singleAddon.inventory_count),
-				name : $scope.singleAddon.name,
-				post_type_id : $scope.singleAddon.post_type_id,
-				rate_code_only : $scope.singleAddon.rate_code_only,
-				manual_posting : $scope.singleAddon.manual_posting,
-				forecast_for_next_day : $scope.singleAddon.forecast_for_next_day,
-				charge_full_weeks_only : (($scope.singleAddon.post_type_id ===3)&& $scope.singleAddon.is_reservation_only && $scope.singleAddon.charge_full_weeks_only)?true:false,
-				allow_rate_exclusions : $scope.singleAddon.allow_rate_exclusions,
-				excluded_rate_ids : _.pluck($scope.singleAddon.excludedRates, 'id')
+				activated: $scope.singleAddon.activated,
+				amount: $scope.singleAddon.amount,
+				amount_type_id: $scope.singleAddon.amount_type_id,
+				bestseller: $scope.singleAddon.bestseller,
+				charge_code_id: $scope.singleAddon.charge_code_id,
+				charge_group_id: $scope.singleAddon.charge_group_id,
+				description: $scope.singleAddon.description,
+				is_reservation_only: $scope.singleAddon.is_reservation_only,
+				inventory_count: parseInt($scope.singleAddon.inventory_count),
+				name: $scope.singleAddon.name,
+				post_type_id: $scope.singleAddon.post_type_id,
+				rate_code_only: $scope.singleAddon.rate_code_only,
+				manual_posting: $scope.singleAddon.manual_posting,
+				forecast_for_next_day: $scope.singleAddon.forecast_for_next_day,
+				charge_full_weeks_only: (($scope.singleAddon.post_type_id ===3)&& $scope.singleAddon.is_reservation_only && $scope.singleAddon.charge_full_weeks_only)?true:false,
+				allow_rate_exclusions: $scope.singleAddon.allow_rate_exclusions,
+				excluded_rate_ids: _.pluck($scope.singleAddon.excludedRates, 'id')
 			};
 
 			// convert dates to system format yyyy-MM-dd
@@ -469,12 +469,12 @@ admin.controller('ADRatesAddonsCtrl', [
 		};
 		$scope.sortByName = function() {
 		if($scope.currentClickedAddon === -1) {
-			$scope.tableParams.sorting({'name' : $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'});
+			$scope.tableParams.sorting({'name': $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'});
 		}
 		};
 		$scope.sortByDescription = function() {
 		if($scope.currentClickedAddon === -1) {
-			$scope.tableParams.sorting({'description' : $scope.tableParams.isSortBy('description', 'asc') ? 'desc' : 'asc'});
+			$scope.tableParams.sorting({'description': $scope.tableParams.isSortBy('description', 'asc') ? 'desc' : 'asc'});
 		}
 		};
 

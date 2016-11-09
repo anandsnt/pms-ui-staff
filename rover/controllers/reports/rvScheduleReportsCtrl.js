@@ -479,7 +479,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			// this filter for few reports could also be listed
 			// under SHOW and not OPTIONS
 			INCLUDE_DUE_OUT: 'INCLUDE_DUE_OUT',
-			RESTRICTED_POST_ONLY : 'RESTRICTED_POST_ONLY'
+			RESTRICTED_POST_ONLY: 'RESTRICTED_POST_ONLY'
 		};
 
 		var matchSortFields = {
@@ -519,10 +519,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				if(filter.value == 'ACCOUNT' || filter.value == 'GUEST') {
 					selected = true;
 					$scope.filters.hasGeneralOptions.data.push({
-						paramKey    : filter.value.toLowerCase(),
-						description : filter.description,
-						selected    : selected,
-						mustSend    : mustSend
+						paramKey: filter.value.toLowerCase(),
+						description: filter.description,
+						selected: selected,
+						mustSend: mustSend
 					});
 				}
 
@@ -546,10 +546,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 					}
 
 					$scope.filters.hasGeneralOptions.data.push({
-						paramKey    : filter.value.toLowerCase(),
-						description : filter.description,
-						selected    : selected,
-						mustSend    : mustSend
+						paramKey: filter.value.toLowerCase(),
+						description: filter.description,
+						selected: selected,
+						mustSend: mustSend
 					});
 
 					if ( $scope.selectedEntityDetails.report.description === 'Arriving Guests' || $scope.selectedEntityDetails.report.description === 'Departing Guests' ) {
@@ -838,10 +838,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
 
         var STAGES = {
-        	SHOW_SCHEDULE_LIST  : 'SHOW_SCHEDULE_LIST',
-        	SHOW_PARAMETERS   : 'SHOW_PARAMETERS',
-        	SHOW_DETAILS      : 'SHOW_DETAILS',
-        	SHOW_DISTRIBUTION : 'SHOW_DISTRIBUTION'
+        	SHOW_SCHEDULE_LIST: 'SHOW_SCHEDULE_LIST',
+        	SHOW_PARAMETERS: 'SHOW_PARAMETERS',
+        	SHOW_DETAILS: 'SHOW_DETAILS',
+        	SHOW_DISTRIBUTION: 'SHOW_DISTRIBUTION'
         }
 
         $scope.shouldHideParametersCol = function() {

@@ -98,12 +98,12 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 		};
 
 		var resClassNames = {
-			'DUE IN'    : 'check-in',
-			'INHOUSE'   : 'inhouse',
-			'DUE OUT'   : 'check-out',
-			'CHECKEDOUT' : 'check-out',
-			'CANCELLED' : 'cancel',
-			'NOSHOW'    : 'no-show'
+			'DUE IN': 'check-in',
+			'INHOUSE': 'inhouse',
+			'DUE OUT': 'check-out',
+			'CHECKEDOUT': 'check-out',
+			'CANCELLED': 'cancel',
+			'NOSHOW': 'no-show'
 		}
 		$scope.getStatusClass = function(status) {
 			return resClassNames[status] || '';
@@ -196,12 +196,12 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
  			};
 
  			_.extend(params, {
- 				'id'             : chosenReport.id,
- 				'date'           : addon.date,
- 				'addon_group_id' : addon.addonGroupId,
- 				'addon_id'       : addon.addonId,
- 				'page'           : addon.pageNo,
- 				'per_page'       : addon.perPage
+ 				'id': chosenReport.id,
+ 				'date': addon.date,
+ 				'addon_group_id': addon.addonGroupId,
+ 				'addon_id': addon.addonId,
+ 				'page': addon.pageNo,
+ 				'per_page': addon.perPage
  			});
 
  			statuses = _.where(chosenReport['hasReservationStatus']['data'], { selected: true });
@@ -284,13 +284,13 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 									addonObj[addonKey]['hasData'] = true;
 
 									_.extend(addon, {
-										'sortField'   : undefined,
-										'roomSortDir' : undefined,
-										'nameSortDir' : undefined,
+										'sortField': undefined,
+										'roomSortDir': undefined,
+										'nameSortDir': undefined,
 										/**/
-										'date'         : date,
-										'addonGroupId' : addonGroupId,
-										'addonId'      : addonId,
+										'date': date,
+										'addonGroupId': addonGroupId,
+										'addonId': addonId,
 									});
 
 									_.extend( addon, calPagination(addon) );
@@ -356,10 +356,10 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
  		mainCtrlScope.printOptions.showModal = function() {			
  			$scope.printLevel = {};
  			$scope.levelValues = {
- 				'date'  : 'DATE',
- 				'group' : 'GROUP',
- 				'addon' : 'ADDON',
- 				'all'   : 'ALL'
+ 				'date': 'DATE',
+ 				'group': 'GROUP',
+ 				'addon': 'ADDON',
+ 				'all': 'ALL'
  			};
 
 			$scope.printLevel.value = 'DATE';

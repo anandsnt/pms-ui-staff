@@ -18,8 +18,8 @@ var ccVerificationService = function($q, $http, $rootScope) {
 
 
 		return {
-			response:response,
-			verifyCC:verifyCC
+			response: response,
+			verifyCC: verifyCC
 
 		};
 };

@@ -278,9 +278,9 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         e_comp = end_date.toComponents(),
                         params =  {
                             begin_time: s_comp.time.toString(),
-                            end_time:   e_comp.time.toString(),
+                            end_time: e_comp.time.toString(),
                             begin_date: s_comp.date.toDateString(),
-                            end_date:   e_comp.date.toDateString()
+                            end_date: e_comp.date.toDateString()
                         };
 
                     if(room_type_id) {
@@ -299,12 +299,12 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                 *
                 */
                 var InActiveRoomSlots = Config({
-                    id:         meta.inactive_rooms.id,
-                    name:       'inactiveroom',
-                    url:        'api/room_services/inactive_rooms',
+                    id: meta.inactive_rooms.id,
+                    name: 'inactiveroom',
+                    url: 'api/room_services/inactive_rooms',
                     key_prefix: 'iar-',
-                    namespace:  'inactive_rooms',
-                    cache:      true
+                    namespace: 'inactive_rooms',
+                    cache: true
                 },
                 ['from_date', 'to_date'],
                 undefined,
@@ -315,12 +315,12 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                 Config(config, param_cfg, index_cfg, group_cfg, dataStore, normalizationFn, mergeFn)
                 */
                 Room = Config({
-                    id:         meta.room.id,
-                    name:       'room',
-                    url:        'api/rooms',
+                    id: meta.room.id,
+                    name: 'room',
+                    url: 'api/rooms',
                     key_prefix: 'rm-',
-                    namespace:  'rooms',
-                    cache:      true
+                    namespace: 'rooms',
+                    cache: true
                 },
                 undefined,
                 ['id', 'room_no'],
@@ -368,8 +368,8 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                                 room.room_inactive_slots.push({
                                     'startTime': startTime,
-                                    'endTime'  : endTime,
-                                    'status'   : eachRoom.service_status
+                                    'endTime': endTime,
+                                    'status': eachRoom.service_status
                                 });
                             }
                         });
@@ -381,12 +381,12 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                 /* ROOM TYPE Configuration Adapter */
                 RoomType = Config({
-                    id:         meta.room_type.id,
-                    name:       'room_type',
-                    url:        '/api/room_types.json?is_exclude_pseudo=true',
+                    id: meta.room_type.id,
+                    name: 'room_type',
+                    url: '/api/room_types.json?is_exclude_pseudo=true',
                     key_prefix: 'rt-',
-                    namespace:  'results',
-                    cache:      true
+                    namespace: 'results',
+                    cache: true
                 },
                 undefined,
                 ['id'],
@@ -395,11 +395,11 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                 /* ROOM MAINTENANCE Configuration Adapter */
                 Maintenance= Config({
-                    id:             meta.maintenance.id,
-                    name:           'maintenance',
-                    url:            '/api/room_types_task_completion_time?exclude_pseudo=true',
-                    namespace:      'results',
-                    cache:          true
+                    id: meta.maintenance.id,
+                    name: 'maintenance',
+                    url: '/api/room_types_task_completion_time?exclude_pseudo=true',
+                    namespace: 'results',
+                    cache: true
                 },
                 undefined,
                 ['room_type_id'],
@@ -415,11 +415,11 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                 /* OCCUPANCY Configuration Adapter */
                 Occupancy =  Config({
-                    id:             meta.occupancy.id,
-                    name:           'occupancy',
-                    url:            'api/hourly_occupancy',
-                    key_prefix:     'oc-',
-                    namespace:      'reservations'
+                    id: meta.occupancy.id,
+                    name: 'occupancy',
+                    url: 'api/hourly_occupancy',
+                    key_prefix: 'oc-',
+                    namespace: 'reservations'
                 },
                 ['start_date', 'end_date'],
                 ['reservation_id'],
@@ -474,11 +474,11 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                 /*AVAILABILITY Configuration Adapter */
                 Availability = Config({
-                    id:         meta.availability.id,
-                    name:       'availability',
-                    url:        'api/hourly_availability',
+                    id: meta.availability.id,
+                    name: 'availability',
+                    url: 'api/hourly_availability',
                     key_prefix: 'av-',
-                    namespace:  'availability',
+                    namespace: 'availability',
                     observe_change: true
                 },
                 ['start_date', 'end_date', 'room_type_id', 'rate_type', 'account_id'],
@@ -497,7 +497,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         room_type   = room.room_type,
                         slot_statues = {
                             'WEBBOOKING': 'blocked',
-                            'AVAILABLE' : 'available'
+                            'AVAILABLE': 'available'
                         };
                     /*
                         Configrue Available slot to mirror occupancy, execpt
@@ -524,10 +524,10 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                 /*AVAILABILITY COUNT Configuration Adapter */
                 AvailabilityCount = Config({
-                    name:       'availability_count',
-                    url:        'api/hourly_availability_count',
+                    name: 'availability_count',
+                    url: 'api/hourly_availability_count',
                     key_prefix: 'ac-',
-                    namespace:  'availability_count_per_hour',
+                    namespace: 'availability_count_per_hour',
                     cache: true
                 },
                 ['start_date', 'end_date'],
@@ -536,11 +536,11 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                 this.data_Store),
 
                 HourlyRate = Config({
-                    id:         'min_hours',
-                    name:       'min_hours',
-                    url:        '/api/hourly_rate_min_hours',
-                    namespace:  'min_hours',
-                    cache:      true
+                    id: 'min_hours',
+                    name: 'min_hours',
+                    url: '/api/hourly_rate_min_hours',
+                    namespace: 'min_hours',
+                    cache: true
                 },
                 undefined,
                 undefined,
@@ -556,14 +556,14 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                         _data_Store.set({
                             common_reservation_data: {
-                                company_id:         undefined,
-                                travel_Agent_id:    undefined,
-                                guest_first_name:   undefined,
-                                guest_last_name:    undefined,
+                                company_id: undefined,
+                                travel_Agent_id: undefined,
+                                guest_first_name: undefined,
+                                guest_last_name: undefined,
                                 occupancy_data: {
-                                    adults:         1,
-                                    children:       0,
-                                    infants:        0
+                                    adults: 1,
+                                    children: 0,
+                                    infants: 0
                                 }
                             }
                         });
@@ -573,17 +573,17 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                             _data_Store.set({
                                 filter: {
-                                    arrival_time:     (new Date(create_reservation_data.start_date)).toComponents().time.toString(),
-                                    min_hours:        (create_reservation_data.end_date - create_reservation_data.start_date) / 3600000,
-                                    room_type_id:     create_reservation_data.room_type_id
+                                    arrival_time: (new Date(create_reservation_data.start_date)).toComponents().time.toString(),
+                                    min_hours: (create_reservation_data.end_date - create_reservation_data.start_date) / 3600000,
+                                    room_type_id: create_reservation_data.room_type_id
                                 },
                                 common_reservation_data: {
-                                    company_id:         create_reservation_data.company_id,
-                                    travel_agent_id:    create_reservation_data.travel_agent_id,
+                                    company_id: create_reservation_data.company_id,
+                                    travel_agent_id: create_reservation_data.travel_agent_id,
                                     occupancy_details: {
-                                        adults:      create_reservation_data.adults,
-                                        children:    create_reservation_data.children,
-                                        infants:     create_reservation_data.infants
+                                        adults: create_reservation_data.adults,
+                                        children: create_reservation_data.children,
+                                        infants: create_reservation_data.infants
                                     }
                                  }
                              });
@@ -618,23 +618,23 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                             _data_Store.set({
                                 filter: {
-                                    arrival_times:      arrival_times,
-                                    arrival_time:       time.x_origin_start_time.toString(),
-                                    rate:               undefined,
-                                    rate_id:            undefined,
-                                    rate_type:          'Standard',
-                                    room_type:          _data_Store.get('room_type'),
-                                    room_type_id:       create_reservation_data ? create_reservation_data.room_type_id : ''
+                                    arrival_times: arrival_times,
+                                    arrival_time: time.x_origin_start_time.toString(),
+                                    rate: undefined,
+                                    rate_id: undefined,
+                                    rate_type: 'Standard',
+                                    room_type: _data_Store.get('room_type'),
+                                    room_type_id: create_reservation_data ? create_reservation_data.room_type_id : ''
                                 },
                                 display: {
-                                    x_n:                    time.x_n,
-                                    x_n_time:               time.x_n_time,
-                                    x_origin:               time.x_0,
-                                    x_origin_start_time:    time.x_origin_start_time,
-                                    x_p:                    time.x_p,
-                                    x_p_time:               time.x_p_time,
-                                    x_offset:               time.x_offset,
-                                    min_hours:              _data_Store.get('min_hours')
+                                    x_n: time.x_n,
+                                    x_n_time: time.x_n_time,
+                                    x_origin: time.x_0,
+                                    x_origin_start_time: time.x_origin_start_time,
+                                    x_p: time.x_p,
+                                    x_p_time: time.x_p_time,
+                                    x_offset: time.x_offset,
+                                    min_hours: _data_Store.get('min_hours')
                                 }
                             });
 
@@ -862,13 +862,13 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                 */
                 this.roomAvailabilityCheckAgainstReservation = function(data) {
                     var params = {
-                        room_id:            data.room_id,
-                        reservation_id:     data.reservation_id,
-                        begin_date:         data.begin_date,
-                        begin_time:         data.begin_time,
-                        end_date:           data.end_date,
-                        end_time:           data.end_time,
-                        rate_type:          data.rate_type
+                        room_id: data.room_id,
+                        reservation_id: data.reservation_id,
+                        begin_date: data.begin_date,
+                        begin_time: data.begin_time,
+                        end_date: data.end_date,
+                        end_time: data.end_time,
+                        rate_type: data.rate_type
                     };
                     if(data.rate_type === 'Corporate') {
                         if(data.account_id) {
@@ -950,13 +950,13 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                 */
                 this.checkAvailabilityForReservationToA_Date = function (data) {
                     var params = {
-                        room_id:            data.room_id,
-                        reservation_id:     data.reservation_id,
-                        begin_date:         data.begin_date,
-                        begin_time:         data.begin_time,
-                        end_date:           data.end_date,
-                        end_time:           data.end_time,
-                        rate_type:          data.rate_type
+                        room_id: data.room_id,
+                        reservation_id: data.reservation_id,
+                        begin_date: data.begin_date,
+                        begin_time: data.begin_time,
+                        end_date: data.end_date,
+                        end_time: data.end_time,
+                        rate_type: data.rate_type
                     };
 
                     if(data.rate_type === 'Corporate') {
@@ -1000,19 +1000,19 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                             __end_date.setMinutes(0);
 
                         return {
-                            __start_date:       __start_date,
-                            __end_date:         __end_date,
-                            start_date:         start_date,
-                            end_date:           end_date,
-                            adults:             data.adults,
-                            children:           data.children,
-                            infants:            data.infants,
-                            room_type_id:       data.roomTypeID,
-                            guest_first_name:   data.guestFirstName,
-                            guest_last_name:    data.guestLastName,
-                            company_id:         data.companyID,
-                            travel_agent_id:    data.TravelAgenID,
-                            minHours:           parseInt(data.minHours)
+                            __start_date: __start_date,
+                            __end_date: __end_date,
+                            start_date: start_date,
+                            end_date: end_date,
+                            adults: data.adults,
+                            children: data.children,
+                            infants: data.infants,
+                            room_type_id: data.roomTypeID,
+                            guest_first_name: data.guestFirstName,
+                            guest_last_name: data.guestLastName,
+                            company_id: data.companyID,
+                            travel_agent_id: data.TravelAgenID,
+                            minHours: parseInt(data.minHours)
                         };
                     }
 

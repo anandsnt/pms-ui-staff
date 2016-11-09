@@ -39,7 +39,7 @@ admin.controller('ADCampaignsListCtrl', ['$scope', '$state', 'ADRatesSrv', 'ADCa
 	};
 
 	$scope.editCampaign = function(id, index) {
-		$state.go('admin.addCampaign', {'id' : id, 'type': 'EDIT'});
+		$state.go('admin.addCampaign', {'id': id, 'type': 'EDIT'});
 	};
 
 	$scope.deleteCampaign = function(id, index) {
@@ -56,7 +56,7 @@ admin.controller('ADCampaignsListCtrl', ['$scope', '$state', 'ADRatesSrv', 'ADCa
 
 			$scope.reloadTable();
 		};
-		var params = {"id" : id};
+		var params = {"id": id};
 		$scope.invokeApi(ADCampaignSrv.deleteCampaign, params, deleteSuccess);
 	};
 

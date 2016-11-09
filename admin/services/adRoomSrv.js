@@ -52,7 +52,7 @@ admin.service('ADRoomSrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 			var dataToAdd = {
 				"room_number": updateData.room_number,
                 "room_type": that.getRoomTypeName(updateData.room_type_id),
-                "room_id" : data.room_id
+                "room_id": data.room_id
 			};
 			deferred.resolve(data);
 		}, function(errorMessage) {

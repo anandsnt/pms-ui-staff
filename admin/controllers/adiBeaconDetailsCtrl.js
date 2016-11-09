@@ -47,14 +47,14 @@ if(!$scope.addmode) {
   $scope.backClicked = function() {
 
     if($rootScope.previousStateParam) {
-      $state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
+      $state.go($rootScope.previousState, { menu: $rootScope.previousStateParam});
     }
     else if($rootScope.previousState) {
       $state.go($rootScope.previousState);
     }
     else
     {
-      $state.go('admin.dashboard', {menu : 0});
+      $state.go('admin.dashboard', {menu: 0});
     }
 
   };
@@ -100,10 +100,10 @@ if(!$scope.addmode) {
     var args = [];
 
     args.push({
-      "NewEstimoteID":{
+      "NewEstimoteID": {
       "proximityUUID": $scope.data.proximity_id,
-      "majorID":$scope.data.major_id,
-      "minorID":$scope.data.minor_id
+      "majorID": $scope.data.major_id,
+      "minorID": $scope.data.minor_id
       }
 
     });

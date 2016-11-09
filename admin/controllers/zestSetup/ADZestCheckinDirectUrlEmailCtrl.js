@@ -10,9 +10,9 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
 
     var resetEditScreen  = function() {
         $scope.url                = {   
-                                        "name":"",
-                                        "url_suffix":"",
-                                        "active":false
+                                        "name": "",
+                                        "url_suffix": "",
+                                        "active": false
                                     };
         $scope.editMode           = false;
         $scope.isAddMode          = false;
@@ -86,7 +86,7 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
 
     var callEditApi = function() {
          var data = {
-             "id":$scope.url.id,
+             "id": $scope.url.id,
              "active": $scope.url.active,
              "application": "URL",
              "guest_web_url_type": "CHECKIN",
@@ -104,7 +104,7 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
         };
         //call API
          var data = {
-             "id":$scope.urls[index].id,
+             "id": $scope.urls[index].id,
              "active": !$scope.urls[index].active
         }
         $scope.invokeApi(adZestCheckinCheckoutSrv.editDirectURL, data, toggleSucces);
@@ -118,7 +118,7 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
              $scope.urls.splice(index, 1);
              $scope.$emit('hideLoader');
         };
-        var data =  {"id":$scope.urls[index].id};
+        var data =  {"id": $scope.urls[index].id};
         $scope.invokeApi(adZestCheckinCheckoutSrv.deteDirectUrl, data, deleteSuccessCallback);
     };
     // save/update  success

@@ -34,11 +34,11 @@ angular.module('allotmentModule', [])
                         //as per CICO-13899, initially we are looking for groups which has from & to date equal
                         // to business date
                         var params = {
-                            'query'     : '',
-                            'from_date' : businessDate.business_date,
-                            'to_date'   : '',
-                            'per_page'  : rvAllotmentSrv.DEFAULT_PER_PAGE,
-                            'page'      : rvAllotmentSrv.DEFAULT_PAGE
+                            'query': '',
+                            'from_date': businessDate.business_date,
+                            'to_date': '',
+                            'per_page': rvAllotmentSrv.DEFAULT_PER_PAGE,
+                            'page': rvAllotmentSrv.DEFAULT_PAGE
                         };
                         return rvAllotmentSrv.getAllotmentList(params);
                     }
@@ -76,7 +76,7 @@ angular.module('allotmentModule', [])
                 },
                 holdStatusList: function (rvAllotmentConfigurationSrv, allotmentAssets, loadPaymentModule) {
                     var params = {
-                        is_group : false
+                        is_group: false
                     }
                     return rvAllotmentConfigurationSrv.getHoldStatusList (params);
                 }

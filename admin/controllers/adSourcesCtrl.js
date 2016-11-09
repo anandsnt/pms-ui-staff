@@ -17,7 +17,7 @@ admin.controller('ADSourcesCtrl', ['$scope', 'ADSourcesSrv', '$anchorScroll', '$
     * To handle enable/disable of use sources
     */
 	$scope.clickedUsedSources = function() {
-		$scope.invokeApi(ADSourcesSrv.toggleUsedSources, {'is_use_sources':$scope.data.is_use_sources });
+		$scope.invokeApi(ADSourcesSrv.toggleUsedSources, {'is_use_sources': $scope.data.is_use_sources });
 	};
     /*
     * To render edit screen
@@ -67,7 +67,7 @@ admin.controller('ADSourcesCtrl', ['$scope', 'ADSourcesSrv', '$anchorScroll', '$
 			$scope.data.name = "";
 			$scope.data.sources.push(data);
 		};
-  		$scope.invokeApi(ADSourcesSrv.save, { 'name' : $scope.data.name }, postSuccess);
+  		$scope.invokeApi(ADSourcesSrv.save, { 'name': $scope.data.name }, postSuccess);
 	};
 	/*
     * To handle save button in edit box.
@@ -99,7 +99,7 @@ admin.controller('ADSourcesCtrl', ['$scope', 'ADSourcesSrv', '$anchorScroll', '$
 	 			}
  			});
 		};
-		$scope.invokeApi(ADSourcesSrv.deleteItem, {'value':id }, successDeletionCallback);
+		$scope.invokeApi(ADSourcesSrv.deleteItem, {'value': id }, successDeletionCallback);
 	};
 
 }]);

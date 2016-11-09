@@ -96,7 +96,7 @@
       templateUrl: '/assets/checkin/partials/ccErrorModal.html',
       controller: ccVerificationModalCtrl,
       resolve: {
-        errorMessage:function() {
+        errorMessage: function() {
           return "You must provide all the required information. Please update and try again.";
         }
       }
@@ -110,7 +110,7 @@
       templateUrl: '/assets/checkoutnow/partials/ccVerificationNumberModal.html',
       controller: ccVerificationModalCtrl,
       resolve: {
-        errorMessage:function() {
+        errorMessage: function() {
           return "";
         }
       }
@@ -132,7 +132,7 @@
 
     $scope.goToNextStep = function() {
         var cardExpiryDate = $scope.yearSelected+"-"+$scope.monthSelected+"-"+"01";
-        var data = {'reservation_id':$rootScope.reservationID, 'token':MLISessionId, 'card_expiry':cardExpiryDate, 'payment_type':"CC"};
+        var data = {'reservation_id': $rootScope.reservationID, 'token': MLISessionId, 'card_expiry': cardExpiryDate, 'payment_type': "CC"};
         ccVerificationService.verifyCC(data).then(function(response) {
         $scope.isFetching = false;
         if(response.status ==="success") {

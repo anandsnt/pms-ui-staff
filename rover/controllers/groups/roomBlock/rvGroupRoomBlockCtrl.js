@@ -1826,12 +1826,12 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			var sumryData = $scope.groupConfigData.summary,
 				oldSumryData = summaryMemento,
 				options = {
-					fromDate 		: sumryData.block_from,
-					toDate 			: sumryData.block_to,
-					oldFromDate 	: oldSumryData.block_from,
-					oldToDate 		: oldSumryData.block_to,
-					successCallBack : successCallBackOfMoveButton,
-					failureCallBack : failureCallBackOfMoveButton
+					fromDate: sumryData.block_from,
+					toDate: sumryData.block_to,
+					oldFromDate: oldSumryData.block_from,
+					oldToDate: oldSumryData.block_to,
+					successCallBack: successCallBackOfMoveButton,
+					failureCallBack: failureCallBackOfMoveButton
 				};
 			$scope.changeDatesActions.clickedOnMoveSaveButton (options);
 		};
@@ -1917,11 +1917,11 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			var sumryData = $scope.groupConfigData.summary,
 				oldSumryData = summaryMemento,
 				options = {
-					fromDate 			: sumryData.block_from,
-					oldFromDate 		: oldSumryData.block_from,
-					successCallBack 	: successCallBackOfEarlierArrivalDateChange,
-					failureCallBack 	: failureCallBackOfEarlierArrivalDateChange,
-					cancelPopupCallBack	: cancelCallBackofDateChange
+					fromDate: sumryData.block_from,
+					oldFromDate: oldSumryData.block_from,
+					successCallBack: successCallBackOfEarlierArrivalDateChange,
+					failureCallBack: failureCallBackOfEarlierArrivalDateChange,
+					cancelPopupCallBack: cancelCallBackofDateChange
 				};
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerEarlierArrDateChange (options);
@@ -1937,8 +1937,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 		var triggerEarlierDepartureDateChangeInvalidError = function() {
 			var options = {
-				cancelPopupCallBack	: cancelCallBackofDateChange,
-				message 			: "GROUP_EARLIER_DEP_DATE_CHANGE_WARNING"
+				cancelPopupCallBack: cancelCallBackofDateChange,
+				message: "GROUP_EARLIER_DEP_DATE_CHANGE_WARNING"
 			}
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.showDateChangeInvalidWarning(options);
@@ -1946,8 +1946,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 		var triggerLaterArrivalDateChangeInvalidError = function() {
 			var options = {
-				cancelPopupCallBack	: cancelCallBackofDateChange,
-				message 			: "GROUP_LATER_ARR_DATE_CHANGE_WARNING"
+				cancelPopupCallBack: cancelCallBackofDateChange,
+				message: "GROUP_LATER_ARR_DATE_CHANGE_WARNING"
 			}
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.showDateChangeInvalidWarning(options);
@@ -1961,11 +1961,11 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			var sumryData = $scope.groupConfigData.summary,
 				oldSumryData = summaryMemento,
 				options = {
-					fromDate 			: sumryData.block_from,
-					oldFromDate 		: oldSumryData.block_from,
-					successCallBack 	: successCallBackOfEarlierArrivalDateChange,
-					failureCallBack 	: failureCallBackOfEarlierArrivalDateChange,
-					cancelPopupCallBack	: cancelCallBackofDateChange
+					fromDate: sumryData.block_from,
+					oldFromDate: oldSumryData.block_from,
+					successCallBack: successCallBackOfEarlierArrivalDateChange,
+					failureCallBack: failureCallBackOfEarlierArrivalDateChange,
+					cancelPopupCallBack: cancelCallBackofDateChange
 				};
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerLaterArrDateChange (options);
@@ -1999,11 +1999,11 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			var sumryData = $scope.groupConfigData.summary,
 				oldSumryData = summaryMemento,
 				options = {
-					toDate 				: sumryData.block_to,
-					oldToDate 			: oldSumryData.block_to,
-					successCallBack 	: successCallBackOfEarlierDepartureDateChange,
-					failureCallBack 	: failureCallBackOfEarlierDepartureDateChange,
-					cancelPopupCallBack	: cancelCallBackofDateChange
+					toDate: sumryData.block_to,
+					oldToDate: oldSumryData.block_to,
+					successCallBack: successCallBackOfEarlierDepartureDateChange,
+					failureCallBack: failureCallBackOfEarlierDepartureDateChange,
+					cancelPopupCallBack: cancelCallBackofDateChange
 				};
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerEarlierDepDateChange (options);
@@ -2034,11 +2034,11 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			var sumryData = $scope.groupConfigData.summary,
 				oldSumryData = summaryMemento,
 				options = {
-					toDate 				: sumryData.block_to,
-					oldToDate 			: oldSumryData.block_to,
-					successCallBack 	: successCallBackOfLaterDepartureDateChange,
-					failureCallBack 	: failureCallBackOfLaterDepartureDateChange,
-					cancelPopupCallBack	: cancelCallBackofDateChange
+					toDate: sumryData.block_to,
+					oldToDate: oldSumryData.block_to,
+					successCallBack: successCallBackOfLaterDepartureDateChange,
+					failureCallBack: failureCallBackOfLaterDepartureDateChange,
+					cancelPopupCallBack: cancelCallBackofDateChange
 				};
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerLaterDepDateChange (options);

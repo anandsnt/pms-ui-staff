@@ -136,9 +136,9 @@ angular.module('sntRover').service('RVreportsSrv', [
 		 */
 		function checkUserFilters (data) {
 			var loadUsersFor = {
-                'Arrival'                : true,
-                'Login and out Activity' : true,
-                'Rate Adjustment Report' : true,
+                'Arrival': true,
+                'Login and out Activity': true,
+                'Rate Adjustment Report': true,
                 'Financial Transactions - Adjustment Report': true
             };
 

@@ -26,8 +26,8 @@ admin.controller('adLetShareSetupCtrl', ['$scope', 'letsShareSetupValues', 'adLe
 			letshare: $scope.letshare
 		};
         var options = {
-            params 			: params,
-            successCallBack : successCallBackOfSaveLetShareSetup
+            params: params,
+            successCallBack: successCallBackOfSaveLetShareSetup
         };
         $scope.callAPI(adLetShareSetupSrv.saveLetShareConfiguration, options);
 	};

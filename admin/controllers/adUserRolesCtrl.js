@@ -13,7 +13,7 @@ admin.controller('ADUserRolesCtrl', ['$scope', 'userRolesData', 'ADUserRolesSrv'
 	var userRoleSuccessCallback = function() {
 		$scope.toggleAddMode();
 		$scope.$emit('hideLoader');
-		$scope.rolesList.push({"name":$scope.newUserRole});
+		$scope.rolesList.push({"name": $scope.newUserRole});
 		$scope.newUserRole = "";//reset
 	};
 	var userRoleFailureCallback = function() {
@@ -39,7 +39,7 @@ admin.controller('ADUserRolesCtrl', ['$scope', 'userRolesData', 'ADUserRolesSrv'
 	};
 
 	$scope.changeDashBoard =  function(id, dashboardId) {
-		var data =  {"value" : id, "dashboard_id" :dashboardId };
+		var data =  {"value": id, "dashboard_id": dashboardId };
 		$scope.invokeApi(ADUserRolesSrv.assignDashboard, data, changeDashBoardSuccessCallback, changeDashBoardFailureCallback);
 	};
 

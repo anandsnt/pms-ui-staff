@@ -27,7 +27,7 @@ sntRover.controller('rvAllotmentReservationCheckoutCtrl', [
        */
       $scope.completeCheckOut = function(reservationID) {
         var params = {
-          'reservation_id' : reservationID
+          'reservation_id': reservationID
         };
 
         var options = {

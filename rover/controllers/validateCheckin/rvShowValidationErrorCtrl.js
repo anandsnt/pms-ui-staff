@@ -23,10 +23,10 @@ sntRover.controller('RVShowValidationErrorCtrl', ['$rootScope', '$scope', 'ngDia
 			 * "hkstatus_id": 2 for INSPECTED
 			 */
 			if($scope.reservationBillData.checkin_inspected_only === "true") {
-				var data  = { "hkstatus_id": 2, "room_no":$scope.reservationBillData.room_number };
+				var data  = { "hkstatus_id": 2, "room_no": $scope.reservationBillData.room_number };
 			}
 			else{
-				var data  = { "hkstatus_id": 1, "room_no":$scope.reservationBillData.room_number };
+				var data  = { "hkstatus_id": 1, "room_no": $scope.reservationBillData.room_number };
 			}
 
 			var houseKeepingStatusUpdateSuccess = function(data) {

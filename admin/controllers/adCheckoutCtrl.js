@@ -160,25 +160,25 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
                 excluded_room_types.push(excludedRoomType.id);
             });
             var uploadData = {
-				'checkout_email_alert_time':$scope.checkoutData.checkout_email_alert_time_hour+":"+$scope.checkoutData.checkout_email_alert_time_minute,
-                'zest_checkout_alert_time':$scope.checkoutData.zest_checkout_alert_time_hour+":"+$scope.checkoutData.zest_checkout_alert_time_minute,
-                'zest_hourly_checkout_alert_time':$scope.checkoutData.zest_hourly_checkout_alert_time_hour+":"+$scope.checkoutData.zest_hourly_checkout_alert_time_minute,
-                'alternate_checkout_email_alert_time':$scope.checkoutData.alternate_checkout_email_alert_time_hour+":"+$scope.checkoutData.alternate_checkout_email_alert_time_minute,
-                'weekends_checkout_email_alert_time':$scope.checkoutData.weekends_checkout_email_alert_time_hour+":"+$scope.checkoutData.weekends_checkout_email_alert_time_minute,
-                'weekends_zest_checkout_alert_time':$scope.checkoutData.weekends_zest_checkout_alert_time_hour+":"+$scope.checkoutData.weekends_zest_checkout_alert_time_minute,
-                'weekends_zest_hourly_checkout_alert_time':$scope.checkoutData.weekends_zest_hourly_checkout_alert_time_hour+":"+$scope.checkoutData.weekends_zest_hourly_checkout_alert_time_minute,
-                'alternate_weekends_checkout_email_alert_time':$scope.checkoutData.alternate_weekends_checkout_email_alert_time_hour+":"+$scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute,
-				'checkout_staff_alert_option':$scope.checkoutData.checkout_staff_alert_option,
-				'emails':$scope.checkoutData.emails,
-				'include_cash_reservations':$scope.checkoutData.include_cash_reservations,
-				'is_send_checkout_staff_alert':$scope.checkoutData.is_send_checkout_staff_alert,
-                'is_send_zest_checkout_alert' : $scope.checkoutData.is_send_zest_checkout_alert,
-				'require_cc_for_checkout_email':$scope.checkoutData.require_cc_for_checkout_email,
-                'staff_emails_for_late_checkouts':$scope.checkoutData.staff_emails_for_late_checkouts,
-                'room_verification_instruction':$scope.checkoutData.room_verification_instruction,
-                'excluded_room_types':excluded_room_types,
+				'checkout_email_alert_time': $scope.checkoutData.checkout_email_alert_time_hour+":"+$scope.checkoutData.checkout_email_alert_time_minute,
+                'zest_checkout_alert_time': $scope.checkoutData.zest_checkout_alert_time_hour+":"+$scope.checkoutData.zest_checkout_alert_time_minute,
+                'zest_hourly_checkout_alert_time': $scope.checkoutData.zest_hourly_checkout_alert_time_hour+":"+$scope.checkoutData.zest_hourly_checkout_alert_time_minute,
+                'alternate_checkout_email_alert_time': $scope.checkoutData.alternate_checkout_email_alert_time_hour+":"+$scope.checkoutData.alternate_checkout_email_alert_time_minute,
+                'weekends_checkout_email_alert_time': $scope.checkoutData.weekends_checkout_email_alert_time_hour+":"+$scope.checkoutData.weekends_checkout_email_alert_time_minute,
+                'weekends_zest_checkout_alert_time': $scope.checkoutData.weekends_zest_checkout_alert_time_hour+":"+$scope.checkoutData.weekends_zest_checkout_alert_time_minute,
+                'weekends_zest_hourly_checkout_alert_time': $scope.checkoutData.weekends_zest_hourly_checkout_alert_time_hour+":"+$scope.checkoutData.weekends_zest_hourly_checkout_alert_time_minute,
+                'alternate_weekends_checkout_email_alert_time': $scope.checkoutData.alternate_weekends_checkout_email_alert_time_hour+":"+$scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute,
+				'checkout_staff_alert_option': $scope.checkoutData.checkout_staff_alert_option,
+				'emails': $scope.checkoutData.emails,
+				'include_cash_reservations': $scope.checkoutData.include_cash_reservations,
+				'is_send_checkout_staff_alert': $scope.checkoutData.is_send_checkout_staff_alert,
+                'is_send_zest_checkout_alert': $scope.checkoutData.is_send_zest_checkout_alert,
+				'require_cc_for_checkout_email': $scope.checkoutData.require_cc_for_checkout_email,
+                'staff_emails_for_late_checkouts': $scope.checkoutData.staff_emails_for_late_checkouts,
+                'room_verification_instruction': $scope.checkoutData.room_verification_instruction,
+                'excluded_room_types': excluded_room_types,
                 'enable_offline_checkout': $scope.checkoutData.enable_offline_checkout,
-                'checkout_static_uri':$scope.checkoutData.checkout_static_uri
+                'checkout_static_uri': $scope.checkoutData.checkout_static_uri
 			};
 
         

@@ -66,7 +66,7 @@ sntRover.controller('RVReservationPackageController',
 		addonArray.push(addonId);
 		var dataToApi = {
 			"postData": {
-				"addons":addonArray
+				"addons": addonArray
 			},
 
 			"reservationId": reservationId
