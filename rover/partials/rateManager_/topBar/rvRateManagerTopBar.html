@@ -25,7 +25,7 @@
         </li>
          
         <!-- show .card if there are any cards selected -->
-        <li class="card" ng-show="selectedCardNames.length">
+        <li class="card" ng-show="selectedCardNames.length" ng-hide="selectedAccountName[0]">
             <strong>Name Card</strong>
 
             <!-- add ',' for each company card,IATA etc except the last one-->
