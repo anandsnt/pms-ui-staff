@@ -114,9 +114,6 @@
             "error",
             "always"
         ],
-        "valid-jsdoc": [
-            "error"
-        ],
         "require-jsdoc": [
             "error",
             {
