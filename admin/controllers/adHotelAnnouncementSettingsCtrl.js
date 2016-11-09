@@ -11,7 +11,7 @@ admin.controller('ADHotelAnnouncementSettingsCtrl', ['$scope', '$rootScope', '$s
 		$scope.data = data;
 	};
 
-	//fetching the settings details
+	// fetching the settings details
 	$scope.invokeApi(ADHotelAnnouncementSrv.fetchSettingsDetails, {}, fetchCompletedOfSettingsDetails);
 
 
@@ -30,7 +30,7 @@ admin.controller('ADHotelAnnouncementSettingsCtrl', ['$scope', '$rootScope', '$s
 		postingData.guest_zest_checkout_complete_message = $scope.data.guest_zest_checkout_complete_message;
 		postingData.key_delivery_email_message = $scope.data.key_delivery_email_message;
 
-		//calling the save api
+		// calling the save api
 		$scope.invokeApi(ADHotelAnnouncementSrv.saveAnnoucementSettings, postingData, successCallbackOfSaveDetails);
 	};
 

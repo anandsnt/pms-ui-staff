@@ -41,7 +41,7 @@ sntRover.config([
 	'$provide',
 	function($httpProvider, ngDialogProvider, $provide) {
 
-		//adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
+		// adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 		$httpProvider.interceptors.push('sharedHttpInterceptor');
 
 	    ngDialogProvider.setDefaults({
@@ -279,7 +279,7 @@ sntRover.run([
 		*/
 		$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 	        if (fromState.name === 'rover.reservation.staycard.roomassignment' && toState.name === 'rover.diary') {
-	            //cico-13697, fix until proper workflow routes are developed
+	            // cico-13697, fix until proper workflow routes are developed
 	            return;
 	        }
 

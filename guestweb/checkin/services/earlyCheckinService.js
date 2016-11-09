@@ -3,7 +3,7 @@
 
 	var responseData = {};
 
-	//apply late checkout
+	// apply late checkout
 
 	var applyEarlyCheckin = function(data) {
 

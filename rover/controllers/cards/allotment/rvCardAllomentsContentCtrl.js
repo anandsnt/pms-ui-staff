@@ -38,7 +38,7 @@ angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', '
      * @return {String}
      */
     $scope.getGuestClassForArrival = function(allotment) {
-        //"cancel" if cancelled, "check-in" if not cancelled
+        // "cancel" if cancelled, "check-in" if not cancelled
         var classes = isCancelledAllotment(allotment) ? 'cancel' : 'check-in';
 
         return classes;
@@ -52,11 +52,11 @@ angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', '
     $scope.getClassAgainstPickedStatus = function(allotment) {
         var classes = '';
 
-        //Add class "green" if No. > 0
+        // Add class "green" if No. > 0
         if (allotment.total_picked_count > 0) {
             classes = 'green';
         }
-        //Add class "red" if cancelled
+        // Add class "red" if cancelled
         if (isCancelledAllotment(allotment)) {
             classes += ' red';
         }
@@ -69,7 +69,7 @@ angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', '
      * @return {String}
      */
     $scope.getGuestClassForDeparture = function(allotment) {
-        //"cancel" if cancelled, 'check-out' if not cancelled
+        // "cancel" if cancelled, 'check-out' if not cancelled
         var classes = isCancelledAllotment(allotment) ? 'cancel' : 'check-out';
 
         return classes;
@@ -85,12 +85,12 @@ angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', '
             returnString = '';
 
         switch (type_) {
-            //if date string passed
+            // if date string passed
             case 'string':
                 returnString = $filter('date')(new tzIndependentDate(date_), $rootScope.dateFormat);
                 break;
 
-                //if date object passed
+                // if date object passed
             case 'object':
                 returnString = $filter('date')(date_, $rootScope.dateFormat);
                 break;
@@ -114,7 +114,7 @@ angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', '
      * return - None
      */
     var setScrollerForMe = function() {
-        //setting scroller things
+        // setting scroller things
         var scrollerOptions = {
             tap: true,
             preventDefault: false,
@@ -193,15 +193,15 @@ angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', '
      * @return {None}
      */
 	var initilizeMe = function() {
-        //allotmentlist
+        // allotmentlist
         $scope.allotmentList = [];
 
-        //total result count
+        // total result count
         $scope.totalResultCount = 0;
 
         $scope.searchMode = true;
         
-        //scroller and related things
+        // scroller and related things
         setScrollerForMe();
 	}();
 }]);

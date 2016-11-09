@@ -58,7 +58,7 @@ sntRover.controller('RVActivityLogCtrl', [
     });
 
     var setDatePickerOptions = function() {
-        //I just changed this to a function, dont knw who written this
+        // I just changed this to a function, dont knw who written this
         var datePickerCommon = {
             dateFormat: $rootScope.jqDateFormat,
             numberOfMonths: 1,
@@ -257,7 +257,7 @@ sntRover.controller('RVActivityLogCtrl', [
     }
 
     var initializeAutoCompletion = function() {
-        //forming auto complte source object
+        // forming auto complte source object
         var activeUserAutoCompleteObj = [];
 
         _.each($scope.activeUserList, function(user) {
@@ -346,7 +346,7 @@ sntRover.controller('RVActivityLogCtrl', [
     $scope.userEmail='';
 	$scope.init = function() {
         var reservationDetails = $scope.$parent.reservation.reservation_card;
-        //setting the header caption
+        // setting the header caption
 
 		$scope.$emit('HeaderChanged', $filter('translate')('ACTIVITY_LOG_TITLE'));
 
@@ -355,34 +355,34 @@ sntRover.controller('RVActivityLogCtrl', [
         $scope.activityLogData.total_count = activityLogResponse.total_count;
         $scope.activeUserList = activeUserList;
 
-        //Filter
+        // Filter
         $scope.isUpdateReportFilter = false;
         $scope.reportUpdateVisible = false;
         $scope.reportUpdateWidth = resizableMinWidth;
         
-        //CICO-24929
-        //for future reservation
+        // CICO-24929
+        // for future reservation
         if(tzIndependentDate (reservationDetails.arrival_date) > tzIndependentDate($rootScope.businessDate)) {
             $scope.fromDate = $rootScope.businessDate;
         }
-        //for inhouse/noshow/checkingin/checkedout
+        // for inhouse/noshow/checkingin/checkedout
         else {
             $scope.fromDate = reservationDetails.arrival_date;
         }
 
-        //CICO-24929
+        // CICO-24929
         $scope.toDate = $rootScope.businessDate;
 
         $scope.user_id = 0;
 
-        //Paginaton
+        // Paginaton
         $scope.totalResults = activityLogResponse.total_count;
         $scope.initPaginationParams();
 
-        //Sorting
+        // Sorting
         $scope.initSort();
 
-        //setting date picker options
+        // setting date picker options
         setDatePickerOptions();
 
         // set a back button on header
@@ -392,12 +392,12 @@ sntRover.controller('RVActivityLogCtrl', [
             scope: $scope
         };
 
-        //setting title
+        // setting title
         var title = $filter('translate')('ACTIVITY_LOG_TITLE');
 
         $scope.setTitle(title);
 
-        //left side filter scrollbar
+        // left side filter scrollbar
         $scope.setScroller('report-update');
 
         $scope.setScroller('report_content');
@@ -418,15 +418,15 @@ sntRover.controller('RVActivityLogCtrl', [
             }
         };
 
-        //accordion options, will add/remove class on toggling
+        // accordion options, will add/remove class on toggling
         $scope.accordionInitiallyNotCollapsedOptions = {
             header: 'a.toggle',
             heightStyle: 'content',
             collapsible: true,
             activate: function(event, ui) {
-                if (isEmpty(ui.newHeader) && isEmpty(ui.newPanel)) { //means accordion was previously collapsed, activating..
+                if (isEmpty(ui.newHeader) && isEmpty(ui.newPanel)) { // means accordion was previously collapsed, activating..
                     ui.oldHeader.removeClass('active');
-                } else if (isEmpty(ui.oldHeader)) { //means activating..
+                } else if (isEmpty(ui.oldHeader)) { // means activating..
                     ui.newHeader.addClass('active');
                 }
                 refreshScroller();

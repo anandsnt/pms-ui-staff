@@ -1,8 +1,8 @@
 angular.module('dashboardModule', []).config(function($stateProvider, $urlRouterProvider, $translateProvider) {
 
         $stateProvider.state('rover.search', {
-            //as we dont have a status called Mobile checkin, we still need to pass as PRE_CHECKIN
-            //along with that we will pass is mobile checkin variable. This will be null if not send
+            // as we dont have a status called Mobile checkin, we still need to pass as PRE_CHECKIN
+            // along with that we will pass is mobile checkin variable. This will be null if not send
             url: '/search/:type/:from_page/:useCache/:isMobileCheckin',
             templateUrl: '/assets/partials/search/rvSearchReservation.html',
             controller: 'rvReservationSearchController',
@@ -25,11 +25,11 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                         else{
                             dataDict.status = oldType;
                         }
-                        //The pagination should be set to page=1. for navigations from dashboard buttons.
+                        // The pagination should be set to page=1. for navigations from dashboard buttons.
                         if($stateParams.from_page === "DASHBOARD") {
                             RVSearchSrv.page = 1;
                         }
-                        //calling the webservice
+                        // calling the webservice
                         return RVSearchSrv.fetch(dataDict, $stateParams.useCache);
                     } else if ( !!$stateParams.useCache && oldType !=="RESET") {
                         return RVSearchSrv.fetch({}, $stateParams.useCache);
@@ -81,7 +81,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
             }
         });
         $stateProvider.state('rover.dashboard.housekeeping', {
-            url: '/housekeeping',  //TODO: check can we reduced it to hk?
+            url: '/housekeeping',  // TODO: check can we reduced it to hk?
             templateUrl: '/assets/partials/dashboard/rvHouseKeepingDashboard.html',
             controller: 'RVhouseKeepingDashboardController'
         });

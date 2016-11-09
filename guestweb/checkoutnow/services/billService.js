@@ -3,7 +3,7 @@ var BillService = function($q, baseWebService, $rootScope, $http) {
 	var bills = {};
 	var billDisplayDetails = {};
 
-	//fetch bill details
+	// fetch bill details
 	var fetchBillData = function() {
 		var deferred = $q.defer();
 		var url = '/guest_web/home/bill_details.json',

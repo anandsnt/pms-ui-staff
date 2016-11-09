@@ -36,7 +36,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             $location.hash('top');
             $scope.isAdd = true;
             $scope.isEdit = false;
-            //scroll to top
+            // scroll to top
                     $scope.editData.mapping_type_value = '';
                     $scope.editData.external_value = '';
                     $scope.editData.snt_value = '';
@@ -44,16 +44,16 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 
         };
 
-        //for preventing drag & drop operations turning into click
+        // for preventing drag & drop operations turning into click
         var lastDropedTime = '';
 
         $scope.onDragStop = function () {
             $scope.isDragging = false;
-            //also we are taking the lastDropedTime to preventing click after drag stop operation
+            // also we are taking the lastDropedTime to preventing click after drag stop operation
             lastDropedTime = new Date();
         };
         $scope.clickedInterfaceMenuItem = function (event, state, submenu) {
-            //need to cache the submenu, then go to the next state with the interface id
+            // need to cache the submenu, then go to the next state with the interface id
             cacheInterfaceId(submenu);
             setTimeout(function () {
                 $scope.clickedMenuItem(event, state);
@@ -135,7 +135,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         $scope.siteminder_setup.mapping_type_list = [];
 
 
-        //---------------- do an isDirty check and launch isValid checks
+        // ---------------- do an isDirty check and launch isValid checks
         $scope.$watch('editData.snt_value', function(to, fm, evt) {
            $scope.hasValidSelection();
 
@@ -145,7 +145,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 
         });
 
-        //----------------
+        // ----------------
 
         $scope.$watch('editData.mapping_type_value', function(to, fm, evt) {
             if (to) {
@@ -179,7 +179,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                 $scope.mappingInterface.mappingTypeRefs = [];
             }
 
-            for (var x in data.mapping_type) {//cache this off
+            for (var x in data.mapping_type) {// cache this off
                 mTypeName = data.mapping_type[x].name;
                 for (var vals in data.mapping_type[x].sntvalues) {
                     if (typeof $scope.mappingInterface.mappingTypeRefs[mTypeName] !== typeof []) {
@@ -335,9 +335,9 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 
         };
         $scope.hasValidSelection = function() {
-            //check to verify if the selected values are valid
-            //ie. don't allow a user to switch from a credit card type to source_code, withoout selecting a valid SNT value
-            //loop through the available selections with the currently selected value to verify its avialable for selection
+            // check to verify if the selected values are valid
+            // ie. don't allow a user to switch from a credit card type to source_code, withoout selecting a valid SNT value
+            // loop through the available selections with the currently selected value to verify its avialable for selection
 
             var snt_value = $scope.editData.snt_value,
                     mapping_type = $scope.editData.mapping_type_value,
@@ -407,7 +407,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             if ($scope.isAdd) {
                 $scope.invokeApi(ADInterfaceMappingSrv.saveMapping, newData, successSaveCallback);
             } else {
-                //isEdit
+                // isEdit
                 $scope.invokeApi(ADInterfaceMappingSrv.saveEditMapping, newData, successSaveCallback);
             }
         };

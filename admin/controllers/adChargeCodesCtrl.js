@@ -21,7 +21,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			var getParams = $scope.calculateGetParams(params);
 			var fetchSuccessOfItemList = function(data) {
 				$scope.$emit('hideLoader');
-				//No expanded rate view
+				// No expanded rate view
 				$scope.currentClickedElement = -1;
 				$scope.totalCount = data.total_count;
 				$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
@@ -257,7 +257,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			var unwantedKeys = ["charge_code_types", "payment_types", "charge_groups", "link_with", "amount_types", "tax_codes", "post_types", "symbolList"];
 			var postData = dclone($scope.prefetchData, unwantedKeys);
 
-			//Include Charge code Link with List when selected_charge_code_type is not "TAX".
+			// Include Charge code Link with List when selected_charge_code_type is not "TAX".
 			if ($scope.prefetchData.selected_charge_code_type !== "1") {
 				postData.selected_link_with = selected_link_with;
 			}
@@ -443,17 +443,17 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			 * 3. Make a SAVE requset IFF REQUIRED [ Might need to check how to work on the a dependent tax deletion! ]
 			 */
 
-			//1.
+			// 1.
 			$scope.prefetchData.linked_charge_codes.splice(index, 1);
 
-			//2.
+			// 2.
 			// https://stayntouch.atlassian.net/browse/CICO-9576?focusedCommentId=52342&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52342
 			_.each($scope.prefetchData.linked_charge_codes, function(tax) {
 				tax.selected_calculation_rule = 0;
 			});
 
-			//3.
-			//NA as there is a save changes button
+			// 3.
+			// NA as there is a save changes button
 
 		};
 

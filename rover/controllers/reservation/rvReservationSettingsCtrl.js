@@ -155,9 +155,9 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             heightStyle: 'content',
             collapsible: true,
             activate: function(event, ui) {
-                if (isEmpty(ui.newHeader) && isEmpty(ui.newPanel)) { //means accordion was previously collapsed, activating..
+                if (isEmpty(ui.newHeader) && isEmpty(ui.newPanel)) { // means accordion was previously collapsed, activating..
                     ui.oldHeader.removeClass('active');
-                } else if (isEmpty(ui.oldHeader)) { //means activating..
+                } else if (isEmpty(ui.oldHeader)) { // means activating..
                     ui.newHeader.addClass('active');
                 }
                 $scope.refreshScroll();
@@ -171,9 +171,9 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             heightStyle: 'content',
             active: false,
             activate: function(event, ui) {
-                if (isEmpty(ui.newHeader) && isEmpty(ui.newPanel)) { //means accordion was previously collapsed, activating..
+                if (isEmpty(ui.newHeader) && isEmpty(ui.newPanel)) { // means accordion was previously collapsed, activating..
                     ui.oldHeader.removeClass('active');
-                } else if (isEmpty(ui.oldHeader)) { //means activating..
+                } else if (isEmpty(ui.oldHeader)) { // means activating..
                     ui.newHeader.addClass('active');
                 }
                 $scope.refreshScroll();

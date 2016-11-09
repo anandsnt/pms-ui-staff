@@ -16,7 +16,7 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
             return display;
         };
         $scope.showLoyaltyProgramDialog = function() {
-            //Disable the feature when the reservation is checked out
+            // Disable the feature when the reservation is checked out
             if(!$scope.$parent.isNewsPaperPreferenceAvailable()) {
                 return;
             }

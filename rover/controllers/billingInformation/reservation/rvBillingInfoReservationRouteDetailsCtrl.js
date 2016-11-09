@@ -337,7 +337,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl', ['$scope', '$roo
 
         data.is_new = $scope.selectedEntity.is_new;
 
-        //CICO-22444 - Added inorder to allow the same charge codes for different date range
+        // CICO-22444 - Added inorder to allow the same charge codes for different date range
         data.from_date = $filter('date')(tzIndependentDate($scope.routeDates.from), "yyyy-MM-dd");
         data.to_date   = $filter('date')(tzIndependentDate($scope.routeDates.to), "yyyy-MM-dd");
 
@@ -398,7 +398,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl', ['$scope', '$roo
 
         data.is_new = $scope.selectedEntity.is_new;
 
-        //CICO-22444 - Added inorder to allow the same charge codes for different date range
+        // CICO-22444 - Added inorder to allow the same charge codes for different date range
         data.from_date = $filter('date')(tzIndependentDate($scope.routeDates.from), "yyyy-MM-dd");
         data.to_date   = $filter('date')(tzIndependentDate($scope.routeDates.to), "yyyy-MM-dd");
 
@@ -478,7 +478,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl', ['$scope', '$roo
             $scope.selectedEntity.to_bill = $scope.selectedEntity.is_new? $scope.bills[0].id: 
                                             $scope.selectedEntity.to_bill;
 
-            //default to last item when there is no bill no.
+            // default to last item when there is no bill no.
             var billNo = $scope.selectedEntity.bill_no;
 
             if ($scope.isGroupOrHouse) {
@@ -611,7 +611,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl', ['$scope', '$roo
             $scope.$emit('displayErrorMessage', errorMessage);
         };
 
-        //CICO-12797 workaround to meet the API expected params
+        // CICO-12797 workaround to meet the API expected params
         var params = angular.copy($scope.selectedEntity);
 
         $scope.invokeApi(RVBillinginfoSrv.saveRoute, params, $scope.saveSuccessCallback, errorCallback);
@@ -704,7 +704,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl', ['$scope', '$roo
                 $scope.navigateToInitialPage();
                 $scope.$parent.$emit('BILLINGINFOADDED');
 
-                //Added for CICO-23210
+                // Added for CICO-23210
                 $scope.$parent.$emit('REFRESH_BILLCARD_VIEW');
             }
         };

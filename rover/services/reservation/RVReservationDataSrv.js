@@ -94,7 +94,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 				numNights: 1, // computed value, ensure to keep it updated
 				roomCount: 1, // Hard coded for now,
 				rooms: self.getRoomDataModel(),
-				totalTaxAmount: 0, //This is for ONLY exclusive taxes
+				totalTaxAmount: 0, // This is for ONLY exclusive taxes
 				totalStayCost: 0,
 				totalTax: 0, // CICO-10161 > This stores the tax inclusive and exclusive together
 				guest: {
@@ -118,7 +118,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 				},
 				paymentType: {
 					type: {},
-					ccDetails: { //optional - only if credit card selected
+					ccDetails: { // optional - only if credit card selected
 						number: '',
 						expMonth: '',
 						expYear: '',
@@ -136,7 +136,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 					type: '',
 					discount: {}
 				},
-				status: '', //reservation status
+				status: '', // reservation status
 				reservationId: '',
 				confirmNum: '',
 				isSameCard: false, // Set flag to retain the card details,
@@ -263,7 +263,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 
 		self.parseTime = function(timeString) {
 			var timeParts = timeString.trim().split(" ");
-			//flooring to nearest 15th as the select element's options are in 15s
+			// flooring to nearest 15th as the select element's options are in 15s
 			var hourMinutes = timeParts[0].split(":");
 
 			hourMinutes[1] = (15 * Math.round(hourMinutes[1] / 15) % 60).toString();
@@ -403,22 +403,22 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 				isManual = false,
 				showSelectedCreditCard = false;
 
-			//---------------------- ReservationData -------------------------------------------------------------------------//
-			reservationData.status = stayCard.reservation_status; //status
+			// ---------------------- ReservationData -------------------------------------------------------------------------//
+			reservationData.status = stayCard.reservation_status; // status
 			reservationData.inHouse = stayCard.reservation_status === "CHECKEDIN";
-			reservationData.group = { //group
+			reservationData.group = { // group
 				id: stayCard.group_id,
 				name: stayCard.group_name,
 				company: cards.company_id || "",
 				travelAgent: cards.travel_agent_id || ""
 			};
-			reservationData.allotment = { //allotment
+			reservationData.allotment = { // allotment
 				id: stayCard.allotment_id,
 				name: stayCard.allotment_name,
 				company: cards.company_id || "",
 				travelAgent: cards.travel_agent_id || ""
 			};
-			//ID
+			// ID
 			reservationData.confirmNum = stayCard.confirmation_num;
 			reservationData.reservationId = stayCard.reservation_id;
 			reservationData.arrivalDate = stayCard.arrival_date;
@@ -428,7 +428,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 			reservationData.number_of_adults = stayCard.number_of_adults;
 			reservationData.number_of_children = stayCard.number_of_children;
 			reservationData.number_of_infants = stayCard.number_of_infants;
-			//CICO-6135
+			// CICO-6135
 			if (stayCard.arrival_time) {
 				reservationData.checkinTime = self.parseTime(stayCard.arrival_time);
 			}
@@ -449,10 +449,10 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 				origin: stayCard.booking_origin_id || "",
 				segment: stayCard.segment_id || ""
 			};
-			//Cost
+			// Cost
 			reservationData.totalStayCost = stayCard.total_rate;
 			// ---------------------------Room Details------------------------------------------------//
-			var roomDetails = reservationData.rooms[0]; //Only a single room is possible as this is coming from stay-card
+			var roomDetails = reservationData.rooms[0]; // Only a single room is possible as this is coming from stay-card
 
 			roomDetails.rateId = [];
 			roomDetails.demographics = angular.copy(reservationData.demographics);
@@ -462,12 +462,12 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 			 */
 			roomDetails.roomNumber = stayCard.room_number;
 			roomDetails.roomTypeDescription = stayCard.room_type_description;
-			//cost
+			// cost
 			roomDetails.rateAvg = stayCard.avg_daily_rate;
 			roomDetails.rateTotal = stayCard.total_rate;
 			roomDetails.rateName = stayCard.is_multiple_rates ? "Multiple Rates" : stayCard.rate_name;
-			roomDetails.is_package_exist = stayCard.is_package_exist; //-- Changes for CICO-17173
-			roomDetails.package_count = stayCard.package_count; //-- Changes for CICO-17173
+			roomDetails.is_package_exist = stayCard.is_package_exist; // -- Changes for CICO-17173
+			roomDetails.package_count = stayCard.package_count; // -- Changes for CICO-17173
 
 			reservationData.is_modified = false;
 			angular.forEach(stayCard.stay_dates, function(item, index) {
@@ -521,11 +521,11 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 					renderData.cardExpiry = paymentDetails.card_expiry;
 					renderData.isSwiped = paymentDetails.is_swiped;
 					reservationData.selectedPaymentId = paymentDetails.id;
-					//CICO-11579 - To show credit card if C&P swiped or manual.
-					//In other cases condition in HTML will work
+					// CICO-11579 - To show credit card if C&P swiped or manual.
+					// In other cases condition in HTML will work
 					if ($rootScope.paymentGateway === "sixpayments") {
 						if (paymentDetails.is_swiped) {
-							//can't set manual true..that is why added this flag.. Added in HTML too
+							// can't set manual true..that is why added this flag.. Added in HTML too
 							reservationEditMode = true;
 						} else {
 							isManual = true;
@@ -575,7 +575,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 			roomDetails.rateName = self.isVaryingRates(roomDetails.stayDates, reservationData.arrivalDate, reservationData.departureDate, reservationData.numNights) ?
 				"Multiple Rates Selected" : stayCard.package_description;
 
-			//---------------------- Tab Data -------------------------------------------------------------------------//
+			// ---------------------- Tab Data -------------------------------------------------------------------------//
 			var activeTab = reservationData.tabs[0];
 
 			_.extend(activeTab, {

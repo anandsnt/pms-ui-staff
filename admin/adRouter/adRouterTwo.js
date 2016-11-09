@@ -1,5 +1,5 @@
 angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterProvider, $translateProvider) {
-     //define module-specific routes here
+     // define module-specific routes here
         $stateProvider.state('admin.departments', {
 			templateUrl: '/assets/partials/departments/adDepartmentsList.html',
 			controller: 'ADDepartmentListCtrl',

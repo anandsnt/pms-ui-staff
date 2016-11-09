@@ -118,8 +118,8 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 		var url = 'api/reservations/' + dataToSrv.reservation_id + '/submit_payment';
 
 		var pollToTerminal = function(async_callback_url) {
-			//we will continously communicate with the terminal till 
-			//the timeout set for the hotel
+			// we will continously communicate with the terminal till 
+			// the timeout set for the hotel
 			if(timeStampInSeconds >= $rootScope.emvTimeout) {
 				var errors = ["Request timed out. Unable to process the transaction"];
 
@@ -127,9 +127,9 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 			}
 			else{
 				RVBaseWebSrvV2.getJSONWithSpecialStatusHandling(async_callback_url).then(function(data) {
-					//if the request is still not proccesed
+					// if the request is still not proccesed
 					if ((!!data.status && data.status === 'processing_not_completed') || data === "null") {
-						//is this same URL ?
+						// is this same URL ?
 						setTimeout(function() {
 							console.info("POLLING::-> for emv terminal response");
 				            pollToTerminal(async_callback_url);
@@ -151,7 +151,7 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 		};
 
 		RVBaseWebSrvV2.postJSONWithSpecialStatusHandling(url, dataToSrv.postData).then(function(data) {
-			//if connect to emv terminal is neeeded
+			// if connect to emv terminal is neeeded
 			// need to poll oftently to avoid
 			// timeout issues
 			if (dataToSrv.postData.is_emv_request) {
@@ -196,8 +196,8 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 		var url = '/api/cc/get_token.json';
 
 		var pollToTerminal = function(async_callback_url) {
-			//we will continously communicate with the terminal till 
-			//the timeout set for the hotel
+			// we will continously communicate with the terminal till 
+			// the timeout set for the hotel
 			if(timeStampInSeconds >= $rootScope.emvTimeout) {
 				var errors = ["Request timed out. Unable to process the transaction"];
 
@@ -205,9 +205,9 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 			}
 			else{
 				RVBaseWebSrvV2.getJSONWithSpecialStatusHandling(async_callback_url).then(function(data) {
-					//if the request is still not proccesed
+					// if the request is still not proccesed
 					if ((!!data.status && data.status === 'processing_not_completed') || data === "null") {
-						//is this same URL ?
+						// is this same URL ?
 						setTimeout(function() {
 							console.info("POLLING::-> for emv terminal response");
 				            pollToTerminal(async_callback_url);
@@ -230,7 +230,7 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 		
 
 		RVBaseWebSrvV2.postJSONWithSpecialStatusHandling(url, postData).then(function(data) {
-			//if connect to emv terminal is neeeded
+			// if connect to emv terminal is neeeded
 			// need to poll oftently to avoid
 			// timeout issues
 			if (!!data.status && data.status === 'processing_not_completed') {

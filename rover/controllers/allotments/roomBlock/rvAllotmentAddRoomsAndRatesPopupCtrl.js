@@ -25,7 +25,7 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 		var initializeMe = function() {
 			BaseCtrl.call(this, $scope);
 
-			//setting the scroller
+			// setting the scroller
 			$scope.setScroller('room_type_scroller');
 
 			$scope.defaultRoomTypeDetails = {
@@ -36,7 +36,7 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 				"rate_id": ''
 			};
 
-			//selected room types & its rates
+			// selected room types & its rates
 			$scope.selectedRoomTypeAndRates = util.deepCopy($scope.allotmentConfigData.roomblock.selected_room_types_and_rates);
 			angular.forEach ($scope.selectedRoomTypeAndRates, function (row) {
 				if (row.is_configured_in_allotment) {
@@ -51,25 +51,25 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 
 			$scope.roomTypes = util.getListOfKeyValuesFromAnArray($scope.selectedRoomTypeAndRates, wanted_keys);
 
-			//adding currency symbol to best available rate
+			// adding currency symbol to best available rate
 			$scope.roomTypes = _.map($scope.roomTypes, function(roomType) {
 				roomType.best_available_rate_amount = ($rootScope.currencySymbol +
 					roomType.best_available_rate_amount);
 				return roomType;
 			});
 
-			//we only showing if associated with that allotment
+			// we only showing if associated with that allotment
 			$scope.selectedRoomTypeAndRates = _.where($scope.selectedRoomTypeAndRates, {
 				is_configured_in_allotment: true
 			});
 
-			//if nothing is configured, we have to add a new row
+			// if nothing is configured, we have to add a new row
 			if ($scope.selectedRoomTypeAndRates.length === 0) {
 				$scope.selectedRoomTypeAndRates = [];
 				$scope.selectedRoomTypeAndRates.push(util.deepCopy($scope.allotmentConfigData.roomblock.selected_room_types_and_rates[0]));
 			};
 
-			//adding currency symbol to best available rate
+			// adding currency symbol to best available rate
 			$scope.selectedRoomTypeAndRates = _.map($scope.selectedRoomTypeAndRates, function(row) {
 				row.best_available_rate_amount = ($rootScope.currencySymbol +
 					row.best_available_rate_amount);
@@ -129,7 +129,7 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 		 */
 		$scope.addNewRoomTypeAndRatesRow = function() {
 			$scope.selectedRoomTypeAndRates.push(util.deepCopy($scope.defaultRoomTypeDetails));
-			//refreshing the scroller
+			// refreshing the scroller
 			$scope.refreshScroller('room_type_scroller');
 			scrollToEnd();
 		};
@@ -153,7 +153,7 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 		 */
 		$scope.deleteRoomTypeAndRatesRow = function($index) {
 			$scope.selectedRoomTypeAndRates.splice($index, 1);
-			//refreshing the scroller
+			// refreshing the scroller
 			$scope.refreshScroller('room_type_scroller');
 		};
 
@@ -179,11 +179,11 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 		 * @return {Object}
 		 */
 		var formSaveNewRoomTypesAndRatesParams = function() {
-			//we only want rows who have room type choosed
+			// we only want rows who have room type choosed
 			var selectedRoomTypeAndRates = _.filter($scope.selectedRoomTypeAndRates, function(obj) {
 				return (typeof obj.room_type_id !== "undefined" && obj.room_type_id !== '');
 			});
-			//since selectedRoomTypeAndRates containst some unwanted keys
+			// since selectedRoomTypeAndRates containst some unwanted keys
 			var wanted_keys = ["room_type_id", "single_rate", "double_rate", "extra_adult_rate", "rate_id", "best_available_rate_id", "update_existing_reservations_rate"];
 
 			selectedRoomTypeAndRates = util.getListOfKeyValuesFromAnArray(selectedRoomTypeAndRates, wanted_keys);
@@ -241,21 +241,21 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 		 * @return {Boolean}              [Will decide whether to show/not]
 		 */
 		$scope.hideRoomType = function(mySelectedID, roomType) {
-			//if it is mine room type, we will show that
+			// if it is mine room type, we will show that
 			if (parseInt(mySelectedID) === parseInt(roomType.room_type_id)) {
 				return false;
 			}
 
-			//we are removing other selected
-			//list of selecetd room types' ids
+			// we are removing other selected
+			// list of selecetd room types' ids
 			var selectedIdList = _.pluck($scope.selectedRoomTypeAndRates, "room_type_id");
-			//Converting to integer
+			// Converting to integer
 
 			selectedIdList = _.map(selectedIdList, function(element) {
 				return parseInt(element);
 			});
 
-			//yes final Boolean is on the way
+			// yes final Boolean is on the way
 			return (_.indexOf(selectedIdList, roomType.room_type_id) >= 0);
 		};
 	}

@@ -31,7 +31,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			"notes": []
 		};
 
-		//---------------------------- cache 
+		// ---------------------------- cache 
 		// Used to cache the demographics information of the last fetched group so that it can be used to capture the
 		// info while creating a reservation from the Create Reservation module 
 		
@@ -40,7 +40,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			demographics: null
 		}
 
-		/*----------------------------*/
+		/* ----------------------------*/
 
 		/**
 		 * Function to get list of Hold status to display
@@ -246,7 +246,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			return deferred.promise;
 		};
 
-		/*** DEPRICATED 'summaryHolder{}' & 'getAccountSummary()' ***/
+		/** * DEPRICATED 'summaryHolder{}' & 'getAccountSummary()' ***/
 		var summaryHolder = {},
 			getAccountSummary = function(deferred, params) {
 				if (params.accountId === "NEW_ACCOUNT") {
@@ -267,7 +267,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 				}
 				return deferred.promise;
 			};
-		/*** DEPRICATED 'summaryHolder{}' & 'getAccountSummary()' ***/
+		/** * DEPRICATED 'summaryHolder{}' & 'getAccountSummary()' ***/
 
 		this.getGroupSummary = function(params) {
 			var deferred = $q.defer();

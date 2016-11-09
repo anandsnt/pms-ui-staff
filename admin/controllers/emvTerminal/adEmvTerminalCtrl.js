@@ -4,7 +4,7 @@ admin.controller('ADEmvTerminalCtrl', ['$scope', '$rootScope', 'ADEmvTerminalsSr
 	*/
 	$scope.errorMessage = '';
 	$scope.data = {};
-	//inheriting from base controller
+	// inheriting from base controller
 	BaseCtrl.call(this, $scope);
    /*
     * Success call back of fetch
@@ -13,7 +13,7 @@ admin.controller('ADEmvTerminalCtrl', ['$scope', '$rootScope', 'ADEmvTerminalsSr
 	var fetchSuccessOfItemList = function(data) {
 		$scope.$emit('hideLoader');
 		$scope.data = data;
-		//applying sorting functionality in item list
+		// applying sorting functionality in item list
 		$scope.itemListTerminals = new ngTableParams({
 		        page: 1,            // show first page
 		        count: $scope.data.results.length ? $scope.data.results.length : 1,    // count per page - Need to change when on pagination implemntation
@@ -35,7 +35,7 @@ admin.controller('ADEmvTerminalCtrl', ['$scope', '$rootScope', 'ADEmvTerminalsSr
 
 	};
 
-	//To list items
+	// To list items
 	$scope.invokeApi(ADEmvTerminalsSrv.fetchItemList, {}, fetchSuccessOfItemList);
 
 

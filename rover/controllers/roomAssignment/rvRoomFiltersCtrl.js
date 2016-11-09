@@ -17,7 +17,7 @@ sntRover.controller('RVRoomFiltersController', ['$scope', '$state', '$stateParam
 	* function to handle the floor filter selection Explictily.
 	*/
 	$scope.selectedFloorChanged = function() {
-		//resetting selected floor while selecting Show all check box
+		// resetting selected floor while selecting Show all check box
 		if($scope.data.isNoFloorSelected)
 		{
 		$scope.data.selectedFloor='';

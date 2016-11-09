@@ -78,7 +78,7 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
 		};
 		var successDelete = function() {
 			$scope.$emit('hideLoader');
-			//To refresh the user list
+			// To refresh the user list
 			$scope.listUsers();
 		};
 

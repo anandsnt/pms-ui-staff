@@ -10,7 +10,7 @@ sntRover.controller('rvManagerDashboardSearchController', ['$scope', '$rootScope
   	BaseCtrl.call( this, $scope );
 
 
-	//setting the scroller for view
+	// setting the scroller for view
 	var scrollerOptions = {
         tap: true,
         preventDefault: true,
@@ -21,10 +21,10 @@ sntRover.controller('rvManagerDashboardSearchController', ['$scope', '$rootScope
 
   	$scope.setScroller('result_showing_area', scrollerOptions);
     $scope.$broadcast("showSearchResultsArea", false);
-    //Clear the from date and to date options from search box.
+    // Clear the from date and to date options from search box.
 
-    //To clear date boxes when we come to dashboard through main menu
-    //timeout given because rvReservationSearchWidgetCtrl init happens after some time
+    // To clear date boxes when we come to dashboard through main menu
+    // timeout given because rvReservationSearchWidgetCtrl init happens after some time
     setTimeout(function() {
         $scope.$broadcast("clearSearchDateValues", false);
     }, 500);
@@ -41,12 +41,12 @@ sntRover.controller('rvManagerDashboardSearchController', ['$scope', '$rootScope
     * function used to back onto dashboard screen
     */
     var backToDashboard = function() {
-        //setting the backbutton & showing the caption
+        // setting the backbutton & showing the caption
         $scope.$emit("UpdateSearchBackbuttonCaption", "");
-        //we need to show the dashboard & hide search area
+        // we need to show the dashboard & hide search area
         $scope.$emit("showDashboardArea", true);
         $scope.$broadcast("showSearchResultsArea", false);
-        //also need to clear results present in that & type
+        // also need to clear results present in that & type
         $scope.$broadcast("updateReservationTypeFromOutside", 'default');
         $scope.$emit("UpdateHeading", 'DASHBOARD_MANAGER_HEADING');
     };
@@ -64,7 +64,7 @@ sntRover.controller('rvManagerDashboardSearchController', ['$scope', '$rootScope
     * When leaving this, we need to reset the back button text
     */
     $scope.$on('$stateChangeSuccess', function(event) {
-        //setting the backbutton & showing the caption
+        // setting the backbutton & showing the caption
         $scope.$emit("UpdateSearchBackbuttonCaption", "");
     });
 

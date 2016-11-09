@@ -22,7 +22,7 @@ sntRover.controller('RVMoveChargeCtrl',
          * return - An array of Bills except current acive bill
          */
 		var createBillOptions = function() {
-			//Bills are collected from reservationBillData or transactionsDetails		
+			// Bills are collected from reservationBillData or transactionsDetails		
 			var data = $scope.reservationBillData ||$scope.transactionsDetails;			
 
 			_.each(data.bills, function(result, index) {

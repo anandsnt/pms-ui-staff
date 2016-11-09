@@ -21,7 +21,7 @@ sntRover.controller('contractStartCalendarCtrl', ['$rootScope', '$scope', 'dateF
 		     onSelect: function() {
 
 			     if($scope.contractList.isAddMode) {
-			     	//set end date as one day next to begin date
+			     	// set end date as one day next to begin date
 			     	$scope.addData.begin_date = $scope.date;
 		     		var myDate = tzIndependentDate($scope.date);
 
@@ -33,7 +33,7 @@ sntRover.controller('contractStartCalendarCtrl', ['$rootScope', '$scope', 'dateF
 
 			    	$scope.contractData.begin_date = $scope.date;
 			    	if(!($scope.contractData.begin_date < $scope.contractData.end_date)) {
-			     		//set end date as one day next to begin date
+			     		// set end date as one day next to begin date
 			     		var myDate = tzIndependentDate($scope.date);
 
 						myDate.setDate(myDate.getDate() + 1);

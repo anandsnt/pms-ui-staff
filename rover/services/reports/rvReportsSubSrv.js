@@ -39,17 +39,17 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 			var refreshIntervalId = setInterval(incrementTimer, 1000);
 
 			var pollToReport = function(async_callback_url) {
-				//we will continously communicate with the server 
-				//the timeout set for the hotel
+				// we will continously communicate with the server 
+				// the timeout set for the hotel
 				if (timeStampInSeconds >= 300) {
 					var errors = ["Request timed out. Unable to process report !!"];
 
 					deferred.reject(errors);
 				} else {
 					rvBaseWebSrvV2.getJSONWithSpecialStatusHandling(async_callback_url).then(function(data) {
-						//if the request is still not proccesed
+						// if the request is still not proccesed
 						if ((!!data.status && data.status === 'processing_not_completed') || data === "null") {
-							//is this same URL ?
+							// is this same URL ?
 							setTimeout(function() {
 								console.info("POLLING::-> for print response");
 								pollToReport(async_callback_url);
@@ -277,7 +277,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 				url: '/api/rates/active',
 				resKey: 'rates',
                 params: {
-                    include_custom_rates: true //This service is used ONLY for the Daily Production Rate Report Filters & hence this param is added to the request
+                    include_custom_rates: true // This service is used ONLY for the Daily Production Rate Report Filters & hence this param is added to the request
                 }
 			});
 		};

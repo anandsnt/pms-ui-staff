@@ -27,7 +27,7 @@ sntGuestWeb.controller('gwTermsAndConditionsController', ['$scope', '$state', '$
 		    };
 		};
 		$scope.cancelClicked = function() {
-			//to do
+			// to do
 		};
 
 	}

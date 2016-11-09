@@ -6,7 +6,7 @@ angular.module('sntRover').service('rvPermissionSrv',
 	['$http', '$q', 'rvBaseWebSrvV2',
 		function($http, $q, rvBaseWebSrvV2) {
 
-	//variable for storing the permissions, will be a dictionary (object)
+	// variable for storing the permissions, will be a dictionary (object)
 	var roverPermissions = null;
 
 	/**

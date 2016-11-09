@@ -20,7 +20,7 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
             init = function() {
                 var onGetFilterSuccess = function(filters) {
                         $scope.$emit('hideLoader');
-                        //backUp the entire list
+                        // backUp the entire list
                         $scope.filterState.store = angular.copy(filters);
                         $scope.filterState.filters = filters;
                     },
@@ -54,7 +54,7 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
         $scope.filterState = {
             fromDate: initDay,
             toDate: initDay,
-            sortByValue: 'hotel_name', //DEFAULT SORT
+            sortByValue: 'hotel_name', // DEFAULT SORT
             fromDateOptions: angular.extend({
                 onSelect: function(value) {
                     $scope.filterState.toDateOptions.minDate = value;

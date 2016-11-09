@@ -14,7 +14,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
       $scope.successMessage = "";
       $scope.$emit('contactInfoError', false);
     });
-    //to reset current data in contcat info for determining any change
+    // to reset current data in contcat info for determining any change
     $scope.$on('RESETCONTACTINFO', function(event, data) {
       presentContactInfo.address = data.address;
       presentContactInfo.phone = data.phone;
@@ -53,7 +53,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
         var avatarImage = getAvatharUrl(dataToUpdate.title);
 
         $scope.$emit("CHANGEAVATAR", avatarImage);
-        //to reset current data in header info for determining any change
+        // to reset current data in header info for determining any change
         $scope.$emit("RESETHEADERDATA", $scope.guestCardData.contactInfo);
         updateSearchCache(avatarImage);
         $scope.$emit('hideLoader');
@@ -107,11 +107,11 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
 
           }
         }
-        //TODO : Reduce all these places where guestId is kept and used to just ONE
+        // TODO : Reduce all these places where guestId is kept and used to just ONE
         $scope.guestCardData.contactInfo.user_id = data.id;
         $scope.reservationDetails.guestCard.id = data.id;
         
-        //dirty fix for handling multiple api call being made
+        // dirty fix for handling multiple api call being made
         $scope.saveGuestCardInfoInProgress = false;
 
         $scope.reservationDetails.guestCard.futureReservations = 0;
@@ -119,7 +119,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
           $scope.reservationData.guest.id = data.id;
           $scope.reservationData.guest.firstName = $scope.guestCardData.contactInfo.first_name;
           $scope.reservationData.guest.lastName = $scope.guestCardData.contactInfo.last_name;
-          //TODO : Check if this is needed here
+          // TODO : Check if this is needed here
 
           $scope.reservationData.guest.loyaltyNumber = $scope.guestLoyaltyNumber;
         }
@@ -141,7 +141,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
       } else {
 
         RVContactInfoSrv.completeContactInfoClone = JSON.parse(JSON.stringify(dataToUpdate));
-        //change date format to be send to API
+        // change date format to be send to API
         dataToUpdate.birthday = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
         var unwantedKeys = ["avatar"]; // remove unwanted keys for API
 
@@ -182,7 +182,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
     $scope.$on('saveContactInfo', function() {
       $scope.errorMessage = "";
       if ((!$scope.reservationData.guest.id && !$scope.guestCardData.contactInfo.user_id) || $scope.viewState.isAddNewCard) {
-        //dirty fix until we refactor the whole staycard/card
+        // dirty fix until we refactor the whole staycard/card
         if(!$scope.saveGuestCardInfoInProgress) {
             $scope.saveGuestCardInfoInProgress = true;
             $scope.saveContactInfo(true);
@@ -193,7 +193,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
       }
     });
 
-    //Error popup
+    // Error popup
     $scope.$on('showSaveMessage', function() {
       $scope.errorMessage = ['Please save the Guest Card first'];
     });

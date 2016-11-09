@@ -12,7 +12,7 @@ sntRover.controller('RVJournalCashierController', ['$scope', 'RVJournalSrv', '$r
             $scope.lastCashierId = data.last_cashier_period_id;
             $scope.detailsList = data.history;
             $scope.selectedHistory = ($scope.detailsList.length>0) ? 0:"";
-            $scope.details = ($scope.detailsList.length>0) ?  $scope.detailsList[0] : {};//set first one as selected
+            $scope.details = ($scope.detailsList.length>0) ?  $scope.detailsList[0] : {};// set first one as selected
             $scope.selectedHistoryId = ($scope.detailsList.length>0) ? $scope.detailsList[0].id :"";
             $scope.isLoading = false;
             setTimeout(function() {$scope.refreshScroller('cashier_history');}, 200);
@@ -24,7 +24,7 @@ sntRover.controller('RVJournalCashierController', ['$scope', 'RVJournalSrv', '$r
         $scope.invokeApi(RVJournalSrv.fetchCashierDetails, data, fetchDetailsSuccessCallback);
     };
 
-    //init
+    // init
     var init = function() {
 
         BaseCtrl.call(this, $scope);

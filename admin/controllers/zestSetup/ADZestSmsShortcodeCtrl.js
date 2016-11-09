@@ -41,7 +41,7 @@ admin.controller('ADZestSmsShortcodeCtrl', ['$scope', '$state', 'ADZestShortCode
 
         params.sms_double_opt_in = (params.sms_double_opt_in === 'true') ? true : false;
         console.info('saving', params);
-        //params.id = $scope.editData.hotel_id;
+        // params.id = $scope.editData.hotel_id;
         var options = {
             params: params,
             successCallBack: $scope.onCallback,
@@ -53,7 +53,7 @@ admin.controller('ADZestSmsShortcodeCtrl', ['$scope', '$state', 'ADZestShortCode
 
 
     
-    $scope.getPages = function(r) {//response text length
+    $scope.getPages = function(r) {// response text length
         if (r > 0) {
             return (Math.ceil(r/$scope.charLimitPerText));
         } else {

@@ -6,7 +6,7 @@ admin.controller('ADEmvTerminalDetailsCtrl', ['$scope', '$rootScope', 'ADEmvTerm
 	$scope.errorMessage = '';
 	$scope.mod = 'edit';
 
-	//inheriting from base controller
+	// inheriting from base controller
 	BaseCtrl.call(this, $scope);
 
 	$scope.itemDetails = {};
@@ -14,7 +14,7 @@ admin.controller('ADEmvTerminalDetailsCtrl', ['$scope', '$rootScope', 'ADEmvTerm
 	$scope.itemDetails.terminal_identifier = '';
 
 	var itemId = $stateParams.itemid;
-	//if itemid is null, means it is for add item form
+	// if itemid is null, means it is for add item form
 
 	if(typeof itemId === 'undefined' || itemId.trim() === '') {
 		$scope.mod = 'add';

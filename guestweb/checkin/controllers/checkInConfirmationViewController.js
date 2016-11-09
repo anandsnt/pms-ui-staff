@@ -17,13 +17,13 @@
 		} else {
 			$scope.pageValid = true;
 		}
-		//uncheck checkbox in reservation details page
+		// uncheck checkbox in reservation details page
 
 		$rootScope.checkedApplyCharges = false;
 		$scope.minDate = $rootScope.businessDate;
 		$scope.cardDigits = '';
 
-		//setup options for modal
+		// setup options for modal
 		$scope.opts = {
 			backdrop: true,
 			backdropClick: true,
@@ -33,7 +33,7 @@
 
 		if ($scope.pageValid) {
 
-			//next page actions
+			// next page actions
 			var verificationSuccessActions = function(response) {
 				// display options for room upgrade screen
 				$rootScope.ShowupgradedLabel = false;
@@ -44,16 +44,16 @@
 				$rootScope.outStandingBalance = response.outstanding_balance;
 				$rootScope.payment_method_used = response.payment_method_used;
 				$rootScope.paymentDetails = response.payment_details;
-				//navigate to next page
+				// navigate to next page
 				$state.go('checkinReservationDetails');
 				$scope.isPosting = false;
 
 			};
 
-			//if we don't need extra verification using
-			//departure date and CC
+			// if we don't need extra verification using
+			// departure date and CC
 			if ($rootScope.bypassCheckinVerification) {
-				//set up flags related to webservice
+				// set up flags related to webservice
 				$scope.isPosting = true;
 				var data = {
 					'reservation_id': $rootScope.reservationID,
@@ -71,12 +71,12 @@
 					$scope.isPosting = false;
 				});
 			}else{
-				//set up flags related to webservice
+				// set up flags related to webservice
 				$scope.isPosting = false;
 				$rootScope.netWorkError = false;
 			}
 			
-			//next button clicked actions
+			// next button clicked actions
 			$scope.nextButtonClicked = function() {
 				var data = {
 					'departure_date': dateToSend,
@@ -86,7 +86,7 @@
 
 				$scope.isPosting = true;
 
-				//call service
+				// call service
 				checkinConfirmationService.verifyCheckinReservation(data).then(function(response) {
 
 					if (response.status === 'failure') {

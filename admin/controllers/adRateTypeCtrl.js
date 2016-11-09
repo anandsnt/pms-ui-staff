@@ -114,7 +114,7 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
         }
 				$scope.data[(l - 1)].rate_count = 0;
 			} else {
-				//To update data with new value
+				// To update data with new value
 				$scope.data[parseInt($scope.currentClickedElement)].name = $scope.rateTypeData.name;
 				if($scope.rateTypeData.classification !== null && typeof $scope.rateTypeData.classification !== "undefined") {
 					$scope.data[parseInt($scope.currentClickedElement)].classification = _.findWhere($scope.rateClassifications, {id: parseInt($scope.rateTypeData.classification.id, 10)});
@@ -167,7 +167,7 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 			$scope.mouseEnterPopover = true;
 		};
 
-		//Fetch the rates only when we enter the popover area.
+		// Fetch the rates only when we enter the popover area.
 		if(!$scope.mouseEnterPopover) {
 			$scope.popoverRates = "";
 			$scope.currentHoverElement = index;

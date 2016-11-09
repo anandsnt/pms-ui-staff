@@ -143,7 +143,7 @@ angular.module('sntRover').service('RVSearchSrv', ['$q', 'RVBaseWebSrv', 'rvBase
 					self.data[i]['vip'] = data['vip'];
 				};
 
-				//Update the primary image of the guest with the changed avatar
+				// Update the primary image of the guest with the changed avatar
 				if (data['avatar']) {
 					for(var k in self.data[i]['images']) {
 						if(self.data[i]['images'][k].is_primary) {

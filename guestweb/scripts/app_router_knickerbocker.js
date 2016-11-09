@@ -83,7 +83,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 	 	templateUrl: '/assets/checkin/partials/Knickerbocker/arrivalDetails.html',
 	 	title: 'Arrival Details - Check-in'
 	 });
-	 //room verification
+	 // room verification
 
 	 $stateProvider.state('checkoutRoomVerification', {
 	 	url: '/checkoutRoomVerification',

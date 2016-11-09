@@ -63,7 +63,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
 
         this.fetchDemographicSources = function(deferred) {
             if(isEmpty(sourcesData)) {
-                var url = '/api/sources?is_active=true'; //TODO: Whether we need active list only or all
+                var url = '/api/sources?is_active=true'; // TODO: Whether we need active list only or all
 
                 rvBaseWebSrvV2.getJSON(url).then(function(data) {
                     sourcesData.is_use_sources = that.reservationData.demographics.is_use_sources = data.is_use_sources;
@@ -83,7 +83,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
             var originsSuccessCallback = function(data) {
                 that.reservationData.demographics.origins = data.booking_origins;
                 that.reservationData.demographics.origins = [];
-                //We need only the booking origins activated in the admin
+                // We need only the booking origins activated in the admin
                 that.reservationData.demographics.is_use_origins = data.is_use_origins;
                 for (var i in data.booking_origins) {
                     if (data.booking_origins[i].is_active) {
@@ -110,7 +110,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
         this.fetchDemographicReservationTypes = function(deferred) {
             var reservationTypesCallback = function(data) {
                 that.reservationData.demographics.reservationTypes = [];
-                    //We need only the active reservation types
+                    // We need only the active reservation types
                     for (var i in data.reservation_types) {
                         if (data.reservation_types[i].is_active) {
                             that.reservationData.demographics.reservationTypes.push(data.reservation_types[i]);
@@ -134,7 +134,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
         };
 
         this.fetchInitialData = function() {
-            //Please be care. Only last function should resolve the data
+            // Please be care. Only last function should resolve the data
             var deferred = $q.defer();
 
             that.fetchDemographicMarketSegments(deferred);

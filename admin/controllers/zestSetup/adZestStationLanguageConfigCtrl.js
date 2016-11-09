@@ -9,7 +9,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 			var languageListForApi = $scope.languageList.map(function(language, index) {
 				return {
 					'name': language.name,
-					'position': index + 1 //index will be in teh order of position
+					'position': index + 1 // index will be in teh order of position
 				}
 			});
 			var options = {
@@ -22,7 +22,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 			$scope.callAPI(adZestStationLanguageConfigSrv.saveLanguageList, options);
 		};
 
-		//when dragging stopped
+		// when dragging stopped
 		var onDragStop = function(e, ui) {
 			var position = ui.item.sortable.dropindex,
 				languageName = ui.item.sortable.model.name,
@@ -33,7 +33,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 			}
 		};
 
-		//when language fetch completed
+		// when language fetch completed
 		var onFetchLanguageList = function(data) {
 			var combinedList = _.partition(data.languages, { position: null }),
 				nullList = combinedList[0],
@@ -60,10 +60,10 @@ admin.controller('adZestStationLanguageConfigCtrl',
 		(function() {
 			$scope.languageList = [];
 
-			//fetch the language list
+			// fetch the language list
 			fetchLanguageList();
 
-			//this sortable options will give us callback when dragging stopped
+			// this sortable options will give us callback when dragging stopped
 			$scope.sortableOptions = {
 				stop: onDragStop
 			};

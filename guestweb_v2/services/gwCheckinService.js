@@ -15,7 +15,7 @@ sntGuestWeb.service('GwCheckinSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'GwW
 		var deferred = $q.defer();
 
 		params.application = (typeof GwWebSrv.zestwebData.application !== "undefined") ? GwWebSrv.zestwebData.application : "";
-		//use dummy data for demo mode
+		// use dummy data for demo mode
 		var url= "";
 
 		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {

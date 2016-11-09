@@ -17,7 +17,7 @@ sntGuestWeb.service('GWBaseWebSrv', ['$http', '$q', '$window', function($http, $
 			params = "";
 		}
 
-		//Sample params {params:{fname: "fname", lname: "lname"}}
+		// Sample params {params:{fname: "fname", lname: "lname"}}
 		var httpDict = {};
 
  		httpDict.url = url;

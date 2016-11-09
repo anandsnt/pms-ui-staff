@@ -32,13 +32,13 @@ var GlobalApp = function() {
     		that.browser = browser;
     	}
     	if(browser === 'rv_native' && !that.cordovaLoaded) {
-    	   //TODO: check URL
+    	   // TODO: check URL
     		var url = "/assets/shared/cordova.js";
 
     		/* Using XHR instead of $HTTP service, to avoid angular dependency, as this will be invoked from
     		 * webview of iOS / Android.
     		 */
-    		var xhr=new XMLHttpRequest(); //TODO: IE support?
+    		var xhr=new XMLHttpRequest(); // TODO: IE support?
 
     		xhr.onreadystatechange=function() {
   				if (xhr.readyState===4 && xhr.status===200) {
@@ -49,7 +49,7 @@ var GlobalApp = function() {
   			};
   			xhr.open("GET", url, true);
 
-			xhr.send(); //TODO: Loading indicator
+			xhr.send(); // TODO: Loading indicator
 
     	}
 

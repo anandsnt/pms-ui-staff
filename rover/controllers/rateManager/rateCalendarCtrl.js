@@ -20,9 +20,9 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
         $scope.activityObj = {};
         $scope.activityObj.changedField = '';
         $scope.isWeekend = function(date) {
-            //get the 'day' format, sat/sun and return true if its considered a weekend
+            // get the 'day' format, sat/sun and return true if its considered a weekend
             var day = new Date(date).getDay();
-            //sat=5, sun=6
+            // sat=5, sun=6
 
             if (day === 6 || day === 5) {
                 return true;
@@ -214,7 +214,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
             $scope.anyRoomHasClosedRestriction = false;
             var restriction;
 
-            $scope.currentExpandedRow = -1; //reset the expanded row
+            $scope.currentExpandedRow = -1; // reset the expanded row
             $scope.loading = true;
                 // If only one rate is selected in the filter section, the defult view is room type calendar
                 if ($scope.currentFilterData.rates_selected_list.length === 1) {
@@ -223,7 +223,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
                 }
 
                 var calenderDataFetchSuccess = function(data) {
-                    //Set the calendar type
+                    // Set the calendar type
                     
                     if (data.type === 'ROOM_TYPES_LIST') {
                         $scope.calendarMode = "ROOM_TYPE_VIEW";
@@ -256,8 +256,8 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
                         }
 
 
-                        //push the room_type restriction into the all_rates object
-                        //per date/room_type
+                        // push the room_type restriction into the all_rates object
+                        // per date/room_type
                         var room_type_id, date, rs, rs_ri;
 
                         for (var a in $scope.calendarData.data_new) {
@@ -288,7 +288,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
                             for (var xi = 0; xi < $scope.calendarData.dates.length; xi++) {
                                 r_date = $scope.calendarData.dates[xi];
                                 $scope.calendarData.data[ev][r_date] = $scope.getRestrictionsForDateRoomType(r_date, rm_type_name);
-                                restriction = $scope.calendarData.data[ev][r_date];//array of restricitons for that date
+                                restriction = $scope.calendarData.data[ev][r_date];// array of restricitons for that date
                                 for (var rir in restriction) {
                                     if (restriction[rir].restriction_type_id === $scope.closedRateRestrictionId) {
                                         $scope.anyRoomHasClosedRestriction = true;
@@ -309,14 +309,14 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
                             $scope.currentSelectedRate = data.selectedRateDetails;
                             $scope.ratesDisplayed.push(data.selectedRateDetails);
                         }
-                        $scope.calendarData = {}; //wipe it out first..
+                        $scope.calendarData = {}; // wipe it out first..
                         $scope.calendarData = data;
                     
                     
                     
                     
                     
-                    if (!$scope.reloadingRooms) { //workaround to fix the loader from disappearing too quickly
+                    if (!$scope.reloadingRooms) { // workaround to fix the loader from disappearing too quickly
                         $scope.$emit('hideLoader');
                     } else if ($scope.reloadRoomsCount >= 1) {
                         $scope.$emit('hideLoader');
@@ -368,7 +368,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
                     refreshScrollerAndAttachEvents();
                     
                 };
-                //Set the current business date value to the service. Done for calculating the history dates
+                // Set the current business date value to the service. Done for calculating the history dates
 
                 RateMngrCalendarSrv.businessDate = $rootScope.businessDate;
                 if ($scope.calendarMode === "RATE_VIEW") {
@@ -377,7 +377,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
                     if ($scope.ratesRoomsToggle !== 'RATES') {
                         params.roomrate = 'ROOMS';
                     }
-                    $scope.popupData.currentFilterData = $scope.currentFilterData;//pass this in for the popup views to use
+                    $scope.popupData.currentFilterData = $scope.currentFilterData;// pass this in for the popup views to use
                         $scope.invokeApi(RateMngrCalendarSrv.fetchCalendarData, params, calenderDataFetchSuccess)
                             .then(finalizeCapture);
 
@@ -403,7 +403,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
         });
 
         $scope.toggleAllRates = function() {
-            //if active toggle IS rates, ignore
+            // if active toggle IS rates, ignore
             if ($scope.ratesRoomsToggle !== 'RATES') {
                 $scope.calendarData.data = [];
                 $scope.calendarData.restriction_types = [];
@@ -423,7 +423,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
 
 
         function finalizeCapture() {
-            //$scope.initScrollBind();
+            // $scope.initScrollBind();
             $scope.loading = false;
             $scope.currentFilterData.filterConfigured = true;
 
@@ -442,7 +442,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
             data.to_date = dateFilter($scope.currentFilterData.end_date, 'yyyy-MM-dd');
             data.order_id = $scope.currentFilterData.sort_order;
 
-            //Total number of dates to be displayed
+            // Total number of dates to be displayed
             data.per_page = getNumOfCalendarColumns();
 
             data.name_card_ids = [];
@@ -483,7 +483,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
 
             data.order_id = $scope.currentFilterData.sort_order;
 
-            //Total number of dates to be displayed
+            // Total number of dates to be displayed
             data.per_page = getNumOfCalendarColumns();
             return data;
         };
@@ -572,7 +572,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
 
             $scope.calendarMode = "RATE_VIEW";
             $scope.ratesDisplayed.length = 0;
-            //Update the rates displayed list - show in topbar
+            // Update the rates displayed list - show in topbar
             for (var i = 0, len = rates_selected.length; i < len; i++) {
                 rates_displayed.push(rates_selected[i]);
             }
@@ -605,7 +605,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
             }
 
             $stateParams.openUpdatePriceRestrictions = true;
-            //flag to show update price restriction window
+            // flag to show update price restriction window
             $scope.popupData.all_room_types = $scope.calendarData.room_types_all;
             if ($scope.ratesRoomsToggle === 'ROOMS') {
                 var roomTypeName;
@@ -731,7 +731,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
 
         $scope.hasAnyOverride = function() {
             $scope.overrideByDate = [];
-            //date > room type > occupancy
+            // date > room type > occupancy
             var all = $scope.current_overrides,
                 d, occupancyOverrides;
 
@@ -784,7 +784,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
             }
         };
 
-        $scope.rateDateHasOverride = function(rate, date, occ) { //room_type, date, occupancy
+        $scope.rateDateHasOverride = function(rate, date, occ) { // room_type, date, occupancy
             /*
              *
              * this is a three step check to determine if--
@@ -798,7 +798,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
             var room_type = rate.name;
 
             if (typeof date === typeof undefined) {
-                date = $scope.popupData.selectedDate; //use the popup data
+                date = $scope.popupData.selectedDate; // use the popup data
             }
             var override_obj, override_date, room_type_obj;
 
@@ -809,7 +809,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
                     if (override_obj.room_types_with_override) {
                         for (var r in override_obj.room_types_with_override) {
                             if (override_obj.room_types_with_override[r] === room_type) {
-                                if (occ === 'nightly') { //hourly / nightly
+                                if (occ === 'nightly') { // hourly / nightly
                                     $scope.popupData.hasOverride = true;
                                     return true;
                                 }

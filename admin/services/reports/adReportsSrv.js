@@ -1,7 +1,7 @@
 admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$http',
     function($q, ADBaseWebSrvV2, adReportsFilterSrv, $http) {
         var self = this;
-        /*-------------------------------------------------------------------------------------------------------------- A. CONFIGURATION
+        /* -------------------------------------------------------------------------------------------------------------- A. CONFIGURATION
                                                Reports are identified by their "KEY"
                                            ENSURE that the key of the reports stays UNIQUE
                                      The below objects (self.reports, self.filters) contain
@@ -25,7 +25,7 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
             subTitle: "",
             title: "Client Usage"
         }];
-        /*-------------------------------------------------------------------------------------------------------------- 
+        /* -------------------------------------------------------------------------------------------------------------- 
                   Filters to reports must be mapped in the below Object if prefetching is required
                                           Note: ONLY IF PREFETCHING is REQUIRED
                                 i.e. The values must be available for selection from start
@@ -73,7 +73,7 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
             return deferred.promise;
         };
 
-        //gets pre fetched filter data
+        // gets pre fetched filter data
         self.getFilterData = function(ReportKey) {
             var deferred = $q.defer();
 
@@ -109,7 +109,7 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
                         window, null,
                         0, 0, 0, 0, /* coordinates */
                         false, false, false, false, /* modifier keys */
-                        0 /*left*/, null
+                        0 /* left*/, null
                     );
                     hiddenAnchor[0].dispatchEvent(ev);
                 } else {
@@ -127,7 +127,7 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
 
         self.cache = {
             config: {
-                lifeSpan: 600 //in seconds
+                lifeSpan: 600 // in seconds
             },
             filters: {}
         }

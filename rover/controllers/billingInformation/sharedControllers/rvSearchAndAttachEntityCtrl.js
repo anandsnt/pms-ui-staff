@@ -10,7 +10,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$fi
 		$scope.textInQueryBox      = "";
 	  	$scope.isReservationActive = true;
 
-	  	//Setting scroller
+	  	// Setting scroller
 	  	var scrollerOptions = {click: true, preventDefault: false};
 
 	    $scope.setScroller('cards_search_scroller', scrollerOptions);
@@ -94,10 +94,10 @@ sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$fi
      */
   	var displayFilteredResultsCards = function() {
 
-	    //show everything, means no filtering
+	    // show everything, means no filtering
 	    if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
 
-			//based on 'is_row_visible' parameter we are showing the data in the template
+			// based on 'is_row_visible' parameter we are showing the data in the template
 			for (var i = 0; i < $scope.searchResults.cards.length; i++) {
 				$scope.searchResults.cards[i].is_row_visible = true;
 			}
@@ -113,8 +113,8 @@ sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$fi
 			var value = "";
 			var visibleElementsCount = 0;
 
-			//searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
-			//if it is zero, then we will request for webservice
+			// searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
+			// if it is zero, then we will request for webservice
 			for (var i = 0; i < $scope.searchResults.cards.length; i++) {
 				value = $scope.searchResults.cards[i];
 
@@ -205,10 +205,10 @@ sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$fi
      */
 	var displayFilteredResultsReservations = function() {
 
-	    //show everything, means no filtering
+	    // show everything, means no filtering
 	    if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
 
-	      	//based on 'is_row_visible' parameter we are showing the data in the template
+	      	// based on 'is_row_visible' parameter we are showing the data in the template
 	      	for (var i = 0; i < $scope.searchResults.length; i++) {
 	        	$scope.searchResults.reservations[i].is_row_visible = true;
 	      	}
@@ -228,8 +228,8 @@ sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$fi
 		    	$scope.searchResults.reservations.length > 0) {
 
 		        var value = "";
-		        //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
-		        //if it is zero, then we will request for webservice
+		        // searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
+		        // if it is zero, then we will request for webservice
 		        var totalCountOfFound = 0;
 
 		        for (var i = 0; i < $scope.searchResults.reservations.length; i++) {

@@ -10,7 +10,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.workTypeClickedElement = -1;
 		$scope.taskListClickedElement = -1;
 		$scope.workShiftClickedElement = -1;
-		//Have to change when default task is assigned for all work types.
+		// Have to change when default task is assigned for all work types.
 		$scope.defaultData = {};
 		$scope.defaultData.defaultTask = 0;
 
@@ -320,7 +320,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		};
 
 
-//=========== task list ================
+// =========== task list ================
 
 		// fetch task list
 		var fetchTaskList = function() {
@@ -340,7 +340,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.$emit('hideLoader');
 				$scope.roomTypesList = data;
 			};
-			//hide suite as per CICO-24369
+			// hide suite as per CICO-24369
 			var params = {
 				exclude_suite: true
 			};
@@ -403,7 +403,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			_.each($scope.roomTypesList, function(room, index) {
 				if ( !!$scope.eachTaskList.room_type_ids[index] ) {
 					if (!!$scope.eachTaskList.rooms_task_completion[room.id].mins || !!$scope.eachTaskList.rooms_task_completion[room.id].hours) {
-						//CICO-27994
+						// CICO-27994
 						console.log("reached here")
 						if(!!$scope.eachTaskList.rooms_task_completion[room.id].mins && !!$scope.eachTaskList.rooms_task_completion[room.id].hours)
 							times[room.id] = $rootScope.businessDate + ' ' + $scope.eachTaskList.rooms_task_completion[room.id].hours + ':' + $scope.eachTaskList.rooms_task_completion[room.id].mins + ':00';
@@ -641,7 +641,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				work_type_id: $scope.eachTaskList.work_type_id,
 				room_type_ids: traceBackIds( $scope.roomTypesList, $scope.eachTaskList.room_type_ids ),
 				reservation_statuses_ids: traceBackIds( $scope.resHkStatusList, $scope.eachTaskList.reservation_statuses_ids ),
-				is_occupied: $scope.eachTaskList.is_occupied, //as per CICO-33166 removed front_office_status_ids and used is_occupied and is_vacant instead
+				is_occupied: $scope.eachTaskList.is_occupied, // as per CICO-33166 removed front_office_status_ids and used is_occupied and is_vacant instead
 				is_vacant: $scope.eachTaskList.is_vacant,
 				completion_time: $rootScope.businessDate + ' ' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins + ':00',
 				task_completion_hk_status_id: $scope.eachTaskList.task_completion_hk_status_id,
@@ -707,7 +707,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				work_type_id: $scope.eachTaskList.work_type_id,
 				room_type_ids: traceBackIds( $scope.roomTypesList, $scope.eachTaskList.room_type_ids ),
 				reservation_statuses_ids: traceBackIds( $scope.resHkStatusList, $scope.eachTaskList.reservation_statuses_ids ),
-				is_occupied: $scope.eachTaskList.is_occupied, //as per CICO-33166 removed front_office_status_ids and used is_occupied and is_vacant instead
+				is_occupied: $scope.eachTaskList.is_occupied, // as per CICO-33166 removed front_office_status_ids and used is_occupied and is_vacant instead
 				is_vacant: $scope.eachTaskList.is_vacant,
 				completion_time: $rootScope.businessDate + ' ' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins + ':00',
 				task_completion_hk_status_id: $scope.eachTaskList.task_completion_hk_status_id,
@@ -845,7 +845,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 		$scope.onChangeWorkType = function() {
 
-			//$scope.resHkStatusList
+			// $scope.resHkStatusList
 			var selectedWorkType = "";
 
 			angular.forEach($scope.workType, function(item, index) {

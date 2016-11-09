@@ -245,7 +245,7 @@ var TimelineResizeGrip = React.createClass({
 
 					dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
 					left = (dateForCalculatingLeft.getTime() - x_origin) * px_per_ms;
-					//The special case adjustment
+					// The special case adjustment
 					if(dateForCalculatingLeft.isOnDST()) {
 						left = (dateForCalculatingLeft.getTime() + 3600000 - x_origin) * px_per_ms;
 					}

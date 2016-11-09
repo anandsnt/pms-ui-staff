@@ -12,7 +12,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
         $scope.putInQueue = false;
 
 
-	//CICO-13907
+	// CICO-13907
 	$scope.hasAnySharerCheckedin = function() {
 		var isSharerCheckedin = false;
 
@@ -31,7 +31,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
 
         $scope.checkGuestInFromQueue = false;
         $scope.putGuestInQueue = false;
-        if (!$rootScope.reservationQueueWatch) {//alternative to $destroy, this is an init-once method
+        if (!$rootScope.reservationQueueWatch) {// alternative to $destroy, this is an init-once method
             $rootScope.reservationQueueWatch = 1;
 
             $rootScope.$on('putGuestInQueue', function() {
@@ -72,7 +72,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
 		$scope.goToNextView();
 	};
          $scope.reservationIsQueued = function() {
-                    //checks current reservation data to see if it is in Queue or not
+                    // checks current reservation data to see if it is in Queue or not
                     if ($scope.reservationData.reservation_card.is_reservation_queued === 'true') {
                         return true;
                     } else return false;
@@ -98,9 +98,9 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
                     $scope.reservationData.reservation_card.is_upsell_available === "true") {
 
                 if ($scope.putInQueue) {
-                    return true;//go to room upgrade if adding to queue
+                    return true;// go to room upgrade if adding to queue
                 } else if ($scope.reservationIsQueued()) {
-                    return false;//skip if already in queue and checking in
+                    return false;// skip if already in queue and checking in
                 }
 
                 return true;
@@ -149,16 +149,16 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
             }
         };
 	$scope.goToNextView = function() {
-		if($scope.hasAnySharerCheckedin() || $scope.checkGuestInFromQueue) {//straight to signature, skip room upgrades CICO-19673
+		if($scope.hasAnySharerCheckedin() || $scope.checkGuestInFromQueue) {// straight to signature, skip room upgrades CICO-19673
 			$scope.goToBillCard();
 
 		} else if($scope.roomAssignmentNeeded()) {
-			//TO DO:Go to room assignemt viw
+			// TO DO:Go to room assignemt viw
 			$scope.goToRoomAssignment();
                         $scope.emitPutGuestInQueue();
 
 		} else if ($scope.upsellNeeded() && !$scope.checkGuestInFromQueue && !$scope.reservationData.reservation_card.is_suite) {
-			//TO DO : GO TO ROOM UPGRAFED VIEW
+			// TO DO : GO TO ROOM UPGRAFED VIEW
 			  $scope.goToUpgrades();
                           $scope.emitPutGuestInQueue();
                 } else{

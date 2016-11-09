@@ -83,8 +83,8 @@ admin.controller('ADRatePromotionsCtrl', [
 				}
 			}, function() {
 				$scope.$emit('hideLoader');
-				//Navigate to next level. If date ranges are available move to config rate screen
-				//If no date range added, move to add_date_range screen
+				// Navigate to next level. If date ranges are available move to config rate screen
+				// If no date range added, move to add_date_range screen
 				var menuName = "ADD_NEW_DATE_RANGE";
 
 				if ($scope.rateData.date_ranges.length > 0) {

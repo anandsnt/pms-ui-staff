@@ -1,7 +1,7 @@
 var DesktopCardOperations = function() {
 	var that = this;
 	var ws = {};
-	//Set to true if the desktop swipe is enabled and a WebSocket connection is established.
+	// Set to true if the desktop swipe is enabled and a WebSocket connection is established.
 
     that.isActive = false;
     that.isDesktopUUIDServiceInvoked = false;
@@ -25,7 +25,7 @@ var DesktopCardOperations = function() {
 			console.warn("Could not connect to card reader. Please check if the port number is valid!!");
 		}
 
-		//Triggers when websocket connection is established.
+		// Triggers when websocket connection is established.
 	    ws.onopen = function () {
 	    	that.isActive = true;
 			ws.send("observeForSwipe");

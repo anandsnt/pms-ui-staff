@@ -1,4 +1,4 @@
-//To fix the issue with csrf token in ajax requests
+// To fix the issue with csrf token in ajax requests
 sntGuestWeb.config(function($httpProvider) {
   $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
   var m = document.getElementsByTagName('meta');
@@ -28,7 +28,7 @@ angular.module('sntGuestWeb').service('GWBaseWebSrv2', ['$http', '$q', '$window'
 			params = "";
 		}
 
-		//Sample params {params:{fname: "fname", lname: "lname"}}
+		// Sample params {params:{fname: "fname", lname: "lname"}}
 		var httpDict = {};
 
  		httpDict.url = url;
@@ -63,7 +63,7 @@ if(status === 406) { // 406- Network error
 				$window.location.href = '/logout' ;
 			}
 
-			//set of custom error emssage range http status
+			// set of custom error emssage range http status
 			else if(status >= 470 && status <= 490) {
 				errors.httpStatus = status;
 				errors.errorMessage = errors;

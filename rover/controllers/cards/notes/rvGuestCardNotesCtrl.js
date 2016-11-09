@@ -52,7 +52,7 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
    * @return {undefined}
    */
   var successCallBackOfFetchDeleteNoteFromGuestCard = function(data, successCallBackParameters) {
-    //we are going to stripe the note from the list
+    // we are going to stripe the note from the list
     var indexToDelete = successCallBackParameters.index;
 
     $scope.notes.splice(indexToDelete, 1);
@@ -103,7 +103,7 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
    * @return {undefined}
    */
   var successCallBackOfCreateNoteFromGuestCard = function(data) {
-    //we are adding to the list with the response
+    // we are adding to the list with the response
     var userDetails = RVDashboardSrv.getUserDetails();
     var noteToAdd = {
       'posted_user_first_name': userDetails.first_name,
@@ -118,7 +118,7 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
     $scope.notes.unshift(0);
     $scope.notes[0] = noteToAdd;
 
-    //clearing the textbox
+    // clearing the textbox
     $scope.noteText = '';
 
     $scope.refreshScroller('guestcard_notes_scroller');
@@ -218,12 +218,12 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
         returnString = '';
 
     switch (type_) {
-      //if date string passed
+      // if date string passed
       case 'string':
           returnString = $filter('date')(new tzIndependentDate(date_), $rootScope.dateFormat);
           break;
 
-          //if date object passed
+          // if date object passed
       case 'object':
           returnString = $filter('date')(date_, $rootScope.dateFormat);
           break;

@@ -11,7 +11,7 @@ sntRover.controller('RVArTransactionsDatePickerController', ['$scope', '$rootSco
         $scope.dateOptions = {
             changeYear: true,
             changeMonth: true,
-            yearRange: "-5:+5", //Show 5 years in past & 5 years in future
+            yearRange: "-5:+5", // Show 5 years in past & 5 years in future
             onSelect: function(dateText, inst) {
                 if($scope.clickedOn === 'FROM') {
                     $scope.filterData.fromDate = $scope.date;

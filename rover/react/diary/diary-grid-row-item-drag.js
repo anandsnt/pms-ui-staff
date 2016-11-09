@@ -82,8 +82,8 @@ var GridRowItemDrag = React.createClass({
 			return;
 		}
 
-		//we will allow to move checkingin/future reservation horizontally as well as vertically
-		//in-house reservation: we will allow to move vertically only (Room change only)
+		// we will allow to move checkingin/future reservation horizontally as well as vertically
+		// in-house reservation: we will allow to move vertically only (Room change only)
 		if(props.currentDragItem.reservation_status !== 'reserved'  &&
 			props.currentDragItem.reservation_status !== 'inhouse'  &&
 			props.currentDragItem.reservation_status !== 'check-in' ) {
@@ -117,7 +117,7 @@ var GridRowItemDrag = React.createClass({
 				var reachingRightEdge = ( parseFloat(e.pageX) + Math.abs( scroller.maxScrollX ) / 4 ) > window.innerWidth;
 
 				if ( reachingRightEdge ) {
-					//based on where the reservation is going to plot, we have to calculate scroll position to scroll
+					// based on where the reservation is going to plot, we have to calculate scroll position to scroll
 					var distanceMouseMoved = ( mouseMovingColNumber - state.currentClickedCol ) * display.px_per_int;
 
 					xScPos = (xScPos - distanceMouseMoved);
@@ -133,7 +133,7 @@ var GridRowItemDrag = React.createClass({
 				var reachingLeftEdge = (parseFloat(e.pageX) - parseFloat(width_of_res) - parseFloat(width_of_res) / 4 ) <= 0;
 
 				if ( reachingLeftEdge ) {
-					//based on where the reservation is going to plot, we have to calculate scroll position to scroll
+					// based on where the reservation is going to plot, we have to calculate scroll position to scroll
 					var distanceMouseMoved = ( mouseMovingColNumber - state.currentClickedCol ) * display.px_per_int;
 
 					xScPos = (xScPos - distanceMouseMoved);
@@ -144,7 +144,7 @@ var GridRowItemDrag = React.createClass({
 				}
 			}
 
-			//TOP
+			// TOP
 			if ( mouseMovingRowNumber -  this.startingRowNumber < 0 ) {
 				var reachingTopEdge = (parseFloat(e.pageY) - 3 * adj_height ) <= props.viewport.element().offset().top;
 
@@ -153,7 +153,7 @@ var GridRowItemDrag = React.createClass({
 				}
 
 				if ( reachingTopEdge ) {
-					//based on where the reservation is going to plot, we have to calculate scroll position to scroll
+					// based on where the reservation is going to plot, we have to calculate scroll position to scroll
 					var distanceMouseMoved = ( parseFloat(mouseMovingRowNumber) - parseFloat(this.startingRowNumber) ) * parseFloat(adj_height);
 
 					yScPos = (parseFloat(yScPos) - parseFloat(distanceMouseMoved));
@@ -164,7 +164,7 @@ var GridRowItemDrag = React.createClass({
 				}
 			}
 
-			//BOTTOM
+			// BOTTOM
 			else if ( mouseMovingRowNumber -  this.startingRowNumber > 0 ) {
 				var reachingBottomEdge = (parseFloat(e.pageY) + 3 * adj_height ) >= window.innerHeight;
 
@@ -173,7 +173,7 @@ var GridRowItemDrag = React.createClass({
 				}
 
 				if ( reachingBottomEdge ) {
-					//based on where the reservation is going to plot, we have to calculate scroll position to scroll
+					// based on where the reservation is going to plot, we have to calculate scroll position to scroll
 					var distanceMouseMoved = ( parseFloat(mouseMovingRowNumber) - parseFloat(this.startingRowNumber) ) * parseFloat(adj_height);
 
 					yScPos = ( parseFloat(yScPos) - parseFloat(distanceMouseMoved) );
@@ -264,7 +264,7 @@ var GridRowItemDrag = React.createClass({
 
 					props.iscroll.grid.enable();
 					props.iscroll.timeline.enable();
-					props.angular_evt.onSelect(props.row_data, data, !data.selected, 'edit');	//TODO Make proxy fn, and move this to diary-content
+					props.angular_evt.onSelect(props.row_data, data, !data.selected, 'edit');	// TODO Make proxy fn, and move this to diary-content
 				});
 			}
 		}

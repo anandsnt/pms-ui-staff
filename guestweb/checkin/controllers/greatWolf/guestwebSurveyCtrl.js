@@ -33,14 +33,14 @@
 
 				$scope.surveyDetails.survey_question_type = !!questionType.description ? questionType.description : "Numeric";
 
-				//set initial values
+				// set initial values
 				if ($scope.surveyDetails.survey_question_type === 'Boolean') {
 					$scope.survey_response = 'Yes';
 				} else if ($scope.surveyDetails.survey_question_type === 'Numeric') {
 					$scope.survey_response = 1;
 				};
 			};
-			//call API
+			// call API
 
 			$scope.isLoading = true;
 			guestDetailsService.fetchSurveyDetails(params).then(function(response) {
@@ -56,7 +56,7 @@
 
 		$scope.goToNextPage = function() {
 			$rootScope.skipBalanceconductSurvey = true;
-			$rootScope.netWorkError = false; //unset error flag
+			$rootScope.netWorkError = false; // unset error flag
 			$state.go('preCheckinStatus');
 		};
 

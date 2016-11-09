@@ -1,4 +1,4 @@
-/*FOR POTENTIAL FUTURE USE*/
+/* FOR POTENTIAL FUTURE USE*/
 var ReactIscroll = React.createClass({
 	componentDidMount: function() {
 		var iscroll = this.props.iscroll;

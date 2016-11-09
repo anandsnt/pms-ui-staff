@@ -78,7 +78,7 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function 
          * @return {object} status of update
          */
         this.saveMapping = function (data) {
-            //interface_id will be a property in the data file
+            // interface_id will be a property in the data file
             var hotel_id = data.hotel_id, interface_id = data.interface_type_id;
             var deferred = $q.defer();
             var url = '/admin/external_mappings/' + hotel_id + '/' + interface_id + '/new_mapping/';

@@ -8,7 +8,7 @@ angular.module('sntRover').service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSr
         this.lastFetchedDate = "";
 
         var calendarDataCache = {
-            expiryLimit: 60, //seconds
+            expiryLimit: 60, // seconds
             reponses: []
         }
 
@@ -51,19 +51,19 @@ angular.module('sntRover').service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSr
         };
 
         this.fetchAvailability = function(params) {
-            //If its a request to fetch the additional, then fetch the next set of availability data
-            //based on the last_fetched date
+            // If its a request to fetch the additional, then fetch the next set of availability data
+            // based on the last_fetched date
             var deferred = $q.defer();
             var url = '/api/availability';
 
             RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
-                //We save the last fetched date info to enable caching.
-                //For every subsequent fetch requensts we fetch next set of dates
+                // We save the last fetched date info to enable caching.
+                // For every subsequent fetch requensts we fetch next set of dates
                 that.lastFetchedDate = tzIndependentDate(params.to_date);
                 if (params.status !== 'FETCH_ADDITIONAL') {
 
                     that.availabilityData = dclone(response);
-                    //response.results is an array. We would keep it as a hash indexed with date
+                    // response.results is an array. We would keep it as a hash indexed with date
                     that.availabilityData.results = {};
                 }
                 that.manipulateAvailabilityForEasyLookup(response);
@@ -82,7 +82,7 @@ angular.module('sntRover').service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSr
          */
         this.manipulateAvailabilityForEasyLookup = function(data) {
             var availability = {};
-            //loop1
+            // loop1
 
             angular.forEach(data.results, function(dayDetails, index) {
                 var dayInfo = {};
@@ -90,9 +90,9 @@ angular.module('sntRover').service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSr
                 dayInfo.date = dayDetails.date;
                 dayInfo.house = dayDetails.house;
                 dayInfo.BAR = that.getBestAvailableRateForTheDay(dayDetails.rates, dayDetails.room_types);
-                //loop2
+                // loop2
                 angular.forEach(dayDetails.room_types, function(roomType, i) {
-                    //Get the lowest rate for the room type
+                    // Get the lowest rate for the room type
                     dayInfo[roomType.id] = that.getLowestRateForRoomType(roomType, dayDetails.rates);
                 });
                 that.availabilityData.results[dayDetails.date] = dayInfo;
@@ -111,8 +111,8 @@ angular.module('sntRover').service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSr
             var rateId = "";
 
             angular.forEach(ratesForTheDay, function(rate, rateIndex) {
-                //loop1 - we have to search among all room rates
-                //not considering the room type and find the lowest rate
+                // loop1 - we have to search among all room rates
+                // not considering the room type and find the lowest rate
                 angular.forEach(rate.room_rates, function(roomRate, roomRateIndex) {
                     if (rateForSingleRoom === null) {
                         rateForSingleRoom = roomRate.single;
@@ -131,11 +131,11 @@ angular.module('sntRover').service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSr
 
             dict.rate_id = rateId;
             dict.room_type_availability = {};
-            //Get the room type availability details looping through all room types.
+            // Get the room type availability details looping through all room types.
             angular.forEach(allRoomTypes, function(roomType, roomTypeIndex) {
                 if (roomType.id === lowestRate.room_type_id) {
                     dict.room_type_availability = roomType;
-                    return false; //exit from the loop
+                    return false; // exit from the loop
                 }
             });
 
@@ -153,7 +153,7 @@ angular.module('sntRover').service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSr
             var rateId = "";
 
             angular.forEach(ratesForDay, function(rate, rateIndex) {
-                //loop1 - we need to display only the lowest rate in the UI. For a room type
+                // loop1 - we need to display only the lowest rate in the UI. For a room type
                 angular.forEach(rate.room_rates, function(roomRate, roomRateIndex) {
                     if (roomRate.room_type_id === roomType.id) {
                         if (rateForSingleRoom === null) {
@@ -164,9 +164,9 @@ angular.module('sntRover').service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSr
                             lowestRate = roomRate;
                             rateId = rate.id;
                         }
-                        return false; //exit form loop1 - //we are searching for rates with a room type id.
-                        //other room rates in this loop will be having different room types.
-                        //so go to the next rate.
+                        return false; // exit form loop1 - //we are searching for rates with a room type id.
+                        // other room rates in this loop will be having different room types.
+                        // so go to the next rate.
                     }
                 });
             });

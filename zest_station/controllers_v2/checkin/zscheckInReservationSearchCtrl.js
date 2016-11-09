@@ -8,7 +8,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 	'$timeout',
 	function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, zsGeneralSrv, $timeout) {
 
-		/**********************************************************************************************
+		/** ********************************************************************************************
 		 **		Please note that, not all the stateparams passed to this state will not be used in this state, 
 		 **      however we will have to pass this so as to pass again to future states which will use these.
 		 **
@@ -17,8 +17,8 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		 **                                                                       
 		 ***********************************************************************************************/
 
-		//This controller is used for searching reservation using last name
-		//and other optional params
+		// This controller is used for searching reservation using last name
+		// and other optional params
 
 		/** MODES in the screen
 		 *   1.LAST_NAME_ENTRY_MODE --> enter last name
@@ -32,25 +32,25 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		 **/
 
 		BaseCtrl.call(this, $scope);
-		//flush out previous search results
+		// flush out previous search results
 		zsCheckinSrv.setSelectedCheckInReservation([]);
 		zsCheckinSrv.setCheckInReservations([]);
 
 
 
 		var setupSeperatorBetweenOptions = function() {
-			//show/hide seperator between departure date and no of nights
+			// show/hide seperator between departure date and no of nights
 			$scope.showOrBetweenDateAndNoOfNights = $scope.zestStationData.checkin_screen.authentication_settings.departure_date &&
 				($scope.zestStationData.checkin_screen.authentication_settings.number_of_nights ||
 					$scope.zestStationData.checkin_screen.authentication_settings.email ||
 					$scope.zestStationData.checkin_screen.authentication_settings.confirmation);
 
-			//show/hide seperator between  no of nights and email
+			// show/hide seperator between  no of nights and email
 			$scope.showOrBetweenNoOfNightsAndEmail = $scope.zestStationData.checkin_screen.authentication_settings.number_of_nights &&
 				($scope.zestStationData.checkin_screen.authentication_settings.email ||
 					$scope.zestStationData.checkin_screen.authentication_settings.confirmation);
 
-			//show/hide seperator between email and conf no
+			// show/hide seperator between email and conf no
 			$scope.showOrBetweenEmailAndConfirmNo = $scope.zestStationData.checkin_screen.authentication_settings.email &&
 				$scope.zestStationData.checkin_screen.authentication_settings.confirmation;
 		}();
@@ -159,7 +159,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 
 		$scope.lastNameEntered = function() {
 			$scope.hideKeyboardIfUp();
-			//if room is already entered, no need to enter again
+			// if room is already entered, no need to enter again
 			if ($scope.reservationParams.no_of_nights.length > 0 ||
 				$scope.reservationParams.alt_confirmation_number.length > 0 ||
 				$scope.reservationParams.email.length > 0 ||
@@ -186,7 +186,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 
 		$scope.firstNameEntered = function() {
 			$scope.hideKeyboardIfUp();
-			//if room is already entered, no need to enter again
+			// if room is already entered, no need to enter again
 			if ($scope.reservationParams.no_of_nights.length > 0 ||
 				$scope.reservationParams.alt_confirmation_number.length > 0 ||
 				$scope.reservationParams.email.length > 0 ||
@@ -290,7 +290,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		};
 
 		var setHotelDateTime = function(response) {
-			//fetch the current date and time from the API, 
+			// fetch the current date and time from the API, 
 			// **this should be combined into 1 api call in the future
 			// * have noticed multiple API calls that get date/time and there are inconsistencies
 			$scope.zestStationData.bussinessDate = $scope.hotel_date.business_date;
@@ -311,12 +311,12 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		var setDateOptions = function() {
 
 			var options = {
-				params: {}, //just get the current / active business date to update the calendar
+				params: {}, // just get the current / active business date to update the calendar
 				successCallBack: function(hotel_date) {
 					$scope.hotel_date = hotel_date;
 
 					var timeOptions = {
-						params: {}, //just get the current / active business date to update the calendar
+						params: {}, // just get the current / active business date to update the calendar
 						successCallBack: setHotelDateTime,
 						failureCallBack: function(errorMessage) {
 							$scope.$emit('GENERAL_ERROR', errorMessage);
@@ -368,13 +368,13 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 
 		var init = function() {
 			$scope.hideKeyboardIfUp();
-			//show back button
+			// show back button
 			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
-			//show close button
+			// show close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-			//back button action
+			// back button action
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackClicked);
-			//starting mode
+			// starting mode
 			$scope.showDatePick = false;
 			setDateOptions();
 			setReservationParams();

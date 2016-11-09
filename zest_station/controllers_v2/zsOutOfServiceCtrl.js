@@ -9,9 +9,9 @@ sntZestStation.controller('zsOutOfServiceCtrl', [
 		 */
 		var initializeMe = function() {
 			BaseCtrl.call(this, $scope);
-			//hide back button
+			// hide back button
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
-			//hide close button
+			// hide close button
 			$scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
 			$scope.setScreenIcon('settings');
 		}();

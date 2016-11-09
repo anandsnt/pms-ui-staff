@@ -73,12 +73,12 @@ var GridRowItem = React.createClass({
 				break;
 			default:
 				caption = data[meta.guest];
-				//in case of guest name is blank, we have to show account name againstg taht.
+				// in case of guest name is blank, we have to show account name againstg taht.
 				if(!caption) {
 					caption = data[meta.tr_ag_name] ? data[meta.tr_ag_name] : data[meta.cmp_name];
 				}
 
-				//if there is any accomoanying guests
+				// if there is any accomoanying guests
 				if(!_.isEmpty(data[meta.accompanying_guests])) {
 					caption = caption + "  |  ";
 					_.each(data[meta.accompanying_guests], function(element, index, list) {
@@ -102,7 +102,7 @@ var GridRowItem = React.createClass({
 		style.width =  data[meta.maintenance] * display.px_per_int + 'px';
 		end_of_reservation = (data[meta.maintenance] * ms_fifteen_min + end_time_ms);
 
-		//(CICO-12358) when the reservation end is touching the end of the grid, we are hiding the house keeping task or showing the partial
+		// (CICO-12358) when the reservation end is touching the end of the grid, we are hiding the house keeping task or showing the partial
 		if( end_of_reservation > display.x_p) {
 			// reservation crossing the grid boundary we are hiding
 			if(end_time_ms > display.x_p) {
@@ -125,16 +125,16 @@ var GridRowItem = React.createClass({
 
 		//	console.log(props)
 
-		//if not availability check, this reservation was already there
+		// if not availability check, this reservation was already there
 		var className  = (!is_temp_reservation ? 'occupied ' : '');
 
-			//when we select a particular reservation
+			// when we select a particular reservation
 			className += (state.editing ? ' editing' : '');
 
-			//we have to show striped reservation when we select a availability check reservation
+			// we have to show striped reservation when we select a availability check reservation
 			className += ((is_temp_reservation && data.selected) || (is_temp_reservation && this.state.isDragOver) ? ' reserved' : '');
 
-		//guest status mapping
+		// guest status mapping
 		// console.log(data.cannot_move_room)
 		switch (data[m.status]) {
 
@@ -224,7 +224,7 @@ var GridRowItem = React.createClass({
 
 			left = (dateForCalculatingLeft.getTime() - x_origin) * px_per_ms + 'px';
 
-			//The special case adjustment
+			// The special case adjustment
 			if(dateForCalculatingLeft.isOnDST()) {
 				left = (dateForCalculatingLeft.getTime() +3600000 - x_origin) * px_per_ms + 'px';
 			}

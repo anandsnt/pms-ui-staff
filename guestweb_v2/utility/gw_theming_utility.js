@@ -1,4 +1,4 @@
-//blank check
+// blank check
 function isBlank(pString) {
 	if (!pString || pString.length == 0) {
 		return true;
@@ -14,7 +14,7 @@ function addStyleString(str) {
 }
 
 var styleString = "";
-//concat style strings
+// concat style strings
 
 function appendStyleString(str) {
 	styleString = styleString + str;
@@ -59,7 +59,7 @@ var applyIconStyles = function(color) {
 	 * set in the admin
 	 */
 var overrideStylesWithCMSdata = function(styles) {
-	//set the background color
+	// set the background color
 	applyStyle('body { background:', styles.main_bg.background);
 	// set nav bar background color
 	applyStyle('.header-bar { background:', styles.header_bg.background);
@@ -79,11 +79,11 @@ var overrideStylesWithCMSdata = function(styles) {
 	applyStyle('.date-picker-header ,.pickadate-cell .pickadate-active{ background:', styles.calender_header_background);
 	// set calender main bg color
 	applyStyle('.date-picker-wrap { background:', styles.calender_main_background);
-	//set calender cell bg
+	// set calender cell bg
 	applyStyle('.pickadate-cell .pickadate-disabled, .pickadate-cell .pickadate-enabled, .pickadate-cell .pickadate-outofrange-disabled { background:', styles.calender_cell_background);
 	// set template button text color
 	applyStyle('.btn,.btn:hover  { color:', styles.button_text.color);
-	//set template font family
+	// set template font family
 	applyStyle('body { font-family:', styles.template_font);
 	// set  main text color
 	applyStyle('.template-text,.main-text { color:', styles.title_text.color);
@@ -113,7 +113,7 @@ var overrideStylesWithCMSdata = function(styles) {
 	applyStyle('.footer-text { font-size:', styles.footer_text.sd_font_size, "media-query");
 	// set label font size for small devices
 	applyStyle('.sub-text{ font-size:', styles.label_text.sd_font_size, "media-query");
-	//apply icon styles
+	// apply icon styles
 	if (styles.icon_color !== "White") {
 		applyIconStyles(styles.icon_color)
 	}

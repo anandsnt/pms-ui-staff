@@ -15,8 +15,8 @@ function BaseCtrl($scope) {
 
   };
 
-  //function that converts a null value to a desired string.
-  //if no replace value is passed, it returns an empty string
+  // function that converts a null value to a desired string.
+  // if no replace value is passed, it returns an empty string
   $scope.escapeNull = function(value, replaceWith) {
     var newValue = '';
 
@@ -32,7 +32,7 @@ function BaseCtrl($scope) {
     var url = document.location,
       inDevEnvironment = false;
 
-    if (url.hostname && btn) { //if btn === true, then the user is clicking continue to bypass cc screen in dev environment
+    if (url.hostname && btn) { // if btn === true, then the user is clicking continue to bypass cc screen in dev environment
       if (typeof url.hostname === typeof 'str') {
         if (url.hostname.indexOf('pms-dev') !== -1 ||
           url.hostname.indexOf('pms-release') !== -1 ||
@@ -45,7 +45,7 @@ function BaseCtrl($scope) {
       }
     }
 
-    if (zestSntApp.cardSwipeDebug || inDevEnvironment) { //in production, dont allow this function unless manually called for debugging via console like [   zestSntApp.cardSwipeDebug(true)   ]
+    if (zestSntApp.cardSwipeDebug || inDevEnvironment) { // in production, dont allow this function unless manually called for debugging via console like [   zestSntApp.cardSwipeDebug(true)   ]
       return true;
     } else return false;
   };
@@ -63,13 +63,13 @@ function BaseCtrl($scope) {
         }
       }
     }
-    if (!notProd) { //in production, dont allow this function
+    if (!notProd) { // in production, dont allow this function
       return true;
     } else return false;
   };
   $scope.fetchedFailed = function(errorMessage) {
     $scope.$emit('hideLoader');
-    //scroll to top of the page where error message is shown
+    // scroll to top of the page where error message is shown
     if (angular.element(document.querySelector('.content')).find('.error_message').length) {
       angular.element(document.querySelector('.content')).scrollTop(0);
     };
@@ -85,7 +85,7 @@ function BaseCtrl($scope) {
   };
 
   $scope.invokeApi = function(serviceApi, params, successCallback, failureCallback, loaderType) {
-    //loaderType options are "BLOCKER", "NONE"
+    // loaderType options are "BLOCKER", "NONE"
 
     if (typeof loaderType === 'undefined') {
       loaderType = 'BLOCKER';
@@ -115,7 +115,7 @@ function BaseCtrl($scope) {
     }
 
     return serviceApi(params).then(
-      //success call back
+      // success call back
       function(data) {
         if (showLoader) {
           $scope.$emit('hideLoader');
@@ -128,7 +128,7 @@ function BaseCtrl($scope) {
           }
         }
       },
-      //failure callback
+      // failure callback
       function(error) {
         if (showLoader) {
           $scope.$emit('hideLoader');
@@ -144,7 +144,7 @@ function BaseCtrl($scope) {
     );
   };
 
-  //handle drag and drop events
+  // handle drag and drop events
   $scope.hideCurrentDragItem = function(ev, ui) {
     $(ev.target).hide();
   };
@@ -240,13 +240,13 @@ function BaseCtrl($scope) {
     if (typeof scrollerOptions === 'undefined') {
       scrollerOptions = {};
     }
-    //we are merging the settings provided in the function call with defaults
+    // we are merging the settings provided in the function call with defaults
     var tempScrollerOptions = angular.copy(defaultScrollerOptions);
 
-    angular.extend(tempScrollerOptions, scrollerOptions); //here is using a angular function to extend,
+    angular.extend(tempScrollerOptions, scrollerOptions); // here is using a angular function to extend,
     scrollerOptions = tempScrollerOptions;
-    //checking whether scroll options object is already initilised in parent controller
-    //if so we need add a key, otherwise initialise and add
+    // checking whether scroll options object is already initilised in parent controller
+    // if so we need add a key, otherwise initialise and add
     var isEmptyParentScrollerOptions = isEmptyObject($scope.$parent.myScrollOptions);
 
     if (isEmptyParentScrollerOptions) {

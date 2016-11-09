@@ -3,7 +3,7 @@ var preCheckinSrv = function($q, baseWebService, $rootScope, $http) {
 
 
 	var reservationId = $rootScope.reservationID;
-	//fetch trip details
+	// fetch trip details
 	var fetchTripDetails = function() {
 		var deferred = $q.defer();
 		var url = '/api/reservations/'+reservationId+'/web_checkin_reservation_details';
@@ -17,7 +17,7 @@ var preCheckinSrv = function($q, baseWebService, $rootScope, $http) {
 		return deferred.promise;
 	};
 
-	//post staydetails
+	// post staydetails
 	var postStayDetails = function(data) {
 		var deferred = $q.defer();
 		var url = '/api/reservations/'+reservationId+'/update_stay_details';

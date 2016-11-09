@@ -6,7 +6,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 	this.restrictionsIndependentOfDays = []; // CICO-21942
 
 	this.fetchAllRestrictionTypes = function(onComplete, params, url) {
-		//TODO: Modify to handle case of date range changes, if needed.
+		// TODO: Modify to handle case of date range changes, if needed.
 		var url =  '/api/restriction_types';
 		var deferred = $q.defer();
 
@@ -14,7 +14,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 			deferred.resolve(that.allRestrictionTypes);
 		} else{
 			BaseWebSrvV2.getJSON(url).then(function(data) {
-				//Only the editable restrictions should be shown in the UI
+				// Only the editable restrictions should be shown in the UI
 				for(var i in data.results) {
 					if(data.results[i].activated && !data.results[i].editable) {
 						that.allRestrictionTypes.push(data.results[i]);
@@ -57,7 +57,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 
 	this.updateRoomTypeOverride = function(data) {
             data.date = data.selectedDate; data.rate_id = data.selectedRate;
-            //rate_id, date, room_type_id need to be included to clear rates
+            // rate_id, date, room_type_id need to be included to clear rates
             var url =  '/api/daily_rates/'+data.selectedRate+'/remove_custom_rate?';
             var deferred = $q.defer();
 
@@ -172,9 +172,9 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
                 }
             }
 
-			//If only one rate exists in the search results,
-			//then room type calendar for that rate should be displayed.
-			//Fetch the room type details for that rate.
+			// If only one rate exists in the search results,
+			// then room type calendar for that rate should be displayed.
+			// Fetch the room type details for that rate.
 			if(calendarData.data.length === 1) {
 				var roomDetailsParams = {};
 
@@ -216,10 +216,10 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 			return;
 		};
 		 url = "/api/daily_rates/" + params.id;
-		//To pass the selected rate id and name to the controller.
-		//In situations where the rate is not manually selected by user,
-		//but single rate is returned in the webservice fetch for rates list.
-		//So we fetch the room details for that rate id and display the room type calendar
+		// To pass the selected rate id and name to the controller.
+		// In situations where the rate is not manually selected by user,
+		// but single rate is returned in the webservice fetch for rates list.
+		// So we fetch the room details for that rate id and display the room type calendar
 		if(typeof params.id !== "undefined" && typeof params.rate !== "undefined") {
 			var selectedRate = {};
 
@@ -236,7 +236,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 
 			calendarData.type = "ROOM_TYPES_LIST";
                             calendarData.room_type_restrictions = data.room_type_restrictions;
-			//Pass the rate details to the controller
+			// Pass the rate details to the controller
 			calendarData.selectedRateDetails = selectedRate;
 			calendarData.is_fixed_rate = data.is_fixed_rate;
 			calendarData.is_child = (data.can_modify !== undefined && !data.modify) || data.is_child;
@@ -288,14 +288,14 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 			formattedRestrictionTypes[item.id]= that.getRestrictionUIElements(item);
 		});
                 var totalRestrictions = formattedRestrictionTypes.length;
-                //ADD ONE MORE ITEM, FOR ZOOM 7; CICO-10668
+                // ADD ONE MORE ITEM, FOR ZOOM 7; CICO-10668
                 var baseRestrictionItem = {
                     'activated': true,
                     'background_class': "bg-drk",
                     'description': "Has Restrictions",
                     'editable': false,
                     'hideOnHourly': false,
-                    'isOnRate': true, //hide when on adding/removing restrictions screen
+                    'isOnRate': true, // hide when on adding/removing restrictions screen
                     'icon': "R",
                     'days': "R",
                     'id': totalRestrictions,
@@ -305,7 +305,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 		calendarData.restriction_types = formattedRestrictionTypes;
 
 		// In UI, tables are represented as rows of columns.
-		//Input data is in opposite structure, restructuring here
+		// Input data is in opposite structure, restructuring here
 		var datesList = [];
 		var ratesRestrictions = {};
 		var roomRateData = [];
@@ -320,21 +320,21 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 		   		}
 		   	});
 
-		   	//UI requires al-rates separated from daily rates.
+		   	// UI requires al-rates separated from daily rates.
 		   	ratesRestrictions[item.date] = item.rate_restrictions; 	
 		  
 
-		   	//Adjusting Daily Rate Data - we require rows of colums - not the other way.
+		   	// Adjusting Daily Rate Data - we require rows of colums - not the other way.
 		   	for(var ri in item.room_rates) {
 		   		var rate = item.room_rates[ri];
-		   		//Check if this rate is already pushed.
+		   		// Check if this rate is already pushed.
 		   		var rateData = null;
 
 		   		for (var i in roomRateData) {
 	   				if (roomRateData[i].id === rate.room_type.id)
 	   				{
 	   		  			rateData = roomRateData[i];
-	   		  			//break;
+	   		  			// break;
 	   				}
 		   		}
 
@@ -372,7 +372,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 		calendarData.rate_restrictions = ratesRestrictions;
 		calendarData.data = roomRateData;
 
-		//close all/open all restriction status
+		// close all/open all restriction status
 		var enableDisableCloseAll = that.getCloseAllEnableDisableStatus(calendarData.data, "ROOM_TYPE");
 
 		calendarData.disableCloseAllBtn = !enableDisableCloseAll.enableCloseAll;
@@ -396,13 +396,13 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 		});
 
                 var totalRestrictions = formattedRestrictionTypes.length;
-                //ADD ONE MORE ITEM, FOR ZOOM 7; CICO-10668
+                // ADD ONE MORE ITEM, FOR ZOOM 7; CICO-10668
                 var baseRestrictionItem = {
                     'activated': true,
                     'background_class': "bg-drk",
                     'description': "Has Restrictions",
                     'editable': false,
-                    'isOnRate': true, //hide when on adding/removing restrictions screen
+                    'isOnRate': true, // hide when on adding/removing restrictions screen
                     'hideOnHourly': false,
                     'icon': "R",
                     'days': "R",
@@ -414,7 +414,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 		calendarData.restriction_types = formattedRestrictionTypes;
 
 		// In UI, tables are represented as rows of columns.
-		//Input data is in opposite structure, restructuring here
+		// Input data is in opposite structure, restructuring here
 		var datesList = [];
 		var allRatesData = {};
 		var dailyRatesData = [];
@@ -422,7 +422,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 		angular.forEach(that.dailyRates.results, function(item) {
 		   	datesList.push(item.date);
 
-		   	//UI requires al-rates separated from daily rates.
+		   	// UI requires al-rates separated from daily rates.
 		   	allRatesData[item.date] = item.all_rate_restrictions;
                         var rates;
 
@@ -431,7 +431,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
                         } else {
                             rates = 'room_types';
                         }
-		   	//Adjusting Daily Rate Data - we require rows of colums - not the other way.
+		   	// Adjusting Daily Rate Data - we require rows of colums - not the other way.
 		   	for(var ri in item[rates]) {
 		   		var rate = item[rates][ri];
 
@@ -442,7 +442,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
                                     rate.is_child = false;
                                     rate.is_suppress_rate_on = false;
                                 }
-		   		//Check if this rate is already pushed.
+		   		// Check if this rate is already pushed.
 		   		var rateData = null;
 
 		   		for (var i in dailyRatesData) {
@@ -468,7 +468,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 		calendarData.dates = datesList;
 		calendarData.all_rates = allRatesData;
 		calendarData.data = dailyRatesData;
-		//close all/open all restriction status
+		// close all/open all restriction status
 		var enableDisableCloseAll = that.getCloseAllEnableDisableStatus(calendarData.data, "RATE_TYPE");
 
 		calendarData.disableCloseAllBtn = !enableDisableCloseAll.enableCloseAll;
@@ -477,17 +477,17 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 		return calendarData;
 	};
 
-	//compute the closeall/openall restriction status beased on the total number of
-	//closed restrictions in the all_rates/all_restrictions section
+	// compute the closeall/openall restriction status beased on the total number of
+	// closed restrictions in the all_rates/all_restrictions section
 	that.getCloseAllEnableDisableStatus = function(rateData, type) {
-		//Check if CLOSE ALL restriction is available in all_rates section
+		// Check if CLOSE ALL restriction is available in all_rates section
 		var closedRestrictionId = -1,
 			dict = {};
 
 		    dict.enableOpenAll = false;
 		    dict.enableCloseAll = false;
 
-		//Get the id for 'CLOSED' restriction
+		// Get the id for 'CLOSED' restriction
 		for(var i in that.allRestrictionTypes) {
 			if (that.allRestrictionTypes[i].value === 'CLOSED') {
 				closedRestrictionId = that.allRestrictionTypes[i].id;
@@ -495,7 +495,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 			}
 		}
 
-		//Iterate through each calendar cell to find if 'CLOSED' restricion is available
+		// Iterate through each calendar cell to find if 'CLOSED' restricion is available
 		for(var i in rateData) {
 			var rate = rateData[i];
 			var isDate = false;
@@ -512,7 +512,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 
 
 
-				//We don't want to check the history dates
+				// We don't want to check the history dates
 				if( (new Date(date).getTime() < new Date(that.businessDate).getTime()) ) {
 			   		continue;
 		   		}
@@ -522,7 +522,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 		   		if(type === "ROOM_TYPE") {
 		   			var item = rate[date].restrictions;
 		   		}
-		   		//If the 'CLOSED' restriction is available in any of the cell, the openall button is enabled
+		   		// If the 'CLOSED' restriction is available in any of the cell, the openall button is enabled
 		   		// If 'CLOSED' restriction is absent in any cell, close all button is enabled
 		   		var isDateClosed = false;
 
@@ -545,12 +545,12 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 
 	this.getRestrictionUIElements = function(restriction_type) {
 		var restriction_type_updated = {};
-		//TODO: Add UI condition checks using "restrVal"
+		// TODO: Add UI condition checks using "restrVal"
 
 		restriction_type_updated.icon = "";
-		//(CICO-9555
+		// (CICO-9555
 		restriction_type_updated.hideOnHourly = false;
-		//CICO-9555)
+		// CICO-9555)
 		if('CLOSED' === restriction_type.value) {
 			restriction_type_updated.icon = "icon-cross";
 		}

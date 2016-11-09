@@ -5,7 +5,7 @@ sntRover.controller('RVReservationDepositController',
 		RVReservationCardSrv, $state, $filter, ngDialog, rvPermissionSrv) {
 
 		BaseCtrl.call(this, $scope);
-		//adding a flag to be set after some timeout to remove flickering action in iPad
+		// adding a flag to be set after some timeout to remove flickering action in iPad
 		$scope.pageloadingOver = false;
 		$timeout(function() {
 			$scope.pageloadingOver = true;
@@ -52,7 +52,7 @@ sntRover.controller('RVReservationDepositController',
 			addToGuestCard: false
 		};
 
-		//CICO-30207
+		// CICO-30207
 		$scope.isReservationRateSuppressed = $scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates;
 		$scope.depositData.paymentType = ($scope.reservationData.reservation_card.payment_method_used) ? $scope.reservationData.reservation_card.payment_method_used : "";
 
@@ -66,7 +66,7 @@ sntRover.controller('RVReservationDepositController',
 
 		$scope.closeDialog = function() {
 			$scope.$emit("UPDATE_STAY_CARD_DEPOSIT_FLAG", false);
-			//to add stjepan's popup showing animation
+			// to add stjepan's popup showing animation
       		$rootScope.modalOpened = false;
       		$timeout(function() {
       			ngDialog.close();
@@ -116,7 +116,7 @@ sntRover.controller('RVReservationDepositController',
 		 	$scope.isManual ? showCardOptions() : "";
 		 	refreshCardsList();
 		};
-		 //to trigger from sixpayment partial
+		 // to trigger from sixpayment partial
         $scope.$on('changeOnsiteCallIn', function(event) {
             $scope.isManual =  !$scope.isManual;
             $scope.changeOnsiteCallIn();
@@ -347,8 +347,8 @@ sntRover.controller('RVReservationDepositController',
 
 			var onSaveSuccess = function(data) {
 				$scope.$emit('hideLoader');
-				//if the param passed attach_to_reservation is undefined, this will be used to 
-				//render the card details ito the screen only
+				// if the param passed attach_to_reservation is undefined, this will be used to 
+				// render the card details ito the screen only
 				if(typeof attach_to_reservation === "undefined") {
 					$scope.depositData.selectedCard = data.id;
 					$scope.depositData.cardNumber = retrieveCardNumber();
@@ -364,10 +364,10 @@ sntRover.controller('RVReservationDepositController',
 					}
 			    }
 				$scope.newCardAdded = true;
-				//if the param passed attach_to_reservation is defined, this will be used to 
-				//update the payment in the staycard
+				// if the param passed attach_to_reservation is defined, this will be used to 
+				// update the payment in the staycard
 				if(typeof attach_to_reservation !== "undefined") {
-					//set data in the staycard
+					// set data in the staycard
 					$scope.$parent.reservationData.reservation_card.payment_method_used = 'CC';
 					$scope.$parent.reservationData.reservation_card.payment_details.card_number = angular.copy($scope.depositData.cardNumber);
 					$scope.$parent.reservationData.reservation_card.payment_details.card_expiry = angular.copy($scope.depositData.expiry_date);
@@ -381,7 +381,7 @@ sntRover.controller('RVReservationDepositController',
 				payment_type: "CC",
 				token: cardToken
 			};
-			//if new card is added and payment is success, add the card to reservation
+			// if new card is added and payment is success, add the card to reservation
 
 			if(typeof attach_to_reservation !== "undefined") {
 				paymentData.reservation_id = $scope.passData.reservationId
@@ -481,10 +481,10 @@ sntRover.controller('RVReservationDepositController',
 		}
 		
 
-		//the below code is commented as the payment linkage is now done i backend
+		// the below code is commented as the payment linkage is now done i backend
 		
-		//if the rservation payment methode is Cash and deposit is 
-		//paid by CC, add that CC as payment method to the reservation
+		// if the rservation payment methode is Cash and deposit is 
+		// paid by CC, add that CC as payment method to the reservation
 		// if($scope.$parent.reservationData.reservation_card.payment_method_used === 'CA' &&
 		//    $scope.depositData.paymentType === 'CC'){
 		// 	if($scope.newCardAdded && typeof cardAddedBySixPaySWipe === "undefined")
@@ -511,8 +511,8 @@ sntRover.controller('RVReservationDepositController',
 		// 	}
 		// }
 		
-		//if the existing payment method is not CC or Direct BIll and the selected payment method is CC
-		//The submit payment will update the payment type for the bill
+		// if the existing payment method is not CC or Direct BIll and the selected payment method is CC
+		// The submit payment will update the payment type for the bill
 		if($scope.$parent.reservationData.reservation_card.payment_method_used !== 'CC'
 		   && $scope.$parent.reservationData.reservation_card.payment_method_used !== 'DB'
 		   && $scope.depositData.paymentType === 'CC') {
@@ -587,8 +587,8 @@ sntRover.controller('RVReservationDepositController',
 			if($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.depositData.paymentType === 'CC') {
 				dataToSrv.postData.is_emv_request = true;
 				$scope.shouldShowWaiting = true;
-				//the card will be added to reservation if existing payment methid is cash
-					//and six pay is succes by passing reservation_id
+				// the card will be added to reservation if existing payment methid is cash
+					// and six pay is succes by passing reservation_id
 				// if($scope.$parent.reservationData.reservation_card.payment_method_used !== 'CC' &&
 				//    $scope.$parent.reservationData.reservation_card.payment_method_used !== 'DB'){
 					dataToSrv.postData.reservation_id = $stateParams.id;
@@ -596,8 +596,8 @@ sntRover.controller('RVReservationDepositController',
 				RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
 					$scope.shouldShowWaiting = false;
 					var cardAddedBySixPaySWipe = true;
-					//the card will be added to reservation if existing payment methid is cash
-					//and six pay is succes by passing reservation_id
+					// the card will be added to reservation if existing payment methid is cash
+					// and six pay is succes by passing reservation_id
 
 					$scope.newCardAdded = true;
 					successPayment(response, cardAddedBySixPaySWipe);
@@ -673,7 +673,7 @@ sntRover.controller('RVReservationDepositController',
                     $scope.showAddtoGuestCard = false;
                 }
 
-                if ($scope.depositData.paymentType === 'CC' && $scope.isNewCard()) {//check if the card added is new
+                if ($scope.depositData.paymentType === 'CC' && $scope.isNewCard()) {// check if the card added is new
                        $scope.showAddtoGuestCard = true;
                 } else {
                        $scope.showAddtoGuestCard = false;

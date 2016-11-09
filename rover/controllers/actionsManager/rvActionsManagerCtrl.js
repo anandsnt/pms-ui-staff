@@ -2,7 +2,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
     function ($scope, $rootScope, ngDialog, rvActionTasksSrv, departments, dateFilter, rvUtilSrv, $state) {
         BaseCtrl.call(this, $scope);
 
-        //-------------------------------------------------------------------------------------------------------------- B. Local Methods
+        // -------------------------------------------------------------------------------------------------------------- B. Local Methods
         var init = function () {
                 $scope.$emit("updateRoverLeftMenu", "actionManager");
                 var heading = 'Actions Manager';
@@ -51,13 +51,13 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                     per_page: $scope.filterOptions.perPage,
                     page: $scope.filterOptions.page
                 }, onFetchListSuccess = function (response) {
-                    //catch empty pages
+                    // catch empty pages
                     if (response.results.length === 0 && response.total_count !== 0 && $scope.filterOptions.page !== 1) {
                         $scope.filterOptions.page = 1;
                         fetchActionsList();
                     }
 
-                    //Pagination
+                    // Pagination
                     $scope.filterOptions.totalCount = response.total_count;
                     $scope.filterOptions.startRecord = (($scope.filterOptions.page - 1) * $scope.filterOptions.perPage) + 1;
                     if (response.results.length === $scope.filterOptions.perPage) {
@@ -68,7 +68,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                     $scope.filterOptions.isLastPage = $scope.filterOptions.endRecord === $scope.filterOptions.totalCount;
 
 
-                    //Parsing
+                    // Parsing
                     $scope.actions = [];
 
                     _.each(response.results, function (action) {
@@ -155,7 +155,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             };
 
 
-        //-------------------------------------------------------------------------------------------------------------- B. Scope Variables
+        // -------------------------------------------------------------------------------------------------------------- B. Scope Variables
 
         $scope._actionCompleted = "COMPLETED";
 
@@ -195,7 +195,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             }
         });
 
-        //-------------------------------------------------------------------------------------------------------------- C.Scope Methods
+        // -------------------------------------------------------------------------------------------------------------- C.Scope Methods
 
         $scope.actionsFilterDateOptions = {
             firstDay: 1,
@@ -294,7 +294,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
         };
 
         $scope.toStayCard = function () {
-            //Store the state of the filters so that while coming back from staycard the correct page can be loaded
+            // Store the state of the filters so that while coming back from staycard the correct page can be loaded
             rvActionTasksSrv.setFilterState($scope.filterOptions);
             $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
                 "id": $scope.selectedAction.reservation_id,
@@ -304,7 +304,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
         };
 
         $scope.toGroup = function () {
-            //Store the state of the filters so that while coming back from staycard the correct page can be loaded
+            // Store the state of the filters so that while coming back from staycard the correct page can be loaded
             rvActionTasksSrv.setFilterState($scope.filterOptions);
             $state.go('rover.groups.config', {
                 "id": $scope.selectedAction.group_id,
@@ -323,7 +323,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
         };
 
 
-        //-------------------------------------------------------------------------------------------------------------- D. Listeners
+        // -------------------------------------------------------------------------------------------------------------- D. Listeners
 
         var listenerClosePopup = $scope.$on("CLOSE_POPUP", function () {
             ngDialog.close();
@@ -334,7 +334,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             fetchActionsList();
         });
 
-        //-------------------------------------------------------------------------------------------------------------- E. Cleanup
+        // -------------------------------------------------------------------------------------------------------------- E. Cleanup
 
         $scope.$on('$destroy', listenerClosePopup);
         $scope.$on('$destroy', listenerNewActionPosted);

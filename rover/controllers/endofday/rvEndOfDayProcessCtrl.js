@@ -107,7 +107,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope', 'ngDialog', '$root
             $timeout(function() {
                 refreshScroller();           
             }, 1000);
-            //Eod status update handles here
+            // Eod status update handles here
             if(!$rootScope.isEodRunning&&$scope.checkEodStatus) {
                 $state.go('rover.dashboard.manager');
             } 
@@ -156,7 +156,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope', 'ngDialog', '$root
     };
     
     $scope.updateStatus = function() {
-        //we are fetching eod login, flag to handle update status
+        // we are fetching eod login, flag to handle update status
         $scope.checkEodStatus = true;
         fetchEodLogOfSelectedDate();
     };

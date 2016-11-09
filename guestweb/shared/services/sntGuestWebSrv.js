@@ -23,11 +23,11 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 		return deferred.promise;
 	};
 
-	//call CMS details only for checkin URLs now
+	// call CMS details only for checkin URLs now
 	var absUrl = window.location.href;
 
 	if (absUrl.indexOf("checkin") !== -1) {
-		//to strip away state URLS
+		// to strip away state URLS
 		absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
 		var urlComponents = absUrl.split('/');
 

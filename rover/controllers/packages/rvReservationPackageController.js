@@ -30,7 +30,7 @@ sntRover.controller('RVReservationPackageController',
 				},
 				2000);
 	$scope.closeAddOnPopup = function() {
-		//to add stjepan's popup showing animation
+		// to add stjepan's popup showing animation
 		$rootScope.modalOpened = false;
 		$timeout(function() {
 			ngDialog.close();
@@ -77,7 +77,7 @@ sntRover.controller('RVReservationPackageController',
 		$scope.invokeApi(RVReservationPackageSrv.deleteAddonsFromReservation, dataToApi, successDelete);
 	};
 
-	//Get addon count
+	// Get addon count
         $scope.getAddonCount = function(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly, quantity) {
             if(!postingRythm) {
                 if(postType ==='WEEK') {

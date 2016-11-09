@@ -32,7 +32,7 @@
             
             ul.addClass(scope.ulClass);
             
-            //if no function passed for processing each item
+            // if no function passed for processing each item
             if (!_.isFunction(scope.processEachItem)) {
                 htmlForItem = defaultProcessEachItem (item, scope);
             }

@@ -1,7 +1,7 @@
 angular.module('sntRover').service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
 	function($q, rvBaseWebSrvV2) {
 
-		//some default values
+		// some default values
 		this.DEFAULT_PER_PAGE = 50;
 		this.DEFAULT_PAGE = 1;
 
@@ -139,11 +139,11 @@ angular.module('sntRover').service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
 		this.getClassAgainstPickedStatus = function(group) {
 			var classes = '';
 
-			//Add class "green" if No. > 0
+			// Add class "green" if No. > 0
 			if (group.total_picked_count > 0) {
 				classes = 'green';
 			}
-			//Add class "red" if cancelled
+			// Add class "red" if cancelled
 			if (isCancelledGroup(group)) {
 				classes += ' red';
 			}
@@ -151,14 +151,14 @@ angular.module('sntRover').service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
 		};
 
         this.getGuestClassForArrival = function(group) {
-            //"cancel" if cancelled, "check-in" if not cancelled
+            // "cancel" if cancelled, "check-in" if not cancelled
             var classes = isCancelledGroup(group) ? 'cancel' : 'check-in';
 
             return classes;
         };
 
 		this.getGuestClassForDeparture = function(group) {
-            //"cancel" if cancelled, 'check-out' if not cancelled
+            // "cancel" if cancelled, 'check-out' if not cancelled
             var classes = isCancelledGroup(group) ? 'cancel' : 'check-out';
 
             return classes;

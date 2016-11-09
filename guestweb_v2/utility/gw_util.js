@@ -74,7 +74,7 @@ var extractScreenDetails = function(identifier, screen_mappings, cms_data) {
   screen_details = _.find(cms_data, function(cms_item) {
     return cms_item.screen_id === screen_id;
   });
-  //rename the varaiables for easy usage
+  // rename the varaiables for easy usage
   if (typeof screen_details !== "undefined") {
     screen_details.title = screen_details.screen_title;
     screen_details.description = screen_details.item_description;
@@ -179,7 +179,7 @@ var returnTimeArray = function() {
 };
 
 var getFormattedTime = function(timeToFormat) {
-  //change format to 24 hours
+  // change format to 24 hours
   var timeHour = parseInt(timeToFormat.slice(0, 2));
   var timeMinute = timeToFormat.slice(3, 5);
   var primeTime = timeToFormat.slice(-2).toLowerCase();
@@ -195,11 +195,11 @@ var getFormattedTime = function(timeToFormat) {
 
 
 var getIndexOfSelectedTime = function(time) {
-  //extract time components
+  // extract time components
   var timeHour = time.slice(0, 2);
   var timeMinute = time.slice(3, 5);
   var primeTime = time.slice(-2).toLowerCase();
-  //set the minute to next available level, ie 00,15,30,45
+  // set the minute to next available level, ie 00,15,30,45
   var timeLimit = "00";
 
   if (timeMinute === "00" || timeMinute < 15) {
@@ -217,11 +217,11 @@ var getIndexOfSelectedTime = function(time) {
   var switchAMPM = function() {
     primeTime = (primeTime === "pm") ? "am" : "pm";
   };
-  //if hour is 12, need to switch primetimes
+  // if hour is 12, need to switch primetimes
 
   (timeHour === 12 && timeMinute === "00") ? switchAMPM(): "";
   timeLimit = timeHour + ":" + timeMinute + " " + primeTime;
-  //find the index of the hoteltime inside the list we have
+  // find the index of the hoteltime inside the list we have
   var timeList = returnTimeArray();
   var index = _.findIndex(timeList, function(time) {
     return time === timeLimit;

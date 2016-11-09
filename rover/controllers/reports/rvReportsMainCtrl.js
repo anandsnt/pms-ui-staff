@@ -395,7 +395,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			}
 		}, datePickerCommon);
 
-		//for some of the reports we need to restrict max date selection to 1 year (eg:- daily production report)
+		// for some of the reports we need to restrict max date selection to 1 year (eg:- daily production report)
 		$scope.fromDateOptionsOneYearLimit = angular.extend({
 			onSelect: function(value, datePickerObj) {
 				var selectedDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
@@ -405,7 +405,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			}
 		}, datePickerCommon);
 
-		//for some of the reports we need to restrict max date selection to one month (eg:- rate restriction report)
+		// for some of the reports we need to restrict max date selection to one month (eg:- rate restriction report)
 		$scope.fromDateOptionsOneMonthLimit = angular.extend({
 			onSelect: function(value, datePickerObj) {
 				var selectedDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
@@ -673,7 +673,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
         $scope.restrictionChanged = function(item) {
         	formTitleAndToggleSelectAllForRestrictionDropDown(item);
-        	//for report details filter
+        	// for report details filter
         	refreshScroller();
         };
 
@@ -705,7 +705,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
         $scope.roomTypeChanged = function(item) {
         	formTitleAndToggleSelectAllForRoomTypeDropDown(item);
-        	//for report details filter
+        	// for report details filter
         	refreshScroller();
         };
 
@@ -730,12 +730,12 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         	else if(selectedRateCodes.length === 1 ) {
         		item.hasRateCodeFilter.title = selectedRateCodes[0].description;
         	}
-        	//for report details filter
+        	// for report details filter
         	refreshScroller();
         };
 
         $scope.toggleRateTypeSelectAll = function(item) {
-        	//whether rate type selected all or not selected all, applying to listing
+        	// whether rate type selected all or not selected all, applying to listing
         	_.each(item.hasRateTypeFilter.data, function(rateType) {
         		rateType.selected = item.hasRateTypeFilter.selectAll;
         	});
@@ -787,7 +787,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         $scope.toggleRateSelectAll = function(item) {
         	var showingRateList = $scope.getRates(item);
 
-        	//whether rate type selected all or not selected all, applying to listing
+        	// whether rate type selected all or not selected all, applying to listing
         	_.each(item.hasRateFilter.data, function(rateType) {
         		rateType.selected = item.hasRateFilter.selectAll;
         	});
@@ -800,7 +800,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         }
 
         var getRateListToShow = function(item) {
-        	//if selected some room types
+        	// if selected some room types
         	var listedRateTypes 		= item.hasRateTypeFilter.data,
         		selectedRateTypes 		= _.where(listedRateTypes, {selected: true}),
         		selectedRateTypesIds 	= _.pluck(selectedRateTypes, "rate_type_id");
@@ -811,7 +811,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         };
 
 
-        //Get the selected rates
+        // Get the selected rates
         var getRatesListToShow = function(item) {
         	var listedRates 		= item.hasRateCodeFilter.data,
         		selectedRates 		= _.where(listedRates, {selected: true});
@@ -827,7 +827,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         	return (selectedRateTypesIds.indexOf(rate.rate_type_id) > -1);
         }
         $scope.getRates = function(item) {
-        	//if all selected from rate type drop down
+        	// if all selected from rate type drop down
         	var wantedToShowAllRates = item.hasRateTypeFilter.selectAll;
 
         	if( wantedToShowAllRates ) {
@@ -907,7 +907,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			return selectedItems;
 		};
 
-		//Get the charge codes corresponding to selected charge groups
+		// Get the charge codes corresponding to selected charge groups
 		$scope.chargeGroupfauxSelectChange = function (reportItem, fauxDS, allTapped) {
 			var selectedItems = $scope.fauxSelectChange(reportItem, fauxDS, allTapped);
 
@@ -928,7 +928,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			$scope.chargeCodeFauxSelectChange(reportItem, reportItem.hasByChargeCode, allTapped);
 		};
 
-		//Refill hasByChargeCode.data with the charge codes corresponding to selected charge groups
+		// Refill hasByChargeCode.data with the charge codes corresponding to selected charge groups
 		$scope.chargeCodeFauxSelectChange = function (reportItem, fauxDS, allTapped) {
 			var requiredChardeCodes = [];
 
@@ -1209,13 +1209,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     var selectedCustomRates = _.pluck(_.where(getRateListToShow(report), {selected: true, id: null}), "group_id");
 
                     if ( selectedCustomRates.length > 0 ) {
-                        params[key] = _.without(params[key], null); //remove null entries in the rate_ids array (null entries would be there if custom rates were selected)
+                        params[key] = _.without(params[key], null); // remove null entries in the rate_ids array (null entries would be there if custom rates were selected)
                         params['custom_rate_group_ids'] = selectedCustomRates;
                     }
                 }
 			};
 
-			/*if (!!report.hasRatesCodeFilter) {
+			/* if (!!report.hasRatesCodeFilter) {
 				key = reportParams['RATE_IDS'];
 				params[key] = getRatesListToShow(report);
 			};*/
@@ -1994,7 +1994,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			var chosenReport = report || reportsSrv.getChoosenReport();
 			var exportUrl = "";
 
-			if ( _.isEmpty(chosenReport) ) { //I dont know why chosenReport becoming undefined in one loop, need to check with Vijay
+			if ( _.isEmpty(chosenReport) ) { // I dont know why chosenReport becoming undefined in one loop, need to check with Vijay
 				return exportUrl;
 			};
 			return "/api/reports/" + chosenReport.id + "/submit.csv?";;
@@ -2014,7 +2014,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				changeAppliedFilter   = false,
 				params;
 
-			if ( _.isEmpty(chosenReport) ) { //I dont know why chosenReport becoming undefined in one loop, need to check with Vijay
+			if ( _.isEmpty(chosenReport) ) { // I dont know why chosenReport becoming undefined in one loop, need to check with Vijay
 				return exportUrl;
 			};
 

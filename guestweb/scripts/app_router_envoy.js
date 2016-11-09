@@ -43,7 +43,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		title: 'Status - Check-out Later'
 	 });
 
-	 //room verification
+	 // room verification
 
 	 $stateProvider.state('checkoutRoomVerification', {
 	 	url: '/checkoutRoomVerification',

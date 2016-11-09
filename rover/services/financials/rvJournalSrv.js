@@ -95,7 +95,7 @@ angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2
         return deferred.promise;
     };
 
-    /*********************************************************************************************
+    /** *******************************************************************************************
 
     Flags used for REVENUE DATA and PAYMENTS DATA.
 

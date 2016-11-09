@@ -1,4 +1,4 @@
-//File reader directive - in HTML <input type="file" ng-model="image" accept="image/*" app-filereader />
+// File reader directive - in HTML <input type="file" ng-model="image" accept="image/*" app-filereader />
 sntRover.directive('appFilereader', function($q) {
     var slice = Array.prototype.slice;
 
@@ -42,11 +42,11 @@ sntRover.directive('appFilereader', function($q) {
                     return deferred.promise;
                 }
 
-            });//change
+            });// change
 
-        }//link
+        }// link
 
-    };//return
+    };// return
 
-})//appFilereader
+})// appFilereader
 ;

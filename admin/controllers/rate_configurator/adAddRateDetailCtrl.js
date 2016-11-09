@@ -49,7 +49,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 work_type_id: $scope.rateTypesDetails.hotel_settings.default_work_type.id
             };
 
-            //$scope.invokeApi(ADRatesAddDetailsSrv.fetTasksForDefaultWorkType, params, succesCallBack, failureCallBack);
+            // $scope.invokeApi(ADRatesAddDetailsSrv.fetTasksForDefaultWorkType, params, succesCallBack, failureCallBack);
 
             $scope.invokeApi(ADRatesAddDetailsSrv.fetchWorkTypesValues, params, succesCallBack, failureCallBack);
         };
@@ -213,7 +213,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 if (rateTasks.id !== undefined) {
                     rateTasks.task_id = rateTasks.id
                 }
-                //API throws erros if these keys are passed - so deleting - CICO-30780
+                // API throws erros if these keys are passed - so deleting - CICO-30780
                 delete rateTasks["id"];
                 delete rateTasks["name"];
             });

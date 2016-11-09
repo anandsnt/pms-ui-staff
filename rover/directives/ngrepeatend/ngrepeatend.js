@@ -5,7 +5,7 @@
 angular.module('ngrepeatend', []).directive('ngrepeatend', function() {
 	return function(scope, element, attrs) {
 
-		//we are using ngrepeat $last in cracking this
+		// we are using ngrepeat $last in cracking this
 		if ( scope.$last ) {
 			scope.$emit( 'NG_REPEAT_COMPLETED_RENDERING' );
 

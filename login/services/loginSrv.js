@@ -2,7 +2,7 @@ angular.module('login').service('loginSrv', ['$http', '$q', function($http, $q) 
 	this.login = function(data, successCallback, failureCallBack) {
 		var deferred = $q.defer();
 
-		//Sample params {params:{fname: "fname", lname: "lname"}}
+		// Sample params {params:{fname: "fname", lname: "lname"}}
 		$http.post("/login/submit", data).success(function(response, status) {
 			if(response.status === "success") {
 		    	successCallback(response.data);
@@ -34,7 +34,7 @@ angular.module('login').service('loginSrv', ['$http', '$q', function($http, $q) 
 	this.forgotPassword = function(data, successCallback, failureCallBack) {
 		var deferred = $q.defer();
 
-		//Sample params {params:{"email":email}}
+		// Sample params {params:{"email":email}}
 		$http.post("/login/send_temporary_password", data).success(function(response, status) {
 			if(response.status === "success") {
 		    	successCallback(response.data);

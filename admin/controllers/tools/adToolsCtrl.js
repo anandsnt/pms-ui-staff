@@ -25,7 +25,7 @@ admin.controller('ADToolsCtrl',
 
         $scope.invokeApi(ADToolsSrv.fetch, {}, successCallbackFetch);
     };
-    //To list tools
+    // To list tools
     $scope.listTools();
    /*
     * To render edit department screen

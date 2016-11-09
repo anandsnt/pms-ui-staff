@@ -36,12 +36,12 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
             var getParams = $scope.calculateGetParams(params);
             var fetchSuccessOfItemList = function(data) {
                 $scope.$emit('hideLoader');
-                //No expanded rate view
+                // No expanded rate view
                 $scope.currentClickedElement = -1;
                 $scope.totalCount = data.total_count;
                 $scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
 
-                for (var i in data.work_stations) { //pull in the description of the key encoder
+                for (var i in data.work_stations) { // pull in the description of the key encoder
                     data.work_stations[i].key_encoder_description = $scope.getKeyEncoderDescription(data.work_stations[i].key_encoder_id);
                     data.work_stations[i].emv_name = $scope.getEmvDescription(data.work_stations[i].emv_terminal_id);
                 }
@@ -84,7 +84,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
                 $scope.key_encoders = data.results;
                 $scope.isKeysLoaded = true;
                 if ($scope.isEmvLoaded) {
-                    $scope.loadTable(); //this loads up after key encoders so we can get the key encoder description first
+                    $scope.loadTable(); // this loads up after key encoders so we can get the key encoder description first
                 }
                 $scope.$emit('hideLoader');
             };
@@ -101,7 +101,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
                 $scope.emv_terminals = data.results;
                 $scope.isEmvLoaded = true;
                 if ($scope.isKeysLoaded) {
-                    $scope.loadTable(); //this loads up after key encoders so we can get the key encoder description first
+                    $scope.loadTable(); // this loads up after key encoders so we can get the key encoder description first
                 }
                 $scope.$emit('hideLoader');
             };
@@ -117,7 +117,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
         $scope.fetchKeyEncoderList();
         $scope.fetchEmvList();
 
-        //To list device mappings
+        // To list device mappings
         /*
          * To render edit device mapping screen
          * @param {index} index of selected device mapping
@@ -202,7 +202,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
          */
 
         $scope.isValidWorkStation = function() {
-            //check if required fields are filled out
+            // check if required fields are filled out
             if (!$scope.mapping.name || !$scope.mapping.station_identifier) {
                 return false;
             } else return true;
@@ -256,17 +256,17 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
         };
 
         $scope.saveWorkstation = function(workstation) {
-            //updates a workstation without opening details, used for quick toggle a workstation Out of Service, or back in service.
+            // updates a workstation without opening details, used for quick toggle a workstation Out of Service, or back in service.
             $scope.mapping = workstation;
-            $scope.updateInline = true; //currently only for OOS + refresh Station toggles
+            $scope.updateInline = true; // currently only for OOS + refresh Station toggles
             setTimeout(function() {
                 $scope.saveMapping(true);
             }, 250);
         };
 
         $scope.saveMapping = function(inline) {
-            var data = { //not getting list of printers from the api at this point, 
-                //so we will have to rely on zest station or another UI to update the workstation with a default printer
+            var data = { // not getting list of printers from the api at this point, 
+                // so we will have to rely on zest station or another UI to update the workstation with a default printer
                 "name": $scope.mapping.name,
                 "identifier": $scope.mapping.station_identifier
             };
@@ -281,7 +281,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
                 data.emv_terminal_id = $scope.mapping.emv_terminal_id;
                 data.default_key_encoder_id = $scope.mapping.key_encoder_id;
             }
-            //CICO-18808
+            // CICO-18808
             if (!_.isUndefined($scope.mapping.rover_device_id)) {
                 data.rover_device_id = $scope.mapping.rover_device_id;
             }
@@ -289,7 +289,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
                 $scope.mapping.refresh_station = false;
             }
             data.refresh_station = $scope.mapping.refresh_station;
-            //CICO-10506 //zest station
+            // CICO-10506 //zest station
             if (!$scope.mapping.is_out_of_order) {
                 $scope.mapping.is_out_of_order = false;
             }

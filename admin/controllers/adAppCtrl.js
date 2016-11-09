@@ -1,10 +1,10 @@
 admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate', '$timeout', 'adminDashboardConfigData',
 	function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate, $timeout,  adminDashboardConfigData) {
 
-		//hide the loading text that is been shown when entering Admin
+		// hide the loading text that is been shown when entering Admin
 		$( ".loading-container" ).hide();
 
-		//store basic details as rootscope variables
+		// store basic details as rootscope variables
 		$rootScope.adminRole = adminDashboardConfigData.admin_role;
 		$rootScope.isServiceProvider = adminDashboardConfigData.is_service_provider;
 		$rootScope.hotelId = adminDashboardConfigData.hotel_id;
@@ -12,7 +12,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 		$rootScope.isSntAdmin = $rootScope.adminRole === 'snt-admin' ? true : false;
 
-		//when there is an occured while trying to access any menu details, we need to show that errors
+		// when there is an occured while trying to access any menu details, we need to show that errors
 		$scope.errorMessage = '';
 
 		BaseCtrl.call(this, $scope);
@@ -27,7 +27,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		$scope.selectedIndex = 0;
 		$scope.dropedElementsModel = []; // model used for drag & drop feature, used for droping menu items displaying area
 
-		//for preventing drag & drop operations turning into click
+		// for preventing drag & drop operations turning into click
 		var lastDropedTime = '';
 		/*
 	     * To close drawer on click inside pages
@@ -36,30 +36,30 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 	    $scope.closeDrawer = function(event) {
 	    	 $scope.menuOpen = false;
 	    };
-		//scroller options
+		// scroller options
 		var scrollerOptions = {click: true, scrollbars: true};
 
 		$scope.setScroller('tabs_menu', scrollerOptions);
 
 		$scope.bookMarks = [];
 
-		$rootScope.shortDateFormat = "MM/yy"; //05/99
-		$rootScope.dayInWeek = "EEE"; //Sun
-		$rootScope.dayInMonth = "dd"; //01
-		$rootScope.monthInYear = "MMM"; //Jan
+		$rootScope.shortDateFormat = "MM/yy"; // 05/99
+		$rootScope.dayInWeek = "EEE"; // Sun
+		$rootScope.dayInMonth = "dd"; // 01
+		$rootScope.monthInYear = "MMM"; // Jan
 		// Use below standard date formatter in the UI.
-		$rootScope.mmddyyyyFormat = "MM-dd-yyyy"; //01-22-2014
-		$rootScope.fullDateFormat = "EEEE, d MMMM yyyy"; //Wednesday, 4 June 2014
-		$rootScope.dayAndDate = "EEEE MM-dd-yyyy"; //Wednesday 06-04-2014
+		$rootScope.mmddyyyyFormat = "MM-dd-yyyy"; // 01-22-2014
+		$rootScope.fullDateFormat = "EEEE, d MMMM yyyy"; // Wednesday, 4 June 2014
+		$rootScope.dayAndDate = "EEEE MM-dd-yyyy"; // Wednesday 06-04-2014
 		$rootScope.fullDateFullMonthYear = "dd MMMM yyyy";
-		$rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy";//Wednesday, 06-04-2014
-		$rootScope.longDateFormat = "MMM dd, yyyy";//Wednesday, 06-04-2014
+		$rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy";// Wednesday, 06-04-2014
+		$rootScope.longDateFormat = "MMM dd, yyyy";// Wednesday, 06-04-2014
 		$rootScope.dateFormatForAPI = "yyyy-MM-dd";
 		$rootScope.currencySymbol = "";
 		// Initialise $rootScope.isHourlyRatesEnabled to false; the value is set on call to api/hotel_settings
 		$rootScope.isHourlyRatesEnabled = false;
 		$rootScope.isSuiteRoomsAvailable = false;
-		//in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
+		// in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
 	    // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
 
 	    $rootScope.businessDate = businessDate;
@@ -76,7 +76,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 	    };
 
 	    $rootScope.$on('$locationChangeStart', routeChange);
-	    window.history.pushState("initial", "Showing Admin Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
+	    window.history.pushState("initial", "Showing Admin Dashboard", "#/"); // we are forcefully setting top url, please refer routerFile
 
 		var setupLeftMenu = function() {
 			if($scope.isStandAlone) {
@@ -133,7 +133,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		            	title: "MENU_ACCOUNTS",
 		            	action: "staff#/staff/accounts/search",
 		            	menuIndex: "accounts"
-		            	//hidden: $rootScope.isHourlyRatesEnabled
+		            	// hidden: $rootScope.isHourlyRatesEnabled
 		       	 	}, {
 						title: "MENU_END_OF_DAY",
 						action: "staff#/staff/endofDay/starteod"
@@ -313,7 +313,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		});
 
 		$scope.$on("updateSubMenu", function(idx, item) {
-			//CICO-9816 Bug fix - When moving to /staff, the screen was showing blank content
+			// CICO-9816 Bug fix - When moving to /staff, the screen was showing blank content
 			if (item[1].action.split('#')[0] === "staff") {
 				$('body').addClass('no-animation');
 				$('#admin-header').css({'z-index': '0'});
@@ -338,27 +338,27 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		$scope.isPmsConfigured = $rootScope.isPmsConfigured;
 		$scope.isDragging = false;
 
-		//on drag start we need to show a dotted border on bookmark area
+		// on drag start we need to show a dotted border on bookmark area
 		$scope.onDragStart = function() {
 			$scope.isDragging = true;
 		};
 
-		//on drag stop we need to hide the dotted border on bookmark area
+		// on drag stop we need to hide the dotted border on bookmark area
 		$scope.onDragStop = function() {
 			$scope.isDragging = false;
 
-			//also we are taking the lastDropedTime to preventing click after drag stop operation
+			// also we are taking the lastDropedTime to preventing click after drag stop operation
 			lastDropedTime = new Date();
 		};
 
-		//function to copy the ids of bookmark to a new array
+		// function to copy the ids of bookmark to a new array
 		var copyBookmarkIds = function(arrayToCopy) {
 			for (var i = 0; i < $scope.bookMarks.length; i++) {
 				arrayToCopy.push($scope.bookMarks[i].id);
 			}
 		};
 
-		//function to change bookmark status after dropping
+		// function to change bookmark status after dropping
 		var updateBookmarkStatus = function() {
 			for (var i = 0; i < $scope.data.menus.length; i++) {
 				for (var j = 0; j < $scope.data.menus[i].components.length; j++) {
@@ -371,11 +371,11 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			}
 		};
 
-		//drop function on menu item listing
+		// drop function on menu item listing
 		$scope.onDropingMenuItemListing = function(event, ui) {
 			var index = -1;
 
-			//successcallback of removing menu item
+			// successcallback of removing menu item
 			var successCallbackOfRemovingBookMark = function() {
 				$scope.$emit('hideLoader');
 
@@ -394,7 +394,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 			if ($scope.bookMarks.length <= $scope.bookmarkIdList.length) {
 				for (var i = 0; i < $scope.bookmarkIdList.length; i++) {
-					//checking bookmarked id's in copiedBookark id's, if it is no, call web service
+					// checking bookmarked id's in copiedBookark id's, if it is no, call web service
 					if (copiedBookMarkIds.indexOf($scope.bookmarkIdList[i]) === -1) {
 						index = i;
 						var data = {
@@ -408,7 +408,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 		};
 
-		//drop function on boomark menu item listing
+		// drop function on boomark menu item listing
 		$scope.onDropAtBookmarkArea = function(event, ui) {
 			var index = -1;
 			var successCallbackOfBookMark = function() {
@@ -457,7 +457,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		$scope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
 			event.preventDefault();
 			$scope.errorMessage = ['Sorry, the feature you are looking for is not implemented yet'];
-			//closing the error message after after 2 seconds
+			// closing the error message after after 2 seconds
 			setTimeout(function() {
 				$scope.clearErrorMessage();
 				$scope.$apply();
@@ -525,14 +525,14 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		       */
 		      setTimeout(function() {
 		        $translate('NA');
-		      }, 1000); //Word around.
+		      }, 1000); // Word around.
 		    } else {
 		      $translate.use('EN');
 		    };
-		    //to hide eod submenu conditionally
+		    // to hide eod submenu conditionally
 			$rootScope.is_auto_change_bussiness_date = data.business_date.is_auto_change_bussiness_date;
 
-			//set flag if standalone PMS
+			// set flag if standalone PMS
 			if (data.pms_type === null) {
 				$scope.isStandAlone = true;
 			}
@@ -551,7 +551,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$rootScope.isFFPActive = data.is_ffp_active;
 			$rootScope.isHLPActive = data.is_hlp_active;
 			$rootScope.isPromoActive = data.is_promotion_active;
-			//CICO-21697
+			// CICO-21697
 			$rootScope.isEnabledRoomTypeByRoomClass = data.is_enabled_room_type_by_class;
 
 			$rootScope.isRoomStatusImportPerRoomTypeOn = data.is_room_status_import_per_room_type_on ? data.is_room_status_import_per_room_type_on : false;
@@ -650,7 +650,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 	  	$rootScope.$on('ngDialog.opened', function(e, $dialog) {
 	        LastngDialogId = $dialog.attr('id');
-	        //to add stjepan's popup showing animation
+	        // to add stjepan's popup showing animation
 	        $rootScope.modalOpened = false;
 	        $timeout(function() {
 	            $rootScope.modalOpened = true;

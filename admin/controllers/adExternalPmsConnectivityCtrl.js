@@ -20,7 +20,7 @@ admin.controller('ADExternalPmsConnectivityCtrl', ['$scope', '$rootScope', '$sta
 	$scope.renderExternalPmsConnectivity = function() {
 		$scope.invokeApi(ADExternalPmsConnectivitySrv.getExternalPmsConnectivityDetails, {}, $scope.successCallbackRender);
 	};
-	//To render screen
+	// To render screen
 	$scope.renderExternalPmsConnectivity();
    /*
     * To handle success call back of test connectivity
@@ -28,13 +28,13 @@ admin.controller('ADExternalPmsConnectivityCtrl', ['$scope', '$rootScope', '$sta
 	$scope.successCallbackConnectionTest = function() {
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = "";
-		//Success message to show connection valid
+		// Success message to show connection valid
 		$scope.successMessage = "Connection Valid";
 	};
   $scope.failureCallbackConnectionTest = function() {
     $scope.$emit('hideLoader');
     $scope.successMessage = "";
-    //Failure message to show connection invalid
+    // Failure message to show connection invalid
     $scope.errorMessage = ["Invalid"];
   };
    /*

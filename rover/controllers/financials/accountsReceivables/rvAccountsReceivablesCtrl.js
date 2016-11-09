@@ -177,7 +177,7 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
 		var valueToReturn = ((value === null || typeof value === 'undefined') ? newValue : value);
 
         if (valueToReturn.indexOf('null') !== -1) {
-            valueToReturn = '';//removes unwanted ", null" type of values
+            valueToReturn = '';// removes unwanted ", null" type of values
         }
 		return valueToReturn;
 	};

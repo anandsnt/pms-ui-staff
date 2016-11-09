@@ -36,7 +36,7 @@ admin.controller('ADBrandCtrl', ['$scope', '$rootScope', 'adBrandsSrv', function
 		var editBrandsSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.brandDetails   = data;
-			$scope.formTitle = $scope.brandDetails.name;//To show brand name in title
+			$scope.formTitle = $scope.brandDetails.name;// To show brand name in title
 			$scope.isEditmode = true;
 		};
 
@@ -84,7 +84,7 @@ admin.controller('ADBrandCtrl', ['$scope', '$rootScope', 'adBrandsSrv', function
  			$scope.isAddmode = false;
  			$scope.isEditmode = false;
 		};
-		//chains list not required on update/save data
+		// chains list not required on update/save data
 		var	unwantedKeys = ["chains"];
 		var data = dclone($scope.brandDetails, unwantedKeys);
 

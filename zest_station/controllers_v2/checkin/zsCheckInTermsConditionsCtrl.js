@@ -11,7 +11,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 	'zsUtilitySrv',
 	function($scope, $rootScope, $state, $stateParams, zsEventConstants, zsCheckinSrv, $stateParams, $timeout, $sce, zsUtilitySrv) {
 
-		/**********************************************************************************************
+		/** ********************************************************************************************
 		 **		Please note that, not all the stateparams passed to this state will not be used in this state, 
 		 **      however we will have to pass this so as to pass again to future states which will use these.
 		 **
@@ -24,15 +24,15 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 		BaseCtrl.call(this, $scope);
 
 		var init = function() {
-			//hide back button
+			// hide back button
 			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
-			//show close button
+			// show close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-			//back button action
+			// back button action
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
 				$state.go('zest_station.checkInReservationDetails', $stateParams);
 			});
-			//starting mode
+			// starting mode
 			$scope.mode = "TERMS_CONDITIONS";
 			$scope.setScreenIcon('bed');
 		};
@@ -50,7 +50,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 		 * @return {[type]}          [description]
 		 */
 		var afterGuestCheckinCallback = function(response) {
-			//if email is valid and is not blacklisted
+			// if email is valid and is not blacklisted
 			var haveValidGuestEmail = checkIfEmailIsBlackListedOrValid();
 
 			console.warn('afterGuestCheckinCallback :: current state params: ', $stateParams)
@@ -111,7 +111,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				'pre_auth_amount_for_zest_station': $stateParams.pre_auth_amount_for_zest_station,
 				'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin
 			};
-			//check if this page was invoked through pickupkey flow
+			// check if this page was invoked through pickupkey flow
 
 			if (!!$stateParams.pickup_key_mode) {
 				stateparams.pickup_key_mode = 'manual';
@@ -150,7 +150,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				'pre_auth_amount_for_zest_station': $stateParams.pre_auth_amount_for_zest_station,
 				'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin
 			};
-			//check if this page was invoked through pickupkey flow
+			// check if this page was invoked through pickupkey flow
 
 			if (!!$stateParams.pickup_key_mode) {
 				stateParams.pickup_key_mode = 'manual';
@@ -159,25 +159,25 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 		};
 
 		var nextPageActions = function(byPassCC) {
-			//check if depsoit is to be paid
+			// check if depsoit is to be paid
 			if (depositRequired()) {
 				goToDepositScreen();
 			} else if (!byPassCC) {
 				goToCreditCardAuthScreen();
 			} else {
-				checkInGuest(); //bye pass CC
+				checkInGuest(); // bye pass CC
 			}
 		};
 
 		var checkIfNeedToSkipCC = function(showDeposit) {
 
 			var checkIfCCToBeBypassed = function(response) {
-				//1. If Routing is setup, bypass the credit card collection screen.
-				//2. If guest has $0 balance  AND there are no other Bill Windows present, 
-				//bypass the credit card collection screen
-				//3. If guest payment type is PP - Pre Payment or DB - Direct Bill, 
-				//bypass the credit card collection screen
-				//4. if No Routing and balance > 0, credit card prompt like normal.
+				// 1. If Routing is setup, bypass the credit card collection screen.
+				// 2. If guest has $0 balance  AND there are no other Bill Windows present, 
+				// bypass the credit card collection screen
+				// 3. If guest payment type is PP - Pre Payment or DB - Direct Bill, 
+				// bypass the credit card collection screen
+				// 4. if No Routing and balance > 0, credit card prompt like normal.
 				return response.routing_setup_present ||
 					(parseInt($stateParams.balance_amount) === 0 && response.no_of_bill_windows === 1) ||
 					(response.paymenet_type === "PP" || response.paymenet_type === "DB");
@@ -187,7 +187,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 
 				nextPageActions(byPassCC);
 			};
-			//states are not to store varaiable, use service
+			// states are not to store varaiable, use service
 			var options = {
 				params: {
 					"reservation_id": $stateParams.reservation_id
@@ -218,7 +218,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 		 */
 		var initiateTermsAndConditions = function() {
 			$scope.setScroller('terms');
-			setDisplayContentHeight(); //utils function
+			setDisplayContentHeight(); // utils function
 			var refreshScroller = function() {
 				$scope.refreshScroller('terms');
 			};
@@ -228,8 +228,8 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 			}, 600);
 		};
 
-		//Based Upon Admin Setting need to skip displaying
-		//terms and conditions
+		// Based Upon Admin Setting need to skip displaying
+		// terms and conditions
 		if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
 			$scope.agreeTerms();
 		} else {

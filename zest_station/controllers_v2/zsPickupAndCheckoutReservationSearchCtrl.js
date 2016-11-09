@@ -11,8 +11,8 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 	function($scope, $rootScope, $state, zsEventConstants, zsCheckoutSrv, $stateParams, $timeout, zsCheckinSrv, zsGeneralSrv) {
 
 
-		//This controller is used for searching reservation using last name
-		//and room number
+		// This controller is used for searching reservation using last name
+		// and room number
 
 		/** MODES in the screen
 		 *   1.LAST_NAME_ENTRY --> enter last name
@@ -23,8 +23,8 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 		BaseCtrl.call(this, $scope);
 
 		var debugWithReservation = function() {
-			//use this to quickly go through last name + room number and debug keys faster
-			//just replace the below params for whichever reservation you want to use
+			// use this to quickly go through last name + room number and debug keys faster
+			// just replace the below params for whichever reservation you want to use
 			$scope.reservationParams = {
 				"last_name": "mike",
 				"room_no": "102"
@@ -38,11 +38,11 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 			}, 500);
 		};
 		var init = function() {
-			//show back button
+			// show back button
 			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
-			//show close button
+			// show close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-			//back button action
+			// back button action
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
 				if (!$scope.zestStationData.checkout_keycard_lookup || $stateParams.mode === 'PICKUP_KEY') {
 					$state.go('zest_station.home');
@@ -55,10 +55,10 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 			} else {
 				$scope.setScreenIcon('checkout');
 			}
-			//starting mode
+			// starting mode
 			$scope.mode = "LAST_NAME_ENTRY";
 			$scope.focusInputField("last-name");
-			//debugWithReservation();//debugging, comment out before deploying
+			// debugWithReservation();//debugging, comment out before deploying
 		};
 
 		init();
@@ -120,14 +120,14 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 					$state.go('zest_station.pickUpKeyDispense', stateParams);
 				} else if (!!$stateParams.mode && $stateParams.mode === 'PICKUP_KEY' && !data.is_checked_in) {
 					if (data.guest_arriving_today) {
-						//go to Checkin flow -- CICO-32703
+						// go to Checkin flow -- CICO-32703
 						fetchReservationDetailsForCheckingIn(data.reservation_id);
 					} else {
 						generalFailureActions();
 					}
 				} else {
-					//checkout is allowed only if guest is departing 
-					//on the bussiness day
+					// checkout is allowed only if guest is departing 
+					// on the bussiness day
 					if (data.is_departing_today) {
 						var stateParams = {
 							"from": "searchByName",
@@ -151,7 +151,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 
 			var params = {
 				"last_name": $scope.reservationParams.last_name,
-				"room_no": $scope.reservationParams.room_no + ''.replace(/\-/g, '') //adding '' to for non-str values
+				"room_no": $scope.reservationParams.room_no + ''.replace(/\-/g, '') // adding '' to for non-str values
 			};
 
 			if ($stateParams.mode === 'PICKUP_KEY') {
@@ -170,7 +170,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 		var roomNumberEntered = false;
 
 		$scope.lastNameEntered = function() {
-			//if room is already entered, no need to enter again
+			// if room is already entered, no need to enter again
 			if (roomNumberEntered) {
 				if ($scope.reservationParams.room_no.length > 0) {
 					searchReservation();
@@ -207,7 +207,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 		$scope.talkToStaff = function() {
 			$state.go('zest_station.speakToStaff');
 		};
-		/************* Fontainbleu specific ******************/
+		/** *********** Fontainbleu specific ******************/
 
 		$scope.tower = {
 			'selected': ''

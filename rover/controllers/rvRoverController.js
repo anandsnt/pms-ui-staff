@@ -29,7 +29,7 @@ sntRover.controller('roverController',
        */
       setTimeout(function() {
         $translate('NA');
-      }, 1000); //Word around.
+      }, 1000); // Word around.
     } else {
       $translate.use('EN');
     };
@@ -46,7 +46,7 @@ sntRover.controller('roverController',
    });
     $scope.roverFlags = {};
     $scope.hotelDetails = hotelDetails;
-    //set current hotel details
+    // set current hotel details
     $scope.currentHotelData = {
       "name": "",
       "id": ""
@@ -60,34 +60,34 @@ sntRover.controller('roverController',
     });
 
     $scope.isSettingSubMenuActive = false;
-    //Used to add precison in amounts
+    // Used to add precison in amounts
     $rootScope.precisonZero = 0;
     $rootScope.precisonTwo = 2;
-    //To get currency symbol - update the value with the value from API see fetchHotelDetailsSuccessCallback
+    // To get currency symbol - update the value with the value from API see fetchHotelDetailsSuccessCallback
     $rootScope.currencySymbol = "";
     $scope.showSubMenu = false;
     $scope.activeSubMenu = [];
     $rootScope.isStandAlone = false;
 
-    $rootScope.shortDateFormat = "MM/yy"; //05/99
-    $rootScope.dayInWeek = "EEE"; //Sun
-    $rootScope.dayInMonth = "dd"; //01
-    $rootScope.monthInYear = "MMM"; //Jan
+    $rootScope.shortDateFormat = "MM/yy"; // 05/99
+    $rootScope.dayInWeek = "EEE"; // Sun
+    $rootScope.dayInMonth = "dd"; // 01
+    $rootScope.monthInYear = "MMM"; // Jan
     // Use below standard date formatter in the UI.
-    $rootScope.mmddyyyyFormat = "MM-dd-yyyy"; //01-22-2014
-    $rootScope.mmddyyyyBackSlashFormat = "dd/MM/yyyy"; //01-22-2014
-    $rootScope.fullDateFormat = "EEEE, d MMMM yyyy"; //Wednesday, 4 June 2014
-    $rootScope.dayAndDate = "EEEE MM-dd-yyyy"; //Wednesday 06-04-2014
+    $rootScope.mmddyyyyFormat = "MM-dd-yyyy"; // 01-22-2014
+    $rootScope.mmddyyyyBackSlashFormat = "dd/MM/yyyy"; // 01-22-2014
+    $rootScope.fullDateFormat = "EEEE, d MMMM yyyy"; // Wednesday, 4 June 2014
+    $rootScope.dayAndDate = "EEEE MM-dd-yyyy"; // Wednesday 06-04-2014
     $rootScope.fullDateFullMonthYear = "dd MMMM yyyy";
-    $rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy"; //Wednesday, 06-04-2014
+    $rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy"; // Wednesday, 06-04-2014
     $rootScope.dateFormatForAPI = "yyyy-MM-dd";
     $rootScope.shortMonthAndDate = "MMM dd";
     $rootScope.monthAndDate = "MMMM dd";
     $rootScope.fullMonth = "MMMM";
     $rootScope.fullYear = "yyyy";
     $rootScope.fulldayInWeek = "EEEE";
-    $rootScope.fullMonthFullDayFullYear = "MMMM dd, yyyy"; //January 06, 2014
-    $rootScope.timeWithAMPM = "hh:mm a"; //01:00 AM
+    $rootScope.fullMonthFullDayFullYear = "MMMM dd, yyyy"; // January 06, 2014
+    $rootScope.timeWithAMPM = "hh:mm a"; // 01:00 AM
 
     // CICO-25098 - Flag to enable/disable the billing info code refactoring.
     // Need to be removed finally.
@@ -137,8 +137,8 @@ sntRover.controller('roverController',
     $rootScope.printConfirmationLetter = hotelDetails.print_confirmation_letter;
     $rootScope.sendConfirmationLetter = hotelDetails.send_confirmation_letter;
     $rootScope.isItemInventoryOn    = hotelDetails.is_item_inventory_on;
-    //need to set some default timeout
-    //discuss with Mubarak
+    // need to set some default timeout
+    // discuss with Mubarak
 
       if (hotelDetails.emv_timeout) {
           $rootScope.emvTimeout = hotelDetails.emv_timeout;
@@ -150,8 +150,8 @@ sntRover.controller('roverController',
       }
 
 
-      //CICO-25728
-      //TEMPORARY FLAG TO SKIP BAR AREAS
+      // CICO-25728
+      // TEMPORARY FLAG TO SKIP BAR AREAS
       $rootScope.hideRateOfDay = hotelDetails.hide_rate_of_day;
 
 
@@ -160,14 +160,14 @@ sntRover.controller('roverController',
       $rootScope.isHLPActive = hotelDetails.is_hlp_active;
       $rootScope.isPromoActive = hotelDetails.is_promotion_active;
 
-    //set MLI Merchant Id
+    // set MLI Merchant Id
     try {
       sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
     } catch (err) {};
     $rootScope.isSingleDigitSearch = hotelDetails.is_single_digit_search;
 
 
-    //handle six payment iFrame communication
+    // handle six payment iFrame communication
     var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
     var eventer = window[eventMethod];
     var messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
@@ -183,7 +183,7 @@ sntRover.controller('roverController',
       }
     }, false);
 
-    //set flag if standalone PMS
+    // set flag if standalone PMS
     if (hotelDetails.pms_type === null) {
       $rootScope.isStandAlone = true;
     };
@@ -229,7 +229,7 @@ sntRover.controller('roverController',
       $scope.userInfo.business_date = newBussinessDate;
     });
 
-    //Default Dashboard
+    // Default Dashboard
     $rootScope.default_dashboard = hotelDetails.current_user.default_dashboard;
     $rootScope.userName = userInfoDetails.first_name + ' ' + userInfoDetails.last_name;
     $rootScope.userId = hotelDetails.current_user.id;
@@ -256,8 +256,8 @@ sntRover.controller('roverController',
      */
     $scope.$on("UpdateSearchBackbuttonCaption", function(event, caption) {
       event.stopPropagation();
-      //chnaging the heading of the page
-      $scope.searchBackButtonCaption = caption; //if it is not blank, backbutton will show, otherwise dont
+      // chnaging the heading of the page
+      $scope.searchBackButtonCaption = caption; // if it is not blank, backbutton will show, otherwise dont
     });
 
     if ($rootScope.adminRole === "Hotel Admin") {
@@ -274,7 +274,7 @@ sntRover.controller('roverController',
             $scope.menu       = rvMenuSrv.getMainMenuForStandAloneRover ();
             $scope.mobileMenu = rvMenuSrv.getMobileMenuForStandAloneRover ();
         }
-        //connected
+        // connected
         else {
             $scope.menu       = rvMenuSrv.getMainMenuForConnectedRover ();
             $scope.mobileMenu = rvMenuSrv.getMobileMenuForConnectedRover ();
@@ -341,7 +341,7 @@ sntRover.controller('roverController',
       $rootScope.updateSubMenu(idx, item);
     });
 
-    //as settings is seperate section,need to handle seperately
+    // as settings is seperate section,need to handle seperately
     $rootScope.updateSettingsSubMenu = function(item) {
       $scope.isSettingSubMenuActive = true;
       if (item && item.submenu && item.submenu.length > 0) {
@@ -436,14 +436,14 @@ sntRover.controller('roverController',
 
       $scope.menuOpen = !$scope.menuOpen;
 
-	  //Bug fix for CICO-15718
-	  //Found that the issue appears when the keyboard comes over the screen
-	  //Added workaround to focus out from the search box
+	  // Bug fix for CICO-15718
+	  // Found that the issue appears when the keyboard comes over the screen
+	  // Added workaround to focus out from the search box
       $('#dashboard-query').focus();
       $('#dashboard-query').blur();
 
       $scope.showHotelSwitchList = false;
-      //save contact info in guestcard if any changes has been done -CICO-14273
+      // save contact info in guestcard if any changes has been done -CICO-14273
       $scope.$broadcast('saveContactInfo');
       $scope.$broadcast('SAVELIKES');
     };
@@ -488,7 +488,7 @@ sntRover.controller('roverController',
         });
     };
 
-    //subemenu actions
+    // subemenu actions
 
     $scope.subMenuAction = function(subMenu) {
 
@@ -501,7 +501,7 @@ sntRover.controller('roverController',
         openEndOfDayPopup();
       }
       else if(subMenu === "adminSettings") {
-            //CICO-9816 bug fix - Akhila
+            // CICO-9816 bug fix - Akhila
             $('body').addClass('no-animation');
             $window.location.href = "/admin";
       }
@@ -510,8 +510,8 @@ sntRover.controller('roverController',
       }
     };
 
-    //in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
-    //(bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
+    // in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
+    // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
 
     var routeChange = function(event, newURL) {
       event.preventDefault();
@@ -519,7 +519,7 @@ sntRover.controller('roverController',
     };
 
     $rootScope.$on('$locationChangeStart', routeChange);
-    window.history.pushState("initial", "Showing Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
+    window.history.pushState("initial", "Showing Dashboard", "#/"); // we are forcefully setting top url, please refer routerFile
 
     //
     // DEPRICATED!
@@ -531,8 +531,8 @@ sntRover.controller('roverController',
     // thus cancelling out animation, feels like animations are never considered
     //
 
-    //when state change start happens, we need to show the activity activator to prevent further clicking
-    //this will happen when prefetch the data
+    // when state change start happens, we need to show the activity activator to prevent further clicking
+    // this will happen when prefetch the data
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
       // Show a loading message until promises are not resolved
       $scope.$emit('showLoader');
@@ -559,13 +559,13 @@ sntRover.controller('roverController',
       $scope.$broadcast("showErrorMessage", error);
     });
 
-    //This variable is used to identify whether guest card is visible
-    //Depends on $scope.guestCardVisible in rvguestcardcontroller.js
+    // This variable is used to identify whether guest card is visible
+    // Depends on $scope.guestCardVisible in rvguestcardcontroller.js
     $scope.isGuestCardVisible = false;
     $scope.$on('GUESTCARDVISIBLE', function(event, data) {
       $scope.isGuestCardVisible = false;
       if (data) {
-        //inoder to refresh the scroller in tab's and I dont knw why 'GUESTCARDVISIBLE' listened here :(
+        // inoder to refresh the scroller in tab's and I dont knw why 'GUESTCARDVISIBLE' listened here :(
         $scope.$broadcast ('REFRESH_ALL_CARD_SCROLLERS');
         $scope.isGuestCardVisible = true;
       }
@@ -619,8 +619,8 @@ sntRover.controller('roverController',
           sntapp.cardReader.startReader(options);
         }, 2000);
       } else {
-        //If cordova not loaded in server, or page is not yet loaded completely
-        //One second delay is set so that call will repeat in 1 sec delay
+        // If cordova not loaded in server, or page is not yet loaded completely
+        // One second delay is set so that call will repeat in 1 sec delay
         if ($scope.numberOfCordovaCalls < 50) {
           setTimeout(function() {
             $scope.numberOfCordovaCalls = parseInt($scope.numberOfCordovaCalls) + parseInt(1);
@@ -644,14 +644,14 @@ sntRover.controller('roverController',
   			initiateDesktopCardReader();
   		}
       else {
-       	//Time out is to call set Browser
+       	// Time out is to call set Browser
   			setTimeout(function() {
   			  $scope.initiateCardReader();
   			}, 2000);
   		}
     }
 
-    //If desktopSwipe is not enabled, we have to invoke the desktopUUID service like below
+    // If desktopSwipe is not enabled, we have to invoke the desktopUUID service like below
     if(!$rootScope.isDesktopUUIDServiceInvoked &&  !rvUtilSrv.checkDevice.any()) {
       sntapp.desktopUUIDService.startDesktopUUIDService($rootScope.ccSwipeListeningPort, options);
     }
@@ -743,9 +743,9 @@ sntRover.controller('roverController',
       }
     };
 
-  //CICO-13582 Display a timeout error message, without try again button.
-  //We are using the same message as that of OWS timeout as of now.
-  //Keeping the two popup separate since the message may change in future.
+  // CICO-13582 Display a timeout error message, without try again button.
+  // We are using the same message as that of OWS timeout as of now.
+  // Keeping the two popup separate since the message may change in future.
     $rootScope.showTimeoutError = function() {
       // Hide loading message
       $scope.$emit('hideLoader');
@@ -776,7 +776,7 @@ sntRover.controller('roverController',
 
       // Hide loading message
       $scope.$emit('hideLoader');
-      //if already shown no need to show again and again
+      // if already shown no need to show again and again
       if (!$rootScope.isBussinessDateChanging && $rootScope.isStandAlone && !$rootScope.isCurrentUserChangingBussinessDate) {
         $rootScope.isBussinessDateChanging = true;
         var $dialog = ngDialog.open({

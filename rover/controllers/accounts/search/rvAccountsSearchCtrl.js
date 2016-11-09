@@ -36,7 +36,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		$scope.getClassAgainstBalance = function(account) {
 			var classes = '';
 
-			//Add class "red" if status OPEN
+			// Add class "red" if status OPEN
 			if(util.convertToDouble (account.balance) > 0) {
 				classes = 'red';
 			}
@@ -51,7 +51,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		$scope.getClassAgainstAccountStatus = function(account) {
 			var classes = '';
 
-			//Add class "green" if status OPEN
+			// Add class "green" if status OPEN
 			if(account.status.toLowerCase() === "open") {
 				classes = 'green';
 			}
@@ -67,7 +67,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 			$scope.query = '';
 			runDigestCycle();
 
-			//we have to search on changing the from date
+			// we have to search on changing the from date
 			$scope.search();
 		};
 
@@ -159,10 +159,10 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* @return - None
 		*/
 		$scope.search = function() {
-			//am trying to search something, so we have to change the initial search helping screen if no rsults
+			// am trying to search something, so we have to change the initial search helping screen if no rsults
 			$scope.amFirstTimeHere = false;
 
-			//resetting error message
+			// resetting error message
 			$scope.errorMessage = '';
 
 			var params = formAccountSearchParams();
@@ -181,13 +181,13 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* @return {None}
 		*/
 		var successCallBackOfSearch = function(data) {
-			//accountList
+			// accountList
 			$scope.accountList = data.posting_accounts;
 
-			//total result count
+			// total result count
 			$scope.totalResultCount = data.total_count;
 
-			//we have changed the data
+			// we have changed the data
 			refreshScrollers ();
 		};
 
@@ -205,7 +205,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* return - None
 		*/
 		var setScrollerForMe = function() {
-			//setting scroller things
+			// setting scroller things
 			var scrollerOptions = {
 				tap: true,
 				preventDefault: false,
@@ -228,12 +228,12 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* Pagination things
 		*/
 		var setInitialPaginationAndAPIThings = function() {
-			//pagination
+			// pagination
 			$scope.perPage 	= rvAccountsSrv.DEFAULT_PER_PAGE;
 			$scope.start 	= 1;
 			$scope.end 		= initialAccountsListing.posting_accounts.length;
 
-			//what is page that we are requesting in the API
+			// what is page that we are requesting in the API
 			$scope.page = 1;
 		};
 
@@ -302,7 +302,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 			var isAtEnd = ($scope.end === $scope.totalResultCount);
 
 			if (isAtEnd) {
-				//last diff will be diff from our normal diff
+				// last diff will be diff from our normal diff
 				var lastDiff = ($scope.totalResultCount % $scope.perPage);
 
 				if (lastDiff === 0) {
@@ -317,10 +317,10 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 				$scope.end   = $scope.end - $scope.perPage;
 			}
 
-			//Decreasing the page param used for API calling
+			// Decreasing the page param used for API calling
 			$scope.page--;
 
-			//yes we are calling the API
+			// yes we are calling the API
 			$scope.search();
 		};
 
@@ -340,10 +340,10 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 				$scope.end = $scope.end + $scope.perPage;
 			}
 
-			//Increasing the page param used for API calling
+			// Increasing the page param used for API calling
 			$scope.page++;
 
-			//yes we are calling the API
+			// yes we are calling the API
 			$scope.search();
 		};
 
@@ -372,31 +372,31 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* @return {None}
 		*/
 		var initializeMe = function() {
-			//chnaging the heading of the page
+			// chnaging the heading of the page
 			$scope.setHeadingTitle ('MENU_ACCOUNTS');
 
-			//updating the left side menu
+			// updating the left side menu
 	    	$scope.$emit("updateRoverLeftMenu", "accounts");
 
 
-			//accountList
+			// accountList
 			$scope.accountList = initialAccountsListing.posting_accounts;
 
-			//total result count
+			// total result count
 			$scope.totalResultCount = initialAccountsListing.total_count;
 
-			//Yes am first time here
+			// Yes am first time here
 			$scope.amFirstTimeHere = true;
 
 			$scope.query = '';
-			//Initial search param
+			// Initial search param
 			$scope.isNonZero = true;
 			$scope.status = 'OPEN';
 
-			//scroller and related things
+			// scroller and related things
 			setScrollerForMe();
 
-			//pagination  & API things
+			// pagination  & API things
 			setInitialPaginationAndAPIThings();
 		}();
 

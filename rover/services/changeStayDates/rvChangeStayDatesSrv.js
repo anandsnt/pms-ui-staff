@@ -6,7 +6,7 @@ angular.module('sntRover').service('RVChangeStayDatesSrv', ['$q', 'rvBaseWebSrvV
         this.changeStayDetails = {};
 
 
-        //function to fetch staydate details against a reservation id
+        // function to fetch staydate details against a reservation id
         this.fetchStayBasicDetails = function (reservationId, deferred) {
             var url = '/staff/change_stay_dates/' + reservationId + '.json';
 
@@ -17,7 +17,7 @@ angular.module('sntRover').service('RVChangeStayDatesSrv', ['$q', 'rvBaseWebSrvV
             });
         };
 
-    	//function to fetch calender details against a reservation id
+    	// function to fetch calender details against a reservation id
     	this.fetchCalenderDetails = function (reservationId, deferred) {
             var url = '/staff/change_stay_dates/' + reservationId + '/calendar.json';
 
@@ -32,7 +32,7 @@ angular.module('sntRover').service('RVChangeStayDatesSrv', ['$q', 'rvBaseWebSrvV
 
 
         this.fetchInitialData = function (reservationId) {
-            //Please be care. Only last function should resolve the data
+            // Please be care. Only last function should resolve the data
             var deferred = $q.defer ();
 
             that.fetchStayBasicDetails (reservationId, deferred);

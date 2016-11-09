@@ -30,7 +30,7 @@
         $(el).autocomplete( scope.autoOptions )
         .data('ui-autocomplete')
         ._renderItem = function(ul, item) {
-            //CICO-26513
+            // CICO-26513
             ulElement = ul;
             ulElement.off('touchmove').on('touchmove', function(e) {
                 e.stopPropagation();
@@ -40,7 +40,7 @@
             
             ul.addClass(scope.ulClass);
             
-            //if no function passed for processing each item
+            // if no function passed for processing each item
             if (!_.isFunction(scope.processEachItem)) {
                 htmlForItem = defaultProcessEachItem (item, scope);
             }
@@ -58,7 +58,7 @@
             autocompleteEl = $(el);
             autocompleteEl.autocomplete( "destroy" );
             
-            //unbinding the touch move
+            // unbinding the touch move
             if(ulElement instanceof HTMLElement) {
                 ulElement.off('touchmove')
             }

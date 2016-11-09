@@ -51,7 +51,7 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
         $scope.nonAssignedroomTypes = [];
         $scope.assignedRoomTypes = [];
         angular.forEach($scope.availableRoomTypes, function(room_type) {
-        	//CICO-15809 : Exclude psudo roomtypes
+        	// CICO-15809 : Exclude psudo roomtypes
         	if(room_type.is_pseudo) {
 				return true;
         	}
@@ -61,7 +61,7 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
             } else if($scope.rateData.based_on.id === "" || $scope.rateData.based_on.is_copied) {
                 $scope.nonAssignedroomTypes.push(room_type);
             } else if($scope.basedonRateData.name !== undefined) {
-                //CICO-31088 - Added the based_on room types only for rates that are not copied from other rates(ie;only for based on rates)
+                // CICO-31088 - Added the based_on room types only for rates that are not copied from other rates(ie;only for based on rates)
                 if($scope.rateData.based_on && !$scope.rateData.based_on.is_copied && $scope.basedonRateData.room_type_ids.indexOf(room_type.id) >= 0) {
                     $scope.nonAssignedroomTypes.push(room_type);
                 }
@@ -97,8 +97,8 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
             $scope.$emit('hideLoader');
             $scope.rateData.room_types = roomTypes;
             $scope.rateData.room_type_ids = roomIdArray;
-            //Navigate to next level. If date ranges are available move to config rate screen
-            //If no date range added, move to add_date_range screen
+            // Navigate to next level. If date ranges are available move to config rate screen
+            // If no date range added, move to add_date_range screen
             var menuName = "ADD_NEW_DATE_RANGE";
 
             if($scope.rateData.date_ranges.length > 0) {
@@ -156,7 +156,7 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
                 $scope.selectedAssignedRoomIndex =index;
             }
         }
-        else if(typeof lastDropedTime === 'object') { //means date
+        else if(typeof lastDropedTime === 'object') { // means date
             var currentTime = new Date();
             var diff = currentTime - lastDropedTime;
 
@@ -176,7 +176,7 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
      */
 
     $scope.unAssignedRoomSelected = function($event, index) {
-    	//If base rate is selected, restrict the room types to the base rate
+    	// If base rate is selected, restrict the room types to the base rate
     	if($scope.hasBaseRate) {
     		return false;
     	}
@@ -188,7 +188,7 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
                 $scope.selectedUnAssignedRoomIndex =index;
             }
         }
-        else if(typeof lastDropedTime === 'object') { //means date
+        else if(typeof lastDropedTime === 'object') { // means date
             var currentTime = new Date();
             var diff = currentTime - lastDropedTime;
 

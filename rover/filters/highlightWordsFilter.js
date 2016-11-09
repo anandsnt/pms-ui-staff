@@ -29,7 +29,7 @@ function transformTextToHighlight(text, replaceableStrings) {
 
 		for (var idx = 0; idx < replacableStringArray.length; idx++) {
 			char = replacableStringArray[idx];
-			//replacableString.split("").forEach(function(char, idx) {
+			// replacableString.split("").forEach(function(char, idx) {
 			var isAlreadyAdded = false;
 
 			if (spanAddedIndex.length > 0) {

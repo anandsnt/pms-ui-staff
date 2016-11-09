@@ -203,24 +203,24 @@ angular.module('sntRover').controller('rvActivityCtrl', [
     		$("header h1").addClass('text-hide');
     		$(".cards-header").css({marginBottom: '2%'});
 
-    		//changing the orientation to landscape
+    		// changing the orientation to landscape
             addPrintOrientation();
 
-            //as part of https://stayntouch.atlassian.net/browse/CICO-14384?focusedCommentId=48871&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-48871
-            //We dont know the icon background-image loaded or not. We need to start print preview
-            //only when it is loaded, this is wrong practice (accessing DOM elements from controller), but there is no option
+            // as part of https://stayntouch.atlassian.net/browse/CICO-14384?focusedCommentId=48871&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-48871
+            // We dont know the icon background-image loaded or not. We need to start print preview
+            // only when it is loaded, this is wrong practice (accessing DOM elements from controller), but there is no option
             var $container = $('#print-orientation'),
                 bg = $container.css('background-image'),
                 src = bg.replace(/(^url\()|(\)$|[\"\'])/g, ''),
                 $img = $('<img>').attr('src', src).on('load', function() {
-                    //unbinding the events & removing the elements inorder to prevent memory leaks
+                    // unbinding the events & removing the elements inorder to prevent memory leaks
                     $(this).off('load');
                     $(this).remove();
 
-                    //yes we have everything we wanted
+                    // yes we have everything we wanted
                     window.print();
 
-                    //if we are in the app
+                    // if we are in the app
                     $timeout(function() {
                         if (sntapp.cordovaLoaded) {
                             cordova.exec(

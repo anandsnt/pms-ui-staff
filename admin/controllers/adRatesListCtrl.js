@@ -33,14 +33,14 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 		var fetchSuccessOfItemList = function(data) {
 			$timeout(function() {
 		        $scope.$emit('hideLoader');
-				//No expanded rate view
+				// No expanded rate view
 				$scope.currentClickedElement = -1;
 				$scope.totalCount = data.total_count;
 				$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
 				$scope.data = data.results;
 				$scope.currentPage = params.page();
 	        	params.total(data.total_count);
-	        	//params.total(data.results.length);
+	        	// params.total(data.results.length);
 	            $defer.resolve($scope.data);
 		    }, 500);
 
@@ -103,8 +103,8 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 			$scope.mouseEnterPopover = true;
 		};
 
-		//Fetch the rates only when we enter the popover area -
-		//no need to repeat the fetch when we hover over the area.
+		// Fetch the rates only when we enter the popover area -
+		// no need to repeat the fetch when we hover over the area.
 		if(!$scope.mouseEnterPopover) {
 			$scope.popoverRates = {};
 			$scope.currentHoverElement = index;
@@ -131,7 +131,7 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 			$scope.mouseEnterPopover = true;
 		};
 
-		//Fetch the rates only when we enter the popover area.
+		// Fetch the rates only when we enter the popover area.
 		if(!$scope.mouseEnterPopover) {
 			$scope.popoverRates = {};
 			$scope.currentHoverElement = index;
@@ -193,7 +193,7 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
    	$scope.saveRateForNonStandalone = function() {
     	var successCallbackSave = function(data) {
     		$scope.$emit('hideLoader');
-    		//To update data with new value
+    		// To update data with new value
     		$scope.data[parseInt($scope.currentClickedElement)].name = $scope.rateDetailsForNonStandalone.name;
     		$scope.data[parseInt($scope.currentClickedElement)].description = $scope.rateDetailsForNonStandalone.description;
     		$scope.currentClickedElement = -1;
@@ -216,7 +216,7 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 
 	$scope.deleteRate = function(selectedId) {
 
-		//call service for deleting
+		// call service for deleting
 		var rateDeleteSuccess = function() {
 			$scope.tableParams.reload();
 			$scope.$emit('hideLoader');
@@ -239,7 +239,7 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 		var params = {'id': selectedId, is_active: !checkedStatus };
 		var rateToggleSuccess = function() {
 		$scope.$emit('hideLoader');
-			//on success
+			// on success
 		angular.forEach($scope.data, function(rate, key) {
 	      if(rate.id === selectedId) {
 	      	rate.status = !rate.status;
@@ -260,8 +260,8 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 	};
 
 	$scope.editRatesClicked = function(rateId, index) {
-		//If PMS connected, we show an inline edit screen for rates.
-		//Only rate name and description should be editable.
+		// If PMS connected, we show an inline edit screen for rates.
+		// Only rate name and description should be editable.
                 $stateParams.rateId = rateId;
 		if($scope.isConnectedToPMS) {
 			$scope.rateDetailsForNonStandalone = {};
@@ -274,7 +274,7 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 		 	var data = {"id": rateId };
 
 	 		$scope.invokeApi(ADRatesSrv.getRateDetailsForNonstandalone, data, successCallbackRender);
-		//If standalone PMS, then the rate configurator wizard should be appeared.
+		// If standalone PMS, then the rate configurator wizard should be appeared.
 		}else{
 			$scope.showLoader();
 			$state.go('admin.rateDetails', {rateId: rateId});

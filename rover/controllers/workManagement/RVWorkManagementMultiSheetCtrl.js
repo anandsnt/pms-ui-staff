@@ -813,7 +813,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 				/* Shift length to be calculated from api/shifts. need shift_id for that.
 				   Displaying full shift length for now.*/
-				//shift = _.findWhere($scope.shifts, { id: employee.shift_id });
+				// shift = _.findWhere($scope.shifts, { id: employee.shift_id });
 				shift = _.findWhere($scope.shifts, { name: "Full Shift" });
 				summaryModel.shiftLength    = (shift && shift.time) || "08:00";
 				// Shift length must be corrected in future

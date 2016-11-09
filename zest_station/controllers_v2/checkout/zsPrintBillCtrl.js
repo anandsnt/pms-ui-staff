@@ -4,7 +4,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
     'zsCheckoutSrv', '$stateParams', '$window', '$timeout', '$filter',
     function($scope, $state, zsCheckoutSrv, $stateParams, $window, $timeout, $filter) {
 
-        /********************************************************************************
+        /** ******************************************************************************
          **      This is not a sperate state. It's an ng-included ctrl inside 
          **      zsReservationBill.html
          **      Expected state params -----> nothing              
@@ -17,7 +17,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
          *  general failure actions inside bill screen
          **/
         var failureCallBack = function() {
-            //if key card was inserted we need to eject that
+            // if key card was inserted we need to eject that
             $scope.$emit('EJECT_KEYCARD');
             $state.go('zest_station.speakToStaff');
         };
@@ -48,7 +48,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
 
             var printData = "";
 
-            /**** Socket actions starts here *****/
+            /** ** Socket actions starts here *****/
             $scope.$on('SOCKET_FAILED', function() {
                 printFailedActions();
             });
@@ -63,11 +63,11 @@ sntZestStation.controller('zsPrintBillCtrl', [
             $scope.$on('SOCKET_CONNECTED', function() {
                $scope.socketOperator.startPrint(printData);
             });
-            /**** Socket actions ends here *****/
+            /** ** Socket actions ends here *****/
 
             var fetchSatrTacBillSuccess = function(response) {
                 printData =  response.bill_details;
-                //check if socket is open
+                // check if socket is open
                 if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
                     $scope.socketOperator.startPrint(printData);
                 } else {
@@ -110,8 +110,8 @@ sntZestStation.controller('zsPrintBillCtrl', [
                             printFailedActions();
                         }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
                     } else {
-                        //REASON: API error . We cant push the starttac code.
-                        //So uncomment and use the following line in next sprint
+                        // REASON: API error . We cant push the starttac code.
+                        // So uncomment and use the following line in next sprint
                         // if($scope.zestStationData.zest_printer_option === "STAR_TAC"){
                         //     //we will call websocket services to print
                         //     handleStarTacPrinterActions();

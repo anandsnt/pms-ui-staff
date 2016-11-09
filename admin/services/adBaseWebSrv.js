@@ -1,4 +1,4 @@
-//To fix the issue with csrf token in ajax requests
+// To fix the issue with csrf token in ajax requests
 admin.config(function($httpProvider) {
   $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
   var m = document.getElementsByTagName('meta');
@@ -31,7 +31,7 @@ admin.service('ADBaseWebSrv', ['$http', '$q', '$window', function($http, $q, $wi
 			params = "";
 		}
 
-		//Sample params {params:{fname: "fname", lname: "lname"}}
+		// Sample params {params:{fname: "fname", lname: "lname"}}
 		var httpDict = {};
 
  		httpDict.url = url;

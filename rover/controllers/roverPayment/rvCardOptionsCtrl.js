@@ -18,10 +18,10 @@ sntRover.controller('RVCardOptionsCtrl',
 			$scope.cardData.cardType = swipedDataToRenderInScreen.cardType;
                         
                         if (swipedDataToRenderInScreen.swipeFrom === "guestCard") {
-                            $rootScope.$broadcast('swipeAtGuestCard');//change tabs to [ credit cards & payments ]
+                            $rootScope.$broadcast('swipeAtGuestCard');// change tabs to [ credit cards & payments ]
                         }
 			if(swipedDataToRenderInScreen.swipeFrom === "guestCard") {
-				$scope.showAddtoGuestCard = false;//hides redundancy
+				$scope.showAddtoGuestCard = false;// hides redundancy
 			} else {
 				$scope.showAddtoGuestCard = true;
 			}
@@ -29,7 +29,7 @@ sntRover.controller('RVCardOptionsCtrl',
                         
                         
 			if(swipedDataToRenderInScreen.swipeFrom === "guestCard" || swipedDataToRenderInScreen.swipeFrom === "stayCard") {
-                            //go straight to add new card - CICO-20531
+                            // go straight to add new card - CICO-20531
                             setTimeout(function() {
                                 $scope.clickedAddNewCard();
                             }, 100);
@@ -37,7 +37,7 @@ sntRover.controller('RVCardOptionsCtrl',
                 };
 
 		$scope.refreshIframe = function() {
-			//in case of hotel with MLI iframe will not be present
+			// in case of hotel with MLI iframe will not be present
 			if(!!$("#sixIframe").length) {
 				var iFrame = document.getElementById('sixIframe');
 
@@ -54,10 +54,10 @@ sntRover.controller('RVCardOptionsCtrl',
                 });
                 
                 
-                //also if !standalone, check if gift card allowed
+                // also if !standalone, check if gift card allowed
                 $scope.checkForGiftCard = function() {
                      $scope.isGiftCard = false;
-                    if (!$rootScope.isStandAlone) {//CICO-19009 adding gift card support, used to validate gift card is enabled
+                    if (!$rootScope.isStandAlone) {// CICO-19009 adding gift card support, used to validate gift card is enabled
                          $scope.invokeApi(RVPaymentSrv.fetchAvailPayments, {}, $scope.cardsListSuccess);
                     };
                 };
@@ -288,11 +288,11 @@ sntRover.controller('RVCardOptionsCtrl',
                        $scope.hideCancelCard = false;
                    }
                 });
-		//Not a good method
-		//To fix the issue CICO-11440
-		//From diary screen create reservation guest data is available only after reaching the summary ctrl
-		//At that time iframe fname and lname is set as null or undefined since data not available
-		//here refreshing the iframe with name of guest
+		// Not a good method
+		// To fix the issue CICO-11440
+		// From diary screen create reservation guest data is available only after reaching the summary ctrl
+		// At that time iframe fname and lname is set as null or undefined since data not available
+		// here refreshing the iframe with name of guest
 		$scope.refreshIframeWithGuestData = function(guestData) {
 			var time = new Date().getTime();
 			var firstName = guestData.fname;
@@ -430,7 +430,7 @@ sntRover.controller('RVCardOptionsCtrl',
 
 				$scope.fetchMLI (sessionDetails, successCallBack, failureCallback);
 			}
-			//Base Ctrl function
+			// Base Ctrl function
 		};
 
 		/*
@@ -505,13 +505,13 @@ sntRover.controller('RVCardOptionsCtrl',
 
                     $scope.num = n;
                     if (len >= 8 && len <= 22) {
-                        //then go check the balance of the card
+                        // then go check the balance of the card
                         $('[name=card-number]').keydown(function() {
                             clearTimeout($scope.timer); 
                             $scope.timer = setTimeout($scope.fetchGiftCardBalance, 1500);
                         });
                     } else {
-                        //hide the field and reset the amount stored
+                        // hide the field and reset the amount stored
                         $scope.giftCardAmountAvailable = false;
                     }
                 }
@@ -519,12 +519,12 @@ sntRover.controller('RVCardOptionsCtrl',
             $scope.num;
             $scope.fetchGiftCardBalance = function() {
                 if ($scope.isGiftCard) {
-                       //switch this back for the UI if the payment was a gift card
+                       // switch this back for the UI if the payment was a gift card
                    var fetchGiftCardBalanceSuccess = function(giftCardData) {
                        $scope.giftCardAvailableBalance = giftCardData.amount;
                        $scope.giftCardAmountAvailable = true;
                        $scope.$emit('giftCardAvailableBalance', giftCardData);
-                       //data.expiry_date //unused at this time
+                       // data.expiry_date //unused at this time
                        $scope.$emit('hideLoader');
                    };
 

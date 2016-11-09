@@ -11,12 +11,12 @@ angular.module('sntRover').controller('itemInventoryMainController', [
 
 	$scope.selectedView = 'grid';
 	$scope.page.title = "Item Inventory";
-	//default number of selected days is 14
+	// default number of selected days is 14
 	$scope.numberOfDaysSelected = 14;
 
 	$scope.data = {};
 
-	//default date value
+	// default date value
 	$scope.data.selectedDate = $rootScope.businessDate;
 	$scope.data.formattedSelectedDate = $filter('date')($scope.data.selectedDate, $rootScope.dateFormat);
 
@@ -67,7 +67,7 @@ angular.module('sntRover').controller('itemInventoryMainController', [
 	*/
 	$scope.changedAvailabilityDataParams = function () {
 		$timeout(function () {
-			//calculating date after number of dates selected in the select box
+			// calculating date after number of dates selected in the select box
 			var dateAfter = tzIndependentDate ($scope.data.selectedDate);
 
 			dateAfter.setDate(dateAfter.getDate() + parseInt($scope.numberOfDaysSelected) - 1);

@@ -48,7 +48,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 				title = $filter('translate')('NEW_ACCOUNT');
 			}
 
-			//yes, we are setting the headting and title
+			// yes, we are setting the headting and title
 			$scope.setHeadingTitle(title);
 		};
 
@@ -85,7 +85,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 					}
 				};
 			}
-      //setting title and things
+      // setting title and things
 			setTitle();
 		};
 
@@ -125,10 +125,10 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		 * @return - None
 		 */
 		$scope.switchTabTo = function(tab) {
-			//if there was any error message there, we are clearing
+			// if there was any error message there, we are clearing
 			$scope.errorMessage = '';
 
-			//allow to swith to "transactions" tab only if the user has its permission
+			// allow to swith to "transactions" tab only if the user has its permission
 			if (tab === "TRANSACTIONS" && !$scope.hasPermissionToViewTransactionsTab()) {
 				$scope.errorMessage = ["Sorry, you don't have the permission to access the transactions"];
 				return;
@@ -144,15 +144,15 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 				return;
 			}
 
-			//Save summary data on tab switch (UI)
+			// Save summary data on tab switch (UI)
 			if (isInAccountsTab && !$scope.isInAddMode()) {
 
 			}
 
-			//Reload the summary tab contents before switching to it
+			// Reload the summary tab contents before switching to it
 			if(tab === "ACCOUNT") {
 
-			} else if(tab === "TRANSACTIONS") { //Preload the transaction data when we switch to transactions tab
+			} else if(tab === "TRANSACTIONS") { // Preload the transaction data when we switch to transactions tab
 
 
 			} else{
@@ -163,7 +163,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 
 			$scope.accountConfigData.activeTab = tab;
 
-			//propogating an event that next clients are
+			// propogating an event that next clients are
 			$timeout(function() {
 				$scope.$broadcast('ACCOUNT_TAB_SWITCHED', $scope.accountConfigData.activeTab);
 			}, 100);
@@ -217,7 +217,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		 * @return {None}
 		 */
 		var initializeAutoCompletions = function() {
-			//this will be common for both company card & travel agent
+			// this will be common for both company card & travel agent
 			var cardsAutoCompleteCommon = {
 
 				focus: function(event, ui) {
@@ -225,7 +225,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 				}
 			};
 
-			//merging auto complete setting for company card with common auto cmplt options
+			// merging auto complete setting for company card with common auto cmplt options
 			$scope.companyAutoCompleteOptions = angular.extend({
 				source: function(request, response) {
 					rvGroupConfigurationSrv.searchCompanyCards(request.term)
@@ -264,7 +264,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 				}
 			}, cardsAutoCompleteCommon);
 
-			//merging auto complete setting for travel agent with common auto cmplt options
+			// merging auto complete setting for travel agent with common auto cmplt options
 			$scope.travelAgentAutoCompleteOptions = angular.extend({
 				source: function(request, response) {
 					rvGroupConfigurationSrv.searchTravelAgentCards(request.term)
@@ -311,12 +311,12 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		$scope.updateAccountSummary = function() {
 			if (rvPermissionSrv.getPermissionValue('EDIT_ACCOUNT')) {
 				var onAccountUpdateSuccess = function(data) {
-						//client controllers should get an infromation whether updation was success
+						// client controllers should get an infromation whether updation was success
 						$scope.$broadcast("UPDATED_ACCOUNT_INFO");
 						$scope.$emit('hideloader');
 					},
 					onAccountUpdateFailure = function(errorMessage) {
-						//client controllers should get an infromation whether updation was a failure
+						// client controllers should get an infromation whether updation was a failure
 						$scope.$broadcast("FAILED_TO_UPDATE_ACCOUNT_INFO");
 						$scope.$emit('showErrorMessage', errorMessage);
 						$scope.$emit('hideloader');
@@ -351,12 +351,12 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		 */
 		var initGroupConfig = function() {
 
-			//forming the data model if it is in add mode or populating the data if it is in edit mode
+			// forming the data model if it is in add mode or populating the data if it is in edit mode
 			$scope.initializeDataModelForSummaryScreen();
 
 			initializeAutoCompletions();
 
-			//back navigation
+			// back navigation
 			setBackNavigation();
 		};
 

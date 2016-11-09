@@ -21,7 +21,7 @@ admin.controller('ADChannelMgrCtrl', ['$scope', '$rootScope', '$state', 'ADChann
         $scope.loadRoomTypes();
         $scope.selectInterface = function(interface) {
             $scope.lastSelectedInterface = interface;
-            //store to state to pick up in adChannelMgrEditCtrl.js
+            // store to state to pick up in adChannelMgrEditCtrl.js
             $state.selectedInterface = interface;
         };
 
@@ -45,7 +45,7 @@ admin.controller('ADChannelMgrCtrl', ['$scope', '$rootScope', '$state', 'ADChann
             var params = {'id': id, active: !active};
             var toggleSuccess = function () {
                 $scope.$emit('hideLoader');
-                //on success
+                // on success
                 angular.forEach($scope.data, function (interface, key) {
                     if (interface.id === id) {
                         interface.active = !interface.active;

@@ -9,13 +9,13 @@
 
 	$scope.pageValid = false;
 	$rootScope.userEmail = ($rootScope.userEmail === null ) ? "" :$rootScope.userEmail;
-	//CICO-30872 ..this need to be done in a better way when doing octopus
-	//now the variable names are confusing
-	//this has to be set to false as the CC page is expecting that variable to do
-	//checkin now or later
+	// CICO-30872 ..this need to be done in a better way when doing octopus
+	// now the variable names are confusing
+	// this has to be set to false as the CC page is expecting that variable to do
+	// checkin now or later
 	$rootScope.isAutoCheckinOn = false;
 
-	//CICO-34045 we should allow the user to enter their email address if it is not on the database
+	// CICO-34045 we should allow the user to enter their email address if it is not on the database
 	var originsNeedEmailEntering = ["SMS", "EMAIL", "URL"];
 
 	// if prompt for cc is turned on
@@ -23,7 +23,7 @@
 	if($rootScope.collectCCOnCheckin && $rootScope.isMLI && !$rootScope.isCcAttachedFromGuestWeb ) {
 		$state.go('checkinCcVerification');
 	}
-	//CICO-34045 we should allow the user to enter their email address if it is not on the database
+	// CICO-34045 we should allow the user to enter their email address if it is not on the database
 	else if($rootScope.offerRoomDeliveryOptions && !$rootScope.userEmailEntered && originsNeedEmailEntering.indexOf($rootScope.application) > -1) {
 		$state.go('emailAddition', {'isFrom': 'checkinNow'});// if user has not attached an email
 	}
@@ -36,7 +36,7 @@
 
 	if($scope.pageValid) {
 
-	//set up flags related to webservice
+	// set up flags related to webservice
 	$scope.isPosting     = true;
 	$rootScope.netWorkError  = false;
 	$scope.responseData  = [];

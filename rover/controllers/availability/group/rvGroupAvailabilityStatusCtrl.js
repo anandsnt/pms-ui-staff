@@ -30,7 +30,7 @@ angular.module('sntRover').controller('rvGroupAvailabilityStatusController', [
 		* Setting scroller
 		*/
 		var setScroller = function() {
-			//we need horizontal scroller so adding option 'scrollX', also need to get the click event on toggling button on available room
+			// we need horizontal scroller so adding option 'scrollX', also need to get the click event on toggling button on available room
 			var scrollerOptions = {scrollX: true, preventDefault: false};
 
   			$scope.setScroller ('groupscroller', scrollerOptions);
@@ -156,7 +156,7 @@ angular.module('sntRover').controller('rvGroupAvailabilityStatusController', [
 		 */
 		$scope.releaseRooms = function() {
 			var onReleaseRoomsSuccess = function(data) {
-					//: Handle successful release
+					// : Handle successful release
 					$scope.closeDialog();
 					$scope.$parent.changedAvailabilityDataParams();
 				},
@@ -184,12 +184,12 @@ angular.module('sntRover').controller('rvGroupAvailabilityStatusController', [
 			$scope.hideHoldStatusOf["groupRoomTotal"] = true;
 			$scope.hideHoldStatusOf["groupRoomPicked"] = true;
 
-			//we need to store the clicked group id since there is an issue with closing of availablity 
+			// we need to store the clicked group id since there is an issue with closing of availablity 
 			$scope.selectedGroupId = null;
 
 			$scope.data = rvAvailabilitySrv.getGridDataForGroupAvailability();
 			setScroller();	
-			//if already fetched we will show without calling the API
+			// if already fetched we will show without calling the API
 			if(!isEmptyObject($scope.data)) {
 				$scope.hideBeforeDataFetch = false;
 				$scope.refreshScroller('groupscroller');

@@ -1,4 +1,4 @@
-//To fix the issue with csrf token in ajax requests
+// To fix the issue with csrf token in ajax requests
 sntRover.config(function($httpProvider) {
   $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
   var m = document.getElementsByTagName('meta');
@@ -28,7 +28,7 @@ angular.module('sntRover').service('BaseWebSrvV2', ['$http', '$q', '$window', '$
 			params = "";
 		}
 
-		//Sample params {params:{fname: "fname", lname: "lname"}}
+		// Sample params {params:{fname: "fname", lname: "lname"}}
 		var httpDict = {};
 
  		httpDict.url = url;

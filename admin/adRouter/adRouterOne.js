@@ -1,5 +1,5 @@
 angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterProvider, $translateProvider) {
-     //define module-specific routes here
+     // define module-specific routes here
         $stateProvider.state('admin.dashboard', {
 			url: '/dashboard/:menu',
 			templateUrl: '/assets/partials/dashboard/adDashboard.html',

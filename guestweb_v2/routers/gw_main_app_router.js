@@ -23,8 +23,8 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                     apiUrl = startingUrl + "_data" + remainingURl;
 
                 }
-                //invoked when forgot password or email verification is
-                //requested from the zest apps
+                // invoked when forgot password or email verification is
+                // requested from the zest apps
                 else if (absUrl.indexOf("/guest_web/home/user_activation") !== -1) {
                     var offset = absUrl.indexOf("?");
                     var remainingURl = absUrl.substring(offset, absUrl.length);
@@ -34,7 +34,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                 }
                 // direct URL checkin - accessing URLS set in hotel admin for checkin
                 else if (absUrl.indexOf("checkin") !== -1) {
-                    //to strip away state URLS
+                    // to strip away state URLS
                     absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
                     var urlComponents = absUrl.split('/');
 
@@ -47,7 +47,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                 }
                 // direct URL checkout - accessing URLS set in hotel admin for checkin
                 else {
-                    //to strip away state URLS
+                    // to strip away state URLS
                     absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
                     var urlComponents = absUrl.split('/');
 

@@ -20,7 +20,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
 
       BaseCtrl.call(this, $scope);
 
-      //variables
+      // variables
       var initialPopupData = {};
 
       /**
@@ -117,13 +117,13 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
        * @return {Boolean}
        */
       $scope.shouldDisableReservationRoomTypeChange = function(reservation) {
-        //as per CICO-17082, we need to show the room type in select box of edit with others
-        //but should be disabled
+        // as per CICO-17082, we need to show the room type in select box of edit with others
+        // but should be disabled
         var room_type_id_list = _.pluck($scope.roomTypesAndData, 'room_type_id'),
             containNonEditableRoomType = !_.contains(room_type_id_list, parseInt(reservation.room_type_id)),
             rStatus = reservation.status;
 
-        //CICO-18717: disable room type switch once a user checks in
+        // CICO-18717: disable room type switch once a user checks in
         return (!(rStatus === 'RESERVED' || rStatus === 'CHECKING_IN') || containNonEditableRoomType);
       };
 
@@ -138,11 +138,11 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
        * @return {Boolean}
        */
       $scope.shouldShowThisOccupancyAgainstRoomType = function(keyToCheck) {
-        //finding the selected room type data
+        // finding the selected room type data
         var selectedRoomType = _.findWhere($scope.ngDialogData.allowedRoomTypes, {
           room_type_id: parseInt($scope.ngDialogData.room_type_id)
         });
-        //we are hiding the occupancy if selected room type is undefined
+        // we are hiding the occupancy if selected room type is undefined
 
         if (typeof selectedRoomType === 'undefined') {
           return false;
@@ -310,7 +310,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
           }];
         }
 
-        //Since we have to include already assigned rooms in the select box, merging with rooms coming from the api
+        // Since we have to include already assigned rooms in the select box, merging with rooms coming from the api
         $scope.ngDialogData.roomsFreeToAssign = assignedRoom.concat(data.rooms);
       };
 
@@ -342,7 +342,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
       * @return {undefined}
       */
       var onRemoveReservationSuccess = function(data) {
-        //calling initially required APIs
+        // calling initially required APIs
         $scope.$emit('REFRESH_ALLOTMENT_RESERVATIONS_LIST_DATA');
 
         $timeout(function() {
@@ -424,10 +424,10 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
        * return - None
        */
       var setDatePickerOptions = function() {
-        //referring data model -> from group summary
+        // referring data model -> from group summary
         var refData = $scope.allotmentConfigData.summary;
 
-        //date picker options - Common
+        // date picker options - Common
         var commonDateOptions = {
           dateFormat: $rootScope.jqDateFormat,
           numberOfMonths: 1,
@@ -451,12 +451,12 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
           }
         };
 
-        //date picker options - From
+        // date picker options - From
         $scope.reservationFromDateOptions = _.extend({
           onSelect: reservationFromDateChoosed
         }, commonDateOptions);
 
-        //date picker options - Departute
+        // date picker options - Departute
         $scope.reservationToDateOptions = _.extend({
           onSelect: reservationToDateChoosed
         }, commonDateOptions);
@@ -467,10 +467,10 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
       */
 
       (function initilizeMe() {
-        //variable initilizations
+        // variable initilizations
         initializeVariables();
 
-        //date picker
+        // date picker
         setDatePickerOptions();
       }());
     }]);

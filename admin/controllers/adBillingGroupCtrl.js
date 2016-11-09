@@ -64,7 +64,7 @@ admin.controller('ADBillingGroupCtrl', ['$scope', '$state', 'ADBillingGroupSrv',
 		var params = dclone($scope.billingGroupData, unwantedKeys);
     	var successCallbackSave = function(data) {
     		$scope.$emit('hideLoader');
-    		//Since the list is ordered. Update the ordered data
+    		// Since the list is ordered. Update the ordered data
     		if($scope.isAddMode) {
     			$scope.billingGroupList.push(data);
     			$scope.isAddMode = false;
@@ -101,7 +101,7 @@ admin.controller('ADBillingGroupCtrl', ['$scope', '$state', 'ADBillingGroupSrv',
 	$scope.addBillingGroup = function() {
 		var successCallbackSave = function(data) {
     		$scope.$emit('hideLoader');
-    		//Since the list is ordered. Update the ordered data
+    		// Since the list is ordered. Update the ordered data
     		$scope.currentClickedElement = -1;
 			$scope.isAddMode = $scope.isAddMode ? false : true;
 			$scope.billingGroupData = {

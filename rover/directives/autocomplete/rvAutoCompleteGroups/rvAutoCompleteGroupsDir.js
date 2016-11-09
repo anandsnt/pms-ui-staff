@@ -7,7 +7,7 @@ angular.module('sntRover').directive('autoCompleteGroups', ['RVSearchSrv', 'high
             templateUrl: "/assets/directives/autocomplete/rvAutoCompleteGroups/rvAutoCompleteGroups.html",
             link: function (scope, el, attrs, ngModel) {
                 BaseCtrl.call(this, scope);
-                //CICO-26513
+                // CICO-26513
                 var ulElement = null;
 
                 var lastSearchText = "",
@@ -65,7 +65,7 @@ angular.module('sntRover').directive('autoCompleteGroups', ['RVSearchSrv', 'high
 
                     ul.addClass("find-guest");
                     
-                    //For fixing CICO-26513
+                    // For fixing CICO-26513
                     ulElement = ul;
                     ul.off('touchmove').on('touchmove', function(e) {
                         e.stopPropagation();
@@ -79,8 +79,8 @@ angular.module('sntRover').directive('autoCompleteGroups', ['RVSearchSrv', 'high
                 scope.$on('$destroy', function () {
                     el.find("input").autocomplete("destroy");
                     
-                    //CICO-26513
-                    //unbinding the touch move
+                    // CICO-26513
+                    // unbinding the touch move
                     if(ulElement instanceof HTMLElement) {
                         ulElement.off('touchmove')
                     }

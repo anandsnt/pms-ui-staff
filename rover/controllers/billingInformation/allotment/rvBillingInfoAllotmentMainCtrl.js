@@ -188,8 +188,8 @@ sntRover.controller('rvBillingInfoAllotmentMainCtrl', ['$scope', '$rootScope', '
         $scope.errorMessage = '';
         $scope.allotmentId = $scope.allotmentConfigData.summary.allotment_id;
 
-        //Holds entity search results.
-        //includes reservations, travel agent/company cards and accounts
+        // Holds entity search results.
+        // includes reservations, travel agent/company cards and accounts
         $scope.searchResults = {
             reservations: [],
             cards: [],

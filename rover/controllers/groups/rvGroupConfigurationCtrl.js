@@ -58,7 +58,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 title = $filter('translate')('NEW_GROUP');
             }
 
-            //yes, we are setting the headting and title
+            // yes, we are setting the headting and title
             $scope.setHeadingTitle(title);
         };
 
@@ -80,7 +80,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
          * @return {Boolean} [description]
          */
         $scope.shouldShowRoomingListTab = function() {
-            //we will not show it in add mode
+            // we will not show it in add mode
             return (!$scope.isInAddMode());
         };
 
@@ -94,12 +94,12 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 returnString = '';
 
             switch (type_) {
-                //if date string passed
+                // if date string passed
                 case 'string':
                     returnString = $filter('date')(new tzIndependentDate(date_), $rootScope.dateFormatForAPI);
                     break;
 
-                    //if date object passed
+                    // if date object passed
                 case 'object':
                     returnString = $filter('date')(date_, $rootScope.dateFormatForAPI);
                     break;
@@ -117,12 +117,12 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 returnString = '';
 
             switch (type_) {
-                //if date string passed
+                // if date string passed
                 case 'string':
                     returnString = $filter('date')(new tzIndependentDate(date_), $rootScope.dateFormat);
                     break;
 
-                    //if date object passed
+                    // if date object passed
                 case 'object':
                     returnString = $filter('date')(date_, $rootScope.dateFormat);
                     break;
@@ -130,7 +130,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             return (returnString);
         };
 
-        //Move date, from date, end date change
+        // Move date, from date, end date change
         (function() {
 
             var activeMode = null,
@@ -437,12 +437,12 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     return false;
                 }
 
-                //is in move mode
+                // is in move mode
                 if (isInCompleteMoveMode()) {
                     $scope.callMoveDatesAPI (args[0], true);
                 }
 
-                //is in left/right date change
+                // is in left/right date change
                 else {
                     $scope.callChangeDatesAPI (args[0], args[1], true);
                 }
@@ -471,8 +471,8 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             var failureCallBackOfChangeDatesAPI= function (error) {
                 $scope.closeDialog ();
 
-                //since we are expecting some custom http error status in the response
-                //and we are using that to differentiate among errors
+                // since we are expecting some custom http error status in the response
+                // and we are using that to differentiate among errors
                 if(error.hasOwnProperty ('httpStatus')) {
                     switch (error.httpStatus) {
                         case 470:
@@ -534,8 +534,8 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
 
                 var options = {
                     params: params,
-                    successCallBack: successCallBackOfChangeDatesAPI, //null case will be handled from baseCtrl
-                    failureCallBack: failureCallBackOfChangeDatesAPI //null case will be handled from baseCtrl
+                    successCallBack: successCallBackOfChangeDatesAPI, // null case will be handled from baseCtrl
+                    failureCallBack: failureCallBackOfChangeDatesAPI // null case will be handled from baseCtrl
                 };
 
                 $scope.callAPI(rvGroupConfigurationSrv.changeDates, options);
@@ -614,8 +614,8 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             var failureCallBackOfMoveDatesAPI= function (error) {
                 $scope.closeDialog ();
 
-                //since we are expecting some custom http error status in the response
-                //and we are using that to differentiate among errors
+                // since we are expecting some custom http error status in the response
+                // and we are using that to differentiate among errors
                 if(error.hasOwnProperty ('httpStatus')) {
                     switch (error.httpStatus) {
                         case 470:
@@ -867,10 +867,10 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
          */
         $scope.switchTabTo = function(tab) {
 
-            //if there was any error message there, we are clearing
+            // if there was any error message there, we are clearing
             $scope.errorMessage = '';
 
-            //allow to swith to "transactions" tab only if the user has its permission
+            // allow to swith to "transactions" tab only if the user has its permission
             if (tab === "TRANSACTIONS" && !$scope.hasPermissionToViewTransactionsTab()) {
                 $scope.errorMessage = ["Sorry, you don't have the permission to access the transactions"];
                 return;
@@ -888,7 +888,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
 
             $scope.groupConfigData.activeTab = tab;
 
-            //propogating an event that next clients are
+            // propogating an event that next clients are
             $timeout(function() {
                 $scope.$broadcast('GROUP_TAB_SWITCHED', $scope.groupConfigData.activeTab);
             }, 100);
@@ -911,7 +911,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 angular.forEach($scope.transactionsDetails.bills, function(value, key) {
                     angular.forEach(value.total_fees.fees_details, function(feesValue, feesKey) {
 
-                        feesValue.billValue = value.bill_number; //Bill value append with bill details
+                        feesValue.billValue = value.bill_number; // Bill value append with bill details
                         feesValue.oldBillValue = value.bill_number; // oldBillValue used to identify the old billnumber
                     });
                 });
@@ -1047,7 +1047,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     return false;
                 }
                 var onGroupUpdateSuccess = function(data) {
-                        //client controllers should get an infromation whether updation was success
+                        // client controllers should get an infromation whether updation was success
                         $scope.$broadcast("UPDATED_GROUP_INFO", angular.copy($scope.groupConfigData.summary));
                         $scope.groupSummaryMemento = angular.copy($scope.groupConfigData.summary);
                         return true;
@@ -1067,7 +1067,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                         }
 
                         else {
-                            //client controllers should get an infromation whether updation was a failure
+                            // client controllers should get an infromation whether updation was a failure
                             $scope.$broadcast("FAILED_TO_UPDATE_GROUP_INFO", error);
                             $scope.errorMessage = error;
                             return false;
@@ -1100,7 +1100,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
          * @return undefined
          */
         $scope.duplicateGroup = function() {
-            //TODO: Duplicate Group - Future functionality
+            // TODO: Duplicate Group - Future functionality
         }
 
         /**
@@ -1147,7 +1147,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
          * @return {None}
          */
         var initializeAutoCompletions = function() {
-            //this will be common for both company card & travel agent
+            // this will be common for both company card & travel agent
             var cardsAutoCompleteCommon = {
 
                 focus: function(event, ui) {
@@ -1155,7 +1155,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 }
             }
 
-            //merging auto complete setting for company card with common auto cmplt options
+            // merging auto complete setting for company card with common auto cmplt options
             $scope.companyAutoCompleteOptions = angular.extend({
                 source: function(request, response) {
                     rvGroupConfigurationSrv.searchCompanyCards(request.term)
@@ -1198,7 +1198,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 }
             }, cardsAutoCompleteCommon);
 
-            //merging auto complete setting for travel agent with common auto cmplt options
+            // merging auto complete setting for travel agent with common auto cmplt options
             $scope.travelAgentAutoCompleteOptions = angular.extend({
                 source: function(request, response) {
                     rvGroupConfigurationSrv.searchTravelAgentCards(request.term)
@@ -1378,16 +1378,16 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
          */
         var initGroupConfig = function() {
 
-            //forming the data model if it is in add mode or populating the data if it is in edit mode
+            // forming the data model if it is in add mode or populating the data if it is in edit mode
             $scope.initializeDataModelForSummaryScreen();
 
-            //auto completion things
+            // auto completion things
             initializeAutoCompletions();
 
-            //back navigation
+            // back navigation
             setBackNavigation();
 
-            //updating the left side menu
+            // updating the left side menu
             setActiveLeftSideMenu();
         };
 

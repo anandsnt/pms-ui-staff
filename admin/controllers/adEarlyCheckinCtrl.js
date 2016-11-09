@@ -17,7 +17,7 @@ $scope.showRoomType = function(max_early_checkins) {
 
 var setUpList = function() {
 
-   //remove the selected item from drop down
+   // remove the selected item from drop down
   var selectedIds = [];
 
   $scope.upsellData.room_types.forEach(function(item, index) {
@@ -62,7 +62,7 @@ var isRoomTypesSelected = function() {
 };
 
 $scope.clickExcludeRoomType = function() {
-  //While addig a room type, making its max_late_checkins defaults to 0.
+  // While addig a room type, making its max_late_checkins defaults to 0.
   angular.forEach($scope.upsellData.room_types, function(item, index) {
       if(parseInt(item.id) === parseInt($scope.upsellData.selected_room_type)) {
         // CICO-32613: Do not reset existing value.
@@ -71,7 +71,7 @@ $scope.clickExcludeRoomType = function() {
         }
       }
   });
-    //Removing the selected room type from dropdown of room type list.
+    // Removing the selected room type from dropdown of room type list.
   angular.forEach($scope.upsellData.room_type_list, function(item, index) {
     if(item.value === $scope.upsellData.selected_room_type) {
        $scope.upsellData.room_type_list.splice(index, 1);
@@ -101,7 +101,7 @@ $scope.deleteRoomType = function(value, name) {
 };
 
 $scope.closeBlockClodeWindow = function() {
-  //resets back to initial set and closes dialog
+  // resets back to initial set and closes dialog
   $scope.excludedBlockCodes = $scope.blockCodesWhenOpenedPopup;
   $scope.block_codes = $scope.blockCodeModelWhenOpened;
     ngDialog.close();
@@ -119,15 +119,15 @@ $scope.clickExcludeBlockCode = function() {
   ngDialog.close();
 };
 
-//remove exclude block code
+// remove exclude block code
 $scope.deleteBlockCode = function(id) {
-  //remove from final array
+  // remove from final array
   angular.forEach($scope.excludedBlockCodes, function(item, index) {
     if(item.id === id) {
       $scope.excludedBlockCodes.splice(index, 1);
     }
   });
-  //untick from list
+  // untick from list
    angular.forEach($scope.block_codes, function(item, index) {
     if(item.id === id) {
       item.ticked = false;
@@ -366,7 +366,7 @@ $scope.clickVIPCode = function() {
     $scope.upsellData.free_eci_for_vips =  !$scope.upsellData.free_eci_for_vips;
 };
 $scope.clickAddRoomType = function() {
-	//While addig a room type, making its max_late_checkouts defaults to 0.
+	// While addig a room type, making its max_late_checkouts defaults to 0.
   if($scope.getSelectedRateIndexForID($scope.upsell_rate.selected_rate_id) !== -1) {
     return;
   }
@@ -487,13 +487,13 @@ $scope.startWatching = function() {
    });
 };
 
-//opens the block/group code selector (angular-multi-select) in a new window scope so the elements dont slow down the rest of the page (CICO-34151)
+// opens the block/group code selector (angular-multi-select) in a new window scope so the elements dont slow down the rest of the page (CICO-34151)
 $scope.clickOpenBlockCodeDialog = function() {
     $scope.blockCodesWhenOpenedPopup = $scope.excludedBlockCodes;
     $scope.blockCodeModelWhenOpened = angular.copy($scope.block_codes);
         ngDialog.open({
             template: '/assets/partials/earlyCheckin/adEarlyCheckinBlockCodePopup.html',
-           //className: 'ngdialog-theme-default1 calendar-single1',
+           // className: 'ngdialog-theme-default1 calendar-single1',
             closeByDocument: true,
             scope: $scope
         });

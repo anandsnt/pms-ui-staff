@@ -7,7 +7,7 @@ admin.service('adWindsurferCRSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', funct
     this.fetchWindsurferCRSConfiguration = function() {
         var deferred = $q.defer();
         var url = '/api/ota_config/windsurfer';
-        //var url = "ui/show?json_input=WindsurferCRS/settings.json&format=json";
+        // var url = "ui/show?json_input=WindsurferCRS/settings.json&format=json";
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);

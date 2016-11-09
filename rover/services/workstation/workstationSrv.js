@@ -1,6 +1,6 @@
 sntRover.service('RVWorkstationSrv', ['$q', 'rvBaseWebSrvV2', function($q, RVBaseWebSrvV2) {
 
-	//Service to check whether a workstation with given device id is already set or not
+	// Service to check whether a workstation with given device id is already set or not
 	this.setWorkstation = function(param) {
 		var deferred = $q.defer();
 		var url =  '/api/workstations/set_workstation';
@@ -13,7 +13,7 @@ sntRover.service('RVWorkstationSrv', ['$q', 'rvBaseWebSrvV2', function($q, RVBas
 		return deferred.promise;
 	};
 
-	//Service to create new workstation
+	// Service to create new workstation
 	this.createWorkstation = function(param) {
 		var deferred = $q.defer();
 		var url = '/api/workstations';
@@ -27,7 +27,7 @@ sntRover.service('RVWorkstationSrv', ['$q', 'rvBaseWebSrvV2', function($q, RVBas
 
 	};
 
-	//Fetches the list of emv terminals
+	// Fetches the list of emv terminals
 	this.fetchEmvTerminals = function() {
 		var deferred = $q.defer();
 		var url = '/api/emv_terminals';
@@ -40,7 +40,7 @@ sntRover.service('RVWorkstationSrv', ['$q', 'rvBaseWebSrvV2', function($q, RVBas
 		return deferred.promise;
 	};
 
-	//Fetches the list of key encoders
+	// Fetches the list of key encoders
 	this.fetchEncoders = function (data) {
 	    var deferred = $q.defer();
 

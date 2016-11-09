@@ -12,7 +12,7 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 
 		$scope.arAccountDetails = {};
 
-		//handle tab switching in both cards
+		// handle tab switching in both cards
 		$scope.switchTabTo = function($event, tabToSwitch) {
 			$event.stopPropagation();
 			$event.stopImmediatePropagation();
@@ -60,7 +60,7 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 			$scope.isWithFilters = data;
 		});
 
-		/*-------AR account starts here-----------*/
+		/* -------AR account starts here-----------*/
 
 		$scope.showARTab = function($event) {
 			$scope.isArTabAvailable = true;
@@ -131,7 +131,7 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 		};
 
 
-		/*-------AR account ends here-----------*/
+		/* -------AR account ends here-----------*/
 
 		$scope.$on('companyCardAvailable', function(obj, isNew) {
 			$scope.searchMode = false;
@@ -230,11 +230,11 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 			$scope.contactInformation.id = data.id;
 			$rootScope.$broadcast("IDGENERATED", { 'id': data.id });
 			callCompanyCardServices();
-			//New Card Handler
+			// New Card Handler
 			if ($scope.viewState.isAddNewCard && typeof data.id !== "undefined") {
 				if ($scope.viewState.identifier === "STAY_CARD" || ($scope.viewState.identifier === "CREATION" && $scope.viewState.reservationStatus.confirm)) {
 					$scope.viewState.pendingRemoval.status = false;
-					//if a new card has been added, reset the future count to zero
+					// if a new card has been added, reset the future count to zero
 					$scope.viewState.pendingRemoval.cardType = "";
 					if ($scope.reservationDetails.companyCard.futureReservations <= 0) {
 						$scope.replaceCardCaller('company', {
@@ -257,8 +257,8 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 				}
 			}
 
-			//taking a deep copy of copy of contact info. for handling save operation
-			//we are not associating with scope in order to avoid watch
+			// taking a deep copy of copy of contact info. for handling save operation
+			// we are not associating with scope in order to avoid watch
 			presentContactInfo = angular.copy($scope.contactInformation);
 		};
 
@@ -292,7 +292,7 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 
 				for (key in dataToSend) {
 					if (typeof dataToSend[key] !== "undefined" && data[key] !== null && data[key] !== "") {
-						//in add case's first api call, presentContactInfo will be empty object
+						// in add case's first api call, presentContactInfo will be empty object
 						if (JSON.stringify(presentContactInfo) !== '{}') {
 							for (subDictKey in dataToSend[key]) {
 								if (typeof dataToSend[key][subDictKey] === 'undefined' || dataToSend[key][subDictKey] === presentContactInfo[key][subDictKey]) {

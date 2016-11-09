@@ -6,7 +6,7 @@ admin.controller('ADNotificationCtrl', ['$scope', '$rootScope', '$state', '$stat
         changeMonth: true,
         onSelect: function(date, context) {            
             $scope.notification.activates_at =  $filter('date')(tzIndependentDate(date), 'yyyy-MM-dd');
-            //Selected date
+            // Selected date
             $scope.datePickerDate = new Date(date);
             ngDialog.close();
         }
@@ -15,13 +15,13 @@ admin.controller('ADNotificationCtrl', ['$scope', '$rootScope', '$state', '$stat
     var init = function() {
         $scope.notification = {};
         if(!!$stateParams.id)
-        {   //Editing Notification
+        {   // Editing Notification
             $scope.notification.id = $stateParams.id;
             fetchNotification($scope.notification.id);
 
-        }else{//Adding new Notification            
+        }else{// Adding new Notification            
             $scope.notification.action_type="LINK";
-            //default value
+            // default value
             $scope.notification.pms_type = "BOTH";
         }    
     };
@@ -51,11 +51,11 @@ admin.controller('ADNotificationCtrl', ['$scope', '$rootScope', '$state', '$stat
 
         $scope.invokeApi(ADNotificationsListSrv.fetchNotification, id, fetchSuccess, fetchFailed);
     }
-    //return a date string in the format of yyyy-MM-dd 00:00:00 (API expects this format)
+    // return a date string in the format of yyyy-MM-dd 00:00:00 (API expects this format)
     var formatActivatesAtDate = function(date) {        
         return date + " 00:00:00";
     };
-    //return a date string in the format of yyyy-MM-dd 23:59:59 (API expects this format)
+    // return a date string in the format of yyyy-MM-dd 23:59:59 (API expects this format)
     var formatExpiresAtDate = function(activates_at, duration) {
         if(duration !=0) {       
             var activates_at = new Date(activates_at);
@@ -94,7 +94,7 @@ admin.controller('ADNotificationCtrl', ['$scope', '$rootScope', '$state', '$stat
     $scope.back = function() {
        $state.go('admin.notifications');
     };
-    //save Notification
+    // save Notification
     $scope.save = function(notification) {
         var saveFailed = function(err) {
             $scope.errorMessage = err;
@@ -114,7 +114,7 @@ admin.controller('ADNotificationCtrl', ['$scope', '$rootScope', '$state', '$stat
             $scope.invokeApi(ADNotificationsListSrv.createNotification, params, $scope.back, saveFailed);
         }
     };
-    //Starts Here
+    // Starts Here
     init();
 
 

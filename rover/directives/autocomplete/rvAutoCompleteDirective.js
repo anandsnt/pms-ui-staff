@@ -12,7 +12,7 @@ sntRover.directive('autoComplete', ['highlightFilter',
                 insertEmail: '=insertEmail'
             },
             link: function(scope, el, attrs) {
-                //CICO-26513
+                // CICO-26513
                 var ulElement = null;
 
                 $(el).autocomplete(scope.autoOptions)
@@ -20,7 +20,7 @@ sntRover.directive('autoComplete', ['highlightFilter',
                     ._renderItem = function(ul, item) {
                         ul.addClass(scope.ulClass);
 
-                        //CICO-26513
+                        // CICO-26513
                         ulElement = ul;
                         ul.off('touchmove').on('touchmove', function(e) {
                             e.stopPropagation();
@@ -123,7 +123,7 @@ sntRover.directive('autoComplete', ['highlightFilter',
                 scope.$on('$destroy', function() {
                     $(el).autocomplete( "destroy" );
                     scope.insertEmail && $(el).off('keypress');
-                    //unbinding the touch move
+                    // unbinding the touch move
                     if(ulElement instanceof HTMLElement) {
                         ulElement.off('touchmove');
                     }                    

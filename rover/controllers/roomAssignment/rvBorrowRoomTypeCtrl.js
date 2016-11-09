@@ -34,7 +34,7 @@ sntRover.controller('rvBorrowRoomTypeCtrl', [
             params      = {};
 
 
-        //CICO-25067
+        // CICO-25067
         params.forcefully_assign_room   = true;
         params.reservation_id   = resData.reservation_id;
         params.upsell_amount    = $scope.passingParams.upsell_amount;

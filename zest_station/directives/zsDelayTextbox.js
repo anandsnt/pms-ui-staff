@@ -8,7 +8,7 @@ sntZestStation.directive('zsDelayTextbox', ['$timeout', function($timeout) {
             functionToFire: '=functionToFire'
 	    },
     	link: function(scope, element, attrs) {
-            //we are setting delay to 2sec. if it is undefined
+            // we are setting delay to 2sec. if it is undefined
             if(typeof scope.delay === "undefined") {
                 scope.delay = 2000;
             }

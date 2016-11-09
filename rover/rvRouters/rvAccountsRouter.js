@@ -4,8 +4,8 @@ angular.module('accountsModule', [])
     '$urlRouterProvider',
     '$translateProvider',
     function($stateProvider, $urlRouterProvider, $translateProvider) {
-    //define module-specific routes here
-        //group
+    // define module-specific routes here
+        // group
         $stateProvider.state('rover.accounts', {
             url: '/accounts',
             abstract: true,
@@ -18,16 +18,16 @@ angular.module('accountsModule', [])
             }
         });
 
-        //company card details
+        // company card details
         $stateProvider.state('rover.accounts.search', {
             url: '/search',
             templateUrl: '/assets/partials/accounts/search/rvAccountsSearch.html',
             controller: 'rvAccountsSearchCtrl',
             resolve: {
-                //to tackle from coming admin app to rover
+                // to tackle from coming admin app to rover
                 initialAccountsListing: ['rvAccountsSrv', 'accountsAssets',
                     function(rvAccountsSrv, accountsAssets) {
-                        //as per CICO-13899, initially we are looking for groups which has from & to date equal
+                        // as per CICO-13899, initially we are looking for groups which has from & to date equal
                         // to business date
                         var params = {
                             'query': '',
@@ -44,7 +44,7 @@ angular.module('accountsModule', [])
             }
         });
 
-        //group summary : CICO-6096
+        // group summary : CICO-6096
         $stateProvider.state('rover.accounts.config', {
             url: '/account/:id/:activeTab/:isFromArTransactions/:isFromCards',
             templateUrl: '/assets/partials/accounts/rvAccountsConfiguration.html',

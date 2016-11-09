@@ -13,16 +13,16 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 
 		$scope.rooms = [];
 
-		//whether we need to show the search results area
+		// whether we need to show the search results area
 		$scope.showSearchResultsArea = false;
 
 		$scope.queryFunctionProccessing = null;
-		//inorder to hide/show searhc results area from outide we can use this
+		// inorder to hide/show searhc results area from outide we can use this
 		$scope.$on("showSearchResultsArea", function(event, showSearchResultsArea) {
 			$scope.showSearchResultsArea = showSearchResultsArea;
 		});
 
-		//setting the scroller for view
+		// setting the scroller for view
 		var scrollerOptions = { click: true, preventDefault: false };
 
 	  	$scope.setScroller('result_showing_area', scrollerOptions);
@@ -205,7 +205,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 			$scope.query = '';
 			$scope.rooms = [];
 			$scope.$emit("showDashboardArea", true);
-		  	 //we are setting the header accrdoing to house keeping dashboard
+		  	 // we are setting the header accrdoing to house keeping dashboard
    			$scope.$emit("UpdateHeading", 'DASHBOARD_HOUSEKEEPING_HEADING');
 		  	$scope.showSearchResultsArea = false;
 		  	$scope.isSearchResultsShowing = false;

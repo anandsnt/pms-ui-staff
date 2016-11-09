@@ -11,7 +11,7 @@ angular.module('sntRover').controller('rvGroupReservationCheckinCtrl', [
             $state) {
 
     var completeCheckinSuccessCallback = function(data) {
-        //As we have checked in a reservation we need to update rooming list data.
+        // As we have checked in a reservation we need to update rooming list data.
         $scope.$emit("REFRESH_GROUP_ROOMING_LIST_DATA");
         $timeout(function() {
             $scope.closeDialog();

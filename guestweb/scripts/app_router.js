@@ -15,20 +15,20 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                     absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
                     var offset = absUrl.indexOf("?");
                     var startingUrl = absUrl.substring(0, offset);
-                    //to strip away state URLS
+                    // to strip away state URLS
                     var remainingURl = decodeURIComponent(absUrl.substring(offset, absUrl.length));
 
                         remainingURl = (remainingURl.indexOf("#") !== -1) ? remainingURl.substring(0, remainingURl.indexOf("#")) : remainingURl;
                     apiUrl = startingUrl + "_data" + remainingURl;
 
                 }
-                //invoked when forgot password or email verification is
-                //requested from the zest apps
+                // invoked when forgot password or email verification is
+                // requested from the zest apps
                 else if (absUrl.indexOf("/guest_web/home/user_activation") !== -1) {
                     absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
                     var offset = absUrl.indexOf("?");
                     var startingUrl = absUrl.substring(0, offset);
-                    //to strip away state URLS
+                    // to strip away state URLS
                     var remainingURl = decodeURIComponent(absUrl.substring(offset, absUrl.length));
 
                         remainingURl = (remainingURl.indexOf("#") !== -1) ? remainingURl.substring(0, remainingURl.indexOf("#")) : remainingURl;
@@ -37,7 +37,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                 }
                 // direct URL checkin - accessing URLS set in hotel admin for checkin
                 else if (absUrl.indexOf("checkin") !== -1) {
-                    //to strip away state URLS
+                    // to strip away state URLS
                     absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
                     var urlComponents = absUrl.split('/');
 
@@ -50,7 +50,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                 }
                 // direct URL checkout - accessing URLS set in hotel admin for checkin
                 else {
-                    //to strip away state URLS
+                    // to strip away state URLS
                     absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
                     var urlComponents = absUrl.split('/');
 

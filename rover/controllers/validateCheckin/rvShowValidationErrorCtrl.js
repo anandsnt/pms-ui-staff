@@ -16,7 +16,7 @@ sntRover.controller('RVShowValidationErrorCtrl', ['$rootScope', '$scope', 'ngDia
 
 
 	$scope.okButtonClicked = function() {
-		//If we chose the room status as ready, then we should make an API call to change the HK status
+		// If we chose the room status as ready, then we should make an API call to change the HK status
 		if($scope.flag.roomStatusReady) {
 			/*
 			 * "hkstatus_id": 1 for CLEAN
@@ -35,7 +35,7 @@ sntRover.controller('RVShowValidationErrorCtrl', ['$rootScope', '$scope', 'ngDia
 			};
 
 			$scope.invokeApi(RVBillCardSrv.changeHousekeepingStatus, data, houseKeepingStatusUpdateSuccess);
-		//Room is set to be not ready by default in checkout process. So we don't need to change the HK status
+		// Room is set to be not ready by default in checkout process. So we don't need to change the HK status
 		} else {
 			cancelPopup();
 		}

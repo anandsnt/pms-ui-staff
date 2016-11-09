@@ -12,8 +12,8 @@ var SwipeOperation = function() {
 		if (swipedCardData.evt === null && swipedCardData.data) {
 			swipedCardData = swipedCardData.data;
 		}
-		//alert('tokenize from: ');
-		//alert(JSON.stringify(swipedCardData));
+		// alert('tokenize from: ');
+		// alert(JSON.stringify(swipedCardData));
 
 		var ksn = swipedCardData.RVCardReadTrack2KSN;
 
@@ -70,13 +70,13 @@ var SwipeOperation = function() {
 			"mli_token": swipedCardData.token,
 			"payment_type": "CC",
 			"cardExpiryMonth": swipedCardData.cardExpiryMonth,
-			"cardExpiryYear": swipedCardData.cardExpiryYear, //2-digit
-			"cardNumber": "xxxx-xxxx-xxxx-" + swipedCardData.token.slice(-4), //xxxx-xxxx-xxxx-0123
+			"cardExpiryYear": swipedCardData.cardExpiryYear, // 2-digit
+			"cardNumber": "xxxx-xxxx-xxxx-" + swipedCardData.token.slice(-4), // xxxx-xxxx-xxxx-0123
 			"addToGuestCard": false,
 			"card_name": swipedCardData.RVCardReadCardName,
 			"payment_credit_type": swipedCardData.RVCardReadCardType,
-			"credit_card": swipedCardData.RVCardReadCardType, //VA / AX
-			"card_expiry": '20' + swipedCardData.RVCardReadExpDate.substring(0, 2) + '-01-' + swipedCardData.RVCardReadExpDate.slice(-2), //2017-12-01
+			"credit_card": swipedCardData.RVCardReadCardType, // VA / AX
+			"card_expiry": '20' + swipedCardData.RVCardReadExpDate.substring(0, 2) + '-01-' + swipedCardData.RVCardReadExpDate.slice(-2), // 2017-12-01
 			"add_to_guest_card": false
 		};
 

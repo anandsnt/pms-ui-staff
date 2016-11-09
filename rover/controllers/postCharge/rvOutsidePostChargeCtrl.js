@@ -16,7 +16,7 @@ sntRover.controller('RVOutsidePostChargeController',
 			$scope.isOutsidePostCharge = true;
 
 			$scope.init = function() {
-				//Show/hide reservations or items
+				// Show/hide reservations or items
 				$scope.itemsVisible = true;
 				$scope.firstTime = true;
 				$scope.search = {};
@@ -37,7 +37,7 @@ sntRover.controller('RVOutsidePostChargeController',
 			$scope.init();
 
 			$scope.closeDialog = function() {
-				//to add stjepan's popup showing animation
+				// to add stjepan's popup showing animation
       			$rootScope.modalOpened = false;
       			$timeout(function() {
       				ngDialog.close();
@@ -102,9 +102,9 @@ sntRover.controller('RVOutsidePostChargeController',
 					$scope.showInitialSearchScreen = true;
 				}
 
-				//single difit search parameter is turned on in admin, room number search is made for single digit
-				//company/TA/guest search will be done for 3 characters.
-				//CICO-10323
+				// single difit search parameter is turned on in admin, room number search is made for single digit
+				// company/TA/guest search will be done for 3 characters.
+				// CICO-10323
 				var search = false;
 
 				if($scope.search.guest_company_agent.length >= 3) {
@@ -221,7 +221,7 @@ sntRover.controller('RVOutsidePostChargeController',
 			      return viewStatus;
 		  };
 
-		  //Map the room status to the view expected format
+		  // Map the room status to the view expected format
 		  $scope.getRoomStatusMapped = function(roomstatus, fostatus) {
 			    var mappedStatus = "";
 
@@ -233,9 +233,9 @@ sntRover.controller('RVOutsidePostChargeController',
 			    return mappedStatus;
 		  };
 
-		  //function that converts a null value to a desired string.
+		  // function that converts a null value to a desired string.
 
-		   //if no replace value is passed, it returns an empty string
+		   // if no replace value is passed, it returns an empty string
 
 		  $scope.escapeNull = function(value, replaceWith) {
 		      var newValue = "";

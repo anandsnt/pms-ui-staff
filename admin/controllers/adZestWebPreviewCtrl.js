@@ -1,6 +1,6 @@
 admin.controller('adZestWebPreviewCtrl', ['$scope', 'isSmallDevice',
 	function($scope, isSmallDevice) {
-		//blank check
+		// blank check
 		function isBlank(pString) {
 			if (!pString || pString.length == 0) {
 				return true;
@@ -20,7 +20,7 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'isSmallDevice',
 		}
 
 		var styleString = "";
-		//concat style strings
+		// concat style strings
 
 		function appendStyleString(str) {
 			styleString = styleString + str;
@@ -53,7 +53,7 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'isSmallDevice',
 			 * set in the admin
 			 */
 		var overrideStylesWithCMSdata = function(styles) {
-			//set the background color
+			// set the background color
 			applyStyle('.zest-web-main-container { background:', styles.main_bg.background);
 			// set nav bar background color
 			applyStyle('.zest-web-header-bar { background:', styles.header_bg.background);
@@ -61,7 +61,7 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'isSmallDevice',
 			applyStyle('.zest-web-btn { background:', styles.button.background);
 			// set template button text color
 			applyStyle('.zest-web-btn  { color:', styles.button_text.color);
-			//set template font family
+			// set template font family
 			applyStyle('.zest-web-main-container { font-family:', styles.template_font);
 			// set  main text color
 			applyStyle('.zest-web-template-text,.zest-web-main-text { color:', styles.title_text.color);
@@ -96,7 +96,7 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'isSmallDevice',
 				applyStyle('.szest-web-ub-text { font-size:', styles.label_text.ld_font_size, "font-size");
 			};
 
-			//apply icon styles
+			// apply icon styles
 			if (styles.icon_color !== "White" && styles.icon_color !== null) {
 				applyIconStyles(styles.icon_color)
 			}

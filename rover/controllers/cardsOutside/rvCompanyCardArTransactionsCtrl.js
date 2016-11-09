@@ -68,8 +68,8 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 				"per_page": $scope.filterData.perPage,
 				"transaction_type": $scope.filterData.transactionType
 			};
-			//CICO-10323. for hotels with single digit search,
-			//If it is a numeric query with less than 3 digits, then lets assume it is room serach.
+			// CICO-10323. for hotels with single digit search,
+			// If it is a numeric query with less than 3 digits, then lets assume it is room serach.
 
 			if($rootScope.isSingleDigitSearch &&
 				!isNaN($scope.filterData.textInQueryBox) &&
@@ -80,7 +80,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 			return paramsToSend;
 		};
 
-		//CICO-11669 -Added new summary fields
+		// CICO-11669 -Added new summary fields
 		var setSummaryValues = function(data) {
 			$scope.arTransactionDetails.total_payments = data.total_payments;
 		    $scope.arTransactionDetails.total_charges = data.total_charges;
@@ -161,7 +161,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 			fetchData();
 		};
 
-		//Handle the change in transaction type filter
+		// Handle the change in transaction type filter
 		$scope.onTransactionTypeChange = function() {
 			initPaginationParams();
 			fetchData();
@@ -204,7 +204,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 		$scope.queryEntered = function() {
 
 			var queryText = $scope.filterData.textInQueryBox;
-			//setting first letter as captial
+			// setting first letter as captial
 
 			$scope.filterData.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
 
@@ -215,7 +215,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 
 			fetchData();
 
-		}; //end of query entered
+		}; // end of query entered
 
 		/**
 		* Single digit search done based on the settings in admin
@@ -471,7 +471,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 
 	    };
 
-	    //Reloads the AR Transaction Listing
+	    // Reloads the AR Transaction Listing
 	    $scope.reloadARTransactionListing = function() {
 	    	fetchData();
 	    };

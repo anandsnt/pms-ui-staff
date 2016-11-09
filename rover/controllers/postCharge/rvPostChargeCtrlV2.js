@@ -252,7 +252,7 @@ sntRover.controller('RVPostChargeControllerV2',
 				// recalculate net price
 				calNetTotalPrice();
 				$scope.refreshScroller('items_summary');
-				//CICO-10013 fix
+				// CICO-10013 fix
 				$scope.calToggle = 'QTY';
 			};
 
@@ -334,7 +334,7 @@ sntRover.controller('RVPostChargeControllerV2',
 							// normal senario user must no be allowed to make the price as 0
 							// as soon as it choosen
 							if( $scope.selectedChargeItem.modifiedPrice === $scope.selectedChargeItem.unit_price ) {
-								//CICO-17276 - add provision to add amount < $1
+								// CICO-17276 - add provision to add amount < $1
 
 									$scope.selectedChargeItem.userEnteredPrice += input;
 									$scope.selectedChargeItem.modifiedPrice = parseFloat( $scope.selectedChargeItem.userEnteredPrice );
@@ -485,16 +485,16 @@ sntRover.controller('RVPostChargeControllerV2',
 					items: items
 			   	};
 
-			    //accounts or reservation bill screen check
+			    // accounts or reservation bill screen check
 				isFromAccounts ? (data.account_id = $scope.account_id) :  (data.reservation_id = $scope.reservation_id);
 
-				/****    CICO-6094    **/
+				/** **    CICO-6094    **/
 				var needToCreateNewBill = false;
 
 				if($scope.billNumber > $scope.fetchedData.bill_numbers.length) {
 					needToCreateNewBill = true;
 				}
-				/****    CICO-6094    **/
+				/** **    CICO-6094    **/
 				var callback = function(data) {
 					$scope.$emit( 'hideLoader' );
 					// CICO-21768 - Alert to show Credit Limit has exceeded.
@@ -551,7 +551,7 @@ sntRover.controller('RVPostChargeControllerV2',
 
 				var updateParam = data;
 
-				/****    CICO-6094    **/
+				/** **    CICO-6094    **/
 				if(!needToCreateNewBill) {
 					if(isFromAccounts) {
 						$scope.invokeApi(rvAccountTransactionsSrv.postCharges, updateParam, accountsPostcallback, failureCallback);
@@ -565,7 +565,7 @@ sntRover.controller('RVPostChargeControllerV2',
 					var billData ={
 						"bill_number": $scope.billNumber
 					};
-					//accounts or reservation bill screen check
+					// accounts or reservation bill screen check
 
 					isFromAccounts ? (billData.account_id = $scope.account_id):(billData.reservation_id = $scope.reservation_id);
 
@@ -575,7 +575,7 @@ sntRover.controller('RVPostChargeControllerV2',
 						 */
 						var createBillSuccessCallback = function() {
 							$scope.$emit('hideLoader');
-							//Fetch data again to refresh the screen with new data
+							// Fetch data again to refresh the screen with new data
 							$scope.invokeApi(rvAccountTransactionsSrv.postCharges, updateParam, accountsPostcallback, failureCallback);
 
 						};
@@ -588,7 +588,7 @@ sntRover.controller('RVPostChargeControllerV2',
 						 */
 						var createBillSuccessCallback = function() {
 							$scope.$emit('hideLoader');
-							//Fetch data again to refresh the screen with new data
+							// Fetch data again to refresh the screen with new data
 							$scope.invokeApi(RVPostChargeSrvV2.postCharges, updateParam, callback);
 							// Update Review status array.
 							if(!$scope.isOutsidePostCharge) {
@@ -607,7 +607,7 @@ sntRover.controller('RVPostChargeControllerV2',
 				}
 			};
 
-			//Will be invoked only if triggered from the menu.
+			// Will be invoked only if triggered from the menu.
 			// So always the default bill no will be 1
 			$rootScope.$on("UPDATED_BILLNUMBERS", function( event, data ) {
 				$scope.fetchedData.bill_numbers = data.bills;
@@ -632,7 +632,7 @@ sntRover.controller('RVPostChargeControllerV2',
 			});
 
 			$scope.closeDialog = function() {
-				//to add stjepan's popup showing animation
+				// to add stjepan's popup showing animation
       			$rootScope.modalOpened = false;
       			$timeout(function() {
       				ngDialog.close();

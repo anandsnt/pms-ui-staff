@@ -2,7 +2,7 @@ angular.module('sntRover').controller('rvAvailabilityMainController', [
 	'$scope', 'rvAvailabilitySrv', '$rootScope',
 	function($scope, rvAvailabilitySrv, $rootScope) {
 
-		//variable to get/set value availabilty or house
+		// variable to get/set value availabilty or house
 		$scope.availabilityToShow = 'room';
 		$scope.page = {};
 		$scope.page.title = "Availability";

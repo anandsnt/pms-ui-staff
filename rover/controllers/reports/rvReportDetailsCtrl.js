@@ -18,7 +18,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		var REPORT_FILTER_SIDEBAR_SCROLL = 'report-filter-sidebar-scroll';
 
 		var setScroller = function() {
-			//setting scroller things
+			// setting scroller things
 			var scrollerOptions = {
 				tap: true,
 				preventDefault: false
@@ -69,7 +69,7 @@ sntRover.controller('RVReportDetailsCtrl', [
                         if (typeof item.value == typeof 'str' && item.value.indexOf('%')!=-1) {
                         	v = item.value.split('%')[0]+'%';
                         } else if (item.label.indexOf('Mobile Check In Conversion')!==-1 || item.label.indexOf('Auto Check In Conversion')!==-1) {
-                        	v = item.value + '%';//these values are currently being passed without the percentage...just need to add the % sign
+                        	v = item.value + '%';// these values are currently being passed without the percentage...just need to add the % sign
                         } else {
                             v = 'N/A';
                         }
@@ -225,20 +225,20 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.hasReportTotals = true;
                     $scope.hasNoResults = false;
                     $scope.hasNoTotals = false;
-                    setTotalsForReport(totals);//refreshes Totals
+                    setTotalsForReport(totals);// refreshes Totals
 					break;
 				case reportNames['MOBILE_CHECKIN']:
                     $scope.hasReportTotals = true;
                     $scope.hasNoResults = false;
                     $scope.hasNoTotals = false;
-                    setTotalsForReport(totals);//refreshes Totals
+                    setTotalsForReport(totals);// refreshes Totals
 					break;
 
 				case reportNames['ROOM_UPSELL']:
                     $scope.hasReportTotals = true;
                     $scope.hasNoResults = false;
                     $scope.hasNoTotals = false;
-                    setTotalsForReport(totals);//refreshes Totals
+                    setTotalsForReport(totals);// refreshes Totals
 					break;
 				case reportNames['ACTIONS_MANAGER']:
                     $scope.isActionsManager = true;

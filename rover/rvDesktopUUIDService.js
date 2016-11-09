@@ -18,7 +18,7 @@ var DesktopUUIDService = function() {
             console.warn("Could not connect to card reader. Please check if the port number is valid!!");
         }
 
-        //Triggers when websocket connection is established.
+        // Triggers when websocket connection is established.
         ws.onopen = function () {
             that.isActive = true;
             ws.send("UUIDforDevice");

@@ -18,7 +18,7 @@ admin.controller('ADRoomClassListCtrl', ['$scope', '$state', 'ADRoomClassesSrv',
 
 		$scope.invokeApi(ADRoomClassesSrv.fetch, {}, successCallbackFetch);
 	};
-	//To list room class
+	// To list room class
 	$scope.listRoomClass();
    /*
     * To render edit room class screen
@@ -72,7 +72,7 @@ admin.controller('ADRoomClassListCtrl', ['$scope', '$state', 'ADRoomClassesSrv',
 				// To add new data to scope
     			$scope.roomClasses.push(response.data);
 	    	} else {
-	    		//To update data with new value
+	    		// To update data with new value
 	    		$scope.roomClasses[parseInt($scope.currentClickedElement)].code = $scope.roomClassData.code;
 	    		$scope.roomClasses[parseInt($scope.currentClickedElement)].description = $scope.roomClassData.description;
 	    	}

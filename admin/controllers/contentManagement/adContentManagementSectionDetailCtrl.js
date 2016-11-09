@@ -8,7 +8,7 @@ admin.controller('ADContentManagementSectionDetailCtrl', ['$scope', '$state', 'n
 
 	$scope.delay_timings = [{"name": "1", "value": "1"}, {"name": "2", "value": "2"}, {"name": "3", "value": "3"}, {"name": "4", "value": "4"}, {"name": "5", "value": "5"}, {"name": "6", "value": "6"}, {"name": "7", "value": "7"}, {"name": "8", "value": "8"}, {"name": "9", "value": "9"}, {"name": "10", "value": "10"}];
 	$scope.alignments = [{"name": "Left", "value": "Left"}, {"name": "Center", "value": "Center"}, {"name": "Right", "value": "Right"}];
-	/*Initializing data, for adding a new section.
+	/* Initializing data, for adding a new section.
     */
 	$scope.data = {
 	            "component_type": "SECTION",
@@ -28,12 +28,12 @@ admin.controller('ADContentManagementSectionDetailCtrl', ['$scope', '$state', 'n
             };
 
 
-    /*Function to fetch the snt products
+    /* Function to fetch the snt products
     */
 	$scope.fetchSntProducts = function() {
 		var fetchSntProductsSuccessCallback = function(data) {
 
-		/*Checkin if the screen is loaded for a new section or,
+		/* Checkin if the screen is loaded for a new section or,
 	    * for existing section.
         */
 	    if($stateParams.id !== 'new') {
@@ -52,7 +52,7 @@ admin.controller('ADContentManagementSectionDetailCtrl', ['$scope', '$state', 'n
 		$scope.invokeApi(ADContentManagementSrv.fetchSntProducts, {}, fetchSntProductsSuccessCallback);
 	};
 
-    /*Function to fetch the section details
+    /* Function to fetch the section details
     */
 	$scope.fetchSection = function() {
 		var fetchSectionSuccessCallback = function(data) {
@@ -66,12 +66,12 @@ admin.controller('ADContentManagementSectionDetailCtrl', ['$scope', '$state', 'n
 
 	$scope.fetchSntProducts();
 	
-	/*Function to return to preveous state
+	/* Function to return to preveous state
     */
 	$scope.goBack = function() {
         $state.go('admin.cmscomponentSettings');
 	};
-	/*Function to save a category
+	/* Function to save a category
     */
 	$scope.saveSection = function() {
 		var saveSectionSuccessCallback = function(data) {

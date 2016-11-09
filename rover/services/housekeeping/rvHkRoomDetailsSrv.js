@@ -287,7 +287,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 			return deferred.promise;
 		};
 
-		//CICO-12520 Room service status
+		// CICO-12520 Room service status
 		this.fetchRoomStatus = function(params) {
 			var queryString = {
 				from_date: $filter('date')(tzIndependentDate(new Date(params.year, params.month - 1, 1)), 'yyyy-MM-dd'),

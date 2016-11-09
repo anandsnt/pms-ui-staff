@@ -7,7 +7,7 @@
 	var checkinOptionsController = function($scope, $rootScope, $state, checkinNowService) {
 
 		$rootScope.checkinOptionShown = true;
-		//set default values
+		// set default values
 		var early_checkin_switch_on = false;
 		var reservation_has_early_checkin = false;// check if reservation matches criteria 
 		var early_checkin_offer_id = "";
@@ -19,7 +19,7 @@
 		var early_checkin_charge = "";
 		var checkin_time = "";
 		var roomAssignedFromZestWeb = false;
-		var reservation_is_in_early_checkin_window = false;//check if its inside early checkin window
+		var reservation_is_in_early_checkin_window = false;// check if its inside early checkin window
 
 
 		var init = function() {
@@ -30,7 +30,7 @@
 			};
 
 			checkinNowService.fetchEarlyCheckinData(params).then(function(response) {
-				//set variables based on the response
+				// set variables based on the response
 				early_checkin_switch_on = response.early_checkin_on;
 				reservation_has_early_checkin = response.early_checkin_available;
 				early_checkin_offer_id = response.early_checkin_offer_id
@@ -66,15 +66,15 @@
 			} else if (early_checkin_switch_on && reservation_has_early_checkin) {
 				if (offer_eci_bypass) {
 					// Early checkin byepass
-					//$state.go('earlyCheckinReady');
-					//need to change later
+					// $state.go('earlyCheckinReady');
+					// need to change later
 					$state.go('checkinKeys');
 				} else {
 					if (eci_upsell_limit_reached || typeof early_checkin_offer_id === 'undefined' || early_checkin_offer_id === null) {
-						//limted by overall count and room type
+						// limted by overall count and room type
 						$state.go('checkinArrival');
 					} else {
-						//offer early checkin purchase
+						// offer early checkin purchase
 						$state.go('earlyCheckinOptions', {
 							'time': checkin_time,
 							'charge': early_checkin_charge,
@@ -136,13 +136,13 @@
 		};
 
 		$scope.checkinNow = function() {
-			//check if room is assigned, if not assigned assign room
+			// check if room is assigned, if not assigned assign room
 			roomAssignmentActions();
 		};
 		$scope.checkinLater = function() {
-			//not to eta restrict on arrival time
+			// not to eta restrict on arrival time
 			delete $rootScope.earlyCheckinRestrictHour;
-			//continue existing precheckin flow
+			// continue existing precheckin flow
 			$state.go('checkinArrival');
 		};
 	};

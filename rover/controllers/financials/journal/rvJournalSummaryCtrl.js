@@ -152,7 +152,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
 
 	initSummaryData();
 
-    //To load API data for pagination
+    // To load API data for pagination
     var loadAPIData = function( balance_type, pageNo ) {
         var item        = getSummaryItemByBalanceType( balance_type );
 

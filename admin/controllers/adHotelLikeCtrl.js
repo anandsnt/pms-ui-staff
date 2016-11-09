@@ -52,7 +52,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
     */
     $scope.switchClicked = function(index) {
 
-		//on success
+		// on success
 	   var toggleSwitchLikesSuccessCallback = function(data) {
 	    $scope.$emit('hideLoader');
 	    $scope.fetchHotelLikes();

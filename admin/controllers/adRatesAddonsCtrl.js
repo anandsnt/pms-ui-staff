@@ -222,7 +222,7 @@ admin.controller('ADRatesAddonsCtrl', [
    			$scope.singleAddon.begin_date = null;
 			$scope.singleAddon.end_date   = null;
 
-			//initate to include all rates here
+			// initate to include all rates here
 			$scope.filterRates($scope.singleAddon);
 		};
 

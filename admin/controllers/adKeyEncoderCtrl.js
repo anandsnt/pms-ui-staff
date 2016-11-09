@@ -10,7 +10,7 @@ admin.controller('ADKeyEncoderCtrl', ['$scope', '$state', 'ADRatesSrv', 'ADKeyEn
 		var getParams = $scope.calculateGetParams(params);
 		var fetchSuccessOfItemList = function(data) {
 			$scope.$emit('hideLoader');
-			//No expanded rate view
+			// No expanded rate view
 			$scope.currentClickedElement = -1;
 			$scope.totalCount = data.total_count;
 			$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
@@ -82,7 +82,7 @@ admin.controller('ADKeyEncoderCtrl', ['$scope', '$state', 'ADRatesSrv', 'ADKeyEn
 				$scope.data[(l - 1)].enabled = $scope.encoderData.enabled;
 				$scope.reloadTable();
 			} else {
-				//To update data with new value
+				// To update data with new value
 				$scope.data[parseInt($scope.currentClickedElement)].description = $scope.encoderData.description;
 				$scope.data[parseInt($scope.currentClickedElement)].location = $scope.encoderData.location;
 				$scope.data[parseInt($scope.currentClickedElement)].encoder_id = $scope.encoderData.encoder_id;
@@ -140,7 +140,7 @@ admin.controller('ADKeyEncoderCtrl', ['$scope', '$state', 'ADRatesSrv', 'ADKeyEn
 
 
 
-	/****************************************************************************************/
+	/** **************************************************************************************/
 
 
 }]);

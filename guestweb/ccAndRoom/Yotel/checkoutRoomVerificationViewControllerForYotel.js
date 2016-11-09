@@ -19,7 +19,7 @@
 	}
 
 	if($scope.pageValid) {
-		//setup options for error popup
+		// setup options for error popup
 		$scope.opts = {
 			backdrop: true,
 			backdropClick: true,

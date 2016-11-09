@@ -18,11 +18,11 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 		 */
 		var getReservationID = function() {
 			if ($scope.ngDialogData.index === 0) {
-				//when there is only reservation in reservation summary screen and 			
-				//on accessing from staycard
+				// when there is only reservation in reservation summary screen and 			
+				// on accessing from staycard
 				return ($scope.reservationData.reservationId || $scope.reservationParentData.reservationId);
 			} else {
-				//when accesing from multiple reservations in summary screen
+				// when accesing from multiple reservations in summary screen
 				return $scope.reservationData.reservationIds[$scope.ngDialogData.index];
 			};
 
@@ -45,7 +45,7 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 			if ($scope.adjustment_reason.trim() === "") {
 				return;
 			}
-			//forming the API params
+			// forming the API params
 			var params = {};
 
 			params.reservation_id = getReservationID();
@@ -74,7 +74,7 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 
 				$scope.reservationData.rooms[index] = room;
 
-				//comment box will appear in every box
+				// comment box will appear in every box
 				$scope.saveCommentAgainstRateChange();
 
 
@@ -141,7 +141,7 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 		 * @return {[type]} [description]
 		 */
 		var initializeMe = function() {
-			//As per CICO-14354, we are setting adjustment reason as the last one we entered
+			// As per CICO-14354, we are setting adjustment reason as the last one we entered
 			$scope.adjustment_reason = $scope.ngDialogData.lastReason;
 			$scope.setScroller('rateDetails');
 			$scope.refreshRateDetails();			

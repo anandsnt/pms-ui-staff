@@ -11,7 +11,7 @@ sntRover.controller('rvAllotmentReservationCheckoutCtrl', [
             $state) {
 
       var completeCheckoutSuccessCallback = function(data) {
-        //calling initially required APIs
+        // calling initially required APIs
         $scope.$emit('REFRESH_ALLOTMENT_RESERVATIONS_LIST_DATA');
         $timeout(function() {
           $scope.closeDialog();

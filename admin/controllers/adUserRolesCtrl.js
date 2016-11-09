@@ -14,7 +14,7 @@ admin.controller('ADUserRolesCtrl', ['$scope', 'userRolesData', 'ADUserRolesSrv'
 		$scope.toggleAddMode();
 		$scope.$emit('hideLoader');
 		$scope.rolesList.push({"name": $scope.newUserRole});
-		$scope.newUserRole = "";//reset
+		$scope.newUserRole = "";// reset
 	};
 	var userRoleFailureCallback = function() {
 		$scope.toggleAddMode();

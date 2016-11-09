@@ -34,7 +34,7 @@ sntGuestWeb.controller('gwUpdateGuestDetailsController', ['$scope', '$state', '$
 				$scope.guestDetails = response;
 				$scope.guestDetails.street = response.street1;
 				$scope.guestDetails.country = response.country_id;
-				//split the birthday string to be used in popup
+				// split the birthday string to be used in popup
 				$scope.guestDetails.day = (response.birthday !== null) ? parseInt(response.birthday.substring(8, 10)) : "";
 				$scope.guestDetails.month = (response.birthday !== null) ? returnSelectedMonth(response.birthday.substring(5, 7)).value : "";
 				$scope.guestDetails.year = (response.birthday !== null) ? parseInt(response.birthday.substring(0, 4)) : "";
@@ -87,7 +87,7 @@ sntGuestWeb.controller('gwUpdateGuestDetailsController', ['$scope', '$state', '$
 			return data;
 		};
 
-		//save changes
+		// save changes
 		$scope.postGuestDetails = function() {
 			var postGuestDetailsSuccess = function() {
 				if (GwWebSrv.zestwebData.isAutoCheckinOn) {

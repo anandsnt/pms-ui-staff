@@ -24,7 +24,7 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 
 
 		HostedForm.setMerchant(GwWebSrv.zestwebData.mliMerchatId);
-		//setup options for error popup
+		// setup options for error popup
 		var cardErrorPopupOpts = angular.copy($scope.errorOpts);
 		var emptyFeildsErrorPopup = angular.copy($scope.errorOpts);
 
@@ -62,7 +62,7 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 			}
 		};
 
-		//save payment method and proceed
+		// save payment method and proceed
 		var goToNextStep = function() {
 			var cardExpiryDate = $scope.yearSelected + "-" + $scope.monthSelected + "-" + "01";
 			var onSuccess = function() {
@@ -85,7 +85,7 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 			$scope.callAPI(GwCheckoutSrv.savePayment, options);
 		};
 
-		//MLI token creation
+		// MLI token creation
 		$scope.savePaymentDetails = function() {
 			var fetchMLISessionId = function() {
 				var sessionDetails = {};

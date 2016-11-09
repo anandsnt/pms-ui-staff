@@ -27,7 +27,7 @@ var admin = angular.module('admin',
     'onScroll',
     'limitInputRange']);
 
-//adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
+// adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 admin.config(function($httpProvider) {
     $httpProvider.interceptors.push('sharedHttpInterceptor');
 });
@@ -52,7 +52,7 @@ function getLengthChangedNumber(lengthWanted, number) {
         number = number.toString();
     }
     var numberOfZerosToAppend = lengthWanted - number.length;
-    //if numberOfZerosToAppend is zero or less, nothing to do
+    // if numberOfZerosToAppend is zero or less, nothing to do
 
     if (numberOfZerosToAppend <= 0) {
         return number;
@@ -65,13 +65,13 @@ function getLengthChangedNumber(lengthWanted, number) {
     return (zeros + number);
 }
 
-//range function as filter
-//usage examples
+// range function as filter
+// usage examples
 admin.filter('makeRange', function() {
     return function(input) {
         var lowBound, highBound;
         var step = 1;
-        //in some cases we need 0 or combination of 0 to the front
+        // in some cases we need 0 or combination of 0 to the front
         var appendingString = "";
         var minLengthWanted = 0;
 

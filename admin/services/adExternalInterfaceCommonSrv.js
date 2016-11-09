@@ -2,11 +2,11 @@ admin.service('adExternalInterfaceCommonSrv', ['$http', '$q', 'ADBaseWebSrv', 'A
 
 	var service = this;
 
-	//-------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
+	// -------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
 
         service.cache = {
             config: {
-                lifeSpan: 300 //in seconds
+                lifeSpan: 300 // in seconds
             },
             responses: {
                 paymentMethods: null,
@@ -14,7 +14,7 @@ admin.service('adExternalInterfaceCommonSrv', ['$http', '$q', 'ADBaseWebSrv', 'A
             }
         }
 
-       //-------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
+       // -------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
 
 	this.fetchSetup = function(params) {
 		var deferred = $q.defer();

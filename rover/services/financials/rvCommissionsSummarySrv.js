@@ -10,7 +10,7 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($h
 
         var deferred = $q.defer();
         var url = "/api/accounts/commission_overview";
-        //var url = 'ui/show?json_input=commissions/commissons.json&format=json';
+        // var url = 'ui/show?json_input=commissions/commissons.json&format=json';
 
             BaseWebSrvV2.getJSON(url, params).then(function (data) {
                 deferred.resolve(data);

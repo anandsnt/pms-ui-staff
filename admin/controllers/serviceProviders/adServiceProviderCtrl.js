@@ -34,7 +34,7 @@ admin.controller('ADServiceProviderListCtrl', ['$scope', '$rootScope', '$state',
 
     };
 
-    //Delete a service provide with given id
+    // Delete a service provide with given id
     $scope.deleteServiceProvider = function(serviceProviderId) {
         var onDeleteSuccess = function(data) {
             fetchServiceProviderList();

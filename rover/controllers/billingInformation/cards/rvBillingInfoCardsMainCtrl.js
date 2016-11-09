@@ -7,7 +7,7 @@ sntRover.controller('rvBillingInfoCardsMainCtrl', ['$scope', '$rootScope', '$fil
      * @return {undefined}
      */
     var init = function() {
-        //Contains selected entity details
+        // Contains selected entity details
         $scope.selectedEntity = {};
         $scope.errorMessage   = '';
 

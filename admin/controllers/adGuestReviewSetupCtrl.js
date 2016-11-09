@@ -7,7 +7,7 @@ admin.controller('ADGuestReviewSetupCtrl', ['$scope', '$state', 'ADGuestReviewSe
 	BaseCtrl.call(this, $scope);
 	$scope.errorMessage = '';
 
-	//scope varibales
+	// scope varibales
 	$scope.rating_list = [{'name': '1', 'value': '1'}, {'name': '2', 'value': '2'}, {'name': '3', 'value': '3'}, {'name': '4', 'value': '4'}, {'name': '5', 'value': '5'}];
 
 
@@ -21,7 +21,7 @@ admin.controller('ADGuestReviewSetupCtrl', ['$scope', '$state', 'ADGuestReviewSe
 
 	};
 
-	//fetching the settings details
+	// fetching the settings details
 	$scope.invokeApi(ADGuestReviewSetupSrv.fetchGuestSetupDetails, {}, fetchCompletedOfSettingsDetails);
 
 	/*
@@ -38,7 +38,7 @@ admin.controller('ADGuestReviewSetupCtrl', ['$scope', '$state', 'ADGuestReviewSe
 		postingData.number_of_reviews = $scope.data.number_of_reviews;
 		postingData.rating_limit = $scope.data.rating_limit;
 
-		//calling the save api
+		// calling the save api
 		$scope.invokeApi(ADGuestReviewSetupSrv.saveGuestReviewSetup, postingData, successCallbackOfSaveDetails);
 	};
 

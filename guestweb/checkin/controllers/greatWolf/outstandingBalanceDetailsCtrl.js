@@ -15,7 +15,7 @@
 		 */
 		$scope.changeCard = function() {
 
-			//reset card details
+			// reset card details
 			$scope.cardNumber = "";
 			$scope.ccv = "";
 			$scope.monthSelected = "";
@@ -23,12 +23,12 @@
 			$scope.ccSaved = false;
 			$scope.cardName = "";
 
-			//error flags
+			// error flags
 			$scope.cardError = false;
 			$scope.paymentError = false;
 			$scope.cardNotFilledError = false;
 
-			//mode
+			// mode
 			$scope.mode = "CC_ENTRY_MODE";
 		};
 
@@ -44,7 +44,7 @@
 				"amount": $rootScope.outStandingBalance,
 				"payment_type_id": $scope.paymentMethodDetails.payment_details.id
 			};
-			//submit payment
+			// submit payment
 
 			guestDetailsService.submitPayment(params).then(function(response) {
 				$scope.isLoading = false;
@@ -56,21 +56,21 @@
 		};
 
 
-		/********************** card entry ***************************/
-		//set merchant id
+		/** ******************** card entry ***************************/
+		// set merchant id
 
 		HostedForm.setMerchant($rootScope.mliMerchatId);
 
 
 		var saveCardToReservation = function() {
-			//save cc success
+			// save cc success
 			var ccSaveSuccesActions = function(response) {
-					//set flags
+					// set flags
 					$rootScope.isCCOnFile = true;
 					$rootScope.isCcAttachedFromGuestWeb = true;
 					$scope.cardPresent = true;
 					var cardNumberLength = $scope.cardNumber.length;
-					//set data to be displayed
+					// set data to be displayed
 
 					$scope.paymentMethodDetails.payment_details = {
 						"card_type_image": "images/" + response.data.credit_card_type.toLowerCase() + ".png",
@@ -79,12 +79,12 @@
 						"card_name": $scope.cardName,
 						"id": response.data.id
 					}
-					//handle mode
+					// handle mode
 					$scope.cardError = false;
 					$scope.paymentError = false;
 					$scope.mode = "PAYMENT_MODE";
 				}
-				//setup params
+				// setup params
 			var cardExpiryDate = $scope.yearSelected + "-" + $scope.monthSelected + "-" + "01";
 			var data = {
 				'reservation_id': $rootScope.reservationID,
@@ -93,7 +93,7 @@
 				'payment_type': "CC",
 				'card_name': $scope.cardName
 			};
-			//call API
+			// call API
 
 			$scope.isLoading = true;
 			ccVerificationService.verifyCC(data).then(function(response) {
@@ -113,9 +113,9 @@
 		$scope.saveCard = function() {
 
 			$scope.cardNotFilledError = false;
-			//first we fecth MLI token using the card 
-			//informations entered and then save that token
-			//against the reservations
+			// first we fecth MLI token using the card 
+			// informations entered and then save that token
+			// against the reservations
 			var fetchMLISessionId = function() {
 
 				var sessionDetails = {};
@@ -130,14 +130,14 @@
 					}
 					$scope.$apply();
 				};
-				//check if user has entered all data
+				// check if user has entered all data
 
 				if (($scope.cardNumber.length === 0) || ($scope.ccv.length === 0) ||
 					(!$scope.monthSelected) ||(!$scope.yearSelected)) 
 				{
 					$scope.cardError = false;
 					$scope.cardNotFilledError = true;
-					//check if ccv is empty
+					// check if ccv is empty
 					if ($scope.ccv.length === 0) {
 						$scope.isCVVEmpty = true;
 					} else {
@@ -147,7 +147,7 @@
 
 					$scope.isLoading = true;
 					$scope.isCVVEmpty = false;
-					//params for fetching MLI token
+					// params for fetching MLI token
 					sessionDetails.cardNumber = $scope.cardNumber;
 					sessionDetails.cardSecurityCode = $scope.ccv;
 					sessionDetails.cardExpiryMonth = $scope.monthSelected;
@@ -173,8 +173,8 @@
 
 		var init = function() {
 
-			//setup data for dropdowns
-			$scope.months = returnMonthsArray(); //utils function
+			// setup data for dropdowns
+			$scope.months = returnMonthsArray(); // utils function
 			$scope.years = [];
 			var startYear = new Date().getFullYear();
 			var endYear = parseInt(startYear) + 100;
@@ -183,7 +183,7 @@
 				$scope.years.push(year);
 			};
 
-			//card details
+			// card details
 			$scope.cardNumber = "";
 			$scope.ccv = "";
 			$scope.monthSelected = "";
@@ -196,12 +196,12 @@
 				"payment_method_used": $rootScope.payment_method_used,
 				"payment_details": $rootScope.paymentDetails
 			};
-			//check if already a card is attached
+			// check if already a card is attached
 			if ($scope.paymentMethodDetails.payment_method_used === "CC" && typeof $scope.paymentMethodDetails.payment_details !== "undefined" && typeof $scope.paymentMethodDetails.payment_details.id !== null) {
-				//update card or keep card option available
+				// update card or keep card option available
 				$scope.cardPresent = true;
 			} else {
-				//only can add new card
+				// only can add new card
 				$scope.cardPresent = false;
 			};
 			$scope.mode = "PAYMENT_MODE";

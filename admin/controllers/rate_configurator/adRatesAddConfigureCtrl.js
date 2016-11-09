@@ -1,6 +1,6 @@
 admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesConfigureSrv', 'ADRatesAddRoomTypeSrv', 'ADRatesRangeSrv', 'ngDialog', '$state', '$timeout',
     function($scope, $rootScope, ADRatesConfigureSrv, ADRatesAddRoomTypeSrv, ADRatesRangeSrv, ngDialog, $state, $timeout) {
-        //expand first set
+        // expand first set
         $scope.currentClickedSet = 0;
         $scope.init = function() {
             // in edit mode last date range data will be expanded and details can't fetch by click
@@ -73,8 +73,8 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             newSet.friday = true;
             newSet.saturday = true;
             newSet.sunday = true;
-            //The day will be enabled in current set,
-            //only if it is not enabled in any other sets in current date range
+            // The day will be enabled in current set,
+            // only if it is not enabled in any other sets in current date range
             for (var i in $scope.data.sets) {
                 if ($scope.data.sets[i].monday === true) {
                     newSet.monday = false;
@@ -125,7 +125,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
             newSet.room_rates = [];
 
-            //Crate the room rates array based on the available room_types
+            // Crate the room rates array based on the available room_types
             for (var i in $scope.rateData.room_types) {
                 var roomType = {};
 
@@ -140,7 +140,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             }
 
             $scope.data.sets.push(newSet);
-            //Expand the current set
+            // Expand the current set
             $scope.setCurrentClickedSet($scope.data.sets.length - 1);
         };
 
@@ -243,7 +243,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                         });
                     }
                 });
-                //Expand top set in the current date range
+                // Expand top set in the current date range
                 $scope.setCurrentClickedSet(0);
 
 
@@ -259,25 +259,25 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             $scope.invokeApi(ADRatesConfigureSrv.fetchSetsInDateRange, paramsToSend, fetchSetsInDateRangeSuccessCallback);
         };
 
-        //The Response from server may not have
-        //all the room_type details in in the set info.
-        //Calculate the room_rates dict for all selected room_types (from $scope.rateData.room_types)
+        // The Response from server may not have
+        // all the room_type details in in the set info.
+        // Calculate the room_rates dict for all selected room_types (from $scope.rateData.room_types)
         var updateSetsForAllSelectedRoomTypes = function(data) {
             var roomAddDetails = {};
             var roomRate = {};
-            //Iterate through room types
+            // Iterate through room types
 
             for (var i in $scope.rateData.room_types) {
 
-                //Iterate through sets
+                // Iterate through sets
                 for (var j in data.sets) {
                     roomAddDetails = {};
                     var foundRoomType = false;
 
-                    //Room rates in sets
+                    // Room rates in sets
                     for (var k in data.sets[j].room_rates) {
                         roomRate = data.sets[j].room_rates[k];
-                        //Round off the values to two decimal places
+                        // Round off the values to two decimal places
                         data.sets[j].room_rates[k].single = precisionTwo(roomRate.single);
                         data.sets[j].room_rates[k].double = precisionTwo(roomRate.double);
                         data.sets[j].room_rates[k].extra_adult = precisionTwo(roomRate.extra_adult);
@@ -293,8 +293,8 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
                     }
 
-                    //If the current room_type detail not available in the room_rates dict from server
-                    //Add the room room_type to the set with details as empty.
+                    // If the current room_type detail not available in the room_rates dict from server
+                    // Add the room room_type to the set with details as empty.
                     if (!foundRoomType) {
                         roomAddDetails.child = '';
                         roomAddDetails.double = '';
@@ -335,10 +335,10 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 $scope.otherData.setChanged = false;
             };
 
-            //if set id is null, then it is a new set - save it
+            // if set id is null, then it is a new set - save it
             if (setData.id === null) {
                 $scope.invokeApi(ADRatesConfigureSrv.saveSet, setData, saveSetSuccessCallback);
-            //Already existing set - update
+            // Already existing set - update
             } else {
                 $scope.invokeApi(ADRatesConfigureSrv.updateSet, setData, saveSetSuccessCallback);
             };
@@ -381,7 +381,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             $scope.invokeApi(ADRatesConfigureSrv.rateManagerStatusCheck, {"id": setData.id}, rateManagerCheckSuccsess);
         };
 
-        //Saves the individual set
+        // Saves the individual set
         $scope.saveSet = function(dateRangeId, index, saveGrid) {
 
             var selectedSet = $scope.data.sets[index];
@@ -444,8 +444,8 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
             setData.dateRangeId = dateRangeId;
             selectedIndex = index;
-            //Check if values exist in the Rate Manager
-            if(!!setData.id) { //CICO-20263
+            // Check if values exist in the Rate Manager
+            if(!!setData.id) { // CICO-20263
                 checkForRateSetUpdateInRateManager(setData);
             }else{
                 callSaveOrUpdateSet();
@@ -484,14 +484,14 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
         $scope.confirmDeleteSet = function(id, index, setName) {
 
-            //if set id is null, then it is a new set - not saved, so delete directly
+            // if set id is null, then it is a new set - not saved, so delete directly
             if (id === null || typeof id === 'undefined') {
                 $scope.data.sets.pop();
                 $scope.setCurrentClickedSet($scope.data.sets.length - 1);
                 return false;
             }
 
-            //If not a new set, open a dialog to confirm the delete action
+            // If not a new set, open a dialog to confirm the delete action
             $scope.deleteSetId = id;
             $scope.deleteSetIndex = index;
             $scope.deleteSetName = setName;
@@ -532,11 +532,11 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             });
         };
 
-        //For a rate in a date range, a day can not be selected in more than one rate sets
+        // For a rate in a date range, a day can not be selected in more than one rate sets
         $scope.toggleDays = function(index, mod) {
           $scope.otherData.setChanged = true;
             angular.forEach($scope.data.sets, function(value, key) {
-                //Deselect the day in all sets other than current selected set.
+                // Deselect the day in all sets other than current selected set.
                 if (key !== index) {
                     $scope.data.sets[key][mod] = false;
                 }
@@ -680,7 +680,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             }
         };
 
-        //Checks whether the rate is a hourly child rate
+        // Checks whether the rate is a hourly child rate
         $scope.isHourlyChildRate = function() {
             return ($scope.rateData.is_hourly_rate && $scope.rateData.based_on.id != "" && $scope.rateData.based_on.id != null)
         };

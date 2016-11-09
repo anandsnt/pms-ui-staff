@@ -25,14 +25,14 @@
 	else{
 		$scope.pageValid = true;
 	}
-	//uncheck checkbox in reservation details page
+	// uncheck checkbox in reservation details page
 
 	$rootScope.checkedApplyCharges = false;
 	$scope.minDate  = $rootScope.businessDate;
 
 	if($scope.pageValid) {
 
-		//set up flags related to webservice
+		// set up flags related to webservice
 		$scope.isLoading 		 	= false;
 		$rootScope.netWorkError  	= false;
 		$scope.searchMode      		= true;
@@ -54,13 +54,13 @@
 	      }
 	    };
 
-	    //we need a guest token for authentication
-	    //so fetch it with reservation id
+	    // we need a guest token for authentication
+	    // so fetch it with reservation id
 	    var getToken = function(response) {
 	    	var data = {"reservation_id": $rootScope.reservationID};
 
 		    checkinConfirmationService.getToken(data).then(function(res_data) {
-	    		//set guestweb token
+	    		// set guestweb token
 	    		$rootScope.accessToken 				= res_data.guest_web_token;
 				// display options for room upgrade screen
 				$rootScope.ShowupgradedLabel = false;
@@ -77,7 +77,7 @@
 				$rootScope.payment_method_used = res_data.payment_method_used;
 				$rootScope.paymentDetails = res_data.payment_details;
 
-				//navigate to next page
+				// navigate to next page
 				$state.go('checkinReservationDetails');
 				
 			}, function() {
@@ -86,13 +86,13 @@
 			});
 	    };
 
-		//next button clicked actions
+		// next button clicked actions
 		$scope.nextButtonClicked = function() {
 			if($scope.lastname.length > 0 && ($scope.confirmationNumber.length > 0 || (typeof $scope.departureDate !== "undefined" && $scope.departureDate.length >0))) {
 				
 				var data = {"hotel_identifier": $rootScope.hotelIdentifier}
 
-				//check if all fields are filled
+				// check if all fields are filled
 				if($scope.lastname.length >0) {
 					data.last_name = $scope.lastname;
 				}
@@ -105,7 +105,7 @@
 
 				
 				$scope.isLoading 		 = true;
-				//call service
+				// call service
 				checkinConfirmationService.searchReservation(data).then(function(response) {
 					
 					var noMatchAction = function() {
@@ -114,7 +114,7 @@
 						$scope.multipleResults 	= false;
 					};
 					var reservations = [];
-					//filter out reservations with reserved status
+					// filter out reservations with reserved status
 
 					angular.forEach(response.results, function(value, key) {
 					  if(value.reservation_status ==='RESERVED') {
@@ -126,7 +126,7 @@
 					if(response.results.length ===0) { // No match
 						$scope.isLoading = false;
 						noMatchAction();
-					}else if(response.results.length >=2) //Multiple matches
+					}else if(response.results.length >=2) // Multiple matches
 					{
 						$scope.searchMode 		= false;
 						$scope.noMatch    		= false;
@@ -134,25 +134,25 @@
 						$scope.isLoading = false;
 					}
 					else{						
-						//if reservation status is CANCELED -> No matches
+						// if reservation status is CANCELED -> No matches
 						if(response.results[0].reservation_status ==='CANCELED') {
 							$scope.isLoading = false;
 							noMatchAction();
 						}
-						//if reservation status is NOSHOW or to too late -> No matches
+						// if reservation status is NOSHOW or to too late -> No matches
 						else if(response.results[0].reservation_status ==='NOSHOW' || response.results[0].is_too_late) {
 							$state.go('guestCheckinLate');
 						}
-						//if reservation is aleady checkin
+						// if reservation is aleady checkin
 						else if(response.results[0].is_checked_in === "true") {
 							$state.go('checkinSuccess');
 						}
-						//if reservation is early checkin
+						// if reservation is early checkin
 						else if(response.results[0].is_too_early) {
 							$state.go('guestCheckinEarly', {"date": response.results[0].available_date_after});
 						}
 						else{
-							//retrieve token for guest
+							// retrieve token for guest
 							$rootScope.primaryGuestId 	= response.results[0].primary_guest_id;
 							$rootScope.reservationID 	= response.results[0].reservation_id;
 							$rootScope.isPrecheckinOnly = (response.is_precheckin_only === "true" && response.results[0].reservation_status ==='RESERVED')?true:false;

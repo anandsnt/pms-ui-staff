@@ -12,7 +12,7 @@ var BasePaymentCtrl = function($scope) {
 		$scope.dataToSave      = {};
 		$scope.showCCPage	   = false;
                         $scope.swippedCard = false;
-		$scope.cardsList       = [];//guess no need to show existing cards
+		$scope.cardsList       = [];// guess no need to show existing cards
 		$scope.errorMessage    = "";
 
 	};

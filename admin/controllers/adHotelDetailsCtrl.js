@@ -23,7 +23,7 @@ admin.controller('ADHotelDetailsCtrl', [
 	$scope.isHotelChainReadonly =  false;
 	$scope.isFieldsReadOnly = (($rootScope.isSntAdmin && $rootScope.isServiceProvider) || $rootScope.adminRole === "hotel-admin") ? "yes" : "no";
 	$scope.isFieldsReadOnlyForServiceProvider = ($rootScope.isSntAdmin && $rootScope.isServiceProvider) ? "yes" : "no";
-	//pms start date setting calendar options
+	// pms start date setting calendar options
 	$scope.pmsStartDateOptions = {
 	    changeYear: true,
 	    changeMonth: true,
@@ -75,7 +75,7 @@ admin.controller('ADHotelDetailsCtrl', [
 					$scope.data.check_out_time.primetime = "AM";
 					$scope.data.check_out_primetime = "AM";
 				}
-				//CICO-24330 -Make the chain non-editable once its saved
+				// CICO-24330 -Make the chain non-editable once its saved
 				if(!!$scope.data.hotel_chain) {
 					$scope.isHotelChainReadonly = true;
 				}
@@ -106,7 +106,7 @@ admin.controller('ADHotelDetailsCtrl', [
 				$scope.data.check_out_primetime = "AM";
 			}
 
-			//CICO-24330 -Make the chain non-editable once its saved
+			// CICO-24330 -Make the chain non-editable once its saved
 			if(!!$scope.data.hotel_chain) {
 				$scope.isHotelChainReadonly = true;
 			}
@@ -198,9 +198,9 @@ admin.controller('ADHotelDetailsCtrl', [
 		else{
 
 
-		/*********** Commented out to fix CICO-8508 ****************************/
-		//template logo was not updating when existing image was removed
-		/********************************************************************/
+		/** ********* Commented out to fix CICO-8508 ****************************/
+		// template logo was not updating when existing image was removed
+		/** ******************************************************************/
 			if($scope.data.payment_gateway === "MLI") {
 
 				var unwantedKeys = ["time_zones", "brands", "chains", "check_in_time", "check_out_time", "countries", "currency_list", "pms_types", "hotel_pms_type", "is_single_digit_search", "is_pms_tokenized", "signature_display", "hotel_list", "menus", "mli_hotel_code", "mli_chain_code", "mli_access_url", "languages", "date_formats", "six_merchant_id", "six_validation_code", "is_external_references_import_on", "external_references_import_freq", "is_hold_room_import_on", "hold_room_import_freq", "allow_desktop_swipe", "cc_swipe_listening_port"];
@@ -368,7 +368,7 @@ admin.controller('ADHotelDetailsCtrl', [
     	return selectedIds;
     }
 
-    //Set dropdown defaults when they are empty or null
+    // Set dropdown defaults when they are empty or null
     var setDropdownDefaults = function() {
     	if(!$scope.data.hotel_brand) {
 			$scope.data.hotel_brand = "";

@@ -54,7 +54,7 @@ admin
 
                 $scope.Sets = [];
                 $scope.Sets.push(createDefaultSet("Set 1"));
-                //if no date is selected .Make bussiness date as default CICO-8703
+                // if no date is selected .Make bussiness date as default CICO-8703
 
                 if (!$scope.begin_date) {
                     $scope.begin_date = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
@@ -63,7 +63,7 @@ admin
                     $scope.end_date = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
                 }
 
-                try { //Handle exception, in case of NaN, initially.
+                try { // Handle exception, in case of NaN, initially.
                     lastSelectedDate = $scope.rateData.date_ranges[$scope.rateData.date_ranges.length - 1].end_date;
                 } catch (e) {}
 

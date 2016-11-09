@@ -4,7 +4,7 @@
 
 sntZestStation.service('zsUtilitySrv', ['$http', '$q', 'zsBaseWebSrv',
     function($http, $q, zsBaseWebSrv) {
-        //service provider for common utilities
+        // service provider for common utilities
         var that = this;
 
         this.CommaFormatted = function(amount) {
@@ -54,11 +54,11 @@ sntZestStation.service('zsUtilitySrv', ['$http', '$q', 'zsBaseWebSrv',
         };
 
         this.getFloat = function(n) {
-            //to check/remove any commas in a string..
+            // to check/remove any commas in a string..
             var num = n + '';
 
             num = num.replace(/,/gi, "");
-            return this.CommaFormatted(parseFloat(num).toFixed(2) + ''); //return with comma back in
+            return this.CommaFormatted(parseFloat(num).toFixed(2) + ''); // return with comma back in
         };
 
 
@@ -69,7 +69,7 @@ sntZestStation.service('zsUtilitySrv', ['$http', '$q', 'zsBaseWebSrv',
             ];
 
             for (var i in monthNames) {
-                if (monthNames[i].toLowerCase() == mo.toLowerCase() || monthNames[i].toLowerCase().indexOf(mo.toLowerCase()) != -1) { //exact or not
+                if (monthNames[i].toLowerCase() == mo.toLowerCase() || monthNames[i].toLowerCase().indexOf(mo.toLowerCase()) != -1) { // exact or not
                     return i;
                 }
             }
@@ -100,14 +100,14 @@ sntZestStation.service('zsUtilitySrv', ['$http', '$q', 'zsBaseWebSrv',
         };
 
         this.returnLanguageList = function() {
-            return [ //in our admin/API, these are saved in english, we will keep reference here if needed
+            return [ // in our admin/API, these are saved in english, we will keep reference here if needed
                 {
                     'language': 'Castellano',
                     'info': {
                         'prefix': '',
                         'code': 'cl',
                         'flag': 'flag-ca',
-                        'name': 'Castellano' //using name as an english reference (which is in the api call)
+                        'name': 'Castellano' // using name as an english reference (which is in the api call)
                     }
                 }, {
                     'language': 'Deutsche',

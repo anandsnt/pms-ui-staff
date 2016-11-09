@@ -30,7 +30,7 @@ angular.module('sntRover').controller('rvAllotmentAvailabilityStatusController',
 		* Setting scroller
 		*/
 		var setScroller = function() {
-			//we need horizontal scroller so adding option 'scrollX', also need to get the click event on toggling button on available room
+			// we need horizontal scroller so adding option 'scrollX', also need to get the click event on toggling button on available room
 			var scrollerOptions = {scrollX: true, preventDefault: false};
 
   			$scope.setScroller ('groupscroller', scrollerOptions);
@@ -72,7 +72,7 @@ angular.module('sntRover').controller('rvAllotmentAvailabilityStatusController',
 		 */
 		$scope.getWidthForTable = function() {
 
-			//if no data exist we will just return 0
+			// if no data exist we will just return 0
 			if (!_.has($scope.data, 'dates')) {
 				return 0;
 			};
@@ -81,7 +81,7 @@ angular.module('sntRover').controller('rvAllotmentAvailabilityStatusController',
 				totalColumns 			= $scope.data && $scope.data.dates && $scope.data.dates.length,
 				individualColWidth 		= 0;
 
-			//on each column length, width is different
+			// on each column length, width is different
 			if (totalColumns <= 7) {
 				individualColWidth = 147;
 			}
@@ -204,12 +204,12 @@ angular.module('sntRover').controller('rvAllotmentAvailabilityStatusController',
 			$scope.hideHoldStatusOf["groupRoomTotal"] = true;
 			$scope.hideHoldStatusOf["groupRoomPicked"] = true;
 
-			//we need to store the clicked group id since there is an issue with closing of availablity 
+			// we need to store the clicked group id since there is an issue with closing of availablity 
 			$scope.selectedAllotmentId = null;
 
 			$scope.data = rvAvailabilitySrv.getGridDataForAllotmentAvailability();
 			setScroller();	
-			//if already fetched we will show without calling the API
+			// if already fetched we will show without calling the API
 			if(!isEmptyObject($scope.data)) {
 				$scope.hideBeforeDataFetch = false;
 				$scope.refreshScroller('groupscroller');

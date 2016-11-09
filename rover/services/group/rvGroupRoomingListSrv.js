@@ -1,7 +1,7 @@
 angular.module('sntRover').service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrvV2', 'rvUtilSrv',
 	function($q, rvBaseWebSrvV2, util) {
 
-		//some default values
+		// some default values
 		this.DEFAULT_PER_PAGE = 50;
 		this.DEFAULT_PAGE = 1;
 

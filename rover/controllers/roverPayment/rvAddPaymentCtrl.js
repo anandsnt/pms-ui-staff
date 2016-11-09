@@ -16,8 +16,8 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
                 $scope.hideCancelCard = false;
                 $scope.depositWithGiftCard = false;
                 setTimeout(function() {
-                    $scope.$broadcast('addNewCardClicked');//child element is the rvCardOptions.html
-                    $scope.$broadcast('hidePayCardToggles', {'isFromSwipe': true});//child element is the rvCardOptions.html
+                    $scope.$broadcast('addNewCardClicked');// child element is the rvCardOptions.html
+                    $scope.$broadcast('hidePayCardToggles', {'isFromSwipe': true});// child element is the rvCardOptions.html
                 }, 100);
             };
 

@@ -1,4 +1,4 @@
-/*FOR POTENTIAL FUTURE USE
+/* FOR POTENTIAL FUTURE USE
 	Switching to this form may reduce rendering time,
 	but has the trade off of janky scrolling
 */
@@ -14,7 +14,7 @@ var GridRowBackground = React.createClass({
 		var hourly_divs = [],
 			self = this;
 
-		/*Create hourly spans across each grid row*/
+		/* Create hourly spans across each grid row*/
 		for(var i = 0; i < this.props.display.hours; i++) {
 			hourly_divs.push(React.DOM.span({
 				key: 'date-time-' + i,

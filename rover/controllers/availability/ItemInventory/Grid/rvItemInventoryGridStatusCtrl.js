@@ -11,14 +11,14 @@ angular.module('sntRover').controller('rvItemInventoryGridStatusController', [
 
 		$scope.data = rvAvailabilitySrv.getGridDataForInventory();
 		
-		//if already fetched we will show without calling the API
+		// if already fetched we will show without calling the API
 		if(!isEmptyObject($scope.data)) {
 			$scope.refreshScroller('room_availability_scroller');
 			$scope.hideMeBeforeFetching = true;
 			$scope.$emit("hideLoader");
 		}
 
-		//we need horizonat scroller so adding option 'scrollX', also need to get the click event on toggling button on available room
+		// we need horizonat scroller so adding option 'scrollX', also need to get the click event on toggling button on available room
 		var scrollerOptions = {scrollX: true, preventDefault: false};
 
   		$scope.setScroller ('room_availability_scroller', scrollerOptions);
@@ -62,7 +62,7 @@ angular.module('sntRover').controller('rvItemInventoryGridStatusController', [
 		 * @return {Integer}
 		 */
 		$scope.getWidthForTable = function() {
-			//if no data exist we will just return 0
+			// if no data exist we will just return 0
 			if (!_.has($scope.data, 'dates')) {
 				return 0;
 			};
@@ -70,7 +70,7 @@ angular.module('sntRover').controller('rvItemInventoryGridStatusController', [
 				totalColumns 			= $scope.data && $scope.data.dates && $scope.data.dates.length,
 				individualColWidth 		= 0;
 
-			//on each column length, width is different
+			// on each column length, width is different
 			if (totalColumns <= 14) {
 				individualColWidth = 71;
 			}

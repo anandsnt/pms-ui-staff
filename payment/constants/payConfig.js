@@ -31,17 +31,17 @@ angular.module("sntPayConfig", []).constant("PAYMENT_CONFIG", Object.freeze({
     },
     "sixpayments": {
         iFrameUrl: "/api/ipage/index.html",
-        //Iframe loading url query string params
-        //Skelton
-        //TODO: need to use while constructing from the params from service
+        // Iframe loading url query string params
+        // Skelton
+        // TODO: need to use while constructing from the params from service
         params: {
-            //guest's first name
+            // guest's first name
             "card_holder_first_name": "",
-            //guest's last name
+            // guest's last name
             "card_holder_last_name": "",
             // service action is sent as createtoken ALWAYS now
             "service_action": "createtoken",
-            //current time stamp new Date() -> getTime()
+            // current time stamp new Date() -> getTime()
             "time": ""
         },
         jsLibrary: null,

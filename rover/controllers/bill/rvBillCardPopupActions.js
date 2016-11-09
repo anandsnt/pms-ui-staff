@@ -6,7 +6,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 
 	var refreshListWithData = function(data) {
 		$scope.init(data);
-		//expand list
+		// expand list
 		$scope.reservationBillData.bills[$scope.currentActiveBill].isOpenFeesDetails = true;
 		$scope.calculateHeightAndRefreshScroll();
 	};
@@ -125,7 +125,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 	};
 
 
-/*----------------------------edit charge drop down implementation--------------------------------------*/
+/* ----------------------------edit charge drop down implementation--------------------------------------*/
 	$scope.chargecodeData = {};
 	$scope.chargecodeData.chargeCodeSearchText = "";
 	$scope.selectedChargeCode = { description: '' };
@@ -148,9 +148,9 @@ sntRover.controller('rvBillCardPopupCtrl',
   	*/
   	var displayFilteredResultsChargeCodes = function() {
 
-	    //if the entered text's length < 3, we will show everything, means no filtering
+	    // if the entered text's length < 3, we will show everything, means no filtering
 	    if($scope.chargecodeData.chargeCodeSearchText.length < 3) {
-	      //based on 'is_row_visible' parameter we are showing the data in the template
+	      // based on 'is_row_visible' parameter we are showing the data in the template
 	      for(var i = 0; i < $scope.availableChargeCodes.length; i++) {
 	          $scope.availableChargeCodes[i].is_row_visible = false;
 	      }
@@ -160,8 +160,8 @@ sntRover.controller('rvBillCardPopupCtrl',
 	    }
 	    else{
 	      var value = "";
-	      //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
-	      //if it is zero, then we will request for webservice
+	      // searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
+	      // if it is zero, then we will request for webservice
 
 	      for(var i = 0; i < $scope.availableChargeCodes.length; i++) {
 	        value = $scope.availableChargeCodes[i];

@@ -6,7 +6,7 @@ admin.controller('ADSocialLobbySettingsCtrl', ['$scope', '$rootScope', '$state',
 	BaseCtrl.call(this, $scope);
 	$scope.errorMessage = '';
 
-	//scope varibales
+	// scope varibales
 	$scope.arrival_grace_days_list = [{'name': '1', 'value': '1'}, {'name': '2', 'value': '2'}, {'name': '3', 'value': '3'}, {'name': '4', 'value': '4'}, {'name': '5', 'value': '5'}];
 	$scope.departure_grace_days_list = [{'name': '1', 'value': '1'}, {'name': '2', 'value': '2'}, {'name': '3', 'value': '3'}, {'name': '4', 'value': '4'}, {'name': '5', 'value': '5'}];
 
@@ -20,7 +20,7 @@ admin.controller('ADSocialLobbySettingsCtrl', ['$scope', '$rootScope', '$state',
 
 	};
 
-	//fetching the settings details
+	// fetching the settings details
 	$scope.invokeApi(ADSocialLobbySrv.fetchSettingsDetails, {}, fetchCompletedOfSettingsDetails);
 
 
@@ -40,7 +40,7 @@ admin.controller('ADSocialLobbySettingsCtrl', ['$scope', '$rootScope', '$state',
 		postingData.arrival_grace_days = $scope.data.arrival_grace_days;
 		postingData.departure_grace_days = $scope.data.departure_grace_days;
 
-		//calling the save api
+		// calling the save api
 		$scope.invokeApi(ADSocialLobbySrv.saveSocialLobbySettings, postingData, successCallbackOfSaveDetails);
 	};
 

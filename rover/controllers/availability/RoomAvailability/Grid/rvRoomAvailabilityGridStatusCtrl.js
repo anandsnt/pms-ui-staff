@@ -11,12 +11,12 @@ angular.module('sntRover').controller('rvRoomAvailabilityGridStatusController', 
 			initToggleStatus();
 			$scope.data = rvAvailabilitySrv.getGridData();
 
-			//we need horizonat scroller so adding option 'scrollX', also need to get the click event on toggling button on available room
+			// we need horizonat scroller so adding option 'scrollX', also need to get the click event on toggling button on available room
 			var scrollerOptions = {scrollX: true, preventDefault: false};
 
   			$scope.setScroller ('room_availability_scroller', scrollerOptions);
 
-  			//if already fetched we will show without calling the API
+  			// if already fetched we will show without calling the API
 			if(!isEmptyObject($scope.data)) {
 				$scope.refreshScroller('room_availability_scroller');
 				$scope.hideMeBeforeFetching = true;
@@ -34,7 +34,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGridStatusController', 
 			$scope.toggleStatusOf['roomInventory'] = false;
 		};
 
-        //-------------------------------------------------------------------------------------------------------------- GRID DETAILED VIEW
+        // -------------------------------------------------------------------------------------------------------------- GRID DETAILED VIEW
         /**
          * NOTE: The below three methods handle the Expanded view of the Availability Grid
          * To start with A. Occupancy B. Available Rooms C. Rooms Sold are collapsed
@@ -83,7 +83,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGridStatusController', 
                 (!$scope.data.additionalData ||
                 !$scope.data.additionalData.adultsChildrenCounts ||
                 !$scope.data.additionalData.roomTypeWiseDetails)) {
-                //get adultsChildrenCounts
+                // get adultsChildrenCounts
                 $scope.callAPI(rvAvailabilitySrv.getOccupancyCount, {
                     params: $scope.getDateParams(),
                     successCallBack: function() {
@@ -98,11 +98,11 @@ angular.module('sntRover').controller('rvRoomAvailabilityGridStatusController', 
         };
 
         $scope.toggleRoomInventory = function() {
-            //This detailed view will have data from the initial API call
+            // This detailed view will have data from the initial API call
             $scope.toggleStatusOf['roomInventory'] = !$scope.toggleStatusOf['roomInventory'];
             $scope.refreshScroller('room_availability_scroller');
         }
-        //--------------------------------------------------------------------------------------------------------------
+        // --------------------------------------------------------------------------------------------------------------
 
         $scope.$on('$includeContentLoaded', function(event) {
 			$scope.$emit("hideLoader");

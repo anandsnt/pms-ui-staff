@@ -54,7 +54,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 title = $filter('translate')('NEW_ALLOTMENT');
             }
 
-            //yes, we are setting the headting and title
+            // yes, we are setting the headting and title
             $scope.setHeadingTitle(title);
         };
 
@@ -63,7 +63,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          * @return {Boolean} [description]
          */
         $scope.shouldShowRoomingListTab = function() {
-            //we will not show it in add mode
+            // we will not show it in add mode
             return (!$scope.isInAddMode());
         };
 
@@ -173,10 +173,10 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          */
         $scope.switchTabTo = function(tab) {
 
-            //if there was any error message there, we are clearing
+            // if there was any error message there, we are clearing
             $scope.errorMessage = '';
 
-            //allow to swith to "transactions" tab only if the user has its permission
+            // allow to swith to "transactions" tab only if the user has its permission
             if (tab === "TRANSACTIONS" && !$scope.hasPermissionToViewTransactionsTab()) {
                 $scope.errorMessage = ["Sorry, you don't have the permission to access the transactions"];
                 return;
@@ -194,7 +194,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
 
             $scope.allotmentConfigData.activeTab = tab;
 
-            //propogating an event that next clients are
+            // propogating an event that next clients are
             $timeout(function() {
                 $scope.$broadcast('ALLOTMENT_TAB_SWITCHED', $scope.allotmentConfigData.activeTab);
             }, 100);
@@ -216,7 +216,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             angular.forEach($scope.transactionsDetails.bills, function(value, key) {
                 angular.forEach(value.total_fees.fees_details, function(feesValue, feesKey) {
 
-                    feesValue.billValue = value.bill_number; //Bill value append with bill details
+                    feesValue.billValue = value.bill_number; // Bill value append with bill details
                     feesValue.oldBillValue = value.bill_number; // oldBillValue used to identify the old billnumber
                 });
             });
@@ -319,7 +319,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
 
         var refreshSummaryDataAfterUpdate = false;
         var onAllotmentUpdateSuccess = function(data) {
-            //client controllers should get an infromation whether updation was success
+            // client controllers should get an infromation whether updation was success
             $scope.$broadcast("UPDATED_ALLOTMENT_INFO", angular.copy($scope.allotmentConfigData.summary));
             $scope.allotmentSummaryMemento = angular.copy($scope.allotmentConfigData.summary);
 
@@ -331,7 +331,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             return true;
         };
         var onAllotmentUpdateFailure = function(errorMessage) {
-            //client controllers should get an infromation whether updation was a failure
+            // client controllers should get an infromation whether updation was a failure
             $scope.$broadcast("FAILED_TO_UPDATE_ALLOTMENT_INFO", errorMessage);
             $scope.errorMessage = errorMessage;
             refreshSummaryDataAfterUpdate = false;
@@ -377,7 +377,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          * @return undefined
          */
         $scope.duplicateAllotment = function() {
-            //TODO: Duplicate Allotment - Future functionality
+            // TODO: Duplicate Allotment - Future functionality
         };
 
         /**
@@ -437,7 +437,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          * @return {None}
          */
         var initializeAutoCompletions = function() {
-            //this will be common for both company card & travel agent
+            // this will be common for both company card & travel agent
             var cardsAutoCompleteCommon = {
 
                 focus: function(event, ui) {
@@ -445,7 +445,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 }
             };
 
-            //merging auto complete setting for company card with common auto cmplt options
+            // merging auto complete setting for company card with common auto cmplt options
             $scope.companyAutoCompleteOptions = angular.extend({
                 source: function(request, response) {
                     rvAllotmentConfigurationSrv.searchCompanyCards(request.term)
@@ -486,7 +486,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 }
             }, cardsAutoCompleteCommon);
 
-            //merging auto complete setting for travel agent with common auto cmplt options
+            // merging auto complete setting for travel agent with common auto cmplt options
             $scope.travelAgentAutoCompleteOptions = angular.extend({
                 source: function(request, response) {
                     rvAllotmentConfigurationSrv.searchTravelAgentCards(request.term)
@@ -563,7 +563,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 callback: 'updateAndBack',
                 scope: $scope
             };
-            //setting title and things
+            // setting title and things
             setTitle();
         };
 
@@ -593,13 +593,13 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          */
         var initAllotmentConfig = function() {
 
-            //forming the data model if it is in add mode or populating the data if it is in edit mode
+            // forming the data model if it is in add mode or populating the data if it is in edit mode
             $scope.initializeDataModelForSummaryScreen();
 
-            //auto completion things
+            // auto completion things
             initializeAutoCompletions();
 
-            //back navigation
+            // back navigation
             setBackNavigation();
         };
 

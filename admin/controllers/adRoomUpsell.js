@@ -113,12 +113,12 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
         if (nextday) {
             n = 'next_day_room_types', s = 'next_day_selected_room_type';
         }
-        //While addig a room type, making its max_los defaults to 0.
+        // While addig a room type, making its max_los defaults to 0.
         angular.forEach($scope.upsellData[n], function (item, index) {
             if (item.id === parseInt($scope.upsellData[s])) {
               // CICO-32613: Do not reset existing value.
               if (!item.max_los) {
-                item.max_los = 0;//this makes the added room type visible in the ui
+                item.max_los = 0;// this makes the added room type visible in the ui
               }
             }
         });
@@ -156,7 +156,7 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
      */
     
     $scope.deleteRoomType = function (value, name, nextday) {
-        //var data = {"value": value, "name": name};
+        // var data = {"value": value, "name": name};
         var losSet = function(n) {
             var t = 'room_types';
 
@@ -169,7 +169,7 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
         };
 
         if (nextday) {
-            //$scope.upsellData['next_day_room_types_list'].push(data);
+            // $scope.upsellData['next_day_room_types_list'].push(data);
             losSet(true);
             $scope.upsellData['next_day_deleted_room_types'].push(value);
             isNextDayRoomTypesSelected();
@@ -216,7 +216,7 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
       
       
       
-      //Creating room type array with available max_late_checkouts data
+      // Creating room type array with available max_late_checkouts data
       angular.forEach($scope.upsellData.room_types, function (item, index) {
         if (item.max_los !== '') {
           var obj = {"id": item.id.toString(), "max_los": item.max_los.toString(), "allow_rover_overwrite": item.allow_rover_overwrite.toString()};

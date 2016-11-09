@@ -31,7 +31,7 @@ angular.module('sntRover').controller('RateMgrOccupancyGraphCtrl', ['$q', '$scop
         $scope.seriesActualVisible = true;
         $scope.seriesTargetVisible = true;
 
-        //INIT GRAPH DIMENSIONS AND SPATIAL PROPERTIES
+        // INIT GRAPH DIMENSIONS AND SPATIAL PROPERTIES
         (function() {
             var height = $(window).height() - 80,
                 width = $(window).width() - 265;
@@ -79,13 +79,13 @@ angular.module('sntRover').controller('RateMgrOccupancyGraphCtrl', ['$q', '$scop
             angular.forEach(data.results, function(item, index) {
                 var valueActual, valueTarget, actual;
 
-                itemDate = Date.parse(item.date); //parse string datetime value to locale ms
+                itemDate = Date.parse(item.date); // parse string datetime value to locale ms
 
                 if(index === 0) {
                     start = itemDate;
                 }
 
-                toolTipLookUp[itemDate] = Object.create(null); //lookup hash
+                toolTipLookUp[itemDate] = Object.create(null); // lookup hash
 
                 categories.push(dateFilter(itemDate, "EEEE") + "<br>" + dateFilter(itemDate, "MMMM dd"));
 
@@ -380,7 +380,7 @@ angular.module('sntRover').controller('RateMgrOccupancyGraphCtrl', ['$q', '$scop
                                     display: 'block',
                                     textAlign: 'center',
                                     textTransform: 'uppercase',
-                                    color: '#666', //#fcfcfc',
+                                    color: '#666', // #fcfcfc',
                                     height: '60px',
                                     lineHeight: 'normal',
                                     fontSize: '12px',

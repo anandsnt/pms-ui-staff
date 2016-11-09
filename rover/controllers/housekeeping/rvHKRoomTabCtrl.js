@@ -59,7 +59,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 		// captures the oo/os status details in this
 		$scope.editService = {};
 
-		//CICO-12520
+		// CICO-12520
 		/**
 		 * This object would contain the service status of the room in the view
 		 * @type {Object}
@@ -72,7 +72,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 
 		$scope.timeSelectorList = util.getListForTimeSelector (intervalForTimeSelector, mode);
 
-		//for fixing the issue of 24 hour long OOO thing
+		// for fixing the issue of 24 hour long OOO thing
 		$scope.timeSelectorList.push ({
 			text: "11:59 PM",
 			value: "23:59"
@@ -92,7 +92,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 			var reasonID = selectedHash.reason_id;
 			var comment = selectedHash.comments;
 
-			/***
+			/** *
 			 *	Sadly the fetch for server API has
 			 *	different key names, so we cant just assign the data
 			 *
@@ -101,7 +101,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 			 */
 			$scope.editService.selected_date = selectedDate;
 			$scope.editService.from_date = selectedDate;
-			//CICO-35456 - set the default to _date as business date
+			// CICO-35456 - set the default to _date as business date
 			$scope.editService.to_date = selectedDate;
 			$scope.editService.reason_id = reasonID;
 			$scope.editService.comment = comment;
@@ -315,7 +315,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldShowTimeSelector = function() {
-			//as per CICO-11840 we will show this for hourly hotels only
+			// as per CICO-11840 we will show this for hourly hotels only
 			return $rootScope.isHourlyRateOn
 		};
 
@@ -398,13 +398,13 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 		 * when it is locked via web api interface or it is already assigned
 		 */
 		$scope.checkWhetherRoomStatusChangePossible = function() {
-			//As per requirement initially we are restricting this feature to hourly hotels only
+			// As per requirement initially we are restricting this feature to hourly hotels only
 			if (!$rootScope.isHourlyRateOn) {
 				$scope.update ();
 				return;
 			}
 
-			//for hourly hotels as of now
+			// for hourly hotels as of now
 			var params = {
 				from_date: getApiFormattedDate($scope.updateService.from_date),
 				to_date: getApiFormattedDate($scope.updateService.to_date),
@@ -535,7 +535,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 					selectedServiceData = $scope.serviceStatus[getApiFormattedDate($scope.updateService.selected_date)],
 					hourlyEnabledHotel 	= $rootScope.isHourlyRateOn;
 
-				//CICO-11840
+				// CICO-11840
 				if (isNotInService && hourlyEnabledHotel) {
 					$scope.updateService.begin_time 	= selectedServiceData.from_time;
 					$scope.updateService.end_time 		= selectedServiceData.to_time;

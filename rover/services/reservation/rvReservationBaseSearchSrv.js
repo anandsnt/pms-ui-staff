@@ -9,11 +9,11 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             'businessDate': {}
         };
 
-        //-------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
+        // -------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
 
         this.cache = {
             config: {
-                lifeSpan: 3600 //in seconds
+                lifeSpan: 3600 // in seconds
             },
             responses: {
                 restrictionTypes: null,
@@ -24,11 +24,11 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             }
         }
 
-        //-------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
+        // -------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
 
 
 
-        //This method returns the default view chosen in the Admin/Reservation/Reservation Settings
+        // This method returns the default view chosen in the Admin/Reservation/Reservation Settings
         this.getRoomRatesDefaultView = function() {
             var view = "ROOM_TYPE";
 
@@ -152,7 +152,7 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             }
 
             if (!!param.promotion_code) {
-                url += '&promotion_code=' + encodeURI(param.promotion_code); //to handle special characters
+                url += '&promotion_code=' + encodeURI(param.promotion_code); // to handle special characters
             }
 
             if (!!param.allotment_id) {

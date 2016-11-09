@@ -8,7 +8,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 	'zsCheckoutSrv', '$timeout',
 	function($scope, $state, zsEventConstants, zsModeConstants, $stateParams, $sce, zsCheckoutSrv, $timeout) {
 
-		/********************************************************************************
+		/** ******************************************************************************
 		 **		Expected state params -----> nothing			  
 		 **		Exit function -> findReservationSuccess								
 		 **																		 
@@ -30,7 +30,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		 * @return {[type]} 
 		 */
 		$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-			$state.go('zest_station.checkoutSearchOptions'); //go back to checkout options
+			$state.go('zest_station.checkoutSearchOptions'); // go back to checkout options
 		});
 
 		$scope.navToPrev = function() {
@@ -99,7 +99,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 
 			$scope.callAPI(zsCheckoutSrv.fetchReservationFromUId, options);
 		};
-		/********************************************************************************
+		/** ******************************************************************************
 		 *  Websocket actions related to keycard lookup
 		 *  starts here
 		 ********************************************************************************/
@@ -116,7 +116,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		$scope.$on('SOCKET_CONNECTED', function() {
 			$scope.socketOperator.InsertKeyCard();
 		});
-		/********************************************************************************
+		/** ******************************************************************************
 		 *  Websocket actions related to keycard lookup
 		 *  ends here
 		 ********************************************************************************/
@@ -125,14 +125,14 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 			$timeout(function() {
 				// so inorder to avoid a possible error because of
 				// wrong timing adding a buffer of 1.5 seconds
-				$scope.socketBeingConnected = false; //connection success
+				$scope.socketBeingConnected = false; // connection success
 			}, 1000);
 
 		};
 		var init = function() {
 			setTimeOutFunctionToEnsureSocketIsOpened();
 			console.info("websocket: readyState -> " + $scope.socketOperator.returnWebSocketObject().readyState);
-			//open socket if not in open state
+			// open socket if not in open state
 			($scope.socketOperator.returnWebSocketObject().readyState !== 1) ? $scope.$emit('CONNECT_WEBSOCKET'): $scope.socketOperator.InsertKeyCard();
 		};
 

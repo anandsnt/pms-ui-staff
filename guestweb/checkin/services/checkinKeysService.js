@@ -21,7 +21,7 @@
 
 		var fetchNoOfKeysData =  function(data) {
 				var deferred = $q.defer();
-				//var url = '/guest_web/reservations/'+data.reservation_id+'.json';
+				// var url = '/guest_web/reservations/'+data.reservation_id+'.json';
 				var url = '/guest_web/zest_web_keys/'+data.reservation_id+'.json';
 
 				$http.get(url, {params: data}).success(function(response) {

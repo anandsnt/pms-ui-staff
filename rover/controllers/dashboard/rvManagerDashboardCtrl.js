@@ -1,8 +1,8 @@
 sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$state', '$vault', 'RVDashboardSrv', '$timeout', function($scope, $rootScope, $state, $vault, RVDashboardSrv, $timeout) {
-  //inheriting some useful things
+  // inheriting some useful things
   BaseCtrl.call(this, $scope);
   var that = this;
-  //scroller related settings
+  // scroller related settings
   var scrollerOptions = {
     preventDefault: false
   };
@@ -10,9 +10,9 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
   $scope.isStatisticsOpened = false;
   $scope.setScroller('dashboard_scroller', scrollerOptions);
 
-  //changing the header
+  // changing the header
   $scope.$emit("UpdateHeading", 'DASHBOARD_MANAGER_HEADING');
-  $scope.showDashboard = true; //variable used to hide/show dabshboard
+  $scope.showDashboard = true; // variable used to hide/show dabshboard
 
   // we are hiding the search results area
   $scope.$broadcast("showSearchResultsArea", false);
@@ -23,14 +23,14 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
   $scope.dayAfterTomorrow.setDate($scope.tomorrow.getDate() + 1);
 
   $scope.$on("$includeContentLoaded", function() {
-      //we are showing the add new guest button in searhc only if it is standalone & search result is empty
+      // we are showing the add new guest button in searhc only if it is standalone & search result is empty
       if($rootScope.isStandAlone) {
           $scope.$broadcast("showAddNewGuestButton", true);
       }
   });
 
 
-  //we are setting the header accrdoing to manager's dashboard
+  // we are setting the header accrdoing to manager's dashboard
   $scope.$emit("UpdateHeading", 'DASHBOARD_MANAGER_HEADING');
 
   /*
@@ -65,7 +65,7 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
     $scope.$broadcast("updateReservationTypeFromOutside", type);
   });
 
-  //show Latecheckout icon
+  // show Latecheckout icon
   $scope.shouldShowLateCheckout = true;
   $scope.shouldShowQueuedRooms = true;
 
@@ -103,13 +103,13 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
   $scope.$on("UPDATE_MANAGER_DASHBOARD", function() {
     $scope.$emit("UpdateHeading", 'DASHBOARD_MANAGER_HEADING');
   });
-  //scroller is not appearing after coming back from other screens
+  // scroller is not appearing after coming back from other screens
   setTimeout(function() {
     $scope.refreshScroller('dashboard_scroller');
   }, 500);
 
 
-  //Function to be deleted - CICO-9433 - Sample button in dashboard screen
+  // Function to be deleted - CICO-9433 - Sample button in dashboard screen
   $scope.setReservationDataFromDiaryScreen = function() {
     var temporaryReservationDataFromDiaryScreen = {
 
@@ -161,13 +161,13 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
         $scope.$emit('hideLoader');
 
       };
-  //Invoke the api only when the statistic block is opened
+  // Invoke the api only when the statistic block is opened
   var requestParams = {
     'show_adr': true,
     'show_upsell': true,
     'show_rate_of_day': true
   };
-  //CICO-31344
+  // CICO-31344
 
   if(!$scope.isStandAlone) {
     requestParams.show_adr = false;

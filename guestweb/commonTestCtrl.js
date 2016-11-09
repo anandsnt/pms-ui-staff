@@ -38,7 +38,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
   loadAssets('/assets/apple-touch-startup-image-1536x2008.png', 'apple-touch-startup-image', '', '(device-width: 768px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)');
   loadAssets('/assets/apple-touch-startup-image-2048x1496.png', 'apple-touch-startup-image', '', '(device-width: 768px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)');
 
-  //store basic details as rootscope variables
+  // store basic details as rootscope variables
 
   $rootScope.hotelName     = reservationAndhotelData.hotelName;
   $rootScope.currencySymbol= reservationAndhotelData.currencySymbol;
@@ -92,14 +92,14 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
   $rootScope.collectCCOnCheckin = (reservationAndhotelData.checkinCollectCc === "true") ? true:false;
   $rootScope.isMLI = (reservationAndhotelData.paymentGateway  = "MLI") ? true : false;
 
-  //room key delivery options
+  // room key delivery options
   $rootScope.preckinCompleted =  false;
   $rootScope.userEmail = reservationAndhotelData.primaryGuestEmail;
   $rootScope.keyDeliveryByEmail = true;
-  //$rootscope.keyDeliveryByText  = true;
+  // $rootscope.keyDeliveryByText  = true;
 
 
-    //Params for zest mobile and desktop screens
+    // Params for zest mobile and desktop screens
     if(reservationAndhotelData.hasOwnProperty('isPasswordReset')) {
       $rootScope.isPasswordResetView = reservationAndhotelData.isPasswordReset;
       $rootScope.isTokenExpired = reservationAndhotelData.isTokenExpired === "true"? true: false;
@@ -108,7 +108,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
       $rootScope.user_name = reservationAndhotelData.login;
     }
 
-    //work around to fix flashing of logo before app loads
+    // work around to fix flashing of logo before app loads
     $timeout(function() {
         $rootScope.hotelLogo     = reservationAndhotelData.hotelLogo;
     }, 750);
@@ -116,7 +116,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
   if(typeof reservationAndhotelData.accessToken !== "undefined") {
     $rootScope.accessToken = reservationAndhotelData.accessToken  ;
   }
-  //navigate to different pages
+  // navigate to different pages
 
   if(reservationAndhotelData.checkinUrlVerification === "true" && reservationAndhotelData.isZestCheckin ==="false") {
     $location.path('/guestCheckinTurnedOff');
@@ -125,22 +125,22 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
     $location.path('/externalCheckinVerification'); // external checkin URL available and is on
   }
   else if(reservationAndhotelData.isExternalVerification ==="true") {
-    $location.path('/externalVerification'); //external checkout URL
+    $location.path('/externalVerification'); // external checkout URL
   }
   else if(reservationAndhotelData.isPrecheckinOnly  ==='true' && reservationAndhotelData.reservationStatus ==='RESERVED' && !(reservationAndhotelData.isAutoCheckin === 'true')) {
     $location.path('/tripDetails');// only available for Fontainbleau -> precheckin + sent to que
   }
   else if (reservationAndhotelData.isPrecheckinOnly  ==='true' && reservationAndhotelData.reservationStatus ==='RESERVED' && (reservationAndhotelData.isAutoCheckin === 'true')) {
-    $location.path('/checkinConfirmation');//checkin starting -> page precheckin + auto checkin
+    $location.path('/checkinConfirmation');// checkin starting -> page precheckin + auto checkin
   }
   else if($rootScope.isCheckedin) {
-    $location.path('/checkinSuccess');//already checked in
+    $location.path('/checkinSuccess');// already checked in
   }
     else if(reservationAndhotelData.isCheckin ==='true') {
-    $location.path('/checkinConfirmation');//checkin starting page -> precheckin turned off
+    $location.path('/checkinConfirmation');// checkin starting page -> precheckin turned off
   }
     else if($rootScope.isCheckedout)  {
-    $location.path('/checkOutStatus');//already checked out
+    $location.path('/checkOutStatus');// already checked out
   }
   else if($rootScope.hasOwnProperty('isPasswordResetView')) {
     var path = $rootScope.isPasswordResetView === 'true'? '/resetPassword' : '/emailVerification';
@@ -163,7 +163,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
   $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       // Hide loading message
       console.error(error);
-      //TODO: Log the error in proper way
+      // TODO: Log the error in proper way
     });
 }]);
 
@@ -202,7 +202,7 @@ var loadAssets = function(filename, rel, type, media) {
 
     $rootScope.isRoomVerified =  false;
     $scope.roomNumber = "";
-//setup options for error popup
+// setup options for error popup
 $scope.opts = {
   backdrop: true,
   backdropClick: true,
@@ -280,7 +280,7 @@ var roomVerificationErrorModalCtrl = function ($scope, $modalInstance) {
   sntGuestWeb.controller('checkOutConfirmationController', dependencies);
 })();
 
-///
+// /
 
 
 
@@ -297,7 +297,7 @@ sntGuestWeb.filter('customizeLabelText', function () {
 
 
 
-////
+// //
 /*
 Balance Ctrl where the reservation balance is shown
 */
@@ -311,7 +311,7 @@ $rootScope.showBill = $scope.showBill;
 $scope.netWorkError = false;
 $scope.isFetching = true;
 
-//fetch data to display
+// fetch data to display
 
 var response = {
   "status": "success",
@@ -505,7 +505,7 @@ var verificationModalCtrl = function ($scope, $modalInstance, $state) {
 
 };
 
-//////////////////////// checkoutt late////////////
+// ////////////////////// checkoutt late////////////
 /*
 Late checkout option Ctrl where user can opt a later checkout time
 */
@@ -565,7 +565,7 @@ New checkout time is set and an option to continue the checkout process is prese
 })();
 
 
-///cc
+// /cc
 
 
 (function() {
@@ -580,7 +580,7 @@ New checkout time is set and an option to continue the checkout process is prese
 
    
       $scope.pageValid = true;
-  //}
+  // }
 
     if($scope.pageValid) {
       $scope.roomVerificationInstruction = "ddebfiebhfi hjevuebfbe ehdved e hdevdb ed e dh ed ejd e dkj edj ejd e de dnendn"
@@ -638,12 +638,12 @@ New checkout time is set and an option to continue the checkout process is prese
 
       $scope.netWorkError = false;
 
-//set merchant id
+// set merchant id
 
 HostedForm.setMerchant($rootScope.mliMerchatId);
 
 
-//setup options for error popup
+// setup options for error popup
 
 $scope.cardErrorOpts = {
   backdrop: true,
@@ -737,7 +737,7 @@ var ccVerificationModalCtrl = function ($scope, $modalInstance, $state, errorMes
 };
 
 
-////////////////// checkin
+// //////////////// checkin
 /*
 Checkin confimation Ctrl 
 The user enetered card number and departure number are verified.
@@ -758,13 +758,13 @@ The reservation details will be the  in the API response of the verification API
     else{
       $scope.pageValid = true;
     }
-//uncheck checkbox in reservation details page
+// uncheck checkbox in reservation details page
 
 $rootScope.checkedApplyCharges = false;
 $scope.minDate  = $rootScope.businessDate;
 $scope.cardDigits = '';
 
-//setup options for modal
+// setup options for modal
 $scope.opts = {
   backdrop: true,
   backdropClick: true,
@@ -774,18 +774,18 @@ $scope.opts = {
 
 if($scope.pageValid) {
 
-//set up flags related to webservice
+// set up flags related to webservice
 $scope.isPosting     = false;
 $rootScope.netWorkError  = false;
 
 
-//next button clicked actions
+// next button clicked actions
 $scope.nextButtonClicked = function() {
   var data = {'departure_date': dateToSend, 'credit_card': $scope.cardDigits, 'reservation_id': $rootScope.reservationID};
 
   $scope.isPosting     = true;
 
-//call service
+// call service
 // checkinConfirmationService.login(data).then(function(response) {
   $scope.isPosting = false;
   response = {data: {}};
@@ -815,7 +815,7 @@ $rootScope.roomUpgradeheading = "Your trip details";
 $scope.isResponseSuccess = true;
 checkinDetailsService.setResponseData(response.data);
 $rootScope.upgradesAvailable = (response.data.is_upgrades_available === "true") ? true :  false;
-//navigate to next page
+// navigate to next page
 $state.go('checkinReservationDetails');
 }
 
@@ -868,14 +868,14 @@ Reservation details are shown in this page.
 
     if($scope.pageValid) {
       $rootScope.ShowupgradedLabel = true;
-//check if checkbox was already checked (before going to upgrades)
+// check if checkbox was already checked (before going to upgrades)
 $scope.checked =  ($rootScope.ShowupgradedLabel) ? true:true;
 $scope.reservationData = checkinDetailsService.getResponseData();
 $scope.reservationData.terms_and_conditions = " Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.33"
 $rootScope.confirmationNumber = $scope.reservationData.confirm_no;
 $scope.showTermsPopup = false;
 
-//setup options for modal
+// setup options for modal
 $scope.opts = {
   backdrop: true,
   backdropClick: true,
@@ -884,7 +884,7 @@ $scope.opts = {
 };
 
 $scope.termsClicked = function() {
-//alert("vefhcgh")
+// alert("vefhcgh")
 $scope.showTermsPopup = true;
 };
 
@@ -908,8 +908,8 @@ if($rootScope.upgradesAvailable) {
 else{
   if($rootScope.isAutoCheckinOn) {
     $state.go('checkinArrival');
-//$state.go('guestDetails');  
-//$state.go('checkinUpgrade');
+// $state.go('guestDetails');  
+// $state.go('checkinUpgrade');
 }
 else{
   $state.go('guestDetails');
@@ -967,7 +967,7 @@ This displays the available rooms for upgrading.
 
     if($scope.pageValid) {
       $scope.slides = [];
-//set up flags related to webservice
+// set up flags related to webservice
 
 $scope.isFetching     = false;
 $rootScope.netWorkError  = false;
@@ -1081,7 +1081,7 @@ The user can change the estimated time of arrival from here and optionally add c
 
       if(typeof $rootScope.earlyCheckinRestrictHour !=="undefined") {
         $scope.earlyCheckinRestrictLimit = $rootScope.earlyCheckinRestrictHourForDisplay+":"+$rootScope.earlyCheckinRestrictMinute+" "+$rootScope.earlyCheckinRestrictPrimetime;
-//restrict time before earlyCheckinRestrictTime
+// restrict time before earlyCheckinRestrictTime
 if($rootScope.earlyCheckinRestrictPrimetime === "PM") {
   $scope.primeTimes = $scope.primeTimes.slice(1);
   if( $rootScope.earlyCheckinRestrictHour !=="12") {
@@ -1125,7 +1125,7 @@ init();
 
 $scope.postStayDetails = function() {
   $scope.isLoading = true;
-//change format to 24 hours
+// change format to 24 hours
 var hour = parseInt($scope.stayDetails.hour);
 
 if ($scope.stayDetails.primeTime === 'PM' && hour < 12) {
@@ -1320,7 +1320,7 @@ update the guest details here.
       $scope.guestDetails.day   = 11;
       $scope.guestDetails.month = 11;
       $scope.guestDetails.year  = 1988;
-//fetch country list
+// fetch country list
 $scope.isLoading = true;
 guestDetailsService.fetchCountryList().then(function(response) {
   $scope.countries = response;
@@ -1357,7 +1357,7 @@ $scope.opts = {
   controller: ModalInstanceCtrl
 };
 
-//post guest details
+// post guest details
 $scope.postGuestDetails = function() {
 
       $scope.isLoading  = false;
@@ -1392,7 +1392,7 @@ display the QR code ,else the text enterd in room key delivery in the admin sett
 (function() {
   var checkInKeysController = function($scope, $rootScope, $http, $location, checkinDetailsService, checkinKeysService, $state) {
 
-//set up flags related to webservice
+// set up flags related to webservice
 $scope.isPosting     = false;
 $rootScope.netWorkError  = false;
 $scope.responseData  = [];
@@ -1566,22 +1566,22 @@ Precheckin final Ctrl where the pre checkin API is called
         return age;
     };
 
-    //check if guest is above age set in hotel admin
-    //else redirect to front desk
+    // check if guest is above age set in hotel admin
+    // else redirect to front desk
     var checkIfGuestIsEligible = function() {
           $scope.isLoading  = false;
           $rootScope.isBirthdayVerified =  true;
           goToNextStep();
     };
 
-    //post guest details
+    // post guest details
     $scope.postGuestDetails = function() {
 
         checkIfGuestIsEligible();
       
     };
 
-    //skip the birthday
+    // skip the birthday
     $scope.skip = function() {
       goToNextStep();
     };
@@ -1647,7 +1647,7 @@ sntGuestWeb.controller('birthDateDetailsController', dependencies);
           $scope.isLoading = false;
           $scope.emailUpdated = true;
         }, function() {
-          //$scope.netWorkError = true;
+          // $scope.netWorkError = true;
           $scope.isLoading = false;
             $modal.open(emailErrorOpts);
         });

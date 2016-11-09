@@ -10,7 +10,7 @@ angular.module('sntRover').controller('guestCardController', [
 		};
 
 		$scope.cardVisible = false;
-		//init activeCard as the companyCard
+		// init activeCard as the companyCard
 		$scope.activeCard = "companyCard";
 		$scope.isPrintArStatement = false;
 		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
@@ -187,7 +187,7 @@ angular.module('sntRover').controller('guestCardController', [
 
 		$scope.$on('reservationCardisClicked', function() {
 
-			$("#guest-card").css("height", $scope.resizableOptions.minHeight); //against angular js practice, sorry :(
+			$("#guest-card").css("height", $scope.resizableOptions.minHeight); // against angular js practice, sorry :(
 			$scope.guestCardVisible = false;
 			$scope.cardVisible = false;
 		});
@@ -195,7 +195,7 @@ angular.module('sntRover').controller('guestCardController', [
 		 * for dragging of guest card
 		 */
 		$scope.guestCardVisible = false;
-		//varibale used to determine whether to show guest card's different tabs
+		// varibale used to determine whether to show guest card's different tabs
 		$scope.guestCardHeight = 90;
 
 		/**
@@ -231,7 +231,7 @@ angular.module('sntRover').controller('guestCardController', [
 			maxHeight: resizableMaxHeight,
 			handles: 's',
 			resize: function(event, ui) {
-				if ($(this).height() > 120 && !$scope.guestCardVisible) { //against angular js principle, sorry :(
+				if ($(this).height() > 120 && !$scope.guestCardVisible) { // against angular js principle, sorry :(
 					$scope.guestCardVisible = true;
 					$scope.cardVisible = true;
 					$scope.$emit('GUESTCARDVISIBLE', true);
@@ -341,7 +341,7 @@ angular.module('sntRover').controller('guestCardController', [
 				$scope.reservationData.guest.email = that.newUpdatedData.email;
 				// update few of the details to searchSrv
 				updateSearchCache();
-				//to reset current data in contcat info for determining any change
+				// to reset current data in contcat info for determining any change
 				$scope.$broadcast("RESETCONTACTINFO", that.newUpdatedData);
 			};
 
@@ -381,13 +381,13 @@ angular.module('sntRover').controller('guestCardController', [
 
 			$event.stopPropagation();
 			$event.stopImmediatePropagation();
-			//if the main menu is open close the same
+			// if the main menu is open close the same
 			if ($scope.isMenuOpen()) {
 				$scope.closeDrawer();
 				return false;
 			}
 			if (getParentWithSelector($event, document.getElementsByClassName("ui-resizable-handle")[0])) {
-				//save contact info
+				// save contact info
 				$scope.$broadcast('saveContactInfo');
 				$scope.$broadcast('SAVELIKES');
 				if (parseInt($scope.eventTimestamp)) {
@@ -531,7 +531,7 @@ angular.module('sntRover').controller('guestCardController', [
 		 */
 		$scope.closeGuestCard = function() {
 			$scope.guestCardHeight = resizableMinHeight;
-			//Check if pending removals - If yes remove
+			// Check if pending removals - If yes remove
 			$scope.handleDrawClosing();
 			$scope.cardVisible = false;
 			$scope.guestCardVisible = false;
@@ -881,7 +881,7 @@ angular.module('sntRover').controller('guestCardController', [
 						code: $scope.searchData.groupCard.code,
 						from_date: $scope.reservationData.arrivalDate,
 						to_date: $scope.reservationData.departureDate,
-                        is_take_from_inventory: true //https://stayntouch.atlassian.net/browse/CICO-24923
+                        is_take_from_inventory: true // https://stayntouch.atlassian.net/browse/CICO-24923
 					},
 					successCallBack: onGroupSearchSuccess,
 					failureCallBack: onGroupSearchFailure
@@ -948,7 +948,7 @@ angular.module('sntRover').controller('guestCardController', [
 							companyData.email = item.email;
 							companyData.phone = item.phone;
 							$scope.searchedCompanies.push(companyData);
-							/*Account Address*/
+							/* Account Address*/
 							companyData.account_address = item.account_address;
 						}
 					});
@@ -986,7 +986,7 @@ angular.module('sntRover').controller('guestCardController', [
 
 							travelAgentData.id = item.id;
 							travelAgentData.account_name = item.account_name;
-							/*Account address*/
+							/* Account address*/
 							travelAgentData.account_address = item.account_address;
 
 							travelAgentData.account_type = item.account_type;
@@ -1171,17 +1171,17 @@ angular.module('sntRover').controller('guestCardController', [
 		var failureCallBackOfAttachGroupToReservation = function(error) {
 			if (error.hasOwnProperty('httpStatus')) {
 
-				//470 is reserved for other room type is available
+				// 470 is reserved for other room type is available
 				if (error.httpStatus === 470) {
 					showGroupOtherRoomTypeAvailablePopup();
 				}
 
-				//471 - NO availability in group
+				// 471 - NO availability in group
 				else if (error.httpStatus === 471) {
 					showGroupNoRoomTypeAvailablePopup();
 				}
 
-				//472 - Room type is not configured in Group
+				// 472 - Room type is not configured in Group
 				else if (error.httpStatus === 472) {
 					showGroupRoomTypeIsNotConfiguredPopup();
 				}
@@ -1207,13 +1207,13 @@ angular.module('sntRover').controller('guestCardController', [
 		var successCallBackOfAttachGroupToReservation = function(data, successCallBackParams) {
 			var selectedGroup = successCallBackParams.selectedGroup;
 
-			//updating the central reservation data model
+			// updating the central reservation data model
 			updateReservationGroupData(selectedGroup);
 
-			//we are in card adding mode
+			// we are in card adding mode
 			switchToNomralCardViewingMode();
 
-			//we need to upadte the rate and other associated field, to do that, we are reloading the staycard
+			// we need to upadte the rate and other associated field, to do that, we are reloading the staycard
 			if ($scope.isInStayCardScreen()) {
 				$scope.reloadTheStaycard();
 			}
@@ -1225,7 +1225,7 @@ angular.module('sntRover').controller('guestCardController', [
 		 * @return undefined
 		 */
 		var attachGroupToThisReservation = function(selectedGroup) {
-			//calling the API
+			// calling the API
 			var params = {
 				reservation_id: $scope.reservationData.reservationId,
 				group_id: selectedGroup.id
@@ -1278,13 +1278,13 @@ angular.module('sntRover').controller('guestCardController', [
 		 * @return {undefined}
 		 */
 		var successCallBackOfDetachGroupFromThisReservation = function(data) {
-			//updating the central reservation data model
+			// updating the central reservation data model
 			resetReservationGroupData();
 
-			//we will be in card opened mode, so closing
+			// we will be in card opened mode, so closing
 			$scope.closeGuestCard();
 
-			//we are in details viewing mode
+			// we are in details viewing mode
 			switchToAddCardViewMode();
 
 			$scope.$broadcast("groupCardDetached");
@@ -1300,7 +1300,7 @@ angular.module('sntRover').controller('guestCardController', [
 		var detachGroupFromThisReservation = function() {
 			var resData = $scope.reservationData;
 
-			//calling the API
+			// calling the API
 			var params = {
 				reservation_id: resData.reservationId,
 				group_id: resData.group.id
@@ -1319,7 +1319,7 @@ angular.module('sntRover').controller('guestCardController', [
 			$scope.callAPI(rvAllotmentSrv.detachAllotmentFromReservation, {
 				params: $scope.reservationData.reservationId,
 				successCallBack: function() {
-					//reset reservation data model
+					// reset reservation data model
 					$scope.reservationData.allotment = {
 						id: "",
 						name: "",
@@ -1494,22 +1494,22 @@ angular.module('sntRover').controller('guestCardController', [
 		var failureCallBackOfAttachAllotmentToReservation = function(error) {
 			if (error.hasOwnProperty('httpStatus')) {
 
-				//470 is reserved for other room type is available
+				// 470 is reserved for other room type is available
 				if (error.httpStatus === 470) {
 					showAllotmentOtherRoomTypeAvailablePopup();
 				}
 
-				//471 - NO availability in group
+				// 471 - NO availability in group
 				else if (error.httpStatus === 471) {
 					showAllotmentNoRoomTypeAvailablePopup();
 				}
 
-				//472 - Room type is not configured in Group
+				// 472 - Room type is not configured in Group
 				else if (error.httpStatus === 472) {
 					showAllotmentRoomTypeIsNotConfiguredPopup();
 				}
 
-				//473 - Show Credit Limit exceed popup.
+				// 473 - Show Credit Limit exceed popup.
 				else if (error.httpStatus === 473) {
 					showCreditLimitExceedPopup();
 				}
@@ -1527,15 +1527,15 @@ angular.module('sntRover').controller('guestCardController', [
 		var successCallBackOfAttachAllotmentToReservation = function(data, successCallBackParams) {
 			var selectedAllotment = successCallBackParams.selectedAllotment;
 
-			//updating the central reservation data model
+			// updating the central reservation data model
 			updateReservationAllotmentData(selectedAllotment);
 
 			$scope.closeGuestCard();
 
-			//we are in card adding mode
+			// we are in card adding mode
 			switchToNomralCardViewingMode();
 
-			//we need to upadte the rate and other associated field, to do that, we are reloading the staycard
+			// we need to upadte the rate and other associated field, to do that, we are reloading the staycard
 			if ($scope.isInStayCardScreen()) {
 				$scope.reloadTheStaycard();
 			}
@@ -1547,7 +1547,7 @@ angular.module('sntRover').controller('guestCardController', [
 		 * @return undefined
 		 */
 		var attachAllotmentToThisReservation = function(selectedAllotment) {
-			//calling the API
+			// calling the API
 			var params = {
 				reservationId: $scope.reservationData.reservationId,
 				allotmentId: selectedAllotment.id
@@ -1601,7 +1601,7 @@ angular.module('sntRover').controller('guestCardController', [
 					$scope.navigateToRoomAndRates();
 				}
 
-				//staycard card attaching
+				// staycard card attaching
 				else {
 					attachAllotmentToThisReservation(allotment);
 				}
@@ -1639,14 +1639,14 @@ angular.module('sntRover').controller('guestCardController', [
 			if (cardData.account_type === 'TRAVELAGENT') {
 				$scope.selectTravelAgent(cardData, chooseCardRate);
 			}
-			//ngDialog.close();
+			// ngDialog.close();
 		};
 		// To change to contracted Rate and proceed.
 		$scope.changeToContractedRate = function(cardData) {
 			$scope.selectCard(cardData, true);
-			//$scope.navigateToRoomAndRates();
-			//ngDialog.close();
-			//we will be in card opened mode, so closing
+			// $scope.navigateToRoomAndRates();
+			// ngDialog.close();
+			// we will be in card opened mode, so closing
 			$scope.closeGuestCard();
 
 			/**
@@ -1682,7 +1682,7 @@ angular.module('sntRover').controller('guestCardController', [
 		// On selecting comapny card
 		$scope.selectCompany = function(company, useCardRate) {
 			$scope.closeDialog();
-			//CICO-7792
+			// CICO-7792
 			if ($scope.viewState.identifier === "CREATION") {
 				$scope.reservationData.company.id = company.id;
 				$scope.showContractedRates({
@@ -1699,7 +1699,7 @@ angular.module('sntRover').controller('guestCardController', [
 				$scope.reservationDetails.companyCard.id = company.id;
 				$scope.initCompanyCard(company);
 				$scope.viewState.isAddNewCard = false;
-				//CICO-32856
+				// CICO-32856
 				$scope.navigateToRoomAndRates();
 			} else {
 				if (!$scope.reservationDetails.companyCard.futureReservations || $scope.reservationDetails.companyCard.futureReservations <= 0) {
@@ -1712,7 +1712,7 @@ angular.module('sntRover').controller('guestCardController', [
 		// On selecting travel agent card
 		$scope.selectTravelAgent = function(travelAgent, useCardRate) {
 			$scope.closeDialog();
-			//CICO-7792
+			// CICO-7792
 			if ($scope.viewState.identifier === "CREATION") {
 				// Update main reservation scope
 				$scope.reservationData.travelAgent.id = travelAgent.id;
@@ -1730,7 +1730,7 @@ angular.module('sntRover').controller('guestCardController', [
 				$scope.reservationDetails.travelAgent.id = travelAgent.id;
 				$scope.initTravelAgentCard(travelAgent);
 				$scope.viewState.isAddNewCard = false;
-				//CICO-32856
+				// CICO-32856
 				$scope.navigateToRoomAndRates();
 			} else {
 				if (!$scope.reservationDetails.travelAgent.futureReservations || $scope.reservationDetails.travelAgent.futureReservations <= 0) {
@@ -1848,7 +1848,7 @@ angular.module('sntRover').controller('guestCardController', [
 		$scope.$on("updateGuestEmail", function(e) {
 			$scope.guestCardData.contactInfo.email = $scope.reservationData.guest.email;
 		});
-		//Listener to update the card info from billing info
+		// Listener to update the card info from billing info
 		$scope.$on("CardInfoUpdated", function(e, card_id, card_type) {
 			if (card_type === 'COMPANY_CARD') {
 				$scope.reservationDetails.companyCard.id = card_id;
@@ -1888,8 +1888,8 @@ angular.module('sntRover').controller('guestCardController', [
 
 
 		$scope.guestCardClicked = function() {
-			//save contact info
-			//CICO-16965 Do IFF the card is saved - NOT in Add mode
+			// save contact info
+			// CICO-16965 Do IFF the card is saved - NOT in Add mode
 			if (!$scope.viewState.isAddNewCard) {
 				// Call save if NOT 'AddNewCard' mode
 				$scope.$broadcast('saveContactInfo');

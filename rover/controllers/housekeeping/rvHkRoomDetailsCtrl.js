@@ -97,13 +97,13 @@ angular.module('sntRover').controller('RVHkRoomDetailsCtrl', [
 
 		var getGuestStatusMapped = function(reservationStatus, isLateCheckout) {
 			var viewStatus = "";
-			//If the guest is opted for late checkout
+			// If the guest is opted for late checkout
 
 			if (isLateCheckout === "true") {
 				return "late-check-out";
 			}
 
-			//Determine the guest status class based on the reservation status
+			// Determine the guest status class based on the reservation status
 			if ("RESERVED" === reservationStatus) {
 				viewStatus = "arrival";
 			} else if ("CHECKING_IN" === reservationStatus) {

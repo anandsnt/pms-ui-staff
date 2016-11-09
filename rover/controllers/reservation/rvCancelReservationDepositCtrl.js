@@ -25,9 +25,9 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 		var cancelReservation = function(with_deposit_refund) {
 
 			var onCancelSuccess = function(data) {
-				//OnCancelsuccess NgDialog shows sendcancelation as well as printcancelation pop up
-				//Since RVCancelReservation and RVCancelReservationDepositController do the same above,
-				//its functions are written in parent controller.Ie reservationActionsController
+				// OnCancelsuccess NgDialog shows sendcancelation as well as printcancelation pop up
+				// Since RVCancelReservation and RVCancelReservationDepositController do the same above,
+				// its functions are written in parent controller.Ie reservationActionsController
 				$scope.DailogeState.isCancelled = true ;
 				$scope.$emit('hideLoader');
 			};

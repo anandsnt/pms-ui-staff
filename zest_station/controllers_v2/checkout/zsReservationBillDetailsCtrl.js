@@ -5,7 +5,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
     function($scope, $state, zsCheckoutSrv, zsEventConstants, $stateParams, zsModeConstants, $window, $timeout, zsUtilitySrv) {
 
 
-        /***********************************************************************************************
+        /** *********************************************************************************************
          **      Please note that, not all the stateparams passed to this state will not be used in this state, 
          **      however we will have to pass this so as to pass again to future states which will use these.
          **
@@ -27,7 +27,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
          * @return {[type]} [description]
          */
         $scope.clickedOnCloseButton = function() {
-            //if key card was inserted we need to eject that
+            // if key card was inserted we need to eject that
             $scope.$emit('EJECT_KEYCARD');
             $state.go('zest_station.home');
         };
@@ -44,14 +44,14 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
          *  general failure actions inside bill screen
          **/
         var failureCallBack = function() {
-            //if key card was inserted we need to eject that
+            // if key card was inserted we need to eject that
             $scope.$emit('EJECT_KEYCARD');
             $state.go('zest_station.speakToStaff');
         };
 
         var fetchBillSuccess = function(response) {
 
-            //process bill data
+            // process bill data
             var billsData = response.bill_details.fee_details;
 
             $scope.billData = [];
@@ -72,8 +72,8 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 });
             });
 
-            //scroller setup
-            setDisplayContentHeight(); //utils function
+            // scroller setup
+            setDisplayContentHeight(); // utils function
             refreshScroller();
         };
 
@@ -95,7 +95,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             var emailSendingSuccess = function(response) {
                 if (printYetToDone) {
                     $scope.stateParamsForNextState.email_sent = 'true';
-                    $scope.printOpted = true; //print mode
+                    $scope.printOpted = true; // print mode
                 } else {
                     $state.go('zest_station.reservationCheckedOut', {
                         'printopted': printopted,
@@ -106,7 +106,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             var emailSendingFailed = function() {
                 if (printYetToDone) {
                     $scope.stateParamsForNextState.email_failed = 'true';
-                    $scope.printOpted = true; //print mode
+                    $scope.printOpted = true; // print mode
                 } else {
                     $state.go('zest_station.reservationCheckedOut', {
                         'printopted': printopted,
@@ -123,8 +123,8 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 successCallBack: emailSendingSuccess,
                 failureCallBack: emailSendingFailed
             };
-            //check if email is valid
-            //if invalid dont send mail
+            // check if email is valid
+            // if invalid dont send mail
 
             if (zsUtilitySrv.isValidEmail($stateParams.email)) {
                 $scope.callAPI(zsCheckoutSrv.sendBill, options);
@@ -156,28 +156,28 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 };
                 var guest_bill = $scope.zestStationData.guest_bill;
 
-                //guest_bill.email refers to update email not the send email
-                //email will be always send (atleast try to send, may fail sometimes)
-                //yes..yes..the name is confusing..i know
-                //cant do much with this now. It saved in admin like that
+                // guest_bill.email refers to update email not the send email
+                // email will be always send (atleast try to send, may fail sometimes)
+                // yes..yes..the name is confusing..i know
+                // cant do much with this now. It saved in admin like that
                 var printopted = 'false';
-                //if update email and print option are off
+                // if update email and print option are off
 
                 if (!guest_bill.email && !guest_bill.print) {
                     printopted = 'false';
                     printYetToDone = false;
-                    //send mail and don't print
+                    // send mail and don't print
                     sendEmail(printopted, printYetToDone);
                 } else if (guest_bill.email && !guest_bill.print) {
-                    //updat email turned on and print is off
+                    // updat email turned on and print is off
                     $state.go('zest_station.emailBill', $scope.stateParamsForNextState);
-                } else if (guest_bill.print) { //go to print nav
+                } else if (guest_bill.print) { // go to print nav
                     if (!guest_bill.email) {
-                        //send mail and then print
+                        // send mail and then print
                         printYetToDone = true;
                         sendEmail(printopted, printYetToDone);
                     } else {
-                        //print first and then email
+                        // print first and then email
                         $scope.printOpted = true;
                     }
                 }
@@ -198,13 +198,13 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
 
         var checkIfDueBalancePresent = function() {
             if ($scope.balance === 0) {
-                //if balance is 0, allow checkout
+                // if balance is 0, allow checkout
                 return false;
             } else if ($scope.balance < 0) {
-                //if refund if present, don't allow checkout
+                // if refund if present, don't allow checkout
                 return true;
             } else {
-                //if balance >0, allow checkout if CC is present
+                // if balance >0, allow checkout if CC is present
                 return !$scope.has_cc;
             }
         };
@@ -220,7 +220,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
         };
 
         $scope.init = function() {
-            //retrieve state variable to be displayed
+            // retrieve state variable to be displayed
             $scope.from = $stateParams.from;
             $scope.reservation_id = $stateParams.reservation_id;
             $scope.has_cc = $stateParams.has_cc;
@@ -229,7 +229,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             $scope.days_of_stay = $stateParams.days_of_stay;
             $scope.hours_of_stay = $stateParams.hours_of_stay;
             $scope.setupBillData();
-            //storing state varibales to be used in print view also
+            // storing state varibales to be used in print view also
             $scope.stateParamsForNextState = {
                 "from": $stateParams.from,
                 "reservation_id": $stateParams.reservation_id,
@@ -249,13 +249,13 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
          * @return {[type]} [description]
          */
         var initializeMe = function() {
-            //show back button
+            // show back button
             $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 
-            //show close button
+            // show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 
-            //back button action
+            // back button action
             $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
                 if ($stateParams.from === 'searchByName') {
                     $state.go('zest_station.checkOutReservationSearch');

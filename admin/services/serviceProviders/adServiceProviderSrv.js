@@ -23,7 +23,7 @@ admin.service('ADServiceProviderSrv', ['$http', '$q', 'ADBaseWebSrvV2', function
 
         var deferred = $q.defer();
         var url = '/admin/users.json';
-        //var url = 'ui/show?json_input=serviceprovider/userslist.json&format=json';
+        // var url = 'ui/show?json_input=serviceprovider/userslist.json&format=json';
 
         ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);

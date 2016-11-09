@@ -59,8 +59,8 @@ sntRover.controller('reservationActionsController', [
 			});
 		};
 
-		//Since API is returning "true"/"false"
-		//TODO: Ask Rashila to to it from the API itself
+		// Since API is returning "true"/"false"
+		// TODO: Ask Rashila to to it from the API itself
 		if (typeof $scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates !== "boolean") {
 			$scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates =
 				($scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates === "true");
@@ -123,11 +123,11 @@ sntRover.controller('reservationActionsController', [
 		};
 
 		// update the price on staycard.
-		/*jslint unparam: true*/
+		/* jslint unparam: true*/
 		var postchargeAdded = $scope.$on('postcharge.added', function(event, netPrice) {
 			$scope.reservationData.reservation_card.balance_amount = parseFloat(netPrice);
 		});
-		/*jslint unparam: false*/
+		/* jslint unparam: false*/
 
 		// the listner must be destroyed when no needed anymore
 		$scope.$on('$destroy', postchargeAdded);
@@ -150,7 +150,7 @@ sntRover.controller('reservationActionsController', [
 				};
 
 				$scope.passData = passData;
-				ngDialog.close(); //close any existing popups
+				ngDialog.close(); // close any existing popups
 				ngDialog.open({
 					template: '/assets/partials/reservationCard/rvReservationDepositPopup.html',
 					className: '',
@@ -168,7 +168,7 @@ sntRover.controller('reservationActionsController', [
 		$scope.ifReferanceForCC = false;
 		$scope.depositDetails = {};
 
-		/**************************************************************************
+		/** ************************************************************************
 		 * Entering staycard we check if any deposit is left else noraml checkin
 		 *
 		 **************************************************************************/
@@ -244,7 +244,7 @@ sntRover.controller('reservationActionsController', [
 
 
                 $scope.reservationIsQueued = function() {
-                    //checks current reservation data to see if it is in Queue or not
+                    // checks current reservation data to see if it is in Queue or not
                     if ($scope.reservationData.reservation_card.is_reservation_queued === 'true') {
                         return true;
                     } else return false;
@@ -274,7 +274,7 @@ sntRover.controller('reservationActionsController', [
                 };
 
                 $scope.goToRoomAssignment = function() {
-                	//check if roomupgrade is available
+                	// check if roomupgrade is available
                 	var reservationStatus = $scope.reservationData.reservation_card.reservation_status
                 	var isUpgradeAvaiable = ($scope.reservationData.reservation_card.is_upsell_available === "true") &&
                 							 (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN');
@@ -327,7 +327,7 @@ sntRover.controller('reservationActionsController', [
 
                 $scope.initCheckInFlow = function() {
                     var checkingInQueued = !$scope.reservationData.check_in_via_queue && $scope.reservationIsQueued();
-                        //CICO-13907 : If any sharer of the reservation is checked in, do not allow to go to room assignment or upgrades screen
+                        // CICO-13907 : If any sharer of the reservation is checked in, do not allow to go to room assignment or upgrades screen
 
                         if ($scope.hasAnySharerCheckedin() || checkingInQueued) {
 
@@ -370,7 +370,7 @@ sntRover.controller('reservationActionsController', [
                 };
 
 		var startCheckin = function() {
-                    $rootScope.queuedCheckIn = $scope.reservationIsQueued();//pass to billcardctrl through here
+                    $rootScope.queuedCheckIn = $scope.reservationIsQueued();// pass to billcardctrl through here
                     if ($scope.checkInFromQueued()) {
                         $scope.checkGuestInFromQueue();
                         return;
@@ -385,7 +385,7 @@ sntRover.controller('reservationActionsController', [
                                             $scope.initCheckInFlow();
 					}
 				} else {
-					//Prompt user to add a Guest Card
+					// Prompt user to add a Guest Card
 					$scope.promptCardAddition();
 				}
 			};
@@ -417,7 +417,7 @@ sntRover.controller('reservationActionsController', [
 						$scope.reservationData.reservation_card.room_status = data.is_ready === "true" ? 'READY' : 'NOTREADY';
 						$scope.reservationData.reservation_card.fo_status = data.is_occupied === "true" ? 'OCCUPIED' : 'VACANT';
 						$scope.reservationData.reservation_card.room_reservation_hk_status = data.room_reservation_hk_status;
-						//CICO-14777 Yotel - Hourly Setup: Checkin with not ready room assigned should redirect to diary
+						// CICO-14777 Yotel - Hourly Setup: Checkin with not ready room assigned should redirect to diary
 
 
 						if (shouldRedirectToDiary()) {
@@ -441,7 +441,7 @@ sntRover.controller('reservationActionsController', [
 			startCheckin();
 		});
 
-		/**************************************************************************
+		/** ************************************************************************
 		 * Before checking in we check if any deposit is left else noraml checkin
 		 *
 		 **************************************************************************/
@@ -455,7 +455,7 @@ sntRover.controller('reservationActionsController', [
 				scope: $scope
 			});
 		};
-		/******************************************/
+		/** ****************************************/
 		$scope.showPutInQueue = function() {
             var isQueueRoomsOn = $scope.reservationData.reservation_card.is_queue_rooms_on,
                 isReservationQueued = $scope.reservationData.reservation_card.is_reservation_queued,
@@ -498,8 +498,8 @@ sntRover.controller('reservationActionsController', [
                         if (useAdvancedQueFlow) {
                             $rootScope.$emit('goToStayCardFromAddToQueue');
                             setTimeout(function() {
-                                //then prompt for keys
-                                $rootScope.$broadcast('clickedIconKeyFromQueue');//signals rvReservationRoomStatusCtrl to init the keys popup
+                                // then prompt for keys
+                                $rootScope.$broadcast('clickedIconKeyFromQueue');// signals rvReservationRoomStatusCtrl to init the keys popup
                             }, 500);
                         }
 		};
@@ -522,7 +522,7 @@ sntRover.controller('reservationActionsController', [
                         var useAdvancedQueFlow = $rootScope.advanced_queue_flow_enabled;
 
                         if (useAdvancedQueFlow) {
-                            $scope.reservationData.check_in_via_queue = true;//set flag for checking in via put-in-queue
+                            $scope.reservationData.check_in_via_queue = true;// set flag for checking in via put-in-queue
                             $scope.initAdvQueCheck();
                             $scope.goToCheckin();
                         } else {
@@ -530,7 +530,7 @@ sntRover.controller('reservationActionsController', [
                              * put in queue will be done later, after cc auth
                              */
 
-                            $scope.reservationData.check_in_via_queue = false;//set flag for checking in via put-in-queue
+                            $scope.reservationData.check_in_via_queue = false;// set flag for checking in via put-in-queue
                             var data = {
                                     "reservationId": reservationId,
                                     "status": "true"
@@ -541,9 +541,9 @@ sntRover.controller('reservationActionsController', [
 		};
 
 		$scope.removeFromQueue = function(reservationId) {
-                    //debuggin
-                    //$scope.putInQueue(reservationId);
-                    //return;
+                    // debuggin
+                    // $scope.putInQueue(reservationId);
+                    // return;
 			var data = {
 				"reservationId": reservationId,
 				"status": false
@@ -642,7 +642,7 @@ sntRover.controller('reservationActionsController', [
 							// Make sure that the cancellation value is -lte thatn the total duration
 							// cancellationCharge = stayDuration > data.results.penalty_value ? data.results.penalty_value : stayDuration;
 							cancellationCharge = data.results.calculated_penalty_amount;
-							//nights = true;
+							// nights = true;
 						} else {
 							cancellationCharge = parseFloat(data.results.calculated_penalty_amount);
 						}
@@ -775,8 +775,8 @@ sntRover.controller('reservationActionsController', [
                     }
                     $rootScope.initFromCashDeposit = cashDesposit;
 
-			//As per CICO-15833
-			//we wanted to show the Balance & Deposit popup for DUEIN & CHECKING IN reservation only
+			// As per CICO-15833
+			// we wanted to show the Balance & Deposit popup for DUEIN & CHECKING IN reservation only
 			reservationStatus = reservationStatus.toUpperCase();
 			return (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN');
 		};
@@ -793,7 +793,7 @@ sntRover.controller('reservationActionsController', [
 			return showDepositBalanceButtonWithSR;
 		};
 
-		//Checking whether email is attached with guest card or not
+		// Checking whether email is attached with guest card or not
 		$scope.isEmailAttached = function() {
 			var isEmailAttachedFlag = false;
 
@@ -807,7 +807,7 @@ sntRover.controller('reservationActionsController', [
 		$scope.ngData.failureMessage = "";
 		$scope.ngData.successMessage = "";
 
-		//Pop up for confirmation print as well as email send
+		// Pop up for confirmation print as well as email send
 		$scope.popupForConfirmation = function() {
 
 			$scope.ngData.sendConfirmatonMailTo = '';
@@ -893,7 +893,7 @@ sntRover.controller('reservationActionsController', [
 			$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data, succesfullEmailCallback, failureEmailCallback);
 		};
 
-		//Print reservation confirmation.
+		// Print reservation confirmation.
 		$scope.printReservation = function() {
 			var succesfullCallback = function(data) {
 				$scope.printData = data.data;
@@ -944,7 +944,7 @@ sntRover.controller('reservationActionsController', [
 			$timeout(removePrintOrientation, 100);
 		};
 
-		$scope.allowOverbook = function() { //check user permission for overbook_house
+		$scope.allowOverbook = function() { // check user permission for overbook_house
 			return rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
 		};
 
@@ -977,12 +977,12 @@ sntRover.controller('reservationActionsController', [
 
 		$scope.reinstateReservation = function(isOverBooking) {
 			$scope.invokeApi(RVReservationCardSrv.reinstateReservation,
-				//Params
+				// Params
 				{
 					reservationId: $scope.reservationData.reservation_card.reservation_id,
 					is_overbook: isOverBooking
 				},
-				//Handle Success
+				// Handle Success
 				function() {
 					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
 						"id": $stateParams.id || $scope.reservationData.reservationId,
@@ -991,7 +991,7 @@ sntRover.controller('reservationActionsController', [
 					});
 					$scope.closeDialog();
 				},
-				//Handle Failure
+				// Handle Failure
 				function(errorMessage) {
 					$scope.$emit('hideLoader');
 					$scope.errorMessage = errorMessage;
@@ -1005,12 +1005,12 @@ sntRover.controller('reservationActionsController', [
 			$scope.invokeApi(RVReservationCardSrv.checkReinstationAvailbility,
 				// Params for API Call
 				$scope.reservationData.reservation_card.reservation_id,
-				//Handle Success
+				// Handle Success
 				function(response) {
 					$scope.$emit('hideLoader');
 					promptReinstate(response.is_available, response.is_suite_room);
 				},
-				//Handle Failure
+				// Handle Failure
 				function(errorMessage) {
 					$scope.$emit('hideLoader');
 					$scope.errorMessage = errorMessage;
@@ -1022,11 +1022,11 @@ sntRover.controller('reservationActionsController', [
 		 * @return {Boolean}
 		 */
 		$scope.isReinstateVisible = function() {
-                        //set not visible for Hourly in 1.11
+                        // set not visible for Hourly in 1.11
             if ($scope.reservationData.reservation_card.is_hourly_reservation) {
                 return false;
             }
-            //CICO-29302 - Check comment
+            // CICO-29302 - Check comment
             if ($scope.reservationData.reservation_card.group_id !== '') {
                 return false;
             }
@@ -1035,7 +1035,7 @@ sntRover.controller('reservationActionsController', [
 
 			return resData.reservation_status === 'CANCELED' && // ONLY cancelled reservations can be reinstated
 				new TZIDate(resData.departure_date) > new TZIDate($rootScope.businessDate) && // can't reinstate if the reservation's dates have passed
-				rvPermissionSrv.getPermissionValue('REINSTATE_RESERVATION'); //also check for permissions
+				rvPermissionSrv.getPermissionValue('REINSTATE_RESERVATION'); // also check for permissions
 		};
 
 		var succesfullCallbackForEmailCancellation = function(data) {
@@ -1049,7 +1049,7 @@ sntRover.controller('reservationActionsController', [
 			$scope.DailogeState.successMessage = '';
 		};
 
-		//Action against email button in staycard.
+		// Action against email button in staycard.
 		$scope.sendReservationCancellation = function() {
 			var postData = {
 				"type": "cancellation",
@@ -1090,7 +1090,7 @@ sntRover.controller('reservationActionsController', [
 			});
 		};
 
-		//Action against print button in staycard.
+		// Action against print button in staycard.
 		$scope.printReservationCancellation = function() {
 			var succesfullCallback = function(data) {
 				$scope.printData = data.data;

@@ -17,7 +17,7 @@ admin.controller('ADHoldStatusListCtrl', ['$scope', '$state', 'ADHoldStatusSrv',
 
 		$scope.invokeApi(ADHoldStatusSrv.fetch, {}, successCallbackFetch);
 	};
-	//To list Hold status
+	// To list Hold status
 	$scope.listHoldStatus();
    /*
     * To render edit hold status
@@ -73,7 +73,7 @@ admin.controller('ADHoldStatusListCtrl', ['$scope', '$state', 'ADHoldStatusSrv',
 				// To add new data to scope
     			$scope.data.holdStatuses.push(data);
 	    	} else {
-	    		//To update data with new value
+	    		// To update data with new value
 	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].name = $scope.holdstatusData.name;
 	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_take_from_inventory = $scope.holdstatusData.is_take_from_inventory;
 	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_system=$scope.holdstatusData.is_system;
@@ -103,12 +103,12 @@ admin.controller('ADHoldStatusListCtrl', ['$scope', '$state', 'ADHoldStatusSrv',
 	$scope.deleteHoldStatus = function(index, id) {
 		var successCallbackDelete = function(data) {
 	 		$scope.$emit('hideLoader');
-	 		//handling error case
+	 		// handling error case
 	 		if(data.status==='failure')
 	 		{
 	 			$scope.errorMessage = data.errors;
 	 		}else{
-	 			//Handling success - removing deleted holdstatus
+	 			// Handling success - removing deleted holdstatus
 	 			$scope.data.holdStatuses.splice(index, 1);
 	 		}
 	 		$scope.currentClickedElement = -1;

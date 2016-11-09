@@ -7,7 +7,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 		$scope.guestCardData.likes = {};
 		$scope.guestLikesData = {};
 		$scope.setScroller('likes_info');
-		$scope.calculatedHeight = 274; //height of Preferences + News paper + Room type + error message div
+		$scope.calculatedHeight = 274; // height of Preferences + News paper + Room type + error message div
 		var presentLikeInfo  = {};
 		var updateData = {};
 
@@ -242,7 +242,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 
 
 		$scope.getHalfArray = function(ar) {
-			//TODO: Cross check math.ceil for all browsers
+			// TODO: Cross check math.ceil for all browsers
 			var out = new Array(Math.ceil(ar.length / 2));
 
 			return out;
@@ -262,7 +262,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 
 
 		$scope.getHalfArrayPref = function(ar) {
-			//TODO: Cross check math.ceil for all browsers
+			// TODO: Cross check math.ceil for all browsers
 			var out = new Array(Math.ceil(ar.length / 2));
 
 			return out;

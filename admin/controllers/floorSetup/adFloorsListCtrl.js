@@ -24,10 +24,10 @@ admin.controller('ADFloorsListCtrl',
 	*/
 	var initializeMe = function() {
         $scope.errorMessage = '';
-		//To list room types
+		// To list room types
 		$scope.listFloorTypes();
 
-        //show Table
+        // show Table
         $scope.showTableDetails = false;
 
         $scope.stateVariables = {

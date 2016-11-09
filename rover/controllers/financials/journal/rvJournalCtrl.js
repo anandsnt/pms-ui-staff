@@ -281,12 +281,12 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
     };
 
     $scope.$on('cashierDateChanged', function() {
-    	//call filter service
+    	// call filter service
     	callCashierFilterService();
     });
 
     $scope.cashierFilterChanged = function() {
-       //call filter service
+       // call filter service
        callCashierFilterService();
        retrieveCashierName();
     };

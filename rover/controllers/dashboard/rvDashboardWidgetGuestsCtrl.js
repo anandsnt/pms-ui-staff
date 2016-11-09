@@ -17,10 +17,10 @@ sntRover.controller('rvDashboardGuestWidgetController', ['$scope', 'RVSearchSrv'
         event.preventDefault();
         event.stopImmediatePropagation();
         event.stopPropagation();
-        //disable reservation search for house keeping
+        // disable reservation search for house keeping
         if(!$scope.disableReservations) {
-            //as we dont have a status called Mobile checkin, we still need to pass as PRE_CHECKIN
-            //along with that we will pass is mobile checkin variable. This will be null if not send
+            // as we dont have a status called Mobile checkin, we still need to pass as PRE_CHECKIN
+            // along with that we will pass is mobile checkin variable. This will be null if not send
             var stateParams = {'type': type, 'from_page': 'DASHBOARD', 'isMobileCheckin': isMobileCheckin};
 
             $state.go('rover.search', stateParams);

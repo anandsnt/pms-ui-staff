@@ -12,12 +12,12 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 	$scope.showWriteToBand = false;
 	$scope.showSuccess = false;
 	$scope.showSmartBandListView = false;
-	//Used to not to call list API again
+	// Used to not to call list API again
 	$scope.firstTimeClick = true;
 	$scope.showBandEditScreen = false;
 
 	var that = this;
-	//since smartband api is returning reversed id, we are using a vairble to keep that locally and use that for band type writing.
+	// since smartband api is returning reversed id, we are using a vairble to keep that locally and use that for band type writing.
 
 	that.lastSuccessfulIDReaded = '';
 	$scope.addNewSmartband = function() {
@@ -85,7 +85,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 	$scope.fetchFailedKeyRead = function(errorObject) {
 		$scope.$emit( 'hideLoader' );
 		$scope.errorMessage = [errorObject.RVErrorDesc];
-		$scope.$apply(); //since this function is calling from out of angular scope
+		$scope.$apply(); // since this function is calling from out of angular scope
 	};
 	$scope.clickContinueButton = function() {
 		document.activeElement.blur();
@@ -232,8 +232,8 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 	 */
 	$scope.writeBandType = function() {
 		var args = [];
-		//Fixed amount - bandtype code : 00000001
-		//Open room charge - bandtype code : 00000002
+		// Fixed amount - bandtype code : 00000001
+		// Open room charge - bandtype code : 00000002
 		var bandType = '00000002';
 
 		if(that.newBandInfo.is_fixed) {
@@ -241,14 +241,14 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		}
 		args.push(bandType);
 		args.push(that.lastSuccessfulIDReaded);
-		args.push('19');//Block Address - hardcoded
+		args.push('19');// Block Address - hardcoded
 
 		var options = {
-			//Cordova write success callback
+			// Cordova write success callback
 			'successCallBack': function() {
 				$scope.$emit( 'hideLoader' );
 				$scope.showSuccess = true;
-				$scope.$apply(); //since it is calling from outside of Angular scope, we need to call this one
+				$scope.$apply(); // since it is calling from outside of Angular scope, we need to call this one
 				that.lastSuccessfulIDReaded = '';
 			},
 			'failureCallBack': function(errorObject) {
@@ -256,7 +256,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 
 				that.lastSuccessfulIDReaded = '';
 				$scope.createSmartBandFailure(message);
-				$scope.$apply(); //since it is calling from outside of Angular scope, we need to call this one
+				$scope.$apply(); // since it is calling from outside of Angular scope, we need to call this one
 			},
 			arguments: args
 		};

@@ -22,12 +22,12 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		$scope.updateAccountSummary = function() {
 			if (rvPermissionSrv.getPermissionValue('EDIT_ACCOUNT')) {
 				var onAccountUpdateSuccess = function(data) {
-						//client controllers should get an infromation whether updation was success
+						// client controllers should get an infromation whether updation was success
 						$scope.$broadcast("UPDATED_ACCOUNT_INFO");
 						$scope.$emit('hideloader');
 					},
 					onAccountUpdateFailure = function(errorMessage) {
-						//client controllers should get an infromation whether updation was a failure
+						// client controllers should get an infromation whether updation was a failure
 						$scope.$broadcast("FAILED_TO_UPDATE_ACCOUNT_INFO");
 						$scope.$emit('showErrorMessage', errorMessage);
 						$scope.$emit('hideloader');
@@ -77,9 +77,9 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			// Have a handler to update the summary - IFF in edit mode
 			var callUpdate = function() {
 				if (!whetherSummaryDataChanged() && !$scope.accountSummaryData.isDemographicsPopupOpen) {
-					//data has changed
+					// data has changed
 					summaryMemento = angular.copy($scope.accountConfigData.summary);
-					//call the updateAccountSummary method from the parent controller
+					// call the updateAccountSummary method from the parent controller
 					$scope.updateAccountSummary();
 				}
 			};
@@ -107,7 +107,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			return $rootScope.currencySymbol + $filter('number')(amount, 2);
 		};
 
-		//Update the balance after payment
+		// Update the balance after payment
 		$scope.$on("BALANCE_AFTER_PAYMENT", function (event, balance) {
 			$scope.accountConfigData.summary.balance = balance;
 		});
@@ -288,7 +288,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		};
 
 		$scope.onAccountTypeModification = function() {
-			//Call only if the account is already saved
+			// Call only if the account is already saved
 			if(!!$scope.accountConfigData.summary.posting_account_id) {
 				$scope.updateAccountSummary();
 			}

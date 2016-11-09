@@ -11,11 +11,11 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
             $scope.keyType = data.type;
         });
 	$scope.init = function() {
-		//CICO-11444 to fix the issue of poping up select box in ipad
+		// CICO-11444 to fix the issue of poping up select box in ipad
 		$('#encoder-type').blur();
 
-		//If SAFLOK_MSR is the chosen encoder type, we would show a dropdown with active encoders listed.
-		/***************************CICO-11444 *****************************************/
+		// If SAFLOK_MSR is the chosen encoder type, we would show a dropdown with active encoders listed.
+		/** *************************CICO-11444 *****************************************/
 		$scope.encoderSelected = "";
 		if($scope.fromView === "checkin") {
 			$scope.isRemoteEncodingEnabled = $scope.reservationBillData.is_remote_encoder_enabled;
@@ -27,20 +27,20 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			$scope.encoderSelected = parseInt(sessionStorage.encoderSelected);
 		}
 
-		/*****************************************************************************/
+		/** ***************************************************************************/
 
 
 		var reservationStatus = "";
 
 		$scope.data = {};
-		//If the keypopup inviked from check-in flow - registration card)
+		// If the keypopup inviked from check-in flow - registration card)
 		if($scope.fromView === "checkin") {
 			reservationStatus = $scope.reservationBillData.reservation_status;
 			// Setup data for late checkout
 			$scope.data.is_late_checkout = false;
 			$scope.data.confirmNumber = $scope.reservationBillData.confirm_no;
 			$scope.data.roomNumber = $scope.reservationBillData.room_number;
-		//If the keypopup inviked from inhouse - staycard card)
+		// If the keypopup inviked from inhouse - staycard card)
 		} else {
 			reservationStatus = $scope.reservationData.reservation_card.reservation_status;
 			// Setup data for late checkout
@@ -72,9 +72,9 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			$scope.data.colorCodeClass = 'check-out';
 			$scope.data.colorCodeClassForClose = 'red';
 		}
-		//TODO: include late checkout scenario
+		// TODO: include late checkout scenario
 
-		//Based on different status, we switch between the views
+		// Based on different status, we switch between the views
 		$scope.deviceConnecting = false;
 		$scope.showPrintKeyOptions = false;
 		$scope.deviceNotConnected = false;
@@ -91,9 +91,9 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		that.printKeyStatus = [];
 		that.isAdditional = false;
 
-		//whether we need to create smartband along with key creation
-		that.isSmartbandCreateWithKeyWrite = $scope.isSmartbandCreateWithKeyWrite; //coming from popup initialization
-		//variable to maintain last successful ID from card reader, will use for smartband creation
+		// whether we need to create smartband along with key creation
+		that.isSmartbandCreateWithKeyWrite = $scope.isSmartbandCreateWithKeyWrite; // coming from popup initialization
+		// variable to maintain last successful ID from card reader, will use for smartband creation
 		that.lastSuccessfulCardIDReaded = '';
 
                 if ($scope.keyType === 'New') {
@@ -105,7 +105,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		if($scope.isRemoteEncodingEnabled) {
 			showPrintKeyOptions();
 		}else {
-			//Initally we check if the device is connected
+			// Initally we check if the device is connected
 			$scope.showDeviceConnectingMessge();
 		}
 
@@ -133,16 +133,16 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 	* If the connection still fails, show a device not connected status in the popup.
 	*/
 	var showDeviceNotConnected = function() {
-		//For 10 seconds, we will check the connectivity
-		//and if still no connection found,
-		//will display the device not connected screen
+		// For 10 seconds, we will check the connectivity
+		// and if still no connection found,
+		// will display the device not connected screen
 		$scope.$emit('hideLoader');
 		var secondsAfterCalled = 0;
 
 		that.noOfErrorMethodCalled++;
 		secondsAfterCalled = that.noOfErrorMethodCalled * 1000;
 		setTimeout(function() {
-			if(secondsAfterCalled <= that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK) { //10seconds
+			if(secondsAfterCalled <= that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK) { // 10seconds
 				$scope.showDeviceConnectingMessge();
 			}
 		}, 1000);
@@ -216,7 +216,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		if($scope.numberOfKeysSelected === 0) {
 			return;
 		}
-		//CICO-11444. If saflok_msr we we ll be connecting to remote encoders in the network
+		// CICO-11444. If saflok_msr we we ll be connecting to remote encoders in the network
 		if($scope.isRemoteEncodingEnabled) {
 			that.callKeyFetchAPI();
 			return false;
@@ -246,8 +246,8 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 
 	that.showCardInfoFetchFailedMsg = function(errorObject) {
 		$scope.$emit('hideLoader');
-		//Asynchrounous action. so we need to notify angular that a change has occured.
-		//It lets you to start the digestion cycle explicitly
+		// Asynchrounous action. so we need to notify angular that a change has occured.
+		// It lets you to start the digestion cycle explicitly
 		$scope.$apply();
 		var message = $filter('translate')('KEY_UNABLE_TO_READ_STATUS') + errorObject['RVErrorDesc'];
 
@@ -324,8 +324,8 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 				break;
 			}
 		}
-		//CICO-11444 if SAFLOK_MSR, we will be writing to remote encoder via print_key api call itself.
-		//No encoder is attached to ipad.
+		// CICO-11444 if SAFLOK_MSR, we will be writing to remote encoder via print_key api call itself.
+		// No encoder is attached to ipad.
 		if($scope.isRemoteEncodingEnabled) {
 			that.numOfKeys--;
 			that.printKeyStatus[index-1].printed = true;
@@ -352,21 +352,21 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		that.setStatusAndMessage($filter('translate')('KEY_WRITING_PROGRESS_STATUS'), 'pending');
 
 		var options = {
-			//Cordova write success callback. If all the keys were written sucessfully, show key success message
-			//If keys left to print, call the cordova write key function to write the pending key
+			// Cordova write success callback. If all the keys were written sucessfully, show key success message
+			// If keys left to print, call the cordova write key function to write the pending key
 			'successCallBack': function(data) {
 				$scope.$emit('hideLoader');
 				that.setStatusAndMessage($filter('translate')('KEY_CREATED_STATUS'), 'success');
-				//if the setting of smart band create along with key creation enabled, we will create a smartband with open room charge
+				// if the setting of smart band create along with key creation enabled, we will create a smartband with open room charge
     			if(that.isSmartbandCreateWithKeyWrite === "true" && that.lastSuccessfulCardIDReaded !== '') {
     				var data = {};
-    				//since there is not UI for adding first name & last name, we are setting as Blank, please see the comments of the story CICO-9315
+    				// since there is not UI for adding first name & last name, we are setting as Blank, please see the comments of the story CICO-9315
 
     				data.first_name = '';
     				data.last_name  = '';
-    				//setting as OPEN ROOM charge
+    				// setting as OPEN ROOM charge
     				data.is_fixed = false;
-    				//setting smartband account number as last read ID from card reader
+    				// setting smartband account number as last read ID from card reader
     				data.account_number = that.lastSuccessfulCardIDReaded;
     				return that.addNewSmartbandWithKey(data, index);
     			}
@@ -423,9 +423,9 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		}
 		args.push(bandType);
 		args.push(that.lastSuccessfulCardIDReaded);
-		args.push('19');//Block Address - hardcoded
+		args.push('19');// Block Address - hardcoded
 		var options = {
-			//Cordova write success callback
+			// Cordova write success callback
 			'successCallBack': function(data) {
 				$scope.$emit('hideLoader');
 				that.numOfKeys--;
@@ -476,7 +476,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		var is_fixed = data.is_fixed;
 
 		that.setStatusAndMessage($filter('translate')('ADDING_BAND'), 'pending');
-		//success call back of smartband's api call for creation
+		// success call back of smartband's api call for creation
 		var successCallbackOfAddNewSmartband_ = function(data) {
 			that.setStatusAndMessage($filter('translate')('BAND_ADDED'), 'success');
 			$scope.$emit('showLoader');
@@ -488,7 +488,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			that.writeBandType (params);
 		};
 
-		//failure call back of smartband's api call for creation
+		// failure call back of smartband's api call for creation
 		var failureCallbackOfAddNewSmartband = function(errorMessage) {
 			that.setStatusAndMessage($filter('translate')('KEY_CREATED_BAND_ADDING_FAILED') + ': ' + errorMessage, 'error');
 			$scope.$emit('hideLoader');
@@ -518,7 +518,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 	};
 
 	var showPrintKeyOptions = function (status) {
-		//if status === false, they are not able to connect. I dont know why these type of designs
+		// if status === false, they are not able to connect. I dont know why these type of designs
 		// we have to call failurecallback on that
 		if(status === false) {
 			return showDeviceNotConnected();
@@ -560,7 +560,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		$scope.pressedCancelStatus = true;
 
 		$('#encoder-type').blur();
-		//TODO:verfiy if required
+		// TODO:verfiy if required
 
 	};
 
@@ -580,7 +580,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			var message = $filter('translate')('KEY_CREATION_FAILED_STATUS');
 		}
 		$scope.pressedCancel(message);
-		//Check if digest is already in progress - if not start digest
+		// Check if digest is already in progress - if not start digest
 		if(!$scope.$$phase) {
 			$scope.$apply();
 		}

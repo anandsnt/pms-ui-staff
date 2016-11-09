@@ -17,7 +17,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             // activate Rate Details View
             $scope.rateMenu = 'Details';
             $scope.prevMenu = "";
-            //set here so as to avoid page reloading resulting in bussinness date being accessed before its being set in rootscope.
+            // set here so as to avoid page reloading resulting in bussinness date being accessed before its being set in rootscope.
             $scope.businessDate = rateInitialData.business_date;
             // intialize rateData dictionary - START
             $scope.rateData = {
@@ -44,7 +44,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "end_date": "",
                 "end_date_for_display": "",
                 "commission_details": {},
-                "is_discount_allowed_on": true //CICO-25305 - For new rates we are enabling default,
+                "is_discount_allowed_on": true // CICO-25305 - For new rates we are enabling default,
 
             };
             // intialize rateData dictionary - END
@@ -52,7 +52,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.allAddOns = [];
             $scope.basedonRateData = {};
             $scope.errorMessage = '';
-            //Added for CICO-24988
+            // Added for CICO-24988
             $scope.isOriginOfBookingEnabled = ADRatesAddDetailsSrv.addRatesDetailsData.hotel_settings.reservation_type.is_origin_of_booking_enabled;
             if($scope.isOriginOfBookingEnabled) {
                fetchOriginOfBookings();
@@ -84,7 +84,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         $scope.rateInitialData = rateInitialData;
 
         var setRateAdditionalDetails = function() {
-            //add ons
+            // add ons
             $scope.allAddOns = rateInitialData.addons;
             angular.forEach($scope.allAddOns, function(addOns) {
                 addOns.isSelected = false;
@@ -94,7 +94,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
 
 
-            //restriction type
+            // restriction type
             $scope.restrictionDetails = rateInitialData.restrictionDetails;
             angular.forEach($scope.restrictionDetails, function(restrictionType) {
                 if (restrictionType.value === 'CANCEL_PENALTIES') {
@@ -105,7 +105,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 }
             });
 
-            //selected restrictions
+            // selected restrictions
             angular.forEach(rateInitialData.selectedRestrictions, function(selectedRestriction) {
                 if (selectedRestriction.activated) {
                     if (selectedRestriction.value === 'MAX_ADV_BOOKING') {
@@ -173,7 +173,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 });
                 $scope.basedonRateData.rate_type = (data.rate_type !== null) ? data.rate_type.id : '';
                 $scope.basedonRateData.based_on = (data.based_on !== null) ? data.based_on.id : '';
-                //Broadcast an event to child classed to notify that the based on rates are changed.
+                // Broadcast an event to child classed to notify that the based on rates are changed.
                 $scope.$broadcast('basedonRatesChanged');
                 $scope.$emit('hideLoader');
             };
@@ -195,11 +195,11 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.deposit_policy_id = data.deposit_policy_id;
             $scope.rateData.cancellation_policy_id = data.cancellation_policy_id;
 
-            //Additional details
+            // Additional details
             $scope.rateData.is_suppress_rate_on = (data.is_suppress_rate_on) ? true : false;
             $scope.rateData.is_discount_allowed_on = (data.is_discount_allowed_on) ? true : false;
             $scope.rateData.is_member_rate = (data.is_member) ? true : false;
-            //CICO-18614
+            // CICO-18614
             $scope.rateData.is_pms_only = !!data.is_pms_only;
             $scope.rateData.is_channel_only = !!data.is_channel_only;
 

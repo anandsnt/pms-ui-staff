@@ -54,11 +54,11 @@ sntRover.controller('rvAllotmentSearchCtrl', [
         $scope.getClassAgainstPickedStatus = function(allotment) {
             var classes = '';
 
-            //Add class "green" if No. > 0
+            // Add class "green" if No. > 0
             if (allotment.total_picked_count > 0) {
                 classes = 'green';
             }
-            //Add class "red" if cancelled
+            // Add class "red" if cancelled
             if (isCancelledAllotment(allotment)) {
                 classes += ' red';
             }
@@ -71,7 +71,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
          * @return {String}
          */
         $scope.getGuestClassForArrival = function(allotment) {
-            //"cancel" if cancelled, "check-in" if not cancelled
+            // "cancel" if cancelled, "check-in" if not cancelled
             var classes = isCancelledAllotment(allotment) ? 'cancel' : 'check-in';
 
             return classes;
@@ -83,7 +83,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
          * @return {String}
          */
         $scope.getGuestClassForDeparture = function(allotment) {
-            //"cancel" if cancelled, 'check-out' if not cancelled
+            // "cancel" if cancelled, 'check-out' if not cancelled
             var classes = isCancelledAllotment(allotment) ? 'cancel' : 'check-out';
 
             return classes;
@@ -99,7 +99,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
 
             runDigestCycle();
 
-            //we have to search on changing the from date
+            // we have to search on changing the from date
             $scope.search();
         };
 
@@ -113,7 +113,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
 
             runDigestCycle();
 
-            //we have to search on changing the from date
+            // we have to search on changing the from date
             $scope.search();
         };
 
@@ -125,7 +125,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
             $scope.query = '';
             runDigestCycle();
 
-            //we have to search on changing the from date
+            // we have to search on changing the from date
             $scope.search();
         };
 
@@ -160,7 +160,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
 
             runDigestCycle();
 
-            //we have to search on changing the from date
+            // we have to search on changing the from date
             $scope.search();
         };
 
@@ -175,7 +175,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
 
             runDigestCycle();
 
-            //we have to search on changing the to date
+            // we have to search on changing the to date
             $scope.search();
         };
 
@@ -241,7 +241,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
          * @return - None
          */
         $scope.search = function() {
-            //am trying to search something, so we have to change the initial search helping screen if no rsults
+            // am trying to search something, so we have to change the initial search helping screen if no rsults
             $scope.amFirstTimeHere = false;
 
             var params = formAllotmentSearchParams();
@@ -260,10 +260,10 @@ sntRover.controller('rvAllotmentSearchCtrl', [
          * @return {None}
          */
         var successCallBackOfSearch = function(data) {
-            //allotmentlist
+            // allotmentlist
             $scope.allotmentList = data.allotments;
 
-            //total result count
+            // total result count
             $scope.totalResultCount = data.total_count;
 
             refreshScrollers();
@@ -283,29 +283,29 @@ sntRover.controller('rvAllotmentSearchCtrl', [
          * return - None
          */
         var setDatePickerOptions = function() {
-            //date picker options - Common
+            // date picker options - Common
             var commonDateOptions = {
                 showOn: 'button',
                 dateFormat: $rootScope.jqDateFormat,
                 numberOfMonths: 1
             };
 
-            //date picker options - From
+            // date picker options - From
             $scope.fromDateOptions = _.extend({
                 onSelect: fromDateChoosed
             }, commonDateOptions);
 
-            //date picker options - Departute
+            // date picker options - Departute
             $scope.toDateOptions = _.extend({
                 onSelect: toDateChoosed
             }, commonDateOptions);
 
-            //default from date, as per CICO-13899 it will be business date
+            // default from date, as per CICO-13899 it will be business date
             $scope.fromDate = $filter('date')(tzIndependentDate(businessDate.business_date),
                 $rootScope.dateFormat);
             $scope.fromDateForAPI = tzIndependentDate(businessDate.business_date);
 
-            //default to date, as per CICO-13899 it will be blank
+            // default to date, as per CICO-13899 it will be blank
             $scope.toDate = '';
             $scope.toDateForAPI = '';
         };
@@ -315,7 +315,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
          * return - None
          */
         var setScrollerForMe = function() {
-            //setting scroller things
+            // setting scroller things
             var scrollerOptions = {
                 tap: true,
                 preventDefault: false,
@@ -338,12 +338,12 @@ sntRover.controller('rvAllotmentSearchCtrl', [
          * Pagination things
          */
         var setInitialPaginationAndAPIThings = function() {
-            //pagination
+            // pagination
             $scope.perPage = rvAllotmentSrv.DEFAULT_PER_PAGE;
             $scope.start = 1;
             $scope.end = initialAllotmentListing.allotments.length;
 
-            //what is page that we are requesting in the API
+            // what is page that we are requesting in the API
             $scope.page = 1;
         };
 
@@ -357,12 +357,12 @@ sntRover.controller('rvAllotmentSearchCtrl', [
                 returnString = '';
 
             switch (type_) {
-                //if date string passed
+                // if date string passed
                 case 'string':
                     returnString = $filter('date')(new tzIndependentDate(date_), $rootScope.dateFormat);
                     break;
 
-                    //if date object passed
+                    // if date object passed
                 case 'object':
                     returnString = $filter('date')(date_, $rootScope.dateFormat);
                     break;
@@ -418,7 +418,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
             return ($scope.start === 1);
         };
 
-        //just redirecting to allotment creation page
+        // just redirecting to allotment creation page
         $scope.gotoAddNewAllotment = function() {
             $state.go('rover.allotments.config', {
                 'id': "NEW_ALLOTMENT",
@@ -435,7 +435,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
             var isAtEnd = ($scope.end === $scope.totalResultCount);
 
             if (isAtEnd) {
-                //last diff will be diff from our normal diff
+                // last diff will be diff from our normal diff
                 var lastDiff = ($scope.totalResultCount % $scope.perPage);
 
                 if (lastDiff === 0) {
@@ -449,10 +449,10 @@ sntRover.controller('rvAllotmentSearchCtrl', [
                 $scope.end = $scope.end - $scope.perPage;
             }
 
-            //Decreasing the page param used for API calling
+            // Decreasing the page param used for API calling
             $scope.page--;
 
-            //yes we are calling the API
+            // yes we are calling the API
             $scope.search();
         };
 
@@ -471,10 +471,10 @@ sntRover.controller('rvAllotmentSearchCtrl', [
                 $scope.end = $scope.end + $scope.perPage;
             }
 
-            //Increasing the page param used for API calling
+            // Increasing the page param used for API calling
             $scope.page++;
 
-            //yes we are calling the API
+            // yes we are calling the API
             $scope.search();
         };
 
@@ -495,28 +495,28 @@ sntRover.controller('rvAllotmentSearchCtrl', [
          * @return {None}
          */
         var initializeMe = function() {
-            //chnaging the heading of the page
+            // chnaging the heading of the page
             $scope.setHeadingTitle('ALLOTMENTS');
 
-            //updating the left side menu
+            // updating the left side menu
             $scope.$emit("updateRoverLeftMenu", "menuManageAllotment");
 
-            //date related setups and things
+            // date related setups and things
             setDatePickerOptions();
 
-            //allotmentlist
+            // allotmentlist
             $scope.allotmentList = initialAllotmentListing.allotments;
 
-            //total result count
+            // total result count
             $scope.totalResultCount = initialAllotmentListing.total_count;
 
-            //Yes am first time here
+            // Yes am first time here
             $scope.amFirstTimeHere = true;
 
-            //scroller and related things
+            // scroller and related things
             setScrollerForMe();
 
-            //pagination  & API things
+            // pagination  & API things
             setInitialPaginationAndAPIThings();
         }();
 

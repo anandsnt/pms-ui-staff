@@ -220,14 +220,14 @@ sntRover.controller('rvBillingInfoAccountsMainCtrl', ['$scope', '$rootScope', '$
         }
 	};
 
-    /*function to select the attached entity
+    /* function to select the attached entity
     */
     $scope.selectAttachedEntity = function(index, type) {
 
             $scope.errorMessage = "";
             $scope.isEntitySelected = true;
             $scope.isInitialPage = false;
-            //TODO: Remove commented out code
+            // TODO: Remove commented out code
             $scope.selectedEntity = {
 
 

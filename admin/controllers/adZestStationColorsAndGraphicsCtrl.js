@@ -8,7 +8,7 @@ admin.controller('ADZestStationColorsAndGraphicsCtrl', ['$scope', '$rootScope', 
                 $scope.updateFieldColor(field, value);
             }
             if (typeof value === typeof 'string') {
-                if (value.indexOf('#')) {//show has in field, but dont send when saving
+                if (value.indexOf('#')) {// show has in field, but dont send when saving
                     value = '#'+value;
                 }
             } else {
@@ -18,7 +18,7 @@ admin.controller('ADZestStationColorsAndGraphicsCtrl', ['$scope', '$rootScope', 
             $scope.data[field] = value;
             
         };
-        //CICO-21976
+        // CICO-21976
         $scope.$watch('zestSettings.colors.text', function(value, old) {$scope.updateField('text', value, old)});
         $scope.$watch('zestSettings.colors.background', function(value, old) {$scope.updateField('background', value, old)});
         $scope.$watch('zestSettings.colors.button', function(value, old) {$scope.updateField('button', value, old)});
@@ -28,7 +28,7 @@ admin.controller('ADZestStationColorsAndGraphicsCtrl', ['$scope', '$rootScope', 
         $scope.$watch('zestSettings.colors.header_icons_pressed', function(value, old) {$scope.updateField('header_icons_pressed', value, old)});
         
         $scope.updateFieldColor = function(field_id) {
-            //function to update color preview inline
+            // function to update color preview inline
             $('#'+field_id+' > div > input').css('border-color', $scope.data[field_id]);
         };             
         

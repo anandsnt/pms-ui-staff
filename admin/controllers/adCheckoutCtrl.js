@@ -34,15 +34,15 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
       });
     };
 
-    //remove exclude room type
+    // remove exclude room type
     $scope.deleteRoomType = function(id) {
-      //remove from final array
+      // remove from final array
       angular.forEach($scope.excludedRoomTypes, function(item, index) {
         if(item.id === id) {
           $scope.excludedRoomTypes.splice(index, 1);
         }
       });
-      //untick from list
+      // untick from list
        angular.forEach($scope.roomTypes, function(item, index) {
         if(item.id === id) {
           item.ticked = false;

@@ -6,7 +6,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 	'$sce', 'countryList', 'sortedCountryList', 'zsCheckinSrv', '$timeout',
 	function($scope, $state, zsEventConstants, $stateParams, $sce, countryList, sortedCountryList, zsCheckinSrv, $timeout) {
 
-		/**********************************************************************************************
+		/** ********************************************************************************************
 		 **		Please note that, not all the stateparams passed to this state will not be used in this state, 
 		 **      however we will have to pass this so as to pass again to future states which will use these.
 		 **
@@ -26,10 +26,10 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 			$scope.countryList = [];
 			$scope.sortedCountries = sortedCountryList.sorted;
 			$scope.unSortedCountries = sortedCountryList.unsorted;
-			//if not using the sorted list, get country names with the country native languages to popuplate the list as well
+			// if not using the sorted list, get country names with the country native languages to popuplate the list as well
 			if (!$scope.zestStationData.kiosk_enforce_country_sort) {
 			  countryList.forEach(function(countryObj) {
-			  //objects inside the array of countries
+			  // objects inside the array of countries
 			      countryObj.names.forEach(function(nativeCountryName) {
 			        $scope.countryList.push({
 			          id: countryObj.id,
@@ -48,12 +48,12 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 
 			$scope.$emit('hideLoader');
 
-			//touch-friendly, +searchable list
-			//initializes the jquery plugin for search-filtering in the UI
+			// touch-friendly, +searchable list
+			// initializes the jquery plugin for search-filtering in the UI
 			if ($scope.zestStationData.theme === 'yotel') {
-				//for yotel only right now, TODO: need to optimize on IPAD for zoku and others
+				// for yotel only right now, TODO: need to optimize on IPAD for zoku and others
 				$timeout(function() {
-					//initializes autocomplete, changes the <select> into an <input> field with autocomplete features
+					// initializes autocomplete, changes the <select> into an <input> field with autocomplete features
 					$('select').selectToAutocomplete();
 
 					$timeout(function() {
@@ -71,8 +71,8 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 				return false;
 			}
 			var val = $('input').val().length;
-			//autocomplete plugin overwrites the <select>tags and appends an <input> with autocomplete trigger
-			//need to update the css based on the new dom elements, ie. the border in the input needs to be updated
+			// autocomplete plugin overwrites the <select>tags and appends an <input> with autocomplete trigger
+			// need to update the css based on the new dom elements, ie. the border in the input needs to be updated
 			//  when there are autocomplete elements on-screen
 
 			$scope.showingAutoCompleteArea = (val > 0 && !$scope.selectedCountry.id);
@@ -100,7 +100,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 			var reservations = zsCheckinSrv.getCheckInReservations();
 
 			$state.go('zest_station.checkInReservationSearch');
-			//check if this page was invoked through pickupkey flow
+			// check if this page was invoked through pickupkey flow
 			if (!!$stateParams.pickup_key_mode) {
 				$state.go('zest_station.checkOutReservationSearch', {
 					'mode': 'PICKUP_KEY'
@@ -117,9 +117,9 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 		 * @return {[type]} [description]
 		 */
 		var initializeMe = function() {
-			//hide back button
+			// hide back button
 			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
-			//show close button
+			// show close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 
 			$scope.init();

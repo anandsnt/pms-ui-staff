@@ -22,7 +22,7 @@
 					});
 				return deferred.promise;
 			};
-				//call CMS details only for checkin URLs now
+				// call CMS details only for checkin URLs now
 			var absUrl = window.location.href;
 			// if the guestweb is accessed normaly, ie invoked using
 			// the mail sent from the hotel admin
@@ -35,7 +35,7 @@
 				apiUrl = startingUrl + "_data" + remainingURl;
 
 			} else if (absUrl.indexOf("checkin") !== -1) {
-				//to strip away state URLS
+				// to strip away state URLS
 				absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
 				var urlComponents = absUrl.split('/');
 
@@ -45,7 +45,7 @@
 				fetchScreenWiseData(hotel_identifier);
 			} // direct URL checkout - accessing URLS set in hotel admin for checkin
 			else {
-				//to strip away state URLS
+				// to strip away state URLS
 				absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
 				var urlComponents = absUrl.split('/');
 
@@ -115,7 +115,7 @@
 			};
 			this.setzestwebData = function(zestwebData) {
 
-				//store basic details as rootscope variables
+				// store basic details as rootscope variables
 				if (typeof zestwebData.access_token !== "undefined") {
 					that.zestwebData.accessToken = $rootScope.accessToken = zestwebData.access_token;
 				}
@@ -168,16 +168,16 @@
 				that.zestwebData.collectCCOnCheckin = (zestwebData.checkin_collect_cc === "true") ? true : false;
 				that.zestwebData.isMLI = (zestwebData.payment_gateway = "MLI") ? true : false;
 
-				//room key delivery options
+				// room key delivery options
 				that.zestwebData.preckinCompleted = false;
 				that.zestwebData.userEmail = zestwebData.primary_guest_email;
 				that.zestwebData.keyDeliveryByEmail = true;
-				//that.zestwebData.keyDeliveryByText  = true;
+				// that.zestwebData.keyDeliveryByText  = true;
 				that.zestwebData.zestCheckinNoServiceMsg = zestwebData.zest_checkin_no_service_msg;
 
 				that.zestwebData.offerRoomDeliveryOptions = (zestwebData.offer_room_delivery_options === "true") ? true : false;
 
-				//Params for zest mobile and desktop screens
+				// Params for zest mobile and desktop screens
 				if (zestwebData.hasOwnProperty('is_password_reset')) {
 					that.zestwebData.isPasswordResetView = zestwebData.is_password_reset = "true";
 					that.zestwebData.isTokenExpired = zestwebData.is_token_expired === "true" ? true : false;

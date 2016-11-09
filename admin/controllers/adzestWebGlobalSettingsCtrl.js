@@ -7,7 +7,7 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 		$scope.supportedFonts = ['Source Sans Pro', 'VAGRounded-Light'];
 		$scope.iconColors = ["White", "Black"];
 		$scope.selectedMenu = "";
-		$scope.globalSettings = zestWebGlobalSettings.zest_web; //resolved on route change
+		$scope.globalSettings = zestWebGlobalSettings.zest_web; // resolved on route change
 
 		$scope.saveSettings = function() {
 			var saveSettingsCallback = function() {
@@ -22,7 +22,7 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 
 			$scope.callAPI(ADzestWebGlobalSettingsSrv.saveZestwebGlobalSettings, options);
 		};
-		//on scolling hide all the color pickers
+		// on scolling hide all the color pickers
 		$scope.pageScrolled = function() {
 			$("*").spectrum("hide");
 		};
@@ -54,14 +54,14 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 		$scope.previewClicked = function() {
 			$scope.globalSettings.is_large_screen_preview_on? openLargeScreenPreview():openSmallScreenPreview();
 		};
-		//image upload section starts here
+		// image upload section starts here
 		$scope.isImageAvailable = function(image) {
 			return (image !== '') ? true : false;
 		};
 		var isEmptyString = function(str) {
 			return (_.isUndefined(str) || _.isNull(str) || str.length === 0);
 		};
-		//image place holder texts
+		// image place holder texts
 
 		$scope.stripAndDisplay = function(str) {
 			return  isEmptyString(str) ? "select image.." : "..." + str.substring((str.length - 15), str.length);

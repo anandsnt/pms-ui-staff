@@ -109,7 +109,7 @@ admin.controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 'ideaSetup', 'adId
             }
         };
 
-        //-------------------------------------------------------------------------------------------------------------- SCOPE VARIABLES
+        // -------------------------------------------------------------------------------------------------------------- SCOPE VARIABLES
         // Date Picker Settings
         $scope.datepicker = {
             options: {
@@ -127,7 +127,7 @@ admin.controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 'ideaSetup', 'adId
             }
         }
 
-        //-------------------------------------------------------------------------------------------------------------- SCOPE METHODS
+        // -------------------------------------------------------------------------------------------------------------- SCOPE METHODS
         /**
          * Method to save setup
          * @return {[type]} [description]
@@ -146,7 +146,7 @@ admin.controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 'ideaSetup', 'adId
             })
         }
 
-        //-------------------------------------------------------------------------------------------------------------- INIT
+        // -------------------------------------------------------------------------------------------------------------- INIT
         var init = function() {
             $scope.ideaSetup = ideaSetup;
             // handle null in selected_charge_groups and available_charge_groups

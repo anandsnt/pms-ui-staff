@@ -2,7 +2,7 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
     function(filterDefaults, $scope, RMFilterOptionsSrv, ngDialog) {
         'use strict';
 
-        /*CACHE PROPERTY REFERENCES TO REDUCE OBJECT PROPERTY ACCESS BURDEN*/
+        /* CACHE PROPERTY REFERENCES TO REDUCE OBJECT PROPERTY ACCESS BURDEN*/
         var filterData = $scope.currentFilterData;
 
         BaseCtrl.call(this, $scope);
@@ -14,7 +14,7 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
          */
 
         $scope.leftMenuDimensions = {};
-        //company card search query text
+        // company card search query text
         $scope.companySearchText = "";
         $scope.companyLastSearchText = "";
         $scope.companyCardResults = [];
@@ -25,9 +25,9 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
 
         var companyCardFetchInterval = '';
 
-        var headerHeight = 60;//Top header showing Rate manager title
+        var headerHeight = 60;// Top header showing Rate manager title
         var heightOfFixedComponents = 150;
-        //and little blank space between show rate button and the scolling content
+        // and little blank space between show rate button and the scolling content
         var maxSize = $(window).height() - headerHeight;
 
         $scope.leftMenuDimensions.outerContainerHeight = maxSize;
@@ -42,7 +42,7 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
         });
 
         $scope.selFirst = function() {
-            //ensure the first child el is re-selected (chrome/chromium/ie9 fix for latest ipad:chrome:iOS version- 41.0.2272.58)
+            // ensure the first child el is re-selected (chrome/chromium/ie9 fix for latest ipad:chrome:iOS version- 41.0.2272.58)
             var rmRateType = $('#rmRateType');
 
             if (rmRateType) {
@@ -108,7 +108,7 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
         $scope.fetchFilterOptions();
 
         $scope.clickedAllRates = function() {
-            //If allrates option is selected, unset all rates and rate types
+            // If allrates option is selected, unset all rates and rate types
             if(filterData.is_checked_all_rates) {
                 filterData.rate_type_selected_list = [];
                 filterData.rates_selected_list = [];
@@ -212,7 +212,7 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
         };
 
 
-        //if no replace value is passed, it returns an empty string
+        // if no replace value is passed, it returns an empty string
 
         var escapeNull = function(value) {
             var valueToReturn = ((value === null || typeof value === 'undefined') ? '' : value);
@@ -338,7 +338,7 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
             return !$scope.currentFilterData.begin_date || // Need to filter only when date range is provided
                 !$scope.currentFilterData.end_date || // Need to filter only when date range is provided
                 !rate.end_date || // Need to filter only rates which have an expiry date (end date)
-                (new tzIndependentDate($scope.currentFilterData.begin_date) < new tzIndependentDate(rate.end_date)); //Blocking only expired rates... rates expiring in the date range would still show up.
+                (new tzIndependentDate($scope.currentFilterData.begin_date) < new tzIndependentDate(rate.end_date)); // Blocking only expired rates... rates expiring in the date range would still show up.
         };
     }
 ]);

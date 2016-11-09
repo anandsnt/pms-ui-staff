@@ -100,7 +100,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		templateUrl: '/assets/checkin/partials/MGM/guestNotEligible.html',
 		title: 'Guest Details'
 	});
-	//room verification
+	// room verification
 
 	$stateProvider.state('checkoutRoomVerification', {
 		url: '/checkoutRoomVerification',

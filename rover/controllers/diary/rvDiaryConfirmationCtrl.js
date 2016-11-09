@@ -100,7 +100,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
         $scope.initSelections();
 
         $scope.closeWithAnimation = function () {
-            //to add stjepan's popup showing animation
+            // to add stjepan's popup showing animation
             $rootScope.modalOpened = false;
             $timeout(function() {
                 ngDialog.close();
@@ -129,7 +129,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
 
             var fetchSuccess = function(isAddonsConfigured) {
                 $scope.saveToVault('temporaryReservationDataFromDiaryScreen', $scope.vaultSelections);
-                //CICO-9429
+                // CICO-9429
                 if ( !$rootScope.isHourlyRateOn && $rootScope.isAddonOn&&isAddonsConfigured) {
                     var arrival_date = $scope.vaultSelections.arrival_date;
                     var departure_date = $scope.vaultSelections.departure_date;
@@ -155,9 +155,9 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
                 params.from_date = $scope.vaultSelections.arrival_date;
                 params.to_date = $scope.vaultSelections.departure_date;
                 params.is_active = true;
-            //Fetches whether any configured addons are available.
-            //CICO-16874
-            $scope.invokeApi(RVReservationBaseSearchSrv.hasAnyConfiguredAddons, params, fetchSuccess, fetchFailed); //CICO-16874
+            // Fetches whether any configured addons are available.
+            // CICO-16874
+            $scope.invokeApi(RVReservationBaseSearchSrv.hasAnyConfiguredAddons, params, fetchSuccess, fetchFailed); // CICO-16874
         };
 
         // save data to $vault

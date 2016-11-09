@@ -7,7 +7,7 @@ sntGuestWeb.service('GwCheckoutSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'Gw
 	this.verifyCheckoutUser = function(params) {
 		var deferred = $q.defer();
 		var url = "";
-		//use dummy data for demo mode
+		// use dummy data for demo mode
 
 		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
 			url = '/sample_json/zestweb_v2/checkout_user_verification.json';
@@ -49,7 +49,7 @@ sntGuestWeb.service('GwCheckoutSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'Gw
 	this.verifyRoom = function(params) {
 		var deferred = $q.defer();
 		var url = '';
-		//use dummy data for demo mode
+		// use dummy data for demo mode
 
 		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
 			url = '/sample_json/zestweb_v2/return_status_success.json';
@@ -76,7 +76,7 @@ sntGuestWeb.service('GwCheckoutSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'Gw
 	this.fetchBillDetails = function(params) {
 		var deferred = $q.defer();
 		var url = "";
-		//use dummy data for demo mode
+		// use dummy data for demo mode
 
 		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
 			url = '/sample_json/zestweb_v2/bill_details.json';
@@ -98,7 +98,7 @@ sntGuestWeb.service('GwCheckoutSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'Gw
 	this.fetchLateCheckoutOptions = function(params) {
 		var deferred = $q.defer();
 		var url = "";
-		//use dummy data for demo mode
+		// use dummy data for demo mode
 
 		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
 			url = '/sample_json/zestweb_v2/late_checkout_options.json';
@@ -119,7 +119,7 @@ sntGuestWeb.service('GwCheckoutSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'Gw
 	this.updateReservationWithNewCheckoutOptions = function(params) {
 		var deferred = $q.defer();
 		var url = "";
-		//use dummy data for demo mode
+		// use dummy data for demo mode
 
 		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
 			url = '/sample_json/zestweb_v2/return_blank.json';
@@ -149,7 +149,7 @@ sntGuestWeb.service('GwCheckoutSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'Gw
 	this.completeCheckout = function(params) {
 		var deferred = $q.defer();
 		var url = "";
-		//use dummy data for demo mode
+		// use dummy data for demo mode
 
 		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
 			url = '/sample_json/zestweb_v2/return_status_success.json';

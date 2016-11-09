@@ -7,7 +7,7 @@ sntRover.controller('RVDiaryMessageShowingCtrl', ['$scope',
     	var callBack = $scope.callBackAfterClosingMessagePopUp;
 
     	$scope.closeDialog = function() {
-            //to add stjepan's popup showing animation
+            // to add stjepan's popup showing animation
             $rootScope.modalClosing = true;
             $timeout(function() {
                 $rootScope.modalClosing = false;

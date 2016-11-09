@@ -186,7 +186,7 @@ angular.module('sntRover').service('rvUtilSrv', [function() {
 		 * @return {Array of Objects}
 		 */
 		this.getListForTimeSelector = function(interval, mode) {
-			//TODO: Add Date and check for DST
+			// TODO: Add Date and check for DST
 			var listOfTimeSelectors = [],
 				i 		= 0,
 				hours 	= 0,
@@ -195,7 +195,7 @@ angular.module('sntRover').service('rvUtilSrv', [function() {
 				value 	= '',
 				text 	= '';
 
-			//setting the defaults
+			// setting the defaults
 			if (_.isUndefined (mode)) {
 				mode = 12;
 			}
@@ -222,7 +222,7 @@ angular.module('sntRover').service('rvUtilSrv', [function() {
 
 		        text = hours + ':' + minutes;
 
-		        //is 12 hour mode enabled
+		        // is 12 hour mode enabled
 		        if (mode === 12) {
 					text 	+= ' ' + ampm;
 		        }

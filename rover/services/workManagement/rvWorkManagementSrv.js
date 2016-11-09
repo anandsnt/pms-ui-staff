@@ -1,6 +1,6 @@
 angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 	function($q, RVBaseWebSrvV2) {
-		//Meta Data for Work Management
+		// Meta Data for Work Management
 		// 1. Maids
 		// 2. WorkTypes
 		// 3. Shifts

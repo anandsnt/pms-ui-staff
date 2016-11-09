@@ -257,45 +257,45 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
   $stateProvider.state('admin.sitemindersSetup', {
     templateUrl: '/assets/partials/SiteminderSetup/adSiteminderSetup.html',
     controller: 'adExternalInterfaceCtrl',
-    //interface_id: 2,
-    interface_id: 'SITEMINDER', //Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
-    simple_name: 'Siteminder', //Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    // interface_id: 2,
+    interface_id: 'SITEMINDER', // Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    simple_name: 'Siteminder', // Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
     url: '/siteminderSetup'
   });
 
   $stateProvider.state('admin.givexSetup', {
     templateUrl: '/assets/partials/Givex/adGivexSetup.html',
     controller: 'adExternalInterfaceCtrl',
-    //interface_id: 4,
-    interface_id: 'GIVEX', //Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
-    simple_name: 'Givex', //Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    // interface_id: 4,
+    interface_id: 'GIVEX', // Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    simple_name: 'Givex', // Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
     url: '/siteminderSetup'
   });
 
   $stateProvider.state('admin.synxisSetup', {
     templateUrl: '/assets/partials/SynxisSetup/adSynxisSetup.html',
     controller: 'adExternalInterfaceCtrl',
-    //interface_id: 3,
-    interface_id: 'SYNXIS', //Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
-    simple_name: 'Synxis', //Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    // interface_id: 3,
+    interface_id: 'SYNXIS', // Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    simple_name: 'Synxis', // Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
     url: '/synxisSetup'
   });
 
   $stateProvider.state('admin.zDirectSetup', {
     templateUrl: '/assets/partials/ZDirectSetup/adZDirectSetup.html',
     controller: 'adExternalInterfaceCtrl',
-    //interface_id: 4,
-    interface_id: 'ZDIRECT', //Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
-    simple_name: 'ZDirect', //Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    // interface_id: 4,
+    interface_id: 'ZDIRECT', // Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    simple_name: 'ZDirect', // Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
     url: '/zDirectSetup'
   });
 
   $stateProvider.state('admin.travelTripperSetup', {
     templateUrl: '/assets/partials/travelTripperSetup/adtravelTripperSetup.html',
     controller: 'adExternalInterfaceCtrl',
-    //interface_id: 4,
-    interface_id: 'TRAVELTRIPPER', //Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
-    simple_name: 'TravelTripper', //Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    // interface_id: 4,
+    interface_id: 'TRAVELTRIPPER', // Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    simple_name: 'TravelTripper', // Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
     url: '/travelTripperSetup'
   });
 

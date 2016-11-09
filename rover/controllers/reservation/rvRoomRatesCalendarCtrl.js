@@ -6,7 +6,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 	'$filter',
 	'$timeout',
 	function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filter, $timeout) {
-		//inheriting some useful things
+		// inheriting some useful things
 		BaseCtrl.call(this, $scope);
 		
 		var that = this, availabilityData = null;
@@ -105,7 +105,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				rData 	= $scope.reservationData,
 				dayHouseAvailability = dailyData.house.availability;
 
-			//if the date is checkin/checkout 
+			// if the date is checkin/checkout 
 			if (dailyData.date === rData.arrivalDate) {
 				classes += 'check-in ';
 				if(isClosedArrivalRestrictionPresent(dailyData))
@@ -116,7 +116,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			}
             
             var title = getTitleAgainstDailyData(dailyData);
-			//if day house availability is 0 or less
+			// if day house availability is 0 or less
 
 			if ( title !== "" || title == "undefined") {
 				classes += 'unavailable ';
@@ -231,7 +231,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
                         
 		};
 
-		/**To filter the room rates
+		/** To filter the room rates
 		 * [isRoomRateFiltered description]
 		 * @return {object} [description]
 		 */
@@ -304,8 +304,8 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		 * @return {Boolean}
 		 */
 		var isProcessingLeftSideCalendar = function(dailyData) {
-			//if the month of left calndr and date are same, it means
-			//add 12 to the 'month' value in the options to tackle negative values
+			// if the month of left calndr and date are same, it means
+			// add 12 to the 'month' value in the options to tackle negative values
 			return (($scope.leftCalendarOptions.month + 12) % 12 === new tzIndependentDate(dailyData.date).getMonth() % 12);
 		};
 
@@ -315,8 +315,8 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		 * @return {Boolean}
 		 */
 		var isProcessingRightSideCalendar = function(dailyData) {
-			//if the month of right calndr and date are same, it means
-			//add 12 to the 'month' value in the options to tackle negative values
+			// if the month of right calndr and date are same, it means
+			// add 12 to the 'month' value in the options to tackle negative values
 			return (($scope.rightCalendarOptions.month + 12) % 12  === new tzIndependentDate(dailyData.date).getMonth() % 12);
 		};
 
@@ -345,7 +345,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				}
 			});
 
-			//updating the left, right side calendar data model with new ones
+			// updating the left, right side calendar data model with new ones
 			$scope.eventSources.left.push(calendarData.left);
 			$scope.eventSources.right.push(calendarData.right);
 			refreshScroller();
@@ -397,11 +397,11 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		 * to set title & iScroll object
 		 */
 		var	setTitleAndScroller = function() {
-			//heading & title
+			// heading & title
 			$scope.heading = $filter('translate')('CHANGE_STAY_DATES_TITLE');
 			$scope.setTitle ($scope.heading);
 			
-			//scroller options
+			// scroller options
 			$scope.setScroller ('room-rates-calendar');
 		};
 
@@ -418,7 +418,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		 * Set the calendar options to display the calendar
 		 */
 		var renderFullCalendar = function() {
-			//calender options used by full calender, related settings are done here
+			// calender options used by full calender, related settings are done here
 			var fullCalendarOptions = {
 				height: 450,
 				editable: true,
@@ -598,8 +598,8 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			$scope.checkinDateInCalender = $scope.confirmedCheckinDate = tzIndependentDate(resData.arrivalDate);
 			$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = tzIndependentDate(resData.departureDate);			
 
-			//finalRoomType - Room type finally selected by the user. corresponds to the bottom select box
-			//roomTypeForCalendar - Room type which specifies the calendar data
+			// finalRoomType - Room type finally selected by the user. corresponds to the bottom select box
+			// roomTypeForCalendar - Room type which specifies the calendar data
 			$scope.finalRoomType = $scope.roomTypeForCalendar = resData.rooms[0].roomTypeId;
 		};
 

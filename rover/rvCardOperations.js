@@ -6,7 +6,7 @@ var CardOperation = function() {
 	// Note down: Currently it is recursive
 
 	this.startReaderDebug = function(options) {
-	//Simulating the card reader function for easy testing. May be removed in production.
+	// Simulating the card reader function for easy testing. May be removed in production.
 
 		coinstance = this; // Global instance to test from console.
 		that.callSuccess = function(data)
@@ -29,7 +29,7 @@ var CardOperation = function() {
 
 	};
 	this.writeKeyDataDebug = function(options) {
-		//Simulating the write function for easy testing. May be removed in production.
+		// Simulating the write function for easy testing. May be removed in production.
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
 		var mechineResponse= { };
@@ -75,7 +75,7 @@ var CardOperation = function() {
 			return false;
 		}
 		else{
-			//calling cordova service
+			// calling cordova service
 			cordova.exec(
 						// if success call back require any parameters
 						function(data) {
@@ -130,7 +130,7 @@ var CardOperation = function() {
 		}
 	};
 
-	//function for get single swipe
+	// function for get single swipe
 	this.listenForSingleSwipe = function(options) {
 		options['service'] = "RVCardPlugin";
 		options['action'] = "observeForSwipe";
@@ -196,7 +196,7 @@ var CardOperation = function() {
 	// debug mode of check device connection checking
 	// please check above method (checkDeviceConnected) for further description
 	this.checkDeviceConnectedDebug = function(options) {
-		//Simulating the write function for easy testing. May be removed in production.
+		// Simulating the write function for easy testing. May be removed in production.
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
 		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
@@ -221,7 +221,7 @@ var CardOperation = function() {
 	// debug mode of retrieving the Unique id
 	// please check above method (retrieveUserID) for further description
 	this.retrieveUserIDDebug = function(options) {
-		var retUserID = "CB94C49T"; //Sample ID
+		var retUserID = "CB94C49T"; // Sample ID
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 		// we are simulating the process by calling the success call back after some time period
 
@@ -244,13 +244,13 @@ var CardOperation = function() {
 
 	// debug mode of retrieving the card info
 	this.retrieveCardInfoDebug = function(options) {
-		//TODO: replace with sample hash
+		// TODO: replace with sample hash
 		var retCardInfo = {
 							"card_uid": "E3C33C7E",
 							"card_type": "3",
 							"card_size": "1024",
 							"cs": "912D8F4A79C1"
-							}; //Sample card info
+							}; // Sample card info
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 		// we are simulating the process by calling the success call back after some time period
 
@@ -260,7 +260,7 @@ var CardOperation = function() {
 	};
 
 
-	//function for linking iBeacon
+	// function for linking iBeacon
 	this.linkiBeacon = function(options) {
 		options['service'] = "RVCardPlugin";
 		options['action'] = "writeBeaconID";

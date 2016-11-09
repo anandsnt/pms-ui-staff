@@ -13,7 +13,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		 * @return boolean [description]
 		 */
 		function isWithinMaxOccupancy() {
-			var maxOccupancy = $scope.reservationData.reservation_card.max_occupancy; //TODO: Get the max occupancy here
+			var maxOccupancy = $scope.reservationData.reservation_card.max_occupancy; // TODO: Get the max occupancy here
 
 			if (!!maxOccupancy) {
 				var currentTotal = parseInt($scope.guestData.adult_count || 0) +
@@ -106,13 +106,13 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		};
 
 		$scope.keepCurrentRate = function() {
-			//Save data variables keeping the Current Rate .
+			// Save data variables keeping the Current Rate .
 			saveChanges(false, true, {"isBackToStayCard": true});
 			closeDialog();
 		};
 
 		$scope.ChangeToNewRate = function() {
-			//Save data variables taking the New Rate .
+			// Save data variables taking the New Rate .
 			saveChanges(undefined, undefined, {"isBackToStayCard": true});
 			closeDialog();
 		};
@@ -227,7 +227,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		}
 
 		$scope.applyCurrentRate = function() {
-			saveChanges(true, undefined, {"isBackToStayCard": true}); //override
+			saveChanges(true, undefined, {"isBackToStayCard": true}); // override
 			closeDialog();
 		};
 
@@ -275,9 +275,9 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		 */
 		$scope.onStayCardOccupancyChange = function() {
 			if (isWithinMaxOccupancy()) {
-				////////
+				// //////
 				// Step 1 : Check against max occupancy and let know the user if the occupancy is not allowed
-				////////
+				// //////
 				ngDialog.open({
 					template: '/assets/partials/reservation/alerts/occupancy.html',
 					className: '',

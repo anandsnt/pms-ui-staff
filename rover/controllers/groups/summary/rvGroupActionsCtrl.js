@@ -5,7 +5,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
          *To save the reservation note and update the ui accordingly
          */
         $scope.errorMessage = '';
-        $scope.actionsCount = 'none';//none, pending, all-completed
+        $scope.actionsCount = 'none';// none, pending, all-completed
         $scope.actions = {};
         $scope.newAction = {};
         $scope.actions.totalCount = 0;
@@ -102,13 +102,13 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
 
 
         $scope.stopEditClick = function(ent) {
-            if (!$scope.starting || ent) {//ent = enter on keyboard hit, user was in txt input and hits enter, forcing a save request
+            if (!$scope.starting || ent) {// ent = enter on keyboard hit, user was in txt input and hits enter, forcing a save request
                 setTimeout(function() {
                     $scope.editingDescriptionInline = false;
 
                     if (!$scope.isStandAlone) {
                         if ($scope.lastSavedDescription !== $scope.selectedAction.description) {
-                            ///push up
+                            // /push up
                             if (!$scope.savingDescription) {
                                 $scope.savingDescription = true;
                                 $scope.updateActionDescription($scope.editingDescriptionValue, $scope.selectedAction.description);
@@ -126,7 +126,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         $scope.startEditDescription = function() {
             $scope.starting = true;
             if (!$scope.isStandAlone) {
-                if ($scope.isTrace($scope.selectedAction.action_task_type)) {//only overlay traces for now (sprint 37) CICO-17112
+                if ($scope.isTrace($scope.selectedAction.action_task_type)) {// only overlay traces for now (sprint 37) CICO-17112
                     $scope.editingDescriptionInline = true;
                 }
                 $scope.starting = false;
@@ -164,7 +164,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                 var pending = $scope.actions.pendingCount, total = $scope.actions.totalCount;
 
                 if (total === 0) {
-                    $scope.actionsCount = 'none';//none, pending, all-completed
+                    $scope.actionsCount = 'none';// none, pending, all-completed
                 } else if (total > 0 && pending === 0) {
                     $scope.actionsCount = 'all-completed';
                 } else if (total > 0 && total === pending) {
@@ -196,7 +196,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                 aDay = aDay.toLowerCase();
                 aDayString = aDay.substring(0, 1).toUpperCase()+aDay.substring(1, 3)+' ';
             }
-            //make sure timestring include '0' if < 10, ie. 09, 08, etc instead of 9, 8...
+            // make sure timestring include '0' if < 10, ie. 09, 08, etc instead of 9, 8...
             if (timeStr !== ' ') {
                 var timeSpl = timeStr.split(':');
                 var hour = timeSpl[0];
@@ -245,7 +245,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             var pending = $scope.actions.pendingCount, total = $scope.actions.totalCount;
 
             if (total === 0 && pending === 0) {
-                $scope.actionsCount = 'none';//none, pending, all-completed
+                $scope.actionsCount = 'none';// none, pending, all-completed
             } else if (total > 0 && pending === 0) {
                 $scope.actionsCount = 'all-completed';
             } else if (total > 0 && total === pending) {
@@ -329,7 +329,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             $scope.clearAssignSection();
         };
         $scope.setRightPane = function(toView) {
-            //selected, new, assign, comment
+            // selected, new, assign, comment
             $scope.actionSelected = toView;
         };
         $scope.clearNewAction = function() {
@@ -374,7 +374,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                 }
                 $scope.$emit('hideLoader');
             };
-            //group_id=1616903&action_task[description]=test
+            // group_id=1616903&action_task[description]=test
             var params = {
                 'group_id': $scope.groupConfigData.summary.group_id,
                 'action_task': {
@@ -400,7 +400,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         };
 
         $scope.reformatDateOption = function(d, spl, newSpl) {
-            //expecting ie. 01/09/2015 (month, day, yr)
+            // expecting ie. 01/09/2015 (month, day, yr)
             var spl = d.split(spl);
             var month = spl[0], day = spl[1], year = spl[2];
 
@@ -466,7 +466,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                         if (!$scope.newAction.time_due) {
                             $scope.newAction.time_due = $scope.timeFieldValue[0];
                         }
-                        //this one has a save / post button
+                        // this one has a save / post button
                         $scope.closeNewCalendar();
                     };
                 }
@@ -511,7 +511,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         };
 
         $scope.getBasicDateInMilli = function(d, charToSplit) {
-            //expecting date string ie: 02/15/2015
+            // expecting date string ie: 02/15/2015
             if (typeof charToSplit !== typeof 'string') {
                 charToSplit = '/';
             }
@@ -539,8 +539,8 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             return {day: day, month: month, year: year};
         };
         $scope.showSelectCalendar = function() {
-            //to ensure same day due to utc hour, set utc hour to 0100
-            //if newAction = set start date to today, otherwise set it to the selectedAction due date
+            // to ensure same day due to utc hour, set utc hour to 0100
+            // if newAction = set start date to today, otherwise set it to the selectedAction due date
             var fmObj = tzIndependentDate($scope.selectedAction.due_at_str);
 
             $scope.actionsSelectedDate = $filter('date')(fmObj, "yyyy-MM-dd");
@@ -576,22 +576,22 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             return new Date();
         };
         $scope.cancelNewAction = function() {
-            //switch back to selected view of lastSelected
-            //just change the view to selected
+            // switch back to selected view of lastSelected
+            // just change the view to selected
             if ($scope.actions.totalCount > 0) {
                 if ($scope.lastSelectedItemId) {
                     $scope.selectAction($scope.actions[$scope.lastSelectedItemId]);
                 }
-                $scope.setRightPane('selected');//goes back to last screen if actions exist
+                $scope.setRightPane('selected');// goes back to last screen if actions exist
             } else {
-                $scope.setRightPane('none');//goes back to All is Good if no actions
+                $scope.setRightPane('none');// goes back to All is Good if no actions
             }
 
             $scope.clearNewAction();
         };
         $scope.cancelAssign = function() {
-            //switch back to selected view of lastSelected
-            //just change the view to selected
+            // switch back to selected view of lastSelected
+            // just change the view to selected
             $scope.setRightPane('selected');
             $scope.clearAssignSection();
         };
@@ -682,15 +682,15 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         };
         $scope.lastSelectedItemId = '';
         $scope.refreshActionList = function(del, selected) {
-            $scope.fetchDepartments();//store this to use in assignments of department
+            $scope.fetchDepartments();// store this to use in assignments of department
             var onSuccess = function(data) {
                 var splitTimeString = data.business_date_time.split("T");
 
                 $scope.hotel_time = splitTimeString[0] + "T" +  splitTimeString[1].split(/[+-]/)[0];
 
                 var list = data.data;
-                //if doing a refresh, dont replace the actions array, since it will cause the UI to flash
-                //and look like a bug, instead go through the objects and update them
+                // if doing a refresh, dont replace the actions array, since it will cause the UI to flash
+                // and look like a bug, instead go through the objects and update them
 
                 var matchObj;
 
@@ -712,7 +712,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                         list[x].due_at_time_str = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "hh:mm a");
 
                         list[x].due_at_date = dateFilter(splitDueTimeString[0], $rootScope.dateFormat);
-                        //list[x].due_at_date = $filter('date')(list[x].due_at_str, $rootScope.dateFormat);
+                        // list[x].due_at_date = $filter('date')(list[x].due_at_str, $rootScope.dateFormat);
 
                         list[x].hasDate = true;
                     } else {
@@ -748,9 +748,9 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                                     $scope.actions[i] = listItem;
                                     inActions = true;
                                 } else if (!$scope.isStandAlone) {
-                                    if (del === 'delete' && selected) {//flag to delete an item (overlay)
+                                    if (del === 'delete' && selected) {// flag to delete an item (overlay)
                                         if (selected.id === listItem.id) {
-                                            inActions = true;//skips
+                                            inActions = true;// skips
                                         }
                                     } else {
                                         $scope.actions[i] = listItem;
@@ -765,8 +765,8 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                     }
                 }
 
-                //hide the element that was deleted; and refresh the scroller,
-                //this also sets focus to the first item in the list
+                // hide the element that was deleted; and refresh the scroller,
+                // this also sets focus to the first item in the list
                 for (var xi in $scope.actions) {
                     if (selected && $scope.actions[xi].id === selected.id) {
                         $scope.actions[xi].is_deleted = true;
@@ -786,8 +786,8 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                                 $scope.selectAction($scope.actions[a]);
                             }
                         } else if (!$scope.isStandAlone) {
-                            //overlay has some alerts which can get deleted; these are just hidden from view until the next full refresh / api call is done
-                            //since the action object still exists, upon deleting an action, select the next (visible) action starting at the index (0)
+                            // overlay has some alerts which can get deleted; these are just hidden from view until the next full refresh / api call is done
+                            // since the action object still exists, upon deleting an action, select the next (visible) action starting at the index (0)
                             if ($scope.lastSelectedItemId === $scope.actions[a].id && !del) {
                                 $scope.selectAction($scope.actions[a]);
                             } else {
@@ -797,7 +797,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                                     if (!$scope.actions[a].is_deleted) {
                                         $scope.selectAction($scope.actions[a]);
                                     } else {
-                                        for (var i in $scope.actions) {//select next non-deleted action
+                                        for (var i in $scope.actions) {// select next non-deleted action
                                             if (!$scope.actions[i].is_deleted) {
                                                 $scope.selectAction($scope.actions[i]);
                                                 $scope.$emit('hideLoader');
@@ -818,7 +818,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                 if ($scope.refreshing) {
                     $scope.refreshing = false;
                 }
-                //$scope.$emit('hideLoader');
+                // $scope.$emit('hideLoader');
             };
             var onFailure = function(data) {
                 $scope.$emit('hideLoader');
@@ -876,21 +876,21 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         $scope.isAlert = function(v) {
             var str = 'ALERT';
 
-            if ($scope.eitherString(str, v)) {//checks all cases upper/lower/first letter cap
+            if ($scope.eitherString(str, v)) {// checks all cases upper/lower/first letter cap
                 return true;
             } else return false;
         };
         $scope.isRequest = function(v) {
             var str = 'REQUEST';
 
-            if ($scope.eitherString(str, v)) {//checks all cases upper/lower/first letter cap
+            if ($scope.eitherString(str, v)) {// checks all cases upper/lower/first letter cap
                 return true;
             } else return false;
         };
         $scope.isTrace = function(v) {
             var str = 'TRACE';
 
-            if ($scope.eitherString(str, v)) {//checks all cases upper/lower/first letter cap
+            if ($scope.eitherString(str, v)) {// checks all cases upper/lower/first letter cap
                 return true;
             } else return false;
         };
@@ -960,7 +960,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         };
 
         $scope.fetchActionsList = function() {
-            $scope.fetchDepartments();//store this to use in assignments of department
+            $scope.fetchDepartments();// store this to use in assignments of department
 
             var data = {id: $scope.groupConfigData.summary.group_id};
 
@@ -993,7 +993,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             }
             setTimeout(function() {
                 if ($scope.actions[index]) {
-                    $scope.selectAction($scope.actions[index]);//first action selected by default
+                    $scope.selectAction($scope.actions[index]);// first action selected by default
                 }
             }, 100);
         };
@@ -1194,14 +1194,14 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                 params.action_task.id  = $scope.selectedAction.id;
 
                 var onSuccess = function() {
-                    //switch back to selected
+                    // switch back to selected
                     $scope.actionSelected = 'selected';
                     $scope.lastSelectedItemId = params.action_task.id;
                     $scope.refreshActionList();
                     $scope.clearAssignSection();
                 };
                 var onFailure = function(data) {
-                    //show failed msg, so user can try again-?
+                    // show failed msg, so user can try again-?
                     if (data[0]) {
                         $scope.errorMessage = 'Internal Error Occured';
                     }
@@ -1228,7 +1228,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                 $scope.actionSelected = 'none';
                 $scope.actions.totalCount = 0;
                 $scope.recountAfterDelete = true;
-            } else {//complete action (non-delete)
+            } else {// complete action (non-delete)
                 $scope.refreshing = true;
                 $scope.refreshToEmpty = false;
                 $scope.actionSelected = 'selected';
@@ -1240,7 +1240,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         };
         $scope.isRefreshing = true;
         $scope.completeAction = function(del, selected) {
-            //mark the selected action as complete, notify the api
+            // mark the selected action as complete, notify the api
             var params = $scope.getBaseParams();
 
             params.action_task.id  = $scope.selectedAction.id;
@@ -1296,7 +1296,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         };
 
         $scope.sortActionsList = function(list) {
-            //take an actions list and sort it by due date,
+            // take an actions list and sort it by due date,
             // - but also put "completed" items @ the bottom
             // step 1. make two lists, (completed, not completed)
             // step 2. sort both lists

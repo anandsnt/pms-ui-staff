@@ -31,7 +31,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         }, 1000);
     }
 
-    //common payment model items
+    // common payment model items
     $scope.passData = {};
     $scope.passData.details = {};
     if (typeof $scope.guestCardData === 'undefined' || typeof $scope.guestCardData.contactInfo === 'undefined') {
@@ -91,7 +91,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         $scope.renderAddedPayment = $scope.oldPayment;
     });
 
-    //retrieve card expiry based on paymnet gateway
+    // retrieve card expiry based on paymnet gateway
     var retrieveExpiryDate = function() {
 
         var expiryDate = $scope.cardData.tokenDetails.isSixPayment ?
@@ -102,7 +102,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         return expiryDate;
     };
 
-    //retrieve card number based on paymnet gateway
+    // retrieve card number based on paymnet gateway
     var retrieveCardNumber = function() {
         var cardNumber = $scope.cardData.tokenDetails.isSixPayment ?
             $scope.cardData.tokenDetails.token_no.substr($scope.cardData.tokenDetails.token_no.length - 4) :
@@ -312,7 +312,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
             data.to_bill = $scope.selectedEntity.to_bill;
         }
         data.is_new = $scope.selectedEntity.is_new;
-        //CICO-22444 - Added inorder to allow the same charge codes for different date range
+        // CICO-22444 - Added inorder to allow the same charge codes for different date range
         data.from_date = $filter('date')(tzIndependentDate($scope.routeDates.from), "yyyy-MM-dd");
         data.to_date = $filter('date')(tzIndependentDate($scope.routeDates.to), "yyyy-MM-dd");
 
@@ -368,7 +368,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         }
         data.is_new = $scope.selectedEntity.is_new;
 
-        //CICO-22444 - Added inorder to allow the same charge codes for different date range
+        // CICO-22444 - Added inorder to allow the same charge codes for different date range
         data.from_date = $filter('date')(tzIndependentDate($scope.routeDates.from), "yyyy-MM-dd");
         data.to_date = $filter('date')(tzIndependentDate($scope.routeDates.to), "yyyy-MM-dd");
 
@@ -414,7 +414,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         var successCallback = function(data) {
             $scope.bills = [];
             $scope.$parent.bills = [];
-            //TODO: commented to fix the issue
+            // TODO: commented to fix the issue
 
             $scope.first_bill_id = typeof data[0] !== "undefined" ? data[0].id : "";
             var firstBillId = typeof data[0] !== "undefined" ? data[0].id : "";
@@ -437,14 +437,14 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
                 $scope.$parent.bills = $scope.bills;
             }
             $scope.selectedEntity.to_bill = $scope.selectedEntity.is_new ? $scope.bills[0].id : $scope.selectedEntity.to_bill;
-            //We should display all charge codes here
-            //TODO: verify the logic
+            // We should display all charge codes here
+            // TODO: verify the logic
             if ($scope.billingEntity === "GROUP_DEFAULT_BILLING" || $scope.billingEntity === "ALLOTMENT_DEFAULT_BILLING") {
                 $scope.fetchAllChargeCodes();
                 return;
             }
 
-            //default to last item when there is no bill no.
+            // default to last item when there is no bill no.
             var billNo = $scope.selectedEntity.bill_no;
 
             if ($scope.selectedEntity.entity_type === 'ALLOTMENT' || $scope.selectedEntity.entity_type === 'GROUP' || $scope.selectedEntity.entity_type === 'HOUSE') {
@@ -521,7 +521,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
             if (typeof $scope.selectedEntity.is_allow_direct_debit === 'undefined') {
                 $scope.selectedEntity.is_allow_direct_debit = data.is_allow_direct_debit;
             }
-            //Added for CICO-22869
+            // Added for CICO-22869
             $scope.selectedEntity.attached_charge_codes = data.attached_charge_codes;
             if (!isEmptyObject(data.credit_card_details)) {
                 $scope.renderAddedPayment = data.credit_card_details;
@@ -621,9 +621,9 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
      * if not fouund in the data, it will request for webservice
      */
     var displayFilteredResultsChargeCodes = function() {
-        //if the entered text's length < 3, we will show everything, means no filtering
+        // if the entered text's length < 3, we will show everything, means no filtering
         if ($scope.chargeCodeSearchText.length < 3) {
-            //based on 'is_row_visible' parameter we are showing the data in the template
+            // based on 'is_row_visible' parameter we are showing the data in the template
             for (var i = 0; i < $scope.availableChargeCodes.length; i++) {
                 if ($scope.isChargeCodeSelected($scope.availableChargeCodes[i])) {
                     $scope.availableChargeCodes[i].is_row_visible = false;
@@ -640,8 +640,8 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         }
         else {
             var value = "";
-            //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
-            //if it is zero, then we will request for webservice
+            // searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
+            // if it is zero, then we will request for webservice
 
             for (var i = 0; i < $scope.availableChargeCodes.length; i++) {
                 value = $scope.availableChargeCodes[i];
@@ -780,7 +780,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
             }
         }
         else {
-            //CICO-12797 workaround to meet the API expected params
+            // CICO-12797 workaround to meet the API expected params
             var params = angular.copy($scope.selectedEntity);
 
             $scope.invokeApi(RVBillinginfoSrv.saveRoute, params, $scope.saveSuccessCallback, errorCallback);
@@ -897,7 +897,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
                 $scope.setReloadOption(true);
                 $scope.headerButtonClicked();
                 $scope.$parent.$emit('BILLINGINFOADDED');
-                //Added for CICO-23210
+                // Added for CICO-23210
                 $scope.$parent.$emit('REFRESH_BILLCARD_VIEW');
             }
         };
@@ -1106,7 +1106,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         }
     };
 
-    //Updates the charge codes and billing groups upon changing the route date range
+    // Updates the charge codes and billing groups upon changing the route date range
     $scope.onRouteDateChange = function() {
         $scope.fetchAvailableChargeCodes();
     };

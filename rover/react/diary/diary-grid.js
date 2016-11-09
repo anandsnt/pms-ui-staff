@@ -37,7 +37,7 @@ var Grid = React.createClass({
 			grid_width 	= display.width + 'px',
 			self 		= this;
 
-		/*OUTPUT VIEWPORT/GRID and eventually TIMELINE*/
+		/* OUTPUT VIEWPORT/GRID and eventually TIMELINE*/
 		return  React.DOM.div({
 					id: 'grid-wrapper',
 					className: 'wrapper scrollable'
@@ -45,8 +45,8 @@ var Grid = React.createClass({
 				React.DOM.ul({
 					className: 'grid',
 					style: {
-						width: grid_width//,
-						//left: -1 * (display.x_offset - display.x_n) * display.px_per_ms + 'px'
+						width: grid_width// ,
+						// left: -1 * (display.x_offset - display.x_n) * display.px_per_ms + 'px'
 					}
 				},
 				_.map(this.props.data, function(row, idx) {

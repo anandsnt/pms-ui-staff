@@ -1,4 +1,4 @@
-//To fix the issue with csrf token in ajax requests
+// To fix the issue with csrf token in ajax requests
 sntRover.config(function($httpProvider) {
   $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
   var m = document.getElementsByTagName('meta');
@@ -43,7 +43,7 @@ angular.module('sntRover').service('RVBaseWebSrv', ['$http', '$q', '$window', '$
 			}
   		};
 
-		//Sample params {params:{fname: "fname", lname: "lname"}}
+		// Sample params {params:{fname: "fname", lname: "lname"}}
 		$http(httpDict).success(function(response, status) {
 			if(response.status === "success") {
 		    	deferred.resolve(response.data);
@@ -74,7 +74,7 @@ if(status === 406) { // 406- Network error
 				$window.location.href = '/logout' ;
 			}
 
-			//set of custom error emssage range http status
+			// set of custom error emssage range http status
 			//
 			else if(status >= 470 && status <= 490) {
 				var error = {};

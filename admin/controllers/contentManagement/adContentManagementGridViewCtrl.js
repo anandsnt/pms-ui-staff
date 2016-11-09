@@ -227,7 +227,7 @@ admin.controller('ADContentManagementGridviewCtrl', ['$scope', '$state', 'ADCont
     * Need to delete from all the lists that has dependancy to the filtered data
     */
 	$scope.$on('componentDeleted', function(event, data) {
-	//delete item from correspondong list
+	// delete item from correspondong list
 
 
 		angular.forEach($scope.sections, function(section, index) {
@@ -277,7 +277,7 @@ admin.controller('ADContentManagementGridviewCtrl', ['$scope', '$state', 'ADCont
     * Need to delete from all the lists that has dependancy to the filtered data
     */
 	$scope.$on('statusUpdated', function(event, data) {
-	//delete item from correspondong list
+	// delete item from correspondong list
 
 
 		angular.forEach($scope.sections, function(section, index) {
@@ -319,7 +319,7 @@ admin.controller('ADContentManagementGridviewCtrl', ['$scope', '$state', 'ADCont
 		$scope.categoryParams.reload();
 		$scope.itemParams.reload();
 
-	//refresh tree
+	// refresh tree
 
 	});
 

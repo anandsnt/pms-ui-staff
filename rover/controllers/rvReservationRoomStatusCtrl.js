@@ -15,7 +15,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
 
 
     $timeout(function() { $scope.$apply(); }, 3000);
-    //CICO- 6086 - New class for lock
+    // CICO- 6086 - New class for lock
 	$scope.getRoomClass = function(reservationStatus, cannotMoveRoom) {
 		var reservationRoomClass = '';
 
@@ -96,7 +96,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		if((reservationStatus === 'CHECKING_IN' && $scope.reservationData.reservation_card.room_number !== '')|| reservationStatus === 'CHECKING_OUT' || reservationStatus === 'CHECKEDIN') {
 			showKey = true;
 		}
-                //then check if the current user has permission
+                // then check if the current user has permission
                 if (!$scope.hasPermissionToCreateKeys()) {
                     showKey = false;
                 }
@@ -118,7 +118,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
 	};
 
         $scope.$on('clickedIconKeyFromQueue', function() {
-            $scope.clickedIconKey();//one less thing for user to do
+            $scope.clickedIconKey();// one less thing for user to do
         });
 	// To handle click of key icon.
 	$scope.clickedIconKey = function() {
@@ -150,14 +150,14 @@ angular.module('sntRover').controller('reservationRoomStatus',
 
 		 if(keySettings === "qr_code_tablet") {
 
-                    //Fetch and show the QR code in a popup
+                    // Fetch and show the QR code in a popup
                     var	reservationId = $scope.reservationData.reservation_card.reservation_id;
 
                     var successCallback = function(data) {
                             $scope.$emit('hideLoader');
                             $scope.data = data;
 
-                        ///put NEW / Duplicate here
+                        // /put NEW / Duplicate here
                             ngDialog.open({
                                      template: '/assets/partials/keys/rvKeyQrcodePopup.html',
                                      controller: 'RVKeyQRCodePopupController',
@@ -169,7 +169,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
                     $scope.invokeApi(RVKeyPopupSrv.fetchKeyQRCodeData, { "reservationId": reservationId }, successCallback);
 		}
 
-		//Display the key encoder popup
+		// Display the key encoder popup
 		else if(keySettings === "encode" || keySettings === "mobile_key_encode") {
             if($scope.reservationData.reservation_card.is_remote_encoder_enabled && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0) {
                 fetchEncoderTypes();
@@ -200,7 +200,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		});
 	};
 
-	//Fetch encoder types for if remote encoding enabled
+	// Fetch encoder types for if remote encoding enabled
 	var fetchEncoderTypes = function() {
 
 		var encoderFetchSuccess = function(data) {
@@ -242,11 +242,11 @@ angular.module('sntRover').controller('reservationRoomStatus',
 
 	$scope.goToroomAssignment = function() {
 
-		//CICO-13907 Do not allow to go to room assignment screen if the resevation  any of its shred reservation is checked in.
+		// CICO-13907 Do not allow to go to room assignment screen if the resevation  any of its shred reservation is checked in.
 		if($scope.hasAnySharerCheckedin() || ($scope.reservationData.reservation_card.cannot_move_room && !rvPermissionSrv.getPermissionValue('DO_NOT_MOVE_RESERVATION'))) {
 			return false;
 		}
-		//check if roomupgrade is available
+		// check if roomupgrade is available
 		var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
         var isUpgradeAvaiable = $scope.reservationData.reservation_card.is_upsell_available === "true" && (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN'),
             cannotMoveState   =  $scope.reservationData.reservation_card.cannot_move_room && $scope.reservationData.reservation_card.room_number!=="";

@@ -25,12 +25,12 @@ sntRover.controller('RVDepositBalanceCtrl', [
         $scope.isDepositEditable = $scope.depositDetails.deposit_policy === undefined ||
             (!!$scope.depositDetails.deposit_policy && !!$scope.depositDetails.deposit_policy.allow_deposit_edit);
 
-        //NOTE: The deposit is always editable for connected hotels
+        // NOTE: The deposit is always editable for connected hotels
         if (!$rootScope.isStandAlone) {
             $scope.isDepositEditable = true;
         }
 
-        //adding a flag to be set after some timeout to remove flickering action in iPad
+        // adding a flag to be set after some timeout to remove flickering action in iPad
         $scope.pageloadingOver = false;
         $timeout(function() {
             $scope.pageloadingOver = true;
@@ -41,8 +41,8 @@ sntRover.controller('RVDepositBalanceCtrl', [
 
         angular.forEach($scope.depositBalanceData.data.existing_payments, function(value, key) {
             value.isSelected = false;
-            value.mli_token = value.ending_with; //For common payment HTML to work - Payment modifications story
-            value.card_expiry = value.expiry_date;//Same comment above
+            value.mli_token = value.ending_with; // For common payment HTML to work - Payment modifications story
+            value.card_expiry = value.expiry_date;// Same comment above
         });
 
         $scope.depositWithGiftCard = false;
@@ -79,7 +79,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
         $scope.isDisplayReference = false;
         $scope.referanceText = "";
 
-        //To show add to guest card checkbox
+        // To show add to guest card checkbox
         $scope.isAddToGuestCardVisible = false;
         $scope.isSwipedCardSave = false;
         $scope.isManual = false;
@@ -207,11 +207,11 @@ sntRover.controller('RVDepositBalanceCtrl', [
             $scope.shouldShowMakePaymentScreen = ($scope.isManual) ? false : true;
             $scope.shouldShowExistingCards = ($scope.cardsList.length > 0) ? true : false;
             $scope.addmode = ($scope.cardsList.length > 0) ? false : true;
-            //in case c&p no need to show attached CC
+            // in case c&p no need to show attached CC
             $scope.shouldCardAvailable = ($scope.shouldShowMakePaymentScreen) ? false : true;
             refreshScroll();
         };
-        //to trigger from sixpayment partial
+        // to trigger from sixpayment partial
         $scope.$on('changeOnsiteCallIn', function(event) {
             $scope.isManual = !$scope.isManual;
             $scope.changeOnsiteCallIn();
@@ -229,7 +229,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
             $scope.$emit('cancelCardSelection');
             $scope.cardselectedIndex = -1;
 
-            //in case of hotel with MLI iframe will not be present
+            // in case of hotel with MLI iframe will not be present
             if (!!$("#sixIframe").length) {
                 var iFrame = document.getElementById('sixIframe');
 
@@ -258,7 +258,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
         });
 
         $scope.updatedAmountToPay = function(amt) {
-            //used if checking against gift card balance
+            // used if checking against gift card balance
             if ($scope.depositBalanceMakePaymentData.payment_type === 'GIFT_CARD') {
                 var bal = $scope.giftCardAvailableBalance;
 
@@ -291,7 +291,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
             $scope.paymentId = data.id;
             $scope.shouldCardAvailable = true;
             $scope.isAddToGuestCardVisible = true;
-            //CICO-25882 - Fixing the issue of make payment btn not visible
+            // CICO-25882 - Fixing the issue of make payment btn not visible
             refreshPaymentScroll();
         };
 
@@ -406,7 +406,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
             refreshPaymentScroll();
         });
 
-        //Listen to swipe events
+        // Listen to swipe events
         $scope.$on("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN", function(e, swipedCardDataToRender) {
             $scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
         });

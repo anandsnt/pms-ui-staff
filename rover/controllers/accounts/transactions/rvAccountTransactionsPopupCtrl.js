@@ -6,7 +6,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 
 	var reloadBillScreen =  function() {
 		$timeout(function() {
-			//$scope.$emit('UPDATE_TRANSACTION_DATA'); is not working anmore, 
+			// $scope.$emit('UPDATE_TRANSACTION_DATA'); is not working anmore, 
 			$scope.UPDATE_TRANSACTION_DATA && $scope.UPDATE_TRANSACTION_DATA();
 		}, 1);
 	};
@@ -138,7 +138,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 	};
 
 
-/*----------------------------edit charge drop down implementation--------------------------------------*/
+/* ----------------------------edit charge drop down implementation--------------------------------------*/
 
 	$scope.chargecodeData = {};
 	$scope.chargecodeData.chargeCodeSearchText = "";
@@ -161,9 +161,9 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
   	*/
   	var displayFilteredResultsChargeCodes = function() {
 
-	    //if the entered text's length < 3, we will show everything, means no filtering
+	    // if the entered text's length < 3, we will show everything, means no filtering
 	    if($scope.chargecodeData.chargeCodeSearchText.length < 3) {
-	      //based on 'is_row_visible' parameter we are showing the data in the template
+	      // based on 'is_row_visible' parameter we are showing the data in the template
 	      for(var i = 0; i < $scope.availableChargeCodes.length; i++) {
 	          $scope.availableChargeCodes[i].is_row_visible = true;
 	          $scope.availableChargeCodes[i].is_selected = true;
@@ -174,8 +174,8 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 	    }
 	    else{
 	      var value = "";
-	      //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
-	      //if it is zero, then we will request for webservice
+	      // searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
+	      // if it is zero, then we will request for webservice
 
 	      for(var i = 0; i < $scope.availableChargeCodes.length; i++) {
 	        value = $scope.availableChargeCodes[i];

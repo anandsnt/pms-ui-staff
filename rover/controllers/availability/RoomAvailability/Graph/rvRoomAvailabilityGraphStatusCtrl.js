@@ -15,7 +15,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
   		$scope.hideMeBeforeFetching = false;
 
   		$scope.graphWidth = '1000';
-		//we need horizonat scroller so adding option 'scrollX', also need to get the click event on toggling button on available room
+		// we need horizonat scroller so adding option 'scrollX', also need to get the click event on toggling button on available room
 		var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: false};
 
   		$scope.setScroller ('graph-scroller', scrollerOptionsForGraph);
@@ -111,7 +111,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
 				color: colors[4]
 			}];
 
-			//we are adding occupancy target between if it has setuped in rate manager
+			// we are adding occupancy target between if it has setuped in rate manager
 			if($scope.data.IsOccupancyTargetSetBetween) {
 				$scope.graphData.push({
 					name: 'Occupancy Target',
@@ -320,7 +320,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
 		};
 
 		$scope.data = rvAvailabilitySrv.getGraphData();
-  		//if already fetched we will show without calling the API
+  		// if already fetched we will show without calling the API
 		if(!isEmptyObject($scope.data)) {
 			doInitialOperation();
 			$scope.$emit("hideLoader");
@@ -336,7 +336,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
         	}, 500);
 
 		}else{
-			//If additional data are not available, fetch the same	
+			// If additional data are not available, fetch the same	
 			$scope.$parent.fetchAdditionalData();
 		}
 

@@ -53,7 +53,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      * @return {Boolean}
      */
     var hasPermissionToCreateRoomingList = function() {
-      //TODO: Change key to allotment namespace, not added in API
+      // TODO: Change key to allotment namespace, not added in API
       return (rvPermissionSrv.getPermissionValue('CREATE_ALLOTMENT_ROOMING_LIST'));
     };
 
@@ -62,7 +62,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      * @return {Boolean}
      */
     var hasPermissionToEditRoomingList = function() {
-      //TODO: Change key to allotment namespace, not added in API
+      // TODO: Change key to allotment namespace, not added in API
       return (rvPermissionSrv.getPermissionValue('EDIT_ALLOTMENT_ROOMING_LIST'));
     };
 
@@ -71,7 +71,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      * @return {Boolean}
      */
     var hasPermissionToEditReservation = function() {
-      //TODO: Change key to allotment namespace, not added in API
+      // TODO: Change key to allotment namespace, not added in API
       return (rvPermissionSrv.getPermissionValue('EDIT_RESERVATION'));
     };
 
@@ -106,11 +106,11 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      * @return {Boolean}
      */
     $scope.shouldShowThisOccupancyAgainstRoomType = function(keyToCheck) {
-        //finding the selected room type data
+        // finding the selected room type data
         var selectedRoomType = _.findWhere($scope.roomTypesAndData, {
             room_type_id: parseInt($scope.selectedRoomType)
         });
-        //we are hiding the occupancy if selected room type is undefined
+        // we are hiding the occupancy if selected room type is undefined
 
         if (typeof selectedRoomType === "undefined") {
             return false;
@@ -170,7 +170,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
 
       runDigestCycle();
 
-      //calling the api for populating the room type and max. possible held count
+      // calling the api for populating the room type and max. possible held count
       $scope.fetchConfiguredRoomTypeDetails();
     };
 
@@ -189,7 +189,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
 
       runDigestCycle();
 
-      //calling the api for populating the room type and max. possible held count
+      // calling the api for populating the room type and max. possible held count
       $scope.fetchConfiguredRoomTypeDetails();
     };
 
@@ -207,7 +207,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         $scope.reservationSearchToDate = $scope.reservationSearchFromDate;
       }
 
-      $scope.fetchReservations(true); //true for search mode
+      $scope.fetchReservations(true); // true for search mode
 
       runDigestCycle();
     };
@@ -225,7 +225,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         $scope.reservationSearchFromDate = $scope.reservationSearchToDate;
       }
 
-      $scope.fetchReservations(true); //true for search mode
+      $scope.fetchReservations(true); // true for search mode
 
       runDigestCycle();
     };
@@ -235,10 +235,10 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      * return - None
      */
     var setDatePickerOptions = function() {
-      //referring data model -> from allotment summary
+      // referring data model -> from allotment summary
       var refData = $scope.allotmentConfigData.summary;
 
-      //date picker options - Common
+      // date picker options - Common
       var commonDateOptions = {
         dateFormat: $rootScope.jqDateFormat,
         numberOfMonths: 1
@@ -254,7 +254,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         possibleStartDefaultDate = new tzIndependentDate($rootScope.businessDate);
       }      
 
-      //if we are in edit mode, we have to set the min/max date
+      // if we are in edit mode, we have to set the min/max date
       if (!$scope.isInAddMode()) {
         _.extend(commonDateOptions, {
           minDate: new tzIndependentDate($rootScope.businessDate),
@@ -269,22 +269,22 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       $scope.reservationSearchFromDate  = possibleStartDefaultDate;
       $scope.reservationSearchToDate    = new tzIndependentDate(refData.block_to);
 
-      //date picker options - Reservation Add From
+      // date picker options - Reservation Add From
       $scope.reservationAddFromDateOptions = _.extend({
         onSelect: reservationAddFromDateChoosed
       }, commonDateOptions);
 
-      //date picker options - Reservation to From
+      // date picker options - Reservation to From
       $scope.reservationAddToDateOptions = _.extend({
         onSelect: reservationAddToDateChoosed
       }, commonDateOptions);
 
-      //date picker options - Reservation Add From
+      // date picker options - Reservation Add From
       $scope.reservationSearchFromDateOptions = _.extend({
         onSelect: reservationSearchFromDateChoosed
       }, commonDateOptions);
 
-      //date picker options - Reservation to From
+      // date picker options - Reservation to From
       $scope.reservationSearchToDateOptions = _.extend({
         onSelect: reservationSearchToDateChoosed
       }, commonDateOptions);
@@ -387,7 +387,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
     $scope.clearSearchQuery = function() {
       $scope.searchQuery = '';
       $scope.page = 1;
-      $scope.fetchReservations(true); //true because  to indicate search mode
+      $scope.fetchReservations(true); // true because  to indicate search mode
     };
 
     var sucessCallbackOfRegistrationCardData = function(data) {
@@ -622,7 +622,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      */
     $scope.closeAutoRoomAssignSuccessPopup = function() {
       $scope.closeDialog();
-      //resetting the selected reservations
+      // resetting the selected reservations
       $scope.selected_reservations = [];
 
       $timeout(function() {
@@ -682,14 +682,14 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      * @return {[type]} [description]
      */
     var onBackgroundImageLoaded = function() {
-      //unbinding the events & removing the elements inorder to prevent memory leaks
+      // unbinding the events & removing the elements inorder to prevent memory leaks
       $(this).off('load');
       $(this).remove();
 
-      //yes we have everything we wanted
+      // yes we have everything we wanted
       window.print();
 
-      //if we are in the app
+      // if we are in the app
       $timeout(function() {
         if (sntapp.cordovaLoaded) {
           cordova.exec(
@@ -715,12 +715,12 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      * @return undefined
      */
     var printRoomingList = function() {
-      //changing the orientation to landscape
+      // changing the orientation to landscape
       addPrintOrientation();
 
-      //as part of https://stayntouch.atlassian.net/browse/CICO-14384?focusedCommentId=48871&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-48871
-      //We dont know the icon background-image loaded or not. We need to start print preview
-      //only when it is loaded, this is wrong practice (accessing DOM elements from controller), but there is no option
+      // as part of https://stayntouch.atlassian.net/browse/CICO-14384?focusedCommentId=48871&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-48871
+      // We dont know the icon background-image loaded or not. We need to start print preview
+      // only when it is loaded, this is wrong practice (accessing DOM elements from controller), but there is no option
       var $container  = $('#print-orientation'),
           bg          = $container.css('background-image'),
           src         = bg.replace(/(^url\()|(\)$|[\"\'])/g, ''),
@@ -763,8 +763,8 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       $scope.resevationsBeforePrint = util.deepCopy($scope.reservations);
       $scope.reservations           = data.results;
       $scope.print_type             = 'rooming_list';
-      //if you are looking for where the HELL this list is printing
-      //look for "NG_REPEAT_COMPLETED_RENDERING", thanks!!
+      // if you are looking for where the HELL this list is printing
+      // look for "NG_REPEAT_COMPLETED_RENDERING", thanks!!
     };
 
     /**
@@ -774,7 +774,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
     $scope.fetchReservationsForPrintingRoomingList = function() {
       var params = {
         id: $scope.allotmentConfigData.summary.allotment_id,
-        per_page: 1000 //assuming that there will be max of 1000 res. for an allotment
+        per_page: 1000 // assuming that there will be max of 1000 res. for an allotment
       };
       var options = {
         params: params,
@@ -792,10 +792,10 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       if (activeTab !== 'RESERVATIONS') {
         return;
       }
-      //as the date may get change from other tab
+      // as the date may get change from other tab
       setDatePickerOptions();
 
-      //calling initially required APIs
+      // calling initially required APIs
       callInitialAPIs();
     });
 
@@ -804,17 +804,17 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
  * @return {[type]} [description]
  */
     var initializeVariables = function() {
-      //selected room types & its data against allotment
+      // selected room types & its data against allotment
       $scope.roomTypesAndData = [];
 
-      //list of our reservations
+      // list of our reservations
       $scope.reservations = [];
 
-      //before printing we have to store our 'showing' reservation in some place
-      //to show after printing.
+      // before printing we have to store our 'showing' reservation in some place
+      // to show after printing.
       $scope.resevationsBeforePrint = [];
 
-      //text mapping against occupancy
+      // text mapping against occupancy
       $scope.occupancyTextMap = {
         '1': 'Single',
         '2': 'Double',
@@ -822,34 +822,34 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         '4': 'Quadruple'
       };
 
-      //total result count
+      // total result count
       $scope.totalResultCount = 0;
 
-      //total pick up count
+      // total pick up count
       $scope.totalPickUpCount = 0;
 
-      //some default selected values
+      // some default selected values
       $scope.numberOfRooms          = '1';
       $scope.selectedOccupancy      = '1';
       $scope.possibleNumberOfRooms  = [];
 
-      //varibale used to track addmode/search/default mode, "DEFAULT" ->  defalt mode
+      // varibale used to track addmode/search/default mode, "DEFAULT" ->  defalt mode
       currentMode = 'DEFAULT';
 
-      //default sorting fields & directions
+      // default sorting fields & directions
       $scope.sorting_field = 'room_number';
       $scope.sort_dir = 'ASC';
 
-      //selected reservation list
+      // selected reservation list
       $scope.selected_reservations = [];
 
-      //mass checkin/checkout
+      // mass checkin/checkout
       $scope.qualifiedReservations = [];
 
-      //seaarch text box model
+      // seaarch text box model
       $scope.searchQuery = '';
 
-      //variables for state maintanace - D
+      // variables for state maintanace - D
       $scope.roomingListState = {
         editedReservationStart: '',
         editedReservationEnd: ''
@@ -861,7 +861,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      * return - None
      */
     var setScroller = function() {
-      //setting scroller things
+      // setting scroller things
       var scrollerOptions = {
         tap: true,
         preventDefault: false,
@@ -922,16 +922,16 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         $scope.reservations.unshift(reservation);
       });
 
-      //total result count
+      // total result count
       $scope.totalResultCount += (data.results.length);
 
-      //pickup
+      // pickup
       $scope.totalPickUpCount = data.total_picked_count;
 
-      //we changed data, so
+      // we changed data, so
       refreshScrollers();
 
-      //rooming data will change after adding some reservation
+      // rooming data will change after adding some reservation
       $scope.fetchConfiguredRoomTypeDetails();
     };
 
@@ -940,7 +940,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      * @return undefined
      */
     $scope.addReservations = function() {
-      //if there is no room type attached, we have to show some message
+      // if there is no room type attached, we have to show some message
       if ($scope.roomTypesAndData.length === 0) {
         return showNoRoomTypesAttachedPopUp();
       }
@@ -950,10 +950,10 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         return;
       }
 
-      //wiping the weepy
+      // wiping the weepy
       $scope.errorMessage = '';
 
-      //API params
+      // API params
       var params = {
         id: $scope.allotmentConfigData.summary.allotment_id,
         room_type_id: $scope.selectedRoomType,
@@ -978,24 +978,24 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      * @return {[type]} [description]
      */
     $scope.changedSelectedRoomType = function() {
-      //finding roomTypeData from list of roomTypesData, will form the possible room number list [1,2,3,4]
+      // finding roomTypeData from list of roomTypesData, will form the possible room number list [1,2,3,4]
       var selectedRoomType = _.findWhere($scope.roomTypesAndData, {
         room_type_id: parseInt($scope.selectedRoomType)
       });
 
       var isValidSelectedRoomType = (typeof selectedRoomType !== 'undefined');
 
-      //forming [1,2,3,4]
+      // forming [1,2,3,4]
       $scope.possibleNumberOfRooms = isValidSelectedRoomType ? _.range(1, util.convertToInteger(selectedRoomType.total_rooms) + 1) : [];
 
       // setting single as default occupancy as part of CICO-27540
       $scope.selectedOccupancy = '1';
-      //we are unselecting the selected occupancy incase of invalid roomt type
+      // we are unselecting the selected occupancy incase of invalid roomt type
       if (!isValidSelectedRoomType) {
         $scope.selectedOccupancy = '-1';
       }
 
-      //changing the default selected number of rooms
+      // changing the default selected number of rooms
       if (typeof $scope.numberOfRooms === 'undefined' && $scope.possibleNumberOfRooms.length > 0) {
         $scope.numberOfRooms = $scope.possibleNumberOfRooms[0];
       }
@@ -1051,16 +1051,16 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
     var successCallBackOfFetchConfiguredRoomTypeDetails = function(data) {
       var toI = util.convertToInteger;
 
-      //adding available room count over the data we got
+      // adding available room count over the data we got
       $scope.roomTypesAndData   = _.map(data.result, function(data) {
         data.availableRoomCount = toI(data.total_rooms) - toI(data.total_pickedup_rooms);
         return data;
       });
 
-      //initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
+      // initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
       $scope.selectedRoomType = $scope.roomTypesAndData.length > 0 ? $scope.roomTypesAndData[0].room_type_id : undefined;
 
-      //we have to populate possible number of rooms & occupancy against a
+      // we have to populate possible number of rooms & occupancy against a
       $scope.changedSelectedRoomType();
     };
 
@@ -1072,20 +1072,20 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
     var successCallBackOfFetchReservations = function(data) {
       $scope.reservations = data.results;
 
-      //total result count
+      // total result count
       $scope.totalResultCount = data.total_count;
 
-      //pickup
+      // pickup
       $scope.totalPickUpCount = data.total_picked_count;
 
-      //if pagination end is undefined
+      // if pagination end is undefined
       if ($scope.end === undefined) {
         $scope.end = $scope.reservations.length;
       }
 
       runDigestCycle();
 
-      //we changed data, so
+      // we changed data, so
       refreshScrollers();
     };
 
@@ -1152,7 +1152,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
     var successFetchOfAllReqdForRoomingList = function(data) {
       $scope.$emit('hideLoader');
 
-      //if there is no room type attached, we have to show some message
+      // if there is no room type attached, we have to show some message
       if ($scope.roomTypesAndData.length === 0) {
         showNoRoomTypesAttachedPopUp();
       }
@@ -1183,11 +1183,11 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       }
 
       var promises = [];
-      //we are not using our normal API calling since we have multiple API calls needed
+      // we are not using our normal API calling since we have multiple API calls needed
 
       $scope.$emit('showLoader');
 
-      //roomtypes fetch
+      // roomtypes fetch
       var paramsForRoomingDetails = formParamsForConfiguredRoomTypeFetch();
 
       promises.push(rvAllotmentReservationsListSrv
@@ -1195,7 +1195,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
           .then(successCallBackOfFetchConfiguredRoomTypeDetails)
       );
 
-      //reservation list fetch
+      // reservation list fetch
       var paramsForReservationFetch = formFetchReservationsParams();
 
       promises.push(rvAllotmentReservationsListSrv
@@ -1203,7 +1203,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
           .then(successCallBackOfFetchReservations)
       );
 
-      //Lets start the processing
+      // Lets start the processing
       $q.all(promises)
           .then(successFetchOfAllReqdForRoomingList, failedToFetchOfAllReqdForRoomingList);
     };
@@ -1237,12 +1237,12 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
           returnString = '';
 
       switch (type_) {
-          //if date string passed
+          // if date string passed
         case 'string':
           returnString = $filter('date')(new tzIndependentDate(date_), $rootScope.dateFormat);
           break;
 
-          //if date object passed
+          // if date object passed
         case 'object':
           returnString = $filter('date')(date_, $rootScope.dateFormat);
           break;
@@ -1283,7 +1283,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       var isAtEnd = ($scope.end === $scope.totalResultCount);
 
       if (isAtEnd) {
-        //last diff will be diff from our normal diff
+        // last diff will be diff from our normal diff
         var lastDiff = ($scope.totalResultCount % $scope.perPage);
 
         if (lastDiff === 0) {
@@ -1297,10 +1297,10 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         $scope.end = $scope.end - $scope.perPage;
       }
 
-      //Decreasing the page param used for API calling
+      // Decreasing the page param used for API calling
       $scope.page--;
 
-      //yes we are calling the API
+      // yes we are calling the API
       $scope.fetchReservations(isReservationListInSearchMode());
     };
 
@@ -1319,10 +1319,10 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         $scope.end = $scope.end + $scope.perPage;
       }
 
-      //Increasing the page param used for API calling
+      // Increasing the page param used for API calling
       $scope.page++;
 
-      //yes we are calling the API
+      // yes we are calling the API
       $scope.fetchReservations(isReservationListInSearchMode());
     };
 
@@ -1331,11 +1331,11 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      * @return {undefined}
      */
     var initialisePagination = function() {
-      //pagination
+      // pagination
       $scope.perPage  = rvAllotmentReservationsListSrv.DEFAULT_PER_PAGE;
       $scope.start    = 1;
       $scope.end      = undefined;
-      //what is page that we are requesting in the API
+      // what is page that we are requesting in the API
       $scope.page     = 1;
     };
 
@@ -1467,7 +1467,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
     $scope.getRoomStatusClass = function(res) {
       var mappedStatus = '';
 
-      //Please note: St - Status
+      // Please note: St - Status
 
       if (res.room_service_status) {
         if (res.room_service_status === 'OUT_OF_SERVICE' ||
@@ -1533,7 +1533,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
     $scope.toggleAllSelection = function() {
       var allSelected = $scope.whetherAllReservationsSelected();
 
-      //un selecting all reservations
+      // un selecting all reservations
       if (allSelected) {
         $scope.selected_reservations = [];
       } else {
@@ -1555,7 +1555,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      * @param  {String} sorting_field [description]
      */
     $scope.sortBy = function(sorting_field) {
-      //if we are trying from the same tab, we have to switch between Asc/Desc
+      // if we are trying from the same tab, we have to switch between Asc/Desc
       if ($scope.sorting_field === sorting_field) {
         $scope.sort_dir = ($scope.sort_dir === 'ASC') ? 'DESC' : 'ASC';
       } else {
@@ -1563,7 +1563,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         $scope.sort_dir = 'ASC';
       }
 
-      //calling the reservation fetch API
+      // calling the reservation fetch API
       $scope.fetchReservations();
     };
 
@@ -1574,7 +1574,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      */
     $scope.getSortClass = function(sorting_field) {
       var classes = '';
-      //if we are trying from the same tab, we have to switch between Asc/Desc
+      // if we are trying from the same tab, we have to switch between Asc/Desc
 
       if ($scope.sorting_field === sorting_field) {
         classes = ($scope.sort_dir === 'ASC') ? 'sorting-asc' : 'sorting-desc';
@@ -1610,7 +1610,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
           }];
         }
 
-        //Since we have to include already assigned rooms in the select box, merging with rooms coming from the api
+        // Since we have to include already assigned rooms in the select box, merging with rooms coming from the api
         selectedReservation.roomsAvailableToAssign = assignedRoom.concat(data.rooms);
 
         var reservationData = angular.copy(selectedReservation),
@@ -1624,8 +1624,8 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
           editedReservationEnd: selectedReservation.departure_date
         });
 
-        //as per CICO-17082, we need to show the room type in select box of edit with others
-        //but should be disabled
+        // as per CICO-17082, we need to show the room type in select box of edit with others
+        // but should be disabled
         room_type_id_list = _.pluck($scope.roomTypesAndData, 'room_type_id');
         containNonEditableRoomType = !_.contains(room_type_id_list, parseInt(selectedReservation.room_type_id));
 
@@ -1643,19 +1643,19 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         _.extend(reservationData, {
           arrival_date: new tzIndependentDate(reservationData.arrival_date),
           departure_date: new tzIndependentDate(reservationData.departure_date),
-          //Pls note, roomsFreeToAssign include already assigned room of that particular reservation
+          // Pls note, roomsFreeToAssign include already assigned room of that particular reservation
           roomsFreeToAssign: selectedReservation.roomsAvailableToAssign,
           allowedRoomTypes: allowedRoomTypes
         });
 
-        //inorder to tackle the empty entry showing in case of no rooms available to assign/or prev. set as N/A
+        // inorder to tackle the empty entry showing in case of no rooms available to assign/or prev. set as N/A
         if (reservationData.room_id === null) {
           reservationData.room_id = '';
         }
 
         $scope.$emit('hideLoader');
 
-        //we've everything to show popup
+        // we've everything to show popup
         showEditReservationPopup(reservationData);
 
       };
@@ -1683,7 +1683,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
     * event exposed for other (mainly for children) controllers to update the data
     */
     $scope.$on('REFRESH_ALLOTMENT_RESERVATIONS_LIST_DATA', function(event) {
-      //calling initially required APIs
+      // calling initially required APIs
       callInitialAPIs();
     });
 
@@ -1692,25 +1692,25 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      * @return - None
      */
     var initializeMe = function() {
-      //updating the left side menu
+      // updating the left side menu
       setActiveLeftSideMenu();
 
-      //IF you are looking for where the hell the API is CALLING
-      //scroll above, and look for the event 'GROUP_TAB_SWITCHED'
+      // IF you are looking for where the hell the API is CALLING
+      // scroll above, and look for the event 'GROUP_TAB_SWITCHED'
 
-      //date related setups and things
+      // date related setups and things
       setDatePickerOptions();
 
-      //setting scrollers
+      // setting scrollers
       setScroller();
 
-      //we have a list of scope varibales which we wanted to initialize
+      // we have a list of scope varibales which we wanted to initialize
       initializeVariables();
 
-      //pagination
+      // pagination
       initialisePagination();
 
-      //calling initially required APIs
+      // calling initially required APIs
       // CICO-17898 The initial APIs need to be called in the scenario while we come back to the Rooming List Tab from the stay card
       var isInRoomingList = ($scope.allotmentConfigData.activeTab === 'RESERVATIONS'),
           amDirectlyComingToRoomingList = $stateParams.activeTab === 'RESERVATIONS';

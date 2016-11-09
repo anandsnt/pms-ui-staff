@@ -13,7 +13,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 	 });
 
 
-    //room and cc verification 
+    // room and cc verification 
 
 	 $stateProvider.state('checkoutRoomVerification', {
 	 	url: '/checkoutRoomVerification',
@@ -209,7 +209,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		title: 'Phone number entry'
 	});
 
-	//checkin now states
+	// checkin now states
 	$stateProvider.state('guestCheckinOptions', {
 		url: '/guestCheckinOptions',
 		templateUrl: '/assets/common_templates/partials/MGM/gwCheckinOptions.html',

@@ -563,7 +563,7 @@ angular.module('reportsModule')
                 // fill up DS for display combo box
                 if ( __displayFilterNames[filter.value] ) {
 
-                    //__pushDisplayData( report, filter );
+                    // __pushDisplayData( report, filter );
                     //
                     // QUICK PATCH
                     // TODO: replace with a better solution
@@ -664,7 +664,7 @@ angular.module('reportsModule')
 
                 else if ('RATE' === filter.value && ! filter.filled ) {
                     requested++;
-                    reportsSubSrv.fetchRateTypesAndRateList() //This would include custom rates
+                    reportsSubSrv.fetchRateTypesAndRateList() // This would include custom rates
                         .then( fillRateTypesAndRateList );
                 }
 
@@ -731,10 +731,10 @@ angular.module('reportsModule')
                     reportsSubSrv.fetchDepartments()
                         .then( fillDepartments );
                 } else if ( 'INCLUDE_COMPLETION_STATUS' === filter.value && ! filter.filled) {
-                    //requested++;
+                    // requested++;
                     fillCompletionStatus();
                 } else {
-                    //no op
+                    // no op
                 };
             });
 
@@ -1148,7 +1148,7 @@ angular.module('reportsModule')
             function fillRateTypesAndRateList(data) {
                 var foundFilter;
 
-                //default all are selected for rate & rate types
+                // default all are selected for rate & rate types
                 _.each(data, function(rate) {
                     rate.selected = true;
                 });
@@ -1743,7 +1743,7 @@ angular.module('reportsModule')
                     report['groupStartDate']  = _getDates.businessDate;
                     report['groupEndDate'] = _getDates.twentyEightDaysAfter;
                     /**/
-                    /*report['fromDepositDate']  = _getDates.businessDate;
+                    /* report['fromDepositDate']  = _getDates.businessDate;
                     report['untilDepositDate'] = _getDates.businessDate;*/
                     /**/
                     report['fromPaidDate']  = _getDates.twentyEightDaysBefore;

@@ -29,7 +29,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		// returning object
 		var graphData = {};
 
-		//array to keep all data, we will append these to above dictionary after calculation
+		// array to keep all data, we will append these to above dictionary after calculation
 		var dates 				= [];
 		var bookableRooms 		= [];
 		var outOfOrderRooms 	= [];
@@ -38,10 +38,10 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		var occupanciesActual	= [];
 		var occupanciesTargeted = [];
 
-		//used to show/hide the occupancy target checkbox
+		// used to show/hide the occupancy target checkbox
 		var IsOccupancyTargetSetBetween = false;
 
-		//variables for single day calculation
+		// variables for single day calculation
 		var bookableRoomForADay 		= '';
 		var outOfOrderRoomForADay 		= '';
 		var reservedRoomForADay			= '';
@@ -58,21 +58,21 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			// date for th day
 			date = { 'dateObj': new tzIndependentDate(currentRow.date) };
 
-			//forming bookable room data for a day
-			//total number of rooms - outoforder for that day
+			// forming bookable room data for a day
+			// total number of rooms - outoforder for that day
 			bookableRoomForADay = totalRoomCount - currentRow.house.out_of_order;
 			bookableRoomForADay = ( bookableRoomForADay / totalRoomCount ) * 100;
 
 			// forming outoforder room data for a day
 			outOfOrderRoomForADay = ( currentRow.house.out_of_order / totalRoomCount ) * 100;
 
-			//forming reserved room data for a day
+			// forming reserved room data for a day
 			reservedRoomForADay = ( currentRow.house.sold / totalRoomCount ) * 100;
 
-			//forming available room for a day
+			// forming available room for a day
 			availableRoomForADay = (currentRow.house.availability / totalRoomCount ) * 100;
 
-			//pusing all these to array
+			// pusing all these to array
 			dates.push(date);
 			bookableRooms.push(bookableRoomForADay);
 			outOfOrderRooms.push(outOfOrderRoomForADay);
@@ -80,7 +80,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			availableRooms.push(availableRoomForADay);
 		};
 
-		//since occupancy data is from another API, results may have length  lesser/greater than availability
+		// since occupancy data is from another API, results may have length  lesser/greater than availability
 		for(i = 0; i < occupancyDataFromAPI.results.length; i++) {
 			currentRow = occupancyDataFromAPI.results[i];
 			occupanciesActualForADay = escapeNull(currentRow.actual) === "" ? 0 : currentRow.actual;
@@ -92,7 +92,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			}
 		}
 
-		//forming data to return
+		// forming data to return
 		graphData = {
 			'dates': dates,
 			'bookableRooms': bookableRooms,
@@ -123,17 +123,17 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
 		_.each(datafromApi.results, function(element, index, lis) {
 			var temp = [];
-			//Extracting date detail
+			// Extracting date detail
 			var dateToCheck = tzIndependentDate(element.date);
 			var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
 
 			dates.push({'date': element.date, 'isWeekend': isWeekend, 'dateObj': new Date(element.date)});
-			//Extracting groupTotalRooms
+			// Extracting groupTotalRooms
 			groupTotalRooms.push(element.group_total_rooms);
-			//Extracting groupTotal picked ups
+			// Extracting groupTotal picked ups
 			groupTotalPickedUps.push(element.group_total_pickups);
 			holdstatus.push(element.hold_status);
-			//Forms array(temp) of details of groups date wise
+			// Forms array(temp) of details of groups date wise
 			_.each(element.group_availability, function(ele, ind, list) {
 				var detail ={
 					"id": ele.group_id,
@@ -145,10 +145,10 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
 				temp.push(detail);
 			});
-			//Forms two dimensional array[datewise][groupwise]
+			// Forms two dimensional array[datewise][groupwise]
 			groupDetail.push(temp);
 		});
-		//Forms groupwise Details.
+		// Forms groupwise Details.
 		_.each(datafromApi.results[0].group_availability, function(element, index, list) {
 			var groupdetail ={
 				"name": element.name,
@@ -194,12 +194,12 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			to_date: secondDate
 		};
 
-		//Webservice calling section
+		// Webservice calling section
 		var deferred = $q.defer();
 		var url = 'api/group_availability';
 
 		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function(resultFromAPI) {
-			//storing response temporarily in that.data, will change in occupancy call
+			// storing response temporarily in that.data, will change in occupancy call
 			that.data.gridDataForGroupAvailability = formGridDataForGroupAvailability(resultFromAPI);
 			deferred.resolve(that.data);
 		}, function(data) {
@@ -213,7 +213,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 	var formGridData = function(roomAvailabilityData) {
 		var gridData = {};
 
-		//array to keep all data, we will append these to above dictionary after calculation
+		// array to keep all data, we will append these to above dictionary after calculation
 		var dates 				= [],
 		occupancies  			= [],
 		availableRooms   		= [],
@@ -229,35 +229,35 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
 		_.each(roomAvailabilityData.results, function(item) {
 
-			//Extracting date detail
+			// Extracting date detail
 			var dateToCheck = tzIndependentDate(item.date);
 			var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
 
 			dates.push({'date': item.date, 'isWeekend': isWeekend, 'dateObj': new Date(item.date)});
 
-			//Extracting Occupancy details
+			// Extracting Occupancy details
 			occupancies.push(item.occupancy.percentage);
 
-			//Extracting Availability details
+			// Extracting Availability details
 			availableRooms.push(item.available_rooms);
 
-			//Extracting Availability details
+			// Extracting Availability details
 			nonGroupRooms.push(item.non_group_rooms);
 
 			groupAndAllotments.push(item.group_and_allotment);
 
-			//Extracting inventory count
+			// Extracting inventory count
 			inventory.push(item.physical_room_count);
 
-			//Extracting OOO
+			// Extracting OOO
 			outOfOrder.push(item.occupancy.out_of_order);
 
-			//Extracting room to sell
+			// Extracting room to sell
 			roomToSell.push(item.rooms_to_sell);
 
 
-			//CICO-13590
-			//we are enabling this for non-hourly hotels only
+			// CICO-13590
+			// we are enabling this for non-hourly hotels only
 			if (!isHourlyRateOn) {
 				bookedRooms.push (item.rooms_sold);
 			}
@@ -274,7 +274,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			'roomTypes': roomAvailabilityData['room_types'],
 			'roomToSell': roomToSell
 		};
-		//CICO-13590
+		// CICO-13590
 		if (!isHourlyRateOn) {
 			_.extend (gridData,
 			{
@@ -297,11 +297,11 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			childrenCount;
 
 		_.each(roomAvailabilityAdditionalData.results, function(item) {
-			//Extracts roomtype details
+			// Extracts roomtype details
 			roomtypeDetails.push(item.detailed_room_types);
 
-			//Extracts adult child count
-			//the count could be nothing
+			// Extracts adult child count
+			// the count could be nothing
 			adultsCount   = item.adults_count || 0;
 			childrenCount = item.children_count || 0;
 			adultsChildrenCounts.push({
@@ -310,14 +310,14 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 				'isUnavailable': ( 0 >= adultsCount && 0 >= childrenCount )
 			});
 
-			//Extracts BAR details
+			// Extracts BAR details
 			bestAvailabilityRate.push( (0 == item.best_available_rate_amount.rate_amount) ? 'C' : item.best_available_rate_amount.rate_amount );
 
 		});
 
-		//Forms roomtype names array
+		// Forms roomtype names array
 		_.each(roomAvailabilityAdditionalData.results[0].detailed_room_types, function(item) {
-			//var roomTypeName;
+			// var roomTypeName;
 			var roomTypeData = {};
 
 			_.map(roomAvailabilityAdditionalData.room_types, function(roomType) {
@@ -352,13 +352,13 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			to_date: secondDate
 		};
 
-		//Webservice calling section
+		// Webservice calling section
 		var deferred = $q.defer();
 		var url = 'api/allotment_availability';
 
 		rvBaseWebSrvV2.getJSON(url, dataForWebservice)
 			.then(function(resultFromAPI) {
-				//storing response temporarily in that.data, will change in occupancy call
+				// storing response temporarily in that.data, will change in occupancy call
 				that.data.gridDataForAllotmentAvailability = formGridDataForAllotmentAvailability(resultFromAPI);
 				deferred.resolve(that.data);
 			}, function(data) {
@@ -395,20 +395,20 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		_.each(datafromApi.results, function(element, index, lis) {
 			var temp = [];
 
-			//Extracting date detail
+			// Extracting date detail
 			var dateToCheck = tzIndependentDate(element.date);
 			var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
 
 			dates.push({'date': element.date, 'isWeekend': isWeekend, 'dateObj': new Date(element.date)});
 
-			//Extracting groupTotalRooms
+			// Extracting groupTotalRooms
 			groupTotalRooms.push(element.total_rooms);
 
-			//Extracting groupTotal picked ups
+			// Extracting groupTotal picked ups
 			groupTotalPickedUps.push(element.total_pickups);
 			holdstatus.push(element.hold_status);
 
-			//Forms array(temp) of details of groups date wise
+			// Forms array(temp) of details of groups date wise
 			_.each(element.availability, function(ele, ind, list) {
 				var detail ={
 					"id": ele.id,
@@ -421,11 +421,11 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 				temp.push(detail);
 			});
 
-			//Forms two dimensional array[datewise][groupwise]
+			// Forms two dimensional array[datewise][groupwise]
 			groupDetail.push(temp);
 		});
 
-		//Forms groupwise Details.
+		// Forms groupwise Details.
 		_.each(datafromApi.results[0].availability, function(element, index, list) {
 			var groupdetail ={
 				"name": element.name,
@@ -462,7 +462,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			to_date: secondDate
 		};
 
-		//Webservice calling section
+		// Webservice calling section
 		var deferred = $q.defer();
 		var url = 'api/availability_main';
 
@@ -517,7 +517,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			'is_from_availability_screen': true
 		};
 
-		//Webservice calling section
+		// Webservice calling section
 		var deferred = $q.defer();
 		var url = 'api/calendar_availability';
 
@@ -651,12 +651,12 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		var totalArrivals;
 
 		angular.forEach(data, function(dayInfo, i) {
-			//Creates the hash of date details
-			//Consists of the day info - today, tomorrow or yesterday and the date
+			// Creates the hash of date details
+			// Consists of the day info - today, tomorrow or yesterday and the date
 			dateDetails = {};
 			dateDetails.date = dayInfo.date;
 			var date = tzIndependentDate(dayInfo.date);
-			//Set if the day is yesterday/today/tomorrow
+			// Set if the day is yesterday/today/tomorrow
 
 			if(date.getTime() ===  businessDate.getTime()) {
 				dateDetails.day = "TODAY";
@@ -667,48 +667,48 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			}
 			houseDetails.dates.push(dateDetails);
 
-			//Total rooms occupied
+			// Total rooms occupied
 			// value - Actual value - will be displayed in the colum near to graph
 			// percent - Used for graph plotting
 			houseDetails.total_rooms_occupied[dayInfo.date] = {};
 			houseDetails.total_rooms_occupied[dayInfo.date].value = dayInfo.sold;
 			houseDetails.total_rooms_occupied[dayInfo.date].percent = dayInfo.sold / houseTotal * 100;
-			/*total guests inhouse - not used now. May be added in future
+			/* total guests inhouse - not used now. May be added in future
 			houseDetails.total_guests_inhouse[dayInfo.date] = {};
 			houseDetails.total_guests_inhouse[dayInfo.date].value = dayInfo.house.in_house;*/
 
 			totalDepartures = dayInfo.departing + dayInfo.departed;
-			//Departures Expected
+			// Departures Expected
 			houseDetails.departues_expected[dayInfo.date] = {};
 			houseDetails.departues_expected[dayInfo.date].value = dayInfo.departing;
 			houseDetails.departues_expected[dayInfo.date].percent = dayInfo.departing / totalDepartures * 100;
-			//Departures Actual
+			// Departures Actual
 			houseDetails.departures_actual[dayInfo.date] = {};
 			houseDetails.departures_actual[dayInfo.date].value = dayInfo.departed;
 			houseDetails.departures_actual[dayInfo.date].percent = dayInfo.departed / totalDepartures * 100;
 
 			totalArrivals = dayInfo.arriving + dayInfo.arrived;
-			//Arrivals Expected
+			// Arrivals Expected
 			houseDetails.arrivals_expected[dayInfo.date] = {};
 			houseDetails.arrivals_expected[dayInfo.date].value = dayInfo.arriving;
 			houseDetails.arrivals_expected[dayInfo.date].percent = dayInfo.arriving / totalArrivals * 100;
-			//Arrivals Actual
+			// Arrivals Actual
 			houseDetails.arrivals_actual[dayInfo.date] = {};
 			houseDetails.arrivals_actual[dayInfo.date].value = dayInfo.arrived;
 			houseDetails.arrivals_actual[dayInfo.date].percent = dayInfo.arrived / totalArrivals * 100;
 
-			//Available tonight
+			// Available tonight
 			houseDetails.available_tonight[dayInfo.date] = {};
 			houseDetails.available_tonight[dayInfo.date].value = Math.round(dayInfo.availability /houseTotal * 100);
 			houseDetails.available_tonight[dayInfo.date].percent = Math.round(dayInfo.availability /houseTotal * 100);
 
-			//Occupied tonight
+			// Occupied tonight
 			houseDetails.occupied_tonight[dayInfo.date] = {};
 			houseDetails.occupied_tonight[dayInfo.date].value = Math.round(dayInfo.sold /houseTotal * 100);
 			houseDetails.occupied_tonight[dayInfo.date].percent = Math.round(dayInfo.sold /houseTotal * 100);
-			//Total room revenue
+			// Total room revenue
 			houseDetails.total_room_revenue[dayInfo.date] = dayInfo.total_room_revenue;
-			//Average daily rate
+			// Average daily rate
 			houseDetails.avg_daily_rate[dayInfo.date] = dayInfo.average_daily_rate;
 
 
@@ -752,7 +752,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 	};
 
 
-	//*** CICO-17073 : Code for Item Inventory **//
+	//* ** CICO-17073 : Code for Item Inventory **//
 
 	this.getGridDataForInventory = function () {
 		return that.data.gridDataForItemInventory;
@@ -792,7 +792,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			from_date: firstDate,
 			to_date: secondDate
 		};
-		//Webservice calling section
+		// Webservice calling section
 		var deferred = $q.defer(),
 			url = '/api/availability/addons';
 
@@ -893,6 +893,6 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
-	/***************************************************************************************************/
+	/** *************************************************************************************************/
 
 }]);

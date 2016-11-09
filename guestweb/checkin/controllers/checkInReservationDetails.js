@@ -15,13 +15,13 @@
 	};
 
 	if($scope.pageValid) {
-	//check if checkbox was already checked (before going to upgrades)
+	// check if checkbox was already checked (before going to upgrades)
 	$scope.checked =  ($rootScope.ShowupgradedLabel) ? true:false;
 	$scope.reservationData = checkinDetailsService.getResponseData();
 	$rootScope.confirmationNumber = $scope.reservationData.confirm_no;
 	$scope.showTermsPopup = false;
 
-	//setup options for modal
+	// setup options for modal
 	$scope.opts = {
 		backdrop: true,
 		backdropClick: true,

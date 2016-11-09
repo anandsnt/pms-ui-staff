@@ -2,7 +2,7 @@ admin.service('ADAppSrv', ['ADBaseWebSrv', 'ADBaseWebSrvV2', function(ADBaseWebS
 
 	this.fetch = function() {
 		var url = '/admin/settings/menu_items.json';
-		//var url = "ui/show?json_input=zestweb_v2/menuItem.json&format=json";
+		// var url = "ui/show?json_input=zestweb_v2/menuItem.json&format=json";
 
 		return ADBaseWebSrv.getJSON(url);
 	};

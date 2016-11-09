@@ -1,7 +1,7 @@
-//Directive to set focus to input element
+// Directive to set focus to input element
 sntRover.directive('focusMe', function($timeout, $parse) {
   return {
-    //scope: true,   // optionally create a child scope
+    // scope: true,   // optionally create a child scope
     link: function(scope, element, attrs) {
       var model = $parse(attrs.focusMe);
 

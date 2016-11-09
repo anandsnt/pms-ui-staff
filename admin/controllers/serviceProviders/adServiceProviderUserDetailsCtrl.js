@@ -5,7 +5,7 @@ admin.controller('ADServiceProviderUserDetailsCtrl', ['$scope', '$rootScope', '$
 		$scope.errorMessage = '';
 		$scope.userDetails = {};
 		$scope.userDetails.service_provider_id = $stateParams.serviceProviderId;
-		//if userId exist its edit screen else add new screen
+		// if userId exist its edit screen else add new screen
 		if(!!$stateParams.userId) {
 			$scope.userDetails.user_id = $stateParams.userId;
 			fetchUserDetails();
@@ -86,7 +86,7 @@ admin.controller('ADServiceProviderUserDetailsCtrl', ['$scope', '$rootScope', '$
 			};			
 			$scope.$emit('hideLoader');
 		};
-		//if userId exist updates the user else add new user
+		// if userId exist updates the user else add new user
 
 		if(!$scope.userDetails.user_id) {
 			$scope.invokeApi(ADServiceProviderSrv.addServiceProviderUser, $scope.userDetails, successCallbackFetch);

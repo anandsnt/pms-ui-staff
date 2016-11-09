@@ -140,8 +140,8 @@
 		    return age;
 		};
 
-		//check if guest is above age set in hotel admin
-		//else redirect to front desk
+		// check if guest is above age set in hotel admin
+		// else redirect to front desk
 		var checkIfGuestIsEligible = function() {
 			var birthday = $scope.guestDetails.month+"/"+$scope.guestDetails.day+"/"+$scope.guestDetails.year;	
 
@@ -164,7 +164,7 @@
 			};
 		};
 
-		//post guest details
+		// post guest details
 		$scope.postGuestDetails = function() {
 
 			if($scope.guestDetails.day  && $scope.guestDetails.month && $scope.guestDetails.year) {
@@ -175,7 +175,7 @@
 			};
 		};
 
-		//skip the birthday
+		// skip the birthday
 		$scope.skip = function() {
 			goToNextStep();
 		};

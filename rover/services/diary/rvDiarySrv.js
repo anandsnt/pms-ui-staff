@@ -62,7 +62,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                                 return _.pick(this, args);
                         }
                     },
-                    /*Merge [incoming] occupanices into [existing] room occupanices in
+                    /* Merge [incoming] occupanices into [existing] room occupanices in
                       the data model.
 
                       Constraints:
@@ -356,13 +356,13 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         
                         _.each(value, function(eachRoom) {
                             if(eachRoom.room_id === room.id) {
-                                //start time                     
+                                // start time                     
                                 hour = eachRoom.from_time.split(":") [0];
                                 min = eachRoom.from_time.split(":") [1];
                                 startTime = new tzIndependentDate(key);
                                 startTime.setHours (hour, min, 0);
                                 
-                                //end time
+                                // end time
                                 hour = eachRoom.to_time.split(":") [0];
                                 min = eachRoom.to_time.split(":") [1];
                                 endTime = new tzIndependentDate(key);
@@ -474,7 +474,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     this.dataStore.mergeOccupancies(this.store.group.values.room_id);
                 }),
 
-                /*AVAILABILITY Configuration Adapter */
+                /* AVAILABILITY Configuration Adapter */
                 Availability = Config({
                     id: meta.availability.id,
                     name: 'availability',
@@ -524,7 +524,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     this.dataStore.mergeOccupancies(this.store.group.values.id, true);
                 }),
 
-                /*AVAILABILITY COUNT Configuration Adapter */
+                /* AVAILABILITY COUNT Configuration Adapter */
                 AvailabilityCount = Config({
                     name: 'availability_count',
                     url: 'api/hourly_availability_count',
@@ -549,7 +549,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                 undefined,
                 this.data_Store);
 
-                /*ROUTER RESOLVE - LOADING POINT FOR DIARY*/
+                /* ROUTER RESOLVE - LOADING POINT FOR DIARY*/
                 this.load = function(arrival_ms, create_reservation_data) {
                     var _data_Store     = this.data_Store,
                         arrival_times   = this.fetchArrivalTimes(15, []),
@@ -598,7 +598,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                                 RoomType.read(),
                                 InActiveRoomSlots.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))),
                                 Room.read(),
-                                Occupancy.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), //time.toStartDate(), time.toEndDate())),
+                                Occupancy.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), // time.toStartDate(), time.toEndDate())),
                                 AvailabilityCount.read(dateRange(start_date, end_date))])
                                 .then(function(data_array) {
                                     _.reduce([
@@ -655,7 +655,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     return q.promise;
                 };
 
-                //variables using for reservation transfer from one date to another
+                // variables using for reservation transfer from one date to another
                 this.isReservationMovingFromOneDateToAnother = false;
                 this.movingReservationData = {
                     reservation: undefined,
@@ -672,10 +672,10 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     $q.all([
                             InActiveRoomSlots.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))),
                             Room.read(),
-                            Occupancy.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), //time.toStartDate(), time.toEndDate())),
+                            Occupancy.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), // time.toStartDate(), time.toEndDate())),
                             AvailabilityCount.read(dateRange(time.x_n, time.x_p))])
                             .then(function(data_array) {
-                                //if there is any reservation transfter initiated from one day to another
+                                // if there is any reservation transfter initiated from one day to another
                                 if(__this.isReservationMovingFromOneDateToAnother) {
                                     var reservation = __this.movingReservationData.reservation;
                                     var arrival_date,
@@ -696,14 +696,14 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                                     reservation.departure_date = departure_date.toComponents().date.toDateString();
                                     reservation.departure_time  = departure_date.toComponents().time.toHourAndMinute(":", 24);
                                     reservation.departure        = departure_date.getTime();
-                                    //2 is the index of array who is having reservations
+                                    // 2 is the index of array who is having reservations
                                     var indexOfSameReservationAlreadyInList = _.findIndex (data_array[2].reservations,
                                                                     {reservation_id: reservation.reservation_id});
 
                                     data_array[2].reservations.push(reservation);
 
                                     if(indexOfSameReservationAlreadyInList >= 0) {
-                                        //2 is the index of array who is having reservations
+                                        // 2 is the index of array who is having reservations
                                         data_array[2].reservations.splice(indexOfSameReservationAlreadyInList, 1);
                                     }
                                 }
@@ -726,7 +726,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     return q.promise;
                 };
 
-                /*Process list of arrival times that increment by "base_interval"*/
+                /* Process list of arrival times that increment by "base_interval"*/
                 this.fetchArrivalTimes = function(base_interval, results) {
                     var day_min = 24 * 60,
                         min, hour;
@@ -743,7 +743,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
 
 
-                /*Primary Method to obtain Occupancy Slots for a given date range*/
+                /* Primary Method to obtain Occupancy Slots for a given date range*/
                 this.Occupancy = function(start_date, end_date) {
                     var q = $q.defer();
 
@@ -760,7 +760,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     return q.promise;
                 };
 
-                /*Primary Method to obtain Available Slot Count for a given date range*/
+                /* Primary Method to obtain Available Slot Count for a given date range*/
                 this.AvailabilityCount = function(start_date, end_date) {
                     var q = $q.defer();
 
@@ -776,7 +776,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     return q.promise;
                 };
 
-                /*Primary Method to obtian Available Slots for a given range, room type, and optional
+                /* Primary Method to obtian Available Slots for a given range, room type, and optional
                   GUID*/
                 this.Availability = function(params) {
                     var start_date         = params.start_date,
@@ -793,7 +793,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                     var self = this;
 
-                    //If rate_type is available
+                    // If rate_type is available
                     if(rate_type) {
                         if(account_id) {
                             _.extend(params, { account_id: account_id });
@@ -881,7 +881,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                             _.extend(params, { account_id: data.account_id });
                         }
                     }
-                    //Webservice calling section
+                    // Webservice calling section
                     var deferred = $q.defer();
                     var url = '/api/hourly_availability/room';
 
@@ -972,7 +972,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         }
                     }
 
-                    //Webservice calling section
+                    // Webservice calling section
                     var deferred = $q.defer();
                     var url = '/api/hourly_availability/room_move';
 
@@ -985,7 +985,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                 };
 
-                /*Process data points set during create reservation that redirects here*/
+                /* Process data points set during create reservation that redirects here*/
                 this.ArrivalFromCreateReservation = function() {
                     var data = $vault.get('searchReservationData');
 
@@ -1024,7 +1024,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         };
                     }
 
-                    /*Method to parse object time props into MS*/
+                    /* Method to parse object time props into MS*/
                     function parseDate(ms, timeObj, dstChange) {
                         var t_a, t_b;
 
@@ -1121,4 +1121,4 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                 }
 
             }]);
-                //------------------------------------------------------------------
+                // ------------------------------------------------------------------

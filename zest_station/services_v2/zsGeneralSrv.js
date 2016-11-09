@@ -19,7 +19,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         };
 
         this.isThemeConfigured = function(theme) {
-            //if theme is configured with stylesheets, use it, otherwise default to SNT Theme
+            // if theme is configured with stylesheets, use it, otherwise default to SNT Theme
             return (typeof themeMappings[theme] !== "undefined");
         };
         this.hotelTheme = '';
@@ -28,8 +28,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 url = '/api/hotel_settings/kiosk';
 
             zsBaseWebSrv.getJSON(url).then(function(data) {
-                //fetch hotel theme and set variable to this controller,
-                //then resolve the fetch settings
+                // fetch hotel theme and set variable to this controller,
+                // then resolve the fetch settings
                 that.fetchHotelTheme(data, deferred);
             }, function(data) {
                 deferred.reject(data);
@@ -54,8 +54,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                     }
                 }
 
-                //the hotel theme name has to be mapped to the zeststation resource files 
-                //corresponding to those themes.
+                // the hotel theme name has to be mapped to the zeststation resource files 
+                // corresponding to those themes.
                 theme = _.findKey(themeMappings, function(themeMapping) {
                     return themeMapping.toLowerCase() === theme;
                 });
@@ -64,7 +64,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                     theme = 'snt';
                 }
                 that.hotelTheme = theme;
-                //resolves this.fetchSetting()
+                // resolves this.fetchSetting()
                 deferred.resolve(resolveData);
             }, function(data) {
                 deferred.reject(data);
@@ -73,7 +73,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
-        this.fetchLanguages = function() { //to get terms & conditions
+        this.fetchLanguages = function() { // to get terms & conditions
             var url = '/api/kiosk/languages';
 
             return zsBaseWebSrv.getJSON(url);
@@ -108,7 +108,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
-        this.fetchHotelSettings = function() { //to get terms & conditions
+        this.fetchHotelSettings = function() { // to get terms & conditions
             var url = '/api/hotel_settings.json';
 
             return zsBaseWebSrv.getJSON(url);
@@ -248,8 +248,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
 
         this.emailIsBlackListed = function(data) {
-            //send email address as string, returns true/false depending on if the domain was found to be blacklisted
-            //in settings/zest//email blacklist
+            // send email address as string, returns true/false depending on if the domain was found to be blacklisted
+            // in settings/zest//email blacklist
             var deferred = $q.defer();
             var url = '/api/black_listed_emails';
 
@@ -289,7 +289,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
 
         this.languageValueMappingsForUI = {
-            //LangugaeName: Corresponsing values
+            // LangugaeName: Corresponsing values
             english: {
                 'prefix': 'EN',
                 'code': 'en',
@@ -319,7 +319,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 'code': 'cl',
                 'flag': 'flag-ca',
                 'language_name_in_local': 'Castellano'
-                    //using name as an english reference (which is in the api call)
+                    // using name as an english reference (which is in the api call)
             },
             italian: {
                 'prefix': '',
@@ -335,10 +335,10 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             }
         };
 
-        //This data supposed to be handled in back end.
-        //TODO : Move to api
+        // This data supposed to be handled in back end.
+        // TODO : Move to api
         this.returnLanguageList = function() {
-            return [ //in our admin/API, these are saved in english, we will keep reference here if needed
+            return [ // in our admin/API, these are saved in english, we will keep reference here if needed
             ];
         }
 

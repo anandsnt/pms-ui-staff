@@ -9,7 +9,7 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
     $scope.renderData = {};
     $scope.renderData.defaultPaymentAmount = $scope.arTransactionDetails.amount_owing;
     var bill_id = $scope.arTransactionDetails.company_or_ta_bill_id;
-    //Added for CICO-26730
+    // Added for CICO-26730
 
     $scope.cardsList = [];
     var isSixPayment = false;
@@ -67,7 +67,7 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
         $scope.arTransactionDetails.available_credit = parseFloat(data.available_credit).toFixed(2);
         $scope.depositPaidSuccesFully = true;
         $scope.authorizedCode = data.authorization_code;
-        //Reload the ar transaction listing after payment
+        // Reload the ar transaction listing after payment
         $scope.reloadARTransactionListing();
     };
 
@@ -183,10 +183,10 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
         $scope.defaultPaymentTypeCardNumberEndingWith = cardNumberEndingWith;
         $scope.defaultPaymentTypeCardExpiry = cardExpiry;
 
-        //check if the selected card has reference
+        // check if the selected card has reference
         checkReferencetextAvailableForCC();
 
-        //check if the selected card has fees
+        // check if the selected card has fees
         _.each($scope.renderData.paymentTypes, function(paymentType) {
             if (paymentType.name === "CC") {
                 _.each(paymentType.values, function(paymentType) {
@@ -225,16 +225,16 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
      * Checks whether reference text is available for CC
      */
     var checkReferencetextAvailableForCC = function() {
-        //call utils fn
+        // call utils fn
         $scope.referenceTextAvailable = checkIfReferencetextAvailableForCC($scope.renderData.paymentTypes, $scope.defaultPaymentTypeCard);
     };
 
-    //Added for CICO-26730
+    // Added for CICO-26730
     $scope.changeOnsiteCallIn = function() {
         $scope.showCCPage = ($scope.isManual) ? true : false;
     };
 
-    //Added for CICO-26730
+    // Added for CICO-26730
     $scope.$on('changeOnsiteCallIn', function(event) {
         $scope.isManual = !$scope.isManual;
         $scope.changeOnsiteCallIn();
@@ -255,7 +255,7 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
      * Success call back of MLI swipe - from cards ctrl
      */
     $scope.$on("SHOW_SWIPED_DATA_ON_PAY_SCREEN", function(e, swipedCardDataToRender) {
-        //set variables to display the add mode
+        // set variables to display the add mode
         $scope.showCCPage = true;
         $scope.swippedCard = true;
         $scope.addmode = true;

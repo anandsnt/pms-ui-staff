@@ -13,7 +13,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     	if($rootScope.isEnabledRoomTypeByRoomClass && !$rootScope.isStandAlone) {
     		$scope.getRoomClassList();
     	}
-    	//To list room types
+    	// To list room types
     	$scope.listRoomTypes();
 	}
 
@@ -144,7 +144,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     	var editSuccessCallbackSave = function(data) {
     		$scope.$emit('hideLoader');
     		$scope.is_image_deleted = false;
-    		//Since the list is ordered. Update the ordered data
+    		// Since the list is ordered. Update the ordered data
     		$scope.orderedData[parseInt($scope.currentClickedElement)].name = $scope.roomTypeData.room_type_name;
     		$scope.orderedData[parseInt($scope.currentClickedElement)].code = $scope.roomTypeData.room_type_code;
     		$scope.currentClickedElement = -1;
@@ -165,7 +165,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     	    $scope.invokeApi(ADRoomTypesSrv.updateRoomTypes, data, editSuccessCallbackSave);
     	}
     };
-   /*Handle click
+   /* Handle click
     of image delete*/
 
     $scope.deleteRoomImage = function() {
@@ -239,7 +239,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
 		$scope.fileName = "Choose File....";
 		$scope.imageFileName = $scope.fileName;
 
-		//reset data
+		// reset data
 		$scope.roomTypeData = {
 			"room_type_id": "",
 			"room_type_code": "",
@@ -273,7 +273,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
 	$scope.deleteRoomTypes = function(roomtype_id) {
 		var successCallBack = function() {
 			$scope.$emit('hideLoader');
-			//actualIndex holds the index of clicked element in $scope.data.room_types
+			// actualIndex holds the index of clicked element in $scope.data.room_types
 			var actualIndex = $scope.data.room_types.map(function(x) {return x.id; }).indexOf(roomtype_id);
 
       		$scope.data.room_types.splice(actualIndex, 1);

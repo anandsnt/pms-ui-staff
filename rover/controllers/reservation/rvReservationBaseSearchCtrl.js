@@ -52,11 +52,11 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             var checkinAmPm = $scope.reservationData.checkinTime.ampm;
             var checkoutAmPm = $scope.reservationData.checkoutTime.ampm;
             var selectedHours = parseInt($scope.reservationData.resHours);
-            //if selected hours is greater than a day
+            // if selected hours is greater than a day
 
             if ((checkinHour + selectedHours) > 24) {
                 var extraHours = (checkinHour + selectedHours) % 24;
-                //if extra hours is greater than half a day
+                // if extra hours is greater than half a day
 
                 if (extraHours >= 12) {
                     $scope.reservationData.checkoutTime.hh = (extraHours === 12 || extraHours === 0) ? 12 : extraHours - 12;
@@ -67,7 +67,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     $scope.reservationData.checkoutTime.hh = ($scope.reservationData.checkoutTime.hh.toString().length === 1) ? ("0" + $scope.reservationData.checkoutTime.hh) : $scope.reservationData.checkoutTime.hh;
                 }
             }
-            //if selected hours is greater than half a day
+            // if selected hours is greater than half a day
             else if ((checkinHour + selectedHours) >= 12) {
                 var extraHours = (checkinHour + selectedHours) % 12;
 
@@ -210,8 +210,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             $scope.heading = 'Reservations';
             $scope.setHeadingTitle($scope.heading);
 
-            //Reset to firstTab in case in case of returning to the base screen by clicking "Create a new reservation for the same guest"
-            //in the confirmation screen
+            // Reset to firstTab in case in case of returning to the base screen by clicking "Create a new reservation for the same guest"
+            // in the confirmation screen
             $scope.viewState.currentTab = 0;
 
             // Check flag to retain the card details
@@ -220,10 +220,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.initReservationDetails();
             } else {
 
-                //TODO: 1. User gets diverted to the Search screen (correct)
-                //but Guest Name and Company / TA cards are not copied into the respective search fields.
-                //They are added to the reservation by default later on,
-                //but should be copied to the Search screen as well
+                // TODO: 1. User gets diverted to the Search screen (correct)
+                // but Guest Name and Company / TA cards are not copied into the respective search fields.
+                // They are added to the reservation by default later on,
+                // but should be copied to the Search screen as well
                 $scope.viewState.reservationStatus.confirm = false;
                 // Reset addons as part CICO-10657
                 $scope.resetAddons();
@@ -349,7 +349,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             $scope.reservationData.departureDate = dateFilter($scope.reservationData.departureDate, 'yyyy-MM-dd');
             $scope.setNumberOfNights();
             $scope.errorMessage = [];
-            //CICO-31353
+            // CICO-31353
             clearGroupSelection();
         };
         /*  The following method helps to initiate the staydates object across the period of
@@ -391,7 +391,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             // CICO-19685: if user moves back and forth in create reservation, before saving
             $scope.reservationGuestSearchChanged();
 
-            //if selected thing is 'hours'
+            // if selected thing is 'hours'
             if (!$scope.isNightsActive) {
                 var reservationDataToKeepinVault = {},
                     roomData = $scope.reservationData.rooms[0],
@@ -423,7 +423,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     isfromcreatereservation: true
                 });
             }
-            //if selected thing is 'nights'
+            // if selected thing is 'nights'
             else {
                 /*  For every room initate the stayDates object
                  *   The total room count is taken from the roomCount value in the reservationData object
@@ -574,7 +574,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         id: item.id,
                         corporateid: '',
                         iataNumber: '',
-                        /*Address*/
+                        /* Address*/
                         address: item.account_address  
                     };
 
@@ -750,7 +750,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $('#ui-datepicker-div').addClass('reservation arriving');
             },
             onClose: function(dateText, inst) {
-                //in order to remove the that flickering effect while closing
+                // in order to remove the that flickering effect while closing
                 $timeout(function() {
                     $('#ui-datepicker-div').removeClass('reservation arriving');
                 }, 200);
@@ -769,7 +769,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $('#ui-datepicker-div').addClass('reservation departing');
             },
             onClose: function(dateText, inst) {
-                //in order to remove the that flickering effect while closing
+                // in order to remove the that flickering effect while closing
                 $timeout(function() {
                     $('#ui-datepicker-div').removeClass('reservation arriving');
                 }, 200);
@@ -1021,7 +1021,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             return !!$rootScope.isHourlyRateOn || !!$scope.reservationData.group.id;
         }
 
-        //Clear the group selection when the departure date is changed
+        // Clear the group selection when the departure date is changed
         var clearGroupSelection = function() {
             if( $scope.reservationData.group && $scope.reservationData.group.id) {
                $scope.reservationData.group = {};

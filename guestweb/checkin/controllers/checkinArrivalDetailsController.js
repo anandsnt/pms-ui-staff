@@ -38,7 +38,7 @@
 			// when eta has to restricted bases on early checkin settings
 			if (typeof $rootScope.earlyCheckinRestrictHour !== "undefined") {
 				$scope.earlyCheckinRestrictLimit = $rootScope.earlyCheckinRestrictHourForDisplay + ":" + $rootScope.earlyCheckinRestrictMinute + " " + $rootScope.earlyCheckinRestrictPrimetime;
-				//restrict time before earlyCheckinRestrictTime
+				// restrict time before earlyCheckinRestrictTime
 				$scope.primeTimes = ($rootScope.earlyCheckinRestrictPrimetime === "PM") ? $scope.primeTimes.slice(1) : $scope.primeTimes;
 				$scope.hours = restrictHoursListByHour($rootScope.earlyCheckinRestrictHour);
 				$scope.hoursWithRestrictions = angular.copy($scope.hours);
@@ -161,7 +161,7 @@
 				$modal.open($scope.errorOpts); // error modal popup
 				$scope.isLoading = false;
 			} else {
-				//change format to 24 hours
+				// change format to 24 hours
 				var hour = parseInt($scope.stayDetails.hour);
 
 				if ($scope.stayDetails.primeTime === 'PM' && hour < 12) {

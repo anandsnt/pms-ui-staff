@@ -11,7 +11,7 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 	function($scope, $stateParams, $state, zsEventConstants, $controller, $timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv) {
 		BaseCtrl.call(this, $scope);
 
-		/**********************************************************************************************
+		/** ********************************************************************************************
 		 **      Please note that, not all the stateparams passed to this state will not be used in this state, 
 		 **      however we will have to pass this so as to pass again to future states which will use these.
 		 **       
@@ -40,7 +40,7 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 				'deposit_amount': $stateParams.deposit_amount,
 				'confirmation_number': $stateParams.confirmation_number
 			};
-			//check if this page was invoked through pickupkey flow
+			// check if this page was invoked through pickupkey flow
 
 			if (!!$stateParams.pickup_key_mode) {
 				stateParams.pickup_key_mode = 'manual';
@@ -65,7 +65,7 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 		var initializeMe = function() {
 			BaseCtrl.call(this, $scope);
 			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
-			//back button action
+			// back button action
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
 				if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
 					$state.go('zest_station.checkInReservationDetails', $stateParams);
@@ -84,7 +84,7 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 							'pre_auth_amount_for_zest_station': $stateParams.pre_auth_amount_for_zest_station,
 							'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin
 						}
-						//check if this page was invoked through pickupkey flow
+						// check if this page was invoked through pickupkey flow
 
 					if (!!$stateParams.pickup_key_mode) {
 						stateParams.pickup_key_mode = 'manual';

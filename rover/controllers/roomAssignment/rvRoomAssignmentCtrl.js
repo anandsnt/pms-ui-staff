@@ -50,7 +50,7 @@ sntRover.controller('RVroomAssignmentController', [
 		$scope.$broadcast('roomFeaturesLoaded', $scope.roomFeatures);
 	});
 
-	/*To fix the unassign button flasing issue during checkin
+	/* To fix the unassign button flasing issue during checkin
 	*/
 	$scope.roomAssgnment = {};
 	$scope.roomAssgnment.inProgress = false;
@@ -63,8 +63,8 @@ sntRover.controller('RVroomAssignmentController', [
 		$scope.searchText = '';
 		var currentSelectedRoomType = $scope.roomType;
 
-		$scope.filteredRooms = [];;//Emptying rooms on search
-		$scope.rooms = [];//CICO-23077
+		$scope.filteredRooms = [];;// Emptying rooms on search
+		$scope.rooms = [];// CICO-23077
 
 		angular.forEach($scope.allRooms, function(value, key) {
 			if(value.room_type_code === currentSelectedRoomType) {
@@ -186,12 +186,12 @@ sntRover.controller('RVroomAssignmentController', [
 
 			$scope.currentRoomObject = roomObject;
 
-			//as per CICO-34310 if room type in dropdown and room type of chosen room are same as old room type
-			//No need to check availability or overbooking
+			// as per CICO-34310 if room type in dropdown and room type of chosen room are same as old room type
+			// No need to check availability or overbooking
 			if ( currentRoomType.type === oldRoomType && roomObject.room_type_code === oldRoomType) {
 				$scope.showMaximumOccupancyDialog(roomObject);
 			}
-			//if room type of chosen room is different from old room type, check for overbooking
+			// if room type of chosen room is different from old room type, check for overbooking
 			else if (!isAvailablityExist) {
 				if (roomObject.is_suite_room || !isOverBookPermission) {
 					ngDialog.open({
@@ -352,7 +352,7 @@ sntRover.controller('RVroomAssignmentController', [
 				'reservationId': parseInt($stateParams.reservation_id, 10)
 			};
 
-			//success call of un-assigningb rooms
+			// success call of un-assigningb rooms
 			var successCallbackOfUnAssignRoom = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.reservationData.reservation_card.room_id = '';
@@ -367,7 +367,7 @@ sntRover.controller('RVroomAssignmentController', [
 
 			};
 
-			//failujre call of un-assigningb rooms
+			// failujre call of un-assigningb rooms
 			var failureCallBackOfUnAssignRoom = function(errorMessage) {
 
 				$scope.$emit('hideLoader');
@@ -444,7 +444,7 @@ sntRover.controller('RVroomAssignmentController', [
 		}
 
 		if(data.is_room_auto_assigned && !$scope.isStandAlone) {
-			$scope.roomAssignedByOpera 	= data.room; //Shahul: I don't know who named this variable, What the...
+			$scope.roomAssignedByOpera 	= data.room; // Shahul: I don't know who named this variable, What the...
 			dataToUpdate.room_number 	= data.room;
 			openRoomAlreadyChoosedPopup ();
 		}
@@ -471,13 +471,13 @@ sntRover.controller('RVroomAssignmentController', [
 			dataToUpdate.room_number = assignedRoom.room_number;
 		}
 
-		//updating in the central data model
+		// updating in the central data model
 		_.extend($scope.reservationData.reservation_card, dataToUpdate);
 
 		RVReservationCardSrv
 			.updateResrvationForConfirmationNumber(reservationData.confirmation_num, $scope.reservationData);
 
-		//Yes, its over
+		// Yes, its over
 		$scope.roomAssgnment.inProgress = false;
 	};
 
@@ -489,8 +489,8 @@ sntRover.controller('RVroomAssignmentController', [
 	 */
 	var errorCallbackAssignRoom = function(error) {
 		$scope.roomAssgnment.inProgress = false;
-		//since we are expecting some custom http error status in the response
-		//and we are using that to differentiate among errors
+		// since we are expecting some custom http error status in the response
+		// and we are using that to differentiate among errors
 		if(error.hasOwnProperty ('httpStatus')) {
 			switch (error.httpStatus) {
 				case 470:
@@ -524,21 +524,21 @@ sntRover.controller('RVroomAssignmentController', [
 
 		$scope.roomAssgnment.inProgress = true;
 
-		//API params
+		// API params
 		var params = {};
 
 		params.reservation_id 		= parseInt($stateParams.reservation_id, 10);
 		params.room_number 			= $scope.assignedRoom.room_number;
 		params.without_rate_change 	= $scope.roomTransfer.withoutRateChange;
 		params.new_rate_amount 		= $scope.roomTransfer.newRoomRateChange;
-		//Added for CICO-35102
+		// Added for CICO-35102
 		params.is_preassigned       = $scope.assignedRoom.is_preassigned;
 
-		//CICO-17082 - As per design pattern
+		// CICO-17082 - As per design pattern
 		params.forcefully_assign_room = wanted_to_forcefully_assign;
 
 		wanted_to_forcefully_assign = false;
-		//yes. ALL set. Go!
+		// yes. ALL set. Go!
 		var options = {
             params: params,
             successCallBack: successCallbackAssignRoom,
@@ -551,7 +551,7 @@ sntRover.controller('RVroomAssignmentController', [
 
 
         $scope.goToStayCardFromAddToQueue = false;
-        if (!$rootScope.reservationRoomWatch) {//alternative to $destroy, this is an init-once method
+        if (!$rootScope.reservationRoomWatch) {// alternative to $destroy, this is an init-once method
             $rootScope.reservationRoomWatch = 1;
 
             $rootScope.$on('putGuestInQueue', function() {
@@ -664,7 +664,7 @@ sntRover.controller('RVroomAssignmentController', [
 			return "room-grey";
 		}
 		var reservationRoomStatusClass = "";
-		//CICO-9063 no need to show the color coding if future reservation
+		// CICO-9063 no need to show the color coding if future reservation
 
 		if($scope.reservationData.reservation_card.reservation_status === 'RESERVED') {
 			return reservationRoomStatusClass;
@@ -735,7 +735,7 @@ sntRover.controller('RVroomAssignmentController', [
 		group.group_name = "predefined";
 		group.multiple_allowed = true;
 		group.items = [];
-		//CICO-9063 we should not show Not Ready and Due Out filter if future reservation
+		// CICO-9063 we should not show Not Ready and Due Out filter if future reservation
 		if($scope.reservationData.reservation_card.reservation_status !== 'RESERVED') {
 			var item1 = {};
 
@@ -759,7 +759,7 @@ sntRover.controller('RVroomAssignmentController', [
 		item4.id = -103;
 		item4.name = $filter('translate')('INCLUDE_CLEAN_LABEL');
 		item4.selected = false;
-		//CICO-9063 we should not show Not Ready and Due Out filter if future reservation
+		// CICO-9063 we should not show Not Ready and Due Out filter if future reservation
 		if($scope.reservationData.reservation_card.reservation_status !== 'RESERVED') {
 			group.items.push(item1);
 			group.items.push(item2);
@@ -782,12 +782,12 @@ sntRover.controller('RVroomAssignmentController', [
 		selectedPredefinedFiltersList = $scope.selectedPredefinedFiltersList,
 		selectedFiltersList = $scope.selectedFiltersList;
 
-		//calculating room ids of selected floors in case any floor is selected.
+		// calculating room ids of selected floors in case any floor is selected.
 		if($scope.floorFilterData && !$scope.floorFilterData.isNoFloorSelected) {
 				roomIdsInSelectedFloor= $scope.getRoomIdsInSelectedFloor();
 			};
 
-		//Iterating each room for filter.
+		// Iterating each room for filter.
 		rooms.forEach(function (room) {
 			var isRoomIncluded = false;
 			var isReady = room.room_status === "READY";
@@ -795,7 +795,7 @@ sntRover.controller('RVroomAssignmentController', [
 			var isPreassigned = room.is_preassigned;
 			var isLocked = room.donot_move_room;
 
-			//Checking whether the room is to be displyed.
+			// Checking whether the room is to be displyed.
 			if (isReady && isVacant && !isPreassigned && !isLocked) {
 				if (room.checkin_inspected_only === "true" && room.room_ready_status === "INSPECTED") {
 					isRoomIncluded = true;
@@ -823,9 +823,9 @@ sntRover.controller('RVroomAssignmentController', [
 					isRoomIncluded =isRoomIncluded&&false;
 				};
 			});
-			//Checking Whether the Room to be displyed.
+			// Checking Whether the Room to be displyed.
 			if(isRoomIncluded) {
-				//If floor filter applied, checking whether the room belongs to selected Floor.
+				// If floor filter applied, checking whether the room belongs to selected Floor.
 				if($scope.floorFilterData &&!$scope.floorFilterData.isNoFloorSelected) {
 					if(roomIdsInSelectedFloor.indexOf(room.room_id) !== -1) {
 						$scope.filteredRooms.push(room);
@@ -910,8 +910,8 @@ sntRover.controller('RVroomAssignmentController', [
 
 		$scope.roomTypes = roomPreferences.room_types;
 		$scope.roomFeatures = roomPreferences.room_features;
-		$scope.allRooms = roomsList.rooms;//$scope.allRooms - CICO-23077
-		$scope.rooms = [];//CICO-23077
+		$scope.allRooms = roomsList.rooms;// $scope.allRooms - CICO-23077
+		$scope.rooms = [];// CICO-23077
 
 		angular.forEach($scope.allRooms, function(value, key) {
 			if(value.room_type_code === $stateParams.room_type) {

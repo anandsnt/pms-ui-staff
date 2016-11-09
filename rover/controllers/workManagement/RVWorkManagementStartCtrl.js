@@ -127,7 +127,7 @@ angular.module('sntRover').controller('RVWorkManagementStartCtrl', ['$rootScope'
                     id: room.work_sheet_id,
                     from: "START"
                 });
-            } else { //Assign the room to an employee
+            } else { // Assign the room to an employee
                 $scope.stateVariables.assignRoom.work_type_id = room.work_type_ids[0];
                 ngDialog.open({
                     template: '/assets/partials/workManagement/popups/rvWorkManagementAssignRoom.html',

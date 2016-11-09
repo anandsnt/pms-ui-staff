@@ -88,7 +88,7 @@ admin.controller('ADStationaryCtrl',
 		if ($scope.data.location_image === $scope.memento.location_image) {
 			filterKeys.push('location_image');
 		}
-		//CICO-26524
+		// CICO-26524
 		$scope.data.group_hold_status_data = [];
 		if(!!$scope.data.groupholdstatus) {
 			var groupConfirmationData = {};
@@ -99,7 +99,7 @@ admin.controller('ADStationaryCtrl',
 			$scope.data.group_hold_status_data.push(groupConfirmationData);
 		}
 		var postingData = dclone($scope.data, filterKeys);
-		//calling the save api
+		// calling the save api
 
 		if ($scope.hotelTemplateLogoPrefetched === postingData.location_image) {
 			postingData.location_image = "";
@@ -186,7 +186,7 @@ admin.controller('ADStationaryCtrl',
 	}
 
 	$scope.showConfirmationHeaderFooterBasedOnHoldStatus = function() {
-		//If not set for any status - then empty
+		// If not set for any status - then empty
 		$scope.data.group_confirmation_header = "";
 		$scope.data.group_confirmation_footer = "";
 		angular.forEach($scope.data.group_hold_status_data, function(value, key) {

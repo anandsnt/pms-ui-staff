@@ -164,7 +164,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
 		else if(lastDropedTime === '') {
 			$scope.selectedUnassignedPermission = index;
 		}
-		else if(typeof lastDropedTime === 'object') { //means date
+		else if(typeof lastDropedTime === 'object') { // means date
 			var currentTime = new Date();
 			var diff = currentTime - lastDropedTime;
 

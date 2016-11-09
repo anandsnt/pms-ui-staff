@@ -303,7 +303,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 					updateBackButton();
 					$scope.$emit('hideLoader');
 				};
-				//CICO-23139
+				// CICO-23139
 
 				postData.enable_confirmation_custom_text = $scope.reservationData.enable_confirmation_custom_text;
 				postData.confirmation_custom_title 	= $scope.reservationData.confirmation_custom_title;
@@ -399,7 +399,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 
 			var paymentType = {
 				type: {},
-				ccDetails: { //optional - only if credit card selected
+				ccDetails: { // optional - only if credit card selected
 					number: '',
 					expMonth: '',
 					expYear: '',
@@ -424,7 +424,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			$scope.reservationData.isSameCard = true;
 			$scope.otherData.reservationCreated = true;
 
-			//As we are creating a new reservation for the same guest, we are to show the user occupancy alert popups
+			// As we are creating a new reservation for the same guest, we are to show the user occupancy alert popups
 			_.each($scope.reservationData.rooms, function(roomData) {
 				roomData.isOccupancyCheckAlerted = "";
 			});
@@ -462,15 +462,15 @@ sntRover.controller('RVReservationConfirmCtrl', [
 
 		var checkAllRoomsAreReady = function() {
 			var promises = [], id;
-			//we are following this structure bacuse of the hideloader pblm.
+			// we are following this structure bacuse of the hideloader pblm.
 			// we are going to call mutilple API's paralelly. So sometimes last API may complete first
 			// we need to keep loader until all api gets completed
 
 			$scope.$emit("showLoader");
 			for (var i = 0; i < $scope.reservationData.rooms.length; i++) {
 				id = $scope.reservationData.rooms[i].room_id;
-				//directly calling without base ctrl
-                                //room_id may still be undefined at this point, no need to send a bad request @ '/house/room/unidentified.json';
+				// directly calling without base ctrl
+                                // room_id may still be undefined at this point, no need to send a bad request @ '/house/room/unidentified.json';
                                 if (id) {
                                     promises.push(RVHkRoomDetailsSrv.fetch(id).then(successOfRoomDetailsFetch));
                                 }
@@ -505,7 +505,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				data = {
 					'reservation_id': $scope.reservationData.rooms[i].confirm_no
 				};
-				//directly calling without base ctrl
+				// directly calling without base ctrl
 				promises.push(RVBillCardSrv.completeCheckin(data));
 			}
 			$q.all(promises).then(successOfAllCheckin, failureOfCheckin);
@@ -544,8 +544,8 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		 */
 
 		$scope.openBillingInformation = function(confirm_no) {
-			//incase of multiple reservations we need to check the confirm_no to access billing
-			//information
+			// incase of multiple reservations we need to check the confirm_no to access billing
+			// information
 			if (confirm_no) {
 				angular.forEach($scope.reservationData.reservations, function(reservation, key) {
 					if (reservation.confirm_no === confirm_no) {

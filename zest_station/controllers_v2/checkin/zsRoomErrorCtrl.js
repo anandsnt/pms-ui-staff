@@ -19,9 +19,9 @@ sntZestStation.controller('zsRoomErrorCtrl', [
 		 * @return {[type]} [description]
 		 */
 		var initializeMe = function() {
-			//hide back button
+			// hide back button
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
-			//show close button
+			// show close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			console.log('$stateParams for room error, or early checkin availability: ', $stateParams);
 			if (typeof $stateParams.early_checkin_unavailable !== typeof undefined) {

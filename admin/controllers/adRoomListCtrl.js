@@ -4,7 +4,7 @@ admin.controller('adRoomListCtrl', ['$scope', 'ADRoomSrv', 'ngTableParams', '$fi
 	*/
 
 	$scope.errorMessage = '';
-	//inheriting from base table controller
+	// inheriting from base table controller
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
 
@@ -12,7 +12,7 @@ admin.controller('adRoomListCtrl', ['$scope', 'ADRoomSrv', 'ngTableParams', '$fi
 		var getParams = $scope.calculateGetParams(params);
 		var fetchSuccessOfItemList = function(data) {
 			$scope.$emit('hideLoader');
-			//No expanded rate view
+			// No expanded rate view
 			$scope.currentClickedElement = -1;
 			$scope.totalCount = parseInt(data.total_count);
 			$scope.totalPage = Math.ceil($scope.totalCount/$scope.displyCount);

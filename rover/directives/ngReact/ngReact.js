@@ -117,7 +117,7 @@
       }
     }
     else {
-      //default watchDepth to value if not reference or collection
+      // default watchDepth to value if not reference or collection
       watchExpressions.forEach(function(expr) {
         scope.$watch(expr, listener, true);
       });

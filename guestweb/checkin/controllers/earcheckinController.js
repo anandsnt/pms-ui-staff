@@ -55,7 +55,7 @@
 			};
 
 			$scope.changeArrivalTime = function() {
-				//if room is assigned inside zestweb , release it
+				// if room is assigned inside zestweb , release it
 				if ((!!$stateParams.isFromCheckinNow && $stateParams.isFromCheckinNow === 'true') && (!!$stateParams.roomAssignedFromZestWeb  && $stateParams.roomAssignedFromZestWeb === 'true')) {
 					releaseRoom();
 				} else {

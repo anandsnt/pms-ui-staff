@@ -5,7 +5,7 @@ admin.controller('ADContentManagementCategoryDetailCtrl', ['$scope', '$state', '
 	BaseCtrl.call(this, $scope);
 	$scope.fileName = "Choose file...";
 	$scope.initialIcon = "";
-	/*Initializing data, for adding a new category.
+	/* Initializing data, for adding a new category.
     */
 	$scope.data = {
 	            "component_type": "CATEGORY",
@@ -17,7 +17,7 @@ admin.controller('ADContentManagementCategoryDetailCtrl', ['$scope', '$state', '
             };
 
 
-    /*Function to fetch the category details
+    /* Function to fetch the category details
     */
 	$scope.fetchCategory = function() {
 		var fetchCategorySuccessCallback = function(data) {
@@ -28,7 +28,7 @@ admin.controller('ADContentManagementCategoryDetailCtrl', ['$scope', '$state', '
 
 		$scope.invokeApi(ADContentManagementSrv.fetchComponent, $stateParams.id, fetchCategorySuccessCallback);
 	};
-	/*Checkin if the screen is loaded for a new category or,
+	/* Checkin if the screen is loaded for a new category or,
 	 * for existing category.
     */
 	if($stateParams.id !== 'new') {
@@ -38,12 +38,12 @@ admin.controller('ADContentManagementCategoryDetailCtrl', ['$scope', '$state', '
 	else{
 		$scope.isAddMode = true;
 	}
-	/*Function to return to preveous state
+	/* Function to return to preveous state
     */
 	$scope.goBack = function() {
         $state.go('admin.cmscomponentSettings');
 	};
-	/*Function to popup the assign parent modal.
+	/* Function to popup the assign parent modal.
 	 *The param isSection === true, implies the modal is for assigning sections
 	 *Otherwise the modal is for assigning categories
     */
@@ -57,7 +57,7 @@ admin.controller('ADContentManagementCategoryDetailCtrl', ['$scope', '$state', '
                 scope: $scope
             });
 	};
-	/*Function to save a category
+	/* Function to save a category
     */
 	$scope.saveCategory = function() {
 		var saveCategorySuccessCallback = function(data) {

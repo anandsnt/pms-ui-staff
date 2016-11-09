@@ -20,16 +20,16 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
 
     var init = function() {
       $scope.currentClickedUrl  = -1;
-      $scope.directUrlData = directUrlData;//resolved from router
-      $scope.urls  = diretUrls;//resolved from router
+      $scope.directUrlData = directUrlData;// resolved from router
+      $scope.urls  = diretUrls;// resolved from router
       resetEditScreen();
     };
 
-    //hide if is addmode or editmode
+    // hide if is addmode or editmode
     $scope.isAddOrEditMode = function() {
         return $scope.isAddMode || $scope.editMode;
     }
-    //hide the row content if its clicked
+    // hide the row content if its clicked
     $scope.hideRow = function(index) {
         return ($scope.currentClickedUrl === index && $scope.editMode);
     };
@@ -39,7 +39,7 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
         return "/assets/partials/zestSetup/adZestUrlEdit.html";
     };
 
-    //click on invidual row
+    // click on invidual row
     $scope.editSingle = function(index) {
         $scope.currentClickedUrl = index;
         $scope.editMode          = true;
@@ -53,7 +53,7 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
         $scope.editMode          = false;
         $scope.isAddMode         = true;
     };
-    //canceling add/edit mode
+    // canceling add/edit mode
     $scope.cancelAddEdit = function() {
         resetEditScreen();
         $scope.currentClickedUrl = -1;
@@ -98,14 +98,14 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
         $scope.invokeApi(adZestCheckinCheckoutSrv.editDirectURL, data, saveEditDirectURLSuccess);
 
     };
-    //toggle activate/deactivate
+    // toggle activate/deactivate
 
     $scope.switchActivation =  function(index) {
         var toggleSucces = function(response) {
             $scope.$emit('hideLoader');
             $scope.urls[index] = response;
         };
-        //call API
+        // call API
          var data = {
              "id": $scope.urls[index].id,
              "active": !$scope.urls[index].active
@@ -113,9 +113,9 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
 
         $scope.invokeApi(adZestCheckinCheckoutSrv.editDirectURL, data, toggleSucces);
     };
-    //delete the selected url        
+    // delete the selected url        
     $scope.deleteUrl = function(index) {
-        //call API
+        // call API
 
         // successCallBack
         var deleteSuccessCallback = function() {

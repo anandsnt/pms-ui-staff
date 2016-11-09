@@ -84,7 +84,7 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 		var filteredResults = [];
 
 	  	for(var i = 0; i < $scope.results.reservations.length; i++) {
-            //CICO-26728 Added the future reservations as well in the search results
+            // CICO-26728 Added the future reservations as well in the search results
 	  		if(($scope.results.reservations[i].id !== $scope.reservationData.reservation_id) && ($scope.results.reservations[i].reservation_status === 'CHECKING_IN' || $scope.results.reservations[i].reservation_status === 'CHECKEDIN' || $scope.results.reservations[i].reservation_status === 'CHECKING_OUT' || $scope.results.reservations[i].reservation_status === 'RESERVED')) {
 
 	  			filteredResults.push($scope.results.reservations[i]);
@@ -134,7 +134,7 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 		$scope.invokeApi(RVSearchSrv.fetch, dataDict, searchSuccessReservations, failureCallBackofDataFetch);
 	};
 
-	//Toggle between Reservations , Cards
+	// Toggle between Reservations , Cards
 	$scope.toggleClicked = function(flag) {
 		$scope.isReservationActive = flag;
 		($scope.isReservationActive)?displayFilteredResultsReservations():displayFilteredResultsCards();

@@ -6,7 +6,7 @@ admin.controller('ADUpsellLateCheckoutCtrl', ['$scope', '$rootScope', '$state', 
 
 
 var setUpList = function() {
-   //remove the selected item from drop down
+   // remove the selected item from drop down
   var selectedIds = [];
 
   angular.forEach($scope.upsellData.room_types, function(item, index) {
@@ -185,7 +185,7 @@ $scope.saveClick = function() {
 	updateData.room_types = [];
 	updateData.deleted_room_types = [];
 	updateData.deleted_room_types = $scope.upsellData.deleted_room_types;
-	//Creating room type array with available max_late_checkouts data
+	// Creating room type array with available max_late_checkouts data
 	angular.forEach($scope.upsellData.room_types, function(item, index) {
 		if(item.max_late_checkouts !== '') {
 			 var obj = { "id": item.id.toString(), "max_late_checkouts": item.max_late_checkouts.toString() };
@@ -221,7 +221,7 @@ $scope.saveClick = function() {
 };
 
 $scope.clickAddRoomType = function() {
-	//While addig a room type, making its max_late_checkouts defaults to 0.
+	// While addig a room type, making its max_late_checkouts defaults to 0.
 	angular.forEach($scope.upsellData.room_types, function(item, index) {
 		if (item.id === parseInt($scope.upsellData.selected_room_type)) {
       // CICO-32613: Do not reset existing value.
@@ -230,7 +230,7 @@ $scope.clickAddRoomType = function() {
       }
 		}
   });
-    //Removing the selected room type from dropdown of room type list.
+    // Removing the selected room type from dropdown of room type list.
     angular.forEach($scope.upsellData.room_types_list, function(item, index) {
 		if(item.value === $scope.upsellData.selected_room_type) {
 			 $scope.upsellData.room_types_list.splice(index, 1);

@@ -28,9 +28,9 @@ admin.controller('adWindsurferCRSSetupCtrl', ['$scope', '$rootScope', 'windsurfe
                         $scope.lastRefreshedTimeMark = timeSince(refreshDateObj.valueOf());
                     }, 1000);
                 }
-            }, //Method copied from adExternalInterfaceCtrl.js
+            }, // Method copied from adExternalInterfaceCtrl.js
             timeSince = function(date) {
-                var seconds = Math.floor((new Date() - date) / 1000); //local to the user
+                var seconds = Math.floor((new Date() - date) / 1000); // local to the user
 
                 var interval = Math.floor(seconds / 31536000);
 

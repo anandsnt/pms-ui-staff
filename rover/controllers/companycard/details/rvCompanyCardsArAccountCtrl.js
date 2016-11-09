@@ -65,7 +65,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 			var presentArDetailsAfterEdit = JSON.parse(JSON.stringify($scope.arAccountDetails));
 			var dataNotUpdated = false;
 
-			//check if data was edited
+			// check if data was edited
 			if (!angular.equals(presentArDetailsAfterEdit, presentArDetails)) {
 				dataNotUpdated = true;
 				presentArDetails = presentArDetailsAfterEdit;
@@ -92,7 +92,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 		});
 
 		// to set data to be compared from time to time
-		//to check if data has been edited or not
+		// to check if data has been edited or not
 		$scope.$on('ARDetailsRecieved', function() {
 			presentArDetails = JSON.parse(JSON.stringify($scope.arAccountDetails));
 		});

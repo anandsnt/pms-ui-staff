@@ -2,7 +2,7 @@ sntZestStation.service('zsLoginSrv', ['$http', '$q', function($http, $q) {
 	this.login = function(data, successCallback, failureCallBack) {
 		var deferred = $q.defer();
 
-		//Sample params {params:{fname: "fname", lname: "lname"}}
+		// Sample params {params:{fname: "fname", lname: "lname"}}
 		$http.post("/login/submit", data).success(function(response, status) {
 			if(response.status === "success") {
 		    	successCallback(response.data);

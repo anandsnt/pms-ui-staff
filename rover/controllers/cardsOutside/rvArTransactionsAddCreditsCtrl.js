@@ -1,6 +1,6 @@
 sntRover.controller('RVArTransactionsAddCreditsController', ['$scope', '$rootScope', 'ngDialog', 'dateFilter', 'RVCompanyCardSrv', function($scope, $rootScope, ngDialog, dateFilter, RVCompanyCardSrv) {
 
-    //inheriting some useful things
+    // inheriting some useful things
     BaseCtrl.call(this, $scope);
 
     $scope.existingCreditAmount = $scope.arTransactionDetails.available_credit;

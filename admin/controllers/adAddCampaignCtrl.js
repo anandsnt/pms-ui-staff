@@ -34,7 +34,7 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 
 
 	};
-	//Get the alert length - set in admin settings
+	// Get the alert length - set in admin settings
 	var fetchConfig = function() {
 		var fetchSuccessOfCampaignData = function(data) {
 			$scope.campaignData.ios8_alert_length = data.ios8_alert_length;
@@ -117,16 +117,16 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 		}
 		campaign.subject = $scope.campaignData.subject;
 		campaign.delay_after_checkin = $scope.campaignData.delayAfterCheckin;
-		//TODO: Header image
+		// TODO: Header image
 		campaign.header_image = $scope.campaignData.header_image;
 		campaign.body = $scope.campaignData.body;
 		campaign.call_to_action_label = $scope.campaignData.call_to_action_label;
 		campaign.call_to_action_target = $scope.campaignData.call_to_action_target;
 		campaign.is_recurring = $scope.campaignData.is_recurring === "true"? true : false;
 		campaign.day_of_week = $scope.campaignData.day_of_week;
-		//TODO: time_to_send
+		// TODO: time_to_send
 		campaign.time_to_send = tConvertToAPIFormat($scope.campaignData.delivery_hour, $scope.campaignData.delivery_min, $scope.campaignData.delivery_primetime);
-		//TODO: recurrence_end_date
+		// TODO: recurrence_end_date
 		if($scope.campaignData.end_date_for_display) {
 		campaign.recurrence_end_date = $scope.campaignData.end_date_for_display;
 		}

@@ -10,7 +10,7 @@ sntGuestWeb.controller('resetPasswordController', ['$rootScope', '$location', '$
 
     // $scope.hotelLogo = "/assets/guestweb/img/Yotel/yotel-logo.png"
 
-    //setup options for modal
+    // setup options for modal
 	$scope.opts = {
 		backdrop: true,
 		backdropClick: true,

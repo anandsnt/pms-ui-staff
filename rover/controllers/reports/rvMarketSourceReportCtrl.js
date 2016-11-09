@@ -68,7 +68,7 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 
 		$scope.sort = function(market, values) {
 			var status = $scope.reportStatus;
-			//Market Source Name Sort
+			// Market Source Name Sort
 
 			if (!values) {
 				if (!!market) {
@@ -90,7 +90,7 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 						status.sort.source.ascending = true;
 					}
 				}
-			} else { //Market Source Values Sort
+			} else { // Market Source Values Sort
 				if (!!market) {
 					status.sort.market.name = false;
 					if (status.sort.market.ascending) {

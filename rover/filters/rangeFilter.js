@@ -2,7 +2,7 @@ angular.module('sntRover').filter('makeRange', function() {
 	return function(input) {
 		var lowBound, highBound;
 		var step = 1;
-		//in some cases we need 0 or combination of 0 to the front
+		// in some cases we need 0 or combination of 0 to the front
 		var appendingString = "";
 		var minLengthWanted = 0;
 
@@ -46,7 +46,7 @@ function getLengthChangedNumber(lengthWanted, number) {
         number = number.toString();
     }
     var numberOfZerosToAppend = lengthWanted - number.length;
-    //if numberOfZerosToAppend is zero or less, nothing to do
+    // if numberOfZerosToAppend is zero or less, nothing to do
 
     if(numberOfZerosToAppend <= 0) {
         return number;

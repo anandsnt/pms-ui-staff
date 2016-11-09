@@ -45,12 +45,12 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
             $scope.renderData.billNumberSelected = '';
             $scope.renderData.defaultPaymentAmount = '';
             $scope.defaultRefundAmount = 0;
-            //We are passing $scope from bill to this modal
+            // We are passing $scope from bill to this modal
             $scope.currentActiveBillNumber = parseInt($scope.currentActiveBill) + parseInt(1);
             $scope.renderData.billNumberSelected = $scope.currentActiveBillNumber;
             $scope.renderData.billNumberSelected = $scope.currentActiveBillNumber;
             $scope.billsArray = $scope.transactionsDetails.bills;
-            //common payment model items
+            // common payment model items
             $scope.passData = {};
             $scope.passData.details = {};
             $scope.renderData.referanceText = "";
@@ -173,10 +173,10 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
             $scope.defaultPaymentTypeCardNumberEndingWith = cardNumberEndingWith;
             $scope.defaultPaymentTypeCardExpiry = cardExpiry;
 
-            //check if the selected card has reference
+            // check if the selected card has reference
             checkReferencetextAvailableForCC();
 
-            //check if the selected card has fees
+            // check if the selected card has fees
             _.each($scope.renderData.paymentTypes, function(paymentType) {
                 if (paymentType.name === "CC") {
                     _.each(paymentType.values, function(paymentType) {
@@ -268,7 +268,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
          * Success call back of MLI swipe - from cards ctrl
          */
         $scope.$on("SHOW_SWIPED_DATA_ON_PAY_SCREEN", function(e, swipedCardDataToRender) {
-            //set variables to display the add mode
+            // set variables to display the add mode
             $scope.showCCPage = true;
             $scope.swippedCard = true;
             $scope.addmode = true;
@@ -352,7 +352,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
             if ($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.saveData.paymentType === "CC") {
                 params.data_to_pass.is_emv_request = true;
                 $scope.shouldShowWaiting = true;
-                //Six payment SWIPE actions
+                // Six payment SWIPE actions
                 rvAccountTransactionsSrv.submitPaymentOnBill(params).then(function(response) {
                     $scope.shouldShowWaiting = false;
                     successPayment(response);
@@ -401,7 +401,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
 
             var successArCheck = function(data) {
                 $scope.ArDetails = data;
-                //if both company and travel agent AR accounts are present
+                // if both company and travel agent AR accounts are present
                 if (data.company_present && data.travel_agent_present) {
                     $scope.showArSelection = true;
                 } else if (data.company_present) {
@@ -422,10 +422,10 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
 
                 }
                 else {
-                    //notify user that AR account is not attached
+                    // notify user that AR account is not attached
                     $scope.showErrorPopup($filter('translate')('ACCOUNT_ID_NIL_MESSAGE_PAYMENT'));
                     $timeout(function() {
-                        //close payment popup
+                        // close payment popup
                         ngDialog.close();
                     }, 100);
                 }
@@ -456,12 +456,12 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
                 }, 200);
             }
         };
-        //CICO-25885 Fix
+        // CICO-25885 Fix
         $scope.changeOnsiteCallIn = function() {
             $scope.showCCPage = ($scope.isManual) ? true : false;
         };
 
-        //CICO-25885 Fix - Function to trigger from sixpayment partial
+        // CICO-25885 Fix - Function to trigger from sixpayment partial
         $scope.$on('changeOnsiteCallIn', function(event) {
             $scope.isManual = !$scope.isManual;
             $scope.changeOnsiteCallIn();

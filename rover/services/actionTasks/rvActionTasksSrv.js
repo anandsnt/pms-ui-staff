@@ -56,7 +56,7 @@ angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', 'r
     this.postNewAction = function (params) {
         var deferred = $q.defer();
         var url = "/api/action_tasks.json";
-        //ie::   reservation_id=1616903&action_task[description]=test
+        // ie::   reservation_id=1616903&action_task[description]=test
 
         BaseWebSrvV2.postJSON(url, params).then(function (data) {
             deferred.resolve(data);
@@ -80,7 +80,7 @@ angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', 'r
 
     this.completeAction = function (params) {
         var deferred = $q.defer();
-        var url = "/api/action_tasks/" + params.action_task.id;//+'&is_complete='+params.is_complete;
+        var url = "/api/action_tasks/" + params.action_task.id;// +'&is_complete='+params.is_complete;
 
         BaseWebSrvV2.putJSON(url, params).then(function (data) {
             deferred.resolve(data);
@@ -158,7 +158,7 @@ angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', 'r
             data.queryTime = dataToSend.queryTime;
             data.visibleRowCount = visible;
             data.querySent = dataToSend.query;
-            //self.searchTypeStatus = dataToSend.status;
+            // self.searchTypeStatus = dataToSend.status;
             deferred.resolve(data);
         }, function (data) {
             deferred.reject(data);
@@ -216,11 +216,11 @@ angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', 'r
         return deferred.promise;
     };
 
-    //-------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
+    // -------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
 
     this.cache = {
         config: {
-            lifeSpan: 900 //in seconds
+            lifeSpan: 900 // in seconds
         },
         responses: {
             departments: null

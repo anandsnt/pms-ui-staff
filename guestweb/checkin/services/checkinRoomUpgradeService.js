@@ -3,7 +3,7 @@
 
 			var responseData = {};
 
-	//fetch texts to be displayed
+	// fetch texts to be displayed
 
 	var post = function(data) {
 		var deferred = $q.defer();

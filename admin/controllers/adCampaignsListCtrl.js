@@ -10,7 +10,7 @@ admin.controller('ADCampaignsListCtrl', ['$scope', '$state', 'ADRatesSrv', 'ADCa
 		var getParams = $scope.calculateGetParams(params);
 		var fetchSuccessOfItemList = function(data) {
 			$scope.$emit('hideLoader');
-			//No expanded rate view
+			// No expanded rate view
 			$scope.currentClickedElement = -1;
 			$scope.totalCount = data.total_count;
 			$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);

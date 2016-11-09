@@ -17,7 +17,7 @@ admin.controller('ADDepartmentListCtrl', ['$scope', '$state', 'ADDepartmentSrv',
 
 		$scope.invokeApi(ADDepartmentSrv.fetch, {}, successCallbackFetch);
 	};
-	//To list departments
+	// To list departments
 	$scope.listDepartments();
    /*
     * To render edit department screen
@@ -71,7 +71,7 @@ admin.controller('ADDepartmentListCtrl', ['$scope', '$state', 'ADDepartmentSrv',
 				// To add new data to scope
     			$scope.data.departments.push(data);
 	    	} else {
-	    		//To update data with new value
+	    		// To update data with new value
 	    		$scope.data.departments[parseInt($scope.currentClickedElement)].name = $scope.departmentData.name;
 	    	}
     		$scope.currentClickedElement = -1;

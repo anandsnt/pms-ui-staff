@@ -53,7 +53,7 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
     * @return {undefined}
     */
     var successCallBackOfDeleteNote = function(data, successCallBackParameters) {
-        //we are going to stripe the note from the list
+        // we are going to stripe the note from the list
         var indexToDelete = successCallBackParameters.index;
 
         $scope.notes.splice(indexToDelete, 1);
@@ -104,7 +104,7 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
     * @return {undefined}
     */
     var successCallBackOfCreateNote = function(data) {
-        //we are adding to the list with the response
+        // we are adding to the list with the response
         var noteToAdd = {
             'user_name': data.user_name,
             'avatar': data.avatar,
@@ -117,7 +117,7 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
         $scope.notes.unshift(0);
         $scope.notes[0] = noteToAdd;
 
-        //clearing the textbox
+        // clearing the textbox
         $scope.noteText = '';
 
         $scope.refreshScroller('companycard_notes_scroller');
@@ -218,12 +218,12 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
             returnString = '';
 
         switch (type_) {
-          //if date string passed
+          // if date string passed
           case 'string':
               returnString = $filter('date')(new tzIndependentDate(date_), $rootScope.dateFormat);
               break;
 
-              //if date object passed
+              // if date object passed
           case 'object':
               returnString = $filter('date')(date_, $rootScope.dateFormat);
               break;

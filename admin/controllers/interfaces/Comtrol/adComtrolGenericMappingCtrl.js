@@ -1,7 +1,7 @@
 admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'adComtrolGenericMappingSrv', 'COMTROL_REF',
     function($scope, genericMappings, adComtrolGenericMappingSrv, COMTROL_REF) {
 
-        //private methods and variables
+        // private methods and variables
         var resetNew = function() {
                 $scope.state.new = {
                     external_type: "",
@@ -25,8 +25,8 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
                 });
             };
 
-        //scope method and variables
-        //-------------------------------------------------------------------------------------------------------------- ADD
+        // scope method and variables
+        // -------------------------------------------------------------------------------------------------------------- ADD
         /**
          * Method to open the add form
          */
@@ -84,7 +84,7 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
                 }
             });
         };
-        //-------------------------------------------------------------------------------------------------------------- EDIT
+        // -------------------------------------------------------------------------------------------------------------- EDIT
         /**
          * Method to show the edit form
          * @param idx
@@ -165,7 +165,7 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
             return chargeCode && chargeCode.description;
         };
 
-        //-------------------------------------------------------------------------------------------------------------- DELETE
+        // -------------------------------------------------------------------------------------------------------------- DELETE
         /**
          * Method to delete a Generic Mapping
          * Deleted ones are  hidden in UI with help of isDeleted flag
@@ -190,7 +190,7 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
             return mappedExternalCode && mappedExternalCode.value;
         };
 
-        //--------------------------------------------------------------------------------------------------------------
+        // --------------------------------------------------------------------------------------------------------------
         /**
          * Initialization method for the controller
          */

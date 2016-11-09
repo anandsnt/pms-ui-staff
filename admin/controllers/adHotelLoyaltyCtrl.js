@@ -19,7 +19,7 @@ admin.controller('ADHotelLoyaltyCtrl', ['$scope', '$state', 'ADHotelLoyaltySrv',
 
 		$scope.invokeApi(ADHotelLoyaltySrv.fetch, {}, successCallbackFetch);
 	};
-	//To list hotel loyalty
+	// To list hotel loyalty
 	$scope.listHotelLoyaltyPrograms();
    /*
     * To render edit hotel loyalty screen
@@ -106,7 +106,7 @@ admin.controller('ADHotelLoyaltyCtrl', ['$scope', '$state', 'ADHotelLoyaltySrv',
 				// To add new data to scope
     			$scope.data.hotel_loyalty_program.push(data);
 	    	} else {
-	    		//To update data with new value
+	    		// To update data with new value
 	    		$scope.data.hotel_loyalty_program[parseInt($scope.currentClickedElement)].name = $scope.hotelLoyaltyData.name;
 	    	}
     		$scope.currentClickedElement = -1;
@@ -114,7 +114,7 @@ admin.controller('ADHotelLoyaltyCtrl', ['$scope', '$state', 'ADHotelLoyaltySrv',
     	var errorCallbackSave = function(error) {
     		$scope.errorMessage = error[0];
     		$scope.$emit('hideLoader');
-    		//scroll to top of the page where error message is shown
+    		// scroll to top of the page where error message is shown
 			angular.element( document.querySelector('.content')).scrollTop(0);
 			if($scope.hotelLoyaltyData.levels.length === 0) {
 				$scope.hotelLoyaltyData.levels.push({'value': '', 'name': '', 'editProgress': false});

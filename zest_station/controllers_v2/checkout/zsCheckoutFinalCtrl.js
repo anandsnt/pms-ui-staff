@@ -5,7 +5,7 @@ sntZestStation.controller('zsCheckoutFinalCtrl', [
 	'zsEventConstants',
 	function($scope, $stateParams, $state, zsEventConstants) {
 
-		/**********************************************************************************************
+		/** ********************************************************************************************
 		 **		Expected state params -----> printopted			  
 		 **		Exit function -> $scope.navToHome								
 		 **																		 
@@ -19,9 +19,9 @@ sntZestStation.controller('zsCheckoutFinalCtrl', [
 			$scope.printOpted = $stateParams.printopted === "true";
 			$scope.emailSent = $stateParams.email_sent === "true";
 			$scope.emailSendingFailed = $stateParams.email_failed === "true";
-			//hide back button
+			// hide back button
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
-			//hide close button
+			// hide close button
 			$scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
 		}();
 	}

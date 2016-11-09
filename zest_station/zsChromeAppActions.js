@@ -2,7 +2,7 @@ this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
     var that = this;
 
     if (typeof chrome !== "undefined" && typeof chrome.runtime !== "undefined") {
-        //only init these if using chrome, this is for the chromeapp virtual keyboard
+        // only init these if using chrome, this is for the chromeapp virtual keyboard
         that.onChromeAppMsgResponse = function(response) {
             console.log(response);
             onMessageCallback(response);
@@ -56,7 +56,7 @@ this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
                 chrome.runtime.sendMessage(chromeAppId, msg, that.listenerForQRCodeResponse);
             }
 
-            //this.onChromeAppMsgResponse();
+            // this.onChromeAppMsgResponse();
         };
 
         that.qrAttempt = 0;

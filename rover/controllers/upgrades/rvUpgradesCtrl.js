@@ -16,7 +16,7 @@ angular.module('sntRover').controller('RVUpgradesController',
 
 		$rootScope.setPrevState = {
 			title: $filter('translate')('STAY_CARD'),
-			//As per CICO-9832
+			// As per CICO-9832
 			scope: $scope,
 			callback: 'backToStayCard'
 		};
@@ -98,7 +98,7 @@ angular.module('sntRover').controller('RVUpgradesController',
 		 */
 		$scope.getAllUpgrades = function() {
 			var successCallbackgetAllUpgrades = function(data) {
-				//changes as per CICO-33405 - implemented same as in RVUpgradesCtrl - room assignment screen - CICO-29824
+				// changes as per CICO-33405 - implemented same as in RVUpgradesCtrl - room assignment screen - CICO-29824
 				_.each(data.upsell_mapping, function(roomType) {
 					var roomsInRoomType  = _.where(roomsList.rooms, {"room_type_id": roomType.upgrade_room_type_id_int});
 
@@ -133,7 +133,7 @@ angular.module('sntRover').controller('RVUpgradesController',
 			$scope.invokeApi(RVUpgradesSrv.getAllUpgrades, params, successCallbackgetAllUpgrades, errorCallbackgetAllUpgrades);
 
 		};
-		//check if roomupgrade is available
+		// check if roomupgrade is available
 		var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
         var isUpgradeAvaiable = $scope.reservationData.reservation_card.is_upsell_available === "true" && (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN');
 
@@ -239,8 +239,8 @@ angular.module('sntRover').controller('RVUpgradesController',
 		};
 
 		var failureCallBackSelectUpgrade = function(error) {
-			//since we are expecting some custom http error status in the response
-			//and we are using that to differentiate among errors
+			// since we are expecting some custom http error status in the response
+			// and we are using that to differentiate among errors
 			if(error.hasOwnProperty ('httpStatus')) {
 				switch (error.httpStatus) {
 					case 470:
@@ -268,7 +268,7 @@ angular.module('sntRover').controller('RVUpgradesController',
 		};
 
 
-		/*** THIS IS JUST REPEATATION OF rvUpgradesController.js's upgrade. I dont
+		/** * THIS IS JUST REPEATATION OF rvUpgradesController.js's upgrade. I dont
 		*** know why upgrade is in two file and two controller, WTH.
 		***/
 		/**
@@ -281,7 +281,7 @@ angular.module('sntRover').controller('RVUpgradesController',
 
 			var params = {};
 
-			//CICO-17082
+			// CICO-17082
 			params.forcefully_assign_room = wanted_to_forcefully_assign;
 			wanted_to_forcefully_assign = false;
 
@@ -291,7 +291,7 @@ angular.module('sntRover').controller('RVUpgradesController',
 			params.is_preassigned   = selectedListItem.is_preassigned;
 
 
-			//yes. ALL set. Go!
+			// yes. ALL set. Go!
 			var options = {
                 params: params,
                 successCallBack: successCallbackselectUpgrade,
@@ -359,7 +359,7 @@ angular.module('sntRover').controller('RVUpgradesController',
 
 
                 $scope.putGuestInQueue = false;
-                if (!$rootScope.reservationUpgradeWatch) {//alternative to $destroy, this is an init-once method
+                if (!$rootScope.reservationUpgradeWatch) {// alternative to $destroy, this is an init-once method
                     $rootScope.reservationUpgradeWatch = 1;
 
                     $rootScope.$on('putGuestInQueue', function() {
@@ -385,7 +385,7 @@ angular.module('sntRover').controller('RVUpgradesController',
 				"reservationId": $scope.reservationData.reservation_card.reservation_id,
 				"clickedButton": "checkinButton"
 			});
-                    //}
+                    // }
 
 		};
 

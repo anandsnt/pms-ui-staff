@@ -182,7 +182,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 					}
 				};
 
-				//TODO: If user has opted to show addon revenue, add that as a column
+				// TODO: If user has opted to show addon revenue, add that as a column
 				if (isPastDay && $scope.chosenReport.chosenOptions['include_addon_revenue'] && $scope.uiFilter.showRevenue) {
 					eachDateVal.push({
 						value: $filter('currency')(dateObj['addon_revenue'], $rootScope.currencySymbol, 2),
@@ -211,7 +211,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 					'ADR': 'ADR',
 					'ACTUAL': 'Room Rev.',
 					/**/
-					'ADDON': 'Add-on' //>> This is to be shown IFF 'Options'->'Include Add-on Revenue' is checked
+					'ADDON': 'Add-on' // >> This is to be shown IFF 'Options'->'Include Add-on Revenue' is checked
 				},
 				headers,
 				allDatesValInRoom = [],
@@ -266,7 +266,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 
 			var results = $scope.results;
 
-			//Parse Rates OR Rate Types based on the filter here
+			// Parse Rates OR Rate Types based on the filter here
 			_.each(results.rate_types, function(rateTypeData) {
 				$scope.yAxisLabels.push({
 					name: rateTypeData.rate_type_name,
@@ -275,7 +275,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 				});
 
 				$scope.reportData.push(parseDailyData(rateTypeData.data, true));
-				//Put rates under the rate type
+				// Put rates under the rate type
 				var rates = _.filter(results.rates, {
 					rate_type_id: rateTypeData.rate_type_id,
 				});

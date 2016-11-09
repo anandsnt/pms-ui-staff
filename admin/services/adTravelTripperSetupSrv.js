@@ -13,7 +13,7 @@ admin.service('adTravelTripperSetupSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBase
   };
 
     this.fullRefresh = function(data) {
-        //ota/full_refresh/:interface_id
+        // ota/full_refresh/:interface_id
         var start_date = '', end_date = '';
 
         if (data.start_date && data.end_date) {
@@ -34,7 +34,7 @@ admin.service('adTravelTripperSetupSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBase
 
   this.saveSetup = function (data) {
     var deferred = $q.defer();
-    var url = 'admin/save_ota_connection_config.json?interface='+data.interface;//update for ZDirect-specific
+    var url = 'admin/save_ota_connection_config.json?interface='+data.interface;// update for ZDirect-specific
 
     ADBaseWebSrvV2.postJSON(url, data).then(function (data) {
       deferred.resolve(data);

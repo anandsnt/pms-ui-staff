@@ -7,7 +7,7 @@ admin.service('ADNotificationsListSrv', ['$http', '$q', 'ADBaseWebSrvV2', functi
 	this.fetch = function() {
 		var deferred = $q.defer();
 		var url =  "/api/staff_notifications"
-		//var url = 'ui/show?json_input=serviceprovider/userslist.json&format=json';
+		// var url = 'ui/show?json_input=serviceprovider/userslist.json&format=json';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
@@ -19,7 +19,7 @@ admin.service('ADNotificationsListSrv', ['$http', '$q', 'ADBaseWebSrvV2', functi
 	this.fetchNotification = function(notificationId) {
 		var deferred = $q.defer();
 		var url =  "/api/staff_notifications/" + notificationId;
-		//var url = 'ui/show?json_input=serviceprovider/userslist.json&format=json';
+		// var url = 'ui/show?json_input=serviceprovider/userslist.json&format=json';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);

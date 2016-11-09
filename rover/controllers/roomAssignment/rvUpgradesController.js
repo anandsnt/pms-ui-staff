@@ -159,8 +159,8 @@ angular.module('sntRover').controller('RVUpgradesCtrl', ['$scope', '$state', '$s
 	};
 
 	var errorCallbackselectUpgrade = function(error) {
-		//since we are expecting some custom http error status in the response
-		//and we are using that to differentiate among errors
+		// since we are expecting some custom http error status in the response
+		// and we are using that to differentiate among errors
 		if(error.hasOwnProperty ('httpStatus')) {
 			switch (error.httpStatus) {
 				case 470:
@@ -186,7 +186,7 @@ angular.module('sntRover').controller('RVUpgradesCtrl', ['$scope', '$state', '$s
 			$scope.selectUpgrade ();
 		}, 300);
 	};
-	/*** THIS IS JUST REPEATATION OF rvUpgradesCtrl.js's upgrade. I dont
+	/** * THIS IS JUST REPEATATION OF rvUpgradesCtrl.js's upgrade. I dont
 	*** know why upgrade is in two file and two controller, WTH.
 	***/
 
@@ -201,7 +201,7 @@ angular.module('sntRover').controller('RVUpgradesCtrl', ['$scope', '$state', '$s
 		var params = {};
 
 
-		//CICO-17082
+		// CICO-17082
 		params.forcefully_assign_room 	= wanted_to_forcefully_assign;
 		wanted_to_forcefully_assign 	= false;
 
@@ -219,7 +219,7 @@ angular.module('sntRover').controller('RVUpgradesCtrl', ['$scope', '$state', '$s
 			room_type_level: parseInt(selectedListItem.room_type_level)
 		});
 
-		//yes. ALL set. Go!
+		// yes. ALL set. Go!
 		var options = {
             params: params,
             successCallBack: successCallbackselectUpgrade,

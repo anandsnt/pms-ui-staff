@@ -24,7 +24,7 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
         $scope.reloadOnSet = false;
         if ($scope.reloadOnSet) {
             $rootScope.$on('reload-loyalty-section-data', function(evt, data) {
-                $scope.init();//reload loyalty when switching through staycards
+                $scope.init();// reload loyalty when switching through staycards
             });
             $scope.reloadOnSet = true;
         }
@@ -47,7 +47,7 @@ $rootScope.$on('reload-loyalty-section-data', function(evt, data) {
     if (data) {
         if (data.reload) {
             if ($rootScope.goToReservationCalled) {
-                $scope.init();//reload loyalty when switching through staycards
+                $scope.init();// reload loyalty when switching through staycards
                 $rootScope.goToReservationCalled = false;
             }
         }

@@ -1,4 +1,4 @@
-//React.initializeTouchEvents(true);
+// React.initializeTouchEvents(true);
 
 var DiaryContent = React.createClass({
 	_recalculateGridSize: function() {
@@ -22,7 +22,7 @@ var DiaryContent = React.createClass({
 			}, function() {
             });
 		}
-		//reffreshing the timeline scroller and calling the onscroll fn so that others will get corrected
+		// reffreshing the timeline scroller and calling the onscroll fn so that others will get corrected
 		iscroll.timeline.scrollTo(iscroll.timeline.x, iscroll.timeline.y);
 		iscroll.timeline.refresh();
 		iscroll.timeline._scrollFn();
@@ -81,7 +81,7 @@ var DiaryContent = React.createClass({
 		});
 		this.state.angular_evt.onDragEnd(row_data, row_item_data);
 	},
-	/*Message transport between timeline and grid:
+	/* Message transport between timeline and grid:
 	  As resize controls are arranged on timeline, the positional data
 	  is passed via this command, then a property update is initiated with a
 	  deep copy clone of the position state from the timeline.  This update
@@ -288,7 +288,7 @@ var DiaryContent = React.createClass({
 			state = this.state;
 
 		return React.DOM.div({
-			className: 'diary-container ' + ((state.viewport.hours === 12) ? 'hours-12' : 'hours-24') + /*(props.currentResizeItem*/ (state.edit.active ? ' editing' : '')
+			className: 'diary-container ' + ((state.viewport.hours === 12) ? 'hours-12' : 'hours-24') + /* (props.currentResizeItem*/ (state.edit.active ? ' editing' : '')
 		},
 		React.createElement( UnassignedRoomPanel, {
 			edit: state.edit,

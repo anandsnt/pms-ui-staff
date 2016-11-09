@@ -24,7 +24,7 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
                 beforeShow: function() {
                     angular.element("#ui-datepicker-div").after(angular.element('<div></div>', {
                         id: "ui-datepicker-overlay",
-                        class: $scope.ngDialogId ? "transparent" : "" //If a dialog is already open then make overlay transparent
+                        class: $scope.ngDialogId ? "transparent" : "" // If a dialog is already open then make overlay transparent
                     }));
                 },
                 onClose: function() {

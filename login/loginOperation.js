@@ -32,7 +32,7 @@ var LoginOperation = function() {
 			return false;
 		}
 		else{
-			//calling cordova service
+			// calling cordova service
 			cordova.exec(
 						// if success call back require any parameters
 						function(data) {

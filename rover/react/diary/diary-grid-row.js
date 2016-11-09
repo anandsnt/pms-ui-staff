@@ -2,7 +2,7 @@ var GridRow = React.createClass({
 	shouldComponentUpdate: function(nextProps, nextState) {
 		var render = true;
 
-		/*if(this.props.viewport !== nextProps.viewport ||
+		/* if(this.props.viewport !== nextProps.viewport ||
 		   this.props.display !== nextProps.display) {
 			render = true;
 		} else {
@@ -40,7 +40,7 @@ var GridRow = React.createClass({
 			self 				= this;
 
 		// drag-over
-		/*Create hourly spans across each grid row*/
+		/* Create hourly spans across each grid row*/
 		for(var i = 0, len = display.hours; i < len; i++) {
 			hourly_divs.push(React.DOM.span({
 				className: 'hour',
@@ -60,7 +60,7 @@ var GridRow = React.createClass({
 		});
 
 
-		/*Create grid row and insert each occupany item as child into that row*/
+		/* Create grid row and insert each occupany item as child into that row*/
 		return React.DOM.li({
 			key: props.key,
 			className: 'grid-row'

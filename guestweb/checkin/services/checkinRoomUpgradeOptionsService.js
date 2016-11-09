@@ -3,7 +3,7 @@
 
 	var responseData = {};
 
-	//fetch texts to be displayed
+	// fetch texts to be displayed
 
 	var fetch = function(data) {
 

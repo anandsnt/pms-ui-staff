@@ -22,8 +22,8 @@
 var PLATFORM_VERSION_BUILD_LABEL = '3.8.0';
 // file: src/scripts/require.js
 
-/*jshint -W079 */
-/*jshint -W020 */
+/* jshint -W079 */
+/* jshint -W020 */
 
 var require,
     define;
@@ -42,7 +42,7 @@ var require,
         var factory = module.factory,
             localRequire = function (id) {
                 var resultantId = id;
-                //Its a relative path, so lop off the last portion and add the id (minus "./")
+                // Its a relative path, so lop off the last portion and add the id (minus "./")
 
                 if (id.charAt(0) === ".") {
                     resultantId = module.id.slice(0, module.id.lastIndexOf(SEPARATOR)) + SEPARATOR + id.slice(2);
@@ -95,7 +95,7 @@ var require,
     define.moduleMap = modules;
 })();
 
-//Export for use in node
+// Export for use in node
 if (typeof module === "object" && typeof require === "function") {
     module.exports.require = require;
     module.exports.define = define;
@@ -425,7 +425,7 @@ base64.toArrayBuffer = function(str) {
     return arrayBuffer;
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 /* This code is based on the performance tests at http://jsperf.com/b64tests
  * This 12-bit-at-a-time algorithm was the best performing version on all
@@ -1840,7 +1840,7 @@ utils.alert = function(msg) {
 };
 
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 function UUIDcreatePart(length) {
     var uuidpart = "";
 

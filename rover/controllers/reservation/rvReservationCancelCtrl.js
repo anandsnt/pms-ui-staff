@@ -67,7 +67,7 @@
 			$scope.changeOnsiteCallIn = function() {
 				$scope.isManual ? $scope.showCCPage = true : "";
 			};
-			 //to trigger from sixpayment partial
+			 // to trigger from sixpayment partial
 	        $scope.$on('changeOnsiteCallIn', function(event) {
 	            $scope.isManual =  !$scope.isManual;
 	            $scope.changeOnsiteCallIn();
@@ -280,9 +280,9 @@
 						// Handle individual cancellations here if reqd.
 					},
 					onCancelSuccess = function(data) {
-						//OnCancelsuccess NgDialog shows sendcancelation as well as printcancelation pop up
-						//Since RVCancelReservation and RVCancelReservationDepositController do the same above,
-						//its functions are written in parent controller.Ie reservationActionsController
+						// OnCancelsuccess NgDialog shows sendcancelation as well as printcancelation pop up
+						// Since RVCancelReservation and RVCancelReservationDepositController do the same above,
+						// its functions are written in parent controller.Ie reservationActionsController
 						$scope.$emit('hideLoader');
 						$scope.DailogeState.isCancelled = true ;
 					},
@@ -501,7 +501,7 @@
 			$scope.DailogeState.failureMessage = '';
 			$scope.DailogeState.isCancelled = $scope.passData.isCancelled || false;
 
-			//Checking whether email is attached with guest card or not
+			// Checking whether email is attached with guest card or not
 			$scope.isEmailAttached = function() {
 				var isEmailAttachedFlag = false;
 
@@ -521,7 +521,7 @@
 				$scope.DailogeState.successMessage = '';
 			};
 
-			//Action against email button in staycard.
+			// Action against email button in staycard.
 			$scope.sendReservationCancellation = function() {
 				var postData = {
 					"type": "cancellation",
@@ -566,7 +566,7 @@
 				$timeout(removePrintOrientation, 100);
 			};
 
-			//Action against print button in staycard.
+			// Action against print button in staycard.
 			$scope.printReservationCancellation = function() {
 				var succesfullCallback = function(data) {
 					$scope.printData = data.data;

@@ -10,7 +10,7 @@ admin.controller('ADUserDetailsCtrl',
 	function($scope, $state, $stateParams, ADUserSrv, $rootScope, ADUserRolesSrv, $timeout, $window) {
 
 	BaseCtrl.call(this, $scope);
-	//navigate back to user list if no id
+	// navigate back to user list if no id
 	if(!$stateParams.id && !$stateParams.page ==='add') {
 			$state.go('admin.users');
 	}
@@ -106,7 +106,7 @@ admin.controller('ADUserDetailsCtrl',
 		else if(lastDropedTime === '') {
 			$scope.selectedAssignedRole = index;
 		}
-		else if(typeof lastDropedTime === 'object') { //means date
+		else if(typeof lastDropedTime === 'object') { // means date
 			var currentTime = new Date();
 			var diff = currentTime - lastDropedTime;
 
@@ -133,7 +133,7 @@ admin.controller('ADUserDetailsCtrl',
 		else if(lastDropedTime === '') {
 			$scope.selectedUnassignedRole = index;
 		}
-		else if(typeof lastDropedTime === 'object') { //means date
+		else if(typeof lastDropedTime === 'object') { // means date
 			var currentTime = new Date();
 			var diff = currentTime - lastDropedTime;
 
@@ -309,16 +309,16 @@ admin.controller('ADUserDetailsCtrl',
     * @param {int} user id
     */
 	$scope.sendInvitation = function(userId) {
-		//reseting the error message
+		// reseting the error message
 		$scope.errorMessage = '';
 		if(userId === "" || userId === undefined) {
 			return false;
 		}
 		var data = {"id": userId};
 
-		//if it is in unlocking mode
+		// if it is in unlocking mode
 		if ($scope.isInUnlockingMode()) {
-			//if the erntered password is not matching
+			// if the erntered password is not matching
 			if ($scope.data.password !== $scope.data.confirm_password) {
 
 				$timeout(function() {

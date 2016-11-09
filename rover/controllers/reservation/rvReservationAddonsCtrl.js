@@ -200,7 +200,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
                     // Clear the variables for Enhancement pop up And rooms Add ons And repopulate.
                     // Do this only in case of create reservation. i.e. dont do if reservation ID exists.
-                    //CICO-16792 - DOING THIS ONLY ON INITIAL LOAD -- FOR BUG FIXING
+                    // CICO-16792 - DOING THIS ONLY ON INITIAL LOAD -- FOR BUG FIXING
 
                     if (!!isInitialLoad && (RVReservationStateService.getReservationFlag('RATE_CHANGED') || !$scope.reservationData.reservationId)) {
                         // reset flag!
@@ -210,9 +210,9 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             for (i = startIndex; i <= endIndex; i++) {
                                 $scope.reservationData.rooms[i].addons = [];
                             }
-                            //This is for addons associated with the RATE!!!
+                            // This is for addons associated with the RATE!!!
                             _.each(data.rate_addons, function(addon) {
-                                //Set this flag when there is Children in reservation & addon on for child.
+                                // Set this flag when there is Children in reservation & addon on for child.
                                 addon.is_rate_addon = true; // This is true as these addons are rate associated addons
                                 var flag = addon.amount_type.value === "CHILD" && $scope.reservationData.tabs[$scope.activeRoom].numChildren === 0,
                                     roomIndex;
@@ -239,7 +239,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     'is_active': true,
                     'is_not_rate_only': true,
                     'rate_id': $scope.reservationData.rooms[$scope.roomDetails.firstIndex].rateId,
-                    'no_pagination': true //Added for CICO-25066
+                    'no_pagination': true // Added for CICO-25066
                 }, successCallBackFetchAddons);
             },
             insertAddon = function(addon, addonQty) {
@@ -531,7 +531,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     $scope.roomNumber = data.room_no;
                     $scope.duration_of_stay = data.duration_of_stay || $scope.reservationData.numNights;
                     $scope.addonsData.existingAddons = [];
-                    for (roomIndex = startIndex; roomIndex <= endIndex; roomIndex++) { //Reset Addons list in Room Model - CICO-20061
+                    for (roomIndex = startIndex; roomIndex <= endIndex; roomIndex++) { // Reset Addons list in Room Model - CICO-20061
                         $scope.reservationData.rooms[roomIndex].addons = [];
                     }
                     var associatedPackages = data.existing_packages || data;
@@ -604,7 +604,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
             }
         };
 
-        //Get addon count
+        // Get addon count
         $scope.getAddonCount = function(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly, quantity) {
             if (!postingRythm) {
                 if (postType === 'Every Week' || postType === 'WEEKLY') {
@@ -621,7 +621,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
             return (addonCount * quantity);
         };
 
-        //CICO-32856
+        // CICO-32856
         $scope.$on('cardChanged', function(event, cardIds) {
             setBackButton();
         });

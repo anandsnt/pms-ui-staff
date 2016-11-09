@@ -327,25 +327,25 @@ sntRover.factory('RVReportParserFac', [
                 e = null;
 
             /* forming the left side */
-            //market
+            // market
             parsedDataListing.push (initPrdDemoGrphcsRow(true, 'Market', 'market_totals'));
             markets.map(function(value) {
                 parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'markets'));
             });
 
-            //sources
+            // sources
             parsedDataListing.push (initPrdDemoGrphcsRow(true, 'Source', 'source_totals'));
             sources.map(function(value) {
                 parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'sources'));   
             });
 
-            //origins
+            // origins
             parsedDataListing.push (initPrdDemoGrphcsRow(true, 'Origin', 'origin_totals'));
             origins.map(function(value) {
                 parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'origins'));  
             });
 
-            //segments
+            // segments
             parsedDataListing.push (initPrdDemoGrphcsRow(true, 'Segment', 'segment_totals'));
             segments.map(function(value) {
                 parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'segments'));  
@@ -355,7 +355,7 @@ sntRover.factory('RVReportParserFac', [
                 _.each(apiResponse, function(dateData) {
                     e = dateData[rowData['key-in-api']];
                     if (e instanceof Array) {
-                        //as per db model, a demogrphics' name is a unique for hotel
+                        // as per db model, a demogrphics' name is a unique for hotel
                         e = _.findWhere(e, { 'name': rowData.displayLabel }); 
                     }
                     rowData.valueList = rowData.valueList.concat([

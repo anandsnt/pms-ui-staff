@@ -142,7 +142,7 @@ if(!$scope.addmode) {
         $scope.$emit('hideLoader');
         $scope.errorMessage = data;
       };
-      //unset title and description in case beacon is not promotion else unset message
+      // unset title and description in case beacon is not promotion else unset message
 
       if($scope.data.type !=='PROMOTION') {
           $scope.data.title = "";

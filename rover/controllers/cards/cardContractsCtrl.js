@@ -48,7 +48,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 		$scope.$on("refreshContractsScroll", refreshScroller);
 		$scope.$on("contractTabActive", refreshScroller);
 
-		/**** Scroll related code ends here. ****/
+		/** ** Scroll related code ends here. ****/
 
 
 		$scope.hasPermisionToDeleteContract = function() {
@@ -209,7 +209,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 			angular.forEach(data, function(item) {
 				itemDate = item.month + " " + item.year;
 				$scope.categories.push(itemDate);
-				//contracted.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: Remove this line and uncomment below line
+				// contracted.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: Remove this line and uncomment below line
 				contracted.push([itemDate, item.contracted_occupancy]);
 				// actual.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: Remove this line and uncomment below line
 				actual.push([itemDate, item.actual_occupancy]);
@@ -451,7 +451,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 		};
 
 		$scope.AddNewButtonClicked = function() {
-			//Setup data for Add mode
+			// Setup data for Add mode
 			$scope.hasOverlay = false;
 			$scope.contractList.isAddMode = true;
 			$scope.addData.occupancy = [];
@@ -558,7 +558,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 		* functions to perform rename button click
 		*/
 		$scope.renameButtonClicked = function() {
-			//Setup data for Rename mode
+			// Setup data for Rename mode
 			$scope.contractList.isRenameMode = true;
 			var renameId = $scope.contractList.contractSelected;
 

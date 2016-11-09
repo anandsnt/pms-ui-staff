@@ -2,7 +2,7 @@ angular.module('sntRover').service('RVDashboardSrv', ['$q', 'RVBaseWebSrv', 'rvB
 
 
     var that = this;
-    var userDetails = {}; //varibale to keep header_info.json's output
+    var userDetails = {}; // varibale to keep header_info.json's output
 
     this.dashBoardDetails = {};
     this.getUserDetails = function() {
@@ -42,7 +42,7 @@ angular.module('sntRover').service('RVDashboardSrv', ['$q', 'RVBaseWebSrv', 'rvB
 
 	this.fetchDashboardNotifications = function() {
 	    var deferred = $q.defer();
-	    //var url = "ui/show?json_input=WindsurferCRS/settings.json&format=json";
+	    // var url = "ui/show?json_input=WindsurferCRS/settings.json&format=json";
 		var url = '/api/staff_notifications/user';
 
 		rvBaseWebSrvV2.getJSON(url).then(function(data) {
@@ -55,7 +55,7 @@ angular.module('sntRover').service('RVDashboardSrv', ['$q', 'RVBaseWebSrv', 'rvB
 
 	this.changeNotificationStatus = function(id) {
 	    var deferred = $q.defer();
-	    //var url = "ui/show?json_input=WindsurferCRS/settings.json&format=json";
+	    // var url = "ui/show?json_input=WindsurferCRS/settings.json&format=json";
 		var url = '/api/staff_notifications/'+id+'/user';
 
 		rvBaseWebSrvV2.putJSON(url).then(function(data) {

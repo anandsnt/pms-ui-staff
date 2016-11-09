@@ -44,7 +44,7 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
 	 $scope.successCallback = function(data) {
 
 	 	var navigateToRover = function() {
-	 		//Clear all session storage contents. We are starting a new session.
+	 		// Clear all session storage contents. We are starting a new session.
         	var i = sessionStorage.length;
 
 		 	while(i--) {
@@ -65,14 +65,14 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
 		 	else {
 	            $scope.hasLoader = true;
 	            if(data.is_sp_admin === true) {
-	                //we need to show the animation before redirecting to the url, so introducing a timeout there
+	                // we need to show the animation before redirecting to the url, so introducing a timeout there
 	                setTimeout(function() {
 	                    $state.go('selectProperty');
 	                }, 300);
 	            }
 	            else {
 	                $scope.$emit("signingIn");
-	                //we need to show the animation before redirecting to the url, so introducing a timeout there
+	                // we need to show the animation before redirecting to the url, so introducing a timeout there
 	                setTimeout(function() {
 	                    $window.location.href = data.redirect_url;
 	                }, 300);
@@ -90,14 +90,14 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
 	        args.push($scope.data.email);
 	        var callback = function() {};
 	        var options = {
-	          //Cordova write success callback
+	          // Cordova write success callback
 	          'successCallBack': callback,
 	          'failureCallBack': callback,
 	          arguments: args
 	        };
 
 	        sntapp.loginUpdate.setUserId(options);
-	        /**END
+	        /** END
         	* Passing user login to native, for debugging  */
         }else{
         	/**
@@ -184,14 +184,14 @@ login.controller('resetCtrl', ['$scope', 'resetSrv', '$window', '$state', '$stat
 	 $scope.successCallback = function(data) {
 	 	$scope.hasLoader = false;
 	 	if(data.is_sp_admin === true) {
-            //we need to show the animation before redirecting to the url, so introducing a timeout there
+            // we need to show the animation before redirecting to the url, so introducing a timeout there
             setTimeout(function() {
                 $state.go('selectProperty');
             }, 300);
         } 
         else {
             $scope.$emit("signingIn");
-            //we need to show the animation before redirecting to the url, so introducing a timeout there
+            // we need to show the animation before redirecting to the url, so introducing a timeout there
             setTimeout(function() {
                 $window.location.href = data.redirect_url;
             }, 300);
@@ -236,14 +236,14 @@ login.controller('activateCtrl', ['$scope', 'resetSrv', '$window', '$state', '$s
 	 $scope.successCallback = function(data) {
 	 	$scope.hasLoader = false;
 	 	if(data.is_sp_admin === true) {
-            //we need to show the animation before redirecting to the url, so introducing a timeout there
+            // we need to show the animation before redirecting to the url, so introducing a timeout there
             setTimeout(function() {
                 $state.go('selectProperty');
             }, 300);
         } 
         else {
             $scope.$emit("signingIn");
-            //we need to show the animation before redirecting to the url, so introducing a timeout there
+            // we need to show the animation before redirecting to the url, so introducing a timeout there
             setTimeout(function() {
                 $window.location.href = data.redirect_url;
             }, 300);
@@ -259,10 +259,10 @@ login.controller('activateCtrl', ['$scope', 'resetSrv', '$window', '$state', '$s
 	 resetSrv.checkTokenStatus($scope.data, "", $scope.failureCallBackToken);
 
         $scope.validPassword = false;
-        //data.password
+        // data.password
         $scope.validatePassword = function(data) {
-          //check if password contains at least 1 number and has at least 8 total characters
-          //this is called on ng-change password
+          // check if password contains at least 1 number and has at least 8 total characters
+          // this is called on ng-change password
           if (data) {
               if (data.password.length >= 8) {
                   if (alphanumeric(data.password)) {
@@ -278,7 +278,7 @@ login.controller('activateCtrl', ['$scope', 'resetSrv', '$window', '$state', '$s
           }
         };
         var alphanumeric = function(str) {
-            var letterNumber = /^.*(?=.{8,})(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%]+$/;//at least 1 letter, least 1 number, some special characters [ !@#$% ] allowed
+            var letterNumber = /^.*(?=.{8,})(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%]+$/;// at least 1 letter, least 1 number, some special characters [ !@#$% ] allowed
 
             if(str.match(letterNumber)) {
               return true;
@@ -312,7 +312,7 @@ login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state',
         $scope.errorMessage = resetSrv.getErrorMessage();
 
         $scope.successLoginCallback = function(data) {
-	 	//Clear all session storage contents. We are starting a new session.
+	 	// Clear all session storage contents. We are starting a new session.
 	 	var i = sessionStorage.length;
 
 	 	while(i--) {
@@ -328,7 +328,7 @@ login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state',
                         $scope.$emit("signingIn");
 
                         $scope.hasLoader = true;
-                        //we need to show the animation before redirecting to the url, so introducing a timeout there
+                        // we need to show the animation before redirecting to the url, so introducing a timeout there
                         setTimeout(function() {
                             console.log('data.redirect_url: ', data.redirect_url);
                                 $window.location.href = data.redirect_url;
@@ -352,7 +352,7 @@ login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state',
 	};
          
         $scope.showOnScreenKeyboard = function(id) {
-           //pull up the virtual keyboard (snt) theme... if chrome & fullscreen
+           // pull up the virtual keyboard (snt) theme... if chrome & fullscreen
             var isTouchDevice = 'ontouchstart' in document,
                 agentString = window.navigator.userAgent;
             var shouldShowKeyboard = (typeof chrome) && (agentString.toLowerCase().indexOf('window')!==-1) && isTouchDevice;

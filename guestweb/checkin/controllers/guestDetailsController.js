@@ -51,7 +51,7 @@
 			$scope.days.push(day);
 		};
 
-		//fetch details
+		// fetch details
 		var fetchGuestDetails = function() {
 			$scope.isLoading = true;
 			guestDetailsService.getGuestDetails().then(function(response) {
@@ -68,7 +68,7 @@
 			});
 		};
 
-		//fetch country list
+		// fetch country list
 		$scope.isLoading = true;
 		if($rootScope.enforceCountrySort) {
 			var data = {'reservation_id': $rootScope.reservationID}
@@ -132,7 +132,7 @@
 	      }
 	    };
 
-		//post guest details
+		// post guest details
 		$scope.postGuestDetails = function() {
 
 			if($scope.guestDetails.country  && $scope.guestDetails.street && $scope.guestDetails.city  && $scope.guestDetails.state && $scope.guestDetails.postal_code ) {

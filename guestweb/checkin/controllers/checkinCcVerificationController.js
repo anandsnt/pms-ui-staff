@@ -72,12 +72,12 @@
 
     $scope.netWorkError = false;
 
-    //set merchant id
+    // set merchant id
 
     HostedForm.setMerchant($rootScope.mliMerchatId);
 
 
-    //setup options for error popup
+    // setup options for error popup
 
     $scope.cardErrorOpts = {
       backdrop: true,

@@ -7,7 +7,7 @@ sntGuestWeb.controller('GwCheckoutLaterController', ['$scope', '$state', '$contr
 		$controller('BaseController', {
 			$scope: $scope
 		});
-		//to do:CC
+		// to do:CC
 		var init = function() {
 			var screenIdentifier = "CHECKOUT_LATER_OPTIONS";
 
@@ -52,7 +52,7 @@ sntGuestWeb.controller('GwCheckoutLaterController', ['$scope', '$state', '$contr
 					'reservation_id': GwWebSrv.zestwebData.reservationID,
 					'late_checkout_offer_id': option.id
 				},
-				//'is_cc_attached_from_guest_web':false};
+				// 'is_cc_attached_from_guest_web':false};
 				successCallBack: onSuccess
 			};
 

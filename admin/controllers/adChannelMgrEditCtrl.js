@@ -10,7 +10,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
         
         $scope.available_room_types = [];
         $scope.available_rates = [];
-        $scope.addRemoveMode = 'add';//add | edit
+        $scope.addRemoveMode = 'add';// add | edit
         
 	var lastDropedTime = '';
         
@@ -44,7 +44,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                     $scope.$emit('hideLoader');
                     var allRooms = data.room_types;
                     
-                    //go thru excluded list and push out to included, the ones that match in the IDs from initial get
+                    // go thru excluded list and push out to included, the ones that match in the IDs from initial get
                     
                     var rateInfo;
 
@@ -117,13 +117,13 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                         $scope.showMainAddRemove = false;
                     }
                     
-                    $scope.addRemoveMode = 'edit';//add | edit
+                    $scope.addRemoveMode = 'edit';// add | edit
                 } else {
                     $scope.data[x].rate.editing = false;
                 }
             }
             
-            //go through the rate list and add to included which are in the ids of the rate from channelMgr data object
+            // go through the rate list and add to included which are in the ids of the rate from channelMgr data object
             
             $scope.includedRoomTypes = [];
             $scope.excludedRoomTypes = [];
@@ -136,8 +136,8 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
             for (var i in $scope.data) {
                 item = $scope.data[i];
                 if (rate.rate.id === item.rate.id) {
-                    //for each room in the rate's room_types, add it to the included list,
-                    //place all others in excluded
+                    // for each room in the rate's room_types, add it to the included list,
+                    // place all others in excluded
                     for (var ex in $scope.excludedRoomTypes) {
                         exItem = $scope.excludedRoomTypes[ex];
                         for (var x in item.room_types) {
@@ -155,7 +155,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                         }
                     }
                     
-                    //remove the ones added to included
+                    // remove the ones added to included
                     for (var inc in $scope.includedRoomTypes) {
                         
                         for (var ex in $scope.excludedRoomTypes) {
@@ -231,7 +231,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
         $scope.toggleActive = function (rate) {
             var interface_id = $scope.selectedInterface.id, active = rate.active;
             var included = rate.room_types;
-            //collect rate id's for included/excluded
+            // collect rate id's for included/excluded
             var includedRoomIds = $scope.getIds(included);
             
             var params = {
@@ -243,7 +243,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
             };
             var toggleSuccess = function () {
                 $scope.$emit('hideLoader');
-                //on success
+                // on success
                 angular.forEach($scope.data, function (item, key) {
                     if (item.id === rate.id) {
                         item.active = !item.active;
@@ -261,7 +261,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
             var rate = $scope.editingRate;
             var interface_id = $scope.selectedInterface.id, active = rate.active;
             var included = $scope.includedRoomTypes;
-            //collect rate id's for included/excluded
+            // collect rate id's for included/excluded
             var includedRoomIds = $scope.getIds(included);
             
             var params = {
@@ -272,7 +272,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                 rate_id: rate.rate.id
             };
             var toggleSuccess = function () {
-                //close edit window
+                // close edit window
                 $scope.showInlineAddRemove = false;
                 $scope.resetShowAddRmove();
                 $scope.reloadTable();
@@ -289,11 +289,11 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
         
         $scope.includedRoomTypes = [];
         $scope.excludedRoomTypes = [];
-        $scope.selectedExcludedRoomTypeIndex = -1;//to update the class onSelect
-        $scope.selectedIncludedRoomTypeIndex = -1;//to update the class onSelect
+        $scope.selectedExcludedRoomTypeIndex = -1;// to update the class onSelect
+        $scope.selectedIncludedRoomTypeIndex = -1;// to update the class onSelect
         
-        $scope.excludedRoomTypeSelected;//to update the class onSelect
-        $scope.includedRoomTypeSelected;//to update the class onSelect
+        $scope.excludedRoomTypeSelected;// to update the class onSelect
+        $scope.includedRoomTypeSelected;// to update the class onSelect
         
         $scope.selectIncludedRoomType = function(roomType, evt, idx) {
             $scope.selectedIncludedRoomTypeIndex = idx;
@@ -312,7 +312,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
             if ($scope.selectedIncludedRoomTypeIndex === -1) {
                 return;
             }
-          //take the selected room type from selectedIncludedRoomType  
+          // take the selected room type from selectedIncludedRoomType  
             var includedRoomTypeSelected = $scope.includedRoomTypeSelected;
 
             for (var i in $scope.includedRoomTypes) {
@@ -333,7 +333,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
             if ($scope.selectedExcludedRoomTypeIndex === -1) {
                 return;
             }
-          //take the selected room type from selectedIncludedRoomType  
+          // take the selected room type from selectedIncludedRoomType  
             var excludedRoomTypeSelected = $scope.excludedRoomTypeSelected;
 
             for (var i in $scope.excludedRoomTypes) {
@@ -348,8 +348,8 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
         $scope.refreshLists = function() {
             $scope.includedRoomTypes = [];
             $scope.excludedRoomTypes = [];
-            $scope.selectedExcludedRoomTypeIndex = -1;//to update the class onSelect
-            $scope.selectedIncludedRoomTypeIndex = -1;//to update the class onSelect
+            $scope.selectedExcludedRoomTypeIndex = -1;// to update the class onSelect
+            $scope.selectedIncludedRoomTypeIndex = -1;// to update the class onSelect
         };
         
         $scope.selectedIncludedRoomType;
@@ -358,7 +358,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
         $scope.selectRate = function(rate) {
             $scope.selectedRate = rate;
             $scope.refreshLists();
-            if (!rate.placeholder) {//then is valid, load up room_types
+            if (!rate.placeholder) {// then is valid, load up room_types
                 $scope.setRoomTypesByRate($scope.selectedRate.id, 'new');
                 $scope.resortLists();
             }
@@ -454,7 +454,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                 if (!there) {
                     $scope.excludedRoomTypes.push($scope.dragItem);
                 }
-                //verify removed from included...
+                // verify removed from included...
                 var newInc = [];
 
                 for (var i in $scope.includedRoomTypes) {
@@ -479,7 +479,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                     $scope.includedRoomTypes.push($scope.dragItem);
                 }
                 
-                //verify removed from included...
+                // verify removed from included...
                 var newEx = [];
 
                 for (var c in $scope.excludedRoomTypes) {
@@ -498,7 +498,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
         
         $scope.addRateToChannel = function(selectedInterface) {
             $scope.closeRatesInEdit();
-            $scope.addRemoveMode = 'add';//add | edit
+            $scope.addRemoveMode = 'add';// add | edit
             $scope.showInlineAddRemove = false;
             $scope.showMainAddRemove = true;
             var fetchSuccess = function(data) {
@@ -506,7 +506,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                 for (var i in data.results) {
                     $scope.rateData.push(data.results[i]);
                 }
-                //add the 
+                // add the 
                 $scope.sortList($scope.rateData, 'name');
                 $scope.rateData.unshift({id: 0, placeholder: true, name: 'Select Rate'});
                 $scope.selectedRate = $scope.rateData[0];
@@ -550,7 +550,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                 if (rate.placeholder) {
                     return;
                 }
-                //collect rate id's for included/excluded
+                // collect rate id's for included/excluded
                 var includedRoomIds = $scope.getIds(included);
                 var excludedRoomIds = $scope.getIds(excluded);
 

@@ -11,7 +11,7 @@ angular.module('sntRover').controller('rvGroupReservationCheckoutCtrl', [
             $state) {
 
     var completeCheckoutSuccessCallback = function(data) {
-        //calling initially required APIs
+        // calling initially required APIs
         $scope.$emit("REFRESH_GROUP_ROOMING_LIST_DATA");
         $timeout(function() {
             $scope.closeDialog();

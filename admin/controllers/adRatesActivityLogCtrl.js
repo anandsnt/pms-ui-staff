@@ -47,7 +47,7 @@ admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$
 
 
     var setDatePickerOptions = function() {
-        //I just changed this to a function, dont knw who written this
+        // I just changed this to a function, dont knw who written this
         var datePickerCommon = {
             dateFormat: $rootScope.jqDateFormat,
             numberOfMonths: 1,
@@ -78,7 +78,7 @@ admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$
         }, datePickerCommon);
     };
 
-    //setting date picker options
+    // setting date picker options
     setDatePickerOptions();
 
     $scope.updateReportFilter = function() {
@@ -215,7 +215,7 @@ admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$
     }
 
     var initializeAutoCompletion = function() {
-        //forming auto complte source object
+        // forming auto complte source object
         var activeUserAutoCompleteObj = [];
 
         _.each($scope.activeUserList, function(user) {

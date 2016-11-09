@@ -67,7 +67,7 @@ admin.controller('ADRulesRestrictionCtrl', [
         */
         $scope.switchClicked = function(item) {
 
-            //on success
+            // on success
             var toggleSwitchLikesSuccessCallback = function(data) {
                 item.activated = item.activated ? false : true;
                 $scope.$emit('hideLoader');

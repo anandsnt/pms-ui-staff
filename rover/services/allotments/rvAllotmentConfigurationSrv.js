@@ -274,7 +274,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 						}
 						summaryHolder.allotmentSummary = data;
 						// To be covered in CICO-19135
-						/*getAccountSummary(deferred, {
+						/* getAccountSummary(deferred, {
 							accountId: data.posting_account_id
 						});*/
 						deferred.resolve(summaryHolder); // CICO-12555 avoid account summary call.

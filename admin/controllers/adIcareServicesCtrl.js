@@ -18,7 +18,7 @@ function($scope, $rootScope, $state,  $stateParams, ADICareServicesSrv) {
 	$scope.renderIcareServices = function() {
 		$scope.invokeApi(ADICareServicesSrv.getIcareServices, {}, $scope.successCallbackRender);
 	};
-	//To render screen
+	// To render screen
 	$scope.renderIcareServices();
 	/**
     * To handle save button action

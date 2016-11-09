@@ -173,7 +173,7 @@ sntRover.controller('RVReportListCrl', [
             $timeout( $scope.refreshScroller.bind($scope, REPORT_LIST_SCROLL), 200 );
         });
 
-        //removing event listners when scope is destroyed
+        // removing event listners when scope is destroyed
         $scope.$on( '$destroy', serveRefresh );
 
 

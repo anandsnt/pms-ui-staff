@@ -28,7 +28,7 @@
 			$scope.isLoading = false;
 		}
 		else{
-		//change format to 24 hours
+		// change format to 24 hours
 		 var hour = parseInt($rootScope.stayDetails.hour);
 
 		 if ($rootScope.stayDetails.primeTime === 'PM' && hour < 12) {

@@ -11,7 +11,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 	'$window',
 	function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, zsUtilitySrv, zsGeneralSrv, $filter, $timeout, $window) {
 
-		/**********************************************************************************************
+		/** ********************************************************************************************
 		 **		Expected state params -----> reservation_id, room_no,  first_name, guest_id, key_success
 		 *       and email			  
 		 **		Exit function ->nextPageActions								
@@ -34,9 +34,9 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 		 * @return {[type]} 
 		 */
 		$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-			//back button action from email send mode page will
-			//take to 2 options page
-			$scope.mode = "DELIVERY_OPTIONS_MODE"; //hide back buttons in 2 options page
+			// back button action from email send mode page will
+			// take to 2 options page
+			$scope.mode = "DELIVERY_OPTIONS_MODE"; // hide back buttons in 2 options page
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 		});
 
@@ -96,7 +96,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 			var handleStarTacPrinterActions = function() {
 				var printData = "";
 
-				/**** Socket actions starts here *****/
+				/** ** Socket actions starts here *****/
 				$scope.$on('SOCKET_FAILED', function() {
 					printFailedActions();
 				});
@@ -109,11 +109,11 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				$scope.$on('SOCKET_CONNECTED', function() {
 					$scope.socketOperator.startPrint(printData);
 				});
-				/**** Socket actions ends here *****/
+				/** ** Socket actions ends here *****/
 
 				var fetchSatrTacDataSuccess = function(response) {
 					printData = response.bill_details;
-					//check if socket is open
+					// check if socket is open
 					if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
 						$scope.socketOperator.startPrint(printData);
 					} else {
@@ -155,8 +155,8 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 								printFailedActions();
 							}, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
 						} else {
-							//REASON: API error . We cant push the starttac code.
-							//So uncomment and use the following line in next sprint
+							// REASON: API error . We cant push the starttac code.
+							// So uncomment and use the following line in next sprint
 							// if($scope.zestStationData.zest_printer_option === "STAR_TAC"){
 							// 	//we will call websocket services to print
 							// 	handleStarTacPrinterActions();
@@ -214,7 +214,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 		 */
 		$scope.selectEmailDelivery = function() {
 			$scope.mode = "EMAIL_SEND_MODE";
-			//show back buttons in email send mode page
+			// show back buttons in email send mode page
 			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 		};
 		/**
@@ -282,7 +282,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				if ($scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2 !== '') {
 					stateParams.message = $scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2;
 				} else {
-					//do nothing
+					// do nothing
 				};
 				$state.go('zest_station.speakToStaff', stateParams);
 			}
@@ -318,9 +318,9 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 		 * [initializeMe description]
 		 */
 		var initializeMe = function() {
-			//show back button
-			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON); //hide back buttons in 2 options page
-			//show close button
+			// show back button
+			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON); // hide back buttons in 2 options page
+			// show close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			if ($stateParams.email) {
 				$scope.email = $stateParams.email.length > 0 ? $stateParams.email : "";

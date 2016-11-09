@@ -19,7 +19,7 @@ var applyStylesForYotelStarTac = function() {
 	createStyleNodeWithString(starTacStyles);
 
 };
-//for non startTac
+// for non startTac
 var applyPrintMargin = function() {
 	var starTacStyles = '@page { margin: 1cm 9cm;}#registration-card,#guest-bill{padding-left: 1cm;padding-right: 1cm;}';
 
@@ -47,14 +47,14 @@ var removePrintOrientation = function() {
 var setBeforePrintSetup = function() {
 	$("header .logo").addClass('logo-hide');
 	$("header .h2").addClass('text-hide');
-	$('.popup').hide(); //hide timeout elements
-	$('.invis').hide(); //hide timeout elements
-	$('#popup-overlay').hide(); //hide timeout elements
+	$('.popup').hide(); // hide timeout elements
+	$('.invis').hide(); // hide timeout elements
+	$('#popup-overlay').hide(); // hide timeout elements
 };
 
 
 var formatDateIntoStandard = function(dateString, separator) {
-	//date has to be formatted
+	// date has to be formatted
 	var dayIndex = dateString.indexOf(separator);
 	var day = dateString.substring(0, dayIndex);
 	var dateStringWithoutDay = dateString.substring(dayIndex + 1, dateString.length);
@@ -83,7 +83,7 @@ var setDisplayContentHeight = function() {
 			$h3Height = $('#content h3').length ? $('#content h3').outerHeight(true) : 0,
 			$headingsHeight = parseFloat($h1Height + $h2Height + $h3Height),
 			$textualHeight = parseFloat($contentHeight - $headingsHeight);
-		//$('#textual').css('height', $textualHeight + 'px');
+		// $('#textual').css('height', $textualHeight + 'px');
 
 		$('#textual').css('height', '45%');
 		$('#textual').css('max-height', '100%');

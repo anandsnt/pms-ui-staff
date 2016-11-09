@@ -1,16 +1,16 @@
 sntRover.controller('RVfrontDeskDashboardController', ['$scope', '$rootScope', 'statistics', function($scope, $rootScope, statistics) {
-	//inheriting some useful things
+	// inheriting some useful things
 	BaseCtrl.call(this, $scope);
     var that = this;
 
   $scope.statistics = statistics;
-	//scroller related settings
+	// scroller related settings
 	var scrollerOptions = {click: true, preventDefault: false};
 
   	$scope.setScroller('dashboard_scroller', scrollerOptions);
 
-  	$scope.showDashboard = true; //variable used to hide/show dabshboard
-    //changing the header
+  	$scope.showDashboard = true; // variable used to hide/show dabshboard
+    // changing the header
     $scope.$emit("UpdateHeading", 'DASHBOARD_FRONTDESK_HEADING');
 
     // we are hiding the search results area
@@ -53,10 +53,10 @@ sntRover.controller('RVfrontDeskDashboardController', ['$scope', '$rootScope', '
         $scope.$broadcast("updateReservationTypeFromOutside", type);
     });
 
-    //show Latecheckout icon
+    // show Latecheckout icon
     $scope.shouldShowLateCheckout = true;
     $scope.shouldShowQueuedRooms  = true;
-    //scroller is not appearing after coming back from other screens
+    // scroller is not appearing after coming back from other screens
     setTimeout(function() {
       $scope.refreshScroller('dashboard_scroller');
     }, 500);

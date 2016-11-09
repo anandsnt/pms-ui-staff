@@ -14,7 +14,7 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 		};
 
 
-		//trigger the billing information popup
+		// trigger the billing information popup
 	    $scope.openBillingInformation = function(accountType) {
 
 	    	if($scope.contactInformation.id === null || $scope.contactInformation.id === undefined) {

@@ -41,7 +41,7 @@ admin.controller('ADContentManagementItemDetailCtrl', ['$scope', '$state', '$sta
      init();
 
 
-	 /*Initializing data, for adding a new item.
+	 /* Initializing data, for adding a new item.
     */
 	$scope.data = {
 	            "component_type": "PAGE",
@@ -175,7 +175,7 @@ $scope.getSelectedAddonPrice = function() {
      return price;
 };
 
-	/*Function to fetch the item details
+	/* Function to fetch the item details
     */
 	$scope.fetchItem = function() {
 		var fetchItemSuccessCallback = function(data) {
@@ -198,7 +198,7 @@ $scope.getSelectedAddonPrice = function() {
 
 		$scope.invokeApi(ADContentManagementSrv.fetchComponent, $stateParams.id, fetchItemSuccessCallback);
 	};
-	/*Checkin if the screen is loaded for a new item or,
+	/* Checkin if the screen is loaded for a new item or,
 	 * for existing item.
     */
 	if($stateParams.id !== 'new') {
@@ -208,12 +208,12 @@ $scope.getSelectedAddonPrice = function() {
 	else{
 		$scope.isAddMode = true;
 	}
-	/*Function to return to preveous state
+	/* Function to return to preveous state
     */
 	$scope.goBack = function() {
         $state.go('admin.cmscomponentSettings');
 	};
-	/*Function to popup the assign parent modal.
+	/* Function to popup the assign parent modal.
 	 *The param isSection === true, implies the modal is for assigning sections
 	 *Otherwise the modal is for assigning categories
     */
@@ -227,7 +227,7 @@ $scope.getSelectedAddonPrice = function() {
                 scope: $scope
             });
 	};
-	/*Function to save an item
+	/* Function to save an item
     */
 	$scope.saveItem = function() {
 		var saveItemSuccessCallback = function(data) {

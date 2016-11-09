@@ -36,7 +36,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
         $scope.refreshScroller('routeDetails');
     });
 
-    //retrieve card expiry based on paymnet gateway
+    // retrieve card expiry based on paymnet gateway
     var retrieveExpiryDate = function() {
 
         var expiryDate = $scope.cardData.tokenDetails.isSixPayment?
@@ -47,7 +47,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
         return expiryDate;
     };
 
-    //retrieve card number based on paymnet gateway
+    // retrieve card number based on paymnet gateway
     var retrieveCardNumber = function() {
         var cardNumber = $scope.cardData.tokenDetails.isSixPayment?
                 $scope.cardData.tokenDetails.token_no.substr($scope.cardData.tokenDetails.token_no.length - 4):
@@ -173,7 +173,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
         }
 
         $scope.selectedEntity.reference_number = data.reference_number;
-        //Added for CICO-22869
+        // Added for CICO-22869
         $scope.selectedEntity.attached_charge_codes = data.attached_charge_codes;
         if (!isEmptyObject(data.credit_card_details)) {
             $scope.renderAddedPayment                = data.credit_card_details;
@@ -561,7 +561,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
     var fetchInitialData = function() {
         var promises = [];
 
-        //we are not using our normal API calling since we have multiple API calls needed
+        // we are not using our normal API calling since we have multiple API calls needed
         $scope.$emit('showLoader');
 
         // fetch billing groups
@@ -588,7 +588,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
             );
         }
 
-        //Lets start the processing
+        // Lets start the processing
         $q.all(promises)
             .then(fetchAllInitialDataSuccessCallBack, fetchAllInitialDataFailureCallBack);
     };

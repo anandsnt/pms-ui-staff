@@ -133,10 +133,10 @@ sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope', '$rootScope',
      */
     var displayFilteredResultsChargeCodes = function() {
 
-        //if the entered text's length < 3, we will show everything, means no filtering
+        // if the entered text's length < 3, we will show everything, means no filtering
         if ($scope.chargeCodeSearchText.length < 3) {
 
-            //based on 'is_row_visible' parameter we are showing the data in the template
+            // based on 'is_row_visible' parameter we are showing the data in the template
             for (var i = 0; i < $scope.availableChargeCodes.length; i++) {
                 if ($scope.isChargeCodeSelected($scope.availableChargeCodes[i])) {
                     $scope.availableChargeCodes[i].is_row_visible = false;
@@ -152,8 +152,8 @@ sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope', '$rootScope',
         }
         else {
             var value = "";
-            //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
-            //if it is zero, then we will request for webservice
+            // searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
+            // if it is zero, then we will request for webservice
 
             for (var i = 0; i < $scope.availableChargeCodes.length; i++) {
                 value = $scope.availableChargeCodes[i];

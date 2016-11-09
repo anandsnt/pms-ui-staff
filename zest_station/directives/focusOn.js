@@ -12,7 +12,7 @@ sntZestStation.directive('focusOn', ['$timeout', function($timeout) {
             ngModel: '=ngModel'
         },
         link: function(scope, element, attrs) {
-            //resolves a touchscreen issue between virtual keyboard and autocomplete jquery plugins
+            // resolves a touchscreen issue between virtual keyboard and autocomplete jquery plugins
             $(document).on('touchstart', function() {
                 documentClick = true;
             });
@@ -21,7 +21,7 @@ sntZestStation.directive('focusOn', ['$timeout', function($timeout) {
             if (attrs.focusOn) {
                 elToFocus = attrs.focusOn;
                 if ($(elToFocus) && $(elToFocus)[0]) {
-                    //bind events to retrigger for Virtual keyboard plugin to behave properly
+                    // bind events to retrigger for Virtual keyboard plugin to behave properly
                     $timeout(function() {
                         var el = $(elToFocus)[0],
                         scopeFn = angular.element(el).scope()[attrs.focusOnTrigger];
@@ -30,7 +30,7 @@ sntZestStation.directive('focusOn', ['$timeout', function($timeout) {
                         $(elToFocus).keydown(scopeFn);
                         $(elToFocus).change(scopeFn);
                         $(elToFocus).blur(scopeFn);
-                        //sets initial focus 
+                        // sets initial focus 
 
                         $(elToFocus).focus();
                         $timeout(function() {
@@ -41,7 +41,7 @@ sntZestStation.directive('focusOn', ['$timeout', function($timeout) {
                     }, 0);
                 }
             }
-            //we are setting delay to 2sec. if it is undefined
+            // we are setting delay to 2sec. if it is undefined
             if (typeof scope.delay === "undefined") {
                 scope.delay = 2000;
             }

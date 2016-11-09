@@ -1,4 +1,4 @@
-//React.initializeTouchEvents(true);
+// React.initializeTouchEvents(true);
 
 var DailyProductionByDemographics = React.createClass({
   toggleRevenue: function() {
@@ -7,7 +7,7 @@ var DailyProductionByDemographics = React.createClass({
     curHeadr.showRevenue 	= !curHeadr.showRevenue;
     if (!curHeadr.showRevenue) {
       curHeadr.colspan = 2;
-      curHeadr.showAvailable = true; //show revnue & show availability are mutulay exclusive
+      curHeadr.showAvailable = true; // show revnue & show availability are mutulay exclusive
     } else {
       curHeadr.colspan = curHeadr.colspan + 3;
     }
@@ -25,7 +25,7 @@ var DailyProductionByDemographics = React.createClass({
     curHeadr.showAvailable 	= !curHeadr.showAvailable;
     if (!curHeadr.showAvailable) {
       curHeadr.colspan = 3;
-      curHeadr.showRevenue = true; //show revnue & show availability are mutulay exclusive
+      curHeadr.showRevenue = true; // show revnue & show availability are mutulay exclusive
     } else {
       curHeadr.colspan = curHeadr.colspan + 2;
     }
@@ -39,7 +39,7 @@ var DailyProductionByDemographics = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    //only data will change from parent, we will reset ui fiter selection once we have new data
+    // only data will change from parent, we will reset ui fiter selection once we have new data
     var newState 	= {};
 
     newState.data 	= nextProps.data;

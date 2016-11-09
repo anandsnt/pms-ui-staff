@@ -3,7 +3,7 @@ admin.controller('ADItemListCtrl', ['$scope', 'ADItemSrv', 'ngTableParams', '$fi
 	* Controller class for Room List
 	*/
 	$scope.errorMessage = '';
-	//inheriting from base controller
+	// inheriting from base controller
 	BaseCtrl.call(this, $scope);
    /*
     * Success call back of fetch
@@ -12,7 +12,7 @@ admin.controller('ADItemListCtrl', ['$scope', 'ADItemSrv', 'ngTableParams', '$fi
 	var fetchSuccessOfItemList = function(data) {
 		$scope.$emit('hideLoader');
 		$scope.data = data;
-		//applying sorting functionality in item list
+		// applying sorting functionality in item list
 		$scope.itemList = new ngTableParams({
 		        page: 1,            // show first page
 		        count: $scope.data.items.length,    // count per page - Need to change when on pagination implemntation
@@ -32,7 +32,7 @@ admin.controller('ADItemListCtrl', ['$scope', 'ADItemSrv', 'ngTableParams', '$fi
 		    });
 	};
 
-	//To list items
+	// To list items
 	$scope.invokeApi(ADItemSrv.fetchItemList, {}, fetchSuccessOfItemList);
 
 	/*

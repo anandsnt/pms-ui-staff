@@ -9,11 +9,11 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
             $timeout,
             rvGroupRoomingListSrv,
             $state) {
-        //To set the title
+        // To set the title
     $scope.title = ($scope.isUpdateReservation) ? "Edit" : "Add";
 
-    //Updating and adding some params to show in screen
-    //accompanyingLength, occupancyName etc are not there in API
+    // Updating and adding some params to show in screen
+    // accompanyingLength, occupancyName etc are not there in API
     _.each($scope.selected_reservations, function(eachData) {
             eachData.isOpenAccompanyingGuest = false;
             var cnt = 0;

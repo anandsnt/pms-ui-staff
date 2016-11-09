@@ -11,7 +11,7 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
 	 */
   this.fetchMappingList = function() {
     var deferred = $q.defer();
-    //if you are updating the url, make sure that same in rover's gulp task
+    // if you are updating the url, make sure that same in rover's gulp task
     var url = '/assets/asset_list/____generatedStateJsMappings/____generatedrover/____generatedroverStateJsMappings.json';
 
     rvBaseWebSrvV2.getJSON(url).then(function(data) {

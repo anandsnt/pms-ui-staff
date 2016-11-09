@@ -10,7 +10,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 		BaseCtrl.call(this, $scope);
 		
 
-		/********************************************************************************
+		/** ******************************************************************************
 		 *  Theme based actions starts here
 		 ********************************************************************************/
 
@@ -27,21 +27,21 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 			setTimeout(function() {
 				$('body').css('display', 'block');
 			}, 50);
-			//based upon admin settings set printer css styles
+			// based upon admin settings set printer css styles
 			// setPrinterOptions(); - to do
 		};
 
 
-		$scope.setSvgsToBeLoaded(iconsPath, iconsPath, true); //(icons path, default path, use default icons)
+		$scope.setSvgsToBeLoaded(iconsPath, iconsPath, true); // (icons path, default path, use default icons)
 
 		var setPrinterOptions = function(theme) {
-			//zsUtils function
+			// zsUtils function
 			if ($scope.zestStationData.zest_printer_option === "STAR_TAC") {
 				(theme === 'yotel') ? applyStylesForYotelStarTac(): applyStarTacStyles();
 			} else if ($scope.zestStationData.zest_printer_option === "RECEIPT") {
 				(theme === 'yotel') ? applyStylesForYotelReceipt(): "";
 			} else {
-				applyPrintMargin(); //zsUtils function
+				applyPrintMargin(); // zsUtils function
 			};
 		};
 		var setHotelBasedTheme = function(theme) {
@@ -68,7 +68,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 		};
 
 
-		/********************************************************************************
+		/** ******************************************************************************
 		 *  Theme based actions ends here
 		 ********************************************************************************/
 

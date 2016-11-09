@@ -33,7 +33,7 @@ var iBeaconOperation = function() {
 		}
 		else{
 
-			//calling cordova service
+			// calling cordova service
 			cordova.exec(
 						// if success call back require any parameters
 						function(data) {
@@ -81,7 +81,7 @@ var iBeaconOperation = function() {
 		}
 	};
 
-	//function for linking iBeacon
+	// function for linking iBeacon
 	this.linkiBeacon = function(options) {
 		options['service'] = "RVBeaconPlugin";
 		options['action'] = "writeBeaconID";

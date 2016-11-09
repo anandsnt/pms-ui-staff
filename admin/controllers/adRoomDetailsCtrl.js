@@ -7,7 +7,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 	$scope.fileName = "Choose File....";
 
 
-	//inheriting from base controller
+	// inheriting from base controller
 	BaseCtrl.call(this, $scope);
 
 	var roomId = $stateParams.roomId;
@@ -17,7 +17,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 	$scope.availableComponentRoomsArray = [];
 
 	if(roomId) {
-		//if roomnumber is null returning to room list
+		// if roomnumber is null returning to room list
 		if(typeof roomId === 'undefined' || roomId.trim() === '') {
 			$state.go('admin.rooms');
 		}
@@ -251,7 +251,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 	};
 
     if($scope.editMode) {
-    //getting the room details
+    // getting the room details
 	$scope.invokeApi(ADRoomSrv.roomDetails, {'roomId': roomId}, fetchSuccessOfRoomDetails, fetchFailedOfRoomDetails);
     }
     else

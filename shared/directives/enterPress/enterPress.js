@@ -10,7 +10,7 @@ angular.module('enterPress', []).directive('enterPress', function($timeout, $par
                         scope.$apply(function () {
                             scope.$eval(attrs.enterPress);
                         });
-                        //blur focus another object to drop keypad in touch devices 
+                        // blur focus another object to drop keypad in touch devices 
                         $(element).blur();
                         event.preventDefault();
                     }, 50);

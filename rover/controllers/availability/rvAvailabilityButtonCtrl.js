@@ -13,10 +13,10 @@ angular.module('sntRover').controller('rvAvailabilityButtonController', [
 
 		BaseCtrl.call(this, $scope);
 
-		//variable used to determine whether we need to show availability section or not (we will add/remove section based on this)
+		// variable used to determine whether we need to show availability section or not (we will add/remove section based on this)
 		$scope.showAvailability = false;
 
-		//When closing we need to add a class to container div
+		// When closing we need to add a class to container div
 		$scope.isClosing = false;
 
 		/**
@@ -33,12 +33,12 @@ angular.module('sntRover').controller('rvAvailabilityButtonController', [
 			*/
 
 			if($scope.showAvailability) {
-				//adding the class for closing animation
+				// adding the class for closing animation
 				$scope.isClosing = true;
-				//after some time we are removing the section and resetiing values to older
+				// after some time we are removing the section and resetiing values to older
 				 $timeout(function() {
 				 	$scope.isClosing = false;
-					//hiding/removing the availability section
+					// hiding/removing the availability section
 					$scope.showAvailability = false;
 				 }, 1000);
 

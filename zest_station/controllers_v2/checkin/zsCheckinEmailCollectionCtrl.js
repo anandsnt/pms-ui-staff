@@ -12,7 +12,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
     function($scope, $stateParams, $state, zsEventConstants, $controller, $timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv, zsUtilitySrv) {
 
 
-        /**********************************************************************************************
+        /** ********************************************************************************************
          **      Please note that, not all the stateparams passed to this state will not be used in this state, 
          **      however we will have to pass this so as to pass again to future states which will use these.
          **
@@ -33,9 +33,9 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
          * [initializeMe description]
          */
         var initializeMe = function() {
-            //show back button
+            // show back button
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
-            //show close button
+            // show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
             $scope.email = "";
             $scope.mode = "EMAIL_ENTRY_MODE";
@@ -61,7 +61,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
                     'email': $scope.email
                 },
                 successCallBack: function(data) {
-                    //onSuccess, 
+                    // onSuccess, 
                     if (!data.black_listed_email) {
                         afterBlackListValidation();
 
@@ -103,7 +103,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
              * @return {[type]} [description]
              */
             var updateGuestEmailFailed = function(response) {
-                console.warn('updateGuestEmailFailed: ', response); //if this fails would help give clues as to why
+                console.warn('updateGuestEmailFailed: ', response); // if this fails would help give clues as to why
                 var stateParams = {
                     "first_name": $stateParams.first_name,
                 };
@@ -111,7 +111,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
                 if ($scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2 !== '') {
                     stateParams.message = $scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2;
                 } else {
-                    //do nothing
+                    // do nothing
                 };
                 $state.go('zest_station.speakToStaff', stateParams);
             };
@@ -134,8 +134,8 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
             var onValidationAPIFailure = function() {
                 updateGuestEmailFailed();
             };
-            //checks if new email is blacklisted, if so, set invalid email mode
-            //otherwise, continue updating guest email
+            // checks if new email is blacklisted, if so, set invalid email mode
+            // otherwise, continue updating guest email
 
             checkIfEmailIsBlacklisted(afterBlackListValidation, onBlackListedEmailFound, onValidationAPIFailure);
         };

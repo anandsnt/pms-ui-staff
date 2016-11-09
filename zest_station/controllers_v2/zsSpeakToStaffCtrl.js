@@ -12,10 +12,10 @@ sntZestStation.controller('zsSpeakToStaffCtrl', [
 
 			$scope.customMessagePresent = !!$stateParams.message;
 			$scope.customMessage = $scope.customMessagePresent ? $stateParams.message : "";
-			//hide back button
+			// hide back button
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 
-			//hide close button
+			// hide close button
 			$scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
 		}();
 

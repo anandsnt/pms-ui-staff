@@ -3,7 +3,7 @@ admin.controller('ADNotificatinsListCtrl',
 	function($scope,  $rootScope, $state, $stateParams, ADNotificationsListSrv, ngTableParams, $filter) {
 	BaseCtrl.call(this, $scope);
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
-	//Fetch list of Notification
+	// Fetch list of Notification
 	$scope.$emit("changedSelectedMenu", 0);
 	var fetchSuccess = function (data) {		
 		$scope.data = data;

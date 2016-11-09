@@ -11,7 +11,7 @@ sntRover.directive('scrollPosition', function ($window) {
                     w.bind('scroll ng-iscroll', function (event) {
                             scope.initScrollBind();
                     });
-                    try {scope.initScrollBind();} catch(err) {}//to init the first scrollbind
+                    try {scope.initScrollBind();} catch(err) {}// to init the first scrollbind
                 }
 
                 scope.$on('$destroy', function() {

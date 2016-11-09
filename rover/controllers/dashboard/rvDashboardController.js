@@ -2,11 +2,11 @@
 sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata', '$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes', '$window',
                   function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata, $rootScope, $filter, $state, RVWorkstationSrv, roomTypes, $window) {
 
-    //setting the heading of the screen
+    // setting the heading of the screen
     $scope.heading = 'DASHBOARD_HEADING';
 
-    //We are not showing the backbutton now, so setting as blank
-    $scope.backButtonCaption = ''; //if it is not blank, backbutton will show, otherwise dont
+    // We are not showing the backbutton now, so setting as blank
+    $scope.backButtonCaption = ''; // if it is not blank, backbutton will show, otherwise dont
     $scope.roomTypes = roomTypes;
 
     var that = this;
@@ -19,7 +19,7 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
     var init =  function() {
 
 
-          //setting the heading of the screen
+          // setting the heading of the screen
         $scope.heading = "DASHBOARD_HEADING";
         $scope.userDetails   = RVDashboardSrv.getUserDetails();
         $scope.statisticsData = dashBoarddata.dashboardStatistics;
@@ -27,16 +27,16 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
         $rootScope.adminRole = $scope.userDetails.user_role;
         $scope.isIpad = (navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) && window.cordova;
 
-        //update left nav bar
+        // update left nav bar
         $scope.$emit("updateRoverLeftMenu", "dashboard");
         $scope.$emit("closeDrawer");
         var scrollerOptions = {click: true, preventDefault: false};
 
         $scope.setScroller('dashboard_scroller', scrollerOptions);
-        //Display greetings message based on current time
+        // Display greetings message based on current time
         var d = new Date();
         var time = d.getHours();
-         //Handle Notificatin releated logic.
+         // Handle Notificatin releated logic.
 
         initNotification();
         $scope.greetingsMessage = "";
@@ -49,7 +49,7 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
         else{
           $scope.greetingsMessage = 'GREETING_EVENING';
         }
-        //ADDED Time out since translation not working without time out
+        // ADDED Time out since translation not working without time out
         setTimeout(function() {
           var title = "Showing Dashboard";
 
@@ -61,7 +61,7 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
           setWorkStation();
         }
 
-        //TODO: Add conditionally redirecting from API results
+        // TODO: Add conditionally redirecting from API results
 
         reddirectToDefaultDashboard();
 
@@ -70,7 +70,7 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
    * Function to fetch release notes
    */
    var fetchReleaseNotes = function() {
-      //Standard parameters,As of now leave it all null
+      // Standard parameters,As of now leave it all null
       var params = {
         hotel_uuid: null,
         service_provider_uuid: null,
@@ -88,7 +88,7 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
    */
 
     $scope.closeReleaseNote = function() {
-      ngDialog.close(); //close any existing popups
+      ngDialog.close(); // close any existing popups
     }
   /*
    * Function to open link in new tab
@@ -100,7 +100,7 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
           url = 'http://' + url+'?from=rover';
         }
         $scope.releaseActionSource = url;
-        ngDialog.close(); //close any existing popups
+        ngDialog.close(); // close any existing popups
         ngDialog.open({
           template: '/assets/partials/dashboard/rvReleaseNotificationPopup.html',
           className: '',
@@ -178,8 +178,8 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
    var setWorkStation = function() {
 
 
-      //Variable to avoid calling the set work station api, when
-      //its already invoked when navigating to the dashboard for the first time
+      // Variable to avoid calling the set work station api, when
+      // its already invoked when navigating to the dashboard for the first time
       $rootScope.isWorkstationSet = true;
       if($scope.isIpad) {
         document.addEventListener("deviceready", function() {
@@ -188,8 +188,8 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
         }, false);
       } else {
 
-        //Check whether UUID is set from the WS response. We will check it 3 times
-        //in an interval of 500ms. If the UUID is not set by that time, we will use the default
+        // Check whether UUID is set from the WS response. We will check it 3 times
+        // in an interval of 500ms. If the UUID is not set by that time, we will use the default
         // value 'DEFAULT'
         if(!$scope.getDeviceId()) {
           var count = 3;
@@ -220,7 +220,7 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
    };
 
    var showWorkstationPopup = function() {
-      ngDialog.close(); //close any existing popups
+      ngDialog.close(); // close any existing popups
       ngDialog.open({
         template: '/assets/partials/workstation/rvWorkstationPopup.html',
         className: '',
@@ -307,7 +307,7 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
    */
    $scope.$on("UpdateHeading", function(event, data) {
       event.stopPropagation();
-      //chnaging the heading of the page
+      // chnaging the heading of the page
       $scope.heading = data;
    });
 

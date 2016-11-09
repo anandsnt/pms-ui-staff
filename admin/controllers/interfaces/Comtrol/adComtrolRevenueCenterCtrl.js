@@ -1,7 +1,7 @@
 admin.controller('adComtrolRevenueCenterCtrl', ['$scope', 'revCenters', 'adComtrolRevenueCenterSrv',
     function($scope, revCenters, adComtrolRevenueCenterSrv) {
 
-        //private methods and variables
+        // private methods and variables
         var resetNew = function() {
                 $scope.state.new = {
                     name: "",
@@ -15,8 +15,8 @@ admin.controller('adComtrolRevenueCenterCtrl', ['$scope', 'revCenters', 'adComtr
                 }
             };
 
-        //scope method and variables
-        //-------------------------------------------------------------------------------------------------------------- ADD
+        // scope method and variables
+        // -------------------------------------------------------------------------------------------------------------- ADD
         /**
          * Method to open the add form
          */
@@ -56,7 +56,7 @@ admin.controller('adComtrolRevenueCenterCtrl', ['$scope', 'revCenters', 'adComtr
                 }
             });
         };
-        //-------------------------------------------------------------------------------------------------------------- EDIT
+        // -------------------------------------------------------------------------------------------------------------- EDIT
         /**
          * Method to show the edit form
          * @param idx
@@ -89,7 +89,7 @@ admin.controller('adComtrolRevenueCenterCtrl', ['$scope', 'revCenters', 'adComtr
                 }
             });
         };
-        //-------------------------------------------------------------------------------------------------------------- DELETE
+        // -------------------------------------------------------------------------------------------------------------- DELETE
         /**
          * Method to delete a Revenue Center
          * Deleted ones are  hidden in UI with help of isDeleted flag
@@ -104,7 +104,7 @@ admin.controller('adComtrolRevenueCenterCtrl', ['$scope', 'revCenters', 'adComtr
                 }
             });
         };
-        //--------------------------------------------------------------------------------------------------------------
+        // --------------------------------------------------------------------------------------------------------------
         /**
          * Initialization method for the controller
          */

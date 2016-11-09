@@ -1,7 +1,7 @@
 
 angular.module('stayCardModule', [])
     .config(function($stateProvider, $urlRouterProvider, $translateProvider) {
-        //define module-specific routes here/
+        // define module-specific routes here/
         // +-----------------+--------------------------+
         // |            reservation                     |
         // |              +                             |
@@ -19,7 +19,7 @@ angular.module('stayCardModule', [])
             abstract: true,
             url: '/staycard',
             templateUrl: '/assets/partials/staycard/rvStaycard.html',
-            controller: 'RVReservationMainCtrl', //staycardController',
+            controller: 'RVReservationMainCtrl', // staycardController',
             resolve: {
                 loadPaymentMapping: function (jsMappings) {
                     return jsMappings.loadPaymentMapping();
@@ -118,7 +118,7 @@ angular.module('stayCardModule', [])
                 }
             },
             resolve: {
-                areReservationAddonsAvailable: function(RVReservationBaseSearchSrv, $stateParams, staycardJsAssets) { //CICO-16874
+                areReservationAddonsAvailable: function(RVReservationBaseSearchSrv, $stateParams, staycardJsAssets) { // CICO-16874
                     return RVReservationBaseSearchSrv.hasAnyConfiguredAddons({
                         from_date: $stateParams.from_date,
                         to_date: $stateParams.to_date,
@@ -295,7 +295,7 @@ angular.module('stayCardModule', [])
                     return RVRoomAssignmentSrv.getPreferences(params);
                 },
                 roomUpgrades: function(RVUpgradesSrv, $stateParams, roomAssignmentJsAssets) {
-                    //check if roomupgrade is available
+                    // check if roomupgrade is available
                     if($stateParams.upgrade_available ==="true") {
                         var params = {};
 
@@ -327,7 +327,7 @@ angular.module('stayCardModule', [])
             }
         });
 
-        //Change stay dates
+        // Change stay dates
         $stateProvider.state('rover.reservation.staycard.changestaydates', {
             url: '/changestaydates/:reservationId/:confirmNumber',
             templateUrl: '/assets/partials/changeStayDates/rvChangeStayDates.html',

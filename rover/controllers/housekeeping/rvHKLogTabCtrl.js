@@ -33,7 +33,7 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 				item.service_status.old_value = getServiceStatusValue(item.service_status.old_value);
 				item.service_status.new_value = getServiceStatusValue(item.service_status.new_value);
 			});
-			//Paginaton
+			// Paginaton
 	        $scope.totalResults = roomDetailsLogData.total_count;
 	        if($scope.roomLogData.total_count===0) {
               $scope.start = 0;
@@ -79,7 +79,7 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 	        };
 
 	       // params['sort_order'] = $scope.sort_order;
-	        //params['sort_field'] = $scope.sort_field;
+	        // params['sort_field'] = $scope.sort_field;
 
 	        $scope.invokeApi(RVHkRoomDetailsSrv.getRoomLog, params, callback);
 	    };

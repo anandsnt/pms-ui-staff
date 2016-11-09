@@ -54,8 +54,8 @@ var UnassignedRoomPanel = React.createClass({
         hour_difference = Math.floor(difference / 36e5);
         min_difference = Math.floor((difference % 36e5) / 6e4);
 
-        //fraction = Math.ceil( ((difference < 1.0) ? difference : (difference % Math.floor(difference))) * 10 );
-        //difference = Math.floor(difference);
+        // fraction = Math.ceil( ((difference < 1.0) ? difference : (difference % Math.floor(difference))) * 10 );
+        // difference = Math.floor(difference);
 
         return {
             hh: hour_difference,
@@ -102,7 +102,7 @@ var UnassignedRoomPanel = React.createClass({
             stay_span: this.__getTimeDiff(item.arrival_date, item.arrival_time, item.departure_date, item.departure_time)
         });
 
-        //enable draggable
+        // enable draggable
         $('.unassigned-list-item.ui-draggable').draggable('disable');
         $('#ob-' + index).draggable({
             start: this._dragStart,
@@ -139,8 +139,8 @@ var UnassignedRoomPanel = React.createClass({
             scrollY: true,
             tap: true,
             mouseWheel: true
-            //bounce: false,
-            //useTransition: true
+            // bounce: false,
+            // useTransition: true
         });
         setTimeout(function () {
             iscroll.unassignedList.refresh();

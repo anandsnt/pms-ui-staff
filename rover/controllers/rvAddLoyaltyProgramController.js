@@ -54,7 +54,7 @@ sntRover.controller('rvAddLoyaltyProgramController', ['$scope', '$rootScope', '$
                 $scope.loyaltyPrograms = [];
             }
         }
-        //now setup ffps and hlps
+        // now setup ffps and hlps
         $scope.getFFPS();
         $scope.getHLPS();
     };
@@ -174,6 +174,6 @@ sntRover.controller('rvAddLoyaltyProgramController', ['$scope', '$rootScope', '$
 
 	};
 
-	//CICO-21206
+	// CICO-21206
 	$scope.setupLoyaltyPrograms();
 }]);

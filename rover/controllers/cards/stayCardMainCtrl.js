@@ -2,7 +2,7 @@
 angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state', 'RVReservationSummarySrv', '$timeout', 'dateFilter', 'RVContactInfoSrv', '$q', 'RVReservationStateService', 'RVReservationDataService', 'rvGroupConfigurationSrv', 'rvAllotmentConfigurationSrv', 'RVReservationPackageSrv',
 	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state, RVReservationSummarySrv, $timeout, dateFilter, RVContactInfoSrv, $q, RVReservationStateService, RVReservationDataService, rvGroupConfigurationSrv, rvAllotmentConfigurationSrv, RVReservationPackageSrv) {
 		BaseCtrl.call(this, $scope);
-		//Switch to Enable the new cards addition funcitonality
+		// Switch to Enable the new cards addition funcitonality
 		$scope.addNewCards = true;
 		var that = this;
 
@@ -32,7 +32,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			$scope.countries = data;
 		};
 
-		//fetching country list
+		// fetching country list
 		$scope.invokeApi(RVCompanyCardSrv.fetchCountryList, {}, successCallbackOfCountryListFetch);
 
 
@@ -43,7 +43,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				}
 			}
 			// passReservationParams
-			//TODO : Once this works pull it to a separate method
+			// TODO : Once this works pull it to a separate method
 			var fetchGuestcardDataSuccessCallback = function(data) {
 				$scope.idTypeList = data.id_type_list;
 				$scope.$emit('hideLoader');
@@ -238,7 +238,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 
 		$scope.initGroupCard = function(groupId) {
 			var promises = [];
-			//we are not using our normal API calling since we have multiple API calls needed
+			// we are not using our normal API calling since we have multiple API calls needed
 
 			$scope.$emit('showLoader');
 
@@ -246,7 +246,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				activeScreen: 'STAY_CARD'
 			};
 
-			//group details fetch
+			// group details fetch
 			var paramsForGroupDetails = {
 				groupId: groupId
 			};
@@ -256,7 +256,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				.then(successCallbackOfGroupDetailsFetch)
 			);
 
-			//reservation list fetch
+			// reservation list fetch
 			var paramsForHoldListFetch = {
 				is_group: true
 			};
@@ -266,7 +266,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				.then(successCallBackOfGroupHoldListFetch)
 			);
 
-			//Lets start the processing
+			// Lets start the processing
 			$q.all(promises)
 				.then(successFetchOfAllReqdForGroupDetailsShowing, failedToFetchOfAllReqdForGroupDetailsShowing);
 		};
@@ -354,7 +354,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			$scope.viewState.pendingRemoval.cardType = "";
 			var timer = 0;
 
-			//init all cards with new data
+			// init all cards with new data
 			if (!isCardSame.guest) {
 				$scope.$broadcast('guestCardDetached');
 				$scope.initGuestCard();
@@ -401,7 +401,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			// will be received here!
 			// This code should be HIT everytime there is a removal or a replacement of
 			// any of the cards attached!
-			//if cards are not attached future reservation values are coming in as null
+			// if cards are not attached future reservation values are coming in as null
 			var futureCounts = $scope.reservationListData.future_reservation_counts;
 
 
@@ -563,7 +563,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					}).length;
 
 				removedCard = card;
-				//Cannot Remove the last card... Tell user not to select another card
+				// Cannot Remove the last card... Tell user not to select another card
 				if (totalCardsAttached > 1 && card !== "") {
 					var reservationData = $scope.reservationData,
 						hasMultipleReservations = (reservationData &&
@@ -579,7 +579,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					}
 
 				} else {
-					//Bring up alert here
+					// Bring up alert here
 					if ($scope.viewState.pendingRemoval.status || cardId) {
 						$scope.viewState.pendingRemoval.status = false;
 						$scope.viewState.pendingRemoval.cardType = "";
@@ -723,7 +723,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					$scope.cardRemoved(card);
 					$scope.cardReplaced(card, cardData);
 
-					//CICO-21205
+					// CICO-21205
 					// Fix for Replace card was called even if lastCardSlot.cardType was an empty string
 					if (!!$scope.viewState.lastCardSlot && !!$scope.viewState.lastCardSlot.cardType && card !== $scope.viewState.lastCardSlot.cardType) {
 						$scope.removeCard($scope.viewState.lastCardSlot.cardType, $scope.viewState.lastCardSlot.cardId, true);
@@ -738,10 +738,10 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				onReplaceFailure = function(error) {
 
 					$scope.cardRemoved();
-					//480 is reserved for cases where trial to use the card fails fails
+					// 480 is reserved for cases where trial to use the card fails fails
 					if (error.httpStatus === 480) {
 	  					$scope.cardReplaced(card, cardData);
-	  					//CICO-21205
+	  					// CICO-21205
 						// Fix for Replace card was called even if lastCardSlot.cardType was an empty string
 						if (!!$scope.viewState.lastCardSlot && !!$scope.viewState.lastCardSlot.cardType) {
 							$scope.removeCard($scope.viewState.lastCardSlot);
@@ -758,7 +758,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					$scope.$emit('hideLoader');
 				},
 				onEachReplaceSuccess = function() {
-					//TODO: Handle each success call here
+					// TODO: Handle each success call here
 				};
 
 			if (future && $scope.reservationData && $scope.reservationData.reservationIds && $scope.reservationData.reservationIds.length > 1) {
@@ -777,7 +777,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				});
 				$q.all(promises).then(onReplaceSuccess, onReplaceFailure);
 			} else {
-				//Replace card with the selected one
+				// Replace card with the selected one
 				$scope.invokeApi(RVCompanyCardSrv.replaceCard, {
 					'reservation': typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
 					'cardType': card,
@@ -821,7 +821,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 		};
 
 		$scope.cardRemoved = function(card) {
-			//reset Pending Flag
+			// reset Pending Flag
 			$scope.viewState.pendingRemoval.status = false;
 			$scope.viewState.pendingRemoval.cardType = "";
 			// reset the id and the future reservation counts that were cached
@@ -834,7 +834,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					'userId': "",
 					'avatar': "",
 					'guestId': "",
-					'vip': "" //TODO: check with API or the product team
+					'vip': "" // TODO: check with API or the product team
 				};
 
 				$scope.guestCardData.contactInfo = contactInfoData.contactInfo;
@@ -863,7 +863,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				$scope.reservationDetails.companyCard.id = cardData.id;
 				$scope.reservationData.company.id = cardData.id;
 				$scope.initCompanyCard();
-				//clean search data
+				// clean search data
 				$scope.searchData.companyCard.companyName = "";
 				$scope.searchData.companyCard.companyCity = "";
 				$scope.searchData.companyCard.companyCorpId = "";
@@ -1115,7 +1115,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				// the reservation's already attached demographics
 				// information must be preserved.
 
-				//CICO-16927 - added undefined check for demographics
+				// CICO-16927 - added undefined check for demographics
 				room.demographics = {
 					market: (typeof refData.demographics === "undefined" || !refData.demographics.market_segment_id) ? '' : refData.demographics.market_segment_id,
 					source: (typeof refData.demographics === "undefined" || !refData.demographics.source_id) ? '' : refData.demographics.source_id,
@@ -1131,9 +1131,9 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				self.totalStayCost = parseFloat(self.totalStayCost) + parseFloat(refData.amount);
 				var success = function(data) {
 					room.rateName = data.name;
-					//CICO-16850
-					//Default to market and source of Rate IFF there is nothing associated with the reservation yet
-					//This checkt will Save reservations state while editing
+					// CICO-16850
+					// Default to market and source of Rate IFF there is nothing associated with the reservation yet
+					// This checkt will Save reservations state while editing
 					if (!$scope.reservationData.demographics.market) {
 						$scope.reservationData.demographics.market = !data.market_segment_id ? '' : data.market_segment_id;
 					}
@@ -1205,7 +1205,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 		};
 
 		$scope.staycardClicked = function() {
-			//save contact info
+			// save contact info
 			$scope.$broadcast('saveContactInfo');
 		};
 

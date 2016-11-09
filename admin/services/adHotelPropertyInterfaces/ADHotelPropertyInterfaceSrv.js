@@ -15,7 +15,7 @@ admin.service('ADHotelPropertyInterfaceSrv', ['$http', '$q', 'ADBaseWebSrvV2', f
             return deferred.promise;
         };
 
-        this.activate = function(data) {//data needs to include id (ie. {id: 'wakeup_call'}
+        this.activate = function(data) {// data needs to include id (ie. {id: 'wakeup_call'}
 		var deferred = $q.defer(), url;
 
                     url = '/admin/hotel_interfaces.json';

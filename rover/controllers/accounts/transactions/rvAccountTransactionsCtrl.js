@@ -40,7 +40,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
         	return ($rootScope.isStandAlone && rvPermissionSrv.getPermissionValue ('MOVE_CHARGES_RESERVATION_ACCOUNT'));
   		};
 
-  		//only for standalone
+  		// only for standalone
 		var setChargeCodesSelectedStatus = function(bool) {
 				var billTabsData = $scope.transactionsDetails.bills;
 				var chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
@@ -121,12 +121,12 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 				var billTabsData = $scope.transactionsDetails.bills;
 				var chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
-				//Data to pass to the popup
-				//1. Selected transaction ids
-				//2. Confirmation number
-				//3. AccountName
-				//4. CurrentBillNumber
-				//5. Current Bill id
+				// Data to pass to the popup
+				// 1. Selected transaction ids
+				// 2. Confirmation number
+				// 3. AccountName
+				// 4. CurrentBillNumber
+				// 5. Current Bill id
 
 				$scope.moveChargeData = {};
 				$scope.moveChargeData.selectedTransactionIds = [];
@@ -168,7 +168,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 
 		var initAccountTransactionsView = function() {
-			//Scope variable to set active bill
+			// Scope variable to set active bill
 			$scope.currentActiveBill = 0;
 			$scope.dayRates = -1;
 			$scope.setScroller('registration-content');
@@ -179,8 +179,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				scrollX: true
 			});
 			$scope.showMoveCharges = $scope.hasPermissionToMoveCharges();
-			$scope.renderData = {}; //payment modal data - naming so as to reuse HTML
-			//TODO: Fetch accoutn transactions
+			$scope.renderData = {}; // payment modal data - naming so as to reuse HTML
+			// TODO: Fetch accoutn transactions
 			$scope.paymentModalOpened = false;
 
 			$scope.isFromGroups = (typeof $scope.groupConfigData !== "undefined" && $scope.groupConfigData.activeTab === "TRANSACTIONS");
@@ -256,7 +256,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			};
 			var createBillSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
-				//Fetch data again to refresh the screen with new data
+				// Fetch data again to refresh the screen with new data
 				getTransactionDetails();
 			};
 
@@ -290,7 +290,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			 */
 			var moveToBillSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
-				//Fetch data again to refresh the screen with new data
+				// Fetch data again to refresh the screen with new data
 				getTransactionDetails();
 			};
 
@@ -307,7 +307,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 
 
-		//Calculate the scroll width for bill tabs in all the cases
+		// Calculate the scroll width for bill tabs in all the cases
 		$scope.getWidthForBillTabsScroll = function() {
 
 			var width = 0;
@@ -484,7 +484,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 
 
-		/*------------- edit/remove/split starts here --------------*/
+		/* ------------- edit/remove/split starts here --------------*/
 
 		/**
 		 * function to check whether the user has permission
@@ -492,7 +492,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @return {Boolean}
 		 */
 		var hasPermissionToChangeCharges = function(type) {
-			//hide edit and remove options in case type is  payment
+			// hide edit and remove options in case type is  payment
 			var hasRemoveAndEditPermission  = (type !== "PAYMENT") ? true : false;
 		    var split_permission = rvPermissionSrv.getPermissionValue('SPLIT_CHARGES'),
 		        edit_permission = rvPermissionSrv.getPermissionValue('EDIT_CHARGES'),
@@ -575,7 +575,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		$scope.openActionsPopup = function(id, desc, amount, type, credits) {
 
 			$scope.errorMessage = "";
-			//hide edit and remove options in case type is  payment
+			// hide edit and remove options in case type is  payment
 			$scope.hideRemoveAndEdit  = (type === "PAYMENT") ? true : false;
 			$scope.selectedTransaction = {};
 			$scope.selectedTransaction.id = id;
@@ -675,8 +675,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 
 
-		/*----------- edit/remove/split ends here ---------------*/
-		//CICO-13903
+		/* ----------- edit/remove/split ends here ---------------*/
+		// CICO-13903
 
 		$scope.sendEmail = function(params) {
 			var mailSent = function(data) {
@@ -749,12 +749,12 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.invokeApi(rvAccountTransactionsSrv.fetchAccountBillsForPrint, requestParams, printBillSuccess, printBillFailure);
 		};
 
-		//Direct Bill payment starts here
+		// Direct Bill payment starts here
 
 		var proceedPayment = function(arType) {
 			var successPayment = function() {
 				$scope.$emit('hideLoader');
-				//Fetch data again to refresh the screen with new data
+				// Fetch data again to refresh the screen with new data
 				getTransactionDetails();
 				$scope.diretBillpaymentData = {};
 			};
@@ -769,7 +769,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			 $scope.diretBillpaymentData.data_to_pass.is_new_ar_account = true;
 			 proceedPayment();
 		});
-		//setUp data from the payament modal for future usage
+		// setUp data from the payament modal for future usage
 		$scope.$on('arAccountWillBeCreated', function(e, arg) {
 			    $scope.account_id = arg.account_id;
 			    $scope.is_auto_assign_ar_numbers = arg.is_auto_assign_ar_numbers;
@@ -800,7 +800,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @return {[type]}      [description]
 		 */
 		var successFetchOfAllReqdForTransactionDetails = function(data) {
-			//$scope.$emit('hideLoader');
+			// $scope.$emit('hideLoader');
 		};
 
 		/**
@@ -834,11 +834,11 @@ sntRover.controller('rvAccountTransactionsCtrl', [
             }
 
             var promises = [];
-            //we are not using our normal API calling since we have multiple API calls needed
+            // we are not using our normal API calling since we have multiple API calls needed
 
             $scope.$emit('showLoader');
 
-            //transaction details fetch
+            // transaction details fetch
             var paramsForTransactionDetails = {
                 account_id: $scope.accountConfigData.summary.posting_account_id
             };
@@ -848,14 +848,14 @@ sntRover.controller('rvAccountTransactionsCtrl', [
                 .then(onTransactionFetchSuccess)
             );
 
-            //charge code fetch
+            // charge code fetch
             promises.push(RVBillCardSrv
                 .fetchChargeCodes()
                 .then(fetchChargeCodesSuccess)
             );
 
 
-            //Lets start the processing
+            // Lets start the processing
             $q.all(promises)
                 .then(successFetchOfAllReqdForTransactionDetails, failedToFetchOfAllReqdForTransactionDetails);
         };
@@ -885,13 +885,13 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		var updateBillingReferenceNumber = function() {				
 			if (rvPermissionSrv.getPermissionValue('EDIT_ACCOUNT')) {
 				var onAccountUpdateSuccess = function(data) {
-						//client controllers should get an infromation whether updation was success
+						// client controllers should get an infromation whether updation was success
 						$scope.isBillingRefernceNumberChanged = false;
 						$scope.$broadcast("UPDATED_ACCOUNT_INFO");
 						$scope.$emit('hideloader');
 					},
 					onAccountUpdateFailure = function(errorMessage) {
-						//client controllers should get an infromation whether updation was a failure
+						// client controllers should get an infromation whether updation was a failure
 						$scope.$broadcast("FAILED_TO_UPDATE_ACCOUNT_INFO");
 						$scope.$emit('showErrorMessage', errorMessage);
 						$scope.$emit('hideloader');
@@ -1057,7 +1057,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
  			refreshRegContentScroller();
 
  			angular.forEach(activebillTab.transactions, function(feesValue, feesKey) {
-				feesValue.billValue 	= activebillTab.bill_number; //Bill value append with bill details
+				feesValue.billValue 	= activebillTab.bill_number; // Bill value append with bill details
 				feesValue.oldBillValue 	= activebillTab.bill_number; // oldBillValue used to identify the old billnumber
 			});
 

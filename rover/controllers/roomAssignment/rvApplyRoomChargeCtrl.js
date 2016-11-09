@@ -88,8 +88,8 @@ sntRover.controller('rvApplyRoomChargeCtrl', [
 
 	$scope.failureCallbackUpgrade = function(error) {
 		// ngDialog.close();
-		//since we are expecting some custom http error status in the response
-		//and we are using that to differentiate among errors
+		// since we are expecting some custom http error status in the response
+		// and we are using that to differentiate among errors
 		if(error.hasOwnProperty ('httpStatus')) {
 			switch (error.httpStatus) {
 				case 470:
@@ -139,7 +139,7 @@ sntRover.controller('rvApplyRoomChargeCtrl', [
 			});
 		}
 
-		//updating in the central data model
+		// updating in the central data model
 		_.extend($scope.reservationData.reservation_card, dataToUpdate);
 
 		RVReservationCardSrv

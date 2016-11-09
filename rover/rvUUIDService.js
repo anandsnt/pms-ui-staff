@@ -32,7 +32,7 @@ var UUIDService = function() {
         }
         else{
 
-            //calling cordova service
+            // calling cordova service
             cordova.exec(
                         // if success call back require any parameters
                         function(data) {
@@ -80,7 +80,7 @@ var UUIDService = function() {
         }
     };
 
-    //function for getting Device UUID
+    // function for getting Device UUID
     this.getDeviceId = function(options) {
         options['service'] = "RVCardPlugin";
         options['action'] = "UUIDforDevice";

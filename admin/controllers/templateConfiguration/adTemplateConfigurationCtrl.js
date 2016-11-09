@@ -40,7 +40,7 @@ admin.controller('ADTemplateConfigurationCtrl', ['$scope', '$state', 'ADHotelLis
 		var editHotelConfigurationSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.hotelConfig   = data;
-			$scope.formTitle = data.hotel_name;//To show hotel name in title
+			$scope.formTitle = data.hotel_name;// To show hotel name in title
 			$scope.isEditmode = true;
 			$scope.hotelConfig.theme = $scope.hotelConfig.existing_email_template_theme;
 

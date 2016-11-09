@@ -28,7 +28,7 @@ admin.service('adReportsFilterSrv', ['$q', 'ADBaseWebSrvV2',
 
         self.cache = {
             config: {
-                lifeSpan: 600 //in seconds
+                lifeSpan: 600 // in seconds
             },
             responses: {}
         }

@@ -1,5 +1,5 @@
 admin.service('adZestCheckinCheckoutSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2) {
-    //Email Check-in
+    // Email Check-in
     this.fetchEmailSetup = function(data) {
         var deferred = $q.defer();
         var url = '/admin/zest_email_setups.json';
@@ -24,7 +24,7 @@ admin.service('adZestCheckinCheckoutSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBas
         return deferred.promise;
     };
     
-    //Direct URL
+    // Direct URL
     this.fetchDirectSetup = function(data) {
         var deferred = $q.defer();
         var url = '/admin/zest_direct_url_setups';
@@ -49,7 +49,7 @@ admin.service('adZestCheckinCheckoutSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBas
         return deferred.promise;
     };
 
-    //Direct URL
+    // Direct URL
     this.fetchDirectUrlList= function(data) {
         var deferred = $q.defer();
         var url = '/api/guest_web_urls/';
@@ -74,7 +74,7 @@ admin.service('adZestCheckinCheckoutSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBas
         });
         return deferred.promise;
     };
-    //edit a direct URL
+    // edit a direct URL
     this.editDirectURL = function(data) {
         var deferred = $q.defer();
         var url = '/api/guest_web_urls/'+data.id;
@@ -86,7 +86,7 @@ admin.service('adZestCheckinCheckoutSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBas
         });
         return deferred.promise;
     };
-    //delere a direct URL
+    // delere a direct URL
     this.deteDirectUrl = function(data) {
         var deferred = $q.defer();
         var url = '/api/guest_web_urls/'+data.id;

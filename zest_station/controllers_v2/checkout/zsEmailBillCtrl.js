@@ -8,7 +8,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 	'zsGeneralSrv',
 	function($scope, $stateParams, $state, zsEventConstants, zsUtilitySrv, zsCheckoutSrv, zsGeneralSrv) {
 
-		/***********************************************************************************************
+		/** *********************************************************************************************
 		 **		Expected state params -----> printopted, reservation_id, email and guest_detail_id			  
 		 **		Exit functions -> checkOutSuccess							
 		 **																		 
@@ -27,15 +27,15 @@ sntZestStation.controller('zsEmailBillCtrl', [
 		 */
 		var initializeMe = function() {
 			BaseCtrl.call(this, $scope);
-			//hide back button
+			// hide back button
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
-			//hide close button
+			// hide close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			$scope.email = $stateParams.email;
-			//check if print was done
+			// check if print was done
 			$scope.printOpted = $stateParams.printopted === 'true';
-			//if user already has email provide two options
-			//else prompt for email entry
+			// if user already has email provide two options
+			// else prompt for email entry
 			$scope.mode = !!$scope.email ? "EMAIL_BILL_GUEST_OPTIONS" : "EMAIL_BILL_EDIT_MODE";
 			if ($scope.mode === 'EMAIL_BILL_EDIT_MODE') {
 				$scope.focusInputField("email_text");
@@ -52,7 +52,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 		 *  general failure actions
 		 **/
 		var failureCallBack = function() {
-			//if key card was inserted we need to eject that
+			// if key card was inserted we need to eject that
 			$scope.$emit('EJECT_KEYCARD');
 			$state.go('zest_station.speakToStaff');
 		};
@@ -66,7 +66,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 
 		$scope.sendEmail = function() {
 			$scope.callBlurEventForIpad();
-			//future story, add black-list check here
+			// future story, add black-list check here
 
 			var sendBillSuccess = function(response) {
 				$scope.emailSent = true;
@@ -96,7 +96,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 					'email': $scope.email
 				},
 				successCallBack: function(data) {
-					//onSuccess, 
+					// onSuccess, 
 					if (!data.black_listed_email) {
 						afterBlackListValidation();
 
@@ -139,11 +139,11 @@ sntZestStation.controller('zsEmailBillCtrl', [
 				updateGuestEmailFailed();
 			};
 			//
-			//future story, enable black-list check here
+			// future story, enable black-list check here
 			//
-			//checks if new email is blacklisted, if so, set invalid email mode
-			//otherwise, continue updating guest email
-			//checkIfEmailIsBlacklisted(afterBlackListValidation, onBlackListedEmailFound, onValidationAPIFailure);
+			// checks if new email is blacklisted, if so, set invalid email mode
+			// otherwise, continue updating guest email
+			// checkIfEmailIsBlacklisted(afterBlackListValidation, onBlackListedEmailFound, onValidationAPIFailure);
 
 			afterBlackListValidation();
 

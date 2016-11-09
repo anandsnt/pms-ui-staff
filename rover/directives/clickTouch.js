@@ -17,7 +17,7 @@ sntRover.directive('clickTouch', function($timeout, $parse) {
 
                 }
 
-                //bind any touch start event to the element
+                // bind any touch start event to the element
                 if (typeof event === typeof {}) {
                     if (event.preventDefault) {
                         event.preventDefault();

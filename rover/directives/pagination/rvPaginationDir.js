@@ -15,7 +15,7 @@ sntRover.directive('rvPagination', function() {
         if (!($scope.pageOptions.api)) {
             console.error("rvPagination error : pageOptions should contain an API reference");
         }
-        //To add missing params
+        // To add missing params
         $scope.pageOptions = angular.extend(pageOptions, $scope.pageOptions);
     };
 

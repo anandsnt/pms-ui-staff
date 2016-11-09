@@ -9,12 +9,12 @@ sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope',
     var init = function() {
         $scope.attachedEntities = [];
 
-        //Contains selected entity details. Entity is selected 
-        //from all routes screen or from search entity screen.
+        // Contains selected entity details. Entity is selected 
+        // from all routes screen or from search entity screen.
         $scope.selectedEntity = {};
 
-        //Holds entity search results.
-        //includes reservations, travel agent/company cards and accounts
+        // Holds entity search results.
+        // includes reservations, travel agent/company cards and accounts
         $scope.searchResults = {
             reservations: [],
             cards: [],
@@ -36,7 +36,7 @@ sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope',
             isBillingGroup: true
         };
 
-        //Payment details
+        // Payment details
         $scope.saveData = {
             payment_type: "",
             payment_type_description: "",

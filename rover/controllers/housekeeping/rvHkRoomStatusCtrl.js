@@ -650,7 +650,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldShowTimeSelector = function() {
-			//as per CICO-11840 we will show this for hourly hotels only
+			// as per CICO-11840 we will show this for hourly hotels only
 			return $rootScope.isHourlyRateOn
 		};
 
@@ -698,7 +698,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			else {
 				params.room_id = $scope.multiRoomAction.rooms;
 			}
-			//Used - to minus from this value on status update
+			// Used - to minus from this value on status update
 			$scope.totalRoomsSelectedForUpdate = parseInt(params.room_id.length);
 			$scope.selectedServiceStatusName = $scope.serviceStatusList[_.findIndex
 							($scope.serviceStatusList, {id: params.room_service_status_id
@@ -735,7 +735,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			var roomsToAdd = _.filter($scope.completedData.assignedRoomsList, function(room) { return room.is_add_to_update});
 
 			params.room_id = _.pluck(roomsToAdd, 'id');
-			//as per CICO-32168 comments
+			// as per CICO-32168 comments
 			if(params.room_id.length > 0) {
 				$scope.invokeApi(RVHkRoomDetailsSrv.postRoomServiceStatus, params, successCallBack);
 			} else {
@@ -931,7 +931,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 			// clear old results and update total counts
 			$scope.rooms              = [];
-			$scope.summary			  = $_roomList.summary;//CICO-23419
+			$scope.summary			  = $_roomList.summary;// CICO-23419
 			$scope.netTotalCount = $_roomList.total_count;
 			$scope.uiTotalCount  = !!$_roomList && !!$_roomList.rooms ? $_roomList.rooms.length : 0;
 			$scope.allRoomIDs    = $_roomList.hasOwnProperty('all_room_ids') ? $_roomList['all_room_ids'] : [];
@@ -1367,13 +1367,13 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				if ( this.scrollTop === scrollBarOnTop ) {
 					$refresh.style.WebkitTransition = '';
 					$refresh.classList.add('show');
-					/***/
+					/** */
 					$load.style.WebkitTransition = '';
 					$load.classList.remove('show');
 				} else if ( this.scrollTop === scrollBarOnBot ) {
 					$load.style.WebkitTransition = '';
 					$load.classList.add('show');
-					/***/
+					/** */
 					$refresh.style.WebkitTransition = '';
 					$refresh.classList.remove('show');
 				};

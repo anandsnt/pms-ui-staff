@@ -29,13 +29,13 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 
 
 
-	//default number of selected days is 14
+	// default number of selected days is 14
 	$scope.numberOfDaysSelected = 14;
 
 
 	$scope.data = {};
 
-	//default date value
+	// default date value
 	$scope.data.selectedDate = $rootScope.businessDate;
 	$scope.data.formattedSelectedDate = $filter('date')($scope.data.selectedDate, $rootScope.dateFormat);
 
@@ -79,7 +79,7 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 		$scope.$emit("hideLoader");
 	};
 
-	//calculating date after number of dates selected in the select box
+	// calculating date after number of dates selected in the select box
 	$scope.getDateParams = function() {
 		var dateAfter = tzIndependentDate ($scope.data.selectedDate);
 

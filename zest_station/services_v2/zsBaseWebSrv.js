@@ -1,5 +1,5 @@
 
-//To fix the issue with csrf token in ajax requests
+// To fix the issue with csrf token in ajax requests
 sntZestStation.config(function($httpProvider) {
 	$httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 	var m = document.getElementsByTagName('meta');
@@ -48,7 +48,7 @@ if (status === 406) { // 406- Network error
 			params = "";
 		}
 
-		//Sample params {params:{fname: "fname", lname: "lname"}}
+		// Sample params {params:{fname: "fname", lname: "lname"}}
 		var httpDict = {};
 
 		httpDict.url = url;
@@ -88,7 +88,7 @@ if (status === 406) { // 406- Network error
 
 
 
-	/**************************************************************************************/
+	/** ************************************************************************************/
 
 	/**
 	 *   A http requester method for calling webservice
@@ -104,7 +104,7 @@ if (status === 406) { // 406- Network error
 			params = "";
 		}
 
-		//Sample params {params:{fname: "fname", lname: "lname"}}
+		// Sample params {params:{fname: "fname", lname: "lname"}}
 		var httpDict = {};
 
 		httpDict.url = url;
@@ -121,8 +121,8 @@ if (status === 406) { // 406- Network error
 		
 
 		$http(httpDict).success(function(response, status, headers) {
-			//202 ---> The request has been accepted for processing, but the processing has not been completed.
-			//102 ---> This code indicates that the server has received and is processing the request, but no response is available yet
+			// 202 ---> The request has been accepted for processing, but the processing has not been completed.
+			// 102 ---> This code indicates that the server has received and is processing the request, but no response is available yet
 			if (status === 202 || status === 102 || status === 250) {
 				var response = {
 					'status': 'processing_not_completed',

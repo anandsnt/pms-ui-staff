@@ -1,14 +1,14 @@
 sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope', '$state', function($scope, $rootScope, $state) {
-	//inheriting some useful things
+	// inheriting some useful things
 	BaseCtrl.call(this, $scope);
     var that = this;
-	//scroller related settings
+	// scroller related settings
 	var scrollerOptions = {click: true, preventDefault: false};
 
   	$scope.setScroller('dashboard_scroller', scrollerOptions);
 
 
-  	$scope.showDashboard = true; //variable used to hide/show dabshboard
+  	$scope.showDashboard = true; // variable used to hide/show dabshboard
 
     $scope.disableReservations = true;
 
@@ -21,7 +21,7 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
     $scope.dayAfterTomorrow.setDate ($scope.tomorrow.getDate() + 1);
 
 
-    //we are setting the header accrdoing to house keeping dashboard
+    // we are setting the header accrdoing to house keeping dashboard
     $scope.$emit("UpdateHeading", 'DASHBOARD_HOUSEKEEPING_HEADING');
 
   	/*
@@ -56,7 +56,7 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
         $scope.$broadcast("updateReservationTypeFromOutside", type);
     });
 
-    //dont show Latecheckout icon
+    // dont show Latecheckout icon
     $scope.shouldShowLateCheckout = false;
     $scope.shouldShowQueuedRooms  = false;
 
@@ -88,7 +88,7 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
         $state.go('rover.housekeeping.roomStatus', {'roomStatus': filterType});
    };
 
-   //scroller is not appearing after coming back from other screens
+   // scroller is not appearing after coming back from other screens
     setTimeout(function() {
       $scope.refreshScroller('dashboard_scroller');
     }, 500);

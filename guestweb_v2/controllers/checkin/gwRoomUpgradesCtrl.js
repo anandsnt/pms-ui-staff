@@ -10,7 +10,7 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 		var init = function() {
 			var screenIdentifier = "ROOM_UPGRADES";
 
-			$scope.isUpgradesFetching = true; //to hide contents till api fetches options
+			$scope.isUpgradesFetching = true; // to hide contents till api fetches options
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 		}();
 		/**
@@ -27,7 +27,7 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 			$scope.isUpgradesFetching = false;
 		};
 		var onUpgradeFetchFailure = function(response) {
-			//to do - continue process - no fatal error
+			// to do - continue process - no fatal error
 		};
 
 		var options = {
@@ -55,7 +55,7 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 				$state.go('checkinReservationDetails');
 			};
 			var onUpgradeFailure = function() {
-				//to do - continue process - no fatal error
+				// to do - continue process - no fatal error
 			};
 			var options = {
 				params: params,

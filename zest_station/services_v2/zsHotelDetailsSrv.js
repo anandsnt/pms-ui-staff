@@ -53,8 +53,8 @@ sntZestStation.service('zsHotelDetailsSrv', ['zsBaseWebSrv2', 'zsBaseWebSrv', '$
 			promises = [that.fetchUserHotels(), that.fetchHotelBusinessDate(), that.fetchHotelSettings()];
 
 		$q.all(promises).then(function(data) {
-				//look this.fetchHotelBusinessDate
-				//since api/hotelsettings.json is returing a business date key and that is not the buiness date :(
+				// look this.fetchHotelBusinessDate
+				// since api/hotelsettings.json is returing a business date key and that is not the buiness date :(
 				that.hotelDetails.business_date = business_date;
 
 				deferred.resolve(that.hotelDetails);

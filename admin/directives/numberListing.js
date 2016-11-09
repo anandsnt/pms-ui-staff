@@ -5,7 +5,7 @@ function getLengthChangedNumber(lengthWanted, number) {
         number = number.toString();
     }
     var numberOfZerosToAppend = lengthWanted - number.length;
-    //if numberOfZerosToAppend is zero or less, nothing to do
+    // if numberOfZerosToAppend is zero or less, nothing to do
 
     if(numberOfZerosToAppend <= 0) {
         return number;

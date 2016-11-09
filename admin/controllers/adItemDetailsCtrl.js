@@ -6,12 +6,12 @@ admin.controller('ADItemDetailsCtrl', ['$scope', 'ADItemSrv', '$state', '$stateP
 	$scope.errorMessage = '';
 	$scope.mod = 'edit';
 
-	//inheriting from base controller
+	// inheriting from base controller
 	BaseCtrl.call(this, $scope);
 
 
 	var itemId = $stateParams.itemid;
-	//if itemid is null, means it is for add item form
+	// if itemid is null, means it is for add item form
 
 	if(typeof itemId === 'undefined' || itemId.trim() === '') {
 		$scope.mod = 'add';

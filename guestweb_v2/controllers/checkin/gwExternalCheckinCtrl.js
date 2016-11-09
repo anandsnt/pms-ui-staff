@@ -23,7 +23,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 		}();
 
 		var dateToSend = "";
-		var zestwebData = GwWebSrv.zestwebData; //for easy short usage
+		var zestwebData = GwWebSrv.zestwebData; // for easy short usage
 
 
 		// Calendar toggle actions and date select action
@@ -46,20 +46,20 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 			$scope.multipleMatchesFound = false;
 		};
 
-		//we need a guest token for authentication
-		//so fetch it with reservation id
+		// we need a guest token for authentication
+		// so fetch it with reservation id
 		var generateAuthToken = function(reservation_data) {
 			var params = {
 				"reservation_id": zestwebData.reservationID
 			};
 			var onSuccess = function(token_response) {
-				//set guestweb token
+				// set guestweb token
 				$rootScope.accessToken = zestwebData.accessToken = token_response.guest_web_token;
 				// display options for room upgrade screen
 				zestwebData.ShowupgradedLabel = false;
 				zestwebData.roomUpgradeheading = "Your trip details";
 				reservation_data.terms_and_conditions = (typeof zestwebData.termsAndConditions !== "undefined") ? zestwebData.termsAndConditions : "";
-				//set in service for future usage
+				// set in service for future usage
 				GwCheckinSrv.setcheckinData(reservation_data);
 				zestwebData.upgradesAvailable = (reservation_data.is_upgrades_available === "true") ? true : false;
 				zestwebData.isCCOnFile = (reservation_data.is_cc_attached === "true") ? true : false;
@@ -67,8 +67,8 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 				zestwebData.userMobile = reservation_data.guest_mobile;
 				GwWebSrv.zestwebData.roomUpgraded  = false;
 
-				//navigate to next page
-				//to be done
+				// navigate to next page
+				// to be done
 				$state.go('checkinReservationDetails');
 			};
 			var options = {
@@ -77,7 +77,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 			};
 
 			if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
-				onSuccess({"guest_web_token": "4120081e61c6e6abe51258a738ea94d1"});//dummy token
+				onSuccess({"guest_web_token": "4120081e61c6e6abe51258a738ea94d1"});// dummy token
 			}
 			else{
 				$scope.callAPI(GwCheckinSrv.generateAuthToken, options);
@@ -93,7 +93,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 			var onSuccess = function(response) {
 
 				var reservations = [];
-				//filter out reservations with 'RESERVED' status
+				// filter out reservations with 'RESERVED' status
 
 				angular.forEach(response.results, function(value, key) {
 					if (value.reservation_status === 'RESERVED') {
@@ -102,32 +102,32 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 				});
 				if (reservations.length === 0) { // No match
 					noMatchAction();
-				} else if (reservations.length >= 2) //Multiple matches
+				} else if (reservations.length >= 2) // Multiple matches
 				{
 					$scope.multipleMatchesFound = true;
 				} else {
 					var reservation_data = reservations[0];
-					//if reservation status is CANCELED -> No matches
+					// if reservation status is CANCELED -> No matches
 
 					if (reservation_data.reservation_status === 'CANCELED') {
 						noMatchAction();
 					}
-					//if reservation status is NOSHOW or to too late -> No matches
+					// if reservation status is NOSHOW or to too late -> No matches
 					else if (reservation_data.reservation_status === 'NOSHOW' || reservation_data.is_too_late) {
-						$state.go('guestCheckinLate'); //to be done
+						$state.go('guestCheckinLate'); // to be done
 					}
-					//if reservation is aleady checkin
+					// if reservation is aleady checkin
 					else if (reservation_data.is_checked_in === "true") {
 						$state.go('alreadyCheckedIn');
 					}
-					//if reservation is early checkin
+					// if reservation is early checkin
 					else if (reservation_data.is_too_early) {
-						//to be done
+						// to be done
 						$state.go('guestCheckinEarly', {
 							"date": reservation_data.available_date_after
 						});
 					} else {
-						//retrieve token for guest
+						// retrieve token for guest
 						zestwebData.primaryGuestId = reservation_data.primary_guest_id;
 						zestwebData.reservationID = reservation_data.reservation_id;
 						zestwebData.isPrecheckinOnly = (response.is_precheckin_only === "true" && reservation_data.reservation_status === 'RESERVED') ? true : false;
@@ -143,7 +143,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 			var params = {
 				"hotel_identifier": zestwebData.hotelIdentifier
 			};
-			//check if all fields are filled
+			// check if all fields are filled
 
 			$scope.lastname.length > 0 ? (params.last_name = $scope.lastname) : '';
 			$scope.confirmationNumber.length > 0 ? (params.alt_confirmation_number = $scope.confirmationNumber) : '';
@@ -157,7 +157,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 
 			if($scope.lastname.length > 0 && 
 			  ($scope.confirmationNumber.length > 0 || (typeof $scope.departureDate !== "undefined" && $scope.departureDate.length >0))) {
-				//if last name and either of confirmation number or departure date is provided
+				// if last name and either of confirmation number or departure date is provided
 				$scope.callAPI(GwCheckinSrv.findUser, options);
 			}
 			else{

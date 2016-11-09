@@ -23,7 +23,7 @@ var TimelinePanel = React.createClass({
 	        iscroll.timeline.refresh();
 
 	        if(_.isNumber(this.props.display.scrollTo)) {
-	        	//scroll.timeline.scrollTo(this.props.display.scrollTo, 0);
+	        	// scroll.timeline.scrollTo(this.props.display.scrollTo, 0);
 	        }
 	    }.bind(this), 1000);
 	},

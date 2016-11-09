@@ -93,7 +93,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
                 langName = langs[i].toLowerCase();
                 
                 hasFileUpdatedOrUploading = $scope.hasFileUpdatedOrUploading(langName);
-                if (isCapitalizedProperty && isEnabled && hasFileUpdatedOrUploading) {//is a language if [is capitalized] and enabled
+                if (isCapitalizedProperty && isEnabled && hasFileUpdatedOrUploading) {// is a language if [is capitalized] and enabled
                     languages.push({
                         value: langs[i]
                     });
@@ -154,8 +154,8 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
     };
 
     $scope.saveSettings = function() {
-        ///handling for the api for now, api has some issue with the default image setting back to snt logo...
-        //api dev should resolve this at some point
+        // /handling for the api for now, api has some issue with the default image setting back to snt logo...
+        // api dev should resolve this at some point
         if ($scope.zestSettings.key_create_file_uploaded.indexOf('/logo.png') !== -1) {
             $scope.zestSettings.key_create_file_uploaded = 'false';
         }
@@ -182,7 +182,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
     $scope.downloadLang = function(lang) {
          $timeout(function() {
             $scope.downloadPromptFileName = lang+'.json';
-            var link = document.getElementById('download-link-popup');//ie. en-download-link
+            var link = document.getElementById('download-link-popup');// ie. en-download-link
 
             link.href = 'staff/locales/download/'+lang+'.json';
          }, 500);
