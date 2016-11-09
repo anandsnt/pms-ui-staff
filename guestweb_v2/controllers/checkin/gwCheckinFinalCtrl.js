@@ -7,13 +7,13 @@ sntGuestWeb.controller('gwCheckinFinalController', ['$scope', '$state', '$stateP
 		$controller('BaseController', {
 			$scope: $scope
 		});
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "CHECKIN_FINAL";
 
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.confirmationNumber = GwWebSrv.zestwebData.confirmationNo;
 			$scope.isPosting = true;
-		}();
+		}());
 
 		var onSuccess = function(response) {
 			$scope.isPosting = false;

@@ -629,7 +629,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		/**
 		 * to what we need to in initial time
 		 */
-		var initializeMe = function() {
+		var initializeMe = (function() {
 
 			initializeVariables();
 
@@ -638,7 +638,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			chooseMode();
 
 			fetchAndShowCalendar();
-		}();
+		}());
 
 	}
 ]);

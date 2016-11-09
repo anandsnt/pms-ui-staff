@@ -8,7 +8,7 @@ sntGuestWeb.controller('GwCheckoutReviewBillController', ['$scope', '$state', '$
 			$scope: $scope
 		});
 
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "REVIEW_BILL";
 
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
@@ -31,7 +31,7 @@ sntGuestWeb.controller('GwCheckoutReviewBillController', ['$scope', '$state', '$
 			$scope.callAPI(GwCheckoutSrv.fetchBillDetails, options);
 			// varibale to handle bill popup
 			$scope.showBill = false;
-		}();
+		}());
 
 		$scope.gotToNextStep = function() {
 			// if payment gateway is MLI

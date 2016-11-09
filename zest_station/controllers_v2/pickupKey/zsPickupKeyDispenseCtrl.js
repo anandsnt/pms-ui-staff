@@ -29,7 +29,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 		/**
 		 * [initializeMe description]
 		 */
-		var initializeMe = function() {
+		var initializeMe = (function() {
 			// All the common actions for dispensing keys are to be included in
 			// zsKeyDispenseCtrl
 			$controller('zsKeyDispenseCtrl', {
@@ -37,7 +37,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 			});
 			$scope.mode = "DISPENSE_KEY_MODE";
 			$scope.readyForUserToPressMakeKey = true;
-		}();
+		}());
 
 		$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
 			if ($scope.zestStationData.pickup_qr_scan) {

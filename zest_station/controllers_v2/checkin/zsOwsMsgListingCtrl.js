@@ -55,7 +55,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 			}, 100);
 		};
 
-		var init = function() {
+		var init = (function() {
 
 			var showEmailButton = function() {
 				// check if reservation had email id
@@ -119,7 +119,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 
 			};
 
-			var fetchOwsMessages = function() {
+			var fetchOwsMessages = (function() {
 				$scope.owsMsgOpenPoup = false;
 				var options = {
 					params: {
@@ -130,9 +130,9 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 
 				$scope.callAPI(zsCheckinSrv.fetchOwsMessage, options);
 
-			}();
+			}());
 
-		}();
+		}());
 
 	}
 ]);

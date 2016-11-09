@@ -172,10 +172,10 @@ sntZestStation.controller('zsRootCtrl', [
 		 *  is invoked from chrome app, we will be hidding this tag from chrome app and
 		 *  checking that to distinguish if app was launched using chrome app or not 
 		 * */
-		var CheckIfItsChromeApp = function() {
+		var CheckIfItsChromeApp = (function() {
 			$scope.inChromeApp = $("#hideFromChromeApp").css("visibility") === 'hidden';
 			console.info(":: is in chrome app ->" + $scope.inChromeApp);
-		}();
+		}());
 		/**
 		 * This fetches hotel admin settings
 		 * */
@@ -1178,7 +1178,7 @@ sntZestStation.controller('zsRootCtrl', [
 		 * [initializeMe description]
 		 * @return {[type]} [description]
 		 */
-		var initializeMe = function() {
+		var initializeMe = (function() {
 			$('body').css('display', 'none'); // this will hide contents until svg logos are loaded
 			// call Zest station settings API
 			$scope.zestStationData = zestStationSettings;
@@ -1205,6 +1205,6 @@ sntZestStation.controller('zsRootCtrl', [
 
 			// flag to check if default language was set or not
 			$scope.zestStationData.IsDefaultLanguageSet = false;
-		}();
+		}());
 	}
 ]);

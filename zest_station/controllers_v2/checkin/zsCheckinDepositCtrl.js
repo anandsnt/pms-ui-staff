@@ -49,18 +49,18 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 		};
 
 
-		var init = function() {
+		var init = (function() {
 			$scope.currencySymbol = $scope.zestStationData.currencySymbol;
 			$scope.depositAmount = $stateParams.deposit_amount;
 			$scope.showSwipeNav = true;
 			$scope.setScreenIcon('card');
-		}();
+		}());
 
 		/**
 		 * [initializeMe description]
 		 */
 
-		var initializeMe = function() {
+		var initializeMe = (function() {
 			BaseCtrl.call(this, $scope);
 			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 			// back button action
@@ -91,7 +91,7 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 				}
 			});
 
-		}();
+		}());
 
 	}
 ]);

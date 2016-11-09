@@ -248,7 +248,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
          * [initializeMe description]
          * @return {[type]} [description]
          */
-        var initializeMe = function() {
+        var initializeMe = (function() {
             // show back button
             $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 
@@ -265,6 +265,6 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             });
 
             $scope.init();
-        }();
+        }());
     }
 ]);

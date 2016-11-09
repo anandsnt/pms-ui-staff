@@ -8,7 +8,7 @@ sntGuestWeb.controller('gwUpdateGuestDetailsController', ['$scope', '$state', '$
 		$controller('BaseController', {
 			$scope: $scope
 		});
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "GUEST_DETAILS_UPDATE";
 
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
@@ -26,7 +26,7 @@ sntGuestWeb.controller('gwUpdateGuestDetailsController', ['$scope', '$state', '$
 				'birthday': '',
 				'country': ''
 			};
-		}();
+		}());
 
 		// fetch the guest details
 		var fetchGuestDetails = function() {

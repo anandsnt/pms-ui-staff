@@ -166,7 +166,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 
-		var initAccountTransactionsView = function() {
+		var initAccountTransactionsView = (function() {
 			// Scope variable to set active bill
 			$scope.currentActiveBill = 0;
 			$scope.dayRates = -1;
@@ -186,7 +186,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			$scope.invoiceDate = $rootScope.businessDate;
 
-		}();
+		}());
 
 
 		/**

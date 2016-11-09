@@ -1691,7 +1691,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      * Function to initialise allotment reservation list
      * @return - None
      */
-    var initializeMe = function() {
+    var initializeMe = (function() {
       // updating the left side menu
       setActiveLeftSideMenu();
 
@@ -1720,6 +1720,6 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
           callInitialAPIs();
         }, 10);
       }
-    }();
+    }());
   }
 ]);

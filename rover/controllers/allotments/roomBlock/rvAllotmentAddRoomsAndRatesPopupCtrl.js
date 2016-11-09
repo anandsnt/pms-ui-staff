@@ -22,7 +22,7 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 		 * to initialize rooms & rates popup
 		 * @return undefined
 		 */
-		var initializeMe = function() {
+		var initializeMe = (function() {
 			BaseCtrl.call(this, $scope);
 
 			// setting the scroller
@@ -75,7 +75,7 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 					row.best_available_rate_amount);
 				return row;
 			});
-		}();
+		}());
 
 		/**
 		 * [getBestAvailableRate description]

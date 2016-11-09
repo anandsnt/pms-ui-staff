@@ -1968,7 +1968,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * Function to initialise room block details
          * @return - None
          */
-        var initializeMe = function() {
+        var initializeMe = (function() {
             // updating the left side menu
             setActiveLeftSideMenu();
 
@@ -1996,7 +1996,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                     callInitialAPIs();
                 }, 10);
             }
-        }();
+        }());
 
 
         /**

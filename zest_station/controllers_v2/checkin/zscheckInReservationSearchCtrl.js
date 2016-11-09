@@ -37,7 +37,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		zsCheckinSrv.setCheckInReservations([]);
 
 
-		var setupSeperatorBetweenOptions = function() {
+		var setupSeperatorBetweenOptions = (function() {
 			// show/hide seperator between departure date and no of nights
 			$scope.showOrBetweenDateAndNoOfNights = $scope.zestStationData.checkin_screen.authentication_settings.departure_date &&
 				($scope.zestStationData.checkin_screen.authentication_settings.number_of_nights ||
@@ -52,7 +52,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			// show/hide seperator between email and conf no
 			$scope.showOrBetweenEmailAndConfirmNo = $scope.zestStationData.checkin_screen.authentication_settings.email &&
 				$scope.zestStationData.checkin_screen.authentication_settings.confirmation;
-		}();
+		}());
 
 
 		$scope.findByDate = function() {

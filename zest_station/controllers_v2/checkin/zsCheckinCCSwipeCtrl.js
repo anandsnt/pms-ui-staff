@@ -699,11 +699,11 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
          * [initializeMe description]
          */
 
-        var initializeMe = function() {
+        var initializeMe = (function() {
             BaseCtrl.call(this, $scope);
             $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 
-        }();
+        }());
 
         /** ************** Listeners ****************/
 

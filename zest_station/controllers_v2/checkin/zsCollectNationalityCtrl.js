@@ -116,14 +116,14 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 		 * [initializeMe description]
 		 * @return {[type]} [description]
 		 */
-		var initializeMe = function() {
+		var initializeMe = (function() {
 			// hide back button
 			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 			// show close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 
 			$scope.init();
-		}();
+		}());
 
 		$scope.saveNationality = function() {
 			var successCallBack = function() {

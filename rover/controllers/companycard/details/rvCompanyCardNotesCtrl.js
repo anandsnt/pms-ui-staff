@@ -235,13 +235,13 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
     * initialization Stuffs
     * @return {undefined}
     */
-    var initializeMe = function() {
+    var initializeMe = (function() {
         $scope.editingNote    = null;
         $scope.notes          = [];
         $scope.noteText       = '';
 
         $scope.setScroller('companycard_notes_scroller', {});
-    }();
+    }());
 
     $scope.$on('fetchNotes', function() {
         accountID = $scope.contactInformation && $scope.contactInformation.id || false;

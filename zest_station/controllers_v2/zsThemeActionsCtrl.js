@@ -73,8 +73,8 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 		 ********************************************************************************/
 
 
-		var getHotelStationTheme = function() {
+		var getHotelStationTheme = (function() {
 			setHotelBasedTheme(zsGeneralSrv.hotelTheme);
-		}();
+		}());
 	}
 ]);

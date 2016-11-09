@@ -192,7 +192,7 @@ angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', '
      * function used to set initlial set of values
      * @return {None}
      */
-	var initilizeMe = function() {
+	var initilizeMe = (function() {
         // allotmentlist
         $scope.allotmentList = [];
 
@@ -203,5 +203,5 @@ angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', '
         
         // scroller and related things
         setScrollerForMe();
-	}();
+	}());
 }]);

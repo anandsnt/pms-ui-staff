@@ -99,7 +99,7 @@ admin.directive('adChargeCodeAutoComplete', ['ADChargeCodesSrv', function (ADCha
 			 * Initialization stuffs
 			 * @return {undefiend}
 			 */
-			var initializeMe = function() {
+			var initializeMe = (function() {
 				$scope.chargeCodeAutocompleteOptions = {
 		            delay: _.isUndefined($scope.delay) ? 600 : parseInt($scope.delay),
 		            minLength: 0,
@@ -115,7 +115,7 @@ admin.directive('adChargeCodeAutoComplete', ['ADChargeCodesSrv', function (ADCha
 				$scope.label 			= _.isUndefined($scope.label) ? 'Charge Code' : $scope.label;
 				$scope.entryDivClass 	= _.isUndefined($scope.entryDivClass) ? '' : $scope.entryDivClass;
 				minLengthToTrigger 		= _.isUndefined($scope.minLengthToTrigger) ? 1 : parseInt($scope.minLengthToTrigger);
-			}();	
+			}());	
 		},
 		templateUrl: '/assets/directives/chargeCodeAutoComplete/adChargeCodeAutoCompleteDir.html'
 	};

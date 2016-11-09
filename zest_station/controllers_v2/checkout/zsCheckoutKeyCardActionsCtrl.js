@@ -15,14 +15,14 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		 *********************************************************************************/
 
 
-		var init = function() {
+		var init = (function() {
 			BaseCtrl.call(this, $scope);
 			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			$scope.reservationSearchFailed = false;
 			$scope.zestStationData.isKeyCardLookUp = true;
 			$scope.socketBeingConnected = true;
-		}();
+		}());
 
 		/**
 		 * when the back button clicked

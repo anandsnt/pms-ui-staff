@@ -317,7 +317,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 		/**
 		 * [initializeMe description]
 		 */
-		var initializeMe = function() {
+		var initializeMe = (function() {
 			// show back button
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON); // hide back buttons in 2 options page
 			// show close button
@@ -334,7 +334,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 			} else {
 				$scope.mode = "DELIVERY_OPTIONS_MODE";
 			}
-		}();
+		}());
 
 	}
 ]);

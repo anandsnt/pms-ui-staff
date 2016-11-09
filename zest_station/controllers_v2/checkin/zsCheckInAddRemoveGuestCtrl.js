@@ -165,14 +165,14 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
          * [initializeMe description]
          * @return {[type]} [description]
          */
-        var initializeMe = function() {
+        var initializeMe = (function() {
             // show back button
             $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
             // show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
             $scope.AddGuestMode = false;
             $scope.init();
-        }();
+        }());
 
 
     }

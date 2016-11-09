@@ -113,7 +113,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
          * [initializeMe description]
          */
 
-        var initializeMe = function() {
+        var initializeMe = (function() {
             // show back button
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
             // show close button
@@ -125,7 +125,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 lineWidth: 1
             };
             $scope.setScreenIcon('card');
-        }();
+        }());
 
         var setTimedOut = function() {
             $scope.mode = 'TIMED_OUT';

@@ -425,13 +425,13 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			$state.go(roomAndRatesState, {
 				from_date: resData.arrivalDate,
 				to_date: resData.departureDate,
-				fromState: function() {
+				fromState: (function() {
 					if ($state.current.name === "rover.reservation.staycard.reservationcard.reservationdetails") {
 						return 'STAY_CARD';
 					} else {
 						return $state.current.name;
 					}
-				}(),
+				}()),
 				company_id: resData.company.id,
 				allotment_id: resData.allotment.id,
 				travel_agent_id: resData.travelAgent.id,

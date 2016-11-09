@@ -351,23 +351,23 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		// common from and untill date picker options
 		// with added limits to yesterday (BD - 1)
 		$scope.fromDateOptionsTillYesterday = angular.extend({
-			maxDate: function() {
+			maxDate: (function() {
 				var currentDate = new tzIndependentDate($rootScope.businessDate);
 
 				currentDate.setDate(currentDate.getDate() - 1);
 				return $filter('date')(currentDate, $rootScope.dateFormat);
-			}(),
+			}()),
 			onSelect: function(value) {
 				$scope.untilDateOptions.minDate = value;
 			}
 		}, datePickerCommon);
 		$scope.untilDateOptionsTillYesterday = angular.extend({
-			maxDate: function() {
+			maxDate: (function() {
 				var currentDate = new tzIndependentDate($rootScope.businessDate);
 
 				currentDate.setDate(currentDate.getDate() - 1);
 				return $filter('date')(currentDate, $rootScope.dateFormat);
-			}(),
+			}()),
 			onSelect: function(value) {
 				$scope.fromDateOptions.maxDate = value;
 			}

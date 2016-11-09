@@ -147,7 +147,7 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'AD
      * Initialization stuffs
      * @return {undefiend}
      */
-    var initializeMe = function() {
+    var initializeMe = (function() {
         $scope.m3Accounting = {
             enabled: m3AccountingSetupValues.enabled,
             emails: m3AccountingSetupValues.emails,
@@ -155,5 +155,5 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'AD
             available_reports: m3AccountingSetupValues.available_reports,
             selected_reports: m3AccountingSetupValues.selected_reports || []
         };
-    }();
+    }());
 }]);

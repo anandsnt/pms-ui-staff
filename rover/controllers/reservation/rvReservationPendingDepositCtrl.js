@@ -5,7 +5,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 
 		BaseCtrl.call(this, $scope);
 
-		var init = function() {
+		var init = (function() {
 
 			$scope.$emit("UPDATE_STAY_CARD_DEPOSIT_FLAG", true);
 			// adding a flag to be set after some timeout to remove flickering action in iPad
@@ -30,7 +30,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			$scope.isDepositEditable = !!$scope.depositDetails.deposit_policy.allow_deposit_edit;
 			$scope.depositPolicyName = $scope.depositDetails.deposit_policy.description;
 			$scope.depositAmount = parseFloat($scope.depositDetails.deposit_amount).toFixed(2);
-		}();
+		}());
 
 
 		var closeDepositPopup = function() {

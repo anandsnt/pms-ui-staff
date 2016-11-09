@@ -22,7 +22,7 @@
 		var reservation_is_in_early_checkin_window = false;// check if its inside early checkin window
 
 
-		var init = function() {
+		var init = (function() {
 
 			$scope.isLoading = true;
 			var params = {
@@ -57,7 +57,7 @@
 				$scope.netWorkError = true;
 				$scope.isLoading = false;
 			});
-		}();
+		}());
 
 		var navigateToNextScreen = function() {
 			if (!early_checkin_switch_on || (early_checkin_switch_on && !reservation_has_early_checkin) || !reservation_is_in_early_checkin_window) {

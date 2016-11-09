@@ -85,14 +85,14 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
          * [initializeMe description]
          * @return {[type]} [description]
          */
-        var initializeMe = function() {
+        var initializeMe = (function() {
             // hide back button
             $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
             // show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 
             init();
-        }();
+        }());
 
     }
 ]);

@@ -36,9 +36,9 @@ admin.controller('adAfasSetupCtrl', ['$scope', 'afasSetupValues', 'adAfasSetupSr
 	 * Initialization stuffs
 	 * @return {undefiend}
 	 */
-	var initializeMe = function() {
+	var initializeMe = (function() {
 		$scope.afas = {};
 		$scope.afas.enabled = afasSetupValues.enabled;
 		$scope.afas.emails = afasSetupValues.emails;
-	}();
+	}());
 }]);

@@ -371,7 +371,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* function used to set initlial set of values
 		* @return {None}
 		*/
-		var initializeMe = function() {
+		var initializeMe = (function() {
 			// chnaging the heading of the page
 			$scope.setHeadingTitle ('MENU_ACCOUNTS');
 
@@ -398,7 +398,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 
 			// pagination  & API things
 			setInitialPaginationAndAPIThings();
-		}();
+		}());
 
 
 	}]);

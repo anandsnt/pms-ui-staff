@@ -18,7 +18,7 @@ sntZestStation.controller('zsRoomErrorCtrl', [
 		 * [initializeMe description]
 		 * @return {[type]} [description]
 		 */
-		var initializeMe = function() {
+		var initializeMe = (function() {
 			// hide back button
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 			// show close button
@@ -27,7 +27,7 @@ sntZestStation.controller('zsRoomErrorCtrl', [
 			if (typeof $stateParams.early_checkin_unavailable !== typeof undefined) {
 				$scope.early_checkin_unavailable = $stateParams.early_checkin_unavailable;
 			}
-		}();
+		}());
 
 	}
 ]);

@@ -10,7 +10,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 			$scope: $scope
 		});
 
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "EXTERNAL_CHECKIN";
 
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
@@ -20,7 +20,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 			$scope.date = $filter('date')(new Date(), 'yyyy-MM-dd');
 			$scope.noMatchesFound = false;
 			$scope.multipleMatchesFound = false;
-		}();
+		}());
 
 		var dateToSend = "";
 		var zestwebData = GwWebSrv.zestwebData; // for easy short usage

@@ -226,7 +226,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
   /**
    * initialization stuff
    */
-  var fetchRequiredDataForCheckinScreen = function() {
+  var fetchRequiredDataForCheckinScreen = (function() {
     // we are not using our normal API calling since we have multiple API calls needed
     $scope.$emit('showLoader');
 
@@ -248,7 +248,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     $q.all(promises)
               .then(successFetchOfAllRequiredDataForCheckinScreen,
                 failedToFetchOfAllRequiredDataForCheckinScreen);
-  }();
+  }());
 
   /*
    * To save checkin details

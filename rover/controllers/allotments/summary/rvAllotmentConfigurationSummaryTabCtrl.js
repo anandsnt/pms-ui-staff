@@ -943,7 +943,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 * Function used to initialize summary view
 		 * @return undefined
 		 */
-		var initializeMe = function() {
+		var initializeMe = (function() {
 			BaseCtrl.call(this, $scope);
 
 			// summary scroller
@@ -971,6 +971,6 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			setDatePickerOptions();
 
 			$scope.computeSegment();
-		}();
+		}());
 	}
 ]);

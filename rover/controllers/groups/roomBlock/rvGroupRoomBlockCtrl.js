@@ -2099,7 +2099,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * Function to initialise room block details
 		 * @return - None
 		 */
-		var initializeMe = function() {
+		var initializeMe = (function() {
 			BaseCtrl.call(this, $scope);
 
 			// updating the left side menu
@@ -2132,7 +2132,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			}
 
 
-		}();
+		}());
 
 
 	}

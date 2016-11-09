@@ -10,7 +10,7 @@ sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$
 			$scope: $scope
 		});
 
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "EXTERNAL_CHECKOUT";
 
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
@@ -21,7 +21,7 @@ sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$
 				"email": ""
 			};
 			$scope.date = $filter('date')(new Date(), 'yyyy-MM-dd');
-		}();
+		}());
 
 		var dateToSend = "";
 

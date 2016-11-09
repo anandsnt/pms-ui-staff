@@ -235,7 +235,7 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
    * initialization Stuffs
    * @return {undefined}
    */
-  var initializeMe = function() {
+  var initializeMe = (function() {
     guestID = $scope.guestCardData.userId;
     $scope.editingNote    = null;
     $scope.notes          = [];
@@ -244,5 +244,5 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
     $scope.setScroller('guestcard_notes_scroller', {});
 
     fetchNotesForThisGuest();
-  }();
+  }());
 }]);

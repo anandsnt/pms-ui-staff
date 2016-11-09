@@ -14,7 +14,7 @@ sntZestStation.controller('zsCheckoutFinalCtrl', [
 		/**
 		 * [initializeMe description]
 		 */
-		var initializeMe = function() {
+		var initializeMe = (function() {
 
 			$scope.printOpted = $stateParams.printopted === "true";
 			$scope.emailSent = $stateParams.email_sent === "true";
@@ -23,6 +23,6 @@ sntZestStation.controller('zsCheckoutFinalCtrl', [
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 			// hide close button
 			$scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
-		}();
+		}());
 	}
 ]);

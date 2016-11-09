@@ -38,7 +38,7 @@ admin.controller('ADZestwebCommonSettingsCtrl', ['$scope', '$state', 'zestWebCom
 		$scope.callAPI(ADzestwebCommonSettingsSrv.saveSettings, options);
 	};
 
-	var init = function() {
+	var init = (function() {
 
 		// zestWebCommonSettings is resolved from router
 		$scope.zestCommonSettings = zestWebCommonSettings;
@@ -55,6 +55,6 @@ admin.controller('ADZestwebCommonSettingsCtrl', ['$scope', '$state', 'zestWebCom
 			}
 		}
 		setFooterData();
-	}();
+	}());
 
 }]);

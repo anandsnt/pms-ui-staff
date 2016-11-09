@@ -17,7 +17,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		 * [initializeMe description]
 		 */
 		var cardwriter = new CardOperation();
-		var initializeMe = function() {
+		var initializeMe = (function() {
 
 			BaseCtrl.call(this, $scope);
 			// hide back button
@@ -26,7 +26,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 
 
-		}();
+		}());
 		/**
 		 * [set data from stateParams description]
 		 * @type {[type]}
@@ -42,7 +42,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		 * [fetchDoorLockSettings description]
 		 * @return {[type]} [description]
 		 */
-		var fetchDoorLockSettings = function() {
+		var fetchDoorLockSettings = (function() {
 			var onResponse = function(response) {
 				var remote = (response.enable_remote_encoding) ? 'enabled' : 'disabled';
 
@@ -53,7 +53,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 				params: {},
 				'successCallBack': onResponse
 			});
-		}();
+		}());
 
 
 		//* *************** refactoring ****************\\

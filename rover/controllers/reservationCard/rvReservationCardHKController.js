@@ -123,12 +123,12 @@ sntRover.controller('rvReservationCardHKController',
         };
 
         // Note: self executing
-        var init = function() {
+        var init = (function() {
             $scope.houseKeeping = {};
             $scope.houseKeeping.serviceEnabled = true;
             $scope.houseKeeping.hideDetails = true;
             $scope.roomAttendance  = false;
-        }();
+        }());
 
         // keep here since we have few var dependecies
         $scope.toggleHKDetails = function() {

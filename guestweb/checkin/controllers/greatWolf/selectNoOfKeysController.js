@@ -2,7 +2,7 @@
 	var selectNoOfkeysController = function($scope, $state, checkinKeysService, $rootScope) {
 
 
-		var init = function() {
+		var init = (function() {
 			$scope.isLoading = true;
 			var params = {
 				'reservation_id': $rootScope.reservationID
@@ -28,7 +28,7 @@
 				$rootScope.netWorkError = true;
 				$scope.isLoading = false;
 			});
-		}();
+		}());
 
 		$scope.goToNextPage = function() {
 			$rootScope.KeyCountAttemptedToSave =  true;

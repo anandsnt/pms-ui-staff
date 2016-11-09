@@ -23,9 +23,9 @@ admin.controller('ADCountrySortCtrl', ['$scope', 'ADCountrySortSrv',
 			$scope.callAPI(ADCountrySortSrv.fetchCountries, options);
 		};
 
-		var init = function() {
+		var init = (function() {
 			fetchCountryList();
-		}();
+		}());
 
 		// add new country to sort list
 		$scope.addCountryToSequence = function() {

@@ -15,7 +15,7 @@ sntGuestWeb.controller('gwLateCheckoutFinalController', ['$scope', '$rootScope',
 			$scope: $scope
 		});
 
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "LATE_CHECKOUT_FINAL";
 
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
@@ -26,7 +26,7 @@ sntGuestWeb.controller('gwLateCheckoutFinalController', ['$scope', '$rootScope',
 			$scope.oldCheckoutTime = angular.copy(GwWebSrv.zestwebData.checkoutTime);
 			GwWebSrv.zestwebData.checkoutTime = $scope.lateCheckOut.time +':00 '+$scope.lateCheckOut.ap;
 			$scope.keyExpiry = "Your room keys are set to expire for the checkout time of "+$scope.oldCheckoutTime+". Please see a guest service agent at the front desk to re-activate your keys for the late checkout time selected.";
-		}();
+		}());
 
 		$scope.$emit('showLoader');
 		// for a better transition from previous screen add small timeout

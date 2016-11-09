@@ -494,7 +494,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
          * function used to set initlial set of values
          * @return {None}
          */
-        var initializeMe = function() {
+        var initializeMe = (function() {
             // chnaging the heading of the page
             $scope.setHeadingTitle('ALLOTMENTS');
 
@@ -518,7 +518,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
 
             // pagination  & API things
             setInitialPaginationAndAPIThings();
-        }();
+        }());
 
 
     }

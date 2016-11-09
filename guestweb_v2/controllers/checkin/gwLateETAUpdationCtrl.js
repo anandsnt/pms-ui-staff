@@ -8,7 +8,7 @@ sntGuestWeb.controller('gwLateETAUpdationController', ['$scope', '$state', '$con
 			$scope: $scope
 		});
 		
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "ETA_LATE_UPDATION";
 
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
@@ -18,7 +18,7 @@ sntGuestWeb.controller('gwLateETAUpdationController', ['$scope', '$state', '$con
 			$scope.screenCMSDetails.description = replaceStringWithScopeVariable($scope.screenCMSDetails.description, "@checkin-time", $scope.checkinTime);
 			$scope.screenCMSDetails.description = replaceStringWithScopeVariable($scope.screenCMSDetails.description, "@early-checkin-limit", $scope.earlyCheckinRestrictLimit);
 			$scope.arrivalTime = "";
-		}();
+		}());
 
 		// need to restrict ETA selection based on early checkin restrict time
 		var hotelTimeLimitInTimeIndex = getIndexOfSelectedTime(GwWebSrv.zestwebData.earlyCheckinRestrictTime); // utils function

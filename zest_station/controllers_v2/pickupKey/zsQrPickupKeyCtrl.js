@@ -156,7 +156,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 		/**
 		 * [initializeMe description]
 		 */
-		var initializeMe = function() {
+		var initializeMe = (function() {
 			// hide back button
 			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 
@@ -168,7 +168,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 			});
 			$scope.qrCodeScanFailed = false;
 
-		}();
+		}());
 
 		/** ****************** LISTENERS ***********************/
 

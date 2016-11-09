@@ -7,12 +7,12 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 		$controller('BaseController', {
 			$scope: $scope
 		});
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "ROOM_UPGRADES";
 
 			$scope.isUpgradesFetching = true; // to hide contents till api fetches options
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
-		}();
+		}());
 		/**
 		 * Room Upgrades fetch actions starts here
 		 */

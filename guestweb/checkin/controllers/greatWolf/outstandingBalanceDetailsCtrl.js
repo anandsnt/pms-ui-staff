@@ -170,7 +170,7 @@
 		};
 
 
-		var init = function() {
+		var init = (function() {
 
 			// setup data for dropdowns
 			$scope.months = returnMonthsArray(); // utils function
@@ -204,7 +204,7 @@
 				$scope.cardPresent = false;
 			}
 			$scope.mode = "PAYMENT_MODE";
-		}();
+		}());
 
 	};
 

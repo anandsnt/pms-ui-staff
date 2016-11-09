@@ -39,11 +39,11 @@ admin.controller('adGoMomentIvySetupCtrl', ['$scope', 'goMomentIvySetupValues', 
      * Initialization stuffs
      * @return {undefiend}
      */
-    var initializeMe = function () {
+    var initializeMe = (function () {
       $scope.goMomentIvy = {
         enabled: goMomentIvySetupValues.enabled,
         url: goMomentIvySetupValues.url,
         access_token: goMomentIvySetupValues.access_token
       };
-    }();
+    }());
   }]);

@@ -1763,7 +1763,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * Function to initialise room block details
 		 * @return - None
 		 */
-		var initializeMe = function() {
+		var initializeMe = (function() {
 			// updating the left side menu
 			setActiveLeftSideMenu();
 
@@ -1789,7 +1789,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				initializeRoomBlockDetails();
 			}
 
-		}();
+		}());
 
 		var reinit = function() {
 

@@ -8,7 +8,7 @@ sntZestStation.controller('zsSpeakToStaffCtrl', [
 		/**
 		 * [initializeMe description]
 		 */
-		var initializeMe = function() {
+		var initializeMe = (function() {
 
 			$scope.customMessagePresent = !!$stateParams.message;
 			$scope.customMessage = $scope.customMessagePresent ? $stateParams.message : "";
@@ -17,7 +17,7 @@ sntZestStation.controller('zsSpeakToStaffCtrl', [
 
 			// hide close button
 			$scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
-		}();
+		}());
 
 	}
 ]);

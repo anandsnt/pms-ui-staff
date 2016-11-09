@@ -140,11 +140,11 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 		 * things we need to do while initializing
 		 * @return {[type]} [description]
 		 */
-		var initializeMe = function() {
+		var initializeMe = (function() {
 			// As per CICO-14354, we are setting adjustment reason as the last one we entered
 			$scope.adjustment_reason = $scope.ngDialogData.lastReason;
 			$scope.setScroller('rateDetails');
 			$scope.refreshRateDetails();			
-		}();
+		}());
 	}
 ]);

@@ -31,7 +31,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
         /**
          * [initializeMe description]
          */
-        var initializeMe = function() {
+        var initializeMe = (function() {
             // show back button
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
             // show close button
@@ -39,7 +39,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
             $scope.email = "";
             $scope.mode = "EMAIL_ENTRY_MODE";
             $scope.focusInputField('email-entry');
-        }();
+        }());
 
         /**
          * [reEnterText description]

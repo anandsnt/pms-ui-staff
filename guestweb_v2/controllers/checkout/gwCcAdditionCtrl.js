@@ -6,7 +6,7 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 		$controller('BaseController', {
 			$scope: $scope
 		});
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "CC_ADDITION";
 
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
@@ -19,7 +19,7 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 			$scope.ccv = "";
 			$scope.monthSelected = "";
 			$scope.yearSelected = "";
-		}();
+		}());
 		var MLISessionId = "";
 
 

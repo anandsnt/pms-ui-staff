@@ -116,7 +116,7 @@
 		 * Initialization stuffs
 		 * @return {undefiend}
 		 */
-		var initializeMe = function() {
+		var initializeMe = (function() {
 			$scope.rateAutocompleteOptions = {
 	            delay: _.isUndefined($scope.delay) ? 600 : parseInt($scope.delay),
 	            minLength: 0,
@@ -135,7 +135,7 @@
 					minLengthToTrigger = _.isUndefined($scope.minLengthToTrigger) ? 1 : parseInt($scope.minLengthToTrigger);
 				});
 			}, 100);
-		}();	    
+		}());	    
     };
 
     var linkFn = function(scope, el) {

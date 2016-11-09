@@ -8,12 +8,12 @@ sntGuestWeb.controller('GwRoomVerificationController', ['$scope', '$state', '$co
 			$scope: $scope
 		});
 
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "ROOM_VERIFICATION";
 
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.roomVerificationInstruction  = GwWebSrv.zestwebData.roomVerificationInstruction;
-		}();
+		}());
 
 		$scope.continueButtonClicked = function() {
 			var onSuccess = function(response) {

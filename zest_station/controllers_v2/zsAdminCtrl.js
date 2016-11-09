@@ -355,7 +355,7 @@ sntZestStation.controller('zsAdminCtrl', [
         $scope.showDebugModeOption = false;
 
         var lastDemoModeSetting = $scope.zestStationData.demoModeEnabled;
-        var initialize = function() {
+        var initialize = (function() {
             $scope.adminLoginError = false;
             $scope.input = {
                 "inputTextValue": ""
@@ -389,6 +389,6 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.showDebugModeOption = true;
             }
 
-        }();
+        }());
     }
 ]);

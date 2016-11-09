@@ -7,11 +7,11 @@ sntGuestWeb.controller('gwReservationDetailsController', ['$scope', '$state', '$
 		$controller('BaseController', {
 			$scope: $scope
 		});
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "RESERVATION_DETAILS";
 
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
-		}();
+		}());
 
 		$scope.reservationData = GwCheckinSrv.getcheckinData();
 		GwWebSrv.zestwebData.confirmationNo = $scope.reservationData.confirm_no;

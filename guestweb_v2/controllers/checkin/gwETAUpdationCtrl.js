@@ -8,14 +8,14 @@ sntGuestWeb.controller('gwETAUpdationController', ['$scope', '$state', '$control
 			$scope: $scope
 		});
 		
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "ETA_UPDATION";
 
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.timings = returnTimeArray();// utils function
 			$scope.arrivalTime = "";
 			$scope.comment ="";
-		}();
+		}());
 
 		var fetchHotelTimeSuccess = function(response) {
 			if (response.guest_arriving_today) {

@@ -9,12 +9,12 @@ sntGuestWeb.controller('GwCheckoutNowInitialController', ['$scope', '$state', '$
 		$controller('BaseController', {
 			$scope: $scope
 		});
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "CHECKOUT_NOW_LANDING";
 
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.screenCMSDetails.description = replaceStringWithScopeVariable($scope.screenCMSDetails.description, "@checkout-time", $scope.checkout_time);
-		}();
+		}());
 
 	}
 ]);

@@ -32,7 +32,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 		/**
 		 * [initializeMe description]
 		 */
-		var initializeMe = function() {
+		var initializeMe = (function() {
 			// All the common actions for dispensing keys are to be included in
 			// zsKeyDispenseCtrl
 			$controller('zsKeyDispenseCtrl', {
@@ -45,7 +45,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 			$scope.mode = "DISPENSE_KEY_MODE";
 			console.info('station settings;', $scope.zestStationData);
 			$scope.setScreenIcon('card');
-		}();
+		}());
 
 		var stateParams = {
 			'guest_id': $stateParams.guest_id,

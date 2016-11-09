@@ -154,7 +154,7 @@ admin.controller('adWindsurferCRSSetupCtrl', ['$scope', '$rootScope', 'windsurfe
          * Initialization stuffs
          * @return {undefiend}
          */
-        var initializeMe = function() {
+        var initializeMe = (function() {
             var onfetchMetaSuccess = function(response) {
                 $scope.channelManagerRates = _.pluck(response.rates, 'rate');
                 $scope.bookingOrigins = response.bookingOrigins;
@@ -169,7 +169,7 @@ admin.controller('adWindsurferCRSSetupCtrl', ['$scope', '$rootScope', 'windsurfe
                 },
                 onSuccess: onfetchMetaSuccess
             });
-        }();
+        }());
 
 
         $scope.$on('$destroy', function() {

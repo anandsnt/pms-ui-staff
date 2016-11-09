@@ -8,7 +8,7 @@ sntGuestWeb.controller('gwCheckinLandingCtrlController', ['$scope', '$state', '$
 			$scope: $scope
 		});
 
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "CHECKIN_LANDING";
 
 			$scope.isPrecheckinOnly = GwWebSrv.zestwebData.isPrecheckinOnly;
@@ -18,7 +18,7 @@ sntGuestWeb.controller('gwCheckinLandingCtrlController', ['$scope', '$state', '$
 			$scope.cardDigits = "";
 			$scope.departureDate = "";
 			$scope.date = $filter('date')(new Date(), 'yyyy-MM-dd');
-		}();
+		}());
 
 		// Calendar toggle actions and date select action
 		$scope.showCalender = function() {

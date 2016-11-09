@@ -7,11 +7,11 @@ sntGuestWeb.controller('GwCheckoutFinalController', ['$scope', '$state', '$contr
 		$controller('BaseController', {
 			$scope: $scope
 		});
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "CHECKOUT_FINAL";
 
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
-		}();
+		}());
 
 		var onSuccess = function(response) {
 			$scope.isOperationCompleted = true;

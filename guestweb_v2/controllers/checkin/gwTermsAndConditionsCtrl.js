@@ -7,11 +7,11 @@ sntGuestWeb.controller('gwTermsAndConditionsController', ['$scope', '$state', '$
 		$controller('BaseController', {
 			$scope: $scope
 		});
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "TERMS_AND_CONDITIONS";
 
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
-		}();
+		}());
 
 		$scope.termsAndConditions = GwWebSrv.zestwebData.termsAndConditions;
 

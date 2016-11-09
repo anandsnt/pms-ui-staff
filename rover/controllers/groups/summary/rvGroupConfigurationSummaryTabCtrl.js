@@ -1495,7 +1495,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 		 * Function used to initialize summary view
 		 * @return undefined
 		 */
-		var initializeMe = function() {
+		var initializeMe = (function() {
 			BaseCtrl.call(this, $scope);
 
 			// summary scroller
@@ -1531,7 +1531,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			setDatePickerOptions();
 
 			$scope.computeSegment();
-		}();
+		}());
 	}
 
 ]);

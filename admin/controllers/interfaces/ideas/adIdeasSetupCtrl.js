@@ -147,11 +147,11 @@ admin.controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 'ideaSetup', 'adId
         };
 
         // -------------------------------------------------------------------------------------------------------------- INIT
-        var init = function() {
+        var init = (function() {
             $scope.ideaSetup = ideaSetup;
             // handle null in selected_charge_groups and available_charge_groups
             $scope.ideaSetup.selected_charge_groups = $scope.ideaSetup.selected_charge_groups || [];
             $scope.ideaSetup.available_charge_groups = $scope.ideaSetup.available_charge_groups || [];
-        }();
+        }());
     }
 ]);

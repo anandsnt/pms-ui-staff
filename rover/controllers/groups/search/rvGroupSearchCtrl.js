@@ -493,7 +493,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
          * function used to set initlial set of values
          * @return {None}
          */
-        var initializeMe = function() {
+        var initializeMe = (function() {
             // chnaging the heading of the page
             $scope.setHeadingTitle('GROUPS');
 
@@ -517,7 +517,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
 
             // pagination  & API things
             setInitialPaginationAndAPIThings();
-        }();
+        }());
 
 
     }

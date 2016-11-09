@@ -73,7 +73,7 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
          * Initialization stuffs
          * @return {undefined}
          */
-        var initializeMe = function() {
+        var initializeMe = (function() {
             /**
              * CICO-33067
              * After exactonline authorization, the application would be redirected to
@@ -93,5 +93,5 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
             $scope.exactOnlineSetup = exactOnlineSetupValues;
             $scope.journals = journalsList;
             $scope.balancingAccounts = balancingAccounts;
-        }();
+        }());
     }]);

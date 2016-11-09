@@ -37,8 +37,8 @@ admin.controller('adLetShareSetupCtrl', ['$scope', 'letsShareSetupValues', 'adLe
 	 * Initialization stuffs
 	 * @return {undefiend}
 	 */
-	var initializeMe = function() {
+	var initializeMe = (function() {
 		$scope.letshare = {};
 		$scope.letshare.enabled = letsShareSetupValues.enabled;
-	}();
+	}());
 }]);

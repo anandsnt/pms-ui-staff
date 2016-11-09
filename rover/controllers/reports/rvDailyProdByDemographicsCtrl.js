@@ -60,7 +60,7 @@ angular.module('sntRover').controller('rvDailyProdByDemographicsCtrl',
   $scope.$on('$destroy', reportPrinting);
   $scope.$on('$destroy', reportPageChanged);
 
-  var initializeMe = function() {
+  var initializeMe = (function() {
   	$timeout(function() {
   		startedRendering();
   	}, 0);
@@ -68,5 +68,5 @@ angular.module('sntRover').controller('rvDailyProdByDemographicsCtrl',
   	$timeout(function() {
   		renderReport();
   	}, 10);
-  }();
+  }());
 }]);

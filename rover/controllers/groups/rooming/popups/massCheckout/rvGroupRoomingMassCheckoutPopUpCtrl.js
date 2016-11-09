@@ -7,12 +7,12 @@ angular.module('sntRover').controller('rvGroupRoomingMassCheckoutPopUpCtrl', ['$
 	// (since we dont want to interfer with this rooming list scroller)
 	BaseCtrl.call(this, $scope);
 
-	var setScroller = function() {
+	var setScroller = (function() {
 		// scroller options
         var scrollerOptions = {};
 
         $scope.setScroller('failed_reservations_scroller', scrollerOptions);
-	}();
+	}());
 
 	/**
      * event triggered by ngrepeatend directive

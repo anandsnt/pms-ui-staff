@@ -7,7 +7,7 @@ sntGuestWeb.controller('gwEarlyCheckinOptionsController', ['$scope', '$state', '
 		$controller('BaseController', {
 			$scope: $scope
 		});
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "EARLY_CHECKIN_OPTIONS";
 
 			$scope.checkinTime = $stateParams.time;
@@ -15,7 +15,7 @@ sntGuestWeb.controller('gwEarlyCheckinOptionsController', ['$scope', '$state', '
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.screenCMSDetails.description = replaceStringWithScopeVariable($scope.screenCMSDetails.description, "@checkin-time", $scope.checkinTime);
 			$scope.screenCMSDetails.description = replaceStringWithScopeVariable($scope.screenCMSDetails.description, "@early-checkin-charge", $scope.earlyCheckinCharge);
-		}();
+		}());
 
 		$scope.nextButtonClicked = function() {
 			var applyEarlyCheckinSuccess = function(response) {

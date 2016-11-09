@@ -2,7 +2,7 @@
 	var guestwebSurveyController = function($scope, $state, guestDetailsService, $rootScope) {
 
 
-		var init = function() {
+		var init = (function() {
 
 			var params = {
 				'reservation_id': $rootScope.reservationID
@@ -52,7 +52,7 @@
 				$rootScope.netWorkError = true;
 				$scope.isLoading = false;
 			});
-		}();
+		}());
 
 		$scope.goToNextPage = function() {
 			$rootScope.skipBalanceconductSurvey = true;

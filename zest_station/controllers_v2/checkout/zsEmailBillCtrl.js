@@ -25,7 +25,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 		/**
 		 * [initializeMe description]
 		 */
-		var initializeMe = function() {
+		var initializeMe = (function() {
 			BaseCtrl.call(this, $scope);
 			// hide back button
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
@@ -41,7 +41,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 				$scope.focusInputField("email_text");
 			}
 
-		}();
+		}());
 
 		$scope.editEmailAddress = function() {
 			$scope.mode = "EMAIL_BILL_EDIT_MODE";
