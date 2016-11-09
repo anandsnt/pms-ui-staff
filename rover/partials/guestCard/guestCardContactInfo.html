@@ -26,7 +26,7 @@
 				<label for="languages">Language</label>
 				<div form="contact-info" class="select">
 					<select iscroll-stop-propagation ng-model="guestCardData.contactInfo.language_id">
-						<option style="display:none" value="{{guestCardData.contactInfo.language_id}}"></option>
+						<option style="display:none" value=""></option>
 						<option value="{{item.id}}" ng-repeat="item in languageData.languages"
 							ng-selected="item.id === guestCardData.contactInfo.language_id"
 							ng-if="item.id === guestCardData.contactInfo.language_id || item.is_show_on_guest_card">{{item.language}}</option>

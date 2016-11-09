@@ -25,17 +25,15 @@ sntRover.controller('RVSocialLobbyCrl', [
             var postContainer = angular.element(document.querySelector(".neighbours-post-container"))[0];
             var postScroll = angular.element(document.querySelector(".neighbours-post-scroll"))[0];
             var posts = postContainer.children;
-            // var height = $scope.errorrMessage == "" || typeof $scope.errorrMessage == 'undefined' ? 82 * posts.length +100 : 82 * posts.length + 200;
-            var height = 82 * posts.length +100;
-            if(expandedPostHeight !== ""){
-                height = height + expandedPostHeight;
-                if(expandedPostHeight > 300)
-                    postScroll.style.height = ""+400+"px";
-                else if(expandedPostHeight < 200)
-                    postScroll.style.height = ""+450+"px";
-                
-            }
             
+            var height = 80 * posts.length + 40;
+            if(expandedPostHeight !== ""){
+                height = height + expandedPostHeight;                
+            }
+            if($scope.errorMessage != "" || typeof $scope.errorMessage != 'undefined')
+                postScroll.style.height = ""+450+"px";
+            else
+                postScroll.style.height = ""+500+"px";
             postContainer.style.height = ""+height+"px";
             
         }
@@ -80,6 +78,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         setScroller();
 
         $scope.fetchPosts = function(){
+            $scope.errorMessage = "";
             var options = {};
             options.params = $scope.postParams;
             options.onSuccess = function(data){
@@ -102,6 +101,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         }
 
         $scope.addPost = function(){
+            $scope.errorMessage = "";
             var options = {};
             options.params = {
                 "post" :{
@@ -124,7 +124,18 @@ sntRover.controller('RVSocialLobbyCrl', [
             });
         }
 
+        $scope.getProfessionStringForUser = function(user){
+            var professionString = "";
+            if(user.profession != null && user.profession != "")
+                professionString = professionString + user.profession;
+            if(user.works_at != "" && user.works_at != null)
+                professionString = professionString != ""? professionString + ", " + user.works_at : user.works_at;
+
+            return professionString;
+        }
+
         $scope.deletePostClicked = function(post_id){
+            $scope.errorMessage = "";
             deleteIndex = post_id;
             ngDialog.open({
                    template: '/assets/partials/socialLobby/rvSLPostDelete.html',
@@ -136,6 +147,7 @@ sntRover.controller('RVSocialLobbyCrl', [
             ngDialog.close();
         }
         $scope.delete = function(){
+            $scope.errorMessage = "";
             var options = {};
             options.params = {'post_id': deleteIndex};
             options.onSuccess = function(){
@@ -152,6 +164,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         }
 
         $scope.paginatePosts = function(page){
+            $scope.errorMessage = "";
             if(page == $scope.postParams.page)
                 return;
             $scope.postParams.page = page;
@@ -176,6 +189,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         }
 
         $scope.togglePostDetails = function(post){
+            $scope.errorMessage = "";
             $scope.selectedPost = $scope.selectedPost == "" ? post : post.id == $scope.selectedPost.id? "" : post;
             if($scope.selectedPost == ""){
                 expandedPostHeight = "";

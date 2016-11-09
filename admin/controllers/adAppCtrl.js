@@ -115,7 +115,12 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						action: "staff#/staff/diary/",
 						standAlone: true,
 						hidden: !$rootScope.isHourlyRatesEnabled
-					}, {
+					},{
+						title: "MENU_ROOM_DIARY",
+						action: "staff#/staff/nightlyDiary/?start_date="+ $rootScope.businessDate,
+						standAlone: true,
+						hidden: ($rootScope.isHourlyRatesEnabled || !$rootScope.isPmsDevEnv)
+					},{
 						title: "MENU_POST_CHARGES",
 						action: "staff#/staff/dashboard/postCharge"
 					}, {
@@ -531,6 +536,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$rootScope.isSuiteRoomsAvailable = data.suite_enabled;
 			$rootScope.hotelTimeZoneFull = data.hotel_time_zone_full;
 			$rootScope.hotelTimeZoneAbbr = data.hotel_time_zone_abbr;
+			$rootScope.isPmsDevEnv = data.is_pms_dev;
 
 			// CICO-18040
 			$rootScope.isFFPActive = data.is_ffp_active;

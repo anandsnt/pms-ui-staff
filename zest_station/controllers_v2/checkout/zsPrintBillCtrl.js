@@ -75,10 +75,13 @@ sntZestStation.controller('zsPrintBillCtrl', [
             var data = {
                 "reservation_id": $scope.reservation_id
             };
+            var startTacDataFailedActions = function(){
+                printFailedActions();
+            };
             var options = {
                 params: data,
                 successCallBack: fetchSatrTacBillSuccess,
-                failureCallBack: printFailedActions
+                failureCallBack: startTacDataFailedActions
             };
            $scope.callAPI(zsCheckoutSrv.fetchStarTacPrinterData, options);
         };
@@ -102,17 +105,19 @@ sntZestStation.controller('zsPrintBillCtrl', [
                             printFailedActions();
                         }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
                     } else {
-                        if($scope.zestStationData.zest_printer_option === "STAR_TAC"){
-                            //we will call websocket services to print
-                            handleStarTacPrinterActions();
-                        }
-                        else{
+                        //REASON: API error . We cant push the starttac code.
+                        //So uncomment and use the following line in next sprint
+                        // if($scope.zestStationData.zest_printer_option === "STAR_TAC"){
+                        //     //we will call websocket services to print
+                        //     handleStarTacPrinterActions();
+                        // }
+                        // else{
                             $window.print();
                             setTimeout(function() {
                                 var printopted = 'true';
                                 nextPageActions(printopted);
                             }, 100);
-                        }
+                        // }
                        
                     }
                     // provide a delay for preview to appear 
