@@ -351,9 +351,9 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			});
             $scope.$emit('showLoader'); 
             jsMappings.fetchAssets(['addBillingInfo', 'directives'])
-            .then(function(){
+            .then(function() {
                 $scope.$emit('hideLoader');
-                if($rootScope.UPDATED_BI_ENABLED_ON['ALLOTMENT']){
+                if($rootScope.UPDATED_BI_ENABLED_ON['ALLOTMENT']) {
                 	console.log("##Billing-info updated version");
 	                ngDialog.open({
 	                    template: '/assets/partials/billingInformation/allotment/rvBillingInfoAllotmentMain.html',

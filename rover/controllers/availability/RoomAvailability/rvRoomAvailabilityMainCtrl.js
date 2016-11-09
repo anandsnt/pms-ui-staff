@@ -5,7 +5,7 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	'ngDialog',
 	'$filter' ,
 	'$timeout',
-	function($scope, rvAvailabilitySrv, $rootScope, ngDialog, $filter, $timeout){
+	function($scope, rvAvailabilitySrv, $rootScope, ngDialog, $filter, $timeout) {
 
 
 	BaseCtrl.call(this, $scope);
@@ -13,16 +13,16 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	$scope.selectedView = 'grid';
 	$scope.page.title = "Availability";
 
-	$scope.setSelectedView = function(selectedView){
+	$scope.setSelectedView = function(selectedView) {
 		$scope.$emit("showLoader");
 		$scope.selectedView = selectedView;
 	};
 
-	$scope.loadSelectedView = function(){
-		if($scope.selectedView === 'grid'){
+	$scope.loadSelectedView = function() {
+		if($scope.selectedView === 'grid') {
 			return '/assets/partials/availability/roomAvailabilityGridStatus.html';
 		}
-		else if($scope.selectedView === 'graph'){
+		else if($scope.selectedView === 'graph') {
 			return '/assets/partials/availability/roomAvailabilityGraphStatus.html';
 		}
 	};
@@ -54,8 +54,8 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	/**
 	* success call of availability data fetch
 	*/
-	var successCallbackOfAvailabilityFetch = function(data){
-		if($scope.selectedView === 'graph'){
+	var successCallbackOfAvailabilityFetch = function(data) {
+		if($scope.selectedView === 'graph') {
 			$scope.fetchAdditionalData();
 			}else{
 			$scope.$emit("hideLoader");
@@ -67,7 +67,7 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	* success call of availability additional data fetch
 	*/
 
-	var successCallbackOfAvailabilityAdditionalDataFetch = function(data){
+	var successCallbackOfAvailabilityAdditionalDataFetch = function(data) {
 		$scope.$emit("hideLoader");
 		$scope.$broadcast("changedRoomAvailableData");
 	};
@@ -75,7 +75,7 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	/**
 	* error call of availability data fetch
 	*/
-	var fetchApiFailed = function(errorMessage){
+	var fetchApiFailed = function(errorMessage) {
 		$scope.$emit("hideLoader");
 	};
 
@@ -95,14 +95,14 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	/**
 	* Api to fetch additional data
 	*/
-	$scope.fetchAdditionalData = function(){
-		$timeout(function(){
+	$scope.fetchAdditionalData = function() {
+		$timeout(function() {
 			$scope.invokeApi(rvAvailabilitySrv.fetchAvailabilityAdditionalDetails, $scope.getDateParams(), successCallbackOfAvailabilityAdditionalDataFetch, fetchApiFailed);
 		}, 0);
 
 	};
 
-	var successCallbackOfGrpNAllotDataFetch = function(data){
+	var successCallbackOfGrpNAllotDataFetch = function(data) {
 		$scope.$emit("hideLoader");
 		$scope.$broadcast("changedGrpNAllotData");
 	};
@@ -121,7 +121,7 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 		if ( isSameData() ) {
 			successCallbackOfGrpNAllotDataFetch();
 		} else {
-			$timeout(function(){
+			$timeout(function() {
 				$scope.oldDateParams = $scope.getDateParams();
 				$scope.invokeApi(rvAvailabilitySrv.fetchGrpNAllotAvailDetails, $scope.getDateParams(), successCallbackOfGrpNAllotDataFetch, fetchApiFailed);
 			}, 0);
@@ -131,8 +131,8 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	/**
 	* When there is any change of for availability data params we need to call the api
 	*/
-	$scope.changedAvailabilityDataParams = function(){
-		$timeout(function(){
+	$scope.changedAvailabilityDataParams = function() {
+		$timeout(function() {
 			$scope.invokeApi(rvAvailabilitySrv.fetchAvailabilityDetails, $scope.getDateParams(), successCallbackOfAvailabilityFetch, fetchApiFailed);
 		}, 0);
 

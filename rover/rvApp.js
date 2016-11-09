@@ -277,7 +277,7 @@ sntRover.run([
 		*	app/assets/rover/partials/staycard/rvStaycard.html
 		*/
 		$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-	        if (fromState.name === 'rover.reservation.staycard.roomassignment' && toState.name === 'rover.diary'){
+	        if (fromState.name === 'rover.reservation.staycard.roomassignment' && toState.name === 'rover.diary') {
 	            //cico-13697, fix until proper workflow routes are developed
 	            return;
 	        }
@@ -358,7 +358,7 @@ sntRover.run([
 			$rootScope.returnBack = false;
 
 			// capture the prev state document title
-			if (fromState.name === 'rover.reservation.staycard.roomassignment' && toState.name === 'rover.diary'){
+			if (fromState.name === 'rover.reservation.staycard.roomassignment' && toState.name === 'rover.diary') {
 	            // cico-13697, fix until proper workflow routes are developed
 	            return;
 	        }

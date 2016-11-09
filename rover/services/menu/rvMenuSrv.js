@@ -26,7 +26,7 @@ angular.module('sntRover').service('rvMenuSrv',
     * @param {string}, dashboard
 	* @return {boolean}
     */
-    var isFrontDeskDashboard = function (dashboard){
+    var isFrontDeskDashboard = function (dashboard) {
     	return dashboard === 'FRONT_DESK';
     };
 
@@ -100,7 +100,7 @@ angular.module('sntRover').service('rvMenuSrv',
 				subMenuVisibleCount = 0;
 
 				//looping through submenus
-				menuItem.submenu = _.filter (menuItem.submenu, function (subMenuItem){
+				menuItem.submenu = _.filter (menuItem.submenu, function (subMenuItem) {
 					isMenuItemVisible = self.shouldShowMenuItem(subMenuItem.menuIndex);
 
 					if (isMenuItemVisible) {
@@ -110,7 +110,7 @@ angular.module('sntRover').service('rvMenuSrv',
 				});
 
 				// if it has submenu & none of them are visible we will not show that menu
-				if(hasSubMenu && subMenuVisibleCount !== 0){
+				if(hasSubMenu && subMenuVisibleCount !== 0) {
 					menuToReturn.push (menuItem);
 				}
 
@@ -518,7 +518,7 @@ angular.module('sntRover').service('rvMenuSrv',
 	this.hasSettingsPermission = function(menuIndex) {
 		
 		var returnValue = true;
-		switch (menuIndex){
+		switch (menuIndex) {
 			case 'diaryReservation':
 				returnValue = isHourlyRateOn();
 				break;

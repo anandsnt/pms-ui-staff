@@ -11,7 +11,7 @@ sntRover.controller('rvAccountActivityCtrl', [
 		 * initialisation and basic configuration
 		 * @return {none}
 		 */
-		$scope.init = function(){
+		$scope.init = function() {
 			$scope.selectedGroupOrAccountId =$scope.$parent.accountConfigData.summary.posting_account_id;
 			 var params = {
 			 	"id":$scope.selectedGroupOrAccountId,
@@ -19,15 +19,15 @@ sntRover.controller('rvAccountActivityCtrl', [
 			 	"type":"account",
 			 	"per_page":50
 			 };
-			var fetchCompleted = function(data){
+			var fetchCompleted = function(data) {
 				$scope.$broadcast('PopulateLogData',data);
 			};
 			$scope.invokeApi(rvGroupAccountActivitySrv.fetchActivityLog, params, fetchCompleted);
 		};
-		$scope.$on('updateLogdata',function(e,params){
+		$scope.$on('updateLogdata',function(e,params) {
 			params["id"]= $scope.selectedGroupOrAccountId;
 			params["type"] = "account";
-			var fetchCompleted = function(data){
+			var fetchCompleted = function(data) {
 				$scope.$broadcast('PopulateLogData',data);
 			};
 			$scope.invokeApi(rvGroupAccountActivitySrv.fetchActivityLog, params, fetchCompleted);
@@ -40,7 +40,7 @@ sntRover.controller('rvAccountActivityCtrl', [
 		 * @param  {String} currentTab - Active tab in the view
 		 * @return undefined
 		 */
-		$scope.$on ('ACCOUNT_TAB_SWITCHED', function(event, currentTab){
+		$scope.$on ('ACCOUNT_TAB_SWITCHED', function(event, currentTab) {
 			if (currentTab === "ACTIVITY") {
 				$scope.init();
 			}

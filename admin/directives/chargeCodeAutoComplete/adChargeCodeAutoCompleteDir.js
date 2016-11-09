@@ -35,11 +35,11 @@ admin.directive('adChargeCodeAutoComplete', ['ADChargeCodesSrv', function (ADCha
 		            query: $scope.charge_code_name
 		        };
 
-				if(!!$scope.excludePayments){
+				if(!!$scope.excludePayments) {
 					params.exclude_payments = true;
 				}
 
-				if(!!$scope.onlyPayments){
+				if(!!$scope.onlyPayments) {
 					params.only_payments = true;
 				}
 

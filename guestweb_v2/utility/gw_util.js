@@ -93,7 +93,7 @@ var returnYears = function() {
   return years;
 };
 
-var returnYearsInReverseOrder = function(){
+var returnYearsInReverseOrder = function() {
   var years = [];
   var startYear = new Date().getFullYear();
   var endYear = parseInt(startYear) - 150;
@@ -103,7 +103,7 @@ var returnYearsInReverseOrder = function(){
   return years;
 };
 
-var returnSelectedMonth = function(month_to_check){
+var returnSelectedMonth = function(month_to_check) {
   var months = returnMonthsArray();
   var selectedMonth = {};
   selectedMonth = _.find(months, function(month) {
@@ -222,7 +222,7 @@ var getIndexOfSelectedTime = function(time) {
 
 
 
-var checkIfDateIsValid = function(month,day,year){
+var checkIfDateIsValid = function(month,day,year) {
   var birthday = month+"/"+day+"/"+year;  
   var comp = birthday.split('/');
   var m = parseInt(comp[0], 10);

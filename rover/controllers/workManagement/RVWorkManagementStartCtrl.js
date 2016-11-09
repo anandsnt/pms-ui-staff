@@ -6,10 +6,10 @@ angular.module('sntRover').controller('RVWorkManagementStartCtrl', ['$rootScope'
         var scrollerOptions = {click: true, scrollbars: true};
         $scope.setScroller('work_management', scrollerOptions);
 
-        $scope.refreshScroller = function (key){
+        $scope.refreshScroller = function (key) {
             setTimeout(function() {
                 if ( !!$scope && $scope.myScroll ) {
-                    if( key in $scope.myScroll ){
+                    if( key in $scope.myScroll ) {
                         $scope.myScroll[key].refresh();
                     }
                 };

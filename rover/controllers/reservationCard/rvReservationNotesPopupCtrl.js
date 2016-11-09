@@ -1,5 +1,5 @@
 
-sntRover.controller('RVReservationNotesPopupCtrl',['$scope','$rootScope', function($scope,$rootScope){
+sntRover.controller('RVReservationNotesPopupCtrl',['$scope','$rootScope', function($scope,$rootScope) {
 
 
 	BaseCtrl.call(this, $scope);
@@ -95,7 +95,7 @@ sntRover.controller('RVReservationNotesPopupCtrl',['$scope','$rootScope', functi
         $scope.reservationnote = note.text;
     };
     // CICO-24928
-    $scope.cancelEditModeReservationNote = function(){
+    $scope.cancelEditModeReservationNote = function() {
         $scope.editingNote  = null;
         $scope.reservationnote = '';
     };

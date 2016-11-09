@@ -1,5 +1,5 @@
 admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', '$anchorScroll', '$timeout', '$location',
-	function($scope, ADSourcesSrv, $anchorScroll, $timeout, $location){
+	function($scope, ADSourcesSrv, $anchorScroll, $timeout, $location) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 7);
@@ -16,7 +16,7 @@ admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', '$anchorScroll', '$t
 	/*
     * To handle enable/disable of use sources
     */
-	$scope.clickedUsedSources = function(){
+	$scope.clickedUsedSources = function() {
 		$scope.invokeApi(ADSourcesSrv.toggleUsedSources, {'is_use_sources':$scope.data.is_use_sources });
 	};
     /*
@@ -31,16 +31,16 @@ admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', '$anchorScroll', '$t
     * To get the template of edit screen
     * @param {int} index of the selected source
     */
-	$scope.getTemplateUrl = function(index){
-		if($scope.currentClickedElement === index){
+	$scope.getTemplateUrl = function(index) {
+		if($scope.currentClickedElement === index) {
 			 return "/assets/partials/sources/adSourcesEdit.html";
 		}
 	};
 	/*
     * To handle cancel click
     */
-	$scope.clickedCancel = function(){
-		if($scope.currentClickedElement !== 'new'){
+	$scope.clickedCancel = function() {
+		if($scope.currentClickedElement !== 'new') {
 			$scope.data.sources[$scope.currentClickedElement].name = $scope.preveousName;
 			$scope.preveousName = "";
 		}
@@ -50,7 +50,7 @@ admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', '$anchorScroll', '$t
 	/*
     * To handle add new button click
     */
-	$scope.addNewClicked = function(){
+	$scope.addNewClicked = function() {
 		$scope.currentClickedElement = 'new';
 		$timeout(function() {
             $location.hash('add-new');
@@ -60,8 +60,8 @@ admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', '$anchorScroll', '$t
 	/*
     * To handle save button in add new box.
     */
-  	$scope.saveAddNew = function(){
-  		var postSuccess = function(data){
+  	$scope.saveAddNew = function() {
+  		var postSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 			$scope.data.name = "";
@@ -72,8 +72,8 @@ admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', '$anchorScroll', '$t
 	/*
     * To handle save button in edit box.
     */
-   	$scope.updateItem = function(index){
-   		var postSuccess = function(data){
+   	$scope.updateItem = function(index) {
+   		var postSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 		};
@@ -88,8 +88,8 @@ admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', '$anchorScroll', '$t
    	/*
     * To handle delete button in edit box.
     */
-	$scope.clickedDelete = function(id){
-		var successDeletionCallback = function(){
+	$scope.clickedDelete = function(id) {
+		var successDeletionCallback = function() {
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 			// delete data from scope

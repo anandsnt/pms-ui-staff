@@ -59,12 +59,12 @@ function($scope, $state, $stateParams, ADFrequentFlyerProgramSrv, ngTableParams,
 		$scope.invokeApi(ADFrequentFlyerProgramSrv.switchToggle, data, postSuccess);
 	};
 
-	$scope.activateMainInactivate = function(currentStatus){
+	$scope.activateMainInactivate = function(currentStatus) {
 		var nextStatus = !$scope.use_ffp;
 		var data = {
 			"set_active": nextStatus
 		};
-		var successCallbackActivateMainInactivate = function(data){
+		var successCallbackActivateMainInactivate = function(data) {
 			$scope.use_ffp = !$scope.use_ffp;
 			$rootScope.isFFPActive = $scope.use_ffp;
 			$scope.$emit('hideLoader');
@@ -73,7 +73,7 @@ function($scope, $state, $stateParams, ADFrequentFlyerProgramSrv, ngTableParams,
 
 
 	};
-        $scope.getTitleAligned = function(title){
+        $scope.getTitleAligned = function(title) {
             return title;
         };
 }]);

@@ -5,7 +5,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 	'$state',
 	'$filter',
 	'RVHkRoomStatusSrv',
-	function($scope, $rootScope, $timeout, $state, $filter, RVHkRoomStatusSrv){
+	function($scope, $rootScope, $timeout, $state, $filter, RVHkRoomStatusSrv) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.query = '';
@@ -18,7 +18,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 
 		$scope.queryFunctionProccessing = null;
 		//inorder to hide/show searhc results area from outide we can use this
-		$scope.$on("showSearchResultsArea", function(event, showSearchResultsArea){
+		$scope.$on("showSearchResultsArea", function(event, showSearchResultsArea) {
 			$scope.showSearchResultsArea = showSearchResultsArea;
 		});
 
@@ -26,7 +26,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 		var scrollerOptions = { click: true, preventDefault: false };
 	  	$scope.setScroller('result_showing_area', scrollerOptions);
 
-	  	var refreshScroller = function(){
+	  	var refreshScroller = function() {
 			$scope.refreshScroller('result_showing_area');
 		};
 
@@ -208,7 +208,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
    			$scope.$emit("UpdateHeading", 'DASHBOARD_HOUSEKEEPING_HEADING');
 		  	$scope.showSearchResultsArea = false;
 		  	$scope.isSearchResultsShowing = false;
-		  	if($scope.queryFunctionProccessing){
+		  	if($scope.queryFunctionProccessing) {
 		  		clearTimeout($scope.queryFunctionProccessing);
 		  		$scope.queryFunctionProccessing = null;
 		  	}
@@ -225,7 +225,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 		* when focused on query box, we need to show the search results area
 		* and need to hide the dashboard area
 		*/
-		$scope.focusedOnQueryBox = function(){
+		$scope.focusedOnQueryBox = function() {
 			$scope.showSearchResultsArea = true;
 			refreshScroller();
 			$scope.$emit("showDashboardArea", false);
@@ -235,10 +235,10 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 		* when focusedout on query box, we need to hide the search results area
 		* and need to show the dashboard area only if there is no data displaying
 		*/
-		$scope.focusedOutOnQueryBox = function(){
+		$scope.focusedOutOnQueryBox = function() {
 
 			$timeout(function() {
-				if(!$scope.isSearchResultsShowing && $scope.query.length ===0){
+				if(!$scope.isSearchResultsShowing && $scope.query.length ===0) {
 					$scope.query = "";
 					$scope.rooms = [];
 					$scope.showSearchResultsArea = false;

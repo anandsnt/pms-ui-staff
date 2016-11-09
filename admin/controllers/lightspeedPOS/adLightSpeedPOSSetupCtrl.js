@@ -29,7 +29,7 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
         $scope.lightspeed.charge_code_name 	= '';
 	};
 
-	var clearPaymentChargeCodeValues = function(){
+	var clearPaymentChargeCodeValues = function() {
 		$scope.lightspeed.payment_charge_code_id 	= '';
 		$scope.lightspeed.payment_charge_code_name 	= '';
 	};

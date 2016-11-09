@@ -152,7 +152,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 
 
 		$scope.$watch("updateService.room_service_status_id", function (newValue, oldValue) {
-        	if(newValue !== oldValue){
+        	if(newValue !== oldValue) {
             	$scope.prev_room_service_status_id = oldValue;
         	}
     	});
@@ -428,7 +428,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 		 */
 		$scope.forcefullyPutRoomToOOSorOOO = function() {
 			$scope.closeDialog ();
-			$timeout(function(){
+			$timeout(function() {
 				$scope.update();
 			}, 700);
 		};

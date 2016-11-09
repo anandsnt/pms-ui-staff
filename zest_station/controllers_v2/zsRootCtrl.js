@@ -192,7 +192,7 @@ sntZestStation.controller('zsRootCtrl', [
 				$scope.zestStationData.mliMerchantId = data.mli_merchant_id;
 				configureSwipeSettings();
 			};
-			var onFailure = function(){
+			var onFailure = function() {
 				console.warn('unable to fetch hotel settings');
 				$scope.$emit(zsEventConstants.PUT_OOS);
 			}
@@ -360,7 +360,7 @@ sntZestStation.controller('zsRootCtrl', [
 		}; 
 		$scope.showOnScreenKeyboard = function(id) {
 			//in console, allow debugging to test out keyboard in any browser
-			if (zestSntApp.virtualKeyBoardEnabled){
+			if (zestSntApp.virtualKeyBoardEnabled) {
 				if (id) {
 					$scope.lastKeyboardId = id;
 					new initScreenKeyboardListener('station', id, true, $scope.resetTime);//on change event fire reset time
@@ -407,7 +407,7 @@ sntZestStation.controller('zsRootCtrl', [
 		$scope.setSvgsToBeLoaded = function(iconsPath, commonIconsPath, useCommonIcons, diffHomeIconsOnly) {
 			var iconBasePath = (!useCommonIcons ? iconsPath : commonIconsPath);
 			$scope.activeScreenIcon = 'bed';
-			if ( $scope.zestStationData.key_create_file_uploaded.indexOf('/logo.png') !== -1 ){
+			if ( $scope.zestStationData.key_create_file_uploaded.indexOf('/logo.png') !== -1 ) {
 				$scope.zestStationData.key_create_file_uploaded = '';	
 			}
 			
@@ -444,11 +444,11 @@ sntZestStation.controller('zsRootCtrl', [
 				}
 			};
 
-			if (diffHomeIconsOnly){
+			if (diffHomeIconsOnly) {
 				$scope.icons.url.checkin  = iconsPath + '/checkin.svg';
 				$scope.icons.url.checkout = iconsPath + '/checkout.svg';
 				$scope.icons.url.key 	  = iconsPath + '/key.svg';
-				if ($scope.zestStationData.theme !== 'epik'){
+				if ($scope.zestStationData.theme !== 'epik') {
 					$scope.icons.url.logo 	  = iconsPath + '/logo-print.svg';	
 				}
 				$scope.icons.url.logo 	  = iconsPath + '/logo-print.svg';
@@ -481,7 +481,7 @@ sntZestStation.controller('zsRootCtrl', [
 				$scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, false);
 			} else if (theme === 'fontainebleau') {
 				//nothing else
-			} else if (theme === 'epik'){
+			} else if (theme === 'epik') {
 				$scope.theme = theme;
 				$scope.iconsPath = '/assets/zest_station/css/icons/epik';//uses the same home icons as avenue
 				$scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true, true);//last arg, is to only show different icons on Home, other icons use default
@@ -564,11 +564,11 @@ sntZestStation.controller('zsRootCtrl', [
 		 *  Events include
 		 *   *Refresh-workstation --> Triggered from Hotel Admin - interfaces - workstation > toggle (Refresh Station)
 		 ********************************************************************************/
-		var checkForEventsIfAtHomeScreen = function(currentState){
-			if (currentState !== 'zest_station.home'){
+		var checkForEventsIfAtHomeScreen = function(currentState) {
+			if (currentState !== 'zest_station.home') {
 				homeInActivityTimeInSeconds = 0;
 			} else {
-				if (homeInActivityTimeInSeconds >= 30){
+				if (homeInActivityTimeInSeconds >= 30) {
 					//reset idle timer, then fire idle timer events
 					//Workstation trigger for Refresh Station is set to TRUE, --Refresh Station at next (idle) opportunity--
 					var station = getWorkStationSetting($rootScope.workstation_id);
@@ -576,7 +576,7 @@ sntZestStation.controller('zsRootCtrl', [
 					// --assumption is that two Zest Stations will be sharing a workstation, currently S69, that is not a logical setup
 					
 					//station.refresh_station = true;//TODO REMOVE THIS AND ADD FROM WORKSTATION API
-					if (station.refresh_station){
+					if (station.refresh_station) {
 						homeInActivityTimeInSeconds = 0;
 						//update the workstation to reflect the refresh has taken place
 						//call API to set workstation "station_refresh" to false, and note "last_refreshed"
@@ -592,11 +592,11 @@ sntZestStation.controller('zsRootCtrl', [
 				}	
 			}
 		}
-		$scope.$on('HOME_ACTIVITY',function(){//need to move the above function to Home Controller after S69
+		$scope.$on('HOME_ACTIVITY',function() {//need to move the above function to Home Controller after S69
 			homeInActivityTimeInSeconds = 0;
 		});
 
-		var refreshInProgress = function(station){
+		var refreshInProgress = function(station) {
 			console.log('Calling API to Reset (refresh_station) Flag for: ',station.name, ' - ',station.id);
 			var onSuccess = function(response) {
 				console.info('Successful Refresh of Station Triggered, turning off (Workstation) Trigger ');
@@ -624,11 +624,11 @@ sntZestStation.controller('zsRootCtrl', [
 			$scope.callAPI(zsGeneralSrv.refreshWorkStationInitialized, options);
 		}
 	 	var homeInActivityTimeInSeconds = 0;
-	 	var initRefreshStation = function(){
+	 	var initRefreshStation = function() {
 	 		console.warn(':: Refreshing Station ::');
 	 		try{
 	 			storage.setItem(refreshedKey, 'true');
-	 		} catch(err){
+	 		} catch(err) {
 	 			console.log(err);
 	 		}
 	 		location.reload(true);
@@ -723,7 +723,7 @@ sntZestStation.controller('zsRootCtrl', [
 				} else {
 					$scope.$broadcast('DISPENSE_FAILED');
 				}
-			} else if( response.Command === 'cmd_print_bill'){
+			} else if( response.Command === 'cmd_print_bill') {
 
 				if (response.ResponseCode === 0 ) {
 					$scope.$broadcast('WS_PRINT_SUCCESS');
@@ -792,7 +792,7 @@ sntZestStation.controller('zsRootCtrl', [
         };
 
 		$scope.navToHome = function() {
-			$timeout(function(){
+			$timeout(function() {
 				$state.go('zest_station.home');
 			},250);//use delay so user doesnt immediately click check-in/out icons on touchscreen devices
 		};
@@ -823,7 +823,7 @@ sntZestStation.controller('zsRootCtrl', [
 			'name': ''
 		};
 
-		var getLocalWorkStation = function(id){
+		var getLocalWorkStation = function(id) {
 			try {
 				storedWorkStation = storage.getItem(workStationstorageKey);
 			} catch (err) {
@@ -831,23 +831,23 @@ sntZestStation.controller('zsRootCtrl', [
 			}
 			//find workstation with the local storage data or from last fetched
 			var station;
-			if (id){
+			if (id) {
 				station = getWorkStationSetting(id);
 			} else {
 			 	station = getSavedWorkStationObj(storedWorkStation);	
 			}
 			
-			if (typeof station !== typeof undefined){
+			if (typeof station !== typeof undefined) {
 				return station;
 			} else {
 				return null;
 			}
 		};
 
-		var getWorkStationSetting = function(id){
-			if (zsGeneralSrv.last_workstation_set.work_stations){
-				for (var i in zsGeneralSrv.last_workstation_set.work_stations){
-					if (zsGeneralSrv.last_workstation_set.work_stations[i].id === id){
+		var getWorkStationSetting = function(id) {
+			if (zsGeneralSrv.last_workstation_set.work_stations) {
+				for (var i in zsGeneralSrv.last_workstation_set.work_stations) {
+					if (zsGeneralSrv.last_workstation_set.work_stations[i].id === id) {
 						return zsGeneralSrv.last_workstation_set.work_stations[i];
 					}
 				}
@@ -866,12 +866,12 @@ sntZestStation.controller('zsRootCtrl', [
 			var recently_refreshed;
 			try{
 	 			recently_refreshed = storage.getItem(refreshedKey);
-	 			if (recently_refreshed == 'true'){
+	 			if (recently_refreshed == 'true') {
 	 				recently_refreshed = true;	
 	 			} else {
 	 				recently_refreshed = false;	
 	 			}
-	 		} catch(err){
+	 		} catch(err) {
 	 			recently_refreshed = false;
 	 			console.log(err);
 	 		}

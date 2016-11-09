@@ -1,4 +1,4 @@
-sntRover.controller('RVAddNewFreaquentLoyaltyContrller',['$scope', '$rootScope','RVGuestCardLoyaltySrv','ngDialog', function($scope, $rootScope,RVGuestCardLoyaltySrv,ngDialog){
+sntRover.controller('RVAddNewFreaquentLoyaltyContrller',['$scope', '$rootScope','RVGuestCardLoyaltySrv','ngDialog', function($scope, $rootScope,RVGuestCardLoyaltySrv,ngDialog) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.userMembershipTypes = $scope.loyaltyData.freaquentLoyaltyData;
@@ -6,16 +6,16 @@ sntRover.controller('RVAddNewFreaquentLoyaltyContrller',['$scope', '$rootScope',
 	$scope.userMembershipType = "";
 	$scope.userMembershipClass = "FFP";
 
-	$scope.save = function(){
+	$scope.save = function() {
 
-		var loyaltyPostsuccessCallback = function(data){
+		var loyaltyPostsuccessCallback = function(data) {
 			$scope.newLoyalty.id = data.id;
 			$scope.$emit('hideLoader');
 			$scope.cancel();
 			$rootScope.$broadcast('loyaltyProgramAdded', $scope.newLoyalty, "fromGuestCard");
 		};
 
-		var loyaltyPostErrorCallback = function(errorMessage){
+		var loyaltyPostErrorCallback = function(errorMessage) {
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = errorMessage;
 		};
@@ -33,7 +33,7 @@ sntRover.controller('RVAddNewFreaquentLoyaltyContrller',['$scope', '$rootScope',
 		$scope.invokeApi(RVGuestCardLoyaltySrv.createLoyalties,data , loyaltyPostsuccessCallback, loyaltyPostErrorCallback);
 	};
 
-	$scope.cancel = function(){
+	$scope.cancel = function() {
 		$scope.closeDialog();
 	};
 

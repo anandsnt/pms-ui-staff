@@ -32,7 +32,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.reservationSearch = ($state.current.name === "rover.search");
 		$scope.search_area_id = !$scope.reservationSearch ? "dashboard-search": "search";
 
-		if($stateParams.type === "OPEN_BILL_CHECKOUT" ){
+		if($stateParams.type === "OPEN_BILL_CHECKOUT" ) {
 			// CICO-24079 - OPEN_BILL_CHECKOUT - Date picker from date should default to Null.
 			$scope.fromDate = "";
 			$scope.$emit("UpdateHeading", 'Checked Out (With Balance)');
@@ -587,7 +587,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				newValue = replaceWith;
 			}
 			var valueToReturn = ((value === null || typeof value === 'undefined') ? newValue : value);
-                        if (valueToReturn.indexOf('null') !== -1){
+                        if (valueToReturn.indexOf('null') !== -1) {
                             valueToReturn = '';//removes unwanted ", null" type of values
                         }
 			return valueToReturn;
@@ -636,7 +636,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$vault.set('searchQuery', '');
 		};
 
-                $rootScope.$on('LOAD_SHARED_RESERVATION',function(evtObj, data){
+                $rootScope.$on('LOAD_SHARED_RESERVATION',function(evtObj, data) {
                     var reservationID = data.reservation_no, confirmationID = data.confirmation_no;
                     $scope.goToSharerReservationDetails(evtObj, reservationID, confirmationID);
                 });
@@ -740,7 +740,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			};
 
 			swipeData.is_encrypted = true;
-			if(data.RVCardReadIsEncrypted === 0 || data.RVCardReadIsEncrypted === '0'){
+			if(data.RVCardReadIsEncrypted === 0 || data.RVCardReadIsEncrypted === '0') {
 				swipeData.is_encrypted = false;
 			}
 
@@ -1028,8 +1028,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				}
 			}
 		});
-		$scope.showStatus = function(reservation){
-			if(reservation.room_ready_status =='CLEAN' ||reservation.room_ready_status== 'INSPECTED'){
+		$scope.showStatus = function(reservation) {
+			if(reservation.room_ready_status =='CLEAN' ||reservation.room_ready_status== 'INSPECTED') {
 				return false;
 			}else{
 				return reservation.reservation_status === 'CHECKING_IN'&& (!!reservation.is_room_due_out || !!reservation.fostatus);

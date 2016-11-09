@@ -25,7 +25,7 @@ admin.service('ADDailyWorkAssignmentSrv', [
             return deferred.promise;
 
         };
-        this.postDefaultTask = function(params){
+        this.postDefaultTask = function(params) {
             var deferred = $q.defer(),
                 url = 'api/tasks/'+params.id+'/default_task';
 

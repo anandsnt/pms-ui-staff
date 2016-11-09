@@ -36,7 +36,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
-        this.authorizeCC = function(postData){
+        this.authorizeCC = function(postData) {
             //send is_emv_request = true, to init sixpay device and capture card
              // var deferred = $q.defer();
              //    var url = '/api/cc/authorize';
@@ -248,7 +248,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
-        this.fetchReservationBalanceDetails = function(params){
+        this.fetchReservationBalanceDetails = function(params) {
 
             var deferred = $q.defer();
             url = 'zest_station/reservations/' + params.reservation_id;
@@ -275,7 +275,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
-        this.fetchStarTacPrinterData = function(params){
+        this.fetchStarTacPrinterData = function(params) {
             var deferred = $q.defer();
             var url = 'api/reservations/'+params.reservation_id+'/bill_print_data?is_checkout=false';
             zsBaseWebSrv.getJSON(url, params).then(function(data) {

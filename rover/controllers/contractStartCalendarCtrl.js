@@ -1,14 +1,14 @@
 
-sntRover.controller('contractStartCalendarCtrl',['$rootScope','$scope','dateFilter','ngDialog',function($rootScope,$scope,dateFilter,ngDialog){
-	$scope.setUpData = function(){
+sntRover.controller('contractStartCalendarCtrl',['$rootScope','$scope','dateFilter','ngDialog',function($rootScope,$scope,dateFilter,ngDialog) {
+	$scope.setUpData = function() {
 	    $scope.isDateSelected = false;
-	    if($scope.contractList.isAddMode){
-		    if($scope.addData.begin_date){
+	    if($scope.contractList.isAddMode) {
+		    if($scope.addData.begin_date) {
 		      $scope.date = $scope.addData.begin_date;
 		    }
 	    }
 	    else{
-	    	if($scope.contractData.begin_date){
+	    	if($scope.contractData.begin_date) {
 		      $scope.date = $scope.contractData.begin_date;
 		    }
 	    }
@@ -20,7 +20,7 @@ sntRover.controller('contractStartCalendarCtrl',['$rootScope','$scope','dateFilt
 		     yearRange: "0:+10",
 		     onSelect: function() {
 
-			     if($scope.contractList.isAddMode){
+			     if($scope.contractList.isAddMode) {
 			     	//set end date as one day next to begin date
 			     	$scope.addData.begin_date = $scope.date;
 		     		var myDate = tzIndependentDate($scope.date);
@@ -31,7 +31,7 @@ sntRover.controller('contractStartCalendarCtrl',['$rootScope','$scope','dateFilt
 			     else{
 
 			    	$scope.contractData.begin_date = $scope.date;
-			    	if(!($scope.contractData.begin_date < $scope.contractData.end_date)){
+			    	if(!($scope.contractData.begin_date < $scope.contractData.end_date)) {
 			     		//set end date as one day next to begin date
 			     		var myDate = tzIndependentDate($scope.date);
 						myDate.setDate(myDate.getDate() + 1);

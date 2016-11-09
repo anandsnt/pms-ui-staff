@@ -10,9 +10,9 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 
 		$scope.DailogeState.isCancelled = false ;
 
-		$scope.completeCancellationProcess = function(){
+		$scope.completeCancellationProcess = function() {
 
-			if($scope.DailogeState.isCancelled){
+			if($scope.DailogeState.isCancelled) {
 				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
 					"id": $stateParams.id || $scope.reservationData.reservationId,
 					"confirmationId": $stateParams.confirmationId || $scope.reservationData.confirmNum,
@@ -42,17 +42,17 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 			$scope.invokeApi(RVReservationCardSrv.cancelReservation, cancellationParameters, onCancelSuccess);
 		};
 
-		$scope.proceedWithDepositRefund = function(){
+		$scope.proceedWithDepositRefund = function() {
 			var	with_deposit_refund = true;
 			cancelReservation(with_deposit_refund);
 		};
 
-		$scope.proceedWithOutDepositRefund = function(){
+		$scope.proceedWithOutDepositRefund = function() {
 			var	with_deposit_refund = false;
 			cancelReservation(with_deposit_refund);
 		};
 
-		$scope.closeDialog = function(){
+		$scope.closeDialog = function() {
 			ngDialog.close();
 		};
 

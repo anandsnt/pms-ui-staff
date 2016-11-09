@@ -36,7 +36,7 @@
 
 			$scope.nextButtonClicked = function() {
 				// check if checkin now is selected 
-				if ($stateParams.isFromCheckinNow){
+				if ($stateParams.isFromCheckinNow) {
 					$rootScope.isAutoCheckinOn = false;// turn off for applying direct checkin
 					$state.go('checkinKeys');
 				} else {

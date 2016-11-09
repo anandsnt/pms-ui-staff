@@ -11,12 +11,12 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 
 	// Checks height on drag-to-resize and opens or closes drawer.
 	var heightChecker = function(height) {
-		if (height > 5){
+		if (height > 5) {
 			$scope.data.isDrawerOpened = true;
 			$scope.data.printBoxHeight = height;
 			$scope.$apply();
 		}
-		else if(height < 5){
+		else if(height < 5) {
 			$scope.closeDrawer();
 		}
 	};
@@ -38,12 +38,12 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	};
 
 	// To handle click on drawer handle - open/close.
-	$scope.clickedDrawer = function($event){
+	$scope.clickedDrawer = function($event) {
 		$event.stopPropagation();
 		$event.stopImmediatePropagation();
-		if(getParentWithSelector($event, document.getElementsByClassName("ui-resizable-handle")[0])){
+		if(getParentWithSelector($event, document.getElementsByClassName("ui-resizable-handle")[0])) {
 			if(parseInt($scope.eventTimestamp)) {
-				if(($event.timeStamp - $scope.eventTimestamp)<2){
+				if(($event.timeStamp - $scope.eventTimestamp)<2) {
 					return;
 				}
 			}
@@ -63,18 +63,18 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	};
 
 	// To open the Drawer
-	$scope.openDrawer = function(){
+	$scope.openDrawer = function() {
 		$scope.data.printBoxHeight = resizableMaxHeight;
 		$scope.data.isDrawerOpened = true;
 	};
 
 	// To close the Drawer
-	$scope.closeDrawer = function(){
+	$scope.closeDrawer = function() {
 		$scope.data.printBoxHeight = resizableMinHeight;
 		$scope.data.isDrawerOpened = false;
 	};
 
-	$scope.$on("CLOSEPRINTBOX",function(){
+	$scope.$on("CLOSEPRINTBOX",function() {
 		$scope.closeDrawer();
 	});
 
@@ -83,11 +83,11 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	/** Code for Revenue Tab - PRINT BOX - filters  starts here .. **/
 
 	// On changing charge group on PRINT filter
-	$scope.chargeGroupChanged = function(){
+	$scope.chargeGroupChanged = function() {
 
 		$scope.data.activeChargeCodes = [];
 
-		var successCallBackFetchRevenueData = function(data){
+		var successCallBackFetchRevenueData = function(data) {
 			$scope.data.revenueData = {};
 			$scope.data.revenueData = data;
 
@@ -116,9 +116,9 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	};
 
 	// On changing charge code on PRINT filter
-	$scope.chargeCodeChanged = function(){
+	$scope.chargeCodeChanged = function() {
 
-		var successCallBackFetchRevenueDataChargeCodes = function(data){
+		var successCallBackFetchRevenueDataChargeCodes = function(data) {
 
 			$scope.data.revenueData.charge_groups[0].charge_codes = [];
 			$scope.data.revenueData.charge_groups[0].charge_codes = data.charge_codes;
@@ -148,13 +148,13 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	};
 
 	// To handle Summary/Details toggle button click - REVENUE
-	$scope.toggleSummaryOrDeatilsRevenue = function(){
+	$scope.toggleSummaryOrDeatilsRevenue = function() {
 
 		$scope.data.isRevenueToggleSummaryActive = !$scope.data.isRevenueToggleSummaryActive;
 	};
 
 	// To handle Summary/Details toggle button click - PAYMENT
-	$scope.toggleSummaryOrDeatilsPayment = function(){
+	$scope.toggleSummaryOrDeatilsPayment = function() {
 
 		$scope.data.isPaymentToggleSummaryActive = !$scope.data.isPaymentToggleSummaryActive;
 	};
@@ -162,13 +162,13 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	/** Code for Revenue Tab - PRINT BOX - filters ends here ..   **/
 
 	/** Code for Payment Tab - PRINT BOX - filters starts here .. **/
-	$scope.paymentTypeChanged = function(){
+	$scope.paymentTypeChanged = function() {
 
-		var successCallBackFetchPaymentData = function(data){
+		var successCallBackFetchPaymentData = function(data) {
 			$scope.data.paymentData = {};
 			$scope.data.paymentData = data;
 
-			if(data.payment_type === 'Credit Card'){
+			if(data.payment_type === 'Credit Card') {
 				$scope.data.paymentData.payment_types[0].active = true;
 			}
             $scope.errorMessage = "";
@@ -183,10 +183,10 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
             "department_ids" : $scope.data.selectedDepartmentList
         };
 
-		if($scope.data.selectedPaymentType === "ALL"){
+		if($scope.data.selectedPaymentType === "ALL") {
 			postData.charge_code_id = "";
 		}
-		else if($scope.data.selectedPaymentType === "" || typeof $scope.data.selectedPaymentType === "undefined"){
+		else if($scope.data.selectedPaymentType === "" || typeof $scope.data.selectedPaymentType === "undefined") {
 			postData.charge_code_id = "CC";
 		}
 		else{
@@ -205,19 +205,19 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 
 	/** PRINT Functionality **/
 
-	$scope.$on("PRINTSUMMARY",function(){
+	$scope.$on("PRINTSUMMARY",function() {
 		printJournal();
 	});
 
-	$scope.printRevenue = function(){
+	$scope.printRevenue = function() {
 		printJournal();
 	};
 
-	$scope.printPayment = function(){
+	$scope.printPayment = function() {
 		printJournal();
 	};
 
-	$scope.printCashier = function(){
+	$scope.printCashier = function() {
 		printJournal();
 	};
 

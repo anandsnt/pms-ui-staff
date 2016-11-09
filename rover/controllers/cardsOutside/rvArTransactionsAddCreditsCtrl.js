@@ -1,4 +1,4 @@
-sntRover.controller('RVArTransactionsAddCreditsController',['$scope','$rootScope','ngDialog','dateFilter','RVCompanyCardSrv',function($scope,$rootScope,ngDialog,dateFilter,RVCompanyCardSrv){
+sntRover.controller('RVArTransactionsAddCreditsController',['$scope','$rootScope','ngDialog','dateFilter','RVCompanyCardSrv',function($scope,$rootScope,ngDialog,dateFilter,RVCompanyCardSrv) {
 
     //inheriting some useful things
     BaseCtrl.call(this, $scope);
@@ -8,7 +8,7 @@ sntRover.controller('RVArTransactionsAddCreditsController',['$scope','$rootScope
     $scope.selectedSymbol = '+';
 
     // save button click to update credit amount
-    $scope.savebuttonClick = function(){
+    $scope.savebuttonClick = function() {
 
         var addCreditAmountSuccess = function(data) {
             $scope.$emit('hideLoader');
@@ -24,7 +24,7 @@ sntRover.controller('RVArTransactionsAddCreditsController',['$scope','$rootScope
             $scope.arTransactionDetails.available_credit = credits;
         };
 
-        var failure = function(errorMessage){
+        var failure = function(errorMessage) {
             $scope.$emit('hideLoader');
             $scope.errorMessage = errorMessage;
         };
@@ -39,7 +39,7 @@ sntRover.controller('RVArTransactionsAddCreditsController',['$scope','$rootScope
     };
 
     // upon entering credit amount
-    $scope.addCreditAmount = function(){
+    $scope.addCreditAmount = function() {
 
         var totalCreditAmount = parseFloat(parseFloat($scope.existingCreditAmount) + parseFloat($scope.selectedSymbol + $scope.addedCreditAmount)).toFixed(2);
         if(totalCreditAmount === '-0.00') {

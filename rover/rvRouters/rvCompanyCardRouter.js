@@ -1,4 +1,4 @@
-angular.module('companyCardModule', []).config(function($stateProvider, $urlRouterProvider, $translateProvider){
+angular.module('companyCardModule', []).config(function($stateProvider, $urlRouterProvider, $translateProvider) {
   //define module-specific routes here
      //company card search
         $stateProvider.state('rover.companycardsearch', {

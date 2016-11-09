@@ -1,7 +1,7 @@
 angular.module('sntRover').controller('MixedRestrictionsCtrl', ['$q', '$scope', 'ngDialog',
     function ($q, $scope, ngDialog) {
 
-        $scope.init = function(){
+        $scope.init = function() {
             $scope.options = {};
             $scope.options.daysEntered = '';
         };
@@ -11,13 +11,13 @@ angular.module('sntRover').controller('MixedRestrictionsCtrl', ['$q', '$scope', 
         * Updates the data modal in parent with the enable status
         * Update the data modal with the days entered in the box
         */
-        $scope.updateRestrictionBtnClicked = function(id){
+        $scope.updateRestrictionBtnClicked = function(id) {
             var currentSelected = $scope.data.restrictionTypes[id];
             currentSelected.isRestrictionEnabled = true;
             currentSelected.hasChanged = true;
             currentSelected.isMixed = false;
 
-            if($scope.options.daysEntered !== undefined && $scope.options.daysEntered !== null){
+            if($scope.options.daysEntered !== undefined && $scope.options.daysEntered !== null) {
                 currentSelected.days = $scope.options.daysEntered === "" ? "" : parseInt($scope.options.daysEntered);
             }
             collapseCurrentSelectedView(currentSelected);
@@ -29,19 +29,19 @@ angular.module('sntRover').controller('MixedRestrictionsCtrl', ['$q', '$scope', 
         * Updates the data modal in parent with the disable status
         * Updates the data modal in parent with days as empty
         */
-        $scope.removeRestrictionBtnClicked = function(id){
+        $scope.removeRestrictionBtnClicked = function(id) {
             var currentSelected = $scope.data.restrictionTypes[id];
             currentSelected.isRestrictionEnabled = false;
             currentSelected.hasChanged = true;
             currentSelected.isMixed = false;
 
-            if($scope.options.daysEntered !== undefined && $scope.options.daysEntered !== null){
+            if($scope.options.daysEntered !== undefined && $scope.options.daysEntered !== null) {
                 currentSelected.days = '';
             }
             collapseCurrentSelectedView(currentSelected);
         };
 
-        $scope.cancelButtonClicked = function(id){
+        $scope.cancelButtonClicked = function(id) {
             collapseCurrentSelectedView($scope.data.restrictionTypes[id]);
         };
 

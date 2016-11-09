@@ -120,7 +120,7 @@ var UnassignedRoomPanel = React.createClass({
         };
     },
 
-    componentDidUpdate: function(){
+    componentDidUpdate: function() {
         var iscroll = this.props.iscroll;
         iscroll.unassignedList.refresh();
     },

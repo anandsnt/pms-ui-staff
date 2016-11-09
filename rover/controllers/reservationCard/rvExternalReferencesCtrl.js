@@ -69,7 +69,7 @@ sntRover.controller('rvExternalReferencesCtrl', ['$rootScope', '$scope', 'RVExte
 					$scope.stateExternalRef.thirdParties = response.systems;
 					$scope.stateExternalRef.references = response.references;
 					_.each($scope.stateExternalRef.references, function (reference) {
-						if(reference.is_primary){
+						if(reference.is_primary) {
 							reference.external_confirm_no += $filter('translate')('PRIMARY_EXTERNAL_REFERENCE');
 						}
 					});

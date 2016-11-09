@@ -5,7 +5,7 @@ angular.module('sntRover').controller('groupAvailabilityMainController', [
 	'ngDialog',
 	'$filter' ,
 	'$timeout',
-	function($scope, rvAvailabilitySrv, $rootScope, ngDialog, $filter, $timeout){
+	function($scope, rvAvailabilitySrv, $rootScope, ngDialog, $filter, $timeout) {
 
 
 	BaseCtrl.call(this, $scope);
@@ -35,7 +35,7 @@ angular.module('sntRover').controller('groupAvailabilityMainController', [
 	/**
 	* success call of availability data fetch
 	*/
-	var successCallbackOfAvailabilityFetch = function(data){
+	var successCallbackOfAvailabilityFetch = function(data) {
 		$scope.$emit("hideLoader");
 		$scope.$broadcast("changedRoomAvailableData");
 		// for this successcallback we are not hiding the activty indicator
@@ -46,7 +46,7 @@ angular.module('sntRover').controller('groupAvailabilityMainController', [
 	/**
 	* error call of availability data fetch
 	*/
-	var failureCallbackOfAvailabilityFetch = function(errorMessage){
+	var failureCallbackOfAvailabilityFetch = function(errorMessage) {
 		$scope.$emit("hideLoader");
 
 	};
@@ -55,8 +55,8 @@ angular.module('sntRover').controller('groupAvailabilityMainController', [
 	/**
 	* When there is any change of for availability data params we need to call the api
 	*/
-	$scope.changedAvailabilityDataParams = function(){
-		$timeout(function(){
+	$scope.changedAvailabilityDataParams = function() {
+		$timeout(function() {
 		//calculating date after number of dates selected in the select box
 			var dateAfter = tzIndependentDate ($scope.data.selectedDate);
 

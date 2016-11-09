@@ -13,7 +13,7 @@
       templateUrl: '/assets/checkin/partials/ccErrorModal.html',
       controller: ccVerificationModalCtrl,
       resolve: {
-        errorMessage:function(){
+        errorMessage:function() {
           return "Please Enter a valid Mobile Number.";
         }
       }
@@ -24,7 +24,7 @@
       templateUrl: '/assets/checkin/partials/ccErrorModal.html',
       controller: ccVerificationModalCtrl,
       resolve: {
-        errorMessage:function(){
+        errorMessage:function() {
           return "There is a problem saving your mobile number. Please retry.";
         }
       }
@@ -34,8 +34,8 @@
     $scope.mobileUpdated = false;
     $scope.country_code  = "";
 
-    $scope.countryChanged = function(){
-      $scope.dial = _.find($scope.countryDetails,function(countryDetails){ return countryDetails.countrycode === $scope.country_code}).dial;
+    $scope.countryChanged = function() {
+      $scope.dial = _.find($scope.countryDetails,function(countryDetails) { return countryDetails.countrycode === $scope.country_code}).dial;
     };
 
 
@@ -43,7 +43,7 @@
     guestDetailsService.fetchCountryCode().then(function(response) {
       $scope.countryDetails = response;
       $scope.isLoading = false;
-    },function(){
+    },function() {
       $scope.netWorkError = true;
       $scope.isLoading = false;
     });
@@ -58,25 +58,25 @@
         }
     };
 
-    $scope.mobileSubmitted = function(){
+    $scope.mobileSubmitted = function() {
 
-    	if(ValidateNo()){
+    	if(ValidateNo()) {
         guestDetailsService.postGuestDetails({"mobile":$scope.dial+"-"+$scope.guestDetails.mobile}).then(function(response) {
           $scope.isLoading = false;
           $scope.mobileUpdated = true;
           $rootScope.userMobile = $scope.guestDetails.mobile;
-        },function(){
+        },function() {
           $scope.isLoading = false;
           $modal.open(mobileNumberSaveFailedAlert);
         });
     	}
     };
 
-    $scope.continueClicked =  function(){
+    $scope.continueClicked =  function() {
       $rootScope.userMobileSkipped = true;
       $state.go('preCheckinStatus');
     };
-    $scope.changeMobile =  function(){
+    $scope.changeMobile =  function() {
        $scope.mobileUpdated = false;
     };
 };

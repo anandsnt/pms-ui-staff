@@ -64,8 +64,8 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
             var url = "/api/rate_types.json";
             ADBaseWebSrvV2.getJSON(url).then(function (data) {
                 var results = [];
-                for(var i = 0; i < data.results.length; i++){
-                    if(data.results[i].activated){
+                for(var i = 0; i < data.results.length; i++) {
+                    if(data.results[i].activated) {
                         results.push(data.results[i]);
                     }
                 }
@@ -112,7 +112,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
             return deferred.promise;
         };
 
-        this.updateRateForNonStandalone = function(data){
+        this.updateRateForNonStandalone = function(data) {
             var deferred = $q.defer();
 
             var url = "/admin/rates/" + data.id;
@@ -166,12 +166,12 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
                 var chargeCodes = data.commission_details.charge_codes,
                     selectedChargeCodes = data.commission_details.selected_commission_charge_code_ids;
                 
-                if( typeof chargeCodes !== 'undefined' && chargeCodes.length >0 ){
+                if( typeof chargeCodes !== 'undefined' && chargeCodes.length >0 ) {
                     
                     angular.forEach( chargeCodes ,function( item, index) {
-                        if( typeof selectedChargeCodes !== 'undefined' && selectedChargeCodes.length >0 ){
+                        if( typeof selectedChargeCodes !== 'undefined' && selectedChargeCodes.length >0 ) {
                             angular.forEach( selectedChargeCodes ,function( id, index) {
-                                if(id === item.id){
+                                if(id === item.id) {
                                     item.is_checked = true;
                                 }
                             });

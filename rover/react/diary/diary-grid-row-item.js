@@ -80,9 +80,9 @@ var GridRowItem = React.createClass({
 				//if there is any accomoanying guests
 				if(!_.isEmpty(data[meta.accompanying_guests])) {
 					caption = caption + "  |  ";
-					_.each(data[meta.accompanying_guests], function(element, index, list){
+					_.each(data[meta.accompanying_guests], function(element, index, list) {
 						caption += (element.guest_name);
-						if(index !== (list.length - 1)){
+						if(index !== (list.length - 1)) {
 							caption += ", ";
 						}
 					});
@@ -94,7 +94,7 @@ var GridRowItem = React.createClass({
 
 	},
 
-	__formHouseKeepingStyle: function(data, display, meta, end_time_ms){
+	__formHouseKeepingStyle: function(data, display, meta, end_time_ms) {
 
 		var style = {}, ms_fifteen_min	= 900000, end_of_reservation;
 
@@ -102,7 +102,7 @@ var GridRowItem = React.createClass({
 		end_of_reservation = (data[meta.maintenance] * ms_fifteen_min + end_time_ms);
 
 		//(CICO-12358) when the reservation end is touching the end of the grid, we are hiding the house keeping task or showing the partial
-		if( end_of_reservation > display.x_p){
+		if( end_of_reservation > display.x_p) {
 			// reservation crossing the grid boundary we are hiding
 			if(end_time_ms > display.x_p) {
 				style.display = 'none';
@@ -115,7 +115,7 @@ var GridRowItem = React.createClass({
 
 	},
 
-	__get_class_for_reservation_span: function(){
+	__get_class_for_reservation_span: function() {
 		var props = this.props,
 			state = this.state,
 			data  = props.data,
@@ -166,7 +166,7 @@ var GridRowItem = React.createClass({
 				className += ' ' + data[m.status];
 				break;
 		}
-		if(data.cannot_move_room){
+		if(data.cannot_move_room) {
 			className += ' locked';
 		}
 
@@ -210,19 +210,19 @@ var GridRowItem = React.createClass({
 
 		var display_start_time = (display.x_n instanceof Date ? display.x_n : new Date (display.x_n) );
 
-		if(!display_start_time.isOnDST() && start_date.isOnDST()){
+		if(!display_start_time.isOnDST() && start_date.isOnDST()) {
 			var dateForCalculatingLeft = new Date(start_time_ms);
 			dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
 			left = (dateForCalculatingLeft.getTime() - x_origin) * px_per_ms + 'px';
 		}
-		else if(display_start_time.isOnDST() && !start_date.isOnDST()){
+		else if(display_start_time.isOnDST() && !start_date.isOnDST()) {
 			var dateForCalculatingLeft = new Date(start_time_ms);
 			dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
 
 			left = (dateForCalculatingLeft.getTime() - x_origin) * px_per_ms + 'px';
 
 			//The special case adjustment
-			if(dateForCalculatingLeft.isOnDST()){
+			if(dateForCalculatingLeft.isOnDST()) {
 				left = (dateForCalculatingLeft.getTime() +3600000 - x_origin) * px_per_ms + 'px';
 			}
 		}
@@ -254,7 +254,7 @@ var GridRowItem = React.createClass({
 				display: 'block',
 				left: left,
 			},
-			__setDragOver: function(bool){ this.__setDragOver(bool) }.bind(this)
+			__setDragOver: function(bool) { this.__setDragOver(bool) }.bind(this)
 		},
 		React.DOM.span({
 			className: this.__get_class_for_reservation_span(),

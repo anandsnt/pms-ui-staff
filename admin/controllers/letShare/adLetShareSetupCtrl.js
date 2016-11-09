@@ -1,4 +1,4 @@
-admin.controller('adLetShareSetupCtrl', ['$scope', 'letsShareSetupValues', 'adLetShareSetupSrv', function($scope, letsShareSetupValues, adLetShareSetupSrv){
+admin.controller('adLetShareSetupCtrl', ['$scope', 'letsShareSetupValues', 'adLetShareSetupSrv', function($scope, letsShareSetupValues, adLetShareSetupSrv) {
 	
 	BaseCtrl.call (this, $scope);
 	

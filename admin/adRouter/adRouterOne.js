@@ -1,4 +1,4 @@
-angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterProvider, $translateProvider){
+angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterProvider, $translateProvider) {
      //define module-specific routes here
         $stateProvider.state('admin.dashboard', {
 			url: '/dashboard/:menu',
@@ -128,7 +128,7 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 				directUrlData: function(adZestCheckinCheckoutSrv) {
 					return adZestCheckinCheckoutSrv.fetchDirectSetup();
 				},
-				diretUrls : function(adZestCheckinCheckoutSrv){
+				diretUrls : function(adZestCheckinCheckoutSrv) {
 					var data = {"application":"URL","guest_web_url_type":"CHECKIN"};
 					return adZestCheckinCheckoutSrv.fetchDirectUrlList(data);
 				}
@@ -140,7 +140,7 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADReportsListCtrl',
 			url : '/reports',
             resolve: {
-                reports: function(adReportsSrv){
+                reports: function(adReportsSrv) {
                     return adReportsSrv.fetchReportsList();
                 }
             }

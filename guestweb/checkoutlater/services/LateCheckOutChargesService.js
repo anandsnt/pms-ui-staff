@@ -21,9 +21,9 @@
 	var postNewCheckoutOption = function(url,data) {
 
 		var deferred = $q.defer();
-		$http.post(url, data).success(function(response){
+		$http.post(url, data).success(function(response) {
 			deferred.resolve(response);
-		}).error(function(){
+		}).error(function() {
 			deferred.reject();
 		});
 		return deferred.promise;

@@ -130,7 +130,7 @@ sntGuestWeb.service('GwCheckinSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'GwW
 		return deferred.promise;
 	};
 
-	this.applyEarlyCheckin = function(params){
+	this.applyEarlyCheckin = function(params) {
 		var deferred = $q.defer();
 		var url = '/api/reservations/apply_early_checkin_offer';
 		GWBaseWebSrv2.postJSON(url, params).then(function(data) {
@@ -165,7 +165,7 @@ sntGuestWeb.service('GwCheckinSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'GwW
 		return deferred.promise;
 	};
 
-	this.fetchCountryList = function(){
+	this.fetchCountryList = function() {
 		var deferred = $q.defer();
 		var url = '/ui/country_list';
 		GWBaseWebSrv2.getJSON(url).then(function(data) {
@@ -176,7 +176,7 @@ sntGuestWeb.service('GwCheckinSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'GwW
 		return deferred.promise;
 	};
 
-	this.checkinGuest = function(params){
+	this.checkinGuest = function(params) {
 		var deferred = $q.defer();
 		var url = '/guest_web/checkin.json';
 		params.application = (typeof GwWebSrv.zestwebData.application !=="undefined") ? GwWebSrv.zestwebData.application : "";

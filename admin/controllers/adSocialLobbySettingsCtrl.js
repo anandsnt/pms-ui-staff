@@ -1,4 +1,4 @@
-admin.controller('ADSocialLobbySettingsCtrl', ['$scope','$rootScope', '$state', 'ADSocialLobbySrv', function($scope, $rootScope,$state, ADSocialLobbySrv){
+admin.controller('ADSocialLobbySettingsCtrl', ['$scope','$rootScope', '$state', 'ADSocialLobbySrv', function($scope, $rootScope,$state, ADSocialLobbySrv) {
 
    	/*
 	* controller class for social lobby settings
@@ -14,7 +14,7 @@ admin.controller('ADSocialLobbySettingsCtrl', ['$scope','$rootScope', '$state', 
 	/*
 	* success call back of details web service call
 	*/
-	var fetchCompletedOfSettingsDetails = function(data){
+	var fetchCompletedOfSettingsDetails = function(data) {
 		$scope.$emit('hideLoader');
 		$scope.data = data;
 
@@ -28,11 +28,11 @@ admin.controller('ADSocialLobbySettingsCtrl', ['$scope','$rootScope', '$state', 
 	/*
 	* success call back of details web service call
 	*/
-	var successCallbackOfSaveDetails = function(data){
+	var successCallbackOfSaveDetails = function(data) {
 		$scope.$emit('hideLoader');
 	};
 
-	$scope.save = function(){
+	$scope.save = function() {
 		var postingData = {};
 		postingData.is_social_lobby_on = $scope.data.is_social_lobby_on;
 		postingData.is_my_group_on = $scope.data.is_my_group_on;

@@ -1,9 +1,9 @@
-admin.controller('ADRoomKeyDeliveryCtrl',['$state', '$scope','$rootScope','ADRoomKeyDeliverySrv', function($state, $scope,$rootScope, ADRoomKeyDeliverySrv){
+admin.controller('ADRoomKeyDeliveryCtrl',['$state', '$scope','$rootScope','ADRoomKeyDeliverySrv', function($state, $scope,$rootScope, ADRoomKeyDeliverySrv) {
 
 	BaseCtrl.call(this, $scope);
 
 
-	var fetchSuccess = function(data){
+	var fetchSuccess = function(data) {
 		$scope.data = data;
 		$scope.$emit('hideLoader');
 	};
@@ -12,7 +12,7 @@ admin.controller('ADRoomKeyDeliveryCtrl',['$state', '$scope','$rootScope','ADRoo
 	/*
     * To handle save button click.
     */
-	$scope.save = function(){
+	$scope.save = function() {
 
 
 		$scope.invokeApi(ADRoomKeyDeliverySrv.update, $scope.data);

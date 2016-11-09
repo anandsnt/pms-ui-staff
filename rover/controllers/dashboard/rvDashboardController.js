@@ -1,6 +1,6 @@
 
 sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata','$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes', '$window',
-                  function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,$rootScope, $filter, $state, RVWorkstationSrv, roomTypes, $window){
+                  function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,$rootScope, $filter, $state, RVWorkstationSrv, roomTypes, $window) {
 
     //setting the heading of the screen
     $scope.heading = 'DASHBOARD_HEADING';
@@ -15,7 +15,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
     BaseCtrl.call(this, $scope);
 
 
-    var init =  function(){
+    var init =  function() {
 
 
           //setting the heading of the screen
@@ -37,17 +37,17 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
          //Handle Notificatin releated logic.
         initNotification();
         $scope.greetingsMessage = "";
-        if (time < 12){
+        if (time < 12) {
           $scope.greetingsMessage = 'GREETING_MORNING';
         }
-        else if (time >= 12 && time < 16){
+        else if (time >= 12 && time < 16) {
           $scope.greetingsMessage = 'GREETING_AFTERNOON';
         }
         else{
           $scope.greetingsMessage = 'GREETING_EVENING';
         }
         //ADDED Time out since translation not working without time out
-        setTimeout(function(){
+        setTimeout(function() {
           var title = "Showing Dashboard";
            $scope.refreshScroller('dashboard_scroller');
            $scope.setTitle(title);
@@ -65,14 +65,14 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
    /*
    * Function to fetch release notes
    */
-   var fetchReleaseNotes = function(){
+   var fetchReleaseNotes = function() {
       //Standard parameters,As of now leave it all null
       var params = {
         hotel_uuid :null,
         service_provider_uuid : null,
         is_read: null
       };
-      var successReleaseNotesFetch = function(data){
+      var successReleaseNotesFetch = function(data) {
         $scope.activeNotification = data.results[0];
         $scope.$emit('hideLoader');
       };
@@ -81,13 +81,13 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
  /*
    * Function to close release notes
    */
-    $scope.closeReleaseNote = function(){
+    $scope.closeReleaseNote = function() {
       ngDialog.close(); //close any existing popups
     }
   /*
    * Function to open link in new tab
    */
-    $scope.showReleaseNote = function(activeNotification){
+    $scope.showReleaseNote = function(activeNotification) {
         var url = activeNotification.action_source;
         if (!url.match(/^https?:\/\//i)) {
           url = 'http://' + url+'?from=rover';
@@ -104,14 +104,14 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
   /*
    * Function to hide release notes for current login
    */
-    $scope.cancelReleaseNote = function(){
+    $scope.cancelReleaseNote = function() {
       $rootScope.showNotificationForCurrentUser = false;
     };
   /*
    * Function to change status, ie is_read true
    */
-    $scope.changeNotificationStatus = function(activeNotification){
-      var successCallBack = function(data){
+    $scope.changeNotificationStatus = function(activeNotification) {
+      var successCallBack = function(data) {
         $rootScope.showNotificationForCurrentUser = false;
         $scope.$emit('hideLoader');
       };
@@ -120,16 +120,16 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
   /*
    * Function to init notification related process.
    */
-    var initNotification = function(){
+    var initNotification = function() {
         fetchReleaseNotes();
     };
 
-   $scope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error){
+   $scope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
         $scope.errorMessage = 'Sorry the feature you are looking for is not implemented yet, or some  errors are occured!!!';
    });
 
    var setDeviceId = function() {
-      var onGetDeviceIdSuccess = function(data){
+      var onGetDeviceIdSuccess = function(data) {
             $rootScope.UUID = data;
             invokeSetWorkstationApi();
           },
@@ -166,7 +166,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
             $scope.$emit('hideLoader');
         };
 
-   var setWorkStation = function(){
+   var setWorkStation = function() {
 
 
       //Variable to avoid calling the set work station api, when
@@ -250,7 +250,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
      return deviceId;
    };
 
-   var reddirectToDefaultDashboard = function(){
+   var reddirectToDefaultDashboard = function() {
         var defaultDashboardMappedWithStates = {
           'FRONT_DESK': 'rover.dashboard.frontoffice',
           'MANAGER': 'rover.dashboard.manager',
@@ -279,7 +279,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
 
 
 
-   $scope.gotosearch = function(){
+   $scope.gotosearch = function() {
     $state.go("rover.search");
 
    };
@@ -291,7 +291,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
    * param1 {object}, javascript event
    * param2 {String}, Heading to change
    */
-   $scope.$on("UpdateHeading", function(event, data){
+   $scope.$on("UpdateHeading", function(event, data) {
       event.stopPropagation();
       //chnaging the heading of the page
       $scope.heading = data;
@@ -302,7 +302,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
     * function to handle click on backbutton in the header section
     * will broadcast an event, the logic of backbutto should be handled there
     */
-   $scope.headerBackButtonClicked = function(){
+   $scope.headerBackButtonClicked = function() {
         $scope.$broadcast("HeaderBackButtonClicked");
    };
 

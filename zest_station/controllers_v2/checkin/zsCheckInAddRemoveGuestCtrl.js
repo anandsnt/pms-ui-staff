@@ -59,10 +59,10 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 $scope.guest.firstName = $scope.guest.Name;
                 $scope.guest.Name = "";
                 $scope.headingText = 'ENTER_LAST';
-                if ($scope.isIpad){
+                if ($scope.isIpad) {
                     $scope.callBlurEventForIpad();
                 } else {
-                    $timeout(function(){
+                    $timeout(function() {
                         $scope.focusInputField('add-guest-name');
                     },300);
                 }
@@ -74,10 +74,10 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 //this needs to reset..the above code needs to be changed in future
                 //seems confusing
                 $scope.guest.firstNameEntered = false;
-                if ($scope.isIpad){
+                if ($scope.isIpad) {
                     $scope.callBlurEventForIpad();
                 } else {
-                    $timeout(function(){
+                    $timeout(function() {
                         $scope.focusInputField('add-guest-name');
                     },300);
 

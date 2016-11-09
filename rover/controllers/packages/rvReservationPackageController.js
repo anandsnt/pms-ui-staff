@@ -12,7 +12,7 @@ sntRover.controller('RVReservationPackageController',
 					$state, $timeout, ngDialog, RVReservationStateService) {
 
 	var reservationId = $scope.reservationData.reservation_card.reservation_id;
-	var successCallBack = function(data){
+	var successCallBack = function(data) {
 		$scope.$emit('hideLoader');
 		$scope.packageData = data;
 		angular.forEach($scope.packageData.existing_packages,function(item, index) {
@@ -28,15 +28,15 @@ sntRover.controller('RVReservationPackageController',
 
 				},
 				2000);
-	$scope.closeAddOnPopup = function(){
+	$scope.closeAddOnPopup = function() {
 		//to add stjepan's popup showing animation
 		$rootScope.modalOpened = false;
-		$timeout(function(){
+		$timeout(function() {
 			ngDialog.close();
 		}, 300);
 	};
 
-	$scope.goToAddons = function(){
+	$scope.goToAddons = function() {
 		$scope.closeAddOnPopup();
 		$state.go('rover.reservation.staycard.mainCard.addons',
 		 	{
@@ -50,14 +50,14 @@ sntRover.controller('RVReservationPackageController',
 	};
 
 
-	$scope.removeSelectedAddons = function(addonId, index){
+	$scope.removeSelectedAddons = function(addonId, index) {
 
-		var successDelete = function(){
+		var successDelete = function() {
 			$scope.$emit('hideLoader');
 			$scope.packageData.existing_packages.splice(index, 1);
 			$scope.addonsData.existingAddons.splice(index, 1);
 			$scope.reservationData.reservation_card.package_count = parseInt($scope.reservationData.reservation_card.package_count)-parseInt(1);
-			if($scope.reservationData.reservation_card.package_count === 0){
+			if($scope.reservationData.reservation_card.package_count === 0) {
 				$scope.reservationData.reservation_card.is_package_exist = false;
 				$scope.closeAddOnPopup();
 			}

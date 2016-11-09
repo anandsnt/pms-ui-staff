@@ -31,13 +31,13 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 	var choosedNoCharge = false;
 
 
-	$scope.enableDisableButtons = function(){
+	$scope.enableDisableButtons = function() {
 
 		return !isNaN($scope.roomCharge) && $scope.roomCharge.length > 0;
 
 
 	};
-	$scope.clickChargeButton = function(){
+	$scope.clickChargeButton = function() {
 		choosedNoCharge = false;
 
 		var options = {
@@ -111,7 +111,7 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 
 	};
 
-	$scope.successCallbackUpgrade = function(data){
+	$scope.successCallbackUpgrade = function(data) {
 
 		// CICO-10152 : To fix - Rover - Stay card - Room type change does not reflect the updated name soon after upgrading.
 		var dataToUpdate 		= {},
@@ -153,7 +153,7 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 		return rvPermissionSrv.getPermissionValue('MOVE_ROOM_WITHOUT_CHARGE');
 	};
 
-	$scope.clickedNoChargeButton = function(){
+	$scope.clickedNoChargeButton = function() {
 		choosedNoCharge = true;
 		var options = {
             params : {

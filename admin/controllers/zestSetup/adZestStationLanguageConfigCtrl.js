@@ -1,12 +1,12 @@
 admin.controller('adZestStationLanguageConfigCtrl',
 	['$scope',
 	'adZestStationLanguageConfigSrv',
-	function($scope, adZestStationLanguageConfigSrv){
+	function($scope, adZestStationLanguageConfigSrv) {
 
 		BaseCtrl.call(this, $scope);
 
 		var saveNewLanguagePosition = function(languageName, position) {
-			var languageListForApi = $scope.languageList.map(function(language, index){
+			var languageListForApi = $scope.languageList.map(function(language, index) {
 				return {
 					'name': language.name,
 					'position': index + 1 //index will be in teh order of position
@@ -54,7 +54,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 		 * initialization
 		 * @return {undefined}
 		 */
-		(function(){
+		(function() {
 			$scope.languageList = [];
 
 			//fetch the language list

@@ -2,7 +2,7 @@ var DesktopUUIDService = function() {
     var that = this;
     this.isActive = false;
     var ws = {};
-    this.startDesktopUUIDService = function(portNumber, callbacks){
+    this.startDesktopUUIDService = function(portNumber, callbacks) {
         this.portNumber = portNumber;
         this.callbacks = callbacks;
         this.createConnection();
@@ -12,7 +12,7 @@ var DesktopUUIDService = function() {
         try{
             ws = new WebSocket("wss://localhost:" + that.portNumber +"/CCSwipeService");
         }
-        catch(e){
+        catch(e) {
             console.warn("Could not connect to card reader. Please check if the port number is valid!!");
         }
 

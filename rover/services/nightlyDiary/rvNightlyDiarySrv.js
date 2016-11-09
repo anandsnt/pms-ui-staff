@@ -1,7 +1,7 @@
 angular.module('sntRover').service('RVNightlyDiarySrv',
     ['$q',
     'BaseWebSrvV2',
-    function($q, BaseWebSrvV2){
+    function($q, BaseWebSrvV2) {
 
     /*
      * Service function to fetch room list.
@@ -12,7 +12,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             url = '/api/nightly_diary/room_list';
         BaseWebSrvV2.getJSON(url, data).then(function(response) {
             deferred.resolve(response);
-        },function(error){
+        },function(error) {
             deferred.reject(error);
         });
         return deferred.promise;
@@ -38,7 +38,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
                 dateArray.push(itemObj);
             });
             deferred.resolve(dateArray);
-        },function(error){
+        },function(error) {
             deferred.reject(error);
         });
         return deferred.promise;

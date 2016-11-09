@@ -4,7 +4,7 @@ function($http, $q, ADBaseWebSrvV2) {
     * To fetch the details of icare services
     * @return {object} icare service details
     */
-	this.getIcareServices = function(){
+	this.getIcareServices = function() {
 
 		var deferred = $q.defer();
 		var url = '/api/hotel_settings/icare.json';
@@ -22,7 +22,7 @@ function($http, $q, ADBaseWebSrvV2) {
 			data.charge_codes = cargeCodes;
 		    deferred.resolve(data);
 
-		},function(data){
+		},function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -32,13 +32,13 @@ function($http, $q, ADBaseWebSrvV2) {
     * To save icare services details
     * @return {object} details of icare services
     */
-	this.saveIcareServices = function(data){
+	this.saveIcareServices = function(data) {
 		var deferred = $q.defer();
 		var url = '/api/hotel_settings/change_settings';
 
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data){
+		},function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;

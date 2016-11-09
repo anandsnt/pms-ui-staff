@@ -1,8 +1,8 @@
-var UUIDService = function(){
+var UUIDService = function() {
     var that = this;
 
     // function used to call cordova services
-    this.callCordovaService = function(options){
+    this.callCordovaService = function(options) {
 
         // cordova.exec function require success and error call back
         var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
@@ -18,16 +18,16 @@ var UUIDService = function(){
         var action = options["action"] ? options["action"] : null;
         var arguments = options["arguments"] ? options["arguments"] : [];
 
-        if(successCallBack == null){
+        if(successCallBack == null) {
             return false;
         }
-        else if(failureCallBack == null){
+        else if(failureCallBack == null) {
             return false;
         }
-        else if(service == null){
+        else if(service == null) {
             return false;
         }
-        else if(action == null){
+        else if(action == null) {
             return false;
         }
         else{
@@ -35,9 +35,9 @@ var UUIDService = function(){
             //calling cordova service
             cordova.exec(
                         // if success call back require any parameters
-                        function(data){
+                        function(data) {
 
-                            if(successCallBackParameters !== null){
+                            if(successCallBackParameters !== null) {
                                 successCallBack(data, successCallBackParameters);
                                 that.callRecursively(options);
                             }
@@ -48,8 +48,8 @@ var UUIDService = function(){
 
                         },
                         // if failure/error call back require any parameters
-                        function(error){
-                            if(failureCallBackParameters !== null){
+                        function(error) {
+                            if(failureCallBackParameters !== null) {
                                 failureCallBack(error, failureCallBackParameters);
                             }
                             else{
@@ -71,7 +71,7 @@ var UUIDService = function(){
         }
     };
 
-    this.callRecursively = function(options){
+    this.callRecursively = function(options) {
         // TODO: Have to find better way of implementing this if not.
         var shouldCallRecursively = options["shouldCallRecursively"] ? options["shouldCallRecursively"] : false;
         if(shouldCallRecursively) {
@@ -80,7 +80,7 @@ var UUIDService = function(){
     };
 
     //function for getting Device UUID
-    this.getDeviceId = function(options){
+    this.getDeviceId = function(options) {
         options['service'] = "RVCardPlugin";
         options['action'] = "UUIDforDevice";
         that.callCordovaService(options);

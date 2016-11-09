@@ -5,7 +5,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 			segmentAvailable: !!$scope.reservationParentData.demographics.segment,
 			hideDetails: true
 		};
-		$scope.hasPermissionForCommissionUpdate = function(){
+		$scope.hasPermissionForCommissionUpdate = function() {
 			return rvPermissionSrv.getPermissionValue('UPDATE_COMMISSION');
 		};
 
@@ -26,11 +26,11 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 			}
 		};
 		var eventTimestamp = "";
-		$scope.clickedAdditionalDetails = function($event){
+		$scope.clickedAdditionalDetails = function($event) {
 			$event.preventDefault();
 		    $event.stopImmediatePropagation();
   			$event.stopPropagation();
-  			var toggleAction = function(){
+  			var toggleAction = function() {
 				$scope.additionalDetails.hideDetails = !$scope.additionalDetails.hideDetails;
 				$scope.refreshReservationDetailsScroller(300);
 				eventTimestamp = $event.timeStamp;
@@ -83,7 +83,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 		$rootScope.$on('UPDATERESERVATIONTYPE', function(e, data, paymentId ) {
             $scope.reservationParentData.demographics.reservationType = data;
             // CICO-24768 - Updating Payment id after adding new CC.
-            if(!!paymentId){
+            if(!!paymentId) {
             	$scope.reservationData.reservation_card.payment_details.id = paymentId;
             }
             var selectedReservationGuaranteeType = _.where($scope.otherData.reservationTypes, {

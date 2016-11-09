@@ -1,4 +1,4 @@
-sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', '$stateParams', '$filter', '$rootScope', '$vault', function($scope, $state, $stateParams, $filter, $rootScope, $vault){
+sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', '$stateParams', '$filter', '$rootScope', '$vault', function($scope, $state, $stateParams, $filter, $rootScope, $vault) {
 
 	/*
 	* Controller class for dashboard search,
@@ -19,20 +19,20 @@ sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', 
 
     //To clear date boxes when we come to dashboard through main menu
     //timeout given because rvReservationSearchWidgetCtrl init happens after some time
-    setTimeout(function(){
+    setTimeout(function() {
         $scope.$broadcast("clearSearchDateValues", false);
     }, 500);
 
-    $scope.$on("$includeContentLoaded", function(){
+    $scope.$on("$includeContentLoaded", function() {
         //we are showing the add new guest button in searhc only if it is standalone & search result is empty
-        if($rootScope.isStandAlone){
+        if($rootScope.isStandAlone) {
             $scope.$broadcast("showAddNewGuestButton", true);
         }
     });
 
 
   	//click function on search area, mainly for closing the drawer
-  	$scope.clickedOnSearchArea = function($event){
+  	$scope.clickedOnSearchArea = function($event) {
         $scope.$emit("closeDrawer");
         // if the click occured on find reservation, no result found, no one opted to late checkout,
         // need to back to dashboard
@@ -46,13 +46,13 @@ sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', 
     /**
     * recieved event from search controller on focusedout.
     */
-    $scope.$on("SEARCH_BOX_FOCUSED_OUT", function(event){
+    $scope.$on("SEARCH_BOX_FOCUSED_OUT", function(event) {
         backToDashboard();
     });
     /**
     * function used to back onto dashboard screen
     */
-    var backToDashboard = function(){
+    var backToDashboard = function() {
         //setting the backbutton & showing the caption
         $scope.$emit("UpdateSearchBackbuttonCaption", "");
         //we need to show the dashboard & hide search area
@@ -70,7 +70,7 @@ sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', 
     * recievable function to handle backbutton click on header area
     * will backto dashboard
     */
-    $scope.$on("HeaderBackButtonClicked", function(event){
+    $scope.$on("HeaderBackButtonClicked", function(event) {
         backToDashboard();
     });
 
@@ -78,7 +78,7 @@ sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', 
     /**
     * When leaving this, we need to reset the back button text
     */
-    $scope.$on('$stateChangeSuccess', function(event){
+    $scope.$on('$stateChangeSuccess', function(event) {
         //setting the backbutton & showing the caption
         $scope.$emit("UpdateSearchBackbuttonCaption", "");
     });
@@ -86,7 +86,7 @@ sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', 
     /**
     * on what action taken, on search results clearing
     */
-    $scope.$on("SearchResultsCleared", function(event){
+    $scope.$on("SearchResultsCleared", function(event) {
         backToDashboard();
     });
 }]);

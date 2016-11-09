@@ -169,7 +169,7 @@ admin.controller('adWindsurferCRSSetupCtrl', ['$scope', '$rootScope', 'windsurfe
         }();
 
 
-        $scope.$on('$destroy', function(){
+        $scope.$on('$destroy', function() {
             $interval.cancel(timer);
         });
     }

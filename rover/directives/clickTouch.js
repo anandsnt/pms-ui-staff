@@ -7,18 +7,18 @@ sntRover.directive('clickTouch', function($timeout, $parse) {
 
             element.bind('touchstart click', function(event) {
                 try {
-                    if (element){
+                    if (element) {
                         if (arguments[0].target.nodeName === 'INPUT') {
                             element.focus(); 
                         }
                     }
-                } catch(err){
+                } catch(err) {
 
                 }
 
                 //bind any touch start event to the element
                 if (typeof event === typeof {}) {
-                    if (event.preventDefault){
+                    if (event.preventDefault) {
                         event.preventDefault();
                     }
                     if ( ! eventShallPass && event.stopPropagation ) {

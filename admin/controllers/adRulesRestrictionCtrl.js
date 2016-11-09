@@ -6,7 +6,7 @@ admin.controller('ADRulesRestrictionCtrl', [
     'ADRulesRestrictionSrv',
     function($scope, $state, $filter, dateFilter, ADRulesRestrictionSrv) {
 
-        var init = function(){
+        var init = function() {
             BaseCtrl.call(this, $scope);
             // lets empty lists all before fetch
             $scope.cancelRulesList = [];
@@ -63,7 +63,7 @@ admin.controller('ADRulesRestrictionCtrl', [
         /*
         * To handle switch
         */
-        $scope.switchClicked = function(item){
+        $scope.switchClicked = function(item) {
 
             //on success
             var toggleSwitchLikesSuccessCallback = function(data) {
@@ -186,7 +186,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             $scope.singleRule.advance_primetime = "AM";
             $scope.singleRule.policy_type = 'CANCELLATION_POLICY';
         };
-        $scope.selectSchedule = function(index){
+        $scope.selectSchedule = function(index) {
             $scope.selectedSchedule = $scope.singleRule.schedules[index];
             $scope.selectedScheduleIndex = index;
         };
@@ -246,7 +246,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             $scope.showDepositForm = false;
         };
 
-        $scope.addNewSchedule = function(){
+        $scope.addNewSchedule = function() {
             var newSchedule = {
                 "amount":null,
                 "amount_type":"",
@@ -340,10 +340,10 @@ admin.controller('ADRulesRestrictionCtrl', [
             };
         };
 
-         $scope.deleteSchedule = function(index){
+         $scope.deleteSchedule = function(index) {
             $scope.singleRule.schedules.splice(index , 1);
-            if($scope.singleRule.schedules.length!==0){
-                if($scope.selectedScheduleIndex === $scope.singleRule.schedules.length){
+            if($scope.singleRule.schedules.length!==0) {
+                if($scope.selectedScheduleIndex === $scope.singleRule.schedules.length) {
                     $scope.selectedSchedule = $scope.singleRule.schedules[$scope.singleRule.schedules.length-1];
                     $scope.selectedScheduleIndex = $scope.singleRule.schedules.length-1;
                 }

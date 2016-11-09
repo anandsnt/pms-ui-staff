@@ -13,10 +13,10 @@ admin.directive("chargeCodeSearch", function() {
             $scope.chargeCodeSearchResults = [];
             $scope.showChargeCodes = false;
 
-            $scope.refreshScroller = function (key){
+            $scope.refreshScroller = function (key) {
                 setTimeout(function() {
                     if ( !!$scope.$parent && $scope.$parent.myScroll ) {
-                        if( key in $scope.$parent.myScroll ){
+                        if( key in $scope.$parent.myScroll ) {
                             $scope.$parent.myScroll[key].refresh();
                         }
                     };
@@ -45,7 +45,7 @@ admin.directive("chargeCodeSearch", function() {
            * Set the charge code to item selected from auto complete list
            * @param {Integer} charge code value
            */
-          $scope.selectChargeCode = function(id, name){
+          $scope.selectChargeCode = function(id, name) {
             $scope.chargeCode = id;
             $scope.chargeCodeName = name;
             $scope.showChargeCodes = false;

@@ -1,4 +1,4 @@
-admin.service('ADRoomClassesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2){
+admin.service('ADRoomClassesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
    /**
     * To fetch the list of users
     * @return {object} users list json
@@ -20,12 +20,12 @@ admin.service('ADRoomClassesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($htt
     * @param {array} data of the new room class
     * @return {object} status and new id of room class
     */
-	this.saveClassRoom = function(data){
+	this.saveClassRoom = function(data) {
 		var deferred = $q.defer();
 		var url = 'admin/room_classes';
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data){
+		},function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -52,12 +52,12 @@ admin.service('ADRoomClassesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($htt
     * @return {object}  of room class
     */
 
-    this.updateClassRoom = function(data){
+    this.updateClassRoom = function(data) {
 		var deferred = $q.defer();
 		var url = ' /admin/room_classes/'+data.id;
 		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data){
+		},function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -67,12 +67,12 @@ admin.service('ADRoomClassesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($htt
     * @param {id} id of the room class
     */
 
-	this.deleteClassRoom = function(id){
+	this.deleteClassRoom = function(id) {
 		var deferred = $q.defer();
 		var url ='admin/room_classes/'+id;
 		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data){
+		},function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;

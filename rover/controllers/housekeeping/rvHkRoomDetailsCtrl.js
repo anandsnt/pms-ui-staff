@@ -131,7 +131,7 @@ angular.module('sntRover').controller('RVHkRoomDetailsCtrl', [
 	   /*
 		*Not used tabswitch for log tab. bcoz pagination not appears
 		*/
-		$scope.showLogTab  = function(){
+		$scope.showLogTab  = function() {
 			$scope.openTab = "Log";
 			$scope.$broadcast('OPEN_LOG');
 			$state.go('rover.housekeeping.roomDetails.log',{

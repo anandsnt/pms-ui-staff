@@ -42,14 +42,14 @@ angular.module('sntRover').service('RVReservationStateService', [
 
 
 		self.updateRateAddonsMeta = function(addonInfo) {
-			if(addonInfo.length === 0){
+			if(addonInfo.length === 0) {
 				return false;
 			}
 			var rateAddons = _.findWhere(self.metaData.rateAddons, {
 				rate_id: addonInfo[0].rateId
 			});
 
-			if(rateAddons){
+			if(rateAddons) {
 				rateAddons[0] = addonInfo[0];
 			}else{
 				self.metaData.rateAddons.push(addonInfo[0]);

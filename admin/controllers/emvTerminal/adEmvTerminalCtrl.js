@@ -1,4 +1,4 @@
-admin.controller('ADEmvTerminalCtrl', ['$scope','$rootScope', 'ADEmvTerminalsSrv', 'ngTableParams', '$filter','$timeout', function($scope, $rootScope, ADEmvTerminalsSrv, ngTableParams, $filter, $timeout){
+admin.controller('ADEmvTerminalCtrl', ['$scope','$rootScope', 'ADEmvTerminalsSrv', 'ngTableParams', '$filter','$timeout', function($scope, $rootScope, ADEmvTerminalsSrv, ngTableParams, $filter, $timeout) {
    /*
 	* Controller class for Room List
 	*/
@@ -10,7 +10,7 @@ admin.controller('ADEmvTerminalCtrl', ['$scope','$rootScope', 'ADEmvTerminalsSrv
     * Success call back of fetch
     * @param {object} items list
     */
-	var fetchSuccessOfItemList = function(data){
+	var fetchSuccessOfItemList = function(data) {
 		$scope.$emit('hideLoader');
 		$scope.data = data;
 		//applying sorting functionality in item list
@@ -43,9 +43,9 @@ admin.controller('ADEmvTerminalCtrl', ['$scope','$rootScope', 'ADEmvTerminalsSrv
     * @param {int} index of the item
     * @param {string} id of the selected item
     */
-	$scope.deleteItem = function(index, id){
+	$scope.deleteItem = function(index, id) {
 
-		var successCallBack = function(){
+		var successCallBack = function() {
 
 			$scope.$emit('hideLoader');
 			angular.forEach($scope.data.results, function(value, key) {

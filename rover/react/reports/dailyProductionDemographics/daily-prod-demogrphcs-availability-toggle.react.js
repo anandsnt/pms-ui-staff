@@ -1,7 +1,7 @@
 var DailyProductionAvailabilityToggle = React.createClass({
 	toggleTheAvailability : function() {
 		var toggleAvailability = this.props.toggleAvailability;
-		setTimeout(function(){
+		setTimeout(function() {
 			toggleAvailability();
 		}, 0);
 	},
@@ -12,7 +12,7 @@ var DailyProductionAvailabilityToggle = React.createClass({
 	componentDidUpdate: function() {
 		ReactDOM.findDOMNode(this).checked = this.props.header.showAvailable;
 	},
-	render: function(){
+	render: function() {
 		return React.DOM.div({
 					className	: 'switch-button ' + (this.props.header.showAvailable ?  'on' : 'disabled'),
 					id 			: 'report-availability-toggle-parent',

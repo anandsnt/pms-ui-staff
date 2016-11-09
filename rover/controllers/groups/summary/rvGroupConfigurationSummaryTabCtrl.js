@@ -339,7 +339,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 		 * @return undefined
 		 */
 		$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
-			if(typeof targetElement === 'undefined' || !(targetElement instanceof Element)){
+			if(typeof targetElement === 'undefined' || !(targetElement instanceof Element)) {
 				return;
 			}
 
@@ -422,7 +422,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			}
 
 			// let the date update if it is future group as well is in edit mode
-			else if (!$scope.isInAddMode() && !refData.is_a_past_group){
+			else if (!$scope.isInAddMode() && !refData.is_a_past_group) {
 				$timeout(function() {
 					$scope.updateGroupSummary();
 				}, 100);
@@ -503,7 +503,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			// departure left date change
 			// this condition is independent of above if - CICO-34463
 			if(newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {
-				if(new tzIndependentDate(refData.last_arrival_date) > newBlockTo){
+				if(new tzIndependentDate(refData.last_arrival_date) > newBlockTo) {
 					triggerEarlierDepartureDateChangeInvalidError();
 				}
 				else{
@@ -517,7 +517,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			}
 
 			// let the date update if it is future group as well is in edit mode
-			else if (!$scope.isInAddMode() && !refData.is_a_past_group){
+			else if (!$scope.isInAddMode() && !refData.is_a_past_group) {
 				$timeout(function() {
 					$scope.updateGroupSummary();
 				}, 100);
@@ -548,7 +548,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 		 * every logic to disable the from date picker should be here
 		 * @return {Boolean} [description]
 		 */
-		var shouldDisableFromDatePicker = function(){
+		var shouldDisableFromDatePicker = function() {
 			var sData 					= $scope.groupConfigData.summary,
 				noOfInhouseIsNotZero 	= (sData.total_checked_in_reservations > 0),
 				cancelledGroup 			= sData.is_cancelled,
@@ -568,7 +568,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 		 * every logic to disable the end date picker should be here
 		 * @return {Boolean} [description]
 		 */
-		var shouldDisableEndDatePicker = function(){
+		var shouldDisableEndDatePicker = function() {
 			var sData 					= $scope.groupConfigData.summary,
 				endDateHasPassed 		= new tzIndependentDate(sData.block_to) < new tzIndependentDate($rootScope.businessDate),
 				cancelledGroup 			= sData.is_cancelled,
@@ -588,7 +588,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 		 * every logic to disable the release date picker should be here
 		 * @return {Boolean} [description]
 		 */
-		var shouldDisableReleaseDatePicker = function(){
+		var shouldDisableReleaseDatePicker = function() {
 			return ($scope.isInStaycardScreen() || $scope.groupConfigData.summary.is_cancelled);
 		};
 
@@ -774,9 +774,9 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			});
 	    	$scope.$emit('showLoader');
            	jsMappings.fetchAssets(['addBillingInfo', 'directives'])
-            .then(function(){
+            .then(function() {
             	$scope.$emit('hideLoader');
-            	if($rootScope.UPDATED_BI_ENABLED_ON['ACCOUNTS']){
+            	if($rootScope.UPDATED_BI_ENABLED_ON['ACCOUNTS']) {
             		console.log("##Billing-info updated version");
             		ngDialog.open({
 				        template: '/assets/partials/billingInformation/accounts/rvBillingInfoAccountsMain.html',
@@ -1267,7 +1267,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 	      $scope.groupSummaryData.newNote = note.description;
     	};
     	// CICO-24928
-	    $scope.cancelEditModeGroupNote = function(){
+	    $scope.cancelEditModeGroupNote = function() {
 	      $scope.groupSummaryData.editingNote  = null;
 	      $scope.groupSummaryData.newNote = '';
 	    };
@@ -1390,8 +1390,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 		 * @param  {[type]} event       [description]
 		 * @return {[type]}             [description]
 		 */
-		$scope.$on ('REFRESH_ALL_CARD_SCROLLERS', function(event){
-			$timeout(function(){
+		$scope.$on ('REFRESH_ALL_CARD_SCROLLERS', function(event) {
+			$timeout(function() {
 				$scope.refreshScroller("groupSummaryScroller");
 			}, 100);
 		});
@@ -1446,11 +1446,11 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			$scope.isUpdateInProgress = false;
 		};
 		//CICO-23143
-		$scope.$on("SET_ACTIONS_COUNT", function(event, value){
-			if(value === "new"){
+		$scope.$on("SET_ACTIONS_COUNT", function(event, value) {
+			if(value === "new") {
 				$scope.groupConfigData.summary.total_group_action_tasks_count = parseInt($scope.groupConfigData.summary.total_group_action_tasks_count) + parseInt(1);
 				$scope.groupConfigData.summary.pending_group_action_tasks_count = parseInt($scope.groupConfigData.summary.pending_group_action_tasks_count) + parseInt(1);
-			} else if(value === "complete"){
+			} else if(value === "complete") {
 				$scope.groupConfigData.summary.pending_group_action_tasks_count = parseInt($scope.groupConfigData.summary.pending_group_action_tasks_count) - parseInt(1);
 			}
 		});

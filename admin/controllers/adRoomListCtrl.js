@@ -1,4 +1,4 @@
-admin.controller('adRoomListCtrl', ['$scope','ADRoomSrv', 'ngTableParams', '$filter', function($scope, ADRoomSrv, ngTableParams, $filter){
+admin.controller('adRoomListCtrl', ['$scope','ADRoomSrv', 'ngTableParams', '$filter', function($scope, ADRoomSrv, ngTableParams, $filter) {
 	/*
 	* Controller class for Room List
 	*/
@@ -8,9 +8,9 @@ admin.controller('adRoomListCtrl', ['$scope','ADRoomSrv', 'ngTableParams', '$fil
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
 
-	$scope.fetchTableData = function($defer, params){
+	$scope.fetchTableData = function($defer, params) {
 		var getParams = $scope.calculateGetParams(params);
-		var fetchSuccessOfItemList = function(data){
+		var fetchSuccessOfItemList = function(data) {
 			$scope.$emit('hideLoader');
 			//No expanded rate view
 			$scope.currentClickedElement = -1;
@@ -30,7 +30,7 @@ admin.controller('adRoomListCtrl', ['$scope','ADRoomSrv', 'ngTableParams', '$fil
 	};
 
 
-	$scope.loadTable = function(){
+	$scope.loadTable = function() {
 		$scope.tableParams = new ngTableParams({
 		        page: 1,  // show first page
 		        count: $scope.displyCount, // count per page
@@ -43,8 +43,8 @@ admin.controller('adRoomListCtrl', ['$scope','ADRoomSrv', 'ngTableParams', '$fil
 		    }
 		);
 	};
-	$scope.deleteRoom = function(index, room_id){
-			var successCallBack = function(){
+	$scope.deleteRoom = function(index, room_id) {
+			var successCallBack = function() {
 			$scope.$emit('hideLoader');
 			$scope.data.splice(index, 1);
 			$scope.tableParams.page(1);

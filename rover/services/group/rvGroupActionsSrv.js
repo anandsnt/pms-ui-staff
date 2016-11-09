@@ -177,7 +177,7 @@ angular.module('sntRover').service('rvGroupActionsSrv', ['$q', 'BaseWebSrvV2', f
         return deferred.promise;
     };
 
-    this.getActionDetails = function(actionId){
+    this.getActionDetails = function(actionId) {
         var deferred = $q.defer(),
             url = "api/action_tasks/"+actionId;
 
@@ -201,15 +201,15 @@ angular.module('sntRover').service('rvGroupActionsSrv', ['$q', 'BaseWebSrvV2', f
         }
     }
 
-    self.setFilterState = function(params){
+    self.setFilterState = function(params) {
         filterState = angular.copy(params);
     };
 
-    self.getFilterState = function(params){
+    self.getFilterState = function(params) {
         return filterState;
     };
 
-    self.clearFilterState = function(params){
+    self.clearFilterState = function(params) {
         filterState = null;
     };
 

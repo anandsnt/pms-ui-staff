@@ -357,7 +357,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
 
         var checkinTimeWithinTheHour = function() {
-            if (!$scope.zestStationData.isHourlyRateOn){
+            if (!$scope.zestStationData.isHourlyRateOn) {
                 console.log('Non-Hourly Hotel, not checking arrival time');
                 return true;
             };

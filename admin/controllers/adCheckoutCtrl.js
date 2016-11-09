@@ -1,4 +1,4 @@
-admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state','roomTypes', function($scope,$rootScope,adCheckoutSrv,$state,roomTypes){
+admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state','roomTypes', function($scope,$rootScope,adCheckoutSrv,$state,roomTypes) {
 
 	$scope.errorMessage = '';
 
@@ -10,7 +10,7 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
     $rootScope.previousState = 'admin.dashboard';
     $rootScope.previousStateParam = '1';
 
-    $scope.init = function(){
+    $scope.init = function() {
     	$scope.checkoutData = {};
       	$scope.hours = ["HH","01","02","03","04","05","06","07","08","09","10","11","12"];
         $scope.minutes = ["MM","00","15","30","45"];
@@ -25,7 +25,7 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
 
 
     // to add to excluded room types
-    $scope.clickExcludeRoomType = function(){
+    $scope.clickExcludeRoomType = function() {
       $scope.excludedRoomTypes = [];
       angular.forEach($scope.roomTypes, function( value, key ) {
         if ( (value.ticked === true) && ( $scope.excludedRoomTypes.indexOf(value) === -1)) {
@@ -35,16 +35,16 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
     };
 
     //remove exclude room type
-    $scope.deleteRoomType = function(id){
+    $scope.deleteRoomType = function(id) {
       //remove from final array
       angular.forEach($scope.excludedRoomTypes,function(item, index) {
-        if(item.id === id){
+        if(item.id === id) {
           $scope.excludedRoomTypes.splice(index,1);
         }
       });
       //untick from list
        angular.forEach($scope.roomTypes,function(item, index) {
-        if(item.id === id){
+        if(item.id === id) {
           item.ticked = false;
         }
       });
@@ -54,11 +54,11 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
     /*
     * To fetch array after slicing from the index of the given value
     */
-    $scope.getArrayAfterValue = function(value){
-        if(typeof value !== 'undefined'){
+    $scope.getArrayAfterValue = function(value) {
+        if(typeof value !== 'undefined') {
             var index = $scope.hours.indexOf(value);
             var arrayAfterValue = ["HH"];
-            for(var i = index; i < $scope.hours.length; i++){
+            for(var i = index; i < $scope.hours.length; i++) {
                 arrayAfterValue.push($scope.hours[i]);
             }
 
@@ -72,7 +72,7 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
   /*
     * To fetch checkin details
     */
-	$scope.fetchCheckoutDetails = function(){
+	$scope.fetchCheckoutDetails = function() {
         var fetchCheckoutDetailsFailureCallback = function(data) {
             $scope.$emit('hideLoader');
             $scope.isLoading = false;
@@ -108,7 +108,7 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
 			$scope.include_cash_reservationsy_flag = ($scope.checkoutData.include_cash_reservations === 'true') ? true:false;
 		    angular.forEach($scope.roomTypes,function(roomType, index) {
                 angular.forEach($scope.checkoutData.excluded_room_types,function(excludedRoomType, index) {
-                if(parseInt(roomType.id) === parseInt(excludedRoomType)){
+                if(parseInt(roomType.id) === parseInt(excludedRoomType)) {
                     $scope.excludedRoomTypes.push(roomType);
                     roomType.ticked = true;// for the multi-select implementation
                 }
@@ -127,14 +127,14 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
     *
     */
 
-    $scope.validateAlertTimings = function(){
-        if($scope.checkoutData.checkout_email_alert_time_hour==='HH' || $scope.checkoutData.checkout_email_alert_time_minute === 'MM'){
+    $scope.validateAlertTimings = function() {
+        if($scope.checkoutData.checkout_email_alert_time_hour==='HH' || $scope.checkoutData.checkout_email_alert_time_minute === 'MM') {
             $scope.checkoutData.checkout_email_alert_time_hour = 'HH';
             $scope.checkoutData.checkout_email_alert_time_minute = 'MM';
             $scope.checkoutData.alternate_checkout_email_alert_time_hour = 'HH';
             $scope.checkoutData.alternate_checkout_email_alert_time_minute = 'MM';
         }
-        if($scope.checkoutData.weekends_checkout_email_alert_time_hour === 'HH' || $scope.checkoutData.weekends_checkout_email_alert_time_minute === 'MM'){
+        if($scope.checkoutData.weekends_checkout_email_alert_time_hour === 'HH' || $scope.checkoutData.weekends_checkout_email_alert_time_minute === 'MM') {
             $scope.checkoutData.weekends_checkout_email_alert_time_minute = 'MM';
             $scope.checkoutData.weekends_checkout_email_alert_time_hour = 'HH';
             $scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute = 'MM';
@@ -148,7 +148,7 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
     *
     */
 
-    $scope.saveCheckout = function(){
+    $scope.saveCheckout = function() {
             $scope.checkoutData.enable_offline_checkout = ($scope.enable_offline_checkout) ? 'true':'false';
     	    $scope.checkoutData.is_send_checkout_staff_alert = ($scope.is_send_checkout_staff_alert_flag) ? 'true':'false';
             $scope.checkoutData.is_send_zest_checkout_alert = ($scope.is_send_zest_checkout_alert_flag) ? 'true':'false';
@@ -188,20 +188,20 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
     	$scope.invokeApi(adCheckoutSrv.save, uploadData,saveCheckoutDetailsSuccessCallback);
     };
 
-    var setWatchers = function(){
-                $scope.$watch(function(){
+    var setWatchers = function() {
+                $scope.$watch(function() {
                 return $scope.checkoutData.zest_hourly_checkout_alert_time_hour;
             }, function(value) {
-                    if($scope.checkoutData.zest_hourly_checkout_alert_time_hour === 4 ){
+                    if($scope.checkoutData.zest_hourly_checkout_alert_time_hour === 4 ) {
                          $scope.checkoutData.zest_hourly_checkout_alert_time_minute = "00";
                     }
 
                 }
             );
-            $scope.$watch(function(){
+            $scope.$watch(function() {
                 return $scope.checkoutData.weekends_zest_hourly_checkout_alert_time_hour;
             }, function(value) {
-                    if($scope.checkoutData.weekends_zest_hourly_checkout_alert_time_hour === 4 ){
+                    if($scope.checkoutData.weekends_zest_hourly_checkout_alert_time_hour === 4 ) {
                          $scope.checkoutData.weekends_zest_hourly_checkout_alert_time_minute = "00";
                     }
 

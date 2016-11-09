@@ -9,12 +9,12 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope','$rootScope','$
 
   // Checks height on drag-to-resize and opens or closes drawer.
   var heightChecker = function(height) {
-    if (height > 5){
+    if (height > 5) {
       $scope.data.isDrawerOpened = true;
       $scope.data.printBoxHeight = height;
       $scope.$apply();
     }
-    else if(height < 5){
+    else if(height < 5) {
       $scope.closeDrawer();
     }
   };
@@ -36,12 +36,12 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope','$rootScope','$
 	};
 
 	// To handle click on drawer handle - open/close.
-	$scope.clickedDrawer = function($event){
+	$scope.clickedDrawer = function($event) {
 		$event.stopPropagation();
 		$event.stopImmediatePropagation();
-		if(getParentWithSelector($event, document.getElementsByClassName("ui-resizable-handle")[0])){
+		if(getParentWithSelector($event, document.getElementsByClassName("ui-resizable-handle")[0])) {
 			if(parseInt($scope.eventTimestamp)) {
-				if(($event.timeStamp - $scope.eventTimestamp)<2){
+				if(($event.timeStamp - $scope.eventTimestamp)<2) {
 					return;
 				}
 			}
@@ -61,18 +61,18 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope','$rootScope','$
 	};
 
 	// To open the Drawer
-	$scope.openDrawer = function(){
+	$scope.openDrawer = function() {
 		$scope.data.printBoxHeight = resizableMaxHeight;
 		$scope.data.isDrawerOpened = true;
 	};
 
 	// To close the Drawer
-	$scope.closeDrawer = function(){
+	$scope.closeDrawer = function() {
 		$scope.data.printBoxHeight = resizableMinHeight;
 		$scope.data.isDrawerOpened = false;
 	};
 
-	$scope.$on("CLOSEPRINTBOX",function(){
+	$scope.$on("CLOSEPRINTBOX",function() {
 		$scope.closeDrawer();
 	});
 
@@ -101,7 +101,7 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope','$rootScope','$
     };
 
     // To print the screen
-    $scope.printButtonClick = function(){
+    $scope.printButtonClick = function() {
 
         // add the orientation
         addPrintOrientation();

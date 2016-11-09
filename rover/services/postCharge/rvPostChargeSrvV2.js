@@ -1,4 +1,4 @@
-angular.module('sntRover').service('RVPostChargeSrvV2',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', function( $http, $q, BaseWebSrvV2, RVBaseWebSrv ){
+angular.module('sntRover').service('RVPostChargeSrvV2',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', function( $http, $q, BaseWebSrvV2, RVBaseWebSrv ) {
 
 	var that = this;
 
@@ -29,7 +29,7 @@ angular.module('sntRover').service('RVPostChargeSrvV2',['$http', '$q', 'BaseWebS
 	};
 
 
-	this.getReservationBillDetails = function( reservationId ){
+	this.getReservationBillDetails = function( reservationId ) {
 
 		var deferred = $q.defer();
 		var url = '/api/reservations/'+reservationId+'/bills';

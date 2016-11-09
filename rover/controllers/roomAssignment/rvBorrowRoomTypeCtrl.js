@@ -27,7 +27,7 @@ sntRover.controller('rvBorrowRoomTypeCtrl',[
         $scope.closeDialog();
     };
 
-    $scope.clickedBorrowButton = function(){
+    $scope.clickedBorrowButton = function() {
         var resData     = $scope.reservationData.reservation_card,
             resStatus   = resData.reservation_status,
             apiToCall   = RVUpgradesSrv.selectUpgrade,

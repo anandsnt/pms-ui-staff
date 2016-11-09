@@ -24,7 +24,7 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 		 */
 		$scope.$on('GUESTPAYMENT', function(event, paymentData) {
 
-			if(paymentData.user_id){
+			if(paymentData.user_id) {
 				$scope.paymentData = paymentData;
 			}
 		});
@@ -51,14 +51,14 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
                         $scope.sharedReservationData = {};
                         //update from api
                         $scope.sharedReservationData.room_number = '';
-                        for (var x in data.sharers){
+                        for (var x in data.sharers) {
                             data.sharers[x].guest_details.first_last = data.sharers[x].guest_details.last_name+', '+data.sharers[x].guest_details.first_name;
                         }
                         $scope.sharedReservationData.sharers = data.sharers;
 
 		});
-                $scope.goToSharedReservation = function(sharer){
-                    if (!sharer.active){
+                $scope.goToSharedReservation = function(sharer) {
+                    if (!sharer.active) {
 
                         var fullname = $scope.guestCardData.contactInfo.first_name+' '+$scope.guestCardData.contactInfo.last_name,
                                 reservation_no = sharer.guest_details.reservation_id,
@@ -67,7 +67,7 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
                         $scope.isLoading = true;
                         $rootScope.$broadcast('showLoading');
                         $scope.$broadcast('showLoading');
-                        setTimeout(function(){
+                        setTimeout(function() {
                             var data = {
                                 confirmation_no: confirmation_no,
                                 reservation_no: reservation_no,
@@ -81,7 +81,7 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
                     }
                 };
 
-                $scope.getTimes=function(n){
+                $scope.getTimes=function(n) {
                     return new Array(n);
                };
 

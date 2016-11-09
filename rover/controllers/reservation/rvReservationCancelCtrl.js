@@ -68,7 +68,7 @@
 				$scope.isManual ? $scope.showCCPage = true : "";
 			};
 			 //to trigger from sixpayment partial
-	        $scope.$on('changeOnsiteCallIn', function(event){
+	        $scope.$on('changeOnsiteCallIn', function(event) {
 	            $scope.isManual =  !$scope.isManual;
 	            $scope.changeOnsiteCallIn();
 	        });
@@ -255,8 +255,8 @@
 				$scope.ngDialogData.state = 'PENALTY';
 			};
 
-			$scope.completeCancellationProcess = function(){
-				if($scope.DailogeState.isCancelled){
+			$scope.completeCancellationProcess = function() {
+				if($scope.DailogeState.isCancelled) {
 					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
 						"id": $scope.reservationData.reservationId || $scope.reservationParentData.reservationId,
 						"confirmationId": $scope.reservationData.confirmNum || $scope.reservationParentData.confirmNum,

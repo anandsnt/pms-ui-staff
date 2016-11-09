@@ -1,4 +1,4 @@
-sntRover.controller('RVStaffsettingsModalController', ['$scope','ngDialog','RVSettingsSrv', function($scope,ngDialog,RVSettingsSrv){
+sntRover.controller('RVStaffsettingsModalController', ['$scope','ngDialog','RVSettingsSrv', function($scope,ngDialog,RVSettingsSrv) {
 
 BaseCtrl.call(this, $scope);
 $scope.newPassword = '';
@@ -8,12 +8,12 @@ $scope.errorMessage='';
 /*
  * fetch data for settings
  */
-$scope.fetchData = function(){
-    var fetchUserInfoSuccessCallback = function(data){
+$scope.fetchData = function() {
+    var fetchUserInfoSuccessCallback = function(data) {
         $scope.userInfo = data;
         $scope.$emit('hideLoader');
     };
-    var fetchUserInfoFailureCallback = function(data){
+    var fetchUserInfoFailureCallback = function(data) {
         $scope.$emit('hideLoader');
     };
     $scope.invokeApi(RVSettingsSrv.fetchUserInfo,{},fetchUserInfoSuccessCallback,fetchUserInfoFailureCallback);
@@ -24,14 +24,14 @@ $scope.fetchData();
 /*
  * cancel click action
  */
-$scope.cancelClicked = function(){
+$scope.cancelClicked = function() {
     ngDialog.close();
 
 };
 /*
  * function to check if the passwords matches
  */
-$scope.passwordsMatch =function(){
+$scope.passwordsMatch =function() {
 	if($scope.newPassword !== $scope.confirmPassword) {
 		return false;
 	}
@@ -45,12 +45,12 @@ $scope.passwordsMatch =function(){
 /*
  * update settings
  */
-$scope.updateSettings = function(){
-	var updateUserInfoSuccessCallback = function(data){
+$scope.updateSettings = function() {
+	var updateUserInfoSuccessCallback = function(data) {
 		$scope.cancelClicked();
 	    $scope.$emit('hideLoader');
 	};
-	var updateUserInfoFailureCallback = function(data){
+	var updateUserInfoFailureCallback = function(data) {
 		 $scope.errorMessage=data;
 	    $scope.$emit('hideLoader');
 	};

@@ -1,4 +1,4 @@
-admin.controller('ADZestSmsShortcodeCtrl',['$scope', '$state', 'ADZestShortCodeSrv','adZestCheckinCheckoutSrv','$filter',function($scope, $state, ADZestShortCodeSrv,adZestCheckinCheckoutSrv,$filter){
+admin.controller('ADZestSmsShortcodeCtrl',['$scope', '$state', 'ADZestShortCodeSrv','adZestCheckinCheckoutSrv','$filter',function($scope, $state, ADZestShortCodeSrv,adZestCheckinCheckoutSrv,$filter) {
     $scope.errorMessage = '';
     $scope.successMessage = '';
     $scope.isLoading = true;
@@ -8,11 +8,11 @@ admin.controller('ADZestSmsShortcodeCtrl',['$scope', '$state', 'ADZestShortCodeS
     $scope.charLimitPerText = 160;
     $scope.charMaxLimit = 500;
     
-    $scope.cancelClicked = function(){
+    $scope.cancelClicked = function() {
         $scope.goBackToPreviousState();
     };
 
-     var saveSMSUrl = function(){
+     var saveSMSUrl = function() {
         var data = {
              "active": true,
              "application": "SMS",
@@ -25,15 +25,15 @@ admin.controller('ADZestSmsShortcodeCtrl',['$scope', '$state', 'ADZestShortCodeS
         };
         $scope.callAPI(adZestCheckinCheckoutSrv.saveNewDirectURL, options);
     };
-    $scope.onCallback = function(response){
-        if (response.status === 'success'){
+    $scope.onCallback = function(response) {
+        if (response.status === 'success') {
             saveSMSUrl();
         } else {
             $scope.errorMessage = ["Error"];
         }
     };
 
-    $scope.saveClicked = function(){
+    $scope.saveClicked = function() {
         
         var params = angular.copy($scope.editData);
         params.sms_double_opt_in = (params.sms_double_opt_in === 'true') ? true : false;
@@ -49,18 +49,18 @@ admin.controller('ADZestSmsShortcodeCtrl',['$scope', '$state', 'ADZestShortCodeS
 
 
     
-    $scope.getPages = function(r){//response text length
-        if (r > 0){
+    $scope.getPages = function(r) {//response text length
+        if (r > 0) {
             return (Math.ceil(r/$scope.charLimitPerText));
         } else {
             return 1;
         }
     };
     
-    $scope.fetch = function(){
-        var callback = function(response){
+    $scope.fetch = function() {
+        var callback = function(response) {
             console.info('fetch: ',response)
-            if (response.status === 'success'){
+            if (response.status === 'success') {
                 $scope.editData = response.data;
                 $scope.editData.sms_double_opt_in = (!!$scope.editData.sms_double_opt_in && $scope.editData.sms_double_opt_in) ? 'true' : 'false';
                 console.info('$scope.editData: ',$scope.editData)
@@ -72,7 +72,7 @@ admin.controller('ADZestSmsShortcodeCtrl',['$scope', '$state', 'ADZestShortCodeS
         };
         $scope.callAPI(ADZestShortCodeSrv.fetch, options);
     };
-    $scope.init = function(){
+    $scope.init = function() {
         $scope.fetch();
     };
     

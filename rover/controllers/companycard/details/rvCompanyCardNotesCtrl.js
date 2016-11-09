@@ -10,9 +10,9 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
     * used to scroll to top as the user add/edits the note
     * @return {undefined}
     */
-    var scrollToTop = function(){
+    var scrollToTop = function() {
         var scroller = $scope.getScroller('companycard_notes_scroller');
-        $timeout(function(){
+        $timeout(function() {
             scroller.scrollTo(0, 0, 300);
         }, 0);
     };
@@ -146,12 +146,12 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
     * @param  {Object} [API response]
     * @return {undefined}
     */
-    var successCallBackOfFetchUpdateActiveNote = function(data){
+    var successCallBackOfFetchUpdateActiveNote = function(data) {
         var indexOfNote = _.findIndex($scope.notes, {id: $scope.editingNote.id}) + 1;
         $scope.cancelEditMode();
         fetchNotes();
         var scroller = $scope.getScroller('companycard_notes_scroller');
-        $timeout(function(){
+        $timeout(function() {
             scroller.scrollToElement('.notes.wrapper li:nth-child('+indexOfNote+')', 300);
         }, 0);
     };
@@ -194,7 +194,7 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
         * to cancel edit mode
         * @return {undefined}
         */
-        $scope.cancelEditMode = function(){
+        $scope.cancelEditMode = function() {
         $scope.editingNote  = null;
         $scope.noteText     = '';
     };

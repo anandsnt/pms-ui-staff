@@ -1,4 +1,4 @@
-admin.controller('ADEarlyCheckinCtrl',['$scope','$rootScope','$state','adUpsellEarlyCheckinService', 'ADChargeCodesSrv', 'ADRatesSrv', 'ADRatesAddonsSrv','blockCodeData','ngDialog',  function($scope,$rootScope,$state,adUpsellEarlyCheckinService, ADChargeCodesSrv, ADRatesSrv, ADRatesAddonsSrv,blockCodeData, ngDialog){
+admin.controller('ADEarlyCheckinCtrl',['$scope','$rootScope','$state','adUpsellEarlyCheckinService', 'ADChargeCodesSrv', 'ADRatesSrv', 'ADRatesAddonsSrv','blockCodeData','ngDialog',  function($scope,$rootScope,$state,adUpsellEarlyCheckinService, ADChargeCodesSrv, ADRatesSrv, ADRatesAddonsSrv,blockCodeData, ngDialog) {
 
 BaseCtrl.call(this, $scope);
 $scope.upsellData = {};
@@ -11,32 +11,32 @@ $scope.block_codes = blockCodeData.block_codes;
 $scope.successMessage = "";
 
 
-$scope.showRoomType = function(max_early_checkins){
+$scope.showRoomType = function(max_early_checkins) {
    return((typeof max_early_checkins !=="undefined") && max_early_checkins !== null) ? true:false;
 };
 
-var setUpList = function(){
+var setUpList = function() {
 
    //remove the selected item from drop down
   var selectedIds = [];
   $scope.upsellData.room_types.forEach(function(item, index) {
-    if((typeof item.max_early_checkins !=="undefined") && item.max_early_checkins !== null){
+    if((typeof item.max_early_checkins !=="undefined") && item.max_early_checkins !== null) {
        selectedIds.push(item.id);
     }
   });
 
   selectedIds.forEach(function(id, index1) {
     $scope.upsellData.room_type_list.forEach(function(room_type_list, index) {
-          if(room_type_list.value === id){
+          if(room_type_list.value === id) {
              $scope.upsellData.room_type_list.splice(index,1);
           }
       });
   });
 
   var block_codes = [];
-  $scope.block_codes.forEach(function(block, index){
-      $scope.upsellData.excluded_block_codes.forEach(function(excludedblock, index){
-        if(block.id === excludedblock){
+  $scope.block_codes.forEach(function(block, index) {
+      $scope.upsellData.excluded_block_codes.forEach(function(excludedblock, index) {
+        if(block.id === excludedblock) {
             block.ticked = true;// for the multi-select implementation
             block_codes.push(block);
         }
@@ -50,7 +50,7 @@ var setUpList = function(){
  * Method to check if max_late_checkins of all elements are blank or not.
  * Configured room type will have valid max_late_checkouts value.
  */
-var isRoomTypesSelected = function(){
+var isRoomTypesSelected = function() {
   $scope.upsellData.isRoomTypesSelectedFlag = false;
   angular.forEach($scope.upsellData.room_types,function(item, index) {
     if((typeof item.max_early_checkins !=="undefined") && item.max_early_checkins !== null) {
@@ -59,10 +59,10 @@ var isRoomTypesSelected = function(){
   });
 };
 
-$scope.clickExcludeRoomType = function(){
+$scope.clickExcludeRoomType = function() {
   //While addig a room type, making its max_late_checkins defaults to 0.
   angular.forEach($scope.upsellData.room_types,function(item, index) {
-      if(parseInt(item.id) === parseInt($scope.upsellData.selected_room_type)){
+      if(parseInt(item.id) === parseInt($scope.upsellData.selected_room_type)) {
         // CICO-32613: Do not reset existing value.
         if (!item.max_early_checkins) {
             item.max_early_checkins = 0;
@@ -71,7 +71,7 @@ $scope.clickExcludeRoomType = function(){
   });
     //Removing the selected room type from dropdown of room type list.
   angular.forEach($scope.upsellData.room_type_list,function(item, index) {
-    if(item.value === $scope.upsellData.selected_room_type){
+    if(item.value === $scope.upsellData.selected_room_type) {
        $scope.upsellData.room_type_list.splice(index,1);
     }
   });
@@ -82,13 +82,13 @@ $scope.clickExcludeRoomType = function(){
 /*
  * Method to delete the room type.
  */
-$scope.deleteRoomType = function(value,name){
+$scope.deleteRoomType = function(value,name) {
 
   var data = { "value": value , "name": name };
   $scope.upsellData.room_type_list.push(data);
 
   angular.forEach($scope.upsellData.room_types,function(item, index) {
-    if(parseInt(item.id) === parseInt(value)){
+    if(parseInt(item.id) === parseInt(value)) {
       item.max_early_checkins = null;
     }
   });
@@ -97,7 +97,7 @@ $scope.deleteRoomType = function(value,name){
   $scope.upsellData.selected_room_type = "";
 };
 
-$scope.closeBlockClodeWindow = function(){
+$scope.closeBlockClodeWindow = function() {
   //resets back to initial set and closes dialog
   $scope.excludedBlockCodes = $scope.blockCodesWhenOpenedPopup;
   $scope.block_codes = $scope.blockCodeModelWhenOpened;
@@ -105,7 +105,7 @@ $scope.closeBlockClodeWindow = function(){
 };
 $scope.blockCodesWhenOpenedPopup = [];
 // to add to excluded block codes
-$scope.clickExcludeBlockCode = function(){
+$scope.clickExcludeBlockCode = function() {
   $scope.excludedBlockCodes = [];
   angular.forEach($scope.block_codes, function( value, key ) {
     if ( (value.ticked === true) && ( $scope.excludedBlockCodes.indexOf(value) === -1)) {
@@ -117,16 +117,16 @@ $scope.clickExcludeBlockCode = function(){
 };
 
 //remove exclude block code
-$scope.deleteBlockCode = function(id){
+$scope.deleteBlockCode = function(id) {
   //remove from final array
   angular.forEach($scope.excludedBlockCodes,function(item, index) {
-    if(item.id === id){
+    if(item.id === id) {
       $scope.excludedBlockCodes.splice(index,1);
     }
   });
   //untick from list
    angular.forEach($scope.block_codes,function(item, index) {
-    if(item.id === id){
+    if(item.id === id) {
       item.ticked = false;
     }
   });
@@ -136,7 +136,7 @@ $scope.deleteBlockCode = function(id){
 * To fetch upsell details
 *
 */
-$scope.fetchUpsellDetails = function(){
+$scope.fetchUpsellDetails = function() {
     var fetchUpsellDetailsSuccessCallback = function(data) {
        $scope.upsellData = data;
        setUpList();
@@ -151,7 +151,7 @@ $scope.fetchUpsellDetails = function(){
    $scope.invokeApi(adUpsellEarlyCheckinService.fetch, {},fetchUpsellDetailsSuccessCallback);
 };
 
-$scope.fetchAddons = function(){
+$scope.fetchAddons = function() {
     var fetchSuccessOfAddons = function(data) {
        $scope.addons = $scope.getAddonsWithNameValues(data.results);
        $scope.fetchRates();
@@ -159,7 +159,7 @@ $scope.fetchAddons = function(){
    $scope.invokeApi(ADRatesAddonsSrv.fetch, {"no_pagination": true, "ignore_inventory":true}, fetchSuccessOfAddons);
 };
 
-$scope.fetchRates = function(){
+$scope.fetchRates = function() {
     var fetchSuccessOfRates = function(data) {
        $scope.$emit('hideLoader');
        $scope.rates = $scope.getRatesWithNameValues(data.results);
@@ -167,14 +167,14 @@ $scope.fetchRates = function(){
    $scope.invokeApi(ADRatesSrv.fetchRates, {}, fetchSuccessOfRates);
 };
 
-$scope.getAddonsWithNameValues = function(addons){
+$scope.getAddonsWithNameValues = function(addons) {
         angular.forEach(addons,function(item, index) {
        item.value = item.id;
   });
         return addons;
 };
 
-$scope.getRatesWithNameValues = function(rates){
+$scope.getRatesWithNameValues = function(rates) {
         angular.forEach(rates,function(item, index) {
        item.value = item.id;
   });
@@ -202,24 +202,24 @@ $scope.takenAddons = {
     2: ''
 };
 
-$scope.updateAddon = function(x, y){
+$scope.updateAddon = function(x, y) {
     $scope.takenAddons[x] = y;
 };
 
-$scope.isAddonAvailable = function(index){
-    if (parseInt($scope.takenAddons[0]) === $scope.addons[index].id){
+$scope.isAddonAvailable = function(index) {
+    if (parseInt($scope.takenAddons[0]) === $scope.addons[index].id) {
              return false;
-       } else if (parseInt($scope.takenAddons[1]) === $scope.addons[index].id){
+       } else if (parseInt($scope.takenAddons[1]) === $scope.addons[index].id) {
              return false;
-       } else if (parseInt($scope.takenAddons[2]) === $scope.addons[index].id){
+       } else if (parseInt($scope.takenAddons[2]) === $scope.addons[index].id) {
              return false;
        } else {
         return true;
        }
 };
 
-$scope.isRateAvailable = function(index){
-       for(var i = 0; i < $scope.upsellData.early_checkin_rates.length; i++){
+$scope.isRateAvailable = function(index) {
+       for(var i = 0; i < $scope.upsellData.early_checkin_rates.length; i++) {
          if($scope.upsellData.early_checkin_rates[i].id === $scope.rates[index].id) {
            return false;
          }
@@ -229,13 +229,13 @@ $scope.isRateAvailable = function(index){
 
 $scope.setUpDefaultUpsellLevels = function () {
          var upsellCountArray ;
-         if($scope.upsellData.early_checkin_levels.length >= 3){
+         if($scope.upsellData.early_checkin_levels.length >= 3) {
            return;
-         }else if($scope.upsellData.early_checkin_levels.length === 0){
+         }else if($scope.upsellData.early_checkin_levels.length === 0) {
            upsellCountArray = [1, 2, 3];
-         }else if($scope.upsellData.early_checkin_levels.length === 1){
+         }else if($scope.upsellData.early_checkin_levels.length === 1) {
            upsellCountArray = [1, 2];
-         }else if($scope.upsellData.early_checkin_levels.length === 2){
+         }else if($scope.upsellData.early_checkin_levels.length === 2) {
            upsellCountArray = [1];
          }
          var defaultWindow;
@@ -248,7 +248,7 @@ $scope.setUpDefaultUpsellLevels = function () {
         });
 };
 
-$scope.setEarlyCheckinTimeForRates = function(){
+$scope.setEarlyCheckinTimeForRates = function() {
        $scope.upsell_rate.hours = ($scope.upsellData.early_checkin_time === "" || $scope.upsellData.early_checkin_time === null)? "" : $scope.upsellData.early_checkin_time.substring(0, 2);
        $scope.upsell_rate.minutes = ($scope.upsellData.early_checkin_time === "" || $scope.upsellData.early_checkin_time === null)? "" : $scope.upsellData.early_checkin_time.substring(3, 5);
        $scope.upsell_rate.meridiem = ($scope.upsellData.early_checkin_time === "" || $scope.upsellData.early_checkin_time === null)? "AM" : $scope.upsellData.early_checkin_time.substring(6);
@@ -263,7 +263,7 @@ $scope.setUpUpsellWindowDataToSave = function () {
         $scope.upsellData.early_checkin_levels = [];
         var upsellWindow;
          angular.forEach($scope.upsellWindows,function(item, index) {
-             if(item.hours !== "" && item.hours !== null){
+             if(item.hours !== "" && item.hours !== null) {
                  upsellWindow = {};
                  upsellWindow.start_time = item.hours + ":" + item.minutes + " " + item.meridiem;
                  upsellWindow.charge = item.charge;
@@ -273,7 +273,7 @@ $scope.setUpUpsellWindowDataToSave = function () {
         });
 };
 
-$scope.validateUpsellWindowTime = function(){
+$scope.validateUpsellWindowTime = function() {
   var time_window1 = new Date;
   var time_window2 = new Date;
   var time_window3 = new Date;
@@ -288,11 +288,11 @@ $scope.validateUpsellWindowTime = function(){
   time_window2.setMinutes(parseInt($scope.upsellWindows[1].minutes));
   time_window3.setMinutes(parseInt($scope.upsellWindows[2].minutes));
 
-  if(time_window1 >= time_window2){
+  if(time_window1 >= time_window2) {
           $scope.fetchedFailed(["The time for upsell window-1 should be less than time for upsell window-2"]);
           return false;
   }
-  else if(time_window2 >= time_window3){
+  else if(time_window2 >= time_window3) {
 
           $scope.fetchedFailed(["The time for upsell window-2 should be less than time for upsell window-3"]);
           return false;
@@ -309,15 +309,15 @@ $scope.minutes = ["00","15","30","45"];
 * To handle switch actions
 *
 */
-$scope.switchClicked = function(){
+$scope.switchClicked = function() {
     $scope.upsellData.is_early_checkin_allowed =  !$scope.upsellData.is_early_checkin_allowed;
 };
 /**
 * To handle save button action
 *
 */
-$scope.saveClick = function(){
-    if(!$scope.validateUpsellWindowTime()){
+$scope.saveClick = function() {
+    if(!$scope.validateUpsellWindowTime()) {
 
         return;
     }
@@ -326,7 +326,7 @@ $scope.saveClick = function(){
     $scope.upsellData.early_checkin_time = ($scope.upsell_rate.hours !== null && $scope.upsell_rate.hours !== "")?$scope.upsell_rate.hours + ":" + $scope.upsell_rate.minutes + " " + $scope.upsell_rate.meridiem : "";
    	$scope.upsellData.early_checkin_ends_at = ($scope.upsell_end_time.hours !== null && $scope.upsell_end_time.hours !== "")?$scope.upsell_end_time.hours + ":" + $scope.upsell_end_time.minutes + " " + $scope.upsell_end_time.meridiem : "";
     
-    if ($scope.upsellData.zest_station_early_checkin_addon_id){
+    if ($scope.upsellData.zest_station_early_checkin_addon_id) {
         $scope.upsellData.zest_station_early_checkin_addon_id = parseInt($scope.upsellData.zest_station_early_checkin_addon_id);
     }
     
@@ -350,17 +350,17 @@ $scope.saveClick = function(){
 
 };
 
-$scope.clickVIPCode = function(){
+$scope.clickVIPCode = function() {
     $scope.upsellData.free_eci_for_vips =  !$scope.upsellData.free_eci_for_vips;
 };
-$scope.clickAddRoomType = function(){
+$scope.clickAddRoomType = function() {
 	//While addig a room type, making its max_late_checkouts defaults to 0.
   if($scope.getSelectedRateIndexForID($scope.upsell_rate.selected_rate_id) !== -1) {
     return;
   }
   var rate_item;
 	angular.forEach($scope.rates,function(item, index) {
-		if(parseInt(item.id) === parseInt($scope.upsell_rate.selected_rate_id)){
+		if(parseInt(item.id) === parseInt($scope.upsell_rate.selected_rate_id)) {
       rate_item = {};
       rate_item.id = item.id;
       rate_item.name = item.name;
@@ -373,17 +373,17 @@ $scope.clickAddRoomType = function(){
  * Method to check if max_late_checkouts of all elements are blank or not.
  * Configured room type will have valid max_late_checkouts value.
  */
-$scope.setRateFlag = function(){
+$scope.setRateFlag = function() {
 	$scope.isRateSelected = false;
-	if($scope.upsellData.early_checkin_rates.length > 0){
+	if($scope.upsellData.early_checkin_rates.length > 0) {
     $scope.isRateSelected = true;
   }
 };
 
-$scope.getSelectedRateIndexForID = function(rateID){
+$scope.getSelectedRateIndexForID = function(rateID) {
   var rateIndex = -1;
   angular.forEach($scope.upsellData.early_checkin_rates,function(item, index) {
-    if(item.id === rateID){
+    if(item.id === rateID) {
       rateIndex =  index;
     }
   });
@@ -392,7 +392,7 @@ $scope.getSelectedRateIndexForID = function(rateID){
 /*
  * Method to delete the room type.
  */
-$scope.deleteRate = function(value,name){
+$scope.deleteRate = function(value,name) {
 	var indexForRate = $scope.getSelectedRateIndexForID(value);
   if(indexForRate !== -1) {
      $scope.upsellData.early_checkin_rates.splice(indexForRate, 1);
@@ -400,12 +400,12 @@ $scope.deleteRate = function(value,name){
    $scope.setRateFlag();
 };
 
-$scope.isChargeRequiredForWindow = function(windowIndex){
-   if(windowIndex === 0){
+$scope.isChargeRequiredForWindow = function(windowIndex) {
+   if(windowIndex === 0) {
       return $scope.upsellWindows[0].hours !== ""? 'yes' : 'no';
-   }else if(windowIndex === 1){
+   }else if(windowIndex === 1) {
       return $scope.upsellWindows[1].hours !== ""? 'yes' : 'no';
-   }else if(windowIndex === 2){
+   }else if(windowIndex === 2) {
       return $scope.upsellWindows[2].hours !== ""? 'yes' : 'no';
    }
 };
@@ -414,66 +414,66 @@ $scope.isChargeRequiredForWindow = function(windowIndex){
 * To watch Upsell data
 *
 */
-$scope.startWatching = function(){
-    $scope.$watch(function(){
+$scope.startWatching = function() {
+    $scope.$watch(function() {
       return ($scope.upsellWindows[0].hours === "" ||$scope.upsellWindows[0].hours === null )? "": $scope.upsellWindows[0].hours;
-    }, function(newValue, oldValue){
-        if($scope.upsellWindows[0].hours === "" || $scope.upsellWindows[0].hours === null){
+    }, function(newValue, oldValue) {
+        if($scope.upsellWindows[0].hours === "" || $scope.upsellWindows[0].hours === null) {
             $scope.upsellWindows[0].charge = "";
             $scope.upsellWindows[0].minutes = "";
             $scope.upsellWindows[0].addon_id = "";
-        }else if($scope.upsellWindows[0].minutes === "" || $scope.upsellWindows[0].minutes === null){
+        }else if($scope.upsellWindows[0].minutes === "" || $scope.upsellWindows[0].minutes === null) {
             $scope.upsellWindows[0].minutes = "00";
         }
    });
 
-    $scope.$watch(function(){
+    $scope.$watch(function() {
       return ($scope.upsellWindows[1].hours === "" ||$scope.upsellWindows[1].hours === null )? "": $scope.upsellWindows[1].hours;
-    }, function(newValue, oldValue){
-        if($scope.upsellWindows[1].hours === "" || $scope.upsellWindows[1].hours === null){
+    }, function(newValue, oldValue) {
+        if($scope.upsellWindows[1].hours === "" || $scope.upsellWindows[1].hours === null) {
             $scope.upsellWindows[1].charge = "";
             $scope.upsellWindows[1].minutes = "";
             $scope.upsellWindows[1].addon_id = "";
-        }else if($scope.upsellWindows[1].minutes === "" || $scope.upsellWindows[1].minutes === null){
+        }else if($scope.upsellWindows[1].minutes === "" || $scope.upsellWindows[1].minutes === null) {
             $scope.upsellWindows[1].minutes = "00";
         }
    });
 
-    $scope.$watch(function(){
+    $scope.$watch(function() {
       return ($scope.upsellWindows[2].hours === "" ||$scope.upsellWindows[2].hours === null )? "": $scope.upsellWindows[2].hours;
-    }, function(newValue, oldValue){
-        if($scope.upsellWindows[2].hours === "" || $scope.upsellWindows[2].hours === null){
+    }, function(newValue, oldValue) {
+        if($scope.upsellWindows[2].hours === "" || $scope.upsellWindows[2].hours === null) {
             $scope.upsellWindows[2].charge = "";
             $scope.upsellWindows[2].minutes = "";
             $scope.upsellWindows[2].addon_id = "";
-        }else if($scope.upsellWindows[2].minutes === "" || $scope.upsellWindows[2].minutes === null){
+        }else if($scope.upsellWindows[2].minutes === "" || $scope.upsellWindows[2].minutes === null) {
             $scope.upsellWindows[2].minutes = "00";
         }
    });
 
-    $scope.$watch(function(){
+    $scope.$watch(function() {
       return ($scope.upsell_rate.hours === "" ||$scope.upsell_rate.hours === null )? "": $scope.upsell_rate.hours;
-    }, function(newValue, oldValue){
-        if($scope.upsell_rate.hours === "" || $scope.upsell_rate.hours === null){
+    }, function(newValue, oldValue) {
+        if($scope.upsell_rate.hours === "" || $scope.upsell_rate.hours === null) {
             $scope.upsell_rate.minutes = "";
-        }else if($scope.upsell_rate.minutes === "" || $scope.upsell_rate.minutes === null){
+        }else if($scope.upsell_rate.minutes === "" || $scope.upsell_rate.minutes === null) {
             $scope.upsell_rate.minutes = "00";
         }
    });
 
-    $scope.$watch(function(){
+    $scope.$watch(function() {
       return ($scope.upsell_end_time.hours === "" ||$scope.upsell_end_time.hours === null )? "": $scope.upsell_end_time.hours;
-    }, function(newValue, oldValue){
-        if($scope.upsell_end_time.hours === "" || $scope.upsell_end_time.hours === null){
+    }, function(newValue, oldValue) {
+        if($scope.upsell_end_time.hours === "" || $scope.upsell_end_time.hours === null) {
             $scope.upsell_end_time.minutes = "";
-        }else if($scope.upsell_end_time.minutes === "" || $scope.upsell_end_time.minutes === null){
+        }else if($scope.upsell_end_time.minutes === "" || $scope.upsell_end_time.minutes === null) {
             $scope.upsell_end_time.minutes = "00";
         }
    });
 };
 
 //opens the block/group code selector (angular-multi-select) in a new window scope so the elements dont slow down the rest of the page (CICO-34151)
-$scope.clickOpenBlockCodeDialog = function(){
+$scope.clickOpenBlockCodeDialog = function() {
     $scope.blockCodesWhenOpenedPopup = $scope.excludedBlockCodes;
     $scope.blockCodeModelWhenOpened = angular.copy($scope.block_codes);
         ngDialog.open({

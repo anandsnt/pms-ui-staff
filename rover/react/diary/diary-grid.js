@@ -1,5 +1,5 @@
 var Grid = React.createClass({
-	componentDidUpdate: function(){
+	componentDidUpdate: function() {
 		this.props.iscroll.grid.refresh();
 	},
 	componentDidMount: function() {

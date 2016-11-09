@@ -60,10 +60,10 @@ angular.module('login').service('BaseWebSrvV2', ['$http', '$q', '$window', '$roo
 		var httpDict = {};
  		httpDict.url = url;
  		httpDict.method = httpMethod;
- 		if(httpMethod === 'GET' || httpMethod === 'DELETE'){
+ 		if(httpMethod === 'GET' || httpMethod === 'DELETE') {
  			httpDict.params = params;
  		}
- 		else if(httpMethod === 'POST' || httpMethod === 'PUT'){
+ 		else if(httpMethod === 'POST' || httpMethod === 'PUT') {
  			httpDict.data = params;
  			if(typeof $rootScope.workstation_id !== 'undefined') {
 				httpDict.data.workstation_id = $rootScope.workstation_id;

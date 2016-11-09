@@ -1,5 +1,5 @@
 admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stateParams', 'ngDialog', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location', 'ADRatesAddonsSrv',
- function($scope, $state, $stateParams, ngDialog, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location, ADRatesAddonsSrv){
+ function($scope, $state, $stateParams, ngDialog, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location, ADRatesAddonsSrv) {
 
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
@@ -17,10 +17,10 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 
 
 
-     var init = function(){
+     var init = function() {
      	var  duration;
 
-        for(var i = 0; i < 30; i++){
+        for(var i = 0; i < 30; i++) {
            duration = {};
            duration.value = i + 1;
            duration.name = duration.value;
@@ -30,7 +30,7 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 
         var  order;
 
-        for(var i = 0; i < 5; i++){
+        for(var i = 0; i < 5; i++) {
            order = {};
            order.value = i + 1;
            order.name = order.value;
@@ -67,7 +67,7 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 	            "parent_section": [],
             };
 
-$scope.fetchAddons = function(){
+$scope.fetchAddons = function() {
     var fetchSuccessOfAddons = function(data) {
 
        $scope.addons = $scope.getAddonsWithNameValues(data.results);
@@ -76,7 +76,7 @@ $scope.fetchAddons = function(){
    $scope.invokeApi(ADRatesAddonsSrv.fetch, {"no_pagination": true}, fetchSuccessOfAddons);
 };
 
-    $scope.getAddonsWithNameValues = function(addons){
+    $scope.getAddonsWithNameValues = function(addons) {
         angular.forEach(addons,function(item, index) {
        		item.value = item.id;
 
@@ -84,7 +84,7 @@ $scope.fetchAddons = function(){
         return addons;
 };
 
-$scope.fetchSpaces = function(){
+$scope.fetchSpaces = function() {
     var fetchSuccessOfSpaces = function(data) {
        $scope.space_occupancys = $scope.getListWithNameValues(data.meeting_room_occupancy); 
 	   // $scope.space_durations = data.meeting_room_durations;  // change need
@@ -121,7 +121,7 @@ $scope.getListWithNameValues = function(items) {
 $scope.getDurationsNames = function (items) {
 	var duration = [];
 	var name;
-	angular.forEach(items,function(item,index){
+	angular.forEach(items,function(item,index) {
 		duration.push(item.name);
 	});
 		return duration;
@@ -130,7 +130,7 @@ $scope.getDurationsNames = function (items) {
 $scope.setSpaceDurations = function(val,index) {
 	var duration = $scope.space_durations[index];
 	var flag = $scope.data.durations.indexOf(duration.value);
-	if(flag === -1){
+	if(flag === -1) {
 		$scope.data.durations.push(duration.value);
 	}
 	else{
@@ -138,16 +138,16 @@ $scope.setSpaceDurations = function(val,index) {
 	}
 }
 
-$scope.itemTypeSelected = function(){
+$scope.itemTypeSelected = function() {
 
-	if($scope.data.page_template === "ADDON" && $scope.addons.length === 0){
+	if($scope.data.page_template === "ADDON" && $scope.addons.length === 0) {
 		$scope.fetchAddons();
-	}else if($scope.data.page_template === "SPACE" && $scope.space_occupancys.length === 0){
+	}else if($scope.data.page_template === "SPACE" && $scope.space_occupancys.length === 0) {
 		$scope.fetchSpaces();
 	}
 };
 
-$scope.getSelectedAddonDescription = function(){
+$scope.getSelectedAddonDescription = function() {
 	var description = "";
      angular.forEach($scope.addons,function(item, index) {
        if(item.value === $scope.data.addon_id) {
@@ -157,7 +157,7 @@ $scope.getSelectedAddonDescription = function(){
      return description;
 };
 
-$scope.getSelectedAddonPrice = function(){
+$scope.getSelectedAddonPrice = function() {
 	var price = "";
 	angular.forEach($scope.addons,function(item, index) {
        if(item.value === $scope.data.addon_id) {
@@ -169,17 +169,17 @@ $scope.getSelectedAddonPrice = function(){
 
 	/*Function to fetch the item details
     */
-	$scope.fetchItem = function(){
-		var fetchItemSuccessCallback = function(data){
+	$scope.fetchItem = function() {
+		var fetchItemSuccessCallback = function(data) {
 			$scope.data = data;
 			$scope.initialIcon =  data.icon;
 			$scope.initialImage = data.image;
-			if(data.page_template === 'ADDON'){
+			if(data.page_template === 'ADDON') {
 				$scope.fetchAddons();
 				$scope.data.addon_max_order = $scope.data.addon_max_order === null? "" : $scope.data.addon_max_order;
 				$scope.data.addon_min_duration = $scope.data.addon_min_duration === null ? "" : $scope.data.addon_min_duration;
 			}else{
-				if(data.page_template === 'SPACE'){
+				if(data.page_template === 'SPACE') {
 					$scope.fetchSpaces();
 				}else{
 					$scope.$emit('hideLoader');
@@ -192,7 +192,7 @@ $scope.getSelectedAddonPrice = function(){
 	/*Checkin if the screen is loaded for a new item or,
 	 * for existing item.
     */
-	if($stateParams.id !== 'new'){
+	if($stateParams.id !== 'new') {
 		$scope.isAddMode = false;
 		$scope.fetchItem();
 	}
@@ -201,14 +201,14 @@ $scope.getSelectedAddonPrice = function(){
 	}
 	/*Function to return to preveous state
     */
-	$scope.goBack = function(){
+	$scope.goBack = function() {
         $state.go('admin.cmscomponentSettings');
 	};
 	/*Function to popup the assign parent modal.
 	 *The param isSection === true, implies the modal is for assigning sections
 	 *Otherwise the modal is for assigning categories
     */
-	$scope.openAddParentModal = function(isSection){
+	$scope.openAddParentModal = function(isSection) {
 		$scope.isSection = isSection;
 		$scope.componentList = [];
           ngDialog.open({
@@ -220,8 +220,8 @@ $scope.getSelectedAddonPrice = function(){
 	};
 	/*Function to save an item
     */
-	$scope.saveItem = function(){
-		var saveItemSuccessCallback = function(data){
+	$scope.saveItem = function() {
+		var saveItemSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.goBack();
 		};
@@ -238,8 +238,8 @@ $scope.getSelectedAddonPrice = function(){
 
 	/* delete component starts here*/
 
-	$scope.deleteItem = function(id){
-		var successCallbackFetchDeleteDetails = function(data){
+	$scope.deleteItem = function(id) {
+		var successCallbackFetchDeleteDetails = function(data) {
 			$scope.assocatedChildComponents = [];
 			$scope.assocatedChildComponents = data.results;
 			$scope.$emit('hideLoader');
@@ -256,11 +256,11 @@ $scope.getSelectedAddonPrice = function(){
 
 	};
 	/* Function to remove the category from selected list*/
-	$scope.deleteParentCategory = function(index){
+	$scope.deleteParentCategory = function(index) {
 		$scope.data.parent_category.splice(index, 1);
 	};
 	/* Function to remove the section from selected list*/
-	$scope.deleteParentSection = function(index){
+	$scope.deleteParentSection = function(index) {
 		$scope.data.parent_section.splice(index, 1);
 	};
 	/* Listener to know that the current category is deleted.
@@ -272,7 +272,7 @@ $scope.getSelectedAddonPrice = function(){
 
    });
 
-	$scope.deleteIcon = function(){
+	$scope.deleteIcon = function() {
 		$scope.iconFileName = "Choose file...";
 		$scope.data.icon = "";
 	}

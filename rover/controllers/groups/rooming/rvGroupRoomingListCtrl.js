@@ -411,7 +411,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 return showNoRoomTypesAttachedPopUp();
             }
 
-            if(!$scope.possibleNumberOfRooms.length){
+            if(!$scope.possibleNumberOfRooms.length) {
                 $scope.errorMessage = ['No Rooms have been added for the selected Room in the Room Block.'];
                 return;
             }
@@ -650,7 +650,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 //We have to show in the same order - in popup
                 $scope.selected_reservations = _.sortBy($scope.selected_reservations, "confirm_no")
                 $scope.selected_reservations = _.sortBy($scope.selected_reservations, $scope.sort_field);
-                if($scope.sort_dir === 'DESC'){
+                if($scope.sort_dir === 'DESC') {
                     $scope.selected_reservations = $scope.selected_reservations.reverse();
                 }
 
@@ -788,10 +788,10 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             refreshScrollers();
             // Added to resolve the issue - CICO-23144 - QA comment
             //updating from one popup not updating in other
-            _.each($scope.selected_reservations, function(eachData, resIndex){
+            _.each($scope.selected_reservations, function(eachData, resIndex) {
 
                 var reservationIndex = _.findIndex(data.results, {"id": eachData.id})
-                if(reservationIndex != -1){
+                if(reservationIndex != -1) {
                     $scope.selected_reservations[resIndex] = $scope.reservations[reservationIndex];
                 }
 
@@ -1782,7 +1782,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
              * @return - None
              */
         $scope.sendEmail = function(mailTo) {
-            if(!mailTo){
+            if(!mailTo) {
                 $scope.errorMessage =  ["Please enter email!!"];
                 return;
             }
@@ -1806,7 +1806,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 params: params
             });
         };
-        $scope.closeDialogBox = function(){
+        $scope.closeDialogBox = function() {
             $scope.closeDialog();
             $scope.isAnyPopupOpen = false;
         }
@@ -1891,17 +1891,17 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         /**
          * Function to handle success, failure callbacks for toggleHideRate
          */
-        var sucessCallbackToggleHideRate = function(data){
+        var sucessCallbackToggleHideRate = function(data) {
             $scope.groupConfigData.summary.hide_rates = !$scope.groupConfigData.summary.hide_rates;
             $scope.errorMessage = "";
         },
-        failureCallbackToggleHideRate = function(errorData){
+        failureCallbackToggleHideRate = function(errorData) {
             $scope.errorMessage = errorData;
         };
         /**
          * Function to toggle show rate checkbox value
          */
-        $scope.clickedShowRate = function(){
+        $scope.clickedShowRate = function() {
 
             var params = {
                 'group_id'      : $scope.groupConfigData.summary.group_id,
@@ -1913,7 +1913,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 params: params
             });
         };
-        $scope.updateGroupReservationsGuestData = function(){
+        $scope.updateGroupReservationsGuestData = function() {
             $scope.isUpdateReservation = true;
             $scope.totalCountForUpdate = $scope.selected_reservations.length;
 
@@ -1966,7 +1966,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             	amDirectlyComingToRoomingList = $stateParams.activeTab === 'ROOMING';
 
             if (isInRoomingList && (amDirectlyComingToRoomingList)) {
-                $timeout(function(){
+                $timeout(function() {
                     callInitialAPIs();
                 }, 10);
             }

@@ -3,7 +3,7 @@ angular.module('groupModule', [])
     '$stateProvider',
     '$urlRouterProvider',
     '$translateProvider',
-    function($stateProvider, $urlRouterProvider, $translateProvider){
+    function($stateProvider, $urlRouterProvider, $translateProvider) {
     //define module-specific routes here
         //group
         $stateProvider.state('rover.groups', {
@@ -68,7 +68,7 @@ angular.module('groupModule', [])
                 },
 
                 //to tackle from coming admin app to rover
-                summaryData: function(rvGroupConfigurationSrv, $stateParams, groupAssets){
+                summaryData: function(rvGroupConfigurationSrv, $stateParams, groupAssets) {
                     var isInAddMode = ($stateParams.id === "NEW_GROUP");
                     var params = {
                         groupId: $stateParams.id

@@ -50,9 +50,9 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		 * used to remove the unneccessary API calls
 		 * @return {Boolean} [description]
 		 */
-		var whetherSummaryDataChanged = function (){
+		var whetherSummaryDataChanged = function () {
 			var currentSummaryData = $scope.accountConfigData.summary;
-			for (key in summaryMemento){
+			for (key in summaryMemento) {
 				if (!angular.equals(currentSummaryData[key], summaryMemento[key])) {
 					return false;
 				}
@@ -318,7 +318,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		 * when we are switching between tabs, we need to update the summary data
 		 * @return undefined
 		 */
-		var refreshSummaryData = function(){
+		var refreshSummaryData = function() {
 			var params = {
 				"accountId": $scope.accountConfigData.summary.posting_account_id
 			};
@@ -338,7 +338,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		 * @param  {String} currentTab - Active tab in the view
 		 * @return undefined
 		 */
-		$scope.$on ('ACCOUNT_TAB_SWITCHED', function(event, currentTab){
+		$scope.$on ('ACCOUNT_TAB_SWITCHED', function(event, currentTab) {
 			if (currentTab === "ACCOUNT") {
 				initAccountSummaryView();
 				refreshSummaryData();
@@ -351,7 +351,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		 * @param  {String} currentTab - Active tab in the view
 		 * @return undefined
 		 */
-		$scope.$on ('GROUP_TAB_SWITCHED', function(event, currentTab){
+		$scope.$on ('GROUP_TAB_SWITCHED', function(event, currentTab) {
 			if (currentTab === "ACCOUNT") {
 				initAccountSummaryView();
 				refreshSummaryData();
@@ -368,7 +368,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			$scope.$emit('hideLoader');
 			$scope.paymentTypes = data;
 			angular.forEach($scope.paymentTypes, function (item, key) {
-				if(item.name == 'CC'){
+				if(item.name == 'CC') {
 					$scope.creditCardTypes = item.values;
 				}
 			});

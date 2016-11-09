@@ -22,9 +22,9 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
   $scope.dayAfterTomorrow = tzIndependentDate($scope.tomorrow);
   $scope.dayAfterTomorrow.setDate($scope.tomorrow.getDate() + 1);
 
-  $scope.$on("$includeContentLoaded", function(){
+  $scope.$on("$includeContentLoaded", function() {
       //we are showing the add new guest button in searhc only if it is standalone & search result is empty
-      if($rootScope.isStandAlone){
+      if($rootScope.isStandAlone) {
           $scope.$broadcast("showAddNewGuestButton", true);
       }
   });

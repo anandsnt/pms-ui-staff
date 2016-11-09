@@ -258,7 +258,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 
 
 		var initMakeKey = function() {
-			if ($scope.zestStationData.keyWriter === 'websocket'){
+			if ($scope.zestStationData.keyWriter === 'websocket') {
 				$scope.remoteEncoding = false;
 				console.info('starting key create with Sankyo...');
 			} else {

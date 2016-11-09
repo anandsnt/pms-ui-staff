@@ -1,5 +1,5 @@
 admin.controller('ADEmailBlackListCtrl',['$scope', '$state', 'ADEmailBlackListSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout', '$location',
-  function($scope, $state, ADEmailBlackListSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location){
+  function($scope, $state, ADEmailBlackListSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location) {
 
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
@@ -14,7 +14,7 @@ admin.controller('ADEmailBlackListCtrl',['$scope', '$state', 'ADEmailBlackListSr
 
 		            var tbParams = $scope.calculateGetParams(params);
 
-                    var orderedData = $filter('filter')($scope.emailList, {"email":tbParams.query}, function(actual, expected){
+                    var orderedData = $filter('filter')($scope.emailList, {"email":tbParams.query}, function(actual, expected) {
                           if(actual.indexOf(expected) > -1) {
                           	return true;
                           }
@@ -39,7 +39,7 @@ admin.controller('ADEmailBlackListCtrl',['$scope', '$state', 'ADEmailBlackListSr
 		            $defer.resolve($scope.orderedData);
     };
 
-	$scope.loadTable = function(){
+	$scope.loadTable = function() {
 		$scope.tableParams = new ngTableParams({
 		        page: 1,  // show first page
 		        count: $scope.displyCount, // count per page
@@ -56,9 +56,9 @@ admin.controller('ADEmailBlackListCtrl',['$scope', '$state', 'ADEmailBlackListSr
    /*
     * To fetch list of blacklisted emails
     */
-	$scope.listEmailBlackList = function(){
+	$scope.listEmailBlackList = function() {
 
-		var successCallbackFetch = function(data){
+		var successCallbackFetch = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.emailList = data;
 			$scope.loadTable();
@@ -94,19 +94,19 @@ admin.controller('ADEmailBlackListCtrl',['$scope', '$state', 'ADEmailBlackListSr
     * @param {int} index of the selected room type
     * @param {string} id of the room type
     */
-	$scope.getTemplateUrl = function(){
+	$scope.getTemplateUrl = function() {
 		return "/assets/partials/EmailBlackList/adAddBlackListedEmail.html";
 	};
 
-	$scope.addNewClicked = function(){
+	$scope.addNewClicked = function() {
 		$scope.isAddMode = true;
 	};
   /*
    * To save/update room type details
    */
-   $scope.saveEmail = function(){
+   $scope.saveEmail = function() {
 
-    	var successCallbackSave = function(data){
+    	var successCallbackSave = function(data) {
     		$scope.$emit('hideLoader');
     		$scope.emailList.push(data);
     		$scope.tableParams.reload();
@@ -115,7 +115,7 @@ admin.controller('ADEmailBlackListCtrl',['$scope', '$state', 'ADEmailBlackListSr
     		$scope.isAddMode =false;
     	};
 
-    	if($scope.emailData.email === ""){
+    	if($scope.emailData.email === "") {
     		$scope.errorMessage = ["The email field is empty"];
     	}else {
     	    $scope.invokeApi(ADEmailBlackListSrv.saveBlackListedEmail, $scope.emailData, successCallbackSave);
@@ -125,10 +125,10 @@ admin.controller('ADEmailBlackListCtrl',['$scope', '$state', 'ADEmailBlackListSr
     /*
    * To delete an email
    */
-   $scope.deleteEmail = function(index){
+   $scope.deleteEmail = function(index) {
 
 		var param = $scope.emailList[index].id;
-    	var successCallbackDelete = function(){
+    	var successCallbackDelete = function() {
     		$scope.$emit('hideLoader');
     		$scope.emailList.splice(index, 1);
     		$scope.tableParams.reload();
@@ -138,7 +138,7 @@ admin.controller('ADEmailBlackListCtrl',['$scope', '$state', 'ADEmailBlackListSr
 	/*
     * To handle click event
     */
-	$scope.clickCancel = function(){
+	$scope.clickCancel = function() {
 		$scope.isAddMode =false;
 	};
 

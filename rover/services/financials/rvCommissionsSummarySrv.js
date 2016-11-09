@@ -1,4 +1,4 @@
-sntRover.service('RVCommissionsSrv',['$http', '$q', 'BaseWebSrvV2', function($http, $q, BaseWebSrvV2){
+sntRover.service('RVCommissionsSrv',['$http', '$q', 'BaseWebSrvV2', function($http, $q, BaseWebSrvV2) {
 
     var that = this;
     /*

@@ -1,4 +1,4 @@
-angular.module('sntRover').service('rvUtilSrv', [function(){
+angular.module('sntRover').service('rvUtilSrv', [function() {
 
 		var self = this;
 		/**
@@ -6,7 +6,7 @@ angular.module('sntRover').service('rvUtilSrv', [function(){
 		 * @param  {Object} 	obj - Source Object
 		 * @return {Object}     Deep copied object
 		 */
-		this.deepCopy = function(obj){
+		this.deepCopy = function(obj) {
 			return (JSON.parse (JSON.stringify (obj)));
 		};
 
@@ -17,9 +17,9 @@ angular.module('sntRover').service('rvUtilSrv', [function(){
 		 * @param  {String} replaceWith [description]
 		 * @return {String}             [description]
 		 */
-		this.escapeNull = function(value, replaceWith){
+		this.escapeNull = function(value, replaceWith) {
 	  		var newValue = "";
-	  		if((typeof replaceWith !== "undefined") && (replaceWith !== null)){
+	  		if((typeof replaceWith !== "undefined") && (replaceWith !== null)) {
 	  			newValue = replaceWith;
 	  		}
 	  		var valueToReturn = ((value === null || typeof value === 'undefined' ) ? newValue : value);
@@ -31,7 +31,7 @@ angular.module('sntRover').service('rvUtilSrv', [function(){
 		* @param {String/Object}
 		* @return {boolean}
 		*/
-		this.isEmpty = function(string){
+		this.isEmpty = function(string) {
 			if (typeof string === "number") {
 				string = string.toString();
 			}
@@ -45,7 +45,7 @@ angular.module('sntRover').service('rvUtilSrv', [function(){
 		* @param {String}
 		* @return {String}
 		*/
-		this.stringify = function(string){
+		this.stringify = function(string) {
 			return JSON.stringify (string);
 		};
 
@@ -55,10 +55,10 @@ angular.module('sntRover').service('rvUtilSrv', [function(){
 		* param2 {Date Object}
 		* return Array of Date Objects
 		*/
-		this.getDatesBetweenTwoDates = function(fromDate, toDate){
+		this.getDatesBetweenTwoDates = function(fromDate, toDate) {
 		    var datesBetween = [];
 
-		    while(fromDate <= toDate){
+		    while(fromDate <= toDate) {
 		        datesBetween.push(new Date(fromDate));
 		        fromDate.setDate(fromDate.getDate() + 1);
 		    }
@@ -71,11 +71,11 @@ angular.module('sntRover').service('rvUtilSrv', [function(){
 		 * @param  {Object/String} Date Obejct Or dateString [description]
 		 * @return {String}            [millisecond]
 		 */
-		this.toMilliSecond = function(date_){
+		this.toMilliSecond = function(date_) {
 			var type_ 	= typeof date_,
 				ms 		= '';
 
-			switch (type_){
+			switch (type_) {
 				case 'string':
 					ms = (new tzIndependentDate(date_));
 					break;
@@ -91,7 +91,7 @@ angular.module('sntRover').service('rvUtilSrv', [function(){
 		 * @param  {Object/String} Date Obejct Or dateString [description]
 		 * @return {String}            [millisecond]
 		 */
-		this.addOneDay = function(date_){
+		this.addOneDay = function(date_) {
 			return (this.toMilliSecond (date_) + (24 * 3600 * 1000));
 		};
 
@@ -101,13 +101,13 @@ angular.module('sntRover').service('rvUtilSrv', [function(){
 		 * @param  {array} wantedKeys 	[array of keys that we wanted to extract from array]
 		 * @return {array}            	[array with key values we wanted]
 		 */
-		this.getListOfKeyValuesFromAnArray = function(array, wantedKeys){
+		this.getListOfKeyValuesFromAnArray = function(array, wantedKeys) {
 			var arrayToReturn = [], eachItemToAdd;
 
-			_.each(array, function(arrayIndexElement){
+			_.each(array, function(arrayIndexElement) {
 				eachItemToAdd = {};
 
-				_.each(wantedKeys, function(key){
+				_.each(wantedKeys, function(key) {
 					eachItemToAdd[key] = arrayIndexElement[key];
 				});
 				arrayToReturn.push (eachItemToAdd);
@@ -121,7 +121,7 @@ angular.module('sntRover').service('rvUtilSrv', [function(){
 		 * @param {Integer/String}
 		 * @return {Boolean}
 		 */
-    	this.isNumeric = function(string){
+    	this.isNumeric = function(string) {
     		return !jQuery.isArray( string ) && (string - parseFloat( string ) + 1) >= 0;
     	};
 
@@ -131,7 +131,7 @@ angular.module('sntRover').service('rvUtilSrv', [function(){
     	* @param {Integer} - if passed string is not a number, what should be retuned
     	* @return {Integer}
     	*/
-    	this.convertToInteger = function(string, withWhatToBeReplacedifNotANumber){
+    	this.convertToInteger = function(string, withWhatToBeReplacedifNotANumber) {
     		withWhatToBeReplacedifNotANumber = withWhatToBeReplacedifNotANumber ? withWhatToBeReplacedifNotANumber : 0;
     		if (self.isNumeric (string)) { return parseInt (string);}
     		return withWhatToBeReplacedifNotANumber;
@@ -143,7 +143,7 @@ angular.module('sntRover').service('rvUtilSrv', [function(){
     	* @param {Double} - if passed string is not a number, what should be retuned
     	* @return {Double}
     	*/
-    	this.convertToDouble = function(string, withWhatToBeReplacedifNotANumber){
+    	this.convertToDouble = function(string, withWhatToBeReplacedifNotANumber) {
     		withWhatToBeReplacedifNotANumber = withWhatToBeReplacedifNotANumber ? withWhatToBeReplacedifNotANumber : 0;
     		if (self.isNumeric (string)) { return parseFloat (string);}
     		return withWhatToBeReplacedifNotANumber;
@@ -155,7 +155,7 @@ angular.module('sntRover').service('rvUtilSrv', [function(){
     	 * @param  {String} seperator   default will be /
     	 * @return {String}             date string
     	 */
-		this.get_date_from_date_picker = function (date_picker, seperator){
+		this.get_date_from_date_picker = function (date_picker, seperator) {
     		if (typeof seperator === "undefined") {
     			seperator = "/";
     		}
@@ -203,7 +203,7 @@ angular.module('sntRover').service('rvUtilSrv', [function(){
 		        hours 	= Math.floor(i / 60);
 
 		        minutes = i % 60;
-		        if (minutes < 10){
+		        if (minutes < 10) {
 		            minutes = '0' + minutes; // adding leading zero
 		        }
 
@@ -212,7 +212,7 @@ angular.module('sntRover').service('rvUtilSrv', [function(){
 		        value 	= ((hours < 10) ? ("0" + hours) : hours) + ':' + minutes;
 				
 				hours 	= hours % mode;
-		        if ((hours === 0 && mode === 12) ||(hours === 0 && mode === 24 && i <= 60)){
+		        if ((hours === 0 && mode === 12) ||(hours === 0 && mode === 24 && i <= 60)) {
 		            hours = 12;
 		        }
 
@@ -235,10 +235,10 @@ angular.module('sntRover').service('rvUtilSrv', [function(){
 
 		/** Method to check if the web app is accessed from a device */
 		this.checkDevice = {
-			any : function(){
+			any : function() {
 				return !!navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i);
 			},
-			iOS : function(){
+			iOS : function() {
 				return !!navigator.userAgent.match(/iPhone|iPad|iPod/i);
 			}, 
 			android: function() {
@@ -253,7 +253,7 @@ angular.module('sntRover').service('rvUtilSrv', [function(){
          * @param minutes INTEGER
          * @returns {string}
          */
-        this.roundToNextQuarter = function(hours,minutes){
+        this.roundToNextQuarter = function(hours,minutes) {
                 var roundedHours =  (minutes > 45 ? ++hours % 24 : hours).toString(),
                     roundedMins = ((((minutes + 14) / 15 | 0) * 15) % 60).toString();
 

@@ -35,18 +35,18 @@ angular.module('sntRover').controller('rvDailyProdByDemographicsCtrl',
     );
   };
 
-  var reRenderReport = function(){
-  	$timeout(function(){
+  var reRenderReport = function() {
+  	$timeout(function() {
   		startedRendering();
   	}, 50);
   	
-  	$timeout(function(){
+  	$timeout(function() {
   		renderReport();
   	}, 100);
   };
 
-  var reportSubmited    = $scope.$on(reportMsgs['REPORT_SUBMITED'], function(){ 
-  	$timeout(function(){
+  var reportSubmited    = $scope.$on(reportMsgs['REPORT_SUBMITED'], function() { 
+  	$timeout(function() {
   		renderReport();
   	}, 50);
   });
@@ -60,11 +60,11 @@ angular.module('sntRover').controller('rvDailyProdByDemographicsCtrl',
   $scope.$on('$destroy', reportPageChanged);
 
   var initializeMe = function() {
-  	$timeout(function(){
+  	$timeout(function() {
   		startedRendering();
   	}, 0);
   	
-  	$timeout(function(){
+  	$timeout(function() {
   		renderReport();
   	}, 10);
   }();

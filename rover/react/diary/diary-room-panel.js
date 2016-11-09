@@ -1,5 +1,5 @@
 var RoomPanel = React.createClass({
-	componentDidUpdate: function(){
+	componentDidUpdate: function() {
 
 		this.props.iscroll.rooms.refresh();
 	},

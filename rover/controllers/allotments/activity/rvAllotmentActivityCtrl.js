@@ -41,7 +41,7 @@ sntRover.controller('rvAllotmentActivityCtrl', [
 		 * @param  {String} currentTab - Active tab in the view
 		 * @return undefined
 		 */
-		$scope.$on ('ALLOTMENT_TAB_SWITCHED', function(event, currentTab){
+		$scope.$on ('ALLOTMENT_TAB_SWITCHED', function(event, currentTab) {
 			if (currentTab === "ACTIVITY") {
 				$scope.init();
 			}
@@ -53,7 +53,7 @@ sntRover.controller('rvAllotmentActivityCtrl', [
 		 * @param  {String} currentTab - Active tab in the view
 		 * @return undefined
 		 */
-		$scope.$on ('ACCOUNT_TAB_SWITCHED', function(event, currentTab){
+		$scope.$on ('ACCOUNT_TAB_SWITCHED', function(event, currentTab) {
 			if (currentTab === "ACTIVITY") {
 				$scope.init();
 			}

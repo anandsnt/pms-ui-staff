@@ -1,5 +1,5 @@
 sntRover.controller('bussinessDateChangingCtrl', ['$scope','ngDialog', function($scope,ngDialog) {
-	$scope.closeThisDialog = function(){
+	$scope.closeThisDialog = function() {
 		ngDialog.close();
 	};
 }]);

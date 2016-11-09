@@ -34,7 +34,7 @@ sntRover.controller('RVPostChargeControllerV2',
 			// entered by the user
 			var userEnteredPrice = '';
 
-			var initPagination = function(){
+			var initPagination = function() {
 				$scope.fetchedData.pageNo	= 1;
 	            $scope.fetchedData.perPage  = 50;
 	            $scope.fetchedData.start 	= 1;
@@ -43,8 +43,8 @@ sntRover.controller('RVPostChargeControllerV2',
 
 			initPagination();
 
-			var fetchChargeGroups = function(){
-				var successCallBackFetchChargeGroups = function( data ){
+			var fetchChargeGroups = function() {
+				var successCallBackFetchChargeGroups = function( data ) {
 					$scope.fetchedData.charge_groups = data.results;
 		            $scope.$emit('hideLoader');
 				};
@@ -54,7 +54,7 @@ sntRover.controller('RVPostChargeControllerV2',
 		    fetchChargeGroups();
 
 		    // To fetch charge code items - via search query or filter by charge group ..
-		    var searchChargeCodeItems = function(){
+		    var searchChargeCodeItems = function() {
 
 		    	var params = {
 					"query" 			: $scope.query ? $scope.query.toLowerCase() : '',
@@ -64,17 +64,17 @@ sntRover.controller('RVPostChargeControllerV2',
 					"is_favorite"		: $scope.chargeGroup === 'FAV' ? 1 : 0
 				};
 
-		    	var successCallBackFetchChargeCodes = function( data ){
+		    	var successCallBackFetchChargeCodes = function( data ) {
 
 		    		$scope.fetchedItems = [];
 		    		$scope.fetchedItems = data.results;
 		    		$scope.fetchedData.total_count = data.total_result;
 
 		    		// Compute the start, end and total count parameters
-	                if($scope.fetchedData.nextAction){
+	                if($scope.fetchedData.nextAction) {
 	                    $scope.fetchedData.start = $scope.fetchedData.start + $scope.fetchedData.perPage;
 	                }
-	                if($scope.fetchedData.prevAction){
+	                if($scope.fetchedData.prevAction) {
 	                    $scope.fetchedData.start = $scope.fetchedData.start - $scope.fetchedData.perPage;
 	                }
 	                $scope.fetchedData.end = $scope.fetchedData.start + $scope.fetchedItems.length - 1;
@@ -102,7 +102,7 @@ sntRover.controller('RVPostChargeControllerV2',
   			* function to check whether the user has permission to Post charge
   			* @return {Boolean}
   			*/
-  			$scope.hasPostChargePermission = function (){
+  			$scope.hasPostChargePermission = function () {
   				return isFromAccounts ? rvPermissionSrv.getPermissionValue ('POST_TRANSACTION') : rvPermissionSrv.getPermissionValue ('ADD_CHARGE');
   			};
 
@@ -110,7 +110,7 @@ sntRover.controller('RVPostChargeControllerV2',
   			* whether we want to disable the POST charge button
   			* @return {Boolean}
   			*/
-  			$scope.shouldDisablePostCharge = function (){
+  			$scope.shouldDisablePostCharge = function () {
   				return (!$scope.hasPostChargePermission());
   			};
 
@@ -120,7 +120,7 @@ sntRover.controller('RVPostChargeControllerV2',
 				searchChargeCodeItems();
 			};
 
-			var resetPostCharge = function(){
+			var resetPostCharge = function() {
 
 				// selected item is not deleting from DOM even after deleting from the hash.
 				// Work around - removing the item manually..
@@ -141,12 +141,12 @@ sntRover.controller('RVPostChargeControllerV2',
 			// filter the items based on the search query
 			// will search on all items, discard chosen 'chargeGroup'
 			$scope.filterByQuery = function() {
-				if( $rootScope.isSingleDigitSearch ){
+				if( $rootScope.isSingleDigitSearch ) {
 					$scope.chargeGroup = '';
 					initPagination();
 					searchChargeCodeItems();
 				}
-				else if( $scope.query.length >= 3 ){
+				else if( $scope.query.length >= 3 ) {
 					$scope.chargeGroup = '';
 					initPagination();
 					searchChargeCodeItems();
@@ -184,7 +184,7 @@ sntRover.controller('RVPostChargeControllerV2',
 
 				$scope.calToggle = ( clickedItem.type === "ITEM" ) ? 'QTY' :'PR';
 
-				if(typeof $scope.selectedChargeItemHash[ clickedItem.id ] === 'undefined'){
+				if(typeof $scope.selectedChargeItemHash[ clickedItem.id ] === 'undefined') {
 					$scope.selectedChargeItemHash[ clickedItem.id ] = clickedItem ;
 					$scope.selectedChargeItemHash[ clickedItem.id ].count = 1;
 					$scope.selectedChargeItemHash[ clickedItem.id ].unit_price = parseFloat($scope.selectedChargeItemHash[ clickedItem.id ].unit_price);
@@ -204,10 +204,10 @@ sntRover.controller('RVPostChargeControllerV2',
 				/*
 				 * TO solve CICO-10251
 				 */
-				angular.forEach(angular.element("#numpad-numbers button"), function(value, key){
+				angular.forEach(angular.element("#numpad-numbers button"), function(value, key) {
 				      new FastClick(value);
 				});
-				angular.forEach(angular.element("#numpad-options button"), function(value, key){
+				angular.forEach(angular.element("#numpad-options button"), function(value, key) {
 				      new FastClick(value);
 				});
 			};
@@ -453,7 +453,7 @@ sntRover.controller('RVPostChargeControllerV2',
 				// We are disabling the POST CHARGE button on the click itself.
 				$scope.disablePostChargeButton = true;
 
-				var failureCallback = function(errorMessage){
+				var failureCallback = function(errorMessage) {
 		  			$scope.$emit('hideLoader');
 		   			$scope.errorMessage = errorMessage;
 		   			// CICO-23196 : Enable POST CHARGE button on error.
@@ -487,7 +487,7 @@ sntRover.controller('RVPostChargeControllerV2',
 
 				/****    CICO-6094    **/
 				var needToCreateNewBill = false;
-				if($scope.billNumber > $scope.fetchedData.bill_numbers.length){
+				if($scope.billNumber > $scope.fetchedData.bill_numbers.length) {
 					needToCreateNewBill = true;
 				}
 				/****    CICO-6094    **/
@@ -503,7 +503,7 @@ sntRover.controller('RVPostChargeControllerV2',
 	                    });
 	                }
 					// update the price in staycard
-					else if(!$scope.isOutsidePostCharge){
+					else if(!$scope.isOutsidePostCharge) {
 						$scope.$emit('postcharge.added', data.total_balance_amount);
 						$scope.closeDialog();
 					}
@@ -513,10 +513,10 @@ sntRover.controller('RVPostChargeControllerV2',
 					}
 				};
 
-				var callbackApplyToBillOne = function(){
+				var callbackApplyToBillOne = function() {
 					$scope.$emit( 'hideLoader' );
 					// update the price in staycard
-					if(!$scope.isOutsidePostCharge){
+					if(!$scope.isOutsidePostCharge) {
 						$scope.$emit('postcharge.added', data.total_balance_amount);
 					}
 					else{
@@ -526,19 +526,19 @@ sntRover.controller('RVPostChargeControllerV2',
 					$scope.closeDialog();
 				};
 				// CICO-21768 - Forcefully posting to Bill#1 while Credit Limit has exceeded.
-				$scope.applyToBillOne = function(){
+				$scope.applyToBillOne = function() {
 					data.bill_no = "1";
 					data.post_to_bill_one = true;
 					$scope.invokeApi(RVPostChargeSrvV2.postCharges, data, callbackApplyToBillOne, failureCallback);
 				};
 
-				var accountsPostcallback = function(){
+				var accountsPostcallback = function() {
 					$scope.$emit( 'hideLoader' );
 					$scope.closeDialog();
 					$scope.$emit('UPDATE_TRANSACTION_DATA',data);
 				};
-				if(!isFromAccounts){
-					if(!!$scope.restrict_post && $scope.hasPermissionToAllowPostWithNoCredit()){
+				if(!isFromAccounts) {
+					if(!!$scope.restrict_post && $scope.hasPermissionToAllowPostWithNoCredit()) {
 						data.post_anyway = true;
 					}
 				}
@@ -546,8 +546,8 @@ sntRover.controller('RVPostChargeControllerV2',
 				var updateParam = data;
 
 				/****    CICO-6094    **/
-				if(!needToCreateNewBill){
-					if(isFromAccounts){
+				if(!needToCreateNewBill) {
+					if(isFromAccounts) {
 						$scope.invokeApi(rvAccountTransactionsSrv.postCharges, updateParam, accountsPostcallback, failureCallback);
 					}
 					else{
@@ -562,11 +562,11 @@ sntRover.controller('RVPostChargeControllerV2',
 					//accounts or reservation bill screen check
 					isFromAccounts ? (billData.account_id = $scope.account_id):(billData.reservation_id = $scope.reservation_id);
 
-					if(isFromAccounts){
+					if(isFromAccounts) {
 						/*
 						 * Success Callback of create bill action
 						 */
-						var createBillSuccessCallback = function(){
+						var createBillSuccessCallback = function() {
 							$scope.$emit('hideLoader');
 							//Fetch data again to refresh the screen with new data
 							$scope.invokeApi(rvAccountTransactionsSrv.postCharges, updateParam, accountsPostcallback, failureCallback);
@@ -578,12 +578,12 @@ sntRover.controller('RVPostChargeControllerV2',
 						/*
 						 * Success Callback of create bill action
 						 */
-						var createBillSuccessCallback = function(){
+						var createBillSuccessCallback = function() {
 							$scope.$emit('hideLoader');
 							//Fetch data again to refresh the screen with new data
 							$scope.invokeApi(RVPostChargeSrvV2.postCharges, updateParam, callback);
 							// Update Review status array.
-							if(!$scope.isOutsidePostCharge){
+							if(!$scope.isOutsidePostCharge) {
 								var data = {};
 								data.reviewStatus = false;
 								data.billNumber = $scope.billNumber;
@@ -599,7 +599,7 @@ sntRover.controller('RVPostChargeControllerV2',
 
 			//Will be invoked only if triggered from the menu.
 			// So always the default bill no will be 1
-			$rootScope.$on("UPDATED_BILLNUMBERS", function( event, data ){
+			$rootScope.$on("UPDATED_BILLNUMBERS", function( event, data ) {
 				$scope.fetchedData.bill_numbers = data.bills;
 				$scope.billNumber = "1";
 				$scope.chargeGroup = 'FAV';
@@ -621,17 +621,17 @@ sntRover.controller('RVPostChargeControllerV2',
 				resetPostCharge();
 			});
 
-			$scope.closeDialog = function(){
+			$scope.closeDialog = function() {
 				//to add stjepan's popup showing animation
       			$rootScope.modalOpened = false;
-      			$timeout(function(){
+      			$timeout(function() {
       				ngDialog.close();
       			}, 200);
   			};
 
-  			$scope.showItemSummaryList = function(){
+  			$scope.showItemSummaryList = function() {
   				var size = _.size($scope.selectedChargeItemHash);
-  				if( size > 0 ){
+  				if( size > 0 ) {
   					return true;
   				}
   				else{
@@ -640,7 +640,7 @@ sntRover.controller('RVPostChargeControllerV2',
   			};
 
   			// Logic for pagination starts here ..
-		    $scope.loadNextSet = function( $event ){
+		    $scope.loadNextSet = function( $event ) {
 		        $scope.fetchedData.pageNo ++;
 		        $scope.fetchedData.nextAction = true;
 		        $scope.fetchedData.prevAction = false;
@@ -648,7 +648,7 @@ sntRover.controller('RVPostChargeControllerV2',
 				$event.stopImmediatePropagation();
 		    };
 
-		    $scope.loadPrevSet = function( $event ){
+		    $scope.loadPrevSet = function( $event ) {
 		        $scope.fetchedData.pageNo --;
 		        $scope.fetchedData.nextAction = false;
 		        $scope.fetchedData.prevAction = true;
@@ -656,21 +656,21 @@ sntRover.controller('RVPostChargeControllerV2',
 		        $event.stopImmediatePropagation();
 		    };
 
-		    $scope.isNextButtonDisabled = function(){
+		    $scope.isNextButtonDisabled = function() {
 
 		    	var isDisabled = false;
 
-		        if($scope.fetchedData.end >= $scope.fetchedData.total_count){
+		        if($scope.fetchedData.end >= $scope.fetchedData.total_count) {
 		            isDisabled = true;
 		        }
 		        return isDisabled;
 		    };
 
-		    $scope.isPrevButtonDisabled = function(){
+		    $scope.isPrevButtonDisabled = function() {
 
 		        var isDisabled = false;
 
-		        if($scope.fetchedData.pageNo === 1){
+		        if($scope.fetchedData.pageNo === 1) {
 		            isDisabled = true;
 		        }
 		        return isDisabled;

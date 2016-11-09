@@ -24,14 +24,14 @@ angular.module('sntRover').controller('RVHKGuestTabCtrl', [
 		Stayover - Show both departure date & departure time (if any)
 		Day use or Due out - Show departure time(or late check out time) alone. No need of showing date.
 		*/
-		$scope.checkOutReservation = function(){
+		$scope.checkOutReservation = function() {
 			var Params = {
 				id:$scope.roomDetails.reservation_id
 			};
 			$scope.invokeApi(RVHkRoomDetailsSrv.postCheckOutReservation, Params, successCheckout, failureCheckout);
 		};
 
-		var successCheckout = function(Message){
+		var successCheckout = function(Message) {
 			$scope.message = Message.data ;
 			$scope.roomDetails.reservation_is_due_out = false;
 			$scope.isSuccess = true;
@@ -53,7 +53,7 @@ angular.module('sntRover').controller('RVHKGuestTabCtrl', [
 			};
 		};
 
-		var failureCheckout = function(Errors){
+		var failureCheckout = function(Errors) {
 			if ( !!Errors && Errors.hasOwnProperty('errors') ) {
 				$scope.message = Errors.errors[0];
 			};
@@ -72,14 +72,14 @@ angular.module('sntRover').controller('RVHKGuestTabCtrl', [
 		};
 
 		$scope.manualRoomStatusChange = function() {
-			var callback = function(data){
+			var callback = function(data) {
 				$scope.$emit('hideLoader');
 				$_updateRoomDetails( 'current_hk_status', $scope.roomDetails.current_hk_status );
 			};
 
 			var hkStatusId;
 			if ( !! $scope.flag.roomStatusReady ) {
-				if( 'true' === $scope.roomDetails.checkin_inspected_only ){
+				if( 'true' === $scope.roomDetails.checkin_inspected_only ) {
 					hkStatusId = 2;
 				}
 				else{
@@ -126,7 +126,7 @@ angular.module('sntRover').controller('RVHKGuestTabCtrl', [
 			$scope.invokeApi(RVHkRoomDetailsSrv.changeHouseKeepingStatus, data, success, error);
 		};
 
-		var init = function(){
+		var init = function() {
 			var currentStatus = $scope.roomDetails.current_room_reservation_status;
 			switch(currentStatus) {
 				case 'ARRIVED':

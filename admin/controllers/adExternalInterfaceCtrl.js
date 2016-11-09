@@ -206,7 +206,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
       secondary_url: ''
     };
     $scope.fetchSetupSuccessCallback = function (data) {
-        if (data.data && data.data.product_cross_customer){
+        if (data.data && data.data.product_cross_customer) {
             $scope.interface = data.data.product_cross_customer.interface_id;
             $scope.fetchManagerDetails();
         }
@@ -219,8 +219,8 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         $scope.$emit('hideLoader');
       } else {//siteminder, synxis, traveltripper all use these
         $scope.data = data;
-        if (data.data.product_cross_customer){
-            if (typeof data.data.product_cross_customer.default_rate === typeof 123){
+        if (data.data.product_cross_customer) {
+            if (typeof data.data.product_cross_customer.default_rate === typeof 123) {
                 data.data.product_cross_customer.default_rate = data.data.product_cross_customer.default_rate+"";
                 $scope.setDefaultRate();
             }
@@ -234,10 +234,10 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
     };
     
     
-    $scope.setDefaultRate = function(){
+    $scope.setDefaultRate = function() {
         var value = $scope.data.data.product_cross_customer.default_rate;
         if (typeof value !== typeof undefined) {
-            setTimeout(function(){
+            setTimeout(function() {
                 var el = $('[name=default-rate]');
                 $(el).val(value);
             },950);
@@ -274,47 +274,47 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
       }
     };
 
-    if ($scope.interfaceName !== 'Givex'){
+    if ($scope.interfaceName !== 'Givex') {
         // Set the selected payment and origin
-        var setPayment = function(){
+        var setPayment = function() {
             var value = parseInt($scope.data.data.product_cross_customer.default_payment_id);
             if (typeof value !== typeof undefined) {
-                setTimeout(function(){
+                setTimeout(function() {
                     var payment = $('[name=default-payment]');
                     $(payment).val(value);
                 },50);//takes a moment for angularjs to catch up with the list population, possibly longer if list grows too big
             };
         };
-        var setOrigin = function(){
+        var setOrigin = function() {
             var value = parseInt($scope.data.data.product_cross_customer.default_origin);
             if (typeof value !== typeof undefined) {
-                setTimeout(function(){
+                setTimeout(function() {
                     var payment = $('[name=default-origin]');
                     $(payment).val(value);
                 },50);
             };
         };
     }
-    $scope.populateRateSelection = function(){
+    $scope.populateRateSelection = function() {
         $scope.rateSelection = [];
         var rates = $scope.channel_manager_rates;
         var rate;
-        for (var i in rates){
+        for (var i in rates) {
             rate = rates[i].rate;
-            if (rate){
+            if (rate) {
                 $scope.rateSelection.push(rate);
             }
         }
     };
     $scope.rateSelection = [];
     
-    $scope.fetchManagerDetails = function(){
+    $scope.fetchManagerDetails = function() {
         var fetchSuccess = function (data) {
             $scope.$emit('hideLoader');
             $scope.channel_manager_rates = data.data.channel_manager_rates;
             $scope.populateRateSelection();
         };
-        var fetchFailure = function(data){
+        var fetchFailure = function(data) {
             $scope.errorMessage = data;
             $scope.$emit('hideLoader');
         };
@@ -323,7 +323,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
 
     $scope.init();
     
-    $scope.initSave = function(){
+    $scope.initSave = function() {
         var saveData = $scope.lastSaved;
         if ($scope.interfaceName === 'Givex') {
         $scope.invokeApi($scope.serviceController.saveSetup, $scope.givex, $scope.saveSetupSuccessCallback, $scope.saveSetupFailureCallback);
@@ -341,7 +341,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
       }
     }
     
-    $scope.initActiveInactiveSave = function(){
+    $scope.initActiveInactiveSave = function() {
       if ($scope.interfaceName === 'Givex') {
         $scope.initSave();
       } else {
@@ -376,7 +376,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
       };
     $scope.saveSetup = function () {
         var saveData;
-        if ($scope.interfaceName === 'Givex'){
+        if ($scope.interfaceName === 'Givex') {
             saveData = $scope.data;
         } else {
             var unwantedKeys = ["available_trackers", "bookmark_count", "bookmarks", "current_hotel", "hotel_list", "menus", "interface_types"];
@@ -386,7 +386,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
       saveData.interface = $scope.interfaceId;
       $scope.lastSaved = saveData;
       
-      if ($scope.activeDirty){
+      if ($scope.activeDirty) {
           $scope.initActiveInactiveSave();
       } else {
           $scope.initSave();
@@ -431,7 +431,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
             start_date_for_display: $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd')
         };
         
-        $scope.getDateOptionsStrMinusDays = function(day){
+        $scope.getDateOptionsStrMinusDays = function(day) {
             day = day+'';
             var i = day.split('-');
             var year = i[0], mo = i[1], dayN = i[2];
@@ -445,15 +445,15 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
             return n;
         };
         
-        $scope.setDefaultEndDate = function(){
-            if ($scope.refreshDatePickerData.start_date){
+        $scope.setDefaultEndDate = function() {
+            if ($scope.refreshDatePickerData.start_date) {
                 $scope.refreshDatePickerData.end_date = $scope.refreshDatePickerData.start_date;
             }
-            if ($scope.refreshDatePickerData.start_date_for_display){
+            if ($scope.refreshDatePickerData.start_date_for_display) {
                 $scope.refreshDatePickerData.end_date_for_display = $scope.refreshDatePickerData.start_date_for_display;
             }
         };
-        $scope.validateEndDate = function(){
+        $scope.validateEndDate = function() {
             //upon selecting a start date; if the start date < the end date, the end date value needs to be updated to match the same day,
             //otherwise the datepicker has the old date that was input
             //start date
@@ -469,13 +469,13 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
               
               var start_date = s.valueOf(),
               end_date = e.valueOf();
-              if (end_date < start_date){
+              if (end_date < start_date) {
                   $scope.refreshDatePickerData.end_date = $scope.refreshDatePickerData.start_date;
                   $scope.refreshDatePickerData.end_date_for_display = $scope.refreshDatePickerData.start_date_for_display;
               }
             
         };
-        $scope.setUpDatePicker = function(){
+        $scope.setUpDatePicker = function() {
             $scope.refreshDatePickerData.start_date = $rootScope.businessDate;
             $scope.refreshDatePickerData.start_date_for_display = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
             
@@ -499,7 +499,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
                 }
             };
             
-            if ($scope.refreshDatePickerData.start_date){
+            if ($scope.refreshDatePickerData.start_date) {
                 $scope.endDateOptions.minDate = tzIndependentDate($scope.refreshDatePickerData.start_date);
                 $scope.endDateOptions.maxDate = tzIndependentDate($scope.getDateOptionsStrMinusDays($scope.refreshDatePickerData.start_date));//n days from the start date (max range of days = 2nd arg)
             } else {
@@ -511,11 +511,11 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
             
         };
         $scope.setUpDatePicker();
-        $scope.closeDialog = function(){
+        $scope.closeDialog = function() {
              ngDialog.close();
         };
         
-	$scope.showDatePicker = function(){
+	$scope.showDatePicker = function() {
             $scope.setUpDatePicker();//this sets up default start and end date
             ngDialog.open({
                 template: '/assets/partials/SiteminderSetup/adSiteminderDatepicker.html',
@@ -526,12 +526,12 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
 	};
         
 
-        $scope.setRefreshTime = function(){
+        $scope.setRefreshTime = function() {
             
-            if ($scope.interfaceName !== 'Givex'){
+            if ($scope.interfaceName !== 'Givex') {
                 /*this refresh timer disabled now that we can send date ranges for refresh
                */
-                if ($scope.data.data.product_cross_customer.full_refresh !== null){
+                if ($scope.data.data.product_cross_customer.full_refresh !== null) {
                    $scope.lastRefreshedTime = new Date($scope.data.data.product_cross_customer.full_refresh);
                    $scope.lastRefreshedTimeRef = $scope.formatDate(new Date($scope.data.data.product_cross_customer.full_refresh));
                    $scope.lastRefreshedTimeObj = new Date($scope.data.data.product_cross_customer.full_refresh);
@@ -539,7 +539,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
                    
                    $scope.lastRefreshedTimeMark = $scope.timeSince($scope.lastRefreshedTimeObj.valueOf());
                    
-                    if (!$scope.initTimeout){
+                    if (!$scope.initTimeout) {
                         $scope.countdownTimer();
                         $scope.initTimeout = true;
                     }

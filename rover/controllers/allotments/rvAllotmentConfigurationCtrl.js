@@ -390,14 +390,14 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             return ( !$scope.isInAddMode() && (null !== $scope.allotmentConfigData.summary.travel_agent && !!$scope.allotmentConfigData.summary.travel_agent.id) );
         };
 
-        $scope.goToTACard = function(){
+        $scope.goToTACard = function() {
             $state.go('rover.companycarddetails', {
                 id: summaryData.allotmentSummary.travel_agent.id,
                 type: 'TRAVELAGENT'
             });
         };
 
-        $scope.goToCompanyCard = function(){
+        $scope.goToCompanyCard = function() {
             $state.go('rover.companycarddetails', {
                 id: summaryData.allotmentSummary.company.id,
                 type: 'COMPANY'

@@ -11,12 +11,12 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
 
         $scope.init = function () {
             $scope.$emit('hideLoader');
-            if ($stateParams.calendarMode !== "ROOM_TYPE_VIEW"){
+            if ($stateParams.calendarMode !== "ROOM_TYPE_VIEW") {
                 $scope.inRoomView = false;
             } else {
                 $scope.inRoomView = true;
             }
-            if ($stateParams.openUpdatePriceRestrictions){
+            if ($stateParams.openUpdatePriceRestrictions) {
                 $stateParams.openUpdatePriceRestrictions = false;
                 $scope.data.roomRateOverrides = [];
                 $scope.data.showEditView = false;
@@ -28,7 +28,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
                     computePopupdataForRoomTypeCal();
                 } else {
                     computePopUpdataForRateViewCal();
-                    if ($scope.popupData.ratesRoomsToggle !== 'ROOMS'){
+                    if ($scope.popupData.ratesRoomsToggle !== 'ROOMS') {
                         fetchPriceDetailsForRate();
                     }
                 }
@@ -39,7 +39,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
 
                 $scope.updatePopupWidth();
 
-            setTimeout(function(){
+            setTimeout(function() {
                         $scope.$emit('hideLoader');
             },200);
             }
@@ -115,17 +115,17 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
             return (rvPermissionSrv.getPermissionValue('CHANGE_RESTRICTIONS'));
         };
 
-        $scope.getRestriction = function(d, prop){
-            if ($scope.popupData){
+        $scope.getRestriction = function(d, prop) {
+            if ($scope.popupData) {
               var date = $scope.popupData.selectedDate,
                       rateId = $scope.popupData.selectedRate;
 
-              for (var i in $scope.calendarData.data){
-                      if (rateId === $scope.calendarData.data[i].id){
+              for (var i in $scope.calendarData.data) {
+                      if (rateId === $scope.calendarData.data[i].id) {
                             //each restriction in the obj
-                            if (d){
-                                for (var x in $scope.calendarData.data[i][date]){
-                                    if ($scope.calendarData.data[i][date][x].restriction_type_id === d.id){
+                            if (d) {
+                                for (var x in $scope.calendarData.data[i][date]) {
+                                    if ($scope.calendarData.data[i][date][x].restriction_type_id === d.id) {
                                         return $scope.calendarData.data[i][date][x][prop];
                                     }
                                 }
@@ -201,7 +201,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
             selectedDateInfo = {};
 
             //detect change on data values and update watch obj accordingly
-            $scope.$watch("data.single_extra_amnt", function(to, from, evt){
+            $scope.$watch("data.single_extra_amnt", function(to, from, evt) {
                 var via = 'single';
                 var d = {};
                 d.to = to;
@@ -210,7 +210,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
                 $scope.$emit('setReadyButton',d);
                 $scope.$emit('applyAllActivity',d);
             });
-            $scope.$watch("data.double_extra_amnt", function(to, from, evt){
+            $scope.$watch("data.double_extra_amnt", function(to, from, evt) {
 
                 var via = 'double';
                 var d = {};
@@ -220,7 +220,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
                 $scope.$emit('setReadyButton',d);
                 $scope.$emit('applyAllActivity',d);
             });
-            $scope.$watch("data.extra_adult_extra_amnt", function(to, from, evt){
+            $scope.$watch("data.extra_adult_extra_amnt", function(to, from, evt) {
 
                 var via = 'extra_adult';
                 var d = {};
@@ -230,7 +230,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
                 $scope.$emit('setReadyButton',d);
                 $scope.$emit('applyAllActivity',d);
             });
-            $scope.$watch("data.child_extra_amnt", function(to, from, evt){
+            $scope.$watch("data.child_extra_amnt", function(to, from, evt) {
 
                 var via = 'child';
                 var d = {};
@@ -370,7 +370,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
                 for (var i in $scope.calendarData.data) {
                     if ($scope.calendarData.data[i].id === $scope.popupData.selectedRate) {
                         selectedDateInfo = $scope.calendarData.data[i][$scope.popupData.selectedDate];
-                        if (selectedDateInfo === []){
+                        if (selectedDateInfo === []) {
                             selectedDateInfo = $scope.calendarData.all_rates[$scope.popupData.selectedDate];
                         }
                         $scope.data.id = $scope.calendarData.data[i].id;
@@ -382,7 +382,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
 
             var restrictionTypes = {};
             var rTypes = dclone($scope.calendarData.restriction_types);
-            if ($scope.ratesRoomsToggle === 'ROOMS'){
+            if ($scope.ratesRoomsToggle === 'ROOMS') {
                 selectedDateInfo = $scope.popupData.room_restrictions;
             }
             for (var i in rTypes) {
@@ -449,8 +449,8 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
          * Enable disable restriction.
          */
         $scope.toggleRestrictions = function (id, days, selectedIndex, restrictionType) {
-            if (restrictionType){
-                if (restrictionType.description === 'Has Restrictions'){
+            if (restrictionType) {
+                if (restrictionType.description === 'Has Restrictions') {
                     return;
                 }
             }
@@ -714,7 +714,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
          */
 
         $scope.saveRestriction = function () {
-            if ($scope.calendarData.is_child){
+            if ($scope.calendarData.is_child) {
                 //manual update is disabled for rates which are based on other rates
                 $scope.daysOptions.applyToPrice = false;
             }
@@ -729,9 +729,9 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
             var ratesInView = $scope.ratesDisplayed;
             var ratesDisplayed = ratesInView.length;
 
-            if (ratesInView){// multiple rates may be selected in view, check for 'all_data_selected'
-                for (var f in ratesInView){
-                    if (ratesInView.length > 1){
+            if (ratesInView) {// multiple rates may be selected in view, check for 'all_data_selected'
+                for (var f in ratesInView) {
+                    if (ratesInView.length > 1) {
                         data.rate_ids.push(ratesInView[f].id);//these will always be sent to the api to apply restrictions to all rates in filter
                     }
                 }
@@ -741,33 +741,33 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
             var all = $scope.popupData.all_data_selected;//if a user wants All rates/rooms applied to or not
             var rateView, allRooms = $scope.calendarData.data;
             var room, totalRooms = allRooms.length;
-            if ($scope.ratesRoomsToggle === 'RATES'){
+            if ($scope.ratesRoomsToggle === 'RATES') {
                 rateView = true;
-                if ($scope.ratesDisplayed.length === 1){
+                if ($scope.ratesDisplayed.length === 1) {
                     rateView = false;//the screen defaults to room view if only 1 is selected
                 }
             } else {
                 rateView = false;
             }
             
-            if (all){
-                if (!rateView){ //for room view
+            if (all) {
+                if (!rateView) { //for room view
                     /*for (var c in allRooms){
                         room = allRooms[c];
                         data.room_ids.push(room.id);//currently invalid param 'room_ids'
                     }*/
-                    if (ratesDisplayed > 1 || totalRooms > 1){
+                    if (ratesDisplayed > 1 || totalRooms > 1) {
                         delete data.room_type_id;
                     }
                 } else {
                     delete data.room_type_id;
                   //  delete data.room_ids;
-                    if (ratesDisplayed > 1){
+                    if (ratesDisplayed > 1) {
                         delete data.rate_id;
                     }
                 }
             } else {//otherwise just send the selected room_type_id
-                if (rateView){
+                if (rateView) {
                     delete data.rate_ids;
                 } else {//in room view remove the rate_id param
 //                    delete data.rate_id;  
@@ -775,7 +775,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
                // delete data.room_ids;
             }
 
-            if (ratesDisplayed === 1){
+            if (ratesDisplayed === 1) {
                 delete data.rate_ids;
             }
             
@@ -787,7 +787,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
 
                 $scope.$emit('showLoader');
                 $rootScope.$broadcast('loadingRooms', true);
-                setTimeout(function(){
+                setTimeout(function() {
                         $scope.refreshCalendar();
                 }, 250);
             };
@@ -813,7 +813,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
             for (var i in $scope.overrideByDate) {
                 if ($scope.overrideByDate[i].date === date) {
                     for (var n in $scope.overrideByDate[i].room_types_with_override) {
-                        if ($scope.overrideByDate[i].room_types_with_override[n] && room_type){
+                        if ($scope.overrideByDate[i].room_types_with_override[n] && room_type) {
                             if ($scope.overrideByDate[i].room_types_with_override[n].toLowerCase() === room_type.toLowerCase()) {
                                 return 'true';
                             }
@@ -867,7 +867,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
                     o = a.roomRateOverrides;
 
             var selected_info;
-            if (o){
+            if (o) {
                 if (o.room_types) {
                     for (var i in o.room_types) {
                         if (o.room_types[i].room_type.name === room_type) {

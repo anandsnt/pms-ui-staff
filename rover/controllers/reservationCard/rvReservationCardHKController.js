@@ -39,7 +39,7 @@ sntRover.controller('rvReservationCardHKController',
             $scope.houseKeeping.hideDetails = $scope.houseKeeping.hideDetails ? false : true;
 
             $scope.refreshScroller('resultDetails');
-            $timeout(function(){
+            $timeout(function() {
                 $scope.$parent.myScroll['resultDetails'].scrollTo($scope.$parent.myScroll['resultDetails'].maxScrollX,
                     $scope.$parent.myScroll['resultDetails'].maxScrollY, 500);
             }, 500);
@@ -122,7 +122,7 @@ sntRover.controller('rvReservationCardHKController',
         };
 
         // Note: self executing
-        var init = function(){
+        var init = function() {
             $scope.houseKeeping = {};
             $scope.houseKeeping.serviceEnabled = true;
             $scope.houseKeeping.hideDetails = true;

@@ -1,25 +1,25 @@
 sntRover.controller('rvBillCardPopupCtrl',
-	['$scope','$rootScope','$filter','RVBillCardSrv', 'ngDialog', '$timeout', function($scope, $rootScope,$filter, RVBillCardSrv, ngDialog, $timeout){
+	['$scope','$rootScope','$filter','RVBillCardSrv', 'ngDialog', '$timeout', function($scope, $rootScope,$filter, RVBillCardSrv, ngDialog, $timeout) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.newAmount = '';
 
-	var refreshListWithData = function(data){
+	var refreshListWithData = function(data) {
 		$scope.init(data);
 		//expand list
 		$scope.reservationBillData.bills[$scope.currentActiveBill].isOpenFeesDetails = true;
 		$scope.calculateHeightAndRefreshScroll();
 	};
 
-	var hideLoaderAndClosePopup = function(){
+	var hideLoaderAndClosePopup = function() {
 		ngDialog.close();
-		$timeout(function(){
+		$timeout(function() {
 			$scope.HIDE_LOADER_FROM_POPUP && $scope.HIDE_LOADER_FROM_POPUP();
 		}, 1000);
 		
 	};
 
-	var failureCallBack = function(data){
+	var failureCallBack = function(data) {
 
 		$scope.$emit("hideLoader");
 		$scope.errorMessage = data;
@@ -29,7 +29,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 	 * API call remove transaction
 	 */
 
-	$scope.removeCharge = function(reason){
+	$scope.removeCharge = function(reason) {
 
 		var deleteData =
 		{
@@ -39,7 +39,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 			},
 			"id" :$scope.selectedTransaction.id
 		};
-		var transactionDeleteSuccessCallback = function(data){
+		var transactionDeleteSuccessCallback = function(data) {
 			hideLoaderAndClosePopup();
 			refreshListWithData(data);
 
@@ -47,8 +47,8 @@ sntRover.controller('rvBillCardPopupCtrl',
 		$scope.invokeApi(RVBillCardSrv.transactionDelete, deleteData, transactionDeleteSuccessCallback,failureCallBack);
 	};
 
-	$scope.showSpiltValues = function(){
-		if($scope.splitTypeisAmount){
+	$scope.showSpiltValues = function() {
+		if($scope.splitTypeisAmount) {
 			$scope.displayFirstValue = $scope.selectedTransaction.amount - $scope.splitValue;
 			$scope.displaySecondValue = $scope.splitValue;
 		}else{
@@ -59,7 +59,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 	/*
 	* API call split transaction
 	*/
-	$scope.splitCharge = function(qty,isAmountType){
+	$scope.splitCharge = function(qty,isAmountType) {
 
 		var split_type = isAmountType ? $rootScope.currencySymbol:'%';
 		var splitData = {
@@ -70,7 +70,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 			}
 
 		};
-		var transactionSplitSuccessCallback = function(data){
+		var transactionSplitSuccessCallback = function(data) {
 			hideLoaderAndClosePopup();
 			refreshListWithData(data);
 		};
@@ -88,7 +88,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 	 * @param {number} chargeCode updated charge code id
 	 * @returns {undefined}
 	 */
-	$scope.editCharge = function(newAmount, chargeCode, adjustmentReason){
+	$scope.editCharge = function(newAmount, chargeCode, adjustmentReason) {
 		var params = {
 			id: $scope.selectedTransaction.id,
 			updatedData : {
@@ -128,9 +128,9 @@ sntRover.controller('rvBillCardPopupCtrl',
 	var scrollerOptionsForSearch = {click: true, preventDefault: false};
 	$scope.setScroller('chargeCodesList',scrollerOptionsForSearch);
 
-	$scope.selectChargeCode = function(id){
-		 for(var i = 0; i < $scope.availableChargeCodes.length; i++){
-		 	 if($scope.availableChargeCodes[i].id === id){
+	$scope.selectChargeCode = function(id) {
+		 for(var i = 0; i < $scope.availableChargeCodes.length; i++) {
+		 	 if($scope.availableChargeCodes[i].id === id) {
 		 	 	$scope.selectedChargeCode = $scope.availableChargeCodes[i];
 		 	 }
 		 }
@@ -141,12 +141,12 @@ sntRover.controller('rvBillCardPopupCtrl',
   	* function to perform filering on results.
   	* if not fouund in the data, it will request for webservice
   	*/
-  	var displayFilteredResultsChargeCodes = function(){
+  	var displayFilteredResultsChargeCodes = function() {
 
 	    //if the entered text's length < 3, we will show everything, means no filtering
-	    if($scope.chargecodeData.chargeCodeSearchText.length < 3){
+	    if($scope.chargecodeData.chargeCodeSearchText.length < 3) {
 	      //based on 'is_row_visible' parameter we are showing the data in the template
-	      for(var i = 0; i < $scope.availableChargeCodes.length; i++){
+	      for(var i = 0; i < $scope.availableChargeCodes.length; i++) {
 	          $scope.availableChargeCodes[i].is_row_visible = false;
 	      }
 	      $scope.refreshScroller('chargeCodesList');
@@ -157,7 +157,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 	      var value = "";
 	      //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
 	      //if it is zero, then we will request for webservice
-	      for(var i = 0; i < $scope.availableChargeCodes.length; i++){
+	      for(var i = 0; i < $scope.availableChargeCodes.length; i++) {
 	        value = $scope.availableChargeCodes[i];
 	        if (($scope.escapeNull(value.name).toUpperCase()).indexOf($scope.chargecodeData.chargeCodeSearchText.toUpperCase()) >= 0 ||
 	            ($scope.escapeNull(value.description).toUpperCase()).indexOf($scope.chargecodeData.chargeCodeSearchText.toUpperCase()) >= 0 )
@@ -177,13 +177,13 @@ sntRover.controller('rvBillCardPopupCtrl',
 	/**
     * function to clear the charge code search text
     */
-	$scope.clearResults = function(){
+	$scope.clearResults = function() {
 	  	$scope.chargecodeData.chargeCodeSearchText = "";
 	};
     /**
     * function to show available charge code list on clicking the dropdown
     */
-    $scope.showAvailableChargeCodes = function(){
+    $scope.showAvailableChargeCodes = function() {
         $scope.clearResults ();
         displayFilteredResultsChargeCodes();
         $scope.showChargeCodes = !$scope.showChargeCodes;
@@ -192,7 +192,7 @@ sntRover.controller('rvBillCardPopupCtrl',
      /**
     * function to trigger the filtering when the search text is entered
     */
-    $scope.chargeCodeEntered = function(){
+    $scope.chargeCodeEntered = function() {
         $scope.showChargeCodes = false;
 	   	displayFilteredResultsChargeCodes();
 	   	var queryText = $scope.chargecodeData.chargeCodeSearchText;
@@ -200,17 +200,17 @@ sntRover.controller('rvBillCardPopupCtrl',
     };
 
     // To show or hide charge code list
-    $scope.isShowChargeCodeList = function(){
+    $scope.isShowChargeCodeList = function() {
     	var isShowChargeCodeList = false,
     		chargeCodeLength = $scope.availableChargeCodes.length,
     		queryLength = $scope.chargecodeData.chargeCodeSearchText.length;
 
-    	if($scope.showChargeCodes){
+    	if($scope.showChargeCodes) {
     		isShowChargeCodeList = true;
     	}
-    	else if(queryLength > 2 && chargeCodeLength !== 0){
-			for(var i = 0; i < chargeCodeLength; i++){
-			 	if($scope.availableChargeCodes[i].is_row_visible){
+    	else if(queryLength > 2 && chargeCodeLength !== 0) {
+			for(var i = 0; i < chargeCodeLength; i++) {
+			 	if($scope.availableChargeCodes[i].is_row_visible) {
 			 		isShowChargeCodeList = true;
 			 		break;
 			 	}

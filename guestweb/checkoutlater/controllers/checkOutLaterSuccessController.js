@@ -8,26 +8,26 @@
 
 	$scope.pageValid = false;
 	// Check if user is trying to access this page when he/she don't have access for this page
-	if($rootScope.isCheckedin){
+	if($rootScope.isCheckedin) {
 		$state.go('checkinSuccess');
 	}
-	else if($rootScope.isCheckin){
+	else if($rootScope.isCheckin) {
 		$state.go('checkinConfirmation');
 	}
-	else if($rootScope.isCheckedout ){
+	else if($rootScope.isCheckedout ) {
 		$state.go('checkOutStatus');
 	}
-	else if(!$rootScope.isRoomVerified){
+	else if(!$rootScope.isRoomVerified) {
 		$state.go('checkoutRoomVerification');
 	}
-	else if(!$rootScope.isLateCheckoutAvailable){
+	else if(!$rootScope.isLateCheckoutAvailable) {
 		$state.go('checkOutConfirmation');
 	}
 	else{
 		$scope.pageValid = true;
 	};
 
-	if($scope.pageValid){
+	if($scope.pageValid) {
 
 		var charges = LateCheckOutChargesService.charges;
 		var id = $stateParams.id;
@@ -55,7 +55,7 @@
 
 		// find the choosen option form list of options
 
-		if($rootScope.ccPaymentSuccessForCheckoutLater){
+		if($rootScope.ccPaymentSuccessForCheckoutLater) {
 			$scope.lateCheckOut = _.find(charges, function(charge) {
 			if (id === charge.amount.toString()) {
 				return charge;
@@ -79,7 +79,7 @@
 		var checkoutLaterData = {'reservation_id': reservation_id, 'late_checkout_offer_id': id,'is_cc_attached_from_guest_web':$rootScope.isCcAttachedFromGuestWeb};
 		LateCheckOutChargesService.postNewCheckoutOption(url,checkoutLaterData).then(function(response) {
 			$scope.success = response.status ? true : false;
-		 	if($scope.success === true){
+		 	if($scope.success === true) {
 				$scope.posted = true;
 				$scope.oldCheckoutTime = angular.copy($rootScope.checkoutTime);
 				$rootScope.checkoutTime = $scope.lateCheckOut.time +':00 '+$scope.lateCheckOut.ap;
@@ -92,7 +92,7 @@
 		    	$scope.netWorkError = true;
 		    }
 
-		},function(){
+		},function() {
 			$scope.netWorkError = true;
 			$scope.posted = true;
 		});

@@ -53,7 +53,7 @@
         /**
          * we've to unbind something while removing the node from dom
          */
-        scope.$on('$destroy', function(){
+        scope.$on('$destroy', function() {
             autocompleteEl = $(el);
             autocompleteEl.autocomplete( "destroy" );
             

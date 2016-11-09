@@ -11,7 +11,7 @@ sntZestStation.config(function($httpProvider) {
 });
 
 
-sntZestStation.service('zsBaseWebSrv2',['$http', '$q', '$window','$rootScope', function($http, $q, $window,$rootScope){
+sntZestStation.service('zsBaseWebSrv2',['$http', '$q', '$window','$rootScope', function($http, $q, $window,$rootScope) {
 
     /**
     *   A http requester method for calling webservice
@@ -21,19 +21,19 @@ sntZestStation.service('zsBaseWebSrv2',['$http', '$q', '$window','$rootScope', f
     *   @return {promise}
     */
 
-	this.callWebService = function(httpMethod, url, params){
+	this.callWebService = function(httpMethod, url, params) {
 		var deferred = $q.defer();
-		if(typeof params === "undefined"){
+		if(typeof params === "undefined") {
 			params = "";
 		}
 
 		var httpDict = {};
  		httpDict.url = url;
  		httpDict.method = httpMethod;
- 		if(httpMethod === 'GET' || httpMethod === 'DELETE'){
+ 		if(httpMethod === 'GET' || httpMethod === 'DELETE') {
  			httpDict.params = params;
  		}
- 		else if(httpMethod === 'POST' || httpMethod === 'PUT'){
+ 		else if(httpMethod === 'POST' || httpMethod === 'PUT') {
  			httpDict.data = params;
  			if(typeof $rootScope.workstation_id !== 'undefined') {
 				httpDict.data.workstation_id = $rootScope.workstation_id;
@@ -42,7 +42,7 @@ sntZestStation.service('zsBaseWebSrv2',['$http', '$q', '$window','$rootScope', f
 
 		//Sample params {params:{fname: "fname", lname: "lname"}}
 		$http(httpDict).success(function(response, status) {
-			if(response.status === "success"){
+			if(response.status === "success") {
 		    	deferred.resolve(response.data);
 			}else{
 				// please note the type of error expecting is array
@@ -52,19 +52,19 @@ sntZestStation.service('zsBaseWebSrv2',['$http', '$q', '$window','$rootScope', f
 			var urlStart = url.split('?')[0];
 			// please note the type of error expecting is array
 			// so form error as array if you modifying it
-			if(status === 406){ // 406- Network error
+			if(status === 406) { // 406- Network error
 				deferred.reject(response.errors);
-			} else if(status === 422){ // 406- Network error
+			} else if(status === 422) { // 406- Network error
 				deferred.reject(response.errors);
 			}
- 			else if(status === 501 || status === 502 || status === 503){ // 500- Internal Server Error
+ 			else if(status === 501 || status === 502 || status === 503) { // 500- Internal Server Error
                                $window.location.href = '/500' ;
                       }
-			else if(status === 500){ // 500- Internal Server Error
+			else if(status === 500) { // 500- Internal Server Error
 
 				deferred.reject(['Internal server error occured']);
 			}
-			else if(status === 401){ // 401- Unauthorized
+			else if(status === 401) { // 401- Unauthorized
 				// so lets redirect to login page
 				$window.location.href = '/logout' ;
 			}
@@ -85,19 +85,19 @@ sntZestStation.service('zsBaseWebSrv2',['$http', '$q', '$window','$rootScope', f
 		return deferred.promise;
 	};
 
-   	this.getJSON = function(url, params){
+   	this.getJSON = function(url, params) {
     	return this.callWebService("GET", url, params);
    	};
 
-   	this.putJSON = function(url, params){
+   	this.putJSON = function(url, params) {
    		return this.callWebService("PUT", url, params);
    	};
 
-   	this.postJSON = function(url, params){
+   	this.postJSON = function(url, params) {
    		return this.callWebService("POST", url, params);
    	};
 
-   	this.deleteJSON = function(url, params){
+   	this.deleteJSON = function(url, params) {
    		return this.callWebService("DELETE", url, params);
    	};
 

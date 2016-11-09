@@ -1,14 +1,14 @@
 admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEncoderSrv', 'ngTableParams','$filter','$timeout', '$location', '$anchorScroll',
-	function($scope, $state, ADRatesSrv, ADKeyEncoderSrv, ngTableParams, $filter, $timeout, $location, $anchorScroll){
+	function($scope, $state, ADRatesSrv, ADKeyEncoderSrv, ngTableParams, $filter, $timeout, $location, $anchorScroll) {
 
 	$scope.errorMessage = '';
 	$scope.successMessage = "";
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
 
-	$scope.fetchTableData = function($defer, params){
+	$scope.fetchTableData = function($defer, params) {
 		var getParams = $scope.calculateGetParams(params);
-		var fetchSuccessOfItemList = function(data){
+		var fetchSuccessOfItemList = function(data) {
 			$scope.$emit('hideLoader');
 			//No expanded rate view
 			$scope.currentClickedElement = -1;
@@ -23,7 +23,7 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 	};
 
 
-	$scope.loadTable = function(){
+	$scope.loadTable = function() {
 		$scope.tableParams = new ngTableParams({
 		        page: 1,  // show first page
 		        count: $scope.displyCount // count per page
@@ -124,7 +124,7 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 		$scope.invokeApi(ADKeyEncoderSrv.updateEncoderStatus, data, postSuccess);
 	};
 
-	$scope.deleteEncoder = function(index,id){
+	$scope.deleteEncoder = function(index,id) {
 		var deleteEncoderSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.data.splice(index, 1);

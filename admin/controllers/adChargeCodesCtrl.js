@@ -17,9 +17,9 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 
 
 
-		$scope.fetchTableData = function($defer, params){
+		$scope.fetchTableData = function($defer, params) {
 			var getParams = $scope.calculateGetParams(params);
-			var fetchSuccessOfItemList = function(data){
+			var fetchSuccessOfItemList = function(data) {
 				$scope.$emit('hideLoader');
 				//No expanded rate view
 				$scope.currentClickedElement = -1;
@@ -35,7 +35,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		};
 
 
-		$scope.loadTable = function(){
+		$scope.loadTable = function() {
 			$scope.tableParams = new ngTableParams({
 			        page: 1,  // show first page
 			        count: $scope.displyCount, // count per page
@@ -204,8 +204,8 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				$scope.$emit('hideLoader');
 				if ($scope.isEdit) {
                                     var p = parseInt($scope.currentClickedElement);
-                                    if ($scope.orderedData){
-                                    if ($scope.orderedData[p]){
+                                    if ($scope.orderedData) {
+                                    if ($scope.orderedData[p]) {
 					$scope.orderedData[parseInt($scope.currentClickedElement)].charge_code = data.charge_code;
 					$scope.orderedData[parseInt($scope.currentClickedElement)].description = data.description;
 					$scope.orderedData[parseInt($scope.currentClickedElement)].charge_group = data.charge_group;
@@ -244,7 +244,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 					item.calculation_rules = item.calculation_rule_list[parseInt(item.selected_calculation_rule)].charge_code_id_list;
 				}
 			});
-			if($scope.prefetchData.selected_fees_code ===""){
+			if($scope.prefetchData.selected_fees_code ==="") {
 				$scope.prefetchData.selected_fees_code = null;
 			};
 
@@ -264,7 +264,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				}
 			});
 
-                        if ($scope.isStandAlone && !$scope.prefetchData.selected_charge_group){
+                        if ($scope.isStandAlone && !$scope.prefetchData.selected_charge_group) {
                             $scope.errorMessage = 'Group Charge Code Required';
                             $scope.validForm = false;
                             return;
@@ -417,7 +417,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 * To set the selected payment type based on the id and cc_type from the dropdown.
 		 */
 		$scope.changeSelectedPaymentType = function() {
-			if($scope.selected_payment_type.id !== ""){
+			if($scope.selected_payment_type.id !== "") {
 				$scope.prefetchData.selected_payment_type = $scope.prefetchData.payment_types[$scope.selected_payment_type.id].value;
 				$scope.prefetchData.is_cc_type = $scope.prefetchData.payment_types[$scope.selected_payment_type.id].is_cc_type;
 			}

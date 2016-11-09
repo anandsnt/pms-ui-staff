@@ -1,4 +1,4 @@
-angular.module('sntRover').controller('rvGroupRoomingAutoRoomAssignPopUpCtrl', ['$scope', function($scope){
+angular.module('sntRover').controller('rvGroupRoomingAutoRoomAssignPopUpCtrl', ['$scope', function($scope) {
 
 	//This controller is only for setting the SCROLLER, we are not using this for any other purpose
 	//because every function that we need to use on closing or some other action residing in rvGroupRoomingListCtrl.js
@@ -7,7 +7,7 @@ angular.module('sntRover').controller('rvGroupRoomingAutoRoomAssignPopUpCtrl', [
 	//(since we dont want to interfer with this rooming list scroller)
 	BaseCtrl.call(this, $scope);
 
-	var setScroller = function(){
+	var setScroller = function() {
 		//scroller options
         var scrollerOptions = {};
         $scope.setScroller('failed_reservations_scroller', scrollerOptions);

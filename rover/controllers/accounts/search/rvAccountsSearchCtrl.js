@@ -33,7 +33,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* @param {Object} - account
 		* @return {String}
 		*/
-		$scope.getClassAgainstBalance = function(account){
+		$scope.getClassAgainstBalance = function(account) {
 			var classes = '';
 
 			//Add class "red" if status OPEN
@@ -48,7 +48,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* @param {Object} - account
 		* @return {String}
 		*/
-		$scope.getClassAgainstAccountStatus = function(account){
+		$scope.getClassAgainstAccountStatus = function(account) {
 			var classes = '';
 
 			//Add class "green" if status OPEN
@@ -63,7 +63,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* Function to clear to search query
 		* @return {None}
 		*/
-		$scope.clearSearchQuery = function(){
+		$scope.clearSearchQuery = function() {
 			$scope.query = '';
 			runDigestCycle();
 
@@ -85,7 +85,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* will check if it is not running
 		* return - None
 		*/
-		var runDigestCycle = function(){
+		var runDigestCycle = function() {
 			if(!$scope.$$phase) {
 				$scope.$digest();
 			}
@@ -115,7 +115,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* this function will execute
 		* @return {None}
 		*/
-		$scope.hasPermissionToAddNewAccount = function(){
+		$scope.hasPermissionToAddNewAccount = function() {
 			return (rvPermissionSrv.getPermissionValue("CREATE_ACCOUNT"));
 		};
 
@@ -125,11 +125,11 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* @return {None}
 		*/
 		$scope.searchQueryChanged = function() {
-			if ($scope.isEmpty ($scope.query)){
+			if ($scope.isEmpty ($scope.query)) {
 				return false;
 			}
 
-			if ($scope.query.length < 3){
+			if ($scope.query.length < 3) {
 				return false;
 			}
 
@@ -140,7 +140,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* utility function to form API params for account search
 		* return {Object}
 		*/
-		var formAccountSearchParams = function(){
+		var formAccountSearchParams = function() {
 			var params = {
 				query		: $scope.query,
 				status		: $scope.status,
@@ -157,7 +157,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* to Search for accounts
 		* @return - None
 		*/
-		$scope.search = function(){
+		$scope.search = function() {
 			//am trying to search something, so we have to change the initial search helping screen if no rsults
 			$scope.amFirstTimeHere = false;
 
@@ -178,7 +178,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* @param {Array} - array of objects - accounts
 		* @return {None}
 		*/
-		var successCallBackOfSearch = function(data){
+		var successCallBackOfSearch = function(data) {
 			//accountList
 			$scope.accountList = data.posting_accounts;
 
@@ -194,7 +194,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* @param {Array} - error messages
 		* @return {None}
 		*/
-		var failureCallBackOfSearch = function(error){
+		var failureCallBackOfSearch = function(error) {
 			$scope.errorMessage = error;
 		};
 
@@ -202,7 +202,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* utiltiy function for setting scroller and things
 		* return - None
 		*/
-		var setScrollerForMe = function(){
+		var setScrollerForMe = function() {
 			//setting scroller things
 			var scrollerOptions = {
 				tap 			: true,
@@ -224,7 +224,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		/**
 		* Pagination things
 		*/
-		var setInitialPaginationAndAPIThings = function(){
+		var setInitialPaginationAndAPIThings = function() {
 			//pagination
 			$scope.perPage 	= rvAccountsSrv.DEFAULT_PER_PAGE;
 			$scope.start 	= 1;
@@ -238,7 +238,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* should we show pagination area
 		* @return {Boolean}
 		*/
-		$scope.shouldShowPagination = function(){
+		$scope.shouldShowPagination = function() {
 			return ($scope.totalResultCount >= $scope.perPage);
 		};
 
@@ -246,7 +246,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* has there any search results?
 		* @return {Boolean}
 		*/
-		var hasSomeSearchResults = function(){
+		var hasSomeSearchResults = function() {
 			return ($scope.accountList.length > 0);
 		};
 
@@ -254,7 +254,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		 * [isFirstTimeWithNoResult description]
 		 * @return {Boolean} [description]
 		 */
-		$scope.isFirstTimeWithNoResult = function(){
+		$scope.isFirstTimeWithNoResult = function() {
 			return ($scope.amFirstTimeHere && !hasSomeSearchResults());
 		};
 
@@ -262,7 +262,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		 * [shouldShowNoResult description]
 		 * @return {[type]} [description]
 		 */
-		$scope.shouldShowNoResult = function(){
+		$scope.shouldShowNoResult = function() {
 			return (!$scope.amFirstTimeHere && !hasSomeSearchResults());
 		};
 
@@ -270,7 +270,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* should we disable next button
 		* @return {Boolean}
 		*/
-		$scope.isNextButtonDisabled = function(){
+		$scope.isNextButtonDisabled = function() {
 			return ($scope.end >= $scope.totalResultCount);
 		};
 
@@ -278,7 +278,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* should we disable prev button
 		* @return {Boolean}
 		*/
-		$scope.isPrevButtonDisabled = function(){
+		$scope.isPrevButtonDisabled = function() {
 			return ($scope.start === 1);
 		};
 
@@ -286,7 +286,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* should show add new button
 		* @return {Boolean}
 		*/
-		$scope.shouldShowAddNewButton = function(){
+		$scope.shouldShowAddNewButton = function() {
 			return ($scope.hasPermissionToAddNewAccount());
 		};
 
@@ -297,10 +297,10 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		*/
 		$scope.loadPrevSet = function() {
 			var isAtEnd = ($scope.end === $scope.totalResultCount);
-			if (isAtEnd){
+			if (isAtEnd) {
 				//last diff will be diff from our normal diff
 				var lastDiff = ($scope.totalResultCount % $scope.perPage);
-				if (lastDiff === 0){
+				if (lastDiff === 0) {
 					lastDiff = $scope.perPage;
 				}
 
@@ -328,7 +328,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 			$scope.start = $scope.start + $scope.perPage;
 			var willNextBeEnd = (($scope.end + $scope.perPage) > $scope.totalResultCount);
 
-			if (willNextBeEnd){
+			if (willNextBeEnd) {
 				$scope.end = $scope.totalResultCount;
 			}
 			else {
@@ -346,7 +346,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		 * Navigate to the account configuration state for editing the account
 		 * @return undefined
 		 */
-		$scope.gotoEditAccountConfiguration = function(accountID){
+		$scope.gotoEditAccountConfiguration = function(accountID) {
 			$state.go('rover.accounts.config',{
 				id: accountID,
 				activeTab: 'ACCOUNT',
@@ -358,7 +358,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		 * Navigate to the account configuration state for adding the account
 		 * @return undefined
 		 */
-		$scope.gotoAddNewAccount = function(){
+		$scope.gotoAddNewAccount = function() {
 			$state.go ('rover.accounts.config', {'id': "NEW_ACCOUNT", isFromCards: true});
 		};
 
@@ -366,7 +366,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* function used to set initlial set of values
 		* @return {None}
 		*/
-		var initializeMe = function(){
+		var initializeMe = function() {
 			//chnaging the heading of the page
 			$scope.setHeadingTitle ('MENU_ACCOUNTS');
 

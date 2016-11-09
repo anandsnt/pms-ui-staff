@@ -6,8 +6,8 @@ angular.module('enterPress', []).directive('enterPress', function($timeout, $par
                 if(event.which === 13) {
                     event.preventDefault();
                     
-                    setTimeout(function(){
-                        scope.$apply(function (){
+                    setTimeout(function() {
+                        scope.$apply(function () {
                             scope.$eval(attrs.enterPress);
                         });
                         //blur focus another object to drop keypad in touch devices 

@@ -1,8 +1,8 @@
-sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootScope','$filter','RVEndOfDayModalSrv','$state','$timeout', function($scope,ngDialog,$rootScope,$filter,RVEndOfDayModalSrv, $state, $timeout){
+sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootScope','$filter','RVEndOfDayModalSrv','$state','$timeout', function($scope,ngDialog,$rootScope,$filter,RVEndOfDayModalSrv, $state, $timeout) {
 
     BaseCtrl.call(this, $scope);
     var calenderMaxDate;
-    var init =function(){
+    var init =function() {
         setTitle();
         $scope.eodLogDetails = {};
         $scope.checkEodStatus = false;
@@ -21,7 +21,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
     /*
     * Function to get day, month and Year from Date(Date format is kept yyyy/mm/dd);
     */
-    var setDisplayDateValues = function(){        
+    var setDisplayDateValues = function() {        
         var values = $scope.selectedDate.split("-");
         $scope.year = values[0];
         $scope.month = getMonthName(parseInt(values[1]-1));
@@ -31,7 +31,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
     /*
     * Setting nextBussiness Date
     */
-    var setDefaultNextBussinessDate = function(){
+    var setDefaultNextBussinessDate = function() {
         $scope.nextBusinessDate = tzIndependentDate($rootScope.businessDate);
         $scope.nextBusinessDate.setDate($scope.nextBusinessDate.getDate()+1);
         $scope.nextBusinessDate = $filter('date')($scope.nextBusinessDate, "yyyy-MM-dd");
@@ -39,14 +39,14 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
     /*
     * Function to restart a failed process.
     */
-    $scope.restartFailedProcess = function(process){
+    $scope.restartFailedProcess = function(process) {
         var data = {           
             id : process.id
         };
-        var restartProcessSuccess = function(){
+        var restartProcessSuccess = function() {
             fetchEodLogOfSelectedDate();
         };
-        var restartProcessFail = function(data){
+        var restartProcessFail = function(data) {
             $rootScope.$broadcast('hideLoader');
         };
         $scope.invokeApi(RVEndOfDayModalSrv.restartFailedProcess,data,restartProcessSuccess,restartProcessFail);
@@ -54,7 +54,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
     /*
     * Set Selected date as previous date of Bussines date.
     */
-    var setDefaultSelectedDate = function(){       
+    var setDefaultSelectedDate = function() {       
         var previousDate = tzIndependentDate($rootScope.businessDate);
         previousDate.setDate(previousDate.getDate() - 1)              
         $scope.selectedDate = $filter('date')(previousDate, "dd-MM-yyyy").split("-").reverse().join("-");        
@@ -62,7 +62,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
     /*
     * Setting Date options
     */
-    var setUpDateData = function(){
+    var setUpDateData = function() {
         $scope.date =  $scope.selectedDate;
         $scope.dateOptions = {
             changeYear: true,
@@ -73,7 +73,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
             onSelect: function(date, inst) {
                 $scope.selectedDate = date;
                 setDisplayDateValues();            
-                if($scope.selectedDate !==$scope.businessDate){
+                if($scope.selectedDate !==$scope.businessDate) {
                    fetchEodLogOfSelectedDate(); 
                 };                
                 ngDialog.close();
@@ -85,16 +85,16 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
         $scope.refreshScroller('eod_scroll');
     };   
 
-    $scope.showError = function(index){
+    $scope.showError = function(index) {
         $scope.eodLogDetails[index].isOpened = !$scope.eodLogDetails[index].isOpened;
         refreshScroller();
     };
 
-    var fetchEodLogOfSelectedDate = function(){
+    var fetchEodLogOfSelectedDate = function() {
         var data = {
             date: $scope.selectedDate
         };
-        var fetchEodLogSuccess = function(data){            
+        var fetchEodLogSuccess = function(data) {            
             $scope.eodLogDetails = data.eod_processes;
             $scope.nextEodRunTime = data.eod_process_time;
             $scope.lastEodRunInHours = data.last_eod_run_in_hours;
@@ -104,22 +104,22 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
                 refreshScroller();           
             },1000);
             //Eod status update handles here
-            if(!$rootScope.isEodRunning&&$scope.checkEodStatus){
+            if(!$rootScope.isEodRunning&&$scope.checkEodStatus) {
                 $state.go('rover.dashboard.manager');
             } 
         };
-        var fetchEodLogFailure = function(){
+        var fetchEodLogFailure = function() {
             $rootScope.$broadcast('hideLoader');
         };
         $scope.invokeApi(RVEndOfDayModalSrv.fetchLog,data,fetchEodLogSuccess,fetchEodLogFailure);
     };
-    $scope.isLastEodRunWithin18Hr = function(){
+    $scope.isLastEodRunWithin18Hr = function() {
         return ($scope.lastEodRunInMinutes == null)?false:true;
     };
     /*
     * Show date picker
     */
-    $scope.clickedDate = function(){
+    $scope.clickedDate = function() {
         setUpDateData();
         ngDialog.open({
             template: '/assets/partials/endOfDay/rvEodDatepicker.html',
@@ -130,53 +130,53 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
     /*
     * returning class name for Button.
     */
-    $scope.getClassForEODButton = function(){        
-        if(!$scope.isLastEodRunWithin18Hr()){
+    $scope.getClassForEODButton = function() {        
+        if(!$scope.isLastEodRunWithin18Hr()) {
             return "green";
         };
-        if($scope.isLastEodRunWithin18Hr()&&$scope.hasPermissionToRunEOD()){
+        if($scope.isLastEodRunWithin18Hr()&&$scope.hasPermissionToRunEOD()) {
             return "orange";
         }else{
             return "grey";
         }        
     };
     
-    $scope.disableEODButton = function(){
-        if($scope.isLastEodRunWithin18Hr()){
+    $scope.disableEODButton = function() {
+        if($scope.isLastEodRunWithin18Hr()) {
             return !($scope.hasPermissionToRunEOD());
         }else{
             return false;
         }        
     };
     
-    $scope.updateStatus = function(){
+    $scope.updateStatus = function() {
         //we are fetching eod login, flag to handle update status
         $scope.checkEodStatus = true;
         fetchEodLogOfSelectedDate();
     };
 
-    $scope.setSelectedDateToBussinessDate = function(){
+    $scope.setSelectedDateToBussinessDate = function() {
         $scope.selectedDate = $scope.businessDate;        
         setDisplayDateValues();
     };
 
-    $scope.showSetToTodayButton = function(){
+    $scope.showSetToTodayButton = function() {
         return (!$rootScope.hotelDetails.is_auto_change_bussiness_date||$scope.isSameSelectedAndBussiness())?true:false;
     };
-    $scope.isSameSelectedAndBussiness = function(){
+    $scope.isSameSelectedAndBussiness = function() {
         return ($scope.selectedDate === $scope.businessDate)?true:false;
     };
     /*
     * returning class name depends on status.
     */
-    $scope.getClass = function(processLog){
-        if(processLog.status =="SUCCESS"){
+    $scope.getClass = function(processLog) {
+        if(processLog.status =="SUCCESS") {
             return "has-success";
-        }else if(processLog.status =='NOT_ACTIVE'){
+        }else if(processLog.status =='NOT_ACTIVE') {
             return "pending";
-        }else if(processLog.status =='PENDING'){
+        }else if(processLog.status =='PENDING') {
             return "";
-        }else if(processLog.status =="FAILED" && processLog.isOpened){
+        }else if(processLog.status =="FAILED" && processLog.isOpened) {
             return " error has-arrow toggle active";
         }else{
             return " error has-arrow toggle ";

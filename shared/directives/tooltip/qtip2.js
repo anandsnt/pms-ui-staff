@@ -27,7 +27,7 @@ angular.module('qtip2', [])
                 url: api.elements.target.attr('url') // Use href attribute as URL
               })
                 .then(function(resultSet) {
-                  scope.isActiveDateRange = function(beginDateTime, endDateTime){
+                  scope.isActiveDateRange = function(beginDateTime, endDateTime) {
                     var hotelBusinessDateTime = new tzIndependentDate($rootScope.businessDate).getTime();
                     return (beginDateTime <= hotelBusinessDateTime && hotelBusinessDateTime <= endDateTime);
                   };

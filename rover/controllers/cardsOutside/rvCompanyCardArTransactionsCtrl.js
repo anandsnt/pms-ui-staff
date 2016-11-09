@@ -6,14 +6,14 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		$scope.errorMessage = '';
 		$scope.setScroller('ar-transaction-list');
 
-		var init = function(){
+		var init = function() {
 			$scope.arTransactionDetails = {};
 			$scope.arTransactionDetails.ar_transactions = [];
 			$scope.paymentModalOpened = false;
 			fetchData();
 		};
 
-		var refreshArTabScroller = function(){
+		var refreshArTabScroller = function() {
 			$timeout(function() {
 				$scope.refreshScroller('ar-transaction-list');
 			}, 100);
@@ -50,13 +50,13 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			'ar_transactions':[]
 		};
 
-		if(typeof $stateParams.type !== 'undefined'){
+		if(typeof $stateParams.type !== 'undefined') {
 			$scope.filterData.viewFromOutside = true;
 			$scope.filterData.id = ($stateParams.id === 'add')? '': $stateParams.id;
 		}
 
 		// Get parameters for fetch data
-		var getParamsToSend = function(){
+		var getParamsToSend = function() {
 			var paramsToSend = {
 				"id": $scope.filterData.id,
 				"paid" : $scope.filterData.isShowPaid,
@@ -71,7 +71,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			//If it is a numeric query with less than 3 digits, then lets assume it is room serach.
 			if($rootScope.isSingleDigitSearch &&
 				!isNaN($scope.filterData.textInQueryBox) &&
-				$scope.filterData.textInQueryBox.length < 3){
+				$scope.filterData.textInQueryBox.length < 3) {
 
 				paramsToSend.room_search = true;
 			}
@@ -87,7 +87,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	    };
 
 		// To fetch data for ar transactions
-		var fetchData = function(clearErrorMsg){
+		var fetchData = function(clearErrorMsg) {
 			$scope.arDetailsFetched = false;
 			var arAccountsFetchSuccess = function(data) {
 				$scope.arDetailsFetched = true;
@@ -111,24 +111,24 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			    refreshArTabScroller();
 
 				// Compute the start, end and total count parameters
-				if($scope.nextAction){
+				if($scope.nextAction) {
 					$scope.filterData.start = $scope.filterData.start + $scope.filterData.perPage ;
 				}
-				if($scope.prevAction){
+				if($scope.prevAction) {
 					$scope.filterData.start = $scope.filterData.start - $scope.filterData.perPage ;
 
 				}
 				$scope.filterData.end = $scope.filterData.start + $scope.arTransactionDetails.ar_transactions.length - 1;
 			};
 
-			var failure = function(errorMessage){
+			var failure = function(errorMessage) {
 			    $scope.$emit('hideLoader');
 			    $scope.errorMessage = errorMessage;
 			};
 
 			var params = getParamsToSend();
 
-			if(typeof params.id !== 'undefined' && params.id !== ''){
+			if(typeof params.id !== 'undefined' && params.id !== '') {
 				$scope.invokeApi(RVCompanyCardSrv.fetchArAccountsList, params, arAccountsFetchSuccess, failure);
 			}
 		};
@@ -141,13 +141,13 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 
 		// To click filter button
-		$scope.clickedFilter = function(){
+		$scope.clickedFilter = function() {
 			$scope.filterData.filterActive = !$scope.filterData.filterActive;
 			$scope.$emit('ARTransactionSearchFilter', $scope.filterData.filterActive);
 		};
 
 		// To handle show filter changes
-		$scope.chagedShowFilter = function(){
+		$scope.chagedShowFilter = function() {
 			if($scope.filterData.showFilterFlag === 'ALL') {
 				$scope.filterData.isShowPaid = '';
 			}
@@ -165,10 +165,10 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		};
 
 		/* Handling different date picker clicks */
-		$scope.clickedFromDate = function(){
+		$scope.clickedFromDate = function() {
 			$scope.popupCalendar('FROM');
 		};
-		$scope.clickedToDate = function(){
+		$scope.clickedToDate = function() {
 			$scope.popupCalendar('TO');
 		};
 		// Show calendar popup.
@@ -183,13 +183,13 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	    };
 
 	    // To handle from date change
-	    $scope.$on('fromDateChanged',function(){
+	    $scope.$on('fromDateChanged',function() {
 	    	initPaginationParams();
 	        fetchData();
 	    });
 
 		// To handle to date change
-	    $scope.$on('toDateChanged',function(){
+	    $scope.$on('toDateChanged',function() {
 	    	initPaginationParams();
 	        fetchData();
 	    });
@@ -218,15 +218,15 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		* The single digit search is done only for numeric characters.
 		* CICO-10323
 		*/
-		function isCharacterWithSingleDigit(searchTerm){
-			if($rootScope.isSingleDigitSearch){
+		function isCharacterWithSingleDigit(searchTerm) {
+			if($rootScope.isSingleDigitSearch) {
 				return isNaN(searchTerm);
 			} else {
 				return true;
 			}
 		};
 
-		var initPaginationParams = function(){
+		var initPaginationParams = function() {
 			$scope.filterData.pageNo = 1;
 			$scope.filterData.start = 1;
 			$scope.filterData.end = $scope.filterData.start + $scope.arTransactionDetails.ar_transactions.length - 1;
@@ -234,51 +234,51 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			$scope.prevAction = false;
 		};
 
-		$scope.loadNextSet = function(){
+		$scope.loadNextSet = function() {
 			$scope.filterData.pageNo++;
 			$scope.nextAction = true;
 			$scope.prevAction = false;
 			fetchData();
 		};
 
-		$scope.loadPrevSet = function(){
+		$scope.loadPrevSet = function() {
 			$scope.filterData.pageNo--;
 			$scope.nextAction = false;
 			$scope.prevAction = true;
 			fetchData();
 		};
 
-		$scope.clearSearchField = function(){
+		$scope.clearSearchField = function() {
 			$scope.filterData.textInQueryBox = '';
 			initPaginationParams();
 			fetchData();
 		};
 
-		$scope.clearToDateField = function(){
+		$scope.clearToDateField = function() {
 			$scope.filterData.toDate = '';
 			initPaginationParams();
 			fetchData();
 		};
-		$scope.clearFromDateField = function(){
+		$scope.clearFromDateField = function() {
 			$scope.filterData.fromDate = '';
 			initPaginationParams();
 			fetchData();
 		};
-		$scope.isNextButtonDisabled = function(){
+		$scope.isNextButtonDisabled = function() {
 			var isDisabled = false;
 
 			if(typeof $scope.arTransactionDetails === "undefined") {
 				return true;
 			}
-			if($scope.filterData.end >= $scope.arTransactionDetails.total_count){
+			if($scope.filterData.end >= $scope.arTransactionDetails.total_count) {
 				isDisabled = true;
 			}
 			return isDisabled;
 		};
 
-		$scope.isPrevButtonDisabled = function(){
+		$scope.isPrevButtonDisabled = function() {
 			var isDisabled = false;
-			if($scope.filterData.pageNo === 1){
+			if($scope.filterData.pageNo === 1) {
 				isDisabled = true;
 			}
 			return isDisabled;
@@ -288,7 +288,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		/*
 		 * Function to handle paid/open toggle button click.
 		 */
-		$scope.toggleTransaction = function(index){
+		$scope.toggleTransaction = function(index) {
 	    	$scope.arTransactionDetails.ar_transactions[index].paid = !$scope.arTransactionDetails.ar_transactions[index].paid;
 
 	    	var transactionSuccess = function(data) {
@@ -303,17 +303,17 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	            $scope.arTransactionDetails.available_credit = credits;
 	            $scope.arTransactionDetails.open_guest_bills = data.open_guest_bills;
 
-	            if($scope.filterData.showFilterFlag === 'OPEN' && $scope.arTransactionDetails.ar_transactions[index].paid){
+	            if($scope.filterData.showFilterFlag === 'OPEN' && $scope.arTransactionDetails.ar_transactions[index].paid) {
 	            	$scope.arTransactionDetails.total_count--;
 	            }
-	            if($scope.filterData.showFilterFlag === 'OPEN' && !$scope.arTransactionDetails.ar_transactions[index].paid){
+	            if($scope.filterData.showFilterFlag === 'OPEN' && !$scope.arTransactionDetails.ar_transactions[index].paid) {
 	            	$scope.arTransactionDetails.total_count++;
 	            }
 
 	            setSummaryValues(data);
 	        };
 
-	        var failure = function(errorMessage){
+	        var failure = function(errorMessage) {
 	            $scope.$emit('hideLoader');
 	            $scope.errorMessage = errorMessage;
 	            $scope.arTransactionDetails.ar_transactions[index].paid = !$scope.arTransactionDetails.ar_transactions[index].paid;
@@ -324,7 +324,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	            'transaction_id': $scope.arTransactionDetails.ar_transactions[index].transaction_id
 	        };
 
-	        if($scope.arTransactionDetails.ar_transactions[index].paid){
+	        if($scope.arTransactionDetails.ar_transactions[index].paid) {
 	        	// To pay API call
 	        	$scope.invokeApi(RVCompanyCardSrv.payForReservation, params, transactionSuccess ,failure);
 	    	}
@@ -339,7 +339,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		 */
 		$scope.goToReservationDetails = function(index) {
 
-			if($scope.filterData.viewFromOutside){
+			if($scope.filterData.viewFromOutside) {
 				$vault.set('cardId', $stateParams.id);
 				$vault.set('type', $stateParams.type);
 				$vault.set('query', $stateParams.query);
@@ -367,12 +367,12 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		};
 
 		// clicked pay all button
-	    $scope.clickedPayAll = function(){
+	    $scope.clickedPayAll = function() {
 
 	        var payAllSuccess = function(data) {
 	            $scope.$emit('hideLoader');
 
-	            if(data.errors.length > 0){
+	            if(data.errors.length > 0) {
 	                $scope.errorMessage = [data.errors[0]];
 	            }
 	            else{
@@ -382,7 +382,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	            fetchData(clearErrorMsg);
 	        };
 
-	        var failure = function(errorMessage){
+	        var failure = function(errorMessage) {
 	            $scope.$emit('hideLoader');
 	            $scope.errorMessage = errorMessage;
 	        };
@@ -394,7 +394,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	    };
 
 	    // Show add credits amount popup
-		$scope.addCreditAmount = function(){
+		$scope.addCreditAmount = function() {
 			ngDialog.open({
 	      		template:'/assets/partials/companyCard/rvArTransactionsAddCredits.html',
 		        controller: 'RVArTransactionsAddCreditsController',
@@ -403,7 +403,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	      	});
 		};
 
-		$scope.payAmount = function(){
+		$scope.payAmount = function() {
 			$scope.passData = getPassData();
 			ngDialog.open({
 	      		template:'/assets/partials/companyCard/rvArTransactionsPayCredits.html',
@@ -414,8 +414,8 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	      	$scope.paymentModalOpened = true;
 		};
 
-		$scope.getTimeConverted = function(time){
-			if(time === null || time === undefined){
+		$scope.getTimeConverted = function(time) {
+			if(time === null || time === undefined) {
 				return "";
 			}
 			var timeDict = tConvert(time);
@@ -425,7 +425,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	    init();
 
 	    // To print the current screen details.
-	    $scope.clickedPrintButton = function(){
+	    $scope.clickedPrintButton = function() {
 
 			// CICO-11667 to enable landscpe printing on transactions page.
 			// Sorry , we have to access the DOM , so using jQuery..
@@ -522,9 +522,9 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		 *	CICO-27364 : To Handle invoice button click.
 		 *	show popup with PRINT, EMAIL options.
 		 */
-		$scope.clickedArStatementButton = function(){
+		$scope.clickedArStatementButton = function() {
 
-			var dataFetchSuccess = function(data){
+			var dataFetchSuccess = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.filterData.statementEmailAddress = data.data.to_address;
 
@@ -535,7 +535,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			        scope: $scope
 		      	});
 			},
-	      	dataFailureCallback = function(errorData){
+	      	dataFailureCallback = function(errorData) {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorData;
 			};
@@ -555,7 +555,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 		// print AR Statement
 		var printArStatement = function(params) {
-			var printDataFetchSuccess = function(successData){
+			var printDataFetchSuccess = function(successData) {
 				$scope.$emit('hideLoader');
 				$scope.printData = successData;
 				$scope.errorMessage = "";
@@ -598,7 +598,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			    }, 1000);
 			};
 
-			var printDataFailureCallback = function(errorData){
+			var printDataFailureCallback = function(errorData) {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorData;
 			};
@@ -606,7 +606,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		};
 
 		// Handle AR Statement-PRINT button click
-		$scope.clickedPrintArStatementButton = function(){
+		$scope.clickedPrintArStatementButton = function() {
 			var params = getParamsToSend();
 			printArStatement( params );
 		};
@@ -619,19 +619,19 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	    	});
 	    };
 		// Handle AR Statement-EMAIL button click
-		$scope.clickedEmailArStatementButton = function(){
+		$scope.clickedEmailArStatementButton = function() {
 			var params = getParamsToSend();
 			params.to_address = $scope.filterData.statementEmailAddress;
 			$scope.closeDialog();
 
-			var emailSuccess = function(successData){
+			var emailSuccess = function(successData) {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = "";
 				$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
 				$scope.status = "success";
 				$scope.showEmailSentStatusPopup();
 			},
-			emailFailureCallback = function(errorData){
+			emailFailureCallback = function(errorData) {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorData;
 				$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
@@ -649,26 +649,26 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		// CICO-28089 - Handle click on each transaction.
 		// will expand with detailed view.
 		// Fetching data for detailed view here..
-		$scope.clickedOnTransaction = function( index, event ){
+		$scope.clickedOnTransaction = function( index, event ) {
 			
 			var element = event.target;
 
-			if(element.className ==='switch-button' || element.className ==='switch-button on' || element.parentNode.className ==='switch-button' || element.parentNode.className ==='switch-button on'){
+			if(element.className ==='switch-button' || element.className ==='switch-button on' || element.parentNode.className ==='switch-button' || element.parentNode.className ==='switch-button on') {
 				$scope.toggleTransaction(index);
 			}
 			else{
 				var transaction = $scope.arTransactionDetails.ar_transactions[index];
 				transaction.details = [];
 
-				if(!transaction.active){
-					var transactionFetchSuccess = function(data){
+				if(!transaction.active) {
+					var transactionFetchSuccess = function(data) {
 						$scope.$emit('hideLoader');
 						$scope.errorMessage = '';
 						transaction.active = ! transaction.active;
 						transaction.details = data.transactions;
 						refreshArTabScroller();
 					},
-					transactionFetchFailure = function(errorMessage){
+					transactionFetchFailure = function(errorMessage) {
 						$scope.$emit('hideLoader');
 						$scope.errorMessage = errorMessage;
 					};

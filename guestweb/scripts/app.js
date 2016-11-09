@@ -129,9 +129,9 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		//Footer Settings
 		$rootScope.footerSettings = reservationAndhotelData.zest_web_footer_settings;
 
-		if(!!$rootScope.footerSettings.display_footer){
+		if(!!$rootScope.footerSettings.display_footer) {
 			//active footer count
-			var footerCount = _.filter($rootScope.footerSettings.footers, function(footer){ return footer.is_active;}).length;
+			var footerCount = _.filter($rootScope.footerSettings.footers, function(footer) { return footer.is_active;}).length;
 			//set zestweb footer color based on admin settings
 			applyFooterStyle($rootScope.footerSettings.footer_color);//utils function
 			// based upon number of footer items, set a class for styling
@@ -173,7 +173,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 
 
 		if(reservationAndhotelData.is_sent_to_que === 'true' 
-		           && !!reservationAndhotelData.zest_web_use_new_sent_to_que_action){
+		           && !!reservationAndhotelData.zest_web_use_new_sent_to_que_action) {
 			//even though this is sent to que, the  flag name in 
 			//next screens are isAutoCheckinOn. So setting that as true
 			$rootScope.isAutoCheckinOn = true;

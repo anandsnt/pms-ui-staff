@@ -21,7 +21,7 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 			goTop && $scope.getScroller('LOG_TAB_SCROLL').scrollTo(0, 0);
 		}
 
-		$scope.init = function(){
+		$scope.init = function() {
 			$scope.roomDetails = $scope.$parent.roomDetails;
 			$scope.$emit('hideLoader');
 			$scope.roomLogData = roomDetailsLogData.results;
@@ -35,7 +35,7 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 			});
 			//Paginaton
 	        $scope.totalResults = roomDetailsLogData.total_count;
-	        if($scope.roomLogData.total_count===0){
+	        if($scope.roomLogData.total_count===0) {
               $scope.start = 0;
               $scope.end =0;
 	        }else{
@@ -45,7 +45,7 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 	        refreshScroll(false);
 		};
 
-		$scope.updateLog = function(){
+		$scope.updateLog = function() {
 	        var callback = function(data) {
 
 	                $scope.roomLogData = data.results;
@@ -84,7 +84,7 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 	        $scope.invokeApi(RVHkRoomDetailsSrv.getRoomLog, params, callback);
 	    };
 
-	    $scope.getRoomStatusClass = function(roomStatus){
+	    $scope.getRoomStatusClass = function(roomStatus) {
 	    	return roomStatus.toLowerCase()
 	    };
 
@@ -92,7 +92,7 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 	    * Pagination
 	    */
 	    $scope.initPaginationParams = function() {
-	        if($scope.roomLogData.total_count===0){
+	        if($scope.roomLogData.total_count===0) {
 	             $scope.start = 0;
 	             $scope.end =0;
 	        }else{

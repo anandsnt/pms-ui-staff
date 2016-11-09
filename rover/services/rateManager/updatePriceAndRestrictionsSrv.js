@@ -1,9 +1,9 @@
-angular.module('sntRover').service('UpdatePriceAndRestrictionsSrv',['$q', 'BaseWebSrvV2', function( $q, BaseWebSrvV2){
+angular.module('sntRover').service('UpdatePriceAndRestrictionsSrv',['$q', 'BaseWebSrvV2', function( $q, BaseWebSrvV2) {
 
 
 
 
-	this.savePriceAndRestrictions = function(data){
+	this.savePriceAndRestrictions = function(data) {
             var deferred = $q.defer();
             var url = "/api/daily_rates";
 

@@ -154,7 +154,7 @@ sntRover.factory('RVReportParserFac', [
 
             var getRemarksAry = function(remark) {
                 var ary = remark.split('<br />');
-                return _.reject(ary, function(i){ return i === '' || i === ' ' });
+                return _.reject(ary, function(i) { return i === '' || i === ' ' });
             };
 
             var processAry = function(source, type) {
@@ -328,30 +328,30 @@ sntRover.factory('RVReportParserFac', [
             /* forming the left side */
             //market
             parsedDataListing.push (initPrdDemoGrphcsRow(true, 'Market', 'market_totals'));
-            markets.map(function(value){
+            markets.map(function(value) {
                 parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'markets'));
             });
 
             //sources
             parsedDataListing.push (initPrdDemoGrphcsRow(true, 'Source', 'source_totals'));
-            sources.map(function(value){
+            sources.map(function(value) {
                 parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'sources'));   
             });
 
             //origins
             parsedDataListing.push (initPrdDemoGrphcsRow(true, 'Origin', 'origin_totals'));
-            origins.map(function(value){
+            origins.map(function(value) {
                 parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'origins'));  
             });
 
             //segments
             parsedDataListing.push (initPrdDemoGrphcsRow(true, 'Segment', 'segment_totals'));
-            segments.map(function(value){
+            segments.map(function(value) {
                 parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'segments'));  
             });
 
-            _.each(parsedDataListing, function(rowData){
-                _.each(apiResponse, function(dateData){
+            _.each(parsedDataListing, function(rowData) {
+                _.each(apiResponse, function(dateData) {
                     e = dateData[rowData['key-in-api']];
                     if (e instanceof Array) {
                         //as per db model, a demogrphics' name is a unique for hotel

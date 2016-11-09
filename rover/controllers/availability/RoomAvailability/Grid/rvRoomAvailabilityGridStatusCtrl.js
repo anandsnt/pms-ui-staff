@@ -2,11 +2,11 @@ angular.module('sntRover').controller('rvRoomAvailabilityGridStatusController', 
 	'$scope',
 	'rvAvailabilitySrv',
 	'$rootScope',
-	function($scope, rvAvailabilitySrv, $rootScope){
+	function($scope, rvAvailabilitySrv, $rootScope) {
 
 		BaseCtrl.call(this, $scope);
 
-		var init = function(){
+		var init = function() {
 			$scope.hideMeBeforeFetching = false;
 			initToggleStatus();
 			$scope.data = rvAvailabilitySrv.getGridData();
@@ -16,7 +16,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGridStatusController', 
   			$scope.setScroller ('room_availability_scroller', scrollerOptions);
 
   			//if already fetched we will show without calling the API
-			if(!isEmptyObject($scope.data)){
+			if(!isEmptyObject($scope.data)) {
 				$scope.refreshScroller('room_availability_scroller');
 				$scope.hideMeBeforeFetching = true;
 				$scope.$emit("hideLoader");
@@ -25,7 +25,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGridStatusController', 
 		/*
 		* Function to set all toggle to close
 		*/
-		var initToggleStatus = function(){			
+		var initToggleStatus = function() {			
 			$scope.toggleStatusOf = {};
 			$scope.toggleStatusOf['availableRooms'] = false;
 			$scope.toggleStatusOf['roomsSold'] = false;
@@ -58,14 +58,14 @@ angular.module('sntRover').controller('rvRoomAvailabilityGridStatusController', 
 			}
 		};
 
-        $scope.toggleAvailableRooms = function(){
+        $scope.toggleAvailableRooms = function() {
             // This detailed view needs ONLY additionalData.roomTypeWiseDetails
             if(!$scope.toggleStatusOf['availableRooms'] &&
                 (!$scope.data.additionalData || !$scope.data.additionalData.roomTypeWiseDetails)) {
                 // get Room Type wise details
                 $scope.callAPI(rvAvailabilitySrv.getRoomsAvailability, {
                     params: $scope.getDateParams(),
-                    successCallBack: function(){
+                    successCallBack: function() {
                         handleDataChange();
                         $scope.toggleStatusOf['availableRooms'] = true;
                     }
@@ -76,16 +76,16 @@ angular.module('sntRover').controller('rvRoomAvailabilityGridStatusController', 
             }
         };
 
-        $scope.toggleSoldRooms = function(){
+        $scope.toggleSoldRooms = function() {
             // This detailed view needs additionalData.adultsChildrenCounts AND additionalData.roomTypeWiseDetails
             if(!$scope.toggleStatusOf['roomsSold'] &&
                 (!$scope.data.additionalData ||
                 !$scope.data.additionalData.adultsChildrenCounts ||
-                !$scope.data.additionalData.roomTypeWiseDetails)){
+                !$scope.data.additionalData.roomTypeWiseDetails)) {
                 //get adultsChildrenCounts
                 $scope.callAPI(rvAvailabilitySrv.getOccupancyCount, {
                     params: $scope.getDateParams(),
-                    successCallBack: function(){
+                    successCallBack: function() {
                         handleDataChange();
                         $scope.toggleStatusOf['roomsSold'] = true;
                     }
@@ -96,28 +96,28 @@ angular.module('sntRover').controller('rvRoomAvailabilityGridStatusController', 
             }
         };
 
-        $scope.toggleRoomInventory = function(){
+        $scope.toggleRoomInventory = function() {
             //This detailed view will have data from the initial API call
             $scope.toggleStatusOf['roomInventory'] = !$scope.toggleStatusOf['roomInventory'];
             $scope.refreshScroller('room_availability_scroller');
         }
         //--------------------------------------------------------------------------------------------------------------
 
-        $scope.$on('$includeContentLoaded', function(event){
+        $scope.$on('$includeContentLoaded', function(event) {
 			$scope.$emit("hideLoader");
 			$scope.refreshScroller('room_availability_scroller');
 		});
 		/*
 		*  Checks whether additional data available or not
 		*/
-		var isFullDataAvaillable = function(){
+		var isFullDataAvaillable = function() {
 			return $scope.data.hasOwnProperty('additionalData');
 		};
 
 
-        var handleDataChange = function(){
+        var handleDataChange = function() {
             $scope.data = rvAvailabilitySrv.getGridData();
-            if(!isFullDataAvaillable()){
+            if(!isFullDataAvaillable()) {
                 initToggleStatus();
             }
             $scope.refreshScroller('room_availability_scroller');
@@ -156,7 +156,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGridStatusController', 
 		* param - Holdstatus id
 		* return Hold status name
 		*/
-		$scope.getGroupAllotmentName = function(source, id){
+		$scope.getGroupAllotmentName = function(source, id) {
 			var found = _.findWhere(source.holdStatus, {id: id});
 			return found && found.name;
 		};

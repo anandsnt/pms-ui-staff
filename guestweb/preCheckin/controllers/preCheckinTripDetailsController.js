@@ -3,9 +3,9 @@
 	var preCheckinTripDetailsController = function($scope, preCheckinSrv,$rootScope) {
 
 
-	var extractArrivalTime = function(){
+	var extractArrivalTime = function() {
 		$rootScope.stayDetails = {};
-		if($scope.tripDetails.arrival_time){
+		if($scope.tripDetails.arrival_time) {
 			$rootScope.stayDetails.hour =  $scope.tripDetails.arrival_time.substring(0,2);
 			$rootScope.stayDetails.minute =  $scope.tripDetails.arrival_time.substring(3,5);
 			$rootScope.stayDetails.primeTime = $scope.tripDetails.arrival_time.substring(6,9);
@@ -22,7 +22,7 @@
 			$scope.isLoading = false;
 			$scope.tripDetails = response;
 			extractArrivalTime();
-		},function(){
+		},function() {
 			$scope.netWorkError = true;
 			$scope.isLoading = false;
 	});

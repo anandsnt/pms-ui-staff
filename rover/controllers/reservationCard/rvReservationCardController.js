@@ -119,13 +119,13 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 
 			//prevTimeLineEmpty - flag indicates if the "FROM timeline" was empty
 			//Bug fix CICO-10184
-			if(count > 0 && !$scope.prevTimeLineEmpty){
+			if(count > 0 && !$scope.prevTimeLineEmpty) {
 				$scope.reservationDisplayStatus = true;
 			} else {
 				$scope.reservationDisplayStatus = false;
 			}
 
-			if (count>0){
+			if (count>0) {
 				$scope.prevTimeLineEmpty = false;
 				$scope.currentReservationId = $scope.reservationList[0].confirmation_num;
 				$scope.getReservationDetails($scope.reservationList[0].confirmation_num, $scope.reservationList[0].id);
@@ -139,7 +139,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 			$scope.$broadcast('RESERVATIONLISTUPDATED');
 
 		};
-		$scope.$on("REFRESH_LIST_SCROLL", function(){
+		$scope.$on("REFRESH_LIST_SCROLL", function() {
 			$scope.$broadcast("RESERVATIONLISTUPDATED");
 		});
 		/*
@@ -178,7 +178,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 				$scope.$emit('SHOWGUESTLIKES');
 			};
 
-			if($stateParams.isrefresh === "true"){
+			if($stateParams.isrefresh === "true") {
 				$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, userId, paymentSuccess, '', 'NONE');
 			}
 

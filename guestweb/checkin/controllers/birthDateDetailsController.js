@@ -8,23 +8,23 @@
 
 	$scope.pageValid = false;
 
-	if($rootScope.isCheckedin){
+	if($rootScope.isCheckedin) {
 	 	$state.go('checkinSuccess');
 	 }
-	 else if($rootScope.isCheckedout ){
+	 else if($rootScope.isCheckedout ) {
 	 	$state.go('checkOutStatus');
 	 }
 	 else{
 		$scope.pageValid = true;
 	}		
 
-	if($scope.pageValid){
+	if($scope.pageValid) {
 		
 		$scope.years     	= [];
 		$scope.months   	= [];
 		$scope.days      	= [];
 		
-		for(year=new Date().getFullYear();year>=1900;year--){
+		for(year=new Date().getFullYear();year>=1900;year--) {
 			$scope.years.push(year);
 		};
 
@@ -43,7 +43,7 @@
 							{"id":12,"name":"DEC"}
 						];
 			
-		for(day=1;day<=31;day++){
+		for(day=1;day<=31;day++) {
 			$scope.days.push(day);
 		};
 		$scope.guestDetails 	  = {};
@@ -52,15 +52,15 @@
 		$scope.guestDetails.year  =	 "";
 
 	
-		var getDataToSave = function(){
+		var getDataToSave = function() {
 			var data 				= {};
 			var unwanted_keys 		= ["month","year","day"];
 			var newObject 			= JSON.parse(JSON.stringify($scope.guestDetails));
-            for(var i=0; i < unwanted_keys.length; i++){
+            for(var i=0; i < unwanted_keys.length; i++) {
                 delete newObject[unwanted_keys[i]];
             };
             data 					= newObject;
-            if($scope.guestDetails.month && $scope.guestDetails.day && $scope.guestDetails.year){
+            if($scope.guestDetails.month && $scope.guestDetails.day && $scope.guestDetails.year) {
             	data.birthday = $scope.guestDetails.month+"-"+$scope.guestDetails.day+"-"+$scope.guestDetails.year;
             }
             else{
@@ -77,17 +77,17 @@
 			controller: ModalInstanceCtrl
 		};
 
-		var goToNextStep = function(){
-			if($rootScope.guestPromptAddressOn){
+		var goToNextStep = function() {
+			if($rootScope.guestPromptAddressOn) {
 				$state.go('promptGuestDetails');
 			}
-			else if(!$rootScope.guestAddressOn || $rootScope.isGuestAddressVerified){
+			else if(!$rootScope.guestAddressOn || $rootScope.isGuestAddressVerified) {
 				// if room upgrades are available
-				if($rootScope.upgradesAvailable){
+				if($rootScope.upgradesAvailable) {
 					$state.go('checkinUpgrade');
 				}
 				else{
-					  if($rootScope.isAutoCheckinOn){
+					  if($rootScope.isAutoCheckinOn) {
 					    $state.go('checkinArrival');
 					  }
 					  else{
@@ -101,7 +101,7 @@
 		};
 
 
-		var checkIfDateIsValid = function(){
+		var checkIfDateIsValid = function() {
 			var birthday = $scope.guestDetails.month+"/"+$scope.guestDetails.day+"/"+$scope.guestDetails.year;	
 			var comp = birthday.split('/');
 			var m = parseInt(comp[0], 10);
@@ -118,8 +118,8 @@
 
 
 
-		$scope.yearOrMonthChanged = function(){
-			if(!checkIfDateIsValid()){
+		$scope.yearOrMonthChanged = function() {
+			if(!checkIfDateIsValid()) {
 				$scope.guestDetails.day = "";
 			}else{
 				return;
@@ -139,17 +139,17 @@
 
 		//check if guest is above age set in hotel admin
 		//else redirect to front desk
-		var checkIfGuestIsEligible = function(){
+		var checkIfGuestIsEligible = function() {
 			var birthday = $scope.guestDetails.month+"/"+$scope.guestDetails.day+"/"+$scope.guestDetails.year;	
 			$scope.isLoading 		= false;
-			if(getAge(birthday) >= $rootScope.minimumAge || $rootScope.minimumAge === 0){
+			if(getAge(birthday) >= $rootScope.minimumAge || $rootScope.minimumAge === 0) {
 				$scope.isLoading 		= true;
 				var dataToSave 			= getDataToSave();
 				guestDetailsService.postGuestBirthDate(dataToSave).then(function(response) {
 					$scope.isLoading 	= false;
 					$rootScope.isBirthdayVerified =  true;
 					goToNextStep();
-				},function(){
+				},function() {
 					$rootScope.netWorkError = true;
 					$scope.isLoading = false;
 				});
@@ -160,9 +160,9 @@
 		};
 
 		//post guest details
-		$scope.postGuestDetails = function(){
+		$scope.postGuestDetails = function() {
 
-			if($scope.guestDetails.day  && $scope.guestDetails.month && $scope.guestDetails.year){
+			if($scope.guestDetails.day  && $scope.guestDetails.month && $scope.guestDetails.year) {
 				checkIfGuestIsEligible();
 			}
 			else{
@@ -171,7 +171,7 @@
 		};
 
 		//skip the birthday
-		$scope.skip = function(){
+		$scope.skip = function() {
 			goToNextStep();
 		};
 	}

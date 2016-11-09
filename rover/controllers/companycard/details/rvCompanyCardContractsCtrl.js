@@ -141,7 +141,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			 *Nights pop up should be triggered only after contract details are saved
 			 *and refetched in the case of add mode
 			*/
-			if($scope.contractList.isAddMode){
+			if($scope.contractList.isAddMode) {
 				ngDialog.open({
 							template: '/assets/partials/companyCard/rvContractedNightsPopup.html',
 							controller: 'contractedNightsCtrl',
@@ -347,7 +347,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 
 			};
 
-			var deleteContractFailureCallback = function(errorMessage){
+			var deleteContractFailureCallback = function(errorMessage) {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorMessage;
 			};
@@ -687,17 +687,17 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			}
 		});
 
-		var rateSource = function(request, response){
+		var rateSource = function(request, response) {
 
 			// fetch data from server
             var fetchData = function() {
                 if (request.term !== '' && $scope.autoCompleteState.lastSearchText !== request.term) {
                     $scope.invokeApi(RVCompanyCardSrv.fetchRates, {
                         'query': request.term
-                    }, function(data){
+                    }, function(data) {
                     	$scope.$emit('hideLoader');
                     	var processedResults = [];
-                    	_.each(data.contract_rates,function(result){
+                    	_.each(data.contract_rates,function(result) {
                     		processedResults.push({
                     			label: result.name,
 	                            value: result.name,
@@ -721,8 +721,8 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
             }
 		};
 
-		var onRateSelect = function(event, rate){
-			if(!$scope.contractList.isAddMode){
+		var onRateSelect = function(event, rate) {
+			if(!$scope.contractList.isAddMode) {
 				$scope.contractData.contracted_rate_selected = rate.item.id;
 				$scope.contractData.contractedRate = rate.item.label;
 			}else{

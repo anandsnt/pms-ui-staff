@@ -2,7 +2,7 @@ login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window'
     function($scope, selectPropertySrv, $window, $state, $stateParams) {
         
         BaseCtrl.call(this, $scope);
-        var init = function(){
+        var init = function() {
             $scope.errorMessage = "";
             $scope.propertyResults = [];
             $scope.searchData = "";

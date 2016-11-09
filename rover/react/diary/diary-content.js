@@ -104,7 +104,7 @@ var DiaryContent = React.createClass({
 			currentResizeItemRow: row_data
 		});
 	},
-	componentDidUpdate: function(){
+	componentDidUpdate: function() {
 		this.componentWillMount();
 
 		var props = this.props,
@@ -144,7 +144,7 @@ var DiaryContent = React.createClass({
 
     	$(window).on('resize', _.throttle(function(e) {
     		self._recalculateGridSize();
-    		setTimeout(function(){
+    		setTimeout(function() {
     			self.componentWillMount();
     		}, 1000);
 
@@ -205,7 +205,7 @@ var DiaryContent = React.createClass({
   			this.setState({
   				display: nextProps.display
   			},
-  			function(){
+  			function() {
   				this._recalculateGridSize();
   			});
   		}

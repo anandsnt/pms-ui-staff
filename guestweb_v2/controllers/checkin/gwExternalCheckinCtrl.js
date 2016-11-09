@@ -150,7 +150,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 				failureCallBack: onFailure
 			};
 			if($scope.lastname.length > 0 && 
-			  ($scope.confirmationNumber.length > 0 || (typeof $scope.departureDate !== "undefined" && $scope.departureDate.length >0))){
+			  ($scope.confirmationNumber.length > 0 || (typeof $scope.departureDate !== "undefined" && $scope.departureDate.length >0))) {
 				//if last name and either of confirmation number or departure date is provided
 				$scope.callAPI(GwCheckinSrv.findUser, options);
 			}

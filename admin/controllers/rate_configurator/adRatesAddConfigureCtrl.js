@@ -310,7 +310,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         var setData = {};
         var selectedIndex = -1;
 
-        var callSaveOrUpdateSet = function(){
+        var callSaveOrUpdateSet = function() {
 
             var saveSetSuccessCallback = function(data) {
                 $scope.$emit('hideLoader');
@@ -334,13 +334,13 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             };
         };
 
-        $scope.dontOverwriteRateManger = function(){
+        $scope.dontOverwriteRateManger = function() {
             setData.overwrite_rate_manager = false;
             callSaveOrUpdateSet();
             $scope.closeDialog();
         };
 
-        $scope.overwriteRateManger = function(){
+        $scope.overwriteRateManger = function() {
             setData.overwrite_rate_manager = true;
             callSaveOrUpdateSet();
             $scope.closeDialog();
@@ -355,11 +355,11 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             });
         };
 
-        var checkForRateSetUpdateInRateManager = function(){
+        var checkForRateSetUpdateInRateManager = function() {
 
-            var rateManagerCheckSuccsess = function(data){
+            var rateManagerCheckSuccsess = function(data) {
                 $scope.$emit('hideLoader');
-                if(data.is_custom_rate_present){
+                if(data.is_custom_rate_present) {
                     popupRateManagerActions();
                 }
                 else{
@@ -434,7 +434,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             setData.dateRangeId = dateRangeId;
             selectedIndex = index;
             //Check if values exist in the Rate Manager
-            if(!!setData.id){ //CICO-20263
+            if(!!setData.id) { //CICO-20263
                 checkForRateSetUpdateInRateManager(setData);
             }else{
                 callSaveOrUpdateSet();
@@ -462,7 +462,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
          */
         $scope.deleteSet = function() {
 
-            var deleteSetSuccessCallback = function(){
+            var deleteSetSuccessCallback = function() {
                 $scope.$emit('hideLoader');
                 $scope.data.sets.splice($scope.deleteSetIndex, 1);
                 ngDialog.close();
@@ -595,7 +595,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         });
 
         $scope.checkNightly = function(selectedSet, hour) {
-             if (!selectedSet.dawn.hh || !selectedSet.dusk.hh || (selectedSet.dusk.hh === selectedSet.dawn.hh && selectedSet.dusk.mm === selectedSet.dawn.mm && selectedSet.dawn.am === selectedSet.dusk.am)){
+             if (!selectedSet.dawn.hh || !selectedSet.dusk.hh || (selectedSet.dusk.hh === selectedSet.dawn.hh && selectedSet.dusk.mm === selectedSet.dawn.mm && selectedSet.dawn.am === selectedSet.dusk.am)) {
                 return false;
             } else if (!!selectedSet.dawn.hh && !!selectedSet.dawn.hh && !!selectedSet.dusk.hh && !!selectedSet.dusk.hh) {
 

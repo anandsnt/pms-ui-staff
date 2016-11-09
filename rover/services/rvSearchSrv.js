@@ -1,4 +1,4 @@
-angular.module('sntRover').service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault', function($q, RVBaseWebSrv, rvBaseWebSrvV2, $vault){
+angular.module('sntRover').service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault', function($q, RVBaseWebSrv, rvBaseWebSrvV2, $vault) {
 
 	var self = this;
 	self.searchPerPage = 50;
@@ -6,7 +6,7 @@ angular.module('sntRover').service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWe
 	self.to_date = "";
 	self.from_date = "";
 
-	this.fetch = function(dataToSend, useCache){
+	this.fetch = function(dataToSend, useCache) {
 		var deferred = $q.defer();
 
 
@@ -19,11 +19,11 @@ angular.module('sntRover').service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWe
 			deferred.resolve( self.data );
 		} else {
 			RVBaseWebSrv.getJSON(url, dataToSend).then(function(data) {
-				for(var i = 0; i < data.results.length; i++){
+				for(var i = 0; i < data.results.length; i++) {
 					data.results[i].is_row_visible = true;
 				}
 
-				if(dataToSend.is_queued_rooms_only === true){
+				if(dataToSend.is_queued_rooms_only === true) {
 					self.lastSearchedType = "queued";
 				} else {
 					self.lastSearchedType = "others";
@@ -33,7 +33,7 @@ angular.module('sntRover').service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWe
 				self.searchTypeStatus = dataToSend.status;
 				self.totalSearchResults = data.total_count;
 				deferred.resolve(self.data);
-			},function(data){
+			},function(data) {
 				deferred.reject(data);
 			});
 		}
@@ -101,9 +101,9 @@ angular.module('sntRover').service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWe
 			}
 		};
 	};
-	this.removeResultFromData = function(reservationId){
+	this.removeResultFromData = function(reservationId) {
 
-        if(self.lastSearchedType === "queued"){
+        if(self.lastSearchedType === "queued") {
         	for (var i = 0, j = self.data.length; i < j; i++) {
 
 				if ( self.data[i]['id'] === reservationId ) {
@@ -144,8 +144,8 @@ angular.module('sntRover').service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWe
 
 				//Update the primary image of the guest with the changed avatar
 				if (data['avatar']) {
-					for(var k in self.data[i]['images']){
-						if(self.data[i]['images'][k].is_primary){
+					for(var k in self.data[i]['images']) {
+						if(self.data[i]['images'][k].is_primary) {
 							self.data[i]['images'][k].guest_image = data['avatar'];
 						}
 					}
@@ -154,11 +154,11 @@ angular.module('sntRover').service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWe
 		};
 	};
 
-	this.searchByCC = function(swipeData){
+	this.searchByCC = function(swipeData) {
 		var deferred = $q.defer();
 		var url = '/staff/payments/search_by_cc';
 		RVBaseWebSrv.postJSON(url, swipeData).then(function(data) {
-			for(var i = 0; i < data.length; i++){
+			for(var i = 0; i < data.length; i++) {
 					data[i].is_row_visible = true;
 			}
 			deferred.resolve(data);
@@ -168,9 +168,9 @@ angular.module('sntRover').service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWe
 		});
 		return deferred.promise;
 	};
-	this.fetchReservationsToPostCharge = function(dataToSrv){
+	this.fetchReservationsToPostCharge = function(dataToSrv) {
 		var deferred = $q.defer();
-		if(dataToSrv.refreshApi){
+		if(dataToSrv.refreshApi) {
 			var url = 'api/reservations/search_reservation';
 			rvBaseWebSrvV2.postJSON(url, dataToSrv.postData).then(function(data) {
 				deferred.resolve(data);

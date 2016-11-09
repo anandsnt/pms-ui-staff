@@ -54,7 +54,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		$scope.setScroller('room-status-filter');
 		$scope.setScroller('room-service-status-update');
 		$scope.setScroller('rooms-list-to-forcefully-update');
-		setTimeout(function(){
+		setTimeout(function() {
 			$scope.refreshScroller('room-status-filter');
 			$scope.refreshScroller('rooms-list-to-forcefully-update');
 		}, 1500);
@@ -147,7 +147,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			}
 
 			RVHkRoomStatusSrv.defaultViewState = $scope.currentView;
-			$timeout(function(){
+			$timeout(function() {
 				$scope.refreshScroller('tasks-summary-scroller');
 			}, 2000);
 
@@ -206,7 +206,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 		$scope.showFilters = function() {
 			$scope.filterOpen = true;
-			setTimeout(function(){ $scope.refreshScroller('room-status-filter'); }, 1500);
+			setTimeout(function() { $scope.refreshScroller('room-status-filter'); }, 1500);
 		};
 
 		$scope.refreshData = function() {
@@ -617,10 +617,10 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			$scope.completedData.notSuccessFullyUpdated = parseInt($scope.completedData.assignedRoomsList.length);
 			_.each($scope.completedData.assignedRoomsList, function(item) {
   				item.is_add_to_update =true;
-  				if(item.reservations.length > 1){
+  				if(item.reservations.length > 1) {
   					item.reservationData = "Multiple Reservations";
   					item.isMultipleReservation = true;
-  				} else if((item.reservations.length === 1)){
+  				} else if((item.reservations.length === 1)) {
   					item.reservationData = "#"+item.reservations[0].confirm_no;
   					item.GuestName = item.reservations[0].last_name+", "+item.reservations[0].first_name;
   					item.isMultipleReservation = false;
@@ -634,7 +634,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			    scope: $scope
             });
 
-            setTimeout(function(){
+            setTimeout(function() {
             	$scope.refreshScroller('rooms-list-to-forcefully-update');
             }, 1500);
 
@@ -680,14 +680,14 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				room_service_status_id: $scope.updateServiceData.room_service_status_id
 			};
 
-			if($scope.shouldShowTimeSelector()){
+			if($scope.shouldShowTimeSelector()) {
 				params.begin_time = $scope.updateServiceData.begin_time;
 				params.end_time = $scope.updateServiceData.end_time;
 			}
 
 			// To check All Rooms are Choosen or not
 			params.room_id = [];
-			if($scope.multiRoomAction.allChosen){
+			if($scope.multiRoomAction.allChosen) {
 				params.room_id = $scope.allRoomIDs;
 			}
 			else {
@@ -727,7 +727,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				room_service_status_id: $scope.updateServiceData.room_service_status_id
 			};
 
-			var roomsToAdd = _.filter($scope.completedData.assignedRoomsList, function(room){ return room.is_add_to_update});
+			var roomsToAdd = _.filter($scope.completedData.assignedRoomsList, function(room) { return room.is_add_to_update});
 			params.room_id = _.pluck(roomsToAdd,'id');
 			//as per CICO-32168 comments
 			if(params.room_id.length > 0) {
@@ -738,7 +738,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		};
 
 
-		var initilizeServiceStatusData = function(){
+		var initilizeServiceStatusData = function() {
 
 			// $scope.updateServiceData.room_service_status_id = $scope.serviceStatusList[0].id;
 			$scope.updateServiceData.from_date = $rootScope.businessDate;
@@ -750,7 +750,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		};
 
 
-		$scope.initilizeServiceStatus = function(){
+		$scope.initilizeServiceStatus = function() {
 
 			fetchMaintenanceReasons();
 			fetchAllServiceStatus();
@@ -1422,7 +1422,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			angular.element( $_filterRoomsEl ).off('ontouchmove');
 		});
 
-		$scope.getWidthForSummary = function(){
+		$scope.getWidthForSummary = function() {
 			var summaryWidth = 0,
 				tasksLength = $scope.summary.work_types.length;
 			summaryWidth = parseInt(parseInt(tasksLength + 1)*160 + 40);

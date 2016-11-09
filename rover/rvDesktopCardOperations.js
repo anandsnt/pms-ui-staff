@@ -1,4 +1,4 @@
-var DesktopCardOperations = function(){
+var DesktopCardOperations = function() {
 	var that = this;
 	var ws = {};
 	//Set to true if the desktop swipe is enabled and a WebSocket connection is established.
@@ -6,7 +6,7 @@ var DesktopCardOperations = function(){
     that.isDesktopUUIDServiceInvoked = false;
 
 	this.swipeCallbacks;
-	this.startDesktopReader = function(portNumber, swipeCallbacks){
+	this.startDesktopReader = function(portNumber, swipeCallbacks) {
 		that.portNumber = portNumber;
 		that.swipeCallbacks = swipeCallbacks;
 		createConnection();
@@ -16,11 +16,11 @@ var DesktopCardOperations = function(){
 		that.isDesktopUUIDServiceInvoked = true;
 	};
 
-	var createConnection = function(){
+	var createConnection = function() {
 		try{
 			ws = new WebSocket("wss://localhost:" + that.portNumber +"/CCSwipeService");
 		}
-		catch(e){
+		catch(e) {
 			console.warn("Could not connect to card reader. Please check if the port number is valid!!");
 		}
 

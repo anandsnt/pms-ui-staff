@@ -685,7 +685,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				// sort schedule list by report name
 				$scope.$parent.$parent.schedulesList = _.sortBy(
 						payload.schedulesList,
-						function(item){
+						function(item) {
 							return item.report.title
 						}
 					);
@@ -722,7 +722,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				// sort schedulable reports by report name
 				$scope.$parent.$parent.schedulableReports = _.sortBy(
 						$scope.$parent.$parent.schedulableReports,
-						function(item){
+						function(item) {
 							return item.report.title
 						}
 					);

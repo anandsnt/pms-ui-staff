@@ -1,7 +1,7 @@
 angular.module('sntRover').controller('rvItemInventoryGridStatusController', [
 	'$scope',
 	'rvAvailabilitySrv',
-	function($scope, rvAvailabilitySrv){
+	function($scope, rvAvailabilitySrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -12,7 +12,7 @@ angular.module('sntRover').controller('rvItemInventoryGridStatusController', [
 		$scope.data = rvAvailabilitySrv.getGridDataForInventory();
 		
 		//if already fetched we will show without calling the API
-		if(!isEmptyObject($scope.data)){
+		if(!isEmptyObject($scope.data)) {
 			$scope.refreshScroller('room_availability_scroller');
 			$scope.hideMeBeforeFetching = true;
 			$scope.$emit("hideLoader");
@@ -22,7 +22,7 @@ angular.module('sntRover').controller('rvItemInventoryGridStatusController', [
 		var scrollerOptions = {scrollX: true, preventDefault: false};
   		$scope.setScroller ('room_availability_scroller', scrollerOptions);
 
-		$scope.$on('$includeContentLoaded', function(event){
+		$scope.$on('$includeContentLoaded', function(event) {
 			$scope.$emit("hideLoader");
 			$scope.refreshScroller('room_availability_scroller');
 		});
@@ -41,7 +41,7 @@ angular.module('sntRover').controller('rvItemInventoryGridStatusController', [
 		* function to toggle the display of individual room type booked list on clicking
 		* the toogle button
 		*/
-		$scope.toggleShowRoomTypeWiseBookedRooms = function(){
+		$scope.toggleShowRoomTypeWiseBookedRooms = function() {
 			$scope.showRoomTypeWiseBookedRooms  = !$scope.showRoomTypeWiseBookedRooms ;
 			$scope.refreshScroller('room_availability_scroller');
 		};
@@ -51,7 +51,7 @@ angular.module('sntRover').controller('rvItemInventoryGridStatusController', [
 		* function to toggle the display of individual room type available list on clicking
 		* the toogle button
 		*/
-		$scope.toggleShowRoomTypeWiseAvailableRooms = function(){
+		$scope.toggleShowRoomTypeWiseAvailableRooms = function() {
 			$scope.showRoomTypeWiseAvailableRooms  = !$scope.showRoomTypeWiseAvailableRooms ;
 			$scope.refreshScroller('room_availability_scroller');
 		};

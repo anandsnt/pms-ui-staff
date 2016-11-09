@@ -5,7 +5,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 
 		BaseCtrl.call(this, $scope);
 
-		var init = function(){
+		var init = function() {
 
 			$scope.$emit("UPDATE_STAY_CARD_DEPOSIT_FLAG",true);
 			//adding a flag to be set after some timeout to remove flickering action in iPad
@@ -45,7 +45,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 		};
 		//need to to override $scope.closeDialog function to handle 
 		//popup flags
-		$scope.closeDialog = function(){
+		$scope.closeDialog = function() {
 			closeDepositPopup();
 		};
 		
@@ -64,19 +64,19 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			$scope.errorOccured = false;
 		};
 
-		$scope.$on('SET_SCROLL_FOR_EXISTING_CARDS',function(){
+		$scope.$on('SET_SCROLL_FOR_EXISTING_CARDS',function() {
 			console.log("set_scroll");
 			$scope.setScroller('cardsList',{'click':true, 'tap':true});
 		});
 
 		//Listen to swipe events
-		$scope.$on("SHOW_SWIPED_DATA_ON_STAY_CARD_DEPOSIT_SCREEN", function(e, swipedCardDataToRender){
+		$scope.$on("SHOW_SWIPED_DATA_ON_STAY_CARD_DEPOSIT_SCREEN", function(e, swipedCardDataToRender) {
 			$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 		});
 
 		/***************** Events From Payment Module ************************/
 
-		var showErrorMessage = function(data){
+		var showErrorMessage = function(data) {
 			$timeout(function() {
 				//provide some delay to deal with clearErrorMessage function
 				$scope.errorMessage = data;
@@ -85,12 +85,12 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			console.log($scope.errorMessage);
 		};		
 
-		$scope.$on('CLOSE_DIALOG',function(){
+		$scope.$on('CLOSE_DIALOG',function() {
 			closeDepositPopup();
 		});
 		//user selected pay later option
-		$scope.$on('PAY_LATER',function(){
-			if($scope.depositDetails.isFromCheckin){
+		$scope.$on('PAY_LATER',function() {
+			if($scope.depositDetails.isFromCheckin) {
 				$scope.$emit("PROCEED_CHECKIN");
 			}
 			else{
@@ -100,7 +100,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 		});
 
 		//payment success
-		$scope.$on('PAYMENT_SUCCESS',function(event,data){
+		$scope.$on('PAYMENT_SUCCESS',function(event,data) {
 			$scope.depositPaidSuccesFully = true;
 			$scope.depositAmount =  data.amountPaid;
 			$scope.feePaid = data.feePaid;
@@ -115,7 +115,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			//The submit payment will update the payment type for the bill #1(staycard too)
 			if($scope.$parent.reservationData.reservation_card.payment_method_used !== 'CC'
 			   && $scope.$parent.reservationData.reservation_card.payment_method_used !== 'DB'
-			   && typeof data.cc_details !=="undefined"){
+			   && typeof data.cc_details !=="undefined") {
 				$scope.$parent.reservationData.reservation_card.payment_method_used = 'CC';
 				$scope.$parent.reservationData.reservation_card.payment_details.card_number = data.cc_details.ending_with;
 				$scope.$parent.reservationData.reservation_card.payment_details.card_expiry = data.cc_details.expiry_date;
@@ -123,7 +123,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			};
 			
 			//Add the CC to guestcard
-			if(typeof data.add_to_guest_card !=="undefined" && data.add_to_guest_card){
+			if(typeof data.add_to_guest_card !=="undefined" && data.add_to_guest_card) {
 
 				var dataToGuestList = {
 					"card_code": data.cc_details.card_code,
@@ -142,7 +142,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 		});
 
 		//payment failed
-		$scope.$on('PAYMENT_FAILED',function(event,data){
+		$scope.$on('PAYMENT_FAILED',function(event,data) {
 			$timeout(function() {
 				$scope.errorOccured = true;
 				//provide some delay to deal with clearErrorMessage function

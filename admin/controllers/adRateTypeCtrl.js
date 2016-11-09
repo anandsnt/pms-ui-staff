@@ -153,7 +153,7 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 	* @param {string} id of the selected rate type
 	* @param {string} number of rates available for the rate type
 	*/
-	$scope.showRates = function(index, rateTypeId, rateCount){
+	$scope.showRates = function(index, rateTypeId, rateCount) {
 		if(rateCount <= 0) {
 			return false;
 		}
@@ -164,7 +164,7 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 		};
 
 		//Fetch the rates only when we enter the popover area.
-		if(!$scope.mouseEnterPopover){
+		if(!$scope.mouseEnterPopover) {
 			$scope.popoverRates = "";
 			$scope.currentHoverElement = index;
 			$scope.invokeApi(ADRatesSrv.fetchRates, {'rate_type_id': rateTypeId}, rateFetchSuccess, undefined, 'NOOP');
@@ -174,7 +174,7 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 	/**
 	* To handle the popover state. Reset the flag, rates dict while leaving the popover area
 	*/
-	$scope.mouseLeavePopover = function(){
+	$scope.mouseLeavePopover = function() {
 		$scope.popoverRates = "";
 		$scope.mouseEnterPopover = false;
 	};

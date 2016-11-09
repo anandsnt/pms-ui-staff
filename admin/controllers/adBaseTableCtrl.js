@@ -1,4 +1,4 @@
-function ADBaseTableCtrl($scope, ngTableParams){
+function ADBaseTableCtrl($scope, ngTableParams) {
     BaseCtrl.call(this, $scope);
 
     $scope.displayCountList = [10, 25, 50, 100];
@@ -22,20 +22,20 @@ function ADBaseTableCtrl($scope, ngTableParams){
     // -- https://docs.angularjs.org/api/ng/type/$rootScope.Scope
 
     $scope.$watch("displyCount", function (newValue, oldValue) {
-        if(newValue !== oldValue){
+        if(newValue !== oldValue) {
             $scope.tableParams.count($scope.displyCount);
         }
     });
 
     $scope.$watch("data", function (newValue, oldValue) {
-        if(newValue !== oldValue){
+        if(newValue !== oldValue) {
             $scope.startCount = (($scope.currentPage - 1) * $scope.displyCount )+ 1;
             $scope.endCount = $scope.startCount + $scope.data.length - 1;
         }
     },true);
 
     $scope.$watch("filterType", function (newValue, oldValue) {
-        if(newValue !== oldValue){
+        if(newValue !== oldValue) {
             $scope.reloadTable();
         }
     });
@@ -44,17 +44,17 @@ function ADBaseTableCtrl($scope, ngTableParams){
         $scope.reloadTable();
     };
 
-    $scope.reloadTable = function(){
+    $scope.reloadTable = function() {
         $scope.tableParams.page(1);
         $scope.tableParams.reload();
     };
 
-    $scope.filterFetchSuccess = function(data){
+    $scope.filterFetchSuccess = function(data) {
         $scope.filterList = data;
         $scope.$emit('hideLoader');
     };
 
-    $scope.calculateGetParams = function(tableParams){
+    $scope.calculateGetParams = function(tableParams) {
 
         var getParams = {};
         getParams.per_page = $scope.displyCount;
@@ -73,7 +73,7 @@ function ADBaseTableCtrl($scope, ngTableParams){
 
     };
 
-    $scope.fetchTableData = function(){
+    $scope.fetchTableData = function() {
 
     };
 

@@ -15,7 +15,7 @@ admin.controller('ADFloorsListCtrl',
         $filter,
         $anchorScroll,
         $timeout,
-        $location){
+        $location) {
 
 	BaseCtrl.call(this, $scope);
 
@@ -53,7 +53,7 @@ admin.controller('ADFloorsListCtrl',
     /**
     * initialize table in view
     */
-    $scope.setUptable = function(){
+    $scope.setUptable = function() {
         $scope.tableParams = new ngTableParams({
            page: 1,            // show first page
             count:  $scope.data.floors.length,    // count per page - Need to change when on pagination implemntation
@@ -79,8 +79,8 @@ admin.controller('ADFloorsListCtrl',
     /**
     * To fetch list of room types
     */
-	$scope.listFloorTypes = function(){
-		var successCallbackFetch = function(data){
+	$scope.listFloorTypes = function() {
+		var successCallbackFetch = function(data) {
 			$scope.data = data;
             $scope.floorsList = $scope.data.floors;
             $scope.setUptable ();
@@ -95,12 +95,12 @@ admin.controller('ADFloorsListCtrl',
     /*
     * To delete a floor
     */
-    $scope.deleteFloor = function(index){
+    $scope.deleteFloor = function(index) {
 
         var unwantedKeys = [];
         var data = {};
         data.id = $scope.orderedData[index].id;
-        var successCallbackSave = function(){
+        var successCallbackSave = function() {
             $scope.$emit('hideLoader');
             var pos = $scope.data.floors.indexOf($scope.orderedData[index]);
             $scope.data.floors.splice(pos, 1);
@@ -109,11 +109,11 @@ admin.controller('ADFloorsListCtrl',
         $scope.invokeApi(ADFloorSetupSrv.deleteFloor, data , successCallbackSave);
     };
 
-    $scope.$on("ASSIGNMENT_CHANGED",function(){
+    $scope.$on("ASSIGNMENT_CHANGED",function() {
          $scope.listFloorTypes();
     });
 
-    $scope.toggleAssignFloors = function(){           
+    $scope.toggleAssignFloors = function() {           
         $scope.stateVariables.activeTab = $scope.stateVariables.activeTab === 'MANAGE' ?  'ASSIGN' : 'MANAGE';
     }
 

@@ -460,7 +460,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 					$scope.message_out_going_to_comp_tra = true;
 				}
 			}
-			if($scope.availabilityDetails.is_cc_authorize_for_incidentals_active && ($scope.message_out_going_to_room || $scope.message_out_going_to_comp_tra)){
+			if($scope.availabilityDetails.is_cc_authorize_for_incidentals_active && ($scope.message_out_going_to_room || $scope.message_out_going_to_comp_tra)) {
 				$scope.enableIncedentalOnlyOption = true;
 			}
 		};
@@ -468,7 +468,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		// CICO-17266 Considering Billing info details before Auth..
 		var showPreAuthPopupWithBillingInfo = function(data) {
 
-			$scope.clickedIncidentalsOnly = function(){
+			$scope.clickedIncidentalsOnly = function() {
 				// @params : data , isCheckinWithoutAuth: false
 				data.is_cc_authorize_for_incidentals = true;
 				$scope.requireAuthorization = true;

@@ -8,20 +8,20 @@
   $scope.monthSelected = "";
   $scope.yearSelected ="";
 
-  if($rootScope.isCheckedin){
+  if($rootScope.isCheckedin) {
     $state.go('checkinSuccess');
   }
-  else if($rootScope.isCheckin){
+  else if($rootScope.isCheckin) {
     $state.go('checkinConfirmation');
   }
-  else if(!$rootScope.isRoomVerified){
+  else if(!$rootScope.isRoomVerified) {
     $state.go('checkoutRoomVerification');
   }
   else{
     $scope.pageValid = true;
   }
 
-	if($scope.pageValid){
+	if($scope.pageValid) {
 
     $scope.checkoutmessage = $stateParams.message;
     $scope.isFromCheckoutNow =  ($stateParams.isFromCheckoutNow  ==="true") ? true :false;
@@ -89,7 +89,7 @@
       templateUrl: '/assets/checkoutnow/partials/ccVerificationErrorModal.html',
       controller: ccVerificationModalCtrl,
       resolve: {
-        errorMessage: function(){
+        errorMessage: function() {
           return "There is a problem with your credit card.";
         }
       }
@@ -101,7 +101,7 @@
       templateUrl: '/assets/checkoutnow/partials/ccVerificationErrorModal.html',
       controller: ccVerificationModalCtrl,
       resolve: {
-        errorMessage:function(){
+        errorMessage:function() {
           return "All fields are required";
         }
       }
@@ -115,7 +115,7 @@
       templateUrl: '/assets/checkoutnow/partials/ccVerificationNumberModal.html',
       controller: ccVerificationModalCtrl,
       resolve: {
-        errorMessage:function(){
+        errorMessage:function() {
           return "";
         }
       }
@@ -123,19 +123,19 @@
 
 
 
-    $scope.showCcvPopup = function(){
+    $scope.showCcvPopup = function() {
       $modal.open($scope.ccvOpts); // error modal popup
     };
 
-    $scope.goToNextStep = function(){
+    $scope.goToNextStep = function() {
         var cardExpiryDate = $scope.yearSelected+"-"+$scope.monthSelected+"-"+"01";
         var data = {'reservation_id':$rootScope.reservationID,'token':MLISessionId,'card_expiry':cardExpiryDate,'payment_type':"CC"};
         ccVerificationService.verifyCC(data).then(function(response) {
         $scope.isFetching = false;
-        if(response.status ==="success"){
+        if(response.status ==="success") {
             $rootScope.isCCOnFile = true;
             $rootScope.isCcAttachedFromGuestWeb = true;
-            if($stateParams.isFromCheckoutNow === "true"){
+            if($stateParams.isFromCheckoutNow === "true") {
               $rootScope.ccPaymentSuccessForCheckoutNow = true;
               $state.go('checkOutStatus');
             }else{
@@ -147,22 +147,22 @@
          $scope.netWorkError = true;
         };
 
-      },function(){
+      },function() {
         $scope.netWorkError = true;
         $scope.isFetching = false;
       });
 
     };
 
-    $scope.savePaymentDetails = function(){
+    $scope.savePaymentDetails = function() {
 
-      $scope.fetchMLISessionId = function(){
+      $scope.fetchMLISessionId = function() {
 
        var sessionDetails = {};
 
-       $scope.callback = function(response){
+       $scope.callback = function(response) {
           $scope.$apply();
-          if(response.status ==="ok"){
+          if(response.status ==="ok") {
               MLISessionId = response.session;
               $scope.goToNextStep();
           }
@@ -176,9 +176,9 @@
       if( ($scope.cardNumber.length === 0) ||
           ($scope.ccv.length === 0) ||
           (!$scope.monthSelected) ||
-          (!$scope.yearSelected)){
+          (!$scope.yearSelected)) {
               $modal.open($scope.errorOpts); // details modal popup
-              if($scope.ccv.length===0){
+              if($scope.ccv.length===0) {
                 $scope.isCVVEmpty = true;
               }
               else{
@@ -232,7 +232,7 @@ sntGuestWeb.controller('ccVerificationViewController', dependencies);
     $scope.closeDialog = function () {
       $modalInstance.dismiss('cancel');
     };
-    $scope.cancelTransaction = function(){
+    $scope.cancelTransaction = function() {
       $scope.closeDialog();
       $state.go('checkOutOptions');
     };

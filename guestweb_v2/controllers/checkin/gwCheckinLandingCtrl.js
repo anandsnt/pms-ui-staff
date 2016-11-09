@@ -35,13 +35,13 @@ sntGuestWeb.controller('gwCheckinLandingCtrlController', ['$scope', '$state', '$
 		};
 
 		$scope.nextButtonClicked = function() {
-			var verificationSuccess = function(response){
+			var verificationSuccess = function(response) {
 				GwCheckinSrv.setcheckinData(response);
 				GwWebSrv.zestwebData.termsAndConditions = response.terms_and_conditions;
 				GwWebSrv.zestwebData.roomUpgraded  = false;
 				$state.go('checkinReservationDetails');
 			};
-			var verificationFailed = function(response){
+			var verificationFailed = function(response) {
 				var popupOptions = angular.copy($scope.errorOpts);
 				popupOptions.resolve = {
 					message: function() {

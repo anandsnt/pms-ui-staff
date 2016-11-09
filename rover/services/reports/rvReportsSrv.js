@@ -59,7 +59,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 			return deferred.promise;
 		};
 
-		service.exportCSV = function(params){
+		service.exportCSV = function(params) {
 			var deferred = $q.defer();
 			$http({
 				method: 'POST', 

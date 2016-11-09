@@ -27,7 +27,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 			$scope.sortedCountries = sortedCountryList.sorted;
 			$scope.unSortedCountries = sortedCountryList.unsorted;
 			//if not using the sorted list, get country names with the country native languages to popuplate the list as well
-			if (!$scope.zestStationData.kiosk_enforce_country_sort){
+			if (!$scope.zestStationData.kiosk_enforce_country_sort) {
 			  countryList.forEach(function(countryObj) {
 			  //objects inside the array of countries
 			      countryObj.names.forEach(function(nativeCountryName) {
@@ -52,11 +52,11 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 			//initializes the jquery plugin for search-filtering in the UI
 			if ($scope.zestStationData.theme === 'yotel') {
 				//for yotel only right now, TODO: need to optimize on IPAD for zoku and others
-				$timeout(function(){
+				$timeout(function() {
 					//initializes autocomplete, changes the <select> into an <input> field with autocomplete features
 					$('select').selectToAutocomplete();
 
-					$timeout(function(){
+					$timeout(function() {
 						$scope.showOnScreenKeyboard('country-selector');
 						$scope.focusInputField('country-selector');
 					},0);
@@ -65,7 +65,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 
 		};
 		$scope.showingAutoCompleteArea = false;
-		$scope.showingAutoComplete = function(){
+		$scope.showingAutoComplete = function() {
 			if ($scope.zestStationData.theme !== 'yotel') {
 				$scope.showingAutoCompleteArea = false;
 				return false;
@@ -75,17 +75,17 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 			//need to update the css based on the new dom elements, ie. the border in the input needs to be updated
 			//  when there are autocomplete elements on-screen
 			$scope.showingAutoCompleteArea = (val > 0 && !$scope.selectedCountry.id);
-			if (val < 1){
+			if (val < 1) {
 				$scope.selectedCountry.id = "";	
 			}
 			try {
 				$scope.$digest();	
-			} catch(err){
+			} catch(err) {
 				console.warn(err);
 			};
 		};
 
-		$scope.clearNationality = function(){
+		$scope.clearNationality = function() {
 			$scope.selectedCountry.id = "";
 			$('input').val('');
 			$scope.showingAutoComplete();

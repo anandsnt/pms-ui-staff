@@ -18,9 +18,9 @@ admin.controller('ADInvoiceSettingsCtrl',[
         * To handle save button action
         *
         */
-        $scope.saveClick = function(){
+        $scope.saveClick = function() {
 
-            var saveInvoiceSettingsSuccessCallback = function(){
+            var saveInvoiceSettingsSuccessCallback = function() {
                  $scope.errorMessage = [];
                  $scope.$emit('hideLoader');
                  $scope.goBackToPreviousState();

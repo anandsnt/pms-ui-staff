@@ -45,7 +45,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                     var hotelTheme = _.findWhere(response.themes, {
                         id: response.existing_email_template_theme
                     });
-                    if (hotelTheme && hotelTheme.name){
+                    if (hotelTheme && hotelTheme.name) {
                         theme = hotelTheme.name.toLowerCase();    
                     } else {
                         deferred.reject();
@@ -58,7 +58,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                     return themeMapping.toLowerCase() === theme;
                 });
 
-                if (!that.isThemeConfigured(theme)){
+                if (!that.isThemeConfigured(theme)) {
                     theme = 'snt';
                 }
                 that.hotelTheme = theme;
@@ -91,14 +91,14 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 url = '/api/locales/' + langShortCode + '.json';
                 promises.push(
                     zsBaseWebSrv.getJSON(url)
-                        .then(function(langShortCode, data){
+                        .then(function(langShortCode, data) {
                                 results[langShortCode] = data.data;
                             }.bind(null, langShortCode)
                         )
                     );
             });
 
-            $q.all(promises).then(function(data){
+            $q.all(promises).then(function(data) {
                 deferred.resolve(results);
             });
 

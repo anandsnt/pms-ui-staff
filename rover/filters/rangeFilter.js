@@ -38,7 +38,7 @@ angular.module('sntRover').filter('makeRange', function() {
 	};
 });
 
-function getLengthChangedNumber(lengthWanted, number){
+function getLengthChangedNumber(lengthWanted, number) {
 
     if(typeof number === 'number') {
         number = number.toString();
@@ -49,7 +49,7 @@ function getLengthChangedNumber(lengthWanted, number){
         return number;
     }
     var zeros = "";
-    for(var i = 1; i <= numberOfZerosToAppend; i++){
+    for(var i = 1; i <= numberOfZerosToAppend; i++) {
         zeros += "0";
     }
     return (zeros + number);

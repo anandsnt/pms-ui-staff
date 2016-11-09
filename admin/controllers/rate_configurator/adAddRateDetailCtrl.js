@@ -10,9 +10,9 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             $scope.detailsMenu = '';
             $scope.isStandAlone = $rootScope.isStandAlone;
         };
-        $scope.getSubtask = function(task){
+        $scope.getSubtask = function(task) {
             var subtask = [];
-            subtask = _.filter(task,function(item){
+            subtask = _.filter(task,function(item) {
                         return item.is_default == true;
                     });
           return subtask;
@@ -21,14 +21,14 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             var succesCallBack = function(data) {
                 $scope.defaultWorkTypeTasks = data.results;
                 $scope.selectedWorkTypeTask = {};
-                _.each(data.results, function(workType){
+                _.each(data.results, function(workType) {
                     var selectedTaskIds = _.pluck($scope.rateData.tasks, "id"),
-                        currentSelection = _.find(workType.tasks, function(task){
+                        currentSelection = _.find(workType.tasks, function(task) {
                         return _.indexOf(selectedTaskIds, task.id) > -1;
                     });
 
                     var defaultTask = null;
-                    if(!currentSelection && !$scope.is_edit){
+                    if(!currentSelection && !$scope.is_edit) {
                         defaultTask = _.find(workType.tasks,{
                             is_default : true
                         });
@@ -59,7 +59,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             $scope.detailsMenu = selectedMenu;
         };
 
-        $scope.shouldShowMemberRates = function(){
+        $scope.shouldShowMemberRates = function() {
             return !$rootScope.isHourlyRatesEnabled && (!!$rootScope.isFFPActive || !!$rootScope.isHLPActive);
         };
 
@@ -72,7 +72,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             if ($scope.rateTypesDetails) {
                 angular.forEach($scope.rateTypesDetails.rate_types, function(rate_type) {
                     if ($scope.rateData.rate_type.id === rate_type.id) {
-                        if ($scope.rateData.classification){
+                        if ($scope.rateData.classification) {
                             classification = $scope.rateData.classification.toLowerCase();
                         } else {
                             classification = '';
@@ -162,14 +162,14 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
         /*
          * Set commission data
          */
-        var setupCommissionData = function(){
-            if(typeof $scope.rateData.commission_details !== 'undefined'){
+        var setupCommissionData = function() {
+            if(typeof $scope.rateData.commission_details !== 'undefined') {
                 var chargeCodes = $scope.rateData.commission_details.charge_codes,
                     selectedChargeCodes = [];
 
-                if( typeof chargeCodes !== 'undefined' && chargeCodes.length >0 ){
+                if( typeof chargeCodes !== 'undefined' && chargeCodes.length >0 ) {
                     angular.forEach( chargeCodes ,function( item, index) {
-                        if( item.is_checked ){
+                        if( item.is_checked ) {
                             selectedChargeCodes.push(item.id);
                         }
                     });
@@ -345,23 +345,23 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             }
         };
 
-        $scope.togglePMSOnly = function(){
-            if(!!$scope.rateData.is_channel_only && !!$scope.rateData.is_pms_only){
+        $scope.togglePMSOnly = function() {
+            if(!!$scope.rateData.is_channel_only && !!$scope.rateData.is_pms_only) {
                 $scope.rateData.is_channel_only = false;
             }
 
         };
 
-        $scope.toggleChannelOnly = function(){
-            if(!!$scope.rateData.is_channel_only && !!$scope.rateData.is_pms_only){
+        $scope.toggleChannelOnly = function() {
+            if(!!$scope.rateData.is_channel_only && !!$scope.rateData.is_pms_only) {
                 $scope.rateData.is_pms_only = false;
             }
         };
 
         // CICO-24645 -  Show Tax Incl / Excl indicator on changing Charge code.
-        $scope.onChangeChargeCode = function(){
+        $scope.onChangeChargeCode = function() {
 
-            var selectedObj = _.find( $scope.rateTypesDetails.charge_codes, function(obj){
+            var selectedObj = _.find( $scope.rateTypesDetails.charge_codes, function(obj) {
                                     return obj.id === $scope.rateData.charge_code_id;
                                 });
             $scope.rateData.tax_inclusive_or_exclusive = selectedObj.tax_inclusive_or_exclusive;

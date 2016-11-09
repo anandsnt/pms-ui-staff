@@ -111,7 +111,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 			// if there is a request params object
 			else if ( !! options.params ) {
 			
-				if ( options.params.reportTitle === "Credit Check Report" ){
+				if ( options.params.reportTitle === "Credit Check Report" ) {
 					options.params = _.omit(options.params, 'reportTitle');
 					rvBaseWebSrvV2.postJSONWithSpecialStatusHandling( options.url, options.params ).then( success, failed );
 				}

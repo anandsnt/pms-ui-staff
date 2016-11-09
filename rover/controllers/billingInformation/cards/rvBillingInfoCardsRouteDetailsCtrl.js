@@ -1,4 +1,4 @@
-sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope','$filter','RVBillinginfoSrv', 'RVGuestCardSrv', 'ngDialog', 'RVBillCardSrv', 'RVPaymentSrv', 'rvPermissionSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, RVGuestCardSrv, ngDialog, RVBillCardSrv, RVPaymentSrv, rvPermissionSrv){
+sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope','$filter','RVBillinginfoSrv', 'RVGuestCardSrv', 'ngDialog', 'RVBillCardSrv', 'RVPaymentSrv', 'rvPermissionSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, RVGuestCardSrv, ngDialog, RVBillCardSrv, RVPaymentSrv, rvPermissionSrv) {
 
     BaseCtrl.call(this, $scope);
 
@@ -53,7 +53,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
             $scope.paymentFlags.showPaymentDropDown   = false;
             $scope.paymentFlags.isShownExistingCCPayment = true;
 
-            setTimeout(function(){
+            setTimeout(function() {
                 $scope.$broadcast('UPDATE_FLAG');
             }, 1000);
         }
@@ -95,7 +95,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
      * @return {undefined}
      */
     var refreshScrollers = function() {
-        setTimeout(function(){
+        setTimeout(function() {
             $scope.refreshScroller('paymentList');
             $scope.refreshScroller('billingGroups');
             $scope.refreshScroller('chargeCodes');
@@ -244,11 +244,11 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
         $scope.refreshScroller('routeDetails');
     };
 
-    $scope.$on("SHOW_SWIPED_DATA_ON_BILLING_SCREEN", function(e, swipedCardDataToRender){
+    $scope.$on("SHOW_SWIPED_DATA_ON_BILLING_SCREEN", function(e, swipedCardDataToRender) {
         $scope.paymentFlags.isAddPayment = true;
         $scope.$broadcast('showaddpayment');
 
-        setTimeout(function(){
+        setTimeout(function() {
             $scope.saveData.payment_type = "CC";
             $scope.paymentFlags.showPaymentDropDown = true;
             $scope.swippedCard = true;
@@ -262,7 +262,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
      * We save the id for the ngDialog to close nested dialog for 
      * disabling manual payment addition.
      */
-    $scope.$on("ngDialog.opened", function(event, data){
+    $scope.$on("ngDialog.opened", function(event, data) {
         $scope.ngDialogID =  data[0].id;
     });
 
@@ -371,7 +371,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
      * Listener for the save button click
      * @return {undefined}
      */
-    $scope.$on('routeSaveClicked', function(event){
+    $scope.$on('routeSaveClicked', function(event) {
         $scope.saveRoute();
     });
 
@@ -497,7 +497,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
                 RVPaymentSrv.chipAndPinGetToken(data).then(function(response) {
                     $scope.$emit('UPDATE_SHOULD_SHOW_WAITING', false);
                     successSixSwipe(response);
-                },function(error){
+                },function(error) {
                     $scope.errorMessage = error;
                     $scope.$emit('UPDATE_SHOULD_SHOW_WAITING', false);
                 });
@@ -563,7 +563,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
         return rvPermissionSrv.getPermissionValue('OVERWRITE_DIRECT_BILL_MAXIMUM_AMOUNT');
     };
 
-    $scope.$on('CHANGE_IS_MANUAL', function(e, value){
+    $scope.$on('CHANGE_IS_MANUAL', function(e, value) {
         $scope.paymentFlags.sixIsManual = value;
     });
 

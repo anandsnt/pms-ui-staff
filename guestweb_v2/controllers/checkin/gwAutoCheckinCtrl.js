@@ -14,7 +14,7 @@ sntGuestWeb.controller('gwAutoCheckinController', ['$scope','$controller', 'GwWe
 			$scope.isLoading = true;
 		}();
 
-		var completeAutoCheckinSuccess = function(response){
+		var completeAutoCheckinSuccess = function(response) {
 			console.log(response);
 			$scope.displayText = response.confirmation_message;
 			$scope.confirmationNumber = GwWebSrv.zestwebData.confirmationNo;

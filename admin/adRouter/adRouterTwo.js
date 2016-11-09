@@ -1,4 +1,4 @@
-angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterProvider, $translateProvider){
+angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterProvider, $translateProvider) {
      //define module-specific routes here
         $stateProvider.state('admin.departments', {
 			templateUrl: '/assets/partials/departments/adDepartmentsList.html',
@@ -232,7 +232,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 				rateInitialData: function(ADRatesAddDetailsSrv) {
 					return ADRatesAddDetailsSrv.fetchRateTypes();
 				},
-				rateDetails: function(){
+				rateDetails: function() {
 					return {};
 				}
 			}
@@ -291,7 +291,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADCheckoutCtrl',
 			url : '/checkout',
 			resolve:{
-				roomTypes:function(ADRoomTypesSrv){
+				roomTypes:function(ADRoomTypesSrv) {
 					return ADRoomTypesSrv.fetch();
 				}
 			}
@@ -413,7 +413,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADEarlyCheckinCtrl',
 			url : '/earlyCheckin',
 			resolve: {
-				blockCodeData : function(adCheckinSrv){
+				blockCodeData : function(adCheckinSrv) {
 					return adCheckinSrv.getBlockCodes();
 				}
 			}
@@ -424,7 +424,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADiBeaconDetailsCtrl',
 			url : '/iBeaconDetails/:action',
 			resolve: {
-				beaconNeighbours: function(adiBeaconSettingsSrv){
+				beaconNeighbours: function(adiBeaconSettingsSrv) {
 					return adiBeaconSettingsSrv.fetchBeaconList();
 				},
 				triggerTypes: function(adiBeaconSettingsSrv) {
@@ -450,7 +450,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADiBeaconDetailsCtrl',
 			url : '/iBeaconDetails/:action',
 			resolve: {
-				beaconNeighbours: function(adiBeaconSettingsSrv){
+				beaconNeighbours: function(adiBeaconSettingsSrv) {
 					return adiBeaconSettingsSrv.fetchBeaconList();
 				},
 				triggerTypes: function(adiBeaconSettingsSrv) {
@@ -476,7 +476,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 				settingsAndParamsData: function(settingsAndParamsSrv) {
 					return settingsAndParamsSrv.fetchsettingsAndParams();
 				},
-				chargeCodes: function(settingsAndParamsSrv){
+				chargeCodes: function(settingsAndParamsSrv) {
 					return settingsAndParamsSrv.fetchChargeCodes();
 				}
 			}
@@ -630,10 +630,10 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller : 'ADZestwebCommonSettingsCtrl',
 			url: '/zestWebCommonSettings',
 			resolve : {
-				zestWebCommonSettings : function (ADzestwebCommonSettingsSrv){
+				zestWebCommonSettings : function (ADzestwebCommonSettingsSrv) {
 					return ADzestwebCommonSettingsSrv.fetchSettings();
 				},
-				initialFooterSettings : function (ADzestwebCommonSettingsSrv){
+				initialFooterSettings : function (ADzestwebCommonSettingsSrv) {
 					return ADzestwebCommonSettingsSrv.fetchInitialFooterSettings();
 				}
 			}

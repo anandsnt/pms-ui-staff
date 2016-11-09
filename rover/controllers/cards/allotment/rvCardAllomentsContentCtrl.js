@@ -1,4 +1,4 @@
-angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', 'rvUtilSrv', function($scope, util){
+angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', 'rvUtilSrv', function($scope, util) {
 	BaseCtrl.call(this, $scope);
 
     /**
@@ -187,7 +187,7 @@ angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', '
      * function used to set initlial set of values
      * @return {None}
      */
-	var initilizeMe = function(){
+	var initilizeMe = function() {
         //allotmentlist
         $scope.allotmentList = [];
 

@@ -1,5 +1,5 @@
 var Timeline = React.createClass({
-    __get_property_time_line_showing_point: function(){
+    __get_property_time_line_showing_point: function() {
         var props = this.props,
             display = props.display,
             prop_time = display.property_date_time.start_date,

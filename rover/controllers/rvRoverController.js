@@ -41,7 +41,7 @@ sntRover.controller('roverController',
       $scope.menuOpen = false;
     };
    $scope.isAddToGuestCardEnabledDuringCheckin = false;
-   $scope.$on('UPDATE_ADD_TO_GUEST_ON_CHECKIN_FLAG', function(e, value){
+   $scope.$on('UPDATE_ADD_TO_GUEST_ON_CHECKIN_FLAG', function(e, value) {
     $scope.isAddToGuestCardEnabledDuringCheckin = value;
    });
     $scope.roverFlags = {};
@@ -52,7 +52,7 @@ sntRover.controller('roverController',
       "id":""
     };
     angular.forEach($scope.hotelDetails.userHotelsData.hotel_list, function(hotel, index) {
-          if($scope.hotelDetails.userHotelsData.current_hotel_id === hotel.hotel_id){
+          if($scope.hotelDetails.userHotelsData.current_hotel_id === hotel.hotel_id) {
              $scope.currentHotelData.name = hotel.hotel_name;
              $scope.currentHotelData.id   = hotel.hotel_id;
              $scope.hotelDetails.userHotelsData.hotel_list.splice(index,1);
@@ -305,12 +305,12 @@ sntRover.controller('roverController',
     * utility method to openup the settings popup
     * @return - None
     */
-    var openUpdatePasswordPopup = function(){
+    var openUpdatePasswordPopup = function() {
         // Show a loading message until promises are not resolved
         $scope.$emit('showLoader');
 
         jsMappings.fetchAssets(['staffpasswordchange'])
-        .then(function(){
+        .then(function() {
             $scope.$emit('hideLoader');
             ngDialog.open({
                 template: '/assets/partials/settings/rvStaffSettingModal.html',
@@ -374,10 +374,10 @@ sntRover.controller('roverController',
       $scope.hasLoader = false;
     });
 
-    $scope.$on("SHOW_SIX_PAY_LOADER",function(){
+    $scope.$on("SHOW_SIX_PAY_LOADER",function() {
       $scope.showSixPayLoader = true;
     });
-    $scope.$on("HIDE_SIX_PAY_LOADER",function(){
+    $scope.$on("HIDE_SIX_PAY_LOADER",function() {
       $scope.showSixPayLoader = false;
     });
     /**
@@ -460,7 +460,7 @@ sntRover.controller('roverController',
         $scope.$emit('showLoader');
 
         jsMappings.fetchAssets(['endofday'])
-        .then(function(){
+        .then(function() {
             $scope.$emit('hideLoader');
             ngDialog.open({
               template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
@@ -475,7 +475,7 @@ sntRover.controller('roverController',
         $scope.$emit('showLoader');
 
         jsMappings.fetchAssets(['postcharge', 'directives'])
-        .then(function(){
+        .then(function() {
             $scope.isOutsidePostCharge = true;
             $scope.$emit('hideLoader');
             ngDialog.open(
@@ -499,12 +499,12 @@ sntRover.controller('roverController',
       else if (subMenu === "endOfDay") {
         openEndOfDayPopup();
       }
-      else if(subMenu === "adminSettings"){
+      else if(subMenu === "adminSettings") {
             //CICO-9816 bug fix - Akhila
             $('body').addClass('no-animation');
             $window.location.href = "/admin";
       }
-      else if(subMenu === "changePassword"){
+      else if(subMenu === "changePassword") {
          openUpdatePasswordPopup();
       }
     };
@@ -576,7 +576,7 @@ sntRover.controller('roverController',
 
     $scope.failureCallBackSwipe = function(errorMessage) {
     	$scope.errorMessage = errorMessage;
-    	if($rootScope.desktopSwipeEnabled){
+    	if($rootScope.desktopSwipeEnabled) {
     	}
     };
 
@@ -601,7 +601,7 @@ sntRover.controller('roverController',
 
     $scope.numberOfCordovaCalls = 0;
 
-    var initiateDesktopCardReader = function(){
+    var initiateDesktopCardReader = function() {
       sntapp.desktopCardReader.setDesktopUUIDServiceStatus(true);
     	sntapp.desktopCardReader.startDesktopReader($rootScope.ccSwipeListeningPort, options);
     };
@@ -637,7 +637,7 @@ sntRover.controller('roverController',
   		/* Enabling desktop Swipe if we access the app from desktop ( not from devices) and
        * desktopSwipeEnabled flag is true
       */
-      if($rootScope.desktopSwipeEnabled && !rvUtilSrv.checkDevice.any()){
+      if($rootScope.desktopSwipeEnabled && !rvUtilSrv.checkDevice.any()) {
         $rootScope.isDesktopUUIDServiceInvoked = true;
   			initiateDesktopCardReader();
   		}

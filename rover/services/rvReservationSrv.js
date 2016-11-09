@@ -224,7 +224,7 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 			var postData = {
 				"status": data.status
 			};
-                        if (data.viaAdvancedQueue){
+                        if (data.viaAdvancedQueue) {
                             postData.signature = data.signature;
                             postData.is_promotions_and_email_set = data.is_promotions_and_email_set;
                         }
@@ -309,8 +309,8 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 			var deferred = $q.defer(),
 				url = '/api/gift_cards/balance_inquiry';
 			rvBaseWebSrvV2.postJSON(url,data).then(function(response) {
-                            if (response){
-                                if (typeof response.amount === typeof 123){
+                            if (response) {
+                                if (typeof response.amount === typeof 123) {
                                     response.amount = parseFloat(response.amount).toFixed(2);
                                 }
                             }

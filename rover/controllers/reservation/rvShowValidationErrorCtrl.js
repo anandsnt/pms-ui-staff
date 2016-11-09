@@ -1,9 +1,9 @@
 sntRover.controller('RVShowRoomNotAvailableCtrl',['$rootScope', '$scope', 'ngDialog', '$state', '$vault',
-  function($rootScope, $scope, ngDialog, $state, $vault){
+  function($rootScope, $scope, ngDialog, $state, $vault) {
 	BaseCtrl.call(this, $scope);
 
-	$scope.okButtonClicked = function(){
-		if($rootScope.isHourlyRateOn){
+	$scope.okButtonClicked = function() {
+		if($rootScope.isHourlyRateOn) {
 			 var reservationDataToKeepinVault = {};
             var roomData = $scope.reservationData.rooms[0];
 

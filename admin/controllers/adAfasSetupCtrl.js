@@ -1,4 +1,4 @@
-admin.controller('adAfasSetupCtrl', ['$scope', 'afasSetupValues', 'adAfasSetupSrv', function($scope, afasSetupValues, adAfasSetupSrv){
+admin.controller('adAfasSetupCtrl', ['$scope', 'afasSetupValues', 'adAfasSetupSrv', function($scope, afasSetupValues, adAfasSetupSrv) {
 	BaseCtrl.call (this, $scope);
 	
 	/**

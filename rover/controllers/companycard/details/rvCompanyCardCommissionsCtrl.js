@@ -29,7 +29,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
     };
 
     $scope.setScroller('commission-list');
-    var refreshScroll = function(){
+    var refreshScroll = function() {
         $timeout(function() {
             $scope.refreshScroller('commission-list');
         }, 3000);
@@ -54,10 +54,10 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
                 $scope.commissionSummary.taxOnCommissions = data.tax_on_commissions;
                 //set pagination controls values
                 $scope.pagination.totalResultCount = data.total_count;
-                if($scope.nextAction && isPageChanged){
+                if($scope.nextAction && isPageChanged) {
                     $scope.pagination.start = $scope.pagination.start + $scope.filterData.perPage;
                 }
-                if($scope.prevAction && isPageChanged){
+                if($scope.prevAction && isPageChanged) {
                     $scope.pagination.start = $scope.pagination.start - $scope.filterData.perPage ;
                 }
 
@@ -85,7 +85,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         return rvPermissionSrv.getPermissionValue ('EDIT_COMMISSIONS_TAB');
     };
 
-    $scope.loadNextSet = function(){
+    $scope.loadNextSet = function() {
         $scope.filterData.page++;
         $scope.nextAction = true;
         $scope.prevAction = false;
@@ -93,7 +93,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         fetchCommissionDetails(true);
     };
 
-    $scope.loadPrevSet = function(){
+    $scope.loadPrevSet = function() {
         $scope.filterData.page--;
         $scope.nextAction = false;
         $scope.prevAction = true;
@@ -101,31 +101,31 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         fetchCommissionDetails(true);
     };
 
-    $scope.isNextButtonDisabled = function(){
+    $scope.isNextButtonDisabled = function() {
         var isDisabled = false;
         if($scope.commissionDetails.length == 0) {
             return true;
         }
-        if($scope.pagination.end >= $scope.pagination.totalResultCount){
+        if($scope.pagination.end >= $scope.pagination.totalResultCount) {
             isDisabled = true;
         }
         return isDisabled;
     };
 
-    $scope.isPrevButtonDisabled = function(){
+    $scope.isPrevButtonDisabled = function() {
         var isDisabled = false;
-        if($scope.filterData.page === 1){
+        if($scope.filterData.page === 1) {
             isDisabled = true;
         }
         return isDisabled;
 
     };
 
-    $scope.clearToDateField = function(){
+    $scope.clearToDateField = function() {
         $scope.filterData.toDate = '';
         $scope.onFilterChange();
     };
-    $scope.clearFromDateField = function(){
+    $scope.clearFromDateField = function() {
         $scope.filterData.fromDate = '';
         $scope.onFilterChange();
     };
@@ -134,7 +134,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         return ($scope.commissionDetails.length > 0 && $scope.pagination.totalResultCount > $scope.filterData.perPage);
     };
 
-    var initPaginationParams = function(){
+    var initPaginationParams = function() {
         $scope.filterData.page = 1;
         $scope.pagination.start = 1;
         $scope.nextAction = false;
@@ -142,12 +142,12 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
     };
 
     // To handle from date change
-    $scope.$on('fromDateChanged',function(){
+    $scope.$on('fromDateChanged',function() {
        $scope.onFilterChange();
     });
 
     // To handle to date change
-    $scope.$on('toDateChanged',function(){
+    $scope.$on('toDateChanged',function() {
         $scope.onFilterChange();
     });
 
@@ -161,10 +161,10 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
 
 
     /* Handling different date picker clicks */
-    $scope.clickedFromDate = function(){
+    $scope.clickedFromDate = function() {
         $scope.popupCalendar('FROM');
     };
-    $scope.clickedToDate = function(){
+    $scope.clickedToDate = function() {
         $scope.popupCalendar('TO');
     };
     // Show calendar popup.
@@ -289,13 +289,13 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         var commissionListToUpdate = [];
         if($scope.filterData.selectAll) {
            $scope.commissionDetails.forEach(function(commission) {
-                if(commission.commission_data.paid_status != 'Prepaid'){
+                if(commission.commission_data.paid_status != 'Prepaid') {
                     commissionListToUpdate.push({reservation_id : commission.reservation_id, status : $scope.status.groupPaidStatus});
                 }
            });
         } else {
             $scope.selectedCommissions.forEach(function(commission) {
-                if(commission.commission_data.paid_status != 'Prepaid'){
+                if(commission.commission_data.paid_status != 'Prepaid') {
                     commissionListToUpdate.push({reservation_id : commission.reservation_id, status : $scope.status.groupPaidStatus});
                 }
             });
@@ -313,7 +313,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
     };
 
     // To print the current screen details.
-    $scope.clickedPrintButton = function(){
+    $scope.clickedPrintButton = function() {
 
         // CICO-11667 to enable landscpe printing on transactions page.
         // Sorry , we have to access the DOM , so using jQuery..

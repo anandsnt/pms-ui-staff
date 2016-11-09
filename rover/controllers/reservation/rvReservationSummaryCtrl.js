@@ -651,7 +651,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                                     $scope.showSelectedCreditCard = true;
                                 }
                                 //CICO-29487 -> Before proceeding to this; need to fetch the addons details
-                                $scope.invokeApi(RVReservationPackageSrv.getReservationPackages, room.reservation_id, function(response){
+                                $scope.invokeApi(RVReservationPackageSrv.getReservationPackages, room.reservation_id, function(response) {
                                     temporaryReservationDataFromDiaryScreen.addons =  response.existing_packages;
                                     $scope.populateDatafromDiary(roomsArray, temporaryReservationDataFromDiaryScreen, true);
                                     createReservation();
@@ -829,7 +829,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             }
         };
 
-        var onSavePaymentMethodSuccess = function(){
+        var onSavePaymentMethodSuccess = function() {
             if (!$scope.isDemographicsFormValid(true)) {
                 $scope.summaryState.forceDemographicsData = true;
                 $scope.setDemographics(true);
@@ -838,7 +838,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             $scope.proceedCreatingReservation();
         };
 
-        var savePayment = function(callback, addToGuestCard){
+        var savePayment = function(callback, addToGuestCard) {
             var promises = [];
             $scope.$emit('showLoader');
 
@@ -886,7 +886,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             check();
         };
 
-        $scope.onPayDepositLater = function(){
+        $scope.onPayDepositLater = function() {
             savePayment($scope.confirmReservation);
         };
 
@@ -1280,9 +1280,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
             $scope.$emit('showLoader');
             jsMappings.fetchAssets(['addBillingInfo', 'directives'])
-            .then(function(){
+            .then(function() {
                 $scope.$emit('hideLoader'); 
-                if($rootScope.UPDATED_BI_ENABLED_ON['RESERVATION']){
+                if($rootScope.UPDATED_BI_ENABLED_ON['RESERVATION']) {
                     console.log("##Billing-info updated version");
                     ngDialog.open({
                         template: '/assets/partials/billingInformation/reservation/rvBillingInfoReservationMain.html',
@@ -1593,7 +1593,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             $scope.addToGuestCard = addToGuestCard;
         });
 
-        $scope.$on('PAYMENT_SCREEN_MODE_CHANGED', function(){
+        $scope.$on('PAYMENT_SCREEN_MODE_CHANGED', function() {
             $timeout(function() {
                 $scope.refreshScroller('paymentInfo');
             }, 300);

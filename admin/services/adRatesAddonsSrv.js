@@ -53,14 +53,14 @@ admin.service('ADRatesAddonsSrv', [
 		* @param {object} new addon details
 		* @return {object} defer promise
 		*/
-		this.addNewAddon = function(data){
+		this.addNewAddon = function(data) {
 			var deferred = $q.defer(),
 				url = '/api/addons';
 
 			ADBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				},function(errorMessage){
+				},function(errorMessage) {
 					deferred.reject(errorMessage);
 				});
 

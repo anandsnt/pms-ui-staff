@@ -1,6 +1,6 @@
 angular.module('sntRover').service('RVBillingInfoUtilSrv',
     ['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv',
-    function($http, $q, BaseWebSrvV2, RVBaseWebSrv){
+    function($http, $q, BaseWebSrvV2, RVBaseWebSrv) {
 
     var guestStatusMappings = {
         'RESERVED'       : ['arrival'],
@@ -33,7 +33,7 @@ angular.module('sntRover').service('RVBillingInfoUtilSrv',
      * @param {Object} selected entity/route details
      * @return {String} class name
      */
-    this.getEntityRole = function(route){
+    this.getEntityRole = function(route) {
         if(route.entity_type === 'RESERVATION' &&  !route.has_accompanying_guests) {
             return 'guest';
         }
@@ -53,7 +53,7 @@ angular.module('sntRover').service('RVBillingInfoUtilSrv',
      * @param {Object} selected entity/route details
      * @return {String} class name
      */
-    this.getEntityIconClass = function(route){
+    this.getEntityIconClass = function(route) {
         if(route.entity_type === 'RESERVATION' &&  route.has_accompanying_guests ) {
             return 'accompany';
         }

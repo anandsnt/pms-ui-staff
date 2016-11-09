@@ -1,8 +1,8 @@
-admin.service('ADDashboardSrv',['$http', '$q', function($http, $q){
+admin.service('ADDashboardSrv',['$http', '$q', function($http, $q) {
 
 	var _this = this;
 
-	this.fetch = function(){
+	this.fetch = function() {
 		this.data = {"menus":[
 							{
 								"menu_id":1,
@@ -342,7 +342,7 @@ admin.service('ADDashboardSrv',['$http', '$q', function($http, $q){
 		return this.data;
 	};
 
-	this.fetchSNT = function(){
+	this.fetchSNT = function() {
 		this.data = {"menus":[
 							{
 								"menu_id":1,

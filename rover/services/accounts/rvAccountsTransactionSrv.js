@@ -75,7 +75,7 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 		 * @return {object} defer promise
 		 */
 
-		this.transactionEdit = function(data){
+		this.transactionEdit = function(data) {
 
 			var deferred = $q.defer();
 			var trasactionId = data.id;
@@ -83,7 +83,7 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			var url = 'api/financial_transactions/'+trasactionId;
 			rvBaseWebSrvV2.putJSON(url, updatedDate).then(function(data) {
 			   	 deferred.resolve(data);
-			},function(data){
+			},function(data) {
 			    deferred.reject(data);
 			});
 
@@ -97,13 +97,13 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 		 * @return {object} defer promise
 		 */
 
-		this.transactionEditChargeDescription = function(params){
+		this.transactionEditChargeDescription = function(params) {
 
 			var deferred = $q.defer();
 			var url = 'api/financial_transactions/'+ params.id +'/save_custom_description';
 			rvBaseWebSrvV2.postJSON(url, params.postData ).then(function(data) {
 			   	 deferred.resolve(data);
-			},function(data){
+			},function(data) {
 			    deferred.reject(data);
 			});
 			return deferred.promise;
@@ -117,14 +117,14 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 		 * @return {object} defer promise
 		 */
 
-		this.transactionDelete = function(deleteData){
+		this.transactionDelete = function(deleteData) {
 
 			var deferred = $q.defer();
 			var trasactionId = deleteData.id;
 			var url = 'api/financial_transactions/'+trasactionId;
 			rvBaseWebSrvV2.putJSON(url, deleteData.data).then(function(data) {
 			   	 deferred.resolve(data);
-			},function(data){
+			},function(data) {
 			    deferred.reject(data);
 			});
 
@@ -137,13 +137,13 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 		* @return {object} defer promise
 		*/
 
-		this.transactionSplit = function(splitData){
+		this.transactionSplit = function(splitData) {
 			var deferred = $q.defer();
 			var trasactionId = splitData.id;
 			var url = 'api/financial_transactions/'+trasactionId;
 			rvBaseWebSrvV2.putJSON(url, splitData.data).then(function(data) {
 			   	 deferred.resolve(data);
-			},function(data){
+			},function(data) {
 			    deferred.reject(data);
 			});
 			return deferred.promise;
@@ -156,12 +156,12 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 		* @return {object} defer promise
 		*/
 
-		this.savePaymentDetails = function(data){
+		this.savePaymentDetails = function(data) {
 			var deferred = $q.defer();
 			var url = '/api/bills/'+data.bill_id+'/add_payment_method';
 			rvBaseWebSrvV2.postJSON(url, data.data_to_pass).then(function(data) {
 				    deferred.resolve(data);
-				},function(data){
+				},function(data) {
 				    deferred.reject(data);
 				});
 			return deferred.promise;

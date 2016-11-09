@@ -28,7 +28,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             $scope.isEdit = false;
         };
 
-        $scope.isActiveClass = function(){
+        $scope.isActiveClass = function() {
             return $scope.siteminder.active;
         };
 
@@ -60,7 +60,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 
         };
 
-        $scope.onFailureSetMessage = function(data){
+        $scope.onFailureSetMessage = function(data) {
           $scope.errorMessage = data.responseText;
         };
 
@@ -130,19 +130,19 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 
 
         //---------------- do an isDirty check and launch isValid checks
-        $scope.$watch('editData.snt_value',function(to, fm, evt){
+        $scope.$watch('editData.snt_value',function(to, fm, evt) {
            $scope.hasValidSelection();
 
         });
-        $scope.$watch('editData.external_value',function(to, fm, evt){
+        $scope.$watch('editData.external_value',function(to, fm, evt) {
            $scope.hasValidSelection();
 
         });
 
         //----------------
 
-        $scope.$watch('editData.mapping_type_value',function(to, fm, evt){
-            if (to){
+        $scope.$watch('editData.mapping_type_value',function(to, fm, evt) {
+            if (to) {
                 $scope.editData.sntValues = $scope.mappingInterface.mappingTypeRefs[to];
                 // In case external values list has been obtained for this mapping type refer to the list
                 if ($scope.mappingInterface.mappingTypeRefsExt && $scope.mappingInterface.mappingTypeRefsExt[to]) {
@@ -187,15 +187,15 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                     $scope.mappingInterface.mappingTypeRefs[mTypeName].push(mappingTypeRefObject);
                 }
 
-                if(_.isArray(data.mapping_type[x].extvalues) && data.mapping_type[x].extvalues.length > 0){
-                    if(!$scope.mappingInterface.mappingTypeRefsExt){
+                if(_.isArray(data.mapping_type[x].extvalues) && data.mapping_type[x].extvalues.length > 0) {
+                    if(!$scope.mappingInterface.mappingTypeRefsExt) {
                         $scope.mappingInterface.mappingTypeRefsExt = [];
                     }
 
-                    if(!$scope.mappingInterface.mappingTypeRefsExt[mTypeName]){
+                    if(!$scope.mappingInterface.mappingTypeRefsExt[mTypeName]) {
                         $scope.mappingInterface.mappingTypeRefsExt[mTypeName] = [];
                     }
-                    _.each(data.mapping_type[x].extvalues, function(extRef){
+                    _.each(data.mapping_type[x].extvalues, function(extRef) {
                         $scope.mappingInterface.mappingTypeRefsExt[mTypeName].push({
                             name:extRef.value,
                             description:extRef.description
@@ -324,7 +324,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             $scope.invokeApi(ADInterfaceMappingSrv.fetchInterfaceMappingsList, mappingData, $scope.fetchInterfaceMappingsSuccess);
 
         };
-        $scope.hasValidSelection = function(){
+        $scope.hasValidSelection = function() {
             //check to verify if the selected values are valid
             //ie. don't allow a user to switch from a credit card type to source_code, withoout selecting a valid SNT value
             //loop through the available selections with the currently selected value to verify its avialable for selection
@@ -339,22 +339,22 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             available_mapping_types = $scope.editData.mapping_types;
             available_snt_values = $scope.mappingInterface.mappingTypeRefs[mapping_type];
             var valid_mapping_type = false, valid_snt_value = false, valid_external_value = false;
-            if (external_value !== '' && external_value !== " " && typeof external_value === typeof 'string'){
+            if (external_value !== '' && external_value !== " " && typeof external_value === typeof 'string') {
                 valid_external_value = true;
             }
 
-            for (var i in available_mapping_types){
-                if (mapping_type === available_mapping_types[i].name){
+            for (var i in available_mapping_types) {
+                if (mapping_type === available_mapping_types[i].name) {
                     valid_mapping_type = true;
                 }
             }
 
-            for (var n in available_snt_values){
-                if (snt_value === available_snt_values[n].name){
+            for (var n in available_snt_values) {
+                if (snt_value === available_snt_values[n].name) {
                     valid_snt_value = true;
                 }
             }
-            if (valid_mapping_type && valid_snt_value && valid_external_value){
+            if (valid_mapping_type && valid_snt_value && valid_external_value) {
                 $scope.editData.validEditSelection = 'true';
             } else {
                 $scope.editData.validEditSelection = 'false';

@@ -23,7 +23,7 @@ admin.config([
                 businessDate: function(ADAppSrv) {
                 	return ADAppSrv.fetchHotelBusinessDate();
                 },
-                adminDashboardConfigData: function(ADAppSrv){
+                adminDashboardConfigData: function(ADAppSrv) {
 					return ADAppSrv.fetchDashboardConfig();
 				}
             }

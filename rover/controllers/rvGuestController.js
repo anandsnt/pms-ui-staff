@@ -1102,7 +1102,7 @@ angular.module('sntRover').controller('guestCardController', [
 		 * [showCreditLimitExceedPopup description]
 		 * @return {undefined}
 		 */
-		var showCreditLimitExceedPopup = function(){
+		var showCreditLimitExceedPopup = function() {
 			ngDialog.open({
                 template: '/assets/partials/bill/rvBillingInfoCreditLimitExceededPopup.html',
                 className: '',
@@ -1351,7 +1351,7 @@ angular.module('sntRover').controller('guestCardController', [
 
 		$scope.selectGroup = function(group) {
 			$scope.closeDialog();
-			setTimeout(function(){
+			setTimeout(function() {
 				if ($scope.viewState.identifier === "CREATION") {
 					// In create reservation
 					$scope.reservationData.group = {
@@ -1547,7 +1547,7 @@ angular.module('sntRover').controller('guestCardController', [
 		 */
 		$scope.selectAllotment = function(allotment) {
 			$scope.closeDialog();
-			setTimeout(function(){
+			setTimeout(function() {
 				if (isInCreateReservationMode()) {
 					$scope.reservationData.allotment = {
 						id: allotment.id,
@@ -1868,7 +1868,7 @@ angular.module('sntRover').controller('guestCardController', [
 		};
 
 		// CICO-25249 - Catch error from staycard main controler - card replace API.
-		$scope.$on("SHOWERRORMESSAGE",function( event, errorMessage ){
+		$scope.$on("SHOWERRORMESSAGE",function( event, errorMessage ) {
 			$scope.errorMessage = errorMessage;
 		});
 

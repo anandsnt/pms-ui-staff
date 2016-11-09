@@ -104,8 +104,8 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
                 $scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = "";
             }
         };
-        $scope.loadLoyaltyPrograms = function(){
-            if ($scope.$parent.$parent.refreshingReservation){
+        $scope.loadLoyaltyPrograms = function() {
+            if ($scope.$parent.$parent.refreshingReservation) {
                 $rootScope.goToReservationCalled = true;
                 $rootScope.$broadcast('reload-loyalty-section-data',{'reload':true});
             }
@@ -128,8 +128,8 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
             $scope.invokeApi(RVLoyaltyProgramSrv.selectLoyalty, params, successCallback, errorCallback);
         };
 
-        $scope.$on('detect-hlps-ffp-active-status',function(evt,data){
-           if (data.userMemberships.use_hlp){
+        $scope.$on('detect-hlps-ffp-active-status',function(evt,data) {
+           if (data.userMemberships.use_hlp) {
                $scope.loyaltyProgramsActive(true);
                $scope.$parent.reservationData.use_hlp = true;
            } else {
@@ -138,7 +138,7 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
            }
 
 
-           if (data.userMemberships.use_ffp){
+           if (data.userMemberships.use_ffp) {
                $scope.ffpProgramsActive(true);
                $scope.$parent.reservationData.use_ffp = true;
            } else {
@@ -149,11 +149,11 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
 
         });
 
-        $scope.loyaltyProgramsActive = function(b){
+        $scope.loyaltyProgramsActive = function(b) {
           $scope.hotelLoyaltyProgramEnabled = b;
           $scope.$parent.reservationData.use_hlp = b;
         };
-        $scope.ffpProgramsActive = function(b){
+        $scope.ffpProgramsActive = function(b) {
           $scope.hotelFrequentFlyerProgramEnabled = b;
           $scope.$parent.reservationData.use_ffp = b;
         };

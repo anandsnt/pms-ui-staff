@@ -1,4 +1,4 @@
-admin.controller('settingsAndParamsCtrl',['$scope','settingsAndParamsSrv','settingsAndParamsData','chargeCodes', function($scope,settingsAndParamsSrv,settingsAndParamsData,chargeCodes){
+admin.controller('settingsAndParamsCtrl',['$scope','settingsAndParamsSrv','settingsAndParamsData','chargeCodes', function($scope,settingsAndParamsSrv,settingsAndParamsData,chargeCodes) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.ccBatchProcessingOptions = [{
@@ -28,9 +28,9 @@ admin.controller('settingsAndParamsCtrl',['$scope','settingsAndParamsSrv','setti
     * To handle save button action
     *
     */
-    $scope.saveClick = function(){
+    $scope.saveClick = function() {
 
-        var saveDetailsSuccessCallback = function(){
+        var saveDetailsSuccessCallback = function() {
              $scope.$emit('hideLoader');
              $scope.goBackToPreviousState();
             

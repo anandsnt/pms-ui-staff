@@ -6,75 +6,75 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
     $scope.data = {};
     var zestLanguageDataCopy = {};
     
-    var setLanguageDisplayNames = function(langs){
+    var setLanguageDisplayNames = function(langs) {
         /*
          * Using this to display language as seen in zest station
          * once we add an API (display name) variable
          * we can remove this reference, -CICO-27814
          */
-        for (var i in langs){
-            if (langs[i].value === 'Castellano'){
+        for (var i in langs) {
+            if (langs[i].value === 'Castellano') {
                 langs[i].name = 'Castellano';
             }
-            if (langs[i].value === 'English'){
+            if (langs[i].value === 'English') {
                 langs[i].name = 'English';
             }
-            if (langs[i].value === 'French'){
+            if (langs[i].value === 'French') {
                 langs[i].name = 'Français';
             }
-            if (langs[i].value === 'German'){
+            if (langs[i].value === 'German') {
                 langs[i].name = 'Deutsch';
             }
-            if (langs[i].value === 'Italian'){
+            if (langs[i].value === 'Italian') {
                 langs[i].name = 'Italiano';
             }
-            if (langs[i].value === 'Spanish'){
+            if (langs[i].value === 'Spanish') {
                 langs[i].name = 'Español';
             }
         }
         return langs;
     };
     
-    $scope.updateDefaultLanguageDropdown = function(){
+    $scope.updateDefaultLanguageDropdown = function() {
         console.info('update lang dropdown');
         $scope.enabledLangs = getEnabledLanguages();
         validateDefaultLang();
     };
     
-    var validateDefaultLang = function(){
+    var validateDefaultLang = function() {
         var lang = $scope.zestSettings.zest_lang.default_language;
         var enabledLanguages = getEnabledLanguages();
         var isValid = false;
-        for (var i in enabledLanguages){
-            if (lang === enabledLanguages[i].value){
+        for (var i in enabledLanguages) {
+            if (lang === enabledLanguages[i].value) {
                 isValid = true;
             }
         }
-        if (!isValid){
+        if (!isValid) {
             $scope.zestSettings.zest_lang.default_language = '';
         }
     };
     
-    $scope.hasFileUpdatedOrUploading = function(name){
-        if ($scope.zestSettings && $scope.zestSettings.zest_lang){
+    $scope.hasFileUpdatedOrUploading = function(name) {
+        if ($scope.zestSettings && $scope.zestSettings.zest_lang) {
             if ($scope.zestSettings.zest_lang[name+'_translations_file_updated'] ||
-                $scope.zestSettings.zest_lang[name+'_translations_file']){return true;}
+                $scope.zestSettings.zest_lang[name+'_translations_file']) {return true;}
             return false;
         } else return false;
     };
 
-    $scope.hasKeyImageFileUpdatedOrUploading = function(name){
-        if ($scope.zestSettings && $scope.zestSettings.key_create_file_uploaded){
-            if ($scope.zestSettings.key_create_file_uploaded !== '' && $scope.zestSettings.key_create_file_uploaded !== 'false' && $scope.zestSettings.key_create_file_uploaded.indexOf('/logo.png') === -1){return true;}
+    $scope.hasKeyImageFileUpdatedOrUploading = function(name) {
+        if ($scope.zestSettings && $scope.zestSettings.key_create_file_uploaded) {
+            if ($scope.zestSettings.key_create_file_uploaded !== '' && $scope.zestSettings.key_create_file_uploaded !== 'false' && $scope.zestSettings.key_create_file_uploaded.indexOf('/logo.png') === -1) {return true;}
             return false;
         } else return false;
     };
     
-    var getEnabledLanguages = function(){
-        if (!$scope.zestSettings.zest_lang){return null;};
+    var getEnabledLanguages = function() {
+        if (!$scope.zestSettings.zest_lang) {return null;};
         var langs = Object.keys($scope.zestSettings.zest_lang);
         var languages = [];
-        if (!langs){
+        if (!langs) {
             return null;
         } else {
             /*
@@ -83,14 +83,14 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             * otherwise the user shouldnt be allowed to set it to default
             */
             var isCapitalizedProperty, isEnabled, hasFileUpdatedOrUploading, langName;
-            for (var i in langs){
+            for (var i in langs) {
                 
                 isCapitalizedProperty = langs[i].charAt(0).toUpperCase() === langs[i].charAt(0);
                 isEnabled = $scope.zestSettings.zest_lang[langs[i]];
                 langName = langs[i].toLowerCase();
                 
                 hasFileUpdatedOrUploading = $scope.hasFileUpdatedOrUploading(langName);
-                if (isCapitalizedProperty && isEnabled && hasFileUpdatedOrUploading){//is a language if [is capitalized] and enabled
+                if (isCapitalizedProperty && isEnabled && hasFileUpdatedOrUploading) {//is a language if [is capitalized] and enabled
                     languages.push({
                         value: langs[i]
                     });
@@ -102,19 +102,19 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         }
     };
     
-    var setupDefaultLanguageDropdown = function(){
+    var setupDefaultLanguageDropdown = function() {
         $scope.enabledLangs = getEnabledLanguages();
-            if ($scope.enabledLangs === null){
+            if ($scope.enabledLangs === null) {
                 $scope.defaultLangsDivClass = 'overlay';
             } else {
                 $scope.defaultLangsDivClass = '';
-                if (!$scope.zestSettings.zest_lang.default_language || $scope.zestSettings.zest_lang.default_language === ''){
+                if (!$scope.zestSettings.zest_lang.default_language || $scope.zestSettings.zest_lang.default_language === '') {
                     $scope.zestSettings.zest_lang.default_language = '';
                 }
             }
     };
     
-    var fetchZestStationData =  function(){
+    var fetchZestStationData =  function() {
         
          var fetchSuccess = function (data) {
             $scope.$emit('hideLoader');
@@ -134,7 +134,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         };
         $scope.invokeApi(ADZestStationSrv.fetch, {}, fetchSuccess);
     };
-    var checkIfFileWasAdded = function(file){
+    var checkIfFileWasAdded = function(file) {
         return (!!file && file.length > 0) ? true : false;
     };
 
@@ -151,7 +151,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
     $scope.saveSettings = function() {
         ///handling for the api for now, api has some issue with the default image setting back to snt logo...
         //api dev should resolve this at some point
-        if ($scope.zestSettings.key_create_file_uploaded.indexOf('/logo.png') !== -1){
+        if ($scope.zestSettings.key_create_file_uploaded.indexOf('/logo.png') !== -1) {
             $scope.zestSettings.key_create_file_uploaded = 'false';
         }
         var saveSuccess = function() {
@@ -168,12 +168,12 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess);
     };
 
-    $scope.closePrompt = function(){
+    $scope.closePrompt = function() {
         ngDialog.close();
     };
     $scope.downloadPromptFileName = '';
-    $scope.downloadLang = function(lang){
-         $timeout(function(){
+    $scope.downloadLang = function(lang) {
+         $timeout(function() {
             $scope.downloadPromptFileName = lang+'.json';
             var link = document.getElementById('download-link-popup');//ie. en-download-link
             link.href = 'staff/locales/download/'+lang+'.json';
@@ -190,7 +190,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
 
     $scope.init = function() {
         fetchSettings();
-        if ($scope.isChrome){
+        if ($scope.isChrome) {
             $scope.saveAsText = 'Save-As';
         } else {
             $scope.saveAsText = 'Download Linked File As';

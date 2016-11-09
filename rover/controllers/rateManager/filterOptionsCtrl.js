@@ -41,30 +41,30 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
             }, 3000);
         });
 
-        $scope.selFirst = function(){
+        $scope.selFirst = function() {
             //ensure the first child el is re-selected (chrome/chromium/ie9 fix for latest ipad:chrome:iOS version- 41.0.2272.58)
             var rmRateType = $('#rmRateType');
-            if (rmRateType){
-                if (rmRateType && rmRateType.children){
+            if (rmRateType) {
+                if (rmRateType && rmRateType.children) {
                     try { setTimeout(function() {
-                        if (!rmRateType.children()[0].selected){
+                        if (!rmRateType.children()[0].selected) {
                             $('#rmRateType').children()[0].selected = true;
                         }
                     }, 100);
-                    } catch(err){
+                    } catch(err) {
 
                     }
                 }
             }
             var rmRate = $('#rmRate');
-            if (rmRate){
-                if (rmRate && rmRate.children){
+            if (rmRate) {
+                if (rmRate && rmRate.children) {
                     try { setTimeout(function() {
-                        if (!rmRate.children()[0].selected){
+                        if (!rmRate.children()[0].selected) {
                             $('#rmRate').children()[0].selected = true;
                         }
                     }, 100);
-                    } catch(err){
+                    } catch(err) {
 
                     }
                 }
@@ -155,11 +155,11 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
             }
 
             $scope.refreshFilterScroll();
-            if (filterData.rate_type_selected_list.length === 0){
+            if (filterData.rate_type_selected_list.length === 0) {
                 $scope.resetRatesList();
             }
         };
-        $scope.resetRatesList = function(){
+        $scope.resetRatesList = function() {
             filterData.rates = filterData.allRates;
         };
         /**
@@ -202,7 +202,7 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
                 $scope.companyLastSearchText = "";
             } else if($scope.companySearchText.length === 1) {
                 $scope.companySearchText = $scope.companySearchText.charAt(0).toUpperCase() + $scope.companySearchText.substr(1);
-            } else if($scope.companySearchText.length > 2){
+            } else if($scope.companySearchText.length > 2) {
                 companyCardFetchInterval = window.setInterval(function() {
                     displayFilteredResults();
                 }, 500);
@@ -228,7 +228,7 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
             } else {
                 $scope.cmpCardSearchDivHgt = $scope.companyCardResults.length * totalHeight;
             }
-            if( $scope.cmpCardSearchDivHgt > 250 ){
+            if( $scope.cmpCardSearchDivHgt > 250 ) {
                 $scope.cmpCardSearchDivHgt = 250;
             }
             var halfOfInputHeight = $('#company-card').height() / 2;
@@ -327,7 +327,7 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
          * @param  {Object} rate Rate object from the array of rates
          * @return {Boolean}      True if the rate is not expired
          */
-        $scope.removeExpiredRates = function(rate){
+        $scope.removeExpiredRates = function(rate) {
             return !$scope.currentFilterData.begin_date || // Need to filter only when date range is provided
                 !$scope.currentFilterData.end_date || // Need to filter only when date range is provided
                 !rate.end_date || // Need to filter only rates which have an expiry date (end date)

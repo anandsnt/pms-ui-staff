@@ -8,9 +8,9 @@ var ccVerificationService = function($q,$http,$rootScope) {
 			var url = "/staff/reservation/save_payment";
 			data.application = (typeof $rootScope.application !=="undefined") ? $rootScope.application : "WEB";
 			data.url_suffix = (typeof $rootScope.urlSuffix !=="undefined") ? $rootScope.urlSuffix : "";
-			$http.post(url, data).success(function(response){
+			$http.post(url, data).success(function(response) {
 				deferred.resolve(response);
-			}).error(function(){
+			}).error(function() {
 				deferred.reject();
 			});
 			return deferred.promise;

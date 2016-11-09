@@ -4,20 +4,20 @@
 
 	$scope.pageValid = false;
 
-	if($rootScope.isCheckedin){
+	if($rootScope.isCheckedin) {
 		$state.go('checkinSuccess');
 	}
-	else if($rootScope.isCheckin){
+	else if($rootScope.isCheckin) {
 		$state.go('checkinConfirmation');
 	}
-	else if(!$rootScope.isRoomVerified && !$rootScope.isCheckedout){
+	else if(!$rootScope.isRoomVerified && !$rootScope.isCheckedout) {
 		$state.go('checkoutRoomVerification');
 	}
 	else{
 		$scope.pageValid = true;
 	}
 
-	if($scope.pageValid){
+	if($scope.pageValid) {
 		$scope.finalMessage = "Thank You for staying with us!";
 		$scope.errorMessage = "";
 
@@ -29,7 +29,7 @@
 
 	// prevent chekout operation if user has already checked out
 
-	if(!$scope.isCheckoutCompleted){
+	if(!$scope.isCheckoutCompleted) {
 		var url = '/guest_web/home/checkout_guest.json';
 		var data = {'reservation_id':$rootScope.reservationID};
 
@@ -42,7 +42,7 @@
 			else {
 				$scope.netWorkError = true;
 			}
-		},function(){
+		},function() {
 			$scope.netWorkError = true;
 			$scope.posted = true;
 		});

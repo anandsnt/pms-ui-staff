@@ -98,10 +98,10 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
 
         $scope.initSelections();
 
-        $scope.closeWithAnimation = function (){
+        $scope.closeWithAnimation = function () {
             //to add stjepan's popup showing animation
             $rootScope.modalOpened = false;
-            $timeout(function(){
+            $timeout(function() {
                 ngDialog.close();
             }, 300);
         };
@@ -126,7 +126,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
 
         $scope.routeToSummary = function() {
 
-            var fetchSuccess = function(isAddonsConfigured){
+            var fetchSuccess = function(isAddonsConfigured) {
                 $scope.saveToVault('temporaryReservationDataFromDiaryScreen', $scope.vaultSelections);
                 //CICO-9429
                 if ( !$rootScope.isHourlyRateOn && $rootScope.isAddonOn&&isAddonsConfigured) {
@@ -144,7 +144,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
                 }
                 $scope.closeWithAnimation ();
             };
-            var fetchFailed = function(errorMessage){
+            var fetchFailed = function(errorMessage) {
                 $scope.errorMessage = errorMessage;
                 $scope.closeWithAnimation();
             };

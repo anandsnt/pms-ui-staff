@@ -25,20 +25,20 @@ admin.directive('adDropdownName', function($timeout) {
 	    },
         link: function ($scope, $element, $attr)
         {
-            if(typeof $scope.options !== 'undefined'){
+            if(typeof $scope.options !== 'undefined') {
                 if($scope.options.hasOwnProperty('showOptionsIf')) {
                     $scope.showOptionsIf = $scope.options.showOptionsIf;
                 }
             } else{
-                $scope.showOptionsIf = function(index){
+                $scope.showOptionsIf = function(index) {
                      return true;
                 };
             }
 
-            $scope.getLabel = function(row){
+            $scope.getLabel = function(row) {
                 var label = "";
-                _.each($scope.labelProperties, function(key, idx){
-                    if (idx === 0){
+                _.each($scope.labelProperties, function(key, idx) {
+                    if (idx === 0) {
                         label += row[key];
                     } else {
                         label +=  " - " + row[key];

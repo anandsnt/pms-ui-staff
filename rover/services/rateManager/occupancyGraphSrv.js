@@ -12,7 +12,7 @@ angular.module('sntRover').service('RateMgrOccupancyGraphSrv', ['$q', 'BaseWebSr
             return deferred.promise;
         };
 
-        this.setTargets = function(params){
+        this.setTargets = function(params) {
             var deferred = $q.defer();
             var url = '/api/daily_occupancies/targets';
             BaseWebSrvV2.postJSON(url, params).then(function (data) {

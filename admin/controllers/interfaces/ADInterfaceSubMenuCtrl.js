@@ -1,6 +1,6 @@
 admin.controller('ADInterfaceSubMenuCtrl', ['$scope', '$state',
     function ($scope, $state) {
-        switch ($state.current.name){
+        switch ($state.current.name) {
             case "admin.textMessagingGroup":
                 $scope.sectionTitle = "Text Messaging Systems Setup";
                 break;

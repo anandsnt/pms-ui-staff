@@ -159,7 +159,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
             data.data.is_opted_promotion_email = false;
           }
           $scope.invokeApi(RVContactInfoSrv.createGuest, data, createUserInfoSuccessCallback, failureOfCreateGuestCard);
-      } else if(!dataUpdated){
+      } else if(!dataUpdated) {
           if (!angular.equals(dataToUpdate, initialGuestCardData)) {
               $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
           }

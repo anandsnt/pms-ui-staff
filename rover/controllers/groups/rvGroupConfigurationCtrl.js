@@ -128,7 +128,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
         };
 
         //Move date, from date, end date change
-        (function(){
+        (function() {
 
             var activeMode = null,
                 lastSuccessCallback = null,
@@ -153,7 +153,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
              * whether arrival date left change allowed
              * @return {Boolean}
              */
-            var arrDateLeftChangeAllowed = function(){
+            var arrDateLeftChangeAllowed = function() {
                 var sumryData                   = $scope.groupConfigData.summary,
                     roomBlockExist              = (parseInt(sumryData.rooms_total) > 0),
                     notAPastGroup               = !sumryData.is_a_past_group,
@@ -168,7 +168,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
              * whether arrival date left change allowed
              * @return {Boolean}
              */
-            var arrDateRightChangeAllowed = function(){
+            var arrDateRightChangeAllowed = function() {
                 var sumryData                   = $scope.groupConfigData.summary,
                     roomBlockExist              = (parseInt(sumryData.rooms_total) > 0),
                     noInHouseReservationExist   = (parseInt(sumryData.total_checked_in_reservations) === 0),
@@ -261,7 +261,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
              * whether departure date left change allowed
              * @return {Boolean}
              */
-            var depDateLeftChangeAllowed = function(){
+            var depDateLeftChangeAllowed = function() {
                 var sumryData                   = $scope.groupConfigData.summary,
                     roomBlockExist              = (parseInt(sumryData.rooms_total) > 0),
                     noInHouseReservationExist   = (parseInt(sumryData.total_checked_in_reservations) === 0);
@@ -274,7 +274,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
              * whether departure date right change allowed
              * @return {Boolean}
              */
-            var depDateRightChangeAllowed = function(){
+            var depDateRightChangeAllowed = function() {
                 var sumryData                   = $scope.groupConfigData.summary,
                     roomBlockExist              = (parseInt(sumryData.rooms_total) > 0),
                     noInHouseReservationExist   = (parseInt(sumryData.total_checked_in_reservations) === 0);
@@ -474,7 +474,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     switch (error.httpStatus) {
                         case 470:
                             $timeout(
-                                function(){
+                                function() {
                                     openNoAvailabilityPopup ();
                                 },
                             750);
@@ -616,7 +616,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     switch (error.httpStatus) {
                         case 470:
                             $timeout(
-                                function(){
+                                function() {
                                     openNoAvailabilityPopup ();
                                 },
                             750);
@@ -713,7 +713,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
              */
             var cancelMoveAction = function() {
                 // time out to prevent outside click event firing.
-                $timeout(function(){
+                $timeout(function() {
                     setToDefaultMode ();
                 }, 100);
             };
@@ -728,7 +728,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     lastCancelCallback();
 
                 // time out to prevent outside click event firing.
-                $timeout(function(){
+                $timeout(function() {
                     setToDefaultMode ();
                 }, 100);
              };
@@ -1015,7 +1015,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             var data = {
                 errorMessages: errors.errorMessage
             };
-            $timeout(function(){
+            $timeout(function() {
                 ngDialog.open({
                     template: '/assets/partials/groups/summary/popups/detachCardsAPIErrorPopup.html',
                     className: 'ngdialog-theme-default stay-card-alerts',

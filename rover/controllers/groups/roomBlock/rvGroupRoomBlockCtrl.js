@@ -660,7 +660,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			}
 
 			// let the date update if it is future group as well is in edit mode
-			else if (!$scope.isInAddMode() && !refData.is_a_past_group){
+			else if (!$scope.isInAddMode() && !refData.is_a_past_group) {
 				$timeout(function() {
 					$scope.updateGroupSummary();
 				}, 100);
@@ -709,7 +709,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			}
 
 			// let the date update if it is future group as well is in edit mode
-			else if (!$scope.isInAddMode() && !refData.is_a_past_group){
+			else if (!$scope.isInAddMode() && !refData.is_a_past_group) {
 				$timeout(function() {
 					$scope.updateGroupSummary();
 					//for updating the room block after udating the summary
@@ -730,7 +730,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * every logic to disable the from date picker should be here
 		 * @return {Boolean} [description]
 		 */
-		var shouldDisableStartDatePicker = function(){
+		var shouldDisableStartDatePicker = function() {
 			var sData 					= $scope.groupConfigData.summary,
 				noOfInhouseIsNotZero 	= (sData.total_checked_in_reservations > 0),
 				cancelledGroup 			= sData.is_cancelled,
@@ -750,7 +750,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * every logic to disable the end date picker should be here
 		 * @return {Boolean} [description]
 		 */
-		var shouldDisableEndDatePicker = function(){
+		var shouldDisableEndDatePicker = function() {
 			var sData 					= $scope.groupConfigData.summary,
 				endDateHasPassed 		= new tzIndependentDate(sData.block_to) < new tzIndependentDate($rootScope.businessDate),
 				cancelledGroup 			= sData.is_cancelled,
@@ -890,7 +890,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			else if(isHouseOverbooked && canOverbookHouse) {
 				return "HOUSE_OVERBOOK";
 			}
-			else if(isRoomTypeOverbooked && canOverbookRoomType){
+			else if(isRoomTypeOverbooked && canOverbookRoomType) {
 				return "ROOMTYPE_OVERBOOK";
 			}
 			// Overbooking occurs and has no permission.
@@ -936,7 +936,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 						$scope.saveRoomBlock(true);
 					}
 					else {
-						if (message === "NO_PERMISSION"){
+						if (message === "NO_PERMISSION") {
 							showNoPermissionOverBookingPopup();
 						} else {
 							showOverBookingPopup(message);
@@ -1442,7 +1442,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 						$scope.saveMassUpdate(true, lastCalledMassUpdateConfig);
 					}
 					else {
-						if (message === "NO_PERMISSION"){
+						if (message === "NO_PERMISSION") {
 							$scope.disableButtons = true;
 						} else {
 							$scope.overBookingMessage = message;
@@ -1696,13 +1696,13 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 					block.scrollTo(xPos, block.y);
 					// check if edge reached next button
-					if (Math.abs(this.maxScrollX) - Math.abs(this.x) <= 150 ){
-						if (!timeLineScrollEndReached){
+					if (Math.abs(this.maxScrollX) - Math.abs(this.x) <= 150 ) {
+						if (!timeLineScrollEndReached) {
 								timeLineScrollEndReached = true;
 								runDigestCycle();
 							}
 						} else {
-							if (timeLineScrollEndReached){
+							if (timeLineScrollEndReached) {
 								timeLineScrollEndReached = false;
 								runDigestCycle();
 						}
@@ -1722,13 +1722,13 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 						$scope.$parent.myScroll[RATE_TIMELINE].scrollTo(xPos, 0);
 						$scope.$parent.myScroll[BLOCK_SCROLL].scrollTo(0, yPos);
 					// check if edge reached next button
-					if (Math.abs(this.maxScrollX) - Math.abs(this.x) <= 150 ){
-						if (!timeLineScrollEndReached){
+					if (Math.abs(this.maxScrollX) - Math.abs(this.x) <= 150 ) {
+						if (!timeLineScrollEndReached) {
 								timeLineScrollEndReached = true;
 								runDigestCycle();
 							}
 						} else {
-							if (timeLineScrollEndReached){
+							if (timeLineScrollEndReached) {
 								timeLineScrollEndReached = false;
 								runDigestCycle();
 						}
@@ -1855,14 +1855,14 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			$scope.changeDatesActions.clickedOnMoveButton ();
 
 		};
-		var getTotalOfIndividualDate = function(passedDate){
+		var getTotalOfIndividualDate = function(passedDate) {
 			var totalRoomsBlockedCountIndividualDate = 0;
 			var totalRoomsPickedIndividulaDate 		 = 0;
 			var cInt = util.convertToInteger;
 			angular.forEach($scope.groupConfigData.summary.selected_room_types_and_bookings, function(value, key) {
 
 				angular.forEach(value.dates, function(eachDateValue, eachDateKey) {
-					if(eachDateValue.date === passedDate){
+					if(eachDateValue.date === passedDate) {
 						totalRoomsBlockedCountIndividualDate = totalRoomsBlockedCountIndividualDate + cInt(eachDateValue.single) + cInt(eachDateValue.double) + cInt(eachDateValue.triple) + cInt(eachDateValue.quadruple);
 						totalRoomsPickedIndividulaDate = totalRoomsPickedIndividulaDate + cInt(eachDateValue.single_pickup) + cInt(eachDateValue.double_pickup) + cInt(eachDateValue.triple_pickup) + cInt(eachDateValue.quadruple_pickup);
 					}
@@ -1874,7 +1874,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			return totalOfIndividualDateData;
 		}
 
-		$scope.getTotalBookedRooms = function(){
+		$scope.getTotalBookedRooms = function() {
 
 			angular.forEach($scope.groupConfigData.summary.selected_room_types_and_occupanies, function(value, key) {
 				value.totalRoomsBlockedCountPerDay = getTotalOfIndividualDate(value.date)["totalBlocked"];
@@ -2049,7 +2049,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * This function sets tab data
 		 * @return {undefined}
 		 */
-		var initializeRoomBlockDetails = function(){
+		var initializeRoomBlockDetails = function() {
 			callInitialAPIs();
 			//on tab switching, we have change min date
 			setDatePickers();

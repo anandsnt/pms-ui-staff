@@ -43,7 +43,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
             nextPageActions(printopted);
         };
 
-        var handleStarTacPrinterActions = function(){
+        var handleStarTacPrinterActions = function() {
 
             var printData = "";
 
@@ -51,11 +51,11 @@ sntZestStation.controller('zsPrintBillCtrl', [
             $scope.$on('SOCKET_FAILED', function() {
                 printFailedActions();
             });
-            $scope.$on('WS_PRINT_SUCCESS',function(){
+            $scope.$on('WS_PRINT_SUCCESS',function() {
                 var printopted = 'true';
                 nextPageActions(printopted);
             });
-             $scope.$on('WS_PRINT_FAILED',function(event,data){
+             $scope.$on('WS_PRINT_FAILED',function(event,data) {
                 printFailedActions(data.error_message);
             });
             $scope.$on('SOCKET_CONNECTED', function() {
@@ -63,7 +63,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
             });
             /**** Socket actions ends here *****/
 
-            var fetchSatrTacBillSuccess = function(response){
+            var fetchSatrTacBillSuccess = function(response) {
                 printData =  response.bill_details;
                 //check if socket is open
                 if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
@@ -75,7 +75,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
             var data = {
                 "reservation_id": $scope.reservation_id
             };
-            var startTacDataFailedActions = function(){
+            var startTacDataFailedActions = function() {
                 printFailedActions();
             };
             var options = {

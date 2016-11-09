@@ -74,7 +74,7 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
 
         // save email to the reservation
         this.checkoutGuest = function(params) {
-            if (params){
+            if (params) {
                 params['application'] = 'KIOSK';
             }
             console.info('params: ',params);
@@ -112,7 +112,7 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
             return deferred.promise;
         };
 
-        this.fetchStarTacPrinterData = function(params){
+        this.fetchStarTacPrinterData = function(params) {
             var deferred = $q.defer();
             var url = 'api/reservations/'+params.reservation_id+'/bill_print_data?is_checkout=true';
             zsBaseWebSrv.getJSON(url, params).then(function(data) {

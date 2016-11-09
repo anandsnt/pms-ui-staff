@@ -11,7 +11,7 @@
       templateUrl: '/assets/checkin/partials/ccErrorModal.html',
       controller: ccVerificationModalCtrl,
       resolve: {
-        errorMessage:function(){
+        errorMessage:function() {
           return "Please enter a valid email.";
         }
       }
@@ -23,7 +23,7 @@
       templateUrl: '/assets/checkin/partials/ccErrorModal.html',
       controller: ccVerificationModalCtrl,
       resolve: {
-        errorMessage:function(){
+        errorMessage:function() {
           return "There is a problem saving your email address. Please retry.";
         }
       }
@@ -39,9 +39,9 @@
 	    return re.test(email);
 	  };
 
-    $scope.emailSubmitted = function(){
+    $scope.emailSubmitted = function() {
 
-    	if(!validateEmail($scope.guestDetails.email)){
+    	if(!validateEmail($scope.guestDetails.email)) {
     		$modal.open(errorOpts);
     	}
     	else{
@@ -51,17 +51,17 @@
           $scope.emailUpdated = true;
           $rootScope.userEmail = $scope.guestDetails.email;
           $rootScope.userEmailEntered = true;
-        },function(){
+        },function() {
           $scope.isLoading = false;
           $modal.open(emailErrorOpts);
         });
     	}
     };
 
-    $scope.continueToPrecheckin =  function(){
+    $scope.continueToPrecheckin =  function() {
       ($stateParams.isFrom === "checkinLater") ? $state.go('preCheckinStatus') : $state.go('checkinKeys');;
     };
-    $scope.changeEmail =  function(){
+    $scope.changeEmail =  function() {
        $scope.emailUpdated = false;
     };
 };

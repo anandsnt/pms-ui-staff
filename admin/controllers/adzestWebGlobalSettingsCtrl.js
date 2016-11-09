@@ -56,7 +56,7 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 		$scope.isImageAvailable = function(image) {
 			return (image !== '') ? true : false;
 		};
-		var isEmptyString = function(str){
+		var isEmptyString = function(str) {
 			return (_.isUndefined(str) || _.isNull(str) || str.length === 0);
 		};
 		//image place holder texts

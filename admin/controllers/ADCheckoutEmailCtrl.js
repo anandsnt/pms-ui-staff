@@ -1,4 +1,4 @@
-admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state','ngTableParams','$filter','$stateParams',function($scope,adCheckinCheckoutSrv,$state,ngTableParams,$filter,$stateParams){
+admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state','ngTableParams','$filter','$stateParams',function($scope,adCheckinCheckoutSrv,$state,ngTableParams,$filter,$stateParams) {
 
  /*
   * To retrieve previous state
@@ -10,7 +10,7 @@ admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state'
   BaseCtrl.call(this, $scope);
     ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
-  $scope.init = function(){
+  $scope.init = function() {
       $scope.emailDatas = {};
   };
 
@@ -20,7 +20,7 @@ admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state'
   * To show email list
   *
   */
-  $scope.showSendEmailOptions = function($defer, params){
+  $scope.showSendEmailOptions = function($defer, params) {
 
     $scope.emailTitle = 'Guests Checking Out';
     $scope.saveButtonTitle = 'SEND CHECKOUT EMAIL';
@@ -55,7 +55,7 @@ admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state'
     $scope.invokeApi(adCheckinCheckoutSrv.fetchEmailList, getParams, fetchEmailListSuccessCallback);
 
   };
-  $scope.loadTable = function(){
+  $scope.loadTable = function() {
     // REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
     $scope.tableParams = new ngTableParams({
       page: 1,            // show first page
@@ -75,14 +75,14 @@ admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state'
   * To check if all options are all selected or not
   *
   */
-  $scope.isAllOptionsSelected = function(){
+  $scope.isAllOptionsSelected = function() {
     var selectedCount = false;
     $scope.disableSave = true;
-    if($scope.emailDatas.length ===0){
+    if($scope.emailDatas.length ===0) {
       return false;
     }
      angular.forEach($scope.emailDatas,function(item, index) {
-           if(item.is_selected === true){
+           if(item.is_selected === true) {
              selectedCount++;
              $scope.disableSave = false;
            }
@@ -97,12 +97,12 @@ admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state'
   * To watch if all options are selcted
   *
   */
-  $scope.$watch("selectAllOption", function(o,n){
+  $scope.$watch("selectAllOption", function(o,n) {
     angular.forEach($scope.emailDatas,function(item, index) {
       item.is_selected = $scope.selectAllOption;
     });
   });
-  $scope.backActionFromEmail = function(){
+  $scope.backActionFromEmail = function() {
     $state.go('admin.checkout');
 
   };
@@ -111,7 +111,7 @@ admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state'
   *
   */
 
-  $scope.toggleAllOptions = function(){
+  $scope.toggleAllOptions = function() {
 
    var selectedStatus =  $scope.isAllOptionsSelected() ? false : true;
 
@@ -126,7 +126,7 @@ admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state'
   *
   */
 
-  $scope.sendMailClicked = function(){
+  $scope.sendMailClicked = function() {
   	var reservations = [];
   	angular.forEach($scope.emailDatas,function(item, index) {
        if(item.is_selected) {

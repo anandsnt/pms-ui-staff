@@ -1,4 +1,4 @@
-admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', function($scope, $rootScope,adChainsSrv){
+admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', function($scope, $rootScope,adChainsSrv) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.chainsList = [];
@@ -11,7 +11,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
    /*
     * To fetch hotel chains list
     */
-	$scope.fetchHotelChains = function(){
+	$scope.fetchHotelChains = function() {
 		var fetchChainsSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.chainsList = data.chain_list;
@@ -48,7 +48,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
   /*
    * To render add screen
    */
-	$scope.addNew = function(){
+	$scope.addNew = function() {
 		$scope.editData   = {};
 		$scope.errorMessage ="";
 		$scope.editData.lov  = [{'value':'','name':''}];
@@ -61,13 +61,13 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
    /*
     * To fetch the template for chains details add/edit screens
     */
- 	$scope.getTemplateUrl = function(){
+ 	$scope.getTemplateUrl = function() {
  		return "/assets/partials/chains/adChainForm.html";
  	};
    /*
     * To save new chain
     */
- 	$scope.addNewChain = function (){
+ 	$scope.addNewChain = function () {
 
  		var lovNames = [];
  		angular.forEach($scope.editData.lov, function(item, index) {
@@ -86,11 +86,11 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  			$scope.isAddmode = false;
 
  		};
- 		var addChainFailureCallback = function(errorMessage){
+ 		var addChainFailureCallback = function(errorMessage) {
  			$scope.$emit('hideLoader');
  			$scope.errorMessage = errorMessage;
 
- 			if(oldLov.length > 0){
+ 			if(oldLov.length > 0) {
  				$scope.editData.lov = oldLov;
  			}
  			//if the length is zero, we are reverting to initial one
@@ -105,7 +105,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
     * To update chain details
     * @param {string} id - chain id
     */
- 	$scope.updateChain = function(id){
+ 	$scope.updateChain = function(id) {
  		angular.forEach($scope.editData.lov,function(item, index) {
  			if (item.name === "") {
  				$scope.editData.lov.splice(index, 1);
@@ -120,7 +120,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 
 
- 		var updateChainFailureCallback = function(errorMessage){
+ 		var updateChainFailureCallback = function(errorMessage) {
  			$scope.$emit('hideLoader');
  			$scope.errorMessage = errorMessage;
  			//scroll to top of the page where error message is shown
@@ -142,8 +142,8 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  		$scope.invokeApi(adChainsSrv.update, updateData, updateChainSuccessCallback, updateChainFailureCallback);
  	};
         
-        $scope.getPages = function(r){//response text length
-            if (r > 0){
+        $scope.getPages = function(r) {//response text length
+            if (r > 0) {
                 return (Math.ceil(r/$scope.charLimitPerText));
             } else {
                 return 1;
@@ -153,7 +153,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
    /*
     * To handle cancel click event
     */
-	$scope.cancelClicked = function (){
+	$scope.cancelClicked = function () {
 		if($scope.isAddmode) {
 			$scope.isAddmode = false;
 		}
@@ -164,8 +164,8 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
    /*
     * To handle save button click - Add/Update action
     */
-	$scope.saveClicked = function(){
-		if($scope.isAddmode){
+	$scope.saveClicked = function() {
+		if($scope.isAddmode) {
 			$scope.addNewChain();
 		}
 		else{
@@ -175,11 +175,11 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
    /*
     * To handle focus event on lov levels
     */
-	$scope.onFocus = function(index){
-		if((index === $scope.editData.lov.length-1) || ($scope.editData.lov.length===1)){
+	$scope.onFocus = function(index) {
+		if((index === $scope.editData.lov.length-1) || ($scope.editData.lov.length===1)) {
 			$scope.newOptionAvailable = true;
 			// exclude first two fields
-			if($scope.editData.lov.length > 2){
+			if($scope.editData.lov.length > 2) {
 				angular.forEach($scope.editData.lov,function(item, index) {
 					if (item.name === "" && index < $scope.editData.lov.length-1 ) {
 						$scope.newOptionAvailable = false;
@@ -194,9 +194,9 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
    /*
     * To handle text change on lov levels
     */
-	$scope.textChanged = function(index){
+	$scope.textChanged = function(index) {
 
-		if($scope.editData.lov.length>1){
+		if($scope.editData.lov.length>1) {
 			if($scope.editData.lov[index].name === "") {
 				$scope.editData.lov.splice(index, 1);
 			}
@@ -205,8 +205,8 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
    /*
     * To handle blur event on lov levels
     */
-	$scope.onBlur = function(index){
-		if($scope.editData.lov.length>1){
+	$scope.onBlur = function(index) {
+		if($scope.editData.lov.length>1) {
 			if($scope.editData.lov[index].name === "") {
 				$scope.editData.lov.splice(index, 1);
 			}

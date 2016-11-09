@@ -63,7 +63,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             if ($stateParams.rateId) {
                 setRateDetails(rateDetails);
                 $scope.is_edit = true;
-                if(rateDetails.based_on && rateDetails.based_on.id){
+                if(rateDetails.based_on && rateDetails.based_on.id) {
                     $scope.otherData.notIsBasedOn = (rateDetails.based_on.is_copied) ? false :  true;
                 }
                 $scope.otherData.isEdit = true;
@@ -71,9 +71,9 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         };
 
 
-        var fetchCommissionDetails = function(){
-            var fetchCommissionDetailsSuccess = function(data){
-                if(_.isEmpty($scope.rateData.commission_details)){
+        var fetchCommissionDetails = function() {
+            var fetchCommissionDetailsSuccess = function(data) {
+                if(_.isEmpty($scope.rateData.commission_details)) {
                     $scope.rateData.commission_details = data.commission_details;
                 }
             };
@@ -412,7 +412,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         * Fetches the list of origin of bookings available, sets only the active ones
         */
         var fetchOriginOfBookings = function() {
-            var onOriginOfBookingFetchSuccess = function(data){
+            var onOriginOfBookingFetchSuccess = function(data) {
                 $scope.originOfBookings = _.filter(data.booking_origins, function(origin) {
                     return origin.is_active;
                 });

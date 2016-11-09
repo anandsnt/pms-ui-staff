@@ -208,7 +208,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			// since we moved these from main controller
 			$scope.markets = chosenReport.hasMarketsList;
 
-			angular.forEach($scope.markets.data,function(marketValue, index){
+			angular.forEach($scope.markets.data,function(marketValue, index) {
 				if(marketValue.hasOwnProperty("selected")) {
 					$scope.marketExists = true;
 					return true;

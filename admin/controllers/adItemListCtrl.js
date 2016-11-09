@@ -1,4 +1,4 @@
-admin.controller('ADItemListCtrl', ['$scope','ADItemSrv', 'ngTableParams', '$filter', function($scope, ADItemSrv, ngTableParams, $filter){
+admin.controller('ADItemListCtrl', ['$scope','ADItemSrv', 'ngTableParams', '$filter', function($scope, ADItemSrv, ngTableParams, $filter) {
    /*
 	* Controller class for Room List
 	*/
@@ -9,7 +9,7 @@ admin.controller('ADItemListCtrl', ['$scope','ADItemSrv', 'ngTableParams', '$fil
     * Success call back of fetch
     * @param {object} items list
     */
-	var fetchSuccessOfItemList = function(data){
+	var fetchSuccessOfItemList = function(data) {
 		$scope.$emit('hideLoader');
 		$scope.data = data;
 		//applying sorting functionality in item list
@@ -40,7 +40,7 @@ admin.controller('ADItemListCtrl', ['$scope','ADItemSrv', 'ngTableParams', '$fil
 	* @param {boolean} checked status
 	* will call the web service for toggling status
 	*/
-	$scope.toggleFavourite = function(itemId, isFavourite){
+	$scope.toggleFavourite = function(itemId, isFavourite) {
 		$scope.invokeApi(ADItemSrv.toggleFavourite, {'item_id': itemId, 'toggle_status': isFavourite});
 	};
    /*
@@ -48,9 +48,9 @@ admin.controller('ADItemListCtrl', ['$scope','ADItemSrv', 'ngTableParams', '$fil
     * @param {int} index of the item
     * @param {string} id of the selected item
     */
-	$scope.deleteItem = function(index, id){
+	$scope.deleteItem = function(index, id) {
 
-		var successCallBack = function(){
+		var successCallBack = function() {
 			$scope.$emit('hideLoader');
 			$scope.data.items.splice(index, 1);
 			$scope.itemList = new ngTableParams({

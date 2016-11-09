@@ -250,7 +250,7 @@ angular.module('reportsModule')
                 selected = true;
             };
 
-            if (report['title'] === reportNames['DAILY_PRODUCTION_DEMO'] && filter.value === 'EXCLUDE_TAX'){
+            if (report['title'] === reportNames['DAILY_PRODUCTION_DEMO'] && filter.value === 'EXCLUDE_TAX') {
                 selected = true;
             }
 
@@ -726,11 +726,11 @@ angular.module('reportsModule')
                     requested++;
                     reportsSubSrv.fetchFloors()
                         .then( fillFloors );
-                } else if ( 'INCLUDE_DEPARTMENTS' === filter.value && ! filter.filled){
+                } else if ( 'INCLUDE_DEPARTMENTS' === filter.value && ! filter.filled) {
                     requested++;
                     reportsSubSrv.fetchDepartments()
                         .then( fillDepartments );
-                } else if ( 'INCLUDE_COMPLETION_STATUS' === filter.value && ! filter.filled){
+                } else if ( 'INCLUDE_COMPLETION_STATUS' === filter.value && ! filter.filled) {
                     //requested++;
                     fillCompletionStatus();
                 } else {
@@ -900,7 +900,7 @@ angular.module('reportsModule')
                 checkAllCompleted();
             };
 
-            function fillCompletionStatus(){
+            function fillCompletionStatus() {
                 customData = [
                                 {id: "UNASSIGNED", status: "UNASSIGNED", selected: true},
                                 {id: "ASSIGNED", status: "ASSIGNED", selected: true},
@@ -924,7 +924,7 @@ angular.module('reportsModule')
                 });
             };
 
-            function fillDepartments(data){
+            function fillDepartments(data) {
                 var foundFilter,
                     customData;
 
@@ -1124,7 +1124,7 @@ angular.module('reportsModule')
                 var rateTypeListIds      = _.pluck(rateTypesAndRateList, "rate_type_id"),
                     rateTypeListIds      = _.unique(rateTypeListIds),
                     rateTypeObject       = {},
-                    rateTypeListToReturn = rateTypeListIds.map(function(id){
+                    rateTypeListToReturn = rateTypeListIds.map(function(id) {
                         rateTypeObject   =  _.findWhere(rateTypesAndRateList, {rate_type_id: id});
                         if(rateTypeObject) {
                             rateTypeObject.name = rateTypeObject.rate_type_name;
@@ -1136,7 +1136,7 @@ angular.module('reportsModule')
             };
 
             var extractRatesFromRateTypesAndRateList = function(rateTypesAndRateList) {
-                return rateTypesAndRateList.map(function(rate){
+                return rateTypesAndRateList.map(function(rate) {
                     rate.name = rate.rate_name;
                     return _.omit(rate, "rate_type_name");
                 });

@@ -18,16 +18,16 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
         $scope.levelTwo = $scope.upsellData.upsell_room_levels[1].room_types;
         $scope.levelThree = $scope.upsellData.upsell_room_levels[2].room_types;
         
-        if (typeof $scope.upsellData.next_day_selected_charge_code_id === typeof 123){
+        if (typeof $scope.upsellData.next_day_selected_charge_code_id === typeof 123) {
             $scope.upsellData.selected_next_day_charge_code_id = $scope.upsellData.next_day_selected_charge_code_id;
         }
         
-        if (typeof $scope.upsellData.next_day_room_types_list !== typeof []){
+        if (typeof $scope.upsellData.next_day_room_types_list !== typeof []) {
             $scope.upsellData.next_day_room_types_list = angular.copy($scope.upsellData.room_types_list);
         }
-        if (typeof $scope.upsellData.next_day_room_types !== typeof []){
+        if (typeof $scope.upsellData.next_day_room_types !== typeof []) {
             $scope.upsellData.next_day_room_types = angular.copy($scope.upsellData.room_types);
-            for (var i in $scope.upsellData.next_day_room_types){
+            for (var i in $scope.upsellData.next_day_room_types) {
                 $scope.upsellData.next_day_room_types[i].max_los = '';
             }
             $scope.upsellData.isNextDayRoomTypesSelectedFlag = false;
@@ -39,17 +39,17 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
         isNextDayRoomTypesSelected();
         
         $scope.currency_code = getCurrencySign($scope.upsellData.upsell_setup.currency_code);
-        if (!$scope.upsellData.next_day_upsell_amounts || $scope.upsellData.next_day_upsell_amounts.length === 0){
+        if (!$scope.upsellData.next_day_upsell_amounts || $scope.upsellData.next_day_upsell_amounts.length === 0) {
             $scope.upsellData.next_day_upsell_amounts = angular.copy($scope.upsellData.upsell_amounts);
             $scope.upsellData.next_day_upsell_amounts[0].amount = '';
             $scope.upsellData.next_day_upsell_amounts[1].amount = '';
             $scope.upsellData.next_day_upsell_amounts[2].amount = '';
         }
-        if (typeof $scope.upsellData.next_day_room_types_list !== typeof []){
+        if (typeof $scope.upsellData.next_day_room_types_list !== typeof []) {
             $scope.upsellData.next_day_room_types_list = [];
         }
         
-        if (!$scope.upsellData.upsell_setup.is_next_day_upsell_on){
+        if (!$scope.upsellData.upsell_setup.is_next_day_upsell_on) {
             $scope.upsellData.upsell_setup.is_next_day_upsell_on = 'false';
         }
         
@@ -108,7 +108,7 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
      */
     $scope.clickAddRoomType = function (nextday) {
         var n = 'room_types', s = 'selected_room_type';
-        if (nextday){
+        if (nextday) {
             n = 'next_day_room_types', s = 'next_day_selected_room_type';
         }
         //While addig a room type, making its max_los defaults to 0.
@@ -120,7 +120,7 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
               }
             }
         });
-        if (nextday){
+        if (nextday) {
             isNextDayRoomTypesSelected();
         } else {
             isRoomTypesSelected();
@@ -155,16 +155,16 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
     
     $scope.deleteRoomType = function (value, name, nextday) {
         //var data = {"value": value, "name": name};
-        var losSet = function(n){
+        var losSet = function(n) {
             var t = 'room_types';
-            if (n){t = 'next_day_room_types';}
+            if (n) {t = 'next_day_room_types';}
             angular.forEach($scope.upsellData[t], function (item, index) {
               if (item.id === value) {
                 item.max_los = '';
               }
             });
         };
-        if (nextday){
+        if (nextday) {
             //$scope.upsellData['next_day_room_types_list'].push(data);
             losSet(true);
             $scope.upsellData['next_day_deleted_room_types'].push(value);

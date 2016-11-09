@@ -1,4 +1,4 @@
-sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', 'RVBillingInfoUtilSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog, RVBillingInfoUtilSrv){
+sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', 'RVBillingInfoUtilSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog, RVBillingInfoUtilSrv) {
 
     BaseCtrl.call(this, $scope);
 
@@ -136,7 +136,7 @@ sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter
     /**
      * Listener to show error messages for child views
      */
-    $scope.$on("displayErrorMessage", function(event, error){
+    $scope.$on("displayErrorMessage", function(event, error) {
         $scope.errorMessage = error;
     });
 

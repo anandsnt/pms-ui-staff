@@ -14,7 +14,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
             var encoder =  _.find($scope.key_encoders, function(t) {
                 return (t.id == id);
             });
-            if (!_.isUndefined(encoder)){
+            if (!_.isUndefined(encoder)) {
                 return encoder.description;    
             } else {
                 return '';
@@ -24,7 +24,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
             var terminal =  _.find($scope.emv_terminals, function(t) {
                 return (t.id == id);
             });
-            if (!_.isUndefined(terminal)){
+            if (!_.isUndefined(terminal)) {
                 return terminal.name;    
             } else {
                 return '';

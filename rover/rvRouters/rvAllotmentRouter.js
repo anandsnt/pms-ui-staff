@@ -3,7 +3,7 @@ angular.module('allotmentModule', [])
     '$stateProvider',
     '$urlRouterProvider',
     '$translateProvider',
-    function($stateProvider, $urlRouterProvider, $translateProvider){
+    function($stateProvider, $urlRouterProvider, $translateProvider) {
     //define module-specific routes here
         //group
         $stateProvider.state('rover.allotments', {
@@ -67,7 +67,7 @@ angular.module('allotmentModule', [])
                     return jsMappings.loadPaymentModule();
                 },
                 //to tackle from coming admin app to rover
-                summaryData: function(rvAllotmentConfigurationSrv, $stateParams, allotmentAssets, loadPaymentModule){
+                summaryData: function(rvAllotmentConfigurationSrv, $stateParams, allotmentAssets, loadPaymentModule) {
                     var isInAddMode = ($stateParams.id === "NEW_ALLOTMENT");
                     var params = {
                         allotmentId: $stateParams.id

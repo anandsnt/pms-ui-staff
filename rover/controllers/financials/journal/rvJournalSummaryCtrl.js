@@ -5,7 +5,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
 
     $scope.setScroller('summary_content',{});
     var refreshSummaryScroller = function () {
-        setTimeout(function(){$scope.refreshScroller('summary_content');}, 500);
+        setTimeout(function() {$scope.refreshScroller('summary_content');}, 500);
     };
 
     $rootScope.$on('REFRESHSUMMARYCONTENT',function () {
@@ -17,7 +17,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
     });
 
     // CICO-28060 : Update dates for summary upon changing from-date from Revenue or Payments 
-    $rootScope.$on('REFRESH_SUMMARY_DATA',function( event, date ){
+    $rootScope.$on('REFRESH_SUMMARY_DATA',function( event, date ) {
         $scope.data.summaryDate = date;
         initSummaryData();
     });
@@ -26,7 +26,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
         @param  {string} will be { DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE }
         @return {object}
      */
-    var getSummaryItemByBalanceType = function( balance_type ){
+    var getSummaryItemByBalanceType = function( balance_type ) {
 
         var summaryItem = "";
 
@@ -44,7 +44,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
         return summaryItem;
     };
 
-    var updateTotalForBalanceType = function( balance_type, opening_balance, debit_sum, credit_sum, closing_balance ){
+    var updateTotalForBalanceType = function( balance_type, opening_balance, debit_sum, credit_sum, closing_balance ) {
         switch( balance_type ) {
             case 'DEPOSIT_BALANCE'  :
                 $scope.data.summaryData.deposit_closing_balance = closing_balance;
@@ -67,9 +67,9 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
         }
     };
 
-	var initSummaryData = function(){
+	var initSummaryData = function() {
 
-		var successCallBackFetchSummaryData = function(responce){
+		var successCallBackFetchSummaryData = function(responce) {
 
             $scope.data.summaryData = {};
             $scope.data.summaryData = responce.data;
@@ -91,7 +91,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
     };
 
     // To handle date updation on summary tab
-    $rootScope.$on('summaryDateChanged',function(){
+    $rootScope.$on('summaryDateChanged',function() {
         initSummaryData();
         // CICO-28060 : Update dates for Revenue & Payments upon changing summary dates
         $rootScope.$broadcast('REFRESH_REVENUE_PAYMENT_DATA', {"date":$scope.data.summaryDate, "origin" :"SUMMARY_DATE_CHANGED"});
@@ -101,11 +101,11 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
         @param  {string} will be { DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE }
         @return {object}
      */
-    var fetchBalanceDetails = function( balance_type , isFromPagination ){
+    var fetchBalanceDetails = function( balance_type , isFromPagination ) {
 
         var summaryItem = getSummaryItemByBalanceType( balance_type );
 
-        var successCallBackFetchBalanceDetails = function(responce){
+        var successCallBackFetchBalanceDetails = function(responce) {
 
             summaryItem.transactions = [];
             summaryItem.transactions = responce.transactions;
@@ -113,7 +113,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
 
             updateTotalForBalanceType( balance_type, responce.opening_balance, responce.debit_sum, responce.credit_sum, responce.closing_balance );
 
-            if(!isFromPagination && summaryItem.transactions.length > 0){
+            if(!isFromPagination && summaryItem.transactions.length > 0) {
                 summaryItem.active = !summaryItem.active;
             }
 
@@ -151,7 +151,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
 	initSummaryData();
 
     //To load API data for pagination
-    var loadAPIData = function( balance_type, pageNo ){
+    var loadAPIData = function( balance_type, pageNo ) {
         var item        = getSummaryItemByBalanceType( balance_type );
         item.page_no    = pageNo;
         fetchBalanceDetails( balance_type, true );

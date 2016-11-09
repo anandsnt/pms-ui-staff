@@ -69,15 +69,15 @@ var GridRowItemDrag = React.createClass({
 			mouseMovingRowNumber = Math.floor(yCurPos / adj_height),
 			mouseMovingColNumber = Math.floor(Math.abs(scroller.x - (e.pageX - this.__roomListingAreaWidth)) / display.px_per_int);
 
-		if(!props.edit.active && !props.edit.passive){
+		if(!props.edit.active && !props.edit.passive) {
 			return;
 		}
 
-		if(props.edit.active && (props.data.key !== props.currentDragItem.key)){
+		if(props.edit.active && (props.data.key !== props.currentDragItem.key)) {
 			return;
 		}
 
-		if(mouseMovingColNumber < 0 || mouseMovingColNumber/4 > display.hours || mouseMovingRowNumber < 0 || mouseMovingRowNumber > (display.total_rows-1)){
+		if(mouseMovingColNumber < 0 || mouseMovingColNumber/4 > display.hours || mouseMovingRowNumber < 0 || mouseMovingRowNumber > (display.total_rows-1)) {
 			return;
 		}
 
@@ -85,7 +85,7 @@ var GridRowItemDrag = React.createClass({
 		//in-house reservation: we will allow to move vertically only (Room change only)
 		if(props.currentDragItem.reservation_status !== 'reserved'  &&
 			props.currentDragItem.reservation_status !== 'inhouse'  &&
-			props.currentDragItem.reservation_status !== 'check-in' ){
+			props.currentDragItem.reservation_status !== 'check-in' ) {
 			return;
 		}
 
@@ -203,7 +203,7 @@ var GridRowItemDrag = React.createClass({
 					props.__onResizeCommand(model);
 
 					if (scroller.maxScrollX <= xScPos && xScPos <= 0 &&
-						scroller.maxScrollY <= yScPos && yScPos <= 0 ){
+						scroller.maxScrollY <= yScPos && yScPos <= 0 ) {
 
 						scroller.scrollTo(xScPos, yScPos, 0);
 						scroller._scrollFn();
@@ -230,7 +230,7 @@ var GridRowItemDrag = React.createClass({
 		document.removeEventListener (this.mouseMovingEvent, this.__dbMouseMove);
 		var page_offset = this.getDOMNode().getBoundingClientRect();
 
-		if(state.dragging && props.edit.active && (props.data.key !== props.currentDragItem.key)){
+		if(state.dragging && props.edit.active && (props.data.key !== props.currentDragItem.key)) {
 			return;
 		}
 

@@ -6,7 +6,7 @@ sntRover.controller('RVActivityLogCtrl',[
     'activeUserList',
     '$state',
     'RVActivityLogSrv',
-	function($scope, $rootScope, $filter, activityLogResponse, activeUserList, $state, RVActivityLogSrv){
+	function($scope, $rootScope, $filter, activityLogResponse, activeUserList, $state, RVActivityLogSrv) {
 
 	BaseCtrl.call(this, $scope);
 
@@ -18,7 +18,7 @@ sntRover.controller('RVActivityLogCtrl',[
 	/**
 	* function to go back to reservation details
 	*/
-	$scope.backToStayCard = function(){
+	$scope.backToStayCard = function() {
 		$state.go("rover.reservation.staycard.reservationcard.reservationdetails",
             {
                 id:$scope.$parent.reservation.reservation_card.reservation_id,
@@ -57,7 +57,7 @@ sntRover.controller('RVActivityLogCtrl',[
         $scope.reportUpdateVisible = false;
     });
 
-    var setDatePickerOptions = function(){
+    var setDatePickerOptions = function() {
         //I just changed this to a function, dont knw who written this
         var datePickerCommon = {
             dateFormat: $rootScope.jqDateFormat,
@@ -90,22 +90,22 @@ sntRover.controller('RVActivityLogCtrl',[
         }, datePickerCommon);
     };
 
-    $scope.isOldValue = function(value){
-        if(value ==="" || typeof value === "undefined" || value === null){
+    $scope.isOldValue = function(value) {
+        if(value ==="" || typeof value === "undefined" || value === null) {
             return false;
         }
         else{
             return true;
         }
     };
-    $scope.updateReportFilter = function(){
+    $scope.updateReportFilter = function() {
         $scope.isUpdateReportFilter = true;
         $scope.initPaginationParams();
         $scope.initSort();
         $scope.updateReport();
     };
 
-    $scope.updateReport = function(){
+    $scope.updateReport = function() {
         var callback = function(data) {
                 $scope.totalResults = data.total_count;
                 $scope.activityLogData = data.results;
@@ -127,7 +127,7 @@ sntRover.controller('RVActivityLogCtrl',[
                 page: $scope.page,
                 per_page: $scope.perPage
         };
-        if($scope.isUpdateReportFilter){
+        if($scope.isUpdateReportFilter) {
             params['from_date'] = $filter('date')($scope.fromDate, 'yyyy-MM-dd');
             params['to_date'] =$filter('date')($scope.toDate, 'yyyy-MM-dd');
             if($scope.user_id) {
@@ -142,7 +142,7 @@ sntRover.controller('RVActivityLogCtrl',[
     /*
     * Sorting
     */
-    $scope.initSort =function(){
+    $scope.initSort =function() {
         $scope.sortOrderOfUserASC = false;
         $scope.sortOrderOfDateASC = false;
         $scope.sortOrderOfActionASC = false;
@@ -151,9 +151,9 @@ sntRover.controller('RVActivityLogCtrl',[
         $scope.sortOrderOfActionDSC = false;
     };
 
-    $scope.sortByUserName = function(){
+    $scope.sortByUserName = function() {
         $scope.sort_field ="USERNAME";
-        if($scope.sortOrderOfUserASC){
+        if($scope.sortOrderOfUserASC) {
             $scope.initSort();
             $scope.sortOrderOfUserDSC = true;
             $scope.sort_order="desc";
@@ -166,9 +166,9 @@ sntRover.controller('RVActivityLogCtrl',[
         $scope.updateReport();
     };
 
-    $scope.sortByDate = function(){
+    $scope.sortByDate = function() {
         $scope.sort_field ="DATE";
-        if($scope.sortOrderOfDateASC){
+        if($scope.sortOrderOfDateASC) {
             $scope.initSort();
             $scope.sortOrderOfDateDSC = true;
             $scope.sort_order="desc";
@@ -181,9 +181,9 @@ sntRover.controller('RVActivityLogCtrl',[
         $scope.updateReport();
     };
 
-    $scope.sortByAction = function(){
+    $scope.sortByAction = function() {
         $scope.sort_field ="ACTION";
-        if($scope.sortOrderOfActionASC){
+        if($scope.sortOrderOfActionASC) {
             $scope.initSort();
             $scope.sortOrderOfActionDSC = true;
             $scope.sort_order="desc";
@@ -200,7 +200,7 @@ sntRover.controller('RVActivityLogCtrl',[
     * Pagination
     */
     $scope.initPaginationParams = function() {
-        if($scope.activityLogData.total_count===0){
+        if($scope.activityLogData.total_count===0) {
              $scope.start = 0;
              $scope.end =0;
         }else{
@@ -253,7 +253,7 @@ sntRover.controller('RVActivityLogCtrl',[
         return split(term).pop();
     }
 
-    var initializeAutoCompletion = function(){
+    var initializeAutoCompletion = function() {
         //forming auto complte source object
         var activeUserAutoCompleteObj = [];
         _.each($scope.activeUserList, function(user) {
@@ -331,13 +331,13 @@ sntRover.controller('RVActivityLogCtrl',[
        $scope.fromDate = "";
 
     };
-    $scope.userChanged = function(){
-        if($scope.userEmail===''){
+    $scope.userChanged = function() {
+        if($scope.userEmail==='') {
            $scope.user_id=0;
         }
     };
     $scope.userEmail='';
-	$scope.init = function(){
+	$scope.init = function() {
         var reservationDetails = $scope.$parent.reservation.reservation_card;
         //setting the header caption
 		$scope.$emit('HeaderChanged', $filter('translate')('ACTIVITY_LOG_TITLE'));

@@ -1,15 +1,15 @@
 
 // Function to remove unwanted key elements from hash.
-var dclone = function(object, unwanted_keys){
+var dclone = function(object, unwanted_keys) {
 
-  	if(typeof unwanted_keys === "undefined"){
+  	if(typeof unwanted_keys === "undefined") {
   		unwanted_keys = [];
   	}
-  	if(object === "undefined"){
+  	if(object === "undefined") {
   		return object;
   	} else {
   			var newObject = JSON.parse(JSON.stringify(object));
-		  	for(var i=0; i < unwanted_keys.length; i++){
+		  	for(var i=0; i < unwanted_keys.length; i++) {
 		  		delete newObject[unwanted_keys[i]];
 		  	}
   	}
@@ -28,7 +28,7 @@ var DateFormatInfoMappings = {
 };
 
 var getDateFormat = function(dateFormat) {
-    if(typeof dateFormat === 'undefined'){
+    if(typeof dateFormat === 'undefined') {
         return DateFormatInfoMappings['MM-DD-YYYY'][0];
     }
     else{
@@ -37,7 +37,7 @@ var getDateFormat = function(dateFormat) {
 };
 
 var getJqDateFormat = function(dateFormat) {
-    if(typeof dateFormat === 'undefined'){
+    if(typeof dateFormat === 'undefined') {
         return DateFormatInfoMappings['MM-DD-YYYY'][1];
     }
     else{
@@ -76,7 +76,7 @@ var creditCardTypes = {
       "VISA": 'VA'
 };
 
-function getCreditCardType(cardBrand){
+function getCreditCardType(cardBrand) {
     var card = (typeof cardBrand  ==="undefined") ? "":cardBrand.toUpperCase();
     var cardArray = ['AX','DC','DS','JCB','MC','VA'];
     return (cardArray.indexOf(card) != -1 ) ? card : (typeof creditCardTypes[card]!='undefined') ? creditCardTypes[card] : 'credit-card';
@@ -122,7 +122,7 @@ var returnMonthsArray = function() {
   }];
 };
 
-var applyStyle = function(styleString){
+var applyStyle = function(styleString) {
   //set zestweb footer color based on admin settings
     var css = document.createElement("style");
     css.type = "text/css";
@@ -130,7 +130,7 @@ var applyStyle = function(styleString){
     document.body.appendChild(css);
 };
 
-var applyFooterStyle = function(footer_color){
+var applyFooterStyle = function(footer_color) {
     var styleString = "#zest-footer a{  color :"+ footer_color + " !important;}";
     //body and HTML tags were given auto height in some themes(almost 40 themes),
     //so in order to override all these, we needed to add this line of code here

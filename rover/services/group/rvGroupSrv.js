@@ -50,7 +50,7 @@ angular.module('sntRover').service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
 			};
 
             // Groups that are not deducted from inventory are exculded from card searches in Reservation module
-            if (params.is_take_from_inventory){
+            if (params.is_take_from_inventory) {
                 data.is_take_from_inventory = true;
             }
 

@@ -1,7 +1,7 @@
-var BasePaymentCtrl = function($scope){
+var BasePaymentCtrl = function($scope) {
 	BaseCtrl.call(this, $scope);
 
-	var init = function(){
+	var init = function() {
 
 		$scope.isFromAccounts = true;
 		$scope.shouldShowWaiting = false;
@@ -21,9 +21,9 @@ var BasePaymentCtrl = function($scope){
 	/**
 	 * change payment type action - initial add payment screen
 	 */
-	$scope.changePaymentType = function(){
+	$scope.changePaymentType = function() {
 
-		if($scope.paymentGateway !== 'sixpayments'){
+		if($scope.paymentGateway !== 'sixpayments') {
 			$scope.showCCPage = ($scope.dataToSave.paymentType === "CC") ? true: false;
                         $scope.swippedCard = ($scope.dataToSave.paymentType === "CC") ? true: false;
 			$scope.showCCPage = ($scope.dataToSave.paymentType === "CC") ? true: false;
@@ -33,7 +33,7 @@ var BasePaymentCtrl = function($scope){
 			return;
 		};
 	};
-	$scope.changeOnsiteCallIn = function(){
+	$scope.changeOnsiteCallIn = function() {
 		$scope.showCCPage = ($scope.isManual) ? true:false;
 		$scope.swippedCard = ($scope.isManual) ? true:false;
 		$scope.addmode = true;

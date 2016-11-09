@@ -7,7 +7,7 @@ sntRover.controller('RVWorkstationController',[
   'ngDialog',
   'RVWorkstationSrv',
   '$timeout',
-  function($scope, $rootScope, $filter, $state, ngDialog, RVWorkstationSrv, $timeout){
+  function($scope, $rootScope, $filter, $state, ngDialog, RVWorkstationSrv, $timeout) {
     BaseCtrl.call(this, $scope);
 
     var fetchKeyEncoderList = function() {
@@ -32,7 +32,7 @@ sntRover.controller('RVWorkstationController',[
         $scope.errorMessage = "";
         var onSetWorkstationSuccess = function(response) {
           $scope.$emit('hideLoader');
-          $timeout(function(){
+          $timeout(function() {
             ngDialog.close();
           }, 250);
         };

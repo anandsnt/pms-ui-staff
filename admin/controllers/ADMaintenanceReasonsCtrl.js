@@ -1,5 +1,5 @@
 admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv', '$anchorScroll', '$timeout',  '$location',
- function($scope, ADMaintenanceReasonsSrv, $anchorScroll, $timeout, $location){
+ function($scope, ADMaintenanceReasonsSrv, $anchorScroll, $timeout, $location) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 4);
@@ -30,16 +30,16 @@ admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv'
     * @param {int} index of the selected item
     * @param {string} id of the item
     */
-	$scope.getTemplateUrl = function(index){
-		if($scope.currentClickedElement === index){
+	$scope.getTemplateUrl = function(index) {
+		if($scope.currentClickedElement === index) {
 			 return "/assets/partials/maintenanceReasons/adMaintenanceReasonsEdit.html";
 		}
 	};
 	/*
     * To handle cancel click
     */
-	$scope.clickedCancel = function(){
-		if($scope.currentClickedElement !== 'new'){
+	$scope.clickedCancel = function() {
+		if($scope.currentClickedElement !== 'new') {
 			$scope.data.maintenance_reasons[$scope.currentClickedElement].name = $scope.preveousName;
 			$scope.data.maintenance_reasons[$scope.currentClickedElement].code = $scope.preveouscode;
 			$scope.preveousName = "";
@@ -52,7 +52,7 @@ admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv'
 	/*
     * To handle add new button click
     */
-	$scope.addNewClicked = function(){
+	$scope.addNewClicked = function() {
 		$scope.currentClickedElement = 'new';
 		$timeout(function() {
             $location.hash('add-new');
@@ -62,8 +62,8 @@ admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv'
 	/*
     * To handle save button in add new box.
     */
-  	$scope.saveAddNew = function(){
-  		var postSuccess = function(data){
+  	$scope.saveAddNew = function() {
+  		var postSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 			$scope.data.name = "";
@@ -80,8 +80,8 @@ admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv'
 	/*
     * To handle save button in edit box.
     */
-   	$scope.updateItem = function(){
-   		var postSuccess = function(data){
+   	$scope.updateItem = function() {
+   		var postSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 		};
@@ -91,8 +91,8 @@ admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv'
    	/*
     * To handle delete button in edit box and list view.
     */
-	$scope.clickedDelete = function(id){
-		var successDeletionCallback = function(){
+	$scope.clickedDelete = function(id) {
+		var successDeletionCallback = function() {
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 			// delete data from scope

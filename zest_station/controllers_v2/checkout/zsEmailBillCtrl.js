@@ -37,7 +37,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 			//if user already has email provide two options
 			//else prompt for email entry
 			$scope.mode = !!$scope.email ? "EMAIL_BILL_GUEST_OPTIONS" : "EMAIL_BILL_EDIT_MODE";
-			if ($scope.mode === 'EMAIL_BILL_EDIT_MODE'){
+			if ($scope.mode === 'EMAIL_BILL_EDIT_MODE') {
 				$scope.focusInputField("email_text");
 			};
 

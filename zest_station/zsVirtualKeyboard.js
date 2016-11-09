@@ -15,7 +15,7 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
   //open virtual keyboard
   $.keyboard.language.love = $.extend($.keyboard.language.en);
   var focused, isCountrySelector = (id === 'country-selector');
-  if (isCountrySelector){
+  if (isCountrySelector) {
      focused = $('input')[0];  
      elementObj = $(focused)[0];
   } else {
@@ -44,14 +44,14 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
     zestStationNumDaysField = false;
     zestStationNationalityField = false;
     
-  } else if (isNumOfDaysField(id)){
+  } else if (isNumOfDaysField(id)) {
     zestStationNonPasswordField = true;
     zestStationNumDaysField = true;
     zestStationNationalityField = false;
 
     defaultLayout = 'station_num_keyboard';
     shift = '';
-  } else if (isNationalityField(id)){
+  } else if (isNationalityField(id)) {
     zestStationNonPasswordField = true;
     zestStationNumDaysField = false;
     zestStationNationalityField = true;
@@ -266,12 +266,12 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
     beforeVisible: function(e, keyboard, el) {},
     visible: function(e, keyboard, el) {},
     change: function(e, keyboard, el) {
-       if (onChangeEvent){
+       if (onChangeEvent) {
         onChangeEvent();  
       }
       //country selector uses another jquery plugin, which does not recognize the input event from virtual keyboard,
       //we just need to trigger the search method from autocomplete to trigger filtering
-      if (isCountrySelector){
+      if (isCountrySelector) {
         $(elementObj).autocomplete('search', $(elementObj).val());
         //workaround to fix css updating for nationality in yotel..need to fire the scope.showingAutoComplete
         angular.element(elementObj).scope().showingAutoComplete();
@@ -279,9 +279,9 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
 
     },
     beforeClose: function(e, keyboard, el, accepted) {
-      if (isCountrySelector && ('ontouchstart' in window)){//only for touchscreen devices
+      if (isCountrySelector && ('ontouchstart' in window)) {//only for touchscreen devices
         var beforeCloseVal = $(elementObj).val();
-        setTimeout(function(){
+        setTimeout(function() {
           $(elementObj).autocomplete('search', beforeCloseVal);
         },0);
       }
@@ -307,17 +307,17 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
     //custom keyboard for zest station
     keyboardOptions.customLayout.default = keyboardOptions.customLayout.station_keyboard;
     $('.ui-keyboard').removeClass('top-align-keyboard');
-  } else if (zestStationNumDaysField){
+  } else if (zestStationNumDaysField) {
     //number of days keyboard, only number input with backspace button
     keyboardOptions.customLayout.default = keyboardOptions.customLayout.station_num_keyboard;
     $('.ui-keyboard').addClass('top-align-keyboard');
-  } else if (zestStationNationalityField){
+  } else if (zestStationNationalityField) {
     //number of days keyboard, only number input with backspace button
     keyboardOptions.customLayout.default = keyboardOptions.customLayout.station_keyboard_no_numbers;
     $('.ui-keyboard').addClass('bottom-align-keyboard');
   }
   var focused, isCountrySelector = (id === 'country-selector');
-  if (isCountrySelector){
+  if (isCountrySelector) {
      focused = $('input')[0];  
      elementObj = $(focused);
   } else {
@@ -330,12 +330,12 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
   * if the keyboard is used in conjunction with the autocomplete jquery plugin, then
   * it should be configured slightly differently...
   */
-  if (isCountrySelector){
+  if (isCountrySelector) {
       keyboardOptions.ignoreEsc = true;
   }
   elementObj.keyboard(keyboardOptions);
 
-  if (from === 'login'){
+  if (from === 'login') {
     keyboardOptions.display.bksp = '\u2421:Backspace';
    }
 

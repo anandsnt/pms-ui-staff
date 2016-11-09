@@ -1,5 +1,5 @@
 admin.controller('ADTemplateConfigurationCtrl',['$scope', '$state', 'ADHotelListSrv', 'ADHotelConfigurationSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout', '$location',
-  function($scope, $state, ADHotelListSrv, ADHotelConfigurationSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location){
+  function($scope, $state, ADHotelListSrv, ADHotelConfigurationSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location) {
 
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
@@ -12,7 +12,7 @@ admin.controller('ADTemplateConfigurationCtrl',['$scope', '$state', 'ADHotelList
    /*
     * Method to fetch all hotel brands
     */
-	$scope.fetchHotelList = function(){
+	$scope.fetchHotelList = function() {
 		var fetchSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.data = data.hotels;
@@ -23,10 +23,10 @@ admin.controller('ADTemplateConfigurationCtrl',['$scope', '$state', 'ADHotelList
 	/*
     * To get brand details form - used for both add and edit
     */
-	$scope.getTemplateUrl = function(){
+	$scope.getTemplateUrl = function() {
 		return "/assets/partials/templateConfiguration/adHotelConfigurationEdit.html";
 	};
-	$scope.editHotelConfiguration = function(index, hotelId){
+	$scope.editHotelConfiguration = function(index, hotelId) {
 
 
 
@@ -43,7 +43,7 @@ admin.controller('ADTemplateConfigurationCtrl',['$scope', '$state', 'ADHotelList
 			$scope.isEditmode = true;
 			$scope.hotelConfig.theme = $scope.hotelConfig.existing_email_template_theme;
 
-			for(var i = 0; i < $scope.hotelConfig.email_templates.length; i++){
+			for(var i = 0; i < $scope.hotelConfig.email_templates.length; i++) {
 				$scope.hotelConfig.email_templates[i].selected = false;
 				if($scope.hotelConfig.existing_email_templates.indexOf($scope.hotelConfig.email_templates[i].id) !== -1) {
 					$scope.hotelConfig.email_templates[i].selected = true;
@@ -54,8 +54,8 @@ admin.controller('ADTemplateConfigurationCtrl',['$scope', '$state', 'ADHotelList
 		$scope.invokeApi(ADHotelConfigurationSrv.editHotelConfiguration,postData,editHotelConfigurationSuccessCallback);
 	};
 
-	$scope.updateTemplateConfiguration = function(){
-		var updateHotelConfigurationSuccessCallback = function(){
+	$scope.updateTemplateConfiguration = function() {
+		var updateHotelConfigurationSuccessCallback = function() {
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
  			$scope.isAddmode = false;
@@ -79,7 +79,7 @@ admin.controller('ADTemplateConfigurationCtrl',['$scope', '$state', 'ADHotelList
 		$scope.invokeApi(ADHotelConfigurationSrv.updateHotelConfiguration,postData,updateHotelConfigurationSuccessCallback);
 	};
 
-	$scope.cancelClicked = function(){
+	$scope.cancelClicked = function() {
 		$scope.currentClickedElement = -1;
 		$scope.isAddmode = false;
 		$scope.isEditmode = false;
@@ -88,12 +88,12 @@ admin.controller('ADTemplateConfigurationCtrl',['$scope', '$state', 'ADHotelList
 	 * to get the templates associated with the selected theme
 	 *
 	 */
-	$scope.displayThemeTemplates = function(){
+	$scope.displayThemeTemplates = function() {
 
 		var data = {
 			"email_template_theme_id": $scope.hotelConfig.theme
 		};
-		var displayThemeCallback = function(data){
+		var displayThemeCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.hotelConfig.email_templates = data.email_templates;
 		};

@@ -1,4 +1,4 @@
-admin.controller('adAnalyticSetupCtrl',['$scope','adAnalyticSetupSrv','$state','$filter','$stateParams',function($scope,adAnalyticSetupSrv,$state,$filter,$stateParams){
+admin.controller('adAnalyticSetupCtrl',['$scope','adAnalyticSetupSrv','$state','$filter','$stateParams',function($scope,adAnalyticSetupSrv,$state,$filter,$stateParams) {
 
  /*
   * To retrieve previous state
@@ -11,7 +11,7 @@ admin.controller('adAnalyticSetupCtrl',['$scope','adAnalyticSetupSrv','$state','
   BaseCtrl.call(this, $scope);
 
 
-  $scope.fetchAnalyticSetup = function(){
+  $scope.fetchAnalyticSetup = function() {
 
     var fetchAnalyticSetupSuccessCallback = function(data) {
         $scope.isLoading = false;
@@ -25,7 +25,7 @@ admin.controller('adAnalyticSetupCtrl',['$scope','adAnalyticSetupSrv','$state','
   };
   $scope.fetchAnalyticSetup();
 
-  $scope.saveAnalyticSetup = function(){
+  $scope.saveAnalyticSetup = function() {
 
     var saveAnalyticSetupSuccessCallback = function(data) {
         $scope.isLoading = false;

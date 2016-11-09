@@ -1,4 +1,4 @@
-admin.controller('adTelnetInterfaceCtrl', ['$scope', 'adTelnetInterfaceSrv', function($scope, adTelnetInterfaceSrv){
+admin.controller('adTelnetInterfaceCtrl', ['$scope', 'adTelnetInterfaceSrv', function($scope, adTelnetInterfaceSrv) {
 
     BaseCtrl.call(this, $scope);
 

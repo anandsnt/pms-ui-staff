@@ -125,7 +125,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 						$scope.saveMassUpdate(true, false, lastCalledMassUpdateConfig);
 					}
 					else {
-						if (message === "NO_PERMISSION"){
+						if (message === "NO_PERMISSION") {
 							$scope.disableButtons = true;
 						} else {
 							$scope.overBookingMessage = message;

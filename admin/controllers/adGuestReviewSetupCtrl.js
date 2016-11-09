@@ -1,4 +1,4 @@
-admin.controller('ADGuestReviewSetupCtrl', ['$scope', '$state', 'ADGuestReviewSetupSrv','$rootScope', function($scope, $state, ADGuestReviewSetupSrv,$rootScope){
+admin.controller('ADGuestReviewSetupCtrl', ['$scope', '$state', 'ADGuestReviewSetupSrv','$rootScope', function($scope, $state, ADGuestReviewSetupSrv,$rootScope) {
 
 	/*
 	* controller class for guest review setup
@@ -15,7 +15,7 @@ admin.controller('ADGuestReviewSetupCtrl', ['$scope', '$state', 'ADGuestReviewSe
 	/*
 	* success call back of details web service call
 	*/
-	var fetchCompletedOfSettingsDetails = function(data){
+	var fetchCompletedOfSettingsDetails = function(data) {
 		$scope.$emit('hideLoader');
 		$scope.data = data;
 
@@ -27,11 +27,11 @@ admin.controller('ADGuestReviewSetupCtrl', ['$scope', '$state', 'ADGuestReviewSe
 	/*
 	* success call back of details web service call
 	*/
-	var successCallbackOfSaveDetails = function(data){
+	var successCallbackOfSaveDetails = function(data) {
 		$scope.$emit('hideLoader');
 	};
 
-	$scope.save = function(){
+	$scope.save = function() {
 		var postingData = {};
 		postingData.is_guest_reviews_on = $scope.data.is_guest_reviews_on;
 		postingData.number_of_reviews = $scope.data.number_of_reviews;

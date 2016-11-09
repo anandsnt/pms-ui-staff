@@ -1,4 +1,4 @@
-var GlobalApp = function(){
+var GlobalApp = function() {
     var that = this;
     this.browser = "other";
     this.cordovaLoaded = false;
@@ -11,7 +11,7 @@ var GlobalApp = function(){
         this.MLIOperator = new MLIOperation();
         this.desktopUUIDService = new DesktopUUIDService();
     }
-        catch(er){
+        catch(er) {
     };
 
 
@@ -23,14 +23,14 @@ var GlobalApp = function(){
 
 
 
-    this.setBrowser = function(browser){
-    	if(typeof browser === 'undefined' || browser === ''){
+    this.setBrowser = function(browser) {
+    	if(typeof browser === 'undefined' || browser === '') {
     		that.browser = "other";
     	}
     	else{
     		that.browser = browser;
     	}
-    	if(browser === 'rv_native' && !that.cordovaLoaded){
+    	if(browser === 'rv_native' && !that.cordovaLoaded) {
     	   //TODO: check URL
     		var url = "/assets/shared/cordova.js";
 
@@ -40,7 +40,7 @@ var GlobalApp = function(){
     		var xhr=new XMLHttpRequest(); //TODO: IE support?
 
     		xhr.onreadystatechange=function() {
-  				if (xhr.readyState===4 && xhr.status===200){
+  				if (xhr.readyState===4 && xhr.status===200) {
                       that.fetchCompletedOfCordovaPlugins(xhr.responseText);
   				} else {
   					that.fetchFailedOfCordovaPlugins();
@@ -56,7 +56,7 @@ var GlobalApp = function(){
 
 
     // success function of coddova plugin's appending
-    this.fetchCompletedOfCordovaPlugins = function(script){
+    this.fetchCompletedOfCordovaPlugins = function(script) {
         $("head").append('<script type="text/javascript">'+ script +'</script>');
         that.cordovaLoaded = true;
         try{
@@ -64,21 +64,21 @@ var GlobalApp = function(){
     	   that.cardReader = new CardOperation();
 
         }
-        catch(er){
+        catch(er) {
         };
         try{
 
             that.iBeaconLinker = new iBeaconOperation();
 
         }
-        catch(er){};
+        catch(er) {};
 
         try {
 
             that.uuidService = new UUIDService();
 
         }
-        catch(er){
+        catch(er) {
 
         };
 
@@ -86,12 +86,12 @@ var GlobalApp = function(){
     };
 
     // success function of coddova plugin's appending
-    this.fetchFailedOfCordovaPlugins = function(errorMessage){
+    this.fetchFailedOfCordovaPlugins = function(errorMessage) {
     	that.cordovaLoaded = false;
     };
 
 
-    this.enableCardSwipeDebug = function(){
+    this.enableCardSwipeDebug = function() {
         that.cardSwipeDebug = true; // Mark it as true to debug cardSwype opertations
         that.cardReader = new CardOperation();
     };

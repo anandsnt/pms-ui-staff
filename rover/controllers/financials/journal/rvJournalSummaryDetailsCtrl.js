@@ -5,7 +5,7 @@ sntRover.controller('RVJournalSummaryDetailsController', ['$scope','$rootScope',
     $scope.setScroller('summary_content',{});
 
     var refreshSummaryScroller = function () {
-        setTimeout(function(){$scope.refreshScroller('summary_content');}, 500);
+        setTimeout(function() {$scope.refreshScroller('summary_content');}, 500);
     };
 
     $scope.$on("INITIALIZESUMMARYDETAILS", function() {
@@ -13,7 +13,7 @@ sntRover.controller('RVJournalSummaryDetailsController', ['$scope','$rootScope',
     });
 
 
-    var getSummaryItemByBalanceType = function( balance_type ){
+    var getSummaryItemByBalanceType = function( balance_type ) {
         var summaryItem = "";
 
         switch( balance_type ) {
@@ -30,7 +30,7 @@ sntRover.controller('RVJournalSummaryDetailsController', ['$scope','$rootScope',
         return summaryItem;
     };
 
-    var updateTotalForBalanceType = function( balance_type, opening_balance, debit_sum, credit_sum, closing_balance ){
+    var updateTotalForBalanceType = function( balance_type, opening_balance, debit_sum, credit_sum, closing_balance ) {
         switch( balance_type ) {
             case 'DEPOSIT_BALANCE'  :
                 $scope.details.summaryData.deposit_closing_balance = closing_balance;
@@ -53,9 +53,9 @@ sntRover.controller('RVJournalSummaryDetailsController', ['$scope','$rootScope',
         }
     };
 
-    var initSummaryData = function(){
+    var initSummaryData = function() {
 
-        var successCallBackFetchSummaryData = function(responce){
+        var successCallBackFetchSummaryData = function(responce) {
             $scope.details = {};
             $scope.details.summaryData = {};
             $scope.details.summaryData = responce.data;
@@ -69,7 +69,7 @@ sntRover.controller('RVJournalSummaryDetailsController', ['$scope','$rootScope',
 
             fetchBalanceDetails("DEPOSIT_BALANCE", function() {
                 fetchBalanceDetails("GUEST_BALANCE", function() {
-                    fetchBalanceDetails("AR_BALANCE", function(){
+                    fetchBalanceDetails("AR_BALANCE", function() {
                         refreshSummaryScroller();
                         $scope.$emit('hideLoader');
                         $rootScope.$broadcast('PRINTSUMMARY');
@@ -88,11 +88,11 @@ sntRover.controller('RVJournalSummaryDetailsController', ['$scope','$rootScope',
         @param  {string} will be { DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE }
         @return {object}
      */
-    var fetchBalanceDetails = function( balance_type , callback){
+    var fetchBalanceDetails = function( balance_type , callback) {
 
         var summaryItem = getSummaryItemByBalanceType( balance_type );
 
-        var successCallBackFetchBalanceDetails = function(responce){
+        var successCallBackFetchBalanceDetails = function(responce) {
 
             summaryItem.transactions = [];
             summaryItem.transactions = responce.transactions;

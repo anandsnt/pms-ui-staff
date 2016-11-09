@@ -4,7 +4,7 @@ angular.module('sntRover').controller('rvAvailabilityButtonController', [
 	'$filter',
 	'rvAvailabilitySrv',
 	'jsMappings',
-	function($scope, $timeout, $filter, rvAvailabilitySrv, jsMappings){
+	function($scope, $timeout, $filter, rvAvailabilitySrv, jsMappings) {
 
 		/**
 		* Controller class for availability  button in header section,
@@ -24,7 +24,7 @@ angular.module('sntRover').controller('rvAvailabilityButtonController', [
 		* will call the API to fetch data with default values (from business date to 14 days)
 		* and will show the availability section if successful
 		*/
-		$scope.clickedOnAvailabilityButton = function($event){
+		$scope.clickedOnAvailabilityButton = function($event) {
 
 			/*
 				in order to compromise with stjepan's animation class we need write like this
@@ -32,11 +32,11 @@ angular.module('sntRover').controller('rvAvailabilityButtonController', [
 				we need to wait some time to complete the animation and execute the removing section after that
 			*/
 
-			if($scope.showAvailability){
+			if($scope.showAvailability) {
 				//adding the class for closing animation
 				$scope.isClosing = true;
 				//after some time we are removing the section and resetiing values to older
-				 $timeout(function(){
+				 $timeout(function() {
 				 	$scope.isClosing = false;
 					//hiding/removing the availability section
 					$scope.showAvailability = false;
@@ -49,9 +49,9 @@ angular.module('sntRover').controller('rvAvailabilityButtonController', [
 			else{
 				$scope.$emit("showLoader");
 				jsMappings.fetchAssets(['rover.availability', 'highcharts'], ['highcharts-ng'])
-                .then(function(){
+                .then(function() {
                 	$scope.$emit("hideLoader");
-                	$timeout(function(){
+                	$timeout(function() {
                 		$scope.showAvailability = true;
                 	}, 0);
                 });
@@ -64,8 +64,8 @@ angular.module('sntRover').controller('rvAvailabilityButtonController', [
 		* function to get the template url for availability, it will supply only if
 		* 'showAvailability' is true
 		*/
-		$scope.getAvailabilityTemplateUrl = function(){
-			if($scope.showAvailability){
+		$scope.getAvailabilityTemplateUrl = function() {
+			if($scope.showAvailability) {
 				return '/assets/partials/availability/availability.html';
 			}
 			return "";

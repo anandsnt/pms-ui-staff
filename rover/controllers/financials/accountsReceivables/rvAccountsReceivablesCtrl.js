@@ -9,16 +9,16 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
      * Setting up scroller with refresh options..
      */
     $scope.setScroller('arOverViewScroll', {});
-    var refreshArOverviewScroll = function(){
-        setTimeout(function(){$scope.refreshScroller('arOverViewScroll');}, 500);
+    var refreshArOverviewScroll = function() {
+        setTimeout(function() {$scope.refreshScroller('arOverViewScroll');}, 500);
     };
     refreshArOverviewScroll();
 
     /*
      *   Method to initialize the AR Overview Data set.
      */  
-    var fetchArOverviewData = function(){
-        var successCallBackFetchAccountsReceivables = function(data){
+    var fetchArOverviewData = function() {
+        var successCallBackFetchAccountsReceivables = function(data) {
 
             $scope.arOverviewData = {};
             $scope.arOverviewData = data;
@@ -38,7 +38,7 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
             refreshArOverviewScroll();
 
             // Condition to show/hide header bar - with OPEN GUEST BILL & UNPAID BALANCE.
-            if($scope.filterData.searchQuery !== "" || $scope.filterData.minAmount !== "" || $scope.filterData.ageingDays !== ""){
+            if($scope.filterData.searchQuery !== "" || $scope.filterData.minAmount !== "" || $scope.filterData.ageingDays !== "") {
             	$scope.filterData.hideArHeader = true;
             }
             else{
@@ -86,29 +86,29 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
     };
 
     // Filter block starts here ..
-    $scope.changedSearchQuery = function(){
+    $scope.changedSearchQuery = function() {
 
-        if($scope.filterData.searchQuery.length > 2 || $scope.filterData.searchQuery === ""){
+        if($scope.filterData.searchQuery.length > 2 || $scope.filterData.searchQuery === "") {
             $scope.filterData.minAmount     = "";
             $scope.filterData.ageingDays    = "";
             fetchArOverviewData();
         }
     };
 
-    $scope.clearSearchQuery = function(){
+    $scope.clearSearchQuery = function() {
         $scope.filterData.searchQuery = '';
         fetchArOverviewData();
     };
 
-    $scope.changedMinAmount = function(){
+    $scope.changedMinAmount = function() {
         fetchArOverviewData();
     };
 
-    $scope.changedSortBy = function(){
+    $scope.changedSortBy = function() {
         fetchArOverviewData();
     };
 
-    $scope.changedAgeingDays = function(){
+    $scope.changedAgeingDays = function() {
         fetchArOverviewData();
     };
     // Filter block ends here ..
@@ -170,7 +170,7 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
 			newValue = replaceWith;
 		}
 		var valueToReturn = ((value === null || typeof value === 'undefined') ? newValue : value);
-        if (valueToReturn.indexOf('null') !== -1){
+        if (valueToReturn.indexOf('null') !== -1) {
             valueToReturn = '';//removes unwanted ", null" type of values
         }
 		return valueToReturn;
@@ -179,7 +179,7 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
 	/* 	Is show pagination tab
 	 *	@return { boolean } 
 	 */
-	$scope.isShowPagination = function(){
+	$scope.isShowPagination = function() {
 		var arOverviewData = $scope.arOverviewData;
 		return (!!arOverviewData && arOverviewData.total_result >= $scope.filterData.perPage && arOverviewData.accounts.length > 0);
 	};

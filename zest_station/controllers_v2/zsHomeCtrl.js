@@ -55,7 +55,7 @@ sntZestStation.controller('zsHomeCtrl', [
 				var languageConfig = zsGeneralSrv.languageValueMappingsForUI[defaultLanguage.name],
 				langShortCode = languageConfig.code;
 
-				if( $translate.use() === langShortCode && checkIfDefaultLanguagIsSet){
+				if( $translate.use() === langShortCode && checkIfDefaultLanguagIsSet) {
 					//do nothing, current language is already the default one
 				} else {
 					console.info("translating to default lanaguage after "+userInActivityTimeInHomeScreenInSeconds+" seconds");
@@ -83,7 +83,7 @@ sntZestStation.controller('zsHomeCtrl', [
 				//when user activity is not recorded for more than 120 secs
 				//translating to default lanaguage
 				console.log('userInActivityTimeInHomeScreenInSeconds',userInActivityTimeInHomeScreenInSeconds,$state.current.name)
-				if ($state.current.name !== 'zest_station.home'){
+				if ($state.current.name !== 'zest_station.home') {
 					userInActivityTimeInHomeScreenInSeconds = 0;
 					clearInterval($scope.activityTimer);
 				}
@@ -106,7 +106,7 @@ sntZestStation.controller('zsHomeCtrl', [
 		//running at the same time, we will be start new timer)
 		try{
 			clearInterval($scope.activityTimer);
-		}catch(e){
+		}catch(e) {
 			//console.log("no timer running.")
 		}
 		setHomeScreenTimer();

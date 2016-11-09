@@ -3,16 +3,16 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     $scope.errorMessage = "";
 
 	$scope.setScroller('payment_content', {});
-    var refreshPaymentScroll = function(){
-        setTimeout(function(){$scope.refreshScroller('payment_content');}, 500);
+    var refreshPaymentScroll = function() {
+        setTimeout(function() {$scope.refreshScroller('payment_content');}, 500);
     };
 
-    $rootScope.$on('REFRESHPAYMENTCONTENT',function(){
+    $rootScope.$on('REFRESHPAYMENTCONTENT',function() {
         refreshPaymentScroll();
     });
 
-	var initPaymentData = function(origin){
-		var successCallBackFetchPaymentData = function(data){
+	var initPaymentData = function(origin) {
+		var successCallBackFetchPaymentData = function(data) {
 			$scope.data.paymentData = {};
             $scope.data.selectedPaymentType = '';
 			$scope.data.paymentData = data;
@@ -20,7 +20,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 
             $scope.errorMessage = "";
 			refreshPaymentScroll();
-            if(origin !=="SUMMARY_DATE_CHANGED"){
+            if(origin !=="SUMMARY_DATE_CHANGED") {
                 $scope.$emit('hideLoader');
             }
 		};
@@ -37,43 +37,43 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 
 	initPaymentData("");
 
-    $rootScope.$on('fromDateChanged',function(){
+    $rootScope.$on('fromDateChanged',function() {
         initPaymentData("");
         $rootScope.$broadcast('REFRESH_SUMMARY_DATA', $scope.data.fromDate);
     });
 
-    $rootScope.$on('toDateChanged',function(){
+    $rootScope.$on('toDateChanged',function() {
         initPaymentData("");
     });
 
     // CICO-28060 : Update dates for Revenue & Payments upon changing summary dates
-    $rootScope.$on('REFRESH_REVENUE_PAYMENT_DATA',function( event, data ){
+    $rootScope.$on('REFRESH_REVENUE_PAYMENT_DATA',function( event, data ) {
         $scope.data.fromDate = data.date;
         $scope.data.toDate   = data.date;
         initPaymentData(data.origin);
     });
 
     // Load the transaction details
-    var loadTransactionDeatils = function(chargeCodeItem, isFromPagination){
+    var loadTransactionDeatils = function(chargeCodeItem, isFromPagination) {
 
-        var successCallBackFetchPaymentDataTransactions = function(data){
+        var successCallBackFetchPaymentDataTransactions = function(data) {
 
             chargeCodeItem.transactions = [];
             chargeCodeItem.transactions = data.transactions;
             chargeCodeItem.total_count = data.total_count;
             chargeCodeItem.end = chargeCodeItem.start + data.transactions.length - 1;
 
-            if(isFromPagination){
+            if(isFromPagination) {
                 // Compute the start, end and total count parameters
-                if(chargeCodeItem.nextAction){
+                if(chargeCodeItem.nextAction) {
                     chargeCodeItem.start = chargeCodeItem.start + $scope.data.filterData.perPage;
                 }
-                if(chargeCodeItem.prevAction){
+                if(chargeCodeItem.prevAction) {
                     chargeCodeItem.start = chargeCodeItem.start - $scope.data.filterData.perPage;
                 }
                 chargeCodeItem.end = chargeCodeItem.start + chargeCodeItem.transactions.length - 1;
             }
-            else if(data.transactions.length > 0){
+            else if(data.transactions.length > 0) {
                 chargeCodeItem.active = !chargeCodeItem.active;
             }
 
@@ -83,7 +83,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         };
 
         // Call api only while expanding the tab or on pagination Next/Prev button actions ..
-        if(!chargeCodeItem.active || isFromPagination){
+        if(!chargeCodeItem.active || isFromPagination) {
             var postData = {
                 "from_date":$scope.data.fromDate ,
                 "to_date":$scope.data.toDate ,
@@ -102,11 +102,11 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     };
 
     /** Handle Expand/Collapse of Level1 **/
-    $scope.clickedFirstLevel = function(index1){
+    $scope.clickedFirstLevel = function(index1) {
 
         var toggleItem = $scope.data.paymentData.payment_types[index1];
 
-        if(toggleItem.payment_type !== "Credit Card"){
+        if(toggleItem.payment_type !== "Credit Card") {
             loadTransactionDeatils(toggleItem , false);
         }
         else{
@@ -116,7 +116,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     };
 
     // Handle Expand/Collapse of Level2  Credit card section
-    $scope.clickedSecondLevel = function(index1, index2){
+    $scope.clickedSecondLevel = function(index1, index2) {
 
         var toggleItem = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
 
@@ -124,20 +124,20 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     };
 
     /* To hide/show arrow button for Level1 */
-    $scope.checkHasArrowFirstLevel = function(index){
+    $scope.checkHasArrowFirstLevel = function(index) {
         var hasArrow = false,
         item = $scope.data.paymentData.payment_types[index];
-        if((typeof item.credit_cards !== 'undefined') && (item.credit_cards.length >0)){
+        if((typeof item.credit_cards !== 'undefined') && (item.credit_cards.length >0)) {
             hasArrow = true;
         }
-        else if((typeof item.transactions !== 'undefined') && (item.transactions.length >0)){
+        else if((typeof item.transactions !== 'undefined') && (item.transactions.length >0)) {
             hasArrow = true;
         }
         return hasArrow;
     };
 
     /* To hide/show arrow button for Level2 */
-    $scope.checkHasArrowSecondLevel = function(index1, index2){
+    $scope.checkHasArrowSecondLevel = function(index1, index2) {
         var hasArrow = false,
         item = $scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions;
         if((typeof item !== 'undefined') && (item.length >0)) {
@@ -147,18 +147,18 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     };
 
     // To hanlde click inside payment tab.
-    $scope.clickedOnPayment = function($event){
+    $scope.clickedOnPayment = function($event) {
         $event.stopPropagation();
-        if($scope.data.isDrawerOpened){
+        if($scope.data.isDrawerOpened) {
             $rootScope.$broadcast("CLOSEPRINTBOX");
         }
         $scope.errorMessage = "";
     };
 
     // Logic for pagination starts here ..
-    $scope.loadNextSet = function(index1, index2){
+    $scope.loadNextSet = function(index1, index2) {
 
-        if(typeof index2 === 'undefined' || index2 === false ){
+        if(typeof index2 === 'undefined' || index2 === false ) {
             var item = $scope.data.paymentData.payment_types[index1];
         }
         else{
@@ -170,8 +170,8 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         loadTransactionDeatils(item , true);
     };
 
-    $scope.loadPrevSet = function(index1, index2){
-        if(typeof index2 === 'undefined' || index2 === false ){
+    $scope.loadPrevSet = function(index1, index2) {
+        if(typeof index2 === 'undefined' || index2 === false ) {
             var item = $scope.data.paymentData.payment_types[index1];
         }
         else{
@@ -183,9 +183,9 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         loadTransactionDeatils(item, true);
     };
 
-    $scope.isNextButtonDisabled = function(index1, index2){
+    $scope.isNextButtonDisabled = function(index1, index2) {
 
-        if(typeof index2 === 'undefined' || index2 === false ){
+        if(typeof index2 === 'undefined' || index2 === false ) {
             var item = $scope.data.paymentData.payment_types[index1];
         }
         else{
@@ -193,15 +193,15 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         }
         var isDisabled = false;
 
-        if(item.end >= item.total_count){
+        if(item.end >= item.total_count) {
             isDisabled = true;
         }
         return isDisabled;
     };
 
-    $scope.isPrevButtonDisabled = function(index1, index2){
+    $scope.isPrevButtonDisabled = function(index1, index2) {
 
-        if(typeof index2 === 'undefined' || index2 === false ){
+        if(typeof index2 === 'undefined' || index2 === false ) {
             var item = $scope.data.paymentData.payment_types[index1];
         }
         else{
@@ -209,7 +209,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         }
         var isDisabled = false;
 
-        if(item.page_no === 1){
+        if(item.page_no === 1) {
             isDisabled = true;
         }
         return isDisabled;
@@ -217,7 +217,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     // Pagination logic ends ...
 
     // Hanlde payment group active toggle
-    $scope.clickedPaymentGroup = function( activePaymentTab ){
+    $scope.clickedPaymentGroup = function( activePaymentTab ) {
         $scope.data.activePaymentTab = activePaymentTab;
         initPaymentData("");
     };

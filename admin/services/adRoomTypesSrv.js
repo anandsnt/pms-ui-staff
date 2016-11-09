@@ -81,7 +81,7 @@ admin.service('ADRoomTypesSrv', ['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2',
 			var url = '/admin/room_types/' + data.roomtype_id;
 			ADBaseWebSrv.deleteJSON(url).then(function(data) {
 			deferred.resolve(data);
-			},function(errorMessage){
+			},function(errorMessage) {
 			deferred.reject(errorMessage);
 			});
 		return deferred.promise;

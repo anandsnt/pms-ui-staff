@@ -17,11 +17,11 @@ sntZestStation.directive('focusOn', ['$timeout', function($timeout) {
                 documentClick = true;
             });
             var elToFocus = '';
-            if (attrs.focusOn){
+            if (attrs.focusOn) {
                 elToFocus = attrs.focusOn;
-                if ($(elToFocus) && $(elToFocus)[0]){
+                if ($(elToFocus) && $(elToFocus)[0]) {
                     //bind events to retrigger for Virtual keyboard plugin to behave properly
-                    $timeout(function(){
+                    $timeout(function() {
                         var el = $(elToFocus)[0],
                         scopeFn = angular.element(el).scope()[attrs.focusOnTrigger];
 
@@ -32,7 +32,7 @@ sntZestStation.directive('focusOn', ['$timeout', function($timeout) {
                         //sets initial focus 
 
                         $(elToFocus).focus();
-                        $timeout(function(){
+                        $timeout(function() {
                             $(elToFocus).click();
                         },200);
 

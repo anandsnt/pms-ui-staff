@@ -71,8 +71,8 @@ sntRover.controller('RVComparisonReportCtrl', [
 
 		// re-render must be initiated before for taks like printing.
 		// thats why timeout time is set to min value 50ms
-		var reportSubmited = $scope.$on(reportMsgs['REPORT_SUBMITED'], function(){ 
-			$timeout(function(){
+		var reportSubmited = $scope.$on(reportMsgs['REPORT_SUBMITED'], function() { 
+			$timeout(function() {
 				init();
 			}, 50);
 		});

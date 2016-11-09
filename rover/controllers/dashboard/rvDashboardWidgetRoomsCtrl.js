@@ -1,4 +1,4 @@
-sntRover.controller('rvDashboardRoomsWidgetController',['$scope', 'RVSearchSrv', '$state', function($scope, RVSearchSrv, $state){
+sntRover.controller('rvDashboardRoomsWidgetController',['$scope', 'RVSearchSrv', '$state', function($scope, RVSearchSrv, $state) {
 	/**
 	* controller class for dashbaord's rooms area
 	*/
@@ -12,7 +12,7 @@ sntRover.controller('rvDashboardRoomsWidgetController',['$scope', 'RVSearchSrv',
     * we will call the webservice with given type and
     * will update search results and show search area
     */
-   $scope.clickedOnRoomButton = function(event, filterType){
+   $scope.clickedOnRoomButton = function(event, filterType) {
         event.preventDefault();
         event.stopImmediatePropagation();
         event.stopPropagation();

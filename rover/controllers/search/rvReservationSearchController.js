@@ -32,7 +32,7 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
 
     //Special case: Search by swipe in back navigation. We have to display the card number as well.
     //So we store the title as sucn in $vault
-    if($stateParams.type === "BY_SWIPE"){
+    if($stateParams.type === "BY_SWIPE") {
       heading = $vault.get('title');
     } else {
       if ($stateParams.type in headingDict) {
@@ -60,7 +60,7 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
       $vault.set('searchType', '');
       //$scope.$broadcast("showSearchResultsArea", false);
 
-      setTimeout(function(){
+      setTimeout(function() {
          $state.go('rover.dashboard', {
           useCache: true
         });
@@ -105,7 +105,7 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
     /**
     * When the ng-include content request started, we will show activity indicator
     */
-    $scope.$on("$includeContentRequested", function(event){
+    $scope.$on("$includeContentRequested", function(event) {
       totalNgIncludeRequested++; //variable used to track total number of nginlude requested
       $scope.$emit('showLoader');
     });
@@ -115,7 +115,7 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
     */
     $scope.$on("$viewContentLoaded", function(event) {
       totalNgIncludeRequested--;
-      if(totalNgIncludeRequested === 0){
+      if(totalNgIncludeRequested === 0) {
         $scope.$emit('hideLoader');
       }
       setTimeout(function() {

@@ -25,14 +25,14 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 						defaultLangShortCode = defaultLanguageConfig.code;
 
 					return zsGeneralSrv.fetchTranslations(sortedLanguages)
-						.then(function(translationFiles){
-							for(langShortCode in translationFiles){
+						.then(function(translationFiles) {
+							for(langShortCode in translationFiles) {
 								$translateProvider.translations(langShortCode, translationFiles[langShortCode]);
 							}
 							$translate.use(defaultLangShortCode);
 						});
 				},
-				hotelTimeData: function(zsGeneralSrv){
+				hotelTimeData: function(zsGeneralSrv) {
 					return zsGeneralSrv.fetchHotelTime();
 				},
 				cssMappings: function(zsCSSMappings) {

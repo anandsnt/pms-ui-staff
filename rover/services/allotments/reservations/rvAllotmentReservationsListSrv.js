@@ -168,12 +168,12 @@ angular.module('sntRover').service('rvAllotmentReservationsListSrv', ['$q', 'rvB
 	 * @param  {[type]} params [description]
 	 * @return {[type]}        [description]
 	 */
-	this.toggleHideRate = function( params ){
+	this.toggleHideRate = function( params ) {
 		var deferred = $q.defer(),
 			url = 'api/allotments/'+params.id+'/hide_rates';
 			rvBaseWebSrvV2.postJSON(url, _.without(params, 'id')).then(function(data) {
 			   	 deferred.resolve(data);
-			},function(data){
+			},function(data) {
 			    deferred.reject(data);
 			});
 		return deferred.promise;

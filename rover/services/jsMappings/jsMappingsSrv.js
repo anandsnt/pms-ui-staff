@@ -56,7 +56,7 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
       } else {
         locMappingFile = "/assets/asset_list/____generatedgatewayJsMappings/____generatedpayment/____generatedpaymentTemplateJsMappings.json";
 
-        rvBaseWebSrvV2.getJSON(locMappingFile).then(function(data){
+        rvBaseWebSrvV2.getJSON(locMappingFile).then(function(data) {
           paymentMappingList = data;
           deferred.resolve(paymentMappingList);
         }, function() {

@@ -107,7 +107,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
     controller: 'adIdeasSetupCtrl',
     url : '/ideas/setup',
     resolve: {
-      ideaSetup : ['adIdeasSetupSrv', function(adIdeasSetupSrv){
+      ideaSetup : ['adIdeasSetupSrv', function(adIdeasSetupSrv) {
         return adIdeasSetupSrv.getIdeaSetup();
       }]
     }

@@ -30,17 +30,17 @@ angular.module('sntRover').controller('RVUpgradesController',
                   noThanks: 'NO THANKS, proceed with Check In'
                 };
 
-                $scope.initAdvQueCheck = function(){
+                $scope.initAdvQueCheck = function() {
                     var adv = $rootScope.advanced_queue_flow_enabled;
                     var viaQueue = $scope.$parent.reservation.check_in_via_queue;
                     $scope.buttonText.noThanks = 'No Thanks, proceed with Check In';
 
-                    if (adv && viaQueue){
+                    if (adv && viaQueue) {
                         $scope.buttonText.noThanks = 'No thanks, proceed to queue';
                     }
                 };
                 $scope.initAdvQueCheck();
-                if (typeof $scope.$parent === typeof {}){
+                if (typeof $scope.$parent === typeof {}) {
                     $scope.$parent.myScrollOptions = {
                             'upgradesView': {
                                     scrollX: true,
@@ -66,9 +66,9 @@ angular.module('sntRover').controller('RVUpgradesController',
 		/**
 		* function to decide whether or not to show the upgrades
 		*/
-		$scope.isUpsellAvailable = function(){
+		$scope.isUpsellAvailable = function() {
 			var showUpgrade = false;
-			if($scope.upgradesList.length > 0 && !$scope.reservationData.reservation_card.is_suite && (($scope.reservationData.reservation_card.is_upsell_available === 'true') && ($scope.reservationData.reservation_card.reservation_status === 'RESERVED' || $scope.reservationData.reservation_card.reservation_status === 'CHECKING_IN'))){
+			if($scope.upgradesList.length > 0 && !$scope.reservationData.reservation_card.is_suite && (($scope.reservationData.reservation_card.is_upsell_available === 'true') && ($scope.reservationData.reservation_card.reservation_status === 'RESERVED' || $scope.reservationData.reservation_card.reservation_status === 'CHECKING_IN'))) {
 				showUpgrade = true;
 			}
 			return showUpgrade;
@@ -80,11 +80,11 @@ angular.module('sntRover').controller('RVUpgradesController',
 		 * @returns {Boolean} flag
 		 */
 		var isRoomReadyToAssign = function(room) {
-			if(room.room_status === "READY" && room.fo_status === "VACANT" && !room.is_preassigned){
-				if(room.checkin_inspected_only === "true" && room.room_ready_status === "INSPECTED"){
+			if(room.room_status === "READY" && room.fo_status === "VACANT" && !room.is_preassigned) {
+				if(room.checkin_inspected_only === "true" && room.room_ready_status === "INSPECTED") {
 					return true;
 				}
-				else if(room.checkin_inspected_only === "false"){
+				else if(room.checkin_inspected_only === "false") {
 					return true;
 				}
 			}
@@ -112,8 +112,8 @@ angular.module('sntRover').controller('RVUpgradesController',
 				$scope.setUpgradesDescriptionInitialStatuses();
 				$scope.$emit('hideLoader');
 				setTimeout(function() {
-                            if (typeof $scope.$parent === typeof {}){
-                                if (typeof $scope.$parent.myScroll === typeof {}){
+                            if (typeof $scope.$parent === typeof {}) {
+                                if (typeof $scope.$parent.myScroll === typeof {}) {
                                     $scope.$parent.myScroll['upgradesView'].refresh();
                                 }
                             }
@@ -137,7 +137,7 @@ angular.module('sntRover').controller('RVUpgradesController',
 		 * function to check occupancy for the reservation
 		 */
 		$scope.showMaximumOccupancyDialog = function(index) {
-			if($scope.isRoomLockedForThisReservation === "true" || $scope.upgradesList[index].donot_move_room){
+			if($scope.isRoomLockedForThisReservation === "true" || $scope.upgradesList[index].donot_move_room) {
 				ngDialog.open({
 	                template: '/assets/partials/roomAssignment/rvRoomLocked.html',
 	                className: 'ngdialog-theme-default',
@@ -254,9 +254,9 @@ angular.module('sntRover').controller('RVUpgradesController',
 		 * [borrowFromOtherRoomType description]
 		 * @return {[type]} [description]
 		 */
-		$scope.borrowFromOtherRoomType = function (){
+		$scope.borrowFromOtherRoomType = function () {
 			$scope.closeDialog ();
-			$timeout(function(){
+			$timeout(function() {
 				$scope.selectUpgrade ();
 			}, 300);
 		};
@@ -351,11 +351,11 @@ angular.module('sntRover').controller('RVUpgradesController',
 
 
                 $scope.putGuestInQueue = false;
-                if (!$rootScope.reservationUpgradeWatch){//alternative to $destroy, this is an init-once method
+                if (!$rootScope.reservationUpgradeWatch) {//alternative to $destroy, this is an init-once method
                     $rootScope.reservationUpgradeWatch = 1;
 
-                    $rootScope.$on('putGuestInQueue',function(){
-                        if ($rootScope.advanced_queue_flow_enabled){
+                    $rootScope.$on('putGuestInQueue',function() {
+                        if ($rootScope.advanced_queue_flow_enabled) {
                             $scope.putGuestInQueue = true;
                         } else {
                             $scope.putGuestInQueue = false;
@@ -384,9 +384,9 @@ angular.module('sntRover').controller('RVUpgradesController',
 		/**
 		* In upgrades we would display rooms Inspected & vacant(color - green) or outof service (grey).
 		*/
-		$scope.getRoomStatusClass = function(room){
+		$scope.getRoomStatusClass = function(room) {
 			var statusClass = "ready";
-			if(room.is_oos === "true"){
+			if(room.is_oos === "true") {
 				return "room-grey";
 			}
 			return statusClass;

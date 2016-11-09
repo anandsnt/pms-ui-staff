@@ -212,7 +212,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				// 	//No need to pass these values along with rate id
 				// 	//CICO-30723
 				if (forRate) {
-					if(typeof forRate !== "string"){
+					if(typeof forRate !== "string") {
 						payLoad['rate_id'] = forRate;
 					}
 				}
@@ -334,7 +334,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					}
 				}
 				//Add these params to API - only in Reccommended tab. CICO-28657
-				if($scope.stateCheck.activeView === 'RECOMMENDED'){
+				if($scope.stateCheck.activeView === 'RECOMMENDED') {
 
 					payLoad.company_id = $scope.reservationData.company.id;
 					payLoad.travel_agent_id = $scope.reservationData.travelAgent.id;
@@ -683,7 +683,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				}
 				if($stateParams.travel_agent_id || $stateParams.company_id
 					 || $stateParams.group_id || $stateParams.allotment_id
-					 || $stateParams.is_member == "true" || $stateParams.promotion_id){
+					 || $stateParams.is_member == "true" || $stateParams.promotion_id) {
 					$scope.stateCheck.activeView = 'RECOMMENDED';
 				}
 
@@ -958,13 +958,13 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				if ($scope.stateCheck.activeView === "RATE" || $scope.stateCheck.activeView === "RECOMMENDED") {
 					$scope.stateCheck.rateFilterText = "";
 					var isReccommendedTabApiRequired = false;
-					if($scope.stateCheck.activeView === "RATE"){
+					if($scope.stateCheck.activeView === "RATE") {
 						isReccommendedTabApiRequired = true;
 					} else if(($scope.stateCheck.activeView === "RECOMMENDED") && shouldRecommend()) {
 						isReccommendedTabApiRequired = true;
 					}
 					if(
-						isReccommendedTabApiRequired){
+						isReccommendedTabApiRequired) {
 						fetchRatesList(null, null, $scope.stateCheck.pagination.rate.page, function(response) {
 							$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
 							generateRatesGrid(response.results);
@@ -1833,7 +1833,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							isPromotion: isPromotion,
 							isSuiteUnavailable : room.isSuiteUnavailable
 						};
-						if(bestAvailableRateOfSelectedRoom === rate.id){
+						if(bestAvailableRateOfSelectedRoom === rate.id) {
 							rateInfo.bestAvailableRateRestrictions = rate.restrictions
 						}
 

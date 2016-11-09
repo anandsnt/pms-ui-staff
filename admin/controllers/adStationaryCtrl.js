@@ -86,7 +86,7 @@ admin.controller('ADStationaryCtrl',
 		}
 		//CICO-26524
 		$scope.data.group_hold_status_data = [];
-		if(!!$scope.data.groupholdstatus){
+		if(!!$scope.data.groupholdstatus) {
 			var groupConfirmationData = {};
 			groupConfirmationData.hold_status_id = $scope.data.groupholdstatus;
 			groupConfirmationData.confirmation_email_header = $scope.data.group_confirmation_header;
@@ -178,13 +178,13 @@ admin.controller('ADStationaryCtrl',
 		fetchStationary(params);
 	}
 
-	$scope.showConfirmationHeaderFooterBasedOnHoldStatus = function(){
+	$scope.showConfirmationHeaderFooterBasedOnHoldStatus = function() {
 		//If not set for any status - then empty
 		$scope.data.group_confirmation_header = "";
 		$scope.data.group_confirmation_footer = "";
 		angular.forEach($scope.data.group_hold_status_data, function(value, key) {
 
-	     	if(value.hold_status_id == $scope.data.groupholdstatus){
+	     	if(value.hold_status_id == $scope.data.groupholdstatus) {
 	     		$scope.data.group_confirmation_header = value.confirmation_email_header;
 		        $scope.data.group_confirmation_footer = value.confirmation_email_footer;
 	     	}

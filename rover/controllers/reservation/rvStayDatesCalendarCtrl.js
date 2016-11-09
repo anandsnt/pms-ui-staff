@@ -56,7 +56,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			fromDate.setMonth(fromDate.getMonth() - 1);
 			fromDate.setDate(22);
 
-			if(fromDate < new Date($rootScope.businessDate)){
+			if(fromDate < new Date($rootScope.businessDate)) {
 				fromDate = $rootScope.businessDate;
 			}
 
@@ -72,13 +72,13 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			params.per_page = 81;
 			params.to_date = $filter('date')(toDate, $rootScope.dateFormatForAPI);
 			params.status = "";
-			if($scope.reservationData.travelAgent.id !== ""){
+			if($scope.reservationData.travelAgent.id !== "") {
 				params.travel_agent_id = $scope.reservationData.travelAgent.id;
 			}
-			if($scope.reservationData.company.id !== ""){
+			if($scope.reservationData.company.id !== "") {
 				params.company_id = $scope.reservationData.company.id;
 			}
-			if($scope.reservationData.searchPromoCode !== ""){
+			if($scope.reservationData.searchPromoCode !== "") {
 				params.promotion_code = $scope.reservationData.searchPromoCode;
 			}
 			//Initialise data
@@ -260,7 +260,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 
 			$scope.disablePrevButton = $scope.isPrevButtonDisabled();
 
-			setTimeout(function(){
+			setTimeout(function() {
 				$scope.refreshScroller('stay-dates-calendar');
 			}, 1500);
 
@@ -543,7 +543,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 		};
 		//Click handler for cancel button in calendar screen
 		$scope.handleCancelAction = function() {
-			if($stateParams.fromState === 'STAY_CARD'){
+			if($stateParams.fromState === 'STAY_CARD') {
 				$state.go("rover.reservation.staycard.reservationcard.reservationdetails",
 					{"id" : $scope.reservationData.reservationId, "confirmationId": $scope.reservationData.confirmNum, "isrefresh": true});
 			} else{
@@ -567,8 +567,8 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 		/**
 		* Handles the forward and backward change for the calendar months
 		*/
-		var changeMonth = function(direction){
-			if(direction === 'FORWARD'){
+		var changeMonth = function(direction) {
+			if(direction === 'FORWARD') {
 				$scope.leftCalendarOptions.month = parseInt($scope.leftCalendarOptions.month) + 1;
 				$scope.rightCalendarOptions.month = parseInt($scope.rightCalendarOptions.month) + 1;
 			} else {
@@ -602,7 +602,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			nextMonthLastVisibleDate = new Date($scope.rightCalendarOptions.year, $scope.rightCalendarOptions.month);
 			nextMonthLastVisibleDate.setMonth(nextMonthLastVisibleDate.getMonth() + 2);
 			nextMonthLastVisibleDate.setDate(13);
-			if((fetchedStartDate <= nextMonthLastVisibleDate) && (nextMonthLastVisibleDate <= fetchedEndDate)){
+			if((fetchedStartDate <= nextMonthLastVisibleDate) && (nextMonthLastVisibleDate <= fetchedEndDate)) {
 				changeMonth('FORWARD');
 				return false;
 			}
@@ -614,10 +614,10 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			params.per_page = 44;
 			params.to_date = $filter('date')(nextMonthLastVisibleDate, $rootScope.dateFormatForAPI);;
 			params.status = 'FETCH_ADDITIONAL';
-			if($scope.reservationData.travelAgent.id !== ""){
+			if($scope.reservationData.travelAgent.id !== "") {
 				params.travel_agent_id = $scope.reservationData.travelAgent.id;
 			}
-			if($scope.reservationData.company.id !== ""){
+			if($scope.reservationData.company.id !== "") {
 				params.company_id = $scope.reservationData.company.id;
 			}
 			$scope.invokeApi(RVStayDatesCalendarSrv.fetchAvailability, params, nextMonthDetailsFetchSuccess);
@@ -649,11 +649,11 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			prevMonthLastVisibleDate.setDate(22);
 
 			//Limit the start date to the current business date
-			if(prevMonthLastVisibleDate <= tzIndependentDate($rootScope.businessDate)){
+			if(prevMonthLastVisibleDate <= tzIndependentDate($rootScope.businessDate)) {
 				prevMonthLastVisibleDate = tzIndependentDate($rootScope.businessDate);
 			}
 			//If the data is already fetched for the visble dates, then just swith the months
-			if((fetchedStartDate <= prevMonthLastVisibleDate) && (prevMonthLastVisibleDate <= fetchedEndDate)){
+			if((fetchedStartDate <= prevMonthLastVisibleDate) && (prevMonthLastVisibleDate <= fetchedEndDate)) {
 				changeMonth('BACKWARD');
 				return false;
 			}
@@ -665,10 +665,10 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			var toDate = fetchedStartDate.setDate(fetchedStartDate.getDate() - 1);
 			params.to_date = $filter('date')(toDate, $rootScope.dateFormatForAPI);
 			params.status = 'FETCH_ADDITIONAL';
-			if($scope.reservationData.travelAgent.id !== ""){
+			if($scope.reservationData.travelAgent.id !== "") {
 				params.travel_agent_id = $scope.reservationData.travelAgent.id;
 			}
-			if($scope.reservationData.company.id !== ""){
+			if($scope.reservationData.company.id !== "") {
 				params.company_id = $scope.reservationData.company.id;
 			}
 			$scope.invokeApi(RVStayDatesCalendarSrv.fetchAvailability, params, prevMonthDetailsFetchSuccess);

@@ -25,10 +25,10 @@ sntZestStation.config(['$stateProvider',
             templateUrl : '/assets/partials_v2/checkin/zsCollectNationality.html',
             controller  : 'zsCollectNationalityCtrl',
             resolve: {
-                countryList: function(zsGeneralSrv){
+                countryList: function(zsGeneralSrv) {
                     return zsGeneralSrv.fetchCountryList();
                 },
-                sortedCountryList: function(zsGeneralSrv){
+                sortedCountryList: function(zsGeneralSrv) {
                      return zsGeneralSrv.fetchSortedCountryList();
                 }
             }

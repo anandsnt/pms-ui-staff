@@ -337,7 +337,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 
 			};
 
-			var deleteContractFailureCallback = function(errorMessage){
+			var deleteContractFailureCallback = function(errorMessage) {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorMessage;
 			};
@@ -684,17 +684,17 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 			}
 		});
 
-		var rateSource = function(request, response){
+		var rateSource = function(request, response) {
 
 			// fetch data from server
             var fetchData = function() {
                 if (request.term !== '' && $scope.autoCompleteState.lastSearchText !== request.term) {
                     $scope.invokeApi(RVCompanyCardSrv.fetchRates, {
                         'query': request.term
-                    }, function(data){
+                    }, function(data) {
                     	$scope.$emit('hideLoader');
                     	var processedResults = [];
-                    	_.each(data.contract_rates,function(result){
+                    	_.each(data.contract_rates,function(result) {
                     		processedResults.push({
                     			label: result.name,
 	                            value: result.name,
@@ -719,7 +719,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
             }
 		};
 
-		var onRateSelect = function(){
+		var onRateSelect = function() {
 
 		};
 

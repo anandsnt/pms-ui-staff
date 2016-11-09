@@ -99,7 +99,7 @@ sntRover
 			return base;
 		};
 
-		copyArray = function(src, dest){
+		copyArray = function(src, dest) {
     		var val;
 
     		dest = [];
@@ -155,7 +155,7 @@ sntRover
 		roomIndex = function(rooms, room) {
 			var idx = -1;
 
-			for(var i = 0, len = rooms.length; i < len; i++){
+			for(var i = 0, len = rooms.length; i < len; i++) {
 				if(rooms[i].id === room.id) {
 					idx = i;
 					return idx;

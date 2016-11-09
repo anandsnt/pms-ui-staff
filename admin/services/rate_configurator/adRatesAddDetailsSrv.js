@@ -12,7 +12,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
 
             var deferred = $q.defer();
 
-            that.fetchBusinessDate = function(){
+            that.fetchBusinessDate = function() {
                 var url = '/api/business_dates/active';
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     that.addRatesDetailsData.business_date = data.business_date;

@@ -90,11 +90,11 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			return (rvPermissionSrv.getPermissionValue('EDIT_ALLOTMENT_ROOM_BLOCK'));
 		};
 
-		var isContractHeld = function(){
+		var isContractHeld = function() {
 			var contractIsHeld = true;
 
-			_.each($scope.allotmentConfigData.roomblock.selected_room_types_and_bookings,function(roomData){
-				_.each(roomData.dates,function(config){
+			_.each($scope.allotmentConfigData.roomblock.selected_room_types_and_bookings,function(roomData) {
+				_.each(roomData.dates,function(config) {
 					contractIsHeld = contractIsHeld && config.single === config.single_contract &&
 						config.double === config.double_contract &&
 						  config.triple === config.triple_contract &&
@@ -726,7 +726,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			else if(isHouseOverbooked && canOverbookHouse) {
 				return "HOUSE_OVERBOOK";
 			}
-			else if(isRoomTypeOverbooked && canOverbookRoomType){
+			else if(isRoomTypeOverbooked && canOverbookRoomType) {
 				return "ROOMTYPE_OVERBOOK";
 			}
 			// Overbooking occurs and has no permission.
@@ -751,7 +751,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 						$scope.saveRoomBlock(true);
 					}
 					else {
-						if (message === "NO_PERMISSION"){
+						if (message === "NO_PERMISSION") {
 							showNoPermissionOverBookingPopup();
 						} else {
 							showOverBookingPopup(message);
@@ -1277,7 +1277,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * we used to hide activity indicator & refresh scroller
 		 */
 		$scope.$on('NG_REPEAT_COMPLETED_RENDERING', function(event) {
-			$timeout(function(){
+			$timeout(function() {
 				refreshScroller();
 			}, 0);
 		});
@@ -1603,13 +1603,13 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 						block.scrollTo(xPos, block.y);
 
 						// check if edge reached next button
-						if (Math.abs(this.maxScrollX) - Math.abs(this.x) <= 150 ){
-							if (!timeLineScrollEndReached){
+						if (Math.abs(this.maxScrollX) - Math.abs(this.x) <= 150 ) {
+							if (!timeLineScrollEndReached) {
 									timeLineScrollEndReached = true;
 									runDigestCycle();
 								}
 							} else {
-								if (timeLineScrollEndReached){
+								if (timeLineScrollEndReached) {
 								 	timeLineScrollEndReached = false;
 									runDigestCycle();
 							}
@@ -1629,13 +1629,13 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 						getScrollerObject (ROOM_BLOCK_SCROLL).scrollTo(0, yPos);
 
 						// check if edge reached and enable next button
-						if (Math.abs(this.maxScrollX) - Math.abs(this.x) <= 150 ){
-							if (!timeLineScrollEndReached){
+						if (Math.abs(this.maxScrollX) - Math.abs(this.x) <= 150 ) {
+							if (!timeLineScrollEndReached) {
 									timeLineScrollEndReached = true;
 									runDigestCycle();
 								}
 							} else {
-								if (timeLineScrollEndReached){
+								if (timeLineScrollEndReached) {
 								 	timeLineScrollEndReached = false;
 									runDigestCycle();
 							}
@@ -1715,7 +1715,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * This function sets tab data
 		 * @return {undefined}
 		 */
-		var initializeRoomBlockDetails = function(){
+		var initializeRoomBlockDetails = function() {
 			// CICO-21222 Introduced pagination in room block timeline.
 			//default start date
 			$scope.timeLineStartDate = new tzIndependentDate($rootScope.businessDate);
@@ -1736,7 +1736,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			initializeVariables();
 
 			//date related setups and things
-			if (!$scope.isInAddMode()){
+			if (!$scope.isInAddMode()) {
 				setDatePickers();
 			}
 

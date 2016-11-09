@@ -1,16 +1,16 @@
-sntRover.controller('rvBillingInfoAllotmentMainCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog){
+sntRover.controller('rvBillingInfoAllotmentMainCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog) {
 	BaseCtrl.call(this, $scope);
 
-	$scope.$on('UPDATE_SHOULD_SHOW_WAITING', function(e, value){
+	$scope.$on('UPDATE_SHOULD_SHOW_WAITING', function(e, value) {
 		$scope.shouldShowWaiting = value;
 	});
 
-	$scope.closeDialog = function(){
+	$scope.closeDialog = function() {
 		ngDialog.close();
         $scope.$emit('routingPopupDismissed');
 	};
 
-	$scope.dimissLoaderAndDialog = function(){
+	$scope.dimissLoaderAndDialog = function() {
 		$scope.$emit('hideLoader');
 		$scope.closeDialog();
 	};
@@ -18,14 +18,14 @@ sntRover.controller('rvBillingInfoAllotmentMainCtrl',['$scope','$rootScope','$fi
     /**
      * function to set the reload option param option is boolean
      */
-    $scope.setReloadOption = function(option){
+    $scope.setReloadOption = function(option) {
         $scope.isReloadNeeded = option;
     };
 
     /**
      * function to handle the pencil button click in route detail screen
      */
-    $scope.deSelectEntity = function(){
+    $scope.deSelectEntity = function() {
         $scope.billingInfoFlags.isEntitySelected = false;
     };
 
@@ -73,7 +73,7 @@ sntRover.controller('rvBillingInfoAllotmentMainCtrl',['$scope','$rootScope','$fi
     /**
      * function to get the class for the 'li' according to the entity role
      */
-	$scope.getEntityRole = function(route){
+	$scope.getEntityRole = function(route) {
     	if(route.entity_type === 'RESERVATION' &&  !route.has_accompanying_guests) {
     		return 'guest';
         }
@@ -91,7 +91,7 @@ sntRover.controller('rvBillingInfoAllotmentMainCtrl',['$scope','$rootScope','$fi
     /**
      * function to get the class for the 'icon' according to the entity role
      */
-    $scope.getEntityIconClass = function(route){
+    $scope.getEntityIconClass = function(route) {
         if(route.entity_type === 'RESERVATION' &&  route.has_accompanying_guests ) {
             return 'accompany';
         }
@@ -103,7 +103,7 @@ sntRover.controller('rvBillingInfoAllotmentMainCtrl',['$scope','$rootScope','$fi
         }
     };
 
-    $scope.escapeNull = function(value, replaceWith){
+    $scope.escapeNull = function(value, replaceWith) {
 		return escapeNull(value, replaceWith);
 
     };
@@ -132,19 +132,19 @@ sntRover.controller('rvBillingInfoAllotmentMainCtrl',['$scope','$rootScope','$fi
     /**
      * function to save the new route
      */
-    $scope.saveRoute = function(){
+    $scope.saveRoute = function() {
         $rootScope.$broadcast('routeSaveClicked');
     };
 
     /**
      * Listener to show error messages for child views
      */
-    $scope.$on("displayErrorMessage", function(event, error){
+    $scope.$on("displayErrorMessage", function(event, error) {
         $scope.errorMessage = error;
 
     });
 
-	$scope.handleCloseDialog = function(){
+	$scope.handleCloseDialog = function() {
 		$scope.$emit('HANDLE_MODAL_OPENED');
 		$scope.closeDialog();
         if(!!$scope.billingData) {// NOTE: CICO-17123 When the billing information popup is called from the Group Summary Tab, there wont be a billingData object in $scope. This was throwing "TypeError: Cannot set property 'billingInfoTitle' of undefined"
@@ -155,7 +155,7 @@ sntRover.controller('rvBillingInfoAllotmentMainCtrl',['$scope','$rootScope','$fi
     /**
      * CICO-14951 :function to delete routing info from default billing info
      */
-    $scope.deleteDefaultRouting = function(){
+    $scope.deleteDefaultRouting = function() {
         var successCallback = function(data) {
             $scope.$emit('hideLoader');
             $scope.$emit('BILLINGINFODELETED');
@@ -172,7 +172,7 @@ sntRover.controller('rvBillingInfoAllotmentMainCtrl',['$scope','$rootScope','$fi
     };
 
     // CICO-14951
-    $scope.deleteBillingInfo = function(){
+    $scope.deleteBillingInfo = function() {
         $scope.deleteDefaultRouting();
     };
 

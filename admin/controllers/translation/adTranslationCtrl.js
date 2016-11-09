@@ -1,4 +1,4 @@
-admin.controller('ADTranslationCtrl',['$scope','$rootScope','$state','ADTranslationSrv','ngTableParams','$filter','availableLanguages','menuDetails', function($scope, $rootScope,$state,ADTranslationSrv, ngTableParams, $filter, availableLanguages, menuDetails){
+admin.controller('ADTranslationCtrl',['$scope','$rootScope','$state','ADTranslationSrv','ngTableParams','$filter','availableLanguages','menuDetails', function($scope, $rootScope,$state,ADTranslationSrv, ngTableParams, $filter, availableLanguages, menuDetails) {
 
     BaseCtrl.call(this, $scope);
 
@@ -24,7 +24,7 @@ admin.controller('ADTranslationCtrl',['$scope','$rootScope','$state','ADTranslat
                 }
 
             },
-            onFetchFailure = function(error){
+            onFetchFailure = function(error) {
                 $scope.data = [];
                 $scope.$emit('hideLoader');
             };

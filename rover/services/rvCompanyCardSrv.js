@@ -295,14 +295,14 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
-		this.fetchArAccountsList = function(params){
+		this.fetchArAccountsList = function(params) {
 			var deferred = $q.defer();
 
 			var url = "/api/accounts/"+params.id+"/ar_transactions?paid="+params.paid+"&from_date="+params.from_date+"&to_date="+params.to_date+"&query="+params.query+"&page="+params.page_no+"&per_page="+params.per_page+"&transaction_type="+params.transaction_type;
 			rvBaseWebSrvV2.getJSON(url).then(function(data) {
 
 				// CICO-28089 - View detailed transactions - setting active flag
-				if(!!data.ar_transactions && data.ar_transactions.length > 0 ){
+				if(!!data.ar_transactions && data.ar_transactions.length > 0 ) {
 					angular.forEach(data.ar_transactions,function(item, index) {
 			       		if(item.transaction_type === 'DEBIT') {
 			       			item.active = false;
@@ -317,7 +317,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
-		this.addCreditAmount = function(params){
+		this.addCreditAmount = function(params) {
 			var deferred = $q.defer();
 			var url = "api/accounts/"+params.id+"/ar_transactions";
 			rvBaseWebSrvV2.postJSON(url,params).then(function(data) {
@@ -328,7 +328,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
-		this.payForReservation = function(params){
+		this.payForReservation = function(params) {
 			var deferred = $q.defer();
 			var url = "api/accounts/"+params.id+"/ar_transactions/"+params.transaction_id+"/pay";
 			rvBaseWebSrvV2.postJSON(url).then(function(data) {
@@ -339,7 +339,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
-		this.openForReservation = function(params){
+		this.openForReservation = function(params) {
 			var deferred = $q.defer();
 			var url = "api/accounts/"+params.id+"/ar_transactions/"+params.transaction_id+"/open";
 			rvBaseWebSrvV2.postJSON(url).then(function(data) {
@@ -350,7 +350,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
-		this.payAll = function(params){
+		this.payAll = function(params) {
 			var deferred = $q.defer();
 			var url = "api/accounts/"+params.id+"/ar_transactions/pay_all";
 			rvBaseWebSrvV2.postJSON(url).then(function(data) {
@@ -361,22 +361,22 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
-		this.fetchHotelLoyaltiesHlps = function(param){
+		this.fetchHotelLoyaltiesHlps = function(param) {
                     var deferred = $q.defer();
                     var url =  '/staff/user_memberships/get_available_hlps.json';
                     rvBaseWebSrvV2.getJSON(url).then(function(data) {
                             deferred.resolve(data);
-                    },function(data){
+                    },function(data) {
                             deferred.reject(data);
                     });
                     return deferred.promise;
                 };
-		this.fetchHotelLoyaltiesFfp = function(param){
+		this.fetchHotelLoyaltiesFfp = function(param) {
                     var deferred = $q.defer();
                     var url =  '/staff/user_memberships/get_available_ffps.json';
                     rvBaseWebSrvV2.getJSON(url).then(function(data) {
                             deferred.resolve(data);
-                    },function(data){
+                    },function(data) {
                             deferred.reject(data);
                     });
                     return deferred.promise;
@@ -430,36 +430,36 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 		};
 
 		// To fetch AR Statement Print data.
-		this.fetchArStatementPrintData = function(params){
+		this.fetchArStatementPrintData = function(params) {
 			var deferred = $q.defer();
 			var url = '/api/ar_transactions/print';
 			rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 		   	 	deferred.resolve(data);
-			},function(data){
+			},function(data) {
 			    deferred.reject(data);
 			});
 			return deferred.promise;
 		};
 
 		// To email the AR Statement pdf.
-		this.emailArStatement = function(params){
+		this.emailArStatement = function(params) {
 			var deferred = $q.defer();
 			var url = '/api/ar_transactions/email';
 			rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 		   	 	deferred.resolve(data);
-			},function(data){
+			},function(data) {
 			    deferred.reject(data);
 			});
 			return deferred.promise;
 		};
 
 		// To fetch statement data
-		this.fetchArStatementData = function(params){
+		this.fetchArStatementData = function(params) {
 			var deferred = $q.defer();
 			var url = '/api/ar_transactions/get_email?id='+params.id;
 			rvBaseWebSrvV2.getJSON(url).then(function(data) {
 		   	 	deferred.resolve(data);
-			},function(data){
+			},function(data) {
 			    deferred.reject(data);
 			});
 			return deferred.promise;

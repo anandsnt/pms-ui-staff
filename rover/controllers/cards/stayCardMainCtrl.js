@@ -203,7 +203,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			$scope.$emit("hideLoader");
 		};
 
-		var fetchExistingAddonsAndGotoRoomRates = function(options){
+		var fetchExistingAddonsAndGotoRoomRates = function(options) {
 			$scope.invokeApi(RVReservationPackageSrv.getReservationPackages, $scope.reservationData.reservationId, function(response) {
 				$scope.$emit('hideLoader');
 				var roomData = $scope.reservationData.rooms[0]; // Accessing from staycard -> ONLY one room/reservation!
@@ -1062,7 +1062,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				room.room_type = refData.room_type;
 
 				// tData will have addons IFF the hourly reservation is being edited; while creation tData.addons will be undefined
-				if(tData.addons){
+				if(tData.addons) {
 					room.addons = [];
 					angular.forEach(tData.addons, function(item) {
 						room.addons.push({

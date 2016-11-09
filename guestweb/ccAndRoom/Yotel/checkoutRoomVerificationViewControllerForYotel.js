@@ -5,20 +5,20 @@
 	$rootScope.isRoomVerified =  false;
 	$scope.roomNumber = "";
 
-	if($rootScope.isExternalVerification){
+	if($rootScope.isExternalVerification) {
 		$state.go('externalVerification');
 	}
-	else if($rootScope.isCheckedin){
+	else if($rootScope.isCheckedin) {
 		$state.go('checkinSuccess');
 	}
-	else if($rootScope.isCheckin){
+	else if($rootScope.isCheckin) {
 		$state.go('checkinConfirmation');
 	}
 	else{
 		$scope.pageValid = true;
 	}
 
-	if($scope.pageValid){
+	if($scope.pageValid) {
 		//setup options for error popup
 		$scope.opts = {
 			backdrop: true,
@@ -27,7 +27,7 @@
 			controller: roomVerificationErrorModalCtrl
 		};
 
-		$scope.continueButtonClicked = function(){
+		$scope.continueButtonClicked = function() {
 
 		var url = '/guest_web/verify_room.json';
 		var data = {'reservation_id':$rootScope.reservationID,"room_number":$scope.roomNumber};
@@ -36,9 +36,9 @@
 
 			   $timeout(function() {
 
-					if(response.status ==="success"){
+					if(response.status ==="success") {
 						$rootScope.isRoomVerified =  true;
-						if($rootScope.isLateCheckoutAvailable ){
+						if($rootScope.isLateCheckoutAvailable ) {
 								$state.go('checkOutOptions');
 					    }else {
 					    	$state.go('checkOutConfirmation');
@@ -50,7 +50,7 @@
 					}
 			    }, 2000);
 
-		},function(){
+		},function() {
 			 $scope.isFetching = false;
 			 $scope.netWorkError = true;
 
@@ -76,7 +76,7 @@ sntGuestWeb.controller('checkoutRoomVerificationViewControllerForYotel', depende
 		$scope.closeDialog = function () {
 			$modalInstance.dismiss('cancel');
 		};
-		$scope.goToBrowserHomePage = function(){
+		$scope.goToBrowserHomePage = function() {
 			if (window.home) {
                 window.home ();
             } else {        // Internet Explorer

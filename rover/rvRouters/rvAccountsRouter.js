@@ -3,7 +3,7 @@ angular.module('accountsModule', [])
     '$stateProvider',
     '$urlRouterProvider',
     '$translateProvider',
-    function($stateProvider, $urlRouterProvider, $translateProvider){
+    function($stateProvider, $urlRouterProvider, $translateProvider) {
     //define module-specific routes here
         //group
         $stateProvider.state('rover.accounts', {
@@ -64,7 +64,7 @@ angular.module('accountsModule', [])
                     return jsMappings.loadPaymentModule();
                 },
                 accountData: ['rvAccountsConfigurationSrv', '$stateParams', 'accountsAssets',
-                    function(rvAccountsConfigurationSrv, $stateParams, accountsAssets){
+                    function(rvAccountsConfigurationSrv, $stateParams, accountsAssets) {
                         var params = {
                             accountId: $stateParams.id
                         };

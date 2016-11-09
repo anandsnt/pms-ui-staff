@@ -60,13 +60,13 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     $scope.checkinData.checkin_alert_primetime = (!$scope.checkinData.checkin_alert_primetime) ? "AM" : $scope.checkinData.checkin_alert_primetime;
     
 
-    if($scope.checkinData.max_no_of_keys === "ROOM_OCCUPANCY"){
+    if($scope.checkinData.max_no_of_keys === "ROOM_OCCUPANCY") {
       $scope.checkinData.max_keys_type = "ROOM_OCCUPANCY";
       $scope.checkinData.no_of_keys = 1;//default as 1
     }
     else{
        $scope.checkinData.max_keys_type = "other";
-       if($scope.checkinData.max_no_of_keys !== null){
+       if($scope.checkinData.max_no_of_keys !== null) {
           $scope.checkinData.no_of_keys = angular.copy($scope.checkinData.max_no_of_keys);
        }
        else{
@@ -99,7 +99,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
   /**
    * when you clicked on group code dropdown
    */
-  $scope.onBlockCodeDropDownClick = function(){
+  $scope.onBlockCodeDropDownClick = function() {
     //if we have the data already, we dont need to fetch
     if ($scope.block_codes.length) {
         return;
@@ -126,7 +126,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
   /**
    * when you clicked on rate code dropdown
    */
-  $scope.onRateCodeDropDownClick = function(){
+  $scope.onRateCodeDropDownClick = function() {
     //if we have the data already, we dont need to fetch
     if ($scope.rate_codes.length) {
         return;
@@ -153,7 +153,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
   /**
    * when you clicked on room types dropdown
    */
-  $scope.onRoomTypesDropDownClick = function(){
+  $scope.onRoomTypesDropDownClick = function() {
     //if we have the data already, we dont need to fetch
     if ($scope.roomTypes.length) {
         return;
@@ -170,16 +170,16 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
 
     var fetchCheckinDetailsSuccessCallback = function (data) {
       $scope.checkinData = data;
-      if (!$scope.checkinData.next_day_checkin_alert_primetime){
+      if (!$scope.checkinData.next_day_checkin_alert_primetime) {
           $scope.checkinData.next_day_checkin_alert_primetime = 'AM';
       }
-      if (!$scope.checkinData.checkin_alert_primetime){
+      if (!$scope.checkinData.checkin_alert_primetime) {
           $scope.checkinData.checkin_alert_primetime = 'AM';
       }
-      if (!$scope.checkinData.zest_checkin_alert_primetime){
+      if (!$scope.checkinData.zest_checkin_alert_primetime) {
           $scope.checkinData.zest_checkin_alert_primetime = 'AM';
       }
-      if (!$scope.checkinData.zest_precheckin_alert_primetime){
+      if (!$scope.checkinData.zest_precheckin_alert_primetime) {
           $scope.checkinData.zest_precheckin_alert_primetime = 'AM';
       }
       if ($scope.checkinData.start_auto_checkin_from) {
@@ -220,7 +220,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
   /**
    * initialization stuff
    */
-  var fetchRequiredDataForCheckinScreen = function(){
+  var fetchRequiredDataForCheckinScreen = function() {
     //we are not using our normal API calling since we have multiple API calls needed
     $scope.$emit('showLoader');
 
@@ -286,7 +286,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     var startAutoCheckinTo = ($scope.checkinData.auto_checkin_to_hour !== "" && $scope.checkinData.auto_checkin_to_minute !== "" && $scope.checkinData.auto_checkin_to_hour && $scope.checkinData.auto_checkin_to_minute) ? $scope.checkinData.auto_checkin_to_hour + ":" + $scope.checkinData.auto_checkin_to_minute : "";
     
     var max_no_of_keys = "";
-    if($scope.checkinData.max_keys_type === "ROOM_OCCUPANCY"){
+    if($scope.checkinData.max_keys_type === "ROOM_OCCUPANCY") {
       max_no_of_keys = "ROOM_OCCUPANCY";
     }
     else{
@@ -360,7 +360,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       'zest_web_use_new_sent_to_que_action' : $scope.checkinData.zest_web_use_new_sent_to_que_action
     };
 
-    if($scope.surveyQuestionImage === $scope.checkinData.survey_question_image){
+    if($scope.surveyQuestionImage === $scope.checkinData.survey_question_image) {
       uploadData.survey_question_image = '';
     }
 

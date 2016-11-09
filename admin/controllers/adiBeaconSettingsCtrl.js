@@ -1,7 +1,7 @@
 admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','adiBeaconSettingsSrv','$rootScope',
-	function($scope, $state, ngTableParams,adiBeaconSettingsSrv,$rootScope){
+	function($scope, $state, ngTableParams,adiBeaconSettingsSrv,$rootScope) {
 	$scope.$emit('hideLoader');
-	$scope.init = function(){
+	$scope.init = function() {
 		$scope.errorMessage = "";
 		$scope.successMessage = "";
 		ADBaseTableCtrl.call(this, $scope, ngTableParams);
@@ -10,7 +10,7 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
 	};
 	$scope.init();
 
-	$scope.showLoader = function(){
+	$scope.showLoader = function() {
 		$scope.$emit("showLoader");
 	};
 
@@ -20,9 +20,9 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
     $rootScope.previousState = 'admin.dashboard';
     $rootScope.previousStateParam = '1';
 
-	$scope.fetchTableData = function($defer, params){
+	$scope.fetchTableData = function($defer, params) {
 		var getParams = $scope.calculateGetParams(params);
-		var fetchSuccessOfItemList = function(data){
+		var fetchSuccessOfItemList = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
 			$scope.proximityId = data.proximity_id;
@@ -33,14 +33,14 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
 	        params.total(data.total_count);
 	        $defer.resolve($scope.data);
 		};
-		var fetchFailedOfItemList = function(data){
+		var fetchFailedOfItemList = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = data;
 		};
 		$scope.invokeApi(adiBeaconSettingsSrv.fetchBeaconList, getParams, fetchSuccessOfItemList,fetchFailedOfItemList);
 	};
 
-	$scope.loadTable = function(){
+	$scope.loadTable = function() {
 		$scope.tableParams = new ngTableParams({
 		        page: 1,  // show first page
 		        count: $scope.displyCount, // count per page
@@ -56,17 +56,17 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
 
 	$scope.loadTable();
 
-	$scope.toggleActive = function(id,status){
+	$scope.toggleActive = function(id,status) {
 
-		var toggleBeaconSuccess = function(){
+		var toggleBeaconSuccess = function() {
 			$scope.$emit('hideLoader');
 			angular.forEach($scope.data, function(ibeacon, key) {
-		      if(ibeacon.beacon_id === id){
+		      if(ibeacon.beacon_id === id) {
 		      	ibeacon.status = !ibeacon.status;
 		      }
 		     });
 		};
-		var toggleBeaconFailed = function(data){
+		var toggleBeaconFailed = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = data;
 		};
@@ -76,13 +76,13 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
 
 	};
 
-	$scope.deleteBeacon = function(id){
+	$scope.deleteBeacon = function(id) {
 
-		var deleteBeaconSuccess = function(){
+		var deleteBeaconSuccess = function() {
 			$scope.$emit('hideLoader');
 			$scope.tableParams.reload();
 		};
-		var deleteBeaconFailed = function(data){
+		var deleteBeaconFailed = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = data;
 		};

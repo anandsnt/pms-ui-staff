@@ -75,7 +75,7 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
             return deferred.promise;
         };
         
-        this.fetchChannelRates = function(data){
+        this.fetchChannelRates = function(data) {
             var deferred = $q.defer();
 
             var url = "/api/channel_rates_"+data.id+".json";

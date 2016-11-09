@@ -31,7 +31,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		/*
 	     * To close drawer on click inside pages
 	     */
-	    $scope.closeDrawer = function(event){
+	    $scope.closeDrawer = function(event) {
 	    	 $scope.menuOpen = false;
 	    };
 		//scroller options
@@ -75,8 +75,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 	    $rootScope.$on('$locationChangeStart', routeChange);
 	    window.history.pushState("initial", "Showing Admin Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
 
-		var setupLeftMenu = function(){
-			if($scope.isStandAlone){
+		var setupLeftMenu = function() {
+			if($scope.isStandAlone) {
 				$scope.menu = [{
 					title: "MENU_DASHBOARD",
 					action: "staff#/staff/dashboard/",
@@ -305,13 +305,13 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		* in case of we want to reinitialize left menu based on new $rootScope values or something
 		* which set during it's creation, we can use
 		*/
-		$scope.$on('refreshLeftMenu', function(event){
+		$scope.$on('refreshLeftMenu', function(event) {
 			setupLeftMenu();
 		});
 
 		$scope.$on("updateSubMenu", function(idx, item) {
 			//CICO-9816 Bug fix - When moving to /staff, the screen was showing blank content
-			if (item[1].action.split('#')[0] === "staff"){
+			if (item[1].action.split('#')[0] === "staff") {
 				$('body').addClass('no-animation');
 				$('#admin-header').css({'z-index':'0'});
 				$('section.content-scroll').css({'overflow':'visible'});
@@ -457,7 +457,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			}, 10000);
 		});
 
-		$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error){
+		$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
 			$scope.$emit('hideLoader');
 			$scope.$broadcast("STATE_CHANGE_FAILURE", error);
 		});
@@ -563,7 +563,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		/*
 		 * Function to change hotel name on updation in hotel details page
 		 */
-		$scope.$on('hotelNameChanged',function(e,data){
+		$scope.$on('hotelNameChanged',function(e,data) {
 			$scope.data.current_hotel = data.new_name;
 		});
 
@@ -623,12 +623,12 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		/**
 		    *   Method to go back to previous state.
 		    */
-		$scope.goBackToPreviousState = function(){
+		$scope.goBackToPreviousState = function() {
 
-			    if($rootScope.previousStateParam){
+			    if($rootScope.previousStateParam) {
 			      $state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
 			    }
-			    else if($rootScope.previousState){
+			    else if($rootScope.previousState) {
 			      $state.go($rootScope.previousState);
 			    }
 			    else

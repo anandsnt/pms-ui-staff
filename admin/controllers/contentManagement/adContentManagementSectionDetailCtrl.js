@@ -1,5 +1,5 @@
 admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', 'ngDialog', '$stateParams', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location',
- function($scope, $state, ngDialog, $stateParams, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location){
+ function($scope, $state, ngDialog, $stateParams, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location) {
 
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
@@ -30,13 +30,13 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', 'ng
 
     /*Function to fetch the snt products
     */
-	$scope.fetchSntProducts = function(){
-		var fetchSntProductsSuccessCallback = function(data){
+	$scope.fetchSntProducts = function() {
+		var fetchSntProductsSuccessCallback = function(data) {
 
 		/*Checkin if the screen is loaded for a new section or,
 	    * for existing section.
         */
-	    if($stateParams.id !== 'new'){
+	    if($stateParams.id !== 'new') {
 		    $scope.isAddMode = false;
 		    $scope.fetchSection();
 	    }
@@ -53,8 +53,8 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', 'ng
 
     /*Function to fetch the section details
     */
-	$scope.fetchSection = function(){
-		var fetchSectionSuccessCallback = function(data){
+	$scope.fetchSection = function() {
+		var fetchSectionSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.data = data;
 			$scope.initialIcon = $scope.data.icon;
@@ -66,13 +66,13 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', 'ng
 	
 	/*Function to return to preveous state
     */
-	$scope.goBack = function(){
+	$scope.goBack = function() {
         $state.go('admin.cmscomponentSettings');
 	};
 	/*Function to save a category
     */
-	$scope.saveSection = function(){
-		var saveSectionSuccessCallback = function(data){
+	$scope.saveSection = function() {
+		var saveSectionSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.goBack();
 		};
@@ -86,8 +86,8 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', 'ng
 
 	/* delete component starts here*/
 
-	$scope.deleteItem = function(id){
-		var successCallbackFetchDeleteDetails = function(data){
+	$scope.deleteItem = function(id) {
+		var successCallbackFetchDeleteDetails = function(data) {
 			$scope.assocatedChildComponents = [];
 			$scope.assocatedChildComponents = data.results;
 			$scope.$emit('hideLoader');

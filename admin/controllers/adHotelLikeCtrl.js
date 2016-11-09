@@ -2,7 +2,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
   function($scope, $state, ADHotelLikesSrv, $location, $anchorScroll, $timeout) {
 
 
-  $scope.init = function(){
+  $scope.init = function() {
 
    BaseCtrl.call(this, $scope);
    $scope.likeList = {};
@@ -33,7 +33,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
 	/*
    * To render add screen
    */
-   $scope.addNew = function(){
+   $scope.addNew = function() {
 	    $scope.likeTitle  ="Add New";
 	    $scope.likeSubtitle ="Like category";
 	    $scope.likeData   = {};
@@ -49,7 +49,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
 	 /*
     * To handle switch
     */
-    $scope.switchClicked = function(index){
+    $scope.switchClicked = function(index) {
 
 		//on success
 	   var toggleSwitchLikesSuccessCallback = function(data) {
@@ -65,7 +65,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
 	 /*
     * To fetch the template for chains details add/edit screens
     */
-    $scope.getTemplateUrl = function(rowName){
+    $scope.getTemplateUrl = function(rowName) {
 
 
       if(rowName === "ROOM TYPE") {
@@ -87,7 +87,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
     * To handle checkbox click actions
     */
 
-    $scope.checkBoxClicked = function(index){
+    $scope.checkBoxClicked = function(index) {
 
 
       $scope.likeData.news_papers[index].is_checked = ($scope.likeData.news_papers[index].is_checked === 'true') ? 'false' :'true';
@@ -99,7 +99,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
    */
 
 
-   $scope.checkBoxDeleteClicked = function(index,id){
+   $scope.checkBoxDeleteClicked = function(index,id) {
 
     var checkBoxDeleteCallback = function(data) {
       $scope.$emit('hideLoader');
@@ -121,7 +121,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
     $scope.currentClickedElement = index;
     $scope.isAddmode = false;
 
-    if(isSystemDefined === 'true'){
+    if(isSystemDefined === 'true') {
      $scope.isEditmode = false;
     }
 
@@ -159,14 +159,14 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
    * To handle new newspaper option
    */
 
-   $scope.showNewNewsPaperOption = function(){
+   $scope.showNewNewsPaperOption = function() {
 
 
-	     if($scope.showNewsPaperOption){
+	     if($scope.showNewsPaperOption) {
 	      /*
 	      *add a input box for adding new option
 	      */
-	      if($scope.likeData.newfeature.length !==0){
+	      if($scope.likeData.newfeature.length !==0) {
 	        $scope.likeData.news_papers.push({'name':$scope.likeData.newfeature,'is_checked':'true'});
 	        $scope.likeData.newfeature ="";
 	      }
@@ -181,16 +181,16 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
    * To handle new room feature option
    */
 
-   $scope.shownewInputRoomOption = function(){
+   $scope.shownewInputRoomOption = function() {
 
 
 
-    if($scope.showNewRoomOption){
+    if($scope.showNewRoomOption) {
       /*
       *add a input box for adding new option
       */
 
-      if($scope.likeData.newfeature.length !==0){
+      if($scope.likeData.newfeature.length !==0) {
 
         $scope.likeData.news_papers.push({'name':$scope.likeData.newfeature,'is_checked':'true'});
         $scope.likeData.newfeature ="";
@@ -206,15 +206,15 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
  /*
    * To watch type for add/edit form
    */
-   $scope.$watch('likeData.type',function(){
+   $scope.$watch('likeData.type',function() {
 
-    if($scope.likeData.type === "textbox"){
+    if($scope.likeData.type === "textbox") {
      $scope.showTextBox = true;
      $scope.showRadio = false;
      $scope.showDropDown = false;
      $scope.showCheckbox = false;
    }
-   else if ($scope.likeData.type ==="radio"){
+   else if ($scope.likeData.type ==="radio") {
      $scope.showRadio = true;
      $scope.showTextBox = false;
      $scope.showDropDown = false;
@@ -228,12 +228,12 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
     }
 
    }
-   else if ($scope.likeData.type === "dropdown"){
+   else if ($scope.likeData.type === "dropdown") {
      $scope.showDropDown = true;
      $scope.showTextBox = false;
      $scope.showRadio = false;
      $scope.showCheckbox = false;
-     if($scope.likeData.options.length === 0){
+     if($scope.likeData.options.length === 0) {
         $scope.likeData.options =[{'name':''}];
      }
    }
@@ -242,7 +242,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
      $scope.showTextBox = false;
      $scope.showRadio = false;
      $scope.showDropDown = false;
-     if($scope.likeData.options.length === 0){
+     if($scope.likeData.options.length === 0) {
         $scope.likeData.options =[{'name':''}];
      }
    }
@@ -251,11 +251,11 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
      /*
     * To handle focus event for types
     */
-    $scope.onFocus = function(index){
-      if((index === $scope.likeData.options.length-1) || ($scope.likeData.options.length===1)){
+    $scope.onFocus = function(index) {
+      if((index === $scope.likeData.options.length-1) || ($scope.likeData.options.length===1)) {
         $scope.newOptionAvailable = true;
             // exclude first two fields
-            if($scope.likeData.options.length > 2){
+            if($scope.likeData.options.length > 2) {
               angular.forEach($scope.likeData.options,function(item, index) {
                 if (item.name === "" && index < $scope.likeData.options.length-1 ) {
                   $scope.newOptionAvailable = false;
@@ -270,9 +270,9 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
    /*
     * To handle text change on types
     */
-    $scope.textChanged = function(index){
+    $scope.textChanged = function(index) {
 
-      if($scope.likeData.options.length>1){
+      if($scope.likeData.options.length>1) {
         if($scope.likeData.options[index].name === "") {
           $scope.likeData.options.splice(index, 1);
         }
@@ -281,8 +281,8 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
    /*
     * To handle blur event on types
     */
-    $scope.onBlur = function(index){
-      if($scope.likeData.options.length>1){
+    $scope.onBlur = function(index) {
+      if($scope.likeData.options.length>1) {
         if($scope.likeData.options[index].name === "") {
           $scope.likeData.options.splice(index, 1);
         }
@@ -297,7 +297,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
     * To handle cancel click
     */
 
-    $scope.cancelCliked   = function(){
+    $scope.cancelCliked   = function() {
 
       $scope.isAddmode = false;
       $scope.isEditmode = false;
@@ -308,7 +308,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
     * To handle save
     */
 
-    $scope.addSaveCliked   = function(){
+    $scope.addSaveCliked   = function() {
 
       angular.forEach($scope.likeData.options,function(item, index) {
         if (item.name === "") {
@@ -316,7 +316,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
        }
 
      });
-      if($scope.isAddmode){
+      if($scope.isAddmode) {
 
         delete $scope.likeData.newfeature;
         delete $scope.likeData.is_system_defined;
@@ -347,9 +347,9 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
     */
 
 
-    $scope.customLikeSave= function(){
+    $scope.customLikeSave= function() {
 
-      if($scope.likeData.newfeature.length !==0){
+      if($scope.likeData.newfeature.length !==0) {
 
         $scope.likeData.news_papers.push({'name':$scope.likeData.newfeature,'is_checked':'true'});
         $scope.likeData.newfeature ="";

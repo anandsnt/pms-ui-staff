@@ -1,4 +1,4 @@
-admin.controller('ADRoomClassListCtrl',['$scope', '$state', 'ADRoomClassesSrv', '$location', '$anchorScroll', '$timeout',  function($scope, $state, ADRoomClassesSrv, $location, $anchorScroll, $timeout){
+admin.controller('ADRoomClassListCtrl',['$scope', '$state', 'ADRoomClassesSrv', '$location', '$anchorScroll', '$timeout',  function($scope, $state, ADRoomClassesSrv, $location, $anchorScroll, $timeout) {
 
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
@@ -7,8 +7,8 @@ admin.controller('ADRoomClassListCtrl',['$scope', '$state', 'ADRoomClassesSrv', 
    /*
     * To fetch list of room class
     */
-	$scope.listRoomClass = function(){
-		var successCallbackFetch = function(data){
+	$scope.listRoomClass = function() {
+		var successCallbackFetch = function(data) {
 			$scope.$emit('hideLoader');
 			console.log(data);
 			$scope.roomClasses = data;
@@ -28,7 +28,7 @@ admin.controller('ADRoomClassListCtrl',['$scope', '$state', 'ADRoomClassesSrv', 
 		$scope.roomClassData = {};
 		$scope.currentClickedElement = index;
 		$scope.isAddMode = false;
-	 	var successCallbackRender = function(data){
+	 	var successCallbackRender = function(data) {
 	 		$scope.roomClassData = data;
 	 		$scope.$emit('hideLoader');
 	 	};
@@ -52,21 +52,21 @@ admin.controller('ADRoomClassListCtrl',['$scope', '$state', 'ADRoomClassesSrv', 
     * @param {int} index of the selected room class
     * @param {string} id of the room class
     */
-	$scope.getTemplateUrl = function(index, id){
+	$scope.getTemplateUrl = function(index, id) {
 		if(typeof index === "undefined" || typeof id === "undefined") {
 			return "";
 		}
-		if($scope.currentClickedElement === index){
+		if($scope.currentClickedElement === index) {
 			return "/assets/partials/roomClass/adRoomClassEdit.html";
 		}
 	};
   /*
    * To save/update room class details
    */
-   $scope.saveRoomClass = function(){
-    	var successCallbackSave = function(response){
+   $scope.saveRoomClass = function() {
+    	var successCallbackSave = function(response) {
     		$scope.$emit('hideLoader');
-			if($scope.isAddMode){
+			if($scope.isAddMode) {
 				// To add new data to scope
     			$scope.roomClasses.push(response.data);
 	    	} else {
@@ -76,7 +76,7 @@ admin.controller('ADRoomClassListCtrl',['$scope', '$state', 'ADRoomClassesSrv', 
 	    	}
     		$scope.currentClickedElement = -1;
     	};
-    	if($scope.isAddMode){
+    	if($scope.isAddMode) {
     		$scope.invokeApi(ADRoomClassesSrv.saveClassRoom, $scope.roomClassData , successCallbackSave);
     	} else {
     		$scope.invokeApi(ADRoomClassesSrv.updateClassRoom, $scope.roomClassData , successCallbackSave);
@@ -85,7 +85,7 @@ admin.controller('ADRoomClassListCtrl',['$scope', '$state', 'ADRoomClassesSrv', 
    /*
     * To handle click event
     */
-	$scope.clickCancel = function(){
+	$scope.clickCancel = function() {
 		$scope.currentClickedElement = -1;
 	};
    /*
@@ -93,8 +93,8 @@ admin.controller('ADRoomClassListCtrl',['$scope', '$state', 'ADRoomClassesSrv', 
     * @param {int} index of the selected room class
     * @param {string} id of the selected room class
     */
-	$scope.deleteRoomClass = function(index, id){
-		var successCallbackDelete = function(data){
+	$scope.deleteRoomClass = function(index, id) {
+		var successCallbackDelete = function(data) {
 	 		$scope.$emit('hideLoader');
 	 		$scope.roomClasses.splice(index, 1);
 	 		$scope.currentClickedElement = -1;

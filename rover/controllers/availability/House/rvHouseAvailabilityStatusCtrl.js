@@ -5,13 +5,13 @@ angular.module('sntRover').controller('RVHouseAvailabilityStatusCtrl', [
 	'$rootScope',
 	'$filter',
 	'rvAvailabilitySrv',
-	function($scope, $timeout, ngDialog, $rootScope, $filter, rvAvailabilitySrv){
+	function($scope, $timeout, ngDialog, $rootScope, $filter, rvAvailabilitySrv) {
 
-		$scope.$on('$includeContentLoaded', function(event){
+		$scope.$on('$includeContentLoaded', function(event) {
 			$scope.$emit("hideLoader");
 		});
 
-		var init = function(){
+		var init = function() {
 			$scope.page.title = "House Status";
 			$scope.houseStatus = {};
 			fetchHouseStatus();
@@ -19,12 +19,12 @@ angular.module('sntRover').controller('RVHouseAvailabilityStatusCtrl', [
 			$scope.houseDetailsFetched = false;
 		};
 
-		var fetchHouseStatus = function(){
-			var houseStatusFetchSuccess = function(data){
+		var fetchHouseStatus = function() {
+			var houseStatusFetchSuccess = function(data) {
 				$scope.$emit("hideLoader");
 				$scope.houseDetails = data;
 				$scope.houseDetailsFetched = true;
-				$timeout(function(){
+				$timeout(function() {
 					$scope.refreshScroller('house-status-grid');
 					//CICO-10617 The refresh scroller is not working in this case... On first check found that the scope is different.
 					// Applying a quick resolution now... Will have to debug and apply fix later

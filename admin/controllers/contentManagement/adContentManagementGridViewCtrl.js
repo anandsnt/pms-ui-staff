@@ -1,5 +1,5 @@
 admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location', 'ngDialog',
- function($scope, $state, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location,ngDialog){
+ function($scope, $state, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location,ngDialog) {
 
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
@@ -18,8 +18,8 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    $scope.searchText = "";
    /* Function to fetch the components to be listed in the gridview
     */
-   $scope.fetchGridViewList= function(){
-   		var successCallbackGridFetch = function(data){
+   $scope.fetchGridViewList= function() {
+   		var successCallbackGridFetch = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.data = data;
 			$scope.setUpLists();
@@ -32,18 +32,18 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    };
    /* Function to split the fetch components to sections, categories and items
     */
-   $scope.setUpLists =function(){
-   		for(var i= 0; i < $scope.data.length; i++){
+   $scope.setUpLists =function() {
+   		for(var i= 0; i < $scope.data.length; i++) {
    			$scope.data[i].last_updated = new Date($scope.data[i].last_updated);
-   			if($scope.data[i].component_type === 'SECTION'){
+   			if($scope.data[i].component_type === 'SECTION') {
    				$scope.sections.push($scope.data[i]);
    				$scope.section_options.push($scope.data[i]);
-   			}else if($scope.data[i].component_type === 'HOME SCREEN'){
+   			}else if($scope.data[i].component_type === 'HOME SCREEN') {
    				$scope.home_screens.push($scope.data[i]);
-   			}else if($scope.data[i].component_type === 'CATEGORY'){
+   			}else if($scope.data[i].component_type === 'CATEGORY') {
    				$scope.categories.push($scope.data[i]);
    				$scope.category_options.push($scope.data[i]);
-   			}else if($scope.data[i].component_type === 'PAGE'){
+   			}else if($scope.data[i].component_type === 'PAGE') {
    				$scope.items.push($scope.data[i]);
    			}
    		}
@@ -51,7 +51,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 
     /* Function to set the table params for sections
     */
-   $scope.setHomeScreens =function(){
+   $scope.setHomeScreens =function() {
    		// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
 		    $scope.homeScreenParams = new ngTableParams({
 		       page: 1,            // show first page
@@ -77,7 +77,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 
    /* Function to set the table params for sections
     */
-   $scope.setSections =function(){
+   $scope.setSections =function() {
    		// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
 		    $scope.sectionParams = new ngTableParams({
 		       page: 1,            // show first page
@@ -100,7 +100,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    };
    /* Function to set the table params for categories
     */
-   $scope.setCategories =function(){
+   $scope.setCategories =function() {
    		// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
 		    $scope.categoryParams = new ngTableParams({
 		       page: 1,            // show first page
@@ -123,7 +123,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    };
    /* Function to set the table params for items
     */
-   $scope.setItems =function(){
+   $scope.setItems =function() {
    		// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
 		    $scope.itemParams = new ngTableParams({
 		       page: 1,            // show first page
@@ -146,41 +146,41 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    };
    /* Function to filter the data set by section and category and unmapped items
     */
-   $scope.filterBySectionAndCategory = function(){
+   $scope.filterBySectionAndCategory = function() {
    		$scope.filteredData = [];
-   		if($scope.showUnMappedList){
+   		if($scope.showUnMappedList) {
    				$scope.fromSection = 'all';
    				$scope.fromCategory = 'all';
    				$scope.fromHomeScreen = 'all';
-   				for(var i=0; i < $scope.data.length; i++){
-			   			if($scope.data[i].parent_section.length === 0 && $scope.data[i].parent_category.length === 0){
+   				for(var i=0; i < $scope.data.length; i++) {
+			   			if($scope.data[i].parent_section.length === 0 && $scope.data[i].parent_category.length === 0) {
 			   				$scope.filteredData.push($scope.data[i]);
 			   			}
 		   			}
    		}else{
-	   			if($scope.fromSection === 'all' && $scope.fromCategory === 'all' && $scope.fromHomeScreen === 'all'){
+	   			if($scope.fromSection === 'all' && $scope.fromCategory === 'all' && $scope.fromHomeScreen === 'all') {
 	   				$scope.filteredData = $scope.data;
-	   			}else if($scope.fromSection !== 'all' && $scope.fromCategory !== 'all'){
-		   			for(var i=0; i < $scope.data.length; i++){
-			   			if($scope.data[i].parent_section.indexOf(parseInt($scope.fromSection)) !== -1 && $scope.data[i].parent_category.indexOf(parseInt($scope.fromCategory)) !== -1 ){
+	   			}else if($scope.fromSection !== 'all' && $scope.fromCategory !== 'all') {
+		   			for(var i=0; i < $scope.data.length; i++) {
+			   			if($scope.data[i].parent_section.indexOf(parseInt($scope.fromSection)) !== -1 && $scope.data[i].parent_category.indexOf(parseInt($scope.fromCategory)) !== -1 ) {
 			   				$scope.filteredData.push($scope.data[i]);
 			   			}
 		   			}
-	   			}else if($scope.fromSection !== 'all'){
-	   				for(var i=0; i < $scope.data.length; i++){
-			   			if($scope.data[i].parent_section.indexOf(parseInt($scope.fromSection)) !== -1){
+	   			}else if($scope.fromSection !== 'all') {
+	   				for(var i=0; i < $scope.data.length; i++) {
+			   			if($scope.data[i].parent_section.indexOf(parseInt($scope.fromSection)) !== -1) {
 			   				$scope.filteredData.push($scope.data[i]);
 			   			}
 		   			}
-	   			}else if($scope.fromHomeScreen !== 'all'){
-	   				for(var i=0; i < $scope.data.length; i++){
-			   			if($scope.data[i].parent_home_screen.indexOf(parseInt($scope.fromHomeScreen)) !== -1){
+	   			}else if($scope.fromHomeScreen !== 'all') {
+	   				for(var i=0; i < $scope.data.length; i++) {
+			   			if($scope.data[i].parent_home_screen.indexOf(parseInt($scope.fromHomeScreen)) !== -1) {
 			   				$scope.filteredData.push($scope.data[i]);
 			   			}
 		   			}
 	   			}else{
-	   				for(var i=0; i < $scope.data.length; i++){
-			   			if($scope.data[i].parent_category.indexOf(parseInt($scope.fromCategory)) !== -1){
+	   				for(var i=0; i < $scope.data.length; i++) {
+			   			if($scope.data[i].parent_category.indexOf(parseInt($scope.fromCategory)) !== -1) {
 			   				$scope.filteredData.push($scope.data[i]);
 			   			}
 		   			}
@@ -193,16 +193,16 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    };
    /* Function to apply the filterd data to the current list of categories and items
     */
-   $scope.applyFiltersToSectionsAndItems = function(){
+   $scope.applyFiltersToSectionsAndItems = function() {
    		$scope.categories = [];
    		$scope.items = [];
    		$scope.sections = [];
-   		for(var i= 0; i < $scope.filteredData.length; i++){
-   			if($scope.filteredData[i].component_type === 'CATEGORY'){
+   		for(var i= 0; i < $scope.filteredData.length; i++) {
+   			if($scope.filteredData[i].component_type === 'CATEGORY') {
    				$scope.categories.push($scope.filteredData[i]);
-   			}else if($scope.filteredData[i].component_type === 'PAGE'){
+   			}else if($scope.filteredData[i].component_type === 'PAGE') {
    				$scope.items.push($scope.filteredData[i]);
-   			}else if($scope.filteredData[i].component_type === 'SECTION'){
+   			}else if($scope.filteredData[i].component_type === 'SECTION') {
    				$scope.sections.push($scope.filteredData[i]);
    			}
    		}
@@ -213,7 +213,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    };
    /* Function to set the filter params, when the view selection changes
     */
-   $scope.viewSelected = function(){
+   $scope.viewSelected = function() {
    		$scope.fromSection = 'all';
    		$scope.fromCategory = 'all';
    		$scope.fromHomeScreen = 'all';
@@ -325,7 +325,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 	/* delete component ends here*/
 
 
-	$scope.trimComponent = function(component){
+	$scope.trimComponent = function(component) {
 
 		var trimmedComponent = component.substring(0, 20);
 		return component.length > 20? trimmedComponent + "..." : trimmedComponent;
@@ -334,7 +334,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 
 	/* search predicate functions for cms components*/
 
-	$scope.filterComponents = function(value, index, array){
+	$scope.filterComponents = function(value, index, array) {
    		if($scope.searchText == '')
    			return true;
    		var searchRegExp = new RegExp($scope.searchText.toLowerCase());

@@ -1208,7 +1208,7 @@ if (window.navigator) {
 
 if (!window.console) {
     window.console = {
-        log: function(){}
+        log: function() {}
     };
 }
 if (!window.console.warn) {
@@ -1335,7 +1335,7 @@ if (window.navigator) {
 
 if (!window.console) {
     window.console = {
-        log: function(){}
+        log: function() {}
     };
 }
 if (!window.console.warn) {
@@ -1715,16 +1715,16 @@ utils.clone = function(obj) {
 
     var retVal, i;
 
-    if(utils.isArray(obj)){
+    if(utils.isArray(obj)) {
         retVal = [];
-        for(i = 0; i < obj.length; ++i){
+        for(i = 0; i < obj.length; ++i) {
             retVal.push(utils.clone(obj[i]));
         }
         return retVal;
     }
 
     retVal = {};
-    for(i in obj){
+    for(i in obj) {
         if(!(i in retVal) || retVal[i] != obj[i]) {
             retVal[i] = utils.clone(obj[i]);
         }

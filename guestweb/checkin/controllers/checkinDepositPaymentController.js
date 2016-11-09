@@ -92,7 +92,7 @@
 			$scope.isLoading = false; 
 			if (!!response.deposit_policy && parseInt(response.deposit_amount, 10) > 0) {
 				checkForAdminMessageSetup();
-				if(!!response.payment_method_used){
+				if(!!response.payment_method_used) {
 					$scope.noPaymentMethod = false;
 					payment_method_used = response.payment_method_used;
 					payment_method_id = response.payment_method_id;

@@ -1,6 +1,6 @@
 admin.controller('ADZestCheckinDirectUrlEmailCtrl',
     ['$scope', '$state', 'adZestCheckinCheckoutSrv','$filter','directUrlData','diretUrls',
-    function($scope, $state, adZestCheckinCheckoutSrv,$filter,directUrlData,diretUrls){
+    function($scope, $state, adZestCheckinCheckoutSrv,$filter,directUrlData,diretUrls) {
 
 
     $scope.errorMessage     = '';
@@ -8,7 +8,7 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
 
     BaseCtrl.call(this, $scope);
 
-    var resetEditScreen  = function(){
+    var resetEditScreen  = function() {
         $scope.url                = {   
                                         "name":"",
                                         "url_suffix":"",
@@ -18,7 +18,7 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
         $scope.isAddMode          = false;
     };
 
-    var init = function(){
+    var init = function() {
       $scope.currentClickedUrl  = -1;
       $scope.directUrlData = directUrlData;//resolved from router
       $scope.urls  = diretUrls;//resolved from router
@@ -26,11 +26,11 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
     };
 
     //hide if is addmode or editmode
-    $scope.isAddOrEditMode = function(){
+    $scope.isAddOrEditMode = function() {
         return $scope.isAddMode || $scope.editMode;
     }
     //hide the row content if its clicked
-    $scope.hideRow = function(index){
+    $scope.hideRow = function(index) {
         return ($scope.currentClickedUrl === index && $scope.editMode);
     };
    
@@ -40,33 +40,33 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
     };
 
     //click on invidual row
-    $scope.editSingle = function(index){
+    $scope.editSingle = function(index) {
         $scope.currentClickedUrl = index;
         $scope.editMode          = true;
         $scope.isAddMode         = false;
         $scope.url               = $scope.urls[$scope.currentClickedUrl];
     };
     // add new button press
-    $scope.addNew =  function(){
+    $scope.addNew =  function() {
         resetEditScreen();
         $scope.currentClickedUrl = -1;
         $scope.editMode          = false;
         $scope.isAddMode         = true;
     };
     //canceling add/edit mode
-    $scope.cancelAddEdit = function(){
+    $scope.cancelAddEdit = function() {
         resetEditScreen();
         $scope.currentClickedUrl = -1;
     };
 
-    var saveNewDirectURLSuccess = function(response){
+    var saveNewDirectURLSuccess = function(response) {
         $scope.$emit('hideLoader');
         $scope.urls.push(response);
         resetEditScreen();
         $scope.currentClickedUrl = -1;
     };
 
-    var callSaveApi = function(){
+    var callSaveApi = function() {
         var data = {
              "active": $scope.url.active,
              "application": "URL",
@@ -77,14 +77,14 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
         $scope.invokeApi(adZestCheckinCheckoutSrv.saveNewDirectURL, data,saveNewDirectURLSuccess);
     };
 
-    var saveEditDirectURLSuccess = function(response){
+    var saveEditDirectURLSuccess = function(response) {
         $scope.$emit('hideLoader');
         $scope.urls[$scope.currentClickedUrl] = response;
         resetEditScreen();
         $scope.currentClickedUrl = -1;
     };
 
-    var callEditApi = function(){
+    var callEditApi = function() {
          var data = {
              "id":$scope.url.id,
              "active": $scope.url.active,
@@ -97,8 +97,8 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
 
     };
     //toggle activate/deactivate
-    $scope.switchActivation =  function(index){
-        var toggleSucces = function(response){
+    $scope.switchActivation =  function(index) {
+        var toggleSucces = function(response) {
             $scope.$emit('hideLoader');
             $scope.urls[index] = response;
         };
@@ -110,11 +110,11 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
         $scope.invokeApi(adZestCheckinCheckoutSrv.editDirectURL, data,toggleSucces);
     };
     //delete the selected url        
-    $scope.deleteUrl = function(index){
+    $scope.deleteUrl = function(index) {
         //call API
 
         // successCallBack
-        var deleteSuccessCallback = function(){
+        var deleteSuccessCallback = function() {
              $scope.urls.splice(index,1);
              $scope.$emit('hideLoader');
         };
@@ -122,8 +122,8 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
         $scope.invokeApi(adZestCheckinCheckoutSrv.deteDirectUrl, data,deleteSuccessCallback);
     };
     // save/update  success
-    $scope.saveAddEdit = function(){
-        if($scope.isAddMode){
+    $scope.saveAddEdit = function() {
+        if($scope.isAddMode) {
            callSaveApi();
         }
         else{
@@ -131,11 +131,11 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
         };
     };
     // save success
-    var saveSettingsSuccess = function(data){
+    var saveSettingsSuccess = function(data) {
         $scope.$emit('hideLoader');
     };
     // save direct URL settings
-    $scope.saveCheckin = function(){
+    $scope.saveCheckin = function() {
         $scope.invokeApi(adZestCheckinCheckoutSrv.saveDirectSetup, $scope.directUrlData,saveSettingsSuccess);
     };
 

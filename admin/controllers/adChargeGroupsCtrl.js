@@ -1,5 +1,5 @@
 admin.controller('ADChargeGroupsCtrl',['$scope', 'ADChargeGroupsSrv', '$anchorScroll', '$timeout', '$location',
-	function($scope, ADChargeGroupsSrv, $anchorScroll, $timeout, $location){
+	function($scope, ADChargeGroupsSrv, $anchorScroll, $timeout, $location) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 5);
@@ -28,16 +28,16 @@ admin.controller('ADChargeGroupsCtrl',['$scope', 'ADChargeGroupsSrv', '$anchorSc
     * @param {int} index of the selected item
     * @param {string} id of the item
     */
-	$scope.getTemplateUrl = function(index){
-		if($scope.currentClickedElement === index){
+	$scope.getTemplateUrl = function(index) {
+		if($scope.currentClickedElement === index) {
 			 return "/assets/partials/chargeGroups/adChargeGroupsEdit.html";
 		}
 	};
 	/*
     * To handle cancel click
     */
-	$scope.clickedCancel = function(){
-		if($scope.currentClickedElement !== 'new'){
+	$scope.clickedCancel = function() {
+		if($scope.currentClickedElement !== 'new') {
 			$scope.data.charge_groups[$scope.currentClickedElement].name = $scope.preveousItem;
 			$scope.preveousItem = "";
 		}
@@ -47,7 +47,7 @@ admin.controller('ADChargeGroupsCtrl',['$scope', 'ADChargeGroupsSrv', '$anchorSc
 	/*
     * To handle add new button click
     */
-	$scope.addNewClicked = function(){
+	$scope.addNewClicked = function() {
 		$scope.currentClickedElement = 'new';
 		$timeout(function() {
             $location.hash('add-new');
@@ -58,8 +58,8 @@ admin.controller('ADChargeGroupsCtrl',['$scope', 'ADChargeGroupsSrv', '$anchorSc
 	/*
     * To handle save button in add new box.
     */
-  	$scope.saveAddNew = function(){
-  		var postSuccess = function(data){
+  	$scope.saveAddNew = function() {
+  		var postSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 			$scope.data.name = "";
@@ -70,8 +70,8 @@ admin.controller('ADChargeGroupsCtrl',['$scope', 'ADChargeGroupsSrv', '$anchorSc
 	/*
     * To handle save button in edit box.
     */
-   	$scope.updateItem = function(){
-   		var postSuccess = function(data){
+   	$scope.updateItem = function() {
+   		var postSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 		};
@@ -81,8 +81,8 @@ admin.controller('ADChargeGroupsCtrl',['$scope', 'ADChargeGroupsSrv', '$anchorSc
    	/*
     * To handle delete button in edit box and list view.
     */
-	$scope.clickedDelete = function(id){
-		var successDeletionCallback = function(){
+	$scope.clickedDelete = function(id) {
+		var successDeletionCallback = function() {
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 			// delete data from scope

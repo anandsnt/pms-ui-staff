@@ -282,7 +282,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 						var postingAccId = groupSummary.posting_account_id,
 							url;
 
-						if ( groupSummary.rate === null ){
+						if ( groupSummary.rate === null ) {
 							groupSummary.rate = -1;
 						}
 
@@ -514,12 +514,12 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			return deferred.promise;
 		};
 
-		this.toggleHideRate = function( params ){
+		this.toggleHideRate = function( params ) {
 			var deferred = $q.defer(),
 				url = 'api/groups/'+params.group_id+'/hide_rates';
 				rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 				   	 deferred.resolve(data);
-				},function(data){
+				},function(data) {
 				    deferred.reject(data);
 				});
 			return deferred.promise;
@@ -530,7 +530,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 				url = 'api/groups/'+params.group_id+'/change_rate';
 				rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 				   	 deferred.resolve(data);
-				},function(data){
+				},function(data) {
 				    deferred.reject(data);
 				});
 			return deferred.promise;	

@@ -1,4 +1,4 @@
-sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog','RVCompanyCardSearchSrv','RVSearchSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog, RVCompanyCardSearchSrv, RVSearchSrv){
+sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog','RVCompanyCardSearchSrv','RVSearchSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog, RVCompanyCardSearchSrv, RVSearchSrv) {
 	
 	BaseCtrl.call(this, $scope);
 
@@ -183,7 +183,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 
 				excludeActiveReservationFromsSearch();
 		}
-		setTimeout(function(){$scope.refreshScroller('res_search_scroller');}, 750);
+		setTimeout(function() {$scope.refreshScroller('res_search_scroller');}, 750);
 	};
 
 	/**

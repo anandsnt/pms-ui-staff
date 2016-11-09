@@ -1,4 +1,4 @@
-admin.service('adBritePabXSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2){
+admin.service('adBritePabXSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
 	
 	/**
 	 * to get the BritePabX configraton values
@@ -10,7 +10,7 @@ admin.service('adBritePabXSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function(
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data.brite);
-		},function(data){
+		},function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -26,7 +26,7 @@ admin.service('adBritePabXSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function(
 
 		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
-		},function(data){
+		},function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;

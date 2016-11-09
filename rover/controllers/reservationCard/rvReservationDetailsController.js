@@ -55,7 +55,7 @@ sntRover.controller('reservationDetailsController',
 			setNavigationBookMark();
 		}
 
-        if($scope.previousState.name === "rover.actionsManager"){
+        if($scope.previousState.name === "rover.actionsManager") {
             setNavigationBookMark();
             $rootScope.setPrevState = {
                 title: 'ACTIONS MANAGER',
@@ -299,10 +299,10 @@ sntRover.controller('reservationDetailsController',
 				$scope.$broadcast("UPDATEGUESTDEATAILS", {"isBackToStayCard": true});
 			}
 		};
-		$scope.saveAccGuestDetails = function(){
-			setTimeout(function(){
+		$scope.saveAccGuestDetails = function() {
+			setTimeout(function() {
 
-				if(document.activeElement.getAttribute("type") != "text"){
+				if(document.activeElement.getAttribute("type") != "text") {
 					$scope.$broadcast("UPDATEGUESTDEATAILS", {"isBackToStayCard": false});
 				}
 
@@ -327,7 +327,7 @@ sntRover.controller('reservationDetailsController',
 		angular.forEach($scope.reservationData.reservation_card.loyalty_level.frequentFlyerProgram, function(item, index) {
 			if ($scope.reservationData.reservation_card.loyalty_level.selected_loyalty === item.id) {
 				$scope.selectedLoyalty = item;
-				if(_.isString($scope.selectedLoyalty.membership_card_number)){
+				if(_.isString($scope.selectedLoyalty.membership_card_number)) {
 					$scope.selectedLoyalty.membership_card_number = $scope.selectedLoyalty.membership_card_number.substr($scope.selectedLoyalty.membership_card_number.length - 4);
 				}
 			}
@@ -335,7 +335,7 @@ sntRover.controller('reservationDetailsController',
 		angular.forEach($scope.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram, function(item, index) {
 			if ($scope.reservationData.reservation_card.loyalty_level.selected_loyalty === item.id) {
 				$scope.selectedLoyalty = item;
-				if(_.isString($scope.selectedLoyalty.membership_card_number)){
+				if(_.isString($scope.selectedLoyalty.membership_card_number)) {
 					$scope.selectedLoyalty.membership_card_number = $scope.selectedLoyalty.membership_card_number.substr($scope.selectedLoyalty.membership_card_number.length - 4);
 				}
 			}
@@ -471,7 +471,7 @@ sntRover.controller('reservationDetailsController',
 		 * Handle swipe action in reservationdetails card
 		 */
 
-                 $scope.$on('UPDATE_DEPOSIT_BALANCE_FLAG',function(evt, val){
+                 $scope.$on('UPDATE_DEPOSIT_BALANCE_FLAG',function(evt, val) {
                      $scope.isDepositBalanceScreenOpened = val;
                  });
 
@@ -498,7 +498,7 @@ sntRover.controller('reservationDetailsController',
 			} else {
 				swipedCardData.swipeFrom = "stayCard";
 			}
-                        if (swipedCardData.swipeFrom !== 'guestCard'){
+                        if (swipedCardData.swipeFrom !== 'guestCard') {
                             $scope.$emit('isFromGuestCardFalse');
                         }
 
@@ -514,7 +514,7 @@ sntRover.controller('reservationDetailsController',
 
 				$scope.showAddNewPaymentModel(swipedCardData);
                                 $scope.swippedCard = true;
-                                if (swipedCardData.swipeFrom !== 'guestCard'){
+                                if (swipedCardData.swipeFrom !== 'guestCard') {
                                     $scope.$emit('isFromGuestCardFalse');
                                 }
 			};
@@ -834,7 +834,7 @@ sntRover.controller('reservationDetailsController',
                                         swipedCardDataToRender.swipeFrom !== "cancelReservationPenalty" &&
                                         swipedCardDataToRender.swipeFrom !== "stayCardDeposit") {
                                         console.info('doing open pmt window with pass data')
-					if (swipedCardDataToRender.swipeFrom === 'guestCard'){
+					if (swipedCardDataToRender.swipeFrom === 'guestCard') {
                        passData.isFromGuestCard = true;
 					}
 					//close any ngDialogs if opened (work around fix)
@@ -1159,12 +1159,12 @@ sntRover.controller('reservationDetailsController',
 		*/
 		$scope.showAuthAmountPopUp = function() {
 
-			var fetchCreditCardAuthInfoSuccess = function( data ){
+			var fetchCreditCardAuthInfoSuccess = function( data ) {
 				$scope.$emit('hideLoader');
 				$scope.authData.manualCCAuthPermission = hasManualCCAuthPermission();
 				$scope.authData.billData = data.bill_data;
 
-				if( $scope.authData.billData.length > 0 ){
+				if( $scope.authData.billData.length > 0 ) {
 					// Show Multiple Credit card auth popup
 					ngDialog.open({
 						template		: '/assets/partials/authorization/rvManualAuthorizationPopup.html',
@@ -1185,7 +1185,7 @@ sntRover.controller('reservationDetailsController',
 				}
 			};
 
-			var fetchCreditCardAuthInfoFaliure = function( errorMessage ){
+			var fetchCreditCardAuthInfoFaliure = function( errorMessage ) {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorMessage;
 			};
@@ -1205,7 +1205,7 @@ sntRover.controller('reservationDetailsController',
 		* Method to hanlde each credit card click.
 		* @param {int} index of the selected card
 		*/
-		$scope.selectCCforAuth = function( index ){
+		$scope.selectCCforAuth = function( index ) {
 			var selectedCardData = $scope.authData.billData[index];
 			var selectedCardDetails = {
 				'name' 			: selectedCardData.card_name,
@@ -1272,7 +1272,7 @@ sntRover.controller('reservationDetailsController',
 		};
 
 		// To handle close/cancel button click after success/declined of auth process.
-		$scope.cancelButtonClick = function(){
+		$scope.cancelButtonClick = function() {
 			$scope.showAuthAmountPopUp();
 		};
 
@@ -1297,35 +1297,35 @@ sntRover.controller('reservationDetailsController',
 		};
 
     // Handle TRY AGAIN on auth failure popup.
-    $scope.tryAgain = function(){
+    $scope.tryAgain = function() {
 		authInProgress();
 		manualAuthAPICall();
 	};
     // CICO-17067 PMS: Rover - Stay Card: Add manual authorization ends here...
 
     //>>wakeup call check after guest prefs are fetched
-        $scope.$on('wakeup_call_ON',function(evt, data){
-            if (data){
+        $scope.$on('wakeup_call_ON',function(evt, data) {
+            if (data) {
                 $scope.activeWakeUp = data.active;
             }
         });
 
-            $scope.updateGiftCardNumber = function(n){
+            $scope.updateGiftCardNumber = function(n) {
                 $rootScope.$broadcast('GIFTCARD_DETAILS',n);
             };
 
             $scope.giftCardAmountAvailable = false;
             $scope.giftCardAvailableBalance = 0;
-            $scope.$on('giftCardAvailableBalance',function(e, giftCardData){
+            $scope.$on('giftCardAvailableBalance',function(e, giftCardData) {
                $scope.giftCardAvailableBalance = giftCardData.amount;
             });
             $scope.timer = null;
-            $scope.cardNumberInput = function(n, e){
+            $scope.cardNumberInput = function(n, e) {
                     var len = n.length;
                     $scope.num = n;
-                    if (len >= 8 && len <= 22){
+                    if (len >= 8 && len <= 22) {
                         //then go check the balance of the card
-                        $('[name=card-number]').keydown(function(){
+                        $('[name=card-number]').keydown(function() {
                             clearTimeout($scope.timer);
                             $scope.updateGiftCardNumber(n);
                             $scope.timer = setTimeout($scope.fetchGiftCardBalance, 1500);
@@ -1340,7 +1340,7 @@ sntRover.controller('reservationDetailsController',
                // if ($scope.depositData.paymentType === 'GIFT_CARD'){
                        //switch this back for the UI if the payment was a gift card
                    $scope.giftCardAmountAvailable = false;
-                   var fetchGiftCardBalanceSuccess = function(giftCardData){
+                   var fetchGiftCardBalanceSuccess = function(giftCardData) {
                        $scope.giftCardAvailableBalance = giftCardData.amount;
                        $scope.giftCardAmountAvailable = true;
                        $scope.$emit('giftCardAvailableBalance',giftCardData);
@@ -1353,7 +1353,7 @@ sntRover.controller('reservationDetailsController',
               // }
             };
 
-     var unbindChildContentModListener = $scope.$on('CHILD_CONTENT_MOD',function(event, timer){
+     var unbindChildContentModListener = $scope.$on('CHILD_CONTENT_MOD',function(event, timer) {
      	event.stopPropagation();
      	$scope.refreshReservationDetailsScroller(timer || 0);
      });

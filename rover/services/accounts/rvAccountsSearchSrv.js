@@ -11,7 +11,7 @@ angular.module('sntRover').service('rvAccountsSrv',
 		* @param {Object} with search query, from_date, to_date
 		* @return {Promise} - After resolving it will return the list of groups
 		*/
-		this.getAccountsList = function(params){
+		this.getAccountsList = function(params) {
 			var deferred = $q.defer(),
 
 				url = '/api/posting_accounts/search';
@@ -26,10 +26,10 @@ angular.module('sntRover').service('rvAccountsSrv',
 			};
 
 			rvBaseWebSrvV2.getJSON(url, data).then(
-				function(data){
+				function(data) {
 					deferred.resolve(data);
 				},
-				function(errorMessage){
+				function(errorMessage) {
 					deferred.reject(errorMessage);
 				}
 			);

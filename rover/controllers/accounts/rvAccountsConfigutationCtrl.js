@@ -148,9 +148,9 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			}
 
 			//Reload the summary tab contents before switching to it
-			if(tab === "ACCOUNT"){
+			if(tab === "ACCOUNT") {
 
-			} else if(tab === "TRANSACTIONS"){ //Preload the transaction data when we switch to transactions tab
+			} else if(tab === "TRANSACTIONS") { //Preload the transaction data when we switch to transactions tab
 
 
 			} else{
@@ -336,7 +336,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		 * @param  {String} errorMessage)
 		 * @return undefined
 		 */
-		$scope.$on('showErrorMessage', function(event, errorMessage){
+		$scope.$on('showErrorMessage', function(event, errorMessage) {
 			$scope.errorMessage = errorMessage;
 			runDigestCycle();
 		});

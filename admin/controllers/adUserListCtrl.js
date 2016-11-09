@@ -1,4 +1,4 @@
-admin.controller('ADUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$stateParams', 'ADUserSrv', 'ngTableParams','$filter',  function($scope, $rootScope, $q, $state, $stateParams, ADUserSrv, ngTableParams, $filter){
+admin.controller('ADUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$stateParams', 'ADUserSrv', 'ngTableParams','$filter',  function($scope, $rootScope, $q, $state, $stateParams, ADUserSrv, ngTableParams, $filter) {
 	BaseCtrl.call(this, $scope);
 	$scope.hotelId = $stateParams.id;
 	$scope.isAdminSnt = false;
@@ -7,16 +7,16 @@ admin.controller('ADUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$state
    /**
     * To check whether logged in user is sntadmin or hoteladmin
     */
-	if($rootScope.adminRole === "snt-admin"){
+	if($rootScope.adminRole === "snt-admin") {
 		$scope.isAdminSnt = true;
 	}
    /**
     * To fetch the list of users
     */
-	$scope.fetchTableData = function($defer, params){
+	$scope.fetchTableData = function($defer, params) {
 		var getParams = $scope.calculateGetParams(params);
 		getParams.isAdminSnt = $scope.isAdminSnt;
-		var successCallbackFetch = function(data){
+		var successCallbackFetch = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 			$scope.totalCount = data.total_count;
@@ -30,7 +30,7 @@ admin.controller('ADUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$state
 	};
 
 
-	$scope.loadTable = function(){
+	$scope.loadTable = function() {
 		$scope.tableParams = new ngTableParams({
 		        page: 1,  // show first page
 		        count: $scope.displyCount, // count per page
@@ -51,13 +51,13 @@ admin.controller('ADUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$state
     * @param {string} current status of the user
     * @param {num} current index
     */
-	$scope.activateInactivate = function(userId, currentStatus, index){
+	$scope.activateInactivate = function(userId, currentStatus, index) {
 		var nextStatus = (currentStatus === "true" ? "inactivate" : "activate");
 		var data = {
 			"activity": nextStatus,
 			"id": userId
 		};
-		var successCallbackActivateInactivate = function(data){
+		var successCallbackActivateInactivate = function(data) {
 			$scope.data[index].is_active = (currentStatus === "true" ? "false" : "true");
 			$scope.$emit('hideLoader');
 		};
@@ -68,12 +68,12 @@ admin.controller('ADUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$state
     * @param {int} index of the selected user
     * @param {string} user id
     */
-	$scope.deleteUser = function(index, userId){
+	$scope.deleteUser = function(index, userId) {
 		var data = {
 			"id": userId,
 			"index": index
 		};
-		var successDelete = function(){
+		var successDelete = function() {
 			$scope.$emit('hideLoader');
 			//To refresh the user list
 			$scope.listUsers();
@@ -85,7 +85,7 @@ admin.controller('ADUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$state
 	/**
     * Handle back action
     */
-	$scope.clickBack = function(){
+	$scope.clickBack = function() {
 		$state.go("admin.hoteldetails");
 	};
 

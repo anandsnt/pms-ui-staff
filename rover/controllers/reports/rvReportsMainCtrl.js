@@ -118,7 +118,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		* should show schedule report menu
 		* @return {Boolean}
 		*/
-		$scope.shouldShowScheduleReport = function(){
+		$scope.shouldShowScheduleReport = function() {
 			return ($scope.hasPermissionToViewScheduleReport());
 		};
 
@@ -653,10 +653,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         		item.hasRestrictionListFilter.title = 'All Selected';
         		item.hasRestrictionListFilter.selectAll = true;
         	}
-        	else if(selectedRestrictions.length === 0 ){
+        	else if(selectedRestrictions.length === 0 ) {
         		item.hasRestrictionListFilter.title = item.hasRestrictionListFilter.defaultTitle;
         	}
-        	else if(selectedRestrictions.length === 1 ){
+        	else if(selectedRestrictions.length === 1 ) {
         		item.hasRestrictionListFilter.title = selectedRestrictions[0].description;
         	}
         	else {
@@ -664,13 +664,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         	}
         };
 
-        $scope.restrictionChanged = function(item){
+        $scope.restrictionChanged = function(item) {
         	formTitleAndToggleSelectAllForRestrictionDropDown(item);
         	//for report details filter
         	refreshScroller();
         };
 
-        $scope.toggleRestrictionSelectAll = function(item){
+        $scope.toggleRestrictionSelectAll = function(item) {
         	_.each(item.hasRestrictionListFilter.data, function(rateType) {
         		rateType.selected = item.hasRestrictionListFilter.selectAll;
         	});
@@ -685,10 +685,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         		item.hasRoomTypeFilter.title = 'All Selected';
         		item.hasRoomTypeFilter.selectAll = true;
         	}
-        	else if(selectedRoomTypes.length === 0 ){
+        	else if(selectedRoomTypes.length === 0 ) {
         		item.hasRoomTypeFilter.title = item.hasRoomTypeFilter.defaultTitle;
         	}
-        	else if(selectedRoomTypes.length === 1 ){
+        	else if(selectedRoomTypes.length === 1 ) {
         		item.hasRoomTypeFilter.title = selectedRoomTypes[0].name;
         	}
         	else {
@@ -696,13 +696,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         	}
         };
 
-        $scope.roomTypeChanged = function(item){
+        $scope.roomTypeChanged = function(item) {
         	formTitleAndToggleSelectAllForRoomTypeDropDown(item);
         	//for report details filter
         	refreshScroller();
         };
 
-        $scope.toggleRoomTypeSelectAll = function(item){
+        $scope.toggleRoomTypeSelectAll = function(item) {
         	_.each(item.hasRoomTypeFilter.data, function(roomType) {
         		roomType.selected = item.hasRoomTypeFilter.selectAll;
         	});
@@ -716,10 +716,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         		}
         	});
         	var selectedRateCodes = _.where(item.hasRateCodeFilter.data, {selected: true});
-        	if(selectedRateCodes.length === 0 ){
+        	if(selectedRateCodes.length === 0 ) {
         		item.hasRateCodeFilter.title = item.hasRateCodeFilter.defaultTitle;
         	}
-        	else if(selectedRateCodes.length === 1 ){
+        	else if(selectedRateCodes.length === 1 ) {
         		item.hasRateCodeFilter.title = selectedRateCodes[0].description;
         	}
         	//for report details filter
@@ -752,10 +752,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         		item.hasRateFilter.title = 'All Selected';
         		item.hasRateFilter.selectAll = true;
         	}
-        	else if(selectedRates.length === 0 ){
+        	else if(selectedRates.length === 0 ) {
         		item.hasRateFilter.title = item.hasRateFilter.defaultTitle;
         	}
-        	else if(selectedRates.length === 1 ){
+        	else if(selectedRates.length === 1 ) {
         		item.hasRateFilter.title = selectedRates[0].rate_name;
         	}
         	else {
@@ -763,8 +763,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         	}
         };
 
-        var refreshScroller = function(){
-        	$timeout(function(){
+        var refreshScroller = function() {
+        	$timeout(function() {
 				$scope.refreshScroller('report-list-scroll');
 				$scope.myScroll['report-list-scroll'].refresh();
 				$scope.myScroll && $scope.myScroll['report-filter-sidebar-scroll'] && $scope.myScroll['report-filter-sidebar-scroll'].refresh();
@@ -839,7 +839,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		};
 
 		$scope.toggleFauxSelect = function(e, fauxDS) {
-			$timeout(function(){
+			$timeout(function() {
 				// this is a temp fix
 				// will replace faux select with <multi-option-selection>
 				$scope.$$childTail.myScroll['report-filters-scroll'].refresh();
@@ -1192,9 +1192,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				key = reportParams['RATE_IDS'];
 				params[key] = _.pluck(_.where(getRateListToShow(report),{selected: true}), "id");
                 // For the daily production rates; we are to send an array with group or allotment ids
-                if(reportNames['DAILY_PRODUCTION_RATE'] === report.title){
+                if(reportNames['DAILY_PRODUCTION_RATE'] === report.title) {
                     var selectedCustomRates = _.pluck(_.where(getRateListToShow(report),{selected: true, id: null}), "group_id");
-                    if ( selectedCustomRates.length > 0 ){
+                    if ( selectedCustomRates.length > 0 ) {
                         params[key] = _.without(params[key],null); //remove null entries in the rate_ids array (null entries would be there if custom rates were selected)
                         params['custom_rate_group_ids'] = selectedCustomRates;
                     }

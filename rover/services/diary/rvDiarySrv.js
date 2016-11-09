@@ -791,7 +791,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                     //If rate_type is available
                     if(rate_type) {
-                        if(account_id){
+                        if(account_id) {
                             _.extend(params, { account_id: account_id });
                         }
                     }
@@ -822,7 +822,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                                 id_difference   = undefined;
 
 
-                                if(existing_ids.length > 0){
+                                if(existing_ids.length > 0) {
                                     id_difference = _.difference(existing_ids, new_coming_ids);
 
                                     var len = Availability.store.data.length;
@@ -830,7 +830,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                                     for(var i = 0; i < len; i++) {
                                        for(var k = 0; k < id_difference.length; k++) {
-                                            if(Availability.store.data[i] && _.has(Availability.store.data[i], "id") &&  Availability.store.data[i].id === id_difference [k]){
+                                            if(Availability.store.data[i] && _.has(Availability.store.data[i], "id") &&  Availability.store.data[i].id === id_difference [k]) {
                                                 Availability.store.data.splice(i);
                                                 delete Availability.store.group.values.id[id_difference[k]];
                                                 len--;
@@ -860,7 +860,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                 * primary method to get availability against a room
                 * usually used when reservation editing with time slot changing or room changing
                 */
-                this.roomAvailabilityCheckAgainstReservation = function(data){
+                this.roomAvailabilityCheckAgainstReservation = function(data) {
                     var params = {
                         room_id:            data.room_id,
                         reservation_id:     data.reservation_id,
@@ -871,7 +871,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         rate_type:          data.rate_type
                     };
                     if(data.rate_type === 'Corporate') {
-                        if(data.account_id){
+                        if(data.account_id) {
                             _.extend(params, { account_id: data.account_id });
                         }
                     }
@@ -880,7 +880,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     var url = '/api/hourly_availability/room';
                     rvBaseWebSrvV2.getJSON(url, params).then(function(resultFromAPI) {
                         deferred.resolve(resultFromAPI);
-                    },function(error){
+                    },function(error) {
                         deferred.reject(error);
                     });
                     return deferred.promise;
@@ -960,7 +960,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     };
 
                     if(data.rate_type === 'Corporate') {
-                        if(data.account_id){
+                        if(data.account_id) {
                             _.extend(params, { account_id: data.account_id });
                         }
                     }
@@ -970,7 +970,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     var url = '/api/hourly_availability/room_move';
                     rvBaseWebSrvV2.getJSON(url, params).then(function(resultFromAPI) {
                         deferred.resolve(resultFromAPI);
-                    },function(error){
+                    },function(error) {
                         deferred.reject(error);
                     });
                     return deferred.promise;
@@ -1081,7 +1081,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     var url = '/api/hourly_occupancy/unassigned_list?date=' + params.date;
                     rvBaseWebSrvV2.getJSON(url).then(function(data) {
                         deferred.resolve(data.reservations);
-                    },function(error){
+                    },function(error) {
                         deferred.reject(error);
                     });
                     return deferred.promise;
@@ -1092,7 +1092,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     var url = '/api/hourly_occupancy/unassigned_list?date=' + params.date;
                     rvBaseWebSrvV2.getJSON(url).then(function(data) {
                         deferred.resolve(data.reservations.length);
-                    },function(error){
+                    },function(error) {
                         deferred.reject(error);
                     });
                     return deferred.promise;
@@ -1103,7 +1103,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     var url = 'api/reservations/' + params.id + '/unassign_room/';
                     rvBaseWebSrvV2.postJSON(url).then(function(data) {
                         deferred.resolve(data.reservations);
-                    },function(error){
+                    },function(error) {
                         deferred.reject(error);
                     });
                     return deferred.promise;

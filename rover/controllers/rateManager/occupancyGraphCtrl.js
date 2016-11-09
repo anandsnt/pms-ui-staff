@@ -92,7 +92,7 @@ angular.module('sntRover').controller('RateMgrOccupancyGraphCtrl', ['$q', '$scop
                 // NOTE :: Check if replaced harcoded 10 with item.actual
 
 
-                if(item.actual === null){
+                if(item.actual === null) {
                    actual = 0;
                 }
                 else{

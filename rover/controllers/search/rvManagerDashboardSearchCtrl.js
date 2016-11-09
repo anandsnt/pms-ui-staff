@@ -1,4 +1,4 @@
-sntRover.controller('rvManagerDashboardSearchController',['$scope', '$rootScope', '$state', '$stateParams', '$filter', '$vault',  function($scope, $rootScope, $state, $stateParams, $filter, $vault){
+sntRover.controller('rvManagerDashboardSearchController',['$scope', '$rootScope', '$state', '$stateParams', '$filter', '$vault',  function($scope, $rootScope, $state, $stateParams, $filter, $vault) {
 
 	/*
 	* Controller class for dashboard search,
@@ -23,14 +23,14 @@ sntRover.controller('rvManagerDashboardSearchController',['$scope', '$rootScope'
 
     //To clear date boxes when we come to dashboard through main menu
     //timeout given because rvReservationSearchWidgetCtrl init happens after some time
-    setTimeout(function(){
+    setTimeout(function() {
         $scope.$broadcast("clearSearchDateValues", false);
     }, 500);
 
     /**
     * recieved event from search controller on focusedout.
     */
-    $scope.$on("SEARCH_BOX_FOCUSED_OUT", function(event){
+    $scope.$on("SEARCH_BOX_FOCUSED_OUT", function(event) {
         backToDashboard();
     });
 
@@ -38,7 +38,7 @@ sntRover.controller('rvManagerDashboardSearchController',['$scope', '$rootScope'
     /**
     * function used to back onto dashboard screen
     */
-    var backToDashboard = function(){
+    var backToDashboard = function() {
         //setting the backbutton & showing the caption
         $scope.$emit("UpdateSearchBackbuttonCaption", "");
         //we need to show the dashboard & hide search area
@@ -53,7 +53,7 @@ sntRover.controller('rvManagerDashboardSearchController',['$scope', '$rootScope'
     * recievable function to handle backbutton click on header area
     * will backto dashboard
     */
-    $scope.$on("HeaderBackButtonClicked", function(event){
+    $scope.$on("HeaderBackButtonClicked", function(event) {
         backToDashboard();
     });
 
@@ -61,7 +61,7 @@ sntRover.controller('rvManagerDashboardSearchController',['$scope', '$rootScope'
     /**
     * When leaving this, we need to reset the back button text
     */
-    $scope.$on('$stateChangeSuccess', function(event){
+    $scope.$on('$stateChangeSuccess', function(event) {
         //setting the backbutton & showing the caption
         $scope.$emit("UpdateSearchBackbuttonCaption", "");
     });
@@ -69,7 +69,7 @@ sntRover.controller('rvManagerDashboardSearchController',['$scope', '$rootScope'
     /**
     * on what action taken, on search results clearing
     */
-    $scope.$on("SearchResultsCleared", function(event){
+    $scope.$on("SearchResultsCleared", function(event) {
         backToDashboard();
     });
 }]);

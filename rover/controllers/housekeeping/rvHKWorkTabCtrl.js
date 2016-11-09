@@ -115,7 +115,7 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 		};
 
 		$scope.manualRoomStatusChanged = function() {
-			var callback = function(data){
+			var callback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.refreshScroller('room-status-content');
 				$_updateRoomDetails( 'current_hk_status', $scope.roomDetails.current_hk_status );

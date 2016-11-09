@@ -1,14 +1,14 @@
 admin.controller('ADCampaignsListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADCampaignSrv', 'ngTableParams','$filter','$timeout', '$location', '$anchorScroll',
-	function($scope, $state, ADRatesSrv, ADCampaignSrv, ngTableParams, $filter, $timeout, $location, $anchorScroll){
+	function($scope, $state, ADRatesSrv, ADCampaignSrv, ngTableParams, $filter, $timeout, $location, $anchorScroll) {
 
 	$scope.errorMessage = '';
 	$scope.successMessage = "";
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
 
-	$scope.fetchTableData = function($defer, params){
+	$scope.fetchTableData = function($defer, params) {
 		var getParams = $scope.calculateGetParams(params);
-		var fetchSuccessOfItemList = function(data){
+		var fetchSuccessOfItemList = function(data) {
 			$scope.$emit('hideLoader');
 			//No expanded rate view
 			$scope.currentClickedElement = -1;
@@ -38,17 +38,17 @@ admin.controller('ADCampaignsListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADCam
 		);
 	};
 
-	$scope.editCampaign = function(id , index){
+	$scope.editCampaign = function(id , index) {
 		$state.go('admin.addCampaign', {'id' : id, 'type': 'EDIT'});
 	};
 
-	$scope.deleteCampaign = function(id, index){
+	$scope.deleteCampaign = function(id, index) {
 
-		var deleteSuccess = function(){
+		var deleteSuccess = function() {
 			$scope.$emit('hideLoader');
 
-			for(var i in $scope.data){
-				if($scope.data[i].id === id){
+			for(var i in $scope.data) {
+				if($scope.data[i].id === id) {
 					$scope.data.splice(i, 1);
 					break;
 				}

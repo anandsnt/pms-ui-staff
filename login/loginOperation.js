@@ -1,9 +1,9 @@
-var LoginOperation = function(){
+var LoginOperation = function() {
 	// class for handling operations with payment device
 	var that = this;
 
 	// function used to call cordova services
-	this.callCordovaService = function(options){
+	this.callCordovaService = function(options) {
 
 		// cordova.exec function require success and error call back
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
@@ -19,25 +19,25 @@ var LoginOperation = function(){
 		var action = options["action"] ? options["action"] : null;
 		var arguments = options["arguments"] ? options["arguments"] : [];
 
-		if(successCallBack == null){
+		if(successCallBack == null) {
 			return false;
 		}
-		else if(failureCallBack == null){
+		else if(failureCallBack == null) {
 			return false;
 		}
-		else if(service == null){
+		else if(service == null) {
 			return false;
 		}
-		else if(action == null){
+		else if(action == null) {
 			return false;
 		}
 		else{
 			//calling cordova service
 			cordova.exec(
 						// if success call back require any parameters
-						function(data){
+						function(data) {
 
-							if(successCallBackParameters !== null){
+							if(successCallBackParameters !== null) {
 								successCallBack(data, successCallBackParameters);
 								that.callRecursively(options);
 							}
@@ -48,8 +48,8 @@ var LoginOperation = function(){
 
 						},
 						// if failure/error call back require any parameters
-						function(error){
-							if(failureCallBackParameters !== null){
+						function(error) {
+							if(failureCallBackParameters !== null) {
 								failureCallBack(error, failureCallBackParameters);
 							}
 							else{
@@ -71,7 +71,7 @@ var LoginOperation = function(){
 		}
 	};
 
-	this.callRecursively = function(options){
+	this.callRecursively = function(options) {
 		// TODO: Have to find better way of implementing this if not.
 		var shouldCallRecursively = options["shouldCallRecursively"] ? options["shouldCallRecursively"] : false;
 		if(shouldCallRecursively) {
@@ -82,7 +82,7 @@ var LoginOperation = function(){
 	/**
 	* method To set the user id in native component
 	*/
-	this.setUserId = function(options){
+	this.setUserId = function(options) {
 
 		options['service'] = "RVCardPlugin";
 		options['action'] = "setUserID";

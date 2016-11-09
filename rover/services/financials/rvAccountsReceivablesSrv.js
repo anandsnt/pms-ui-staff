@@ -1,4 +1,4 @@
-angular.module('sntRover').service('RVAccountsReceivablesSrv',['$http', '$q', 'BaseWebSrvV2', function($http, $q, BaseWebSrvV2){
+angular.module('sntRover').service('RVAccountsReceivablesSrv',['$http', '$q', 'BaseWebSrvV2', function($http, $q, BaseWebSrvV2) {
 
     var that = this;
     /*

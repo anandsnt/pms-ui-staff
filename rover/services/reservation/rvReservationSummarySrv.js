@@ -23,7 +23,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
         };
 
         this.fetchLengthSegments = function(deferred) {
-            if(isEmpty(segmentData)){
+            if(isEmpty(segmentData)) {
                 var url = '/api/segments?is_active=true';
                 rvBaseWebSrvV2.getJSON(url).then(function(data) {
                     segmentData = data;
@@ -42,7 +42,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
 
         this.fetchDemographicMarketSegments = function(deferred) {
 
-            if(isEmpty(demographicsData)){
+            if(isEmpty(demographicsData)) {
                  var url = '/api/market_segments?is_active=true';
                 rvBaseWebSrvV2.getJSON(url).then(function(data) {
                     demographicsData.is_use_markets = that.reservationData.demographics.is_use_markets = data.is_use_markets;
@@ -59,7 +59,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
         };
 
         this.fetchDemographicSources = function(deferred) {
-            if(isEmpty(sourcesData)){
+            if(isEmpty(sourcesData)) {
                 var url = '/api/sources?is_active=true'; //TODO: Whether we need active list only or all
                 rvBaseWebSrvV2.getJSON(url).then(function(data) {
                     sourcesData.is_use_sources = that.reservationData.demographics.is_use_sources = data.is_use_sources;
@@ -76,7 +76,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
         };
 
         this.fetchDemographicOrigins = function(deferred) {
-            var originsSuccessCallback = function(data){
+            var originsSuccessCallback = function(data) {
                 that.reservationData.demographics.origins = data.booking_origins;
                 that.reservationData.demographics.origins = [];
                 //We need only the booking origins activated in the admin
@@ -87,7 +87,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
                     }
                 }
             };
-            if(isEmpty(originsData)){
+            if(isEmpty(originsData)) {
                 var url = '/api/booking_origins';
                 rvBaseWebSrvV2.getJSON(url).then(function(data) {
                     originsData  = data;
@@ -102,7 +102,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
         };
 
         this.fetchDemographicReservationTypes = function(deferred) {
-            var reservationTypesCallback = function(data){
+            var reservationTypesCallback = function(data) {
                 that.reservationData.demographics.reservationTypes = [];
                     //We need only the active reservation types
                     for (var i in data.reservation_types) {
@@ -111,7 +111,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
                         }
                     }
             };
-            if(isEmpty(reservationTypes)){
+            if(isEmpty(reservationTypes)) {
                 var url = '/api/reservation_types.json?is_active=true';
                 rvBaseWebSrvV2.getJSON(url).then(function(data) {
                     reservationTypes = data;
@@ -297,7 +297,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
         };
 
         // To fetch the confirmation email data for PRINT functionality on Rover.
-        this.fetchResservationConfirmationPrintData = function( params ){
+        this.fetchResservationConfirmationPrintData = function( params ) {
             var deferred = $q.defer(),
                 url = '/api/reservations/'+params.reservation_id+'/confirmation_email_data';
             rvBaseWebSrvV2.getJSON(url).then(function(data) {
@@ -311,7 +311,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
         };
 
         // To fetch the Cancellation email data for PRINT functionality on Rover.
-        this.fetchResservationCancellationPrintData = function( params ){
+        this.fetchResservationCancellationPrintData = function( params ) {
             var deferred = $q.defer(),
                 url = '/api/reservations/'+params.reservation_id+'/cancellation_email_data';
             rvBaseWebSrvV2.getJSON(url).then(function(data) {

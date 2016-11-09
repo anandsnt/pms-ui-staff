@@ -19,7 +19,7 @@ admin.service('ADRatesConfigureSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$rootSco
             return deferred.promise;
         };
 
-        this.saveHourlySet = function(data){
+        this.saveHourlySet = function(data) {
             var deferred = $q.defer();
             var url = "/api/rate_sets";
 
@@ -31,7 +31,7 @@ admin.service('ADRatesConfigureSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$rootSco
             return deferred.promise;
         };
 
-        this.updateHourlySet = function(data){
+        this.updateHourlySet = function(data) {
             var deferred = $q.defer();
             var url = "/api/rate_sets/"+ data.id;
 

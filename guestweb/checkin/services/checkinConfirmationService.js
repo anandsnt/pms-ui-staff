@@ -16,7 +16,7 @@
 				return deferred.promise;
 			};
 
-			var searchReservation =  function(data){
+			var searchReservation =  function(data) {
 				var deferred = $q.defer();
 				data.application = (typeof $rootScope.application !=="undefined") ? $rootScope.application : "";
 				var url = '/guest_web/checkin_reservation_search.json';
@@ -30,7 +30,7 @@
 			};
 
 
-			var getToken = function(data){
+			var getToken = function(data) {
 				var deferred = $q.defer();
 				data.application = (typeof $rootScope.application !=="undefined") ? $rootScope.application : "";
 				var url = '/guest_web/authenticate_checkin_guest';

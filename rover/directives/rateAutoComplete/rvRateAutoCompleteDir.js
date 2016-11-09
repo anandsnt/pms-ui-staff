@@ -86,7 +86,7 @@
 	        return false;    
 	    };
 
-		$scope.processEachItem = function(item, scope){
+		$scope.processEachItem = function(item, scope) {
 			var $content = highlightFilter_(item.name, $scope.rate_name),
 			    $result = $("<a></a>").html($content),
 			    defIconText = '',
@@ -127,8 +127,8 @@
 	            source 		: autoCompleteSourceHandler,
 	            select 		: autoCompleteSelectHandler
 			};
-			setTimeout(function(){
-				$scope.$apply(function(){					
+			setTimeout(function() {
+				$scope.$apply(function() {					
 					$scope.label 			= _.isUndefined($scope.label) ? 'Contracted Rate' : $scope.label;
 					$scope.entryDivClass 	= _.isUndefined($scope.entryDivClass) ? 'find-rate margin' : $scope.entryDivClass;
 					minLengthToTrigger = _.isUndefined($scope.minLengthToTrigger) ? 1 : parseInt($scope.minLengthToTrigger);
@@ -137,7 +137,7 @@
 		}();	    
     };
 
-    var linkFn = function(scope, el){
+    var linkFn = function(scope, el) {
     	autocompleteEl = el;
     };
   

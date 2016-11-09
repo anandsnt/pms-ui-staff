@@ -7,14 +7,14 @@
 
 	$scope.pageValid = false;
 
-	if($rootScope.isCheckedin){
+	if($rootScope.isCheckedin) {
 		$state.go('checkinSuccess');
 	}
 	else{
 		$scope.pageValid = true;
 	};
 
-	if($scope.pageValid){
+	if($scope.pageValid) {
 	//check if checkbox was already checked (before going to upgrades)
 	$scope.checked =  ($rootScope.ShowupgradedLabel) ? true:false;
 	$scope.reservationData = checkinDetailsService.getResponseData();
@@ -29,16 +29,16 @@
 		controller: ModalInstanceCtrl
 	};
 
-	$scope.termsClicked = function(){
+	$scope.termsClicked = function() {
     	$scope.showTermsPopup = true;
      };
 
-	$scope.agreeClicked = function(){
+	$scope.agreeClicked = function() {
 		$rootScope.checkedApplyCharges = $scope.checked =  true;
 		$scope.showTermsPopup = false;
 	};
 
-	$scope.cancel = function(){
+	$scope.cancel = function() {
 		$rootScope.checkedApplyCharges = $scope.checked = false;
 		$scope.showTermsPopup = false;
 	};
@@ -50,21 +50,21 @@
 	*   If precheckin is turned on go to ETA page.
 	*/
 
-	$scope.checkInButtonClicked = function(){
-		if($scope.checked){
-			if($rootScope.guestBirthdateOn && !$rootScope.isBirthdayVerified){
+	$scope.checkInButtonClicked = function() {
+		if($scope.checked) {
+			if($rootScope.guestBirthdateOn && !$rootScope.isBirthdayVerified) {
 				$state.go('birthDateDetails');
 			}
-			else if($rootScope.guestPromptAddressOn && !$rootScope.isGuestAddressVerified){
+			else if($rootScope.guestPromptAddressOn && !$rootScope.isGuestAddressVerified) {
 				$state.go('promptGuestDetails');
 			}
-			else if(!$rootScope.guestAddressOn || $rootScope.isGuestAddressVerified){
+			else if(!$rootScope.guestAddressOn || $rootScope.isGuestAddressVerified) {
 				// if room upgrades are available
-				if($rootScope.upgradesAvailable){
+				if($rootScope.upgradesAvailable) {
 					$state.go('checkinUpgrade');
 				}
 				else{
-					  if($rootScope.isAutoCheckinOn){
+					  if($rootScope.isAutoCheckinOn) {
 					    $state.go('checkinArrival');
 					  }
 					  else{
@@ -81,7 +81,7 @@
 		};
 	};
 
-	$scope.skipTermsAndContinue = function(){
+	$scope.skipTermsAndContinue = function() {
 		$scope.checked = true;
 		$scope.checkInButtonClicked();
 	};
