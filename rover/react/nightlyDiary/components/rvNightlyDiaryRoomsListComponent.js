@@ -1,6 +1,6 @@
-const NightlyDiaryRoomsListComponent = ({ roomListToComponent }) => {
+const NightlyDiaryRoomsListComponent = ({ roomListToComponent }) =>
 
-    return (
+     (
             <div className="grid-rooms">
             {
                 roomListToComponent.map((item) =>
@@ -29,8 +29,7 @@ const NightlyDiaryRoomsListComponent = ({ roomListToComponent }) => {
                 )
             }
             </div>
-        )
-};
+        );
 
 
 const { PropTypes } = React;

@@ -19,6 +19,7 @@ sntRover.controller('RVAccountReceivableMessagePopupCtrl',['$rootScope', '$scope
 		$scope.$emit("hideLoader");
 		if(typeof $scope.reservationBillData !=="undefined"){
 			$scope.reservationBillData.ar_number = data.ar_number;
+			$scope.reservationBillData.bills[$scope.currentActiveBill].ar_number = data.ar_number;
 		}
 		$rootScope.$emit('arAccountCreated');
 		ngDialog.close();
