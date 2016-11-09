@@ -20,14 +20,14 @@ angular.module('admin').controller('adCRSCommonCtrl', ['$scope', '$rootScope', '
 
                 return tzIndependentDate(maxDate.setDate(maxDate.getDate() + addDays));
             },
-            toDateSelected = () => {
+            toDateSelected = function() {
                 if (!$scope.sync.start_date ||
                     new tzIndependentDate($scope.sync.end_date) < new tzIndependentDate($scope.sync.start_date)) {
                     $scope.sync.start_date = $scope.sync.end_date;
                 }
                 // NOTE: This function call is intentional.
                 $scope.endDatePickerOptions.maxDate = getFutureDate($scope.sync.start_date, MAX_REFRESH_SPAN_DAYS);
-            }, fromDateSelected = () => {
+            }, fromDateSelected = function() {
                 if (!$scope.sync.end_date ||
                     new tzIndependentDate($scope.sync.start_date) > new tzIndependentDate($scope.sync.end_date)) {
                     $scope.sync.end_date = $scope.sync.start_date;
