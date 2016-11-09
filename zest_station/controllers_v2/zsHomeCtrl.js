@@ -57,8 +57,7 @@ sntZestStation.controller('zsHomeCtrl', [
 
 				if( $translate.use() === langShortCode && checkIfDefaultLanguagIsSet){
 					//do nothing, current language is already the default one
-				}else
-				{
+				} else {
 					console.info("translating to default lanaguage after "+userInActivityTimeInHomeScreenInSeconds+" seconds");
 					$scope.selectLanguage(defaultLanguage);
 				}
@@ -69,36 +68,37 @@ sntZestStation.controller('zsHomeCtrl', [
 		var userInActivityTimeInHomeScreenInSeconds = 0;
 
 		var setHomeScreenTimer = function() {
-
 			$scope.resetHomeScreenTimer = function() {
+				$scope.$emit('HOME_ACTIVITY');//remove once refresh functions are moved to this controller
 				userInActivityTimeInHomeScreenInSeconds = 0;
 			};
 
-		var incrementHomeScreenTimer = function() {
-			//if by some reason, the timer is running even 
-			//after chaning state (we are clearing timer whenever we are
-			//changing state), we need to deactivate the timer.
-			if ($state.current.name === 'zest_station.home') {
-				userInActivityTimeInHomeScreenInSeconds++;
-			} else {
-				//if current state is not home, then 
-				//deactivate the timer
-				userInActivityTimeInHomeScreenInSeconds = 0;
-				clearInterval($scope.activityTimer);
-			}
-			//when user activity is not recorded for more than 120 secs
-			//translating to default lanaguage
-			if (userInActivityTimeInHomeScreenInSeconds >= 120 && $state.current.name === 'zest_station.home') {
-				var checkIfDefaultLanguagIsSet = true;//this need to checked as, apart from translating we are 
-				//highlighting active language buttons. We need not do that again and again , if we already have a 
-				//default language set.So on timer limit(120s), we need to check if the current language is default or not.
-				setToDefaultLanguage(checkIfDefaultLanguagIsSet);
-				$scope.runDigestCycle();
-				userInActivityTimeInHomeScreenInSeconds = 0;
-			} else {
-				//do nothing;
-			}
-		};
+			var incrementHomeScreenTimer = function() {
+				//if by some reason, the timer is running even 
+				//after chaning state (we are clearing timer whenever we are
+				//changing state), we need to deactivate the timer.
+				if ($state.current.name === 'zest_station.home') {
+					userInActivityTimeInHomeScreenInSeconds++;
+				}
+				//when user activity is not recorded for more than 120 secs
+				//translating to default lanaguage
+				console.log('userInActivityTimeInHomeScreenInSeconds',userInActivityTimeInHomeScreenInSeconds,$state.current.name)
+				if ($state.current.name !== 'zest_station.home'){
+					userInActivityTimeInHomeScreenInSeconds = 0;
+					clearInterval($scope.activityTimer);
+				}
+				//$state.current.name === 'zest_station.admin' - if going to hotel admin, switch back to default language, in future we may need to find best logic for multiple languages for admin screen
+				//also if user has been inactive at the (home screen) for 2 minutes, reset language the default
+				if ((userInActivityTimeInHomeScreenInSeconds >= 120 && $state.current.name === 'zest_station.home') || $state.current.name === 'zest_station.admin')  {
+					console.info("translating to default lanaguage");
+					setToDefaultLanguage();
+					$scope.runDigestCycle();
+					userInActivityTimeInHomeScreenInSeconds = 0;
+				} else {
+					//do nothing;
+				}
+				
+			};
 			$scope.activityTimer = setInterval(incrementHomeScreenTimer, 1000);
 		};
 
@@ -128,8 +128,10 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * @param  {object} language
 		 */
 		$scope.selectLanguage = function(language) {
+			//$scope.resetHomeScreenTimer();//to reset timer to 0 when changing language, otherwise counter is still going
 			//Reset timer on language selection
 			userInActivityTimeInHomeScreenInSeconds = 0;
+			$scope.$emit('HOME_ACTIVITY');
 			var languageConfig = zsGeneralSrv.languageValueMappingsForUI[language.name],
 				langShortCode = languageConfig.code;
 			$translate.use(langShortCode);
@@ -168,7 +170,7 @@ sntZestStation.controller('zsHomeCtrl', [
 			});
 
 			//assigning default language initially
-			if (!zsGeneralSrv.isDefaultLanguageSet) {
+			if (!zsGeneralSrv.isDefaultLanguageSet && $state.current.name === 'zest_station.home') {
 				setToDefaultLanguage();
 				zsGeneralSrv.isDefaultLanguageSet = true;
 			} else {

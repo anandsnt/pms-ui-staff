@@ -49,10 +49,10 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 			};
 			if (printopted) {
 				stateParams.print_opted = 'true';
-				stateParams.print_status = actionStatus
+				stateParams.print_status = actionStatus;
 			} else {
 				stateParams.email_opted = 'true';
-				stateParams.email_status = actionStatus
+				stateParams.email_status = actionStatus;
 			}
 			$state.go('zest_station.zsCheckinFinal', stateParams);
 		};
@@ -70,12 +70,13 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				});
 			};
 
-			var printFailedActions = function() {
+			var printFailedActions = function(errorMessage) {
+				errorMessage = _.isUndefined(errorMessage) ? 'CHECKIN_PRINT_FAIL' : errorMessage;
 				if ($stateParams.key_success === "true") {
-					$scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_PRINT_FAIL');
+					$scope.zestStationData.workstationOooReason = $filter('translate')(errorMessage);
 				} else {
 					$scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_KEY_FAIL_PRINT_FAIL');
-				};
+				}
 				$scope.zestStationData.workstationStatus = 'out-of-order';
 				var printopted = true;
 				var emailopted = false;
@@ -87,7 +88,49 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				var emailopted = false;
 				var actionStatus = 'success';
 				nextPageActions(printopted, emailopted, actionStatus);
-			}
+			};
+
+			var handleStarTacPrinterActions = function() {
+				var printData = "";
+
+				/**** Socket actions starts here *****/
+				$scope.$on('SOCKET_FAILED', function() {
+					printFailedActions();
+				});
+				$scope.$on('WS_PRINT_SUCCESS', function() {
+					printSuccessActions();
+				});
+				$scope.$on('WS_PRINT_FAILED', function(event, data) {
+					printFailedActions(data.error_message);
+				});
+				$scope.$on('SOCKET_CONNECTED', function() {
+					$scope.socketOperator.startPrint(printData);
+				});
+				/**** Socket actions ends here *****/
+
+				var fetchSatrTacDataSuccess = function(response) {
+					printData = response.bill_details;
+					//check if socket is open
+					if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
+						$scope.socketOperator.startPrint(printData);
+					} else {
+						$scope.$emit('CONNECT_WEBSOCKET'); // connect socket
+					}
+				};
+				var data = {
+					"reservation_id": $stateParams.reservation_id
+				};
+				var startTacDataFailedActions = function() {
+					printFailedActions();
+				};
+				var options = {
+					params: data,
+					successCallBack: fetchSatrTacDataSuccess,
+					failureCallBack: startTacDataFailedActions
+				};
+				$scope.callAPI(zsCheckinSrv.fetchStarTacPrinterData, options);
+			};
+
 			var handleBillPrint = function() {
 				// add the orientation
 				addPrintOrientation();
@@ -107,11 +150,18 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 								printFailedActions();
 							}, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
 						} else {
-							$window.print();
-							setTimeout(function() {
-								printSuccessActions();
-							}, 100);
-						};
+							//REASON: API error . We cant push the starttac code.
+							//So uncomment and use the following line in next sprint
+							// if($scope.zestStationData.zest_printer_option === "STAR_TAC"){
+							// 	//we will call websocket services to print
+							// 	handleStarTacPrinterActions();
+							// } else {
+								$window.print();
+								setTimeout(function() {
+									printSuccessActions();
+								}, 100);
+							// }
+						}
 						// provide a delay for preview to appear 
 
 					}, 100);
@@ -148,7 +198,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				},
 				successCallBack: fetchPrintViewCompleted,
 				failureCallBack: printFailedActions
-			}
+			};
 			$scope.callAPI(zsCheckinSrv.fetchRegistrationCardPrintData, options);
 		};
 		/**
@@ -190,7 +240,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				},
 				successCallBack: registrationCardSent,
 				failureCallBack: registrationCardSendingFailed
-			}
+			};
 			$scope.callAPI(zsCheckinSrv.sendRegistrationByEmail, options);
 		};
 
