@@ -4,9 +4,11 @@ sntZestStation.service('zsHotelDetailsSrv', ['zsBaseWebSrv2', 'zsBaseWebSrv', '$
 	this.data = {};
 	this.hotelDetails = {};
 	var business_date = null;
+
 	this.fetchUserHotels = function() {
 		var deferred = $q.defer();
 		var url = '/api/current_user_hotels';
+
 		ZSBaseWebSrvV2.getJSON(url).then(function(data) {
 			_.extend(that.hotelDetails, {
 				userHotelsData: data
@@ -21,6 +23,7 @@ sntZestStation.service('zsHotelDetailsSrv', ['zsBaseWebSrv2', 'zsBaseWebSrv', '$
 	this.fetchHotelBusinessDate = function() {
 		var deferred = $q.defer();
 		var url = '/api/business_dates/active';
+
 		ZSBaseWebSrvV2.getJSON(url).then(function(data) {
 			_.extend(that.hotelDetails, {
 				business_date: data.business_date
@@ -48,22 +51,24 @@ sntZestStation.service('zsHotelDetailsSrv', ['zsBaseWebSrv2', 'zsBaseWebSrv', '$
 	this.fetchHotelDetails = function() {
 		var deferred = $q.defer(),
 			promises = [that.fetchUserHotels(), that.fetchHotelBusinessDate(), that.fetchHotelSettings()];
+
 		$q.all(promises).then(function(data) {
-				//look this.fetchHotelBusinessDate
-				//since api/hotelsettings.json is returing a business date key and that is not the buiness date :(
+				// look this.fetchHotelBusinessDate
+				// since api/hotelsettings.json is returing a business date key and that is not the buiness date :(
 				that.hotelDetails.business_date = business_date;
 
 				deferred.resolve(that.hotelDetails);
 			},
 			function(errorMessage) {
 				deferred.reject(errorMessage);
-			})
+			});
 		return deferred.promise;
 	};
 
 	this.fetchCountryList = function() {
 		var deferred = $q.defer(),
 			url = '/ui/country_list.json';
+
 		zsBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
@@ -75,6 +80,7 @@ sntZestStation.service('zsHotelDetailsSrv', ['zsBaseWebSrv2', 'zsBaseWebSrv', '$
 	this.fetchTranslationData = function(lang_code) {
 		var deferred = $q.defer();
 		var url = '/api/locales/' + lang_code + '.json';
+
 		ZSBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(errorMessage) {

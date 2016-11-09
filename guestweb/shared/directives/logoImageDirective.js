@@ -3,8 +3,8 @@
 (function() {
 	var logoImage = function() {
 		return {
-		restrict : 'E',
-		templateUrl : "/assets/shared/directives/logoImagePartial.html"
+		restrict: 'E',
+		templateUrl: "/assets/shared/directives/logoImagePartial.html"
 	};
 	};
 
@@ -12,8 +12,8 @@
 
 	var logoImageBack = function() {
 		return {
-		restrict : 'E',
-		templateUrl : "/assets/shared/directives/logoImageBackPartial.html"
+		restrict: 'E',
+		templateUrl: "/assets/shared/directives/logoImageBackPartial.html"
 	};
 	};
 

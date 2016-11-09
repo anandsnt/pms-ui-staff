@@ -10,27 +10,29 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             $scope.detailsMenu = '';
             $scope.isStandAlone = $rootScope.isStandAlone;
         };
-        $scope.getSubtask = function(task){
+        $scope.getSubtask = function(task) {
             var subtask = [];
-            subtask = _.filter(task,function(item){
+
+            subtask = _.filter(task, function(item) {
                         return item.is_default == true;
                     });
           return subtask;
-        }
+        };
         var getTasksForDefaultWorkType = function() {
             var succesCallBack = function(data) {
                 $scope.defaultWorkTypeTasks = data.results;
                 $scope.selectedWorkTypeTask = {};
-                _.each(data.results, function(workType){
+                _.each(data.results, function(workType) {
                     var selectedTaskIds = _.pluck($scope.rateData.tasks, "id"),
-                        currentSelection = _.find(workType.tasks, function(task){
+                        currentSelection = _.find(workType.tasks, function(task) {
                         return _.indexOf(selectedTaskIds, task.id) > -1;
                     });
 
                     var defaultTask = null;
-                    if(!currentSelection && !$scope.is_edit){
-                        defaultTask = _.find(workType.tasks,{
-                            is_default : true
+
+                    if (!currentSelection && !$scope.is_edit) {
+                        defaultTask = _.find(workType.tasks, {
+                            is_default: true
                         });
                     }
 
@@ -47,7 +49,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 work_type_id: $scope.rateTypesDetails.hotel_settings.default_work_type.id
             };
 
-            //$scope.invokeApi(ADRatesAddDetailsSrv.fetTasksForDefaultWorkType, params, succesCallBack, failureCallBack);
+            // $scope.invokeApi(ADRatesAddDetailsSrv.fetTasksForDefaultWorkType, params, succesCallBack, failureCallBack);
 
             $scope.invokeApi(ADRatesAddDetailsSrv.fetchWorkTypesValues, params, succesCallBack, failureCallBack);
         };
@@ -59,7 +61,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             $scope.detailsMenu = selectedMenu;
         };
 
-        $scope.shouldShowMemberRates = function(){
+        $scope.shouldShowMemberRates = function() {
             return !$rootScope.isHourlyRatesEnabled && (!!$rootScope.isFFPActive || !!$rootScope.isHLPActive);
         };
 
@@ -69,10 +71,11 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
 
         $scope.isPromotional = function() {
             var ispromo = false, classification = '';
+
             if ($scope.rateTypesDetails) {
                 angular.forEach($scope.rateTypesDetails.rate_types, function(rate_type) {
                     if ($scope.rateData.rate_type.id === rate_type.id) {
-                        if ($scope.rateData.classification){
+                        if ($scope.rateData.classification) {
                             classification = $scope.rateData.classification.toLowerCase();
                         } else {
                             classification = '';
@@ -104,7 +107,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
         };
 
 
-
         /*
          * Fetch Details
          */
@@ -127,6 +129,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
              */
             angular.forEach($scope.rateTypesDetails.depositPolicies, function(depositPolicy) {
                 var symbol = (depositPolicy.amount_type === "amount") ? '$' : '%';
+
                 if (symbol === '%') {
                     depositPolicy.displayData = depositPolicy.name + "   " + "(" + depositPolicy.amount + symbol + ")";
                 } else {
@@ -135,9 +138,10 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             });
             angular.forEach($scope.rateTypesDetails.cancelationPenalties, function(cancelationPenalty) {
                 var symbol = (cancelationPenalty.amount_type === "amount") ? '$' : '%';
-                if(cancelationPenalty.amount_type === "amount") {
+
+                if (cancelationPenalty.amount_type === "amount") {
                 	symbol = "$";
-                } else if(cancelationPenalty.amount_type === "day") {
+                } else if (cancelationPenalty.amount_type === "day") {
                 	symbol = "Night(s)";
                 } else {
                 	symbol = "%";
@@ -162,20 +166,21 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
         /*
          * Set commission data
          */
-        var setupCommissionData = function(){
-            if(typeof $scope.rateData.commission_details !== 'undefined'){
+        var setupCommissionData = function() {
+            if (typeof $scope.rateData.commission_details !== 'undefined') {
                 var chargeCodes = $scope.rateData.commission_details.charge_codes,
                     selectedChargeCodes = [];
 
-                if( typeof chargeCodes !== 'undefined' && chargeCodes.length >0 ){
-                    angular.forEach( chargeCodes ,function( item, index) {
-                        if( item.is_checked ){
+                if ( typeof chargeCodes !== 'undefined' && chargeCodes.length > 0 ) {
+                    angular.forEach( chargeCodes, function( item, index) {
+                        if ( item.is_checked ) {
                             selectedChargeCodes.push(item.id);
                         }
                     });
                 }
 
-                var commissionData = dclone($scope.rateData.commission_details,["charge_codes"]);
+                var commissionData = dclone($scope.rateData.commission_details, ["charge_codes"]);
+
                 commissionData.selected_commission_charge_code_ids = selectedChargeCodes;
             }
             return commissionData;
@@ -185,9 +190,11 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
          */
         var setUpAddOnData = function() {
             var addOnsArray = [];
+
             angular.forEach($scope.rateData.addOns, function(addOns) {
                 if (addOns.isSelected) {
                     var data = {};
+
                     data.is_inclusive_in_rate = addOns.is_inclusive_in_rate;
                     data.addon_id = addOns.id;
                     addOnsArray.push(data);
@@ -200,11 +207,12 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             var amount = parseInt($scope.rateData.based_on.value_sign + $scope.rateData.based_on.value_abs);
             var addOns = setUpAddOnData();
             var commissions = setupCommissionData();
+
             angular.forEach($scope.rateData.tasks, function(rateTasks) {
                 if (rateTasks.id !== undefined) {
-                    rateTasks.task_id = rateTasks.id
+                    rateTasks.task_id = rateTasks.id;
                 }
-                //API throws erros if these keys are passed - so deleting - CICO-30780
+                // API throws erros if these keys are passed - so deleting - CICO-30780
                 delete rateTasks["id"];
                 delete rateTasks["name"];
             });
@@ -232,15 +240,15 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'deposit_policy_id': $scope.rateData.deposit_policy_id,
                 'end_date': $scope.rateData.end_date,
                 'is_hourly_rate': $scope.rateData.is_hourly_rate,
-                'commission_details':commissions,
+                'commission_details': commissions,
                 'is_member': $scope.rateData.is_member_rate ? $scope.rateData.is_member_rate : false,
-                'is_pms_only' : $scope.rateData.is_pms_only,
-                'is_channel_only' : $scope.rateData.is_channel_only,
-                'code':$scope.rateData.code,
+                'is_pms_only': $scope.rateData.is_pms_only,
+                'is_channel_only': $scope.rateData.is_channel_only,
+                'code': $scope.rateData.code,
                 'task_id': $scope.rateData.task_id,
-                'is_copied' : ($scope.rateData.based_on.is_copied == undefined) ? false : $scope.rateData.based_on.is_copied,
-                'booking_origin_id' : $scope.rateData.booking_origin_id,
-                'tasks' : $scope.rateData.tasks
+                'is_copied': ($scope.rateData.based_on.is_copied == undefined) ? false : $scope.rateData.based_on.is_copied,
+                'booking_origin_id': $scope.rateData.booking_origin_id,
+                'tasks': $scope.rateData.tasks
             };
 
             // Save Rate Success Callback
@@ -249,7 +257,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 $scope.detailsMenu = "";
                 $('#activityLogArea').scope().detailsMenu = '';
                 $scope.$emit('hideLoader');
-                if($scope.rateData.based_on && $scope.rateData.based_on.is_copied == true) {
+                if ($scope.rateData.based_on && $scope.rateData.based_on.is_copied == true) {
                     $scope.$emit("activateSetTab");
                 } else {
                     $scope.$emit("changeMenu", 'Room types');
@@ -269,6 +277,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                     'updatedData': data,
                     'rateId': $scope.rateData.id
                 };
+
                 $scope.invokeApi(ADRatesAddDetailsSrv.updateNewRate, updatedData, saveSuccessCallback, saveFailureCallback);
             }
         };
@@ -304,12 +313,14 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 $scope.$emit('hideLoader');
 
             };
+
             if ($scope.rateData.end_date) {
                 if ($scope.rateData.id) {
                     var data = {
                         "id": $scope.rateData.id,
                         "end_date": $scope.rateData.end_date
                     };
+
                     $scope.invokeApi(ADRatesAddDetailsSrv.validateEndDate, data, validateEndDateSuccessCallback, validateEndDateFailureCallback);
                 } else {
                     $scope.startSave();
@@ -345,25 +356,26 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             }
         };
 
-        $scope.togglePMSOnly = function(){
-            if(!!$scope.rateData.is_channel_only && !!$scope.rateData.is_pms_only){
+        $scope.togglePMSOnly = function() {
+            if (!!$scope.rateData.is_channel_only && !!$scope.rateData.is_pms_only) {
                 $scope.rateData.is_channel_only = false;
             }
 
         };
 
-        $scope.toggleChannelOnly = function(){
-            if(!!$scope.rateData.is_channel_only && !!$scope.rateData.is_pms_only){
+        $scope.toggleChannelOnly = function() {
+            if (!!$scope.rateData.is_channel_only && !!$scope.rateData.is_pms_only) {
                 $scope.rateData.is_pms_only = false;
             }
         };
 
         // CICO-24645 -  Show Tax Incl / Excl indicator on changing Charge code.
-        $scope.onChangeChargeCode = function(){
+        $scope.onChangeChargeCode = function() {
 
-            var selectedObj = _.find( $scope.rateTypesDetails.charge_codes, function(obj){
+            var selectedObj = _.find( $scope.rateTypesDetails.charge_codes, function(obj) {
                                     return obj.id === $scope.rateData.charge_code_id;
                                 });
+
             $scope.rateData.tax_inclusive_or_exclusive = selectedObj.tax_inclusive_or_exclusive;
         };
 

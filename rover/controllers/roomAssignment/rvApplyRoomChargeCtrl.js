@@ -1,4 +1,4 @@
-sntRover.controller('rvApplyRoomChargeCtrl',[
+sntRover.controller('rvApplyRoomChargeCtrl', [
 	'$scope',
 	'$rootScope',
 	'$state',
@@ -31,26 +31,27 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 	var choosedNoCharge = false;
 
 
-	$scope.enableDisableButtons = function(){
+	$scope.enableDisableButtons = function() {
 
 		return !isNaN($scope.roomCharge) && $scope.roomCharge.length > 0;
 
 
 	};
-	$scope.clickChargeButton = function(){
+	$scope.clickChargeButton = function() {
 		choosedNoCharge = false;
 
 		var options = {
-            params : {
+            params: {
 				"reservation_id": $scope.reservationData.reservation_card.reservation_id,
 				"room_no": $scope.assignedRoom.room_number,
 				"upsell_amount": $scope.roomCharge,
 				"forcefully_assign_room": wanted_to_forcefully_assign,
-				"is_preassigned" : $scope.assignedRoom.is_preassigned
+				"is_preassigned": $scope.assignedRoom.is_preassigned
 			},
-            successCallBack : $scope.successCallbackUpgrade,
-            failureCallBack : $scope.failureCallbackUpgrade
+            successCallBack: $scope.successCallbackUpgrade,
+            failureCallBack: $scope.failureCallbackUpgrade
         };
+
         $scope.callAPI(RVUpgradesSrv.selectUpgrade, options);
 	};
 
@@ -61,10 +62,10 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 	var openRoomAlreadyChoosedPopup = function() {
 		ngDialog.open(
 		{
-			template 	: '/assets/partials/roomAssignment/rvRoomHasAutoAssigned.html',
-			controller 	: 'rvRoomAlreadySelectedCtrl',
-			className 	: 'ngdialog-theme-default',
-			scope 		: $scope
+			template: '/assets/partials/roomAssignment/rvRoomHasAutoAssigned.html',
+			controller: 'rvRoomAlreadySelectedCtrl',
+			className: 'ngdialog-theme-default',
+			scope: $scope
         });
 	};
 
@@ -87,15 +88,16 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 
 	$scope.failureCallbackUpgrade = function(error) {
 		// ngDialog.close();
-		//since we are expecting some custom http error status in the response
-		//and we are using that to differentiate among errors
-		if(error.hasOwnProperty ('httpStatus')) {
+		// since we are expecting some custom http error status in the response
+		// and we are using that to differentiate among errors
+		if (error.hasOwnProperty ('httpStatus')) {
 			switch (error.httpStatus) {
 				case 470:
 						var dataToBorrowRoom = {
 							"errorMessage": error.errorMessage[0],
-							"upsell_amount" : $scope.roomCharge
+							"upsell_amount": $scope.roomCharge
 						};
+
 						wanted_to_forcefully_assign = true;
 						// openWantedToBorrowPopup(error);
 						$scope.$emit('closeDialogWithError', dataToBorrowRoom);
@@ -111,7 +113,7 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 
 	};
 
-	$scope.successCallbackUpgrade = function(data){
+	$scope.successCallbackUpgrade = function(data) {
 
 		// CICO-10152 : To fix - Rover - Stay card - Room type change does not reflect the updated name soon after upgrading.
 		var dataToUpdate 		= {},
@@ -121,23 +123,23 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 
 		_.extend (dataToUpdate,
 		{
-			room_id 			: assignedRoom.room_id,
-			room_number 		: assignedRoom.room_number,
-			room_status 		: "READY",
-			fo_status 			: "VACANT",
-			room_ready_status	: "INSPECTED",
-			is_upsell_available	: (data.is_upsell_available) ? "true" : "false"  // CICO-7904 and CICO-9628 : update the upsell availability to staycard
+			room_id: assignedRoom.room_id,
+			room_number: assignedRoom.room_number,
+			room_status: "READY",
+			fo_status: "VACANT",
+			room_ready_status: "INSPECTED",
+			is_upsell_available: (data.is_upsell_available) ? "true" : "false"  // CICO-7904 and CICO-9628 : update the upsell availability to staycard
 		});
 
 		if (typeof $scope.selectedRoomType !== 'undefined') {
 			_.extend (dataToUpdate,
 			{
-				room_type_description 	: selectedRoomType.description,
-				room_type_code 			: selectedRoomType.type
+				room_type_description: selectedRoomType.description,
+				room_type_code: selectedRoomType.type
 			});
 		}
 
-		//updating in the central data model
+		// updating in the central data model
 		_.extend($scope.reservationData.reservation_card, dataToUpdate);
 
 		RVReservationCardSrv
@@ -153,17 +155,17 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 		return rvPermissionSrv.getPermissionValue('MOVE_ROOM_WITHOUT_CHARGE');
 	};
 
-	$scope.clickedNoChargeButton = function(){
+	$scope.clickedNoChargeButton = function() {
 		choosedNoCharge = true;
 		var options = {
-            params : {
+            params: {
 				"reservation_id": $scope.reservationData.reservation_card.reservation_id,
 				"room_no": $scope.assignedRoom.room_number,
-				"forcefully_assign_room" : wanted_to_forcefully_assign,
-				"is_preassigned" : $scope.assignedRoom.is_preassigned
+				"forcefully_assign_room": wanted_to_forcefully_assign,
+				"is_preassigned": $scope.assignedRoom.is_preassigned
 			},
-            successCallBack : $scope.successCallbackUpgrade,
-            failureCallBack : $scope.failureCallbackUpgrade
+            successCallBack: $scope.successCallbackUpgrade,
+            failureCallBack: $scope.failureCallbackUpgrade
         };
 
         $scope.callAPI(RVUpgradesSrv.selectUpgrade, options);

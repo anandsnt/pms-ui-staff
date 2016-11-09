@@ -1,5 +1,5 @@
 
-sntRover.controller('RVReservationNotesPopupCtrl',['$scope','$rootScope', function($scope,$rootScope){
+sntRover.controller('RVReservationNotesPopupCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
 
 
 	BaseCtrl.call(this, $scope);
@@ -27,6 +27,7 @@ sntRover.controller('RVReservationNotesPopupCtrl',['$scope','$rootScope', functi
 	    };
 
 	    var params = {};
+
 	    params.reservation_id = $scope.$parent.reservationData.reservation_card.reservation_id;
 	    params.text = $scope.reservationnote;
 	    params.note_topic = 1;
@@ -38,7 +39,7 @@ sntRover.controller('RVReservationNotesPopupCtrl',['$scope','$rootScope', functi
 	 */
 	$scope.deleteReservationNote = function(event, index) {
 	    $scope.deletedNoteIndex = index;
-	    if(event!== null) {
+	    if (event !== null) {
 	    	event.stopPropagation();
 	    }
 	    var successCallBackDeleteReservationNote = function(data) {
@@ -51,12 +52,13 @@ sntRover.controller('RVReservationNotesPopupCtrl',['$scope','$rootScope', functi
 	    };
 
 	    var note_id = $scope.$parent.reservationData.reservation_card.notes.reservation_notes[index].note_id;
+
 	    $scope.invokeApi($scope.$parent.reservationCardSrv.deleteReservationNote, note_id, successCallBackDeleteReservationNote);
 	};
 
 	// CICO-24928
 	$scope.updateActiveReservationNote = function() {
-		if($scope.reservationnote === null) {
+		if ($scope.reservationnote === null) {
           $scope.errorMessage = ['Something went wrong, please try again!'];
           return;
         }
@@ -71,7 +73,8 @@ sntRover.controller('RVReservationNotesPopupCtrl',['$scope','$rootScope', functi
         if ($scope.reservationnote) {
     			var successCallBackReservationNote = function(data) {
                     $scope.editingNote.text = $scope.reservationnote;
-                    var noteArrayIndex = _.findIndex($scope.$parent.reservationData.reservation_card.notes.reservation_notes, {note_id : data.note_id});
+                    var noteArrayIndex = _.findIndex($scope.$parent.reservationData.reservation_card.notes.reservation_notes, {note_id: data.note_id});
+
     				$scope.$parent.reservationData.reservation_card.notes.reservation_notes[noteArrayIndex] = $scope.editingNote;
     				$scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
     				refreshScroller();
@@ -82,6 +85,7 @@ sntRover.controller('RVReservationNotesPopupCtrl',['$scope','$rootScope', functi
     				$scope.errorMessage = errorMessage;
     			};
     			var params = {};
+
                 params.id = $scope.editingNote.note_id;
     			params.text = $scope.reservationnote;
     			params.associated_id = $scope.$parent.reservationData.reservation_card.reservation_id;
@@ -95,7 +99,7 @@ sntRover.controller('RVReservationNotesPopupCtrl',['$scope','$rootScope', functi
         $scope.reservationnote = note.text;
     };
     // CICO-24928
-    $scope.cancelEditModeReservationNote = function(){
+    $scope.cancelEditModeReservationNote = function() {
         $scope.editingNote  = null;
         $scope.reservationnote = '';
     };

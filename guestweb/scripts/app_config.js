@@ -1,11 +1,11 @@
 // to be deleted
 
-sntGuestWeb.factory('authInterceptor', function ($rootScope, $q,$location) {
+sntGuestWeb.factory('authInterceptor', function ($rootScope, $q, $location) {
 	return {
 		request: function (config) {
 			config.headers = config.headers || {};
 
-			if (typeof $rootScope.accessToken !=="undefined") {
+			if (typeof $rootScope.accessToken !== "undefined") {
 
 				config.headers.Authorization = $rootScope.accessToken;
 			}
@@ -39,16 +39,15 @@ sntGuestWeb.config(function ($httpProvider) {
 });
 
 
-
-sntGuestWeb.run(function($rootScope, $location, $http, $window){
+sntGuestWeb.run(function($rootScope, $location, $http, $window) {
 
 	$rootScope.$on('$stateChangeStart',
-		function(event, toState, toParams, fromState, fromParams){
+		function(event, toState, toParams, fromState, fromParams) {
 
-		if(toState.name === 'noOptionAvailable' && (fromState.name === 'emailVerification' || fromState.name === 'resetPassword')){
+		if (toState.name === 'noOptionAvailable' && (fromState.name === 'emailVerification' || fromState.name === 'resetPassword')) {
 			event.preventDefault();
-		}else{
-			$rootScope.title =toState.title;
+		} else {
+			$rootScope.title = toState.title;
 		}	
 		
 	});
@@ -57,7 +56,7 @@ sntGuestWeb.run(function($rootScope, $location, $http, $window){
       // Hide loading message
       
       console.error(error);
-      //TODO: Log the error in proper way
+      // TODO: Log the error in proper way
     });
         // track pageview on state change
         $rootScope.$on('$stateChangeSuccess', function (event) {

@@ -10,7 +10,7 @@ sntRover.controller('overbookingAlertCtrl', ['$scope',
             departureDateString = $scope.ngDialogData.departureDate || $scope.reservationData.departureDate,
             arrival = tzIndependentDate(arrivalDateString),
             computeCalendarData = function() {
-                //https://github.com/angular-ui/ui-calendar/issues/219
+                // https://github.com/angular-ui/ui-calendar/issues/219
                 $scope.stateVariables.eventSources.left.length = 0;
                 $scope.stateVariables.eventSources.right.length = 0;
 
@@ -21,8 +21,9 @@ sntRover.controller('overbookingAlertCtrl', ['$scope',
 
                 _.each($scope.availabilityData, function(dailyStat) {
                     var dayAvailabilityToDisplay;
+
                     if ($scope.ngDialogData.activeView === 'HOUSE') {
-                        dayAvailabilityToDisplay = dailyStat.house.availability
+                        dayAvailabilityToDisplay = dailyStat.house.availability;
                     } else {
                         dayAvailabilityToDisplay = dailyStat.room_types[$scope.ngDialogData.roomTypeId];
                         if ($scope.ngDialogData.isGroupRate) {
@@ -38,6 +39,7 @@ sntRover.controller('overbookingAlertCtrl', ['$scope',
                         })(),
                         className: (function() {
                             var classes = "";
+
                             if (dailyStat.date === arrivalDateString) {
                                 classes += 'check-in ';
                             } else if (dailyStat.date === departureDateString) {
@@ -69,13 +71,13 @@ sntRover.controller('overbookingAlertCtrl', ['$scope',
                     }
                 });
 
-                //https://github.com/angular-ui/ui-calendar/issues/219
+                // https://github.com/angular-ui/ui-calendar/issues/219
                 $scope.stateVariables.eventSources.left.push(calendarData.left);
                 $scope.stateVariables.eventSources.right.push(calendarData.right);
 
             },
             renderFullCalendar = function() {
-                //calender options used by full calender, related settings are done here
+                // calender options used by full calender, related settings are done here
                 var fullCalendarOptions = {
                     height: 300,
                     editable: true,
@@ -96,10 +98,10 @@ sntRover.controller('overbookingAlertCtrl', ['$scope',
                 };
 
                 $scope.leftCalendarOptions = dclone(fullCalendarOptions);
-                //Setting events for right calendar
+                // Setting events for right calendar
                 $scope.rightCalendarOptions = dclone(fullCalendarOptions);
 
-                //Set month of rigt calendar
+                // Set month of rigt calendar
                 $scope.rightCalendarOptions.month = $scope.leftCalendarOptions.month + 1;
                 computeCalendarData();
                 $scope.$emit('hideLoader');

@@ -20,12 +20,13 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 			$scope.ARData = {};
 			$scope.ARData.note = "";
 		};
+
 		init();
 		var presentArDetails = {};
 
 		$scope.$on('setgenerateNewAutoAr', function(e, bool) {
 			$scope.$parent.generateNewAutoAr = bool;
-			if( !$scope.arAccountDetails.is_auto_assign_ar_numbers && bool ) {
+			if ( !$scope.arAccountDetails.is_auto_assign_ar_numbers && bool ) {
 				updateArAccount(true);
 			}
 		});
@@ -38,7 +39,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 				if ($scope.arAccountDetails.is_auto_assign_ar_numbers && !$scope.arAccountDetails.ar_number) {
 					$scope.arAccountDetails.ar_number = data.ar_number;
 					$scope.$parent.generateNewAutoAr = false;
-				};
+				}
 				$scope.$emit('ARNumberChanged', {
 					'newArNumber': $scope.arAccountDetails.ar_number
 				});
@@ -49,21 +50,22 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 				$scope.errorMessage = "";
 			};
 
-			var failureCallback = function(errorMessage){
+			var failureCallback = function(errorMessage) {
 				$scope.$emit("hideLoader");
 				$scope.errorMessage = errorMessage;
 				$scope.$emit('ERRORONARTAB');
 			};
 
 			var dataToSend = $scope.arAccountDetails;
-			if(!!$scope.contactInformation.id) {
+
+			if (!!$scope.contactInformation.id) {
 				dataToSend.id = $scope.contactInformation.id;
 				presentArDetails.id = $scope.contactInformation.id;
 			}
 			var presentArDetailsAfterEdit = JSON.parse(JSON.stringify($scope.arAccountDetails));
 			var dataNotUpdated = false;
 
-			//check if data was edited
+			// check if data was edited
 			if (!angular.equals(presentArDetailsAfterEdit, presentArDetails)) {
 				dataNotUpdated = true;
 				presentArDetails = presentArDetailsAfterEdit;
@@ -71,7 +73,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 			if (($scope.generateNewAutoAr && $scope.arAccountDetails.is_auto_assign_ar_numbers) || (dataNotUpdated && $scope.arAccountDetails.ar_number)) {
 				$scope.invokeApi(RVCompanyCardSrv.saveARDetails, dataToSend, successCallbackOfsaveARDetails, failureCallback );
 			}
-			else if( (!$scope.arAccountDetails.is_auto_assign_ar_numbers && dataNotUpdated ) || initialUpdate ){
+			else if ( (!$scope.arAccountDetails.is_auto_assign_ar_numbers && dataNotUpdated ) || initialUpdate ) {
 				// CICO-24472 => If is_auto_assign_ar_numbers property is OFF and some data updated on AR TAB , 
 				// we call save API without AR Number.
 				$scope.invokeApi(RVCompanyCardSrv.saveARDetails, dataToSend, successCallbackOfsaveARDetailsWithoutARNumber, failureCallback );
@@ -90,7 +92,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 		});
 
 		// to set data to be compared from time to time
-		//to check if data has been edited or not
+		// to check if data has been edited or not
 		$scope.$on('ARDetailsRecieved', function() {
 			presentArDetails = JSON.parse(JSON.stringify($scope.arAccountDetails));
 		});
@@ -113,6 +115,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 				"note": $scope.ARData.note,
 				"ar_number": $scope.arAccountDetails.ar_number
 			};
+
 			$scope.invokeApi(RVCompanyCardSrv.saveARNote, dataToSend, successCallbackOfsaveARNote);
 		};
 
@@ -128,6 +131,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 				"id": $scope.contactInformation.id,
 				"note_id": note_id
 			};
+
 			$scope.invokeApi(RVCompanyCardSrv.deleteARNote, dataToSend, deleteARNoteSuccess);
 
 		};
@@ -142,6 +146,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 
 		$scope.$on('ArAccountDeleted', function(event) {
 			var bool = $scope.arAccountDetails.is_auto_assign_ar_numbers;
+
 			$scope.arAccountDetails = {};
 			$scope.arAccountDetails.is_use_main_contact = true;
 			$scope.arAccountDetails.is_use_main_address = true;

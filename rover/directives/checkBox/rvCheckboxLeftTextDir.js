@@ -5,7 +5,7 @@ sntRover.directive('rvCheckboxtextLeft', function($timeout) {
         replace: 'true',
       	scope: {
             label: '@label',
-	        required : '@required',
+	        required: '@required',
             isChecked: '=isChecked',
             parentLabelClass: '@parentLabelClass',
             divClass: '@divClass',

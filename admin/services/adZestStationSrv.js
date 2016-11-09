@@ -4,6 +4,7 @@ admin.service('ADZestStationSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
     this.fetch = function() {
         var deferred = $q.defer();
         var url = '/api/hotel_settings/kiosk';
+
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
         }, function(data) {
@@ -15,6 +16,7 @@ admin.service('ADZestStationSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
     this.fetchZestStationData = function() {
         var deferred = $q.defer();
         var url = '/api/zest_stations';
+
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
         }, function(data) {

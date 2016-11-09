@@ -1,6 +1,7 @@
 angular.module('sntRover').service('RVReservationStateService', [
 	function() {
 		var self = this;
+
 		self.metaData = {
 			rateAddons: [],
 			taxDetails: []
@@ -27,11 +28,12 @@ angular.module('sntRover').service('RVReservationStateService', [
 			// In case of multiple rates, rateId might come in as an array
 			// In such a case, take the rate for the first night
 			if (_.isArray(rateId)) {
-				rateId = rateId[0]
+				rateId = rateId[0];
 			}
 			var rateAddons = _.findWhere(self.metaData.rateAddons, {
 				rate_id: rateId
 			});
+
 			if (rateAddons && rateAddons.associated_addons) {
 				return rateAddons.associated_addons;
 			} else {
@@ -42,25 +44,26 @@ angular.module('sntRover').service('RVReservationStateService', [
 
 
 		self.updateRateAddonsMeta = function(addonInfo) {
-			if(addonInfo.length === 0){
+			if (addonInfo.length === 0) {
 				return false;
 			}
 			var rateAddons = _.findWhere(self.metaData.rateAddons, {
 				rate_id: addonInfo[0].rateId
 			});
 
-			if(rateAddons){
+			if (rateAddons) {
 				rateAddons[0] = addonInfo[0];
-			}else{
+			} else {
 				self.metaData.rateAddons.push(addonInfo[0]);
 			}
 		};
 
 		self.getCustomRateModel = function(id, name, type) {
 			var isAllotment = type && type === 'ALLOTMENT',
-				rateIdentifier = '_CUSTOM_' + id, //Default to the GROUP
+				rateIdentifier = '_CUSTOM_' + id, // Default to the GROUP
 				rateName = isAllotment ? "Custom Rate for Allotment " + name : "Custom Rate for Group " + name,
 				rateDescription = isAllotment ? "Custom Allotment Rate" : "Custom Group Rate";
+
 			return {
 				id: rateIdentifier,
 				name: rateName,
@@ -93,8 +96,8 @@ angular.module('sntRover').service('RVReservationStateService', [
 				},
 				is_member: false,
 				linked_promotion_ids: []
-			}
-		}
+			};
+		};
 
 
 		/**
@@ -128,11 +131,13 @@ angular.module('sntRover').service('RVReservationStateService', [
 		self.calculateRate = function(rateTable, numAdults, numChildren) {
 			var baseRoomRate = numAdults >= 2 ? rateTable.double : rateTable.single;
 			var extraAdults = numAdults >= 2 ? numAdults - 2 : 0;
+
 			return baseRoomRate + (extraAdults * rateTable.extra_adult) + (numChildren * rateTable.child);
 		};
 
 		self.calculateMultiplier = function(amountType, numAdults, numChildren) {
 			var multiplier = 1; // for amount_type = flat
+
 			if (amountType === "ADULT") {
 				multiplier = numAdults;
 			} else if (amountType === "CHILD") {
@@ -150,7 +155,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 				} else if (postingRythm === 1) {
                     return baseCount * numNights;
                 } else {
-					if(typeof chargeFullWeeksOnly !== "undefined" && !!chargeFullWeeksOnly) {
+					if (typeof chargeFullWeeksOnly !== "undefined" && !!chargeFullWeeksOnly) {
 						return baseCount * parseInt((numNights / postingRythm), 10);
 					} else {
 						return baseCount * (parseInt((numNights / postingRythm), 10) + 1);
@@ -167,12 +172,13 @@ angular.module('sntRover').service('RVReservationStateService', [
 				return getTotalPostedAddons(postType, numChildren);
 			} else if (amountType === 'FLAT') {
 				return getTotalPostedAddons(postType, 1);
-			};
-		}
+			}
+		};
 
 		self.computeBaseAmount = function(taxableAmount, taxes, numAdults, numChildren) {
 			var totalInclTaxPercent = 0.0,
 				totalInclTaxAmount = 0.0;
+
 			_.each(taxes, function(tax) {
 				var isInclusive = tax.is_inclusive,
 					taxData = _.findWhere(self.metaData.taxDetails, { // obtain the tax data from the metaData
@@ -180,6 +186,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 					}),
 					amountType = taxData.amount_type,
 					multiplier = self.calculateMultiplier(amountType, numAdults, numChildren);
+
 				if (isInclusive) {
 					if (taxData.amount_symbol === '%') {
 						totalInclTaxPercent += (multiplier * parseFloat(taxData.amount));
@@ -202,17 +209,17 @@ angular.module('sntRover').service('RVReservationStateService', [
 		 * @return {Object}
 		 */
 		self.calculateTax = function(taxableAmount, taxes, roomIndex, numAdults, numChildren, forAddons) {
-			var taxInclusiveTotal = 0.0, //Per Night Inclusive Charges
-				taxExclusiveTotal = 0.0; //Per Night Exclusive Charges
+			var taxInclusiveTotal = 0.0, // Per Night Inclusive Charges
+				taxExclusiveTotal = 0.0; // Per Night Exclusive Charges
 			// --The above two are required only for the room and rates section where we do not display the STAY taxes
-			var taxInclusiveStayTotal = 0.0, //Per Stay Inclusive Charges
-				taxExclusiveStayTotal = 0.0; //Per Stay Exlusive Charges
+			var taxInclusiveStayTotal = 0.0, // Per Stay Inclusive Charges
+				taxExclusiveStayTotal = 0.0; // Per Stay Exlusive Charges
 			var taxDescription = [],
 				taxesLookUp = {},
 				baseAmount = self.computeBaseAmount(taxableAmount, taxes, numAdults, numChildren);
 
 			_.each(taxes, function(tax) {
-				//for every tax that is associated to the date proceed
+				// for every tax that is associated to the date proceed
 				var isInclusive = tax.is_inclusive,
 					taxData = _.findWhere(self.metaData.taxDetails, { // obtain the tax data from the metaData
 						id: parseInt(tax.charge_code_id, 10)
@@ -239,7 +246,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 					if (taxData.amount_symbol === '%') { // The formula for inclusive tax computation is different from that for exclusive. Kindly NOTE.
 						taxCalculated = parseFloat(multiplier * (parseFloat(taxValue / 100) * taxOn));
 					} else {
-						taxCalculated = parseFloat(multiplier * parseFloat(taxValue)); //In case the tax is not a percentage amount, its plain multiplication with the tax's amount_type
+						taxCalculated = parseFloat(multiplier * parseFloat(taxValue)); // In case the tax is not a percentage amount, its plain multiplication with the tax's amount_type
 					}
 
 					taxesLookUp[taxData.id] = parseFloat(taxCalculated);
@@ -311,7 +318,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 				return 0;
 			}
 			if (discount.type === 'amount') {
-				return amount - discount.value / numNights; //perNight's discount to be deducted
+				return amount - discount.value / numNights; // perNight's discount to be deducted
 			} // discount.type === 'percent'
 			return amount - (amount * (discount.value / 100.0));
 		};
@@ -346,12 +353,13 @@ angular.module('sntRover').service('RVReservationStateService', [
 				rooms[roomTypeId].availabilityNumbers[date] = {
 					room: roomType.availability,
 					group: roomType.group_availability
-				}
+				};
 			});
 		};
 
 		self.getAddonAmounts = function(rateAddons, arrival, departure, stayDates) {
 			var addonRates = {};
+
 			_.each(stayDates, function(dayInfo, date) {
 				var numAdults = dayInfo.guests.adults,
 					numChildren = dayInfo.guests.children,
@@ -361,9 +369,11 @@ angular.module('sntRover').service('RVReservationStateService', [
 
 				_.each(rateAddons, function(rateInfo) {
 					var rateId = rateInfo.rate_id;
+
 					_.each(rateInfo.associated_addons, function(addon) {
 						var currentAddonAmount = parseFloat(self.getAddonAmount(addon.amount_type.value, parseFloat(addon.amount), numAdults, numChildren)),
 							shouldPostAddon = self.shouldPostAddon(addon.post_type.frequency, currentDate, arrival, departure, addon.charge_full_weeks_only);
+
 						if (!addon.is_inclusive && shouldPostAddon) {
 							if (addonRates[currentDate][rateId] === undefined) {
 								addonRates[currentDate][rateId] = currentAddonAmount;
@@ -407,6 +417,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 					if (taxDetail.postType === 'STAY') {
 						var taxType = taxDetail.isInclusive ? "incl" : "excl",
 							currentTaxId = taxDetail.id;
+
 						if (stayTax[taxType][currentTaxId] === undefined) {
 							stayTax[taxType][currentTaxId] = parseFloat(taxDetail.amount);
 						} else {
@@ -417,7 +428,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 			};
 
 
-			//ADDON
+			// ADDON
 
 			if (associatedAddons && associatedAddons.length > 0) {
 				_.each(associatedAddons, function(addon) {
@@ -458,15 +469,16 @@ angular.module('sntRover').service('RVReservationStateService', [
 			}
 
 
-			//calculate tax for the current day
+			// calculate tax for the current day
 			if (taxes && taxes.length > 0) { // Need to calculate taxes IFF there are taxes associated with the rate
 				var taxApplied = self.calculateTax(rateOnRoomAddonAdjusted, taxes, activeRoom, numAdults, numChildren, false);
+
 				rateTax = {
 					incl: parseFloat(taxApplied.INCL.NIGHT),
 					excl: parseFloat(taxApplied.EXCL.NIGHT)
 				};
 				updateStayTaxes(taxApplied.taxDescription);
-			};
+			}
 
 			totalTax = {
 				incl: parseFloat(rateTax.incl) + parseFloat(addonTax.incl),
@@ -481,7 +493,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 					excl: totalTax.excl
 				},
 				stayTax: stayTax
-			}
+			};
 
 		};
 

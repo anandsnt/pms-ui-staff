@@ -16,7 +16,7 @@ admin.controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 'ideaSetup', 'adId
          */
         $scope.chooseSelectedChargeGroup = function(chargeGroupIndex) {
             if ($scope.chosenSelectedChargeGroups.indexOf(chargeGroupIndex) > -1) {
-                $scope.chosenSelectedChargeGroups = _.without($scope.chosenSelectedChargeGroups, chargeGroupIndex)
+                $scope.chosenSelectedChargeGroups = _.without($scope.chosenSelectedChargeGroups, chargeGroupIndex);
             } else {
                 $scope.chosenSelectedChargeGroups.push(chargeGroupIndex);
             }
@@ -28,7 +28,7 @@ admin.controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 'ideaSetup', 'adId
          */
         $scope.chooseAvailableChargeGroup = function(chargeGroupIndex) {
             if ($scope.chosenAvailableChargeGroups.indexOf(chargeGroupIndex) > -1) {
-                $scope.chosenAvailableChargeGroups = _.without($scope.chosenAvailableChargeGroups, chargeGroupIndex)
+                $scope.chosenAvailableChargeGroups = _.without($scope.chosenAvailableChargeGroups, chargeGroupIndex);
             } else {
                 $scope.chosenAvailableChargeGroups.push(chargeGroupIndex);
             }
@@ -53,6 +53,7 @@ admin.controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 'ideaSetup', 'adId
          */
         $scope.selectChosen = function() {
             var chosenAvailableChargeGroupValues = [];
+
             _.each($scope.chosenAvailableChargeGroups, function(chargeGroupIndex) {
                 chosenAvailableChargeGroupValues.push($scope.ideaSetup.available_charge_groups[chargeGroupIndex]);
             });
@@ -67,6 +68,7 @@ admin.controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 'ideaSetup', 'adId
          */
         $scope.unSelectChosen = function() {
             var chosenSelectedChargeGroupValues = [];
+
             _.each($scope.chosenSelectedChargeGroups, function(chargeGroupIndex) {
                 chosenSelectedChargeGroupValues.push($scope.ideaSetup.selected_charge_groups[chargeGroupIndex]);
             });
@@ -101,13 +103,13 @@ admin.controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 'ideaSetup', 'adId
          */
         $scope.chooseAvailableChargeCode = function(chargeGroupIndex) {
             if ($scope.chosenAvailableChargeCodes.indexOf(chargeGroupIndex) > -1) {
-                $scope.chosenAvailableChargeCodes = _.without($scope.chosenAvailableChargeCodes, chargeGroupIndex)
+                $scope.chosenAvailableChargeCodes = _.without($scope.chosenAvailableChargeCodes, chargeGroupIndex);
             } else {
                 $scope.chosenAvailableChargeCodes.push(chargeGroupIndex);
             }
         };
 
-        //-------------------------------------------------------------------------------------------------------------- SCOPE VARIABLES
+        // -------------------------------------------------------------------------------------------------------------- SCOPE VARIABLES
         // Date Picker Settings
         $scope.datepicker = {
             options: {
@@ -123,9 +125,9 @@ admin.controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 'ideaSetup', 'adId
                 },
                 yearRange: "-1:+5"
             }
-        }
+        };
 
-        //-------------------------------------------------------------------------------------------------------------- SCOPE METHODS
+        // -------------------------------------------------------------------------------------------------------------- SCOPE METHODS
         /**
          * Method to save setup
          * @return {[type]} [description]
@@ -133,6 +135,7 @@ admin.controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 'ideaSetup', 'adId
         $scope.saveSetup = function() {
             var params = angular.copy($scope.ideaSetup);
             // Convert date object to API format
+
             params.start_date = dateFilter(params.start_date, $rootScope.dateFormatForAPI);
             $scope.callAPI(adIdeasSetupSrv.postIdeasSetup, {
                 params: params,
@@ -140,15 +143,15 @@ admin.controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 'ideaSetup', 'adId
                     // Navigate back to interfaces list on successful save
                     $scope.goBackToPreviousState();
                 }
-            })
-        }
+            });
+        };
 
-        //-------------------------------------------------------------------------------------------------------------- INIT
-        var init = function() {
+        // -------------------------------------------------------------------------------------------------------------- INIT
+        var init = (function() {
             $scope.ideaSetup = ideaSetup;
             // handle null in selected_charge_groups and available_charge_groups
             $scope.ideaSetup.selected_charge_groups = $scope.ideaSetup.selected_charge_groups || [];
             $scope.ideaSetup.available_charge_groups = $scope.ideaSetup.available_charge_groups || [];
-        }();
+        }());
     }
-])
+]);
