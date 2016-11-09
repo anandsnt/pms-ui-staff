@@ -286,7 +286,6 @@ admin.controller('ADRulesRestrictionCtrl', [
             var from = from,
                 saveCallback,
                 updateCallback;
-                console.log($scope.singleRule);
             // if we are in update (or edit) mode
             if ( $scope.updateRule ) {
                 updateCallback = function(data) {
