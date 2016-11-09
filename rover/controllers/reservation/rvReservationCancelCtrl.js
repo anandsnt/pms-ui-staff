@@ -24,7 +24,7 @@
 			};
 			$scope.cancellationData.paymentType = "";
 			$scope.DailogeState = typeof $scope.$parent.DailogeState !== 'undefined' ? $scope.$parent.DailogeState : {};
-			$scope.DailogeState.sendConfirmatonMailTo = typeof $scope.$parent.DailogeState!== 'undefined' ? $scope.$parent.DailogeState.sendConfirmatonMailTo : "";
+			$scope.DailogeState.sendConfirmatonMailTo = typeof $scope.$parent.DailogeState !== 'undefined' ? $scope.$parent.DailogeState.sendConfirmatonMailTo : "";
 			$scope.DailogeState.isCancelled = false;
 			
 			if ($scope.ngDialogData.penalty > 0) {

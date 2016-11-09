@@ -2,14 +2,14 @@ sntRover.controller('RVEndOfDayModalController', ['$scope', 'ngDialog', '$rootSc
 
 BaseCtrl.call(this, $scope);
 $scope.userName = '';
-$scope.password ='';
-$scope.errorMessage='';
+$scope.password = '';
+$scope.errorMessage = '';
 $scope.isLoggedIn = false;
 $scope.startProcess = false;
 $scope.startProcessEnabled = true;
 $scope.businessDate = $filter('date')($rootScope.businessDate, $rootScope.dateFormat);
 $scope.nextBusinessDate = tzIndependentDate($rootScope.businessDate);
-$scope.nextBusinessDate.setDate($scope.nextBusinessDate.getDate()+1);
+$scope.nextBusinessDate.setDate($scope.nextBusinessDate.getDate() + 1);
 $scope.nextBusinessDate = $filter('date')($scope.nextBusinessDate, $rootScope.dateFormat);
 $scope.isTimePastMidnight = true;
 $rootScope.isCurrentUserChangingBussinessDate = true;
@@ -29,7 +29,7 @@ $scope.login = function() {
 		$rootScope.$broadcast('hideLoader');
 		$scope.isLoggedIn = true;
 		// verify if hotel time is past midnight or not
-		$scope.isTimePastMidnight = (data.is_show_warning ==="true") ? false: true;
+		$scope.isTimePastMidnight = (data.is_show_warning === "true") ? false : true;
 	};
 	var loginFailure = function(data) {
 		$rootScope.$broadcast('hideLoader');

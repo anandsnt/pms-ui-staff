@@ -51,7 +51,7 @@ admin.service('ADOriginsSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, 
 	this.update = function(data) {
 
 		var deferred = $q.defer();
-		var url = '/api/booking_origins/'+data.value;
+		var url = '/api/booking_origins/' + data.value;
 
 		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 			deferred.resolve(data);
@@ -67,7 +67,7 @@ admin.service('ADOriginsSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, 
 	this.deleteItem = function(data) {
 
 		var deferred = $q.defer();
-		var url = '/api/booking_origins/'+data.value;
+		var url = '/api/booking_origins/' + data.value;
 
 		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 			deferred.resolve(data);

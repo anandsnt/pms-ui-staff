@@ -17,7 +17,7 @@ var TimelineResizeGrip = React.createClass({
 		this.setState({
 			mouse_down: true,
 			origin_x: e.pageX,
-			element_x: page_offset.left -props.display.x_0 - props.iscroll.grid.x
+			element_x: page_offset.left - props.display.x_0 - props.iscroll.grid.x
 		});
 
 	},
@@ -36,7 +36,7 @@ var TimelineResizeGrip = React.createClass({
 			direction = 			props.itemProp,
 			newValue = ((((state.element_x + delta_x) / px_per_ms) + x_origin) / 900000).toFixed() * 900000,
 			opposite =      		((direction === 'departure') ? 'arrival' : 'departure'),
-			isResizable=			this.__whetherResizable( opposite, newValue),
+			isResizable =			this.__whetherResizable( opposite, newValue),
 			last_left;
 
 
@@ -112,7 +112,7 @@ var TimelineResizeGrip = React.createClass({
 			direction = 			props.itemProp.toUpperCase(),
 			fifteenMin =			900000,
 			reservation_status = 	original_item.reservation_status.toUpperCase(),
-			difference	= (opposite === 'departure' ? (original_item[opposite] - value) :(value - original_item[opposite]) );
+			difference	= (opposite === 'departure' ? (original_item[opposite] - value) : (value - original_item[opposite]) );
 
 		if ((difference) < (fifteenMin)) {
 			return false;
@@ -152,7 +152,7 @@ var TimelineResizeGrip = React.createClass({
   	},
 	componentDidMount: function() {
 		this.isTouchEnabled 	= 'ontouchstart' in window;
-		this.mouseStartingEvent = this.isTouchEnabled ? 'touchstart': 'mousedown';
+		this.mouseStartingEvent = this.isTouchEnabled ? 'touchstart' : 'mousedown';
 		this.mouseMovingEvent 	= this.isTouchEnabled ? 'touchmove' : 'mousemove';
 		this.mouseLeavingEvent 	= this.isTouchEnabled ? 'touchend'	: 'mouseup';
 
@@ -232,7 +232,7 @@ var TimelineResizeGrip = React.createClass({
 				time_txt = dateDirection.toComponents().time.toString(true);
 				var display_start_time = (props.display.x_n instanceof Date ? props.display.x_n : new Date (props.display.x_n) );
 
-				if (display_start_time.isOnDST()===false && dateDirection.isOnDST() ===true ) {
+				if (display_start_time.isOnDST() === false && dateDirection.isOnDST() === true ) {
 					var dateForCalculatingLeft = new Date(currentResizeItem[direction]);
 
 					dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
@@ -240,7 +240,7 @@ var TimelineResizeGrip = React.createClass({
 
 				}
 
-				else if (display_start_time.isOnDST()===true && dateDirection.isOnDST() ===false ) {
+				else if (display_start_time.isOnDST() === true && dateDirection.isOnDST() === false ) {
 					var dateForCalculatingLeft = new Date(currentResizeItem[direction]);
 
 					dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());

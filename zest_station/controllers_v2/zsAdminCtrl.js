@@ -184,7 +184,7 @@ sntZestStation.controller('zsAdminCtrl', [
 
                 console.info("chrome app id" + chromeAppId);
                 // minimize the chrome app on loging out
-                (chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId, "zest-station-logout"): "";
+                (chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId, "zest-station-logout") : "";
                 console.info("login out from chrome");
             } else {
                 console.info("login out");
@@ -319,7 +319,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 cordova.exec(
                     function(success) {
                         // sntZestStation.selectedPrinter = JSON.stringify(success);
-                        (typeof $scope.savedSettings === "undefined") ? $scope.savedSettings = {}: "";
+                        (typeof $scope.savedSettings === "undefined") ? $scope.savedSettings = {} : "";
                         $scope.savedSettings.printer = success; // save to the save params here
                         $scope.workstation.printer = $scope.savedSettings.printer;
                         setPrinterLabel($scope.savedSettings.printer);

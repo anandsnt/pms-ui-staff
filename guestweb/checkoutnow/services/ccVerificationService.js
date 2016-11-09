@@ -7,8 +7,8 @@ var ccVerificationService = function($q, $http, $rootScope) {
 			var deferred = $q.defer();
 			var url = "/staff/reservation/save_payment";
 
-			data.application = (typeof $rootScope.application !=="undefined") ? $rootScope.application : "WEB";
-			data.url_suffix = (typeof $rootScope.urlSuffix !=="undefined") ? $rootScope.urlSuffix : "";
+			data.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "WEB";
+			data.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "";
 			$http.post(url, data).success(function(response) {
 				deferred.resolve(response);
 			}).error(function() {

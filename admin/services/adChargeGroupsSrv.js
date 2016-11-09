@@ -37,7 +37,7 @@ admin.service('ADChargeGroupsSrv', ['$http', '$q', 'ADBaseWebSrv', function($htt
 	this.update = function(data) {
 
 		var deferred = $q.defer();
-		var url = '/admin/charge_groups/'+data.value;
+		var url = '/admin/charge_groups/' + data.value;
 
 		ADBaseWebSrv.putJSON(url, data).then(function(data) {
 			deferred.resolve(data);
@@ -53,7 +53,7 @@ admin.service('ADChargeGroupsSrv', ['$http', '$q', 'ADBaseWebSrv', function($htt
 	this.deleteItem = function(data) {
 
 		var deferred = $q.defer();
-		var url = '/admin/charge_groups/'+data.value;
+		var url = '/admin/charge_groups/' + data.value;
 
 		ADBaseWebSrv.deleteJSON(url, data).then(function(data) {
 			deferred.resolve(data);

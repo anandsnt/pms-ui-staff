@@ -133,7 +133,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 
 		this.getRoomLog = function(params) {
 			var deferred = $q.defer(),
-				url = '/api/room_actions/'+params.id+'/?page='+params.page+'&per_page='+params.per_page;
+				url = '/api/room_actions/' + params.id + '/?page=' + params.page + '&per_page=' + params.per_page;
 
 
 				rvBaseWebSrvV2.getJSON(url)
@@ -202,7 +202,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 		// POST: save from IN_SERVICE to OO/OS
 		this.postCheckOutReservation = function(params) {
 			var deferred = $q.defer(),
-				url = 'api/reservations/'+params.id+'/checkout_from_house_keeping';
+				url = 'api/reservations/' + params.id + '/checkout_from_house_keeping';
 
 			rvBaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {

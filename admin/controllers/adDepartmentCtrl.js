@@ -25,7 +25,7 @@ admin.controller('ADDepartmentListCtrl', ['$scope', '$state', 'ADDepartmentSrv',
     * @param {id} id of the department
     */
 	$scope.editDepartments = function(index, id)	{
-		$scope.departmentData={};
+		$scope.departmentData = {};
 		$scope.currentClickedElement = index;
 		$scope.isAddMode = false;
 	 	var successCallbackRender = function(data) {
@@ -40,7 +40,7 @@ admin.controller('ADDepartmentListCtrl', ['$scope', '$state', 'ADDepartmentSrv',
     * Render add department screen
     */
 	$scope.addNew = function()	{
-		$scope.departmentData={};
+		$scope.departmentData = {};
 		$scope.currentClickedElement = "new";
 		$scope.isAddMode = true;
 		$timeout(function() {

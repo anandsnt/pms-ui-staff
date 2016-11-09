@@ -9,7 +9,7 @@ admin.controller('ADZestStationColorsAndGraphicsCtrl', ['$scope', '$rootScope', 
             }
             if (typeof value === typeof 'string') {
                 if (value.indexOf('#')) {// show has in field, but dont send when saving
-                    value = '#'+value;
+                    value = '#' + value;
                 }
             } else {
                 value = '';
@@ -29,7 +29,7 @@ admin.controller('ADZestStationColorsAndGraphicsCtrl', ['$scope', '$rootScope', 
         
         $scope.updateFieldColor = function(field_id) {
             // function to update color preview inline
-            $('#'+field_id+' > div > input').css('border-color', $scope.data[field_id]);
+            $('#' + field_id + ' > div > input').css('border-color', $scope.data[field_id]);
         };             
         
         $scope.fetchSettings = function() {

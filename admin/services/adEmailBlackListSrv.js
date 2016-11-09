@@ -34,10 +34,10 @@ admin.service('ADEmailBlackListSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
 	/*
     * To delete billing group data
     */
-	this.deleteBlacklistedEmail= function(id) {
+	this.deleteBlacklistedEmail = function(id) {
 
 		var deferred = $q.defer();
-		var url = '/api/hotels/'+id+'/delete_email.json';
+		var url = '/api/hotels/' + id + '/delete_email.json';
 
 		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 		    deferred.resolve(data);

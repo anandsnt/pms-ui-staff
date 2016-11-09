@@ -219,7 +219,7 @@ var getIndexOfSelectedTime = function(time) {
   };
   // if hour is 12, need to switch primetimes
 
-  (timeHour === 12 && timeMinute === "00") ? switchAMPM(): "";
+  (timeHour === 12 && timeMinute === "00") ? switchAMPM() : "";
   timeLimit = timeHour + ":" + timeMinute + " " + primeTime;
   // find the index of the hoteltime inside the list we have
   var timeList = returnTimeArray();
@@ -232,12 +232,12 @@ var getIndexOfSelectedTime = function(time) {
 
 
 var checkIfDateIsValid = function(month, day, year) {
-  var birthday = month+"/"+day+"/"+year;  
+  var birthday = month + "/" + day + "/" + year;  
   var comp = birthday.split('/');
   var m = parseInt(comp[0], 10);
   var d = parseInt(comp[1], 10);
   var y = parseInt(comp[2], 10);
-  var date = new Date(y, m-1, d);
+  var date = new Date(y, m - 1, d);
 
   if (date.getFullYear() == y && date.getMonth() + 1 == m && date.getDate() == d) {
      return true;

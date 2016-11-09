@@ -28,7 +28,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
             var comments = commentContainer.children;
             var height = 75 * comments.length ;
 
-            height = height < 200 && height > 0 ? height + 20: height;
+            height = height < 200 && height > 0 ? height + 20 : height;
             _.each(comments, function(comment) {
                 
                 if (comment.clientHeight > 70)
@@ -39,15 +39,15 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
 conversationWrapper.clientHeight;
             if (height < 300) {
                 wrapperHeight = height;
-                commentScroll.style.height = ""+height+"px";
-                conversationWrapper.style.height = ""+height+"px";
+                commentScroll.style.height = "" + height + "px";
+                conversationWrapper.style.height = "" + height + "px";
             } else {
                 wrapperHeight = 300;
                 commentScroll.style.height = "300px";
                 conversationWrapper.style.height = "300px";
             }
             
-            commentContainer.style.height = ""+height+"px";
+            commentContainer.style.height = "" + height + "px";
 
             var parentPostEl =  angular.element(document.querySelector(".post-full"))[0];
             var parentPostElHeight = parentPostEl.clientHeight - 20;
@@ -177,9 +177,9 @@ conversationWrapper.clientHeight;
                 $scope.middle_page2 = 3;
                 $scope.middle_page1 = 2;
             } else if ($scope.commentParams.page == $scope.totalCommentPages && $scope.totalCommentPages > 5) {
-                $scope.middle_page3 = $scope.totalCommentPages -1;
-                $scope.middle_page2 = $scope.totalCommentPages -2;
-                $scope.middle_page1 = $scope.totalCommentPages -3;
+                $scope.middle_page3 = $scope.totalCommentPages - 1;
+                $scope.middle_page2 = $scope.totalCommentPages - 2;
+                $scope.middle_page1 = $scope.totalCommentPages - 3;
             }
         };
 

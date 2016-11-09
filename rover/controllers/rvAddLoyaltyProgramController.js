@@ -90,7 +90,7 @@ sntRover.controller('rvAddLoyaltyProgramController', ['$scope', '$rootScope', '$
 	$scope.setAvailableFFPS = function (FFPArray) {
 		var loyaltyType;
 
-		for (var i=0; i < FFPArray.length; i++) {
+		for (var i = 0; i < FFPArray.length; i++) {
 			loyaltyType = {};
 			loyaltyType.name = FFPArray[i].ff_description;
 			loyaltyType.code = FFPArray[i].ff_value;
@@ -102,7 +102,7 @@ sntRover.controller('rvAddLoyaltyProgramController', ['$scope', '$rootScope', '$
 	$scope.setAvailableHLPS = function (HLPArray) {
 		var loyaltyType;
 
-		for (var i=0; i < HLPArray.length; i++) {
+		for (var i = 0; i < HLPArray.length; i++) {
 			loyaltyType = {};
 			loyaltyType.name = HLPArray[i].hl_description;
 			loyaltyType.code = HLPArray[i].hl_value;
@@ -160,7 +160,7 @@ sntRover.controller('rvAddLoyaltyProgramController', ['$scope', '$rootScope', '$
                 } else if ($scope.selectedLoyaltyProgram === 'FFP') {
                     loyaltytypes = $scope.availableFFPS;
                 }
-		for (var i=0; i < loyaltytypes.length; i++) {
+		for (var i = 0; i < loyaltytypes.length; i++) {
 			if ($scope.selectedLoyaltyType === loyaltytypes[i].code) {
 				levels = loyaltytypes[i].levels;
 				break;

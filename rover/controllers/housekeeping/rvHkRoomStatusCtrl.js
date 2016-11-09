@@ -613,13 +613,13 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			$scope.completedData.successFullyUpdated = parseInt($scope.totalRoomsSelectedForUpdate) - parseInt($scope.completedData.assignedRoomsList.length);
 			$scope.completedData.notSuccessFullyUpdated = parseInt($scope.completedData.assignedRoomsList.length);
 			_.each($scope.completedData.assignedRoomsList, function(item) {
-  				item.is_add_to_update =true;
+  				item.is_add_to_update = true;
   				if (item.reservations.length > 1) {
   					item.reservationData = "Multiple Reservations";
   					item.isMultipleReservation = true;
   				} else if ((item.reservations.length === 1)) {
-  					item.reservationData = "#"+item.reservations[0].confirm_no;
-  					item.GuestName = item.reservations[0].last_name+", "+item.reservations[0].first_name;
+  					item.reservationData = "#" + item.reservations[0].confirm_no;
+  					item.GuestName = item.reservations[0].last_name + ", " + item.reservations[0].first_name;
   					item.isMultipleReservation = false;
   				}
 			});
@@ -656,7 +656,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			var updateServiceStatusSuccessCallBack = function(data) {
 
 				$scope.$emit( 'hideLoader' );
-				if (typeof data.assigned_rooms !='undefined' && data.assigned_rooms.length > 0) {
+				if (typeof data.assigned_rooms != 'undefined' && data.assigned_rooms.length > 0) {
 					showUpdateResultPopup(data.assigned_rooms);
 				}
 				else {
@@ -1411,7 +1411,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			var summaryWidth = 0,
 				tasksLength = $scope.summary.work_types.length;
 
-			summaryWidth = parseInt(parseInt(tasksLength + 1)*160 + 40);
+			summaryWidth = parseInt(parseInt(tasksLength + 1) * 160 + 40);
 			return summaryWidth;
 		};
 

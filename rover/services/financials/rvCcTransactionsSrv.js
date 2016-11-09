@@ -40,7 +40,7 @@ angular.module('sntRover').service('RVccTransactionsSrv', ['$http', '$q', 'BaseW
     	if (typeof params.date === 'undefined' || params.date === "") {
     		params.date = $rootScope.businessDate;
     	}
-    	var url = "/api/cc?date="+params.date;
+    	var url = "/api/cc?date=" + params.date;
 
         BaseWebSrvV2.getJSON(url).then(function (data) {
 

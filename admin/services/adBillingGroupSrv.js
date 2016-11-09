@@ -35,7 +35,7 @@ admin.service('ADBillingGroupSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrv
 	this.getBillingGroupDetails = function(id) {
 
 		var deferred = $q.defer();
-		var url = 'api/billing_groups/'+ id;
+		var url = 'api/billing_groups/' + id;
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
@@ -65,7 +65,7 @@ admin.service('ADBillingGroupSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrv
 	this.updateBillingGroup = function(data) {
 
 		var deferred = $q.defer();
-		var url = 'api/billing_groups/'+data.id;
+		var url = 'api/billing_groups/' + data.id;
 
 		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
@@ -80,7 +80,7 @@ admin.service('ADBillingGroupSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrv
 	this.deleteBillingGroup = function(id) {
 
 		var deferred = $q.defer();
-		var url = '/api/billing_groups/'+id;
+		var url = '/api/billing_groups/' + id;
 
 		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 		    deferred.resolve(data);

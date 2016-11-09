@@ -830,7 +830,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 			// date picker options - End Date
 			$scope.endDateOptions = _.extend({
-				minDate: ($scope.startDate !== '') ? new tzIndependentDate($scope.startDate): new tzIndependentDate($rootScope.businessDate),
+				minDate: ($scope.startDate !== '') ? new tzIndependentDate($scope.startDate) : new tzIndependentDate($rootScope.businessDate),
 				disabled: shouldDisableEndDatePicker(),
 				onSelect: onEndDatePicked
 			}, commonDateOptions);
@@ -1789,7 +1789,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return {undefined}
 		 */
 		var setActiveLeftSideMenu = function () {
-			var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup": "menuManageGroup";
+			var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup" : "menuManageGroup";
 
 			$scope.$emit("updateRoverLeftMenu", activeMenu);
 		};

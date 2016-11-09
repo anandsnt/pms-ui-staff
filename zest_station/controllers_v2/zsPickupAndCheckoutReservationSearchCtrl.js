@@ -189,7 +189,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 
 		$scope.roomNumberEntered = function() {
 			roomNumberEntered = true;
-			($scope.reservationParams.room_no.length > 0) ? searchReservation(): "";
+			($scope.reservationParams.room_no.length > 0) ? searchReservation() : "";
 			$scope.callBlurEventForIpad();
 			$scope.resetTime();
 		};

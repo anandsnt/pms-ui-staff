@@ -35,7 +35,7 @@ angular.module('sntRover').service('RVEndOfDayModalSrv', ['$q', 'rvBaseWebSrvV2'
 		 */
 		this.restartFailedProcess = function(data) {
 			var deferred = $q.defer();
-			var url = '/api/eod_processes/'+data.id+'/re_run';
+			var url = '/api/eod_processes/' + data.id + '/re_run';
 
 			rvBaseWebSrvV2.postJSON(url).then(function(data) {
 				deferred.resolve(data);

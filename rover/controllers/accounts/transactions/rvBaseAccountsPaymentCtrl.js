@@ -25,9 +25,9 @@ var BasePaymentCtrl = function($scope) {
 	$scope.changePaymentType = function() {
 
 		if ($scope.paymentGateway !== 'sixpayments') {
-			$scope.showCCPage = ($scope.dataToSave.paymentType === "CC") ? true: false;
-                        $scope.swippedCard = ($scope.dataToSave.paymentType === "CC") ? true: false;
-			$scope.showCCPage = ($scope.dataToSave.paymentType === "CC") ? true: false;
+			$scope.showCCPage = ($scope.dataToSave.paymentType === "CC") ? true : false;
+                        $scope.swippedCard = ($scope.dataToSave.paymentType === "CC") ? true : false;
+			$scope.showCCPage = ($scope.dataToSave.paymentType === "CC") ? true : false;
 			$scope.addmode = true;
 		} else {
 			$scope.isNewCardAdded = ($scope.dataToSave.paymentType === "CC" && !$scope.isManual) ? true : false;
@@ -35,8 +35,8 @@ var BasePaymentCtrl = function($scope) {
 		}
 	};
 	$scope.changeOnsiteCallIn = function() {
-		$scope.showCCPage = ($scope.isManual) ? true:false;
-		$scope.swippedCard = ($scope.isManual) ? true:false;
+		$scope.showCCPage = ($scope.isManual) ? true : false;
+		$scope.swippedCard = ($scope.isManual) ? true : false;
 		$scope.addmode = true;
 	};
 

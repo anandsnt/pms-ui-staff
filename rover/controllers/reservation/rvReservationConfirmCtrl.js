@@ -166,7 +166,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			$( '#print-orientation' ).remove();
 		};
 
-		var printPage= function() {
+		var printPage = function() {
 			// add the orientation
 			addPrintOrientation();
 	    	$timeout(function() {

@@ -37,9 +37,9 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 		var setPrinterOptions = function(theme) {
 			// zsUtils function
 			if ($scope.zestStationData.zest_printer_option === "STAR_TAC") {
-				(theme === 'yotel') ? applyStylesForYotelStarTac(): applyStarTacStyles();
+				(theme === 'yotel') ? applyStylesForYotelStarTac() : applyStarTacStyles();
 			} else if ($scope.zestStationData.zest_printer_option === "RECEIPT") {
-				(theme === 'yotel') ? applyStylesForYotelReceipt(): "";
+				(theme === 'yotel') ? applyStylesForYotelReceipt() : "";
 			} else {
 				applyPrintMargin(); // zsUtils function
 			}

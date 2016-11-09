@@ -30,7 +30,7 @@ admin.service('ADHotelPropertyInterfaceSrv', ['$http', '$q', 'ADBaseWebSrvV2', f
         this.deActivate = function(data) {
 		var deferred = $q.defer(), url;
 
-                    url = 'admin/hotel_interfaces/'+data.id+'.json';
+                    url = 'admin/hotel_interfaces/' + data.id + '.json';
 
 		ADBaseWebSrvV2.deleteJSON(url, data).then(function(data) {
 		    deferred.resolve(data);

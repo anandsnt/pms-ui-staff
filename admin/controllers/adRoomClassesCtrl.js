@@ -41,7 +41,7 @@ admin.controller('ADRoomClassListCtrl', ['$scope', '$state', 'ADRoomClassesSrv',
     * Render add room class screen
     */
 	$scope.addNew = function()	{
-		$scope.roomClassData={};
+		$scope.roomClassData = {};
 		$scope.currentClickedElement = "new";
 		$scope.isAddMode = true;
 		$timeout(function() {

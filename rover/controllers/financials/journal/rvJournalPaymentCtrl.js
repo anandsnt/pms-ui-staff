@@ -20,7 +20,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
 
             $scope.errorMessage = "";
 			refreshPaymentScroll();
-            if (origin !=="SUMMARY_DATE_CHANGED") {
+            if (origin !== "SUMMARY_DATE_CHANGED") {
                 $scope.$emit('hideLoader');
             }
 		};
@@ -130,10 +130,10 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
         var hasArrow = false,
         item = $scope.data.paymentData.payment_types[index];
 
-        if ((typeof item.credit_cards !== 'undefined') && (item.credit_cards.length >0)) {
+        if ((typeof item.credit_cards !== 'undefined') && (item.credit_cards.length > 0)) {
             hasArrow = true;
         }
-        else if ((typeof item.transactions !== 'undefined') && (item.transactions.length >0)) {
+        else if ((typeof item.transactions !== 'undefined') && (item.transactions.length > 0)) {
             hasArrow = true;
         }
         return hasArrow;
@@ -144,7 +144,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
         var hasArrow = false,
         item = $scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions;
 
-        if ((typeof item !== 'undefined') && (item.length >0)) {
+        if ((typeof item !== 'undefined') && (item.length > 0)) {
             hasArrow = true;
         }
         return hasArrow;

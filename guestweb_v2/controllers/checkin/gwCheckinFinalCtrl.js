@@ -17,7 +17,7 @@ sntGuestWeb.controller('gwCheckinFinalController', ['$scope', '$state', '$stateP
 
 		var onSuccess = function(response) {
 			$scope.isPosting = false;
-			$scope.responseData =response;
+			$scope.responseData = response;
 		};
 		var options = {
 				params: {

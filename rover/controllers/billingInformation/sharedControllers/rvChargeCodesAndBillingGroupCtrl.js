@@ -57,7 +57,7 @@ sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope', '$rootScope',
      * @return {undefined}
      */
     $scope.removeChargeCode = function(chargeCode) {
-        for (var i=0; i < $scope.selectedEntity.attached_charge_codes.length; i++) {
+        for (var i = 0; i < $scope.selectedEntity.attached_charge_codes.length; i++) {
             if ($scope.selectedEntity.attached_charge_codes[i].id === chargeCode.id) {
                 $scope.selectedEntity.attached_charge_codes.splice(i, 1);
                 return;

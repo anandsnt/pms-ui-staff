@@ -296,7 +296,7 @@ angular.module('stayCardModule', [])
                 },
                 roomUpgrades: function(RVUpgradesSrv, $stateParams, roomAssignmentJsAssets) {
                     // check if roomupgrade is available
-                    if ($stateParams.upgrade_available ==="true") {
+                    if ($stateParams.upgrade_available === "true") {
                         var params = {};
 
                         params.reservation_id = $stateParams.reservation_id;

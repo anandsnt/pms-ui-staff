@@ -122,13 +122,13 @@ sntRover.controller('RVOutsidePostChargeController',
 				}
 
 				if (oldSearchGuestText.length > 0) {
-					if ((oldSearchGuestText.length < $scope.search.guest_company_agent.length) && ($scope.search.guest_company_agent.indexOf(oldSearchGuestText) !==-1 )) {
+					if ((oldSearchGuestText.length < $scope.search.guest_company_agent.length) && ($scope.search.guest_company_agent.indexOf(oldSearchGuestText) !== -1 )) {
 						$scope.refreshApi = true;
 					}
 				}
 
 				else if (oldSearchRoomValue.length > 0) {
-					if ((oldSearchRoomValue.length < $scope.search.room.length) && ($scope.search.room.indexOf(oldSearchRoomValue) !==-1 )) {
+					if ((oldSearchRoomValue.length < $scope.search.room.length) && ($scope.search.room.indexOf(oldSearchRoomValue) !== -1 )) {
 						$scope.refreshApi = false;
 					}
 				}
@@ -215,7 +215,7 @@ sntRover.controller('RVOutsidePostChargeController',
 			        viewStatus = "check-out";
 			      } else if ("CANCELED" === reservationStatus) {
 			        viewStatus = "cancel";
-			      } else if (("NOSHOW" === reservationStatus)||("NOSHOW_CURRENT" === reservationStatus)) {
+			      } else if (("NOSHOW" === reservationStatus) || ("NOSHOW_CURRENT" === reservationStatus)) {
 			        viewStatus = "no-show";
 			      }
 			      return viewStatus;
@@ -269,7 +269,7 @@ sntRover.controller('RVOutsidePostChargeController',
 			$scope.getQueueClass = function(isReservationQueued, isQueueRoomsOn) {
 		  	    var queueClass = '';
 
-		  		if (isReservationQueued==="true" && isQueueRoomsOn === "true") {
+		  		if (isReservationQueued === "true" && isQueueRoomsOn === "true") {
 		 			queueClass = 'queued';
 		 		}
 		 		return queueClass;

@@ -234,19 +234,19 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 
 	$scope.roverOnlyChanged = function() {
 		if ($scope.currentClickedElement === "new") {
-			$scope.addData.is_web_only = $scope.addData.is_rover_only ? false: $scope.addData.is_web_only;
+			$scope.addData.is_web_only = $scope.addData.is_rover_only ? false : $scope.addData.is_web_only;
 		}
 		else {
-			$scope.editData.is_web_only = $scope.editData.is_rover_only ? false: $scope.editData.is_web_only;
+			$scope.editData.is_web_only = $scope.editData.is_rover_only ? false : $scope.editData.is_web_only;
 		}
 	};
 
 	$scope.webOnlyChanged = function() {
 		if ($scope.currentClickedElement === "new") {
-			$scope.addData.is_rover_only = $scope.addData.is_web_only ? false: $scope.addData.is_rover_only;
+			$scope.addData.is_rover_only = $scope.addData.is_web_only ? false : $scope.addData.is_rover_only;
 		}
 		else {
-			$scope.editData.is_rover_only = $scope.editData.is_web_only ? false: $scope.editData.is_rover_only;
+			$scope.editData.is_rover_only = $scope.editData.is_web_only ? false : $scope.editData.is_rover_only;
 		}
 	};
 }]);

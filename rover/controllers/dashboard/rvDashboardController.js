@@ -97,7 +97,7 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
         var url = activeNotification.action_source;
 
         if (!url.match(/^https?:\/\//i)) {
-          url = 'http://' + url+'?from=rover';
+          url = 'http://' + url + '?from=rover';
         }
         $scope.releaseActionSource = url;
         ngDialog.close(); // close any existing popups

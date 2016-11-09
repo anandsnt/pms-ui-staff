@@ -83,30 +83,30 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
 			$scope.$emit('hideLoader');
             $scope.isLoading = false;
 			$scope.checkoutData = data;
-            $scope.checkoutData.checkout_email_alert_time_hour = $scope.checkoutData.checkout_email_alert_time_hour === null? "HH":$scope.checkoutData.checkout_email_alert_time_hour;
-            $scope.checkoutData.zest_checkout_alert_time_hour = $scope.checkoutData.zest_checkout_alert_time_hour === null? "HH":$scope.checkoutData.zest_checkout_alert_time_hour;
-            $scope.checkoutData.zest_hourly_checkout_alert_time_hour = $scope.checkoutData.zest_hourly_checkout_alert_time_hour === null? "HH":$scope.checkoutData.zest_hourly_checkout_alert_time_hour;
-            $scope.checkoutData.weekends_zest_hourly_checkout_alert_time_hour = $scope.checkoutData.weekends_zest_hourly_checkout_alert_time_hour === null? "HH":$scope.checkoutData.weekends_zest_hourly_checkout_alert_time_hour;
-            $scope.checkoutData.weekends_checkout_email_alert_time_hour = $scope.checkoutData.weekends_checkout_email_alert_time_hour === null? "HH":$scope.checkoutData.weekends_checkout_email_alert_time_hour;
-            $scope.checkoutData.weekends_zest_checkout_alert_time_hour = $scope.checkoutData.weekends_zest_checkout_alert_time_hour === null? "HH":$scope.checkoutData.weekends_zest_checkout_alert_time_hour;
-            $scope.checkoutData.alternate_checkout_email_alert_time_hour = $scope.checkoutData.alternate_checkout_email_alert_time_hour === null? "HH":$scope.checkoutData.alternate_checkout_email_alert_time_hour;
-            $scope.checkoutData.alternate_weekends_checkout_email_alert_time_hour = $scope.checkoutData.alternate_weekends_checkout_email_alert_time_hour === null? "HH":$scope.checkoutData.alternate_weekends_checkout_email_alert_time_hour;
+            $scope.checkoutData.checkout_email_alert_time_hour = $scope.checkoutData.checkout_email_alert_time_hour === null ? "HH" : $scope.checkoutData.checkout_email_alert_time_hour;
+            $scope.checkoutData.zest_checkout_alert_time_hour = $scope.checkoutData.zest_checkout_alert_time_hour === null ? "HH" : $scope.checkoutData.zest_checkout_alert_time_hour;
+            $scope.checkoutData.zest_hourly_checkout_alert_time_hour = $scope.checkoutData.zest_hourly_checkout_alert_time_hour === null ? "HH" : $scope.checkoutData.zest_hourly_checkout_alert_time_hour;
+            $scope.checkoutData.weekends_zest_hourly_checkout_alert_time_hour = $scope.checkoutData.weekends_zest_hourly_checkout_alert_time_hour === null ? "HH" : $scope.checkoutData.weekends_zest_hourly_checkout_alert_time_hour;
+            $scope.checkoutData.weekends_checkout_email_alert_time_hour = $scope.checkoutData.weekends_checkout_email_alert_time_hour === null ? "HH" : $scope.checkoutData.weekends_checkout_email_alert_time_hour;
+            $scope.checkoutData.weekends_zest_checkout_alert_time_hour = $scope.checkoutData.weekends_zest_checkout_alert_time_hour === null ? "HH" : $scope.checkoutData.weekends_zest_checkout_alert_time_hour;
+            $scope.checkoutData.alternate_checkout_email_alert_time_hour = $scope.checkoutData.alternate_checkout_email_alert_time_hour === null ? "HH" : $scope.checkoutData.alternate_checkout_email_alert_time_hour;
+            $scope.checkoutData.alternate_weekends_checkout_email_alert_time_hour = $scope.checkoutData.alternate_weekends_checkout_email_alert_time_hour === null ? "HH" : $scope.checkoutData.alternate_weekends_checkout_email_alert_time_hour;
 
 
-            $scope.checkoutData.checkout_email_alert_time_minute = $scope.checkoutData.checkout_email_alert_time_minute === null? "MM":$scope.checkoutData.checkout_email_alert_time_minute;
-            $scope.checkoutData.zest_checkout_alert_time_minute = $scope.checkoutData.zest_checkout_alert_time_minute === null? "MM":$scope.checkoutData.zest_checkout_alert_time_minute;
-            $scope.checkoutData.zest_hourly_checkout_alert_time_minute = $scope.checkoutData.zest_hourly_checkout_alert_time_minute === null? "MM":$scope.checkoutData.zest_hourly_checkout_alert_time_minute;
-            $scope.checkoutData.weekends_zest_hourly_checkout_alert_time_minute = $scope.checkoutData.weekends_zest_hourly_checkout_alert_time_minute === null? "MM":$scope.checkoutData.weekends_zest_hourly_checkout_alert_time_minute;
-            $scope.checkoutData.weekends_checkout_email_alert_time_minute = $scope.checkoutData.weekends_checkout_email_alert_time_minute === null? "MM":$scope.checkoutData.weekends_checkout_email_alert_time_minute;
-            $scope.checkoutData.weekends_zest_checkout_alert_time_minute = $scope.checkoutData.weekends_zest_checkout_alert_time_minute === null? "MM":$scope.checkoutData.weekends_zest_checkout_alert_time_minute;
-            $scope.checkoutData.alternate_checkout_email_alert_time_minute = $scope.checkoutData.alternate_checkout_email_alert_time_minute === null? "MM":$scope.checkoutData.alternate_checkout_email_alert_time_minute;
-            $scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute = $scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute === null? "MM":$scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute;
+            $scope.checkoutData.checkout_email_alert_time_minute = $scope.checkoutData.checkout_email_alert_time_minute === null ? "MM" : $scope.checkoutData.checkout_email_alert_time_minute;
+            $scope.checkoutData.zest_checkout_alert_time_minute = $scope.checkoutData.zest_checkout_alert_time_minute === null ? "MM" : $scope.checkoutData.zest_checkout_alert_time_minute;
+            $scope.checkoutData.zest_hourly_checkout_alert_time_minute = $scope.checkoutData.zest_hourly_checkout_alert_time_minute === null ? "MM" : $scope.checkoutData.zest_hourly_checkout_alert_time_minute;
+            $scope.checkoutData.weekends_zest_hourly_checkout_alert_time_minute = $scope.checkoutData.weekends_zest_hourly_checkout_alert_time_minute === null ? "MM" : $scope.checkoutData.weekends_zest_hourly_checkout_alert_time_minute;
+            $scope.checkoutData.weekends_checkout_email_alert_time_minute = $scope.checkoutData.weekends_checkout_email_alert_time_minute === null ? "MM" : $scope.checkoutData.weekends_checkout_email_alert_time_minute;
+            $scope.checkoutData.weekends_zest_checkout_alert_time_minute = $scope.checkoutData.weekends_zest_checkout_alert_time_minute === null ? "MM" : $scope.checkoutData.weekends_zest_checkout_alert_time_minute;
+            $scope.checkoutData.alternate_checkout_email_alert_time_minute = $scope.checkoutData.alternate_checkout_email_alert_time_minute === null ? "MM" : $scope.checkoutData.alternate_checkout_email_alert_time_minute;
+            $scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute = $scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute === null ? "MM" : $scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute;
 
-            $scope.is_send_checkout_staff_alert_flag = ($scope.checkoutData.is_send_checkout_staff_alert === 'true') ? true:false;
-            $scope.enable_offline_checkout = ($scope.checkoutData.enable_offline_checkout === 'true') ? true:false;    
-            $scope.is_send_zest_checkout_alert_flag = ($scope.checkoutData.is_send_zest_checkout_alert === 'true') ? true:false;
-			$scope.require_cc_for_checkout_email_flag = ($scope.checkoutData.require_cc_for_checkout_email === 'true') ? true:false;
-			$scope.include_cash_reservationsy_flag = ($scope.checkoutData.include_cash_reservations === 'true') ? true:false;
+            $scope.is_send_checkout_staff_alert_flag = ($scope.checkoutData.is_send_checkout_staff_alert === 'true') ? true : false;
+            $scope.enable_offline_checkout = ($scope.checkoutData.enable_offline_checkout === 'true') ? true : false;    
+            $scope.is_send_zest_checkout_alert_flag = ($scope.checkoutData.is_send_zest_checkout_alert === 'true') ? true : false;
+			$scope.require_cc_for_checkout_email_flag = ($scope.checkoutData.require_cc_for_checkout_email === 'true') ? true : false;
+			$scope.include_cash_reservationsy_flag = ($scope.checkoutData.include_cash_reservations === 'true') ? true : false;
 		    angular.forEach($scope.roomTypes, function(roomType, index) {
                 angular.forEach($scope.checkoutData.excluded_room_types, function(excludedRoomType, index) {
                 if (parseInt(roomType.id) === parseInt(excludedRoomType)) {
@@ -130,7 +130,7 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
     */
 
     $scope.validateAlertTimings = function() {
-        if ($scope.checkoutData.checkout_email_alert_time_hour==='HH' || $scope.checkoutData.checkout_email_alert_time_minute === 'MM') {
+        if ($scope.checkoutData.checkout_email_alert_time_hour === 'HH' || $scope.checkoutData.checkout_email_alert_time_minute === 'MM') {
             $scope.checkoutData.checkout_email_alert_time_hour = 'HH';
             $scope.checkoutData.checkout_email_alert_time_minute = 'MM';
             $scope.checkoutData.alternate_checkout_email_alert_time_hour = 'HH';
@@ -151,11 +151,11 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
     */
 
     $scope.saveCheckout = function() {
-            $scope.checkoutData.enable_offline_checkout = ($scope.enable_offline_checkout) ? 'true':'false';
-    	    $scope.checkoutData.is_send_checkout_staff_alert = ($scope.is_send_checkout_staff_alert_flag) ? 'true':'false';
-            $scope.checkoutData.is_send_zest_checkout_alert = ($scope.is_send_zest_checkout_alert_flag) ? 'true':'false';
-			$scope.checkoutData.require_cc_for_checkout_email = ($scope.require_cc_for_checkout_email_flag) ? 'true':'false';
-			$scope.checkoutData.include_cash_reservations = ($scope.include_cash_reservationsy_flag) ?'true':'false';
+            $scope.checkoutData.enable_offline_checkout = ($scope.enable_offline_checkout) ? 'true' : 'false';
+    	    $scope.checkoutData.is_send_checkout_staff_alert = ($scope.is_send_checkout_staff_alert_flag) ? 'true' : 'false';
+            $scope.checkoutData.is_send_zest_checkout_alert = ($scope.is_send_zest_checkout_alert_flag) ? 'true' : 'false';
+			$scope.checkoutData.require_cc_for_checkout_email = ($scope.require_cc_for_checkout_email_flag) ? 'true' : 'false';
+			$scope.checkoutData.include_cash_reservations = ($scope.include_cash_reservationsy_flag) ? 'true' : 'false';
 			$scope.validateAlertTimings();
             var excluded_room_types = [];
 
@@ -163,14 +163,14 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
                 excluded_room_types.push(excludedRoomType.id);
             });
             var uploadData = {
-				'checkout_email_alert_time': $scope.checkoutData.checkout_email_alert_time_hour+":"+$scope.checkoutData.checkout_email_alert_time_minute,
-                'zest_checkout_alert_time': $scope.checkoutData.zest_checkout_alert_time_hour+":"+$scope.checkoutData.zest_checkout_alert_time_minute,
-                'zest_hourly_checkout_alert_time': $scope.checkoutData.zest_hourly_checkout_alert_time_hour+":"+$scope.checkoutData.zest_hourly_checkout_alert_time_minute,
-                'alternate_checkout_email_alert_time': $scope.checkoutData.alternate_checkout_email_alert_time_hour+":"+$scope.checkoutData.alternate_checkout_email_alert_time_minute,
-                'weekends_checkout_email_alert_time': $scope.checkoutData.weekends_checkout_email_alert_time_hour+":"+$scope.checkoutData.weekends_checkout_email_alert_time_minute,
-                'weekends_zest_checkout_alert_time': $scope.checkoutData.weekends_zest_checkout_alert_time_hour+":"+$scope.checkoutData.weekends_zest_checkout_alert_time_minute,
-                'weekends_zest_hourly_checkout_alert_time': $scope.checkoutData.weekends_zest_hourly_checkout_alert_time_hour+":"+$scope.checkoutData.weekends_zest_hourly_checkout_alert_time_minute,
-                'alternate_weekends_checkout_email_alert_time': $scope.checkoutData.alternate_weekends_checkout_email_alert_time_hour+":"+$scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute,
+				'checkout_email_alert_time': $scope.checkoutData.checkout_email_alert_time_hour + ":" + $scope.checkoutData.checkout_email_alert_time_minute,
+                'zest_checkout_alert_time': $scope.checkoutData.zest_checkout_alert_time_hour + ":" + $scope.checkoutData.zest_checkout_alert_time_minute,
+                'zest_hourly_checkout_alert_time': $scope.checkoutData.zest_hourly_checkout_alert_time_hour + ":" + $scope.checkoutData.zest_hourly_checkout_alert_time_minute,
+                'alternate_checkout_email_alert_time': $scope.checkoutData.alternate_checkout_email_alert_time_hour + ":" + $scope.checkoutData.alternate_checkout_email_alert_time_minute,
+                'weekends_checkout_email_alert_time': $scope.checkoutData.weekends_checkout_email_alert_time_hour + ":" + $scope.checkoutData.weekends_checkout_email_alert_time_minute,
+                'weekends_zest_checkout_alert_time': $scope.checkoutData.weekends_zest_checkout_alert_time_hour + ":" + $scope.checkoutData.weekends_zest_checkout_alert_time_minute,
+                'weekends_zest_hourly_checkout_alert_time': $scope.checkoutData.weekends_zest_hourly_checkout_alert_time_hour + ":" + $scope.checkoutData.weekends_zest_hourly_checkout_alert_time_minute,
+                'alternate_weekends_checkout_email_alert_time': $scope.checkoutData.alternate_weekends_checkout_email_alert_time_hour + ":" + $scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute,
 				'checkout_staff_alert_option': $scope.checkoutData.checkout_staff_alert_option,
 				'emails': $scope.checkoutData.emails,
 				'include_cash_reservations': $scope.checkoutData.include_cash_reservations,

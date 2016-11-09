@@ -29,7 +29,7 @@ admin.service('ADToolsSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q
 
     this.updateTool = function(data) {
         var deferred = $q.defer();
-        var url = '/admin/auto_sync_inventories/'+data.id;
+        var url = '/admin/auto_sync_inventories/' + data.id;
 
         ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
             deferred.resolve(data);
@@ -42,7 +42,7 @@ admin.service('ADToolsSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q
 
     this.getToolsDetails = function(data) {
         var deferred = $q.defer();
-        var url = '/admin/auto_sync_inventories/'+data.id;
+        var url = '/admin/auto_sync_inventories/' + data.id;
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);

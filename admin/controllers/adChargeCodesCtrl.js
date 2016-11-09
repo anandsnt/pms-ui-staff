@@ -23,7 +23,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				// No expanded rate view
 				$scope.currentClickedElement = -1;
 				$scope.totalCount = data.total_count;
-				$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
+				$scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
 				$scope.data = data.charge_codes;
 				$scope.is_connected_to_pms = data.is_connected_to_pms;
 				$scope.currentPage = params.page();
@@ -249,7 +249,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 					item.calculation_rules = item.calculation_rule_list[parseInt(item.selected_calculation_rule)].charge_code_id_list;
 				}
 			});
-			if ($scope.prefetchData.selected_fees_code ==="") {
+			if ($scope.prefetchData.selected_fees_code === "") {
 				$scope.prefetchData.selected_fees_code = null;
 			}
 

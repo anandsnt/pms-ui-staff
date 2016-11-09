@@ -396,7 +396,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                 this.data_Store),
 
                 /* ROOM MAINTENANCE Configuration Adapter */
-                Maintenance= Config({
+                Maintenance = Config({
                     id: meta.maintenance.id,
                     name: 'maintenance',
                     url: '/api/room_types_task_completion_time?exclude_pseudo=true',

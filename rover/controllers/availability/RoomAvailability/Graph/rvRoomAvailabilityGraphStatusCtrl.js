@@ -28,7 +28,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
  		var timeoutFunction = null;
 
  		for (var i = 0 ;i < colors.length; i++) {
- 			legendClasses.push("background: "+colors[i]+" !important;");
+ 			legendClasses.push("background: " + colors[i] + " !important;");
 		}
 
 		$scope.returnLegendStyle  = function(index, legendModel) {
@@ -52,7 +52,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
 
         	$scope.graphWidth = getMaxSeriesLengthData() * 75;
         	if (getMaxSeriesLengthData() !== 0) {
-        		labelWidthToSet = (100/getMaxSeriesLengthData());
+        		labelWidthToSet = (100 / getMaxSeriesLengthData());
         	}
         	else {
         		navListNode.css("width", 0);
@@ -231,8 +231,8 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
 					},
 					tooltip: {
 			            formatter: function () {
-			                return '<b>' + dateFilter(this.x.dateObj, $rootScope.dayInWeek) + " " + dateFilter(this.x.dateObj, $rootScope.shortMonthAndDate) +'</b><br/>' +
-			                       this.series.name +  ': ' + Math.round((this.y/100) * $scope.data.totalRooms) + " Rooms (" + this.y.toFixed(2) + "%)";
+			                return '<b>' + dateFilter(this.x.dateObj, $rootScope.dayInWeek) + " " + dateFilter(this.x.dateObj, $rootScope.shortMonthAndDate) + '</b><br/>' +
+			                       this.series.name +  ': ' + Math.round((this.y / 100) * $scope.data.totalRooms) + " Rooms (" + this.y.toFixed(2) + "%)";
 			            }
 				    }
 				},

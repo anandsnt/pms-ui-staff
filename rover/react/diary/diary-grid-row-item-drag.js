@@ -25,10 +25,10 @@ var GridRowItemDrag = React.createClass({
 
 		el = props.viewport.element();
 
-		this.mouseClickedColOnStarting = Math.floor(Math.abs(props.iscroll.grid.x - (e.pageX - this.__roomListingAreaWidth))/display.px_per_int);
+		this.mouseClickedColOnStarting = Math.floor(Math.abs(props.iscroll.grid.x - (e.pageX - this.__roomListingAreaWidth)) / display.px_per_int);
 		this.reservationTimeStartColNumber = parseFloat(this.props.style.left) / display.px_per_int;
 
-		this.startingRowNumber = Math.floor((e.pageY - props.iscroll.grid.y - props.viewport.element().offset().top)/ (display.row_height + display.row_height_margin));
+		this.startingRowNumber = Math.floor((e.pageY - props.iscroll.grid.y - props.viewport.element().offset().top) / (display.row_height + display.row_height_margin));
 
 		this.setState({
 				mouse_down: true,
@@ -38,7 +38,7 @@ var GridRowItemDrag = React.createClass({
 				origin_y: e.pageY,
 				offset_x: el.offset().left + props.iscroll.grid.x,
 				offset_y: el.offset().top + props.iscroll.grid.y,
-				element_x: page_offset.left-props.display.x_0 - props.iscroll.grid.x,
+				element_x: page_offset.left - props.display.x_0 - props.iscroll.grid.x,
 				element_y: page_offset.top,
 				currentClickedCol: this.mouseClickedColOnStarting
 			},
@@ -78,7 +78,7 @@ var GridRowItemDrag = React.createClass({
 			return;
 		}
 
-		if (mouseMovingColNumber < 0 || mouseMovingColNumber/4 > display.hours || mouseMovingRowNumber < 0 || mouseMovingRowNumber > (display.total_rows-1)) {
+		if (mouseMovingColNumber < 0 || mouseMovingColNumber / 4 > display.hours || mouseMovingRowNumber < 0 || mouseMovingRowNumber > (display.total_rows - 1)) {
 			return;
 		}
 
@@ -292,7 +292,7 @@ var GridRowItemDrag = React.createClass({
 	},
 	componentDidMount: function() {
 		this.isTouchEnabled 	= 'ontouchstart' in window;
-		this.mouseStartingEvent = this.isTouchEnabled ? 'touchstart': 'mousedown';
+		this.mouseStartingEvent = this.isTouchEnabled ? 'touchstart' : 'mousedown';
 		this.mouseMovingEvent 	= this.isTouchEnabled ? 'touchmove' : 'mousemove';
 		this.mouseLeavingEvent 	= this.isTouchEnabled ? 'touchend'	: 'mouseup';
 		this.getDOMNode().addEventListener(this.mouseStartingEvent, this.__onMouseDown);

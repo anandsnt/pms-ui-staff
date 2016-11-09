@@ -5,17 +5,17 @@ sntRover.controller('rvSetWakeupcallController', ['$scope', '$filter', 'RVSaveWa
 	$scope.minValues = ["00", "15", "30", "45"];
 
 	$scope.getHours = function() {
-			return (typeof $scope.wakeupData.wake_up_time !== 'undefined')?$scope.wakeupData.wake_up_time.substr(0, 2):"";
+			return (typeof $scope.wakeupData.wake_up_time !== 'undefined') ? $scope.wakeupData.wake_up_time.substr(0, 2) : "";
 	};
 	$scope.getMins = function() {
-			return (typeof $scope.wakeupData.wake_up_time !== 'undefined')?$scope.wakeupData.wake_up_time.substr(3, 2):"";
+			return (typeof $scope.wakeupData.wake_up_time !== 'undefined') ? $scope.wakeupData.wake_up_time.substr(3, 2) : "";
 	};
 	$scope.getAM_PM = function() {
-			return (typeof $scope.wakeupData.wake_up_time !== 'undefined')?$scope.wakeupData.wake_up_time.substr(6, 2):"AM";
+			return (typeof $scope.wakeupData.wake_up_time !== 'undefined') ? $scope.wakeupData.wake_up_time.substr(6, 2) : "AM";
 	};
 
 	$scope.$watch(
-        function() { return $scope.wakeupData.day === "TOMORROW"|| typeof $scope.wakeupData.day === 'undefined' ; },
+        function() { return $scope.wakeupData.day === "TOMORROW" || typeof $scope.wakeupData.day === 'undefined' ; },
         function(flag) { $scope.todaySelected  = !flag; }
     );
 
@@ -31,13 +31,13 @@ sntRover.controller('rvSetWakeupcallController', ['$scope', '$filter', 'RVSaveWa
 		var params = {};
 
 		params.wake_up_time = $scope.getTimeString();
-		params.day = ($scope.todaySelected)? "Today":"Tomorrow";
+		params.day = ($scope.todaySelected) ? "Today" : "Tomorrow";
 		params.reservation_id = $scope.reservationData.reservation_card.reservation_id;
 
 		var successCallbackSetWakeupcall = function() {
 
 			$scope.wakeupData.wake_up_time = $scope.getTimeString();
-			$scope.wakeupData.day = ($scope.todaySelected)? "TODAY":"TOMORROW";
+			$scope.wakeupData.day = ($scope.todaySelected) ? "TODAY" : "TOMORROW";
 			$scope.$emit("updateWakeUpTime", $scope.wakeupData);
 			$scope.dimissLoaderAndDialog();
 		};

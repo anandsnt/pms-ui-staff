@@ -24,7 +24,7 @@
 		$scope.months   	= [];
 		$scope.days      	= [];
 		
-		for (year=new Date().getFullYear();year>=1900;year--) {
+		for (year = new Date().getFullYear();year >= 1900;year--) {
 			$scope.years.push(year);
 		}
 
@@ -43,7 +43,7 @@
 							{"id": 12, "name": "DEC"}
 						];
 			
-		for (day=1;day<=31;day++) {
+		for (day = 1;day <= 31;day++) {
 			$scope.days.push(day);
 		}
 		$scope.guestDetails 	  = {};
@@ -57,12 +57,12 @@
 			var unwanted_keys 		= ["month", "year", "day"];
 			var newObject 			= JSON.parse(JSON.stringify($scope.guestDetails));
 
-            for (var i=0; i < unwanted_keys.length; i++) {
+            for (var i = 0; i < unwanted_keys.length; i++) {
                 delete newObject[unwanted_keys[i]];
             }
             data 					= newObject;
             if ($scope.guestDetails.month && $scope.guestDetails.day && $scope.guestDetails.year) {
-            	data.birthday = $scope.guestDetails.month+"-"+$scope.guestDetails.day+"-"+$scope.guestDetails.year;
+            	data.birthday = $scope.guestDetails.month + "-" + $scope.guestDetails.day + "-" + $scope.guestDetails.year;
             }
             else {
             	delete data["birthday"];
@@ -103,12 +103,12 @@
 
 
 		var checkIfDateIsValid = function() {
-			var birthday = $scope.guestDetails.month+"/"+$scope.guestDetails.day+"/"+$scope.guestDetails.year;	
+			var birthday = $scope.guestDetails.month + "/" + $scope.guestDetails.day + "/" + $scope.guestDetails.year;	
 			var comp = birthday.split('/');
 			var m = parseInt(comp[0], 10);
 			var d = parseInt(comp[1], 10);
 			var y = parseInt(comp[2], 10);
-			var date = new Date(y, m-1, d);
+			var date = new Date(y, m - 1, d);
 
 			if (date.getFullYear() == y && date.getMonth() + 1 == m && date.getDate() == d) {
 			   return true;
@@ -141,7 +141,7 @@
 		// check if guest is above age set in hotel admin
 		// else redirect to front desk
 		var checkIfGuestIsEligible = function() {
-			var birthday = $scope.guestDetails.month+"/"+$scope.guestDetails.day+"/"+$scope.guestDetails.year;	
+			var birthday = $scope.guestDetails.month + "/" + $scope.guestDetails.day + "/" + $scope.guestDetails.year;	
 
 			$scope.isLoading 		= false;
 			if (getAge(birthday) >= $rootScope.minimumAge || $rootScope.minimumAge === 0) {

@@ -19,7 +19,7 @@ sntRover.controller('RVPostChargeControllerV2',
 
   			$scope.setScroller ('items_list', scrollerOptions);
   			$scope.setScroller ('items_summary', scrollerOptions);
-  			var isFromAccounts = ( typeof $scope.account_id !=="undefined" && $scope.account_id !=="" )? true : false;
+  			var isFromAccounts = ( typeof $scope.account_id !== "undefined" && $scope.account_id !== "" ) ? true : false;
 
   			// make favorite selected by default
 			$scope.chargeGroup = 'FAV';
@@ -185,7 +185,7 @@ sntRover.controller('RVPostChargeControllerV2',
 			*/
 			$scope.addItem = function( clickedItem ) {
 
-				$scope.calToggle = ( clickedItem.type === "ITEM" ) ? 'QTY' :'PR';
+				$scope.calToggle = ( clickedItem.type === "ITEM" ) ? 'QTY' : 'PR';
 
 				if (typeof $scope.selectedChargeItemHash[ clickedItem.id ] === 'undefined') {
 					$scope.selectedChargeItemHash[ clickedItem.id ] = clickedItem ;
@@ -562,12 +562,12 @@ sntRover.controller('RVPostChargeControllerV2',
 				}
 				else {
 
-					var billData ={
+					var billData = {
 						"bill_number": $scope.billNumber
 					};
 					// accounts or reservation bill screen check
 
-					isFromAccounts ? (billData.account_id = $scope.account_id):(billData.reservation_id = $scope.reservation_id);
+					isFromAccounts ? (billData.account_id = $scope.account_id) : (billData.reservation_id = $scope.reservation_id);
 
 					if (isFromAccounts) {
 						/*

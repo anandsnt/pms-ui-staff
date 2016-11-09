@@ -34,7 +34,7 @@ admin.directive('numberlisting', function() {
         },
     	link: function(scope, elem, attrs) {
             scope.numbers = [];
-            for (var i = parseInt(scope.start); i <= parseInt(scope.stop); i+=parseInt(scope.step)) {
+            for (var i = parseInt(scope.start); i <= parseInt(scope.stop); i += parseInt(scope.step)) {
                 number = getLengthChangedNumber(parseInt(scope.minLength), i);
                 scope.numbers.push(number);
             }

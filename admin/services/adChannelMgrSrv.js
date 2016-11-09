@@ -8,7 +8,7 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
         this.toggleActivate = function (params) {
             var id = params.id;
             var deferred = $q.defer();
-            var url = "/api/channel_managers/"+id+"/activate";
+            var url = "/api/channel_managers/" + id + "/activate";
             
 
             ADBaseWebSrvV2.putJSON(url, params).then(function (data) {
@@ -28,7 +28,7 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
                     active: params.active
             };
             var deferred = $q.defer();
-            var url = "/api/channel_managers/"+interface_id+"/channel_manager_rates/"+channel_rate_id;
+            var url = "/api/channel_managers/" + interface_id + "/channel_manager_rates/" + channel_rate_id;
             
 
             ADBaseWebSrvV2.putJSON(url, postData).then(function (data) {
@@ -41,7 +41,7 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
 
         this.postRateOnChannel = function (params) {
             var deferred = $q.defer();
-            var url = "/api/channel_managers/"+params.channel_id+"/channel_manager_rates";
+            var url = "/api/channel_managers/" + params.channel_id + "/channel_manager_rates";
             var data = {rate_id: params.rate_id, room_type_ids: params.room_type_ids};
             
             ADBaseWebSrvV2.postJSON(url, data).then(function (data) {
@@ -67,7 +67,7 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
         this.fetchManagerDetails = function (data) {
             var deferred = $q.defer();
 
-            var url = "/api/channel_managers/"+data.id;
+            var url = "/api/channel_managers/" + data.id;
 
             ADBaseWebSrvV2.getJSON(url).then(function (data) {
                 deferred.resolve(data);
@@ -80,7 +80,7 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
         this.fetchChannelRates = function(data) {
             var deferred = $q.defer();
 
-            var url = "/api/channel_rates_"+data.id+".json";
+            var url = "/api/channel_rates_" + data.id + ".json";
 
             ADBaseWebSrvV2.getJSON(url, data).then(function (data) {
                 deferred.resolve(data);
@@ -107,7 +107,7 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
         this.getRoomTypesByRate = function (data) {
             var deferred = $q.defer();
 
-                var url = '/api/rates/'+data.id;
+                var url = '/api/rates/' + data.id;
 
             ADBaseWebSrvV2.getJSON(url, data).then(function (data) {
                 deferred.resolve(data);
@@ -130,7 +130,7 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
         };
         this.deleteRateOnChannel = function(data) {
                 var deferred = $q.defer();
-                var url = '/api/channel_managers/'+data.channel_manager_id+'/channel_manager_rates/'+data.channel_manager_rate_id;
+                var url = '/api/channel_managers/' + data.channel_manager_id + '/channel_manager_rates/' + data.channel_manager_rate_id;
 
                 ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
                         deferred.resolve(data);

@@ -40,7 +40,7 @@ admin.service('ADContentManagementSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseW
 	this.fetchComponent = function(id) {
 
 		var deferred = $q.defer();
-		var url = '/api/cms_components/'+ id;
+		var url = '/api/cms_components/' + id;
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
@@ -130,7 +130,7 @@ admin.service('ADContentManagementSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseW
 	this.fetchChildList = function(data) {
 
 		var deferred = $q.defer();
-		var url = 'api/cms_components/'+ data.id+'/sub_categories.json';
+		var url = 'api/cms_components/' + data.id + '/sub_categories.json';
 
 		ADBaseWebSrvV2.getJSON(url, data).then(function(data) {
 		    deferred.resolve(data);

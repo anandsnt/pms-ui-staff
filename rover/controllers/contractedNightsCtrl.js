@@ -1,7 +1,7 @@
 
 sntRover.controller('contractedNightsCtrl', ['$scope', 'dateFilter', 'ngDialog', 'RVCompanyCardSrv', '$stateParams', function($scope, dateFilter, ngDialog, RVCompanyCardSrv, $stateParams) {
-	$scope.nightsData={};
-	$scope.nightsData.occupancy =[];
+	$scope.nightsData = {};
+	$scope.nightsData.occupancy = [];
 	$scope.nightsData.allNights = "";
 	var first_date = new Date($scope.contractData.begin_date);
 	var last_date = new Date($scope.contractData.end_date);
@@ -9,13 +9,13 @@ sntRover.controller('contractedNightsCtrl', ['$scope', 'dateFilter', 'ngDialog',
 	var month_array = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 	var new_occupancy = [];
 
-	start_point = first_date.getFullYear()*12 + first_date.getMonth();
-	end_point = last_date.getFullYear()*12 + last_date.getMonth();
+	start_point = first_date.getFullYear() * 12 + first_date.getMonth();
+	end_point = last_date.getFullYear() * 12 + last_date.getMonth();
 	my_point = start_point;
 
 	while ( my_point <= end_point ) {
-		year = Math.floor(my_point/12);
-		month = my_point - year*12;
+		year = Math.floor(my_point / 12);
+		month = my_point - year * 12;
 		var obj = {
 				"contracted_occupancy": 0,
 				"year": year,
@@ -24,7 +24,7 @@ sntRover.controller('contractedNightsCtrl', ['$scope', 'dateFilter', 'ngDialog',
 		};
 
 		new_occupancy.push(obj);
-		my_point +=1;
+		my_point += 1;
 	}
 
 	// Taking deep copy of current occupancy data

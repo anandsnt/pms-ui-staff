@@ -28,8 +28,8 @@ admin.controller('ADContentManagementChildViewCtrl', ['$scope', '$state', 'ADCon
 
     data.id = id;
     data.parent_id = $scope.parent_id;
-    data.position = position +1;
-    data.previous_position = prevPosition +1;
+    data.position = position + 1;
+    data.previous_position = prevPosition + 1;
     $scope.invokeApi(ADContentManagementSrv.saveComponentOrder, data, successCallbackSavePosition);
 
   };

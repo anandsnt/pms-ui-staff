@@ -199,7 +199,7 @@ sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope',
      * @return {undefined}
      */
     $scope.setDefaultRoutingDates = function() {
-        $scope.routeDates.from = $rootScope.businessDate > $scope.reservation.reservation_card.arrival_date? 
+        $scope.routeDates.from = $rootScope.businessDate > $scope.reservation.reservation_card.arrival_date ? 
                                  $rootScope.businessDate : $scope.reservation.reservation_card.arrival_date;
         $scope.routeDates.to   = $scope.reservation.reservation_card.departure_date;
     };
@@ -264,8 +264,8 @@ sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope',
 	$scope.handleCloseDialog = function() {
 		$scope.$emit('HANDLE_MODAL_OPENED');
 		$scope.closeDialog();
-        $scope.billingData.billingInfoTitle = ($scope.routes.length > 0 )? 
-                                              $filter('translate')('BILLING_INFO_TITLE'):
+        $scope.billingData.billingInfoTitle = ($scope.routes.length > 0 ) ? 
+                                              $filter('translate')('BILLING_INFO_TITLE') :
                                               $filter('translate')('ADD_BILLING_INFO_TITLE');
 	};
 

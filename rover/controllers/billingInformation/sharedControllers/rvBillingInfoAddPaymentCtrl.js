@@ -2,7 +2,7 @@ sntRover.controller('rvBillingInfoAddPaymentCtrl', ['$scope', '$rootScope', '$fi
 	BaseCtrl.call(this, $scope);
 
 	$scope.cardsList = [];
-	$scope.addmode = $scope.cardsList.length>0 ? false: true;
+	$scope.addmode = $scope.cardsList.length > 0 ? false : true;
 	$scope.hideCancelCard = true;
 	$scope.isManual = false;
 
@@ -84,7 +84,7 @@ sntRover.controller('rvBillingInfoAddPaymentCtrl', ['$scope', '$rootScope', '$fi
 			 var callback = function(response) {
 			 	$scope.$emit("hideLoader");
 
-			 	if (response.status ==="ok") {
+			 	if (response.status === "ok") {
 
 			 		MLISessionId = response.session;
 			 		$scope.savePayment();// call save payment details WS
@@ -112,7 +112,7 @@ sntRover.controller('rvBillingInfoAddPaymentCtrl', ['$scope', '$rootScope', '$fi
 			$scope.saveData.reservation_id = $scope.reservationData.reservation_id;
 			$scope.saveData.session_id = MLISessionId;
 			$scope.saveData.mli_token = $scope.saveData.card_number.substr($scope.saveData.card_number.length - 4);
-			$scope.saveData.card_expiry = $scope.saveData.card_expiry_month+"/"+$scope.saveData.card_expiry_year;
+			$scope.saveData.card_expiry = $scope.saveData.card_expiry_month + "/" + $scope.saveData.card_expiry_year;
 
 			$scope.paymentAdded($scope.saveData);
 		};
@@ -127,10 +127,10 @@ sntRover.controller('rvBillingInfoAddPaymentCtrl', ['$scope', '$rootScope', '$fi
 			}
 			$scope.refreshScroller('newpaymentview');
 			if ($scope.paymentGateway !== 'sixpayments') {
-				$scope.showCCPage = ($scope.saveData.payment_type === "CC") ? true: false;
-				$scope.swippedCard = ($scope.saveData.payment_type === "CC") ? true: false;
-				$scope.saveData.newPaymentFormVisible = ($scope.saveData.payment_type === "CC") ? true: false;
-				$scope.addmode =($scope.saveData.payment_type === "CC" &&  $scope.cardsList.length === 0) ? true: false;
+				$scope.showCCPage = ($scope.saveData.payment_type === "CC") ? true : false;
+				$scope.swippedCard = ($scope.saveData.payment_type === "CC") ? true : false;
+				$scope.saveData.newPaymentFormVisible = ($scope.saveData.payment_type === "CC") ? true : false;
+				$scope.addmode = ($scope.saveData.payment_type === "CC" &&  $scope.cardsList.length === 0) ? true : false;
 			} else {
 				$scope.isManual = false;
 			}
@@ -138,10 +138,10 @@ sntRover.controller('rvBillingInfoAddPaymentCtrl', ['$scope', '$rootScope', '$fi
 
 		$scope.changeOnsiteCallIn = function() {
 			$scope.$emit('CHANGE_IS_MANUAL', $scope.isManual);
-			$scope.showCCPage = ($scope.saveData.payment_type === "CC" &&  $scope.isManual) ? true: false;
-			$scope.swippedCard = ($scope.saveData.payment_type === "CC" &&  $scope.isManual) ? true: false;
-			$scope.addmode =($scope.saveData.payment_type === "CC" &&  $scope.cardsList.length === 0) ? true: false;
-			$scope.saveData.newPaymentFormVisible = ($scope.saveData.payment_type === "CC" &&  $scope.isManual) ? true: false;
+			$scope.showCCPage = ($scope.saveData.payment_type === "CC" &&  $scope.isManual) ? true : false;
+			$scope.swippedCard = ($scope.saveData.payment_type === "CC" &&  $scope.isManual) ? true : false;
+			$scope.addmode = ($scope.saveData.payment_type === "CC" &&  $scope.cardsList.length === 0) ? true : false;
+			$scope.saveData.newPaymentFormVisible = ($scope.saveData.payment_type === "CC" &&  $scope.isManual) ? true : false;
 			$scope.$broadcast('REFRESH_IFRAME');
 		};
 		/*

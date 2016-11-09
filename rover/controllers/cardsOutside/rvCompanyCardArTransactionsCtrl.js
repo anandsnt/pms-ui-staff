@@ -27,7 +27,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 		// Initializing filter data
 
 		$scope.filterData = {
-			'id': $scope.contactInformation === undefined? "" :$scope.contactInformation.id,
+			'id': $scope.contactInformation === undefined ? "" : $scope.contactInformation.id,
 			'filterActive': false,
 			'showFilterFlag': 'OPEN',
 			'fromDate': '',
@@ -53,7 +53,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 
 		if (typeof $stateParams.type !== 'undefined') {
 			$scope.filterData.viewFromOutside = true;
-			$scope.filterData.id = ($stateParams.id === 'add')? '': $stateParams.id;
+			$scope.filterData.id = ($stateParams.id === 'add') ? '' : $stateParams.id;
 		}
 
 		// Get parameters for fetch data
@@ -670,7 +670,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 			
 			var element = event.target;
 
-			if (element.className ==='switch-button' || element.className ==='switch-button on' || element.parentNode.className ==='switch-button' || element.parentNode.className ==='switch-button on') {
+			if (element.className === 'switch-button' || element.className === 'switch-button on' || element.parentNode.className === 'switch-button' || element.parentNode.className === 'switch-button on') {
 				$scope.toggleTransaction(index);
 			}
 			else {

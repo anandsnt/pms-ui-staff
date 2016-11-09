@@ -58,7 +58,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 	this.updateRoomTypeOverride = function(data) {
             data.date = data.selectedDate; data.rate_id = data.selectedRate;
             // rate_id, date, room_type_id need to be included to clear rates
-            var url =  '/api/daily_rates/'+data.selectedRate+'/remove_custom_rate?';
+            var url =  '/api/daily_rates/' + data.selectedRate + '/remove_custom_rate?';
             var deferred = $q.defer();
 
                     BaseWebSrvV2.postJSON(url, data).then(function(data) {
@@ -92,7 +92,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
         var dateString = url + '?from_date=' + params.from_date
                                                 + '&to_date=' + params.to_date
                                                 + '&per_page=' + params.per_page +
-                                                '&order_id='+ params.order_id;
+                                                '&order_id=' + params.order_id;
         var rateString = "";
 
         for (var i in params.rate_ids) {
@@ -116,7 +116,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
         var url = "/api/daily_rates", fetchingRooms = that.isFetchingRooms(params);
 
         if (fetchingRooms) {
-            url = url+'/room_restrictions';
+            url = url + '/room_restrictions';
         }
 
 		var deferred = $q.defer();
@@ -285,7 +285,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 		var formattedRestrictionTypes = {};
 
 		angular.forEach(that.allRestrictionTypes, function(item) {
-			formattedRestrictionTypes[item.id]= that.getRestrictionUIElements(item);
+			formattedRestrictionTypes[item.id] = that.getRestrictionUIElements(item);
 		});
                 var totalRestrictions = formattedRestrictionTypes.length;
                 // ADD ONE MORE ITEM, FOR ZOOM 7; CICO-10668
@@ -339,7 +339,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 		   		}
 
 		   	   	if (rateData === null) {
-		   	   		rateData ={
+		   	   		rateData = {
    				   				id: rate.room_type.id,
    				   				name: rate.room_type.name,
    				   				is_hourly: rate.is_hourly
@@ -392,7 +392,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 		var formattedRestrictionTypes = {};
 
 		angular.forEach(that.allRestrictionTypes, function(item) {
-			formattedRestrictionTypes[item.id]= that.getRestrictionUIElements(item);
+			formattedRestrictionTypes[item.id] = that.getRestrictionUIElements(item);
 		});
 
                 var totalRestrictions = formattedRestrictionTypes.length;
@@ -454,7 +454,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 		   		}
 
 		   	   	if (rateData === null) {
-		   			rateData ={
+		   			rateData = {
 		   				id: rate.id,
 		   				name: rate.name,
 		   				isHourly: rate.is_hourly

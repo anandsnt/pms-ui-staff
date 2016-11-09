@@ -5,8 +5,8 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
     var lastDropedTime = '';
 
     $scope.init = function () {
-        $scope.selectedAssignedRoomIndex =-1;
-        $scope.selectedUnAssignedRoomIndex =-1;
+        $scope.selectedAssignedRoomIndex = -1;
+        $scope.selectedUnAssignedRoomIndex = -1;
         $scope.nonAssignedroomTypes = [];
         $scope.assignedRoomTypes = [];
         $scope.availableRoomTypes = [];
@@ -55,7 +55,7 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
 				return true;
         	}
 
-            if ($scope.rateData.room_type_ids.indexOf(room_type.id) >=0) {
+            if ($scope.rateData.room_type_ids.indexOf(room_type.id) >= 0) {
                 $scope.assignedRoomTypes.push(room_type);
             } else if ($scope.rateData.based_on.id === "" || $scope.rateData.based_on.is_copied) {
                 $scope.nonAssignedroomTypes.push(room_type);
@@ -75,7 +75,7 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
     */
 
     $scope.saveRoomTypes = function() {
-        var roomIdArray =[];
+        var roomIdArray = [];
         var roomTypes = [];
 
         angular.forEach($scope.assignedRoomTypes, function(item) {
@@ -133,7 +133,7 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
      */
     $scope.anyRoomSelected = function() {
 
-        if ($scope.assignedRoomTypes.length >0) {
+        if ($scope.assignedRoomTypes.length > 0) {
             return true;
         }
         else {
@@ -152,7 +152,7 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
                 $scope.selectedAssignedRoomIndex = -1;
             }
             else {
-                $scope.selectedAssignedRoomIndex =index;
+                $scope.selectedAssignedRoomIndex = index;
             }
         }
         else if (typeof lastDropedTime === 'object') { // means date
@@ -181,10 +181,10 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
     	}
         if (lastDropedTime === '') {
             if (index === $scope.selectedUnAssignedRoomIndex) {
-                $scope.selectedUnAssignedRoomIndex =-1;
+                $scope.selectedUnAssignedRoomIndex = -1;
             }
             else {
-                $scope.selectedUnAssignedRoomIndex =index;
+                $scope.selectedUnAssignedRoomIndex = index;
             }
         }
         else if (typeof lastDropedTime === 'object') { // means date
@@ -213,7 +213,7 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
 
             $scope.assignedRoomTypes.push(temp);
             $scope.nonAssignedroomTypes.splice($scope.selectedUnAssignedRoomIndex, 1);
-            $scope.selectedUnAssignedRoomIndex =-1;
+            $scope.selectedUnAssignedRoomIndex = -1;
         }
     };
     /*
@@ -226,7 +226,7 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
 
             $scope.nonAssignedroomTypes.push(temp);
             $scope.assignedRoomTypes.splice($scope.selectedAssignedRoomIndex, 1);
-            $scope.selectedAssignedRoomIndex =-1;
+            $scope.selectedAssignedRoomIndex = -1;
          }
     };
     /*
@@ -235,26 +235,26 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
      */
 
     $scope.bottomMoverightClicked = function() {
-        if ($scope.nonAssignedroomTypes.length>0) {
+        if ($scope.nonAssignedroomTypes.length > 0) {
             angular.forEach($scope.nonAssignedroomTypes, function(item) {
             $scope.assignedRoomTypes.push(item);
      	});
             $scope.nonAssignedroomTypes = [];
         }
-        $scope.selectedUnAssignedRoomIndex =-1;
+        $scope.selectedUnAssignedRoomIndex = -1;
     };
     /*
      * To handle click action to move all unassigned room types
      *
      */
     $scope.bottomMoveleftClicked = function() {
-        if ($scope.assignedRoomTypes.length>0) {
+        if ($scope.assignedRoomTypes.length > 0) {
             angular.forEach($scope.assignedRoomTypes, function(item) {
                $scope.nonAssignedroomTypes.push(item);
              });
             $scope.assignedRoomTypes = [];
         }
-        $scope.selectedAssignedRoomIndex =-1;
+        $scope.selectedAssignedRoomIndex = -1;
 
         };
     $scope.reachedAssignedRoomTypes = function() {

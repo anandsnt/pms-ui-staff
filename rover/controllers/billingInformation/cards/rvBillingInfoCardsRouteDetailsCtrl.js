@@ -140,9 +140,9 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope', '$rootScope
      * @return {DateObject}
      */
     var retrieveExpiryDate = function() {
-        var expiryDate = $scope.cardData.tokenDetails.isSixPayment?
-                         $scope.cardData.tokenDetails.expiry.substring(2, 4)+" / "+$scope.cardData.tokenDetails.expiry.substring(0, 2):
-                         $scope.cardData.cardDetails.expiryMonth+" / "+$scope.cardData.cardDetails.expiryYear;
+        var expiryDate = $scope.cardData.tokenDetails.isSixPayment ?
+                         $scope.cardData.tokenDetails.expiry.substring(2, 4) + " / " + $scope.cardData.tokenDetails.expiry.substring(0, 2) :
+                         $scope.cardData.cardDetails.expiryMonth + " / " + $scope.cardData.cardDetails.expiryYear;
 
         return expiryDate;
     };
@@ -152,8 +152,8 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope', '$rootScope
      * @return {Number} credit card number
      */
     var retrieveCardNumber = function() {
-        var cardNumber = $scope.cardData.tokenDetails.isSixPayment?
-                         $scope.cardData.tokenDetails.token_no.substr($scope.cardData.tokenDetails.token_no.length - 4):
+        var cardNumber = $scope.cardData.tokenDetails.isSixPayment ?
+                         $scope.cardData.tokenDetails.token_no.substr($scope.cardData.tokenDetails.token_no.length - 4) :
                          $scope.cardData.cardDetails.cardNumber.slice(-4);
 
         return cardNumber;
@@ -164,8 +164,8 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope', '$rootScope
      * @return {card name}
      */
     var retrieveCardName = function() {
-        var cardName = (!$scope.cardData.tokenDetails.isSixPayment)?
-                       $scope.cardData.cardDetails.userName:
+        var cardName = (!$scope.cardData.tokenDetails.isSixPayment) ?
+                       $scope.cardData.cardDetails.userName :
                        ($scope.passData.details.firstName + " " + $scope.passData.details.lastName);
 
         return cardName;
@@ -183,7 +183,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope', '$rootScope
         var expiryYear  = cardInfo.tokenDetails.isSixPayment ? 
                           cardInfo.tokenDetails.expiry.substring(0, 2) :
                           cardInfo.cardDetails.expiryYear;
-        var expiryDate  = (expiryMonth && expiryYear )? ("20"+expiryYear+"-"+expiryMonth+"-01"):"";
+        var expiryDate  = (expiryMonth && expiryYear ) ? ("20" + expiryYear + "-" + expiryMonth + "-01") : "";
 
         return expiryDate;
     };
@@ -200,7 +200,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope', '$rootScope
         $scope.renderAddedPayment.payment_type = "CC";
         $scope.paymentFlags.isAddPayment = false;
 
-        $scope.renderAddedPayment.creditCardType = (!$scope.cardData.tokenDetails.isSixPayment)?
+        $scope.renderAddedPayment.creditCardType = (!$scope.cardData.tokenDetails.isSixPayment) ?
                                                    getCreditCardType($scope.cardData.cardDetails.cardType).toLowerCase() :
                                                    getSixCreditCardType($scope.cardData.tokenDetails.card_type).toLowerCase();
         $scope.renderAddedPayment.cardExpiry = retrieveExpiryDate();
@@ -217,7 +217,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope', '$rootScope
         $scope.renderAddedPayment.payment_type = "CC";
         $scope.swipedCardDataToSave = swipedCardDataToSave;
         $scope.renderAddedPayment.creditCardType = swipedCardDataToSave.cardType.toLowerCase();
-        $scope.renderAddedPayment.cardExpiry = swipedCardDataToSave.cardExpiryMonth+"/"+swipedCardDataToSave.cardExpiryYear;
+        $scope.renderAddedPayment.cardExpiry = swipedCardDataToSave.cardExpiryMonth + "/" + swipedCardDataToSave.cardExpiryYear;
         $scope.renderAddedPayment.endingWith = swipedCardDataToSave.cardNumber.slice(-4);
     };
 
@@ -519,7 +519,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope', '$rootScope
                 data.account_id = $scope.selectedEntity.id;
                 data.payment_credit_type = $scope.swipedCardDataToSave.cardType;
                 data.credit_card = $scope.swipedCardDataToSave.cardType;
-                data.card_expiry = "20" + $scope.swipedCardDataToSave.cardExpiryYear + "-" + $scope.swipedCardDataToSave.cardExpiryMonth+"-01";
+                data.card_expiry = "20" + $scope.swipedCardDataToSave.cardExpiryYear + "-" + $scope.swipedCardDataToSave.cardExpiryMonth + "-01";
 
                 $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, $scope.errorCallback);
             }
@@ -530,15 +530,15 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope', '$rootScope
 
                 data.account_id   = $scope.selectedEntity.id;
                 data.payment_type = $scope.saveData.payment_type;
-                creditCardType    = (!$scope.cardData.tokenDetails.isSixPayment)?
-                                    getCreditCardType($scope.cardData.cardDetails.cardType):
+                creditCardType    = (!$scope.cardData.tokenDetails.isSixPayment) ?
+                                    getCreditCardType($scope.cardData.cardDetails.cardType) :
                                     getSixCreditCardType($scope.cardData.tokenDetails.card_type).toLowerCase();
-                data.token        = (!$scope.cardData.tokenDetails.isSixPayment)?
+                data.token        = (!$scope.cardData.tokenDetails.isSixPayment) ?
                                     $scope.cardData.tokenDetails.session : $scope.cardData.tokenDetails.token_no;
                 data.card_name    = retrieveCardName();
                 data.card_expiry  = retrieveCardExpiryForApi();
-                data.card_code    = (!$scope.cardData.tokenDetails.isSixPayment)?
-                                    $scope.cardData.cardDetails.cardType:
+                data.card_code    = (!$scope.cardData.tokenDetails.isSixPayment) ?
+                                    $scope.cardData.cardDetails.cardType :
                                     getSixCreditCardType($scope.cardData.tokenDetails.card_type).toLowerCase();
 
                 $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, $scope.errorCallback);

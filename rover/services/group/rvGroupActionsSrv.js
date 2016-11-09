@@ -181,7 +181,7 @@ angular.module('sntRover').service('rvGroupActionsSrv', ['$q', 'BaseWebSrvV2', f
 
     this.getActionDetails = function(actionId) {
         var deferred = $q.defer(),
-            url = "api/action_tasks/"+actionId;
+            url = "api/action_tasks/" + actionId;
 
         BaseWebSrvV2.getJSON(url).then(function (data) {
             deferred.resolve(data);

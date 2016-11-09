@@ -4,8 +4,8 @@ admin.controller('ADDashboardCtrl', ['$scope', '$state', '$stateParams', '$rootS
 		$scope.selectedMenu = $scope.data.menus[$stateParams.menu];
 		// As part of CICO-27990, Notification menu is hiding for SP, ie shows only for sntAdmin
 		if ($rootScope.isServiceProvider) {
-			 $scope.selectedMenu.components =_.filter($scope.selectedMenu.components, function(item) {
-    			return item.name !=="Notifications"; 
+			 $scope.selectedMenu.components = _.filter($scope.selectedMenu.components, function(item) {
+    			return item.name !== "Notifications"; 
 			});			 
 		}
 	}

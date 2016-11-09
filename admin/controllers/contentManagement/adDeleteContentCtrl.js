@@ -24,7 +24,7 @@ admin.controller('adDeleteContentController', ['$scope', '$rootScope', 'ADConten
 
     $scope.getComponentType = function(component) {
 
-    	return component.component_type == "PAGE"? "ITEM" : component.component_type;
+    	return component.component_type == "PAGE" ? "ITEM" : component.component_type;
 
     };
 

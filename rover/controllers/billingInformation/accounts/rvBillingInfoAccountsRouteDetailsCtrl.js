@@ -36,7 +36,7 @@ sntRover.controller('rvBillingInfoAccountsRouteDetailsCtrl', ['$scope', '$rootSc
     * function to get label for all routes and add routes button
     */
 	$scope.getHeaderButtonLabel = function() {
-		return $scope.isInitialPage? $filter('translate')('ADD_ROUTES_LABEL') : $filter('translate')('ALL_ROUTES_LABEL');
+		return $scope.isInitialPage ? $filter('translate')('ADD_ROUTES_LABEL') : $filter('translate')('ALL_ROUTES_LABEL');
 	};
     /**
     * function to set the reload option
@@ -107,9 +107,9 @@ sntRover.controller('rvBillingInfoAccountsRouteDetailsCtrl', ['$scope', '$rootSc
         $scope.selectedEntityChanged = true;
         if (type === 'ATTACHED_ENTITY' || type === 'ROUTES') {
         	$scope.selectedEntity = $scope.routes[index];
-            $scope.selectedEntity.is_new = (type === 'ATTACHED_ENTITY')? true: false;
+            $scope.selectedEntity.is_new = (type === 'ATTACHED_ENTITY') ? true : false;
 
-            if ($scope.selectedEntity.entity_type !=='RESERVATION') {
+            if ($scope.selectedEntity.entity_type !== 'RESERVATION') {
                    $scope.selectedEntity.guest_id = null;
             }
             if ($scope.selectedEntity.entity_type === "GROUP" || $scope.selectedEntity.entity_type === "HOUSE" || $scope.selectedEntity.entity_type === "ALLOTMENT") {
@@ -130,7 +130,7 @@ sntRover.controller('rvBillingInfoAccountsRouteDetailsCtrl', ['$scope', '$rootSc
                 "is_opted_late_checkout": data.is_opted_late_checkout,
                 "name": data.firstname + " " + data.lastname,
                 "entity_type": "RESERVATION",
-                "has_accompanying_guests": ( data.images.length >1 ) ? true : false,
+                "has_accompanying_guests": ( data.images.length > 1 ) ? true : false,
                 "bill_no": "",
                 "is_new": true,
                 "credit_card_details": {}
@@ -282,7 +282,7 @@ sntRover.controller('rvBillingInfoAccountsRouteDetailsCtrl', ['$scope', '$rootSc
                 }];
                 $scope.selectedEntity.entity_type = "TRAVEL_AGENT";
             }
-            else if (type ==='GROUP' || type === 'HOUSE') {
+            else if (type === 'GROUP' || type === 'HOUSE') {
                 if (isRoutingForPostingAccountExist()) {
                     $scope.errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
                     $scope.isEntitySelected = false;
@@ -332,7 +332,7 @@ sntRover.controller('rvBillingInfoAccountsRouteDetailsCtrl', ['$scope', '$rootSc
         viewStatus = "check-out";
       } else if ("CANCELED" === reservationStatus) {
         viewStatus = "cancel";
-      } else if (("NOSHOW" === reservationStatus)||("NOSHOW_CURRENT" === reservationStatus)) {
+      } else if (("NOSHOW" === reservationStatus) || ("NOSHOW_CURRENT" === reservationStatus)) {
         viewStatus = "no-show";
       }
       return viewStatus;
@@ -458,7 +458,7 @@ sntRover.controller('rvBillingInfoAccountsRouteDetailsCtrl', ['$scope', '$rootSc
 		$scope.$emit('HANDLE_MODAL_OPENED');
 		$scope.closeDialog();
         if (!!$scope.billingData) {// NOTE: CICO-17123 When the billing information popup is called from the Group Summary Tab, there wont be a billingData object in $scope. This was throwing "TypeError: Cannot set property 'billingInfoTitle' of undefined"
-            $scope.billingData.billingInfoTitle = ($scope.routes.length > 0 )? $filter('translate')('BILLING_INFO_TITLE'):$filter('translate')('ADD_BILLING_INFO_TITLE');
+            $scope.billingData.billingInfoTitle = ($scope.routes.length > 0 ) ? $filter('translate')('BILLING_INFO_TITLE') : $filter('translate')('ADD_BILLING_INFO_TITLE');
         }
 	};
 

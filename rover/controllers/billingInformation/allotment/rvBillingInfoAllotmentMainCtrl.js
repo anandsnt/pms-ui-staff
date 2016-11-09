@@ -148,7 +148,7 @@ sntRover.controller('rvBillingInfoAllotmentMainCtrl', ['$scope', '$rootScope', '
 		$scope.$emit('HANDLE_MODAL_OPENED');
 		$scope.closeDialog();
         if (!!$scope.billingData) {// NOTE: CICO-17123 When the billing information popup is called from the Group Summary Tab, there wont be a billingData object in $scope. This was throwing "TypeError: Cannot set property 'billingInfoTitle' of undefined"
-            $scope.billingData.billingInfoTitle = ($scope.routes.length > 0 )? $filter('translate')('BILLING_INFO_TITLE'):$filter('translate')('ADD_BILLING_INFO_TITLE');
+            $scope.billingData.billingInfoTitle = ($scope.routes.length > 0 ) ? $filter('translate')('BILLING_INFO_TITLE') : $filter('translate')('ADD_BILLING_INFO_TITLE');
         }
 	};
 

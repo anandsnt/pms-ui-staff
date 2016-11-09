@@ -6,7 +6,7 @@ var login = angular.module('login', ['ui.router', 'documentTouchMovePrevent', 'n
 login.run(function($rootScope) {
     $rootScope.$on('$stateChangeStart',
             function(event, toState, toParams, fromState, fromParams) {
-            $rootScope.title =toState.title;
+            $rootScope.title = toState.title;
     });
 });
 
@@ -59,7 +59,7 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
 				console.log('ignoring a problem occured while setting item using localStorage');
 			}
 
-		 	if (data.token!=='') {
+		 	if (data.token !== '') {
 		 		$state.go('resetpassword', {token: data.token, notifications: data.notifications});
 		 	}
 		 	else {
@@ -321,7 +321,7 @@ login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state',
 	 	}
 
 	 	localStorage.email = $scope.data.email;
-	 	if (data.token!=='') {
+	 	if (data.token !== '') {
 	 		$state.go('resetpassword', {token: data.token, notifications: data.notifications});
 	 	} else {
                         $scope.$emit("signingIn");
@@ -354,7 +354,7 @@ login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state',
            // pull up the virtual keyboard (snt) theme... if chrome & fullscreen
             var isTouchDevice = 'ontouchstart' in document,
                 agentString = window.navigator.userAgent;
-            var shouldShowKeyboard = (typeof chrome) && (agentString.toLowerCase().indexOf('window')!==-1) && isTouchDevice;
+            var shouldShowKeyboard = (typeof chrome) && (agentString.toLowerCase().indexOf('window') !== -1) && isTouchDevice;
 
             if (shouldShowKeyboard && id) {
                     new initScreenKeyboardListener('login', id, true);

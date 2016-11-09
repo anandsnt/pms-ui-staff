@@ -40,8 +40,8 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 					isSmallDevice: isSmallDevice
 				}),
 				closeByDocument: true,
-				template: '/assets/partials/zestwebGlobalSettings/'+template,
-				className: 'ngdialog-theme-default '+className
+				template: '/assets/partials/zestwebGlobalSettings/' + template,
+				className: 'ngdialog-theme-default ' + className
 			});
 		};
 		var openSmallScreenPreview = function() {
@@ -52,7 +52,7 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 		};
 
 		$scope.previewClicked = function() {
-			$scope.globalSettings.is_large_screen_preview_on? openLargeScreenPreview():openSmallScreenPreview();
+			$scope.globalSettings.is_large_screen_preview_on ? openLargeScreenPreview() : openSmallScreenPreview();
 		};
 		// image upload section starts here
 		$scope.isImageAvailable = function(image) {

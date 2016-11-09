@@ -242,7 +242,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
 
         this.fetTasksForDefaultWorkType = function(params) {
             var deferred = $q.defer();
-            var url = "/api/work_types/"+ params.work_type_id +"/tasks?stayover_only=true&is_active=true";
+            var url = "/api/work_types/" + params.work_type_id + "/tasks?stayover_only=true&is_active=true";
 
             ADBaseWebSrvV2.getJSON(url).then(function (data) {
                 deferred.resolve(data);

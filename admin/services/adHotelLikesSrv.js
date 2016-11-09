@@ -60,7 +60,7 @@ admin.service('ADHotelLikesSrv', ['$q', 'ADBaseWebSrv', function( $q, ADBaseWebS
     this.edit = function(data) {
     	var editID = data.editID;
     	var deferred = $q.defer();
-    	var url = '/admin/hotel_likes/'+editID+'/edit_hotel_likes.json';
+    	var url = '/admin/hotel_likes/' + editID + '/edit_hotel_likes.json';
 
     	ADBaseWebSrv.getJSON(url).then(function(data) {
     		deferred.resolve(data);
@@ -79,7 +79,7 @@ admin.service('ADHotelLikesSrv', ['$q', 'ADBaseWebSrv', function( $q, ADBaseWebS
     this.editRoom = function(data) {
     	var editID = data.editID;
     	var deferred = $q.defer();
-    	var url = '/admin/hotel_likes/'+editID+'/edit_hotel_likes.json';
+    	var url = '/admin/hotel_likes/' + editID + '/edit_hotel_likes.json';
 
 
     	ADBaseWebSrv.getJSON(url).then(function(data) {

@@ -23,7 +23,7 @@
 
 	// data posted status
 	$scope.posted = false;
-	$scope.isCheckoutCompleted= $rootScope.isCheckedout;
+	$scope.isCheckoutCompleted = $rootScope.isCheckedout;
 	$scope.netWorkError = false;
 
 

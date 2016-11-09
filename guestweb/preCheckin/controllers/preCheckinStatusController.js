@@ -6,8 +6,8 @@
 	// if prompt for cc is turned on
 	// we will always ask for CC addition in case of MLI
 
-	$rootScope.userEmail = ($rootScope.userEmail === null ) ? "" :$rootScope.userEmail;
-	$rootScope.userMobile = ($rootScope.userMobile === null ) ? "" :$rootScope.userMobile;
+	$rootScope.userEmail = ($rootScope.userEmail === null ) ? "" : $rootScope.userEmail;
+	$rootScope.userMobile = ($rootScope.userMobile === null ) ? "" : $rootScope.userMobile;
 
 	// collect oustanding stay total
 	if (parseFloat($rootScope.outStandingBalance) > 0 && $rootScope.isMLI
@@ -24,17 +24,17 @@
 		$state.go('checkinCcVerification');
 	}
 	// collect mobile number with option to update already existing mobile number
-	else if ($rootScope.application ==="SMS" 
-			&& $rootScope.userMobile.length >0 && !$rootScope.userMobileSkipped) {
+	else if ($rootScope.application === "SMS" 
+			&& $rootScope.userMobile.length > 0 && !$rootScope.userMobileSkipped) {
 		$state.go('mobileNumberOptions');// if user has not attached an mobile
 	}
 	// collect new mobile number
-	else if ($rootScope.application ==="SMS" 
-			&& $rootScope.userMobile.length ===0 && !$rootScope.userMobileSkipped) {
+	else if ($rootScope.application === "SMS" 
+			&& $rootScope.userMobile.length === 0 && !$rootScope.userMobileSkipped) {
 		$state.go('mobileNumberAddition');// if user has not attached an mobile
 	}
 	// collect email
-	else if ($rootScope.offerRoomDeliveryOptions && !$rootScope.userEmailEntered && ($rootScope.application ==="SMS" || $rootScope.application ==="EMAIL" || $rootScope.application ==="URL")) {
+	else if ($rootScope.offerRoomDeliveryOptions && !$rootScope.userEmailEntered && ($rootScope.application === "SMS" || $rootScope.application === "EMAIL" || $rootScope.application === "URL")) {
 		$state.go('emailAddition', {'isFrom': 'checkinLater'});// if user has not attached an email
 	}
 	// collect deposit
@@ -56,7 +56,7 @@
 					$scope.netWorkError = true;
 				}
 				else {
-					$scope.responseData =response.data;
+					$scope.responseData = response.data;
 					$rootScope.preckinCompleted =  true;
 					$rootScope.responseData = {"confirmation_message": $scope.responseData.confirmation_message};
 				}

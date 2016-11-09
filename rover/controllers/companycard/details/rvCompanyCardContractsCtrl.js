@@ -138,7 +138,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 
 			var selectedRate = _.findWhere(ratesList, {id: data.contracted_rate_selected});
 
-			$scope.contractData.contractedRate = selectedRate? selectedRate.name : "";
+			$scope.contractData.contractedRate = selectedRate ? selectedRate.name : "";
 			/*
 			 *Nights pop up should be triggered only after contract details are saved
 			 *and refetched in the case of add mode
@@ -452,7 +452,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			$scope.hasOverlay = false;
 			$scope.contractList.isAddMode = true;
 
-			$scope.addData={};
+			$scope.addData = {};
 			$scope.addData.occupancy = [];
 			$scope.addData.begin_date = dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
 			$scope.addData.contracted_rate_selected = "";

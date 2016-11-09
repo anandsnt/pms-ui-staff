@@ -9,7 +9,7 @@ login.service('resetSrv', ['$http', '$q', function($http, $q) {
 
 		var deferred = $q.defer();
 
-		$http.put("/api/password_resets/"+data.token+"/update.json", data).success(function(response, status) {
+		$http.put("/api/password_resets/" + data.token + "/update.json", data).success(function(response, status) {
 			if (response.status === "success") {
 		    	successCallback(response.data);
 			} else {
@@ -48,7 +48,7 @@ login.service('resetSrv', ['$http', '$q', function($http, $q) {
 
 		var deferred = $q.defer();
 
-		var url = "/api/password_resets/"+data.token+"/update.json";
+		var url = "/api/password_resets/" + data.token + "/update.json";
 
 
 		$http.put(url, data).success(function(response, status) {

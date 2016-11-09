@@ -37,7 +37,7 @@ admin.directive('appFilereader', function($q) {
 
                     reader.onload = function(e) {
                     if (scope.emitData !== '') {
-                         $('#'+scope.emitData).val(e.target.result);
+                         $('#' + scope.emitData).val(e.target.result);
                     }
                         deferred.resolve(e.target.result);
                     };

@@ -32,10 +32,10 @@ sntRover.controller('RVSocialLobbyCrl', [
                 height = height + expandedPostHeight;                
             }
             if ($scope.errorMessage != "" || typeof $scope.errorMessage != 'undefined')
-                postScroll.style.height = ""+450+"px";
+                postScroll.style.height = "" + 450 + "px";
             else
-                postScroll.style.height = ""+500+"px";
-            postContainer.style.height = ""+height+"px";
+                postScroll.style.height = "" + 500 + "px";
+            postContainer.style.height = "" + height + "px";
             
         };
         
@@ -132,7 +132,7 @@ sntRover.controller('RVSocialLobbyCrl', [
             if (user.profession != null && user.profession != "")
                 professionString = professionString + user.profession;
             if (user.works_at != "" && user.works_at != null)
-                professionString = professionString != ""? professionString + ", " + user.works_at : user.works_at;
+                professionString = professionString != "" ? professionString + ", " + user.works_at : user.works_at;
 
             return professionString;
         };
@@ -186,15 +186,15 @@ sntRover.controller('RVSocialLobbyCrl', [
                 $scope.middle_page2 = 3;
                 $scope.middle_page1 = 2;
             } else if ($scope.postParams.page == $scope.totalPostPages && $scope.totalPostPages > 5) {
-                $scope.middle_page3 = $scope.totalPostPages -1;
-                $scope.middle_page2 = $scope.totalPostPages -2;
-                $scope.middle_page1 = $scope.totalPostPages -3;
+                $scope.middle_page3 = $scope.totalPostPages - 1;
+                $scope.middle_page2 = $scope.totalPostPages - 2;
+                $scope.middle_page1 = $scope.totalPostPages - 3;
             }
         };
 
         $scope.togglePostDetails = function(post) {
             $scope.errorMessage = "";
-            $scope.selectedPost = $scope.selectedPost == "" ? post : post.id == $scope.selectedPost.id? "" : post;
+            $scope.selectedPost = $scope.selectedPost == "" ? post : post.id == $scope.selectedPost.id ? "" : post;
             if ($scope.selectedPost == "") {
                 expandedPostHeight = "";
                 refreshPostScroll();

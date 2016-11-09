@@ -16,7 +16,7 @@ admin.service('ADZestShortCodeSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSr
         
         this.save = function(data) {
             var deferred = $q.defer();
-            var url = '/admin/sms_campaigns/'+data.id+'.json';
+            var url = '/admin/sms_campaigns/' + data.id + '.json';
 
             ADBaseWebSrvV2.putJSON(url, data).then(function (data) {
                 deferred.resolve(data);

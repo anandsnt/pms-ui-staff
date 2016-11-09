@@ -41,14 +41,14 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
   // store basic details as rootscope variables
 
   $rootScope.hotelName     = reservationAndhotelData.hotelName;
-  $rootScope.currencySymbol= reservationAndhotelData.currencySymbol;
+  $rootScope.currencySymbol = reservationAndhotelData.currencySymbol;
   $rootScope.hotelPhone    = reservationAndhotelData.hotelPhone;
   $rootScope.businessDate  = reservationAndhotelData.businessDate;
   $rootScope.mliMerchatId = reservationAndhotelData.mliMerchatId;
   $rootScope.dateFormatPlaceholder = reservationAndhotelData.dateFormatValue;
   $rootScope.dateFormat = getDateFormat(reservationAndhotelData.dateFormatValue);
   $rootScope.roomVerificationInstruction = reservationAndhotelData.roomVerificationInstruction;
-  $rootScope.isSixpayments = (reservationAndhotelData.paymentGateway  === "sixpayments") ? true:false;
+  $rootScope.isSixpayments = (reservationAndhotelData.paymentGateway  === "sixpayments") ? true : false;
 
   $rootScope.reservationID = reservationAndhotelData.reservationId;
   $rootScope.userName      = reservationAndhotelData.userName;
@@ -60,36 +60,36 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
   $rootScope.isLateCheckoutAvailable  = (reservationAndhotelData.isLateCheckoutAvailable  === 'true') ? true : false;
   $rootScope.emailAddress  = reservationAndhotelData.emailAddress;
   $rootScope.isCheckedout  = (reservationAndhotelData.isCheckedout === 'true') ? true : false;
-  $rootScope.isCheckin     =   (reservationAndhotelData.isCheckin ==='true') ? true : false;
-  $rootScope.reservationStatusCheckedIn = (reservationAndhotelData.reservationStatus ==='CHECKIN')? true :false;
-    $rootScope.isActiveToken = (reservationAndhotelData.isActiveToken ==='true') ? true : false;
+  $rootScope.isCheckin     =   (reservationAndhotelData.isCheckin === 'true') ? true : false;
+  $rootScope.reservationStatusCheckedIn = (reservationAndhotelData.reservationStatus === 'CHECKIN') ? true : false;
+    $rootScope.isActiveToken = (reservationAndhotelData.isActiveToken === 'true') ? true : false;
   $rootScope.isCheckedin  =  ($rootScope.reservationStatusCheckedIn  && !$rootScope.isActiveToken);
-  $rootScope.isCCOnFile = (reservationAndhotelData.isCcAttached ==='true')? true:false;
-  $rootScope.isPreCheckedIn   = (reservationAndhotelData.isPreCheckedIn === 'true') ? true: false;
+  $rootScope.isCCOnFile = (reservationAndhotelData.isCcAttached === 'true') ? true : false;
+  $rootScope.isPreCheckedIn   = (reservationAndhotelData.isPreCheckedIn === 'true') ? true : false;
   $rootScope.isRoomVerified =  false;
-  $rootScope.isPrecheckinOnly = (reservationAndhotelData.isPrecheckinOnly ==='true' && reservationAndhotelData.reservationStatus ==='RESERVED')?true:false;
+  $rootScope.isPrecheckinOnly = (reservationAndhotelData.isPrecheckinOnly === 'true' && reservationAndhotelData.reservationStatus === 'RESERVED') ? true : false;
   $rootScope.isCcAttachedFromGuestWeb = false;
-  $rootScope.isAutoCheckinOn = ((reservationAndhotelData.isAutoCheckin === 'true') && (reservationAndhotelData.isPrecheckinOnly === 'true')) ? true :false;
-  $rootScope.isExternalVerification = (reservationAndhotelData.isExternalVerification === "true") ? true :false;
+  $rootScope.isAutoCheckinOn = ((reservationAndhotelData.isAutoCheckin === 'true') && (reservationAndhotelData.isPrecheckinOnly === 'true')) ? true : false;
+  $rootScope.isExternalVerification = (reservationAndhotelData.isExternalVerification === "true") ? true : false;
   $rootScope.hotelIdentifier = reservationAndhotelData.hotelIdentifier;
-  $rootScope.guestAddressOn = reservationAndhotelData.guestAddressOn === 'true' ? true:false;
+  $rootScope.guestAddressOn = reservationAndhotelData.guestAddressOn === 'true' ? true : false;
   $rootScope.isGuestAddressVerified =  false;
 
-  $rootScope.guestBirthdateOn = (reservationAndhotelData.birthdateOn === 'true') ? true :false;
-  $rootScope.guestBirthdateMandatory = (reservationAndhotelData.birthdateMandatory === 'true') ? true :false;
-  $rootScope.guestPromptAddressOn = (reservationAndhotelData.promptForAddressOn === 'true') ? true :false;
+  $rootScope.guestBirthdateOn = (reservationAndhotelData.birthdateOn === 'true') ? true : false;
+  $rootScope.guestBirthdateMandatory = (reservationAndhotelData.birthdateMandatory === 'true') ? true : false;
+  $rootScope.guestPromptAddressOn = (reservationAndhotelData.promptForAddressOn === 'true') ? true : false;
   $rootScope.minimumAge = parseInt(reservationAndhotelData.minimumAge);
   $rootScope.primaryGuestId = reservationAndhotelData.primaryGuestId;
 
 
-  $rootScope.isGuestEmailURl =  (reservationAndhotelData.checkinUrlVerification === "true" && reservationAndhotelData.isZestCheckin ==="true") ?true:false;
+  $rootScope.isGuestEmailURl =  (reservationAndhotelData.checkinUrlVerification === "true" && reservationAndhotelData.isZestCheckin === "true") ? true : false;
   $rootScope.zestEmailCheckinNoServiceMsg = reservationAndhotelData.zestCheckinNoServiceMsg;
   $rootScope.termsAndConditions = reservationAndhotelData.termsAndConditions;
   $rootScope.isBirthdayVerified =  false;
 
   $rootScope.application        = reservationAndhotelData.application;
   $rootScope.urlSuffix        = reservationAndhotelData.urlSuffix;
-  $rootScope.collectCCOnCheckin = (reservationAndhotelData.checkinCollectCc === "true") ? true:false;
+  $rootScope.collectCCOnCheckin = (reservationAndhotelData.checkinCollectCc === "true") ? true : false;
   $rootScope.isMLI = (reservationAndhotelData.paymentGateway  = "MLI") ? true : false;
 
   // room key delivery options
@@ -102,7 +102,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
     // Params for zest mobile and desktop screens
     if (reservationAndhotelData.hasOwnProperty('isPasswordReset')) {
       $rootScope.isPasswordResetView = reservationAndhotelData.isPasswordReset;
-      $rootScope.isTokenExpired = reservationAndhotelData.isTokenExpired === "true"? true: false;
+      $rootScope.isTokenExpired = reservationAndhotelData.isTokenExpired === "true" ? true : false;
       $rootScope.accessToken = reservationAndhotelData.token;
       $rootScope.user_id = reservationAndhotelData.id;
       $rootScope.user_name = reservationAndhotelData.login;
@@ -118,32 +118,32 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
   }
   // navigate to different pages
 
-  if (reservationAndhotelData.checkinUrlVerification === "true" && reservationAndhotelData.isZestCheckin ==="false") {
+  if (reservationAndhotelData.checkinUrlVerification === "true" && reservationAndhotelData.isZestCheckin === "false") {
     $location.path('/guestCheckinTurnedOff');
   }
   else if (reservationAndhotelData.checkinUrlVerification === "true") {
     $location.path('/externalCheckinVerification'); // external checkin URL available and is on
   }
-  else if (reservationAndhotelData.isExternalVerification ==="true") {
+  else if (reservationAndhotelData.isExternalVerification === "true") {
     $location.path('/externalVerification'); // external checkout URL
   }
-  else if (reservationAndhotelData.isPrecheckinOnly  ==='true' && reservationAndhotelData.reservationStatus ==='RESERVED' && !(reservationAndhotelData.isAutoCheckin === 'true')) {
+  else if (reservationAndhotelData.isPrecheckinOnly  === 'true' && reservationAndhotelData.reservationStatus === 'RESERVED' && !(reservationAndhotelData.isAutoCheckin === 'true')) {
     $location.path('/tripDetails');// only available for Fontainbleau -> precheckin + sent to que
   }
-  else if (reservationAndhotelData.isPrecheckinOnly  ==='true' && reservationAndhotelData.reservationStatus ==='RESERVED' && (reservationAndhotelData.isAutoCheckin === 'true')) {
+  else if (reservationAndhotelData.isPrecheckinOnly  === 'true' && reservationAndhotelData.reservationStatus === 'RESERVED' && (reservationAndhotelData.isAutoCheckin === 'true')) {
     $location.path('/checkinConfirmation');// checkin starting -> page precheckin + auto checkin
   }
   else if ($rootScope.isCheckedin) {
     $location.path('/checkinSuccess');// already checked in
   }
-    else if (reservationAndhotelData.isCheckin ==='true') {
+    else if (reservationAndhotelData.isCheckin === 'true') {
     $location.path('/checkinConfirmation');// checkin starting page -> precheckin turned off
   }
     else if ($rootScope.isCheckedout)  {
     $location.path('/checkOutStatus');// already checked out
   }
   else if ($rootScope.hasOwnProperty('isPasswordResetView')) {
-    var path = $rootScope.isPasswordResetView === 'true'? '/resetPassword' : '/emailVerification';
+    var path = $rootScope.isPasswordResetView === 'true' ? '/resetPassword' : '/emailVerification';
 
     $location.path(path);
     $location.replace();
@@ -253,8 +253,8 @@ var roomVerificationErrorModalCtrl = function ($scope, $modalInstance) {
 (function() {
   var checkOutConfirmationController = function($scope, $rootScope, $state) {
 
-    $scope.checkoutTimessage = $rootScope.checkoutTimessage ? $rootScope.checkoutTimessage:"Check-out time is ";
-    $scope.footerMessage1 = !$rootScope.isLateCheckoutAvailable ? 'Late check-out is not available.' :'' ;
+    $scope.checkoutTimessage = $rootScope.checkoutTimessage ? $rootScope.checkoutTimessage : "Check-out time is ";
+    $scope.footerMessage1 = !$rootScope.isLateCheckoutAvailable ? 'Late check-out is not available.' : '' ;
 
   };
 
@@ -275,7 +275,7 @@ sntGuestWeb.controller('checkOutLandingController', ['$rootScope', '$location', 
 
 sntGuestWeb.filter('customizeLabelText', function () {
   return function (input, scope) {
-    return input.substring(0, 1) +" ' "+ input.substring(1, 2).toBold() +" ' "+ input.substring(2);
+    return input.substring(0, 1) + " ' " + input.substring(1, 2).toBold() + " ' " + input.substring(2);
   };
 });
 
@@ -527,10 +527,10 @@ New checkout time is set and an option to continue the checkout process is prese
     $scope.success =  true ;
     $scope.posted = true;
     $scope.oldCheckoutTime = angular.copy($rootScope.checkoutTime);
-    $rootScope.checkoutTime = 11 +':00 '+"pm";
+    $rootScope.checkoutTime = 11 + ':00 ' + "pm";
     $rootScope.checkoutTimessage = "Your new check-out time is ";
     $rootScope.isLateCheckoutAvailable = false;
-    $scope.keyExpiry = "Your room keys are set to expire for the checkout time of "+$scope.oldCheckoutTime+". Please see a guest service agent at the front desk to re-activate your keys for the late checkout time selected.";
+    $scope.keyExpiry = "Your room keys are set to expire for the checkout time of " + $scope.oldCheckoutTime + ". Please see a guest service agent at the front desk to re-activate your keys for the late checkout time selected.";
 
   };
 
@@ -555,7 +555,7 @@ New checkout time is set and an option to continue the checkout process is prese
     $scope.cardNumber = "";
     $scope.ccv = "";
     $scope.monthSelected = "";
-    $scope.yearSelected ="";
+    $scope.yearSelected = "";
 
    
       $scope.pageValid = true;
@@ -564,7 +564,7 @@ New checkout time is set and an option to continue the checkout process is prese
     if ($scope.pageValid) {
       $scope.roomVerificationInstruction = "ddebfiebhfi hjevuebfbe ehdved e hdevdb ed e dh ed ejd e dkj edj ejd e de dnendn";
       $scope.checkoutmessage = $stateParams.message;
-      $scope.isFromCheckoutNow =  ($stateParams.isFromCheckoutNow  ==="true") ? true :false;
+      $scope.isFromCheckoutNow =  ($stateParams.isFromCheckoutNow  === "true") ? true : false;
       $scope.fee = $stateParams.fee;
       var MLISessionId = "";
 
@@ -608,7 +608,7 @@ New checkout time is set and an option to continue the checkout process is prese
 
       $scope.years = [];
       var startYear = new Date().getFullYear();
-      var endYear   = parseInt(startYear) +100;
+      var endYear   = parseInt(startYear) + 100;
 
       for (year = parseInt(startYear); year <= parseInt(endYear); year++) {
         $scope.years.push(year);
@@ -845,7 +845,7 @@ Reservation details are shown in this page.
     if ($scope.pageValid) {
       $rootScope.ShowupgradedLabel = true;
 // check if checkbox was already checked (before going to upgrades)
-$scope.checked =  ($rootScope.ShowupgradedLabel) ? true:true;
+$scope.checked =  ($rootScope.ShowupgradedLabel) ? true : true;
 $scope.reservationData = checkinDetailsService.getResponseData();
 $scope.reservationData.terms_and_conditions = " Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.33";
 $rootScope.confirmationNumber = $scope.reservationData.confirm_no;
@@ -1052,16 +1052,16 @@ The user can change the estimated time of arrival from here and optionally add c
       $scope.minutes = ["00", "15", "30", "45"];
       $scope.primeTimes = ["AM", "PM"];
 
-      if (typeof $rootScope.earlyCheckinRestrictHour !=="undefined") {
-        $scope.earlyCheckinRestrictLimit = $rootScope.earlyCheckinRestrictHourForDisplay+":"+$rootScope.earlyCheckinRestrictMinute+" "+$rootScope.earlyCheckinRestrictPrimetime;
+      if (typeof $rootScope.earlyCheckinRestrictHour !== "undefined") {
+        $scope.earlyCheckinRestrictLimit = $rootScope.earlyCheckinRestrictHourForDisplay + ":" + $rootScope.earlyCheckinRestrictMinute + " " + $rootScope.earlyCheckinRestrictPrimetime;
 // restrict time before earlyCheckinRestrictTime
 if ($rootScope.earlyCheckinRestrictPrimetime === "PM") {
   $scope.primeTimes = $scope.primeTimes.slice(1);
-  if ( $rootScope.earlyCheckinRestrictHour !=="12") {
+  if ( $rootScope.earlyCheckinRestrictHour !== "12") {
     angular.forEach( $scope.hours, function(hour, index) {
       if (hour === $rootScope.earlyCheckinRestrictHour) {
         $scope.hours =  $scope.hours.slice(index);
-        $scope.hours.splice($scope.hours.length-1, 1);
+        $scope.hours.splice($scope.hours.length - 1, 1);
       }
     });
   }
@@ -1090,7 +1090,7 @@ $scope.errorOpts = {
     }
   }
 };
-$scope.checkinTime = (typeof $stateParams.time !=="undefined") ? $stateParams.time :"";
+$scope.checkinTime = (typeof $stateParams.time !== "undefined") ? $stateParams.time : "";
 
 };
 
@@ -1102,14 +1102,14 @@ $scope.postStayDetails = function() {
 var hour = parseInt($scope.stayDetails.hour);
 
 if ($scope.stayDetails.primeTime === 'PM' && hour < 12) {
-  hour = hour+ 12;
+  hour = hour + 12;
 }
 else if ($scope.stayDetails.primeTime === 'AM' && hour === 12) {
-  hour = hour-12;
+  hour = hour - 12;
 }
-hour = (hour <10)?("0"+hour): hour;
+hour = (hour < 10) ? ("0" + hour) : hour;
 var dataTosend = {
-  "arrival_time": hour+":"+$scope.stayDetails.minute,
+  "arrival_time": hour + ":" + $scope.stayDetails.minute,
   "comments": $scope.stayDetails.comment
 };
 
@@ -1216,7 +1216,7 @@ The early checkin purcahse is done here on entering to this page itself.
     if ($scope.pageValid) {
       $scope.checkinTime = $stateParams.time;
       $scope.earlyCheckinCharge = $stateParams.charge;
-      var offerId= $stateParams.id;
+      var offerId = $stateParams.id;
 
       $scope.isPosting = true;
       var dataTosend = {'reservation_id': $rootScope.reservationID, 'early_checkin_offer_id': offerId};
@@ -1277,14 +1277,14 @@ update the guest details here.
       };
 
 
-      for (year=1900;year<=new Date().getFullYear();year++) {
+      for (year = 1900;year <= new Date().getFullYear();year++) {
         $scope.years.push(year);
       }
-      for (month=1;month<=12;month++) {
+      for (month = 1;month <= 12;month++) {
         $scope.months.push(month);
       }
 
-      for (day=1;day<=31;day++) {
+      for (day = 1;day <= 31;day++) {
         $scope.days.push(day);
       }
 
@@ -1309,12 +1309,12 @@ var getDataToSave = function() {
   var unwanted_keys     = ["month", "year", "day"];
   var newObject       = JSON.parse(JSON.stringify($scope.guestDetails));
 
-  for (var i=0; i < unwanted_keys.length; i++) {
+  for (var i = 0; i < unwanted_keys.length; i++) {
     delete newObject[unwanted_keys[i]];
   }
   data          = newObject;
   if ($scope.guestDetails.month && $scope.guestDetails.day && $scope.guestDetails.year) {
-    data.birthday = $scope.guestDetails.month+"-"+$scope.guestDetails.day+"-"+$scope.guestDetails.year;
+    data.birthday = $scope.guestDetails.month + "-" + $scope.guestDetails.day + "-" + $scope.guestDetails.year;
   }
   else {
     delete data["birthday"];
@@ -1374,7 +1374,7 @@ var url = '/guest_web/checkin.json';
 var data = {'reservation_id': $rootScope.reservationID};
 
 $rootScope.isCheckedin = true;
-$scope.responseData =response.data;
+$scope.responseData = response.data;
 $scope.responseData.delivery_message  = "Please conatct front desk";
 };
 var dependencies = [
@@ -1391,7 +1391,7 @@ Precheckin final Ctrl where the pre checkin API is called
 (function() {
   var preCheckinStatusController = function($scope, preCheckinSrv, $state) {
     $scope.isLoading = false;
-    $scope.responseData ={};
+    $scope.responseData = {};
     $scope.responseData.confirmation_message = "Please go to front desk.hevhce vhe ce chj ec e cece cee ewewheew ee jk je ekjnnencne";
     $scope.changeEmail = function() {
       $state.go('emailAddition');
@@ -1421,7 +1421,7 @@ Precheckin final Ctrl where the pre checkin API is called
     $scope.months     = [];
     $scope.days       = [];
     
-    for (year=1900;year<=new Date().getFullYear();year++) {
+    for (year = 1900;year <= new Date().getFullYear();year++) {
       $scope.years.push(year);
     }
 
@@ -1440,7 +1440,7 @@ Precheckin final Ctrl where the pre checkin API is called
               {"id": 12, "name": "DEC"}
             ];
       
-    for (day=1;day<=31;day++) {
+    for (day = 1;day <= 31;day++) {
       $scope.days.push(day);
     }
     $scope.guestDetails     = {};
@@ -1454,12 +1454,12 @@ Precheckin final Ctrl where the pre checkin API is called
       var unwanted_keys     = ["month", "year", "day"];
       var newObject       = JSON.parse(JSON.stringify($scope.guestDetails));
 
-            for (var i=0; i < unwanted_keys.length; i++) {
+            for (var i = 0; i < unwanted_keys.length; i++) {
                 delete newObject[unwanted_keys[i]];
             }
             data          = newObject;
             if ($scope.guestDetails.month && $scope.guestDetails.day && $scope.guestDetails.year) {
-              data.birthday = $scope.guestDetails.month+"-"+$scope.guestDetails.day+"-"+$scope.guestDetails.year;
+              data.birthday = $scope.guestDetails.month + "-" + $scope.guestDetails.day + "-" + $scope.guestDetails.year;
             }
             else {
               delete data["birthday"];
@@ -1500,12 +1500,12 @@ Precheckin final Ctrl where the pre checkin API is called
 
 
     var checkIfDateIsValid = function() {
-      var birthday = $scope.guestDetails.month+"/"+$scope.guestDetails.day+"/"+$scope.guestDetails.year;  
+      var birthday = $scope.guestDetails.month + "/" + $scope.guestDetails.day + "/" + $scope.guestDetails.year;  
       var comp = birthday.split('/');
       var m = parseInt(comp[0], 10);
       var d = parseInt(comp[1], 10);
       var y = parseInt(comp[2], 10);
-      var date = new Date(y, m-1, d);
+      var date = new Date(y, m - 1, d);
 
       if (date.getFullYear() == y && date.getMonth() + 1 == m && date.getDate() == d) {
          return true;

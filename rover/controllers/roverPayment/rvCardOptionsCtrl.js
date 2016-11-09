@@ -92,15 +92,15 @@ sntRover.controller('RVCardOptionsCtrl',
                 });
                 $scope.$on('SHOW_SWIPED_DATA_ON_PAY_SCREEN', function() {
                     $scope.clickedAddNewCard();
-                    !$scope.$$phase ? $scope.$apply():"";
+                    !$scope.$$phase ? $scope.$apply() : "";
                 });
                 $scope.$on('SHOW_SWIPED_DATA_ON_BILLING_SCREEN', function() {
                     $scope.clickedAddNewCard();
-                    !$scope.$$phase ? $scope.$apply():"";
+                    !$scope.$$phase ? $scope.$apply() : "";
                 });
                 $scope.$on('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN', function() {
                     $scope.clickedAddNewCard();
-                    !$scope.$$phase ? $scope.$apply():"";
+                    !$scope.$$phase ? $scope.$apply() : "";
                 });
                 $scope.clickedAddNewCard = function() {
                     $scope.shouldShowIframe = false; 
@@ -232,7 +232,7 @@ sntRover.controller('RVCardOptionsCtrl',
                 
                 if ($scope.depositBalanceMakePaymentData) {
                     if (typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined") {
-			buttonClass = ($scope.depositBalanceMakePaymentData.payment_type.length > 0 && $scope.validPayment) ? "green" :"grey";
+			buttonClass = ($scope.depositBalanceMakePaymentData.payment_type.length > 0 && $scope.validPayment) ? "green" : "grey";
                     } else {
                         if (!$scope.validPayment) {
                             buttonClass = "grey overlay";
@@ -294,7 +294,7 @@ sntRover.controller('RVCardOptionsCtrl',
 			var firstName = guestData.fname;
 			var lastName = guestData.lname;
 
-			iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" +firstName + "&card_holder_last_name=" + lastName + "&service_action=createtoken&time="+time;
+			iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" + firstName + "&card_holder_last_name=" + lastName + "&service_action=createtoken&time=" + time;
 			var iFrame = document.getElementById('sixIframe');
 
 			try {
@@ -318,7 +318,7 @@ sntRover.controller('RVCardOptionsCtrl',
 		$scope.cardData.addToGuestCard = false;
 		$scope.cardData.cardNumber = "";
 		$scope.cardData.CCV = "";
-		$scope.cardData.expiryMonth ="";
+		$scope.cardData.expiryMonth = "";
 		$scope.cardData.expiryYear = "";
 		$scope.cardData.userName   = "";
 
@@ -326,11 +326,11 @@ sntRover.controller('RVCardOptionsCtrl',
 
 		$scope.shouldShowAddNewCard = true;
 		if (typeof $scope.passData !== "undefined") {
-			var firstName = (typeof $scope.passData.details.firstName ==="undefined")?"":$scope.passData.details.firstName;
-			var lastName = (typeof $scope.passData.details.lastName ==="undefined")?"":$scope.passData.details.lastName;
+			var firstName = (typeof $scope.passData.details.firstName === "undefined") ? "" : $scope.passData.details.firstName;
+			var lastName = (typeof $scope.passData.details.lastName === "undefined") ? "" : $scope.passData.details.lastName;
 		}
 
-		$scope.iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" +firstName + "&card_holder_last_name=" + lastName + "&service_action=createtoken&time="+time;
+		$scope.iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" + firstName + "&card_holder_last_name=" + lastName + "&service_action=createtoken&time=" + time;
 		if ($rootScope.paymentGateway === "sixpayments") {
 			$scope.shouldShowAddNewCard = false;
 			var iFrame = $document.find("sixIframe");

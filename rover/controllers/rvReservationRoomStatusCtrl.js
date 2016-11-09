@@ -20,7 +20,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		var reservationRoomClass = '';
 
 		if (reservationStatus === 'CANCELED') {
-			reservationRoomClass ='overlay';
+			reservationRoomClass = 'overlay';
 		} else if (cannotMoveRoom && $scope.reservationData.reservation_card.room_number !== "") {
             reservationRoomClass = 'has-lock hover-hand';
         }
@@ -39,7 +39,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
 
 		if (reservationStatus === 'CHECKING_IN') {
 
-			if (roomReadyStatus!=='') {
+			if (roomReadyStatus !== '') {
 				if (foStatus === 'VACANT') {
 					switch (roomReadyStatus) {
 
@@ -93,7 +93,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
 	$scope.showKeysButton = function(reservationStatus) {
 		var showKey = false;
 
-		if ((reservationStatus === 'CHECKING_IN' && $scope.reservationData.reservation_card.room_number !== '')|| reservationStatus === 'CHECKING_OUT' || reservationStatus === 'CHECKEDIN') {
+		if ((reservationStatus === 'CHECKING_IN' && $scope.reservationData.reservation_card.room_number !== '') || reservationStatus === 'CHECKING_OUT' || reservationStatus === 'CHECKEDIN') {
 			showKey = true;
 		}
                 // then check if the current user has permission
@@ -220,7 +220,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
 	};
 
 	$scope.goToRoomUpgrades = function() {
-        var cannotMoveState   =  $scope.reservationData.reservation_card.cannot_move_room && $scope.reservationData.reservation_card.room_number!=="";
+        var cannotMoveState   =  $scope.reservationData.reservation_card.cannot_move_room && $scope.reservationData.reservation_card.room_number !== "";
 
 		$state.go("rover.reservation.staycard.upgrades", {reservation_id: $scope.reservationData.reservation_card.reservation_id, "clickedButton": "upgradeButton", "cannot_move_room": cannotMoveState});
 	};
@@ -249,14 +249,14 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		// check if roomupgrade is available
 		var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
         var isUpgradeAvaiable = $scope.reservationData.reservation_card.is_upsell_available === "true" && (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN'),
-            cannotMoveState   =  $scope.reservationData.reservation_card.cannot_move_room && $scope.reservationData.reservation_card.room_number!=="";
+            cannotMoveState   =  $scope.reservationData.reservation_card.cannot_move_room && $scope.reservationData.reservation_card.room_number !== "";
 
 		if ($scope.reservationData.reservation_card.is_hourly_reservation) {
 			gotToDiaryInEditMode ();
 		} else if ($scope.isFutureReservation($scope.reservationData.reservation_card.reservation_status)) {
 
 			$state.go("rover.reservation.staycard.roomassignment", {reservation_id: $scope.reservationData.reservation_card.reservation_id, room_type: $scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton", "upgrade_available": isUpgradeAvaiable, "cannot_move_room": cannotMoveState});
-		} else if ($scope.reservationData.reservation_card.reservation_status==="CHECKEDIN" && $rootScope.isStandAlone) { // As part of CICO-27631 added Check for overlay hotels
+		} else if ($scope.reservationData.reservation_card.reservation_status === "CHECKEDIN" && $rootScope.isStandAlone) { // As part of CICO-27631 added Check for overlay hotels
 			$state.go("rover.reservation.staycard.roomassignment", {reservation_id: $scope.reservationData.reservation_card.reservation_id, room_type: $scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton", "upgrade_available": isUpgradeAvaiable, "cannot_move_room": cannotMoveState});
 		}
 
@@ -269,7 +269,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
      *
      */
 
-    $scope.toggleDoNotMove= function() {
+    $scope.toggleDoNotMove = function() {
 
         var updateParams = {
             "no_room_move": !$scope.reservationData.reservation_card.cannot_move_room,

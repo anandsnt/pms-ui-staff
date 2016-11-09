@@ -40,7 +40,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.isWithFilters = data;
 		});
 		var setBackButtonCaption = function() {
-	        if ($rootScope.previousState.controller ==="rvAllotmentConfigurationCtrl")
+	        if ($rootScope.previousState.controller === "rvAllotmentConfigurationCtrl")
 	        {
 	            $scope.searchBackButtonCaption = $filter('translate')('ALLOTMENTS');
 	        }

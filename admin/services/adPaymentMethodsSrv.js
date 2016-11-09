@@ -81,7 +81,7 @@ function($q, ADBaseWebSrv) {
     */
 	this.deletePaymentMethod = function(id) {
 		var deferred = $q.defer();
-		var url = '/admin/hotel_payment_types/'+id;
+		var url = '/admin/hotel_payment_types/' + id;
 
 		ADBaseWebSrv.deleteJSON(url).then(function(data) {
 		    deferred.resolve(data);

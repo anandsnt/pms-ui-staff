@@ -22,7 +22,7 @@ admin.service('adChainsSrv', ['$http', '$q', 'ADBaseWebSrv', function($http, $q,
 	this.edit = function(data) {
 		var editID = data.editID;
 		var deferred = $q.defer();
-		var url = '/admin/hotel_chains/'+editID+'/edit.json';
+		var url = '/admin/hotel_chains/' + editID + '/edit.json';
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
@@ -40,7 +40,7 @@ admin.service('adChainsSrv', ['$http', '$q', 'ADBaseWebSrv', function($http, $q,
 		var id  = data.id;
 		var updateData = data.updateData;
 		var deferred = $q.defer();
-		var url = '/admin/hotel_chains/'+id;
+		var url = '/admin/hotel_chains/' + id;
 
 		ADBaseWebSrv.putJSON(url, updateData).then(function(data) {
 			deferred.resolve(data);

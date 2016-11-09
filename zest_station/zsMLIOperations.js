@@ -12,7 +12,7 @@
 
                 var callback = function(response) {
                     console.info('mli session response: ', response);
-                    (response.status === "ok") ? updateSessionSuccessCallback(response): updateSessionFailureCallback(response);
+                    (response.status === "ok") ? updateSessionSuccessCallback(response) : updateSessionFailureCallback(response);
                 };
 
                 console.info('update session--- ');

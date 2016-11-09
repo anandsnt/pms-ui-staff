@@ -147,7 +147,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
 
                 if (mode && mode !== null) {
                     mode        = mode.toString().toUpperCase();
-                    activeMode  = ( modesAvailable.indexOf(mode) >=0 ) ? mode : null;
+                    activeMode  = ( modesAvailable.indexOf(mode) >= 0 ) ? mode : null;
                 }
             };
 
@@ -230,7 +230,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     dataset:
                         {
                             fromDate: options["fromDate"]   ? options["fromDate"] : null,
-                            oldFromDate: options["oldFromDate"]? options["oldFromDate"] : null,
+                            oldFromDate: options["oldFromDate"] ? options["oldFromDate"] : null,
                             changeInArr: true
                         }
                 };
@@ -251,7 +251,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     dataset:
                         {
                             fromDate: options["fromDate"]   ? options["fromDate"] : null,
-                            oldFromDate: options["oldFromDate"]? options["oldFromDate"] : null,
+                            oldFromDate: options["oldFromDate"] ? options["oldFromDate"] : null,
                             changeInArr: true
                         }
                 };
@@ -332,7 +332,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     dataset:
                         {
                             toDate: options["toDate"]   ? options["toDate"] : null,
-                            oldToDate: options["oldToDate"]? options["oldToDate"] : null,
+                            oldToDate: options["oldToDate"] ? options["oldToDate"] : null,
                             changeInDep: true
                         }
                 };
@@ -353,7 +353,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     dataset:
                         {
                             toDate: options["toDate"]   ? options["toDate"] : null,
-                            oldToDate: options["oldToDate"]? options["oldToDate"] : null,
+                            oldToDate: options["oldToDate"] ? options["oldToDate"] : null,
                             changeInDep: true
                         }
                 };
@@ -467,7 +467,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
              * @param  {[type]} errorMessage [description]
              * @return {[type]}              [description]
              */
-            var failureCallBackOfChangeDatesAPI= function (error) {
+            var failureCallBackOfChangeDatesAPI = function (error) {
                 $scope.closeDialog ();
 
                 // since we are expecting some custom http error status in the response
@@ -587,7 +587,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                         {
                             fromDate: options["fromDate"]   ? options["fromDate"] : null,
                             toDate: options["toDate"]     ? options["toDate"] : null,
-                            oldFromDate: options["oldFromDate"]? options["oldFromDate"] : null,
+                            oldFromDate: options["oldFromDate"] ? options["oldFromDate"] : null,
                             oldToDate: options["oldToDate"]  ? options["oldToDate"] : null
                         }
                 };
@@ -610,7 +610,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
              * @param  {[type]} errorMessage [description]
              * @return {[type]}              [description]
              */
-            var failureCallBackOfMoveDatesAPI= function (error) {
+            var failureCallBackOfMoveDatesAPI = function (error) {
                 $scope.closeDialog ();
 
                 // since we are expecting some custom http error status in the response
@@ -1363,7 +1363,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
          * @return {undefined}
          */
         var setActiveLeftSideMenu = function () {
-            var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup": "menuManageGroup";
+            var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup" : "menuManageGroup";
 
             $scope.$emit("updateRoverLeftMenu", activeMenu);
         };

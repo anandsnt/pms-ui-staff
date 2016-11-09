@@ -46,7 +46,7 @@ sntRover.controller('RVroomAssignmentController', [
 				},
 			3000);
 	$timeout(function() {
-    	roomUpgrades.length ===0 ? "":$scope.$broadcast('roomUpgradesLoaded', roomUpgrades);
+    	roomUpgrades.length === 0 ? "" : $scope.$broadcast('roomUpgradesLoaded', roomUpgrades);
 		$scope.$broadcast('roomFeaturesLoaded', $scope.roomFeatures);
 	});
 
@@ -102,7 +102,7 @@ sntRover.controller('RVroomAssignmentController', [
 		if ($scope.searchText !== '') {
 				var isRoomSearchAllowed = false;
 
-				if (($rootScope.isSingleDigitSearch && $scope.searchText.length >=1) || (!$rootScope.isSingleDigitSearch && $scope.searchText.length >=3)) {
+				if (($rootScope.isSingleDigitSearch && $scope.searchText.length >= 1) || (!$rootScope.isSingleDigitSearch && $scope.searchText.length >= 3)) {
 					$scope.filteredRooms = [];
 					isRoomSearchAllowed = true;
 				}
@@ -288,7 +288,7 @@ sntRover.controller('RVroomAssignmentController', [
 	 */
 	var openWantedToBorrowPopup = function(dataToBorrowRoom) {
 		$scope.passingParams = {
-			"errorMessage": (typeof dataToBorrowRoom.errorMessage === "object")? dataToBorrowRoom.errorMessage[0] : dataToBorrowRoom.errorMessage,
+			"errorMessage": (typeof dataToBorrowRoom.errorMessage === "object") ? dataToBorrowRoom.errorMessage[0] : dataToBorrowRoom.errorMessage,
 			"upsell_amount": dataToBorrowRoom.upsell_amount
 		};
 		ngDialog.open(
@@ -608,7 +608,7 @@ sntRover.controller('RVroomAssignmentController', [
 		$scope.reservationData.reservation_card.fo_status = "VACANT";
 		$scope.reservationData.reservation_card.room_ready_status = "INSPECTED";
 		// CICO-7904 and CICO-9628 : update the upsell availability to staycard
-		$scope.reservationData.reservation_card.is_upsell_available = data.is_upsell_available?"true":"false";
+		$scope.reservationData.reservation_card.is_upsell_available = data.is_upsell_available ? "true" : "false";
 		RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
 		if ($scope.clickedButton === "checkinButton") {
 			$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
@@ -673,7 +673,7 @@ sntRover.controller('RVroomAssignmentController', [
 		var foStatus = room.fo_status;
 		var checkinInspectedOnly = room.checkin_inspected_only;
 
-	    if (roomReadyStatus!=='') {
+	    if (roomReadyStatus !== '') {
 				if (foStatus === 'VACANT') {
 					switch (roomReadyStatus) {
 
@@ -711,7 +711,7 @@ sntRover.controller('RVroomAssignmentController', [
 	* function to change text according to the number of nights
 	*/
 	$scope.setNightsText = function() {
-		return ($scope.reservationData.reservation_card.total_nights === 1)?$filter('translate')('NIGHT_LABEL'):$filter('translate')('NIGHTS_LABEL');
+		return ($scope.reservationData.reservation_card.total_nights === 1) ? $filter('translate')('NIGHT_LABEL') : $filter('translate')('NIGHTS_LABEL');
 	};
 	/**
 	* Moved this function to RVUpgradesCtrl#26 to fix CICO-33338
@@ -777,13 +777,13 @@ sntRover.controller('RVroomAssignmentController', [
 		$scope.filteredRooms = [];
 		var roomsWithInitialFilters = [],
 		roomIdsInSelectedFloor,
-		rooms =$scope.rooms,
+		rooms = $scope.rooms,
 		selectedPredefinedFiltersList = $scope.selectedPredefinedFiltersList,
 		selectedFiltersList = $scope.selectedFiltersList;
 
 		// calculating room ids of selected floors in case any floor is selected.
 		if ($scope.floorFilterData && !$scope.floorFilterData.isNoFloorSelected) {
-				roomIdsInSelectedFloor= $scope.getRoomIdsInSelectedFloor();
+				roomIdsInSelectedFloor = $scope.getRoomIdsInSelectedFloor();
 			}
 
 		// Iterating each room for filter.
@@ -810,22 +810,22 @@ sntRover.controller('RVroomAssignmentController', [
 
 			// Checking whether any of  predefined Filter condition satisfies
 			selectedPredefinedFiltersList.forEach(function(filter) {
-				if (room.room_features.indexOf(filter)!== -1) {
+				if (room.room_features.indexOf(filter) !== -1) {
 					isRoomIncluded = true;
 				}
 			});
 			// Checking whether any of Filter condition satisfies
 			selectedFiltersList.forEach(function(filter) {
-				if (room.room_features.indexOf(filter)!== -1) {
-					isRoomIncluded =isRoomIncluded&&true;
+				if (room.room_features.indexOf(filter) !== -1) {
+					isRoomIncluded = isRoomIncluded && true;
 				} else {
-					isRoomIncluded =isRoomIncluded&&false;
+					isRoomIncluded = isRoomIncluded && false;
 				}
 			});
 			// Checking Whether the Room to be displyed.
 			if (isRoomIncluded) {
 				// If floor filter applied, checking whether the room belongs to selected Floor.
-				if ($scope.floorFilterData &&!$scope.floorFilterData.isNoFloorSelected) {
+				if ($scope.floorFilterData && !$scope.floorFilterData.isNoFloorSelected) {
 					if (roomIdsInSelectedFloor.indexOf(room.room_id) !== -1) {
 						$scope.filteredRooms.push(room);
 						}
@@ -938,7 +938,7 @@ sntRover.controller('RVroomAssignmentController', [
 	* function to handle floor filter.
 	*/
 	$scope.applyFloorFilter = function(floorFilterData) {
-		$scope.floorFilterData =floorFilterData;
+		$scope.floorFilterData = floorFilterData;
 		$scope.setSelectedFiltersList();
 		$scope.applyFilterToRooms();
 	};

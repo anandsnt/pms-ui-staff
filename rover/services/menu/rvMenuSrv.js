@@ -62,7 +62,7 @@ angular.module('sntRover').service('rvMenuSrv',
     * @param {string}, user role
 	* @return {boolean}
 	*/
-    var isFloorMaintananceStaff= function() {
+    var isFloorMaintananceStaff = function() {
     	var userDetails = RVDashboardSrv.getUserDetails();
 
     	return (userDetails.user_role === "Floor & Maintenance Staff");

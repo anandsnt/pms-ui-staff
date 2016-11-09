@@ -48,7 +48,7 @@ angular.module('sntRover').service('RVSmartBandSrv', ['$q', 'BaseWebSrvV2', func
 
 	this.getBalanceSmartBands = function(data) {
 		var deferred = $q.defer();
-		var url = 'api/reservations/'+data.reservationId+'/smartbands/with_balance.json' ;
+		var url = 'api/reservations/' + data.reservationId + '/smartbands/with_balance.json' ;
 
 		BaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
@@ -60,7 +60,7 @@ angular.module('sntRover').service('RVSmartBandSrv', ['$q', 'BaseWebSrvV2', func
 
 	this.cashOutSmartBalance = function(id) {
 		var deferred = $q.defer();
-		var url = '/api/reservations/'+id+'/smartbands/cash_out' ;
+		var url = '/api/reservations/' + id + '/smartbands/cash_out' ;
 		var postData = {};
 
 		BaseWebSrvV2.postJSON(url, postData).then(function(data) {

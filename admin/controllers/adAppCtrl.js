@@ -16,7 +16,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		$scope.errorMessage = '';
 
 		BaseCtrl.call(this, $scope);
-		var title ="Showing Settings";
+		var title = "Showing Settings";
 
 		$scope.setTitle(title);
 		$scope.menuOpen = false;
@@ -110,7 +110,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						hidden: !$rootScope.isHourlyRatesEnabled
 					}, {
 						title: "MENU_ROOM_DIARY",
-						action: "staff#/staff/nightlyDiary/?start_date="+ $rootScope.businessDate,
+						action: "staff#/staff/nightlyDiary/?start_date=" + $rootScope.businessDate,
 						standAlone: true,
 						hidden: ($rootScope.isHourlyRatesEnabled || !$rootScope.isPmsDevEnv)
 					}, {

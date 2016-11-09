@@ -356,7 +356,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             $scope.closeDialog();
         };
 
-        var popupRateManagerActions= function() {
+        var popupRateManagerActions = function() {
             ngDialog.open({
                 template: '/assets/partials/rates/adRateManagerPresentPopup.html',
                 className: '',

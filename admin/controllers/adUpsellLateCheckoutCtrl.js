@@ -50,7 +50,7 @@ $scope.minutes = ["00", "15", "30", "45"];
 *
 */
 $scope.switchClicked = function() {
-    $scope.upsellData.is_late_checkout_set =  ($scope.upsellData.is_late_checkout_set === 'true')?'false':'true';
+    $scope.upsellData.is_late_checkout_set =  ($scope.upsellData.is_late_checkout_set === 'true') ? 'false' : 'true';
 };
 
 /**
@@ -59,7 +59,7 @@ $scope.switchClicked = function() {
 */
 $scope.checkBoxClicked = function() {
 
-    $scope.upsellData.is_exclude_guests = ($scope.upsellData.is_exclude_guests === 'true')?'false':'true';
+    $scope.upsellData.is_exclude_guests = ($scope.upsellData.is_exclude_guests === 'true') ? 'false' : 'true';
 
 };
 /**
@@ -114,7 +114,7 @@ $scope.startWatchingCheckoutcharge0 = function() {
 */
 $scope.$watch('upsellData.extended_checkout_charge_0', function(newValue, oldValue) {
     $scope.setUpLateCheckoutArray();
-    if ($scope.upsellData.extended_checkout_charge_0.charge.length ===0 || $scope.upsellData.extended_checkout_charge_0.time === "HH") {
+    if ($scope.upsellData.extended_checkout_charge_0.charge.length === 0 || $scope.upsellData.extended_checkout_charge_0.time === "HH") {
        if ($scope.upsellData.extended_checkout_charge_2) {
           $scope.upsellData.extended_checkout_charge_2.charge = "";
           $scope.upsellData.extended_checkout_charge_2.time = "HH";
@@ -141,7 +141,7 @@ $scope.startWatchingCheckoutcharge1 = function() {
 */
 $scope.setUpLateCheckoutArray();
 $scope.$watch('upsellData.extended_checkout_charge_1', function(newValue, oldValue) {
-    if ($scope.upsellData.extended_checkout_charge_1.charge.length ===0 || $scope.upsellData.extended_checkout_charge_1.time === "HH") {
+    if ($scope.upsellData.extended_checkout_charge_1.charge.length === 0 || $scope.upsellData.extended_checkout_charge_1.time === "HH") {
        if ($scope.upsellData.extended_checkout_charge_2) {
           $scope.upsellData.extended_checkout_charge_2.charge = "";
           $scope.upsellData.extended_checkout_charge_2.time = "HH";
@@ -168,14 +168,14 @@ $scope.saveClick = function() {
   updateData.is_late_checkout_set = $scope.upsellData.is_late_checkout_set;
   updateData.allowed_late_checkout = $scope.upsellData.allowed_late_checkout;
   updateData.is_exclude_guests = $scope.upsellData.is_exclude_guests;
-  updateData.sent_alert = $scope.upsellData.alert_hour+':'+$scope.upsellData.alert_minute;
+  updateData.sent_alert = $scope.upsellData.alert_hour + ':' + $scope.upsellData.alert_minute;
 
   for (var i = $scope.chekoutchargesArray.length - 1; i >= 0; i--) {
-    if ($scope.chekoutchargesArray[i].time ==="HH" && $scope.chekoutchargesArray[i].charge ==="") {
+    if ($scope.chekoutchargesArray[i].time === "HH" && $scope.chekoutchargesArray[i].charge === "") {
         $scope.chekoutchargesArray.splice(i, 1);
     }
     else {
-        $scope.chekoutchargesArray[i].time = $scope.chekoutchargesArray[i].time+" PM";
+        $scope.chekoutchargesArray[i].time = $scope.chekoutchargesArray[i].time + " PM";
     }
   }
 

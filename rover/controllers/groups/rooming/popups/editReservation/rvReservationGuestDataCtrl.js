@@ -26,7 +26,7 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
         eachData.accompanyingLength = cnt;
         var occupancyName = "";
 
-        if (eachData.occupancy ===1) {
+        if (eachData.occupancy === 1) {
             occupancyName = "Single";
         } else if (eachData.occupancy === 2) {
             occupancyName = "Double";

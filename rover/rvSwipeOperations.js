@@ -17,9 +17,9 @@ var SwipeOperation = function() {
 				'pan': swipedCardData.RVCardReadMaskedPAN
 			};
 
-			if (swipedCardData.RVCardReadTrack2!=='') {
+			if (swipedCardData.RVCardReadTrack2 !== '') {
 				getTokenFrom.et2 = swipedCardData.RVCardReadTrack2;
-			} else if (swipedCardData.RVCardReadETB !=="") {
+			} else if (swipedCardData.RVCardReadETB !== "") {
 				getTokenFrom.etb = swipedCardData.RVCardReadETB;
 			}
 			getTokenFrom.is_encrypted = true;

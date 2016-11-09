@@ -23,7 +23,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				businessM = businessDate.getMonth(),
 				businessY = businessDate.getFullYear();
 
-            day = (m + (y*100)) > ( businessM + (businessY * 100)) ? 1 : parseInt(tzIndependentDate($rootScope.businessDate).getDate());
+            day = (m + (y * 100)) > ( businessM + (businessY * 100)) ? 1 : parseInt(tzIndependentDate($rootScope.businessDate).getDate());
 			return $filter('date')(new Date(y, m, day), $rootScope.dateFormatForAPI);
 		};
 
@@ -65,7 +65,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			    
 			    if (!isInBestAvailableMode() && $scope.stateVariables.selectedRoom !== '' && $scope.stateVariables.selectedRate !== '') {
 				      
-                      var filtered_room = typeof filtered_rate !== 'undefined' ? _.findWhere(filtered_rate.room_rates, {room_type_id: $scope.stateVariables.selectedRoom}): undefined ;
+                      var filtered_room = typeof filtered_rate !== 'undefined' ? _.findWhere(filtered_rate.room_rates, {room_type_id: $scope.stateVariables.selectedRoom}) : undefined ;
 
                       if (typeof filtered_room != 'undefined' &&  typeof _.findWhere(filtered_room.restrictions, {restriction_type_id: 2}) === 'undefined')
                 	      return false;
@@ -134,8 +134,8 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		var getTitleAgainstDailyData = function (dailyData) {
 			var dayHouseAvailability = dailyData.house.availability;
 
-			$scope.stateVariables.selectedRoom = $scope.stateVariables.selectedRoom == null? "" : $scope.stateVariables.selectedRoom;
-			$scope.stateVariables.selectedRate = $scope.stateVariables.selectedRate == null? "" : $scope.stateVariables.selectedRate;
+			$scope.stateVariables.selectedRoom = $scope.stateVariables.selectedRoom == null ? "" : $scope.stateVariables.selectedRoom;
+			$scope.stateVariables.selectedRate = $scope.stateVariables.selectedRate == null ? "" : $scope.stateVariables.selectedRate;
 			if (dayHouseAvailability <= 0) {
 				return dayHouseAvailability.toString();
 			} else if (isInBestAvailableMode()) {
@@ -185,7 +185,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		var findBestAvailableRateAgainstDate = function(dailyData) {
 
             var availabileRates = _.reject(dailyData.rates, function(rate) {
-					$scope.stateVariables.selectedRate = $scope.stateVariables.selectedRate == null? "" : $scope.stateVariables.selectedRate;
+					$scope.stateVariables.selectedRate = $scope.stateVariables.selectedRate == null ? "" : $scope.stateVariables.selectedRate;
 					return (isInRoomTypeSelectedMode() && rate.id !== $scope.stateVariables.selectedRate && $scope.stateVariables.selectedRate != "");
 				}),
 				availableRoomRates = _.pluck (availabileRates, "room_rates"),
@@ -240,7 +240,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				return false;
 			else {
                 
-				$scope.stateVariables.selectedRoom = $scope.stateVariables.selectedRoom == null? "" : $scope.stateVariables.selectedRoom;
+				$scope.stateVariables.selectedRoom = $scope.stateVariables.selectedRoom == null ? "" : $scope.stateVariables.selectedRoom;
 				
 				if (typeof _.findWhere(room_rate.restrictions, {restriction_type_id: 1}) !== 'undefined')
 					return false;
@@ -289,7 +289,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				start: new tzIndependentDate (dailyData.date),
 				end: new tzIndependentDate (dailyData.date),
 				editable: false,
-				title: title == "" || title == 'undefined'? bestRateData.bestAvailableRate.toString() : title,
+				title: title == "" || title == 'undefined' ? bestRateData.bestAvailableRate.toString() : title,
 				toolTipData: bestRateData,
 				currencySymbol: $scope.currencySymbol,
 				currentCalendar: ''
@@ -429,7 +429,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 					right: ''
 				},
 				year: $scope.confirmedCheckinDate.getFullYear(), // Check in year
-				month: typeof $scope.leftCalendarOptions == 'undefined'?$scope.confirmedCheckinDate.getMonth():$scope.leftCalendarOptions.month, // Check in month (month is zero based)
+				month: typeof $scope.leftCalendarOptions == 'undefined' ? $scope.confirmedCheckinDate.getMonth() : $scope.leftCalendarOptions.month, // Check in month (month is zero based)
 				day: $scope.confirmedCheckinDate.getDate(), // Check in day
 				editable: true,
 				disableResizing: false,
@@ -486,7 +486,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				busDate = new tzIndependentDate($rootScope.businessDate);
 			// Disable prev button if current business date is visible in the calendar
 
-			return busDate <= calTo && busDate >=calFrom;
+			return busDate <= calTo && busDate >= calFrom;
 		};
 
 		/**

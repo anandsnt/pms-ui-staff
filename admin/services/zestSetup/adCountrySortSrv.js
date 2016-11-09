@@ -37,7 +37,7 @@ admin.service('ADCountrySortSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 	this.deleteItem = function(params) {
 
 		var deferred = $q.defer();
-		var url = 'api/countries/'+params.id+'/destroy_sorting.json';
+		var url = 'api/countries/' + params.id + '/destroy_sorting.json';
 
 		ADBaseWebSrv.deleteJSON(url).then(function(data) {
 		    deferred.resolve(data);

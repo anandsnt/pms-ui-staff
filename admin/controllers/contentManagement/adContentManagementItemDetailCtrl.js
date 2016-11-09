@@ -101,7 +101,7 @@ $scope.getDurationsWithNameValues = function(items) {
         obj = {};
        	obj.value = item;
        	obj.name = item;
-       	obj.isChecked = $scope.data.durations.indexOf(item) === -1?  false : true;
+       	obj.isChecked = $scope.data.durations.indexOf(item) === -1 ?  false : true;
        	list.push(obj);
 
     });
@@ -182,7 +182,7 @@ $scope.getSelectedAddonPrice = function() {
 			$scope.initialImage = data.image;
 			if (data.page_template === 'ADDON') {
 				$scope.fetchAddons();
-				$scope.data.addon_max_order = $scope.data.addon_max_order === null? "" : $scope.data.addon_max_order;
+				$scope.data.addon_max_order = $scope.data.addon_max_order === null ? "" : $scope.data.addon_max_order;
 				$scope.data.addon_min_duration = $scope.data.addon_min_duration === null ? "" : $scope.data.addon_min_duration;
 			} else {
 				if (data.page_template === 'SPACE') {

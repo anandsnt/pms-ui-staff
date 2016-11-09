@@ -3,11 +3,11 @@ sntRover.controller('rvRoomTransferConfirmationCtrl', ['$scope', '$rootScope', '
 
 	BaseCtrl.call(this, $scope);
 
-	var newRate =parseInt($scope.roomTransfer.newRoomRate);
-	var oldRate =parseInt($scope.roomTransfer.oldRoomRate);
+	var newRate = parseInt($scope.roomTransfer.newRoomRate);
+	var oldRate = parseInt($scope.roomTransfer.oldRoomRate);
 
 	$scope.isSmallerRate = function() {
-		if (newRate<oldRate) {
+		if (newRate < oldRate) {
 			return true;
 		}
 		else {
@@ -16,7 +16,7 @@ sntRover.controller('rvRoomTransferConfirmationCtrl', ['$scope', '$rootScope', '
 	};
 
 	$scope.isLargerRate = function() {
-		if (newRate>oldRate) {
+		if (newRate > oldRate) {
 			return true;
 		}
 		else {

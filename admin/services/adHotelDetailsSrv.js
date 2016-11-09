@@ -38,7 +38,7 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrv
 	that.fetchEditData = function(data) {
 		var deferred = $q.defer();
 
-		var url = '/admin/hotels/'+data.id+'/edit.json';
+		var url = '/admin/hotels/' + data.id + '/edit.json';
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			hotelDetailsData.data = data;
@@ -85,7 +85,7 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrv
     */
 	that.updateHotelDeatils = function(data) {
 		var deferred = $q.defer();
-		var url = '/admin/hotels/'+data.id;
+		var url = '/admin/hotels/' + data.id;
 
 		ADBaseWebSrv.putJSON(url, data).then(function(data) {
 		    deferred.resolve(data);

@@ -158,7 +158,7 @@ angular.module('reportsModule')
                     return appliedFilters;
                 },
                 genParamsAndFilters: function(report, page, perPage, shouldChangeFilters) {
-                    var shouldChangeFilters = 'boolean' === typeof shouldChangeFilters ? shouldChangeFilters: true;
+                    var shouldChangeFilters = 'boolean' === typeof shouldChangeFilters ? shouldChangeFilters : true;
 
                     if ( shouldChangeFilters ) {
                         resetFilters();

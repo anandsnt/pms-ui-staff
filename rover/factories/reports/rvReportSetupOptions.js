@@ -86,7 +86,7 @@ angular.module('reportsModule')
 
         	var changers = {
         		CANCELLATION_NO_SHOW: function(filter) {
-        			if ( filter === 'INCLUDE_CANCELLED' || filter ==='INCLUDE_CANCELED' ) {
+        			if ( filter === 'INCLUDE_CANCELLED' || filter === 'INCLUDE_CANCELED' ) {
         				return {
         					selected: true
         				};

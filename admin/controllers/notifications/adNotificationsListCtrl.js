@@ -41,7 +41,7 @@ admin.controller('ADNotificatinsListCtrl',
         var timeDiff = Math.abs(expires_at.getTime() - activates_at.getTime());
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-        return (diffDays-1);
+        return (diffDays - 1);
     };
 
 	$scope.deleteNotification = function(index, id) {		

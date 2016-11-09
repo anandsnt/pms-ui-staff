@@ -5,9 +5,9 @@
 
 	var postGuestDetails = function(data) {
 		var deferred = $q.defer();
-		var url = '/guest_web/guest_details/'+$rootScope.reservationID+'.json';
+		var url = '/guest_web/guest_details/' + $rootScope.reservationID + '.json';
 
-		data.application = (typeof $rootScope.application !=="undefined") ? $rootScope.application : "";
+		data.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "";
 		$http.put(url, data).success(function(response) {
 			this.responseData = response;
 			deferred.resolve(this.responseData);
@@ -21,7 +21,7 @@
 	var getGuestDetails = function() {
 
 		var deferred = $q.defer();
-		var url = '/guest_web/guest_details/'+$rootScope.reservationID+'.json';
+		var url = '/guest_web/guest_details/' + $rootScope.reservationID + '.json';
 
 		$http.get(url).success(function(response) {
 			deferred.resolve(response);
@@ -67,7 +67,7 @@
 
 	var postGuestBirthDate = function(data) {
 		var deferred = $q.defer();
-		var url = ' /api/guest_details/'+$rootScope.primaryGuestId+'.json';
+		var url = ' /api/guest_details/' + $rootScope.primaryGuestId + '.json';
 
 		$http.put(url, data).success(function(response) {
 			deferred.resolve(response);
@@ -111,7 +111,7 @@
 
 	var fetchDepositDetails = function() {
 		var deferred = $q.defer();
-		var url = '/guest_web/reservations/'+$rootScope.reservationID+'/deposit_details';
+		var url = '/guest_web/reservations/' + $rootScope.reservationID + '/deposit_details';
 
 		$http.get(url).success(function(response) {
 			deferred.resolve(response);
@@ -124,7 +124,7 @@
 
 	var submitPayment = function(data) {
 		var deferred = $q.defer();
-		var url = '/guest_web/reservations/'+$rootScope.reservationID+'/submit_payment';
+		var url = '/guest_web/reservations/' + $rootScope.reservationID + '/submit_payment';
 
 		$http.post(url, data).success(function(response) {
 			this.responseData = response;
@@ -152,7 +152,7 @@
 
 	var submitSurvey = function(data) {
 		var deferred = $q.defer();
-		var url = '/guest_web/zest_web_questions/'+$rootScope.reservationID+'.json';
+		var url = '/guest_web/zest_web_questions/' + $rootScope.reservationID + '.json';
 
 		$http.put(url, data).success(function(response) {
 			this.responseData = response;

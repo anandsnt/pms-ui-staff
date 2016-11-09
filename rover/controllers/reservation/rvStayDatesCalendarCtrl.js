@@ -386,8 +386,8 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 				// instead of new Date(), Fixing the timezone issue related with fullcalendar
 				thisDate = tzIndependentDate(date);
 				rate = getRateForTheDay(dateDetails[availabilityKey]);
-				calEvt.title = typeof rate.value === 'undefined'? '': rate.value;
-				calEvt.rate = typeof rate.name === 'undefined'? '': rate.name; // Displayed in tooltip
+				calEvt.title = typeof rate.value === 'undefined' ? '' : rate.value;
+				calEvt.rate = typeof rate.name === 'undefined' ? '' : rate.name; // Displayed in tooltip
 				calEvt.start = thisDate;
 				calEvt.end = thisDate;
 				calEvt.day = thisDate.getDate().toString();
@@ -397,7 +397,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 				}
 
 				// Event is check-in
-				if (thisDate.getDate() === checkinDate.getDate()&&thisDate.getMonth() === checkinDate.getMonth()&&thisDate.getYear() === checkinDate.getYear()) {
+				if (thisDate.getDate() === checkinDate.getDate() && thisDate.getMonth() === checkinDate.getMonth() && thisDate.getYear() === checkinDate.getYear()) {
 					calEvt.id = "check-in";
 					calEvt.className = "check-in";
 
@@ -406,12 +406,12 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 					}
 					calEvt.durationEditable = "false";
 					// If check-in date and check-out dates are the same, show split view.
-					if (checkinDate.getDate() === checkoutDate.getDate()&&checkinDate.getMonth() === checkoutDate.getMonth()&&checkinDate.getYear() === checkoutDate.getYear()) {
+					if (checkinDate.getDate() === checkoutDate.getDate() && checkinDate.getMonth() === checkoutDate.getMonth() && checkinDate.getYear() === checkoutDate.getYear()) {
 						calEvt.className = "check-in split-view";
 						events.push(calEvt);
 						// checkout-event
 						calEvt = {};
-						calEvt.title =getRateForTheDay(dateDetails[availabilityKey]).value;
+						calEvt.title = getRateForTheDay(dateDetails[availabilityKey]).value;
 						calEvt.start = thisDate;
 						calEvt.end = thisDate;
 						calEvt.day = thisDate.getDate().toString();
@@ -426,7 +426,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 					calEvt.id = "availability";
 					calEvt.className = "mid-stay";
 				// Event is check-out
-				} else if (thisDate.getDate() === checkoutDate.getDate()&&thisDate.getMonth() === checkoutDate.getMonth()&&thisDate.getYear() === checkoutDate.getYear()) {
+				} else if (thisDate.getDate() === checkoutDate.getDate() && thisDate.getMonth() === checkoutDate.getMonth() && thisDate.getYear() === checkoutDate.getYear()) {
 					calEvt.id = "check-out";
 					calEvt.className = "check-out";
 					calEvt.startEditable = "true";

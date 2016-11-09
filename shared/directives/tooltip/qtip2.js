@@ -42,7 +42,7 @@ angular.module('qtip2', [])
                         var beginDateTime = new tzIndependentDate(result.begin_date).getTime();
                         var endDateTime = new tzIndependentDate(result.end_date).getTime();
 
-                        htmlString += "<li ng-class='{active : isActiveDateRange("+beginDateTime+ "," +endDateTime+ ")}'>" + beginDate + " to " + endDate + "</li>";
+                        htmlString += "<li ng-class='{active : isActiveDateRange(" + beginDateTime + "," + endDateTime + ")}'>" + beginDate + " to " + endDate + "</li>";
                       });
                       htmlString += "</ul>";
                       break;

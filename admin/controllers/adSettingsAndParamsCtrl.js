@@ -10,7 +10,7 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
             "name": "Hotel"
         }];
 
-    $scope.cc_batch_processing = settingsAndParamsData.cc_batch_processing === null? "": settingsAndParamsData.cc_batch_processing;
+    $scope.cc_batch_processing = settingsAndParamsData.cc_batch_processing === null ? "" : settingsAndParamsData.cc_batch_processing;
     $scope.cc_auto_settlement_by_eod = settingsAndParamsData.cc_auto_settlement_by_eod;
 
 	$scope.hours = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];

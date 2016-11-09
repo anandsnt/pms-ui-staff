@@ -39,7 +39,7 @@ sntRover.controller('RVReservationNotesPopupCtrl', ['$scope', '$rootScope', func
 	 */
 	$scope.deleteReservationNote = function(event, index) {
 	    $scope.deletedNoteIndex = index;
-	    if (event!== null) {
+	    if (event !== null) {
 	    	event.stopPropagation();
 	    }
 	    var successCallBackDeleteReservationNote = function(data) {

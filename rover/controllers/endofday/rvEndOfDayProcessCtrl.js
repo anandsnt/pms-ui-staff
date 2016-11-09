@@ -2,15 +2,15 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope', 'ngDialog', '$root
 
     BaseCtrl.call(this, $scope);
     var calenderMaxDate;
-    var init =function() {
+    var init = function() {
         setTitle();
         $scope.eodLogDetails = {};
         $scope.checkEodStatus = false;
         $scope.dateFormat = $rootScope.dateFormat;
-        $scope.businessDate =$rootScope.businessDate;       
+        $scope.businessDate = $rootScope.businessDate;       
         setDefaultNextBussinessDate();
         setDefaultSelectedDate();
-        calenderMaxDate = ($rootScope.hotelDetails.is_auto_change_bussiness_date)?$scope.selectedDate:$scope.businessDate;
+        calenderMaxDate = ($rootScope.hotelDetails.is_auto_change_bussiness_date) ? $scope.selectedDate : $scope.businessDate;
         setDisplayDateValues();         
         $scope.setScroller('eod_scroll');
         fetchEodLogOfSelectedDate();
@@ -25,7 +25,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope', 'ngDialog', '$root
         var values = $scope.selectedDate.split("-");
 
         $scope.year = values[0];
-        $scope.month = getMonthName(parseInt(values[1]-1));
+        $scope.month = getMonthName(parseInt(values[1] - 1));
         $scope.day = values[2];
     };
     
@@ -34,7 +34,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope', 'ngDialog', '$root
     */
     var setDefaultNextBussinessDate = function() {
         $scope.nextBusinessDate = tzIndependentDate($rootScope.businessDate);
-        $scope.nextBusinessDate.setDate($scope.nextBusinessDate.getDate()+1);
+        $scope.nextBusinessDate.setDate($scope.nextBusinessDate.getDate() + 1);
         $scope.nextBusinessDate = $filter('date')($scope.nextBusinessDate, "yyyy-MM-dd");
     };
     /*
@@ -77,7 +77,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope', 'ngDialog', '$root
             onSelect: function(date, inst) {
                 $scope.selectedDate = date;
                 setDisplayDateValues();            
-                if ($scope.selectedDate !==$scope.businessDate) {
+                if ($scope.selectedDate !== $scope.businessDate) {
                    fetchEodLogOfSelectedDate(); 
                 }                
                 ngDialog.close();
@@ -108,7 +108,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope', 'ngDialog', '$root
                 refreshScroller();           
             }, 1000);
             // Eod status update handles here
-            if (!$rootScope.isEodRunning&&$scope.checkEodStatus) {
+            if (!$rootScope.isEodRunning && $scope.checkEodStatus) {
                 $state.go('rover.dashboard.manager');
             } 
         };
@@ -120,7 +120,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope', 'ngDialog', '$root
     };
 
     $scope.isLastEodRunWithin18Hr = function() {
-        return ($scope.lastEodRunInMinutes == null)?false:true;
+        return ($scope.lastEodRunInMinutes == null) ? false : true;
     };
     /*
     * Show date picker
@@ -140,7 +140,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope', 'ngDialog', '$root
         if (!$scope.isLastEodRunWithin18Hr()) {
             return "green";
         }
-        if ($scope.isLastEodRunWithin18Hr()&&$scope.hasPermissionToRunEOD()) {
+        if ($scope.isLastEodRunWithin18Hr() && $scope.hasPermissionToRunEOD()) {
             return "orange";
         } else {
             return "grey";
@@ -167,22 +167,22 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope', 'ngDialog', '$root
     };
 
     $scope.showSetToTodayButton = function() {
-        return (!$rootScope.hotelDetails.is_auto_change_bussiness_date||$scope.isSameSelectedAndBussiness())?true:false;
+        return (!$rootScope.hotelDetails.is_auto_change_bussiness_date || $scope.isSameSelectedAndBussiness()) ? true : false;
     };
     $scope.isSameSelectedAndBussiness = function() {
-        return ($scope.selectedDate === $scope.businessDate)?true:false;
+        return ($scope.selectedDate === $scope.businessDate) ? true : false;
     };
     /*
     * returning class name depends on status.
     */
     $scope.getClass = function(processLog) {
-        if (processLog.status =="SUCCESS") {
+        if (processLog.status == "SUCCESS") {
             return "has-success";
-        } else if (processLog.status =='NOT_ACTIVE') {
+        } else if (processLog.status == 'NOT_ACTIVE') {
             return "pending";
-        } else if (processLog.status =='PENDING') {
+        } else if (processLog.status == 'PENDING') {
             return "";
-        } else if (processLog.status =="FAILED" && processLog.isOpened) {
+        } else if (processLog.status == "FAILED" && processLog.isOpened) {
             return " error has-arrow toggle active";
         } else {
             return " error has-arrow toggle ";

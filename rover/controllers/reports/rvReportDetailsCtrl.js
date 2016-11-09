@@ -65,15 +65,15 @@ sntRover.controller('RVReportDetailsCtrl', [
                 var totalsForReport = [], v;
 
                 _.each(totals, function(item) {
-                    if (item.label.indexOf('Conversion')!==-1) {
-                        if (typeof item.value == typeof 'str' && item.value.indexOf('%')!=-1) {
-                        	v = item.value.split('%')[0]+'%';
-                        } else if (item.label.indexOf('Mobile Check In Conversion')!==-1 || item.label.indexOf('Auto Check In Conversion')!==-1) {
+                    if (item.label.indexOf('Conversion') !== -1) {
+                        if (typeof item.value == typeof 'str' && item.value.indexOf('%') != -1) {
+                        	v = item.value.split('%')[0] + '%';
+                        } else if (item.label.indexOf('Mobile Check In Conversion') !== -1 || item.label.indexOf('Auto Check In Conversion') !== -1) {
                         	v = item.value + '%';// these values are currently being passed without the percentage...just need to add the % sign
                         } else {
                             v = 'N/A';
                         }
-                    } else if (item.label.indexOf('Revenue')!==-1) {
+                    } else if (item.label.indexOf('Revenue') !== -1) {
                     	if (typeof item.value == typeof 'str') {
                         	v = item.value;
                         } else {

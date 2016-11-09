@@ -23,7 +23,7 @@ sntRover.controller('RVMoveChargeCtrl',
          */
 		var createBillOptions = function() {
 			// Bills are collected from reservationBillData or transactionsDetails		
-			var data = $scope.reservationBillData ||$scope.transactionsDetails;			
+			var data = $scope.reservationBillData || $scope.transactionsDetails;			
 
 			_.each(data.bills, function(result, index) {
 				if (index !== $scope.currentActiveBill) {
@@ -48,7 +48,7 @@ sntRover.controller('RVMoveChargeCtrl',
          * TODO : Disable search Portion
          */
         $scope.billSelected = function() {
-        	if ($scope.selectedBillId!=="") {
+        	if ($scope.selectedBillId !== "") {
         		$scope.targetBillId = parseInt($scope.selectedBillId);
         		$scope.targetBillSelected = true;
         	} else {
@@ -128,7 +128,7 @@ sntRover.controller('RVMoveChargeCtrl',
 				$scope.searchResults = data.results;
     			_.each($scope.searchResults, function(result, index) {
     				result.entity_id = index;
-    				(result.type === 'RESERVATION') ? result.displaytext = result.last_name+', '+result.first_name : '';
+    				(result.type === 'RESERVATION') ? result.displaytext = result.last_name + ', ' + result.first_name : '';
     			});
     			refreshSearchList();
 			};
@@ -165,8 +165,8 @@ sntRover.controller('RVMoveChargeCtrl',
 			_.each($scope.searchResults, function(result) {
 				if (result.entity_id === selectedId) {
 					$scope.selectedTarget               = result;
-					$scope.selectedTarget.displayNumber = (result.type ==="ACCOUNT" ||result.type ==="GROUP") ? result.account_number : result.confirm_no;
-					$scope.selectedTarget.displaytext   = (result.type ==="ACCOUNT" ||result.type ==="GROUP") ? result.account_name : (result.last_name+' ,'+result.first_name);
+					$scope.selectedTarget.displayNumber = (result.type === "ACCOUNT" || result.type === "GROUP") ? result.account_number : result.confirm_no;
+					$scope.selectedTarget.displaytext   = (result.type === "ACCOUNT" || result.type === "GROUP") ? result.account_name : (result.last_name + ' ,' + result.first_name);
 					$scope.targetBillId                 = $scope.selectedTarget.bills[0].id;
 					$scope.targetSelected               = true;
 				}

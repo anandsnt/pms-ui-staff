@@ -8,7 +8,7 @@ angular.module('sntRover').service('RVActivityLogSrv', [
 		this.fetchActivityLog = function(params) {
 			var deferred = $q.defer();
 
-			var url = '/api/reservation_actions/'+ params;
+			var url = '/api/reservation_actions/' + params;
 
 			rvBaseWebSrvV2.getJSON(url, {per_page: 50, page: 1})
 			.then(function(data) {
@@ -23,7 +23,7 @@ angular.module('sntRover').service('RVActivityLogSrv', [
 
 		this.filterActivityLog = function(params) {
 			var deferred = $q.defer();
-			var url = '/api/reservation_actions/'+ params.id;
+			var url = '/api/reservation_actions/' + params.id;
 
 			params = _.omit(params, 'id');
 

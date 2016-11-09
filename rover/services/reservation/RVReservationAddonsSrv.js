@@ -32,7 +32,7 @@ angular.module('sntRover').service('RVReservationAddonsSrv', ['$q', 'rvBaseWebSr
 
         this.checkInventory = function(params) {
             var deferred = $q.defer();
-            var url =  '/api/addons/'+params.addon_id+'/inventory_details';
+            var url =  '/api/addons/' + params.addon_id + '/inventory_details';
 
             RVBaseWebSrvV2.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);

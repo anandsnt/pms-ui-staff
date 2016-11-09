@@ -20,7 +20,7 @@
 			var searchReservation =  function(data) {
 				var deferred = $q.defer();
 
-				data.application = (typeof $rootScope.application !=="undefined") ? $rootScope.application : "";
+				data.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "";
 				var url = '/guest_web/checkin_reservation_search.json';
 
 				$http.get(url, {params: data}).success(function(response) {
@@ -36,7 +36,7 @@
 			var getToken = function(data) {
 				var deferred = $q.defer();
 
-				data.application = (typeof $rootScope.application !=="undefined") ? $rootScope.application : "";
+				data.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "";
 				var url = '/guest_web/authenticate_checkin_guest';
 
 				$http.post(url, data).success(function(response) {

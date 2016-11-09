@@ -33,7 +33,7 @@ admin.service('ADRatesConfigureSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$rootSco
 
         this.updateHourlySet = function(data) {
             var deferred = $q.defer();
-            var url = "/api/rate_sets/"+ data.id;
+            var url = "/api/rate_sets/" + data.id;
 
             ADBaseWebSrvV2.putJSON(url, data).then(function (data) {
                 deferred.resolve(data);
@@ -46,7 +46,7 @@ admin.service('ADRatesConfigureSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$rootSco
         this.saveSet = function (data) {
 
             var deferred = $q.defer();
-            var url = "/api/rate_date_ranges/" + data.dateRangeId +"/rate_sets";
+            var url = "/api/rate_date_ranges/" + data.dateRangeId + "/rate_sets";
 
             delete data['id'];
             delete data['dateRangeId'];
@@ -102,7 +102,7 @@ admin.service('ADRatesConfigureSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$rootSco
         this.rateManagerStatusCheck = function (data) {
             var deferred = $q.defer();
             var id = data.id;
-            var url = '/api/rate_sets/'+id+'/custom_rate_check';
+            var url = '/api/rate_sets/' + id + '/custom_rate_check';
 
             ADBaseWebSrvV2.getJSON(url).then(function (data) {
                 deferred.resolve(data);

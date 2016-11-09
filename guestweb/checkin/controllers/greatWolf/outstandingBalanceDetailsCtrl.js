@@ -133,7 +133,7 @@
 				// check if user has entered all data
 
 				if (($scope.cardNumber.length === 0) || ($scope.ccv.length === 0) ||
-					(!$scope.monthSelected) ||(!$scope.yearSelected)) 
+					(!$scope.monthSelected) || (!$scope.yearSelected)) 
 				{
 					$scope.cardError = false;
 					$scope.cardNotFilledError = true;

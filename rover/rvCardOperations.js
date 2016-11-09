@@ -13,7 +13,7 @@ var CardOperation = function() {
 		{
 			var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 			var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
-			var carddata= { 'RVCardReadCardType': 'AX',
+			var carddata = { 'RVCardReadCardType': 'AX',
 							'RVCardReadTrack2': '4788250000028291=17121015432112345601',
           					'RVCardReadTrack2KSN': '950067000000062002AF',
           					'RVCardReadMaskedPAN': '5405220008002226',
@@ -32,7 +32,7 @@ var CardOperation = function() {
 		// Simulating the write function for easy testing. May be removed in production.
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
-		var mechineResponse= { };
+		var mechineResponse = { };
 
 		setTimeout(function() {
 			successCallBack(mechineResponse, successCallBackParameters);

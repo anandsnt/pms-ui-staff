@@ -138,7 +138,7 @@ angular.module('sntRover').service('rvAllotmentReservationsListSrv', ['$q', 'rvB
 		this.addReservations = function(params) {
 			var deferred = $q.defer(),
 				allotment_id = params.id,
-				url = '/api/allotments/'+allotment_id+'/reservations';
+				url = '/api/allotments/' + allotment_id + '/reservations';
 
 			var params = {
 				reservations_data: {
@@ -171,7 +171,7 @@ angular.module('sntRover').service('rvAllotmentReservationsListSrv', ['$q', 'rvB
 	 */
 	this.toggleHideRate = function( params ) {
 		var deferred = $q.defer(),
-			url = 'api/allotments/'+params.id+'/hide_rates';
+			url = 'api/allotments/' + params.id + '/hide_rates';
 
 			rvBaseWebSrvV2.postJSON(url, _.without(params, 'id')).then(function(data) {
 			   	 deferred.resolve(data);

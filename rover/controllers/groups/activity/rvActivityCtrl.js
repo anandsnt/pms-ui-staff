@@ -65,7 +65,7 @@ angular.module('sntRover').controller('rvActivityCtrl', [
 		 *@return - Boolean
 		 */
 		$scope.isOldValue = function(value) {
-	        if (value ==="" || typeof value === "undefined" || value === null) {
+	        if (value === "" || typeof value === "undefined" || value === null) {
 	            return false;
 	        	} else {
 	            return true;
@@ -103,7 +103,7 @@ angular.module('sntRover').controller('rvActivityCtrl', [
 	    *setting all sort flags false
 	    *@return {none}
 	    */
-	    $scope.initSort =function() {
+	    $scope.initSort = function() {
 	        $scope.sortOrderOfUserASC = false;
 	        $scope.sortOrderOfDateASC = false;
 	        $scope.sortOrderOfActionASC = false;
@@ -117,16 +117,16 @@ angular.module('sntRover').controller('rvActivityCtrl', [
 		 * @return {none}
 		 */
 	    $scope.sortByUserName = function() {
-        	$scope.sort_field ="USERNAME";
+        	$scope.sort_field = "USERNAME";
 	        if ($scope.sortOrderOfUserASC) {
 	            $scope.initSort();
 	            $scope.sortOrderOfUserDSC = true;
-	            $scope.sort_order="desc";
+	            $scope.sort_order = "desc";
 	        }
 	        else {
 	            $scope.initSort();
 	            $scope.sortOrderOfUserASC = true;
-	            $scope.sort_order="asc";
+	            $scope.sort_order = "asc";
 	        }
         	$scope.updateReport();
     	};
@@ -136,16 +136,16 @@ angular.module('sntRover').controller('rvActivityCtrl', [
 		 * @return {none}
 		 */
     	$scope.sortByDate = function() {
-	        $scope.sort_field ="DATE";
+	        $scope.sort_field = "DATE";
 	        if ($scope.sortOrderOfDateASC) {
 	            $scope.initSort();
 	            $scope.sortOrderOfDateDSC = true;
-	            $scope.sort_order="desc";
+	            $scope.sort_order = "desc";
 	        }
 	        else {
 	            $scope.initSort();
 	            $scope.sortOrderOfDateASC = true;
-	            $scope.sort_order="asc";
+	            $scope.sort_order = "asc";
 	        }
 	        $scope.updateReport();
     	};
@@ -155,22 +155,22 @@ angular.module('sntRover').controller('rvActivityCtrl', [
 		 * @return {none}
 		 */
 	    $scope.sortByAction = function() {
-	        $scope.sort_field ="ACTION";
+	        $scope.sort_field = "ACTION";
 	        if ($scope.sortOrderOfActionASC) {
 	            $scope.initSort();
 	            $scope.sortOrderOfActionDSC = true;
-	            $scope.sort_order="desc";
+	            $scope.sort_order = "desc";
 	        }
 	        else {
 	            $scope.initSort();
 	            $scope.sortOrderOfActionASC = true;
-	            $scope.sort_order="asc";
+	            $scope.sort_order = "asc";
 	        }
 	        $scope.updateReport();
 	    };
 		$scope.updateReport = function() {
 	        var params = {
-	            page: $scope.prevAction?$scope.page - 1:($scope.nextAction?$scope.page + 1:$scope.page),
+	            page: $scope.prevAction ? $scope.page - 1 : ($scope.nextAction ? $scope.page + 1 : $scope.page),
 	            per_page: $scope.perPage
 	        	};
 

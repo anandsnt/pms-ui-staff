@@ -91,7 +91,7 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 				isOOS = room.room_reservation_hk_status === 2;
 			}
 
-			return isOOS? OOSTitle : (isOOO ? OOOTitle : false);
+			return isOOS ? OOSTitle : (isOOO ? OOOTitle : false);
 		};
 
 		// default room HK status

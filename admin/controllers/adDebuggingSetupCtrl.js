@@ -109,7 +109,7 @@ admin.controller('adDebuggingSetupCtrl', ['$scope', 'adDebuggingSetupSrv', '$sta
   var setDurations = function() {
     _.each($scope.deviceList, function(device) {
         if (device.logging_end_time != "" && device.logging_start_time != "") {
-          device.hours_log_enabled = (new Date(device.logging_end_time).getTime() - new Date(device.logging_start_time).getTime())/(1000*60*60) ;
+          device.hours_log_enabled = (new Date(device.logging_end_time).getTime() - new Date(device.logging_start_time).getTime()) / (1000 * 60 * 60) ;
         }
     });
   };
@@ -122,7 +122,7 @@ admin.controller('adDebuggingSetupCtrl', ['$scope', 'adDebuggingSetupSrv', '$sta
 
   $scope.changeDuration = function(hours) {
     $scope.selectedDevice.logging_start_time = new Date().toLocaleString();
-    $scope.selectedDevice.logging_end_time = new Date(new Date().getTime() + (hours * 1000 *60 *60)).toLocaleString();
+    $scope.selectedDevice.logging_end_time = new Date(new Date().getTime() + (hours * 1000 * 60 * 60)).toLocaleString();
   };
 
   $scope.selectDevice = function(event, device, index) {

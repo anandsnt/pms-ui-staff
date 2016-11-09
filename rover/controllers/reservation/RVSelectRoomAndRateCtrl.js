@@ -175,7 +175,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				var payLoad = {
 					from_date: ARRIVAL_DATE,
 					to_date: DEPARTURE_DATE,
-					company_id: ($scope.stateCheck.activeView == 'RECOMMENDED') ? $scope.reservationData.company.id: null,
+					company_id: ($scope.stateCheck.activeView == 'RECOMMENDED') ? $scope.reservationData.company.id : null,
 					travel_agent_id: ($scope.stateCheck.activeView == 'RECOMMENDED') ? $scope.reservationData.travelAgent.id : null,
 					group_id: $scope.reservationData.group.id || $scope.reservationData.allotment.id,
 					promotion_code: ($scope.stateCheck.activeView == 'RECOMMENDED') ? $scope.reservationData.searchPromoCode : null,
@@ -186,7 +186,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					include_expired_promotions: !!$scope.reservationData.promotionId && $scope.stateCheck.showClosedRates,
 					per_page: $scope.stateCheck.pagination.rate.roomsList.perPage,
 					page: page,
-					is_member: ($scope.stateCheck.activeView == 'RECOMMENDED') ? !!$scope.reservationData.member.isSelected: ""
+					is_member: ($scope.stateCheck.activeView == 'RECOMMENDED') ? !!$scope.reservationData.member.isSelected : ""
 				};
 
 				if ($scope.stateCheck.stayDatesMode) {
@@ -383,17 +383,17 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 								_.indexOf($scope.reservationData.ratesMeta[roomType.rate_id].linked_promotion_ids, $scope.reservationData.code
 									.id) > -1) ? !proccesedRestrictions.isPromoInvalid &&
 								_.indexOf($scope.reservationData.ratesMeta[roomType.rate_id].linked_promotion_ids, $scope.reservationData.code
-									.id) > -1: false;
+									.id) > -1 : false;
 
 
 					_.each(roomType.restrictions, function(restrictionObject) {
 					   var restrictionKey = restrictionObject.restriction_type_id;
 
-					   restrictionObject.restrictionBgClass = "bg-"+getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
+					   restrictionObject.restrictionBgClass = "bg-" + getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
 					 //  restrictionObject.restrictionBgColor = getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
 					   restrictionObject.restrictionIcon = getRestrictionIcon(ratesMeta.restrictions[restrictionKey].key);
 					});
-					var restrictionsLength = (typeof roomType.restrictions!=="undefined") ? roomType.restrictions.length : 0;
+					var restrictionsLength = (typeof roomType.restrictions !== "undefined") ? roomType.restrictions.length : 0;
 					var roomTypeInfo = {
 							isCollapsed: $scope.stateCheck.selectedRoomType != roomType.id,
 							name: $scope.reservationData.roomsMeta[roomType.id].name,
@@ -449,7 +449,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					_.each(rate.restrictions, function(restrictionObject) {
 					   var restrictionKey = restrictionObject.restriction_type_id;
 
-					   restrictionObject.restrictionBgClass = "bg-"+getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
+					   restrictionObject.restrictionBgClass = "bg-" + getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
 					  // restrictionObject.restrictionBgColor = getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
 					   restrictionObject.restrictionIcon = getRestrictionIcon(ratesMeta.restrictions[restrictionKey].key);
 					});
@@ -1774,7 +1774,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						_.each(room.restrictions, function(restrictionObject) {
 						   var restrictionKey = restrictionObject.restriction_type_id;
 
-						   restrictionObject.restrictionBgClass = "bg-"+getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
+						   restrictionObject.restrictionBgClass = "bg-" + getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
 						   // restrictionObject.restrictionBgColor = getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
 						   restrictionObject.restrictionIcon = getRestrictionIcon(ratesMeta.restrictions[restrictionKey].key);
 						});
@@ -1842,7 +1842,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						_.each(rate.restrictions, function(restrictionObject) {
 						   var restrictionKey = restrictionObject.restriction_type_id;
 
-						   restrictionObject.restrictionBgClass = "bg-"+getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
+						   restrictionObject.restrictionBgClass = "bg-" + getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
 						  // restrictionObject.restrictionBgColor = getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
 						   restrictionObject.restrictionIcon = getRestrictionIcon(ratesMeta.restrictions[restrictionKey].key);
 						});
@@ -1855,7 +1855,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						var isMember = ($scope.stateCheck.activeView == 'RECOMMENDED' && $scope.reservationData.member.isSelected && $scope.reservationData.ratesMeta[rate.id].is_member) ? !!$scope.reservationData.member.isSelected && $scope.reservationData.ratesMeta[rate.id].is_member : false;
 						var isPromotion = ($scope.stateCheck.activeView == 'RECOMMENDED' && !proccesedRestrictions.isPromoInvalid && _.indexOf($scope.reservationData.ratesMeta[rate.id].linked_promotion_ids, $scope.reservationData.code.id) > -1) ? !proccesedRestrictions.isPromoInvalid && _.indexOf($scope.reservationData.ratesMeta[rate.id].linked_promotion_ids, $scope.reservationData.code.id) > -1 : false;
 
-						var restrictionsLength = (typeof rate.restrictions!=="undefined") ? rate.restrictions.length : 0;
+						var restrictionsLength = (typeof rate.restrictions !== "undefined") ? rate.restrictions.length : 0;
 
 						var rateInfo = {
 							id: rate.id,
@@ -2116,7 +2116,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		_.each(restrictionsArray, function(restrictionObject) {
 		   var restrictionKey = restrictionObject.key;
 
-		   restrictionObject.restrictionBgClass = "bg-"+getRestrictionClass(restrictionKey);
+		   restrictionObject.restrictionBgClass = "bg-" + getRestrictionClass(restrictionKey);
 		   // restrictionObject.restrictionBgColor = getRestrictionClass(restrictionKey);
 		   restrictionObject.restrictionIcon = getRestrictionIcon(restrictionKey);
 		});

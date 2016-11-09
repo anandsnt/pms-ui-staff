@@ -6,7 +6,7 @@ var dclone = function(object, unwanted_keys) {
   	}
   	var newObject = JSON.parse(JSON.stringify(object));
 
-  	for (var i=0; i < unwanted_keys.length; i++) {
+  	for (var i = 0; i < unwanted_keys.length; i++) {
   		delete newObject[unwanted_keys[i]];
   	}
   	return newObject;
@@ -73,7 +73,7 @@ var CurrencyInfoMappings = {
 var isAnyMatch = function(val, arr) {
     var ret = false;
 
-    for (var i=0, j= arr.length ; i<j ; i++) {
+    for (var i = 0, j = arr.length ; i < j ; i++) {
         if (arr[i] === val) {
             ret = true;
             break;

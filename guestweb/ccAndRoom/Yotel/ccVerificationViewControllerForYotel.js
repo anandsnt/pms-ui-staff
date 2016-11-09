@@ -5,7 +5,7 @@
   $scope.cardNumber = "";
   $scope.ccv = "";
   $scope.monthSelected = "";
-  $scope.yearSelected ="";
+  $scope.yearSelected = "";
 
   if ($rootScope.isCheckedin) {
     $state.go('checkinSuccess');
@@ -23,7 +23,7 @@
 	if ($scope.pageValid) {
 
     $scope.checkoutmessage = $stateParams.message;
-    $scope.isFromCheckoutNow =  ($stateParams.isFromCheckoutNow  ==="true") ? true :false;
+    $scope.isFromCheckoutNow =  ($stateParams.isFromCheckoutNow  === "true") ? true : false;
     $scope.fee = $stateParams.fee;
     var MLISessionId = "";
 
@@ -67,7 +67,7 @@
 
           $scope.years = [];
           var startYear = new Date().getFullYear();
-          var endYear   = parseInt(startYear) +100;
+          var endYear   = parseInt(startYear) + 100;
 
           for (year = parseInt(startYear); year <= parseInt(endYear); year++) {
             $scope.years.push(year);
@@ -127,12 +127,12 @@
 
     $scope.goToNextStep = function() {
 
-        var cardExpiryDate = $scope.yearSelected+"-"+$scope.monthSelected+"-"+"01";
+        var cardExpiryDate = $scope.yearSelected + "-" + $scope.monthSelected + "-" + "01";
         var data = {'reservation_id': $rootScope.reservationID, 'token': MLISessionId, 'card_expiry': cardExpiryDate, 'payment_type': "CC"};
 
         ccVerificationService.verifyCC(data).then(function(response) {
           $scope.isFetching = false;
-          if (response.status ==="success") {
+          if (response.status === "success") {
               $rootScope.isCCOnFile = true;
               $rootScope.isCcAttachedFromGuestWeb = true;
               if ($stateParams.isFromCheckoutNow === "true") {
@@ -162,7 +162,7 @@
 
        $scope.callback = function(response) {
           $scope.$apply();
-          if (response.status ==="ok") {
+          if (response.status === "ok") {
               MLISessionId = response.session;
               $scope.goToNextStep();
           }

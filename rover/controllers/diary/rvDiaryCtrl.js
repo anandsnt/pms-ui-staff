@@ -352,7 +352,7 @@ angular.module('sntRover')
 			time span.
 		*/
 			display: {
-				x_offset: isVaultDataSet ? (vaultData.start_date-7200000) : (correctTimeDate.start_date-7200000),
+				x_offset: isVaultDataSet ? (vaultData.start_date - 7200000) : (correctTimeDate.start_date - 7200000),
 				x_0: undefined,
 				x_origin: isVaultDataSet ? vaultData.start_date : correctTimeDate.start_date,
 				x_n: isVaultDataSet ? (vaultData.__start_date) : (correctTimeDate.__start_date),
@@ -1813,7 +1813,7 @@ angular.module('sntRover')
 				}
 				else {
 					$scope.gridProps.filter.rate_type = rate_type ? rate_type : "Standard";
-					$scope.gridProps.filter.arrival_time = arrival_time ? arrival_time: "00:00";
+					$scope.gridProps.filter.arrival_time = arrival_time ? arrival_time : "00:00";
 					$scope.gridProps.filter.room_type = room_type ? room_type : "";
 				}
 
@@ -1830,7 +1830,7 @@ angular.module('sntRover')
 	var getRateType = function (reservation) {
 		return ( reservation.travel_agent_id === null || reservation.travel_agent_id === '') &&
 				( reservation.company_card_id === null || reservation.company_card_id === '') ?
-				'Standard': 'Corporate';
+				'Standard' : 'Corporate';
 	};
 
 	/**

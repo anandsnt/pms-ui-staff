@@ -598,7 +598,7 @@ sntZestStation.controller('zsRootCtrl', [
 					}
 
 				} else {
-					homeInActivityTimeInSeconds = homeInActivityTimeInSeconds+1;
+					homeInActivityTimeInSeconds = homeInActivityTimeInSeconds + 1;
 				}	
 			}
 		};
@@ -1022,7 +1022,7 @@ sntZestStation.controller('zsRootCtrl', [
 				storage.setItem(oosStorageKey, workstationStatus);
 				// set workstation oos reason in localstorage
 				console.log('set works station :--->' + oosReason);
-				(!!oosReason) ? storage.setItem(oosReasonKey, oosReason): '';
+				(!!oosReason) ? storage.setItem(oosReasonKey, oosReason) : '';
 			} catch (err) {
 				console.warn(err);
 			}
@@ -1096,7 +1096,7 @@ sntZestStation.controller('zsRootCtrl', [
 
 			console.info("chrome app id [ " + chromeAppId + ' ]');
 			// maximize the chrome app in the starting
-			(chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId, "zest-station-login"): "";
+			(chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId, "zest-station-login") : "";
 		};
 		var colorLogText = function(val) {
 			// if using chrome, push debugging log for UI, colors only supported by chrome 24+

@@ -16,7 +16,7 @@ sntRover.controller('RVAddNewHotelLoyaltyController', ['$scope', '$rootScope', '
 
     		if ($scope.userMembershipType === userMembershipType.hl_value) {
      			$scope.userMembershipLevels = userMembershipType.levels;
-     			if ($scope.userMembershipLevels.length >0) {
+     			if ($scope.userMembershipLevels.length > 0) {
      				$scope.isLevelsAvailable = true;
      			}
      			else {

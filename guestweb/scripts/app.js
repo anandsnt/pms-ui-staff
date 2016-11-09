@@ -31,7 +31,7 @@ sntGuestWeb.controller('rootController', ['$state', '$scope', function($state, $
 	 */
 	$scope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
 		event.preventDefault();
-		console.info("Hotel admin settings are wrong. This feature is not available for this theme. Please check the settings related to -> "+unfoundState.to);
+		console.info("Hotel admin settings are wrong. This feature is not available for this theme. Please check the settings related to -> " + unfoundState.to);
 		$state.go('noOptionAvailable');
 	});
 }]);
@@ -171,9 +171,9 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 
 		$rootScope.is_checkin_now_on = checkinNowisAvailable();
 		$rootScope.checkin_now_text = 
-		(reservationAndhotelData.zest_checkin_now_text !== null && typeof reservationAndhotelData.zest_checkin_now_text !== "undefined" && reservationAndhotelData.zest_checkin_now_text.length>0) ? reservationAndhotelData.zest_checkin_now_text : "I'm Already Here";
+		(reservationAndhotelData.zest_checkin_now_text !== null && typeof reservationAndhotelData.zest_checkin_now_text !== "undefined" && reservationAndhotelData.zest_checkin_now_text.length > 0) ? reservationAndhotelData.zest_checkin_now_text : "I'm Already Here";
 		$rootScope.checkin_later_text = 
-		(reservationAndhotelData.zest_checkin_later_text !== null && typeof reservationAndhotelData.zest_checkin_later_text !== "undefined" && reservationAndhotelData.zest_checkin_later_text.length>0) ? reservationAndhotelData.zest_checkin_later_text :"Arriving Later";
+		(reservationAndhotelData.zest_checkin_later_text !== null && typeof reservationAndhotelData.zest_checkin_later_text !== "undefined" && reservationAndhotelData.zest_checkin_later_text.length > 0) ? reservationAndhotelData.zest_checkin_later_text : "Arriving Later";
 
 
 		if (reservationAndhotelData.is_sent_to_que === 'true' 
@@ -202,7 +202,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		} else if (reservationAndhotelData.is_precheckin_only === 'true' 
 		           && reservationAndhotelData.reservation_status === 'RESERVED' 
 		           && (reservationAndhotelData.is_auto_checkin === 'true' 
-		           ||(reservationAndhotelData.is_sent_to_que === 'true' 
+		           || (reservationAndhotelData.is_sent_to_que === 'true' 
 		           && !!reservationAndhotelData.zest_web_use_new_sent_to_que_action)))
 		{
 			$state.go('checkinConfirmation'); // checkin starting -> page precheckin + auto checkin

@@ -14,7 +14,7 @@ sntGuestWeb.controller('gwETAUpdationController', ['$scope', '$state', '$control
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.timings = returnTimeArray();// utils function
 			$scope.arrivalTime = "";
-			$scope.comment ="";
+			$scope.comment = "";
 		}());
 
 		var fetchHotelTimeSuccess = function(response) {

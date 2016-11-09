@@ -1959,7 +1959,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return {undefined}
          */
         var setActiveLeftSideMenu = function () {
-            var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup": "menuManageGroup";
+            var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup" : "menuManageGroup";
 
             $scope.$emit("updateRoverLeftMenu", activeMenu);
         };

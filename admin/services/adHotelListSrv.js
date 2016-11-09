@@ -21,7 +21,7 @@ admin.service('ADHotelListSrv', ['$http', '$q', 'ADBaseWebSrv', function($http, 
     */
 	this.postReservationImportToggle = function(data) {
 		var deferred = $q.defer();
-		var url = '/admin/hotels/'+data.hotel_id+'/toggle_res_import_on';
+		var url = '/admin/hotels/' + data.hotel_id + '/toggle_res_import_on';
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);

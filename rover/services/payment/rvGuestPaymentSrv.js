@@ -2,7 +2,7 @@ angular.module('sntRover').service('RVGuestCardSrv', ['$http', '$q', 'RVBaseWebS
 
 	this.fetchGuestPaymentData = function(userId) {
 		var deferred = $q.defer();
-		var url = '/staff/payments/payment.json?user_id='+userId;
+		var url = '/staff/payments/payment.json?user_id=' + userId;
 
 		RVBaseWebSrv.getJSON(url).then(function(data) {
 			    deferred.resolve(data);

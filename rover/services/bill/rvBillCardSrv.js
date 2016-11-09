@@ -3,7 +3,7 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
 
 	this.fetch = function(reservationId) {
 		var deferred = $q.defer();
-		var url = '/staff/reservation/bill_card.json?reservation_id='+reservationId;
+		var url = '/staff/reservation/bill_card.json?reservation_id=' + reservationId;
 
 			BaseWebSrvV2.getJSON(url).then(function(data) {
 
@@ -25,11 +25,11 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
 				data.credit_details_list = [];
 				angular.forEach(data.fee_details, function(fees, index1) {
 					angular.forEach(fees.charge_details, function(charge, index2) {
-						charge.date=fees.date;
+						charge.date = fees.date;
 						data.charge_details_list.push(charge);
 					});
 					angular.forEach(fees.credit_details, function(credit, index3) {
-						credit.date=fees.date;
+						credit.date = fees.date;
 						data.credit_details_list.push(credit);
 					});
 				});
@@ -97,7 +97,7 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
 
 	this.getAdvanceBill = function(data) {
 		var deferred = $q.defer();
-		var url = 'api/reservations/'+data.id+'/advance_bill';
+		var url = 'api/reservations/' + data.id + '/advance_bill';
 
 			RVBaseWebSrv.postJSON(url).then(function(data) {
 				deferred.resolve(data);
@@ -138,7 +138,7 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
 	this.transactionEditChargeDescription = function(params) {
 
 		var deferred = $q.defer();
-		var url = 'api/financial_transactions/' + params.id+ '/save_custom_description';
+		var url = 'api/financial_transactions/' + params.id + '/save_custom_description';
 
 		BaseWebSrvV2.postJSON(url, params.postData).then(function(data) {
 		   	 deferred.resolve(data);
@@ -160,7 +160,7 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
 
 		var deferred = $q.defer();
 		var trasactionId = deleteData.id;
-		var url = 'api/financial_transactions/'+trasactionId;
+		var url = 'api/financial_transactions/' + trasactionId;
 
 		BaseWebSrvV2.putJSON(url, deleteData.data).then(function(data) {
 		   	 deferred.resolve(data);
@@ -180,7 +180,7 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
 	this.transactionSplit = function(splitData) {
 		var deferred = $q.defer();
 		var trasactionId = splitData.id;
-		var url = 'api/financial_transactions/'+trasactionId;
+		var url = 'api/financial_transactions/' + trasactionId;
 
 		BaseWebSrvV2.putJSON(url, splitData.data).then(function(data) {
 		   	 deferred.resolve(data);
@@ -264,7 +264,7 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
 
 	this.toggleHideRate = function( params ) {
 		var deferred = $q.defer();
-		var url = 'api/reservations/'+params.reservation_id+'/hide_rates';
+		var url = 'api/reservations/' + params.reservation_id + '/hide_rates';
 
 			BaseWebSrvV2.postJSON(url, params).then(function(data) {
 			   	 deferred.resolve(data);

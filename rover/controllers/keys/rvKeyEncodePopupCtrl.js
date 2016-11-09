@@ -328,9 +328,9 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		// No encoder is attached to ipad.
 		if ($scope.isRemoteEncodingEnabled) {
 			that.numOfKeys--;
-			that.printKeyStatus[index-1].printed = true;
+			that.printKeyStatus[index - 1].printed = true;
 			$scope.printedKeysCount = index;
-			$scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
+			$scope.buttonText = 'Print key ' + (index + 1) + '/' + that.printKeyStatus.length;
 
 			if (that.numOfKeys === 0) {
 				that.showKeyPrintSuccess();
@@ -372,9 +372,9 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
     			}
 
 				that.numOfKeys--;
-				that.printKeyStatus[index-1].printed = true;
+				that.printKeyStatus[index - 1].printed = true;
 				$scope.printedKeysCount = index;
-				$scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
+				$scope.buttonText = 'Print key ' + (index + 1) + '/' + that.printKeyStatus.length;
 				$scope.$apply();
 				if (that.numOfKeys === 0) {
 					that.showKeyPrintSuccess();
@@ -434,9 +434,9 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 					return true;
 				}
 				that.setStatusAndMessage($filter('translate')('KEY_BAND_CREATED_SUCCESSFULLY'), 'success');
-				that.printKeyStatus[index-1].printed = true;
+				that.printKeyStatus[index - 1].printed = true;
 				$scope.printedKeysCount = index;
-				$scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
+				$scope.buttonText = 'Print key ' + (index + 1) + '/' + that.printKeyStatus.length;
 				$scope.$apply();
 				return;
 			},
@@ -445,9 +445,9 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 				that.numOfKeys--;
 				if (that.numOfKeys > 0) {
 					that.setStatusAndMessage($filter('translate')('KEY_BAND_CREATED_FAILED_WRITING_BANDTYPE') + ': ' + errorObject['RVErrorDesc'], 'error');
-					that.printKeyStatus[index-1].printed = true;
+					that.printKeyStatus[index - 1].printed = true;
 					$scope.printedKeysCount = index;
-                                        $scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
+                                        $scope.buttonText = 'Print key ' + (index + 1) + '/' + that.printKeyStatus.length;
 					$scope.$apply();
 				}
 				else {
@@ -493,9 +493,9 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			$scope.$emit('hideLoader');
 			that.numOfKeys--;
 			if (that.numOfKeys > 0) {
-				that.printKeyStatus[index-1].printed = true;
+				that.printKeyStatus[index - 1].printed = true;
 				$scope.printedKeysCount = index;
-				$scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
+				$scope.buttonText = 'Print key ' + (index + 1) + '/' + that.printKeyStatus.length;
 				$scope.$apply();
 			}
 			else {

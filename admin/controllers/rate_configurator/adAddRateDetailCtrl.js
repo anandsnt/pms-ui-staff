@@ -171,7 +171,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 var chargeCodes = $scope.rateData.commission_details.charge_codes,
                     selectedChargeCodes = [];
 
-                if ( typeof chargeCodes !== 'undefined' && chargeCodes.length >0 ) {
+                if ( typeof chargeCodes !== 'undefined' && chargeCodes.length > 0 ) {
                     angular.forEach( chargeCodes, function( item, index) {
                         if ( item.is_checked ) {
                             selectedChargeCodes.push(item.id);

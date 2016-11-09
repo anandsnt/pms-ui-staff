@@ -32,7 +32,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.totalSearchResults = RVSearchSrv.totalSearchResults;
 		$scope.searchPerPage = RVSearchSrv.searchPerPage;
 		$scope.reservationSearch = ($state.current.name === "rover.search");
-		$scope.search_area_id = !$scope.reservationSearch ? "dashboard-search": "search";
+		$scope.search_area_id = !$scope.reservationSearch ? "dashboard-search" : "search";
 
 		if ($stateParams.type === "OPEN_BILL_CHECKOUT" ) {
 			// CICO-24079 - OPEN_BILL_CHECKOUT - Date picker from date should default to Null.
@@ -1056,10 +1056,10 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			}
 		});
 		$scope.showStatus = function(reservation) {
-			if (reservation.room_ready_status =='CLEAN' ||reservation.room_ready_status== 'INSPECTED') {
+			if (reservation.room_ready_status == 'CLEAN' || reservation.room_ready_status == 'INSPECTED') {
 				return false;
 			} else {
-				return reservation.reservation_status === 'CHECKING_IN'&& (!!reservation.is_room_due_out || !!reservation.fostatus);
+				return reservation.reservation_status === 'CHECKING_IN' && (!!reservation.is_room_due_out || !!reservation.fostatus);
 			}
 		};
 

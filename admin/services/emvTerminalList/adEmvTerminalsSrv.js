@@ -74,7 +74,7 @@ admin.service('ADEmvTerminalsSrv', ['$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', func
 	* @param {object} details of emv terminal
 	*/
 	this.updateItemDetails = function(data) {
-		var url = "/api/emv_terminals/"+data.id;
+		var url = "/api/emv_terminals/" + data.id;
 		var deferred = $q.defer();
 
 		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {

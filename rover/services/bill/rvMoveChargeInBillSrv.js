@@ -2,7 +2,7 @@ angular.module('sntRover').service('RVMoveChargeSrv', ['$http', '$q', 'BaseWebSr
 
 	this.fetchSearchedItems = function(data) {
 		var deferred = $q.defer();
-		var url = '/api/bills/search_for_associated?search_by_no='+data.number_search+'&search_by_name='+data.text_search+'&bill_id='+data.bill_id;
+		var url = '/api/bills/search_for_associated?search_by_no=' + data.number_search + '&search_by_name=' + data.text_search + '&bill_id=' + data.bill_id;
 
 		BaseWebSrvV2.getJSON(url).then(function(data) {
 		   	 deferred.resolve(data);

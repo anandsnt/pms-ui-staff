@@ -115,10 +115,10 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 	var formGridDataForGroupAvailability = function(datafromApi) {
 		var gridDataForGroupAvailability = {};
 		var dates = [];
-		var groupTotalRooms =[];
+		var groupTotalRooms = [];
 		var groupTotalPickedUps = [];
 		var holdstatus = [];
-		var groupDetails =[];
+		var groupDetails = [];
 		var groupDetail = [];
 
 		_.each(datafromApi.results, function(element, index, lis) {
@@ -135,7 +135,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			holdstatus.push(element.hold_status);
 			// Forms array(temp) of details of groups date wise
 			_.each(element.group_availability, function(ele, ind, list) {
-				var detail ={
+				var detail = {
 					"id": ele.group_id,
 					"Name": ele.name,
 					"date": element.date,
@@ -150,7 +150,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		});
 		// Forms groupwise Details.
 		_.each(datafromApi.results[0].group_availability, function(element, index, list) {
-			var groupdetail ={
+			var groupdetail = {
 				"name": element.name,
 				"id": element.group_id,
 				"holdStatusName": getGroupName(element.hold_status_id, datafromApi.hold_status),
@@ -176,7 +176,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 	*/
 	var getGroupName = function(GroupId, holdstatuses) {
 		var grp = _.find(holdstatuses, function(elem) {
-			return (elem.id === GroupId)?true:false;
+			return (elem.id === GroupId) ? true : false;
 		});
 
 		return !!grp ? grp.name : '';
@@ -289,7 +289,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 	var formGridAdditionalData = function(roomAvailabilityAdditionalData) {
 		var additionalData = {};
 		var roomtypeDetails = [];
-		var roomTypeNames =[],
+		var roomTypeNames = [],
 			bestAvailabilityRate = [],
 			adultsChildrenCounts = [];
 
@@ -330,7 +330,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		});
 
 
-		additionalData ={
+		additionalData = {
 			'roomTypeWiseDetails': _.zip.apply(null, roomtypeDetails),
 			'roomTypeNames': roomTypeNames,
 			'adultsChildrenCounts': adultsChildrenCounts,
@@ -373,7 +373,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 	*/
 	var getAllotmentName = function(GroupId, holdstatuses) {
 		var grp = _.find(holdstatuses, function(elem) {
-			return (elem.id === GroupId)?true:false;
+			return (elem.id === GroupId) ? true : false;
 		});
 
 		return !!grp ? grp.name : '';
@@ -386,10 +386,10 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 	var formGridDataForAllotmentAvailability = function(datafromApi) {
 		var gridDataForAllotmentAvailability = {};
 		var dates = [];
-		var groupTotalRooms =[];
+		var groupTotalRooms = [];
 		var groupTotalPickedUps = [];
 		var holdstatus = [];
-		var groupDetails =[];
+		var groupDetails = [];
 		var groupDetail = [];
 
 		_.each(datafromApi.results, function(element, index, lis) {
@@ -410,7 +410,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
 			// Forms array(temp) of details of groups date wise
 			_.each(element.availability, function(ele, ind, list) {
-				var detail ={
+				var detail = {
 					"id": ele.id,
 					"Name": ele.name,
 					"date": element.date, // is needed, not in API
@@ -427,7 +427,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
 		// Forms groupwise Details.
 		_.each(datafromApi.results[0].availability, function(element, index, list) {
-			var groupdetail ={
+			var groupdetail = {
 				"name": element.name,
 				"id": element.id,
 				"holdStatusName": getAllotmentName(element.hold_status_id, datafromApi.hold_status),
@@ -467,7 +467,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		var url = 'api/availability_main';
 
 		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function(resultFromAPI) {
-			that.data.gridData ={};
+			that.data.gridData = {};
 			that.data.gridData = formGridData(resultFromAPI);
 			deferred.resolve(resultFromAPI);
 		}, function(data) {
@@ -699,13 +699,13 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
 			// Available tonight
 			houseDetails.available_tonight[dayInfo.date] = {};
-			houseDetails.available_tonight[dayInfo.date].value = Math.round(dayInfo.availability /houseTotal * 100);
-			houseDetails.available_tonight[dayInfo.date].percent = Math.round(dayInfo.availability /houseTotal * 100);
+			houseDetails.available_tonight[dayInfo.date].value = Math.round(dayInfo.availability / houseTotal * 100);
+			houseDetails.available_tonight[dayInfo.date].percent = Math.round(dayInfo.availability / houseTotal * 100);
 
 			// Occupied tonight
 			houseDetails.occupied_tonight[dayInfo.date] = {};
-			houseDetails.occupied_tonight[dayInfo.date].value = Math.round(dayInfo.sold /houseTotal * 100);
-			houseDetails.occupied_tonight[dayInfo.date].percent = Math.round(dayInfo.sold /houseTotal * 100);
+			houseDetails.occupied_tonight[dayInfo.date].value = Math.round(dayInfo.sold / houseTotal * 100);
+			houseDetails.occupied_tonight[dayInfo.date].percent = Math.round(dayInfo.sold / houseTotal * 100);
 			// Total room revenue
 			houseDetails.total_room_revenue[dayInfo.date] = dayInfo.total_room_revenue;
 			// Average daily rate

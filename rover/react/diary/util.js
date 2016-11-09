@@ -118,7 +118,7 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 	};
 	Time.prototype.padZeroes = function(time) {
 		time = +time;
-		return time < 10 ? '0' + time :time;
+		return time < 10 ? '0' + time : time;
 	};
 	Time.prototype.toString = function(asAMPM) {
 		var hours = this.padZeroes(this.hours),
@@ -232,7 +232,7 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 				monthNameShort: __MONTHS_SHORT[this.getMonth()],
 				year: this.getFullYear(),
 				toDateString: function() {
-					return this.year + '-' + (this.month+1) + '-' + (this.day.length < 2 ? '0' : '') + this.day;
+					return this.year + '-' + (this.month + 1) + '-' + (this.day.length < 2 ? '0' : '') + this.day;
 				},
 				fromDate: function() {
 					var tmp = this.toLocaleDateString().replace(/\//g, '-').split('-').reverse();

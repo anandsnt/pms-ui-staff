@@ -7,7 +7,7 @@ sntRover.config([
 
         $translateProvider.useStaticFilesLoader({
           prefix: '/assets/rvLocales/',
-          suffix: '.json?time='+currentTime
+          suffix: '.json?time=' + currentTime
         });
         $translateProvider.fallbackLanguage('EN');
 

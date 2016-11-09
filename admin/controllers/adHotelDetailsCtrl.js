@@ -34,11 +34,11 @@ admin.controller('ADHotelDetailsCtrl', [
   	};
 	if ($rootScope.adminRole === "snt-admin") {
 		$scope.isAdminSnt = true;
-		if ($stateParams.action ==="addfromSetup") {
+		if ($stateParams.action === "addfromSetup") {
 			$scope.previousStateIsDashBoard = true;
 		}
 		// SNT Admin -To add new hotel view
-		if ($stateParams.action === "add" || $stateParams.action ==="addfromSetup") {
+		if ($stateParams.action === "add" || $stateParams.action === "addfromSetup") {
 			$scope.title = "Add New Hotel";
 			var fetchSuccess = function(data) {
 				$scope.data = data.data;
@@ -49,7 +49,7 @@ admin.controller('ADHotelDetailsCtrl', [
 				$scope.data.hold_room_import_freq = undefined;
 				$scope.languages = data.languages;
 				$scope.$emit('hideLoader');
-					$scope.data.check_in_primetime ="AM";
+					$scope.data.check_in_primetime = "AM";
 					$scope.data.check_out_primetime = "AM";
 				$scope.data.hotel_pms_type = "";
 			};
@@ -69,7 +69,7 @@ admin.controller('ADHotelDetailsCtrl', [
 				}
 				if ($scope.data.check_in_time.primetime === "" || typeof $scope.data.check_in_time.primetime === 'undefined') {
 					$scope.data.check_in_time.primetime = "AM";
-					$scope.data.check_in_primetime ="AM";
+					$scope.data.check_in_primetime = "AM";
 				}
 				if ($scope.data.check_out_time.primetime === "" || typeof $scope.data.check_out_time.primetime === 'undefined') {
 					$scope.data.check_out_time.primetime = "AM";
@@ -99,7 +99,7 @@ admin.controller('ADHotelDetailsCtrl', [
 			$scope.hotelTemplateLogoPrefetched = data.hotel_template_logo;
 			if ($scope.data.check_in_time.primetime === "" || typeof $scope.data.check_in_time.primetime === 'undefined') {
 				$scope.data.check_in_time.primetime = "AM";
-				$scope.data.check_in_primetime ="AM";
+				$scope.data.check_in_primetime = "AM";
 			}
 			if ($scope.data.check_out_time.primetime === "" || typeof $scope.data.check_out_time.primetime === 'undefined') {
 				$scope.data.check_out_time.primetime = "AM";

@@ -11,7 +11,7 @@ admin.controller('ADUserDetailsCtrl',
 
 	BaseCtrl.call(this, $scope);
 	// navigate back to user list if no id
-	if (!$stateParams.id && !$stateParams.page ==='add') {
+	if (!$stateParams.id && !$stateParams.page === 'add') {
 			$state.go('admin.users');
 	}
 	$scope.mod = "";
@@ -86,7 +86,7 @@ admin.controller('ADUserDetailsCtrl',
 
 	if ($rootScope.adminRole === "snt-admin") {
 		$scope.isAdminSnt = true;
-		 $scope.BackAction = "admin.users({id:"+$scope.hotelId+"})";
+		 $scope.BackAction = "admin.users({id:" + $scope.hotelId + "})";
 	} else {
 		 $scope.BackAction = "admin.users";
 	}
@@ -98,10 +98,10 @@ admin.controller('ADUserDetailsCtrl',
 	$scope.selectAssignedRole = function($event, index) {
 
 
-		var lastSelectedItem =$scope.selectedAssignedRole;
+		var lastSelectedItem = $scope.selectedAssignedRole;
 
 		if (lastSelectedItem === index) {
-			$scope.selectedAssignedRole =-1;
+			$scope.selectedAssignedRole = -1;
 		}
 		else if (lastDropedTime === '') {
 			$scope.selectedAssignedRole = index;
@@ -125,10 +125,10 @@ admin.controller('ADUserDetailsCtrl',
     */
 	$scope.selectUnAssignedRole = function($event, index) {
 
-		var lastSelectedItem =$scope.selectedUnassignedRole;
+		var lastSelectedItem = $scope.selectedUnassignedRole;
 
 		if (lastSelectedItem === index) {
-			$scope.selectedUnassignedRole =-1;
+			$scope.selectedUnassignedRole = -1;
 		}
 		else if (lastDropedTime === '') {
 			$scope.selectedUnassignedRole = index;
@@ -186,7 +186,7 @@ admin.controller('ADUserDetailsCtrl',
 		var params = $scope.data;
 		var unwantedKeys = [];
 
-		if ($scope.image.indexOf("data:")!== -1) {
+		if ($scope.image.indexOf("data:") !== -1) {
 			unwantedKeys = ["departments", "roles"];
 		} else {
 			unwantedKeys = ["departments", "roles", "user_photo"];
@@ -204,7 +204,7 @@ admin.controller('ADUserDetailsCtrl',
 		var data = dclone($scope.data, unwantedKeys);
 		// Remove user_photo field if image is not uploaded. Checking base64 encoded data exist or not
 
-		if ($scope.image.indexOf("data:")!== -1) {
+		if ($scope.image.indexOf("data:") !== -1) {
 			data.user_photo = $scope.image;
 		}
 

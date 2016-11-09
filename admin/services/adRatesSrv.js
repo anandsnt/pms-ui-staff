@@ -108,7 +108,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         this.getRateDetailsForNonstandalone = function (params) {
             var deferred = $q.defer();
 
-            var url = "/admin/rates/"+ params.id +"/edit.json";
+            var url = "/admin/rates/" + params.id + "/edit.json";
 
             ADBaseWebSrv.getJSON(url).then(function (data) {
                 deferred.resolve(data);
@@ -178,10 +178,10 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
                 var chargeCodes = data.commission_details.charge_codes,
                     selectedChargeCodes = data.commission_details.selected_commission_charge_code_ids;
                 
-                if ( typeof chargeCodes !== 'undefined' && chargeCodes.length >0 ) {
+                if ( typeof chargeCodes !== 'undefined' && chargeCodes.length > 0 ) {
                     
                     angular.forEach( chargeCodes, function( item, index) {
-                        if ( typeof selectedChargeCodes !== 'undefined' && selectedChargeCodes.length >0 ) {
+                        if ( typeof selectedChargeCodes !== 'undefined' && selectedChargeCodes.length > 0 ) {
                             angular.forEach( selectedChargeCodes, function( id, index) {
                                 if (id === item.id) {
                                     item.is_checked = true;

@@ -27,7 +27,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
             $scope.data.activeChargeGroups = data.charge_groups;
             $scope.errorMessage = "";
 			refreshRevenueScroller();
-            if (origin !=="SUMMARY_DATE_CHANGED") {
+            if (origin !== "SUMMARY_DATE_CHANGED") {
                 $scope.$emit('hideLoader');
             }
 		};
@@ -161,7 +161,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
         var hasArrow = false;
         var item = $scope.data.revenueData.charge_groups[index].charge_codes;
 
-        if ((typeof item !== 'undefined') && (item.length >0)) {
+        if ((typeof item !== 'undefined') && (item.length > 0)) {
             hasArrow = true;
         }
         return hasArrow;
@@ -172,7 +172,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
         var hasArrow = false;
         var item = $scope.data.revenueData.charge_groups[index1].charge_codes[index2].transactions;
 
-        if ((typeof item !== 'undefined') && (item.length >0)) {
+        if ((typeof item !== 'undefined') && (item.length > 0)) {
             hasArrow = true;
         }
         return hasArrow;

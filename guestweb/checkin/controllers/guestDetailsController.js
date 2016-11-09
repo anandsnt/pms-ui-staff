@@ -40,14 +40,14 @@
 							  };
 
 		
-		for (year=new Date().getFullYear();year>=1900;year--) {
+		for (year = new Date().getFullYear();year >= 1900;year--) {
 			$scope.years.push(year);
 		}
-		for (month=1;month<=12;month++) {
+		for (month = 1;month <= 12;month++) {
 			$scope.months.push(month);
 		}
 		
-		for (day=1;day<=31;day++) {
+		for (day = 1;day <= 31;day++) {
 			$scope.days.push(day);
 		}
 
@@ -59,9 +59,9 @@
 				$scope.guestDetails       	 = response;
 				$scope.guestDetails.street   = response.street1;
 				$scope.guestDetails.country	 = !!response.country_id ? response.country_id : '';
-				$scope.guestDetails.day   	 = ($scope.guestDetails.birthday !== null) ? parseInt($scope.guestDetails.birthday.substring(8, 10)): "";
-				$scope.guestDetails.month 	 = ($scope.guestDetails.birthday !== null)?  parseInt($scope.guestDetails.birthday.substring(5, 7)) : "";
-				$scope.guestDetails.year  	 = ($scope.guestDetails.birthday !== null)?  parseInt($scope.guestDetails.birthday.substring(0, 4)): "";
+				$scope.guestDetails.day   	 = ($scope.guestDetails.birthday !== null) ? parseInt($scope.guestDetails.birthday.substring(8, 10)) : "";
+				$scope.guestDetails.month 	 = ($scope.guestDetails.birthday !== null) ?  parseInt($scope.guestDetails.birthday.substring(5, 7)) : "";
+				$scope.guestDetails.year  	 = ($scope.guestDetails.birthday !== null) ?  parseInt($scope.guestDetails.birthday.substring(0, 4)) : "";
 			}, function() {
 				$rootScope.netWorkError   = true;
 				$scope.isLoading          = false;
@@ -105,12 +105,12 @@
 			var unwanted_keys 		= ["month", "year", "day"];
 			var newObject 			= JSON.parse(JSON.stringify($scope.guestDetails));
 
-            for (var i=0; i < unwanted_keys.length; i++) {
+            for (var i = 0; i < unwanted_keys.length; i++) {
                 delete newObject[unwanted_keys[i]];
             }
             data 					= newObject;
             if ($scope.guestDetails.month && $scope.guestDetails.day && $scope.guestDetails.year) {
-            	data.birthday = $scope.guestDetails.month+"-"+$scope.guestDetails.day+"-"+$scope.guestDetails.year;
+            	data.birthday = $scope.guestDetails.month + "-" + $scope.guestDetails.day + "-" + $scope.guestDetails.year;
             }
             else {
             	delete data["birthday"];

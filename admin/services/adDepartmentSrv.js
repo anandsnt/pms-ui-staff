@@ -39,7 +39,7 @@ admin.service('ADDepartmentSrv', ['$http', '$q', 'ADBaseWebSrv', function($http,
 	this.getDepartmentDetails = function(data) {
 		var deferred = $q.defer();
 		var id = data.id;
-		var url = '/admin/departments/'+id+'/edit.json';
+		var url = '/admin/departments/' + id + '/edit.json';
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
@@ -56,7 +56,7 @@ admin.service('ADDepartmentSrv', ['$http', '$q', 'ADBaseWebSrv', function($http,
 	this.updateDepartment = function(data) {
 
 		var deferred = $q.defer();
-		var url = '/admin/departments/'+data.value;
+		var url = '/admin/departments/' + data.value;
 
 		ADBaseWebSrv.putJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
@@ -72,7 +72,7 @@ admin.service('ADDepartmentSrv', ['$http', '$q', 'ADBaseWebSrv', function($http,
     */
 	this.deleteDepartment = function(id) {
 		var deferred = $q.defer();
-		var url = '/admin/departments/'+id;
+		var url = '/admin/departments/' + id;
 
 		ADBaseWebSrv.deleteJSON(url).then(function(data) {
 		    deferred.resolve(data);

@@ -29,7 +29,7 @@ function ADBaseTableCtrl($scope, ngTableParams) {
 
     $scope.$watch("data", function (newValue, oldValue) {
         if (newValue !== oldValue) {
-            $scope.startCount = (($scope.currentPage - 1) * $scope.displyCount )+ 1;
+            $scope.startCount = (($scope.currentPage - 1) * $scope.displyCount ) + 1;
             $scope.endCount = $scope.startCount + $scope.data.length - 1;
         }
     }, true);
@@ -69,7 +69,7 @@ function ADBaseTableCtrl($scope, ngTableParams) {
         var sortField = Object.keys(sortData)[0];
 
         getParams.sort_field = sortField;
-        getParams.sort_dir = sortData[sortField] === "desc"? false :true;
+        getParams.sort_dir = sortData[sortField] === "desc" ? false : true;
 
         return getParams;
 

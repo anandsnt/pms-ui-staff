@@ -87,7 +87,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
         }
         else {
 			if (typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined") {
-				return ($scope.depositBalanceMakePaymentData.payment_type.length > 0) ? false :true;
+				return ($scope.depositBalanceMakePaymentData.payment_type.length > 0) ? false : true;
 			}
 			else {
 				return true;
@@ -139,11 +139,11 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
             $scope.shouldCardAvailable              = false;
         };
 	$scope.changeOnsiteCallIn = function () {
-		$scope.shouldShowMakePaymentScreen = ($scope.isManual) ? false:true;
-		$scope.shouldShowExistingCards =  ($scope.cardsList.length>0) ? true :false;
-		$scope.addmode = ($scope.cardsList.length>0) ? false :true;
+		$scope.shouldShowMakePaymentScreen = ($scope.isManual) ? false : true;
+		$scope.shouldShowExistingCards =  ($scope.cardsList.length > 0) ? true : false;
+		$scope.addmode = ($scope.cardsList.length > 0) ? false : true;
 		// in case c&p no need to show attached CC
-		$scope.shouldCardAvailable = ($scope.shouldShowMakePaymentScreen) ? false: true;
+		$scope.shouldCardAvailable = ($scope.shouldShowMakePaymentScreen) ? false : true;
 		refreshScroll();
 	};
 
@@ -161,7 +161,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	    var cardExpiry = "";
 
 	    if (!$scope.cardValues.tokenDetails.isSixPayment) {
-	    	cardExpiry = ($scope.cardValues.cardDetails.expiryMonth!=='' && $scope.cardValues.cardDetails.expiryYear!=='') ? "20"+$scope.cardValues.cardDetails.expiryYear+"-"+$scope.cardValues.cardDetails.expiryMonth+"-01" : "";
+	    	cardExpiry = ($scope.cardValues.cardDetails.expiryMonth !== '' && $scope.cardValues.cardDetails.expiryYear !== '') ? "20" + $scope.cardValues.cardDetails.expiryYear + "-" + $scope.cardValues.cardDetails.expiryMonth + "-01" : "";
 	    	// To render the selected card data
 	    	$scope.depositBalanceMakePaymentData.card_code = getCreditCardType($scope.cardValues.cardDetails.cardType).toLowerCase();
 	    	$scope.depositBalanceMakePaymentData.ending_with = $scope.cardValues.cardDetails.cardNumber.substr($scope.cardValues.cardDetails.cardNumber.length - 4);
@@ -173,7 +173,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 		   };
 		}
 		else {
-			cardExpiry = ($scope.cardValues.tokenDetails.expiry!=='') ? "20"+$scope.cardValues.tokenDetails.expiry.substring(0, 2)+"-"+$scope.cardValues.tokenDetails.expiry.substring(2, 4)+"-01" : "";
+			cardExpiry = ($scope.cardValues.tokenDetails.expiry !== '') ? "20" + $scope.cardValues.tokenDetails.expiry.substring(0, 2) + "-" + $scope.cardValues.tokenDetails.expiry.substring(2, 4) + "-01" : "";
 			$scope.shouldShowIframe 	   			 = false;
 			$scope.shouldShowMakePaymentScreen       = true;
 			$scope.showAddtoGuestCard    			 = false;
@@ -188,17 +188,17 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 
 		     var dataToApiToAddNewCard = {
 		          	"token": $scope.cardValues.tokenDetails.token_no,
-		          	"card_name": $scope.passData.details.firstName+" "+$scope.passData.details.lastName,
+		          	"card_name": $scope.passData.details.firstName + " " + $scope.passData.details.lastName,
 		          	"card_expiry": cardExpiry,
 		          	"payment_type": "CC"
 		   };
 		}
-		dataToApiToAddNewCard.card_code = (!$scope.cardValues.tokenDetails.isSixPayment)?
+		dataToApiToAddNewCard.card_code = (!$scope.cardValues.tokenDetails.isSixPayment) ?
 										$scope.cardValues.cardDetails.cardType :
 										getSixCreditCardType($scope.cardValues.tokenDetails.card_type).toLowerCase();
-		$scope.depositBalanceMakePaymentData.card_expiry = $scope.cardValues.tokenDetails.isSixPayment?
-					$scope.cardValues.tokenDetails.expiry.substring(2, 4)+" / "+$scope.cardValues.tokenDetails.expiry.substring(0, 2):
-					$scope.cardValues.cardDetails.expiryMonth+" / "+$scope.cardValues.cardDetails.expiryYear;
+		$scope.depositBalanceMakePaymentData.card_expiry = $scope.cardValues.tokenDetails.isSixPayment ?
+					$scope.cardValues.tokenDetails.expiry.substring(2, 4) + " / " + $scope.cardValues.tokenDetails.expiry.substring(0, 2) :
+					$scope.cardValues.cardDetails.expiryMonth + " / " + $scope.cardValues.cardDetails.expiryYear;
       	$scope.invokeApi(RVPaymentSrv.savePaymentDetails, dataToApiToAddNewCard, $scope.successSavePayment);
 	});
 
@@ -219,7 +219,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 		}
 		else if ((feesData.defaultAmount  >= feesData.minFees) && $scope.isStandAlone && feesData.feesInfo.amount) {
 			if ($scope.depositBalanceMakePaymentData.amount >= 0) {
-				isShowFees = (($rootScope.paymentGateway !== 'sixpayments' || $scope.isManual || $scope.depositBalanceMakePaymentData.payment_type !=='CC') && $scope.depositBalanceMakePaymentData.payment_type !=="") ? true:false;
+				isShowFees = (($rootScope.paymentGateway !== 'sixpayments' || $scope.isManual || $scope.depositBalanceMakePaymentData.payment_type !== 'CC') && $scope.depositBalanceMakePaymentData.payment_type !== "") ? true : false;
 			}
 		}
 		return isShowFees;
@@ -407,7 +407,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	$scope.$on("SWIPED_DATA_TO_SAVE", function (e, swipedCardDataToSave) {
 		$scope.depositBalanceMakePaymentData.card_code   = swipedCardDataToSave.cardType.toLowerCase();
 		$scope.depositBalanceMakePaymentData.ending_with = swipedCardDataToSave.cardNumber.slice(-4);
-		$scope.depositBalanceMakePaymentData.card_expiry  = swipedCardDataToSave.cardExpiryMonth+"/"+swipedCardDataToSave.cardExpiryYear;
+		$scope.depositBalanceMakePaymentData.card_expiry  = swipedCardDataToSave.cardExpiryMonth + "/" + swipedCardDataToSave.cardExpiryYear;
 		$scope.depositBalanceMakePaymentData.payment_type = "CC";
 
 		$scope.isSwipedCardSave = true;
@@ -416,7 +416,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 
 		data.payment_credit_type = swipedCardDataToSave.cardType;
 		data.credit_card = swipedCardDataToSave.cardType;
-		data.card_expiry = "20"+swipedCardDataToSave.cardExpiryYear+"-"+swipedCardDataToSave.cardExpiryMonth+"-01";
+		data.card_expiry = "20" + swipedCardDataToSave.cardExpiryYear + "-" + swipedCardDataToSave.cardExpiryMonth + "-01";
 
 		$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.successSavePayment);
 	});

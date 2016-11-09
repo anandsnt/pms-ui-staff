@@ -11,9 +11,9 @@ sntRover.controller('RVJournalCashierController', ['$scope', 'RVJournalSrv', '$r
             $scope.$emit('hideLoader');
             $scope.lastCashierId = data.last_cashier_period_id;
             $scope.detailsList = data.history;
-            $scope.selectedHistory = ($scope.detailsList.length>0) ? 0:"";
-            $scope.details = ($scope.detailsList.length>0) ?  $scope.detailsList[0] : {};// set first one as selected
-            $scope.selectedHistoryId = ($scope.detailsList.length>0) ? $scope.detailsList[0].id :"";
+            $scope.selectedHistory = ($scope.detailsList.length > 0) ? 0 : "";
+            $scope.details = ($scope.detailsList.length > 0) ?  $scope.detailsList[0] : {};// set first one as selected
+            $scope.selectedHistoryId = ($scope.detailsList.length > 0) ? $scope.detailsList[0].id : "";
             $scope.isLoading = false;
             setTimeout(function() {$scope.refreshScroller('cashier_history');}, 200);
             setTimeout(function() {$scope.refreshScroller('cashier_shift');}, 200);
@@ -40,11 +40,11 @@ sntRover.controller('RVJournalCashierController', ['$scope', 'RVJournalSrv', '$r
 
 
     $scope.isDateBeforeBusinnesDate = function(date) {
-        return ($rootScope.businessDate  !== date)?true:false;
+        return ($rootScope.businessDate  !== date) ? true : false;
     };
 
     $scope.isLastCashierPeriod = function(date) {
-        return ( parseInt($scope.lastCashierId) === parseInt($scope.details.id))?true:false;
+        return ( parseInt($scope.lastCashierId) === parseInt($scope.details.id)) ? true : false;
     };
 
 
@@ -77,7 +77,7 @@ sntRover.controller('RVJournalCashierController', ['$scope', 'RVJournalSrv', '$r
         var closing_balance_cash  = ($scope.details.opening_balance_cash + $scope.details.total_cash_received) - $scope.details.cash_submitted;
         var closing_balance_check = ($scope.details.opening_balance_check + $scope.details.total_check_received) - $scope.details.check_submitted;
 
-        updateData.data ={"cash_submitted": $scope.details.cash_submitted, "check_submitted": $scope.details.check_submitted, "closing_balance_cash": closing_balance_cash, "closing_balance_check": closing_balance_check};
+        updateData.data = {"cash_submitted": $scope.details.cash_submitted, "check_submitted": $scope.details.check_submitted, "closing_balance_cash": closing_balance_cash, "closing_balance_check": closing_balance_check};
         $scope.invokeApi(RVJournalSrv.closeCashier, updateData, closeShiftSuccesCallback);
 
     };

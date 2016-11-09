@@ -29,7 +29,7 @@ admin.service('ADKeyEncoderSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
 
         this.updateEncoder = function (data) {
             var deferred = $q.defer();
-            var url = "/api/key_encoders/"+ data.id;
+            var url = "/api/key_encoders/" + data.id;
 
             ADBaseWebSrvV2.putJSON(url, data).then(function (data) {
                 deferred.resolve(data);
@@ -42,7 +42,7 @@ admin.service('ADKeyEncoderSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
         this.showEncoderDetails = function (data) {
             var deferred = $q.defer();
 
-            var url = "/api/key_encoders/"+ data.id;
+            var url = "/api/key_encoders/" + data.id;
 
             ADBaseWebSrvV2.getJSON(url).then(function (data) {
                 deferred.resolve(data);
@@ -54,7 +54,7 @@ admin.service('ADKeyEncoderSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
 
         this.updateEncoderStatus = function (data) {
             var deferred = $q.defer();
-            var url = "/api/key_encoders/" + data.id +"/activate";
+            var url = "/api/key_encoders/" + data.id + "/activate";
 
             delete data['id'];
             ADBaseWebSrvV2.putJSON(url, data).then(function (data) {

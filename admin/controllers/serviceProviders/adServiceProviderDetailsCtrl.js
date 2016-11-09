@@ -15,11 +15,11 @@ admin.controller('ADServiceProviderDetailsCtrl', [
 
     if ($rootScope.adminRole === "snt-admin") {
         $scope.isAdminSnt = true;
-        if ($stateParams.action ==="addfromSetup") {
+        if ($stateParams.action === "addfromSetup") {
             $scope.previousStateIsDashBoard = true;
         }
         // SNT Admin -To add new hotel view
-        if ($stateParams.action === "add" || $stateParams.action ==="addfromSetup") {
+        if ($stateParams.action === "add" || $stateParams.action === "addfromSetup") {
             $scope.title = "Add New Service Provider";
 
             var fetchSuccess = function(data) {

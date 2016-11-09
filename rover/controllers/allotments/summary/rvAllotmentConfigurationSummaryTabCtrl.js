@@ -934,7 +934,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 * @return {undefined}
 		 */
 		var setActiveLeftSideMenu = function () {
-			var activeMenu = ($scope.isInAddMode()) ? "menuCreateAllotment": "menuManageAllotment";
+			var activeMenu = ($scope.isInAddMode()) ? "menuCreateAllotment" : "menuManageAllotment";
 
 			$scope.$emit("updateRoverLeftMenu", activeMenu);
 		};

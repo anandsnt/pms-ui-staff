@@ -180,7 +180,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkType, $scope.eachWorkType, callback);
 		};
 
-		$scope.setShowOnStayCard= function() {
+		$scope.setShowOnStayCard = function() {
 			var callback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.workTypeClickedElement = -1;
@@ -407,7 +407,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 						else if (!!$scope.eachTaskList.rooms_task_completion[room.id].hours)
 							times[room.id] = $rootScope.businessDate + ' ' + $scope.eachTaskList.rooms_task_completion[room.id].hours + ':00:00';
 						else if (!!$scope.eachTaskList.rooms_task_completion[room.id].mins)
-							times[room.id] = $rootScope.businessDate + ' ' + '00:'+ $scope.eachTaskList.rooms_task_completion[room.id].mins +':00';
+							times[room.id] = $rootScope.businessDate + ' ' + '00:' + $scope.eachTaskList.rooms_task_completion[room.id].mins + ':00';
 					} else {
 						times[room.id] = '';
 					}
@@ -500,7 +500,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		var checkForFrequencyType = function(frequencyObj) {
 			var isCustom = false, isWeekDay = false, isWeekEnd = false, isByWeekDay = false, isByStayDay = false;
 
-			if (frequencyObj.days !== null && frequencyObj.days!== 0) {
+			if (frequencyObj.days !== null && frequencyObj.days !== 0) {
 				isCustom = true;
 				isByStayDay = true;
 				isByWeekDay = false;

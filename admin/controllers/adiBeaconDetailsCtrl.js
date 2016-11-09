@@ -3,7 +3,7 @@ admin.controller('ADiBeaconDetailsCtrl', ['$scope', '$stateParams', '$rootScope'
   $scope.init = function() {
     BaseCtrl.call(this, $scope);
     $scope.$emit('hideLoader');
-    $scope.addmode = ($stateParams.action === "add")? true : false;
+    $scope.addmode = ($stateParams.action === "add") ? true : false;
     if (!$scope.addmode) {
       $scope.beaconId = $stateParams.action;
       $scope.isBeaconLinked = beaconDetails.is_linked;
@@ -11,7 +11,7 @@ admin.controller('ADiBeaconDetailsCtrl', ['$scope', '$stateParams', '$rootScope'
     else {
       $scope.isBeaconLinked = false;
     }
-    $scope.displayMessage = $scope.addmode ? "Add new iBeacon" :"Edit iBeacon";
+    $scope.displayMessage = $scope.addmode ? "Add new iBeacon" : "Edit iBeacon";
     $scope.isIpad = navigator.userAgent.match(/iPad/i) !== null && window.cordova;
     $scope.errorMessage = "";
     $scope.successMessage = "";
@@ -19,10 +19,10 @@ admin.controller('ADiBeaconDetailsCtrl', ['$scope', '$stateParams', '$rootScope'
     $scope.beaconTypes = beaconTypes.results;
     $scope.triggerTypes = triggerTypes.results;
     $scope.beaconNeighbours = beaconNeighbours.results;
-    $scope.data ={};
+    $scope.data = {};
     $scope.data.status = false;
-    $scope.data.description ="";
-    $scope.data.title ="";
+    $scope.data.description = "";
+    $scope.data.title = "";
     $scope.fileName = "Choose file...";
   };
   $scope.init();
@@ -30,7 +30,7 @@ admin.controller('ADiBeaconDetailsCtrl', ['$scope', '$stateParams', '$rootScope'
 if (!$scope.addmode) {
   $scope.data = beaconDetails;
    angular.forEach($scope.beaconNeighbours, function(beaconNeighbour, index) {
-                if (beaconNeighbour.beacon_id ===$scope.beaconId) {
+                if (beaconNeighbour.beacon_id === $scope.beaconId) {
                   $scope.beaconNeighbours.splice(index, 1);
                 }
   });
@@ -68,10 +68,10 @@ if (!$scope.addmode) {
     if ($scope.data.status) {
       $scope.data.status = false;
     }
-    else if ($scope.data.description.length>0 && $scope.data.title.length>0) {
+    else if ($scope.data.description.length > 0 && $scope.data.title.length > 0) {
       $scope.data.status = ! $scope.data.status;
     }
-    else if ($scope.data.message.length>0) {
+    else if ($scope.data.message.length > 0) {
       $scope.data.status = ! $scope.data.status;
     }
 
@@ -127,7 +127,7 @@ if (!$scope.addmode) {
 
   $scope.saveBeacon = function() {
 
-      var updateData ={};
+      var updateData = {};
       var updateBeaconSuccess = function(data) {
         if (!$scope.addmode) {
           $scope.$emit('hideLoader');
@@ -144,19 +144,19 @@ if (!$scope.addmode) {
       };
       // unset title and description in case beacon is not promotion else unset message
 
-      if ($scope.data.type !=='PROMOTION') {
+      if ($scope.data.type !== 'PROMOTION') {
           $scope.data.title = "";
           $scope.data.description = "";
       }
       else {
           $scope.data.message = "";
       }
-      var BeaconId = $scope.data.proximity_id+"-"+$scope.data.major_id+"-"+$scope.data.minor_id;
+      var BeaconId = $scope.data.proximity_id + "-" + $scope.data.major_id + "-" + $scope.data.minor_id;
 
       if ($scope.addmode) {
         var unwantedKeys = ["major_id", "minor_id", "proximity_id"];
 
-        updateData= dclone($scope.data, unwantedKeys);
+        updateData = dclone($scope.data, unwantedKeys);
         updateData.uuid = BeaconId;
         $scope.invokeApi(adiBeaconSettingsSrv.addBeaconDetails, updateData, updateBeaconSuccess, updateBeaconFailure);
       }
@@ -164,10 +164,10 @@ if (!$scope.addmode) {
         updateData.id = $stateParams.action;
         var unwantedKeys = ["picture", "majorid", "minorid"];
 
-        updateData.data= dclone($scope.data, unwantedKeys);
+        updateData.data = dclone($scope.data, unwantedKeys);
         updateData.data.uuid = BeaconId;
         // Remove user_photo field if image is not uploaded. Checking base64 encoded data exist or not
-        if ($scope.data.picture.indexOf("data:")!== -1) {
+        if ($scope.data.picture.indexOf("data:") !== -1) {
           updateData.data.picture = $scope.data.picture;
         }
 

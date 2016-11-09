@@ -137,7 +137,7 @@ angular.module('sntRover').controller('RVUpgradesController',
 		var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
         var isUpgradeAvaiable = $scope.reservationData.reservation_card.is_upsell_available === "true" && (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN');
 
-		isUpgradeAvaiable ? $scope.getAllUpgrades() :"";
+		isUpgradeAvaiable ? $scope.getAllUpgrades() : "";
 		/**
 		 * function to check occupancy for the reservation
 		 */

@@ -13,7 +13,7 @@ admin.controller('ADCampaignsListCtrl', ['$scope', '$state', 'ADRatesSrv', 'ADCa
 			// No expanded rate view
 			$scope.currentClickedElement = -1;
 			$scope.totalCount = data.total_count;
-			$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
+			$scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
 			$scope.data = data.results;
 			$scope.currentPage = params.page();
         	params.total(data.total_count);

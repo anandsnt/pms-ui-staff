@@ -16,7 +16,7 @@
 
 	if ($scope.pageValid) {
 	// check if checkbox was already checked (before going to upgrades)
-	$scope.checked =  ($rootScope.ShowupgradedLabel) ? true:false;
+	$scope.checked =  ($rootScope.ShowupgradedLabel) ? true : false;
 	$scope.reservationData = checkinDetailsService.getResponseData();
 	$rootScope.confirmationNumber = $scope.reservationData.confirm_no;
 	$scope.showTermsPopup = false;

@@ -47,7 +47,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         initPaginationParams();
         fetchCommissionsData();
     };
-    var initSearchParams =function() {
+    var initSearchParams = function() {
         $scope.filterData = {
             'page': 1,
             'perPage': 50,
@@ -73,14 +73,14 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         fetchCommissionsData();
     };
     var updatePaginationParams = function() {
-        $scope.showPagination =($scope.commissionsData.total_results <= 50)?false:true;
-        $scope.start = ($scope.filterData.page ==1)?1:(($scope.filterData.page-1)*$scope.filterData.perPage)+1 ;
-        $scope.end = (($scope.filterData.page *$scope.filterData.perPage )>=$scope.commissionsData.total_results)?$scope.commissionsData.total_results:($scope.filterData.page *$scope.filterData.perPage );
+        $scope.showPagination = ($scope.commissionsData.total_results <= 50) ? false : true;
+        $scope.start = ($scope.filterData.page == 1) ? 1 : (($scope.filterData.page - 1) * $scope.filterData.perPage) + 1 ;
+        $scope.end = (($scope.filterData.page * $scope.filterData.perPage ) >= $scope.commissionsData.total_results) ? $scope.commissionsData.total_results : ($scope.filterData.page * $scope.filterData.perPage );
 
     };
     var initPaginationParams = function() {
-        $scope.filterData.page= 1,
-        $scope.filterData.perPage= 50;
+        $scope.filterData.page = 1,
+        $scope.filterData.perPage = 50;
     };
 
     $scope.loadNextPage = function() {
@@ -92,7 +92,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         fetchCommissionsData();
     };
     $scope.isNextButtonDisabled = function() {
-        if ($scope.filterData.page > $scope.commissionsData.total_results/$scope.filterData.perPage) {
+        if ($scope.filterData.page > $scope.commissionsData.total_results / $scope.filterData.perPage) {
             return true;
         } else {
             return false;}
@@ -105,21 +105,21 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
             }
         }, 100);
     };
-    $scope.navigateToTA =function(account) {
+    $scope.navigateToTA = function(account) {
         if (account.is_commission_on) {
             $state.go('rover.companycarddetails', {id: account.id, type: 'TRAVELAGENT', origin: 'COMMISION_SUMMARY'});
         }
     };
     $scope.isPrevButtonDisabled = function() {
-        if ($scope.filterData.page ==1) {
+        if ($scope.filterData.page == 1) {
             return true;
         } else {
             return false;}
     };
 
     var init = function() {
-        $scope.commissionsData ={};
-        $scope.filterData={};
+        $scope.commissionsData = {};
+        $scope.filterData = {};
         updateHeader();
         initSearchParams();
         fetchCommissionsData();

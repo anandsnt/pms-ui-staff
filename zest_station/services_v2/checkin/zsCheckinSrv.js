@@ -28,7 +28,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         // add / remove additional guests from reservation
         this.updateGuestTabDetails = function(data) {
             var deferred = $q.defer();
-            var url = '/api/reservations/'+data.reservation_id+'/reservations_guest_details';
+            var url = '/api/reservations/' + data.reservation_id + '/reservations_guest_details';
 
             zsBaseWebSrv.postJSON(url, data).then(function(data) {
                 deferred.resolve(data);
@@ -277,7 +277,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         
         this.fetchUpsellDetails = function(reservation) {
             var deferred = $q.defer(),
-                url = 'guest_web/reservations/'+reservation.id+'.json';
+                url = 'guest_web/reservations/' + reservation.id + '.json';
 
             zsBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
@@ -289,7 +289,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.fetchStarTacPrinterData = function(params) {
             var deferred = $q.defer();
-            var url = 'api/reservations/'+params.reservation_id+'/bill_print_data?is_checkout=false';
+            var url = 'api/reservations/' + params.reservation_id + '/bill_print_data?is_checkout=false';
 
             zsBaseWebSrv.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);

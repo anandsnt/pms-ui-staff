@@ -24,7 +24,7 @@ admin.controller('ADiBeaconSettingsCtrl', ['$scope', '$state', 'ngTableParams', 
 		var getParams = $scope.calculateGetParams(params);
 		var fetchSuccessOfItemList = function(data) {
 			$scope.$emit('hideLoader');
-			$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
+			$scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
 			$scope.proximityId = data.proximity_id;
 			$scope.majorId = data.major_id;
 			$scope.data = data.results;

@@ -46,7 +46,7 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 			$scope.results.reservations = [];
 		}
 		else {
-	    	($scope.isReservationActive)?displayFilteredResultsReservations():displayFilteredResultsCards();
+	    	($scope.isReservationActive) ? displayFilteredResultsReservations() : displayFilteredResultsCards();
 	   	}
 	   	var queryText = $scope.textInQueryBox;
 
@@ -113,7 +113,7 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 	/**
 	* failure call back of search result fetch
 	*/
-	var failureCallBackofDataFetch= function(errorMessage) {
+	var failureCallBackofDataFetch = function(errorMessage) {
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = errorMessage;
 	};
@@ -137,7 +137,7 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 	// Toggle between Reservations , Cards
 	$scope.toggleClicked = function(flag) {
 		$scope.isReservationActive = flag;
-		($scope.isReservationActive)?displayFilteredResultsReservations():displayFilteredResultsCards();
+		($scope.isReservationActive) ? displayFilteredResultsReservations() : displayFilteredResultsCards();
 	};
 
 }]);

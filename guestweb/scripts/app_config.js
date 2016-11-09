@@ -5,7 +5,7 @@ sntGuestWeb.factory('authInterceptor', function ($rootScope, $q, $location) {
 		request: function (config) {
 			config.headers = config.headers || {};
 
-			if (typeof $rootScope.accessToken !=="undefined") {
+			if (typeof $rootScope.accessToken !== "undefined") {
 
 				config.headers.Authorization = $rootScope.accessToken;
 			}
@@ -47,7 +47,7 @@ sntGuestWeb.run(function($rootScope, $location, $http, $window) {
 		if (toState.name === 'noOptionAvailable' && (fromState.name === 'emailVerification' || fromState.name === 'resetPassword')) {
 			event.preventDefault();
 		} else {
-			$rootScope.title =toState.title;
+			$rootScope.title = toState.title;
 		}	
 		
 	});

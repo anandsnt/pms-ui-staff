@@ -11,7 +11,7 @@ var MLIOperation = function() {
 	this.fetchMLISessionDetails = function(sessionDetails, updateSessionSuccessCallback, updateSessionFailureCallback) {
 
 		var callback = function(response) {
-			(response.status ==="ok") ? updateSessionSuccessCallback(response) : updateSessionFailureCallback(response);
+			(response.status === "ok") ? updateSessionSuccessCallback(response) : updateSessionFailureCallback(response);
 	    };
 
 		HostedForm.updateSession(sessionDetails, callback);

@@ -10,7 +10,7 @@ var dclone = function(object, unwanted_keys) {
   	} else {
   			var newObject = JSON.parse(JSON.stringify(object));
 
-		  	for (var i=0; i < unwanted_keys.length; i++) {
+		  	for (var i = 0; i < unwanted_keys.length; i++) {
 		  		delete newObject[unwanted_keys[i]];
 		  	}
   	}
@@ -79,10 +79,10 @@ var creditCardTypes = {
 };
 
 function getCreditCardType(cardBrand) {
-    var card = (typeof cardBrand  ==="undefined") ? "":cardBrand.toUpperCase();
+    var card = (typeof cardBrand  === "undefined") ? "" : cardBrand.toUpperCase();
     var cardArray = ['AX', 'DC', 'DS', 'JCB', 'MC', 'VA'];
 
-    return (cardArray.indexOf(card) != -1 ) ? card : (typeof creditCardTypes[card]!='undefined') ? creditCardTypes[card] : 'credit-card';
+    return (cardArray.indexOf(card) != -1 ) ? card : (typeof creditCardTypes[card] != 'undefined') ? creditCardTypes[card] : 'credit-card';
 }
 
 var returnMonthsArray = function() {
@@ -135,7 +135,7 @@ var applyStyle = function(styleString) {
 };
 
 var applyFooterStyle = function(footer_color) {
-    var styleString = "#zest-footer a{  color :"+ footer_color + " !important;}";
+    var styleString = "#zest-footer a{  color :" + footer_color + " !important;}";
     // body and HTML tags were given auto height in some themes(almost 40 themes),
     // so in order to override all these, we needed to add this line of code here
 

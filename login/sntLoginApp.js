@@ -26,10 +26,10 @@ var GlobalApp = function() {
             /* Using XHR instead of $HTTP service, to avoid angular dependency, as this will be invoked from
              * webview of iOS / Android.
              */
-            var xhr=new XMLHttpRequest(); // TODO: IE support?
+            var xhr = new XMLHttpRequest(); // TODO: IE support?
 
-            xhr.onreadystatechange=function() {
-                if (xhr.readyState===4 && xhr.status===200) {
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
                       that.fetchCompletedOfCordovaPlugins(xhr.responseText);
                 } else {
                     that.fetchFailedOfCordovaPlugins();

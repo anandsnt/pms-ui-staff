@@ -31,7 +31,7 @@ angular.module('sntRover').service('RVBillinginfoSrv', ['$http', '$q', 'BaseWebS
 	this.fetchAvailableBillingGroups = function(data) {
 		var deferred = $q.defer();
 
-		var url = 'api/bill_routings/billing_groups?id='+ data.id+'&to_bill='+data.to_bill + '&is_new=' + data.is_new;
+		var url = 'api/bill_routings/billing_groups?id=' + data.id + '&to_bill=' + data.to_bill + '&is_new=' + data.is_new;
 
 		if (!!data.from_date) {
 			url = url + '&from_date=' + data.from_date;
@@ -52,7 +52,7 @@ angular.module('sntRover').service('RVBillinginfoSrv', ['$http', '$q', 'BaseWebS
 	this.fetchAvailableChargeCodes = function(data) {
 		var deferred = $q.defer();
 
-		var url = 'api/bill_routings/charge_codes?id='+ data.id+'&to_bill='+data.to_bill + '&is_new=' + data.is_new;
+		var url = 'api/bill_routings/charge_codes?id=' + data.id + '&to_bill=' + data.to_bill + '&is_new=' + data.is_new;
 
 		if (!!data.from_date) {
 			url = url + '&from_date=' + data.from_date;
@@ -107,7 +107,7 @@ angular.module('sntRover').service('RVBillinginfoSrv', ['$http', '$q', 'BaseWebS
 		var url = 'api/bill_routings/' + data.id + '/bills.json';
 
 		if (data.entity_type !== "") {
-			url = 'api/bill_routings/' + data.id + '/bills.json?entity_type='+data.entity_type;
+			url = 'api/bill_routings/' + data.id + '/bills.json?entity_type=' + data.entity_type;
 		}
 		BaseWebSrvV2.getJSON(url).then(function(data) {
 
@@ -176,8 +176,8 @@ angular.module('sntRover').service('RVBillinginfoSrv', ['$http', '$q', 'BaseWebS
 	this.fetchDefaultAccountRouting = function(params) {
 
 		var deferred = $q.defer();
-			var url = (typeof params.entity_type !=="undefined" && params.entity_type !== "") ?
-			 '/api/default_account_routings/' + params.id+'?entity_type='+params.entity_type:
+			var url = (typeof params.entity_type !== "undefined" && params.entity_type !== "") ?
+			 '/api/default_account_routings/' + params.id + '?entity_type=' + params.entity_type :
 			 '/api/default_account_routings/' + params.id;
 
 			BaseWebSrvV2.getJSON(url).then(function(data) {
@@ -192,7 +192,7 @@ angular.module('sntRover').service('RVBillinginfoSrv', ['$http', '$q', 'BaseWebS
 	// CICO-14951 to delete default routings
 	this.deleteDefaultRouting = function(data) {
 		var deferred = $q.defer();
-		var url = 'api/default_account_routings/'+data.id;
+		var url = 'api/default_account_routings/' + data.id;
 
 			BaseWebSrvV2.deleteJSON(url).then(function(data) {
 			   	 deferred.resolve(data);

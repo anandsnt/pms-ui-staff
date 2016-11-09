@@ -923,7 +923,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
                 }
                 return false;
             } else if ($scope.lastChildRates) {
-                 for (var i=0; i< $scope.lastChildRates.length; i++) {
+                 for (var i = 0; i < $scope.lastChildRates.length; i++) {
                     if ($scope.lastChildRates[i] === rate.id) {
                         return true;
                     }

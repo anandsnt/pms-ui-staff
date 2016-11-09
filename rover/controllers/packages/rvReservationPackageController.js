@@ -16,7 +16,7 @@ sntRover.controller('RVReservationPackageController',
 		$scope.$emit('hideLoader');
 		$scope.packageData = data;
 		angular.forEach($scope.packageData.existing_packages, function(item, index) {
-           item.totalAmount = (item.addon_count)*(item.amount);
+           item.totalAmount = (item.addon_count) * (item.amount);
   		});
 	};
 
@@ -57,7 +57,7 @@ sntRover.controller('RVReservationPackageController',
 			$scope.$emit('hideLoader');
 			$scope.packageData.existing_packages.splice(index, 1);
 			$scope.addonsData.existingAddons.splice(index, 1);
-			$scope.reservationData.reservation_card.package_count = parseInt($scope.reservationData.reservation_card.package_count)-parseInt(1);
+			$scope.reservationData.reservation_card.package_count = parseInt($scope.reservationData.reservation_card.package_count) - parseInt(1);
 			if ($scope.reservationData.reservation_card.package_count === 0) {
 				$scope.reservationData.reservation_card.is_package_exist = false;
 				$scope.closeAddOnPopup();
@@ -80,7 +80,7 @@ sntRover.controller('RVReservationPackageController',
 	// Get addon count
         $scope.getAddonCount = function(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly, quantity) {
             if (!postingRythm) {
-                if (postType ==='WEEK') {
+                if (postType === 'WEEK') {
                     postingRythm = 7;
                 } else if (postType === 'STAY') {
                     postingRythm = 1;

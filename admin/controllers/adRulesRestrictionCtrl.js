@@ -11,7 +11,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             // lets empty lists all before fetch
             $scope.cancelRulesList = [];
             $scope.depositRuleslList = [];
-            $scope.selectedSchedule =null;
+            $scope.selectedSchedule = null;
             $scope.ruleList = {};
             fetchRestrictions();
         };
@@ -111,7 +111,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             if ( !item.editable || item.description === 'Levels' ) {
                 return;
             }
-            var ruleType ='CANCELLATION_POLICY';
+            var ruleType = 'CANCELLATION_POLICY';
             // fetch the appropriate policy
             var callback = function(data) {
                 $scope.cancelRulesList = data.results;
@@ -163,7 +163,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             $scope.rulesTitle = 'New';
             $scope.updateRule = false;
             $scope.singleRule = {};
-            $scope.singleRule.schedules =[];
+            $scope.singleRule.schedules = [];
                 var newSchedule = {
                 "amount": null,
                 "amount_type": "",
@@ -203,7 +203,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                 $scope.singleRule = data;
                 $scope.selectedSchedule =  $scope.singleRule.schedules[0];
                 $scope.selectedScheduleIndex = 0;
-                $scope.singleRule.allow_deposit_edit = (data.allow_deposit_edit !=="" &&  data.allow_deposit_edit)? true : false;
+                $scope.singleRule.allow_deposit_edit = (data.allow_deposit_edit !== "" &&  data.allow_deposit_edit) ? true : false;
                 $scope.showCancelForm = false;
                 $scope.showDepositForm = true;
                 $scope.rulesTitle = 'Edit';
@@ -221,7 +221,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             var callback = function(data) {
                 // clear any previous data
                 $scope.singleRule = data;
-                $scope.singleRule.allow_deposit_edit = (data.allow_deposit_edit !=="" &&  data.allow_deposit_edit)? true : false;
+                $scope.singleRule.allow_deposit_edit = (data.allow_deposit_edit !== "" &&  data.allow_deposit_edit) ? true : false;
                 $scope.singleRule.policy_type = 'CANCELLATION_POLICY';
                 // need to split HH:MM into individual keys
                 var hhmm, hh, mm, ampm;
@@ -265,8 +265,8 @@ admin.controller('ADRulesRestrictionCtrl', [
             };
 
             $scope.singleRule.schedules.push(newSchedule);
-             $scope.selectedSchedule = $scope.singleRule.schedules[$scope.singleRule.schedules.length-1];
-             $scope.selectedScheduleIndex = $scope.singleRule.schedules.length-1;
+             $scope.selectedSchedule = $scope.singleRule.schedules[$scope.singleRule.schedules.length - 1];
+             $scope.selectedScheduleIndex = $scope.singleRule.schedules.length - 1;
         };
 
         // save a new rule or update an edited rule
@@ -354,10 +354,10 @@ admin.controller('ADRulesRestrictionCtrl', [
 
          $scope.deleteSchedule = function(index) {
             $scope.singleRule.schedules.splice(index, 1);
-            if ($scope.singleRule.schedules.length!==0) {
+            if ($scope.singleRule.schedules.length !== 0) {
                 if ($scope.selectedScheduleIndex === $scope.singleRule.schedules.length) {
-                    $scope.selectedSchedule = $scope.singleRule.schedules[$scope.singleRule.schedules.length-1];
-                    $scope.selectedScheduleIndex = $scope.singleRule.schedules.length-1;
+                    $scope.selectedSchedule = $scope.singleRule.schedules[$scope.singleRule.schedules.length - 1];
+                    $scope.selectedScheduleIndex = $scope.singleRule.schedules.length - 1;
                 }
             } else {
             var newSchedule = {

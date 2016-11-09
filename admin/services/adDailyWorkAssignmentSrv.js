@@ -27,7 +27,7 @@ admin.service('ADDailyWorkAssignmentSrv', [
         };
         this.postDefaultTask = function(params) {
             var deferred = $q.defer(),
-                url = 'api/tasks/'+params.id+'/default_task';
+                url = 'api/tasks/' + params.id + '/default_task';
 
             ADBaseWebSrvV2.postJSON(url, params)
                 .then(function(data) {
@@ -244,7 +244,7 @@ admin.service('ADDailyWorkAssignmentSrv', [
             // hide suite as per CICO-24369
 
             if (params) {
-                url = 'api/room_types.json?exclude_suite='+ params.exclude_suite;
+                url = 'api/room_types.json?exclude_suite=' + params.exclude_suite;
             } else {
                 url = 'api/room_types';
             }

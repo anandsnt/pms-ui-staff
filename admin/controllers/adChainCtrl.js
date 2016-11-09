@@ -29,20 +29,20 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
    */
 	$scope.editSelected = function(index, id)	{
 		$scope.isAddmode = false;
-		$scope.errorMessage ="";
+		$scope.errorMessage = "";
 		$scope.currentClickedElement = index;
 		$scope.editId = id;
 		var editID = { 'editID': id };
 		var editChainSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.editData   = data;
-			$scope.formTitle = 'Edit'+' '+$scope.editData.name;
+			$scope.formTitle = 'Edit' + ' ' + $scope.editData.name;
 			if ($scope.editData.lov.length === 0) {
 				$scope.editData.lov.push({'value': '', 'name': ''});
 			}
 			$scope.isEditmode = true;
-			$scope.fileName = ($scope.editData.ca_certificate_exists === "true")  ? 'Certificate Attached' :'Choose file ...';
-			$scope.apns_file = ( $scope.editData.apns_certificate_exists === "true") ? 'Certificate Attached' :'Choose file ...';
+			$scope.fileName = ($scope.editData.ca_certificate_exists === "true")  ? 'Certificate Attached' : 'Choose file ...';
+			$scope.apns_file = ( $scope.editData.apns_certificate_exists === "true") ? 'Certificate Attached' : 'Choose file ...';
 		};
 
 		$scope.invokeApi(adChainsSrv.edit, editID, editChainSuccessCallback);
@@ -52,7 +52,7 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
    */
 	$scope.addNew = function() {
 		$scope.editData   = {};
-		$scope.errorMessage ="";
+		$scope.errorMessage = "";
 		$scope.editData.lov  = [{'value': '', 'name': ''}];
 		$scope.formTitle = 'Add';
 		$scope.isAddmode = true;
@@ -148,7 +148,7 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
         
         $scope.getPages = function(r) {// response text length
             if (r > 0) {
-                return (Math.ceil(r/$scope.charLimitPerText));
+                return (Math.ceil(r / $scope.charLimitPerText));
             } else {
                 return 1;
             }
@@ -180,12 +180,12 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
     * To handle focus event on lov levels
     */
 	$scope.onFocus = function(index) {
-		if ((index === $scope.editData.lov.length-1) || ($scope.editData.lov.length===1)) {
+		if ((index === $scope.editData.lov.length - 1) || ($scope.editData.lov.length === 1)) {
 			$scope.newOptionAvailable = true;
 			// exclude first two fields
 			if ($scope.editData.lov.length > 2) {
 				angular.forEach($scope.editData.lov, function(item, index) {
-					if (item.name === "" && index < $scope.editData.lov.length-1 ) {
+					if (item.name === "" && index < $scope.editData.lov.length - 1 ) {
 						$scope.newOptionAvailable = false;
 					}
 				});
@@ -200,7 +200,7 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
     */
 	$scope.textChanged = function(index) {
 
-		if ($scope.editData.lov.length>1) {
+		if ($scope.editData.lov.length > 1) {
 			if ($scope.editData.lov[index].name === "") {
 				$scope.editData.lov.splice(index, 1);
 			}
@@ -210,12 +210,12 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
     * To handle blur event on lov levels
     */
 	$scope.onBlur = function(index) {
-		if ($scope.editData.lov.length>1) {
+		if ($scope.editData.lov.length > 1) {
 			if ($scope.editData.lov[index].name === "") {
 				$scope.editData.lov.splice(index, 1);
 			}
 			angular.forEach($scope.editData.lov, function(item, i) {
-				if (item.name === "" && i !== $scope.editData.lov.length-1) {
+				if (item.name === "" && i !== $scope.editData.lov.length - 1) {
 					$scope.editData.lov.splice(i, 1);
 				}
 			});

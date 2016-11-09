@@ -53,7 +53,7 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
                         // update from api
                         $scope.sharedReservationData.room_number = '';
                         for (var x in data.sharers) {
-                            data.sharers[x].guest_details.first_last = data.sharers[x].guest_details.last_name+', '+data.sharers[x].guest_details.first_name;
+                            data.sharers[x].guest_details.first_last = data.sharers[x].guest_details.last_name + ', ' + data.sharers[x].guest_details.first_name;
                         }
                         $scope.sharedReservationData.sharers = data.sharers;
 
@@ -61,7 +61,7 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
                 $scope.goToSharedReservation = function(sharer) {
                     if (!sharer.active) {
 
-                        var fullname = $scope.guestCardData.contactInfo.first_name+' '+$scope.guestCardData.contactInfo.last_name,
+                        var fullname = $scope.guestCardData.contactInfo.first_name + ' ' + $scope.guestCardData.contactInfo.last_name,
                                 reservation_no = sharer.guest_details.reservation_id,
                                 confirmation_no = sharer.confirm_no;
 
@@ -83,7 +83,7 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
                     }
                 };
 
-                $scope.getTimes=function(n) {
+                $scope.getTimes = function(n) {
                     return new Array(n);
                };
 

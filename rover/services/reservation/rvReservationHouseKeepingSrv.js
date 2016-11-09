@@ -3,7 +3,7 @@ sntRover.service('rvReservationHouseKeepingSrv', ['$q', 'rvBaseWebSrvV2',
 
         this.fetch = function(data) {
             var deferred = $q.defer();
-            var url = '/api/reservations/'+ data.reservation_id +'/room_attendance';
+            var url = '/api/reservations/' + data.reservation_id + '/room_attendance';
 
             RVBaseWebSrvV2.getJSON(url).then(function(data) {
                 deferred.resolve(data);

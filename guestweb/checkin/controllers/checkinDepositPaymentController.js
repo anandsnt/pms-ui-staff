@@ -42,7 +42,7 @@
 	    var payment_method_id = "";
 		var payment_method_used = "";
 		var deposit_amount = "";
-		var card_type ="";
+		var card_type = "";
 
 
 		// payment success
@@ -75,7 +75,7 @@
 				"payment_type_id": payment_method_id
 			};
 
-			(payment_method_used === "CC")? params.credit_card_type = card_type : "";
+			(payment_method_used === "CC") ? params.credit_card_type = card_type : "";
 
 			// submit payment
 			guestDetailsService.submitPayment(params).then(function(response) {
@@ -103,8 +103,8 @@
 					payment_method_used = response.payment_method_used;
 					payment_method_id = response.payment_method_id;
 					deposit_amount = response.deposit_amount;
-					card_type = !!response.card_type ? response.card_type.toUpperCase() :"";
-					$scope.depositAmount = response.currency_symbol+response.deposit_amount;
+					card_type = !!response.card_type ? response.card_type.toUpperCase() : "";
+					$scope.depositAmount = response.currency_symbol + response.deposit_amount;
 				}
 				else {
 					$scope.noPaymentMethod = true;

@@ -71,7 +71,7 @@ admin.controller('ADCountrySortCtrl', ['$scope', 'ADCountrySortSrv',
 
 		// save new order
 		var saveNewPosition = function(id, position, prevPosition) {
-			_.isUndefined(position) ? "" : saveSortedList(id, position+1);
+			_.isUndefined(position) ? "" : saveSortedList(id, position + 1);
 		};
 
 		$scope.sortableOptions = {

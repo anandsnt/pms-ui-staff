@@ -21,8 +21,8 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			$scope.successMessage = "";
 			$scope.authorizedCode = "";
 			$scope.billNumber = "1";// set bill no as 1
-			$scope.firstName = (typeof $scope.passData.details.firstName ==="undefined")?"":$scope.passData.details.firstName;
-			$scope.lastName = (typeof $scope.passData.details.lastName ==="undefined")?"":$scope.passData.details.lastName;
+			$scope.firstName = (typeof $scope.passData.details.firstName === "undefined") ? "" : $scope.passData.details.firstName;
+			$scope.lastName = (typeof $scope.passData.details.lastName === "undefined") ? "" : $scope.passData.details.lastName;
 
 		
 			$scope.isReservationRateSuppressed = $scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates;
@@ -115,15 +115,15 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			// The submit payment will update the payment type for the bill #1(staycard too)
 			if ($scope.$parent.reservationData.reservation_card.payment_method_used !== 'CC'
 			   && $scope.$parent.reservationData.reservation_card.payment_method_used !== 'DB'
-			   && typeof data.cc_details !=="undefined") {
+			   && typeof data.cc_details !== "undefined") {
 				$scope.$parent.reservationData.reservation_card.payment_method_used = 'CC';
 				$scope.$parent.reservationData.reservation_card.payment_details.card_number = data.cc_details.ending_with;
 				$scope.$parent.reservationData.reservation_card.payment_details.card_expiry = data.cc_details.expiry_date;
-				$scope.$parent.reservationData.reservation_card.payment_details.card_type_image = 'images/'+data.cc_details.card_code+'.png';
+				$scope.$parent.reservationData.reservation_card.payment_details.card_type_image = 'images/' + data.cc_details.card_code + '.png';
 			}
 			
 			// Add the CC to guestcard
-			if (typeof data.add_to_guest_card !=="undefined" && data.add_to_guest_card) {
+			if (typeof data.add_to_guest_card !== "undefined" && data.add_to_guest_card) {
 
 				var dataToGuestList = {
 					"card_code": data.cc_details.card_code,

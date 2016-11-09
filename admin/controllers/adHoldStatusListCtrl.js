@@ -3,7 +3,7 @@ admin.controller('ADHoldStatusListCtrl', ['$scope', '$state', 'ADHoldStatusSrv',
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	$scope.isAddMode = false;
-	$scope.holdstatusData={};
+	$scope.holdstatusData = {};
    /*
     * To fetch list of hold status
     */
@@ -25,7 +25,7 @@ admin.controller('ADHoldStatusListCtrl', ['$scope', '$state', 'ADHoldStatusSrv',
     * @param {id} id of selected hold status
     */
 	$scope.editHoldStatus = function(index, id)	{
-		$scope.holdstatusData={};
+		$scope.holdstatusData = {};
 		$scope.currentClickedElement = index;
 		$scope.isAddMode = false;
 		$scope.holdstatusData = _.findWhere($scope.data.holdStatuses, {
@@ -36,7 +36,7 @@ admin.controller('ADHoldStatusListCtrl', ['$scope', '$state', 'ADHoldStatusSrv',
     * Render add hold status screen
     */
 	$scope.addNew = function()	{
-		$scope.holdstatusData={
+		$scope.holdstatusData = {
 			name: null,
 			is_system: false,
 			is_take_from_inventory: false,
@@ -76,9 +76,9 @@ admin.controller('ADHoldStatusListCtrl', ['$scope', '$state', 'ADHoldStatusSrv',
 	    		// To update data with new value
 	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].name = $scope.holdstatusData.name;
 	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_take_from_inventory = $scope.holdstatusData.is_take_from_inventory;
-	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_system=$scope.holdstatusData.is_system;
-	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_group_only=$scope.holdstatusData.is_group_only;
-	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_allotment_only=$scope.holdstatusData.is_allotment_only;
+	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_system = $scope.holdstatusData.is_system;
+	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_group_only = $scope.holdstatusData.is_group_only;
+	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_allotment_only = $scope.holdstatusData.is_allotment_only;
 	    	}
     		$scope.currentClickedElement = -1;
     	};
@@ -104,7 +104,7 @@ admin.controller('ADHoldStatusListCtrl', ['$scope', '$state', 'ADHoldStatusSrv',
 		var successCallbackDelete = function(data) {
 	 		$scope.$emit('hideLoader');
 	 		// handling error case
-	 		if (data.status==='failure')
+	 		if (data.status === 'failure')
 	 		{
 	 			$scope.errorMessage = data.errors;
 	 		} else {

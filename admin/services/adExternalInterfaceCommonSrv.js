@@ -18,7 +18,7 @@ admin.service('adExternalInterfaceCommonSrv', ['$http', '$q', 'ADBaseWebSrv', 'A
 
 	this.fetchSetup = function(params) {
 		var deferred = $q.defer();
-		var url = 'admin/get_ota_connection_config.json?interface='+params.interface_id;
+		var url = 'admin/get_ota_connection_config.json?interface=' + params.interface_id;
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
@@ -107,7 +107,7 @@ admin.service('adExternalInterfaceCommonSrv', ['$http', '$q', 'ADBaseWebSrv', 'A
 
 	this.testSetup = function(data) {
 		var deferred = $q.defer();
-		var url = 'admin/test_ota_connection/'+data.interface;
+		var url = 'admin/test_ota_connection/' + data.interface;
 
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
@@ -119,7 +119,7 @@ admin.service('adExternalInterfaceCommonSrv', ['$http', '$q', 'ADBaseWebSrv', 'A
 
 	this.toggleActive = function(data) {
 		var deferred = $q.defer();
-		var url = 'admin/ota_update_active/'+data.interface;
+		var url = 'admin/ota_update_active/' + data.interface;
 
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);

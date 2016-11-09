@@ -5,8 +5,8 @@ sntRover.controller('RVRoomFiltersController', ['$scope', '$state', '$stateParam
 
 	$scope.roomFeatures = $scope.$parent.roomFeatures;
 	$scope.floor_details = $scope.$parent.floors;
-	$scope.data ={};
-	$scope.data.isNoFloorSelected =true;
+	$scope.data = {};
+	$scope.data.isNoFloorSelected = true;
 	/**
 	* Listener to set the room filters when loaded
 	*/
@@ -20,12 +20,12 @@ sntRover.controller('RVRoomFiltersController', ['$scope', '$state', '$stateParam
 		// resetting selected floor while selecting Show all check box
 		if ($scope.data.isNoFloorSelected)
 		{
-		$scope.data.selectedFloor='';
+		$scope.data.selectedFloor = '';
 		}
-		if ($scope.data.selectedFloor!=='')
+		if ($scope.data.selectedFloor !== '')
 		{
 			$scope.$emit('roomFeaturesUpdated', $scope.roomFeatures);
-			var floorFilterdata ={
+			var floorFilterdata = {
 				"isNoFloorSelected": $scope.data.isNoFloorSelected,
 				"selectedFloorId": $scope.data.selectedFloor
 			};
@@ -33,7 +33,7 @@ sntRover.controller('RVRoomFiltersController', ['$scope', '$state', '$stateParam
 			$scope.$parent.applyFloorFilter(floorFilterdata);
 		} else {
 			$scope.$emit('roomFeaturesUpdated', $scope.roomFeatures);
-			var floorFilterdata ={
+			var floorFilterdata = {
 				"isNoFloorSelected": $scope.data.isNoFloorSelected,
 				"selectedFloorId": ''
 			};

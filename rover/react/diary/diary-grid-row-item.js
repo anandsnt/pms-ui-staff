@@ -200,7 +200,7 @@ var GridRowItem = React.createClass({
 			is_room_locked          = data.cannot_move_room,
 			show_outstanding_indicator = ((data.reservation_status === 'check-in' || data.reservation_status === 'reserved') && is_balance_present),
 			row_item_class 			= 'occupancy-block' + ( state.editing ? ' editing' : '')
-										+ (show_outstanding_indicator ? ' deposit-required': '');
+										+ (show_outstanding_indicator ? ' deposit-required' : '');
 
 		if (state.editing) {
 			start_time_ms = state.currentResizeItem[m.start_date];
@@ -226,7 +226,7 @@ var GridRowItem = React.createClass({
 
 			// The special case adjustment
 			if (dateForCalculatingLeft.isOnDST()) {
-				left = (dateForCalculatingLeft.getTime() +3600000 - x_origin) * px_per_ms + 'px';
+				left = (dateForCalculatingLeft.getTime() + 3600000 - x_origin) * px_per_ms + 'px';
 			}
 		}
 

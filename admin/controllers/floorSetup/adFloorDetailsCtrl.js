@@ -101,12 +101,12 @@ admin.controller('ADFloorDetailsCtrl',
         return ($scope.unassignedRooms.length === 0 && !$scope.IsTryingToDropOnUnAssigned);
     };
 
-    $scope.shouldShowNoRooms=function() {
-        return ($scope.assignedRooms.length === 0 && $scope.unassignedRooms.length===0);
+    $scope.shouldShowNoRooms = function() {
+        return ($scope.assignedRooms.length === 0 && $scope.unassignedRooms.length === 0);
     };
 
-    $scope.shouldShowDropHere=function() {
-        return ($scope.assignedRooms.length === 0 && $scope.unassignedRooms.length!==0);
+    $scope.shouldShowDropHere = function() {
+        return ($scope.assignedRooms.length === 0 && $scope.unassignedRooms.length !== 0);
     };
 
 	/**
@@ -535,9 +535,9 @@ admin.controller('ADFloorDetailsCtrl',
 
     $scope.navigateFromPage = function(gotoNext) {
         if (gotoNext) {
-            $scope.paginationState.currentPage +=1 ;
+            $scope.paginationState.currentPage += 1 ;
         } else {
-            $scope.paginationState.currentPage -=1 ;
+            $scope.paginationState.currentPage -= 1 ;
         }
         $scope.searchInUnassignedRooms();
     };

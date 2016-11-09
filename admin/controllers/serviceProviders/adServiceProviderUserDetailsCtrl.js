@@ -79,7 +79,7 @@ admin.controller('ADServiceProviderUserDetailsCtrl', ['$scope', '$rootScope', '$
 	$scope.save = function() {
 		delete $scope.userDetails.previewImage;
 		var successCallbackFetch = function(data) {			
-			if (data.status ==="failure") {
+			if (data.status === "failure") {
 				$scope.errorMessage = data.errors;
 			} else {				
 				$state.go('admin.serviceproviderusers', {'id': $scope.userDetails.service_provider_id, 'name': $scope.serviceProviderName});

@@ -58,8 +58,8 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
     
     $scope.hasFileUpdatedOrUploading = function(name) {
         if ($scope.zestSettings && $scope.zestSettings.zest_lang) {
-            if ($scope.zestSettings.zest_lang[name+'_translations_file_updated'] ||
-                $scope.zestSettings.zest_lang[name+'_translations_file']) {return true;}
+            if ($scope.zestSettings.zest_lang[name + '_translations_file_updated'] ||
+                $scope.zestSettings.zest_lang[name + '_translations_file']) {return true;}
             return false;
         } else return false;
     };
@@ -146,10 +146,10 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
     var setUpTranslationFilesStatus = function() {
         zestLanguageDataCopy = angular.copy($scope.zestSettings.zest_lang);
         checkIfFileWasAdded(zestLanguageDataCopy.english_translations_file) ? zestLanguageDataCopy.english_translations_file_updated = true : "";
-        checkIfFileWasAdded(zestLanguageDataCopy.french_translations_file)  ? zestLanguageDataCopy.french_translations_file_updated = true :"";
+        checkIfFileWasAdded(zestLanguageDataCopy.french_translations_file)  ? zestLanguageDataCopy.french_translations_file_updated = true : "";
         checkIfFileWasAdded(zestLanguageDataCopy.spanish_translations_file) ? zestLanguageDataCopy.spanish_translations_file_updated = true : "" ;
-        checkIfFileWasAdded(zestLanguageDataCopy.german_translations_file)  ? zestLanguageDataCopy.german_translations_file_updated = true :"";
-        checkIfFileWasAdded(zestLanguageDataCopy.italian_translations_file) ? zestLanguageDataCopy.italian_translations_file_updated = true :"";
+        checkIfFileWasAdded(zestLanguageDataCopy.german_translations_file)  ? zestLanguageDataCopy.german_translations_file_updated = true : "";
+        checkIfFileWasAdded(zestLanguageDataCopy.italian_translations_file) ? zestLanguageDataCopy.italian_translations_file_updated = true : "";
         checkIfFileWasAdded(zestLanguageDataCopy.castellano_translations_file) ? zestLanguageDataCopy.castellano_translations_file_updated = true : "";
     };
 
@@ -181,10 +181,10 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
     $scope.downloadPromptFileName = '';
     $scope.downloadLang = function(lang) {
          $timeout(function() {
-            $scope.downloadPromptFileName = lang+'.json';
+            $scope.downloadPromptFileName = lang + '.json';
             var link = document.getElementById('download-link-popup');// ie. en-download-link
 
-            link.href = 'staff/locales/download/'+lang+'.json';
+            link.href = 'staff/locales/download/' + lang + '.json';
          }, 500);
          ngDialog.open({
             template: '/assets/partials/zestStation/adZestStationLanguageFile.html',

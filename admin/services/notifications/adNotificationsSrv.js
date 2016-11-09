@@ -31,7 +31,7 @@ admin.service('ADNotificationsListSrv', ['$http', '$q', 'ADBaseWebSrvV2', functi
 
 	this.deleteNotification = function(data) {
 		var deferred = $q.defer();
-		var url = '/api/staff_notifications/'+data.id;
+		var url = '/api/staff_notifications/' + data.id;
 
 		ADBaseWebSrvV2.deleteJSON(url, data).then(function(data) {			
 		    deferred.resolve(data);
@@ -54,7 +54,7 @@ admin.service('ADNotificationsListSrv', ['$http', '$q', 'ADBaseWebSrvV2', functi
 	};
 	this.updateNotification = function(data) {
 		var deferred = $q.defer();
-		var url = '/api/staff_notifications/'+ data.id;
+		var url = '/api/staff_notifications/' + data.id;
 
 		ADBaseWebSrvV2.putJSON(url, data.params).then(function(data) {
 		    deferred.resolve(data);

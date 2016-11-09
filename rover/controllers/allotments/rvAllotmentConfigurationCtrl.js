@@ -14,7 +14,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
     function($scope, $rootScope, rvAllotmentSrv, $filter, $stateParams, rvAllotmentConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout, rvAccountTransactionsSrv) {
 
         BaseCtrl.call(this, $scope);
-        $scope.isDisabledDatePicker = ($stateParams.id !== "NEW_ALLOTMENT")? true :  false;
+        $scope.isDisabledDatePicker = ($stateParams.id !== "NEW_ALLOTMENT") ? true :  false;
         /**
          * to run angular digest loop,
          * will check if it is not running

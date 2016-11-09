@@ -19,7 +19,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		$scope.billsArray = $scope.reservationBillData.bills;
 		// common payment model items
 		$scope.passData = {};
-		$scope.passData.details ={};
+		$scope.passData.details = {};
 		$scope.passData.details.firstName = $scope.guestCardData.contactInfo.first_name;
 		$scope.passData.details.lastName = $scope.guestCardData.contactInfo.last_name;
 		$scope.setScroller('cardsList', {'click': true, 'tap': true});
@@ -59,7 +59,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		}
 		else if ((feesData.defaultAmount  >= feesData.minFees) && $scope.isStandAlone && feesData.feesInfo.amount) {
 			if ($scope.renderData.defaultPaymentAmount >= 0) {
-				isShowFees = (($rootScope.paymentGateway !== 'sixpayments' || $scope.isManual || $scope.saveData.paymentType !=='CC') && $scope.saveData.paymentType !=="") ? true :false;
+				isShowFees = (($rootScope.paymentGateway !== 'sixpayments' || $scope.isManual || $scope.saveData.paymentType !== 'CC') && $scope.saveData.paymentType !== "") ? true : false;
 			}
 
 		}
@@ -135,7 +135,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 				delete value.expiry_date;
 		    });
 
-		    $scope.addmode = $scope.cardsList.length > 0 ? false:true;
+		    $scope.addmode = $scope.cardsList.length > 0 ? false : true;
 			angular.forEach($scope.cardsList, function(value, key) {
 				value.isSelected = false;
 				if (!isEmptyObject($scope.billsArray[$scope.currentActiveBill].credit_card_details)) {
@@ -161,8 +161,8 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 			splitAmount: 0,
 			carryAmount: 0
 		};
-		$scope.messageOfSuccessSplitPayment ='';
-		$scope.paymentErrorMessage ='';
+		$scope.messageOfSuccessSplitPayment = '';
+		$scope.paymentErrorMessage = '';
 		// reset value
 		if (!$scope.splitBillEnabled) {
 			$scope.renderData.defaultPaymentAmount = angular.copy(startingAmount );
@@ -179,7 +179,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 			carryAmount: 0
 		};
 		$scope.messageOfSuccessSplitPayment = '';
-		$scope.paymentErrorMessage ='';
+		$scope.paymentErrorMessage = '';
 		// reset value
 		if (!$scope.splitBillEnabled) {
 			$scope.renderData.defaultPaymentAmount = angular.copy( $scope.copyOfdefaultPaymentAmount );
@@ -272,7 +272,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		$scope.renderData.defaultPaymentAmount = parseFloat(defaultAmount).toFixed(2);
 		$scope.copyOfdefaultPaymentAmount      = parseFloat(defaultAmount).toFixed(2);
 		$scope.splitePaymentDetail["totalAmount"] = parseFloat(defaultAmount).toFixed(2);
-		$scope.defaultRefundAmount = (-1)*parseFloat($scope.renderData.defaultPaymentAmount);
+		$scope.defaultRefundAmount = (-1) * parseFloat($scope.renderData.defaultPaymentAmount);
 
 
 		if ($scope.renderData.defaultPaymentAmount < 0 ) {
@@ -311,8 +311,8 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		// Amount spliting logic goes here, say total amount is 100 and no of split is 3,
 		// So split = 33.33 ie totalAmount = 33.33*3 = 99.99 so carry = 100-99.99 = 0.01
 		// this carry is added with first split amount
-		$scope.splitePaymentDetail["splitAmount"] = parseFloat($filter("number")((startingAmount/$scope.splitePaymentDetail["totalNoOfsplits"]), 2).replace(/,/g, ''));
-		$scope.splitePaymentDetail["carryAmount"] = parseFloat($filter("number")((startingAmount - ($scope.splitePaymentDetail["splitAmount"] *$scope.splitePaymentDetail["totalNoOfsplits"])), 2));
+		$scope.splitePaymentDetail["splitAmount"] = parseFloat($filter("number")((startingAmount / $scope.splitePaymentDetail["totalNoOfsplits"]), 2).replace(/,/g, ''));
+		$scope.splitePaymentDetail["carryAmount"] = parseFloat($filter("number")((startingAmount - ($scope.splitePaymentDetail["splitAmount"] * $scope.splitePaymentDetail["totalNoOfsplits"])), 2));
 		// For first payment , carry amount is added with split amount.
         // Fixed the defect - CICO-23642
 		$scope.renderData.defaultPaymentAmount = (parseFloat($scope.splitePaymentDetail["splitAmount"]) + parseFloat($scope.splitePaymentDetail["carryAmount"])).toFixed(2);
@@ -332,7 +332,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 	*/
 
 	$scope.classForPaymentSplitButton = function(index) {
-		if (index === 1 && $scope.splitePaymentDetail["completedSplitPayments"]===0) {
+		if (index === 1 && $scope.splitePaymentDetail["completedSplitPayments"] === 0) {
 			return "checked";
 		} else if (index <= $scope.splitePaymentDetail["completedSplitPayments"]) {
 			return "paid";
@@ -346,8 +346,8 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 	* Updates success payment detail.
 	*/
 	var updateSuccessMessage = function() {
-		$scope.messageOfSuccessSplitPayment = $scope.messageOfSuccessSplitPayment +"SPLIT # "+$scope.splitePaymentDetail["completedSplitPayments"]+" OF "
-		+  $filter("number")($scope.renderData.defaultPaymentAmount.toString().replace(/,/g, ""), 2) +" PAID SUCCESSFULLY !"+"<br/>";
+		$scope.messageOfSuccessSplitPayment = $scope.messageOfSuccessSplitPayment + "SPLIT # " + $scope.splitePaymentDetail["completedSplitPayments"] + " OF "
+		+  $filter("number")($scope.renderData.defaultPaymentAmount.toString().replace(/,/g, ""), 2) + " PAID SUCCESSFULLY !" + "<br/>";
 		// Clears older failure messages.
 		$scope.clearPaymentErrorMessage();
 		// TO CONFIRM AND REMOVE COMMENT OR TO DELETE
@@ -355,7 +355,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		// ($scope.reservationBillData.isCheckout || !$scope.splitBillEnabled) -> this was the condtition before
 		// had to remove the isCheckout flag which was causing the popup to close even if split payment is
 		// selected
-		(!$scope.splitBillEnabled) ? $scope.closeDialog():'';
+		(!$scope.splitBillEnabled) ? $scope.closeDialog() : '';
 	};
 	/*
 	* updates DefaultPaymentAmount
@@ -396,7 +396,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 	* Success call back of success payment
 	*/
 	var successPayment = function(data) {
-		$scope.errorMessage ="";
+		$scope.errorMessage = "";
 		$scope.authorizedCode = data.authorization_code;
 		processeRestOfPaymentOperations();
 		paymentFinalDetails =  data;
@@ -410,7 +410,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		$scope.disableMakePaymentButton = false;
 		$scope.$emit("hideLoader");
 		if ($scope.splitBillEnabled) {
-			$scope.paymentErrorMessage = "SPLIT # "+($scope.splitePaymentDetail["completedSplitPayments"]+1)+" PAYMENT OF "+$scope.renderData.defaultPaymentAmount+" FAILED !"+"<br/>";
+			$scope.paymentErrorMessage = "SPLIT # " + ($scope.splitePaymentDetail["completedSplitPayments"] + 1) + " PAYMENT OF " + $scope.renderData.defaultPaymentAmount + " FAILED !" + "<br/>";
 		}
 		else {
 			$scope.errorMessage = data;
@@ -434,7 +434,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 
 		data.payment_credit_type = swipedCardDataToSave.cardType;
 		data.credit_card = swipedCardDataToSave.cardType;
-		data.card_expiry = "20"+swipedCardDataToSave.cardExpiryYear+"-"+swipedCardDataToSave.cardExpiryMonth+"-01";
+		data.card_expiry = "20" + swipedCardDataToSave.cardExpiryYear + "-" + swipedCardDataToSave.cardExpiryMonth + "-01";
 		$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successNewPayment);
 	});
 

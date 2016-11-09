@@ -37,7 +37,7 @@ admin.service('ADMaintenanceReasonsSrv', ['$http', '$q', 'ADBaseWebSrvV2', funct
 	this.update = function(data) {
 
 		var deferred = $q.defer();
-		var url = '/api/maintenance_reasons/'+data.value;
+		var url = '/api/maintenance_reasons/' + data.value;
 
 		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 			deferred.resolve(data);
@@ -53,7 +53,7 @@ admin.service('ADMaintenanceReasonsSrv', ['$http', '$q', 'ADBaseWebSrvV2', funct
 	this.deleteItem = function(data) {
 
 		var deferred = $q.defer();
-		var url = '/api/maintenance_reasons/'+data.value;
+		var url = '/api/maintenance_reasons/' + data.value;
 
 		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 			deferred.resolve(data);

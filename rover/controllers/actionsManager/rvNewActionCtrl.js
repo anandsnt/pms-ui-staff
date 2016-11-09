@@ -43,7 +43,7 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
             var ref = $scope.newAction,
                 payLoad = {
                     description: ref.note,
-                    assigned_to: ref.department? parseInt(ref.department, 10) : "",
+                    assigned_to: ref.department ? parseInt(ref.department, 10) : "",
                     due_at: dateFilter(ref.dueDate, $rootScope.dateFormatForAPI) + "T" + ref.dueTime + ":00"
                 };
 

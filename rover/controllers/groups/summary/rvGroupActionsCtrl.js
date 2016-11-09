@@ -194,7 +194,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
 
             if (aDay) {
                 aDay = aDay.toLowerCase();
-                aDayString = aDay.substring(0, 1).toUpperCase()+aDay.substring(1, 3)+' ';
+                aDayString = aDay.substring(0, 1).toUpperCase() + aDay.substring(1, 3) + ' ';
             }
             // make sure timestring include '0' if < 10, ie. 09, 08, etc instead of 9, 8...
             if (timeStr !== ' ') {
@@ -203,7 +203,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                 var hourInt = parseInt(hour);
 
                 if (hour < 10) {
-                    timeStr = '0'+hourInt+':'+timeSpl[1];
+                    timeStr = '0' + hourInt + ':' + timeSpl[1];
                 }
             }
             if (dateStr) {
@@ -404,7 +404,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             var spl = d.split(spl);
             var month = spl[0], day = spl[1], year = spl[2];
 
-            return month+newSpl+day+newSpl+year;
+            return month + newSpl + day + newSpl + year;
         };
 
 
@@ -413,7 +413,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             var nd = new Date(businessDate);
             var day = ("0" + nd.getDate()).slice(-2);
             var month = ("0" + (nd.getMonth() + 1)).slice(-2);
-            var fromDateStr = nd.getFullYear()+'-'+month+'-'+day;
+            var fromDateStr = nd.getFullYear() + '-' + month + '-' + day;
 
             $scope.fromDate = fromDateStr;
         };
@@ -519,7 +519,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             var nd = new Date();
 
             nd.setFullYear(sp[2]);
-            nd.setMonth(sp[0]-1);
+            nd.setMonth(sp[0] - 1);
             nd.setDate(sp[1]);
 
             return nd.valueOf();
@@ -633,7 +633,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             } else return false;
         };
         $scope.showErrMsg = function() {
-            if ($scope.errorMessage!='') {
+            if ($scope.errorMessage != '') {
                 return true;
             } else return false;
         };
@@ -1007,7 +1007,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                 fullDate = new Date(d);
             }
             day = fullDate.getDate();
-            month = fullDate.getMonth()+1;
+            month = fullDate.getMonth() + 1;
             year = fullDate.getFullYear();
 
             if (day < 10) {
@@ -1086,7 +1086,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             if (seconds < 10) {
                 seconds = '0' + seconds;
             }
-            return getFormattedTime(hours+''+minutes);
+            return getFormattedTime(hours + '' + minutes);
         };
         var formatTime = function(timeInMs, via) {
             var dt = new Date(timeInMs);
@@ -1111,7 +1111,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             if (seconds < 10) {
                 seconds = '0' + seconds;
             }
-            return getFormattedTime(hours+''+minutes);
+            return getFormattedTime(hours + '' + minutes);
 
         };
         var getFormattedTime = function (fourDigitTime) {
@@ -1122,7 +1122,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
 
             if (typeof hours === typeof 2) {
                 if (hours < 10) {
-                    hours = '0'+hours;
+                    hours = '0' + hours;
                 }
             }
 
@@ -1137,7 +1137,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                 var minutes = fourDigitTime.substring(2);
 
                 if (parseInt(hours) < 10) {
-                    hours = '0'+hours;
+                    hours = '0' + hours;
                 }
                 return hours + ':' + minutes + amPm;
             };

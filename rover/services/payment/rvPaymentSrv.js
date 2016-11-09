@@ -1,7 +1,7 @@
 angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', '$rootScope', function($http, $q, RVBaseWebSrv, RVBaseWebSrvV2, $rootScope) {
 
 
-	var that =this;
+	var that = this;
 
 	var paymentsData = {};
 
@@ -83,7 +83,7 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 	};
 	this.getPaymentList = function(reservationId) {
 		var deferred = $q.defer();
-		var url = '/staff/staycards/get_credit_cards.json?reservation_id='+reservationId;
+		var url = '/staff/staycards/get_credit_cards.json?reservation_id=' + reservationId;
 
 		RVBaseWebSrv.getJSON(url).then(function(data) {
 			    deferred.resolve(data);

@@ -8,7 +8,7 @@
 	var checkInKeysController = function($scope, $rootScope, $http, $location, checkinDetailsService, checkinKeysService, $state) {
 
 	$scope.pageValid = false;
-	$rootScope.userEmail = ($rootScope.userEmail === null ) ? "" :$rootScope.userEmail;
+	$rootScope.userEmail = ($rootScope.userEmail === null ) ? "" : $rootScope.userEmail;
 	// CICO-30872 ..this need to be done in a better way when doing octopus
 	// now the variable names are confusing
 	// this has to be set to false as the CC page is expecting that variable to do
@@ -50,7 +50,7 @@
 		}
 		else {
 			$rootScope.isCheckedin = true;
-			$scope.responseData =response.data;
+			$scope.responseData = response.data;
 		}
 		$scope.isPosting = false;
 

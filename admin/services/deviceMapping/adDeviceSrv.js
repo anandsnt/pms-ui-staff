@@ -39,7 +39,7 @@ admin.service('ADDeviceSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $
 	this.getDeviceMappingDetails = function(data) {
 		var deferred = $q.defer();
 		var id = data.id;
-		var url = '/api/workstations/'+id;
+		var url = '/api/workstations/' + id;
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
@@ -56,7 +56,7 @@ admin.service('ADDeviceSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $
 	this.updateMapping = function(data) {
 
 		var deferred = $q.defer();
-		var url = '/api/workstations/'+data.id;
+		var url = '/api/workstations/' + data.id;
 
 		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
@@ -72,7 +72,7 @@ admin.service('ADDeviceSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $
     */
 	this.deleteDeviceMapping = function(id) {
 		var deferred = $q.defer();
-		var url = '/api/workstations/'+id;
+		var url = '/api/workstations/' + id;
 
 		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 		    deferred.resolve(data);

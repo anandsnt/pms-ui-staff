@@ -140,7 +140,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
         var room_type_id_list = _.pluck($scope.roomTypesAndData, 'room_type_id'),
             containNonEditableRoomType = !_.contains(room_type_id_list, parseInt(reservation.room_type_id)),
             rStatus = reservation.reservation_status,
-            basicDisableCondition = !( rStatus === "RESERVED" || rStatus === "CHECKING_IN")|| containNonEditableRoomType;
+            basicDisableCondition = !( rStatus === "RESERVED" || rStatus === "CHECKING_IN") || containNonEditableRoomType;
 
         // CICO-18717: disable room type switch once a user checks in
         return (!fieldsEnabled['roomType'] || basicDisableCondition);

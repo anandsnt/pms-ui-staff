@@ -3,8 +3,8 @@ sntRover.controller('RVPaymentGuestCtrl', ['$rootScope', '$scope', '$state', 'RV
 
 
 	$scope.$on('clearNotifications', function() {
-    	$scope.errorMessage ="";
-    	$scope.successMessage ="";
+    	$scope.errorMessage = "";
+    	$scope.successMessage = "";
     });
 
 	/*

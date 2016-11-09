@@ -6,7 +6,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     	BaseCtrl.call(this, $scope);
     	$scope.roomTypeData = {};
     	$scope.successMessage = "";
-    	$scope.errorMessage ="";
+    	$scope.errorMessage = "";
     	$scope.is_image_deleted = false;
     	$scope.fileName = "Choose File....";
     	$scope.imageFileName = $scope.fileName;
@@ -67,11 +67,11 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     * @param {id} id of the room type
     */
     $scope.editRoomTypeDetails = function(index, id) {
-        $scope.isAddMode =false;
+        $scope.isAddMode = false;
         $scope.fetchAvailableRoomTypesForSuite(index, id);
     };
 	$scope.editRoomTypes = function(index, id)	{
-		$scope.departmentData={};
+		$scope.departmentData = {};
 		$scope.currentClickedElement = index;
 		$scope.roomTypeData = {};
 	 	var successCallbackRender = function(data) {
@@ -129,7 +129,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
 
 		var unwantedKeys = [];
 
-		if ($scope.roomTypeData.image_of_room_type.indexOf("data:")!== -1) {
+		if ($scope.roomTypeData.image_of_room_type.indexOf("data:") !== -1) {
 			unwantedKeys = ["is_image_deleted"];
 		} else {
 			$scope.roomTypeData.is_image_deleted = $scope.is_image_deleted;
@@ -175,7 +175,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
 
 	$scope.clickCancel = function() {
 		if ($scope.isAddMode) {
-			$scope.isAddMode =false;
+			$scope.isAddMode = false;
 			$scope.fileName = "";
 			$scope.imageFileName = $scope.fileName;
         }
@@ -203,7 +203,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
 	 	};
 	 	var errorCallbackImport = function(data) {
 	 		$scope.$emit('hideLoader');
-	 		$scope.successMessage ="";
+	 		$scope.successMessage = "";
 	 		$scope.errorMessage = data;
 	 	};
 
@@ -301,7 +301,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
 
         if (clickedBlockRoomType.blocked_rooms_count > 0) {
             clickedBlockRoomType.isComponentUpArrowEnabled = true;
-            clickedBlockRoomType.blocked_rooms_count = clickedBlockRoomType.blocked_rooms_count -1;
+            clickedBlockRoomType.blocked_rooms_count = clickedBlockRoomType.blocked_rooms_count - 1;
             if (clickedBlockRoomType.blocked_rooms_count == 0) {
                 clickedBlockRoomType.isComponentDownArrowEnabled = false;
             }

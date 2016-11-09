@@ -19,7 +19,7 @@ admin.service('ADChargeCodesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
     */
 	this.deleteItem = function(data) {
 		var deferred = $q.defer();
-		var url = '/admin/charge_codes/'+data.value+'/delete';
+		var url = '/admin/charge_codes/' + data.value + '/delete';
 
 		ADBaseWebSrv.getJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
@@ -47,7 +47,7 @@ admin.service('ADChargeCodesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
     */
 	this.fetchEditData = function(data) {
 		var deferred = $q.defer();
-		var url = '/admin/charge_codes/'+data.editId+'/edit.json';
+		var url = '/admin/charge_codes/' + data.editId + '/edit.json';
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 		    deferred.resolve(data);

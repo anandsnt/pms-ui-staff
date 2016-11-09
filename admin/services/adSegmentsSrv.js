@@ -52,7 +52,7 @@ admin.service('ADSegmentsSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http,
 	this.update = function(data) {
 
 		var deferred = $q.defer();
-		var url = '/api/segments/'+data.value;
+		var url = '/api/segments/' + data.value;
 
 		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 			deferred.resolve(data);
@@ -67,7 +67,7 @@ admin.service('ADSegmentsSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http,
     */
 	this.delete = function(data) {
 		var deferred = $q.defer();
-		var url = '/api/segments/'+data.value;
+		var url = '/api/segments/' + data.value;
 
 		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 			deferred.resolve(data);

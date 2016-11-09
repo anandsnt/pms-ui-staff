@@ -193,7 +193,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$fi
 	/**
 	 * failure call back of search result fetch
 	 */
-	var failureCallBackofDataFetch= function(errorMessage) {
+	var failureCallBackofDataFetch = function(errorMessage) {
 		$scope.$emit('hideLoader');
 		$scope.$emit('displayErrorMessage', errorMessage);
 	};
@@ -309,7 +309,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$fi
                 "is_opted_late_checkout": data.is_opted_late_checkout,
                 "name": data.firstname + " " + data.lastname,
                 "entity_type": "RESERVATION",
-                "has_accompanying_guests": ( data.images.length >1 ) ? true : false,
+                "has_accompanying_guests": ( data.images.length > 1 ) ? true : false,
                 "bill_no": "",
                 "is_new": true,
                 "credit_card_details": {},
@@ -447,7 +447,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$fi
             $scope.selectedEntity.entity_type = "TRAVEL_AGENT";
             $scope.selectedEntity.is_allow_direct_debit = $scope.attachedEntities.travel_agent.is_allow_direct_debit;
         }
-        else if (type ==='GROUP' || type === 'HOUSE') {
+        else if (type === 'GROUP' || type === 'HOUSE') {
             if ($scope.isRoutingForPostingAccountExist()) {
                 var errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
 

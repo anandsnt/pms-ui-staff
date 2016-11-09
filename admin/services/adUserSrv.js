@@ -33,7 +33,7 @@ admin.service('ADUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'AD
 	this.getUserDetails = function(data) {
 		var id = data.id;
 		var deferred = $q.defer();
-		var url = '/admin/users/'+id+'/edit.json';
+		var url = '/admin/users/' + id + '/edit.json';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
@@ -67,11 +67,11 @@ admin.service('ADUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'AD
 	this.updateUserDetails = function(data) {
 
 		var deferred = $q.defer();
-		var url = '/admin/users/'+data.user_id;
+		var url = '/admin/users/' + data.user_id;
 		var updateData = data;
 
 		ADBaseWebSrv.putJSON(url, data).then(function(data) {
-			that.updateUserDataOnUpdate(updateData.user_id, "full_name", updateData.first_name+" "+updateData.last_name);
+			that.updateUserDataOnUpdate(updateData.user_id, "full_name", updateData.first_name + " " + updateData.last_name);
 			that.updateUserDataOnUpdate(updateData.user_id, "email", updateData.email);
 			that.updateUserDataOnUpdate(updateData.user_id, "department", that.getDepartmentName(updateData.user_department));
 			that.updateUserDataOnUpdate(updateData.user_id, "is_active", updateData.is_activated);
@@ -89,7 +89,7 @@ admin.service('ADUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'AD
     */
 	this.saveUserDetails = function(data) {
 		var newDataToArray = {
-            "full_name": data.first_name+" "+data.last_name,
+            "full_name": data.first_name + " " + data.last_name,
             "email": data.email,
             "department": that.getDepartmentName(data.user_department),
             "last_login": "",
@@ -179,7 +179,7 @@ admin.service('ADUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'AD
 	this.deleteUser = function(data) {
 
 		var deferred = $q.defer();
-		var url = '/admin/users/'+data.id;
+		var url = '/admin/users/' + data.id;
 		var itemToRemove = data.index;
 
 		delete data["index"];

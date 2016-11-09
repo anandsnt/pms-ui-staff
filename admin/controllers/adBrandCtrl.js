@@ -29,7 +29,7 @@ admin.controller('ADBrandCtrl', ['$scope', '$rootScope', 'adBrandsSrv', function
     */
 	$scope.editBrand = function(index, id)	{
 		$scope.isAddmode = false;
-		$scope.errorMessage ="";
+		$scope.errorMessage = "";
 		$scope.currentClickedElement = index;
 		$scope.editId = id;
 		var editID = { 'editID': id };
@@ -53,7 +53,7 @@ admin.controller('ADBrandCtrl', ['$scope', '$rootScope', 'adBrandsSrv', function
     */
 	$scope.addNew = function() {
 		$scope.brandDetails   = {};
-		$scope.errorMessage ="";
+		$scope.errorMessage = "";
 		$scope.formTitle = "";
 		$scope.isAddmode = true;
 		$scope.isEditmode = false;

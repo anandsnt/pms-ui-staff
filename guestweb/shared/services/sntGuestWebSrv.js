@@ -14,7 +14,7 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 				that.cms_screen_details = _.find(response.screen_list, function(cms_item) {
 					return cms_item.screen_name === "ECI SCREENS";
 				});
-				that.cms_screen_details = typeof that.cms_screen_details !=='undefined' ? that.cms_screen_details : [];
+				that.cms_screen_details = typeof that.cms_screen_details !== 'undefined' ? that.cms_screen_details : [];
 				deferred.resolve(response);
 			}.bind(this))
 			.error(function() {

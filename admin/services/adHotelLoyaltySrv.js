@@ -39,7 +39,7 @@ admin.service('ADHotelLoyaltySrv', ['$http', '$q', 'ADBaseWebSrv', function($htt
 	this.getHotelLoyaltyDetails = function(data) {
 		var deferred = $q.defer();
 		var id = data.id;
-		var url = '/admin/hotel/edit_hlp/'+id+'.json';
+		var url = '/admin/hotel/edit_hlp/' + id + '.json';
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 		    deferred.resolve(data);

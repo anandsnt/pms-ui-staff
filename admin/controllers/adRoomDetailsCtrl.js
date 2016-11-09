@@ -40,7 +40,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 			$scope.$emit('hideLoader');
 			// console.log(data.rooms)
 			angular.forEach(data, function(item) {
-				var roomData =_.findWhere($scope.data.room_types, {value: item.id});
+				var roomData = _.findWhere($scope.data.room_types, {value: item.id});
 
 				item.room_type_name = roomData.name;
 				item.selected_room_number = "";
@@ -163,7 +163,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 		$scope.roomTypeChanged(data.room_type_id);
 		if ($scope.editMode) {
 			angular.forEach($scope.data.suite_rooms, function(suiteRoomItem) {
-				var roomData =_.findWhere($scope.data.room_types, {value: suiteRoomItem.room_type_id});
+				var roomData = _.findWhere($scope.data.room_types, {value: suiteRoomItem.room_type_id});
 
 				suiteRoomItem.room_type_name = roomData.name;
 			});
@@ -240,8 +240,8 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 	    $scope.floors = data.floors;
 		$scope.likeCopy = angular.copy( $scope.data.room_likes );
 		$scope.data.room_image = "";
-		$scope.data.room_number="";
-		$scope.data.room_type_id="";
+		$scope.data.room_number = "";
+		$scope.data.room_type_id = "";
 
 	};
 	var fecthAllRoomDetailsFailureCallback = function(errorMessage) {
@@ -327,7 +327,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 			}
 		}
 
-		if ($scope.data.room_image.indexOf("data:")!== -1) {
+		if ($scope.data.room_image.indexOf("data:") !== -1) {
 			postData.room_image = $scope.data.room_image;
 		}
 

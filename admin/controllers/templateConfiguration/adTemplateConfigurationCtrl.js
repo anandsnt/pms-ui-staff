@@ -31,7 +31,7 @@ admin.controller('ADTemplateConfigurationCtrl', ['$scope', '$state', 'ADHotelLis
 
 
 		$scope.isAddmode = false;
-		$scope.errorMessage ="";
+		$scope.errorMessage = "";
 		$scope.currentClickedElement = index;
 		$scope.clickedHotel = hotelId;
 

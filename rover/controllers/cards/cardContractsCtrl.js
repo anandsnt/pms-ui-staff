@@ -141,7 +141,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 
 			var selectedRate = _.findWhere(ratesList, {id: data.contracted_rate_selected});
 
-			$scope.contractData.contractedRate = selectedRate? selectedRate.name : "";
+			$scope.contractData.contractedRate = selectedRate ? selectedRate.name : "";
 
 			if (typeof $stateParams.type !== 'undefined' && $stateParams.type !== "") {
 				$scope.contractData.account_type = $stateParams.type;

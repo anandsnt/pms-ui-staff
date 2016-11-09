@@ -41,7 +41,7 @@
 
 			   $timeout(function() {
 
-					if (response.status ==="success") {
+					if (response.status === "success") {
 						$rootScope.isRoomVerified =  true;
 						if ($rootScope.isLateCheckoutAvailable ) {
 								$state.go('checkOutOptions');

@@ -107,10 +107,10 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
 
             if (url.hostname) {
                 if (typeof url.hostname === typeof 'str') {
-                    if (url.hostname.indexOf('pms-dev') !==-1 || // not listing release to verify this is not shown in near-production view
-                        url.hostname.indexOf('192.168.1.218') !==-1 || 
-                        url.hostname.indexOf('192.168.1.239') !==-1 || 
-                        url.hostname.indexOf('localhost') !==-1) {
+                    if (url.hostname.indexOf('pms-dev') !== -1 || // not listing release to verify this is not shown in near-production view
+                        url.hostname.indexOf('192.168.1.218') !== -1 || 
+                        url.hostname.indexOf('192.168.1.239') !== -1 || 
+                        url.hostname.indexOf('localhost') !== -1) {
                         notProd = true;
                     }
                 }

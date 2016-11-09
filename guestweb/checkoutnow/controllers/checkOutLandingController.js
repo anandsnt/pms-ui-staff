@@ -27,6 +27,6 @@ sntGuestWeb.controller('checkOutLandingController', ['$rootScope', '$location', 
 
 sntGuestWeb.filter('customizeLabelText', function () {
     return function (input, scope) {
-        return input.substring(0, 1) +" ' "+ input.substring(1, 2).toBold() +" ' "+ input.substring(2);
+        return input.substring(0, 1) + " ' " + input.substring(1, 2).toBold() + " ' " + input.substring(2);
     };
 });

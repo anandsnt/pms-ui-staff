@@ -6,7 +6,7 @@ admin.controller('ADContentManagementTreeViewCtrl', ['$scope', '$state', 'ADCont
 
    /* Function to fetch the components to be listed in the tree view
     */
-	 $scope.fetchTreeViewList= function() {
+	 $scope.fetchTreeViewList = function() {
    		var successCallbackTreeFetch = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.contentList = data;

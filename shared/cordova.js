@@ -418,7 +418,7 @@ base64.toArrayBuffer = function(str) {
     var arrayBuffer = new ArrayBuffer(decodedStr.length);
     var array = new Uint8Array(arrayBuffer);
 
-    for (var i=0, len=decodedStr.length; i < len; i++) {
+    for (var i = 0, len = decodedStr.length; i < len; i++) {
         array[i] = decodedStr.charCodeAt(i);
     }
     return arrayBuffer;
@@ -436,9 +436,9 @@ var b64_12bit;
 
 var b64_12bitTable = function() {
     b64_12bit = [];
-    for (var i=0; i<64; i++) {
-        for (var j=0; j<64; j++) {
-            b64_12bit[i*64+j] = b64_6bit[i] + b64_6bit[j];
+    for (var i = 0; i < 64; i++) {
+        for (var j = 0; j < 64; j++) {
+            b64_12bit[i * 64 + j] = b64_6bit[i] + b64_6bit[j];
         }
     }
     b64_12bitTable = function() { return b64_12bit; };
@@ -447,17 +447,17 @@ var b64_12bitTable = function() {
 
 function uint8ToBase64(rawData) {
     var numBytes = rawData.byteLength;
-    var output="";
+    var output = "";
     var segment;
     var table = b64_12bitTable();
 
-    for (var i=0;i<numBytes-2;i+=3) {
-        segment = (rawData[i] << 16) + (rawData[i+1] << 8) + rawData[i+2];
+    for (var i = 0;i < numBytes - 2;i += 3) {
+        segment = (rawData[i] << 16) + (rawData[i + 1] << 8) + rawData[i + 2];
         output += table[segment >> 12];
         output += table[segment & 0xfff];
     }
     if (numBytes - i == 2) {
-        segment = (rawData[i] << 16) + (rawData[i+1] << 8);
+        segment = (rawData[i] << 16) + (rawData[i + 1] << 8);
         output += table[segment >> 12];
         output += b64_6bit[(segment & 0xfff) >> 6];
         output += '=';
@@ -660,7 +660,7 @@ var Channel = function(type, sticky) {
                     if (!(--i)) h();
                 };
 
-            for (var j=0; j<len; j++) {
+            for (var j = 0; j < len; j++) {
                 if (c[j].state === 0) {
                     throw Error('Can only use join with sticky channels.');
                 }
@@ -1632,7 +1632,7 @@ function findCordovaPath() {
     var scripts = document.getElementsByTagName('script');
     var term = '/cordova.js';
 
-    for (var n = scripts.length-1; n>-1; n--) {
+    for (var n = scripts.length - 1; n > -1; n--) {
         var src = scripts[n].src.replace(/\?.*$/, ''); // Strip any query param (CB-6007).
 
         if (src.indexOf(term) == (src.length - term.length)) {
@@ -1843,7 +1843,7 @@ utils.alert = function(msg) {
 function UUIDcreatePart(length) {
     var uuidpart = "";
 
-    for (var i=0; i<length; i++) {
+    for (var i = 0; i < length; i++) {
         var uuidchar = parseInt((Math.random() * 256), 10).toString(16);
 
         if (uuidchar.length == 1) {

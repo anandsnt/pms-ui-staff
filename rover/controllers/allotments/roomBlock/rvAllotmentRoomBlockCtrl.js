@@ -1684,7 +1684,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {undefined}
 		 */
 		var setActiveLeftSideMenu = function () {
-			var activeMenu = ($scope.isInAddMode()) ? "menuCreateAllotment": "menuManageAllotment";
+			var activeMenu = ($scope.isInAddMode()) ? "menuCreateAllotment" : "menuManageAllotment";
 
 			$scope.$emit("updateRoverLeftMenu", activeMenu);
 		};
@@ -1712,7 +1712,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 			var maxDate = new tzIndependentDate(summaryData.block_to);
 
-			maxDate.setDate(maxDate.getDate()-1);
+			maxDate.setDate(maxDate.getDate() - 1);
 
 			// date picker options - Start Date
 			$scope.timeLineStartDateOptions = _.extend({

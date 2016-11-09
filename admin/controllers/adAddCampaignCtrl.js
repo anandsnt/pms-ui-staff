@@ -50,10 +50,10 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 		$scope.campaignData.id = data.id;
 		$scope.campaignData.name = data.name;
 		$scope.campaignData.audience_type = data.audience_type;
-		$scope.campaignData.delayAfterCheckin = data.delay_after_checkin < 10 ? "0"+data.delay_after_checkin : "" + data.delay_after_checkin;
+		$scope.campaignData.delayAfterCheckin = data.delay_after_checkin < 10 ? "0" + data.delay_after_checkin : "" + data.delay_after_checkin;
 		$scope.campaignData.delivery_details = data.delivery_details;
-		$scope.campaignData.target_type = (data.screen_type_id !==  "" && data.screen_type_id !==  null)? "SCREEN" : "URL";
-		$scope.campaignData.screen_type_id = (data.screen_type_id !==  "" && data.screen_type_id !==  null)? data.screen_type_id : "";
+		$scope.campaignData.target_type = (data.screen_type_id !==  "" && data.screen_type_id !==  null) ? "SCREEN" : "URL";
+		$scope.campaignData.screen_type_id = (data.screen_type_id !==  "" && data.screen_type_id !==  null) ? data.screen_type_id : "";
 		$scope.campaignData.specific_users = data.specific_users;
 
 		$scope.campaignData.subject = data.subject;
@@ -62,7 +62,7 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 		$scope.campaignData.call_to_action_label = data.call_to_action_label;
 		$scope.campaignData.call_to_action_target = data.call_to_action_target;
 
-		$scope.campaignData.is_recurring = data.is_recurring? 'true': 'false';
+		$scope.campaignData.is_recurring = data.is_recurring ? 'true' : 'false';
 		$scope.campaignData.day_of_week = data.day_of_week;
 
 		$scope.campaignData.completed_date = data.completed_date;
@@ -110,7 +110,7 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 		if ($scope.campaignData.screen_type_id && $scope.campaignData.target_type === 'SCREEN') {
 		campaign.screen_type_id = $scope.campaignData.screen_type_id;
 		}
-		if ($scope.campaignData.audience_type==="SPECIFIC_USERS") {
+		if ($scope.campaignData.audience_type === "SPECIFIC_USERS") {
 		campaign.specific_users = $scope.campaignData.specific_users;
 		}
 		campaign.subject = $scope.campaignData.subject;
@@ -120,7 +120,7 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 		campaign.body = $scope.campaignData.body;
 		campaign.call_to_action_label = $scope.campaignData.call_to_action_label;
 		campaign.call_to_action_target = $scope.campaignData.call_to_action_target;
-		campaign.is_recurring = $scope.campaignData.is_recurring === "true"? true : false;
+		campaign.is_recurring = $scope.campaignData.is_recurring === "true" ? true : false;
 		campaign.day_of_week = $scope.campaignData.day_of_week;
 		// TODO: time_to_send
 		campaign.time_to_send = tConvertToAPIFormat($scope.campaignData.delivery_hour, $scope.campaignData.delivery_min, $scope.campaignData.delivery_primetime);
@@ -185,7 +185,7 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 	};
 
 	$scope.statusChanged = function() {
-		$scope.campaignData.status = $scope.campaignData.status === 'ACTIVE' ? 'INACTIVE': 'ACTIVE';
+		$scope.campaignData.status = $scope.campaignData.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
 	};
 
 	$scope.getTimeConverted = function(time) {

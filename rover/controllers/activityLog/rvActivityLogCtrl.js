@@ -91,7 +91,7 @@ sntRover.controller('RVActivityLogCtrl', [
     };
 
     $scope.isOldValue = function(value) {
-        if (value ==="" || typeof value === "undefined" || value === null) {
+        if (value === "" || typeof value === "undefined" || value === null) {
             return false;
         }
         else {
@@ -130,7 +130,7 @@ sntRover.controller('RVActivityLogCtrl', [
 
         if ($scope.isUpdateReportFilter) {
             params['from_date'] = $filter('date')($scope.fromDate, 'yyyy-MM-dd');
-            params['to_date'] =$filter('date')($scope.toDate, 'yyyy-MM-dd');
+            params['to_date'] = $filter('date')($scope.toDate, 'yyyy-MM-dd');
             if ($scope.user_id) {
                 params['user_id'] = $scope.user_id;
             }
@@ -143,7 +143,7 @@ sntRover.controller('RVActivityLogCtrl', [
     /*
     * Sorting
     */
-    $scope.initSort =function() {
+    $scope.initSort = function() {
         $scope.sortOrderOfUserASC = false;
         $scope.sortOrderOfDateASC = false;
         $scope.sortOrderOfActionASC = false;
@@ -153,46 +153,46 @@ sntRover.controller('RVActivityLogCtrl', [
     };
 
     $scope.sortByUserName = function() {
-        $scope.sort_field ="USERNAME";
+        $scope.sort_field = "USERNAME";
         if ($scope.sortOrderOfUserASC) {
             $scope.initSort();
             $scope.sortOrderOfUserDSC = true;
-            $scope.sort_order="desc";
+            $scope.sort_order = "desc";
         }
         else {
             $scope.initSort();
             $scope.sortOrderOfUserASC = true;
-            $scope.sort_order="asc";
+            $scope.sort_order = "asc";
         }
         $scope.updateReport();
     };
 
     $scope.sortByDate = function() {
-        $scope.sort_field ="DATE";
+        $scope.sort_field = "DATE";
         if ($scope.sortOrderOfDateASC) {
             $scope.initSort();
             $scope.sortOrderOfDateDSC = true;
-            $scope.sort_order="desc";
+            $scope.sort_order = "desc";
         }
         else {
             $scope.initSort();
             $scope.sortOrderOfDateASC = true;
-            $scope.sort_order="asc";
+            $scope.sort_order = "asc";
         }
         $scope.updateReport();
     };
 
     $scope.sortByAction = function() {
-        $scope.sort_field ="ACTION";
+        $scope.sort_field = "ACTION";
         if ($scope.sortOrderOfActionASC) {
             $scope.initSort();
             $scope.sortOrderOfActionDSC = true;
-            $scope.sort_order="desc";
+            $scope.sort_order = "desc";
         }
         else {
             $scope.initSort();
             $scope.sortOrderOfActionASC = true;
-            $scope.sort_order="asc";
+            $scope.sort_order = "asc";
         }
         $scope.updateReport();
     };
@@ -201,9 +201,9 @@ sntRover.controller('RVActivityLogCtrl', [
     * Pagination
     */
     $scope.initPaginationParams = function() {
-        if ($scope.activityLogData.total_count===0) {
+        if ($scope.activityLogData.total_count === 0) {
              $scope.start = 0;
-             $scope.end =0;
+             $scope.end = 0;
         } else {
         $scope.start = 1;
         $scope.end = $scope.start + $scope.activityLogData.length - 1;
@@ -330,7 +330,7 @@ sntRover.controller('RVActivityLogCtrl', [
 
     $scope.clearToDate = function()
     {
-        $scope.toDate ="";
+        $scope.toDate = "";
      };
     $scope.clearFromDate = function()
     {
@@ -338,11 +338,11 @@ sntRover.controller('RVActivityLogCtrl', [
 
     };
     $scope.userChanged = function() {
-        if ($scope.userEmail==='') {
-           $scope.user_id=0;
+        if ($scope.userEmail === '') {
+           $scope.user_id = 0;
         }
     };
-    $scope.userEmail='';
+    $scope.userEmail = '';
 	$scope.init = function() {
         var reservationDetails = $scope.$parent.reservation.reservation_card;
         // setting the header caption

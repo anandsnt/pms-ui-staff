@@ -56,7 +56,7 @@ angular.module('sntRover').service('RVDashboardSrv', ['$q', 'RVBaseWebSrv', 'rvB
 	this.changeNotificationStatus = function(id) {
 	    var deferred = $q.defer();
 	    // var url = "ui/show?json_input=WindsurferCRS/settings.json&format=json";
-		var url = '/api/staff_notifications/'+id+'/user';
+		var url = '/api/staff_notifications/' + id + '/user';
 
 		rvBaseWebSrvV2.putJSON(url).then(function(data) {
 			deferred.resolve(data);

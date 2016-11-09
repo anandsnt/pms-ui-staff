@@ -28,7 +28,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 	$scope.removeCharge = function(reason) {
 
 		$scope.$emit('showLoader');
-		var params ={
+		var params = {
 			data: {
 				"reason": reason,
 				"process": "delete"
@@ -70,7 +70,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 	$scope.splitCharge = function(qty, isAmountType) {
 
 		$scope.$emit('showLoader');
-		var split_type = isAmountType ? $rootScope.currencySymbol:'%';
+		var split_type = isAmountType ? $rootScope.currencySymbol : '%';
 		var splitData = {
 			"id": $scope.selectedTransaction.id,
 			"data": {

@@ -37,7 +37,7 @@ admin.service('ADFloorSetupSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2
 	this.deleteFloor = function(data) {
 
 		var deferred = $q.defer();
-		var url = '/api/floors/'+data.id;
+		var url = '/api/floors/' + data.id;
 
 		ADBaseWebSrvV2.deleteJSON(url, data).then(function(data) {
 		    deferred.resolve(data);

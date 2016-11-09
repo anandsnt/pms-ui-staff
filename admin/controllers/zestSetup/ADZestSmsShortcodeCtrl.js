@@ -54,7 +54,7 @@ admin.controller('ADZestSmsShortcodeCtrl', ['$scope', '$state', 'ADZestShortCode
     
     $scope.getPages = function(r) {// response text length
         if (r > 0) {
-            return (Math.ceil(r/$scope.charLimitPerText));
+            return (Math.ceil(r / $scope.charLimitPerText));
         } else {
             return 1;
         }

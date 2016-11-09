@@ -160,7 +160,7 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
     var scroller = $scope.getScroller('guestcard_notes_scroller');
 
     $timeout(function() {
-        scroller.scrollToElement('.notes.wrapper li:nth-child('+indexOfNote+')', 300);
+        scroller.scrollToElement('.notes.wrapper li:nth-child(' + indexOfNote + ')', 300);
     }, 0);
   };
 

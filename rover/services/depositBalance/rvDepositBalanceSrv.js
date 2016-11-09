@@ -1,7 +1,7 @@
 angular.module('sntRover').service('RVDepositBalanceSrv', ['$q', 'BaseWebSrvV2', 'rvBaseWebSrvV2', '$rootScope', function($q, BaseWebSrvV2, rvBaseWebSrvV2, $rootScope) {
 	this.getDepositBalanceData = function (data) {
 		var deferred = $q.defer();
-		var url = 'staff/reservations/'+data.reservationId+'/deposit_and_balance.json';
+		var url = 'staff/reservations/' + data.reservationId + '/deposit_and_balance.json';
 
 		BaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
@@ -13,7 +13,7 @@ angular.module('sntRover').service('RVDepositBalanceSrv', ['$q', 'BaseWebSrvV2',
 
 	this.getRevenueDetails = function (data) {
 		var deferred = $q.defer();
-		var url = 'api/posting_accounts/'+data.posting_account_id+'/deposit_and_balance';
+		var url = 'api/posting_accounts/' + data.posting_account_id + '/deposit_and_balance';
 
 		BaseWebSrvV2.getJSON(url).then(function (data) {
 			deferred.resolve(data);
@@ -50,7 +50,7 @@ angular.module('sntRover').service('RVDepositBalanceSrv', ['$q', 'BaseWebSrvV2',
 
 
 			var deferred = $q.defer();
-			var url = '/api/bills/'+postData.bill_id+'/submit_payment';
+			var url = '/api/bills/' + postData.bill_id + '/submit_payment';
 
 			var pollToTerminal = function(async_callback_url) {
 				// we will continously communicate with the terminal till 

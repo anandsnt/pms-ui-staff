@@ -216,7 +216,7 @@ angular.module('sntRover').service('rvUtilSrv', [function() {
 		        value 	= ((hours < 10) ? ("0" + hours) : hours) + ':' + minutes;
 				
 				hours 	= hours % mode;
-		        if ((hours === 0 && mode === 12) ||(hours === 0 && mode === 24 && i <= 60)) {
+		        if ((hours === 0 && mode === 12) || (hours === 0 && mode === 24 && i <= 60)) {
 		            hours = 12;
 		        }
 

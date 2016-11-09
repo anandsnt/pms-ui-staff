@@ -30,7 +30,7 @@ admin.controller('ADBillingGroupCtrl', ['$scope', '$state', 'ADBillingGroupSrv',
 				$scope.currentClickedElement = index;
 				$scope.billingGroupData.available_charge_codes.forEach(function(charge, index) {
 					if ($scope.billingGroupData.selected_charge_codes.indexOf(charge.id) !== -1) {
-						$scope.billingGroupData.available_charge_codes[index].isChecked =true;
+						$scope.billingGroupData.available_charge_codes[index].isChecked = true;
 					}
 					$scope.updateIsAllChargeCodeSelectedStatus();
 				});
@@ -141,7 +141,7 @@ admin.controller('ADBillingGroupCtrl', ['$scope', '$state', 'ADBillingGroupSrv',
 		$scope.billingGroupData.isAllChargeCodeSelected = false;
 		$scope.billingGroupData.available_charge_codes.forEach(function(chargeCode) {
 			if (!chargeCode.isChecked) {
-				$scope.billingGroupData.isAllChargeCodeSelected =true;
+				$scope.billingGroupData.isAllChargeCodeSelected = true;
 			}
 		});
 		$scope.billingGroupData.isAllChargeCodeSelected = !$scope.billingGroupData.isAllChargeCodeSelected;
@@ -195,7 +195,7 @@ admin.controller('ADBillingGroupCtrl', ['$scope', '$state', 'ADBillingGroupSrv',
 	$scope.clickCancel = function() {
 		$scope.billingGroupData.name = $scope.billingGroupData.title;
 		if ($scope.isAddMode) {
-			$scope.isAddMode =false;
+			$scope.isAddMode = false;
 		}
 		else {
 		    $scope.currentClickedElement = -1;

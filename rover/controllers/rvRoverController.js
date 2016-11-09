@@ -909,7 +909,7 @@ sntRover.controller('roverController',
        // convert HTML syntax charactors to their encoded value ex: < to &lt;
       text = text.split(query).map(toHTMLSpecials);
       query = toHTMLSpecials(query);
-      text = text.join('<span class="highlight">'+ query +'</span>');
+      text = text.join('<span class="highlight">' + query + '</span>');
       
       return $rootScope.trustAsHtml(text);
     };

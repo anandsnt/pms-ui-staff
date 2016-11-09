@@ -30,7 +30,7 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
         }
 
 	$scope.$watch(
-		function() { return ($scope.$parent.$parent.guestCardData.userId !== '')?true:false; },
+		function() { return ($scope.$parent.$parent.guestCardData.userId !== '') ? true : false; },
 		function(gustDataReady) {
 			if (gustDataReady) {
 				$scope.init();
@@ -67,8 +67,8 @@ $scope.checkForHotelLoyaltyLevel = function() {
 
 
 $scope.$on('clearNotifications', function() {
-	$scope.errorMessage ="";
-	$scope.successMessage ="";
+	$scope.errorMessage = "";
+	$scope.successMessage = "";
 });
 var scrollerOptions = { preventDefault: false};
 

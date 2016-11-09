@@ -15,7 +15,7 @@ admin.service('adSiteminderSetupSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWeb
 
 	this.testSetup = function(data) {
 		var deferred = $q.defer();
-		var url = 'admin/test_ota_connection/'+data.interface;
+		var url = 'admin/test_ota_connection/' + data.interface;
 
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
@@ -30,12 +30,12 @@ admin.service('adSiteminderSetupSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWeb
             var start_date = '', end_date = '';
 
             if (data.start_date && data.end_date) {
-                start_date = '?start_date='+data.start_date;
-                end_date = '&end_date='+data.end_date;
+                start_date = '?start_date=' + data.start_date;
+                end_date = '&end_date=' + data.end_date;
             }
             
 		var deferred = $q.defer();
-		var url = 'admin/ota_full_refresh/'+data.interface_id+start_date+end_date;
+		var url = 'admin/ota_full_refresh/' + data.interface_id + start_date + end_date;
 
 		ADBaseWebSrvV2.postJSON(url).then(function(data) {
 		    deferred.resolve(data);
@@ -47,7 +47,7 @@ admin.service('adSiteminderSetupSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWeb
 
 	this.saveSetup = function(data) {
 		var deferred = $q.defer();
-		var url = 'admin/save_ota_connection_config.json?interface='+data.interface;// update for ZDirect-specific
+		var url = 'admin/save_ota_connection_config.json?interface=' + data.interface;// update for ZDirect-specific
 
                 ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
@@ -59,7 +59,7 @@ admin.service('adSiteminderSetupSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWeb
 
 	this.toggleActive = function(data) {
 		var deferred = $q.defer();
-		var url = 'admin/ota/update_active?interface='+data.interface_id;
+		var url = 'admin/ota/update_active?interface=' + data.interface_id;
 
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);

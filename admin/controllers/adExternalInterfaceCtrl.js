@@ -232,7 +232,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         $scope.data = data;
         if (data.data.product_cross_customer) {
             if (typeof data.data.product_cross_customer.default_rate === typeof 123) {
-                data.data.product_cross_customer.default_rate = data.data.product_cross_customer.default_rate+"";
+                data.data.product_cross_customer.default_rate = data.data.product_cross_customer.default_rate + "";
                 $scope.setDefaultRate();
             }
         }
@@ -455,16 +455,16 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         };
         
         $scope.getDateOptionsStrMinusDays = function(day) {
-            day = day+'';
+            day = day + '';
             var i = day.split('-');
             var year = i[0], mo = i[1], dayN = i[2];
-            var setDate = new Date(year, mo-1, dayN);
+            var setDate = new Date(year, mo - 1, dayN);
             var nDaysLater = 86400000 * $scope.maxRefreshDaysApart;
             var nDay = new Date(setDate.valueOf() + nDaysLater);
-            var nDayDate = nDay.getDate(), nYear = nDay.getFullYear(), nMonth = nDay.getMonth()+1;
+            var nDayDate = nDay.getDate(), nYear = nDay.getFullYear(), nMonth = nDay.getMonth() + 1;
             
             // var newDateToSet = nYear+'-'+nMonth+'-'+nDayDate;
-            var n = new Date(nYear, nMonth-1, nDayDate);
+            var n = new Date(nYear, nMonth - 1, nDayDate);
 
             return n;
         };
@@ -488,8 +488,8 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
             var ed = $scope.refreshDatePickerData.end_date_for_display.split('-');
             var eYr = parseInt(ed[0]), eMo = parseInt(ed[1]), eDay = parseInt(ed[2]);
             
-              var s = new Date(sYr, sMo-1, sDay),
-              e = new Date(eYr, eMo-1, eDay);
+              var s = new Date(sYr, sMo - 1, sDay),
+              e = new Date(eYr, eMo - 1, eDay);
               
               var start_date = s.valueOf(),
               end_date = e.valueOf();

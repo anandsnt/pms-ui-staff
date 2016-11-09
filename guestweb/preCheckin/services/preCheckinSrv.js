@@ -6,7 +6,7 @@ var preCheckinSrv = function($q, baseWebService, $rootScope, $http) {
 	// fetch trip details
 	var fetchTripDetails = function() {
 		var deferred = $q.defer();
-		var url = '/api/reservations/'+reservationId+'/web_checkin_reservation_details';
+		var url = '/api/reservations/' + reservationId + '/web_checkin_reservation_details';
 
 		$http.get(url).success(function(response) {
 			deferred.resolve(response);
@@ -20,7 +20,7 @@ var preCheckinSrv = function($q, baseWebService, $rootScope, $http) {
 	// post staydetails
 	var postStayDetails = function(data) {
 		var deferred = $q.defer();
-		var url = '/api/reservations/'+reservationId+'/update_stay_details';
+		var url = '/api/reservations/' + reservationId + '/update_stay_details';
 
 		$http.post(url, data).success(function(response) {
 			deferred.resolve(response);
@@ -33,11 +33,11 @@ var preCheckinSrv = function($q, baseWebService, $rootScope, $http) {
 
 	var completePrecheckin = function() {
 		var deferred = $q.defer();
-		var url = '/api/reservations/'+reservationId+'/pre_checkin';
+		var url = '/api/reservations/' + reservationId + '/pre_checkin';
 		var data = {};
 
-		data.application = (typeof $rootScope.application !=="undefined") ? $rootScope.application : "";
-		data.url_suffix = (typeof $rootScope.urlSuffix !=="undefined") ? $rootScope.urlSuffix : "";
+		data.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "";
+		data.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "";
 		$http.post(url, data).success(function(response) {
 			deferred.resolve(response);
 		}.bind(this))

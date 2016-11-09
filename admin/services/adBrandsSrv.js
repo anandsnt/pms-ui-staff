@@ -39,7 +39,7 @@ admin.service('adBrandsSrv', ['$http', '$q', 'ADBaseWebSrv', function($http, $q,
 
 		var deferred = $q.defer();
 
-		var url = '/admin/hotel_brands/'+editID+'/edit.json';
+		var url = '/admin/hotel_brands/' + editID + '/edit.json';
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
@@ -56,7 +56,7 @@ admin.service('adBrandsSrv', ['$http', '$q', 'ADBaseWebSrv', function($http, $q,
 
 		var id  = data.value;
 		var deferred = $q.defer();
-		var url = '/admin/hotel_brands/'+id;
+		var url = '/admin/hotel_brands/' + id;
 
 		ADBaseWebSrv.putJSON(url, data).then(function(data) {
 			deferred.resolve(data);

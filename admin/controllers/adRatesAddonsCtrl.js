@@ -48,7 +48,7 @@ admin.controller('ADRatesAddonsCtrl', [
 
 		$scope.init();
 		$scope.showChargeFullWeeksOnly = function() {
-			if (!$scope.isConnectedToPMS&&($scope.singleAddon.post_type_id ===3)&&($scope.singleAddon.is_reservation_only ===true)) {
+			if (!$scope.isConnectedToPMS && ($scope.singleAddon.post_type_id === 3) && ($scope.singleAddon.is_reservation_only === true)) {
 				return true;
 			} else {
 				return false;
@@ -108,7 +108,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			else {
 				var selectedChargeGrpId = $scope.singleAddon.charge_group_id;
 
-				$scope.chargeCodesForChargeGrp =[];
+				$scope.chargeCodesForChargeGrp = [];
 		   		angular.forEach($scope.chargeCodes, function(chargeCode, key) {
 		        angular.forEach(chargeCode.associcated_charge_groups, function(associatedChargeGrp, key) {
 		        	if (associatedChargeGrp.id === selectedChargeGrpId) {
@@ -189,7 +189,7 @@ admin.controller('ADRatesAddonsCtrl', [
 		// to add new addon
 		$scope.addNew = function() {
 
-			$scope.singleAddon.charge_group_id ="";
+			$scope.singleAddon.charge_group_id = "";
 			manipulateChargeCodeForChargeGroups();
 
 			$scope.isAddMode   = true;
@@ -318,7 +318,7 @@ admin.controller('ADRatesAddonsCtrl', [
 
 
 				$scope.singleAddon.begin_date = $scope.singleAddon.begin_date;
-				$scope.singleAddon.end_date   =$scope.singleAddon.end_date;
+				$scope.singleAddon.end_date   = $scope.singleAddon.end_date;
 
 				$scope.filterRates($scope.singleAddon);
 
@@ -353,7 +353,7 @@ admin.controller('ADRatesAddonsCtrl', [
 				rate_code_only: $scope.singleAddon.rate_code_only,
 				manual_posting: $scope.singleAddon.manual_posting,
 				forecast_for_next_day: $scope.singleAddon.forecast_for_next_day,
-				charge_full_weeks_only: (($scope.singleAddon.post_type_id ===3)&& $scope.singleAddon.is_reservation_only && $scope.singleAddon.charge_full_weeks_only)?true:false,
+				charge_full_weeks_only: (($scope.singleAddon.post_type_id === 3) && $scope.singleAddon.is_reservation_only && $scope.singleAddon.charge_full_weeks_only) ? true : false,
 				allow_rate_exclusions: $scope.singleAddon.allow_rate_exclusions,
 				excluded_rate_ids: _.pluck($scope.singleAddon.excludedRates, 'id')
 			};
@@ -361,7 +361,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			// convert dates to system format yyyy-MM-dd
 			// if not date null should be passed - read story CICO-7287
 			singleAddonData.begin_date = $scope.singleAddon.begin_date ? $filter('date')(tzIndependentDate($scope.singleAddon.begin_date), 'yyyy-MM-dd') : null;
-			singleAddonData.end_date = $scope.singleAddon.end_date? $filter('date')(tzIndependentDate($scope.singleAddon.end_date), 'yyyy-MM-dd') : null;
+			singleAddonData.end_date = $scope.singleAddon.end_date ? $filter('date')(tzIndependentDate($scope.singleAddon.end_date), 'yyyy-MM-dd') : null;
 
 			// if we are adding new addon
 			if ( $scope.isAddMode ) {
@@ -466,7 +466,7 @@ admin.controller('ADRatesAddonsCtrl', [
 		};
 
 		$scope.reservationOnlyChanged = function() {
-			$scope.singleAddon.rate_code_only = $scope.singleAddon.is_reservation_only? false : $scope.singleAddon.is_reservation_only;
+			$scope.singleAddon.rate_code_only = $scope.singleAddon.is_reservation_only ? false : $scope.singleAddon.is_reservation_only;
 			updateBestSellerOption();
 		};
 

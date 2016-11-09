@@ -69,7 +69,7 @@ admin.service('ADCampaignSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         this.deleteCampaign = function(params) {
 
         	var deferred = $q.defer();
-        	var url = "/api/campaigns/"+ params.id;
+        	var url = "/api/campaigns/" + params.id;
 
         	ADBaseWebSrvV2.deleteJSON(url).then(function (data) {
         	    deferred.resolve(data);

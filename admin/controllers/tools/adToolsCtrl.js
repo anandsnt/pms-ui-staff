@@ -33,7 +33,7 @@ admin.controller('ADToolsCtrl',
     * @param {id} id of the department
     */
     $scope.editTools = function(index, id)    {
-        $scope.toolsData={};
+        $scope.toolsData = {};
         $scope.currentClickedElement = index;
         $scope.isAddMode = false;
         $scope.addEditHeading = "Edit";
@@ -49,7 +49,7 @@ admin.controller('ADToolsCtrl',
     * Render add screen
     */
     $scope.addNew = function()  {
-        $scope.toolsData={};
+        $scope.toolsData = {};
         $scope.currentClickedElement = "new";
         $scope.isAddMode = true;
         $scope.addEditHeading = "Add";

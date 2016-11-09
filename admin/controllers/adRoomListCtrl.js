@@ -15,7 +15,7 @@ admin.controller('adRoomListCtrl', ['$scope', 'ADRoomSrv', 'ngTableParams', '$fi
 			// No expanded rate view
 			$scope.currentClickedElement = -1;
 			$scope.totalCount = parseInt(data.total_count);
-			$scope.totalPage = Math.ceil($scope.totalCount/$scope.displyCount);
+			$scope.totalPage = Math.ceil($scope.totalCount / $scope.displyCount);
 			$scope.numberOfRoomsConfigured = data.number_of_rooms_configured;
 			$scope.totalNumberOfConfigurableRooms = data.total_number_of_rooms;
 			$scope.is_add_available = data.is_add_available;

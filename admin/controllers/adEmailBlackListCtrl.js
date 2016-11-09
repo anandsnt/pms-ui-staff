@@ -4,7 +4,7 @@ admin.controller('ADEmailBlackListCtrl', ['$scope', '$state', 'ADEmailBlackListS
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
     $scope.isAddMode = false;
-	$scope.emailData= {};
+	$scope.emailData = {};
 	$scope.emailData.email = "";
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
@@ -28,7 +28,7 @@ admin.controller('ADEmailBlackListCtrl', ['$scope', '$state', 'ADEmailBlackListS
 		                                orderedData;
 		            $scope.totalCount = orderedData.length;
 		            params.total(orderedData.length);
-		            $scope.totalPage = Math.ceil(orderedData.length/$scope.displyCount);
+		            $scope.totalPage = Math.ceil(orderedData.length / $scope.displyCount);
 		            var startIndex  = tbParams.per_page * (tbParams.page - 1);
 		            var endIndex  =      (tbParams.per_page * (tbParams.page - 1)) + tbParams.per_page;
 
@@ -100,7 +100,7 @@ admin.controller('ADEmailBlackListCtrl', ['$scope', '$state', 'ADEmailBlackListS
     		$scope.tableParams.reload();
     		$scope.emailData = {};
     		$scope.emailData.email = "";
-    		$scope.isAddMode =false;
+    		$scope.isAddMode = false;
     	};
 
     	if ($scope.emailData.email === "") {
@@ -128,7 +128,7 @@ admin.controller('ADEmailBlackListCtrl', ['$scope', '$state', 'ADEmailBlackListS
     * To handle click event
     */
 	$scope.clickCancel = function() {
-		$scope.isAddMode =false;
+		$scope.isAddMode = false;
 	};
 
 }]);

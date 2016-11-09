@@ -45,7 +45,7 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope', '$rootScope', 
 		$event.stopImmediatePropagation();
 		if (getParentWithSelector($event, document.getElementsByClassName("ui-resizable-handle")[0])) {
 			if (parseInt($scope.eventTimestamp)) {
-				if (($event.timeStamp - $scope.eventTimestamp)<2) {
+				if (($event.timeStamp - $scope.eventTimestamp) < 2) {
 					return;
 				}
 			}

@@ -11,7 +11,7 @@ angular.module('sntRover').controller('rvAllotmentAvailabilityStatusController',
 
 		$scope.togleHoldStatusVisibility = function(eventSource) {
 			if (eventSource === "groupRoomTotal") {
-				$scope.hideHoldStatusOf["groupRoomTotal"]=!$scope.hideHoldStatusOf["groupRoomTotal"];
+				$scope.hideHoldStatusOf["groupRoomTotal"] = !$scope.hideHoldStatusOf["groupRoomTotal"];
 			} else if (eventSource === "groupRoomPicked") {
 				$scope.hideHoldStatusOf["groupRoomPicked"] = !$scope.hideHoldStatusOf["groupRoomPicked"];
 			}
@@ -146,7 +146,7 @@ angular.module('sntRover').controller('rvAllotmentAvailabilityStatusController',
 
 		$scope.toggleButtonClicked = function(index) {
 			if (_.contains($scope.idsOfDropDownOpenedGroups, $scope.data.groupDetails[index].id)) {
-				var temp =_.filter($scope.idsOfDropDownOpenedGroups, 
+				var temp = _.filter($scope.idsOfDropDownOpenedGroups, 
 					function(num) { 
 						return num !== $scope.data.groupDetails[index].id; 
 					});
@@ -198,8 +198,8 @@ angular.module('sntRover').controller('rvAllotmentAvailabilityStatusController',
 		* Initialisation goes here!
 		*/
 		var init = function() {
-			$scope.idsOfDropDownOpenedGroups =[];
-			$scope.hideBeforeDataFetch =true;
+			$scope.idsOfDropDownOpenedGroups = [];
+			$scope.hideBeforeDataFetch = true;
 			$scope.hideHoldStatusOf = {};
 			$scope.hideHoldStatusOf["groupRoomTotal"] = true;
 			$scope.hideHoldStatusOf["groupRoomPicked"] = true;

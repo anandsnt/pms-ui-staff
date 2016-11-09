@@ -12,7 +12,7 @@ admin.controller('ADContentManagementAssignComponentCtrl', ['$scope', 'ngDialog'
    /* Function to fetch the components,
     *to provide the option to assign parent
     */
-	$scope.fetchComponents= function() {
+	$scope.fetchComponents = function() {
    		var successCallComponentFetch = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.componentList = data;
@@ -25,8 +25,8 @@ admin.controller('ADContentManagementAssignComponentCtrl', ['$scope', 'ngDialog'
    /* Function to split the fetched components to categories and sections,
     *to provide the option to assign parent
     */
-   $scope.setUpLists =function() {
-   		for (var i= 0; i < $scope.componentList.length; i++) {
+   $scope.setUpLists = function() {
+   		for (var i = 0; i < $scope.componentList.length; i++) {
    			if ($scope.componentList[i].component_type === 'SECTION') {
    				$scope.sections.push($scope.componentList[i]);
    			} else if ($scope.componentList[i].component_type === 'CATEGORY') {
@@ -51,7 +51,7 @@ admin.controller('ADContentManagementAssignComponentCtrl', ['$scope', 'ngDialog'
          if (array.length === 0) {
             return -1;
          }
-         for (var i =0; i < array.length; i++) {
+         for (var i = 0; i < array.length; i++) {
             if (array[i].id === component.id) {
                return i;
             }

@@ -47,7 +47,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 		$event.stopImmediatePropagation();
 		if (getParentWithSelector($event, document.getElementsByClassName("ui-resizable-handle")[0])) {
 			if (parseInt($scope.eventTimestamp)) {
-				if (($event.timeStamp - $scope.eventTimestamp)<2) {
+				if (($event.timeStamp - $scope.eventTimestamp) < 2) {
 					return;
 				}
 			}
@@ -97,7 +97,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 
 			var chargeCodeList = data.charge_groups[0].charge_codes;
 
-			$scope.data.activeChargeCodes = ( chargeCodeList.length >0 ) ? chargeCodeList : [];
+			$scope.data.activeChargeCodes = ( chargeCodeList.length > 0 ) ? chargeCodeList : [];
 			$scope.data.revenueData.charge_groups[0].active = true;
 
             $scope.errorMessage = "";
@@ -118,7 +118,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
        		return (each.id).toString() === $scope.data.selectedChargeGroup;
        	});
 
-       	$scope.data.uiSelectedChargeGroup = !!uiValue ? uiValue['name']: 'ALL';
+       	$scope.data.uiSelectedChargeGroup = !!uiValue ? uiValue['name'] : 'ALL';
 	};
 
 	// On changing charge code on PRINT filter
@@ -205,7 +205,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 			return each.charge_code_id === parseInt($scope.data.selectedPaymentType);
 		});
 
-		$scope.data.uiSelectedPaymentType = !!uiValue ? uiValue['payment_type']:'ALL';
+		$scope.data.uiSelectedPaymentType = !!uiValue ? uiValue['payment_type'] : 'ALL';
 	};
 
 	/** Code for Payment Tab - PRINT BOX - filters ends here .. **/

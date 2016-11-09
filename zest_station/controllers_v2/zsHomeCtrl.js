@@ -58,7 +58,7 @@ sntZestStation.controller('zsHomeCtrl', [
 				if ( $translate.use() === langShortCode && checkIfDefaultLanguagIsSet) {
 					// do nothing, current language is already the default one
 				} else {
-					console.info("translating to default lanaguage after "+userInActivityTimeInHomeScreenInSeconds+" seconds");
+					console.info("translating to default lanaguage after " + userInActivityTimeInHomeScreenInSeconds + " seconds");
 					$scope.selectLanguage(defaultLanguage);
 				}
 			}

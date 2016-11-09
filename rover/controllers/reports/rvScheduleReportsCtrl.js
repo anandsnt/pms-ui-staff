@@ -882,7 +882,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
 			$scope.$parent.$parent.schedulesList = [];
 			$scope.$parent.$parent.scheduleReport = [];
-			$scope.scheduleTimePeriods =[];
+			$scope.scheduleTimePeriods = [];
 			$scope.scheduleFrequency = [];
 			$scope.scheduleFreqType = [];
 			$scope.emailList = [];

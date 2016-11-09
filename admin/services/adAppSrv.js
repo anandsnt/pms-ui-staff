@@ -27,7 +27,7 @@ admin.service('ADAppSrv', ['ADBaseWebSrv', 'ADBaseWebSrvV2', function(ADBaseWebS
 	};
 	this.removeBookMarkItem = function(data) {
 		var id = data.id,
-			url = '/admin/user_admin_bookmark/'+id;
+			url = '/admin/user_admin_bookmark/' + id;
 
 		return ADBaseWebSrv.deleteJSON(url);
 	};

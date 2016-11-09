@@ -28,7 +28,7 @@ function($q, ADBaseWebSrvV2) {
 		var data = {'room_type_ids': updateData.room_type_ids};
 		var id   = updateData.id;
 		var deferred = $q.defer();
-		var url = "/api/rates/"+id+"/room_types";
+		var url = "/api/rates/" + id + "/room_types";
 
 		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 			deferred.resolve(data);

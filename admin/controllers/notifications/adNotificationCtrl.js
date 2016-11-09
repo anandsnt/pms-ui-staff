@@ -20,7 +20,7 @@ admin.controller('ADNotificationCtrl', ['$scope', '$rootScope', '$state', '$stat
             fetchNotification($scope.notification.id);
 
         } else {// Adding new Notification            
-            $scope.notification.action_type="LINK";
+            $scope.notification.action_type = "LINK";
             // default value
             $scope.notification.pms_type = "BOTH";
         }    
@@ -32,7 +32,7 @@ admin.controller('ADNotificationCtrl', ['$scope', '$rootScope', '$state', '$stat
         var timeDiff = Math.abs(expires_at.getTime() - activates_at.getTime());
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-        return (diffDays-1);
+        return (diffDays - 1);
     };
 
     var fetchNotification = function(id) {
@@ -57,11 +57,11 @@ admin.controller('ADNotificationCtrl', ['$scope', '$rootScope', '$state', '$stat
     };
     // return a date string in the format of yyyy-MM-dd 23:59:59 (API expects this format)
     var formatExpiresAtDate = function(activates_at, duration) {
-        if (duration !=0) {       
+        if (duration != 0) {       
             var activates_at = new Date(activates_at);
-            var expires_at = new Date(activates_at.getTime() + (duration*1000 * 60 * 60 * 24));
+            var expires_at = new Date(activates_at.getTime() + (duration * 1000 * 60 * 60 * 24));
 
-            expires_at = $filter('date')(tzIndependentDate(expires_at), 'yyyy-MM-dd') +" 23:59:59";
+            expires_at = $filter('date')(tzIndependentDate(expires_at), 'yyyy-MM-dd') + " 23:59:59";
             return expires_at;
         } else {
             return null;
@@ -72,8 +72,8 @@ admin.controller('ADNotificationCtrl', ['$scope', '$rootScope', '$state', '$stat
         params = {
             hotel_uuid: null,
             message: notification.message,
-            activates_at: (!!notification.activates_at)?formatActivatesAtDate(notification.activates_at):null,
-            expires_at: (!!notification.activates_at)?formatExpiresAtDate(notification.activates_at, notification.duration):null,
+            activates_at: (!!notification.activates_at) ? formatActivatesAtDate(notification.activates_at) : null,
+            expires_at: (!!notification.activates_at) ? formatExpiresAtDate(notification.activates_at, notification.duration) : null,
             action_type: "LINK",
             action_source: notification.action_source,
             pms_type: notification.pms_type,

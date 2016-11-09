@@ -23,7 +23,7 @@
 
 	$scope.postStayDetails = function() {
 		$scope.isLoading = true;
-		if (!$rootScope.stayDetails.hour  || !$rootScope.stayDetails.minute  ||!$rootScope.stayDetails.primeTime) {
+		if (!$rootScope.stayDetails.hour  || !$rootScope.stayDetails.minute  || !$rootScope.stayDetails.primeTime) {
 			$modal.open($scope.errorOpts); // error modal popup
 			$scope.isLoading = false;
 		}
@@ -32,14 +32,14 @@
 		 var hour = parseInt($rootScope.stayDetails.hour);
 
 		 if ($rootScope.stayDetails.primeTime === 'PM' && hour < 12) {
-		 	hour = hour+ 12;
+		 	hour = hour + 12;
 		 }
 		 else if ($rootScope.stayDetails.primeTime === 'AM' && hour === 12) {
-		    hour = hour-12;
+		    hour = hour - 12;
 		 }
-		 hour = (hour <10)?("0"+hour): hour;
+		 hour = (hour < 10) ? ("0" + hour) : hour;
 		 var dataTosend = {
-		 	"arrival_time": hour+":"+$rootScope.stayDetails.minute,
+		 	"arrival_time": hour + ":" + $rootScope.stayDetails.minute,
 		 	"comments": $rootScope.stayDetails.comment,
 		 	"mobile": $rootScope.stayDetails.mobile
 		 };

@@ -5,7 +5,7 @@ angular
     return {
       restrict: 'AC',
       link: function(scope, element, attr) {
-        var oldVal, name = 'ngClassWithoutAnimation', selector=true;
+        var oldVal, name = 'ngClassWithoutAnimation', selector = true;
 
         scope.$watch(attr[name], ngClassWatchAction, true);
 

@@ -7,7 +7,7 @@ this.fetchEmailList = function(data) {
 
 	var deferred = $q.defer();
 
-	var url ="";
+	var url = "";
 
 	if (data.id === 'checkin') {
 	    url = '/admin/get_due_in_guests.json';
@@ -31,7 +31,7 @@ this.sendMail = function(emailData) {
 	var deferred = $q.defer();
 
 
-	var url ="";
+	var url = "";
 
 	if (emailData.id === 'checkin') {
 	   url = '/admin/checkin_setups/notify_all_checkin_guests';

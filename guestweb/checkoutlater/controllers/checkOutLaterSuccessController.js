@@ -76,7 +76,7 @@
 		}
 		var reservation_id = $scope.reservationID;
 		var url = '/guest_web/apply_late_checkout';
-		var id  = ($rootScope.ccPaymentSuccessForCheckoutLater)? $scope.lateCheckOut.id:$scope.id ;
+		var id  = ($rootScope.ccPaymentSuccessForCheckoutLater) ? $scope.lateCheckOut.id : $scope.id ;
 		var checkoutLaterData = {'reservation_id': reservation_id, 'late_checkout_offer_id': id, 'is_cc_attached_from_guest_web': $rootScope.isCcAttachedFromGuestWeb};
 
 		LateCheckOutChargesService.postNewCheckoutOption(url, checkoutLaterData).then(function(response) {
@@ -84,10 +84,10 @@
 		 	if ($scope.success === true) {
 				$scope.posted = true;
 				$scope.oldCheckoutTime = angular.copy($rootScope.checkoutTime);
-				$rootScope.checkoutTime = $scope.lateCheckOut.time +':00 '+$scope.lateCheckOut.ap;
+				$rootScope.checkoutTime = $scope.lateCheckOut.time + ':00 ' + $scope.lateCheckOut.ap;
 			 	$rootScope.checkoutTimessage = "Your new check-out time is ";
 			 	$rootScope.isLateCheckoutAvailable = false;
-			 	$scope.keyExpiry = "Your room keys are set to expire for the checkout time of "+$scope.oldCheckoutTime+". Please see a guest service agent at the front desk to re-activate your keys for the late checkout time selected.";
+			 	$scope.keyExpiry = "Your room keys are set to expire for the checkout time of " + $scope.oldCheckoutTime + ". Please see a guest service agent at the front desk to re-activate your keys for the late checkout time selected.";
 
 			}
 		    else {

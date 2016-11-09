@@ -16,7 +16,7 @@ sntGuestWeb.service('GwCheckinSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'GwW
 
 		params.application = (typeof GwWebSrv.zestwebData.application !== "undefined") ? GwWebSrv.zestwebData.application : "";
 		// use dummy data for demo mode
-		var url= "";
+		var url = "";
 
 		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
 			url = '/sample_json/zestweb_v2/ext_checkin_verfication.json';
@@ -57,7 +57,7 @@ sntGuestWeb.service('GwCheckinSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'GwW
 
 	this.fetchRoomUpgradesDetails = function(params) {
 		var deferred = $q.defer();
-		var url= "";
+		var url = "";
 
 		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
 			url = '/sample_json/zestweb_v2/room_upgrades.json';
@@ -154,9 +154,9 @@ sntGuestWeb.service('GwCheckinSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'GwW
 
 	this.postGuestDetails = function(params) {
 		var deferred = $q.defer();
-		var url = '/guest_web/guest_details/'+params.reservation_id+'.json';
+		var url = '/guest_web/guest_details/' + params.reservation_id + '.json';
 
-		params.application = (typeof GwWebSrv.zestwebData.application !=="undefined") ? GwWebSrv.zestwebData.application : "";
+		params.application = (typeof GwWebSrv.zestwebData.application !== "undefined") ? GwWebSrv.zestwebData.application : "";
 		GWBaseWebSrv2.putJSON(url, params.data).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
@@ -168,7 +168,7 @@ sntGuestWeb.service('GwCheckinSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'GwW
 	this.getGuestDetails = function(params) {
 
 		var deferred = $q.defer();
-		var url = '/guest_web/guest_details/'+params.reservation_id+'.json';
+		var url = '/guest_web/guest_details/' + params.reservation_id + '.json';
 
 		GWBaseWebSrv2.getJSON(url, params).then(function(data) {
 			deferred.resolve(data);
@@ -194,8 +194,8 @@ sntGuestWeb.service('GwCheckinSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'GwW
 		var deferred = $q.defer();
 		var url = '/guest_web/checkin.json';
 
-		params.application = (typeof GwWebSrv.zestwebData.application !=="undefined") ? GwWebSrv.zestwebData.application : "";
-		params.url_suffix = (typeof GwWebSrv.zestwebData.url_suffix !=="undefined") ? GwWebSrv.zestwebData.url_suffix : "";
+		params.application = (typeof GwWebSrv.zestwebData.application !== "undefined") ? GwWebSrv.zestwebData.application : "";
+		params.url_suffix = (typeof GwWebSrv.zestwebData.url_suffix !== "undefined") ? GwWebSrv.zestwebData.url_suffix : "";
 		GWBaseWebSrv.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {

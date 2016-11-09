@@ -258,13 +258,13 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
         // 2. Go to Financials -> Journal.
         // a) Upon logging in, default Tab should be =>
         // REVENUE (If Hourly) or SUMMARY.
-        $scope.data.activeTab = ($rootScope.isHourlyRateOn) ? 'REVENUE':'SUMMARY';
+        $scope.data.activeTab = ($rootScope.isHourlyRateOn) ? 'REVENUE' : 'SUMMARY';
         $scope.$emit("updateRoverLeftMenu", "journals");
         // b) All employee fields should default to ALL users
         // c) All date fields should default to yesterday's date
         var yesterday = tzIndependentDate($rootScope.businessDate);
 
-        yesterday.setDate(yesterday.getDate()-1);
+        yesterday.setDate(yesterday.getDate() - 1);
         $scope.data.fromDate = $filter('date')(yesterday, 'yyyy-MM-dd');
         $scope.data.toDate   = $filter('date')(yesterday, 'yyyy-MM-dd');
         $scope.data.cashierDate = $filter('date')(yesterday, 'yyyy-MM-dd');

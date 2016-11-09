@@ -201,7 +201,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 			});
 
 			var dataToUpdate = JSON.parse(JSON.stringify(updateData));
-		    var dataUpdated = (angular.equals(dataToUpdate, presentLikeInfo))?true:false;
+		    var dataUpdated = (angular.equals(dataToUpdate, presentLikeInfo)) ? true : false;
 
 			var saveData = {
 				userId: $scope.guestCardData.contactInfo.user_id,

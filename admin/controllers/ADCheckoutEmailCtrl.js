@@ -35,14 +35,14 @@ admin.controller('ADCheckoutEmailCtrl', ['$scope', 'adCheckinCheckoutSrv', '$sta
         $scope.currentClickedElement = -1;
 
         $scope.totalCount = parseInt(data.total_count);
-        $scope.totalPage = Math.ceil($scope.totalCount/$scope.displyCount);
+        $scope.totalPage = Math.ceil($scope.totalCount / $scope.displyCount);
 
 
         $scope.currentPage = params.page();
         $scope.emailDatas  = data.due_out_guests;
 
         params.total($scope.totalCount);
-        $scope.data=$scope.emailDatas;
+        $scope.data = $scope.emailDatas;
         $defer.resolve($scope.data);
         angular.forEach($scope.emailDatas, function(item, index) {
           item.is_selected = false;
@@ -53,7 +53,7 @@ admin.controller('ADCheckoutEmailCtrl', ['$scope', 'adCheckinCheckoutSrv', '$sta
 
     };
 
-    $scope.emailDatas =[];
+    $scope.emailDatas = [];
     $scope.invokeApi(adCheckinCheckoutSrv.fetchEmailList, getParams, fetchEmailListSuccessCallback);
 
   };
@@ -81,7 +81,7 @@ admin.controller('ADCheckoutEmailCtrl', ['$scope', 'adCheckinCheckoutSrv', '$sta
     var selectedCount = false;
 
     $scope.disableSave = true;
-    if ($scope.emailDatas.length ===0) {
+    if ($scope.emailDatas.length === 0) {
       return false;
     }
      angular.forEach($scope.emailDatas, function(item, index) {
@@ -119,7 +119,7 @@ admin.controller('ADCheckoutEmailCtrl', ['$scope', 'adCheckinCheckoutSrv', '$sta
    var selectedStatus =  $scope.isAllOptionsSelected() ? false : true;
 
      angular.forEach($scope.emailDatas, function(item, index) {
-           item.is_selected =selectedStatus;
+           item.is_selected = selectedStatus;
        });
 
     };
