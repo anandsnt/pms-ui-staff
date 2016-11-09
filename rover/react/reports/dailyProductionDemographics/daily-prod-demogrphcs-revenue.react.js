@@ -20,7 +20,7 @@ var DailyProductionRevenueToggle = React.createClass({
 
     return React.DOM.div({
       className: 'switch-button ' + (this.props.header.showRevenue ?  'on' : 'disabled'),
-      id: 'report-revenue-toggle-parent',
+      id: 'report-revenue-toggle-parent'
     },
 	React.DOM.input({
 	  name: 'report-toggle',

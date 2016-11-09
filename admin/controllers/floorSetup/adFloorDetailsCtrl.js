@@ -427,7 +427,7 @@ admin.controller('ADFloorDetailsCtrl',
 		};
     	var options = {
     		params: params,
-    		successCallBack: successCallBackOfFetchAllUnAssignedRoom,
+    		successCallBack: successCallBackOfFetchAllUnAssignedRoom
         };
 
         $scope.callAPI(ADFloorSetupSrv.getUnAssignedRooms, options);

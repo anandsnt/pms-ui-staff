@@ -2143,7 +2143,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						$.map(data, function(user) {
 							entry = {
 								label: user.full_name || user.email,
-								value: user.id,
+								value: user.id
 							};
 							activeUserAutoCompleteObj.push(entry);
 						});

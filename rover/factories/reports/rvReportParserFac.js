@@ -769,7 +769,7 @@ sntRover.factory('RVReportParserFac', [
                                 'rooms_held_non_deduct': groupData.rooms_held_non_deduct,
                                 'rooms_held_deduct': groupData.rooms_held_deduct,
                                 'rooms_held_picked_up': groupData.rooms_held_picked_up,
-                                'pickup_percentage': groupData.pickup_percentage,
+                                'pickup_percentage': groupData.pickup_percentage
                             });
                             returnAry.push( makeCopy );
                         }
@@ -787,7 +787,7 @@ sntRover.factory('RVReportParserFac', [
                                 'rooms_held_non_deduct': groupData.rooms_held_non_deduct,
                                 'rooms_held_deduct': groupData.rooms_held_deduct,
                                 'rooms_held_picked_up': groupData.rooms_held_picked_up,
-                                'pickup_percentage': groupData.pickup_percentage,
+                                'pickup_percentage': groupData.pickup_percentage
                             });
                             returnAry.push( customData );
                         }
@@ -814,7 +814,7 @@ sntRover.factory('RVReportParserFac', [
                         'rooms_held_non_deduct': groupDataTotal.rooms_held_non_deduct,
                         'rooms_held_deduct': groupDataTotal.rooms_held_deduct,
                         'rooms_held_picked_up': groupDataTotal.rooms_held_picked_up,
-                        'pickup_percentage': groupDataTotal.pickup_percentage,
+                        'pickup_percentage': groupDataTotal.pickup_percentage
                     });
                     returnAry.push( customData );
                 // } else {
@@ -1041,7 +1041,7 @@ sntRover.factory('RVReportParserFac', [
                                         rowspan: eachAry.length,
                                         isMainRow: true,
                                         // if there is only one entry!!
-                                        className: k === i ? 'row-break' : '',
+                                        className: k === i ? 'row-break' : ''
                                     }
                                 )
                             );
@@ -1070,7 +1070,7 @@ sntRover.factory('RVReportParserFac', [
                             result,
                             {
                                 className: 'row-break',
-                                isMainRow: true,
+                                isMainRow: true
                             }
                         )
                     );

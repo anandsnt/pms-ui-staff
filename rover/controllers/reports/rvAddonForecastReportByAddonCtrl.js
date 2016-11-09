@@ -213,7 +213,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  				'addon_group_id': eachDate.addonGroupId,
  				'addon_id': eachDate.addonId,
  				'page': eachDate.pageNo,
- 				'per_page': eachDate.perPage,
+ 				'per_page': eachDate.perPage
  			});
 
  			statuses = _.where(chosenReport['hasReservationStatus']['data'], { selected: true });

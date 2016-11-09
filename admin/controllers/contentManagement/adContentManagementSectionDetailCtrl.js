@@ -24,7 +24,7 @@ admin.controller('ADContentManagementSectionDetailCtrl', ['$scope', '$state', 'n
 	            "is_caraousal_enabled": false,
 	            "is_caraousal_auto_advance_enabled": false,
 	            "carousal_delay": "3",
-	            "is_carousal_loop_enabled": false,
+	            "is_carousal_loop_enabled": false
             };
 
 

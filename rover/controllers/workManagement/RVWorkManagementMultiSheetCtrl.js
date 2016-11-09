@@ -458,7 +458,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 						assignedRoomTasks: $scope.multiSheetState.assigned,
 						date: (config && config.date) || $scope.multiSheetState.selectedDate,
 						shouldSaveOrder: isAllWorktypeView()
-					},
+					}
 				};
 
 				// now assign room "order" to the tasks inside "only_tasks" based on their index in "rooms"
@@ -510,7 +510,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				className: '',
 				scope: $scope,
 				closeByDocument: false,
-				closeByEscape: false,
+				closeByEscape: false
 			});
 		};
 
@@ -874,10 +874,10 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 						'unassigned': payload.unassignedRoomTasks,
 						'assigned': payload.assignedRoomTasks,
 						'allTasks': payload.allTasks,
-						'allRooms': payload.allRooms,
+						'allRooms': payload.allRooms
 					}, {
 						'unassignedFiltered': [],
-						'_unassignIndexMap': {},
+						'_unassignIndexMap': {}
 					}, {
 						'selectedEmployees': [],
 						'_selectedIndexMap': {},
@@ -888,7 +888,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 						'summary': {},
 						'header': {
 							work_type_id: $scope.workTypeSelected || ""
-						},
+						}
 					}
 				);
 
@@ -1232,7 +1232,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                 return {                
                     screenStart: {
                         x: LEFT_OFFSET + TASK_OFFSET,
-                        y: TOP_OFFSET + AVG_TASK_HEIGHT,
+                        y: TOP_OFFSET + AVG_TASK_HEIGHT
                     },
                     screenEnd: {
                         x: winWidth - LEFT_OFFSET,

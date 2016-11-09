@@ -25,7 +25,7 @@ sntGuestWeb.controller('gwAutoCheckinController', ['$scope', '$controller', 'GwW
 			params: {
 				'reservation_id': GwWebSrv.zestwebData.reservationID
 			},
-			successCallBack: completeAutoCheckinSuccess,
+			successCallBack: completeAutoCheckinSuccess
 		};
 
 		$scope.callAPI(GwCheckinSrv.completeAutoCheckin, options);

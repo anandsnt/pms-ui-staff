@@ -293,7 +293,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 										/**/
 										'date': date,
 										'addonGroupId': addonGroupId,
-										'addonId': addonId,
+										'addonId': addonId
 									});
 
 									_.extend( addon, calPagination(addon) );

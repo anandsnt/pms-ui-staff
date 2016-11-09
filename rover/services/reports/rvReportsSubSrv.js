@@ -266,7 +266,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 				method: 'getJSON',
 				url: '/api/reports/' + params.id + '/addon_reservations',
 				params: _.omit(params, 'id'),
-				resKey: 'results',
+				resKey: 'results'
 			});
 		};
 
@@ -287,7 +287,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 				name: 'rateCodeList',
 				method: 'getJSON',
 				url: '/api/rates/codes',
-				resKey: 'rate_codes',
+				resKey: 'rate_codes'
 			});
 		};
 

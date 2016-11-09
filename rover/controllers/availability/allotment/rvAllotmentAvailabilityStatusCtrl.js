@@ -53,7 +53,7 @@ angular.module('sntRover').controller('rvAllotmentAvailabilityStatusController',
 			$timeout(function() {
 				$state.go('rover.allotments.config', {
 					id: GroupId,
-					activeTab: 'RESERVATIONS',	
+					activeTab: 'RESERVATIONS'	
 				},
 				{
 					reload: true

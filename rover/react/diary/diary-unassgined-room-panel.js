@@ -231,7 +231,7 @@ var UnassignedRoomPanel = React.createClass({
         return (
             React.DOM.div({
                     id: 'room-diary-rooms',
-                    className: panelClassName,
+                    className: panelClassName
                 },
                 React.DOM.a({
                     className: handleClassName,

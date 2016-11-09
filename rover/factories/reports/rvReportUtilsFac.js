@@ -1259,7 +1259,7 @@ angular.module('reportsModule')
                             options: {
                                 selectAll: selected,
                                 hasSearch: false,
-                                key: 'name',
+                                key: 'name'
                             },
                             updateData: function() {
                                 var enabled = [];
@@ -1340,7 +1340,7 @@ angular.module('reportsModule')
                             options: {
                                 selectAll: true,
                                 hasSearch: true,
-                                key: 'addon_name',
+                                key: 'addon_name'
                             },
                             updateData: function() {
                                 this.data = flattenAddons(this.originalData);

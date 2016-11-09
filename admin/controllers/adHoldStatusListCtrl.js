@@ -41,7 +41,7 @@ admin.controller('ADHoldStatusListCtrl', ['$scope', '$state', 'ADHoldStatusSrv',
 			is_system: false,
 			is_take_from_inventory: false,
 			is_group_only: false,
-			is_allotment_only: false,
+			is_allotment_only: false
 		};
 		$scope.currentClickedElement = "new";
 		$scope.isAddMode = true;

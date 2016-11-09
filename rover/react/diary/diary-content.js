@@ -293,7 +293,7 @@ var DiaryContent = React.createClass({
 		React.createElement( UnassignedRoomPanel, {
 			edit: state.edit,
 			unassignedRoomList: props.unassignedRoomList,
-			iscroll: state.iscroll,
+			iscroll: state.iscroll
 		}),
 		React.createElement( TogglePanel, {
 			__toggleRows: self.__toggleRows

@@ -64,7 +64,7 @@ admin.controller('ADContentManagementItemDetailCtrl', ['$scope', '$state', '$sta
   				"recipient_emails": "",
   				"max_occupancy": "",
 	            "parent_category": [],
-	            "parent_section": [],
+	            "parent_section": []
             };
 
 $scope.fetchAddons = function() {

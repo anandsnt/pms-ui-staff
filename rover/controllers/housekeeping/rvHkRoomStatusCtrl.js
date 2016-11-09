@@ -588,7 +588,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		$scope.fromDateOptions = angular.extend({
 			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
 			onSelect: adjustDates,
-			beforeShowDay: $scope.setClass,
+			beforeShowDay: $scope.setClass
 			// onChangeMonthYear: function(year, month, instance) {
 			// 	$scope.updateCalendar(year, month);
 			// }
@@ -597,7 +597,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		$scope.untilDateOptions = angular.extend({
 			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
 			onSelect: adjustDates,
-			beforeShowDay: $scope.setClass,
+			beforeShowDay: $scope.setClass
 			// onChangeMonthYear: function(year, month, instance) {
 			// 	$scope.updateCalendar(year, month);
 			// }

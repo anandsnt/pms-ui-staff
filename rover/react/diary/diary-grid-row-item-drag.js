@@ -97,7 +97,7 @@ var GridRowItemDrag = React.createClass({
 				this.setState({
 					dragging: true,
 					currentDragItem: model,
-					left: parseFloat( ((this.reservationTimeStartColNumber) * display.px_per_int) ),
+					left: parseFloat( ((this.reservationTimeStartColNumber) * display.px_per_int) )
 				}, function() {
 					props.__onDragStart(props.row_data, model);
 				});

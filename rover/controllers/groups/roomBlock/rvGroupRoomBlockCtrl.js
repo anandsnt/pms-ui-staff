@@ -839,14 +839,14 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			$scope.timeLineStartDateOptions = _.extend({
 				minDate: ($scope.startDate !== '') ? new tzIndependentDate($scope.startDate) : new tzIndependentDate($rootScope.businessDate),
 				maxDate: maxEndDate,
-				onSelect: $scope.onTimeLineStartDatePicked,
+				onSelect: $scope.onTimeLineStartDatePicked
 			}, commonDateOptions);
 
 			// date picker options - mass update end Date
 			$scope.massUpdateEndDateOptions = _.extend({
 				minDate: $scope.timeLineStartDate,
 				maxDate: maxEndDate,
-				onSelect: $scope.onMassUpdateEndDatePicked,
+				onSelect: $scope.onMassUpdateEndDatePicked
 			}, commonDateOptions);
 		};
 

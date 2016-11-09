@@ -633,7 +633,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         'include_group': $scope.reservationData.rooms.length === 1,
                         'include_allotment': $scope.reservationData.rooms.length === 1,
                         'from_date': $scope.reservationData.arrivalDate,
-                        'to_date': $scope.reservationData.departureDate,
+                        'to_date': $scope.reservationData.departureDate
                     }, processDisplay);
                     lastSearchText = request.term;
                 }
@@ -853,7 +853,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         'include_group': $scope.reservationData.rooms.length === 1,
                         'include_allotment': $scope.reservationData.rooms.length === 1,
                         'from_date': $scope.reservationData.arrivalDate,
-                        'to_date': $scope.reservationData.departureDate,
+                        'to_date': $scope.reservationData.departureDate
                     }, function(filteredCodes) {
                         codeResults = [];
                         angular.forEach(filteredCodes.promotions, function(item) {

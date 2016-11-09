@@ -470,7 +470,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                 var paramDict = {
                     'addon_id': addon.id,
                     'from_date': $scope.reservationData.arrivalDate,
-                    'to_date': $filter('date')(adjustedQueryEndDate, 'yyyy-MM-dd'),
+                    'to_date': $filter('date')(adjustedQueryEndDate, 'yyyy-MM-dd')
                 };
 
                 $scope.invokeApi(RVReservationAddonsSrv.checkInventory, paramDict, successCallBackInventoryCheck);

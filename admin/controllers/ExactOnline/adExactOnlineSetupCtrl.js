@@ -84,7 +84,7 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
                 $rootScope.previousState = "admin.backOfficeSetup";
                 var interfacesMenuIndex = _.indexOf($scope.data.menus,
                     _.findWhere($scope.data.menus, {
-                        menu_id: 9, // 9 is ID returned by API for the Interfaces Menu
+                        menu_id: 9 // 9 is ID returned by API for the Interfaces Menu
                     }));
 
                 $scope.$emit("changedSelectedMenu", interfacesMenuIndex);

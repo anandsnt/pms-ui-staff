@@ -787,7 +787,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 
 					newAssignment = {
 						employee_id: art.id,
-						tasks: [],
+						tasks: []
 					};
 
 					if ( !! hasThisWorkType ) {

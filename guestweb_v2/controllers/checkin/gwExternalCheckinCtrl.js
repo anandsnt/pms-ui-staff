@@ -73,7 +73,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 			};
 			var options = {
 				params: params,
-				successCallBack: onSuccess,
+				successCallBack: onSuccess
 			};
 
 			if (GwWebSrv.zestwebData.isInZestwebDemoMode) {

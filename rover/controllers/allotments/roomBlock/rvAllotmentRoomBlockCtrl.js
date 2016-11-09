@@ -1392,7 +1392,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			}
 
 			var params = _.extend(paginationOptions, {
-				allotment_id: $scope.allotmentConfigData.summary.allotment_id,
+				allotment_id: $scope.allotmentConfigData.summary.allotment_id
 			});
 
 			var options = {
@@ -1718,7 +1718,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			$scope.timeLineStartDateOptions = _.extend({
 				minDate: summaryData.block_from,
 				maxDate: maxDate,
-				onSelect: $scope.onTimeLineStartDatePicked,
+				onSelect: $scope.onTimeLineStartDatePicked
 			}, commonDateOptions);
 
 		};

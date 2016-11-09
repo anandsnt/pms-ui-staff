@@ -287,7 +287,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				fillValidationErrors();
 				ngDialog.open({
 					template: '/assets/partials/reports/scheduleReport/rvCantCreateSchedule.html',
-					scope: $scope,
+					scope: $scope
 				});
 			}
 		};
@@ -389,7 +389,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				fillValidationErrors();
 				ngDialog.open({
 					template: '/assets/partials/reports/scheduleReport/rvCantCreateSchedule.html',
-					scope: $scope,
+					scope: $scope
 				});
 			}
 		};
@@ -718,7 +718,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 							report: {
 								id: found.id,
 								description: found.description,
-								title: found.title,
+								title: found.title
 							},
 							reportIconCls: found.reportIconCls,
 							active: false,

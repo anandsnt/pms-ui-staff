@@ -38,16 +38,16 @@ angular.module('reportsModule')
             				'untilDate': getDates.yesterday
             			},
             			'DAILY_TRANSACTIONS': {
-            				'singleValueDate': getDates.yesterday,
+            				'singleValueDate': getDates.yesterday
             			},
             			'DAILY_PAYMENTS': {
-            				'singleValueDate': getDates.yesterday,
+            				'singleValueDate': getDates.yesterday
             			},
             			'MARKET_SEGMENT_STAT_REPORT': {
-            				'singleValueDate': getDates.yesterday,
+            				'singleValueDate': getDates.yesterday
             			},
             			'COMPARISION_BY_DATE': {
-            				'singleValueDate': getDates.yesterday,
+            				'singleValueDate': getDates.yesterday
             			},
             			'FORECAST_BY_DATE': {
             				'fromDate': getDates.businessDate,
@@ -78,7 +78,7 @@ angular.module('reportsModule')
             				'untilDate': getDates.businessDate
             			},
             			'IN_HOUSE_GUEST': {
-            				'singleValueDate': getDates.businessDate,
+            				'singleValueDate': getDates.businessDate
             			},
                         'COMPANY_TA_TOP_PRODUCERS': {
                             'fromDate': undefined,

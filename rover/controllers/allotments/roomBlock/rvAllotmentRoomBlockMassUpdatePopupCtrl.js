@@ -196,7 +196,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 			$scope.massUpdateEndDateOptions = _.extend({
 				minDate: $scope.timeLineStartDate,
 				maxDate: maxDate,
-				onSelect: onEndDatePicked,
+				onSelect: onEndDatePicked
 			}, commonDateOptions);
 		};
 

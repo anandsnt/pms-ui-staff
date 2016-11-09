@@ -67,7 +67,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			var postParams = {
 				"is_additional": false,
 				"reservation_id": $scope.reservation_id,
-				"key": 1,
+				"key": 1
 				//"is_kiosk": true
 			};
 

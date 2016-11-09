@@ -57,7 +57,7 @@ sntGuestWeb.controller('gwETABaseController', ['$scope', '$state', '$controller'
 				};
 				var options = {
 					params: params,
-					successCallBack: updateReservationDetailsSuccess,
+					successCallBack: updateReservationDetailsSuccess
 				};
 
 				$scope.callAPI(GwCheckinSrv.updateReservationDetails, options);

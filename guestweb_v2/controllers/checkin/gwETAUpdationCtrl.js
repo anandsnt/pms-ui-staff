@@ -36,7 +36,7 @@ sntGuestWeb.controller('gwETAUpdationController', ['$scope', '$state', '$control
 			params: {
 				'reservation_id': GwWebSrv.zestwebData.reservationID
 			},
-			successCallBack: fetchHotelTimeSuccess,
+			successCallBack: fetchHotelTimeSuccess
 		};
 
 		$scope.callAPI(GwCheckinSrv.fetchHotelTime, options);

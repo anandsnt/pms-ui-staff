@@ -54,7 +54,7 @@ angular.module('sntRover').controller('rvGroupAvailabilityStatusController', [
 				$state.go('rover.groups.config', 
 				{
 					id: GroupId,
-					activeTab: 'ROOMING',
+					activeTab: 'ROOMING'
 
 				},
 				{

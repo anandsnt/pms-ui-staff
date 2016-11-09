@@ -105,7 +105,7 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
           template: '/assets/partials/dashboard/rvReleaseNotificationPopup.html',
           className: '',
           controller: '',
-          scope: $scope,
+          scope: $scope
         });
     };
   /*

@@ -514,7 +514,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       var options = {
         params: params,
         successCallBack: mailSent,
-        failureCallBack: mailFailed,
+        failureCallBack: mailFailed
       };
 
       $scope.callAPI(rvAllotmentReservationsListSrv.emailInvoice, options);

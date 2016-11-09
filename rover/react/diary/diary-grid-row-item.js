@@ -256,7 +256,7 @@ var GridRowItem = React.createClass({
 			currentDragItem: props.currentResizeItem,
 			style: {
 				display: 'block',
-				left: left,
+				left: left
 			},
 			__setDragOver: function(bool) { this.__setDragOver(bool); }.bind(this)
 		},
@@ -300,5 +300,5 @@ var GridRowItem = React.createClass({
 		}
 
 		this.__setDragOver(true);
-	},
+	}
 });

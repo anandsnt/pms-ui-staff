@@ -829,7 +829,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			ngDialog.open({
 				template: '/assets/partials/groups/summary/groupSendConfirmationPopup.html',
 				className: '',
-				scope: $scope,
+				scope: $scope
 			});
 		};
 

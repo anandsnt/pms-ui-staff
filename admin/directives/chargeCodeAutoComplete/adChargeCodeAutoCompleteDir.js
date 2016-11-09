@@ -117,6 +117,6 @@ admin.directive('adChargeCodeAutoComplete', ['ADChargeCodesSrv', function (ADCha
 				minLengthToTrigger 		= _.isUndefined($scope.minLengthToTrigger) ? 1 : parseInt($scope.minLengthToTrigger);
 			}();	
 		},
-		templateUrl: '/assets/directives/chargeCodeAutoComplete/adChargeCodeAutoCompleteDir.html',
+		templateUrl: '/assets/directives/chargeCodeAutoComplete/adChargeCodeAutoCompleteDir.html'
 	};
 }]);

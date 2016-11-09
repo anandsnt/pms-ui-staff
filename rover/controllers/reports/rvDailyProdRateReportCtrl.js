@@ -277,7 +277,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 				$scope.reportData.push(parseDailyData(rateTypeData.data, true));
 				// Put rates under the rate type
 				var rates = _.filter(results.rates, {
-					rate_type_id: rateTypeData.rate_type_id,
+					rate_type_id: rateTypeData.rate_type_id
 				});
 
 				_.each(rates, function(rate) {

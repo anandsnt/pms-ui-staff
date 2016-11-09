@@ -16,7 +16,7 @@ var DailyProductionAvailabilityToggle = React.createClass({
 	render: function() {
 		return React.DOM.div({
 					className: 'switch-button ' + (this.props.header.showAvailable ?  'on' : 'disabled'),
-					id: 'report-availability-toggle-parent',
+					id: 'report-availability-toggle-parent'
 				},
 				React.DOM.input({
 					name: 'report-toggle',

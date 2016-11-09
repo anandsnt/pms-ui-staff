@@ -528,7 +528,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 					.then(function(occupancyDataFromAPI) {
 						_.extend(that.data.gridData, {
 							'additionalData': formGridAdditionalData( availabilityAdditionalFromAPI ),
-							'additionalGraphData': formGraphData( availabilityAdditionalFromAPI, occupancyDataFromAPI ),
+							'additionalGraphData': formGraphData( availabilityAdditionalFromAPI, occupancyDataFromAPI )
 						});
 
 						// passing on gridData is a waste, sort of.
@@ -860,7 +860,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
                 }
                 _.each(response.results, function(occupancy) {
                     adultsChildrenCounts.push({
-                        'bothCount': occupancy.adults + '/' + occupancy.children,
+                        'bothCount': occupancy.adults + '/' + occupancy.children
                     });
                 });
 

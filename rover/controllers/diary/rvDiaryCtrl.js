@@ -2237,7 +2237,7 @@ angular.module('sntRover')
 						infants_count: data.infants,
 						rate_id: data.rate_id,
 						room_id: roomId,
-						room_type_id: data.room_type_id,
+						room_type_id: data.room_type_id
 					}
 				]
 			],

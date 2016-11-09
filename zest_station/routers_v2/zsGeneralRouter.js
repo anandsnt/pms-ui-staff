@@ -54,11 +54,11 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
         $stateProvider.state('zest_station.admin', {
              url: '/find_reservation', 
              controller: 'zsAdminCtrl',
-             templateUrl: '/assets/partials_v2/zsAdminSettings.html',
+             templateUrl: '/assets/partials_v2/zsAdminSettings.html'
         }).state('zest_station.outOfService', {
              url: '/outOfService', 
              controller: 'zsOutOfServiceCtrl',
-             templateUrl: '/assets/partials_v2/zsOutOfService.html',
+             templateUrl: '/assets/partials_v2/zsOutOfService.html'
         });
 
 	}
