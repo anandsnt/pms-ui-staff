@@ -289,7 +289,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 $scope.newPaymentInfo.cardDetails.cardType;
             if (!$scope.newPaymentInfo.tokenDetails.isSixPayment) {
                 data.card_expiry = retrieveExpiryDateForSave();
-            };
+            }
             data.card_name = (!$scope.newPaymentInfo.tokenDetails.isSixPayment) ?
                 $scope.newPaymentInfo.cardDetails.userName :
                 ($scope.passData.details.firstName + " " + $scope.passData.details.lastName);
@@ -381,11 +381,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                     angular.forEach(paymentMethod.credit_card_list, function(value, key) {
                         if ((typeof $scope.renderData.creditCardType !== 'undefined') && $scope.renderData.creditCardType.toUpperCase() === value.cardcode) {
                             referenceTextAvailable = (value.is_display_reference) ? true : false;
-                        };
+                        }
                     });
                 } else if (paymentMethod.value === $scope.reservationData.paymentType.type.value) {
                     referenceTextAvailable = (paymentMethod.is_display_reference) ? true : false;
-                };
+                }
             });
             return referenceTextAvailable;
         };
@@ -463,13 +463,13 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
             if (dataToMakePaymentApi.postData.payment_type === "CC") {
                 dataToMakePaymentApi.postData.payment_type_id = $scope.reservationData.selectedPaymentId;
-            };
+            }
 
 
             if (dataToMakePaymentApi.postData.payment_type === "GIFT_CARD") {
                 delete dataToMakePaymentApi.postData.payment_type_id;
                 dataToMakePaymentApi.postData.card_number = $.trim($scope.num); // trim to remove whitespaces from copy-paste
-            };
+            }
 
             if ($scope.isShowFees()) {
                 if ($scope.feeData.calculatedFee) {
@@ -482,7 +482,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
             if ($scope.checkReferencetextAvailable()) {
                 dataToMakePaymentApi.postData.reference_text = $scope.reservationData.referanceText;
-            };
+            }
             if ($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.reservationData.paymentType.type.value === "CC") {
                 dataToMakePaymentApi.postData.is_emv_request = true;
                 ngDialog.open({
@@ -566,7 +566,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 depositPaid = $scope.depositData.attempted ? true : false;
             } else {
                 depositPaid = true;
-            };
+            }
             var idPresent = ($stateParams.mode === 'OTHER' || $stateParams.mode === 'EDIT_HOURLY') ? (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id && !$scope.reservationData.group.id && !$scope.reservationData.allotment.id) : true;
             var isPaymentTypeNotSelected = ((typeof $scope.reservationData.paymentType.type.value === "undefined") || $scope.reservationData.paymentType.type.value.length === 0);
             // CICO-30786 - check the payment type selection only if deposit not paid
@@ -782,7 +782,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             data.forEach(function(item) {
                 if (item.value === 'CC') {
                     $scope.creditCardTypes = item.credit_card_list;
-                };
+                }
             });
         };
 
@@ -1195,7 +1195,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                         $scope.setupFeeData();
                     }
                 });
-            };
+            }
 
             $scope.refreshPaymentScroller();
         };
@@ -1402,7 +1402,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             // CICO-18594 - Urgent fix
             if (typeof $scope.reservationData.reservation_type !== "undefined" && !$scope.reservationData.group.id ) {
                 $scope.demographics.reservationType = $scope.reservationData.reservation_type;
-            };
+            }
 
             if (showRequiredFieldsOnly) {
                 $scope.shouldShowReservationType = ($scope.otherData.reservationTypeIsForced && $scope.otherData.reservationTypes.length > 0) ? true : false;
@@ -1509,7 +1509,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             $scope.showSelectedCreditCard = true;
             $scope.reservationData.selectedPaymentId = data.id;
             $scope.renderData.creditCardType = successParams.cardType.toLowerCase();
-            $scope.renderData.endingWith = successParams.cardNumber.slice(-4);;
+            $scope.renderData.endingWith = successParams.cardNumber.slice(-4);
             $scope.renderData.cardExpiry = successParams.cardExpiryMonth + "/" + successParams.cardExpiryYear;
             $scope.isNewCardAdded = true;
         };

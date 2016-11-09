@@ -54,7 +54,7 @@ admin.directive('fauxSelect', function() {
 
             if (!$scope.title) {
                 setTitle();
-            };
+            }
 
             $scope.toggleList = function() {
                 $scope.show = !$scope.show;

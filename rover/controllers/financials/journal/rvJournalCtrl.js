@@ -51,7 +51,7 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
                    $scope.data.selectedCashier = item.name;
                 }
             });
-        };
+        }
     };
 
     retrieveCashierName();
@@ -174,7 +174,7 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
         }
         else {
             $scope.data.filterData.checkedAllDepartments = false;
-        };
+        }
     };
 
     // Clicking on each Employees check boxes.

@@ -162,7 +162,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['CHECK_IN_CHECK_OUT']:
 					if ( $scope.chosenReport.chosenCico === 'IN' || $scope.chosenReport.chosenCico === 'OUT' ) {
 						$scope.hasNoTotals = true;
-					};
+					}
 					break;
 
 				case reportNames['EMAIL_CHECKIN_SUMMARY']:
@@ -249,7 +249,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				default:
 					break;
-			};
+			}
 
 
 			// hack to set the colspan for reports details tfoot
@@ -401,7 +401,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 2;
 					break;
-			};
+			}
 
 			// modify the summary count for certain reports as per the report totals
 			// these are done for old reports as for old reports 'totals' is what we
@@ -433,7 +433,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 								'ins_via_zest': totals[3]['value'],
 								'ins_via_kiosk': totals[4]['value']
 							};
-						};
+						}
 					} else if ( 'Total Check Outs' == totals[0]['label'] ) {
 						$scope.$parent.summaryCounts = {
 							'has_out': true,
@@ -443,7 +443,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 							'outs_via_zest': totals[3]['value'],
 							'outs_via_kiosk': totals[4]['value']
 						};
-					};
+					}
 					break;
 
 				case reportNames['EMAIL_CHECKIN_SUMMARY']:
@@ -499,7 +499,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 				default:
 					// no op
-			};
+			}
 
 			// change date format for all
 			for (var i = 0, j = results.length; i < j; i++) {
@@ -514,7 +514,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			        // thus makin the value in template 'X:00 PM'
 			        results[i][ results[i].length - 2 ] += ':00 PM';
 			    }
-			};
+			}
 
 			// hack to edit the title 'LATE CHECK OUT TIME' to 'SELECTED LATE CHECK OUT TIME'
 			// notice the text case, they are as per api response and ui
@@ -523,9 +523,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 			        if ( headers[i] === 'Late Check Out Time' ) {
 			            headers[i] = 'Selected Late Check Out Time';
 			            break;
-			        };
-			    };
-			};
+			        }
+			    }
+			}
 
 			// new more detailed reports
 			$scope.parsedApiFor = $scope.chosenReport.title;
@@ -608,7 +608,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 						$scope.hasReportTotals    = true;
 						$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
 						$scope.detailsTemplateUrl = '/assets/partials/reports/shared/rvCommonReportDetails.html';
-					};
+					}
 					break;
 				case reportNames['DEPOSIT_SUMMARY']:
 						$scope.hasReportTotals    = true;
@@ -648,7 +648,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 						$scope.detailsTemplateUrl = '/assets/partials/reports/addonForecastReport/rvAddonForecastReportByAddon.html';
 					} else {
 						$scope.detailsTemplateUrl = '/assets/partials/reports/addonForecastReport/rvAddonForecastReportByDate.html';
-					};
+					}
 					break;
 
 				case reportNames['DAILY_PRODUCTION_ROOM_TYPE']:
@@ -698,7 +698,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/shared/rvCommonReportDetails.html';
 					break;
-			};
+			}
 		};
 
 		$scope.parsedApiTemplate = function() {
@@ -790,7 +790,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				default:
 					template = '/assets/partials/reports/shared/rvCommonReportRow.html';
 					break;
-			};
+			}
 
 			return template;
 		};
@@ -806,7 +806,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				return !! _.find(name, function(each) {
 					return $scope.parsedApiFor == reportNames[each];
 				});
-			};
+			}
 		};
 
 
@@ -817,7 +817,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		var calPagination = function(response, pageNum) {
 			if ( ! $scope.hasPagination ) {
 				return;
-			};
+			}
 
 			// clear old results and update total counts
 			$scope.netTotalCount = $scope.$parent.totalCount;
@@ -829,9 +829,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 				_.each($scope.$parent.results, function(item) {
 					if ( typeof item === 'array' ) {
 						$scope.uiTotalCount += item.length;
-					};
+					}
 				});
-			};
+			}
 
 			if ( $scope.netTotalCount === 0 && $scope.uiTotalCount === 0 ) {
 				$scope.disablePrevBtn = true;
@@ -874,11 +874,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 					if ( !!match ) {
 						_userNames.push( user.full_name );
-					};
+					}
 				});
 
 				$scope.userNames = _userNames.join(', ');
-		    };
+		    }
 		};
 
 		// fetch next page on pagination change
@@ -894,7 +894,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				$_pageNo++;
 				$scope.genReport( false, $_pageNo );
-			};
+			}
 		};
 
 		// fetch prev page on pagination change
@@ -912,18 +912,18 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.sortResultBy = function(sortBy, report) {
 			if ( !sortBy ) {
 				return;
-			};
+			}
 
 			// if there a group by filter applied, reset it
 			if ( !!$scope.chosenReport.chosenGroupBy ) {
 				$scope.chosenReport.chosenGroupBy = 'BLANK';
-			};
+			}
 
 			// un-select sort dir of others
 			_.each($scope.chosenReport.sortByOptions, function(item) {
 				if ( item && item.value !== sortBy.value ) {
 					item.sortDir = undefined;
-				};
+				}
 			});
 
 			// select sort_dir for clicked item
@@ -933,7 +933,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				sortBy.sortDir = (sortBy.sortDir === undefined || sortBy.sortDir === true) ? false : true;
 			} else {
 				sortBy.sortDir = (sortBy.sortDir === undefined || sortBy.sortDir === false) ? true : false;
-			};
+			}
 
 			$scope.chosenReport.chosenSortBy = sortBy.value;
 
@@ -967,7 +967,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				$scope.printOptions.showModal();
 			} else {
 				$_fetchFullReport();
-			};
+			}
 		};
 
 		// when user press submit from pre-print modal, continue our calls to '$_fetchFullReport'
@@ -984,7 +984,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			// should-we-change-view, specify-page, per-page-value
 			$scope.genReport( false, 1, 1000 );
-		};
+		}
 
 		// add the print orientation before printing
 		var addPrintOrientation = function() {
@@ -1063,7 +1063,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				    $window.print();
 				    if ( sntapp.cordovaLoaded ) {
 				        cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-				    };
+				    }
 				}, 1000);
 
 				/*
@@ -1082,7 +1082,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					// READ MORE: rvReportsMainCtrl:L#:61-75
 					if ( 'function' == typeof $scope.printOptions.afterPrint ) {
 						$scope.printOptions.afterPrint();
-					};
+					}
 
 				    // load the report with the original page
 				    $scope.fetchNextPage( $scope.returnToPage );

@@ -7,8 +7,8 @@ admin.controller('ADDashboardCtrl', ['$scope', '$state', '$stateParams', '$rootS
 			 $scope.selectedMenu.components =_.filter($scope.selectedMenu.components, function(item) {
     			return item.name !=="Notifications"; 
 			});			 
-		};
-	};
+		}
+	}
 }]);
 
 

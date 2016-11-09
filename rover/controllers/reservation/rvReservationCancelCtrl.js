@@ -30,7 +30,7 @@
 			if ($scope.ngDialogData.penalty > 0) {
 				$scope.$emit("UPDATE_CANCEL_RESERVATION_PENALTY_FLAG", true);
 				$scope.ngDialogData.penalty = parseFloat($scope.ngDialogData.penalty).toFixed(2);
-			};
+			}
 
 			$scope.setScroller('cardsList', {
 				'click': true,
@@ -58,7 +58,7 @@
 					angular.forEach($scope.passData.details.creditCardTypes, function(value, key) {
 						if ($scope.cancellationData.card_type.toUpperCase() === value.cardcode) {
 							$scope.isDisplayReference = (value.is_display_reference) ? true : false;
-						};
+						}
 					});
 				}
 			};
@@ -79,7 +79,7 @@
 					($rootScope.paymentGateway === 'sixpayments') ? "" : $scope.showCCPage = true;
 				} else {
 					checkReferencetextAvailableForCC();
-				};
+				}
 			};
 
 			$scope.feeData = {};
@@ -241,7 +241,7 @@
 					$scope.newPaymentInfo.cardDetails.cardType;
 				if (!$scope.newPaymentInfo.tokenDetails.isSixPayment) {
 					paymentData.card_expiry = cardExpiry;
-				};
+				}
 
 				$scope.invokeApi(RVPaymentSrv.savePaymentDetails, paymentData, onSaveSuccess);
 			};
@@ -271,7 +271,7 @@
 						"confirmationId": $scope.reservationData.confirmNum || $scope.reservationParentData.confirmNum,
 						"isrefresh": false
 					});
-				};
+				}
 				$scope.closeReservationCancelModal();
 			};
 
@@ -324,7 +324,7 @@
 
 					if ($scope.ngDialogData.isDisplayReference) {
 						cancellationParameters.reference_text = $scope.referanceText;
-					};
+					}
 					$scope.invokeApi(RVReservationCardSrv.cancelReservation, cancellationParameters, onCancelSuccess, onCancelFailure);
 				}
 			};
@@ -386,10 +386,10 @@
 					dataToSrv.postData.add_to_guest_card = $scope.cancellationData.addToGuestCard;
 				} else {
 					dataToSrv.postData.add_to_guest_card = false;
-				};
+				}
 				if ($scope.isDisplayReference) {
 					dataToSrv.postData.reference_text = $scope.referanceText;
-				};
+				}
 				if ($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.cancellationData.paymentType === 'CC') {
 					dataToSrv.postData.is_emv_request = true;
 					$scope.shouldShowWaiting = true;
@@ -466,7 +466,7 @@
 			var successSwipePayment = function(data, successParams) {
 				$scope.$emit('hideLoader');
 				$scope.cancellationData.selectedCard = data.id;
-				$scope.cancellationData.cardNumber = successParams.cardNumber.slice(-4);;
+				$scope.cancellationData.cardNumber = successParams.cardNumber.slice(-4);
 				$scope.cancellationData.expiry_date = successParams.cardExpiryMonth + "/" + successParams.cardExpiryYear;
 				$scope.cancellationData.card_type = successParams.cardType.toLowerCase();
 				$scope.showCCPage = false;

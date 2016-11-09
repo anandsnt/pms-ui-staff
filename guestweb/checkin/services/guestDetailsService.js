@@ -56,7 +56,7 @@
 			}
 			else{
 				deferred.reject();
-			};
+			}
 			
 		}.bind(this))
 		.error(function() {

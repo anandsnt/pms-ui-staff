@@ -228,7 +228,7 @@ sntRover.controller('RVbillCardController',
 		}
 		else{
 			return;
-		};
+		}
 	};
 
 
@@ -494,7 +494,7 @@ sntRover.controller('RVbillCardController',
 	     		}
 
 	        }, 200);
-	    };
+	    }
 		$scope.reservationBillData = reservationBillData;
 		$scope.routingArrayCount = $scope.reservationBillData.routing_array.length;
 		$scope.incomingRoutingArrayCount = $scope.reservationBillData.incoming_routing_array.length;
@@ -1576,7 +1576,7 @@ sntRover.controller('RVbillCardController',
                 if ($scope.reservationBillData.signature_details.is_signed === 'true') {
                     signatureData = $scope.reservationBillData.signature_details.signed_image;
                     return false;
-                };
+                }
 
 		if(signatureData === "[]" && $scope.reservationBillData.required_signature_at === "CHECKIN") {
                     return true;
@@ -1855,7 +1855,7 @@ sntRover.controller('RVbillCardController',
 			var bill = reservationBillData.bills[i];
 
 			totalBal += bill.total_amount * 1;
-		};
+		}
 
 		var finalBillBalance = "0.00";
 
@@ -2208,7 +2208,7 @@ sntRover.controller('RVbillCardController',
 		}
 		else if(credits) {
 			$scope.selectedTransaction.amount = credits;
-		};
+		}
 
 		ngDialog.open({
     		template: '/assets/partials/bill/rvBillActionsPopup.html',
@@ -2287,7 +2287,7 @@ sntRover.controller('RVbillCardController',
 		    $scope.openSplitChargePopup();
 		} else if (action === "edit") {
 		    $scope.openEditChargePopup();
-		};
+		}
 
 
 	};
@@ -2365,7 +2365,7 @@ sntRover.controller('RVbillCardController',
 		    	$window.print();
 		    	if ( sntapp.cordovaLoaded ) {
 		    		cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-		    	};
+		    	}
 		    }, 200);
 
 		    /*
@@ -2433,7 +2433,7 @@ sntRover.controller('RVbillCardController',
 		    	$window.print();
 		    	if ( sntapp.cordovaLoaded ) {
 		    		cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-		    	};
+		    	}
 		    }, 200);
 
 		    /*
@@ -2603,7 +2603,7 @@ sntRover.controller('RVbillCardController',
 					$scope.reverseCheckoutDetails.data.is_reverse_checkout_failed  = true;
 					$scope.reverseCheckoutDetails.data.errormessage= data.message;
 					$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id": reservationId, "confirmationId": confirmationNumber});
-				};
+				}
 			};
 
 			var data ={"reservation_id": $scope.reservationBillData.reservation_id};

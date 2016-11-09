@@ -137,7 +137,7 @@ angular.module('sntRover').controller('RVWorkManagementCtrl', ['$rootScope', '$s
 						room.show = true;
 					} else {
 						room.show = false;
-					};
+					}
 				});
 
 
@@ -162,7 +162,7 @@ angular.module('sntRover').controller('RVWorkManagementCtrl', ['$rootScope', '$s
 									room.show = true;
 								} else {
 									room.show = false;
-								};
+								}
 							}
 							else if ( !! cia.hh ) { // CASE 1 : Arrival After
 								roomTime = refData.checkin_time;
@@ -172,7 +172,7 @@ angular.module('sntRover').controller('RVWorkManagementCtrl', ['$rootScope', '$s
 									room.show = true;
 								} else {
 									room.show = false;
-								};
+								}
 							}
 							else if ( !!cib.hh ) { // CASE 2 : Arrival Before
 								roomTime = refData.checkin_time;
@@ -182,7 +182,7 @@ angular.module('sntRover').controller('RVWorkManagementCtrl', ['$rootScope', '$s
 									room.show = true;
 								} else {
 									room.show = false;
-								};
+								}
 							}
 							else if ( !! coa.hh && !! cob.hh ) { // CASE 3 & 4
 								roomTime = refData.checkout_time;
@@ -193,7 +193,7 @@ angular.module('sntRover').controller('RVWorkManagementCtrl', ['$rootScope', '$s
 									room.show = true;
 								} else {
 									room.show = false;
-								};
+								}
 							}
 							else if ( !! coa.hh ) { // CASE 3 : Departure After
 								roomTime = refData.checkout_time;
@@ -203,7 +203,7 @@ angular.module('sntRover').controller('RVWorkManagementCtrl', ['$rootScope', '$s
 									room.show = true;
 								} else {
 									room.show = false;
-								};
+								}
 							}
 							else if ( !! cob.hh ) { // CASE 4 : Departure Before
 								roomTime = refData.checkin_time;
@@ -213,20 +213,20 @@ angular.module('sntRover').controller('RVWorkManagementCtrl', ['$rootScope', '$s
 									room.show = true;
 								} else {
 									room.show = false;
-								};
-							};
+								}
+							}
 						}
 					});
-				};
+				}
 
 
 				function filterHasTime () {
 					return !! filter.checkin.before.hh || !! filter.checkin.after.hh || !! filter.checkout.after.hh || !! filter.checkout.after.hh;
-				};
+				}
 
 				function roomHasTime (room) {
 					return ( !! room.checkin_time && (!! filter.checkin.before.hh || !! filter.checkin.after.hh) ) || ( !! room.checkout_time && (!! filter.checkout.before.hh || !! filter.checkout.after.hh) );
-				};
+				}
 
 				function get24hourTime (time) {
 					var firstSplit, secondSplit, ret;
@@ -249,11 +249,11 @@ angular.module('sntRover').controller('RVWorkManagementCtrl', ['$rootScope', '$s
 						ret += ':' + secondSplit[0];
 					} else {
 						ret = '00:00';
-					};
+					}
 
 					return ret;
-				};
-			};
+				}
+			}
 		};
 	}
 ]);

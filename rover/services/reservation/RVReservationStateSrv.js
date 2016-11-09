@@ -172,7 +172,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 				return getTotalPostedAddons(postType, numChildren);
 			} else if (amountType === 'FLAT') {
 				return getTotalPostedAddons(postType, 1);
-			};
+			}
 		};
 
 		self.computeBaseAmount = function(taxableAmount, taxes, numAdults, numChildren) {
@@ -478,7 +478,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 					excl: parseFloat(taxApplied.EXCL.NIGHT)
 				};
 				updateStayTaxes(taxApplied.taxDescription);
-			};
+			}
 
 			totalTax = {
 				incl: parseFloat(rateTax.incl) + parseFloat(addonTax.incl),

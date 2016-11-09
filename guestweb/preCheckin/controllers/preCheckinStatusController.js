@@ -59,7 +59,7 @@
 					$scope.responseData =response.data;
 					$rootScope.preckinCompleted =  true;
 					$rootScope.responseData = {"confirmation_message": $scope.responseData.confirmation_message};
-				};
+				}
 			}, function() {
 				$scope.netWorkError = true;
 				$scope.isLoading = false;

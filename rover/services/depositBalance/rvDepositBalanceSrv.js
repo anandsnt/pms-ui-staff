@@ -80,7 +80,7 @@ angular.module('sntRover').service('RVDepositBalanceSrv', ['$q', 'BaseWebSrvV2',
 							deferred.reject(data);
 						}
 					});
-				};
+				}
 			};
 
 			rvBaseWebSrvV2.postJSONWithSpecialStatusHandling(url, postData.postData).then(function(data) {

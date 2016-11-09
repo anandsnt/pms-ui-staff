@@ -45,7 +45,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
             if (!isInteger($scope.reservationData.resHours) || $scope.reservationData.resHours && $scope.reservationData.resHours < $rootScope.minimumHourlyReservationPeriod) {
                 $timeout(correctHours.bind(null, $rootScope.minimumHourlyReservationPeriod), 100);
-            };
+            }
 
             var checkinHour = parseInt($scope.reservationData.checkinTime.hh);
             var checkoutHour = parseInt($scope.reservationData.checkoutTime.hh);
@@ -165,7 +165,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                             break;
                         }
                     } while (intMins !== 15 || intMins !== 30 || intMins !== 45);
-                };
+                }
 
                 // finally append zero and convert to string -- only for $scope.reservationData.checkinTime
                 $scope.reservationData.checkinTime = {
@@ -383,7 +383,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         name: ""
                     }
                 };
-            };
+            }
         };
 
         $scope.navigate = function() {
@@ -590,7 +590,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     // will loop the entire 'companyCardResults'
                     if (!hasItem) {
                         companyCardResults.push(eachItem);
-                    };
+                    }
                 });
 
                 if ($scope.reservationData.rooms.length === 1 && !!data.groups && data.groups.length > 0) {
@@ -709,7 +709,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.reservationData.travelAgent.id = ui.item.id;
                 $scope.reservationData.travelAgent.name = ui.item.label;
                 $scope.reservationData.travelAgent.iataNumber = ui.item.iataNumber;
-            };
+            }
 
             // DO NOT return false
         };
@@ -795,7 +795,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             } else {
                 $scope.shouldShowNights = true;
                 $scope.shouldShowHours = false;
-            };
+            }
         };
 
         // CICO-18204

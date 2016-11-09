@@ -18,7 +18,7 @@ var styleString = "";
 
 function appendStyleString(str) {
 	styleString = styleString + str;
-};
+}
 
 var applyStyle = function(target, style, type) {
 	if (!isBlank(style)) {
@@ -32,7 +32,7 @@ var applyStyle = function(target, style, type) {
 
 	} else {
 		return;
-	};
+	}
 };
 
 // icons of each color has to be in corresponding folders
@@ -121,5 +121,5 @@ var overrideStylesWithCMSdata = function(styles) {
 		addStyleString(styleString);
 	} else {
 		return;
-	};
+	}
 };

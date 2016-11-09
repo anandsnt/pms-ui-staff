@@ -38,7 +38,7 @@ admin.service('ADBaseWebSrvV2', ['$http', '$q', '$window', function($http, $q, $
  		}
  		else if(httpMethod === 'POST' || httpMethod === 'PUT') {
  			httpDict.data = params;
-  		};
+  		}
 
 		$http(httpDict).success(function(response, status) {
 	    	deferred.resolve(response);

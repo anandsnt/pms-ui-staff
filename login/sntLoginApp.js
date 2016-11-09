@@ -48,7 +48,7 @@ var GlobalApp = function() {
     // success function of coddova plugin's appending
     this.fetchCompletedOfCordovaPlugins = function(script) {
         // $("body").append('<script type="text/javascript">'+ script +'</script>');
-        ;
+        
         var script_node = document.createElement('script');
 
         script_node.innerHTML = script;
@@ -61,7 +61,7 @@ var GlobalApp = function() {
 
         }
         catch(er) {
-        };
+        }
 
     };
     // success function of coddova plugin's appending

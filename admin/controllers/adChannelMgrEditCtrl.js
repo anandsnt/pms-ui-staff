@@ -165,7 +165,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                             }
                         }
                         
-                    };
+                    }
                     $scope.setRateDropdown(rate.rate.id, 'old');
                     return;
             }

@@ -54,7 +54,7 @@ sntRover.controller('RVMoveChargeCtrl',
         	}else{
         		$scope.targetBillSelected = false;
         		$scope.searching = false;
-        		};
+        		}
         };
 
 
@@ -149,7 +149,7 @@ sntRover.controller('RVMoveChargeCtrl',
 					refreshSearchList();
 				} else {
 					fetchFilterdData();
-				};
+				}
 				runDigestCycle();
 			}, 200);
 		};

@@ -18,7 +18,7 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 					"confirmationId": $stateParams.confirmationId || $scope.reservationData.confirmNum,
 					"isrefresh": false
 				});
-			};
+			}
 			$scope.closeDialog();
 		};
 

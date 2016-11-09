@@ -39,7 +39,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 				if ($scope.arAccountDetails.is_auto_assign_ar_numbers && !$scope.arAccountDetails.ar_number) {
 					$scope.arAccountDetails.ar_number = data.ar_number;
 					$scope.$parent.generateNewAutoAr = false;
-				};
+				}
 				$scope.$emit('ARNumberChanged', {
 					'newArNumber': $scope.arAccountDetails.ar_number
 				});

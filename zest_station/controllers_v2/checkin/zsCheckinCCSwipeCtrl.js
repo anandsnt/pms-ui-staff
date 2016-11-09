@@ -269,7 +269,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             } else {
                 // MLI desktop swipe
                 data = response;
-            };
+            }
             var swipeOperationObj = new SwipeOperation();
             var postData = swipeOperationObj.createSWipedDataToSave(data);
 
@@ -603,7 +603,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
                 console.info('fetchNonDepositAuthorizationForCheckin()');
                 fetchNonDepositAuthorizationForCheckin();
-            };
+            }
         };
 
         $scope.successCallBackSwipe = function(data) {

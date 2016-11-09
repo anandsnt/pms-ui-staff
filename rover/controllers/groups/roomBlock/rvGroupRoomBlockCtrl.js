@@ -891,7 +891,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 			if ( !(isRoomTypeOverbooked || isHouseOverbooked) ) {
 				return false;
-			};
+			}
 
 			// show appropriate overbook message.
 			if (isHouseOverbooked && isRoomTypeOverbooked && canOverBookBoth) {
@@ -906,7 +906,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			// Overbooking occurs and has no permission.
 			else {
 				return "NO_PERMISSION";
-			};
+			}
 
 		};
 

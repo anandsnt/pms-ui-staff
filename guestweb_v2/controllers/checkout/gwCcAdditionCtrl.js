@@ -96,7 +96,7 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 						goToNextStep();
 					} else {
 						$modal.open(cardErrorPopupOpts);
-					};
+					}
 				};
 
 				if (($scope.cardNumber.length === 0) || ($scope.ccv.length === 0) || (!$scope.monthSelected) || (!$scope.yearSelected)) {
@@ -110,7 +110,7 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 						HostedForm.updateSession(sessionDetails, callback);
 					} catch (err) {
 						$state.go('seeFrontDesk');
-					};
+					}
 				}
 			};
 

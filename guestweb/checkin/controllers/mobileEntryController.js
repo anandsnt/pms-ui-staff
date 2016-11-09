@@ -57,7 +57,7 @@
             $modal.open(invalidMobileAlert);
             return false;
         }
-    };
+    }
 
     $scope.mobileSubmitted = function() {
 

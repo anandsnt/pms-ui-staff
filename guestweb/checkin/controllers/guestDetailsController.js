@@ -42,14 +42,14 @@
 		
 		for(year=new Date().getFullYear();year>=1900;year--) {
 			$scope.years.push(year);
-		};
+		}
 		for(month=1;month<=12;month++) {
 			$scope.months.push(month);
-		};
+		}
 		
 		for(day=1;day<=31;day++) {
 			$scope.days.push(day);
-		};
+		}
 
 		// fetch details
 		var fetchGuestDetails = function() {
@@ -108,14 +108,14 @@
 
             for(var i=0; i < unwanted_keys.length; i++) {
                 delete newObject[unwanted_keys[i]];
-            };
+            }
             data 					= newObject;
             if($scope.guestDetails.month && $scope.guestDetails.day && $scope.guestDetails.year) {
             	data.birthday = $scope.guestDetails.month+"-"+$scope.guestDetails.day+"-"+$scope.guestDetails.year;
             }
             else{
             	delete data["birthday"];
-            };
+            }
 			return data;
 		};
 		
@@ -160,7 +160,7 @@
 			}
 			else{
 				$modal.open($scope.errorOpts);
-			};
+			}
 		};		
 	}
 };

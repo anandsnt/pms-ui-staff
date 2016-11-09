@@ -146,7 +146,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
         var unwantedKeys = ["avatar"]; // remove unwanted keys for API
 
         dataToUpdate = dclone(dataToUpdate, unwantedKeys);
-      };
+      }
 
       if (typeof dataToUpdate.address === "undefined") {
         dataToUpdate.address = {};

@@ -478,7 +478,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 				if ( !!match ) {
 					model[index] = true;
-				};
+				}
 			});
 			return angular.copy( model );
 		};
@@ -489,7 +489,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			_.each(source, function(item, index) {
 				if ( model[index] ) {
 					idAry.push(item.id);
-				};
+				}
 			});
 			return idAry;
 		};
@@ -602,7 +602,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					}
 				}
 			}
-		};
+		}
 
 		$scope.closeTaskListForm = function() {
 			$scope.taskListClickedElement = -1;

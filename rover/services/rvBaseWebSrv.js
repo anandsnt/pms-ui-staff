@@ -41,7 +41,7 @@ angular.module('sntRover').service('RVBaseWebSrv', ['$http', '$q', '$window', '$
  			if(typeof $rootScope.workstation_id !== 'undefined') {
 				httpDict.data.workstation_id = $rootScope.workstation_id;
 			}
-  		};
+  		}
 
 		// Sample params {params:{fname: "fname", lname: "lname"}}
 		$http(httpDict).success(function(response, status) {

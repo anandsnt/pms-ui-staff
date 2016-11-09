@@ -28,7 +28,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				};
 
 				openSaveConfirmationPopup();
-			};
+			}
 		});
 
 		$scope.closeSaveConfirmationDialog = function(options) {
@@ -91,7 +91,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 				// refresh scrollers and update summary
 				refreshView();
-			};
+			}
 		};
 
 
@@ -164,7 +164,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				fromEmp = source[fromEmpIndex];
 				draggedRoom = fromEmp['rooms'][fromRoomIndex];
 				draggedTask = draggedRoom['room_tasks'][fromTaskIndex];
-			};
+			}
 
 			var dropped  = $(event.target).attr('id'),
 				toEmpIndex = parseInt( dropped.split('-')[0] ),
@@ -254,13 +254,13 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 					if ( inOnlyTask > -1 ) {
 						fromEmp.only_tasks.splice(inOnlyTask, 1);
-					};
+					}
 
 					hasOtherTaskWithSameWtid = _.find(fromEmp.only_tasks, { work_type_id: draggedTask.work_type_id });
 					if ( ! hasOtherTaskWithSameWtid ) {
 						fromEmp.touched_work_types = _.without(fromEmp.touched_work_types, draggedTask.work_type_id);
-					};
-				};
+					}
+				}
 
 
 				// remove task from draggedRoom
@@ -271,7 +271,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				// remove the room iself!
 				if ( 'UA' !== fromEmpIndex && ! draggedRoom['room_tasks'].length ) {
 					fromEmp['rooms'].splice(fromRoomIndex, 1);
-				};
+				}
 			}
 
 			// THE ABOVE CODE COULD BETTER BE HIDDEN IN SERVICE
@@ -316,7 +316,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 					'room_tasks': [draggedTask],
 					'show': true
 				});
-			};
+			}
 
 			$scope.filterUnassigned();
 
@@ -332,12 +332,12 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			});
 			if ( inOnlyTask > -1 ) {
 				thatEmpl.only_tasks.splice(inOnlyTask, 1);
-			};
+			}
 
 			hasOtherTaskWithSameWtid = _.find(thatEmpl.only_tasks, { work_type_id: draggedTask.work_type_id });
 			if ( ! hasOtherTaskWithSameWtid ) {
 				thatEmpl.touched_work_types = _.without(thatEmpl.touched_work_types, draggedTask.work_type_id);
-			};
+			}
 
 
 			// remove task from draggedRoom
@@ -348,7 +348,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			// remove the room iself!
 			if ( ! draggedRoom['room_tasks'].length ) {
 				thatEmpl['rooms'].splice(roomIndex, 1);
-			};
+			}
 
 			// THE ABOVE CODE COULD BETTER BE HIDDEN IN SERVICE
 
@@ -405,10 +405,10 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			// delay are for avoiding collisions
 			if (!$_stateChangeInterrupted && lastSaveConfig && $scope[lastSaveConfig.callNextMethod]) {
 				$timeout($scope[lastSaveConfig.callNextMethod].bind(null, lastSaveConfig.nexMethodArgs), 50);
-			};
+			}
 			if ($_stateChangeInterrupted && !!$_afterSave) {
 				$timeout($_afterSave, 60);
-			};
+			}
 			lastSaveConfig = null;
 		};
 
@@ -476,7 +476,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 			} else {
 				afterSaveAPIcall(config);
-			};
+			}
 		};
 
 
@@ -553,7 +553,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				$window.print();
 				if ( sntapp.cordovaLoaded ) {
 					cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-				};
+				}
 
 				/*
 				*	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
@@ -683,7 +683,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			$scope.$watch('multiSheetState.header.work_type_id', function(newVal, oldVal) {
 				if (newVal !== oldVal) {
 					$scope.onWorkTypeChanged();
-				};
+				}
 			});
 		};
 
@@ -710,7 +710,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 				// push employee id into '_lastSelectedIds'
 				$scope.multiSheetState._lastSelectedIds.push( $scope.multiSheetState.assigned[foundIndex]['id'] );
-			};
+			}
 		};
 
 		/**
@@ -739,7 +739,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			_.each($scope.employeeList, function(emp) {
 				if ( emp.ticked ) {
 					initingEmpList(emp);
-				};
+				}
 			});
 		};
 
@@ -854,7 +854,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 			} else {
 				_.each(refData.assigned, function(employee) {
-					refData.summary[employee.id] = calculateSummary(employee);;
+					refData.summary[employee.id] = calculateSummary(employee);
 				});
 			}
 		};
@@ -1209,7 +1209,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                                     $col.find('.wrapper')
                                         .append( $placeholder );
                                     break;
-                            };
+                            }
 
                             $scope.dropIndex = onOverData.index;
                         }
@@ -1338,7 +1338,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                 if ( !! timer ) {
                     window.clearInterval(timer);
                     timer = UNDEF;
-                };
+                }
             };
 
             var addPlaceholderThrottled = _.throttle(orderState.addPlaceholder, 250, {leading: true, trailing: false});
@@ -1379,7 +1379,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				setUpAutoScroller();
 			} else {
 				setTimeout(checkAutoScroll, 100);
-			};
+			}
 		};
 
 		/**

@@ -23,7 +23,7 @@ sntGuestWeb.service('GwCheckinSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'GwW
 		}
 		else{
 			url = '/guest_web/checkin_reservation_search.json';
-		}; 
+		} 
 		GWBaseWebSrv2.getJSON(url, params).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {

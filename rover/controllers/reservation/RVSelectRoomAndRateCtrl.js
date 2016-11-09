@@ -298,13 +298,13 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						customRate.taxes = ratesMeta.customRates.custom_group_taxes;
 					}
 					$scope.reservationData.ratesMeta[customRate.id] = customRate;
-				};
+				}
 
 				if (!!$scope.reservationData.allotment.id) {
 					customRate = RVReservationStateService.getCustomRateModel($scope.reservationData.allotment.id, $scope.reservationData
 						.allotment.name, 'ALLOTMENT');
 					$scope.reservationData.ratesMeta[customRate.id] = customRate;
-				};
+				}
 			},
 			fetchRatesList = function(roomTypeId, rateId, page, cb) {
 				var occupancies = _.pluck(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates, 'guests');
@@ -329,7 +329,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					payLoad['restrictions_on_date'] = $scope.stateCheck.dateModeActiveDate;
 					payLoad.adults = dayOccupancy.adults;
 					payLoad.children = dayOccupancy.children;
-				};
+				}
 
 				if ($scope.stateCheck.activeView === 'ROOM_TYPE') {
 					payLoad.per_page = $scope.stateCheck.pagination.roomType.ratesList.perPage;
@@ -1143,7 +1143,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						};
 					});
 				}
-			};
+			}
 			fetchRoomTypesList();
 		};
 
@@ -1207,7 +1207,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				if ($scope.stateCheck.rateSelected.oneDay) {
 					payLoad.room_type_id = $scope.stateCheck.preferredType;
 				}
-			};
+			}
 
 			$scope.invokeApi(RVSelectRoomRateSrv.getRateDetails, payLoad, function(rateDetails) {
 				$scope.$emit('hideLoader');

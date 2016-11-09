@@ -14,7 +14,7 @@ angular.module('sntRover').controller('rvAllotmentAvailabilityStatusController',
 				$scope.hideHoldStatusOf["groupRoomTotal"]=!$scope.hideHoldStatusOf["groupRoomTotal"];
 			}else if(eventSource === "groupRoomPicked") {
 				$scope.hideHoldStatusOf["groupRoomPicked"] = !$scope.hideHoldStatusOf["groupRoomPicked"];
-			};
+			}
 			$scope.refreshScroller('groupscroller');
 		};
 		/**
@@ -75,7 +75,7 @@ angular.module('sntRover').controller('rvAllotmentAvailabilityStatusController',
 			// if no data exist we will just return 0
 			if (!_.has($scope.data, 'dates')) {
 				return 0;
-			};
+			}
 
 			var leftMostRowCaptionWidth = 273,
 				totalColumns 			= $scope.data && $scope.data.dates && $scope.data.dates.length,
@@ -123,8 +123,8 @@ angular.module('sntRover').controller('rvAllotmentAvailabilityStatusController',
 					retCls = '';
 				} else {
 					retCls = 'hidden';
-				};
-			};
+				}
+			}
 
 			return retCls;
 		};
@@ -214,7 +214,7 @@ angular.module('sntRover').controller('rvAllotmentAvailabilityStatusController',
 				$scope.hideBeforeDataFetch = false;
 				$scope.refreshScroller('groupscroller');
 				$scope.$emit("hideLoader");
-			};
+			}
 		};
 
 		init();

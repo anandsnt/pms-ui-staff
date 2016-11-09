@@ -123,7 +123,7 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope', '$rootScope', 
 
             if ( sntapp.cordovaLoaded ) {
                 cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-            };
+            }
         }, 100);
 
         /*

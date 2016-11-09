@@ -26,7 +26,7 @@
 		
 		for(year=new Date().getFullYear();year>=1900;year--) {
 			$scope.years.push(year);
-		};
+		}
 
 		$scope.months = [
 							{"id": 1, "name": "JAN"},
@@ -45,7 +45,7 @@
 			
 		for(day=1;day<=31;day++) {
 			$scope.days.push(day);
-		};
+		}
 		$scope.guestDetails 	  = {};
 		$scope.guestDetails.day   =  "";
 		$scope.guestDetails.month =  "";
@@ -59,14 +59,14 @@
 
             for(var i=0; i < unwanted_keys.length; i++) {
                 delete newObject[unwanted_keys[i]];
-            };
+            }
             data 					= newObject;
             if($scope.guestDetails.month && $scope.guestDetails.day && $scope.guestDetails.year) {
             	data.birthday = $scope.guestDetails.month+"-"+$scope.guestDetails.day+"-"+$scope.guestDetails.year;
             }
             else{
             	delete data["birthday"];
-            };
+            }
             
 			return data;
 		};
@@ -94,7 +94,7 @@
 					  else{
 					    $state.go('checkinKeys');
 					  }
-				};
+				}
 			}
 			else{
 					$state.go('guestDetails');	
@@ -138,7 +138,7 @@
 		        age--;
 		    }
 		    return age;
-		};
+		}
 
 		// check if guest is above age set in hotel admin
 		// else redirect to front desk
@@ -161,7 +161,7 @@
 			}
 			else{
 				$state.go('guestNotEligible');
-			};
+			}
 		};
 
 		// post guest details
@@ -172,7 +172,7 @@
 			}
 			else{
 				$modal.open($scope.opts);
-			};
+			}
 		};
 
 		// skip the birthday

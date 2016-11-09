@@ -119,7 +119,7 @@
 					angular.forEach(response.results, function(value, key) {
 					  if(value.reservation_status ==='RESERVED') {
 					  	reservations.push(value);
-					  };
+					  }
 					});
 					response.results = reservations;
 
@@ -158,8 +158,8 @@
 							$rootScope.isPrecheckinOnly = (response.is_precheckin_only === "true" && response.results[0].reservation_status ==='RESERVED')?true:false;
 							$rootScope.isAutoCheckinOn 	= (response.is_auto_checkin === "true") && $rootScope.isPrecheckinOnly;
 							getToken(response);
-						};
-					};
+						}
+					}
 				}, function() {
 						$rootScope.netWorkError = true;
 						$scope.isLoading = false;
@@ -167,7 +167,7 @@
 			}
 			else{
 				$modal.open($scope.errorOpts);
-			};
+			}
 		};
 
 		$scope.tryAgain = function() {
@@ -192,7 +192,7 @@
 			for (var i = 0; i < inputs.length; ++i) {
 			  inputs[i].blur();
 			}
-		};
+		}
 		$scope.showCalender = function() {
 			loseFocus();// focusout the input fields , so as to fix cursor being shown above the calendar
 			$scope.isCalender = true;

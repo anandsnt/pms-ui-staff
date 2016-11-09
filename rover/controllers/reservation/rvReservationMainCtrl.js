@@ -510,7 +510,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 $scope.reservationData.rooms[roomIdx].stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')].rate = {
                     id: ''
                 };
-            };
+            }
 
             $state.go(roomAndRatesState, {
                 from_date: $scope.reservationData.arrivalDate,
@@ -528,7 +528,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     children: parseInt($scope.reservationData.rooms[roomIdx].numChildren),
                     infants: parseInt($scope.reservationData.rooms[roomIdx].numInfants)
                 };
-            };
+            }
         };
 
         /*
@@ -590,7 +590,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             // just in case
             if (!room) {
                 return;
-            };
+            }
 
             var numAdults = parseInt(room.numAdults),
                 numChildren = parseInt(room.numChildren);
@@ -946,7 +946,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 data.forEach(function(item) {
                     if (item.name === 'CC') {
                         $scope.creditCardTypes = item.values;
-                    };
+                    }
                 });
                 openCancelPopup();
             };
@@ -983,13 +983,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                             showDepositPopup(depositAmount, isOutOfCancellationPeriod, cancellationCharge);
                         } else {
                             promptCancel(cancellationCharge, nights);
-                        };
+                        }
                     } else {
                         if (parseInt(depositAmount) > 0) {
                             showDepositPopup(depositAmount, isOutOfCancellationPeriod, '');
                         } else {
                             promptCancel('', nights);
-                        };
+                        }
                     }
                 };
                 var onCancellationDetailsFetchFailure = function(error) {
@@ -1565,7 +1565,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
             if ($scope.viewState.currentTab == tabIndex) {
                 $scope.viewState.currentTab = 0; // In case of deleting current tab, reset to first
-            };
+            }
 
             $scope.$broadcast('TABS_MODIFIED');
             devlogRoomsArray();

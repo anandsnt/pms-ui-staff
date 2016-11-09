@@ -27,7 +27,7 @@ sntGuestWeb.service('GWBaseWebSrv', ['$http', '$q', '$window', function($http, $
  		}
  		else if(httpMethod === 'POST' || httpMethod === 'PUT') {
  			httpDict.data = params;
-  		};
+  		}
 
 		$http(httpDict).success(function(response, status) {
 	    	if(response.status === "success") {

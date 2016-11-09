@@ -24,7 +24,7 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 			} else {
 				// when accesing from multiple reservations in summary screen
 				return $scope.reservationData.reservationIds[$scope.ngDialogData.index];
-			};
+			}
 
 		};
 

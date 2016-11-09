@@ -39,11 +39,11 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 		var refreshScrollers = function() {
 			if ( !! mainCtrlScope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL) ) {
 				$scope.refreshScroller( LEFT_PANE_SCROLL );
-			};
+			}
 
 			if ( !! mainCtrlScope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL) ) {
 				$scope.refreshScroller( RIGHT_PANE_SCROLL );
-			};
+			}
 		};
 
 		var setupScrollListner = function() {
@@ -65,7 +65,7 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 				setupScrollListner();
 			} else {
 				$timeout(isScrollReady, 1000);
-			};
+			}
 		};
 
 		isScrollReady();
@@ -106,7 +106,7 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 		$scope.$watch('uiFilter.showRevenue', function(newValue) {
 			if ( false == newValue && ! $scope.uiFilter.showAvailability ) {
 				$scope.uiFilter.showAvailability = true;
-			};
+			}
 
 			$scope.$emit('showLoader');
 			$timeout( reInit, 300 );
@@ -131,7 +131,7 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 				$scope.colSpan = 3;
 			} else if ( $scope.uiFilter.showAvailability && ! $scope.uiFilter.showRevenue ) {
 				$scope.colSpan = 2;
-			};
+			}
 
 			$scope.headerTop  = [];
 			$scope.headerBot  = [];
@@ -160,7 +160,7 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 			for( roomKey in results ) {
 				if ( ! results.hasOwnProperty(roomKey) ) {
 					continue;
-				};
+				}
 
 				actualName = roomKey.split('__')[0];
 				$scope.roomNames.push( actualName || 'NA' );
@@ -171,7 +171,7 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 				for( dateKey in roomObj ) {
 					if ( ! roomObj.hasOwnProperty(dateKey) ) {
 						continue;
-					};
+					}
 
 					if ( 0 == loopCount ) {
 						$scope.headerTop.push( $filter('date')(dateKey, $rootScope.shortMonthAndDate) );
@@ -188,16 +188,16 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 							startIndex   = 0;
 							endIndex     = 1 + 1;
 							triggerIndex = 1;
-						};
+						}
 						for (; startIndex < endIndex; startIndex++) {
 							$scope.headerBot.push({
 								'name': SUB_HEADER_NAMES[startIndex],
 								'cls': startIndex == triggerIndex ? 'day-end' : ''
 							});
-						};
+						}
 
 						noOfDays += 1;
-					};
+					}
 					
 					dateObj = roomObj[dateKey];
 
@@ -249,15 +249,15 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 							isRev: true,
 							cls: 'last-day'
 						});
-					};
+					}
 
 					allDatesValInRoom = allDatesValInRoom.concat( eachDateVal );
-				};
+				}
 
 				loopCount += 1;
 
 				$scope.reportData.push( allDatesValInRoom );
-			};
+			}
 
 			$scope.rightPaneWidth = noOfDays * cellWidth * $scope.colSpan;
 			
@@ -283,19 +283,19 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 				React.createElement(DPContent, props),
 				document.getElementById('daily-production-render')
 			);
-		};
+		}
 
 		function init (argument) {
 			processData();
 			renderReact();
-		};
+		}
 
 		init();
 
 		function reInit (argument) {
 			processData();
 			renderReact();
-		};
+		}
 
 
 

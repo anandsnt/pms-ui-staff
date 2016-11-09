@@ -26,7 +26,7 @@ sntZestStation.controller('zsRoomErrorCtrl', [
 			console.log('$stateParams for room error, or early checkin availability: ', $stateParams);
 			if (typeof $stateParams.early_checkin_unavailable !== typeof undefined) {
 				$scope.early_checkin_unavailable = $stateParams.early_checkin_unavailable;
-			};
+			}
 		}();
 
 	}

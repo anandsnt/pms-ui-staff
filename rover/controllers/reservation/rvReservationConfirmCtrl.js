@@ -173,7 +173,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 	        	$window.print();
 	        	if ( sntapp.cordovaLoaded ) {
 	            	cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-	        	};
+	        	}
 	    	}, 100);
 			// remove the orientation after similar delay
 			$timeout(removePrintOrientation, 100);
@@ -248,7 +248,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				});
 				if(typeof $rootScope.searchData !== "undefined") {
 					$rootScope.searchData.guestCard.email = $scope.reservationData.guest.email;
-				};				
+				}				
 
 			};
 

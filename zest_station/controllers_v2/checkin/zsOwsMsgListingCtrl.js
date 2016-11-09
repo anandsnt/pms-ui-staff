@@ -115,7 +115,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 					};
 				} else {
 					return;
-				};
+				}
 
 			};
 

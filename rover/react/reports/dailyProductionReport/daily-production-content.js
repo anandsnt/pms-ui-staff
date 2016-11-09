@@ -27,7 +27,7 @@ var DPHeadPanel = React.createClass({
 					'data': this.props.headerTop[i]
 				})
 			);
-		};
+		}
 
 		topRow = React.DOM.tr({}, topRowCells);
 
@@ -38,7 +38,7 @@ var DPHeadPanel = React.createClass({
 					'data': this.props.headerBot[i]['name']
 				})
 			);
-		};
+		}
 
 		botRow = React.DOM.tr({
 				'className': 'bottom-row'
@@ -59,7 +59,7 @@ var DPtdCell = React.createClass({
 			tag = 'em';
 		} else if ( this.props.isRev ) {
 			tag = 'span';
-		};
+		}
 
 		return React.DOM.td({
 				'className': this.props.className
@@ -86,7 +86,7 @@ var DPBodyRow = React.createClass({
 					'isBold': this.props.rowData[i]['isRateType']
 				})
 			);
-		};
+		}
 
 		return React.DOM.tr({}, cells);
 	}
@@ -105,7 +105,7 @@ var DPBodyPanel = React.createClass({
 					'isLastRow': this.props.isLastRowSum && 1 == j - i
 				})
 			);
-		};
+		}
 
 		return React.DOM.tbody({}, rows);
 	}

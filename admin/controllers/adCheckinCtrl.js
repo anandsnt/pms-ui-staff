@@ -196,7 +196,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
         $scope.checkinData.auto_checkin_to_hour = $scope.checkinData.start_auto_checkin_to.split(":")[0];
         $scope.checkinData.auto_checkin_to_minute = $scope.checkinData.start_auto_checkin_to.split(":")[1];
       }
-      ;
+      
 
       setUpData();
 
@@ -299,7 +299,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     }
     else{
        max_no_of_keys = $scope.checkinData.no_of_keys;
-    };
+    }
 
     var uploadData = {
       'checkin_alert_message': $scope.checkinData.checkin_alert_message,

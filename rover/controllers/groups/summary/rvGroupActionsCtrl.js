@@ -252,7 +252,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                 $scope.actionsCount = 'only-pending';
             } else {
                 $scope.actionsCount = 'pending';
-            };
+            }
             return $scope.actionsCount;
         };
         $scope.fetchActionsCount = function() {
@@ -468,7 +468,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                         }
                         // this one has a save / post button
                         $scope.closeNewCalendar();
-                    };
+                    }
                 }
             }
         };
@@ -625,7 +625,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                 return true;
             } else {
                 return false;
-            };
+            }
 
         };
         $scope.showActionsList = function() {
@@ -1309,7 +1309,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                 } else {
                     not_completed.push(list[x]);
                 }
-            };
+            }
 
 
 

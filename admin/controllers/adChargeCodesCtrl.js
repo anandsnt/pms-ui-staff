@@ -252,7 +252,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			});
 			if($scope.prefetchData.selected_fees_code ==="") {
 				$scope.prefetchData.selected_fees_code = null;
-			};
+			}
 
 			var unwantedKeys = ["charge_code_types", "payment_types", "charge_groups", "link_with", "amount_types", "tax_codes", "post_types", "symbolList"];
 			var postData = dclone($scope.prefetchData, unwantedKeys);

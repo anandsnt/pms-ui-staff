@@ -187,7 +187,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.isValidEmail = function(email) {
             if (email === '') {
                 return false;
-            };
+            }
             email = email.replace(/\s+/g, '');
             if (that.ValidateEmail(email)) {
                 return false;

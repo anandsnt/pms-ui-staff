@@ -311,11 +311,11 @@ angular.module('sntRover').controller('guestCardController', [
 				} else {
 					$scope.$broadcast('saveContactInfo');
 				}
-			};
+			}
 			if ($scope.current === 'guest-like' && tab !== 'guest-like') {
 				$scope.$broadcast('SAVELIKES');
 
-			};
+			}
 			if (tab === 'guest-credit') {
 				$scope.$broadcast('PAYMENTSCROLL');
 			}
@@ -372,7 +372,7 @@ angular.module('sntRover').controller('guestCardController', [
 				matched = false;
 
 			return selector.contains(obj);
-		};
+		}
 
 		$scope.guestCardClick = function($event) {
 			$rootScope.$emit('clearErroMessages');
@@ -456,7 +456,7 @@ angular.module('sntRover').controller('guestCardController', [
 				cls = "change-card " + subCls[$scope.UICards.indexOf(from)];
 			} else {
 				cls = subCls[0];
-			};
+			}
 			return cls;
 		};
 
@@ -468,7 +468,7 @@ angular.module('sntRover').controller('guestCardController', [
 				cls = "hidden";
 			} else {
 				cls = 'visible';
-			};
+			}
 			return cls;
 		};
 

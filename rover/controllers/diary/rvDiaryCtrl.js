@@ -144,7 +144,7 @@ angular.module('sntRover')
 				};
 			} else {
 				$r.setPrevState = angular.copy( DEFAULT_STATE );
-			};
+			}
 
 			/**
 			 * check if the prev state is a flow state
@@ -156,7 +156,7 @@ angular.module('sntRover')
 				});
 
 				return !!found;
-			};
+			}
 
 			/**
 			 * check if the prev state is an allowed state
@@ -168,7 +168,7 @@ angular.module('sntRover')
 				});
 
 				return !!found;
-			};
+			}
 		};
 
 		decideBackBtn($rootScope, $rootScope.diaryState);
@@ -645,7 +645,7 @@ angular.module('sntRover')
         startingTime.setHours(0, 0, 0, 0);
 
         return Math.ceil( Math.abs(endingTime - startingTime) / toHourMs );
-	};
+	}
 
 	$scope.gridProps.filter.room_types.unshift({ id: 'All', name: 'All', description: 'All' });
 
@@ -1592,7 +1592,7 @@ angular.module('sntRover')
 				hasExtraHour: hasExtraHour,
 				hasLessHour: hasLessHour
 			};
-		};
+		}
 
 
 		var filter 		= _.extend({}, this.filter),
@@ -1989,7 +1989,7 @@ angular.module('sntRover')
 				break;
 			default:
 				break;
-		};
+		}
 	};
 
 	/**
@@ -2296,7 +2296,7 @@ angular.module('sntRover')
 			$scope.clearAvailability();
 			$scope.resetEdit();
 			$scope.renderGrid();
-		};
+		}
 	};
 
 	$scope.clickedOnRoomType = function() {
@@ -2307,7 +2307,7 @@ angular.module('sntRover')
 			$scope.clearAvailability();
 			$scope.resetEdit();
 			$scope.renderGrid();
-		};
+		}
 	};
 
 	$scope.clickedOnRateType = function() {
@@ -2422,7 +2422,7 @@ angular.module('sntRover')
 			});
 
 			$scope.gridProps.filter.room_type = match;
-		};
+		}
 		// CICO-11718
 		// trigger call
 		$scope.clickedOnRoomType();
@@ -2529,7 +2529,7 @@ angular.module('sntRover')
                 // will loop the entire 'companyCardResults'
                 if (!hasItem) {
                     companyCardResults.push(eachItem);
-                };
+                }
             });
 
             // call response callback function

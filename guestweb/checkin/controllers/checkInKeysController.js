@@ -32,7 +32,7 @@
 	}
 	else{
 		$scope.pageValid = true;
-	};
+	}
 
 	if($scope.pageValid) {
 

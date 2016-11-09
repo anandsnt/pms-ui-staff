@@ -98,7 +98,7 @@ sntRover.run([
 			this.update = function(toState, fromState, fromParam) {
 				if ( toState !== this.stateName ) {
 					return;
-				};
+				}
 
 				for (var i = 0; i < self.checkAgainst.length; i++) {
 					if ( self.checkAgainst[i] === fromState ) {
@@ -106,8 +106,8 @@ sntRover.run([
 						self.fromParam = fromParam;
 						self.fromTitle = $rootScope.getPrevStateTitle();
 						break;
-					};
-				};
+					}
+				}
 			};
 
 			this.getOriginState = function() {
@@ -207,8 +207,8 @@ sntRover.run([
 				if ( $_revAnimList[i].fromState === fromState && $_revAnimList[i].toState === toState ) {
 					return true;
 					break;
-				};
-			};
+				}
+			}
 
 			return false;
 		};
@@ -241,7 +241,7 @@ sntRover.run([
 			// if currently disabled, return
 			if ( options.disable ) {
 				return;
-			};
+			}
 
 			// ok boys we are gonna sit this one out
 			// 'scope.callback' is will be running the show
@@ -253,13 +253,13 @@ sntRover.run([
 
 				options.scope[options.callback]();
 				return;
-			};
+			}
 
 			// check necessary as we can have a case where both can be null
 			if ( !!name ) {
 				$_mustRevAnim = reverse ? options.reverse : true;
 				$state.go( name, param );
-			};
+			}
 		};
 
 		$rootScope.returnBack = false;
@@ -298,12 +298,12 @@ sntRover.run([
 	        if ( 'rover.housekeeping.roomStatus' == fromState.name ) {
 	        	if ( 'rover.housekeeping.roomDetails' != toState.name ) {
 	        		resetHkFilter();
-	        	};
+	        	}
 	        } else if ( 'rover.housekeeping.roomDetails' == fromState.name ) {
 	        	if ( 'rover.housekeeping.roomStatus' != toState.name ) {
 	        		resetHkFilter();
-	        	};
-	        };
+	        	}
+	        }
 			
 
 			// FOR DEV WORK
@@ -354,7 +354,7 @@ sntRover.run([
 			if ( $_userReqBack ) {
 				toParams.useCache = true;
 				$_userReqBack = false;
-			};
+			}
 
 			// reset this flag
 			$rootScope.returnBack = false;
@@ -369,7 +369,7 @@ sntRover.run([
 			if ( $rootScope.setNextState.data ) {
 				_.extend(toParams, $rootScope.setNextState.data);
 				$rootScope.setNextState = {};
-			};
+			}
 
 			$rootScope.diaryState.update(toState.name, fromState.name, fromParams);
 		});

@@ -152,7 +152,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				}
 				else{
 					return;
-				};
+				}
 			});
 		};
 
@@ -377,7 +377,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					angular.forEach($scope.renderData, function(item, key) {
 						if (item.name === 'CC') {
 							$scope.creditCardTypes = item.values;
-						};
+						}
 					});
 				},
 				onPaymnentFetchFailure = function(errorMessage) {
@@ -479,7 +479,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
 			} else {
 				return;
-			};
+			}
 		});
 
 
@@ -585,7 +585,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$scope.selectedTransaction.amount = amount;
 			} else if (credits) {
 				$scope.selectedTransaction.amount = credits;
-			};
+			}
 
 			ngDialog.open({
 				template: '/assets/partials/bill/rvBillActionsPopup.html',
@@ -609,7 +609,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			    $scope.openSplitChargePopup();
 			} else if (action === "edit") {
 			    $scope.openEditChargePopup();
-			};
+			}
 
 		};
 
@@ -730,7 +730,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					$window.print();
 					if (sntapp.cordovaLoaded) {
 						cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-					};
+					}
 
 					$('.nav-bar').removeClass('no-print');
 					$('.cards-header').removeClass('no-print');

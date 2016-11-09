@@ -10,7 +10,7 @@ admin.controller('ADiBeaconDetailsCtrl', ['$scope', '$stateParams', '$rootScope'
     }
     else{
       $scope.isBeaconLinked = false;
-    };
+    }
     $scope.displayMessage = $scope.addmode ? "Add new iBeacon" :"Edit iBeacon";
     $scope.isIpad = navigator.userAgent.match(/iPad/i) !== null && window.cordova;
     $scope.errorMessage = "";
@@ -122,7 +122,7 @@ if(!$scope.addmode) {
 
       error.RVError = er;
       failedLinkage(error);
-    };
+    }
   };
 
   $scope.saveBeacon = function() {
@@ -150,7 +150,7 @@ if(!$scope.addmode) {
       }
       else{
           $scope.data.message = "";
-      };
+      }
       var BeaconId = $scope.data.proximity_id+"-"+$scope.data.major_id+"-"+$scope.data.minor_id;
 
       if($scope.addmode) {

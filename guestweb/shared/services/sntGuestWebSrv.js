@@ -31,11 +31,11 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 		absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
 		var urlComponents = absUrl.split('/');
 
-;
+
 		var hotel_identifier = urlComponents[urlComponents.length - 2];
 
 		that.fetchScreenWiseData(hotel_identifier);
-	};
+	}
 
 	this.extractScreenDetails = function(screen_identifier) {
 		return extractScreenDetails(screen_identifier, that.cms_screen_details);
@@ -149,7 +149,7 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 		} else {
 			console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
 			return;
-		};
+		}
 	};
 
 	/**
@@ -173,7 +173,7 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 		} else {
 			console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
 			return;
-		};
+		}
 	};
 
 	/**
@@ -196,7 +196,7 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 		} else {
 			console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
 			return;
-		};
+		}
 	};
 
 

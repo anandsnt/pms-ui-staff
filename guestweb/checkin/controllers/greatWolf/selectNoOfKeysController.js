@@ -23,7 +23,7 @@
 
 				for (i = 1; i <= keyData.max_no_of_keys; i++) {
 					$scope.keysArray.push(i);
-				};
+				}
 			}, function() {
 				$rootScope.netWorkError = true;
 				$scope.isLoading = false;

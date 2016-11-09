@@ -32,7 +32,7 @@ var BasePaymentCtrl = function($scope) {
 		}else{
 			$scope.isNewCardAdded = ($scope.dataToSave.paymentType === "CC" && !$scope.isManual) ? true : false;
 			return;
-		};
+		}
 	};
 	$scope.changeOnsiteCallIn = function() {
 		$scope.showCCPage = ($scope.isManual) ? true:false;

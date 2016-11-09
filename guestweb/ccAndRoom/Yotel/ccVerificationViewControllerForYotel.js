@@ -71,7 +71,7 @@
 
           for (year = parseInt(startYear); year <= parseInt(endYear); year++) {
             $scope.years.push(year);
-          };
+          }
     /* MLI integration starts here */
 
     $scope.netWorkError = false;
@@ -147,7 +147,7 @@
         }
         else{
          $scope.netWorkError = true;
-        };
+        }
 
       }, function() {
         $scope.netWorkError = true;
@@ -193,7 +193,7 @@
              }
              catch(err) {
                 $scope.netWorkError = true;
-             };
+             }
 
          }
 

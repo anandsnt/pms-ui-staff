@@ -42,7 +42,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 				(theme === 'yotel') ? applyStylesForYotelReceipt(): "";
 			} else {
 				applyPrintMargin(); // zsUtils function
-			};
+			}
 		};
 		var setHotelBasedTheme = function(theme) {
 			/*
@@ -64,7 +64,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 				setThemeByName(theme);
 			} else {
 				return;
-			};
+			}
 		};
 
 

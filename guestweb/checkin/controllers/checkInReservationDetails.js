@@ -12,7 +12,7 @@
 	}
 	else{
 		$scope.pageValid = true;
-	};
+	}
 
 	if($scope.pageValid) {
 	// check if checkbox was already checked (before going to upgrades)
@@ -70,7 +70,7 @@
 					  else{
 					    $state.go('checkinKeys');
 					  }
-				};
+				}
 			}
 			else{
 					$state.go('guestDetails');	
@@ -78,7 +78,7 @@
 		}
 		else{
 			$modal.open($scope.opts); // error modal popup
-		};
+		}
 	};
 
 	$scope.skipTermsAndContinue = function() {

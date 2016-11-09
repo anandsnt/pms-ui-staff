@@ -48,7 +48,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 			}
 			else{
 				toggleAction();
-			};
+			}
 
 		};
 

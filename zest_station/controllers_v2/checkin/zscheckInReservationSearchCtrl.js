@@ -180,7 +180,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 					$scope.mode = $scope.reservationParams.last_name.length > 0 ? "CHOOSE_OPTIONS" : $scope.mode;
 					$scope.callBlurEventForIpad();
 				}
-			};
+			}
 			$scope.resetTime();
 		};
 
@@ -196,7 +196,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			} else {
 				$scope.mode = $scope.reservationParams.first_name.length > 0 ? "CHOOSE_OPTIONS" : $scope.mode;
 				$scope.callBlurEventForIpad();
-			};
+			}
 			$scope.resetTime();
 		};
 
@@ -282,7 +282,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 				$scope.focusInputField("departure-date");
 			} else {
 				return;
-			};
+			}
 		};
 
 		$scope.talkToStaff = function() {
@@ -362,7 +362,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			} else {
 				$scope.mode = 'LAST_NAME_ENTRY';
 				$scope.focusInputField('last-name');
-			};
+			}
 
 		};
 

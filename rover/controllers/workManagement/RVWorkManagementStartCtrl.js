@@ -13,7 +13,7 @@ angular.module('sntRover').controller('RVWorkManagementStartCtrl', ['$rootScope'
                     if( key in $scope.myScroll ) {
                         $scope.myScroll[key].refresh();
                     }
-                };
+                }
             }, 100);
         };
 
@@ -37,14 +37,14 @@ angular.module('sntRover').controller('RVWorkManagementStartCtrl', ['$rootScope'
                             type.css_class = 'red';
                         } else {
                             type.css_class = 'green';
-                        };
+                        }
 
                         _.each(type.tasks, function(task) {
                             if ( task.total_rooms_completed < task.total_rooms_assigned ) {
                                 task.css_class = 'red';
                             } else {
                                 task.css_class = 'green';
-                            };
+                            }
                         });
                     });
 

@@ -193,7 +193,7 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 					_.each(sourcesValues, function(sourceValue) {
 						sourcesValuesPercentage.push(sourceValue / $scope.sourcesValuesTotal);
 					});
-				};
+				}
 
 				if ( ! _.isEmpty($scope.results.market)  ) {
 					$scope.markets = _.keys($scope.results.market);
@@ -207,13 +207,13 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 					_.each(marketsValues, function(marketValue) {
 						marketsValuesPercentage.push(marketValue / $scope.marketsValuesTotal);
 					});
-				};
+				}
 
 				$scope.reportStatus.graph = {
 					sourceNumber: getRange(sourcesValues),
 					marketNumber: getRange(marketsValues)
 				};
-			};
+			}
 
 			$timeout(function() {
 				$scope.refreshScroller('report-details-scroll');

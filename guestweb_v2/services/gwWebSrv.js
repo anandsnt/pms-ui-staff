@@ -39,7 +39,7 @@
 				absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
 				var urlComponents = absUrl.split('/');
 
-;
+
 				var hotel_identifier = urlComponents[urlComponents.length - 2];
 
 				fetchScreenWiseData(hotel_identifier);
@@ -49,11 +49,11 @@
 				absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
 				var urlComponents = absUrl.split('/');
 
-;
+
 				var hotel_identifier = urlComponents[urlComponents.length - 1];
 
 				fetchScreenWiseData(hotel_identifier);
-			};
+			}
 
 
 			this.fetchHotelDetailsFromUrl = function(url) {
@@ -145,7 +145,7 @@
 				that.zestwebData.isRoomVerified = false;
 				that.zestwebData.isPrecheckinOnly = (zestwebData.is_precheckin_only === 'true' && zestwebData.reservation_status === 'RESERVED') ? true : false;
 				that.zestwebData.isCcAttachedFromGuestWeb = false;
-				that.zestwebData.isAutoCheckinOn = ((zestwebData.is_auto_checkin === 'true') && (zestwebData.is_precheckin_only === 'true')) ? true : false;;
+				that.zestwebData.isAutoCheckinOn = ((zestwebData.is_auto_checkin === 'true') && (zestwebData.is_precheckin_only === 'true')) ? true : false;
 				that.zestwebData.isExternalVerification = (zestwebData.is_external_verification === "true") ? true : false;
 				that.zestwebData.hotelIdentifier = zestwebData.hotel_identifier;
 				that.zestwebData.guestAddressOn = zestwebData.guest_address_on === 'true' ? true : false;

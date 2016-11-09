@@ -30,7 +30,7 @@ angular.module('reportsModule')
                         _.each(flags[reportName], function(flag) {
                             report[flag] = true;
                         });
-                    };
+                    }
                 }
             };
         }

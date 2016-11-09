@@ -69,7 +69,7 @@ sntRover.directive('autoComplete', ['highlightFilter',
                                 break;
                             default:
                                 break;
-                        };
+                        }
 
                         if (item.image) {
                             $image = '<img src="' + item.image + '">';

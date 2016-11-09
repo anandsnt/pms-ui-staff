@@ -450,7 +450,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 
 					employee.rooms = roomsSorted;
 				}
-			};
+			}
 
 			return assigned;
 		};
@@ -463,7 +463,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 			var allRooms = [];
 
 			return allRooms.concat( unassignedRoomsResponse.rooms, assignedRoomsResponse.rooms );
-		};
+		}
 
 		function compileUnassignedRooms (unassignedRooms, allTasks, allRooms) {
 			var allTasks        = allTasks || [],
@@ -506,15 +506,15 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 					 */
 
 					compiled.push(copyRoom);
-				};
-			};
+				}
+			}
 
 			// loop through roomTasks, gather much info on each tasks
 			// and push it into appropriate room
 			for (i = 0, j = roomTasks.length; i < j; i++) {
 				if ( ! roomTasks[i]['tasks'].length ) {
 					continue;
-				};
+				}
 
 				eachRoomId     = roomTasks[i]['room_id'];
 				eachRoomTasks  = roomTasks[i]['tasks'];
@@ -555,11 +555,11 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 					thatCompiledRoom
 						.room_tasks
 						.push( copyTask );
-				};
-			};
+				}
+			}
 
 			return compiled;
-		};
+		}
 
 		function compileAssignedRooms (assignedRooms, allTasks, allRooms) {
 			var allTasks      = allTasks || [],
@@ -710,17 +710,17 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 						 *   touched_work_types: [ [1], [2] ]
 						 * }
 						 */
-					};
-				};
+					}
+				}
 
 				// flatten and remove duplicates
 				copyEmployee.touched_work_types = _.uniq( _.flatten(copyEmployee.touched_work_types) );
 
 				compiled.push(copyEmployee);
-			};
+			}
 
 			return compiled;
-		};
+		}
 
 		function getTimeAllocated (task, roomId) {
 			var time = '',
@@ -731,18 +731,18 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 				time = task['room_types_completion_time'][roomId];
 			} else if ( !! task['completion_time'] ) {
 				time = task['completion_time'];
-			};
+			}
 
 			if ( time.indexOf(':') > -1 ) {
 				hh = time.split(':')[0];
 				mm = time.split(':')[1];
-			};
+			}
 
 			return {
 				hh: isNaN(parseInt(hh)) ? 0 : parseInt(hh),
 				mm: isNaN(parseInt(mm)) ? 0 : parseInt(mm)
 			};
-		};
+		}
 
 		function compileAssignedRoomsParams (assignedRoomTasks, date, shouldSaveOrder) {
 			var complied = $.extend(
@@ -769,7 +769,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 						complied
 							.work_types
 							.push( newWorkType );
-					};
+					}
 				});
 			});
 
@@ -804,7 +804,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 								.tasks
 								.push( newTask );
 						});
-					};
+					}
 
 					complied
 						.work_types[workTypesIndex]
@@ -814,7 +814,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 			});
 
 			return complied;
-		};
+		}
 
 		// ALL APIS
 		// ========

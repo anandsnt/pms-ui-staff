@@ -44,7 +44,7 @@ sntGuestWeb.controller('GwCheckoutLaterController', ['$scope', '$state', '$contr
 						ap: option.ap,
 						amount: option.amount
 					});
-				};
+				}
 
 			};
 			var options = {

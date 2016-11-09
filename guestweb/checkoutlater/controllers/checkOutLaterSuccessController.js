@@ -25,7 +25,7 @@
 	}
 	else{
 		$scope.pageValid = true;
-	};
+	}
 
 	if($scope.pageValid) {
 
@@ -52,7 +52,7 @@
 			$state.go('checkOutOptions');
 			$scope.returnHome = true;
 			return;
-		};
+		}
 
 		// find the choosen option form list of options
 
@@ -60,7 +60,7 @@
 			$scope.lateCheckOut = _.find(charges, function(charge) {
 			if (id === charge.amount.toString()) {
 				return charge;
-			};
+			}
 			});
 			$scope.success = true;
 			$scope.posted = true;
@@ -71,7 +71,7 @@
 			$scope.lateCheckOut = _.find(charges, function(charge) {
 			if (id === charge.id) {
 				return charge;
-			};
+			}
 			});
 		}
 		var reservation_id = $scope.reservationID;

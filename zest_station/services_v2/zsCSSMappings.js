@@ -40,7 +40,7 @@ sntZestStation.service('zsCSSMappings', ['$q', 'zsBaseWebSrv',
       } else {
         console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
         return;
-      };
+      }
     };
 
   }

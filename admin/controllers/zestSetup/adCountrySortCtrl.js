@@ -54,7 +54,7 @@ admin.controller('ADCountrySortCtrl', ['$scope', 'ADCountrySortSrv',
 				$scope.errorMessage = ["Please select a country"];
 			} else {
 				saveSortedList($scope.countrySelected, $scope.sortedCountries.length + 1);
-			};
+			}
 		};
 
 		// delete a country from the sort list

@@ -49,7 +49,7 @@ sntRover.controller('RVSocialLobbyCrl', [
                 $scope.refreshScroller(POST_LIST_SCROLL);
                 if (scrollUp &&  $scope.myScroll.hasOwnProperty(POST_LIST_SCROLL) ) {
                     $scope.myScroll[POST_LIST_SCROLL].scrollTo(0, 0, 100);
-                };
+                }
                 
 
             }, 1000);

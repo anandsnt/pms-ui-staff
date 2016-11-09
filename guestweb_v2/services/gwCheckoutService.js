@@ -23,7 +23,7 @@ sntGuestWeb.service('GwCheckoutSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'Gw
 			}, function(data) {
 				deferred.reject(data);
 			});
-		};
+		}
 		return deferred.promise;
 	};
 
@@ -82,7 +82,7 @@ sntGuestWeb.service('GwCheckoutSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'Gw
 			url = '/sample_json/zestweb_v2/bill_details.json';
 		} else {
 			url = '/guest_web/home/bill_details.json';
-		};
+		}
 		GWBaseWebSrv.getJSON(url, params).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
@@ -104,7 +104,7 @@ sntGuestWeb.service('GwCheckoutSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'Gw
 			url = '/sample_json/zestweb_v2/late_checkout_options.json';
 		} else {
 			url = '/guest_web/get_late_checkout_charges.json';
-		};
+		}
 		GWBaseWebSrv2.getJSON(url, params).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
@@ -135,7 +135,7 @@ sntGuestWeb.service('GwCheckoutSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'Gw
 			}, function(data) {
 				deferred.reject(data);
 			});
-		};
+		}
 		return deferred.promise;
 
 	};
@@ -165,7 +165,7 @@ sntGuestWeb.service('GwCheckoutSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'Gw
 			}, function(data) {
 				deferred.reject(data);
 			});
-		};
+		}
 		return deferred.promise;
 	};
 

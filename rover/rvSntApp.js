@@ -13,7 +13,7 @@ var GlobalApp = function() {
         this.desktopUUIDService = new DesktopUUIDService();
     }
         catch(er) {
-    };
+    }
 
 
     this.DEBUG = true;
@@ -66,13 +66,13 @@ var GlobalApp = function() {
 
         }
         catch(er) {
-        };
+        }
         try{
 
             that.iBeaconLinker = new iBeaconOperation();
 
         }
-        catch(er) {};
+        catch(er) {}
 
         try {
 
@@ -81,7 +81,7 @@ var GlobalApp = function() {
         }
         catch(er) {
 
-        };
+        }
 
 
     };

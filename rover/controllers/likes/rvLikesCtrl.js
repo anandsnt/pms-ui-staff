@@ -58,18 +58,18 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 							each.isChecked = match.id;
 						} else {
 							each.isChecked = '';
-						};
-					};
+						}
+					}
 				}
 					for ( k = 0, l = values.length; k < l; k++ ) {
 						values[k]['isChecked'] = false;
 
 						if ( _.contains($scope.guestLikesData.user_preference, values[k]['id']) ) {
 							values[k]['isChecked'] = true;
-						};
-					};
+						}
+					}
 
-			};
+			}
 			// angular.forEach($scope.guestLikesData.preferences, function(eachPref) {
 			// 	$scope.calculatedHeight += 34;
 			// 	var rowCount = 0;
@@ -193,7 +193,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 							'type': value.name,
 							'value': prefValue.details
 						});
-					};
+					}
 				});
 
 				// who the F&*K would want to push the value after the above loop!!
@@ -236,7 +236,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 
 				if ( item.id === $scope.guestLikesData.preferences[index]['isChecked'] ) {
 					item.isChecked = true;
-				};
+				}
 			});
 		};
 

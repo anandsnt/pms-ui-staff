@@ -63,7 +63,7 @@ sntRover.controller('RVroomAssignmentController', [
 		$scope.searchText = '';
 		var currentSelectedRoomType = $scope.roomType;
 
-		$scope.filteredRooms = [];;// Emptying rooms on search
+		$scope.filteredRooms = [];// Emptying rooms on search
 		$scope.rooms = [];// CICO-23077
 
 		angular.forEach($scope.allRooms, function(value, key) {
@@ -88,7 +88,7 @@ sntRover.controller('RVroomAssignmentController', [
 			{
 				return $scope.roomTypes[i];
 			}
-		};
+		}
 	};
 
 	$scope.searchRoom = function() {
@@ -785,7 +785,7 @@ sntRover.controller('RVroomAssignmentController', [
 		// calculating room ids of selected floors in case any floor is selected.
 		if($scope.floorFilterData && !$scope.floorFilterData.isNoFloorSelected) {
 				roomIdsInSelectedFloor= $scope.getRoomIdsInSelectedFloor();
-			};
+			}
 
 		// Iterating each room for filter.
 		rooms.forEach(function (room) {
@@ -813,7 +813,7 @@ sntRover.controller('RVroomAssignmentController', [
 			selectedPredefinedFiltersList.forEach(function(filter) {
 				if(room.room_features.indexOf(filter)!== -1) {
 					isRoomIncluded = true;
-				};
+				}
 			});
 			// Checking whether any of Filter condition satisfies
 			selectedFiltersList.forEach(function(filter) {
@@ -821,7 +821,7 @@ sntRover.controller('RVroomAssignmentController', [
 					isRoomIncluded =isRoomIncluded&&true;
 				}else{
 					isRoomIncluded =isRoomIncluded&&false;
-				};
+				}
 			});
 			// Checking Whether the Room to be displyed.
 			if(isRoomIncluded) {
@@ -829,12 +829,12 @@ sntRover.controller('RVroomAssignmentController', [
 				if($scope.floorFilterData &&!$scope.floorFilterData.isNoFloorSelected) {
 					if(roomIdsInSelectedFloor.indexOf(room.room_id) !== -1) {
 						$scope.filteredRooms.push(room);
-						};
+						}
 				}else{
 				// If No floor filter applied,Directly pushed.
 					$scope.filteredRooms.push(room);
-				};
-			};
+				}
+			}
 
 		});
 	};
@@ -863,16 +863,16 @@ sntRover.controller('RVroomAssignmentController', [
 		for(var j = 0; j < length; j++) {
 			if($scope.roomFeatures[0].items[j].selected) {
 				$scope.selectedPredefinedFiltersList.push(roomFeatures[0].items[j].id);
-			};
-		};
+			}
+		}
 
 		for(var i = 1; i < roomFeatures.length; i++) {
 			for(var j = 0; j < roomFeatures[i].items.length; j++) {
 				if(roomFeatures[i].items[j].selected) {
 					$scope.selectedFiltersList.push(roomFeatures[i].items[j].id);
-				};
-			};
-		};
+				}
+			}
+		}
 	};
 	/**
 	* function to return the rooms list status

@@ -48,7 +48,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 					$state.go('zest_station.home');
 				} else {
 					$state.go('zest_station.checkoutSearchOptions');
-				};
+				}
 			});
 			if ($stateParams.mode === 'PICKUP_KEY') {
 				$scope.setScreenIcon('key');
@@ -182,8 +182,8 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 					$scope.focusInputField("room-number");
 				} else {
 					return;
-				};
-			};
+				}
+			}
 			$scope.resetTime();
 		};
 

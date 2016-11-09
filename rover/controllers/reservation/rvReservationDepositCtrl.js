@@ -280,7 +280,7 @@ sntRover.controller('RVReservationDepositController',
 		if($scope.isStandAlone) {
 			$scope.feeData.feesInfo = $scope.passData.fees_information;
 			$scope.setupFeeData();
-		};
+		}
 
 		/*
 		 * check if reference text is available for the selected card type
@@ -309,10 +309,10 @@ sntRover.controller('RVReservationDepositController',
 						angular.forEach($scope.passData.details.creditCardTypes, function(value, key) {
 							if($scope.depositData.card_type.toUpperCase() === value.cardcode) {
 									$scope.isDisplayReference = (value.is_display_reference)? true:false;
-								};
+								}
 						});
-					};
-				};
+					}
+				}
 			});
 
 		};
@@ -336,7 +336,7 @@ sntRover.controller('RVReservationDepositController',
 
 		if((typeof $scope.depositDetails.attached_card !== "undefined") && $scope.depositDetails.attached_card.value !=="" && $scope.depositDetails.attached_card.is_credit_card) {
 				setReservationCreditCard($scope.depositDetails.attached_card.value);
-		};
+		}
 
 		var savePayment = function(attach_to_reservation) {
 
@@ -392,11 +392,11 @@ sntRover.controller('RVReservationDepositController',
 
 			if(!$scope.newPaymentInfo.tokenDetails.isSixPayment) {
 				paymentData.card_expiry = cardExpiry;
-			};
+			}
 
 			if($scope.depositData.isDisplayReference) {
 				paymentData.referance_text = $scope.depositData.referanceText;
-			};
+			}
 
 			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, paymentData, onSaveSuccess);
 		};
@@ -419,7 +419,7 @@ sntRover.controller('RVReservationDepositController',
 			if ($scope.cardsList.length > 0) {
 				$scope.addmode = false;
 				refreshCardsList();
-			};
+			}
 		};
 
 	var reservationId = $stateParams.id;
@@ -444,7 +444,7 @@ sntRover.controller('RVReservationDepositController',
 					cardName = $scope.swipedCardHolderName;
 				} else {
 					cardName = ($scope.newPaymentInfo.tokenDetails.isSixPayment) ? $scope.passData.details.firstName+" "+$scope.passData.details.lastName: $scope.newPaymentInfo.cardDetails.userName;
-				};
+				}
 
 				var cardCode = $scope.depositData.card_type;
 				var cardNumber = $scope.depositData.cardNumber;
@@ -463,7 +463,7 @@ sntRover.controller('RVReservationDepositController',
 
 				$scope.cardsList.push(dataToGuestList);
 				$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
-		};
+		}
 
 		if(typeof cardAddedBySixPaySWipe !== "undefined") {
 			var paymentDetails = data.payment_method;
@@ -566,11 +566,11 @@ sntRover.controller('RVReservationDepositController',
 			}
 			else{
                                 dataToSrv.postData.add_to_guest_card =  false;
-			};
+			}
                         if ($scope.depositData.paymentType === 'GIFT_CARD') {
                             delete dataToSrv.postData.payment_type_id;
                             dataToSrv.postData.card_number = $scope.cardData.cardNumber;
-                        };
+                        }
 
 			if($scope.isShowFees()) {
 				if($scope.feeData.calculatedFee) {
@@ -582,7 +582,7 @@ sntRover.controller('RVReservationDepositController',
 			}
 			if($scope.isDisplayReference) {
 				dataToSrv.postData.reference_text = $scope.reservationData.referanceText;
-			};
+			}
 			$scope.isLoading =  true;
 			if($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.depositData.paymentType === 'CC') {
 				dataToSrv.postData.is_emv_request = true;
@@ -611,7 +611,7 @@ sntRover.controller('RVReservationDepositController',
 				$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, successPayment, paymentFailed);
 			}
 
-		};
+		}
 	};
 
 
@@ -760,7 +760,7 @@ sntRover.controller('RVReservationDepositController',
 	 var successSwipePayment = function(data, successParams) {
 				$scope.$emit('hideLoader');
 				$scope.depositData.selectedCard = data.id;
-				$scope.depositData.cardNumber = successParams.cardNumber.slice(-4);;
+				$scope.depositData.cardNumber = successParams.cardNumber.slice(-4);
 				$scope.depositData.expiry_date = successParams.cardExpiryMonth+"/"+successParams.cardExpiryYear;
 				$scope.depositData.card_type = successParams.cardType.toLowerCase();
 				$scope.showCCPage = false;

@@ -16,7 +16,7 @@ angular.module('reportsModule')
                             params[fromKey]  = $filter('date')(report.fromDate, 'yyyy/MM/dd');
                             if ( shouldChangeFilters ) {
                                 filters.fromDate = angular.copy( report.fromDate );
-                            };
+                            }
                         }
 
                         if ( !! report.untilDate ) {
@@ -24,9 +24,9 @@ angular.module('reportsModule')
                             params[untilKey]  = $filter('date')(report.untilDate, 'yyyy/MM/dd');
                             if ( shouldChangeFilters ) {
                                 filters.toDate = angular.copy( report.untilDate );
-                            };
+                            }
                         }
-                    };
+                    }
 
                     return {
                         params: params,
@@ -57,8 +57,8 @@ angular.module('reportsModule')
                         if ( shouldChangeFilters ) {
                             filters.cancelFromDate = angular.copy( report.fromCancelDate );
                             filters.cancelToDate = angular.copy( report.untilCancelDate );
-                        };
-                    };
+                        }
+                    }
 
                     return {
                         params: params,
@@ -89,8 +89,8 @@ angular.module('reportsModule')
                         if ( shouldChangeFilters ) {
                             filters.arrivalFromDate = angular.copy( report.fromArrivalDate );
                             filters.arrivalToDate = angular.copy( report.untilArrivalDate );
-                        };
-                    };
+                        }
+                    }
 
                     return {
                         params: params,

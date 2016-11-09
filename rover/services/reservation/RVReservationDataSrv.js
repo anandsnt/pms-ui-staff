@@ -15,7 +15,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 						obj: currentDate
 					};
 				}
-			};
+			}
 			return dates;
 		};
 

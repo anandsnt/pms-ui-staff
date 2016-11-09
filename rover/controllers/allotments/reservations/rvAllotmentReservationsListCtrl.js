@@ -415,7 +415,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         window.print();
         if (sntapp.cordovaLoaded) {
           cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-        };
+        }
       }, 100);
 
       /*
@@ -698,7 +698,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
               'RVCardPlugin',
               'printWebView', []
           );
-        };
+        }
       }, 300);
 
       $timeout(function() {

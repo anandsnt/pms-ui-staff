@@ -157,13 +157,13 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					 var customRate = RVReservationStateService.getCustomRateModel($scope.reservationData.group.id, $scope.reservationData.group.name, 'GROUP');
 
 					 rates[customRate.id] = customRate;
-				};
+				}
 
 				if (!!$scope.reservationData.allotment.id) {
 					 var customRate = RVReservationStateService.getCustomRateModel($scope.reservationData.allotment.id, $scope.reservationData.allotment.name, 'ALLOTMENT');
 
 					 rates[customRate.id] = customRate;
-				};
+				}
 
 				$scope.displayData.allRates = rates;
 				$scope.reservationData.ratesMeta = rates;

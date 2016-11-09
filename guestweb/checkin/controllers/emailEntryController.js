@@ -38,7 +38,7 @@
 	    var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 	    return re.test(email);
-	  };
+	  }
 
     $scope.emailSubmitted = function() {
 
@@ -60,7 +60,7 @@
     };
 
     $scope.continueToPrecheckin =  function() {
-      ($stateParams.isFrom === "checkinLater") ? $state.go('preCheckinStatus') : $state.go('checkinKeys');;
+      ($stateParams.isFrom === "checkinLater") ? $state.go('preCheckinStatus') : $state.go('checkinKeys');
     };
     $scope.changeEmail =  function() {
        $scope.emailUpdated = false;

@@ -102,15 +102,15 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 		$scope.checkShow = function(from) {
 			if ( from === 'clean' && ($scope.roomDetails.current_hk_status === 'CLEAN' || $scope.roomDetails.current_hk_status === 'INSPECTED') ) {
 				return true;
-			};
+			}
 
 			if ( from === 'dirty' && $scope.roomDetails.current_hk_status === 'DIRTY' ) {
 				return true;
-			};
+			}
 
 			if ( from === 'pickup' && $scope.roomDetails.current_hk_status === 'PICKUP' ) {
 				return true;
-			};
+			}
 
 			return false;
 		};
@@ -190,7 +190,7 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 				if ( !!$scope.currentTask.task_completion_status ) {
 					// update 'current_hk_status' to 'task_completion_status', this should call '$scope.manualRoomStatusChanged'
 					$scope.roomDetails.current_hk_status = $scope.currentTask.task_completion_status;
-				};
+				}
 			};
 
 			var params = {

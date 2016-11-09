@@ -848,7 +848,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             // pass over that search term here
             if ( !!$stateParams.newGroupName ) {
                 groupSummary.group_name = $stateParams.newGroupName;
-            };
+            }
 
         };
 
@@ -1308,7 +1308,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 title = prevTitle;
                 name  = prevName;
                 param = prevParam;
-            };
+            }
 
             return {
                 'title': title,
@@ -1322,7 +1322,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 $scope.updateGroupSummary();
             } else if ( 'ACCOUNT' === $scope.groupConfigData.activeTab ) {
                 $scope.$broadcast( 'UPDATE_ACCOUNT_SUMMARY' );
-            };
+            }
 
             $state.go( resolvedBackBtn.name, resolvedBackBtn.param );
         };

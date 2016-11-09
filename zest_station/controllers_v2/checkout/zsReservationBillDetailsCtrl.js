@@ -136,7 +136,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                         'printopted': printopted
                     });
                 }
-            };
+            }
 
         };
 
@@ -153,7 +153,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 if ($scope.zestStationData.keyCardInserted) {
                     $scope.zestStationData.keyCaptureDone = true;
                     $scope.socketOperator.CaptureKeyCard();
-                };
+                }
                 var guest_bill = $scope.zestStationData.guest_bill;
 
                 // guest_bill.email refers to update email not the send email
@@ -216,7 +216,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 $state.go('zest_station.speakToStaff');
             } else {
                 $scope.checkOutGuest();
-            };
+            }
         };
 
         $scope.init = function() {
@@ -261,7 +261,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                     $state.go('zest_station.checkOutReservationSearch');
                 } else {
                     $state.go('zest_station.checkoutKeyCardLookUp');
-                };
+                }
             });
 
             $scope.init();

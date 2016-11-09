@@ -81,7 +81,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.isRoomVerified = false;
 		$rootScope.isPrecheckinOnly = (reservationAndhotelData.is_precheckin_only === 'true' && reservationAndhotelData.reservation_status === 'RESERVED') ? true : false;
 		$rootScope.isCcAttachedFromGuestWeb = false;
-		$rootScope.isAutoCheckinOn = ((reservationAndhotelData.is_auto_checkin === 'true') && (reservationAndhotelData.is_precheckin_only === 'true')) ? true : false;;
+		$rootScope.isAutoCheckinOn = ((reservationAndhotelData.is_auto_checkin === 'true') && (reservationAndhotelData.is_precheckin_only === 'true')) ? true : false;
 		$rootScope.isExternalVerification = (reservationAndhotelData.is_external_verification === "true") ? true : false;
 		$rootScope.hotelIdentifier = reservationAndhotelData.hotel_identifier;
 		$rootScope.guestAddressOn = reservationAndhotelData.guest_address_on === 'true' ? true : false;
@@ -181,7 +181,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 			// even though this is sent to que, the  flag name in 
 			// next screens are isAutoCheckinOn. So setting that as true
 			$rootScope.isAutoCheckinOn = true;
-		};
+		}
 		
 
 		// check if we are using new send to que settings.
@@ -220,7 +220,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 			$state.go(path);
 		} else {
 			!reservationAndhotelData.error_occured ? $state.go('checkoutRoomVerification') : $state.go('errorOccured'); // checkout landing page
-		};
+		}
 
 		$(".loading-container").hide();
 

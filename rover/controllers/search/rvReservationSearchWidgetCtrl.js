@@ -407,7 +407,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			} else {
 				return true;
 			}
-		};
+		}
 
 		/**
 		 * function to perform filering on results.
@@ -1060,7 +1060,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				return false;
 			}else{
 				return reservation.reservation_status === 'CHECKING_IN'&& (!!reservation.is_room_due_out || !!reservation.fostatus);
-			};
+			}
 		};
 
 		/**

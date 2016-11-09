@@ -19,7 +19,7 @@ admin.directive("chargeCodeSearch", function() {
                         if( key in $scope.$parent.myScroll ) {
                             $scope.$parent.myScroll[key].refresh();
                         }
-                    };
+                    }
                 }, $scope.timeOutForScrollerRefresh);
             };
 

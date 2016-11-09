@@ -217,7 +217,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 				if (keyNo === 2) {
 					params.is_additional = true;
 				}
-			};
+			}
 
 			if (!$scope.remoteEncoding) {
 				params.uid = null;
@@ -225,7 +225,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 			} else {
 				params.key_encoder_id = $scope.zestStationData.key_encoder_id;
 				onResponseSuccess = remoteEncodingSuccsess;
-			};
+			}
 
 
 			if ($scope.inDemoMode()) {
@@ -247,7 +247,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 
 						$scope.$emit('printLocalKeyCordova', $scope.selectedReservation.reservationId, $scope.noOfKeysSelected);
 						return;
-					};
+					}
 				} else {
 					$scope.callAPI(zsGeneralSrv.encodeKey, {
 						params: params,
@@ -310,7 +310,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 				// provide some timeout for user to grab keys
 				$timeout(initMakeKey, 6000);
 			}
-		};
+		}
 
 
 		/**

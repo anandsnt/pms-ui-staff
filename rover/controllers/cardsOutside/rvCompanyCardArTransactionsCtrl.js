@@ -228,7 +228,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 			} else {
 				return true;
 			}
-		};
+		}
 
 		var initPaginationParams = function() {
 			$scope.filterData.pageNo = 1;
@@ -454,7 +454,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 
 		        if ( sntapp.cordovaLoaded ) {
 		            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-		        };
+		        }
 
 		        // Removing the style after print.
 		        $("#paper-orientation").remove();
@@ -523,7 +523,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
 			} else {
 				return;
-			};
+			}
 		});
 
 		$scope.$on('HANDLE_MODAL_OPENED', function(event) {
@@ -593,7 +593,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 			    	$window.print();
 			    	if ( sntapp.cordovaLoaded ) {
 			    		cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-			    	};
+			    	}
 			    }, 1000);
 
 			    /*

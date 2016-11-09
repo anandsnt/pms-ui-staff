@@ -112,7 +112,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 			$scope.$emit('hideLoader');
 			$scope.refreshScroller('room-tab-scroll');
 			$scope.onViewDateChanged(data.service_status);
-		};
+		}
 
 		// fetch callback of all service status
 		function $_allServiceStatusCallback(data) {
@@ -137,8 +137,8 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 			} else {
 				$scope.refreshScroller('room-tab-scroll');
 				$scope.$emit('hideLoader');
-			};
-		};
+			}
+		}
 
 		$scope.invokeApi(RVHkRoomDetailsSrv.fetchAllServiceStatus, {}, $_allServiceStatusCallback);
 
@@ -147,7 +147,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 			$scope.$emit('hideLoader');
 			$scope.maintenanceReasonsList = data;
 			$scope.refreshScroller('room-tab-scroll');
-		};
+		}
 
 		$scope.invokeApi(RVHkRoomDetailsSrv.fetchMaintenanceReasons, {}, $_maintenanceReasonsCallback);
 
@@ -235,7 +235,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 				if ($_originalStatusId !== $scope.updateService.room_service_status_id) {
 					$scope.invokeApi(RVHkRoomDetailsSrv.putRoomInService, _params, _successCallback, _errorCallback);
 				}
-			};
+			}
 
 			$scope.refreshScroller('room-tab-scroll');
 		};

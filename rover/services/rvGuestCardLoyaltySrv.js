@@ -49,7 +49,7 @@ angular.module('sntRover').service('RVGuestCardLoyaltySrv', ['$q', 'RVBaseWebSrv
 	    	that.loyalties.freaquentLoyaltyData = ffps;
 	    	that.loyalties.hotelLoyaltyData     = hlps;
 	    	this.fetchUserMemberships();
-	    };			
+	    }			
 		return deferred.promise;
 
 	};

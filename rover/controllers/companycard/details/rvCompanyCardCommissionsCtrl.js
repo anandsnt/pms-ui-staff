@@ -345,7 +345,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
 
             if ( sntapp.cordovaLoaded ) {
                 cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-            };
+            }
 
             // Removing the style after print.
             $("#paper-orientation").remove();

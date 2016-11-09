@@ -67,7 +67,7 @@
 
           for (year = parseInt(startYear); year <= parseInt(endYear); year++) {
             $scope.years.push(year);
-          };
+          }
     /* MLI integration starts here */
 
     $scope.netWorkError = false;
@@ -128,7 +128,7 @@
         $state.go('preCheckinStatus');
       }else{
         $state.go('checkinKeys');
-        };
+        }
     };
 
     $scope.goToNextStep = function() {
@@ -144,7 +144,7 @@
         }
         else{
          $scope.netWorkError = true;
-        };
+        }
       }, function() {
         $scope.netWorkError = true;
         $scope.isFetching = false;
@@ -194,7 +194,7 @@
              }
              catch(err) {
                 $scope.netWorkError = true;
-             };
+             }
          }
     };
     $scope.fetchMLISessionId();

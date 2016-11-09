@@ -85,7 +85,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                             deferred.reject(data);
                         }
                     });
-                };
+                }
             };
            
 

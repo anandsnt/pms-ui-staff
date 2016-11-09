@@ -206,18 +206,18 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 
 					if ( !! match ) {
 						each.selected = match.value;
-					};
-				};
+					}
+				}
 			} else {
 				for ( k = 0, l = options.length; k < l; k++ ) {
 					options[k]['selected'] = false;
 
 					if ( _.contains($scope.activeLikeCopy, options[k]['value']) ) {
 						options[k]['selected'] = true;
-					};
-				};
-			};
-		};
+					}
+				}
+			}
+		}
 
 	};
 
@@ -323,10 +323,10 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 				for ( m = 0, n = options.length; m < n; m++ ) {
 					if ( !! options[m]['selected'] ) {
 						postData.active_room_likes.push( options[m]['value'] );
-					};
-				};
-			};
-		};
+					}
+				}
+			}
+		}
 
 		if($scope.data.room_image.indexOf("data:")!== -1) {
 			postData.room_image = $scope.data.room_image;

@@ -68,7 +68,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
                     } else {
                         console.warn('email is black listed, request different email address');
                         onBlackListedEmailFound();
-                    };
+                    }
                 },
                 failureCallBack: onValidationAPIFailure
             };
@@ -112,7 +112,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
                     stateParams.message = $scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2;
                 } else {
                     // do nothing
-                };
+                }
                 $state.go('zest_station.speakToStaff', stateParams);
             };
 
@@ -152,7 +152,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
             } else {
                 setInvalidEmailMode();
                 $scope.callBlurEventForIpad();
-            };
+            }
         };
         /**
          * [skipEmail description]

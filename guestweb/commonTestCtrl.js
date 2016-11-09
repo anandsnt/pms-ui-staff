@@ -69,7 +69,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
   $rootScope.isRoomVerified =  false;
   $rootScope.isPrecheckinOnly = (reservationAndhotelData.isPrecheckinOnly ==='true' && reservationAndhotelData.reservationStatus ==='RESERVED')?true:false;
   $rootScope.isCcAttachedFromGuestWeb = false;
-  $rootScope.isAutoCheckinOn = ((reservationAndhotelData.isAutoCheckin === 'true') && (reservationAndhotelData.isPrecheckinOnly === 'true')) ? true :false;;
+  $rootScope.isAutoCheckinOn = ((reservationAndhotelData.isAutoCheckin === 'true') && (reservationAndhotelData.isPrecheckinOnly === 'true')) ? true :false;
   $rootScope.isExternalVerification = (reservationAndhotelData.isExternalVerification === "true") ? true :false;
   $rootScope.hotelIdentifier = reservationAndhotelData.hotelIdentifier;
   $rootScope.guestAddressOn = reservationAndhotelData.guestAddressOn === 'true' ? true:false;
@@ -149,7 +149,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
     $location.replace();
   }else{
          $state.go('checkoutRoomVerification'); // checkout landing page
-  };
+  }
 
   $( ".loading-container" ).hide();
   /*
@@ -633,7 +633,7 @@ New checkout time is set and an option to continue the checkout process is prese
 
       for (year = parseInt(startYear); year <= parseInt(endYear); year++) {
         $scope.years.push(year);
-      };
+      }
       /* MLI integration starts here */
 
       $scope.netWorkError = false;
@@ -864,7 +864,7 @@ Reservation details are shown in this page.
     }
     else{
       $scope.pageValid = true;
-    };
+    }
 
     if($scope.pageValid) {
       $rootScope.ShowupgradedLabel = true;
@@ -914,7 +914,7 @@ else{
 else{
   $state.go('guestDetails');
 }
-};
+}
 }
 else{
   $state.go('guestDetails');  
@@ -922,7 +922,7 @@ else{
 }
 else{
 $modal.open($scope.opts); // error modal popup
-};
+}
 };
 
 }
@@ -963,7 +963,7 @@ This displays the available rooms for upgrading.
     }
     else{
       $scope.pageValid = true;
-    };
+    }
 
     if($scope.pageValid) {
       $scope.slides = [];
@@ -1089,10 +1089,10 @@ if($rootScope.earlyCheckinRestrictPrimetime === "PM") {
       if(hour === $rootScope.earlyCheckinRestrictHour) {
         $scope.hours =  $scope.hours.slice(index);
         $scope.hours.splice($scope.hours.length-1, 1);
-      };
+      }
     });
   }
-};
+}
 $scope.stayDetails = {
   "hour": $rootScope.earlyCheckinRestrictHour,
   "minute": $rootScope.earlyCheckinRestrictMinute,
@@ -1104,7 +1104,7 @@ $scope.stayDetails = {
     "minute": "",
     "primeTime": ""
   };
-};
+}
 
 $scope.errorOpts = {
   backdrop: true,
@@ -1306,14 +1306,14 @@ update the guest details here.
 
       for(year=1900;year<=new Date().getFullYear();year++) {
         $scope.years.push(year);
-      };
+      }
       for(month=1;month<=12;month++) {
         $scope.months.push(month);
-      };
+      }
 
       for(day=1;day<=31;day++) {
         $scope.days.push(day);
-      };
+      }
 
       $scope.isLoading          = false;
       $scope.guestDetails       = {};
@@ -1338,14 +1338,14 @@ var getDataToSave = function() {
 
   for(var i=0; i < unwanted_keys.length; i++) {
     delete newObject[unwanted_keys[i]];
-  };
+  }
   data          = newObject;
   if($scope.guestDetails.month && $scope.guestDetails.day && $scope.guestDetails.year) {
     data.birthday = $scope.guestDetails.month+"-"+$scope.guestDetails.day+"-"+$scope.guestDetails.year;
   }
   else{
     delete data["birthday"];
-  };
+  }
 
   return data;
 };
@@ -1452,7 +1452,7 @@ Precheckin final Ctrl where the pre checkin API is called
     
     for(year=1900;year<=new Date().getFullYear();year++) {
       $scope.years.push(year);
-    };
+    }
 
     $scope.months = [
               {"id": 1, "name": "JAN"},
@@ -1471,7 +1471,7 @@ Precheckin final Ctrl where the pre checkin API is called
       
     for(day=1;day<=31;day++) {
       $scope.days.push(day);
-    };
+    }
     $scope.guestDetails     = {};
     $scope.guestDetails.day   =  "";
     $scope.guestDetails.month =  "";
@@ -1485,14 +1485,14 @@ Precheckin final Ctrl where the pre checkin API is called
 
             for(var i=0; i < unwanted_keys.length; i++) {
                 delete newObject[unwanted_keys[i]];
-            };
+            }
             data          = newObject;
             if($scope.guestDetails.month && $scope.guestDetails.day && $scope.guestDetails.year) {
               data.birthday = $scope.guestDetails.month+"-"+$scope.guestDetails.day+"-"+$scope.guestDetails.year;
             }
             else{
               delete data["birthday"];
-            };
+            }
             
       return data;
     };
@@ -1520,7 +1520,7 @@ Precheckin final Ctrl where the pre checkin API is called
             else{
               $state.go('checkinKeys');
             }
-        };
+        }
       }
       else{
           $state.go('guestDetails');  
@@ -1564,7 +1564,7 @@ Precheckin final Ctrl where the pre checkin API is called
             age--;
         }
         return age;
-    };
+    }
 
     // check if guest is above age set in hotel admin
     // else redirect to front desk
@@ -1635,7 +1635,7 @@ sntGuestWeb.controller('birthDateDetailsController', dependencies);
       var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
       return re.test(email);
-    };
+    }
 
     $scope.emailSubmitted = function() {
 

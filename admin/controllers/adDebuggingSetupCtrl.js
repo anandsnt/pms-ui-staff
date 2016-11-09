@@ -73,7 +73,7 @@ admin.controller('adDebuggingSetupCtrl', ['$scope', 'adDebuggingSetupSrv', '$sta
           {
             if (params.settings().$scope == null) {
               params.settings().$scope = $scope;
-            };
+            }
             // use build-in angular filter
             var orderedData = params.sorting() ?
               $filter('orderBy')($scope.deviceList, params.orderBy()) :

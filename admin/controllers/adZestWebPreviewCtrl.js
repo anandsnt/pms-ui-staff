@@ -24,7 +24,7 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'isSmallDevice',
 
 		function appendStyleString(str) {
 			styleString = styleString + str;
-		};
+		}
 
 		var applyStyle = function(target, style, type) {
 			if (!isBlank(style)) {
@@ -38,7 +38,7 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'isSmallDevice',
 
 			} else {
 				return;
-			};
+			}
 		};
 		// icons of each color has to be in corresponding folders
 		var applyIconStyles = function(color) {
@@ -94,7 +94,7 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'isSmallDevice',
 				applyStyle('.zest-web-footer-text { font-size:', styles.footer_text.ld_font_size, "font-size");
 				// set label font size for large devices
 				applyStyle('.szest-web-ub-text { font-size:', styles.label_text.ld_font_size, "font-size");
-			};
+			}
 
 			// apply icon styles
 			if (styles.icon_color !== "White" && styles.icon_color !== null) {
@@ -104,7 +104,7 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'isSmallDevice',
 				addStyleString(styleString);
 			} else {
 				return;
-			};
+			}
 		};
 
 		BaseCtrl.call(this, $scope);
@@ -113,7 +113,7 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'isSmallDevice',
 		}
 		else{
 			return;
-		};
+		}
 		
 
 	}

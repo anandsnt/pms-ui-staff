@@ -104,7 +104,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 					$vault.set( cacheKey, JSON.stringify(service.payloadCache) );
 
 					deferred.resolve( payload );
-				};
+				}
 			};
 
 			var success = function(key, data) {
@@ -128,8 +128,8 @@ angular.module('sntRover').service('RVreportsSrv', [
 			if ( hasFilter['ACTIVE_USERS'] ) {
 				subSrv.fetchActiveUsers()
 					.then( success.bind(null, 'activeUserList'), failed.bind(null, 'activeUserList', []) );
-			};
-		};
+			}
+		}
 
 		/**
 		 * parse report list data to determine the additional apis to load
@@ -150,11 +150,11 @@ angular.module('sntRover').service('RVreportsSrv', [
 			_.each(data.results, function(eachResult) {
 				if ( ! hasFilter.hasOwnProperty('ACTIVE_USERS') && loadUsersFor[eachResult.title] ) {
 					hasFilter['ACTIVE_USERS'] = true;
-				};
+				}
 			});
 
 			return hasFilter;
-		};
+		}
 
 		service.reportSchedulesPayload = function() {
 			var deferred = $q.defer(),

@@ -105,7 +105,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 					}.bind(this), function(data) {
 						deferred.reject(data);
 					});
-			};
+			}
 
 			return deferred.promise;
 		};
@@ -127,7 +127,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 					}.bind(this), function(data) {
 						deferred.reject(data);
 					});
-			};
+			}
 
 			return deferred.promise;
 		};
@@ -266,7 +266,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 					}.bind(this), function(data) {
 						deferred.reject(data);
 					});
-			};
+			}
 
 			return deferred.promise;
 		};

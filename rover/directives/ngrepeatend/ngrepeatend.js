@@ -11,7 +11,7 @@ angular.module('ngrepeatend', []).directive('ngrepeatend', function() {
 
 			if ( !! attrs.ngrepeatend ) {
 				scope.$eval(attrs.ngrepeatend);
-			};
-		};
+			}
+		}
 	};
 });

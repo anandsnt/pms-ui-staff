@@ -902,7 +902,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         start_date.setHours( parseInt(data.arrivalTime.hh), parseInt(data.arrivalTime.mm) );
                     } else {
                         correctTime();
-                    };
+                    }
 
                     return start_date;
 
@@ -942,10 +942,10 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                             mm = 30;
                         } else {
                             mm = 45;
-                        };
+                        }
 
                         start_date.setHours(hh, mm);
-                    };
+                    }
                 };
 
                 /**
@@ -1081,7 +1081,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                             hasExtraHour: hasExtraHour,
                             hasLessHour: hasLessHour
                         };
-                    };
+                    }
                 };
 
                 this.fetchUnassignedRoomList = function(params) {

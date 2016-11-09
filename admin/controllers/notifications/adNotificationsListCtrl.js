@@ -20,7 +20,7 @@ admin.controller('ADNotificatinsListCtrl',
 			{
 				if (params.settings().$scope == null) {
 					params.settings().$scope = $scope;
-				};
+				}
 				var orderedData = params.sorting() ?
 					$filter('orderBy')($scope.data.results, params.orderBy()) :
 					$scope.data.results;

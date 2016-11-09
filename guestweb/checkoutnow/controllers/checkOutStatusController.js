@@ -46,7 +46,7 @@
 			$scope.netWorkError = true;
 			$scope.posted = true;
 		});
-	};
+	}
  }
 };
 

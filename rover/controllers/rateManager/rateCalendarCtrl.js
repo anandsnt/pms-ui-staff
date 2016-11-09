@@ -831,7 +831,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
                                     }
                                 }
                             }
-                        };
+                        }
                     }
                 }
             }
@@ -924,14 +924,14 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
                 for (var i in $scope.calendarData.isChildRate) {
                     if ($scope.calendarData.isChildRate[i] === rate.id) {
                         return true;
-                    };
+                    }
                 }
                 return false;
             } else if ($scope.lastChildRates) {
                  for (var i=0; i< $scope.lastChildRates.length; i++) {
                     if ($scope.lastChildRates[i] === rate.id) {
                         return true;
-                    };
+                    }
                 }
             }
             // Return FALSE by DEFAULT

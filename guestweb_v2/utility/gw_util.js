@@ -93,7 +93,7 @@ var returnYears = function() {
 
   for (year = parseInt(startYear); year <= parseInt(endYear); year++) {
     years.push(year);
-  };
+  }
   return years;
 };
 
@@ -104,7 +104,7 @@ var returnYearsInReverseOrder = function() {
 
   for (year = startYear; year >= parseInt(endYear); year--) {
      years.push(year);
-  };
+  }
   return years;
 };
 
@@ -212,7 +212,7 @@ var getIndexOfSelectedTime = function(time) {
     timeHour = parseInt(timeHour) + 1;
     timeHour = (timeHour < 10) ? ("0" + timeHour) : timeHour;
     timeMinute = "00";
-  };
+  }
 
   var switchAMPM = function() {
     primeTime = (primeTime === "pm") ? "am" : "pm";

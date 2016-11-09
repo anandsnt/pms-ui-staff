@@ -32,7 +32,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 			$scope.refreshScroller(SCROLL_NAME);
 			if ( !!scrollUp && $scope.$parent.myScroll.hasOwnProperty(SCROLL_NAME) ) {
 				$scope.$parent.myScroll[SCROLL_NAME].scrollTo(0, 0, 100);
-			};
+			}
 		};
 
 		var setScroller = function() {
@@ -92,7 +92,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 				item.hidden = true;
 			} else {
 				item.hidden = !item.hidden;
-			};
+			}
 			
 			refreshScroll();
 		};
@@ -124,7 +124,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 				addon.nameSortDir = (addon.nameSortDir == undefined || addon.nameSortDir == false) ? true : false;
 				addon.roomSortDir = undefined;
 				params['sort_dir'] = addon.nameSortDir;
-			};
+			}
 
 			callResAPI( addon, params );
  		};
@@ -140,7 +140,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
  				_.extend( addon, calPagination(addon) );
  				
  				callResAPI( addon );
- 			};
+ 			}
  		};
 
 		function calPagination (addon) {
@@ -166,7 +166,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 				resultUpto = (resultFrom + perPage - 1) < netTotalCount ? (resultFrom + perPage - 1) : netTotalCount;
 				disablePrevBtn = false;
 				disableNextBtn = resultUpto === netTotalCount ? true : false;
-			};
+			}
 
 			return {
 				'perPage': perPage,
@@ -178,7 +178,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 				'resultFrom': resultFrom,
 				'resultUpto': resultUpto
 			};
- 		};
+ 		}
 
  		function callResAPI (addon, params) {
  			var params = params || {},
@@ -213,10 +213,10 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
  				_.each(statuses, function(each) {
  					params[key].push( each.id );
  				});
- 			};
+ 			}
 
  			$scope.invokeApi(reportsSubSrv.fetchAddonReservations, params, success, error);
- 		};
+ 		}
 
 
  		function setup () {
@@ -238,7 +238,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 			for (reportKey in results) {
 				if ( ! results.hasOwnProperty(reportKey) ) {
 					continue;
-				};
+				}
 
 				var date        = reportKey,
 					addonGroups = results[reportKey]['addon_groups'];
@@ -247,7 +247,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 					results[reportKey]['hasData'] = true;
 				} else {
 					results[reportKey]['hasData'] = false;
-				};
+				}
 				
 				var i, j;
 
@@ -257,7 +257,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 					for (addonGroupKey in addonGrpObj) {
 						if ( '$$hashKey' == addonGroupKey || ! addonGrpObj.hasOwnProperty(addonGroupKey) ) {
 							continue;
-						};
+						}
 
 						var addonGroupId = addonGroupKey,
 							addons       = addonGrpObj[addonGroupKey]['addons'];
@@ -266,7 +266,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 							addonGrpObj[addonGroupKey]['hasData'] = true;
 						} else {
 							addonGrpObj[addonGroupKey]['hasData'] = false;
-						};
+						}
 
 						var k, l;
 
@@ -276,7 +276,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 							for (addonKey in addonObj) {
 								if ( '$$hashKey' == addonKey || ! addonObj.hasOwnProperty(addonKey) ) {
 									continue;
-								};
+								}
 
 								var addonId = addonKey,
 									addon   = addonObj[addonKey];
@@ -299,17 +299,17 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 									_.extend( addon, calPagination(addon) );
 								} else {
 									addonObj[addonKey]['hasData'] = false;
-								};
-							};
-						};
-					};
-				};
-			};
+								}
+							}
+						}
+					}
+				}
+			}
 			/* LOOP ENDS */
 			$scope.modifiedResults = angular.copy( results );
 
 			$scope.hasResults = !!( _.find($scope.modifiedResults, function(data) { return data.hasData; }) );
-		};
+		}
 
 		var init = function() {
  			setup();
@@ -409,7 +409,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 
 				default:
 					// no-op
-			};
+			}
 
 			ngDialog.close();
 			$scope.$emit( reportMsgs['REPORT_PRE_PRINT_DONE'] );

@@ -132,7 +132,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
             } catch (e) {
                 console.info("something went wrong while attempting to print--->" + e);
                 printFailedActions();
-            };
+            }
             setTimeout(function() {
                 // CICO-9569 to solve the hotel logo issue
                 $("header .logo").removeClass('logo-hide');

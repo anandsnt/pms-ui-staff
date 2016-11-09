@@ -278,7 +278,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 
 	        if ( sntapp.cordovaLoaded ) {
 	            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-	        };
+	        }
 	    }, 100);
 
 	    /*

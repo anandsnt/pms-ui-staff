@@ -103,7 +103,7 @@
 			        break;
 			    default:
 			        break;
-			};
+			}
 			$image = '<span class="label ' + defIconText + '">' + defIconText + '</span>';
 
 			if (item.classification_name) {

@@ -11,7 +11,7 @@
       $state.go('checkinSuccess');
     } else {
       $scope.pageValid = true;
-    };
+    }
 
     if ($scope.pageValid) {
       $scope.slides = [];

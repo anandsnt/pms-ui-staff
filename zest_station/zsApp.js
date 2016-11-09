@@ -56,7 +56,7 @@ var GlobalZestStationApp = function() {
     try {
         this.desktopCardReader = new DesktopCardOperations();
         this.MLIOperator = new MLIOperation();
-    } catch (er) {};
+    } catch (er) {}
 
 
     this.DEBUG = true;
@@ -98,10 +98,10 @@ var GlobalZestStationApp = function() {
             that.cardReader = new CardOperation();
         } catch (er) {
             console.info('failed get card op');
-        };
+        }
         try {
             that.iBeaconLinker = new iBeaconOperation();
-        } catch (er) {};
+        } catch (er) {}
 
     };
     this.fetchCompletedOfCordovaPlugins();

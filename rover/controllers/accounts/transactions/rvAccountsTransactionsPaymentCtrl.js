@@ -110,7 +110,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
 
                 $scope.shouldShowMakePaymentButton = true;
             }
-            ;
+            
         };
         /*
          * Action - On bill selection
@@ -187,7 +187,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
 
                     });
                 }
-                ;
+                
             });
 
 
@@ -330,7 +330,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
             if (typeof arType !== "undefined" && arType !== "") {
                 params.data_to_pass.ar_type = arType;
             }
-            ;
+            
 
             if ($scope.isShowFees()) {
                 if ($scope.feeData.calculatedFee) {
@@ -340,7 +340,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
                     params.data_to_pass.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
                 }
             }
-            ;
+            
             return params;
         };
 
@@ -429,7 +429,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
                         ngDialog.close();
                     }, 100);
                 }
-                ;
+                
             };
             var params = {
                 account_id: $scope.accountConfigData.summary.posting_account_id

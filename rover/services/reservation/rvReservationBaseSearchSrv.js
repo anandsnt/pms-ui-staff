@@ -93,7 +93,7 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
                 });
             } else {
                 deferred.resolve(that.reservation);
-            };
+            }
 
             return deferred.promise;
         };

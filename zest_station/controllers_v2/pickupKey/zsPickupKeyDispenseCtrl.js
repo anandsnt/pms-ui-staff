@@ -216,7 +216,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 				if (keyNo === 2) {
 					params.is_additional = true;
 				}
-			};
+			}
 
 			if (!$scope.remoteEncoding) {
 				params.uid = null;
@@ -224,7 +224,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 			} else {
 				params.key_encoder_id = $scope.zestStationData.key_encoder_id;
 				onResponseSuccess = remoteEncodingSuccsess;
-			};
+			}
 
 
 			if ($scope.inDemoMode()) {
@@ -245,7 +245,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 					} else {
 						$scope.$emit('printLocalKeyCordova', $scope.selectedReservation.reservationId, $scope.noOfKeysSelected);
 						return;
-					};
+					}
 				} else {
 					$scope.callAPI(zsGeneralSrv.encodeKey, {
 						params: params,
@@ -309,7 +309,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 				$timeout(initMakeKey, 3000);
 			}
 			$scope.runDigestCycle();
-		};
+		}
 
 
 		/**

@@ -15,7 +15,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 				return store[key];
 			} else {
 				return false;
-			};
+			}
 		};
 
 		service.setIntoStore = function(key, value) {
@@ -66,7 +66,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 							deferred.reject(data);
 						}
 					});
-				};
+				}
 			};
 
 			var success = function(data) {
@@ -83,12 +83,12 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 						resolveData = data[options.resKey];
 					} else {
 						resolveData = data;
-					};
+					}
 
 					// push it into store
 					if ( !! options.hasOwnProperty('name') ) {
 						service.setIntoStore(options.name, resolveData);
-					};
+					}
 					clearInterval(refreshIntervalId);
 					deferred.resolve( resolveData );
 				}
@@ -125,7 +125,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 			// else simple call
 			else {
 				rvBaseWebSrvV2[options.method]( options.url ).then( success, failed );
-			};
+			}
 
 			return deferred.promise;
 		};
@@ -232,7 +232,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 
 			if (exclude_groups) {
 				urlPrams += '&exclude_groups=true';
-			};
+			}
 
 			return callApi({
 				// no name here since we dont want to cache it in the store ever

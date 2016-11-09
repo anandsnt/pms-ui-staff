@@ -72,7 +72,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
     };
     
     var getEnabledLanguages = function() {
-        if (!$scope.zestSettings.zest_lang) {return null;};
+        if (!$scope.zestSettings.zest_lang) {return null;}
         var langs = Object.keys($scope.zestSettings.zest_lang);
         var languages = [];
 

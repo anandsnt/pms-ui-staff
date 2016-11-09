@@ -165,7 +165,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	    	cardExpiry = ($scope.cardValues.cardDetails.expiryMonth!=='' && $scope.cardValues.cardDetails.expiryYear!=='') ? "20"+$scope.cardValues.cardDetails.expiryYear+"-"+$scope.cardValues.cardDetails.expiryMonth+"-01" : "";
 	    	// To render the selected card data
 	    	$scope.depositBalanceMakePaymentData.card_code = getCreditCardType($scope.cardValues.cardDetails.cardType).toLowerCase();
-	    	$scope.depositBalanceMakePaymentData.ending_with = $scope.cardValues.cardDetails.cardNumber.substr($scope.cardValues.cardDetails.cardNumber.length - 4);;
+	    	$scope.depositBalanceMakePaymentData.ending_with = $scope.cardValues.cardDetails.cardNumber.substr($scope.cardValues.cardDetails.cardNumber.length - 4);
 		    var dataToApiToAddNewCard = {
 		          	"token": $scope.cardValues.tokenDetails.session,
 		          	"card_name": $scope.cardValues.cardDetails.userName,
@@ -185,7 +185,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 
 			// To render the selected card data
 			$scope.depositBalanceMakePaymentData.card_code = getSixCreditCardType($scope.cardValues.tokenDetails.card_type).toLowerCase();
-			 $scope.depositBalanceMakePaymentData.ending_with = $scope.cardValues.tokenDetails.token_no.substr($scope.cardValues.tokenDetails.token_no.length - 4);;
+			 $scope.depositBalanceMakePaymentData.ending_with = $scope.cardValues.tokenDetails.token_no.substr($scope.cardValues.tokenDetails.token_no.length - 4);
 
 		     var dataToApiToAddNewCard = {
 		          	"token": $scope.cardValues.tokenDetails.token_no,
@@ -239,7 +239,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
             var iFrame = document.getElementById('sixIframe');
 
             iFrame.src = iFrame.src;
-        };
+        }
     };
 
 	/*
@@ -263,7 +263,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 			if($scope.feeData.feesInfo) {
 				dataToSrv.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
 			}
-		};
+		}
 
 		$scope.invokeApi(RVDepositBalanceSrv.submitPaymentOnBill, dataToSrv, $scope.successMakePayment);
 	};

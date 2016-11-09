@@ -51,13 +51,13 @@ angular.module('sntRover').controller('RVHKGuestTabCtrl', [
 					scope: $scope,
 					closeByDocument: true
 				});
-			};
+			}
 		};
 
 		var failureCheckout = function(Errors) {
 			if ( !!Errors && Errors.hasOwnProperty('errors') ) {
 				$scope.message = Errors.errors[0];
-			};
+			}
 			$scope.isSuccess = false;
 			$scope.$emit('hideLoader');
 
@@ -89,7 +89,7 @@ angular.module('sntRover').controller('RVHKGuestTabCtrl', [
 				}
 			} else {
 				hkStatusId = 3;
-			};
+			}
 
 			$scope.roomDetails.current_hk_status = _.find($scope.roomDetails.hk_status_list, { id: hkStatusId }).value;
 

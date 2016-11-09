@@ -341,7 +341,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             // Already existing set - update
             } else {
                 $scope.invokeApi(ADRatesConfigureSrv.updateSet, setData, saveSetSuccessCallback);
-            };
+            }
         };
 
         $scope.dontOverwriteRateManger = function() {
@@ -375,7 +375,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 else{
                     setData.overwrite_rate_manager = false;
                     callSaveOrUpdateSet();
-                };
+                }
             };
 
             $scope.invokeApi(ADRatesConfigureSrv.rateManagerStatusCheck, {"id": setData.id}, rateManagerCheckSuccsess);

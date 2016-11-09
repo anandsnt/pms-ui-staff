@@ -11,7 +11,7 @@ sntRover.directive('imageLoad', function () {
             		}
             		catch(err) {
 
-                    };
+                    }
 
                 });
             }

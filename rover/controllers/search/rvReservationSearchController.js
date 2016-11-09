@@ -93,7 +93,7 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
     // we are returning to this screen
     if ($rootScope.isReturning()) {
       scrollerOptions.scrollToPrevLoc = !!$vault.get('result_showing_area') ? $vault.get('result_showing_area') : 0;
-    };
+    }
 
     // finally
     $scope.setScroller('result_showing_area', scrollerOptions);

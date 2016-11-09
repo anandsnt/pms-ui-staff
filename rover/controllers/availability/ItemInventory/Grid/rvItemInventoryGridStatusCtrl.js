@@ -65,7 +65,7 @@ angular.module('sntRover').controller('rvItemInventoryGridStatusController', [
 			// if no data exist we will just return 0
 			if (!_.has($scope.data, 'dates')) {
 				return 0;
-			};
+			}
 			var leftMostRowCaptionWidth = 273,
 				totalColumns 			= $scope.data && $scope.data.dates && $scope.data.dates.length,
 				individualColWidth 		= 0;

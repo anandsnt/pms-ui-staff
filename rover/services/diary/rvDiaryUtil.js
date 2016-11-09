@@ -314,7 +314,7 @@ sntRover
                 mm = 30;
             } else {
                 mm = 45;
-            };
+            }
 
             var date         = date_string,
             	fromDate     = new tzIndependentDate(date).getTime(),

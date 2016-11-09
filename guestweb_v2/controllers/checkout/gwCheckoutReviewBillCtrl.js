@@ -41,7 +41,7 @@ sntGuestWeb.controller('GwCheckoutReviewBillController', ['$scope', '$state', '$
 			}
 			else{
 				$state.go('checkOutFinal');
-			};
+			}
 		};
 	}
 ]);

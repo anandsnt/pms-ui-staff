@@ -92,7 +92,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
                         name: ""
                     }
                 };
-            };
+            }
         };
 
         $scope.arrivalDateChanged = function() {

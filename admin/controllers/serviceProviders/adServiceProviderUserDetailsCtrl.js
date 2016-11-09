@@ -9,7 +9,7 @@ admin.controller('ADServiceProviderUserDetailsCtrl', ['$scope', '$rootScope', '$
 		if(!!$stateParams.userId) {
 			$scope.userDetails.user_id = $stateParams.userId;
 			fetchUserDetails();
-		};
+		}
 		$scope.serviceProviderName = $stateParams.name;
 	};
 	/**
@@ -22,7 +22,7 @@ admin.controller('ADServiceProviderUserDetailsCtrl', ['$scope', '$rootScope', '$
 		var successCallbackFetch = function(data) {
 			if(data.status === "failure") {
 				$scope.errorMessage = data.errors;
-			};
+			}
 			$scope.userDetails = Object.assign($scope.userDetails, data);
 			$scope.userDetails.previewImage = $scope.userDetails.user_photo;
 			delete $scope.userDetails.user_photo;			
@@ -61,7 +61,7 @@ admin.controller('ADServiceProviderUserDetailsCtrl', ['$scope', '$rootScope', '$
 		var successCallbackOfSendInvitation = function(data) {
 			if(data.status === "failure") {
 				$scope.errorMessage = data.errors;
-			};
+			}
 			$scope.$emit('hideLoader');
 			$state.go('admin.serviceproviderusers', { 'id': $scope.userDetails.service_provider_id,
 				'name': $scope.serviceProviderName });
@@ -83,7 +83,7 @@ admin.controller('ADServiceProviderUserDetailsCtrl', ['$scope', '$rootScope', '$
 				$scope.errorMessage = data.errors;
 			}else{				
 				$state.go('admin.serviceproviderusers', {'id': $scope.userDetails.service_provider_id, 'name': $scope.serviceProviderName});
-			};			
+			}			
 			$scope.$emit('hideLoader');
 		};
 		// if userId exist updates the user else add new user

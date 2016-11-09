@@ -67,7 +67,7 @@ sntGuestWeb.controller('gwUpdateGuestDetailsController', ['$scope', '$state', '$
 				$scope.guestDetails.day = "";
 			} else {
 				return;
-			};
+			}
 		};
 		// the PUT API expects some parameters, so need to convert in to that
 		var getDataToSave = function() {
@@ -77,13 +77,13 @@ sntGuestWeb.controller('gwUpdateGuestDetailsController', ['$scope', '$state', '$
 
 			for (var i = 0; i < unwanted_keys.length; i++) {
 				delete newObject[unwanted_keys[i]];
-			};
+			}
 			data = newObject;
 			if ($scope.guestDetails.month && $scope.guestDetails.day && $scope.guestDetails.year) {
 				data.birthday = $scope.guestDetails.month + "-" + $scope.guestDetails.day + "-" + $scope.guestDetails.year;
 			} else {
 				delete data["birthday"];
-			};
+			}
 			return data;
 		};
 
@@ -94,7 +94,7 @@ sntGuestWeb.controller('gwUpdateGuestDetailsController', ['$scope', '$state', '$
 					$state.go('etaUpdation');
 				} else {
 					$state.go('checkinFinal');
-				};
+				}
 			};
 			var options = {
 				params: {

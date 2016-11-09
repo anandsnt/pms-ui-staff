@@ -18,7 +18,7 @@ admin.controller('ADServiceProviderUserListCtrl', ['$scope', '$rootScope', '$q',
 		var successCallbackFetch = function(data) {
 			if(data.status === "failure") {
 				$scope.errorMessage = data.errors;
-			};
+			}
 			$scope.currentClickedElement = -1;
 			$scope.displyCount = 5;
 			$scope.totalCount = data.total_count;

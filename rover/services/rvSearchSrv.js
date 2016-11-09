@@ -46,7 +46,7 @@ angular.module('sntRover').service('RVSearchSrv', ['$q', 'RVBaseWebSrv', 'rvBase
 	this.updateRoomDetails = function(confirmation, data) {
 		if ( !self.data ) {
 			return;
-		};
+		}
 
 		// update room related details based on confirmation id
 		for (var i = 0, j = self.data.length; i < j; i++) {
@@ -100,7 +100,7 @@ angular.module('sntRover').service('RVSearchSrv', ['$q', 'RVBaseWebSrv', 'rvBase
 			else if ( data.hasOwnProperty('room') && data['room'] === self.data[i]['room'] && self.data[i]['reservation_status'] === 'CHECKING_IN' && data['reservation_status'] === 'CHECKING_IN') {
 				self.data[i]['room'] = '';
 			}
-		};
+		}
 	};
 	this.removeResultFromData = function(reservationId) {
 
@@ -122,7 +122,7 @@ angular.module('sntRover').service('RVSearchSrv', ['$q', 'RVBaseWebSrv', 'rvBase
 	this.updateGuestDetails = function(guestid, data) {
 		if ( !self.data ) {
 			return;
-		};
+		}
 
 		// update guest details based on the guest id(s)
 		for (var i = 0, j = self.data.length; i < j; i++) {
@@ -133,15 +133,15 @@ angular.module('sntRover').service('RVSearchSrv', ['$q', 'RVBaseWebSrv', 'rvBase
 
 				if ( data['lastname'] ) {
 					self.data[i]['lastname'] = data['lastname'];
-				};
+				}
 
 				if ( data['location'] ) {
 					self.data[i]['location'] = data['location'];
-				};
+				}
 
 				if ( typeof data['vip'] === 'boolean' ) {
 					self.data[i]['vip'] = data['vip'];
-				};
+				}
 
 				// Update the primary image of the guest with the changed avatar
 				if (data['avatar']) {
@@ -150,9 +150,9 @@ angular.module('sntRover').service('RVSearchSrv', ['$q', 'RVBaseWebSrv', 'rvBase
 							self.data[i]['images'][k].guest_image = data['avatar'];
 						}
 					}
-				};
-			};
-		};
+				}
+			}
+		}
 	};
 
 	this.searchByCC = function(swipeData) {

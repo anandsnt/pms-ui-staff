@@ -166,7 +166,7 @@ sntRover.controller('rvAddLoyaltyProgramController', ['$scope', '$rootScope', '$
 				break;
 			}
 		}
-            };
+            }
             return levels;
         };
 

@@ -254,7 +254,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
 
                 $(el).val(value);
             }, 950);
-        };
+        }
     };
     
     $scope.fetchFailSuccessCallback = function (data) {
@@ -298,7 +298,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
 
                     $(payment).val(value);
                 }, 50);// takes a moment for angularjs to catch up with the list population, possibly longer if list grows too big
-            };
+            }
         };
         var setOrigin = function() {
             var value = parseInt($scope.data.data.product_cross_customer.default_origin);
@@ -309,7 +309,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
 
                     $(payment).val(value);
                 }, 50);
-            };
+            }
         };
     }
     $scope.populateRateSelection = function() {

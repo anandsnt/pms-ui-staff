@@ -91,7 +91,7 @@
 				$state.go('externalCheckinVerification');
 			} else {
 				$state.go('checkinConfirmation');
-			};
+			}
 		};
 	
 		var onDepositFetchSuccess = function(response) {
@@ -113,7 +113,7 @@
 				// no deposit to pay
 				$rootScope.skipDeposit = true;
 				$state.go('preCheckinStatus');
-			};
+			}
 		};
 
 		var onDepositFetchFailed = function() {

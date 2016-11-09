@@ -21,14 +21,14 @@ sntRover.controller('RVReportListCrl', [
             $scope.refreshScroller(REPORT_FILTERS_SCROLL);
             if ( !!scrollUp && $scope.myScroll.hasOwnProperty(REPORT_FILTERS_SCROLL) ) {
                 $scope.myScroll[REPORT_FILTERS_SCROLL].scrollTo(0, 0, 100);
-            };
+            }
         };
 
         $scope.refreshAllScroll = function() {
             $scope.refreshScroller(REPORT_LIST_SCROLL);
             if ( $scope.myScroll.hasOwnProperty(REPORT_LIST_SCROLL) ) {
                 $scope.myScroll[REPORT_LIST_SCROLL].scrollTo(0, 0, 100);
-            };
+            }
             $scope.refreshFilterScroll();
         };
 
@@ -108,9 +108,9 @@ sntRover.controller('RVReportListCrl', [
 
                     if (!!sortDate) {
                         report[i].chosenSortBy = sortDate.value;
-                    };
-                };
-            };
+                    }
+                }
+            }
 
             // SUPER forcing scroll refresh!
             // 2000 is the delay for slide anim, so firing again after 2010
@@ -126,7 +126,7 @@ sntRover.controller('RVReportListCrl', [
             if ( e ) {
                 e.preventDefault();
                 e.stopPropagation();
-            };
+            }
 
             var callback = function() {
                 if ( !! $scope.$parent.uiChosenReport ) {
@@ -150,7 +150,7 @@ sntRover.controller('RVReportListCrl', [
             } else {
                 reportUtils.findFillFilters( report, $scope.$parent.reportList )
                     .then( callback );
-            };
+            }
         };
 
         $scope.setnGenReport = function(report) {
@@ -163,7 +163,7 @@ sntRover.controller('RVReportListCrl', [
             // READ MORE: rvReportsMainCtrl:L#:61-75
             if ( lastReportID != report.id ) {
                 mainCtrlScope.printOptions.resetSelf();
-            };
+            }
             reportsSrv.setChoosenReport( report );
             mainCtrlScope.genReport();
         };

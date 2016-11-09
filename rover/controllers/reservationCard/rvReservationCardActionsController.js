@@ -264,7 +264,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     $scope.actionsCount = 'only-pending';
                 } else {
                     $scope.actionsCount = 'pending';
-                };
+                }
                 return $scope.actionsCount;
         };
         $scope.fetchActionsCount = function() {
@@ -480,7 +480,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                          }
                          // this one has a save / post button
                          $scope.closeNewCalendar();
-                     };
+                     }
                  }
             }
         };
@@ -636,7 +636,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
               return true;
           } else {
               return false;
-          };
+          }
             
         };
         $scope.showActionsList = function() {
@@ -1334,7 +1334,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 } else {
                     not_completed.push(list[x]);
                 }
-            };
+            }
 
 
 

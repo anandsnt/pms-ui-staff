@@ -41,7 +41,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                     absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
                     var urlComponents = absUrl.split('/');
 
-;
+
                     var application = urlComponents[urlComponents.length - 3];
                     var url_suffix = urlComponents[urlComponents.length - 1];
                     var hotel_identifier = urlComponents[urlComponents.length - 2];
@@ -54,7 +54,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                     absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
                     var urlComponents = absUrl.split('/');
 
-;
+
                     var url_suffix = urlComponents[urlComponents.length - 1];
 
                     apiUrl = "/guest_web/home/checkout_verification_data?hotel_identifier=" + url_suffix;

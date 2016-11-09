@@ -118,15 +118,15 @@ angular.module('reportsModule')
 
         			if ( filter === 'DUE_IN_ARRIVALS' || filter === 'DUE_OUT_DEPARTURES' ) {
         				ret.selected = true;
-        			};
+        			}
 
         			if ( filter === 'DEPOSIT_PAID' || filter === 'DEPOSIT_DUE' || filter === 'DEPOSIT_PAST' ) {
         				ret.mustSend = true;
-        			};
+        			}
 
         			if ( filter === 'SHOW_COMPANY' || filter === 'SHOW_TRAVEL_AGENT' ) {
         				ret.selected = true;
-        			};
+        			}
 
         			return ret;
         		}
@@ -144,7 +144,7 @@ angular.module('reportsModule')
         					pushFilterData(key, overrides[key], changer(filter.value), report, filter);
 
         					report.allOptions.push(key);
-        				};
+        				}
         			});
         		});
 
@@ -165,7 +165,7 @@ angular.module('reportsModule')
         				valueKey: 'description',
         				data: []
         			}, override);
-        		};
+        		}
 
         		data = $.extend({
         			paramKey: filter.value.toLowerCase(),
@@ -174,7 +174,7 @@ angular.module('reportsModule')
         		}, change);
 
         		report[key]['data'].push( data );
-        	};
+        	}
 
         	function updateOption(option) {
         		var selectedItems = _.where(option.data, { selected: true });
@@ -186,8 +186,8 @@ angular.module('reportsModule')
         			option.selectAll = true;
         		} else {
         			option.value = selectedItems.length + ' Selected';
-        		};
-        	};
+        		}
+        	}
 
         	return factory;
         }

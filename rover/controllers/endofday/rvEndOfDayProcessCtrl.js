@@ -79,7 +79,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope', 'ngDialog', '$root
                 setDisplayDateValues();            
                 if($scope.selectedDate !==$scope.businessDate) {
                    fetchEodLogOfSelectedDate(); 
-                };                
+                }                
                 ngDialog.close();
             }
         };
@@ -139,7 +139,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope', 'ngDialog', '$root
     $scope.getClassForEODButton = function() {        
         if(!$scope.isLastEodRunWithin18Hr()) {
             return "green";
-        };
+        }
         if($scope.isLastEodRunWithin18Hr()&&$scope.hasPermissionToRunEOD()) {
             return "orange";
         }else{
@@ -186,7 +186,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope', 'ngDialog', '$root
             return " error has-arrow toggle active";
         }else{
             return " error has-arrow toggle ";
-        };
+        }
     };
 
     $scope.openEndOfDayPopup = function() {

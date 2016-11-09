@@ -118,7 +118,7 @@ sntRover
 					});
 
 					$timeout($scope.onUpdate, 150);
-				};
+				}
 
 				function updateSelectedValue() {
 					var options = $scope.options || {};
@@ -134,14 +134,14 @@ sntRover
 					} else if ( selectedItems.length === $scope.data.length ) {
 						options.selectAll = true;
 						$scope.value = options.allValue || 'All Selected';
-					};
+					}
 
 					if ( typeof $scope.affectsFilter == typeof {} ) {
 						$scope.affectsFilter.process( $scope.report[$scope.affectsFilter.name], selectedItems );
-					};
+					}
 
 					$timeout($scope.onUpdate, 150);
-				};
+				}
 
 				/**/
 
@@ -153,12 +153,12 @@ sntRover
 
 					if ( options.selectAll ) {
 						updateData( 'selected', true );
-					};
+					}
 
 					if ( options.hasSearch ) {
 						$scope.search = '';
 						updateData( 'filteredOut', false );
-					};
+					}
 
 					updateSelectedValue();
 				};

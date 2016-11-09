@@ -22,7 +22,7 @@
 					if (hour === restrictHour) {
 						hoursList = $scope.hours.slice(index);
 						hoursList.splice($scope.hours.length - 1, 1);
-					};
+					}
 				});
 			}
 			return hoursList;
@@ -83,7 +83,7 @@
 					"minute": "",
 					"primeTime": ""
 				};
-			};
+			}
 
 			var restrictMinutes = function() {
 				if (parseInt(restrictMinute) >= 0 && parseInt(restrictMinute) < 15) {
@@ -96,7 +96,7 @@
 					$scope.minutesWithRestrictions = [];
 				} else {
 					$scope.minutesWithRestrictions = ["00", "15", "30", "45"];
-				};
+				}
 			};
 
 			$scope.primeTimeChanged = function() {
@@ -106,13 +106,13 @@
 						$scope.hours = $scope.hoursWithRestrictions = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
 					} else if ($rootScope.earlyCheckinRestrictPrimetime === "AM" && $scope.stayDetails.primeTime === "AM") {
 						$scope.hours = $scope.hoursWithRestrictions = restrictHoursListByHour($rootScope.earlyCheckinRestrictHour);
-					};
+					}
 				} else if ($rootScope.restrictByHotelTimeisOn && isDayOfArrival) {
 					if (restrictPrimetime === "AM" && $scope.stayDetails.primeTime === "PM") {
 						$scope.hoursWithRestrictions = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
 					} else if (restrictPrimetime === "AM" && $scope.stayDetails.primeTime === "AM") {
 						$scope.hoursWithRestrictions = restrictHoursListByHour(restrictHour);
-					};
+					}
 					if ($rootScope.restrictByHotelTimeisOn && $scope.stayDetails.hour === restrictHour && restrictPrimetime === $scope.stayDetails.primeTime) {
 						restrictMinutes();
 					} else {
@@ -131,7 +131,7 @@
 					restrictMinutes();
 				} else {
 					$scope.minutesWithRestrictions = ["00", "15", "30", "45"];
-				};
+				}
 			};
 
 			$scope.errorOpts = {
@@ -153,7 +153,7 @@
 			$state.go('guestCheckinOptions');
 		} else {
 			init();
-		};
+		}
 
 		$scope.postStayDetails = function() {
 			$scope.isLoading = true;

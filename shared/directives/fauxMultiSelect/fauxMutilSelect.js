@@ -15,7 +15,7 @@ angular.module('fauxMultiSelectModule', [])
                     scope.fauxTitle = scope.model.length + ' Selected';
                 } else if ( scope.model.length === 0 ) {
                     scope.fauxTitle = 'Select';
-                };
+                }
             };
 
             var setupSelections = function() {
@@ -44,7 +44,7 @@ angular.module('fauxMultiSelectModule', [])
                     if ( item.selected ) {
                         modelAry.push( item.id );
                         newTitle = item.itemName;
-                    };
+                    }
                 });
 
                 scope.model = modelAry;

@@ -6,12 +6,12 @@ angular.module('eventReachedRootModule', [])
             if ( ! attrs.ngApp ) {
                 console.warn( "'event-reached-root' must be added to the element where 'ng-app' is declared!" );
                 return;
-            };
+            }
 
             if ( $window.eventReachedRootBind ) {
                 console.warn( "'event-reached-root' must be added only once, on element where 'ng-app' is declared!" );
                 return;
-            };
+            }
 
             var TAP_EV = 'ontouchstart' in $window ? 'touchstart' : 'mousedown';
 

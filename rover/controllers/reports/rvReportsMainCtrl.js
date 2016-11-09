@@ -172,7 +172,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		    $scope.query = '';
 		    for (i = 0, j = $scope.reportList.length; i < j; i++) {
 		        $scope.reportList[i].filteredOut = false;
-		    };
+		    }
 		};
 
 
@@ -229,11 +229,11 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			if ( !!e ) {
 				if ( $(e.target).is('.ui-resizable-handle') ) {
 					$scope.showSidebar = $scope.showSidebar ? false : true;
-				};
+				}
 				e.stopPropagation();
 			} else {
 				$scope.showSidebar = false;
-			};
+			}
 		};
 
 		$scope.filterItemsToggle = {
@@ -474,18 +474,18 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			if (item.title === reportNames['COMPANY_TA_TOP_PRODUCERS']) {
 				if ( !! item.fromDate && item.untilDate === undefined ) {
 					item.untilDate = item.fromDate;
-				};
+				}
 
 				if ( !! item.untilDate && item.fromDate === undefined ) {
 					item.fromDate = item.untilDate;
-				};
+				}
 			}
 
 			if ( item.title === reportNames['ARRIVAL'] ) {
 				if ( !angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj) ) {
 					item.chosenDueInArrivals = false;
 				}
-			};
+			}
 			if ( item.title === reportNames['DEPARTURE'] ) {
 				if ( !angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj) ) {
 					item.chosenDueOutDepartures = false;
@@ -530,11 +530,11 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					if ( !!otherFilledDates ) {
 						dateObj['showRemove'] = true;
 						reportItem[otherFilledDates]['showRemove'] = true;
-					};
-				};
+					}
+				}
 
 				forceScopeApply();
-			};
+			}
 
 			function isDateValid (report, name) {
 				var from  = true,
@@ -544,14 +544,14 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 				if ( _dateObj.hasOwnProperty('fromModel') && report[_dateObj['fromModel']] === undefined ) {
 					from = false;
-				};
+				}
 
 				if ( _dateObj.hasOwnProperty('untilModel') && report[_dateObj['untilModel']] === undefined ) {
 					until = false;
-				};
+				}
 
 				return from && until ? true : false;
-			};
+			}
 
 			function forceScopeApply () {
 				var retry = function() {
@@ -563,7 +563,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				};
 
 				$timeout(retry, 100);
-			};
+			}
 		};
 
 		$scope.clearDateFromFilter = function(reportItem, dateName) {
@@ -576,10 +576,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			// empty dates
 			if ( reportItem.hasOwnProperty(fromModel) ) {
 				reportItem[fromModel]  = undefined;
-			};
+			}
 			if ( reportItem.hasOwnProperty(untilModel) ) {
 				reportItem[untilModel] = undefined;
-			};
+			}
 
 			// hide remove date button
 			reportItem[dateName]['showRemove'] = false;
@@ -593,13 +593,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					if ( reportItem[each]['showRemove'] ) {
 						lastDate = each;
 						otherFilledDates += 1;
-					};
+					}
 				});
 
 				if ( otherFilledDates === 1 ) {
 					reportItem[lastDate]['showRemove'] = false;
-				};
-			};
+				}
+			}
 		};
 
 
@@ -612,24 +612,24 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			// I know this is ugly :(
 			if ( chosenReport.title !== reportNames['CHECK_IN_CHECK_OUT'] ) {
 				return;
-			};
+			}
 
 			// if user has not chosen anything
 			// both 'checked_in' & 'checked_out' must be true
 			if (!chosenReport.chosenCico) {
 				chosenReport.chosenCico = 'BOTH';
 				return true;
-			};
+			}
 
 			// for 'checked_in'
 			if (type === 'checked_in') {
 				return chosenReport.chosenCico === 'IN' || chosenReport.chosenCico === 'BOTH';
-			};
+			}
 
 			// for 'checked_out'
 			if (type === 'checked_out') {
 				return chosenReport.chosenCico === 'OUT' || chosenReport.chosenCico === 'BOTH';
-			};
+			}
 		};
 
 
@@ -649,7 +649,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             // select sort_dir for chosen item
             if (!!_sortBy) {
                 _sortBy.sortDir = true;
-            };
+            }
 		};
 
         var formTitleAndToggleSelectAllForRestrictionDropDown = function(item) {
@@ -844,7 +844,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				_.each(element, function(value, key) {
 					if ( key !== currentFaux && (!!value && value.type === 'FAUX_SELECT') ) {
 						value.show = false;
-					};
+					}
 				});
 			});
 		};
@@ -858,7 +858,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 			if ( !e || !fauxDS ) {
 				return;
-			};
+			}
 
 			fauxDS.show = !fauxDS.show;
 		};
@@ -875,7 +875,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     fauxDS.title = fauxDS.allTitle || 'All Selected';
                 } else {
                     fauxDS.title = fauxDS.defaultTitle;
-                };
+                }
 
                 _.each(fauxDS.data, function(each) {
                     each.selected = fauxDS.selectAll;
@@ -895,11 +895,11 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 } else {
                     fauxDS.selectAll = false;
                     fauxDS.title = selectedItems.length + ' Selected';
-                };
+                }
 
 				console.info( reportMsgs['REPORT_FILTER_CHANGED'] );
 				$scope.$broadcast( reportMsgs['REPORT_FILTER_CHANGED'] );
-			};
+			}
 
 			console.info( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
 			$rootScope.$broadcast( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
@@ -1084,7 +1084,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					'assigned_departments': [],
 					'completion_status': []
 				};
-			};
+			}
 
 			// include dates
 			if ( !! report.hasDateFilter ) {
@@ -1093,7 +1093,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					params[fromKey]  = $filter('date')(report.fromDate, 'yyyy/MM/dd');
 					if ( changeAppliedFilter ) {
 						$scope.appliedFilter['fromDate'] = angular.copy( report.fromDate );
-					};
+					}
 				}
 
 				if ( !! report.untilDate ) {
@@ -1101,9 +1101,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					params[fromKey]  = $filter('date')(report.untilDate, 'yyyy/MM/dd');
 					if ( changeAppliedFilter ) {
 						$scope.appliedFilter['toDate'] = angular.copy( report.untilDate );
-					};
+					}
 				}
-			};
+			}
 
 			// include cancel dates
 			if (!!report.hasCancelDateFilter) {
@@ -1116,8 +1116,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				if ( changeAppliedFilter ) {
 					$scope.appliedFilter['cancelFromDate'] = angular.copy( report.fromCancelDate );
 					$scope.appliedFilter['cancelToDate']   = angular.copy( report.untilCancelDate );
-				};
-			};
+				}
+			}
 
 			// include arrival dates -- IFF both the limits of date range have been selected
 			if (!!report.hasArrivalDateFilter && !!report.fromArrivalDate && !!report.untilArrivalDate) {
@@ -1130,8 +1130,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				if ( changeAppliedFilter ) {
 					$scope.appliedFilter['arrivalFromDate'] = angular.copy( report.fromArrivalDate );
 					$scope.appliedFilter['arrivalToDate']   = angular.copy( report.untilArrivalDate );
-				};
-			};
+				}
+			}
 
 			// include group start dates -- IFF both the limits of date range have been selected
 			if (!!report.hasGroupStartDateRange && !!report.groupStartDate && !!report.groupEndDate) {
@@ -1144,8 +1144,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				if ( changeAppliedFilter ) {
 					$scope.appliedFilter['groupFromDate'] = angular.copy( report.groupStartDate );
 					$scope.appliedFilter['groupToDate']   = angular.copy( report.groupEndDate );
-				};
-			};
+				}
+			}
 
 			// include deposit due dates
 			if (!!report.hasDepositDateFilter) {
@@ -1158,8 +1158,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				if ( changeAppliedFilter ) {
 					$scope.appliedFilter['depositFromDate'] = angular.copy( report.fromDepositDate );
 					$scope.appliedFilter['depositToDate']   = angular.copy( report.untilDepositDate );
-				};
-			};
+				}
+			}
 
 			// include paid dates
 			if (!!report.hasPaidDateRange) {
@@ -1172,8 +1172,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				if ( changeAppliedFilter ) {
 					$scope.appliedFilter['paidFromDate'] = angular.copy( report.fromPaidDate );
 					$scope.appliedFilter['paidToDate']   = angular.copy( report.untilPaidDate );
-				};
-			};
+				}
+			}
 
 			// include create dates
 			if (!!report.hasCreateDateFilter) {
@@ -1186,8 +1186,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				if ( changeAppliedFilter ) {
 					$scope.appliedFilter['createFromDate'] = angular.copy( report.fromCreateDate );
 					$scope.appliedFilter['createToDate']   = angular.copy( report.untilCreateDate );
-				};
-			};
+				}
+			}
 
 			// include single dates
 			if (!!report.hasSingleDateFilter) {
@@ -1197,8 +1197,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				/**/
 				if ( changeAppliedFilter ) {
 					$scope.appliedFilter['singleValueDate'] = angular.copy( report.singleValueDate );
-				};
-			};
+				}
+			}
 
 			// rate
 			if (!!report.hasRateFilter) {
@@ -1213,7 +1213,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                         params['custom_rate_group_ids'] = selectedCustomRates;
                     }
                 }
-			};
+			}
 
 			/* if (!!report.hasRatesCodeFilter) {
 				key = reportParams['RATE_IDS'];
@@ -1225,7 +1225,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			// for restriction list
 			if (!!report.hasRestrictionListFilter) {
 				params[reportParams['RESTRICTION_IDS']] = _.pluck(_.where(report.hasRestrictionListFilter.data, { selected: true }), "id");
-			};
+			}
 
 			// for rate code
 			if (!!report.hasRateCodeFilter) {
@@ -1245,30 +1245,30 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 							params[key].push( rate.id );
 							if ( changeAppliedFilter ) {
 								$scope.appliedFilter.rates.push( rate.description );
-							};
+							}
 						});
 
 						// in case if all rates are selected
 						if ( changeAppliedFilter && report.hasRateCodeFilter.data.length === params[reportParams['RATE_IDS']].length ) {
 							$scope.appliedFilter.rates = ['All Rates'];
-						};
+						}
 					}
 
 				}
 
 
-			};
+			}
 
 			// for room type filter
 			if (!!report.hasRoomTypeFilter) {
 				params[reportParams['ROOM_TYPE_IDS']] = _.pluck(_.where(report.hasRoomTypeFilter.data, { selected: true }), "id");
-			};
+			}
 
 			// rate
 			if (!!report.hasRateTypeFilter) {
 				key = reportParams['RATE_TYPE_IDS'];
 				params[key] = getSelectedRateTypes(report);
-			};
+			}
 
 			// include rate adjustment dates
 			if (!!report.hasAdjustmentDateRange) {
@@ -1281,8 +1281,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				if ( changeAppliedFilter ) {
 					$scope.appliedFilter['adjustmentFromDate'] = angular.copy( report.fromAdjustmentDate );
 					$scope.appliedFilter['adjustmentToDate']   = angular.copy( report.untilAdjustmentDate );
-				};
-			};
+				}
+			}
 
 			// include times
 			if (report.hasTimeFilter) {
@@ -1292,8 +1292,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					/**/
 					if ( changeAppliedFilter ) {
 						$scope.appliedFilter['fromTime'] = angular.copy( report.fromTime );
-					};
-				};
+					}
+				}
 
 				if ( report.untilTime ) {
 					key         = reportParams['TO_TIME'];
@@ -1301,9 +1301,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					/**/
 					if ( changeAppliedFilter ) {
 						$scope.appliedFilter['toTime'] = angular.copy( report.untilTime );
-					};
-				};
-			};
+					}
+				}
+			}
 
 			// include CICO filter
 			if (!!report.hasCicoFilter) {
@@ -1320,9 +1320,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						$scope.appliedFilter['cicoTypes'] = 'Only Check Ins';
 					} else if ( params[checkOutKey] ) {
 						$scope.appliedFilter['cicoTypes'] = 'Only Check Outs';
-					};
-				};
-			};
+					}
+				}
+			}
 
 			// include user ids
 			if (report.hasUserFilter && report.empList.data.length) {
@@ -1337,22 +1337,22 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.users.push( user.full_name || user.email );
-						};
+						}
 					});
 
 					// in case if all users are selected
 					if ( changeAppliedFilter && report.empList.data.length === selected.length ) {
 						$scope.appliedFilter.users = ['All Users'];
-					};
-				};
-			};
+					}
+				}
+			}
 
 			// include sort bys
 			if ( report.sortByOptions ) {
 				if ( !! report.chosenSortBy ) {
 					key         = reportParams['SORT_FIELD'];
 					params[key] = report.chosenSortBy;
-				};
+				}
 				/**/
 				var _chosenSortBy = _.find(report.sortByOptions, function(item) {
 					return item && item.value === report.chosenSortBy;
@@ -1361,17 +1361,17 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				if ( !! _chosenSortBy && 'boolean' === typeof _chosenSortBy.sortDir ) {
 					key         = reportParams['SORT_DIR'];
 					params[key] = _chosenSortBy.sortDir;
-				};
+				}
 				/**/
 				if ( changeAppliedFilter ) {
 					if ( !! _chosenSortBy ) {
 						$scope.appliedFilter['sortBy'] = _chosenSortBy.description;
-					};
+					}
 					if ( !! _chosenSortBy && 'boolean' === typeof _chosenSortBy.sortDir ) {
 						$scope.appliedFilter['sortDir'] = _chosenSortBy.sortDir ? 'Ascending' : 'Descending';
-					};
-				};
-			};
+					}
+				}
+			}
 
 			// include group bys
 			if ( report.groupByOptions ) {
@@ -1393,8 +1393,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					/**/
 					if ( changeAppliedFilter ) {
 						$scope.appliedFilter['groupBy'] = key.replace( 'group_by_', '' ).replace( '_', ' ' );
-					};
-				};
+					}
+				}
 
 				// patch
 				if ( report.title === reportNames['ADDON_FORECAST'] && ('ADDON' === report.chosenGroupBy || 'DATE' === report.chosenGroupBy) ) {
@@ -1403,9 +1403,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					/**/
 					if ( changeAppliedFilter ) {
 						$scope.appliedFilter['groupBy'] = 'GROUP BY ' + report.chosenGroupBy;
-					};
+					}
 				}
-			};
+			}
 
 			// reset and generate params for selected options
 			if ( report['hasGeneralOptions']['data'].length ) {
@@ -1417,13 +1417,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.options.push( each.description );
-						};
+						}
 					} else if ( ! each.selected && each.mustSend ) {
 						key         = each.paramKey;
 						params[key] = false;
-					};
+					}
 				});
-			};
+			}
 
 			// generate params for selected displays
 			if ( report['hasDisplay']['data'].length ) {
@@ -1434,10 +1434,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.display.push( each.description );
-						};
-					};
+						}
+					}
 				});
-			};
+			}
 
 			// generate params for selected shows
 			if ( report['hasShow']['data'].length ) {
@@ -1448,10 +1448,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.show.push( each.description );
-						};
-					};
+						}
+					}
 				});
-			};
+			}
 
 			// generate params for selected shows
 			if ( report['hasChargeTypes']['data'].length ) {
@@ -1462,15 +1462,15 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.chargeTypes.push( each.description );
-						};
-					};
+						}
+					}
 				});
 
 				// in case if all types are selected
 				if ( changeAppliedFilter && report['hasChargeTypes']['selectAll'] ) {
 					$scope.appliedFilter.chargeTypes = ['Both'];
-				};
-			};
+				}
+			}
 
 			// generate params for selected exclusions
 			if ( report['hasExclusions']['data'].length ) {
@@ -1481,10 +1481,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.display.push( each.description );
-						};
-					};
+						}
+					}
 				});
-			};
+			}
 
 			// generate params for guest or account
 			if ( report['hasGuestOrAccountFilter']['data'].length ) {
@@ -1495,10 +1495,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.guestOrAccount.push( each.description );
-						};
-					};
+						}
+					}
 				});
-			};
+			}
 
 			// include company/ta
 			if ( report.hasOwnProperty('hasIncludeCompanyTa') && !!report.chosenIncludeCompanyTa ) {
@@ -1511,8 +1511,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				/* Note: Using the ui value here */
 				if ( changeAppliedFilter ) {
 					$scope.appliedFilter['companyTa'] = report.uiChosenIncludeCompanyTa;
-				};
-			};
+				}
+			}
 
 			// include company/ta/group
 			if ( report.hasOwnProperty('hasIncludeCompanyTaGroup') && !! report.chosenIncludeCompanyTaGroup ) {
@@ -1521,8 +1521,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				/* Note: Using the ui value here */
 				if ( changeAppliedFilter ) {
 					$scope.appliedFilter['companyTaGroup'] = report.uiChosenIncludeCompanyTaGroup;
-				};
-			};
+				}
+			}
 
 			// selected markets
 			if ( report.hasOwnProperty('hasMarketsList') ) {
@@ -1537,15 +1537,15 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.markets.push( market.name );
-						};
+						}
 					});
 
 					// in case if all markets are selected
 					if ( changeAppliedFilter && report['hasMarketsList']['data'].length === selected.length ) {
 						$scope.appliedFilter.markets = ['All Markets'];
-					};
-				};
-			};
+					}
+				}
+			}
 
 			// selected source
 			if ( report.hasOwnProperty('hasSourcesList') ) {
@@ -1560,15 +1560,15 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.sources.push( source.name );
-						};
+						}
 					});
 
 					// in case if all sources are selected
 					if ( changeAppliedFilter && report['hasSourcesList']['data'].length === selected.length ) {
 						$scope.appliedFilter.sources = ['All Sources'];
-					};
-				};
-			};
+					}
+				}
+			}
 
 			// selected origin
 			if ( report.hasOwnProperty('hasOriginsList') ) {
@@ -1583,15 +1583,15 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.origins.push( origin.name );
-						};
+						}
 					});
 
 					// in case if all origins are selected
 					if ( changeAppliedFilter && report['hasOriginsList']['data'].length === selected.length ) {
 						$scope.appliedFilter.origins = ['All Origins'];
-					};
-				};
-			};
+					}
+				}
+			}
 
 			// include guarantee type
 			if ( report.hasOwnProperty('hasGuaranteeType') ) {
@@ -1606,15 +1606,15 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.guarantees.push( guarantee.name );
-						};
+						}
 					});
 
 					// in case if all guarantee type is selected
 					if ( changeAppliedFilter && report['hasGuaranteeType']['data'].length === selected.length ) {
 						$scope.appliedFilter.guarantees = ['All Guarantees'];
-					};
-				};
-			};
+					}
+				}
+			}
 
 			// include charge groups
 			if (report.hasOwnProperty('hasByChargeGroup')) {
@@ -1629,15 +1629,15 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.chargeGroups.push( cg.description );
-						};
+						}
 					});
 
 					// in case if all charge groups is selected
 					if ( changeAppliedFilter && report['hasByChargeGroup']['data'].length === selected.length ) {
 						$scope.appliedFilter.chargeGroups = ['All Groups'];
-					};
-				};
-			};
+					}
+				}
+			}
 
 			// include charge code
 			if (report.hasOwnProperty('hasByChargeCode')) {
@@ -1652,15 +1652,15 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.chargeCodes.push( cc.description );
-						};
+						}
 					});
 
 					// in case if all charge code is selected
 					if ( changeAppliedFilter && report['hasByChargeCode']['data'].length === selected.length ) {
 						$scope.appliedFilter.chargeCodes = ['All Codes'];
-					};
-				};
-			};
+					}
+				}
+			}
 
 			// include hold status
 			if ( report.hasOwnProperty('hasHoldStatus') ) {
@@ -1675,15 +1675,15 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.holdStatuses.push( status.description );
-						};
+						}
 					});
 
 					// in case if all charge code is selected
 					if ( changeAppliedFilter && report['hasHoldStatus']['data'].length === selected.length ) {
 						$scope.appliedFilter.holdStatuses = ['All Status'];
-					};
-				};
-			};
+					}
+				}
+			}
 
 			// include addon groups
 			if ( report.hasOwnProperty('hasAddonGroups') ) {
@@ -1698,15 +1698,15 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.addonGroups.push( group.description );
-						};
+						}
 					});
 
 					// in case if all addon groups are selected
 					if ( changeAppliedFilter && report['hasAddonGroups']['data'].length === selected.length ) {
 						$scope.appliedFilter.addonGroups = ['All Addon Groups'];
-					};
-				};
-			};
+					}
+				}
+			}
 
 			// include addons
 			if ( report.hasOwnProperty('hasAddons') ) {
@@ -1721,15 +1721,15 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.addons.push( each.addon_name );
-						};
+						}
 					});
 
 					// in case if all addon groups are selected
 					if ( changeAppliedFilter && report['hasAddons']['data'].length === selected.length ) {
 						$scope.appliedFilter.addons = ['All Addons'];
-					};
-				};
-			};
+					}
+				}
+			}
 
 			// include addons
 			if ( report.hasOwnProperty('hasReservationStatus') ) {
@@ -1744,15 +1744,15 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.reservationStatus.push( each.status );
-						};
+						}
 					});
 
 					// in case if all reservation status are selected
 					if ( changeAppliedFilter && report['hasReservationStatus']['data'].length === selected.length ) {
 						$scope.appliedFilter.reservationStatus = ['All Reservation Status'];
-					};
-				};
-			};
+					}
+				}
+			}
 
 
 			// include departments
@@ -1768,15 +1768,15 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.assigned_departments.push( each.name );
-						};
+						}
 					});
 
 					// in case if all reservation status are selected
 					if ( changeAppliedFilter && report['hasDepartments']['data'].length === selected.length ) {
 						$scope.appliedFilter.assigned_departments = ['All Departments'];
-					};
-				};
-			};
+					}
+				}
+			}
 			// include departments
 			if ( report.hasOwnProperty('hasCompletionStatus') ) {
 				selected = _.where(report['hasCompletionStatus']['data'], { selected: true });
@@ -1790,15 +1790,15 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.completion_status.push( each.id );
-						};
+						}
 					});
 
 					// in case if all reservation status are selected
 					if ( changeAppliedFilter && report['hasCompletionStatus']['data'].length === selected.length ) {
 						$scope.appliedFilter.completion_status = ['All Status'];
-					};
-				};
-			};
+					}
+				}
+			}
 
 			// selected origin
 			if ( report.hasOwnProperty('hasOriginFilter') ) {
@@ -1813,15 +1813,15 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.origins.push( source.description );
-						};
+						}
 					});
 
 					// in case if all sources are selected
 					if ( changeAppliedFilter && report['hasOriginFilter']['data'].length === selected.length ) {
 						$scope.appliedFilter.origins = ['All Origins'];
-					};
-				};
-			};
+					}
+				}
+			}
 
 			// selected URLs
 			if ( report.hasOwnProperty('hasURLsList') ) {
@@ -1836,15 +1836,15 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.origin_urls.push( source.name );
-						};
+						}
 					});
 
 					// in case if all sources are selected
 					if ( changeAppliedFilter && report['hasURLsList']['data'].length === selected.length ) {
 						$scope.appliedFilter.origin_urls = ['All URLs'];
-					};
-				};
-			};
+					}
+				}
+			}
 			// selected Campaign types
 			if ( report.hasOwnProperty('hasCampaignTypes') ) {
 				selected = _.where( report['hasCampaignTypes']['data'], { selected: true } );
@@ -1858,15 +1858,15 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.campaign_types.push( source.name );
-						};
+						}
 					});
 
 					// in case if all sources are selected
 					if ( changeAppliedFilter && report['hasCampaignTypes']['data'].length === selected.length ) {
 						$scope.appliedFilter.campaign_types = ['All Campaigns'];
-					};
-				};
-			};
+					}
+				}
+			}
 
 			//
 			if ( report.hasOwnProperty('hasFloorList') ) {
@@ -1881,15 +1881,15 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.floorList.push( source.floor_number );
-						};
+						}
 					});
 
 					// in case if all sources are selected
 					if ( changeAppliedFilter && report['hasFloorList']['data'].length === selected.length ) {
 						$scope.appliedFilter.floorList = ['All Floors'];
-					};
-				};
-			};
+					}
+				}
+			}
 
 			// has min revenue
 			if ( report.hasOwnProperty('hasMinRevenue') && !!report.hasMinRevenue.data ) {
@@ -1898,8 +1898,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				/* Note: Using the ui value here */
 				if ( changeAppliedFilter ) {
 					$scope.appliedFilter['hasMinRevenue'] = report.hasMinRevenue.data;
-				};
-			};
+				}
+			}
 
 			// has min room nights
 			if ( report.hasOwnProperty('hasMinRoomNights') && !!report.hasMinRoomNights.data ) {
@@ -1908,8 +1908,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				/* Note: Using the ui value here */
 				if ( changeAppliedFilter ) {
 					$scope.appliedFilter['hasMinRoomNights'] = report.hasMinRoomNights.data;
-				};
-			};
+				}
+			}
 
 			// has min no of days not occupied
 			if ( report.hasOwnProperty('hasMinNoOfDaysNotOccupied') && !!report.hasMinNoOfDaysNotOccupied.data ) {
@@ -1918,8 +1918,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				/* Note: Using the ui value here */
 				if ( changeAppliedFilter ) {
 					$scope.appliedFilter['hasMinNoOfDaysNotOccupied'] = report.hasMinNoOfDaysNotOccupied.data;
-				};
-			};
+				}
+			}
 
 			// need to reset the "group by" if any new filter has been applied
 			// Added a patch to ignore the following for addon forecast report
@@ -1928,7 +1928,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				for (key in params) {
 					if ( !params.hasOwnProperty(key) ) {
 					    continue;
-					};
+					}
 
 					if ( key === 'group_by_date' || key === 'group_by_user' || key === 'group_by_charge_type' || key === 'group_by_group_name' || key === 'page' || key === 'per_page' ) {
 						continue;
@@ -1937,31 +1937,31 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( params.hasOwnProperty('group_by_date') ) {
 							params['group_by_date'] = undefined;
-						};
+						}
 						if ( params.hasOwnProperty('group_by_user') ) {
 							params['group_by_user'] = undefined;
-						};
+						}
 						/**/
 						if ( params.hasOwnProperty('group_by_group_name') ) {
 							params['group_by_group_name'] = undefined;
-						};
+						}
 						if ( params.hasOwnProperty('group_by_charge_type') ) {
 							params['group_by_charge_type'] = undefined;
-						};
+						}
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter['groupBy'] = undefined;
 						}
 						break;
-					};
-				};
-			};
+					}
+				}
+			}
 
 			// keep a copy of the current params
 			$scope.oldParams = angular.copy( params );
 
 			return params;
-		};
+		}
 
 		/**
 		 * Should we show export button
@@ -1996,8 +1996,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 			if ( _.isEmpty(chosenReport) ) { // I dont know why chosenReport becoming undefined in one loop, need to check with Vijay
 				return exportUrl;
-			};
-			return "/api/reports/" + chosenReport.id + "/submit.csv?";;
+			}
+			return "/api/reports/" + chosenReport.id + "/submit.csv?";
 		};
 
 
@@ -2016,7 +2016,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 			if ( _.isEmpty(chosenReport) ) { // I dont know why chosenReport becoming undefined in one loop, need to check with Vijay
 				return exportUrl;
-			};
+			}
 
 			param = jQuery.param(genParams(chosenReport, loadPage, resultPerPageOverride, changeAppliedFilter));
 
@@ -2053,7 +2053,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				if ( changeView ) {
 					$rootScope.setPrevState.hide = false;
 					$scope.showReportDetails = true;
-				};
+				}
 
 				updateDS( response );
 
@@ -2068,19 +2068,19 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					msg = reportMsgs['REPORT_PRINTING'];
 				} else {
 					msg = reportMsgs['REPORT_SUBMITED'];
-				};
+				}
 
 				if ( !! msg ) {
 					console.info( msg );
 					$scope.$broadcast( msg );
-				};
+				}
 			};
 
 			var errorCallback = function (response) {
 				if ( changeView ) {
 					$rootScope.setPrevState.hide = false;
 					$scope.showReportDetails = true;
-				};
+				}
 
 				updateDS( response );
 
@@ -2114,7 +2114,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		$scope.removeCompTaGrpId = function(item, uiValue, modelValue) {
 			if ( ! item[uiValue] ) {
 				item[modelValue] = '';
-			};
+			}
 		};
 
 		var split = function (val) {
@@ -2180,7 +2180,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 					if (!!match) {
 						modelVal.push(user.value);
-					};
+					}
 				});
 
 				setTimeout(function() {
@@ -2200,7 +2200,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 					if (!!match) {
 						modelVal.push(user.value);
-					};
+					}
 				});
 
 				setTimeout(function() {
@@ -2258,7 +2258,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 									value: item.id.replace( 'account_', '' ), 	// remove 'account_' part and just get the id
 									type: item.type
 								});
-							};
+							}
 						});
 
 						found = $.ui.autocomplete.filter(activeCompTaCompleteAry, term);
@@ -2304,7 +2304,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 						if (!!match) {
 							modelVal.push(compTa.value);
-						};
+						}
 					});
 
 					setTimeout(function() {
@@ -2327,7 +2327,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 					if (!!match) {
 						modelVal.push(compTa.value);
-					};
+					}
 				});
 
 				setTimeout(function() {

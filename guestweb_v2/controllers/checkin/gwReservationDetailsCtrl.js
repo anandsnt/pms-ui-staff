@@ -25,7 +25,7 @@ sntGuestWeb.controller('gwReservationDetailsController', ['$scope', '$state', '$
 				$state.go('roomUpgrade');
 			} else {
 				$state.go('termsAndConditions');
-			};
+			}
 		};
 	}
 ]);

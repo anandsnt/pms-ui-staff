@@ -408,7 +408,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     headCount = getTotalPostedAddons(addon.postType, $scope.reservationData.number_of_children);
                 } else if (addon.amountType.value === 'FLAT') {
                     headCount = getTotalPostedAddons(addon.postType, 1);
-                };
+                }
 
                 // account for room-count
                 headCount = headCount * roomCount;
@@ -456,7 +456,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                                 canOverbookInventory: rvPermissionSrv.getPermissionValue('OVERRIDE_ITEM_INVENTORY')
                             })
                         });
-                    };
+                    }
                 };
 
 
@@ -486,7 +486,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
             if ($stateParams.reservation === "HOURLY") {
                 startIndex = 0;
                 endIndex = $scope.reservationData.rooms.length - 1;
-            };
+            }
 
             // subtract selected addon amount from total stay cost
             $scope.addonsData.existingAddons.splice(index, 1);
@@ -525,7 +525,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     if ($stateParams.reservation === "HOURLY") {
                         startIndex = 0;
                         endIndex = $scope.reservationData.rooms.length - 1;
-                    };
+                    }
 
                     $scope.$emit('hideLoader');
                     $scope.roomNumber = data.room_no;

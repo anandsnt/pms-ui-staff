@@ -72,7 +72,7 @@ sntZestStation.controller('zsAdminCtrl', [
             setPrinterLabel($scope.workstation.printer);
         } else {
             // do nothing as no workstation was set
-        };
+        }
 
         // if workstation changes -> change printer accordingly
         $scope.worksStationChanged = function() {
@@ -188,7 +188,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 console.info("login out from chrome");
             } else {
                 console.info("login out");
-            };
+            }
             $window.location.href = '/station_logout';
         };
 
@@ -251,7 +251,7 @@ sntZestStation.controller('zsAdminCtrl', [
                     'emv_terminal_id': station.emv_terminal_id,
                     'id': station.id
                 };
-            };
+            }
 
             if ($scope.savedSettings.printer) {
                 params.printer = $scope.savedSettings.printer;
@@ -380,7 +380,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.zestStationData.isAdminFirstLogin = false;
             } else {
                 $scope.mode = 'login-mode';
-            };
+            }
             setTimeout(function() {
                 refreshScroller(); // maybe need to update layout, but this works to fix scroll issue on admin after page load
             }, 1000);

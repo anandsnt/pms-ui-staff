@@ -629,7 +629,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			params.from_date = $filter('date')(fromDate, $rootScope.dateFormatForAPI);
 			// Number of items to be fetched - 31+13
 			params.per_page = 44;
-			params.to_date = $filter('date')(nextMonthLastVisibleDate, $rootScope.dateFormatForAPI);;
+			params.to_date = $filter('date')(nextMonthLastVisibleDate, $rootScope.dateFormatForAPI);
 			params.status = 'FETCH_ADDITIONAL';
 			if($scope.reservationData.travelAgent.id !== "") {
 				params.travel_agent_id = $scope.reservationData.travelAgent.id;

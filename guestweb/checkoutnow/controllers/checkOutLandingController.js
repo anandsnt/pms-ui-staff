@@ -20,7 +20,7 @@ sntGuestWeb.controller('checkOutLandingController', ['$rootScope', '$location', 
 	}
 	else{
 		$scope.pageValid = true;
-	};
+	}
 
 
 }]);

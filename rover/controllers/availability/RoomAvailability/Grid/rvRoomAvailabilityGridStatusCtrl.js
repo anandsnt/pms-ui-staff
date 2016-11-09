@@ -151,7 +151,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGridStatusController', 
 				$scope.refreshScroller('room_availability_scroller');
 			} else {
 				$scope.$parent.fetchGrpNAllotData();
-			};
+			}
 		};
 
 		/*
@@ -177,7 +177,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGridStatusController', 
 
 			if (!_.has($scope.data, 'dates') && totalColumns < 30) {
 				return 0;
-			};
+			}
 
 			if (totalColumns == 30) {
 				return (totalColumns * individualColWidth + leftMostRowCaptionWidth);
@@ -199,8 +199,8 @@ angular.module('sntRover').controller('rvRoomAvailabilityGridStatusController', 
 					retCls = '';
 				} else {
 					retCls = 'hidden';
-				};
-			};
+				}
+			}
 
 			return retCls;
 		};

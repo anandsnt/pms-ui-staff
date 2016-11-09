@@ -83,7 +83,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                     }, 300);
 
                 }
-            };
+            }
         };
         $scope.removeGuest = function(toDeleteId) {
             // for API

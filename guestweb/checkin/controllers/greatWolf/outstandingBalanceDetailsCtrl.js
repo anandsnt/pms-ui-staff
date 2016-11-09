@@ -102,7 +102,7 @@
 					ccSaveSuccesActions(response);
 				} else {
 					$scope.cardError = true;
-				};
+				}
 			}, function() {
 				$scope.cardError = true;
 				$scope.isLoading = false;
@@ -156,7 +156,7 @@
 						HostedForm.updateSession(sessionDetails, mliCallback);
 					} catch (err) {
 						$scope.netWorkError = true;
-					};
+					}
 				}
 			};
 
@@ -181,7 +181,7 @@
 
 			for (year = parseInt(startYear); year <= parseInt(endYear); year++) {
 				$scope.years.push(year);
-			};
+			}
 
 			// card details
 			$scope.cardNumber = "";
@@ -203,7 +203,7 @@
 			} else {
 				// only can add new card
 				$scope.cardPresent = false;
-			};
+			}
 			$scope.mode = "PAYMENT_MODE";
 		}();
 

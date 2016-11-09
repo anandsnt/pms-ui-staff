@@ -214,7 +214,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 		if(typeof(params.id) === "undefined") {
 			deferred.resolve( {} );
 			return;
-		};
+		}
 		 url = "/api/daily_rates/" + params.id;
 		// To pass the selected rate id and name to the controller.
 		// In situations where the rate is not manually selected by user,
@@ -460,7 +460,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 		   				isHourly: rate.is_hourly
 		   			};
 		   			dailyRatesData.push(rateData);
-		   		};
+		   		}
 		   		rateData[item.date] = rate.restrictions;
 		   	}
 

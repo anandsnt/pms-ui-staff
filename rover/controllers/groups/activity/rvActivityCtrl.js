@@ -229,7 +229,7 @@ angular.module('sntRover').controller('rvActivityCtrl', [
                                 'RVCardPlugin',
                                 'printWebView', []
                             );
-                        };
+                        }
                     }, 300);
 
 

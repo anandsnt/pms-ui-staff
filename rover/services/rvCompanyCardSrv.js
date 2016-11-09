@@ -58,7 +58,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 				}, function(data) {
 					deferred.reject(data);
 				});
-			};
+			}
 
 			return deferred.promise;
 		};

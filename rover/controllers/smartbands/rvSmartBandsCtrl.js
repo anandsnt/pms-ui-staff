@@ -74,7 +74,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 
 		if($scope.isFixedAmount) {
 			postData.amount = $scope.smartBandData.fixedAmount;
-		};
+		}
 		var dataToApi = {
 			'postData': postData,
 			'reservationId': $scope.reservation.reservation_card.reservation_id

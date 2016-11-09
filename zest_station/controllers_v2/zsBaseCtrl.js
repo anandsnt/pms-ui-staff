@@ -72,7 +72,7 @@ function BaseCtrl($scope) {
     // scroll to top of the page where error message is shown
     if (angular.element(document.querySelector('.content')).find('.error_message').length) {
       angular.element(document.querySelector('.content')).scrollTop(0);
-    };
+    }
     if ($scope.hasOwnProperty('errorMessage')) {
       $scope.errorMessage = errorMessage;
       $scope.successMessage = '';
@@ -314,12 +314,12 @@ function BaseCtrl($scope) {
         var errorMessage = ['There was a problem connecting to the payment gateway.'];
 
         failureCallback(errorMessage);
-      };
+      }
     } else {
       var errorMessage = ['There is a problem with your credit card'];
 
       failureCallback(errorMessage);
-    };
+    }
 
   };
 

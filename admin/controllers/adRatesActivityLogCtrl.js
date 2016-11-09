@@ -252,7 +252,7 @@ admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$
 
                     if (!!match) {
                         modelVal.push(user.value);
-                    };
+                    }
                 });
 
             },

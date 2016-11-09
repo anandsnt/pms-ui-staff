@@ -125,7 +125,7 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 				$scope.oldDateParams = $scope.getDateParams();
 				$scope.invokeApi(rvAvailabilitySrv.fetchGrpNAllotAvailDetails, $scope.getDateParams(), successCallbackOfGrpNAllotDataFetch, fetchApiFailed);
 			}, 0);
-		};
+		}
 	};
 
 	/**

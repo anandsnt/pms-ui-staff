@@ -39,7 +39,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
                  that.reservationData.demographics.is_use_segments = segmentData.is_use_segments;
                  that.reservationData.demographics.segments = segmentData.segments;
                  deferred.resolve(that.reservationData);
-            };
+            }
         };
 
         this.fetchDemographicMarketSegments = function(deferred) {
@@ -57,7 +57,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
             else{
                     that.reservationData.demographics.is_use_markets = demographicsData.is_use_markets;
                     that.reservationData.demographics.markets = demographicsData.markets;
-            };
+            }
 
         };
 
@@ -75,7 +75,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
             else{
                     that.reservationData.demographics.is_use_sources = sourcesData.is_use_sources;
                     that.reservationData.demographics.sources = sourcesData.sources;
-            };
+            }
 
         };
 
@@ -103,7 +103,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
                 });
             }else{
                 originsSuccessCallback(originsData);
-            };
+            }
 
         };
 
@@ -129,7 +129,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
                 });
             }else{
                 reservationTypesCallback(reservationTypes);
-            };
+            }
 
         };
 

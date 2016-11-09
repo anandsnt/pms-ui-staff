@@ -147,7 +147,7 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 						deferred.reject(data);
 					}
 				});
-			};
+			}
 		};
 
 		RVBaseWebSrvV2.postJSONWithSpecialStatusHandling(url, dataToSrv.postData).then(function(data) {
@@ -225,7 +225,7 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 						deferred.reject(data);
 					}
 				});
-			};
+			}
 		};
 		
 

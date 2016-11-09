@@ -294,7 +294,7 @@ sntRover.controller('RVActivityLogCtrl', [
 
                     if (!!match) {
                         modelVal.push(user.value);
-                    };
+                    }
                 });
 
             },

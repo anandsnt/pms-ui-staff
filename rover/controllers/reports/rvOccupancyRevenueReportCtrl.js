@@ -202,7 +202,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			// dont init if there is an API error
 			if ( $scope.$parent.errorMessage.length ) {
 				return;
-			};
+			}
 
 			var chosenReport = RVreportsSrv.getChoosenReport();
 
@@ -238,7 +238,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			$timeout(function() {
 				refreshScrollers();
 			}, 400);
-		};
+		}
 
 		init();
 
@@ -300,7 +300,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			// diff should be 14 (15 - 1), including fromdate
 			else {
 				allowedDateRange = 14;
-			};
+			}
 
 			// if the current chosen dates are within
 			// the allowedDateRange, dont show pop
@@ -327,7 +327,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 				});
 			} else {
 				$scope.$emit( reportMsgs['REPORT_PRE_PRINT_DONE'] );
-			};
+			}
 		};
 
 		mainCtrlScope.printOptions.afterPrint = function() {

@@ -53,14 +53,14 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
         $scope.moveToNextPage = function() {
             if ($scope.currentPage === $scope.totalPages) {
                 return;
-            };
+            }
             $scope.currentPage++;
             listReservations();
         };
         $scope.moveToPreviousPage = function() {
             if ($scope.currentPage === 1) {
                 return;
-            };
+            }
             $scope.currentPage--;
             listReservations();
         };

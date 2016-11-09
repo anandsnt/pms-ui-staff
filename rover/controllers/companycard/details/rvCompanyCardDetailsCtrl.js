@@ -93,7 +93,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			// to check if click is outside the AR accounts Tab
 			if (!getParentWithSelector($event, document.getElementById("cc-ar-accounts"))) {
 				$scope.$broadcast("saveArAccount");
-			};
+			}
 
 			$event.stopPropagation();
 
@@ -195,7 +195,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.currentSelectedTab = 'cc-ar-transactions';
 			$scope.$broadcast('setgenerateNewAutoAr', true);
 			$scope.switchTabTo('', 'cc-ar-transactions');
-		};
+		}
 
 		$scope.$on('ARNumberChanged', function(e, data) {
 			$scope.contactInformation.account_details.accounts_receivable_number = data.newArNumber;
@@ -276,7 +276,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.contactInformation = data;
 			if ($scope.contactInformation.alert_message !== "") {
 				$scope.errorMessage = [$scope.contactInformation.alert_message];
-			};
+			}
 			if (typeof $stateParams.id !== 'undefined' && $stateParams.id !== "") {
 				$scope.contactInformation.id = $stateParams.id;
 				callCompanyCardServices();

@@ -72,7 +72,7 @@ function transformTextToHighlight(text, replaceableStrings) {
 					continue;
 				}
 			}
-		};
+		}
 		var splitedString = [];
 
 		lastIdx = 0;
@@ -103,4 +103,4 @@ function transformTextToHighlight(text, replaceableStrings) {
 		replacableString = splitedString.join("");
 	});
 	return replacableString;
-};
+}

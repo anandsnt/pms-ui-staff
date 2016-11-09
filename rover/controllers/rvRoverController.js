@@ -32,7 +32,7 @@ sntRover.controller('roverController',
       }, 1000); // Word around.
     } else {
       $translate.use('EN');
-    };
+    }
 
     /*
      * To close drawer on click inside pages
@@ -56,7 +56,7 @@ sntRover.controller('roverController',
              $scope.currentHotelData.name = hotel.hotel_name;
              $scope.currentHotelData.id   = hotel.hotel_id;
              $scope.hotelDetails.userHotelsData.hotel_list.splice(index, 1);
-          };
+          }
     });
 
     $scope.isSettingSubMenuActive = false;
@@ -163,7 +163,7 @@ sntRover.controller('roverController',
     // set MLI Merchant Id
     try {
       sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
-    } catch (err) {};
+    } catch (err) {}
     $rootScope.isSingleDigitSearch = hotelDetails.is_single_digit_search;
 
 
@@ -186,7 +186,7 @@ sntRover.controller('roverController',
     // set flag if standalone PMS
     if (hotelDetails.pms_type === null) {
       $rootScope.isStandAlone = true;
-    };
+    }
 
     /*
      * retrieve user info
@@ -432,7 +432,7 @@ sntRover.controller('roverController',
     $scope.toggleDrawerMenu = function(e) {
       if ( !!e ) {
         e.stopPropagation();
-      };
+      }
 
       $scope.menuOpen = !$scope.menuOpen;
 

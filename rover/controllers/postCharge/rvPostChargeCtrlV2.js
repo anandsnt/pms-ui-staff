@@ -326,7 +326,7 @@ sntRover.controller('RVPostChargeControllerV2',
 						case '.':
 							if ( $scope.selectedChargeItem.userEnteredPrice.length && $scope.selectedChargeItem.userEnteredPrice.indexOf('.') === -1 ) {
 								$scope.selectedChargeItem.userEnteredPrice += '.';
-							};
+							}
 							break;
 
 						default:
@@ -381,7 +381,7 @@ sntRover.controller('RVPostChargeControllerV2',
 				if ( input === 'QTY' || input === 'PR' ) {
 					$scope.calToggle = input;
 					return;
-				};
+				}
 
 				// toggle total_price of 'selectedChargeItem' sign value and exit
 				if ( input === 'SIGN' ) {
@@ -395,7 +395,7 @@ sntRover.controller('RVPostChargeControllerV2',
 					// update net total price
 					calNetTotalPrice();
 					return;
-				};
+				}
 
 				// clear input numbers
 				if ( input === 'CLR' ) {
@@ -446,7 +446,7 @@ sntRover.controller('RVPostChargeControllerV2',
 					}
 
 					return;
-				};
+				}
 			};
 
 
@@ -558,7 +558,7 @@ sntRover.controller('RVPostChargeControllerV2',
 					}
 					else{
 						$scope.invokeApi(RVPostChargeSrvV2.postCharges, updateParam, callback, failureCallback);
-					};
+					}
 				}
 				else{
 

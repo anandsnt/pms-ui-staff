@@ -244,7 +244,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 		}
 		else{
 			$scope.editData.is_web_only = $scope.editData.is_rover_only ? false: $scope.editData.is_web_only;
-		};
+		}
 	};
 
 	$scope.webOnlyChanged = function() {
@@ -253,6 +253,6 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 		}
 		else{
 			$scope.editData.is_rover_only = $scope.editData.is_web_only ? false: $scope.editData.is_rover_only;
-		};
+		}
 	};
 }]);

@@ -45,7 +45,7 @@ admin.controller('ADBalanceInventoryCtrl', [
 				return $filter('date')(calWeekAfter(beginDate), 'yyyy-MM-dd');
 			} else {
 				return end;
-			};
+			}
 		};
 
 
@@ -61,7 +61,7 @@ admin.controller('ADBalanceInventoryCtrl', [
 					$scope.anyJobRunning = true;
 				} else {
 					$scope.anyJobRunning = false;
-				};
+				}
 
 				$scope.lastRunStatus = status;
 			};
@@ -108,7 +108,7 @@ admin.controller('ADBalanceInventoryCtrl', [
 				// make sure the dates are valid -> end is after begin
 				if ( $scope.payload.end_date ) {
 					$scope.payload.end_date = checkDates($scope.payload.begin_date, $scope.payload.end_date);
-				};
+				}
 			} else {
 				$scope.payload.end_date = chosenDate;
 			}

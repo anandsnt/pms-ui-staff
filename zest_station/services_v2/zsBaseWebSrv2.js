@@ -41,7 +41,7 @@ sntZestStation.service('zsBaseWebSrv2', ['$http', '$q', '$window', '$rootScope',
  			if(typeof $rootScope.workstation_id !== 'undefined') {
 				httpDict.data.workstation_id = $rootScope.workstation_id;
 			}
-  		};
+  		}
 
 		// Sample params {params:{fname: "fname", lname: "lname"}}
 		$http(httpDict).success(function(response, status) {

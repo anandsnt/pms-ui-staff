@@ -32,7 +32,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 			$scope.$emit('staycardGuestData', data);
 			$scope.data = data;
 
-			$scope.timeline = data.reservation_details.timeline;;
+			$scope.timeline = data.reservation_details.timeline;
 
 			$scope.countCurrent = data.reservation_list.current_reservations_arr.length;
 			$scope.countUpcoming = data.reservation_list.upcoming_reservations_arr.length;

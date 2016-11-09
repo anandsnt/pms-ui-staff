@@ -22,7 +22,7 @@ sntRover.controller('RVOccRevPrintPopupCtrl', [
 		// fromdate <- 15 days -> untildate, so including fromdate, diff should be 14 (15 - 1)
 		else {
 			$scope.occupancyMaxDate = 14;
-		};
+		}
 
 
 		// common date picker options object
@@ -79,7 +79,7 @@ sntRover.controller('RVOccRevPrintPopupCtrl', [
 			} else if ( format === 'DD-MM-YYYY' || format === 'DD/MM/YYYY' ) {
 				day   = parseInt( value.substring(0, 2) );
 				month = parseInt( value.substring(3, 5) );
-			};
+			}
 
 			year = parseInt( value.substring(6, 10) );
 			date = new Date( year, month - 1, day + dayOffset );
@@ -88,7 +88,7 @@ sntRover.controller('RVOccRevPrintPopupCtrl', [
 				effectObj.maxDate = date;
 			} else {
 				return date;
-			};
-		};
+			}
+		}
     }
 ]);

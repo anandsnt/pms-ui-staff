@@ -83,7 +83,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 				$scope.$digest();	
 			} catch(err) {
 				console.warn(err);
-			};
+			}
 		};
 
 		$scope.clearNationality = function() {

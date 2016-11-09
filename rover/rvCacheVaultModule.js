@@ -28,7 +28,7 @@ angular.module('cacheVaultModule', [])
 
 			if ( index < 0 ) {
 				setOnceTracker.push(key);
-			};
+			}
 			
 			factory.set(key, value);
 		};
@@ -44,7 +44,7 @@ angular.module('cacheVaultModule', [])
 				);
 
 				factory.remove(key);
-			};
+			}
 
 			return ret;
 		};

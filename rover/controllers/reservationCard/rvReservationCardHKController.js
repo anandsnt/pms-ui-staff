@@ -24,7 +24,7 @@ sntRover.controller('rvReservationCardHKController',
 
             if ( ! workType.default_task && workType.old_default_task == workType.default_task ) {
                 return;
-            };
+            }
 
             params = {
                 old_task_id: workType.old_default_task,
@@ -137,7 +137,7 @@ sntRover.controller('rvReservationCardHKController',
                 toggleDetails();
             } else {
                 callInitialAPIs();
-            };
+            }
         };
     }
 ]);

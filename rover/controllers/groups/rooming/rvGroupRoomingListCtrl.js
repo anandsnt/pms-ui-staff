@@ -374,7 +374,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 attachBillingInfoToReservations();
             } else {
                 return;
-            };
+            }
         };
 
         /**
@@ -1716,7 +1716,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                                 'RVCardPlugin',
                                 'printWebView', []
                             );
-                        };
+                        }
                     }, 300);
 
 
@@ -1883,7 +1883,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                         $window.print();
                         if (sntapp.cordovaLoaded) {
                             cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-                        };
+                        }
                     }, 100);
 
                     /*

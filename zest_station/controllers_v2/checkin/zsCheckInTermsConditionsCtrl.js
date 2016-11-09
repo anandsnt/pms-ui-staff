@@ -201,7 +201,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				var byPassCC = false;
 
 				nextPageActions(byPassCC);
-			};
+			}
 
 		};
 		/**

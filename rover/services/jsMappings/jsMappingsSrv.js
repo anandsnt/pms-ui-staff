@@ -44,7 +44,7 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
     } else {
       console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
       return;
-    };
+    }
   };    
 
 

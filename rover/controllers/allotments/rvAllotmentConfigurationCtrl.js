@@ -155,7 +155,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             // If allotment name is passsed to create a new one
             if ( !!$stateParams.newAllotmentName ) {
                 $scope.allotmentConfigData.summary.allotment_name = $stateParams.newAllotmentName;
-            };
+            }
         };
 
         /**

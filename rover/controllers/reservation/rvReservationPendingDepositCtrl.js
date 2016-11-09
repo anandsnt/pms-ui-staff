@@ -96,7 +96,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			}
 			else{
 				// do nothing
-			};
+			}
 			closeDepositPopup();
 		});
 
@@ -121,7 +121,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 				$scope.$parent.reservationData.reservation_card.payment_details.card_number = data.cc_details.ending_with;
 				$scope.$parent.reservationData.reservation_card.payment_details.card_expiry = data.cc_details.expiry_date;
 				$scope.$parent.reservationData.reservation_card.payment_details.card_type_image = 'images/'+data.cc_details.card_code+'.png';
-			};
+			}
 			
 			// Add the CC to guestcard
 			if(typeof data.add_to_guest_card !=="undefined" && data.add_to_guest_card) {
@@ -140,7 +140,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 				};
 
 				$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
-			};
+			}
 		});
 
 		// payment failed

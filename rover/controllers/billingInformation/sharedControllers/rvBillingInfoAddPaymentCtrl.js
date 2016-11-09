@@ -14,7 +14,7 @@ sntRover.controller('rvBillingInfoAddPaymentCtrl', ['$scope', '$rootScope', '$fi
 	try {
 			HostedForm.setMerchant($rootScope.MLImerchantId);
 		}
-		catch(err) {};
+		catch(err) {}
 
 	$scope.cancelClicked = function() {
 		$scope.showPaymentList();
@@ -101,7 +101,7 @@ sntRover.controller('rvBillingInfoAddPaymentCtrl', ['$scope', '$rootScope', '$fi
 			}
 			catch(err) {
 			   $scope.$emit('displayErrorMessage', ["There was a problem connecting to the payment gateway."]);
-			};
+			}
 
 		};
 		/**

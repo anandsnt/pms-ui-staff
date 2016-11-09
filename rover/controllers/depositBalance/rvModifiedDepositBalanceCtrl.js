@@ -153,7 +153,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
                     buttonClass = "grey";
                 }
             }
-            ;
+            
             return buttonClass;
         };
 
@@ -165,7 +165,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
             } else {
                 buttonClass = "grey";
             }
-            ;
+            
             return buttonClass;
         };
 
@@ -187,7 +187,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
                 $scope.depositBalanceMakePaymentData.payment_type = angular.copy($scope.reservationData.reservation_card.payment_method_used);
             }
         }
-        ;
+        
 
 
         $scope.showSixPayCardInput = function() {
@@ -235,7 +235,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
 
                 iFrame.src = iFrame.src;
             }
-            ;
+            
         };
 
         /*

@@ -108,7 +108,7 @@ sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv', '$rootSco
                             deferred.reject(data);
                         }
                     });
-                };
+                }
             };
 
             zsBaseWebSrv.postJSONWithSpecialStatusHandling(url, postData).then(function(data) {
@@ -196,7 +196,7 @@ sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv', '$rootSco
                             deferred.reject(data);
                         }
                     });
-                };
+                }
             };
            
 

@@ -133,7 +133,7 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
         }
         else{
            callEditApi();
-        };
+        }
     };
     // save success
     var saveSettingsSuccess = function(data) {

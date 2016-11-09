@@ -86,19 +86,19 @@ admin.controller('ADRulesRestrictionCtrl', [
 
             if ( !this.item ) {
                 return;
-            };
+            }
             // if this is sysdef return
             if ( !this.item.editable || this.item.description === 'Levels' ) {
                 return;
-            };
+            }
 
             if ( this.item.description === 'Cancellation Penalties' ) {
                 return '/assets/partials/rulesRestriction/adCancellationPenaltiesRules.html';
-            };
+            }
 
             if ( this.item.description === 'Deposit Requests' ) {
                 return '/assets/partials/rulesRestriction/adDepositRequestRules.html';
-            };
+            }
         };
 
         // fetch rules under editable restrictions
@@ -110,7 +110,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             // if this is sysdef return
             if ( !item.editable || item.description === 'Levels' ) {
                 return;
-            };
+            }
             var ruleType ='CANCELLATION_POLICY';
             // fetch the appropriate policy
             var callback = function(data) {
@@ -127,7 +127,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             // if this is sysdef return
             if ( !item.editable || item.description === 'Levels' ) {
                 return;
-            };
+            }
             var ruleType = 'DEPOSIT_REQUEST';
             // fetch the appropriate policy
             var callback = function(data) {
@@ -141,21 +141,21 @@ admin.controller('ADRulesRestrictionCtrl', [
         $scope.showPolicyArrow = function() {
             if ( this.item.description === 'Cancellation Penalties' ) {
                 return $scope.cancelRulesList.length ? true : false;
-            };
+            }
 
             if ( this.item.description === 'Deposit Requests' ) {
                 return $scope.depositRuleslList.length ? true : false;
-            };
+            }
         };
 
         $scope.toggleRulesListShow = function() {
             if ( this.item.description === 'Cancellation Penalties' ) {
                 $scope.showCancelList = $scope.showCancelList ? false : true;
-            };
+            }
 
             if ( this.item.description === 'Deposit Requests' ) {
                 $scope.showDepositList = $scope.showDepositList ? false : true;
-            };
+            }
         };
 
         // open the form to add a new rule
@@ -237,7 +237,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                     $scope.singleRule.advance_hour = hh;
                     $scope.singleRule.advance_min = mm;
                     $scope.singleRule.advance_primetime = ampm;
-                };
+                }
                 $scope.showCancelForm = true;
                 $scope.showDepositForm = false;
                 $scope.rulesTitle = 'Edit';
@@ -300,7 +300,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                 };
 
                 $scope.invokeApi(ADRulesRestrictionSrv.saveDepositeRule, $scope.singleRule, saveCallback);
-            };
+            }
 
         };
         // save a new rule or update an edited rule
@@ -322,7 +322,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                 withoutEach = _.omit(withoutEach, 'advance_primetime');
 
                 $scope.singleRule = withoutEach;
-            };
+            }
 
             // if we are in update (or edit) mode
             if ( $scope.updateRule ) {
@@ -349,7 +349,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                     $scope.$emit('hideLoader');
                 };
                 $scope.invokeApi(ADRulesRestrictionSrv.saveRule, $scope.singleRule, saveCallback);
-            };
+            }
         };
 
          $scope.deleteSchedule = function(index) {

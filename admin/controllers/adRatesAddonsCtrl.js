@@ -53,7 +53,7 @@ admin.controller('ADRatesAddonsCtrl', [
 				return true;
 			}else{
 				return false;
-			};
+			}
 		};
 
 		$scope.fetchTableData = function($defer, params) {
@@ -133,7 +133,7 @@ admin.controller('ADRatesAddonsCtrl', [
 				$scope.apiLoadCount++;
 				if ( $scope.apiLoadCount > 4 ) {
 					$scope.$emit('hideLoader');
-				};
+				}
 			};
 
 			$scope.invokeApi(ADRatesAddonsSrv.fetchChargeGroups, {}, cgCallback, '', 'NONE');
@@ -259,7 +259,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			else{
 				$scope.singleAddon.end_date_for_display   = "";
 				$scope.singleAddon.end_date = null;
-			};
+			}
 
 		};
 
@@ -315,7 +315,7 @@ admin.controller('ADRatesAddonsCtrl', [
 					$scope.singleAddon.end_date_for_display = "";
 				}else{
 					$scope.singleAddon.end_date_for_display   = $filter('date')(tzIndependentDate($scope.singleAddon.end_date), $rootScope.dateFormat);
-				};
+				}
 
 				// convert system date to MM-dd-yyyy format
 
@@ -378,7 +378,7 @@ admin.controller('ADRatesAddonsCtrl', [
 
 
 				$scope.invokeApi(ADRatesAddonsSrv.addNewAddon, singleAddonData, callback);
-			};
+			}
 
 			// if we are editing an addon
 			if ( $scope.isEditMode ) {
@@ -395,7 +395,7 @@ admin.controller('ADRatesAddonsCtrl', [
 				singleAddonData.id = $scope.currentAddonId;
 
 				$scope.invokeApi(ADRatesAddonsSrv.updateSingle, singleAddonData, callback);
-			};
+			}
 		};
 
 		// on change activation

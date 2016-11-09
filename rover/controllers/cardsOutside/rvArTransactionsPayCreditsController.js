@@ -27,7 +27,7 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
         else {
             return true;
         }
-        ;
+        
     };
     $scope.handleCloseDialog = function() {
         $scope.$emit('HANDLE_MODAL_OPENED');
@@ -197,7 +197,7 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
 
                 });
             }
-            ;
+            
         });
 
 
@@ -302,7 +302,7 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
         } else {
             $scope.shouldShowMakePaymentButton = true;
         }
-        ;
+        
     };
 
 }]);

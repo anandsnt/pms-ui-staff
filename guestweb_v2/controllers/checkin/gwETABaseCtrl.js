@@ -52,7 +52,7 @@ sntGuestWeb.controller('gwETABaseController', ['$scope', '$state', '$controller'
 						$state.go('laterArrival', stateParams);
 					} else {
 						$state.go('autoCheckinFinal');
-					};
+					}
 
 				};
 				var options = {

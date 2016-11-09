@@ -110,7 +110,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		angular.forEach($scope.renderData.paymentTypes, function(item, key) {
 			if(item.name === 'CC') {
 				$scope.creditCardTypes = item.values;
-			};
+			}
 		});
 	};
 
@@ -126,7 +126,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 			angular.forEach(data.existing_payments, function(obj, index) {
 				if (obj.is_credit_card) {
 		 		 	$scope.cardsList.push(obj);
-				};
+				}
 			});
 			angular.forEach($scope.cardsList, function(value, key) {
 				value.mli_token = value.ending_with; // For common payment HTML to work - Payment modifications story
@@ -184,7 +184,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		if(!$scope.splitBillEnabled) {
 			$scope.renderData.defaultPaymentAmount = angular.copy( $scope.copyOfdefaultPaymentAmount );
 			$scope.splitSelected = false;
-		};
+		}
 	};
 	/*
 	* Initial function - To render screen with data
@@ -267,7 +267,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		}
 		else{
 			defaultAmount =  currentBillTotalFees[0].balance_amount;
-		};
+		}
 
 		$scope.renderData.defaultPaymentAmount = parseFloat(defaultAmount).toFixed(2);
 		$scope.copyOfdefaultPaymentAmount      = parseFloat(defaultAmount).toFixed(2);
@@ -301,7 +301,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		if(!$scope.splitSelected) {
 			$scope.splitSelected = true;
 			startingAmount = angular.copy($scope.renderData.defaultPaymentAmount);
-		};
+		}
 		calulateSplitAmount();
 	};
 	/*
@@ -414,7 +414,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		}
 		else{
 			$scope.errorMessage = data;
-		};
+		}
 
 	};
 	/*

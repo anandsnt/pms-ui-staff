@@ -42,7 +42,7 @@ sntRover.controller('RVCardOptionsCtrl',
 				var iFrame = document.getElementById('sixIframe');
 
 				iFrame.src = iFrame.src;
-			};
+			}
 		};
 
 		$scope.$on('REFRESH_IFRAME', function(e) {
@@ -59,7 +59,7 @@ sntRover.controller('RVCardOptionsCtrl',
                      $scope.isGiftCard = false;
                     if (!$rootScope.isStandAlone) {// CICO-19009 adding gift card support, used to validate gift card is enabled
                          $scope.invokeApi(RVPaymentSrv.fetchAvailPayments, {}, $scope.cardsListSuccess);
-                    };
+                    }
                 };
                 
                 $scope.hideCardToggles = function() {
@@ -243,14 +243,14 @@ sntRover.controller('RVCardOptionsCtrl',
                         } else {
                             buttonClass = "grey";
                         }
-                    };
+                    }
                 } else {
                     if (!$scope.validPayment) {
 			buttonClass = "grey overlay";
                     } else {
 			buttonClass = "grey";
                     }
-		};
+		}
 		return buttonClass;
 	};
                 $scope.useDepositGiftCard = false;
@@ -332,7 +332,7 @@ sntRover.controller('RVCardOptionsCtrl',
 		if(typeof $scope.passData !== "undefined") {
 			var firstName = (typeof $scope.passData.details.firstName ==="undefined")?"":$scope.passData.details.firstName;
 			var lastName = (typeof $scope.passData.details.lastName ==="undefined")?"":$scope.passData.details.lastName;
-		};
+		}
 
 		$scope.iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" +firstName + "&card_holder_last_name=" + lastName + "&service_action=createtoken&time="+time;
 		if($rootScope.paymentGateway === "sixpayments") {
@@ -474,7 +474,7 @@ sntRover.controller('RVCardOptionsCtrl',
 	    		$scope.$emit('cancelCardSelection');
 	    		$scope.cardselectedIndex = -1;
 	    		$scope.refreshIframe();
-	    	};
+	    	}
 	    };
             $scope.$on('cancelCardSelection', function() {
                 $scope.depositWithGiftCard = false;

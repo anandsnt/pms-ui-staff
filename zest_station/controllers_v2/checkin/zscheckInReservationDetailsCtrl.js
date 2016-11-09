@@ -234,7 +234,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
                 if (data.free_eci_for_vips && data.is_vip) {
                     freeForVip = ' [ for vip guest ]';
-                };
+                }
                 console.info('selected reservation includes free early check-in! ' + freeForVip);
                 return true;
             } else {
@@ -370,7 +370,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             if (!$scope.zestStationData.isHourlyRateOn) {
                 console.log('Non-Hourly Hotel, not checking arrival time');
                 return true;
-            };
+            }
             /*
              * for hourly hotels, we just need to check that the reservation is checking in during their arrival time, otherwise, ask they wait until later
              */
@@ -425,7 +425,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             } else {
                 console.warn('guest is not within 1 hour of arrival time');
                 return false;
-            };
+            }
             /*
              *
              *  just need to check hour and minutes (of arrival time) are within/before (current time),

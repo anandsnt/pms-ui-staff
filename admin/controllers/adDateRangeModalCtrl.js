@@ -29,10 +29,10 @@ admin.controller('ADDateRangeModalCtrl', ['$scope',
       $scope.toDate = "";
       if ($scope.data.begin_date.length > 0) {
         $scope.fromDate = $scope.data.begin_date;
-      };
+      }
       if ($scope.data.end_date.length > 0) {
         $scope.toDate = $scope.data.end_date;
-      };
+      }
 
       $scope.fromDateOptions = _.extend(datePickerDefaults, {
         onSelect: function() {

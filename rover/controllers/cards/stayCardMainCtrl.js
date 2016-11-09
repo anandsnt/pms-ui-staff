@@ -704,7 +704,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				params.travel_agent_id = $scope.reservationDetails.travelAgent.id;
 			} else if (card === 'company') {
 				params.company_id = $scope.reservationDetails.companyCard.id;
-			};
+			}
 
 			$scope.invokeApi(RVReservationSummarySrv.fetchDefaultRoutingInfo, params, fetchSuccessofDefaultRouting);
 		};

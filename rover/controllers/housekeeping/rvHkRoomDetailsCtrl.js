@@ -53,27 +53,27 @@ angular.module('sntRover').controller('RVHkRoomDetailsCtrl', [
 			// if room is out
 			if ($scope.roomDetails.room_reservation_hk_status !== 1) {
 				return 'out';
-			};
+			}
 
 			// if the room is clean
 			if ($scope.roomDetails.current_hk_status === 'CLEAN') {
 				return 'clean';
-			};
+			}
 
 			// if the room is dirty
 			if ($scope.roomDetails.current_hk_status === 'DIRTY') {
 				return 'dirty';
-			};
+			}
 
 			// if the room is pickup
 			if ($scope.roomDetails.current_hk_status === 'PICKUP') {
 				return 'pickup';
-			};
+			}
 
 			// if the room is inspected
 			if ($scope.roomDetails.current_hk_status === 'INSPECTED') {
 				return 'inspected';
-			};
+			}
 		};
 
 
@@ -128,7 +128,7 @@ angular.module('sntRover').controller('RVHkRoomDetailsCtrl', [
 		$scope.tabSwitch = function(tab) {
 			if (!!tab) {
 				$scope.openTab = tab;
-			};
+			}
 		};
 	   /*
 		*Not used tabswitch for log tab. bcoz pagination not appears

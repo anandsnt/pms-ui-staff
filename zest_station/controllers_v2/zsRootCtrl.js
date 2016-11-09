@@ -87,7 +87,7 @@ sntZestStation.controller('zsRootCtrl', [
 				$("input").blur();
 			} else {
 				// do nothing
-			};
+			}
 		};
 		/**
 		 * to run angular digest loop,
@@ -461,7 +461,7 @@ sntZestStation.controller('zsRootCtrl', [
 					$scope.icons.url.logo 	  = iconsPath + '/logo-print.svg';	
 				}
 				$scope.icons.url.logo 	  = iconsPath + '/logo-print.svg';
-			};
+			}
 		};
 
 		/** ******************************************************************************
@@ -597,7 +597,7 @@ sntZestStation.controller('zsRootCtrl', [
 						// -- CICO-35215
 						// --  this should refresh all settings and bring zest station up to the latest version
 						// --  does not apply to the ChromeApp / iOS apps... only the zest station content
-					};
+					}
 
 				} else {
 					homeInActivityTimeInSeconds = homeInActivityTimeInSeconds+1;
@@ -708,7 +708,7 @@ sntZestStation.controller('zsRootCtrl', [
 					});
 				} else {
 					$scope.$broadcast('UID_FETCH_FAILED');
-				};
+				}
 			} else if (response.Command === 'cmd_eject_key_card') {
 				// ejectkey card callback
 				if (response.ResponseCode === 19) {
@@ -768,7 +768,7 @@ sntZestStation.controller('zsRootCtrl', [
 				$scope.socketOperator.EjectKeyCard();
 			} else {
 				// do nothing
-			};
+			}
 		});
 		/** ******************************************************************************
 		 *  Websocket actions related to keycard lookup

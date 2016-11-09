@@ -81,7 +81,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 			}
 			else{
 				$scope.callAPI(GwCheckinSrv.generateAuthToken, options);
-			};
+			}
 			
 		};
 
@@ -98,7 +98,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 				angular.forEach(response.results, function(value, key) {
 					if (value.reservation_status === 'RESERVED') {
 						reservations.push(value);
-					};
+					}
 				});
 				if (reservations.length === 0) { // No match
 					noMatchAction();
@@ -133,8 +133,8 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 						zestwebData.isPrecheckinOnly = (response.is_precheckin_only === "true" && reservation_data.reservation_status === 'RESERVED') ? true : false;
 						zestwebData.isAutoCheckinOn = (response.is_auto_checkin === "true") && zestwebData.isPrecheckinOnly;
 						generateAuthToken(reservation_data);
-					};
-				};
+					}
+				}
 
 			};
 			var onFailure = function(data) {
@@ -176,7 +176,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 					$modal.open(popupOptions);
 				}
 				
-			};
+			}
 		};
 
 		$scope.tryAgain = function() {

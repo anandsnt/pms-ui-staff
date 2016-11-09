@@ -38,7 +38,7 @@ angular.module('sntGuestWeb').service('GWBaseWebSrv2', ['$http', '$q', '$window'
  		}
  		else if(httpMethod === 'POST' || httpMethod === 'PUT') {
  			httpDict.data = params;
-  		};
+  		}
 
 		$http(httpDict).success(function(response, status) {
 	    	deferred.resolve(response);

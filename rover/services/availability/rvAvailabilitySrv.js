@@ -78,7 +78,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			outOfOrderRooms.push(outOfOrderRoomForADay);
 			reservedRooms.push(reservedRoomForADay);
 			availableRooms.push(availableRoomForADay);
-		};
+		}
 
 		// since occupancy data is from another API, results may have length  lesser/greater than availability
 		for(i = 0; i < occupancyDataFromAPI.results.length; i++) {
@@ -725,7 +725,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		var shallWeResolve = function() {
 			if ( count == 0 ) {
 				deferred.resolve();
-			};
+			}
 		};
 
 		var success = function() {

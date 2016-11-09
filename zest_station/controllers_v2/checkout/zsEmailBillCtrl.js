@@ -39,7 +39,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 			$scope.mode = !!$scope.email ? "EMAIL_BILL_GUEST_OPTIONS" : "EMAIL_BILL_EDIT_MODE";
 			if ($scope.mode === 'EMAIL_BILL_EDIT_MODE') {
 				$scope.focusInputField("email_text");
-			};
+			}
 
 		}();
 
@@ -103,7 +103,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 					} else {
 						console.warn('email is black listed, request different email address');
 						onBlackListedEmailFound();
-					};
+					}
 				},
 				failureCallBack: onValidationAPIFailure
 			};

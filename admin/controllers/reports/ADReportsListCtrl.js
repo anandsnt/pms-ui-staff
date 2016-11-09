@@ -17,7 +17,7 @@ admin.controller('ADReportsListCtrl', ['$scope', '$rootScope', 'reports', 'adRep
             if (e) {
                 e.preventDefault();
                 e.stopPropagation();
-            };
+            }
 
             // TODO: Fetch Data for the filters
 

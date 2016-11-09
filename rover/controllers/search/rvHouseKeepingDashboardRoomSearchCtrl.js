@@ -57,7 +57,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 			$_roomList = _.extend({}, data);
 		} else {
 			$_roomList = {};
-		};
+		}
 
 		// clear old results and update total counts
 		$scope.rooms         = [];
@@ -82,7 +82,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
   		}, 10);
 
 	  	RVHkRoomStatusSrv.currentFilters.page = $_page;
-	  };
+	  }
 
 
 
@@ -101,13 +101,13 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 	  		} else {
 	  			$scope.rooms = [];
 	  			_hideLoader();
-	  		};
+	  		}
 
 	  		function _firstInsert () {
 	  			for ( i = 0; i < _processCount; i++ ) {
 	  				_roomCopy = _.extend( {}, $_roomList.rooms[i] );
 	  				$scope.rooms.push( _roomCopy );
-	  			};
+	  			}
 
 	  			// if   : more than '_minCount' results -> load '_processCount' to last
 	  			// else : hide loader
@@ -115,24 +115,24 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 	  				$timeout(_secondInsert, 100);
 	  			} else {
 	  				_hideLoader();
-	  			};
-	  		};
+	  			}
+	  		}
 
 	  		function _secondInsert () {
 	  			for ( i = _processCount; i < $scope.uiTotalCount; i++ ) {
 	  				_roomCopy = _.extend( {}, $_roomList.rooms[i] );
 	  				$scope.rooms.push( _roomCopy );
-	  			};
+	  			}
 
 	  			_hideLoader();
-	  		};
+	  		}
 
 	  		function _hideLoader () {
 	  			$_roomList = {};
 	  			refreshScroller();
 	  			$scope.$emit( 'hideLoader' );
-	  		};
-		};
+	  		}
+		}
 
 
 
@@ -141,7 +141,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 	  	$scope.loadNextPage = function() {
 			if ( $scope.disableNextBtn ) {
 				return;
-			};
+			}
 
 			$_page++;
 			RVHkRoomStatusSrv.currentFilters.page = $_page;
@@ -152,7 +152,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 	  	$scope.loadPrevPage = function() {
 			if ($scope.disablePrevBtn) {
 				return;
-			};
+			}
 
 			$_page--;
 			RVHkRoomStatusSrv.currentFilters.page = $_page;
@@ -166,7 +166,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 
 		function $_callRoomsApi() {
 			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {}, $_fetchRoomListCallback);
-		};
+		}
 
 
 
@@ -188,15 +188,15 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 			if ( $rootScope.isSingleDigitSearch ) {
 				if (forced || $scope.query !== $_lastQuery) {
 					_makeCall();
-				};
+				}
 			} else {
 				if ( forced ||
 						($scope.query.length <= 2 && $scope.query.length < $_lastQuery.length) ||
 						($scope.query.length > 2 && $scope.query !== $_lastQuery)
 				) {
 					_makeCall();
-				};
-			};
+				}
+			}
 		};
 
 		$scope.filterByQuery = _.throttle($_filterByQuery, 1000, { leading: false });
@@ -218,7 +218,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 		function $_resetPageCounts () {
 			$_page = $_defaultPage;
 			RVHkRoomStatusSrv.currentFilters.page = $_page;
-		};
+		}
 
 
 

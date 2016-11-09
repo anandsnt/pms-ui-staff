@@ -36,11 +36,11 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 		var refreshScrollers = function() {
 			if (!!mainCtrlScope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL)) {
 				$scope.refreshScroller(LEFT_PANE_SCROLL);
-			};
+			}
 
 			if (!!mainCtrlScope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL)) {
 				$scope.refreshScroller(RIGHT_PANE_SCROLL);
-			};
+			}
 		};
 
 		var setupScrollListner = function() {
@@ -62,7 +62,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 				setupScrollListner();
 			} else {
 				$timeout(isScrollReady, 1000);
-			};
+			}
 		};
 
 		isScrollReady();
@@ -102,7 +102,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 		$scope.$watch('uiFilter.showRevenue', function(newValue) {
 			if (false == newValue && !$scope.uiFilter.showAvailability) {
 				$scope.uiFilter.showAvailability = true;
-			};
+			}
 
 			$scope.$emit('showLoader');
 			$timeout(reInit, 300);
@@ -180,7 +180,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 							isRateType: isRateType
 						});
 					}
-				};
+				}
 
 				// TODO: If user has opted to show addon revenue, add that as a column
 				if (isPastDay && $scope.chosenReport.chosenOptions['include_addon_revenue'] && $scope.uiFilter.showRevenue) {
@@ -232,7 +232,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 				headers = ['FORECAST', 'ADR'];
 			} else if ($scope.uiFilter.showAvailability && !$scope.uiFilter.showRevenue) {
 				headers = ['ROOMS', 'AVAILABLE_ROOMS'];
-			};
+			}
 
 			$scope.colSpan = headers.length;
 
@@ -315,19 +315,19 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 				React.createElement(DPContent, props),
 				document.getElementById('daily-production-render')
 			);
-		};
+		}
 
 		function init(argument) {
 			processData();
 			renderReact();
-		};
+		}
 
 		init();
 
 		function reInit(argument) {
 			processData();
 			renderReact();
-		};
+		}
 
 
 

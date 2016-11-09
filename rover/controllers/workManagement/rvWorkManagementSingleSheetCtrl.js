@@ -20,7 +20,7 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 				};
 
 				$scope.saveWorkSheet();
-			};
+			}
 		});
 
 
@@ -264,7 +264,7 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 				$window.print();
 				if ( sntapp.cordovaLoaded ) {
 					cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-				};
+				}
 			}, 100);
 
 			/*
@@ -328,10 +328,10 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 					// delay are for avoiding collisions
 					if ( options && $scope[options.callNextMethod] ) {
 						$timeout($scope[options.callNextMethod], 50);
-					};
+					}
 					if ( $_shouldSaveFirst && !!$_afterSave ) {
 						$timeout($_afterSave, 60);
-					};
+					}
 				},
 				onSaveSuccess = function(data) {
 					saveCount--;
@@ -340,7 +340,7 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 						$scope.clearErrorMessage();
 
 						afterAPIcall();
-					};
+					}
 				},
 				onSaveFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
@@ -349,7 +349,7 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 					if ( saveCount === 0 ) {
 						$scope.$emit("hideLoader");
 						afterAPIcall();
-					};
+					}
 				};
 
 			if (!worktypeId) {
@@ -385,7 +385,7 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 						worktypesSet[room.work_type_id.toString()].push(room);
 					} else {
 						worktypesSet[worktypeId.toString()].push(room);
-					};
+					}
 				});
 
 				// loop each worktypeSet
@@ -414,7 +414,7 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 
 						// increment API call count
 						saveCount++;
-					};
+					}
 				});
 			} else {
 				_.each(worktypesSet, function(set, key) {
@@ -428,7 +428,7 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 						}, onSaveSuccess, onSaveFailure);
 				});
 				afterAPIcall();
-			};
+			}
 		};
 
 
@@ -461,7 +461,7 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 					oldWorkTypeId: oldVal,
 					callNextMethod: 'onWorkTypeChange'
 				});
-			};
+			}
 		});
 
 		$scope.onWorkTypeChange = function() {
@@ -474,7 +474,7 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 					oldUserId: oldVal,
 					callNextMethod: 'onEmployeeChange'
 				});
-			};
+			}
 		});
 
 		$scope.onEmployeeChange = function(options) {

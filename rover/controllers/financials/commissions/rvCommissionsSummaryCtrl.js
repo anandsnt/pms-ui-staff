@@ -95,26 +95,26 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         if($scope.filterData.page > $scope.commissionsData.total_results/$scope.filterData.perPage) {
             return true;
         }else{
-            return false;};
+            return false;}
     };
     $scope.printButtonClick = function() {
         $timeout(function() {
             $window.print();
             if ( sntapp.cordovaLoaded ) {
                 cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-            };
+            }
         }, 100);
     };
     $scope.navigateToTA =function(account) {
         if(account.is_commission_on) {
             $state.go('rover.companycarddetails', {id: account.id, type: 'TRAVELAGENT', origin: 'COMMISION_SUMMARY'});
-        };
+        }
     };
     $scope.isPrevButtonDisabled = function() {
         if($scope.filterData.page ==1) {
             return true;
         }else{
-            return false;};
+            return false;}
     };
 
     var init = function() {

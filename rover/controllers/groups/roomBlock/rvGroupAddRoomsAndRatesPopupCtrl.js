@@ -67,7 +67,7 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 			if ($scope.selectedRoomTypeAndRates.length === 0) {
 				$scope.selectedRoomTypeAndRates = [];
 				$scope.selectedRoomTypeAndRates.push(util.deepCopy($scope.groupConfigData.summary.selected_room_types_and_rates[0]));
-			};
+			}
 
 			// adding currency symbol to best available rate
 			$scope.selectedRoomTypeAndRates = _.map($scope.selectedRoomTypeAndRates, function(row) {

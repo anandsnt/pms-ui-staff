@@ -34,9 +34,9 @@ sntRover.controller('RVComparisonReportCtrl', [
 				} else if ( !!results[i]['is_static'] ) {
 					processed = postProcess(results[i]);
 					$scope.staticEntries.push( processed );
-				};
-			};
-		};
+				}
+			}
+		}
 
 		function postProcess (entry) {
 			switch ( entry.section ) {
@@ -62,10 +62,10 @@ sntRover.controller('RVComparisonReportCtrl', [
 				default:
 					// no op
 					break;
-			};
+			}
 
 			return entry;
-		};
+		}
 
 		init();
 

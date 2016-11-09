@@ -570,7 +570,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				// only if there are any changes
 				if ( $scope.shouldShowDiscardButton() ) {
 					$scope.clickedOnDiscardButton();
-				};
+				}
 
 				$scope.gridViewTemplateUrl = $scope.getGridViewTemplateurl($scope.activeGridView);
 
@@ -728,7 +728,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 			if ( !(isRoomTypeOverbooked || isHouseOverbooked) ) {
 				return false;
-			};
+			}
 
 			// show appropriate overbook message.
 			if (isHouseOverbooked && isRoomTypeOverbooked && canOverBookBoth) {
@@ -743,7 +743,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			// Overbooking occurs and has no permission.
 			else {
 				return "NO_PERMISSION";
-			};
+			}
 
 		};
 
@@ -1317,13 +1317,13 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 			if ( '' == days || isNaN(value) ) {
 				return;
-			};
+			}
 
 			_.each($scope.allotmentConfigData.roomblock.selected_room_types_and_bookings, function(each) {
 				if ( each.hasOwnProperty('dates') && each['dates'][index] ) {
 					each['dates'][index]['release_days'] = value;
 					$scope.releaseDaysEdited = true;
-				};
+				}
 			});
 		};
 
@@ -1336,7 +1336,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 			if ( '' == days || isNaN(value) ) {
 				return;
-			};
+			}
 			var data = {
 				value: days,
 				isReleaseDays: true

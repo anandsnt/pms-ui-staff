@@ -528,7 +528,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		      }, 1000); // Word around.
 		    } else {
 		      $translate.use('EN');
-		    };
+		    }
 		    // to hide eod submenu conditionally
 			$rootScope.is_auto_change_bussiness_date = data.business_date.is_auto_change_bussiness_date;
 

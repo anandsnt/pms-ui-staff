@@ -86,7 +86,7 @@ sntRover.controller('RVOutsidePostChargeController',
 				} else {
 					return true;
 				}
-			};
+			}
 
 			$scope.searchForResults = function() {
 				$scope.showNoMatches = false;
