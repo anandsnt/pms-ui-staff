@@ -391,6 +391,13 @@ sntZestStation.controller('zsRootCtrl', [
 			}
 
 		};
+
+
+		$scope.quickSetHotelTheme = function(theme){
+			$scope.$broadcast('QUICK_SET_HOTEL_THEME',theme);
+		};
+
+
 		/**
 		 * SVGs are ng-included inside HTML
 		 **/
@@ -480,53 +487,109 @@ sntZestStation.controller('zsRootCtrl', [
 				$scope.iconsPath = '/assets/zest_station/css/icons/yotel';
 				$scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, false);
 			} else if (theme === 'fontainebleau') {
+				$scope.useNavIcons = true;
 				//nothing else
 			} else if (theme === 'epik'){
+				$scope.useNavIcons = true;
 				$scope.theme = theme;
 				$scope.iconsPath = '/assets/zest_station/css/icons/epik';//uses the same home icons as avenue
 				$scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true, true);//last arg, is to only show different icons on Home, other icons use default
 
 			} else if (theme === 'conscious') {
+				$scope.useNavIcons = true;
 				$scope.theme = theme;
 				$scope.iconsPath = '/assets/zest_station/css/icons/conscious';
 				$scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true);
 			} else if (theme === 'avenue') {
+				$scope.useNavIcons = true;
 				$scope.theme = theme;
 				$scope.iconsPath = '/assets/zest_station/css/icons/avenue';
 				$scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true, true);//last arg, is to only show different icons on Home, other icons use default
 
-			} else {
+			} else {//zoku and snt use default path
+				$scope.useNavIcons = true;
 				$scope.iconsPath = commonIconsPath;
+				$scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true);
 			}
 
 		});
+
+		$scope.$on('RUN_APPLY',function(){
+			$scope.$apply();
+			$scope.$digest();
+		});
+
 
 		/********************************************************************************
 		 *  User activity timer
 		 *  starts here
 		 ********************************************************************************/
 		var setAUpIdleTimer = function() {
-			var userInActivityTimeInSeconds = 0;
+			var userInActivityTimeInSeconds = 0,
+				workstationTimer = 0;
 			$scope.zestStationData.timeOut = false;
 
 			$scope.resetTime = function() {
-				homeInActivityTimeInSeconds = 0;
 				userInActivityTimeInSeconds = 0;
 				$scope.zestStationData.timeOut = false;
 			};
+			$scope.setTimerDebuggerOptions = function(timeUntilRefreshCheck, timeUntilLanguageResetCheck, userInActivityTimeInHomeScreenInSeconds){
+				$scope.timeUntilRefreshCheck = timeUntilRefreshCheck;
+				$scope.timeUntilLanguageResetCheck = timeUntilLanguageResetCheck;
+				$scope.userInActivityTimeInHomeScreenInSeconds = userInActivityTimeInHomeScreenInSeconds;
+				$scope.runDigestCycle();
+			};
 
 			function increment() {
-				var currentState = $state.current.name;
-				checkForEventsIfAtHomeScreen(currentState);
+				var currentState = $state.current.name,
+					idlePopupTime = $scope.zestStationData.idle_timer.prompt,
+					idleToHomeTime = $scope.zestStationData.idle_timer.max,
+					idleTimerEnabled = $scope.zestStationData.idle_timer.enabled,
+					getWorkstationsAtTime = 120;//refresh workstation data every 120seconds
+
+				/**
+				 * [CheckForWorkStationStatusContinously description]
+				 *  Check if admin has set back the status of the
+				 *  selected workstation to in order
+				 */
+
+				workstationTimer = workstationTimer + 1;
+				//Use Debugger Time If Enabled
+				if (zestSntApp.timeDebugger){
+					$scope.zestStationData.timeDebugger = 'true';
+					if (zestSntApp.workstationFetchTimer > 0){
+						getWorkstationsAtTime = zestSntApp.workstationFetchTimer;	
+					}
+					if (zestSntApp.idlePopupTimer > 0){
+						idlePopupTime = zestSntApp.idlePopupTimer;
+					}
+					if (zestSntApp.backToHomeTimer > 0){
+						idleToHomeTime = zestSntApp.backToHomeTimer;
+					}
+					$scope.idleToHomeTime = idleToHomeTime;
+					$scope.idlePopupTime = idlePopupTime;
+					$scope.userInActivityTimeInSeconds = userInActivityTimeInSeconds;
+					$scope.getWorkstationsAtTime = getWorkstationsAtTime;
+					$scope.workstationTimer = workstationTimer;
+					$scope.runDigestCycle();
+				} else {
+					getWorkstationsAtTime = 120;
+					$scope.zestStationData.timeDebugger = 'false';
+					//$scope.runDigestCycle();
+				}
+				if (workstationTimer >= getWorkstationsAtTime){
+					getAdminWorkStations();//fetch workstations with latest status details
+					workstationTimer = 0;
+				}
 				//the user inactivity actions need not be done when user in 
 				//home screen or in admin screen or in OOS screen
 				//include the states, which don't need the timeout to be handled 
 				//in the below condition
-				if ($scope.zestStationData.idle_timer.enabled === 'true' && !(currentState === 'zest_station.admin' || currentState === 'zest_station.home' || currentState === 'zest_station.outOfService')) {
+				if (idleTimerEnabled === 'true' && !(currentState === 'zest_station.admin' || currentState === 'zest_station.home' || currentState === 'zest_station.outOfService')) {
 					userInActivityTimeInSeconds = userInActivityTimeInSeconds + 1;
 					//when user activity is not recorded for more than idle_timer.prompt
 					//time set in admin, display inactivity popup
-					if (userInActivityTimeInSeconds >= $scope.zestStationData.idle_timer.prompt) {
+					if (userInActivityTimeInSeconds >= idlePopupTime) {
 						if (currentState === 'zest_station.checkInSignature' || currentState === 'zest_station.checkInCardSwipe') {
 							$scope.$broadcast('USER_ACTIVITY_TIMEOUT');
 						} else {
@@ -539,7 +602,7 @@ sntZestStation.controller('zsRootCtrl', [
 					}
 					//when user activity is not recorded for more than idle_timer.max
 					//time set in admin, got to home page
-					if (userInActivityTimeInSeconds >= $scope.zestStationData.idle_timer.max && currentState !== 'zest_station.checkInSignature' && currentState !== 'zest_station.checkInCardSwipe') {
+					if (userInActivityTimeInSeconds >= idleToHomeTime && currentState !== 'zest_station.checkInSignature' && currentState !== 'zest_station.checkInCardSwipe') {
 						$scope.hideKeyboardIfUp();
 
 						$state.go('zest_station.home');
@@ -556,90 +619,7 @@ sntZestStation.controller('zsRootCtrl', [
 		};
 
 
-		/********************************************************************************
-		 *  User activity timer at home screen - 
-		 *   -- fire events when kiosk is in-service and not in-use by guest.
-		 *   --	 
-		 *
-		 *  Events include
-		 *   *Refresh-workstation --> Triggered from Hotel Admin - interfaces - workstation > toggle (Refresh Station)
-		 ********************************************************************************/
-		var checkForEventsIfAtHomeScreen = function(currentState){
-			console.log('homeInActivityTimeInSeconds: ',homeInActivityTimeInSeconds);
-			if (currentState !== 'zest_station.home'){
-				homeInActivityTimeInSeconds = 0;
-			} else {
-				if (homeInActivityTimeInSeconds >= 30){
-					//reset idle timer, then fire idle timer events
-					//Workstation trigger for Refresh Station is set to TRUE, --Refresh Station at next (idle) opportunity--
-					var station = getWorkStationSetting($rootScope.workstation_id);
-					//send back to workstation that kiosk is being/has been refreshed 
-					// --assumption is that two Zest Stations will be sharing a workstation, currently S69, that is not a logical setup
-					
-					//station.refresh_station = true;//TODO REMOVE THIS AND ADD FROM WORKSTATION API
-					if (station.refresh_station){
-						homeInActivityTimeInSeconds = 0;
-						//update the workstation to reflect the refresh has taken place
-						//call API to set workstation "station_refresh" to false, and note "last_refreshed"
-						refreshInProgress(station);
-						//just refreshes the browser, user should not have to re-login 
-						//-- CICO-35215
-						//--  this should refresh all settings and bring zest station up to the latest version
-						//--  does not apply to the ChromeApp / iOS apps... only the zest station content
-					};
 
-				} else {
-					homeInActivityTimeInSeconds = homeInActivityTimeInSeconds+1;
-				}	
-			}
-		}
-
-		var refreshInProgress = function(station){
-			console.log('Calling API to Reset (refresh_station) Flag for: ',station.name, ' - ',station.id);
-			var onSuccess = function(response) {
-				console.info('Successful Refresh of Station Triggered, turning off (Workstation) Trigger ');
-				initRefreshStation();
-			};
-			var onFail = function(response) {
-				console.warn('Manual Refresh Failed: ',response);
-			};
-			var options = {
-				params: {
-					'out_of_order_msg': station.out_of_order_msg,
-					'emv_terminal_id': station.emv_terminal_id,
-					'default_key_encoder_id': station.key_encoder_id,
-					'refresh_station': false,
-					'is_out_of_order': station.is_out_of_order,
-					'identifier': station.station_identifier,
-					'name': station.name,
-					'rover_device_id':station.rover_device_id,
-					'id': station.id
-				},
-				successCallBack: onSuccess,
-				failureCallBack: onFail,
-				'loader': 'none'
-			};
-			$scope.callAPI(zsGeneralSrv.refreshWorkStationInitialized, options);
-		}
-	 	var homeInActivityTimeInSeconds = 0;
-	 	var initRefreshStation = function(){
-	 		console.warn(':: Refreshing Station ::');
-	 		try{
-	 			storage.setItem(refreshedKey, 'true');
-	 		} catch(err){
-	 			console.log(err);
-	 		}
-	 		location.reload(true);
-	 	};
-		/**
-		 * [CheckForWorkStationStatusContinously description]
-		 *  Check if admin has set back the status of the
-		 *  selected workstation to in order
-		 */
-		var CheckForWorkStationStatusContinously = function() {
-			$scope.$emit('FETCH_LATEST_WORK_STATIONS');
-			$timeout(CheckForWorkStationStatusContinously, 120000);
-		};
 		/********************************************************************************
 		 *  User activity timer
 		 *  ends here
@@ -811,7 +791,7 @@ sntZestStation.controller('zsRootCtrl', [
 			//find workstation with the local storage data or from last fetched
 			var station;
 			if (id){
-				station = getWorkStationSetting(id);
+				station = $scope.getWorkStationSetting(id);
 			} else {
 			 	station = getSavedWorkStationObj(storedWorkStation);	
 			}
@@ -823,7 +803,7 @@ sntZestStation.controller('zsRootCtrl', [
 			}
 		};
 
-		var getWorkStationSetting = function(id){
+		$scope.getWorkStationSetting = function(id){
 			if (zsGeneralSrv.last_workstation_set.work_stations){
 				for (var i in zsGeneralSrv.last_workstation_set.work_stations){
 					if (zsGeneralSrv.last_workstation_set.work_stations[i].id === id){
@@ -954,13 +934,6 @@ sntZestStation.controller('zsRootCtrl', [
 			};
 			$scope.callAPI(zsGeneralSrv.fetchWorkStations, options);
 		};
-		/**
-		 *   When workstation is in OOS fetch status continously 
-		 *   to check if status has changed
-		 */
-		$scope.$on('FETCH_LATEST_WORK_STATIONS', function() {
-			getAdminWorkStations();
-		});
 
 
 		//store workstation status in localstorage
@@ -1104,7 +1077,6 @@ sntZestStation.controller('zsRootCtrl', [
 			$scope.zestStationData = zestStationSettings;
 			$scope.zestStationData.demoModeEnabled = 'false'; //demo mode for hitech, only used in snt-theme
 			$scope.zestStationData.isAdminFirstLogin = true;
-			CheckForWorkStationStatusContinously();
 			//$scope.zestStationData.checkin_screen.authentication_settings.departure_date = true;//left from debuggin?
 			setAUpIdleTimer();
 			$scope.zestStationData.workstationOooReason = "";

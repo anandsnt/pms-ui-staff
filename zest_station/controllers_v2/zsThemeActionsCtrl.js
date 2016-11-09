@@ -70,7 +70,20 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 		 *  Theme based actions ends here
 		 ********************************************************************************/
 
-
+		 $scope.$on('QUICK_SET_HOTEL_THEME', function(evt, theme){
+		 	console.log('Quick! Set theme to: ',theme);
+		 	var oldLink = $('link');
+		 	for (var i in oldLink){
+		 		if (oldLink[i].href){
+			 		if (oldLink[i].href.indexOf('.css') != -1){
+			 			oldLink[i].href = '';
+			 		}	
+		 		}
+		 	}
+		 	setHotelBasedTheme(theme);
+		 	$scope.$emit('updateIconPath', theme);
+		 	$scope.$emit('RUN_APPLY');
+		 });
 		var getHotelStationTheme = function() {
 			setHotelBasedTheme(zsGeneralSrv.hotelTheme);
 		}();

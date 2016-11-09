@@ -2,6 +2,13 @@
     <div id="loading-spinner"></div>
 </div>
 <span ng-show="zestStationData.demoModeEnabled == 'true'" class="demo-text">demo</span>
+<span ng-show="zestStationData.timeDebugger == 'true'" class="timer-debugger">
+    <br> <span>Fetch Workstation Data ({{workstationTimer}}/{{getWorkstationsAtTime}}) <br> </span>
+    <span>Language Reset ({{userInActivityTimeInHomeScreenInSeconds}}/{{timeUntilLanguageResetCheck}}) <br> </span>
+    <span>Refresh Station Check ({{userInActivityTimeInHomeScreenInSeconds}}/{{timeUntilRefreshCheck}}) <br> </span>
+    <span>Idle Time, Alert ({{userInActivityTimeInSeconds}}/{{idlePopupTime}}) <br> </span>
+    <span>Idle Time, Back to Home ({{userInActivityTimeInSeconds}}/{{idleToHomeTime}})</span>
+</span>
 <div ng-include="'/assets/partials_v2/zsTabletHeader.html'"></div>
 <!--PopUp For External webPage-->
 <div class="popup iframe-popup open" ng-if="showExternalWebPage">

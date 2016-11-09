@@ -178,19 +178,6 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             } else return true;
         };
 
-
-        this.isValidEmail = function(email) {
-            if (email === '') {
-                return false;
-            };
-            email = email.replace(/\s+/g, '');
-            if (that.ValidateEmail(email)) {
-                return false;
-            } else return true;
-
-        };
-
-
         this.tokenize = function(data) {
             var deferred = $q.defer();
             var url = '/staff/payments/tokenize';

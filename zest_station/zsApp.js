@@ -121,8 +121,68 @@ var GlobalZestStationApp = function() {
             }
             angular.element('#header').scope().$apply();
         }
-            
     }
+    this.debugTimers = function(workstationFetchTimer, languageResetTimer, refreshTimer, idlePopupTimer, backToHomeTimer){
+            if (arguments.length === 0 || workstationFetchTimer === false){//ie. debugTimers(false) or debugTimers() will turn off timer debugging
+                console.info('Please pass the timer values as an argument, ie. debugTimers(','workstationFetchTimer,', 
+                'languageResetTimer,', 
+                'refreshTimer,', 
+                'idlePopupTimer,', 
+                'backToHomeTimer )');  
+                console.info('Passing null, or empty string will assume default setting');
+                console.info(':: turning off timer debugger ::');
+                that.timeDebugger = false;
+                try {
+                    setTimeout(function(){
+                        //angular.element('#header').scope().$parent.runDigestCycle();
+                        angular.element('#header').scope().$parent.$digest();
+                    },500);
+
+                } catch (err){
+                    console.warn('unable to run digest ',err);
+                }
+                
+            } else {    
+                var isValidArg = function(a){
+                    return (typeof a === typeof 123 && a > 0);
+                }
+                if (typeof _ !== typeof undefined){
+                    if (isValidArg(workstationFetchTimer)){
+                        that.workstationFetchTimer = workstationFetchTimer;
+                        that.timeDebugger = true;
+                    }
+                    if (isValidArg(languageResetTimer)){
+                        that.languageResetTimer = languageResetTimer;
+                        that.timeDebugger = true;
+                    }
+                    if (isValidArg(refreshTimer)){
+                        that.refreshTimer = refreshTimer;
+                        that.timeDebugger = true;
+                    }
+                    if (isValidArg(idlePopupTimer)){
+                        that.idlePopupTimer = idlePopupTimer;
+                        that.timeDebugger = true;
+                    }
+                    if (isValidArg(backToHomeTimer)){
+                        that.backToHomeTimer = backToHomeTimer;
+                        that.timeDebugger = true;
+                    }
+                    console.info('Timers Set: (',' [ workstationFetchTimer:', that.workstationFetchTimer,
+                        '] [ languageResetTimer,', that.languageResetTimer,
+                        '] [ refreshTimer: ', that.refreshTimer,
+                        '] [ idlePopupTimer: ', that.idlePopupTimer,
+                        '] [ backToHomeTimer: ',that.backToHomeTimer,'] )');
+                } else {
+                    console.warn(':: debugger out of date ::');
+                }
+            }
+        return;
+    }
+    this.debugTheme = function(theme){
+        //thats right, quick-switching of themes...
+        console.warn('attempting to set to hotel theme: "',theme,'"');
+        angular.element('#header').scope().$parent.quickSetHotelTheme(theme);
+    };
     this.virtualKeyBoardEnabled = false;
 
     this.enableCardSwipeDebug = function(toggle) {

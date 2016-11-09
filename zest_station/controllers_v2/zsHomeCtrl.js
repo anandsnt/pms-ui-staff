@@ -67,43 +67,65 @@ sntZestStation.controller('zsHomeCtrl', [
 
 		/**************************************************************************************/
 		var userInActivityTimeInHomeScreenInSeconds = 0;
+		var atHomeView = function(){
+			return ($state.current.name === 'zest_station.home');
+		};
 
 		var setHomeScreenTimer = function() {
+			//time in seconds
+			var timeUntilRefreshCheck = 30,
+				timeUntilLanguageResetCheck = 120;
 
 			$scope.resetHomeScreenTimer = function() {
 				userInActivityTimeInHomeScreenInSeconds = 0;
 			};
 
-		var incrementHomeScreenTimer = function() {
-			//if by some reason, the timer is running even 
-			//after chaning state (we are clearing timer whenever we are
-			//changing state), we need to deactivate the timer.
-			if ($state.current.name === 'zest_station.home') {
-				userInActivityTimeInHomeScreenInSeconds++;
-			} else {
-				//if current state is not home, then 
-				//deactivate the timer
-				userInActivityTimeInHomeScreenInSeconds = 0;
-				clearInterval($scope.activityTimer);
-			}
-			//when user activity is not recorded for more than 120 secs
-			//translating to default lanaguage
-			if (userInActivityTimeInHomeScreenInSeconds >= 120 && $state.current.name === 'zest_station.home') {
-				var checkIfDefaultLanguagIsSet = true;//this need to checked as, apart from translating we are 
-				//highlighting active language buttons. We need not do that again and again , if we already have a 
-				//default language set.So on timer limit(120s), we need to check if the current language is default or not.
-				setToDefaultLanguage(checkIfDefaultLanguagIsSet);
-				$scope.runDigestCycle();
-				userInActivityTimeInHomeScreenInSeconds = 0;
-			} else {
-				//do nothing;
-			}
-		};
+			var incrementHomeScreenTimer = function() {
+				//if debugging options enabled, use those values instead
+				if (zestSntApp.timeDebugger){
+					if (zestSntApp.refreshTimer > 0){
+						timeUntilRefreshCheck = zestSntApp.refreshTimer;	
+					}
+					if (zestSntApp.languageResetTimer > 0){
+						timeUntilLanguageResetCheck = zestSntApp.languageResetTimer;	
+					}
+					$scope.setTimerDebuggerOptions(timeUntilRefreshCheck, timeUntilLanguageResetCheck, userInActivityTimeInHomeScreenInSeconds);
+				} else {
+					timeUntilLanguageResetCheck = 120;
+					timeUntilRefreshCheck = 30;
+				}
+				//if by some reason, the timer is running even 
+				//after chaning state (we are clearing timer whenever we are
+				//changing state), we need to deactivate the timer.
+				var atHome = atHomeView();
+				if (atHome) {
+					userInActivityTimeInHomeScreenInSeconds++;
+				} else {
+					//if current state is not home, then 
+					//deactivate the timer
+					userInActivityTimeInHomeScreenInSeconds = 0;
+					clearInterval($scope.activityTimer);
+				}
+				if (userInActivityTimeInHomeScreenInSeconds >= timeUntilRefreshCheck && atHome) {
+					checkIfWorkstationRefreshRequested();
+				}
+				//when user activity is not recorded for more than 120 secs
+				//translating to default lanaguage
+				if (userInActivityTimeInHomeScreenInSeconds >= timeUntilLanguageResetCheck && atHome) {
+					var checkIfDefaultLanguagIsSet = true;//this need to checked as, apart from translating we are 
+					//highlighting active language buttons. We need not do that again and again , if we already have a 
+					//default language set.So on timer limit(120s), we need to check if the current language is default or not.
+					setToDefaultLanguage(checkIfDefaultLanguagIsSet);
+					$scope.runDigestCycle();
+					userInActivityTimeInHomeScreenInSeconds = 0;
+				} else {
+					//do nothing;
+				}
+			};
 			$scope.activityTimer = setInterval(incrementHomeScreenTimer, 1000);
 		};
-
-		//deactivate the active activity timer on entering home page(inorder to avoid multiple timers 
-		//running at the same time, we will be start new timer)
+		//deactivate the active activity timer on entering home page (to avoid multiple timers 
+		// running at the same time, we will be start new timer)
 		try{
 			clearInterval($scope.activityTimer);
 		}catch(e){
@@ -135,6 +157,71 @@ sntZestStation.controller('zsHomeCtrl', [
 			$translate.use(langShortCode);
 			$scope.selectedLanguage = language;
 		};
+
+
+
+		/********************************************************************************
+		 *  User activity timer at home screen should trigger a refresh check periodically - 
+		 *   -- fire events when kiosk is in-service and not in-use by guest.
+		 *   --	 
+		 *
+		 *  Events include
+		 *   *Refresh-workstation --> Triggered from Hotel Admin - interfaces - workstation > toggle (Refresh Station)
+		 ********************************************************************************/
+		var checkIfWorkstationRefreshRequested = function(){
+				//Workstation trigger for Refresh Station is set to TRUE, --Refresh Station at next (idle) opportunity--
+				var station = $scope.getWorkStationSetting($rootScope.workstation_id);
+				//send back to workstation that kiosk is being/has been refreshed 
+				// --assumption is that two Zest Stations will be sharing a workstation, currently S69, that is not a logical setup
+				if (station.refresh_station){
+					station.refresh_station = false;//only trigger once
+					//update the workstation to reflect the refresh has taken place
+					//call API to set workstation "station_refresh" to false, and note "last_refreshed"
+					refreshInProgress(station);
+					//just refreshes the browser, user should not have to re-login 
+					//-- CICO-35215
+					//--  this should refresh all settings and bring zest station up to the latest version
+					//--  does not apply to refreshing the ChromeApp / iOS app versions... only the Zest Station content
+				};
+		}
+
+		var refreshInProgress = function(station){
+			console.log('Calling API to Reset (refresh_station) Flag for: ',station.name, ' - ',station.id);
+			var onSuccess = function(response) {
+				console.info('Successful Refresh of Station Triggered, turning off (Workstation) Trigger ');
+				initRefreshStation();
+			};
+			var onFail = function(response) {
+				console.warn('Manual Refresh Failed: ',response);
+			};
+			var options = {
+				params: {
+					'out_of_order_msg': station.out_of_order_msg,
+					'emv_terminal_id': station.emv_terminal_id,
+					'default_key_encoder_id': station.key_encoder_id,
+					'refresh_station': false,
+					'is_out_of_order': station.is_out_of_order,
+					'identifier': station.station_identifier,
+					'name': station.name,
+					'rover_device_id':station.rover_device_id,
+					'id': station.id
+				},
+				successCallBack: onSuccess,
+				failureCallBack: onFail,
+				'loader': 'none'
+			};
+			$scope.callAPI(zsGeneralSrv.refreshWorkStationInitialized, options);
+		}
+	 	var initRefreshStation = function(){
+	 		console.warn(':: Refreshing Station ::');
+	 		try{
+	 			storage.setItem(refreshedKey, 'true');
+	 		} catch(err){
+	 			console.log(err);
+	 		}
+	 		location.reload(true);
+	 	};
+
 
 		/**
 		 * [initializeMe description]
