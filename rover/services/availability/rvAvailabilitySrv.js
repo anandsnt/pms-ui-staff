@@ -52,7 +52,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		var totalRoomCount = availabilityAdditionalFromAPI.physical_count;
 		var currentRow = null;
 
-		for(var i = 0; i < availabilityAdditionalFromAPI.results.length; i++) {
+		for (var i = 0; i < availabilityAdditionalFromAPI.results.length; i++) {
 			currentRow = availabilityAdditionalFromAPI.results[i];
 
 			// date for th day
@@ -81,13 +81,13 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		}
 
 		// since occupancy data is from another API, results may have length  lesser/greater than availability
-		for(i = 0; i < occupancyDataFromAPI.results.length; i++) {
+		for (i = 0; i < occupancyDataFromAPI.results.length; i++) {
 			currentRow = occupancyDataFromAPI.results[i];
 			occupanciesActualForADay = escapeNull(currentRow.actual) === "" ? 0 : currentRow.actual;
 			occupanciesTargetedForADay = escapeNull(currentRow.target) === "" ? 0 : currentRow.target;
 			occupanciesActual.push(occupanciesActualForADay);
 			occupanciesTargeted.push(occupanciesTargetedForADay);
-			if(occupanciesTargetedForADay > 0) {
+			if (occupanciesTargetedForADay > 0) {
 				IsOccupancyTargetSetBetween = true;
 			}
 		}
@@ -321,7 +321,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			var roomTypeData = {};
 
 			_.map(roomAvailabilityAdditionalData.room_types, function(roomType) {
-				if(roomType.id === item.id) {
+				if (roomType.id === item.id) {
 					roomTypeData.name = roomType.name;
 					roomTypeData.is_suite = roomType.is_suite;
 				}
@@ -487,7 +487,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		rvBaseWebSrvV2.getJSON(url, payLoad).then(function(response) {
 			var BARs = [];
 
-			if(!that.data.gridData.additionalData) {
+			if (!that.data.gridData.additionalData) {
                 that.data.gridData.additionalData = {};
             }
 
@@ -658,11 +658,11 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			var date = tzIndependentDate(dayInfo.date);
 			// Set if the day is yesterday/today/tomorrow
 
-			if(date.getTime() ===  businessDate.getTime()) {
+			if (date.getTime() ===  businessDate.getTime()) {
 				dateDetails.day = "TODAY";
-			} else if(date.getTime() < businessDate.getTime()) {
+			} else if (date.getTime() < businessDate.getTime()) {
 				dateDetails.day = "YESTERDAY";
-			}else {
+			} else {
 				dateDetails.day = "TOMORROW";
 			}
 			houseDetails.dates.push(dateDetails);
@@ -816,11 +816,11 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
             rvBaseWebSrvV2.getJSON(url, dateRange).then(function(response) {
                 var roomTypeNames = [];
 
-                if(!that.data.gridData.additionalData) {
+                if (!that.data.gridData.additionalData) {
                     that.data.gridData.additionalData = {};
                 }
 
-                if(response.results.length > 0) {
+                if (response.results.length > 0) {
                     // Inorder to get the room type names in the order of display fetch the first result set
                     var firstDayRoomDetails = response.results[0].room_types,
                         idsInOrder = _.pluck(firstDayRoomDetails, 'id');
@@ -855,7 +855,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
             rvBaseWebSrvV2.getJSON(url, dateRange).then(function(response) {
                 var adultsChildrenCounts = [];
 
-                if(!that.data.gridData.additionalData) {
+                if (!that.data.gridData.additionalData) {
                     that.data.gridData.additionalData = {};
                 }
                 _.each(response.results, function(occupancy) {
@@ -879,7 +879,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
             var deferred = $q.defer(),
                 promises = [];
 
-            if(!that.data.gridData.additionalData || !that.data.gridData.additionalData.roomTypeWiseDetails) {
+            if (!that.data.gridData.additionalData || !that.data.gridData.additionalData.roomTypeWiseDetails) {
                 promises.push(that.getRoomsAvailability(dateRange));
             }
             promises.push(that.getGuestOccupancies(dateRange));

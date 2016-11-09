@@ -483,7 +483,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
                 $scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(currentRoom.rateTotal) + parseFloat(roomMetaData.addOnCumulative);
 
-                if(roomIndex === $scope.reservationData.rooms.length -1) {
+                if (roomIndex === $scope.reservationData.rooms.length -1) {
                   $scope.reservationData.totalStayCost =  parseFloat($scope.reservationData.totalStayCost) +  parseFloat(roomMetaData.totalTaxes);
                   $scope.reservationData.totalTax = parseFloat(roomMetaData.taxesInclusiveExclusive);
                   $scope.reservationData.totalTaxAmount = parseFloat($scope.reservationData.totalTaxAmount) + parseFloat(roomMetaData.totalTaxes);
@@ -1519,7 +1519,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
                 $scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(room.rateTotal) + parseFloat(addOnCumulative);
 
-                if(roomNumber === $scope.reservationData.rooms.length -1) {
+                if (roomNumber === $scope.reservationData.rooms.length -1) {
                   $scope.reservationData.totalStayCost =  parseFloat($scope.reservationData.totalStayCost) +  parseFloat(roomMetaData.totalTaxes);
                   $scope.reservationData.totalTax = parseFloat(roomMetaData.taxesInclusiveExclusive);
                   $scope.reservationData.totalTaxAmount = parseFloat($scope.reservationData.totalTaxAmount) + parseFloat(roomMetaData.totalTaxes);

@@ -1,14 +1,14 @@
 sntRover.controller('contractEndCalendarCtrl', ['$rootScope', '$scope', 'dateFilter', 'ngDialog', function($rootScope, $scope, dateFilter, ngDialog) {
 	$scope.setUpData = function() {
 
-		if($scope.contractList.isAddMode) {
+		if ($scope.contractList.isAddMode) {
   			$scope.date = $scope.addData.end_date;
 	  	}
-	  	else{
-	  		if($scope.contractData.end_date) {
+	  	else {
+	  		if ($scope.contractData.end_date) {
 	 	      	$scope.date = $scope.contractData.end_date;
 		    }
-		    else{
+		    else {
 		    	// set end date as one day next to bussiness date
 		    	var myDate = tzIndependentDate($rootScope.businessDate);
 
@@ -26,10 +26,10 @@ sntRover.controller('contractEndCalendarCtrl', ['$rootScope', '$scope', 'dateFil
 		     yearRange: "0:+10",
 		     onSelect: function() {
 
-			    if($scope.contractList.isAddMode) {
+			    if ($scope.contractList.isAddMode) {
 			     	$scope.addData.end_date = $scope.date;
 			    }
-			    else{
+			    else {
 			    	$scope.contractData.end_date = $scope.date;
 			    }
 			        ngDialog.close();

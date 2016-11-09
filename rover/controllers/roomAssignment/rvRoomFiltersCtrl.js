@@ -18,11 +18,11 @@ sntRover.controller('RVRoomFiltersController', ['$scope', '$state', '$stateParam
 	*/
 	$scope.selectedFloorChanged = function() {
 		// resetting selected floor while selecting Show all check box
-		if($scope.data.isNoFloorSelected)
+		if ($scope.data.isNoFloorSelected)
 		{
 		$scope.data.selectedFloor='';
 		}
-		if($scope.data.selectedFloor!=='')
+		if ($scope.data.selectedFloor!=='')
 		{
 			$scope.$emit('roomFeaturesUpdated', $scope.roomFeatures);
 			var floorFilterdata ={
@@ -31,7 +31,7 @@ sntRover.controller('RVRoomFiltersController', ['$scope', '$state', '$stateParam
 			};
 
 			$scope.$parent.applyFloorFilter(floorFilterdata);
-		}else{
+		} else {
 			$scope.$emit('roomFeaturesUpdated', $scope.roomFeatures);
 			var floorFilterdata ={
 				"isNoFloorSelected": $scope.data.isNoFloorSelected,
@@ -45,9 +45,9 @@ sntRover.controller('RVRoomFiltersController', ['$scope', '$state', '$stateParam
 	* function to handle the filter selection
 	*/
 	$scope.setSelectionForFeature = function(group, feature) {
-			if(!$scope.roomFeatures[group].multiple_allowed) {
-				for(var i = 0; i < $scope.roomFeatures[group].items.length; i++) {
-					if(feature !== i) {
+			if (!$scope.roomFeatures[group].multiple_allowed) {
+				for (var i = 0; i < $scope.roomFeatures[group].items.length; i++) {
+					if (feature !== i) {
 						$scope.roomFeatures[group].items[i].selected = false;
 					}
 				}
@@ -59,8 +59,8 @@ sntRover.controller('RVRoomFiltersController', ['$scope', '$state', '$stateParam
 	* function to handle the filter clearing
 	*/
 	$scope.clearAllFilters = function() {
-				for(var i = 0; i < $scope.roomFeatures.length; i++) {
-					for(var j = 0; j < $scope.roomFeatures[i].items.length; j++) {
+				for (var i = 0; i < $scope.roomFeatures.length; i++) {
+					for (var j = 0; j < $scope.roomFeatures[i].items.length; j++) {
 						$scope.roomFeatures[i].items[j].selected = false;
 					}
 				}

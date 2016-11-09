@@ -32,21 +32,21 @@ var GridRowItem = React.createClass({
 			editing = edit.active,
 			creating;
 
-		if(editing && (edit.originalItem[meta_id] === nextProps.data[meta_id])) {
+		if (editing && (edit.originalItem[meta_id] === nextProps.data[meta_id])) {
 			this.setState({
 				editing: true,
 				resizing: true,
 				currentResizeItem: nextProps.currentResizeItem,
 				currentResizeItemRow: nextProps.currentResizeItemRow
 			});
-		} else if(!editing && nextProps.currentResizeItem && (nextProps.currentResizeItem[meta_id] === nextProps.data[meta_id])) {
+		} else if (!editing && nextProps.currentResizeItem && (nextProps.currentResizeItem[meta_id] === nextProps.data[meta_id])) {
 			this.setState({
 				editing: nextProps.edit.active,
 				resizing: true,
 				currentResizeItem: nextProps.currentResizeItem,
 				currentResizeItemRow: nextProps.currentResizeItemRow
 			});
-		} else if((!this.props.edit.active && this.props.currentResizeItem && !nextProps.currentResizeItem) || (this.props.edit.active && !editing)) {
+		} else if ((!this.props.edit.active && this.props.currentResizeItem && !nextProps.currentResizeItem) || (this.props.edit.active && !editing)) {
 			this.setState({
 				editing: false,
 				resizing: false,
@@ -64,7 +64,7 @@ var GridRowItem = React.createClass({
 			props   = this.props,
 			display = props.display;
 
-		switch(data[meta.status]) {
+		switch (data[meta.status]) {
 			case 'available':
 				caption = display.currency_symbol + ' ' + parseFloat(data[meta.rate]).toFixed(2) + ' | ' + data[meta.room_type];
 				break;
@@ -74,16 +74,16 @@ var GridRowItem = React.createClass({
 			default:
 				caption = data[meta.guest];
 				// in case of guest name is blank, we have to show account name againstg taht.
-				if(!caption) {
+				if (!caption) {
 					caption = data[meta.tr_ag_name] ? data[meta.tr_ag_name] : data[meta.cmp_name];
 				}
 
 				// if there is any accomoanying guests
-				if(!_.isEmpty(data[meta.accompanying_guests])) {
+				if (!_.isEmpty(data[meta.accompanying_guests])) {
 					caption = caption + "  |  ";
 					_.each(data[meta.accompanying_guests], function(element, index, list) {
 						caption += (element.guest_name);
-						if(index !== (list.length - 1)) {
+						if (index !== (list.length - 1)) {
 							caption += ", ";
 						}
 					});
@@ -103,12 +103,12 @@ var GridRowItem = React.createClass({
 		end_of_reservation = (data[meta.maintenance] * ms_fifteen_min + end_time_ms);
 
 		// (CICO-12358) when the reservation end is touching the end of the grid, we are hiding the house keeping task or showing the partial
-		if( end_of_reservation > display.x_p) {
+		if ( end_of_reservation > display.x_p) {
 			// reservation crossing the grid boundary we are hiding
-			if(end_time_ms > display.x_p) {
+			if (end_time_ms > display.x_p) {
 				style.display = 'none';
 			}
-			else{
+			else {
 				style.width = ((display.x_p - end_time_ms) * (display.px_per_ms)) + 'px';
 			}
 		}
@@ -167,7 +167,7 @@ var GridRowItem = React.createClass({
 				className += ' ' + data[m.status];
 				break;
 		}
-		if(data.cannot_move_room) {
+		if (data.cannot_move_room) {
 			className += ' locked';
 		}
 
@@ -202,7 +202,7 @@ var GridRowItem = React.createClass({
 			row_item_class 			= 'occupancy-block' + ( state.editing ? ' editing' : '')
 										+ (show_outstanding_indicator ? ' deposit-required': '');
 
-		if(state.editing) {
+		if (state.editing) {
 			start_time_ms = state.currentResizeItem[m.start_date];
 			end_time_ms = state.currentResizeItem[m.end_date];
 			left = (start_time_ms - x_origin) * px_per_ms + 'px';
@@ -211,13 +211,13 @@ var GridRowItem = React.createClass({
 
 		var display_start_time = (display.x_n instanceof Date ? display.x_n : new Date (display.x_n) );
 
-		if(!display_start_time.isOnDST() && start_date.isOnDST()) {
+		if (!display_start_time.isOnDST() && start_date.isOnDST()) {
 			var dateForCalculatingLeft = new Date(start_time_ms);
 
 			dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
 			left = (dateForCalculatingLeft.getTime() - x_origin) * px_per_ms + 'px';
 		}
-		else if(display_start_time.isOnDST() && !start_date.isOnDST()) {
+		else if (display_start_time.isOnDST() && !start_date.isOnDST()) {
 			var dateForCalculatingLeft = new Date(start_time_ms);
 
 			dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
@@ -225,7 +225,7 @@ var GridRowItem = React.createClass({
 			left = (dateForCalculatingLeft.getTime() - x_origin) * px_per_ms + 'px';
 
 			// The special case adjustment
-			if(dateForCalculatingLeft.isOnDST()) {
+			if (dateForCalculatingLeft.isOnDST()) {
 				left = (dateForCalculatingLeft.getTime() +3600000 - x_origin) * px_per_ms + 'px';
 			}
 		}

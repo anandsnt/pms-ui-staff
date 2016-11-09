@@ -1,9 +1,9 @@
 sntRover.controller('RVArTransactionsDatePickerController', ['$scope', '$rootScope', 'ngDialog', 'dateFilter', function($scope, $rootScope, ngDialog, dateFilter) {
 
-    if($scope.clickedOn === 'FROM') {
+    if ($scope.clickedOn === 'FROM') {
         $scope.date = $scope.filterData.fromDate ? tzIndependentDate($scope.filterData.fromDate) : tzIndependentDate($rootScope.businessDate);
     }
-    else if($scope.clickedOn === 'TO') {
+    else if ($scope.clickedOn === 'TO') {
         $scope.date = $scope.filterData.toDate ? tzIndependentDate($scope.filterData.toDate) : tzIndependentDate($rootScope.businessDate) ;
     }
 
@@ -13,11 +13,11 @@ sntRover.controller('RVArTransactionsDatePickerController', ['$scope', '$rootSco
             changeMonth: true,
             yearRange: "-5:+5", // Show 5 years in past & 5 years in future
             onSelect: function(dateText, inst) {
-                if($scope.clickedOn === 'FROM') {
+                if ($scope.clickedOn === 'FROM') {
                     $scope.filterData.fromDate = $scope.date;
                     $scope.$emit('fromDateChanged');
                 }
-                else if($scope.clickedOn === 'TO') {
+                else if ($scope.clickedOn === 'TO') {
                     $scope.filterData.toDate = $scope.date;
                     $scope.$emit('toDateChanged');
                 }

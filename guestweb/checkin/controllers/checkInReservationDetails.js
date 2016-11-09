@@ -7,14 +7,14 @@
 
 	$scope.pageValid = false;
 
-	if($rootScope.isCheckedin) {
+	if ($rootScope.isCheckedin) {
 		$state.go('checkinSuccess');
 	}
-	else{
+	else {
 		$scope.pageValid = true;
 	}
 
-	if($scope.pageValid) {
+	if ($scope.pageValid) {
 	// check if checkbox was already checked (before going to upgrades)
 	$scope.checked =  ($rootScope.ShowupgradedLabel) ? true:false;
 	$scope.reservationData = checkinDetailsService.getResponseData();
@@ -51,32 +51,32 @@
 	*/
 
 	$scope.checkInButtonClicked = function() {
-		if($scope.checked) {
-			if($rootScope.guestBirthdateOn && !$rootScope.isBirthdayVerified) {
+		if ($scope.checked) {
+			if ($rootScope.guestBirthdateOn && !$rootScope.isBirthdayVerified) {
 				$state.go('birthDateDetails');
 			}
-			else if($rootScope.guestPromptAddressOn && !$rootScope.isGuestAddressVerified) {
+			else if ($rootScope.guestPromptAddressOn && !$rootScope.isGuestAddressVerified) {
 				$state.go('promptGuestDetails');
 			}
-			else if(!$rootScope.guestAddressOn || $rootScope.isGuestAddressVerified) {
+			else if (!$rootScope.guestAddressOn || $rootScope.isGuestAddressVerified) {
 				// if room upgrades are available
-				if($rootScope.upgradesAvailable) {
+				if ($rootScope.upgradesAvailable) {
 					$state.go('checkinUpgrade');
 				}
-				else{
-					  if($rootScope.isAutoCheckinOn) {
+				else {
+					  if ($rootScope.isAutoCheckinOn) {
 					    $state.go('checkinArrival');
 					  }
-					  else{
+					  else {
 					    $state.go('checkinKeys');
 					  }
 				}
 			}
-			else{
+			else {
 					$state.go('guestDetails');	
 			}				
 		}
-		else{
+		else {
 			$modal.open($scope.opts); // error modal popup
 		}
 	};

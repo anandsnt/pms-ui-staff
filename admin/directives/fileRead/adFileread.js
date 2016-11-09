@@ -10,7 +10,7 @@ admin.directive('appFilereader', function($q) {
             emitData: '@emitData'
         }
         , link: function(scope, element, attrs, ngModel) {
-            if(!ngModel) {
+            if (!ngModel) {
                 return;
             }
 
@@ -21,7 +21,7 @@ admin.directive('appFilereader', function($q) {
 
                 $q.all(slice.call(element.files, 0).map(readFile))
                 .then(function(values) {
-                    if(element.multiple) {
+                    if (element.multiple) {
                         ngModel.$setViewValue(values);
                     }
                     else {
@@ -46,9 +46,9 @@ admin.directive('appFilereader', function($q) {
                     };
                     reader.readAsDataURL(file);
 
-                    if(typeof scope.fileNameKey !== 'undefined') {
+                    if (typeof scope.fileNameKey !== 'undefined') {
                         scope.$parent[scope.fileNameKey] = file.name;
-                    }else{
+                    } else {
                         scope.$parent.fileName = file.name;
                     }
                     scope.$apply();

@@ -20,7 +20,7 @@ sntRover.controller('RVCardOptionsCtrl',
                         if (swipedDataToRenderInScreen.swipeFrom === "guestCard") {
                             $rootScope.$broadcast('swipeAtGuestCard');// change tabs to [ credit cards & payments ]
                         }
-			if(swipedDataToRenderInScreen.swipeFrom === "guestCard") {
+			if (swipedDataToRenderInScreen.swipeFrom === "guestCard") {
 				$scope.showAddtoGuestCard = false;// hides redundancy
 			} else {
 				$scope.showAddtoGuestCard = true;
@@ -28,7 +28,7 @@ sntRover.controller('RVCardOptionsCtrl',
                         
                         
                         
-			if(swipedDataToRenderInScreen.swipeFrom === "guestCard" || swipedDataToRenderInScreen.swipeFrom === "stayCard") {
+			if (swipedDataToRenderInScreen.swipeFrom === "guestCard" || swipedDataToRenderInScreen.swipeFrom === "stayCard") {
                             // go straight to add new card - CICO-20531
                             setTimeout(function() {
                                 $scope.clickedAddNewCard();
@@ -38,7 +38,7 @@ sntRover.controller('RVCardOptionsCtrl',
 
 		$scope.refreshIframe = function() {
 			// in case of hotel with MLI iframe will not be present
-			if(!!$("#sixIframe").length) {
+			if (!!$("#sixIframe").length) {
 				var iFrame = document.getElementById('sixIframe');
 
 				iFrame.src = iFrame.src;
@@ -235,7 +235,7 @@ sntRover.controller('RVCardOptionsCtrl',
 		var buttonClass = "";
                 
                 if ($scope.depositBalanceMakePaymentData) {
-                    if(typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined") {
+                    if (typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined") {
 			buttonClass = ($scope.depositBalanceMakePaymentData.payment_type.length > 0 && $scope.validPayment) ? "green" :"grey";
                     } else {
                         if (!$scope.validPayment) {
@@ -301,9 +301,9 @@ sntRover.controller('RVCardOptionsCtrl',
 			iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" +firstName + "&card_holder_last_name=" + lastName + "&service_action=createtoken&time="+time;
 			var iFrame = document.getElementById('sixIframe');
 
-			try{
+			try {
 			 	iFrame.src = iFrameUrl;
-			}catch(ex) {
+			} catch (ex) {
 				// CICO-21044
 				// Hiding ugly exception thrown in console
 				// happens when MLI is shown and no sixpayment iFrame is configured
@@ -329,24 +329,24 @@ sntRover.controller('RVCardOptionsCtrl',
 		var time = new Date().getTime();
 
 		$scope.shouldShowAddNewCard = true;
-		if(typeof $scope.passData !== "undefined") {
+		if (typeof $scope.passData !== "undefined") {
 			var firstName = (typeof $scope.passData.details.firstName ==="undefined")?"":$scope.passData.details.firstName;
 			var lastName = (typeof $scope.passData.details.lastName ==="undefined")?"":$scope.passData.details.lastName;
 		}
 
 		$scope.iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" +firstName + "&card_holder_last_name=" + lastName + "&service_action=createtoken&time="+time;
-		if($rootScope.paymentGateway === "sixpayments") {
+		if ($rootScope.paymentGateway === "sixpayments") {
 			$scope.shouldShowAddNewCard = false;
 			var iFrame = $document.find("sixIframe");
 
 			iFrame.attr("src", $scope.iFrameUrl);
 			$scope.showAddtoGuestCard = false;
 		} else {
-			if(!$scope.isFromGuestCard) {
+			if (!$scope.isFromGuestCard) {
 				$scope.showAddtoGuestCard = true;
 			}
 		}
-		if(typeof $scope.passData !== "undefined" && !isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)) {
+		if (typeof $scope.passData !== "undefined" && !isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)) {
 			$scope.renderDataFromSwipe($scope.passData.details.swipedDataToRenderInScreen);
 		}
 		$scope.shouldShowIframe = false;
@@ -354,8 +354,8 @@ sntRover.controller('RVCardOptionsCtrl',
 
 		$scope.changeOnsiteCallIn = function() {
 			$scope.shouldShowIframe = !$scope.shouldShowIframe;
-			if(!$scope.isFromGuestCard) {
-				if($scope.shouldShowIframe) {
+			if (!$scope.isFromGuestCard) {
+				if ($scope.shouldShowIframe) {
 					$scope.showAddtoGuestCard = true;
 					$scope.refreshIframe();
 				} else {
@@ -408,7 +408,7 @@ sntRover.controller('RVCardOptionsCtrl',
 		$scope.getToken = function($event) {
 			$event.preventDefault();
                         
-			if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)) {
+			if (!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)) {
 				var swipeOperationObj = new SwipeOperation();
 				var swipedCardDataToSave = swipeOperationObj.createSWipedDataToSave($scope.passData.details.swipedDataToRenderInScreen);
 
@@ -464,13 +464,13 @@ sntRover.controller('RVCardOptionsCtrl',
             $scope.isSixPayPayment = function() {
                 if (($scope.paymentGateway === 'sixpayments' && $scope.addmode) || $scope.isManual) {
                     return true; 
-                }else return false;
+                } else return false;
             };
 	    $scope.cancelCardSelection = function() {
-	    	if(!$rootScope.isStandAlone) {
+	    	if (!$rootScope.isStandAlone) {
 	    		ngDialog.close();
 	    	}
-	    	else{
+	    	else {
 	    		$scope.$emit('cancelCardSelection');
 	    		$scope.cardselectedIndex = -1;
 	    		$scope.refreshIframe();

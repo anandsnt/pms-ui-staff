@@ -26,7 +26,7 @@ login.controller('loginRootCtrl', ['$scope', function($scope) {
 login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', function($scope, loginSrv, $window, $state, resetSrv) {
 	 $scope.data = {};
 
-	 if(localStorage.email) {
+	 if (localStorage.email) {
 	 	$scope.data.email = localStorage.email;
                 document.getElementById("password").focus();
 
@@ -47,7 +47,7 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
 	 		// Clear all session storage contents. We are starting a new session.
         	var i = sessionStorage.length;
 
-		 	while(i--) {
+		 	while (i--) {
 		 	  	var key = sessionStorage.key(i);
 
 		 	  	sessionStorage.removeItem(key);
@@ -55,16 +55,16 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
 
 			try {
 				localStorage.email = $scope.data.email;
-			} catch(e) {
+			} catch (e) {
 				console.log('ignoring a problem occured while setting item using localStorage');
 			}
 
-		 	if(data.token!=='') {
+		 	if (data.token!=='') {
 		 		$state.go('resetpassword', {token: data.token, notifications: data.notifications});
 		 	}
 		 	else {
 	            $scope.hasLoader = true;
-	            if(data.is_sp_admin === true) {
+	            if (data.is_sp_admin === true) {
 	                // we need to show the animation before redirecting to the url, so introducing a timeout there
 	                setTimeout(function() {
 	                    $state.go('selectProperty');
@@ -81,7 +81,7 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
 		 	}
         };
 	 	
-        if(sntapp.loginUpdate != null) {
+        if (sntapp.loginUpdate != null) {
 	        /**
 	        * Passing user Login ID to native, for debugging on ipads
 	        */
@@ -99,7 +99,7 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
 	        sntapp.loginUpdate.setUserId(options);
 	        /** END
         	* Passing user login to native, for debugging  */
-        }else{
+        } else {
         	/**
 	        * There is no native component, so just move to rover without passing Login ID.
 	        */
@@ -153,7 +153,7 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
         $scope.successMessage = "";
 	 	var errorMessage = ["Please enter your Login email address"];
 
-	 	if($scope.data.email === "") {
+	 	if ($scope.data.email === "") {
 	 		$scope.errorMessage = errorMessage;
 	 	} else {
 	 		var dataToPost = {"email": $scope.data.email};
@@ -171,7 +171,7 @@ login.controller('resetCtrl', ['$scope', 'resetSrv', '$window', '$state', '$stat
 	 $scope.data = {};
 	 $scope.data.token = $stateParams.token;
 
-	 if($stateParams.notifications.count !== "") {
+	 if ($stateParams.notifications.count !== "") {
 	 	$scope.errorMessage = [$stateParams.notifications];
 	 } else {
 	 	$scope.errorMessage = "";
@@ -183,7 +183,7 @@ login.controller('resetCtrl', ['$scope', 'resetSrv', '$window', '$state', '$stat
 	  */
 	 $scope.successCallback = function(data) {
 	 	$scope.hasLoader = false;
-	 	if(data.is_sp_admin === true) {
+	 	if (data.is_sp_admin === true) {
             // we need to show the animation before redirecting to the url, so introducing a timeout there
             setTimeout(function() {
                 $state.go('selectProperty');
@@ -235,7 +235,7 @@ login.controller('activateCtrl', ['$scope', 'resetSrv', '$window', '$state', '$s
 	  */
 	 $scope.successCallback = function(data) {
 	 	$scope.hasLoader = false;
-	 	if(data.is_sp_admin === true) {
+	 	if (data.is_sp_admin === true) {
             // we need to show the animation before redirecting to the url, so introducing a timeout there
             setTimeout(function() {
                 $state.go('selectProperty');
@@ -280,7 +280,7 @@ login.controller('activateCtrl', ['$scope', 'resetSrv', '$window', '$state', '$s
         var alphanumeric = function(str) {
             var letterNumber = /^.*(?=.{8,})(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%]+$/;// at least 1 letter, least 1 number, some special characters [ !@#$% ] allowed
 
-            if(str.match(letterNumber)) {
+            if (str.match(letterNumber)) {
               return true;
             } else {
               return false;
@@ -300,7 +300,7 @@ login.controller('activateCtrl', ['$scope', 'resetSrv', '$window', '$state', '$s
 login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', function($scope, loginSrv, $window, $state, resetSrv) {
         $scope.data = {};
 
-        if(localStorage.email) {
+        if (localStorage.email) {
                $scope.data.email = localStorage.email;
                document.getElementById("password").focus();
 
@@ -315,14 +315,14 @@ login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state',
 	 	// Clear all session storage contents. We are starting a new session.
 	 	var i = sessionStorage.length;
 
-	 	while(i--) {
+	 	while (i--) {
 	 	  	var key = sessionStorage.key(i);
 
 	 	  	sessionStorage.removeItem(key);
 	 	}
 
 	 	localStorage.email = $scope.data.email;
-	 	if(data.token!=='') {
+	 	if (data.token!=='') {
 	 		$state.go('resetpassword', {token: data.token, notifications: data.notifications});
 	 	} else {
                         $scope.$emit("signingIn");

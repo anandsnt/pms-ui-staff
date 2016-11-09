@@ -391,7 +391,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 		};
 
 		$scope.continueWithPrint = function () {
-			switch( $scope.printLevel.value ) {
+			switch ( $scope.printLevel.value ) {
 				case 'GROUP':
 					$scope.openGroup = true;
 					break;

@@ -45,9 +45,9 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
     $scope.isPrintClicked = false;
 
     var retrieveCashierName = function() {
-        if($scope.data.filterData.selectedCashier !== "") {
+        if ($scope.data.filterData.selectedCashier !== "") {
             angular.forEach($scope.data.filterData.cashiers, function(item, index) {
-                if(item.id === $scope.data.filterData.selectedCashier) {
+                if (item.id === $scope.data.filterData.selectedCashier) {
                    $scope.data.selectedCashier = item.name;
                 }
             });
@@ -85,7 +85,7 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
     // Filter by Logged in user id.
     var filterByLoggedInUser = function() {
         angular.forEach($scope.data.filterData.employees, function(item, index) {
-            if(item.id === $scope.data.filterData.loggedInUserId ) {
+            if (item.id === $scope.data.filterData.loggedInUserId ) {
                 item.checked = true;
                 $scope.data.filterData.isSelectButtonActive = true;
                 $scope.clickedSelectButton();
@@ -107,7 +107,7 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
         var flag = true;
 
         angular.forEach($scope.data.filterData.departments, function(item, index) {
-            if(item.checked) {
+            if (item.checked) {
                 flag = false;
             }
         });
@@ -115,10 +115,10 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
     };
 
     var getSelectButtonStatus = function() {
-        if(isAllEmployeesUnchecked() && isAllDepartmentsUnchecked()) {
+        if (isAllEmployeesUnchecked() && isAllDepartmentsUnchecked()) {
             $scope.data.filterData.isSelectButtonActive = false;
         }
-        else{
+        else {
             $scope.data.filterData.isSelectButtonActive = true;
         }
     };
@@ -142,7 +142,7 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
         var flag = true;
 
         angular.forEach($scope.data.filterData.employees, function(item, index) {
-            if(item.checked) {
+            if (item.checked) {
                 flag = false;
             }
         });
@@ -169,7 +169,7 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
     	$scope.data.filterData.departments[index].checked = !$scope.data.filterData.departments[index].checked;
         getSelectButtonStatus();
 
-        if(isAllDepartmentsUnchecked()) {
+        if (isAllDepartmentsUnchecked()) {
             $scope.selectAllDepartment();
         }
         else {
@@ -191,7 +191,7 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
         $scope.data.selectedDepartmentList = [];
         $scope.data.selectedDepartmentName = [];
         angular.forEach($scope.data.filterData.departments, function(item, index) {
-            if(item.checked) {
+            if (item.checked) {
                 $scope.data.selectedDepartmentList.push(item.id);
                 $scope.data.selectedDepartmentName.push(item.name);
                 filterTitle = item.name;
@@ -202,7 +202,7 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
         $scope.data.selectedEmployeeList = [];
         $scope.data.selectedEmployeesName = [];
         angular.forEach($scope.data.filterData.employees, function(item, index) {
-            if(item.checked) {
+            if (item.checked) {
                 $scope.data.selectedEmployeeList.push(item.id);
                 $scope.data.selectedEmployeesName.push(item.name);
                 filterTitle = item.name;
@@ -210,15 +210,15 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
         });
 
 
-        if(($scope.data.selectedDepartmentList.length + $scope.data.selectedEmployeeList.length) > 1 ) {
+        if (($scope.data.selectedDepartmentList.length + $scope.data.selectedEmployeeList.length) > 1 ) {
             $scope.data.filterTitle = "Multiple";
         }
-        else if( ($scope.data.selectedDepartmentList.length === 0) && ($scope.data.selectedEmployeeList.length === 0) ) {
+        else if ( ($scope.data.selectedDepartmentList.length === 0) && ($scope.data.selectedEmployeeList.length === 0) ) {
             $scope.data.filterTitle = "All Departments";
             $scope.data.selectedDepartmentName = [];
             $scope.data.selectedDepartmentName.push('ALL');
         }
-        else{
+        else {
             $scope.data.filterTitle = filterTitle;
         }
 
@@ -231,13 +231,13 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
     // On selecting select button.
     $scope.clickedSelectButton = function() {
 
-        if($scope.data.filterData.isSelectButtonActive) {
+        if ($scope.data.filterData.isSelectButtonActive) {
             setupDeptAndEmpList();
             $scope.data.isActiveRevenueFilter = false; // Close the entire filter box
         }
     };
 
-    if( $stateParams.id === 'CASHIER' ) {
+    if ( $stateParams.id === 'CASHIER' ) {
         // if we come from the cashier scenario, we should not display the summary screen at all
         $scope.data.isShowSummaryTab = false;
         // 1. Go to Front Office -> Cashier
@@ -254,7 +254,7 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
             filterByLoggedInUser();
         }, 2000);
     }
-    else{
+    else {
         // 2. Go to Financials -> Journal.
         // a) Upon logging in, default Tab should be =>
         // REVENUE (If Hourly) or SUMMARY.
@@ -270,7 +270,7 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
         $scope.data.cashierDate = $filter('date')(yesterday, 'yyyy-MM-dd');
         $scope.data.summaryDate = $filter('date')(yesterday, 'yyyy-MM-dd');
         // CICO-20294 : Hide summary tab if the reservation is of type Hourly.
-        if($rootScope.isHourlyRateOn) $scope.data.isShowSummaryTab = false;
+        if ($rootScope.isHourlyRateOn) $scope.data.isShowSummaryTab = false;
     }
 
     /** Employee/Departments Filter ends here .. **/
@@ -295,13 +295,13 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
 
     $scope.activatedTab = function(tabName) {
     	$scope.data.activeTab = tabName;
-    	if(tabName === 'REVENUE') {
+    	if (tabName === 'REVENUE') {
             $rootScope.$broadcast('REFRESHREVENUECONTENT');
         }
-    	else if(tabName === 'CASHIER') {
+    	else if (tabName === 'CASHIER') {
             $scope.$broadcast('cashierTabActive');
         }
-    	else if(tabName === 'PAYMENTS') {
+    	else if (tabName === 'PAYMENTS') {
             $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
         }
         else if (tabName === 'SUMMARY') {
@@ -316,7 +316,7 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
 
         var returnData = data;
 
-        if((data === "") || (typeof data === 'undefined') || (data === null)) {
+        if ((data === "") || (typeof data === 'undefined') || (data === null)) {
             returnData = '-';
         }
 
@@ -333,7 +333,7 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
 
     /* To PRINT Summary Deatils */
     $scope.printSummary = function() {
-        if($scope.isDetailsSelected) {
+        if ($scope.isDetailsSelected) {
             $rootScope.$broadcast("INITIALIZESUMMARYDETAILS");
             $scope.isPrintClicked = true;
         } else {

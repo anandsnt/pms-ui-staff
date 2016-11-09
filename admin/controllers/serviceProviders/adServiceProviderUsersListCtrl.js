@@ -16,7 +16,7 @@ admin.controller('ADServiceProviderUserListCtrl', ['$scope', '$rootScope', '$q',
 
 		getParams.service_provider_id = $scope.serviceProviderId;		
 		var successCallbackFetch = function(data) {
-			if(data.status === "failure") {
+			if (data.status === "failure") {
 				$scope.errorMessage = data.errors;
 			}
 			$scope.currentClickedElement = -1;

@@ -106,7 +106,7 @@ angular.module('sntRover').service('RVBillinginfoSrv', ['$http', '$q', 'BaseWebS
 
 		var url = 'api/bill_routings/' + data.id + '/bills.json';
 
-		if(data.entity_type !== "") {
+		if (data.entity_type !== "") {
 			url = 'api/bill_routings/' + data.id + '/bills.json?entity_type='+data.entity_type;
 		}
 		BaseWebSrvV2.getJSON(url).then(function(data) {

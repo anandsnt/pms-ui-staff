@@ -13,13 +13,13 @@ admin.controller('ADServiceProviderDetailsCtrl', [
     $scope.errorMessage = '';
     BaseCtrl.call(this, $scope);
 
-    if($rootScope.adminRole === "snt-admin") {
+    if ($rootScope.adminRole === "snt-admin") {
         $scope.isAdminSnt = true;
-        if($stateParams.action ==="addfromSetup") {
+        if ($stateParams.action ==="addfromSetup") {
             $scope.previousStateIsDashBoard = true;
         }
         // SNT Admin -To add new hotel view
-        if($stateParams.action === "add" || $stateParams.action ==="addfromSetup") {
+        if ($stateParams.action === "add" || $stateParams.action ==="addfromSetup") {
             $scope.title = "Add New Service Provider";
 
             var fetchSuccess = function(data) {
@@ -30,7 +30,7 @@ admin.controller('ADServiceProviderDetailsCtrl', [
             $scope.invokeApi(ADServiceProviderSrv.fetchServiceProviderAddData, {}, fetchSuccess);
         }
         // SNT Admin -To edit existing hotel view
-        else if($stateParams.action === "edit") {
+        else if ($stateParams.action === "edit") {
             $scope.isEdit = true;
             $scope.title = "Edit Service Provider";
             var fetchSuccess = function(data) {
@@ -48,14 +48,14 @@ admin.controller('ADServiceProviderDetailsCtrl', [
     */
     $scope.clickedSave = function() {
 
-        if($scope.isAdminSnt) {
+        if ($scope.isAdminSnt) {
             var requestData = $scope.data;
             var postSuccess = function() {
                 $scope.$emit('hideLoader');
                 $state.go("admin.serviceProviders");
             };
 
-            if($scope.isEdit) {
+            if ($scope.isEdit) {
                 requestData.id = $scope.id;
                 $scope.invokeApi(ADServiceProviderSrv.updateServiceProvider, $scope.data, postSuccess);
             }
@@ -68,7 +68,7 @@ admin.controller('ADServiceProviderDetailsCtrl', [
     *   Method to go back to previous state.
     */
     $scope.back = function() {
-        if($scope.isAdminSnt) {
+        if ($scope.isAdminSnt) {
             $state.go("admin.serviceProviders");
         }
     };

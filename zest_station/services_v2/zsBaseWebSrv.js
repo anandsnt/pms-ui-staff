@@ -57,7 +57,7 @@ if (status === 406) { // 406- Network error
 			httpDict.params = params;
 		} else if (httpMethod === 'POST' || httpMethod === 'PUT') {
 			httpDict.data = params;
-			if(typeof $rootScope.workstation_id !== 'undefined') {
+			if (typeof $rootScope.workstation_id !== 'undefined') {
 				httpDict.data.workstation_id = $rootScope.workstation_id;
 			}
 		}
@@ -113,7 +113,7 @@ if (status === 406) { // 406- Network error
 			httpDict.params = params;
 		} else if (httpMethod === 'POST' || httpMethod === 'PUT') {
 			httpDict.data = params;
-			if(typeof $rootScope.workstation_id !== 'undefined') {
+			if (typeof $rootScope.workstation_id !== 'undefined') {
 				httpDict.data.workstation_id = $rootScope.workstation_id;
 			}
 		}

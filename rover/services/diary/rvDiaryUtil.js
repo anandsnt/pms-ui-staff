@@ -60,7 +60,7 @@ sntRover
             ret.x_n_time = ret.x_n.toComponents().time.convertToReferenceInterval(15);
             ret.x_p_time = ret.x_p.toComponents().time.convertToReferenceInterval(15);
 
-            if(display) {
+            if (display) {
                 display.x_offset                = x_offset;
                 display.x_origin                = x_origin;
                 display.x_origin_start_time     = ret.x_origin_start_time;
@@ -88,9 +88,9 @@ sntRover
 				len = objects.length,
 				base = Object.create(null);
 
-			for(; i < len; i++) {
-				for(k in objects[i]) {
-					if(hops.call(objects[i], k)) {
+			for (; i < len; i++) {
+				for (k in objects[i]) {
+					if (hops.call(objects[i], k)) {
 						base[k] = objects[i][k];
 					}
 				}
@@ -104,8 +104,8 @@ sntRover
 
     		dest = [];
 
-    		for(var i = 0, len = src.length; i < len; i++) {
-    			if(_.isObject(src[i])) {
+    		for (var i = 0, len = src.length; i < len; i++) {
+    			if (_.isObject(src[i])) {
     				val = deepCopy(src[i]);
     			} else if (_.isArray(src[i])) {
     				val = copyArray(src[i]);
@@ -122,8 +122,8 @@ sntRover
     	shallowCopy = function(dest, src) {
     		var k;
 
-    		for(k in src) {
-    			if(hops.call(src, k) &&
+    		for (k in src) {
+    			if (hops.call(src, k) &&
     			   typeof src[k] !== 'function') {
     				dest[k] = src[k];
     			}
@@ -135,13 +135,13 @@ sntRover
 		deepCopy = function(obj) {
 			var newRes = {};
 
-				for(var k in  obj) {
-					if(hops.call(obj, k)) {
-						if(obj[k] instanceof Date) {
+				for (var k in  obj) {
+					if (hops.call(obj, k)) {
+						if (obj[k] instanceof Date) {
 							newRes[k] = new Date(obj[k].getTime());
-						} else if(_.isArray(obj[k])) {
+						} else if (_.isArray(obj[k])) {
 							newRes[k] = copyArray(obj[k]);
-						} else if(_.isObject(obj[k])) {
+						} else if (_.isObject(obj[k])) {
 							newRes[k] = deepCopy(obj[k]);
 						} else {
 							newRes[k] = obj[k];
@@ -155,8 +155,8 @@ sntRover
 		roomIndex = function(rooms, room) {
 			var idx = -1;
 
-			for(var i = 0, len = rooms.length; i < len; i++) {
-				if(rooms[i].id === room.id) {
+			for (var i = 0, len = rooms.length; i < len; i++) {
+				if (rooms[i].id === room.id) {
 					idx = i;
 					return idx;
 				}
@@ -168,8 +168,8 @@ sntRover
 		reservationIndex = function(room, reservation) {
 			var idx = -1, occupancy = room.occupancy;
 
-			for(var i = 0, len = occupancy.length; i < len; i++) {
-				if(occupancy[i].reservation_id === reservation.reservation_id) {
+			for (var i = 0, len = occupancy.length; i < len; i++) {
+				if (occupancy[i].reservation_id === reservation.reservation_id) {
 					idx = i;
 					return idx;
 				}
@@ -192,7 +192,7 @@ sntRover
 		updateReservation = function(room, reservation) {
 			var idx = reservationIndex(room, reservation);
 
-			if(idx > -1) {
+			if (idx > -1) {
 				room.occupancy[idx] = reservation;
 			}
 		};
@@ -200,7 +200,7 @@ sntRover
 		removeReservation = function(room, reservation) {
 			var idx = reservationIndex(room, reservation);
 
-			if(idx > -1) {
+			if (idx > -1) {
 				return room.occupancy.splice(idx, 1);
 			}
 
@@ -214,7 +214,7 @@ sntRover
 					return angular.lowercase(child[m_status]) === 'available';
 				};
 
-			for(var i = 0, len = rooms.length; i < len; i++) {
+			for (var i = 0, len = rooms.length; i < len; i++) {
 				room = rooms[i];
 				room.occupancy = _.reject(room.occupancy, reject);
 				room = deepCopy(room);
@@ -230,7 +230,7 @@ sntRover
 
 			oldRoom = copyRoom(room);
 
-			if(nextRoom.id !== room.id) {
+			if (nextRoom.id !== room.id) {
 				newRoom = copyRoom(nextRoom);
 
 				removeReservation(oldRoom, reservation);
@@ -241,11 +241,11 @@ sntRover
                 idxNewRoom = roomIndex(rooms, newRoom);
 
 
-                if(idxOldRoom > -1 && idxOldRoom < data.length) {
+                if (idxOldRoom > -1 && idxOldRoom < data.length) {
                     data[idxOldRoom] = oldRoom;
                 }
 
-                if(idxNewRoom > -1 && idxNewRoom < data.length) {
+                if (idxNewRoom > -1 && idxNewRoom < data.length) {
                     data[idxNewRoom] = newRoom;
                 }
 			} else {
@@ -256,8 +256,8 @@ sntRover
 		clearRowClasses = function(rooms) {
 	    	var data = rooms;
 
-            if(data) {
-    	    	for(var i = 0, len = data.length; i < len; i++) {
+            if (data) {
+    	    	for (var i = 0, len = data.length; i < len; i++) {
     	    		data[i] = deepCopy(data[i]);
     	    		data[i][meta.room.status] = '';
     	    	}
@@ -265,10 +265,10 @@ sntRover
 	    };
 
 	    registerNotifictions = function(obj) {
-	    	if(_.isObject(obj)) {
-	    		for(var k in obj) {
-	    			if(hops.call(obj, k)) {
-	    				switch(typeof obj[k]) {
+	    	if (_.isObject(obj)) {
+	    		for (var k in obj) {
+	    			if (hops.call(obj, k)) {
+	    				switch (typeof obj[k]) {
 	    					case 'function':
 
 	    					break;

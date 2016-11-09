@@ -5,12 +5,12 @@
 
 	var extractArrivalTime = function() {
 		$rootScope.stayDetails = {};
-		if($scope.tripDetails.arrival_time) {
+		if ($scope.tripDetails.arrival_time) {
 			$rootScope.stayDetails.hour =  $scope.tripDetails.arrival_time.substring(0, 2);
 			$rootScope.stayDetails.minute =  $scope.tripDetails.arrival_time.substring(3, 5);
 			$rootScope.stayDetails.primeTime = $scope.tripDetails.arrival_time.substring(6, 9);
 		}
-		else{
+		else {
 			$rootScope.stayDetails.hour =  "";
 			$rootScope.stayDetails.minute =  "";
 			$rootScope.stayDetails.primeTime = "";

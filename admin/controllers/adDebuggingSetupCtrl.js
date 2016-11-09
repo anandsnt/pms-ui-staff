@@ -14,23 +14,23 @@ admin.controller('adDebuggingSetupCtrl', ['$scope', 'adDebuggingSetupSrv', '$sta
 
 
   $scope.sortByName = function() {
-      if($scope.selectedDevice === "") {
+      if ($scope.selectedDevice === "") {
         $scope.tableParams.sorting({'device_name': $scope.tableParams.isSortBy('device_name', 'asc') ? 'desc' : 'asc'});
       }
   };
   $scope.sortByUser = function() {
-      if($scope.selectedDevice === "") {
+      if ($scope.selectedDevice === "") {
         $scope.tableParams.sorting({'last_logged_in_user': $scope.tableParams.isSortBy('last_logged_in_user', 'asc') ? 'desc' : 'asc'});
       }
   };
   $scope.sortByDevice = function() {
-      if($scope.selectedDevice === "") {
+      if ($scope.selectedDevice === "") {
         $scope.tableParams.sorting({'device_type': $scope.tableParams.isSortBy('device_type', 'asc') ? 'desc' : 'asc'});
     }
   };
 
   $scope.filterDevices = function(value, index, array) {
-      if($scope.searchText == '')
+      if ($scope.searchText == '')
         return true;
       var searchRegExp = new RegExp($scope.searchText.toLowerCase());
       // if(value.device_name != undefined && value.device_name != null && value.device_name != "")
@@ -40,8 +40,8 @@ admin.controller('adDebuggingSetupCtrl', ['$scope', 'adDebuggingSetupSrv', '$sta
       // else
       //   return searchRegExp.test(value.device_uid.toLowerCase()) || searchRegExp.test(value.application.toLowerCase()) || searchRegExp.test(value.device_type.toLowerCase());
    
-      for(var key in value) {
-        if(value[key] != null && value[key] != "" && typeof value[key] == 'string' && searchRegExp.test((value[key]).toLowerCase())) {
+      for (var key in value) {
+        if (value[key] != null && value[key] != "" && typeof value[key] == 'string' && searchRegExp.test((value[key]).toLowerCase())) {
             return true;
         }
       }
@@ -108,7 +108,7 @@ admin.controller('adDebuggingSetupCtrl', ['$scope', 'adDebuggingSetupSrv', '$sta
 
   var setDurations = function() {
     _.each($scope.deviceList, function(device) {
-        if(device.logging_end_time != "" && device.logging_start_time != "") {
+        if (device.logging_end_time != "" && device.logging_start_time != "") {
           device.hours_log_enabled = (new Date(device.logging_end_time).getTime() - new Date(device.logging_start_time).getTime())/(1000*60*60) ;
         }
     });
@@ -126,10 +126,10 @@ admin.controller('adDebuggingSetupCtrl', ['$scope', 'adDebuggingSetupSrv', '$sta
   };
 
   $scope.selectDevice = function(event, device, index) {
-    if($scope.selectedDevice !== "" && $scope.selectedDevice.device_uid == device.device_uid) {
+    if ($scope.selectedDevice !== "" && $scope.selectedDevice.device_uid == device.device_uid) {
       $scope.selectedDevice = "";
       $scope.selectedIndex = "";
-    }else{
+    } else {
       $scope.selectedIndex = index;
       $scope.selectedDevice = device;
       $scope.selectedDevice.hours_log_enabled = $scope.selectedDevice.hours_log_enabled == "" ? 4 : $scope.selectedDevice.hours_log_enabled;
@@ -139,7 +139,7 @@ admin.controller('adDebuggingSetupCtrl', ['$scope', 'adDebuggingSetupSrv', '$sta
 
   var setHoursList = function() {
     $scope.hours = [];
-    for(var i = 1; i < 25; i++) {
+    for (var i = 1; i < 25; i++) {
       var hour = {'name': i, 'value': i};
 
       $scope.hours.push(hour);

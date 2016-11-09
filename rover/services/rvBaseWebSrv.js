@@ -25,7 +25,7 @@ angular.module('sntRover').service('RVBaseWebSrv', ['$http', '$q', '$window', '$
 	this.callWebService = function(httpMethod, url, params) {
 		var deferred = $q.defer();
 
-		if(typeof params === "undefined") {
+		if (typeof params === "undefined") {
 			params = "";
 		}
 
@@ -33,21 +33,21 @@ angular.module('sntRover').service('RVBaseWebSrv', ['$http', '$q', '$window', '$
 
  		httpDict.url = url;
  		httpDict.method = httpMethod;
- 		if(httpMethod === 'GET' || httpMethod === 'DELETE') {
+ 		if (httpMethod === 'GET' || httpMethod === 'DELETE') {
  			httpDict.params = params;
  		}
- 		else if(httpMethod === 'POST' || httpMethod === 'PUT') {
+ 		else if (httpMethod === 'POST' || httpMethod === 'PUT') {
  			httpDict.data = params;
- 			if(typeof $rootScope.workstation_id !== 'undefined') {
+ 			if (typeof $rootScope.workstation_id !== 'undefined') {
 				httpDict.data.workstation_id = $rootScope.workstation_id;
 			}
   		}
 
 		// Sample params {params:{fname: "fname", lname: "lname"}}
 		$http(httpDict).success(function(response, status) {
-			if(response.status === "success") {
+			if (response.status === "success") {
 		    	deferred.resolve(response.data);
-			}else{
+			} else {
 				// please note the type of error expecting is array
 		    	deferred.reject(response.errors);
 			}
@@ -57,26 +57,26 @@ angular.module('sntRover').service('RVBaseWebSrv', ['$http', '$q', '$window', '$
 			// so form error as array if you modifying it
 			
 
-if(status === 406) { // 406- Network error
+if (status === 406) { // 406- Network error
 				deferred.reject(response.errors);
-			} else if(status === 422) { // 406- Network error
+			} else if (status === 422) { // 406- Network error
 				deferred.reject(response.errors);
 			}
- 			else if(status === 501 || status === 502 || status === 503) { // 500- Internal Server Error
+ 			else if (status === 501 || status === 502 || status === 503) { // 500- Internal Server Error
                                $window.location.href = '/500' ;
                       }
-			else if(status === 500) { // 500- Internal Server Error
+			else if (status === 500) { // 500- Internal Server Error
 
 				deferred.reject(['Internal server error occured']);
 			}
-			else if(status === 401) { // 401- Unauthorized
+			else if (status === 401) { // 401- Unauthorized
 				// so lets redirect to login page
 				$window.location.href = '/logout' ;
 			}
 
 			// set of custom error emssage range http status
 			//
-			else if(status >= 470 && status <= 490) {
+			else if (status >= 470 && status <= 490) {
 				var error = {};
 
 				error.httpStatus = status;
@@ -84,10 +84,10 @@ if(status === 406) { // 406- Network error
 				deferred.reject (error);
 			}
 			// CICO-26779 : Handling 404 - Not found.
-			else if(status === 404) {
+			else if (status === 404) {
 				console.warn("Found 404 Error : " + url );
 			}
-			else{
+			else {
 				deferred.reject(response.errors);
 			}
 

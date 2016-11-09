@@ -7,20 +7,20 @@
   $scope.monthSelected = "";
   $scope.yearSelected ="";
 
-  if($rootScope.isCheckedin) {
+  if ($rootScope.isCheckedin) {
     $state.go('checkinSuccess');
   }
-  else if($rootScope.isCheckin) {
+  else if ($rootScope.isCheckin) {
     $state.go('checkinConfirmation');
   }
-  else if(!$rootScope.isRoomVerified) {
+  else if (!$rootScope.isRoomVerified) {
     $state.go('checkoutRoomVerification');
   }
-  else{
+  else {
     $scope.pageValid = true;
   }
 
-	if($scope.pageValid) {
+	if ($scope.pageValid) {
 
     $scope.checkoutmessage = $stateParams.message;
     $scope.isFromCheckoutNow =  ($stateParams.isFromCheckoutNow  ==="true") ? true :false;
@@ -134,18 +134,18 @@
 
         ccVerificationService.verifyCC(data).then(function(response) {
           $scope.isFetching = false;
-          if(response.status ==="success") {
+          if (response.status ==="success") {
               $rootScope.isCCOnFile = true;
               $rootScope.isCcAttachedFromGuestWeb = true;
-              if($stateParams.isFromCheckoutNow === "true") {
+              if ($stateParams.isFromCheckoutNow === "true") {
                 $rootScope.ccPaymentSuccessForCheckoutNow = true;
                 $state.go('checkOutStatus');
-              }else{
+              } else {
                  $rootScope.ccPaymentSuccessForCheckoutLater = true;
                  $state.go('checkOutLaterSuccess', {id: $scope.fee});
               }
         }
-        else{
+        else {
          $scope.netWorkError = true;
         }
 
@@ -164,24 +164,24 @@
 
        $scope.callback = function(response) {
           $scope.$apply();
-          if(response.status ==="ok") {
+          if (response.status ==="ok") {
               MLISessionId = response.session;
               $scope.goToNextStep();
           }
-          else{
+          else {
             $modal.open($scope.cardErrorOpts);
             $scope.isFetching = false;
           }
 
        };
 
-      if( ($scope.cardNumber.length === 0) ||
+      if ( ($scope.cardNumber.length === 0) ||
           ($scope.ccv.length === 0) ||
           (!$scope.monthSelected) ||
           (!$scope.yearSelected)) {
               $modal.open($scope.errorOpts); // details modal popup
          }
-         else{
+         else {
 
              $scope.isFetching = true;
              sessionDetails.cardNumber = $scope.cardNumber;
@@ -191,7 +191,7 @@
              try {
                 HostedForm.updateSession(sessionDetails, $scope.callback);
              }
-             catch(err) {
+             catch (err) {
                 $scope.netWorkError = true;
              }
 

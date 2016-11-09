@@ -17,7 +17,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 			$scope.data.printBoxHeight = height;
 			$scope.$apply();
 		}
-		else if(height < 5) {
+		else if (height < 5) {
 			$scope.closeDrawer();
 		}
 	};
@@ -45,13 +45,13 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 	$scope.clickedDrawer = function($event) {
 		$event.stopPropagation();
 		$event.stopImmediatePropagation();
-		if(getParentWithSelector($event, document.getElementsByClassName("ui-resizable-handle")[0])) {
-			if(parseInt($scope.eventTimestamp)) {
-				if(($event.timeStamp - $scope.eventTimestamp)<2) {
+		if (getParentWithSelector($event, document.getElementsByClassName("ui-resizable-handle")[0])) {
+			if (parseInt($scope.eventTimestamp)) {
+				if (($event.timeStamp - $scope.eventTimestamp)<2) {
 					return;
 				}
 			}
-			if($scope.data.printBoxHeight === resizableMinHeight || $scope.data.printBoxHeight === resizableMaxHeight) {
+			if ($scope.data.printBoxHeight === resizableMinHeight || $scope.data.printBoxHeight === resizableMaxHeight) {
 				if ($scope.data.isDrawerOpened)	{
 					$scope.closeDrawer();
 				}
@@ -59,7 +59,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 					$scope.openDrawer();
 				}
 			}
-			else{
+			else {
 				// mid way click : close guest card
 				$scope.closeDrawer();
 			}
@@ -175,7 +175,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 			$scope.data.paymentData = {};
 			$scope.data.paymentData = data;
 
-			if(data.payment_type === 'Credit Card') {
+			if (data.payment_type === 'Credit Card') {
 				$scope.data.paymentData.payment_types[0].active = true;
 			}
             $scope.errorMessage = "";
@@ -190,13 +190,13 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
             "department_ids": $scope.data.selectedDepartmentList
         };
 
-		if($scope.data.selectedPaymentType === "ALL") {
+		if ($scope.data.selectedPaymentType === "ALL") {
 			postData.charge_code_id = "";
 		}
-		else if($scope.data.selectedPaymentType === "" || typeof $scope.data.selectedPaymentType === "undefined") {
+		else if ($scope.data.selectedPaymentType === "" || typeof $scope.data.selectedPaymentType === "undefined") {
 			postData.charge_code_id = "CC";
 		}
-		else{
+		else {
 			postData.charge_code_id = $scope.data.selectedPaymentType;
 		}
 		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, postData, successCallBackFetchPaymentData);
@@ -233,7 +233,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 	var addPrintOrientation = function() {
 		var orientation = 'portrait';
 
-		switch( $scope.data.activeTab ) {
+		switch ( $scope.data.activeTab ) {
 			case 'SUMMARY'	:
 				orientation = 'landscape';
 				break;

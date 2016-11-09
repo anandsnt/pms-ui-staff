@@ -35,10 +35,10 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 			});
 			// Paginaton
 	        $scope.totalResults = roomDetailsLogData.total_count;
-	        if($scope.roomLogData.total_count===0) {
+	        if ($scope.roomLogData.total_count===0) {
               $scope.start = 0;
               $scope.end =0;
-	        }else{
+	        } else {
 	          $scope.start = 1;
 	          $scope.end = $scope.start + $scope.roomLogData.length - 1;
 	        }
@@ -92,10 +92,10 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 	    * Pagination
 	    */
 	    $scope.initPaginationParams = function() {
-	        if($scope.roomLogData.total_count===0) {
+	        if ($scope.roomLogData.total_count===0) {
 	             $scope.start = 0;
 	             $scope.end =0;
-	        }else{
+	        } else {
 		        $scope.start = 1;
 		        $scope.end = $scope.start + $scope.roomLogData.length - 1;
 	        }

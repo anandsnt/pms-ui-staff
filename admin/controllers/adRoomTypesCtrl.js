@@ -10,7 +10,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     	$scope.is_image_deleted = false;
     	$scope.fileName = "Choose File....";
     	$scope.imageFileName = $scope.fileName;
-    	if($rootScope.isEnabledRoomTypeByRoomClass && !$rootScope.isStandAlone) {
+    	if ($rootScope.isEnabledRoomTypeByRoomClass && !$rootScope.isStandAlone) {
     		$scope.getRoomClassList();
     	}
     	// To list room types
@@ -78,16 +78,16 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
 	 		$scope.$emit('hideLoader');
 
 	 		$scope.roomTypeData = data;
-	 		if($scope.roomTypeData.is_pseudo_room_type === "true" || $scope.roomTypeData.is_pseudo_room_type === true) {
+	 		if ($scope.roomTypeData.is_pseudo_room_type === "true" || $scope.roomTypeData.is_pseudo_room_type === true) {
 	 			$scope.roomTypeData.is_pseudo_room_type = true;
 	 		}
-	 		else{
+	 		else {
 	 			$scope.roomTypeData.is_pseudo_room_type = false;
 	 		}
-	 		if($scope.roomTypeData.is_suite === "true" || $scope.roomTypeData.is_suite === true) {
+	 		if ($scope.roomTypeData.is_suite === "true" || $scope.roomTypeData.is_suite === true) {
 	 			$scope.roomTypeData.is_suite = true;
 	 		}
-	 		else{
+	 		else {
 	 			$scope.roomTypeData.is_suite = false;
 	 		}
             var blockedRoomsCountObj;
@@ -96,7 +96,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
                 blockedRoomsCountObj = _.find($scope.roomTypeData.component_room_types, {'component_room_type_id': value.id});
                 value.blocked_rooms_count = (blockedRoomsCountObj !== undefined) ? blockedRoomsCountObj.rooms_count : 0;
 
-                if(blockedRoomsCountObj) {
+                if (blockedRoomsCountObj) {
                     value.isComponentUpArrowEnabled = (blockedRoomsCountObj.rooms_count !== value.rooms_count) ? true : false;
                     value.isComponentDownArrowEnabled = (blockedRoomsCountObj.rooms_count > 0) ? true : false;
                 }
@@ -115,10 +115,10 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     * @param {string} id of the room type
     */
 	$scope.getTemplateUrl = function(index, id) {
-		if(typeof index === "undefined" || typeof id === "undefined") {
+		if (typeof index === "undefined" || typeof id === "undefined") {
 			return "";
 		}
-		if($scope.currentClickedElement === index) {
+		if ($scope.currentClickedElement === index) {
 			 	return "/assets/partials/roomTypes/adRoomTypesDetails.html";
 		}
 	};
@@ -129,13 +129,13 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
 
 		var unwantedKeys = [];
 
-		if($scope.roomTypeData.image_of_room_type.indexOf("data:")!== -1) {
+		if ($scope.roomTypeData.image_of_room_type.indexOf("data:")!== -1) {
 			unwantedKeys = ["is_image_deleted"];
 		} else {
 			$scope.roomTypeData.is_image_deleted = $scope.is_image_deleted;
 			unwantedKeys = ["image_of_room_type"];
 		}
-        if($scope.roomTypeData.is_suite) {
+        if ($scope.roomTypeData.is_suite) {
             $scope.roomTypeData.component_room_types = _.reject($scope.availableRoomTypes, {"blocked_rooms_count": 0});
         }
 		var data = dclone($scope.roomTypeData, unwantedKeys);
@@ -158,7 +158,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     	};
 
 
-    	if($scope.isAddMode) {
+    	if ($scope.isAddMode) {
     		$scope.invokeApi(ADRoomTypesSrv.createRoomType, data, addSuccessCallbackSave);
     	}
       	else {
@@ -174,7 +174,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     };
 
 	$scope.clickCancel = function() {
-		if($scope.isAddMode) {
+		if ($scope.isAddMode) {
 			$scope.isAddMode =false;
 			$scope.fileName = "";
 			$scope.imageFileName = $scope.fileName;
@@ -220,7 +220,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
                 value.isComponentUpArrowEnabled = true;
                 value.isComponentDownArrowEnabled = false;
             });
-            if(!$scope.isAddMode) {
+            if (!$scope.isAddMode) {
                 $scope.editRoomTypes(index, id);
             }
 
@@ -261,12 +261,12 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
 	};
 
 	$scope.sortByName = function() {
-		if($scope.currentClickedElement === -1) {
+		if ($scope.currentClickedElement === -1) {
 		$scope.tableParams.sorting({'name': $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'});
 		}
 	};
 	$scope.sortByCode = function() {
-		if($scope.currentClickedElement === -1) {
+		if ($scope.currentClickedElement === -1) {
 		$scope.tableParams.sorting({'code': $scope.tableParams.isSortBy('code', 'asc') ? 'desc' : 'asc'});
 	}
 	};
@@ -287,10 +287,10 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     $scope.incrementBlockedRoomTypesCount = function(roomTypeId) {
         var clickedBlockRoomType = _.findWhere($scope.availableRoomTypes, {id: roomTypeId});
 
-        if(clickedBlockRoomType.blocked_rooms_count < clickedBlockRoomType.rooms_count) {
+        if (clickedBlockRoomType.blocked_rooms_count < clickedBlockRoomType.rooms_count) {
             clickedBlockRoomType.isComponentDownArrowEnabled = true;
             clickedBlockRoomType.blocked_rooms_count = clickedBlockRoomType.blocked_rooms_count + 1;
-            if(clickedBlockRoomType.blocked_rooms_count == clickedBlockRoomType.rooms_count) {
+            if (clickedBlockRoomType.blocked_rooms_count == clickedBlockRoomType.rooms_count) {
                 clickedBlockRoomType.isComponentUpArrowEnabled = false;
             }
         }
@@ -299,10 +299,10 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     $scope.decrementBlockedRoomTypesCount = function(roomTypeId) {
         var clickedBlockRoomType = _.findWhere($scope.availableRoomTypes, {id: roomTypeId});
 
-        if(clickedBlockRoomType.blocked_rooms_count > 0) {
+        if (clickedBlockRoomType.blocked_rooms_count > 0) {
             clickedBlockRoomType.isComponentUpArrowEnabled = true;
             clickedBlockRoomType.blocked_rooms_count = clickedBlockRoomType.blocked_rooms_count -1;
-            if(clickedBlockRoomType.blocked_rooms_count == 0) {
+            if (clickedBlockRoomType.blocked_rooms_count == 0) {
                 clickedBlockRoomType.isComponentDownArrowEnabled = false;
             }
         }
@@ -313,11 +313,11 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
 
         clickedBlockRoomType.isComponentUpArrowEnabled = true;
         clickedBlockRoomType.isComponentDownArrowEnabled = false;
-        if(clickedBlockRoomType.blocked_rooms_count == clickedBlockRoomType.rooms_count)
+        if (clickedBlockRoomType.blocked_rooms_count == clickedBlockRoomType.rooms_count)
         {
             clickedBlockRoomType.isComponentUpArrowEnabled = false;
         }
-        if(clickedBlockRoomType.blocked_rooms_count > 0)
+        if (clickedBlockRoomType.blocked_rooms_count > 0)
         {
             clickedBlockRoomType.isComponentDownArrowEnabled = true;
         }

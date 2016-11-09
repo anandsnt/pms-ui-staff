@@ -1,18 +1,18 @@
 // function to add zeros(0) infront of a number, like 09 for 9 or 007 for 7
 function getLengthChangedNumber(lengthWanted, number) {
 
-    if(typeof number === 'number') {
+    if (typeof number === 'number') {
         number = number.toString();
     }
     var numberOfZerosToAppend = lengthWanted - number.length;
     // if numberOfZerosToAppend is zero or less, nothing to do
 
-    if(numberOfZerosToAppend <= 0) {
+    if (numberOfZerosToAppend <= 0) {
         return number;
     }
     var zeros = "";
 
-    for(var i = 1; i <= numberOfZerosToAppend; i++) {
+    for (var i = 1; i <= numberOfZerosToAppend; i++) {
         zeros += "0";
     }
     return (zeros + number);

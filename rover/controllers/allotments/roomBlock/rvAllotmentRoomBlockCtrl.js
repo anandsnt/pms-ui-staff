@@ -734,10 +734,10 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			if (isHouseOverbooked && isRoomTypeOverbooked && canOverBookBoth) {
 				return "HOUSE_AND_ROOMTYPE_OVERBOOK";
 			}
-			else if(isHouseOverbooked && canOverbookHouse) {
+			else if (isHouseOverbooked && canOverbookHouse) {
 				return "HOUSE_OVERBOOK";
 			}
-			else if(isRoomTypeOverbooked && canOverbookRoomType) {
+			else if (isRoomTypeOverbooked && canOverbookRoomType) {
 				return "ROOMTYPE_OVERBOOK";
 			}
 			// Overbooking occurs and has no permission.
@@ -754,7 +754,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @returns {undefined}
 		 */
 		var failureCallBackOfSaveRoomBlock = function(error) {
-			if(error.hasOwnProperty ('httpStatus')) {
+			if (error.hasOwnProperty ('httpStatus')) {
 				if (error.httpStatus === 470) {
 					var message = $scope.checkOverBooking(error);
 

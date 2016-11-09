@@ -20,7 +20,7 @@ var DPHeadPanel = React.createClass({
 		var topRowCells = [],
 			botRowCells = [];
 
-		for(i = 0, j = this.props.headerTop.length; i < j; i++) {
+		for (i = 0, j = this.props.headerTop.length; i < j; i++) {
 			topRowCells.push(
 				React.createElement( DPthCell, {
 					'colspan': this.props.colspanArray && this.props.colspanArray[i] || this.props.colspan,
@@ -31,7 +31,7 @@ var DPHeadPanel = React.createClass({
 
 		topRow = React.DOM.tr({}, topRowCells);
 
-		for(i = 0, j = this.props.headerBot.length; i < j; i++) {
+		for (i = 0, j = this.props.headerBot.length; i < j; i++) {
 			botRowCells.push(
 					React.createElement( DPthCell, {
 					'className': this.props.headerBot[i]['cls'],
@@ -75,7 +75,7 @@ var DPBodyRow = React.createClass({
 
 		var i, j;
 
-		for(i = 0, j = this.props.rowData.length; i < j; i++) {
+		for (i = 0, j = this.props.rowData.length; i < j; i++) {
 			cells.push(
 				React.createElement( DPtdCell, {
 					'isLastRow': this.props.isLastRow,
@@ -98,7 +98,7 @@ var DPBodyPanel = React.createClass({
 
 		var i, j;
 
-		for(i = 0, j = this.props.reportData.length; i < j; i++) {
+		for (i = 0, j = this.props.reportData.length; i < j; i++) {
 			rows.push(
 				React.createElement( DPBodyRow, {
 					'rowData': this.props.reportData[i],

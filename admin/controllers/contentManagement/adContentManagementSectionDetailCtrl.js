@@ -36,11 +36,11 @@ admin.controller('ADContentManagementSectionDetailCtrl', ['$scope', '$state', 'n
 		/* Checkin if the screen is loaded for a new section or,
 	    * for existing section.
         */
-	    if($stateParams.id !== 'new') {
+	    if ($stateParams.id !== 'new') {
 		    $scope.isAddMode = false;
 		    $scope.fetchSection();
 	    }
-	    else{
+	    else {
 	    	$scope.$emit('hideLoader');
 		    $scope.isAddMode = true;
 	    }
@@ -80,7 +80,7 @@ admin.controller('ADContentManagementSectionDetailCtrl', ['$scope', '$state', 'n
 		};
 		var unwantedKeys = ["image"];
 
-		if($scope.initialIcon === $scope.data.icon) {
+		if ($scope.initialIcon === $scope.data.icon) {
 			unwantedKeys = ["icon", "image"];
 		}
 		var data = dclone($scope.data, unwantedKeys);

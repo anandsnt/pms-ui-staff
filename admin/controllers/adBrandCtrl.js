@@ -68,10 +68,10 @@ admin.controller('ADBrandCtrl', ['$scope', '$rootScope', 'adBrandsSrv', function
     * To handle cancel button click
     */
 	$scope.cancelClicked = function () {
-		if($scope.isAddmode) {
+		if ($scope.isAddmode) {
 			$scope.isAddmode = false;
 		}
-		else if($scope.isEditmode) {
+		else if ($scope.isEditmode) {
 			$scope.isEditmode = false;
 		}
 	};
@@ -88,7 +88,7 @@ admin.controller('ADBrandCtrl', ['$scope', '$rootScope', 'adBrandsSrv', function
 		var	unwantedKeys = ["chains"];
 		var data = dclone($scope.brandDetails, unwantedKeys);
 
-		if($scope.isAddmode) {
+		if ($scope.isAddmode) {
 			$scope.invokeApi(adBrandsSrv.post, data, successSave);
 		} else {
 			$scope.invokeApi(adBrandsSrv.update, data, successSave);

@@ -466,7 +466,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 					$scope.message_out_going_to_comp_tra = true;
 				}
 			}
-			if($scope.availabilityDetails.is_cc_authorize_for_incidentals_active && ($scope.message_out_going_to_room || $scope.message_out_going_to_comp_tra)) {
+			if ($scope.availabilityDetails.is_cc_authorize_for_incidentals_active && ($scope.message_out_going_to_room || $scope.message_out_going_to_comp_tra)) {
 				$scope.enableIncedentalOnlyOption = true;
 			}
 		};
@@ -553,7 +553,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				return false;
 			}
 			// CICO-30310
-			if(event.id === 'check-in' && $scope.stayDetails.details.reservation_status === 'CHECKEDIN') {
+			if (event.id === 'check-in' && $scope.stayDetails.details.reservation_status === 'CHECKEDIN') {
 				revertFunc();
 				return false;
 			}

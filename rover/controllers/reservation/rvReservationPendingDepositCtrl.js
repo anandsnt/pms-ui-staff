@@ -91,10 +91,10 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 		});
 		// user selected pay later option
 		$scope.$on('PAY_LATER', function() {
-			if($scope.depositDetails.isFromCheckin) {
+			if ($scope.depositDetails.isFromCheckin) {
 				$scope.$emit("PROCEED_CHECKIN");
 			}
-			else{
+			else {
 				// do nothing
 			}
 			closeDepositPopup();
@@ -114,7 +114,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			
 			// if the existing payment method is not CC or Direct BIll and the selected payment method is CC
 			// The submit payment will update the payment type for the bill #1(staycard too)
-			if($scope.$parent.reservationData.reservation_card.payment_method_used !== 'CC'
+			if ($scope.$parent.reservationData.reservation_card.payment_method_used !== 'CC'
 			   && $scope.$parent.reservationData.reservation_card.payment_method_used !== 'DB'
 			   && typeof data.cc_details !=="undefined") {
 				$scope.$parent.reservationData.reservation_card.payment_method_used = 'CC';
@@ -124,7 +124,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			}
 			
 			// Add the CC to guestcard
-			if(typeof data.add_to_guest_card !=="undefined" && data.add_to_guest_card) {
+			if (typeof data.add_to_guest_card !=="undefined" && data.add_to_guest_card) {
 
 				var dataToGuestList = {
 					"card_code": data.cc_details.card_code,

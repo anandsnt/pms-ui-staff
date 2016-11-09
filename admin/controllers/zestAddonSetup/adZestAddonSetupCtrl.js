@@ -12,7 +12,7 @@ admin.controller('adZestAddonSetupCtrl', ['$scope', 'adZestAddonSetupSrv', '$sta
 
   var startWatching = function() {
     $scope.$watch('addonSetup.is_zest_addon_actions_enabled', function(newValue, oldValue) {
-        if(!$scope.addonSetup.is_zest_addon_actions_enabled) {
+        if (!$scope.addonSetup.is_zest_addon_actions_enabled) {
            $scope.addonSetup.is_zest_display_purchased_addons = false;
            $scope.addonSetup.is_zest_allow_cancellation_of_addons = false;
            $scope.addonSetup.is_zest_enable_purchase = false;

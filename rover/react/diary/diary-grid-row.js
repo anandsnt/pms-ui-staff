@@ -41,7 +41,7 @@ var GridRow = React.createClass({
 
 		// drag-over
 		/* Create hourly spans across each grid row*/
-		for(var i = 0, len = display.hours; i < len; i++) {
+		for (var i = 0, len = display.hours; i < len; i++) {
 			hourly_divs.push(React.DOM.span({
 				className: 'hour',
 				style: {

@@ -951,7 +951,7 @@ sntRover.factory('RVReportParserFac', [
 
             var i, j, k, l;
 
-            for( i = 0, j = apiResponse.length; i < j; i++ ) {
+            for ( i = 0, j = apiResponse.length; i < j; i++ ) {
 
                 // create a copy of ith apiResponse
                 makeCopy = angular.copy( apiResponse[i] );
@@ -970,7 +970,7 @@ sntRover.factory('RVReportParserFac', [
                 // only that user, so a set of that will be
                 // an object of objects
                 usersInThisRes = {};
-                for( k = 0, l = makeCopy['stay_dates'].length; k < l; k++ ) {
+                for ( k = 0, l = makeCopy['stay_dates'].length; k < l; k++ ) {
                     kth = makeCopy['stay_dates'][k];
                     userId = kth['adjusted_user_id'] || 'Unknown';
                     userNa = kth['adjusted_by'] || 'Unknown';
@@ -989,7 +989,7 @@ sntRover.factory('RVReportParserFac', [
                 // inset the just found reservation
                 // each with only details of 'stay_dates'
                 // changes of just one user, into a 'tempObj'
-                for( keyId in usersInThisRes ) {
+                for ( keyId in usersInThisRes ) {
                     if ( ! usersInThisRes.hasOwnProperty(keyId) ) {
                         continue;
                     }
@@ -1006,7 +1006,7 @@ sntRover.factory('RVReportParserFac', [
             // we need to remove the 'adjusted_user_id'
             // part from 'uid', and have the 'returnObj' in that format
             returnObj = {};
-            for( keyId in tempObj ) {
+            for ( keyId in tempObj ) {
                 if ( ! tempObj.hasOwnProperty(keyId) ) {
                     continue;
                 }

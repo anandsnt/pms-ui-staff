@@ -6,7 +6,7 @@ sntRover.directive('appFilereader', function($q) {
         restrict: 'A'
         , require: '?ngModel'
         , link: function(scope, element, attrs, ngModel) {
-            if(!ngModel) {
+            if (!ngModel) {
                 return;
             }
             ngModel.$render = function() {};
@@ -16,7 +16,7 @@ sntRover.directive('appFilereader', function($q) {
 
                 $q.all(slice.call(element.files, 0).map(readFile))
                 .then(function(values) {
-                    if(element.multiple) {
+                    if (element.multiple) {
                         ngModel.$setViewValue(values);
                     }
                     else {

@@ -52,8 +52,8 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
         var routeToPostingAccountExist = false;
         var routesList = dclone($scope.routes, []);
 
-        for(var i = 0; i < routesList.length; i++) {
-            if(routesList[i].entity_type === "GROUP" || routesList[i].entity_type === "HOUSE" || routesList[i].entity_type === "ALLOTMENT" ) {
+        for (var i = 0; i < routesList.length; i++) {
+            if (routesList[i].entity_type === "GROUP" || routesList[i].entity_type === "HOUSE" || routesList[i].entity_type === "ALLOTMENT" ) {
                 routeToPostingAccountExist = true;
                 return routeToPostingAccountExist;
             }
@@ -72,7 +72,7 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
             setDefaultRoutingDates();
             setRoutingDateOptions();
         }
-        if($scope.isInitialPage  && $scope.isReloadNeeded) {
+        if ($scope.isInitialPage  && $scope.isReloadNeeded) {
             $scope.isReloadNeeded = false;
             $scope.fetchRoutes();
         }
@@ -105,21 +105,21 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
         $scope.isInAddRoutesMode = false;
         $scope.isInitialPage = false;
         $scope.selectedEntityChanged = true;
-        if(type === 'ATTACHED_ENTITY' || type === 'ROUTES') {
+        if (type === 'ATTACHED_ENTITY' || type === 'ROUTES') {
         	$scope.selectedEntity = $scope.routes[index];
             $scope.selectedEntity.is_new = (type === 'ATTACHED_ENTITY')? true: false;
 
-            if($scope.selectedEntity.entity_type !=='RESERVATION') {
+            if ($scope.selectedEntity.entity_type !=='RESERVATION') {
                    $scope.selectedEntity.guest_id = null;
             }
-            if($scope.selectedEntity.entity_type === "GROUP" || $scope.selectedEntity.entity_type === "HOUSE" || $scope.selectedEntity.entity_type === "ALLOTMENT") {
+            if ($scope.selectedEntity.entity_type === "GROUP" || $scope.selectedEntity.entity_type === "HOUSE" || $scope.selectedEntity.entity_type === "ALLOTMENT") {
 
             }
-            else{
+            else {
                 $scope.selectedEntity.images[0].guest_image = $scope.selectedEntity.images[0].image;
             }
         }
-        else if(type === 'RESERVATIONS') {
+        else if (type === 'RESERVATIONS') {
         	var data = $scope.results.reservations[index];
 
         	$scope.selectedEntity = {
@@ -151,7 +151,7 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
             }
 
         }
-        else if(type === 'ACCOUNT') {
+        else if (type === 'ACCOUNT') {
         	var data = $scope.results.accounts[index];
 
         	$scope.selectedEntity = {
@@ -179,22 +179,22 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
                     }
                 });
             }
-    		if(data.account_type === 'COMPANY') {
+    		if (data.account_type === 'COMPANY') {
     			$scope.selectedEntity.entity_type = 'COMPANY_CARD';
                 $scope.selectedEntity.account_address = data.account_address;
     		}
-            else if(data.account_type === 'TRAVELAGENT') {
+            else if (data.account_type === 'TRAVELAGENT') {
                 $scope.selectedEntity.entity_type = 'TRAVEL_AGENT';
                 $scope.selectedEntity.account_address = data.account_address;
             }
         }
-        else if(type === 'GROUP' || type === 'HOUSE') {
-            if(isRoutingForPostingAccountExist()) {
+        else if (type === 'GROUP' || type === 'HOUSE') {
+            if (isRoutingForPostingAccountExist()) {
                 $scope.errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
                 $scope.isEntitySelected = false;
                 $scope.isInitialPage = true;
             }
-            else{
+            else {
                 var data = $scope.results.posting_accounts[index];
 
                 $scope.selectedEntity = {
@@ -241,7 +241,7 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
                 "is_new": true,
                 "credit_card_details": {}
             };
-            if($scope.billingEntity !== "TRAVEL_AGENT_DEFAULT_BILLING" &&
+            if ($scope.billingEntity !== "TRAVEL_AGENT_DEFAULT_BILLING" &&
                 $scope.billingEntity !== "COMPANY_CARD_DEFAULT_BILLING" &&
                 $scope.billingEntity !== "GROUP_DEFAULT_BILLING" &&
                 $scope.billingEntity !== "ALLOTMENT_DEFAULT_BILLING") {
@@ -249,7 +249,7 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
                 $scope.selectedEntity.is_opted_late_checkout = $scope.reservationData.is_opted_late_checkout;
             }
 
-            if(type === 'GUEST') {
+            if (type === 'GUEST') {
                 $scope.selectedEntity.id = $scope.reservationData.reservation_id;
                 $scope.selectedEntity.guest_id = $scope.attachedEntities.primary_guest_details.id;
                 $scope.selectedEntity.name = $scope.attachedEntities.primary_guest_details.name;
@@ -258,7 +258,7 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
                     "guest_image": $scope.attachedEntities.primary_guest_details.avatar
                 }];
                 $scope.selectedEntity.entity_type = "RESERVATION";
-            }else if(type === 'ACCOMPANY_GUEST') {
+            } else if (type === 'ACCOMPANY_GUEST') {
                 $scope.selectedEntity.id = $scope.reservationData.reservation_id;
                 $scope.selectedEntity.guest_id = $scope.attachedEntities.accompanying_guest_details[index].id;
                 $scope.selectedEntity.name = $scope.attachedEntities.accompanying_guest_details[index].name;
@@ -268,7 +268,7 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
                 }];
                 $scope.selectedEntity.has_accompanying_guests = true;
                 $scope.selectedEntity.entity_type = "RESERVATION";
-            }else if(type === 'COMPANY_CARD') {
+            } else if (type === 'COMPANY_CARD') {
                 $scope.selectedEntity.id = $scope.attachedEntities.company_card.id;
                 $scope.selectedEntity.name = $scope.attachedEntities.company_card.name;
                 $scope.selectedEntity.is_allow_direct_debit = $scope.attachedEntities.company_card.is_allow_direct_debit;
@@ -278,7 +278,7 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
                 }];
                 $scope.selectedEntity.entity_type = "COMPANY_CARD";
                 $scope.selectedEntity.account_address = $scope.attachedEntities.company_card.account_address;
-            }else if(type === 'TRAVEL_AGENT') {
+            } else if (type === 'TRAVEL_AGENT') {
                 $scope.selectedEntity.id = $scope.attachedEntities.travel_agent.id;
                 $scope.selectedEntity.name = $scope.attachedEntities.travel_agent.name;
                 $scope.selectedEntity.is_allow_direct_debit = $scope.attachedEntities.travel_agent.is_allow_direct_debit;
@@ -289,25 +289,25 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
                 $scope.selectedEntity.entity_type = "TRAVEL_AGENT";
                 $scope.selectedEntity.account_address = $scope.attachedEntities.travel_agent.account_address;
             }
-            else if(type ==='GROUP' || type === 'HOUSE') {
-                if(isRoutingForPostingAccountExist()) {
+            else if (type ==='GROUP' || type === 'HOUSE') {
+                if (isRoutingForPostingAccountExist()) {
                     $scope.errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
                     $scope.isEntitySelected = false;
                     $scope.isInitialPage = true;
                 }
-                else{
+                else {
                     $scope.selectedEntity.id = $scope.attachedEntities.posting_account.id;
                     $scope.selectedEntity.name = $scope.attachedEntities.posting_account.name;
                     $scope.selectedEntity.entity_type = type;
                 }
             }
             else if (type === 'ALLOTMENT') {
-                if(isRoutingForPostingAccountExist()) {
+                if (isRoutingForPostingAccountExist()) {
                     $scope.errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
                     $scope.isEntitySelected = false;
                     $scope.isInitialPage = true;
                 }
-                else{
+                else {
                     $scope.allotmentId = $scope.attachedEntities.posting_account.id;
                     $scope.selectedEntity.id = $scope.allotmentId;
                     $scope.selectedEntity.allotment_id = $scope.allotmentId;
@@ -323,23 +323,23 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
     $scope.getGuestStatusMapped = function(reservationStatus, isLateCheckoutOn) {
       var viewStatus = "";
 
-      if(isLateCheckoutOn && "CHECKING_OUT" === reservationStatus) {
+      if (isLateCheckoutOn && "CHECKING_OUT" === reservationStatus) {
         viewStatus = "late-check-out";
         return viewStatus;
       }
-      if("RESERVED" === reservationStatus) {
+      if ("RESERVED" === reservationStatus) {
         viewStatus = "arrival";
-      }else if("CHECKING_IN" === reservationStatus) {
+      } else if ("CHECKING_IN" === reservationStatus) {
         viewStatus = "check-in";
-      }else if("CHECKEDIN" === reservationStatus) {
+      } else if ("CHECKEDIN" === reservationStatus) {
         viewStatus = "inhouse";
-      }else if("CHECKEDOUT" === reservationStatus) {
+      } else if ("CHECKEDOUT" === reservationStatus) {
         viewStatus = "departed";
-      }else if("CHECKING_OUT" === reservationStatus) {
+      } else if ("CHECKING_OUT" === reservationStatus) {
         viewStatus = "check-out";
-      }else if("CANCELED" === reservationStatus) {
+      } else if ("CANCELED" === reservationStatus) {
         viewStatus = "cancel";
-      }else if(("NOSHOW" === reservationStatus)||("NOSHOW_CURRENT" === reservationStatus)) {
+      } else if (("NOSHOW" === reservationStatus)||("NOSHOW_CURRENT" === reservationStatus)) {
         viewStatus = "no-show";
       }
       return viewStatus;
@@ -349,16 +349,16 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
     * function to get the class for the 'li' according to the entity role
     */
 	$scope.getEntityRole = function(route) {
-    	if(route.entity_type === 'RESERVATION' &&  !route.has_accompanying_guests) {
+    	if (route.entity_type === 'RESERVATION' &&  !route.has_accompanying_guests) {
     		return 'guest';
         }
-    	else if(route.entity_type === 'RESERVATION') {
+    	else if (route.entity_type === 'RESERVATION') {
     		return 'accompany';
         }
-    	else if(route.entity_type === 'TRAVEL_AGENT') {
+    	else if (route.entity_type === 'TRAVEL_AGENT') {
     		return 'travel-agent';
         }
-    	else if(route.entity_type === 'COMPANY_CARD') {
+    	else if (route.entity_type === 'COMPANY_CARD') {
     		return 'company';
         }
     };
@@ -366,13 +366,13 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
     * function to get the class for the 'icon' according to the entity role
     */
     $scope.getEntityIconClass = function(route) {
-        if(route.entity_type === 'RESERVATION' &&  route.has_accompanying_guests ) {
+        if (route.entity_type === 'RESERVATION' &&  route.has_accompanying_guests ) {
             return 'accompany';
         }
-    	else if(route.entity_type === 'RESERVATION' || route.entity_type === 'COMPANY_CARD') {
+    	else if (route.entity_type === 'RESERVATION' || route.entity_type === 'COMPANY_CARD') {
             return '';
         }
-    	else if(route.entity_type === 'TRAVEL_AGENT') {
+    	else if (route.entity_type === 'TRAVEL_AGENT') {
     		return 'icons icon-travel-agent';
         }
     };
@@ -464,7 +464,7 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
 	$scope.handleCloseDialog = function() {
 		$scope.$emit('HANDLE_MODAL_OPENED');
 		$scope.closeDialog();
-        if(!!$scope.billingData) {// NOTE: CICO-17123 When the billing information popup is called from the Group Summary Tab, there wont be a billingData object in $scope. This was throwing "TypeError: Cannot set property 'billingInfoTitle' of undefined"
+        if (!!$scope.billingData) {// NOTE: CICO-17123 When the billing information popup is called from the Group Summary Tab, there wont be a billingData object in $scope. This was throwing "TypeError: Cannot set property 'billingInfoTitle' of undefined"
             $scope.billingData.billingInfoTitle = ($scope.routes.length > 0 )? $filter('translate')('BILLING_INFO_TITLE'):$filter('translate')('ADD_BILLING_INFO_TITLE');
         }
 	};
@@ -496,23 +496,23 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
     };
 
     var init = function() {
-        if($scope.attachedEntities === undefined) {
+        if ($scope.attachedEntities === undefined) {
             $scope.isInitialPage = true;
             $scope.fetchRoutes();
             $scope.attachedEntities = [];
 
         }
         else {
-            if($scope.billingEntity === "TRAVEL_AGENT_DEFAULT_BILLING") {
+            if ($scope.billingEntity === "TRAVEL_AGENT_DEFAULT_BILLING") {
                 $scope.selectAttachedEntity('', 'TRAVEL_AGENT');
             }
-            else if($scope.billingEntity === "COMPANY_CARD_DEFAULT_BILLING") {
+            else if ($scope.billingEntity === "COMPANY_CARD_DEFAULT_BILLING") {
                 $scope.selectAttachedEntity('', 'COMPANY_CARD');
             }
-            else if($scope.billingEntity === "GROUP_DEFAULT_BILLING") {
+            else if ($scope.billingEntity === "GROUP_DEFAULT_BILLING") {
                 $scope.selectAttachedEntity('', 'GROUP');
             }
-            else if($scope.billingEntity === "ALLOTMENT_DEFAULT_BILLING") {
+            else if ($scope.billingEntity === "ALLOTMENT_DEFAULT_BILLING") {
                 $scope.selectAttachedEntity('', 'ALLOTMENT');
             }
             else {

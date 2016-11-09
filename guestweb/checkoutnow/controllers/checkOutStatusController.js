@@ -4,20 +4,20 @@
 
 	$scope.pageValid = false;
 
-	if($rootScope.isCheckedin) {
+	if ($rootScope.isCheckedin) {
 		$state.go('checkinSuccess');
 	}
-	else if($rootScope.isCheckin) {
+	else if ($rootScope.isCheckin) {
 		$state.go('checkinConfirmation');
 	}
-	else if(!$rootScope.isRoomVerified && !$rootScope.isCheckedout) {
+	else if (!$rootScope.isRoomVerified && !$rootScope.isCheckedout) {
 		$state.go('checkoutRoomVerification');
 	}
-	else{
+	else {
 		$scope.pageValid = true;
 	}
 
-	if($scope.pageValid) {
+	if ($scope.pageValid) {
 		$scope.finalMessage = "Thank You for staying with us!";
 		$scope.errorMessage = "";
 
@@ -29,14 +29,14 @@
 
 	// prevent chekout operation if user has already checked out
 
-	if(!$scope.isCheckoutCompleted) {
+	if (!$scope.isCheckoutCompleted) {
 		var url = '/guest_web/home/checkout_guest.json';
 		var data = {'reservation_id': $rootScope.reservationID};
 
 		checkoutNowService.completeCheckout(url, data).then(function(response) {
 			$scope.posted = true;
 			$scope.success = (response.status !== "failure") ? true : false;
-			if($scope.success) {
+			if ($scope.success) {
 				$rootScope.isCheckedout = $scope.isCheckoutCompleted = true;
 			}
 			else {

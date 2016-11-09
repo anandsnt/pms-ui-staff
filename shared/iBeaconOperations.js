@@ -19,30 +19,30 @@ var iBeaconOperation = function() {
 		var action = options["action"] ? options["action"] : null;
 		var arguments = options["arguments"] ? options["arguments"] : [];
 
-		if(successCallBack == null) {
+		if (successCallBack == null) {
 			return false;
 		}
-		else if(failureCallBack == null) {
+		else if (failureCallBack == null) {
 			return false;
 		}
-		else if(service == null) {
+		else if (service == null) {
 			return false;
 		}
-		else if(action == null) {
+		else if (action == null) {
 			return false;
 		}
-		else{
+		else {
 
 			// calling cordova service
 			cordova.exec(
 						// if success call back require any parameters
 						function(data) {
 
-							if(successCallBackParameters !== null) {
+							if (successCallBackParameters !== null) {
 								successCallBack(data, successCallBackParameters);
 								that.callRecursively(options);
 							}
-							else{
+							else {
 								successCallBack(data);
 								that.callRecursively(options);
 							}
@@ -50,10 +50,10 @@ var iBeaconOperation = function() {
 						},
 						// if failure/error call back require any parameters
 						function(error) {
-							if(failureCallBackParameters !== null) {
+							if (failureCallBackParameters !== null) {
 								failureCallBack(error, failureCallBackParameters);
 							}
-							else{
+							else {
 								failureCallBack(error);
 							}
 
@@ -76,7 +76,7 @@ var iBeaconOperation = function() {
 		// TODO: Have to find better way of implementing this if not.
 		var shouldCallRecursively = options["shouldCallRecursively"] ? options["shouldCallRecursively"] : false;
 
-		if(shouldCallRecursively) {
+		if (shouldCallRecursively) {
 			that.callCordovaService(options);
 		}
 	};

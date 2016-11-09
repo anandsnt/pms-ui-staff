@@ -65,9 +65,9 @@ angular.module('sntRover').controller('rvActivityCtrl', [
 		 *@return - Boolean
 		 */
 		$scope.isOldValue = function(value) {
-	        if(value ==="" || typeof value === "undefined" || value === null) {
+	        if (value ==="" || typeof value === "undefined" || value === null) {
 	            return false;
-	        	}else{
+	        	} else {
 	            return true;
 	        	}
     	};
@@ -118,12 +118,12 @@ angular.module('sntRover').controller('rvActivityCtrl', [
 		 */
 	    $scope.sortByUserName = function() {
         	$scope.sort_field ="USERNAME";
-	        if($scope.sortOrderOfUserASC) {
+	        if ($scope.sortOrderOfUserASC) {
 	            $scope.initSort();
 	            $scope.sortOrderOfUserDSC = true;
 	            $scope.sort_order="desc";
 	        }
-	        else{
+	        else {
 	            $scope.initSort();
 	            $scope.sortOrderOfUserASC = true;
 	            $scope.sort_order="asc";
@@ -137,12 +137,12 @@ angular.module('sntRover').controller('rvActivityCtrl', [
 		 */
     	$scope.sortByDate = function() {
 	        $scope.sort_field ="DATE";
-	        if($scope.sortOrderOfDateASC) {
+	        if ($scope.sortOrderOfDateASC) {
 	            $scope.initSort();
 	            $scope.sortOrderOfDateDSC = true;
 	            $scope.sort_order="desc";
 	        }
-	        else{
+	        else {
 	            $scope.initSort();
 	            $scope.sortOrderOfDateASC = true;
 	            $scope.sort_order="asc";
@@ -156,12 +156,12 @@ angular.module('sntRover').controller('rvActivityCtrl', [
 		 */
 	    $scope.sortByAction = function() {
 	        $scope.sort_field ="ACTION";
-	        if($scope.sortOrderOfActionASC) {
+	        if ($scope.sortOrderOfActionASC) {
 	            $scope.initSort();
 	            $scope.sortOrderOfActionDSC = true;
 	            $scope.sort_order="desc";
 	        }
-	        else{
+	        else {
 	            $scope.initSort();
 	            $scope.sortOrderOfActionASC = true;
 	            $scope.sort_order="asc";

@@ -16,7 +16,7 @@ admin.controller('ADEmvTerminalDetailsCtrl', ['$scope', '$rootScope', 'ADEmvTerm
 	var itemId = $stateParams.itemid;
 	// if itemid is null, means it is for add item form
 
-	if(typeof itemId === 'undefined' || itemId.trim() === '') {
+	if (typeof itemId === 'undefined' || itemId.trim() === '') {
 		$scope.mod = 'add';
 	}
 
@@ -30,7 +30,7 @@ admin.controller('ADEmvTerminalDetailsCtrl', ['$scope', '$rootScope', 'ADEmvTerm
 		$scope.errorMessage = errorMessage ;
 	};
 
-	if($scope.mod === 'edit') {
+	if ($scope.mod === 'edit') {
 		$scope.invokeApi(ADEmvTerminalsSrv.getItemDetails, {'item_id': itemId}, fetchSuccessOfItemDetails, fetchFailedOfItemDetails);
 	}
 
@@ -41,7 +41,7 @@ admin.controller('ADEmvTerminalDetailsCtrl', ['$scope', '$rootScope', 'ADEmvTerm
 	$scope.saveItemDetails = function()	{
 		var postData = {};
 
-		if($scope.mod === 'edit') {
+		if ($scope.mod === 'edit') {
 			postData.id = $scope.itemDetails.id;
 		}
 
@@ -54,10 +54,10 @@ admin.controller('ADEmvTerminalDetailsCtrl', ['$scope', '$rootScope', 'ADEmvTerm
 			}, 3000);
 		};
 
-		if($scope.mod === 'edit') {
+		if ($scope.mod === 'edit') {
 			$scope.invokeApi(ADEmvTerminalsSrv.updateItemDetails, postData, fetchSuccessOfSaveItemDetails);
 		}
-		else{
+		else {
 			$scope.invokeApi(ADEmvTerminalsSrv.saveItemDetails, postData, fetchSuccessOfSaveItemDetails);
 		}
 	};

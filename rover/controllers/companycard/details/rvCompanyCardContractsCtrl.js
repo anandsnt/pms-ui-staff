@@ -143,7 +143,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			 *Nights pop up should be triggered only after contract details are saved
 			 *and refetched in the case of add mode
 			*/
-			if($scope.contractList.isAddMode) {
+			if ($scope.contractList.isAddMode) {
 				ngDialog.open({
 							template: '/assets/partials/companyCard/rvContractedNightsPopup.html',
 							controller: 'contractedNightsCtrl',
@@ -567,20 +567,20 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			var renameId = $scope.contractList.contractSelected;
 
 			$scope.contractNameToRename = "";
-			for(var index = 0; index < $scope.contractList.current_contracts.length; index++) {
-				if(renameId == $scope.contractList.current_contracts[index].id) {
+			for (var index = 0; index < $scope.contractList.current_contracts.length; index++) {
+				if (renameId == $scope.contractList.current_contracts[index].id) {
 					existingContractName = angular.copy($scope.contractList.current_contracts[index].contract_name);
 					break;
 				}
 			}
-			for(var index = 0; index < $scope.contractList.future_contracts.length; index++) {
-				if(renameId == $scope.contractList.future_contracts[index].id) {
+			for (var index = 0; index < $scope.contractList.future_contracts.length; index++) {
+				if (renameId == $scope.contractList.future_contracts[index].id) {
 					existingContractName = angular.copy($scope.contractList.future_contracts[index].contract_name);
 					break;
 				}
 			}
-			for(var index = 0; index < $scope.contractList.history_contracts.length; index++) {
-				if(renameId == $scope.contractList.history_contracts[index].id) {
+			for (var index = 0; index < $scope.contractList.history_contracts.length; index++) {
+				if (renameId == $scope.contractList.history_contracts[index].id) {
 					existingContractName = angular.copy($scope.contractList.history_contracts[index].contract_name);
 					break;
 				}
@@ -626,7 +626,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 				$scope.fetchContracts();
 			};
 
-			if(existingContractName !== $scope.contractList.contractNameToChange) {
+			if (existingContractName !== $scope.contractList.contractNameToChange) {
 				var data = dclone($scope.contractData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights']);
 
 				if ($stateParams.id === "add") {
@@ -736,10 +736,10 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		};
 
 		var onRateSelect = function(event, rate) {
-			if(!$scope.contractList.isAddMode) {
+			if (!$scope.contractList.isAddMode) {
 				$scope.contractData.contracted_rate_selected = rate.item.id;
 				$scope.contractData.contractedRate = rate.item.label;
-			}else{
+			} else {
 				$scope.addData.contracted_rate_selected = rate.item.id;
 				$scope.addData.contractedRate = rate.item.label;
 			}

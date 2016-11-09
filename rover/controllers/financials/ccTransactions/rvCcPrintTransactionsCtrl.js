@@ -15,7 +15,7 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope', '$rootScope', 
       $scope.data.printBoxHeight = height;
       $scope.$apply();
     }
-    else if(height < 5) {
+    else if (height < 5) {
       $scope.closeDrawer();
     }
   };
@@ -43,13 +43,13 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope', '$rootScope', 
 	$scope.clickedDrawer = function($event) {
 		$event.stopPropagation();
 		$event.stopImmediatePropagation();
-		if(getParentWithSelector($event, document.getElementsByClassName("ui-resizable-handle")[0])) {
-			if(parseInt($scope.eventTimestamp)) {
-				if(($event.timeStamp - $scope.eventTimestamp)<2) {
+		if (getParentWithSelector($event, document.getElementsByClassName("ui-resizable-handle")[0])) {
+			if (parseInt($scope.eventTimestamp)) {
+				if (($event.timeStamp - $scope.eventTimestamp)<2) {
 					return;
 				}
 			}
-			if($scope.data.printBoxHeight === resizableMinHeight || $scope.data.printBoxHeight === resizableMaxHeight) {
+			if ($scope.data.printBoxHeight === resizableMinHeight || $scope.data.printBoxHeight === resizableMaxHeight) {
 				if ($scope.data.isDrawerOpened)	{
 					$scope.closeDrawer();
 				}
@@ -57,7 +57,7 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope', '$rootScope', 
 					$scope.openDrawer();
 				}
 			}
-			else{
+			else {
 				// mid way click : close guest card
 				$scope.closeDrawer();
 			}
@@ -84,7 +84,7 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope', '$rootScope', 
     var addPrintOrientation = function() {
         var orientation = 'portrait';
 
-        switch( $scope.data.activeTab ) {
+        switch ( $scope.data.activeTab ) {
             case 0:
                 orientation = 'landscape';
                 break;

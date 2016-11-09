@@ -26,7 +26,7 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 
 					return zsGeneralSrv.fetchTranslations(sortedLanguages)
 						.then(function(translationFiles) {
-							for(langShortCode in translationFiles) {
+							for (langShortCode in translationFiles) {
 								$translateProvider.translations(langShortCode, translationFiles[langShortCode]);
 							}
 							$translate.use(defaultLangShortCode);

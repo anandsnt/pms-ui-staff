@@ -26,7 +26,7 @@ sntRover.controller('RVMoveChargeCtrl',
 			var data = $scope.reservationBillData ||$scope.transactionsDetails;			
 
 			_.each(data.bills, function(result, index) {
-				if(index !== $scope.currentActiveBill) {
+				if (index !== $scope.currentActiveBill) {
 					$scope.billOptions.push(result);
 				}
 			});
@@ -48,10 +48,10 @@ sntRover.controller('RVMoveChargeCtrl',
          * TODO : Disable search Portion
          */
         $scope.billSelected = function() {
-        	if($scope.selectedBillId!=="") {
+        	if ($scope.selectedBillId!=="") {
         		$scope.targetBillId = parseInt($scope.selectedBillId);
         		$scope.targetBillSelected = true;
-        	}else{
+        	} else {
         		$scope.targetBillSelected = false;
         		$scope.searching = false;
         		}
@@ -163,7 +163,7 @@ sntRover.controller('RVMoveChargeCtrl',
 		$scope.targetClicked =  function(selectedId) {
 
 			_.each($scope.searchResults, function(result) {
-				if(result.entity_id === selectedId) {
+				if (result.entity_id === selectedId) {
 					$scope.selectedTarget               = result;
 					$scope.selectedTarget.displayNumber = (result.type ==="ACCOUNT" ||result.type ==="GROUP") ? result.account_number : result.confirm_no;
 					$scope.selectedTarget.displaytext   = (result.type ==="ACCOUNT" ||result.type ==="GROUP") ? result.account_name : (result.last_name+' ,'+result.first_name);

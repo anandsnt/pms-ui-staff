@@ -6,23 +6,23 @@
 	$scope.roomNumber = "";
 
 
-	if($rootScope.isExternalVerification) {
+	if ($rootScope.isExternalVerification) {
 		$state.go('externalVerification');
 	}
-    else if($rootScope.isPrecheckinOnly) {
+    else if ($rootScope.isPrecheckinOnly) {
  		$state.go('preCheckinTripDetails');
  	}
-	else if($rootScope.isCheckedin) {
+	else if ($rootScope.isCheckedin) {
 		$state.go('checkinSuccess');
 	}
-	else if($rootScope.isCheckin) {
+	else if ($rootScope.isCheckin) {
 		$state.go('checkinConfirmation');
 	}
-	else{
+	else {
 		$scope.pageValid = true;
 	}
 
-	if($scope.pageValid) {
+	if ($scope.pageValid) {
 		// setup options for error popup
 		$scope.opts = {
 			backdrop: true,
@@ -41,15 +41,15 @@
 
 			   $timeout(function() {
 
-					if(response.status ==="success") {
+					if (response.status ==="success") {
 						$rootScope.isRoomVerified =  true;
-						if($rootScope.isLateCheckoutAvailable ) {
+						if ($rootScope.isLateCheckoutAvailable ) {
 								$state.go('checkOutOptions');
-					    }else {
+					    } else {
 					    	$state.go('checkOutConfirmation');
 						}
 					}
-					else{
+					else {
 						$scope.isFetching = false;
 						$modal.open($scope.opts); // error modal popup
 					}

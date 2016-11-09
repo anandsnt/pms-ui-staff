@@ -241,7 +241,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 
 		// CICO-24928
 		$scope.updateActiveAccountNote = function() {
-			if(!$scope.accountSummaryData.editingNote) {
+			if (!$scope.accountSummaryData.editingNote) {
 	            $scope.errorMessage = ['Something went wrong, please switch tab and comeback'];
 	            return;
         	}
@@ -289,7 +289,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 
 		$scope.onAccountTypeModification = function() {
 			// Call only if the account is already saved
-			if(!!$scope.accountConfigData.summary.posting_account_id) {
+			if (!!$scope.accountConfigData.summary.posting_account_id) {
 				$scope.updateAccountSummary();
 			}
 		};
@@ -373,7 +373,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			$scope.$emit('hideLoader');
 			$scope.paymentTypes = data;
 			angular.forEach($scope.paymentTypes, function (item, key) {
-				if(item.name == 'CC') {
+				if (item.name == 'CC') {
 					$scope.creditCardTypes = item.values;
 				}
 			});

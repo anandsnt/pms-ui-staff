@@ -37,7 +37,7 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
 			$scope.$emit('hideLoader');
 			$scope.editData   = data;
 			$scope.formTitle = 'Edit'+' '+$scope.editData.name;
-			if($scope.editData.lov.length === 0) {
+			if ($scope.editData.lov.length === 0) {
 				$scope.editData.lov.push({'value': '', 'name': ''});
 			}
 			$scope.isEditmode = true;
@@ -77,7 +77,7 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
  			if (item.name === "") {
  				$scope.editData.lov.splice(index, 1);
  			}
- 			else{
+ 			else {
  				lovNames.push(item.name);
  			}
  		});
@@ -94,11 +94,11 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
  			$scope.$emit('hideLoader');
  			$scope.errorMessage = errorMessage;
 
- 			if(oldLov.length > 0) {
+ 			if (oldLov.length > 0) {
  				$scope.editData.lov = oldLov;
  			}
  			// if the length is zero, we are reverting to initial one
- 			else{
+ 			else {
  				$scope.editData.lov = [{'value': '', 'name': ''}];
  			}
  		};
@@ -129,11 +129,11 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
  			$scope.$emit('hideLoader');
  			$scope.errorMessage = errorMessage;
  			// scroll to top of the page where error message is shown
-			if(angular.element( document.querySelector('.content')).find(".error_message").length) {
+			if (angular.element( document.querySelector('.content')).find(".error_message").length) {
 	  			angular.element( document.querySelector('.content')).scrollTop(0);
 			}
 
-			if($scope.editData.lov.length === 0) {
+			if ($scope.editData.lov.length === 0) {
 				$scope.editData.lov = [{'value': '', 'name': ''}];
 			}
 
@@ -160,10 +160,10 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
     * To handle cancel click event
     */
 	$scope.cancelClicked = function () {
-		if($scope.isAddmode) {
+		if ($scope.isAddmode) {
 			$scope.isAddmode = false;
 		}
-		else if($scope.isEditmode) {
+		else if ($scope.isEditmode) {
 			$scope.isEditmode = false;
 		}
 	};
@@ -171,10 +171,10 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
     * To handle save button click - Add/Update action
     */
 	$scope.saveClicked = function() {
-		if($scope.isAddmode) {
+		if ($scope.isAddmode) {
 			$scope.addNewChain();
 		}
-		else{
+		else {
 			$scope.updateChain($scope.editId);
 		}
 	};
@@ -182,17 +182,17 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
     * To handle focus event on lov levels
     */
 	$scope.onFocus = function(index) {
-		if((index === $scope.editData.lov.length-1) || ($scope.editData.lov.length===1)) {
+		if ((index === $scope.editData.lov.length-1) || ($scope.editData.lov.length===1)) {
 			$scope.newOptionAvailable = true;
 			// exclude first two fields
-			if($scope.editData.lov.length > 2) {
+			if ($scope.editData.lov.length > 2) {
 				angular.forEach($scope.editData.lov, function(item, index) {
 					if (item.name === "" && index < $scope.editData.lov.length-1 ) {
 						$scope.newOptionAvailable = false;
 					}
 				});
 			}
-			if($scope.newOptionAvailable) {
+			if ($scope.newOptionAvailable) {
 				$scope.editData.lov.push({'value': '', 'name': ''});
 			}
 		}
@@ -202,8 +202,8 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
     */
 	$scope.textChanged = function(index) {
 
-		if($scope.editData.lov.length>1) {
-			if($scope.editData.lov[index].name === "") {
+		if ($scope.editData.lov.length>1) {
+			if ($scope.editData.lov[index].name === "") {
 				$scope.editData.lov.splice(index, 1);
 			}
 		}
@@ -212,8 +212,8 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
     * To handle blur event on lov levels
     */
 	$scope.onBlur = function(index) {
-		if($scope.editData.lov.length>1) {
-			if($scope.editData.lov[index].name === "") {
+		if ($scope.editData.lov.length>1) {
+			if ($scope.editData.lov[index].name === "") {
 				$scope.editData.lov.splice(index, 1);
 			}
 			angular.forEach($scope.editData.lov, function(item, i) {

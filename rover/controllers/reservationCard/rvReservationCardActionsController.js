@@ -679,7 +679,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.showEmptyActions = function() {
             if (($scope.actions.totalCount === 0 && $scope.actionSelected === "none") || $scope.refreshToEmpty) {
                 return true;
-            }else return false;
+            } else return false;
         };
         $scope.postActionEnabled = function() {
             if (!$scope.newAction.hasDate || !$scope.newAction.notes || (!$scope.departmentSelected && !$scope.isStandAlone)) {

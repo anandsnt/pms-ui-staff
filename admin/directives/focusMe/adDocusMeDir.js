@@ -6,7 +6,7 @@ admin.directive('focusMe', function($timeout, $parse) {
       var model = $parse(attrs.focusMe);
 
       scope.$watch(model, function(value) {
-        if(value === true) {
+        if (value === true) {
           $timeout(function() {
             element[0].focus();
           });

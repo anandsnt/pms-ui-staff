@@ -15,7 +15,7 @@ sntRover.directive('clickTap', function($timeout, $parse) {
                     }
                     
                 }
-             } catch(err) {
+             } catch (err) {
                  
              }
              if (typeof event === typeof {}) {

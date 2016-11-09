@@ -640,9 +640,9 @@ sntZestStation.controller('zsRootCtrl', [
 	 	var homeInActivityTimeInSeconds = 0;
 	 	var initRefreshStation = function() {
 	 		console.warn(':: Refreshing Station ::');
-	 		try{
+	 		try {
 	 			storage.setItem(refreshedKey, 'true');
-	 		} catch(err) {
+	 		} catch (err) {
 	 			console.log(err);
 	 		}
 	 		location.reload(true);
@@ -738,7 +738,7 @@ sntZestStation.controller('zsRootCtrl', [
 				} else {
 					$scope.$broadcast('DISPENSE_FAILED');
 				}
-			} else if( response.Command === 'cmd_print_bill') {
+			} else if ( response.Command === 'cmd_print_bill') {
 
 				if (response.ResponseCode === 0 ) {
 					$scope.$broadcast('WS_PRINT_SUCCESS');
@@ -885,14 +885,14 @@ sntZestStation.controller('zsRootCtrl', [
 			station;
 			var recently_refreshed;
 
-			try{
+			try {
 	 			recently_refreshed = storage.getItem(refreshedKey);
 	 			if (recently_refreshed == 'true') {
 	 				recently_refreshed = true;	
 	 			} else {
 	 				recently_refreshed = false;	
 	 			}
-	 		} catch(err) {
+	 		} catch (err) {
 	 			recently_refreshed = false;
 	 			console.log(err);
 	 		}

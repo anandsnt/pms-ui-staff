@@ -113,7 +113,7 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
         $scope.$emit('hideLoader');
       };
 
-      if($scope.reservationSettingsData.suite_enabled) {
+      if ($scope.reservationSettingsData.suite_enabled) {
         $scope.invokeApi(ADReservationSettingsSrv.canDisableSuite, {}, canSuiteDisableSuccessCallback, canSuiteDisableFailureCallback);
 
       } else {

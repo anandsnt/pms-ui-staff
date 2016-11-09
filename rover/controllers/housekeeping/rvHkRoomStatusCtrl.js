@@ -622,10 +622,10 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			$scope.completedData.notSuccessFullyUpdated = parseInt($scope.completedData.assignedRoomsList.length);
 			_.each($scope.completedData.assignedRoomsList, function(item) {
   				item.is_add_to_update =true;
-  				if(item.reservations.length > 1) {
+  				if (item.reservations.length > 1) {
   					item.reservationData = "Multiple Reservations";
   					item.isMultipleReservation = true;
-  				} else if((item.reservations.length === 1)) {
+  				} else if ((item.reservations.length === 1)) {
   					item.reservationData = "#"+item.reservations[0].confirm_no;
   					item.GuestName = item.reservations[0].last_name+", "+item.reservations[0].first_name;
   					item.isMultipleReservation = false;
@@ -664,7 +664,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			var updateServiceStatusSuccessCallBack = function(data) {
 
 				$scope.$emit( 'hideLoader' );
-				if(typeof data.assigned_rooms !='undefined' && data.assigned_rooms.length > 0) {
+				if (typeof data.assigned_rooms !='undefined' && data.assigned_rooms.length > 0) {
 					showUpdateResultPopup(data.assigned_rooms);
 				}
 				else {
@@ -685,14 +685,14 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				room_service_status_id: $scope.updateServiceData.room_service_status_id
 			};
 
-			if($scope.shouldShowTimeSelector()) {
+			if ($scope.shouldShowTimeSelector()) {
 				params.begin_time = $scope.updateServiceData.begin_time;
 				params.end_time = $scope.updateServiceData.end_time;
 			}
 
 			// To check All Rooms are Choosen or not
 			params.room_id = [];
-			if($scope.multiRoomAction.allChosen) {
+			if ($scope.multiRoomAction.allChosen) {
 				params.room_id = $scope.allRoomIDs;
 			}
 			else {
@@ -736,7 +736,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 			params.room_id = _.pluck(roomsToAdd, 'id');
 			// as per CICO-32168 comments
-			if(params.room_id.length > 0) {
+			if (params.room_id.length > 0) {
 				$scope.invokeApi(RVHkRoomDetailsSrv.postRoomServiceStatus, params, successCallBack);
 			} else {
 				$scope.closeForcefullyUpdatePopup();

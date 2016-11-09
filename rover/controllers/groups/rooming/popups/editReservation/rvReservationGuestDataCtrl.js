@@ -19,20 +19,20 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
             var cnt = 0;
 
             angular.forEach(eachData.accompanying_guests_details, function(value, key) {
-              if((value.first_name !== "" && value.first_name !== null) || (value.last_name !== "" && value.last_name !== null) ) {
+              if ((value.first_name !== "" && value.first_name !== null) || (value.last_name !== "" && value.last_name !== null) ) {
                   cnt = cnt + 1;
               }
         });
         eachData.accompanyingLength = cnt;
         var occupancyName = "";
 
-        if(eachData.occupancy ===1) {
+        if (eachData.occupancy ===1) {
             occupancyName = "Single";
-        } else if(eachData.occupancy === 2) {
+        } else if (eachData.occupancy === 2) {
             occupancyName = "Double";
-        } else if(eachData.occupancy === 3) {
+        } else if (eachData.occupancy === 3) {
             occupancyName = "Triple";
-        } else if(eachData.occupancy === 4) {
+        } else if (eachData.occupancy === 4) {
             occupancyName = "Quadruple";
         }
         eachData.occupancyName = occupancyName;
@@ -52,10 +52,10 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
     $scope.toggleAccompanyingGuest = function(index) {
         var target = event.target;
 
-        if(target.type === "text")
+        if (target.type === "text")
             return false;
         _.each($scope.selected_reservations, function(eachData, resIndex) {
-            if(resIndex !== index)
+            if (resIndex !== index)
                 eachData.isOpenAccompanyingGuest = false;
         });
         $scope.selected_reservations[index].isOpenAccompanyingGuest = !$scope.selected_reservations[index].isOpenAccompanyingGuest;
@@ -114,7 +114,7 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
         var rStatus = reservation.reservation_status;
         var isDisabled = false;
 
-        if(rStatus === "CANCELED") {
+        if (rStatus === "CANCELED") {
             isDisabled = true;
         }
         return isDisabled;

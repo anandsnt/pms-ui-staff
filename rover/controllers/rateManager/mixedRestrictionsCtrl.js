@@ -18,7 +18,7 @@ angular.module('sntRover').controller('MixedRestrictionsCtrl', ['$q', '$scope', 
             currentSelected.hasChanged = true;
             currentSelected.isMixed = false;
 
-            if($scope.options.daysEntered !== undefined && $scope.options.daysEntered !== null) {
+            if ($scope.options.daysEntered !== undefined && $scope.options.daysEntered !== null) {
                 currentSelected.days = $scope.options.daysEntered === "" ? "" : parseInt($scope.options.daysEntered);
             }
             collapseCurrentSelectedView(currentSelected);
@@ -37,7 +37,7 @@ angular.module('sntRover').controller('MixedRestrictionsCtrl', ['$q', '$scope', 
             currentSelected.hasChanged = true;
             currentSelected.isMixed = false;
 
-            if($scope.options.daysEntered !== undefined && $scope.options.daysEntered !== null) {
+            if ($scope.options.daysEntered !== undefined && $scope.options.daysEntered !== null) {
                 currentSelected.days = '';
             }
             collapseCurrentSelectedView(currentSelected);

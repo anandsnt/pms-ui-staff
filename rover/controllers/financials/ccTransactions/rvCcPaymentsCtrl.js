@@ -34,7 +34,7 @@ sntRover.controller('RVccPaymentsController', ['$scope', '$filter', '$stateParam
     });
 
 	$scope.clickedApprovedTab = function() {
-		if(isEmptyObject($scope.data.paymentData.approved)) {
+		if (isEmptyObject($scope.data.paymentData.approved)) {
 			return false;
 		}
 		$scope.data.paymentData.approved.active = !$scope.data.paymentData.approved.active;
@@ -42,7 +42,7 @@ sntRover.controller('RVccPaymentsController', ['$scope', '$filter', '$stateParam
 	};
 
 	$scope.clickedDeclinedTab = function() {
-		if(isEmptyObject($scope.data.paymentData.declined)) {
+		if (isEmptyObject($scope.data.paymentData.declined)) {
 			return false;
 		}
 		$scope.data.paymentData.declined.active = !$scope.data.paymentData.declined.active;
@@ -50,7 +50,7 @@ sntRover.controller('RVccPaymentsController', ['$scope', '$filter', '$stateParam
 	};
 
 	$scope.clickedApprovedTransactionItem = function(item) {
-		if(item.cc_transactions.length === 0) {
+		if (item.cc_transactions.length === 0) {
 			return false;
 		}
 		item.active = !item.active;
@@ -58,7 +58,7 @@ sntRover.controller('RVccPaymentsController', ['$scope', '$filter', '$stateParam
 	};
 
 	$scope.clickedDeclinedTransactionItem = function(item) {
-		if(item.cc_transactions.length === 0) {
+		if (item.cc_transactions.length === 0) {
 			return false;
 		}
 		item.active = !item.active;
@@ -66,7 +66,7 @@ sntRover.controller('RVccPaymentsController', ['$scope', '$filter', '$stateParam
 	};
 
 	$scope.$on('mainTabSwiched', function() {
-		if($scope.data.activeTab === 0) {
+		if ($scope.data.activeTab === 0) {
 			refreshPaymentScroll();
 		}
     });

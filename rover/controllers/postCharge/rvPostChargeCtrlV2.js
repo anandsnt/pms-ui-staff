@@ -73,10 +73,10 @@ sntRover.controller('RVPostChargeControllerV2',
 		    		$scope.fetchedData.total_count = data.total_result;
 
 		    		// Compute the start, end and total count parameters
-	                if($scope.fetchedData.nextAction) {
+	                if ($scope.fetchedData.nextAction) {
 	                    $scope.fetchedData.start = $scope.fetchedData.start + $scope.fetchedData.perPage;
 	                }
-	                if($scope.fetchedData.prevAction) {
+	                if ($scope.fetchedData.prevAction) {
 	                    $scope.fetchedData.start = $scope.fetchedData.start - $scope.fetchedData.perPage;
 	                }
 	                $scope.fetchedData.end = $scope.fetchedData.start + $scope.fetchedItems.length - 1;
@@ -87,7 +87,7 @@ sntRover.controller('RVPostChargeControllerV2',
 	    					return $scope.selectedChargeItemHash[i].id === item.id;
 	    				});
 
-						if( typeof match !== "undefined" ) {
+						if ( typeof match !== "undefined" ) {
 							match.count = $scope.selectedChargeItemHash[i].count;
 						}
 					}
@@ -144,12 +144,12 @@ sntRover.controller('RVPostChargeControllerV2',
 			// filter the items based on the search query
 			// will search on all items, discard chosen 'chargeGroup'
 			$scope.filterByQuery = function() {
-				if( $rootScope.isSingleDigitSearch ) {
+				if ( $rootScope.isSingleDigitSearch ) {
 					$scope.chargeGroup = '';
 					initPagination();
 					searchChargeCodeItems();
 				}
-				else if( $scope.query.length >= 3 ) {
+				else if ( $scope.query.length >= 3 ) {
 					$scope.chargeGroup = '';
 					initPagination();
 					searchChargeCodeItems();
@@ -187,14 +187,14 @@ sntRover.controller('RVPostChargeControllerV2',
 
 				$scope.calToggle = ( clickedItem.type === "ITEM" ) ? 'QTY' :'PR';
 
-				if(typeof $scope.selectedChargeItemHash[ clickedItem.id ] === 'undefined') {
+				if (typeof $scope.selectedChargeItemHash[ clickedItem.id ] === 'undefined') {
 					$scope.selectedChargeItemHash[ clickedItem.id ] = clickedItem ;
 					$scope.selectedChargeItemHash[ clickedItem.id ].count = 1;
 					$scope.selectedChargeItemHash[ clickedItem.id ].unit_price = parseFloat($scope.selectedChargeItemHash[ clickedItem.id ].unit_price);
 					$scope.selectedChargeItemHash[ clickedItem.id ].modifiedPrice = $scope.selectedChargeItemHash[ clickedItem.id ].unit_price;
 					$scope.selectedChargeItemHash[ clickedItem.id ].userEnteredPrice = '';
 				}
-				else{
+				else {
 					$scope.selectedChargeItemHash[ clickedItem.id ].count ++ ;
 				}
 
@@ -234,7 +234,7 @@ sntRover.controller('RVPostChargeControllerV2',
     					return $scope.selectedChargeItem.id === item.id;
     				});
 
-					if(typeof match !== "undefined") {
+					if (typeof match !== "undefined") {
 						match.count = 0;
 					}
 				}
@@ -285,7 +285,7 @@ sntRover.controller('RVPostChargeControllerV2',
 				if ( $scope.calToggle === 'QTY' ) {
 					var countStr = $scope.selectedChargeItem.count.toString();
 
-					switch(input) {
+					switch (input) {
 						case 1:
 							if ( $scope.selectedChargeItem.count === 1 && (lastInput === null || lastInput === 'CLR' || lastInput === 'QTY') ) {
 								// do nothing
@@ -322,7 +322,7 @@ sntRover.controller('RVPostChargeControllerV2',
 
 				// user is trying to update the price
 				else {
-					switch(input) {
+					switch (input) {
 						case '.':
 							if ( $scope.selectedChargeItem.userEnteredPrice.length && $scope.selectedChargeItem.userEnteredPrice.indexOf('.') === -1 ) {
 								$scope.selectedChargeItem.userEnteredPrice += '.';
@@ -333,7 +333,7 @@ sntRover.controller('RVPostChargeControllerV2',
 
 							// normal senario user must no be allowed to make the price as 0
 							// as soon as it choosen
-							if( $scope.selectedChargeItem.modifiedPrice === $scope.selectedChargeItem.unit_price ) {
+							if ( $scope.selectedChargeItem.modifiedPrice === $scope.selectedChargeItem.unit_price ) {
 								// CICO-17276 - add provision to add amount < $1
 
 									$scope.selectedChargeItem.userEnteredPrice += input;
@@ -491,14 +491,14 @@ sntRover.controller('RVPostChargeControllerV2',
 				/** **    CICO-6094    **/
 				var needToCreateNewBill = false;
 
-				if($scope.billNumber > $scope.fetchedData.bill_numbers.length) {
+				if ($scope.billNumber > $scope.fetchedData.bill_numbers.length) {
 					needToCreateNewBill = true;
 				}
 				/** **    CICO-6094    **/
 				var callback = function(data) {
 					$scope.$emit( 'hideLoader' );
 					// CICO-21768 - Alert to show Credit Limit has exceeded.
-					if( data.has_crossed_credit_limit ) {
+					if ( data.has_crossed_credit_limit ) {
 	                    ngDialog.open({
 	                        template: '/assets/partials/bill/rvBillingInfoCreditLimitAlert.html',
 	                        className: '',
@@ -507,11 +507,11 @@ sntRover.controller('RVPostChargeControllerV2',
 	                    });
 	                }
 					// update the price in staycard
-					else if(!$scope.isOutsidePostCharge) {
+					else if (!$scope.isOutsidePostCharge) {
 						$scope.$emit('postcharge.added', data.total_balance_amount);
 						$scope.closeDialog();
 					}
-					else{
+					else {
 						$rootScope.$emit( 'CHARGEPOSTED' );
 						$rootScope.$broadcast('postcharge.added'); // To reload the View bill Screen.
 					}
@@ -520,10 +520,10 @@ sntRover.controller('RVPostChargeControllerV2',
 				var callbackApplyToBillOne = function() {
 					$scope.$emit( 'hideLoader' );
 					// update the price in staycard
-					if(!$scope.isOutsidePostCharge) {
+					if (!$scope.isOutsidePostCharge) {
 						$scope.$emit('postcharge.added', data.total_balance_amount);
 					}
-					else{
+					else {
 						$rootScope.$emit( 'CHARGEPOSTED' );
 						$rootScope.$broadcast('postcharge.added'); // To reload the View bill Screen.
 					}
@@ -543,8 +543,8 @@ sntRover.controller('RVPostChargeControllerV2',
 					$scope.$emit('UPDATE_TRANSACTION_DATA', data);
 				};
 
-				if(!isFromAccounts) {
-					if(!!$scope.restrict_post && $scope.hasPermissionToAllowPostWithNoCredit()) {
+				if (!isFromAccounts) {
+					if (!!$scope.restrict_post && $scope.hasPermissionToAllowPostWithNoCredit()) {
 						data.post_anyway = true;
 					}
 				}
@@ -552,15 +552,15 @@ sntRover.controller('RVPostChargeControllerV2',
 				var updateParam = data;
 
 				/** **    CICO-6094    **/
-				if(!needToCreateNewBill) {
-					if(isFromAccounts) {
+				if (!needToCreateNewBill) {
+					if (isFromAccounts) {
 						$scope.invokeApi(rvAccountTransactionsSrv.postCharges, updateParam, accountsPostcallback, failureCallback);
 					}
-					else{
+					else {
 						$scope.invokeApi(RVPostChargeSrvV2.postCharges, updateParam, callback, failureCallback);
 					}
 				}
-				else{
+				else {
 
 					var billData ={
 						"bill_number": $scope.billNumber
@@ -569,7 +569,7 @@ sntRover.controller('RVPostChargeControllerV2',
 
 					isFromAccounts ? (billData.account_id = $scope.account_id):(billData.reservation_id = $scope.reservation_id);
 
-					if(isFromAccounts) {
+					if (isFromAccounts) {
 						/*
 						 * Success Callback of create bill action
 						 */
@@ -582,7 +582,7 @@ sntRover.controller('RVPostChargeControllerV2',
 
 						$scope.invokeApi(rvAccountTransactionsSrv.createAnotherBill, billData, createBillSuccessCallback, failureCallback);
 					}
-					else{
+					else {
 						/*
 						 * Success Callback of create bill action
 						 */
@@ -591,7 +591,7 @@ sntRover.controller('RVPostChargeControllerV2',
 							// Fetch data again to refresh the screen with new data
 							$scope.invokeApi(RVPostChargeSrvV2.postCharges, updateParam, callback);
 							// Update Review status array.
-							if(!$scope.isOutsidePostCharge) {
+							if (!$scope.isOutsidePostCharge) {
 								var data = {};
 
 								data.reviewStatus = false;
@@ -642,10 +642,10 @@ sntRover.controller('RVPostChargeControllerV2',
   			$scope.showItemSummaryList = function() {
   				var size = _.size($scope.selectedChargeItemHash);
 
-  				if( size > 0 ) {
+  				if ( size > 0 ) {
   					return true;
   				}
-  				else{
+  				else {
   					return false;
   				}
   			};
@@ -671,7 +671,7 @@ sntRover.controller('RVPostChargeControllerV2',
 
 		    	var isDisabled = false;
 
-		        if($scope.fetchedData.end >= $scope.fetchedData.total_count) {
+		        if ($scope.fetchedData.end >= $scope.fetchedData.total_count) {
 		            isDisabled = true;
 		        }
 		        return isDisabled;
@@ -681,7 +681,7 @@ sntRover.controller('RVPostChargeControllerV2',
 
 		        var isDisabled = false;
 
-		        if($scope.fetchedData.pageNo === 1) {
+		        if ($scope.fetchedData.pageNo === 1) {
 		            isDisabled = true;
 		        }
 		        return isDisabled;

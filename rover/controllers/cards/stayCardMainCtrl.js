@@ -752,7 +752,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 						RVReservationStateService.setReservationFlag('RATE_CHANGE_FAILED', true);
 						ngDialog.close();
 	 				}
-	 				else{
+	 				else {
 	 					$scope.$broadcast("SHOWERRORMESSAGE", error);
 	 				}
 					$scope.$emit('hideLoader');
@@ -1090,7 +1090,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				room.room_type = refData.room_type;
 
 				// tData will have addons IFF the hourly reservation is being edited; while creation tData.addons will be undefined
-				if(tData.addons) {
+				if (tData.addons) {
 					room.addons = [];
 					angular.forEach(tData.addons, function(item) {
 						room.addons.push({

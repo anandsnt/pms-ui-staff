@@ -17,9 +17,9 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		// If SAFLOK_MSR is the chosen encoder type, we would show a dropdown with active encoders listed.
 		/** *************************CICO-11444 *****************************************/
 		$scope.encoderSelected = "";
-		if($scope.fromView === "checkin") {
+		if ($scope.fromView === "checkin") {
 			$scope.isRemoteEncodingEnabled = $scope.reservationBillData.is_remote_encoder_enabled;
-		}else{
+		} else {
 			$scope.isRemoteEncodingEnabled = $scope.reservationData.reservation_card.is_remote_encoder_enabled;
 		}
 
@@ -34,7 +34,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 
 		$scope.data = {};
 		// If the keypopup inviked from check-in flow - registration card)
-		if($scope.fromView === "checkin") {
+		if ($scope.fromView === "checkin") {
 			reservationStatus = $scope.reservationBillData.reservation_status;
 			// Setup data for late checkout
 			$scope.data.is_late_checkout = false;
@@ -50,24 +50,24 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 
 		}
 
-    	if($scope.data.is_late_checkout) {
+    	if ($scope.data.is_late_checkout) {
     		$scope.data.late_checkout_time = $scope.reservationData.reservation_card.late_checkout_time;
     	}
 		var statusMessage = $filter('translate')('KEY_CONNECTED_STATUS');
 
     	that.setStatusAndMessage(statusMessage, 'success');
     	// To check reservation status and select corresponding texts and classes.
-    	if(reservationStatus === 'CHECKING_IN' ) {
+    	if (reservationStatus === 'CHECKING_IN' ) {
 			$scope.data.reservationStatusText = $filter('translate')('KEY_CHECKIN_STATUS');
 			$scope.data.colorCodeClass = 'check-in';
 			$scope.data.colorCodeClassForClose = 'green';
 		}
-		else if(reservationStatus === 'CHECKEDIN' ) {
+		else if (reservationStatus === 'CHECKEDIN' ) {
 			$scope.data.reservationStatusText = $filter('translate')('KEY_INHOUSE_STATUS');
 			$scope.data.colorCodeClass = 'inhouse';
 			$scope.data.colorCodeClassForClose = 'blue';
 		}
-		else if(reservationStatus === 'CHECKING_OUT') {
+		else if (reservationStatus === 'CHECKING_OUT') {
 			$scope.data.reservationStatusText = $filter('translate')('KEY_CHECKOUT_STATUS');
 			$scope.data.colorCodeClass = 'check-out';
 			$scope.data.colorCodeClassForClose = 'red';
@@ -102,9 +102,9 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
                     $scope.buttonText = $filter('translate')('KEY_DUPLICATE_BUTTON_TEXT');
                 }
 
-		if($scope.isRemoteEncodingEnabled) {
+		if ($scope.isRemoteEncodingEnabled) {
 			showPrintKeyOptions();
-		}else {
+		} else {
 			// Initally we check if the device is connected
 			$scope.showDeviceConnectingMessge();
 		}
@@ -117,7 +117,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			return false;
 		}
 		if ($scope.numberOfKeysSelected > 0) {
-			if($scope.isRemoteEncodingEnabled && $scope.encoderSelected === "") {
+			if ($scope.isRemoteEncodingEnabled && $scope.encoderSelected === "") {
 				return false;
 			}
 			return true;
@@ -142,11 +142,11 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		that.noOfErrorMethodCalled++;
 		secondsAfterCalled = that.noOfErrorMethodCalled * 1000;
 		setTimeout(function() {
-			if(secondsAfterCalled <= that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK) { // 10seconds
+			if (secondsAfterCalled <= that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK) { // 10seconds
 				$scope.showDeviceConnectingMessge();
 			}
 		}, 1000);
-		if(secondsAfterCalled > that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK) {
+		if (secondsAfterCalled > that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK) {
 			$scope.deviceConnecting = false;
 			$scope.keysPrinted = false;
 			$scope.showPrintKeyOptions = false;
@@ -175,13 +175,13 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			'failureCallBack': showDeviceNotConnected
 		};
 
-		if(sntapp.cardSwipeDebug) {
+		if (sntapp.cardSwipeDebug) {
 			sntapp.cardReader.checkDeviceConnectedDebug(callBack);
 		}
 		else {
 			try {
 				sntapp.cardReader.checkDeviceConnected(callBack);
-			} catch(e) {
+			} catch (e) {
 				showDeviceNotConnected();
 			}
 		}
@@ -191,7 +191,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		$scope.numberOfKeysSelected = ($scope.numberOfKeysSelected === index) ? --$scope.numberOfKeysSelected : index;
 		that.numOfKeys = $scope.numberOfKeysSelected;
 		$scope.printedKeysCount = 0;
-		if(that.numOfKeys > 0) {
+		if (that.numOfKeys > 0) {
                     if ($scope.keyType === 'New') {
                         $scope.buttonText = $filter('translate')('KEY_PRINT_BUTTON_TEXT_KEY1');
                     } else {
@@ -203,7 +203,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		var elementToPut = {};
 
 		that.printKeyStatus = [];
-		for(var i = 1; i <= $scope.numberOfKeysSelected; i++) {
+		for (var i = 1; i <= $scope.numberOfKeysSelected; i++) {
 			elementToPut = {};
 			elementToPut['key'] = 'key' + i;
 			elementToPut['printed'] = false;
@@ -213,11 +213,11 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 	};
 
 	$scope.clickedPrintKey = function() {
-		if($scope.numberOfKeysSelected === 0) {
+		if ($scope.numberOfKeysSelected === 0) {
 			return;
 		}
 		// CICO-11444. If saflok_msr we we ll be connecting to remote encoders in the network
-		if($scope.isRemoteEncodingEnabled) {
+		if ($scope.isRemoteEncodingEnabled) {
 			that.callKeyFetchAPI();
 			return false;
 		}
@@ -235,10 +235,10 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			'failureCallBack': that.showCardInfoFetchFailedMsg
 		};
 
-		if(sntapp.cardSwipeDebug) {
+		if (sntapp.cardSwipeDebug) {
 			sntapp.cardReader.retrieveCardInfoDebug(options);
 		}
-		else{
+		else {
 			sntapp.cardReader.retrieveCardInfo(options);
 		}
 
@@ -261,7 +261,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		that.setStatusAndMessage($filter('translate')('KEY_GETTING_KEY_IMAGE_STATUS'), 'pending');
 		var reservationId = '';
 
-		if($scope.viewFromBillScreen) {
+		if ($scope.viewFromBillScreen) {
 			reservationId = $scope.reservationBillData.reservation_id;
 		} else {
 			reservationId = $scope.reservationData.reservation_card.reservation_id;
@@ -269,14 +269,14 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 	    var postParams = {"reservation_id": reservationId, "key": 1, "is_additional": true};
 	    // for initial case the key we are requesting is not additional
 
-	    if(!that.isAdditional) {
+	    if (!that.isAdditional) {
 	    	that.isAdditional = true;
 	    	var postParams = {"reservation_id": reservationId, "key": 1, "is_additional": false};
 	    }
-	    if(typeof cardInfo !== 'undefined') {
+	    if (typeof cardInfo !== 'undefined') {
 	    	postParams.card_info = cardInfo;
 	    	that.lastSuccessfulCardIDReaded = cardInfo.card_uid;
-	    }else{
+	    } else {
 	    	postParams.card_info = "";
 
 	    }
@@ -284,7 +284,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
         if ($scope.keyType === 'Duplicate') {
             postParams.is_additional = true;
         }
-	    if($scope.isRemoteEncodingEnabled) {
+	    if ($scope.isRemoteEncodingEnabled) {
 		    postParams.key_encoder_id = $scope.encoderSelected;
 	    }
 	    $scope.invokeApi(RVKeyPopupSrv.fetchKeyFromServer, postParams, that.keyFetchSuccess, that.keyFetchFailed);
@@ -318,21 +318,21 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 	that.printKeys = function() {
 		var index = -1;
 
-		for(var i = 0; i < that.printKeyStatus.length; i++) {
-			if(that.printKeyStatus[i].printed === false) {
+		for (var i = 0; i < that.printKeyStatus.length; i++) {
+			if (that.printKeyStatus[i].printed === false) {
 				index = i + 1;
 				break;
 			}
 		}
 		// CICO-11444 if SAFLOK_MSR, we will be writing to remote encoder via print_key api call itself.
 		// No encoder is attached to ipad.
-		if($scope.isRemoteEncodingEnabled) {
+		if ($scope.isRemoteEncodingEnabled) {
 			that.numOfKeys--;
 			that.printKeyStatus[index-1].printed = true;
 			$scope.printedKeysCount = index;
 			$scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
 
-			if(that.numOfKeys === 0) {
+			if (that.numOfKeys === 0) {
 				that.showKeyPrintSuccess();
 				return true;
 			}
@@ -358,7 +358,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 				$scope.$emit('hideLoader');
 				that.setStatusAndMessage($filter('translate')('KEY_CREATED_STATUS'), 'success');
 				// if the setting of smart band create along with key creation enabled, we will create a smartband with open room charge
-    			if(that.isSmartbandCreateWithKeyWrite === "true" && that.lastSuccessfulCardIDReaded !== '') {
+    			if (that.isSmartbandCreateWithKeyWrite === "true" && that.lastSuccessfulCardIDReaded !== '') {
     				var data = {};
     				// since there is not UI for adding first name & last name, we are setting as Blank, please see the comments of the story CICO-9315
 
@@ -376,7 +376,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 				$scope.printedKeysCount = index;
 				$scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
 				$scope.$apply();
-				if(that.numOfKeys === 0) {
+				if (that.numOfKeys === 0) {
 					that.showKeyPrintSuccess();
 					return true;
 				}
@@ -386,7 +386,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			},
 			'failureCallBack': function(errorObject) {
 				$scope.$emit('hideLoader');
-				if(that.numOfKeys > 0) {
+				if (that.numOfKeys > 0) {
 					that.setStatusAndMessage($filter('translate')('KEY_CREATION_FAILED_STATUS_LONG') + ': '  + errorObject['RVErrorDesc'], 'error');
 				}
 				else {
@@ -400,10 +400,10 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			arguments: keyData
 		};
 
-		if(sntapp.cardSwipeDebug) {
+		if (sntapp.cardSwipeDebug) {
 			sntapp.cardReader.writeKeyDataDebug(options);
 		}
-		else{
+		else {
 			sntapp.cardReader.writeKeyData(options);
 		}
 
@@ -418,7 +418,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		var args = [];
 		var bandType = '00000002';
 
-		if(data.is_fixed) {
+		if (data.is_fixed) {
 			bandType = '00000001';
 		}
 		args.push(bandType);
@@ -429,7 +429,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			'successCallBack': function(data) {
 				$scope.$emit('hideLoader');
 				that.numOfKeys--;
-				if(that.numOfKeys === 0) {
+				if (that.numOfKeys === 0) {
 					$scope.$emit('hideLoader');
 					that.showKeyPrintSuccess();
 					return true;
@@ -444,7 +444,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			'failureCallBack': function(errorObject) {
 				$scope.$emit('hideLoader');
 				that.numOfKeys--;
-				if(that.numOfKeys > 0) {
+				if (that.numOfKeys > 0) {
 					that.setStatusAndMessage($filter('translate')('KEY_BAND_CREATED_FAILED_WRITING_BANDTYPE') + ': ' + errorObject['RVErrorDesc'], 'error');
 					that.printKeyStatus[index-1].printed = true;
 					$scope.printedKeysCount = index;
@@ -461,10 +461,10 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			arguments: args
 		};
 
-		if(sntapp.cardSwipeDebug) {
+		if (sntapp.cardSwipeDebug) {
 			sntapp.cardReader.setBandTypeDebug(options);
 		}
-		else{
+		else {
 			sntapp.cardReader.setBandType(options);
 		}
 
@@ -493,7 +493,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			that.setStatusAndMessage($filter('translate')('KEY_CREATED_BAND_ADDING_FAILED') + ': ' + errorMessage, 'error');
 			$scope.$emit('hideLoader');
 			that.numOfKeys--;
-			if(that.numOfKeys > 0) {
+			if (that.numOfKeys > 0) {
 				that.printKeyStatus[index-1].printed = true;
 				$scope.printedKeysCount = index;
 				$scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
@@ -507,7 +507,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		};
 		var reservationId = '';
 
-		if($scope.viewFromBillScreen) {
+		if ($scope.viewFromBillScreen) {
 			reservationId = $scope.reservationBillData.reservation_id;
 		} else {
 			reservationId = $scope.reservationData.reservation_card.reservation_id;
@@ -520,7 +520,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 	var showPrintKeyOptions = function (status) {
 		// if status === false, they are not able to connect. I dont know why these type of designs
 		// we have to call failurecallback on that
-		if(status === false) {
+		if (status === false) {
 			return showDeviceNotConnected();
 		}
 		$scope.$emit('hideLoader');
@@ -538,7 +538,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		$scope.keysPrinted = true;
 		$scope.showPrintKeyOptions = false;
 		$scope.deviceNotConnected = false;
-		if(!$scope.$$phase) {
+		if (!$scope.$$phase) {
 			$scope.$apply();
 		}
 	};
@@ -550,7 +550,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
     $scope.pressedCancel = function(message) {
 		$scope.$emit('hideLoader');
 		$scope.printKeyFailMsg = $filter('translate')('KEY_NOT_PRINTED');
-		if(message !== undefined) {
+		if (message !== undefined) {
 			$scope.printKeyFailMsg = message;
 		}
 		$scope.deviceConnecting = false;
@@ -576,12 +576,12 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 	*/
 	this.showKeyPrintFailure = function(message) {
 		$scope.$emit('hideLoader');
-		if(typeof message === 'undefined') {
+		if (typeof message === 'undefined') {
 			var message = $filter('translate')('KEY_CREATION_FAILED_STATUS');
 		}
 		$scope.pressedCancel(message);
 		// Check if digest is already in progress - if not start digest
-		if(!$scope.$$phase) {
+		if (!$scope.$$phase) {
 			$scope.$apply();
 		}
 

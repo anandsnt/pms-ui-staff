@@ -29,7 +29,7 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
     * CICO-10323
     */
     var isSearchOnSingleDigit = function(searchTerm) {
-    	if($rootScope.isSingleDigitSearch) {
+    	if ($rootScope.isSingleDigitSearch) {
     		return isNaN(searchTerm);
     	} else {
     		return true;
@@ -45,7 +45,7 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 			$scope.results.posting_accounts  = [];
 			$scope.results.reservations = [];
 		}
-		else{
+		else {
 	    	($scope.isReservationActive)?displayFilteredResultsReservations():displayFilteredResultsCards();
 	   	}
 	   	var queryText = $scope.textInQueryBox;
@@ -83,9 +83,9 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 	$scope.excludeActivereservationFromsSearch = function() {
 		var filteredResults = [];
 
-	  	for(var i = 0; i < $scope.results.reservations.length; i++) {
+	  	for (var i = 0; i < $scope.results.reservations.length; i++) {
             // CICO-26728 Added the future reservations as well in the search results
-	  		if(($scope.results.reservations[i].id !== $scope.reservationData.reservation_id) && ($scope.results.reservations[i].reservation_status === 'CHECKING_IN' || $scope.results.reservations[i].reservation_status === 'CHECKEDIN' || $scope.results.reservations[i].reservation_status === 'CHECKING_OUT' || $scope.results.reservations[i].reservation_status === 'RESERVED')) {
+	  		if (($scope.results.reservations[i].id !== $scope.reservationData.reservation_id) && ($scope.results.reservations[i].reservation_status === 'CHECKING_IN' || $scope.results.reservations[i].reservation_status === 'CHECKEDIN' || $scope.results.reservations[i].reservation_status === 'CHECKING_OUT' || $scope.results.reservations[i].reservation_status === 'RESERVED')) {
 
 	  			filteredResults.push($scope.results.reservations[i]);
 	  		}
@@ -100,7 +100,7 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
         $scope.$emit('hideLoader');
         $scope.results.reservations = [];
 		$scope.results.reservations = data;
-		if($scope.billingEntity !== "TRAVEL_AGENT_DEFAULT_BILLING" &&
+		if ($scope.billingEntity !== "TRAVEL_AGENT_DEFAULT_BILLING" &&
                 $scope.billingEntity !== "COMPANY_CARD_DEFAULT_BILLING" &&
                 $scope.billingEntity !== "GROUP_DEFAULT_BILLING" &&
                 $scope.billingEntity !== "ALLOTMENT_DEFAULT_BILLING") {
@@ -128,7 +128,7 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 	var fetchSearchResults = function() {
 		var dataDict = {'query': $scope.textInQueryBox.trim()};
 
-		if($rootScope.isSingleDigitSearch && !isNaN($scope.textInQueryBox) && $scope.textInQueryBox.length < 3) {
+		if ($rootScope.isSingleDigitSearch && !isNaN($scope.textInQueryBox) && $scope.textInQueryBox.length < 3) {
 			dataDict.room_search = true;
 		}
 		$scope.invokeApi(RVSearchSrv.fetch, dataDict, searchSuccessReservations, failureCallBackofDataFetch);

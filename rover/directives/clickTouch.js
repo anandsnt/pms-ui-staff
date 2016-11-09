@@ -13,7 +13,7 @@ sntRover.directive('clickTouch', function($timeout, $parse) {
                             element.focus(); 
                         }
                     }
-                } catch(err) {
+                } catch (err) {
 
                 }
 

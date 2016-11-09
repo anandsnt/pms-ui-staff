@@ -81,7 +81,7 @@ angular.module('sntRover').controller('RateMgrOccupancyGraphCtrl', ['$q', '$scop
 
                 itemDate = Date.parse(item.date); // parse string datetime value to locale ms
 
-                if(index === 0) {
+                if (index === 0) {
                     start = itemDate;
                 }
 
@@ -92,10 +92,10 @@ angular.module('sntRover').controller('RateMgrOccupancyGraphCtrl', ['$q', '$scop
                 // NOTE :: Check if replaced harcoded 10 with item.actual
 
 
-                if(item.actual === null) {
+                if (item.actual === null) {
                    actual = 0;
                 }
-                else{
+                else {
                     actual = (item.actual % 1 === 0) ? item.actual : Math.round(item.actual);
                 }
                 actualData.push(parseInt(actual));
@@ -282,7 +282,7 @@ angular.module('sntRover').controller('RateMgrOccupancyGraphCtrl', ['$q', '$scop
 
             records = collection[childCollParam];
 
-            for(var i = 0, len = records.length; i < len; i++) {
+            for (var i = 0, len = records.length; i < len; i++) {
                 record = records[i][valueParam];
 
                 curVal = (record === null || !record || isNaN(record)) ? 0 : record;
@@ -321,11 +321,11 @@ angular.module('sntRover').controller('RateMgrOccupancyGraphCtrl', ['$q', '$scop
 
                     max = ((maxActual > maxTarget) ? maxActual : maxTarget);
 
-                    if(max <= 0) {
+                    if (max <= 0) {
                         max = 100;
                     }
 
-                    if(container.length > 0) {
+                    if (container.length > 0) {
                         viewport = container[0].getBoundingClientRect();
                     }
 
@@ -449,19 +449,19 @@ angular.module('sntRover').controller('RateMgrOccupancyGraphCtrl', ['$q', '$scop
             $scope.graphDimensions.height = $scope.uiOptions.tableHeight;
             $scope.graphDimensions.interval = $scope.uiOptions.columnWidth;
 
-            if($scope.highchartsNG && $scope.highchartsNG.options && $scope.highchartsNG.options.chart) {
+            if ($scope.highchartsNG && $scope.highchartsNG.options && $scope.highchartsNG.options.chart) {
                 $scope.highchartsNG.options.chart.width = $scope.graphDimensions.width;
                 $scope.highchartsNG.options.chart.height = $scope.graphDimensions.height;
             }
 
-            if(!$scope.myScroll || !$scope.myScroll.RateMgrOccupancyGraphCtrl) {
+            if (!$scope.myScroll || !$scope.myScroll.RateMgrOccupancyGraphCtrl) {
                 $scope.$parent.myScroll = {};
                 $scope.myScroll = {};
                 $scope.setScroller('RateMgrOccupancyGraphCtrl', { scrollX: true, scrollY: false, scrollbars: true, interactiveScrollbars: false, momentum: false });
 
                 try {
                     $scope.myScroll.RateMgrOccupancyGraphCtrl = new IScroll('#occ-graph', $scope.$parent.myScrollOptions.RateMgrOccupancyGraphCtrl);
-                }catch(e) {
+                } catch (e) {
 
                 }
             }

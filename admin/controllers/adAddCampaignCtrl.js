@@ -18,14 +18,14 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 
 
 		$scope.minutes = ["00", "05"];
-		for(var i = 10; i < 61; i++) {
-               if(i % 5 === 0)
+		for (var i = 10; i < 61; i++) {
+               if (i % 5 === 0)
                   $scope.minutes.push("" + i);
 		}
 
 		$scope.mode = 'ADD';
 		fetchConfig();
-		if($stateParams.type === 'EDIT') {
+		if ($stateParams.type === 'EDIT') {
 			$scope.mode = 'EDIT';
 			fetchCampaignDetails($stateParams.id);
 		}
@@ -74,7 +74,7 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 
 		var deliveryTime = tConvert(data.time_to_send);
 
-		if(!isEmptyObject(deliveryTime)) {
+		if (!isEmptyObject(deliveryTime)) {
 			$scope.campaignData.delivery_hour = deliveryTime.hh;
 			$scope.campaignData.delivery_min = deliveryTime.mm;
 			$scope.campaignData.delivery_primetime = deliveryTime.ampm;
@@ -103,16 +103,16 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 		var campaign = {};
 
 		campaign.name = $scope.campaignData.name;
-		if($scope.campaignData.audience_type) {
+		if ($scope.campaignData.audience_type) {
 		campaign.audience_type = $scope.campaignData.audience_type;
 		}
-		if($scope.campaignData.delivery_details) {
+		if ($scope.campaignData.delivery_details) {
 		campaign.delivery_details = $scope.campaignData.delivery_details;
 		}
-		if($scope.campaignData.screen_type_id && $scope.campaignData.target_type === 'SCREEN') {
+		if ($scope.campaignData.screen_type_id && $scope.campaignData.target_type === 'SCREEN') {
 		campaign.screen_type_id = $scope.campaignData.screen_type_id;
 		}
-		if($scope.campaignData.audience_type==="SPECIFIC_USERS") {
+		if ($scope.campaignData.audience_type==="SPECIFIC_USERS") {
 		campaign.specific_users = $scope.campaignData.specific_users;
 		}
 		campaign.subject = $scope.campaignData.subject;
@@ -127,7 +127,7 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 		// TODO: time_to_send
 		campaign.time_to_send = tConvertToAPIFormat($scope.campaignData.delivery_hour, $scope.campaignData.delivery_min, $scope.campaignData.delivery_primetime);
 		// TODO: recurrence_end_date
-		if($scope.campaignData.end_date_for_display) {
+		if ($scope.campaignData.end_date_for_display) {
 		campaign.recurrence_end_date = $scope.campaignData.end_date_for_display;
 		}
 		campaign.alert_ios7 = $scope.campaignData.alert_ios7;
@@ -160,16 +160,16 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 		var saveSucess = function(data) {
 			$scope.campaignData.id = data.id;
 			$scope.$emit('hideLoader');
-			if(action === "START_CAMPAIGN") {
+			if (action === "START_CAMPAIGN") {
 				startCampaign(data.id);
 
-			}else{
+			} else {
 				$scope.gobackToCampaignListing();
 			}
 		};
 		var data = computeCampaignSaveData();
 
-		if($scope.mode === 'EDIT') {
+		if ($scope.mode === 'EDIT') {
 			data.id = $scope.campaignData.id;
 			$scope.invokeApi(ADCampaignSrv.updateCampaign, data, saveSucess);
 
@@ -224,7 +224,7 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 	$scope.$watch(function() {
 		return $scope.campaignData.header_image;
 	}, function(logo) {
-			if(logo === 'false') {
+			if (logo === 'false') {
 				$scope.fileName = "Choose File....";
 			}
 			$scope.campaignData.header_file = $scope.fileName;
@@ -236,7 +236,7 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 	$scope.isScreenSwitchDisabled = function() {
           var delivery_types = ['EXTERNAL_CHECKIN', 'EXTERNAL_CHECKOUT', 'PRE_CHECKIN', 'ROOM_READY', 'ON_CHECKIN'];
 
-          if(delivery_types.indexOf($scope.campaignData.audience_type) > -1
+          if (delivery_types.indexOf($scope.campaignData.audience_type) > -1
           	&& delivery_types.indexOf($scope.campaignData.delivery_details) > -1 &&
           	 delivery_types.indexOf($scope.campaignData.audience_type) === delivery_types.indexOf($scope.campaignData.delivery_details)) {
           	return false;
@@ -247,7 +247,7 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 	$scope.$watch(function() {
 		return $scope.campaignData.delivery_details;
 	}, function(value) {
-			if($scope.campaignData.target_type === 'SCREEN' && $scope.isScreenSwitchDisabled()) {
+			if ($scope.campaignData.target_type === 'SCREEN' && $scope.isScreenSwitchDisabled()) {
                  $scope.campaignData.target_type = "";
 				 $scope.campaignData.screen_type_id = "";
 			}
@@ -258,7 +258,7 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 	$scope.$watch(function() {
 		return $scope.campaignData.audience_type;
 	}, function(value) {
-			if($scope.campaignData.target_type === 'SCREEN' && $scope.isScreenSwitchDisabled()) {
+			if ($scope.campaignData.target_type === 'SCREEN' && $scope.isScreenSwitchDisabled()) {
                  $scope.campaignData.target_type = "";
 				 $scope.campaignData.screen_type_id = "";
 			}

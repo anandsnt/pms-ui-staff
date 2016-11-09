@@ -42,24 +42,24 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
         var processParamsForRoomTypeAndRateRequest = function(params) {
             var currentRoomAndRateActiveView = service.getRoomAndRateActiveTab();
 
-            if(currentRoomAndRateActiveView === "RATE" || currentRoomAndRateActiveView === "ROOM_TYPE") {
+            if (currentRoomAndRateActiveView === "RATE" || currentRoomAndRateActiveView === "ROOM_TYPE") {
                params.is_member = "false";
 
-               if(params.company_id) {
+               if (params.company_id) {
                 delete params.company_id;
                }
-               if(params.travel_agent_id) {
+               if (params.travel_agent_id) {
                 delete params.travel_agent_id;
                }
-               if(params.promotion_code) {
+               if (params.promotion_code) {
                 delete params.promotion_code;
                }
-               if(params.promotion_id) {
+               if (params.promotion_id) {
                 delete params.promotion_id;
                }
             }
 
-            if(currentRoomAndRateActiveView === "RECOMMENDED") {
+            if (currentRoomAndRateActiveView === "RECOMMENDED") {
                 delete params.room_type_id;
             }
 

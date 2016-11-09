@@ -37,7 +37,7 @@ sntRover.controller('rvBillingInfoAllotmentMainCtrl', ['$scope', '$rootScope', '
 	$scope.setSelectedEntity = function(data, type) {
         $scope.errorMessage = "";
 
-        if(type === 'RESERVATIONS') {
+        if (type === 'RESERVATIONS') {
         	$scope.selectedEntity = _.extend (data, {
                 "id": $scope.allotmentId,
                 "allotment_id": $scope.allotmentId,
@@ -48,7 +48,7 @@ sntRover.controller('rvBillingInfoAllotmentMainCtrl', ['$scope', '$rootScope', '
 			});
 
         }
-        else if(type === 'ACCOUNT') {
+        else if (type === 'ACCOUNT') {
             $scope.selectedEntity = _.extend (data, {
                 "id": $scope.allotmentId,
                 "allotment_id": $scope.allotmentId,
@@ -58,7 +58,7 @@ sntRover.controller('rvBillingInfoAllotmentMainCtrl', ['$scope', '$rootScope', '
                 }
             });
         }
-        else if(type === 'GROUP' || type === 'HOUSE') {
+        else if (type === 'GROUP' || type === 'HOUSE') {
             $scope.selectedEntity = _.extend (data, {
                 "id": $scope.allotmentId,
                 "allotment_id": $scope.allotmentId,
@@ -74,16 +74,16 @@ sntRover.controller('rvBillingInfoAllotmentMainCtrl', ['$scope', '$rootScope', '
      * function to get the class for the 'li' according to the entity role
      */
 	$scope.getEntityRole = function(route) {
-    	if(route.entity_type === 'RESERVATION' &&  !route.has_accompanying_guests) {
+    	if (route.entity_type === 'RESERVATION' &&  !route.has_accompanying_guests) {
     		return 'guest';
         }
-    	else if(route.entity_type === 'RESERVATION') {
+    	else if (route.entity_type === 'RESERVATION') {
     		return 'accompany';
         }
-    	else if(route.entity_type === 'TRAVEL_AGENT') {
+    	else if (route.entity_type === 'TRAVEL_AGENT') {
     		return 'travel-agent';
         }
-    	else if(route.entity_type === 'COMPANY_CARD') {
+    	else if (route.entity_type === 'COMPANY_CARD') {
     		return 'company';
         }
     };
@@ -92,13 +92,13 @@ sntRover.controller('rvBillingInfoAllotmentMainCtrl', ['$scope', '$rootScope', '
      * function to get the class for the 'icon' according to the entity role
      */
     $scope.getEntityIconClass = function(route) {
-        if(route.entity_type === 'RESERVATION' &&  route.has_accompanying_guests ) {
+        if (route.entity_type === 'RESERVATION' &&  route.has_accompanying_guests ) {
             return 'accompany';
         }
-    	else if(route.entity_type === 'RESERVATION' || route.entity_type === 'COMPANY_CARD') {
+    	else if (route.entity_type === 'RESERVATION' || route.entity_type === 'COMPANY_CARD') {
             return '';
         }
-    	else if(route.entity_type === 'TRAVEL_AGENT') {
+    	else if (route.entity_type === 'TRAVEL_AGENT') {
     		return 'icons icon-travel-agent';
         }
     };
@@ -147,7 +147,7 @@ sntRover.controller('rvBillingInfoAllotmentMainCtrl', ['$scope', '$rootScope', '
 	$scope.handleCloseDialog = function() {
 		$scope.$emit('HANDLE_MODAL_OPENED');
 		$scope.closeDialog();
-        if(!!$scope.billingData) {// NOTE: CICO-17123 When the billing information popup is called from the Group Summary Tab, there wont be a billingData object in $scope. This was throwing "TypeError: Cannot set property 'billingInfoTitle' of undefined"
+        if (!!$scope.billingData) {// NOTE: CICO-17123 When the billing information popup is called from the Group Summary Tab, there wont be a billingData object in $scope. This was throwing "TypeError: Cannot set property 'billingInfoTitle' of undefined"
             $scope.billingData.billingInfoTitle = ($scope.routes.length > 0 )? $filter('translate')('BILLING_INFO_TITLE'):$filter('translate')('ADD_BILLING_INFO_TITLE');
         }
 	};

@@ -30,7 +30,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
 
         var summaryItem = "";
 
-        switch( balance_type ) {
+        switch ( balance_type ) {
             case 'DEPOSIT_BALANCE'  :
                 summaryItem = $scope.data.summaryData.deposit_balance;
                 break;
@@ -45,7 +45,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
     };
 
     var updateTotalForBalanceType = function( balance_type, opening_balance, debit_sum, credit_sum, closing_balance ) {
-        switch( balance_type ) {
+        switch ( balance_type ) {
             case 'DEPOSIT_BALANCE'  :
                 $scope.data.summaryData.deposit_closing_balance = closing_balance;
                 $scope.data.summaryData.deposit_credits = credit_sum;
@@ -114,7 +114,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
 
             updateTotalForBalanceType( balance_type, responce.opening_balance, responce.debit_sum, responce.credit_sum, responce.closing_balance );
 
-            if(!isFromPagination && summaryItem.transactions.length > 0) {
+            if (!isFromPagination && summaryItem.transactions.length > 0) {
                 summaryItem.active = !summaryItem.active;
             }
 
@@ -125,7 +125,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
         };
 
         // Call api only while expanding the tab ..
-        if(!summaryItem.active || isFromPagination) {
+        if (!summaryItem.active || isFromPagination) {
             var params = {
                 "date": $scope.data.summaryDate,
                 "page_no": summaryItem.page_no,
@@ -135,7 +135,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
 
             $scope.invokeApi(RVJournalSrv.fetchBalanceDetails, params, successCallBackFetchBalanceDetails);
         }
-        else{
+        else {
             summaryItem.active = !summaryItem.active;
             refreshSummaryScroller();
         }

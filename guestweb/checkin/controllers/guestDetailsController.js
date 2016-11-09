@@ -8,17 +8,17 @@
 
 	$scope.pageValid = false;
 
-	if($rootScope.isCheckedin) {
+	if ($rootScope.isCheckedin) {
 		$state.go('checkinSuccess');
 	}
-	else if($rootScope.isCheckedout ) {
+	else if ($rootScope.isCheckedout ) {
 		$state.go('checkOutStatus');
 	}
-	else{
+	else {
 		$scope.pageValid = true;
 	}		
 
-	if($scope.pageValid) {
+	if ($scope.pageValid) {
 		
 		$scope.countries 	= [];
 		$scope.sortedCountries = [];
@@ -40,14 +40,14 @@
 							  };
 
 		
-		for(year=new Date().getFullYear();year>=1900;year--) {
+		for (year=new Date().getFullYear();year>=1900;year--) {
 			$scope.years.push(year);
 		}
-		for(month=1;month<=12;month++) {
+		for (month=1;month<=12;month++) {
 			$scope.months.push(month);
 		}
 		
-		for(day=1;day<=31;day++) {
+		for (day=1;day<=31;day++) {
 			$scope.days.push(day);
 		}
 
@@ -70,7 +70,7 @@
 
 		// fetch country list
 		$scope.isLoading = true;
-		if($rootScope.enforceCountrySort) {
+		if ($rootScope.enforceCountrySort) {
 			var data = {'reservation_id': $rootScope.reservationID};
 
 			guestDetailsService.fetchSortedCountryList(data).then(function(response) {
@@ -83,7 +83,7 @@
 				$scope.isLoading = false;
 			});
 		}
-		else{
+		else {
 			guestDetailsService.fetchCountryList().then(function(response) {
 				$scope.countries = response;
 				$scope.isLoading = false;
@@ -106,14 +106,14 @@
 			var unwanted_keys 		= ["month", "year", "day"];
 			var newObject 			= JSON.parse(JSON.stringify($scope.guestDetails));
 
-            for(var i=0; i < unwanted_keys.length; i++) {
+            for (var i=0; i < unwanted_keys.length; i++) {
                 delete newObject[unwanted_keys[i]];
             }
             data 					= newObject;
-            if($scope.guestDetails.month && $scope.guestDetails.day && $scope.guestDetails.year) {
+            if ($scope.guestDetails.month && $scope.guestDetails.day && $scope.guestDetails.year) {
             	data.birthday = $scope.guestDetails.month+"-"+$scope.guestDetails.day+"-"+$scope.guestDetails.year;
             }
-            else{
+            else {
             	delete data["birthday"];
             }
 			return data;
@@ -135,21 +135,21 @@
 		// post guest details
 		$scope.postGuestDetails = function() {
 
-			if($scope.guestDetails.country  && $scope.guestDetails.street && $scope.guestDetails.city  && $scope.guestDetails.state && $scope.guestDetails.postal_code ) {
+			if ($scope.guestDetails.country  && $scope.guestDetails.street && $scope.guestDetails.city  && $scope.guestDetails.state && $scope.guestDetails.postal_code ) {
 				$scope.isLoading 		= true;
 				var dataToSave 			= getDataToSave();
 
 				guestDetailsService.postGuestDetails(dataToSave).then(function(response) {
 					$scope.isLoading 	= false;
 					$rootScope.isGuestAddressVerified =  true;
-					if($rootScope.upgradesAvailable) {
+					if ($rootScope.upgradesAvailable) {
 						$state.go('checkinUpgrade');
 					}
-					else{
-						  if($rootScope.isAutoCheckinOn) {
+					else {
+						  if ($rootScope.isAutoCheckinOn) {
 						    $state.go('checkinArrival');
 						  }
-						  else{
+						  else {
 						    $state.go('checkinKeys');
 						  }
 					}
@@ -158,7 +158,7 @@
 					$scope.isLoading = false;
 				});
 			}
-			else{
+			else {
 				$modal.open($scope.errorOpts);
 			}
 		};		

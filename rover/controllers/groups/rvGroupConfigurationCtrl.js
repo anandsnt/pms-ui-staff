@@ -473,7 +473,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
 
                 // since we are expecting some custom http error status in the response
                 // and we are using that to differentiate among errors
-                if(error.hasOwnProperty ('httpStatus')) {
+                if (error.hasOwnProperty ('httpStatus')) {
                     switch (error.httpStatus) {
                         case 470:
                             $timeout(
@@ -616,7 +616,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
 
                 // since we are expecting some custom http error status in the response
                 // and we are using that to differentiate among errors
-                if(error.hasOwnProperty ('httpStatus')) {
+                if (error.hasOwnProperty ('httpStatus')) {
                     switch (error.httpStatus) {
                         case 470:
                             $timeout(
@@ -1055,7 +1055,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     onGroupUpdateFailure = function(error) {
                         /* CICO-20270: Since we are expecting some custom http error status in the response
                          * and we are using that to acknowledge error with card detaching.*/
-                        if(error.hasOwnProperty ('httpStatus')) {
+                        if (error.hasOwnProperty ('httpStatus')) {
                             switch (error.httpStatus) {
                                 case 470:
                                     showRemoveCardsAPIErrorPopup(error);

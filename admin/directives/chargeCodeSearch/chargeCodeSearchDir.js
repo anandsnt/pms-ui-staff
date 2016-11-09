@@ -16,7 +16,7 @@ admin.directive("chargeCodeSearch", function() {
             $scope.refreshScroller = function (key) {
                 setTimeout(function() {
                     if ( !!$scope.$parent && $scope.$parent.myScroll ) {
-                        if( key in $scope.$parent.myScroll ) {
+                        if ( key in $scope.$parent.myScroll ) {
                             $scope.$parent.myScroll[key].refresh();
                         }
                     }

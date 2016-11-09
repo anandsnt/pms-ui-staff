@@ -7,7 +7,7 @@ admin.service('ADRatesConfigureSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$rootSco
             var url = "/api/rate_date_ranges/" + data.id,
                 params = {};
 
-            if(!!data.child_rate_id) {
+            if (!!data.child_rate_id) {
                 params.child_rate_id =  data.child_rate_id;
             }
 

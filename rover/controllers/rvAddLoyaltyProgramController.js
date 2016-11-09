@@ -90,7 +90,7 @@ sntRover.controller('rvAddLoyaltyProgramController', ['$scope', '$rootScope', '$
 	$scope.setAvailableFFPS = function (FFPArray) {
 		var loyaltyType;
 
-		for(var i=0; i < FFPArray.length; i++) {
+		for (var i=0; i < FFPArray.length; i++) {
 			loyaltyType = {};
 			loyaltyType.name = FFPArray[i].ff_description;
 			loyaltyType.code = FFPArray[i].ff_value;
@@ -102,7 +102,7 @@ sntRover.controller('rvAddLoyaltyProgramController', ['$scope', '$rootScope', '$
 	$scope.setAvailableHLPS = function (HLPArray) {
 		var loyaltyType;
 
-		for(var i=0; i < HLPArray.length; i++) {
+		for (var i=0; i < HLPArray.length; i++) {
 			loyaltyType = {};
 			loyaltyType.name = HLPArray[i].hl_description;
 			loyaltyType.code = HLPArray[i].hl_value;
@@ -131,17 +131,17 @@ sntRover.controller('rvAddLoyaltyProgramController', ['$scope', '$rootScope', '$
                     use_hlp = $scope.$parent.reservationData.use_hlp;
 
                 if (use_ffp === true && use_hlp === false) {
-                    if($scope.selectedLoyaltyProgram === $scope.loyaltyPrograms[0].code) {
+                    if ($scope.selectedLoyaltyProgram === $scope.loyaltyPrograms[0].code) {
 			return $scope.getLoyaltyLevelsfromCode();
                     }
                 } else if (use_ffp === false && use_hlp === true) {
-                    if($scope.selectedLoyaltyProgram === $scope.loyaltyPrograms[0].code) {
+                    if ($scope.selectedLoyaltyProgram === $scope.loyaltyPrograms[0].code) {
 			return $scope.getLoyaltyLevelsfromCode();
                     }
                 } else if (use_ffp === true && use_hlp === true) {
-                    if($scope.selectedLoyaltyProgram === $scope.loyaltyPrograms[1].code) {
+                    if ($scope.selectedLoyaltyProgram === $scope.loyaltyPrograms[1].code) {
 			return $scope.getLoyaltyLevelsfromCode();
-                    }else{
+                    } else {
                         return $scope.getLoyaltyLevelsfromCode();
                     }
                 } else if (use_ffp === false && use_hlp === false) {
@@ -160,8 +160,8 @@ sntRover.controller('rvAddLoyaltyProgramController', ['$scope', '$rootScope', '$
                 } else if ($scope.selectedLoyaltyProgram === 'FFP') {
                     loyaltytypes = $scope.availableFFPS;
                 }
-		for(var i=0; i < loyaltytypes.length; i++) {
-			if($scope.selectedLoyaltyType === loyaltytypes[i].code) {
+		for (var i=0; i < loyaltytypes.length; i++) {
+			if ($scope.selectedLoyaltyType === loyaltytypes[i].code) {
 				levels = loyaltytypes[i].levels;
 				break;
 			}

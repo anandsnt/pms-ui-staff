@@ -91,10 +91,10 @@ sntRover.controller('RVActivityLogCtrl', [
     };
 
     $scope.isOldValue = function(value) {
-        if(value ==="" || typeof value === "undefined" || value === null) {
+        if (value ==="" || typeof value === "undefined" || value === null) {
             return false;
         }
-        else{
+        else {
             return true;
         }
     };
@@ -128,10 +128,10 @@ sntRover.controller('RVActivityLogCtrl', [
                 per_page: $scope.perPage
         };
 
-        if($scope.isUpdateReportFilter) {
+        if ($scope.isUpdateReportFilter) {
             params['from_date'] = $filter('date')($scope.fromDate, 'yyyy-MM-dd');
             params['to_date'] =$filter('date')($scope.toDate, 'yyyy-MM-dd');
-            if($scope.user_id) {
+            if ($scope.user_id) {
                 params['user_id'] = $scope.user_id;
             }
         }
@@ -154,12 +154,12 @@ sntRover.controller('RVActivityLogCtrl', [
 
     $scope.sortByUserName = function() {
         $scope.sort_field ="USERNAME";
-        if($scope.sortOrderOfUserASC) {
+        if ($scope.sortOrderOfUserASC) {
             $scope.initSort();
             $scope.sortOrderOfUserDSC = true;
             $scope.sort_order="desc";
         }
-        else{
+        else {
             $scope.initSort();
             $scope.sortOrderOfUserASC = true;
             $scope.sort_order="asc";
@@ -169,12 +169,12 @@ sntRover.controller('RVActivityLogCtrl', [
 
     $scope.sortByDate = function() {
         $scope.sort_field ="DATE";
-        if($scope.sortOrderOfDateASC) {
+        if ($scope.sortOrderOfDateASC) {
             $scope.initSort();
             $scope.sortOrderOfDateDSC = true;
             $scope.sort_order="desc";
         }
-        else{
+        else {
             $scope.initSort();
             $scope.sortOrderOfDateASC = true;
             $scope.sort_order="asc";
@@ -184,12 +184,12 @@ sntRover.controller('RVActivityLogCtrl', [
 
     $scope.sortByAction = function() {
         $scope.sort_field ="ACTION";
-        if($scope.sortOrderOfActionASC) {
+        if ($scope.sortOrderOfActionASC) {
             $scope.initSort();
             $scope.sortOrderOfActionDSC = true;
             $scope.sort_order="desc";
         }
-        else{
+        else {
             $scope.initSort();
             $scope.sortOrderOfActionASC = true;
             $scope.sort_order="asc";
@@ -201,10 +201,10 @@ sntRover.controller('RVActivityLogCtrl', [
     * Pagination
     */
     $scope.initPaginationParams = function() {
-        if($scope.activityLogData.total_count===0) {
+        if ($scope.activityLogData.total_count===0) {
              $scope.start = 0;
              $scope.end =0;
-        }else{
+        } else {
         $scope.start = 1;
         $scope.end = $scope.start + $scope.activityLogData.length - 1;
         }
@@ -339,7 +339,7 @@ sntRover.controller('RVActivityLogCtrl', [
 
     };
     $scope.userChanged = function() {
-        if($scope.userEmail==='') {
+        if ($scope.userEmail==='') {
            $scope.user_id=0;
         }
     };
@@ -362,7 +362,7 @@ sntRover.controller('RVActivityLogCtrl', [
         
         // CICO-24929
         // for future reservation
-        if(tzIndependentDate (reservationDetails.arrival_date) > tzIndependentDate($rootScope.businessDate)) {
+        if (tzIndependentDate (reservationDetails.arrival_date) > tzIndependentDate($rootScope.businessDate)) {
             $scope.fromDate = $rootScope.businessDate;
         }
         // for inhouse/noshow/checkingin/checkedout

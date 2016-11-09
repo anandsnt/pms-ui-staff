@@ -21,13 +21,13 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 
 	that.lastSuccessfulIDReaded = '';
 	$scope.addNewSmartband = function() {
-		if($scope.selectedReservationStatus !== 'CHECKEDOUT') {
+		if ($scope.selectedReservationStatus !== 'CHECKEDOUT') {
 			$scope.errorMessage = '';
 			$scope.showSmartBandListView = false;
 			$scope.showAddNewSmartBandScreen = true;
 			$scope.showSuccess = false;
 			$scope.showWriteToBand = false;
-			if($scope.smartBandLength > 0) {
+			if ($scope.smartBandLength > 0) {
 				$scope.smartBandData.firstName = "";
 				$scope.smartBandData.lastName = "";
 			}
@@ -72,7 +72,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 			'is_fixed': $scope.isFixedAmount
 		};
 
-		if($scope.isFixedAmount) {
+		if ($scope.isFixedAmount) {
 			postData.amount = $scope.smartBandData.fixedAmount;
 		}
 		var dataToApi = {
@@ -95,20 +95,20 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		var blankKeys = "";
 
 		that.lastSuccessfulIDReaded = '';
-		if($scope.isFixedAmount) {
-			if($scope.smartBandData.fixedAmount === '' || $scope.smartBandData.fixedAmount === null) {
+		if ($scope.isFixedAmount) {
+			if ($scope.smartBandData.fixedAmount === '' || $scope.smartBandData.fixedAmount === null) {
 				blankKeys = blankKeys === '' ? "Amount" : (blankKeys + ", " + "Amount");
 			}
-			else{
+			else {
 				var pattern = /^(0|[1-9][0-9]{0,2}(?:(,[0-9]{3})*|[0-9]*))(\.[0-9]+){0,1}$/;
 
-				if(!pattern.test($scope.smartBandData.fixedAmount)) {
+				if (!pattern.test($scope.smartBandData.fixedAmount)) {
 					blankKeys = blankKeys === '' ? "Amount is not valid" : (blankKeys + ", " + "Amount is not valid");
 				}
 			}
 
 		}
-		if(blankKeys !== "")	{
+		if (blankKeys !== "")	{
 			$scope.errorMessage = ['Please enter ' + blankKeys ];
 		} else {
 			var options = {
@@ -118,10 +118,10 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 
 			$scope.$emit( 'showLoader' );
 			$scope.showWriteToBand = true;
-			if(sntapp.cardSwipeDebug) {
+			if (sntapp.cardSwipeDebug) {
 				sntapp.cardReader.retrieveUserIDDebug(options);
 			}
-			else{
+			else {
 				sntapp.cardReader.retrieveUserID(options);
 			}
 		}
@@ -134,7 +134,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		$scope.showSmartBandListView = true;
 		$scope.showBandEditScreen = false;
 		$scope.$emit( 'hideLoader' );
-		if($scope.firstTimeClick) {
+		if ($scope.firstTimeClick) {
 			$scope.firstTimeClick = false;
 			$scope.smartBands = data.results;
 		} else {
@@ -147,7 +147,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 	$scope.seeAllBands = function() {
 		$scope.errorMessage = '';
 
-		if($scope.firstTimeClick) {
+		if ($scope.firstTimeClick) {
 			var dataToApi = {
 				'reservationId': $scope.reservation.reservation_card.reservation_id
 			};
@@ -175,7 +175,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 	 * @param {int} id of the band
 	 */
 	$scope.editBandDetails = function(id) {
-		if($scope.selectedReservationStatus !== 'CHECKEDOUT') {
+		if ($scope.selectedReservationStatus !== 'CHECKEDOUT') {
 			$scope.bandEditId = id;
 			$scope.invokeApi(RVSmartBandSrv.getSmartBandDetails, id, $scope.getSmartBandSuccess);
 		}
@@ -188,8 +188,8 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 	$scope.updateSmartBandSuccess = function(data) {
 		$scope.$emit( 'hideLoader' );
 		angular.forEach($scope.smartBands, function(value, key) {
-			if(value.id === $scope.bandEditId) {
-				if($scope.bandData.additionalCredit !== undefined) {
+			if (value.id === $scope.bandEditId) {
+				if ($scope.bandData.additionalCredit !== undefined) {
 					value.amount = parseInt(value.amount) + parseInt($scope.bandData.additionalCredit);
 				}
 				value.first_name = $scope.bandData.first_name;
@@ -209,7 +209,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
         setTimeout(function() {
       	   window.scrollTo(0, 0);
         }, 700);
-		if(isFixed) {
+		if (isFixed) {
 
 			var dataToApi = {
 				"postData": {
@@ -236,7 +236,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		// Open room charge - bandtype code : 00000002
 		var bandType = '00000002';
 
-		if(that.newBandInfo.is_fixed) {
+		if (that.newBandInfo.is_fixed) {
 			bandType = '00000001';
 		}
 		args.push(bandType);
@@ -261,10 +261,10 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 			arguments: args
 		};
 
-		if(sntapp.cardSwipeDebug) {
+		if (sntapp.cardSwipeDebug) {
 			sntapp.cardReader.setBandTypeDebug(options);
 		}
-		else{
+		else {
 			sntapp.cardReader.setBandType(options);
 		}
 	};

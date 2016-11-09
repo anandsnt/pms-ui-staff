@@ -4,7 +4,7 @@
 */
 var GridRowBackground = React.createClass({
 	shouldComponentUpdate: function(nextProps, nextState) {
-		if(this.props.display !== nextProps.display) {
+		if (this.props.display !== nextProps.display) {
 			return true;
 		}
 
@@ -15,7 +15,7 @@ var GridRowBackground = React.createClass({
 			self = this;
 
 		/* Create hourly spans across each grid row*/
-		for(var i = 0; i < this.props.display.hours; i++) {
+		for (var i = 0; i < this.props.display.hours; i++) {
 			hourly_divs.push(React.DOM.span({
 				key: 'date-time-' + i,
 				className: 'hour',

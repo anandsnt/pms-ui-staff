@@ -209,7 +209,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
    			$scope.$emit("UpdateHeading", 'DASHBOARD_HOUSEKEEPING_HEADING');
 		  	$scope.showSearchResultsArea = false;
 		  	$scope.isSearchResultsShowing = false;
-		  	if($scope.queryFunctionProccessing) {
+		  	if ($scope.queryFunctionProccessing) {
 		  		clearTimeout($scope.queryFunctionProccessing);
 		  		$scope.queryFunctionProccessing = null;
 		  	}
@@ -239,7 +239,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 		$scope.focusedOutOnQueryBox = function() {
 
 			$timeout(function() {
-				if(!$scope.isSearchResultsShowing && $scope.query.length ===0) {
+				if (!$scope.isSearchResultsShowing && $scope.query.length ===0) {
 					$scope.query = "";
 					$scope.rooms = [];
 					$scope.showSearchResultsArea = false;

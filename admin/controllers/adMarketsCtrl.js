@@ -33,7 +33,7 @@ admin.controller('ADMarketsCtrl', ['$scope', 'ADMarketsSrv', '$anchorScroll', '$
     * @param {int} index of the selected item
     */
 	$scope.getTemplateUrl = function(index) {
-		if($scope.currentClickedElement === index) {
+		if ($scope.currentClickedElement === index) {
 			 return "/assets/partials/markets/adMarketsEdit.html";
 		}
 	};
@@ -41,7 +41,7 @@ admin.controller('ADMarketsCtrl', ['$scope', 'ADMarketsSrv', '$anchorScroll', '$
     * To handle cancel click
     */
 	$scope.clickedCancel = function() {
-		if($scope.currentClickedElement !== 'new') {
+		if ($scope.currentClickedElement !== 'new') {
 			$scope.data.markets[$scope.currentClickedElement].name = $scope.preveousItem;
 			$scope.preveousItem = "";
 		}
@@ -80,7 +80,7 @@ admin.controller('ADMarketsCtrl', ['$scope', 'ADMarketsSrv', '$anchorScroll', '$
 			$scope.currentClickedElement = -1;
 		};
 
-		if(index === undefined) {
+		if (index === undefined) {
 			var data = $scope.data.markets[$scope.currentClickedElement];
 		}
 		else {

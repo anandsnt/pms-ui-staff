@@ -216,7 +216,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				// 	//No need to pass these values along with rate id
 				// 	//CICO-30723
 				if (forRate) {
-					if(typeof forRate !== "string") {
+					if (typeof forRate !== "string") {
 						payLoad['rate_id'] = forRate;
 					}
 				}
@@ -294,7 +294,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				if (!!$scope.reservationData.group.id) {
 					customRate = RVReservationStateService.getCustomRateModel($scope.reservationData.group.id, $scope.reservationData
 						.group.name, 'GROUP');
-					if(!!ratesMeta.customRates.custom_group_taxes) {
+					if (!!ratesMeta.customRates.custom_group_taxes) {
 						customRate.taxes = ratesMeta.customRates.custom_group_taxes;
 					}
 					$scope.reservationData.ratesMeta[customRate.id] = customRate;
@@ -341,7 +341,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					}
 				}
 				// Add these params to API - only in Reccommended tab. CICO-28657
-				if($scope.stateCheck.activeView === 'RECOMMENDED') {
+				if ($scope.stateCheck.activeView === 'RECOMMENDED') {
 
 					payLoad.company_id = $scope.reservationData.company.id;
 					payLoad.travel_agent_id = $scope.reservationData.travelAgent.id;
@@ -698,7 +698,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				} else if ($scope.otherData.defaultRateDisplayName === 'By Rate') {
 					$scope.stateCheck.activeView = 'RATE';
 				}
-				if($stateParams.travel_agent_id || $stateParams.company_id
+				if ($stateParams.travel_agent_id || $stateParams.company_id
 					 || $stateParams.group_id || $stateParams.allotment_id
 					 || $stateParams.is_member == "true" || $stateParams.promotion_id) {
 					$scope.stateCheck.activeView = 'RECOMMENDED';
@@ -983,12 +983,12 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					$scope.stateCheck.rateFilterText = "";
 					var isReccommendedTabApiRequired = false;
 
-					if($scope.stateCheck.activeView === "RATE") {
+					if ($scope.stateCheck.activeView === "RATE") {
 						isReccommendedTabApiRequired = true;
-					} else if(($scope.stateCheck.activeView === "RECOMMENDED") && shouldRecommend()) {
+					} else if (($scope.stateCheck.activeView === "RECOMMENDED") && shouldRecommend()) {
 						isReccommendedTabApiRequired = true;
 					}
-					if(
+					if (
 						isReccommendedTabApiRequired) {
 						fetchRatesList(null, null, $scope.stateCheck.pagination.rate.page, function(response) {
 							$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
@@ -1665,7 +1665,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 			}
 			// CICO-30938 - fixing undefined issue in console
-			if(secondary !== undefined)
+			if (secondary !== undefined)
 				availabilityCount = _.min(_.pluck(_.toArray(secondary.dates), 'availability'));
 			return availabilityCount;
 
@@ -1880,7 +1880,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							isSuiteUnavailable: room.isSuiteUnavailable
 						};
 
-						if(bestAvailableRateOfSelectedRoom === rate.id) {
+						if (bestAvailableRateOfSelectedRoom === rate.id) {
 							rateInfo.bestAvailableRateRestrictions = rate.restrictions;
 						}
 
@@ -2142,7 +2142,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		$scope.reservationData.ratesMeta = ratesMeta['rates'];
 		var isRateInCache = checkForRatesInCache();
 
-		if(!isRateInCache) {
+		if (!isRateInCache) {
 				var params = {};
 
 				params.isForceRefresh = true;

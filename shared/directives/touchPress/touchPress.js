@@ -9,7 +9,7 @@
                         element.focus(); 
                     }
                 }
-             } catch(err) {
+             } catch (err) {
                  
              }
              // bind any touch start event to the element

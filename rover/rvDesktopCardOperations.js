@@ -18,10 +18,10 @@ var DesktopCardOperations = function() {
 	};
 
 	var createConnection = function() {
-		try{
+		try {
 			ws = new WebSocket("wss://localhost:" + that.portNumber +"/CCSwipeService");
 		}
-		catch(e) {
+		catch (e) {
 			console.warn("Could not connect to card reader. Please check if the port number is valid!!");
 		}
 
@@ -41,7 +41,7 @@ var DesktopCardOperations = function() {
 			var cardData = event.data;
 			var cardDataJSON = JSON.parse(cardData);
 
-			if(cardDataJSON.ResponseType) {
+			if (cardDataJSON.ResponseType) {
 				that.swipeCallbacks.uuidServiceSuccessCallBack(cardDataJSON);
 			}
 			else {

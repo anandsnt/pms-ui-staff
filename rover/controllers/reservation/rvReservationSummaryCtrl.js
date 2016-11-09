@@ -677,7 +677,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                                     createReservation();
                                     refreshScrolls();
                                 });
-                            }else{
+                            } else {
                                 // CICO-29487 -> In case of creation; The addons are not part of the flow; So whilst creation; an hourly reservation cannot have addons
                                 $scope.populateDatafromDiary(roomsArray, temporaryReservationDataFromDiaryScreen, true);
                                 createReservation();
@@ -1314,7 +1314,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function() {
                 $scope.$emit('hideLoader'); 
-                if($rootScope.UPDATED_BI_ENABLED_ON['RESERVATION']) {
+                if ($rootScope.UPDATED_BI_ENABLED_ON['RESERVATION']) {
                     console.log("##Billing-info updated version");
                     ngDialog.open({
                         template: '/assets/partials/billingInformation/reservation/rvBillingInfoReservationMain.html',
@@ -1323,7 +1323,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                         scope: $scope
                     });
                 }
-                else{
+                else {
                     console.log("##Billing-info old version");
                     ngDialog.open({
                         template: '/assets/partials/bill/rvBillingInformationPopup.html',

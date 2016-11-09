@@ -83,9 +83,9 @@
 			$rootScope.isRoomVerified =  true;
 			$scope.isLoading = false;
 
-			if($rootScope.isLateCheckoutAvailable ) {
+			if ($rootScope.isLateCheckoutAvailable ) {
 				$state.go('checkOutOptions');
-			}else {
+			} else {
 				$state.go('checkOutConfirmation');
 			}
 

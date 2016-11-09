@@ -12,7 +12,7 @@ angular.module('sntRover').controller('rvItemInventoryGridStatusController', [
 		$scope.data = rvAvailabilitySrv.getGridDataForInventory();
 		
 		// if already fetched we will show without calling the API
-		if(!isEmptyObject($scope.data)) {
+		if (!isEmptyObject($scope.data)) {
 			$scope.refreshScroller('room_availability_scroller');
 			$scope.hideMeBeforeFetching = true;
 			$scope.$emit("hideLoader");

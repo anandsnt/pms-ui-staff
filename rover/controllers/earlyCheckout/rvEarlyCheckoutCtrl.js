@@ -3,7 +3,7 @@ sntRover.controller('RVEarlyCheckoutCtrl', ['$rootScope', '$scope', 'ngDialog', 
 
 	$scope.okButtonClicked = function() {
 		$scope.saveData.isEarlyDepartureFlag = true;
-		if($scope.callBackMethodCheckout) {
+		if ($scope.callBackMethodCheckout) {
 			$scope.callBackMethodCheckout();
 		}
 		ngDialog.close();

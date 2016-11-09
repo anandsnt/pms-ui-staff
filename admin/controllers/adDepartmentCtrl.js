@@ -54,10 +54,10 @@ admin.controller('ADDepartmentListCtrl', ['$scope', '$state', 'ADDepartmentSrv',
     * @param {string} id of the department
     */
 	$scope.getTemplateUrl = function(index, id) {
-		if(typeof index === "undefined" || typeof id === "undefined") {
+		if (typeof index === "undefined" || typeof id === "undefined") {
 			return "";
 		}
-		if($scope.currentClickedElement === index) {
+		if ($scope.currentClickedElement === index) {
 			 	return "/assets/partials/departments/adDepartmentsEdit.html";
 		}
 	};
@@ -67,7 +67,7 @@ admin.controller('ADDepartmentListCtrl', ['$scope', '$state', 'ADDepartmentSrv',
    $scope.saveDepartment = function() {
     	var successCallbackSave = function(data) {
     		$scope.$emit('hideLoader');
-			if($scope.isAddMode) {
+			if ($scope.isAddMode) {
 				// To add new data to scope
     			$scope.data.departments.push(data);
 	    	} else {
@@ -77,7 +77,7 @@ admin.controller('ADDepartmentListCtrl', ['$scope', '$state', 'ADDepartmentSrv',
     		$scope.currentClickedElement = -1;
     	};
 
-    	if($scope.isAddMode) {
+    	if ($scope.isAddMode) {
     		$scope.invokeApi(ADDepartmentSrv.saveDepartment, $scope.departmentData, successCallbackSave);
     	} else {
     		$scope.invokeApi(ADDepartmentSrv.updateDepartment, $scope.departmentData, successCallbackSave);

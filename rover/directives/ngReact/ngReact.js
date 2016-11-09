@@ -40,7 +40,7 @@
 
     try {
       reactComponent = $injector.get(name);
-    } catch(e) { }
+    } catch (e) { }
 
     if (!reactComponent) {
       try {
@@ -142,7 +142,7 @@
           var scopeProps = scope.$eval(attrs.props ? attrs.props : {scope: scope});
           var props = applyFunctions(scopeProps, scope);
 
-          if(!props) {
+          if (!props) {
           	props = _.extend({}, {scope: scope});
           }
           props = _.extend({}, {scope: scope});

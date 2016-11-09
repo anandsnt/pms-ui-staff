@@ -39,7 +39,7 @@ sntRover.controller('RVReservationNotesPopupCtrl', ['$scope', '$rootScope', func
 	 */
 	$scope.deleteReservationNote = function(event, index) {
 	    $scope.deletedNoteIndex = index;
-	    if(event!== null) {
+	    if (event!== null) {
 	    	event.stopPropagation();
 	    }
 	    var successCallBackDeleteReservationNote = function(data) {
@@ -58,7 +58,7 @@ sntRover.controller('RVReservationNotesPopupCtrl', ['$scope', '$rootScope', func
 
 	// CICO-24928
 	$scope.updateActiveReservationNote = function() {
-		if($scope.reservationnote === null) {
+		if ($scope.reservationnote === null) {
           $scope.errorMessage = ['Something went wrong, please try again!'];
           return;
         }

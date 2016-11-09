@@ -391,8 +391,8 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
             
             lst.sort(function(a, b) {
                 if (typeof a[prop] !== typeof undefined) {
-                    if(a[prop].toLowerCase() < b[prop].toLowerCase()) return -1;
-                    if(a[prop].toLowerCase() > b[prop].toLowerCase()) return 1;
+                    if (a[prop].toLowerCase() < b[prop].toLowerCase()) return -1;
+                    if (a[prop].toLowerCase() > b[prop].toLowerCase()) return 1;
                 }
                 return 0;
             });

@@ -1778,7 +1778,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 		var setBackButton = function() {
 			// CICO-20270: to force selection of a rate after removing a card with contracted rate.
-			if($stateParams.disable_back_staycard) {
+			if ($stateParams.disable_back_staycard) {
 				return;
 			}
 
@@ -1871,9 +1871,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				// Go through the existingReservationAddons and retain those of which arent having the new rate
 				// in their excluded list. Leave the rest
 				_.each(existingReservationAddons, function(addon) {
-					if(!addon.allow_rate_exclusion || (addon.allow_rate_exclusion && _.indexOf(addon.excluded_rate_ids, currentRate) < 0)) {
+					if (!addon.allow_rate_exclusion || (addon.allow_rate_exclusion && _.indexOf(addon.excluded_rate_ids, currentRate) < 0)) {
 						firstRoom.addons.push(addon);
-					}else{
+					} else {
 						reservationAddonsChanged = true;
 					}
 				});

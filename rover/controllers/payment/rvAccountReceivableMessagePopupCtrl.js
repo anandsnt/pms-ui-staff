@@ -6,19 +6,19 @@ sntRover.controller('RVAccountReceivableMessagePopupCtrl', ['$rootScope', '$scop
 
 	$scope.createAccountAction = function() {
 
-		if((typeof $scope.reservationBillData !=="undefined"  && $scope.reservationBillData.is_auto_assign_ar_numbers === "true")||(typeof $scope.is_auto_assign_ar_numbers !=="undefined" && $scope.is_auto_assign_ar_numbers)) {
+		if ((typeof $scope.reservationBillData !=="undefined"  && $scope.reservationBillData.is_auto_assign_ar_numbers === "true")||(typeof $scope.is_auto_assign_ar_numbers !=="undefined" && $scope.is_auto_assign_ar_numbers)) {
 			var isAutoAssignARNumber = true;
 
 			$scope.createAccountReceivable( isAutoAssignARNumber );
 		}
-		else{
+		else {
 			$scope.isCreateNewARAccountMode = true;
 		}
 	};
 
 	$scope.successCreate = function(data) {
 		$scope.$emit("hideLoader");
-		if(typeof $scope.reservationBillData !=="undefined") {
+		if (typeof $scope.reservationBillData !=="undefined") {
 			$scope.reservationBillData.ar_number = data.ar_number;
 			$scope.reservationBillData.bills[$scope.currentActiveBill].ar_number = data.ar_number;
 		}

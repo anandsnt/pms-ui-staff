@@ -75,7 +75,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 				if ( !!data.status && data.status === 'processing_not_completed' ) {
 					pollToReport(data.location_header);
 				}
-				else{
+				else {
 
 					if ( !! options.resKey2 && !! options.resKey ) {
 						resolveData = data[options.resKey][options.resKey2];
@@ -105,7 +105,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 			}
 
 			// if it has been fetched already
-			else if( service.availInStore(options.name) ) {
+			else if ( service.availInStore(options.name) ) {
 				deferred.resolve( service.getfromStore(options.name) );
 			}
 

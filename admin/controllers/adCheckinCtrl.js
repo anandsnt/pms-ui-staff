@@ -60,16 +60,16 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     $scope.checkinData.checkin_alert_primetime = (!$scope.checkinData.checkin_alert_primetime) ? "AM" : $scope.checkinData.checkin_alert_primetime;
     
 
-    if($scope.checkinData.max_no_of_keys === "ROOM_OCCUPANCY") {
+    if ($scope.checkinData.max_no_of_keys === "ROOM_OCCUPANCY") {
       $scope.checkinData.max_keys_type = "ROOM_OCCUPANCY";
       $scope.checkinData.no_of_keys = 1;// default as 1
     }
-    else{
+    else {
        $scope.checkinData.max_keys_type = "other";
-       if($scope.checkinData.max_no_of_keys !== null) {
+       if ($scope.checkinData.max_no_of_keys !== null) {
           $scope.checkinData.no_of_keys = angular.copy($scope.checkinData.max_no_of_keys);
        }
-       else{
+       else {
            $scope.checkinData.no_of_keys = 1;// default as 1
        }
     }
@@ -91,7 +91,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     var excludedGroupIds = _.pluck($scope.excludedBlockCodes, 'id');
 
     $scope.block_codes.map(function(group) {
-      if(excludedGroupIds.indexOf(group.id) > -1) {
+      if (excludedGroupIds.indexOf(group.id) > -1) {
         group.ticked = true;
       }
     });
@@ -120,7 +120,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     var excludedRateIds = _.pluck($scope.excludedRateCodes, 'id');
 
     $scope.rate_codes.map(function(rate) {
-      if(excludedRateIds.indexOf(rate.id) > -1) {
+      if (excludedRateIds.indexOf(rate.id) > -1) {
         rate.ticked = true;
       }
     });
@@ -149,7 +149,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     var excludedRoomTypeIds = _.pluck($scope.excludedRoomTypes, 'id');
 
     $scope.roomTypes.map(function(roomType) {
-      if(excludedRoomTypeIds.indexOf(parseInt(roomType.id)) > -1) {
+      if (excludedRoomTypeIds.indexOf(parseInt(roomType.id)) > -1) {
         roomType.ticked = true;
       }
     });
@@ -294,10 +294,10 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     
     var max_no_of_keys = "";
 
-    if($scope.checkinData.max_keys_type === "ROOM_OCCUPANCY") {
+    if ($scope.checkinData.max_keys_type === "ROOM_OCCUPANCY") {
       max_no_of_keys = "ROOM_OCCUPANCY";
     }
-    else{
+    else {
        max_no_of_keys = $scope.checkinData.no_of_keys;
     }
 
@@ -368,7 +368,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       'zest_web_use_new_sent_to_que_action': $scope.checkinData.zest_web_use_new_sent_to_que_action
     };
 
-    if($scope.surveyQuestionImage === $scope.checkinData.survey_question_image) {
+    if ($scope.surveyQuestionImage === $scope.checkinData.survey_question_image) {
       uploadData.survey_question_image = '';
     }
 

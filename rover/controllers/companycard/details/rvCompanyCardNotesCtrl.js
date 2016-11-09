@@ -169,7 +169,7 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
     * @return {undefined}
     */
     $scope.updateActiveNote = function() {
-        if($scope.editingNote === null) {
+        if ($scope.editingNote === null) {
             $scope.errorMessage = ['Something went wrong, please switch tab and comeback'];
             return;
         }

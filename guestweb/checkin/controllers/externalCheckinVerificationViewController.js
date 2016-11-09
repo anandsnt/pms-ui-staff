@@ -19,10 +19,10 @@
 	$scope.pageValid = false;
 	var dateToSend = '';
 
-	if($rootScope.isExternalVerification) {
+	if ($rootScope.isExternalVerification) {
 		$state.go('externalVerification');
 	}
-	else{
+	else {
 		$scope.pageValid = true;
 	}
 	// uncheck checkbox in reservation details page
@@ -30,7 +30,7 @@
 	$rootScope.checkedApplyCharges = false;
 	$scope.minDate  = $rootScope.businessDate;
 
-	if($scope.pageValid) {
+	if ($scope.pageValid) {
 
 		// set up flags related to webservice
 		$scope.isLoading 		 	= false;
@@ -88,18 +88,18 @@
 
 		// next button clicked actions
 		$scope.nextButtonClicked = function() {
-			if($scope.lastname.length > 0 && ($scope.confirmationNumber.length > 0 || (typeof $scope.departureDate !== "undefined" && $scope.departureDate.length >0))) {
+			if ($scope.lastname.length > 0 && ($scope.confirmationNumber.length > 0 || (typeof $scope.departureDate !== "undefined" && $scope.departureDate.length >0))) {
 				
 				var data = {"hotel_identifier": $rootScope.hotelIdentifier};
 
 				// check if all fields are filled
-				if($scope.lastname.length >0) {
+				if ($scope.lastname.length >0) {
 					data.last_name = $scope.lastname;
 				}
-				if($scope.confirmationNumber.length>0) {
+				if ($scope.confirmationNumber.length>0) {
 					data.alt_confirmation_number = $scope.confirmationNumber;
 				}
-				if(typeof $scope.departureDate !== "undefined" && $scope.departureDate.length >0) {
+				if (typeof $scope.departureDate !== "undefined" && $scope.departureDate.length >0) {
 					data.departure_date  = dateToSend;
 				}
 
@@ -117,41 +117,41 @@
 					// filter out reservations with reserved status
 
 					angular.forEach(response.results, function(value, key) {
-					  if(value.reservation_status ==='RESERVED') {
+					  if (value.reservation_status ==='RESERVED') {
 					  	reservations.push(value);
 					  }
 					});
 					response.results = reservations;
 
-					if(response.results.length ===0) { // No match
+					if (response.results.length ===0) { // No match
 						$scope.isLoading = false;
 						noMatchAction();
-					}else if(response.results.length >=2) // Multiple matches
+					} else if (response.results.length >=2) // Multiple matches
 					{
 						$scope.searchMode 		= false;
 						$scope.noMatch    		= false;
 						$scope.multipleResults 	= true;
 						$scope.isLoading = false;
 					}
-					else{						
+					else {						
 						// if reservation status is CANCELED -> No matches
-						if(response.results[0].reservation_status ==='CANCELED') {
+						if (response.results[0].reservation_status ==='CANCELED') {
 							$scope.isLoading = false;
 							noMatchAction();
 						}
 						// if reservation status is NOSHOW or to too late -> No matches
-						else if(response.results[0].reservation_status ==='NOSHOW' || response.results[0].is_too_late) {
+						else if (response.results[0].reservation_status ==='NOSHOW' || response.results[0].is_too_late) {
 							$state.go('guestCheckinLate');
 						}
 						// if reservation is aleady checkin
-						else if(response.results[0].is_checked_in === "true") {
+						else if (response.results[0].is_checked_in === "true") {
 							$state.go('checkinSuccess');
 						}
 						// if reservation is early checkin
-						else if(response.results[0].is_too_early) {
+						else if (response.results[0].is_too_early) {
 							$state.go('guestCheckinEarly', {"date": response.results[0].available_date_after});
 						}
-						else{
+						else {
 							// retrieve token for guest
 							$rootScope.primaryGuestId 	= response.results[0].primary_guest_id;
 							$rootScope.reservationID 	= response.results[0].reservation_id;
@@ -165,7 +165,7 @@
 						$scope.isLoading = false;
 					});
 			}
-			else{
+			else {
 				$modal.open($scope.errorOpts);
 			}
 		};

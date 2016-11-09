@@ -9,7 +9,7 @@ var DiaryContent = React.createClass({
 		viewport.width = $(window).width() - 120;
 		viewport.height = $(window).height() - 230;
 
-		if(viewport.width !== this.state.viewport.width ||
+		if (viewport.width !== this.state.viewport.width ||
 		   viewport.height !== this.state.viewport.height) {
 			display.width 		= display.hours / viewport.hours * viewport.width;
 			display.px_per_hr 	= viewport.width / viewport.hours;
@@ -39,7 +39,7 @@ var DiaryContent = React.createClass({
 	__onGridScroll: function(iscroll_object) {
 		var el = iscroll_object, iscroll = this.state.iscroll;
 
-		switch(el) {
+		switch (el) {
 			case iscroll.grid:
 				iscroll.timeline.scrollTo(el.x, 0);
 
@@ -114,7 +114,7 @@ var DiaryContent = React.createClass({
 		var setScrollerPositions = function() {
 			var scrollToPos = (reset.x_origin - reset.x_n - 7200000) * state.display.px_per_ms;
 
-			if(scrollToPos < 0) {
+			if (scrollToPos < 0) {
 				scrollToPos = 0;
 			}
 
@@ -154,7 +154,7 @@ var DiaryContent = React.createClass({
         setTimeout(function() {
         	var scrollToPos = (self.state.display.x_origin - self.state.display.x_n - 7200000) * self.state.display.px_per_ms;
 
-        	if(scrollToPos < 0) {
+        	if (scrollToPos < 0) {
         		scrollToPos = 0;
         	}
             self.state.iscroll.grid.scrollTo(-scrollToPos, 0, 0, 1000);
@@ -169,9 +169,9 @@ var DiaryContent = React.createClass({
   	componentWillMount: function() {
   		var self = this;
 
-    	for(var k in this.state.iscroll) {
-    		if(Object.prototype.hasOwnProperty.call(this.state.iscroll, k)) {
-    			if(this.state.iscroll[k] instanceof IScroll) {
+    	for (var k in this.state.iscroll) {
+    		if (Object.prototype.hasOwnProperty.call(this.state.iscroll, k)) {
+    			if (this.state.iscroll[k] instanceof IScroll) {
     				setTimeout(function () {
     					self.state.iscroll[k].refresh();
     				}, 100);
@@ -184,26 +184,26 @@ var DiaryContent = React.createClass({
   		var hops = Object.prototype.hasOwnProperty,
   			self = this;
 
-		if(hops.call(this.props, 'stats') && this.props.stats !== nextProps.stats) {
+		if (hops.call(this.props, 'stats') && this.props.stats !== nextProps.stats) {
   			this.setState({
   				stats: nextProps.stats
   			});
   		}
 
-		if(hops.call(this.props, 'data') && this.props.data !== nextProps.data) {
+		if (hops.call(this.props, 'data') && this.props.data !== nextProps.data) {
   			this.setState({
   				data: nextProps.data
   			});
   		}
 
-  		if(hops.call(this.props, 'viewport') && this.props.viewport !== nextProps.viewport) {
+  		if (hops.call(this.props, 'viewport') && this.props.viewport !== nextProps.viewport) {
   			this.setState({
   				viewport: nextProps.viewport
   			});
 
   		}
 
-  		if(hops.call(this.props, 'display') && this.props.display !== nextProps.display) {
+  		if (hops.call(this.props, 'display') && this.props.display !== nextProps.display) {
   			this.setState({
   				display: nextProps.display
   			},
@@ -212,13 +212,13 @@ var DiaryContent = React.createClass({
   			});
   		}
 
-  		if(hops.call(this.props, 'filter') && this.props.filter !== nextProps.filter ) {
+  		if (hops.call(this.props, 'filter') && this.props.filter !== nextProps.filter ) {
   			this.setState({
   				filter: nextProps.filter
   			});
   		}
 
-  		if(hops.call(this.props, 'edit') && this.props.edit !== nextProps.edit) {
+  		if (hops.call(this.props, 'edit') && this.props.edit !== nextProps.edit) {
 
   			this.setState({
   				edit: nextProps.edit

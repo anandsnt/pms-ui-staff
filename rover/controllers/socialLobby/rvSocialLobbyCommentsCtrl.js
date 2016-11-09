@@ -31,17 +31,17 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
             height = height < 200 && height > 0 ? height + 20: height;
             _.each(comments, function(comment) {
                 
-                if(comment.clientHeight > 70)
+                if (comment.clientHeight > 70)
                     height += comment.clientHeight - 70;
             });
             var wrapperHeight;
 
 conversationWrapper.clientHeight;
-            if(height < 300) {
+            if (height < 300) {
                 wrapperHeight = height;
                 commentScroll.style.height = ""+height+"px";
                 conversationWrapper.style.height = ""+height+"px";
-            }else{
+            } else {
                 wrapperHeight = 300;
                 commentScroll.style.height = "300px";
                 conversationWrapper.style.height = "300px";
@@ -160,23 +160,23 @@ conversationWrapper.clientHeight;
 
         $scope.paginateComments = function(page) {
             $scope.$emit("SL_ERROR", "");
-            if(page == $scope.commentParams.page)
+            if (page == $scope.commentParams.page)
                 return;
             $scope.commentParams.page = page;
             $scope.fetchComments();
-            if($scope.commentParams.page > $scope.middle_page3 && $scope.commentParams.page < $scope.totalCommentPages) {
+            if ($scope.commentParams.page > $scope.middle_page3 && $scope.commentParams.page < $scope.totalCommentPages) {
                 $scope.middle_page3++;
                 $scope.middle_page2++;
                 $scope.middle_page1++;
-            }else if($scope.commentParams.page < $scope.middle_page1 && $scope.commentParams.page > 1) {
+            } else if ($scope.commentParams.page < $scope.middle_page1 && $scope.commentParams.page > 1) {
                 $scope.middle_page3--;
                 $scope.middle_page2--;
                 $scope.middle_page1--;
-            }else if($scope.commentParams.page == 1) {
+            } else if ($scope.commentParams.page == 1) {
                 $scope.middle_page3 = 4;
                 $scope.middle_page2 = 3;
                 $scope.middle_page1 = 2;
-            }else if($scope.commentParams.page == $scope.totalCommentPages && $scope.totalCommentPages > 5) {
+            } else if ($scope.commentParams.page == $scope.totalCommentPages && $scope.totalCommentPages > 5) {
                 $scope.middle_page3 = $scope.totalCommentPages -1;
                 $scope.middle_page2 = $scope.totalCommentPages -2;
                 $scope.middle_page1 = $scope.totalCommentPages -3;

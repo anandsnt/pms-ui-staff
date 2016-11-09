@@ -56,11 +56,11 @@ sntRover.controller('RVWorkstationController', [
       requestData.identifier = $scope.mapping.station_identifier;
       requestData.rover_device_id = $scope.getDeviceId();
 
-      if($scope.mapping.selectedKeyEncoder) {
+      if ($scope.mapping.selectedKeyEncoder) {
         requestData.default_key_encoder_id = $scope.mapping.selectedKeyEncoder;
       }
 
-      if($scope.mapping.selectedEmvTerminal) {
+      if ($scope.mapping.selectedEmvTerminal) {
         requestData.emv_terminal_id = $scope.mapping.selectedEmvTerminal;
       }
 

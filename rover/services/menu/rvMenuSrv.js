@@ -96,7 +96,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		_.each (menuList, function(menuItem) {
 			// if the menu is hi
 			isMenuItemVisible = self.shouldShowMenuItem(menuItem.menuIndex);
-			if(isMenuItemVisible) {
+			if (isMenuItemVisible) {
 				subMenuCount = menuItem.submenu ? menuItem.submenu.length : 0;
 				hasSubMenu = (subMenuCount > 0) ? true : false;
 				subMenuVisibleCount = 0;
@@ -112,12 +112,12 @@ angular.module('sntRover').service('rvMenuSrv',
 				});
 
 				// if it has submenu & none of them are visible we will not show that menu
-				if(hasSubMenu && subMenuVisibleCount !== 0) {
+				if (hasSubMenu && subMenuVisibleCount !== 0) {
 					menuToReturn.push (menuItem);
 				}
 
 				// if it has no submenu, we will just push them
-				if(!hasSubMenu) {
+				if (!hasSubMenu) {
 					menuToReturn.push (menuItem);
 				}
 			}
@@ -483,7 +483,7 @@ angular.module('sntRover').service('rvMenuSrv',
 
 		var permissions = null, collectivePermissionValue = true;
 
-		if(menuIndex in menuPermissions) {
+		if (menuIndex in menuPermissions) {
 			permissions = menuPermissions[menuIndex];
 
 			_.each(permissions, function(item) {

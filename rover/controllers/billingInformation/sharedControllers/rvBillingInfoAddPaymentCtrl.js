@@ -14,7 +14,7 @@ sntRover.controller('rvBillingInfoAddPaymentCtrl', ['$scope', '$rootScope', '$fi
 	try {
 			HostedForm.setMerchant($rootScope.MLImerchantId);
 		}
-		catch(err) {}
+		catch (err) {}
 
 	$scope.cancelClicked = function() {
 		$scope.showPaymentList();
@@ -47,8 +47,8 @@ sntRover.controller('rvBillingInfoAddPaymentCtrl', ['$scope', '$rootScope', '$fi
                 $scope.creditCardTypes = [];
                $scope.availablePaymentTypes = data;
                 $scope.ccPaymentDetails = {};
-                for(var i in data) {
-                	if(data[i].name === "CC") {
+                for (var i in data) {
+                	if (data[i].name === "CC") {
                 		$scope.ccPaymentDetails = data[i];
                 		$scope.creditCardTypes = data[i].values;
                 	}
@@ -70,7 +70,7 @@ sntRover.controller('rvBillingInfoAddPaymentCtrl', ['$scope', '$rootScope', '$fi
 
      $scope.savePaymentDetails = function() {
 
-     		if($scope.saveData.payment_type !== "CC") {
+     		if ($scope.saveData.payment_type !== "CC") {
      			$scope.savePayment();
      			return;
      		}
@@ -84,12 +84,12 @@ sntRover.controller('rvBillingInfoAddPaymentCtrl', ['$scope', '$rootScope', '$fi
 			 var callback = function(response) {
 			 	$scope.$emit("hideLoader");
 
-			 	if(response.status ==="ok") {
+			 	if (response.status ==="ok") {
 
 			 		MLISessionId = response.session;
 			 		$scope.savePayment();// call save payment details WS
 			 	}
-			 	else{
+			 	else {
 			 		$scope.$emit('displayErrorMessage', ["There is a problem with your credit card"]);
 			 	}
 			 	$scope.$apply();
@@ -99,7 +99,7 @@ sntRover.controller('rvBillingInfoAddPaymentCtrl', ['$scope', '$rootScope', '$fi
 			    HostedForm.updateSession(sessionDetails, callback);
 			    $scope.$emit("showLoader");
 			}
-			catch(err) {
+			catch (err) {
 			   $scope.$emit('displayErrorMessage', ["There was a problem connecting to the payment gateway."]);
 			}
 
@@ -120,13 +120,13 @@ sntRover.controller('rvBillingInfoAddPaymentCtrl', ['$scope', '$rootScope', '$fi
 	    * function to set the selected payment type
 	    */
 		$scope.selectPaymentType = function() {
-			for(var i = 0; i < $scope.availablePaymentTypes.length; i++) {
-				if($scope.availablePaymentTypes[i].name === $scope.saveData.payment_type) {
+			for (var i = 0; i < $scope.availablePaymentTypes.length; i++) {
+				if ($scope.availablePaymentTypes[i].name === $scope.saveData.payment_type) {
 					$scope.saveData.payment_type_description = $scope.availablePaymentTypes[i].description;
 				}
 			}
 			$scope.refreshScroller('newpaymentview');
-			if($scope.paymentGateway !== 'sixpayments') {
+			if ($scope.paymentGateway !== 'sixpayments') {
 				$scope.showCCPage = ($scope.saveData.payment_type === "CC") ? true: false;
 				$scope.swippedCard = ($scope.saveData.payment_type === "CC") ? true: false;
 				$scope.saveData.newPaymentFormVisible = ($scope.saveData.payment_type === "CC") ? true: false;

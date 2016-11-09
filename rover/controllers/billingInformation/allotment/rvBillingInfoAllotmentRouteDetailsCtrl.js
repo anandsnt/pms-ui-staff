@@ -149,7 +149,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
     var fetchDefaultAccountRoutingsuccessCallback = function(data) {
         // CICO-19848: In case of allotment
         if (data.charge_routes_recipient !== undefined) {
-            if(data.type === "TRAVELAGENT") {
+            if (data.type === "TRAVELAGENT") {
                 data.type = "TRAVEL_AGENT";
             }
             else if (data.type === "COMPANY") {
@@ -208,7 +208,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
 
     var fetchAllBillingGroupsSuccessCallback = function(data) {
         $scope.availableBillingGroups = data;
-        if(data.length === 0) {
+        if (data.length === 0) {
             $scope.isBillingGroup = false;
         }
     };
@@ -272,14 +272,14 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
             entity   = $scope.selectedEntity;
 
         // If no charge codes and billing group selected abort saving.
-        if(entity.attached_charge_codes.length === 0 &&
+        if (entity.attached_charge_codes.length === 0 &&
             entity.attached_billing_groups.length === 0) {
 
             $scope.$emit('displayErrorMessage', [$filter('translate')('ERROR_CHARGES_EMPTY')]);
             return;
         }
 
-        if( $scope.saveData.payment_type !== null &&
+        if ( $scope.saveData.payment_type !== null &&
             $scope.saveData.payment_type !== "" &&
             !$scope.paymentFlags.isShownExistingCCPayment) {
 
@@ -392,8 +392,8 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
             $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, errorCallback);
         };
 
-        if($scope.saveData.payment_type === 'CC') {
-            if($rootScope.paymentGateway === "sixpayments" && !$scope.paymentFlags.sixIsManual) {
+        if ($scope.saveData.payment_type === 'CC') {
+            if ($rootScope.paymentGateway === "sixpayments" && !$scope.paymentFlags.sixIsManual) {
 
                 var data = {};
 
@@ -411,7 +411,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
 
                 });
             }
-            else if(!isEmptyObject($scope.swipedCardDataToSave)) {
+            else if (!isEmptyObject($scope.swipedCardDataToSave)) {
                 var data = $scope.swipedCardDataToSave;
 
                 data.allotment_id = $scope.allotmentId;

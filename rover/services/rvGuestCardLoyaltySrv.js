@@ -35,7 +35,7 @@ angular.module('sntRover').service('RVGuestCardLoyaltySrv', ['$q', 'RVBaseWebSrv
 			return deferred.promise;
 	    };
 
-	    if(isEmpty(hlps) || isEmpty(ffps)) {
+	    if (isEmpty(hlps) || isEmpty(ffps)) {
 	    	var url =  '/staff/user_memberships/get_available_ffps.json';
 
 			RVBaseWebSrv.getJSON(url).then(function(data) {
@@ -45,7 +45,7 @@ angular.module('sntRover').service('RVGuestCardLoyaltySrv', ['$q', 'RVBaseWebSrv
 			}, function(data) {
 				deferred.reject(data);
 			});
-	    }else{
+	    } else {
 	    	that.loyalties.freaquentLoyaltyData = ffps;
 	    	that.loyalties.hotelLoyaltyData     = hlps;
 	    	this.fetchUserMemberships();

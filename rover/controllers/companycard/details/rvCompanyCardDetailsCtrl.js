@@ -40,16 +40,16 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.isWithFilters = data;
 		});
 		var setBackButtonCaption = function() {
-	        if($rootScope.previousState.controller ==="rvAllotmentConfigurationCtrl")
+	        if ($rootScope.previousState.controller ==="rvAllotmentConfigurationCtrl")
 	        {
 	            $scope.searchBackButtonCaption = $filter('translate')('ALLOTMENTS');
 	        }
-	        else if($stateParams.origin === 'AR_OVERVIEW') {
+	        else if ($stateParams.origin === 'AR_OVERVIEW') {
 	        	$scope.searchBackButtonCaption = $filter('translate')('MENU_ACCOUNTS_RECEIVABLES');
 	        }
-	        else if($stateParams.origin === 'COMMISION_SUMMARY') {
+	        else if ($stateParams.origin === 'COMMISION_SUMMARY') {
 				$scope.searchBackButtonCaption = $filter('translate')('MENU_COMMISIONS');
-			}else {
+			} else {
 	            $scope.searchBackButtonCaption = $filter('translate')('FIND_CARDS');
 	        }
         };
@@ -60,13 +60,13 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		$scope.headerBackButtonClicked = function() {
 
 			// Save details if made changes.
-			if($scope.currentSelectedTab === 'cc-contact-info') {
+			if ($scope.currentSelectedTab === 'cc-contact-info') {
 				saveContactInformation($scope.contactInformation);
 			}
-			else if($scope.currentSelectedTab === 'cc-contracts') {
+			else if ($scope.currentSelectedTab === 'cc-contracts') {
 				$scope.$broadcast("saveContract");
 			}
-			else if($scope.currentSelectedTab === 'cc-ar-accounts') {
+			else if ($scope.currentSelectedTab === 'cc-ar-accounts') {
 				$scope.$broadcast("saveArAccount");
 			}
 
@@ -173,10 +173,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			if (tabToSwitch === 'cc-commissions') {
 				$scope.$broadcast("commissionsTabActive");
 			}
-			if(tabToSwitch === 'cc-ar-transactions' && !isArNumberAvailable) {
+			if (tabToSwitch === 'cc-ar-transactions' && !isArNumberAvailable) {
 			  	console.warn("Save AR Account and Navigate to AR Transactions");
 			}
-			else{
+			else {
 				$scope.currentSelectedTab = tabToSwitch;
 			}
 		};
@@ -286,9 +286,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
 			
 			// CICO-20567-Select default to AR Transactions Tab
-			if($stateParams.origin === 'AR_OVERVIEW') {
+			if ($stateParams.origin === 'AR_OVERVIEW') {
 				$scope.switchTabTo('', 'cc-ar-transactions');
-			}else if($stateParams.origin === 'COMMISION_SUMMARY') {
+			} else if ($stateParams.origin === 'COMMISION_SUMMARY') {
 				$scope.switchTabTo('', 'cc-commissions');
 			}
 		};
@@ -406,7 +406,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 						// in add case's first api call, presentContactInfo will be empty object
 						if (JSON.stringify(presentContactInfo) !== '{}') {
 							for (subDictKey in dataToSend[key]) {
-								if(typeof presentContactInfo[key] !== 'undefined') {
+								if (typeof presentContactInfo[key] !== 'undefined') {
 									if (typeof dataToSend[key][subDictKey] === 'undefined' || dataToSend[key][subDictKey] === presentContactInfo[key][subDictKey]) {
 										delete dataToSend[key][subDictKey];
 									}
@@ -465,15 +465,15 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			}
 			else if ($scope.isContactInformationSaved) {
 			}
-			else{
+			else {
 
-				if($scope.currentSelectedTab === 'cc-contact-info') {
+				if ($scope.currentSelectedTab === 'cc-contact-info') {
 					saveContactInformation($scope.contactInformation);
 				}
-				else if($scope.currentSelectedTab === 'cc-contracts') {
+				else if ($scope.currentSelectedTab === 'cc-contracts') {
 					$scope.$broadcast("saveContract");
 				}
-				else if($scope.currentSelectedTab === 'cc-ar-accounts') {
+				else if ($scope.currentSelectedTab === 'cc-ar-accounts') {
 					$scope.$broadcast("saveArAccount");
 				}
 			}

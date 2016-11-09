@@ -1023,7 +1023,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
         // Clear the group selection when the departure date is changed
         var clearGroupSelection = function() {
-            if( $scope.reservationData.group && $scope.reservationData.group.id) {
+            if ( $scope.reservationData.group && $scope.reservationData.group.id) {
                $scope.reservationData.group = {};
                $scope.companySearchText = "";
                $scope.codeSearchText = "";

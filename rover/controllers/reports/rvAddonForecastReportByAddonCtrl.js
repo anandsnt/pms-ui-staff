@@ -388,7 +388,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 		};
 
 		$scope.continueWithPrint = function () {
-			switch( $scope.printLevel.value ) {
+			switch ( $scope.printLevel.value ) {
 				case 'ADDON':
 					$scope.openAddon = true;
 					break;

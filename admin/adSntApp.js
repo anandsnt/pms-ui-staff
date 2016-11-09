@@ -7,14 +7,14 @@ var AdminGlobalApp = function() {
 
 
     this.setBrowser = function(browser) {
-    	if(typeof browser === 'undefined' || browser === '') {
+    	if (typeof browser === 'undefined' || browser === '') {
     		that.browser = "other";
     	}
-    	else{
+    	else {
     		that.browser = browser;
     	}
 
-    	if(browser === 'rv_native' && !that.cordovaLoaded) {
+    	if (browser === 'rv_native' && !that.cordovaLoaded) {
     	   // TODO: check URL
     		var url = "/ui/show?haml_file=cordova/cordova_ipad_ios&json_input=cordova/cordova.json&is_hash_map=true&is_partial=true";
 

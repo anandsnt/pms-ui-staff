@@ -50,7 +50,7 @@ admin.controller('ADEmvTerminalCtrl', ['$scope', '$rootScope', 'ADEmvTerminalsSr
 
 			$scope.$emit('hideLoader');
 			angular.forEach($scope.data.results, function(value, key) {
-				if(value.id === id) {
+				if (value.id === id) {
 					$scope.data.results.splice(key, 1);
 				}
 			});

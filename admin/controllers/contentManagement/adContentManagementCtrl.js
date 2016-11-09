@@ -10,20 +10,20 @@ admin.controller('ADContentManagementCtrl', ['$scope', '$state', '$rootScope', '
     */
 	 $scope.componentSelected = function(component) {
 
-	 	if(component.is_system_defined)
+	 	if (component.is_system_defined)
 	 		return;
 	 	var component_type = component.component_type,
 	 	id = component.id;
 
-   		if(component_type === 'section' || component_type === 'SECTION') {
+   		if (component_type === 'section' || component_type === 'SECTION') {
    			$state.go("admin.contentManagementSectionDetails", {
 				id: id
 			});
-   		}else if(component_type === 'category' || component_type === 'CATEGORY') {
+   		} else if (component_type === 'category' || component_type === 'CATEGORY') {
    			$state.go("admin.contentManagementCategoryDetails", {
 				id: id
 			});
-   		}else if(component_type === 'item' || component_type === 'PAGE') {
+   		} else if (component_type === 'item' || component_type === 'PAGE') {
    			$state.go("admin.contentManagementItemDetails", {
 				id: id
 			});

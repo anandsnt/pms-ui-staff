@@ -38,13 +38,13 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
     $scope.deleteRoomType = function(id) {
       // remove from final array
       angular.forEach($scope.excludedRoomTypes, function(item, index) {
-        if(item.id === id) {
+        if (item.id === id) {
           $scope.excludedRoomTypes.splice(index, 1);
         }
       });
       // untick from list
        angular.forEach($scope.roomTypes, function(item, index) {
-        if(item.id === id) {
+        if (item.id === id) {
           item.ticked = false;
         }
       });
@@ -55,16 +55,16 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
     * To fetch array after slicing from the index of the given value
     */
     $scope.getArrayAfterValue = function(value) {
-        if(typeof value !== 'undefined') {
+        if (typeof value !== 'undefined') {
             var index = $scope.hours.indexOf(value);
             var arrayAfterValue = ["HH"];
 
-            for(var i = index; i < $scope.hours.length; i++) {
+            for (var i = index; i < $scope.hours.length; i++) {
                 arrayAfterValue.push($scope.hours[i]);
             }
 
             return arrayAfterValue;
-        }else{
+        } else {
             return [];
         }
 
@@ -109,7 +109,7 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
 			$scope.include_cash_reservationsy_flag = ($scope.checkoutData.include_cash_reservations === 'true') ? true:false;
 		    angular.forEach($scope.roomTypes, function(roomType, index) {
                 angular.forEach($scope.checkoutData.excluded_room_types, function(excludedRoomType, index) {
-                if(parseInt(roomType.id) === parseInt(excludedRoomType)) {
+                if (parseInt(roomType.id) === parseInt(excludedRoomType)) {
                     $scope.excludedRoomTypes.push(roomType);
                     roomType.ticked = true;// for the multi-select implementation
                 }
@@ -130,13 +130,13 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
     */
 
     $scope.validateAlertTimings = function() {
-        if($scope.checkoutData.checkout_email_alert_time_hour==='HH' || $scope.checkoutData.checkout_email_alert_time_minute === 'MM') {
+        if ($scope.checkoutData.checkout_email_alert_time_hour==='HH' || $scope.checkoutData.checkout_email_alert_time_minute === 'MM') {
             $scope.checkoutData.checkout_email_alert_time_hour = 'HH';
             $scope.checkoutData.checkout_email_alert_time_minute = 'MM';
             $scope.checkoutData.alternate_checkout_email_alert_time_hour = 'HH';
             $scope.checkoutData.alternate_checkout_email_alert_time_minute = 'MM';
         }
-        if($scope.checkoutData.weekends_checkout_email_alert_time_hour === 'HH' || $scope.checkoutData.weekends_checkout_email_alert_time_minute === 'MM') {
+        if ($scope.checkoutData.weekends_checkout_email_alert_time_hour === 'HH' || $scope.checkoutData.weekends_checkout_email_alert_time_minute === 'MM') {
             $scope.checkoutData.weekends_checkout_email_alert_time_minute = 'MM';
             $scope.checkoutData.weekends_checkout_email_alert_time_hour = 'HH';
             $scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute = 'MM';
@@ -196,7 +196,7 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
                 $scope.$watch(function() {
                 return $scope.checkoutData.zest_hourly_checkout_alert_time_hour;
             }, function(value) {
-                    if($scope.checkoutData.zest_hourly_checkout_alert_time_hour === 4 ) {
+                    if ($scope.checkoutData.zest_hourly_checkout_alert_time_hour === 4 ) {
                          $scope.checkoutData.zest_hourly_checkout_alert_time_minute = "00";
                     }
 
@@ -205,7 +205,7 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
             $scope.$watch(function() {
                 return $scope.checkoutData.weekends_zest_hourly_checkout_alert_time_hour;
             }, function(value) {
-                    if($scope.checkoutData.weekends_zest_hourly_checkout_alert_time_hour === 4 ) {
+                    if ($scope.checkoutData.weekends_zest_hourly_checkout_alert_time_hour === 4 ) {
                          $scope.checkoutData.weekends_zest_hourly_checkout_alert_time_minute = "00";
                     }
 

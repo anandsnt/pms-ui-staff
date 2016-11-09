@@ -11,7 +11,7 @@ angular.module('clickTouch', []).directive('clickTouch', function($timeout, $par
                             element.focus(); 
                         }
                     }
-                } catch(err) {
+                } catch (err) {
 
                 }
 

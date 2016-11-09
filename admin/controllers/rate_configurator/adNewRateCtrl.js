@@ -54,7 +54,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.errorMessage = '';
             // Added for CICO-24988
             $scope.isOriginOfBookingEnabled = ADRatesAddDetailsSrv.addRatesDetailsData.hotel_settings.reservation_type.is_origin_of_booking_enabled;
-            if($scope.isOriginOfBookingEnabled) {
+            if ($scope.isOriginOfBookingEnabled) {
                fetchOriginOfBookings();
             }
             fetchCommissionDetails();
@@ -63,7 +63,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             if ($stateParams.rateId) {
                 setRateDetails(rateDetails);
                 $scope.is_edit = true;
-                if(rateDetails.based_on && rateDetails.based_on.id) {
+                if (rateDetails.based_on && rateDetails.based_on.id) {
                     $scope.otherData.notIsBasedOn = (rateDetails.based_on.is_copied) ? false :  true;
                 }
                 $scope.otherData.isEdit = true;
@@ -73,7 +73,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
         var fetchCommissionDetails = function() {
             var fetchCommissionDetailsSuccess = function(data) {
-                if(_.isEmpty($scope.rateData.commission_details)) {
+                if (_.isEmpty($scope.rateData.commission_details)) {
                     $scope.rateData.commission_details = data.commission_details;
                 }
             };

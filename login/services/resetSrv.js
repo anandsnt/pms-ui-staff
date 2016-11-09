@@ -10,26 +10,26 @@ login.service('resetSrv', ['$http', '$q', function($http, $q) {
 		var deferred = $q.defer();
 
 		$http.put("/api/password_resets/"+data.token+"/update.json", data).success(function(response, status) {
-			if(response.status === "success") {
+			if (response.status === "success") {
 		    	successCallback(response.data);
-			}else{
+			} else {
 				// please note the type of error expecting is array
 		    	failureCallBack(response.errors);
 			}
 		}).error(function(response, status) {
 			// please note the type of error expecting is array
 			// so form error as array if you modifying it
-			if(status === 406) { // 406- Network error
+			if (status === 406) { // 406- Network error
 				deferred.reject(response.errors);
 			}
-			else if(status === 500) { // 500- Internal Server Error
+			else if (status === 500) { // 500- Internal Server Error
 
 				failureCallBack(['Internal server error occured']);
 			}
-			else if(status === 401) { // 401- Unauthorized
+			else if (status === 401) { // 401- Unauthorized
 				// so lets redirect to login page
 				$window.location.href = '/logout' ;
-			}else{
+			} else {
 				deferred.reject(response.errors);
 			}
 
@@ -54,26 +54,26 @@ login.service('resetSrv', ['$http', '$q', function($http, $q) {
 
 
 		$http.put(url, data).success(function(response, status) {
-			if(response.status === "success") {
+			if (response.status === "success") {
 		    	successCallback(response.data);
-			}else{
+			} else {
 				// please note the type of error expecting is array
 		    	failureCallBack(response.errors);
 			}
 		}).error(function(response, status) {
 			// please note the type of error expecting is array
 			// so form error as array if you modifying it
-			if(status === 406) { // 406- Network error
+			if (status === 406) { // 406- Network error
 				deferred.reject(response.errors);
 			}
-			else if(status === 500) { // 500- Internal Server Error
+			else if (status === 500) { // 500- Internal Server Error
 
 				failureCallBack(['Internal server error occured']);
 			}
-			else if(status === 401) { // 401- Unauthorized
+			else if (status === 401) { // 401- Unauthorized
 				// so lets redirect to login page
 				$window.location.href = '/logout' ;
-			}else{
+			} else {
 				deferred.reject(response.errors);
 			}
 
@@ -95,23 +95,23 @@ login.service('resetSrv', ['$http', '$q', function($http, $q) {
 		var url = "/api/password_resets/validate_token.json";
 
 		$http.post(url, data).success(function(response, status) {
-			if(response.status !== "success") {
+			if (response.status !== "success") {
 		    	failureCallBack(response.errors);
 			}
 		}).error(function(response, status) {
 			// please note the type of error expecting is array
 			// so form error as array if you modifying it
-			if(status === 406) { // 406- Network error
+			if (status === 406) { // 406- Network error
 				deferred.reject(response.errors);
 			}
-			else if(status === 500) { // 500- Internal Server Error
+			else if (status === 500) { // 500- Internal Server Error
 
 				failureCallBack(['Internal server error occured']);
 			}
-			else if(status === 401) { // 401- Unauthorized
+			else if (status === 401) { // 401- Unauthorized
 				// so lets redirect to login page
 				$window.location.href = '/logout' ;
-			}else{
+			} else {
 				deferred.reject(response.errors);
 			}
 

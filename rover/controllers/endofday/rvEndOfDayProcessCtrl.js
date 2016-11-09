@@ -77,7 +77,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope', 'ngDialog', '$root
             onSelect: function(date, inst) {
                 $scope.selectedDate = date;
                 setDisplayDateValues();            
-                if($scope.selectedDate !==$scope.businessDate) {
+                if ($scope.selectedDate !==$scope.businessDate) {
                    fetchEodLogOfSelectedDate(); 
                 }                
                 ngDialog.close();
@@ -108,7 +108,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope', 'ngDialog', '$root
                 refreshScroller();           
             }, 1000);
             // Eod status update handles here
-            if(!$rootScope.isEodRunning&&$scope.checkEodStatus) {
+            if (!$rootScope.isEodRunning&&$scope.checkEodStatus) {
                 $state.go('rover.dashboard.manager');
             } 
         };
@@ -137,20 +137,20 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope', 'ngDialog', '$root
     * returning class name for Button.
     */
     $scope.getClassForEODButton = function() {        
-        if(!$scope.isLastEodRunWithin18Hr()) {
+        if (!$scope.isLastEodRunWithin18Hr()) {
             return "green";
         }
-        if($scope.isLastEodRunWithin18Hr()&&$scope.hasPermissionToRunEOD()) {
+        if ($scope.isLastEodRunWithin18Hr()&&$scope.hasPermissionToRunEOD()) {
             return "orange";
-        }else{
+        } else {
             return "grey";
         }        
     };
     
     $scope.disableEODButton = function() {
-        if($scope.isLastEodRunWithin18Hr()) {
+        if ($scope.isLastEodRunWithin18Hr()) {
             return !($scope.hasPermissionToRunEOD());
-        }else{
+        } else {
             return false;
         }        
     };
@@ -176,15 +176,15 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope', 'ngDialog', '$root
     * returning class name depends on status.
     */
     $scope.getClass = function(processLog) {
-        if(processLog.status =="SUCCESS") {
+        if (processLog.status =="SUCCESS") {
             return "has-success";
-        }else if(processLog.status =='NOT_ACTIVE') {
+        } else if (processLog.status =='NOT_ACTIVE') {
             return "pending";
-        }else if(processLog.status =='PENDING') {
+        } else if (processLog.status =='PENDING') {
             return "";
-        }else if(processLog.status =="FAILED" && processLog.isOpened) {
+        } else if (processLog.status =="FAILED" && processLog.isOpened) {
             return " error has-arrow toggle active";
-        }else{
+        } else {
             return " error has-arrow toggle ";
         }
     };

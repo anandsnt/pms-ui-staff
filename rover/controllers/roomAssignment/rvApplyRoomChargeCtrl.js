@@ -90,7 +90,7 @@ sntRover.controller('rvApplyRoomChargeCtrl', [
 		// ngDialog.close();
 		// since we are expecting some custom http error status in the response
 		// and we are using that to differentiate among errors
-		if(error.hasOwnProperty ('httpStatus')) {
+		if (error.hasOwnProperty ('httpStatus')) {
 			switch (error.httpStatus) {
 				case 470:
 						var dataToBorrowRoom = {

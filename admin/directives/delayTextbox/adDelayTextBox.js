@@ -9,17 +9,17 @@ admin.directive('adDelayTextbox', function($timeout) {
 	    },
     	link: function(scope, element, attrs) {
             // we are setting delay to 2sec. if it is undefined
-            if(typeof scope.delay === "undefined") {
+            if (typeof scope.delay === "undefined") {
                 scope.delay = 2000;
             }
             element.bind('keyup', function(event) {
-                if(scope.currentTimeoutFn) {
+                if (scope.currentTimeoutFn) {
                     clearTimeout(scope.currentTimeoutFn);
                     scope.currentTimeoutFn = setTimeout(function() {
                      scope.functionToFire();
                     }, scope.delay);
                 }
-                else{
+                else {
                     scope.currentTimeoutFn = setTimeout(function() {
                         scope.functionToFire();
                     }, scope.delay);

@@ -323,9 +323,9 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 			rvBaseWebSrvV2.getJSON(url).then(function(data) {
 
 				// CICO-28089 - View detailed transactions - setting active flag
-				if(!!data.ar_transactions && data.ar_transactions.length > 0 ) {
+				if (!!data.ar_transactions && data.ar_transactions.length > 0 ) {
 					angular.forEach(data.ar_transactions, function(item, index) {
-			       		if(item.transaction_type === 'DEBIT') {
+			       		if (item.transaction_type === 'DEBIT') {
 			       			item.active = false;
 			       		}
 			       	});

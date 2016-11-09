@@ -15,13 +15,13 @@ var GlobalApp = function() {
 
     this.setBrowser = function(browser) {
         
-        if(typeof browser === 'undefined' || browser === '') {
+        if (typeof browser === 'undefined' || browser === '') {
             that.browser = "other";
         }
-        else{
+        else {
             that.browser = browser;
         }
-        if(browser === 'rv_native' && !that.cordovaLoaded) {
+        if (browser === 'rv_native' && !that.cordovaLoaded) {
            // TODO: check URL
             var url = "/assets/shared/cordova.js";
             /* Using XHR instead of $HTTP service, to avoid angular dependency, as this will be invoked from
@@ -55,12 +55,12 @@ var GlobalApp = function() {
 
         document.getElementById("login-page").appendChild(script_node);
         that.cordovaLoaded = true;
-        try{
+        try {
             
            that.loginUpdate = new LoginOperation();
 
         }
-        catch(er) {
+        catch (er) {
         }
 
     };

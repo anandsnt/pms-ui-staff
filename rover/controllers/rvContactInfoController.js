@@ -163,7 +163,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
             data.data.is_opted_promotion_email = false;
           }
           $scope.invokeApi(RVContactInfoSrv.createGuest, data, createUserInfoSuccessCallback, failureOfCreateGuestCard);
-      } else if(!dataUpdated) {
+      } else if (!dataUpdated) {
           if (!angular.equals(dataToUpdate, initialGuestCardData)) {
               $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
           }
@@ -183,7 +183,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
       $scope.errorMessage = "";
       if ((!$scope.reservationData.guest.id && !$scope.guestCardData.contactInfo.user_id) || $scope.viewState.isAddNewCard) {
         // dirty fix until we refactor the whole staycard/card
-        if(!$scope.saveGuestCardInfoInProgress) {
+        if (!$scope.saveGuestCardInfoInProgress) {
             $scope.saveGuestCardInfoInProgress = true;
             $scope.saveContactInfo(true);
         }

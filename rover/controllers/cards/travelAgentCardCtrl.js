@@ -42,7 +42,7 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 				$scope.$broadcast("fetchNotes");
 				$scope.isWithFilters = false;
 			}
-			if(tabToSwitch === 'cc-ar-transactions' && !isArNumberAvailable) {
+			if (tabToSwitch === 'cc-ar-transactions' && !isArNumberAvailable) {
 			  	console.warn("Save AR Account and Navigate to AR Transactions");
 			}
 			else if (!$scope.viewState.isAddNewCard) {
@@ -146,7 +146,7 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			$timeout(function() {
 				$scope.$emit('hideLoader');
 			}, 1000);
-			if(!isNew) {
+			if (!isNew) {
 				callCompanyCardServices();
 			}
 		});

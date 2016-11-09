@@ -59,7 +59,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.$emit('hideLoader');
 				$scope.workType = data.results;
 				angular.forEach($scope.workType, function(item, index) {
-		            if(item.is_default === true) {
+		            if (item.is_default === true) {
 		            	angular.forEach(item.tasks, function(taskItem, taskIndex) {
 		            		$scope.defaultData.defaultTask = taskItem.id;
 		            	});
@@ -88,7 +88,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.workTypeForm = 'add';
 
 		$scope.openWorkTypeForm = function(typeIndex, isSystemDefined) {
-			if(!isSystemDefined)
+			if (!isSystemDefined)
 			{
 				if (typeIndex === 'new') {
 					$scope.workTypeForm = 'add';
@@ -194,7 +194,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			$scope.eachWorkType = this.item;
 			angular.forEach($scope.taskList, function(itemTask, index) {
-				if(itemTask.work_type_id === workTypeId) {
+				if (itemTask.work_type_id === workTypeId) {
 					itemTask.is_show_on_stay_card = isShowOnStayCard;
 				}
 	        });
@@ -405,11 +405,11 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					if (!!$scope.eachTaskList.rooms_task_completion[room.id].mins || !!$scope.eachTaskList.rooms_task_completion[room.id].hours) {
 						// CICO-27994
 						console.log("reached here");
-						if(!!$scope.eachTaskList.rooms_task_completion[room.id].mins && !!$scope.eachTaskList.rooms_task_completion[room.id].hours)
+						if (!!$scope.eachTaskList.rooms_task_completion[room.id].mins && !!$scope.eachTaskList.rooms_task_completion[room.id].hours)
 							times[room.id] = $rootScope.businessDate + ' ' + $scope.eachTaskList.rooms_task_completion[room.id].hours + ':' + $scope.eachTaskList.rooms_task_completion[room.id].mins + ':00';
-						else if(!!$scope.eachTaskList.rooms_task_completion[room.id].hours)
+						else if (!!$scope.eachTaskList.rooms_task_completion[room.id].hours)
 							times[room.id] = $rootScope.businessDate + ' ' + $scope.eachTaskList.rooms_task_completion[room.id].hours + ':00:00';
-						else if(!!$scope.eachTaskList.rooms_task_completion[room.id].mins)
+						else if (!!$scope.eachTaskList.rooms_task_completion[room.id].mins)
 							times[room.id] = $rootScope.businessDate + ' ' + '00:'+ $scope.eachTaskList.rooms_task_completion[room.id].mins +':00';
 					} else {
 						times[room.id] = '';
@@ -503,19 +503,19 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		var checkForFrequencyType = function(frequencyObj) {
 			var isCustom = false, isWeekDay = false, isWeekEnd = false, isByWeekDay = false, isByStayDay = false;
 
-			if(frequencyObj.days !== null && frequencyObj.days!== 0) {
+			if (frequencyObj.days !== null && frequencyObj.days!== 0) {
 				isCustom = true;
 				isByStayDay = true;
 				isByWeekDay = false;
-			} else if(frequencyObj.sunday === true && frequencyObj.monday === true
+			} else if (frequencyObj.sunday === true && frequencyObj.monday === true
 				&& frequencyObj.tuesday === true && frequencyObj.wednesday === true
 				&& frequencyObj.thursday === true && frequencyObj.friday === true
 				&& frequencyObj.saturday === true) {
 					isWeekDay = true;
 					isWeekEnd = true;
-			} else if(frequencyObj.sunday === true && frequencyObj.saturday === true) {
+			} else if (frequencyObj.sunday === true && frequencyObj.saturday === true) {
 					isWeekEnd = true;
-			} else if(frequencyObj.monday === true
+			} else if (frequencyObj.monday === true
 				&& frequencyObj.tuesday === true && frequencyObj.wednesday === true
 				&& frequencyObj.thursday === true && frequencyObj.friday === true) {
 					isWeekDay = true;
@@ -555,7 +555,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		};
 
 		function openTaskListForm (item, typeIndex, isSystemDefined) {
-			if(!isSystemDefined)
+			if (!isSystemDefined)
 			{
 				if (typeIndex === 'new') {
 					$scope.taskListForm = 'add';
@@ -595,7 +595,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 						is_pickup: item.is_pickup
 					};
 					mapRoomShowflag($scope.eachTaskList);
-					if(frequencyType.isCustom === true) {
+					if (frequencyType.isCustom === true) {
 					//	$scope.eachTaskList.isByWeekDay = frequencyType.isByWeekDay;
 					//	$scope.eachTaskList.isByStayDay = frequencyType.isByStayDay;
 						$scope.eachTaskList.customBy = (frequencyType.isByWeekDay === true) ? "weekday" : "stayday";
@@ -664,23 +664,23 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			frequencyParams.sunday = false;
 			params.frequency = frequencyParams;
 			params.frequency.days = 0;
-			if($scope.eachTaskList.isCustom === false) {
+			if ($scope.eachTaskList.isCustom === false) {
 
-				if($scope.eachTaskList.isWeekDay === true) {
+				if ($scope.eachTaskList.isWeekDay === true) {
 					frequencyParams.monday = true;
 					frequencyParams.tuesday = true;
 					frequencyParams.wednesday = true;
 					frequencyParams.thursday = true;
 					frequencyParams.friday = true;
 				}
-				if($scope.eachTaskList.isWeekEnd === true) {
+				if ($scope.eachTaskList.isWeekEnd === true) {
 					frequencyParams.saturday = true;
 					frequencyParams.sunday = true;
 				}
 				params.frequency = frequencyParams;
 				params.frequency.days = 0;
 			} else {
-				if($scope.eachTaskList.customBy === "weekday") {
+				if ($scope.eachTaskList.customBy === "weekday") {
 					params.frequency = $scope.eachTaskList.frequency;
 					params.frequency.days = 0;
 				} else {
@@ -727,23 +727,23 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			frequencyParams.friday = false;
 			frequencyParams.saturday = false;
 			frequencyParams.sunday = false;
-			if($scope.eachTaskList.isCustom === false) {
+			if ($scope.eachTaskList.isCustom === false) {
 
-				if($scope.eachTaskList.isWeekDay === true) {
+				if ($scope.eachTaskList.isWeekDay === true) {
 					frequencyParams.monday = true;
 					frequencyParams.tuesday = true;
 					frequencyParams.wednesday = true;
 					frequencyParams.thursday = true;
 					frequencyParams.friday = true;
 				}
-				if($scope.eachTaskList.isWeekEnd === true) {
+				if ($scope.eachTaskList.isWeekEnd === true) {
 					frequencyParams.saturday = true;
 					frequencyParams.sunday = true;
 				}
 				params.frequency = frequencyParams;
 				params.frequency.days = 0;
 			} else {
-				if($scope.eachTaskList.customBy === "weekday") {
+				if ($scope.eachTaskList.customBy === "weekday") {
 					params.frequency = $scope.eachTaskList.frequency;
 					params.frequency.days = 0;
 				} else {
@@ -757,10 +757,10 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		};
 		$scope.handleFrequencySetting = function(type) {
 			setTimeout(function() {
-				if(type === "custom") {
+				if (type === "custom") {
 					$scope.eachTaskList.isWeekDay = $scope.eachTaskList.isWeekEnd = !$scope.eachTaskList.isCustom;
 				}
-				if(type === "weekday" || type == "weekend") {
+				if (type === "weekday" || type == "weekend") {
 					$scope.eachTaskList.isCustom = false;
 				}
 				$scope.$apply();
@@ -810,8 +810,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.clickedDefaultTaskChekbox = function (task) {
 
 			angular.forEach($scope.taskList, function(item, index) {
-				if(item.work_type_id === task.work_type_id) {
-					if(item.id === task.id) {
+				if (item.work_type_id === task.work_type_id) {
+					if (item.id === task.id) {
 						item.is_default = !item.is_default;
 					} else {
 						item.is_default = false;
@@ -849,13 +849,13 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			var selectedWorkType = "";
 
 			angular.forEach($scope.workType, function(item, index) {
-	            if(item.value === "DEPARTURE_CLEAN" && item.id === $scope.eachTaskList.work_type_id) {
+	            if (item.value === "DEPARTURE_CLEAN" && item.id === $scope.eachTaskList.work_type_id) {
 	            	selectedWorkType = "DEPARTURE_CLEAN";
-	            } else if(item.value === "STAYOVER_CLEAN" && item.id === $scope.eachTaskList.work_type_id) {
+	            } else if (item.value === "STAYOVER_CLEAN" && item.id === $scope.eachTaskList.work_type_id) {
 	            	selectedWorkType = "STAYOVER_CLEAN";
-	            } else if(item.value === "LINEN_CHANGE" && item.id === $scope.eachTaskList.work_type_id) {
+	            } else if (item.value === "LINEN_CHANGE" && item.id === $scope.eachTaskList.work_type_id) {
 	            	selectedWorkType = "LINEN_CHANGE";
-	            } else if(item.value === "TURNDOWN" && item.id === $scope.eachTaskList.work_type_id) {
+	            } else if (item.value === "TURNDOWN" && item.id === $scope.eachTaskList.work_type_id) {
 	            	selectedWorkType = "TURNDOWN";
 	            }
 
@@ -863,9 +863,9 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			var reservation_statuses_ids_array = [];
 
-			if(selectedWorkType === "DEPARTURE_CLEAN") {
+			if (selectedWorkType === "DEPARTURE_CLEAN") {
 				angular.forEach($scope.resHkStatusList, function(item, index) {
-		            if(item.value === "DUEOUT" || item.value === "DEPARTED") {
+		            if (item.value === "DUEOUT" || item.value === "DEPARTED") {
 		            	item.is_disabled = false;
 		            	reservation_statuses_ids_array.push(item.id);
 		            } else {
@@ -873,9 +873,9 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		            }
 
 		        });
-			} else if(selectedWorkType === "STAYOVER_CLEAN" || selectedWorkType === "LINEN_CHANGE") {
+			} else if (selectedWorkType === "STAYOVER_CLEAN" || selectedWorkType === "LINEN_CHANGE") {
 				angular.forEach($scope.resHkStatusList, function(item, index) {
-		            if(item.value === "STAYOVER") {
+		            if (item.value === "STAYOVER") {
 		            	item.is_disabled = false;
 		            	reservation_statuses_ids_array.push(item.id);
 		            } else {
@@ -883,9 +883,9 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		            }
 
 		        });
-			} else if(selectedWorkType === "TURNDOWN") {
+			} else if (selectedWorkType === "TURNDOWN") {
 				angular.forEach($scope.resHkStatusList, function(item, index) {
-		            if(item.value === "STAYOVER" || item.value === "ARRIVALS" || item.value === "ARRIVED") {
+		            if (item.value === "STAYOVER" || item.value === "ARRIVALS" || item.value === "ARRIVED") {
 		            	item.is_disabled = false;
 		            	reservation_statuses_ids_array.push(item.id);
 		            } else {

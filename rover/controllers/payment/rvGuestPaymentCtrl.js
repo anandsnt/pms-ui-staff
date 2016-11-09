@@ -62,7 +62,7 @@ sntRover.controller('RVPaymentGuestCtrl', ['$rootScope', '$scope', '$state', 'RV
 
 
 	 $scope.$on('ADDEDNEWPAYMENTTOGUEST', function(event, data) {
-	 	if(typeof $scope.paymentData.data === "undefined") {
+	 	if (typeof $scope.paymentData.data === "undefined") {
 	 			$scope.paymentData.data = [];
 	 	}
 	 	$scope.paymentData.data.push(data);

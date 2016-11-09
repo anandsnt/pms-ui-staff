@@ -347,7 +347,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 		 * @return undefined
 		 */
 		$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
-			if(typeof targetElement === 'undefined' || !(targetElement instanceof Element)) {
+			if (typeof targetElement === 'undefined' || !(targetElement instanceof Element)) {
 				return;
 			}
 
@@ -415,14 +415,14 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			}
 
 			// arrival left date change
-			else if(newBlockFrom < oldBlockFrom && $scope.changeDatesActions.arrDateLeftChangeAllowed()) {
+			else if (newBlockFrom < oldBlockFrom && $scope.changeDatesActions.arrDateLeftChangeAllowed()) {
 				triggerEarlierArrivalDateChange();
 			}
 
 			// arrival right date change
-			else if(newBlockFrom > oldBlockFrom && $scope.changeDatesActions.arrDateRightChangeAllowed()) {
+			else if (newBlockFrom > oldBlockFrom && $scope.changeDatesActions.arrDateRightChangeAllowed()) {
 				// check move validity
-				if(new tzIndependentDate(refData.first_dep_date) < newBlockFrom) {
+				if (new tzIndependentDate(refData.first_dep_date) < newBlockFrom) {
 					triggerLaterArrivalDateChangeInvalidError();
 				}
 				else {
@@ -513,17 +513,17 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			// check move validity
 			// departure left date change
 			// this condition is independent of above if - CICO-34463
-			if(newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {
-				if(new tzIndependentDate(refData.last_arrival_date) > newBlockTo) {
+			if (newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {
+				if (new tzIndependentDate(refData.last_arrival_date) > newBlockTo) {
 					triggerEarlierDepartureDateChangeInvalidError();
 				}
-				else{
+				else {
 					triggerEarlierDepartureDateChange();
 				}
 			}
 
 			// departure right date change
-			else if(newBlockTo > oldBlockTo && chActions.depDateRightChangeAllowed()) {
+			else if (newBlockTo > oldBlockTo && chActions.depDateRightChangeAllowed()) {
 				triggerLaterDepartureDateChange();
 			}
 
@@ -787,7 +787,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
            	jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function() {
             	$scope.$emit('hideLoader');
-            	if($rootScope.UPDATED_BI_ENABLED_ON['ACCOUNTS']) {
+            	if ($rootScope.UPDATED_BI_ENABLED_ON['ACCOUNTS']) {
             		console.log("##Billing-info updated version");
             		ngDialog.open({
 				        template: '/assets/partials/billingInformation/accounts/rvBillingInfoAccountsMain.html',
@@ -796,7 +796,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				        scope: $scope
 				    });
             	}
-            	else{
+            	else {
             		console.log("##Billing-info old version");
 				    ngDialog.open({
 				        template: '/assets/partials/bill/rvBillingInformationPopup.html',
@@ -888,7 +888,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				showRateChangeWarningPopup();
 				$scope.groupConfigData.summary.rate = summaryMemento.rate;
 			}
-			else{
+			else {
 			  summaryMemento.rate = $scope.groupConfigData.summary.rate;
 				// fetch summary once rate is changed - as per CICO-31812 comments
 				$scope.$emit("FETCH_SUMMARY");
@@ -1253,7 +1253,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 		};
 		// CICO-24928
 		$scope.updateActiveGroupNote = function() {
-			if(!$scope.groupSummaryData.editingNote) {
+			if (!$scope.groupSummaryData.editingNote) {
 		        $scope.errorMessage = ['Something went wrong, please switch tab and comeback'];
 		        return;
       		}
@@ -1393,7 +1393,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			if (activeTab !== 'SUMMARY') {
 				return;
 			}
-			if(!$scope.isInAddMode()) {
+			if (!$scope.isInAddMode()) {
 				$scope.$emit("FETCH_SUMMARY");
 
 				// to date picker will be in disabled in move mode
@@ -1474,10 +1474,10 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 		// CICO-23143
 
 		$scope.$on("SET_ACTIONS_COUNT", function(event, value) {
-			if(value === "new") {
+			if (value === "new") {
 				$scope.groupConfigData.summary.total_group_action_tasks_count = parseInt($scope.groupConfigData.summary.total_group_action_tasks_count) + parseInt(1);
 				$scope.groupConfigData.summary.pending_group_action_tasks_count = parseInt($scope.groupConfigData.summary.pending_group_action_tasks_count) + parseInt(1);
-			} else if(value === "complete") {
+			} else if (value === "complete") {
 				$scope.groupConfigData.summary.pending_group_action_tasks_count = parseInt($scope.groupConfigData.summary.pending_group_action_tasks_count) - parseInt(1);
 			}
 		});

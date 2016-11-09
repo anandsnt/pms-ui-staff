@@ -61,7 +61,7 @@
 
     $scope.mobileSubmitted = function() {
 
-    	if(ValidateNo()) {
+    	if (ValidateNo()) {
         guestDetailsService.postGuestDetails({"mobile": $scope.dial+"-"+$scope.guestDetails.mobile}).then(function(response) {
           $scope.isLoading = false;
           $scope.mobileUpdated = true;

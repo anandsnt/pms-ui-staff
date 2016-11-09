@@ -182,7 +182,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
 			var successCallback = function(data) {
 				$scope.errorMessage = '';
-				if(params.isBackToStayCard) {
+				if (params.isBackToStayCard) {
 					saveReservation();
 				}
 				else {
@@ -193,7 +193,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			var errorCallback = function(errorMessage) {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorMessage;
-				if(params.isBackToStayCard) {
+				if (params.isBackToStayCard) {
 					$scope.$emit("OPENGUESTTAB");
 				}
 			};
@@ -306,8 +306,8 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				$scope.reservationParentData.rooms[0].accompanying_guest_details = data.accompanying_guests_details;
 				$scope.errorMessage = '';
 
-				if($scope.reservationParentData.group.id) {
-					if($scope.otherData.maxAdults > 4) {
+				if ($scope.reservationParentData.group.id) {
+					if ($scope.otherData.maxAdults > 4) {
 						$scope.maxAdultsForReservation = 4;
 					} else {
 						scope.maxAdultsForReservation = $scope.otherData.maxAdults;

@@ -110,12 +110,12 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                 if (!!$scope.filterOptions.query) {
                     payLoad.query = $scope.filterOptions.query;
                 }
-                if($scope.filterOptions.selectedView == "GUEST") {
+                if ($scope.filterOptions.selectedView == "GUEST") {
                     $scope.callAPI(rvActionTasksSrv.fetchActions, {
                     params: payLoad,
                     successCallBack: onFetchListSuccess
                 });
-                } else if($scope.filterOptions.selectedView == "GROUP") {
+                } else if ($scope.filterOptions.selectedView == "GROUP") {
                     $scope.callAPI(rvActionTasksSrv.fetchGroupActions, {
                     params: payLoad,
                     successCallBack: onFetchListSuccess
@@ -269,9 +269,9 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                 ($scope.selectedAction.dueTime ? "T" + $scope.selectedAction.dueTime + ":00" : "")
             };
 
-            if(!!$scope.selectedAction.reservation_id) {
+            if (!!$scope.selectedAction.reservation_id) {
                 payLoad.reservation_id = $scope.selectedAction.reservation_id;
-            } else if(!!$scope.selectedAction.group_id) {
+            } else if (!!$scope.selectedAction.group_id) {
                 payLoad.group_id = $scope.selectedAction.group_id;
             }
 

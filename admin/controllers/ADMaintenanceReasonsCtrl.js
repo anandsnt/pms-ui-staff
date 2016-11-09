@@ -32,7 +32,7 @@ admin.controller('ADMaintenanceReasonsCtrl', ['$scope', 'ADMaintenanceReasonsSrv
     * @param {string} id of the item
     */
 	$scope.getTemplateUrl = function(index) {
-		if($scope.currentClickedElement === index) {
+		if ($scope.currentClickedElement === index) {
 			 return "/assets/partials/maintenanceReasons/adMaintenanceReasonsEdit.html";
 		}
 	};
@@ -40,7 +40,7 @@ admin.controller('ADMaintenanceReasonsCtrl', ['$scope', 'ADMaintenanceReasonsSrv
     * To handle cancel click
     */
 	$scope.clickedCancel = function() {
-		if($scope.currentClickedElement !== 'new') {
+		if ($scope.currentClickedElement !== 'new') {
 			$scope.data.maintenance_reasons[$scope.currentClickedElement].name = $scope.preveousName;
 			$scope.data.maintenance_reasons[$scope.currentClickedElement].code = $scope.preveouscode;
 			$scope.preveousName = "";

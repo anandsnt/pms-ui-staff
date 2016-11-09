@@ -19,15 +19,15 @@ angular.module('sntRover').controller('reservationRoomStatus',
 	$scope.getRoomClass = function(reservationStatus, cannotMoveRoom) {
 		var reservationRoomClass = '';
 
-		if(reservationStatus === 'CANCELED') {
+		if (reservationStatus === 'CANCELED') {
 			reservationRoomClass ='overlay';
 		} else if (cannotMoveRoom && $scope.reservationData.reservation_card.room_number !== "") {
             reservationRoomClass = 'has-lock hover-hand';
         }
-		else if( !$rootScope.isStandAlone && reservationStatus !== 'NOSHOW' && reservationStatus !== 'CHECKEDOUT' && reservationStatus !== 'CANCELED' && reservationStatus !== 'CHECKEDIN' && reservationStatus !== 'CHECKING_OUT') {
+		else if ( !$rootScope.isStandAlone && reservationStatus !== 'NOSHOW' && reservationStatus !== 'CHECKEDOUT' && reservationStatus !== 'CANCELED' && reservationStatus !== 'CHECKEDIN' && reservationStatus !== 'CHECKING_OUT') {
 			reservationRoomClass = 'has-arrow hover-hand';
 		}
-		else if($rootScope.isStandAlone && reservationStatus !== 'NOSHOW' && reservationStatus !== 'CHECKEDOUT' && reservationStatus !== 'CANCELED') {
+		else if ($rootScope.isStandAlone && reservationStatus !== 'NOSHOW' && reservationStatus !== 'CHECKEDOUT' && reservationStatus !== 'CANCELED') {
 			reservationRoomClass = 'has-arrow hover-hand';
 		}
 		return reservationRoomClass;
@@ -37,11 +37,11 @@ angular.module('sntRover').controller('reservationRoomStatus',
 
 		var reservationRoomStatusClass = "";
 
-		if(reservationStatus === 'CHECKING_IN') {
+		if (reservationStatus === 'CHECKING_IN') {
 
-			if(roomReadyStatus!=='') {
-				if(foStatus === 'VACANT') {
-					switch(roomReadyStatus) {
+			if (roomReadyStatus!=='') {
+				if (foStatus === 'VACANT') {
+					switch (roomReadyStatus) {
 
 						case "INSPECTED":
 							reservationRoomStatusClass = ' room-green';
@@ -77,10 +77,10 @@ angular.module('sntRover').controller('reservationRoomStatus',
 	$scope.showUpgradeButton = function(reservationStatus,  isUpsellAvailable) {
 		var showUpgrade = false;
 
-		if($scope.hasAnySharerCheckedin() || $scope.reservationData.reservation_card.is_suite || $rootScope.isHourlyRateOn) {
+		if ($scope.hasAnySharerCheckedin() || $scope.reservationData.reservation_card.is_suite || $rootScope.isHourlyRateOn) {
 			return false;
 		}
-		if((isUpsellAvailable === 'true') && $scope.isFutureReservation(reservationStatus)) {
+		if ((isUpsellAvailable === 'true') && $scope.isFutureReservation(reservationStatus)) {
 			showUpgrade = true;
 		}
 		return showUpgrade;
@@ -93,7 +93,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
 	$scope.showKeysButton = function(reservationStatus) {
 		var showKey = false;
 
-		if((reservationStatus === 'CHECKING_IN' && $scope.reservationData.reservation_card.room_number !== '')|| reservationStatus === 'CHECKING_OUT' || reservationStatus === 'CHECKEDIN') {
+		if ((reservationStatus === 'CHECKING_IN' && $scope.reservationData.reservation_card.room_number !== '')|| reservationStatus === 'CHECKING_OUT' || reservationStatus === 'CHECKEDIN') {
 			showKey = true;
 		}
                 // then check if the current user has permission
@@ -108,10 +108,10 @@ angular.module('sntRover').controller('reservationRoomStatus',
 	$scope.addHasButtonClass = function(reservationStatus,  isUpsellAvailable) {
 		var hasButton = "";
 
-		if($scope.showKeysButton(reservationStatus) && $scope.showUpgradeButton(reservationStatus,  isUpsellAvailable)) {
+		if ($scope.showKeysButton(reservationStatus) && $scope.showUpgradeButton(reservationStatus,  isUpsellAvailable)) {
 			hasButton = "has-buttons";
 		}
-		else if($scope.showKeysButton(reservationStatus) || $scope.showUpgradeButton(reservationStatus,  isUpsellAvailable)) {
+		else if ($scope.showKeysButton(reservationStatus) || $scope.showUpgradeButton(reservationStatus,  isUpsellAvailable)) {
 			hasButton = "has-button";
 		}
 		return hasButton;
@@ -125,7 +125,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		var keySettings = $scope.reservationData.reservation_card.key_settings;
 
 		$scope.viewFromBillScreen = false;
-		if(keySettings === "email") {
+		if (keySettings === "email") {
                     ngDialog.open({
                         template: '/assets/partials/keys/rvKeyEmailPopup.html',
                         controller: 'RVKeyEmailPopupController',
@@ -148,7 +148,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
 
 		var keySettings = $scope.reservationData.reservation_card.key_settings;
 
-		 if(keySettings === "qr_code_tablet") {
+		 if (keySettings === "qr_code_tablet") {
 
                     // Fetch and show the QR code in a popup
                     var	reservationId = $scope.reservationData.reservation_card.reservation_id;
@@ -170,8 +170,8 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		}
 
 		// Display the key encoder popup
-		else if(keySettings === "encode" || keySettings === "mobile_key_encode") {
-            if($scope.reservationData.reservation_card.is_remote_encoder_enabled && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0) {
+		else if (keySettings === "encode" || keySettings === "mobile_key_encode") {
+            if ($scope.reservationData.reservation_card.is_remote_encoder_enabled && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0) {
                 fetchEncoderTypes();
             } else {
                 openKeyEncodePopup();
@@ -243,7 +243,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
 	$scope.goToroomAssignment = function() {
 
 		// CICO-13907 Do not allow to go to room assignment screen if the resevation  any of its shred reservation is checked in.
-		if($scope.hasAnySharerCheckedin() || ($scope.reservationData.reservation_card.cannot_move_room && !rvPermissionSrv.getPermissionValue('DO_NOT_MOVE_RESERVATION'))) {
+		if ($scope.hasAnySharerCheckedin() || ($scope.reservationData.reservation_card.cannot_move_room && !rvPermissionSrv.getPermissionValue('DO_NOT_MOVE_RESERVATION'))) {
 			return false;
 		}
 		// check if roomupgrade is available
@@ -251,12 +251,12 @@ angular.module('sntRover').controller('reservationRoomStatus',
         var isUpgradeAvaiable = $scope.reservationData.reservation_card.is_upsell_available === "true" && (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN'),
             cannotMoveState   =  $scope.reservationData.reservation_card.cannot_move_room && $scope.reservationData.reservation_card.room_number!=="";
 
-		if($scope.reservationData.reservation_card.is_hourly_reservation) {
+		if ($scope.reservationData.reservation_card.is_hourly_reservation) {
 			gotToDiaryInEditMode ();
-		} else if($scope.isFutureReservation($scope.reservationData.reservation_card.reservation_status)) {
+		} else if ($scope.isFutureReservation($scope.reservationData.reservation_card.reservation_status)) {
 
 			$state.go("rover.reservation.staycard.roomassignment", {reservation_id: $scope.reservationData.reservation_card.reservation_id, room_type: $scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton", "upgrade_available": isUpgradeAvaiable, "cannot_move_room": cannotMoveState});
-		}else if($scope.reservationData.reservation_card.reservation_status==="CHECKEDIN" && $rootScope.isStandAlone) { // As part of CICO-27631 added Check for overlay hotels
+		} else if ($scope.reservationData.reservation_card.reservation_status==="CHECKEDIN" && $rootScope.isStandAlone) { // As part of CICO-27631 added Check for overlay hotels
 			$state.go("rover.reservation.staycard.roomassignment", {reservation_id: $scope.reservationData.reservation_card.reservation_id, room_type: $scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton", "upgrade_available": isUpgradeAvaiable, "cannot_move_room": cannotMoveState});
 		}
 
@@ -288,7 +288,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
         var shouldShowDNMToggleButton = true,
             reservationStatus = $scope.reservationData.reservation_card.reservation_status;
 
-        if(!$scope.isStandAlone || reservationStatus === 'NOSHOW' || reservationStatus === 'CHECKEDOUT' || reservationStatus === 'CANCELED' || $scope.reservationData.reservation_card.room_number === "" || !rvPermissionSrv.getPermissionValue('DO_NOT_MOVE_RESERVATION')) {
+        if (!$scope.isStandAlone || reservationStatus === 'NOSHOW' || reservationStatus === 'CHECKEDOUT' || reservationStatus === 'CANCELED' || $scope.reservationData.reservation_card.room_number === "" || !rvPermissionSrv.getPermissionValue('DO_NOT_MOVE_RESERVATION')) {
             shouldShowDNMToggleButton = false;
         }
 
@@ -299,7 +299,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
 
     $scope.showPopupsOnlineOfflineRoomMove = function() {
         setTimeout(function() {
-            if(keySettings === "email") {
+            if (keySettings === "email") {
                     ngDialog.open({
                         template: '/assets/partials/keys/rvKeyEmailPopup.html',
                         controller: 'RVKeyEmailPopupController',
@@ -315,8 +315,8 @@ angular.module('sntRover').controller('reservationRoomStatus',
 
 
 
-    if($rootScope.isStandAlone && !$rootScope.isHourlyRateOn) {
-        if((($stateParams.isOnlineRoomMove == null && $stateParams.isKeySystemAvailable) || $stateParams.isOnlineRoomMove == "false"
+    if ($rootScope.isStandAlone && !$rootScope.isHourlyRateOn) {
+        if ((($stateParams.isOnlineRoomMove == null && $stateParams.isKeySystemAvailable) || $stateParams.isOnlineRoomMove == "false"
             || ($stateParams.isOnlineRoomMove == "true" && (keySettings === "email" || keySettings === "qr_code_tablet")))
             && ($scope.showKeysButton($scope.reservationData.reservation_card.reservation_status)
             && $scope.reservationData.reservation_card.reservation_status === "CHECKEDIN")) {

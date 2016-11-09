@@ -7,12 +7,12 @@ var GlobalApp = function() {
     this.iBeaconLinker = null;
     this.enableURLChange = true;
     this.uuidService = null;
-    try{
+    try {
     	this.desktopCardReader = new DesktopCardOperations();
         this.MLIOperator = new MLIOperation();
         this.desktopUUIDService = new DesktopUUIDService();
     }
-        catch(er) {
+        catch (er) {
     }
 
 
@@ -25,13 +25,13 @@ var GlobalApp = function() {
 
 
     this.setBrowser = function(browser) {
-    	if(typeof browser === 'undefined' || browser === '') {
+    	if (typeof browser === 'undefined' || browser === '') {
     		that.browser = "other";
     	}
-    	else{
+    	else {
     		that.browser = browser;
     	}
-    	if(browser === 'rv_native' && !that.cordovaLoaded) {
+    	if (browser === 'rv_native' && !that.cordovaLoaded) {
     	   // TODO: check URL
     		var url = "/assets/shared/cordova.js";
 
@@ -60,26 +60,26 @@ var GlobalApp = function() {
     this.fetchCompletedOfCordovaPlugins = function(script) {
         $("head").append('<script type="text/javascript">'+ script +'</script>');
         that.cordovaLoaded = true;
-        try{
+        try {
 
     	   that.cardReader = new CardOperation();
 
         }
-        catch(er) {
+        catch (er) {
         }
-        try{
+        try {
 
             that.iBeaconLinker = new iBeaconOperation();
 
         }
-        catch(er) {}
+        catch (er) {}
 
         try {
 
             that.uuidService = new UUIDService();
 
         }
-        catch(er) {
+        catch (er) {
 
         }
 

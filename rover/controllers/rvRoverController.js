@@ -52,7 +52,7 @@ sntRover.controller('roverController',
       "id": ""
     };
     angular.forEach($scope.hotelDetails.userHotelsData.hotel_list, function(hotel, index) {
-          if($scope.hotelDetails.userHotelsData.current_hotel_id === hotel.hotel_id) {
+          if ($scope.hotelDetails.userHotelsData.current_hotel_id === hotel.hotel_id) {
              $scope.currentHotelData.name = hotel.hotel_name;
              $scope.currentHotelData.id   = hotel.hotel_id;
              $scope.hotelDetails.userHotelsData.hotel_list.splice(index, 1);
@@ -122,9 +122,9 @@ sntRover.controller('roverController',
        * NOTE: Temporary Fix
        * As saferpay is not supported in Rover, if saferpay is selected in SNT Admin; default to sixpayments
        */
-      if(hotelDetails.payment_gateway === "SAFERPAY") {
+      if (hotelDetails.payment_gateway === "SAFERPAY") {
           $rootScope.paymentGateway = "sixpayments";
-      }else{
+      } else {
           $rootScope.paymentGateway = hotelDetails.payment_gateway;
       }
     $rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
@@ -500,12 +500,12 @@ sntRover.controller('roverController',
       else if (subMenu === "endOfDay") {
         openEndOfDayPopup();
       }
-      else if(subMenu === "adminSettings") {
+      else if (subMenu === "adminSettings") {
             // CICO-9816 bug fix - Akhila
             $('body').addClass('no-animation');
             $window.location.href = "/admin";
       }
-      else if(subMenu === "changePassword") {
+      else if (subMenu === "changePassword") {
          openUpdatePasswordPopup();
       }
     };
@@ -577,7 +577,7 @@ sntRover.controller('roverController',
 
     $scope.failureCallBackSwipe = function(errorMessage) {
     	$scope.errorMessage = errorMessage;
-    	if($rootScope.desktopSwipeEnabled) {
+    	if ($rootScope.desktopSwipeEnabled) {
     	}
     };
 
@@ -639,7 +639,7 @@ sntRover.controller('roverController',
   		/* Enabling desktop Swipe if we access the app from desktop ( not from devices) and
        * desktopSwipeEnabled flag is true
       */
-      if($rootScope.desktopSwipeEnabled && !rvUtilSrv.checkDevice.any()) {
+      if ($rootScope.desktopSwipeEnabled && !rvUtilSrv.checkDevice.any()) {
         $rootScope.isDesktopUUIDServiceInvoked = true;
   			initiateDesktopCardReader();
   		}
@@ -652,7 +652,7 @@ sntRover.controller('roverController',
     }
 
     // If desktopSwipe is not enabled, we have to invoke the desktopUUID service like below
-    if(!$rootScope.isDesktopUUIDServiceInvoked &&  !rvUtilSrv.checkDevice.any()) {
+    if (!$rootScope.isDesktopUUIDServiceInvoked &&  !rvUtilSrv.checkDevice.any()) {
       sntapp.desktopUUIDService.startDesktopUUIDService($rootScope.ccSwipeListeningPort, options);
     }
 

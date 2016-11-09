@@ -416,7 +416,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 return showNoRoomTypesAttachedPopUp();
             }
 
-            if(!$scope.possibleNumberOfRooms.length) {
+            if (!$scope.possibleNumberOfRooms.length) {
                 $scope.errorMessage = ['No Rooms have been added for the selected Room in the Room Block.'];
                 return;
             }
@@ -660,7 +660,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 // We have to show in the same order - in popup
                 $scope.selected_reservations = _.sortBy($scope.selected_reservations, "confirm_no");
                 $scope.selected_reservations = _.sortBy($scope.selected_reservations, $scope.sort_field);
-                if($scope.sort_dir === 'DESC') {
+                if ($scope.sort_dir === 'DESC') {
                     $scope.selected_reservations = $scope.selected_reservations.reverse();
                 }
 
@@ -804,7 +804,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
 
                 var reservationIndex = _.findIndex(data.results, {"id": eachData.id});
 
-                if(reservationIndex != -1) {
+                if (reservationIndex != -1) {
                     $scope.selected_reservations[resIndex] = $scope.reservations[reservationIndex];
                 }
 
@@ -1805,7 +1805,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
              * @return - None
              */
         $scope.sendEmail = function(mailTo) {
-            if(!mailTo) {
+            if (!mailTo) {
                 $scope.errorMessage =  ["Please enter email!!"];
                 return;
             }

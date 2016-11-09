@@ -67,7 +67,7 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 				GwWebSrv.zestwebData.roomUpgraded  = true;
 				$state.go('checkinReservationDetails');
 			}
-			else{
+			else {
 				$scope.callAPI(GwCheckinSrv.upgradeRoom, options);
 			}
 		};

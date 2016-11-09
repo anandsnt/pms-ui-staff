@@ -81,11 +81,11 @@ admin.controller('ADCheckoutEmailCtrl', ['$scope', 'adCheckinCheckoutSrv', '$sta
     var selectedCount = false;
 
     $scope.disableSave = true;
-    if($scope.emailDatas.length ===0) {
+    if ($scope.emailDatas.length ===0) {
       return false;
     }
      angular.forEach($scope.emailDatas, function(item, index) {
-           if(item.is_selected === true) {
+           if (item.is_selected === true) {
              selectedCount++;
              $scope.disableSave = false;
            }
@@ -133,7 +133,7 @@ admin.controller('ADCheckoutEmailCtrl', ['$scope', 'adCheckinCheckoutSrv', '$sta
   	var reservations = [];
 
   	angular.forEach($scope.emailDatas, function(item, index) {
-       if(item.is_selected) {
+       if (item.is_selected) {
          reservations.push(item.reservation_id);
        }
   });

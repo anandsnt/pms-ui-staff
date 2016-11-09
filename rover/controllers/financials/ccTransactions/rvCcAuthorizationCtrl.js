@@ -29,13 +29,13 @@ sntRover.controller('RVccAuthorizationController', ['$scope', '$filter', '$state
     };
 
     $scope.$on('mainTabSwiched', function() {
-		if($scope.data.activeTab === 1) {
+		if ($scope.data.activeTab === 1) {
 			refreshAuthorizationScroll();
 		}
     });
 
 	$scope.clickedApprovedTab = function() {
-		if(isEmptyObject($scope.data.authData.approved)) {
+		if (isEmptyObject($scope.data.authData.approved)) {
 			return false;
 		}
 		$scope.data.authData.approved.active = !$scope.data.authData.approved.active;
@@ -43,7 +43,7 @@ sntRover.controller('RVccAuthorizationController', ['$scope', '$filter', '$state
 	};
 
 	$scope.clickedDeclinedTab = function() {
-		if(isEmptyObject($scope.data.authData.declined)) {
+		if (isEmptyObject($scope.data.authData.declined)) {
 			return false;
 		}
 		$scope.data.authData.declined.active = !$scope.data.authData.declined.active;
@@ -51,7 +51,7 @@ sntRover.controller('RVccAuthorizationController', ['$scope', '$filter', '$state
 	};
 
 	$scope.clickedReversalsTab = function() {
-		if(isEmptyObject($scope.data.authData.reversals)) {
+		if (isEmptyObject($scope.data.authData.reversals)) {
 			return false;
 		}
 		$scope.data.authData.reversals.active = !$scope.data.authData.reversals.active;
@@ -59,7 +59,7 @@ sntRover.controller('RVccAuthorizationController', ['$scope', '$filter', '$state
 	};
 
 	$scope.clickedApprovedTransactionItem = function(item) {
-		if(item.cc_transactions.length === 0) {
+		if (item.cc_transactions.length === 0) {
 			return false;
 		}
 		item.active = !item.active;
@@ -67,7 +67,7 @@ sntRover.controller('RVccAuthorizationController', ['$scope', '$filter', '$state
 	};
 
 	$scope.clickedDeclinedTransactionItem = function(item) {
-		if(item.cc_transactions.length === 0) {
+		if (item.cc_transactions.length === 0) {
 			return false;
 		}
 		item.active = !item.active;
@@ -75,7 +75,7 @@ sntRover.controller('RVccAuthorizationController', ['$scope', '$filter', '$state
 	};
 
 	$scope.clickedReversalTransactionItem = function(item) {
-		if(item.cc_transactions.length === 0) {
+		if (item.cc_transactions.length === 0) {
 			return false;
 		}
 		item.active = !item.active;

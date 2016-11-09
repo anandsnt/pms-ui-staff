@@ -1,12 +1,12 @@
 
 // Function to remove unwanted key elements from hash.
 var dclone = function(object, unwanted_keys) {
-  	if(typeof unwanted_keys === "undefined") {
+  	if (typeof unwanted_keys === "undefined") {
   		unwanted_keys = [];
   	}
   	var newObject = JSON.parse(JSON.stringify(object));
 
-  	for(var i=0; i < unwanted_keys.length; i++) {
+  	for (var i=0; i < unwanted_keys.length; i++) {
   		delete newObject[unwanted_keys[i]];
   	}
   	return newObject;
@@ -73,8 +73,8 @@ var CurrencyInfoMappings = {
 var isAnyMatch = function(val, arr) {
     var ret = false;
 
-    for(var i=0, j= arr.length ; i<j ; i++) {
-        if(arr[i] === val) {
+    for (var i=0, j= arr.length ; i<j ; i++) {
+        if (arr[i] === val) {
             ret = true;
             break;
         }
@@ -106,19 +106,19 @@ var DateFormatInfoMappings = {
 
 var getDateFormat = function(dateFormat) {
 
-    if(typeof dateFormat === 'undefined') {
+    if (typeof dateFormat === 'undefined') {
         return DateFormatInfoMappings['MM-DD-YYYY'][0];
     }
-    else{
+    else {
         return DateFormatInfoMappings[dateFormat][0];
     }
 };
 
 var getJqDateFormat = function(dateFormat) {
-    if(typeof dateFormat === 'undefined') {
+    if (typeof dateFormat === 'undefined') {
         return DateFormatInfoMappings['MM-DD-YYYY'][1];
     }
-    else{
+    else {
         return DateFormatInfoMappings[dateFormat][1];
     }
 };

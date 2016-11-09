@@ -158,7 +158,7 @@ angular.module('sntRover').controller('RVWorkManagementCtrl', ['$rootScope', '$s
 								filterAfterTime = cia.hh + ':' + (cia.mm || '00') + ' ' + cia.am;
 								filterBeforeTime = cib.hh + ':' + (cib.mm || '00') + ' ' + cib.am;
 
-								if( get24hourTime(roomTime) >= get24hourTime(filterAfterTime) && get24hourTime(roomTime) <= get24hourTime(filterBeforeTime) ) {
+								if ( get24hourTime(roomTime) >= get24hourTime(filterAfterTime) && get24hourTime(roomTime) <= get24hourTime(filterBeforeTime) ) {
 									room.show = true;
 								} else {
 									room.show = false;
@@ -168,7 +168,7 @@ angular.module('sntRover').controller('RVWorkManagementCtrl', ['$rootScope', '$s
 								roomTime = refData.checkin_time;
 								filterAfterTime = cia.hh + ':' + (cia.mm || '00') + ' ' + cia.am;
 
-								if( get24hourTime(roomTime) >= get24hourTime(filterAfterTime) ) {
+								if ( get24hourTime(roomTime) >= get24hourTime(filterAfterTime) ) {
 									room.show = true;
 								} else {
 									room.show = false;
@@ -178,7 +178,7 @@ angular.module('sntRover').controller('RVWorkManagementCtrl', ['$rootScope', '$s
 								roomTime = refData.checkin_time;
 								filterBeforeTime = cib.hh + ':' + (cib.mm || '00') + " " + cib.am;
 
-								if( get24hourTime(roomTime) >= get24hourTime(filterBeforeTime) ) {
+								if ( get24hourTime(roomTime) >= get24hourTime(filterBeforeTime) ) {
 									room.show = true;
 								} else {
 									room.show = false;
@@ -199,7 +199,7 @@ angular.module('sntRover').controller('RVWorkManagementCtrl', ['$rootScope', '$s
 								roomTime = refData.checkout_time;
 								filterAfterTime = coa.hh + ':' + (coa.mm || '00') + " " + coa.am;
 
-								if( get24hourTime(roomTime) >= get24hourTime(filterAfterTime) ) {
+								if ( get24hourTime(roomTime) >= get24hourTime(filterAfterTime) ) {
 									room.show = true;
 								} else {
 									room.show = false;
@@ -209,7 +209,7 @@ angular.module('sntRover').controller('RVWorkManagementCtrl', ['$rootScope', '$s
 								roomTime = refData.checkin_time;
 								filterBeforeTime = cob.hh + ':' + (cob.mm || '00') + " " + cob.am;
 
-								if( get24hourTime(roomTime) <= get24hourTime(filterBeforeTime) ) {
+								if ( get24hourTime(roomTime) <= get24hourTime(filterBeforeTime) ) {
 									room.show = true;
 								} else {
 									room.show = false;

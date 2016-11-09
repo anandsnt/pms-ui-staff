@@ -109,14 +109,14 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 				var l = $scope.data.length;
 
 				$scope.data[(l - 1)].name = $scope.rateTypeData.name;
-				if($scope.rateTypeData.classification !== null && typeof $scope.rateTypeData.classification !== "undefined") {
+				if ($scope.rateTypeData.classification !== null && typeof $scope.rateTypeData.classification !== "undefined") {
          	$scope.data[(l - 1)].classification = _.findWhere($scope.rateClassifications, {id: parseInt($scope.rateTypeData.classification.id, 10)});
         }
 				$scope.data[(l - 1)].rate_count = 0;
 			} else {
 				// To update data with new value
 				$scope.data[parseInt($scope.currentClickedElement)].name = $scope.rateTypeData.name;
-				if($scope.rateTypeData.classification !== null && typeof $scope.rateTypeData.classification !== "undefined") {
+				if ($scope.rateTypeData.classification !== null && typeof $scope.rateTypeData.classification !== "undefined") {
 					$scope.data[parseInt($scope.currentClickedElement)].classification = _.findWhere($scope.rateClassifications, {id: parseInt($scope.rateTypeData.classification.id, 10)});
         }
 			}
@@ -158,7 +158,7 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 	* @param {string} number of rates available for the rate type
 	*/
 	$scope.showRates = function(index, rateTypeId, rateCount) {
-		if(rateCount <= 0) {
+		if (rateCount <= 0) {
 			return false;
 		}
 		var rateFetchSuccess = function(data) {
@@ -168,7 +168,7 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 		};
 
 		// Fetch the rates only when we enter the popover area.
-		if(!$scope.mouseEnterPopover) {
+		if (!$scope.mouseEnterPopover) {
 			$scope.popoverRates = "";
 			$scope.currentHoverElement = index;
 			$scope.invokeApi(ADRatesSrv.fetchRates, {'rate_type_id': rateTypeId}, rateFetchSuccess, undefined, 'NOOP');

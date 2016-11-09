@@ -56,7 +56,7 @@ sntRover.controller('RVccTransactionsController', ['$scope', '$filter', '$stateP
     $scope.hasAnyElements = function(object) {
     	var hasAnyElements = true;
 
-    	if(isEmptyObject(object)) {
+    	if (isEmptyObject(object)) {
     		hasAnyElements = false;
     	}
     	return hasAnyElements;

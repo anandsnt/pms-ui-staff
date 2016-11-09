@@ -81,7 +81,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 			}
 			try {
 				$scope.$digest();	
-			} catch(err) {
+			} catch (err) {
 				console.warn(err);
 			}
 		};

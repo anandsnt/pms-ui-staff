@@ -66,7 +66,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			// TODO : Currently hardcoded to go to groups search..
 			// Change the same according to the requirements
       // CICO-17777: added isFromCards to $stateParams from rvAccountRouter
-			if($stateParams.isFromCards) {
+			if ($stateParams.isFromCards) {
 				$rootScope.setPrevState = {
 					title: $filter('translate')('ACCOUNTS'),
 					callback: 'updateAndBack',
@@ -150,12 +150,12 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			}
 
 			// Reload the summary tab contents before switching to it
-			if(tab === "ACCOUNT") {
+			if (tab === "ACCOUNT") {
 
-			} else if(tab === "TRANSACTIONS") { // Preload the transaction data when we switch to transactions tab
+			} else if (tab === "TRANSACTIONS") { // Preload the transaction data when we switch to transactions tab
 
 
-			} else{
+			} else {
 				// Switching from SUMMARY tab -
 				// Check for any updation => lets save it.
 				$scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');

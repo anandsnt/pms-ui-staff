@@ -24,7 +24,7 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
 
   $scope.$on("$includeContentLoaded", function() {
       // we are showing the add new guest button in searhc only if it is standalone & search result is empty
-      if($rootScope.isStandAlone) {
+      if ($rootScope.isStandAlone) {
           $scope.$broadcast("showAddNewGuestButton", true);
       }
   });
@@ -169,10 +169,10 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
   };
   // CICO-31344
 
-  if(!$scope.isStandAlone) {
+  if (!$scope.isStandAlone) {
     requestParams.show_adr = false;
   }
-  if($scope.isStatisticsOpened) {
+  if ($scope.isStatisticsOpened) {
     $scope.invokeApi(RVDashboardSrv.fetchStatisticData, requestParams, onStatisticsFetchSuccess, onStatisticsFetchFailure);
   } else {
     $timeout(function() {

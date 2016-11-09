@@ -14,12 +14,12 @@ admin.controller('ADNotificationCtrl', ['$scope', '$rootScope', '$state', '$stat
     
     var init = function() {
         $scope.notification = {};
-        if(!!$stateParams.id)
+        if (!!$stateParams.id)
         {   // Editing Notification
             $scope.notification.id = $stateParams.id;
             fetchNotification($scope.notification.id);
 
-        }else{// Adding new Notification            
+        } else {// Adding new Notification            
             $scope.notification.action_type="LINK";
             // default value
             $scope.notification.pms_type = "BOTH";
@@ -57,13 +57,13 @@ admin.controller('ADNotificationCtrl', ['$scope', '$rootScope', '$state', '$stat
     };
     // return a date string in the format of yyyy-MM-dd 23:59:59 (API expects this format)
     var formatExpiresAtDate = function(activates_at, duration) {
-        if(duration !=0) {       
+        if (duration !=0) {       
             var activates_at = new Date(activates_at);
             var expires_at = new Date(activates_at.getTime() + (duration*1000 * 60 * 60 * 24));
 
             expires_at = $filter('date')(tzIndependentDate(expires_at), 'yyyy-MM-dd') +" 23:59:59";
             return expires_at;
-        }else{
+        } else {
             return null;
         }
     };
@@ -101,14 +101,14 @@ admin.controller('ADNotificationCtrl', ['$scope', '$rootScope', '$state', '$stat
             $scope.$emit('hideLoader');
         };       
 
-        if(!!notification.id) {
+        if (!!notification.id) {
             var params = {
                 id: $scope.notification.id,
                 params: getParams(notification)
             };
 
             $scope.invokeApi(ADNotificationsListSrv.updateNotification, params, $scope.back, saveFailed);        
-        }else{
+        } else {
             var params = getParams(notification);
 
             $scope.invokeApi(ADNotificationsListSrv.createNotification, params, $scope.back, saveFailed);

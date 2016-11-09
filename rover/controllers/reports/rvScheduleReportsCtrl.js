@@ -522,7 +522,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				var selected = false,
 					mustSend = false;
 
-				if(filter.value == 'ACCOUNT' || filter.value == 'GUEST') {
+				if (filter.value == 'ACCOUNT' || filter.value == 'GUEST') {
 					selected = true;
 					$scope.filters.hasGeneralOptions.data.push({
 						paramKey: filter.value.toLowerCase(),
@@ -737,7 +737,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
 
 				var getValue = function(value) {
-					switch(value) {
+					switch (value) {
 						case 'DAILY':
 							return 'Day';
 						case 'HOURLY':

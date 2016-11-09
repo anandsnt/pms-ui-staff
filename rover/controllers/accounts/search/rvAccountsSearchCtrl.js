@@ -37,7 +37,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 			var classes = '';
 
 			// Add class "red" if status OPEN
-			if(util.convertToDouble (account.balance) > 0) {
+			if (util.convertToDouble (account.balance) > 0) {
 				classes = 'red';
 			}
 			return classes;
@@ -52,7 +52,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 			var classes = '';
 
 			// Add class "green" if status OPEN
-			if(account.status.toLowerCase() === "open") {
+			if (account.status.toLowerCase() === "open") {
 				classes = 'green';
 			}
 
@@ -86,7 +86,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* return - None
 		*/
 		var runDigestCycle = function() {
-			if(!$scope.$$phase) {
+			if (!$scope.$$phase) {
 				$scope.$digest();
 			}
 		};

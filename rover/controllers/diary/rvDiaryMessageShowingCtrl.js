@@ -13,7 +13,7 @@ sntRover.controller('RVDiaryMessageShowingCtrl', ['$scope',
                 $rootScope.modalClosing = false;
                 ngDialog.close();
             }, 300);
-    		if(callBack) {
+    		if (callBack) {
     			$timeout(function() {
     				callBack();
     			}, 1000);

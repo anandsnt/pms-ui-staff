@@ -32,13 +32,13 @@ admin.controller('ADHotelDetailsCtrl', [
 	    	ngDialog.close();
 	    }
   	};
-	if($rootScope.adminRole === "snt-admin") {
+	if ($rootScope.adminRole === "snt-admin") {
 		$scope.isAdminSnt = true;
-		if($stateParams.action ==="addfromSetup") {
+		if ($stateParams.action ==="addfromSetup") {
 			$scope.previousStateIsDashBoard = true;
 		}
 		// SNT Admin -To add new hotel view
-		if($stateParams.action === "add" || $stateParams.action ==="addfromSetup") {
+		if ($stateParams.action === "add" || $stateParams.action ==="addfromSetup") {
 			$scope.title = "Add New Hotel";
 			var fetchSuccess = function(data) {
 				$scope.data = data.data;
@@ -57,26 +57,26 @@ admin.controller('ADHotelDetailsCtrl', [
 			$scope.invokeApi(ADHotelDetailsSrv.fetchAddData, {}, fetchSuccess);
 		}
 		// SNT Admin -To edit existing hotel view
-		else if($stateParams.action === "edit") {
+		else if ($stateParams.action === "edit") {
 			$scope.isEdit = true;
 			$scope.title = "Edit Hotel";
 			var fetchSuccess = function(data) {
 				$scope.data = data.data;
 				$scope.languages = data.languages;
 				$scope.$emit('hideLoader');
-				if($scope.data.mli_pem_certificate_loaded) {
+				if ($scope.data.mli_pem_certificate_loaded) {
 					$scope.mli_pem_certificate_file_name = "Certificate Attached";
 				}
-				if($scope.data.check_in_time.primetime === "" || typeof $scope.data.check_in_time.primetime === 'undefined') {
+				if ($scope.data.check_in_time.primetime === "" || typeof $scope.data.check_in_time.primetime === 'undefined') {
 					$scope.data.check_in_time.primetime = "AM";
 					$scope.data.check_in_primetime ="AM";
 				}
-				if($scope.data.check_out_time.primetime === "" || typeof $scope.data.check_out_time.primetime === 'undefined') {
+				if ($scope.data.check_out_time.primetime === "" || typeof $scope.data.check_out_time.primetime === 'undefined') {
 					$scope.data.check_out_time.primetime = "AM";
 					$scope.data.check_out_primetime = "AM";
 				}
 				// CICO-24330 -Make the chain non-editable once its saved
-				if(!!$scope.data.hotel_chain) {
+				if (!!$scope.data.hotel_chain) {
 					$scope.isHotelChainReadonly = true;
 				}
 
@@ -87,7 +87,7 @@ admin.controller('ADHotelDetailsCtrl', [
 		}
 
 	}
-	else if($rootScope.adminRole === "hotel-admin") {
+	else if ($rootScope.adminRole === "hotel-admin") {
 		// Hotel Admin -To Edit current hotel view
 		$scope.isEdit = true;
 		$scope.title = "Edit Hotel";
@@ -97,17 +97,17 @@ admin.controller('ADHotelDetailsCtrl', [
 			$scope.$emit('hideLoader');
 			$scope.hotelLogoPrefetched = data.hotel_logo;
 			$scope.hotelTemplateLogoPrefetched = data.hotel_template_logo;
-			if($scope.data.check_in_time.primetime === "" || typeof $scope.data.check_in_time.primetime === 'undefined') {
+			if ($scope.data.check_in_time.primetime === "" || typeof $scope.data.check_in_time.primetime === 'undefined') {
 				$scope.data.check_in_time.primetime = "AM";
 				$scope.data.check_in_primetime ="AM";
 			}
-			if($scope.data.check_out_time.primetime === "" || typeof $scope.data.check_out_time.primetime === 'undefined') {
+			if ($scope.data.check_out_time.primetime === "" || typeof $scope.data.check_out_time.primetime === 'undefined') {
 				$scope.data.check_out_time.primetime = "AM";
 				$scope.data.check_out_primetime = "AM";
 			}
 
 			// CICO-24330 -Make the chain non-editable once its saved
-			if(!!$scope.data.hotel_chain) {
+			if (!!$scope.data.hotel_chain) {
 				$scope.isHotelChainReadonly = true;
 			}
 
@@ -121,7 +121,7 @@ admin.controller('ADHotelDetailsCtrl', [
 		function() {
 		return $scope.data.hotel_template_logo;
 	}, function(logo) {
-				if(logo === 'false') {
+				if (logo === 'false') {
 					$scope.fileName = "Choose File....";
 				}
 				$scope.hotel_template_logo_file = $scope.fileName;
@@ -130,7 +130,7 @@ admin.controller('ADHotelDetailsCtrl', [
 	$scope.$watch(function() {
 		return $scope.data.hotel_logo;
 	}, function(logo) {
-				if(logo === 'false') {
+				if (logo === 'false') {
 					$scope.fileName = "Choose File....";
 				}
 				$scope.hotel_logo_file = $scope.fileName;
@@ -174,7 +174,7 @@ admin.controller('ADHotelDetailsCtrl', [
     */
 	$scope.clickedSave = function() {
 		// SNT Admin - To save Add/Edit data
-		if($scope.isAdminSnt) {
+		if ($scope.isAdminSnt) {
 			var unwantedKeys = ["time_zones", "brands", "chains", "check_in_time", "check_out_time", "countries", "currency_list", "pms_types", "signature_display", "hotel_logo", "languages", "hotel_template_logo"];
 			var data = dclone($scope.data, unwantedKeys);
 
@@ -187,7 +187,7 @@ admin.controller('ADHotelDetailsCtrl', [
 				$state.go("admin.hotels");
 			};
 
-			if($scope.isEdit) {
+			if ($scope.isEdit) {
 				$scope.invokeApi(ADHotelDetailsSrv.updateHotelDeatils, data, postSuccess);
 			}
 			else {
@@ -195,13 +195,13 @@ admin.controller('ADHotelDetailsCtrl', [
 			}
 		}
 		// Hotel Admin -To save Edit data
-		else{
+		else {
 
 
 		/** ********* Commented out to fix CICO-8508 ****************************/
 		// template logo was not updating when existing image was removed
 		/** ******************************************************************/
-			if($scope.data.payment_gateway === "MLI") {
+			if ($scope.data.payment_gateway === "MLI") {
 
 				var unwantedKeys = ["time_zones", "brands", "chains", "check_in_time", "check_out_time", "countries", "currency_list", "pms_types", "hotel_pms_type", "is_single_digit_search", "is_pms_tokenized", "signature_display", "hotel_list", "menus", "mli_hotel_code", "mli_chain_code", "mli_access_url", "languages", "date_formats", "six_merchant_id", "six_validation_code", "is_external_references_import_on", "external_references_import_freq", "is_hold_room_import_on", "hold_room_import_freq", "allow_desktop_swipe", "cc_swipe_listening_port"];
 			 } else {
@@ -212,10 +212,10 @@ admin.controller('ADHotelDetailsCtrl', [
 			var data = dclone($scope.data, unwantedKeys);
 
 			data.interface_type_ids = getSelectedInterfaceTypes(data);
-			if($scope.hotelLogoPrefetched === data.hotel_logo) {
+			if ($scope.hotelLogoPrefetched === data.hotel_logo) {
 				data.hotel_logo = "";
 			}
-			if($scope.hotelTemplateLogoPrefetched === data.hotel_template_logo) {
+			if ($scope.hotelTemplateLogoPrefetched === data.hotel_template_logo) {
 				data.hotel_template_logo = "";
 			}
 			var postSuccess = function() {
@@ -307,21 +307,21 @@ admin.controller('ADHotelDetailsCtrl', [
     */
 	$scope.back = function() {
 
-		if($scope.isAdminSnt) {
+		if ($scope.isAdminSnt) {
 
-    		if($scope.previousStateIsDashBoard) {
+    		if ($scope.previousStateIsDashBoard) {
     			$state.go("admin.dashboard", {"menu": 0});
     		}
-    		else{
+    		else {
     			$state.go("admin.hotels");
     		}
 
 		}
 		else {
-			if($rootScope.previousStateParam) {
+			if ($rootScope.previousStateParam) {
 				$state.go($rootScope.previousState, { menu: $rootScope.previousStateParam});
 			}
-			else if($rootScope.previousState) {
+			else if ($rootScope.previousState) {
 				$state.go($rootScope.previousState);
 			}
 			else
@@ -345,7 +345,7 @@ admin.controller('ADHotelDetailsCtrl', [
     *   To handle show hide status for the logo delete button
     */
     $scope.isLogoAvailable = function(logo) {
-    	if(logo !== '/assets/images/logo.png' && logo !== 'false') {
+    	if (logo !== '/assets/images/logo.png' && logo !== 'false') {
     		return true;
     	}
     	else {
@@ -361,7 +361,7 @@ admin.controller('ADHotelDetailsCtrl', [
     	var selectedIds = [];
 
     	for (var i = 0; i < data.interface_types.length; i++) {
-    		if(data.interface_types[i].is_checked === 'true') {
+    		if (data.interface_types[i].is_checked === 'true') {
     			selectedIds.push(data.interface_types[i].id);
     		}
     	}
@@ -370,23 +370,23 @@ admin.controller('ADHotelDetailsCtrl', [
 
     // Set dropdown defaults when they are empty or null
     var setDropdownDefaults = function() {
-    	if(!$scope.data.hotel_brand) {
+    	if (!$scope.data.hotel_brand) {
 			$scope.data.hotel_brand = "";
 		}
 
-		if(!$scope.data.hotel_chain) {
+		if (!$scope.data.hotel_chain) {
 			$scope.data.hotel_chain = "";
 		}
 
-		if(!$scope.data.hotel_date_format) {
+		if (!$scope.data.hotel_date_format) {
 			$scope.data.hotel_date_format = "";
 		}
 
-		if(!$scope.data.default_currency) {
+		if (!$scope.data.default_currency) {
 			$scope.data.default_currency = "";
 		}
 
-		if(!$scope.data.selected_language) {
+		if (!$scope.data.selected_language) {
 			$scope.data.selected_language = "";
 		}
     };

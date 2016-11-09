@@ -33,7 +33,7 @@ admin.controller('ADSourcesCtrl', ['$scope', 'ADSourcesSrv', '$anchorScroll', '$
     * @param {int} index of the selected source
     */
 	$scope.getTemplateUrl = function(index) {
-		if($scope.currentClickedElement === index) {
+		if ($scope.currentClickedElement === index) {
 			 return "/assets/partials/sources/adSourcesEdit.html";
 		}
 	};
@@ -41,7 +41,7 @@ admin.controller('ADSourcesCtrl', ['$scope', 'ADSourcesSrv', '$anchorScroll', '$
     * To handle cancel click
     */
 	$scope.clickedCancel = function() {
-		if($scope.currentClickedElement !== 'new') {
+		if ($scope.currentClickedElement !== 'new') {
 			$scope.data.sources[$scope.currentClickedElement].name = $scope.preveousName;
 			$scope.preveousName = "";
 		}
@@ -80,7 +80,7 @@ admin.controller('ADSourcesCtrl', ['$scope', 'ADSourcesSrv', '$anchorScroll', '$
 			$scope.currentClickedElement = -1;
 		};
 
-		if(index === undefined) {
+		if (index === undefined) {
 			var data = $scope.data.sources[$scope.currentClickedElement];
 		}
 		else {

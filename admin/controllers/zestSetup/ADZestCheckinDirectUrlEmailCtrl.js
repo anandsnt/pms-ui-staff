@@ -128,10 +128,10 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
     };
     // save/update  success
     $scope.saveAddEdit = function() {
-        if($scope.isAddMode) {
+        if ($scope.isAddMode) {
            callSaveApi();
         }
-        else{
+        else {
            callEditApi();
         }
     };

@@ -360,7 +360,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
             jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function() {
                 $scope.$emit('hideLoader');
-                if($rootScope.UPDATED_BI_ENABLED_ON['ALLOTMENT']) {
+                if ($rootScope.UPDATED_BI_ENABLED_ON['ALLOTMENT']) {
                 	console.log("##Billing-info updated version");
 	                ngDialog.open({
 	                    template: '/assets/partials/billingInformation/allotment/rvBillingInfoAllotmentMain.html',
@@ -369,7 +369,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 	                    scope: $scope
 	                });
 	            }
-	            else{
+	            else {
 	            	console.log("##Billing-info old version");
 	            	ngDialog.open({
 	                	template: '/assets/partials/bill/rvBillingInformationPopup.html',
@@ -452,7 +452,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			if (!data.is_changed && !data.is_room_rate_available) {
 				showChangeDateNotPossiblePopup();
 				$scope.allotmentConfigData.summary.rate = summaryMemento.rate;
-			} else{
+			} else {
 			  summaryMemento.rate = $scope.allotmentConfigData.summary.rate;
 			}
 		};

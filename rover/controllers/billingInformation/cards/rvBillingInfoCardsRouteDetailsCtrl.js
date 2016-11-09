@@ -404,7 +404,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope', '$rootScope
              */
             $scope.savePayment();
         }
-        else{
+        else {
             saveRouteAPICall();
         }
     };

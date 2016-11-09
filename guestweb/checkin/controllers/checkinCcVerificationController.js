@@ -9,14 +9,14 @@
   $scope.yearSelected ="";
   $scope.ccSaved = false;
 
-  if($rootScope.isCheckedin) {
+  if ($rootScope.isCheckedin) {
     $state.go('checkinSuccess');
   }
-  else{
+  else {
     $scope.pageValid = true;
   }
 
-	if($scope.pageValid) {
+	if ($scope.pageValid) {
 
     $scope.checkoutmessage = $stateParams.message;
     $scope.isFromCheckoutNow =  ($stateParams.isFromCheckoutNow  ==="true") ? true :false;
@@ -124,9 +124,9 @@
     };
 
     $scope.nextButtonClicked = function() {
-      if($rootScope.isAutoCheckinOn) {
+      if ($rootScope.isAutoCheckinOn) {
         $state.go('preCheckinStatus');
-      }else{
+      } else {
         $state.go('checkinKeys');
         }
     };
@@ -137,12 +137,12 @@
 
         ccVerificationService.verifyCC(data).then(function(response) {
         $scope.isFetching = false;
-        if(response.status ==="success") {
+        if (response.status ==="success") {
             $rootScope.isCCOnFile = true;
             $rootScope.isCcAttachedFromGuestWeb = true;
             $scope.ccSaved = true;     
         }
-        else{
+        else {
          $scope.netWorkError = true;
         }
       }, function() {
@@ -160,28 +160,28 @@
 
        $scope.callback = function(response) {
           $scope.$apply();
-          if(response.status ==="ok") {
+          if (response.status ==="ok") {
               MLISessionId = response.session;
               $scope.goToNextStep();
           }
-          else{
+          else {
             $modal.open($scope.cardErrorOpts);
             $scope.isFetching = false;
           }
        };
-      if( ($scope.cardNumber.length === 0) ||
+      if ( ($scope.cardNumber.length === 0) ||
           ($scope.ccv.length === 0) ||
           (!$scope.monthSelected) ||
           (!$scope.yearSelected)) {
               $modal.open($scope.errorOpts); // details modal popup
-              if($scope.ccv.length===0) {
+              if ($scope.ccv.length===0) {
                 $scope.isCVVEmpty = true;
               }
-              else{
+              else {
                 $scope.isCVVEmpty = false;
               }
          }
-         else{
+         else {
 
              $scope.isFetching = true;
              $scope.isCVVEmpty = false;
@@ -192,7 +192,7 @@
              try {
                 HostedForm.updateSession(sessionDetails, $scope.callback);
              }
-             catch(err) {
+             catch (err) {
                 $scope.netWorkError = true;
              }
          }

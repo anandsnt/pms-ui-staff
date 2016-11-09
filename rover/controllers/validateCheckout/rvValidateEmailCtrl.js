@@ -6,14 +6,14 @@ sntRover.controller('RVValidateEmailCtrl', ['$scope', '$state', 'ngDialog', 'RVC
 	// To handle ignore & goto checkout click
 	$scope.ignoreAndGoToCheckout = function() {
 		// Callback method
-		if($scope.callBackMethodCheckout) {
+		if ($scope.callBackMethodCheckout) {
 			$scope.callBackMethodCheckout();
 		}
 		ngDialog.close();
 	};
 	// To handle submit & goto checkout click
 	$scope.submitAndGoToCheckout = function() {
-		if($scope.saveData.email === "") {
+		if ($scope.saveData.email === "") {
 			return false;
 		}
 
@@ -31,7 +31,7 @@ sntRover.controller('RVValidateEmailCtrl', ['$scope', '$state', 'ngDialog', 'RVC
 		$scope.$emit('hideLoader');
 		ngDialog.close();
 		// Callback method
-		if($scope.callBackMethodCheckout) {
+		if ($scope.callBackMethodCheckout) {
 			$scope.callBackMethodCheckout();
 		}
 	};

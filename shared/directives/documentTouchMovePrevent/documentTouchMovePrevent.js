@@ -4,7 +4,7 @@ angular.module('documentTouchMovePrevent', []).directive('documentTouchMovePreve
     link: function(scope, element) {
     	var hasTouch = 'ontouchstart' in window;
 
-    	if(hasTouch) {
+    	if (hasTouch) {
 		    document.addEventListener('touchmove', function(event) {
 		    	event.preventDefault();
 		    });

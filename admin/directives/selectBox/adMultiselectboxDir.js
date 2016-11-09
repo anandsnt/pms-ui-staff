@@ -21,11 +21,11 @@ admin.directive('adMultiselectbox', function($timeout) {
 	    },
         link: function ($scope, $element, $attr)
         {
-            if(typeof $scope.options !== 'undefined') {
-                if($scope.options.hasOwnProperty('showOptionsIf')) {
+            if (typeof $scope.options !== 'undefined') {
+                if ($scope.options.hasOwnProperty('showOptionsIf')) {
                     $scope.showOptionsIf = $scope.options.showOptionsIf;
                 }
-            }else{
+            } else {
                 $scope.showOptionsIf = function(index) {
                      return true;
                 };

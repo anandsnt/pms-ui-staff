@@ -24,7 +24,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
         };
 
         this.fetchLengthSegments = function(deferred) {
-            if(isEmpty(segmentData)) {
+            if (isEmpty(segmentData)) {
                 var url = '/api/segments?is_active=true';
 
                 rvBaseWebSrvV2.getJSON(url).then(function(data) {
@@ -35,7 +35,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
                 }, function(errorMessage) {
                     deferred.reject(errorMessage);
                 });
-            }else{
+            } else {
                  that.reservationData.demographics.is_use_segments = segmentData.is_use_segments;
                  that.reservationData.demographics.segments = segmentData.segments;
                  deferred.resolve(that.reservationData);
@@ -44,7 +44,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
 
         this.fetchDemographicMarketSegments = function(deferred) {
 
-            if(isEmpty(demographicsData)) {
+            if (isEmpty(demographicsData)) {
                  var url = '/api/market_segments?is_active=true';
 
                 rvBaseWebSrvV2.getJSON(url).then(function(data) {
@@ -54,7 +54,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
                     deferred.reject(errorMessage);
                 });
             }
-            else{
+            else {
                     that.reservationData.demographics.is_use_markets = demographicsData.is_use_markets;
                     that.reservationData.demographics.markets = demographicsData.markets;
             }
@@ -62,7 +62,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
         };
 
         this.fetchDemographicSources = function(deferred) {
-            if(isEmpty(sourcesData)) {
+            if (isEmpty(sourcesData)) {
                 var url = '/api/sources?is_active=true'; // TODO: Whether we need active list only or all
 
                 rvBaseWebSrvV2.getJSON(url).then(function(data) {
@@ -72,7 +72,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
                     deferred.reject(errorMessage);
                 });
             }
-            else{
+            else {
                     that.reservationData.demographics.is_use_sources = sourcesData.is_use_sources;
                     that.reservationData.demographics.sources = sourcesData.sources;
             }
@@ -92,7 +92,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
                 }
             };
 
-            if(isEmpty(originsData)) {
+            if (isEmpty(originsData)) {
                 var url = '/api/booking_origins';
 
                 rvBaseWebSrvV2.getJSON(url).then(function(data) {
@@ -101,7 +101,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
                 }, function(errorMessage) {
                     deferred.reject(errorMessage);
                 });
-            }else{
+            } else {
                 originsSuccessCallback(originsData);
             }
 
@@ -118,7 +118,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
                     }
             };
 
-            if(isEmpty(reservationTypes)) {
+            if (isEmpty(reservationTypes)) {
                 var url = '/api/reservation_types.json?is_active=true';
 
                 rvBaseWebSrvV2.getJSON(url).then(function(data) {
@@ -127,7 +127,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
                 }, function(errorMessage) {
                     deferred.reject(errorMessage);
                 });
-            }else{
+            } else {
                 reservationTypesCallback(reservationTypes);
             }
 

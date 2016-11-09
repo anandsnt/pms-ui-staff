@@ -44,9 +44,9 @@ admin.controller('ADTemplateConfigurationCtrl', ['$scope', '$state', 'ADHotelLis
 			$scope.isEditmode = true;
 			$scope.hotelConfig.theme = $scope.hotelConfig.existing_email_template_theme;
 
-			for(var i = 0; i < $scope.hotelConfig.email_templates.length; i++) {
+			for (var i = 0; i < $scope.hotelConfig.email_templates.length; i++) {
 				$scope.hotelConfig.email_templates[i].selected = false;
-				if($scope.hotelConfig.existing_email_templates.indexOf($scope.hotelConfig.email_templates[i].id) !== -1) {
+				if ($scope.hotelConfig.existing_email_templates.indexOf($scope.hotelConfig.email_templates[i].id) !== -1) {
 					$scope.hotelConfig.email_templates[i].selected = true;
 				}
 			}

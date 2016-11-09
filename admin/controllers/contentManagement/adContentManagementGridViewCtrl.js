@@ -34,17 +34,17 @@ admin.controller('ADContentManagementGridviewCtrl', ['$scope', '$state', 'ADCont
    /* Function to split the fetch components to sections, categories and items
     */
    $scope.setUpLists =function() {
-   		for(var i= 0; i < $scope.data.length; i++) {
+   		for (var i= 0; i < $scope.data.length; i++) {
    			$scope.data[i].last_updated = new Date($scope.data[i].last_updated);
-   			if($scope.data[i].component_type === 'SECTION') {
+   			if ($scope.data[i].component_type === 'SECTION') {
    				$scope.sections.push($scope.data[i]);
    				$scope.section_options.push($scope.data[i]);
-   			}else if($scope.data[i].component_type === 'HOME SCREEN') {
+   			} else if ($scope.data[i].component_type === 'HOME SCREEN') {
    				$scope.home_screens.push($scope.data[i]);
-   			}else if($scope.data[i].component_type === 'CATEGORY') {
+   			} else if ($scope.data[i].component_type === 'CATEGORY') {
    				$scope.categories.push($scope.data[i]);
    				$scope.category_options.push($scope.data[i]);
-   			}else if($scope.data[i].component_type === 'PAGE') {
+   			} else if ($scope.data[i].component_type === 'PAGE') {
    				$scope.items.push($scope.data[i]);
    			}
    		}
@@ -149,39 +149,39 @@ admin.controller('ADContentManagementGridviewCtrl', ['$scope', '$state', 'ADCont
     */
    $scope.filterBySectionAndCategory = function() {
    		$scope.filteredData = [];
-   		if($scope.showUnMappedList) {
+   		if ($scope.showUnMappedList) {
    				$scope.fromSection = 'all';
    				$scope.fromCategory = 'all';
    				$scope.fromHomeScreen = 'all';
-   				for(var i=0; i < $scope.data.length; i++) {
-			   			if($scope.data[i].parent_section.length === 0 && $scope.data[i].parent_category.length === 0) {
+   				for (var i=0; i < $scope.data.length; i++) {
+			   			if ($scope.data[i].parent_section.length === 0 && $scope.data[i].parent_category.length === 0) {
 			   				$scope.filteredData.push($scope.data[i]);
 			   			}
 		   			}
-   		}else{
-	   			if($scope.fromSection === 'all' && $scope.fromCategory === 'all' && $scope.fromHomeScreen === 'all') {
+   		} else {
+	   			if ($scope.fromSection === 'all' && $scope.fromCategory === 'all' && $scope.fromHomeScreen === 'all') {
 	   				$scope.filteredData = $scope.data;
-	   			}else if($scope.fromSection !== 'all' && $scope.fromCategory !== 'all') {
-		   			for(var i=0; i < $scope.data.length; i++) {
-			   			if($scope.data[i].parent_section.indexOf(parseInt($scope.fromSection)) !== -1 && $scope.data[i].parent_category.indexOf(parseInt($scope.fromCategory)) !== -1 ) {
+	   			} else if ($scope.fromSection !== 'all' && $scope.fromCategory !== 'all') {
+		   			for (var i=0; i < $scope.data.length; i++) {
+			   			if ($scope.data[i].parent_section.indexOf(parseInt($scope.fromSection)) !== -1 && $scope.data[i].parent_category.indexOf(parseInt($scope.fromCategory)) !== -1 ) {
 			   				$scope.filteredData.push($scope.data[i]);
 			   			}
 		   			}
-	   			}else if($scope.fromSection !== 'all') {
-	   				for(var i=0; i < $scope.data.length; i++) {
-			   			if($scope.data[i].parent_section.indexOf(parseInt($scope.fromSection)) !== -1) {
+	   			} else if ($scope.fromSection !== 'all') {
+	   				for (var i=0; i < $scope.data.length; i++) {
+			   			if ($scope.data[i].parent_section.indexOf(parseInt($scope.fromSection)) !== -1) {
 			   				$scope.filteredData.push($scope.data[i]);
 			   			}
 		   			}
-	   			}else if($scope.fromHomeScreen !== 'all') {
-	   				for(var i=0; i < $scope.data.length; i++) {
-			   			if($scope.data[i].parent_home_screen.indexOf(parseInt($scope.fromHomeScreen)) !== -1) {
+	   			} else if ($scope.fromHomeScreen !== 'all') {
+	   				for (var i=0; i < $scope.data.length; i++) {
+			   			if ($scope.data[i].parent_home_screen.indexOf(parseInt($scope.fromHomeScreen)) !== -1) {
 			   				$scope.filteredData.push($scope.data[i]);
 			   			}
 		   			}
-	   			}else{
-	   				for(var i=0; i < $scope.data.length; i++) {
-			   			if($scope.data[i].parent_category.indexOf(parseInt($scope.fromCategory)) !== -1) {
+	   			} else {
+	   				for (var i=0; i < $scope.data.length; i++) {
+			   			if ($scope.data[i].parent_category.indexOf(parseInt($scope.fromCategory)) !== -1) {
 			   				$scope.filteredData.push($scope.data[i]);
 			   			}
 		   			}
@@ -198,12 +198,12 @@ admin.controller('ADContentManagementGridviewCtrl', ['$scope', '$state', 'ADCont
    		$scope.categories = [];
    		$scope.items = [];
    		$scope.sections = [];
-   		for(var i= 0; i < $scope.filteredData.length; i++) {
-   			if($scope.filteredData[i].component_type === 'CATEGORY') {
+   		for (var i= 0; i < $scope.filteredData.length; i++) {
+   			if ($scope.filteredData[i].component_type === 'CATEGORY') {
    				$scope.categories.push($scope.filteredData[i]);
-   			}else if($scope.filteredData[i].component_type === 'PAGE') {
+   			} else if ($scope.filteredData[i].component_type === 'PAGE') {
    				$scope.items.push($scope.filteredData[i]);
-   			}else if($scope.filteredData[i].component_type === 'SECTION') {
+   			} else if ($scope.filteredData[i].component_type === 'SECTION') {
    				$scope.sections.push($scope.filteredData[i]);
    			}
    		}
@@ -337,11 +337,11 @@ admin.controller('ADContentManagementGridviewCtrl', ['$scope', '$state', 'ADCont
 	/* search predicate functions for cms components*/
 
 	$scope.filterComponents = function(value, index, array) {
-   		if($scope.searchText == '')
+   		if ($scope.searchText == '')
    			return true;
    		var searchRegExp = new RegExp($scope.searchText.toLowerCase());
 
-   		if(value.component_type === 'PAGE')
+   		if (value.component_type === 'PAGE')
    			return searchRegExp.test(value.name.toLowerCase()) || searchRegExp.test($scope.getFormattedTime(value.last_updated))  || searchRegExp.test(value.page_template.toLowerCase()) || searchRegExp.test(value.screen_id.toLowerCase());
    		else
    			return searchRegExp.test(value.name.toLowerCase()) || searchRegExp.test($scope.getFormattedTime(value.last_updated)) ;

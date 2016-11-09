@@ -81,7 +81,7 @@ sntRover
 					// unselect others
 					var unSelectOthers = function() {
 						_.each($scope.data, function(each) {
-							if(each.id !== item.id) {
+							if (each.id !== item.id) {
 								each.selected = false;
 							}
 						});
@@ -89,7 +89,7 @@ sntRover
 
 					var unSelectOtherRadio = function() {
 						_.each($scope.data, function(each) {
-							if( each.isRadioOption && each.id !== item.id) {
+							if ( each.isRadioOption && each.id !== item.id) {
 								each.selected = false;
 							}
 						});

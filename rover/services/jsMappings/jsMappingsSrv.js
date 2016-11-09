@@ -33,7 +33,7 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
     var promises = [], length = keys.length, i = 0;
 
     if (!!mappingList) {
-      for(; i < length; i++) {
+      for (; i < length; i++) {
         promises.push( $ocLazyLoad.load({ serie: true, files: mappingList[keys[i]] }) );
       }
       return $q.all(promises).then(function() {

@@ -52,7 +52,7 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
                             $('#rmRateType').children()[0].selected = true;
                         }
                     }, 100);
-                    } catch(err) {
+                    } catch (err) {
 
                     }
                 }
@@ -66,7 +66,7 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
                             $('#rmRate').children()[0].selected = true;
                         }
                     }, 100);
-                    } catch(err) {
+                    } catch (err) {
 
                     }
                 }
@@ -109,7 +109,7 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
 
         $scope.clickedAllRates = function() {
             // If allrates option is selected, unset all rates and rate types
-            if(filterData.is_checked_all_rates) {
+            if (filterData.is_checked_all_rates) {
                 filterData.rate_type_selected_list = [];
                 filterData.rates_selected_list = [];
             }
@@ -127,14 +127,14 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
                 rateTypeSelected = filterData.rate_type_selected_list,
                 allRates = filterData.allRates;
 
-            if(rateTypeSelected.length === 0) {
+            if (rateTypeSelected.length === 0) {
                 rates = dclone(allRates);
             }
 
             for (var j = 0, jlen = rateTypeSelected.length, rate_sel = rateTypeSelected[j]; j < jlen; rate_sel = rateTypeSelected[++j]) {
-                for(var i = 0, ilen = allRates.length, rate = allRates[i]; i < ilen; rate = allRates[++i]) {
-                    if(_.isObject(rate.rate_type)) {
-                        if(rate.rate_type.id === rate_sel.id) {
+                for (var i = 0, ilen = allRates.length, rate = allRates[i]; i < ilen; rate = allRates[++i]) {
+                    if (_.isObject(rate.rate_type)) {
+                        if (rate.rate_type.id === rate_sel.id) {
                             rates.push(rate);
                         }
                     }
@@ -143,7 +143,7 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
         };
 
         $scope.deleteSelectedRateType = function(id) {
-            if(filterData.isResolved) {
+            if (filterData.isResolved) {
                 if (id === "ALL") {
                     filterData.rate_type_selected_list = [];
                 } else {
@@ -169,7 +169,7 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
         * Duplicates are not allowed in the list.
         */
         $scope.$watch('currentFilterData.rate_selected', function() {
-            if(filterData.isResolved && !_.isEmpty(filterData.rate_selected)) {
+            if (filterData.isResolved && !_.isEmpty(filterData.rate_selected)) {
                 _update(filterData.rates_selected_list, filterData.rates, filterData.rate_selected);
 
                 filterData.rate_selected = '';
@@ -177,7 +177,7 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
         });
 
         $scope.$watch('currentFilterData.rate_type_selected', function() {
-            if(filterData.isResolved && !_.isEmpty(filterData.rate_type_selected)) {
+            if (filterData.isResolved && !_.isEmpty(filterData.rate_type_selected)) {
                 _update(filterData.rate_type_selected_list, filterData.rate_types, filterData.rate_type_selected);
 
                 filterData.rate_type_selected = '';
@@ -189,7 +189,7 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
         var _update = function(sel_list, orig_list, sel_id) {
             var selected_id = { id: +sel_id }, item;
 
-            if(!_.findWhere(sel_list, selected_id) &&
+            if (!_.findWhere(sel_list, selected_id) &&
                (item = _.findWhere(orig_list, selected_id))) {
                     sel_list.push(item);
             }
@@ -202,9 +202,9 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
             if ($scope.companySearchText.length === 0) {
                 $scope.companyCardResults = [];
                 $scope.companyLastSearchText = "";
-            } else if($scope.companySearchText.length === 1) {
+            } else if ($scope.companySearchText.length === 1) {
                 $scope.companySearchText = $scope.companySearchText.charAt(0).toUpperCase() + $scope.companySearchText.substr(1);
-            } else if($scope.companySearchText.length > 2) {
+            } else if ($scope.companySearchText.length > 2) {
                 companyCardFetchInterval = window.setInterval(function() {
                     displayFilteredResults();
                 }, 500);
@@ -233,7 +233,7 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
             } else {
                 $scope.cmpCardSearchDivHgt = $scope.companyCardResults.length * totalHeight;
             }
-            if( $scope.cmpCardSearchDivHgt > 250 ) {
+            if ( $scope.cmpCardSearchDivHgt > 250 ) {
                 $scope.cmpCardSearchDivHgt = 250;
             }
             var halfOfInputHeight = $('#company-card').height() / 2;

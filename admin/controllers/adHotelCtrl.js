@@ -56,12 +56,12 @@ admin.controller('ADHotelListCtrl', ['$scope', '$rootScope', '$state', '$statePa
 		var confirmForReservationImport = true;
       	// show confirm if it is going turn on stage
 
-      	if(hotel.is_res_import_on === 'false') {
+      	if (hotel.is_res_import_on === 'false') {
           	confirmForReservationImport = confirm("Do NOT switch ON, until hotel mapping and setup is completed!, Do you want to proceed?");
       	}
       	// If pressed OK button proceed toggle action ON.
       	// Toggle OFF action perform without confirm box.
-      	if(confirmForReservationImport) {
+      	if (confirmForReservationImport) {
 	      	var isResImportOn = hotel.is_res_import_on === 'true' ? false : true;
 	      	var data = {'hotel_id': hotel.id,  'is_res_import_on': isResImportOn };
 

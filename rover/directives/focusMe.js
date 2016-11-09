@@ -6,7 +6,7 @@ sntRover.directive('focusMe', function($timeout, $parse) {
       var model = $parse(attrs.focusMe);
 
       scope.$watch(model, function(value) {
-        if(value === true) {
+        if (value === true) {
           $timeout(function() {
             element[0].focus();
           });
@@ -15,9 +15,9 @@ sntRover.directive('focusMe', function($timeout, $parse) {
       // to address @blesh's comment, set attribute value to 'false'
       // on blur event:
       element.bind('blur', function() {
-      	if(!scope.$$phase) {
+      	if (!scope.$$phase) {
          	scope.$apply(model.assign(scope, false));
-      	}else {
+      	} else {
 			model.assign(scope, false);
       	}
 

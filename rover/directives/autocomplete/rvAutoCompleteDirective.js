@@ -85,7 +85,7 @@ sntRover.directive('autoComplete', ['highlightFilter',
 
                 $(el).autocomplete("instance")._resizeMenu = function() {
                     this.menu.element.css('height', 'auto');
-                    if(($(el).offset().top - $(document).scrollTop() - this.menu.element.outerHeight()) <= 0) {
+                    if (($(el).offset().top - $(document).scrollTop() - this.menu.element.outerHeight()) <= 0) {
                         this.menu.element.outerHeight($(el).offset().top - $(document).scrollTop() - 10);
                     }
                 };
@@ -124,7 +124,7 @@ sntRover.directive('autoComplete', ['highlightFilter',
                     $(el).autocomplete( "destroy" );
                     scope.insertEmail && $(el).off('keypress');
                     // unbinding the touch move
-                    if(ulElement instanceof HTMLElement) {
+                    if (ulElement instanceof HTMLElement) {
                         ulElement.off('touchmove');
                     }                    
                 });                    

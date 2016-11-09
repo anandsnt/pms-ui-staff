@@ -62,7 +62,7 @@ admin.controller('ADiBeaconSettingsCtrl', ['$scope', '$state', 'ngTableParams', 
 		var toggleBeaconSuccess = function() {
 			$scope.$emit('hideLoader');
 			angular.forEach($scope.data, function(ibeacon, key) {
-		      if(ibeacon.beacon_id === id) {
+		      if (ibeacon.beacon_id === id) {
 		      	ibeacon.status = !ibeacon.status;
 		      }
 		     });

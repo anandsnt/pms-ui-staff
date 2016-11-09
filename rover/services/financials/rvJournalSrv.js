@@ -108,7 +108,7 @@ angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2
 
 	this.fetchRevenueDataByChargeGroups = function(params) {
 
-		if(typeof params.charge_group_id === "undefined") {
+		if (typeof params.charge_group_id === "undefined") {
 			params.charge_group_id = "";
 		}
 		var deferred = $q.defer(),
@@ -128,7 +128,7 @@ angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2
 
 	this.fetchRevenueDataByChargeCodes = function(params) {
 
-		if(typeof params.charge_code_id === "undefined") {
+		if (typeof params.charge_code_id === "undefined") {
 			params.charge_code_id = "";
 		}
 		var deferred = $q.defer(),
@@ -165,7 +165,7 @@ angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2
 
 	this.fetchPaymentDataByPaymentTypes = function(params) {
 
-		if(typeof params.charge_code_id === "undefined") {
+		if (typeof params.charge_code_id === "undefined") {
 			params.charge_code_id = "";
 		}
 		var deferred = $q.defer(),
@@ -175,7 +175,7 @@ angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2
 
 			angular.forEach(data.payment_types, function(payment_types, index1) {
 
-				if(payment_types.payment_type === "Credit Card") {
+				if (payment_types.payment_type === "Credit Card") {
 		            angular.forEach(payment_types.credit_cards, function(credit_cards, index2) {
 		            	credit_cards.active = false ;
 		            	credit_cards.page_no = 1;
@@ -185,7 +185,7 @@ angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2
         				credit_cards.prevAction = false;
 		            });
 	        	}
-	        	else{
+	        	else {
 	        		payment_types.active = false;
 	        		payment_types.page_no = 1;
 	            	payment_types.start = 1;

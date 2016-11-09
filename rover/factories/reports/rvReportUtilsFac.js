@@ -454,35 +454,35 @@ angular.module('reportsModule')
             // going around and taking a note on filters
             _.each(report['filters'], function(filter) {
 
-                if(filter.value === 'RATE_TYPE') {
+                if (filter.value === 'RATE_TYPE') {
                     report['hasRateTypeFilter'] = filter;
                 }
 
-                if(filter.value === 'RATE') {
+                if (filter.value === 'RATE') {
                     report['hasRateFilter'] = filter;
                 }
 
-                if(filter.value === 'RATE_CODE') {
+                if (filter.value === 'RATE_CODE') {
                     report['hasRateCodeFilter'] = filter;
                 }
 
-                if(filter.value === 'ROOM_TYPE') {
+                if (filter.value === 'ROOM_TYPE') {
                     report['hasRoomTypeFilter'] = filter;
                 }
 
-                if(filter.value === 'RESTRICTION') {
+                if (filter.value === 'RESTRICTION') {
                     report['hasRestrictionListFilter'] = filter;
                 }
 
-                if(filter.value === 'ORIGIN') {
+                if (filter.value === 'ORIGIN') {
                     report['hasOriginFilter'] = filter;
                 }
 
-                if(filter.value === 'URLS') {
+                if (filter.value === 'URLS') {
                     report['hasURLsList'] = filter;
                 }
 
-                if(filter.value === 'CAMPAIGN_TYPES') {
+                if (filter.value === 'CAMPAIGN_TYPES') {
                     report['hasCampaignTypes'] = filter;
                 }
 
@@ -1127,7 +1127,7 @@ angular.module('reportsModule')
                     rateTypeObject       = {},
                     rateTypeListToReturn = rateTypeListIds.map(function(id) {
                         rateTypeObject   =  _.findWhere(rateTypesAndRateList, {rate_type_id: id});
-                        if(rateTypeObject) {
+                        if (rateTypeObject) {
                             rateTypeObject.name = rateTypeObject.rate_type_name;
                             rateTypeObject = _.pick(rateTypeObject, "name", "rate_type_id", "selected");
                         }

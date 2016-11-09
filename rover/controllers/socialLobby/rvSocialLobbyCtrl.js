@@ -28,10 +28,10 @@ sntRover.controller('RVSocialLobbyCrl', [
             
             var height = 80 * posts.length + 40;
 
-            if(expandedPostHeight !== "") {
+            if (expandedPostHeight !== "") {
                 height = height + expandedPostHeight;                
             }
-            if($scope.errorMessage != "" || typeof $scope.errorMessage != 'undefined')
+            if ($scope.errorMessage != "" || typeof $scope.errorMessage != 'undefined')
                 postScroll.style.height = ""+450+"px";
             else
                 postScroll.style.height = ""+500+"px";
@@ -130,9 +130,9 @@ sntRover.controller('RVSocialLobbyCrl', [
         $scope.getProfessionStringForUser = function(user) {
             var professionString = "";
 
-            if(user.profession != null && user.profession != "")
+            if (user.profession != null && user.profession != "")
                 professionString = professionString + user.profession;
-            if(user.works_at != "" && user.works_at != null)
+            if (user.works_at != "" && user.works_at != null)
                 professionString = professionString != ""? professionString + ", " + user.works_at : user.works_at;
 
             return professionString;
@@ -170,23 +170,23 @@ sntRover.controller('RVSocialLobbyCrl', [
 
         $scope.paginatePosts = function(page) {
             $scope.errorMessage = "";
-            if(page == $scope.postParams.page)
+            if (page == $scope.postParams.page)
                 return;
             $scope.postParams.page = page;
             $scope.fetchPosts();
-            if($scope.postParams.page > $scope.middle_page3 && $scope.postParams.page < $scope.totalPostPages) {
+            if ($scope.postParams.page > $scope.middle_page3 && $scope.postParams.page < $scope.totalPostPages) {
                 $scope.middle_page3++;
                 $scope.middle_page2++;
                 $scope.middle_page1++;
-            }else if($scope.postParams.page < $scope.middle_page1 && $scope.postParams.page > 1) {
+            } else if ($scope.postParams.page < $scope.middle_page1 && $scope.postParams.page > 1) {
                 $scope.middle_page3--;
                 $scope.middle_page2--;
                 $scope.middle_page1--;
-            }else if($scope.postParams.page == 1) {
+            } else if ($scope.postParams.page == 1) {
                 $scope.middle_page3 = 4;
                 $scope.middle_page2 = 3;
                 $scope.middle_page1 = 2;
-            }else if($scope.postParams.page == $scope.totalPostPages && $scope.totalPostPages > 5) {
+            } else if ($scope.postParams.page == $scope.totalPostPages && $scope.totalPostPages > 5) {
                 $scope.middle_page3 = $scope.totalPostPages -1;
                 $scope.middle_page2 = $scope.totalPostPages -2;
                 $scope.middle_page1 = $scope.totalPostPages -3;
@@ -196,7 +196,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         $scope.togglePostDetails = function(post) {
             $scope.errorMessage = "";
             $scope.selectedPost = $scope.selectedPost == "" ? post : post.id == $scope.selectedPost.id? "" : post;
-            if($scope.selectedPost == "") {
+            if ($scope.selectedPost == "") {
                 expandedPostHeight = "";
                 refreshPostScroll();
             }

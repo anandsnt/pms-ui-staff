@@ -78,12 +78,12 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
                             },
                             local_version = util.shallowCopy({}, item);
 
-                        if( $scope.gridProps.filter.rate_type === 'Corporate') {
+                        if ( $scope.gridProps.filter.rate_type === 'Corporate') {
                             selected_type = $scope.gridProps.filter.rate.type;
-                            if(selected_type === "COMPANY") {
+                            if (selected_type === "COMPANY") {
                                 item.company_card_id = $scope.gridProps.filter.rate.id;
                             }
-                            if(selected_type === "TRAVELAGENT") {
+                            if (selected_type === "TRAVELAGENT") {
                                 item.travel_agent_id = $scope.gridProps.filter.rate.id;
                             }
                         }

@@ -70,30 +70,30 @@ var GridRowItemDrag = React.createClass({
 			mouseMovingRowNumber = Math.floor(yCurPos / adj_height),
 			mouseMovingColNumber = Math.floor(Math.abs(scroller.x - (e.pageX - this.__roomListingAreaWidth)) / display.px_per_int);
 
-		if(!props.edit.active && !props.edit.passive) {
+		if (!props.edit.active && !props.edit.passive) {
 			return;
 		}
 
-		if(props.edit.active && (props.data.key !== props.currentDragItem.key)) {
+		if (props.edit.active && (props.data.key !== props.currentDragItem.key)) {
 			return;
 		}
 
-		if(mouseMovingColNumber < 0 || mouseMovingColNumber/4 > display.hours || mouseMovingRowNumber < 0 || mouseMovingRowNumber > (display.total_rows-1)) {
+		if (mouseMovingColNumber < 0 || mouseMovingColNumber/4 > display.hours || mouseMovingRowNumber < 0 || mouseMovingRowNumber > (display.total_rows-1)) {
 			return;
 		}
 
 		// we will allow to move checkingin/future reservation horizontally as well as vertically
 		// in-house reservation: we will allow to move vertically only (Room change only)
-		if(props.currentDragItem.reservation_status !== 'reserved'  &&
+		if (props.currentDragItem.reservation_status !== 'reserved'  &&
 			props.currentDragItem.reservation_status !== 'inhouse'  &&
 			props.currentDragItem.reservation_status !== 'check-in' ) {
 			return;
 		}
 
-		if(!state.dragging && (Math.abs(delta_x) + Math.abs(delta_y) > 10)) {
+		if (!state.dragging && (Math.abs(delta_x) + Math.abs(delta_y) > 10)) {
 			model = this._update(props.currentDragItem);
 
-			if(this.isMounted()) {
+			if (this.isMounted()) {
 				this.setState({
 					dragging: true,
 					currentDragItem: model,
@@ -104,7 +104,7 @@ var GridRowItemDrag = React.createClass({
 			}
 		}
 
-		else if(state.dragging) {
+		else if (state.dragging) {
 			model = (props.currentDragItem);
 
 			var xScPos = scroller.x,
@@ -122,7 +122,7 @@ var GridRowItemDrag = React.createClass({
 
 					xScPos = (xScPos - distanceMouseMoved);
 
-					if( xScPos < scroller.maxScrollX ) {
+					if ( xScPos < scroller.maxScrollX ) {
 						xScPos = scroller.maxScrollX;
 					}
 				}
@@ -138,7 +138,7 @@ var GridRowItemDrag = React.createClass({
 
 					xScPos = (xScPos - distanceMouseMoved);
 
-					if( xScPos > 0) {
+					if ( xScPos > 0) {
 						xScPos = 0;
 					}
 				}
@@ -158,7 +158,7 @@ var GridRowItemDrag = React.createClass({
 
 					yScPos = (parseFloat(yScPos) - parseFloat(distanceMouseMoved));
 
-					if(yScPos > 0) {
+					if (yScPos > 0) {
 						yScPos = 0;
 					}
 				}
@@ -178,7 +178,7 @@ var GridRowItemDrag = React.createClass({
 
 					yScPos = ( parseFloat(yScPos) - parseFloat(distanceMouseMoved) );
 
-					if( yScPos < scroller.maxScrollY ) {
+					if ( yScPos < scroller.maxScrollY ) {
 						yScPos = scroller.maxScrollY;
 					}
 				}
@@ -187,7 +187,7 @@ var GridRowItemDrag = React.createClass({
 			var newLeft = ((this.reservationTimeStartColNumber + mouseMovingColNumber - this.mouseClickedColOnStarting) * display.px_per_int),
 				newTop = mouseMovingRowNumber * adj_height;
 
-			if(props.currentDragItem.reservation_status === 'inhouse' ) {
+			if (props.currentDragItem.reservation_status === 'inhouse' ) {
 				newLeft = (state.element_x / display.px_per_int).toFixed() * display.px_per_int;
 			}
 			else {
@@ -198,7 +198,7 @@ var GridRowItemDrag = React.createClass({
 				model.departure = model.departure + diff;
 			}
 
-			if( this.isMounted() ) {
+			if ( this.isMounted() ) {
 				this.setState({
 					currentClickedCol: mouseMovingColNumber,
 					currentResizeItem: model,
@@ -237,13 +237,13 @@ var GridRowItemDrag = React.createClass({
 		document.removeEventListener (this.mouseMovingEvent, this.__dbMouseMove);
 		var page_offset = this.getDOMNode().getBoundingClientRect();
 
-		if(state.dragging && props.edit.active && (props.data.key !== props.currentDragItem.key)) {
+		if (state.dragging && props.edit.active && (props.data.key !== props.currentDragItem.key)) {
 			return;
 		}
 
 		this.isInProperDraggingCycle =  false;
-		if(state.dragging) {
-			if( this.isMounted() ) {
+		if (state.dragging) {
+			if ( this.isMounted() ) {
 				this.reservationTimeStartColNumber = parseFloat(state.left) / display.px_per_int;
 				this.setState({
 					dragging: false,
@@ -254,8 +254,8 @@ var GridRowItemDrag = React.createClass({
 
 				});
 			}
-		} else if(this.state.mouse_down) {
-			if( this.isMounted() ) {
+		} else if (this.state.mouse_down) {
+			if ( this.isMounted() ) {
 				this.setState({
 					mouse_down: false,
 					selected: !state.selected
@@ -274,7 +274,7 @@ var GridRowItemDrag = React.createClass({
 	componentWillReceiveProps: function(nextProps) {
 		var id_meta = this.props.meta.occupancy.id;
 
-		if(!this.props.currentDragItem &&
+		if (!this.props.currentDragItem &&
 			!this.state.currentDragItem &&
 			nextProps.currentDragItem &&
 			nextProps.currentDragItem[id_meta] === this.props.data[id_meta]) {
@@ -282,7 +282,7 @@ var GridRowItemDrag = React.createClass({
 			this.setState({
 				currentDragItem: nextProps.currentDragItem
 			});
-		} else if(this.props.currentDragItem &&
+		} else if (this.props.currentDragItem &&
 			!nextProps.currentDragItem) {
 
 			this.setState({
@@ -311,7 +311,7 @@ var GridRowItemDrag = React.createClass({
 			x_origin = (props.display.x_n instanceof Date ? props.display.x_n.getTime() : props.display.x_n),
 			className = '';
 
-		if(state.dragging) {
+		if (state.dragging) {
 			style = {
 				position: 'fixed',
 				left: state.left,

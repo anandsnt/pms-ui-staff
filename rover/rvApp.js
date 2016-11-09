@@ -52,7 +52,7 @@ sntRover.config([
 	    // transform -13 -> ($13), and keep it like -> -$13
 	    // SF: http://stackoverflow.com/questions/17441254/why-angularjs-currency-filter-formats-negative-numbers-with-parenthesis/30122327#30122327
 	    $provide.decorator('$locale', ['$delegate', function($delegate) {
-			if($delegate.id == 'en-us') {
+			if ($delegate.id == 'en-us') {
 				$delegate.NUMBER_FORMATS.PATTERNS[1].negPre = '-\u00A4';
 				$delegate.NUMBER_FORMATS.PATTERNS[1].negSuf = '';
 			}

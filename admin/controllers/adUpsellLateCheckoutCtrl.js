@@ -10,13 +10,13 @@ var setUpList = function() {
   var selectedIds = [];
 
   angular.forEach($scope.upsellData.room_types, function(item, index) {
-    if(item.max_late_checkouts !== '') {
+    if (item.max_late_checkouts !== '') {
        selectedIds.push(item.id);
     }
   });
   angular.forEach(selectedIds, function(id, index1) {
   angular.forEach($scope.upsellData.room_types_list, function(room_types_list, index) {
-        if(room_types_list.value === id) {
+        if (room_types_list.value === id) {
            $scope.upsellData.room_types_list.splice(index, 1);
         }
     });
@@ -68,7 +68,7 @@ $scope.checkBoxClicked = function() {
 */
 $scope.setUpLateCheckoutArray = function() {
 
-    if($scope.upsellData.extended_checkout_charge_0 && $scope.upsellData.extended_checkout_charge_1 && $scope.upsellData.extended_checkout_charge_2)
+    if ($scope.upsellData.extended_checkout_charge_0 && $scope.upsellData.extended_checkout_charge_1 && $scope.upsellData.extended_checkout_charge_2)
     {
        $scope.chekoutchargesArray = [$scope.upsellData.extended_checkout_charge_0,
        $scope.upsellData.extended_checkout_charge_1,
@@ -79,7 +79,7 @@ $scope.setUpLateCheckoutArray = function() {
        $scope.chekoutchargesArray = [$scope.upsellData.extended_checkout_charge_0,
        $scope.upsellData.extended_checkout_charge_1];
    }
-   else if($scope.upsellData.extended_checkout_charge_0) {
+   else if ($scope.upsellData.extended_checkout_charge_0) {
        $scope.chekoutchargesArray = [$scope.upsellData.extended_checkout_charge_0];
    }
    else {
@@ -93,13 +93,13 @@ $scope.setUpLateCheckoutArray = function() {
 */
 $scope.startWatching = function() {
     $scope.$watch('upsellData', function(newValue, oldValue) {
-        if(!$scope.upsellData.extended_checkout_charge_0) {
+        if (!$scope.upsellData.extended_checkout_charge_0) {
             $scope.upsellData.extended_checkout_charge_0 = { 'time': 'HH', 'charge': ''};
         }
-        if(!$scope.upsellData.extended_checkout_charge_1) {
+        if (!$scope.upsellData.extended_checkout_charge_1) {
             $scope.upsellData.extended_checkout_charge_1 = { 'time': 'HH', 'charge': ''};
         }
-        if(!$scope.upsellData.extended_checkout_charge_2) {
+        if (!$scope.upsellData.extended_checkout_charge_2) {
            $scope.upsellData.extended_checkout_charge_2 = { 'time': 'HH', 'charge': ''};
         }
        $scope.startWatchingCheckoutcharge0();
@@ -114,13 +114,13 @@ $scope.startWatchingCheckoutcharge0 = function() {
 */
 $scope.$watch('upsellData.extended_checkout_charge_0', function(newValue, oldValue) {
     $scope.setUpLateCheckoutArray();
-    if($scope.upsellData.extended_checkout_charge_0.charge.length ===0 || $scope.upsellData.extended_checkout_charge_0.time === "HH") {
-       if($scope.upsellData.extended_checkout_charge_2) {
+    if ($scope.upsellData.extended_checkout_charge_0.charge.length ===0 || $scope.upsellData.extended_checkout_charge_0.time === "HH") {
+       if ($scope.upsellData.extended_checkout_charge_2) {
           $scope.upsellData.extended_checkout_charge_2.charge = "";
           $scope.upsellData.extended_checkout_charge_2.time = "HH";
           $scope.chekoutchargesArray.splice(2, 1);
       }
-      if($scope.upsellData.extended_checkout_charge_1) {
+      if ($scope.upsellData.extended_checkout_charge_1) {
           $scope.upsellData.extended_checkout_charge_1.charge = "";
           $scope.upsellData.extended_checkout_charge_1.time = "HH";
           $scope.chekoutchargesArray.splice(1, 1);
@@ -128,7 +128,7 @@ $scope.$watch('upsellData.extended_checkout_charge_0', function(newValue, oldVal
       $scope.disableThirdOption = true;
       $scope.disableSecondOption = true;
   }
-  else if($scope.upsellData.extended_checkout_charge_0.charge.length > 0 && $scope.upsellData.extended_checkout_charge_0.time !== "HH") {
+  else if ($scope.upsellData.extended_checkout_charge_0.charge.length > 0 && $scope.upsellData.extended_checkout_charge_0.time !== "HH") {
     $scope.disableSecondOption = false;
   }
 }, true);
@@ -141,15 +141,15 @@ $scope.startWatchingCheckoutcharge1 = function() {
 */
 $scope.setUpLateCheckoutArray();
 $scope.$watch('upsellData.extended_checkout_charge_1', function(newValue, oldValue) {
-    if($scope.upsellData.extended_checkout_charge_1.charge.length ===0 || $scope.upsellData.extended_checkout_charge_1.time === "HH") {
-       if($scope.upsellData.extended_checkout_charge_2) {
+    if ($scope.upsellData.extended_checkout_charge_1.charge.length ===0 || $scope.upsellData.extended_checkout_charge_1.time === "HH") {
+       if ($scope.upsellData.extended_checkout_charge_2) {
           $scope.upsellData.extended_checkout_charge_2.charge = "";
           $scope.upsellData.extended_checkout_charge_2.time = "HH";
           $scope.chekoutchargesArray.splice(2, 1);
       }
       $scope.disableThirdOption = true;
   }
-  else if($scope.upsellData.extended_checkout_charge_1.charge.length > 0 && $scope.upsellData.extended_checkout_charge_1.time !== "HH") {
+  else if ($scope.upsellData.extended_checkout_charge_1.charge.length > 0 && $scope.upsellData.extended_checkout_charge_1.time !== "HH") {
     $scope.disableThirdOption = false;
   }
 }, true);
@@ -175,7 +175,7 @@ $scope.saveClick = function() {
     if ($scope.chekoutchargesArray[i].time ==="HH" && $scope.chekoutchargesArray[i].charge ==="") {
         $scope.chekoutchargesArray.splice(i, 1);
     }
-    else{
+    else {
         $scope.chekoutchargesArray[i].time = $scope.chekoutchargesArray[i].time+" PM";
     }
   }
@@ -187,7 +187,7 @@ $scope.saveClick = function() {
 	updateData.deleted_room_types = $scope.upsellData.deleted_room_types;
 	// Creating room type array with available max_late_checkouts data
 	angular.forEach($scope.upsellData.room_types, function(item, index) {
-		if(item.max_late_checkouts !== '') {
+		if (item.max_late_checkouts !== '') {
 			 var obj = { "id": item.id.toString(), "max_late_checkouts": item.max_late_checkouts.toString() };
 
 			 updateData.room_types.push(obj);
@@ -232,7 +232,7 @@ $scope.clickAddRoomType = function() {
   });
     // Removing the selected room type from dropdown of room type list.
     angular.forEach($scope.upsellData.room_types_list, function(item, index) {
-		if(item.value === $scope.upsellData.selected_room_type) {
+		if (item.value === $scope.upsellData.selected_room_type) {
 			 $scope.upsellData.room_types_list.splice(index, 1);
 		}
     });
@@ -246,7 +246,7 @@ $scope.clickAddRoomType = function() {
 var isRoomTypesSelected = function() {
 	$scope.upsellData.isRoomTypesSelectedFlag = false;
 	angular.forEach($scope.upsellData.room_types, function(item, index) {
-		if(item.max_late_checkouts !== '') {
+		if (item.max_late_checkouts !== '') {
       $scope.upsellData.isRoomTypesSelectedFlag = true;
     }
     });
@@ -261,7 +261,7 @@ $scope.deleteRoomType = function(value, name) {
 
 	$scope.upsellData.room_types_list.push(data);
 	angular.forEach($scope.upsellData.room_types, function(item, index) {
-		if(item.id === value) {
+		if (item.id === value) {
 			item.max_late_checkouts = '';
 		}
     });

@@ -22,20 +22,20 @@ function ADBaseTableCtrl($scope, ngTableParams) {
     // -- https://docs.angularjs.org/api/ng/type/$rootScope.Scope
 
     $scope.$watch("displyCount", function (newValue, oldValue) {
-        if(newValue !== oldValue) {
+        if (newValue !== oldValue) {
             $scope.tableParams.count($scope.displyCount);
         }
     });
 
     $scope.$watch("data", function (newValue, oldValue) {
-        if(newValue !== oldValue) {
+        if (newValue !== oldValue) {
             $scope.startCount = (($scope.currentPage - 1) * $scope.displyCount )+ 1;
             $scope.endCount = $scope.startCount + $scope.data.length - 1;
         }
     }, true);
 
     $scope.$watch("filterType", function (newValue, oldValue) {
-        if(newValue !== oldValue) {
+        if (newValue !== oldValue) {
             $scope.reloadTable();
         }
     });
@@ -60,7 +60,7 @@ function ADBaseTableCtrl($scope, ngTableParams) {
 
         getParams.per_page = $scope.displyCount;
         getParams.page = tableParams.page();
-        if($scope.filterType !== null && typeof $scope.filterType !== "undefined") {
+        if ($scope.filterType !== null && typeof $scope.filterType !== "undefined") {
             getParams.rate_type_id = $scope.filterType.id;
         }
         getParams.query = $scope.searchTerm;

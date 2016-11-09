@@ -74,7 +74,7 @@ sntRover.controller('rvSetWakeupcallController', ['$scope', '$filter', 'RVSaveWa
 	};
 
 	$scope.validate = function() {
-		if($scope.hrs === "" || $scope.min === "" || $scope.am_pm === "") {
+		if ($scope.hrs === "" || $scope.min === "" || $scope.am_pm === "") {
 			return false;
 		}
 		else {

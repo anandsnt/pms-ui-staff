@@ -81,7 +81,7 @@ angular.module('sntRover').directive('autoCompleteGroups', ['RVSearchSrv', 'high
                     
                     // CICO-26513
                     // unbinding the touch move
-                    if(ulElement instanceof HTMLElement) {
+                    if (ulElement instanceof HTMLElement) {
                         ulElement.off('touchmove');
                     }
                 });

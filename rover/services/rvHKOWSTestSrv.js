@@ -8,10 +8,10 @@ angular.module('sntRover').service('RVHKOWSTestSrv', ['$http', '$q', '$window', 
 		    deferred.resolve(response.data);
 
 		}).error(function(response, status) {
-			if(status === 401) { // 401- Unauthorized
+			if (status === 401) { // 401- Unauthorized
 				// so lets redirect to login page
 				$window.location.href = '/house/logout' ;
-			}else{
+			} else {
 				deferred.reject(response);
 			}
 		});

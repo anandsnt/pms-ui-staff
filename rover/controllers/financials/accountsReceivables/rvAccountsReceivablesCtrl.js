@@ -39,10 +39,10 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
             refreshArOverviewScroll();
 
             // Condition to show/hide header bar - with OPEN GUEST BILL & UNPAID BALANCE.
-            if($scope.filterData.searchQuery !== "" || $scope.filterData.minAmount !== "" || $scope.filterData.ageingDays !== "") {
+            if ($scope.filterData.searchQuery !== "" || $scope.filterData.minAmount !== "" || $scope.filterData.ageingDays !== "") {
             	$scope.filterData.hideArHeader = true;
             }
-            else{
+            else {
             	$scope.filterData.hideArHeader = false;
             }
         };
@@ -90,7 +90,7 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
     // Filter block starts here ..
     $scope.changedSearchQuery = function() {
 
-        if($scope.filterData.searchQuery.length > 2 || $scope.filterData.searchQuery === "") {
+        if ($scope.filterData.searchQuery.length > 2 || $scope.filterData.searchQuery === "") {
             $scope.filterData.minAmount     = "";
             $scope.filterData.ageingDays    = "";
             fetchArOverviewData();

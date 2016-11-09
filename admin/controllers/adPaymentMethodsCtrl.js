@@ -18,10 +18,10 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	 *   @param {String} index value for the credit card list.
 	 */
 	$scope.toggleClickedPayment = function(index, isFromCCGroup) {
-		if(isFromCCGroup) {
+		if (isFromCCGroup) {
 			var item = $scope.data.credit_card_types[index];
 		}
-		else{
+		else {
 			var item = $scope.data.payments[index];
 		}
 
@@ -100,7 +100,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 
 	$scope.activeCCTab = function() {
 		angular.forEach($scope.data.payments, function(item, index) {
-			if(item.value === "CC" && item.is_active === "false") {
+			if (item.value === "CC" && item.is_active === "false") {
 				$scope.toggleClickedPayment(index, false);
 			}
 		});
@@ -117,25 +117,25 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 
 		var successCallbackSavePaymentMethod = function(data) {
 
-			if(data.value === "CC") {
+			if (data.value === "CC") {
 				// Edited CC - LINKED RESERVATION TYPE only
 				$scope.data.payments[parseInt($scope.currentClickedElement)] = data;
 			}
-			else if($scope.currentClickedElement === "new") {
-				if(data.is_cc) {
+			else if ($scope.currentClickedElement === "new") {
+				if (data.is_cc) {
 				// Added new credit card type item ( ie,'is_cc = true' )
 					$scope.data.credit_card_types.push(data);
 				}
-				else{
+				else {
 					// Added new payment item ( ie,'is_cc = false' ).
 					$scope.data.payments.push(data);
 				}
 			}
-			else if(!data.is_cc && $scope.currentClickedElement !== -1) {
+			else if (!data.is_cc && $scope.currentClickedElement !== -1) {
 				// Edited from 'payments list' with 'is_cc = false'.
 				$scope.data.payments[parseInt($scope.currentClickedElement)] = data;
 	    	}
-	    	else if(data.is_cc && $scope.currentClickedElement !== -1) {
+	    	else if (data.is_cc && $scope.currentClickedElement !== -1) {
 	    		// Edited from 'payments list' - made as 'is_cc = true' : moving data to 'credit card type list'.
 	    		// Remove data from $scope.data.payments[] list.
 	    		// push this data to $scope.data.credit_card_types[] list.
@@ -144,11 +144,11 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	    		// Active the toggle button for payment method -Credit card.
 	    		$scope.activeCCTab();
 	    	}
-	    	else if(data.is_cc && $scope.currentClickedElementCC !== -1) {
+	    	else if (data.is_cc && $scope.currentClickedElementCC !== -1) {
 	    		// Edited from 'credit card type list' with 'is_cc = true'.
 	    		$scope.data.credit_card_types[parseInt($scope.currentClickedElementCC)] = data;
 	    	}
-	    	else if(!data.is_cc && $scope.currentClickedElementCC !== -1) {
+	    	else if (!data.is_cc && $scope.currentClickedElementCC !== -1) {
 	    		// Edited from 'credit card type list'  - made as 'is_cc = false' : moving data to 'payments list'.
 	    		// Remove data from $scope.data.credit_card_types[] list.
 	    		// push this data to $scope.data.payments[] list.
@@ -162,18 +162,18 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 
     	var dataToSend = {};
 
-    	if($scope.currentClickedElement === "new") {
+    	if ($scope.currentClickedElement === "new") {
     		dataToSend = $scope.addData;
     	}
 		else {
 			dataToSend = $scope.editData;
 		}
 		// If we edit system defined credit card type - call api to update credit card.
-		if( $scope.currentClickedElementCC !== -1 && dataToSend.is_system_defined ) {
+		if ( $scope.currentClickedElementCC !== -1 && dataToSend.is_system_defined ) {
 			$scope.invokeApi(ADPaymentMethodsSrv.saveCreditCardMethod, dataToSend, successCallbackSaveCC);
 		}
 		// Else we call api to update payment types.
-		else{
+		else {
 			$scope.invokeApi(ADPaymentMethodsSrv.savePaymentMethod, dataToSend, successCallbackSavePaymentMethod);
 		}
 	};
@@ -224,10 +224,10 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	$scope.deletePaymentMethod = function(id) {
 		var successCallbackDelete = function(data) {
 			$scope.$emit('hideLoader');
-			if($scope.currentClickedElementCC === -1) {
+			if ($scope.currentClickedElementCC === -1) {
 			$scope.data.payments.splice($scope.currentClickedElement, 1);
 			$scope.currentClickedElement = -1;
-			}else{
+			} else {
 			$scope.data.credit_card_types.splice($scope.currentClickedElementCC, 1);
 			$scope.currentClickedElementCC = -1;
 			}
@@ -239,19 +239,19 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 
 
 	$scope.roverOnlyChanged = function() {
-		if($scope.currentClickedElement === "new") {
+		if ($scope.currentClickedElement === "new") {
 			$scope.addData.is_web_only = $scope.addData.is_rover_only ? false: $scope.addData.is_web_only;
 		}
-		else{
+		else {
 			$scope.editData.is_web_only = $scope.editData.is_rover_only ? false: $scope.editData.is_web_only;
 		}
 	};
 
 	$scope.webOnlyChanged = function() {
-		if($scope.currentClickedElement === "new") {
+		if ($scope.currentClickedElement === "new") {
 			$scope.addData.is_rover_only = $scope.addData.is_web_only ? false: $scope.addData.is_rover_only;
 		}
-		else{
+		else {
 			$scope.editData.is_rover_only = $scope.editData.is_web_only ? false: $scope.editData.is_rover_only;
 		}
 	};

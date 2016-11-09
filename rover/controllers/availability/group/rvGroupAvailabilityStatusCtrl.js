@@ -10,9 +10,9 @@ angular.module('sntRover').controller('rvGroupAvailabilityStatusController', [
 		BaseCtrl.call(this, $scope);		
 
 		$scope.togleHoldStatusVisibility = function(eventSource) {
-			if(eventSource === "groupRoomTotal") {
+			if (eventSource === "groupRoomTotal") {
 				$scope.hideHoldStatusOf["groupRoomTotal"]=!$scope.hideHoldStatusOf["groupRoomTotal"];
-			}else if(eventSource === "groupRoomPicked") {
+			} else if (eventSource === "groupRoomPicked") {
 				$scope.hideHoldStatusOf["groupRoomPicked"] = !$scope.hideHoldStatusOf["groupRoomPicked"];
 			}
 			$scope.refreshScroller('groupscroller');
@@ -101,9 +101,9 @@ angular.module('sntRover').controller('rvGroupAvailabilityStatusController', [
 		* return class name for holdstatus row in picked up
 		*/
 		$scope.getClassForHoldStatusRowInPickedUp = function(id) {
-			if(!isTakenFromInventory(id) ||$scope.hideHoldStatusOf.groupRoomPicked) {
+			if (!isTakenFromInventory(id) ||$scope.hideHoldStatusOf.groupRoomPicked) {
 				return 'hidden';
-			}else{
+			} else {
 				return '';
 			}
 
@@ -125,14 +125,14 @@ angular.module('sntRover').controller('rvGroupAvailabilityStatusController', [
 		*/
 
 		$scope.toggleButtonClicked = function(index) {
-			if(_.contains($scope.idsOfDropDownOpenedGroups, $scope.data.groupDetails[index].id)) {
+			if (_.contains($scope.idsOfDropDownOpenedGroups, $scope.data.groupDetails[index].id)) {
 				var temp =_.filter($scope.idsOfDropDownOpenedGroups, 
 					function(num) { 
 						return num !== $scope.data.groupDetails[index].id; 
 					});
 
 				$scope.idsOfDropDownOpenedGroups = temp;
-			}else{
+			} else {
 				$scope.idsOfDropDownOpenedGroups.push($scope.data.groupDetails[index].id);
 			}
 			$scope.refreshScroller('groupscroller');
@@ -190,7 +190,7 @@ angular.module('sntRover').controller('rvGroupAvailabilityStatusController', [
 			$scope.data = rvAvailabilitySrv.getGridDataForGroupAvailability();
 			setScroller();	
 			// if already fetched we will show without calling the API
-			if(!isEmptyObject($scope.data)) {
+			if (!isEmptyObject($scope.data)) {
 				$scope.hideBeforeDataFetch = false;
 				$scope.refreshScroller('groupscroller');
 				$scope.$emit("hideLoader");

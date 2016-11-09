@@ -246,7 +246,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 						}, onupdateSuccess, onUpdateFailure);
 					}
 				});
-				if(typeof $rootScope.searchData !== "undefined") {
+				if (typeof $rootScope.searchData !== "undefined") {
 					$rootScope.searchData.guestCard.email = $scope.reservationData.guest.email;
 				}				
 
@@ -570,7 +570,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
            	jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function() {
             	$scope.$emit('hideLoader'); 
-            	if($rootScope.UPDATED_BI_ENABLED_ON['RESERVATION']) {
+            	if ($rootScope.UPDATED_BI_ENABLED_ON['RESERVATION']) {
             		console.log("##Billing-info updated version");
 				    ngDialog.open({
 				        template: '/assets/partials/billingInformation/reservation/rvBillingInfoReservationMain.html',
@@ -579,7 +579,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				        scope: $scope
 				    });
 				}
-				else{
+				else {
 					console.log("##Billing-info old version");
 					ngDialog.open({
 				        template: '/assets/partials/bill/rvBillingInformationPopup.html',

@@ -56,10 +56,10 @@ admin.controller('ADHoldStatusListCtrl', ['$scope', '$state', 'ADHoldStatusSrv',
     * @param {string} id of the hold status
     */
 	$scope.getTemplateUrl = function(index, id) {
-		if(typeof index === "undefined" || typeof id === "undefined") {
+		if (typeof index === "undefined" || typeof id === "undefined") {
 			return "";
 		}
-		if($scope.currentClickedElement === index) {
+		if ($scope.currentClickedElement === index) {
 			 	return "/assets/partials/holdStatus/adHoldStatusEdit.html";
 		}
 	};
@@ -69,7 +69,7 @@ admin.controller('ADHoldStatusListCtrl', ['$scope', '$state', 'ADHoldStatusSrv',
    $scope.saveHoldStatus = function() {
     	var successCallbackSave = function(data) {
     		$scope.$emit('hideLoader');
-			if($scope.isAddMode) {
+			if ($scope.isAddMode) {
 				// To add new data to scope
     			$scope.data.holdStatuses.push(data);
 	    	} else {
@@ -83,7 +83,7 @@ admin.controller('ADHoldStatusListCtrl', ['$scope', '$state', 'ADHoldStatusSrv',
     		$scope.currentClickedElement = -1;
     	};
 
-    	if($scope.isAddMode) {
+    	if ($scope.isAddMode) {
     		$scope.invokeApi(ADHoldStatusSrv.saveHoldStatus, $scope.holdstatusData, successCallbackSave);
     	} else {
     		$scope.invokeApi(ADHoldStatusSrv.updateHoldStatus, $scope.holdstatusData, successCallbackSave);
@@ -104,10 +104,10 @@ admin.controller('ADHoldStatusListCtrl', ['$scope', '$state', 'ADHoldStatusSrv',
 		var successCallbackDelete = function(data) {
 	 		$scope.$emit('hideLoader');
 	 		// handling error case
-	 		if(data.status==='failure')
+	 		if (data.status==='failure')
 	 		{
 	 			$scope.errorMessage = data.errors;
-	 		}else{
+	 		} else {
 	 			// Handling success - removing deleted holdstatus
 	 			$scope.data.holdStatuses.splice(index, 1);
 	 		}

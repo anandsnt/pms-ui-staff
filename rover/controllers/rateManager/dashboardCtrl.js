@@ -165,10 +165,10 @@ sntRover
             $scope.$on("computeColumWidth", computeColWidthOnResize);
 
             $scope.getSortOption = function(option) {
-                if(option === "HIGH_TO_LOW") {
+                if (option === "HIGH_TO_LOW") {
                     return "Highest Rate";
                 }
-                if(option === "LOW_TO_HIGH") {
+                if (option === "LOW_TO_HIGH") {
                     return "Lowest Rate";
                 }
                 return "Alphabetical";

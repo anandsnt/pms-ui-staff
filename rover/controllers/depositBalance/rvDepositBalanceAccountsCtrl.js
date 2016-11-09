@@ -126,7 +126,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 		return rvPermissionSrv.getPermissionValue ('MAKE_PAYMENT');
 	};
 
-	if($rootScope.paymentGateway === "sixpayments") {
+	if ($rootScope.paymentGateway === "sixpayments") {
     	// initilayy C&P ACTIVE
     	$scope.shouldCardAvailable = false;
     	$scope.makePaymentButtonDisabled = false;
@@ -161,7 +161,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 		$scope.cardValues = tokenDetails;
 	    var cardExpiry = "";
 
-	    if(!$scope.cardValues.tokenDetails.isSixPayment) {
+	    if (!$scope.cardValues.tokenDetails.isSixPayment) {
 	    	cardExpiry = ($scope.cardValues.cardDetails.expiryMonth!=='' && $scope.cardValues.cardDetails.expiryYear!=='') ? "20"+$scope.cardValues.cardDetails.expiryYear+"-"+$scope.cardValues.cardDetails.expiryMonth+"-01" : "";
 	    	// To render the selected card data
 	    	$scope.depositBalanceMakePaymentData.card_code = getCreditCardType($scope.cardValues.cardDetails.cardType).toLowerCase();
@@ -215,11 +215,11 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 		var isShowFees = false;
 		var feesData = $scope.feeData;
 
-		if(typeof feesData === 'undefined' || typeof feesData.feesInfo === 'undefined' || feesData.feesInfo === null) {
+		if (typeof feesData === 'undefined' || typeof feesData.feesInfo === 'undefined' || feesData.feesInfo === null) {
 			isShowFees = false;
 		}
-		else if((feesData.defaultAmount  >= feesData.minFees) && $scope.isStandAlone && feesData.feesInfo.amount) {
-			if($scope.depositBalanceMakePaymentData.amount >= 0) {
+		else if ((feesData.defaultAmount  >= feesData.minFees) && $scope.isStandAlone && feesData.feesInfo.amount) {
+			if ($scope.depositBalanceMakePaymentData.amount >= 0) {
 				isShowFees = (($rootScope.paymentGateway !== 'sixpayments' || $scope.isManual || $scope.depositBalanceMakePaymentData.payment_type !=='CC') && $scope.depositBalanceMakePaymentData.payment_type !=="") ? true:false;
 			}
 		}
@@ -227,7 +227,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	};
 
     $scope.emitCancelCardSelection = function () {
-        if(!$rootScope.isStandAlone) {
+        if (!$rootScope.isStandAlone) {
                 ngDialog.close();
         }
         $scope.depositWithGiftCard = false;
@@ -235,7 +235,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
         $scope.cardselectedIndex = -1;
 
         // in case of hotel with MLI iframe will not be present
-        if(!!$("#sixIframe").length) {
+        if (!!$("#sixIframe").length) {
             var iFrame = document.getElementById('sixIframe');
 
             iFrame.src = iFrame.src;
@@ -256,11 +256,11 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 			"bill_id": $scope.depositBalanceData.primary_bill_id
 		};
 
-		if($scope.isShowFees()) {
-			if($scope.feeData.calculatedFee) {
+		if ($scope.isShowFees()) {
+			if ($scope.feeData.calculatedFee) {
 				dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
 			}
-			if($scope.feeData.feesInfo) {
+			if ($scope.feeData.feesInfo) {
 				dataToSrv.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
 			}
 		}
@@ -337,7 +337,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	$scope.successMakePayment = function (data) {
 		$scope.$emit("hideLoader");
 
-		if($rootScope.paymentGateway === "sixpayments" && $scope.isManual) {
+		if ($rootScope.paymentGateway === "sixpayments" && $scope.isManual) {
 			$scope.authorizedCode = data.authorization_code;
 		}
 

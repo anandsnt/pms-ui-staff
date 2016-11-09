@@ -29,7 +29,7 @@ admin.controller('ADBillingGroupCtrl', ['$scope', '$state', 'ADBillingGroupSrv',
 				$scope.billingGroupData.title = $scope.billingGroupData.name;
 				$scope.currentClickedElement = index;
 				$scope.billingGroupData.available_charge_codes.forEach(function(charge, index) {
-					if($scope.billingGroupData.selected_charge_codes.indexOf(charge.id) !== -1) {
+					if ($scope.billingGroupData.selected_charge_codes.indexOf(charge.id) !== -1) {
 						$scope.billingGroupData.available_charge_codes[index].isChecked =true;
 					}
 					$scope.updateIsAllChargeCodeSelectedStatus();
@@ -49,10 +49,10 @@ admin.controller('ADBillingGroupCtrl', ['$scope', '$state', 'ADBillingGroupSrv',
     */
 	$scope.getTemplateUrl = function(index, id) {
 
-		if(typeof index === "undefined" ) {
+		if (typeof index === "undefined" ) {
 			return "";
 		}
-		if($scope.currentClickedElement === index) {
+		if ($scope.currentClickedElement === index) {
 			 	return "/assets/partials/billingGroups/adBillingGroupDetails.html";
 		}
 	};
@@ -65,18 +65,18 @@ admin.controller('ADBillingGroupCtrl', ['$scope', '$state', 'ADBillingGroupSrv',
     	var successCallbackSave = function(data) {
     		$scope.$emit('hideLoader');
     		// Since the list is ordered. Update the ordered data
-    		if($scope.isAddMode) {
+    		if ($scope.isAddMode) {
     			$scope.billingGroupList.push(data);
     			$scope.isAddMode = false;
-    		}else{
+    		} else {
     			$scope.billingGroupList[$scope.currentClickedElement].name = $scope.billingGroupData.name;
     			$scope.currentClickedElement = -1;
     		}
     	};
 
-    	if($scope.isAddMode) {
+    	if ($scope.isAddMode) {
     		$scope.invokeApi(ADBillingGroupSrv.createBillingGroup, params, successCallbackSave);
-    	}else{
+    	} else {
     		$scope.invokeApi(ADBillingGroupSrv.updateBillingGroup, params, successCallbackSave);
     	}
     };
@@ -124,10 +124,10 @@ admin.controller('ADBillingGroupCtrl', ['$scope', '$state', 'ADBillingGroupSrv',
     *
     */
 	$scope.selectChargeCode = function(index) {
-		if($scope.isChecked($scope.billingGroupData.available_charge_codes[index].id)) {
+		if ($scope.isChecked($scope.billingGroupData.available_charge_codes[index].id)) {
 			$scope.removeChargeCode($scope.billingGroupData.available_charge_codes[index].id);
 			$scope.billingGroupData.available_charge_codes[index].isChecked = false;
-		}else{
+		} else {
 			$scope.billingGroupData.selected_charge_codes.push($scope.billingGroupData.available_charge_codes[index].id);
 			$scope.billingGroupData.available_charge_codes[index].isChecked = true;
 		}
@@ -140,7 +140,7 @@ admin.controller('ADBillingGroupCtrl', ['$scope', '$state', 'ADBillingGroupSrv',
 	$scope.updateIsAllChargeCodeSelectedStatus = function() {
 		$scope.billingGroupData.isAllChargeCodeSelected = false;
 		$scope.billingGroupData.available_charge_codes.forEach(function(chargeCode) {
-			if(!chargeCode.isChecked) {
+			if (!chargeCode.isChecked) {
 				$scope.billingGroupData.isAllChargeCodeSelected =true;
 			}
 		});
@@ -153,8 +153,8 @@ admin.controller('ADBillingGroupCtrl', ['$scope', '$state', 'ADBillingGroupSrv',
 	$scope.removeChargeCode = function(id) {
 		var pos;
 
-		for(var i = 0; i < $scope.billingGroupData.selected_charge_codes.length; i++) {
-			if($scope.billingGroupData.selected_charge_codes[i] === id) {
+		for (var i = 0; i < $scope.billingGroupData.selected_charge_codes.length; i++) {
+			if ($scope.billingGroupData.selected_charge_codes[i] === id) {
 				pos = i;
 				break;
 			}
@@ -166,21 +166,21 @@ admin.controller('ADBillingGroupCtrl', ['$scope', '$state', 'ADBillingGroupSrv',
     *
     */
 	$scope.isChecked = function(id) {
-		for(var i = 0; i < $scope.billingGroupData.selected_charge_codes.length; i++) {
-			if($scope.billingGroupData.selected_charge_codes[i] === id) {
+		for (var i = 0; i < $scope.billingGroupData.selected_charge_codes.length; i++) {
+			if ($scope.billingGroupData.selected_charge_codes[i] === id) {
 				return true;
 			}
 		}
 		return false;
 	};
 	$scope.selectOrUnselectAllChargeCodeSelected = function() {
-		if($scope.billingGroupData.isAllChargeCodeSelected) {
+		if ($scope.billingGroupData.isAllChargeCodeSelected) {
 			$scope.billingGroupData.selected_charge_codes.length = 0;
 			$scope.billingGroupData.available_charge_codes.forEach(function(chargeCode, index) {
 			$scope.billingGroupData.selected_charge_codes.push(chargeCode.id);
 			$scope.billingGroupData.available_charge_codes[index].isChecked = true;
 			});
-		}else{
+		} else {
 			$scope.billingGroupData.selected_charge_codes.length = 0;
 			$scope.billingGroupData.available_charge_codes.forEach(function(chargeCode, index) {
 			$scope.billingGroupData.available_charge_codes[index].isChecked = false;
@@ -194,7 +194,7 @@ admin.controller('ADBillingGroupCtrl', ['$scope', '$state', 'ADBillingGroupSrv',
     */
 	$scope.clickCancel = function() {
 		$scope.billingGroupData.name = $scope.billingGroupData.title;
-		if($scope.isAddMode) {
+		if ($scope.isAddMode) {
 			$scope.isAddMode =false;
 		}
 		else {

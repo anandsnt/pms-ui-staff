@@ -47,10 +47,10 @@ angular.module('sntRover').controller('rvItemInventoryGraphStatusController', [
         	var labelWidthToSet = 0;
 
         	$scope.graphWidth = getMaxSeriesLengthData() * 75;
-        	if(getMaxSeriesLengthData() !== 0) {
+        	if (getMaxSeriesLengthData() !== 0) {
         		labelWidthToSet = (100/getMaxSeriesLengthData());
         	}
-        	else{
+        	else {
         		navListNode.css("width", 0);
         	}
         	LabelElements.css("width", labelWidthToSet + "%");
@@ -61,8 +61,8 @@ angular.module('sntRover').controller('rvItemInventoryGraphStatusController', [
 		var getMaxSeriesLengthData = function() {
 			var max = 0;
 
-			for(var i = 0; i < plottedChart.series.length; i++) {
-				if(plottedChart.series[i].visible) {
+			for (var i = 0; i < plottedChart.series.length; i++) {
+				if (plottedChart.series[i].visible) {
 					max = max < plottedChart.series[i].data.length ? plottedChart.series[i].data.length  : max;
 				}
 			}
@@ -109,7 +109,7 @@ angular.module('sntRover').controller('rvItemInventoryGraphStatusController', [
 			}];
 
 			// we are adding occupancy target between if it has setuped in rate manager
-			if($scope.data.IsOccupancyTargetSetBetween) {
+			if ($scope.data.IsOccupancyTargetSetBetween) {
 				$scope.graphData.push({
 					name: 'Occupancy Target',
 					data: $scope.data.occupanciesTargeted,
@@ -121,12 +121,12 @@ angular.module('sntRover').controller('rvItemInventoryGraphStatusController', [
  		};
 
  		$scope.clickedOnLegend = function(legendName, model) {
- 			for(var i = 0; i < plottedChart.series.length; i++) {
- 				if(plottedChart.series[i].name === legendName) {
+ 			for (var i = 0; i < plottedChart.series.length; i++) {
+ 				if (plottedChart.series[i].name === legendName) {
  					if (model) {
  						plottedChart.series[i].hide();
  					}
- 					else{
+ 					else {
  						plottedChart.series[i].show();
  					}
  					break;
@@ -290,7 +290,7 @@ angular.module('sntRover').controller('rvItemInventoryGraphStatusController', [
 			        	setTimeout(function() {
 			        		$scope.$apply(function() {
 
-					        	for(var i = 0; i < $scope.graphData.length; i++) {
+					        	for (var i = 0; i < $scope.graphData.length; i++) {
 					        		$scope.clickedOnLegend($scope.graphData[i].name, !$scope.graphData[i].checked);
 					        	}
 					        	$scope.graphWidth = getMaxSeriesLengthData() * 75;
@@ -316,7 +316,7 @@ angular.module('sntRover').controller('rvItemInventoryGraphStatusController', [
 
 		$scope.data = rvAvailabilitySrv.getGraphData();
   		// if already fetched we will show without calling the API
-		if(!isEmptyObject($scope.data)) {
+		if (!isEmptyObject($scope.data)) {
 			formGraphData();
 			doInitialOperation();
 
@@ -357,7 +357,7 @@ angular.module('sntRover').controller('rvItemInventoryGraphStatusController', [
 		$scope.$on("$destroy", function() {
 			isAlreadyRemoved = true;
 			$(window).unbind('resize');
-			if(timeoutFunction) {
+			if (timeoutFunction) {
 				$timeout.cancel(timeoutFunction);
 			}
 		});

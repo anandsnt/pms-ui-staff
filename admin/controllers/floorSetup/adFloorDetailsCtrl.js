@@ -122,11 +122,11 @@ admin.controller('ADFloorDetailsCtrl',
         $scope.isSearchResult = false ;
 
         // if it is in editMode
-        if(!$scope.isAddMode) {
+        if (!$scope.isAddMode) {
             setUpForEditMode();
         }
         // if it is in addMode
-        if($scope.isAddMode) {
+        if ($scope.isAddMode) {
             setUpForAddMode();
         }
         // list of selected rooms from unassigned rooms list
@@ -535,9 +535,9 @@ admin.controller('ADFloorDetailsCtrl',
     };
 
     $scope.navigateFromPage = function(gotoNext) {
-        if(gotoNext) {
+        if (gotoNext) {
             $scope.paginationState.currentPage +=1 ;
-        }else{
+        } else {
             $scope.paginationState.currentPage -=1 ;
         }
         $scope.searchInUnassignedRooms();

@@ -253,7 +253,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 "id": dateRangeId
             };
 
-            if($scope.rateData && $scope.rateData.based_on && !!$scope.rateData.based_on.id) {
+            if ($scope.rateData && $scope.rateData.based_on && !!$scope.rateData.based_on.id) {
                 paramsToSend.child_rate_id = $scope.rateData.id;
             }
             $scope.invokeApi(ADRatesConfigureSrv.fetchSetsInDateRange, paramsToSend, fetchSetsInDateRangeSuccessCallback);
@@ -369,10 +369,10 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
             var rateManagerCheckSuccsess = function(data) {
                 $scope.$emit('hideLoader');
-                if(data.is_custom_rate_present) {
+                if (data.is_custom_rate_present) {
                     popupRateManagerActions();
                 }
-                else{
+                else {
                     setData.overwrite_rate_manager = false;
                     callSaveOrUpdateSet();
                 }
@@ -445,9 +445,9 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             setData.dateRangeId = dateRangeId;
             selectedIndex = index;
             // Check if values exist in the Rate Manager
-            if(!!setData.id) { // CICO-20263
+            if (!!setData.id) { // CICO-20263
                 checkForRateSetUpdateInRateManager(setData);
-            }else{
+            } else {
                 callSaveOrUpdateSet();
             }
         };
@@ -546,10 +546,10 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         // check whether date range is past
         $scope.is_date_range_editable = function(date_range_end_date) {
             if ($scope.is_edit) {
-                if($scope.rateData.based_on && $scope.rateData.based_on.is_copied && date_range_end_date && ($scope.businessDate || $scope.hotel_business_date)) {
+                if ($scope.rateData.based_on && $scope.rateData.based_on.is_copied && date_range_end_date && ($scope.businessDate || $scope.hotel_business_date)) {
                     var businessDate = $scope.hotel_business_date;
 
-                    if(!businessDate) {
+                    if (!businessDate) {
                       businessDate = $scope.businessDate;
                     }
                     return Date.parse(date_range_end_date) > Date.parse(businessDate);

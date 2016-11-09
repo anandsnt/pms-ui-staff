@@ -30,7 +30,7 @@ admin.controller('ADChargeGroupsCtrl', ['$scope', 'ADChargeGroupsSrv', '$anchorS
     * @param {string} id of the item
     */
 	$scope.getTemplateUrl = function(index) {
-		if($scope.currentClickedElement === index) {
+		if ($scope.currentClickedElement === index) {
 			 return "/assets/partials/chargeGroups/adChargeGroupsEdit.html";
 		}
 	};
@@ -38,7 +38,7 @@ admin.controller('ADChargeGroupsCtrl', ['$scope', 'ADChargeGroupsSrv', '$anchorS
     * To handle cancel click
     */
 	$scope.clickedCancel = function() {
-		if($scope.currentClickedElement !== 'new') {
+		if ($scope.currentClickedElement !== 'new') {
 			$scope.data.charge_groups[$scope.currentClickedElement].name = $scope.preveousItem;
 			$scope.preveousItem = "";
 		}

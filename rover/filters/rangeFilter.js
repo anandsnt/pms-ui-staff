@@ -42,18 +42,18 @@ angular.module('sntRover').filter('makeRange', function() {
 
 function getLengthChangedNumber(lengthWanted, number) {
 
-    if(typeof number === 'number') {
+    if (typeof number === 'number') {
         number = number.toString();
     }
     var numberOfZerosToAppend = lengthWanted - number.length;
     // if numberOfZerosToAppend is zero or less, nothing to do
 
-    if(numberOfZerosToAppend <= 0) {
+    if (numberOfZerosToAppend <= 0) {
         return number;
     }
     var zeros = "";
 
-    for(var i = 1; i <= numberOfZerosToAppend; i++) {
+    for (var i = 1; i <= numberOfZerosToAppend; i++) {
         zeros += "0";
     }
     return (zeros + number);

@@ -57,7 +57,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
     	$scope.previuosAssignedPermissions.length=0;
     	$scope.permissions.forEach(function(element) {
     		$scope.selectedUserRole.assigned_permissions.map(function(x) {
-    			if(x ===element.value) {
+    			if (x ===element.value) {
     				$scope.assignedPermissions.push(element);
     				$scope.previuosAssignedPermissions.push(element);
     			}
@@ -76,10 +76,10 @@ admin.controller('ADUserRolePermissionsCtrl', [
     };
 
     $scope.$watch("assignedPermissions.length", function(oldValue, newValue) {
-    		if(oldValue<newValue) {
+    		if (oldValue<newValue) {
     			$scope.removedElement = $scope.calculateArrayDifferance($scope.previuosAssignedPermissions, $scope.assignedPermissions);
     			$scope.previuosAssignedPermissions = $scope.calculateArrayDifferance($scope.previuosAssignedPermissions, $scope.removedElement);
-    			if($scope.removedElement.length!==0) {
+    			if ($scope.removedElement.length!==0) {
     			var successCallback = function(data) {
     				var index =$scope.userRoles[$scope.selectedUserRole.index].assigned_permissions.indexOf($scope.removedElement[0].value);
 
@@ -100,11 +100,11 @@ admin.controller('ADUserRolePermissionsCtrl', [
 				postData.permissions.push($scope.removedElement[0].value);
 				$scope.invokeApi(ADUserRolePermissionSrv.removeUserRolePermission, postData, successCallback, failureCallback);
 				}
-    		}else
+    		} else
     		{
     			$scope.addedElement = $scope.calculateArrayDifferance($scope.assignedPermissions, $scope.previuosAssignedPermissions);
     			$scope.previuosAssignedPermissions = $scope.previuosAssignedPermissions.concat($scope.addedElement);
-    			if($scope.addedElement.length!==0) {
+    			if ($scope.addedElement.length!==0) {
     			var successCallback = function(data) {
 	    			$scope.$emit('hideLoader');
 	    			$scope.userRoles[$scope.selectedUserRole.index].assigned_permissions.push($scope.addedElement[0].value);
@@ -133,20 +133,20 @@ admin.controller('ADUserRolePermissionsCtrl', [
 	$scope.selectAssignedPermission = function($event, index) {
 		var lastSelectedItem =$scope.selectedAssignedPermission;
 
-		if(lastSelectedItem === index) {
+		if (lastSelectedItem === index) {
 			$scope.selectedAssignedPermission =-1;
 		}
-		else if(lastDropedTime === '') {
+		else if (lastDropedTime === '') {
 			$scope.selectedAssignedPermission = index;
 		}
-		else if(typeof lastDropedTime === 'object') {
+		else if (typeof lastDropedTime === 'object') {
 			var currentTime = new Date();
 			var diff = currentTime - lastDropedTime;
 
-			if(diff <= 100) {
+			if (diff <= 100) {
 				$event.preventDefault();
 			}
-			else{
+			else {
 				lastDropedTime = '';
 			}
 		}
@@ -158,20 +158,20 @@ admin.controller('ADUserRolePermissionsCtrl', [
 	$scope.selectUnAssignedPermission = function($event, index) {
 		var lastSelectedItem =$scope.selectedUnassignedPermission;
 
-		if(lastSelectedItem === index) {
+		if (lastSelectedItem === index) {
 			$scope.selectedUnassignedPermission =-1;
 		}
-		else if(lastDropedTime === '') {
+		else if (lastDropedTime === '') {
 			$scope.selectedUnassignedPermission = index;
 		}
-		else if(typeof lastDropedTime === 'object') { // means date
+		else if (typeof lastDropedTime === 'object') { // means date
 			var currentTime = new Date();
 			var diff = currentTime - lastDropedTime;
 
-			if(diff <= 100) {
+			if (diff <= 100) {
 				$event.preventDefault();
 			}
-			else{
+			else {
 				lastDropedTime = '';
 			}
 		}
@@ -182,7 +182,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
 	$scope.leftToRight = function() {
 		var index = $scope.selectedAssignedPermission;
 
-		if(index === -1) {
+		if (index === -1) {
 			return;
 		}
 		var newElement = $scope.assignedPermissions[index];
@@ -199,7 +199,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
 	$scope.rightToleft = function() {
 		var index = $scope.selectedUnassignedPermission;
 
-		if(index === -1) {
+		if (index === -1) {
 			return;
 		}
 		var newElement = $scope.unAssignedPermissions[index];

@@ -175,12 +175,12 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			var roomCopy = [];
 
 			function move(array, from, to) {
-				if( to === from ) return;
+				if ( to === from ) return;
 
 				var target = array[from];                         
 				var increment = to < from ? -1 : 1;
 
-				for(var k = from; k != to; k += increment) {
+				for (var k = from; k != to; k += increment) {
 				array[k] = array[k + increment];
 				}
 				array[to] = target;
@@ -1196,7 +1196,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                         } else {
                             var onOverData = this.checkOnOverRoom(firstRoom, index, prevHeight);
 
-                            switch( onOverData.method ) {
+                            switch ( onOverData.method ) {
                                 case 'BEFORE':
                                     $placeholder.insertBefore( onOverData.node  );
                                     break;

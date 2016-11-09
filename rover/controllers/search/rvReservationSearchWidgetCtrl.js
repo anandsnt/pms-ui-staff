@@ -34,12 +34,12 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.reservationSearch = ($state.current.name === "rover.search");
 		$scope.search_area_id = !$scope.reservationSearch ? "dashboard-search": "search";
 
-		if($stateParams.type === "OPEN_BILL_CHECKOUT" ) {
+		if ($stateParams.type === "OPEN_BILL_CHECKOUT" ) {
 			// CICO-24079 - OPEN_BILL_CHECKOUT - Date picker from date should default to Null.
 			$scope.fromDate = "";
 			$scope.$emit("UpdateHeading", 'Checked Out (With Balance)');
 		}
-		else{
+		else {
 		// Date picker from date should default to current business date - CICO-8490
 		// Get the date stored in service, and clear the service
 		$scope.fromDate = RVSearchSrv.fromDate === undefined ? $rootScope.businessDate : RVSearchSrv.fromDate;
@@ -336,9 +336,9 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				check_against_cap_query = typeof check_against_cap_query === "undefined" ? true : check_against_cap_query,
 				query = check_against_cap_query ? $scope.textInQueryBox.toUpperCase() : $scope.textInQueryBox;
 
-			if(query.indexOf(' ') != -1) {
+			if (query.indexOf(' ') != -1) {
 				query = query.split(' ');
-			} else if(query.indexOf(',') != -1) {
+			} else if (query.indexOf(',') != -1) {
 				query = query.split(',');
 			}
 			// query contains multiple words
@@ -347,10 +347,10 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			}
 			var isContains = false;
 
-			for(var i = 0; i < query.length; i++) {
+			for (var i = 0; i < query.length; i++) {
 				isContains = isContains || ((escN(text1).toUpperCase()).indexOf(query[i]) >= 0);
 			}
-			for(var i = 0; i < query.length; i++) {
+			for (var i = 0; i < query.length; i++) {
 				isContains = isContains || ((escN(text2).toUpperCase()).indexOf(query[i]) >= 0);
 			}
 
@@ -570,11 +570,11 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.getRoomStatusMapped = function(roomstatus, fostatus, roomNo) {
 			var mappedStatus = "";
 
-			if(roomNo == '' || roomNo == null) {
+			if (roomNo == '' || roomNo == null) {
 				mappedStatus = 'no-number';
 			} else if (roomstatus === "READY" && fostatus === "VACANT") {
 				mappedStatus = 'ready';
-			} else if(roomstatus === 'NOT READY') {
+			} else if (roomstatus === 'NOT READY') {
 				mappedStatus = "not-ready";
 			}
 			return mappedStatus;
@@ -760,7 +760,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			};
 
 			swipeData.is_encrypted = true;
-			if(data.RVCardReadIsEncrypted === 0 || data.RVCardReadIsEncrypted === '0') {
+			if (data.RVCardReadIsEncrypted === 0 || data.RVCardReadIsEncrypted === '0') {
 				swipeData.is_encrypted = false;
 			}
 
@@ -818,7 +818,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				}
 			}
 
-			if(!room) {
+			if (!room) {
 				return "no-number";
 			}
 
@@ -990,7 +990,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomTypes, {}, onRoomTypesFetchSuccess, onRoomTypesFetchFailure);
 		};
 
-		if(!$scope.roomTypes) {
+		if (!$scope.roomTypes) {
 			$scope.fetchRoomTypes();
 		}
 
@@ -1014,7 +1014,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			var confirmationNo = "";
 
 			// CICO-28150 show external reference numbers only for external reservations
-			if(reservation.external_confirm_no && !reservation.is_from_rover) {
+			if (reservation.external_confirm_no && !reservation.is_from_rover) {
 				confirmationNo = reservation.external_confirm_no;
 			} else if (reservation.confirmation) {
 				confirmationNo = reservation.confirmation;
@@ -1031,7 +1031,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			var confirmationText = "";
 
 			// CICO-28150 show external reference numbers only for external reservations
-			if(reservation.external_confirm_no && !reservation.is_from_rover) {
+			if (reservation.external_confirm_no && !reservation.is_from_rover) {
 				confirmationText = $filter('translate')('EXTERNAL_REF_NO_PREFIX');
 			} else if (reservation.confirmation) {
 				confirmationText = $filter('translate')('CONFIRM_NO_PREFIX');
@@ -1045,7 +1045,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		*/
 		$scope.$watch('textInQueryBox', function(newVal) {
 			$scope.searchWords = [];
-			if(newVal.length >= 2) {
+			if (newVal.length >= 2) {
 				if (newVal.indexOf(',') != -1) {
 					$scope.searchWords = newVal.split(',');
 				} else if (newVal.indexOf(' ') != -1) {
@@ -1056,9 +1056,9 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			}
 		});
 		$scope.showStatus = function(reservation) {
-			if(reservation.room_ready_status =='CLEAN' ||reservation.room_ready_status== 'INSPECTED') {
+			if (reservation.room_ready_status =='CLEAN' ||reservation.room_ready_status== 'INSPECTED') {
 				return false;
-			}else{
+			} else {
 				return reservation.reservation_status === 'CHECKING_IN'&& (!!reservation.is_room_due_out || !!reservation.fostatus);
 			}
 		};
@@ -1069,7 +1069,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.getRoomStatus = function(reservation) {
 			var status = "";
 
-			if(!!reservation.is_room_due_out) {
+			if (!!reservation.is_room_due_out) {
 				status = "DUE OUT";
 			} else {
 				status = reservation.fostatus;

@@ -79,7 +79,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 			if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
 				onSuccess({"guest_web_token": "4120081e61c6e6abe51258a738ea94d1"});// dummy token
 			}
-			else{
+			else {
 				$scope.callAPI(GwCheckinSrv.generateAuthToken, options);
 			}
 			
@@ -155,16 +155,16 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 				failureCallBack: onFailure
 			};
 
-			if($scope.lastname.length > 0 && 
+			if ($scope.lastname.length > 0 && 
 			  ($scope.confirmationNumber.length > 0 || (typeof $scope.departureDate !== "undefined" && $scope.departureDate.length >0))) {
 				// if last name and either of confirmation number or departure date is provided
 				$scope.callAPI(GwCheckinSrv.findUser, options);
 			}
-			else{
+			else {
 				if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
 					$scope.callAPI(GwCheckinSrv.findUser, options);
 				}
-				else{
+				else {
 					// show popup
 					var popupOptions = angular.copy($scope.errorOpts);
 

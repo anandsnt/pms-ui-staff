@@ -7,7 +7,7 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
    /**
     * To check whether logged in user is sntadmin or hoteladmin
     */
-	if($rootScope.adminRole === "snt-admin") {
+	if ($rootScope.adminRole === "snt-admin") {
 		$scope.isAdminSnt = true;
 	}
    /**

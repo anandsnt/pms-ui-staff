@@ -16,7 +16,7 @@ sntRover.controller('RVJournalSummaryDetailsController', ['$scope', '$rootScope'
     var getSummaryItemByBalanceType = function( balance_type ) {
         var summaryItem = "";
 
-        switch( balance_type ) {
+        switch ( balance_type ) {
             case 'DEPOSIT_BALANCE'  :
                 summaryItem = $scope.details.summaryData.deposit_balance;
                 break;
@@ -31,7 +31,7 @@ sntRover.controller('RVJournalSummaryDetailsController', ['$scope', '$rootScope'
     };
 
     var updateTotalForBalanceType = function( balance_type, opening_balance, debit_sum, credit_sum, closing_balance ) {
-        switch( balance_type ) {
+        switch ( balance_type ) {
             case 'DEPOSIT_BALANCE'  :
                 $scope.details.summaryData.deposit_closing_balance = closing_balance;
                 $scope.details.summaryData.deposit_credits = credit_sum;

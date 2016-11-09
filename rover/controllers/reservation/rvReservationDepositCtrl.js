@@ -126,7 +126,7 @@ sntRover.controller('RVReservationDepositController',
 		$scope.changePaymentType = function() {
 			$scope.checkReferencetextAvailable();
 
-			if($scope.depositData.paymentType === "CC") {
+			if ($scope.depositData.paymentType === "CC") {
 				($rootScope.paymentGateway === 'sixpayments')  ? "": showCardOptions();
 			}
 		};
@@ -190,10 +190,10 @@ sntRover.controller('RVReservationDepositController',
 			var isShowFees = false;
 			var feesData = $scope.feeData;
 
-			if(typeof feesData === 'undefined' || typeof feesData.feesInfo === 'undefined' || feesData.feesInfo === null) {
+			if (typeof feesData === 'undefined' || typeof feesData.feesInfo === 'undefined' || feesData.feesInfo === null) {
 				isShowFees = false;
 			}
-			else if((feesData.defaultAmount  >= feesData.minFees) && $scope.isStandAlone && feesData.feesInfo.amount) {
+			else if ((feesData.defaultAmount  >= feesData.minFees) && $scope.isStandAlone && feesData.feesInfo.amount) {
 				isShowFees = true;
 			}
 			return isShowFees;
@@ -201,7 +201,7 @@ sntRover.controller('RVReservationDepositController',
 
 		// CICO-6068 : To calculate fee
 		$scope.calculateFee = function() {
-			if($scope.isStandAlone) {
+			if ($scope.isStandAlone) {
 
 				var feesInfo = $scope.feeData.feesInfo;
 				var amountSymbol = "";
@@ -220,15 +220,15 @@ sntRover.controller('RVReservationDepositController',
 				$scope.feeData.minFees = minFees;
 				$scope.feeData.defaultAmount = totalAmount;
 
-				if($scope.isShowFees()) {
+				if ($scope.isShowFees()) {
 
-					if(amountSymbol === "percent") {
+					if (amountSymbol === "percent") {
 						var calculatedFee = parseFloat(totalAmount * (feePercent/100));
 
 						$scope.feeData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
 						$scope.feeData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
 					}
-					else{
+					else {
 						$scope.feeData.calculatedFee = parseFloat(feePercent).toFixed(2);
 						$scope.feeData.totalOfValueAndFee = parseFloat(totalAmount + feePercent).toFixed(2);
 					}
@@ -248,19 +248,19 @@ sntRover.controller('RVReservationDepositController',
 			$scope.feeData.minFees = minFees;
 			$scope.feeData.defaultAmount = defaultAmount;
 
-			if($scope.isShowFees()) {
+			if ($scope.isShowFees()) {
 
-				if(typeof feesInfo.amount !== 'undefined' && feesInfo!== null) {
+				if (typeof feesInfo.amount !== 'undefined' && feesInfo!== null) {
 
 					var amountSymbol = feesInfo.amount_symbol;
 					var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
 
 					$scope.feeData.actualFees = feesAmount;
 
-					if(amountSymbol === "percent") {
+					if (amountSymbol === "percent") {
 						$scope.calculateFee();
 					}
-					else{
+					else {
 						$scope.feeData.calculatedFee = parseFloat(feesAmount).toFixed(2);
 						$scope.feeData.totalOfValueAndFee = parseFloat(feesAmount + defaultAmount).toFixed(2);
 					}
@@ -277,7 +277,7 @@ sntRover.controller('RVReservationDepositController',
 			$scope.feeData.totalOfValueAndFee = parseFloat(amountToPay + feesAmount).toFixed(2);
 		};
 
-		if($scope.isStandAlone) {
+		if ($scope.isStandAlone) {
 			$scope.feeData.feesInfo = $scope.passData.fees_information;
 			$scope.setupFeeData();
 		}
@@ -293,21 +293,21 @@ sntRover.controller('RVReservationDepositController',
 		$scope.checkReferencetextAvailable = function() {
 
 			angular.forEach($scope.passData.details.paymentTypes, function(value, key) {
-				if(value.name === $scope.depositData.paymentType) {
-					if($scope.depositData.paymentType !== "CC") {
+				if (value.name === $scope.depositData.paymentType) {
+					if ($scope.depositData.paymentType !== "CC") {
 						$scope.isDisplayReference = (value.is_display_reference)? true:false;
 
 						// To handle fees details on reservation deposits,
 						// While we change payment methods
 						// Handling Credit Cards seperately.
-						if(value.name !== "CC") {
+						if (value.name !== "CC") {
 							$scope.feeData.feesInfo = value.charge_code.fees_information;
 						}
 						$scope.setupFeeData();
 					}
-					else{
+					else {
 						angular.forEach($scope.passData.details.creditCardTypes, function(value, key) {
-							if($scope.depositData.card_type.toUpperCase() === value.cardcode) {
+							if ($scope.depositData.card_type.toUpperCase() === value.cardcode) {
 									$scope.isDisplayReference = (value.is_display_reference)? true:false;
 								}
 						});
@@ -334,7 +334,7 @@ sntRover.controller('RVReservationDepositController',
 
 		};
 
-		if((typeof $scope.depositDetails.attached_card !== "undefined") && $scope.depositDetails.attached_card.value !=="" && $scope.depositDetails.attached_card.is_credit_card) {
+		if ((typeof $scope.depositDetails.attached_card !== "undefined") && $scope.depositDetails.attached_card.value !=="" && $scope.depositDetails.attached_card.is_credit_card) {
 				setReservationCreditCard($scope.depositDetails.attached_card.value);
 		}
 
@@ -349,7 +349,7 @@ sntRover.controller('RVReservationDepositController',
 				$scope.$emit('hideLoader');
 				// if the param passed attach_to_reservation is undefined, this will be used to 
 				// render the card details ito the screen only
-				if(typeof attach_to_reservation === "undefined") {
+				if (typeof attach_to_reservation === "undefined") {
 					$scope.depositData.selectedCard = data.id;
 					$scope.depositData.cardNumber = retrieveCardNumber();
 					$scope.depositData.expiry_date = retrieveExpiryDate();
@@ -358,7 +358,7 @@ sntRover.controller('RVReservationDepositController',
 					$scope.showCCPage = false;
 					$scope.cardSelected = true;
 
-					if($scope.isStandAlone) {
+					if ($scope.isStandAlone) {
 						$scope.feeData.feesInfo = data.fees_information;
 						$scope.setupFeeData();
 					}
@@ -366,7 +366,7 @@ sntRover.controller('RVReservationDepositController',
 				$scope.newCardAdded = true;
 				// if the param passed attach_to_reservation is defined, this will be used to 
 				// update the payment in the staycard
-				if(typeof attach_to_reservation !== "undefined") {
+				if (typeof attach_to_reservation !== "undefined") {
 					// set data in the staycard
 					$scope.$parent.reservationData.reservation_card.payment_method_used = 'CC';
 					$scope.$parent.reservationData.reservation_card.payment_details.card_number = angular.copy($scope.depositData.cardNumber);
@@ -383,18 +383,18 @@ sntRover.controller('RVReservationDepositController',
 			};
 			// if new card is added and payment is success, add the card to reservation
 
-			if(typeof attach_to_reservation !== "undefined") {
+			if (typeof attach_to_reservation !== "undefined") {
 				paymentData.reservation_id = $scope.passData.reservationId;
 			}
 			paymentData.card_code = $scope.newPaymentInfo.tokenDetails.isSixPayment?
 									getSixCreditCardType($scope.newPaymentInfo.tokenDetails.card_type).toLowerCase():
 									$scope.newPaymentInfo.cardDetails.cardType;
 
-			if(!$scope.newPaymentInfo.tokenDetails.isSixPayment) {
+			if (!$scope.newPaymentInfo.tokenDetails.isSixPayment) {
 				paymentData.card_expiry = cardExpiry;
 			}
 
-			if($scope.depositData.isDisplayReference) {
+			if ($scope.depositData.isDisplayReference) {
 				paymentData.referance_text = $scope.depositData.referanceText;
 			}
 
@@ -438,9 +438,9 @@ sntRover.controller('RVReservationDepositController',
 		var cardName = "";
 
 
-		if($scope.depositData.addToGuestCard && $scope.newCardAdded) {
+		if ($scope.depositData.addToGuestCard && $scope.newCardAdded) {
 
-				if($scope.isSwipedCardSave) {
+				if ($scope.isSwipedCardSave) {
 					cardName = $scope.swipedCardHolderName;
 				} else {
 					cardName = ($scope.newPaymentInfo.tokenDetails.isSixPayment) ? $scope.passData.details.firstName+" "+$scope.passData.details.lastName: $scope.newPaymentInfo.cardDetails.userName;
@@ -465,7 +465,7 @@ sntRover.controller('RVReservationDepositController',
 				$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 		}
 
-		if(typeof cardAddedBySixPaySWipe !== "undefined") {
+		if (typeof cardAddedBySixPaySWipe !== "undefined") {
 			var paymentDetails = data.payment_method;
 
 			$scope.newPaymentInfo = { 
@@ -513,7 +513,7 @@ sntRover.controller('RVReservationDepositController',
 		
 		// if the existing payment method is not CC or Direct BIll and the selected payment method is CC
 		// The submit payment will update the payment type for the bill
-		if($scope.$parent.reservationData.reservation_card.payment_method_used !== 'CC'
+		if ($scope.$parent.reservationData.reservation_card.payment_method_used !== 'CC'
 		   && $scope.$parent.reservationData.reservation_card.payment_method_used !== 'DB'
 		   && $scope.depositData.paymentType === 'CC') {
 			$scope.$parent.reservationData.reservation_card.payment_method_used = 'CC';
@@ -545,7 +545,7 @@ sntRover.controller('RVReservationDepositController',
        });
 	$scope.submitPayment = function() {
 
-		if($scope.reservationData.depositAmount === '' || $scope.reservationData.depositAmount === null) {
+		if ($scope.reservationData.depositAmount === '' || $scope.reservationData.depositAmount === null) {
 			$scope.errorMessage = ["Please enter amount"];
 		} else {
 			$scope.errorMessage = "";
@@ -561,10 +561,10 @@ sntRover.controller('RVReservationDepositController',
 			};
 			// add to guest card only if new card is added and checkbox is selected
 
-			if($scope.newCardAdded) {
+			if ($scope.newCardAdded) {
 				dataToSrv.postData.add_to_guest_card =  $scope.depositData.addToGuestCard;
 			}
-			else{
+			else {
                                 dataToSrv.postData.add_to_guest_card =  false;
 			}
                         if ($scope.depositData.paymentType === 'GIFT_CARD') {
@@ -572,19 +572,19 @@ sntRover.controller('RVReservationDepositController',
                             dataToSrv.postData.card_number = $scope.cardData.cardNumber;
                         }
 
-			if($scope.isShowFees()) {
-				if($scope.feeData.calculatedFee) {
+			if ($scope.isShowFees()) {
+				if ($scope.feeData.calculatedFee) {
 					dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
 				}
-				if($scope.feeData.feesInfo) {
+				if ($scope.feeData.feesInfo) {
 					dataToSrv.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
 				}
 			}
-			if($scope.isDisplayReference) {
+			if ($scope.isDisplayReference) {
 				dataToSrv.postData.reference_text = $scope.reservationData.referanceText;
 			}
 			$scope.isLoading =  true;
-			if($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.depositData.paymentType === 'CC') {
+			if ($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.depositData.paymentType === 'CC') {
 				dataToSrv.postData.is_emv_request = true;
 				$scope.shouldShowWaiting = true;
 				// the card will be added to reservation if existing payment methid is cash
@@ -697,7 +697,7 @@ sntRover.controller('RVReservationDepositController',
 		$scope.showCCPage = false;
 		$scope.cardSelected = true;
 
-		if($scope.isStandAlone) {
+		if ($scope.isStandAlone) {
 			$scope.feeData.feesInfo = $scope.cardsList[index].fees_information;
 			$scope.setupFeeData();
 		}

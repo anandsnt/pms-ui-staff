@@ -221,7 +221,7 @@ var cordova = {
         var evt = createEvent(type, data);
 
         if (typeof documentEventHandlers[type] != 'undefined') {
-            if( bNoDetach ) {
+            if ( bNoDetach ) {
                 documentEventHandlers[type].fire(evt);
             }
             else {
@@ -323,7 +323,7 @@ var cordova = {
         channel.onCordovaReady.subscribe(function() {
             try {
                 func();
-            } catch(e) {
+            } catch (e) {
                 console.log("Failed to run constructor: " + e);
             }
         });
@@ -546,7 +546,7 @@ function include(parent, objects, clobber, merge) {
             if (obj.children) {
                 include(result, obj.children, clobber, merge);
             }
-        } catch(e) {
+        } catch (e) {
             utils.alert('Exception building Cordova JS globals: ' + e + ' for key "' + key + '"');
         }
     });
@@ -1762,23 +1762,23 @@ utils.isDate = function(d) {
  * Does a deep clone of the object.
  */
 utils.clone = function(obj) {
-    if(!obj || typeof obj == 'function' || utils.isDate(obj) || typeof obj != 'object') {
+    if (!obj || typeof obj == 'function' || utils.isDate(obj) || typeof obj != 'object') {
         return obj;
     }
 
     var retVal, i;
 
-    if(utils.isArray(obj)) {
+    if (utils.isArray(obj)) {
         retVal = [];
-        for(i = 0; i < obj.length; ++i) {
+        for (i = 0; i < obj.length; ++i) {
             retVal.push(utils.clone(obj[i]));
         }
         return retVal;
     }
 
     retVal = {};
-    for(i in obj) {
-        if(!(i in retVal) || retVal[i] != obj[i]) {
+    for (i in obj) {
+        if (!(i in retVal) || retVal[i] != obj[i]) {
             retVal[i] = utils.clone(obj[i]);
         }
     }

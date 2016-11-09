@@ -80,7 +80,7 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
              * the exactonline settings page directly. In such a case, the previousState wont be set,
              * also the selectedMenu wont be set.
              */
-            if(!$rootScope.previousState) {
+            if (!$rootScope.previousState) {
                 $rootScope.previousState = "admin.backOfficeSetup";
                 var interfacesMenuIndex = _.indexOf($scope.data.menus,
                     _.findWhere($scope.data.menus, {

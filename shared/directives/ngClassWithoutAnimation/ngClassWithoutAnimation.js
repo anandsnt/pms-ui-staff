@@ -77,11 +77,11 @@ angular
 	      var values = [];
 
 	      outer:
-	      for(var i = 0; i < tokens1.length; i++) {
+	      for (var i = 0; i < tokens1.length; i++) {
 	        var token = tokens1[i];
 
-	        for(var j = 0; j < tokens2.length; j++) {
-	          if(token === tokens2[j]) {
+	        for (var j = 0; j < tokens2.length; j++) {
+	          if (token === tokens2[j]) {
               continue outer;
             }
 	        }

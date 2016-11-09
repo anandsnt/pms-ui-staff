@@ -34,16 +34,16 @@ angular.module('sntRover').service('RVBillingInfoUtilSrv',
      * @return {String} class name
      */
     this.getEntityRole = function(route) {
-        if(route.entity_type === 'RESERVATION' &&  !route.has_accompanying_guests) {
+        if (route.entity_type === 'RESERVATION' &&  !route.has_accompanying_guests) {
             return 'guest';
         }
-        else if(route.entity_type === 'RESERVATION') {
+        else if (route.entity_type === 'RESERVATION') {
             return 'accompany';
         }
-        else if(route.entity_type === 'TRAVEL_AGENT') {
+        else if (route.entity_type === 'TRAVEL_AGENT') {
             return 'travel-agent';
         }
-        else if(route.entity_type === 'COMPANY_CARD') {
+        else if (route.entity_type === 'COMPANY_CARD') {
             return 'company';
         }
     };
@@ -54,13 +54,13 @@ angular.module('sntRover').service('RVBillingInfoUtilSrv',
      * @return {String} class name
      */
     this.getEntityIconClass = function(route) {
-        if(route.entity_type === 'RESERVATION' &&  route.has_accompanying_guests ) {
+        if (route.entity_type === 'RESERVATION' &&  route.has_accompanying_guests ) {
             return 'accompany';
         }
-        else if(route.entity_type === 'RESERVATION' || route.entity_type === 'COMPANY_CARD') {
+        else if (route.entity_type === 'RESERVATION' || route.entity_type === 'COMPANY_CARD') {
             return '';
         }
-        else if(route.entity_type === 'TRAVEL_AGENT') {
+        else if (route.entity_type === 'TRAVEL_AGENT') {
             return 'icons icon-travel-agent';
         }
     };

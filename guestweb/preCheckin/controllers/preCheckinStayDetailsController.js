@@ -23,11 +23,11 @@
 
 	$scope.postStayDetails = function() {
 		$scope.isLoading = true;
-		if(!$rootScope.stayDetails.hour  || !$rootScope.stayDetails.minute  ||!$rootScope.stayDetails.primeTime) {
+		if (!$rootScope.stayDetails.hour  || !$rootScope.stayDetails.minute  ||!$rootScope.stayDetails.primeTime) {
 			$modal.open($scope.errorOpts); // error modal popup
 			$scope.isLoading = false;
 		}
-		else{
+		else {
 		// change format to 24 hours
 		 var hour = parseInt($rootScope.stayDetails.hour);
 

@@ -27,7 +27,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
             $scope.data.activeChargeGroups = data.charge_groups;
             $scope.errorMessage = "";
 			refreshRevenueScroller();
-            if(origin !=="SUMMARY_DATE_CHANGED") {
+            if (origin !=="SUMMARY_DATE_CHANGED") {
                 $scope.$emit('hideLoader');
             }
 		};
@@ -72,7 +72,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
         var toggleItem = $scope.data.revenueData.charge_groups[index1];
 
         var successCallBackFetchRevenueDataChargeCodes = function(data) {
-            if(data.charge_codes.length > 0) {
+            if (data.charge_codes.length > 0) {
                 toggleItem.charge_codes = data.charge_codes;
                 toggleItem.active = !toggleItem.active;
                 refreshRevenueScroller();
@@ -83,7 +83,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
         };
 
         // Call api only while expanding the tab ..
-        if(!toggleItem.active) {
+        if (!toggleItem.active) {
 
             var postData = {
                 "from_date": $scope.data.fromDate,
@@ -95,7 +95,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
 
             $scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeCodes, postData, successCallBackFetchRevenueDataChargeCodes);
         }
-        else{
+        else {
             toggleItem.active = !toggleItem.active;
         }
     };
@@ -110,17 +110,17 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
             chargeCodeItem.total_count = data.total_count;
             chargeCodeItem.end = chargeCodeItem.start + data.transactions.length - 1;
 
-            if(isFromPagination) {
+            if (isFromPagination) {
                 // Compute the start, end and total count parameters
-                if(chargeCodeItem.nextAction) {
+                if (chargeCodeItem.nextAction) {
                     chargeCodeItem.start = chargeCodeItem.start + $scope.data.filterData.perPage;
                 }
-                if(chargeCodeItem.prevAction) {
+                if (chargeCodeItem.prevAction) {
                     chargeCodeItem.start = chargeCodeItem.start - $scope.data.filterData.perPage;
                 }
                 chargeCodeItem.end = chargeCodeItem.start + chargeCodeItem.transactions.length - 1;
             }
-            else if(data.transactions.length > 0) {
+            else if (data.transactions.length > 0) {
                 chargeCodeItem.active = !chargeCodeItem.active;
             }
 
@@ -130,7 +130,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
         };
 
         // Call api only while expanding the tab or on pagination Next/Prev button actions ..
-        if(!chargeCodeItem.active || isFromPagination) {
+        if (!chargeCodeItem.active || isFromPagination) {
             var postData = {
                 "from_date": $scope.data.fromDate,
                 "to_date": $scope.data.toDate,
@@ -161,7 +161,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
         var hasArrow = false;
         var item = $scope.data.revenueData.charge_groups[index].charge_codes;
 
-        if((typeof item !== 'undefined') && (item.length >0)) {
+        if ((typeof item !== 'undefined') && (item.length >0)) {
             hasArrow = true;
         }
         return hasArrow;
@@ -172,7 +172,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
         var hasArrow = false;
         var item = $scope.data.revenueData.charge_groups[index1].charge_codes[index2].transactions;
 
-        if((typeof item !== 'undefined') && (item.length >0)) {
+        if ((typeof item !== 'undefined') && (item.length >0)) {
             hasArrow = true;
         }
         return hasArrow;
@@ -181,7 +181,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
     // To hanlde click inside revenue tab.
     $scope.clickedOnRevenue = function($event) {
         $event.stopPropagation();
-        if($scope.data.isDrawerOpened) {
+        if ($scope.data.isDrawerOpened) {
             $rootScope.$broadcast("CLOSEPRINTBOX");
         }
         $scope.errorMessage = "";
@@ -212,7 +212,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
         var item = $scope.data.revenueData.charge_groups[index1].charge_codes[index2],
             isDisabled = false;
 
-        if(item.end >= item.total_count) {
+        if (item.end >= item.total_count) {
             isDisabled = true;
         }
         return isDisabled;
@@ -223,7 +223,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
         var item = $scope.data.revenueData.charge_groups[index1].charge_codes[index2],
             isDisabled = false;
 
-        if(item.page_no === 1) {
+        if (item.page_no === 1) {
             isDisabled = true;
         }
         return isDisabled;

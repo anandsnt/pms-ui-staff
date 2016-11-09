@@ -42,10 +42,10 @@
 
     $scope.emailSubmitted = function() {
 
-    	if(!validateEmail($scope.guestDetails.email)) {
+    	if (!validateEmail($scope.guestDetails.email)) {
     		$modal.open(errorOpts);
     	}
-    	else{
+    	else {
         $scope.isLoading = true;
         guestDetailsService.postGuestDetails({"email": $scope.guestDetails.email}).then(function(response) {
           $scope.isLoading = false;

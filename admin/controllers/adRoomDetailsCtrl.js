@@ -16,9 +16,9 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 	$scope.availableComponentRooms = [];
 	$scope.availableComponentRoomsArray = [];
 
-	if(roomId) {
+	if (roomId) {
 		// if roomnumber is null returning to room list
-		if(typeof roomId === 'undefined' || roomId.trim() === '') {
+		if (typeof roomId === 'undefined' || roomId.trim() === '') {
 			$state.go('admin.rooms');
 		}
 		$scope.editMode = true;
@@ -28,7 +28,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
      * To handle add new room number click
      */
 	$scope.showNewRoomNumber = function() {
-		if($scope.data.suite_rooms.length == 0 || _.last($scope.data.suite_rooms).room_number !== "") {
+		if ($scope.data.suite_rooms.length == 0 || _.last($scope.data.suite_rooms).room_number !== "") {
 			$scope.data.suite_rooms.push({'room_number': '', 'room_type_id': ''});
 		}
 	};
@@ -57,7 +57,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 
 		};
 
-		if( $scope.isStandAlone && !$rootScope.isHourlyRatesEnabled ) {
+		if ( $scope.isStandAlone && !$rootScope.isHourlyRatesEnabled ) {
 			if ($scope.editMode) {
 
 				var isNewTypeSuite = _.findWhere($scope.data.room_types, {"value": value}).is_suite,
@@ -67,10 +67,10 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 
 					$scope.isSuite = true;
 					$scope.selectedRoomTypeId = $scope.data.room_type_id;
-					if(oldRoomTypeId != value)
+					if (oldRoomTypeId != value)
 						$scope.data.suite_rooms = [];
 				}
-				else if(isNewTypeSuite || isOldTypeSuite) {
+				else if (isNewTypeSuite || isOldTypeSuite) {
 					var message = [];
 
 					if (isNewTypeSuite) {
@@ -86,16 +86,16 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 						$('.content-scroll').animate({scrollTop: 0}, 'fast');
 					}, 500);
 				}
-				if($scope.isSuite) {
+				if ($scope.isSuite) {
 					$scope.invokeApi(ADRoomSrv.getComponentRoomTypes, {'suite_room_type_id': value}, fetchSuccessOfComponentRooms, fetchFailedOfComponentRooms);
 				}
 			}
-			else{
+			else {
 
 				$scope.data.suite_rooms = [];
 				$scope.isSuite = _.findWhere($scope.data.room_types, {"value": value}).is_suite;
 
-				if($scope.isSuite) {
+				if ($scope.isSuite) {
 					$scope.invokeApi(ADRoomSrv.getComponentRoomTypes, {'suite_room_type_id': value}, fetchSuccessOfComponentRooms, fetchFailedOfComponentRooms);
 				}
 			}
@@ -106,7 +106,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
      * To handle blur event on Suite rooms
      */
     $scope.onBlur = function(index) {
-        if($scope.data.suite_rooms[index].name === "") {
+        if ($scope.data.suite_rooms[index].name === "") {
           $scope.data.suite_rooms.splice(index, 1);
         }
         angular.forEach($scope.data.suite_rooms, function(item, i) {
@@ -174,9 +174,9 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 		* adding the selected attribute on room feature here
 		* which will be used in template for adding class if it the selected attribute is true
 		*/
-		for(var i = 0; i < $scope.data.room_features.length; i++) {
+		for (var i = 0; i < $scope.data.room_features.length; i++) {
 			$scope.data.room_features[i].selected = false;
-			if($scope.data.active_room_features.indexOf($scope.data.room_features[i].value) !== -1) {
+			if ($scope.data.active_room_features.indexOf($scope.data.room_features[i].value) !== -1) {
 				$scope.data.room_features[i].selected = true;
 			}
 		}
@@ -230,11 +230,11 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 		$scope.$emit('hideLoader');
 		$scope.data = data;
 		$scope.data.suite_rooms = [];
-		for(var i = 0; i < $scope.data.room_features.length; i++) {
+		for (var i = 0; i < $scope.data.room_features.length; i++) {
 			$scope.data.room_features[i].selected = false;
 		}
-		for(var i = 0; i < $scope.data.room_likes.length; i++) {
-			for(var j = 0; j < $scope.data.room_likes[i].options.length; j++) {
+		for (var i = 0; i < $scope.data.room_likes.length; i++) {
+			for (var j = 0; j < $scope.data.room_likes[i].options.length; j++) {
 				$scope.data.room_likes[i].options[j].selected = false;
 		    }
 	    }
@@ -250,7 +250,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 		$scope.errorMessage = errorMessage ;
 	};
 
-    if($scope.editMode) {
+    if ($scope.editMode) {
     // getting the room details
 	$scope.invokeApi(ADRoomSrv.roomDetails, {'roomId': roomId}, fetchSuccessOfRoomDetails, fetchFailedOfRoomDetails);
     }
@@ -301,8 +301,8 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 		postData.is_suite_or_pseudo = $scope.isSuite || _.findWhere($scope.data.room_types, {"value": postData.room_type_id}).is_pseudo;
 
 		// to get selected features
-		for(var i = 0; i < $scope.data.room_features.length; i++) {
-			if($scope.data.room_features[i].selected === true ) {
+		for (var i = 0; i < $scope.data.room_features.length; i++) {
+			if ($scope.data.room_features[i].selected === true ) {
 				postData.active_room_features.push($scope.data.room_features[i].value);
 			}
 		}
@@ -315,7 +315,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 			options = each['options'];
 
 			if ( 'dropdown' == each.type || 'radio' == each.type ) {
-				if(each.selected !== '') {
+				if (each.selected !== '') {
 					postData.active_room_likes.push( each.selected );
 				}
 
@@ -328,11 +328,11 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 			}
 		}
 
-		if($scope.data.room_image.indexOf("data:")!== -1) {
+		if ($scope.data.room_image.indexOf("data:")!== -1) {
 			postData.room_image = $scope.data.room_image;
 		}
 
-		if($scope.editMode) {
+		if ($scope.editMode) {
 		    $scope.invokeApi(ADRoomSrv.update, {'room_id': $scope.data.room_id, 'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails, $scope.failureCallBackOfUpdateRoomDetails);
 		}
 		else {
@@ -358,7 +358,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 
 	$scope.selectedConfiguredRoom = function(selectedItem, roomTypeId, roomTypeName) {
 
-			if(selectedItem !== "") {
+			if (selectedItem !== "") {
 				$scope.data.suite_rooms.push({'room_number': selectedItem, 'room_type_id': roomTypeId, "room_type_name": roomTypeName});
 
 				var selectedRoomTypeIndex = _.findIndex($scope.availableComponentRooms, {id: roomTypeId});

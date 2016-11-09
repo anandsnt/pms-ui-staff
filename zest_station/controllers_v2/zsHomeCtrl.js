@@ -55,7 +55,7 @@ sntZestStation.controller('zsHomeCtrl', [
 				var languageConfig = zsGeneralSrv.languageValueMappingsForUI[defaultLanguage.name],
 				langShortCode = languageConfig.code;
 
-				if( $translate.use() === langShortCode && checkIfDefaultLanguagIsSet) {
+				if ( $translate.use() === langShortCode && checkIfDefaultLanguagIsSet) {
 					// do nothing, current language is already the default one
 				} else {
 					console.info("translating to default lanaguage after "+userInActivityTimeInHomeScreenInSeconds+" seconds");
@@ -105,9 +105,9 @@ sntZestStation.controller('zsHomeCtrl', [
 
 		// deactivate the active activity timer on entering home page(inorder to avoid multiple timers 
 		// running at the same time, we will be start new timer)
-		try{
+		try {
 			clearInterval($scope.activityTimer);
-		}catch(e) {
+		} catch (e) {
 			// console.log("no timer running.")
 		}
 		setHomeScreenTimer();

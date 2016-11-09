@@ -20,7 +20,7 @@ admin.controller('ADContentManagementItemDetailCtrl', ['$scope', '$state', '$sta
      var init = function() {
      	var  duration;
 
-        for(var i = 0; i < 30; i++) {
+        for (var i = 0; i < 30; i++) {
            duration = {};
            duration.value = i + 1;
            duration.name = duration.value;
@@ -30,7 +30,7 @@ admin.controller('ADContentManagementItemDetailCtrl', ['$scope', '$state', '$sta
 
         var  order;
 
-        for(var i = 0; i < 5; i++) {
+        for (var i = 0; i < 5; i++) {
            order = {};
            order.value = i + 1;
            order.name = order.value;
@@ -136,19 +136,19 @@ $scope.setSpaceDurations = function(val, index) {
 	var duration = $scope.space_durations[index];
 	var flag = $scope.data.durations.indexOf(duration.value);
 
-	if(flag === -1) {
+	if (flag === -1) {
 		$scope.data.durations.push(duration.value);
 	}
-	else{
+	else {
 		$scope.data.durations.splice(flag, 1);
 	}
 };
 
 $scope.itemTypeSelected = function() {
 
-	if($scope.data.page_template === "ADDON" && $scope.addons.length === 0) {
+	if ($scope.data.page_template === "ADDON" && $scope.addons.length === 0) {
 		$scope.fetchAddons();
-	}else if($scope.data.page_template === "SPACE" && $scope.space_occupancys.length === 0) {
+	} else if ($scope.data.page_template === "SPACE" && $scope.space_occupancys.length === 0) {
 		$scope.fetchSpaces();
 	}
 };
@@ -157,7 +157,7 @@ $scope.getSelectedAddonDescription = function() {
 	var description = "";
 
      angular.forEach($scope.addons, function(item, index) {
-       if(item.value === $scope.data.addon_id) {
+       if (item.value === $scope.data.addon_id) {
        	description = item.description;
        }
   	});
@@ -168,7 +168,7 @@ $scope.getSelectedAddonPrice = function() {
 	var price = "";
 
 	angular.forEach($scope.addons, function(item, index) {
-       if(item.value === $scope.data.addon_id) {
+       if (item.value === $scope.data.addon_id) {
        	price = item.amount;
        }
   });
@@ -182,14 +182,14 @@ $scope.getSelectedAddonPrice = function() {
 			$scope.data = data;
 			$scope.initialIcon =  data.icon;
 			$scope.initialImage = data.image;
-			if(data.page_template === 'ADDON') {
+			if (data.page_template === 'ADDON') {
 				$scope.fetchAddons();
 				$scope.data.addon_max_order = $scope.data.addon_max_order === null? "" : $scope.data.addon_max_order;
 				$scope.data.addon_min_duration = $scope.data.addon_min_duration === null ? "" : $scope.data.addon_min_duration;
-			}else{
-				if(data.page_template === 'SPACE') {
+			} else {
+				if (data.page_template === 'SPACE') {
 					$scope.fetchSpaces();
-				}else{
+				} else {
 					$scope.$emit('hideLoader');
 				}
 			}
@@ -201,11 +201,11 @@ $scope.getSelectedAddonPrice = function() {
 	/* Checkin if the screen is loaded for a new item or,
 	 * for existing item.
     */
-	if($stateParams.id !== 'new') {
+	if ($stateParams.id !== 'new') {
 		$scope.isAddMode = false;
 		$scope.fetchItem();
 	}
-	else{
+	else {
 		$scope.isAddMode = true;
 	}
 	/* Function to return to preveous state
@@ -236,10 +236,10 @@ $scope.getSelectedAddonPrice = function() {
 		};
 		var unwantedKeys = [];
 
-		if($scope.initialIcon === $scope.data.icon) {
+		if ($scope.initialIcon === $scope.data.icon) {
 			unwantedKeys.push('icon');
 		}
-		if($scope.initialImage === $scope.data.image) {
+		if ($scope.initialImage === $scope.data.image) {
 			unwantedKeys.push('image');
 		}
 		var data = dclone($scope.data, unwantedKeys);

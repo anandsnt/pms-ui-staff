@@ -21,7 +21,7 @@ sntGuestWeb.service('GwCheckinSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'GwW
 		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
 			url = '/sample_json/zestweb_v2/ext_checkin_verfication.json';
 		}
-		else{
+		else {
 			url = '/guest_web/checkin_reservation_search.json';
 		} 
 		GWBaseWebSrv2.getJSON(url, params).then(function(data) {
@@ -62,7 +62,7 @@ sntGuestWeb.service('GwCheckinSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'GwW
 		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
 			url = '/sample_json/zestweb_v2/room_upgrades.json';
 		}
-		else{
+		else {
 			url = '/guest_web/upgrade_options.json';
 		}
 		GWBaseWebSrv.getJSON(url, params).then(function(data) {

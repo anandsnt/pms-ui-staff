@@ -59,7 +59,7 @@
             autocompleteEl.autocomplete( "destroy" );
             
             // unbinding the touch move
-            if(ulElement instanceof HTMLElement) {
+            if (ulElement instanceof HTMLElement) {
                 ulElement.off('touchmove');
             }
         });    

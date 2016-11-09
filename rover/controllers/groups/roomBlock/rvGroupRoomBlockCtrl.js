@@ -655,15 +655,15 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			}
 
 			// arrival left date change
-			else if(newBlockFrom < oldBlockFrom && chActions.arrDateLeftChangeAllowed()) {
+			else if (newBlockFrom < oldBlockFrom && chActions.arrDateLeftChangeAllowed()) {
 				triggerEarlierArrivalDateChange();
 
 			}
 
 			// arrival right date change
-			else if(newBlockFrom > oldBlockFrom && chActions.arrDateRightChangeAllowed()) {
+			else if (newBlockFrom > oldBlockFrom && chActions.arrDateRightChangeAllowed()) {
 				// check move validity
-				if(new tzIndependentDate(refData.first_dep_date) < newBlockFrom)
+				if (new tzIndependentDate(refData.first_dep_date) < newBlockFrom)
 					triggerLaterArrivalDateChangeInvalidError();
 				else
 					triggerLaterArrivalDateChange();
@@ -705,16 +705,16 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				chActions 	= $scope.changeDatesActions;
 
 			// departure left date change
-			if(newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {
+			if (newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {
 				// check move validity
-				if(new tzIndependentDate(refData.last_arrival_date) > newBlockTo)
+				if (new tzIndependentDate(refData.last_arrival_date) > newBlockTo)
 					triggerEarlierDepartureDateChangeInvalidError();
 				else
 					triggerEarlierDepartureDateChange();
 			}
 
 			// departure right date change
-			else if(newBlockTo > oldBlockTo && chActions.depDateRightChangeAllowed()) {
+			else if (newBlockTo > oldBlockTo && chActions.depDateRightChangeAllowed()) {
 				triggerLaterDepartureDateChange();
 			}
 
@@ -794,7 +794,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			var refData = $scope.groupConfigData.summary;
 
 			// default to goto date
-			if(!$scope.timeLineStartDate) {
+			if (!$scope.timeLineStartDate) {
 				$scope.timeLineStartDate = (refData.block_from !== '') ? new tzIndependentDate(refData.block_from) : new tzIndependentDate($rootScope.businessDate);
 			}
 
@@ -897,10 +897,10 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			if (isHouseOverbooked && isRoomTypeOverbooked && canOverBookBoth) {
 				return "HOUSE_AND_ROOMTYPE_OVERBOOK";
 			}
-			else if(isHouseOverbooked && canOverbookHouse) {
+			else if (isHouseOverbooked && canOverbookHouse) {
 				return "HOUSE_OVERBOOK";
 			}
-			else if(isRoomTypeOverbooked && canOverbookRoomType) {
+			else if (isRoomTypeOverbooked && canOverbookRoomType) {
 				return "ROOMTYPE_OVERBOOK";
 			}
 			// Overbooking occurs and has no permission.
@@ -938,7 +938,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @returns {undefined}
 		 */
 		var failureCallBackOfSaveRoomBlock = function(error) {
-			if(error.hasOwnProperty ('httpStatus')) {
+			if (error.hasOwnProperty ('httpStatus')) {
 				if (error.httpStatus === 470) {
 					var message = $scope.checkOverBooking(error);
 
@@ -1460,7 +1460,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		};
 
 		var failureCallBackOfSaveMassUpdate = function(error) {
-			if(error.hasOwnProperty ('httpStatus')) {
+			if (error.hasOwnProperty ('httpStatus')) {
 				if (error.httpStatus === 470) {
 					var message = $scope.checkOverBooking(error);
 
@@ -1896,7 +1896,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			angular.forEach($scope.groupConfigData.summary.selected_room_types_and_bookings, function(value, key) {
 
 				angular.forEach(value.dates, function(eachDateValue, eachDateKey) {
-					if(eachDateValue.date === passedDate) {
+					if (eachDateValue.date === passedDate) {
 						totalRoomsBlockedCountIndividualDate = totalRoomsBlockedCountIndividualDate + cInt(eachDateValue.single) + cInt(eachDateValue.double) + cInt(eachDateValue.triple) + cInt(eachDateValue.quadruple);
 						totalRoomsPickedIndividulaDate = totalRoomsPickedIndividulaDate + cInt(eachDateValue.single_pickup) + cInt(eachDateValue.double_pickup) + cInt(eachDateValue.triple_pickup) + cInt(eachDateValue.quadruple_pickup);
 					}

@@ -31,7 +31,7 @@ admin.controller('adHousekeepingCtrl', ['$state', '$scope', '$rootScope', 'ADHot
 
 	$scope.watchInspectedStatus = function() {
 		$scope.$watch('data.use_inspected', function() {
-	       if(!$scope.data.use_inspected) {
+	       if (!$scope.data.use_inspected) {
 	       		$scope.data.checkin_inspected_only = false;
 	       }
 

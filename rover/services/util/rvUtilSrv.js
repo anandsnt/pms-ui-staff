@@ -21,7 +21,7 @@ angular.module('sntRover').service('rvUtilSrv', [function() {
 		this.escapeNull = function(value, replaceWith) {
 	  		var newValue = "";
 
-	  		if((typeof replaceWith !== "undefined") && (replaceWith !== null)) {
+	  		if ((typeof replaceWith !== "undefined") && (replaceWith !== null)) {
 	  			newValue = replaceWith;
 	  		}
 	  		var valueToReturn = ((value === null || typeof value === 'undefined' ) ? newValue : value);
@@ -61,7 +61,7 @@ angular.module('sntRover').service('rvUtilSrv', [function() {
 		this.getDatesBetweenTwoDates = function(fromDate, toDate) {
 		    var datesBetween = [];
 
-		    while(fromDate <= toDate) {
+		    while (fromDate <= toDate) {
 		        datesBetween.push(new Date(fromDate));
 		        fromDate.setDate(fromDate.getDate() + 1);
 		    }
@@ -203,7 +203,7 @@ angular.module('sntRover').service('rvUtilSrv', [function() {
 				interval = 15;
 			}
 
-			for(; i < 1440; i += interval) {
+			for (; i < 1440; i += interval) {
 		        hours 	= Math.floor(i / 60);
 
 		        minutes = i % 60;

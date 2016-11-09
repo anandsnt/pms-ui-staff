@@ -55,10 +55,10 @@ admin.controller('ADRoomClassListCtrl', ['$scope', '$state', 'ADRoomClassesSrv',
     * @param {string} id of the room class
     */
 	$scope.getTemplateUrl = function(index, id) {
-		if(typeof index === "undefined" || typeof id === "undefined") {
+		if (typeof index === "undefined" || typeof id === "undefined") {
 			return "";
 		}
-		if($scope.currentClickedElement === index) {
+		if ($scope.currentClickedElement === index) {
 			return "/assets/partials/roomClass/adRoomClassEdit.html";
 		}
 	};
@@ -68,7 +68,7 @@ admin.controller('ADRoomClassListCtrl', ['$scope', '$state', 'ADRoomClassesSrv',
    $scope.saveRoomClass = function() {
     	var successCallbackSave = function(response) {
     		$scope.$emit('hideLoader');
-			if($scope.isAddMode) {
+			if ($scope.isAddMode) {
 				// To add new data to scope
     			$scope.roomClasses.push(response.data);
 	    	} else {
@@ -79,7 +79,7 @@ admin.controller('ADRoomClassListCtrl', ['$scope', '$state', 'ADRoomClassesSrv',
     		$scope.currentClickedElement = -1;
     	};
 
-    	if($scope.isAddMode) {
+    	if ($scope.isAddMode) {
     		$scope.invokeApi(ADRoomClassesSrv.saveClassRoom, $scope.roomClassData, successCallbackSave);
     	} else {
     		$scope.invokeApi(ADRoomClassesSrv.updateClassRoom, $scope.roomClassData, successCallbackSave);

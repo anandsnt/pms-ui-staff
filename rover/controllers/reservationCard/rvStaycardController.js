@@ -25,7 +25,7 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 		 */
 		$scope.$on('GUESTPAYMENT', function(event, paymentData) {
 
-			if(paymentData.user_id) {
+			if (paymentData.user_id) {
 				$scope.paymentData = paymentData;
 			}
 		});
@@ -121,10 +121,10 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 			 */
 			$scope.$parent.heading = data;
 
-			if(data === "Guest Bill") {
+			if (data === "Guest Bill") {
 				$scope.$parent.addNoPrintClass = true;
 			}
-			else if(data === "Stay Card") {
+			else if (data === "Stay Card") {
 				$scope.$parent.isLogoPrint = true;
 			}
 			else {

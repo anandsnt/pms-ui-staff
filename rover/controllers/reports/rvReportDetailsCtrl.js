@@ -990,7 +990,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		var addPrintOrientation = function() {
 			var orientation = 'portrait';
 
-			switch( $scope.chosenReport.title ) {
+			switch ( $scope.chosenReport.title ) {
 				case reportNames['AR_SUMMARY_REPORT']:
 				case reportNames['ARRIVAL']:
 				case reportNames['IN_HOUSE_GUEST']:

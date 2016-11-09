@@ -32,7 +32,7 @@ angular.module('sntRover').controller('rvAvailabilityButtonController', [
 				we need to wait some time to complete the animation and execute the removing section after that
 			*/
 
-			if($scope.showAvailability) {
+			if ($scope.showAvailability) {
 				// adding the class for closing animation
 				$scope.isClosing = true;
 				// after some time we are removing the section and resetiing values to older
@@ -47,7 +47,7 @@ angular.module('sntRover').controller('rvAvailabilityButtonController', [
 
 				rvAvailabilitySrv.updateData (emptyDict);
 			}
-			else{
+			else {
 				$scope.$emit("showLoader");
 				jsMappings.fetchAssets(['rover.availability', 'highcharts'], ['highcharts-ng'])
                 .then(function() {
@@ -66,7 +66,7 @@ angular.module('sntRover').controller('rvAvailabilityButtonController', [
 		* 'showAvailability' is true
 		*/
 		$scope.getAvailabilityTemplateUrl = function() {
-			if($scope.showAvailability) {
+			if ($scope.showAvailability) {
 				return '/assets/partials/availability/availability.html';
 			}
 			return "";

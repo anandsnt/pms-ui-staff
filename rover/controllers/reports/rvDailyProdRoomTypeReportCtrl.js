@@ -157,7 +157,7 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 			var results = $scope.results,
 				actualNam;
 
-			for( roomKey in results ) {
+			for ( roomKey in results ) {
 				if ( ! results.hasOwnProperty(roomKey) ) {
 					continue;
 				}
@@ -168,7 +168,7 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 				roomObj = results[roomKey];
 				allDatesValInRoom = [];
 
-				for( dateKey in roomObj ) {
+				for ( dateKey in roomObj ) {
 					if ( ! roomObj.hasOwnProperty(dateKey) ) {
 						continue;
 					}

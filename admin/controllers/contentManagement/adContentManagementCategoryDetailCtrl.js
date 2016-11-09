@@ -31,11 +31,11 @@ admin.controller('ADContentManagementCategoryDetailCtrl', ['$scope', '$state', '
 	/* Checkin if the screen is loaded for a new category or,
 	 * for existing category.
     */
-	if($stateParams.id !== 'new') {
+	if ($stateParams.id !== 'new') {
 		$scope.isAddMode = false;
 		$scope.fetchCategory();
 	}
-	else{
+	else {
 		$scope.isAddMode = true;
 	}
 	/* Function to return to preveous state
@@ -66,7 +66,7 @@ admin.controller('ADContentManagementCategoryDetailCtrl', ['$scope', '$state', '
 		};
 		var unwantedKeys = ["image"];
 
-		if($scope.initialIcon === $scope.data.icon) {
+		if ($scope.initialIcon === $scope.data.icon) {
 			unwantedKeys = ["icon", "image"];
 		}
 		var data = dclone($scope.data, unwantedKeys);

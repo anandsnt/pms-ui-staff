@@ -51,10 +51,10 @@
 		var url = '/api/countries/sorted_list.json';
 
 		$http.get(url, {params: data}).success(function(response) {
-			if(response.status === "success") {
+			if (response.status === "success") {
 				deferred.resolve(response.data);
 			}
-			else{
+			else {
 				deferred.reject();
 			}
 			

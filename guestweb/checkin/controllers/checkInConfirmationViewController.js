@@ -63,14 +63,14 @@
 				checkinConfirmationService.verifyCheckinReservation(data).then(function(response) {
 					if (response.status === 'failure') {
 						$rootScope.netWorkError = true;
-					}else{
+					} else {
 						verificationSuccessActions(response.data);	
 					}
 				}, function() {
 					$rootScope.netWorkError = true;
 					$scope.isPosting = false;
 				});
-			}else{
+			} else {
 				// set up flags related to webservice
 				$scope.isPosting = false;
 				$rootScope.netWorkError = false;

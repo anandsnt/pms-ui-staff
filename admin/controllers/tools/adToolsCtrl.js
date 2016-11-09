@@ -64,10 +64,10 @@ admin.controller('ADToolsCtrl',
     * @param {string} id of the tool
     */
     $scope.getTemplateUrl = function(index, id) {
-        if(typeof index === "undefined" || typeof id === "undefined") {
+        if (typeof index === "undefined" || typeof id === "undefined") {
             return "";
         }
-        if($scope.currentClickedElement === index) {
+        if ($scope.currentClickedElement === index) {
                 return "/assets/partials/tools/adToolsAdd.html";
         }
     };
@@ -82,7 +82,7 @@ admin.controller('ADToolsCtrl',
 
         };
 
-        if($scope.isAddMode) {
+        if ($scope.isAddMode) {
             $scope.invokeApi(ADToolsSrv.saveTools, $scope.toolsData, successCallbackSave);
         } else {
             $scope.invokeApi(ADToolsSrv.updateTool, $scope.toolsData, successCallbackSave);

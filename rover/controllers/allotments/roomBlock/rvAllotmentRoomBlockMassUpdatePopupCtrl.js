@@ -43,7 +43,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 		 */
 		var copyValuesThroughDates = function(dates, property, value) {
 			dates.every(function(each) {
-				if(isDateInsideLimit(each.date)) {
+				if (isDateInsideLimit(each.date)) {
 					each[property] = parseInt(value);
 					return true;
 				}
@@ -119,7 +119,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 		};
 
 		var failureCallBackOfSaveMassUpdate = function(error) {
-			if(error.hasOwnProperty ('httpStatus')) {
+			if (error.hasOwnProperty ('httpStatus')) {
 				if (error.httpStatus === 470) {
 					var message = $scope.checkOverBooking(error);
 

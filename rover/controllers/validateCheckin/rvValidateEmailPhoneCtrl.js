@@ -17,7 +17,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
 		var isSharerCheckedin = false;
 
 		angular.forEach($scope.reservationData.reservation_card.sharer_information, function(sharer, key) {
-			if(sharer.reservation_status === 'CHECKEDIN' || sharer.reservation_status === 'CHECKING_OUT') {
+			if (sharer.reservation_status === 'CHECKEDIN' || sharer.reservation_status === 'CHECKING_OUT') {
 				isSharerCheckedin = true;
 				return false;
 			}
@@ -58,13 +58,13 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
         }
 	$scope.validateEmailPhoneSuccessCallback = function() {
 
-        if($scope.showPhone ) {
+        if ($scope.showPhone ) {
 			$scope.guestCardData.contactInfo.phone = $scope.saveData.phone;
 		}
-        if($scope.showEmail) {
+        if ($scope.showEmail) {
 			$scope.guestCardData.contactInfo.email = $scope.saveData.email;
 		}
-        if($scope.showMobile) {
+        if ($scope.showMobile) {
             $scope.guestCardData.contactInfo.mobile = $scope.saveData.mobile;
         }
 		$scope.$emit('hideLoader');
@@ -149,10 +149,10 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
             }
         };
 	$scope.goToNextView = function() {
-		if($scope.hasAnySharerCheckedin() || $scope.checkGuestInFromQueue) {// straight to signature, skip room upgrades CICO-19673
+		if ($scope.hasAnySharerCheckedin() || $scope.checkGuestInFromQueue) {// straight to signature, skip room upgrades CICO-19673
 			$scope.goToBillCard();
 
-		} else if($scope.roomAssignmentNeeded()) {
+		} else if ($scope.roomAssignmentNeeded()) {
 			// TO DO:Go to room assignemt viw
 			$scope.goToRoomAssignment();
                         $scope.emitPutGuestInQueue();
@@ -161,7 +161,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
 			// TO DO : GO TO ROOM UPGRAFED VIEW
 			  $scope.goToUpgrades();
                           $scope.emitPutGuestInQueue();
-                } else{
+                } else {
                     $scope.goToBillCard();
 		}
 
@@ -172,55 +172,55 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
 	        $scope.saveData.user_id = $scope.guestCardData.userId;
 	        var isValidDataExist = false;
 
-			if($scope.showEmail && $scope.showPhone && $scope.showMobile) {
+			if ($scope.showEmail && $scope.showPhone && $scope.showMobile) {
 				$scope.saveData = $scope.saveData;
-				if($scope.saveData.email !== '' || $scope.saveData.phone !== '' || $scope.saveData.mobile !== '') {
+				if ($scope.saveData.email !== '' || $scope.saveData.phone !== '' || $scope.saveData.mobile !== '') {
 					isValidDataExist = true;
 				}
-			} else if($scope.showPhone && $scope.showMobile) {
+			} else if ($scope.showPhone && $scope.showMobile) {
 				var unwantedKeys = ["email"]; // remove unwanted keys for API
 
 				$scope.saveData = dclone($scope.saveData, unwantedKeys);
-				if($scope.saveData.phone !== '' || $scope.saveData.mobile !== '' ) {
+				if ($scope.saveData.phone !== '' || $scope.saveData.mobile !== '' ) {
 					isValidDataExist = true;
 				}
-			} else if($scope.showEmail && $scope.showMobile) {
+			} else if ($scope.showEmail && $scope.showMobile) {
                 var unwantedKeys = ["phone"]; // remove unwanted keys for API
 
                 $scope.saveData = dclone($scope.saveData, unwantedKeys);
-                if($scope.saveData.phone !== '' || $scope.saveData.mobile !== '' ) {
+                if ($scope.saveData.phone !== '' || $scope.saveData.mobile !== '' ) {
                     isValidDataExist = true;
                 }
-            } else if($scope.showEmail && $scope.showPhone) {
+            } else if ($scope.showEmail && $scope.showPhone) {
                 var unwantedKeys = ["mobile"]; // remove unwanted keys for API
 
                 $scope.saveData = dclone($scope.saveData, unwantedKeys);
-                if($scope.saveData.phone !== '' || $scope.saveData.mobile !== '' ) {
+                if ($scope.saveData.phone !== '' || $scope.saveData.mobile !== '' ) {
                     isValidDataExist = true;
                 }
-            } else if($scope.showEmail) {
+            } else if ($scope.showEmail) {
                 var unwantedKeys = ["mobile", "phone"]; // remove unwanted keys for API
 
                 $scope.saveData = dclone($scope.saveData, unwantedKeys);
-                if($scope.saveData.phone !== '' || $scope.saveData.mobile !== '' ) {
+                if ($scope.saveData.phone !== '' || $scope.saveData.mobile !== '' ) {
                     isValidDataExist = true;
                 }
-            } else if($scope.showPhone) {
+            } else if ($scope.showPhone) {
                 var unwantedKeys = ["mobile", "email"]; // remove unwanted keys for API
 
                 $scope.saveData = dclone($scope.saveData, unwantedKeys);
-                if($scope.saveData.phone !== '' || $scope.saveData.mobile !== '' ) {
+                if ($scope.saveData.phone !== '' || $scope.saveData.mobile !== '' ) {
                     isValidDataExist = true;
                 }
             } else {
 				var unwantedKeys = ["phone", "email"]; // remove unwanted keys for API
 
 				$scope.saveData = dclone($scope.saveData, unwantedKeys);
-				if($scope.saveData.email !== '') {
+				if ($scope.saveData.email !== '') {
 					isValidDataExist = true;
 				}
 			}
-			if(isValidDataExist) {  // CICO-15079 : Validation for phone/email data being blank.
+			if (isValidDataExist) {  // CICO-15079 : Validation for phone/email data being blank.
 				$scope.invokeApi(RVValidateCheckinSrv.saveGuestEmailPhone, $scope.saveData, $scope.validateEmailPhoneSuccessCallback);
 			} else {
                 $scope.errorMessage = ["Please fill the fields"];

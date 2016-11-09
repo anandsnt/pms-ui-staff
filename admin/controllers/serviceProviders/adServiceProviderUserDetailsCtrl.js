@@ -6,7 +6,7 @@ admin.controller('ADServiceProviderUserDetailsCtrl', ['$scope', '$rootScope', '$
 		$scope.userDetails = {};
 		$scope.userDetails.service_provider_id = $stateParams.serviceProviderId;
 		// if userId exist its edit screen else add new screen
-		if(!!$stateParams.userId) {
+		if (!!$stateParams.userId) {
 			$scope.userDetails.user_id = $stateParams.userId;
 			fetchUserDetails();
 		}
@@ -20,7 +20,7 @@ admin.controller('ADServiceProviderUserDetailsCtrl', ['$scope', '$rootScope', '$
 			id: $scope.userDetails.user_id
 		};
 		var successCallbackFetch = function(data) {
-			if(data.status === "failure") {
+			if (data.status === "failure") {
 				$scope.errorMessage = data.errors;
 			}
 			$scope.userDetails = Object.assign($scope.userDetails, data);
@@ -59,7 +59,7 @@ admin.controller('ADServiceProviderUserDetailsCtrl', ['$scope', '$rootScope', '$
 					"is_trying_to_unlock": true
 				};
 		var successCallbackOfSendInvitation = function(data) {
-			if(data.status === "failure") {
+			if (data.status === "failure") {
 				$scope.errorMessage = data.errors;
 			}
 			$scope.$emit('hideLoader');
@@ -79,18 +79,18 @@ admin.controller('ADServiceProviderUserDetailsCtrl', ['$scope', '$rootScope', '$
 	$scope.save = function() {
 		delete $scope.userDetails.previewImage;
 		var successCallbackFetch = function(data) {			
-			if(data.status ==="failure") {
+			if (data.status ==="failure") {
 				$scope.errorMessage = data.errors;
-			}else{				
+			} else {				
 				$state.go('admin.serviceproviderusers', {'id': $scope.userDetails.service_provider_id, 'name': $scope.serviceProviderName});
 			}			
 			$scope.$emit('hideLoader');
 		};
 		// if userId exist updates the user else add new user
 
-		if(!$scope.userDetails.user_id) {
+		if (!$scope.userDetails.user_id) {
 			$scope.invokeApi(ADServiceProviderSrv.addServiceProviderUser, $scope.userDetails, successCallbackFetch);
-		}else{
+		} else {
 			$scope.invokeApi(ADServiceProviderSrv.updateServiceProviderUser, $scope.userDetails, successCallbackFetch);
 		}
 	};

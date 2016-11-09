@@ -132,7 +132,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		// Footer Settings
 		$rootScope.footerSettings = reservationAndhotelData.zest_web_footer_settings;
 
-		if(!!$rootScope.footerSettings.display_footer) {
+		if (!!$rootScope.footerSettings.display_footer) {
 			// active footer count
 			var footerCount = _.filter($rootScope.footerSettings.footers, function(footer) { return footer.is_active;}).length;
 			// set zestweb footer color based on admin settings
@@ -142,7 +142,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 			$rootScope.footerClass = returnFooterStyleClass(footerCount);
 			// to avoid flickering effect we hides the footer initially using CSS
 			$("#zest-footer").show();
-		}else{
+		} else {
 			// if no footer is set
 			$rootScope.footerSettings.display_footer = false;
 		}
@@ -176,7 +176,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		(reservationAndhotelData.zest_checkin_later_text !== null && typeof reservationAndhotelData.zest_checkin_later_text !== "undefined" && reservationAndhotelData.zest_checkin_later_text.length>0) ? reservationAndhotelData.zest_checkin_later_text :"Arriving Later";
 
 
-		if(reservationAndhotelData.is_sent_to_que === 'true' 
+		if (reservationAndhotelData.is_sent_to_que === 'true' 
 		           && !!reservationAndhotelData.zest_web_use_new_sent_to_que_action) {
 			// even though this is sent to que, the  flag name in 
 			// next screens are isAutoCheckinOn. So setting that as true

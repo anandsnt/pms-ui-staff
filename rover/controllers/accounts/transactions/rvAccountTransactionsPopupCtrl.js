@@ -147,8 +147,8 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 	$scope.setScroller('chargeCodesList', scrollerOptionsForSearch);
 
 	$scope.selectChargeCode = function(id) {
-		 for(var i = 0; i < $scope.availableChargeCodes.length; i++) {
-		 	 if($scope.availableChargeCodes[i].id === id) {
+		 for (var i = 0; i < $scope.availableChargeCodes.length; i++) {
+		 	 if ($scope.availableChargeCodes[i].id === id) {
 		 	 	$scope.selectedChargeCode = $scope.availableChargeCodes[i];
 		 	 }
 		 }
@@ -162,9 +162,9 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
   	var displayFilteredResultsChargeCodes = function() {
 
 	    // if the entered text's length < 3, we will show everything, means no filtering
-	    if($scope.chargecodeData.chargeCodeSearchText.length < 3) {
+	    if ($scope.chargecodeData.chargeCodeSearchText.length < 3) {
 	      // based on 'is_row_visible' parameter we are showing the data in the template
-	      for(var i = 0; i < $scope.availableChargeCodes.length; i++) {
+	      for (var i = 0; i < $scope.availableChargeCodes.length; i++) {
 	          $scope.availableChargeCodes[i].is_row_visible = true;
 	          $scope.availableChargeCodes[i].is_selected = true;
 	      }
@@ -172,12 +172,12 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 	      // we have changed data, so we are refreshing the scrollerbar
 
 	    }
-	    else{
+	    else {
 	      var value = "";
 	      // searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
 	      // if it is zero, then we will request for webservice
 
-	      for(var i = 0; i < $scope.availableChargeCodes.length; i++) {
+	      for (var i = 0; i < $scope.availableChargeCodes.length; i++) {
 	        value = $scope.availableChargeCodes[i];
 	        if (($scope.escapeNull(value.name).toUpperCase()).indexOf($scope.chargecodeData.chargeCodeSearchText.toUpperCase()) >= 0 ||
 	            ($scope.escapeNull(value.description).toUpperCase()).indexOf($scope.chargecodeData.chargeCodeSearchText.toUpperCase()) >= 0 )

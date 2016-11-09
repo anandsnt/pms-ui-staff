@@ -22,7 +22,7 @@ var TimelinePanel = React.createClass({
 		setTimeout(function () {
 	        iscroll.timeline.refresh();
 
-	        if(_.isNumber(this.props.display.scrollTo)) {
+	        if (_.isNumber(this.props.display.scrollTo)) {
 	        	// scroll.timeline.scrollTo(this.props.display.scrollTo, 0);
 	        }
 	    }.bind(this), 1000);
@@ -35,14 +35,14 @@ var TimelinePanel = React.createClass({
 
 		var hops = Object.prototype.hasOwnProperty;
 
-		if(hops.call(this.props, 'filter') && this.props.filter !== nextProps.filter ) {
+		if (hops.call(this.props, 'filter') && this.props.filter !== nextProps.filter ) {
   			this.setState({
   				filter: nextProps.filter
   			});
   		}
 	},
 	shouldComponentUpdate: function(nextProps, nextState) {
-		if(this.props.viewport !== nextProps.viewport ||
+		if (this.props.viewport !== nextProps.viewport ||
 		   this.props.display !== nextProps.display ||
 		   !this.props.currentResizeItem && nextProps.currentResizeItem ||
 		   this.props.currentResizeItem || this.props.filter !== nextProps.filter ) {

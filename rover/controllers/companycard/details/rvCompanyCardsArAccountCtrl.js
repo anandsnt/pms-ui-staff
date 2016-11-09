@@ -26,7 +26,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 
 		$scope.$on('setgenerateNewAutoAr', function(e, bool) {
 			$scope.$parent.generateNewAutoAr = bool;
-			if( !$scope.arAccountDetails.is_auto_assign_ar_numbers && bool ) {
+			if ( !$scope.arAccountDetails.is_auto_assign_ar_numbers && bool ) {
 				updateArAccount(true);
 			}
 		});
@@ -58,7 +58,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 
 			var dataToSend = $scope.arAccountDetails;
 
-			if(!!$scope.contactInformation.id) {
+			if (!!$scope.contactInformation.id) {
 				dataToSend.id = $scope.contactInformation.id;
 				presentArDetails.id = $scope.contactInformation.id;
 			}
@@ -73,7 +73,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 			if (($scope.generateNewAutoAr && $scope.arAccountDetails.is_auto_assign_ar_numbers) || (dataNotUpdated && $scope.arAccountDetails.ar_number)) {
 				$scope.invokeApi(RVCompanyCardSrv.saveARDetails, dataToSend, successCallbackOfsaveARDetails, failureCallback );
 			}
-			else if( (!$scope.arAccountDetails.is_auto_assign_ar_numbers && dataNotUpdated ) || initialUpdate ) {
+			else if ( (!$scope.arAccountDetails.is_auto_assign_ar_numbers && dataNotUpdated ) || initialUpdate ) {
 				// CICO-24472 => If is_auto_assign_ar_numbers property is OFF and some data updated on AR TAB , 
 				// we call save API without AR Number.
 				$scope.invokeApi(RVCompanyCardSrv.saveARDetails, dataToSend, successCallbackOfsaveARDetailsWithoutARNumber, failureCallback );

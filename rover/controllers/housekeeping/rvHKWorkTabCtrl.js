@@ -29,7 +29,7 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 		$scope.roomDetails = $scope.$parent.roomDetails;
 
 		$scope.taskDetails = $scope.roomDetails.task_details;
-		if($scope.isTaskPresent()) { 
+		if ($scope.isTaskPresent()) { 
 			$scope.currentTask = $scope.taskDetails[0];
 			$scope.currentTaskID = $scope.currentTask.id;
 		}

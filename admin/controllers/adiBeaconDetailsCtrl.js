@@ -4,11 +4,11 @@ admin.controller('ADiBeaconDetailsCtrl', ['$scope', '$stateParams', '$rootScope'
     BaseCtrl.call(this, $scope);
     $scope.$emit('hideLoader');
     $scope.addmode = ($stateParams.action === "add")? true : false;
-    if(!$scope.addmode) {
+    if (!$scope.addmode) {
       $scope.beaconId = $stateParams.action;
       $scope.isBeaconLinked = beaconDetails.is_linked;
     }
-    else{
+    else {
       $scope.isBeaconLinked = false;
     }
     $scope.displayMessage = $scope.addmode ? "Add new iBeacon" :"Edit iBeacon";
@@ -27,7 +27,7 @@ admin.controller('ADiBeaconDetailsCtrl', ['$scope', '$stateParams', '$rootScope'
   };
   $scope.init();
 
-if(!$scope.addmode) {
+if (!$scope.addmode) {
   $scope.data = beaconDetails;
    angular.forEach($scope.beaconNeighbours, function(beaconNeighbour, index) {
                 if (beaconNeighbour.beacon_id ===$scope.beaconId) {
@@ -35,7 +35,7 @@ if(!$scope.addmode) {
                 }
   });
  }
- else{
+ else {
   $scope.data.proximity_id = defaultBeaconDetails.proximity_id;
   $scope.data.major_id = defaultBeaconDetails.major_id;
   $scope.data.minor_id = defaultBeaconDetails.minor_id;
@@ -46,10 +46,10 @@ if(!$scope.addmode) {
     */
   $scope.backClicked = function() {
 
-    if($rootScope.previousStateParam) {
+    if ($rootScope.previousStateParam) {
       $state.go($rootScope.previousState, { menu: $rootScope.previousStateParam});
     }
-    else if($rootScope.previousState) {
+    else if ($rootScope.previousState) {
       $state.go($rootScope.previousState);
     }
     else
@@ -65,13 +65,13 @@ if(!$scope.addmode) {
 
   $scope.toggleStatus = function() {
 
-    if($scope.data.status) {
+    if ($scope.data.status) {
       $scope.data.status = false;
     }
-    else if($scope.data.description.length>0 && $scope.data.title.length>0) {
+    else if ($scope.data.description.length>0 && $scope.data.title.length>0) {
       $scope.data.status = ! $scope.data.status;
     }
-    else if($scope.data.message.length>0) {
+    else if ($scope.data.message.length>0) {
       $scope.data.status = ! $scope.data.status;
     }
 
@@ -81,9 +81,9 @@ if(!$scope.addmode) {
   $scope.linkiBeacon =  function() {
     var successfullyLinked = function(data) {
       $scope.isBeaconLinked = true;
-      if(!$scope.addmode) {
+      if (!$scope.addmode) {
         $scope.linkBeacon();
-      }else{
+      } else {
         $scope.$emit('hideLoader');
         $scope.successMessage = data.RVSuccess;
       }
@@ -114,10 +114,10 @@ if(!$scope.addmode) {
     };
 
     $scope.$emit('showLoader');
-    try{
+    try {
       sntapp.iBeaconLinker.linkiBeacon(options);
     }
-    catch(er) {
+    catch (er) {
       var error = {};
 
       error.RVError = er;
@@ -129,10 +129,10 @@ if(!$scope.addmode) {
 
       var updateData ={};
       var updateBeaconSuccess = function(data) {
-        if(!$scope.addmode) {
+        if (!$scope.addmode) {
           $scope.$emit('hideLoader');
           else$state.go('admin.ibeaconSettings');
-        }else{
+        } else {
           $scope.beaconId = data.id;
           $scope.linkBeacon();
         }
@@ -144,30 +144,30 @@ if(!$scope.addmode) {
       };
       // unset title and description in case beacon is not promotion else unset message
 
-      if($scope.data.type !=='PROMOTION') {
+      if ($scope.data.type !=='PROMOTION') {
           $scope.data.title = "";
           $scope.data.description = "";
       }
-      else{
+      else {
           $scope.data.message = "";
       }
       var BeaconId = $scope.data.proximity_id+"-"+$scope.data.major_id+"-"+$scope.data.minor_id;
 
-      if($scope.addmode) {
+      if ($scope.addmode) {
         var unwantedKeys = ["major_id", "minor_id", "proximity_id"];
 
         updateData= dclone($scope.data, unwantedKeys);
         updateData.uuid = BeaconId;
         $scope.invokeApi(adiBeaconSettingsSrv.addBeaconDetails, updateData, updateBeaconSuccess, updateBeaconFailure);
       }
-      else{
+      else {
         updateData.id = $stateParams.action;
         var unwantedKeys = ["picture", "majorid", "minorid"];
 
         updateData.data= dclone($scope.data, unwantedKeys);
         updateData.data.uuid = BeaconId;
         // Remove user_photo field if image is not uploaded. Checking base64 encoded data exist or not
-        if($scope.data.picture.indexOf("data:")!== -1) {
+        if ($scope.data.picture.indexOf("data:")!== -1) {
           updateData.data.picture = $scope.data.picture;
         }
 
@@ -178,9 +178,9 @@ if(!$scope.addmode) {
   $scope.linkBeacon = function() {
     var linkBeaconSuccess = function() {
         $scope.$emit('hideLoader');
-        if($scope.addmode) {
+        if ($scope.addmode) {
           $state.go('admin.ibeaconSettings');
-        }else{
+        } else {
           $scope.successMessage = data.RVSuccess;
         }
     };

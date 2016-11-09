@@ -70,7 +70,7 @@ angular.module('sntRover').controller('RVUpgradesController',
 		$scope.isUpsellAvailable = function() {
 			var showUpgrade = false;
 
-			if($scope.upgradesList.length > 0 && !$scope.reservationData.reservation_card.is_suite && (($scope.reservationData.reservation_card.is_upsell_available === 'true') && ($scope.reservationData.reservation_card.reservation_status === 'RESERVED' || $scope.reservationData.reservation_card.reservation_status === 'CHECKING_IN'))) {
+			if ($scope.upgradesList.length > 0 && !$scope.reservationData.reservation_card.is_suite && (($scope.reservationData.reservation_card.is_upsell_available === 'true') && ($scope.reservationData.reservation_card.reservation_status === 'RESERVED' || $scope.reservationData.reservation_card.reservation_status === 'CHECKING_IN'))) {
 				showUpgrade = true;
 			}
 			return showUpgrade;
@@ -82,11 +82,11 @@ angular.module('sntRover').controller('RVUpgradesController',
 		 * @returns {Boolean} flag
 		 */
 		var isRoomReadyToAssign = function(room) {
-			if(room.room_status === "READY" && room.fo_status === "VACANT" && !room.is_preassigned) {
-				if(room.checkin_inspected_only === "true" && room.room_ready_status === "INSPECTED") {
+			if (room.room_status === "READY" && room.fo_status === "VACANT" && !room.is_preassigned) {
+				if (room.checkin_inspected_only === "true" && room.room_ready_status === "INSPECTED") {
 					return true;
 				}
-				else if(room.checkin_inspected_only === "false") {
+				else if (room.checkin_inspected_only === "false") {
 					return true;
 				}
 			}
@@ -104,7 +104,7 @@ angular.module('sntRover').controller('RVUpgradesController',
 
 						roomToUpgrade	 = _.filter(roomsInRoomType, isRoomReadyToAssign)[0];
 
-					if(roomToUpgrade) {
+					if (roomToUpgrade) {
 						roomType.upgrade_room_number = roomToUpgrade.room_number;
 						roomType.donot_move_room = roomToUpgrade.donot_move_room;
 						$scope.upgradesList.push(roomType);
@@ -142,7 +142,7 @@ angular.module('sntRover').controller('RVUpgradesController',
 		 * function to check occupancy for the reservation
 		 */
 		$scope.showMaximumOccupancyDialog = function(index) {
-			if($scope.isRoomLockedForThisReservation === "true" || $scope.upgradesList[index].donot_move_room) {
+			if ($scope.isRoomLockedForThisReservation === "true" || $scope.upgradesList[index].donot_move_room) {
 				ngDialog.open({
 	                template: '/assets/partials/roomAssignment/rvRoomLocked.html',
 	                className: 'ngdialog-theme-default',
@@ -241,7 +241,7 @@ angular.module('sntRover').controller('RVUpgradesController',
 		var failureCallBackSelectUpgrade = function(error) {
 			// since we are expecting some custom http error status in the response
 			// and we are using that to differentiate among errors
-			if(error.hasOwnProperty ('httpStatus')) {
+			if (error.hasOwnProperty ('httpStatus')) {
 				switch (error.httpStatus) {
 					case 470:
 							wanted_to_forcefully_assign = true;
@@ -395,7 +395,7 @@ angular.module('sntRover').controller('RVUpgradesController',
 		$scope.getRoomStatusClass = function(room) {
 			var statusClass = "ready";
 
-			if(room.is_oos === "true") {
+			if (room.is_oos === "true") {
 				return "room-grey";
 			}
 			return statusClass;

@@ -60,23 +60,23 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			var isAllChargeCodesSelected = true;
 			var billTabsData = $scope.transactionsDetails.bills;
 
-			if(!$rootScope.isStandAlone) {
+			if (!$rootScope.isStandAlone) {
 				isAllChargeCodesSelected = false;
 			}
-			else{
+			else {
 				var chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
 
 		        if (chargeCodes) {
-		            if(chargeCodes.length > 0) {
+		            if (chargeCodes.length > 0) {
 		                _.each(chargeCodes, function(chargeCode) {
-		                  if(!chargeCode.isSelected) {
+		                  if (!chargeCode.isSelected) {
 		                    isAllChargeCodesSelected = false;
 		                  }
 		                });
-		            } else{
+		            } else {
 		                isAllChargeCodesSelected = false;
 		            }
-		        } else{
+		        } else {
 		            isAllChargeCodesSelected = false;
 		        }
 			}
@@ -92,17 +92,17 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			var billTabsData = $scope.transactionsDetails.bills;
 			var chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
 
-			if(!!chargeCodes && chargeCodes.length>0) {
+			if (!!chargeCodes && chargeCodes.length>0) {
 				_.each(chargeCodes, function(chargeCode, index) {
-				  if(!chargeCode.isSelected) {
+				  if (!chargeCode.isSelected) {
 				  	isAnyOneChargeCodeIsExcluded = true;
 				  }
-				  else{
+				  else {
 				  	isAnyOneChargeCodeIsIncluded = true;
 				  }
 				});
 			}
-			else{
+			else {
 				isAnyOneChargeCodeIsExcluded = false;
 				isAnyOneChargeCodeIsIncluded = false;
 			}
@@ -137,9 +137,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$scope.moveChargeData.fromBillId = billTabsData[$scope.currentActiveBill].bill_id;
 
 
-				if(chargeCodes.length>0) {
+				if (chargeCodes.length>0) {
 					_.each(chargeCodes, function(chargeCode, index) {
-						if(chargeCode.isSelected) {
+						if (chargeCode.isSelected) {
 							$scope.moveChargeData.selectedTransactionIds.push(chargeCode.id);
 						}
 				    });
@@ -150,7 +150,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			    		scope: $scope
 		    		});
 				}
-				else{
+				else {
 					return;
 				}
 			});
@@ -312,7 +312,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			var width = 0;
 
-			if($scope.transactionsDetails !== undefined) {
+			if ($scope.transactionsDetails !== undefined) {
 				var width = $('#registration-summary ul li').width() * ($scope.transactionsDetails.bills.length + 1);
 			}
 			return width;
@@ -352,7 +352,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			var bills = [];
 
-		    for(var i = 0; i < $scope.transactionsDetails.bills.length; i++ ) {
+		    for (var i = 0; i < $scope.transactionsDetails.bills.length; i++ ) {
 		    	bills.push(i+1);
 		    }
 
@@ -875,8 +875,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			if (currentTab === "TRANSACTIONS") {
 				callInitialAPIs();
 			}
-			else{
-				if($scope.isBillingReferenceNumberChanged) {
+			else {
+				if ($scope.isBillingReferenceNumberChanged) {
 					updateBillingReferenceNumber();
 				}
 			}
@@ -958,10 +958,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
     		var activebillTab 	= $scope.transactionsDetails.bills[$scope.currentActiveBill];
     		// Load the data only if an active date is present and there is no data already fetched.
 
-			if(!!activebillTab.activeDate && activebillTab.transactions.length === 0 ) {
+			if (!!activebillTab.activeDate && activebillTab.transactions.length === 0 ) {
 				getBillTransactionDetails();
 			}
-			else{
+			else {
 				console.log("here");
 				$scope.$emit('hideLoader');
 				refreshRegContentScroller();
@@ -981,7 +981,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
             next: function(billData) {
                 var length = billData.days.length - 1;
 
-                if(billData.currentActive < length) {
+                if (billData.currentActive < length) {
                     billData.currentActive ++;
                     billData.days[billData.currentActive].isShown = true;
                     billData.days[billData.currentActive - this.showCount].isShown = false;
@@ -992,7 +992,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
                 } 
             },
             prev: function(billData) {
-                if(billData.currentActive >= this.showCount) {
+                if (billData.currentActive >= this.showCount) {
                     billData.days[billData.currentActive].isShown = false;
                     billData.days[billData.currentActive-this.showCount].isShown = true;
                     if (billData.currentActive === this.showCount) {
@@ -1016,9 +1016,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
                 var i = 0,
                 dateCount = bill.days.length;
 
-                if(dateCount > showCount) {
+                if (dateCount > showCount) {
                     bill.disablePrev = false;                    
-                    while(i < (dateCount - showCount)) {
+                    while (i < (dateCount - showCount)) {
                         bill.days[i].isShown = false;
                         i++;
                     }
@@ -1026,7 +1026,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
                 else {
                     bill.disablePrev = true;
                 }
-                while(i < dateCount) {
+                while (i < dateCount) {
                     bill.days[i].isShown = true;
                     i++;
                 }
@@ -1046,10 +1046,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
  			activebillTab.total_count  = data.total_count;
 
  			// Compute the start, end and total count parameters
-            if(activebillTab.nextAction) {
+            if (activebillTab.nextAction) {
                 activebillTab.start = activebillTab.start + $scope.perPage;
             }
-            if(activebillTab.prevAction) {
+            if (activebillTab.prevAction) {
                 activebillTab.start = activebillTab.start - $scope.perPage;
             }
             activebillTab.end = activebillTab.start + activebillTab.transactions.length - 1;

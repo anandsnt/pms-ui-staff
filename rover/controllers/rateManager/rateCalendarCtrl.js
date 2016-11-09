@@ -294,7 +294,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
                                         $scope.anyRoomHasClosedRestriction = true;
                                     }
                                     // CICO-21942 Set days count of restrictionsIndependentOfDays to be null
-                                    if(_.indexOf(RateMngrCalendarSrv.restrictionsIndependentOfDays, parseInt(restriction[rir].restriction_type_id, 10)) > -1) {
+                                    if (_.indexOf(RateMngrCalendarSrv.restrictionsIndependentOfDays, parseInt(restriction[rir].restriction_type_id, 10)) > -1) {
                                         restriction[rir].restriction_type_id.days = null;
                                     }
                                 }
@@ -341,7 +341,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
                                         $scope.anyRoomHasClosedRestriction = true;
                                     }
                                     // CICO-21942 Set days count of restrictionsIndependentOfDays to be null
-                                    if(_.indexOf(RateMngrCalendarSrv.restrictionsIndependentOfDays, parseInt(_restriction, 10)) > -1) {
+                                    if (_.indexOf(RateMngrCalendarSrv.restrictionsIndependentOfDays, parseInt(_restriction, 10)) > -1) {
                                         _row[_date].restrictions[a].days = null;
                                     }
                                 }
@@ -353,7 +353,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
                                         $scope.anyRoomHasClosedRestriction = true;
                                     }
                                     // CICO-21942 Set days count of restrictionsIndependentOfDays to be null
-                                    if(_.indexOf(RateMngrCalendarSrv.restrictionsIndependentOfDays, parseInt(_restriction, 10)) > -1) {
+                                    if (_.indexOf(RateMngrCalendarSrv.restrictionsIndependentOfDays, parseInt(_restriction, 10)) > -1) {
                                         _row[_date][a].days = null;
                                     }
                                 }
@@ -600,7 +600,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
 
             // In case of selecting rates and coming into room-view, the isChildRate[] is not initialized
             // USE 'is_child' from API response on such cases
-            if($scope.calendarData.isChildRate !== undefined || $scope.lastChildRates !== undefined) {
+            if ($scope.calendarData.isChildRate !== undefined || $scope.lastChildRates !== undefined) {
                  $scope.calendarData.is_child = $scope.rateIsChild($scope.currentSelectedRate);
             }
 
@@ -656,7 +656,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
             }
             $stateParams.calendarMode = $scope.calendarMode;
 
-            if($scope.calendarData.is_child) {
+            if ($scope.calendarData.is_child) {
                 $scope.popupData.parentRate = '"' + $scope.calendarData.parentRateName + '"';
             }
 

@@ -6,10 +6,10 @@ sntRover.directive('imageLoad', function () {
         link: function(scope, element, attrs) {
 
             element.bind("load", function(e) {
-            		try{
+            		try {
             			scope.imageLoaded();
             		}
-            		catch(err) {
+            		catch (err) {
 
                     }
 

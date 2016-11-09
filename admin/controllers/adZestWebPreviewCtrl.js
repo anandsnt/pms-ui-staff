@@ -108,10 +108,10 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'isSmallDevice',
 		};
 
 		BaseCtrl.call(this, $scope);
-		if($scope.globalSettings.is_cms_on) {
+		if ($scope.globalSettings.is_cms_on) {
 			overrideStylesWithCMSdata($scope.globalSettings);
 		}
-		else{
+		else {
 			return;
 		}
 		

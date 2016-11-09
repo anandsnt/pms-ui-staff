@@ -656,14 +656,14 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         	var selectedRestrictions = _.where(item.hasRestrictionListFilter.data, {selected: true});
 
 			item.hasRestrictionListFilter.selectAll = false;
-        	if(item.hasRestrictionListFilter.data.length === selectedRestrictions.length) {
+        	if (item.hasRestrictionListFilter.data.length === selectedRestrictions.length) {
         		item.hasRestrictionListFilter.title = 'All Selected';
         		item.hasRestrictionListFilter.selectAll = true;
         	}
-        	else if(selectedRestrictions.length === 0 ) {
+        	else if (selectedRestrictions.length === 0 ) {
         		item.hasRestrictionListFilter.title = item.hasRestrictionListFilter.defaultTitle;
         	}
-        	else if(selectedRestrictions.length === 1 ) {
+        	else if (selectedRestrictions.length === 1 ) {
         		item.hasRestrictionListFilter.title = selectedRestrictions[0].description;
         	}
         	else {
@@ -688,14 +688,14 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         	var selectedRoomTypes 	= _.where(item.hasRoomTypeFilter.data, {selected: true});
 
 			item.hasRoomTypeFilter.selectAll = false;
-        	if(item.hasRoomTypeFilter.data.length === selectedRoomTypes.length) {
+        	if (item.hasRoomTypeFilter.data.length === selectedRoomTypes.length) {
         		item.hasRoomTypeFilter.title = 'All Selected';
         		item.hasRoomTypeFilter.selectAll = true;
         	}
-        	else if(selectedRoomTypes.length === 0 ) {
+        	else if (selectedRoomTypes.length === 0 ) {
         		item.hasRoomTypeFilter.title = item.hasRoomTypeFilter.defaultTitle;
         	}
-        	else if(selectedRoomTypes.length === 1 ) {
+        	else if (selectedRoomTypes.length === 1 ) {
         		item.hasRoomTypeFilter.title = selectedRoomTypes[0].name;
         	}
         	else {
@@ -718,16 +718,16 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
         $scope.rateCodeChanged = function(item, rateCode) {
         	_.each(item.hasRateCodeFilter.data, function(__rateCode) {
-        		if(__rateCode.id !== rateCode.id) {
+        		if (__rateCode.id !== rateCode.id) {
         			__rateCode.selected = false;
         		}
         	});
         	var selectedRateCodes = _.where(item.hasRateCodeFilter.data, {selected: true});
 
-        	if(selectedRateCodes.length === 0 ) {
+        	if (selectedRateCodes.length === 0 ) {
         		item.hasRateCodeFilter.title = item.hasRateCodeFilter.defaultTitle;
         	}
-        	else if(selectedRateCodes.length === 1 ) {
+        	else if (selectedRateCodes.length === 1 ) {
         		item.hasRateCodeFilter.title = selectedRateCodes[0].description;
         	}
         	// for report details filter
@@ -756,14 +756,14 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 			item.hasRateFilter.selectAll = false;
 
-        	if(showingRateList.length === selectedRates.length && showingRateList.length !== 0) {
+        	if (showingRateList.length === selectedRates.length && showingRateList.length !== 0) {
         		item.hasRateFilter.title = 'All Selected';
         		item.hasRateFilter.selectAll = true;
         	}
-        	else if(selectedRates.length === 0 ) {
+        	else if (selectedRates.length === 0 ) {
         		item.hasRateFilter.title = item.hasRateFilter.defaultTitle;
         	}
-        	else if(selectedRates.length === 1 ) {
+        	else if (selectedRates.length === 1 ) {
         		item.hasRateFilter.title = selectedRates[0].rate_name;
         	}
         	else {
@@ -830,7 +830,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         	// if all selected from rate type drop down
         	var wantedToShowAllRates = item.hasRateTypeFilter.selectAll;
 
-        	if( wantedToShowAllRates ) {
+        	if ( wantedToShowAllRates ) {
         		return item.hasRateFilter.data;
         	}
 
@@ -1205,7 +1205,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				key = reportParams['RATE_IDS'];
 				params[key] = _.pluck(_.where(getRateListToShow(report), {selected: true}), "id");
                 // For the daily production rates; we are to send an array with group or allotment ids
-                if(reportNames['DAILY_PRODUCTION_RATE'] === report.title) {
+                if (reportNames['DAILY_PRODUCTION_RATE'] === report.title) {
                     var selectedCustomRates = _.pluck(_.where(getRateListToShow(report), {selected: true, id: null}), "group_id");
 
                     if ( selectedCustomRates.length > 0 ) {
@@ -1229,17 +1229,17 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 			// for rate code
 			if (!!report.hasRateCodeFilter) {
-				if(report.hasRateCodeFilter.options.singleSelect) {
+				if (report.hasRateCodeFilter.options.singleSelect) {
 					var selectedRateCode = _.findWhere(report.hasRateCodeFilter.data, { selected: true });
 
-					if(selectedRateCode) {
+					if (selectedRateCode) {
 						params[reportParams['RATE_ID']] = selectedRateCode.id;
 					}
 				} else {
 					key = reportParams['RATE_IDS'];
 					var selectedRates = getRatesListToShow(report);
 
-					if(selectedRates.length > 0) {
+					if (selectedRates.length > 0) {
 						params[key] = [];
 						_.each(selectedRates, function(rate) {
 							params[key].push( rate.id );

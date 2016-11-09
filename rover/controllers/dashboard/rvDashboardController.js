@@ -46,7 +46,7 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
         else if (time >= 12 && time < 16) {
           $scope.greetingsMessage = 'GREETING_AFTERNOON';
         }
-        else{
+        else {
           $scope.greetingsMessage = 'GREETING_EVENING';
         }
         // ADDED Time out since translation not working without time out
@@ -57,7 +57,7 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
            $scope.setTitle(title);
         }, 2000);
 
-        if(!$rootScope.isWorkstationSet) {
+        if (!$rootScope.isWorkstationSet) {
           setWorkStation();
         }
 
@@ -153,13 +153,13 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
 
       try {
           sntapp.uuidService.getDeviceId(options);
-      } catch(err) {
+      } catch (err) {
 
       }
    };
 
    var onSetWorkstationSuccess = function(data) {
-            if(!data.is_workstation_present) {
+            if (!data.is_workstation_present) {
               if ($scope.isHotelAdmin) {
                 $scope.$emit('hideLoader');
                 showWorkstationPopup();
@@ -181,7 +181,7 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
       // Variable to avoid calling the set work station api, when
       // its already invoked when navigating to the dashboard for the first time
       $rootScope.isWorkstationSet = true;
-      if($scope.isIpad) {
+      if ($scope.isIpad) {
         document.addEventListener("deviceready", function() {
                       setDeviceId();
 
@@ -191,13 +191,13 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
         // Check whether UUID is set from the WS response. We will check it 3 times
         // in an interval of 500ms. If the UUID is not set by that time, we will use the default
         // value 'DEFAULT'
-        if(!$scope.getDeviceId()) {
+        if (!$scope.getDeviceId()) {
           var count = 3;
           var deviceIdCheckTimer = setInterval(function() {
-            if($scope.getDeviceId()) {
+            if ($scope.getDeviceId()) {
               clearInterval(deviceIdCheckTimer);
               invokeSetWorkstationApi();
-            } else if(!$scope.getDeviceId() && count == 0) {
+            } else if (!$scope.getDeviceId() && count == 0) {
               $rootScope.UUID = "DEFAULT";
               clearInterval(deviceIdCheckTimer);
               invokeSetWorkstationApi();
@@ -270,7 +270,7 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
           'HOUSEKEEPING': 'rover.dashboard.housekeeping'
         };
 
-        if($rootScope.default_dashboard in defaultDashboardMappedWithStates) {
+        if ($rootScope.default_dashboard in defaultDashboardMappedWithStates) {
 
             // Nice Gotacha!!
             // When returning from search/housekeeping to dashboard, the animation will be reversed
@@ -283,7 +283,7 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
               $state.go(defaultDashboardMappedWithStates[$rootScope.default_dashboard]);
             }
         }
-        else{
+        else {
             $scope.errorMessage = 'We are unable to redirect to dashboard, Please set Dashboard against this user and try again!!';
         }
    };

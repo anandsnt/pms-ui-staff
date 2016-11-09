@@ -30,7 +30,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
 
                     var defaultTask = null;
 
-                    if(!currentSelection && !$scope.is_edit) {
+                    if (!currentSelection && !$scope.is_edit) {
                         defaultTask = _.find(workType.tasks, {
                             is_default: true
                         });
@@ -140,9 +140,9 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             angular.forEach($scope.rateTypesDetails.cancelationPenalties, function(cancelationPenalty) {
                 var symbol = (cancelationPenalty.amount_type === "amount") ? '$' : '%';
 
-                if(cancelationPenalty.amount_type === "amount") {
+                if (cancelationPenalty.amount_type === "amount") {
                 	symbol = "$";
-                } else if(cancelationPenalty.amount_type === "day") {
+                } else if (cancelationPenalty.amount_type === "day") {
                 	symbol = "Night(s)";
                 } else {
                 	symbol = "%";
@@ -168,13 +168,13 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
          * Set commission data
          */
         var setupCommissionData = function() {
-            if(typeof $scope.rateData.commission_details !== 'undefined') {
+            if (typeof $scope.rateData.commission_details !== 'undefined') {
                 var chargeCodes = $scope.rateData.commission_details.charge_codes,
                     selectedChargeCodes = [];
 
-                if( typeof chargeCodes !== 'undefined' && chargeCodes.length >0 ) {
+                if ( typeof chargeCodes !== 'undefined' && chargeCodes.length >0 ) {
                     angular.forEach( chargeCodes, function( item, index) {
-                        if( item.is_checked ) {
+                        if ( item.is_checked ) {
                             selectedChargeCodes.push(item.id);
                         }
                     });
@@ -258,7 +258,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 $scope.detailsMenu = "";
                 $('#activityLogArea').scope().detailsMenu = '';
                 $scope.$emit('hideLoader');
-                if($scope.rateData.based_on && $scope.rateData.based_on.is_copied == true) {
+                if ($scope.rateData.based_on && $scope.rateData.based_on.is_copied == true) {
                     $scope.$emit("activateSetTab");
                 } else {
                     $scope.$emit("changeMenu", 'Room types');
@@ -358,14 +358,14 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
         };
 
         $scope.togglePMSOnly = function() {
-            if(!!$scope.rateData.is_channel_only && !!$scope.rateData.is_pms_only) {
+            if (!!$scope.rateData.is_channel_only && !!$scope.rateData.is_pms_only) {
                 $scope.rateData.is_channel_only = false;
             }
 
         };
 
         $scope.toggleChannelOnly = function() {
-            if(!!$scope.rateData.is_channel_only && !!$scope.rateData.is_pms_only) {
+            if (!!$scope.rateData.is_channel_only && !!$scope.rateData.is_pms_only) {
                 $scope.rateData.is_pms_only = false;
             }
         };

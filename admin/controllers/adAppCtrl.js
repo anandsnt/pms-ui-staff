@@ -79,7 +79,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 	    window.history.pushState("initial", "Showing Admin Dashboard", "#/"); // we are forcefully setting top url, please refer routerFile
 
 		var setupLeftMenu = function() {
-			if($scope.isStandAlone) {
+			if ($scope.isStandAlone) {
 				$scope.menu = [{
 					title: "MENU_DASHBOARD",
 					action: "staff#/staff/dashboard/",
@@ -593,7 +593,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 		if ($scope.isHotelAdmin) {
 			$scope.getLanguage();
-		}else{
+		} else {
 			$translate.use('EN');
 		}
 
@@ -634,10 +634,10 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		    */
 		$scope.goBackToPreviousState = function() {
 
-			    if($rootScope.previousStateParam) {
+			    if ($rootScope.previousStateParam) {
 			      $state.go($rootScope.previousState, { menu: $rootScope.previousStateParam});
 			    }
-			    else if($rootScope.previousState) {
+			    else if ($rootScope.previousState) {
 			      $state.go($rootScope.previousState);
 			    }
 			    else

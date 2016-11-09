@@ -26,10 +26,10 @@ angular.module('sntRover').controller('itemInventoryMainController', [
 	};
 
 	$scope.loadSelectedView = function () {
-		if($scope.selectedView === 'grid') {
+		if ($scope.selectedView === 'grid') {
 			return '/assets/partials/availability/itemInventoryGridStatus.html';
 		}
-		else if($scope.selectedView === 'graph') {
+		else if ($scope.selectedView === 'graph') {
 			return '/assets/partials/availability/itemInventoryGraphStatus.html';
 		}
 	};

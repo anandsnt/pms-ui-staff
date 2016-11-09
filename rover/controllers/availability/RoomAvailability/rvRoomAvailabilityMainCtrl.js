@@ -19,10 +19,10 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	};
 
 	$scope.loadSelectedView = function() {
-		if($scope.selectedView === 'grid') {
+		if ($scope.selectedView === 'grid') {
 			return '/assets/partials/availability/roomAvailabilityGridStatus.html';
 		}
-		else if($scope.selectedView === 'graph') {
+		else if ($scope.selectedView === 'graph') {
 			return '/assets/partials/availability/roomAvailabilityGraphStatus.html';
 		}
 	};
@@ -55,9 +55,9 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	* success call of availability data fetch
 	*/
 	var successCallbackOfAvailabilityFetch = function(data) {
-		if($scope.selectedView === 'graph') {
+		if ($scope.selectedView === 'graph') {
 			$scope.fetchAdditionalData();
-			}else{
+			} else {
 			$scope.$emit("hideLoader");
 			$scope.$broadcast("changedRoomAvailableData");
 		}

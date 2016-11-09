@@ -113,7 +113,7 @@ angular.module('stayCardModule', [])
                 if (!$stateParams.promotion_code) {
                     $stateParams.promotion_code = null;
                 }
-                if(!$stateParams.room_type_id) {
+                if (!$stateParams.room_type_id) {
                     $stateParams.room_type_id = null;
                 }
             },
@@ -133,24 +133,24 @@ angular.module('stayCardModule', [])
                         params.override_restrictions =  $stateParams.override_restrictions;
                         params.adults  = $stateParams.adults;
                         params.children = $stateParams.children;
-                    if($stateParams.company_id)
+                    if ($stateParams.company_id)
                         params.company_id = $stateParams.company_id;
-                    if($stateParams.travel_agent_id)
+                    if ($stateParams.travel_agent_id)
                         params.travel_agent_id = $stateParams.travel_agent_id;
-                    if($stateParams.group_id || $stateParams.allotment_id)
+                    if ($stateParams.group_id || $stateParams.allotment_id)
                         params.group_id = $stateParams.group_id || $stateParams.allotment_id;
-                    if($stateParams.promotion_code)
+                    if ($stateParams.promotion_code)
                         params.promotion_code = $stateParams.promotion_code;
-                    if($stateParams.promotion_id)
+                    if ($stateParams.promotion_id)
                         params.promotion_id = $stateParams.promotion_id;
-                    if($stateParams.room_type_id)
+                    if ($stateParams.room_type_id)
                         params.room_type_id = $stateParams.room_type_id;
-                    if($stateParams.is_member == "true")
+                    if ($stateParams.is_member == "true")
                         params.is_member = $stateParams.is_member;
 
                     var activeTab = RVReservationBaseSearchSrv.getRoomRatesDefaultView();
 
-                    if(params.company_id || params.travel_agent_id || params.group_id || params.promotion_id || params.is_member) {
+                    if (params.company_id || params.travel_agent_id || params.group_id || params.promotion_id || params.is_member) {
                         activeTab = 'RECOMMENDED';
                     }
                     RVRoomRatesSrv.setRoomAndRateActiveTab(activeTab);
@@ -296,13 +296,13 @@ angular.module('stayCardModule', [])
                 },
                 roomUpgrades: function(RVUpgradesSrv, $stateParams, roomAssignmentJsAssets) {
                     // check if roomupgrade is available
-                    if($stateParams.upgrade_available ==="true") {
+                    if ($stateParams.upgrade_available ==="true") {
                         var params = {};
 
                         params.reservation_id = $stateParams.reservation_id;
                         return RVUpgradesSrv.getAllUpgrades(params);
                     }
-                    else{
+                    else {
                         return [];
                     }
 

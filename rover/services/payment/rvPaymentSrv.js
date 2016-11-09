@@ -120,12 +120,12 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 		var pollToTerminal = function(async_callback_url) {
 			// we will continously communicate with the terminal till 
 			// the timeout set for the hotel
-			if(timeStampInSeconds >= $rootScope.emvTimeout) {
+			if (timeStampInSeconds >= $rootScope.emvTimeout) {
 				var errors = ["Request timed out. Unable to process the transaction"];
 
 				deferred.reject(errors);
 			}
-			else{
+			else {
 				RVBaseWebSrvV2.getJSONWithSpecialStatusHandling(async_callback_url).then(function(data) {
 					// if the request is still not proccesed
 					if ((!!data.status && data.status === 'processing_not_completed') || data === "null") {
@@ -139,10 +139,10 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 						deferred.resolve(data);
 					}
 				}, function(data) {
-					if(typeof data === 'undefined') {
+					if (typeof data === 'undefined') {
 						pollToTerminal(async_callback_url);
 					}
-					else{
+					else {
 						clearInterval(refreshIntervalId);
 						deferred.reject(data);
 					}
@@ -198,12 +198,12 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 		var pollToTerminal = function(async_callback_url) {
 			// we will continously communicate with the terminal till 
 			// the timeout set for the hotel
-			if(timeStampInSeconds >= $rootScope.emvTimeout) {
+			if (timeStampInSeconds >= $rootScope.emvTimeout) {
 				var errors = ["Request timed out. Unable to process the transaction"];
 
 				deferred.reject(errors);
 			}
-			else{
+			else {
 				RVBaseWebSrvV2.getJSONWithSpecialStatusHandling(async_callback_url).then(function(data) {
 					// if the request is still not proccesed
 					if ((!!data.status && data.status === 'processing_not_completed') || data === "null") {
@@ -217,10 +217,10 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 						deferred.resolve(data);
 					}
 				}, function(data) {
-					if(typeof data === 'undefined') {
+					if (typeof data === 'undefined') {
 						pollToTerminal(async_callback_url);
 					}
-					else{
+					else {
 						clearInterval(refreshIntervalId);
 						deferred.reject(data);
 					}

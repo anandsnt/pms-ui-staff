@@ -245,7 +245,7 @@ admin.service('ADDailyWorkAssignmentSrv', [
             var deferred = $q.defer(), url;
             // hide suite as per CICO-24369
 
-            if(params) {
+            if (params) {
                 url = 'api/room_types.json?exclude_suite='+ params.exclude_suite;
             } else {
                 url = 'api/room_types';

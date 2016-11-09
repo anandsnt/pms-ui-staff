@@ -81,10 +81,10 @@ angular.module('sntRover').controller('RVHKGuestTabCtrl', [
 			var hkStatusId;
 
 			if ( !! $scope.flag.roomStatusReady ) {
-				if( 'true' === $scope.roomDetails.checkin_inspected_only ) {
+				if ( 'true' === $scope.roomDetails.checkin_inspected_only ) {
 					hkStatusId = 2;
 				}
-				else{
+				else {
 					hkStatusId = 1;
 				}
 			} else {
@@ -131,7 +131,7 @@ angular.module('sntRover').controller('RVHKGuestTabCtrl', [
 		var init = function() {
 			var currentStatus = $scope.roomDetails.current_room_reservation_status;
 
-			switch(currentStatus) {
+			switch (currentStatus) {
 				case 'ARRIVED':
 				case 'STAYOVER':
 					$scope.roomDetails.hasDept = !!$scope.roomDetails.dept_date || $scope.roomDetails.departure_time ? true : false;

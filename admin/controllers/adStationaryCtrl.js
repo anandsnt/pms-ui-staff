@@ -90,7 +90,7 @@ admin.controller('ADStationaryCtrl',
 		}
 		// CICO-26524
 		$scope.data.group_hold_status_data = [];
-		if(!!$scope.data.groupholdstatus) {
+		if (!!$scope.data.groupholdstatus) {
 			var groupConfirmationData = {};
 
 			groupConfirmationData.hold_status_id = $scope.data.groupholdstatus;
@@ -112,7 +112,7 @@ admin.controller('ADStationaryCtrl',
 
 	// CICO-17706 : While Cancellation Email is Turned OFF , Print Cancellation Email also forced to OFF.
 	$scope.$watch('data.send_cancellation_letter', function(newValue, oldValue) {
-		if(!newValue) {
+		if (!newValue) {
 	   		$scope.data.print_cancellation_letter = false;
 		}
 	});
@@ -191,7 +191,7 @@ admin.controller('ADStationaryCtrl',
 		$scope.data.group_confirmation_footer = "";
 		angular.forEach($scope.data.group_hold_status_data, function(value, key) {
 
-	     	if(value.hold_status_id == $scope.data.groupholdstatus) {
+	     	if (value.hold_status_id == $scope.data.groupholdstatus) {
 	     		$scope.data.group_confirmation_header = value.confirmation_email_header;
 		        $scope.data.group_confirmation_footer = value.confirmation_email_footer;
 	     	}

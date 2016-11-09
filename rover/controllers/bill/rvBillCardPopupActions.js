@@ -49,10 +49,10 @@ sntRover.controller('rvBillCardPopupCtrl',
 	};
 
 	$scope.showSpiltValues = function() {
-		if($scope.splitTypeisAmount) {
+		if ($scope.splitTypeisAmount) {
 			$scope.displayFirstValue = $scope.selectedTransaction.amount - $scope.splitValue;
 			$scope.displaySecondValue = $scope.splitValue;
-		}else{
+		} else {
 			$scope.displaySecondValue = parseFloat($scope.selectedTransaction.amount* $scope.splitValue /100).toFixed(2);
 			$scope.displayFirstValue = $scope.selectedTransaction.amount - $scope.displaySecondValue;
 		}
@@ -134,8 +134,8 @@ sntRover.controller('rvBillCardPopupCtrl',
 	$scope.setScroller('chargeCodesList', scrollerOptionsForSearch);
 
 	$scope.selectChargeCode = function(id) {
-		 for(var i = 0; i < $scope.availableChargeCodes.length; i++) {
-		 	 if($scope.availableChargeCodes[i].id === id) {
+		 for (var i = 0; i < $scope.availableChargeCodes.length; i++) {
+		 	 if ($scope.availableChargeCodes[i].id === id) {
 		 	 	$scope.selectedChargeCode = $scope.availableChargeCodes[i];
 		 	 }
 		 }
@@ -149,21 +149,21 @@ sntRover.controller('rvBillCardPopupCtrl',
   	var displayFilteredResultsChargeCodes = function() {
 
 	    // if the entered text's length < 3, we will show everything, means no filtering
-	    if($scope.chargecodeData.chargeCodeSearchText.length < 3) {
+	    if ($scope.chargecodeData.chargeCodeSearchText.length < 3) {
 	      // based on 'is_row_visible' parameter we are showing the data in the template
-	      for(var i = 0; i < $scope.availableChargeCodes.length; i++) {
+	      for (var i = 0; i < $scope.availableChargeCodes.length; i++) {
 	          $scope.availableChargeCodes[i].is_row_visible = false;
 	      }
 	      $scope.refreshScroller('chargeCodesList');
 	      // we have changed data, so we are refreshing the scrollerbar
 
 	    }
-	    else{
+	    else {
 	      var value = "";
 	      // searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
 	      // if it is zero, then we will request for webservice
 
-	      for(var i = 0; i < $scope.availableChargeCodes.length; i++) {
+	      for (var i = 0; i < $scope.availableChargeCodes.length; i++) {
 	        value = $scope.availableChargeCodes[i];
 	        if (($scope.escapeNull(value.name).toUpperCase()).indexOf($scope.chargecodeData.chargeCodeSearchText.toUpperCase()) >= 0 ||
 	            ($scope.escapeNull(value.description).toUpperCase()).indexOf($scope.chargecodeData.chargeCodeSearchText.toUpperCase()) >= 0 )
@@ -213,12 +213,12 @@ sntRover.controller('rvBillCardPopupCtrl',
     		chargeCodeLength = $scope.availableChargeCodes.length,
     		queryLength = $scope.chargecodeData.chargeCodeSearchText.length;
 
-    	if($scope.showChargeCodes) {
+    	if ($scope.showChargeCodes) {
     		isShowChargeCodeList = true;
     	}
-    	else if(queryLength > 2 && chargeCodeLength !== 0) {
-			for(var i = 0; i < chargeCodeLength; i++) {
-			 	if($scope.availableChargeCodes[i].is_row_visible) {
+    	else if (queryLength > 2 && chargeCodeLength !== 0) {
+			for (var i = 0; i < chargeCodeLength; i++) {
+			 	if ($scope.availableChargeCodes[i].is_row_visible) {
 			 		isShowChargeCodeList = true;
 			 		break;
 			 	}

@@ -45,9 +45,9 @@ sntGuestWeb.run(function($rootScope, $location, $http, $window) {
 	$rootScope.$on('$stateChangeStart',
 		function(event, toState, toParams, fromState, fromParams) {
 
-		if(toState.name === 'noOptionAvailable' && (fromState.name === 'emailVerification' || fromState.name === 'resetPassword')) {
+		if (toState.name === 'noOptionAvailable' && (fromState.name === 'emailVerification' || fromState.name === 'resetPassword')) {
 			event.preventDefault();
-		}else{
+		} else {
 			$rootScope.title =toState.title;
 		}	
 		

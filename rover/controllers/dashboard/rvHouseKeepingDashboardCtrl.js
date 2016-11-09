@@ -76,7 +76,7 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
     $scope.escapeNull = function(value, replaceWith) {
         var newValue = "";
 
-        if((typeof replaceWith !== "undefined") && (replaceWith !== null)) {
+        if ((typeof replaceWith !== "undefined") && (replaceWith !== null)) {
             newValue = replaceWith;
         }
         var valueToReturn = ((value === null || typeof value === 'undefined' ) ? newValue : value);

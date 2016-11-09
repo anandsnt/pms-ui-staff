@@ -27,7 +27,7 @@ sntRover.controller('rvFrontDeskDashboardSearchController', ['$scope', '$state',
 
     $scope.$on("$includeContentLoaded", function() {
         // we are showing the add new guest button in searhc only if it is standalone & search result is empty
-        if($rootScope.isStandAlone) {
+        if ($rootScope.isStandAlone) {
             $scope.$broadcast("showAddNewGuestButton", true);
         }
     });
@@ -38,7 +38,7 @@ sntRover.controller('rvFrontDeskDashboardSearchController', ['$scope', '$state',
         $scope.$emit("closeDrawer");
         // if the click occured on find reservation, no result found, no one opted to late checkout,
         // need to back to dashboard
-        if(getParentWithSelector($event, document.getElementsByClassName("no-content")[0])
+        if (getParentWithSelector($event, document.getElementsByClassName("no-content")[0])
             || getParentWithSelector($event, document.getElementsByClassName("no-content")[1])
             || getParentWithSelector($event, document.getElementsByClassName("no-content")[2])) {
 

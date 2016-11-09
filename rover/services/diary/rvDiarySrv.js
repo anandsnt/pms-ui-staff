@@ -2,7 +2,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
         function($q, RVBaseWebSrv, rvBaseWebSrvV2, util, meta, $vault, $rootScope) {
                 /* DATA STORE w/ set functions */
                 function STORE() {
-                    if(!(this instanceof STORE)) {
+                    if (!(this instanceof STORE)) {
                         return new STORE();
                     }
                     this.bCreated = true;
@@ -15,7 +15,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         var props = def.split('.'),
                             ret = this;
 
-                        for(var i = 0, len = props.length; i < len; i++) {
+                        for (var i = 0, len = props.length; i < len; i++) {
                             ret = ret[props[i]];
                         }
 
@@ -27,18 +27,18 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                                 var key = args.shift(),
                                     val = args.shift();
 
-                                if(_.isObject(val) && _.has(val, 'data')) {
+                                if (_.isObject(val) && _.has(val, 'data')) {
                                     this[key]           = val.data;
                                     this['_' + key]     = val.index;
                                     this['__' + key]    = val.group;
-                                } else{
+                                } else {
                                     this[key]           = val;
                                 }
                             }.bind(this);
 
-                        switch(args.length) {
+                        switch (args.length) {
                             case 1:
-                                if(_.isObject(args[0])) {
+                                if (_.isObject(args[0])) {
                                     _.each(_.pairs(args[0]),
                                            function(data) {
                                                 setLookups(data);
@@ -55,7 +55,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     get: function(field) {
                         var args = _.toArray(arguments);
 
-                        switch(args.length) {
+                        switch (args.length) {
                             case 1:
                                 return this.namespace(args[0]);
                             default:
@@ -84,7 +84,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                             set_difference,
                             room_ids    = _.keys(room_oc_groups);
 
-                        for(var i = 0, len = room_ids.length; i < len; i++) {
+                        for (var i = 0, len = room_ids.length; i < len; i++) {
                             idx = +room_ids[i];
 
                             r = _.findWhere(this.get('room'), { id: idx });
@@ -92,12 +92,12 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                             existing = util.copyArray(r.occupancy, existing);
                             incoming = _.sortBy(room_oc_groups[idx], 'arrival');
 
-                            if(existing.length === 0) {
+                            if (existing.length === 0) {
                                 r.occupancy = util.copyArray(existing.concat(incoming), r.occupancy);
                             } else {
                                 set_difference  = this.difference(existing, incoming, 'reservation_id');
 
-                                if(set_difference.length > 0) {
+                                if (set_difference.length > 0) {
                                     existing = this.merge(existing,
                                                           _.sortBy(set_difference, 'arrival'),
                                                           [],
@@ -116,7 +116,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         var diff    = _.difference(_.pluck(incoming, itr), _.pluck(existing, itr)),
                             result = [];
 
-                        if(diff.length > 0) {
+                        if (diff.length > 0) {
                             result = _.filter(incoming, function(id) { return diff.indexOf(id); });
                         }
 
@@ -137,12 +137,12 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                 this.data_Store = new STORE();
 
                 function Config(config, param_cfg, index_cfg, group_cfg, dataStore, normalizationFn, mergeFn) {
-                    if(!(this instanceof Config)) {
+                    if (!(this instanceof Config)) {
                         return new Config(config, param_cfg, index_cfg, group_cfg, dataStore, normalizationFn, mergeFn);
                     }
 
-                    for(var k in config) {
-                        if(_.has(config, k)) {
+                    for (var k in config) {
+                        if (_.has(config, k)) {
                             this[k] = config[k];
                         }
                     }
@@ -186,7 +186,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                             prefix = this.key_prefix,
                             temp;
 
-                        if(recv !== null) {
+                        if (recv !== null) {
                             local_store.data = recv;
 
                             this.homogenizeValues();
@@ -206,15 +206,15 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                             local_store = this.store,
                             prefix = this.key_prefix;
 
-                        if(_.isArray(local_store.data)) {
+                        if (_.isArray(local_store.data)) {
                             _.each(local_store.data, function(datum) {
-                                if(prefix) {
+                                if (prefix) {
                                     datum.key = _.uniqueId(prefix + (datum[id] || _.random(0, 100000)) + '-');
                                 }
 
-                                for(var k in datum) {
-                                    if(_.has(datum, k) && k !== 'room_no') {
-                                        if(/^\d+\.?\d*$/.test(datum[k])) {
+                                for (var k in datum) {
+                                    if (_.has(datum, k) && k !== 'room_no') {
+                                        if (/^\d+\.?\d*$/.test(datum[k])) {
                                             datum[k] = +datum[k];
                                         }
                                     }
@@ -225,7 +225,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     mergeData: function() {
                         var local_store = this.store;
 
-                        if(this.merge) {
+                        if (this.merge) {
                             this.merge(local_store.data);
                         }
                     },
@@ -233,11 +233,11 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         var local_store = this.store,
                             self = this;
 
-                        if(this.normalize) {
+                        if (this.normalize) {
                             _.each(local_store.data, function(obj) {
-                                if(!normalizeParams) {
+                                if (!normalizeParams) {
                                     self.normalize.call(self, obj);
-                                } else{
+                                } else {
                                     self.normalize.apply(self, [obj].concat(normalizeParams));
                                 }
                             });
@@ -258,7 +258,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         });
                     },
                     normalizeTime: function(date, time) {
-                        if(!date || !time) {
+                        if (!date || !time) {
                         }
                         var std = (time.indexOf('am') > -1 || time.indexOf('pm') > -1),
                             t_a = time.slice(0, -3),
@@ -285,12 +285,12 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                             end_date: e_comp.date.toDateString()
                         };
 
-                    if(room_type_id) {
+                    if (room_type_id) {
                         _.extend(params, { room_type_id: room_type_id });
 
                     }
 
-                    if(rate_type) {
+                    if (rate_type) {
                         _.extend(params, { rate_type: rate_type });
                     }
 
@@ -334,7 +334,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         room_type = this.dataStore.get('_room_type.values.id')[room_type_id],
                         maintenance = this.dataStore.get('_maintenance.values.room_type_id')[room_type_id];
 
-                    if(maintenance) {
+                    if (maintenance) {
                         room_type[meta.maintenance.time_span] = maintenance[meta.maintenance.time_span];
                     }
                     room.room_type = room_type;
@@ -355,7 +355,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     _.each(inactiveRooms, function(value, key) {
                         
                         _.each(value, function(eachRoom) {
-                            if(eachRoom.room_id === room.id) {
+                            if (eachRoom.room_id === room.id) {
                                 // start time                     
                                 hour = eachRoom.from_time.split(":") [0];
                                 min = eachRoom.from_time.split(":") [1];
@@ -435,29 +435,29 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                     occupancy.arrival_date = occupancy.arrival_date.replace(/-/g, '/');
                     occupancy.departure_date = occupancy.departure_date.replace(/-/g, '/');
-                    if(!occupancy[m.start_date]) {
+                    if (!occupancy[m.start_date]) {
                         occupancy[m.start_date]    = this.normalizeTime(occupancy.arrival_date, occupancy.arrival_time);
                     }
-                    if(!occupancy[m.end_date]) {
+                    if (!occupancy[m.end_date]) {
                         occupancy[m.end_date]        = this.normalizeTime(occupancy.departure_date, occupancy.departure_time);
                     }
-                    if(!occupancy[m.maintenance]) {
+                    if (!occupancy[m.maintenance]) {
                     occupancy[m.maintenance]  = room_type[meta.maintenance.time_span];
                     }
                     occupancy[m.room_type]      = angular.lowercase(room_type.name);
                     occupancy[m.status]         = angular.lowercase(occupancy[m.status]);
-                    if(occupancy[m.status]          === 'reserved') {
+                    if (occupancy[m.status]          === 'reserved') {
                         occupancy[m.status]         = 'reserved';
-                    } else if(occupancy[m.status]   === 'checkedin') {
+                    } else if (occupancy[m.status]   === 'checkedin') {
                         occupancy[m.status]         = 'inhouse';
-                    } else if(occupancy[m.status]   === 'checkedout') {
+                    } else if (occupancy[m.status]   === 'checkedout') {
                         occupancy[m.status]         = 'check-out';
-                    } else if(occupancy[m.status]   === 'checking_out') {
+                    } else if (occupancy[m.status]   === 'checking_out') {
                         occupancy[m.status]         = 'departed';
-                    } else if(occupancy[m.status]   ===  'checking_in') {
+                    } else if (occupancy[m.status]   ===  'checking_in') {
                         occupancy[m.status]         = 'check-in';
                     }
-                    else if(occupancy[m.status]     ===  'noshow') {
+                    else if (occupancy[m.status]     ===  'noshow') {
                         occupancy[m.status]         = 'no-show';
                     }
                     room = _.findWhere(Room.store.data, { id: occupancy.room_id });
@@ -507,7 +507,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         will work on all as a group.
                     */
 
-                    if(!slot.room_id) {
+                    if (!slot.room_id) {
                         slot.room_id                = room.id;
                         slot.reservation_status     = slot_statues[slot.status];
                         slot.room_service_status    = '';
@@ -570,7 +570,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                             }
                         });
 
-                        if(create_reservation_data) {
+                        if (create_reservation_data) {
                             time = util.gridTimeComponents(create_reservation_data.start_date, 48);
 
                             _data_Store.set({
@@ -676,7 +676,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                             AvailabilityCount.read(dateRange(time.x_n, time.x_p))])
                             .then(function(data_array) {
                                 // if there is any reservation transfter initiated from one day to another
-                                if(__this.isReservationMovingFromOneDateToAnother) {
+                                if (__this.isReservationMovingFromOneDateToAnother) {
                                     var reservation = __this.movingReservationData.reservation;
                                     var arrival_date,
                                         res_arrival  = new Date (reservation.arrival),
@@ -702,7 +702,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                                     data_array[2].reservations.push(reservation);
 
-                                    if(indexOfSameReservationAlreadyInList >= 0) {
+                                    if (indexOfSameReservationAlreadyInList >= 0) {
                                         // 2 is the index of array who is having reservations
                                         data_array[2].reservations.splice(indexOfSameReservationAlreadyInList, 1);
                                     }
@@ -794,8 +794,8 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     var self = this;
 
                     // If rate_type is available
-                    if(rate_type) {
-                        if(account_id) {
+                    if (rate_type) {
+                        if (account_id) {
                             _.extend(params, { account_id: account_id });
                         }
                     }
@@ -807,7 +807,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                     Availability.read(params)
                     .then(function(data) {
-                        if(data && data.results) {
+                        if (data && data.results) {
                             var availability = data.results[0].availability;
                             var roomTypes = data.results[0].room_types;
                             var match;
@@ -827,15 +827,15 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                                 id_difference   = undefined;
 
 
-                                if(existing_ids.length > 0) {
+                                if (existing_ids.length > 0) {
                                     id_difference = _.difference(existing_ids, new_coming_ids);
 
                                     var len = Availability.store.data.length;
 
 
-                                    for(var i = 0; i < len; i++) {
-                                       for(var k = 0; k < id_difference.length; k++) {
-                                            if(Availability.store.data[i] && _.has(Availability.store.data[i], "id") &&  Availability.store.data[i].id === id_difference [k]) {
+                                    for (var i = 0; i < len; i++) {
+                                       for (var k = 0; k < id_difference.length; k++) {
+                                            if (Availability.store.data[i] && _.has(Availability.store.data[i], "id") &&  Availability.store.data[i].id === id_difference [k]) {
                                                 Availability.store.data.splice(i);
                                                 delete Availability.store.group.values.id[id_difference[k]];
                                                 len--;
@@ -876,8 +876,8 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         rate_type: data.rate_type
                     };
 
-                    if(data.rate_type === 'Corporate') {
-                        if(data.account_id) {
+                    if (data.rate_type === 'Corporate') {
+                        if (data.account_id) {
                             _.extend(params, { account_id: data.account_id });
                         }
                     }
@@ -897,7 +897,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     var data       = $vault.get('searchReservationData'),
                         start_date = start_date ? new tzIndependentDate(start_date) : new tzIndependentDate($rootScope.businessDate);
 
-                    if(data) {
+                    if (data) {
                         data = JSON.parse(data);
                         start_date.setHours( parseInt(data.arrivalTime.hh), parseInt(data.arrivalTime.mm) );
                     } else {
@@ -966,8 +966,8 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         rate_type: data.rate_type
                     };
 
-                    if(data.rate_type === 'Corporate') {
-                        if(data.account_id) {
+                    if (data.rate_type === 'Corporate') {
+                        if (data.account_id) {
                             _.extend(params, { account_id: data.account_id });
                         }
                     }
@@ -989,11 +989,11 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                 this.ArrivalFromCreateReservation = function() {
                     var data = $vault.get('searchReservationData');
 
-                    if(data) {
+                    if (data) {
                         data = JSON.parse(data);
                     }
 
-                    if(data) {
+                    if (data) {
                         var hoursInDay = getTotalHours(data.fromDate),
                             dstChange = hoursInDay.hasExtraHour ? 1 : (hoursInDay.hasLessHour ? -1 : 0);
 
@@ -1035,7 +1035,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         // update it will the passed down hours, read further
                         var ms = new tzIndependentDate(ms).setHours(0, 0, 0);
 
-                        if(timeObj.ampm === 'PM') {
+                        if (timeObj.ampm === 'PM') {
                             t_a = (12 + parseInt(timeObj.hh, 10)) * 3600000;
                         } else {
                             t_a = (parseInt(timeObj.hh, 10)) * 3600000;

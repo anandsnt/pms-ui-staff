@@ -12,10 +12,10 @@ sntRover.controller('reservationPaymentController',
 		    isCC = $scope.reservationData.reservation_card.has_any_credit_card_attached_bill,
 		    hasButtonClass = "has-button";
 
-		if(status === 'NOSHOW' || status === 'CHECKEDOUT' || status === 'CANCELED') {
+		if (status === 'NOSHOW' || status === 'CHECKEDOUT' || status === 'CANCELED') {
 			hasButtonClass = "";
 		}
-		else if(isCC && $scope.showCCAuthButton()) {
+		else if (isCC && $scope.showCCAuthButton()) {
 			hasButtonClass = "has-buttons";
 		}
 		return hasButtonClass;
@@ -26,7 +26,7 @@ sntRover.controller('reservationPaymentController',
 		var status = $scope.reservationData.reservation_card.reservation_status,
 			display = true;
 
-		if(status === 'NOSHOW' || status === 'CHECKEDOUT' || status === 'CANCELED') {
+		if (status === 'NOSHOW' || status === 'CHECKEDOUT' || status === 'CANCELED') {
 			display = false;
 		}
 		return display;
@@ -35,10 +35,10 @@ sntRover.controller('reservationPaymentController',
 
 	// To hide/show CCAuthButton
 	$scope.showCCAuthButton = function() {
-		if($scope.reservationData.reservation_card.has_any_credit_card_attached_bill && $scope.isStandAlone) {
+		if ($scope.reservationData.reservation_card.has_any_credit_card_attached_bill && $scope.isStandAlone) {
 			return true;
 		}
-		else{
+		else {
 			return false;
 		}
 	};
@@ -54,7 +54,7 @@ sntRover.controller('reservationPaymentController',
 
     $scope.setAllowPostWithNoCredit= function() {
 
-    	if(rvPermissionSrv.getPermissionValue('ALLOW_POST_WHEN_RESTRICTED')) {
+    	if (rvPermissionSrv.getPermissionValue('ALLOW_POST_WHEN_RESTRICTED')) {
     		var updateParams = {
 	            "restrict_post": !$scope.reservationData.reservation_card.restrict_post,
 	            "reservationId": $scope.reservationData.reservation_card.reservation_id
@@ -73,7 +73,7 @@ sntRover.controller('reservationPaymentController',
     $scope.showPostWithNoCreditButton = function() {
     	var isPostWithNoCreditButtonVisible = true;
 
-    	if(!$rootScope.isStandAlone || $scope.reservationData.reservation_card.payment_method_used === '' || $scope.reservationData.reservation_card.payment_method_used === null) {
+    	if (!$rootScope.isStandAlone || $scope.reservationData.reservation_card.payment_method_used === '' || $scope.reservationData.reservation_card.payment_method_used === null) {
     		isPostWithNoCreditButtonVisible = false;
     	}
     	return isPostWithNoCreditButtonVisible;

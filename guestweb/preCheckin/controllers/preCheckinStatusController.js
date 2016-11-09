@@ -10,52 +10,52 @@
 	$rootScope.userMobile = ($rootScope.userMobile === null ) ? "" :$rootScope.userMobile;
 
 	// collect oustanding stay total
-	if(parseFloat($rootScope.outStandingBalance) > 0 && $rootScope.isMLI
+	if (parseFloat($rootScope.outStandingBalance) > 0 && $rootScope.isMLI
 	   && $rootScope.collectOutStandingBalance && !$rootScope.skipBalanceCollection) {
 		$state.go('balancePaymentCCCollection');
 	}
 	// collect number of keys
-	else if($rootScope.promptForKeyCount && !$rootScope.KeyCountAttemptedToSave) {
+	else if ($rootScope.promptForKeyCount && !$rootScope.KeyCountAttemptedToSave) {
 		console.info("collect no of keys");
 		$state.go('selectNoOfkeys');
 	}
 	// collect credit card
-	else if($rootScope.collectCCOnCheckin && $rootScope.isMLI && !$rootScope.isCcAttachedFromGuestWeb) {
+	else if ($rootScope.collectCCOnCheckin && $rootScope.isMLI && !$rootScope.isCcAttachedFromGuestWeb) {
 		$state.go('checkinCcVerification');
 	}
 	// collect mobile number with option to update already existing mobile number
-	else if($rootScope.application ==="SMS" 
+	else if ($rootScope.application ==="SMS" 
 			&& $rootScope.userMobile.length >0 && !$rootScope.userMobileSkipped) {
 		$state.go('mobileNumberOptions');// if user has not attached an mobile
 	}
 	// collect new mobile number
-	else if($rootScope.application ==="SMS" 
+	else if ($rootScope.application ==="SMS" 
 			&& $rootScope.userMobile.length ===0 && !$rootScope.userMobileSkipped) {
 		$state.go('mobileNumberAddition');// if user has not attached an mobile
 	}
 	// collect email
-	else if($rootScope.offerRoomDeliveryOptions && !$rootScope.userEmailEntered && ($rootScope.application ==="SMS" || $rootScope.application ==="EMAIL" || $rootScope.application ==="URL")) {
+	else if ($rootScope.offerRoomDeliveryOptions && !$rootScope.userEmailEntered && ($rootScope.application ==="SMS" || $rootScope.application ==="EMAIL" || $rootScope.application ==="URL")) {
 		$state.go('emailAddition', {'isFrom': 'checkinLater'});// if user has not attached an email
 	}
 	// collect deposit
-	else if($rootScope.enforceDeposit && !$rootScope.skipDeposit) {
+	else if ($rootScope.enforceDeposit && !$rootScope.skipDeposit) {
 		$state.go('depositPayment'); // checkin deposit collection
 	}
 	// conduct survey
-	else if($rootScope.conductSurvey && !$rootScope.skipBalanceconductSurvey) {
+	else if ($rootScope.conductSurvey && !$rootScope.skipBalanceconductSurvey) {
 		$state.go('conductSurvey'); // conduct Survey
 	}
-	else{
+	else {
 		// this page will be used again after email entry
 		// So once preckin is completed we store some details
-		if(!$rootScope.preckinCompleted) {
+		if (!$rootScope.preckinCompleted) {
 			$scope.isLoading = true;
 			preCheckinSrv.completePrecheckin().then(function(response) {
 				$scope.isLoading = false;
-				if(response.status === 'failure') {
+				if (response.status === 'failure') {
 					$scope.netWorkError = true;
 				}
-				else{
+				else {
 					$scope.responseData =response.data;
 					$rootScope.preckinCompleted =  true;
 					$rootScope.responseData = {"confirmation_message": $scope.responseData.confirmation_message};

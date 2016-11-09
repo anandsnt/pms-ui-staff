@@ -42,11 +42,11 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 				if (($event.timeStamp - eventTimestamp) < 500) {
 					return;
 				}
-				else{
+				else {
 					toggleAction();
 				}
 			}
-			else{
+			else {
 				toggleAction();
 			}
 
@@ -87,7 +87,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 		$rootScope.$on('UPDATERESERVATIONTYPE', function(e, data, paymentId ) {
             $scope.reservationParentData.demographics.reservationType = data;
             // CICO-24768 - Updating Payment id after adding new CC.
-            if(!!paymentId) {
+            if (!!paymentId) {
             	$scope.reservationData.reservation_card.payment_details.id = paymentId;
             }
             var selectedReservationGuaranteeType = _.where($scope.otherData.reservationTypes, {

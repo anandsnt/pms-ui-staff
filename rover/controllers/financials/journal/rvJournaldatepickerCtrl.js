@@ -2,20 +2,20 @@ sntRover.controller('RVJournalDatePickerController', ['$scope', '$rootScope', 'n
 
     var minDateSelected = '';
 
-    if($scope.clickedOn === 'FROM') {
+    if ($scope.clickedOn === 'FROM') {
         $scope.date = $scope.data.fromDate;
     }
-    else if($scope.clickedOn === 'TO') {
+    else if ($scope.clickedOn === 'TO') {
         $scope.date = $scope.data.toDate;
         minDateSelected = tzIndependentDate($scope.data.fromDate);
     }
-    else if($scope.clickedOn === 'CASHIER') {
+    else if ($scope.clickedOn === 'CASHIER') {
         $scope.date = $scope.data.cashierDate;
     }
-    else if($scope.clickedOn === 'TRANSACTIONS') {
+    else if ($scope.clickedOn === 'TRANSACTIONS') {
         $scope.date =  $scope.data.transactionDate;
     }
-    else if($scope.clickedOn === 'SUMMARY') {
+    else if ($scope.clickedOn === 'SUMMARY') {
         $scope.date =  $scope.data.summaryDate;
     }
 
@@ -27,24 +27,24 @@ sntRover.controller('RVJournalDatePickerController', ['$scope', '$rootScope', 'n
            maxDate: tzIndependentDate($rootScope.businessDate),
            yearRange: "-100:+0",
            onSelect: function(dateText, inst) {
-                if($scope.clickedOn === 'FROM') {
+                if ($scope.clickedOn === 'FROM') {
                   $scope.data.fromDate = $scope.date;
                   $scope.data.toDate = $scope.date;
                   $rootScope.$emit('fromDateChanged');
                 }
-                else if($scope.clickedOn === 'TO') {
+                else if ($scope.clickedOn === 'TO') {
                   $scope.data.toDate = $scope.date;
                   $rootScope.$emit('toDateChanged');
                 }
-                else if($scope.clickedOn === 'CASHIER') {
+                else if ($scope.clickedOn === 'CASHIER') {
                   $scope.data.cashierDate = $scope.date;
                   $scope.$emit('cashierDateChanged');
                 }
-                else if($scope.clickedOn === 'TRANSACTIONS') {
+                else if ($scope.clickedOn === 'TRANSACTIONS') {
                   $scope.data.transactionDate = $scope.date;
                   $rootScope.$emit('transactionDateChanged');
                 }
-                else if($scope.clickedOn === 'SUMMARY') {
+                else if ($scope.clickedOn === 'SUMMARY') {
                   $scope.data.summaryDate = $scope.date;
                   $rootScope.$emit('summaryDateChanged');
                 }

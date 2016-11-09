@@ -37,10 +37,10 @@ admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$
             }
         };
         $scope.isOldValue = function(value) {
-            if(value === "" || typeof value === "undefined" || value === null) {
+            if (value === "" || typeof value === "undefined" || value === null) {
                 return false;
             }
-            else{
+            else {
                 return true;
             }
         };
@@ -88,10 +88,10 @@ admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$
         $scope.updateReport();
     };
     $scope.initPaginationParams = function() {
-        if($scope.activityLogData.total_count === 0) {
+        if ($scope.activityLogData.total_count === 0) {
              $scope.start = 0;
              $scope.end =0;
-        }else{
+        } else {
         $scope.start = 1;
         $scope.end = $scope.start + $scope.activityLogData.length - 1;
         }
@@ -123,7 +123,7 @@ admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$
                 per_page: 50
         };
 
-        if($scope.isUpdateReportFilter) {
+        if ($scope.isUpdateReportFilter) {
             $scope.fromDate = $('#activity-range-from').val();
             $scope.toDate = $('#activity-range-to').val();
             if ($scope.fromDate !== '') {
@@ -144,7 +144,7 @@ admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$
     };
 
     $scope.userChanged = function() {
-        if($scope.userEmail === '') {
+        if ($scope.userEmail === '') {
            $scope.user_id=0;
         }
     };
@@ -163,12 +163,12 @@ admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$
 
     $scope.sortByUserName = function() {
         $scope.sort_field ="USERNAME";
-        if($scope.sortOrderOfUserASC) {
+        if ($scope.sortOrderOfUserASC) {
             $scope.initSort();
             $scope.sortOrderOfUserDSC = true;
             $scope.sort_order="desc";
         }
-        else{
+        else {
             $scope.initSort();
             $scope.sortOrderOfUserASC = true;
             $scope.sort_order="asc";
@@ -178,12 +178,12 @@ admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$
 
     $scope.sortByDate = function() {
         $scope.sort_field ="DATE";
-        if($scope.sortOrderOfDateASC) {
+        if ($scope.sortOrderOfDateASC) {
             $scope.initSort();
             $scope.sortOrderOfDateDSC = true;
             $scope.sort_order="desc";
         }
-        else{
+        else {
             $scope.initSort();
             $scope.sortOrderOfDateASC = true;
             $scope.sort_order="asc";
@@ -193,12 +193,12 @@ admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$
 
     $scope.sortByAction = function() {
         $scope.sort_field ="ACTION";
-        if($scope.sortOrderOfActionASC) {
+        if ($scope.sortOrderOfActionASC) {
             $scope.initSort();
             $scope.sortOrderOfActionDSC = true;
             $scope.sort_order="desc";
         }
-        else{
+        else {
             $scope.initSort();
             $scope.sortOrderOfActionASC = true;
             $scope.sort_order="asc";
