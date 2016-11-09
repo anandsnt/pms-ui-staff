@@ -45,7 +45,7 @@ angular.module('sntRover').service('RVActivityLogSrv', [
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 

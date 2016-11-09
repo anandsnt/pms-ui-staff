@@ -328,7 +328,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					deferred.resolve(data.accounts);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -342,7 +342,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					deferred.resolve(data.accounts);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -356,7 +356,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.putJSON(url, data.summary)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -370,7 +370,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.postJSON(url, data.summary)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -384,7 +384,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -399,7 +399,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.deleteJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -415,7 +415,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -429,7 +429,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;
@@ -456,7 +456,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.deleteJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;
@@ -469,7 +469,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.putJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;
@@ -482,7 +482,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;
@@ -495,7 +495,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.getJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;
@@ -513,7 +513,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.getJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;
@@ -562,7 +562,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;
@@ -581,7 +581,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;

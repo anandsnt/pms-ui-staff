@@ -148,7 +148,7 @@ var DiaryContent = React.createClass({
     			self.componentWillMount();
     		}, 1000);
 
-    	}.bind(this), 10, { leading: false, trailing: true }));
+    	}, 10, { leading: false, trailing: true }));
 
         setTimeout(function() {
         	var scrollToPos = (self.state.display.x_origin - self.state.display.x_n - 7200000) * self.state.display.px_per_ms;

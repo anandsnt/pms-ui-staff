@@ -16,7 +16,7 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 				});
 				that.cms_screen_details = typeof that.cms_screen_details !== 'undefined' ? that.cms_screen_details : [];
 				deferred.resolve(response);
-			}.bind(this))
+			})
 			.error(function() {
 				deferred.reject();
 			});
@@ -54,7 +54,7 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 					deferred.resolve(response.data);
 				}
 
-			}.bind(this))
+			})
 			.error(function() {
 				deferred.reject();
 			});
@@ -67,7 +67,7 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 
 		$http.get(url).success(function(response) {
 				deferred.resolve(response);
-			}.bind(this))
+			})
 			.error(function() {
 				deferred.reject();
 			});
@@ -80,7 +80,7 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 
 		$http.get(url).success(function(response) {
 				deferred.resolve(response);
-			}.bind(this))
+			})
 			.error(function() {
 				deferred.reject();
 			});
@@ -94,7 +94,7 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 		$http.get(url).success(function(response) {
 				jsMappingList = response;
 				deferred.resolve(response);
-			}.bind(this))
+			})
 			.error(function() {
 				deferred.reject();
 			});
@@ -108,7 +108,7 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 		$http.get(url).success(function(response) {
 				cssMappingList = response;
 				deferred.resolve(response);
-			}.bind(this))
+			})
 			.error(function() {
 				deferred.reject();
 			});
@@ -122,7 +122,7 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 		$http.get(url).success(function(response) {
 				templateMappingList = response;
 				deferred.resolve(response);
-			}.bind(this))
+			})
 			.error(function() {
 				deferred.reject();
 			});

@@ -10,7 +10,7 @@ var preCheckinSrv = function($q, baseWebService, $rootScope, $http) {
 
 		$http.get(url).success(function(response) {
 			deferred.resolve(response);
-		}.bind(this))
+		})
 		.error(function() {
 			deferred.reject();
 		});
@@ -24,7 +24,7 @@ var preCheckinSrv = function($q, baseWebService, $rootScope, $http) {
 
 		$http.post(url, data).success(function(response) {
 			deferred.resolve(response);
-		}.bind(this))
+		})
 		.error(function() {
 			deferred.reject();
 		});
@@ -40,7 +40,7 @@ var preCheckinSrv = function($q, baseWebService, $rootScope, $http) {
 		data.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "";
 		$http.post(url, data).success(function(response) {
 			deferred.resolve(response);
-		}.bind(this))
+		})
 		.error(function() {
 			deferred.reject();
 		});

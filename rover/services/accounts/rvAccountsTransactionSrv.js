@@ -19,7 +19,7 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 		        		bill.activeDate = null;
 		            });
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -33,7 +33,7 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -47,7 +47,7 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			rvBaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -61,7 +61,7 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			rvBaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -289,7 +289,7 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 

@@ -9,7 +9,7 @@
 
 				$http.post(url, data).success(function(response) {
 					deferred.resolve(response);
-				}.bind(this))
+				})
 				.error(function() {
 					deferred.reject();
 				});
@@ -22,7 +22,7 @@
 
 				$http.post(url).success(function(response) {
 					deferred.resolve(response);
-				}.bind(this))
+				})
 				.error(function() {
 					deferred.reject();
 				});
@@ -35,7 +35,7 @@
 
 				$http.get(url, {params: data}).success(function(response) {
 					deferred.resolve(response);
-				}.bind(this))
+				})
 				.error(function() {
 					deferred.reject();
 				});

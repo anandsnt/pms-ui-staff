@@ -101,7 +101,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 					.then(function(data) {
 						allServiceStatus = data.results;
 						deferred.resolve(allServiceStatus);
-					}.bind(this), function(data) {
+					}, function(data) {
 						deferred.reject(data);
 					});
 			}
@@ -123,7 +123,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 					.then(function(data) {
 						maintenanceReasons = data.maintenance_reasons;
 						deferred.resolve(maintenanceReasons);
-					}.bind(this), function(data) {
+					}, function(data) {
 						deferred.reject(data);
 					});
 			}
@@ -139,7 +139,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 				rvBaseWebSrvV2.getJSON(url)
 					.then(function(data) {
 						deferred.resolve(data);
-					}.bind(this), function(data) {
+					}, function(data) {
 						deferred.reject(data);
 					});
 
@@ -161,7 +161,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 			rvBaseWebSrvV2.getJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -178,7 +178,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 					setRoomServiceInVault( params );
 
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -192,7 +192,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 			rvBaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -207,7 +207,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 			rvBaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -221,7 +221,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 			rvBaseWebSrvV2.putJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -241,7 +241,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 			rvBaseWebSrvV2.putJSON(url, options)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -262,7 +262,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 					.then(function(data) {
 						workTypesList = data.results;
 						deferred.resolve(workTypesList);
-					}.bind(this), function(data) {
+					}, function(data) {
 						deferred.reject(data);
 					});
 			}
@@ -279,7 +279,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 			rvBaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -301,7 +301,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 					deferred.resolve({
 						service_status: data.service_status
 					});
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;
@@ -314,7 +314,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 			rvBaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 

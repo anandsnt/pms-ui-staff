@@ -25,7 +25,7 @@ var Grid = React.createClass({
 
 		setTimeout(function () {
 	        iscroll.grid.refresh();
-	    }.bind(this), 1000);
+	    }, 1000);
 	},
 	componentWillUnmount: function() {
 		this.props.iscroll.grid.destroy();

@@ -295,7 +295,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					deferred.resolve(data.accounts);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -309,7 +309,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					deferred.resolve(data.accounts);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -323,7 +323,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 			rvBaseWebSrvV2.putJSON(url, data.summary)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -337,7 +337,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 			rvBaseWebSrvV2.postJSON(url, data.summary)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -351,7 +351,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -366,7 +366,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 			rvBaseWebSrvV2.deleteJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -382,7 +382,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -396,7 +396,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;
@@ -410,7 +410,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 			rvBaseWebSrvV2.deleteJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;
@@ -423,7 +423,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 			rvBaseWebSrvV2.putJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;
@@ -436,7 +436,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;
@@ -449,7 +449,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 			rvBaseWebSrvV2.getJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;
@@ -467,7 +467,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 			rvBaseWebSrvV2.getJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;

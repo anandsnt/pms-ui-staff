@@ -16,7 +16,7 @@
 						});
 						that.cms_screen_details = typeof that.cms_screen_details !== 'undefined' ? that.cms_screen_details.screen_messages : [];
 						deferred.resolve(response);
-					}.bind(this))
+					})
 					.error(function() {
 						deferred.reject();
 					});
@@ -74,7 +74,7 @@
 							deferred.resolve(response.data);
 						}
 
-					}.bind(this))
+					})
 					.error(function() {
 						deferred.reject();
 					});

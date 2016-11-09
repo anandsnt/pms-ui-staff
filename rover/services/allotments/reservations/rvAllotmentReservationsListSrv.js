@@ -104,7 +104,7 @@ angular.module('sntRover').service('rvAllotmentReservationsListSrv', ['$q', 'rvB
 			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;
@@ -122,7 +122,7 @@ angular.module('sntRover').service('rvAllotmentReservationsListSrv', ['$q', 'rvB
 			rvBaseWebSrvV2.postJSON(url, data).then(
 				function(data) {
 					deferred.resolve(data);
-				}.bind(this), 
+				}, 
 				function(data) {
 					deferred.reject(data);
 				}

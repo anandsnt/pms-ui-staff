@@ -25,7 +25,7 @@
 
 		$http.get(url).success(function(response) {
 			deferred.resolve(response);
-		}.bind(this))
+		})
 		.error(function() {
 			deferred.reject();
 		});
@@ -38,7 +38,7 @@
 
 		$http.get(url).success(function(response) {
 			deferred.resolve(response);
-		}.bind(this))
+		})
 		.error(function() {
 			deferred.reject();
 		});
@@ -58,7 +58,7 @@
 				deferred.reject();
 			}
 			
-		}.bind(this))
+		})
 		.error(function() {
 			deferred.reject();
 		});
@@ -71,7 +71,7 @@
 
 		$http.put(url, data).success(function(response) {
 			deferred.resolve(response);
-		}.bind(this))
+		})
 		.error(function() {
 			deferred.reject();
 		});
@@ -85,7 +85,7 @@
 
 		$http.get(url).success(function(response) {
 			deferred.resolve(response);	
-		}.bind(this))
+		})
 		.error(function() {
 			deferred.reject();
 		});
@@ -101,7 +101,7 @@
 			params: parameters
 		}).success(function(response) {
 			deferred.resolve(response);
-		}.bind(this))
+		})
 		.error(function() {
 			deferred.reject();
 		});
@@ -115,7 +115,7 @@
 
 		$http.get(url).success(function(response) {
 			deferred.resolve(response);
-		}.bind(this))
+		})
 		.error(function() {
 			deferred.reject();
 		});
@@ -143,7 +143,7 @@
 
 		$http.get(url).success(function(response) {
 			deferred.resolve(response);
-		}.bind(this))
+		})
 		.error(function() {
 			deferred.reject();
 		});

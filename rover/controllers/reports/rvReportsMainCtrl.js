@@ -2154,7 +2154,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					$scope.$apply(function() {
 						touchedReport.uiChosenUsers = uiValue.join(", ");
 					});
-				}.bind(this), 100);
+				}, 100);
 				return false;
 			},
 			close: function(event, ui) {
@@ -2175,7 +2175,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					$scope.$apply(function() {
 						touchedReport.chosenUsers = modelVal;
 					});
-				}.bind(this), 10);
+				}, 10);
 			},
 			change: function () {
 				var uiValues = split(this.value);
@@ -2195,7 +2195,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					$scope.$apply(function() {
 						touchedReport.chosenUsers = modelVal;
 					});
-				}.bind(this), 10);
+				}, 10);
 			},
 			focus: function(event, ui) {
 				return false;
@@ -2264,7 +2264,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					$scope.$apply(function() {
 						touchedReport.uiChosenIncludeCompanyTa = uiValue.join(", ");
 					});
-				}.bind(this), 100);
+				}, 100);
 				return false;
 			},
 			close: function(event, ui) {
@@ -2280,7 +2280,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						$scope.$apply(function() {
 							touchedReport.chosenIncludeCompanyTa = modelVal.join('');
 						});
-					}.bind(this), 10);
+					}, 10);
 				} else {
 					_.each(activeCompTaCompleteAry, function(compTa) {
 						var match = _.find(uiValues, function(label) {
@@ -2296,7 +2296,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						$scope.$apply(function() {
 							touchedReport.chosenIncludeCompanyTa = modelVal.join(", ");
 						});
-					}.bind(this), 10);
+					}, 10);
 				}
 			},
 			change: function () {
@@ -2319,7 +2319,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					$scope.$apply(function() {
 						touchedReport.chosenIncludeCompanyTa = modelVal.join(", ");
 					});
-				}.bind(this), 10);
+				}, 10);
 			},
 			focus: function(event, ui) {
 				return false;
@@ -2371,7 +2371,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						touchedReport.uiChosenIncludeCompanyTaGroup = ui.item.label;
 						touchedReport.chosenIncludeCompanyTaGroup = ui.item.value;
 					});
-				}.bind(this), 100);
+				}, 100);
 				return false;
 			},
 			focus: function(event, ui) {

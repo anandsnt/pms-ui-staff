@@ -26,7 +26,7 @@
 
 				$http.get(url, {params: data}).success(function(response) {
 					deferred.resolve(response);
-				}.bind(this))
+				})
 				.error(function() {
 					deferred.reject();
 				});
