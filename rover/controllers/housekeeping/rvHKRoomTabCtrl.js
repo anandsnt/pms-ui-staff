@@ -100,6 +100,8 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 			 */
 			$scope.editService.selected_date = selectedDate;
 			$scope.editService.from_date = selectedDate;
+			//CICO-35456 - set the default to _date as business date
+			$scope.editService.to_date = selectedDate;
 			$scope.editService.reason_id = reasonID;
 			$scope.editService.comment = comment;
 
@@ -130,7 +132,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 				$scope.invokeApi(RVHkRoomDetailsSrv.getRoomServiceStatus, {
 					room_id: $scope.roomDetails.id,
 					from_date: $scope.updateService.selected_date
-				}, $_fetchSavedStausCallback);			
+				}, $_fetchSavedStausCallback);
 			} else {
 				$scope.refreshScroller('room-tab-scroll');
 				$scope.$emit('hideLoader');
@@ -148,7 +150,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 
 		$scope.invokeApi(RVHkRoomDetailsSrv.fetchMaintenanceReasons, {}, $_maintenanceReasonsCallback);
 
-		
+
 		$scope.$watch("updateService.room_service_status_id", function (newValue, oldValue) {
         	if(newValue !== oldValue){
             	$scope.prev_room_service_status_id = oldValue;
@@ -377,7 +379,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 			else {
 				$scope.update ();
 			}
-			
+
 		};
 
 		/**
@@ -408,7 +410,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 				begin_time	: 	$scope.updateService.begin_time,
 				end_time	: 	$scope.updateService.end_time
 			};
-			
+
 			var options = {
 				params : params,
 				successCallBack: successCallbackOfRoomStatusChangePossible,
@@ -492,7 +494,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 				from_date: $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd'),
 				to_date: $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd')
 			};
-			$scope.refreshScroller('room-tab-scroll');	
+			$scope.refreshScroller('room-tab-scroll');
 		};
 
 		$scope.showCalendar = function(controller) {
@@ -526,7 +528,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 		$scope.updateCalendar = function(year, month) {
 			function onFetchSuccess(data) {
 				angular.extend($scope.serviceStatus, data.service_status);
-				
+
 				var isNotInService 		= $scope.updateService.room_service_status_id > 1,
 					selectedServiceData = $scope.serviceStatus[getApiFormattedDate($scope.updateService.selected_date)],
 					hourlyEnabledHotel 	= $rootScope.isHourlyRateOn;

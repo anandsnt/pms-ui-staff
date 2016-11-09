@@ -338,6 +338,7 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
 
             switch (gateWay) {
                 case "MLI":
+                case "CBA":
                     break;
                 case "sixpayments":
                     var time = new Date().getTime(),
@@ -348,7 +349,6 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
                         "&card_holder_last_name=" + params.card_holder_last_name +
                         "&service_action=" + service_action +
                         "&time=" + time;
-
                     break;
                 default:
                     throw new Error("Payment Gateway not configured");

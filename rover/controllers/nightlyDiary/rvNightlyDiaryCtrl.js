@@ -20,22 +20,26 @@ angular.module('sntRover')
         BaseCtrl.call(this, $scope);
         $scope.heading = $filter('translate')('MENU_ROOM_DIARY');
         $scope.setTitle($filter('translate')('MENU_ROOM_DIARY'));
+        $scope.$emit("updateRoverLeftMenu", "nightlyDiaryReservation");
 
         // data set for diary used for Angular code.
         $scope.diaryData = {
-            isSevenMode     : true,
-            datesGridData   : datesList.dates,
+            isSevenSelected : true,
+            datesGridData   : datesList,
+            businessDate    : $rootScope.businessDate,
+            diaryRoomsList  : roomsList,
+            numberOfDays    : 7,
             fromDate        : '',
             toDate          : '',
             roomFilterCount : 0,
-            filterCount     : 0,
-            diaryRoomsList  : roomsList
+            filterCount     : 0
         };
 
-        //Nothing to be there in initial state
-        // $scope.updateDiaryView - used for every actions in top bar filters
-        //During initial nvaigation too we are using the same common method to view screen and dispatch data
-        var initialState = {};
+        //Initial State
+        var initialState = {
+            roomsList : roomsList.rooms
+        };
+        
         const store = configureStore(initialState);
 
         const {render} = ReactDOM;
@@ -45,13 +49,13 @@ angular.module('sntRover')
         $scope.updateDiaryView = function(){
             var dispatchData = {
                 type: 'DIARY_VIEW_CHANGED',
-                mode: ($scope.diaryData.isSevenMode) ? '7_DAYS_MODE': '21_DAYS_MODE',
+                number_of_days: $scope.diaryData.numberOfDays,
                 diaryRoomsListData : $scope.diaryData.diaryRoomsList
             };
             store.dispatch(dispatchData);
         };
 
-        $scope.updateDiaryView();
+
 
         /**
          * to render the grid view

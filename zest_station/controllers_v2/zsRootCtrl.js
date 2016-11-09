@@ -565,7 +565,6 @@ sntZestStation.controller('zsRootCtrl', [
 		 *   *Refresh-workstation --> Triggered from Hotel Admin - interfaces - workstation > toggle (Refresh Station)
 		 ********************************************************************************/
 		var checkForEventsIfAtHomeScreen = function(currentState){
-			console.log('homeInActivityTimeInSeconds: ',homeInActivityTimeInSeconds);
 			if (currentState !== 'zest_station.home'){
 				homeInActivityTimeInSeconds = 0;
 			} else {
@@ -593,6 +592,9 @@ sntZestStation.controller('zsRootCtrl', [
 				}	
 			}
 		}
+		$scope.$on('HOME_ACTIVITY',function(){//need to move the above function to Home Controller after S69
+			homeInActivityTimeInSeconds = 0;
+		});
 
 		var refreshInProgress = function(station){
 			console.log('Calling API to Reset (refresh_station) Flag for: ',station.name, ' - ',station.id);
@@ -661,6 +663,16 @@ sntZestStation.controller('zsRootCtrl', [
 		 *   Websocket actions related to keycard lookup
 		 *  starts here
 		 ********************************************************************************/
+		
+		var printerErrorMapping = {
+			23: 'PRINTER_ERROR_PRINTER_IS_OFFLINE',
+			24:	'PRINTER_ERROR_PAPER_ROLL_IS_NEAR_EMPTY',
+			25:	'PRINTER_ERROR_PRINTER_OUT_OF_ORDER',
+			26:	'PRINTER_ERROR_PRINTER_ERROR',
+			27:	'PRINTER_ERROR_UNABLE_TO_GET_PRINTER_STATUS',
+			28:	'PRINTER_ERROR_UNABLE_TO_WRITE_TO_PRINTER_PORT',
+			29:	'PRINTER_ERROR_PRINT_ERROR'
+		};
 
 		var socketActions = function(response) {
 			var cmd = response.Command,
@@ -699,7 +711,7 @@ sntZestStation.controller('zsRootCtrl', [
 				} else {
 					//capture failed
 					$state.go('zest_station.speakToStaff');
-				};
+				}
 			} else if (response.Command === 'cmd_dispense_key_card') {
 				if (response.ResponseCode === 0) {
 					$scope.$broadcast('DISPENSE_SUCCESS', {
@@ -710,9 +722,18 @@ sntZestStation.controller('zsRootCtrl', [
 					$scope.$broadcast('DISPENSE_CARD_EMPTY');
 				} else {
 					$scope.$broadcast('DISPENSE_FAILED');
-				};
+				}
+			} else if( response.Command === 'cmd_print_bill'){
+
+				if (response.ResponseCode === 0 ) {
+					$scope.$broadcast('WS_PRINT_SUCCESS');
+				} else {
+					var errorData = {'error_message':printerErrorMapping[response.ResponseCode]};
+					$scope.$broadcast('WS_PRINT_FAILED',errorData);
+				}
 			}
 		};
+
 		var socketOpenedFailed = function() {
 			console.info("Websocket:-> socket connection failed");
 			$scope.$broadcast('SOCKET_FAILED');
