@@ -126,6 +126,8 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.conductSurvey =  !!reservationAndhotelData.survey_question_prompt_on ? true : false;
 		$rootScope.skipBalanceconductSurvey = false;
 
+		$rootScope.showDepartureDateForExtUrl = false;
+
 		//Footer Settings
 		$rootScope.footerSettings = reservationAndhotelData.zest_web_footer_settings;
 

@@ -28,7 +28,7 @@
             <!-- default main text -->
             <p class="main-text" ng-if="!screenCMSDetails.title">Find Your Reservation</p>
             <!-- default sub  text -->
-            <p class="sub-main-text" ng-if="!screenCMSDetails.description">Enter your last name and either your confirmation number OR departure date:</p>
+            <p class="sub-main-text" ng-if="!screenCMSDetails.description">Enter your last name and either your confirmation number <span  ng-if="showDepartureDateForExtUrl">OR departure date</span>:</p>
             <!-- fields -->
             <div class="section-container">
                 <form>
@@ -39,10 +39,10 @@
                     <p class="pull-left sub-text margin-top-10">CONFIRMATION NUMBER</p>
                     <input type="text" class="input-field padding-2" ng-model="confirmationNumber"></input>
                     <br/>
-                    <p class="sub-text margin-top-10">OR</p>
+                    <p class="sub-text margin-top-10" ng-if="showDepartureDateForExtUrl">OR</p>
                     <!-- Departure date -->
-                    <p class="pull-left sub-text margin-top-10">DEPARTURE DATE</p>
-                    <input class="input-field padding-2 calendar-button" ng-click="showCalender()" ng-model="departureDate" placeholder="{{dateFormatPlaceholder}}" readonly></input>
+                    <p class="pull-left sub-text margin-top-10" ng-if="showDepartureDateForExtUrl">DEPARTURE DATE</p>
+                    <input class="input-field padding-2 calendar-button" ng-click="showCalender()" ng-model="departureDate" placeholder="{{dateFormatPlaceholder}}" readonly ng-if="showDepartureDateForExtUrl"></input>
                     <!-- Submit button -->
                     <input type="submit" class="btn btn-template margin-top-20 padding-3" ng-click="nextButtonClicked()" value="Continue" />
                 </form>
