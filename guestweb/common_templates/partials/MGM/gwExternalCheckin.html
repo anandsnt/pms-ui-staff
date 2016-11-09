@@ -28,7 +28,8 @@
             <!-- default main text -->
             <p class="main-text" ng-if="!screenCMSDetails.title">Find Your Reservation</p>
             <!-- default sub  text -->
-            <p class="sub-main-text" ng-if="!screenCMSDetails.description">Enter your last name and either your confirmation number <span  ng-if="showDepartureDateForExtUrl">OR departure date</span>:</p>
+            <p class="sub-main-text" ng-if="!screenCMSDetails.description && !showDepartureDateForExtUrl">Enter your last name and confirmation number:</p>
+            <p class="sub-main-text" ng-if="!screenCMSDetails.description && showDepartureDateForExtUrl">Enter your last name and either your confirmation number OR departure date:</p>
             <!-- fields -->
             <div class="section-container">
                 <form>
