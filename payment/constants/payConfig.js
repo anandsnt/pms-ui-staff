@@ -3,6 +3,20 @@
  * the payment module
  */
 angular.module("sntPayConfig", []).constant("PAYMENT_CONFIG", Object.freeze({
+    "CBA": {
+        iFrameUrl: null,
+        jsLibrary: null,
+        partial: "/assets/partials/payCBAPartial.html",
+        params: null,
+        disableCardSelection: true
+    },
+    'SHIJI': {
+        iFrameUrl: null,
+        jsLibrary: null,
+        partial: '/assets/partials/payShijiPartial.html',
+        params: null,
+        disableCardSelection: true
+    },
     "MLI": {
         iFrameUrl: null,
         jsLibrary: "https://cnp.merchantlink.com/form/v2.1/hpf.js",

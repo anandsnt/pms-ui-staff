@@ -303,7 +303,15 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				if ($scope.reservationData.isHourly) {
 					$scope.invokeApi(RVReservationSummarySrv.sendHourlyConfirmationEmail, postData, emailSentSuccess);
 				} else {
-					$scope.invokeApi(RVReservationSummarySrv.sendConfirmationEmail, postData, emailSentSuccess);
+					var reservations = $scope.reservationData.reservations;
+					if (reservations && reservations.length) {
+						reservations.forEach(function (reservation) {
+							postData.reservationId = reservation.id;
+							$scope.invokeApi(RVReservationSummarySrv.sendConfirmationEmail, postData, emailSentSuccess);
+						});
+					} else {
+						$scope.invokeApi(RVReservationSummarySrv.sendConfirmationEmail, postData, emailSentSuccess);
+					}
 				}
 			}
 

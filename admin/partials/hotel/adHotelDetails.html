@@ -518,38 +518,13 @@
                     </label>
 				</div>
 				<div class="entry full-width"></div>
-                <!--CBA starts-->
+
                 <div class="entry" ng-if="data.payment_gateway === 'CBA'" >
                     <label>
-                        Merchant Index
+                        Default Opera Payment Type
                     </label>
-                    <input type="text" ng-model="data.cba_merchant">
+                    <input type="text" ng-model="data.cba_default_payment_type">
                 </div>
-                <div class="entry" ng-if="data.payment_gateway === 'CBA'" >
-                    <label>
-                        Card Acceptor Terminal ID
-                    </label>
-                    <input type="text" ng-model="data.cba_catid">
-                </div>
-                <div class="entry" ng-if="data.payment_gateway === 'CBA'" >
-                    <label>
-                        Card Acceptor ID (Merchant ID)
-                    </label>
-                    <input type="text" ng-model="data.cba_caid">
-                </div>
-                <div class="entry" ng-if="data.payment_gateway === 'CBA'" >
-                    <label>
-                        Acquiring Institution Id Code
-                    </label>
-                    <input type="text" ng-model="data.cba_aiic">
-                </div>
-                <div class="entry" ng-if="data.payment_gateway === 'CBA'" >
-                    <label>
-                        Network International Identifier
-                    </label>
-                    <input type="text" ng-model="data.cba_nii">
-                </div>
-                <!-- CBA ENDS -->
 
 				<div class="entry" ng-if="data.payment_gateway === 'SAFERPAY'" >
 					<label>
@@ -698,6 +673,19 @@
                         Partner ID
                     </label>
                     <input type="text" ng-model="data.shiji_partner_id" value="{{data.shiji_partner_id}}">
+                </div>
+                <div class="entry" ng-if="data.payment_gateway === 'SHIJI'">
+                    <label for="shiji-key">
+                        Platform SSL Key
+                    </label>
+                    <input type="text" ng-model="data.shiji_key" value="{{data.shiji_key}}">
+                </div>
+                
+                <div class="entry" ng-if="data.payment_gateway === 'SHIJI'">
+                    <label for="shiji-payment-gateway-url">
+                        Gateway URL
+                    </label>
+                    <input type="text" value="{{data.shiji_payment_gateway_url}}" readonly="readonly">
                 </div>
                 <!--SHIJI ENDS-->
 				<div class="entry full-width">
