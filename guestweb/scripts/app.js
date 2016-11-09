@@ -23,7 +23,6 @@ and some folder dedicated to MGM, which has some text changes specifically asked
 */
 var sntGuestWebTemplates = angular.module('sntGuestWebTemplates', []);
 var sntGuestWeb = angular.module('sntGuestWeb', ['ui.router', 'ui.bootstrap', 'pickadate', 'oc.lazyLoad']);
-
 sntGuestWeb.controller('rootController', ['$state', '$scope', function($state, $scope) {
 	$state.go('guestwebRoot');
 	/*
@@ -31,15 +30,14 @@ sntGuestWeb.controller('rootController', ['$state', '$scope', function($state, $
 	 */
 	$scope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
 		event.preventDefault();
-		console.info("Hotel admin settings are wrong. This feature is not available for this theme. Please check the settings related to -> " + unfoundState.to);
+		console.info("Hotel admin settings are wrong. This feature is not available for this theme. Please check the settings related to -> "+unfoundState.to);
 		$state.go('noOptionAvailable');
-	});
+	})
 }]);
 sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '$state', '$timeout', 'reservationAndhotelData', '$window',
 	function($rootScope, $scope, $location, $state, $timeout, reservationAndhotelData, $window) {
 
 		var that = this;
-
 		loadAssets('/assets/favicon.png', 'icon', 'image/png');
 		loadAssets('/assets/apple-touch-icon-precomposed.png', 'apple-touch-icon-precomposed');
 		loadAssets('/assets/apple-touch-startup-image-768x1004.png', 'apple-touch-startup-image', '', '(device-width: 768px) and (orientation: portrait)');
@@ -49,9 +47,8 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 
 		var trackinID = reservationAndhotelData.google_analytics_tracking_id;
 		// initialise google analytics
-
 		$window.ga('create', trackinID, 'auto');
-		// store basic details as rootscope variables
+		//store basic details as rootscope variables
 		if (typeof reservationAndhotelData.access_token !== "undefined") {
 			$rootScope.accessToken = reservationAndhotelData.access_token;
 		}
@@ -81,7 +78,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.isRoomVerified = false;
 		$rootScope.isPrecheckinOnly = (reservationAndhotelData.is_precheckin_only === 'true' && reservationAndhotelData.reservation_status === 'RESERVED') ? true : false;
 		$rootScope.isCcAttachedFromGuestWeb = false;
-		$rootScope.isAutoCheckinOn = ((reservationAndhotelData.is_auto_checkin === 'true') && (reservationAndhotelData.is_precheckin_only === 'true')) ? true : false;
+		$rootScope.isAutoCheckinOn = ((reservationAndhotelData.is_auto_checkin === 'true') && (reservationAndhotelData.is_precheckin_only === 'true')) ? true : false;;
 		$rootScope.isExternalVerification = (reservationAndhotelData.is_external_verification === "true") ? true : false;
 		$rootScope.hotelIdentifier = reservationAndhotelData.hotel_identifier;
 		$rootScope.guestAddressOn = reservationAndhotelData.guest_address_on === 'true' ? true : false;
@@ -104,7 +101,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.collectCCOnCheckin = (reservationAndhotelData.checkin_collect_cc === "true") ? true : false;
 		$rootScope.isMLI = (reservationAndhotelData.payment_gateway === "MLI") ? true : false;
 
-		// room key delivery options
+		//room key delivery options
 		$rootScope.preckinCompleted = false;
 		$rootScope.userEmail = reservationAndhotelData.primary_guest_email;
 		$rootScope.userMobile = reservationAndhotelData.primary_guest_mobile;
@@ -112,7 +109,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.restrictByHotelTimeisOn = reservationAndhotelData.eta_enforcement;
 		$rootScope.checkinOptionShown = false;
 		$rootScope.userEmailEntered = false;
-		// $rootscope.keyDeliveryByText  = true;
+		//$rootscope.keyDeliveryByText  = true;
 
 		$rootScope.offerRoomDeliveryOptions = (reservationAndhotelData.offer_room_delivery_options === "true") ? true : false;
 		$rootScope.enforceDeposit = !!reservationAndhotelData.zestweb_enforce_deposit ? true : false;
@@ -128,26 +125,28 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 
 		$rootScope.conductSurvey =  !!reservationAndhotelData.survey_question_prompt_on ? true : false;
 		$rootScope.skipBalanceconductSurvey = false;
+		//we will be showing the departure date as a verification option in external URL landing based
+		//on admin settings
+		$rootScope.showDepartureDateForExtUrl = (reservationAndhotelData.checkin_auth_actions === 'conf_num_and_depart_date');
 
-		// Footer Settings
+		//Footer Settings
 		$rootScope.footerSettings = reservationAndhotelData.zest_web_footer_settings;
 
-		if (!!$rootScope.footerSettings.display_footer) {
-			// active footer count
-			var footerCount = _.filter($rootScope.footerSettings.footers, function(footer) { return footer.is_active;}).length;
-			// set zestweb footer color based on admin settings
-
-			applyFooterStyle($rootScope.footerSettings.footer_color);// utils function
+		if(!!$rootScope.footerSettings.display_footer){
+			//active footer count
+			var footerCount = _.filter($rootScope.footerSettings.footers, function(footer){ return footer.is_active;}).length;
+			//set zestweb footer color based on admin settings
+			applyFooterStyle($rootScope.footerSettings.footer_color);//utils function
 			// based upon number of footer items, set a class for styling
 			$rootScope.footerClass = returnFooterStyleClass(footerCount);
-			// to avoid flickering effect we hides the footer initially using CSS
+			//to avoid flickering effect we hides the footer initially using CSS
 			$("#zest-footer").show();
-		} else {
-			// if no footer is set
+		}else{
+			//if no footer is set
 			$rootScope.footerSettings.display_footer = false;
 		}
 		
-		// Params for zest mobile and desktop screens
+		//Params for zest mobile and desktop screens
 		if (reservationAndhotelData.hasOwnProperty('is_password_reset')) {
 			$rootScope.isPasswordResetView = reservationAndhotelData.is_password_reset;
 			$rootScope.isTokenExpired = reservationAndhotelData.is_token_expired === "true";
@@ -159,7 +158,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 			$rootScope.dateFormat = !!reservationAndhotelData.date_format ? getDateFormat(reservationAndhotelData.date_format.value) : "";
 		}
 
-		// work around to fix flashing of logo before app loads
+		//work around to fix flashing of logo before app loads
 		$timeout(function() {
 			$rootScope.hotelLogo = reservationAndhotelData.hotel_logo;
 		}, 750);
@@ -171,20 +170,20 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 
 		$rootScope.is_checkin_now_on = checkinNowisAvailable();
 		$rootScope.checkin_now_text = 
-		(reservationAndhotelData.zest_checkin_now_text !== null && typeof reservationAndhotelData.zest_checkin_now_text !== "undefined" && reservationAndhotelData.zest_checkin_now_text.length > 0) ? reservationAndhotelData.zest_checkin_now_text : "I'm Already Here";
+		(reservationAndhotelData.zest_checkin_now_text !== null && typeof reservationAndhotelData.zest_checkin_now_text !== "undefined" && reservationAndhotelData.zest_checkin_now_text.length>0) ? reservationAndhotelData.zest_checkin_now_text : "I'm Already Here";
 		$rootScope.checkin_later_text = 
-		(reservationAndhotelData.zest_checkin_later_text !== null && typeof reservationAndhotelData.zest_checkin_later_text !== "undefined" && reservationAndhotelData.zest_checkin_later_text.length > 0) ? reservationAndhotelData.zest_checkin_later_text : "Arriving Later";
+		(reservationAndhotelData.zest_checkin_later_text !== null && typeof reservationAndhotelData.zest_checkin_later_text !== "undefined" && reservationAndhotelData.zest_checkin_later_text.length>0) ? reservationAndhotelData.zest_checkin_later_text :"Arriving Later";
 
 
-		if (reservationAndhotelData.is_sent_to_que === 'true' 
-		           && !!reservationAndhotelData.zest_web_use_new_sent_to_que_action) {
-			// even though this is sent to que, the  flag name in 
-			// next screens are isAutoCheckinOn. So setting that as true
+		if(reservationAndhotelData.is_sent_to_que === 'true' 
+		           && !!reservationAndhotelData.zest_web_use_new_sent_to_que_action){
+			//even though this is sent to que, the  flag name in 
+			//next screens are isAutoCheckinOn. So setting that as true
 			$rootScope.isAutoCheckinOn = true;
-		}
+		};
 		
 
-		// check if we are using new send to que settings.
+		//check if we are using new send to que settings.
 		$rootScope.bypassCheckinVerification = (reservationAndhotelData.is_sent_to_que === 'true' 
 		           && !!reservationAndhotelData.zest_web_use_new_sent_to_que_action);
 
@@ -192,35 +191,34 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		if (typeof reservationAndhotelData.accessToken !== "undefined") {
 			$rootScope.accessToken = reservationAndhotelData.accessToken;
 		}
-		// navigate to different pages
+		//navigate to different pages
 		if (reservationAndhotelData.checkin_url_verification === "true" && reservationAndhotelData.is_zest_checkin === "false") {
 			$state.go('guestCheckinTurnedOff');
 		} else if (reservationAndhotelData.checkin_url_verification === "true") {
 			$state.go('externalCheckinVerification'); // external checkin URL available and is on
 		} else if (reservationAndhotelData.is_external_verification === "true") {
-			$state.go('externalVerification'); // external checkout URL
+			$state.go('externalVerification'); //external checkout URL
 		} else if (reservationAndhotelData.is_precheckin_only === 'true' 
 		           && reservationAndhotelData.reservation_status === 'RESERVED' 
 		           && (reservationAndhotelData.is_auto_checkin === 'true' 
-		           || (reservationAndhotelData.is_sent_to_que === 'true' 
+		           ||(reservationAndhotelData.is_sent_to_que === 'true' 
 		           && !!reservationAndhotelData.zest_web_use_new_sent_to_que_action)))
 		{
-			$state.go('checkinConfirmation'); // checkin starting -> page precheckin + auto checkin
+			$state.go('checkinConfirmation'); //checkin starting -> page precheckin + auto checkin
 		} else if (reservationAndhotelData.is_precheckin_only === 'true' && reservationAndhotelData.reservation_status === 'RESERVED' && (reservationAndhotelData.is_sent_to_que === 'true')) {
 			$state.go('preCheckinTripDetails'); // only available for Fontainbleau -> precheckin + sent to que
 		} else if ($rootScope.isCheckedin) {
-			$state.go('checkinSuccess'); // already checked in
+			$state.go('checkinSuccess'); //already checked in
 		} else if (reservationAndhotelData.is_checkin === 'true') {
-			$state.go('checkinConfirmation'); // checkin starting page -> precheckin turned off
+			$state.go('checkinConfirmation'); //checkin starting page -> precheckin turned off
 		} else if ($rootScope.isCheckedout) {
-			$state.go('checkOutStatus'); // already checked out
+			$state.go('checkOutStatus'); //already checked out
 		} else if ($rootScope.hasOwnProperty('isPasswordResetView')) {
 			var path = $rootScope.isPasswordResetView === 'true' ? 'resetPassword' : 'emailVerification';
-
 			$state.go(path);
 		} else {
 			!reservationAndhotelData.error_occured ? $state.go('checkoutRoomVerification') : $state.go('errorOccured'); // checkout landing page
-		}
+		};
 
 		$(".loading-container").hide();
 
@@ -229,7 +227,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 			// console.log(toState, toParams, fromState, fromParams, error)
 			console.error(error);
 			$state.go('noOptionAvailable');
-			// TODO: Log the error in proper way
+			//TODO: Log the error in proper way
 		});
 	}
 ]);
@@ -237,7 +235,6 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 
 var loadAssets = function(filename, rel, type, media) {
 	var fileref = document.createElement("link");
-
 	fileref.setAttribute("rel", rel);
 	fileref.setAttribute("href", filename);
 	if (type !== '') {
