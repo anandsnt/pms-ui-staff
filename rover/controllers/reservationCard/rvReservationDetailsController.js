@@ -1137,7 +1137,7 @@ sntRover.controller('reservationDetailsController',
 			'authAmount': '0.00',
 			'manualCCAuthPermission': true,
 			'billData': [],
-			'selectedCardDetails': 		// To keep the selected/active card details{
+			'selectedCardDetails': {	// To keep the selected/active card details
 					'name': '',	// card - name
 					'number': '',	// card - number
 					'payment_id': '',	// card - payment method id
