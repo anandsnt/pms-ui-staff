@@ -73,7 +73,7 @@ sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$co
         $scope.$emit('hideLoader');
         // TO DELETE
         $rootScope.accessToken = "c840a5ce26df8e2a4db2bd575c11efc1";
-        GwWebSrv.zestwebData.reservationID = "1479808"
+        GwWebSrv.zestwebData.reservationID = "1479808";
         // conditional page navigations
         if (reservationAndhotelDetails.is_external_verification === "true") {
             $state.go('externalCheckoutVerification'); // external checkout URL

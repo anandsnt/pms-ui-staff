@@ -67,7 +67,7 @@ angular.module('sntRover').service('RVDepositBalanceSrv', ['$q', 'BaseWebSrvV2',
 							setTimeout(function() {
 								console.info("POLLING::-> for emv terminal response");
 								pollToTerminal(async_callback_url);
-							}, 5000)
+							}, 5000);
 						} else {
 							clearInterval(refreshIntervalId);
 							deferred.resolve(data);

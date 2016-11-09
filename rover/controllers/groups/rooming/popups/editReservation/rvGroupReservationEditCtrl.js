@@ -143,14 +143,14 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
             basicDisableCondition = !( rStatus === "RESERVED" || rStatus === "CHECKING_IN")|| containNonEditableRoomType;
 
         // CICO-18717: disable room type switch once a user checks in
-        return (!fieldsEnabled['roomType'] || basicDisableCondition)
+        return (!fieldsEnabled['roomType'] || basicDisableCondition);
     };
 
     $scope.shouldDisableReservationOccuppancyChange = function(reservation) {
       var basicDisableCondition = $scope.reservationStatusFlags.isUneditable ||
                                   $scope.reservationStatusFlags.isCheckedOut;
 
-        return !fieldsEnabled['occupancy'] || basicDisableCondition
+        return !fieldsEnabled['occupancy'] || basicDisableCondition;
     };
 
     /**
@@ -449,7 +449,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
             isNoShow: rStatus === "NOSHOW",
             isGuestAttached: !!reservation.lastname,
             isPastArrival: new tzIndependentDate($rootScope.businessDate) >= new tzIndependentDate(reservation.arrival_date)
-        }
+        };
     };
 
     /**

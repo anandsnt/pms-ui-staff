@@ -76,7 +76,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             var summary = $scope.allotmentConfigData.summary;
 
             return !!summary.allotment_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to;
-        }
+        };
 
 
         /**

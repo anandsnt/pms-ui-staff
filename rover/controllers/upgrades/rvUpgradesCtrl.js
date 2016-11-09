@@ -107,7 +107,7 @@ angular.module('sntRover').controller('RVUpgradesController',
 					if(roomToUpgrade) {
 						roomType.upgrade_room_number = roomToUpgrade.room_number;
 						roomType.donot_move_room = roomToUpgrade.donot_move_room;
-						$scope.upgradesList.push(roomType)
+						$scope.upgradesList.push(roomType);
 					}
 					$scope.isUpsellAvailable();
 				});
@@ -190,7 +190,7 @@ angular.module('sntRover').controller('RVUpgradesController',
 		var openWantedToBorrowPopup = function(error) {
 			$scope.passingParams = {
 				"errorMessage": error.errorMessage[0]
-			}
+			};
 			ngDialog.open(
 			{
 				template: '/assets/partials/roomAssignment/rvGroupRoomTypeNotConfigured.html',

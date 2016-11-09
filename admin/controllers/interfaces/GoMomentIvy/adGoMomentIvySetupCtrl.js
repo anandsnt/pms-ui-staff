@@ -46,4 +46,4 @@ admin.controller('adGoMomentIvySetupCtrl', ['$scope', 'goMomentIvySetupValues', 
         access_token: goMomentIvySetupValues.access_token
       };
     }();
-  }])
+  }]);

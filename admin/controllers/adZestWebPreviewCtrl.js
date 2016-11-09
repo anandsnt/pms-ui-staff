@@ -43,11 +43,11 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'isSmallDevice',
 		// icons of each color has to be in corresponding folders
 		var applyIconStyles = function(color) {
 
-				var styleString = ""
+				var styleString = "";
 
-				styleString = styleString + ".zest-web-checkout-icon{background-image: url('/assets/cssimg/" + color + "/checkout_icon.png')}"
+				styleString = styleString + ".zest-web-checkout-icon{background-image: url('/assets/cssimg/" + color + "/checkout_icon.png')}";
 				addStyleString(styleString);
-			}
+			};
 			/*
 			 * This is to override the existing demo theme styling with the CMS contents if
 			 * set in the admin
@@ -98,7 +98,7 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'isSmallDevice',
 
 			// apply icon styles
 			if (styles.icon_color !== "White" && styles.icon_color !== null) {
-				applyIconStyles(styles.icon_color)
+				applyIconStyles(styles.icon_color);
 			}
 			if (styleString.length > 0) {
 				addStyleString(styleString);

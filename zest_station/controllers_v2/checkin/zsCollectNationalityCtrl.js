@@ -135,7 +135,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 					nationality_id: $scope.selectedCountry.id
 				},
 				successCallBack: successCallBack
-			}
+			};
 
 			$scope.callAPI(zsCheckinSrv.saveNationality, options);
 		};

@@ -60,13 +60,13 @@ sntZestStation.controller('zsAdminCtrl', [
                 return workstation.id == $scope.zestStationData.set_workstation_id;
             });
 
-            $scope.workstation = {}
+            $scope.workstation = {};
             if (typeof selectedWorkStation !== 'undefined') {
                 $scope.workstation.selected = parseInt(selectedWorkStation.id);
                 $scope.workstation.printer = selectedWorkStation.printer;
             } else {
                 $scope.workstation.selected = "";
-                $scope.workstation.printer = ""
+                $scope.workstation.printer = "";
             }
             // set printer label
             setPrinterLabel($scope.workstation.printer);

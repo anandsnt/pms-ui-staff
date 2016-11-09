@@ -57,17 +57,17 @@ sntRover
 
 					// if in this set any one item can be choosen at a time
 					var isSingleSelect = function() {
-						return item.selected && !! options.singleSelect
+						return item.selected && !! options.singleSelect;
 					};
 
 					// if in this set if a particular item is selected, that should only be selected
 					var isSelectiveSingleSelect = function() {
-						return item.selected && (options.selectiveSingleSelectKey === item.id)
+						return item.selected && (options.selectiveSingleSelectKey === item.id);
 					};
 
 					var isRadioOption = function() {
-						return item.selected && item.isRadioOption
-					}
+						return item.selected && item.isRadioOption;
+					};
 
 					var checkUnselectSelectiveSingleSelect = function() {
 						var thatItem;
@@ -76,7 +76,7 @@ sntRover
 							thatItem = _.find($scope.data, { id: options.selectiveSingleSelectKey });
 							thatItem.selected = false;
 						}
-					}
+					};
 
 					// unselect others
 					var unSelectOthers = function() {
@@ -93,7 +93,7 @@ sntRover
 								each.selected = false;
 							}
 						});
-					}
+					};
 
 					if ( isSingleSelect() || isSelectiveSingleSelect() ) {
 						unSelectOthers();
@@ -172,5 +172,5 @@ sntRover
 				$scope.$on('$destroy', unWatchData);
 				$scope.$on('$destroy', unWatchOptions);
 			}
-		}
-	}])
+		};
+	}]);

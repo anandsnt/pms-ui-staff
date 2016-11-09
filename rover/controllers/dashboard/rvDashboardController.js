@@ -89,7 +89,7 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
 
     $scope.closeReleaseNote = function() {
       ngDialog.close(); // close any existing popups
-    }
+    };
   /*
    * Function to open link in new tab
    */

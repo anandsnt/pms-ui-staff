@@ -172,7 +172,7 @@ sntRover.controller('rvAllotmentConfigurationAddonsCtrl', [
 				successCallBack: onRemoveAddonSuccess,
 				failureCallBack: onRemoveAddonFailure,
 				params: params
-			}
+			};
 
 			$scope.callAPI(rvAllotmentConfigurationSrv.removeAllotmentEnhancement, options);
 		};

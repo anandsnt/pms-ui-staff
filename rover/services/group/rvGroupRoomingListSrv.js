@@ -63,7 +63,7 @@ angular.module('sntRover').service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrv
 				if ( typeof params[key] === typeof true ) {
 					data[key] = params[key];
 				}
-			})
+			});
 
 			rvBaseWebSrvV2.getJSON(url, data).then(
 				function(data) {

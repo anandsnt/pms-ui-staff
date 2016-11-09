@@ -50,7 +50,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 				$interval.cancel(timer);
 				timer = undefined;
 			}
-		}
+		};
 
 		var setScrollListner = function() {
 			if ( $scope.$parent.myScroll.hasOwnProperty(SCROLL_NAME) ) {
@@ -66,7 +66,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 			} else {
 				$timeout(setScrollListner, 1000);
 			}
-		}
+		};
 
 
 
@@ -104,7 +104,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 			'CHECKEDOUT': 'check-out',
 			'CANCELLED': 'cancel',
 			'NOSHOW': 'no-show'
-		}
+		};
 
 		$scope.getStatusClass = function(status) {
 			return resClassNames[status] || '';
@@ -318,7 +318,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
  			$timeout(function() {
  				refreshScroll('scrollUp');
  			});
- 		}
+ 		};
 
  		init();	
 
@@ -328,7 +328,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
  			$timeout(function() {
  				refreshScroll('scrollUp');
  			});
- 		}
+ 		};
 
 
 		// re-render must be initiated before for taks like printing.

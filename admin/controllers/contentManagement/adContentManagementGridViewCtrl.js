@@ -332,7 +332,7 @@ admin.controller('ADContentManagementGridviewCtrl', ['$scope', '$state', 'ADCont
 
 		return component.length > 20? trimmedComponent + "..." : trimmedComponent;
 
-	}
+	};
 
 	/* search predicate functions for cms components*/
 

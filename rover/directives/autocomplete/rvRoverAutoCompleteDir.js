@@ -60,7 +60,7 @@
             
             // unbinding the touch move
             if(ulElement instanceof HTMLElement) {
-                ulElement.off('touchmove')
+                ulElement.off('touchmove');
             }
         });    
     };

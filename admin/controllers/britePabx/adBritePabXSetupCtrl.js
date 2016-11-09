@@ -65,4 +65,4 @@ admin.controller('adBritePabXSetupCtrl', ['$scope', 'britePabXSetupValues', 'adB
 	var initializeMe = function() {
 		$scope.brite = britePabXSetupValues;
 	}();
-}])
+}]);

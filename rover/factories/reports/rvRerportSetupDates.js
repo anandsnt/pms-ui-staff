@@ -107,7 +107,7 @@ angular.module('reportsModule')
             			}
             		};
 
-            		var reportName = _.findKey(reportNames, function(value, key) { return value === report['title'] });
+            		var reportName = _.findKey(reportNames, function(value, key) { return value === report['title']; });
 
             		var dates = datesConfig[reportName] || datesConfig['DEFAULT']; 
 
@@ -198,6 +198,6 @@ angular.module('reportsModule')
                 		setUp('hasAdjustmentDateRange', 'fromAdjustmentDate', 'untilAdjustmentDate');
 	                };
                 }
-            }
+            };
         }
     ]);

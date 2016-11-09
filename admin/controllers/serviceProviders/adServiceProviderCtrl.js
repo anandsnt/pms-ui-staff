@@ -38,7 +38,7 @@ admin.controller('ADServiceProviderListCtrl', ['$scope', '$rootScope', '$state',
     $scope.deleteServiceProvider = function(serviceProviderId) {
         var onDeleteSuccess = function(data) {
             fetchServiceProviderList();
-        }
+        };
 
         $scope.invokeApi(ADServiceProviderSrv.deleteServiceProvider, serviceProviderId, onDeleteSuccess);
     };

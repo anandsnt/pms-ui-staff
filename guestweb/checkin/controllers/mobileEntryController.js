@@ -35,7 +35,7 @@
     $scope.country_code  = "";
 
     $scope.countryChanged = function() {
-      $scope.dial = _.find($scope.countryDetails, function(countryDetails) { return countryDetails.countrycode === $scope.country_code}).dial;
+      $scope.dial = _.find($scope.countryDetails, function(countryDetails) { return countryDetails.countrycode === $scope.country_code;}).dial;
     };
 
 
@@ -49,13 +49,13 @@
     });
 
     function ValidateNo() {
-        var val = $scope.guestDetails.mobile
+        var val = $scope.guestDetails.mobile;
 
         if (/^[0-9]{1,15}$/.test(val)) {
             return true;
         } else {
             $modal.open(invalidMobileAlert);
-            return false
+            return false;
         }
     };
 

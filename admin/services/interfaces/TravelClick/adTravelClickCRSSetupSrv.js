@@ -47,6 +47,6 @@ admin.service('adTravelClickCRSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', func
             deferred.reject(data);
         });
         return deferred.promise;
-    }
+    };
 
 }]);

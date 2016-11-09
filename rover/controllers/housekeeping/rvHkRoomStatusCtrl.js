@@ -313,7 +313,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		};
 
 		$scope.clearFilters = function() {
-			console.log('clearFilters autocalled')
+			console.log('clearFilters autocalled');
 			$scope.roomTypes = RVHkRoomStatusSrv.resetRoomTypes();
 
 			$scope.currentFilters = RVHkRoomStatusSrv.initFilters();
@@ -651,7 +651,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		 */
 		$scope.shouldShowTimeSelector = function() {
 			// as per CICO-11840 we will show this for hourly hotels only
-			return $rootScope.isHourlyRateOn
+			return $rootScope.isHourlyRateOn;
 		};
 
 
@@ -732,7 +732,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				room_service_status_id: $scope.updateServiceData.room_service_status_id
 			};
 
-			var roomsToAdd = _.filter($scope.completedData.assignedRoomsList, function(room) { return room.is_add_to_update});
+			var roomsToAdd = _.filter($scope.completedData.assignedRoomsList, function(room) { return room.is_add_to_update;});
 
 			params.room_id = _.pluck(roomsToAdd, 'id');
 			// as per CICO-32168 comments

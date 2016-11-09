@@ -119,7 +119,7 @@ admin.controller('ADFloorsListCtrl',
 
     $scope.toggleAssignFloors = function() {           
         $scope.stateVariables.activeTab = $scope.stateVariables.activeTab === 'MANAGE' ?  'ASSIGN' : 'MANAGE';
-    }
+    };
 
 	initializeMe();
 

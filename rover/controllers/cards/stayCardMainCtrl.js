@@ -40,7 +40,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			if (!guestData) {
 				guestData = {
 					id: ""
-				}
+				};
 			}
 			// passReservationParams
 			// TODO : Once this works pull it to a separate method
@@ -428,9 +428,9 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				to_date: resData.departureDate,
 				fromState: function() {
 					if ($state.current.name === "rover.reservation.staycard.reservationcard.reservationdetails") {
-						return 'STAY_CARD'
+						return 'STAY_CARD';
 					} else {
-						return $state.current.name
+						return $state.current.name;
 					}
 				}(),
 				company_id: resData.company.id,
@@ -572,7 +572,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 
 					if (hasMultipleReservations) {
 						$scope.$emit('showLoader');
-						callRemoveCardsAPIforAllReservations(reservationData, card, cardId)
+						callRemoveCardsAPIforAllReservations(reservationData, card, cardId);
 
 					} else {
 						callRemoveCardsAPIforReservation(card, cardId);
@@ -703,7 +703,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			if (card === 'travel_agent') {
 				params.travel_agent_id = $scope.reservationDetails.travelAgent.id;
 			} else if (card === 'company') {
-				params.company_id = $scope.reservationDetails.companyCard.id
+				params.company_id = $scope.reservationDetails.companyCard.id;
 			};
 
 			$scope.invokeApi(RVReservationSummarySrv.fetchDefaultRoutingInfo, params, fetchSuccessofDefaultRouting);
@@ -972,10 +972,10 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			});
 			roomTypes = _.uniq(roomTypes);
 			$scope.reservationData.tabs = RVReservationDataService.getTabDataModel(roomTypes.length, roomTypes);
-			$scope.reservationData.rooms = []
+			$scope.reservationData.rooms = [];
 			_.each($scope.reservationData.tabs, function(tab) {
 				var roomsOfType = _.filter(tData.rooms, function(room) {
-					return parseInt(room.roomTypeId, 10) === parseInt(tab.roomTypeId, 10)
+					return parseInt(room.roomTypeId, 10) === parseInt(tab.roomTypeId, 10);
 				});
 
 				tab.roomCount = roomsOfType.length;

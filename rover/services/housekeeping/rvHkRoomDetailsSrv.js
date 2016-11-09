@@ -15,7 +15,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 				} else if ( 3 === id ) {
 					return 'OUT_OF_ORDER';
 				} else {
-					return 'IN_SERVICE'
+					return 'IN_SERVICE';
 				}
 			};
 

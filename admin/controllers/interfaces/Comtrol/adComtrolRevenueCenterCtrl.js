@@ -6,7 +6,7 @@ admin.controller('adComtrolRevenueCenterCtrl', ['$scope', 'revCenters', 'adComtr
                 $scope.state.new = {
                     name: "",
                     code: ""
-                }
+                };
             },
             revertEdit = function() {
                 if ($scope.state.editRef) {

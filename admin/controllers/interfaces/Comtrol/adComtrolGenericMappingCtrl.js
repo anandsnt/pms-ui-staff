@@ -8,7 +8,7 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
                     charge_code_name: "",
                     external_code: "",
                     is_default: false
-                }
+                };
             },
             revertEdit = function() {
                 if ($scope.state.editRef) {
@@ -69,7 +69,7 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
                         var similar_types = _.where($scope.mappings, {external_type: external_type});
 
                         _.each(similar_types, function(obj) {
-                            obj.is_default = false
+                            obj.is_default = false;
                         });
                     }
 
@@ -110,7 +110,7 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
                 var similar_types = _.where($scope.mappings, {external_type: mapping.external_type});
 
                 _.each(similar_types, function(obj) {
-                    obj.is_default = false
+                    obj.is_default = false;
                 });
             }
             mapping.is_default = !mapping.is_default;
@@ -147,7 +147,7 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
                         similar_types = _.where($scope.mappings, {external_type: mapping.external_type});
 
                         _.each(similar_types, function(obj) {
-                            obj.is_default = false
+                            obj.is_default = false;
                         });
                         mapping.is_default = true;
                     }

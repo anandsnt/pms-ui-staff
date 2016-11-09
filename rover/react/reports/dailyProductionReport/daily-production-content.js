@@ -58,7 +58,7 @@ var DPtdCell = React.createClass({
 		} else if ( this.props.isAvail ) {
 			tag = 'em';
 		} else if ( this.props.isRev ) {
-			tag = 'span'
+			tag = 'span';
 		};
 
 		return React.DOM.td({

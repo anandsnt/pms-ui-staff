@@ -51,7 +51,7 @@ var returnEmptyScreenDetails = function() {
     "screen_title": "",
     "item_description": ""
   };
-}
+};
 
 var extractScreenDetails = function(identifier, cms_screen_details) {
   var screen_id = returnEmptyScreenDetails();
@@ -155,4 +155,4 @@ var returnFooterStyleClass = function(footerCount) {
     footerClass = "single-footer";
   }
   return footerClass;
-}
+};

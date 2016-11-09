@@ -10,7 +10,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 				return {
 					'name': language.name,
 					'position': index + 1 // index will be in teh order of position
-				}
+				};
 			});
 			var options = {
 				params: {
@@ -40,7 +40,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 				listHavingValues= combinedList[1];
 
 			$scope.languageList = _.sortBy(listHavingValues, 'position').concat(nullList);
-		}
+		};
 
 		/**
 		 * to fetch the country list

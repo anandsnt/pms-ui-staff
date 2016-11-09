@@ -95,7 +95,7 @@ sntGuestWeb.controller('gwUpdateGuestDetailsController', ['$scope', '$state', '$
 				} else {
 					$state.go('checkinFinal');
 				};
-			}
+			};
 			var options = {
 				params: {
 					'data': getDataToSave(),

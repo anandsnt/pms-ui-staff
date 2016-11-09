@@ -71,7 +71,7 @@
 		// fetch country list
 		$scope.isLoading = true;
 		if($rootScope.enforceCountrySort) {
-			var data = {'reservation_id': $rootScope.reservationID}
+			var data = {'reservation_id': $rootScope.reservationID};
 
 			guestDetailsService.fetchSortedCountryList(data).then(function(response) {
 				$scope.sortedCountries = response.sorted;

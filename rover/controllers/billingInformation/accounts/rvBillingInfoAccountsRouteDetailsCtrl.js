@@ -398,7 +398,7 @@ sntRover.controller('rvBillingInfoAccountsRouteDetailsCtrl', ['$scope', '$rootSc
             $scope.departureDate = $scope.reservation.reservation_card.departure_date;
             $scope.arrivalDate = $rootScope.businessDate > $scope.arrivalDate ? $rootScope.businessDate : $scope.arrivalDate;
         }
-    }
+    };
 
     var setRoutingDateOptions = function () {
         $scope.routeDates = {
@@ -419,7 +419,7 @@ sntRover.controller('rvBillingInfoAccountsRouteDetailsCtrl', ['$scope', '$rootSc
                 maxDate: tzIndependentDate($scope.reservation.reservation_card.departure_date)
             };
         }
-    }
+    };
 
     /**
     * function to fetch the attached entity list

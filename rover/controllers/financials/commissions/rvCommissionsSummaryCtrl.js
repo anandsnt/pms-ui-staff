@@ -77,10 +77,10 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         $scope.start = ($scope.filterData.page ==1)?1:(($scope.filterData.page-1)*$scope.filterData.perPage)+1 ;
         $scope.end = (($scope.filterData.page *$scope.filterData.perPage )>=$scope.commissionsData.total_results)?$scope.commissionsData.total_results:($scope.filterData.page *$scope.filterData.perPage );
 
-    }
+    };
     var initPaginationParams = function() {
         $scope.filterData.page= 1,
-        $scope.filterData.perPage= 50
+        $scope.filterData.perPage= 50;
     };
 
     $scope.loadNextPage = function() {
@@ -95,7 +95,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         if($scope.filterData.page > $scope.commissionsData.total_results/$scope.filterData.perPage) {
             return true;
         }else{
-            return false};
+            return false;};
     };
     $scope.printButtonClick = function() {
         $timeout(function() {
@@ -114,7 +114,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         if($scope.filterData.page ==1) {
             return true;
         }else{
-            return false};
+            return false;};
     };
 
     var init = function() {

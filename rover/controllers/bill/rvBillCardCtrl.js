@@ -1031,7 +1031,7 @@ sntRover.controller('RVbillCardController',
 			$scope.openPostCharge(activeBillNo);
 		}
 
-	 }
+	 };
 
 	$scope.openPostCharge = function(activeBillNo) {
 
@@ -1071,7 +1071,7 @@ sntRover.controller('RVbillCardController',
 	    		className: '',
 	    		scope: $scope
 	    	});
-	    })
+	    });
 
 
 	};
@@ -1660,7 +1660,7 @@ sntRover.controller('RVbillCardController',
 			// Do nothing , Keep going checkin process , it is a sharer reservation..
 		}
 		else if(($scope.reservationBillData.room_status === 'NOTREADY' || $scope.reservationBillData.fo_status === 'OCCUPIED') && !$rootScope.queuedCheckIn) {
-			 var reservationStatus = $scope.reservationBillData.reservation_status
+			 var reservationStatus = $scope.reservationBillData.reservation_status;
 	  		 var isUpgradeAvaiable = $scope.reservationBillData.is_upsell_available && (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN');
 			// TO DO:Go to room assignemt view
 
@@ -1780,7 +1780,7 @@ sntRover.controller('RVbillCardController',
 	* @return {Boolean}
 	*/
 	$scope.hasPermissionToAllowPostWithNoCredit = function() {
-		return rvPermissionSrv.getPermissionValue('ALLOW_POST_WHEN_RESTRICTED')
+		return rvPermissionSrv.getPermissionValue('ALLOW_POST_WHEN_RESTRICTED');
 	};
     // CICO-6089 : Handle toggle button.
     $scope.toggleCheckoutWithoutSettlement = function() {

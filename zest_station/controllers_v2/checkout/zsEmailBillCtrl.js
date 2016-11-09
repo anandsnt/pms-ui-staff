@@ -109,7 +109,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 			};
 
 			$scope.callAPI(zsGeneralSrv.emailIsBlackListed, blacklistCheckOptions);
-		}
+		};
 
 		var callSaveEmail = function() {
 			$scope.callBlurEventForIpad();

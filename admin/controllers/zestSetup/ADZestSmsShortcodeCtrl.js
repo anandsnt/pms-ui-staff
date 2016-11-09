@@ -19,7 +19,7 @@ admin.controller('ADZestSmsShortcodeCtrl', ['$scope', '$state', 'ADZestShortCode
              "guest_web_url_type": "CHECKIN",
              "name": "SMS URL",
              "url_suffix": $scope.editData.checkin_static_url
-        }
+        };
         var options = {
             params: data
         };
@@ -63,11 +63,11 @@ admin.controller('ADZestSmsShortcodeCtrl', ['$scope', '$state', 'ADZestShortCode
     
     $scope.fetch = function() {
         var callback = function(response) {
-            console.info('fetch: ', response)
+            console.info('fetch: ', response);
             if (response.status === 'success') {
                 $scope.editData = response.data;
                 $scope.editData.sms_double_opt_in = (!!$scope.editData.sms_double_opt_in && $scope.editData.sms_double_opt_in) ? 'true' : 'false';
-                console.info('$scope.editData: ', $scope.editData)
+                console.info('$scope.editData: ', $scope.editData);
             }
         };
         var options = {

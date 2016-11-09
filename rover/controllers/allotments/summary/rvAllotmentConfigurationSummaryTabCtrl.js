@@ -323,7 +323,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				successCallBack: successCallBackOfCopyDefaultBilling,
 				failureCallBack: failureCallBackOfCopyDefaultBilling,
 				params: params
-			}
+			};
 
 			$scope.callAPI(rvAllotmentConfigurationSrv.copyDefaultBillingInfo, options);
 		};

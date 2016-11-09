@@ -195,7 +195,7 @@ sntZestStation.controller('zsRootCtrl', [
 			var onFailure = function() {
 				console.warn('unable to fetch hotel settings');
 				$scope.$emit(zsEventConstants.PUT_OOS);
-			}
+			};
 			var options = {
 				params: {},
 				successCallBack: onSuccess,
@@ -248,7 +248,7 @@ sntZestStation.controller('zsRootCtrl', [
 		};
 
 		var forDemo = function() {
-			console.info('readLocally() : ', readLocally())
+			console.info('readLocally() : ', readLocally());
 			if (readLocally() && $scope.zestStationData.theme === 'snt') {
 				console.info('forDemo: !!!');
 				return true;
@@ -345,7 +345,7 @@ sntZestStation.controller('zsRootCtrl', [
 			var frameBody = $("#booking_iframe").contents().find("body");
 
 			frameBody.focus(function() {
-				console.log('iframe focus')
+				console.log('iframe focus');
 			});
 		};
 		$scope.hideKeyboardIfUp = function() {
@@ -357,7 +357,7 @@ sntZestStation.controller('zsRootCtrl', [
 						try {
 							$(focused).getkeyboard().accept(true);
 						} catch (err) {
-							console.warn($(focused).getkeyboard())
+							console.warn($(focused).getkeyboard());
 						}
 
 					}
@@ -603,7 +603,7 @@ sntZestStation.controller('zsRootCtrl', [
 					homeInActivityTimeInSeconds = homeInActivityTimeInSeconds+1;
 				}	
 			}
-		}
+		};
 
 		$scope.$on('HOME_ACTIVITY', function() {// need to move the above function to Home Controller after S69
 			homeInActivityTimeInSeconds = 0;
@@ -636,7 +636,7 @@ sntZestStation.controller('zsRootCtrl', [
 			};
 
 			$scope.callAPI(zsGeneralSrv.refreshWorkStationInitialized, options);
-		}
+		};
 	 	var homeInActivityTimeInSeconds = 0;
 	 	var initRefreshStation = function() {
 	 		console.warn(':: Refreshing Station ::');
@@ -1131,7 +1131,7 @@ sntZestStation.controller('zsRootCtrl', [
 		};
 		var logSetting = function(txt, setting) {
 			// adds colors green/red to console log, to quickly check if a setting is enabled or disabled
-			console.log('%c' + txt + logTextOnOff(setting), colorLogText(setting))
+			console.log('%c' + txt + logTextOnOff(setting), colorLogText(setting));
 		};
 
 		var cardwriter = new CardOperation();
@@ -1166,7 +1166,7 @@ sntZestStation.controller('zsRootCtrl', [
 						$scope.hideKeyboardIfUp();
 					}
 				}
-			}
+			};
 
 			var el = window.document;
 
@@ -1174,7 +1174,7 @@ sntZestStation.controller('zsRootCtrl', [
 			el.addEventListener("touchend", optimizeTouch, false);
 			el.addEventListener("touchcancel", optimizeTouch, false);
 			el.addEventListener("touchmove", optimizeTouch, false);
-		}
+		};
 
 
 		/** *

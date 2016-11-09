@@ -15,7 +15,7 @@
                     (response.status === "ok") ? updateSessionSuccessCallback(response): updateSessionFailureCallback(response);
                 };
 
-                console.info('update session--- ')
+                console.info('update session--- ');
                 HostedForm.updateSession(sessionDetails, callback);
             };
 

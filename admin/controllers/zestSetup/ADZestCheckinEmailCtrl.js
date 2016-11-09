@@ -74,7 +74,7 @@ admin.controller('ADZestCheckinEmailCtrl', ['$scope', '$state', 'adZestCheckinCh
              "guest_web_url_type": "CHECKIN",
              "name": "Email URL",
              "url_suffix": $scope.data.zest_email_setup.checkin_static_uri
-        }
+        };
 
         $scope.invokeApi(adZestCheckinCheckoutSrv.saveNewDirectURL, data, saveNewDirectURLSuccess);
     };

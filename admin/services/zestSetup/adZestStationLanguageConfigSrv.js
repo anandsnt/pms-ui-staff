@@ -12,4 +12,4 @@ admin.service('adZestStationLanguageConfigSrv', ['ADBaseWebSrvV2', function(ADBa
 
         return ADBaseWebSrvV2.putJSON(url, params);
     };
-}])
+}]);

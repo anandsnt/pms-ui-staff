@@ -66,7 +66,7 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
                 url = 'staff/guest_cards/' + params.guest_detail_id;
             var param = {
                 "email": params.email
-            }
+            };
 
             zsBaseWebSrv2.putJSON(url, param).then(function(data) {
                 deferred.resolve(data);

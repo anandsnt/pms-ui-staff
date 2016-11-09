@@ -47,10 +47,10 @@ admin.controller('ADNotificationCtrl', ['$scope', '$rootScope', '$state', '$stat
         var fetchFailed = function(err) {
             $scope.errorMessage = err;
             $scope.$emit('hideLoader');
-        }
+        };
 
         $scope.invokeApi(ADNotificationsListSrv.fetchNotification, id, fetchSuccess, fetchFailed);
-    }
+    };
     // return a date string in the format of yyyy-MM-dd 00:00:00 (API expects this format)
     var formatActivatesAtDate = function(date) {        
         return date + " 00:00:00";
@@ -99,13 +99,13 @@ admin.controller('ADNotificationCtrl', ['$scope', '$rootScope', '$state', '$stat
         var saveFailed = function(err) {
             $scope.errorMessage = err;
             $scope.$emit('hideLoader');
-        }       
+        };       
 
         if(!!notification.id) {
             var params = {
                 id: $scope.notification.id,
                 params: getParams(notification)
-            }
+            };
 
             $scope.invokeApi(ADNotificationsListSrv.updateNotification, params, $scope.back, saveFailed);        
         }else{

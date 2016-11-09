@@ -77,7 +77,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         $scope.oldPayment = $scope.renderAddedPayment;
         $scope.renderAddedPayment = null;
         isAddPayment = false;
-    }
+    };
 
     /**
      * function to show the payment list on cancelling or adding new payment
@@ -320,7 +320,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
     };
     $scope.showPaymentOption = function() {
         return (!$scope.isAddPayment && $scope.showPayment && $scope.renderAddedPayment == null);
-    }
+    };
     /**
      * function to fetch available billing groups from the server
      */

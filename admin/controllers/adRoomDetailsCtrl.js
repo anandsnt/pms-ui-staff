@@ -53,7 +53,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 		};
 		var fetchFailedOfComponentRooms = function(data) {
 			$scope.$emit('hideLoader');
-			console.log(data)
+			console.log(data);
 
 		};
 
@@ -61,7 +61,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 			if ($scope.editMode) {
 
 				var isNewTypeSuite = _.findWhere($scope.data.room_types, {"value": value}).is_suite,
-					isOldTypeSuite = _.findWhere($scope.data.room_types, {"value": $scope.selectedRoomTypeId}).is_suite
+					isOldTypeSuite = _.findWhere($scope.data.room_types, {"value": $scope.selectedRoomTypeId}).is_suite;
 
 				if (isNewTypeSuite && isOldTypeSuite) {
 
@@ -363,11 +363,11 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 
 				var selectedRoomTypeIndex = _.findIndex($scope.availableComponentRooms, {id: roomTypeId});
 
-				$scope.availableComponentRooms[selectedRoomTypeIndex].rooms.splice(_.findIndex($scope.availableComponentRooms[selectedRoomTypeIndex].rooms, {'room_no': selectedItem}), 1)
+				$scope.availableComponentRooms[selectedRoomTypeIndex].rooms.splice(_.findIndex($scope.availableComponentRooms[selectedRoomTypeIndex].rooms, {'room_no': selectedItem}), 1);
 		     	$scope.availableComponentRooms[selectedRoomTypeIndex].selected_room_number = "";
 			}
 
-		}
+		};
 
 
 }]);

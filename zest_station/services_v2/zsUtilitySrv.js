@@ -12,7 +12,7 @@ sntZestStation.service('zsUtilitySrv', ['$http', '$q', 'zsBaseWebSrv',
                 amount = parseFloat(amount).toFixed(2) + '';
             }
             var delimiter = ",";
-            var a = amount.split('.', 2)
+            var a = amount.split('.', 2);
             var d = a[1];
             var i = parseInt(a[0]);
 
@@ -159,7 +159,7 @@ sntZestStation.service('zsUtilitySrv', ['$http', '$q', 'zsBaseWebSrv',
                     }
                 }
             ];
-        }
+        };
 
     }
 ]);

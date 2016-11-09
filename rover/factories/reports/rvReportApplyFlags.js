@@ -24,7 +24,7 @@ angular.module('reportsModule')
                         'COMPARISION_BY_DATE': ['hasSysDateLimit']
                     };
 
-                    var reportName = _.findKey(reportNames, function(value, key) { return value === report['title'] });
+                    var reportName = _.findKey(reportNames, function(value, key) { return value === report['title']; });
 
                     if ( !! reportName ) {
                         _.each(flags[reportName], function(flag) {
@@ -32,6 +32,6 @@ angular.module('reportsModule')
                         });
                     };
                 }
-            }
+            };
         }
     ]);

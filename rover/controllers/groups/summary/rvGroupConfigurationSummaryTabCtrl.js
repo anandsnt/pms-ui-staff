@@ -337,7 +337,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 		 * @return {Boolean} hide or not
 		 */
 		$scope.shouldShowGroupActionsButton = function () {
-			return ($scope.isStandAlone && !$scope.isInStaycardScreen() && !$scope.isInAddMode())
+			return ($scope.isStandAlone && !$scope.isInStaycardScreen() && !$scope.isInAddMode());
 		};
 
 		/**
@@ -1363,7 +1363,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 						else {
 							rate.groupName = "Group Rates";
 						}
-						sumData.rateSelectDataObject.push(rate)
+						sumData.rateSelectDataObject.push(rate);
 					});
 
 				},

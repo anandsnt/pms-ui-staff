@@ -152,7 +152,7 @@ admin.controller('adTravelClickCRSSetupCtrl', ['$scope', '$rootScope', 'CRSConfi
                 $scope.paymentMethods = response.paymentMethods;
                 $scope.CRSConfig = CRSConfig;
                 initTimeCopy();
-            }
+            };
 
             $scope.callAPI(adExternalInterfaceCommonSrv.fetchMetaData, {
                 params: {

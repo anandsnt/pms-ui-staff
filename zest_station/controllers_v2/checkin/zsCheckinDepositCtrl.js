@@ -45,7 +45,7 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 			if (!!$stateParams.pickup_key_mode) {
 				stateParams.pickup_key_mode = 'manual';
 			}
-			console.info('to card swipe ctrl params: ', stateParams)
+			console.info('to card swipe ctrl params: ', stateParams);
 			$state.go('zest_station.checkInCardSwipe', stateParams);
 		};
 
@@ -83,7 +83,7 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 							'balance_amount': $stateParams.balance_amount,
 							'pre_auth_amount_for_zest_station': $stateParams.pre_auth_amount_for_zest_station,
 							'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin
-						}
+						};
 						// check if this page was invoked through pickupkey flow
 
 					if (!!$stateParams.pickup_key_mode) {

@@ -34,10 +34,10 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url: '/channelManagerEditRates',
 			resolve: {
 				availableRates: function (ADChannelMgrSrv) {
-					return ADChannelMgrSrv.fetchRates().then(function(data) {return data.results});
+					return ADChannelMgrSrv.fetchRates().then(function(data) {return data.results;});
 				},
 				availableRoomTypes: function (ADChannelMgrSrv) {
-					return ADChannelMgrSrv.fetchRoomTypes().then(function(data) {return data.data.room_types});
+					return ADChannelMgrSrv.fetchRoomTypes().then(function(data) {return data.data.room_types;});
 				}
 			}
 		});

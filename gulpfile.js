@@ -20,10 +20,10 @@ var gulp 	  = require('gulp'),
 				    },
 				    silentErrorShowing: function(error) {
 				    	// If you want details of the error in the console
-					  	console.log ('--------GULP TASK SILENT ERROR---\n\n')
+					  	console.log ('--------GULP TASK SILENT ERROR---\n\n');
 				    	
 				    	console.trace(error);
-				    	console.log('\n\n---END OF GULP ERROR MESSAGE--')
+				    	console.log('\n\n---END OF GULP ERROR MESSAGE--');
 
 					  	this.emit('end');
 				    }

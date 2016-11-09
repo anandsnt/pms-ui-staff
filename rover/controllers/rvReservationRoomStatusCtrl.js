@@ -274,7 +274,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
         var updateParams = {
             "no_room_move": !$scope.reservationData.reservation_card.cannot_move_room,
             "reservationId": $scope.reservationData.reservation_card.reservation_id
-        }
+        };
 
         var options = {
             params: updateParams,
@@ -282,7 +282,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
         };
 
         $scope.callAPI(RVReservationSummarySrv.updateReservation, options);
-    }
+    };
 
     $scope.showDoNotMoveToggleButton = function() {
         var shouldShowDNMToggleButton = true,
@@ -310,7 +310,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
                 $scope.keyInitPopup();
             }
 
-        }, 700)
+        }, 700);
     };
 
 

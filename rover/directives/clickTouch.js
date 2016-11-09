@@ -31,7 +31,7 @@ sntRover.directive('clickTouch', function($timeout, $parse) {
 
             scope.$on('$destroy', function() {
                 element.unbind('touchstart click');
-            })
+            });
         }
     };
 });

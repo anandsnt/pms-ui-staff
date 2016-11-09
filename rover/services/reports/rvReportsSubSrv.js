@@ -53,7 +53,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 							setTimeout(function() {
 								console.info("POLLING::-> for print response");
 								pollToReport(async_callback_url);
-							}, 5000)
+							}, 5000);
 						} else {
 							clearInterval(refreshIntervalId);
 							deferred.resolve(data);
@@ -380,8 +380,8 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 				method: 'getJSON',
 				url: 'api/floors.json',
 				resKey: 'floors'
-			})
-		}
+			});
+		};
 
 		service.fetchDepartments = function() {
 			return callApi({
@@ -390,8 +390,8 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 				url: 'admin/departments.json',
 				resKey: 'data',
 				resKey2: 'departments'
-			})
-		}
+			});
+		};
 
 		return service;
 	}

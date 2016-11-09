@@ -41,4 +41,4 @@ admin.controller('adLetShareSetupCtrl', ['$scope', 'letsShareSetupValues', 'adLe
 		$scope.letshare = {};
 		$scope.letshare.enabled = letsShareSetupValues.enabled;
 	}();
-}])
+}]);

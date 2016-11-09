@@ -33,7 +33,7 @@ angular.module('reportsModule')
                         filters: filters
                     };
                 }
-            }
+            };
         }
     ])
     .factory('cancelDateFilterFac', [
@@ -65,7 +65,7 @@ angular.module('reportsModule')
                         filters: filters
                     };
                 }
-            }
+            };
         }
     ])
     .factory('arrivalDateFilterFac', [
@@ -97,7 +97,7 @@ angular.module('reportsModule')
                         filters: filters
                     };
                 }
-            }
+            };
         }
     ])
     .service('RVReportParamsAndFiltersSrv', [
@@ -133,12 +133,12 @@ angular.module('reportsModule')
             var addParams = function(obj) {
                 params = _.extend(params, obj);
                 return params;
-            }
+            };
 
             var resetParams = function() {
                 params = {};
                 return params;
-            }
+            };
 
             var addFilter = function(obj) {
                 appliedFilters = _.extend(appliedFilters, obj);
@@ -188,8 +188,8 @@ angular.module('reportsModule')
                     return {
                         params: params,
                         filters: filters
-                    }
+                    };
                 }
-            }
+            };
         }
-    ])
+    ]);

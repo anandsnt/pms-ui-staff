@@ -79,7 +79,7 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
 
 	            }
 		 	}
-        }
+        };
 	 	
         if(sntapp.loginUpdate != null) {
 	        /**

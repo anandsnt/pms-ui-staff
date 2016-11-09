@@ -78,4 +78,4 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
 	var initializeMe = function() {
 		$scope.lightspeed = lightSpeedSetupValues;
 	}();
-}])
+}]);

@@ -19,7 +19,7 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 		var refreshScroll = function(goTop) {
 			$scope.refreshScroller('LOG_TAB_SCROLL');
 			goTop && $scope.getScroller('LOG_TAB_SCROLL').scrollTo(0, 0);
-		}
+		};
 
 		$scope.init = function() {
 			$scope.roomDetails = $scope.$parent.roomDetails;
@@ -85,7 +85,7 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 	    };
 
 	    $scope.getRoomStatusClass = function(roomStatus) {
-	    	return roomStatus.toLowerCase()
+	    	return roomStatus.toLowerCase();
 	    };
 
 	   /*

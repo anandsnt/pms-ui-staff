@@ -30,12 +30,12 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 
 		cardErrorPopupOpts.resolve = {
 			message: function() {
-				return "There is a problem with your credit card."
+				return "There is a problem with your credit card.";
 			}
 		};
 		emptyFeildsErrorPopup.resolve = {
 			message: function() {
-				return "All fields are required"
+				return "All fields are required";
 			}
 		};
 		var ccvOpts = angular.copy($scope.errorOpts);
@@ -43,7 +43,7 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 		ccvOpts.templateUrl = '/assets/partials/ccVerificationNumberModal.html',
 			ccvOpts.resolve = {
 				message: function() {
-					return ""
+					return "";
 				}
 			};
 

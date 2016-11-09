@@ -113,7 +113,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                         'email_failed': 'true'
                     });
                 }
-            }
+            };
             var params = {
                 reservation_id: $stateParams.reservation_id,
                 bill_number: "1"

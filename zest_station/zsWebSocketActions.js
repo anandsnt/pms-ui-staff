@@ -19,7 +19,7 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
         that.ws.send("{\"Command\" : \"cmd_device_uid\"}");
     };
     this.DispenseKey = function(keyDispenseUID) { // write to key after successful encodeKey call
-        console.info('dispense called : [', keyDispenseUID, ']')
+        console.info('dispense called : [', keyDispenseUID, ']');
         that.ws.send("{\"Command\" : \"cmd_dispense_key_card\", \"Data\" : \"" + keyDispenseUID + "\"}");
     };
     this.EjectKeyCard = function() { // reject key on failure
@@ -45,7 +45,7 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
         try {
             that.ws = new WebSocket("wss://localhost:4649/CCSwipeService");
         } catch (e) {
-            console.error(e)
+            console.error(e);
             socketOpenedFailureCallback();
         }
 
@@ -87,4 +87,4 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
             that.connect();
         },
         wsConfig['connect_delay']);
-}
+};

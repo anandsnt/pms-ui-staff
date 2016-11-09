@@ -11,10 +11,10 @@ admin.controller('ADInterfaceSubMenuCtrl', ['$scope', '$state',
                 $scope.sectionTitle = "Central Reservation Systems Setup";
                 break;
             case "admin.ifcComtrolSetup":
-                $scope.sectionTitle = "Comtrol Setup"
+                $scope.sectionTitle = "Comtrol Setup";
                 break;
             default:
-                $scope.sectionTitle = "Interfaces Setup"
+                $scope.sectionTitle = "Interfaces Setup";
         }
 
         $scope.subComponents = _.find($scope.selectedMenu.components, {state: $state.current.name}).sub_components;

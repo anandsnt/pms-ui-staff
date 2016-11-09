@@ -6,5 +6,5 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
        	controller: 'checkOutStatusController',
        	templateUrl: '/assets/common_templates/partials/MGM/MandalayBay/gwCheckoutfinal.html',
 		title: 'Status - Check-out Now'
-   	 })
+   	 });
 }]);

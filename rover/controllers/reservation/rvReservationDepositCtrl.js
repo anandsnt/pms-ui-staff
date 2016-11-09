@@ -384,7 +384,7 @@ sntRover.controller('RVReservationDepositController',
 			// if new card is added and payment is success, add the card to reservation
 
 			if(typeof attach_to_reservation !== "undefined") {
-				paymentData.reservation_id = $scope.passData.reservationId
+				paymentData.reservation_id = $scope.passData.reservationId;
 			}
 			paymentData.card_code = $scope.newPaymentInfo.tokenDetails.isSixPayment?
 									getSixCreditCardType($scope.newPaymentInfo.tokenDetails.card_type).toLowerCase():

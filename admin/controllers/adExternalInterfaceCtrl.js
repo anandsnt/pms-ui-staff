@@ -359,7 +359,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         }
         $scope.invokeApi($scope.serviceController.saveSetup, saveData, $scope.saveSetupSuccessCallback, $scope.saveSetupFailureCallback);
       }
-    }
+    };
     
     $scope.initActiveInactiveSave = function() {
       if ($scope.interfaceName === 'Givex') {
@@ -379,7 +379,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
           }
         }
       }
-    }
+    };
     // ////////////////////
     // //SAVE
     //

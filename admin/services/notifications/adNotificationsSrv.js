@@ -6,7 +6,7 @@ admin.service('ADNotificationsListSrv', ['$http', '$q', 'ADBaseWebSrvV2', functi
 	
 	this.fetch = function() {
 		var deferred = $q.defer();
-		var url =  "/api/staff_notifications"
+		var url =  "/api/staff_notifications";
 		// var url = 'ui/show?json_input=serviceprovider/userslist.json&format=json';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {

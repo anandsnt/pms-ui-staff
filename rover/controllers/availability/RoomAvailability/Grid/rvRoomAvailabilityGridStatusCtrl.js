@@ -101,7 +101,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGridStatusController', 
             // This detailed view will have data from the initial API call
             $scope.toggleStatusOf['roomInventory'] = !$scope.toggleStatusOf['roomInventory'];
             $scope.refreshScroller('room_availability_scroller');
-        }
+        };
         // --------------------------------------------------------------------------------------------------------------
 
         $scope.$on('$includeContentLoaded', function(event) {
@@ -124,7 +124,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGridStatusController', 
             $scope.refreshScroller('room_availability_scroller');
             $scope.hideMeBeforeFetching = true;
             $scope.$emit("hideLoader");
-        }
+        };
 		/**
 		* when data changed from super controller, it will broadcast an event 'changedRoomAvailableData'
 		*/

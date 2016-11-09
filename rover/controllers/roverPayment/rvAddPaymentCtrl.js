@@ -34,9 +34,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
              */
             $scope.getAddActionType = function() {
                 if ($scope.isFromGuestCard) {
-                    return 'ADD_PAYMENT_GUEST_CARD'
+                    return 'ADD_PAYMENT_GUEST_CARD';
                 } else if ($scope.paymentData.isFromBillCard || $scope.passData.fromView === "billcard") {
-                    return 'ADD_PAYMENT_BILL'
+                    return 'ADD_PAYMENT_BILL';
                 }
                 return 'ADD_PAYMENT_STAY_CARD';
             };

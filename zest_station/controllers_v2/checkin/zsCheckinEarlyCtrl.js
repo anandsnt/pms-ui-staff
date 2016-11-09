@@ -18,7 +18,7 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
         BaseCtrl.call(this, $scope);
 
         var init = function() {
-            console.log('init')
+            console.log('init');
             $scope.$emit('hideLoader'); // need to fix why loader is still appearing after init/success call
             console.info('init early checkin ctrl: ', $stateParams);
 
@@ -51,9 +51,9 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
             } else return false;
         };
         var setEarlyParams = function(response) {
-            console.info('===============')
+            console.info('===============');
             console.info('===============', response);
-            console.info('===============')
+            console.info('===============');
             $scope.reservation_in_early_checkin_window = response.reservation_in_early_checkin_window;
             $scope.is_early_prepaid = false;
 

@@ -574,13 +574,13 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			var options = {
 				start_date: formatDateForAPI($scope.timeLineStartDate),
 				end_date: formatDateForAPI($scope.timeLineEndDate)
-			}
+			};
 
 			$scope.fetchRoomBlockGridDetails(options);
-        }
+        };
 
         var formatDateForAPI = function(date) {
-			return $filter('date')(date, $rootScope.dateFormatForAPI)
+			return $filter('date')(date, $rootScope.dateFormatForAPI);
 		};
 
 		/**
@@ -905,7 +905,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			}
 			// Overbooking occurs and has no permission.
 			else {
-				return "NO_PERMISSION"
+				return "NO_PERMISSION";
 			};
 
 		};
@@ -1012,7 +1012,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			// Show overbooking message
 			var dialogData = {
 				message: message
-			}
+			};
 
 			ngDialog.open({
 				template: '/assets/partials/groups/roomBlock/rvGroupWarnOverBookingPopup.html',
@@ -1227,7 +1227,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				closeByDocument: false,
 				closeByEscape: false
 			});
-		}
+		};
 
 		/**
 		 * To check whether inhouse reservations exists.
@@ -1287,7 +1287,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			};
 
 			$scope.callAPI(rvGroupConfigurationSrv.updateSelectedRoomTypesAndRates, options);
-		}
+		};
 
 		var successCallBackOfSaveNewRoomTypesAndRates = function () {
 			$scope.fetchCurrentSetOfRoomBlockData();
@@ -1457,7 +1457,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			// Room block saved
 			$scope.fetchCurrentSetOfRoomBlockData();
 			$scope.closeDialog();
-		}
+		};
 
 		var failureCallBackOfSaveMassUpdate = function(error) {
 			if(error.hasOwnProperty ('httpStatus')) {
@@ -1481,7 +1481,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				$scope.errorMessage = error;
 				$scope.closeDialog();
 			}
-		}
+		};
 
 		/**
 		 * For mass update triggered by clicking > button
@@ -1827,7 +1827,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 			// since we are recieving two ouside click event on tapping outside, we wanted to check and act
 			$scope.isUpdateInProgress = false;
-		}
+		};
 
 		/**
 		 * Our Move date, start date, end date change are defined in parent controller
@@ -1907,7 +1907,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			totalOfIndividualDateData["totalBlocked"] = totalRoomsBlockedCountIndividualDate;
 			totalOfIndividualDateData["totalPicked"]  = totalRoomsPickedIndividulaDate;
 			return totalOfIndividualDateData;
-		}
+		};
 
 		$scope.getTotalBookedRooms = function() {
 
@@ -1934,7 +1934,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 		var cancelCallBackofDateChange = function () {
 			resetDatePickers();
-		}
+		};
 
 		var successCallBackOfEarlierArrivalDateChange = function() {
 			$scope.reloadPage("ROOM_BLOCK");
@@ -1975,7 +1975,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			var options = {
 				cancelPopupCallBack: cancelCallBackofDateChange,
 				message: "GROUP_EARLIER_DEP_DATE_CHANGE_WARNING"
-			}
+			};
 
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.showDateChangeInvalidWarning(options);
@@ -1985,7 +1985,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			var options = {
 				cancelPopupCallBack: cancelCallBackofDateChange,
 				message: "GROUP_LATER_ARR_DATE_CHANGE_WARNING"
-			}
+			};
 
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.showDateChangeInvalidWarning(options);

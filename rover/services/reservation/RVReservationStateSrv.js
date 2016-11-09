@@ -28,7 +28,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 			// In case of multiple rates, rateId might come in as an array
 			// In such a case, take the rate for the first night
 			if (_.isArray(rateId)) {
-				rateId = rateId[0]
+				rateId = rateId[0];
 			}
 			var rateAddons = _.findWhere(self.metaData.rateAddons, {
 				rate_id: rateId
@@ -96,8 +96,8 @@ angular.module('sntRover').service('RVReservationStateService', [
 				},
 				is_member: false,
 				linked_promotion_ids: []
-			}
-		}
+			};
+		};
 
 
 		/**
@@ -173,7 +173,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 			} else if (amountType === 'FLAT') {
 				return getTotalPostedAddons(postType, 1);
 			};
-		}
+		};
 
 		self.computeBaseAmount = function(taxableAmount, taxes, numAdults, numChildren) {
 			var totalInclTaxPercent = 0.0,
@@ -353,7 +353,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 				rooms[roomTypeId].availabilityNumbers[date] = {
 					room: roomType.availability,
 					group: roomType.group_availability
-				}
+				};
 			});
 		};
 
@@ -493,7 +493,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 					excl: totalTax.excl
 				},
 				stayTax: stayTax
-			}
+			};
 
 		};
 

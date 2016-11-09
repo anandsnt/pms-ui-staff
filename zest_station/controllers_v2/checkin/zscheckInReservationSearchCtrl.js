@@ -155,7 +155,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 				params = params;
 			}
 			return params;
-		}
+		};
 
 		$scope.lastNameEntered = function() {
 			$scope.hideKeyboardIfUp();
@@ -307,7 +307,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			};
 
 			console.info(':: zestStationData > bussinessDate :: ', $scope.zestStationData.bussinessDate);
-		}
+		};
 		var setDateOptions = function() {
 
 			var options = {
@@ -322,7 +322,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 							$scope.$emit('GENERAL_ERROR', errorMessage);
 						}
 
-					}
+					};
 
 					$scope.callAPI(zsGeneralSrv.fetchHotelTime, timeOptions);
 				},

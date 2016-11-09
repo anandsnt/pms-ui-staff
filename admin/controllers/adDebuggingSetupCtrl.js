@@ -111,19 +111,19 @@ admin.controller('adDebuggingSetupCtrl', ['$scope', 'adDebuggingSetupSrv', '$sta
         if(device.logging_end_time != "" && device.logging_start_time != "") {
           device.hours_log_enabled = (new Date(device.logging_end_time).getTime() - new Date(device.logging_start_time).getTime())/(1000*60*60) ;
         }
-    })
-  }
+    });
+  };
 
   $scope.getDisplayTime = function(date) {
-    var dateObj = new Date(date)
+    var dateObj = new Date(date);
 
     return dateObj.toLocaleString();
-  }
+  };
 
   $scope.changeDuration = function(hours) {
     $scope.selectedDevice.logging_start_time = new Date().toLocaleString();
     $scope.selectedDevice.logging_end_time = new Date(new Date().getTime() + (hours * 1000 *60 *60)).toLocaleString();
-  }
+  };
 
   $scope.selectDevice = function(event, device, index) {
     if($scope.selectedDevice !== "" && $scope.selectedDevice.device_uid == device.device_uid) {
@@ -135,7 +135,7 @@ admin.controller('adDebuggingSetupCtrl', ['$scope', 'adDebuggingSetupSrv', '$sta
       $scope.selectedDevice.hours_log_enabled = $scope.selectedDevice.hours_log_enabled == "" ? 4 : $scope.selectedDevice.hours_log_enabled;
     }
       
-  }
+  };
 
   var setHoursList = function() {
     $scope.hours = [];

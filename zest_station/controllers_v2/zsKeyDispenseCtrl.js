@@ -94,7 +94,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 					'card_type': "1"
 				}
 
-			}
+			};
 			var debugging = false;
 
 			if (debugging) {
@@ -179,12 +179,12 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 
 		var emitCordovaKeyError = function(response) {
 			$scope.$emit('printLocalKeyCordovaFailed', response);
-		}
+		};
 		var makeKeyViaCordova = function(data, reservation_id, keys) {
 			// to start writing process to a local device (ingenico | infinea), need to read the card info, then write back the respond onto the card
 			if ($scope.writeLocally() && $scope.isIpad) {
 				console.info('accessing card writer object to retrieve card info...');
-				console.log('$scope.cardwriter: ', $scope.cardwriter)
+				console.log('$scope.cardwriter: ', $scope.cardwriter);
 
 				cardwriter.retrieveCardInfo({
 					'successCallBack': onSuccessLocalKeyWrite,

@@ -29,7 +29,7 @@ angular.module('clickTouch', []).directive('clickTouch', function($timeout, $par
 
             scope.$on('$destroy', function() {
                 element.unbind('touchstart click');
-            })
+            });
         }
     };
 });

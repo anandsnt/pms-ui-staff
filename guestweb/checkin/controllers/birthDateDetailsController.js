@@ -111,7 +111,7 @@
 			var date = new Date(y, m-1, d);
 
 			if (date.getFullYear() == y && date.getMonth() + 1 == m && date.getDate() == d) {
-			   return true
+			   return true;
 			} else {
 			   return false;
 			}

@@ -74,7 +74,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
             };
 
             $scope.callAPI(zsGeneralSrv.emailIsBlackListed, blacklistCheckOptions);
-        }
+        };
 
 
         /**

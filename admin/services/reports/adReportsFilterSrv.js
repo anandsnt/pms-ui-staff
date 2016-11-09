@@ -22,7 +22,7 @@ admin.service('adReportsFilterSrv', ['$q', 'ADBaseWebSrvV2',
             });
 
             return deferred.promise;
-        }
+        };
 
         // ------------------------------------------------------------------------------------------------------------- B. CACHING
 
@@ -31,7 +31,7 @@ admin.service('adReportsFilterSrv', ['$q', 'ADBaseWebSrvV2',
                 lifeSpan: 600 // in seconds
             },
             responses: {}
-        }
+        };
 
         // ------------------------------------------------------------------------------------------------------------- C. MAPPING
         var requestMap = {
@@ -61,7 +61,7 @@ admin.service('adReportsFilterSrv', ['$q', 'ADBaseWebSrvV2',
                                 name: hotel.hotel_name,
                                 isStandAlone: hotel.is_external_pms_available === "false",
                                 chain: hotel.chain_id
-                            })
+                            });
                         });
 
                         self.cache.responses['HOTELS'] = {
@@ -100,6 +100,6 @@ admin.service('adReportsFilterSrv', ['$q', 'ADBaseWebSrvV2',
                 }
                 return deferred.promise;
             }
-        }
+        };
     }
 ]);

@@ -158,7 +158,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
   $scope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
     event.preventDefault();
     $state.go('noOptionAvailable'); 
-  })
+  });
 
   $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       // Hide loading message
@@ -461,7 +461,7 @@ This is accessed using URL set in admin settings WEB CHECK OUT URL in admin -> z
 
       setReservartionDetails({"guest_web_token": "4c46f2fb42241caf08a3f9675abb11c3", "reservation_id": 1333742, "user_name": "d, dfsdff"
         , "checkout_date": "06/10/2015", "checkout_time": "11:00 PM", "user_city": "", "user_state": "", "room_no": "195"
-        , "is_late_checkout_available": false, "email_address": "resheil@qburst.com", "is_cc_attached": true})
+        , "is_late_checkout_available": false, "email_address": "resheil@qburst.com", "is_cc_attached": true});
       $rootScope.isRoomVerified =  true;
       $scope.isLoading = true;
       $timeout(function() {
@@ -583,7 +583,7 @@ New checkout time is set and an option to continue the checkout process is prese
   // }
 
     if($scope.pageValid) {
-      $scope.roomVerificationInstruction = "ddebfiebhfi hjevuebfbe ehdved e hdevdb ed e dh ed ejd e dkj edj ejd e de dnendn"
+      $scope.roomVerificationInstruction = "ddebfiebhfi hjevuebfbe ehdved e hdevdb ed e dh ed ejd e dkj edj ejd e de dnendn";
       $scope.checkoutmessage = $stateParams.message;
       $scope.isFromCheckoutNow =  ($stateParams.isFromCheckoutNow  ==="true") ? true :false;
       $scope.fee = $stateParams.fee;
@@ -802,7 +802,7 @@ $scope.nextButtonClicked = function() {
     "status": "fef",
     "is_upgrades_available": "false"
 
-  }
+  };
   $rootScope.ShowupgradedLabel = true;
 
   if(response.status === 'failure') {
@@ -871,7 +871,7 @@ Reservation details are shown in this page.
 // check if checkbox was already checked (before going to upgrades)
 $scope.checked =  ($rootScope.ShowupgradedLabel) ? true:true;
 $scope.reservationData = checkinDetailsService.getResponseData();
-$scope.reservationData.terms_and_conditions = " Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.33"
+$scope.reservationData.terms_and_conditions = " Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.33";
 $rootScope.confirmationNumber = $scope.reservationData.confirm_no;
 $scope.showTermsPopup = false;
 
@@ -1537,7 +1537,7 @@ Precheckin final Ctrl where the pre checkin API is called
       var date = new Date(y, m-1, d);
 
       if (date.getFullYear() == y && date.getMonth() + 1 == m && date.getDate() == d) {
-         return true
+         return true;
       } else {
          return false;
       }

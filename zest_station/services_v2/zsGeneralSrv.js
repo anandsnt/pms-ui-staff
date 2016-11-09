@@ -340,12 +340,12 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.returnLanguageList = function() {
             return [ // in our admin/API, these are saved in english, we will keep reference here if needed
             ];
-        }
+        };
 
 
 
         this.refreshWorkStationInitialized = function(params) {
-            console.log('::refreshWorkStationInitialized:: ', params)
+            console.log('::refreshWorkStationInitialized:: ', params);
             var deferred = $q.defer(),
                 url = '/api/workstations/' + params.id;
 

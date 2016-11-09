@@ -98,10 +98,10 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             id: $scope.reservationData.rooms[0].roomTypeId,
                             num_rooms: 1,
                             addons: _.filter($scope.addonsData.existingAddons, function(addon) {
-                                return !addon.is_rate_addon
+                                return !addon.is_rate_addon;
                             })
                         }]
-                    }
+                    };
 
                     var successCallBack = function() {
                         $scope.$emit('hideLoader');
@@ -334,7 +334,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
         $scope.proceed = function() {
             $scope.closePopup();
             var allRatesSelected = _.reduce(_.pluck($scope.reservationData.rooms, 'rateId'), function(a, b) {
-                return !!a && !!b
+                return !!a && !!b;
             });
 
             if ($stateParams.reservation === "HOURLY" || allRatesSelected) {
@@ -378,7 +378,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
         $scope.selectAddon = function(addon, addonQty, overBook) {
             $scope.closePopup();
             if (!$rootScope.isItemInventoryOn || overBook) {
-                insertAddon(addon, addonQty)
+                insertAddon(addon, addonQty);
             } else {
                 /*
                  *  the following is for the calculation to check if the inventory limit is exeeded
@@ -471,7 +471,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     'addon_id': addon.id,
                     'from_date': $scope.reservationData.arrivalDate,
                     'to_date': $filter('date')(adjustedQueryEndDate, 'yyyy-MM-dd'),
-                }
+                };
 
                 $scope.invokeApi(RVReservationAddonsSrv.checkInventory, paramDict, successCallBackInventoryCheck);
             }

@@ -258,7 +258,7 @@ var GridRowItem = React.createClass({
 				display: 'block',
 				left: left,
 			},
-			__setDragOver: function(bool) { this.__setDragOver(bool) }.bind(this)
+			__setDragOver: function(bool) { this.__setDragOver(bool); }.bind(this)
 		},
 		React.DOM.span({
 			className: this.__get_class_for_reservation_span(),

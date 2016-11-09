@@ -15,7 +15,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     	}
     	// To list room types
     	$scope.listRoomTypes();
-	}
+	};
 
    /*
     * To fetch list of room types
@@ -219,7 +219,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
                 value.blocked_rooms_count = 0;
                 value.isComponentUpArrowEnabled = true;
                 value.isComponentDownArrowEnabled = false;
-            })
+            });
             if(!$scope.isAddMode) {
                 $scope.editRoomTypes(index, id);
             }

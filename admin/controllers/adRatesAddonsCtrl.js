@@ -460,14 +460,14 @@ admin.controller('ADRatesAddonsCtrl', [
 			if(!!$scope.singleAddon.rate_code_only) {
 				$scope.singleAddon.bestseller = false;
 			}
-		}
+		};
 
 		$scope.bestsellerChanged = function() {
 			// CICO-21783 'BestSeller' and 'Rate Only' are mutually exclusive
 			if($scope.singleAddon.bestseller) {
 				$scope.singleAddon.rate_code_only = false;
 			}
-		}
+		};
 
 		$scope.reservationOnlyChanged = function() {
 			$scope.singleAddon.rate_code_only = $scope.singleAddon.is_reservation_only? false : $scope.singleAddon.is_reservation_only;

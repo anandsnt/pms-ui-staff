@@ -33,7 +33,7 @@ sntGuestWeb.controller('rootController', ['$state', '$scope', function($state, $
 		event.preventDefault();
 		console.info("Hotel admin settings are wrong. This feature is not available for this theme. Please check the settings related to -> "+unfoundState.to);
 		$state.go('noOptionAvailable');
-	})
+	});
 }]);
 sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '$state', '$timeout', 'reservationAndhotelData', '$window',
 	function($rootScope, $scope, $location, $state, $timeout, reservationAndhotelData, $window) {

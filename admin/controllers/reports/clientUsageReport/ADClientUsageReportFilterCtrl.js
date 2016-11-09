@@ -43,7 +43,7 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
                         from_date: $filter('date')(state.fromDate, "yyyy-MM-dd"),
                         to_date: $filter('date')(state.toDate, "yyyy-MM-dd"),
                         hotel_ids: _.pluck(selectedHotels, 'value')
-                    }
+                    };
 
                 payLoad['sort_field'] = state.sortByValue || "hotel_name";
                 payLoad['sort_dir'] = true;

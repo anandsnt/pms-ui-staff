@@ -32,11 +32,11 @@ admin.controller('ADReportsListCtrl', ['$scope', '$rootScope', 'reports', 'adRep
             } else {
                 report.viewFilters = false;
             }
-        }
+        };
 
         $scope.getFilterTemplate = function(report) {
-            return "/assets/partials/reports/filters/ADClientUsageReportFilter.html"
-        }
+            return "/assets/partials/reports/filters/ADClientUsageReportFilter.html";
+        };
 
         // Init Controller
         initialize();

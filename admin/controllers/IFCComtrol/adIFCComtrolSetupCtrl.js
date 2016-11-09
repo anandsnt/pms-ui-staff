@@ -78,4 +78,4 @@ admin.controller('adIFCComtrolSetupCtrl', ['$scope', 'ifcComtrolSetupValues', 'a
 	(function() {
 		$scope.ifc_comtrol = ifcComtrolSetupValues;
 	})();
-}])
+}]);

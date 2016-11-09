@@ -169,7 +169,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			'holdStatus': datafromApi.hold_status
 		};
 		return gridDataForGroupAvailability;
-	}
+	};
 	/*
 	* param - Group id
 	* return Group name
@@ -493,7 +493,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
 			_.each(response.dates, function(day) {
 				BARs.push((null == day.amount) ? 'C' : day.amount);
-			})
+			});
 
 			_.extend(that.data.gridData.additionalData, {
 				'bestAvailabilityRate': BARs
@@ -502,7 +502,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			deferred.resolve(BARs);
 
 		}, function(errorMessage) {
-			deferred.reject(errorMessage)
+			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
 	};
@@ -579,7 +579,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			deferred.reject(data);
 		});
 		return deferred.promise;
-	}
+	};
 
 	var getHouseAvailability = function(params) {
 		var deferred = $q.defer();
@@ -593,7 +593,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			deferred.reject(data);
 		});
 		return deferred.promise;
-	}
+	};
 
 	this.fetchHouseStatusDetails = function(params) {
 		var deferred = $q.defer(),
@@ -614,7 +614,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
         $q.all(promises).then(function() {
         	// Merge sold and availability count with the houseStatistics object
-        	_.each(houseAvailability, function(availability, idx) {_.extend(houseStatistics[idx], availability.house)});
+        	_.each(houseAvailability, function(availability, idx) {_.extend(houseStatistics[idx], availability.house);});
         	// Resolve after parsing to a bindable object
             deferred.resolve(that.restructureHouseDataForUI(houseStatistics, roomCount, businessDate));
         }, function(errorMessage) {
@@ -834,7 +834,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
                         roomTypeData.is_suite = _.find(that.data.gridData.roomTypes, {
                             id: roomTypeId
                         }).is_suite;
-                        roomTypeNames.push(roomTypeData)
+                        roomTypeNames.push(roomTypeData);
                     });
                 }
                 _.extend(that.data.gridData.additionalData, {

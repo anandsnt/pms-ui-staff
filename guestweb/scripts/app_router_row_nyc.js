@@ -101,7 +101,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 	 	templateUrl: '/assets/common_templates/partials/checkin/gwGuestDetail.html',
 	 	controller: 'guestDetailsController',
 	    title: 'Guest Details'
-	 })
+	 });
 	 
 
 	// pre checkin states

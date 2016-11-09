@@ -390,7 +390,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
          * @return {Boolean} [description]
          */
         $scope.isFirstTimeWithNoResult = function() {
-            return ($scope.amFirstTimeHere && !hasSomeSearchResults())
+            return ($scope.amFirstTimeHere && !hasSomeSearchResults());
         };
 
         /**
@@ -398,7 +398,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
          * @return {[type]} [description]
          */
         $scope.shouldShowNoResult = function() {
-            return (!$scope.amFirstTimeHere && !hasSomeSearchResults())
+            return (!$scope.amFirstTimeHere && !hasSomeSearchResults());
         };
 
         /**
@@ -485,8 +485,8 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
             $state.go('rover.groups.config', {
                 id: groupId,
                 activeTab: 'SUMMARY'
-            })
-        }
+            });
+        };
 
 
         /**

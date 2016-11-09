@@ -22,7 +22,7 @@ sntRover.controller('RVReportListCrl', [
             if ( !!scrollUp && $scope.myScroll.hasOwnProperty(REPORT_FILTERS_SCROLL) ) {
                 $scope.myScroll[REPORT_FILTERS_SCROLL].scrollTo(0, 0, 100);
             };
-        }
+        };
 
         $scope.refreshAllScroll = function() {
             $scope.refreshScroller(REPORT_LIST_SCROLL);

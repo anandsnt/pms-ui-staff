@@ -47,7 +47,7 @@ sntGuestWeb.controller('gwCheckinLandingCtrlController', ['$scope', '$state', '$
 
 				popupOptions.resolve = {
 					message: function() {
-						return "<b>We could not find your reservation</b>. Please check for typos, or call <hotelPhone>."
+						return "<b>We could not find your reservation</b>. Please check for typos, or call <hotelPhone>.";
 					}
 				};
 				$modal.open(popupOptions);

@@ -78,28 +78,28 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
         // };
 	var setInitialExcludedList = function() {
 		angular.forEach($scope.data.ios_versions, function(version) {
-			version.isExcluded = $scope.data.excluded_ios_versions.indexOf(version.name) !== -1
+			version.isExcluded = $scope.data.excluded_ios_versions.indexOf(version.name) !== -1;
 			version.value = version.name;
-		})
+		});
 
 		angular.forEach($scope.data.android_versions, function(version) {
-			version.isExcluded = $scope.data.excluded_android_versions.indexOf(version.name) !== -1
+			version.isExcluded = $scope.data.excluded_android_versions.indexOf(version.name) !== -1;
 			version.value = version.name;
-		})
-	}
+		});
+	};
 
 	var setFinalExcludedList = function() {
 		$scope.data.excluded_ios_versions = [], $scope.data.excluded_android_versions = [];
 		angular.forEach($scope.data.ios_versions, function(version) {
 			if(version.isExcluded)
                $scope.data.excluded_ios_versions.push(version.name);
-		})
+		});
 
 		angular.forEach($scope.data.android_versions, function(version) {
 			if(version.isExcluded)
                $scope.data.excluded_android_versions.push(version.name);
-		})
-	}
+		});
+	};
         
         var inProd = function() {
             var notProd = false;

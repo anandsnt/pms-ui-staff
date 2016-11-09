@@ -37,7 +37,7 @@ sntRover.controller('RVSocialLobbyCrl', [
                 postScroll.style.height = ""+500+"px";
             postContainer.style.height = ""+height+"px";
             
-        }
+        };
 
         
 
@@ -54,7 +54,7 @@ sntRover.controller('RVSocialLobbyCrl', [
 
             }, 1000);
             
-        }
+        };
 
         $scope.$on("socialLobbyHeightUpdated", function(event, currentPostHeight) {
             expandedPostHeight = currentPostHeight;
@@ -89,9 +89,9 @@ sntRover.controller('RVSocialLobbyCrl', [
                 $scope.totalPostPages = data.results.total_count % $scope.postParams.per_page > 0 ? Math.floor(data.results.total_count / $scope.postParams.per_page) + 1 : Math.floor(data.results.total_count / $scope.postParams.per_page);
                 $scope.$emit('hideLoader');
                 refreshPostScroll(true);
-            }
+            };
             $scope.callAPI(RVSocilaLobbySrv.fetchPosts, options);
-        }
+        };
 
         $scope.fetchPosts();
 
@@ -100,7 +100,7 @@ sntRover.controller('RVSocialLobbyCrl', [
             $scope.middle_page1 = 2, $scope.middle_page2 = 3, $scope.middle_page3 = 4;
             $scope.newPost = "";
             $scope.fetchPosts();
-        }
+        };
 
         $scope.addPost = function() {
             $scope.errorMessage = "";
@@ -114,9 +114,9 @@ sntRover.controller('RVSocialLobbyCrl', [
             options.onSuccess = function() {
 
                 $scope.refreshPosts();
-            }
+            };
             $scope.callAPI(RVSocilaLobbySrv.addPost, options);
-        }
+        };
 
         $scope.goToStayCard = function(reservation_id, confirm_no, event) {
             event.stopPropagation();
@@ -125,7 +125,7 @@ sntRover.controller('RVSocialLobbyCrl', [
                 confirmationId: confirm_no,
                 isrefresh: false
             });
-        }
+        };
 
         $scope.getProfessionStringForUser = function(user) {
             var professionString = "";
@@ -136,7 +136,7 @@ sntRover.controller('RVSocialLobbyCrl', [
                 professionString = professionString != ""? professionString + ", " + user.works_at : user.works_at;
 
             return professionString;
-        }
+        };
 
         $scope.deletePostClicked = function(post_id) {
             $scope.errorMessage = "";
@@ -146,10 +146,10 @@ sntRover.controller('RVSocialLobbyCrl', [
                    className: 'ngdialog-theme-default single-calendar-modal',
                    scope: $scope,
                    closeByDocument: true});
-        }
+        };
         $scope.closeDialog = function() {
             ngDialog.close();
-        }
+        };
         $scope.delete = function() {
             $scope.errorMessage = "";
             var options = {};
@@ -159,14 +159,14 @@ sntRover.controller('RVSocialLobbyCrl', [
                 
                 $scope.refreshPosts();
                 ngDialog.close();
-            }
+            };
             options.failureCallBack = function(error) {
 
                 $scope.errorMessage = error;
                 ngDialog.close();
-            }
+            };
             $scope.callAPI(RVSocilaLobbySrv.deletePost, options);
-        }
+        };
 
         $scope.paginatePosts = function(page) {
             $scope.errorMessage = "";
@@ -191,7 +191,7 @@ sntRover.controller('RVSocialLobbyCrl', [
                 $scope.middle_page2 = $scope.totalPostPages -2;
                 $scope.middle_page1 = $scope.totalPostPages -3;
             }
-        }
+        };
 
         $scope.togglePostDetails = function(post) {
             $scope.errorMessage = "";
@@ -200,7 +200,7 @@ sntRover.controller('RVSocialLobbyCrl', [
                 expandedPostHeight = "";
                 refreshPostScroll();
             }
-        }
+        };
 
         $scope.$watch(function() {
             return $scope.errorMessage;

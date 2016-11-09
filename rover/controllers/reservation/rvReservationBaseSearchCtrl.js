@@ -301,7 +301,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             if (dateOffset > RESV_LIMIT) {
                 dateOffset = RESV_LIMIT;
                 $scope.reservationData.numNights = '';
-                $scope.errorMessage = ["Maximum number of nights of " + RESV_LIMIT + " exceeded"]
+                $scope.errorMessage = ["Maximum number of nights of " + RESV_LIMIT + " exceeded"];
             }
             var newDate = tzIndependentDate($scope.reservationData.arrivalDate);
 
@@ -469,7 +469,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
             if (close) {
                 $scope.closeDialog();
-                timer = 1000
+                timer = 1000;
             }
             $timeout(function() {
                 for (; tabIndex < $scope.reservationData.tabs.length; tabIndex++) {
@@ -505,7 +505,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.availabilityData = availability;
                 var houseAvailable = true,
                     roomtypesAvailable = _($scope.reservationData.tabs.length).times(function(n) {
-                        return true
+                        return true;
                     });
 
                 _.each(availability, function(dailyStat) {
@@ -519,7 +519,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 });
 
                 if (houseAvailable && _.reduce(roomtypesAvailable, function(a, b) {
-                        return a && b
+                        return a && b;
                     })) {
                     $scope.navigate();
                 } else {
@@ -529,7 +529,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                             house: houseAvailable,
                             room: roomtypesAvailable[tabIndex],
                             alerted: false
-                        }
+                        };
                     });
                     $scope.alertOverbooking();
                 }
@@ -1019,7 +1019,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
         $scope.restrictMultipleBookings = function() {
             return !!$rootScope.isHourlyRateOn || !!$scope.reservationData.group.id;
-        }
+        };
 
         // Clear the group selection when the departure date is changed
         var clearGroupSelection = function() {

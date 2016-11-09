@@ -619,7 +619,7 @@ angular.module('sntRover').controller('guestCardController', [
 						code: "",
 						company: "",
 						travelAgent: ""
-					}
+					};
 
 					$scope.showContractedRates({
 						companyCard: $scope.reservationDetails.companyCard.id,
@@ -644,7 +644,7 @@ angular.module('sntRover').controller('guestCardController', [
 						code: "",
 						company: "",
 						travelAgent: ""
-					}
+					};
 
 					$scope.showContractedRates({
 						companyCard: $scope.reservationDetails.companyCard.id,
@@ -699,7 +699,7 @@ angular.module('sntRover').controller('guestCardController', [
 					cardTypeText: "Company Card",
 					cardType: "company",
 					cardId: $scope.reservationDetails.companyCard.id
-				}
+				};
 
 				showDetachCardsAPIWarningPopup(dataForPopup);
 			}
@@ -722,7 +722,7 @@ angular.module('sntRover').controller('guestCardController', [
 					cardTypeText: "Travel Agent Card",
 					cardType: "travel_agent",
 					cardId: $scope.reservationDetails.travelAgent.id
-				}
+				};
 
 				showDetachCardsAPIWarningPopup(dataForPopup);
 			}
@@ -738,7 +738,7 @@ angular.module('sntRover').controller('guestCardController', [
 					cardTypeText: "Guest Card",
 					cardType: "guest",
 					cardId: $scope.reservationDetails.guestCard.id
-				}
+				};
 
 				ngDialog.open({
 					template: '/assets/partials/cards/alerts/detachCard.html',
@@ -759,7 +759,7 @@ angular.module('sntRover').controller('guestCardController', [
 			} else if (card === 'guest') {
 				$scope.$broadcast('guestCardDetached');
 			}
-		}
+		};
 
 		$scope.deleteCard = function(cardType, cardId) {
 			$scope.closeDialog();
@@ -859,7 +859,7 @@ angular.module('sntRover').controller('guestCardController', [
 					$scope.searchedGroups = _.map(data.groups, function(group) {
 						return _.extend(group, {
 							type: 'GROUP'
-						})
+						});
 					});
 
 					$scope.searchedGroups = $scope.searchedGroups.concat(_.map(data.allotments, function(allotment) {
@@ -1606,7 +1606,7 @@ angular.module('sntRover').controller('guestCardController', [
 					attachAllotmentToThisReservation(allotment);
 				}
 
-			}, 1000)
+			}, 1000);
 
 		};
 

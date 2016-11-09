@@ -20,7 +20,7 @@ sntGuestWeb.controller('gwETABaseController', ['$scope', '$state', '$controller'
 
 				popupOptions.resolve = {
 					message: function() {
-						return "Please select a valid time."
+						return "Please select a valid time.";
 					}
 				};
 				$modal.open(popupOptions);
@@ -47,7 +47,7 @@ sntGuestWeb.controller('gwETABaseController', ['$scope', '$state', '$controller'
 						var stateParams = {
 							'time': response.checkin_time,
 							'isearlycheckin': true
-						}
+						};
 
 						$state.go('laterArrival', stateParams);
 					} else {

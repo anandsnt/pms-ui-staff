@@ -17,7 +17,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                         return item.is_default == true;
                     });
           return subtask;
-        }
+        };
         var getTasksForDefaultWorkType = function() {
             var succesCallBack = function(data) {
                 $scope.defaultWorkTypeTasks = data.results;
@@ -211,7 +211,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
 
             angular.forEach($scope.rateData.tasks, function(rateTasks) {
                 if (rateTasks.id !== undefined) {
-                    rateTasks.task_id = rateTasks.id
+                    rateTasks.task_id = rateTasks.id;
                 }
                 // API throws erros if these keys are passed - so deleting - CICO-30780
                 delete rateTasks["id"];

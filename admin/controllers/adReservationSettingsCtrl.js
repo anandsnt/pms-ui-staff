@@ -75,7 +75,7 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
 
     $scope.reservationSettingsData = reservationSettingsData;
 
-  }
+  };
 
 
     /**
@@ -120,7 +120,7 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
         $scope.reservationSettingsData.suite_enabled = !$scope.reservationSettingsData.suite_enabled;
       }
 
-    }
+    };
     init();
   }
 ]);

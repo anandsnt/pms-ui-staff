@@ -90,7 +90,7 @@
 		$scope.nextButtonClicked = function() {
 			if($scope.lastname.length > 0 && ($scope.confirmationNumber.length > 0 || (typeof $scope.departureDate !== "undefined" && $scope.departureDate.length >0))) {
 				
-				var data = {"hotel_identifier": $rootScope.hotelIdentifier}
+				var data = {"hotel_identifier": $rootScope.hotelIdentifier};
 
 				// check if all fields are filled
 				if($scope.lastname.length >0) {

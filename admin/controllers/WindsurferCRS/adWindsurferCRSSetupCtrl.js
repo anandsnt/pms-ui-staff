@@ -161,7 +161,7 @@ admin.controller('adWindsurferCRSSetupCtrl', ['$scope', '$rootScope', 'windsurfe
                 $scope.paymentMethods = response.paymentMethods;
                 $scope.windsurferSetup = windsurferCRSSetupValues;
                 initTimeCopy();
-            }
+            };
 
             $scope.callAPI(adExternalInterfaceCommonSrv.fetchMetaData, {
                 params: {

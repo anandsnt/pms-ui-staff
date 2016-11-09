@@ -68,7 +68,7 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
       }
 
       return deferred.promise;
-    }
+    };
 
     /**
      * [loadPaymentModule description]
@@ -105,7 +105,7 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
             deferred.resolve();
           }, function(err) {
              console.log('Error on loading Payment Module', err);
-          })
+          });
 
         }, function(err) {
           console.log('Error on loading Payment Module', err);

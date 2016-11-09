@@ -25,7 +25,7 @@ sntGuestWeb.controller('GwRoomVerificationController', ['$scope', '$state', '$co
 
 				popupOptions.resolve = {
 					message: function() {
-						return "We couldn't verify your room number. Please try again or check out at the front desk."
+						return "We couldn't verify your room number. Please try again or check out at the front desk.";
 					}
 				};
 				$modal.open(popupOptions);

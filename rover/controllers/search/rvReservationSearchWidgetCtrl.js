@@ -967,14 +967,14 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 */
 		$scope.getRoomNo = function(roomNo) {
 			return roomNo != '' && roomNo != null ? roomNo : 'N/A';
-		}
+		};
 
 		/**
 		 * Get the guest name
 		*/
 		$scope.getGuestName = function(firstName, lastName) {
 			return lastName + ", " + firstName;
-		}
+		};
 
 		/**
 		 * Fetches the room types for filter

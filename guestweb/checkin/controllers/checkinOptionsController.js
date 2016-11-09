@@ -33,7 +33,7 @@
 				// set variables based on the response
 				early_checkin_switch_on = response.early_checkin_on;
 				reservation_has_early_checkin = response.early_checkin_available;
-				early_checkin_offer_id = response.early_checkin_offer_id
+				early_checkin_offer_id = response.early_checkin_offer_id;
 				offer_eci_bypass = response.offer_eci_bypass;
 				eci_upsell_limit_reached = response.eci_upsell_limit_reached;
 				is_room_already_assigned = response.is_room_already_assigned;

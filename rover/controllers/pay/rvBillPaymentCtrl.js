@@ -391,7 +391,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 			$scope.cardsList.push(dataToGuestList);
 			$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 		}
-	}
+	};
 	/*
 	* Success call back of success payment
 	*/
@@ -515,7 +515,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 				holder_name: cardDetails.card_name,
 				is_credit_card: cardDetails.payment_type === "CC",
 				value: cardDetails.payment_id
-			}
+			};
 		});
 	};
 

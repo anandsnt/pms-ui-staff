@@ -155,7 +155,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
       var data = {
         'data': dataToUpdate,
         'userId': $scope.guestCardData.contactInfo.user_id
-      }
+      };
 
       if (newGuest) {
         dataToUpdate.avatar = "";

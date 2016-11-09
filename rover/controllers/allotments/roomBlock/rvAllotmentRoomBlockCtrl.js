@@ -503,7 +503,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			var options = {
 				start_date: formatDateForAPI($scope.timeLineStartDate),
 				end_date: formatDateForAPI($scope.timeLineEndDate)
-			}
+			};
 
 			$scope.fetchRoomBlockGridDetails(options);
 		};
@@ -742,7 +742,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			}
 			// Overbooking occurs and has no permission.
 			else {
-				return "NO_PERMISSION"
+				return "NO_PERMISSION";
 			};
 
 		};
@@ -1476,7 +1476,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		var formatDateForAPI = function(date) {
-			return $filter('date')(date, $rootScope.dateFormatForAPI)
+			return $filter('date')(date, $rootScope.dateFormatForAPI);
 		};
 
 		/**

@@ -114,7 +114,7 @@
 						$scope.hoursWithRestrictions = restrictHoursListByHour(restrictHour);
 					};
 					if ($rootScope.restrictByHotelTimeisOn && $scope.stayDetails.hour === restrictHour && restrictPrimetime === $scope.stayDetails.primeTime) {
-						restrictMinutes()
+						restrictMinutes();
 					} else {
 						$scope.minutesWithRestrictions = ["00", "15", "30", "45"];
 					}

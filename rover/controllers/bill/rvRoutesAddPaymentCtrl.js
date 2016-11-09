@@ -200,6 +200,6 @@ sntRover.controller('rvRoutesAddPaymentCtrl', ['$scope', '$rootScope', '$filter'
 		});
 		$scope.$watch("bills", function() {
 			$scope.billNumber = $scope.getSelectedBillNumber();
-		})
+		});
 	})();
 }]);

@@ -547,7 +547,7 @@ sntRover.controller('RVCardOptionsCtrl',
 			$scope.passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
                         setTimeout(function() {
                             $scope.clickedAddNewCard();
-                        }, 100)
+                        }, 100);
 		});
 
 }]);

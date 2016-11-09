@@ -122,7 +122,7 @@ var GlobalZestStationApp = function() {
             console.log('no argument passed, turning OFF card swipe debugging');
             that.cardSwipeDebug = false; // Mark it as false to disable debug cardSwipe opertations
         }
-        console.warn('cardSwipeDebug: ', that.cardSwipeDebug)
+        console.warn('cardSwipeDebug: ', that.cardSwipeDebug);
     };
 };
 

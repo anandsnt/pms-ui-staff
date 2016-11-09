@@ -201,7 +201,7 @@ angular.module('sntRover').service('rvGroupActionsSrv', ['$q', 'BaseWebSrvV2', f
         responses: {
             departments: null
         }
-    }
+    };
 
     self.setFilterState = function(params) {
         filterState = angular.copy(params);

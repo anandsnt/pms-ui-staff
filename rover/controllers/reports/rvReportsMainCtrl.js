@@ -77,7 +77,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				    $scope.$parent.myScroll[FULL_REPORT_SCROLL].scrollTo($scope.myScroll[FULL_REPORT_SCROLL].maxScrollX, 0, 299);
 				}
 			}, 300);
-		}
+		};
 		/**/
 		$scope.viewCols = [1, 2, 3, 4];
 		var _currentViewCol = $scope.viewCols[0];
@@ -173,7 +173,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		    for (i = 0, j = $scope.reportList.length; i < j; i++) {
 		        $scope.reportList[i].filteredOut = false;
 		    };
-		}
+		};
 
 
 		// CICO-21232
@@ -797,7 +797,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
         var getSelectedRateTypes = function(item) {
         	return _.pluck(_.where(item.hasRateTypeFilter.data, {selected: true}), "rate_type_id");
-        }
+        };
 
         var getRateListToShow = function(item) {
         	// if selected some room types
@@ -825,7 +825,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         		selectedRateTypesIds 	= _.pluck(selectedRateTypes, "rate_type_id");
 
         	return (selectedRateTypesIds.indexOf(rate.rate_type_id) > -1);
-        }
+        };
         $scope.getRates = function(item) {
         	// if all selected from rate type drop down
         	var wantedToShowAllRates = item.hasRateTypeFilter.selectAll;

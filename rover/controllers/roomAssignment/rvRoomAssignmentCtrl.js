@@ -280,7 +280,7 @@ sntRover.controller('RVroomAssignmentController', [
 	$scope.$on('closeDialogWithError', function(event, error) {
 		ngDialog.close();
 		openWantedToBorrowPopup(error);
-	})
+	});
 
 	/**
 	 * to open the room aleady chhosed popup
@@ -616,7 +616,7 @@ sntRover.controller('RVroomAssignmentController', [
 		} else {
 			$scope.backToStayCard();
 		}
-	}
+	};
 
 	/**
 	* function to go back to reservation details

@@ -15,12 +15,12 @@ admin.directive('fauxSelect', function() {
                 pre: function($scope) {
                     if ($scope.selectAll) {
                         _.each($scope.source, function(item) {
-                            item.isSelected = true
+                            item.isSelected = true;
                         });
                         $scope.title = 'All Selected';
                     }
                 }
-            }
+            };
         },
         controller: function($scope) {
             var setTitle = function() {
@@ -37,13 +37,13 @@ admin.directive('fauxSelect', function() {
                     $scope.title = 'All Selected';
                     $scope.selectAll = true;
                 } else {
-                    $scope.title = selectedCount + " Selected"
+                    $scope.title = selectedCount + " Selected";
                 }
             };
 
             $scope.toggleSelectAll = function() {
                 _.each($scope.source, function(item) {
-                    item.isSelected = !$scope.selectAll
+                    item.isSelected = !$scope.selectAll;
                 });
 
                 $scope.selectAll = !$scope.selectAll;

@@ -10,12 +10,12 @@ angular.module('sntRover').service('RVExternalReferencesSrv', ['$q', 'rvBaseWebS
                 url = "/api/reference_values/manual_external_reference_interfaces";
 
             RVBaseWebSrvV2.getJSON(url).then(function(response) {
-                deferred.resolve(response.external_interface_types)
+                deferred.resolve(response.external_interface_types);
             }, function(errorMessage) {
-                deferred.reject(errorMessage)
+                deferred.reject(errorMessage);
             });
             return deferred.promise;
-        }
+        };
 
         var fetchExternalReferences = function(reservationId) {
             var deferred = $q.defer(),
@@ -29,7 +29,7 @@ angular.module('sntRover').service('RVExternalReferencesSrv', ['$q', 'rvBaseWebS
                 }
                 deferred.resolve(references);
             }, function(errorMessage) {
-                deferred.reject(errorMessage)
+                deferred.reject(errorMessage);
             });
             return deferred.promise;
         };
@@ -44,7 +44,7 @@ angular.module('sntRover').service('RVExternalReferencesSrv', ['$q', 'rvBaseWebS
             }).then(function(response) {
                 deferred.resolve(response);
             }, function(errorMessage) {
-                deferred.reject(errorMessage)
+                deferred.reject(errorMessage);
             });
             return deferred.promise;
         };
@@ -59,7 +59,7 @@ angular.module('sntRover').service('RVExternalReferencesSrv', ['$q', 'rvBaseWebS
             }).then(function(response) {
                 deferred.resolve(response);
             }, function(errorMessage) {
-                deferred.reject(errorMessage)
+                deferred.reject(errorMessage);
             });
             return deferred.promise;
         };
@@ -71,7 +71,7 @@ angular.module('sntRover').service('RVExternalReferencesSrv', ['$q', 'rvBaseWebS
             RVBaseWebSrvV2.deleteJSON(url).then(function(response) {
                 deferred.resolve(response);
             }, function(errorMessage) {
-                deferred.reject(errorMessage)
+                deferred.reject(errorMessage);
             });
             return deferred.promise;
         };
@@ -82,8 +82,8 @@ angular.module('sntRover').service('RVExternalReferencesSrv', ['$q', 'rvBaseWebS
                 external_confirm_no: "",
                 id: "",
                 is_from_rover: true
-            }
-        }
+            };
+        };
 
         self.getExternalData = function(reservationId) {
             var deferred = $q.defer(),
@@ -105,6 +105,6 @@ angular.module('sntRover').service('RVExternalReferencesSrv', ['$q', 'rvBaseWebS
             });
 
             return deferred.promise;
-        }
+        };
     }
 ]);

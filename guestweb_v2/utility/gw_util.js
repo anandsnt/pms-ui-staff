@@ -51,7 +51,7 @@ var returnEmptyScreenDetails = function() {
     "title": "",
     "description": ""
   };
-}
+};
 
 var replaceStringWithScopeVariable = function(string, substring_to_be_replaced, new_string) {
   return string = string.length > 0 ? string.replace(substring_to_be_replaced, new_string) : '';
@@ -156,7 +156,7 @@ var returnMonthsArray = function() {
     'name': 'DEC',
     'value': '12'
   }];
-}
+};
 
 var returnTimeArray = function() {
   return ['12:00 am', '12:15 am', '12:30 am', '12:45 am', '01:00 am', '01:15 am',
@@ -241,7 +241,7 @@ var checkIfDateIsValid = function(month, day, year) {
   var date = new Date(y, m-1, d);
 
   if (date.getFullYear() == y && date.getMonth() + 1 == m && date.getDate() == d) {
-     return true
+     return true;
   } else {
      return false;
   }

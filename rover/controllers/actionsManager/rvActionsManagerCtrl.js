@@ -42,7 +42,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                         successCallBack: function (response) {
                             $scope.selectedAction = getBindabaleAction(response.data);
                         }
-                    })
+                    });
                 }
             },
             fetchActionsList = function () {
@@ -87,7 +87,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                         // While coming back from staycard, the previously selected action is selected
                         var selectedAction = _.findWhere($scope.actions, {
                             id: $scope.filterOptions.selectedActionId
-                        })
+                        });
 
                         if (!selectedAction) {
                             $scope.filterOptions.selectedActionId = $scope.actions[0].id;
@@ -124,7 +124,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             },
             updateListEntry = function () {
                 var currentAction = _.find($scope.actions, function (action) {
-                    return action.id === $scope.filterOptions.selectedActionId
+                    return action.id === $scope.filterOptions.selectedActionId;
                 }), departmentId = $scope.selectedAction.assigned_to && $scope.selectedAction.assigned_to.id;
 
 
@@ -137,7 +137,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                         value: departmentId.toString()
                     }).name : "",
                     isCompleted: !!$scope.selectedAction.completed_at
-                })
+                });
             },
             addDatePickerOverlay = function () {
                 angular.element("#ui-datepicker-div").after(angular.element('<div></div>', {
@@ -267,7 +267,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                 assigned_to: $scope.selectedAction.department || null,
                 due_at: dateFilter($scope.selectedAction.dueDate, $rootScope.dateFormatForAPI) +
                 ($scope.selectedAction.dueTime ? "T" + $scope.selectedAction.dueTime + ":00" : "")
-            }
+            };
 
             if(!!$scope.selectedAction.reservation_id) {
                 payLoad.reservation_id = $scope.selectedAction.reservation_id;
@@ -284,7 +284,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                     $scope.selectedAction = getBindabaleAction(response.data);
                     updateListEntry();
                 }
-            })
+            });
             ngDialog.close();
         };
 

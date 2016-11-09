@@ -285,7 +285,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 					// do nothing
 				};
 				$state.go('zest_station.speakToStaff', stateParams);
-			}
+			};
 
 			var options = {
 				params: {
@@ -294,7 +294,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				},
 				successCallBack: updateComplete,
 				failureCallBack: updateGuestEmailFailed
-			}
+			};
 
 			$scope.callAPI(zsGeneralSrv.updateGuestEmail, options);
 		};

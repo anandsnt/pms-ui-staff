@@ -38,7 +38,7 @@
 					'time': $scope.checkinTime,
 					'isearlycheckin': true
 				});
-			}
+			};
 
 			var releaseRoom = function() {
 				$scope.isPosting = true;

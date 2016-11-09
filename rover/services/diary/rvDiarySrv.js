@@ -1080,7 +1080,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         return {
                             hasExtraHour: hasExtraHour,
                             hasLessHour: hasLessHour
-                        }
+                        };
                     };
                 };
 
@@ -1118,7 +1118,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         deferred.reject(error);
                     });
                     return deferred.promise;
-                }
+                };
 
             }]);
                 // ------------------------------------------------------------------

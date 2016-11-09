@@ -40,7 +40,7 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
             "PMS_TYPES": ["CLIENT_USAGE"],
             "HOTELS": ["CLIENT_USAGE"],
             "HOTEL_CHAINS": ["CLIENT_USAGE"]
-        }
+        };
 
         // ------------------------------------------------------------------------------------------------------------- B. EXPOSED SERVICES
         self.fetchReportsList = function() {
@@ -53,7 +53,7 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
         // Pre Fetch Iniital Dependencies Reqiured to show the filters
         self.fetchFilterData = function(ReportKey) {
             var filters = _.filter(_.keys(reportFiltersMap), function(key) {
-                return _.indexOf(reportFiltersMap[key], ReportKey) > -1
+                return _.indexOf(reportFiltersMap[key], ReportKey) > -1;
             });
             var deferred = $q.defer();
 
@@ -66,7 +66,7 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
                     deferred.resolve("success");
                 }, function(error) {
                     deferred.reject(error);
-                })
+                });
             } else {
                 deferred.resolve(self.cache.filters[ReportKey]['data']);
             }
@@ -79,7 +79,7 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
 
             deferred.resolve(self.cache.filters[ReportKey].data);
             return deferred.promise;
-        }
+        };
 
         self.exportCSV = function(params) {
             var deferred = $q.defer();
@@ -130,7 +130,7 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
                 lifeSpan: 600 // in seconds
             },
             filters: {}
-        }
+        };
 
 
     }

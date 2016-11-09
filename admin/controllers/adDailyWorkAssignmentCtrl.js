@@ -190,7 +190,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			this.item.hotel_id = $rootScope.hotelId;
 			this.item.default_task_id = $scope.defaultData.defaultTask;
-			var workTypeId = this.item.id
+			var workTypeId = this.item.id;
 
 			$scope.eachWorkType = this.item;
 			angular.forEach($scope.taskList, function(itemTask, index) {
@@ -404,7 +404,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				if ( !!$scope.eachTaskList.room_type_ids[index] ) {
 					if (!!$scope.eachTaskList.rooms_task_completion[room.id].mins || !!$scope.eachTaskList.rooms_task_completion[room.id].hours) {
 						// CICO-27994
-						console.log("reached here")
+						console.log("reached here");
 						if(!!$scope.eachTaskList.rooms_task_completion[room.id].mins && !!$scope.eachTaskList.rooms_task_completion[room.id].hours)
 							times[room.id] = $rootScope.businessDate + ' ' + $scope.eachTaskList.rooms_task_completion[room.id].hours + ':' + $scope.eachTaskList.rooms_task_completion[room.id].mins + ':00';
 						else if(!!$scope.eachTaskList.rooms_task_completion[room.id].hours)
@@ -531,7 +531,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				"isWeekEnd": isWeekEnd,
 				"isByWeekDay": isByWeekDay,
 				"isByStayDay": isByStayDay
-			}
+			};
 
 			return returnObj;
 		};
@@ -540,7 +540,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			// reset flag
 			_.map($scope.roomTypesList, function(roomType) {
 				roomType.show = false;
-				return roomType
+				return roomType;
 			});
 		};
 
@@ -765,7 +765,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				}
 				$scope.$apply();
 
-			}, 100)
+			}, 100);
 
 		};
 		$scope.anySelected = function(bool) {

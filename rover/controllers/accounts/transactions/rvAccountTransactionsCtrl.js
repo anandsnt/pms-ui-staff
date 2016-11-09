@@ -365,7 +365,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 	    		className: '',
 	    		scope: $scope
 	    	});
-		})
+		});
 		};
 
 		var fetchPaymentMethods = function(directBillNeeded) {

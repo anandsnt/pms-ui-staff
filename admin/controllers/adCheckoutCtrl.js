@@ -211,7 +211,7 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
 
                 }
             );
-    }
+    };
     
 
 }]);

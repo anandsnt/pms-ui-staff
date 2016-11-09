@@ -61,7 +61,7 @@ var UnassignedRoomPanel = React.createClass({
             hh: hour_difference,
             mm: min_difference,
             hhs: hour_difference + 'h'
-        }
+        };
     },
 
     _dragStart: function(event) {

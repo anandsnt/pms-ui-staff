@@ -804,7 +804,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                                 var rate = (date === $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].rate.id : staydata.rate.id;
                                 // in case of custom rates (rates without IDs send them as null.... the named ids used within the UI controllers are just for tracking and arent saved)
 
-                                return rate && rate.toString().match(/_CUSTOM_/) ? null : rate
+                                return rate && rate.toString().match(/_CUSTOM_/) ? null : rate;
                             })(),
                             room_type_id: room.roomTypeId,
                             room_id: room.room_id,
@@ -1576,7 +1576,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 size: $scope.reservationData.rooms.length,
                 contents: $scope.reservationData.rooms
             });
-        }
+        };
 
 
         $scope.onRoomCountChange = function(tabIndex) {

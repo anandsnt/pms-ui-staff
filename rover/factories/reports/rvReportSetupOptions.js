@@ -89,28 +89,28 @@ angular.module('reportsModule')
         			if ( filter === 'INCLUDE_CANCELLED' || filter ==='INCLUDE_CANCELED' ) {
         				return {
         					selected: true
-        				}
+        				};
         			}
         		},
         		FORECAST_GUEST_GROUPS: function(filter) {
         			if ( filter == 'EXCLUDE_NON_GTD' ) {
         				return {
         					selected: true
-        				}
+        				};
         			}
         		},
         		DAILY_PRODUCTION_DEMO: function(filter) {
         			if ( filter === 'EXCLUDE_TAX' ) {
         				return {
         					selected: true
-        				}
+        				};
         			}
         		},
         		DAILY_PRODUCTION_ROOM_TYPE: function(filter) {
         			if ( filter === 'INCLUDE_ADDONS' ) {
         				return {
         					selected: true
-        				}
+        				};
         			}
         		},
         		DEFAULT: function(filter) {
@@ -133,7 +133,7 @@ angular.module('reportsModule')
         	};
 
         	factory.init = function(report) {
-        		var reportName = _.findKey(reportNames, function(value, key) { return value === report['title'] });
+        		var reportName = _.findKey(reportNames, function(value, key) { return value === report['title']; });
         		var changer = changers[reportName] || changers['DEFAULT']; 
 
         		report.allOptions = [];

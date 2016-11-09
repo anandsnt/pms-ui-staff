@@ -355,7 +355,7 @@ admin.controller('ADHotelDetailsCtrl', [
 
     $scope.toggleInterfaceType = function(index) {
     	$scope.data.interface_types[index].is_checked = $scope.data.interface_types[index].is_checked === 'true' ? "false" : "true";
-    }
+    };
 
     var getSelectedInterfaceTypes = function(data) {
     	var selectedIds = [];
@@ -366,7 +366,7 @@ admin.controller('ADHotelDetailsCtrl', [
     		}
     	}
     	return selectedIds;
-    }
+    };
 
     // Set dropdown defaults when they are empty or null
     var setDropdownDefaults = function() {

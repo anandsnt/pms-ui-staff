@@ -898,7 +898,7 @@ sntRover.controller('roverController',
         str = str.replace(/>/g, '&gt;');
       }
       return str;
-    }
+    };
 
     /**
      * Forms highlighted html content to use with ng-bind-html

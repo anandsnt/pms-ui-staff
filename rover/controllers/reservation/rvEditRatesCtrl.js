@@ -134,7 +134,7 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 				return true;
 			}
 			return false;
-		}
+		};
 
 		/**
 		 * things we need to do while initializing

@@ -154,7 +154,7 @@ angular.module('stayCardModule', [])
                         activeTab = 'RECOMMENDED';
                     }
                     RVRoomRatesSrv.setRoomAndRateActiveTab(activeTab);
-                    return RVRoomRatesSrv.fetchRatesInitial(params)
+                    return RVRoomRatesSrv.fetchRatesInitial(params);
                 },
                 ratesMeta: function(RVReservationBaseSearchSrv, staycardJsAssets) {
                     return RVReservationBaseSearchSrv.fetchRatesMeta();

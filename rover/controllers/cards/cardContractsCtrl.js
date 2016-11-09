@@ -725,7 +725,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 			if (request.term.length === 0) {
                 companyCardResults = [];
                 $scope.autoCompleteState.lastSearchText = "";
-                $scope.autoCompleteState.selectedRate = {}
+                $scope.autoCompleteState.selectedRate = {};
             } else if (request.term.length > 2) {
                 fetchData();
             }

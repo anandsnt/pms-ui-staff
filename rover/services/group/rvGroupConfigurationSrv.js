@@ -38,7 +38,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 		this.lastFetchedGroup = {
 			group_id: null,
 			demographics: null
-		}
+		};
 
 		/* ----------------------------*/
 
@@ -290,7 +290,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 						self.lastFetchedGroup = {
 							id: groupSummary.group_id,
 							demographics: angular.copy(groupSummary.demographics)
-						}
+						};
 
 						if ( postingAccId === 'NEW_ACCOUNT' ) {
 							deferred.resolve({

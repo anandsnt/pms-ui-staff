@@ -1027,7 +1027,7 @@ angular.module('sntRover')
 
 		    $scope.onDragEnd = function(nextRoom, reservation) {
 		    	var availability;
-		    	var selectedReservationRoomType = _.findWhere($scope.room, {"id": reservation.room_id})
+		    	var selectedReservationRoomType = _.findWhere($scope.room, {"id": reservation.room_id});
 
 
 		    	if(reservation.cannot_move_room && (nextRoom.room_no !== selectedReservationRoomType.room_no)) {
@@ -1591,7 +1591,7 @@ angular.module('sntRover')
 			return {
 				hasExtraHour: hasExtraHour,
 				hasLessHour: hasLessHour
-			}
+			};
 		};
 
 

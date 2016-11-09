@@ -20,7 +20,7 @@ sntRover.controller('RVPaymentGuestCtrl', ['$rootScope', '$scope', '$state', 'RV
 		$scope.callAPI(RVPaymentSrv.renderPaymentScreen, {
 			params: {"direct_bill": false},
 			onSuccess: function(response) {
-				var creditCardPaymentTypeObj = _.find(response, function(obj) { return obj.name === 'CC' });
+				var creditCardPaymentTypeObj = _.find(response, function(obj) { return obj.name === 'CC'; });
 				var passData = {
 					"guest_id": $scope.guestCardData.contactInfo.user_id,
 					"isFromGuestCard": true,

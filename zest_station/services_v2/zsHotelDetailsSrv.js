@@ -61,7 +61,7 @@ sntZestStation.service('zsHotelDetailsSrv', ['zsBaseWebSrv2', 'zsBaseWebSrv', '$
 			},
 			function(errorMessage) {
 				deferred.reject(errorMessage);
-			})
+			});
 		return deferred.promise;
 	};
 

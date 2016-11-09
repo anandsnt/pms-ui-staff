@@ -142,7 +142,7 @@ $scope.setSpaceDurations = function(val, index) {
 	else{
 		$scope.data.durations.splice(flag, 1);
 	}
-}
+};
 
 $scope.itemTypeSelected = function() {
 
@@ -287,7 +287,7 @@ $scope.getSelectedAddonPrice = function() {
 	$scope.deleteIcon = function() {
 		$scope.iconFileName = "Choose file...";
 		$scope.data.icon = "";
-	}
+	};
 
 }]);
 

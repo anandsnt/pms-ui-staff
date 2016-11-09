@@ -48,7 +48,7 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'AD
      */
     $scope.chooseSelectedReport = function(reportIndex) {
         if ($scope.chosenSelectedReports.indexOf(reportIndex) > -1) {
-            $scope.chosenSelectedReports = _.without($scope.chosenSelectedReports, reportIndex)
+            $scope.chosenSelectedReports = _.without($scope.chosenSelectedReports, reportIndex);
         } else {
             $scope.chosenSelectedReports.push(reportIndex);
         }
@@ -61,7 +61,7 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'AD
      */
     $scope.chooseAvailableReport = function(reportIndex) {
         if ($scope.chosenAvailableReports.indexOf(reportIndex) > -1) {
-            $scope.chosenAvailableReports = _.without($scope.chosenAvailableReports, reportIndex)
+            $scope.chosenAvailableReports = _.without($scope.chosenAvailableReports, reportIndex);
         } else {
             $scope.chosenAvailableReports.push(reportIndex);
         }
@@ -156,4 +156,4 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'AD
             selected_reports: m3AccountingSetupValues.selected_reports || []
         };
     }();
-}])
+}]);

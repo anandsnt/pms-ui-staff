@@ -54,7 +54,7 @@ conversationWrapper.clientHeight;
             var updatedHeight = wrapperHeight + 60 + parentPostElHeight;
 
             $scope.$emit("socialLobbyHeightUpdated", updatedHeight);
-        }
+        };
 
         $scope.refreshCommentScroll = function() {
             
@@ -93,13 +93,13 @@ conversationWrapper.clientHeight;
                 $scope.totalCommentPages = data.results.total_count % $scope.commentParams.per_page > 0 ? Math.floor(data.results.total_count / $scope.commentParams.per_page) + 1 : Math.floor(data.results.total_count / $scope.commentParams.per_page);
                 $scope.$emit('hideLoader');
                 $scope.refreshCommentScroll();
-            }
+            };
             options.failureCallBack = function(error) {
 
                 $scope.$emit("SL_ERROR", error);
-            }
+            };
             $scope.callAPI(RVSocilaLobbySrv.fetchComments, options);
-        }
+        };
 
         $scope.fetchComments();
 
@@ -108,7 +108,7 @@ conversationWrapper.clientHeight;
             $scope.middle_page1 = 2, $scope.middle_page2 = 3, $scope.middle_page3 = 4;
             $scope.newComment = "";
             $scope.fetchComments();
-        }
+        };
 
         $scope.addComment = function() {
             $scope.$emit("SL_ERROR", "");
@@ -123,13 +123,13 @@ conversationWrapper.clientHeight;
             options.onSuccess = function() {
                 $scope.parentPost.comment_count ++;
                 $scope.refreshComments();
-            }
+            };
             options.failureCallBack = function(error) {
 
                 $scope.$emit("SL_ERROR", error);
-            }
+            };
             $scope.callAPI(RVSocilaLobbySrv.addComment, options);
-        }
+        };
 
         $scope.deleteCommentClicked = function(comment_id) {
             deleteIndex = comment_id;
@@ -138,7 +138,7 @@ conversationWrapper.clientHeight;
                    className: 'ngdialog-theme-default single-calendar-modal',
                    scope: $scope,
                    closeByDocument: true});
-        }
+        };
         
         $scope.delete = function() {
             $scope.$emit("SL_ERROR", "");
@@ -149,14 +149,14 @@ conversationWrapper.clientHeight;
                 $scope.parentPost.comment_count --;
                 $scope.refreshComments();
                 ngDialog.close();
-            }
+            };
             options.failureCallBack = function(error) {
 
                 $scope.$emit("SL_ERROR", error);
                 ngDialog.close();
-            }
+            };
             $scope.callAPI(RVSocilaLobbySrv.deleteComment, options);
-        }
+        };
 
         $scope.paginateComments = function(page) {
             $scope.$emit("SL_ERROR", "");
@@ -181,7 +181,7 @@ conversationWrapper.clientHeight;
                 $scope.middle_page2 = $scope.totalCommentPages -2;
                 $scope.middle_page1 = $scope.totalCommentPages -3;
             }
-        }
+        };
 
     }
 

@@ -71,5 +71,5 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 		data: {
 			pageTitle: 'Status - Check-out'
 		}
-	})
+	});
 }]);

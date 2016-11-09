@@ -275,7 +275,7 @@ sntRover.controller('reservationActionsController', [
 
                 $scope.goToRoomAssignment = function() {
                 	// check if roomupgrade is available
-                	var reservationStatus = $scope.reservationData.reservation_card.reservation_status
+                	var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
                 	var isUpgradeAvaiable = ($scope.reservationData.reservation_card.is_upsell_available === "true") &&
                 							 (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN');
 

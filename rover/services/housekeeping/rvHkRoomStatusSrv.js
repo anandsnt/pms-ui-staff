@@ -160,7 +160,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 					var lastRoomService = $vault.get('LAST_ROOM_SERVICE');
 
 					if ( !! lastRoomService ) {
-						lastRoomService = JSON.parse(lastRoomService)
+						lastRoomService = JSON.parse(lastRoomService);
 					} else {
 						lastRoomService = {
 							rooms: [],
@@ -707,7 +707,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 				if (_.unique(_.pluck(_.pluck(room.room_tasks, 'assignee_maid'), 'id')).length > 1) {
 					assignedStaff.name = 'Multiple Assignees';
 				} else {
-					assignedStaff.name = room.room_tasks[0].assignee_maid.name
+					assignedStaff.name = room.room_tasks[0].assignee_maid.name;
 				}
 			}
 

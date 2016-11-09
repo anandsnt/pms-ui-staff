@@ -190,7 +190,7 @@ sntRover.controller('RVOutsidePostChargeController',
 			* @return {Boolean}
 			*/
 			$scope.hasPermissionToAllowPostWithNoCredit = function() {
-				return rvPermissionSrv.getPermissionValue('ALLOW_POST_WHEN_RESTRICTED')
+				return rvPermissionSrv.getPermissionValue('ALLOW_POST_WHEN_RESTRICTED');
 			};
 
 			/*

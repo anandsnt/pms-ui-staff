@@ -545,19 +545,19 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				_.each($scope.chosenReport.hasGeneralOptions.data, function(each) {
 					if ( each.paramKey === 'include_actions' && each.selected ) {
-						retObj.include_actions = true
+						retObj.include_actions = true;
 					}
 					if ( each.paramKey === 'include_notes' && each.selected ) {
-						retObj.include_notes = true
+						retObj.include_notes = true;
 					}
 					if ( each.paramKey === 'show_guests' && each.selected ) {
-						retObj.show_guests = true
+						retObj.show_guests = true;
 					}
 					if ( each.paramKey === 'include_cancelled' && each.selected ) {
-						retObj.include_cancelled = true
+						retObj.include_cancelled = true;
 					}
 					if ( each.paramKey === 'show_rate_adjustments_only' && each.selected ) {
-						retObj.show_rate_adjustments_only = true
+						retObj.show_rate_adjustments_only = true;
 					}
 				});
 
@@ -1109,7 +1109,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			var s = $scope.chosenReport.sortByOptions || [];
 
 			return !! s[index];
-		}
+		};
 
 		$scope.isAsc = function(index) {
 			var s = $scope.chosenReport.sortByOptions || [];

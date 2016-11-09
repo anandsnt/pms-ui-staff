@@ -12,7 +12,7 @@ admin.service('adExternalInterfaceCommonSrv', ['$http', '$q', 'ADBaseWebSrv', 'A
                 paymentMethods: null,
                 origins: null
             }
-        }
+        };
 
        // -------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
 

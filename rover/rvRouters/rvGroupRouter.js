@@ -39,7 +39,7 @@ angular.module('groupModule', [])
                             'to_date': '',
                             'per_page': rvGroupSrv.DEFAULT_PER_PAGE,
                             'page': rvGroupSrv.DEFAULT_PAGE
-                        }
+                        };
 
                         return rvGroupSrv.getGroupList(params);
                     }
@@ -80,7 +80,7 @@ angular.module('groupModule', [])
                 holdStatusList: function (rvGroupConfigurationSrv, groupAssets) {
                     var params = {
                         is_group: true
-                    }
+                    };
 
                     return rvGroupConfigurationSrv.getHoldStatusList (params);
                 }

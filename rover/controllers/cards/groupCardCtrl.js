@@ -20,14 +20,14 @@ angular.module('sntRover').controller('RVGroupCardCtrl', ['$scope', '$rootScope'
 
 		$scope.isInAddMode = function() {
 			return false;
-		}
+		};
 
 		$scope.getMoveDatesActions = function() {
 			return {
 				setToDefaultMode: function() {
 					return false;
 				}
-			}
+			};
 		};
 
 		$scope.fetchGroupAllotmentCardId = function(section) {

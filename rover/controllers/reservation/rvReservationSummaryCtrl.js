@@ -825,7 +825,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             }
             var saveSuccess = function(data) {
                 console.log(data);
-                console.log($scope.reservationData)
+                console.log($scope.reservationData);
                 // CICO-18699 credit card not saving to guest card when selecting Deposit later option.
                 if ($scope.reservationData.paymentType.type.value === 'CC' && $scope.addToGuestCard) {
                     addToGuestCard($scope.summaryState.selectedCardDetails);
@@ -908,7 +908,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
                     $q.all(promises).then(updateSuccess, updateFailure);
                 }
-            }
+            };
 
             check();
         };

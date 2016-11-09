@@ -33,8 +33,8 @@ angular
             if( condition ) {
                 $timeout(function() {
                     scope.$emit(event);
-                })
+                });
             }
         }
-    }
+    };
 }]);

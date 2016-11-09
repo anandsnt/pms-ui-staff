@@ -140,7 +140,7 @@
 
 	var fetchSurveyDetails = function() {
 		var deferred = $q.defer();
-		var url = '/guest_web/zest_web_questions.json'
+		var url = '/guest_web/zest_web_questions.json';
 
 		$http.get(url).success(function(response) {
 			deferred.resolve(response);
@@ -179,7 +179,7 @@
 	fetchSortedCountryList: fetchSortedCountryList,
 	fetchSurveyDetails: fetchSurveyDetails,
 	submitSurvey: submitSurvey
-	}
+	};
 };
 
 var dependencies = [

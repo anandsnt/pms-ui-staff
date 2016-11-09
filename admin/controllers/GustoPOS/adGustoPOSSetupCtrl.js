@@ -65,4 +65,4 @@ admin.controller('adGustoPOSSetupCtrl', ['$scope', 'gustoSetupValues', 'adGustoP
 	var initializeMe = function() {
 		$scope.gusto = gustoSetupValues;
 	}();
-}])
+}]);

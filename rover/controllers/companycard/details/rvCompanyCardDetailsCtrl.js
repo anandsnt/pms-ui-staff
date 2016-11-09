@@ -298,7 +298,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		var successCallbackOffetchCommissionDetail = function(data) {
 			$scope.$emit("hideLoader");
 			$scope.contactInformation["commission_details"] = data.commission_details;
-		}
+		};
 
 		/**
 		 * successcall back of country list fetch

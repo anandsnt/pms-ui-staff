@@ -20,7 +20,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 			isContractUpdate  = false;
 
 		var formatDateForAPI = function(date) {
-			return $filter('date')(date, $rootScope.dateFormatForAPI)
+			return $filter('date')(date, $rootScope.dateFormatForAPI);
 		};
 
 		/**

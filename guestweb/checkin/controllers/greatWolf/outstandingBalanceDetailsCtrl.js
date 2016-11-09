@@ -78,12 +78,12 @@
 						"card_expiry": $scope.monthSelected + "/" + $scope.yearSelected.toString().substring(2, 4),
 						"card_name": $scope.cardName,
 						"id": response.data.id
-					}
+					};
 					// handle mode
 					$scope.cardError = false;
 					$scope.paymentError = false;
 					$scope.mode = "PAYMENT_MODE";
-				}
+				};
 				// setup params
 			var cardExpiryDate = $scope.yearSelected + "-" + $scope.monthSelected + "-" + "01";
 			var data = {

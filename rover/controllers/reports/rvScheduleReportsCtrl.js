@@ -38,7 +38,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			}
 
 			return occurance;
-		}
+		};
 
 		$scope.removeEmail = function(index) {
 			$scope.emailList = [].concat(
@@ -88,7 +88,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 		};
 		$scope.userEmailTyped = function() {
 
-		}
+		};
 
 		$scope.pickSchedule = function(item, index) {
 			var success = function(data) {
@@ -132,7 +132,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				template: '/assets/partials/reports/scheduleReport/rvConfirmDiscard.html',
 				scope: $scope
 			});
-		}
+		};
 
 		$scope.pickReport = function(item, index) {
 			$scope.selectedEntityDetails = $scope.$parent.$parent.schedulableReports[index];
@@ -154,7 +154,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			applySavedFilters();
 
 			$scope.refreshAllOtherColumnScrolls();
-		}
+		};
 
 		$scope.getRepeatPer = function() {
 			var found = _.find($scope.scheduleFreqType, { id: $scope.scheduleParams.frequency_id });
@@ -172,18 +172,18 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				} else {
 					return !! $scope.scheduleParams.time_period_id;
 				}
-			}
+			};
 
 			var hasFrequency = function() {
 				return !! $scope.scheduleParams.frequency_id;
-			}
+			};
 
 			var hasEmailList = function() {
 				return $scope.emailList.length;
-			}
+			};
 
 			return hasTimePeriod() && hasFrequency() && hasEmailList();
-		}
+		};
 
 		var fillValidationErrors = function() {
 			$scope.createErrors = [];
@@ -197,7 +197,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			if ( ! $scope.emailList.length ) {
 				$scope.createErrors.push('Emails in distribution list');
 			}
-		}
+		};
 
 		var createSchedule = function() {
 			var params = {
@@ -290,7 +290,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 					scope: $scope,
 				});
 			}
-		}
+		};
 
 		var saveSchedule = function() {
 			var params = {
@@ -392,7 +392,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 					scope: $scope,
 				});
 			}
-		}
+		};
 
 
 
@@ -402,7 +402,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				template: '/assets/partials/reports/scheduleReport/rvConfirmDeleteSchedule.html',
 				scope: $scope
 			});
-		}
+		};
 
 		$scope.deleteSchedule = function() {
 			var success = function() {
@@ -469,7 +469,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			$scope.refreshSecondColumnScroll(reset);
 			$scope.refreshThirdColumnScroll(reset);
 			$scope.refreshFourthColumnScroll(reset);
-		}
+		};
 
 
 
@@ -593,7 +593,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			var hasAccOrGuest, todayTimePeriod;
 
 			hasAccOrGuest = _.find(report.filters, function(filter) {
-				return filter.value == 'ACCOUNT' || filter.value == 'GUEST'
+				return filter.value == 'ACCOUNT' || filter.value == 'GUEST';
 			});
 
 			if ( !! hasAccOrGuest ) {
@@ -601,7 +601,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 					return each.value === 'TODAY';
 				});
 
-				$scope.scheduleParams.time_period_id = todayTimePeriod.id
+				$scope.scheduleParams.time_period_id = todayTimePeriod.id;
 				$scope.isGuestBalanceReport = true;
 			} else if ( !! $scope.selectedEntityDetails.time_period_id ) {
 				$scope.scheduleParams.time_period_id = $scope.selectedEntityDetails.time_period_id;
@@ -693,7 +693,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				$scope.$parent.$parent.schedulesList = _.sortBy(
 						payload.schedulesList,
 						function(item) {
-							return item.report.title
+							return item.report.title;
 						}
 					);
 
@@ -731,7 +731,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				$scope.$parent.$parent.schedulableReports = _.sortBy(
 						$scope.$parent.$parent.schedulableReports,
 						function(item) {
-							return item.report.title
+							return item.report.title;
 						}
 					);
 
@@ -798,7 +798,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         	var reset = true;
 
         	$scope.refreshReportSchedulesScroll(reset);
-        }
+        };
 
         $scope.checkCanCancel = function() {
 			var msg = '';
@@ -811,7 +811,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			} else {
 				$scope.cancelScheduleReport();
 			}
-		}
+		};
 
         $scope.cancelScheduleReport = function() {
         	$scope.isAddingNew = false;
@@ -827,7 +827,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         	$scope.refreshReportSchedulesScroll(reset);
 
         	$scope.closeDialog();
-        }
+        };
 
         $scope.goToNext = function() {
         	var noReset = true;
@@ -844,7 +844,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         	}
 
         	$scope.scrollToLast();
-        }
+        };
 
 
 
@@ -854,7 +854,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         	SHOW_PARAMETERS: 'SHOW_PARAMETERS',
         	SHOW_DETAILS: 'SHOW_DETAILS',
         	SHOW_DISTRIBUTION: 'SHOW_DISTRIBUTION'
-        }
+        };
 
         $scope.shouldHideParametersCol = function() {
         	if ( $scope.addingStage === STAGES.SHOW_SCHEDULE_LIST ) {
@@ -862,7 +862,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         	} else {
         		return false;
         	}
-        }
+        };
 
         $scope.shouldHideDetailsCol = function() {
         	if ( $scope.addingStage === STAGES.SHOW_SCHEDULE_LIST || $scope.addingStage === STAGES.SHOW_PARAMETERS ) {
@@ -870,7 +870,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         	} else {
         		return false;
         	}
-        }
+        };
 
         $scope.shouldHideDistributionCol = function() {
         	if ( $scope.addingStage === STAGES.SHOW_SCHEDULE_LIST || $scope.addingStage === STAGES.SHOW_PARAMETERS || $scope.addingStage === STAGES.SHOW_DETAILS ) {
@@ -878,7 +878,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         	} else {
         		return false;
         	}
-        }
+        };
 
 
 

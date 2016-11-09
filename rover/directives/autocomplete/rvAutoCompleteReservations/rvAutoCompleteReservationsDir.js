@@ -85,7 +85,7 @@ angular.module('sntRover').directive('autoCompleteReservations', ['RVSearchSrv',
                         e.stopPropagation();
                     });
 
-                    avatar.append(angular.element('<img>'))
+                    avatar.append(angular.element('<img>'));
                     reservation.append(avatar).append(guestName).append(roomNumber);
 
                     return angular.element('<li></li>').append(reservation).appendTo(ul);
@@ -97,7 +97,7 @@ angular.module('sntRover').directive('autoCompleteReservations', ['RVSearchSrv',
                     // CICO-26513
                     // unbinding the touch move
                     if(ulElement instanceof HTMLElement) {
-                        ulElement.off('touchmove')
+                        ulElement.off('touchmove');
                     }
                 });
 

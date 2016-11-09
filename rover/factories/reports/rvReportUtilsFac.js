@@ -204,7 +204,7 @@ angular.module('reportsModule')
         var __chargeTypeFilterNames = {
             SHOW_DELETED_CHARGES: true,
             SHOW_ADJUSTMENTS: true
-        }
+        };
 
         /**
          * Create a DS representing the found filter into the general options DS
@@ -382,7 +382,7 @@ angular.module('reportsModule')
                         key: 'full_name',
                         altKey: 'email'
                     }
-                }
+                };
             };
 
             // create DS for options combo box
@@ -393,7 +393,7 @@ angular.module('reportsModule')
                     hasSearch: false,
                     key: 'description'
                 }
-            }
+            };
 
             // create a name space for chosen options
             report.chosenOptions = {};
@@ -406,7 +406,7 @@ angular.module('reportsModule')
                     key: 'description',
                     defaultValue: 'Select displays'
                 }
-            }
+            };
 
             // create DS for Exclude combo box
             report.hasExclusions = {
@@ -417,7 +417,7 @@ angular.module('reportsModule')
                     key: 'description',
                     defaultValue: 'Exclude'
                 }
-            }
+            };
 
             // create DS for guest or account
             report.hasGuestOrAccountFilter = {
@@ -427,7 +427,7 @@ angular.module('reportsModule')
                     hasSearch: false,
                     key: 'description'
                 }
-            }
+            };
 
             // create DS for options combo box
             report.hasShow = {
@@ -439,7 +439,7 @@ angular.module('reportsModule')
                     allValue: 'Both',
                     defaultValue: 'Select options'
                 }
-            }
+            };
 
             // create DS for options combo box
             report.hasChargeTypes = {
@@ -449,7 +449,7 @@ angular.module('reportsModule')
                     hasSearch: false,
                     key: 'description'
                 }
-            }
+            };
 
             // going around and taking a note on filters
             _.each(report['filters'], function(filter) {
@@ -760,11 +760,11 @@ angular.module('reportsModule')
                                 key: 'name',
                                 defaultValue: 'Select guarantees'
                             }
-                        }
+                        };
                     };
                 });
 
-                completed++
+                completed++;
                 checkAllCompleted();
             };
 
@@ -783,11 +783,11 @@ angular.module('reportsModule')
                                 hasSearch: false,
                                 key: 'name'
                             }
-                        }
+                        };
                     };
                 });
 
-                completed++
+                completed++;
                 checkAllCompleted();
             };
 
@@ -806,12 +806,12 @@ angular.module('reportsModule')
                                 hasSearch: false,
                                 key: 'name'
                             }
-                        }
+                        };
                         report['filters']['filled'] = true;
                     };
                 });
 
-                completed++
+                completed++;
                 checkAllCompleted();
             };
 
@@ -830,11 +830,11 @@ angular.module('reportsModule')
                                 hasSearch: false,
                                 key: 'name'
                             }
-                        }
+                        };
                     };
                 });
 
-                completed++
+                completed++;
                 checkAllCompleted();
             };
 
@@ -853,11 +853,11 @@ angular.module('reportsModule')
                                 selectAll: false,
                                 key: 'name'
                             }
-                        }
+                        };
                     };
                 });
 
-                completed++
+                completed++;
                 checkAllCompleted();
             };
 
@@ -892,7 +892,7 @@ angular.module('reportsModule')
                                 key: 'status',
                                 defaultValue: 'Select Status'
                             }
-                        }
+                        };
                     };
                 });
 
@@ -919,7 +919,7 @@ angular.module('reportsModule')
                                 key: 'status',
                                 defaultValue: 'Select Status'
                             }
-                        }
+                        };
                     };
                 });
             };
@@ -945,7 +945,7 @@ angular.module('reportsModule')
                                 key: 'name',
                                 defaultValue: 'Select Department'
                             }
-                        }
+                        };
                     };
                 });
 
@@ -969,7 +969,7 @@ angular.module('reportsModule')
                                 key: 'description',
                                 defaultValue: 'Select Rate'
                             }
-                        }
+                        };
                     };
 
 
@@ -992,7 +992,7 @@ angular.module('reportsModule')
                                 selectAll: true,
                                 key: 'name'
                             }
-                        }
+                        };
                     };
                 });
 
@@ -1014,7 +1014,7 @@ angular.module('reportsModule')
                                 key: 'description',
                                 defaultValue: 'Select Restriction(s)'
                             }
-                        }
+                        };
                     };
                 });
 
@@ -1042,7 +1042,7 @@ angular.module('reportsModule')
                                     filter.updateData(!hasUrl);
                                 }
                             }
-                        }
+                        };
                     };
                 });
 
@@ -1067,7 +1067,7 @@ angular.module('reportsModule')
                             updateData: function(shouldHide) {
                                 this.data = shouldHide ? [] : this.originalData;
                             }
-                        }
+                        };
                     };
                 });
 
@@ -1092,7 +1092,7 @@ angular.module('reportsModule')
                             updateData: function(shouldHide) {
                                 this.data = shouldHide ? [] : this.originalData;
                             }
-                        }
+                        };
                     };
                 });
 
@@ -1113,7 +1113,7 @@ angular.module('reportsModule')
                                 key: 'floor_number',
                                 defaultValue: 'Select Floors(s)'
                             }
-                        }
+                        };
                     };
                 });
 
@@ -1165,7 +1165,7 @@ angular.module('reportsModule')
                                 hasSearch: true,
                                 key: 'name'
                             }
-                        }
+                        };
 
                         report.hasRateFilter = {
                             data: angular.copy( extractRatesFromRateTypesAndRateList(data) ),
@@ -1174,7 +1174,7 @@ angular.module('reportsModule')
                                 hasSearch: true,
                                 key: 'name'
                             }
-                        }
+                        };
                     };
                 });
 
@@ -1246,7 +1246,7 @@ angular.module('reportsModule')
                                     filter.updateData();
                                 }
                             }
-                        }
+                        };
                     };
 
                     foundCC = _.find(report['filters'], { value: 'INCLUDE_CHARGE_CODE' }) || _.find(report['filters'], { value: 'SHOW_CHARGE_CODES' });
@@ -1271,7 +1271,7 @@ angular.module('reportsModule')
                                 });
                                 this.data = enabled;
                             }
-                        }
+                        };
                     };
                 });
 
@@ -1295,7 +1295,7 @@ angular.module('reportsModule')
                         }
                     });
                     return data;
-                }
+                };
 
                 _.each(reportList, function(report) {
                     foundAG = _.find(report['filters'], { value: 'ADDON_GROUPS' });
@@ -1327,7 +1327,7 @@ angular.module('reportsModule')
                                     filter.updateData();
                                 }
                             }
-                        }
+                        };
                     };
 
                     foundAs = _.find(report['filters'], { value: 'ADDONS' });
@@ -1345,11 +1345,11 @@ angular.module('reportsModule')
                             updateData: function() {
                                 this.data = flattenAddons(this.originalData);
                             }
-                        }
+                        };
                     };
                 });
 
-                completed++
+                completed++;
                 checkAllCompleted();
             };
 

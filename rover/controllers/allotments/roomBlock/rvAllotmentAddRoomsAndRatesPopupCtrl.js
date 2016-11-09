@@ -205,7 +205,7 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 				ngDialog.close();
 				$timeout(function(argument) {
 					$scope.confirmUpdateRatesWithPickedReservations($scope.selectedRoomTypeAndRates);
-				}, 700)
+				}, 700);
 			}
 			else {
 				var options = {
@@ -232,7 +232,7 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 				}
 			});
 			return updateExistingReservationsRate;
-		}
+		};
 
 		/**
 		 * wanted to hide a particular room type from the list of room types we are showing

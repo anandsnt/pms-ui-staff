@@ -68,7 +68,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 					"last_name": data.last_name,
 					"days_of_stay": data.days_of_stay,
 					"hours_of_stay": data.hours_of_stay
-				}
+				};
 
 				$state.go('zest_station.checkoutReservationBill', stateParams);
 			}
@@ -105,7 +105,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		 ********************************************************************************/
 
 		$scope.$on('UID_FETCH_SUCCESS', function(event, data) {
-			findReservation(data.uid)
+			findReservation(data.uid);
 		});
 		$scope.$on('UID_FETCH_FAILED', function() {
 			findReservationFailed();

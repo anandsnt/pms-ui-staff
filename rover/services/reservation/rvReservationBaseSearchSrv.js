@@ -22,7 +22,7 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
                 taxMeta: null,
                 customMeta: null
             }
-        }
+        };
 
         // -------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
 
@@ -53,7 +53,7 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
                 level = roomTypeDetails.level;
             }
             return level;
-        }
+        };
 
         this.fetchBaseSearchData = function() {
             var deferred = $q.defer();
@@ -366,7 +366,7 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
                         restriction_types[resType.id] = {
                             key: resType.value,
                             value: ['CLOSED', 'CLOSED_ARRIVAL', 'CLOSED_DEPARTURE', 'HOUSE_FULL', 'INVALID_PROMO'].indexOf(resType.value) > -1 ? resType.description : resType.description + ':'
-                        }
+                        };
                     });
 
                     that.cache.responses['restrictionTypes'] = {
@@ -493,7 +493,7 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
 
                 _.each(response.results, function(availability) {
                     houseAvailbility[availability.date] = availability.availability;
-                })
+                });
                 deferred.resolve(houseAvailbility);
             }, function(data) {
                 deferred.reject(data);

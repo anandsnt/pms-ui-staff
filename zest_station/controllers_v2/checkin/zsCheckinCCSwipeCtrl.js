@@ -38,7 +38,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             //* used for develop and release environment where we are testing other screens
             var debuggingCardPmt = $scope.debuggingCardPayment(true); // pass true if the button is being called to continue
 
-            console.info('debuggingCardPmt: ', debuggingCardPmt)
+            console.info('debuggingCardPmt: ', debuggingCardPmt);
             if (!debuggingCardPmt) {
                 return;
             }
@@ -229,7 +229,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
             };
 
-            console.warn('params: ', params)
+            console.warn('params: ', params);
             $state.go('zest_station.checkInSignature', params);
         };
 
@@ -334,7 +334,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
         var listenForSwipe = function() {
             $timeout(function() {
-                console.log('waiting for swipe..')
+                console.log('waiting for swipe..');
                 $scope.waitingForSwipe = true;
                 $scope.swipeError = false;
                 $scope.swipeTimeout = false;
@@ -645,7 +645,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         var init = function() {
             $scope.setScreenIcon('card');
 
-            console.warn('$stateParams: ', $stateParams)
+            console.warn('$stateParams: ', $stateParams);
                 // if at the deposit screen, set the currency symbol and amount due, which should be passed from reservation details
 
             /*
@@ -669,7 +669,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             // check if a Sixpay hotel or MLI
             // then depending on the swipe configuration, initialize the device
             if (!sixPay) { // mli
-                console.info('mli')
+                console.info('mli');
                     // socket = Sankyo
                 if (swipeFromSocket()) {
                     console.log('init websocket swipe');

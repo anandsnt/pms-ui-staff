@@ -79,7 +79,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
                     if( isInRoomTypeSelectedMode() && $scope.stateVariables.selectedRoom !== '') {
                          room_rates = _.filter(room_rates, function(room_rate) {
                                 return room_rate.id === $scope.stateVariables.selectedRoom;
-                         })
+                         });
 			        }else if(isInRoomTypeSelectedMode() && $scope.stateVariables.selectedRate !== '') {
 			        	room_rates = typeof filtered_rate !== 'undefined' ? filtered_rate.room_rates : [];
 			        }
@@ -93,7 +93,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
                     }
                  
                  return true;
-		}
+		};
 
 		/**
 		 * According to each day, we need to pass seperate CSS class
@@ -155,7 +155,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				}, []).length > 0 )
                     return "";
                 else
-                	return "undefined"
+                	return "undefined";
 
 			}
 			return "";				
@@ -166,7 +166,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
                 if($scope.stateVariables.selectedRoom !== "" && dailyData.room_types[$scope.stateVariables.selectedRoom] <= 0)
                 	return false;
                 return true;
-		}
+		};
 
 		var getEmptyRateDetails = function() {
                 var bestRateData = {};
@@ -176,7 +176,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				bestRateData.availability = "";
 				bestRateData.restrictions = [];
 				return bestRateData;
-		}
+		};
 
 		/**
 		 * [findBestAvailableRateAgainstDate description]
@@ -258,7 +258,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 					return false;
 			}
 			return true;
-		}
+		};
 
 		/**
 		 * when a day is rendered, this callback will fire
@@ -476,7 +476,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			resetCalenarEventModel();
 			formCalendarEvents();
 
-		}
+		};
 
 
 		$scope.isPrevButtonDisabled = function() {

@@ -445,7 +445,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         };
 
         var formatDateForAPI = function(date) {
-            return $filter('date')(date, $rootScope.dateFormatForAPI)
+            return $filter('date')(date, $rootScope.dateFormatForAPI);
         };
 
         /**
@@ -658,7 +658,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
 
                 $scope.selected_reservations.push(reservation);
                 // We have to show in the same order - in popup
-                $scope.selected_reservations = _.sortBy($scope.selected_reservations, "confirm_no")
+                $scope.selected_reservations = _.sortBy($scope.selected_reservations, "confirm_no");
                 $scope.selected_reservations = _.sortBy($scope.selected_reservations, $scope.sort_field);
                 if($scope.sort_dir === 'DESC') {
                     $scope.selected_reservations = $scope.selected_reservations.reverse();
@@ -802,7 +802,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             // updating from one popup not updating in other
             _.each($scope.selected_reservations, function(eachData, resIndex) {
 
-                var reservationIndex = _.findIndex(data.results, {"id": eachData.id})
+                var reservationIndex = _.findIndex(data.results, {"id": eachData.id});
 
                 if(reservationIndex != -1) {
                     $scope.selected_reservations[resIndex] = $scope.reservations[reservationIndex];
@@ -830,7 +830,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 query: $scope.query,
                 exclude_cancel: $scope.exclude_cancel,
                 show_pending_only: $scope.show_pending_only
-            }
+            };
 
             return params;
         };
@@ -840,7 +840,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             runDigestCycle();
             initialisePagination();
             $timeout( $scope.fetchReservations, 500 );
-        }
+        };
 
         /**
          * to fetch reservations against group
@@ -1833,7 +1833,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         $scope.closeDialogBox = function() {
             $scope.closeDialog();
             $scope.isAnyPopupOpen = false;
-        }
+        };
 
         $scope.printRegistrationCards = function() {
             // add the print orientation after printing

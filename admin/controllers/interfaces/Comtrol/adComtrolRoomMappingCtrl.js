@@ -7,7 +7,7 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'roomMappings', 'adComtr
                     room_no: "",
                     external_room: "",
                     external_extension: ""
-                }
+                };
             },
             revertEdit = function() {
                 if ($scope.state.editRef) {
@@ -21,7 +21,7 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'roomMappings', 'adComtr
                         $scope.state.roomNumbers = response.roomNumbers;
                         cb();
                     }
-                })
+                });
             };
 
         // scope method and variables

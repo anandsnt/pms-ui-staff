@@ -28,7 +28,7 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
     // hide if is addmode or editmode
     $scope.isAddOrEditMode = function() {
         return $scope.isAddMode || $scope.editMode;
-    }
+    };
     // hide the row content if its clicked
     $scope.hideRow = function(index) {
         return ($scope.currentClickedUrl === index && $scope.editMode);
@@ -73,7 +73,7 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
              "guest_web_url_type": "CHECKIN",
              "name": $scope.url.name,
              "url_suffix": $scope.url.url_suffix
-        }
+        };
 
         $scope.invokeApi(adZestCheckinCheckoutSrv.saveNewDirectURL, data, saveNewDirectURLSuccess);
     };
@@ -93,7 +93,7 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
              "guest_web_url_type": "CHECKIN",
              "name": $scope.url.name,
              "url_suffix": $scope.url.url_suffix
-        }
+        };
 
         $scope.invokeApi(adZestCheckinCheckoutSrv.editDirectURL, data, saveEditDirectURLSuccess);
 
@@ -109,7 +109,7 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
          var data = {
              "id": $scope.urls[index].id,
              "active": !$scope.urls[index].active
-        }
+        };
 
         $scope.invokeApi(adZestCheckinCheckoutSrv.editDirectURL, data, toggleSucces);
     };

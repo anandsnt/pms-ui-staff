@@ -23,7 +23,7 @@ sntRover.controller('overbookingAlertCtrl', ['$scope',
                     var dayAvailabilityToDisplay;
 
                     if ($scope.ngDialogData.activeView === 'HOUSE') {
-                        dayAvailabilityToDisplay = dailyStat.house.availability
+                        dayAvailabilityToDisplay = dailyStat.house.availability;
                     } else {
                         dayAvailabilityToDisplay = dailyStat.room_types[$scope.ngDialogData.roomTypeId];
                         if ($scope.ngDialogData.isGroupRate) {

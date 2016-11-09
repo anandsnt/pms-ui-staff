@@ -60,7 +60,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope', 'ngDialog', '$root
     var setDefaultSelectedDate = function() {       
         var previousDate = tzIndependentDate($rootScope.businessDate);
 
-        previousDate.setDate(previousDate.getDate() - 1)              
+        previousDate.setDate(previousDate.getDate() - 1);              
         $scope.selectedDate = $filter('date')(previousDate, "dd-MM-yyyy").split("-").reverse().join("-");        
     };
     /*

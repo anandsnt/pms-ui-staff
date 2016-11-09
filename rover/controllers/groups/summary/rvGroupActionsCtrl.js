@@ -218,7 +218,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
 
         $scope.setActionsHeaderInfo = function() {
             var arDate = $scope.groupConfigData.summary.block_from,
-                deDate = $scope.groupConfigData.summary.block_to
+                deDate = $scope.groupConfigData.summary.block_to;
 
             var arrivalDayString = $scope.getArDeDateStr(arDate);
 

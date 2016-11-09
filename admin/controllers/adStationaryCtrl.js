@@ -183,7 +183,7 @@ admin.controller('ADStationaryCtrl',
 
 		params.locale = $scope.locale;
 		fetchStationary(params);
-	}
+	};
 
 	$scope.showConfirmationHeaderFooterBasedOnHoldStatus = function() {
 		// If not set for any status - then empty

@@ -10,7 +10,7 @@ angular.module('sntRover').service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSr
         var calendarDataCache = {
             expiryLimit: 60, // seconds
             reponses: []
-        }
+        };
 
 
         this.fetchCalendarData = function(params) {

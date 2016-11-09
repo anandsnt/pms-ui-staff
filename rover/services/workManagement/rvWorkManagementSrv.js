@@ -764,7 +764,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 						newWorkType = {
 							id: wtid,
 							assignments: []
-						}
+						};
 
 						complied
 							.work_types
@@ -788,7 +788,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 					newAssignment = {
 						employee_id: art.id,
 						tasks: [],
-					}
+					};
 
 					if ( !! hasThisWorkType ) {
 						allTaskInThisWorkType = _.where(art.only_tasks, { 'work_type_id': workTypeId });
@@ -798,7 +798,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 								id: eachTask.id,
 								room_id: eachTask.room_id,
 								order: eachTask.order || null
-							}
+							};
 
 							newAssignment
 								.tasks

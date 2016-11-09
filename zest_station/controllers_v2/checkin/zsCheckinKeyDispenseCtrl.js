@@ -242,7 +242,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 					if ($scope.inDemoMode()) {
 						setTimeout(function() {
 								onSuccessWriteKeyDataLocal();
-							}, 2800) // add some delay for demo purposes
+							}, 2800); // add some delay for demo purposes
 					} else {
 
 						$scope.$emit('printLocalKeyCordova', $scope.selectedReservation.reservationId, $scope.noOfKeysSelected);
@@ -281,7 +281,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 			if ($scope.remoteEncoding || $scope.zestStationData.keyWriter === 'local') {
 				$scope.readyForUserToPressMakeKey = true;
 				if ($scope.zestStationData.keyWriter === 'local') {
-					console.warn('local encoder')
+					console.warn('local encoder');
 					$scope.localWriter = true; // icmp (ingenico) or infinea device
 				}
 			} else {

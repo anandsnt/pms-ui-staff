@@ -95,7 +95,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					$scope.reservationData.allotment.id ||
 					$stateParams.promotion_id ||
 					$scope.reservationData.promotionId ||
-					$stateParams.is_member == "true"
+					$stateParams.is_member == "true";
 			},
 			isMembershipValid = function() {
 				var membership = $scope.reservationData.guestMemberships,
@@ -205,7 +205,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				if ($scope.stateCheck.activeView === "RATE") {
 					payLoad.order = "LOW_TO_HIGH";
 				} else if ($scope.stateCheck.activeView === "ROOM_TYPE") {
-					payLoad.order = "ROOM_LEVEL"
+					payLoad.order = "ROOM_LEVEL";
 				}
 
 				if (!!$scope.stateCheck.preferredType) {
@@ -272,7 +272,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				}
 
 				if ($scope.stateCheck.activeView === "ROOM_TYPE") {
-					payLoad.order = "ROOM_LEVEL"
+					payLoad.order = "ROOM_LEVEL";
 				}
 
 				$scope.invokeApi(RVRoomRatesSrv.fetchRoomTypeADRs, payLoad, function(response) {
@@ -392,7 +392,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					   restrictionObject.restrictionBgClass = "bg-"+getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
 					 //  restrictionObject.restrictionBgColor = getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
 					   restrictionObject.restrictionIcon = getRestrictionIcon(ratesMeta.restrictions[restrictionKey].key);
-					})
+					});
 					var restrictionsLength = (typeof roomType.restrictions!=="undefined") ? roomType.restrictions.length : 0;
 					var roomTypeInfo = {
 							isCollapsed: $scope.stateCheck.selectedRoomType != roomType.id,
@@ -1780,7 +1780,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						   restrictionObject.restrictionBgClass = "bg-"+getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
 						   // restrictionObject.restrictionBgColor = getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
 						   restrictionObject.restrictionIcon = getRestrictionIcon(ratesMeta.restrictions[restrictionKey].key);
-						})
+						});
 
 						var proccesedRestrictions = processRestrictions( room.multiple_restrictions, rate.id),
 							roomInfo = {
@@ -1848,7 +1848,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						   restrictionObject.restrictionBgClass = "bg-"+getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
 						  // restrictionObject.restrictionBgColor = getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
 						   restrictionObject.restrictionIcon = getRestrictionIcon(ratesMeta.restrictions[restrictionKey].key);
-						})
+						});
 
 						proccesedRestrictions = processRestrictions( rate.multiple_restrictions, rate.id);
 						var isGroupRate = ($scope.stateCheck.activeView == 'RECOMMENDED' && $scope.reservationData.group.id) ? !!$scope.reservationData.group.id : false;
@@ -1881,7 +1881,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						};
 
 						if(bestAvailableRateOfSelectedRoom === rate.id) {
-							rateInfo.bestAvailableRateRestrictions = rate.restrictions
+							rateInfo.bestAvailableRateRestrictions = rate.restrictions;
 						}
 
 						_.extend(rateInfo.dates[$scope.reservationData.arrivalDate], {

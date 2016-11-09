@@ -58,7 +58,7 @@ sntRover.controller('reservationPaymentController',
     		var updateParams = {
 	            "restrict_post": !$scope.reservationData.reservation_card.restrict_post,
 	            "reservationId": $scope.reservationData.reservation_card.reservation_id
-	        }
+	        };
 
 	        var options = {
 	            params: updateParams,
@@ -69,7 +69,7 @@ sntRover.controller('reservationPaymentController',
     	}
 
 
-    }
+    };
     $scope.showPostWithNoCreditButton = function() {
     	var isPostWithNoCreditButtonVisible = true;
 
@@ -77,7 +77,7 @@ sntRover.controller('reservationPaymentController',
     		isPostWithNoCreditButtonVisible = false;
     	}
     	return isPostWithNoCreditButtonVisible;
-    }
+    };
 
 	// Update while changing credit card from bill screen.
 	$rootScope.$on('UPDATEDPAYMENTLIST', function(event, data) {

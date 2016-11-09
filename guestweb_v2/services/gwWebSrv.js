@@ -12,7 +12,7 @@
 
 				$http.get(url).success(function(response) {
 						that.cms_screen_details = _.find(response.screen_list, function(cms_item) {
-							return cms_item.screen_name === "ZEST WEB SCREENS"
+							return cms_item.screen_name === "ZEST WEB SCREENS";
 						});
 						that.cms_screen_details = typeof that.cms_screen_details !== 'undefined' ? that.cms_screen_details.screen_messages : [];
 						deferred.resolve(response);

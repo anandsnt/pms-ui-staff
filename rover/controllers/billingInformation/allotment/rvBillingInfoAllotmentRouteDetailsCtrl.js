@@ -10,7 +10,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
         $scope.oldPayment = $scope.renderAddedPayment;
         $scope.renderAddedPayment = null;
         $scope.paymentFlags.isAddPayment = false;
-    }
+    };
 
     /**
      * Function to show the payment list on cancelling or adding new payment

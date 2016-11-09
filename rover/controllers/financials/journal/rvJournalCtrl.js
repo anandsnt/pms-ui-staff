@@ -344,6 +344,6 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
 
     $scope.toggleOverviewDetailSelection = function() {
        $scope.isDetailsSelected = !$scope.isDetailsSelected;
-    }
+    };
 
 }]);

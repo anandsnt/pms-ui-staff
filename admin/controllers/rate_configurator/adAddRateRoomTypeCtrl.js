@@ -92,7 +92,7 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
             $scope.$emit('hideLoader');
             $scope.$emit("errorReceived", error);
             $scope.fetchAllRoomTypes();
-        }
+        };
         var saveRoomTypesSuccessCallback = function(data) {
             $scope.$emit('hideLoader');
             $scope.rateData.room_types = roomTypes;

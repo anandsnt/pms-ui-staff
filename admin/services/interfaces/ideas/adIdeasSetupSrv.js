@@ -34,6 +34,6 @@ admin.service('adIdeasSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2',
                 deferred.reject(data);
             });
             return deferred.promise;
-        }
+        };
     }
 ]);

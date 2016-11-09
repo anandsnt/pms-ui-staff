@@ -72,7 +72,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                             setTimeout(function() {
                                 console.info("POLLING::-> for emv terminal response");
                                 pollToTerminal(async_callback_url);
-                            }, 5000)
+                            }, 5000);
                         } else {
                             clearInterval(refreshIntervalId);
                             deferred.resolve(data);
@@ -166,7 +166,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             url = '/api/guest_details/' + params.guest_id;
             var param = {
                 "nationality_id": params.nationality_id
-            }
+            };
 
             zsBaseWebSrv.putJSON(url, param).then(function(data) {
                 deferred.resolve(data);
@@ -265,7 +265,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             url = 'zest_station/reservations/' + params.reservation_id;
             var param = {
                 "nationality_id": params.nationality_id
-            }
+            };
 
             zsBaseWebSrv2.getJSON(url, param).then(function(data) {
                 deferred.resolve(data);

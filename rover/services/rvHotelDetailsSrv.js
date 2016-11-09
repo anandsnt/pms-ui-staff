@@ -63,7 +63,7 @@ angular.module('sntRover').service('RVHotelDetailsSrv', ['$q', 'rvBaseWebSrvV2',
 		},
 		function(errorMessage) {
 			deferred.reject(errorMessage);
-		})
+		});
 		return deferred.promise;
 	};
 

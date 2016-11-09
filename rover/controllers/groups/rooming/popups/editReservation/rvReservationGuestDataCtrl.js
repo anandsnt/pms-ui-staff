@@ -68,7 +68,7 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
     };
     var failureCallBackOfUpdateGuestData = function(error) {
         $scope.errorMessage = error;
-    }
+    };
     /*
      * To update all selected reservations guest data
      */

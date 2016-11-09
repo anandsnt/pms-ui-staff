@@ -155,7 +155,7 @@ sntRover.factory('RVReportParserFac', [
             var getRemarksAry = function(remark) {
                 var ary = remark.split('<br />');
 
-                return _.reject(ary, function(i) { return i === '' || i === ' ' });
+                return _.reject(ary, function(i) { return i === '' || i === ' '; });
             };
 
             var processAry = function(source, type) {
@@ -449,7 +449,7 @@ sntRover.factory('RVReportParserFac', [
                     'RESERVATIONS_BY_USER'
                 ];
 
-                return !! _.find(allowNames, function(name) { return reportName == reportNames[name] });
+                return !! _.find(allowNames, function(name) { return reportName == reportNames[name]; });
             };
 
             if ( isForGenericReports(reportName) ) {
@@ -1058,7 +1058,7 @@ sntRover.factory('RVReportParserFac', [
                         } else {
                             returnAry.push(
                                 _.omit(eachAry[i], ['room_no', 'room_type'])
-                            )
+                            );
                         }
                     }
                 });

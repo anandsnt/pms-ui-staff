@@ -161,7 +161,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 'reservation_id': $scope.selectedReservation.reservation_details.reservation_id,
                 'room_no': $scope.selectedReservation.reservation_details.room_no,
                 'first_name': $scope.selectedReservation.guest_details[0].first_name
-            }
+            };
 
             $state.go('zest_station.checkInSignature', stateParams);
         };
@@ -169,7 +169,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
 
         var shouldGoToEarlyCheckInFlow = function(response) {
-            console.log('early checkin on reservation response: ', response)
+            console.log('early checkin on reservation response: ', response);
             if (!response.reservation_in_early_checkin_window) {
                 return false;
             }
@@ -249,10 +249,10 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         };
 
         var fetchEarlyCheckinSettings = function(onSuccessCallback) {
-            console.info(': fetchEarlyCheckinSettings :')
+            console.info(': fetchEarlyCheckinSettings :');
 
             var onSuccessResponse = function(response) {
-                console.info(': fetchEarlyCheckinSettings => onSuccessResponse :', response)
+                console.info(': fetchEarlyCheckinSettings => onSuccessResponse :', response);
                 onSuccessCallback(response);
             };
 
@@ -284,7 +284,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
         var initTermsPage = function() {
             console.log($scope.zestStationData);
-            console.info('$scope.selectedReservation: ', $scope.selectedReservation)
+            console.info('$scope.selectedReservation: ', $scope.selectedReservation);
             var stateParams = {
                 'guest_id': $scope.selectedReservation.guest_details[0].id,
                 'reservation_id': $scope.selectedReservation.reservation_details.reservation_id,
@@ -403,12 +403,12 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
             tA.setHours(arrivalHour);
             tA.setMinutes(arrivalMin);
-            console.log(tA)
+            console.log(tA);
                 // we dont need departure time, only arrival time here, keeping this for generic use if wanted in the future
                 // tD.setHours(departHour);
                 // tD.setMinutes(departMin);
 
-            console.log('')
+            console.log('');
             console.log('current: ', current);
             console.log('arrival: ', tA);
             // console.log('depart : ',tD);

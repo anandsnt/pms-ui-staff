@@ -47,7 +47,7 @@ admin.directive('adDropdownName', function($timeout) {
 
                 });
                 return label;
-            }
+            };
         },
     	templateUrl: '/assets/directives/selectBox/adDropdownboxName.html'
     };

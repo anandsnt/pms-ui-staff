@@ -292,7 +292,7 @@ sntRover.run([
 	        	localStorage.removeItem( 'roomListScrollTopPos' );
 
 	        	// please keep this log
-	        	console.log( 'HK.Filters.Cleared' )
+	        	console.log( 'HK.Filters.Cleared' );
 	        };
 
 	        if ( 'rover.housekeeping.roomStatus' == fromState.name ) {

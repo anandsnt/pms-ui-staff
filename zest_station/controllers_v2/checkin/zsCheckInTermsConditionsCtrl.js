@@ -53,7 +53,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 			// if email is valid and is not blacklisted
 			var haveValidGuestEmail = checkIfEmailIsBlackListedOrValid();
 
-			console.warn('afterGuestCheckinCallback :: current state params: ', $stateParams)
+			console.warn('afterGuestCheckinCallback :: current state params: ', $stateParams);
 			var stateParams = {
 				'guest_id': $stateParams.guest_id,
 				'reservation_id': $stateParams.reservation_id,
@@ -66,7 +66,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				stateParams.email = $stateParams.email;
 				$state.go('zest_station.checkinKeyDispense', stateParams);
 			} else {
-				console.warn('to email collection: ', stateParams)
+				console.warn('to email collection: ', stateParams);
 				$state.go('zest_station.checkInEmailCollection', stateParams);
 			}
 
@@ -128,8 +128,8 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 			}
 		};
 		var depositRequired = function() {
-			console.log('$scope.zestStationData.enforce_deposit: ', $scope.zestStationData.enforce_deposit)
-			console.log('depositAmount: ', depositAmount())
+			console.log('$scope.zestStationData.enforce_deposit: ', $scope.zestStationData.enforce_deposit);
+			console.log('depositAmount: ', depositAmount());
 			return ($scope.zestStationData.enforce_deposit && depositAmount() > 0);
 		};
 		var goToCreditCardAuthScreen = function() {

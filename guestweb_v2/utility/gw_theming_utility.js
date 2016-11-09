@@ -38,7 +38,7 @@ var applyStyle = function(target, style, type) {
 // icons of each color has to be in corresponding folders
 var applyIconStyles = function(color) {
 	if (color !== null) {
-		var styleString = ""
+		var styleString = "";
 
 		styleString = styleString + ".calendar-back {background-image: url('/assets/guestweb_v2/images/" + color + "/back_icon.png')}";
 		styleString = styleString + ".calendar-done{background-image: url('/assets/guestweb_v2/images/" + color + "/done_icon.png')}";
@@ -53,7 +53,7 @@ var applyIconStyles = function(color) {
 		return;
 	}
 
-}
+};
 	/*
 	 * This is to override the existing demo theme styling with the CMS contents if
 	 * set in the admin
@@ -115,7 +115,7 @@ var overrideStylesWithCMSdata = function(styles) {
 	applyStyle('.sub-text{ font-size:', styles.label_text.sd_font_size, "media-query");
 	// apply icon styles
 	if (styles.icon_color !== "White") {
-		applyIconStyles(styles.icon_color)
+		applyIconStyles(styles.icon_color);
 	}
 	if (styleString.length > 0) {
 		addStyleString(styleString);

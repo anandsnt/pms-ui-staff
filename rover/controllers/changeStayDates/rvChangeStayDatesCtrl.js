@@ -318,7 +318,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 			});
 			var firstDateInAvailableDate = $scope.stayDetails.calendarDetails.available_dates[0].date;
-			var indexOfFirstAvailableDateInStayDates = _.findIndex($scope.stayDetails.calendarDetails.stay_dates, {"date": firstDateInAvailableDate})
+			var indexOfFirstAvailableDateInStayDates = _.findIndex($scope.stayDetails.calendarDetails.stay_dates, {"date": firstDateInAvailableDate});
 			var remainingStayDatesArray = _.first($scope.stayDetails.calendarDetails.stay_dates, parseInt(indexOfFirstAvailableDateInStayDates));
 
 			$(remainingStayDatesArray).each(function(index) {
@@ -782,7 +782,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
                 adults: $scope.reservationData.tabs[$scope.viewState.currentTab].numAdults,
                 children: $scope.reservationData.tabs[$scope.viewState.currentTab].numChildren
 			});
-		}
+		};
 
 		$scope.goToRoomAndRates = function() {
 			navigateToRateAndRates();
@@ -793,7 +793,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 			if (close) {
 				$scope.closeDialog();
-				timer = 1000
+				timer = 1000;
 			}
 			$timeout(navigateToRateAndRates, timer);
 		};

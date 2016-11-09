@@ -42,7 +42,7 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
     $scope.getPaymentListSuccess = function(data) {
         $scope.$emit('hideLoader');
         $scope.renderData.paymentTypes = _.filter(data, function(paymentType) {
-            return paymentType.name !== "GIFT_CARD"
+            return paymentType.name !== "GIFT_CARD";
         });
         renderDefaultValues();
     };

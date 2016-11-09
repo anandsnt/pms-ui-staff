@@ -43,6 +43,6 @@ admin.service('adWindsurferCRSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', funct
             deferred.reject(data);
         });
         return deferred.promise;
-    }
+    };
 
 }]);

@@ -170,7 +170,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 
 					popupOptions.resolve = {
 						message: function() {
-							return "Please provide all the required information"
+							return "Please provide all the required information";
 						}
 					};
 					$modal.open(popupOptions);
