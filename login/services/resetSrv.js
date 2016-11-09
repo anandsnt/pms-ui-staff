@@ -37,8 +37,6 @@ login.service('resetSrv', ['$http', '$q', function($http, $q) {
 		return deferred.promise;
 
 
-
-
 	};
    /*
     * Activate user by changing Password

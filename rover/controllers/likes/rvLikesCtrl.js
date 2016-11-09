@@ -113,7 +113,6 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 			$scope.guestCardData.likes = $scope.guestLikesData;
 
 
-
 			setTimeout(function() {
 				$scope.refreshScroller('likes_info');
 			}, 1000);

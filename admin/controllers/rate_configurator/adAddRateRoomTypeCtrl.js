@@ -2,7 +2,6 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
     function($scope, ADRatesAddRoomTypeSrv, $rootScope) {
 
 
-
     var lastDropedTime = '';
 
     $scope.init = function () {

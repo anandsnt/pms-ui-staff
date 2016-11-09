@@ -70,7 +70,6 @@ angular.module('sntRover').controller('rvItemInventoryGraphStatusController', [
 		};
 
 
-
 		var formGraphData = function() {
 			$scope.graphData = [{
 				name: 'Bookable Rooms',

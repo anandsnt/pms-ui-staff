@@ -162,7 +162,6 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         });
 
 
-
         $scope.fetchInterfaceMappingsSuccess = function (data) {
             var mapType, mappingTypeName, mappingTypeId, sntVal, extVal, mv, value, dataObj, mTypeName, mappingTypeRefObject, mappingTypeDesc;
 

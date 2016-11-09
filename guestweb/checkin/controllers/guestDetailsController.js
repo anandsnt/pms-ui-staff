@@ -93,7 +93,6 @@
 				$scope.isLoading = false;
 			});
 		}
-	
 
 
 		$scope.yearOrMonthChanged = function() {

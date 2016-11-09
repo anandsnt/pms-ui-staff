@@ -124,7 +124,6 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 			});
 
 
-
 			// check and update if room in service
 			$scope.inService = $scope.updateService.room_service_status_id !== $_inServiceId ? false : true;
 
@@ -239,7 +238,6 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 
 			$scope.refreshScroller('room-tab-scroll');
 		};
-
 
 
 		/* ***** ***** ***** ***** ***** */

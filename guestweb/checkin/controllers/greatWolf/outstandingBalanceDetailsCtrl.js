@@ -170,7 +170,6 @@
 		};
 
 
-
 		var init = function() {
 
 			// setup data for dropdowns

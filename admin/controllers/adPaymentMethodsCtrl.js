@@ -72,11 +72,6 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
         });
 
 
-
-
-
-
-
 	/*
 	 * Render add payment method screen
 	 */
@@ -235,7 +230,6 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 
 		$scope.invokeApi(ADPaymentMethodsSrv.deletePaymentMethod, id, successCallbackDelete);
 	};
-
 
 
 	$scope.roverOnlyChanged = function() {

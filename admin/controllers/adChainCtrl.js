@@ -123,8 +123,6 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
  		var updateData = {'id': id, 'updateData': $scope.editData };
 
 
-
-
  		var updateChainFailureCallback = function(errorMessage) {
  			$scope.$emit('hideLoader');
  			$scope.errorMessage = errorMessage;

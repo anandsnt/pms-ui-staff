@@ -326,7 +326,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
         // -----------------------------------------------------------------------------------------------------------//
 
 
-
         $scope.computeTotalStayCost = function(reset) {
             $scope.reservationData.taxDetails = {
                 incl: {},
@@ -907,7 +906,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
         $scope.paymentTypes = [];
 
 
-
         var promptCancel = function(penalty, nights) {
             var openCancelPopup = function() {
                 var passData = {
@@ -962,7 +960,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
                     // Sample Response from api/reservations/:id/policies inside the results hash
                     // calculated_penalty_amount: 40
-
 
 
                     depositAmount = data.results.deposit_amount;
@@ -1272,7 +1269,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
                     $scope.reservation.reservation_card.arrival_date = $scope.reservationData.arrivalDate;
                     $scope.reservation.reservation_card.departure_date = $scope.reservationData.departureDate;
-
 
 
                     $scope.$broadcast('PROMPTCARDENTRY');

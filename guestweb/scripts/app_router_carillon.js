@@ -136,7 +136,6 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 	 });
 
 
-
 	$stateProvider.state('noOptionAvailable', {
     	url: '/noOptionAvailable',
 	 	templateUrl: '/assets/preCheckin/partials/Carillon/noOption.html',

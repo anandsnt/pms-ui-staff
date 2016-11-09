@@ -18,7 +18,6 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
 
 
-
 		$scope.setHeadingTitle = function(heading) {
 			$scope.heading = heading;
 			$scope.setTitle(heading);

@@ -11,7 +11,6 @@ admin.controller('ADRatesAddonsCtrl', [
 	function($scope, $rootScope, ADRatesAddonsSrv, ADHotelSettingsSrv, $filter, ngTableParams, ngDialog, $timeout, activeRates) {
 
 
-
 		// extend base controller
 		$scope.init = function() {
 			ADBaseTableCtrl.call(this, $scope, ngTableParams);
@@ -122,7 +121,6 @@ admin.controller('ADRatesAddonsCtrl', [
 		};
 
 
-
 		// fetch charge groups, charge codes, amount type and post type
 		$scope.fetchOtherApis = function() {
 			// fetch charge groups
@@ -181,7 +179,6 @@ admin.controller('ADRatesAddonsCtrl', [
 
 			$scope.invokeApi(ADRatesAddonsSrv.fetchBusinessDate, {}, bdCallback, '', 'NONE');
 		};
-
 
 
 		// To fetch the template for chains details add/edit screens
@@ -318,7 +315,6 @@ admin.controller('ADRatesAddonsCtrl', [
 				}
 
 				// convert system date to MM-dd-yyyy format
-
 
 
 				$scope.singleAddon.begin_date = $scope.singleAddon.begin_date;

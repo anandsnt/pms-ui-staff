@@ -352,7 +352,6 @@ admin.controller('ADFloorDetailsCtrl',
     };
 
 
-
     /**
     * successcallback of fetchAllUnAssignedRoom APi call
     * will set unassignrooms with what we got from API

@@ -31,8 +31,6 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 		}
 
 
-
-
 	};
 	// Get the alert length - set in admin settings
 	var fetchConfig = function() {

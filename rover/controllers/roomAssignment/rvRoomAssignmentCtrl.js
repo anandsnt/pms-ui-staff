@@ -549,7 +549,6 @@ sntRover.controller('RVroomAssignmentController', [
 	};
 
 
-
         $scope.goToStayCardFromAddToQueue = false;
         if (!$rootScope.reservationRoomWatch) {// alternative to $destroy, this is an init-once method
             $rootScope.reservationRoomWatch = 1;

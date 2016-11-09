@@ -77,7 +77,6 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
     $vault.set('result_showing_area', 0);
 
 
-
     $scope.heading = heading;
 
     // setting the scroller for view

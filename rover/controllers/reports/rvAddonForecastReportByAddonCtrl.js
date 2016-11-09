@@ -16,7 +16,6 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 		BaseCtrl.call(this, $scope);
 
 
-
 		var detailsCtrlScope = $scope.$parent,
 			mainCtrlScope    = detailsCtrlScope.$parent,
 			chosenReport     = detailsCtrlScope.chosenReport,
@@ -25,7 +24,6 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 			addonHash    = {},
 			addonGroups,
 			addons;
-
 
 
 		var SCROLL_NAME  = 'addon-forecast-report-scroll',
@@ -70,8 +68,6 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 				$timeout(setScrollListner, 1000);
 			}
 		};
-
-	
 
 
 		$scope.getKey = function(item) {
@@ -187,8 +183,6 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  				callResAPI( eachDate );
  			}
  		};
-
-
 
 
  		function callResAPI (eachDate, params) {
@@ -350,7 +344,6 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 
 		$scope.$on( '$destroy', allRendered );
 		$scope.$on( '$destroy', clearTimer );
-
 
 
  		mainCtrlScope.printOptions.showModal = function() {

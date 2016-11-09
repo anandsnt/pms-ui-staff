@@ -1201,7 +1201,6 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			}
 
 
-
 			$scope.errorMessage = "";
 
 

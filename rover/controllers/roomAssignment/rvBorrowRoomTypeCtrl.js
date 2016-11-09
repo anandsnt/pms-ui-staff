@@ -61,5 +61,4 @@ sntRover.controller('rvBorrowRoomTypeCtrl', [
     };
 
 
-
 }]);

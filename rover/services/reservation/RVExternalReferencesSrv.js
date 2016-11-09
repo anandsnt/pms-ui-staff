@@ -4,7 +4,6 @@ angular.module('sntRover').service('RVExternalReferencesSrv', ['$q', 'rvBaseWebS
         var self = this;
 
 
-
         var fetchExternalSystems = function() {
             var deferred = $q.defer(),
                 url = "/api/reference_values/manual_external_reference_interfaces";

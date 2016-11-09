@@ -228,38 +228,6 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		};
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		this.fetchHKStaffs = function() {
 			var deferred = $q.defer();
 			var url = 'api/work_statistics/employees_list';

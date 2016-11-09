@@ -22,7 +22,6 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 		 ***********************************************************************************************/
 
 
-
 		$scope.proceedToDeposit = function() {
 			var stateParams = {
 				'mode': 'DEPOSIT',
@@ -48,7 +47,6 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 			console.info('to card swipe ctrl params: ', stateParams);
 			$state.go('zest_station.checkInCardSwipe', stateParams);
 		};
-
 
 
 		var init = function() {

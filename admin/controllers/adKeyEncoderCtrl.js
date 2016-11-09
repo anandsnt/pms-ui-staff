@@ -139,7 +139,6 @@ admin.controller('ADKeyEncoderCtrl', ['$scope', '$state', 'ADRatesSrv', 'ADKeyEn
 	};
 
 
-
 	/** **************************************************************************************/
 
 

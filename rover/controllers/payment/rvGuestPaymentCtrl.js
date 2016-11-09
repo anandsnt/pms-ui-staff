@@ -70,6 +70,4 @@ sntRover.controller('RVPaymentGuestCtrl', ['$rootScope', '$scope', '$state', 'RV
 	 });
 
 
-
-
 }]);

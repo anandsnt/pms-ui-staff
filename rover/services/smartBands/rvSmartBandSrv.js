@@ -72,5 +72,4 @@ angular.module('sntRover').service('RVSmartBandSrv', ['$q', 'BaseWebSrvV2', func
 	};
 
 
-
 }]);

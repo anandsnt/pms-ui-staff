@@ -37,7 +37,6 @@ var require,
         SEPARATOR = ".";
 
 
-
     function build(module) {
         var factory = module.factory,
             localRequire = function (id) {

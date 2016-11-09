@@ -26,7 +26,6 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
          * 1.EMAIL_ENTRY_MODE
          * 2.EMAIL_INVLAID_MODE
          */
-
         
          
         /**

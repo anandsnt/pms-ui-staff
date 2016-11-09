@@ -12,5 +12,4 @@ sntRover.controller('RVOverBookRoomDialogController', ['$scope', '$rootScope', '
 	};
 
 
-
 }]);

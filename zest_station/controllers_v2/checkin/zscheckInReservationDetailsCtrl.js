@@ -167,7 +167,6 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         };
 
 
-
         var shouldGoToEarlyCheckInFlow = function(response) {
             console.log('early checkin on reservation response: ', response);
             if (!response.reservation_in_early_checkin_window) {

@@ -18,10 +18,6 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 			chosenReport     = detailsCtrlScope.chosenReport;
 
 
-
-
-
-
 		var LEFT_PANE_SCROLL  = 'left-pane-scroll',
 			RIGHT_PANE_SCROLL = 'right-pane-scroll';
 
@@ -79,8 +75,6 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 		};
 
 		$scope.$on( '$destroy', destroyScrolls );
-
-		
 
 
 		// default colspan value
@@ -296,7 +290,6 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 			processData();
 			renderReact();
 		}
-
 
 
 		// re-render must be initiated before for taks like printing.

@@ -79,5 +79,4 @@ angular.module('sntRover').service('RVGuestCardLoyaltySrv', ['$q', 'RVBaseWebSrv
 	};
 
 
-
 }]);

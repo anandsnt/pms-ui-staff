@@ -291,8 +291,6 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
    init();
 
 
-
-
    $scope.gotosearch = function() {
     $state.go("rover.search");
 

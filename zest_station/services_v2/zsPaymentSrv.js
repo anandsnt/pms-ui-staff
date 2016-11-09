@@ -59,7 +59,6 @@ sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv', '$rootSco
         };
 
 
-
         this.submitDeposit = function(postData) {
             // var deferred = $q.defer();
             // var url = '/api/reservations/' + postData.reservation_id + '/submit_payment';

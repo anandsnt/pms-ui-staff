@@ -133,7 +133,6 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
     }
 
 
-
         $scope.hideCreditCardFields = function() {
             $scope.addmode                          = false;
             $scope.shouldShowExistingCards          = false;

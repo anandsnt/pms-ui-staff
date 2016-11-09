@@ -102,5 +102,4 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 	});
 
 
-
 }]);

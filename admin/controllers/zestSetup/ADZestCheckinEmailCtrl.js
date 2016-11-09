@@ -105,9 +105,4 @@ admin.controller('ADZestCheckinEmailCtrl', ['$scope', '$state', 'adZestCheckinCh
     $scope.init();
 
 
-
-
-
-
-
   }]);

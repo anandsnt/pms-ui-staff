@@ -164,7 +164,6 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         };
 
 
-
         this.fetchReservationDetails = function(param) {
             var url = '/staff/staycards/reservation_details.json?reservation_id=' + param.reservation_id;
             var deferred = $q.defer();
@@ -341,7 +340,6 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return [ // in our admin/API, these are saved in english, we will keep reference here if needed
             ];
         };
-
 
 
         this.refreshWorkStationInitialized = function(params) {

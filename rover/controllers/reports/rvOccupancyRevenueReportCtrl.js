@@ -241,7 +241,6 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 		}
 
 		init();
-
 		
 
 		// re-render must be initiated before for taks like printing.
@@ -261,8 +260,6 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 		$scope.$on( '$destroy', reportPrinting );
 		$scope.$on( '$destroy', reportPageChanged );
 		$scope.$on( '$destroy', reportFilterChanged );
-
-
 
 
 		var detailsCtrlScope = $scope.$parent,

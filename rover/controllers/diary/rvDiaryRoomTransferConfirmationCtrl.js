@@ -46,7 +46,6 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 		formDateAndTimeForMe(next);
 
 
-
 		$scope.price = parseFloat(roomXfer.next.room.new_price - roomXfer.current.room.old_price);
 
 		/**

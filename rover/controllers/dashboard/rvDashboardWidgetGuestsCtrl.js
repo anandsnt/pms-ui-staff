@@ -31,5 +31,4 @@ sntRover.controller('rvDashboardGuestWidgetController', ['$scope', 'RVSearchSrv'
     };
 
 
-
 }]);

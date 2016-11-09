@@ -137,7 +137,6 @@
 	};
 
 
-
 	var fetchSurveyDetails = function() {
 		var deferred = $q.defer();
 		var url = '/guest_web/zest_web_questions.json';

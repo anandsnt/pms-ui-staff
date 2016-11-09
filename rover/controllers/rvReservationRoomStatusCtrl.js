@@ -314,7 +314,6 @@ angular.module('sntRover').controller('reservationRoomStatus',
     };
 
 
-
     if ($rootScope.isStandAlone && !$rootScope.isHourlyRateOn) {
         if ((($stateParams.isOnlineRoomMove == null && $stateParams.isKeySystemAvailable) || $stateParams.isOnlineRoomMove == "false"
             || ($stateParams.isOnlineRoomMove == "true" && (keySettings === "email" || keySettings === "qr_code_tablet")))

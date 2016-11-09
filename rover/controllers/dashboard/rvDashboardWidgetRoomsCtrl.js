@@ -21,5 +21,4 @@ sntRover.controller('rvDashboardRoomsWidgetController', ['$scope', 'RVSearchSrv'
    };
 
 
-
 }]);

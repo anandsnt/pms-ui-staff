@@ -85,7 +85,6 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 		};
 
 
-
 		/* NOTE: using the new API structure */
 
 		// room service status list (will be cached)

@@ -213,8 +213,6 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		};
 
 
-
-
 		var manipulateGraphData = function(data) {
 			var graphData = [];
 			var contracted = [];

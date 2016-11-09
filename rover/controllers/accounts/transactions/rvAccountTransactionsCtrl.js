@@ -166,7 +166,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 
-
 		var initAccountTransactionsView = function() {
 			// Scope variable to set active bill
 			$scope.currentActiveBill = 0;
@@ -304,7 +303,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			$scope.invokeApi(rvAccountTransactionsSrv.moveToAnotherBill, dataToMove, moveToBillSuccessCallback, moveToBillFailureCallback );
 		};
-
 
 
 		// Calculate the scroll width for bill tabs in all the cases
@@ -481,7 +479,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				return;
 			}
 		});
-
 
 
 		/* ------------- edit/remove/split starts here --------------*/
@@ -672,7 +669,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			});
 			$scope.setScroller('chargeCodesList');
 		};
-
 
 
 		/* ----------- edit/remove/split ends here ---------------*/
@@ -910,8 +906,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$scope.$emit('showErrorMessage', ['Sorry, Changes will not get saved as you don\'t have enough permission']);
 			}
 		};
-
-
 		
 
 		/**

@@ -218,8 +218,6 @@ sntRover.controller('reservationActionsController', [
 		};
 
 
-
-
                 $scope.checkGuestInFromQueue  = function() {
                     $scope.initCheckInFlow();
                 };
@@ -628,8 +626,6 @@ sntRover.controller('reservationActionsController', [
 
 					// Sample Response from api/reservations/:id/policies inside the results hash
 					// calculated_penalty_amount: 40
-
-
 
 
 					depositAmount = data.results.deposit_amount;

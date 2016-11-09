@@ -276,7 +276,6 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 		};
 
 
-
 		/**
 		 * function used to save the contact data, it will save only if there is any
 		 * change found in the present contact info.

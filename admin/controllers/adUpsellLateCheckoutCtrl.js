@@ -157,7 +157,6 @@ $scope.$watch('upsellData.extended_checkout_charge_1', function(newValue, oldVal
 };
 
 
-
 /**
 * To handle save button action
 *

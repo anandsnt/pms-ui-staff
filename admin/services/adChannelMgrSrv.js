@@ -104,8 +104,6 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
         };
         
         
-        
-        
         this.getRoomTypesByRate = function (data) {
             var deferred = $q.defer();
 

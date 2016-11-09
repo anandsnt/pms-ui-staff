@@ -93,7 +93,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.addOns = rateInitialData.addons;
 
 
-
             // restriction type
             $scope.restrictionDetails = rateInitialData.restrictionDetails;
             angular.forEach($scope.restrictionDetails, function(restrictionType) {
@@ -214,9 +213,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.commission_details = data.commission_details;
             $scope.rateData.tasks = data.tasks;
             $scope.rateData.booking_origin_id = data.booking_origin_id;
-
-
-
 
 
             // addons -mark as activated for selected addons
@@ -355,7 +351,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             });
             return activeDateRange;
         };
-
 
 
         $scope.$on('deletedAllDateRangeSets', function(e, dateRangeId) {

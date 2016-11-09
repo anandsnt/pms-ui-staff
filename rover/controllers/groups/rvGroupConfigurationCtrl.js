@@ -63,7 +63,6 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
         };
 
 
-
         /**
          * Function to check the mandatory values while saving the reservation
          * Handling in client side owing to alleged issues on import if handled in the server side
@@ -1260,7 +1259,6 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
         };
 
 
-
         /**
          * THIS IS SELF EXECUTED FUNCTIONS VALUE
          * decide what the title, name and param of back button
@@ -1338,8 +1336,6 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             // setting title and things
             setTitle();
         };
-
-
 
 
         /**

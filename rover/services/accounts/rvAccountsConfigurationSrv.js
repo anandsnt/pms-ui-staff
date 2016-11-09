@@ -88,7 +88,6 @@ angular.module('sntRover').service('rvAccountsConfigurationSrv', ['$q', 'rvBaseW
 		};
 
 
-
 		// Account Notes
 
 		this.saveAccountNote = function(data) {

@@ -859,7 +859,6 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		};
 
 
-
 		/**
 		 * when save button clicked,
 		 * @return None
@@ -1748,7 +1747,6 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 						var yPos = this.y;
 
 
-
 						$scope.$parent.myScroll[RATE_TIMELINE].scrollTo(xPos, 0);
 						$scope.$parent.myScroll[BLOCK_SCROLL].scrollTo(0, yPos);
 					// check if edge reached next button
@@ -2132,7 +2130,6 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			if ($scope.groupConfigData.activeTab === "ROOM_BLOCK") {
 				initializeRoomBlockDetails();
 			}
-
 
 
 		}();

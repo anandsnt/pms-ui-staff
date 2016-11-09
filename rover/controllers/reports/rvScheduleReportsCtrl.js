@@ -163,8 +163,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 		};
 
 
-
-
 		var validateSchedule = function() {
 			var hasTimePeriod = function() {
 				if ( $scope.isGuestBalanceReport ) {
@@ -395,8 +393,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 		};
 
 
-
-
 		$scope.confirmDelete = function() {
 			ngDialog.open({
 				template: '/assets/partials/reports/scheduleReport/rvConfirmDeleteSchedule.html',
@@ -425,7 +421,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			$scope.closeDialog();
 			$scope.invokeApi( reportsSrv.deleteSchedule, { id: $scope.selectedEntityDetails.id }, success, failed );
 		};
-
 
 
 		var REPORT_SCHEDULES_SCROLL = 'REPORT_SCHEDULES_SCROLL';
@@ -470,7 +465,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			$scope.refreshThirdColumnScroll(reset);
 			$scope.refreshFourthColumnScroll(reset);
 		};
-
 
 
 		var matchGeneralOptions = {
@@ -688,7 +682,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				$scope.$parent.$parent.schedulableReports = [];
 
 
-
 				// sort schedule list by report name
 				$scope.$parent.$parent.schedulesList = _.sortBy(
 						payload.schedulesList,
@@ -847,8 +840,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         };
 
 
-
-
         var STAGES = {
         	SHOW_SCHEDULE_LIST: 'SHOW_SCHEDULE_LIST',
         	SHOW_PARAMETERS: 'SHOW_PARAMETERS',
@@ -879,8 +870,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         		return false;
         	}
         };
-
-
 
 
 		var init = function() {

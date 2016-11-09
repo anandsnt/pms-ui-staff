@@ -32,6 +32,4 @@ this.save = function(data) {
 };
 
 
-
-
 }]);

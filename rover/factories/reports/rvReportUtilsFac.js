@@ -115,9 +115,6 @@ angular.module('reportsModule')
         };
 
 
-
-
-
         /**
          * A generic method to properly and effeciently set data for report filters, or anything for that matter
          * @param  {Object} objRef   The Object where we are going to set/update the key value
@@ -1357,9 +1354,6 @@ angular.module('reportsModule')
         };
 
 
-
-
-
         // to process the report group by
         factory.processGroupBy = function ( report ) {
             // remove the value for 'BLANK'
@@ -1372,10 +1366,6 @@ angular.module('reportsModule')
                 report['groupByOptions'] = undefined;
             }
         };
-
-
-
-
 
 
         // to reorder the sort by to match the report details column positon
@@ -1657,9 +1647,6 @@ angular.module('reportsModule')
         };
 
 
-
-
-
         // to process the report sort by
         factory.processSortBy = function ( report ) {
             // adding custom name copy for easy access
@@ -1706,9 +1693,6 @@ angular.module('reportsModule')
                 }
             }
         };
-
-
-
 
 
         // to assign inital date values for this report
@@ -1849,9 +1833,6 @@ angular.module('reportsModule')
 
             return returnObj;
         };
-
-
-
 
 
         // HELPER: create time slots

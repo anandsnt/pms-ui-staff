@@ -494,8 +494,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		};
 
 
-
-
 		var employeeListBackup = null;
 
 		/**

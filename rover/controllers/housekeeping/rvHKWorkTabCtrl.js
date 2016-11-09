@@ -35,7 +35,6 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 		}
 
 
-
 		// default cleaning status
 		// [ OPEN, IN_PROGRESS, COMPLETED ]
 		var $_workStatusList = {

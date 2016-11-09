@@ -28,7 +28,6 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
             });
 
 
-
         };
 
         $scope.$on("loyaltyProgramAdded", function(e, data, source) {

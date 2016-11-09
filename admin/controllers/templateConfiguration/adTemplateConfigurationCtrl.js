@@ -30,7 +30,6 @@ admin.controller('ADTemplateConfigurationCtrl', ['$scope', '$state', 'ADHotelLis
 	$scope.editHotelConfiguration = function(index, hotelId) {
 
 
-
 		$scope.isAddmode = false;
 		$scope.errorMessage ="";
 		$scope.currentClickedElement = index;

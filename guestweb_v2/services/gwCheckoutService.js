@@ -141,7 +141,6 @@ sntGuestWeb.service('GwCheckoutSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'Gw
 	};
 
 
-
 	/**
 	 * to checkout user
 	 * @return {undefined}

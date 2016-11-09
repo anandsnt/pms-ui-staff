@@ -189,7 +189,6 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
    $scope.shownewInputRoomOption = function() {
 
 
-
     if ($scope.showNewRoomOption) {
       /*
       *add a input box for adding new option
@@ -375,9 +374,6 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
       $scope.invokeApi(ADHotelLikesSrv.customLikeSave, data, saveCustomLikesSuccessCallback);
 
     };
-
-
-
 
 
   }]);

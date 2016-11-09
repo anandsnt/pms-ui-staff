@@ -61,9 +61,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		}, 1500);
 
 
-
 		/* ***** ***** ***** ***** ***** */
-
 
 
 		// reset all the filters
@@ -73,9 +71,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		$scope.currentFilters = angular.copy( RVHkRoomStatusSrv.currentFilters );
 
 
-
 		/* ***** ***** ***** ***** ***** */
-
 
 
 		var $_roomList        = {},
@@ -170,13 +166,11 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		/* ***** ***** ***** ***** ***** */
 
 
-
 		// true represent that this is a fetchPayload call
 		// and the worktypes and assignments has already be fetched
 		$_fetchRoomListCallback(fetchPayload.roomList, true);
 
 		/* ***** ***** ***** ***** ***** */
-
 
 
 		$scope.loadNextPage = function(e) {
@@ -393,7 +387,6 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		$scope.$on( '$destroy', allRendered );
 
 
-
 		$scope.roomSelectChange = function(item, i) {
 			var _value = item.selected,
 				_key   = i + '';
@@ -505,7 +498,6 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			$scope.isRoomStatusUpdate = !$scope.isRoomStatusUpdate;
 			$scope.isServiceStatusUpdate = !$scope.isServiceStatusUpdate;
 		};
-
 
 
 		/* ***** ***** ***** ***** ***** */
@@ -765,7 +757,6 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		};
 
 
-
 		/* ***** ***** ***** ***** ***** */
 
 
@@ -879,10 +870,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		};
 
 
-
-
 		/* ***** ***** ***** ***** ***** */
-
 
 
 		function $_startPrinting() {
@@ -994,9 +982,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		}
 
 
-
 		/* ***** ***** ***** ***** ***** */
-
 
 
 		function $_checkHasActiveWorkSheet(alreadyFetched) {
@@ -1041,7 +1027,6 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		/* ***** ***** ***** ***** ***** */
 
 
-
 		function $_postProcessRooms() {
 			var rooms = $_roomList.rooms,
 				i     = 0,
@@ -1059,9 +1044,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		}
 
 
-
 		/* ***** ***** ***** ***** ***** */
-
 
 
 		function $_refreshScroll(toPos) {
@@ -1082,9 +1065,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		}
 
 
-
 		/* ***** ***** ***** ***** ***** */
-
 
 
 		function $_callRoomsApi() {
@@ -1108,9 +1089,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		}
 
 
-
 		/* ***** ***** ***** ***** ***** */
-
 
 
 		var $_pullUpDownModule = function() {
@@ -1407,10 +1386,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		}
 
 
-
-
 		/* ***** ***** ***** ***** ***** */
-
 
 
 		// stop browser bounce while swiping on rooms element

@@ -232,7 +232,6 @@ sntRover.controller('RVbillCardController',
 	};
 
 
-
 	$scope.isPrintRegistrationCard = false;
 
 	// To send track details on checkin button
@@ -928,7 +927,6 @@ sntRover.controller('RVbillCardController',
 
 
 	 	 }
-
 
 
 	});
@@ -1651,7 +1649,6 @@ sntRover.controller('RVbillCardController',
         };
 
 
-
 	// To handle complete checkin button click
 	$scope.clickedCompleteCheckin = function(isCheckinWithoutPreAuthPopup, checkInQueuedRoom) {
 
@@ -1680,7 +1677,6 @@ sntRover.controller('RVbillCardController',
 			$scope.showErrorPopup(errorMsg);
 
 
-
 		} else if ($scope.termsConditionsNeeded()) {
 			errorMsg = "Please check agree to the Terms & Conditions";
 			$scope.showErrorPopup(errorMsg);
@@ -1702,7 +1698,6 @@ sntRover.controller('RVbillCardController',
 		if ($scope.signatureNeeded(signatureData)) {
 			errorMsg = "Signature is missing";
 			$scope.showErrorPopup(errorMsg);
-
 
 
 		} else if ($scope.termsConditionsNeeded()) {
@@ -2327,7 +2322,6 @@ sntRover.controller('RVbillCardController',
 	};
 
 
-
 	// add the print orientation before printing
 	var addPrintOrientation = function() {
 		$( 'head' ).append( "<style id='print-orientation'>@page { size: portrait; }</style>" );
@@ -2671,7 +2665,6 @@ sntRover.controller('RVbillCardController',
     $scope.isBalanceShown = function(is_rate_suppressed) {
     	return (!is_rate_suppressed || $scope.isSRViewRateBtnClicked);
     };
-
 
 
 }]);

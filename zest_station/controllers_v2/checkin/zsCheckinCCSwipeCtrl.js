@@ -491,7 +491,6 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         };
 
 
-
         var getCCAuthAfterDeposit = function() {
             // will check for further auth amount needed & if required during checkin, 
             // then go to capture auth or card sign
@@ -514,7 +513,6 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 captureAuthorization(amount, isEmv, false);
             }
         };
-
 
 
         $scope.capturingAuth = false;

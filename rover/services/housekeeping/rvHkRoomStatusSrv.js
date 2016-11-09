@@ -477,9 +477,6 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 		};
 
 
-
-
-
 		this.toggleFilter = function(item) {
 			this.currentFilters[item] = !this.currentFilters[item];
 		};

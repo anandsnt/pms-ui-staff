@@ -796,7 +796,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 		};
 
 
-
 		// simple method to allow checking for report title from the template
 		// by matching it against the report names constant
 		$scope.isThisReport = function (name) {
@@ -808,7 +807,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 				});
 			}
 		};
-
 
 
 		// we are gonna need to drop some pagination

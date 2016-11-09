@@ -26,7 +26,6 @@ admin.controller('ADBalanceInventoryCtrl', [
 		};
 
 
-
 		var calWeekAfter = function(fromDate) {
 		    var _stringDate = $filter('date')(fromDate, 'yyyy-MM-dd'),
 		    	_dateParts  = _stringDate.match(/(\d+)/g),

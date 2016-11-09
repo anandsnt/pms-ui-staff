@@ -101,6 +101,4 @@ admin.service('ADChargeCodesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 	};
 
 
-
-
 }]);

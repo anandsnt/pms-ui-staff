@@ -628,7 +628,6 @@ sntRover.controller('RVReservationDepositController',
 	};
 
 
-
         $scope.showAddtoGuestCardBox = function() {
             if ($scope.cardSelected &&
                     !$scope.showCCPage &&
@@ -682,10 +681,6 @@ sntRover.controller('RVReservationDepositController',
             return showingSelectedCardScreen;
 
         };
-
-
-
-
 
 
 	var setCreditCardFromList = function(index) {
@@ -782,8 +777,6 @@ sntRover.controller('RVReservationDepositController',
           } else return false;
 
         };
-
-
 
 
 }]);

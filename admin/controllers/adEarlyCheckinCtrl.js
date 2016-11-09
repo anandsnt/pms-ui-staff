@@ -500,5 +500,4 @@ $scope.clickOpenBlockCodeDialog = function() {
 };
 
 
-
 }]);

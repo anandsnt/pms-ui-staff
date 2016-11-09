@@ -15,7 +15,6 @@ admin.controller('ADHotelAnnouncementSettingsCtrl', ['$scope', '$rootScope', '$s
 	$scope.invokeApi(ADHotelAnnouncementSrv.fetchSettingsDetails, {}, fetchCompletedOfSettingsDetails);
 
 
-
 	/*
 	* success call back of details web service call
 	*/

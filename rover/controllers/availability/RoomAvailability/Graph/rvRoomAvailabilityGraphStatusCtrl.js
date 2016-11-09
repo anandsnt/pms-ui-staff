@@ -21,8 +21,6 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
   		$scope.setScroller ('graph-scroller', scrollerOptionsForGraph);
 
 
-
-
  		var colors = ['#c1c1c1', '#dc829c', '#83c3df', '#82de89', '#f6981a', '#f2d6af'];
 
  		var legendClasses = [];

@@ -247,5 +247,4 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 	};
 
 
-
 }]);

@@ -202,7 +202,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         rvReservationMainCtrl.callFromChildCtrl(baseData);
 
 
-
         var init = function() {
             $scope.viewState.identifier = "CREATION";
             $scope.reservationData.rateDetails = [];
@@ -544,7 +543,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         };
 
 
-
         // jquery autocomplete Souce handler
         // get two arguments - request object and response callback function
         var autoCompleteSourceHandler = function(request, response) {
@@ -674,7 +672,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.reservationData.travelAgent.id = "";
                 $scope.reservationData.travelAgent.name = "";
                 $scope.reservationData.travelAgent.corporateid = "";
-
 
 
             } else if (request.term.length > 2) {

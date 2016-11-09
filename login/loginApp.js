@@ -128,7 +128,6 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
 	};
 
 
-
 	/*
 	  * successCallback of forgot password action
 	  */

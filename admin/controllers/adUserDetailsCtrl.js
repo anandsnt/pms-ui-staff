@@ -303,7 +303,6 @@ admin.controller('ADUserDetailsCtrl',
 	};
 
 
-
    /*
     * Function to send invitation
     * @param {int} user id

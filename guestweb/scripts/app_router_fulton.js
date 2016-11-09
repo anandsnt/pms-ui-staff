@@ -77,7 +77,6 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 	 });
 
 
-
 	 // room verification
 
 	 $stateProvider.state('checkoutRoomVerification', {
@@ -99,7 +98,6 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		controller: 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
 	 });
-
 
 
 	$stateProvider.state('noOptionAvailable', {

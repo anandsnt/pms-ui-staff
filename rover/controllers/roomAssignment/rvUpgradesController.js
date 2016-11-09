@@ -125,7 +125,6 @@ angular.module('sntRover').controller('RVUpgradesCtrl', ['$scope', '$state', '$s
 		}
 
 
-
 	};
 	$scope.occupancyDialogSuccess = function() {
 		$scope.selectUpgrade();

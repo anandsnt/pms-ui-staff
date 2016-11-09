@@ -65,7 +65,6 @@ sntRover.factory('RVReportParserFac', [
         };
 
 
-
         /**
          * The normal API reponse (result) is a single array object entry
          * with two keys 'adjustments' and 'deleted_charges'. Both these
@@ -375,9 +374,6 @@ sntRover.factory('RVReportParserFac', [
         }
 
 
-
-
-
         function $_parseDataToInfo ( reportName, apiResponse, options ) {
             var returnAry  = [],
                 makeCopy   = {},
@@ -565,9 +561,6 @@ sntRover.factory('RVReportParserFac', [
         }
 
 
-
-
-
         function $_parseDataToSubArrays ( reportName, apiResponse, options ) {
             var returnObj         = {};
             var groupByKey        = options['groupedByKey'];
@@ -588,9 +581,6 @@ sntRover.factory('RVReportParserFac', [
 
             return returnObj;
         }
-
-
-
 
 
         function $_parseNumeralData ( reportName, apiResponse, options ) {
@@ -650,8 +640,6 @@ sntRover.factory('RVReportParserFac', [
 
             return returnAry;
         }
-
-
 
 
         function $_parseRateAdjustments ( reportName, apiResponse, options ) {
@@ -730,7 +718,6 @@ sntRover.factory('RVReportParserFac', [
 
             return returnAry;
         }
-
 
 
         function $_parseGroupPickupReport ( reportName, apiResponse, options ) {
@@ -830,7 +817,6 @@ sntRover.factory('RVReportParserFac', [
 
             return returnAry;
         }
-
 
 
         function $_parseDepositReport ( reportName, apiResponse, options ) {

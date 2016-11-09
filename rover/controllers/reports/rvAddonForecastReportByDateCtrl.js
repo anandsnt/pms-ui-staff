@@ -69,8 +69,6 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 		};
 
 
-
-
 		$scope.getKey = function(item) {
 			return _.keys(item)[0];
 		};
@@ -346,14 +344,6 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 
 		$scope.$on( '$destroy', allRendered );
 		$scope.$on( '$destroy', clearTimer );
-
- 		
-
-
-
-
-
-
 
 
  		mainCtrlScope.printOptions.showModal = function() {			

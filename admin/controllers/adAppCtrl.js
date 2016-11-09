@@ -89,16 +89,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				},
 
 
-
-
-
-
-
-
-
-
-
-
 				{
 					title: "MENU_FRONT_DESK",
 
@@ -387,7 +377,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			};
 
 
-
 			var copiedBookMarkIds = [];
 
 			copyBookmarkIds(copiedBookMarkIds);
@@ -598,10 +587,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		}
 
 
-
-
-
-
 		// if there is any error occured
 		$scope.$on("showErrorMessage", function($event, errorMessage) {
 			$event.stopPropagation();
@@ -626,7 +611,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		$scope.$on("hideLoader", function() {
 			$scope.hasLoader = false;
 		});
-
 
 
 		/**

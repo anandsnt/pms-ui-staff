@@ -247,7 +247,6 @@ sntRover.controller('RVActivityLogCtrl', [
     };
 
 
-
     function split(val) {
         return val.split(/,\s*/);
     }

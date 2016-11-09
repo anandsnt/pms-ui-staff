@@ -89,7 +89,6 @@ sntRover.directive('autoComplete', ['highlightFilter',
                         this.menu.element.outerHeight($(el).offset().top - $(document).scrollTop() - 10);
                     }
                 };
-                
 
 
                 var isEmail = function(email) {

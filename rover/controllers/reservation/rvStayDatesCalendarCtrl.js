@@ -362,7 +362,6 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 		};
 
 
-
 		/**
 		* Compute the fullcalendar events object from the availability details
 		*/

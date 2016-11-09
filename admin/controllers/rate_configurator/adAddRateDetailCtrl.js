@@ -107,7 +107,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
         };
 
 
-
         /*
          * Fetch Details
          */

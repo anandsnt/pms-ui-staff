@@ -32,8 +32,6 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 		};
 
 
-
-
 	  	// internal variables
 	  	var $_roomList,
 	  		$_page = 1,
@@ -48,8 +46,6 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 	  	$scope.uiTotalCount   = 0;
 	  	$scope.disablePrevBtn = true;
 	  	$scope.disableNextBtn = true;
-
-
 
 
 	  function $_fetchRoomListCallback(data) {
@@ -83,8 +79,6 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 
 	  	RVHkRoomStatusSrv.currentFilters.page = $_page;
 	  }
-
-
 
 
 	  	function $_postProcessRooms() {
@@ -135,9 +129,6 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 		}
 
 
-
-
-
 	  	$scope.loadNextPage = function() {
 			if ( $scope.disableNextBtn ) {
 				return;
@@ -161,16 +152,9 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 		};
 
 
-
-
-
 		function $_callRoomsApi() {
 			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {}, $_fetchRoomListCallback);
 		}
-
-
-
-
 
 
 		var $_filterByQuery = function(forced) {
@@ -219,7 +203,6 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 			$_page = $_defaultPage;
 			RVHkRoomStatusSrv.currentFilters.page = $_page;
 		}
-
 
 
 		/**

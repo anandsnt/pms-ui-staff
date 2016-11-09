@@ -187,7 +187,6 @@ sntRover.controller('RVDepositBalanceCtrl', [
                 $scope.depositBalanceMakePaymentData.payment_type = angular.copy($scope.reservationData.reservation_card.payment_method_used);
             }
         }
-        
 
 
         $scope.showSixPayCardInput = function() {

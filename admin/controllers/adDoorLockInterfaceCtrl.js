@@ -166,7 +166,6 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
 		$scope.invokeApi(ADDoorlockInterfaceSrv.save, saveData, saveSuccessCallback);
 
 
-
 	};
 
 	// check if any selected key card types require authentication

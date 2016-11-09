@@ -91,7 +91,6 @@ admin.service('ADHotelLikesSrv', ['$q', 'ADBaseWebSrv', function( $q, ADBaseWebS
     };
 
 
-
 	 /*
     * To update the like details
     * @param {object} like id
@@ -147,8 +146,6 @@ admin.service('ADHotelLikesSrv', ['$q', 'ADBaseWebSrv', function( $q, ADBaseWebS
         });
         return deferred.promise;
     };
-
-
 
 
 }]);

@@ -108,7 +108,6 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 		};
 
 
-
 		var noOfKeysCreated = 0;
 		/**
 		 * [saveUIDToReservation description]
@@ -259,7 +258,6 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 
 			}
 		};
-
 
 
 		$scope.readyForUserToPressMakeKey = true;

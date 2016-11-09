@@ -597,7 +597,6 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         };
 
 
-
         var getTimeObj = function(timeVal) {
             var forTime = getTimeFromDateMilli(timeVal);
 
@@ -730,7 +729,6 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                     }
 
                 }
-
 
 
                 var inActions = false;
@@ -1310,9 +1308,6 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                     not_completed.push(list[x]);
                 }
             }
-
-
-
 
 
         };

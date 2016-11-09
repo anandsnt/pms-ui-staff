@@ -3,7 +3,6 @@ sntRover.controller('rvAllRoutesCtrl', ['$scope', '$rootScope', '$filter', 'RVBi
 	$scope.isInitialPage = true;
 
 
-
     var scrollerOptions = { preventDefault: false};
 
     $scope.setScroller('routes', scrollerOptions);

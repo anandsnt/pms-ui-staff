@@ -134,8 +134,6 @@ admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$
             }
 
 
-
-
         }
         params['sort_order'] = $scope.sort_order;
         params['sort_field'] = $scope.sort_field;

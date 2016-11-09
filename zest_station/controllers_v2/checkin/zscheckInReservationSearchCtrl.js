@@ -37,7 +37,6 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		zsCheckinSrv.setCheckInReservations([]);
 
 
-
 		var setupSeperatorBetweenOptions = function() {
 			// show/hide seperator between departure date and no of nights
 			$scope.showOrBetweenDateAndNoOfNights = $scope.zestStationData.checkin_screen.authentication_settings.departure_date &&

@@ -147,7 +147,6 @@ admin.service('ADDailyWorkAssignmentSrv', [
         };
 
 
-
         /*
          * To fetch work shifts
          * @param {object}
@@ -229,7 +228,6 @@ admin.service('ADDailyWorkAssignmentSrv', [
 
             return deferred.promise;
         };
-
 
 
         /*

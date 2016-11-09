@@ -35,8 +35,6 @@ function($scope, $state, $stateParams, ADFrequentFlyerProgramSrv, ngTableParams,
 	$scope.fetchFFP();
 
 
-
-
 	/**
 	 *   A post method to update Frequent Flyer Program  for a hotel
 	 *   @param {String} index value for the Frequent Flyer Program List item.

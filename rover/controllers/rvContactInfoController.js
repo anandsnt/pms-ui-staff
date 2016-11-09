@@ -104,7 +104,6 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
             }
 
 
-
           }
         }
         // TODO : Reduce all these places where guestId is kept and used to just ONE

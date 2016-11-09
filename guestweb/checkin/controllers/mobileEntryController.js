@@ -4,7 +4,6 @@
 
 (function() {
 	var mobileEntryController = function($scope, $modal, guestDetailsService, $state, $rootScope) {
-		
 
 
     var invalidMobileAlert = {
@@ -37,7 +36,6 @@
     $scope.countryChanged = function() {
       $scope.dial = _.find($scope.countryDetails, function(countryDetails) { return countryDetails.countrycode === $scope.country_code;}).dial;
     };
-
 
     
     guestDetailsService.fetchCountryCode().then(function(response) {

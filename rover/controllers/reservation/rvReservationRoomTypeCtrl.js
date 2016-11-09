@@ -1074,7 +1074,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		};
 
 
-
 		// This method does a restriction check on the rates!
 		var restrictionCheck = function(roomsIn) {
 			var rooms = roomsIn;

@@ -57,8 +57,4 @@ var DesktopCardOperations = function() {
 	};
 
 
-
-
-
-
 };

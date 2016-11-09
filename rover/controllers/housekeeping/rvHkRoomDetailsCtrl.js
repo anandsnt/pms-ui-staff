@@ -45,7 +45,6 @@ angular.module('sntRover').controller('RVHkRoomDetailsCtrl', [
 			});
 
 
-
 		$scope.roomDetails = roomDetailsData;
 
 

@@ -64,12 +64,6 @@ angular.module('sntRover')
 		};
 
 
-
-
-
-
-
-
 		/**
 		 * decide what the behaviour and title of back button on diary
 		 * @param {Object} $r  shorthand ref to $rootScoop
@@ -172,9 +166,6 @@ angular.module('sntRover')
 		};
 
 		decideBackBtn($rootScope, $rootScope.diaryState);
-
-
-
 
 
 	// adjuested property date time (rounded to next 15min slot time)
@@ -1225,7 +1216,6 @@ angular.module('sntRover')
 		};
 
 
-
 	    $scope.isSelected = function(room, reservation) {
 	    	return _.isBoolean(reservation.selected) && reservation.selected;
 	    };
@@ -1340,7 +1330,6 @@ angular.module('sntRover')
 				this.currentResizeItemRow 	= util.copyRoom(data.row_data);
 			}
 		}).bind($scope.gridProps, meta, util);
-
 
 
  		$scope.editCancel = function() {
@@ -2327,8 +2316,6 @@ angular.module('sntRover')
 			$scope.gridProps.filter.toggleRates();
 		}
 	};
-
-
 
 
 	/*

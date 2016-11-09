@@ -288,7 +288,6 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 		};
 
 
-
 		this.searchCompanyCards = function(query) {
 			var deferred = $q.defer(),
 				url = 'api/accounts?account_type=COMPANY&query=' + query;
@@ -402,7 +401,6 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 				});
 			return deferred.promise;
 		};
-
 
 
 		this.removeAllotmentNote = function(data) {

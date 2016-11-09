@@ -36,7 +36,6 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 	$scope.roomTypeChanged = function(value) {
 
 
-
 		var fetchSuccessOfComponentRooms = function(data) {
 			$scope.$emit('hideLoader');
 			// console.log(data.rooms)

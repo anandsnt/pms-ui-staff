@@ -510,8 +510,6 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 				// Ignore keys other date object
 
 
-
-
 				// We don't want to check the history dates
 				if ( (new Date(date).getTime() < new Date(that.businessDate).getTime()) ) {
 			   		continue;

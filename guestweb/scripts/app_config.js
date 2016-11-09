@@ -39,7 +39,6 @@ sntGuestWeb.config(function ($httpProvider) {
 });
 
 
-
 sntGuestWeb.run(function($rootScope, $location, $http, $window) {
 
 	$rootScope.$on('$stateChangeStart',

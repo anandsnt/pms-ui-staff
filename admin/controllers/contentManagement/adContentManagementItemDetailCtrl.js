@@ -15,8 +15,6 @@ admin.controller('ADContentManagementItemDetailCtrl', ['$scope', '$state', '$sta
      $scope.space_durations = [];
 
 
-
-
      var init = function() {
      	var  duration;
 

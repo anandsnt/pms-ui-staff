@@ -100,10 +100,6 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 	 	}
 	 });
 
-	 
-
-
-
 
 	// // checkin states
 

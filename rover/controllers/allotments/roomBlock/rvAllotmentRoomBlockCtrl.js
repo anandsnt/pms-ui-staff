@@ -1746,7 +1746,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 
-
 		/**
 		 * This function sets tab data
 		 * @return {undefined}

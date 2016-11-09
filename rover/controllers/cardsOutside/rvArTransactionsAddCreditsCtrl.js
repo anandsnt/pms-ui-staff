@@ -52,5 +52,4 @@ sntRover.controller('RVArTransactionsAddCreditsController', ['$scope', '$rootSco
     };
 
 
-
 }]);

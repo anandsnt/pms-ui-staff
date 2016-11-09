@@ -253,7 +253,6 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 		};
 
 
-
 	  /*
 		* Service function to post charge
 		* @method POST

@@ -734,7 +734,6 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 }
 
 
-
                 var inActions = false;
                 var listItem, actionItem;
 
@@ -1335,9 +1334,6 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     not_completed.push(list[x]);
                 }
             }
-
-
-
 
 
         };

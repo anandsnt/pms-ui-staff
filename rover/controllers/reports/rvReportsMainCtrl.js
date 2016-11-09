@@ -48,8 +48,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		$scope.showReportDetails = false;
 
 
-
-
 		var FULL_REPORT_SCROLL = 'FULL_REPORT_SCROLL';
 		/**/
 		var setupScroll = (function() {
@@ -92,7 +90,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			_currentViewCol = value;
 			refreshScroll(noReset);
 		};
-
 
 
 		/** Report views managing area */
@@ -299,8 +296,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		};
 
 
-
-
 		// show only valid sort_by Options "Filter"
 		$scope.showValidSortBy = function(sortBy) {
 			return !!sortBy && !!sortBy.value;
@@ -313,14 +308,12 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		};
 
 
-
 		/**
 		 * inorder to refresh after list rendering
 		 */
 		$scope.$on("NG_REPEAT_COMPLETED_RENDERING", function(event) {
 			$scope.refreshScroller('report-list-scroll');
 		});
-
 
 
 		// common date picker options object
@@ -601,7 +594,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				}
 			}
 		};
-
 
 
 		// auto correct the CICO value;
@@ -1219,7 +1211,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				key = reportParams['RATE_IDS'];
 				params[key] = getRatesListToShow(report);
 			};*/
-
 
 
 			// for restriction list
@@ -2102,9 +2093,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		};
 
 
-
-
-
 		var touchedReport;
 
 		$scope.returnuiChosenReport = function(item) {
@@ -2231,9 +2219,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		}, userAutoCompleteCommon);
 
 
-
-
-
 		// for Company TA only
 		var activeCompTaCompleteAry = [];
 		var autoCompleteForCompTa = {
@@ -2355,8 +2340,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				collision: 'flip'
 			}
 		}, autoCompleteForCompTa);
-
-
 
 
 		// for Company TA Group

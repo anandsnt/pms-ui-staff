@@ -26,7 +26,6 @@ sntRover.controller('RVAddNewHotelLoyaltyController', ['$scope', '$rootScope', '
        	});
 
 
-
 	};
 
 	$scope.save = function() {

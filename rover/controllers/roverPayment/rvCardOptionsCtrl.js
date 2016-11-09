@@ -27,7 +27,6 @@ sntRover.controller('RVCardOptionsCtrl',
 			}
                         
                         
-                        
 			if (swipedDataToRenderInScreen.swipeFrom === "guestCard" || swipedDataToRenderInScreen.swipeFrom === "stayCard") {
                             // go straight to add new card - CICO-20531
                             setTimeout(function() {
@@ -198,7 +197,6 @@ sntRover.controller('RVCardOptionsCtrl',
                 });
                 
                 
-                
                 $rootScope.$on('creditCardSelected', function() {
                     if (!$rootScope.isStandAlone) {
                         $scope.shouldShowIframe = true;
@@ -209,8 +207,6 @@ sntRover.controller('RVCardOptionsCtrl',
                         $scope.clickedAddNewCard();
                     }
                 });
-                
-                
                 
                 
                 $scope.hideIfFromStayCardDirect = function() {
@@ -442,7 +438,6 @@ sntRover.controller('RVCardOptionsCtrl',
 			$scope.shouldShowAddNewCard = false;
 			notifyParent(data.six_payment_data);
 		});
-
 
 
             $scope.setCreditCardFromList = function(index) {

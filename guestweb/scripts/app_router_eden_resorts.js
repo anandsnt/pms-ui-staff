@@ -131,8 +131,6 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 	 });
 
 
-
-
 	$stateProvider.state('noOptionAvailable', {
     	url: '/noOptionAvailable',
 	 	templateUrl: '/assets/preCheckin/partials/Eden/noOption.html',

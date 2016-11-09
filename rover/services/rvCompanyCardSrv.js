@@ -289,7 +289,6 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 		};
 
 
-
 		this.deleteARNote = function(data) {
 			var deferred = $q.defer();
 			var url = '/api/accounts/delete_ar_note';

@@ -28,7 +28,6 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	};
 
 
-
 	// default number of selected days is 14
 	$scope.numberOfDaysSelected = 14;
 

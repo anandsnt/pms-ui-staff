@@ -284,6 +284,5 @@ angular.module('sntRover').service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrv
 		};
 
 
-
 	}
 ]);

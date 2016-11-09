@@ -116,8 +116,6 @@
 			   return false;
 			}
 		};
-	
-
 
 
 		$scope.yearOrMonthChanged = function() {

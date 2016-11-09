@@ -140,7 +140,6 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 	    $scope.initPaginationParams();
 
 
-
 	    var unSubscrbeOpenLog = $scope.$on('OPEN_LOG', $scope.updateLog);
 
 	    $scope.$on('$destroy', unSubscrbeOpenLog);

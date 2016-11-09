@@ -38,7 +38,6 @@ sntRover.controller('RVSocialLobbyCrl', [
             postContainer.style.height = ""+height+"px";
             
         };
-
         
 
         var refreshPostScroll = function(scrollUp) {

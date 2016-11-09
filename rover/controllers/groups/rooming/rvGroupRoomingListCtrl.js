@@ -1666,7 +1666,6 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         }());
 
 
-
         $scope.checkoutReservation = function(reservation) {
             //  It navigates to the Guest Bill for the selected record.
         };

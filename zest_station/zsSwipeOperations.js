@@ -97,5 +97,4 @@ var SwipeOperation = function() {
 	};
 
 
-
 };

@@ -84,7 +84,6 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		}
 
 
-
 		/**
 		 * function to handle click operation on company card, mainly used for saving
 		 */
@@ -104,7 +103,6 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			} else if (getParentWithSelector($event, document.getElementById("company-card-nested-first"))) {
 				$scope.$emit("saveContactInformation");
 			}
-
 
 
 		};
@@ -337,7 +335,6 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 
 			$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, data, successCallbackOfInitialFetch);
 		}
-
 
 
 		/**

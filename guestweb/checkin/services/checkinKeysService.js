@@ -50,7 +50,6 @@
 		};
 
 
-
 		return {
 			responseData: responseData,
 			checkin: checkin,

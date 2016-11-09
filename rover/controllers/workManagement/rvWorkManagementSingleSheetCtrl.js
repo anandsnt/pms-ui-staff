@@ -3,8 +3,6 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 		BaseCtrl.call(this, $scope);
 
 
-
-
 		// flag to know if we interrupted the state change
 		var $_shouldSaveFirst = true,
 			$_afterSave = null;
@@ -22,8 +20,6 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 				$scope.saveWorkSheet();
 			}
 		});
-
-
 
 
 		// back button
@@ -47,10 +43,6 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 			};
 		}
 		$rootScope.setPrevState = prevState;
-
-
-
-
 
 
 		$scope.dropToUnassign = function(event, dropped) {
@@ -205,7 +197,6 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 		};
 
 
-
 		$scope.setScroller("workSheetUnassigned");
 		$scope.setScroller("workSheetAssigned");
 
@@ -299,9 +290,6 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 		};
 
 
-
-
-
 		// for all unassigned rooms
 		// we are gonna mark each rooms with
 		// its associated work_type_id
@@ -363,8 +351,6 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 
 			// lets create a set of worktypes that will hold
 			// rooms under each worktype id name - e.g:
-
-
 
 
 			worktypesSet = {};
@@ -432,9 +418,6 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 		};
 
 
-
-
-
 		$scope.startLoader = function() {
 			$scope.$emit('showLoader');
 		};
@@ -449,10 +432,6 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 				$scope.$emit('hideLoader');
 			}, 10);
 		};
-
-
-
-
 
 
 		$scope.$watch('singleState.workSheet.work_type_id', function(newVal, oldVal) {
@@ -488,9 +467,6 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 				callNextMethod: 'init'
 			});
 		};
-
-
-
 
 
 		$scope.onAssignmentDragStart = function() {

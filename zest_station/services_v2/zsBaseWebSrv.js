@@ -87,7 +87,6 @@ if (status === 406) { // 406- Network error
 	};
 
 
-
 	/** ************************************************************************************/
 
 	/**
@@ -117,7 +116,6 @@ if (status === 406) { // 406- Network error
 				httpDict.data.workstation_id = $rootScope.workstation_id;
 			}
 		}
-
 		
 
 		$http(httpDict).success(function(response, status, headers) {

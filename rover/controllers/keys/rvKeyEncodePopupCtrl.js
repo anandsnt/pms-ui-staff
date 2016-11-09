@@ -382,7 +382,6 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 				}
 
 
-
 			},
 			'failureCallBack': function(errorObject) {
 				$scope.$emit('hideLoader');

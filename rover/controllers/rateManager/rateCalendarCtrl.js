@@ -313,9 +313,6 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
                         $scope.calendarData = data;
                     
                     
-                    
-                    
-                    
                     if (!$scope.reloadingRooms) { // workaround to fix the loader from disappearing too quickly
                         $scope.$emit('hideLoader');
                     } else if ($scope.reloadRoomsCount >= 1) {
@@ -358,8 +355,6 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
                                     }
                                 }
                             }
-                            
-                            
                             
                             
                         }

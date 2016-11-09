@@ -17,7 +17,6 @@ sntRover.controller('roverController',
     rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce, $log) {
 
 
-
     $rootScope.isOWSErrorShowing = false;
     if (hotelDetails.language) {
       $translate.use(hotelDetails.language.value);
@@ -197,7 +196,6 @@ sntRover.controller('roverController',
     $rootScope.isHotelStaff = $scope.userInfo.is_staff;
 
 
-
     // self executing check
     $rootScope.isMaintenanceStaff = (function(roles) {
       // Values taken form DB
@@ -357,7 +355,6 @@ sntRover.controller('roverController',
     });
 
 
-
     $scope.$on("closeDrawer", function() {
       $scope.menuOpen = false;
       $scope.isMenuOpen();
@@ -388,7 +385,6 @@ sntRover.controller('roverController',
     $scope.$on('refreshLeftMenu', function(event) {
         setupLeftMenu();
     });
-
     
 
     $scope.init = function() {
@@ -591,9 +587,6 @@ sntRover.controller('roverController',
     };
 
 
-
-
-
     var options = {};
 
     options["successCallBack"] = $scope.successCallBackSwipe;
@@ -629,7 +622,6 @@ sntRover.controller('roverController',
         }
       }
     };
-
 
 
     /*
@@ -817,7 +809,6 @@ sntRover.controller('roverController',
         });
       }
     };
-
 
 
     /**

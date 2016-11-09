@@ -14,7 +14,6 @@ admin.service('ADRateSequenceSrv', ['$http', '$q', 'ADBaseWebSrvV2',
 		};
 
 
-
 		this.fetchSelections = function() {
 			var deferred = $q.defer(),
 				url = '/api/sort_preferences/list_selections';
@@ -38,7 +37,6 @@ admin.service('ADRateSequenceSrv', ['$http', '$q', 'ADBaseWebSrvV2',
 			});
 			return deferred.promise;
 		};
-
 
 
 	}

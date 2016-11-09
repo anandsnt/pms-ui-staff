@@ -120,7 +120,6 @@ sntRover.controller('RVReportListCrl', [
         postProcess( $scope.$parent.reportList );
 
 
-
         // show hide filter toggle
         $scope.toggleFilter = function(e, report) {
             if ( e ) {

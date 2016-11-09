@@ -78,7 +78,6 @@ sntZestStation.controller('zsRootCtrl', [
 		});
 
 
-
 		$scope.callBlurEventForIpad = function() {
 			// need to check if its ipad here too as it 
 			// will be called from multiple areas
@@ -317,7 +316,6 @@ sntZestStation.controller('zsRootCtrl', [
 
 			$scope.callAPI(zsGeneralSrv.fetchWorkStations, options);
 		};
-
 
 
 		$scope.useNavIcons = true;
@@ -670,7 +668,6 @@ sntZestStation.controller('zsRootCtrl', [
 			console.info("going to----->" + to.name);
 			$scope.resetTime();
 		});
-
 
 
 		/** ******************************************************************************

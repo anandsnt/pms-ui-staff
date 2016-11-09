@@ -67,8 +67,6 @@ $scope.loadTable = function() {
   };
 
 
-
-
 /*
   * To check if all options are all selected or not
   *
@@ -141,7 +139,6 @@ $scope.loadTable = function() {
     $scope.invokeApi(adCheckinCheckoutSrv.sendMail, {'id': 'checkin', 'data': emailSendingData}, sendMailClikedSuccessCallback);
 
   };
-
 
 
   }]);

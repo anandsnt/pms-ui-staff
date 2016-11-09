@@ -56,5 +56,4 @@ angular.module('sntRover').service('RVPostChargeSrvV2', ['$http', '$q', 'BaseWeb
     };
 
 
-
 }]);

@@ -215,11 +215,6 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
         };
         
         
-        
-        
-        
-        
-        
         $scope.resetShowAddRmove = function() {
             $scope.showInlineAddRemove = false;
             $scope.showMainAddRemove = false;
@@ -572,7 +567,6 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                 $scope.invokeApi(ADChannelMgrSrv.postRateOnChannel, params, postSuccess, postFailure);
             }
         };
-        
         
         
         $scope.getIds = function(lst) {

@@ -216,8 +216,4 @@ angular.module('sntRover').service('rvGroupActionsSrv', ['$q', 'BaseWebSrvV2', f
     };
 
 
-
-
-
-
 }]);

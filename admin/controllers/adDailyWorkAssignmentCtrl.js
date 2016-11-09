@@ -202,9 +202,6 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		};
 
 
-
-
-
 		// fetch maid work shift
 		var fetchWorkShift = function() {
 			var callback = function(data) {

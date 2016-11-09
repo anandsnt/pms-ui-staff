@@ -88,8 +88,5 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 		});
 
 
-
-
-
 	}
 ]);

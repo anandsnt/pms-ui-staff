@@ -41,7 +41,6 @@ angular.module('sntRover').service('RVKeyPopupSrv', ['$q', 'RVBaseWebSrv', 'rvBa
 		var url =  "/staff/reservation/print_key";
 
 
-
 		RVBaseWebSrv.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
@@ -62,7 +61,6 @@ angular.module('sntRover').service('RVKeyPopupSrv', ['$q', 'RVBaseWebSrv', 'rvBa
 		var data = dclone(params, unWantedKeysToRemove);
 
 		var url = '/api/reservations/' + reservationId + '/smartbands';
-
 
 
 		rvBaseWebSrvV2.postJSON(url, params).then(function(data) {

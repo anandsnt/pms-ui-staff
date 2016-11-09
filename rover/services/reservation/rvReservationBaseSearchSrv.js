@@ -27,7 +27,6 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
         // -------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
 
 
-
         // This method returns the default view chosen in the Admin/Reservation/Reservation Settings
         this.getRoomRatesDefaultView = function() {
             var view = "ROOM_TYPE";

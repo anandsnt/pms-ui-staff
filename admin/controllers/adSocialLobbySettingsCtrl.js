@@ -24,7 +24,6 @@ admin.controller('ADSocialLobbySettingsCtrl', ['$scope', '$rootScope', '$state',
 	$scope.invokeApi(ADSocialLobbySrv.fetchSettingsDetails, {}, fetchCompletedOfSettingsDetails);
 
 
-
 	/*
 	* success call back of details web service call
 	*/

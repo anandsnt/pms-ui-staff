@@ -14,7 +14,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
         var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
 
 
-
         $rootScope.setPrevState = {
             title: $rootScope.getPrevStateTitle()
         };
@@ -87,7 +86,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
         if (!(typeof $scope.reservationData.guest.id === 'undefined' || $scope.reservationData.guest.id === '' || $scope.reservationData.guest.id === null)) {
             $scope.fetchGuestCreditCards();
         }
-
 
 
         // CICO-11591 : To show or hide fees calculation details.
@@ -331,7 +329,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 refreshScrolls();
 
 
-
             }
         };
 
@@ -370,7 +367,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
         $scope.$on('cardSelected', function(e, data) {
             setCreditCardFromList(data.index);
         });
-
 
 
         $scope.checkReferencetextAvailable = function() {
@@ -970,7 +966,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             };
 
 
-
             var saveFailure = function(data) {
                 $scope.$emit('hideLoader');
                 var showRoomNotAvailableDialog = false;
@@ -988,7 +983,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 } else {
                     $scope.errorMessage = data;
                 }
-
 
 
             };
@@ -1099,7 +1093,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             $scope.isManual = !$scope.isManual;
             $scope.changeOnsiteCallIn();
         });
-
 
 
         $scope.giftCardAmountAvailable = false;
@@ -1256,7 +1249,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             $scope.reservationData.paymentType.type.value = 'CC';
             $scope.refreshPaymentScroller();
         };
-
 
 
         /*

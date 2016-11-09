@@ -467,7 +467,6 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         };
 
 
-
         /*
          * delete set
          */
@@ -510,7 +509,6 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         };
 
         $scope.checkFieldEntered = function(index) {
-
 
 
             if ($scope.otherData.setChanged) {

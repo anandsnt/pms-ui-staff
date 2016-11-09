@@ -1021,7 +1021,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		};
 
 
-
 		// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- PERMISSIONS
 
 		$scope.restrictIfOverbook = function(roomId, rateId) {
@@ -1191,11 +1190,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			}
 
 
-
 			if (!secondary.dates) {
 				secondary.dates = angular.copy(RVReservationDataService.getDatesModel(ARRIVAL_DATE, DEPARTURE_DATE));
 			}
-
 
 
 			if ($scope.stateCheck.stayDatesMode) {
@@ -2114,8 +2111,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			{"key": "MAX_ADV_BOOKING", "name": "MAX ADVANCED BOOKING"}
 
 		];
-
-
 
 
 		_.each(restrictionsArray, function(restrictionObject) {

@@ -157,7 +157,6 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 		$scope.setScroller('report-details-scroll');
 
 
-
 		$scope.getTimes = function(n) {
 			return new Array(n);
 		};

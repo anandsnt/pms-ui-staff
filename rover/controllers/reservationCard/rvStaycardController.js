@@ -88,7 +88,6 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
                };
 
 
-
 		$scope.$on('MOUSEMOVEDOVERME', function() {
 			// (CICO-16893) inoreder to refresh scroller, we are broadcasting this
 			$scope.$broadcast('refreshScrollerReservationDetails');

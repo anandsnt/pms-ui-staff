@@ -183,17 +183,6 @@ var loadAssets = function(filename, rel, type, media) {
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
 // room verification
 
 
@@ -261,9 +250,6 @@ var roomVerificationErrorModalCtrl = function ($scope, $modalInstance) {
 // checkout isFromCheckoutNow
 
 
-
-
-
 (function() {
   var checkOutConfirmationController = function($scope, $rootScope, $state) {
 
@@ -283,7 +269,6 @@ var roomVerificationErrorModalCtrl = function ($scope, $modalInstance) {
 // /
 
 
-
 sntGuestWeb.controller('checkOutLandingController', ['$rootScope', '$location', '$state', '$scope', function($rootScope, $location, $state, $scope) {
 
 }]);
@@ -293,8 +278,6 @@ sntGuestWeb.filter('customizeLabelText', function () {
     return input.substring(0, 1) +" ' "+ input.substring(1, 2).toBold() +" ' "+ input.substring(2);
   };
 });
-
-
 
 
 // //
@@ -409,11 +392,8 @@ sntGuestWeb.controller('checkOutBalanceController', dependencies);
 })();
 
 
-
-
 (function() {
   var checkOutStatusController = function($scope, checkoutNowService, $rootScope, $state) {
-
 
 
 // checkoutNowService.completeCheckout(url,data).then(function(response) {
@@ -474,7 +454,6 @@ This is accessed using URL set in admin settings WEB CHECK OUT URL in admin -> z
         }
       }, 500);
     };
-
 
 
   };
@@ -670,7 +649,6 @@ $scope.errorOpts = {
 };
 
 
-
 $scope.ccvOpts = {
   backdrop: true,
   backdropClick: true,
@@ -682,7 +660,6 @@ $scope.ccvOpts = {
     }
   }
 };
-
 
 
 $scope.showCcvPopup = function() {
@@ -711,7 +688,6 @@ $scope.savePaymentDetails = function() {
 
 }
 };
-
 
 
 var dependencies = [
@@ -947,8 +923,6 @@ var ModalInstanceCtrl = function ($scope, $modalInstance) {
 };
 
 
-
-
 /*
 Checkin Room Upgrade Ctrl 
 This displays the available rooms for upgrading.
@@ -1061,7 +1035,6 @@ sntGuestWeb.directive('errSrc', function() {
     }
   };
 });
-
 
 
 /*
@@ -1435,8 +1408,6 @@ Precheckin final Ctrl where the pre checkin API is called
 })();
 
 
-
-
 /*
   guest birthday details Ctrl 
   If the admin settings for this is turned on , this screen will be shown and user can
@@ -1542,8 +1513,6 @@ Precheckin final Ctrl where the pre checkin API is called
          return false;
       }
     };
-  
-
 
 
     $scope.yearOrMonthChanged = function() {

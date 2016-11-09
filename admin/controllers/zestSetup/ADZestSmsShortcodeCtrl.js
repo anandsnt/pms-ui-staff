@@ -51,7 +51,6 @@ admin.controller('ADZestSmsShortcodeCtrl', ['$scope', '$state', 'ADZestShortCode
         $scope.callAPI(ADZestShortCodeSrv.save, options);
     };
 
-
     
     $scope.getPages = function(r) {// response text length
         if (r > 0) {
@@ -82,8 +81,6 @@ admin.controller('ADZestSmsShortcodeCtrl', ['$scope', '$state', 'ADZestShortCode
     };
     
     $scope.init();
-
-
 
 
   }]);

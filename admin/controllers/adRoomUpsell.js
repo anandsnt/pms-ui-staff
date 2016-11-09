@@ -215,7 +215,6 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
       data.next_day_deleted_room_types = $scope.upsellData.next_day_deleted_room_types;
       
       
-      
       // Creating room type array with available max_late_checkouts data
       angular.forEach($scope.upsellData.room_types, function (item, index) {
         if (item.max_los !== '') {
@@ -231,9 +230,6 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
           data.next_day_room_types.push(obj);
         }
       });
-      
-      
-      
       
 
         var updateRoomUpsellSuccessCallback = function (data) {

@@ -43,7 +43,6 @@
 			};
 
 
-
 			return {
 				responseData: responseData,
 				assignRoom: assignRoom,

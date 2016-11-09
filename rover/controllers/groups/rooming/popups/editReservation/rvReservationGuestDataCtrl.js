@@ -121,6 +121,4 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
     };
 
 
-
-
 }]);

@@ -48,7 +48,6 @@ sntZestStation.service('zsUtilitySrv', ['$http', '$q', 'zsBaseWebSrv',
         };
 
 
-
         this.formatCurrency = function(amt) {
             return parseFloat(amt).toFixed(2);
         };
@@ -60,7 +59,6 @@ sntZestStation.service('zsUtilitySrv', ['$http', '$q', 'zsBaseWebSrv',
             num = num.replace(/,/gi, "");
             return this.CommaFormatted(parseFloat(num).toFixed(2) + ''); // return with comma back in
         };
-
 
 
         this.getMonthN = function(mo) {

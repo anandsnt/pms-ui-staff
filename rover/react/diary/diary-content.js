@@ -119,7 +119,6 @@ var DiaryContent = React.createClass({
 			}
 
 
-
 			var data 	= props.data,
 			display = props.display,
 			rowHeight = display.row_height + display.row_height_margin,

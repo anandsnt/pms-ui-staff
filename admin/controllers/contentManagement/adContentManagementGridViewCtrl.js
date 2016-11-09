@@ -75,7 +75,6 @@ admin.controller('ADContentManagementGridviewCtrl', ['$scope', '$state', 'ADCont
    };
 
 
-
    /* Function to set the table params for sections
     */
    $scope.setSections =function() {
@@ -238,7 +237,6 @@ admin.controller('ADContentManagementGridviewCtrl', ['$scope', '$state', 'ADCont
 		$scope.sectionParams.reload();
 
 
-
 		angular.forEach($scope.categories, function(category, index) {
 			if (category.id === data.id) {
 				$scope.categories.splice(index, 1);
@@ -287,14 +285,11 @@ admin.controller('ADContentManagementGridviewCtrl', ['$scope', '$state', 'ADCont
 		});
 
 
-
-
 		angular.forEach($scope.categories, function(category, index) {
 			if (category.id === data.id) {
 				category.status = data.status;
 			}
 		});
-
 
 
 		angular.forEach($scope.items, function(item, index) {

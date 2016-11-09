@@ -231,7 +231,6 @@ var getIndexOfSelectedTime = function(time) {
 };
 
 
-
 var checkIfDateIsValid = function(month, day, year) {
   var birthday = month+"/"+day+"/"+year;  
   var comp = birthday.split('/');

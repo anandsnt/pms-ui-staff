@@ -321,7 +321,6 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 		};
 
 
-
 		this.searchCompanyCards = function(query) {
 			var deferred = $q.defer(),
 				url = 'api/accounts?account_type=COMPANY&query=' + query;

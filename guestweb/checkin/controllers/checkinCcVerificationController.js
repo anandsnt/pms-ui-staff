@@ -104,7 +104,6 @@
     };
 
 
-
     $scope.ccvOpts = {
       backdrop: true,
       backdropClick: true,
@@ -116,7 +115,6 @@
         }
       }
     };
-
 
 
     $scope.showCcvPopup = function() {
@@ -203,7 +201,6 @@
      /* MLI integration ends here */
 }
 };
-
 
 
 var dependencies = [

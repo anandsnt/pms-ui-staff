@@ -294,7 +294,6 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 		};
 
 
-
 		function remoteEncodingSuccsess(response) {
 			noOfKeysCreated++;
 			if ($scope.noOfKeysSelected === noOfKeysCreated) {

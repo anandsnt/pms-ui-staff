@@ -199,7 +199,6 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
             $scope.data.child_amnt_diff = $rootScope.currencySymbol;
 
 
-
             // Flag to check if the rate set amounts are configured for the selected date
             $scope.data.hasAmountConfigured = true;
             selectedDateInfo = {};
@@ -519,7 +518,6 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
             $scope.updatePopupWidth();
 
         };
-
 
 
         $scope.updatePopupWidth = function () {
@@ -885,8 +883,6 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
             }
             return $scope.hasOverrideValue($scope.popupData.selectedDate, $scope.data.selected_room_type);
         };
-
-
 
 
         $scope.hasOverride = function (a, label) {
