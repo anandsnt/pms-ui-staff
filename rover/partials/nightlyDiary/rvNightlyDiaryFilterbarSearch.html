@@ -1,0 +1,51 @@
+<div ng-controller = "rvNightlyDiaryFilterbarSearchController">
+    <!-- Find reservation -->
+    <div class="entry search">
+        <button class="clear-query" ng-class = "{'visible': textInQueryBox.length > 0}"> <!-- Class 'visible' added when searching. Clicking the button clears the query text. -->
+            <span class="icons icon-clear-search" ng-click = "clearResults()">Clear query</span>
+        </button>
+        <span class="result-count" ng-show = "totalSearchResults !== 0">{{totalSearchResults}} Matches</span> 
+        <input class="query" placeholder="Search by Guest, Allotment/Group or Conf./Ext. red no." type="search" autocomplete="off" ng-change = "queryEntered()" ng-model = "textInQueryBox">
+
+
+        <!-- Search results, show only when searching: -->
+        <div class="diary-search" ng-show = "results.length > 0">
+            <div class="list-header">
+                <span class="name">Name</span>
+                <span class="room">Room</span>
+                <span class="nights">Nights</span>
+            </div>
+            <div class="list scrollable" ng-iscroll="result_showing_area" ng-iscroll-delay="1000">
+                <div class="wrapper">
+                    <div class="guest" ng-repeat = "row in results" ng-class = "{'no-room': escapeNull(row.room) === '', 'no-status': row.reservation_status === 'RESERVED'}">
+                        <div class="data">
+                            <span class="guest-status small-icon" ng-class="getReservationClass(row.reservation_status)"></span> <!-- _future_reservation_condition_here -->
+                            <div class="information" ng-class = "{'with-card': escapeNull(row.company)!=='' || escapeNull(row.travel_agent)!=='' || escapeNull(row.group)!=='' || escapeNull(row.allotment)!==''}"> 
+                                <span class="name" ng-show="escapeNull(row.lastname) !== '' || escapeNull(row.firstname) !== ''" ng-bind-html="getGuestName(row.firstname, row.lastname)| highlightWords:searchWords"></span>
+                                <span class="name" ng-class = "{'pending': escapeNull(row.lastname)=== '' && escapeNull(row.firstname)=== ''}" translate="" ng-if = "escapeNull(row.lastname)=== '' && escapeNull(row.firstname)=== ''">PENDING</span>
+
+
+                                <span class="icons icon-guest-company" ng-if="escapeNull(row.company)!==''" ng-bind-html="escapeNull(row.company)|highlight:textInQueryBox:false"></span>
+
+                                <span class="icons icon-guest-travelagent" ng-if="escapeNull(row.travel_agent)!==''" ng-bind-html="escapeNull(row.travel_agent)|highlight:textInQueryBox:false"></span>
+
+                                <span class="icons icon-guest-group" ng-if="escapeNull(row.group)!==''" ng-bind-html="escapeNull(row.group)|highlight:textInQueryBox:false"></span>
+
+                                <span class="icons icon-guest-allotment" ng-if="escapeNull(row.allotment)!==''" ng-bind-html="escapeNull(row.allotment)|highlight:textInQueryBox:false"></span>
+                            </div>
+                        </div>
+                        <div class="arrival" ng-show = "row.reservation_status === 'RESERVED'">
+                            <span class="guest-status small-icon check-in"></span>
+                            {{ row.arrival_date }}
+                        </div>
+                        <div class="room" ng-show = "escapeNull(row.room) !== ''">{{ row.room }}
+                        </div>
+                        <div class="room pending" ng-if = "escapeNull(row.room) === ''">N/A
+                        </div>
+                        <div class="nights">{{ row.no_of_nights }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>

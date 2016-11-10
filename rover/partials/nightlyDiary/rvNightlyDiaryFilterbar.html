@@ -21,59 +21,7 @@
         </button>
     </div>
 
-    <!-- Find reservation -->
-    <div class="entry search">
-        <button class="clear-query"> <!-- Add class 'visible' when searching. Tap clears L25 value and removes search. -->
-            <span class="icons icon-clear-search">Clear query</span>
-        </button>
-        <!--- Show count when searching:
-        <span class="result-count">{X} Matches</span> -->
-        <input class="query" placeholder="Search by Guest, Allotment/Group or Conf./Ext. red no." type="search" autocomplete="off">
-
-
-        <!-- Search results, show only when searching: -->
-        <div class="diary-search hidden">
-            <div class="list-header">
-                <span class="name">Name</span>
-                <span class="room">Room</span>
-                <span class="nights">Nights</span>
-            </div>
-            <div class="list scrollable">
-                <div class="wrapper">
-                    <!-- If reservation has status -->
-                    <div class="guest"> <!-- Add class 'no-status' if future reservation. Add class 'no-room' if room is not assigned -->
-                        <div class="data">
-                            <!-- If NOT future reservation, show reservation status:
-                            <span class="guest-status small-icon {reservations status}"></span> -->
-                            <div class="information"> <!-- Add class 'with-card' if returning CO/TA/Group/Allotment match -->
-                                <span class="name"> <!-- Add class 'pending' if no name -->
-                                    {'Lastname Firstname' or 'Pending'}  <!-- Highlight search query like this: <span class="highlight">{Query}</span> -->
-                                </span>
-                                <!-- if returning CO/TA/Group/Allotment match, use on of these (Highlight search query same as above):
-                                <span class="icons icon-guest-company">{Company Name}</span>
-                                <span class="icons icon-guest-travelagent">{Travel Agent Name}</span>
-                                <span class="icons icon-guest-group">{Group Name}</span>
-                                <span class="icons icon-guest-allotment">{allotment Name}</span>
-                                -->
-                            </div>
-                        </div>
-                        <!-- If future reservation, show arrival date:
-                        <div class="arrival">
-                            <span class="guest-status small-icon check-in"></span>
-                            {Arrival Date}
-                        </div> -->
-                        <div class="room"> <!-- Add class 'pending' if not assigned -->
-                            {'Room No.' or 'N/A'}
-                        </div>
-                        <div class="nights">{No. of nights}</div>
-                    </div>
-                    ... repeat for each result
-                </div>
-            </div>
-        </div>
-
-    </div>
-
+    <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryFilterbarSearch.html'"></div>
 
     <!-- 7 or 21 Days -->
     <div class="entry switch">
