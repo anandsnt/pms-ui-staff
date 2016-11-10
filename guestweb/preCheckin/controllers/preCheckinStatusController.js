@@ -29,9 +29,8 @@
 		$state.go('mobileNumberOptions');// if user has not attached an mobile
 	}
 	// collect new mobile number
-	else if ($rootScope.application === "SMS" 
-			&& $rootScope.userMobile.length === 0 && !$rootScope.userMobileSkipped) {
-		$state.go('mobileNumberAddition');// if user has not attached an mobile
+	else if ((($rootScope.application === "SMS" && $rootScope.userMobile.length === 0) || $rootScope.alwaysAskForMobileNumber) && !$rootScope.userMobileSkipped) {
+			$state.go('mobileNumberAddition'); // if user has not attached an mobile
 	}
 	// collect email
 	else if ($rootScope.offerRoomDeliveryOptions && !$rootScope.userEmailEntered && ($rootScope.application === "SMS" || $rootScope.application === "EMAIL" || $rootScope.application === "URL")) {
