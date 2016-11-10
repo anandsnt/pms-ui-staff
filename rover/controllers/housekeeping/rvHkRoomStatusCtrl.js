@@ -955,8 +955,10 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				var _setUpWorkTypeEmployees = function() {
 					$_defaultWorkType = $scope.currentFilters.filterByWorkType;
 					$_defaultEmp      = $scope.currentFilters.filterByEmployeeName;
+
 					// if already fetched assigned rooms, no need to call api again CICO-32781
 					if (alreadyFetched) {
+
 						$scope.hasActiveWorkSheet = $scope.employees && $scope.employees.room_tasks && $scope.employees.room_tasks.length || false;
 
 						$scope.topFilter.byWorkType = $_defaultWorkType;
