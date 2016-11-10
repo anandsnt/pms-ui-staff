@@ -2,10 +2,11 @@
  * Service used for tablet-kiosk UI (Zest Station)
  */
 
-sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWebSrv2','$rootScope',
-    function($http, $q, zsBaseWebSrv, zsBaseWebSrv2,$rootScope) {
+sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWebSrv2', '$rootScope',
+    function($http, $q, zsBaseWebSrv, zsBaseWebSrv2, $rootScope) {
 
         var that = this;
+
         this.checkInReservations = [];
         this.setCheckInReservations = function(data) {
             that.checkInReservations = [];
@@ -24,10 +25,11 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.getSelectedCheckInReservation = function() {
             return that.selectedCheckInReservation;
         };
-        //add / remove additional guests from reservation
+        // add / remove additional guests from reservation
         this.updateGuestTabDetails = function(data) {
             var deferred = $q.defer();
-            var url = '/api/reservations/'+data.reservation_id+'/reservations_guest_details';
+            var url = '/api/reservations/' + data.reservation_id + '/reservations_guest_details';
+
             zsBaseWebSrv.postJSON(url, data).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -36,8 +38,8 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
-        this.authorizeCC = function(postData){
-            //send is_emv_request = true, to init sixpay device and capture card
+        this.authorizeCC = function(postData) {
+            // send is_emv_request = true, to init sixpay device and capture card
              // var deferred = $q.defer();
              //    var url = '/api/cc/authorize';
              //    zsBaseWebSrv.postJSON(url, postData).then(function(data) {
@@ -55,21 +57,22 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var deferred = $q.defer();
             var url = '/api/cc/authorize';
             var pollToTerminal = function(async_callback_url) {
-                //we will continously communicate with the terminal till 
-                //the timeout set for the hotel
+                // we will continously communicate with the terminal till 
+                // the timeout set for the hotel
                 if (timeStampInSeconds >= $rootScope.emvTimeout) {
                     var errors = ["Request timed out. Unable to process the transaction"];
+
                     clearInterval(refreshIntervalId);
                     deferred.reject(errors);
                 } else {
                     zsBaseWebSrv.getJSONWithSpecialStatusHandling(async_callback_url).then(function(data) {
-                        //if the request is still not proccesed
+                        // if the request is still not proccesed
                         if ((!!data.status && data.status === 'processing_not_completed') || data === "null") {
-                            //is this same URL ?
+                            // is this same URL ?
                             setTimeout(function() {
                                 console.info("POLLING::-> for emv terminal response");
                                 pollToTerminal(async_callback_url);
-                            }, 5000)
+                            }, 5000);
                         } else {
                             clearInterval(refreshIntervalId);
                             deferred.resolve(data);
@@ -82,12 +85,12 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                             deferred.reject(data);
                         }
                     });
-                };
+                }
             };
            
 
-            zsBaseWebSrv.postJSONWithSpecialStatusHandling(url,postData).then(function(data) {
-                //if connect to emv terminal is neeeded
+            zsBaseWebSrv.postJSONWithSpecialStatusHandling(url, postData).then(function(data) {
+                // if connect to emv terminal is neeeded
                 // need to poll oftently to avoid
                 // timeout issues
                 if (postData.is_emv_request) {
@@ -120,6 +123,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         };
         this.fetchReservationDetails = function(param) {
             var url;
+
             url = '/staff/staycards/reservation_details.json?reservation=' + param.id;
             var deferred = $q.defer();
 
@@ -158,10 +162,12 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.saveNationality = function(params) {
             var deferred = $q.defer();
+
             url = '/api/guest_details/' + params.guest_id;
             var param = {
                 "nationality_id": params.nationality_id
-            }
+            };
+
             zsBaseWebSrv.putJSON(url, param).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -175,7 +181,8 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
             var deferred = $q.defer();
             var url = '/api/reservation_guest_messages/' + params.reservation_id + '.json';
-            //var url = '/sample_json/zest_station/ows_msgs.json';
+            // var url = '/sample_json/zest_station/ows_msgs.json';
+
             zsBaseWebSrv.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -186,6 +193,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.sendOWSMsgAsMail = function(params) {
             var deferred = $q.defer();
+
             url = 'api/reservation_guest_messages/email_message.json';
 
             zsBaseWebSrv.postJSON(url, params).then(function(data) {
@@ -208,13 +216,14 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
-        this.sendRegistrationByEmail = function(data) { //to get terms & conditions
+        this.sendRegistrationByEmail = function(data) { // to get terms & conditions
             var deferred = $q.defer();
             var id = data.id;
             var url = '/api/reservations/' + id + '/email_registration_card';
             var params = {
                 "application": data.application
             };
+
             zsBaseWebSrv.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -226,6 +235,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.fetchRegistrationCardPrintData = function(params) {
             var deferred = $q.defer();
             var url = '/api/reservations/' + params.id + '/print_registration_card';
+
             zsBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -236,7 +246,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         };
         
         this.assignGuestRoom = function(params) {
-            //params['reservation_id'] = some id...
+            // params['reservation_id'] = some id...
             var deferred = $q.defer(),
                 url = '/guest/reservations/assign_room';
 
@@ -248,13 +258,15 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
-        this.fetchReservationBalanceDetails = function(params){
+        this.fetchReservationBalanceDetails = function(params) {
 
             var deferred = $q.defer();
+
             url = 'zest_station/reservations/' + params.reservation_id;
             var param = {
                 "nationality_id": params.nationality_id
-            }
+            };
+
             zsBaseWebSrv2.getJSON(url, param).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -265,7 +277,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         
         this.fetchUpsellDetails = function(reservation) {
             var deferred = $q.defer(),
-                url = 'guest_web/reservations/'+reservation.id+'.json';
+                url = 'guest_web/reservations/' + reservation.id + '.json';
 
             zsBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
@@ -275,9 +287,10 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
-        this.fetchStarTacPrinterData = function(params){
+        this.fetchStarTacPrinterData = function(params) {
             var deferred = $q.defer();
-            var url = 'api/reservations/'+params.reservation_id+'/bill_print_data?is_checkout=false';
+            var url = 'api/reservations/' + params.reservation_id + '/bill_print_data?is_checkout=false';
+
             zsBaseWebSrv.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {

@@ -1,22 +1,23 @@
-admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', '$location', '$anchorScroll', '$timeout',  function($scope, $state, ADHoldStatusSrv, $location, $anchorScroll, $timeout){
+admin.controller('ADHoldStatusListCtrl', ['$scope', '$state', 'ADHoldStatusSrv', '$location', '$anchorScroll', '$timeout',  function($scope, $state, ADHoldStatusSrv, $location, $anchorScroll, $timeout) {
 
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	$scope.isAddMode = false;
-	$scope.holdstatusData={};
+	$scope.holdstatusData = {};
    /*
     * To fetch list of hold status
     */
-	$scope.listHoldStatus = function(){
-		var successCallbackFetch = function(data){
+	$scope.listHoldStatus = function() {
+		var successCallbackFetch = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.data.holdStatuses = data.data.hold_status;
 			$scope.currentClickedElement = -1;
 			$scope.isAddMode = false;
 		};
-		$scope.invokeApi(ADHoldStatusSrv.fetch, {} , successCallbackFetch);
+
+		$scope.invokeApi(ADHoldStatusSrv.fetch, {}, successCallbackFetch);
 	};
-	//To list Hold status
+	// To list Hold status
 	$scope.listHoldStatus();
    /*
     * To render edit hold status
@@ -24,7 +25,7 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
     * @param {id} id of selected hold status
     */
 	$scope.editHoldStatus = function(index, id)	{
-		$scope.holdstatusData={};
+		$scope.holdstatusData = {};
 		$scope.currentClickedElement = index;
 		$scope.isAddMode = false;
 		$scope.holdstatusData = _.findWhere($scope.data.holdStatuses, {
@@ -35,12 +36,12 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
     * Render add hold status screen
     */
 	$scope.addNew = function()	{
-		$scope.holdstatusData={
+		$scope.holdstatusData = {
 			name: null,
 			is_system: false,
 			is_take_from_inventory: false,
 			is_group_only: false,
-			is_allotment_only: false,
+			is_allotment_only: false
 		};
 		$scope.currentClickedElement = "new";
 		$scope.isAddMode = true;
@@ -54,43 +55,44 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
     * @param {int} index of the selected hold status
     * @param {string} id of the hold status
     */
-	$scope.getTemplateUrl = function(index, id){
-		if(typeof index === "undefined" || typeof id === "undefined") {
+	$scope.getTemplateUrl = function(index, id) {
+		if (typeof index === "undefined" || typeof id === "undefined") {
 			return "";
 		}
-		if($scope.currentClickedElement === index){
+		if ($scope.currentClickedElement === index) {
 			 	return "/assets/partials/holdStatus/adHoldStatusEdit.html";
 		}
 	};
   /*
    * To save/update Hold status details
    */
-   $scope.saveHoldStatus = function(){
-    	var successCallbackSave = function(data){
+   $scope.saveHoldStatus = function() {
+    	var successCallbackSave = function(data) {
     		$scope.$emit('hideLoader');
-			if($scope.isAddMode){
+			if ($scope.isAddMode) {
 				// To add new data to scope
     			$scope.data.holdStatuses.push(data);
 	    	} else {
-	    		//To update data with new value
+	    		// To update data with new value
 	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].name = $scope.holdstatusData.name;
 	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_take_from_inventory = $scope.holdstatusData.is_take_from_inventory;
-	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_system=$scope.holdstatusData.is_system;
-	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_group_only=$scope.holdstatusData.is_group_only;
-	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_allotment_only=$scope.holdstatusData.is_allotment_only;
+	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_system = $scope.holdstatusData.is_system;
+	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_group_only = $scope.holdstatusData.is_group_only;
+	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_allotment_only = $scope.holdstatusData.is_allotment_only;
 	    	}
     		$scope.currentClickedElement = -1;
     	};
-    	if($scope.isAddMode){
-    		$scope.invokeApi(ADHoldStatusSrv.saveHoldStatus, $scope.holdstatusData , successCallbackSave);
+
+    	if ($scope.isAddMode) {
+    		$scope.invokeApi(ADHoldStatusSrv.saveHoldStatus, $scope.holdstatusData, successCallbackSave);
     	} else {
-    		$scope.invokeApi(ADHoldStatusSrv.updateHoldStatus, $scope.holdstatusData , successCallbackSave);
+    		$scope.invokeApi(ADHoldStatusSrv.updateHoldStatus, $scope.holdstatusData, successCallbackSave);
     	}
     };
    /*
     * To handle click event
     */
-	$scope.clickCancel = function(){
+	$scope.clickCancel = function() {
 		$scope.currentClickedElement = -1;
 	};
    /*
@@ -98,19 +100,20 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
     * @param {int} index of the selected HoldStatus
     * @param {string} id of the selected HoldStatus
     */
-	$scope.deleteHoldStatus = function(index, id){
-		var successCallbackDelete = function(data){
+	$scope.deleteHoldStatus = function(index, id) {
+		var successCallbackDelete = function(data) {
 	 		$scope.$emit('hideLoader');
-	 		//handling error case
-	 		if(data.status==='failure')
+	 		// handling error case
+	 		if (data.status === 'failure')
 	 		{
 	 			$scope.errorMessage = data.errors;
-	 		}else{
-	 			//Handling success - removing deleted holdstatus
+	 		} else {
+	 			// Handling success - removing deleted holdstatus
 	 			$scope.data.holdStatuses.splice(index, 1);
 	 		}
 	 		$scope.currentClickedElement = -1;
 	 	};
+
 		$scope.invokeApi(ADHoldStatusSrv.deleteHoldStatus, id, successCallbackDelete);
 	};
 }]);

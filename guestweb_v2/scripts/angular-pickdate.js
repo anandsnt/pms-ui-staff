@@ -1,4 +1,4 @@
-;(function(angular){
+(function(angular) {
   var indexOf = [].indexOf || function(item) {
     for (var i = 0, l = this.length; i < l; i++) {
       if (i in this && this[i] === item) {
@@ -61,7 +61,7 @@
               '<div class="pickadate-controls">' +
                 '<a href="" class="pickadate-prev" ng-click="changeMonth(-1)" ng-show="allowPrevMonth">prev</a>' +
                 '<a href="" class="pickadate-next" ng-click="changeMonth(1)" ng-show="allowNextMonth">next</a>' +
-              '</div>'+
+              '</div>' +
               '<h3 class="pickadate-centered-heading">' +
                 '{{currentDate | date:"MMMM yyyy"}}' +
               '</h3>' +
@@ -105,6 +105,7 @@
               today             = dateFilter(new Date(), 'yyyy-MM-dd');
 
             var nextMonthInitialDate = new Date(initialDate);
+
             nextMonthInitialDate.setMonth(currentMonth);
 
             scope.allowPrevMonth = !minDate || initialDate > minDate;

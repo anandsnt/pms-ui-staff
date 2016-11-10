@@ -1,13 +1,15 @@
-var SwipeOperation = function(){
+var SwipeOperation = function() {
 
 	var that = this;
 	/*
 	 * Function to create the token - Swipe.
 	 * @param {obj} swipedCardData - initial swiped data to create token
 	 */
-	this.createDataToTokenize = function(swipedCardData){
+
+	this.createDataToTokenize = function(swipedCardData) {
 			var ksn = swipedCardData.RVCardReadTrack2KSN;
-      		if(swipedCardData.RVCardReadETBKSN !== "" && typeof swipedCardData.RVCardReadETBKSN !== "undefined"){
+
+      		if (swipedCardData.RVCardReadETBKSN !== "" && typeof swipedCardData.RVCardReadETBKSN !== "undefined") {
 				ksn = swipedCardData.RVCardReadETBKSN;
 			}
 			var getTokenFrom = {
@@ -15,13 +17,13 @@ var SwipeOperation = function(){
 				'pan': swipedCardData.RVCardReadMaskedPAN
 			};
 
-			if(swipedCardData.RVCardReadTrack2!==''){
+			if (swipedCardData.RVCardReadTrack2 !== '') {
 				getTokenFrom.et2 = swipedCardData.RVCardReadTrack2;
-			} else if(swipedCardData.RVCardReadETB !==""){
+			} else if (swipedCardData.RVCardReadETB !== "") {
 				getTokenFrom.etb = swipedCardData.RVCardReadETB;
 			}
 			getTokenFrom.is_encrypted = true;
-			if(swipedCardData.RVCardReadIsEncrypted === 0 || swipedCardData.RVCardReadIsEncrypted === '0'){
+			if (swipedCardData.RVCardReadIsEncrypted === 0 || swipedCardData.RVCardReadIsEncrypted === '0') {
 				getTokenFrom.is_encrypted = false;
 			}
 			return getTokenFrom;
@@ -29,7 +31,7 @@ var SwipeOperation = function(){
 	/*
 	 * Function to create the data to render in screens
 	 */
-	this.createSWipedDataToRender = function(swipedCardData){
+	this.createSWipedDataToRender = function(swipedCardData) {
 		var swipedCardDataToRender = {
 			"cardType": swipedCardData.RVCardReadCardType,
 			"cardNumber": "xxxx-xxxx-xxxx-" + swipedCardData.token.slice(-4),
@@ -50,7 +52,7 @@ var SwipeOperation = function(){
 	/*
 	 * Function to create the data to save which is passed to API
 	 */
-	this.createSWipedDataToSave = function(swipedCardData){
+	this.createSWipedDataToSave = function(swipedCardData) {
 		var swipedCardDataToSave = {
 			"cardType": swipedCardData.cardType,
 			"et2": swipedCardData.et2,
@@ -62,9 +64,9 @@ var SwipeOperation = function(){
 			"expiryYear": swipedCardData.cardExpiryYear,
 			"cardNumber": swipedCardData.cardNumber
 		};
+
 		return swipedCardDataToSave;
 	};
-
 
 
 };

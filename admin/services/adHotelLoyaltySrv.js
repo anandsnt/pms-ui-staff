@@ -1,16 +1,16 @@
-admin.service('ADHotelLoyaltySrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv){
+admin.service('ADHotelLoyaltySrv', ['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv) {
    /**
     * To fetch the list of hotel loyalty
     * @return {object} hotel loyalty list json
     */
-	this.fetch = function(){
+	this.fetch = function() {
 
 		var deferred = $q.defer();
 		var url = '/admin/hotel/list_hlps.json';
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data){
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -20,13 +20,13 @@ admin.service('ADHotelLoyaltySrv',['$http', '$q', 'ADBaseWebSrv', function($http
     * @param {array} data of the new hotel loyalty
     * @return {object} status and new id of new hotel loyalty
     */
-	this.saveHotelLoyalty = function(data){
+	this.saveHotelLoyalty = function(data) {
 		var deferred = $q.defer();
 		var url = '/admin/hotel/save_hlp';
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data){
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -36,14 +36,14 @@ admin.service('ADHotelLoyaltySrv',['$http', '$q', 'ADBaseWebSrv', function($http
     * @param {array} selected hotel loyalty id
     * @return {object} selected hotel loyalty details
     */
-	this.getHotelLoyaltyDetails = function(data){
+	this.getHotelLoyaltyDetails = function(data) {
 		var deferred = $q.defer();
 		var id = data.id;
-		var url = '/admin/hotel/edit_hlp/'+id+'.json';
+		var url = '/admin/hotel/edit_hlp/' + id + '.json';
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data){
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -53,14 +53,14 @@ admin.service('ADHotelLoyaltySrv',['$http', '$q', 'ADBaseWebSrv', function($http
     * @param {array} data of the modified hotel loyalty
     * @return {object} status of updated hotel loyalty
     */
-	this.updateHotelLoyalty = function(data){
+	this.updateHotelLoyalty = function(data) {
 
 		var deferred = $q.defer();
 		var url = '/admin/hotel/update_hlp/';
 
 		ADBaseWebSrv.putJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data){
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -70,13 +70,13 @@ admin.service('ADHotelLoyaltySrv',['$http', '$q', 'ADBaseWebSrv', function($http
     * @param {int} id of the selected hotel loyalty
     * @return {object} status of delete
     */
-	this.activateInactivate = function(data){
+	this.activateInactivate = function(data) {
 		var deferred = $q.defer();
 		var url = '/admin/hotel/toggle_hlp_activation/';
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data){
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;

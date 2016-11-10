@@ -1,6 +1,6 @@
 angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 	function($q, RVBaseWebSrvV2) {
-		//Meta Data for Work Management
+		// Meta Data for Work Management
 		// 1. Maids
 		// 2. WorkTypes
 		// 3. Shifts
@@ -10,6 +10,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		this.fetchMaids = function() {
 			var deferred = $q.defer();
 			var url = 'api/work_statistics/employees_list';
+
 			RVBaseWebSrvV2.getJSON(url).then(function(data) {
 				_.each(data.results, function(d) {
 					d.ticked = false;
@@ -42,6 +43,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		this.fetchShifts = function() {
 			var deferred = $q.defer();
 			var url = 'api/shifts';
+
 			RVBaseWebSrvV2.getJSON(url).then(function(data) {
 				_.each(data.results, function(shift) {
 					shift.display_name = shift.name + "(" + shift.time + ")";
@@ -62,6 +64,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		this.fetchStatistics = function(params) {
 			var deferred = $q.defer(),
 				url = '/api/work_statistics?date=' + params.date;
+
 			RVBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -78,6 +81,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		this.createWorkSheet = function(params) {
 			var deferred = $q.defer();
 			var url = 'api/work_sheets';
+
 			RVBaseWebSrvV2.postJSON(url, params).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -93,6 +97,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		this.fetchWorkSheet = function(params) {
 			var deferred = $q.defer();
 			var url = 'api/work_sheets/' + params.id;
+
 			RVBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -108,6 +113,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		this.deleteWorkSheet = function(params) {
 			var deferred = $q.defer();
 			var url = 'api/work_sheets/' + params.id;
+
 			RVBaseWebSrvV2.deleteJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -129,6 +135,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 			// }, function(data) {
 			// 	deferred.reject(data);
 			// });
+
 			deferred.resolve([]);
 			return deferred.promise;
 		};
@@ -137,6 +144,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		this.saveWorkSheet = function(params) {
 			var deferred = $q.defer();
 			var url = 'api/work_assignments/assign';
+
 			RVBaseWebSrvV2.postJSON(url, params).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -188,6 +196,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		this.searchRooms = function(params) {
 			var deferred = $q.defer(),
 				url = '/house/search.json?query=' + params.key + '&date=' + params.date;
+
 			RVBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data.data.rooms);
 			}, function(data) {
@@ -219,38 +228,6 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		};
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		this.fetchHKStaffs = function() {
 			var deferred = $q.defer();
 			var url = 'api/work_statistics/employees_list';
@@ -272,8 +249,8 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 				});
 
 				return {
-					'results' : results,
-					'emp_ids' : emp_ids
+					'results': results,
+					'emp_ids': emp_ids
 				};
 			};
 
@@ -354,10 +331,10 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 					allRooms = compileAllRooms(unassignedRoomsResponse, assignedRoomsResponse);
 
 					this.payload = {
-						'allTasks'            : tasksResponse,
-						'allRooms'            : allRooms,
-						'unassignedRoomTasks' : compileUnassignedRooms(unassignedRoomsResponse, tasksResponse, allRooms),
-						'assignedRoomTasks'   : compileAssignedRooms(assignedRoomsResponse, tasksResponse, allRooms)
+						'allTasks': tasksResponse,
+						'allRooms': allRooms,
+						'unassignedRoomTasks': compileUnassignedRooms(unassignedRoomsResponse, tasksResponse, allRooms),
+						'assignedRoomTasks': compileAssignedRooms(assignedRoomsResponse, tasksResponse, allRooms)
 					};
 
 					deferred.resolve( this.payload );
@@ -399,6 +376,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		this.sortAssigned = function(assigned, allRooms, allTasks, options) {
 			var length = assigned.length,
 				employee;
+
 			for (var i = 0; i < length; i++) {
 				employee = assigned[i];
 
@@ -440,7 +418,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 
 					employee.rooms = roomsSorted;
 				}
-			};
+			}
 
 			return assigned;
 		};
@@ -453,11 +431,11 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 			var allRooms = [];
 
 			return allRooms.concat( unassignedRoomsResponse.rooms, assignedRoomsResponse.rooms );
-		};
+		}
 
 		function compileUnassignedRooms (unassignedRooms, allTasks, allRooms) {
 			var allTasks        = allTasks || [],
-				unassignedRooms = $.extend({}, { 'rooms' : [], 'room_tasks' : [] }, unassignedRooms);
+				unassignedRooms = $.extend({}, { 'rooms': [], 'room_tasks': [] }, unassignedRooms);
 
 			var rooms     = unassignedRooms.rooms,
 				roomTasks = unassignedRooms.room_tasks;
@@ -496,15 +474,15 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 					 */
 
 					compiled.push(copyRoom);
-				};
-			};
+				}
+			}
 
 			// loop through roomTasks, gather much info on each tasks
 			// and push it into appropriate room
 			for (i = 0, j = roomTasks.length; i < j; i++) {
 				if ( ! roomTasks[i]['tasks'].length ) {
 					continue;
-				};
+				}
 
 				eachRoomId     = roomTasks[i]['room_id'];
 				eachRoomTasks  = roomTasks[i]['tasks'];
@@ -521,14 +499,14 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 							{},
 							eachRoomTasks[k],
 							{
-								'task_name'      : thatAllTask.name,
-								'work_type_id'   : thatAllTask.work_type_id,
-								'work_type_name' : thatAllTask.work_type_name,
-								'time_allocated' : getTimeAllocated( thatAllTask, thatRoomTypeId )
+								'task_name': thatAllTask.name,
+								'work_type_id': thatAllTask.work_type_id,
+								'work_type_name': thatAllTask.work_type_name,
+								'time_allocated': getTimeAllocated( thatAllTask, thatRoomTypeId )
 							},
 							{
-								'room_id' : eachRoomId,
-								'room_no' : thatRoomNo
+								'room_id': eachRoomId,
+								'room_no': thatRoomNo
 							}
 						);
 					/**
@@ -545,15 +523,15 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 					thatCompiledRoom
 						.room_tasks
 						.push( copyTask );
-				};
-			};
+				}
+			}
 
 			return compiled;
-		};
+		}
 
 		function compileAssignedRooms (assignedRooms, allTasks, allRooms) {
 			var allTasks      = allTasks || [],
-				assignedRooms = $.extend({}, { 'employees' : [], 'rooms' : [] }, assignedRooms);
+				assignedRooms = $.extend({}, { 'employees': [], 'rooms': [] }, assignedRooms);
 
 			var employees = assignedRooms.employees,
 				rooms     = assignedRooms.rooms;
@@ -567,13 +545,14 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 			for (i = 0, j = employees.length; i < j; i++) {
 				var displayName = employees[i].name.split(" "),
 					firstname   = displayName.shift();
+
 				displayName = firstname.charAt(0) + ". " + displayName.join(" ");
 				copyEmployee = $.extend(
 						{},
-						{ 'id' : employees[i].id, 'name' : employees[i].name },
+						{ 'id': employees[i].id, 'name': employees[i].name },
 						{ 'display_name': displayName },
-						{ 'rooms' : [] },
-						{ 'only_tasks' : [] },
+						{ 'rooms': [] },
+						{ 'only_tasks': [] },
 						{ 'touched_work_types': [] },
 						{ 'shift_id': employees[i].shift_id }
 					);
@@ -640,14 +619,14 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 								{},
 								tasksInIt[m],
 								{
-									'task_name'      : thatAllTask.name,
-									'work_type_id'   : thatAllTask.work_type_id,
-									'work_type_name' : thatAllTask.work_type_name,
-									'time_allocated' : getTimeAllocated( thatAllTask, thatRoomTypeId )
+									'task_name': thatAllTask.name,
+									'work_type_id': thatAllTask.work_type_id,
+									'work_type_name': thatAllTask.work_type_name,
+									'time_allocated': getTimeAllocated( thatAllTask, thatRoomTypeId )
 								},
 								{
-									'room_id' : roomTasksInit[k].room_id,
-									'room_no' : thatRoomNo
+									'room_id': roomTasksInit[k].room_id,
+									'room_no': thatRoomNo
 								}
 							);
 						/**
@@ -699,17 +678,17 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 						 *   touched_work_types: [ [1], [2] ]
 						 * }
 						 */
-					};
-				};
+					}
+				}
 
 				// flatten and remove duplicates
 				copyEmployee.touched_work_types = _.uniq( _.flatten(copyEmployee.touched_work_types) );
 
 				compiled.push(copyEmployee);
-			};
+			}
 
 			return compiled;
-		};
+		}
 
 		function getTimeAllocated (task, roomId) {
 			var time = '',
@@ -720,24 +699,24 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 				time = task['room_types_completion_time'][roomId];
 			} else if ( !! task['completion_time'] ) {
 				time = task['completion_time'];
-			};
+			}
 
 			if ( time.indexOf(':') > -1 ) {
 				hh = time.split(':')[0];
 				mm = time.split(':')[1];
-			};
+			}
 
 			return {
 				hh: isNaN(parseInt(hh)) ? 0 : parseInt(hh),
 				mm: isNaN(parseInt(mm)) ? 0 : parseInt(mm)
 			};
-		};
+		}
 
 		function compileAssignedRoomsParams (assignedRoomTasks, date, shouldSaveOrder) {
 			var complied = $.extend(
 					{},
-					{ 'date'       : date },
-					{ 'work_types' : [] }
+					{ 'date': date },
+					{ 'work_types': [] }
 				);
 
 			// PASS 1
@@ -751,14 +730,14 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 
 					if ( ! hasWorkType ) {
 						newWorkType = {
-							id          : wtid,
-							assignments : []
-						}
+							id: wtid,
+							assignments: []
+						};
 
 						complied
 							.work_types
 							.push( newWorkType );
-					};
+					}
 				});
 			});
 
@@ -775,25 +754,25 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 					});
 
 					newAssignment = {
-						employee_id : art.id,
-						tasks       : [],
-					}
+						employee_id: art.id,
+						tasks: []
+					};
 
 					if ( !! hasThisWorkType ) {
 						allTaskInThisWorkType = _.where(art.only_tasks, { 'work_type_id': workTypeId });
 
 						_.each(allTaskInThisWorkType, function(eachTask, index) {
 							newTask = {
-								id      : eachTask.id,
-								room_id : eachTask.room_id,
-								order   : eachTask.order || null
-							}
+								id: eachTask.id,
+								room_id: eachTask.room_id,
+								order: eachTask.order || null
+							};
 
 							newAssignment
 								.tasks
 								.push( newTask );
 						});
-					};
+					}
 
 					complied
 						.work_types[workTypesIndex]
@@ -803,7 +782,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 			});
 
 			return complied;
-		};
+		}
 
 		// ALL APIS
 		// ========

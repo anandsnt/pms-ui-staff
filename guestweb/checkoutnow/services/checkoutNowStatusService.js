@@ -1,13 +1,14 @@
 (function() {
-var checkoutNowService = function($q,$rootScope,$http) {
+var checkoutNowService = function($q, $rootScope, $http) {
 	var response = {};
 
-	var completeCheckout = function(url,data) {
+	var completeCheckout = function(url, data) {
 
 		var deferred = $q.defer();
-		$http.post(url, data).success(function(response){
+
+		$http.post(url, data).success(function(response) {
 			deferred.resolve(response);
-		}).error(function(){
+		}).error(function() {
 		$rootScope.netWorkError = true;
 			deferred.reject();
 		});
@@ -15,14 +16,14 @@ var checkoutNowService = function($q,$rootScope,$http) {
 		};
 
 		return {
-			response:response,
-			completeCheckout:completeCheckout
+			response: response,
+			completeCheckout: completeCheckout
 
 		};
 };
 
 var dependencies = [
-'$q','$rootScope','$http',
+'$q', '$rootScope', '$http',
 checkoutNowService
 ];
 

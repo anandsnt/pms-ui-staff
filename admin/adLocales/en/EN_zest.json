@@ -124,7 +124,13 @@
 "QUESTION" : "Question",
 "MAXIMUM" : "Maximum",
 "RESPONSE_MANDATORY" : "Response is mandatory?",
-"IMAGE" : "Image"
+"IMAGE" : "Image",
+
+"URL_CHECKIN_SECOND_AUTH_HEADING" : "URL Checkin In - Second Authentication Factor to Find Reservation",
+"URL_CHECKIN_SECOND_AUTH_SUB_HEADING" : "Guests must provide the Last Name as the first authentication factor when attempting a checkin through the following origins: Email from Guest, SMS from Guest, Direct URL. Select the second authentication factor(s) offered to the guest to find the reservation",
+"CHECKIN_SECOND_AUTH_FACTOR" : "Second Authentication Factor",
+"CONFIRMATION_NUMBER" : "CONFIRMATION NUMBER",
+"CONF_NUMBER_AND_DEPART_DATE" : "CONFIRMATION NUMBER and DEPARTURE DATE - Guest must provide one"
 
 
 

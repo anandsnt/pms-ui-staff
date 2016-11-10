@@ -10,34 +10,34 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 
 		this.initFilters = function() {
 			return {
-				"dirty"                : false,
-				"pickup"               : false,
-				"clean"                : false,
-				"inspected"            : false,
-				"out_of_order"         : false,
-				"out_of_service"       : false,
-				"vacant"               : false,
-				"occupied"             : false,
-				"stayover"             : false,
-				"not_reserved"         : false,
-				"arrival"              : false,
-				"arrived"              : false,
-				"dueout"               : false,
-				"departed"             : false,
-				"dayuse"               : false,
-				"queued"               : false,
-				"lateCheckout"         : false,
-				"pre_checkin"          : false,
-				"floorFilterSingle"    : "",
-				"floorFilterStart"     : "",
-				"floorFilterEnd"       : "",
-				"showAllFloors"        : true,
-				"filterByWorkType"     : false,
-				"filterByEmployeeName" : false,
-				"singleRoomType"       : false,
-				"query"                : "",
-				"page"                 : 1,
-				"perPage"              : $window.innerWidth < 599 ? 25 : 50
+				"dirty": false,
+				"pickup": false,
+				"clean": false,
+				"inspected": false,
+				"out_of_order": false,
+				"out_of_service": false,
+				"vacant": false,
+				"occupied": false,
+				"stayover": false,
+				"not_reserved": false,
+				"arrival": false,
+				"arrived": false,
+				"dueout": false,
+				"departed": false,
+				"dayuse": false,
+				"queued": false,
+				"lateCheckout": false,
+				"pre_checkin": false,
+				"floorFilterSingle": "",
+				"floorFilterStart": "",
+				"floorFilterEnd": "",
+				"showAllFloors": true,
+				"filterByWorkType": false,
+				"filterByEmployeeName": false,
+				"singleRoomType": false,
+				"query": "",
+				"page": 1,
+				"perPage": $window.innerWidth < 599 ? 25 : 50
 			};
 		};
 
@@ -56,8 +56,8 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 				floor_start          = false,
 				floor_end            = false,
 				params               = {
-					'page'     : filter.page,
-					'per_page' : filter.perPage
+					'page': filter.page,
+					'per_page': filter.perPage
 				};
 
 			// if there is a search query, ignore all other filters. Reset page to 1
@@ -85,7 +85,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 							filter.filterByEmployeeName = passedParams.assignee_id;
 						} else {
 							params['all_employees_selected'] = true;
-						};
+						}
 					} else {
 						if ( filter.filterByWorkType ) {
 							params['work_type_id'] = filter.filterByWorkType;
@@ -95,52 +95,52 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 						} else {
 							params['all_employees_selected'] = true;
 						}
-					};
-				};
+					}
+				}
 
 				// process the floors
 				if ( !filter.showAllFloors ) {
 					floor_start = filter.floorFilterStart || filter.floorFilterSingle;
 					floor_end   = filter.floorFilterEnd || filter.floorFilterSingle;
-				};
+				}
 
 				// process room type ids
 				_.each(this.roomTypes, function(type) {
-					if (type.isSelected) { room_type_ids.push(type.id); };
+					if (type.isSelected) { room_type_ids.push(type.id); }
 				});
 
 				// process the reservation status
-				if ( filter.vacant )       { reservation_status.push('VACANT'); };
-				if ( filter.occupied )     { reservation_status.push('OCCUPIED'); };
-				if ( filter.queued )       { reservation_status.push('QUEUED'); };
-				if ( filter.lateCheckout ) { reservation_status.push('LATE_CHECKOUT'); };
-				if ( filter.pre_checkin )  { reservation_status.push('PRE_CHECKIN'); };
+				if ( filter.vacant )       { reservation_status.push('VACANT'); }
+				if ( filter.occupied )     { reservation_status.push('OCCUPIED'); }
+				if ( filter.queued )       { reservation_status.push('QUEUED'); }
+				if ( filter.lateCheckout ) { reservation_status.push('LATE_CHECKOUT'); }
+				if ( filter.pre_checkin )  { reservation_status.push('PRE_CHECKIN'); }
 
 				// process front office status
-				if ( filter.stayover )     { front_office_status.push('STAY_OVER'); };
-				if ( filter.not_reserved ) { front_office_status.push('NOT_RESERVED'); };
-				if ( filter.arrival )      { front_office_status.push('ARRIVAL'); };
-				if ( filter.arrived )      { front_office_status.push('ARRIVED'); };
-				if ( filter.dayuse )       { front_office_status.push('DAY_USE'); };
-				if ( filter.dueout )       { front_office_status.push('DUE_OUT'); };
-				if ( filter.departed )     { front_office_status.push('DEPARTED'); };
+				if ( filter.stayover )     { front_office_status.push('STAY_OVER'); }
+				if ( filter.not_reserved ) { front_office_status.push('NOT_RESERVED'); }
+				if ( filter.arrival )      { front_office_status.push('ARRIVAL'); }
+				if ( filter.arrived )      { front_office_status.push('ARRIVED'); }
+				if ( filter.dayuse )       { front_office_status.push('DAY_USE'); }
+				if ( filter.dueout )       { front_office_status.push('DUE_OUT'); }
+				if ( filter.departed )     { front_office_status.push('DEPARTED'); }
 
 				// process house keeping status
-				if ( filter.dirty )          { house_keeping_status.push('DIRTY'); };
-				if ( filter.clean )          { house_keeping_status.push('CLEAN'); };
-				if ( filter.inspected )      { house_keeping_status.push('INSPECTED'); };
-				if ( filter.pickup )         { house_keeping_status.push('PICKUP'); };
-				if ( filter.out_of_order )   { house_keeping_status.push('OO'); };
-				if ( filter.out_of_service ) { house_keeping_status.push('OS'); };
+				if ( filter.dirty )          { house_keeping_status.push('DIRTY'); }
+				if ( filter.clean )          { house_keeping_status.push('CLEAN'); }
+				if ( filter.inspected )      { house_keeping_status.push('INSPECTED'); }
+				if ( filter.pickup )         { house_keeping_status.push('PICKUP'); }
+				if ( filter.out_of_order )   { house_keeping_status.push('OO'); }
+				if ( filter.out_of_service ) { house_keeping_status.push('OS'); }
 
 				// fill request param
-				if ( reservation_status.length )     { params['reservation_status']   = reservation_status; };
-				if ( front_office_status.length )    { params['front_office_status']  = front_office_status; };
-				if ( house_keeping_status.length )   { params['house_keeping_status'] = house_keeping_status; };
-				if ( room_type_ids.length )          { params['room_type_ids']        = room_type_ids; };
-				if ( floor_start )                   { params['floor_start']          = floor_start; };
-				if ( floor_end )                     { params['floor_end']            = floor_end; };
-			};
+				if ( reservation_status.length )     { params['reservation_status']   = reservation_status; }
+				if ( front_office_status.length )    { params['front_office_status']  = front_office_status; }
+				if ( house_keeping_status.length )   { params['house_keeping_status'] = house_keeping_status; }
+				if ( room_type_ids.length )          { params['room_type_ids']        = room_type_ids; }
+				if ( floor_start )                   { params['floor_start']          = floor_start; }
+				if ( floor_end )                     { params['floor_end']            = floor_end; }
+			}
 
 			return params;
 		}.bind(this);
@@ -158,8 +158,9 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 					roomList.summary = response.data.summary;
 
 					var lastRoomService = $vault.get('LAST_ROOM_SERVICE');
+
 					if ( !! lastRoomService ) {
-						lastRoomService = JSON.parse(lastRoomService)
+						lastRoomService = JSON.parse(lastRoomService);
 					} else {
 						lastRoomService = {
 							rooms: [],
@@ -168,6 +169,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 					}
 
 					var i, j;
+
 					for (i = 0, j = roomList.rooms.length; i < j; i++) {
 						var room = roomList.rooms[i];
 
@@ -200,10 +202,10 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 								);
 							}
 						}
-					};
+					}
 
 					deferred.resolve(roomList);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -223,19 +225,19 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 			if ( passedParams.isStandAlone || $rootScope.isStandAlone ) {
 				this.fetchWorkTypes().then( _fetchWorkAssignments.bind(this) );
 			} else {
-				_fetchRoomListPost.call(this);;
+				_fetchRoomListPost.call(this);
 			}
 
 			function _fetchWorkAssignments (workTypes) {
 				fetchedWorkTypes = workTypes;
 
 				var params = {
-					'date'         : $rootScope.businessDate,
-					'employee_ids' : [$rootScope.userId]
+					'date': $rootScope.businessDate,
+					'employee_ids': [$rootScope.userId]
 				};
 
 				this.fetchWorkAssignments( params ).then( _checkHasActiveWorkSheet.bind(this) );
-			};
+			}
 
 			function _checkHasActiveWorkSheet (assignments) {
 				var employee = assignments.employees.length && assignments.employees[0] || null,
@@ -252,39 +254,40 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 
 				// make the call
 				_fetchRoomListPost.call(this);
-			};
+			}
 
 			function _fetchRoomListPost () {
 				if ( paramWorkTypeId ) {
 					additionalParams['work_type_id'] = paramWorkTypeId;
-				};
+				}
 
 				if ( paramEmployeeId ) {
 					additionalParams['assignee_id'] = paramEmployeeId;
-				};
+				}
 
 				_.extend( passedParams, additionalParams, {'initialLoad': true} );
 
-				this.fetchRoomListPost( passedParams ).then( _resolveData, function(error){
+				this.fetchRoomListPost( passedParams ).then( _resolveData, function(error) {
 					deferred.reject(error);
 				});
-			};
+			}
 
 			function _resolveData (roomList) {
 				var payload = {
-					'roomList':    roomList,
-					'workTypes':   fetchedWorkTypes,
+					'roomList': roomList,
+					'workTypes': fetchedWorkTypes,
 					'assignments': fetchedAssignments
 				};
 
 				deferred.resolve(payload);
-			};
+			}
 
 			return deferred.promise;
 		};
 
 		// Get all floors for the current hotel.
 		var hotelFloors = [];
+
 		this.fetchFloors = function() {
 			var deferred = $q.defer();
 			var url = '/api/floors.json';
@@ -299,7 +302,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 					}, function(data) {
 						deferred.reject(data);
 					});
-			};
+			}
 
 			return deferred.promise;
 		};
@@ -325,7 +328,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 					}.bind(this), function(data) {
 						deferred.reject(data);
 					});
-			};
+			}
 
 			return deferred.promise;
 		};
@@ -340,6 +343,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 
 		// fetch all HK cleaning staffs
 		var HKEmps = [];
+
 		this.fetchHKEmps = function() {
 			var url = "/api/work_statistics/employees_list";
 			var deferred = $q.defer();
@@ -354,7 +358,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 					}, function(data) {
 						deferred.reject(data);
 					});
-			};
+			}
 
 			return deferred.promise;
 		};
@@ -392,6 +396,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 
 		// get all all WorkTypes
 		var workTypesList = [];
+
 		this.fetchWorkTypes = function() {
 			var deferred = $q.defer(),
 				url = 'api/work_types';
@@ -403,10 +408,10 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 					.then(function(data) {
 						workTypesList = data.results;
 						deferred.resolve(workTypesList);
-					}.bind(this), function(data) {
+					}, function(data) {
 						deferred.reject(data);
 					});
-			};
+			}
 
 			return deferred.promise;
 		};
@@ -419,7 +424,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 			BaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -433,7 +438,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 			BaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -450,7 +455,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 			BaseWebSrvV2.putJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -464,15 +469,12 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 			BaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					deferred.resolve(data.room_ids);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
 			return deferred.promise;
 		};
-
-
-
 
 
 		this.toggleFilter = function(item) {
@@ -493,13 +495,14 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 		this.setRoomStatusClass = function(room) {
 
 			var isOOSorOOO;
+
 			if ( room.hasOwnProperty('service_status') ) {
 				// new code, note: new code is not dependent on 'isStandAlone'
 				isOOSorOOO = (room.service_status.value === 'OUT_OF_SERVICE' || room.service_status.value === 'OUT_OF_ORDER') ? true : false;
 			} else {
 				// old code, kept for just in case fallbacks
 				isOOSorOOO = room.hk_status.value === 'OO' || room.hk_status.value === 'OS' || room.room_reservation_hk_status === 2 || room.room_reservation_hk_status === 3;
-			};
+			}
 
 			if (!isOOSorOOO && roomList.checkin_inspected_only === "true") {
 				if (room.hk_status.value === 'INSPECTED') {
@@ -553,7 +556,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 						room.roomStatusClassWithOO = 'dirty';
 						return;
 					}
-				};
+				}
 
 				return;
 			}
@@ -630,7 +633,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 
 			if ( room.is_late_checkout === 'true' ) {
 				room.leaveStatusClass = 'late-check-out';
-			};
+			}
 		};
 
 		/**
@@ -642,6 +645,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 			var matchedRoom = _.find(roomList.rooms, function(room) {
 				return parseInt(room.id) === id;
 			});
+
 			matchedRoom[property] = value;
 			matchedRoom.ooOsTitle = calculateOoOsTitle(matchedRoom);
 			this.setRoomStatusClass(matchedRoom);
@@ -651,6 +655,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 			var matchedRoom = _.find(roomList.rooms, function(room) {
 				return parseInt(room.id) === id;
 			});
+
 			matchedRoom.hk_status.description = status.description;
 			matchedRoom.description = matchedRoom.hk_status.description;
 			matchedRoom.hk_status.value = status.value;
@@ -683,12 +688,13 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 		var calculateAssignedStaff = function(room) {
 			if (!$rootScope.isStandAlone) {
 				return false;
-			};
+			}
 
 			var assignedStaff = {
 				name: 'Unassigned',
 				class: 'unassigned'
 			};
+
 			room.canAssign = true;
 
 			if ( !!room.room_tasks && room.room_tasks.length ) {
@@ -698,13 +704,14 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 				if (_.unique(_.pluck(_.pluck(room.room_tasks, 'assignee_maid'), 'id')).length > 1) {
 					assignedStaff.name = 'Multiple Assignees';
 				} else {
-					assignedStaff.name = room.room_tasks[0].assignee_maid.name
+					assignedStaff.name = room.room_tasks[0].assignee_maid.name;
 				}
 			}
 
 			return assignedStaff;
 		};
 		// exposing the method to service
+
 		this.calculateAssignedStaff = calculateAssignedStaff;
 
 		// calculte the OO/OS title
@@ -718,7 +725,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 					return 'Out of Order';
 				} else {
 					return '';
-				};
+				}
 			} else {
 				// old code, kept for just in case fallbacks
 				if ($rootScope.isStandAlone) {
@@ -730,7 +737,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 						room.hk_status.value === 'OO' ? 'Out of Order' :
 						false;
 				}
-			};
+			}
 		};
 
 	}

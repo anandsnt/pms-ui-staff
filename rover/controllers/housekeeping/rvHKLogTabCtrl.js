@@ -19,9 +19,9 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 		var refreshScroll = function(goTop) {
 			$scope.refreshScroller('LOG_TAB_SCROLL');
 			goTop && $scope.getScroller('LOG_TAB_SCROLL').scrollTo(0, 0);
-		}
+		};
 
-		$scope.init = function(){
+		$scope.init = function() {
 			$scope.roomDetails = $scope.$parent.roomDetails;
 			$scope.$emit('hideLoader');
 			$scope.roomLogData = roomDetailsLogData.results;
@@ -33,19 +33,19 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 				item.service_status.old_value = getServiceStatusValue(item.service_status.old_value);
 				item.service_status.new_value = getServiceStatusValue(item.service_status.new_value);
 			});
-			//Paginaton
+			// Paginaton
 	        $scope.totalResults = roomDetailsLogData.total_count;
-	        if($scope.roomLogData.total_count===0){
+	        if ($scope.roomLogData.total_count === 0) {
               $scope.start = 0;
-              $scope.end =0;
-	        }else{
+              $scope.end = 0;
+	        } else {
 	          $scope.start = 1;
 	          $scope.end = $scope.start + $scope.roomLogData.length - 1;
 	        }
 	        refreshScroll(false);
 		};
 
-		$scope.updateLog = function(){
+		$scope.updateLog = function() {
 	        var callback = function(data) {
 
 	                $scope.roomLogData = data.results;
@@ -79,23 +79,23 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 	        };
 
 	       // params['sort_order'] = $scope.sort_order;
-	        //params['sort_field'] = $scope.sort_field;
+	        // params['sort_field'] = $scope.sort_field;
 
 	        $scope.invokeApi(RVHkRoomDetailsSrv.getRoomLog, params, callback);
 	    };
 
-	    $scope.getRoomStatusClass = function(roomStatus){
-	    	return roomStatus.toLowerCase()
+	    $scope.getRoomStatusClass = function(roomStatus) {
+	    	return roomStatus.toLowerCase();
 	    };
 
 	   /*
 	    * Pagination
 	    */
 	    $scope.initPaginationParams = function() {
-	        if($scope.roomLogData.total_count===0){
+	        if ($scope.roomLogData.total_count === 0) {
 	             $scope.start = 0;
-	             $scope.end =0;
-	        }else{
+	             $scope.end = 0;
+	        } else {
 		        $scope.start = 1;
 		        $scope.end = $scope.start + $scope.roomLogData.length - 1;
 	        }
@@ -121,6 +121,7 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 
 	    $scope.isNextButtonDisabled = function() {
 	        var isDisabled = false;
+
 	        if ($scope.end >= $scope.totalResults) {
 	            isDisabled = true;
 	        }
@@ -129,6 +130,7 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 
 	    $scope.isPrevButtonDisabled = function() {
 	        var isDisabled = false;
+
 	        if ($scope.page === 1) {
 	            isDisabled = true;
 	        }
@@ -138,8 +140,8 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 	    $scope.initPaginationParams();
 
 
-
 	    var unSubscrbeOpenLog = $scope.$on('OPEN_LOG', $scope.updateLog);
+
 	    $scope.$on('$destroy', unSubscrbeOpenLog);
 	}
 

@@ -9,42 +9,51 @@
 			var fetchScreenWiseData = function(hotel_identifier) {
 				var deferred = $q.defer();
 				var url = '/api/hotels/custom_cms_messages.json?application=ZEST_WEB&hotel_identifier=' + hotel_identifier;
+
 				$http.get(url).success(function(response) {
 						that.cms_screen_details = _.find(response.screen_list, function(cms_item) {
-							return cms_item.screen_name === "ZEST WEB SCREENS"
+							return cms_item.screen_name === "ZEST WEB SCREENS";
 						});
 						that.cms_screen_details = typeof that.cms_screen_details !== 'undefined' ? that.cms_screen_details.screen_messages : [];
 						deferred.resolve(response);
-					}.bind(this))
+					})
 					.error(function() {
 						deferred.reject();
 					});
 				return deferred.promise;
 			};
-				//call CMS details only for checkin URLs now
+				// call CMS details only for checkin URLs now
 			var absUrl = window.location.href;
 			// if the guestweb is accessed normaly, ie invoked using
 			// the mail sent from the hotel admin
+
 			if (absUrl.indexOf("/guest_web/home/index?guest_web_token=") !== -1) {
 				var offset = absUrl.indexOf("?");
 				var remainingURl = absUrl.substring(offset, absUrl.length);
 				var startingUrl = absUrl.substring(0, offset);
+
 				apiUrl = startingUrl + "_data" + remainingURl;
 
 			} else if (absUrl.indexOf("checkin") !== -1) {
-				//to strip away state URLS
+				// to strip away state URLS
 				absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
-				var urlComponents = absUrl.split('/');;
+				var urlComponents = absUrl.split('/');
+
+
 				var hotel_identifier = urlComponents[urlComponents.length - 2];
+
 				fetchScreenWiseData(hotel_identifier);
 			} // direct URL checkout - accessing URLS set in hotel admin for checkin
 			else {
-				//to strip away state URLS
+				// to strip away state URLS
 				absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
-				var urlComponents = absUrl.split('/');;
+				var urlComponents = absUrl.split('/');
+
+
 				var hotel_identifier = urlComponents[urlComponents.length - 1];
+
 				fetchScreenWiseData(hotel_identifier);
-			};
+			}
 
 
 			this.fetchHotelDetailsFromUrl = function(url) {
@@ -65,7 +74,7 @@
 							deferred.resolve(response.data);
 						}
 
-					}.bind(this))
+					})
 					.error(function() {
 						deferred.reject();
 					});
@@ -106,7 +115,7 @@
 			};
 			this.setzestwebData = function(zestwebData) {
 
-				//store basic details as rootscope variables
+				// store basic details as rootscope variables
 				if (typeof zestwebData.access_token !== "undefined") {
 					that.zestwebData.accessToken = $rootScope.accessToken = zestwebData.access_token;
 				}
@@ -136,7 +145,7 @@
 				that.zestwebData.isRoomVerified = false;
 				that.zestwebData.isPrecheckinOnly = (zestwebData.is_precheckin_only === 'true' && zestwebData.reservation_status === 'RESERVED') ? true : false;
 				that.zestwebData.isCcAttachedFromGuestWeb = false;
-				that.zestwebData.isAutoCheckinOn = ((zestwebData.is_auto_checkin === 'true') && (zestwebData.is_precheckin_only === 'true')) ? true : false;;
+				that.zestwebData.isAutoCheckinOn = ((zestwebData.is_auto_checkin === 'true') && (zestwebData.is_precheckin_only === 'true')) ? true : false;
 				that.zestwebData.isExternalVerification = (zestwebData.is_external_verification === "true") ? true : false;
 				that.zestwebData.hotelIdentifier = zestwebData.hotel_identifier;
 				that.zestwebData.guestAddressOn = zestwebData.guest_address_on === 'true' ? true : false;
@@ -159,16 +168,16 @@
 				that.zestwebData.collectCCOnCheckin = (zestwebData.checkin_collect_cc === "true") ? true : false;
 				that.zestwebData.isMLI = (zestwebData.payment_gateway = "MLI") ? true : false;
 
-				//room key delivery options
+				// room key delivery options
 				that.zestwebData.preckinCompleted = false;
 				that.zestwebData.userEmail = zestwebData.primary_guest_email;
 				that.zestwebData.keyDeliveryByEmail = true;
-				//that.zestwebData.keyDeliveryByText  = true;
+				// that.zestwebData.keyDeliveryByText  = true;
 				that.zestwebData.zestCheckinNoServiceMsg = zestwebData.zest_checkin_no_service_msg;
 
 				that.zestwebData.offerRoomDeliveryOptions = (zestwebData.offer_room_delivery_options === "true") ? true : false;
 
-				//Params for zest mobile and desktop screens
+				// Params for zest mobile and desktop screens
 				if (zestwebData.hasOwnProperty('is_password_reset')) {
 					that.zestwebData.isPasswordResetView = zestwebData.is_password_reset = "true";
 					that.zestwebData.isTokenExpired = zestwebData.is_token_expired === "true" ? true : false;

@@ -23,8 +23,10 @@
         },
         link: function(scope, el, attrs) {
           var adjustX, adjustY, at, content, delay, event, eventOut, fixed, generateQtip, my, qtipClass, string_to_bool;
+
           string_to_bool = function(str) {
             var ref;
+
             return !((ref = String(str).toLowerCase()) === 'false' || ref === '0' || ref === 'null');
           };
           my = scope.qtipMy || 'bottom center';
@@ -39,6 +41,7 @@
           delay = scope.qtipDelay || 100;
           generateQtip = function(content) {
             var options;
+
             options = {
               content: content,
               position: {

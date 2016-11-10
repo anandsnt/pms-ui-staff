@@ -3,15 +3,15 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
   $stateProvider.state('admin.exactOnlineSetup', {
     templateUrl: '/assets/partials/ExactOnline/setup/adExactOnlineSetup.html',
     controller: 'adExactOnlineSetupCtrl',
-    url : '/exactonline/setup',
+    url: '/exactonline/setup',
     resolve: {
       exactOnlineSetupValues: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
         return adExactOnlineSetupSrv.fetchExactOnLineConfiguration();
       }],
-      journalsList : ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
+      journalsList: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
         return adExactOnlineSetupSrv.fetchJournalsList();
       }],
-      balancingAccounts : ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
+      balancingAccounts: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
         return adExactOnlineSetupSrv.fetchBalancingAccounts();
       }]
     }
@@ -25,19 +25,19 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
         return ADzestWebGlobalSettingsSrv.fetchZestwebGlobalSettings();
       }]
     },
-    url : '/zestWebGlobalSettings'
+    url: '/zestWebGlobalSettings'
   });
 
   $stateProvider.state('admin.propertyInterfaceSetup', {
     templateUrl: '/assets/partials/property/propertyInterfaceSetup.html',
     controller: 'ADPropertyInterfaceSetupCtrl',
-    url : '/propertyinterface/setup'
+    url: '/propertyinterface/setup'
   });
 
   $stateProvider.state('admin.letshareSetup', {
     templateUrl: '/assets/partials/letshare/letShareSetup.html',
     controller: 'adLetShareSetupCtrl',
-    url : '/letshare/setup',
+    url: '/letshare/setup',
     resolve: {
       letsShareSetupValues: ['adLetShareSetupSrv', function(adLetShareSetupSrv) {
         return adLetShareSetupSrv.fetchLetShareConfiguration();
@@ -48,7 +48,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
   $stateProvider.state('admin.goMomentIvySetup', {
     templateUrl: '/assets/partials/interfaces/GoMomentIvy/goMomentIvySetup.html',
     controller: 'adGoMomentIvySetupCtrl',
-    url : '/gomomentivy/setup',
+    url: '/gomomentivy/setup',
     resolve: {
       goMomentIvySetupValues: ['adGoMomentIvySetupSrv', function(adGoMomentIvySetupSrv) {
         return adGoMomentIvySetupSrv.fetchGoMomentIvyConfiguration();
@@ -60,7 +60,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
   $stateProvider.state('admin.checkmate', {
     templateUrl: '/assets/partials/interfaces/Checkmate/checkmateSetup.html',
     controller: 'adCheckmateSetupCtrl',
-    url : '/checkmate/setup',
+    url: '/checkmate/setup',
     resolve: {
       checkmateSetupValues: ['adCheckmateSetupSrv', function(adCheckmateSetupSrv) {
         return adCheckmateSetupSrv.fetchCheckmateConfiguration();
@@ -72,7 +72,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
   $stateProvider.state('admin.lightspeedPosSetup', {
     templateUrl: '/assets/partials/lightspeedPOS/adLightspeedPOSSetup.html',
     controller: 'adLightSpeedPOSSetupCtrl',
-    url : '/lightspeedpos/setup',
+    url: '/lightspeedpos/setup',
     resolve: {
       lightSpeedSetupValues: ['adLightSpeedPOSSetupSrv', function(adLightSpeedPOSSetupSrv) {
         return adLightSpeedPOSSetupSrv.fetchLightSpeedPOSConfiguration();
@@ -83,7 +83,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
   $stateProvider.state('admin.windsurferCRSSetup', {
     templateUrl: '/assets/partials/WindsurferCRS/setup/adWindsurferCRSSetup.html',
     controller: 'adWindsurferCRSSetupCtrl',
-    url : '/windsurfercrs/setup',
+    url: '/windsurfercrs/setup',
     resolve: {
       windsurferCRSSetupValues: ['adWindsurferCRSSetupSrv', function(adWindsurferCRSSetupSrv) {
         return adWindsurferCRSSetupSrv.fetchWindsurferCRSConfiguration();
@@ -94,7 +94,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
   $stateProvider.state('admin.travelClickSetup', {
     templateUrl: '/assets/partials/interfaces/TravelClick/adTravelClickCRSSetup.html',
     controller: 'adTravelClickCRSSetupCtrl',
-    url : '/travelclick/setup',
+    url: '/travelclick/setup',
     resolve: {
       CRSConfig: ['adTravelClickCRSSetupSrv', function(adTravelClickCRSSetupSrv) {
         return adTravelClickCRSSetupSrv.fetchCRSConfiguration();
@@ -102,12 +102,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
     }
   });
 
-  $stateProvider.state('admin.ideasSetup',{
+  $stateProvider.state('admin.ideasSetup', {
     templateUrl: '/assets/partials/interfaces/ideas/adIdeasSetup.html',
     controller: 'adIdeasSetupCtrl',
-    url : '/ideas/setup',
+    url: '/ideas/setup',
     resolve: {
-      ideaSetup : ['adIdeasSetupSrv', function(adIdeasSetupSrv){
+      ideaSetup: ['adIdeasSetupSrv', function(adIdeasSetupSrv) {
         return adIdeasSetupSrv.getIdeaSetup();
       }]
     }
@@ -116,7 +116,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
   $stateProvider.state('admin.ifc_comtrol_settings', {
     templateUrl: '/assets/partials/IFCComtrol/adIFCComtrolSetup.html',
     controller: 'adIFCComtrolSetupCtrl',
-    url : '/ifc_comtrol/setup',
+    url: '/ifc_comtrol/setup',
     resolve: {
       ifcComtrolSetupValues: ['adIFCComtrolSetupSrv', function(adIFCComtrolSetupSrv) {
         return adIFCComtrolSetupSrv.fetchIFCComtrolConfiguration();
@@ -127,7 +127,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
   $stateProvider.state('admin.ifc_revenue_centers', {
     templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolRevenueCenterConfig.html',
     controller: 'adComtrolRevenueCenterCtrl',
-    url : '/ifc_comtrol/revenueCenter',
+    url: '/ifc_comtrol/revenueCenter',
     resolve: {
       revCenters: ['adComtrolRevenueCenterSrv', function(adComtrolRevenueCenterSrv) {
         return adComtrolRevenueCenterSrv.fetch();
@@ -138,7 +138,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
   $stateProvider.state('admin.ifc_charge_codes', {
     templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolChargeCodes.html',
     controller: 'adComtrolChargeCodeMappingCtrl',
-    url : '/ifc_comtrol/chargeCodeMappings',
+    url: '/ifc_comtrol/chargeCodeMappings',
     resolve: {
       mappedChargeCodes: ['adComtrolChargeCodeMappingSrv', function(adComtrolChargeCodeMappingSrv) {
         return adComtrolChargeCodeMappingSrv.fetch();
@@ -149,7 +149,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
   $stateProvider.state('admin.ifc_generic_mappings', {
     templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolGenericMappings.html',
     controller: 'adComtrolGenericMappingCtrl',
-    url : '/ifc_comtrol/genericMappings',
+    url: '/ifc_comtrol/genericMappings',
     resolve: {
       genericMappings: ['adComtrolGenericMappingSrv', function(adComtrolGenericMappingSrv) {
         return adComtrolGenericMappingSrv.fetch();
@@ -161,9 +161,9 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
   $stateProvider.state('admin.ifc_room_mappings', {
     templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolRoomMappings.html',
     controller: 'adComtrolRoomMappingCtrl',
-    url : '/ifc_comtrol/setup',
+    url: '/ifc_comtrol/setup',
     resolve: {
-      roomMappings : ['adComtrolRoomMappingSrv', function(adComtrolRoomMappingSrv) {
+      roomMappings: ['adComtrolRoomMappingSrv', function(adComtrolRoomMappingSrv) {
         return adComtrolRoomMappingSrv.fetch();
       }]
     }
@@ -172,7 +172,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
   $stateProvider.state('admin.gustoPosSetup', {
       templateUrl: '/assets/partials/GustoPOS/adGustoPOSSetup.html',
       controller: 'adGustoPOSSetupCtrl',
-      url : '/guestopos/setup',
+      url: '/guestopos/setup',
       resolve: {
           gustoSetupValues: ['adGustoPOSSetupSrv', function(adGustoPOSSetupSrv) {
               return adGustoPOSSetupSrv.fetchGustoPOSConfiguration();
@@ -183,7 +183,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
   $stateProvider.state('admin.britePabXSetup', {
     templateUrl: '/assets/partials/britePabX/britePabXSetup.html',
     controller: 'adBritePabXSetupCtrl',
-    url : '/britePabX/setup',
+    url: '/britePabX/setup',
     resolve: {
       britePabXSetupValues: ['adBritePabXSetupSrv', function(adBritePabXSetupSrv) {
         return adBritePabXSetupSrv.fetchBritePabXConfiguration();
@@ -194,7 +194,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
   $stateProvider.state('admin.afasSetup', {
     templateUrl: '/assets/partials/afas/afasSetup.html',
     controller: 'adAfasSetupCtrl',
-    url : '/letshare/setup',
+    url: '/letshare/setup',
     resolve: {
       afasSetupValues: ['adAfasSetupSrv', function(adAfasSetupSrv) {
         return adAfasSetupSrv.fetchAfasConfiguration();
@@ -205,7 +205,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
   $stateProvider.state('admin.m3BackOfficeExport', {
     templateUrl: '/assets/partials/interfaces/M3BackOffice/ADM3Configuration.html',
     controller: 'ADM3BackOfficeCtrl',
-    url : '/backoffice/m3/setup',
+    url: '/backoffice/m3/setup',
     resolve: {
       m3AccountingSetupValues: ['ADM3SetupSrv', function(ADM3SetupSrv) {
         return ADM3SetupSrv.getConfig();
@@ -216,87 +216,87 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
   $stateProvider.state('admin.mapping', {
     templateUrl: '/assets/partials/mapping/adExternalMapping.html',
     controller: 'ADMappingCtrl',
-    url : '/mapping/:hotelId'
+    url: '/mapping/:hotelId'
   });
   $stateProvider.state('admin.ffp', {
     templateUrl: '/assets/partials/frequentFlyerProgram/adFFPList.html',
     controller: 'ADFrequentFlyerProgramCtrl',
-    url : '/ffp'
+    url: '/ffp'
   });
 
   $stateProvider.state('admin.icare', {
     templateUrl: '/assets/partials/icare/adIcareServices.html',
     controller: 'ADIcareServicesCtrl',
-    url : '/icare'
+    url: '/icare'
   });
 
   $stateProvider.state('admin.keyEncoders', {
     templateUrl: '/assets/partials/keyEncoders/adKeyEncoderList.html',
     controller: 'ADKeyEncoderCtrl',
-    url : '/encoders'
+    url: '/encoders'
   });
 
   $stateProvider.state('admin.emvTerminals', {
     templateUrl: '/assets/partials/emvTerminals/emvTerminalList.html',
     controller: 'ADEmvTerminalCtrl',
-    url : '/terminals'
+    url: '/terminals'
   });
 
   $stateProvider.state('admin.emvTerminalDetails', {
     templateUrl: '/assets/partials/emvTerminals/emvTerminalDetails.html',
     controller: 'ADEmvTerminalDetailsCtrl',
-    url : '/terminaldetails/:itemid'
+    url: '/terminaldetails/:itemid'
   });
 
   $stateProvider.state('admin.doorlockInterface', {
     templateUrl: '/assets/partials/doorLockInterface/adDoorLockInterface.html',
     controller: 'ADDoorLockInterfaceCtrl',
-    url : '/doorlockinterface'
+    url: '/doorlockinterface'
   });
 
   $stateProvider.state('admin.sitemindersSetup', {
     templateUrl: '/assets/partials/SiteminderSetup/adSiteminderSetup.html',
     controller: 'adExternalInterfaceCtrl',
-    //interface_id: 2,
-    interface_id: 'SITEMINDER', //Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
-    simple_name: 'Siteminder', //Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
-    url : '/siteminderSetup'
+    // interface_id: 2,
+    interface_id: 'SITEMINDER', // Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    simple_name: 'Siteminder', // Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    url: '/siteminderSetup'
   });
 
   $stateProvider.state('admin.givexSetup', {
     templateUrl: '/assets/partials/Givex/adGivexSetup.html',
     controller: 'adExternalInterfaceCtrl',
-    //interface_id: 4,
-    interface_id: 'GIVEX',//Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
-    simple_name: 'Givex',//Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
-    url : '/siteminderSetup'
+    // interface_id: 4,
+    interface_id: 'GIVEX', // Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    simple_name: 'Givex', // Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    url: '/siteminderSetup'
   });
 
   $stateProvider.state('admin.synxisSetup', {
     templateUrl: '/assets/partials/SynxisSetup/adSynxisSetup.html',
     controller: 'adExternalInterfaceCtrl',
-    //interface_id: 3,
-    interface_id: 'SYNXIS',//Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
-    simple_name: 'Synxis',//Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
-    url : '/synxisSetup'
+    // interface_id: 3,
+    interface_id: 'SYNXIS', // Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    simple_name: 'Synxis', // Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    url: '/synxisSetup'
   });
 
   $stateProvider.state('admin.zDirectSetup', {
     templateUrl: '/assets/partials/ZDirectSetup/adZDirectSetup.html',
     controller: 'adExternalInterfaceCtrl',
-    //interface_id: 4,
-    interface_id: 'ZDIRECT',//Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
-    simple_name: 'ZDirect',//Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
-    url : '/zDirectSetup'
+    // interface_id: 4,
+    interface_id: 'ZDIRECT', // Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    simple_name: 'ZDirect', // Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    url: '/zDirectSetup'
   });
 
   $stateProvider.state('admin.travelTripperSetup', {
     templateUrl: '/assets/partials/travelTripperSetup/adtravelTripperSetup.html',
     controller: 'adExternalInterfaceCtrl',
-    //interface_id: 4,
-    interface_id: 'TRAVELTRIPPER',//Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
-    simple_name: 'TravelTripper',//Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
-    url : '/travelTripperSetup'
+    // interface_id: 4,
+    interface_id: 'TRAVELTRIPPER', // Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    simple_name: 'TravelTripper', // Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    url: '/travelTripperSetup'
   });
 
 });

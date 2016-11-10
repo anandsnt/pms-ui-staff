@@ -2,7 +2,7 @@ login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window'
     function($scope, selectPropertySrv, $window, $state, $stateParams) {
         
         BaseCtrl.call(this, $scope);
-        var init = function(){
+        var init = function() {
             $scope.errorMessage = "";
             $scope.propertyResults = [];
             $scope.searchData = "";
@@ -44,6 +44,7 @@ login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window'
                     "query": $scope.searchData.toLowerCase(),
                     "per_page": 10
                 };
+
                 $scope.invokeApi(selectPropertySrv.searchChargeCode, params, successCallBackSearchProperty);
             } else {
                 $scope.propertyResults = [];
@@ -67,6 +68,7 @@ login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window'
          */
         var successCallback = function(data) {
             var redirUrl = '/staff';
+
             setTimeout(function() {
                 $window.location.href = redirUrl;
             }, 300);
@@ -96,6 +98,7 @@ login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window'
             var data = {
                 hotel_id: $scope.selectedPropertyId
             };
+
             $scope.invokeApi(selectPropertySrv.setProperty, data, successCallback, failureCallBack);
         };
 

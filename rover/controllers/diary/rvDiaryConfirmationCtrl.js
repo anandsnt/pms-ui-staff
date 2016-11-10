@@ -64,6 +64,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
                     _.extend($scope.vaultSelections, convertTimeFormat(vFormat, occupancy));
                     _.extend($scope.selection, convertTimeFormat(dFormat, occupancy));
                     var selected_type;
+
                     _.each($scope.selectedReservations, function(obj, idx, list) {
                         var item = {
                                 room_id: obj.room.id,
@@ -77,12 +78,12 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
                             },
                             local_version = util.shallowCopy({}, item);
 
-                        if( $scope.gridProps.filter.rate_type === 'Corporate') {
+                        if ( $scope.gridProps.filter.rate_type === 'Corporate') {
                             selected_type = $scope.gridProps.filter.rate.type;
-                            if(selected_type === "COMPANY") {
+                            if (selected_type === "COMPANY") {
                                 item.company_card_id = $scope.gridProps.filter.rate.id;
                             }
-                            if(selected_type === "TRAVELAGENT") {
+                            if (selected_type === "TRAVELAGENT") {
                                 item.travel_agent_id = $scope.gridProps.filter.rate.id;
                             }
                         }
@@ -98,10 +99,10 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
 
         $scope.initSelections();
 
-        $scope.closeWithAnimation = function (){
-            //to add stjepan's popup showing animation
+        $scope.closeWithAnimation = function () {
+            // to add stjepan's popup showing animation
             $rootScope.modalOpened = false;
-            $timeout(function(){
+            $timeout(function() {
                 ngDialog.close();
             }, 300);
         };
@@ -126,12 +127,13 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
 
         $scope.routeToSummary = function() {
 
-            var fetchSuccess = function(isAddonsConfigured){
+            var fetchSuccess = function(isAddonsConfigured) {
                 $scope.saveToVault('temporaryReservationDataFromDiaryScreen', $scope.vaultSelections);
-                //CICO-9429
-                if ( !$rootScope.isHourlyRateOn && $rootScope.isAddonOn&&isAddonsConfigured) {
+                // CICO-9429
+                if ( !$rootScope.isHourlyRateOn && $rootScope.isAddonOn && isAddonsConfigured) {
                     var arrival_date = $scope.vaultSelections.arrival_date;
                     var departure_date = $scope.vaultSelections.departure_date;
+
                     $state.go('rover.reservation.staycard.mainCard.addons', {
                         "from_date": arrival_date,
                         "to_date": departure_date,
@@ -144,17 +146,18 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
                 }
                 $scope.closeWithAnimation ();
             };
-            var fetchFailed = function(errorMessage){
+            var fetchFailed = function(errorMessage) {
                 $scope.errorMessage = errorMessage;
                 $scope.closeWithAnimation();
             };
             var params = {};
+
                 params.from_date = $scope.vaultSelections.arrival_date;
                 params.to_date = $scope.vaultSelections.departure_date;
                 params.is_active = true;
-            //Fetches whether any configured addons are available.
-            //CICO-16874
-            $scope.invokeApi(RVReservationBaseSearchSrv.hasAnyConfiguredAddons,params,fetchSuccess,fetchFailed); //CICO-16874
+            // Fetches whether any configured addons are available.
+            // CICO-16874
+            $scope.invokeApi(RVReservationBaseSearchSrv.hasAnyConfiguredAddons, params, fetchSuccess, fetchFailed); // CICO-16874
         };
 
         // save data to $vault
