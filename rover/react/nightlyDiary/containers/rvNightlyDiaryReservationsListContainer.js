@@ -33,7 +33,42 @@ let  calculateReservationDurationAndPosition = (diaryInitialDayOfDateGrid, reser
     }else if(numberOfDays === NIGHTLY_DIARY_CONST.DAYS_21) {
       reservationPosition = reservationPosition + NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_21;
     }
-    //return reservationPosition;
+
+    // {duration} - Duration is calculated like this:
+
+    // Case: Departures within the grid || Not Stay-Day Reservations
+
+    //     Step 1
+    //     - Get the number of nights (if we have an arrival-date from the past, then calculate only the nights from the first day in the grid )
+    //     - Multiply {no. of nights} with {night-duration}.
+    //     Step 2:
+    //      Case:
+    //         Position == 0 -
+    //          - Add 10 to the value
+    //         Position > 0
+    //          - Substract 5 from the value
+    // Case: Stay-Day Reservations
+    //       Reservations that have the same arrival and departure date ( nights == 0 )
+    //       21 Days:
+    //       - {night-duration} - 10
+    //       7 Days:
+    //       - {night-duration} - 15
+    // Case: Departures outside the grid
+    //       All reservations that have their departure outside the grid
+    //       {max-departure-day} : 7 (if 7days), 21 (if 21days)
+    //       {arrival-day} : the day when the reservation starts (if past or first day = 1, second day = 2, ....)
+
+    //       Step 1:
+    //       - Get the number of days that are still inside the grid
+    //       {max-departure-day - arrival-day + 1} // Adding the 1 night fix
+    //       // Example: Arrival is the last day (7) => 7 - 7 = 0, 0 + 1 = 1 -> 1 night that we do show
+    //       // Example: Arrival is the first day (1) => 7 - 1 = 6, 6 + 1 = 7 -> we want to show all the nights through the grid
+    //       - Step 2:
+    //       21 Days:
+    //         - Substract 10 from it
+    //       7 Days:
+    //         - Substract 15 from it
+
     let durationOfReservation = 0;
     if((reservationDepartureDate.getTime() > diaryInitialDate.getTime())
         && (reservationDepartureDate.getTime() < finalDayOfDiaryGrid)
@@ -78,9 +113,6 @@ let  calculateReservationDurationAndPosition = (diaryInitialDayOfDateGrid, reser
 };
 
 let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateGrid, numberOfDays) => {
-  //  console.log("--------Initial day-->>"+diaryInitialDayOfDateGrid)
-   // console.log(diaryInitialDayOfDateGrid)
-  // console.log("--"+NIGHTLY_DIARY_CONST.RESERVATION_ROW_WIDTH)
     roomsList.map((room) => {
        // reservation.duration = 140;
        // reservation.reservation_status = "inhouse";
@@ -97,8 +129,6 @@ let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateG
                 reservation.reservationClass = "reservation inhouse"
 
             })
-            console.log(room.reservations)
-
         }
 
     })
