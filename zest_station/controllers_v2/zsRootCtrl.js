@@ -581,10 +581,6 @@ sntZestStation.controller('zsRootCtrl', [
 				}
 				if (workstationTimer >= getWorkstationsAtTime){
 					getAdminWorkStations();//fetch workstations with latest status details
-					if (currentState === 'zest_station.outOfService'){
-						//when out of service, keep checking for updates to the workstation, but not as often (120s here vs 30s @ home screen)
-						$scope.checkIfWorkstationRefreshRequested();
-					}
 					workstationTimer = 0;
 				}
 				//the user inactivity actions need not be done when user in 
@@ -1010,6 +1006,10 @@ sntZestStation.controller('zsRootCtrl', [
 			var onSuccess = function(response) {
 				$scope.zestStationData.workstations = response.work_stations;
 				setWorkStationForAdmin();
+				if ($state.current.name === 'zest_station.outOfService'){
+					//when out of service, keep checking for updates to the workstation, but not as often (120s here vs 30s @ home screen)
+					$scope.checkIfWorkstationRefreshRequested();
+				}
 			};
 			var onFail = function(response) {
 				console.warn('fetching workstation list failed:', response);
