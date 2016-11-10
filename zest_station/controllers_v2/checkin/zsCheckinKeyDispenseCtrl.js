@@ -65,6 +65,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 
 		var changePageModeToFailure = function() {
 			$scope.mode = "DISPENSE_KEY_FAILURE_MODE";
+			$scope.zestStationData.workstationStatus = 'out-of-order';//go out of order when (printing or key encoding fails)
 			$scope.runDigestCycle();
 		};
 		/**
@@ -73,7 +74,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 		 */
 		var onGeneralFailureCase = function(response) {
 			$scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_KEY_FAIL');
-			$scope.zestStationData.workstationStatus = 'out-of-order';
+			$scope.zestStationData.workstationStatus = 'out-of-order';//go out of order when (printing or key encoding fails)
 			changePageModeToFailure();
 		};
 
@@ -151,12 +152,10 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 		});
 		$scope.$on('SOCKET_FAILED', function() {
 			$scope.zestStationData.workstationOooReason = $filter('translate')('SOCKET_FAILED');
-			$scope.zestStationData.workstationStatus = 'out-of-order';
 			changePageModeToFailure();
 		});
 		$scope.$on('DISPENSE_CARD_EMPTY', function() {
 			$scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_KEY_FAIL_EMPTY');
-			$scope.zestStationData.workstationStatus = 'out-of-order';
 			changePageModeToFailure();
 		});
 		$scope.$on('SOCKET_CONNECTED', function() {
