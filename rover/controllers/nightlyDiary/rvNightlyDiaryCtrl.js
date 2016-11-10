@@ -7,6 +7,7 @@ angular.module('sntRover')
         '$filter',
         'roomsList',
         'datesList',
+        'RVNightlyDiarySrv',
         function(
             $scope,
             $rootScope,
@@ -14,7 +15,8 @@ angular.module('sntRover')
             $stateParams,
             $filter,
             roomsList,
-            datesList
+            datesList,
+            RVNightlyDiarySrv
         ){
 
         BaseCtrl.call(this, $scope);
@@ -32,21 +34,37 @@ angular.module('sntRover')
             fromDate        : '',
             toDate          : '',
             roomFilterCount : 0,
-            filterCount     : 0
+            filterCount     : 0,
+            hasMultipleMonth : false
+        };
+
+        // Method to update 7/21 time line data.
+        var fetchTimelineListData = function(){
+            var successCallBackFetchDatesList = function(data){
+                $scope.$emit('hideLoader');
+                $scope.errorMessage = "";
+                $scope.diaryData.datesGridData = [];
+                $scope.diaryData.datesGridData = data;
+                $scope.broadcast('FETCH_COMPLETED_DATE_LIST_DATA');
+            };
+            var postData = {
+                "start_date": $scope.diaryData.fromDate,
+                "no_of_days": $scope.diaryData.numberOfDays
+            };
+            $scope.invokeApi(RVNightlyDiarySrv.fetchDatesList, postData, successCallBackFetchDatesList);
         };
 
         //Initial State
         var initialState = {
             roomsList : roomsList.rooms
         };
-        
-        const store = configureStore(initialState);
 
+        const store = configureStore(initialState);
         const {render} = ReactDOM;
         const {Provider} = ReactRedux;
 
         // angular method to update diary view via react dispatch method.
-        $scope.updateDiaryView = function(){
+        var updateDiaryView = function(){
             var dispatchData = {
                 type: 'DIARY_VIEW_CHANGED',
                 number_of_days: $scope.diaryData.numberOfDays,
@@ -55,7 +73,15 @@ angular.module('sntRover')
             store.dispatch(dispatchData);
         };
 
-
+        // Handle event emitted from child - rvNightlyDiaryFiltersController
+        // To refresh diary data - rooms & reservations.
+        $scope.$on('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function(event){
+            updateDiaryView();
+        });
+        // To refresh timeline data
+        $scope.$on('REFRESH_DIARY_TIMELINE', function(event){
+            fetchTimelineListData();
+        });
 
         /**
          * to render the grid view
