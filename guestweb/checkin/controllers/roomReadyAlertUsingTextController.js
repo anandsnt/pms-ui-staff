@@ -1,4 +1,5 @@
-/*global sntGuestWeb */
+/*global sntGuestWeb b:true*/
+/*eslint no-undef: "error"*/
 
 sntGuestWeb.controller('roomReadyAlertUsingTextController', ['$scope',
   '$state',
