@@ -19,6 +19,7 @@ angular.module('sntRover')
             reservationsList
         ){
 
+
         BaseCtrl.call(this, $scope);
         $scope.heading = $filter('translate')('MENU_ROOM_DIARY');
         $scope.setTitle($filter('translate')('MENU_ROOM_DIARY'));
@@ -47,7 +48,8 @@ angular.module('sntRover')
         var initialState = {
             roomsList : roomsList.rooms,
             reservationsList: reservationsList.rooms,
-            initialDayOfDateGrid: $rootScope.businessDate
+            initialDayOfDateGrid: $rootScope.businessDate,
+            numberOfDays: 7
         };
         const store = configureStore(initialState);
 

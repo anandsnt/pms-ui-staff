@@ -1,27 +1,29 @@
 const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent }) => {
 
-    (<div className="grid-reservations firstday-fri">
-
+    return (
+        <div className="grid-reservations firstday-fri">
         {
             reservationsListToComponent.map((item) => (
                     <div className="grid-row">
                         {
-                            //if(item.reservations.length > 0) {
+
+                            item.reservations.length > 0 ?
                                 item.reservations.map((reservationItem) => (
-                                        <div>
-                                            fffffffffffffffxxx
+                                        <div style={reservationItem.style}>
+                                            {reservationItem.confirm_no}
                                         </div>
                                     )
                                 )
 
-                            //}
+                            : ''
 
                         }
                     </div>
                 )
             )
         }
-    </div>);
+        </div>
+    );
 };
 
 
