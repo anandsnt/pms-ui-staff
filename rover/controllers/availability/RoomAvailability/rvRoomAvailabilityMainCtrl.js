@@ -30,8 +30,7 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 
 
 	// default number of selected days is 14
-	$scope.numberOfDaysSelected = 14;
-
+	$scope.numberOfDaysSelected = '14';
 
 	$scope.data = {};
 
@@ -143,10 +142,8 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	};
 
 	$scope.shouldShowPrint = function () {
-		var DAYS = 14,
+		var DAYS = '14',
 			ROOM = 'room';
-
-		console.log( $scope.numberOfDaysSelected, $scope.availabilityToShow );
 
         return DAYS === $scope.numberOfDaysSelected && ROOM === $scope.availabilityToShow;
 	};
