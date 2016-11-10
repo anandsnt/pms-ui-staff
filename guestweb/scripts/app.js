@@ -128,8 +128,9 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		//we will be showing the departure date as a verification option in external URL landing based
 		//on admin settings
 		$rootScope.showDepartureDateForExtUrl = (reservationAndhotelData.checkin_auth_actions === 'conf_num_and_depart_date');
+		
 		//for some hotels, we may need to ask for mobile number even if using hotel triggered email
-		$rootScope.alwaysAskForMobileNumber = true;
+		$rootScope.alwaysAskForMobileNumber = _.isUndefined(reservationAndhotelData.always_ask_for_mobile_number) ? false : reservationAndhotelData.always_ask_for_mobile_number;
 
 		//Footer Settings
 		$rootScope.footerSettings = reservationAndhotelData.zest_web_footer_settings;
