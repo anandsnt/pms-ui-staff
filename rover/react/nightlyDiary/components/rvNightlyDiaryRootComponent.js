@@ -10,6 +10,7 @@ const NightlyDiaryRootComponent = () => (
                 <div className="grid-pagination bottom">
                     <button type="button" className="button blue">Next {X} Rooms</button>
                 </div> */}
+            <GoToPreviousPageButtonContainer/>
             <NightlyDiaryRoomsListContainer/>
 
         </div>
