@@ -1,6 +1,5 @@
-/*
-  email entry Ctrl where the email is added
-*/
+/*global sntGuestWeb */
+
 sntGuestWeb.controller('roomReadyAlertUsingTextController', ['$scope',
   '$state',
   '$rootScope',
