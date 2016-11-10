@@ -408,6 +408,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				return true;
 			}
 		}
+		
 
 		/**
 		 * function to perform filering on results.
@@ -466,7 +467,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				dataDict.is_queued_rooms_only = true;
 			} else if ($stateParams.type === "VIP") {
 				dataDict.vip = true;
-			} else if ($stateParams.type !== undefined && query === '' && $stateParams.type !== 'SEARCH_NORMAL') {
+			} else if (!!$stateParams.type && query === '' && $stateParams.type !== 'SEARCH_NORMAL') {
 				dataDict.status = $stateParams.type;
 			}
 			// CICO-10323. for hotels with single digit search,
