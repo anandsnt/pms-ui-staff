@@ -83,7 +83,7 @@
                     </div>
                 </div>
                 <button type="button" class="button white icons icon-remove-10" ng-click="deletePostClicked(post.id)">Delete</button>
-                <div class="conversation-container" ng-if="post.id == selectedPost.id" ng-include= "'/assets/partials/socialLobby/rvSLComments.html'"></div>
+                <div class="conversation-container" ng-if="post.isExpanded " ng-include= "'/assets/partials/socialLobby/rvSLComments.html'"></div>
                 
             </div>
         </div>

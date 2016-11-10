@@ -27,9 +27,12 @@ sntRover.controller('RVSocialLobbyCrl', [
             var posts = postContainer.children;
             
             var height = 80 * posts.length + 40;
-            if(expandedPostHeight !== ""){
-                height = height + expandedPostHeight;                
+            _.each($scope.posts, function(post){
+                if(typeof post.expandedHeight !== "undefined" && post.expandedHeight !== ""){
+                    height = height + post.expandedHeight;                
             }
+            });
+            
             if($scope.errorMessage != "" || typeof $scope.errorMessage != 'undefined')
                 postScroll.style.height = ""+450+"px";
             else
@@ -55,9 +58,8 @@ sntRover.controller('RVSocialLobbyCrl', [
             
         }
 
-        $scope.$on("socialLobbyHeightUpdated", function(event, currentPostHeight) {
-            expandedPostHeight = currentPostHeight;
-
+        $scope.$on("socialLobbyHeightUpdated", function(event, data) {
+            $scope.posts[data.index].expandedHeight = data.height;
             refreshPostScroll();
         });
 
@@ -190,9 +192,12 @@ sntRover.controller('RVSocialLobbyCrl', [
 
         $scope.togglePostDetails = function(post){
             $scope.errorMessage = "";
-            $scope.selectedPost = $scope.selectedPost == "" ? post : post.id == $scope.selectedPost.id? "" : post;
-            if($scope.selectedPost == ""){
-                expandedPostHeight = "";
+            
+            if(!post.isExpanded){
+                post.isExpanded = true;
+            }else{
+                post.isExpanded = false;
+                post.expandedHeight = "";
                 refreshPostScroll();
             }
         }

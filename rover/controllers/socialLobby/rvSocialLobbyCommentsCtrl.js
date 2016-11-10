@@ -22,9 +22,10 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
         var COMMENT_LIST_SCROLL = 'comment-list-scroll';
 
         var setCommentScrollHeight = function(){
-            var conversationWrapper = angular.element(document.querySelector(".conversation-wrapper"))[0];
-            var commentScroll = angular.element(document.querySelector(".neighbours-comment-scroll"))[0];
-            var commentContainer = angular.element(document.querySelector(".neighbours-comment-container"))[0];
+            var postEl = angular.element(document.querySelectorAll(".activity-post"))[$scope.$index];
+            var conversationWrapper = angular.element(postEl.querySelector(".conversation-wrapper"))[0];
+            var commentScroll = angular.element(postEl.querySelector(".neighbours-comment-scroll"))[0];
+            var commentContainer = angular.element(postEl.querySelector(".neighbours-comment-container"))[0];
             var comments = commentContainer.children;
             var height = 75 * comments.length ;
             height = height < 200 && height > 0 ? height + 20: height;
@@ -33,7 +34,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
                 if(comment.clientHeight > 70)
                     height += comment.clientHeight - 70;
             });
-            var wrapperHeight;conversationWrapper.clientHeight;
+            var wrapperHeight;
             if(height < 300){
                 wrapperHeight = height;
                 commentScroll.style.height = ""+height+"px";
@@ -46,11 +47,13 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
             
             commentContainer.style.height = ""+height+"px";
 
-            var parentPostEl =  angular.element(document.querySelector(".post-full"))[0];
+            var parentPostEl =  angular.element(postEl.querySelector(".post-full"))[0];
             var parentPostElHeight = parentPostEl.clientHeight - 20;
             var updatedHeight = wrapperHeight + 60 + parentPostElHeight;
-
-            $scope.$emit("socialLobbyHeightUpdated", updatedHeight);
+            var commentScrollData = {};
+            commentScrollData.index = $scope.$index;
+            commentScrollData.height = updatedHeight;
+            $scope.$emit("socialLobbyHeightUpdated", commentScrollData);
         }
 
         $scope.refreshCommentScroll = function() {
