@@ -40,20 +40,27 @@ sntZestStation.controller('zsHomeCtrl', [
 				$state.go('zest_station.checkOutReservationSearch');
 			} else {
 				$state.go('zest_station.checkoutSearchOptions');
-			};
+			}
 		};
 
 		$scope.language = {};
 
-		var setToDefaultLanguage = function() {
+		var setToDefaultLanguage = function(checkIfDefaultLanguagIsSet) {
 			//assigning default language
 			if ($scope.languages.length) {
 				var defaultLangName = zestStationSettings.zest_lang.default_language.toLowerCase(),
 					defaultLanguage = _.findWhere($scope.languages, {
 						name: defaultLangName
 					});
-				$scope.selectLanguage(defaultLanguage);
+				var languageConfig = zsGeneralSrv.languageValueMappingsForUI[defaultLanguage.name],
+				langShortCode = languageConfig.code;
 
+				if( $translate.use() === langShortCode && checkIfDefaultLanguagIsSet){
+					//do nothing, current language is already the default one
+				} else {
+					console.info("translating to default lanaguage after "+userInActivityTimeInHomeScreenInSeconds+" seconds");
+					$scope.selectLanguage(defaultLanguage);
+				}
 			}
 		};
 
@@ -61,17 +68,28 @@ sntZestStation.controller('zsHomeCtrl', [
 		var userInActivityTimeInHomeScreenInSeconds = 0;
 
 		var setHomeScreenTimer = function() {
-
 			$scope.resetHomeScreenTimer = function() {
+				$scope.$emit('HOME_ACTIVITY');//remove once refresh functions are moved to this controller
 				userInActivityTimeInHomeScreenInSeconds = 0;
 			};
 
 			var incrementHomeScreenTimer = function() {
-
-				userInActivityTimeInHomeScreenInSeconds++;
+				//if by some reason, the timer is running even 
+				//after chaning state (we are clearing timer whenever we are
+				//changing state), we need to deactivate the timer.
+				if ($state.current.name === 'zest_station.home') {
+					userInActivityTimeInHomeScreenInSeconds++;
+				}
 				//when user activity is not recorded for more than 120 secs
 				//translating to default lanaguage
-				if (userInActivityTimeInHomeScreenInSeconds >= 120) {
+				console.log('userInActivityTimeInHomeScreenInSeconds',userInActivityTimeInHomeScreenInSeconds,$state.current.name)
+				if ($state.current.name !== 'zest_station.home'){
+					userInActivityTimeInHomeScreenInSeconds = 0;
+					clearInterval($scope.activityTimer);
+				}
+				//$state.current.name === 'zest_station.admin' - if going to hotel admin, switch back to default language, in future we may need to find best logic for multiple languages for admin screen
+				//also if user has been inactive at the (home screen) for 2 minutes, reset language the default
+				if ((userInActivityTimeInHomeScreenInSeconds >= 120 && $state.current.name === 'zest_station.home') || $state.current.name === 'zest_station.admin')  {
 					console.info("translating to default lanaguage");
 					setToDefaultLanguage();
 					$scope.runDigestCycle();
@@ -79,9 +97,18 @@ sntZestStation.controller('zsHomeCtrl', [
 				} else {
 					//do nothing;
 				}
+				
 			};
 			$scope.activityTimer = setInterval(incrementHomeScreenTimer, 1000);
 		};
+
+		//deactivate the active activity timer on entering home page(inorder to avoid multiple timers 
+		//running at the same time, we will be start new timer)
+		try{
+			clearInterval($scope.activityTimer);
+		}catch(e){
+			//console.log("no timer running.")
+		}
 		setHomeScreenTimer();
 		/**************************************************************************************/
 
@@ -101,12 +128,14 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * @param  {object} language
 		 */
 		$scope.selectLanguage = function(language) {
+			//$scope.resetHomeScreenTimer();//to reset timer to 0 when changing language, otherwise counter is still going
+			//Reset timer on language selection
+			userInActivityTimeInHomeScreenInSeconds = 0;
+			$scope.$emit('HOME_ACTIVITY');
 			var languageConfig = zsGeneralSrv.languageValueMappingsForUI[language.name],
 				langShortCode = languageConfig.code;
 			$translate.use(langShortCode);
 			$scope.selectedLanguage = language;
-			//Reset timer on language selection
-			userInActivityTimeInHomeScreenInSeconds = 0;
 		};
 
 		/**
@@ -141,7 +170,7 @@ sntZestStation.controller('zsHomeCtrl', [
 			});
 
 			//assigning default language initially
-			if (!zsGeneralSrv.isDefaultLanguageSet) {
+			if (!zsGeneralSrv.isDefaultLanguageSet && $state.current.name === 'zest_station.home') {
 				setToDefaultLanguage();
 				zsGeneralSrv.isDefaultLanguageSet = true;
 			} else {

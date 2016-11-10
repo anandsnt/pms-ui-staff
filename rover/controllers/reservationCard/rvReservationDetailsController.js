@@ -377,6 +377,8 @@ sntRover.controller('reservationDetailsController',
 		$scope.reservationDetails.allotment.id = reservationDetails.reservation_card.allotment_id || '';
 
 		angular.copy(reservationListData, $scope.reservationListData);
+		// CICO-32546, flag to check if atleast one external reference number exists.
+		$scope.externalReferencesExist = ($scope.reservationListData.external_references.length > 0)? true : false;
 		 //Reset to firstTab in case in case of coming into staycard from the create reservation screens
          //after creating multiple reservations
         $scope.viewState.currentTab = 0;
