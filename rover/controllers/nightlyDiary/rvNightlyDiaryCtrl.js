@@ -30,6 +30,23 @@ angular.module('sntRover')
             diaryRoomsList  : roomsList,
             numberOfDays    : 7
         };
+        var goToPrevPage = ()=>{
+        console.log("Implement Prev button action")
+        };
+
+        var goToNextPage = ()=>{
+        console.log("Implement Next button action");
+        };
+    /**
+     * utility method to pass callbacks from
+     * @return {Object} with callbacks
+     */
+        const getTheCallbacksFromAngularToReact = () => {
+            return {            
+                goToPrevPage,
+                goToNextPage
+            }
+        };
 
         // To toogle 7/21 button.
         $scope.toggleSwitchMode = function(){
@@ -38,7 +55,8 @@ angular.module('sntRover')
         }
         //Initial State
         var initialState = {
-            roomsList : roomsList.rooms
+            roomsList : roomsList.rooms,
+            callbackFromAngular : getTheCallbacksFromAngularToReact()
         };
         const store = configureStore(initialState);
 
@@ -50,7 +68,8 @@ angular.module('sntRover')
             var dispatchData = {
                 type: 'DIARY_VIEW_CHANGED',
                 number_of_days: $scope.diaryData.numberOfDays,
-                diaryRoomsListData : $scope.diaryData.diaryRoomsList
+                diaryRoomsListData : $scope.diaryData.diaryRoomsList,
+                callbackFromAngular : getTheCallbacksFromAngularToReact()
             };
             store.dispatch(dispatchData);
         };
