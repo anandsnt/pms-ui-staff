@@ -78,7 +78,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.isRoomVerified = false;
 		$rootScope.isPrecheckinOnly = (reservationAndhotelData.is_precheckin_only === 'true' && reservationAndhotelData.reservation_status === 'RESERVED') ? true : false;
 		$rootScope.isCcAttachedFromGuestWeb = false;
-		$rootScope.isAutoCheckinOn = ((reservationAndhotelData.is_auto_checkin === 'true') && (reservationAndhotelData.is_precheckin_only === 'true')) ? true : false;;
+		$rootScope.isAutoCheckinOn = ((reservationAndhotelData.is_auto_checkin === 'true') && (reservationAndhotelData.is_precheckin_only === 'true')) ? true : false;
 		$rootScope.isExternalVerification = (reservationAndhotelData.is_external_verification === "true") ? true : false;
 		$rootScope.hotelIdentifier = reservationAndhotelData.hotel_identifier;
 		$rootScope.guestAddressOn = reservationAndhotelData.guest_address_on === 'true' ? true : false;
