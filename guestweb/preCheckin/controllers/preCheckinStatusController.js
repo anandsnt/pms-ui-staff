@@ -10,8 +10,7 @@
 	$rootScope.userMobile = ($rootScope.userMobile === null ) ? "" : $rootScope.userMobile;
 
 	// collect oustanding stay total
-	if (parseFloat($rootScope.outStandingBalance) > 0 && $rootScope.isMLI
-	   && $rootScope.collectOutStandingBalance && !$rootScope.skipBalanceCollection) {
+	if (parseFloat($rootScope.outStandingBalance) > 0 && $rootScope.isMLI && $rootScope.collectOutStandingBalance && !$rootScope.skipBalanceCollection) {
 		$state.go('balancePaymentCCCollection');
 	}
 	// collect number of keys
@@ -24,12 +23,11 @@
 		$state.go('checkinCcVerification');
 	}
 	// collect mobile number with option to update already existing mobile number
-	else if ($rootScope.application === "SMS" 
-			&& $rootScope.userMobile.length > 0 && !$rootScope.userMobileSkipped) {
-		$state.go('mobileNumberOptions');// if user has not attached an mobile
+	else if ((($rootScope.application === "SMS" || $rootScope.alwaysAskForMobileNumber) && $rootScope.userMobile.length > 0) && !$rootScope.userMobileSkipped) {
+		$state.go('mobileNumberOptions'); // if user has not attached an mobile
 	}
 	// collect new mobile number
-	else if ((($rootScope.application === "SMS" && $rootScope.userMobile.length === 0) || $rootScope.alwaysAskForMobileNumber) && !$rootScope.userMobileSkipped) {
+	else if ((($rootScope.application === "SMS" || $rootScope.alwaysAskForMobileNumber) && $rootScope.userMobile.length === 0) && !$rootScope.userMobileSkipped) {
 			$state.go('mobileNumberAddition'); // if user has not attached an mobile
 	}
 	// collect email
@@ -69,10 +67,10 @@
 			$state.go('emailAddition');
 		};
 		$scope.isValidEmail = function() {
-	   		 var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+			var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-	    	return re.test($rootScope.userEmail);
-	 	 };
+			return re.test($rootScope.userEmail);
+		};
 	}
 };
 
