@@ -61,7 +61,7 @@ sntRover.directive("autoGrowField", function($window) {
       // Need to fire event once again as the fields in the card headers
       // in the create reservation screens
       // arent of right width
-      $window.setTimeout(updateWidth, 3000); //changed from 0 to 2000 becauze the lazy loading
+      $window.setTimeout(updateWidth, 3000); // changed from 0 to 2000 becauze the lazy loading
 
 
       // do it on keydown so it updates "real time"
@@ -71,7 +71,7 @@ sntRover.directive("autoGrowField", function($window) {
         // the input has updated by the time this executes.
         $window.setTimeout(updateWidth, 0);
       });
-      //sat as active
+      // sat as active
       element.bind("focus", function() {
         element.addClass('active');
       });

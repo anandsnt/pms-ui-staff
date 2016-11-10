@@ -1,14 +1,25 @@
 {
-    "env":{
-        "browser":true,
-        "es6":true,
-        "jquery":true
+    "env": {
+        "browser": true,
+        "es6": true,
+        "jquery": true
     },
-    "installedESLint":true,
-    "parserOptions":{
-        "ecmaFeatures":{
-            "experimentalObjectRestSpread":true,
-            "jsx":true
+    "globals": {
+        "_": false,
+        "angular": false,
+        "React": false,
+        "ReactDOM": false,
+        "Provider": false,
+        "ReactRedux": false,
+        "ReduxThunk": false,
+        "BaseCtrl": true,
+        "sntRover": true
+    },
+    "installedESLint": true,
+    "parserOptions": {
+        "ecmaFeatures": {
+            "experimentalObjectRestSpread": true,
+            "jsx": true
         }
     },
     "extends": [
@@ -17,12 +28,115 @@
     "plugins":[
         "react"
     ],
-    "rules":{
-    },
-    "globals":{
-        "_":true,
-        "sntRover":true,
-        "angular":true,
-        "BaseCtrl":true
+    "rules": {
+        "eqeqeq": [
+            "error"
+        ],
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "curly": [
+            "error"
+        ],
+        "no-alert": "error",
+        "no-caller": "error",
+        "no-else-return": "error",
+        "no-extend-native": "error",
+        "no-extra-bind": "error",
+        "no-implied-eval": "error",
+        "no-invalid-this": "error",
+        "no-loop-func": "error",
+        "no-return-assign": [
+            "error",
+            "always"
+        ],
+        "no-self-compare": "error",
+        "no-throw-literal": "error",
+        "no-unused-expressions": "error",
+        "wrap-iife": [
+            "error",
+            "any"
+        ],
+        "comma-dangle": [
+            "error",
+            "never"
+        ],
+        "comma-spacing": [
+            "error",
+            {
+                "before": false,
+                "after": true
+            }
+        ],
+        "key-spacing": [
+            "error",
+            {
+                "afterColon": true,
+                "beforeColon": false
+            }
+        ],
+        "keyword-spacing": [
+            "error",
+            {
+                "before": true,
+                "after": true
+            }
+        ],
+        "newline-after-var": [
+            "error",
+            "always"
+        ],
+        "newline-per-chained-call": [
+            "error",
+            {
+                "ignoreChainWithDepth": 2
+            }
+        ],
+        "no-mixed-operators": "error",
+        "no-multiple-empty-lines": [
+            "error",
+            {
+                "max": 2,
+                "maxEOF": 1,
+                "maxBOF": 1
+            }
+        ],
+        "no-unneeded-ternary": "error",
+        "no-whitespace-before-property": "error",
+        "space-before-blocks": "error",
+        "space-infix-ops": "error",
+        "spaced-comment": [
+            "error",
+            "always"
+        ],
+        "require-jsdoc": [
+            "error",
+            {
+                "require": {
+                    "FunctionDeclaration": true,
+                    "MethodDefinition": true,
+                    "ClassDeclaration": true
+                }
+            }
+        ],
+        "max-depth": [
+            "error",
+            4
+        ],
+        "max-nested-callbacks": [
+            "error",
+            4
+        ],
+        "max-statements-per-line": [
+            "error",
+            {
+                "max": 1
+            }
+        ]
     }
 }

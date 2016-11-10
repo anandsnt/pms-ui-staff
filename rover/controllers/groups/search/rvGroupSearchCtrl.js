@@ -53,11 +53,11 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
         $scope.getClassAgainstPickedStatus = function(group) {
             var classes = '';
 
-            //Add class "green" if No. > 0
+            // Add class "green" if No. > 0
             if (group.total_picked_count > 0) {
                 classes = 'green';
             }
-            //Add class "red" if cancelled
+            // Add class "red" if cancelled
             if (isCancelledGroup(group)) {
                 classes += ' red';
             }
@@ -70,8 +70,9 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
          * @return {String}
          */
         $scope.getGuestClassForArrival = function(group) {
-            //"cancel" if cancelled, "check-in" if not cancelled
+            // "cancel" if cancelled, "check-in" if not cancelled
             var classes = isCancelledGroup(group) ? 'cancel' : 'check-in';
+
             return classes;
         };
 
@@ -81,8 +82,9 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
          * @return {String}
          */
         $scope.getGuestClassForDeparture = function(group) {
-            //"cancel" if cancelled, 'check-out' if not cancelled
+            // "cancel" if cancelled, 'check-out' if not cancelled
             var classes = isCancelledGroup(group) ? 'cancel' : 'check-out';
+
             return classes;
         };
 
@@ -96,7 +98,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
 
             runDigestCycle();
 
-            //we have to search on changing the from date
+            // we have to search on changing the from date
             $scope.search();
         };
 
@@ -110,7 +112,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
 
             runDigestCycle();
 
-            //we have to search on changing the from date
+            // we have to search on changing the from date
             $scope.search();
         };
 
@@ -122,7 +124,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
             $scope.query = '';
             runDigestCycle();
 
-            //we have to search on changing the from date
+            // we have to search on changing the from date
             $scope.search();
         };
 
@@ -157,7 +159,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
 
             runDigestCycle();
 
-            //we have to search on changing the from date
+            // we have to search on changing the from date
             $scope.search();
         };
 
@@ -172,7 +174,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
 
             runDigestCycle();
 
-            //we have to search on changing the to date
+            // we have to search on changing the to date
             $scope.search();
         };
 
@@ -229,6 +231,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
                 per_page: $scope.perPage,
                 page: $scope.page
             };
+
             return params;
         };
 
@@ -237,7 +240,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
          * @return - None
          */
         $scope.search = function() {
-            //am trying to search something, so we have to change the initial search helping screen if no rsults
+            // am trying to search something, so we have to change the initial search helping screen if no rsults
             $scope.amFirstTimeHere = false;
 
             var params = formGroupSearchParams();
@@ -246,6 +249,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
                 successCallBack: successCallBackOfSearch,
                 failureCallBack: failureCallBackOfSearch
             };
+
             $scope.callAPI(rvGroupSrv.getGroupList, options);
         };
 
@@ -255,10 +259,10 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
          * @return {None}
          */
         var successCallBackOfSearch = function(data) {
-            //groupList
+            // groupList
             $scope.groupList = data.groups;
 
-            //total result count
+            // total result count
             $scope.totalResultCount = data.total_count;
 
             refreshScrollers();
@@ -278,29 +282,29 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
          * return - None
          */
         var setDatePickerOptions = function() {
-            //date picker options - Common
+            // date picker options - Common
             var commonDateOptions = {
                 showOn: 'button',
                 dateFormat: $rootScope.jqDateFormat,
                 numberOfMonths: 1
             };
 
-            //date picker options - From
+            // date picker options - From
             $scope.fromDateOptions = _.extend({
                 onSelect: fromDateChoosed
             }, commonDateOptions);
 
-            //date picker options - Departute
+            // date picker options - Departute
             $scope.toDateOptions = _.extend({
                 onSelect: toDateChoosed
             }, commonDateOptions);
 
-            //default from date, as per CICO-13899 it will be business date
+            // default from date, as per CICO-13899 it will be business date
             $scope.fromDate = $filter('date')(tzIndependentDate(businessDate.business_date),
                 $rootScope.dateFormat);
             $scope.fromDateForAPI = tzIndependentDate(businessDate.business_date);
 
-            //default to date, as per CICO-13899 it will be blank
+            // default to date, as per CICO-13899 it will be blank
             $scope.toDate = '';
             $scope.toDateForAPI = '';
         };
@@ -310,13 +314,14 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
          * return - None
          */
         var setScrollerForMe = function() {
-            //setting scroller things
+            // setting scroller things
             var scrollerOptions = {
                 tap: true,
                 preventDefault: false,
                 deceleration: 0.0001,
                 shrinkScrollbars: 'clip'
             };
+
             $scope.setScroller('result_showing_area', scrollerOptions);
         };
 
@@ -332,12 +337,12 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
          * Pagination things
          */
         var setInitialPaginationAndAPIThings = function() {
-            //pagination
+            // pagination
             $scope.perPage = rvGroupSrv.DEFAULT_PER_PAGE;
             $scope.start = 1;
             $scope.end = initialGroupListing.groups.length;
 
-            //what is page that we are requesting in the API
+            // what is page that we are requesting in the API
             $scope.page = 1;
         };
 
@@ -349,13 +354,14 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
         $scope.formatDateForUI = function(date_) {
             var type_ = typeof date_,
                 returnString = '';
+
             switch (type_) {
-                //if date string passed
+                // if date string passed
                 case 'string':
                     returnString = $filter('date')(new tzIndependentDate(date_), $rootScope.dateFormat);
                     break;
 
-                    //if date object passed
+                    // if date object passed
                 case 'object':
                     returnString = $filter('date')(date_, $rootScope.dateFormat);
                     break;
@@ -384,7 +390,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
          * @return {Boolean} [description]
          */
         $scope.isFirstTimeWithNoResult = function() {
-            return ($scope.amFirstTimeHere && !hasSomeSearchResults())
+            return ($scope.amFirstTimeHere && !hasSomeSearchResults());
         };
 
         /**
@@ -392,7 +398,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
          * @return {[type]} [description]
          */
         $scope.shouldShowNoResult = function() {
-            return (!$scope.amFirstTimeHere && !hasSomeSearchResults())
+            return (!$scope.amFirstTimeHere && !hasSomeSearchResults());
         };
 
         /**
@@ -411,11 +417,11 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
             return ($scope.start === 1);
         };
 
-        //just redirecting to group creation page
+        // just redirecting to group creation page
         $scope.gotoAddNewGroup = function() {
             $state.go('rover.groups.config', {
                 'id': "NEW_GROUP",
-                'newGroupName' : $scope.query
+                'newGroupName': $scope.query
             });
         };
 
@@ -426,9 +432,11 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
          */
         $scope.loadPrevSet = function() {
             var isAtEnd = ($scope.end === $scope.totalResultCount);
+
             if (isAtEnd) {
-                //last diff will be diff from our normal diff
+                // last diff will be diff from our normal diff
                 var lastDiff = ($scope.totalResultCount % $scope.perPage);
+
                 if (lastDiff === 0) {
                     lastDiff = $scope.perPage;
                 }
@@ -440,10 +448,10 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
                 $scope.end = $scope.end - $scope.perPage;
             }
 
-            //Decreasing the page param used for API calling
+            // Decreasing the page param used for API calling
             $scope.page--;
 
-            //yes we are calling the API
+            // yes we are calling the API
             $scope.search();
         };
 
@@ -462,10 +470,10 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
                 $scope.end = $scope.end + $scope.perPage;
             }
 
-            //Increasing the page param used for API calling
+            // Increasing the page param used for API calling
             $scope.page++;
 
-            //yes we are calling the API
+            // yes we are calling the API
             $scope.search();
         };
 
@@ -477,39 +485,39 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
             $state.go('rover.groups.config', {
                 id: groupId,
                 activeTab: 'SUMMARY'
-            })
-        }
+            });
+        };
 
 
         /**
          * function used to set initlial set of values
          * @return {None}
          */
-        var initializeMe = function() {
-            //chnaging the heading of the page
+        var initializeMe = (function() {
+            // chnaging the heading of the page
             $scope.setHeadingTitle('GROUPS');
 
-            //updating the left side menu
+            // updating the left side menu
             $scope.$emit("updateRoverLeftMenu", "menuManageGroup");
 
-            //date related setups and things
+            // date related setups and things
             setDatePickerOptions();
 
-            //groupList
+            // groupList
             $scope.groupList = initialGroupListing.groups;
 
-            //total result count
+            // total result count
             $scope.totalResultCount = initialGroupListing.total_count;
 
-            //Yes am first time here
+            // Yes am first time here
             $scope.amFirstTimeHere = true;
 
-            //scroller and related things
+            // scroller and related things
             setScrollerForMe();
 
-            //pagination  & API things
+            // pagination  & API things
             setInitialPaginationAndAPIThings();
-        }();
+        }());
 
 
     }

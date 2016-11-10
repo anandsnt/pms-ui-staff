@@ -82,9 +82,9 @@ angular.module('sntRover')
             /** 
              * This is a higher order function that will generate funtion for the purpose
              * 
-             * @param section {string} - name of the section to be toggled
-             * @param APIMethod {function} - the deep method from the service
-             * @param toggleOnly {function} - a funtion that return if we have data and the section only needs to be toggled
+             * @param {string} section - name of the section to be toggled
+             * @param {function} APIMethod - the deep method from the service
+             * @param {function} toggleOnly - a funtion that return if we have data and the section only needs to be toggled
              * @returns {function} - the actual repeated functionality as function
              */
             var toggleSectionGenerator = function (section, APIMethod, toggleOnly) {

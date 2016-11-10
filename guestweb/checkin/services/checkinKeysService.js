@@ -6,6 +6,7 @@
 		var checkin = function(url, data) {
 
 			var deferred = $q.defer();
+
 			data.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "WEB";
 			data.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "WEB";
 			$http.post(url, data).success(function(response) {
@@ -18,13 +19,14 @@
 			return deferred.promise;
 		};
 
-		var fetchNoOfKeysData =  function(data){
+		var fetchNoOfKeysData =  function(data) {
 				var deferred = $q.defer();
-				//var url = '/guest_web/reservations/'+data.reservation_id+'.json';
-				var url = '/guest_web/zest_web_keys/'+data.reservation_id+'.json';
-				$http.get(url,{params: data}).success(function(response) {
+				// var url = '/guest_web/reservations/'+data.reservation_id+'.json';
+				var url = '/guest_web/zest_web_keys/' + data.reservation_id + '.json';
+
+				$http.get(url, {params: data}).success(function(response) {
 					deferred.resolve(response);
-				}.bind(this))
+				})
 				.error(function() {
 					deferred.reject();
 				});
@@ -32,8 +34,9 @@
 		};
 
 		var saveNoKeys = function(data) {
-			var url = '/guest_web/zest_web_keys/'+data.reservation_id+'.json';
+			var url = '/guest_web/zest_web_keys/' + data.reservation_id + '.json';
 			var deferred = $q.defer();
+
 			data.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "WEB";
 			data.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "WEB";
 			$http.put(url, data).success(function(response) {
@@ -47,12 +50,11 @@
 		};
 
 
-
 		return {
 			responseData: responseData,
 			checkin: checkin,
-			fetchNoOfKeysData : fetchNoOfKeysData,
-			saveNoKeys:saveNoKeys
+			fetchNoOfKeysData: fetchNoOfKeysData,
+			saveNoKeys: saveNoKeys
 		};
 	};
 

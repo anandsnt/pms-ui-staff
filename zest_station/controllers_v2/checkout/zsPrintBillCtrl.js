@@ -4,7 +4,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
     'zsCheckoutSrv', '$stateParams', '$window', '$timeout', '$filter',
     function($scope, $state, zsCheckoutSrv, $stateParams, $window, $timeout, $filter) {
 
-        /********************************************************************************
+        /** ******************************************************************************
          **      This is not a sperate state. It's an ng-included ctrl inside 
          **      zsReservationBill.html
          **      Expected state params -----> nothing              
@@ -17,7 +17,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
          *  general failure actions inside bill screen
          **/
         var failureCallBack = function() {
-            //if key card was inserted we need to eject that
+            // if key card was inserted we need to eject that
             $scope.$emit('EJECT_KEYCARD');
             $state.go('zest_station.speakToStaff');
         };
@@ -40,32 +40,34 @@ sntZestStation.controller('zsPrintBillCtrl', [
             $scope.zestStationData.workstationOooReason =  $filter('translate')(errorMessage);
             $scope.zestStationData.workstationStatus = 'out-of-order';
             var printopted = 'false';
+
             nextPageActions(printopted);
         };
 
-        var handleStarTacPrinterActions = function(){
+        var handleStarTacPrinterActions = function() {
 
             var printData = "";
 
-            /**** Socket actions starts here *****/
+            /** ** Socket actions starts here *****/
             $scope.$on('SOCKET_FAILED', function() {
                 printFailedActions();
             });
-            $scope.$on('WS_PRINT_SUCCESS',function(){
+            $scope.$on('WS_PRINT_SUCCESS', function() {
                 var printopted = 'true';
+
                 nextPageActions(printopted);
             });
-             $scope.$on('WS_PRINT_FAILED',function(event,data){
+             $scope.$on('WS_PRINT_FAILED', function(event, data) {
                 printFailedActions(data.error_message);
             });
             $scope.$on('SOCKET_CONNECTED', function() {
                $scope.socketOperator.startPrint(printData);
             });
-            /**** Socket actions ends here *****/
+            /** ** Socket actions ends here *****/
 
-            var fetchSatrTacBillSuccess = function(response){
+            var fetchSatrTacBillSuccess = function(response) {
                 printData =  response.bill_details;
-                //check if socket is open
+                // check if socket is open
                 if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
                     $scope.socketOperator.startPrint(printData);
                 } else {
@@ -75,11 +77,15 @@ sntZestStation.controller('zsPrintBillCtrl', [
             var data = {
                 "reservation_id": $scope.reservation_id
             };
+            var startTacDataFailedActions = function() {
+                printFailedActions();
+            };
             var options = {
                 params: data,
                 successCallBack: fetchSatrTacBillSuccess,
-                failureCallBack: printFailedActions
+                failureCallBack: startTacDataFailedActions
             };
+
            $scope.callAPI(zsCheckoutSrv.fetchStarTacPrinterData, options);
         };
 
@@ -95,24 +101,29 @@ sntZestStation.controller('zsPrintBillCtrl', [
                      */
                     if (sntapp.cordovaLoaded) {
                         var printer = (sntZestStation.selectedPrinter);
+
                         cordova.exec(function(success) {
                             var printopted = 'true';
+
                             nextPageActions(printopted);
                         }, function(error) {
                             printFailedActions();
                         }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
                     } else {
-                        if($scope.zestStationData.zest_printer_option === "STAR_TAC"){
-                            //we will call websocket services to print
-                            handleStarTacPrinterActions();
-                        }
-                        else{
+                        // REASON: API error . We cant push the starttac code.
+                        // So uncomment and use the following line in next sprint
+                        // if($scope.zestStationData.zest_printer_option === "STAR_TAC"){
+                        //     //we will call websocket services to print
+                        //     handleStarTacPrinterActions();
+                        // }
+                        // else{
                             $window.print();
                             setTimeout(function() {
                                 var printopted = 'true';
+
                                 nextPageActions(printopted);
                             }, 100);
-                        }
+                        // }
                        
                     }
                     // provide a delay for preview to appear 
@@ -121,7 +132,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
             } catch (e) {
                 console.info("something went wrong while attempting to print--->" + e);
                 printFailedActions();
-            };
+            }
             setTimeout(function() {
                 // CICO-9569 to solve the hotel logo issue
                 $("header .logo").removeClass('logo-hide');
@@ -152,6 +163,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
                 successCallBack: fetchBillSuccess,
                 failureCallBack: failureCallBack
             };
+
             $scope.callAPI(zsCheckoutSrv.fetchBillPrintData, options);
         };
 
@@ -161,6 +173,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
 
         $scope.clickedNoThanks = function() {
             var printopted = 'false';
+
             nextPageActions(printopted);
         };
 

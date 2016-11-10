@@ -122,7 +122,7 @@
 					<snt-payment
 							hotel-config="hotelPaymentConfig"
 							reservation-id="{{reservationData.reservation_card.reservation_id}}"
-                            bill-id="depositBalanceData.primary_bill_id"
+                            bill-id="reservationData.reservation_card.default_bill_id"
 							bill-number="billNumber"
 							payment-types="passData.details.paymentTypes"
 							selected-payment-type="depositBalanceMakePaymentData.payment_type"
