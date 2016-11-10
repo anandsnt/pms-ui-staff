@@ -5,7 +5,8 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	'ngDialog',
 	'$filter',
 	'$timeout',
-	function($scope, rvAvailabilitySrv, $rootScope, ngDialog, $filter, $timeout) {
+    '$q',
+	function($scope, rvAvailabilitySrv, $rootScope, ngDialog, $filter, $timeout, $q) {
 
 
 	BaseCtrl.call(this, $scope);
@@ -101,15 +102,12 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 
 	};
 
-	var successCallbackOfGrpNAllotDataFetch = function(data) {
-		$scope.$emit("hideLoader");
-		$scope.$broadcast("changedGrpNAllotData");
-	};
-
 	/**
 	* Api to fetch group AND Allotment data
 	*/
 	$scope.fetchGrpNAllotData = function() {
+        var deferred = $q.defer();
+
 		var isSameData = function() {
 			var newParams = $scope.getDateParams(),
 				oldParams = $scope.oldDateParams || { 'from_date': '', 'to_date': '' };
@@ -117,14 +115,27 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 			return newParams.from_date == oldParams.from_date && newParams.to_date == oldParams.to_date;
 		};
 
+        var successCallbackOfGrpNAllotDataFetch = function() {
+            $scope.$emit('hideLoader');
+            $scope.$broadcast('changedGrpNAllotData');
+            deferred.resolve( true );
+        };
+
 		if ( isSameData() ) {
-			successCallbackOfGrpNAllotDataFetch();
+			successCallbackOfGrpNAllotDataFetch()
 		} else {
 			$timeout(function() {
 				$scope.oldDateParams = $scope.getDateParams();
-				$scope.invokeApi(rvAvailabilitySrv.fetchGrpNAllotAvailDetails, $scope.getDateParams(), successCallbackOfGrpNAllotDataFetch, fetchApiFailed);
+				$scope.invokeApi(
+                    rvAvailabilitySrv.fetchGrpNAllotAvailDetails,
+                    $scope.getDateParams(),
+                    successCallbackOfGrpNAllotDataFetch,
+                    fetchApiFailed
+                );
 			}, 0);
 		}
+
+        return deferred.promise;
 	};
 
 	/**
