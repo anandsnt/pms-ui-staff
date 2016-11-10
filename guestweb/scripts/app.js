@@ -216,7 +216,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 			$state.go(path);
 		} else {
 			!reservationAndhotelData.error_occured ? $state.go('checkoutRoomVerification') : $state.go('errorOccured'); // checkout landing page
-		};
+		}
 
 		$(".loading-container").hide();
 
