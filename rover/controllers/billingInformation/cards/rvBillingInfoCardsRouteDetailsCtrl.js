@@ -1,4 +1,4 @@
-sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope','$filter','RVBillinginfoSrv', 'RVGuestCardSrv', 'ngDialog', 'RVBillCardSrv', 'RVPaymentSrv', 'rvPermissionSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, RVGuestCardSrv, ngDialog, RVBillCardSrv, RVPaymentSrv, rvPermissionSrv){
+sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'RVBillinginfoSrv', 'RVGuestCardSrv', 'ngDialog', 'RVBillCardSrv', 'RVPaymentSrv', 'rvPermissionSrv', function($scope, $rootScope, $filter, RVBillinginfoSrv, RVGuestCardSrv, ngDialog, RVBillCardSrv, RVPaymentSrv, rvPermissionSrv) {
 
     BaseCtrl.call(this, $scope);
 
@@ -11,10 +11,10 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
         $scope.swipedCardDataToSave = {};
 
         $scope.paymentFlags         = {
-            isAddPayment             : false,
-            showPaymentDropDown      : false,
-            isShownExistingCCPayment : false,
-            sixIsManual              : false
+            isAddPayment: false,
+            showPaymentDropDown: false,
+            isShownExistingCCPayment: false,
+            sixIsManual: false
         };
 
         setCreditCardDetails();
@@ -41,6 +41,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
      */
     var setCreditCardDetails = function() {
         var entity = $scope.selectedEntity;
+
         if (entity.credit_card_details !== null &&
             entity.credit_card_details !== undefined &&
             entity.credit_card_details.hasOwnProperty('payment_type_description')) {
@@ -53,7 +54,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
             $scope.paymentFlags.showPaymentDropDown   = false;
             $scope.paymentFlags.isShownExistingCCPayment = true;
 
-            setTimeout(function(){
+            setTimeout(function() {
                 $scope.$broadcast('UPDATE_FLAG');
             }, 1000);
         }
@@ -66,8 +67,8 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
     var setCommonPaymentModelItems = function() {
         $scope.passData = {};
         $scope.passData.details = {
-            firstName : "",
-            lastName  : ""
+            firstName: "",
+            lastName: ""
         };
         $scope.setScroller('cardsList');
     };
@@ -78,12 +79,14 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
      */
     var initializeScrollers = function() {
         var scrollerOptions = { preventDefault: false};
+
         $scope.setScroller('paymentList', scrollerOptions);
         $scope.setScroller('billingGroups', scrollerOptions);
         $scope.setScroller('chargeCodes', scrollerOptions);
         $scope.setScroller('routeDetails', scrollerOptions);
 
         var scrollerOptionsForSearch = {click: true};
+
         $scope.setScroller('chargeCodesList', scrollerOptionsForSearch);
 
         $scope.chargeCodesListDivHgt = 250;
@@ -95,7 +98,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
      * @return {undefined}
      */
     var refreshScrollers = function() {
-        setTimeout(function(){
+        setTimeout(function() {
             $scope.refreshScroller('paymentList');
             $scope.refreshScroller('billingGroups');
             $scope.refreshScroller('chargeCodes');
@@ -113,7 +116,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
         $scope.oldPayment = $scope.renderAddedPayment;
         $scope.renderAddedPayment = null;
         $scope.paymentFlags.isAddPayment = false;
-    }
+    };
 
     /**
      * Function to show the payment list on cancelling or adding new payment
@@ -137,9 +140,10 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
      * @return {DateObject}
      */
     var retrieveExpiryDate = function() {
-        var expiryDate = $scope.cardData.tokenDetails.isSixPayment?
-                         $scope.cardData.tokenDetails.expiry.substring(2, 4)+" / "+$scope.cardData.tokenDetails.expiry.substring(0, 2):
-                         $scope.cardData.cardDetails.expiryMonth+" / "+$scope.cardData.cardDetails.expiryYear;
+        var expiryDate = $scope.cardData.tokenDetails.isSixPayment ?
+                         $scope.cardData.tokenDetails.expiry.substring(2, 4) + " / " + $scope.cardData.tokenDetails.expiry.substring(0, 2) :
+                         $scope.cardData.cardDetails.expiryMonth + " / " + $scope.cardData.cardDetails.expiryYear;
+
         return expiryDate;
     };
 
@@ -148,9 +152,10 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
      * @return {Number} credit card number
      */
     var retrieveCardNumber = function() {
-        var cardNumber = $scope.cardData.tokenDetails.isSixPayment?
-                         $scope.cardData.tokenDetails.token_no.substr($scope.cardData.tokenDetails.token_no.length - 4):
+        var cardNumber = $scope.cardData.tokenDetails.isSixPayment ?
+                         $scope.cardData.tokenDetails.token_no.substr($scope.cardData.tokenDetails.token_no.length - 4) :
                          $scope.cardData.cardDetails.cardNumber.slice(-4);
+
         return cardNumber;
     };
 
@@ -159,9 +164,10 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
      * @return {card name}
      */
     var retrieveCardName = function() {
-        var cardName = (!$scope.cardData.tokenDetails.isSixPayment)?
-                       $scope.cardData.cardDetails.userName:
+        var cardName = (!$scope.cardData.tokenDetails.isSixPayment) ?
+                       $scope.cardData.cardDetails.userName :
                        ($scope.passData.details.firstName + " " + $scope.passData.details.lastName);
+
         return cardName;
     };
 
@@ -177,7 +183,8 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
         var expiryYear  = cardInfo.tokenDetails.isSixPayment ? 
                           cardInfo.tokenDetails.expiry.substring(0, 2) :
                           cardInfo.cardDetails.expiryYear;
-        var expiryDate  = (expiryMonth && expiryYear )? ("20"+expiryYear+"-"+expiryMonth+"-01"):"";
+        var expiryDate  = (expiryMonth && expiryYear ) ? ("20" + expiryYear + "-" + expiryMonth + "-01") : "";
+
         return expiryDate;
     };
 
@@ -193,7 +200,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
         $scope.renderAddedPayment.payment_type = "CC";
         $scope.paymentFlags.isAddPayment = false;
 
-        $scope.renderAddedPayment.creditCardType = (!$scope.cardData.tokenDetails.isSixPayment)?
+        $scope.renderAddedPayment.creditCardType = (!$scope.cardData.tokenDetails.isSixPayment) ?
                                                    getCreditCardType($scope.cardData.cardDetails.cardType).toLowerCase() :
                                                    getSixCreditCardType($scope.cardData.tokenDetails.card_type).toLowerCase();
         $scope.renderAddedPayment.cardExpiry = retrieveExpiryDate();
@@ -210,7 +217,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
         $scope.renderAddedPayment.payment_type = "CC";
         $scope.swipedCardDataToSave = swipedCardDataToSave;
         $scope.renderAddedPayment.creditCardType = swipedCardDataToSave.cardType.toLowerCase();
-        $scope.renderAddedPayment.cardExpiry = swipedCardDataToSave.cardExpiryMonth+"/"+swipedCardDataToSave.cardExpiryYear;
+        $scope.renderAddedPayment.cardExpiry = swipedCardDataToSave.cardExpiryMonth + "/" + swipedCardDataToSave.cardExpiryYear;
         $scope.renderAddedPayment.endingWith = swipedCardDataToSave.cardNumber.slice(-4);
     };
 
@@ -222,18 +229,19 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
         if (!$rootScope.isManualCCEntryEnabled) {
             $scope.isManualCCEntryEnabled = false;
             var dialog = ngDialog.open({
-                template   : '/assets/partials/payment/rvPaymentModal.html',
-                controller : '',
-                scope      : $scope
+                template: '/assets/partials/payment/rvPaymentModal.html',
+                controller: '',
+                scope: $scope
             });
+
             return;
         }
 
         $scope.renderAddedPayment = {
-            creditCardType : "",
-            cardExpiry     : "",
-            endingWith     : "",
-            payment_type   : ""
+            creditCardType: "",
+            cardExpiry: "",
+            endingWith: "",
+            payment_type: ""
         };
 
         $scope.paymentFlags.isAddPayment = true;
@@ -244,11 +252,11 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
         $scope.refreshScroller('routeDetails');
     };
 
-    $scope.$on("SHOW_SWIPED_DATA_ON_BILLING_SCREEN", function(e, swipedCardDataToRender){
+    $scope.$on("SHOW_SWIPED_DATA_ON_BILLING_SCREEN", function(e, swipedCardDataToRender) {
         $scope.paymentFlags.isAddPayment = true;
         $scope.$broadcast('showaddpayment');
 
-        setTimeout(function(){
+        setTimeout(function() {
             $scope.saveData.payment_type = "CC";
             $scope.paymentFlags.showPaymentDropDown = true;
             $scope.swippedCard = true;
@@ -262,7 +270,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
      * We save the id for the ngDialog to close nested dialog for 
      * disabling manual payment addition.
      */
-    $scope.$on("ngDialog.opened", function(event, data){
+    $scope.$on("ngDialog.opened", function(event, data) {
         $scope.ngDialogID =  data[0].id;
     });
 
@@ -311,8 +319,8 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
         };
 
         var params = {
-            id          : $scope.selectedEntity.id,
-            entity_type : $scope.selectedEntity.entity_type
+            id: $scope.selectedEntity.id,
+            entity_type: $scope.selectedEntity.entity_type
         };
 
         $scope.invokeApi(RVBillinginfoSrv.fetchDefaultAccountRouting, params, successCallback);
@@ -352,7 +360,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
 
         var errorCallback = function(errorMessage) {
             $scope.$parent.$emit('hideLoader');
-            $scope.$emit('displayErrorMessage',errorMessage);
+            $scope.$emit('displayErrorMessage', errorMessage);
         };
 
         $scope.invokeApi(RVBillinginfoSrv.fetchAllChargeCodes, '', successCallback, errorCallback);
@@ -371,7 +379,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
      * Listener for the save button click
      * @return {undefined}
      */
-    $scope.$on('routeSaveClicked', function(event){
+    $scope.$on('routeSaveClicked', function(event) {
         $scope.saveRoute();
     });
 
@@ -383,7 +391,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
         if ($scope.selectedEntity.attached_charge_codes.length === 0 && 
             $scope.selectedEntity.attached_billing_groups.length === 0) {
 
-            $scope.$emit('displayErrorMessage',[$filter('translate')('ERROR_CHARGES_EMPTY')]);
+            $scope.$emit('displayErrorMessage', [$filter('translate')('ERROR_CHARGES_EMPTY')]);
             return;
         }
 
@@ -396,7 +404,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
              */
             $scope.savePayment();
         }
-        else{
+        else {
             saveRouteAPICall();
         }
     };
@@ -420,10 +428,11 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
 
         var errorCallback = function(errorMessage) {
             $scope.$parent.$emit('hideLoader');
-            $scope.$emit('displayErrorMessage',errorMessage);
+            $scope.$emit('displayErrorMessage', errorMessage);
         };
 
         var params = angular.copy($scope.selectedEntity);            
+
         $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, params, defaultRoutingSaveSuccess, errorCallback);
     };
 
@@ -440,7 +449,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
 
         $scope.errorCallback = function(errorMessage) {
             $scope.$parent.$emit('hideLoader');
-            $scope.$emit('displayErrorMessage',errorMessage);
+            $scope.$emit('displayErrorMessage', errorMessage);
         };
 
         $scope.savePaymentToReservationOrAccount();
@@ -455,7 +464,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
 
         $scope.errorCallback = function(errorMessage) {
             $scope.$parent.$emit('hideLoader');
-            $scope.$emit('displayErrorMessage',errorMessage);
+            $scope.$emit('displayErrorMessage', errorMessage);
         };
 
         var defaultRoutingSaveSuccess = function(data) {
@@ -472,13 +481,14 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
         var successCallback = function(data) {
             $scope.$parent.$emit('hideLoader');
             var params = angular.copy( $scope.selectedEntity);
+
             $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, params, defaultRoutingSaveSuccess, $scope.errorCallback);
         };
 
         var successSixSwipe = function(response) {
             var data = {
-                "token"     : response.token,
-                "is_swiped" : true
+                "token": response.token,
+                "is_swiped": true
             };
 
             data.account_id = $scope.selectedEntity.id;
@@ -490,6 +500,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
                !$scope.paymentFlags.sixIsManual) {
 
                 var data = {};
+
                 data.account_id = $scope.selectedEntity.id;
                 data.add_to_guest_card = false;
 
@@ -497,17 +508,18 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
                 RVPaymentSrv.chipAndPinGetToken(data).then(function(response) {
                     $scope.$emit('UPDATE_SHOULD_SHOW_WAITING', false);
                     successSixSwipe(response);
-                },function(error){
+                }, function(error) {
                     $scope.errorMessage = error;
                     $scope.$emit('UPDATE_SHOULD_SHOW_WAITING', false);
                 });
             }
             else if (!isEmptyObject($scope.swipedCardDataToSave)) {
                 var data = $scope.swipedCardDataToSave;
+
                 data.account_id = $scope.selectedEntity.id;
                 data.payment_credit_type = $scope.swipedCardDataToSave.cardType;
                 data.credit_card = $scope.swipedCardDataToSave.cardType;
-                data.card_expiry = "20" + $scope.swipedCardDataToSave.cardExpiryYear + "-" + $scope.swipedCardDataToSave.cardExpiryMonth+"-01";
+                data.card_expiry = "20" + $scope.swipedCardDataToSave.cardExpiryYear + "-" + $scope.swipedCardDataToSave.cardExpiryMonth + "-01";
 
                 $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, $scope.errorCallback);
             }
@@ -518,15 +530,15 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
 
                 data.account_id   = $scope.selectedEntity.id;
                 data.payment_type = $scope.saveData.payment_type;
-                creditCardType    = (!$scope.cardData.tokenDetails.isSixPayment)?
-                                    getCreditCardType($scope.cardData.cardDetails.cardType):
+                creditCardType    = (!$scope.cardData.tokenDetails.isSixPayment) ?
+                                    getCreditCardType($scope.cardData.cardDetails.cardType) :
                                     getSixCreditCardType($scope.cardData.tokenDetails.card_type).toLowerCase();
-                data.token        = (!$scope.cardData.tokenDetails.isSixPayment)?
+                data.token        = (!$scope.cardData.tokenDetails.isSixPayment) ?
                                     $scope.cardData.tokenDetails.session : $scope.cardData.tokenDetails.token_no;
                 data.card_name    = retrieveCardName();
                 data.card_expiry  = retrieveCardExpiryForApi();
-                data.card_code    = (!$scope.cardData.tokenDetails.isSixPayment)?
-                                    $scope.cardData.cardDetails.cardType:
+                data.card_code    = (!$scope.cardData.tokenDetails.isSixPayment) ?
+                                    $scope.cardData.cardDetails.cardType :
                                     getSixCreditCardType($scope.cardData.tokenDetails.card_type).toLowerCase();
 
                 $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, $scope.errorCallback);
@@ -534,7 +546,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
         }
         else {
             var data = {
-                "payment_type" : $scope.saveData.payment_type
+                "payment_type": $scope.saveData.payment_type
             };
 
             data.account_id = $scope.selectedEntity.id;
@@ -563,7 +575,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
         return rvPermissionSrv.getPermissionValue('OVERWRITE_DIRECT_BILL_MAXIMUM_AMOUNT');
     };
 
-    $scope.$on('CHANGE_IS_MANUAL', function(e, value){
+    $scope.$on('CHANGE_IS_MANUAL', function(e, value) {
         $scope.paymentFlags.sixIsManual = value;
     });
 

@@ -32,7 +32,7 @@ var CardOperation = function() {
 			return false;
 		} else {
 			if (cordova) {
-				//calling cordova service
+				// calling cordova service
 				cordova.exec(
 					// if success call back require any parameters
 					function(data) {
@@ -59,12 +59,13 @@ var CardOperation = function() {
 	this.callRecursively = function(options) {
 		// TODO: Have to find better way of implementing this if not.
 		var shouldCallRecursively = options["shouldCallRecursively"] ? options["shouldCallRecursively"] : false;
+
 		if (shouldCallRecursively) {
 			that.callCordovaService(options);
 		}
 	};
 
-	//function for get single swipe
+	// function for get single swipe
 	this.listenForSingleSwipe = function(options) {
 		options['service'] = "RVCardPlugin";
 		options['action'] = "observeForSwipe";
@@ -108,6 +109,7 @@ var CardOperation = function() {
 		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
 		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
 		// we are simulating the process by calling the success call back after some time
+
 		setTimeout(function() {
 			successCallBack();
 		}, 1000);
@@ -129,12 +131,13 @@ var CardOperation = function() {
 	// debug mode of check device connection checking
 	// please check above method (checkDeviceConnected) for further description
 	this.checkDeviceConnectedDebug = function(options) {
-		//Simulating the write function for easy testing. May be removed in production.
+		// Simulating the write function for easy testing. May be removed in production.
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
 		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
 		var deviceStatus = true;
 		// we are simulating the process by calling the success call back after some time
+
 		setTimeout(function() {
 			successCallBack(deviceStatus, successCallBackParameters);
 		}, 1000);
@@ -163,7 +166,7 @@ var CardOperation = function() {
 	};
 
 
-	//function for linking iBeacon
+	// function for linking iBeacon
 	this.linkiBeacon = function(options) {
 		options['service'] = "RVCardPlugin";
 		options['action'] = "writeBeaconID";

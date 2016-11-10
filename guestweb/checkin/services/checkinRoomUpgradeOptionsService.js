@@ -1,17 +1,18 @@
 (function() {
-	var checkinRoomUpgradeOptionsService = function($q,$http,$rootScope) {
+	var checkinRoomUpgradeOptionsService = function($q, $http, $rootScope) {
 
 	var responseData = {};
 
-	//fetch texts to be displayed
+	// fetch texts to be displayed
 
 	var fetch = function(data) {
 
 		var deferred = $q.defer();
 		var url = '/guest_web/upgrade_options.json';
-		data.application = (typeof $rootScope.application !=="undefined") ? $rootScope.application : "";
-		data.url_suffix = (typeof $rootScope.urlSuffix !=="undefined") ? $rootScope.urlSuffix : "";
-		$http.get(url,{
+
+		data.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "";
+		data.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "";
+		$http.get(url, {
 			params: data
 		}).success(function(response) {
 			this.responseData = response;
@@ -26,12 +27,12 @@
 
 	return {
 		responseData: responseData,
-		fetch : fetch
+		fetch: fetch
 	};
 };
 
 var dependencies = [
-'$q','$http','$rootScope',
+'$q', '$http', '$rootScope',
 checkinRoomUpgradeOptionsService
 ];
 

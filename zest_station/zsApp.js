@@ -19,14 +19,14 @@ var sntZestStation = angular.module('sntZestStation', [
 ]);
 
 
-//adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
+// adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 sntZestStation.config(function($httpProvider, $translateProvider) {
     $httpProvider.interceptors.push('sharedHttpInterceptor');
     $translateProvider.useStaticFilesLoader({
         prefix: '/assets/zest_station/zsLocales/',
         suffix: '.json'
     });
-    //$translateProvider.fallbackLanguage('EN_snt');
+    // $translateProvider.fallbackLanguage('EN_snt');
 });
 
 sntZestStation.run(['$rootScope', '$state', '$stateParams', '$location', function($rootScope, $state, $stateParams, $location) {
@@ -47,6 +47,7 @@ var GlobalZestStationApp = function() {
      */
 
     var that = this;
+
     this.browser = "other";
     this.cordovaLoaded = false;
     this.cardReader = null;
@@ -55,7 +56,7 @@ var GlobalZestStationApp = function() {
     try {
         this.desktopCardReader = new DesktopCardOperations();
         this.MLIOperator = new MLIOperation();
-    } catch (er) {};
+    } catch (er) {}
 
 
     this.DEBUG = true;
@@ -67,13 +68,13 @@ var GlobalZestStationApp = function() {
             that.browser = browser;
         }
         if (browser === 'rv_native' && !that.cordovaLoaded) {
-            //TODO: check URL
+            // TODO: check URL
             var url = "/assets/shared/cordova.js";
 
             /* Using XHR instead of $HTTP service, to avoid angular dependency, as this will be invoked from
              * webview of iOS / Android.
              */
-            var xhr = new XMLHttpRequest(); //TODO: IE support?
+            var xhr = new XMLHttpRequest(); // TODO: IE support?
 
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
@@ -84,7 +85,7 @@ var GlobalZestStationApp = function() {
             };
             xhr.open("GET", url, true);
 
-            xhr.send(); //TODO: Loading indicator
+            xhr.send(); // TODO: Loading indicator
 
         }
 
@@ -97,10 +98,10 @@ var GlobalZestStationApp = function() {
             that.cardReader = new CardOperation();
         } catch (er) {
             console.info('failed get card op');
-        };
+        }
         try {
             that.iBeaconLinker = new iBeaconOperation();
-        } catch (er) {};
+        } catch (er) {}
 
     };
     this.fetchCompletedOfCordovaPlugins();
@@ -194,7 +195,7 @@ var GlobalZestStationApp = function() {
             console.log('no argument passed, turning OFF card swipe debugging');
             that.cardSwipeDebug = false; // Mark it as false to disable debug cardSwipe opertations
         }
-        console.warn('cardSwipeDebug: ', that.cardSwipeDebug)
+        console.warn('cardSwipeDebug: ', that.cardSwipeDebug);
     };
 };
 

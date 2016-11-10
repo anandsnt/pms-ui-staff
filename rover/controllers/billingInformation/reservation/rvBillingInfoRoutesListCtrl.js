@@ -1,4 +1,4 @@
-sntRover.controller('rvBillingInfoRoutesListCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog){
+sntRover.controller('rvBillingInfoRoutesListCtrl', ['$scope', '$rootScope', '$filter', 'RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope, $filter, RVBillinginfoSrv, ngDialog) {
 
     BaseCtrl.call(this, $scope);
 
@@ -6,11 +6,12 @@ sntRover.controller('rvBillingInfoRoutesListCtrl',['$scope','$rootScope','$filte
     var init = function() {
         // set scrollers
         var scrollerOptions = { preventDefault: false };
+
         $scope.setScroller('routes', scrollerOptions);
 
         setTimeout(function() {
             $scope.refreshScroller('routes');
-        },500);
+        }, 500);
     };
 
     /**
@@ -63,10 +64,11 @@ sntRover.controller('rvBillingInfoRoutesListCtrl',['$scope','$rootScope','$filte
 
         var errorCallback = function (errorMessage) {
             $scope.$parent.$emit('hideLoader');
-            $scope.$emit('displayErrorMessage',errorMessage);
+            $scope.$emit('displayErrorMessage', errorMessage);
         };
 
         var data = {};
+
         data.id  = $scope.reservationData.reservation_id;
         data.from_bill = $scope.routes[index].from_bill;
         data.to_bill   = $scope.routes[index].to_bill;
@@ -92,6 +94,7 @@ sntRover.controller('rvBillingInfoRoutesListCtrl',['$scope','$rootScope','$filte
         $scope.billingInfoFlags.isInitialPage     = false;
 
         var selectedEntityDetails = $scope.routes[index];
+
         $scope.setSelectedEntity(selectedEntityDetails);
         $scope.selectedEntity.is_new = false;
 

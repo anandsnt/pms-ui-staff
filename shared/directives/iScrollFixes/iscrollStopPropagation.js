@@ -7,7 +7,7 @@ angular.module('iscrollStopPropagation', [])
         e.stopPropagation();
       });
 
-      scope.$on("$destroy",function(e) {
+      scope.$on("$destroy", function(e) {
           element.off('mousedown');
       });
 

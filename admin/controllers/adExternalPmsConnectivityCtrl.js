@@ -1,4 +1,4 @@
-admin.controller('ADExternalPmsConnectivityCtrl',['$scope','$rootScope','$state','ADExternalPmsConnectivitySrv',  function($scope,$rootScope,$state,ADExternalPmsConnectivitySrv){
+admin.controller('ADExternalPmsConnectivityCtrl', ['$scope', '$rootScope', '$state', 'ADExternalPmsConnectivitySrv',  function($scope, $rootScope, $state, ADExternalPmsConnectivitySrv) {
 
 
 	BaseCtrl.call(this, $scope);
@@ -10,41 +10,41 @@ admin.controller('ADExternalPmsConnectivityCtrl',['$scope','$rootScope','$state'
     * Success callback of render
     * @param {object} pms connectivity details
     */
-    $scope.successCallbackRender = function(data){
+    $scope.successCallbackRender = function(data) {
     	$scope.$emit('hideLoader');
     	$scope.externalPmsConnectivityData = data;
     };
    /**
     * Render external connectivity screen
     */
-	$scope.renderExternalPmsConnectivity = function(){
-		$scope.invokeApi(ADExternalPmsConnectivitySrv.getExternalPmsConnectivityDetails, {} , $scope.successCallbackRender);
+	$scope.renderExternalPmsConnectivity = function() {
+		$scope.invokeApi(ADExternalPmsConnectivitySrv.getExternalPmsConnectivityDetails, {}, $scope.successCallbackRender);
 	};
-	//To render screen
+	// To render screen
 	$scope.renderExternalPmsConnectivity();
    /*
     * To handle success call back of test connectivity
     */
-	$scope.successCallbackConnectionTest = function(){
+	$scope.successCallbackConnectionTest = function() {
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = "";
-		//Success message to show connection valid
+		// Success message to show connection valid
 		$scope.successMessage = "Connection Valid";
 	};
-  $scope.failureCallbackConnectionTest = function(){
+  $scope.failureCallbackConnectionTest = function() {
     $scope.$emit('hideLoader');
     $scope.successMessage = "";
-    //Failure message to show connection invalid
+    // Failure message to show connection invalid
     $scope.errorMessage = ["Invalid"];
   };
    /*
     * Function to test connectivity details
     */
-    $scope.testConnectivity = function(){
-   		$scope.invokeApi(ADExternalPmsConnectivitySrv.testConnectivity, $scope.externalPmsConnectivityData , $scope.successCallbackConnectionTest, $scope.failureCallbackConnectionTest);
+    $scope.testConnectivity = function() {
+   		$scope.invokeApi(ADExternalPmsConnectivitySrv.testConnectivity, $scope.externalPmsConnectivityData, $scope.successCallbackConnectionTest, $scope.failureCallbackConnectionTest);
     };
 
-    $scope.successCallbackSave = function(){
+    $scope.successCallbackSave = function() {
       $scope.$emit('hideLoader');
       $scope.successMessage = "";
       $scope.errorMessage = "";
@@ -52,10 +52,10 @@ admin.controller('ADExternalPmsConnectivityCtrl',['$scope','$rootScope','$state'
    /*
     * Function to save connectivity
     */
-    $scope.saveConnectivity = function(){
+    $scope.saveConnectivity = function() {
     	$scope.successMessage = "";
       $scope.errorMessage = "";
-    	$scope.invokeApi(ADExternalPmsConnectivitySrv.saveConnectivity, $scope.externalPmsConnectivityData , $scope.successCallbackSave);
+    	$scope.invokeApi(ADExternalPmsConnectivitySrv.saveConnectivity, $scope.externalPmsConnectivityData, $scope.successCallbackSave);
     };
 
 }]);

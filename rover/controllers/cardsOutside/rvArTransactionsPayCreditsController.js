@@ -3,16 +3,19 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
 
     $scope.feeData = {};
     var zeroAmount = parseFloat("0.00");
+
     $scope.saveData = {'paymentType': ''};
     $scope.billNumber = 1;
     $scope.renderData = {};
     $scope.renderData.defaultPaymentAmount = $scope.arTransactionDetails.amount_owing;
     var bill_id = $scope.arTransactionDetails.company_or_ta_bill_id;
-    //Added for CICO-26730
+    // Added for CICO-26730
+
     $scope.cardsList = [];
     var isSixPayment = false;
     var tokenDetails = {};
     var cardDetails = {};
+
     $scope.addmode = ($scope.cardsList.length > 0) ? false : true;
     /*
      * if no payment type is selected disable payment button
@@ -24,7 +27,7 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
         else {
             return true;
         }
-        ;
+        
     };
     $scope.handleCloseDialog = function() {
         $scope.$emit('HANDLE_MODAL_OPENED');
@@ -39,7 +42,7 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
     $scope.getPaymentListSuccess = function(data) {
         $scope.$emit('hideLoader');
         $scope.renderData.paymentTypes = _.filter(data, function(paymentType) {
-            return paymentType.name !== "GIFT_CARD"
+            return paymentType.name !== "GIFT_CARD";
         });
         renderDefaultValues();
     };
@@ -64,7 +67,7 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
         $scope.arTransactionDetails.available_credit = parseFloat(data.available_credit).toFixed(2);
         $scope.depositPaidSuccesFully = true;
         $scope.authorizedCode = data.authorization_code;
-        //Reload the ar transaction listing after payment
+        // Reload the ar transaction listing after payment
         $scope.reloadARTransactionListing();
     };
 
@@ -162,6 +165,7 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
         var cardNumberEndingWith = "";
         var cardExpiry = "";
         var swipedData = angular.copy($scope.swipedCardDataToSave);
+
         if (!isEmptyObject(swipedData)) {
             cardType = swipedData.cardType.toLowerCase();
             cardNumberEndingWith = swipedData.cardNumber.slice(-4);
@@ -179,10 +183,10 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
         $scope.defaultPaymentTypeCardNumberEndingWith = cardNumberEndingWith;
         $scope.defaultPaymentTypeCardExpiry = cardExpiry;
 
-        //check if the selected card has reference
+        // check if the selected card has reference
         checkReferencetextAvailableForCC();
 
-        //check if the selected card has fees
+        // check if the selected card has fees
         _.each($scope.renderData.paymentTypes, function(paymentType) {
             if (paymentType.name === "CC") {
                 _.each(paymentType.values, function(paymentType) {
@@ -193,7 +197,7 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
 
                 });
             }
-            ;
+            
         });
 
 
@@ -221,16 +225,16 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
      * Checks whether reference text is available for CC
      */
     var checkReferencetextAvailableForCC = function() {
-        //call utils fn
+        // call utils fn
         $scope.referenceTextAvailable = checkIfReferencetextAvailableForCC($scope.renderData.paymentTypes, $scope.defaultPaymentTypeCard);
     };
 
-    //Added for CICO-26730
+    // Added for CICO-26730
     $scope.changeOnsiteCallIn = function() {
         $scope.showCCPage = ($scope.isManual) ? true : false;
     };
 
-    //Added for CICO-26730
+    // Added for CICO-26730
     $scope.$on('changeOnsiteCallIn', function(event) {
         $scope.isManual = !$scope.isManual;
         $scope.changeOnsiteCallIn();
@@ -251,7 +255,7 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
      * Success call back of MLI swipe - from cards ctrl
      */
     $scope.$on("SHOW_SWIPED_DATA_ON_PAY_SCREEN", function(e, swipedCardDataToRender) {
-        //set variables to display the add mode
+        // set variables to display the add mode
         $scope.showCCPage = true;
         $scope.swippedCard = true;
         $scope.addmode = true;
@@ -266,6 +270,7 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
 
         $scope.swipedCardDataToSave = swipedCardDataToSave;
         var data = swipedCardDataToSave;
+
         data.payment_credit_type = swipedCardDataToSave.cardType;
         data.credit_card = swipedCardDataToSave.cardType;
         data.card_expiry = "20" + swipedCardDataToSave.cardExpiryYear + "-" + swipedCardDataToSave.cardExpiryMonth + "-01";
@@ -297,7 +302,7 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
         } else {
             $scope.shouldShowMakePaymentButton = true;
         }
-        ;
+        
     };
 
 }]);

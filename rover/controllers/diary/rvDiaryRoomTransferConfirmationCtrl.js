@@ -39,12 +39,11 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 		};
 
 
-		//forming date & time for current to display and to pass
+		// forming date & time for current to display and to pass
 		formDateAndTimeForMe(current);
 
-		//forming date & time for next to display and to pass
+		// forming date & time for next to display and to pass
 		formDateAndTimeForMe(next);
-
 
 
 		$scope.price = parseFloat(roomXfer.next.room.new_price - roomXfer.current.room.old_price);
@@ -64,6 +63,7 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 
 		$scope.moveWithoutRateChange = function() {
 			var isMoveWithoutRateChange = true;
+
 			$scope.saveReservation ($scope.roomXfer.next.occupancy, $scope.roomXfer.next.room, isMoveWithoutRateChange);
 			resetTheDataForReservationMoveFromOneDateToAnother ();
 			$scope.closeDialog();

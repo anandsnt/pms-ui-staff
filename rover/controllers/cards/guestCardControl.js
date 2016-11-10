@@ -1,4 +1,4 @@
-angular.module('sntRover').controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout', 'RVContactInfoSrv','RVGuestCardLoyaltySrv',
+angular.module('sntRover').controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout', 'RVContactInfoSrv', 'RVGuestCardLoyaltySrv',
 	function($scope, RVCompanyCardSrv, $timeout, RVContactInfoSrv) {
 		$scope.searchMode = true;
 		$scope.guestCardData.selectedLoyaltyLevel = "";
@@ -30,8 +30,8 @@ angular.module('sntRover').controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCa
 				$scope.$emit('hideLoader');
 			}, 1000);
 		});
-                $scope.$on('detect-hlps-ffp-active-status',function(evt,data){
-                    if (data.userMemberships.use_hlp || data.userMemberships.use_ffp){
+                $scope.$on('detect-hlps-ffp-active-status', function(evt, data) {
+                    if (data.userMemberships.use_hlp || data.userMemberships.use_ffp) {
                     $scope.loyaltyTabEnabled = true;
                    } else {
                     $scope.loyaltyTabEnabled = false;
@@ -41,33 +41,33 @@ angular.module('sntRover').controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCa
 		$scope.$on("loyaltyLevelAvailable", function($event, level) {
 			$scope.guestCardData.selectedLoyaltyLevel = level;
 		});
-                $scope.loyaltiesStatus = {'ffp':false,'hlps':false};
-                $scope.$setLoyaltyStatus = function(data, type){
+                $scope.loyaltiesStatus = {'ffp': false, 'hlps': false};
+                $scope.$setLoyaltyStatus = function(data, type) {
                     $scope.loyaltiesStatus[type] = data.active;
-                    if ($scope.loyaltiesStatus.ffp || $scope.loyaltiesStatus.hlps){
+                    if ($scope.loyaltiesStatus.ffp || $scope.loyaltiesStatus.hlps) {
                         $scope.loyaltyTabEnabled = true;
                     } else {
                         $scope.loyaltyTabEnabled = false;
                     }
-                    if ($scope.loyaltiesStatus.hlps){
+                    if ($scope.loyaltiesStatus.hlps) {
                         $scope.guestCardData.loyaltyInGuestCardEnabled = true;
                     } else {
                         $scope.guestCardData.loyaltyInGuestCardEnabled = false;
                     }
                  };
 
-                 $scope.fetchLoyaltyStatus = function(){
-                    var loyaltyFetchsuccessCallbackhlps = function(data){
+                 $scope.fetchLoyaltyStatus = function() {
+                    var loyaltyFetchsuccessCallbackhlps = function(data) {
                         $scope.$setLoyaltyStatus(data, 'hlps');
                             $scope.$emit('hideLoader');
                     };
-                    var loyaltyFetchsuccessCallbackffp = function(data){
+                    var loyaltyFetchsuccessCallbackffp = function(data) {
                         $scope.$setLoyaltyStatus(data, 'ffp');
                             $scope.$emit('hideLoader');
                     };
 
-                    $scope.invokeApi(RVCompanyCardSrv.fetchHotelLoyaltiesHlps,{} , loyaltyFetchsuccessCallbackhlps);
-                    $scope.invokeApi(RVCompanyCardSrv.fetchHotelLoyaltiesFfp,{} , loyaltyFetchsuccessCallbackffp);
+                    $scope.invokeApi(RVCompanyCardSrv.fetchHotelLoyaltiesHlps, {}, loyaltyFetchsuccessCallbackhlps);
+                    $scope.invokeApi(RVCompanyCardSrv.fetchHotelLoyaltiesFfp, {}, loyaltyFetchsuccessCallbackffp);
                  };
 
 	}
@@ -78,6 +78,7 @@ angular.module('sntRover').controller('guestResults', ['$scope', '$timeout',
 
 		BaseCtrl.call(this, $scope);
 		var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: false};
+
   		$scope.setScroller ('guestResultScroll', scrollerOptionsForGraph);
 
 		$scope.$on("refreshGuestScroll", function() {

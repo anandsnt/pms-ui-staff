@@ -1,4 +1,4 @@
-/*FOR POTENTIAL FUTURE USE*/
+/* FOR POTENTIAL FUTURE USE*/
 var ReactIscroll = React.createClass({
 	componentDidMount: function() {
 		var iscroll = this.props.iscroll;
@@ -23,7 +23,7 @@ var ReactIscroll = React.createClass({
 
 		setTimeout(function () {
 	        iscroll.grid.refresh();
-	    }.bind(this), 0);
+	    }, 0);
 	},
 	componentWillUnmount: function() {
 		this.props.iscroll.grid.destroy();

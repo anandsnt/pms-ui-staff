@@ -12,6 +12,7 @@ admin.controller('ADReservationTypeToolsMainCtrl', [
 		// the submenu, how to find, since we are gonna hard code the
 		// state name. We prefer matching state name since we know, it wont change :(
 		var components = $scope.$parent.selectedMenu.components;
+
 		$scope.toolsMenu = _.findWhere(components, { state: 'admin.reservationTools' });
 
 		$scope.openSubmenu = function(e, state) {

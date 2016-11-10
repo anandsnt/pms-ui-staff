@@ -7,7 +7,7 @@ admin.controller('ADCountrySortCtrl', ['$scope', 'ADCountrySortSrv',
 		$scope.listingMode = true;
 		$scope.countrySelected = "";
 
-		//fetch country list with sorted and unsorted countries
+		// fetch country list with sorted and unsorted countries
 		var fetchCountryList = function() {
 			var onfetchCountriesSuccess = function(response) {
 				$scope.sortedCountries = response.sorted;
@@ -19,14 +19,15 @@ admin.controller('ADCountrySortCtrl', ['$scope', 'ADCountrySortSrv',
 				params: {},
 				successCallBack: onfetchCountriesSuccess
 			};
+
 			$scope.callAPI(ADCountrySortSrv.fetchCountries, options);
 		};
 
-		var init = function() {
+		var init = (function() {
 			fetchCountryList();
-		}();
+		}());
 
-		//add new country to sort list
+		// add new country to sort list
 		$scope.addCountryToSequence = function() {
 			$scope.listingMode = false;
 		};
@@ -43,19 +44,20 @@ admin.controller('ADCountrySortCtrl', ['$scope', 'ADCountrySortSrv',
 				},
 				successCallBack: fetchCountryList
 			};
+
 			$scope.callAPI(ADCountrySortSrv.saveComponentOrder, options);
 		};
 
-		//save new country to sort list
+		// save new country to sort list
 		$scope.saveCountry = function() {
 			if (_.isEmpty($scope.countrySelected)) {
 				$scope.errorMessage = ["Please select a country"];
 			} else {
 				saveSortedList($scope.countrySelected, $scope.sortedCountries.length + 1);
-			};
+			}
 		};
 
-		//delete a country from the sort list
+		// delete a country from the sort list
 		$scope.deleteItem = function(id, $index) {
 			var options = {
 				params: {
@@ -63,12 +65,13 @@ admin.controller('ADCountrySortCtrl', ['$scope', 'ADCountrySortSrv',
 				},
 				successCallBack: fetchCountryList
 			};
+
 			$scope.callAPI(ADCountrySortSrv.deleteItem, options);
 		};
 
-		//save new order
+		// save new order
 		var saveNewPosition = function(id, position, prevPosition) {
-			_.isUndefined(position) ? "" : saveSortedList(id, position+1);
+			_.isUndefined(position) ? "" : saveSortedList(id, position + 1);
 		};
 
 		$scope.sortableOptions = {

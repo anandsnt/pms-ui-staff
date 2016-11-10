@@ -1,14 +1,15 @@
 (function() {
-	var earlyCheckinService = function($q,$http) {
+	var earlyCheckinService = function($q, $http) {
 
 	var responseData = {};
 
-	//apply late checkout
+	// apply late checkout
 
 	var applyEarlyCheckin = function(data) {
 
 		var deferred = $q.defer();
 		var url = '/api/reservations/apply_early_checkin_offer';
+
 		$http.post(url, data).success(function(response) {
 			this.responseData = response;
 			deferred.resolve(this.responseData);
@@ -22,12 +23,12 @@
 
 	return {
 		responseData: responseData,
-		applyEarlyCheckin : applyEarlyCheckin
+		applyEarlyCheckin: applyEarlyCheckin
 	};
 };
 
 var dependencies = [
-'$q','$http',
+'$q', '$http',
 earlyCheckinService
 ];
 

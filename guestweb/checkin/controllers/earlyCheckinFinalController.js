@@ -20,11 +20,13 @@
 			$scope.checkinTime = $stateParams.time;
 			$scope.earlyCheckinCharge = $stateParams.charge;
 			var offerId = $stateParams.id;
+
 			$scope.isPosting = true;
 			var dataTosend = {
 				'reservation_id': $rootScope.reservationID,
 				'early_checkin_offer_id': offerId
 			};
+
 			earlyCheckinService.applyEarlyCheckin(dataTosend).then(function(response) {
 				$scope.isPosting = false;
 			}, function() {
@@ -36,7 +38,7 @@
 
 			$scope.nextButtonClicked = function() {
 				// check if checkin now is selected 
-				if ($stateParams.isFromCheckinNow){
+				if ($stateParams.isFromCheckinNow) {
 					$rootScope.isAutoCheckinOn = false;// turn off for applying direct checkin
 					$state.go('checkinKeys');
 				} else {

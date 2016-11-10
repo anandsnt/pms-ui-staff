@@ -1,18 +1,19 @@
 /**
  *	Verify room
  */
-sntGuestWeb.controller('GwRoomVerificationController', ['$scope', '$state', '$controller','$modal', 'GwWebSrv', 'GwCheckoutSrv',
-	function($scope, $state, $controller,$modal, GwWebSrv, GwCheckoutSrv) {
+sntGuestWeb.controller('GwRoomVerificationController', ['$scope', '$state', '$controller', '$modal', 'GwWebSrv', 'GwCheckoutSrv',
+	function($scope, $state, $controller, $modal, GwWebSrv, GwCheckoutSrv) {
 
 		$controller('BaseController', {
 			$scope: $scope
 		});
 
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "ROOM_VERIFICATION";
+
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.roomVerificationInstruction  = GwWebSrv.zestwebData.roomVerificationInstruction;
-		}();
+		}());
 
 		$scope.continueButtonClicked = function() {
 			var onSuccess = function(response) {
@@ -21,9 +22,10 @@ sntGuestWeb.controller('GwRoomVerificationController', ['$scope', '$state', '$co
 			};
 			var onFailure = function() {
 				var popupOptions = angular.copy($scope.errorOpts);
+
 				popupOptions.resolve = {
 					message: function() {
-						return "We couldn't verify your room number. Please try again or check out at the front desk."
+						return "We couldn't verify your room number. Please try again or check out at the front desk.";
 					}
 				};
 				$modal.open(popupOptions);
