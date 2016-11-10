@@ -1,5 +1,5 @@
 angular.module('todoModule', [])
-    .config(function($stateProvider, $urlRouterProvider, $translateProvider){
+    .config(function($stateProvider, $urlRouterProvider, $translateProvider) {
         $stateProvider.state('rover.todo', {
             url: '/todo/',
             templateUrl: '/assets/partials/todo/todoRoot.html',

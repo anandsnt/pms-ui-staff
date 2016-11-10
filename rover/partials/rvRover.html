@@ -1,7 +1,7 @@
 <div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div> 
 
 <!-- loader for EMV terminal actions -->
-<div ng-show="showSixPayLoader" id="loading">
+<div ng-show="showSixPayLoader && paymentGateway === 'sixpayments'" id="loading">
     <div id="six-payment-loader">
         <div class="centeralign alert-box">
             WAITING FOR PAYMENT COMPLETION

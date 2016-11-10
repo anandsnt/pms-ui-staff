@@ -18,7 +18,6 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 			chosenReport = detailsCtrlScope.chosenReport;
 
 
-
 		var LEFT_PANE_SCROLL = 'left-pane-scroll',
 			RIGHT_PANE_SCROLL = 'right-pane-scroll';
 
@@ -36,11 +35,11 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 		var refreshScrollers = function() {
 			if (!!mainCtrlScope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL)) {
 				$scope.refreshScroller(LEFT_PANE_SCROLL);
-			};
+			}
 
 			if (!!mainCtrlScope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL)) {
 				$scope.refreshScroller(RIGHT_PANE_SCROLL);
-			};
+			}
 		};
 
 		var setupScrollListner = function() {
@@ -62,8 +61,9 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 				setupScrollListner();
 			} else {
 				$timeout(isScrollReady, 1000);
-			};
+			}
 		};
+
 		isScrollReady();
 
 		var destroyScrolls = function() {
@@ -75,7 +75,6 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 		};
 
 		$scope.$on('$destroy', destroyScrolls);
-
 
 
 		// default colspan value
@@ -101,7 +100,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 		$scope.$watch('uiFilter.showRevenue', function(newValue) {
 			if (false == newValue && !$scope.uiFilter.showAvailability) {
 				$scope.uiFilter.showAvailability = true;
-			};
+			}
 
 			$scope.$emit('showLoader');
 			$timeout(reInit, 300);
@@ -179,9 +178,9 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 							isRateType: isRateType
 						});
 					}
-				};
+				}
 
-				//TODO: If user has opted to show addon revenue, add that as a column
+				// TODO: If user has opted to show addon revenue, add that as a column
 				if (isPastDay && $scope.chosenReport.chosenOptions['include_addon_revenue'] && $scope.uiFilter.showRevenue) {
 					eachDateVal.push({
 						value: $filter('currency')(dateObj['addon_revenue'], $rootScope.currencySymbol, 2),
@@ -210,7 +209,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 					'ADR': 'ADR',
 					'ACTUAL': 'Room Rev.',
 					/**/
-					'ADDON': 'Add-on' //>> This is to be shown IFF 'Options'->'Include Add-on Revenue' is checked
+					'ADDON': 'Add-on' // >> This is to be shown IFF 'Options'->'Include Add-on Revenue' is checked
 				},
 				headers,
 				allDatesValInRoom = [],
@@ -231,7 +230,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 				headers = ['FORECAST', 'ADR'];
 			} else if ($scope.uiFilter.showAvailability && !$scope.uiFilter.showRevenue) {
 				headers = ['ROOMS', 'AVAILABLE_ROOMS'];
-			};
+			}
 
 			$scope.colSpan = headers.length;
 
@@ -242,6 +241,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 
 				$scope.headerTop.push($filter('date')(ms, $rootScope.shortMonthAndDate));
 				var currentHeaders = headers;
+
 				if (isPastDay && $scope.uiFilter.showRevenue) {
 					// Remove FORECAST header and push ACTUAL
 					currentHeaders = _.without(currentHeaders, 'FORECAST').concat(['ACTUAL']);
@@ -264,7 +264,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 
 			var results = $scope.results;
 
-			//Parse Rates OR Rate Types based on the filter here
+			// Parse Rates OR Rate Types based on the filter here
 			_.each(results.rate_types, function(rateTypeData) {
 				$scope.yAxisLabels.push({
 					name: rateTypeData.rate_type_name,
@@ -273,10 +273,11 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 				});
 
 				$scope.reportData.push(parseDailyData(rateTypeData.data, true));
-				//Put rates under the rate type
+				// Put rates under the rate type
 				var rates = _.filter(results.rates, {
-					rate_type_id: rateTypeData.rate_type_id,
+					rate_type_id: rateTypeData.rate_type_id
 				});
+
 				_.each(rates, function(rate) {
 					$scope.yAxisLabels.push({
 						name: rate.rate_name,
@@ -312,20 +313,19 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 				React.createElement(DPContent, props),
 				document.getElementById('daily-production-render')
 			);
-		};
+		}
 
 		function init(argument) {
 			processData();
 			renderReact();
-		};
+		}
 
 		init();
 
 		function reInit(argument) {
 			processData();
 			renderReact();
-		};
-
+		}
 
 
 		// re-render must be initiated before for taks like printing.

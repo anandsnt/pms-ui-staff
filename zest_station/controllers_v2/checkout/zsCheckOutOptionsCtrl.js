@@ -7,7 +7,7 @@ sntZestStation.controller('zsCheckOutOptionsCtrl', [
 	'$sce',
 	function($scope, $state, zsEventConstants, zsModeConstants, $stateParams, $sce) {
 
-		/*********************************************************************************
+		/** *******************************************************************************
 		 **		Expected state params -----> nothing			  
 		 **		Exit functions -> $scope.searchByName and 	$scope.captureKey							
 		 **																		 

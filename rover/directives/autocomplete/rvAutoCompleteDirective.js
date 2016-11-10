@@ -12,7 +12,7 @@ sntRover.directive('autoComplete', ['highlightFilter',
                 insertEmail: '=insertEmail'
             },
             link: function(scope, el, attrs) {
-                //CICO-26513
+                // CICO-26513
                 var ulElement = null;
 
                 $(el).autocomplete(scope.autoOptions)
@@ -20,7 +20,7 @@ sntRover.directive('autoComplete', ['highlightFilter',
                     ._renderItem = function(ul, item) {
                         ul.addClass(scope.ulClass);
 
-                        //CICO-26513
+                        // CICO-26513
                         ulElement = ul;
                         ul.off('touchmove').on('touchmove', function(e) {
                             e.stopPropagation();
@@ -38,6 +38,7 @@ sntRover.directive('autoComplete', ['highlightFilter',
                                 $result.addClass("autocomplete-result");
                                 if (item.address !== '') {
                                     var address = $("<span></span>").html(item.address);
+
                                     address.addClass("location");
                                     $result.append(address);
                                 }
@@ -52,6 +53,7 @@ sntRover.directive('autoComplete', ['highlightFilter',
                                 $result.addClass("autocomplete-result");
                                 if (item.address !== '') {
                                     var address = $("<span></span>").html(item.address);
+
                                     address.addClass("location");
                                     $result.append(address);
                                 }
@@ -67,7 +69,7 @@ sntRover.directive('autoComplete', ['highlightFilter',
                                 break;
                             default:
                                 break;
-                        };
+                        }
 
                         if (item.image) {
                             $image = '<img src="' + item.image + '">';
@@ -83,18 +85,19 @@ sntRover.directive('autoComplete', ['highlightFilter',
 
                 $(el).autocomplete("instance")._resizeMenu = function() {
                     this.menu.element.css('height', 'auto');
-                    if(($(el).offset().top - $(document).scrollTop() - this.menu.element.outerHeight()) <= 0) {
+                    if (($(el).offset().top - $(document).scrollTop() - this.menu.element.outerHeight()) <= 0) {
                         this.menu.element.outerHeight($(el).offset().top - $(document).scrollTop() - 10);
                     }
                 };
-                
 
 
                 var isEmail = function(email) {
                     var regex = /\S+@\S+\.\S+/;
+
                     return regex.test(email);
                 };
                 var inst;
+
                 if ( scope.insertEmail ) {
                     $(el).on('keypress', function(e) {
                         inst = $(el).autocomplete("instance");
@@ -116,11 +119,11 @@ sntRover.directive('autoComplete', ['highlightFilter',
                 }
                 
 
-                scope.$on('$destroy', function(){
+                scope.$on('$destroy', function() {
                     $(el).autocomplete( "destroy" );
                     scope.insertEmail && $(el).off('keypress');
-                    //unbinding the touch move
-                    if(ulElement instanceof HTMLElement) {
+                    // unbinding the touch move
+                    if (ulElement instanceof HTMLElement) {
                         ulElement.off('touchmove');
                     }                    
                 });                    

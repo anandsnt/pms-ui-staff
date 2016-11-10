@@ -1,8 +1,8 @@
 angular.module('sntRover').controller('rvAvailabilityMainController', [
 	'$scope', 'rvAvailabilitySrv', '$rootScope',
-	function($scope, rvAvailabilitySrv, $rootScope){
+	function($scope, rvAvailabilitySrv, $rootScope) {
 
-		//variable to get/set value availabilty or house
+		// variable to get/set value availabilty or house
 		$scope.availabilityToShow = 'room';
 		$scope.page = {};
 		$scope.page.title = "Availability";
@@ -11,7 +11,7 @@ angular.module('sntRover').controller('rvAvailabilityMainController', [
 		/**
 		* function to execute when switching between availability and house keeping
 		*/
-		$scope.setAvailability = function(){
+		$scope.setAvailability = function() {
 			$scope.$emit("showLoader");
 		};
 
@@ -19,19 +19,19 @@ angular.module('sntRover').controller('rvAvailabilityMainController', [
 		* function to load different template based the availability chosen
 		*/
 		$scope.getTemplateUrl = function()	{
-			if($scope.availabilityToShow === 'room'){
+			if ($scope.availabilityToShow === 'room') {
 				return '/assets/partials/availability/roomAvailabilityMain.html';
 			}
-			else if($scope.availabilityToShow === 'house'){
+			else if ($scope.availabilityToShow === 'house') {
 				return '/assets/partials/availability/houseAvailabilityStatus.html';
 			}
 			else if ($scope.availabilityToShow === 'item-inventory') {
 				return '/assets/partials/availability/itemInventoryMain.html';
 			}
-			else if($scope.availabilityToShow === 'groups'){
+			else if ($scope.availabilityToShow === 'groups') {
 				return '/assets/partials/availability/groupAvailabilityMain.html';
 			}
-			else if($scope.availabilityToShow === 'allotments'){
+			else if ($scope.availabilityToShow === 'allotments') {
 				return '/assets/partials/availability/allotmentAvailabilityMain.html';
 			}
 		};

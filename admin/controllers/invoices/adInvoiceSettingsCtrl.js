@@ -1,9 +1,9 @@
-admin.controller('ADInvoiceSettingsCtrl',[
+admin.controller('ADInvoiceSettingsCtrl', [
     '$scope',
     'invoiceSettingsData',
     'ADInvoiceSettingsSrv',
     '$filter',
-    function($scope,invoiceSettingsData,ADInvoiceSettingsSrv, $filter) {
+    function($scope, invoiceSettingsData, ADInvoiceSettingsSrv, $filter) {
 
     	BaseCtrl.call(this, $scope);
 
@@ -18,14 +18,15 @@ admin.controller('ADInvoiceSettingsCtrl',[
         * To handle save button action
         *
         */
-        $scope.saveClick = function(){
+        $scope.saveClick = function() {
 
-            var saveInvoiceSettingsSuccessCallback = function(){
+            var saveInvoiceSettingsSuccessCallback = function() {
                  $scope.errorMessage = [];
                  $scope.$emit('hideLoader');
                  $scope.goBackToPreviousState();
             };
-            $scope.invokeApi(ADInvoiceSettingsSrv.saveInvoiceSettings, $scope.invoiceSettings ,saveInvoiceSettingsSuccessCallback);
+
+            $scope.invokeApi(ADInvoiceSettingsSrv.saveInvoiceSettings, $scope.invoiceSettings, saveInvoiceSettingsSuccessCallback);
         };
 
 

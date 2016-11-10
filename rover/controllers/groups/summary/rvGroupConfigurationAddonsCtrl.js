@@ -49,6 +49,7 @@ angular.module('sntRover').controller('rvGroupConfigurationAddonsCtrl', [
 		$scope.fetchAddons = function(paramChargeGrpId) {
 			var successCallBackFetchAddons = function(data) {
 				var inclusiveAddons = [];
+
 				angular.forEach(data.rate_addons, function(item) {
 					if (item.is_inclusive) {
 						inclusiveAddons.push(item);
@@ -60,6 +61,7 @@ angular.module('sntRover').controller('rvGroupConfigurationAddonsCtrl', [
 				angular.forEach(data.results, function(item) {
 					if (item !== null) {
 						var addonItem = {};
+
 						addonItem.id = item.id;
 						addonItem.isBestSeller = item.bestseller;
 						addonItem.category = item.charge_group.name;

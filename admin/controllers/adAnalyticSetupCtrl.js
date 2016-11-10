@@ -1,4 +1,4 @@
-admin.controller('adAnalyticSetupCtrl',['$scope','adAnalyticSetupSrv','$state','$filter','$stateParams',function($scope,adAnalyticSetupSrv,$state,$filter,$stateParams){
+admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state', '$filter', '$stateParams', function($scope, adAnalyticSetupSrv, $state, $filter, $stateParams) {
 
  /*
   * To retrieve previous state
@@ -11,7 +11,7 @@ admin.controller('adAnalyticSetupCtrl',['$scope','adAnalyticSetupSrv','$state','
   BaseCtrl.call(this, $scope);
 
 
-  $scope.fetchAnalyticSetup = function(){
+  $scope.fetchAnalyticSetup = function() {
 
     var fetchAnalyticSetupSuccessCallback = function(data) {
         $scope.isLoading = false;
@@ -19,13 +19,14 @@ admin.controller('adAnalyticSetupCtrl',['$scope','adAnalyticSetupSrv','$state','
         $scope.data = data;
 
   };
-  $scope.emailDatas =[];
-  $scope.invokeApi(adAnalyticSetupSrv.fetchSetup, {},fetchAnalyticSetupSuccessCallback);
+
+  $scope.emailDatas = [];
+  $scope.invokeApi(adAnalyticSetupSrv.fetchSetup, {}, fetchAnalyticSetupSuccessCallback);
 
   };
   $scope.fetchAnalyticSetup();
 
-  $scope.saveAnalyticSetup = function(){
+  $scope.saveAnalyticSetup = function() {
 
     var saveAnalyticSetupSuccessCallback = function(data) {
         $scope.isLoading = false;
@@ -36,7 +37,7 @@ admin.controller('adAnalyticSetupCtrl',['$scope','adAnalyticSetupSrv','$state','
   var unwantedKeys = ["available_trackers"];
   var saveData = dclone($scope.data, unwantedKeys);
 
-  $scope.invokeApi(adAnalyticSetupSrv.saveSetup, saveData,saveAnalyticSetupSuccessCallback);
+  $scope.invokeApi(adAnalyticSetupSrv.saveSetup, saveData, saveAnalyticSetupSuccessCallback);
 
   };
 

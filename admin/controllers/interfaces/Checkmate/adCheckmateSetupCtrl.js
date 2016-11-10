@@ -31,6 +31,7 @@ admin.controller('adCheckmateSetupCtrl', ['$scope', 'checkmateSetupValues', 'adC
         params: params,
         successCallBack: successCallBackOfCheckmateSetup
       };
+
       $scope.callAPI(adCheckmateSetupSrv.saveCheckmateConfiguration, options);
     };
 

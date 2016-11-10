@@ -1,4 +1,4 @@
-sntRover.controller('RVFinancialsController', ['$scope',function($scope) {
+sntRover.controller('RVFinancialsController', ['$scope', function($scope) {
 	BaseCtrl.call(this, $scope);
 	$scope.$on('HeaderChanged', function(event, data) {
 		/**

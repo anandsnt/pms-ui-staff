@@ -5,13 +5,14 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 			segmentAvailable: !!$scope.reservationParentData.demographics.segment,
 			hideDetails: true
 		};
-		$scope.hasPermissionForCommissionUpdate = function(){
+		$scope.hasPermissionForCommissionUpdate = function() {
 			return rvPermissionSrv.getPermissionValue('UPDATE_COMMISSION');
 		};
 
 		$scope.isSegmentAutoComputed = function() {
 			var currentSegment = $scope.reservationParentData.demographics.segment,
 				aptSegment = "";
+
 			if (!!currentSegment) {
 				angular.forEach($scope.otherData.segments, function(segment) {
 					if ($scope.reservationData.reservation_card.total_nights < segment.los) {
@@ -26,26 +27,28 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 			}
 		};
 		var eventTimestamp = "";
-		$scope.clickedAdditionalDetails = function($event){
+
+		$scope.clickedAdditionalDetails = function($event) {
 			$event.preventDefault();
 		    $event.stopImmediatePropagation();
   			$event.stopPropagation();
-  			var toggleAction = function(){
+  			var toggleAction = function() {
 				$scope.additionalDetails.hideDetails = !$scope.additionalDetails.hideDetails;
 				$scope.refreshReservationDetailsScroller(300);
 				eventTimestamp = $event.timeStamp;
   			};
+
 			if (parseInt(eventTimestamp)) {
 				if (($event.timeStamp - eventTimestamp) < 500) {
 					return;
 				}
-				else{
+				else {
 					toggleAction();
 				}
 			}
-			else{
+			else {
 				toggleAction();
-			};
+			}
 
 		};
 
@@ -56,6 +59,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 				var selectedReservationGuaranteeType = _.where($scope.otherData.reservationTypes, {
 					value: parseInt($scope.reservationParentData.demographics.reservationType)
 				});
+
 				if (selectedReservationGuaranteeType.length > 0) {
 					$scope.reservationData.reservation_card.guarentee_type = selectedReservationGuaranteeType[0].name;
 				} else {
@@ -83,12 +87,13 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 		$rootScope.$on('UPDATERESERVATIONTYPE', function(e, data, paymentId ) {
             $scope.reservationParentData.demographics.reservationType = data;
             // CICO-24768 - Updating Payment id after adding new CC.
-            if(!!paymentId){
+            if (!!paymentId) {
             	$scope.reservationData.reservation_card.payment_details.id = paymentId;
             }
             var selectedReservationGuaranteeType = _.where($scope.otherData.reservationTypes, {
 				value: parseInt($scope.reservationParentData.demographics.reservationType)
 			});
+
 			if (selectedReservationGuaranteeType.length > 0) {
 				$scope.reservationData.reservation_card.guarentee_type = selectedReservationGuaranteeType[0].name;
 			} else {

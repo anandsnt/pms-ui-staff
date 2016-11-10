@@ -1,5 +1,5 @@
-admin.controller('ADFrequentFlyerProgramCtrl', ['$scope', '$state', '$stateParams', 'ADFrequentFlyerProgramSrv','ngTableParams','$filter', '$rootScope',
-function($scope, $state, $stateParams, ADFrequentFlyerProgramSrv, ngTableParams, $filter,$rootScope) {
+admin.controller('ADFrequentFlyerProgramCtrl', ['$scope', '$state', '$stateParams', 'ADFrequentFlyerProgramSrv', 'ngTableParams', '$filter', '$rootScope',
+function($scope, $state, $stateParams, ADFrequentFlyerProgramSrv, ngTableParams, $filter, $rootScope) {
 	BaseCtrl.call(this, $scope);
 
 	$scope.fetchFFP = function() {
@@ -35,8 +35,6 @@ function($scope, $state, $stateParams, ADFrequentFlyerProgramSrv, ngTableParams,
 	$scope.fetchFFP();
 
 
-
-
 	/**
 	 *   A post method to update Frequent Flyer Program  for a hotel
 	 *   @param {String} index value for the Frequent Flyer Program List item.
@@ -47,8 +45,8 @@ function($scope, $state, $stateParams, ADFrequentFlyerProgramSrv, ngTableParams,
 		var item = this.item;
 
 		var data = {
-			'id' : item.id,
-			'set_active' : item.is_active ? false : true
+			'id': item.id,
+			'set_active': item.is_active ? false : true
 		};
 
 		var postSuccess = function() {
@@ -59,21 +57,22 @@ function($scope, $state, $stateParams, ADFrequentFlyerProgramSrv, ngTableParams,
 		$scope.invokeApi(ADFrequentFlyerProgramSrv.switchToggle, data, postSuccess);
 	};
 
-	$scope.activateMainInactivate = function(currentStatus){
+	$scope.activateMainInactivate = function(currentStatus) {
 		var nextStatus = !$scope.use_ffp;
 		var data = {
 			"set_active": nextStatus
 		};
-		var successCallbackActivateMainInactivate = function(data){
+		var successCallbackActivateMainInactivate = function(data) {
 			$scope.use_ffp = !$scope.use_ffp;
 			$rootScope.isFFPActive = $scope.use_ffp;
 			$scope.$emit('hideLoader');
 		};
-		$scope.invokeApi(ADFrequentFlyerProgramSrv.switchMainToggle, data , successCallbackActivateMainInactivate);
+
+		$scope.invokeApi(ADFrequentFlyerProgramSrv.switchMainToggle, data, successCallbackActivateMainInactivate);
 
 
 	};
-        $scope.getTitleAligned = function(title){
+        $scope.getTitleAligned = function(title) {
             return title;
         };
 }]);

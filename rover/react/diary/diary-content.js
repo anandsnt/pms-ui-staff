@@ -1,4 +1,4 @@
-//React.initializeTouchEvents(true);
+// React.initializeTouchEvents(true);
 
 var DiaryContent = React.createClass({
 	_recalculateGridSize: function() {
@@ -9,7 +9,7 @@ var DiaryContent = React.createClass({
 		viewport.width = $(window).width() - 120;
 		viewport.height = $(window).height() - 230;
 
-		if(viewport.width !== this.state.viewport.width ||
+		if (viewport.width !== this.state.viewport.width ||
 		   viewport.height !== this.state.viewport.height) {
 			display.width 		= display.hours / viewport.hours * viewport.width;
 			display.px_per_hr 	= viewport.width / viewport.hours;
@@ -19,10 +19,10 @@ var DiaryContent = React.createClass({
             this.setState({
 				viewport: viewport,
 				display: display
-			},function() {
+			}, function() {
             });
 		}
-		//reffreshing the timeline scroller and calling the onscroll fn so that others will get corrected
+		// reffreshing the timeline scroller and calling the onscroll fn so that others will get corrected
 		iscroll.timeline.scrollTo(iscroll.timeline.x, iscroll.timeline.y);
 		iscroll.timeline.refresh();
 		iscroll.timeline._scrollFn();
@@ -39,7 +39,7 @@ var DiaryContent = React.createClass({
 	__onGridScroll: function(iscroll_object) {
 		var el = iscroll_object, iscroll = this.state.iscroll;
 
-		switch(el) {
+		switch (el) {
 			case iscroll.grid:
 				iscroll.timeline.scrollTo(el.x, 0);
 
@@ -63,7 +63,7 @@ var DiaryContent = React.createClass({
 			display 		= props.display,
 			rowHeight 		= display.row_height + display.row_height_margin,
 			viewport 		= state.viewport.element(),
-			curPos 			= e.pageY - state.iscroll.grid.y - viewport.offset().top,// e.pageY - viewport.offset().top - state.iscroll.grid.y    viewport[0].scrollTop + e.pageY - viewport.offset().top - state.iscroll.grid.y,
+			curPos 			= e.pageY - state.iscroll.grid.y - viewport.offset().top, // e.pageY - viewport.offset().top - state.iscroll.grid.y    viewport[0].scrollTop + e.pageY - viewport.offset().top - state.iscroll.grid.y,
 			rowNumber 		= Math.floor(curPos / rowHeight),
 			rowNumber       = (rowNumber < 0) ? 0 : rowNumber,
 			rowNumber       = (rowNumber > (display.total_rows - 1)) ? (display.total_rows - 1) : rowNumber,
@@ -81,7 +81,7 @@ var DiaryContent = React.createClass({
 		});
 		this.state.angular_evt.onDragEnd(row_data, row_item_data);
 	},
-	/*Message transport between timeline and grid:
+	/* Message transport between timeline and grid:
 	  As resize controls are arranged on timeline, the positional data
 	  is passed via this command, then a property update is initiated with a
 	  deep copy clone of the position state from the timeline.  This update
@@ -104,7 +104,7 @@ var DiaryContent = React.createClass({
 			currentResizeItemRow: row_data
 		});
 	},
-	componentDidUpdate: function(){
+	componentDidUpdate: function() {
 		this.componentWillMount();
 
 		var props = this.props,
@@ -114,10 +114,9 @@ var DiaryContent = React.createClass({
 		var setScrollerPositions = function() {
 			var scrollToPos = (reset.x_origin - reset.x_n - 7200000) * state.display.px_per_ms;
 
-			if(scrollToPos < 0) {
+			if (scrollToPos < 0) {
 				scrollToPos = 0;
 			}
-
 
 
 			var data 	= props.data,
@@ -127,6 +126,7 @@ var DiaryContent = React.createClass({
 			rowNumber = rowNumber > 0 ? rowNumber : 0;
 
 			var scrollYPos = rowNumber * rowHeight;
+
 			state.iscroll.timeline.scrollTo(-scrollToPos, -scrollYPos, 0, 0);
 			state.iscroll.grid.scrollTo(-scrollToPos, -scrollYPos, 0, 0);
 			state.iscroll.rooms.scrollTo(0, -scrollYPos, 0, 0);
@@ -144,15 +144,16 @@ var DiaryContent = React.createClass({
 
     	$(window).on('resize', _.throttle(function(e) {
     		self._recalculateGridSize();
-    		setTimeout(function(){
+    		setTimeout(function() {
     			self.componentWillMount();
     		}, 1000);
 
-    	}.bind(this), 10, { leading: false, trailing: true }));
+    	}, 10, { leading: false, trailing: true }));
 
         setTimeout(function() {
         	var scrollToPos = (self.state.display.x_origin - self.state.display.x_n - 7200000) * self.state.display.px_per_ms;
-        	if(scrollToPos < 0) {
+
+        	if (scrollToPos < 0) {
         		scrollToPos = 0;
         	}
             self.state.iscroll.grid.scrollTo(-scrollToPos, 0, 0, 1000);
@@ -167,9 +168,9 @@ var DiaryContent = React.createClass({
   	componentWillMount: function() {
   		var self = this;
 
-    	for(var k in this.state.iscroll) {
-    		if(Object.prototype.hasOwnProperty.call(this.state.iscroll, k)) {
-    			if(this.state.iscroll[k] instanceof IScroll) {
+    	for (var k in this.state.iscroll) {
+    		if (Object.prototype.hasOwnProperty.call(this.state.iscroll, k)) {
+    			if (this.state.iscroll[k] instanceof IScroll) {
     				setTimeout(function () {
     					self.state.iscroll[k].refresh();
     				}, 100);
@@ -182,41 +183,41 @@ var DiaryContent = React.createClass({
   		var hops = Object.prototype.hasOwnProperty,
   			self = this;
 
-		if(hops.call(this.props, 'stats') && this.props.stats !== nextProps.stats) {
+		if (hops.call(this.props, 'stats') && this.props.stats !== nextProps.stats) {
   			this.setState({
   				stats: nextProps.stats
   			});
   		}
 
-		if(hops.call(this.props, 'data') && this.props.data !== nextProps.data) {
+		if (hops.call(this.props, 'data') && this.props.data !== nextProps.data) {
   			this.setState({
   				data: nextProps.data
   			});
   		}
 
-  		if(hops.call(this.props, 'viewport') && this.props.viewport !== nextProps.viewport) {
+  		if (hops.call(this.props, 'viewport') && this.props.viewport !== nextProps.viewport) {
   			this.setState({
   				viewport: nextProps.viewport
   			});
 
   		}
 
-  		if(hops.call(this.props, 'display') && this.props.display !== nextProps.display) {
+  		if (hops.call(this.props, 'display') && this.props.display !== nextProps.display) {
   			this.setState({
   				display: nextProps.display
   			},
-  			function(){
+  			function() {
   				this._recalculateGridSize();
   			});
   		}
 
-  		if(hops.call(this.props, 'filter') && this.props.filter !== nextProps.filter ) {
+  		if (hops.call(this.props, 'filter') && this.props.filter !== nextProps.filter ) {
   			this.setState({
   				filter: nextProps.filter
   			});
   		}
 
-  		if(hops.call(this.props, 'edit') && this.props.edit !== nextProps.edit) {
+  		if (hops.call(this.props, 'edit') && this.props.edit !== nextProps.edit) {
 
   			this.setState({
   				edit: nextProps.edit
@@ -232,22 +233,22 @@ var DiaryContent = React.createClass({
 			filter      = scope.gridProps.filter,
 			s_0 		= {
 							angular_evt: {
-								onSelect: 					scope.onSelect,
-								isSelected: 				scope.isSelected,
-								isAvailable:                scope.isAvailable,
-								isDraggable:                scope.isDraggable,
-								isResizable:                scope.isResizable,
-								toggleRows:                 scope.toggleRows,
-								displayFilter: 				scope.displayFilter,
-								onDragStart: 				scope.onDragStart,
-								onDragEnd: 					scope.onDragEnd,
-								onResizeStart: 				scope.onResizeStart,
-								onResizeEnd: 				scope.onResizeEnd,
-								onScrollEnd:                scope.onScrollEnd,
-								onScrollLoadTriggerRight: 	scope.onScrollLoadTriggerRight,
-								onScrollLoadTriggerLeft: 	scope.onScrollLoadTriggerLeft,
-								completedRendering:         scope.eventAfterRendering,
-								saveReservationOnDrop:      scope.saveReservationOnDrop
+								onSelect: scope.onSelect,
+								isSelected: scope.isSelected,
+								isAvailable: scope.isAvailable,
+								isDraggable: scope.isDraggable,
+								isResizable: scope.isResizable,
+								toggleRows: scope.toggleRows,
+								displayFilter: scope.displayFilter,
+								onDragStart: scope.onDragStart,
+								onDragEnd: scope.onDragEnd,
+								onResizeStart: scope.onResizeStart,
+								onResizeEnd: scope.onResizeEnd,
+								onScrollEnd: scope.onScrollEnd,
+								onScrollLoadTriggerRight: scope.onScrollLoadTriggerRight,
+								onScrollLoadTriggerLeft: scope.onScrollLoadTriggerLeft,
+								completedRendering: scope.eventAfterRendering,
+								saveReservationOnDrop: scope.saveReservationOnDrop
 							},
 							currentDragItem: props.currentDragItem,
 							currentResizeItem: props.currentResizeItem,
@@ -264,7 +265,7 @@ var DiaryContent = React.createClass({
 				  				unassignedList: undefined
 				  			},
 				  			stats: props.stats,
-				  			data : props.data
+				  			data: props.data
 						};
 
 		display.width 				= display.hours / viewport.hours * viewport.width;
@@ -286,64 +287,64 @@ var DiaryContent = React.createClass({
 			state = this.state;
 
 		return React.DOM.div({
-			className: 'diary-container ' + ((state.viewport.hours === 12) ? 'hours-12' : 'hours-24') + /*(props.currentResizeItem*/ (state.edit.active ? ' editing' : '')
+			className: 'diary-container ' + ((state.viewport.hours === 12) ? 'hours-12' : 'hours-24') + /* (props.currentResizeItem*/ (state.edit.active ? ' editing' : '')
 		},
 		React.createElement( UnassignedRoomPanel, {
-			edit:               state.edit,
+			edit: state.edit,
 			unassignedRoomList: props.unassignedRoomList,
-			iscroll: 			state.iscroll,
+			iscroll: state.iscroll
 		}),
 		React.createElement( TogglePanel, {
-			__toggleRows:  		self.__toggleRows
+			__toggleRows: self.__toggleRows
 		}),
 		React.createElement( RoomPanel, {
-			refs: 				'rooms',
-			viewport: 			state.viewport,
-			display: 			state.display,
-			meta:           	state.meta,
-			data: 				state.data,
-			edit:               state.edit,
-			filter: 			state.filter,
-			iscroll: 			state.iscroll,
-			__onGridScroll: 	self.__onGridScroll,
-			__onGridScrollEnd: 	self.__onGridScrollEnd
+			refs: 'rooms',
+			viewport: state.viewport,
+			display: state.display,
+			meta: state.meta,
+			data: state.data,
+			edit: state.edit,
+			filter: state.filter,
+			iscroll: state.iscroll,
+			__onGridScroll: self.__onGridScroll,
+			__onGridScrollEnd: self.__onGridScrollEnd
 		}),
 		React.createElement( TimelinePanel, {
-			refs: 				'timeline',
-			viewport: 			state.viewport,
-			display: 			state.display,
-			data: 				state.data,
-            stats:              state.stats,
-			meta:               state.meta,
-			filter: 			state.filter,
-			edit: 				state.edit,
-			iscroll: 			state.iscroll,
-			currentResizeItem: 	props.currentResizeItem,
-			angular_evt: 		state.angular_evt,
-			__onResizeCommand: 	self.__onResizeCommand,
-			__onResizeStart:    self.__onResizeStart,
-			__onResizeEnd:  	self.__onResizeEnd,
-			__onGridScroll: 	self.__onGridScroll,
-			__onGridScrollEnd: 	self.__onGridScrollEnd
+			refs: 'timeline',
+			viewport: state.viewport,
+			display: state.display,
+			data: state.data,
+            stats: state.stats,
+			meta: state.meta,
+			filter: state.filter,
+			edit: state.edit,
+			iscroll: state.iscroll,
+			currentResizeItem: props.currentResizeItem,
+			angular_evt: state.angular_evt,
+			__onResizeCommand: self.__onResizeCommand,
+			__onResizeStart: self.__onResizeStart,
+			__onResizeEnd: self.__onResizeEnd,
+			__onGridScroll: self.__onGridScroll,
+			__onGridScrollEnd: self.__onGridScrollEnd
 		}),
 		React.createElement( GridPanel, {
-			refs: 					'grid',
-			viewport: 				state.viewport,
-			display: 				state.display,
-			filter: 				state.filter,
-			edit:               	state.edit,
-			iscroll: 				state.iscroll,
-			meta:               	state.meta,
-			data: 					state.data,
-			currentResizeItem: 		props.currentResizeItem,
-			currentResizeItemRow: 	props.currentResizeItemRow,
-			unassignedRoomList:        props.unassignedRoomList,
-			angular_evt: 			state.angular_evt,
-			__onResizeCommand: 		self.__onResizeCommand,
-			__onGridScroll: 		self.__onGridScroll,
-			__onGridScrollEnd: 		self.__onGridScrollEnd,
-			__onDragStart: 			self.__onDragStart,
-			__onDragStop: 			self.__onDragStop
+			refs: 'grid',
+			viewport: state.viewport,
+			display: state.display,
+			filter: state.filter,
+			edit: state.edit,
+			iscroll: state.iscroll,
+			meta: state.meta,
+			data: state.data,
+			currentResizeItem: props.currentResizeItem,
+			currentResizeItemRow: props.currentResizeItemRow,
+			unassignedRoomList: props.unassignedRoomList,
+			angular_evt: state.angular_evt,
+			__onResizeCommand: self.__onResizeCommand,
+			__onGridScroll: self.__onGridScroll,
+			__onGridScrollEnd: self.__onGridScrollEnd,
+			__onDragStart: self.__onDragStart,
+			__onDragStop: self.__onDragStop
 		}));
 	}
 });

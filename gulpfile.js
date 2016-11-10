@@ -9,8 +9,8 @@ var gulp 	  = require('gulp'),
 				},
 	$         = require('gulp-load-plugins')({rename: rename }),
     options   = {
-			        DEST_ROOT_PATH  : '../../public/assets/',
-			        URL_APPENDER    : '/assets',
+			        DEST_ROOT_PATH: '../../public/assets/',
+			        URL_APPENDER: '/assets',
 				    onError: function (error) {
 				    	console.log ('--------GULP TASK FAILED---\n\n');
 				    	
@@ -18,12 +18,12 @@ var gulp 	  = require('gulp'),
 				    	console.log('\n\n---END OF GULP ERROR MESSAGE--');
 				    	require('exit')(1);
 				    },
-				    silentErrorShowing: function(error){
+				    silentErrorShowing: function(error) {
 				    	// If you want details of the error in the console
-					  	console.log ('--------GULP TASK SILENT ERROR---\n\n')
+					  	console.log ('--------GULP TASK SILENT ERROR---\n\n');
 				    	
 				    	console.trace(error);
-				    	console.log('\n\n---END OF GULP ERROR MESSAGE--')
+				    	console.log('\n\n---END OF GULP ERROR MESSAGE--');
 
 					  	this.emit('end');
 				    }

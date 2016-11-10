@@ -65,6 +65,7 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function 
             var hotel_id = data.hotel_id, interface_id = data.interface_type_id, mappingTypeId = data.mapping_type_id;
             var deferred = $q.defer();
             var url = '/admin/external_mappings/' + hotel_id + '/' + interface_id + '/update_mapping/' + mappingTypeId + '.json';
+
             ADBaseWebSrv.postJSON(url, data).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
@@ -77,7 +78,7 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function 
          * @return {object} status of update
          */
         this.saveMapping = function (data) {
-            //interface_id will be a property in the data file
+            // interface_id will be a property in the data file
             var hotel_id = data.hotel_id, interface_id = data.interface_type_id;
             var deferred = $q.defer();
             var url = '/admin/external_mappings/' + hotel_id + '/' + interface_id + '/new_mapping/';
@@ -112,6 +113,7 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function 
         this.switchToggle = function (data) {
             var deferred = $q.defer();
             var url = '/admin/ota/update_active/' + data.interface_id + ".json";
+
             ADBaseWebSrv.postJSON(url, data).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {

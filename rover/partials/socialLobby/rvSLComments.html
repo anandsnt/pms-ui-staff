@@ -15,8 +15,7 @@
                                             <h3>{{comment.author_name}}</h3>
                                             <!-- If not staff member, output job details (if they exist) -->
                                             
-                                            <span class="job-title" ng-if="comment.user.works_at != '' && comment.user.works_at != null">{{comment.user.profession + ', ' + comment.user.works_at}}</span> 
-                                            <span class="job-title" ng-if="comment.user.works_at == '' || comment.user.works_at == null">{{comment.user.profession}}</span>
+                                            <span class="job-title" >{{getProfessionStringForUser(comment.user)}}</span> 
                                             <!-- If they exist, output Company / TA 7 Group / Allotment name -->
                                             <!-- <em class="icons icon-{'guest-company' or 'guest-travelagent' or 'group' or 'allotment'}">{Name}</em> -->
                                             <!-- If not staff member, show Stay Card link -->
@@ -26,7 +25,7 @@
 
                                             <span class="posted">{{comment.created_at}}</span>
                                         </div>
-                                        <h4 class="post" ng-class="{'staff': comment.user_role != 'guest'}"> <!-- If this is a 2nd level unread post, add class 'unread'. If staff post, add class 'staff'. If entered / left the lobby post, add class 'appearance' -->
+                                        <h4 class="post post-full" ng-class="{'staff': comment.user_role != 'guest'}"> <!-- If this is a 2nd level unread post, add class 'unread'. If staff post, add class 'staff'. If entered / left the lobby post, add class 'appearance' -->
                                             {{comment.comment}}
                                         </h4>
                                     </div>

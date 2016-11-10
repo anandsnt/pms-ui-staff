@@ -14,6 +14,7 @@ admin.controller('ADLanguagesCtrl', ['$scope', 'ADLanguagesSrv', '$state', 'ngTa
             $scope.$emit('hideLoader');
             $scope.languageData = data;
         };
+
         $scope.invokeApi(ADLanguagesSrv.fetch, {}, onFetchSuccess);
     };
 
@@ -27,6 +28,7 @@ admin.controller('ADLanguagesCtrl', ['$scope', 'ADLanguagesSrv', '$state', 'ngTa
         var onToggleSuccess = function(data) {
             $scope.$emit('hideLoader');
         };
+
         $scope.invokeApi(ADLanguagesSrv.updateLanguage, language, onToggleSuccess);
     };
 
@@ -34,6 +36,7 @@ admin.controller('ADLanguagesCtrl', ['$scope', 'ADLanguagesSrv', '$state', 'ngTa
         var onToggleSuccess = function(data) {
             $scope.$emit('hideLoader');
         };
+
         $scope.languageData.show_language_field = !$scope.languageData.show_language_field;
         $scope.invokeApi(ADLanguagesSrv.toggleLanguagesUse, {
             show_language_field: $scope.languageData.show_language_field

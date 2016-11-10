@@ -15,7 +15,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		$scope.isPromptOpened = false;
 		$scope.isLogoPrint = true;
 		$scope.isPrintArStatement = false;
-		//setting the heading of the screen
+		// setting the heading of the screen
 		if ($stateParams.type === "COMPANY") {
 			if ($scope.isAddNewCard) {
 				$scope.heading = $filter('translate')('NEW_COMPANY_CARD');
@@ -39,49 +39,49 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		$scope.$on('ARTransactionSearchFilter', function(e, data) {
 			$scope.isWithFilters = data;
 		});
-		var setBackButtonCaption = function(){
-	        if($rootScope.previousState.controller ==="rvAllotmentConfigurationCtrl")
+		var setBackButtonCaption = function() {
+	        if ($rootScope.previousState.controller === "rvAllotmentConfigurationCtrl")
 	        {
 	            $scope.searchBackButtonCaption = $filter('translate')('ALLOTMENTS');
 	        }
-	        else if($stateParams.origin === 'AR_OVERVIEW'){
+	        else if ($stateParams.origin === 'AR_OVERVIEW') {
 	        	$scope.searchBackButtonCaption = $filter('translate')('MENU_ACCOUNTS_RECEIVABLES');
 	        }
-	        else if($stateParams.origin === 'COMMISION_SUMMARY'){
+	        else if ($stateParams.origin === 'COMMISION_SUMMARY') {
 				$scope.searchBackButtonCaption = $filter('translate')('MENU_COMMISIONS');
-			}else {
+			} else {
 	            $scope.searchBackButtonCaption = $filter('translate')('FIND_CARDS');
 	        }
         };
+
 		$rootScope.$broadcast("viewFromCardsOutside");
 		// Handle back button Click on card details page.
 		setBackButtonCaption();
 		$scope.headerBackButtonClicked = function() {
 
 			// Save details if made changes.
-			if($scope.currentSelectedTab === 'cc-contact-info'){
+			if ($scope.currentSelectedTab === 'cc-contact-info') {
 				saveContactInformation($scope.contactInformation);
 			}
-			else if($scope.currentSelectedTab === 'cc-contracts') {
+			else if ($scope.currentSelectedTab === 'cc-contracts') {
 				$scope.$broadcast("saveContract");
 			}
-			else if($scope.currentSelectedTab === 'cc-ar-accounts') {
+			else if ($scope.currentSelectedTab === 'cc-ar-accounts') {
 				$scope.$broadcast("saveArAccount");
 			}
 
 			$state.go($rootScope.previousState, $rootScope.previousStateParams);
 		};
 		$scope.isContactInformationSaved = false;
-		//inheriting some useful things
+		// inheriting some useful things
 		BaseCtrl.call(this, $scope);
 
-		//scope variable for tab navigation, based on which the tab will appear
-		$scope.currentSelectedTab = 'cc-contact-info'; //initially contact information is active
+		// scope variable for tab navigation, based on which the tab will appear
+		$scope.currentSelectedTab = 'cc-contact-info'; // initially contact information is active
 
 		if (typeof $stateParams.type !== 'undefined' && $stateParams.type !== "") {
 			$scope.account_type = $stateParams.type;
 		}
-
 
 
 		/**
@@ -89,10 +89,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 */
 		$scope.companyCardClicked = function($event) {
 
-			//to check if click is outside the AR accounts Tab
+			// to check if click is outside the AR accounts Tab
 			if (!getParentWithSelector($event, document.getElementById("cc-ar-accounts"))) {
 				$scope.$broadcast("saveArAccount");
-			};
+			}
 
 			$event.stopPropagation();
 
@@ -105,10 +105,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			}
 
 
-
 		};
 
-		/*-------AR account starts here-----------*/
+		/* -------AR account starts here-----------*/
 		
 		$scope.$on('ERRORONARTAB', function(e) {
 			$scope.switchTabTo('', 'cc-ar-accounts');
@@ -130,6 +129,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			}
 			// CICO-28058 - checking whether AR Number is present or not.
 			var isArNumberAvailable = !!$scope.contactInformation && !!$scope.contactInformation.account_details && !!$scope.contactInformation.account_details.accounts_receivable_number;
+
 			if ($scope.currentSelectedTab === 'cc-contact-info' && tabToSwitch !== 'cc-contact-info') {
 
 				if ($scope.isAddNewCard && !$scope.isContactInformationSaved) {
@@ -171,10 +171,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			if (tabToSwitch === 'cc-commissions') {
 				$scope.$broadcast("commissionsTabActive");
 			}
-			if(tabToSwitch === 'cc-ar-transactions' && !isArNumberAvailable){
+			if (tabToSwitch === 'cc-ar-transactions' && !isArNumberAvailable) {
 			  	console.warn("Save AR Account and Navigate to AR Transactions");
 			}
-			else{
+			else {
 				$scope.currentSelectedTab = tabToSwitch;
 			}
 		};
@@ -186,14 +186,14 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.showArAccountButtonClick($event);
 		};
 
-		//CICO-11664
-		//To default the AR transactions tab while navigating back from staycard
+		// CICO-11664
+		// To default the AR transactions tab while navigating back from staycard
 		if ($stateParams.isBackFromStaycard) {
 			$scope.isArTabAvailable = true;
 			$scope.currentSelectedTab = 'cc-ar-transactions';
 			$scope.$broadcast('setgenerateNewAutoAr', true);
 			$scope.switchTabTo('', 'cc-ar-transactions');
-		};
+		}
 
 		$scope.$on('ARNumberChanged', function(e, data) {
 			$scope.contactInformation.account_details.accounts_receivable_number = data.newArNumber;
@@ -221,6 +221,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			var dataToSend = {
 				"id": $scope.contactInformation.id
 			};
+
 			$scope.invokeApi(RVCompanyCardSrv.deleteArAccount, dataToSend, successCallbackOfdeleteArAccount);
 		};
 
@@ -252,12 +253,13 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				}
 				fetchARNotes();
 			};
+
 			$scope.invokeApi(RVCompanyCardSrv.fetchArAccountDetails, param, successCallbackFetchArDetails);
 
 		};
 
 
-		/*-------AR account ends here-----------*/
+		/* -------AR account ends here-----------*/
 
 
 		/**
@@ -272,29 +274,29 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.contactInformation = data;
 			if ($scope.contactInformation.alert_message !== "") {
 				$scope.errorMessage = [$scope.contactInformation.alert_message];
-			};
+			}
 			if (typeof $stateParams.id !== 'undefined' && $stateParams.id !== "") {
 				$scope.contactInformation.id = $stateParams.id;
 				callCompanyCardServices();
 			}
-			//taking a deep copy of copy of contact info. for handling save operation
-			//we are not associating with scope in order to avoid watch
+			// taking a deep copy of copy of contact info. for handling save operation
+			// we are not associating with scope in order to avoid watch
 			presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
 			
-			//CICO-20567-Select default to AR Transactions Tab
-			if($stateParams.origin === 'AR_OVERVIEW'){
+			// CICO-20567-Select default to AR Transactions Tab
+			if ($stateParams.origin === 'AR_OVERVIEW') {
 				$scope.switchTabTo('', 'cc-ar-transactions');
-			}else if($stateParams.origin === 'COMMISION_SUMMARY'){
+			} else if ($stateParams.origin === 'COMMISION_SUMMARY') {
 				$scope.switchTabTo('', 'cc-commissions');
 			}
 		};
 		/**
 		 * successcall back of commssion detail
 		 */
-		var successCallbackOffetchCommissionDetail = function(data){
+		var successCallbackOffetchCommissionDetail = function(data) {
 			$scope.$emit("hideLoader");
 			$scope.contactInformation["commission_details"] = data.commission_details;
-		}
+		};
 
 		/**
 		 * successcall back of country list fetch
@@ -303,13 +305,14 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.countries = data;
 		};
 
-		//fetching country list
+		// fetching country list
 		$scope.invokeApi(RVCompanyCardSrv.fetchCountryList, data, successCallbackOfCountryListFetch);
 
-		//getting the contact information
+		// getting the contact information
 		var id = $stateParams.id;
 		// here we are following a bad practice for add screen,
-		//we assumes that id will be equal to "add" in case for add, other for edit
+		// we assumes that id will be equal to "add" in case for add, other for edit
+
 		if (typeof id !== "undefined" && id === "add") {
 			$scope.contactInformation = {};
 			if (typeof $stateParams.query !== "undefined" && $stateParams.query !== "") {
@@ -317,21 +320,21 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				$scope.contactInformation.account_details.account_name = $stateParams.query;
 			}
 
-			//setting as null dictionary, will help us in saving..
+			// setting as null dictionary, will help us in saving..
 
 			$scope.arAccountNotes = {};
 			$scope.arAccountDetails = {};
 			presentContactInfo = {};
 			$scope.invokeApi(RVCompanyCardSrv.fetchCommissionDetail, data, successCallbackOffetchCommissionDetail);
 		}
-		//we are checking for edit screen
+		// we are checking for edit screen
 		else if (typeof id !== 'undefined' && id !== "") {
 			var data = {
 				'id': id
 			};
+
 			$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, data, successCallbackOfInitialFetch);
 		}
-
 
 
 		/**
@@ -341,8 +344,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 
 			$scope.$emit("hideLoader");
 			if (typeof data.id !== 'undefined' && data.id !== "") {
-				//to check if id is defined or not before save
+				// to check if id is defined or not before save
 				var contactInfoAvailable = $scope.contactInformation.id ? true : false;
+
 				$scope.contactInformation.id = data.id;
 				if (!contactInfoAvailable) {
 					callCompanyCardServices();
@@ -350,12 +354,12 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			} else if (typeof $stateParams.id !== 'undefined' && $stateParams.id !== "") {
 				$scope.contactInformation.id = $stateParams.id;
 			}
-			//taking a deep copy of copy of contact info. for handling save operation
-			//we are not associating with scope in order to avoid watch
+			// taking a deep copy of copy of contact info. for handling save operation
+			// we are not associating with scope in order to avoid watch
 			presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
-			//In the case of ass mode - rename the headding after saving contact info
+			// In the case of ass mode - rename the headding after saving contact info
 			if ($scope.isAddNewCard) {
-				//setting the heading of the screen
+				// setting the heading of the screen
 				if ($stateParams.type === "COMPANY") {
 					$scope.heading = $filter('translate')('COMPANY_CARD');
 				} else if ($stateParams.type === "TRAVELAGENT") {
@@ -376,7 +380,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		var failureCallbackOfContactSaveData = function(errorMessage) {
 			$scope.$emit("hideLoader");
 			$scope.$broadcast("setCardContactErrorMessage", errorMessage);
-			//$scope.errorMessage = errorMessage;
+			// $scope.errorMessage = errorMessage;
 			$scope.currentSelectedTab = 'cc-contact-info';
 		};
 
@@ -386,18 +390,20 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 */
 		var saveContactInformation = function(data) {
 			var dataUpdated = false;
+
 			if (!angular.equals(data, presentContactInfo)) {
 				dataUpdated = true;
 			}
 
 			if (dataUpdated) {
 				var dataToSend = JSON.parse(JSON.stringify(data));
+
 				for (key in dataToSend) {
 					if (typeof dataToSend[key] !== "undefined" && data[key] !== null && data[key] !== "") {
-						//in add case's first api call, presentContactInfo will be empty object
+						// in add case's first api call, presentContactInfo will be empty object
 						if (JSON.stringify(presentContactInfo) !== '{}') {
 							for (subDictKey in dataToSend[key]) {
-								if(typeof presentContactInfo[key] !== 'undefined'){
+								if (typeof presentContactInfo[key] !== 'undefined') {
 									if (typeof dataToSend[key][subDictKey] === 'undefined' || dataToSend[key][subDictKey] === presentContactInfo[key][subDictKey]) {
 										delete dataToSend[key][subDictKey];
 									}
@@ -431,7 +437,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			}
 		});
 
-		/*** end of the contact info's controller class */
+		/** * end of the contact info's controller class */
 
 		/**
 		 * a reciever function to do operation on outside click, which is generated by outside click directive
@@ -450,21 +456,21 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			else if ($scope.isDiscard) {
 				// On discarded - prevent save call
 			}
-			else if ($stateParams.isBackFromStaycard){
+			else if ($stateParams.isBackFromStaycard) {
 				// Back navigation from stay card.Do nothing here.
-				//CICO-11664 to handle the back navigation from staycard.
+				// CICO-11664 to handle the back navigation from staycard.
 			}
-			else if ($scope.isContactInformationSaved){
+			else if ($scope.isContactInformationSaved) {
 			}
-			else{
+			else {
 
-				if($scope.currentSelectedTab === 'cc-contact-info'){
+				if ($scope.currentSelectedTab === 'cc-contact-info') {
 					saveContactInformation($scope.contactInformation);
 				}
-				else if($scope.currentSelectedTab === 'cc-contracts') {
+				else if ($scope.currentSelectedTab === 'cc-contracts') {
 					$scope.$broadcast("saveContract");
 				}
-				else if($scope.currentSelectedTab === 'cc-ar-accounts') {
+				else if ($scope.currentSelectedTab === 'cc-ar-accounts') {
 					$scope.$broadcast("saveArAccount");
 				}
 			}

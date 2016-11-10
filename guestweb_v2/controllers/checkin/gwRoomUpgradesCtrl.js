@@ -7,14 +7,16 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 		$controller('BaseController', {
 			$scope: $scope
 		});
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "ROOM_UPGRADES";
-			$scope.isUpgradesFetching = true; //to hide contents till api fetches options
+
+			$scope.isUpgradesFetching = true; // to hide contents till api fetches options
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
-		}();
+		}());
 		/**
 		 * Room Upgrades fetch actions starts here
 		 */
+
 		$scope.returnUpgradeRoomImage = function(room_type_image) {
 			console.log((room_type_image.length > 0) ? room_type_image : 'room-image.png');
 			return (room_type_image.length > 0) ? room_type_image : 'room-image.png';
@@ -25,7 +27,7 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 			$scope.isUpgradesFetching = false;
 		};
 		var onUpgradeFetchFailure = function(response) {
-			//to do - continue process - no fatal error
+			// to do - continue process - no fatal error
 		};
 
 		var options = {
@@ -35,6 +37,7 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 			successCallBack: onUpgradeFetchSuccess,
 			failureCallBack: onUpgradeFetchFailure
 		};
+
 		$scope.callAPI(GwCheckinSrv.fetchRoomUpgradesDetails, options);
 
 		/**
@@ -52,18 +55,19 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 				$state.go('checkinReservationDetails');
 			};
 			var onUpgradeFailure = function() {
-				//to do - continue process - no fatal error
+				// to do - continue process - no fatal error
 			};
 			var options = {
 				params: params,
 				successCallBack: onUpgradeSuccess,
 				failureCallBack: onUpgradeFailure
 			};
+
 			if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
 				GwWebSrv.zestwebData.roomUpgraded  = true;
 				$state.go('checkinReservationDetails');
 			}
-			else{
+			else {
 				$scope.callAPI(GwCheckinSrv.upgradeRoom, options);
 			}
 		};

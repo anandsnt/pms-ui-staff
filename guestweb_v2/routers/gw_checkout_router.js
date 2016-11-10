@@ -11,14 +11,14 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 	}).state('checkoutRoomVerification', {
 	 	url: '/checkoutRoomVerification',
 	 	templateUrl: '/assets/partials/checkout/gwRoomVerification.html',
-	 	controller : 'GwRoomVerificationController',
+	 	controller: 'GwRoomVerificationController',
 	 	data: {
 			pageTitle: 'Room verification'
 		}
 	 }).state('ccAddition', {
 	 	url: '/ccAddition/:fee/:message/:isFromCheckoutNow/:time/:ap/:amount',
 	 	templateUrl: '/assets/partials/checkout/gwCcEntry.html',
-	 	controller : 'GwCCAdditionController',
+	 	controller: 'GwCCAdditionController',
 	 	data: {
 			pageTitle: 'CC Addition'
 		}
@@ -64,12 +64,12 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 		data: {
 			pageTitle: 'Status - Check-out Later'
 		}
-	}).state('alreadyCheckedOut',{
+	}).state('alreadyCheckedOut', {
 		url: '/alreadyCheckedOut',
 		templateUrl: '/assets/partials/checkout/gwAlreadyCheckedOut.html',
 		controller: 'gwAlreadyCheckedOutController',
 		data: {
 			pageTitle: 'Status - Check-out'
 		}
-	})
+	});
 }]);

@@ -6,8 +6,8 @@ admin.directive('adCheckboxgrp', function($timeout) {
             label: '@label',
             isChecked: '=isChecked',
             deleteAction: '&deleteAction',
-            toggle:'&toggle',
-            optionId:'=optionId'
+            toggle: '&toggle',
+            optionId: '=optionId'
          },
         templateUrl: '/assets/directives/checkBox/adCheckboxGroup.html'
     };
