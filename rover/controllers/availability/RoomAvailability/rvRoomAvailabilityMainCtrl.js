@@ -122,7 +122,7 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
         };
 
 		if ( isSameData() ) {
-			successCallbackOfGrpNAllotDataFetch()
+			successCallbackOfGrpNAllotDataFetch();
 		} else {
 			$timeout(function() {
 				$scope.oldDateParams = $scope.getDateParams();
@@ -136,6 +136,19 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 		}
 
         return deferred.promise;
+	};
+
+	$scope.printAvaiability = function () {
+		$scope.$broadcast('PRINT_AVAILABILITY');
+	};
+
+	$scope.shouldShowPrint = function () {
+		var DAYS = 14,
+			ROOM = 'room';
+
+		console.log( $scope.numberOfDaysSelected, $scope.availabilityToShow );
+
+        return DAYS === $scope.numberOfDaysSelected && ROOM === $scope.availabilityToShow;
 	};
 
 	/**

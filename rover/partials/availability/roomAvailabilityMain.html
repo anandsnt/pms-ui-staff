@@ -22,6 +22,9 @@
 	    	<li id="show-graph" ng-class="{'active': selectedView == 'graph'}" ng-click="setSelectedView('graph')" ng-hide="isStandAlone">
 	    		<span class="icons icon-navbar only-icon icon-graph" ng-class="{'active': selectedView == 'graph'}">Graph</span>
 	    	</li>
+			<li id="show-print" ng-click="printAvaiability()" ng-show="shouldShowPrint()">
+	    		<span class="icons icon-navbar only-icon icon-graph">Print</span>
+	    	</li>
 	    </ul>
 	</div>
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>

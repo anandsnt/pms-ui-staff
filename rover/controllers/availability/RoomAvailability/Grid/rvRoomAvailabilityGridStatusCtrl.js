@@ -96,12 +96,12 @@ angular.module('sntRover')
                  *  
                  * @return {object} - a promise object
                  */
-                return function () {
+                return function (open, multiple) {
                     var SCROLL = 'room_availability_scroller',
                         deferred = $q.defer();
 
                     if ( toggleOnly() ) {
-                        toggleSection( section );
+                        toggleSection( section, open );
                         $scope.refreshScroller( SCROLL );
                         deferred.resolve( true );
                     } else {
@@ -109,7 +109,7 @@ angular.module('sntRover')
                             APIMethod,
                             $scope.getDateParams(),
                             function () {
-                                handleDataChange();
+                                handleDataChange(multiple);
                                 toggleSection( section, true );
                                 deferred.resolve( true );
                             }
@@ -145,8 +145,8 @@ angular.module('sntRover')
                     }
                 );
 
-            $scope.toggleRoomInventory = function () {
-                toggleSection( 'roomInventory' );
+            $scope.toggleRoomInventory = function (show) {
+                toggleSection( 'roomInventory', show );
                 $scope.refreshScroller('room_availability_scroller');
             };
 
@@ -165,6 +165,31 @@ angular.module('sntRover')
 
                 return deferred.promise;
             };
+
+            var openAllSections = function () {
+                var deferred = $q.defer(),
+                    show = true,
+                    multiple = true,
+                    promises = [
+                        $scope.toggleOccupancy(show, multiple),
+                        $scope.toggleSoldRooms(show, multiple),
+                        $scope.toggleRoomInventory(show, multiple),
+                        $scope.toggleShowGroupAllotmentTotals(show, multiple)
+                    ];
+
+                $q.all(promises).then(function() {
+                    $scope.toggleRoomInventory(show);
+                    deferred.resolve( true );
+                });
+
+                return deferred.promise;
+            }
+
+            $scope.$on('PRINT_AVAILABILITY', function (event) {
+                openAllSections().then(function() {
+                    window.print();
+                });
+            });
         // --------------------------------------------------------------------------------------------------------------
 
             $scope.$on('$includeContentLoaded', function (event) {
@@ -179,14 +204,17 @@ angular.module('sntRover')
             };
 
 
-            var handleDataChange = function () {
+            var handleDataChange = function (multiple) {
                 $scope.data = rvAvailabilitySrv.getGridData();
                 if (!isFullDataAvaillable()) {
                     initToggleStatus();
                 }
                 $scope.refreshScroller('room_availability_scroller');
                 $scope.hideMeBeforeFetching = true;
-                $scope.$emit("hideLoader");
+                
+                if ( ! multiple ) {
+                    $scope.$emit( 'hideLoader' );
+                } 
             };
         /**
         * when data changed from super controller, it will broadcast an event 'changedRoomAvailableData'
