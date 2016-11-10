@@ -105,14 +105,15 @@ angular.module('sntRover')
                         $scope.refreshScroller( SCROLL );
                         deferred.resolve( true );
                     } else {
-                        $scope.callAPI(APIMethod, {
-                            params: $scope.getDateParams(),
-                            successCallBack: function () {
+                        $scope.invokeApi(
+                            APIMethod,
+                            $scope.getDateParams(),
+                            function () {
                                 handleDataChange();
                                 toggleSection( section, true );
                                 deferred.resolve( true );
                             }
-                        });
+                        );
                     };
 
                     return deferred.promise;
@@ -150,12 +151,19 @@ angular.module('sntRover')
             };
 
             $scope.toggleShowGroupAllotmentTotals = function () {
+                var deferred = $q.defer();
+
                 if ($scope.showShowGroupAllotmentTotals) {
                     $scope.showShowGroupAllotmentTotals = false;
                     $scope.refreshScroller('room_availability_scroller');
+                    deferred.resolve( true );
                 } else {
-                    $scope.$parent.fetchGrpNAllotData();
+                    $scope.$parent.fetchGrpNAllotData().then(function () {
+                        deferred.resolve( true );
+                    });
                 }
+
+                return deferred.promise;
             };
         // --------------------------------------------------------------------------------------------------------------
 
