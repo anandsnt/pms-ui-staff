@@ -22,12 +22,15 @@
 	else if ($rootScope.collectCCOnCheckin && $rootScope.isMLI && !$rootScope.isCcAttachedFromGuestWeb) {
 		$state.go('checkinCcVerification');
 	}
+	else if($rootScope.alwaysAskForMobileNumber && !$rootScope.userMobileSkipped){
+		$state.go('roomReadyAlertUsingText'); // prompt user to choose the text delivery option
+	}
 	// collect mobile number with option to update already existing mobile number
-	else if ((($rootScope.application === "SMS" || $rootScope.alwaysAskForMobileNumber) && $rootScope.userMobile.length > 0) && !$rootScope.userMobileSkipped) {
+	else if (($rootScope.application === "SMS" && $rootScope.userMobile.length > 0) && !$rootScope.userMobileSkipped) {
 		$state.go('mobileNumberOptions'); // if user has not attached an mobile
 	}
 	// collect new mobile number
-	else if ((($rootScope.application === "SMS" || $rootScope.alwaysAskForMobileNumber) && $rootScope.userMobile.length === 0) && !$rootScope.userMobileSkipped) {
+	else if (($rootScope.application === "SMS" && $rootScope.userMobile.length === 0) && !$rootScope.userMobileSkipped) {
 			$state.go('mobileNumberAddition'); // if user has not attached an mobile
 	}
 	// collect email

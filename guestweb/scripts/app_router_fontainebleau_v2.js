@@ -181,5 +181,11 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwMobielNUmberOptions.html',
 		controller: 'mobileOptionsController',
 		title: 'Phone number entry'
+	}).state('roomReadyAlertUsingText',{
+		url: '/roomReadyAlertUsingText',
+		templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwRoomReadyAlertUsingText.html',
+		controller: 'roomReadyAlertUsingTextController',
+		title: 'Text Alert'
 	});
+
 }]);
