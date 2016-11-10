@@ -9,7 +9,7 @@ const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent }) 
 
                             item.reservations.length > 0 ?
                                 item.reservations.map((reservationItem) => (
-                                        <div style={reservationItem.style}>
+                                        <div style={reservationItem.style} className={reservationItem.reservationClass}>
                                             {reservationItem.confirm_no}
                                         </div>
                                     )
