@@ -2,10 +2,11 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
     function ($scope, $rootScope, ngDialog, rvActionTasksSrv, departments, dateFilter, rvUtilSrv, $state) {
         BaseCtrl.call(this, $scope);
 
-        //-------------------------------------------------------------------------------------------------------------- B. Local Methods
+        // -------------------------------------------------------------------------------------------------------------- B. Local Methods
         var init = function () {
                 $scope.$emit("updateRoverLeftMenu", "actionManager");
                 var heading = 'Actions Manager';
+
                 $scope.setScroller("rvActionListScroller", {
                     scrollbars: true,
                     preventDefault: false,
@@ -26,8 +27,10 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                 $scope.refreshScroller('rvActionListScroller');
             }, getBindabaleAction = function (response) {
                 var action = angular.copy(response);
+
                 action.department = action.assigned_to && action.assigned_to.id || "";
                 var splitDueTimeString = action.due_at_str.split("T");
+
                 action.dueDate = dateFilter(splitDueTimeString[0], $rootScope.dateFormatForAPI);
                 action.dueTime = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "HH:mm");
                 return action;
@@ -39,7 +42,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                         successCallBack: function (response) {
                             $scope.selectedAction = getBindabaleAction(response.data);
                         }
-                    })
+                    });
                 }
             },
             fetchActionsList = function () {
@@ -48,13 +51,13 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                     per_page: $scope.filterOptions.perPage,
                     page: $scope.filterOptions.page
                 }, onFetchListSuccess = function (response) {
-                    //catch empty pages
+                    // catch empty pages
                     if (response.results.length === 0 && response.total_count !== 0 && $scope.filterOptions.page !== 1) {
                         $scope.filterOptions.page = 1;
                         fetchActionsList();
                     }
 
-                    //Pagination
+                    // Pagination
                     $scope.filterOptions.totalCount = response.total_count;
                     $scope.filterOptions.startRecord = (($scope.filterOptions.page - 1) * $scope.filterOptions.perPage) + 1;
                     if (response.results.length === $scope.filterOptions.perPage) {
@@ -65,7 +68,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                     $scope.filterOptions.isLastPage = $scope.filterOptions.endRecord === $scope.filterOptions.totalCount;
 
 
-                    //Parsing
+                    // Parsing
                     $scope.actions = [];
 
                     _.each(response.results, function (action) {
@@ -84,7 +87,8 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                         // While coming back from staycard, the previously selected action is selected
                         var selectedAction = _.findWhere($scope.actions, {
                             id: $scope.filterOptions.selectedActionId
-                        })
+                        });
+
                         if (!selectedAction) {
                             $scope.filterOptions.selectedActionId = $scope.actions[0].id;
                         }
@@ -106,12 +110,12 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                 if (!!$scope.filterOptions.query) {
                     payLoad.query = $scope.filterOptions.query;
                 }
-                if($scope.filterOptions.selectedView == "GUEST"){
+                if ($scope.filterOptions.selectedView == "GUEST") {
                     $scope.callAPI(rvActionTasksSrv.fetchActions, {
                     params: payLoad,
                     successCallBack: onFetchListSuccess
                 });
-                } else if($scope.filterOptions.selectedView == "GROUP"){
+                } else if ($scope.filterOptions.selectedView == "GROUP") {
                     $scope.callAPI(rvActionTasksSrv.fetchGroupActions, {
                     params: payLoad,
                     successCallBack: onFetchListSuccess
@@ -120,7 +124,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             },
             updateListEntry = function () {
                 var currentAction = _.find($scope.actions, function (action) {
-                    return action.id === $scope.filterOptions.selectedActionId
+                    return action.id === $scope.filterOptions.selectedActionId;
                 }), departmentId = $scope.selectedAction.assigned_to && $scope.selectedAction.assigned_to.id;
 
 
@@ -133,7 +137,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                         value: departmentId.toString()
                     }).name : "",
                     isCompleted: !!$scope.selectedAction.completed_at
-                })
+                });
             },
             addDatePickerOverlay = function () {
                 angular.element("#ui-datepicker-div").after(angular.element('<div></div>', {
@@ -151,7 +155,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             };
 
 
-        //-------------------------------------------------------------------------------------------------------------- B. Scope Variables
+        // -------------------------------------------------------------------------------------------------------------- B. Scope Variables
 
         $scope._actionCompleted = "COMPLETED";
 
@@ -191,7 +195,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             }
         });
 
-        //-------------------------------------------------------------------------------------------------------------- C.Scope Methods
+        // -------------------------------------------------------------------------------------------------------------- C.Scope Methods
 
         $scope.actionsFilterDateOptions = {
             firstDay: 1,
@@ -263,11 +267,11 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                 assigned_to: $scope.selectedAction.department || null,
                 due_at: dateFilter($scope.selectedAction.dueDate, $rootScope.dateFormatForAPI) +
                 ($scope.selectedAction.dueTime ? "T" + $scope.selectedAction.dueTime + ":00" : "")
-            }
+            };
 
-            if(!!$scope.selectedAction.reservation_id) {
+            if (!!$scope.selectedAction.reservation_id) {
                 payLoad.reservation_id = $scope.selectedAction.reservation_id;
-            } else if(!!$scope.selectedAction.group_id) {
+            } else if (!!$scope.selectedAction.group_id) {
                 payLoad.group_id = $scope.selectedAction.group_id;
             }
 
@@ -280,7 +284,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                     $scope.selectedAction = getBindabaleAction(response.data);
                     updateListEntry();
                 }
-            })
+            });
             ngDialog.close();
         };
 
@@ -290,7 +294,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
         };
 
         $scope.toStayCard = function () {
-            //Store the state of the filters so that while coming back from staycard the correct page can be loaded
+            // Store the state of the filters so that while coming back from staycard the correct page can be loaded
             rvActionTasksSrv.setFilterState($scope.filterOptions);
             $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
                 "id": $scope.selectedAction.reservation_id,
@@ -300,7 +304,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
         };
 
         $scope.toGroup = function () {
-            //Store the state of the filters so that while coming back from staycard the correct page can be loaded
+            // Store the state of the filters so that while coming back from staycard the correct page can be loaded
             rvActionTasksSrv.setFilterState($scope.filterOptions);
             $state.go('rover.groups.config', {
                 "id": $scope.selectedAction.group_id,
@@ -319,7 +323,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
         };
 
 
-        //-------------------------------------------------------------------------------------------------------------- D. Listeners
+        // -------------------------------------------------------------------------------------------------------------- D. Listeners
 
         var listenerClosePopup = $scope.$on("CLOSE_POPUP", function () {
             ngDialog.close();
@@ -330,7 +334,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             fetchActionsList();
         });
 
-        //-------------------------------------------------------------------------------------------------------------- E. Cleanup
+        // -------------------------------------------------------------------------------------------------------------- E. Cleanup
 
         $scope.$on('$destroy', listenerClosePopup);
         $scope.$on('$destroy', listenerNewActionPosted);

@@ -1,9 +1,9 @@
 angular.module('fauxMultiSelectModule', [])
   .directive('fauxMultiSelect', ['$window', function($window) {
       return {
-        restrict : 'EA',
-        templateUrl : '../../assets/directives/fauxMultiSelect/fauxMultiSelect.html',
-        scope : {
+        restrict: 'EA',
+        templateUrl: '../../assets/directives/fauxMultiSelect/fauxMultiSelect.html',
+        scope: {
         	model: '=ngModel',
         	source: '=fauxSource'
         },
@@ -15,7 +15,7 @@ angular.module('fauxMultiSelectModule', [])
                     scope.fauxTitle = scope.model.length + ' Selected';
                 } else if ( scope.model.length === 0 ) {
                     scope.fauxTitle = 'Select';
-                };
+                }
             };
 
             var setupSelections = function() {
@@ -44,7 +44,7 @@ angular.module('fauxMultiSelectModule', [])
                     if ( item.selected ) {
                         modelAry.push( item.id );
                         newTitle = item.itemName;
-                    };
+                    }
                 });
 
                 scope.model = modelAry;
@@ -64,6 +64,7 @@ angular.module('fauxMultiSelectModule', [])
             });
 
             var TAP_EV = 'ontouchstart' in $window ? 'touchstart' : 'mousedown';
+
             element.on(TAP_EV, function(e) {
                 e.stopPropagation();
             });

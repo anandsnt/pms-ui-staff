@@ -6,7 +6,7 @@ angular.module('sntRover').service('rvPermissionSrv',
 	['$http', '$q', 'rvBaseWebSrvV2',
 		function($http, $q, rvBaseWebSrvV2) {
 
-	//variable for storing the permissions, will be a dictionary (object)
+	// variable for storing the permissions, will be a dictionary (object)
 	var roverPermissions = null;
 
 	/**
@@ -21,7 +21,7 @@ angular.module('sntRover').service('rvPermissionSrv',
 		rvBaseWebSrvV2.getJSON(url).then(function(data) {
 			roverPermissions = data.permissions;
 			deferred.resolve(data);
-		},function(data){
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -34,6 +34,7 @@ angular.module('sntRover').service('rvPermissionSrv',
 	*/
 	this.getPermissionValue = function (permissionString) {
 		var permission = _.findWhere (roverPermissions, {code: permissionString});
+
 		if (permission) {
 			return permission.value;
 		}

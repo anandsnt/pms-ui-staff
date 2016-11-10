@@ -1,7 +1,7 @@
 angular.module('sntRover').service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
 	function($q, rvBaseWebSrvV2) {
 
-		//some default values
+		// some default values
 		this.DEFAULT_PER_PAGE = 50;
 		this.DEFAULT_PAGE = 1;
 
@@ -50,7 +50,7 @@ angular.module('sntRover').service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
 			};
 
             // Groups that are not deducted from inventory are exculded from card searches in Reservation module
-            if (params.is_take_from_inventory){
+            if (params.is_take_from_inventory) {
                 data.is_take_from_inventory = true;
             }
 
@@ -74,7 +74,7 @@ angular.module('sntRover').service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
 			var deferred = $q.defer(),
 				url = '/api/reservations/' + params.reservation_id + '/add_group',
 				data = {
-					'group_id' : params.group_id
+					'group_id': params.group_id
 				};
 
 			rvBaseWebSrvV2.postJSON(url, data).then(
@@ -97,7 +97,7 @@ angular.module('sntRover').service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
 			var deferred = $q.defer(),
 				url = '/api/reservations/' + params.reservation_id + '/remove_group',
 				data = {
-					'group_id' : params.group_id
+					'group_id': params.group_id
 				};
 
 			rvBaseWebSrvV2.postJSON(url, data).then(
@@ -139,11 +139,11 @@ angular.module('sntRover').service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
 		this.getClassAgainstPickedStatus = function(group) {
 			var classes = '';
 
-			//Add class "green" if No. > 0
+			// Add class "green" if No. > 0
 			if (group.total_picked_count > 0) {
 				classes = 'green';
 			}
-			//Add class "red" if cancelled
+			// Add class "red" if cancelled
 			if (isCancelledGroup(group)) {
 				classes += ' red';
 			}
@@ -151,14 +151,16 @@ angular.module('sntRover').service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
 		};
 
         this.getGuestClassForArrival = function(group) {
-            //"cancel" if cancelled, "check-in" if not cancelled
+            // "cancel" if cancelled, "check-in" if not cancelled
             var classes = isCancelledGroup(group) ? 'cancel' : 'check-in';
+
             return classes;
         };
 
 		this.getGuestClassForDeparture = function(group) {
-            //"cancel" if cancelled, 'check-out' if not cancelled
+            // "cancel" if cancelled, 'check-out' if not cancelled
             var classes = isCancelledGroup(group) ? 'cancel' : 'check-out';
+
             return classes;
         };
 
@@ -167,7 +169,6 @@ angular.module('sntRover').service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
             // API returns a string value for 'is_take_from_inventory'
             return group.is_take_from_inventory === 'true' ? '' : 'tentative';
         };
-
 
 
 	}

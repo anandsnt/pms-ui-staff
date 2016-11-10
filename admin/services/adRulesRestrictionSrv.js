@@ -1,7 +1,7 @@
 admin.service('ADRulesRestrictionSrv', [
     '$q',
-    'ADBaseWebSrvV2','ADBaseWebSrv',
-    function($q, ADBaseWebSrvV2,ADBaseWebSrv) {
+    'ADBaseWebSrvV2', 'ADBaseWebSrv',
+    function($q, ADBaseWebSrvV2, ADBaseWebSrv) {
 
         /*
         * To fetch post types reference values
@@ -79,7 +79,7 @@ admin.service('ADRulesRestrictionSrv', [
             ADBaseWebSrvV2.postJSON(url, data)
                 .then(function(data) {
                     deferred.resolve(data);
-                },function(data){
+                }, function(data) {
                     deferred.reject(data);
                 });
 
@@ -278,13 +278,13 @@ admin.service('ADRulesRestrictionSrv', [
     /**
     *   A getter method to return the charge codes list
     */
-    this.fetchChargeCodes = function(){
+    this.fetchChargeCodes = function() {
         var deferred = $q.defer();
         var url = '/admin/charge_codes/minimal_list.json';
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
-        },function(data){
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;

@@ -14,7 +14,7 @@ var GridRowInactive = React.createClass({
 			end_time_ms  	=  data.endTime,
 			inactive_time_span = (end_time_ms - start_time_ms) * px_per_ms,
 			isOutOfOrder 	= (data.status === 'OUT_OF_ORDER'),
-			spanClassName  = spanClassName + (isOutOfOrder ? ' ooo': ' oos'),
+			spanClassName  = spanClassName + (isOutOfOrder ? ' ooo' : ' oos'),
 			innerText 		= (isOutOfOrder ? 'OUT OF ORDER' : 'OUT OF SERVICE');
 
 		return (React.DOM.div({
@@ -32,5 +32,5 @@ var GridRowInactive = React.createClass({
 			}
 		}, innerText)
 		));
-	},
+	}
 });

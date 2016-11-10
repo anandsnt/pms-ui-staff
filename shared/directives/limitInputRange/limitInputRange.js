@@ -34,17 +34,17 @@ angular
             if ( options.hasOwnProperty('from') && typeof options.from !== 'number' ) {
                 console.error( "'from' value should be numeric" );
                 return;
-            };
+            }
 
             if ( options.hasOwnProperty('to') && typeof options.to !== 'number' ) {
                 console.error( "'to' value should be numeric" );
                 return;
-            };
+            }
 
             if ( options.hasOwnProperty('toFixed') && typeof options.toFixed !== 'number' ) {
                 console.error( "'toFixed' value should be numeric" );
                 return;
-            };
+            }
 
             processIt = function() {
                 var value = parseInt( ngModel.$viewValue ),
@@ -56,7 +56,7 @@ angular
                     apply = options.from;
                 } else if ( options.hasOwnProperty('to') && value > options.to ) {
                     apply = options.to;
-                };
+                }
 
                 if ( !! apply || apply === 0) {
                     if ( options.hasOwnProperty('zeroPrefix') && options.zeroPrefix && apply < 10 ) {
@@ -65,8 +65,8 @@ angular
                         apply = apply.toFixed( options.toFixed );
                     } else {
                         apply = apply.toString();
-                    };
-                };
+                    }
+                }
 
                 ngModel.$setViewValue(apply);
                 ngModel.$render();

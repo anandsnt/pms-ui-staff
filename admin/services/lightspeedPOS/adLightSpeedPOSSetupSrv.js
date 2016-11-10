@@ -1,4 +1,4 @@
-admin.service('adLightSpeedPOSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2){
+admin.service('adLightSpeedPOSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
 	
 	/**
 	 * to get the LightSpeedPOS configraton values
@@ -7,11 +7,11 @@ admin.service('adLightSpeedPOSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', funct
 	this.fetchLightSpeedPOSConfiguration = function() {
 		var deferred = $q.defer();
 		var url = '/api/hotel_settings.json';
-		//var url = "ui/show?json_input=lightspeed/settings.json&format=json";
+		// var url = "ui/show?json_input=lightspeed/settings.json&format=json";
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data.lightspeed);
-		},function(data){
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -27,7 +27,7 @@ admin.service('adLightSpeedPOSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', funct
 
 		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
-		},function(data){
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;

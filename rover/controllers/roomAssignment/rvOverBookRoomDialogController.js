@@ -1,16 +1,15 @@
-sntRover.controller('RVOverBookRoomDialogController',['$scope','$rootScope', 'ngDialog', function($scope, $rootScope, ngDialog){
+sntRover.controller('RVOverBookRoomDialogController', ['$scope', '$rootScope', 'ngDialog', function($scope, $rootScope, ngDialog) {
 	BaseCtrl.call(this, $scope);
 
 
-	$scope.closeDialog = function(){
+	$scope.closeDialog = function() {
 		ngDialog.close();
 	};
 
-	$scope.clickedYesInOverBook = function(){
+	$scope.clickedYesInOverBook = function() {
 		$scope.closeDialog();
 		$scope.showMaximumOccupancyDialog($scope.currentRoomObject);
 	};
-
 
 
 }]);

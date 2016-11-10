@@ -1,6 +1,6 @@
 sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv', '$filter', 'ngDialog', 'rvPermissionSrv', 'RVReservationBaseSearchSrv', '$timeout',
 	function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter, ngDialog, rvPermissionSrv, RVReservationBaseSearchSrv, $timeout) {
-		//inheriting some useful things
+		// inheriting some useful things
 		BaseCtrl.call(this, $scope);
 
 		// set a back button on header
@@ -22,6 +22,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		var that = this;
 		// CICO-9081
 		var translatedHeading = $filter('translate')('CHANGE_STAY_DATES_TITLE');
+
 		$scope.$emit('HeaderChanged', translatedHeading);
 		$scope.setTitle(translatedHeading);
 
@@ -46,15 +47,15 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		};
 
 		this.dataAssign = function() {
-			//Data from Resolve method
+			// Data from Resolve method
 			$scope.stayDetails = stayDateDetails;
 			$scope.stayDetails.isOverlay = false;
 			$scope.stayDetails.validDays = [];
-			//For future comparison / reset
+			// For future comparison / reset
 			$scope.checkinDateInCalender = $scope.confirmedCheckinDate = tzIndependentDate($scope.stayDetails.details.arrival_date);
 			$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = tzIndependentDate($scope.stayDetails.details.departure_date);
 
-			//Data for rightside Pane.
+			// Data for rightside Pane.
 			$scope.rightSideReservationUpdates = '';
 			$scope.roomSelected = $scope.stayDetails.details.room_number;
 			$scope.calendarNightDiff = '';
@@ -67,7 +68,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			$scope.events = $scope.getEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
 
 			$scope.eventSources = [$scope.events];
-			//calender options used by full calender, related settings are done here
+			// calender options used by full calender, related settings are done here
 			$scope.fullCalendarOptions = {
 				height: 450,
 				header: {
@@ -85,12 +86,12 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				ignoreTimezone: false, // For ignoring timezone,
 				eventDrop: $scope.changedDateOnCalendar,
 				eventAfterRender: function(event, element) {
-					//FIX FOR CICO-7897 explicitly setting draggability in touch evnvironment
+					// FIX FOR CICO-7897 explicitly setting draggability in touch evnvironment
 					if ('startEditable' in event && 'ontouchstart' in document.documentElement) {
 						element.draggable();
 					}
 				},
-				//CICO-7897's 2nd fix
+				// CICO-7897's 2nd fix
 				viewRender: function(event, element) {
 					if (!isFirstTime) {
 						$scope.$apply(function() {
@@ -138,9 +139,10 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			var checkinTime = $scope.checkinDateInCalender;
 			var checkoutTime = $scope.checkoutDateInCalender;
 			var thisTime = "";
-			//If the flag 'has_multiple_rates' is true,
-			//then we do not display the dates before check in and dates after departure date as an event
-			//Remove those dates fromt the available dates response
+			// If the flag 'has_multiple_rates' is true,
+			// then we do not display the dates before check in and dates after departure date as an event
+			// Remove those dates fromt the available dates response
+
 			if (calendarDetails.has_multiple_rates === 'true') {
 				for (var i = calendarDetails.available_dates.length - 1; i >= 0; i--) {
 					thisTime = tzIndependentDate(calendarDetails.available_dates[i].date);
@@ -154,8 +156,8 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			return false;
 		};
 
-		//Stay dates can be extended only if dates are available prior to checkin date
-		//or after checkout date.
+		// Stay dates can be extended only if dates are available prior to checkin date
+		// or after checkout date.
 		this.checkIfStaydatesCanBeExtended = function() {
 			var calendarDetails = $scope.stayDetails.calendarDetails;
 			var reservationStatus = calendarDetails.reservation_status;
@@ -165,20 +167,20 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			var canExtendStay = false;
 
 			$(calendarDetails.available_dates).each(function(index) {
-				//Put time correction
+				// Put time correction
 				thisTime = tzIndependentDate(this.date);
-				//Check if a day available for extending prior to the checkin day
-				//Not applicable to inhouse reservations since they can not extend checkin date
+				// Check if a day available for extending prior to the checkin day
+				// Not applicable to inhouse reservations since they can not extend checkin date
 				if (reservationStatus !== "CHECKEDIN" && reservationStatus !== "CHECKING_OUT") {
 					if (thisTime < checkinTime) {
 						canExtendStay = true;
-						return false; //break out of for loop
+						return false; // break out of for loop
 					}
 				}
-				//Check if a day is available to extend after the departure date
+				// Check if a day is available to extend after the departure date
 				if (thisTime > checkoutTime) {
 					canExtendStay = true;
-					return false; //break out of for loop
+					return false; // break out of for loop
 				}
 			});
 
@@ -196,13 +198,13 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			$scope.$emit("hideLoader");
 			$scope.availabilityDetails = data;
 
-			//CICO-7306 Flag setting whether need Authorization or not.
+			// CICO-7306 Flag setting whether need Authorization or not.
 			$scope.requireAuthorization = data.require_cc_auth;
 
-			//if restrictions exist for the rate / room / date combination
+			// if restrictions exist for the rate / room / date combination
 			//					display the existing restriction
-			//Only for standalone. In pms connected, restrictions handled in server
-			//and will return not available status
+			// Only for standalone. In pms connected, restrictions handled in server
+			// and will return not available status
 			if ($rootScope.isStandAlone) {
 				if (data.restrictions.length > 0) {
 					$scope.rightSideReservationUpdates = 'RESTRICTION_EXISTS';
@@ -256,25 +258,25 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			$scope.refreshMyScroller();
 		};
 
-		//function to show restricted stay range div- only available for non-standalone PMS
+		// function to show restricted stay range div- only available for non-standalone PMS
 		this.showRestrictedStayRange = function() {
 			$scope.rightSideReservationUpdates = 'STAY_RANGE_RESTRICTED';
 			$scope.refreshMyScroller();
 		};
 
-		//function to show not available room types div
+		// function to show not available room types div
 		this.showRoomNotAvailable = function() {
 			$scope.rightSideReservationUpdates = 'ROOM_NOT_AVAILABLE';
 			$scope.refreshMyScroller();
 		};
 
-		//function to show restricted stay range div- only available for non-standalone PMS
+		// function to show restricted stay range div- only available for non-standalone PMS
 		this.showRestrictedStayRange = function() {
 			$scope.rightSideReservationUpdates = 'STAY_RANGE_RESTRICTED';
 			$scope.refreshMyScroller();
 		};
 
-		//function to show not available room types div
+		// function to show not available room types div
 		this.showRoomNotAvailable = function() {
 			$scope.rightSideReservationUpdates = 'ROOM_NOT_AVAILABLE';
 			$scope.refreshMyScroller();
@@ -283,45 +285,48 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		// function to show room list
 		that.showRoomTypeAvailable = function(data) {
 			$scope.availableRooms = data.rooms;
-			//we are showing the right side with updates
+			// we are showing the right side with updates
 			$scope.rightSideReservationUpdates = 'ROOM_TYPE_AVAILABLE';
 			$scope.refreshMyScroller();
 		};
 
-		//function to show room details, total, avg.. after successful checking for room available
+		// function to show room details, total, avg.. after successful checking for room available
 		$scope.showRoomAvailable = function() {
-			//setting nights based on calender checking/checkout days
+			// setting nights based on calender checking/checkout days
 			var timeDiff = $scope.checkoutDateInCalender.getTime() - $scope.checkinDateInCalender.getTime();
+
 			$scope.calendarNightDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-			//calculating the total rate / avg.rate
+			// calculating the total rate / avg.rate
 			$scope.totRate = 0;
 			$scope.isStayRatesSuppressed = false;
 			var checkinRate = '';
+
 			$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
 				if (this.is_sr === "true") {
 					$scope.isStayRatesSuppressed = true;
 					return false; // Exit from loop
 				}
-				//we have to add rate between the calendar checkin date & calendar checkout date only
+				// we have to add rate between the calendar checkin date & calendar checkout date only
 				if (tzIndependentDate(this.date).getTime() >= $scope.checkinDateInCalender.getTime() && tzIndependentDate(this.date).getTime() < $scope.checkoutDateInCalender.getTime()) {
 					$scope.totRate += escapeNull(this.rate) === "" ? 0 : parseInt(this.rate);
 				}
-				//if calendar checkout date is same as calendar checking date, total rate is same as that day's checkin rate
+				// if calendar checkout date is same as calendar checking date, total rate is same as that day's checkin rate
 				if (this.date === ($scope.stayDetails.details.arrival_date)) {
 					checkinRate = $scope.escapeNull(this.rate) === "" ? 0 : parseInt(this.rate);
 				}
 
 			});
 			var firstDateInAvailableDate = $scope.stayDetails.calendarDetails.available_dates[0].date;
-			var indexOfFirstAvailableDateInStayDates = _.findIndex($scope.stayDetails.calendarDetails.stay_dates, {"date": firstDateInAvailableDate})
+			var indexOfFirstAvailableDateInStayDates = _.findIndex($scope.stayDetails.calendarDetails.stay_dates, {"date": firstDateInAvailableDate});
 			var remainingStayDatesArray = _.first($scope.stayDetails.calendarDetails.stay_dates, parseInt(indexOfFirstAvailableDateInStayDates));
+
 			$(remainingStayDatesArray).each(function(index) {
 				$scope.totRate += escapeNull(this.rate) === "" ? 0 : parseInt(this.rate);
 			});
 
 			if (!$scope.isStayRatesSuppressed) {
-				//calculating the avg. rate
+				// calculating the avg. rate
 				if ($scope.calendarNightDiff > 0) {
 					$scope.avgRate = Math.round(($scope.totRate / $scope.calendarNightDiff + 0.00001) * 100 / 100);
 				} else {
@@ -329,12 +334,12 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 					$scope.avgRate = Math.round(($scope.totRate + 0.00001));
 				}
 			}
-			//we are showing the right side with updates
+			// we are showing the right side with updates
 			$scope.rightSideReservationUpdates = 'ROOM_AVAILABLE';
 			$scope.refreshMyScroller();
 		};
 
-		//click function to execute when user selected a room from list (on ROOM_TYPE_AVAILABLE status)
+		// click function to execute when user selected a room from list (on ROOM_TYPE_AVAILABLE status)
 		$scope.roomSelectedFromList = function(roomNumber) {
 			$scope.roomSelected = roomNumber;
 			$scope.showRoomAvailable();
@@ -397,6 +402,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			var roomReadyStatus = $scope.stayDetails.details.room_ready_status;
 			var foStatus = $scope.stayDetails.details.fo_status;
 			var checkinInspectedOnly = $scope.stayDetails.details.checkin_inspected_only;
+
 			return getMappedRoomStatusColor(reservationStatus, roomReadyStatus, foStatus, checkinInspectedOnly);
 		};
 
@@ -460,7 +466,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 					$scope.message_out_going_to_comp_tra = true;
 				}
 			}
-			if($scope.availabilityDetails.is_cc_authorize_for_incidentals_active && ($scope.message_out_going_to_room || $scope.message_out_going_to_comp_tra)){
+			if ($scope.availabilityDetails.is_cc_authorize_for_incidentals_active && ($scope.message_out_going_to_room || $scope.message_out_going_to_comp_tra)) {
 				$scope.enableIncedentalOnlyOption = true;
 			}
 		};
@@ -468,7 +474,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		// CICO-17266 Considering Billing info details before Auth..
 		var showPreAuthPopupWithBillingInfo = function(data) {
 
-			$scope.clickedIncidentalsOnly = function(){
+			$scope.clickedIncidentalsOnly = function() {
 				// @params : data , isCheckinWithoutAuth: false
 				data.is_cc_authorize_for_incidentals = true;
 				$scope.requireAuthorization = true;
@@ -527,7 +533,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		 */
 		$scope.changedDateOnCalendar = function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
 			$scope.stayDetails.isOverlay = false;
-			//the new date in calendar
+			// the new date in calendar
 			var newDateSelected = event.start;
 
 			// we are storing the available first date & last date for easiness of the following code
@@ -546,19 +552,19 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				// reverting back to it's original position
 				return false;
 			}
-			//CICO-30310
-			if(event.id === 'check-in' && $scope.stayDetails.details.reservation_status === 'CHECKEDIN') {
+			// CICO-30310
+			if (event.id === 'check-in' && $scope.stayDetails.details.reservation_status === 'CHECKEDIN') {
 				revertFunc();
 				return false;
 			}
-			//Events other than check-in and checkout should not be drag and droped
+			// Events other than check-in and checkout should not be drag and droped
 			if (event.id !== 'check-in' && event.id !== 'check-out') {
 				revertFunc();
 				return false;
 			}
 
 			if (event.id === 'check-in') {
-				//checkin type date draging after checkout date wil not be allowed
+				// checkin type date draging after checkout date wil not be allowed
 				if (newDateSelected > $scope.checkoutDateInCalender) {
 					revertFunc();
 					return false;
@@ -566,7 +572,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				finalCheckin = newDateSelected.clone();
 				finalCheckout = $scope.checkoutDateInCalender.clone();
 			} else if (event.id === "check-out") {
-				//checkout date draging before checkin date wil not be allowed
+				// checkout date draging before checkin date wil not be allowed
 				if (newDateSelected < $scope.checkinDateInCalender) {
 					revertFunc();
 					return false;
@@ -587,10 +593,10 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			$scope.eventSources.length = 0;
 			$scope.eventSources.push($scope.events);
 
-			//For non standalone PMS the restrications are calculated from the
-			//initital calendar data returned by server
+			// For non standalone PMS the restrications are calculated from the
+			// initital calendar data returned by server
 			if (!$rootScope.isStandAlone) {
-				//Check if the stay range is restricted, if so display a restrication message
+				// Check if the stay range is restricted, if so display a restrication message
 				if (that.isStayRangeRestricted($scope.checkinDateInCalender,
 						$scope.checkoutDateInCalender)) {
 					that.showRestrictedStayRange();
@@ -599,7 +605,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 			}
 
-			//calling the webservice for to check the availablity of rooms on these days
+			// calling the webservice for to check the availablity of rooms on these days
 			var getParams = {
 				'arrival_date': getDateString($scope.checkinDateInCalender),
 				'dep_date': getDateString($scope.checkoutDateInCalender),
@@ -620,11 +626,12 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			var thisTime = "";
 			var totalNights = 0;
 			var minNumOfStay = "";
+
 			$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
-				//Put time correction
+				// Put time correction
 				thisTime = tzIndependentDate(this.date).setHours(00, 00, 00);
-				//We calculate the minimum length of stay restriction
-				//by reffering to the checkin day
+				// We calculate the minimum length of stay restriction
+				// by reffering to the checkin day
 				if (this.date === getDateString(checkinDate)) {
 					$(this.restriction_list).each(function(index) {
 						if (this.restriction_type === "MINIMUM_LENGTH_OF_STAY") {
@@ -632,7 +639,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 						}
 					});
 				}
-				//Get the number of nights of stay.
+				// Get the number of nights of stay.
 				if (thisTime < checkinTime || thisTime >= checkoutTime) {
 					return true;
 				}
@@ -663,7 +670,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				canOverbookHouse = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE'),
 				canOverbookRoomType = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE'),
 				canBookRestrictedRate = rvPermissionSrv.getPermissionValue('BOOK_RESTRICTED_ROOM_RATE'),
-				//Introducing this variable to ensure that in case of user having no permissions to go beyond; hide further dates
+				// Introducing this variable to ensure that in case of user having no permissions to go beyond; hide further dates
 				extendThrough = true,
 				thisDate;
 
@@ -679,7 +686,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 				calEvt = {};
 
-				//Fixing the timezone issue related with fullcalendar
+				// Fixing the timezone issue related with fullcalendar
 				thisDate = tzIndependentDate(this.date);
 				if (this.is_sr === "true") {
 					calEvt.title = $filter('translate')('SUPPRESSED_RATES_TEXT');
@@ -690,7 +697,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				calEvt.end = thisDate;
 				calEvt.day = thisDate.getDate().toString();
 
-				//Event is check-in
+				// Event is check-in
 				if (thisDate.getTime() === checkinDate.getTime()) {
 					calEvt.id = "check-in";
 					calEvt.className = "check-in";
@@ -699,11 +706,11 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 					}
 					calEvt.durationEditable = "false";
 
-					//If check-in date and check-out dates are the same, show split view.
+					// If check-in date and check-out dates are the same, show split view.
 					if (checkinDate.getTime() === checkoutDate.getTime()) {
 						calEvt.className = "check-in split-view";
 						events.push(calEvt);
-						//checkout-event
+						// checkout-event
 						calEvt = {};
 						if (this.is_sr === "true") {
 							calEvt.title = $filter('translate')('SUPPRESSED_RATES_TEXT');
@@ -719,17 +726,17 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 						calEvt.durationEditable = "false";
 					}
 
-					//mid-stay range
+					// mid-stay range
 				} else if ((thisDate.getTime() > checkinDate.getTime()) && (thisDate.getTime() < checkoutDate.getTime())) {
 					calEvt.id = "mid-stay" + index; // Id should be unique
 					calEvt.className = "mid-stay";
-					//Event is check-out
+					// Event is check-out
 				} else if (thisDate.getTime() === checkoutDate.getTime()) {
 					calEvt.id = "check-out";
 					calEvt.className = "check-out";
 					calEvt.startEditable = "true";
 					calEvt.durationEditable = "false";
-					//dates prior to check-in and dates after checkout
+					// dates prior to check-in and dates after checkout
 				} else {
 					calEvt.id = "availability" + index; // Id should be unique
 					calEvt.className = "type-available";
@@ -763,19 +770,19 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				fromState: 'STAY_CARD',
 				company_id: $scope.reservationData.company.id,
 				travel_agent_id: $scope.reservationData.travelAgent.id,
-				//Related to CICO-27413 & CICO-17973
-				//group_id passing as '' => for normal reservation and group reservation
-				//rooms and rates screen - No need of group id - for both normal grp res
-				//If it is coming thru 'Find Rooms and Rates' button in change staydates screen
-				//borrow_for_groups - this stateParam is used in rooms and rates screen to show/hide ceratin fields
-				//borrow_for_groups - from this screen - if grp id present then this flag will be false
+				// Related to CICO-27413 & CICO-17973
+				// group_id passing as '' => for normal reservation and group reservation
+				// rooms and rates screen - No need of group id - for both normal grp res
+				// If it is coming thru 'Find Rooms and Rates' button in change staydates screen
+				// borrow_for_groups - this stateParam is used in rooms and rates screen to show/hide ceratin fields
+				// borrow_for_groups - from this screen - if grp id present then this flag will be false
 				group_id: '',
-				borrow_for_groups: ($scope.reservationData.group.id) ? 'true': 'false',
+				borrow_for_groups: ($scope.reservationData.group.id) ? 'true' : 'false',
                 room_type_id: $scope.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,
                 adults: $scope.reservationData.tabs[$scope.viewState.currentTab].numAdults,
                 children: $scope.reservationData.tabs[$scope.viewState.currentTab].numChildren
 			});
-		}
+		};
 
 		$scope.goToRoomAndRates = function() {
 			navigateToRateAndRates();
@@ -783,9 +790,10 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 		$scope.alertOverbooking = function(close) {
 			var timer = 0;
+
 			if (close) {
 				$scope.closeDialog();
-				timer = 1000
+				timer = 1000;
 			}
 			$timeout(navigateToRateAndRates, timer);
 		};
