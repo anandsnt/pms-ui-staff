@@ -109,7 +109,6 @@ let  calculateReservationDurationAndPosition = (diaryInitialDayOfDateGrid, reser
      returnData.reservationPosition   = reservationPosition;
 
      return returnData;
-    //console.log(reservationPosition);
 };
 
 let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateGrid, numberOfDays) => {
@@ -123,10 +122,10 @@ let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateG
                 reservation.style = {};
                 reservation.style.width = duration;
                 reservation.style.transform = "translateX("+positionAndDuration.reservationPosition+"px)";
+                let reservationStatusClass = getReservationStatusClass(reservation.status);
 
 
-
-                reservation.reservationClass = "reservation inhouse"
+                reservation.reservationClass = "reservation "+reservationStatusClass
 
             })
         }
