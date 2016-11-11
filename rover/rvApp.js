@@ -33,6 +33,7 @@ var sntRover = angular.module('sntRover',[
 		'clickTouch',
 		'oc.lazyLoad',
 		'limitInputRange',
+		'iscrollStopPropagation',
 		'emitWhen']);
 
 sntRover.config([
