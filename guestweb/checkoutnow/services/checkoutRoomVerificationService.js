@@ -1,13 +1,14 @@
 (function() {
-var checkoutRoomVerificationService = function($q,$rootScope,$http) {
+var checkoutRoomVerificationService = function($q, $rootScope, $http) {
 	var response = {};
 
-	var verifyRoom = function(url,data) {
+	var verifyRoom = function(url, data) {
 
 		var deferred = $q.defer();
-		$http.post(url, data).success(function(response){
+
+		$http.post(url, data).success(function(response) {
 			deferred.resolve(response);
-		}).error(function(){
+		}).error(function() {
 		$rootScope.netWorkError = true;
 			deferred.reject();
 		});
@@ -15,14 +16,14 @@ var checkoutRoomVerificationService = function($q,$rootScope,$http) {
 		};
 
 		return {
-			response:response,
-			verifyRoom:verifyRoom
+			response: response,
+			verifyRoom: verifyRoom
 
 		};
 };
 
 var dependencies = [
-'$q','$rootScope','$http',
+'$q', '$rootScope', '$http',
 checkoutRoomVerificationService
 ];
 

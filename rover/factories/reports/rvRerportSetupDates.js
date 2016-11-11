@@ -38,16 +38,16 @@ angular.module('reportsModule')
             				'untilDate': getDates.yesterday
             			},
             			'DAILY_TRANSACTIONS': {
-            				'singleValueDate': getDates.yesterday,
+            				'singleValueDate': getDates.yesterday
             			},
             			'DAILY_PAYMENTS': {
-            				'singleValueDate': getDates.yesterday,
+            				'singleValueDate': getDates.yesterday
             			},
             			'MARKET_SEGMENT_STAT_REPORT': {
-            				'singleValueDate': getDates.yesterday,
+            				'singleValueDate': getDates.yesterday
             			},
             			'COMPARISION_BY_DATE': {
-            				'singleValueDate': getDates.yesterday,
+            				'singleValueDate': getDates.yesterday
             			},
             			'FORECAST_BY_DATE': {
             				'fromDate': getDates.businessDate,
@@ -78,7 +78,7 @@ angular.module('reportsModule')
             				'untilDate': getDates.businessDate
             			},
             			'IN_HOUSE_GUEST': {
-            				'singleValueDate': getDates.businessDate,
+            				'singleValueDate': getDates.businessDate
             			},
                         'COMPANY_TA_TOP_PRODUCERS': {
                             'fromDate': undefined,
@@ -107,7 +107,7 @@ angular.module('reportsModule')
             			}
             		};
 
-            		var reportName = _.findKey(reportNames, function(value, key){ return value === report['title'] });
+            		var reportName = _.findKey(reportNames, function(value, key) { return value === report['title']; });
 
             		var dates = datesConfig[reportName] || datesConfig['DEFAULT']; 
 
@@ -123,13 +123,13 @@ angular.module('reportsModule')
                         report[dateKey] = filter;
 
                         angular.extend(report[dateKey], {
-                            showRemove : true,
-                            fromModel  : fromModel
+                            showRemove: true,
+                            fromModel: fromModel
                         });
 
     					if ( !! untilModel ) {
     						report[dateKey]['untilModel'] = untilModel;
-    					};
+    					}
 
     					report.allDates.push( dateKey );
     	        	};
@@ -142,62 +142,62 @@ angular.module('reportsModule')
                 	    // for 'Cancellation & No Show' report the description should be 'Arrival Date Range'
                 	    if ( report['title'] === reportNames['CANCELLATION_NO_SHOW'] ) {
                 	        report['hasDateFilter']['description'] = 'Arrival Date Range';
-                	    };
+                	    }
 
                 	    // for 'Booking Source & Market Report' report the description should be 'Booked Date'
                 	    if ( report['title'] === reportNames['BOOKING_SOURCE_MARKET_REPORT'] ) {
                 	        report['hasDateFilter']['description'] = 'Booked Date';
-                	    };
-                	};
+                	    }
+                	}
 
                 	/** CANCELATION_DATE_RANGE */
 
                 	if ( 'CANCELATION_DATE_RANGE' === filter.value || 'CANCELLATION_DATE_RANGE' === filter.value ) {
                 		setUp('hasCancelDateFilter', 'fromCancelDate', 'untilCancelDate');
-                	};
+                	}
 
                 	/** ARRIVAL_DATE_RANGE */
 
                 	if ( 'ARRIVAL_DATE_RANGE' === filter.value ) {
                 		setUp('hasArrivalDateFilter', 'fromArrivalDate', 'untilArrivalDate');
-	                };
+	                }
 
                 	/** GROUP_START_DATE_RANGE */
 
                 	if ( 'GROUP_START_DATE_RANGE' === filter.value ) {
                 		setUp('hasGroupStartDateRange', 'groupStartDate', 'groupEndDate');
-	                };
+	                }
 
 	                /** DEPOSIT_DATE_RANGE */
 
                 	if ( 'DEPOSIT_DATE_RANGE' === filter.value ) {
                 		setUp('hasDepositDateFilter', 'fromDepositDate', 'untilDepositDate');
-	                };
+	                }
 
 	                /** CREATE_DATE_RANGE */
 
                 	if ( 'CREATE_DATE_RANGE' === filter.value ) {
                 		setUp('hasCreateDateFilter', 'fromCreateDate', 'untilCreateDate');
-	                };
+	                }
 
 	                /** PAID_DATE_RANGE */
 
                 	if ( 'PAID_DATE_RANGE' === filter.value ) {
                 		setUp('hasPaidDateRange', 'fromPaidDate', 'untilPaidDate');
-	                };
+	                }
 
 	                /** SINGLE_DATE */
 
                 	if ( 'SINGLE_DATE' === filter.value ) {
                 		setUp('hasSingleDateFilter', 'singleValueDate');
-	                };
+	                }
 
 	                /** ADJUSTMENT_DATE_RANGE */
 
                 	if ( 'ADJUSTMENT_DATE_RANGE' === filter.value ) {
                 		setUp('hasAdjustmentDateRange', 'fromAdjustmentDate', 'untilAdjustmentDate');
-	                };
+	                }
                 }
-            }
+            };
         }
     ]);

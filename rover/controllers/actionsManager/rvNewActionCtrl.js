@@ -1,7 +1,7 @@
 sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'dateFilter', 'rvActionTasksSrv', '$filter',
     function ($scope, $rootScope, rvUtilSrv, dateFilter, rvActionTasksSrv, $filter) {
         BaseCtrl.call(this, $scope);
-        var init = function(){
+        var init = function() {
 
             $scope.__maxLengthOfNotes = 255;
 
@@ -21,19 +21,19 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
                 onSelect: function (date, datePickerObj) {
                     $scope.newAction.dueDate = new tzIndependentDate(rvUtilSrv.get_date_from_date_picker(datePickerObj));
                 },
-                beforeShow:function(){
-                    angular.element("#ui-datepicker-div").after(angular.element('<div></div>',{
-                        id :"ui-datepicker-overlay",
-                        class: $scope.ngDialogId ? "transparent" : "" //If a dialog is already open then make overlay transparent
+                beforeShow: function() {
+                    angular.element("#ui-datepicker-div").after(angular.element('<div></div>', {
+                        id: "ui-datepicker-overlay",
+                        class: $scope.ngDialogId ? "transparent" : "" // If a dialog is already open then make overlay transparent
                     }));
                 },
-                onClose:function(){
+                onClose: function() {
                     angular.element("#ui-datepicker-overlay").remove();
                 }
             };
 
-            $scope.callAPI(rvActionTasksSrv.fetchCurrentTime,{
-                successCallBack:function(response){
+            $scope.callAPI(rvActionTasksSrv.fetchCurrentTime, {
+                successCallBack: function(response) {
                     $scope.newAction.dueTime = response;
                 }
             });
@@ -43,18 +43,19 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
             var ref = $scope.newAction,
                 payLoad = {
                     description: ref.note,
-                    assigned_to: ref.department? parseInt(ref.department, 10) : "",
+                    assigned_to: ref.department ? parseInt(ref.department, 10) : "",
                     due_at: dateFilter(ref.dueDate, $rootScope.dateFormatForAPI) + "T" + ref.dueTime + ":00"
                 };
-            if(!!ref.reservation && !!ref.reservation.id) {
+
+            if (!!ref.reservation && !!ref.reservation.id) {
                 payLoad.reservation_id = ref.reservation.id;
-            } else if(!!ref.group && !!ref.group.id) {
+            } else if (!!ref.group && !!ref.group.id) {
                 payLoad.group_id = ref.group.id;
             }
 
-            $scope.callAPI(rvActionTasksSrv.postNewAction,{
+            $scope.callAPI(rvActionTasksSrv.postNewAction, {
                 params: payLoad,
-                successCallBack: function(){
+                successCallBack: function() {
                     $scope.$emit("NEW_ACTION_POSTED");
                 }
             });
@@ -66,15 +67,15 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
          * A. The browser for text area max-length
          * B. String length JavaScript
          */
-        $scope.adjustedLength = function(str){
+        $scope.adjustedLength = function(str) {
             return str.replace(/\r(?!\n)|\n(?!\r)/g, "\r\n").length;
         };
 
-        var listenerInit = $scope.$on("INIT_NEW_ACTION",function(){
+        var listenerInit = $scope.$on("INIT_NEW_ACTION", function() {
             init();
         });
 
-        var listenerReservationSelect = $scope.$on("RESERVATION_SELECTED",function(e, selectedReservation){
+        var listenerReservationSelect = $scope.$on("RESERVATION_SELECTED", function(e, selectedReservation) {
             // CICO-27905
             var businessDate = new tzIndependentDate($rootScope.businessDate),
                 arrivalDate = new tzIndependentDate(selectedReservation.arrival_date);
@@ -82,7 +83,7 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
             $scope.newAction.dueDate = businessDate > arrivalDate ? businessDate : arrivalDate;
         });
 
-        var listenerGroupSelect = $scope.$on("GROUP_SELECTED",function(e, selectedGroup){
+        var listenerGroupSelect = $scope.$on("GROUP_SELECTED", function(e, selectedGroup) {
 
             var businessDate = new tzIndependentDate($rootScope.businessDate),
                 arrivalDate = new tzIndependentDate(selectedGroup.from_date);

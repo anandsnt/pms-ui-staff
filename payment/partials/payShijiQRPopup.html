@@ -1,0 +1,18 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
+    <form class="modal-content form pay-bill show-alipay">
+        <button id="modal-close" type="button" class="modal-close" ng-click="closeThisDialog()">
+            <span class="icons icon-close invert"></span>
+        </button>
+        <div class="alipay">
+            <h2 class="message">{{selectedPaymentType}} QR Code</h2>
+
+            <span ng-class="{'success_message' : shijiPaymentState.isSuccess , 'error-message error' : shijiPaymentState.isFailure }">
+            {{shijiPaymentState.notificationText}}
+            </span>
+
+            <img data-ng-src="data:image/png;base64,{{ngDialogData.qr_code}}" alt=""/>
+            <!-- On cancel, return to previous screen by remove class .show-alipay from modal -->
+            <button type="button" class="button blank" ng-click="onCloseQRModal()">{{shijiPaymentState.action}}</button>
+        </div>
+    </form>
+</div>

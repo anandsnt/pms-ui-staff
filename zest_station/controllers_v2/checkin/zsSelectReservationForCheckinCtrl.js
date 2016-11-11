@@ -7,7 +7,7 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
     '$stateParams',
     function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $stateParams) {
 
-        /**********************************************************************************************
+        /** ********************************************************************************************
          **      Please note that, not all the stateparams passed to this state will not be used in this state, 
          **      however we will have to pass this so as to pass again to future states which will use these.
          **
@@ -16,7 +16,7 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
          **                                                                       
          ***********************************************************************************************/
 
-        //This controller is to select checkin reservation from list of reservations.
+        // This controller is to select checkin reservation from list of reservations.
 
         BaseCtrl.call(this, $scope);
 
@@ -25,11 +25,13 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
             $scope.$emit('showLoader');
 
             var selectedReservation = [];
+
             selectedReservation.push(reservation);
             zsCheckinSrv.setSelectedCheckInReservation(selectedReservation);
             var primaryGuest = _.find(selectedReservation[0].guest_details, function(guest_detail) {
                 return guest_detail.is_primary === true;
             });
+
             if ($scope.zestStationData.check_in_collect_nationality) {
                 $state.go('zest_station.collectNationality', {
                     'guestId': primaryGuest.id,
@@ -47,17 +49,18 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
             $scope.currentPage = 1;
             $scope.totalPages = Math.ceil($scope.reservations.length / $scope.itemPerPage);
         };
+
         $scope.moveToNextPage = function() {
             if ($scope.currentPage === $scope.totalPages) {
                 return;
-            };
+            }
             $scope.currentPage++;
             listReservations();
         };
         $scope.moveToPreviousPage = function() {
             if ($scope.currentPage === 1) {
                 return;
-            };
+            }
             $scope.currentPage--;
             listReservations();
         };
@@ -67,28 +70,29 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
             });
         };
         var getCheckInReservations = function() {
-            //the data is service will be reset after the process from zscheckInReservationSearchCtrl
+            // the data is service will be reset after the process from zscheckInReservationSearchCtrl
             $scope.reservations = zsCheckinSrv.getCheckInReservations();
         };
         var init = function() {
             console.info('init at select reservation stateparams: ', $stateParams);
-            //hide back button
+            // hide back button
             $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
-            //show close button
+            // show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-            //back button action
+            // back button action
             $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
                 $state.go('zest_station.checkInReservationSearch');
-                //what needs to be passed back to re-init search results
+                // what needs to be passed back to re-init search results
                 //  if more than 1 reservation was found? else go back to input 2nd screen (confirmation, no of nites, etc..)
             });
-            //starting mode
+            // starting mode
             $scope.mode = "RESERVATION_DETAILS";
             getCheckInReservations();
             initPagination();
             listReservations();
             $scope.$emit('hideLoader');
         };
+
         init();
     }
 ]);

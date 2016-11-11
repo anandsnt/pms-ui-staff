@@ -1,7 +1,7 @@
 angular.module('sntRover').service('rvAllotmentSrv', ['$q', 'rvBaseWebSrvV2',
 	function($q, rvBaseWebSrvV2) {
 
-		//some default values
+		// some default values
 		this.DEFAULT_PER_PAGE = 50;
 		this.DEFAULT_PAGE = 1;
 

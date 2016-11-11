@@ -1,4 +1,4 @@
-sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope', '$filter', 'RVBillinginfoSrv', 'ngDialog', 'RVBillingInfoUtilSrv', function($scope, $rootScope, $filter, RVBillinginfoSrv, ngDialog, RVBillingInfoUtilSrv){
+sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope', '$filter', 'RVBillinginfoSrv', 'ngDialog', 'RVBillingInfoUtilSrv', function($scope, $rootScope, $filter, RVBillinginfoSrv, ngDialog, RVBillingInfoUtilSrv) {
 
     BaseCtrl.call(this, $scope);
 
@@ -9,16 +9,16 @@ sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope',
     var init = function() {
         $scope.attachedEntities = [];
 
-        //Contains selected entity details. Entity is selected 
-        //from all routes screen or from search entity screen.
+        // Contains selected entity details. Entity is selected 
+        // from all routes screen or from search entity screen.
         $scope.selectedEntity = {};
 
-        //Holds entity search results.
-        //includes reservations, travel agent/company cards and accounts
+        // Holds entity search results.
+        // includes reservations, travel agent/company cards and accounts
         $scope.searchResults = {
-            reservations     : [],
-            cards            : [],
-            posting_accounts : []
+            reservations: [],
+            cards: [],
+            posting_accounts: []
         };
 
         $scope.bills = [];
@@ -27,20 +27,20 @@ sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope',
         $scope.errorMessage = '';
 
         $scope.billingInfoFlags = {
-            isInAddRoutesMode   : false,
-            isInitialPage       : true,
-            isEntitySelected    : false,
-            shouldShowWaiting   : false,
-            isReloadNeeded      : false,
-            showChargeCodes     : false,
-            isBillingGroup      : true
+            isInAddRoutesMode: false,
+            isInitialPage: true,
+            isEntitySelected: false,
+            shouldShowWaiting: false,
+            isReloadNeeded: false,
+            showChargeCodes: false,
+            isBillingGroup: true
         };
 
-        //Payment details
+        // Payment details
         $scope.saveData = {
-            payment_type             : "",
-            payment_type_description : "",
-            newPaymentFormVisible    : false
+            payment_type: "",
+            payment_type_description: "",
+            newPaymentFormVisible: false
         };
         $scope.fetchRoutes();
     };
@@ -83,7 +83,7 @@ sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope',
      */
     $scope.isRoutingForPostingAccountExist = function() {
         var routeToPostingAccountExist = false;
-        var routesList = dclone($scope.routes,[]);
+        var routesList = dclone($scope.routes, []);
 
         for (var i = 0; i < routesList.length; i++) {
             if (routesList[i].entity_type === "GROUP" || 
@@ -199,7 +199,7 @@ sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope',
      * @return {undefined}
      */
     $scope.setDefaultRoutingDates = function() {
-        $scope.routeDates.from = $rootScope.businessDate > $scope.reservation.reservation_card.arrival_date? 
+        $scope.routeDates.from = $rootScope.businessDate > $scope.reservation.reservation_card.arrival_date ? 
                                  $rootScope.businessDate : $scope.reservation.reservation_card.arrival_date;
         $scope.routeDates.to   = $scope.reservation.reservation_card.departure_date;
     };
@@ -210,15 +210,15 @@ sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope',
      */
     $scope.setRoutingDateOptions = function() {
         $scope.routingDateFromOptions = {       
-            dateFormat : 'dd-mm-yy',
-            minDate    : tzIndependentDate($scope.reservation.reservation_card.arrival_date),
-            maxDate    : tzIndependentDate($scope.reservation.reservation_card.departure_date)
+            dateFormat: 'dd-mm-yy',
+            minDate: tzIndependentDate($scope.reservation.reservation_card.arrival_date),
+            maxDate: tzIndependentDate($scope.reservation.reservation_card.departure_date)
         };
 
         $scope.routingDateToOptions = {       
-            dateFormat : 'dd-mm-yy',
-            minDate    : tzIndependentDate($scope.reservation.reservation_card.arrival_date),
-            maxDate    : tzIndependentDate($scope.reservation.reservation_card.departure_date)
+            dateFormat: 'dd-mm-yy',
+            minDate: tzIndependentDate($scope.reservation.reservation_card.arrival_date),
+            maxDate: tzIndependentDate($scope.reservation.reservation_card.departure_date)
         };
     };
 
@@ -264,8 +264,8 @@ sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope',
 	$scope.handleCloseDialog = function() {
 		$scope.$emit('HANDLE_MODAL_OPENED');
 		$scope.closeDialog();
-        $scope.billingData.billingInfoTitle = ($scope.routes.length > 0 )? 
-                                              $filter('translate')('BILLING_INFO_TITLE'):
+        $scope.billingData.billingInfoTitle = ($scope.routes.length > 0 ) ? 
+                                              $filter('translate')('BILLING_INFO_TITLE') :
                                               $filter('translate')('ADD_BILLING_INFO_TITLE');
 	};
 

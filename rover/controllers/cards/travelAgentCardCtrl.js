@@ -42,7 +42,7 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 				$scope.$broadcast("fetchNotes");
 				$scope.isWithFilters = false;
 			}
-			if(tabToSwitch === 'cc-ar-transactions' && !isArNumberAvailable){
+			if (tabToSwitch === 'cc-ar-transactions' && !isArNumberAvailable) {
 			  	console.warn("Save AR Account and Navigate to AR Transactions");
 			}
 			else if (!$scope.viewState.isAddNewCard) {
@@ -55,7 +55,7 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 		});
 
 		var presentContactInfo = {};
-		/*-------AR account starts here-----------*/
+		/* -------AR account starts here-----------*/
 
 		$scope.showARTab = function($event) {
 			$scope.isArTabAvailable = true;
@@ -87,6 +87,7 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			var dataToSend = {
 				"id": $scope.reservationDetails.travelAgent.id
 			};
+
 			$scope.invokeApi(RVCompanyCardSrv.deleteArAccount, dataToSend, successCallbackOfdeleteArAccount);
 		};
 
@@ -118,11 +119,12 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 				}
 				fetchARNotes();
 			};
+
 			$scope.invokeApi(RVCompanyCardSrv.fetchArAccountDetails, param, successCallbackFetchArDetails);
 
 		};
 
-		/*-------AR account ends here-----------*/
+		/* -------AR account ends here-----------*/
 
 		$scope.$on('travelAgentFetchComplete', function(obj, isNew) {
 			$scope.searchMode = false;
@@ -144,7 +146,7 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			$timeout(function() {
 				$scope.$emit('hideLoader');
 			}, 1000);
-			if(!isNew){
+			if (!isNew) {
 				callCompanyCardServices();
 			}
 		});
@@ -217,13 +219,13 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			$scope.$emit("hideLoader");
 			$scope.contactInformation.id = data.id;
 			$scope.reservationDetails.travelAgent.id = data.id;
-			$rootScope.$broadcast("IDGENERATED",{ 'id': data.id });
+			$rootScope.$broadcast("IDGENERATED", { 'id': data.id });
 			callCompanyCardServices();
-			//New Card Handler
+			// New Card Handler
 			if ($scope.viewState.isAddNewCard && typeof data.id !== "undefined") {
 				if ($scope.viewState.identifier === "STAY_CARD" || ($scope.viewState.identifier === "CREATION" && $scope.viewState.reservationStatus.confirm)) {
 					$scope.viewState.pendingRemoval.status = false;
-					//if a new card has been added, reset the future count to zero
+					// if a new card has been added, reset the future count to zero
 					if ($scope.reservationDetails.travelAgent.futureReservations <= 0) {
 						$scope.replaceCardCaller('travel_agent', {
 							id: data.id
@@ -247,8 +249,8 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 
 			}
 
-			//taking a deep copy of copy of contact info. for handling save operation
-			//we are not associating with scope in order to avoid watch
+			// taking a deep copy of copy of contact info. for handling save operation
+			// we are not associating with scope in order to avoid watch
 			presentContactInfo = angular.copy($scope.contactInformation);
 		};
 
@@ -271,14 +273,16 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 		 */
 		var saveContactInformation = function(data) {
 			var dataUpdated = false;
+
 			if (!angular.equals(data, presentContactInfo)) {
 				dataUpdated = true;
 			}
 			if (typeof data !== 'undefined' && (dataUpdated || $scope.isAddNewCard)) {
 				var dataToSend = JSON.parse(JSON.stringify(data));
+
 				for (key in dataToSend) {
 					if (typeof dataToSend[key] !== "undefined" && data[key] !== null && data[key] !== "") {
-						//in add case's first api call, presentContactInfo will be empty object
+						// in add case's first api call, presentContactInfo will be empty object
 						if (JSON.stringify(presentContactInfo) !== '{}') {
 							for (subDictKey in dataToSend[key]) {
 								if (typeof dataToSend[key][subDictKey] === 'undefined' || dataToSend[key][subDictKey] === presentContactInfo[key][subDictKey]) {
@@ -310,6 +314,7 @@ angular.module('sntRover').controller('travelAgentResults', ['$scope', '$timeout
 			click: true,
 			preventDefault: false
 		};
+
 		$scope.setScroller('travelAgentResultScroll', scrollerOptionsForGraph);
 
 		$scope.$on("refreshTravelAgentScroll", function() {

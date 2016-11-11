@@ -1,15 +1,15 @@
-admin.service('ADEmailBlackListSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2){
+admin.service('ADEmailBlackListSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2) {
    /**
     * To fetch the list of blacklisted email
     */
-	this.fetch = function(){
+	this.fetch = function() {
 
 		var deferred = $q.defer();
 		var url = '/api/hotels/get_black_listed_emails.json';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data){
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -19,13 +19,14 @@ admin.service('ADEmailBlackListSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSr
 	/*
     * To create blacklisted email
     */
-	this.saveBlackListedEmail = function(data){
+	this.saveBlackListedEmail = function(data) {
 
 		var deferred = $q.defer();
 		var url = '/api/hotels/save_blacklisted_emails.json';
+
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data){
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -33,13 +34,14 @@ admin.service('ADEmailBlackListSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSr
 	/*
     * To delete billing group data
     */
-	this.deleteBlacklistedEmail= function(id){
+	this.deleteBlacklistedEmail = function(id) {
 
 		var deferred = $q.defer();
-		var url = '/api/hotels/'+id+'/delete_email.json';
+		var url = '/api/hotels/' + id + '/delete_email.json';
+
 		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data){
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;

@@ -13,6 +13,7 @@
     var defaultProcessEachItem = function (item, scope) {
         var $content = highlightFilter_(item.name, scope.ngModel),
             $result  = $("<a></a>").html($content);
+
         return $result;
     };
 
@@ -31,7 +32,7 @@
             
             ul.addClass(scope.ulClass);
             
-            //if no function passed for processing each item
+            // if no function passed for processing each item
             if (!_.isFunction(scope.processEachItem)) {
                 htmlForItem = defaultProcessEachItem (item, scope);
             }
@@ -51,12 +52,12 @@
         highlightFilter_ = highlightFilter;
         return {
             restrict: 'A',
-            scope   : {
-                autoOptions : '=autoCompleteOptions',
-                ngModel     : '=',
-                ulClass     : '@ulClass'
+            scope: {
+                autoOptions: '=autoCompleteOptions',
+                ngModel: '=',
+                ulClass: '@ulClass'
             },
-            link    : autoCompleteLinkFn
+            link: autoCompleteLinkFn
         };
     }]);
 }());

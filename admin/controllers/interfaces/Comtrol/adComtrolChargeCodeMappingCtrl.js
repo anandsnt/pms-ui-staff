@@ -1,7 +1,7 @@
 admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'mappedChargeCodes', 'adComtrolChargeCodeMappingSrv', 'COMTROL_REF',
     function($scope, mappedChargeCodes, adComtrolChargeCodeMappingSrv, COMTROL_REF) {
 
-        //private methods and variables
+        // private methods and variables
         var resetNew = function() {
                 $scope.state.new = {
                     revenue_center_code: "",
@@ -26,8 +26,8 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'mappedChargeCodes
                 });
             };
 
-        //scope method and variables
-        //-------------------------------------------------------------------------------------------------------------- ADD
+        // scope method and variables
+        // -------------------------------------------------------------------------------------------------------------- ADD
         /**
          * Method to open the add form
          */
@@ -83,7 +83,7 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'mappedChargeCodes
                 }
             });
         };
-        //-------------------------------------------------------------------------------------------------------------- EDIT
+        // -------------------------------------------------------------------------------------------------------------- EDIT
         /**
          * Method to show the edit form
          * @param idx
@@ -129,7 +129,7 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'mappedChargeCodes
                 }
             });
         };
-        //-------------------------------------------------------------------------------------------------------------- DELETE
+        // -------------------------------------------------------------------------------------------------------------- DELETE
         /**
          * Method to delete a Revenue Center
          * Deleted ones are  hidden in UI with help of isDeleted flag
@@ -189,7 +189,7 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'mappedChargeCodes
             });
         };
 
-        //--------------------------------------------------------------------------------------------------------------
+        // --------------------------------------------------------------------------------------------------------------
         /**
          * Initialization method for the controller
          */

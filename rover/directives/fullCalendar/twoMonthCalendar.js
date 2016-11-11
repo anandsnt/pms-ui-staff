@@ -12,11 +12,11 @@ angular.module('twoMonthscalendar', []).directive('twoMonthCalendar', function()
             disablePrevButton: '=disablePrevButton'
         },
         controller: function($scope, $compile, $http) {
-            $scope.nextButtonClicked = function(){
+            $scope.nextButtonClicked = function() {
                 $scope.nextButtonClickHandler();
             };
 
-            $scope.prevButtonClicked = function(){
+            $scope.prevButtonClicked = function() {
                 $scope.prevButtonClickHandler();
 
             };
