@@ -92,8 +92,12 @@ angular.module('sntPay').controller('payShijiCtrl',
                     bill_number: $scope.billNumber,
                     amount: $scope.payment.amount
                 }).then(response => {
-                    startPolling(response.data.async_callback_id);
-                    showQRCode(response);
+                    if (Number($scope.payment.amount) > 0) {
+                        startPolling(response.data.async_callback_id);
+                        showQRCode(response);
+                    } else {
+                        $scope.$emit('SHIJI_PAYMENT_SUCCESS', response);
+                    }
                     $scope.$emit('hideLoader');
                 }, errorMessage => {
                     $scope.$emit('SHIJI_PAYMENT_FAILED', errorMessage.data);

@@ -1,4 +1,4 @@
-angular.module('adminInterfacesRouter', []).config(function($stateProvider, $urlRouterProvider, $translateProvider) {
+angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
 
     $stateProvider.state('admin.exactOnlineSetup', {
         templateUrl: '/assets/partials/ExactOnline/setup/adExactOnlineSetup.html',
@@ -297,7 +297,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
     $stateProvider.state('admin.sitemindersSetup', {
         templateUrl: '/assets/partials/SiteminderSetup/adSiteminderSetup.html',
         controller: 'adExternalInterfaceCtrl',
-        //interface_id: 2,
+        // interface_id: 2,
         interface_id: 'SITEMINDER',
         simple_name: 'Siteminder',
         url: '/siteminderSetup'

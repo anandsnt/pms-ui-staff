@@ -48,8 +48,8 @@ angular.module('reportsModule')
         			INCLUDE_NOTES: true,
         			VIP_ONLY: true,
         			INCLUDE_VARIANCE: true,
-        			INCLUDE_LAST_YEAR : true,
-        			INCLUDE_CANCELLED : true,
+        			INCLUDE_LAST_YEAR: true,
+        			INCLUDE_CANCELLED: true,
         			INCLUDE_CANCELED: true,
         			INCLUDE_NO_SHOW: true,
         			SHOW_GUESTS: true,
@@ -69,7 +69,7 @@ angular.module('reportsModule')
         			INCLUDE_TAX_RATE: true,
         			INCLUDE_ADDON_RATE: true,
         			INCLUDE_ADDONS: true,
-        			INCLUDE_ADDON_REVENUE:true
+        			INCLUDE_ADDON_REVENUE: true
         		}
         	};
 
@@ -86,31 +86,31 @@ angular.module('reportsModule')
 
         	var changers = {
         		CANCELLATION_NO_SHOW: function(filter) {
-        			if ( filter === 'INCLUDE_CANCELLED' || filter ==='INCLUDE_CANCELED' ) {
+        			if ( filter === 'INCLUDE_CANCELLED' || filter === 'INCLUDE_CANCELED' ) {
         				return {
         					selected: true
-        				}
+        				};
         			}
         		},
         		FORECAST_GUEST_GROUPS: function(filter) {
         			if ( filter == 'EXCLUDE_NON_GTD' ) {
         				return {
         					selected: true
-        				}
+        				};
         			}
         		},
         		DAILY_PRODUCTION_DEMO: function(filter) {
         			if ( filter === 'EXCLUDE_TAX' ) {
         				return {
         					selected: true
-        				}
+        				};
         			}
         		},
         		DAILY_PRODUCTION_ROOM_TYPE: function(filter) {
         			if ( filter === 'INCLUDE_ADDONS' ) {
         				return {
         					selected: true
-        				}
+        				};
         			}
         		},
         		DEFAULT: function(filter) {
@@ -118,22 +118,22 @@ angular.module('reportsModule')
 
         			if ( filter === 'DUE_IN_ARRIVALS' || filter === 'DUE_OUT_DEPARTURES' ) {
         				ret.selected = true;
-        			};
+        			}
 
         			if ( filter === 'DEPOSIT_PAID' || filter === 'DEPOSIT_DUE' || filter === 'DEPOSIT_PAST' ) {
         				ret.mustSend = true;
-        			};
+        			}
 
         			if ( filter === 'SHOW_COMPANY' || filter === 'SHOW_TRAVEL_AGENT' ) {
         				ret.selected = true;
-        			};
+        			}
 
         			return ret;
         		}
         	};
 
         	factory.init = function(report) {
-        		var reportName = _.findKey(reportNames, function(value, key){ return value === report['title'] });
+        		var reportName = _.findKey(reportNames, function(value, key) { return value === report['title']; });
         		var changer = changers[reportName] || changers['DEFAULT']; 
 
         		report.allOptions = [];
@@ -144,7 +144,7 @@ angular.module('reportsModule')
         					pushFilterData(key, overrides[key], changer(filter.value), report, filter);
 
         					report.allOptions.push(key);
-        				};
+        				}
         			});
         		});
 
@@ -160,12 +160,12 @@ angular.module('reportsModule')
         				isOpen: false,
         				selectAll: false,
         				value: 'Select Options',
-        				allValue : 'All Selected',
+        				allValue: 'All Selected',
         				defaultValue: 'Select Options',
-        				valueKey : 'description',
-        				data : []
+        				valueKey: 'description',
+        				data: []
         			}, override);
-        		};
+        		}
 
         		data = $.extend({
         			paramKey: filter.value.toLowerCase(),
@@ -174,7 +174,7 @@ angular.module('reportsModule')
         		}, change);
 
         		report[key]['data'].push( data );
-        	};
+        	}
 
         	function updateOption(option) {
         		var selectedItems = _.where(option.data, { selected: true });
@@ -186,8 +186,8 @@ angular.module('reportsModule')
         			option.selectAll = true;
         		} else {
         			option.value = selectedItems.length + ' Selected';
-        		};
-        	};
+        		}
+        	}
 
         	return factory;
         }

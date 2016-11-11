@@ -3,7 +3,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 
 		BaseCtrl.call(this, $scope);
 		$scope.heading = "Find Cards";
-		//model used in query textbox, we will be using this across
+		// model used in query textbox, we will be using this across
 		$scope.textInQueryBox = "";
 		$scope.$emit("updateRoverLeftMenu", "cards");
 		$scope.results = [];
@@ -17,31 +17,34 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 			/**
 			 * function used for refreshing the scroller
 			 */
-		//setting the scroller for view
+		// setting the scroller for view
 		var scrollerOptions = {
 	        tap: true,
 	        preventDefault: false,
 	        deceleration: 0.0001,
 	        shrinkScrollbars: 'clip'
 	    };
+
 	  	$scope.setScroller('company_card_scroll', scrollerOptions);
 
 
 		var refreshScroller = function() {
 			$timeout(function() {
 				$scope.refreshScroller('company_card_scroll');
-			},300);
+			}, 300);
 		};
 
-		//function that converts a null value to a desired string.
-		//if no replace value is passed, it returns an empty string
+		// function that converts a null value to a desired string.
+		// if no replace value is passed, it returns an empty string
 
 		$scope.escapeNull = function(value, replaceWith) {
 			var newValue = "";
+
 			if ((typeof replaceWith !== "undefined") && (replaceWith !== null)) {
 				newValue = replaceWith;
 			}
 			var valueToReturn = ((value === null || typeof value === 'undefined') ? newValue : value);
+
 			return valueToReturn;
 		};
 
@@ -56,6 +59,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				displayFilteredResults();
 			}
 			var queryText = $scope.textInQueryBox;
+
 			$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
 		};
 
@@ -68,9 +72,9 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		 * if not fouund in the data, it will request for webservice
 		 */
 		var displayFilteredResults = function() {
-			//if the entered text's length < 3, we will show everything, means no filtering
+			// if the entered text's length < 3, we will show everything, means no filtering
 			if ($scope.textInQueryBox.length < 3) {
-				//based on 'is_row_visible' parameter we are showing the data in the template
+				// based on 'is_row_visible' parameter we are showing the data in the template
 				for (var i = 0; i < $scope.results.length; i++) {
 					$scope.results[i].is_row_visible = true;
 				}
@@ -80,8 +84,9 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 			} else {
 				var value = "";
 				var visibleElementsCount = 0;
-				//searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
-				//if it is zero, then we will request for webservice
+				// searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
+				// if it is zero, then we will request for webservice
+
 				for (var i = 0; i < $scope.results.length; i++) {
 					value = $scope.results[i];
 					if (($scope.escapeNull(value.account_first_name).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
@@ -98,6 +103,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 					var dataDict = {
 						'query': $scope.textInQueryBox.trim()
 					};
+
 					$scope.invokeApi(RVCompanyCardSearchSrv.fetch, dataDict, successCallBackofInitialFetch);
 				}
 				// we have changed data, so we are refreshing the scrollerbar

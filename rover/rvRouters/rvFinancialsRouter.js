@@ -1,5 +1,5 @@
 angular.module('FinancialsModule', [])
-	.config(function($stateProvider, $urlRouterProvider, $translateProvider){
+	.config(function($stateProvider, $urlRouterProvider, $translateProvider) {
 
     $stateProvider.state('rover.financials', {
         abstract: true,

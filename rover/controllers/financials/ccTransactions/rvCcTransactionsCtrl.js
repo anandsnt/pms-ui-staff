@@ -1,4 +1,4 @@
-sntRover.controller('RVccTransactionsController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope','RVccTransactionsSrv','$timeout','$window', 'rvPermissionSrv', function($scope, $filter,$stateParams, ngDialog, $rootScope, RVccTransactionsSrv, $timeout, $window, rvPermissionSrv) {
+sntRover.controller('RVccTransactionsController', ['$scope', '$filter', '$stateParams', 'ngDialog', '$rootScope', 'RVccTransactionsSrv', '$timeout', '$window', 'rvPermissionSrv', function($scope, $filter, $stateParams, ngDialog, $rootScope, RVccTransactionsSrv, $timeout, $window, rvPermissionSrv) {
 
 	BaseCtrl.call(this, $scope);
 	// Setting up the screen heading and browser title.
@@ -13,20 +13,21 @@ sntRover.controller('RVccTransactionsController', ['$scope','$filter','$statePar
     $scope.data.authData = {};
 
 	// Handling TransactionDate date picker click
-	$scope.clickedTransactionDate = function(){
+	$scope.clickedTransactionDate = function() {
 		$scope.popupCalendar('TRANSACTIONS');
 	};
 
     // Handling TransactionDate date picker click
-    $scope.clickedSubmitBatch = function(){
-        var successCallBackSubmitBatch = function(data){
+    $scope.clickedSubmitBatch = function() {
+        var successCallBackSubmitBatch = function(data) {
             $scope.$broadcast('showErrorMessage', "");
             $scope.$emit('hideLoader');
         };
-        var failureCallBackSubmitBatch = function(data){
+        var failureCallBackSubmitBatch = function(data) {
             $scope.$broadcast('showErrorMessage', data);
             $scope.$emit('hideLoader');
         };
+
         $scope.invokeApi(RVccTransactionsSrv.submitBatch, {}, successCallBackSubmitBatch,  failureCallBackSubmitBatch);
     };
 
@@ -42,19 +43,20 @@ sntRover.controller('RVccTransactionsController', ['$scope','$filter','$statePar
     };
 
     // Handle Tab switch
-    $scope.activatedTab = function(index){
+    $scope.activatedTab = function(index) {
     	$scope.data.activeTab = index;
     	$scope.$emit('mainTabSwiched');
     	$scope.$broadcast('CLOSEPRINTBOX');
     };
 
-    $scope.clickedOnTransactionContents = function(){
+    $scope.clickedOnTransactionContents = function() {
     	$scope.$broadcast('CLOSEPRINTBOX');
     };
 
-    $scope.hasAnyElements = function(object){
+    $scope.hasAnyElements = function(object) {
     	var hasAnyElements = true;
-    	if(isEmptyObject(object)){
+
+    	if (isEmptyObject(object)) {
     		hasAnyElements = false;
     	}
     	return hasAnyElements;

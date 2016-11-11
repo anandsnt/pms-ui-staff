@@ -28,7 +28,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				};
 
 				openSaveConfirmationPopup();
-			};
+			}
 		});
 
 		$scope.closeSaveConfirmationDialog = function(options) {
@@ -75,6 +75,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			$scope.multiSheetState.dndEnabled = true;
 
 			var currIds = _.where($scope.employeeList, { ticked: true });
+
 			currIds     = _.pluck(currIds, 'id');
 
 			// if there is any changes made by user
@@ -90,7 +91,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 				// refresh scrollers and update summary
 				refreshView();
-			};
+			}
 		};
 
 
@@ -163,7 +164,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				fromEmp = source[fromEmpIndex];
 				draggedRoom = fromEmp['rooms'][fromRoomIndex];
 				draggedTask = draggedRoom['room_tasks'][fromTaskIndex];
-			};
+			}
 
 			var dropped  = $(event.target).attr('id'),
 				toEmpIndex = parseInt( dropped.split('-')[0] ),
@@ -174,12 +175,12 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			var roomCopy = [];
 
 			function move(array, from, to) {
-				if( to === from ) return;
+				if ( to === from ) return;
 
 				var target = array[from];                         
 				var increment = to < from ? -1 : 1;
 
-				for(var k = from; k != to; k += increment){
+				for (var k = from; k != to; k += increment) {
 				array[k] = array[k + increment];
 				}
 				array[to] = target;
@@ -199,7 +200,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 						move(roomCopy, hasRoomIndex, $scope.dropIndex);
 					} else {
 						if ( $scope.dropIndex === 0 ) {
-							move(roomCopy, hasRoomIndex, $scope.dropIndex)
+							move(roomCopy, hasRoomIndex, $scope.dropIndex);
 						} else {
 							move(roomCopy, hasRoomIndex, $scope.dropIndex - 1);
 						}
@@ -213,13 +214,13 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 						'room_id': draggedRoom.room_id,
 						'room_index': draggedRoom.room_index,
 						'room_tasks': [draggedTask]
-					})
+					});
 				} else if ( $scope.dropIndex === 0 ) {
 					toEmp.rooms.unshift({
 						'room_id': draggedRoom.room_id,
 						'room_index': draggedRoom.room_index,
 						'room_tasks': [draggedTask]
-					})
+					});
 				} else {
 					toEmp.rooms = [].concat(
 							toEmp.rooms.slice( 0, $scope.dropIndex ),
@@ -229,7 +230,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 								'room_tasks': [draggedTask]
 							},
 							toEmp.rooms.slice( $scope.dropIndex )
-						)
+						);
 				}
 			}
 
@@ -244,21 +245,22 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				// and if the "work_type_id" in the removed task is not avail
 				// on toEmp's "room_tasks" anymore then remove it from "touched_work_types"
 				var inOnlyTask, hasOtherTaskWithSameWtid;
+
 				if ( 'UA' !== fromEmpIndex ) {
 					// that task with matches the id and room id of dragged task
 					inOnlyTask = _.findIndex(fromEmp.only_tasks, function(task) {
-						return task.id === draggedTask.id && task.room_id === draggedTask.room_id
+						return task.id === draggedTask.id && task.room_id === draggedTask.room_id;
 					});
 
 					if ( inOnlyTask > -1 ) {
 						fromEmp.only_tasks.splice(inOnlyTask, 1);
-					};
+					}
 
 					hasOtherTaskWithSameWtid = _.find(fromEmp.only_tasks, { work_type_id: draggedTask.work_type_id });
 					if ( ! hasOtherTaskWithSameWtid ) {
 						fromEmp.touched_work_types = _.without(fromEmp.touched_work_types, draggedTask.work_type_id);
-					};
-				};
+					}
+				}
 
 
 				// remove task from draggedRoom
@@ -269,7 +271,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				// remove the room iself!
 				if ( 'UA' !== fromEmpIndex && ! draggedRoom['room_tasks'].length ) {
 					fromEmp['rooms'].splice(fromRoomIndex, 1);
-				};
+				}
 			}
 
 			// THE ABOVE CODE COULD BETTER BE HIDDEN IN SERVICE
@@ -314,7 +316,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 					'room_tasks': [draggedTask],
 					'show': true
 				});
-			};
+			}
 
 			$scope.filterUnassigned();
 
@@ -324,17 +326,18 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			// on employee's "room_tasks" anymore then remove it from "touched_work_types"
 			var inOnlyTask, hasOtherTaskWithSameWtid;
 			// that task with matches the id and room id of dragged task
+
 			inOnlyTask = _.findIndex(thatEmpl.only_tasks, function(task) {
-				return task.id === draggedTask.id && task.room_id === draggedTask.room_id
+				return task.id === draggedTask.id && task.room_id === draggedTask.room_id;
 			});
 			if ( inOnlyTask > -1 ) {
 				thatEmpl.only_tasks.splice(inOnlyTask, 1);
-			};
+			}
 
 			hasOtherTaskWithSameWtid = _.find(thatEmpl.only_tasks, { work_type_id: draggedTask.work_type_id });
 			if ( ! hasOtherTaskWithSameWtid ) {
 				thatEmpl.touched_work_types = _.without(thatEmpl.touched_work_types, draggedTask.work_type_id);
-			};
+			}
 
 
 			// remove task from draggedRoom
@@ -345,7 +348,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			// remove the room iself!
 			if ( ! draggedRoom['room_tasks'].length ) {
 				thatEmpl['rooms'].splice(roomIndex, 1);
-			};
+			}
 
 			// THE ABOVE CODE COULD BETTER BE HIDDEN IN SERVICE
 
@@ -402,10 +405,10 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			// delay are for avoiding collisions
 			if (!$_stateChangeInterrupted && lastSaveConfig && $scope[lastSaveConfig.callNextMethod]) {
 				$timeout($scope[lastSaveConfig.callNextMethod].bind(null, lastSaveConfig.nexMethodArgs), 50);
-			};
+			}
 			if ($_stateChangeInterrupted && !!$_afterSave) {
 				$timeout($_afterSave, 60);
-			};
+			}
 			lastSaveConfig = null;
 		};
 
@@ -455,8 +458,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 						assignedRoomTasks: $scope.multiSheetState.assigned,
 						date: (config && config.date) || $scope.multiSheetState.selectedDate,
 						shouldSaveOrder: isAllWorktypeView()
-					},
-				}
+					}
+				};
 
 				// now assign room "order" to the tasks inside "only_tasks" based on their index in "rooms"
 				if ( isAllWorktypeView() ) {
@@ -473,7 +476,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 			} else {
 				afterSaveAPIcall(config);
-			};
+			}
 		};
 
 
@@ -491,8 +494,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		};
 
 
-
-
 		var employeeListBackup = null;
 
 		/**
@@ -507,7 +508,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				className: '',
 				scope: $scope,
 				closeByDocument: false,
-				closeByEscape: false,
+				closeByEscape: false
 			});
 		};
 
@@ -523,6 +524,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		 */
 		var configureMultisheetForPrinting = function(options) {
 			var multiSheetState 		= $scope.multiSheetState;
+
 			multiSheetState.selectedEmployees = RVWorkManagementSrv.sortAssigned(multiSheetState.selectedEmployees,
 										multiSheetState.allRooms,
 										multiSheetState.allTasks,
@@ -533,6 +535,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				listner();
 				$timeout(startPrinting, 0);
 			});
+
 			runDigestCycle();
 		};
 
@@ -548,7 +551,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				$window.print();
 				if ( sntapp.cordovaLoaded ) {
 					cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-				};
+				}
 
 				/*
 				*	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
@@ -585,6 +588,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 			// reset scroll bars to top
 			var i;
+
 			for (i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
 				$scope.$parent.myScroll[ 'assignedRoomList-' + i ].scrollTo(0, 0);
 			}
@@ -638,6 +642,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				scrollX: false,
 				scrollY: true
 			}, commonScrollerOptions);
+
 			$scope.setScroller('unAssignedRoomList', vertical);
 			$scope.setScroller("multiSelectWorkSheet", commonScrollerOptions);
 			$scope.setScroller("multiSelectPrintPopup", commonScrollerOptions);
@@ -651,8 +656,9 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				if ( nextIndex < length ) {
 					addVerScroller(nextIndex, length, scrollObj);
 				}
-			}
+			};
 			/**/
+
 			addVerScroller(0, $scope.multiSheetState.selectedEmployees.length, vertical);
 			/**/
 			// for (var i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
@@ -675,13 +681,13 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			$scope.$watch('multiSheetState.header.work_type_id', function(newVal, oldVal) {
 				if (newVal !== oldVal) {
 					$scope.onWorkTypeChanged();
-				};
+				}
 			});
 		};
 
 		var isAllWorktypeView = function() {
         	return ! $scope.multiSheetState.header.work_type_id;
-        }
+        };
 
 
 		// common computation part of below 2 functions
@@ -702,7 +708,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 				// push employee id into '_lastSelectedIds'
 				$scope.multiSheetState._lastSelectedIds.push( $scope.multiSheetState.assigned[foundIndex]['id'] );
-			};
+			}
 		};
 
 		/**
@@ -731,7 +737,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			_.each($scope.employeeList, function(emp) {
 				if ( emp.ticked ) {
 					initingEmpList(emp);
-				};
+				}
 			});
 		};
 
@@ -805,7 +811,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 				/* Shift length to be calculated from api/shifts. need shift_id for that.
 				   Displaying full shift length for now.*/
-				//shift = _.findWhere($scope.shifts, { id: employee.shift_id });
+				// shift = _.findWhere($scope.shifts, { id: employee.shift_id });
 				shift = _.findWhere($scope.shifts, { name: "Full Shift" });
 				summaryModel.shiftLength    = (shift && shift.time) || "08:00";
 				// Shift length must be corrected in future
@@ -841,11 +847,12 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 			if (typeof employeeId === "number") {
 				var employee = _.findWhere(refData.assigned, {id: employeeId});
+
 				refData.summary[employeeId] = calculateSummary(employee);
 
 			} else {
 				_.each(refData.assigned, function(employee) {
-					refData.summary[employee.id] = calculateSummary(employee);;
+					refData.summary[employee.id] = calculateSummary(employee);
 				});
 			}
 		};
@@ -862,24 +869,24 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 			$scope.multiSheetState = $.extend(
 					{}, {
-						'unassigned' : payload.unassignedRoomTasks,
-						'assigned'   : payload.assignedRoomTasks,
-						'allTasks'   : payload.allTasks,
-						'allRooms'   : payload.allRooms,
+						'unassigned': payload.unassignedRoomTasks,
+						'assigned': payload.assignedRoomTasks,
+						'allTasks': payload.allTasks,
+						'allRooms': payload.allRooms
 					}, {
-						'unassignedFiltered' : [],
-						'_unassignIndexMap'  : {},
+						'unassignedFiltered': [],
+						'_unassignIndexMap': {}
 					}, {
-						'selectedEmployees' : [],
-						'_selectedIndexMap' : {},
-						'_lastSelectedIds'  : []
+						'selectedEmployees': [],
+						'_selectedIndexMap': {},
+						'_lastSelectedIds': []
 					}, {
 						'dndEnabled': true,
 						'selectedDate': $scope.dateSelected || $stateParams.date || $rootScope.businessDate,
 						'summary': {},
 						'header': {
 							work_type_id: $scope.workTypeSelected || ""
-						},
+						}
 					}
 				);
 
@@ -933,6 +940,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			refreshScrollers();
 		};
 		var handler = $scope.$on( 'ALL_RENDER_COMPLETE', callRefreshScroll );
+
 		$scope.$on( '$destroy', handler );
 
 		$scope.getReservationStatusClass = function(room) {
@@ -944,7 +952,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				case 'Due out / Departed':
 				case 'Arrived / Departed':
 				case 'Departed':
-					return 'guest red'
+					return 'guest red';
 
 				case 'Stayover':
 					return 'guest blue';
@@ -991,7 +999,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		$scope.getCurrentStatusClass = function(room) {
 			switch (room.current_status) {
 				case 'DIRTY':
-					return 'room red'
+					return 'room red';
 
 				case 'PICKUP':
 					return 'room orange';
@@ -1003,7 +1011,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				default:
 					return 'room';
 			}
-		}
+		};
 
 		var setUpAutoScroller = function() {
             var LEFT  = 'LEFT',
@@ -1045,7 +1053,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                     	    $placeholder = $node.find('.placeholder');
                     	    $placeholder.remove();
                     	}
-                    }
+                    };
 
                     if ( !! $empNode ) {
                     	$node = $empNode;
@@ -1082,7 +1090,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                     }
                     
                     return colIndex;
-                }
+                };
 
                 base.findCurrColNode = function() {
                     var colIndex = this.findCurrCol(),
@@ -1135,7 +1143,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                             method: 'BEFORE',
                             node: $thisRoom,
                             index: index
-                        }
+                        };
                     } else if ( clienty > bot ) {
                         if ( $nextRoom.length ) {
                             return this.checkOnOverRoom($nextRoom, nextIndex, nextHeight);
@@ -1144,7 +1152,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                                 method: 'AFTER',
                                 node: $thisRoom,
                                 index: nextIndex
-                            }
+                            };
                         }
                     } else {
                         if ( clienty < mid && clienty >= top ) {
@@ -1152,13 +1160,13 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                                 method: 'BEFORE',
                                 node: $thisRoom,
                                 index: index
-                            }
+                            };
                         } else {
                             return {
                                 method: 'AFTER',
                                 node: $thisRoom,
                                 index: nextIndex
-                            }
+                            };
                         }
                     }
                 }.bind(base);
@@ -1182,11 +1190,11 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                             $col.find('.wrapper')
                                 .append( $placeholder );
 
-                            $scope.dropIndex = 0
+                            $scope.dropIndex = 0;
                         } else {
                             var onOverData = this.checkOnOverRoom(firstRoom, index, prevHeight);
 
-                            switch( onOverData.method ) {
+                            switch ( onOverData.method ) {
                                 case 'BEFORE':
                                     $placeholder.insertBefore( onOverData.node  );
                                     break;
@@ -1199,7 +1207,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                                     $col.find('.wrapper')
                                         .append( $placeholder );
                                     break;
-                            };
+                            }
 
                             $scope.dropIndex = onOverData.index;
                         }
@@ -1222,19 +1230,20 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                 return {                
                     screenStart: {
                         x: LEFT_OFFSET + TASK_OFFSET,
-                        y: TOP_OFFSET + AVG_TASK_HEIGHT,
+                        y: TOP_OFFSET + AVG_TASK_HEIGHT
                     },
                     screenEnd: {
                         x: winWidth - LEFT_OFFSET,
                         y: winHeight - AVG_TASK_HEIGHT
                     }
                 };
-            }
+            };
             
             // setup dim and update on screen change, also remove listener when scope dies 
             var dimOnResize = function() {
                 dim = getDimentions();
             };
+
             dimOnResize();
             console.log( dim );
             window.addEventListener( 'resize', dimOnResize, false );
@@ -1252,35 +1261,35 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
                 var isHozCheckRequired = function () {
                     return dragDir === LEFT || dragDir === RIGHT;
-                }
+                };
                 /**/
                 var hasHozScroll = function() {
                     return !! hozScrollInst.hasHorizontalScroll;
-                }
+                };
                 /**/
                 var scrollTowardsHozStart = function () {
                     return dragDir === LEFT && hozScrollInst.x < 0;
-                }
+                };
                 /**/
                 var scrollTowardsHozEnd = function () {
                     return dragDir === RIGHT && hozScrollInst.x > hozScrollInst.maxScrollX;
-                }
+                };
 
                 var isVerCheckRequired = function () {
                     return dragDir === TOP || dragDir === BOTTOM;
-                }
+                };
                 /**/
                 var hasVerScroll = function() {
                     return !! verScrollInst && !! verScrollInst.hasVerticalScroll;
-                }
+                };
                 /**/
                 var scrollTowardsVerStart = function() {
-                    return dragDir === TOP && verScrollInst.y < 0
-                }
+                    return dragDir === TOP && verScrollInst.y < 0;
+                };
                 /**/
                 var scrollTowardsVerEnd = function () {
                     return dragDir === BOTTOM && verScrollInst.y > verScrollInst.maxScrollY;
-                }
+                };
 
                 if ( isHozCheckRequired() && hasHozScroll() ) {
                     if ( scrollTowardsHozStart() ) {
@@ -1327,10 +1336,11 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                 if ( !! timer ) {
                     window.clearInterval(timer);
                     timer = UNDEF;
-                };
+                }
             };
 
             var addPlaceholderThrottled = _.throttle(orderState.addPlaceholder, 250, {leading: true, trailing: false});
+
             $scope.userDragging = function(e) {
 
             	if ( isAllWorktypeView() ) {
@@ -1367,7 +1377,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				setUpAutoScroller();
 			} else {
 				setTimeout(checkAutoScroll, 100);
-			};
+			}
 		};
 
 		/**

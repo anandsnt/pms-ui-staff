@@ -1,29 +1,30 @@
-admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEncoderSrv', 'ngTableParams','$filter','$timeout', '$location', '$anchorScroll',
-	function($scope, $state, ADRatesSrv, ADKeyEncoderSrv, ngTableParams, $filter, $timeout, $location, $anchorScroll){
+admin.controller('ADKeyEncoderCtrl', ['$scope', '$state', 'ADRatesSrv', 'ADKeyEncoderSrv', 'ngTableParams', '$filter', '$timeout', '$location', '$anchorScroll',
+	function($scope, $state, ADRatesSrv, ADKeyEncoderSrv, ngTableParams, $filter, $timeout, $location, $anchorScroll) {
 
 	$scope.errorMessage = '';
 	$scope.successMessage = "";
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
 
-	$scope.fetchTableData = function($defer, params){
+	$scope.fetchTableData = function($defer, params) {
 		var getParams = $scope.calculateGetParams(params);
-		var fetchSuccessOfItemList = function(data){
+		var fetchSuccessOfItemList = function(data) {
 			$scope.$emit('hideLoader');
-			//No expanded rate view
+			// No expanded rate view
 			$scope.currentClickedElement = -1;
 			$scope.totalCount = data.total_count;
-			$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
+			$scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
 			$scope.data = data.results;
 			$scope.currentPage = params.page();
         	params.total(data.total_count);
             $defer.resolve($scope.data);
 		};
+
 		$scope.invokeApi(ADKeyEncoderSrv.fetchEncoders, getParams, fetchSuccessOfItemList);
 	};
 
 
-	$scope.loadTable = function(){
+	$scope.loadTable = function() {
 		$scope.tableParams = new ngTableParams({
 		        page: 1,  // show first page
 		        count: $scope.displyCount // count per page
@@ -60,8 +61,9 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 		};
 
 		var data = {
-			"id" : id
+			"id": id
 		};
+
 		$scope.invokeApi(ADKeyEncoderSrv.showEncoderDetails, data, successCallbackEdit);
 	};
 
@@ -73,13 +75,14 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 				// To add new data to scope
 				$scope.data.push(data);
 				var l = $scope.data.length;
+
 				$scope.data[(l - 1)].description = $scope.encoderData.description;
 				$scope.data[(l - 1)].location = $scope.encoderData.location;
 				$scope.data[(l - 1)].encoder_id = $scope.encoderData.encoder_id;
 				$scope.data[(l - 1)].enabled = $scope.encoderData.enabled;
 				$scope.reloadTable();
 			} else {
-				//To update data with new value
+				// To update data with new value
 				$scope.data[parseInt($scope.currentClickedElement)].description = $scope.encoderData.description;
 				$scope.data[parseInt($scope.currentClickedElement)].location = $scope.encoderData.location;
 				$scope.data[parseInt($scope.currentClickedElement)].encoder_id = $scope.encoderData.encoder_id;
@@ -88,6 +91,7 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 			}
 			$scope.currentClickedElement = -1;
 		};
+
 		if ($scope.isAddMode) {
 			$scope.invokeApi(ADKeyEncoderSrv.saveEncoder, $scope.encoderData, successCallbackSave);
 		} else {
@@ -112,8 +116,8 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 	$scope.statusToggle = function(index) {
 		$scope.data[index].activated;
 		var data = {
-			'id' : $scope.data[index].id,
-			'status' : !$scope.data[index].enabled
+			'id': $scope.data[index].id,
+			'status': !$scope.data[index].enabled
 		};
 
 		var postSuccess = function() {
@@ -124,18 +128,18 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 		$scope.invokeApi(ADKeyEncoderSrv.updateEncoderStatus, data, postSuccess);
 	};
 
-	$scope.deleteEncoder = function(index,id){
+	$scope.deleteEncoder = function(index, id) {
 		var deleteEncoderSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.data.splice(index, 1);
 			$scope.currentClickedElement = -1;
 		};
+
 		$scope.invokeApi(ADKeyEncoderSrv.deleteEncoder, id, deleteEncoderSuccess);
 	};
 
 
-
-	/****************************************************************************************/
+	/** **************************************************************************************/
 
 
 }]);

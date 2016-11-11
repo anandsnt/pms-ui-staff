@@ -1,5 +1,5 @@
-angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterProvider, $translateProvider) {
-    //define module-specific routes here
+angular.module('adminModuleTwo', []).config(function($stateProvider) {
+    // define module-specific routes here
     $stateProvider.state('admin.departments', {
         templateUrl: '/assets/partials/departments/adDepartmentsList.html',
         controller: 'ADDepartmentListCtrl',
@@ -23,11 +23,13 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
         controller: 'ADRatesListCtrl',
         url: '/rates'
     });
+
     $stateProvider.state('admin.channelManager', {
         templateUrl: '/assets/partials/rates/adChannelManager.html',
         controller: 'ADChannelMgrCtrl',
         url: '/channelManager'
     });
+
     $stateProvider.state('admin.channelManagerEditRates', {
         templateUrl: '/assets/partials/rates/adChannelManagerEditRates.html',
         controller: 'ADChannelMgrEditCtrl',
@@ -35,12 +37,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
         resolve: {
             availableRates: function(ADChannelMgrSrv) {
                 return ADChannelMgrSrv.fetchRates().then(function(data) {
-                    return data.results
+                    return data.results;
                 });
             },
             availableRoomTypes: function(ADChannelMgrSrv) {
                 return ADChannelMgrSrv.fetchRoomTypes().then(function(data) {
-                    return data.data.room_types
+                    return data.data.room_types;
                 });
             }
         }
@@ -98,12 +100,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
         controller: 'ADFloorDetailsCtrl',
         url: '/floors/add',
         resolve: {
-            floorDetails: ['ADFloorSetupSrv', '$stateParams',
-                function(ADFloorSetupSrv, $stateParams) {
-                    return [];
-                }]
+            floorDetails: function() {
+                return [];
+            }
         }
     });
+
     $stateProvider.state('admin.editFloor', {
         templateUrl: '/assets/partials/floorSetups/adFloorDetails.html',
         controller: 'ADFloorDetailsCtrl',
@@ -114,6 +116,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
                     var params = {
                         floorID: $stateParams.id
                     };
+
                     return ADFloorSetupSrv.getFloorDetails(params);
                 }]
         }
@@ -254,6 +257,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
                 var params = {
                     rateId: $stateParams.rateId
                 };
+
                 return ADRatesSrv.fetchDetails(params);
             }
         }
@@ -439,8 +443,9 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
             },
             beaconDetails: function(adiBeaconSettingsSrv, $stateParams) {
                 var params = {
-                    "id": $stateParams.action
+                    'id': $stateParams.action
                 };
+
                 return adiBeaconSettingsSrv.fetchBeaconDetails(params);
             },
             defaultBeaconDetails: function() {
