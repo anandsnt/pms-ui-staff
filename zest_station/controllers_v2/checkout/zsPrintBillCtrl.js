@@ -111,7 +111,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
                     }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
                 } else {
                     if ($scope.zestStationData.zest_printer_option === "STAR_TAC") {
-                        //we will call websocket services to print
+                        // we will call websocket services to print
                         handleStarTacPrinterActions();
                     } else {
                         $window.print();
