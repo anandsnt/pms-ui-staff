@@ -6,8 +6,9 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 		$controller('BaseController', {
 			$scope: $scope
 		});
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "CC_ADDITION";
+
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.checkoutmessage = $stateParams.message;
 			$scope.isFromCheckoutNow = ($stateParams.isFromCheckoutNow === "true") ? true : false;
@@ -18,29 +19,31 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 			$scope.ccv = "";
 			$scope.monthSelected = "";
 			$scope.yearSelected = "";
-		}();
+		}());
 		var MLISessionId = "";
 
 
 		HostedForm.setMerchant(GwWebSrv.zestwebData.mliMerchatId);
-		//setup options for error popup
+		// setup options for error popup
 		var cardErrorPopupOpts = angular.copy($scope.errorOpts);
 		var emptyFeildsErrorPopup = angular.copy($scope.errorOpts);
+
 		cardErrorPopupOpts.resolve = {
 			message: function() {
-				return "There is a problem with your credit card."
+				return "There is a problem with your credit card.";
 			}
 		};
 		emptyFeildsErrorPopup.resolve = {
 			message: function() {
-				return "All fields are required"
+				return "All fields are required";
 			}
 		};
 		var ccvOpts = angular.copy($scope.errorOpts);
+
 		ccvOpts.templateUrl = '/assets/partials/ccVerificationNumberModal.html',
 			ccvOpts.resolve = {
 				message: function() {
-					return ""
+					return "";
 				}
 			};
 
@@ -59,7 +62,7 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 			}
 		};
 
-		//save payment method and proceed
+		// save payment method and proceed
 		var goToNextStep = function() {
 			var cardExpiryDate = $scope.yearSelected + "-" + $scope.monthSelected + "-" + "01";
 			var onSuccess = function() {
@@ -82,7 +85,7 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 			$scope.callAPI(GwCheckoutSrv.savePayment, options);
 		};
 
-		//MLI token creation
+		// MLI token creation
 		$scope.savePaymentDetails = function() {
 			var fetchMLISessionId = function() {
 				var sessionDetails = {};
@@ -93,8 +96,9 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 						goToNextStep();
 					} else {
 						$modal.open(cardErrorPopupOpts);
-					};
+					}
 				};
+
 				if (($scope.cardNumber.length === 0) || ($scope.ccv.length === 0) || (!$scope.monthSelected) || (!$scope.yearSelected)) {
 					$modal.open(emptyFeildsErrorPopup); // details modal popup
 				} else {
@@ -106,9 +110,10 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 						HostedForm.updateSession(sessionDetails, callback);
 					} catch (err) {
 						$state.go('seeFrontDesk');
-					};
+					}
 				}
 			};
+
 			if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
 				navigateToNextPage();
 			} else {

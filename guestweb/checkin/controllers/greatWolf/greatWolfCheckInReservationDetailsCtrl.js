@@ -10,7 +10,7 @@
 			$state.go('checkinSuccess');
 		} else {
 			$scope.pageValid = true;
-		};
+		}
 
 		if ($scope.pageValid) {
 			$scope.reservationData = checkinDetailsService.getResponseData();
@@ -38,7 +38,7 @@
 						} else {
 							$state.go('checkinKeys');
 						}
-					};
+					}
 				} else {
 					$state.go('guestDetails');
 				}

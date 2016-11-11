@@ -50,6 +50,7 @@ admin.controller('ADStationaryCtrl',
 
 			$scope.hotelTemplateLogoPrefetched = data.location_image;
 		};
+
 		$scope.invokeApi(ADStationarySrv.fetch, params, successCallbackOfFetch);
 	};
 
@@ -58,6 +59,7 @@ admin.controller('ADStationaryCtrl',
 		$scope.holdStatusList = availableHoldStatus.data.hold_status;
 		$scope.locale = $scope.languages.default_locale;
 		var params = {};
+
 		fetchStationary(params);
 	};
 
@@ -75,26 +77,30 @@ admin.controller('ADStationaryCtrl',
 		$scope.goBackToPreviousState();
 	};
 	// Save changes button actions.
+
 	$scope.clickedSave = function() {
 
 		var filterKeys = ["guest_bill_template", "hotel_logo", "groupholdstatus", "group_confirmation_header", "group_confirmation_footer"];
+
 		if ($scope.data.hotel_picture === $scope.memento.hotel_picture) {
 			filterKeys.push('hotel_picture');
 		}
 		if ($scope.data.location_image === $scope.memento.location_image) {
 			filterKeys.push('location_image');
 		}
-		//CICO-26524
+		// CICO-26524
 		$scope.data.group_hold_status_data = [];
-		if(!!$scope.data.groupholdstatus){
+		if (!!$scope.data.groupholdstatus) {
 			var groupConfirmationData = {};
+
 			groupConfirmationData.hold_status_id = $scope.data.groupholdstatus;
 			groupConfirmationData.confirmation_email_header = $scope.data.group_confirmation_header;
 			groupConfirmationData.confirmation_email_footer = $scope.data.group_confirmation_footer;
 			$scope.data.group_hold_status_data.push(groupConfirmationData);
 		}
 		var postingData = dclone($scope.data, filterKeys);
-		//calling the save api
+		// calling the save api
+
 		if ($scope.hotelTemplateLogoPrefetched === postingData.location_image) {
 			postingData.location_image = "";
 		}
@@ -106,7 +112,7 @@ admin.controller('ADStationaryCtrl',
 
 	// CICO-17706 : While Cancellation Email is Turned OFF , Print Cancellation Email also forced to OFF.
 	$scope.$watch('data.send_cancellation_letter', function(newValue, oldValue) {
-		if(!newValue) {
+		if (!newValue) {
 	   		$scope.data.print_cancellation_letter = false;
 		}
 	});
@@ -174,17 +180,18 @@ admin.controller('ADStationaryCtrl',
 	*/
 	$scope.onLocaleChange = function() {
 		var params = {};
+
 		params.locale = $scope.locale;
 		fetchStationary(params);
-	}
+	};
 
-	$scope.showConfirmationHeaderFooterBasedOnHoldStatus = function(){
-		//If not set for any status - then empty
+	$scope.showConfirmationHeaderFooterBasedOnHoldStatus = function() {
+		// If not set for any status - then empty
 		$scope.data.group_confirmation_header = "";
 		$scope.data.group_confirmation_footer = "";
 		angular.forEach($scope.data.group_hold_status_data, function(value, key) {
 
-	     	if(value.hold_status_id == $scope.data.groupholdstatus){
+	     	if (value.hold_status_id == $scope.data.groupholdstatus) {
 	     		$scope.data.group_confirmation_header = value.confirmation_email_header;
 		        $scope.data.group_confirmation_footer = value.confirmation_email_footer;
 	     	}

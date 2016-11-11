@@ -21,16 +21,17 @@ admin.controller('ADZestStationPickUpKeysCtrl', ['$scope', '$rootScope', '$state
             $scope.zestSettings = data;
             if (typeof $scope.zestSettings.pickup_qr_scan === typeof undefined) {
                 $scope.zestSettings.pickup_qr_scan = false;
-            };
+            }
             if (typeof $scope.zestSettings.qr_scanner_datalogic === typeof undefined) {
                 $scope.zestSettings.qr_scanner_datalogic = false;
-            };
+            }
             if (typeof $scope.zestSettings.qr_scanner_samsotech === typeof undefined) {
                 $scope.zestSettings.qr_scanner_samsotech = false;
-            };
+            }
 
             $scope.$emit('hideLoader');
         };
+
         $scope.invokeApi(ADZestStationSrv.fetch, {}, fetchSuccess);
     };
     $scope.saveSettings = function() {
@@ -45,6 +46,7 @@ admin.controller('ADZestStationPickUpKeysCtrl', ['$scope', '$rootScope', '$state
         var dataToSend = {
             'kiosk': $scope.zestSettings
         };
+
         $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess, saveFailed);
     };
 

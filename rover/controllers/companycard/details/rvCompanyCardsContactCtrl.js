@@ -14,14 +14,14 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 		};
 
 
-		//trigger the billing information popup
-	    $scope.openBillingInformation = function(accountType){
+		// trigger the billing information popup
+	    $scope.openBillingInformation = function(accountType) {
 
-	    	if($scope.contactInformation.id === null || $scope.contactInformation.id === undefined){
+	    	if ($scope.contactInformation.id === null || $scope.contactInformation.id === undefined) {
 	    		$scope.$emit("OUTSIDECLICKED");
 	    		return false;
 	    	}
-	    	if(accountType === 'TRAVELAGENT'){
+	    	if (accountType === 'TRAVELAGENT') {
 	    		$scope.attachedEntities = {};
 	    		$scope.attachedEntities.travel_agent = {};
 	    		$scope.attachedEntities.travel_agent.id = $scope.contactInformation.id;
@@ -29,7 +29,7 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 	    		$scope.attachedEntities.travel_agent.logo = $scope.contactInformation.account_details.company_logo;
 	    		$scope.billingEntity = "TRAVEL_AGENT_DEFAULT_BILLING";
 
-	    	} else if (accountType === 'COMPANY'){
+	    	} else if (accountType === 'COMPANY') {
 	    		$scope.attachedEntities = {};
 	    		$scope.attachedEntities.company_card = {};
 	    		$scope.attachedEntities.company_card.id = $scope.contactInformation.id;
@@ -44,9 +44,9 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 
 	    	$scope.$emit('showLoader'); 
            	jsMappings.fetchAssets(['addBillingInfo', 'directives'])
-            .then(function(){
+            .then(function() {
             	$scope.$emit('hideLoader');
-            	if($rootScope.UPDATED_BI_ENABLED_ON['CARDS']){
+            	if ($rootScope.UPDATED_BI_ENABLED_ON['CARDS']) {
             		console.log("##Billing-info updated version");
 				    ngDialog.open({
 				        template: '/assets/partials/billingInformation/cards/rvBillingInfoCardsMain.html',
@@ -55,7 +55,7 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 				        scope: $scope
 				    });
 				}
-			    else{
+			    else {
 			    	console.log("##Billing-info old version");
 				    ngDialog.open({
 				        template: '/assets/partials/bill/rvBillingInformationPopup.html',
@@ -86,9 +86,6 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 		$scope.$on("BILLINGINFOADDED", function() {
 			$scope.contactInformation.account_details.routes_count = 1;
 		});
-
-
-
 
 
 	}

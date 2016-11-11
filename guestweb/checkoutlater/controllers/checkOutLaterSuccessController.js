@@ -8,29 +8,30 @@
 
 	$scope.pageValid = false;
 	// Check if user is trying to access this page when he/she don't have access for this page
-	if($rootScope.isCheckedin){
+	if ($rootScope.isCheckedin) {
 		$state.go('checkinSuccess');
 	}
-	else if($rootScope.isCheckin){
+	else if ($rootScope.isCheckin) {
 		$state.go('checkinConfirmation');
 	}
-	else if($rootScope.isCheckedout ){
+	else if ($rootScope.isCheckedout ) {
 		$state.go('checkOutStatus');
 	}
-	else if(!$rootScope.isRoomVerified){
+	else if (!$rootScope.isRoomVerified) {
 		$state.go('checkoutRoomVerification');
 	}
-	else if(!$rootScope.isLateCheckoutAvailable){
+	else if (!$rootScope.isLateCheckoutAvailable) {
 		$state.go('checkOutConfirmation');
 	}
-	else{
+	else {
 		$scope.pageValid = true;
-	};
+	}
 
-	if($scope.pageValid){
+	if ($scope.pageValid) {
 
 		var charges = LateCheckOutChargesService.charges;
 		var id = $stateParams.id;
+
 		$scope.reservationID = $rootScope.reservationID;
 		$scope.id = id;
 		$scope.netWorkError = false;
@@ -51,48 +52,49 @@
 			$state.go('checkOutOptions');
 			$scope.returnHome = true;
 			return;
-		};
+		}
 
 		// find the choosen option form list of options
 
-		if($rootScope.ccPaymentSuccessForCheckoutLater){
+		if ($rootScope.ccPaymentSuccessForCheckoutLater) {
 			$scope.lateCheckOut = _.find(charges, function(charge) {
 			if (id === charge.amount.toString()) {
 				return charge;
-			};
+			}
 			});
 			$scope.success = true;
 			$scope.posted = true;
 			$rootScope.isLateCheckoutAvailable = false;
 			// $rootScope.checkoutTime = $scope.lateCheckOut.time +':00 '+$scope.lateCheckOut.ap;
 		}
-		else{
+		else {
 			$scope.lateCheckOut = _.find(charges, function(charge) {
 			if (id === charge.id) {
 				return charge;
-			};
+			}
 			});
 		}
 		var reservation_id = $scope.reservationID;
 		var url = '/guest_web/apply_late_checkout';
-		var id  = ($rootScope.ccPaymentSuccessForCheckoutLater)? $scope.lateCheckOut.id:$scope.id ;
-		var checkoutLaterData = {'reservation_id': reservation_id, 'late_checkout_offer_id': id,'is_cc_attached_from_guest_web':$rootScope.isCcAttachedFromGuestWeb};
-		LateCheckOutChargesService.postNewCheckoutOption(url,checkoutLaterData).then(function(response) {
+		var id  = ($rootScope.ccPaymentSuccessForCheckoutLater) ? $scope.lateCheckOut.id : $scope.id ;
+		var checkoutLaterData = {'reservation_id': reservation_id, 'late_checkout_offer_id': id, 'is_cc_attached_from_guest_web': $rootScope.isCcAttachedFromGuestWeb};
+
+		LateCheckOutChargesService.postNewCheckoutOption(url, checkoutLaterData).then(function(response) {
 			$scope.success = response.status ? true : false;
-		 	if($scope.success === true){
+		 	if ($scope.success === true) {
 				$scope.posted = true;
 				$scope.oldCheckoutTime = angular.copy($rootScope.checkoutTime);
-				$rootScope.checkoutTime = $scope.lateCheckOut.time +':00 '+$scope.lateCheckOut.ap;
+				$rootScope.checkoutTime = $scope.lateCheckOut.time + ':00 ' + $scope.lateCheckOut.ap;
 			 	$rootScope.checkoutTimessage = "Your new check-out time is ";
 			 	$rootScope.isLateCheckoutAvailable = false;
-			 	$scope.keyExpiry = "Your room keys are set to expire for the checkout time of "+$scope.oldCheckoutTime+". Please see a guest service agent at the front desk to re-activate your keys for the late checkout time selected.";
+			 	$scope.keyExpiry = "Your room keys are set to expire for the checkout time of " + $scope.oldCheckoutTime + ". Please see a guest service agent at the front desk to re-activate your keys for the late checkout time selected.";
 
 			}
-		    else{
+		    else {
 		    	$scope.netWorkError = true;
 		    }
 
-		},function(){
+		}, function() {
 			$scope.netWorkError = true;
 			$scope.posted = true;
 		});

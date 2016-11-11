@@ -15,7 +15,8 @@ angular.module('cacheVaultModule', [])
 
 		factory.setUpto = function(key, value, min) {
 			var min = min || 3;
-			//$_store.put( key, value );
+			// $_store.put( key, value );
+
 			factory.set(key, value);
 			$timeout(function() {
 				$_store.remove(key);
@@ -27,7 +28,7 @@ angular.module('cacheVaultModule', [])
 
 			if ( index < 0 ) {
 				setOnceTracker.push(key);
-			};
+			}
 			
 			factory.set(key, value);
 		};
@@ -43,7 +44,7 @@ angular.module('cacheVaultModule', [])
 				);
 
 				factory.remove(key);
-			};
+			}
 
 			return ret;
 		};

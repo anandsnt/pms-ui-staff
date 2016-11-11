@@ -16,7 +16,6 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 		BaseCtrl.call(this, $scope);
 
 
-
 		var detailsCtrlScope = $scope.$parent,
 			mainCtrlScope    = detailsCtrlScope.$parent,
 			chosenReport     = detailsCtrlScope.chosenReport,
@@ -27,7 +26,6 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 			addons;
 
 
-
 		var SCROLL_NAME  = 'addon-forecast-report-scroll',
 			timer;
 
@@ -35,7 +33,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 			$scope.refreshScroller(SCROLL_NAME);
 			if ( !!scrollUp && $scope.$parent.myScroll.hasOwnProperty(SCROLL_NAME) ) {
 				$scope.$parent.myScroll[SCROLL_NAME].scrollTo(0, 0, 100);
-			};
+			}
 		};
 
 		var setScroller = function() {
@@ -53,7 +51,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 				$interval.cancel(timer);
 				timer = undefined;
 			}
-		}
+		};
 
 		var setScrollListner = function() {
 			if ( $scope.$parent.myScroll.hasOwnProperty(SCROLL_NAME) ) {
@@ -69,9 +67,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 			} else {
 				$timeout(setScrollListner, 1000);
 			}
-		}
-
-	
+		};
 
 
 		$scope.getKey = function(item) {
@@ -99,19 +95,20 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 				item.hidden = true;
 			} else {
 				item.hidden = !item.hidden;
-			};
+			}
 
 			refreshScroll();
 		};
 
 		var resClassNames = {
-			'DUE IN'    : 'check-in',
-			'INHOUSE'   : 'inhouse',
-			'DUE OUT'   : 'check-out',
-			'CHECKEDOUT' : 'check-out',
-			'CANCELLED' : 'cancel',
-			'NOSHOW'    : 'no-show'
-		}
+			'DUE IN': 'check-in',
+			'INHOUSE': 'inhouse',
+			'DUE OUT': 'check-out',
+			'CHECKEDOUT': 'check-out',
+			'CANCELLED': 'cancel',
+			'NOSHOW': 'no-show'
+		};
+
 		$scope.getStatusClass = function(status) {
 			return resClassNames[status] || '';
 		};
@@ -140,7 +137,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 				resultUpto = (resultFrom + perPage - 1) < netTotalCount ? (resultFrom + perPage - 1) : netTotalCount;
 				disablePrevBtn = false;
 				disableNextBtn = resultUpto === netTotalCount ? true : false;
-			};
+			}
 
 			return {
 				'perPage': perPage,
@@ -152,7 +149,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 				'resultFrom': resultFrom,
 				'resultUpto': resultUpto
 			};
- 		};
+ 		}
 
  		$scope.sortRes = function(field, eachDate) {
  			var params = {};
@@ -168,7 +165,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 				eachDate.nameSortDir = (eachDate.nameSortDir == undefined || eachDate.nameSortDir == false) ? true : false;
 				eachDate.roomSortDir = undefined;
 				params['sort_dir'] = eachDate.nameSortDir;
-			};
+			}
 
 			callResAPI( eachDate, params );
  		};
@@ -184,10 +181,8 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  				_.extend( eachDate, calPagination(eachDate) );
  				
  				callResAPI( eachDate );
- 			};
+ 			}
  		};
-
-
 
 
  		function callResAPI (eachDate, params) {
@@ -207,12 +202,12 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  			};
 
  			_.extend(params, {
- 				'id'             : chosenReport.id,
- 				'date'           : eachDate.date,
- 				'addon_group_id' : eachDate.addonGroupId,
- 				'addon_id'       : eachDate.addonId,
- 				'page'           : eachDate.pageNo,
- 				'per_page'       : eachDate.perPage,
+ 				'id': chosenReport.id,
+ 				'date': eachDate.date,
+ 				'addon_group_id': eachDate.addonGroupId,
+ 				'addon_id': eachDate.addonId,
+ 				'page': eachDate.pageNo,
+ 				'per_page': eachDate.perPage
  			});
 
  			statuses = _.where(chosenReport['hasReservationStatus']['data'], { selected: true });
@@ -223,10 +218,10 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  				_.each(statuses, function(each) {
  					params[key].push( each.id );
  				});
- 			};
+ 			}
 
  			$scope.invokeApi(reportsSubSrv.fetchAddonReservations, params, success, error);
- 		};
+ 		}
 
  		function setup () {
  			addonGroups  = $scope.chosenReport.hasAddonGroups.data || [];
@@ -247,7 +242,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  			for (reportKey in results) {
  				if ( ! results.hasOwnProperty(reportKey) ) {
  					continue;
- 				};
+ 				}
 
  				var addonGroupId = reportKey,
  					addonsAry    = results[reportKey]['addons'];
@@ -256,16 +251,17 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  					results[reportKey]['hasData'] = true;
  				} else {
  					results[reportKey]['hasData'] = false;
- 				};
+ 				}
 
  				var i, j;
+
  				for (i = 0, j = addonsAry.length; i < j; i++) {
  					var addonObj = addonsAry[i];
 
  					for (addonKey in addonObj) {
  						if ( '$$hashKey' == addonKey || ! addonObj.hasOwnProperty(addonKey) ) {
  							continue;
- 						};
+ 						}
 
  						var addonId  = addonKey,
  							datesAry = addonObj[addonKey]['dates'];
@@ -274,43 +270,44 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  							addonObj[addonKey]['hasData'] = true;
  						} else {
  							addonObj[addonKey]['hasData'] = false;
- 						};
+ 						}
 
  						var k, l;
+
  						for (k = 0, l = datesAry.length; k < l; k++) {
  							var dateObj = datesAry[k];
 
  							for (dateKey in dateObj) {
  								if ( '$$hashKey' == dateKey || ! dateObj.hasOwnProperty(dateKey) ) {
  									continue;
- 								};
+ 								}
 
  								var date = dateKey,
  									addonData = dateObj[dateKey];
 
  								if ( addonObj[addonKey]['guests'] > 0 ) {
 	 								_.extend(addonData, {
-	 									'sortField'   : undefined,
-	 									'roomSortDir' : undefined,
-	 									'nameSortDir' : undefined,
+	 									'sortField': undefined,
+	 									'roomSortDir': undefined,
+	 									'nameSortDir': undefined,
 	 									/**/
-	 									'date'         : date,
-	 									'addonGroupId' : addonGroupId,
-	 									'addonId'      : addonId
+	 									'date': date,
+	 									'addonGroupId': addonGroupId,
+	 									'addonId': addonId
 	 								});
 
 	 								_.extend( addonData, calPagination(addonData) );
-	 							};
- 							};
- 						};
- 					};
- 				};
- 			};
+	 							}
+ 							}
+ 						}
+ 					}
+ 				}
+ 			}
  			/* LOOP ENDS */
  			$scope.modifiedResults = angular.copy( results );
 
  			$scope.hasResults = !!( _.find($scope.modifiedResults, function(data) { return data.hasData; }) );
- 		};
+ 		}
 
  		var init = function() {
  			setup();
@@ -319,7 +316,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  			$timeout(function() {
  				refreshScroll('scrollUp');
  			});
- 		}
+ 		};
 
  		init();	
 
@@ -329,7 +326,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  			$timeout(function() {
  				refreshScroll('scrollUp');
  			});
- 		}
+ 		};
 
 
 		// re-render must be initiated before for taks like printing.
@@ -349,14 +346,13 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 		$scope.$on( '$destroy', clearTimer );
 
 
-
  		mainCtrlScope.printOptions.showModal = function() {
  			$scope.printLevel = {};
  			$scope.levelValues = {
- 				'date'  : 'DATE',
- 				'group' : 'GROUP',
- 				'addon' : 'ADDON',
- 				'all'   : 'ALL'
+ 				'date': 'DATE',
+ 				'group': 'GROUP',
+ 				'addon': 'ADDON',
+ 				'all': 'ALL'
  			};
 
 			$scope.printLevel.value = 'GROUP';
@@ -385,7 +381,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 		};
 
 		$scope.continueWithPrint = function () {
-			switch( $scope.printLevel.value ) {
+			switch ( $scope.printLevel.value ) {
 				case 'ADDON':
 					$scope.openAddon = true;
 					break;
@@ -403,7 +399,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 
 				default:
 					// no-op
-			};
+			}
 
 			ngDialog.close();
 			$scope.$emit( reportMsgs['REPORT_PRE_PRINT_DONE'] );

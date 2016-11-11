@@ -1,4 +1,4 @@
-admin.controller('adAfasSetupCtrl', ['$scope', 'afasSetupValues', 'adAfasSetupSrv', function($scope, afasSetupValues, adAfasSetupSrv){
+admin.controller('adAfasSetupCtrl', ['$scope', 'afasSetupValues', 'adAfasSetupSrv', function($scope, afasSetupValues, adAfasSetupSrv) {
 	BaseCtrl.call (this, $scope);
 	
 	/**
@@ -25,9 +25,10 @@ admin.controller('adAfasSetupCtrl', ['$scope', 'afasSetupValues', 'adAfasSetupSr
 			afas: $scope.afas
 		};
         var options = {
-            params 			: params,
-            successCallBack : successCallBackOfSaveAfasSetup
+            params: params,
+            successCallBack: successCallBackOfSaveAfasSetup
         };
+
         $scope.callAPI(adAfasSetupSrv.saveAfasConfiguration, options);
 	};
 
@@ -35,9 +36,9 @@ admin.controller('adAfasSetupCtrl', ['$scope', 'afasSetupValues', 'adAfasSetupSr
 	 * Initialization stuffs
 	 * @return {undefiend}
 	 */
-	var initializeMe = function() {
+	var initializeMe = (function() {
 		$scope.afas = {};
 		$scope.afas.enabled = afasSetupValues.enabled;
 		$scope.afas.emails = afasSetupValues.emails;
-	}();
-}])
+	}());
+}]);

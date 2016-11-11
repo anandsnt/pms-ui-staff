@@ -7,7 +7,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 	'zsGeneralSrv',
 	function($scope, $stateParams, $state, zsEventConstants, $timeout, zsGeneralSrv) {
 
-		/**********************************************************************************************
+		/** ********************************************************************************************
 		 **		Expected state params -----> none			  
 		 **		Exit function -> onSuccessFetchReservation								
 		 **																		 
@@ -16,14 +16,14 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 		var onQRScanFail = function() {
 			$scope.$emit('hideLoader');
 			if ($scope.zestStationData.pickup_qr_scan_fail_over) {
-				//provide small time out, so as to let user know what is happening
+				// provide small time out, so as to let user know what is happening
 				$scope.qrCodeScanFailed = true;
 			} else {
 				$scope.talkToStaff();
 			}
 		};
 
-		//qr scan arrow
+		// qr scan arrow
 		$scope.arrowDirection = !!$scope.zestStationData.qr_scanner_arrow_direction ? $scope.zestStationData.qr_scanner_arrow_direction : "right";
 
 		var fetchReservationDetails = function(reservation_id) {
@@ -43,6 +43,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 						'room_no': room_no,
 						'first_name': guest_response.primary_guest_details.first_name
 					};
+
 					$state.go('zest_station.pickUpKeyDispense', stateParams);
 				};
 
@@ -54,6 +55,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 					successCallBack: onFetchGuestDataSuccess,
 					failureCallBack: onFailureFetchReservation
 				};
+
 				$scope.callAPI(zsGeneralSrv.fetchGuestDetails, options);
 			};
 
@@ -65,12 +67,13 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 				successCallBack: onSuccessFetchReservation,
 				failureCallBack: onFailureFetchReservation
 			};
+
 			console.info('Fetching Reservation by Scanned QR Code: ', reservation_id);
 			$scope.callAPI(zsGeneralSrv.fetchReservationDetails, options);
 
 		};
 
-		/**************** DATALOGIC *****************/
+		/** ************** DATALOGIC *****************/
 		/**
 		 *  Call back action broadcasted from root ctrl
 		 **/
@@ -79,7 +82,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 			fetchReservationDetails(data.reservation_id);
 		};
 
-		/**************** /DATALOGIC ************************/
+		/** ************** /DATALOGIC ************************/
 
 		$scope.scanQRCode = function() {
 			if ($scope.zestStationData.qr_scanner_samsotech) {
@@ -87,12 +90,12 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 				samsoTechScan();
 			} else {
 				console.info('scan datalogic');
-				//$scope.zestStationData.qr_scanner_datalogic
+				// $scope.zestStationData.qr_scanner_datalogic
 				initChromeAppQRCodeScanner();
 			}
 		};
 
-		/******************* SAMSOTECH ********************/
+		/** ***************** SAMSOTECH ********************/
 		var receiveSamsoTechMsg = function(evt, info) {
 			console.log(arguments);
 			if (typeof info.msg === typeof 'str') {
@@ -102,8 +105,9 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 					console.warn('scan failed..');
 					$scope.runDigestCycle();
 				} else if (info.msg.indexOf(' : ') !== -1) {
-					//qr code coming from the samsotech will look like "PR_DF_BC1 : somevalue"
+					// qr code coming from the samsotech will look like "PR_DF_BC1 : somevalue"
 					var reservationId = info.msg.split(' : ')[1];
+
 					if (reservationId) {
 						fetchReservationDetails(reservationId);
 					} else {
@@ -112,7 +116,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 				}
 			}
 		};
-		//should only be listening for websocket activity 
+		// should only be listening for websocket activity 
 		//		if chromeapp + samsotech is the selected reader
 		var listenForWebsocketActivity = function() {
 			$scope.$on('SOCKET_CONNECTED', function() {
@@ -146,38 +150,38 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 			}
 		};
 
-		/******************* /SAMSOTECH ********************/
+		/** ***************** /SAMSOTECH ********************/
 
 
 		/**
 		 * [initializeMe description]
 		 */
-		var initializeMe = function() {
-			//hide back button
+		var initializeMe = (function() {
+			// hide back button
 			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 
-			//hide close button
+			// hide close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-			//back button action
+			// back button action
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
 				$state.go('zest_station.home');
 			});
 			$scope.qrCodeScanFailed = false;
 
-		}();
+		}());
 
-		/******************** LISTENERS ***********************/
+		/** ****************** LISTENERS ***********************/
 
 		$scope.$on('QR_SCAN_SUCCESS', onDatalogicQRScanSuccess);
 		$scope.$on('QR_PASSPORT_SCAN_MSG', receiveSamsoTechMsg);
 
-		/******************** /LISTENERS ***********************/
+		/** ****************** /LISTENERS ***********************/
 		/**
 		 * QR scan failure actions
 		 **/
 
 		$scope.quitQRScanMode = function() {
-			//do normal QR scan
+			// do normal QR scan
 			$state.go('zest_station.checkOutReservationSearch', {
 				'mode': 'PICKUP_KEY'
 			});
@@ -185,7 +189,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 
 		$scope.retryQRScan = function() {
 			$scope.qrCodeScanFailed = false;
-			//initChromeAppQRCodeScanner();
+			// initChromeAppQRCodeScanner();
 		};
 
 

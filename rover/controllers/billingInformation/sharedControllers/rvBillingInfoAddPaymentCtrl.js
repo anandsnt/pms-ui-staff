@@ -1,8 +1,8 @@
-sntRover.controller('rvBillingInfoAddPaymentCtrl',['$scope','$rootScope','$filter', 'ngDialog', 'RVPaymentSrv', function($scope, $rootScope,$filter, ngDialog, RVPaymentSrv){
+sntRover.controller('rvBillingInfoAddPaymentCtrl', ['$scope', '$rootScope', '$filter', 'ngDialog', 'RVPaymentSrv', function($scope, $rootScope, $filter, ngDialog, RVPaymentSrv) {
 	BaseCtrl.call(this, $scope);
 
 	$scope.cardsList = [];
-	$scope.addmode = $scope.cardsList.length>0 ? false: true;
+	$scope.addmode = $scope.cardsList.length > 0 ? false : true;
 	$scope.hideCancelCard = true;
 	$scope.isManual = false;
 
@@ -10,12 +10,13 @@ sntRover.controller('rvBillingInfoAddPaymentCtrl',['$scope','$rootScope','$filte
     * MLI session set up
     */
 	var MLISessionId = "";
+
 	try {
 			HostedForm.setMerchant($rootScope.MLImerchantId);
 		}
-		catch(err) {};
+		catch (err) {}
 
-	$scope.cancelClicked = function(){
+	$scope.cancelClicked = function() {
 		$scope.showPaymentList();
 		$scope.saveData.payment_type =  "";
 		$scope.saveData.payment_type_description =  "";
@@ -30,23 +31,24 @@ sntRover.controller('rvBillingInfoAddPaymentCtrl',['$scope','$rootScope','$filte
 	* setting the scroll options for the add payment view
 	*/
 	var scrollerOptions = { preventDefault: false};
+
   	$scope.setScroller('newpaymentview', scrollerOptions);
 
-  	$scope.$on('showaddpayment', function(event){
+  	$scope.$on('showaddpayment', function(event) {
   		$scope.refreshScroller('newpaymentview');
 	});
 
   	/**
     * function to show available payment types from server
     */
-  	$scope.fetchAvailablePaymentTypes = function(){
+  	$scope.fetchAvailablePaymentTypes = function() {
 
             var successCallback = function(data) {
                 $scope.creditCardTypes = [];
                $scope.availablePaymentTypes = data;
                 $scope.ccPaymentDetails = {};
-                for(var i in data){
-                	if(data[i].name === "CC"){
+                for (var i in data) {
+                	if (data[i].name === "CC") {
                 		$scope.ccPaymentDetails = data[i];
                 		$scope.creditCardTypes = data[i].values;
                 	}
@@ -56,37 +58,39 @@ sntRover.controller('rvBillingInfoAddPaymentCtrl',['$scope','$rootScope','$filte
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
-                $scope.$emit('displayErrorMessage',errorMessage);
+                $scope.$emit('displayErrorMessage', errorMessage);
             };
-            var paymentParams = {"direct_bill":true};
-            $scope.invokeApi(RVPaymentSrv.renderPaymentScreen,paymentParams, successCallback, errorCallback);
+            var paymentParams = {"direct_bill": true};
+
+            $scope.invokeApi(RVPaymentSrv.renderPaymentScreen, paymentParams, successCallback, errorCallback);
     };
     $scope.fetchAvailablePaymentTypes();
 
   // 	/* MLI integration starts here */
 
-     $scope.savePaymentDetails = function(){
+     $scope.savePaymentDetails = function() {
 
-     		if($scope.saveData.payment_type !== "CC"){
+     		if ($scope.saveData.payment_type !== "CC") {
      			$scope.savePayment();
      			return;
      		}
 			 var sessionDetails = {};
+
 			 sessionDetails.cardNumber = $scope.saveData.card_number;
 			 sessionDetails.cardSecurityCode = $scope.saveData.cvv;
 			 sessionDetails.cardExpiryMonth = $scope.saveData.card_expiry_month;
 			 sessionDetails.cardExpiryYear = $scope.saveData.card_expiry_year;
 
-			 var callback = function(response){
+			 var callback = function(response) {
 			 	$scope.$emit("hideLoader");
 
-			 	if(response.status ==="ok"){
+			 	if (response.status === "ok") {
 
 			 		MLISessionId = response.session;
 			 		$scope.savePayment();// call save payment details WS
 			 	}
-			 	else{
-			 		$scope.$emit('displayErrorMessage',["There is a problem with your credit card"]);
+			 	else {
+			 		$scope.$emit('displayErrorMessage', ["There is a problem with your credit card"]);
 			 	}
 			 	$scope.$apply();
 			 };
@@ -95,62 +99,62 @@ sntRover.controller('rvBillingInfoAddPaymentCtrl',['$scope','$rootScope','$filte
 			    HostedForm.updateSession(sessionDetails, callback);
 			    $scope.$emit("showLoader");
 			}
-			catch(err) {
-			   $scope.$emit('displayErrorMessage',["There was a problem connecting to the payment gateway."]);
-			};
+			catch (err) {
+			   $scope.$emit('displayErrorMessage', ["There was a problem connecting to the payment gateway."]);
+			}
 
 		};
 		/**
 	    * function to save a new payment type
 	    */
-		$scope.savePayment = function(){
+		$scope.savePayment = function() {
 
 			$scope.saveData.reservation_id = $scope.reservationData.reservation_id;
 			$scope.saveData.session_id = MLISessionId;
 			$scope.saveData.mli_token = $scope.saveData.card_number.substr($scope.saveData.card_number.length - 4);
-			$scope.saveData.card_expiry = $scope.saveData.card_expiry_month+"/"+$scope.saveData.card_expiry_year;
+			$scope.saveData.card_expiry = $scope.saveData.card_expiry_month + "/" + $scope.saveData.card_expiry_year;
 
 			$scope.paymentAdded($scope.saveData);
 		};
 		/**
 	    * function to set the selected payment type
 	    */
-		$scope.selectPaymentType = function(){
-			for(var i = 0; i < $scope.availablePaymentTypes.length; i++){
-				if($scope.availablePaymentTypes[i].name === $scope.saveData.payment_type){
+		$scope.selectPaymentType = function() {
+			for (var i = 0; i < $scope.availablePaymentTypes.length; i++) {
+				if ($scope.availablePaymentTypes[i].name === $scope.saveData.payment_type) {
 					$scope.saveData.payment_type_description = $scope.availablePaymentTypes[i].description;
 				}
 			}
 			$scope.refreshScroller('newpaymentview');
-			if($scope.paymentGateway !== 'sixpayments'){
-				$scope.showCCPage = ($scope.saveData.payment_type === "CC") ? true: false;
-				$scope.swippedCard = ($scope.saveData.payment_type === "CC") ? true: false;
-				$scope.saveData.newPaymentFormVisible = ($scope.saveData.payment_type === "CC") ? true: false;
-				$scope.addmode =($scope.saveData.payment_type === "CC" &&  $scope.cardsList.length === 0) ? true: false;
+			if ($scope.paymentGateway !== 'sixpayments') {
+				$scope.showCCPage = ($scope.saveData.payment_type === "CC") ? true : false;
+				$scope.swippedCard = ($scope.saveData.payment_type === "CC") ? true : false;
+				$scope.saveData.newPaymentFormVisible = ($scope.saveData.payment_type === "CC") ? true : false;
+				$scope.addmode = ($scope.saveData.payment_type === "CC" &&  $scope.cardsList.length === 0) ? true : false;
 			} else {
 				$scope.isManual = false;
 			}
 		};
 
-		$scope.changeOnsiteCallIn = function(){
+		$scope.changeOnsiteCallIn = function() {
 			$scope.$emit('CHANGE_IS_MANUAL', $scope.isManual);
-			$scope.showCCPage = ($scope.saveData.payment_type === "CC" &&  $scope.isManual) ? true: false;
-			$scope.swippedCard = ($scope.saveData.payment_type === "CC" &&  $scope.isManual) ? true: false;
-			$scope.addmode =($scope.saveData.payment_type === "CC" &&  $scope.cardsList.length === 0) ? true: false;
-			$scope.saveData.newPaymentFormVisible = ($scope.saveData.payment_type === "CC" &&  $scope.isManual) ? true: false;
+			$scope.showCCPage = ($scope.saveData.payment_type === "CC" &&  $scope.isManual) ? true : false;
+			$scope.swippedCard = ($scope.saveData.payment_type === "CC" &&  $scope.isManual) ? true : false;
+			$scope.addmode = ($scope.saveData.payment_type === "CC" &&  $scope.cardsList.length === 0) ? true : false;
+			$scope.saveData.newPaymentFormVisible = ($scope.saveData.payment_type === "CC" &&  $scope.isManual) ? true : false;
 			$scope.$broadcast('REFRESH_IFRAME');
 		};
 		/*
 		 * on succesfully created the token
 		 */
-		$scope.$on("TOKEN_CREATED", function(e, tokenDetails){
+		$scope.$on("TOKEN_CREATED", function(e, tokenDetails) {
 			$scope.showCCPage = false;
 			$scope.swippedCard = false;
 			$scope.addmode = false;
 			$scope.saveData.newPaymentFormVisible = false;
 			$scope.paymentAdded(tokenDetails);
 		});
-		$scope.$on("RENDER_DATA_ON_BILLING_SCREEN", function(e, swipedCardDataToRender){
+		$scope.$on("RENDER_DATA_ON_BILLING_SCREEN", function(e, swipedCardDataToRender) {
 			$scope.showCCPage 						 = true;
 			$scope.addmode                 			 = true;
                         $scope.swippedCard = true;
@@ -160,14 +164,14 @@ sntRover.controller('rvBillingInfoAddPaymentCtrl',['$scope','$rootScope','$filte
 
 		});
 
-		$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave){
+		$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave) {
 			$scope.showCCPage = false;
 			$scope.swippedCard = false;
 			$scope.addmode = false;
 			$scope.saveData.newPaymentFormVisible = false;
 			$scope.paymentAddedThroughMLISwipe(swipedCardDataToSave);
 		});
-		$scope.$on('UPDATE_FLAG', function(){
+		$scope.$on('UPDATE_FLAG', function() {
 			$scope.showCCPage = false;
 			$scope.swippedCard = false;
 		});

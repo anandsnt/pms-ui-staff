@@ -23,11 +23,12 @@ angular.module('sntRover').controller('rvDailyProdByDemographicsCtrl',
 
   var renderReport = function() {
     var props = {
-      data 				: $scope.results,
-      startedRendering 	: startedRendering,
+      data: $scope.results,
+      startedRendering: startedRendering,
       completedRendering: completedRendering,
-      completedUpdating	: completedUpdating
+      completedUpdating: completedUpdating
     };
+
     startedRendering();
     ReactDOM.render(
 	    React.createElement(DailyProductionByDemographics, props),
@@ -35,18 +36,18 @@ angular.module('sntRover').controller('rvDailyProdByDemographicsCtrl',
     );
   };
 
-  var reRenderReport = function(){
-  	$timeout(function(){
+  var reRenderReport = function() {
+  	$timeout(function() {
   		startedRendering();
   	}, 50);
   	
-  	$timeout(function(){
+  	$timeout(function() {
   		renderReport();
   	}, 100);
   };
 
-  var reportSubmited    = $scope.$on(reportMsgs['REPORT_SUBMITED'], function(){ 
-  	$timeout(function(){
+  var reportSubmited    = $scope.$on(reportMsgs['REPORT_SUBMITED'], function() { 
+  	$timeout(function() {
   		renderReport();
   	}, 50);
   });
@@ -59,13 +60,13 @@ angular.module('sntRover').controller('rvDailyProdByDemographicsCtrl',
   $scope.$on('$destroy', reportPrinting);
   $scope.$on('$destroy', reportPageChanged);
 
-  var initializeMe = function() {
-  	$timeout(function(){
+  var initializeMe = (function() {
+  	$timeout(function() {
   		startedRendering();
   	}, 0);
   	
-  	$timeout(function(){
+  	$timeout(function() {
   		renderReport();
   	}, 10);
-  }();
+  }());
 }]);

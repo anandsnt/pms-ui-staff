@@ -3,21 +3,21 @@ angular.module('sntRover').controller('allotmentAvailabilityMainController', [
 	'rvAvailabilitySrv',
 	'$rootScope',
 	'ngDialog',
-	'$filter' ,
+	'$filter',
 	'$timeout',
-	function($scope, rvAvailabilitySrv, $rootScope, ngDialog, $filter, $timeout){
+	function($scope, rvAvailabilitySrv, $rootScope, ngDialog, $filter, $timeout) {
 
 
 	BaseCtrl.call(this, $scope);
 
 	$scope.page.title = "Allotments";
-	//default number of selected days is 14
+	// default number of selected days is 14
 	$scope.numberOfDaysSelected = 14;
 
 
 	$scope.data = {};
 
-	//default date value
+	// default date value
 	$scope.data.selectedDate = $rootScope.businessDate;
 	$scope.data.formattedSelectedDate = $filter('date')($scope.data.selectedDate, $rootScope.dateFormat);
 
@@ -35,7 +35,7 @@ angular.module('sntRover').controller('allotmentAvailabilityMainController', [
 	/**
 	* success call of availability data fetch
 	*/
-	var successCallbackOfAvailabilityFetch = function(data){
+	var successCallbackOfAvailabilityFetch = function(data) {
 		$scope.$emit("hideLoader");
 		$scope.$broadcast("changedRoomAvailableData");
 		// for this successcallback we are not hiding the activty indicator
@@ -46,7 +46,7 @@ angular.module('sntRover').controller('allotmentAvailabilityMainController', [
 	/**
 	* error call of availability data fetch
 	*/
-	var failureCallbackOfAvailabilityFetch = function(errorMessage){
+	var failureCallbackOfAvailabilityFetch = function(errorMessage) {
 		$scope.$emit("hideLoader");
 	};
 
@@ -54,16 +54,17 @@ angular.module('sntRover').controller('allotmentAvailabilityMainController', [
 	/**
 	* When there is any change of for availability data params we need to call the api
 	*/
-	$scope.changedAvailabilityDataParams = function(){
-		$timeout(function(){
-		//calculating date after number of dates selected in the select box
+	$scope.changedAvailabilityDataParams = function() {
+		$timeout(function() {
+		// calculating date after number of dates selected in the select box
 			var dateAfter = tzIndependentDate ($scope.data.selectedDate);
 
 			dateAfter.setDate (dateAfter.getDate() + parseInt($scope.numberOfDaysSelected) - 1);
 			var dataForWebservice = {
 				'from_date': $filter('date')(tzIndependentDate ($scope.data.selectedDate), $rootScope.dateFormatForAPI),
-				'to_date'  : $filter('date')(tzIndependentDate (dateAfter), $rootScope.dateFormatForAPI)
+				'to_date': $filter('date')(tzIndependentDate (dateAfter), $rootScope.dateFormatForAPI)
 			};
+
 			$scope.invokeApi(rvAvailabilitySrv.fetchAllotmentAvailabilityDetails, dataForWebservice, successCallbackOfAvailabilityFetch, failureCallbackOfAvailabilityFetch);
 		}, 0);
 	};

@@ -1,6 +1,6 @@
 sntRover.controller('rvReservationCardHKController',
-    ['$scope', '$filter','$stateParams', '$rootScope', '$state', '$timeout', 'rvReservationHouseKeepingSrv',
-    function($scope, $filter,$stateParams, $rootScope , $state, $timeout, rvReservationHouseKeepingSrv) {
+    ['$scope', '$filter', '$stateParams', '$rootScope', '$state', '$timeout', 'rvReservationHouseKeepingSrv',
+    function($scope, $filter, $stateParams, $rootScope, $state, $timeout, rvReservationHouseKeepingSrv) {
 
         BaseCtrl.call(this, $scope);
 
@@ -24,7 +24,7 @@ sntRover.controller('rvReservationCardHKController',
 
             if ( ! workType.default_task && workType.old_default_task == workType.default_task ) {
                 return;
-            };
+            }
 
             params = {
                 old_task_id: workType.old_default_task,
@@ -39,7 +39,7 @@ sntRover.controller('rvReservationCardHKController',
             $scope.houseKeeping.hideDetails = $scope.houseKeeping.hideDetails ? false : true;
 
             $scope.refreshScroller('resultDetails');
-            $timeout(function(){
+            $timeout(function() {
                 $scope.$parent.myScroll['resultDetails'].scrollTo($scope.$parent.myScroll['resultDetails'].maxScrollX,
                     $scope.$parent.myScroll['resultDetails'].maxScrollY, 500);
             }, 500);
@@ -85,6 +85,7 @@ sntRover.controller('rvReservationCardHKController',
                 var configured = _.findWhere($scope.houseKeeping.reservationTasks, {
                     work_type_id: workType.id
                 });
+
                 if (configured) {
                     workType.default_task = configured.task_id;
                     workType.old_default_task = configured.task_id;
@@ -113,21 +114,21 @@ sntRover.controller('rvReservationCardHKController',
          */
         var callInitialAPIs = function() {
             var options = {
-                params          : { reservation_id: $scope.reservationData.reservation_card.reservation_id },
-                successCallBack : fetchInitialDataSuccessCallBack,
-                failureCallBack : fetchInitialDataFailureCallBack
+                params: { reservation_id: $scope.reservationData.reservation_card.reservation_id },
+                successCallBack: fetchInitialDataSuccessCallBack,
+                failureCallBack: fetchInitialDataFailureCallBack
             };
 
             $scope.callAPI( rvReservationHouseKeepingSrv.fetch, options );
         };
 
         // Note: self executing
-        var init = function(){
+        var init = (function() {
             $scope.houseKeeping = {};
             $scope.houseKeeping.serviceEnabled = true;
             $scope.houseKeeping.hideDetails = true;
             $scope.roomAttendance  = false;
-        }();
+        }());
 
         // keep here since we have few var dependecies
         $scope.toggleHKDetails = function() {
@@ -136,7 +137,7 @@ sntRover.controller('rvReservationCardHKController',
                 toggleDetails();
             } else {
                 callInitialAPIs();
-            };
+            }
         };
     }
 ]);

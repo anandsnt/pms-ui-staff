@@ -4,6 +4,7 @@ angular.module('sntRover').service('RVReservationAllCardsSrv', ['$q', 'rvBaseWeb
         this.fetchGuests = function(data) {
             var deferred = $q.defer();
             var url = '/api/guest_details';
+
             RVBaseWebSrvV2.getJSON(url, data).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -15,6 +16,7 @@ angular.module('sntRover').service('RVReservationAllCardsSrv', ['$q', 'rvBaseWeb
         this.fetchCompaniesOrTravelAgents = function(data) {
             var deferred = $q.defer();
             var url = '/api/accounts';
+
             RVBaseWebSrvV2.getJSON(url, data).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {

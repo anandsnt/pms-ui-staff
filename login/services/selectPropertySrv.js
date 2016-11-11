@@ -23,6 +23,7 @@ angular.module('login').service('selectPropertySrv', ['$http', '$q', 'BaseWebSrv
 
         var deferred = $q.defer();
         var url = '/admin/hotel_admin/update_current_hotel';
+
         BaseWebSrvV2.postJSON(url, params).then(function(data) {
             deferred.resolve(data);
         }, function(data) {

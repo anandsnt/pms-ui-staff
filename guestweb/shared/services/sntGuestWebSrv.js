@@ -9,28 +9,33 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 	this.fetchScreenWiseData = function(hotel_identifier) {
 		var deferred = $q.defer();
 		var url = '/api/hotels/custom_cms_messages.json?application=ZEST_WEB&hotel_identifier=' + hotel_identifier;
+
 		$http.get(url).success(function(response) {
 				that.cms_screen_details = _.find(response.screen_list, function(cms_item) {
-					return cms_item.screen_name === "ECI SCREENS"
+					return cms_item.screen_name === "ECI SCREENS";
 				});
-				that.cms_screen_details = typeof that.cms_screen_details !=='undefined' ? that.cms_screen_details : [];
+				that.cms_screen_details = typeof that.cms_screen_details !== 'undefined' ? that.cms_screen_details : [];
 				deferred.resolve(response);
-			}.bind(this))
+			})
 			.error(function() {
 				deferred.reject();
 			});
 		return deferred.promise;
 	};
 
-	//call CMS details only for checkin URLs now
+	// call CMS details only for checkin URLs now
 	var absUrl = window.location.href;
+
 	if (absUrl.indexOf("checkin") !== -1) {
-		//to strip away state URLS
+		// to strip away state URLS
 		absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
-		var urlComponents = absUrl.split('/');;
+		var urlComponents = absUrl.split('/');
+
+
 		var hotel_identifier = urlComponents[urlComponents.length - 2];
+
 		that.fetchScreenWiseData(hotel_identifier);
-	};
+	}
 
 	this.extractScreenDetails = function(screen_identifier) {
 		return extractScreenDetails(screen_identifier, that.cms_screen_details);
@@ -38,6 +43,7 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 
 	this.fetchHotelDetailsFromUrl = function(url) {
 		var deferred = $q.defer();
+
 		$http.get(url).success(function(response) {
 				if (response.status === "success") {
 					deferred.resolve(response.data);
@@ -48,7 +54,7 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 					deferred.resolve(response.data);
 				}
 
-			}.bind(this))
+			})
 			.error(function() {
 				deferred.reject();
 			});
@@ -58,9 +64,10 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 	this.fetchHotelDetailsOnExtCheckoutUrl = function() {
 		var deferred = $q.defer();
 		var url = "/ui/show?json_input=opt_dashboard/checkout_row_nyc.json&format=json";
+
 		$http.get(url).success(function(response) {
 				deferred.resolve(response);
-			}.bind(this))
+			})
 			.error(function() {
 				deferred.reject();
 			});
@@ -70,9 +77,10 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 	this.fetchHotelDetailsOnExtCheckinUrl = function() {
 		var deferred = $q.defer();
 		var url = "ui/show?json_input=opt_dashboard/checkout_row_nyc.json&format=json";
+
 		$http.get(url).success(function(response) {
 				deferred.resolve(response);
-			}.bind(this))
+			})
 			.error(function() {
 				deferred.reject();
 			});
@@ -82,10 +90,11 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 	this.fetchJsHotelThemeList = function() {
 		var deferred = $q.defer();
 		var url = "/assets/asset_list/____generatedThemeMappings/____generatedGuestweb/js/____generatedGuestWebJsThemeMappings.json";
+
 		$http.get(url).success(function(response) {
 				jsMappingList = response;
 				deferred.resolve(response);
-			}.bind(this))
+			})
 			.error(function() {
 				deferred.reject();
 			});
@@ -95,10 +104,11 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 	this.fetchCSSHotelThemeList = function() {
 		var deferred = $q.defer();
 		var url = "/assets/asset_list/____generatedThemeMappings/____generatedGuestweb/css/____generatedGuestWebCSSThemeMappings.json";
+
 		$http.get(url).success(function(response) {
 				cssMappingList = response;
 				deferred.resolve(response);
-			}.bind(this))
+			})
 			.error(function() {
 				deferred.reject();
 			});
@@ -108,10 +118,11 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 	this.fetchTemplateHotelThemeList = function() {
 		var deferred = $q.defer();
 		var url = "/assets/asset_list/____generatedThemeMappings/____generatedGuestweb/template/____generatedGuestWebTemplateThemeMappings.json";
+
 		$http.get(url).success(function(response) {
 				templateMappingList = response;
 				deferred.resolve(response);
-			}.bind(this))
+			})
 			.error(function() {
 				deferred.reject();
 			});
@@ -138,7 +149,7 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 		} else {
 			console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
 			return;
-		};
+		}
 	};
 
 	/**
@@ -162,7 +173,7 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 		} else {
 			console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
 			return;
-		};
+		}
 	};
 
 	/**
@@ -185,7 +196,7 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 		} else {
 			console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
 			return;
-		};
+		}
 	};
 
 

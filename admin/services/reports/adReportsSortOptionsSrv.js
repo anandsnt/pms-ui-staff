@@ -19,7 +19,7 @@ admin.service('adReportsSortOptionsSrv', ['$q', 'ADBaseWebSrvV2',
 		self.getSortOptions = function(ReportKey) {
 			var deferred = $q.defer();
 			var associatedOptions = _.filter(_.keys(__sortOptions), function(key) {
-					return _.indexOf(__sortOptions[key].associatedReports, ReportKey) > -1
+					return _.indexOf(__sortOptions[key].associatedReports, ReportKey) > -1;
 				}),
 				response = [];
 
@@ -28,11 +28,11 @@ admin.service('adReportsSortOptionsSrv', ['$q', 'ADBaseWebSrvV2',
 					value: sortOption,
 					description: __sortOptions[sortOption].desc
 				});
-			})
+			});
 
 			deferred.resolve(response);
 			return deferred.promise;
 
-		}
+		};
 	}
 ]);
