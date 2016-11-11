@@ -43,21 +43,23 @@ angular.module('sntRover')
             // if the date range having multiple months.    
             if(startDate.getMonth() !== endDate.getMonth()){
                 hasMultipleMonth = true;
-                var isReachedSecondMonth = false;
-                $scope.diaryData.firstMonthDateList = [];
-                $scope.diaryData.secondMonthDateList = [];
-                angular.forEach($scope.diaryData.datesGridData,function(item) {
-                    var dateObj = tzIndependentDate(item.date);
-                    if(dateObj.getDate() === 1){
-                        isReachedSecondMonth = true;
-                    }
-                    if(isReachedSecondMonth){
-                        $scope.diaryData.secondMonthDateList.push(item);
-                    }
-                    else{
-                        $scope.diaryData.firstMonthDateList.push(item);
-                    }
-                });
+                if($scope.diaryData.numberOfDays === 21){
+                    var isReachedSecondMonth = false;
+                    $scope.diaryData.firstMonthDateList = [];
+                    $scope.diaryData.secondMonthDateList = [];
+                    angular.forEach($scope.diaryData.datesGridData,function(item) {
+                        var dateObj = tzIndependentDate(item.date);
+                        if(dateObj.getDate() === 1){
+                            isReachedSecondMonth = true;
+                        }
+                        if(isReachedSecondMonth){
+                            $scope.diaryData.secondMonthDateList.push(item);
+                        }
+                        else{
+                            $scope.diaryData.firstMonthDateList.push(item);
+                        }
+                    });
+                }
 
             }
             return hasMultipleMonth;
@@ -110,9 +112,10 @@ angular.module('sntRover')
             else{
                 $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift);
                 $scope.diaryData.numberOfDays = 21;
+                if($scope.diaryData.datesGridData.length !== 21){
+                    $scope.$emit('REFRESH_DIARY_TIMELINE');
+                }
             }
-
-            $scope.$emit('REFRESH_DIARY_TIMELINE');
         };
 
         /*
@@ -121,14 +124,14 @@ angular.module('sntRover')
          * @return {String} - calculated date.
          */
         var calculateFromDateAndToDate = function( isRightShift ){
+            var fromDate = angular.copy(tzIndependentDate($scope.diaryData.fromDate));
             if($scope.diaryData.isSevenSelected){
-                $scope.diaryData.fromDate = getDateShift($scope.diaryData.fromDate, 7, isRightShift);
+                $scope.diaryData.fromDate = getDateShift(fromDate, 7, isRightShift);
                 $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 7, isRightShift);
             }
             else{
-                $scope.diaryData.fromDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift);
+                $scope.diaryData.fromDate = getDateShift(fromDate, 21, isRightShift);
                 $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift);
-                
             }
         };
 

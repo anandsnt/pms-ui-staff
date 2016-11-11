@@ -30,12 +30,17 @@ angular.module('sntRover')
             datesGridData   : datesList,
             businessDate    : $rootScope.businessDate,
             diaryRoomsList  : roomsList,
+            reservationList : [],
             numberOfDays    : 7,
             fromDate        : '',
             toDate          : '',
             roomFilterCount : 0,
             filterCount     : 0,
-            hasMultipleMonth : false
+            pageNo          : 1,
+            perPage         : 50,
+            hasMultipleMonth    : false,
+            firstMonthDateList  : [],
+            secondMonthDateList : []
         };
 
         // Method to update 7/21 time line data.
@@ -45,13 +50,43 @@ angular.module('sntRover')
                 $scope.errorMessage = "";
                 $scope.diaryData.datesGridData = [];
                 $scope.diaryData.datesGridData = data;
-                $scope.broadcast('FETCH_COMPLETED_DATE_LIST_DATA');
+                $scope.$broadcast('FETCH_COMPLETED_DATE_LIST_DATA');
             };
             var postData = {
                 "start_date": $scope.diaryData.fromDate,
                 "no_of_days": $scope.diaryData.numberOfDays
             };
             $scope.invokeApi(RVNightlyDiarySrv.fetchDatesList, postData, successCallBackFetchDatesList);
+        };
+
+        // Method to update room list data.
+        var fetchRoomListData = function(){
+            var successCallBackFetchRoomList = function(data){
+                $scope.$emit('hideLoader');
+                $scope.errorMessage = "";
+                $scope.diaryData.diaryRoomsList = [];
+                $scope.diaryData.diaryRoomsList = data;
+            };
+            var postData = {
+                "page": $scope.diaryData.pageNo,
+                "per_page": $scope.diaryData.perPage
+            };
+            $scope.invokeApi(RVNightlyDiarySrv.fetchRoomsList, postData, successCallBackFetchRoomList);
+        };
+
+        // Method to update reservation list data.
+        var fetchReservationListData = function(){
+            var successCallBackFetchReservationList = function(data){
+                $scope.$emit('hideLoader');
+                $scope.errorMessage = "";
+                $scope.diaryData.reservationList = [];
+                $scope.diaryData.reservationList = data;
+            };
+            var postData = {
+                "page": 1,
+                "per_page": 50
+            };
+            $scope.invokeApi(RVNightlyDiarySrv.fetchReservationList, postData, successCallBackFetchReservationList);
         };
 
         //Initial State
