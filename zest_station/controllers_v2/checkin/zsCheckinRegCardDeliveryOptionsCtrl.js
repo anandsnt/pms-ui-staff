@@ -139,40 +139,40 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				// add the orientation
 				addPrintOrientation();
 				setBeforePrintSetup();
-				try {
-					// this will show the popup with full bill
-					$timeout(function() {
-						/*
-						 * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-						 */
+			try {
+				// this will show the popup with full bill
+				$timeout(function() {
+					/*
+					 * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+					 */
 
-						if (sntapp.cordovaLoaded) {
-							var printer = (sntZestStation.selectedPrinter);
+					if (sntapp.cordovaLoaded) {
+						var printer = (sntZestStation.selectedPrinter);
 
-							cordova.exec(function(success) {
-								printSuccessActions();
-							}, function(error) {
-								printFailedActions();
-							}, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
+						cordova.exec(function(success) {
+							printSuccessActions();
+						}, function(error) {
+							printFailedActions();
+						}, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
+					} else {
+						if ($scope.zestStationData.zest_printer_option === "STAR_TAC") {
+							//we will call websocket services to print
+							handleStarTacPrinterActions();
 						} else {
-							if($scope.zestStationData.zest_printer_option === "STAR_TAC"){
-								//we will call websocket services to print
-								handleStarTacPrinterActions();
-							} else {
 
-								$window.print();
-								setTimeout(function() {
-									printSuccessActions();
-								}, 100);
-							}
+							$window.print();
+							setTimeout(function() {
+								printSuccessActions();
+							}, 100);
 						}
-						// provide a delay for preview to appear 
+					}
+					// provide a delay for preview to appear 
 
-					}, 100);
-				} catch (e) {
-					console.info("something went wrong while attempting to print--->" + e);
-					printFailedActions();
-				}
+				}, 100);
+			} catch (e) {
+				console.info("something went wrong while attempting to print--->" + e);
+				printFailedActions();
+			}
 				setTimeout(function() {
 					// CICO-9569 to solve the hotel logo issue
 					$("header .logo").removeClass('logo-hide');
