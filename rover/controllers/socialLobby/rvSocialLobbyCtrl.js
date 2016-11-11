@@ -20,6 +20,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         var deleteIndex = "";
 
         var POST_LIST_SCROLL = 'post-list-scroll';
+        var scrollHeight = "";
 
         var setPostScrollHeight = function(){
             var postContainer = angular.element(document.querySelector(".neighbours-post-container"))[0];
@@ -30,10 +31,17 @@ sntRover.controller('RVSocialLobbyCrl', [
             if(expandedPostHeight !== ""){
                 height = height + expandedPostHeight;                
             }
-            if($scope.errorMessage != "" || typeof $scope.errorMessage != 'undefined')
-                postScroll.style.height = ""+450+"px";
-            else
-                postScroll.style.height = ""+500+"px";
+            if(scrollHeight == "")
+                scrollHeight = postScroll.clientHeight;
+            var scrollHt = "";
+            if($scope.errorMessage != "" && typeof $scope.errorMessage != 'undefined'){
+                scrollHt = scrollHeight - 140;
+                
+            }else{                
+                scrollHt = scrollHeight - 100;
+                
+            }
+            postScroll.style.height = ""+scrollHt+"px";
             postContainer.style.height = ""+height+"px";
             
         }
