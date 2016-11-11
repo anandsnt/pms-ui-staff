@@ -49,7 +49,8 @@ angular.module('sntRover')
             roomsList : roomsList.rooms,
             reservationsList: reservationsList.rooms,
             initialDayOfDateGrid: $rootScope.businessDate,
-            numberOfDays: 7
+            numberOfDays: 7,
+            currentBusinessDate: $rootScope.businessDate
         };
         const store = configureStore(initialState);
 
