@@ -12,22 +12,48 @@
     <div class="wrapper">
         <table class="forecast-reports medium-grid">
             <thead>
-                <tr class="top-row">
+                <tr class="top-row vertical-align">
                     <th class="date break">{{ chosenReport.singleValueDate | date : dateFormat }}</th>
-                    <th colspan="3" class="break">Revenue</th>
-                    <th colspan="3" class="break">Bookings</th>
+                    <th colspan="3" class="break">
+                            <!-- Toggle class .on on switch -->
+                            <div class="switch-button on">
+                                <input id="revenue-toggle" value="" type="checkbox" />
+                                <label class="data-off">
+                                    <span class="value">Room Revenue</span>
+                                    <span class="switch-icon">Other Revenue</span>
+                                </label>
+                                <label class="data-on">
+                                    <span class="switch-icon">Room Revenue</span>
+                                    <span class="value">Other Revenue</span>
+                                </label>
+                            </div>
+                        </th>
+                        <th colspan="3" class="break">
+                            <!-- Toggle class .on on switch -->
+                            <div class="switch-button on">
+                                <input id="bookings-toggle" value="" type="checkbox" />
+                                <label class="data-off">
+                                    <span class="value">Bookings</span>
+                                    <span class="switch-icon">ALOS</span>
+                                </label>
+                                <label class="data-on">
+                                    <span class="switch-icon">Bookings</span>
+                                    <span class="value">ALOS</span>
+                                </label>
+                            </div>
+                        </th>
                     <th colspan="3" class="break">Room Nights</th>
                     <th colspan="3" class="break">ADR</th>
                     <th colspan="3" class="break">%</th>
                 </tr>
             </thead>
-            
+
             <!-- Reports table footer -->
             <tfoot ng-include="'/assets/partials/reports/shared/rvReportDetailsFooter.html'"></tfoot>
 
             <!-- Reports table content -->
             <tbody ng-repeat="item in results" ng-include="'/assets/partials/reports/marketSegmentStatReport/rvMarketSegmentStatReportRow.html'"></tbody>
-            
+
             <!-- Reports table total content -->
             <tbody ng-if="resultsTotalRow"  ng-include="'/assets/partials/reports/marketSegmentStatReport/rvMarketSegmentStatReportTotalRow.html'"></tbody>
         </table>
