@@ -1,4 +1,4 @@
-angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', 'rvUtilSrv', function($scope, util){
+angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', 'rvUtilSrv', function($scope, util) {
 	BaseCtrl.call(this, $scope);
 
     /**
@@ -38,8 +38,9 @@ angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', '
      * @return {String}
      */
     $scope.getGuestClassForArrival = function(allotment) {
-        //"cancel" if cancelled, "check-in" if not cancelled
+        // "cancel" if cancelled, "check-in" if not cancelled
         var classes = isCancelledAllotment(allotment) ? 'cancel' : 'check-in';
+
         return classes;
     };
 
@@ -51,11 +52,11 @@ angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', '
     $scope.getClassAgainstPickedStatus = function(allotment) {
         var classes = '';
 
-        //Add class "green" if No. > 0
+        // Add class "green" if No. > 0
         if (allotment.total_picked_count > 0) {
             classes = 'green';
         }
-        //Add class "red" if cancelled
+        // Add class "red" if cancelled
         if (isCancelledAllotment(allotment)) {
             classes += ' red';
         }
@@ -68,8 +69,9 @@ angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', '
      * @return {String}
      */
     $scope.getGuestClassForDeparture = function(allotment) {
-        //"cancel" if cancelled, 'check-out' if not cancelled
+        // "cancel" if cancelled, 'check-out' if not cancelled
         var classes = isCancelledAllotment(allotment) ? 'cancel' : 'check-out';
+
         return classes;
     };
         
@@ -81,13 +83,14 @@ angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', '
     $scope.formatDateForUI = function(date_) {
         var type_ = typeof date_,
             returnString = '';
+
         switch (type_) {
-            //if date string passed
+            // if date string passed
             case 'string':
                 returnString = $filter('date')(new tzIndependentDate(date_), $rootScope.dateFormat);
                 break;
 
-                //if date object passed
+                // if date object passed
             case 'object':
                 returnString = $filter('date')(date_, $rootScope.dateFormat);
                 break;
@@ -111,13 +114,14 @@ angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', '
      * return - None
      */
     var setScrollerForMe = function() {
-        //setting scroller things
+        // setting scroller things
         var scrollerOptions = {
             tap: true,
             preventDefault: false,
             deceleration: 0.0001,
             shrinkScrollbars: 'clip'
         };
+
         $scope.setScroller('result_showing_area', scrollerOptions);
     };
 
@@ -164,16 +168,17 @@ angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', '
 
         if (!!grpCardData.name || !!grpCardData.code) {
             var params = {
-                name        : grpCardData.name,
-                code        : grpCardData.code,
-                from_date   : resData.arrivalDate,
-                to_date     : resData.departureDate
+                name: grpCardData.name,
+                code: grpCardData.code,
+                from_date: resData.arrivalDate,
+                to_date: resData.departureDate
             };
 
             var options = {
-                params          : params,
-                successCallBack : onAllotmentSearchSuccess
+                params: params,
+                successCallBack: onAllotmentSearchSuccess
             };
+
             $scope.callAPI(rvGroupSrv.searchGroupCard, options);
         } 
 
@@ -187,16 +192,16 @@ angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', '
      * function used to set initlial set of values
      * @return {None}
      */
-	var initilizeMe = function(){
-        //allotmentlist
+	var initilizeMe = (function() {
+        // allotmentlist
         $scope.allotmentList = [];
 
-        //total result count
+        // total result count
         $scope.totalResultCount = 0;
 
         $scope.searchMode = true;
         
-        //scroller and related things
+        // scroller and related things
         setScrollerForMe();
-	}();
+	}());
 }]);

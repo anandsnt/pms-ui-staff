@@ -4,7 +4,7 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
     BaseCtrl.call(this, $scope);
     $scope.errorMessage = "";
 
-    var init = function(){
+    var init = function() {
     $scope.defaultRateDisplays = [{
       "value": 0,
       "name": "Recommended"
@@ -26,8 +26,8 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
       "value": "%",
       "name": "%"
     }, {
-      "value" : "amount",
-      "name"  : $rootScope.currencySymbol
+      "value": "amount",
+      "name": $rootScope.currencySymbol
     }];
     $scope.checkin_types = [{
       "value": "perStay",
@@ -40,8 +40,8 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
       "value": "%",
       "name": "%"
     }, {
-      "value" : "amount",
-      "name"  : $rootScope.currencySymbol
+      "value": "amount",
+      "name": $rootScope.currencySymbol
     }];
     $scope.eod_types = [{
       "value": "perStay",
@@ -52,30 +52,30 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
     }];
 
     $scope.incidentalObj = {
-      'values' : [{
-        "value" : "amount",
-        "name"  : $rootScope.currencySymbol
+      'values': [{
+        "value": "amount",
+        "name": $rootScope.currencySymbol
       }],
-      'types' : [{
-        "value" : "perStay",
-        "name"  : "Per Stay"
+      'types': [{
+        "value": "perStay",
+        "name": "Per Stay"
         }, {
         "value": "perNight",
         "name": "Per Night"
       }]
     };
 
-   _.each(reservationSettingsData.prepaid_commission_charge_codes, function(chargeCode, index){
-      chargeCode.name = chargeCode.code +" "+chargeCode.name;
+   _.each(reservationSettingsData.prepaid_commission_charge_codes, function(chargeCode, index) {
+      chargeCode.name = chargeCode.code + " " + chargeCode.name;
     });
 
-   _.each(reservationSettingsData.tax_transaction_codes, function(chargeCode, index){
-      chargeCode.name = chargeCode.code +" "+chargeCode.name;
+   _.each(reservationSettingsData.tax_transaction_codes, function(chargeCode, index) {
+      chargeCode.name = chargeCode.code + " " + chargeCode.name;
     });
 
     $scope.reservationSettingsData = reservationSettingsData;
 
-  }
+  };
 
 
     /**
@@ -95,7 +95,7 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
         $scope.errorMessage = data;
         $scope.$emit('hideLoader');
       };
-      var data = dclone($scope.reservationSettingsData,['prepaid_commission_charge_codes','tax_transaction_codes']);
+      var data = dclone($scope.reservationSettingsData, ['prepaid_commission_charge_codes', 'tax_transaction_codes']);
 
       $scope.invokeApi(ADReservationSettingsSrv.saveChanges, data, saveChangesSuccessCallback, saveChangesFailureCallback);
 
@@ -103,8 +103,8 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
     /*
      * Suite rooms toggle button actions
      */
-    $scope.suiteRoomsSwitchClicked = function(){
-      var canSuiteDisableSuccessCallback = function(){
+    $scope.suiteRoomsSwitchClicked = function() {
+      var canSuiteDisableSuccessCallback = function() {
         $scope.$emit('hideLoader');
         $scope.reservationSettingsData.suite_enabled = !$scope.reservationSettingsData.suite_enabled;
       };
@@ -112,14 +112,15 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
         $scope.errorMessage = data;
         $scope.$emit('hideLoader');
       };
-      if($scope.reservationSettingsData.suite_enabled){
+
+      if ($scope.reservationSettingsData.suite_enabled) {
         $scope.invokeApi(ADReservationSettingsSrv.canDisableSuite, {}, canSuiteDisableSuccessCallback, canSuiteDisableFailureCallback);
 
       } else {
         $scope.reservationSettingsData.suite_enabled = !$scope.reservationSettingsData.suite_enabled;
       }
 
-    }
+    };
     init();
   }
 ]);

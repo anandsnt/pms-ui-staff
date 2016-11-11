@@ -8,8 +8,9 @@ sntGuestWeb.controller('gwCheckinLandingCtrlController', ['$scope', '$state', '$
 			$scope: $scope
 		});
 
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "CHECKIN_LANDING";
+
 			$scope.isPrecheckinOnly = GwWebSrv.zestwebData.isPrecheckinOnly;
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.isAutoCheckinOn = GwWebSrv.zestwebData.isAutoCheckinOn;
@@ -17,7 +18,7 @@ sntGuestWeb.controller('gwCheckinLandingCtrlController', ['$scope', '$state', '$
 			$scope.cardDigits = "";
 			$scope.departureDate = "";
 			$scope.date = $filter('date')(new Date(), 'yyyy-MM-dd');
-		}();
+		}());
 
 		// Calendar toggle actions and date select action
 		$scope.showCalender = function() {
@@ -30,22 +31,23 @@ sntGuestWeb.controller('gwCheckinLandingCtrlController', ['$scope', '$state', '$
 		$scope.dateChoosen = function() {
 			$scope.departureDate = ($filter('date')($scope.date, GwWebSrv.zestwebData.dateFormat));
 			dateToSend = dclone($scope.date, []);
-			dateToSend = ($filter('date')(dateToSend,'MM-dd-yyyy'));
+			dateToSend = ($filter('date')(dateToSend, 'MM-dd-yyyy'));
 			$scope.closeCalender();
 		};
 
 		$scope.nextButtonClicked = function() {
-			var verificationSuccess = function(response){
+			var verificationSuccess = function(response) {
 				GwCheckinSrv.setcheckinData(response);
 				GwWebSrv.zestwebData.termsAndConditions = response.terms_and_conditions;
 				GwWebSrv.zestwebData.roomUpgraded  = false;
 				$state.go('checkinReservationDetails');
 			};
-			var verificationFailed = function(response){
+			var verificationFailed = function(response) {
 				var popupOptions = angular.copy($scope.errorOpts);
+
 				popupOptions.resolve = {
 					message: function() {
-						return "<b>We could not find your reservation</b>. Please check for typos, or call <hotelPhone>."
+						return "<b>We could not find your reservation</b>. Please check for typos, or call <hotelPhone>.";
 					}
 				};
 				$modal.open(popupOptions);
@@ -60,6 +62,7 @@ sntGuestWeb.controller('gwCheckinLandingCtrlController', ['$scope', '$state', '$
 				successCallBack: verificationSuccess,
 				failureCallBack: verificationFailed
 			};
+
 			$scope.callAPI(GwCheckinSrv.verifyCheckinUser, options);
 		};
 

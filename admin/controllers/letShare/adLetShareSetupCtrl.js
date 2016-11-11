@@ -1,4 +1,4 @@
-admin.controller('adLetShareSetupCtrl', ['$scope', 'letsShareSetupValues', 'adLetShareSetupSrv', function($scope, letsShareSetupValues, adLetShareSetupSrv){
+admin.controller('adLetShareSetupCtrl', ['$scope', 'letsShareSetupValues', 'adLetShareSetupSrv', function($scope, letsShareSetupValues, adLetShareSetupSrv) {
 	
 	BaseCtrl.call (this, $scope);
 	
@@ -26,9 +26,10 @@ admin.controller('adLetShareSetupCtrl', ['$scope', 'letsShareSetupValues', 'adLe
 			letshare: $scope.letshare
 		};
         var options = {
-            params 			: params,
-            successCallBack : successCallBackOfSaveLetShareSetup
+            params: params,
+            successCallBack: successCallBackOfSaveLetShareSetup
         };
+
         $scope.callAPI(adLetShareSetupSrv.saveLetShareConfiguration, options);
 	};
 
@@ -36,8 +37,8 @@ admin.controller('adLetShareSetupCtrl', ['$scope', 'letsShareSetupValues', 'adLe
 	 * Initialization stuffs
 	 * @return {undefiend}
 	 */
-	var initializeMe = function() {
+	var initializeMe = (function() {
 		$scope.letshare = {};
 		$scope.letshare.enabled = letsShareSetupValues.enabled;
-	}();
-}])
+	}());
+}]);

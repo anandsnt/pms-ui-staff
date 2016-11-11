@@ -43,38 +43,35 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		};
 
 		var _title = $rootScope.isMaintenanceStaff ? 'My WorkSheet' : 'ROOM_STATUS';
+
 		_title = $filter( 'translate')(_title);
 
 		// set title in header
 		$scope.setTitle(_title);
 		$scope.heading = _title;
-		$scope.$emit( 'updateRoverLeftMenu' , 'roomStatus' );
+		$scope.$emit( 'updateRoverLeftMenu', 'roomStatus' );
 		$scope.totalRoomsSelectedForUpdate = 0;
 		// set the scroller
 		$scope.setScroller('room-status-filter');
 		$scope.setScroller('room-service-status-update');
 		$scope.setScroller('rooms-list-to-forcefully-update');
-		setTimeout(function(){
+		setTimeout(function() {
 			$scope.refreshScroller('room-status-filter');
 			$scope.refreshScroller('rooms-list-to-forcefully-update');
 		}, 1500);
 
 
-
 		/* ***** ***** ***** ***** ***** */
-
 
 
 		// reset all the filters
 		if ( RVHkRoomStatusSrv.currentFilters.page < 1 ) {
 			RVHkRoomStatusSrv.currentFilters.page = 1;
-		};
+		}
 		$scope.currentFilters = angular.copy( RVHkRoomStatusSrv.currentFilters );
 
 
-
 		/* ***** ***** ***** ***** ***** */
-
 
 
 		var $_roomList        = {},
@@ -95,6 +92,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		var $_lastQuery = '';
 
 		var $_oldFilterValues = angular.copy( RVHkRoomStatusSrv.currentFilters );
+
 			$_oldRoomTypes    = angular.copy( roomTypes );
 
 		var $_printQueued = false;
@@ -147,7 +145,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			}
 
 			RVHkRoomStatusSrv.defaultViewState = $scope.currentView;
-			$timeout(function(){
+			$timeout(function() {
 				$scope.refreshScroller('tasks-summary-scroller');
 			}, 2000);
 
@@ -155,18 +153,17 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 		// multiple room status change DS
 		$scope.multiRoomAction = {
-			rooms      : [],
-			indexes    : {},
-			anyChosen  : false,
-			allChosen  : false,
-			hkStatusId : ''
+			rooms: [],
+			indexes: {},
+			anyChosen: false,
+			allChosen: false,
+			hkStatusId: ''
 		};
 		$scope.hkStatusList = hkStatusList;
 		$scope.allRoomIDs   = fetchPayload.roomList['all_room_ids'];
 
 
 		/* ***** ***** ***** ***** ***** */
-
 
 
 		// true represent that this is a fetchPayload call
@@ -176,11 +173,10 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		/* ***** ***** ***** ***** ***** */
 
 
-
 		$scope.loadNextPage = function(e) {
 			if ( $scope.disableNextBtn ) {
 				return;
-			};
+			}
 
 			$_page++;
 			$_updateFilters('page', $_page);
@@ -191,7 +187,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		$scope.loadPrevPage = function(e) {
 			if ($scope.disablePrevBtn) {
 				return;
-			};
+			}
 
 			$_page--;
 			$_updateFilters('page', $_page);
@@ -206,7 +202,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 		$scope.showFilters = function() {
 			$scope.filterOpen = true;
-			setTimeout(function(){ $scope.refreshScroller('room-status-filter'); }, 1500);
+			setTimeout(function() { $scope.refreshScroller('room-status-filter'); }, 1500);
 		};
 
 		$scope.refreshData = function() {
@@ -242,9 +238,9 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 					} else if ( $scope.currentFilters[key] !== $_oldFilterValues[key] ) {
 						_hasFilterChanged = true;
 						break;
-					};
-				};
-			};
+					}
+				}
+			}
 
 			// if any room types has changed
 			if ( $scope.roomTypes.length ) {
@@ -252,15 +248,15 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 					if ( $scope.roomTypes[i]['isSelected'] !== $_oldRoomTypes[i]['isSelected'] ) {
 						_hasRoomTypeChanged = true;
 						break;
-					};
-				};
-			};
+					}
+				}
+			}
 
 			if ( _hasFilterChanged || _hasRoomTypeChanged ) {
 				$timeout(_makeCall, 100);
 			} else {
 				$scope.filterOpen = false;
-			};
+			}
 		};
 
 		var $_filterByQuery = function(forced) {
@@ -278,15 +274,15 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			if ( $rootScope.isSingleDigitSearch ) {
 				if (forced || $scope.query !== $_lastQuery) {
 					_makeCall();
-				};
+				}
 			} else {
 				if ( forced ||
 						($scope.query.length <= 2 && $scope.query.length < $_lastQuery.length) ||
 						($scope.query.length > 2 && $scope.query !== $_lastQuery)
 				) {
 					_makeCall();
-				};
-			};
+				}
+			}
 		};
 
 		$scope.filterByQuery = _.throttle($_filterByQuery, 1000, { leading: false });
@@ -298,6 +294,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 		$scope.isFilterChcked = function() {
 			var key, ret;
+
 			for (key in $scope.currentFilters) {
 				if ( key !== 'showAllFloors' && !!$scope.currentFilters[key] ) {
 					ret = true;
@@ -310,14 +307,14 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		};
 
 		$scope.clearFilters = function() {
-			console.log('clearFilters autocalled')
+			console.log('clearFilters autocalled');
 			$scope.roomTypes = RVHkRoomStatusSrv.resetRoomTypes();
 
 			$scope.currentFilters = RVHkRoomStatusSrv.initFilters();
 			if ( $scope.isStandAlone ) {
 				$scope.currentFilters.filterByWorkType = "";
 				$scope.currentFilters.filterByEmployeeName = "";
-			};
+			}
 			RVHkRoomStatusSrv.currentFilters = angular.copy( $scope.currentFilters );
 
 			$_refreshScroll();
@@ -362,7 +359,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 					item.isSelected = true;
 				} else {
 					item.isSelected = false;
-				};
+				}
 			});
 		};
 
@@ -375,7 +372,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			function callback (data) {
 				$_fetchRoomListCallback(data);
 				$_printQueued = true;
-			};
+			}
 
 			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {}, callback);
 		};
@@ -390,7 +387,6 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		$scope.$on( '$destroy', allRendered );
 
 
-
 		$scope.roomSelectChange = function(item, i) {
 			var _value = item.selected,
 				_key   = i + '';
@@ -403,29 +399,30 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				if ( ! $scope.multiRoomAction.indexes.hasOwnProperty(_key) ) {
 					$scope.multiRoomAction.rooms.push( $scope.rooms[i].id );
 					$scope.multiRoomAction.indexes[_key] = i;
-				};
+				}
 			} else {
 				if ( _.has($scope.multiRoomAction.indexes, _key) ) {
 					// remove from array
-					var indexToRemove = _.indexOf($scope.multiRoomAction.rooms,$scope.rooms[i].id);
+					var indexToRemove = _.indexOf($scope.multiRoomAction.rooms, $scope.rooms[i].id);
+
 					$scope.multiRoomAction.rooms.splice(indexToRemove, 1);
 
 					// remove keyMirror
 					$scope.multiRoomAction.indexes[_key] = undefined;
 					delete $scope.multiRoomAction.indexes[_key];
-				};
+				}
 
 				if ( !$scope.multiRoomAction.rooms.length ) {
 					$scope.multiRoomAction.anyChosen = false;
-				};
-			};
+				}
+			}
 
 			// check if all rooms have been selected to make the 'All Selected' enabled in filters
 			if ( $scope.uiTotalCount === $scope.multiRoomAction.rooms.length ) {
 				$scope.multiRoomAction.allChosen = true;
 			} else {
 				$scope.multiRoomAction.allChosen = false;
-			};
+			}
 		};
 
 		$scope.toggleRoomSelection = function() {
@@ -439,11 +436,11 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				_selection = true;
 			} else {
 				_selection = false;
-			};
+			}
 
 			if ( $scope.multiRoomAction.anyChosen ) {
 				_selection = false;
-			};
+			}
 
 			$scope.multiRoomAction.anyChosen = _selection;
 			$scope.multiRoomAction.allChosen = _selection;
@@ -458,7 +455,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 					$scope.multiRoomAction.rooms.push( $scope.rooms[i]['id'] );
 					$scope.multiRoomAction.indexes[i] = i;
-				};
+				}
 			}
 
 			// loop the indexes to remove the chosen rooms
@@ -467,19 +464,19 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				for ( _key in $scope.multiRoomAction.indexes ) {
 					if ( ! $scope.multiRoomAction.indexes.hasOwnProperty(_key) ) {
 					    continue;
-					};
+					}
 
 					_ithRoom = $scope.rooms[ $scope.multiRoomAction.indexes[_key] ];
 
 					// remove selection
 					if ( !! _ithRoom ) {
 						_ithRoom['selected'] = false;
-					};
-				};
+					}
+				}
 
 				$scope.multiRoomAction.rooms = [];
 				$scope.multiRoomAction.indexes = {};
-			};
+			}
 		};
 
 
@@ -503,7 +500,6 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		};
 
 
-
 		/* ***** ***** ***** ***** ***** */
 
 		/*
@@ -514,7 +510,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			function $_maintenanceReasonsCallback(data) {
 				$scope.$emit('hideLoader');
 				$scope.maintenanceReasonsList = data;
-			};
+			}
 
 			$scope.invokeApi(RVHkRoomDetailsSrv.fetchMaintenanceReasons, {}, $_maintenanceReasonsCallback);
 		};
@@ -539,6 +535,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		 */
 		var intervalForTimeSelector = 15,
 			mode = 12;
+
 		$scope.timeSelectorList = util.getListForTimeSelector (intervalForTimeSelector, mode);
 
 		$scope.shouldShowTimeSelector = function() {
@@ -583,7 +580,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		$scope.fromDateOptions = angular.extend({
 			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
 			onSelect: adjustDates,
-			beforeShowDay: $scope.setClass,
+			beforeShowDay: $scope.setClass
 			// onChangeMonthYear: function(year, month, instance) {
 			// 	$scope.updateCalendar(year, month);
 			// }
@@ -592,7 +589,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		$scope.untilDateOptions = angular.extend({
 			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
 			onSelect: adjustDates,
-			beforeShowDay: $scope.setClass,
+			beforeShowDay: $scope.setClass
 			// onChangeMonthYear: function(year, month, instance) {
 			// 	$scope.updateCalendar(year, month);
 			// }
@@ -616,13 +613,13 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			$scope.completedData.successFullyUpdated = parseInt($scope.totalRoomsSelectedForUpdate) - parseInt($scope.completedData.assignedRoomsList.length);
 			$scope.completedData.notSuccessFullyUpdated = parseInt($scope.completedData.assignedRoomsList.length);
 			_.each($scope.completedData.assignedRoomsList, function(item) {
-  				item.is_add_to_update =true;
-  				if(item.reservations.length > 1){
+  				item.is_add_to_update = true;
+  				if (item.reservations.length > 1) {
   					item.reservationData = "Multiple Reservations";
   					item.isMultipleReservation = true;
-  				} else if((item.reservations.length === 1)){
-  					item.reservationData = "#"+item.reservations[0].confirm_no;
-  					item.GuestName = item.reservations[0].last_name+", "+item.reservations[0].first_name;
+  				} else if ((item.reservations.length === 1)) {
+  					item.reservationData = "#" + item.reservations[0].confirm_no;
+  					item.GuestName = item.reservations[0].last_name + ", " + item.reservations[0].first_name;
   					item.isMultipleReservation = false;
   				}
 			});
@@ -634,7 +631,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			    scope: $scope
             });
 
-            setTimeout(function(){
+            setTimeout(function() {
             	$scope.refreshScroller('rooms-list-to-forcefully-update');
             }, 1500);
 
@@ -645,8 +642,8 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldShowTimeSelector = function() {
-			//as per CICO-11840 we will show this for hourly hotels only
-			return $rootScope.isHourlyRateOn
+			// as per CICO-11840 we will show this for hourly hotels only
+			return $rootScope.isHourlyRateOn;
 		};
 
 
@@ -659,7 +656,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			var updateServiceStatusSuccessCallBack = function(data) {
 
 				$scope.$emit( 'hideLoader' );
-				if(typeof data.assigned_rooms !='undefined' && data.assigned_rooms.length > 0) {
+				if (typeof data.assigned_rooms != 'undefined' && data.assigned_rooms.length > 0) {
 					showUpdateResultPopup(data.assigned_rooms);
 				}
 				else {
@@ -671,29 +668,29 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 			var params = {
 
-   				from_date			: getApiFormattedDate($scope.updateServiceData.from_date),
-				to_date				: getApiFormattedDate($scope.updateServiceData.to_date),
-				begin_time 			:"",
-				end_time			: "",
-				reason_id			: $scope.updateServiceData.reason_id,
-				comment 			: $scope.updateServiceData.comments,
+   				from_date: getApiFormattedDate($scope.updateServiceData.from_date),
+				to_date: getApiFormattedDate($scope.updateServiceData.to_date),
+				begin_time: "",
+				end_time: "",
+				reason_id: $scope.updateServiceData.reason_id,
+				comment: $scope.updateServiceData.comments,
 				room_service_status_id: $scope.updateServiceData.room_service_status_id
 			};
 
-			if($scope.shouldShowTimeSelector()){
+			if ($scope.shouldShowTimeSelector()) {
 				params.begin_time = $scope.updateServiceData.begin_time;
 				params.end_time = $scope.updateServiceData.end_time;
 			}
 
 			// To check All Rooms are Choosen or not
 			params.room_id = [];
-			if($scope.multiRoomAction.allChosen){
+			if ($scope.multiRoomAction.allChosen) {
 				params.room_id = $scope.allRoomIDs;
 			}
 			else {
 				params.room_id = $scope.multiRoomAction.rooms;
 			}
-			//Used - to minus from this value on status update
+			// Used - to minus from this value on status update
 			$scope.totalRoomsSelectedForUpdate = parseInt(params.room_id.length);
 			$scope.selectedServiceStatusName = $scope.serviceStatusList[_.findIndex
 							($scope.serviceStatusList, {id: params.room_service_status_id
@@ -717,20 +714,21 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 			var params = {
 
-   				from_date			: getApiFormattedDate($scope.updateServiceData.from_date),
-				to_date				: getApiFormattedDate($scope.updateServiceData.to_date),
-				begin_time 			: $scope.updateServiceData.begin_time,
-				end_time			: $scope.updateServiceData.end_time,
-				reason_id			: $scope.updateServiceData.reason_id,
-				comment 			: $scope.updateServiceData.comments,
-				is_move_forcefully  : true,
+   				from_date: getApiFormattedDate($scope.updateServiceData.from_date),
+				to_date: getApiFormattedDate($scope.updateServiceData.to_date),
+				begin_time: $scope.updateServiceData.begin_time,
+				end_time: $scope.updateServiceData.end_time,
+				reason_id: $scope.updateServiceData.reason_id,
+				comment: $scope.updateServiceData.comments,
+				is_move_forcefully: true,
 				room_service_status_id: $scope.updateServiceData.room_service_status_id
 			};
 
-			var roomsToAdd = _.filter($scope.completedData.assignedRoomsList, function(room){ return room.is_add_to_update});
-			params.room_id = _.pluck(roomsToAdd,'id');
-			//as per CICO-32168 comments
-			if(params.room_id.length > 0) {
+			var roomsToAdd = _.filter($scope.completedData.assignedRoomsList, function(room) { return room.is_add_to_update;});
+
+			params.room_id = _.pluck(roomsToAdd, 'id');
+			// as per CICO-32168 comments
+			if (params.room_id.length > 0) {
 				$scope.invokeApi(RVHkRoomDetailsSrv.postRoomServiceStatus, params, successCallBack);
 			} else {
 				$scope.closeForcefullyUpdatePopup();
@@ -738,7 +736,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		};
 
 
-		var initilizeServiceStatusData = function(){
+		var initilizeServiceStatusData = function() {
 
 			// $scope.updateServiceData.room_service_status_id = $scope.serviceStatusList[0].id;
 			$scope.updateServiceData.from_date = $rootScope.businessDate;
@@ -750,14 +748,13 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		};
 
 
-		$scope.initilizeServiceStatus = function(){
+		$scope.initilizeServiceStatus = function() {
 
 			fetchMaintenanceReasons();
 			fetchAllServiceStatus();
 			initilizeServiceStatusData();
 			$scope.refreshScroller('room-service-status-update');
 		};
-
 
 
 		/* ***** ***** ***** ***** ***** */
@@ -768,10 +765,11 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			// we are looping the 'keyMirror' rather than the
 			// entire rooms array, nice!
 			var i, _ithRoom;
+
 			for (i in $scope.multiRoomAction.indexes) {
 				if ( ! $scope.multiRoomAction.indexes.hasOwnProperty(i) ) {
 				    continue;
-				};
+				}
 
 				_ithRoom = $scope.rooms[ $scope.multiRoomAction.indexes[i] ];
 
@@ -779,7 +777,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				if ( !! _ithRoom ) {
 					_ithRoom['selected'] = false;
 				}
-			};
+			}
 
 			// F%$K that, cant update them all togther
 			$scope.multiRoomAction.rooms       = [];
@@ -812,11 +810,11 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			// no need to send anything
 			if ( ! $scope.multiRoomAction.rooms.length ) {
 				return;
-			};
+			}
 
 			_payload = {
-				'room_ids'     : [],
-		    	'hk_status_id' : $scope.multiRoomAction.hkStatusId
+				'room_ids': [],
+		    	'hk_status_id': $scope.multiRoomAction.hkStatusId
 			};
 
 			if ( (1 == $scope.multiRoomAction.rooms.length == $scope.uiTotalCount) &&  $scope.multiRoomAction.allChosen ) {
@@ -825,7 +823,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				_payload['room_ids'] = $scope.allRoomIDs;
 			} else {
 				_payload['room_ids'] = $scope.multiRoomAction.rooms;
-			};
+			}
 
 			_callback = function(data) {
 				$scope.$emit( 'hideLoader' );
@@ -838,10 +836,11 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				// we are looping the 'keyMirror' rather than the
 				// entire rooms array, nice!
 				var i, ithSelectedRoom;
+
 				for (i in $scope.multiRoomAction.indexes) {
 					if ( ! $scope.multiRoomAction.indexes.hasOwnProperty(i) ) {
 					    continue;
-					};
+					}
 
 					ithSelectedRoom = $scope.rooms[ $scope.multiRoomAction.indexes[i] ];
 
@@ -854,7 +853,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 					// 3. now call the status class update
 					RVHkRoomStatusSrv.setRoomStatusClass( ithSelectedRoom );
-				};
+				}
 
 				// need the delay, since close will also clear the values
 				// in '$scope.multiRoomAction', but we need the value atleast
@@ -871,10 +870,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		};
 
 
-
-
 		/* ***** ***** ***** ***** ***** */
-
 
 
 		function $_startPrinting() {
@@ -893,7 +889,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				$window.print();
 				if ( sntapp.cordovaLoaded ) {
 					cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-				};
+				}
 			}, 100);
 			/*
 			*	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
@@ -911,7 +907,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 				$_callRoomsApi();
 			}, 150);
-		};
+		}
 
 
 		function $_fetchRoomListCallback(data, alreadyFetched) {
@@ -919,11 +915,11 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				$_roomList = angular.copy( data );
 			} else {
 				$_roomList = {};
-			};
+			}
 
 			// clear old results and update total counts
 			$scope.rooms              = [];
-			$scope.summary			  = $_roomList.summary;//CICO-23419
+			$scope.summary			  = $_roomList.summary;// CICO-23419
 			$scope.netTotalCount = $_roomList.total_count;
 			$scope.uiTotalCount  = !!$_roomList && !!$_roomList.rooms ? $_roomList.rooms.length : 0;
 			$scope.allRoomIDs    = $_roomList.hasOwnProperty('all_room_ids') ? $_roomList['all_room_ids'] : [];
@@ -949,10 +945,10 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			if ( $rootScope.isStandAlone ) {
 				if ( !$scope.workTypes.length ) {
 					$scope.workTypes = fetchPayload.workTypes;
-				};
+				}
 				if ( !$scope.employees.length ) {
 					$scope.employees = employees;
-				};
+				}
 
 				var _setUpWorkTypeEmployees = function() {
 					$_defaultWorkType = $scope.currentFilters.filterByWorkType;
@@ -973,22 +969,20 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 							_setUpWorkTypeEmployees();
 						});
 					});
-				};
+				}
 			}
 			// connected PMS, just process the roomList
 			else {
 				$timeout(function() {
 					$_postProcessRooms();
 				}, 10);
-			};
+			}
 
 			$_updateFilters('page', $_page);
-		};
-
+		}
 
 
 		/* ***** ***** ***** ***** ***** */
-
 
 
 		function $_checkHasActiveWorkSheet(alreadyFetched) {
@@ -1001,6 +995,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				},
 				_callback = function(data) {
 					var employee = data.employees.length && data.employees[0] || null;
+
 					$scope.hasActiveWorkSheet = employee && employee.room_tasks && employee.room_tasks.length || false;
 
 					$scope.topFilter.byWorkType = $_defaultWorkType;
@@ -1027,10 +1022,9 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				};
 
 			$scope.invokeApi(RVHkRoomStatusSrv.fetchWorkAssignments, _params, _callback, _failed);
-		};
+		}
 
 		/* ***** ***** ***** ***** ***** */
-
 
 
 		function $_postProcessRooms() {
@@ -1042,23 +1036,21 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 			for ( i = 0, j = rooms.length; i < j; i++ ) {
 				$scope.rooms.push( rooms[i] );
-			};
+			}
 
 			$_roomList = {};
 			$_refreshScroll( localStorage.getItem('roomListScrollTopPos') );
 			$scope.$emit( 'hideLoader' );
-		};
-
+		}
 
 
 		/* ***** ***** ***** ***** ***** */
 
 
-
 		function $_refreshScroll(toPos) {
 			if ( $_roomsEl.scrollTop === toPos ) {
 				return;
-			};
+			}
 
 			if ( isNaN(parseInt(toPos)) ) {
 				var toPos = 0;
@@ -1070,12 +1062,10 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			$timeout(function() {
 				$_roomsEl.scrollTop = toPos;
 			}, 10);
-		};
-
+		}
 
 
 		/* ***** ***** ***** ***** ***** */
-
 
 
 		function $_callRoomsApi() {
@@ -1086,22 +1076,20 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			$scope.resetMultiRoomAction();
 
 			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {}, $_fetchRoomListCallback);
-		};
+		}
 
 		function $_updateFilters (key, value) {
 			$scope.currentFilters[key]       = value;
 			RVHkRoomStatusSrv.currentFilters = angular.copy( $scope.currentFilters );
-		};
+		}
 
 		function $_resetPageCounts () {
 			$_page = $_defaultPage;
 			$_updateFilters('page', $_defaultPage);
-		};
-
+		}
 
 
 		/* ***** ***** ***** ***** ***** */
-
 
 
 		var $_pullUpDownModule = function() {
@@ -1141,7 +1129,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 					$refreshArrow.className = '';
 					$refreshTxt.innerHTML = ngScope.disablePrevBtn ? PULL_REFRESH : PULL_LOAD_PREV;
 					return;
-				};
+				}
 
 				if ( diff > trigger - 40 ) {
 					$refreshArrow.className = 'rotate';
@@ -1161,7 +1149,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 					$loadArrow.className = '';
 					$loadTxt.innerHTML = PULL_LOAD_NEXT;
 					return;
-				};
+				}
 
 				if ( abs(diff) > trigger - 40 ) {
 					$loadArrow.className = 'rotate';
@@ -1182,7 +1170,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 					$_callRoomsApi();
 				} else {
 					ngScope.loadPrevPage();
-				};
+				}
 			};
 
 			var callPullUpAction = function() {
@@ -1236,7 +1224,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				// if not touching or we are not on top or bottom of scroll area
 				if (!touching && this.scrollTop !== scrollBarOnTop && this.scrollTop !== scrollBarOnBot) {
 					return;
-				};
+				}
 
 				nowY = touch.y || touch.pageY;
 
@@ -1260,12 +1248,12 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				} else {
 					pulling = false;
 					return;
-				};
+				}
 
 				// sometimes the user may manually scrol to it original state
 				if ( nowY - startY === 0 ) {
 					resetIndicators();
-				};
+				}
 			};
 
 			// set of excutions to be executed when
@@ -1280,7 +1268,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				var commonEx = function() {
 					if ( pulling ) {
 						e.preventDefault();
-					};
+					}
 
 					diff     = (nowY - startY);
 					touching = false;
@@ -1321,7 +1309,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 					if ( abs(diff) > trigger ) {
 						callPulldownAction();
-					};
+					}
 
 					notifyPullDownAction();
 					resetIndicators();
@@ -1330,14 +1318,14 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 					if ( abs(diff) > trigger ) {
 						callPullUpAction();
-					};
+					}
 
 					notifyPullUpAction();
 					resetIndicators();
 				} else {
 					resetIndicators();
 					return;
-				};
+				}
 			};
 
 			// set of excutions to be executed when
@@ -1358,16 +1346,16 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				if ( this.scrollTop === scrollBarOnTop ) {
 					$refresh.style.WebkitTransition = '';
 					$refresh.classList.add('show');
-					/***/
+					/** */
 					$load.style.WebkitTransition = '';
 					$load.classList.remove('show');
 				} else if ( this.scrollTop === scrollBarOnBot ) {
 					$load.style.WebkitTransition = '';
 					$load.classList.add('show');
-					/***/
+					/** */
 					$refresh.style.WebkitTransition = '';
 					$refresh.classList.remove('show');
-				};
+				}
 
 				// only bind 'touchmove' when required
 				$rooms.addEventListener('touchmove', touchMoveHandler, false);
@@ -1395,13 +1383,10 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		// DOM node will be reported missing
 		if ( $window.innerWidth < 599 ) {
 			$_pullUpDownModule();
-		};
-
-
+		}
 
 
 		/* ***** ***** ***** ***** ***** */
-
 
 
 		// stop browser bounce while swiping on rooms element
@@ -1422,14 +1407,16 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			angular.element( $_filterRoomsEl ).off('ontouchmove');
 		});
 
-		$scope.getWidthForSummary = function(){
+		$scope.getWidthForSummary = function() {
 			var summaryWidth = 0,
 				tasksLength = $scope.summary.work_types.length;
-			summaryWidth = parseInt(parseInt(tasksLength + 1)*160 + 40);
+
+			summaryWidth = parseInt(parseInt(tasksLength + 1) * 160 + 40);
 			return summaryWidth;
 		};
 
 		var scrollerOptionsForSummary = {scrollX: true, scrollY: false, click: true, preventDefault: true, mouseWheel: false};
+
     	$scope.setScroller ('tasks-summary-scroller', scrollerOptionsForSummary);
 
 	}

@@ -29,7 +29,7 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
         $scope.lightspeed.charge_code_name 	= '';
 	};
 
-	var clearPaymentChargeCodeValues = function(){
+	var clearPaymentChargeCodeValues = function() {
 		$scope.lightspeed.payment_charge_code_id 	= '';
 		$scope.lightspeed.payment_charge_code_name 	= '';
 	};
@@ -40,7 +40,7 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
 	 */
 	$scope.saveLightSpeedPOSSetup = function() {
 		var params 	= {
-			lightspeed: _.omit( dclone($scope.lightspeed), 'charge_code_name' , 'payment_charge_code_name')
+			lightspeed: _.omit( dclone($scope.lightspeed), 'charge_code_name', 'payment_charge_code_name')
 		};
 
 		if (!$scope.lightspeed.enabled) {
@@ -64,9 +64,10 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
 		}
 
         var options = {
-            params 			: params,
-            successCallBack : successCallBackOfLightSpeedPOSSetup
+            params: params,
+            successCallBack: successCallBackOfLightSpeedPOSSetup
         };
+
         $scope.callAPI(adLightSpeedPOSSetupSrv.saveLightSpeedPOSConfiguration, options);
 	};
 
@@ -74,7 +75,7 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
 	 * Initialization stuffs
 	 * @return {undefiend}
 	 */
-	var initializeMe = function() {
+	var initializeMe = (function() {
 		$scope.lightspeed = lightSpeedSetupValues;
-	}();
-}])
+	}());
+}]);

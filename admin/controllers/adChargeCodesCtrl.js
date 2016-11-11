@@ -16,26 +16,26 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		$scope.prefetchData = {};
 
 
-
-		$scope.fetchTableData = function($defer, params){
+		$scope.fetchTableData = function($defer, params) {
 			var getParams = $scope.calculateGetParams(params);
-			var fetchSuccessOfItemList = function(data){
+			var fetchSuccessOfItemList = function(data) {
 				$scope.$emit('hideLoader');
-				//No expanded rate view
+				// No expanded rate view
 				$scope.currentClickedElement = -1;
 				$scope.totalCount = data.total_count;
-				$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
+				$scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
 				$scope.data = data.charge_codes;
 				$scope.is_connected_to_pms = data.is_connected_to_pms;
 				$scope.currentPage = params.page();
 	        	params.total(data.total_count);
 	            $defer.resolve($scope.data);
 			};
+
 			$scope.invokeApi(ADChargeCodesSrv.fetch, getParams, fetchSuccessOfItemList);
 		};
 
 
-		$scope.loadTable = function(){
+		$scope.loadTable = function() {
 			$scope.tableParams = new ngTableParams({
 			        page: 1,  // show first page
 			        count: $scope.displyCount, // count per page
@@ -151,6 +151,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 						"value": item1.value,
 						"name": item1.name
 					};
+
 					obj.is_checked = 'false';
 					angular.forEach($scope.prefetchData.linked_charge_codes, function(item2, index2) {
 						if (item2.charge_code_id === item1.value) {
@@ -160,6 +161,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 					$scope.prefetchData.link_with.push(obj);
 				});
 			};
+
 			$scope.invokeApi(ADChargeCodesSrv.fetchEditData, data, editSuccessCallback);
 		};
 		/*
@@ -194,6 +196,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			var data = {
 				'value': value
 			};
+
 			$scope.invokeApi(ADChargeCodesSrv.deleteItem, data, deleteSuccessCallback);
 		};
 		/*
@@ -204,8 +207,9 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				$scope.$emit('hideLoader');
 				if ($scope.isEdit) {
                                     var p = parseInt($scope.currentClickedElement);
-                                    if ($scope.orderedData){
-                                    if ($scope.orderedData[p]){
+
+                                    if ($scope.orderedData) {
+                                    if ($scope.orderedData[p]) {
 					$scope.orderedData[parseInt($scope.currentClickedElement)].charge_code = data.charge_code;
 					$scope.orderedData[parseInt($scope.currentClickedElement)].description = data.description;
 					$scope.orderedData[parseInt($scope.currentClickedElement)].charge_group = data.charge_group;
@@ -230,6 +234,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			};
 			// To create Charge code Link with list frm scope.
 			var selected_link_with = [];
+
 			angular.forEach($scope.prefetchData.link_with, function(item, index) {
 				if (item.is_checked === 'true') {
 					selected_link_with.push(item.value);
@@ -244,14 +249,14 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 					item.calculation_rules = item.calculation_rule_list[parseInt(item.selected_calculation_rule)].charge_code_id_list;
 				}
 			});
-			if($scope.prefetchData.selected_fees_code ===""){
+			if ($scope.prefetchData.selected_fees_code === "") {
 				$scope.prefetchData.selected_fees_code = null;
-			};
+			}
 
 			var unwantedKeys = ["charge_code_types", "payment_types", "charge_groups", "link_with", "amount_types", "tax_codes", "post_types", "symbolList"];
 			var postData = dclone($scope.prefetchData, unwantedKeys);
 
-			//Include Charge code Link with List when selected_charge_code_type is not "TAX".
+			// Include Charge code Link with List when selected_charge_code_type is not "TAX".
 			if ($scope.prefetchData.selected_charge_code_type !== "1") {
 				postData.selected_link_with = selected_link_with;
 			}
@@ -264,7 +269,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				}
 			});
 
-                        if ($scope.isStandAlone && !$scope.prefetchData.selected_charge_group){
+                        if ($scope.isStandAlone && !$scope.prefetchData.selected_charge_group) {
                             $scope.errorMessage = 'Group Charge Code Required';
                             $scope.validForm = false;
                             return;
@@ -298,6 +303,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				}, 1000);
 				$scope.fetchChargeCodes();
 			};
+
 			$scope.invokeApi(ADChargeCodesSrv.importData, {}, importSuccessCallback);
 		};
 		/*
@@ -333,8 +339,10 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				 */
 				var name = "ChargeCodeplusTax 1";
 				var idList = [$scope.prefetchData.linked_charge_codes[0].charge_code_id];
+
 				for (var i = 2; i <= taxCount; i++) {
 					var name = name + " & " + i;
+
 					idList.push($scope.prefetchData.linked_charge_codes[i - 1].charge_code_id);
 				}
 				var obj = {
@@ -342,6 +350,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 					"name": name,
 					"charge_code_id_list": idList
 				};
+
 				calculation_rule_list.push(obj);
 			}
 
@@ -373,6 +382,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 * To handle click on tax list to show inline edit screen.
 		 */
 		var tempEditData = [];
+
 		$scope.editSelectedTax = function(index) {
 			$scope.isEditTax = true;
 			$scope.isAddTax = false;
@@ -417,7 +427,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 * To set the selected payment type based on the id and cc_type from the dropdown.
 		 */
 		$scope.changeSelectedPaymentType = function() {
-			if($scope.selected_payment_type.id !== ""){
+			if ($scope.selected_payment_type.id !== "") {
 				$scope.prefetchData.selected_payment_type = $scope.prefetchData.payment_types[$scope.selected_payment_type.id].value;
 				$scope.prefetchData.is_cc_type = $scope.prefetchData.payment_types[$scope.selected_payment_type.id].is_cc_type;
 			}
@@ -432,17 +442,17 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			 * 3. Make a SAVE requset IFF REQUIRED [ Might need to check how to work on the a dependent tax deletion! ]
 			 */
 
-			//1.
+			// 1.
 			$scope.prefetchData.linked_charge_codes.splice(index, 1);
 
-			//2.
+			// 2.
 			// https://stayntouch.atlassian.net/browse/CICO-9576?focusedCommentId=52342&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52342
 			_.each($scope.prefetchData.linked_charge_codes, function(tax) {
 				tax.selected_calculation_rule = 0;
 			});
 
-			//3.
-			//NA as there is a save changes button
+			// 3.
+			// NA as there is a save changes button
 
 		};
 

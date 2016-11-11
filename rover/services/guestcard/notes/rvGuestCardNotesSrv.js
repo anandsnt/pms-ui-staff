@@ -37,7 +37,7 @@ angular.module('sntRover').service('rvGuestCardNotesSrv', ['$q', 'rvBaseWebSrvV2
     rvBaseWebSrvV2.deleteJSON(url)
     .then(function(data) {
   		deferred.resolve(data);
-	},function(errorMessage) {
+	}, function(errorMessage) {
   		deferred.reject(errorMessage);
 	});
     return deferred.promise;
@@ -45,7 +45,7 @@ angular.module('sntRover').service('rvGuestCardNotesSrv', ['$q', 'rvBaseWebSrvV2
 
   this.createNoteFromGuestCard = function(params) {
     var data 		= {'text': params.text},
-	    //url 		= 'ui/show?json_input=cards/new_note.json&format=json',
+	    // url 		= 'ui/show?json_input=cards/new_note.json&format=json',
 	    url 		= '/api/guest_details/' + params.guestID + '/notes',
 	    deferred 	= $q.defer();
 

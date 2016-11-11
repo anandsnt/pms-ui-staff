@@ -1,35 +1,36 @@
-admin.service('adExternalInterfaceCommonSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'ADChannelMgrSrv', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2, ADChannelMgrSrv){
+admin.service('adExternalInterfaceCommonSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'ADChannelMgrSrv', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2, ADChannelMgrSrv) {
 
 	var service = this;
 
-	//-------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
+	// -------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
 
         service.cache = {
             config: {
-                lifeSpan: 300 //in seconds
+                lifeSpan: 300 // in seconds
             },
             responses: {
                 paymentMethods: null,
                 origins: null
             }
-        }
+        };
 
-       //-------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
+       // -------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
 
-	this.fetchSetup = function(params){
+	this.fetchSetup = function(params) {
 		var deferred = $q.defer();
-		var url = 'admin/get_ota_connection_config.json?interface='+params.interface_id;
+		var url = 'admin/get_ota_connection_config.json?interface=' + params.interface_id;
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data){
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
 	};
-	this.fetchOrigins = function(){
+	this.fetchOrigins = function() {
 		var deferred = $q.defer();
 		var url = '/api/booking_origins.json';
+
 		if (service.cache.responses['origins'] === null || Date.now() > service.cache.responses['origins']['expiryDate']) {
 			ADBaseWebSrvV2.getJSON(url).then(function(data) {
 				service.cache.responses['origins'] = {
@@ -45,12 +46,13 @@ admin.service('adExternalInterfaceCommonSrv',['$http', '$q', 'ADBaseWebSrv', 'AD
 		}
 		return deferred.promise;
 	};
-	this.fetchFailedMessages = function(){
+	this.fetchFailedMessages = function() {
 		var deferred = $q.defer();
 		var url = '/api/ota_messages.json';
+
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data){
+		}, function(data) {
 		    deferred.reject(data);
 		});	
 		return deferred.promise;
@@ -86,6 +88,7 @@ admin.service('adExternalInterfaceCommonSrv',['$http', '$q', 'ADBaseWebSrv', 'AD
 	this.fetchPaymethods = function() {
 		var deferred = $q.defer();
 		var url = '/admin/hotel_payment_types.json';
+
 		if (service.cache.responses['paymentMethods'] === null || Date.now() > service.cache.responses['paymentMethods']['expiryDate']) {
 			ADBaseWebSrv.getJSON(url).then(function(data) {
 				service.cache.responses['paymentMethods'] = {
@@ -102,23 +105,25 @@ admin.service('adExternalInterfaceCommonSrv',['$http', '$q', 'ADBaseWebSrv', 'AD
 		return deferred.promise;
 	};
 
-	this.testSetup = function(data){
+	this.testSetup = function(data) {
 		var deferred = $q.defer();
-		var url = 'admin/test_ota_connection/'+data.interface;
+		var url = 'admin/test_ota_connection/' + data.interface;
+
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data){
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
 	};
 
-	this.toggleActive = function(data){
+	this.toggleActive = function(data) {
 		var deferred = $q.defer();
-		var url = 'admin/ota_update_active/'+data.interface;
+		var url = 'admin/ota_update_active/' + data.interface;
+
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data){
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;

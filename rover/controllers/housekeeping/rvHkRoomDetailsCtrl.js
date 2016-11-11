@@ -38,11 +38,11 @@ angular.module('sntRover').controller('RVHkRoomDetailsCtrl', [
 
 		// stop bounce effect only on the room-details
 		var roomDetailsEl = document.getElementById('#room-details');
+
 		angular.element(roomDetailsEl)
 			.bind('ontouchmove', function(e) {
 				e.stopPropagation();
 			});
-
 
 
 		$scope.roomDetails = roomDetailsData;
@@ -52,27 +52,27 @@ angular.module('sntRover').controller('RVHkRoomDetailsCtrl', [
 			// if room is out
 			if ($scope.roomDetails.room_reservation_hk_status !== 1) {
 				return 'out';
-			};
+			}
 
 			// if the room is clean
 			if ($scope.roomDetails.current_hk_status === 'CLEAN') {
 				return 'clean';
-			};
+			}
 
 			// if the room is dirty
 			if ($scope.roomDetails.current_hk_status === 'DIRTY') {
 				return 'dirty';
-			};
+			}
 
 			// if the room is pickup
 			if ($scope.roomDetails.current_hk_status === 'PICKUP') {
 				return 'pickup';
-			};
+			}
 
 			// if the room is inspected
 			if ($scope.roomDetails.current_hk_status === 'INSPECTED') {
 				return 'inspected';
-			};
+			}
 		};
 
 
@@ -96,12 +96,13 @@ angular.module('sntRover').controller('RVHkRoomDetailsCtrl', [
 
 		var getGuestStatusMapped = function(reservationStatus, isLateCheckout) {
 			var viewStatus = "";
-			//If the guest is opted for late checkout
+			// If the guest is opted for late checkout
+
 			if (isLateCheckout === "true") {
 				return "late-check-out";
 			}
 
-			//Determine the guest status class based on the reservation status
+			// Determine the guest status class based on the reservation status
 			if ("RESERVED" === reservationStatus) {
 				viewStatus = "arrival";
 			} else if ("CHECKING_IN" === reservationStatus) {
@@ -126,15 +127,15 @@ angular.module('sntRover').controller('RVHkRoomDetailsCtrl', [
 		$scope.tabSwitch = function(tab) {
 			if (!!tab) {
 				$scope.openTab = tab;
-			};
+			}
 		};
 	   /*
 		*Not used tabswitch for log tab. bcoz pagination not appears
 		*/
-		$scope.showLogTab  = function(){
+		$scope.showLogTab  = function() {
 			$scope.openTab = "Log";
 			$scope.$broadcast('OPEN_LOG');
-			$state.go('rover.housekeeping.roomDetails.log',{
+			$state.go('rover.housekeeping.roomDetails.log', {
                 id: $scope.roomDetails.id
             });
 		};
@@ -151,6 +152,7 @@ angular.module('sntRover').controller('RVHkRoomDetailsCtrl', [
 				var status = _.find($scope.roomDetails.hk_status_list, function(status) {
 					return status.value === value;
 				});
+
 				RVHkRoomStatusSrv.setWorkStatus($scope.roomDetails.id, status);
 			}
 
