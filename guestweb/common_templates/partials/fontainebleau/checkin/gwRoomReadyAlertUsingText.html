@@ -6,13 +6,31 @@
 </div>
 <!-- main section starts here -->
 <div class="container content-container">
-    <!-- email entry -->
-    <div class="row" ng-hide="isLoading || netWorkError || mobileUpdated">
+    <!-- alert -->
+    <div class="row" ng-show="mode ==='TEXT_ALERT'">
         <div class="col-md-3"></div>
         <div class="col-md-6 top-spacing sm-no-top-spacing">
             <div class="top-spacing section-container">
                 <p class="main-text"> Room Ready Alert?</p>
                 <p class="sub-main-text"> Would you like to receive a text message when your room is ready?.
+                </p>
+            </div>
+            <!--  submit button-->
+            <a class="btn btn-template" ng-click="roomReadyAction()">YES</a>
+            <a class="btn btn-template  margin-top-10 grey-btn" ng-click="skip()"> NO THANKS</a>
+        </div>
+        <div class="col-md-3">
+        </div>
+    </div>
+    <!-- existing mobile -->
+    <div class="row"  ng-show="mode ==='EXISTING_NUMBER'">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 top-spacing sm-no-top-spacing">
+            <div class="top-spacing section-container">
+                <p class="main-text"> Mobile Phone Number</p>
+                <p class="sub-main-text"> Your current mobile phone number is {{userMobile}}.
+                </p>
+                <p class="sub-main-text"> Do you want to change it?
                 </p>
             </div>
             <!--  submit button-->
