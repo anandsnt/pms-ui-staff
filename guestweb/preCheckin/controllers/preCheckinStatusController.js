@@ -15,7 +15,6 @@
 		}
 		// collect number of keys
 		else if ($rootScope.promptForKeyCount && !$rootScope.KeyCountAttemptedToSave) {
-			console.info("collect no of keys");
 			$state.go('selectNoOfkeys');
 		}
 		// collect credit card

@@ -55,10 +55,10 @@
 
       if (/^[0-9]{1,15}$/.test(val)) {
         return true;
-      } else {
-        $modal.open(invalidMobileAlert);
-        return false;
       }
+      
+      $modal.open(invalidMobileAlert);
+      return false;
     }
 
     $scope.mobileSubmitted = function() {
@@ -66,7 +66,7 @@
       if (ValidateNo()) {
         guestDetailsService.postGuestDetails({
           "mobile": $scope.dial + "-" + $scope.guestDetails.mobile
-        }).then(function(response) {
+        }).then(function() {
           $scope.isLoading = false;
           $scope.mobileUpdated = true;
           $rootScope.userMobile = $scope.guestDetails.mobile;

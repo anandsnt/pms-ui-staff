@@ -13,7 +13,8 @@
         "ReactRedux": false,
         "ReduxThunk": false,
         "BaseCtrl": true,
-        "sntRover": true
+        "sntRover": true,
+        "sntGuestWeb": true
     },
     "installedESLint": true,
     "parserOptions": {
