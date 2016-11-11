@@ -211,7 +211,7 @@
 </div>
 
 <multi-option-selection ng-show="uiChosenReport.hasUserFilter && uiChosenReport.empList.data.length"
-    label="Employees"
+    label="{{ uiChosenReport.filterTitle }}"
     on-update="refreshFilterScroll"
     data="uiChosenReport.empList.data"
     options="uiChosenReport.empList.options"></multi-option-selection>
