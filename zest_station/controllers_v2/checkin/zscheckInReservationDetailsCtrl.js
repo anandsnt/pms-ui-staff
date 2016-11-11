@@ -446,7 +446,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
         var roomIsAssigned = function() {
             console.log('::reservation current room :: [ ', $scope.selectedReservation.room, ' ]');
-            if ($scope.selectedReservation.room) {
+            if ($scope.selectedReservation.room && (parseInt($scope.selectedReservation.room) === 0 || parseInt($scope.selectedReservation.room) > 0)) {
                 return true;
             }
             return false;
