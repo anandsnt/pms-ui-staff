@@ -218,6 +218,27 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
     controller: 'ADMappingCtrl',
     url: '/mapping/:hotelId'
   });
+
+    $stateProvider.state('admin.external-mappings', {
+        templateUrl: '/assets/partials/interfaces/ExternalMappings/adListExternalMappings.html',
+        controller: 'ADExternalMappingsListCtrl',
+        url: '/mappings/show/:hotel_id/:interface_id/:interface_name',
+        resolve: {
+            mappings: ['ADInterfaceMappingSrv', '$stateParams',
+                function(ADInterfaceMappingSrv, $stateParams) {
+                    return ADInterfaceMappingSrv.fetchInterfaceMappingsList({
+                        hotel_id: $stateParams.hotel_id,
+                        interface_type_id: $stateParams.interface_id
+                    });
+                }]
+        }
+    });
+
+    $stateProvider.state('admin.add-external-mapping', {
+        templateUrl: '/assets/partials/interfaces/ExternalMappings/adNewExternalMappings.html',
+        url: '/mappings/add/:mapping_type/:hotel_id/:interface_id/:interface_name'
+    });
+
   $stateProvider.state('admin.ffp', {
     templateUrl: '/assets/partials/frequentFlyerProgram/adFFPList.html',
     controller: 'ADFrequentFlyerProgramCtrl',
