@@ -16,7 +16,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         $scope.newPost = "";
         $scope.middle_page1 = 2, $scope.middle_page2 = 3, $scope.middle_page3 = 4;
         $scope.$emit("updateRoverLeftMenu", "sociallobby");
-        var expandedPostHeight = "";
+        
         var deleteIndex = "";
 
         var POST_LIST_SCROLL = 'post-list-scroll';
