@@ -67,7 +67,8 @@ angular.module('sntRover')
                 $scope.diaryData.datesGridData = [];
                 $scope.diaryData.datesGridData = data;
                 $scope.$broadcast('FETCH_COMPLETED_DATE_LIST_DATA');
-            },postData = {
+            },
+            postData = {
                 "start_date": $scope.diaryData.fromDate,
                 "no_of_days": $scope.diaryData.numberOfDays
             };
@@ -83,8 +84,9 @@ angular.module('sntRover')
                 $scope.diaryData.reservationsList = data.reservationList;
                 $scope.diaryData.paginationData.totalCount = data.roomList.total_count;
                 updateDiaryView();
-            },postData = {
-                    ...getPaginationParams(),
+            },
+            postData = {
+                ...getPaginationParams(),
                 "start_date": $scope.diaryData.fromDate,
                 "no_of_days": $scope.diaryData.numberOfDays
             };
@@ -130,13 +132,12 @@ angular.module('sntRover')
 
         // angular method to update diary view via react dispatch method.
         var updateDiaryView = function(){
-            var initialDay = $scope.diaryData.fromDate.getFullYear() + '-' + ($scope.diaryData.fromDate.getMonth()+1) + '-0' + $scope.diaryData.fromDate.getDate();
             var dispatchData = {
                 type                : 'DIARY_VIEW_CHANGED',
                 numberOfDays        : $scope.diaryData.numberOfDays,
                 reservationsList    : $scope.diaryData.reservationsList.rooms,
                 roomsList           : $scope.diaryData.diaryRoomsList,
-                initialDayOfDateGrid: initialDay,
+                initialDayOfDateGrid: $scope.diaryData.fromDate,
                 currentBusinessDate : $rootScope.businessDate,
                 callbackFromAngular : getTheCallbacksFromAngularToReact(),
                 paginationData      : getPaginationParams()
