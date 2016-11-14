@@ -9,7 +9,7 @@
         "angular":true,
         "BaseCtrl":true,
         "_":true,
-        "admin":true
+        "isEmptyObject":true
     },
     "installedESLint":true,
     "parserOptions":{
