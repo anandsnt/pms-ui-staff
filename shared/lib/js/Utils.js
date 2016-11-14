@@ -315,7 +315,8 @@ var reservationStatusClassesDiary = {
     "CHECKEDOUT" : "departed",
     "NOSHOW" : "no-show",
     "PRE_CHECKIN" : "pre-check-in",
-    "CHECKING_OUT" : "check-out"
+    "CHECKING_OUT" : "check-out",
+    "CHECKING_IN": "check-in"
     };
 function getReservationStatusClass(status){
     return reservationStatusClassesDiary[status];
@@ -508,6 +509,18 @@ function getTextWidth(text){
         tester.remove();
         return w;
 }
+/*
+ * Function to get the number of days between two days
+ * firstDate{date object} will be the first data
+ * Second date{date object} will be the second date
+ */
+var getNumberOfDaysBetweenTwoDates = function(firstDate, secondDate){
+    var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+    //Get the number of days between initial day of diary grid and arrival date
+    var noOfDaysBtwFirstDateAndSecondDate = Math.abs((secondDate.getTime() - firstDate.getTime()) / (oneDay));
+    return noOfDaysBtwFirstDateAndSecondDate
+
+};
 
 //function that converts a null value to a desired string.
 //if no replace value is passed, it returns an empty string
