@@ -1,4 +1,4 @@
-admin.service('ADEmailSettingsSrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
+admin.service('ADCheckinEmailRoomFilterSrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 
 	var mapKeyNames = function(data) {
 		data.items = data.rooms.map(item => ({
@@ -9,14 +9,12 @@ admin.service('ADEmailSettingsSrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWe
 		delete data.rooms;
 		return data;
 	};
-	/**
-	 * To fetch the saved account receivable status
-	 */
+
 	this.fetchSelectedList = function(params) {
+		var deferred = $q.defer(),
+			url = '/admin/hotel_rooms.json';
 
-		var deferred = $q.defer();
-		var url = '/admin/hotel_rooms.json';
-
+		params.is_excluded_from_checkin_notification = true;
 		ADBaseWebSrv.getJSON(url, params).then(function(data) {
 			data = mapKeyNames(data);
 			deferred.resolve(data);
@@ -28,10 +26,10 @@ admin.service('ADEmailSettingsSrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWe
 
 
 	this.fetchUnselectedList = function(params) {
-		var deferred = $q.defer();
+		var deferred = $q.defer(),
+			url = '/admin/hotel_rooms.json';
 
-		var url = '/admin/hotel_rooms.json';
-
+		params.is_excluded_from_checkin_notification = false;
 		ADBaseWebSrv.getJSON(url, params).then(function(data) {
 			data = mapKeyNames(data);
 			deferred.resolve(data);
