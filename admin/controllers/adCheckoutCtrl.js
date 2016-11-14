@@ -43,8 +43,6 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
         $scope.openRoomExclusionSettings = bool;
     };
 
-
-
     // to add to excluded room types
     $scope.clickExcludeRoomType = function() {
       $scope.excludedRoomTypes = [];
@@ -69,7 +67,6 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
           item.ticked = false;
         }
       });
-
     };
 
     /*
@@ -88,7 +85,6 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
         } else {
             return [];
         }
-
     };
 
   /*
@@ -203,11 +199,10 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
                 'excluded_room_types': excluded_room_types,
                 'enable_offline_checkout': $scope.checkoutData.enable_offline_checkout,
                 'checkout_static_uri': $scope.checkoutData.checkout_static_uri,
-                'removed_excluded_from_checkout_notification' : $scope.checkoutEmailRoomExclusionConfig.selectedExcludedRoomIds,
-                'selected_excluded_from_checkout_notification' : $scope.checkoutEmailRoomExclusionConfig.unSelectedExcludedRoomIds
+                'removed_excluded_from_checkout_notification': $scope.checkoutEmailRoomExclusionConfig.selectedExcludedRoomIds,
+                'selected_excluded_from_checkout_notification': $scope.checkoutEmailRoomExclusionConfig.unSelectedExcludedRoomIds
 			};
 
-        
     	var saveCheckoutDetailsSuccessCallback = function(data) {
     		$scope.$emit('hideLoader');
             $scope.goBackToPreviousState();
@@ -223,7 +218,6 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
                     if ($scope.checkoutData.zest_hourly_checkout_alert_time_hour === 4 ) {
                          $scope.checkoutData.zest_hourly_checkout_alert_time_minute = "00";
                     }
-
                 }
             );
             $scope.$watch(function() {
@@ -232,10 +226,8 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
                     if ($scope.checkoutData.weekends_zest_hourly_checkout_alert_time_hour === 4 ) {
                          $scope.checkoutData.weekends_zest_hourly_checkout_alert_time_minute = "00";
                     }
-
                 }
             );
     };
     
-
 }]);

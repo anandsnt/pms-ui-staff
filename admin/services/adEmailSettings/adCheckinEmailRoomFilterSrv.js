@@ -14,7 +14,6 @@ admin.service('ADCheckinEmailRoomFilterSrv', ['$q', 'ADBaseWebSrv', function($q,
 	 * To fetch the saved account receivable status
 	 */
 	this.fetchSelectedList = function(params) {
-
 		var deferred = $q.defer(),
 			url = '/admin/hotel_rooms.json';
 
