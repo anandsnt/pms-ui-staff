@@ -3,20 +3,20 @@
 */
 
 (function() {
-	var mobileOptionsController = function($scope,$state,$rootScope) {
+	var mobileOptionsController = function($scope, $state, $rootScope) {
 	
-	 $scope.skip =  function(){
+	 $scope.skip =  function() {
       $rootScope.userMobileSkipped = true;
       $state.go('preCheckinStatus');
     };
 
-    $scope.changeNumber =  function(){
+    $scope.changeNumber =  function() {
     	$state.go('mobileNumberAddition');
     };
 };
 
 var dependencies = [
-'$scope','$state','$rootScope',
+'$scope', '$state', '$rootScope',
 mobileOptionsController
 ];
 

@@ -1,29 +1,29 @@
-sntZestStation.service('zsLoginSrv',['$http', '$q', function($http, $q){
-	this.login = function(data, successCallback, failureCallBack){
+sntZestStation.service('zsLoginSrv', ['$http', '$q', function($http, $q) {
+	this.login = function(data, successCallback, failureCallBack) {
 		var deferred = $q.defer();
 
-		//Sample params {params:{fname: "fname", lname: "lname"}}
+		// Sample params {params:{fname: "fname", lname: "lname"}}
 		$http.post("/login/submit", data).success(function(response, status) {
-			if(response.status === "success"){
+			if (response.status === "success") {
 		    	successCallback(response.data);
-			}else{
+			} else {
 				// please note the type of error expecting is array
 		    	failureCallBack(response.errors);
 			}
 		}).error(function(response, status) {
 			// please note the type of error expecting is array
 			// so form error as array if you modifying it
-			if(status === 406){ // 406- Network error
+			if (status === 406) { // 406- Network error
 				deferred.reject(response.errors);
 			}
-			else if(status === 500){ // 500- Internal Server Error
+			else if (status === 500) { // 500- Internal Server Error
 
 				deferred.reject(['Internal server error occured']);
 			}
-			else if(status === 401){ // 401- Unauthorized
+			else if (status === 401) { // 401- Unauthorized
 				// so lets redirect to login page
 				$window.location.href = '/logout' ;
-			}else{
+			} else {
 				deferred.reject(response.errors);
 			}
 

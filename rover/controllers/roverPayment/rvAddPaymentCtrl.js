@@ -16,8 +16,8 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
                 $scope.hideCancelCard = false;
                 $scope.depositWithGiftCard = false;
                 setTimeout(function() {
-                    $scope.$broadcast('addNewCardClicked');//child element is the rvCardOptions.html
-                    $scope.$broadcast('hidePayCardToggles', {'isFromSwipe': true});//child element is the rvCardOptions.html
+                    $scope.$broadcast('addNewCardClicked');// child element is the rvCardOptions.html
+                    $scope.$broadcast('hidePayCardToggles', {'isFromSwipe': true});// child element is the rvCardOptions.html
                 }, 100);
             };
 
@@ -34,9 +34,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
              */
             $scope.getAddActionType = function() {
                 if ($scope.isFromGuestCard) {
-                    return 'ADD_PAYMENT_GUEST_CARD'
+                    return 'ADD_PAYMENT_GUEST_CARD';
                 } else if ($scope.paymentData.isFromBillCard || $scope.passData.fromView === "billcard") {
-                    return 'ADD_PAYMENT_BILL'
+                    return 'ADD_PAYMENT_BILL';
                 }
                 return 'ADD_PAYMENT_STAY_CARD';
             };

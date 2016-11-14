@@ -357,7 +357,9 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       'survey_question_is_mandatory': $scope.checkinData.survey_question_is_mandatory,
       'survey_question_image' : angular.copy($scope.checkinData.survey_question_image),
       'zestweb_collect_outstanding_balance' : $scope.checkinData.zestweb_collect_outstanding_balance,
-      'zest_web_use_new_sent_to_que_action' : $scope.checkinData.zest_web_use_new_sent_to_que_action
+      'zest_web_use_new_sent_to_que_action' : $scope.checkinData.zest_web_use_new_sent_to_que_action,
+      'zest_web_checkin_second_authentication_action': $scope.checkinData.zest_web_checkin_second_authentication_action,
+      'zest_web_always_ask_for_mobile_number': $scope.checkinData.zest_web_always_ask_for_mobile_number
     };
 
     if($scope.surveyQuestionImage === $scope.checkinData.survey_question_image){

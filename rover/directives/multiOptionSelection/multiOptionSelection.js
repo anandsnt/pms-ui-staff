@@ -43,6 +43,7 @@ sntRover
 
 				$scope.toggleSelectAll = function() {
 					var options = $scope.options || {};
+
 					options.selectAll = ! options.selectAll;
 
 					updateData( 'selected', options.selectAll );
@@ -56,17 +57,17 @@ sntRover
 
 					// if in this set any one item can be choosen at a time
 					var isSingleSelect = function() {
-						return item.selected && !! options.singleSelect
+						return item.selected && !! options.singleSelect;
 					};
 
 					// if in this set if a particular item is selected, that should only be selected
 					var isSelectiveSingleSelect = function() {
-						return item.selected && (options.selectiveSingleSelectKey === item.id)
+						return item.selected && (options.selectiveSingleSelectKey === item.id);
 					};
 
 					var isRadioOption = function() {
-						return item.selected && item.isRadioOption
-					}
+						return item.selected && item.isRadioOption;
+					};
 
 					var checkUnselectSelectiveSingleSelect = function() {
 						var thatItem;
@@ -75,12 +76,12 @@ sntRover
 							thatItem = _.find($scope.data, { id: options.selectiveSingleSelectKey });
 							thatItem.selected = false;
 						}
-					}
+					};
 
 					// unselect others
 					var unSelectOthers = function() {
 						_.each($scope.data, function(each) {
-							if(each.id !== item.id) {
+							if (each.id !== item.id) {
 								each.selected = false;
 							}
 						});
@@ -88,11 +89,11 @@ sntRover
 
 					var unSelectOtherRadio = function() {
 						_.each($scope.data, function(each) {
-							if( each.isRadioOption && each.id !== item.id) {
+							if ( each.isRadioOption && each.id !== item.id) {
 								each.selected = false;
 							}
 						});
-					}
+					};
 
 					if ( isSingleSelect() || isSelectiveSingleSelect() ) {
 						unSelectOthers();
@@ -117,7 +118,7 @@ sntRover
 					});
 
 					$timeout($scope.onUpdate, 150);
-				};
+				}
 
 				function updateSelectedValue() {
 					var options = $scope.options || {};
@@ -133,14 +134,14 @@ sntRover
 					} else if ( selectedItems.length === $scope.data.length ) {
 						options.selectAll = true;
 						$scope.value = options.allValue || 'All Selected';
-					};
+					}
 
 					if ( typeof $scope.affectsFilter == typeof {} ) {
 						$scope.affectsFilter.process( $scope.report[$scope.affectsFilter.name], selectedItems );
-					};
+					}
 
 					$timeout($scope.onUpdate, 150);
-				};
+				}
 
 				/**/
 
@@ -149,14 +150,15 @@ sntRover
 					$scope.value  = '';
 
 					var options = $scope.options || {};
+
 					if ( options.selectAll ) {
 						updateData( 'selected', true );
-					};
+					}
 
 					if ( options.hasSearch ) {
 						$scope.search = '';
 						updateData( 'filteredOut', false );
-					};
+					}
 
 					updateSelectedValue();
 				};
@@ -170,5 +172,5 @@ sntRover
 				$scope.$on('$destroy', unWatchData);
 				$scope.$on('$destroy', unWatchOptions);
 			}
-		}
-	}])
+		};
+	}]);

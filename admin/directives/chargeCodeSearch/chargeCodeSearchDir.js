@@ -1,25 +1,25 @@
 admin.directive("chargeCodeSearch", function() {
 
     return {
-        restrict : 'E',
-        replace : true,
-        scope : {
-            chargeCode : '=chargeCode',
-            chargeCodeName : '=chargeCodeName',
-            isBillingGroup : '@isBillingGroup'
+        restrict: 'E',
+        replace: true,
+        scope: {
+            chargeCode: '=chargeCode',
+            chargeCodeName: '=chargeCodeName',
+            isBillingGroup: '@isBillingGroup'
         },
-        templateUrl : '/assets/directives/chargeCodeSearch/chargeCodeSearch.html',
-        controller : function($scope, ADChargeCodesSrv) {
+        templateUrl: '/assets/directives/chargeCodeSearch/chargeCodeSearch.html',
+        controller: function($scope, ADChargeCodesSrv) {
             $scope.chargeCodeSearchResults = [];
             $scope.showChargeCodes = false;
 
-            $scope.refreshScroller = function (key){
+            $scope.refreshScroller = function (key) {
                 setTimeout(function() {
                     if ( !!$scope.$parent && $scope.$parent.myScroll ) {
-                        if( key in $scope.$parent.myScroll ){
+                        if ( key in $scope.$parent.myScroll ) {
                             $scope.$parent.myScroll[key].refresh();
                         }
-                    };
+                    }
                 }, $scope.timeOutForScrollerRefresh);
             };
 
@@ -38,6 +38,7 @@ admin.directive("chargeCodeSearch", function() {
                 var params = {
                     query: $scope.chargeCodeName
                 };
+
                 ADChargeCodesSrv.searchChargeCode(params).then(successCallBackForChargeCodeSearch);
             };
 
@@ -45,7 +46,7 @@ admin.directive("chargeCodeSearch", function() {
            * Set the charge code to item selected from auto complete list
            * @param {Integer} charge code value
            */
-          $scope.selectChargeCode = function(id, name){
+          $scope.selectChargeCode = function(id, name) {
             $scope.chargeCode = id;
             $scope.chargeCodeName = name;
             $scope.showChargeCodes = false;

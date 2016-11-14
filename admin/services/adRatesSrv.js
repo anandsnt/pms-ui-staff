@@ -10,7 +10,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
             var deferred = $q.defer();
             var url = "/api/rates/enable_disable";
 
-            ADBaseWebSrvV2.putJSON(url,params).then(function (data) {
+            ADBaseWebSrvV2.putJSON(url, params).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
                 deferred.reject(data);
@@ -38,6 +38,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
             var deferred = $q.defer();
 
             var url = "/api/rates.json";
+
             ADBaseWebSrvV2.getJSON(url, data).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
@@ -49,6 +50,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         this.fetchCommissionDetails = function (data) {
             var deferred = $q.defer();
             var url = " /api/hotel_settings/default_rate_commission_details";
+
             ADBaseWebSrvV2.getJSON(url).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
@@ -62,10 +64,12 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
 
 
             var url = "/api/rate_types.json";
+
             ADBaseWebSrvV2.getJSON(url).then(function (data) {
                 var results = [];
-                for(var i = 0; i < data.results.length; i++){
-                    if(data.results[i].activated){
+
+                for (var i = 0; i < data.results.length; i++) {
+                    if (data.results[i].activated) {
                         results.push(data.results[i]);
                     }
                 }
@@ -79,6 +83,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         this.importRates = function () {
             var deferred = $q.defer();
             var url = "/api/rates/import";
+
             ADBaseWebSrvV2.postJSON(url).then(function (data) {
                 deferred.resolve(data.results);
             }, function (data) {
@@ -91,6 +96,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
             var deferred = $q.defer();
 
             var url = "/api/rates/" + params.rate_id + "/rate_date_ranges";
+
             ADBaseWebSrvV2.getJSON(url).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
@@ -102,7 +108,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         this.getRateDetailsForNonstandalone = function (params) {
             var deferred = $q.defer();
 
-            var url = "/admin/rates/"+ params.id +"/edit.json";
+            var url = "/admin/rates/" + params.id + "/edit.json";
 
             ADBaseWebSrv.getJSON(url).then(function (data) {
                 deferred.resolve(data);
@@ -112,10 +118,11 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
             return deferred.promise;
         };
 
-        this.updateRateForNonStandalone = function(data){
+        this.updateRateForNonStandalone = function(data) {
             var deferred = $q.defer();
 
             var url = "/admin/rates/" + data.id;
+
             delete data['id'];
             ADBaseWebSrv.putJSON(url, data).then(function (data) {
                 deferred.resolve(data);
@@ -127,6 +134,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         };
 
         var that = this;
+
         this.rateDetails = {};
 
         // get rate details
@@ -136,9 +144,11 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
              * Service function to fetch add ons
              * @return {object} add ons
              */
+
             that.fetchAddons = function () {
-                var params = {"is_active":true, "is_not_reservation_only":true};
+                var params = {"is_active": true, "is_not_reservation_only": true};
                 var url = "/api/addons";
+
                 ADBaseWebSrvV2.getJSON(url, params).then(function (data) {
                     that.rateDetails.allAddOns = data.results;
                     deferred.resolve(that.rateDetails);
@@ -150,6 +160,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
             // fetch hotel business date
             that.fetchHotelInfo = function () {
                 var url = "/api/rover_header_info";
+
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     data = data.data;
                     that.rateDetails.business_date = data.business_date;
@@ -161,22 +172,23 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
             };
 
             var url = "/api/rates/" + params.rateId;
+
             ADBaseWebSrvV2.getJSON(url).then(function (data) {
                 that.rateDetails = data;
                 var chargeCodes = data.commission_details.charge_codes,
                     selectedChargeCodes = data.commission_details.selected_commission_charge_code_ids;
                 
-                if( typeof chargeCodes !== 'undefined' && chargeCodes.length >0 ){
+                if ( typeof chargeCodes !== 'undefined' && chargeCodes.length > 0 ) {
                     
-                    angular.forEach( chargeCodes ,function( item, index) {
-                        if( typeof selectedChargeCodes !== 'undefined' && selectedChargeCodes.length >0 ){
-                            angular.forEach( selectedChargeCodes ,function( id, index) {
-                                if(id === item.id){
+                    angular.forEach( chargeCodes, function( item, index) {
+                        if ( typeof selectedChargeCodes !== 'undefined' && selectedChargeCodes.length > 0 ) {
+                            angular.forEach( selectedChargeCodes, function( id, index) {
+                                if (id === item.id) {
                                     item.is_checked = true;
                                 }
                             });
                         }
-                        else{
+                        else {
                             item.is_checked = false;
                         }
                     });

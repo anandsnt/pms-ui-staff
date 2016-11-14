@@ -1,4 +1,4 @@
-sntRover.controller('rvBillFormatPopupCtrl',['$scope','$rootScope','$filter','RVBillCardSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillCardSrv, ngDialog){
+sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter', 'RVBillCardSrv', 'ngDialog', function($scope, $rootScope, $filter, RVBillCardSrv, ngDialog) {
 
     BaseCtrl.call(this, $scope);
     $scope.isCompanyCardInvoice = true;
@@ -10,7 +10,8 @@ sntRover.controller('rvBillFormatPopupCtrl',['$scope','$rootScope','$filter','RV
     */
     var getBillSettingsInfoRequestParams = function() {
         var params = {};
-        if($scope.reservationBillData && $scope.reservationBillData.reservation_id) {
+
+        if ($scope.reservationBillData && $scope.reservationBillData.reservation_id) {
             params.id = $scope.reservationBillData.reservation_id;
             params.is_type = "Reservation";
         } else {
@@ -21,19 +22,20 @@ sntRover.controller('rvBillFormatPopupCtrl',['$scope','$rootScope','$filter','RV
                 params.is_type = "Account";
 
                 var card = $scope.groupConfigData.summary;
-                if(!!card.company.name && !!card.travel_agent.name && card.company.name !== '' && card.travel_agent.name !== ''){
+
+                if (!!card.company.name && !!card.travel_agent.name && card.company.name !== '' && card.travel_agent.name !== '') {
                     // Both cards are attached.
                 }
-                else if(card.company.name === '' && card.travel_agent.name === ''){
+                else if (card.company.name === '' && card.travel_agent.name === '') {
                     // Both cards are not attached.
                     $scope.hideCompanyCardInvoiceToggle = true;
                 }
-                else if(card.company.name === '' && card.travel_agent.name !== ''){
+                else if (card.company.name === '' && card.travel_agent.name !== '') {
                     // Only TA card is attached.
                     $scope.isCompanyCardInvoice = false;
                     $scope.disableCompanyCardInvoice = true;
                 }
-                else{
+                else {
                     // Only Company card is attached.
                     $scope.disableCompanyCardInvoice = true;
                 }
@@ -44,19 +46,20 @@ sntRover.controller('rvBillFormatPopupCtrl',['$scope','$rootScope','$filter','RV
                 params.is_type = "Account";
 
                 var card = $scope.accountConfigData.summary;
-                if(!!card.company.name && !!card.travel_agent.name && card.company.name !== '' && card.travel_agent.name !== ''){
+
+                if (!!card.company.name && !!card.travel_agent.name && card.company.name !== '' && card.travel_agent.name !== '') {
                     // Both cards are attached.
                 }
-                else if(card.company.name === '' && card.travel_agent.name === ''){
+                else if (card.company.name === '' && card.travel_agent.name === '') {
                     // Both cards are not attached.
                     $scope.hideCompanyCardInvoiceToggle = true;
                 }
-                else if(card.company.name === '' && card.travel_agent.name !== ''){
+                else if (card.company.name === '' && card.travel_agent.name !== '') {
                     // Only TA card is attached.
                     $scope.isCompanyCardInvoice = false;
                     $scope.disableCompanyCardInvoice = true;
                 }
-                else{
+                else {
                     // Only Company card is attached.
                     $scope.disableCompanyCardInvoice = true;
                 }
@@ -78,7 +81,8 @@ sntRover.controller('rvBillFormatPopupCtrl',['$scope','$rootScope','$filter','RV
             $scope.$emit('hideLoader');
             $scope.data = response.data;
         };
-        $scope.invokeApi(RVBillCardSrv.getBillSettingsInfo,params,onBillSettingsInfoFetchSuccess);
+
+        $scope.invokeApi(RVBillCardSrv.getBillSettingsInfo, params, onBillSettingsInfoFetchSuccess);
     };
 
     /*
@@ -87,7 +91,7 @@ sntRover.controller('rvBillFormatPopupCtrl',['$scope','$rootScope','$filter','RV
     var getPrintEmailRequestParams = function() {
         var params = {};
 
-        if($scope.reservationBillData && $scope.reservationBillData.reservation_id) {
+        if ($scope.reservationBillData && $scope.reservationBillData.reservation_id) {
             params.reservation_id = $scope.reservationBillData.reservation_id;
         } else {
             if (!!$scope.groupConfigData) {
@@ -109,6 +113,7 @@ sntRover.controller('rvBillFormatPopupCtrl',['$scope','$rootScope','$filter','RV
     */
     $scope.printBill = function() {
         var printRequest = getPrintEmailRequestParams();
+
         printRequest.bill_layout = $scope.data.default_bill_settings;
         $scope.clickedPrint(printRequest);
     };
@@ -118,6 +123,7 @@ sntRover.controller('rvBillFormatPopupCtrl',['$scope','$rootScope','$filter','RV
     */
     $scope.emailBill = function() {
         var emailRequest = getPrintEmailRequestParams();
+
         emailRequest.bill_layout = $scope.data.default_bill_settings;
         emailRequest.to_address = $scope.data.to_address;
         $scope.clickedEmail(emailRequest);
@@ -131,7 +137,8 @@ sntRover.controller('rvBillFormatPopupCtrl',['$scope','$rootScope','$filter','RV
         fetchBillSettingsInfo();
     };
     // Toggle on COMPANY/TA-CARD invoice generation tab.
-    $scope.changeCompanyCardInvoiceToggle = function(){
+
+    $scope.changeCompanyCardInvoiceToggle = function() {
         $scope.isCompanyCardInvoice = !$scope.isCompanyCardInvoice;
     };
 

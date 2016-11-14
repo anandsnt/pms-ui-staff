@@ -1,4 +1,4 @@
-sntGuestWeb.controller('emailVerificationStatusController', ['$rootScope','$location','$state','$scope', function($rootScope,$location,$state,$scope) {
+sntGuestWeb.controller('emailVerificationStatusController', ['$rootScope', '$location', '$state', '$scope', function($rootScope, $location, $state, $scope) {
 
 
 	$scope.pageValid = true;

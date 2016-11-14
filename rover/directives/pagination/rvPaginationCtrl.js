@@ -2,10 +2,10 @@
  * Number pagination directive - controller.
  */
 sntRover.controller('rvPaginationCtrl', ['$scope', '$attrs', function($scope, $attrs) {
-    //Initializing variables
+    // Initializing variables
     $scope.showCount    = 5;
-    $scope.pageChange   = false;    //Variable for detecting external changes
-    $scope.currentFocus = 1;        //For handling page no. list scroll
+    $scope.pageChange   = false;    // Variable for detecting external changes
+    $scope.currentFocus = 1;        // For handling page no. list scroll
     /*
      *   Handle page scroll( Next/Prev actions )
      *   @param  {number} [Destination page number]
@@ -35,6 +35,7 @@ sntRover.controller('rvPaginationCtrl', ['$scope', '$attrs', function($scope, $a
             else {
                 var apiCall = $scope.pageOptions.api[0],
                     params  = $scope.pageOptions.api.slice(1);
+
                 params.push(page);
                 apiCall.apply($scope, params);      // invoking apiCall( additional_params, pageNo )
             }
@@ -49,9 +50,9 @@ sntRover.controller('rvPaginationCtrl', ['$scope', '$attrs', function($scope, $a
     var getPageNoArray = function(currentPage, totalPages, showCount) {
 
         var pageNoList = {
-            firstDelim  : false,
-            lastDelim   : false,
-            numbers     : []
+            firstDelim: false,
+            lastDelim: false,
+            numbers: []
         };
 
         showCount = showCount || 5;     // Maximun number of page number buttons showing. default to 5.
@@ -94,11 +95,11 @@ sntRover.controller('rvPaginationCtrl', ['$scope', '$attrs', function($scope, $a
 
             // Only either no pagination Id or both in match
             if ($scope.pageChange === true) {
-                //Internal page transition
+                // Internal page transition
                 $scope.pageChange = false;
             }
             else {
-                //External page transition, set page to 1
+                // External page transition, set page to 1
                 $scope.pageOptions.currentPage = 1;
             }
 

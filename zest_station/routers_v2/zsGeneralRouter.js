@@ -25,14 +25,14 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 						defaultLangShortCode = defaultLanguageConfig.code;
 
 					return zsGeneralSrv.fetchTranslations(sortedLanguages)
-						.then(function(translationFiles){
-							for(langShortCode in translationFiles){
+						.then(function(translationFiles) {
+							for (langShortCode in translationFiles) {
 								$translateProvider.translations(langShortCode, translationFiles[langShortCode]);
 							}
 							$translate.use(defaultLangShortCode);
 						});
 				},
-				hotelTimeData: function(zsGeneralSrv){
+				hotelTimeData: function(zsGeneralSrv) {
 					return zsGeneralSrv.fetchHotelTime();
 				},
 				cssMappings: function(zsCSSMappings) {
@@ -46,19 +46,19 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 			templateUrl: '/assets/partials_v2/zsHomePage.html',
 			controller: 'zsHomeCtrl'
 		}).state('zest_station.speakToStaff', {
-            url         : '/speakToStaff/:message',
-            templateUrl : '/assets/partials_v2/zsSpeakToStaff.html',
+            url: '/speakToStaff/:message',
+            templateUrl: '/assets/partials_v2/zsSpeakToStaff.html',
             controller: 'zsSpeakToStaffCtrl'
         });
 
         $stateProvider.state('zest_station.admin', {
              url: '/find_reservation', 
              controller: 'zsAdminCtrl',
-             templateUrl: '/assets/partials_v2/zsAdminSettings.html',
+             templateUrl: '/assets/partials_v2/zsAdminSettings.html'
         }).state('zest_station.outOfService', {
              url: '/outOfService', 
              controller: 'zsOutOfServiceCtrl',
-             templateUrl: '/assets/partials_v2/zsOutOfService.html',
+             templateUrl: '/assets/partials_v2/zsOutOfService.html'
         });
 
 	}

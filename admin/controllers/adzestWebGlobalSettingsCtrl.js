@@ -1,5 +1,5 @@
-admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSettingsSrv', 'ngDialog', 'zestWebGlobalSettings','$controller',
-	function($scope, ADzestWebGlobalSettingsSrv, ngDialog, zestWebGlobalSettings,$controller) {
+admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSettingsSrv', 'ngDialog', 'zestWebGlobalSettings', '$controller',
+	function($scope, ADzestWebGlobalSettingsSrv, ngDialog, zestWebGlobalSettings, $controller) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.successMessage = '';
@@ -7,7 +7,7 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 		$scope.supportedFonts = ['Source Sans Pro', 'VAGRounded-Light'];
 		$scope.iconColors = ["White", "Black"];
 		$scope.selectedMenu = "";
-		$scope.globalSettings = zestWebGlobalSettings.zest_web; //resolved on route change
+		$scope.globalSettings = zestWebGlobalSettings.zest_web; // resolved on route change
 
 		$scope.saveSettings = function() {
 			var saveSettingsCallback = function() {
@@ -19,9 +19,10 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 				},
 				successCallBack: saveSettingsCallback
 			};
+
 			$scope.callAPI(ADzestWebGlobalSettingsSrv.saveZestwebGlobalSettings, options);
 		};
-		//on scolling hide all the color pickers
+		// on scolling hide all the color pickers
 		$scope.pageScrolled = function() {
 			$("*").spectrum("hide");
 		};
@@ -39,27 +40,29 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 					isSmallDevice: isSmallDevice
 				}),
 				closeByDocument: true,
-				template: '/assets/partials/zestwebGlobalSettings/'+template,
-				className: 'ngdialog-theme-default '+className
+				template: '/assets/partials/zestwebGlobalSettings/' + template,
+				className: 'ngdialog-theme-default ' + className
 			});
 		};
 		var openSmallScreenPreview = function() {
-			setUpPopUpDataAndOpen('adZestWebPreview.html','phone-preview', true);
+			setUpPopUpDataAndOpen('adZestWebPreview.html', 'phone-preview', true);
 		};
 		var openLargeScreenPreview = function() {
-			setUpPopUpDataAndOpen('adZestWebLargeScreenPreview.html','ipad-preview', false);
+			setUpPopUpDataAndOpen('adZestWebLargeScreenPreview.html', 'ipad-preview', false);
 		};
+
 		$scope.previewClicked = function() {
-			$scope.globalSettings.is_large_screen_preview_on? openLargeScreenPreview():openSmallScreenPreview();
+			$scope.globalSettings.is_large_screen_preview_on ? openLargeScreenPreview() : openSmallScreenPreview();
 		};
-		//image upload section starts here
+		// image upload section starts here
 		$scope.isImageAvailable = function(image) {
 			return (image !== '') ? true : false;
 		};
-		var isEmptyString = function(str){
+		var isEmptyString = function(str) {
 			return (_.isUndefined(str) || _.isNull(str) || str.length === 0);
 		};
-		//image place holder texts
+		// image place holder texts
+
 		$scope.stripAndDisplay = function(str) {
 			return  isEmptyString(str) ? "select image.." : "..." + str.substring((str.length - 15), str.length);
 		};

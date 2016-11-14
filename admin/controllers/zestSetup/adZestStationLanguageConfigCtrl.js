@@ -1,16 +1,16 @@
 admin.controller('adZestStationLanguageConfigCtrl',
 	['$scope',
 	'adZestStationLanguageConfigSrv',
-	function($scope, adZestStationLanguageConfigSrv){
+	function($scope, adZestStationLanguageConfigSrv) {
 
 		BaseCtrl.call(this, $scope);
 
 		var saveNewLanguagePosition = function(languageName, position) {
-			var languageListForApi = $scope.languageList.map(function(language, index){
+			var languageListForApi = $scope.languageList.map(function(language, index) {
 				return {
 					'name': language.name,
-					'position': index + 1 //index will be in teh order of position
-				}
+					'position': index + 1 // index will be in teh order of position
+				};
 			});
 			var options = {
 				params: {
@@ -18,10 +18,11 @@ admin.controller('adZestStationLanguageConfigCtrl',
 				},
 				successCallBack: fetchLanguageList
 			};
+
 			$scope.callAPI(adZestStationLanguageConfigSrv.saveLanguageList, options);
 		};
 
-		//when dragging stopped
+		// when dragging stopped
 		var onDragStop = function(e, ui) {
 			var position = ui.item.sortable.dropindex,
 				languageName = ui.item.sortable.model.name,
@@ -32,13 +33,14 @@ admin.controller('adZestStationLanguageConfigCtrl',
 			}
 		};
 
-		//when language fetch completed
+		// when language fetch completed
 		var onFetchLanguageList = function(data) {
 			var combinedList = _.partition(data.languages, { position: null }),
 				nullList = combinedList[0],
-				listHavingValues= combinedList[1];
+				listHavingValues = combinedList[1];
+
 			$scope.languageList = _.sortBy(listHavingValues, 'position').concat(nullList);
-		}
+		};
 
 		/**
 		 * to fetch the country list
@@ -47,6 +49,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 			var options = {
 				successCallBack: onFetchLanguageList
 			};
+
 			$scope.callAPI(adZestStationLanguageConfigSrv.fetchLanguageList, options);
 		};
 
@@ -54,13 +57,13 @@ admin.controller('adZestStationLanguageConfigCtrl',
 		 * initialization
 		 * @return {undefined}
 		 */
-		(function(){
+		(function() {
 			$scope.languageList = [];
 
-			//fetch the language list
+			// fetch the language list
 			fetchLanguageList();
 
-			//this sortable options will give us callback when dragging stopped
+			// this sortable options will give us callback when dragging stopped
 			$scope.sortableOptions = {
 				stop: onDragStop
 			};

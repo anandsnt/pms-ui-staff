@@ -1,4 +1,4 @@
-angular.module('sntRover').controller('RVHKOWSErrorCtrl', ['$scope', 'RVHKOWSTestSrv', '$rootScope', 'ngDialog',function($scope, RVHKOWSTestSrv, $rootScope, ngDialog) {
+angular.module('sntRover').controller('RVHKOWSErrorCtrl', ['$scope', 'RVHKOWSTestSrv', '$rootScope', 'ngDialog', function($scope, RVHKOWSTestSrv, $rootScope, ngDialog) {
 
 	/**
 	* Call API to test the OWS connection
@@ -11,11 +11,11 @@ angular.module('sntRover').controller('RVHKOWSErrorCtrl', ['$scope', 'RVHKOWSTes
 			$scope.$parent.$emit('hideLoader');
 			$scope.closeThisDialog();
 			$rootScope.$broadcast('OWSConnectionRetrySuccesss');
-		}, function(){
+		}, function() {
 			$scope.$parent.$emit('hideLoader');
 		});
 	};
-	$scope.closeThisDialog = function(){
+	$scope.closeThisDialog = function() {
 			$rootScope.isOWSErrorShowing = false;
 			ngDialog.close();
 	};

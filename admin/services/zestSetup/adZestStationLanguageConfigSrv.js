@@ -1,13 +1,15 @@
-admin.service('adZestStationLanguageConfigSrv', ['ADBaseWebSrvV2', function(ADBaseWebSrvV2){
+admin.service('adZestStationLanguageConfigSrv', ['ADBaseWebSrvV2', function(ADBaseWebSrvV2) {
 
-    this.fetchLanguageList = function(){
+    this.fetchLanguageList = function() {
     	var url = "/api/kiosk/languages";
-        //var url = '/admin/zest_email_setups.json';
+        // var url = '/admin/zest_email_setups.json';
+
         return ADBaseWebSrvV2.getJSON(url);
     };
 
-    this.saveLanguageList = function(params){
+    this.saveLanguageList = function(params) {
         var url = '/api/kiosk/languages';
+
         return ADBaseWebSrvV2.putJSON(url, params);
     };
-}])
+}]);

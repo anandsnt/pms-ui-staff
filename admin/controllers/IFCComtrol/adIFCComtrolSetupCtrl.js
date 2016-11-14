@@ -43,9 +43,10 @@ admin.controller('adIFCComtrolSetupCtrl', ['$scope', 'ifcComtrolSetupValues', 'a
 		}
 
 	    var options = {
-	        params 			: params,
-	        successCallBack : successCallBackOfIFCComtrolSetup
+	        params: params,
+	        successCallBack: successCallBackOfIFCComtrolSetup
 	    };
+
 	    $scope.callAPI(adIFCComtrolSetupSrv.saveIFCComtrolConfiguration, options);
 	};
 
@@ -61,7 +62,7 @@ admin.controller('adIFCComtrolSetupCtrl', ['$scope', 'ifcComtrolSetupValues', 'a
 		ngDialog.close();
 	};
 
-	$scope.regenerateAuth = function(){
+	$scope.regenerateAuth = function() {
 		$scope.callAPI(adIFCComtrolSetupSrv.reAuthComtrol, {
 			successCallBack: function(response) {
 				$scope.ifc_comtrol.authentication_token =  response.authentication_token;
@@ -77,4 +78,4 @@ admin.controller('adIFCComtrolSetupCtrl', ['$scope', 'ifcComtrolSetupValues', 'a
 	(function() {
 		$scope.ifc_comtrol = ifcComtrolSetupValues;
 	})();
-}])
+}]);
