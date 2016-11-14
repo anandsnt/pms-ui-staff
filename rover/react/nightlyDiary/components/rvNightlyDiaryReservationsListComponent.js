@@ -1,7 +1,7 @@
-const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent }) => {
+const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, roomRowClass }) => {
 
     return (
-        <div className="grid-reservations firstday-fri">
+        <div className={roomRowClass}>
         {
             reservationsListToComponent.map((item) => (
                     <div className="grid-row">
