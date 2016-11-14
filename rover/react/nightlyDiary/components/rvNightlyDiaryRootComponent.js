@@ -1,10 +1,17 @@
-const NightlyDiaryRootComponent = () => (
+const NightlyDiaryRootComponent = ({showNextPageButton,showPrevPageButton,ClassForRootDiv}) => (
 
-	<div id="diary-nightly-grid" className="grid-content scrollable {'top-pagination' if you can only load previous, or 'bottom-pagination' if you can only load next, or 'dual-pagination' if you can load both}">
+	<div id="diary-nightly-grid" className={ClassForRootDiv}>
         <div className="wrapper">
-            <GoToPreviousPageButtonContainer/>
-            <GoToNextPageButtonContainer/>
+            {(showPrevPageButton)?<GoToPreviousPageButtonContainer/>:''}
+            {(showNextPageButton)?<GoToNextPageButtonContainer/>:''}
             <NightlyDiaryRoomsListContainer/>
         </div>
     </div>
 );
+const { PropTypes } = React;
+
+NightlyDiaryRootComponent.propTypes = {
+  showNextPageButton: PropTypes.bool.isRequired,
+  showPrevPageButton: PropTypes.bool.isRequired,
+  ClassForRootDiv 	: PropTypes.string.isRequired
+}
