@@ -1,7 +1,8 @@
 angular.module('sntRover').service('RVNightlyDiarySrv',
     ['$q',
     'BaseWebSrvV2',
-    function($q, BaseWebSrvV2){
+    function($q, BaseWebSrvV2) {
+     var that = this;
     /*
      * To fetch the rooms list
      * @param {data} object
@@ -64,5 +65,27 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
         return deferred.promise;
     }
 
+    this.fetchRoomsListAndReservationList = function(params){
+        var deferred = $q.defer(),
+            promises = [],
+            data = {
+                roomList: null,
+                reservationList: null
+            };
 
+        promises.push(that.fetchRoomsList(params).then(function(response) {
+            data.roomList = response;
+        }));
+         promises.push(that.fetchReservationsList(params).then(function(response) {
+            data.reservationList = response;
+        }));
+
+        $q.all(promises).then(function() {
+            deferred.resolve(data);
+        }, function(errorMessage) {
+            deferred.reject(errorMessage);
+        });
+        return deferred.promise;
+
+    }
 }]);

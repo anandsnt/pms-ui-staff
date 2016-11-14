@@ -111,10 +111,45 @@ let  calculateReservationDurationAndPosition = (diaryInitialDayOfDateGrid, reser
      return returnData;
 };
 
-let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateGrid, numberOfDays) => {
+let getReservationClasses = function(reservation, currentBusinessDate, diaryInitialDayOfDateGrid, numberOfDays){
+    let diaryInitialDayOfDateGridSplit = diaryInitialDayOfDateGrid.split("-");
+    let currentBusinessDateSplit = currentBusinessDate.split("-");
+    let reservationArrivalDateSplit    = reservation.arrival_date.split("-");
+    let reservationDepartureDateSplit  = reservation.dept_date.split("-");
+    let diaryInitialDate               = new Date(diaryInitialDayOfDateGridSplit[0], diaryInitialDayOfDateGridSplit[1], diaryInitialDayOfDateGridSplit[2]);
+    let businessDate                   = new Date(currentBusinessDateSplit[0], currentBusinessDateSplit[1], currentBusinessDateSplit[2]);
+    let reservationArrivalDate         = new Date(reservationArrivalDateSplit[0], reservationArrivalDateSplit[1], reservationArrivalDateSplit[2]);
+    let reservationDepartureDate       = new Date(reservationDepartureDateSplit[0], reservationDepartureDateSplit[1], reservationDepartureDateSplit[2]);
+    let finalDayOfDiaryGrid            = diaryInitialDate.getTime()  + (numberOfDays -1)*24*60*60*1000;//Minusing 1 bcoz otherwise last date end value (gettime) and next days start will be same.
+    //{passed} - class 'passed' should be applied on all reservations that ended before today's date. If you don't have today's date shown in the diary, this class shoudl not be applied to reservations even if they're all in the past
+
+    let passedClass                       = '';
+    if(businessDate.getTime() >= diaryInitialDate.getTime() && businessDate.getTime() <= finalDayOfDiaryGrid){
+        if(reservationDepartureDate.getTime() < businessDate.getTime()){
+            passedClass = 'passed';
+        }
+    }
+    //{day-stay} - class 'day-stay' should be applied to all reservations or OOO/OOS statuses which have the same arrival and departure date, even if in the past or future. This class enables us to show person initials instad of full name.
+    let dayStayClass = '';
+    if(reservationArrivalDate.getTime() === reservationDepartureDate.getTime()){
+      dayStayClass = 'day-stay';
+    }
+    return passedClass+" "+dayStayClass;
+
+};
+
+let findIsReservationDayStay = (reservation) => {
+    let reservationArrivalDateSplit    = reservation.arrival_date.split("-");
+    let reservationDepartureDateSplit  = reservation.dept_date.split("-");
+    let reservationArrivalDate         = new Date(reservationArrivalDateSplit[0], reservationArrivalDateSplit[1], reservationArrivalDateSplit[2]);
+    let reservationDepartureDate       = new Date(reservationDepartureDateSplit[0], reservationDepartureDateSplit[1], reservationDepartureDateSplit[2]);
+    let numberOfNights = getNumberOfDaysBetweenTwoDates(reservationArrivalDate, reservationDepartureDate);
+    return (numberOfNights === 0) ? true : false;
+};
+
+let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateGrid, numberOfDays, currentBusinessDate) => {
+
     roomsList.map((room) => {
-       // reservation.duration = 140;
-       // reservation.reservation_status = "inhouse";
        if(room.reservations.length > 0){
             room.reservations.map((reservation) => {
                 let positionAndDuration = calculateReservationDurationAndPosition(diaryInitialDayOfDateGrid, reservation , numberOfDays)
@@ -123,9 +158,9 @@ let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateG
                 reservation.style.width = duration;
                 reservation.style.transform = "translateX("+positionAndDuration.reservationPosition+"px)";
                 let reservationStatusClass = getReservationStatusClass(reservation.status);
-
-
-                reservation.reservationClass = "reservation "+reservationStatusClass
+                let reservationClass = getReservationClasses(reservation, currentBusinessDate, diaryInitialDayOfDateGrid, numberOfDays);
+                reservation.isReservationDayStay = findIsReservationDayStay(reservation);
+                reservation.reservationClass = "reservation "+reservationStatusClass+" "+reservationClass;
 
             })
         }
@@ -136,8 +171,11 @@ let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateG
 
 
 
+
+
 const mapStateToNightlyDiaryReservationsListContainerProps = (state) => ({
-    reservationsListToComponent: convertReservationsListReadyToComponent(state.reservationsList, state.diaryInitialDayOfDateGrid, state.numberOfDays)
+    reservationsListToComponent: convertReservationsListReadyToComponent(state.reservationsList, state.diaryInitialDayOfDateGrid, state.numberOfDays, state.currentBusinessDate),
+    roomRowClass: "grid-reservations firstday-"+getWeekDayName((new Date(state.diaryInitialDayOfDateGrid)).getDay(), 3)
 });
 
 const NightlyDiaryReservationsListContainer = connect(
