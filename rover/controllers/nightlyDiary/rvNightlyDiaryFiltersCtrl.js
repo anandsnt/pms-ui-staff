@@ -85,7 +85,7 @@ angular.module('sntRover')
             });
         };
 
-        $scope.$on('DATE_CAHNGED',function () {
+        $scope.$on('DATE_CHANGED',function () {
             var isRightShift = true;
             if($scope.diaryData.isSevenSelected){
                 $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 7, isRightShift);

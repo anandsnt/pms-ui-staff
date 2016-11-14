@@ -12,7 +12,7 @@ sntRover.controller('RVNightlyDiaryDatePickerController',['$scope','$rootScope',
 		   yearRange: "-100:+0",
 		   onSelect: function(dateText, inst) {
 				$scope.diaryData.fromDate = $scope.date;
-				$scope.$emit('DATE_CAHNGED');
+				$scope.$emit('DATE_CHANGED');
 				ngDialog.close();
 			}
 		};
