@@ -28,7 +28,7 @@
         </button>
         <!--- Show count when searching:
         <span class="result-count">{X} Matches</span> -->
-        <input class="query" placeholder="Search by Guest, Allotment/Group or Conf./Ext. red no." type="search" autocomplete="off">
+        <input class="query" placeholder="{{ 'PLACEHOLDER_NIGHTLY_DIARY_SEARCH' | translate }}" type="search" autocomplete="off">
 
 
         <!-- Search results, show only when searching: -->
@@ -80,12 +80,12 @@
         <div class="switch-button" ng-class="{'on' : diaryData.isSevenSelected}" ng-click="toggleSwitchMode()">
             <input value="" type="checkbox" checked>
             <label class="data-off">
-                <span class="value">7 Days</span>
-                <span class="switch-icon">21 Days</span>
+                <span class="value" translate>7_DAYS</span>
+                <span class="switch-icon" translate>21_DAYS</span>
             </label>
             <label class="data-on">
-                <span class="switch-icon">7 Days</span>
-                <span class="value">21 Days</span>
+                <span class="switch-icon" translate>7_DAYS</span>
+                <span class="value" translate>21_DAYS</span>
             </label>
         </div>
     </div>
