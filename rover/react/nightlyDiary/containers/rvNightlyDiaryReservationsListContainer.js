@@ -138,7 +138,17 @@ let getReservationClasses = function(reservation, currentBusinessDate, diaryInit
 
 };
 
+let findIsReservationDayStay = (reservation) => {
+    let reservationArrivalDateSplit    = reservation.arrival_date.split("-");
+    let reservationDepartureDateSplit  = reservation.dept_date.split("-");
+    let reservationArrivalDate         = new Date(reservationArrivalDateSplit[0], reservationArrivalDateSplit[1], reservationArrivalDateSplit[2]);
+    let reservationDepartureDate       = new Date(reservationDepartureDateSplit[0], reservationDepartureDateSplit[1], reservationDepartureDateSplit[2]);
+    let numberOfNights = getNumberOfDaysBetweenTwoDates(reservationArrivalDate, reservationDepartureDate);
+    return (numberOfNights === 0) ? true : false;
+};
+
 let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateGrid, numberOfDays, currentBusinessDate) => {
+
     roomsList.map((room) => {
        if(room.reservations.length > 0){
             room.reservations.map((reservation) => {
@@ -149,7 +159,7 @@ let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateG
                 reservation.style.transform = "translateX("+positionAndDuration.reservationPosition+"px)";
                 let reservationStatusClass = getReservationStatusClass(reservation.status);
                 let reservationClass = getReservationClasses(reservation, currentBusinessDate, diaryInitialDayOfDateGrid, numberOfDays);
-
+                reservation.isReservationDayStay = findIsReservationDayStay(reservation);
                 reservation.reservationClass = "reservation "+reservationStatusClass+" "+reservationClass;
 
             })
@@ -161,8 +171,11 @@ let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateG
 
 
 
+
+
 const mapStateToNightlyDiaryReservationsListContainerProps = (state) => ({
-    reservationsListToComponent: convertReservationsListReadyToComponent(state.reservationsList, state.diaryInitialDayOfDateGrid, state.numberOfDays, state.currentBusinessDate)
+    reservationsListToComponent: convertReservationsListReadyToComponent(state.reservationsList, state.diaryInitialDayOfDateGrid, state.numberOfDays, state.currentBusinessDate),
+    roomRowClass: "grid-reservations firstday-"+getWeekDayName((new Date(state.diaryInitialDayOfDateGrid)).getDay(), 3)
 });
 
 const NightlyDiaryReservationsListContainer = connect(
