@@ -639,9 +639,4 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			}
 		});
 
-		$stateProvider.state('admin.checkinEmailSettings',{
-			templateUrl: '/assets/partials/adCheckinEmailSettings/adCheckinEmailSettings.html',
-			controller : 'ADCheckinEmailSettingsCtrl',
-			url: '/checkinEmailSettings'
-		});
 });
