@@ -128,13 +128,13 @@ angular.module('sntRover')
 
         // angular method to update diary view via react dispatch method.
         var updateDiaryView = function(){
-            var initialDay = $scope.diaryData.fromDate.getFullYear() + '-' + ($scope.diaryData.fromDate.getMonth()+1) + '-0' + $scope.diaryData.fromDate.getDate();
+
             var dispatchData = {
                 type                : 'DIARY_VIEW_CHANGED',
                 numberOfDays        : $scope.diaryData.numberOfDays,
                 reservationsList    : $scope.diaryData.reservationsList.rooms,
                 roomsList           : $scope.diaryData.diaryRoomsList,
-                initialDayOfDateGrid: initialDay,
+                initialDayOfDateGrid: tzIndependentDate($scope.diaryData.fromDate),
                 currentBusinessDate : $rootScope.businessDate,
                 callbackFromAngular : getTheCallbacksFromAngularToReact(),
                 paginationData      : getPaginationParams()

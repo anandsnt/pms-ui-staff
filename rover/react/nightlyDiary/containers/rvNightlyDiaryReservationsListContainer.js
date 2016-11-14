@@ -137,7 +137,11 @@ let getReservationClasses = function(reservation, currentBusinessDate, diaryInit
     return passedClass+" "+dayStayClass;
 
 };
-
+/*
+ * Find if the reservation is day stay or not
+ * @param reservation object
+ * return boolean
+ */
 let findIsReservationDayStay = (reservation) => {
     let reservationArrivalDateSplit    = reservation.arrival_date.split("-");
     let reservationDepartureDateSplit  = reservation.dept_date.split("-");
