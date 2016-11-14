@@ -126,13 +126,18 @@ angular.module('sntRover')
          */
         var calculateFromDateAndToDate = function( isRightShift ){
             var fromDate = angular.copy(tzIndependentDate($scope.diaryData.fromDate));
+            var nextShift = isRightShift;
+            if(!isRightShift) {
+                // If the fromDate is a shift to the left, then the toDate is a shift right from the new fromDate.
+                nextShift = true;
+            }
             if($scope.diaryData.isSevenSelected){
                 $scope.diaryData.fromDate = getDateShift(fromDate, 7, isRightShift);
-                $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 7, isRightShift);
+                $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 7, nextShift);
             }
             else{
                 $scope.diaryData.fromDate = getDateShift(fromDate, 21, isRightShift);
-                $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift);
+                $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, nextShift);
             }
         };
 
