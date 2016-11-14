@@ -68,7 +68,7 @@ angular.module('sntRover')
         var init = function(){
             $scope.diaryData.isSevenSelected = true;
             $scope.diaryData.numberOfDays = 7;
-            $scope.diaryData.fromDate = tzIndependentDate($rootScope.businessDate);
+            $scope.diaryData.fromDate = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
             $scope.diaryData.toDate   = getDateShift( $rootScope.businessDate, 7, true);
             $scope.diaryData.firstMonthDateList = [];
             $scope.diaryData.secondMonthDateList = [];
@@ -85,7 +85,7 @@ angular.module('sntRover')
             });
         };
 
-        $scope.$on('DATE_CAHNGED',function () {
+        $scope.$on('DATE_CHANGED',function () {
             var isRightShift = true;
             if($scope.diaryData.isSevenSelected){
                 $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 7, isRightShift);
