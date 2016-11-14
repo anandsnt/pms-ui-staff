@@ -638,5 +638,4 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 				}
 			}
 		});
-
 });
