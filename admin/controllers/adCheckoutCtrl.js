@@ -19,9 +19,30 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
         $scope.roomTypes = roomTypes.room_types;
         $scope.excludedRoomTypes = [];
         $scope.isStandAlone = $rootScope.isStandAlone;
+        $scope.checkoutEmailRoomExclusionConfig = {
+            "item_number": {
+              "active": true,
+              "label" : "ROOM NO.",
+              "column_width" : "width-20"
+            },
+            "item_description": {
+              "active": true,
+              "label" : "ROOM TYPE.",
+              "column_width" : "width-40"
+            },
+            "selectedExcludedRoomIds": [],
+            "unSelectedExcludedRoomIds": [],
+            "apiService" : "ADCheckoutEmailRoomFilterSrv",
+            "noOfItemsSelected" :0
+        };
     };
 
     $scope.init();
+
+    $scope.toggleRoomExlusionSettings = function(bool){
+        $scope.openRoomExclusionSettings = bool;
+    };
+
 
 
     // to add to excluded room types
@@ -181,7 +202,9 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
                 'room_verification_instruction': $scope.checkoutData.room_verification_instruction,
                 'excluded_room_types': excluded_room_types,
                 'enable_offline_checkout': $scope.checkoutData.enable_offline_checkout,
-                'checkout_static_uri': $scope.checkoutData.checkout_static_uri
+                'checkout_static_uri': $scope.checkoutData.checkout_static_uri,
+                'removed_excluded_from_checkout_notification' : $scope.checkoutEmailRoomExclusionConfig.selectedExcludedRoomIds,
+                'selected_excluded_from_checkout_notification' : $scope.checkoutEmailRoomExclusionConfig.unSelectedExcludedRoomIds
 			};
 
         

@@ -72,10 +72,8 @@ admin.controller('adFilterTableController', ['$scope', 'ngTableParams', '$inject
 		var updateDataSet = function() {
 			if ($scope.selectionConfig.activeTab === "SELECTED") {
 				$scope.filterConfig.selectedExcludedRoomIds = processSelectedRooms($scope.filterConfig.selectedExcludedRoomIds, $scope.data);
-				console.log($scope.filterConfig.selectedExcludedRoomIds);
 			} else {
 				$scope.filterConfig.unSelectedExcludedRoomIds = processSelectedRooms($scope.filterConfig.unSelectedExcludedRoomIds, $scope.data);
-				console.log($scope.filterConfig.unSelectedExcludedRoomIds);
 			}
 		};
 
@@ -116,6 +114,7 @@ admin.controller('adFilterTableController', ['$scope', 'ngTableParams', '$inject
 		$scope.fetchTableData = function($defer, params) {
 			var getParams = $scope.calculateGetParams(params);
 			var fetchSuccessOfItemList = function(data) {
+				
 				$scope.$emit('hideLoader');
 				$scope.currentClickedElement = -1;
 				$scope.totalCount = data.total_count;
@@ -136,10 +135,8 @@ admin.controller('adFilterTableController', ['$scope', 'ngTableParams', '$inject
 				$scope.updateSelectedList();
 			};
 			if ($scope.selectionConfig.activeTab === "UNSELECTED") {
-				// getParams.$scope.filterConfig.selectedItemsFlag =  false;
-				$scope.invokeApi(filterService.fetchSelectedList, getParams, fetchSuccessOfItemList);
+				$scope.invokeApi(filterService.fetchUnselectedList, getParams, fetchSuccessOfItemList);
 			} else {
-				// getParams.$scope.filterConfig.selectedItemsFlag =  true;
 				$scope.invokeApi(filterService.fetchSelectedList, getParams, fetchSuccessOfItemList);
 			}
 		};

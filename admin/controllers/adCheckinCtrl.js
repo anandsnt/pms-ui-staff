@@ -43,9 +43,8 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
         },
         "selectedExcludedRoomIds": [],
         "unSelectedExcludedRoomIds": [],
-        "apiService" : "ADEmailSettingsSrv",
-        "noOfItemsSelected" :0,
-        "selectedItemsFlag" : "is_excluded_from_checkin_notification"
+        "apiService" : "ADCheckinEmailRoomFilterSrv",
+        "noOfItemsSelected" :0
     };
 
   };
@@ -383,7 +382,9 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       'zestweb_collect_outstanding_balance' : $scope.checkinData.zestweb_collect_outstanding_balance,
       'zest_web_use_new_sent_to_que_action' : $scope.checkinData.zest_web_use_new_sent_to_que_action,
       'zest_web_checkin_second_authentication_action': $scope.checkinData.zest_web_checkin_second_authentication_action,
-      'zest_web_always_ask_for_mobile_number': $scope.checkinData.zest_web_always_ask_for_mobile_number
+      'zest_web_always_ask_for_mobile_number': $scope.checkinData.zest_web_always_ask_for_mobile_number,
+      'removed_excluded_from_checkin_notification' : $scope.checkinEmailRoomExclusionConfig.selectedExcludedRoomIds,
+      'selected_excluded_from_checkin_notification' : $scope.checkinEmailRoomExclusionConfig.unSelectedExcludedRoomIds
     };
 
     if($scope.surveyQuestionImage === $scope.checkinData.survey_question_image){
