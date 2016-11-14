@@ -23,6 +23,7 @@ angular.module('sntRover')
                     scrollX: true,
                     preventDefault: false
                 };
+
                 $scope.setScroller('room_availability_scroller', scrollerOptions);
 
                 $scope.hideMeBeforeFetching = false;
@@ -38,8 +39,6 @@ angular.module('sntRover')
             };
 
             BaseCtrl.call(this, $scope);
-
-            
             
 
             // -------------------------------------------------------------------------------------------------------------- GRID DETAILED VIEW
@@ -51,17 +50,17 @@ angular.module('sntRover')
 
             var isSectionOpen = function(name) {
                 return $scope.toggleStatusOf.hasOwnProperty(name) && !! $scope.toggleStatusOf[name];
-            }
+            };
 
             var toggleSection = function(key, value) {
                 if ( $scope.toggleStatusOf.hasOwnProperty(key) ) {
                     if ( typeof value === typeof true ) {
-                        $scope.toggleStatusOf[key] = value
+                        $scope.toggleStatusOf[key] = value;
                     } else {
                         $scope.toggleStatusOf[key] = ! $scope.toggleStatusOf[key];
                     }
                 }
-            }
+            };
 
             var hasAdditionalData = function () {
                 return !! $scope.data.additionalData;
@@ -114,34 +113,34 @@ angular.module('sntRover')
                                 deferred.resolve( true );
                             }
                         );
-                    };
+                    }
 
                     return deferred.promise;
-                }
-            }
+                };
+            };
 
             /** */
             $scope.toggleOccupancy = toggleSectionGenerator(
                     'occupancy',
                     rvAvailabilitySrv.fetchBARs,
-                    function(){
-                        return isSectionOpen('occupancy') && hasBestAvailabilityRate()
+                    function() {
+                        return isSectionOpen('occupancy') && hasBestAvailabilityRate();
                     }
                 );
 
             $scope.toggleAvailableRooms = toggleSectionGenerator(
                     'availableRooms',
                     rvAvailabilitySrv.getRoomsAvailability,
-                    function(){
-                        return isSectionOpen('availableRooms') && hasRoomTypeWiseDetails()
+                    function() {
+                        return isSectionOpen('availableRooms') && hasRoomTypeWiseDetails();
                     }
                 );
 
             $scope.toggleSoldRooms = toggleSectionGenerator(
                     'roomsSold',
                     rvAvailabilitySrv.getOccupancyCount,
-                    function(){
-                        return isSectionOpen('roomsSold') && hasSoldRooms()
+                    function() {
+                        return isSectionOpen('roomsSold') && hasSoldRooms();
                     }
                 );
 
@@ -183,17 +182,22 @@ angular.module('sntRover')
                 });
 
                 return deferred.promise;
-            }
+            };
 
             $scope.$on('PRINT_AVAILABILITY', function (event) {
                 openAllSections().then(function() {
-                    window.print();
+
+                    $( '#loading' ).addClass( 'ng-hide' );
+                    $window.print();
+                    if ( sntapp.cordovaLoaded ) {
+                        cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+                    }
                 });
             });
         // --------------------------------------------------------------------------------------------------------------
 
             $scope.$on('$includeContentLoaded', function (event) {
-                $scope.$emit("hideLoader");
+                $scope.$emit('hideLoader');
                 $scope.refreshScroller('room_availability_scroller');
             });
         /*
@@ -219,7 +223,8 @@ angular.module('sntRover')
         /**
         * when data changed from super controller, it will broadcast an event 'changedRoomAvailableData'
         */
-            $scope.$on("changedRoomAvailableData", handleDataChange);
+
+            $scope.$on('changedRoomAvailableData', handleDataChange);
 
             $scope.$on('changedGrpNAllotData', function () {
                 $scope.data.gridDataForGroupAvailability = rvAvailabilitySrv.getGridDataForGroupAvailability();
@@ -243,6 +248,7 @@ angular.module('sntRover')
         */
             $scope.getGroupAllotmentName = function (source, id) {
                 var found = _.findWhere(source.holdStatus, { id: id });
+
                 return found && found.name;
             };
 
@@ -254,35 +260,35 @@ angular.module('sntRover')
             $scope.getWidthForTable = function () {
 
                 var leftMostRowCaptionWidth = 130, // 120px cell width + 10px cell spacing
-                totalColumns = $scope.data && $scope.data.dates && $scope.data.dates.length,
-                individualColWidth = 60; // 55px cell width + 5px cell spacing
+                    totalColumns = $scope.data && $scope.data.dates && $scope.data.dates.length,
+                    individualColWidth = 60; // 55px cell width + 5px cell spacing
 
                 if (!_.has($scope.data, 'dates') && totalColumns < 30) {
-                return 0;
-            };
+                    return 0;
+                }
 
                 if (totalColumns == 30) {
-                return (totalColumns * individualColWidth + leftMostRowCaptionWidth);
-            }
+                    return totalColumns * individualColWidth + leftMostRowCaptionWidth;
+                }
             };
 
             $scope.getClassForHoldStatusRow = function (source, id) {
                 var group,
-                isDeduct,
-                retCls;
+                    isDeduct,
+                    retCls;
 
                 if (!$scope.showShowGroupAllotmentTotals || !source) {
-                retCls = 'hidden';
-            } else {
-                group = _.findWhere(source.holdStatus, { id: id });
-                isDeduct = group && group['is_take_from_inventory'];
+                    retCls = 'hidden';
+                } else {
+                    group = _.findWhere(source.holdStatus, { id: id });
+                    isDeduct = group && group['is_take_from_inventory'];
 
-                if (group && isDeduct) {
-                retCls = '';
-            } else {
-                retCls = 'hidden';
-            };
-            };
+                    if (group && isDeduct) {
+                        retCls = '';
+                    } else {
+                        retCls = 'hidden';
+                    }
+                }
 
                 return retCls;
             };
