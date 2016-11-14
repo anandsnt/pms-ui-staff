@@ -210,6 +210,7 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
         
     	var saveCheckoutDetailsSuccessCallback = function(data) {
     		$scope.$emit('hideLoader');
+            $scope.goBackToPreviousState();
     	};
 
     	$scope.invokeApi(adCheckoutSrv.save, uploadData, saveCheckoutDetailsSuccessCallback);

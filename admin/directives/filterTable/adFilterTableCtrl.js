@@ -112,28 +112,29 @@ admin.controller('adFilterTableController', ['$scope', 'ngTableParams', '$inject
 		};
 
 		$scope.fetchTableData = function($defer, params) {
-			var getParams = $scope.calculateGetParams(params);
-			var fetchSuccessOfItemList = function(data) {
-				
-				$scope.$emit('hideLoader');
-				$scope.currentClickedElement = -1;
-				$scope.totalCount = data.total_count;
-				$scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
-				$scope.data = data.items;
-				if ($scope.selectionConfig.activeTab === "SELECTED") {
-					// set the isSelected Flag for items if in already
-					// selected list
-					$scope.data = handleCurrentSelectedPage($scope.filterConfig.selectedExcludedRoomIds, $scope.data);
-					// $scope.selectionConfig.noOfItemsSelected = data.total_count;
-					$scope.filterConfig.noOfItemsSelected = data.total_count;
-				} else {
-					$scope.data = handleCurrentSelectedPage($scope.filterConfig.unSelectedExcludedRoomIds, $scope.data);
-				}
-				$scope.currentPage = params.page();
-				params.total(data.total_count);
-				$defer.resolve($scope.data);
-				$scope.updateSelectedList();
-			};
+			var getParams = $scope.calculateGetParams(params),
+				fetchSuccessOfItemList = function(data) {
+
+					$scope.$emit('hideLoader');
+					$scope.currentClickedElement = -1;
+					$scope.totalCount = data.total_count;
+					$scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
+					$scope.data = data.items;
+					if ($scope.selectionConfig.activeTab === "SELECTED") {
+						// set the isSelected Flag for items if in already
+						// selected list
+						$scope.data = handleCurrentSelectedPage($scope.filterConfig.selectedExcludedRoomIds, $scope.data);
+						// $scope.selectionConfig.noOfItemsSelected = data.total_count;
+						$scope.filterConfig.noOfItemsSelected = data.total_count;
+					} else {
+						$scope.data = handleCurrentSelectedPage($scope.filterConfig.unSelectedExcludedRoomIds, $scope.data);
+					}
+					$scope.currentPage = params.page();
+					params.total(data.total_count);
+					$defer.resolve($scope.data);
+					$scope.updateSelectedList();
+				};
+
 			if ($scope.selectionConfig.activeTab === "UNSELECTED") {
 				$scope.invokeApi(filterService.fetchUnselectedList, getParams, fetchSuccessOfItemList);
 			} else {

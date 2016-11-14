@@ -15,7 +15,8 @@
         "BaseCtrl": true,
         "sntRover": true,
         "sntGuestWeb": true,
-        "admin": true
+        "admin": true,
+        "ADBaseTableCtrl": true
     },
     "installedESLint": true,
     "parserOptions": {
