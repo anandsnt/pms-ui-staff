@@ -1,11 +1,13 @@
 admin.service('ADCheckinEmailRoomFilterSrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 
 	var mapKeyNames = function(data) {
-		data.items = data.rooms.map(item => ({
-			id: item.room_id,
-			item_number: item.room_number,
-			item_desc: item.room_type
-		}));
+		data.items = data.rooms.map(function(item) {
+			return {
+				id: item.room_id,
+				item_number: item.room_number,
+				item_desc: item.room_type
+			}
+		});
 		delete data.rooms;
 		return data;
 	};
