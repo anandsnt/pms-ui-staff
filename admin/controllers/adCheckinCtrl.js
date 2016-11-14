@@ -44,7 +44,8 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
         "selectedExcludedRoomIds": [],
         "unSelectedExcludedRoomIds": [],
         "apiService" : "ADEmailSettingsSrv",
-        "noOfItemsSelected" :0
+        "noOfItemsSelected" :0,
+        "selectedItemsFlag" : "is_excluded_from_checkin_notification"
     };
 
   };

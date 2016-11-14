@@ -14,7 +14,8 @@
         "ReduxThunk": false,
         "BaseCtrl": true,
         "sntRover": true,
-        "sntGuestWeb": true
+        "sntGuestWeb": true,
+        "admin": true
     },
     "installedESLint": true,
     "parserOptions": {

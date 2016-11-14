@@ -1,10 +1,10 @@
-admin.service('ADEmailSettingsSrv', ['$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($q, ADBaseWebSrv, ADBaseWebSrvV2) {
+admin.service('ADEmailSettingsSrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 
-	var mapKeyNames = function(data){
+	var mapKeyNames = function(data) {
 		data.items = data.rooms.map(item => ({
-				id: item.id,
-				item_number: item.room_number,
-				item_desc: item.room_type
+			id: item.room_id,
+			item_number: item.room_number,
+			item_desc: item.room_type
 		}));
 		delete data.rooms;
 		return data;
@@ -15,9 +15,9 @@ admin.service('ADEmailSettingsSrv', ['$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', fun
 	this.fetchSelectedList = function(params) {
 
 		var deferred = $q.defer();
-		var url = '/api/floors/44.json';
+		var url = '/admin/hotel_rooms.json';
 
-		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
+		ADBaseWebSrv.getJSON(url, params).then(function(data) {
 			data = mapKeyNames(data);
 			deferred.resolve(data);
 		}, function(data) {
@@ -30,9 +30,9 @@ admin.service('ADEmailSettingsSrv', ['$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', fun
 	this.fetchUnselectedList = function(params) {
 		var deferred = $q.defer();
 
-		var url = '/api/floors/rooms';
+		var url = '/admin/hotel_rooms.json';
 
-		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
+		ADBaseWebSrv.getJSON(url, params).then(function(data) {
 			data = mapKeyNames(data);
 			deferred.resolve(data);
 		}, function(data) {

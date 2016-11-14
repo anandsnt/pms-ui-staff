@@ -56,7 +56,7 @@ admin.controller('adFilterTableController', ['$scope', 'ngTableParams', '$inject
 		 */
 		var handleCurrentSelectedPage = function(alreadyChosenRoomIds, currentPageList) {
 			_.each(currentPageList, function(item) {
-				_.each(alreadyChosenRoomIds, function(itemId, key) {
+				_.each(alreadyChosenRoomIds, function(itemId) {
 					if (item.id === itemId) {
 						item.isSelected = true;
 					}
@@ -94,13 +94,13 @@ admin.controller('adFilterTableController', ['$scope', 'ngTableParams', '$inject
 		$scope.toggleSelectItem = function(item) {
 			item.isSelected = !item.isSelected;
 			if (!item.isSelected) {
-				//if unselected delete the Item in the list
+				// if unselected delete the Item in the list
 				updateDataSet();
 			}
 			$scope.updateSelectedList();
 		};
 
-		$scope.displayCountChanged = function(count){
+		$scope.displayCountChanged = function(count) {
 			$scope.displyCount = count;
 		};
 
@@ -122,10 +122,10 @@ admin.controller('adFilterTableController', ['$scope', 'ngTableParams', '$inject
 				$scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
 				$scope.data = data.items;
 				if ($scope.selectionConfig.activeTab === "SELECTED") {
-					//set the isSelected Flag for items if in already
-					//selected list
+					// set the isSelected Flag for items if in already
+					// selected list
 					$scope.data = handleCurrentSelectedPage($scope.filterConfig.selectedExcludedRoomIds, $scope.data);
-					//$scope.selectionConfig.noOfItemsSelected = data.total_count;
+					// $scope.selectionConfig.noOfItemsSelected = data.total_count;
 					$scope.filterConfig.noOfItemsSelected = data.total_count;
 				} else {
 					$scope.data = handleCurrentSelectedPage($scope.filterConfig.unSelectedExcludedRoomIds, $scope.data);
@@ -136,8 +136,10 @@ admin.controller('adFilterTableController', ['$scope', 'ngTableParams', '$inject
 				$scope.updateSelectedList();
 			};
 			if ($scope.selectionConfig.activeTab === "UNSELECTED") {
+				// getParams.$scope.filterConfig.selectedItemsFlag =  false;
 				$scope.invokeApi(filterService.fetchSelectedList, getParams, fetchSuccessOfItemList);
 			} else {
+				// getParams.$scope.filterConfig.selectedItemsFlag =  true;
 				$scope.invokeApi(filterService.fetchSelectedList, getParams, fetchSuccessOfItemList);
 			}
 		};
@@ -148,7 +150,7 @@ admin.controller('adFilterTableController', ['$scope', 'ngTableParams', '$inject
 				page: 1, // show first page
 				count: $scope.displyCount, // count per page
 				sorting: {
-					//room_no: 'asc' // initial sorting
+					// room_no: 'asc' // initial sorting
 				}
 			}, {
 				total: 0, // length of data
