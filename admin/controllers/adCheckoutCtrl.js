@@ -21,25 +21,25 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
         $scope.isStandAlone = $rootScope.isStandAlone;
         $scope.checkoutEmailRoomExclusionConfig = {
             "item_number": {
-              "active": true,
-              "label" : "ROOM NO.",
-              "column_width" : "width-20"
+                "active": true,
+                "label": "ROOM NO.",
+                "column_width": "width-20"
             },
             "item_description": {
-              "active": true,
-              "label" : "ROOM TYPE.",
-              "column_width" : "width-40"
+                "active": true,
+                "label": "ROOM TYPE.",
+                "column_width": "width-40"
             },
             "selectedExcludedRoomIds": [],
             "unSelectedExcludedRoomIds": [],
-            "apiService" : "ADCheckoutEmailRoomFilterSrv",
-            "noOfItemsSelected" :0
+            "apiService": "ADCheckoutEmailRoomFilterSrv",
+            "noOfItemsSelected": 0
         };
     };
 
     $scope.init();
 
-    $scope.toggleRoomExlusionSettings = function(bool){
+    $scope.toggleRoomExlusionSettings = function(bool) {
         $scope.openRoomExclusionSettings = bool;
     };
 
