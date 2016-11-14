@@ -92,15 +92,13 @@ angular.module('sntRover')
         };
 
 
-        var goToPrevPage = () => {
-            console.log("Implement Prev button action")
+        var goToPrevPage = ()=>{
             $scope.diaryData.paginationData.page--;
             fetchRoomListDataAndReservationListData();
         };
 
         var goToNextPage = ()=>{
             $scope.diaryData.paginationData.page++;
-            console.log("Implement Next button action");
             fetchRoomListDataAndReservationListData();
         };
         /**
@@ -157,7 +155,7 @@ angular.module('sntRover')
          */
         var renderDiaryView = () => render(
             <Provider store={store}>
-                <NightlyDiaryRootComponent/>
+                <NightlyDiaryRootContainer/>
             </Provider>,
             document.querySelector('#nightlyDiaryMain')
         );

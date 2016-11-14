@@ -1,7 +1,8 @@
 const {connect} = ReactRedux;
 const mapStateToNightlyDiaryGoToPreviousPageButtonContainerProps = (state) => (
 {
-    goToPrev: state.callBackFromAngular.goToPrevPage
+    goToPrev: state.callBackFromAngular.goToPrevPage,
+    perPage  :state.paginationData.per_page
 });
 
 const mapDispatchToNightlyDiaryGoToPreviousPageButtonContainer = (stateProps, dispatchProps, ownProps) => {
