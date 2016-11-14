@@ -7,6 +7,7 @@ angular.module('sntRover')
         '$filter',
         'roomsList',
         'datesList',
+        'reservationsList',
         function(
             $scope,
             $rootScope,
@@ -14,8 +15,10 @@ angular.module('sntRover')
             $stateParams,
             $filter,
             roomsList,
-            datesList
+            datesList,
+            reservationsList
         ){
+
 
         BaseCtrl.call(this, $scope);
         $scope.heading = $filter('translate')('MENU_ROOM_DIARY');
@@ -26,9 +29,14 @@ angular.module('sntRover')
         $scope.diaryData = {
             isSevenSelected : true,
             datesGridData   : datesList,
+            fromDate        : '',
+            toDate          : '',
+            roomFilterCount : 0,
+            filterCount     : 0,
             businessDate    : $rootScope.businessDate,
             diaryRoomsList  : roomsList,
-            numberOfDays    : 7
+            numberOfDays    : 7,
+            reservationsList:reservationsList.reservationsList
         };
 
         // To toogle 7/21 button.
@@ -38,12 +46,17 @@ angular.module('sntRover')
         }
         //Initial State
         var initialState = {
-            roomsList : roomsList.rooms
+            roomsList : roomsList.rooms,
+            reservationsList: reservationsList.rooms,
+            initialDayOfDateGrid: $rootScope.businessDate,
+            numberOfDays: 7,
+            currentBusinessDate: $rootScope.businessDate
         };
         const store = configureStore(initialState);
 
         const {render} = ReactDOM;
         const {Provider} = ReactRedux;
+
 
         // angular method to update diary view via react dispatch method.
         $scope.updateDiaryView = function(){

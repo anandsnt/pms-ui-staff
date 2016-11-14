@@ -11,6 +11,7 @@ const NightlyDiaryRootComponent = () => (
                     <button type="button" className="button blue">Next {X} Rooms</button>
                 </div> */}
             <NightlyDiaryRoomsListContainer/>
+            <NightlyDiaryReservationsListContainer/>
 
         </div>
     </div>

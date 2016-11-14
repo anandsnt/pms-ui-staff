@@ -308,6 +308,19 @@ function getServiceStatusValue(service_status){
 };
 
 
+var reservationStatusClassesDiary = {
+    "RESERVED" : "check-in",
+    "CANCELED" : "cancel",
+    "CHECKEDIN" : "inhouse",
+    "CHECKEDOUT" : "departed",
+    "NOSHOW" : "no-show",
+    "PRE_CHECKIN" : "pre-check-in",
+    "CHECKING_OUT" : "check-out"
+    };
+function getReservationStatusClass(status){
+    return reservationStatusClassesDiary[status];
+};
+
 var avatharImgs = {
     'mr' : 'avatar-male.png',
     'mrs': 'avatar-female.png',
@@ -535,7 +548,7 @@ var getJqDateFormat = function(dateFormat) {
     }
 };
 
-/** 
+/**
  * Convert 24hr format into 12hr (am/pm) format.
  * @param {string} time string in format 'HH:MM' may contain blanks
  * @returns {object} converted time array

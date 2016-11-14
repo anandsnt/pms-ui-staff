@@ -57,6 +57,14 @@ angular
                 }
                 params.no_of_days = 7;
                 return RVNightlyDiarySrv.fetchDatesList(params);
+            },
+            reservationsList: function(RVNightlyDiarySrv, $rootScope, diaryAssets) {
+                var params = {};
+                params.start_date = $rootScope.businessDate;
+                params.no_of_days = 7;
+                params.page = 1;
+                params.per_page = 50;
+                return RVNightlyDiarySrv.fetchReservationsList(params);
             }
 
         }
