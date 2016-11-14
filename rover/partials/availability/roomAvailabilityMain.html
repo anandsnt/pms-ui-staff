@@ -13,7 +13,18 @@
 				<option value="30" ng-selected="numberOfDaysSelected==30">30 Days</option>
 			</select>
 		</div>
-	    <ul class="display">
+		<!-- Show print button only when viewing 14 days. When pressed, add class 'availability-print' to <html> element. When printing is completed, remove that class. -->
+		<button type="button"
+			class="button blue with-icon only-icon"
+			ng-click="printAvaiability()"
+			ng-show="shouldShowPrint()"
+		>
+			<i class="icons icon-print"></i>
+			Print
+		</button>
+
+		<!--keep for future code clean up-->
+	    <!--<ul class="display">
 	    	<li id="show-grid" ng-click="setSelectedView('grid')" ng-class="{'active': selectedView == 'grid'}">
 	    		<span class="icons icon-navbar only-icon icon-grid" ng-class="{'active': selectedView == 'grid'}">
 	    			Grid
@@ -22,10 +33,7 @@
 	    	<li id="show-graph" ng-class="{'active': selectedView == 'graph'}" ng-click="setSelectedView('graph')" ng-hide="isStandAlone">
 	    		<span class="icons icon-navbar only-icon icon-graph" ng-class="{'active': selectedView == 'graph'}">Graph</span>
 	    	</li>
-			<li id="show-print" ng-click="printAvaiability()" ng-show="shouldShowPrint()">
-	    		<span class="icons icon-navbar only-icon icon-graph">Print</span>
-	    	</li>
-	    </ul>
+	    </ul>-->
 	</div>
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	<span ng-include="loadSelectedView()"></span>
