@@ -545,6 +545,9 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			//CICO-21697
 			$rootScope.isEnabledRoomTypeByRoomClass = data.is_enabled_room_type_by_class;
 
+			//CICO-35270
+			$rootScope.ignoreRoomStatusForPreAssigned = data.ignore_room_status_for_pre_assigned;
+
 			$rootScope.isRoomStatusImportPerRoomTypeOn = data.is_room_status_import_per_room_type_on ? data.is_room_status_import_per_room_type_on : false;
 
 			// CICO-27286
