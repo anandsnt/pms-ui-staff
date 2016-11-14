@@ -235,7 +235,9 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
   };
 
   var successFetchOfAllRequiredDataForCheckinScreen = function() {
-    $scope.$emit('hideLoader');
+    // $scope.$emit('hideLoader');
+    // don't hide loader, as the rooms API will be still running
+    // In future, Add any other actions if needed.
   };
 
   /**

@@ -97,7 +97,8 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
         };
 		var fetchCheckoutDetailsSuccessCallback = function(data) {
 
-			$scope.$emit('hideLoader');
+			// $scope.$emit('hideLoader');
+            // don't hide loader, as the rooms API will be still running
             $scope.isLoading = false;
 			$scope.checkoutData = data;
             $scope.checkoutData.checkout_email_alert_time_hour = $scope.checkoutData.checkout_email_alert_time_hour === null ? "HH" : $scope.checkoutData.checkout_email_alert_time_hour;
