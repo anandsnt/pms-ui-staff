@@ -28,8 +28,29 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     $scope.block_codes = [];
     $scope.roomTypes = [];
     $scope.excludedRoomTypes = [];
+    $scope.openRoomExclusionSettings = false;
+
+    $scope.checkinEmailRoomExclusionConfig = {
+      "item_number": {
+        "active": true,
+        "label": "ROOM NO.",
+        "column_width": "width-20"
+      },
+      "item_description": {
+        "active": true,
+        "label": "ROOM TYPE.",
+        "column_width": "width-40"
+      },
+      "selectedExcludedRoomIds": [],
+      "unSelectedExcludedRoomIds": [],
+      "apiService": "ADCheckinEmailRoomFilterSrv",
+      "noOfItemsSelected": 0
+    };
   };
 
+  $scope.toggleRoomExlusionSettings = function(bool) {
+    $scope.openRoomExclusionSettings = bool;
+  };
   $scope.init();
 
   var setUpData = function () {
@@ -214,7 +235,9 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
   };
 
   var successFetchOfAllRequiredDataForCheckinScreen = function() {
-    $scope.$emit('hideLoader');
+    // $scope.$emit('hideLoader');
+    // don't hide loader, as the rooms API will be still running
+    // In future, Add any other actions if needed.
   };
 
   /**
@@ -359,7 +382,9 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       'zestweb_collect_outstanding_balance' : $scope.checkinData.zestweb_collect_outstanding_balance,
       'zest_web_use_new_sent_to_que_action' : $scope.checkinData.zest_web_use_new_sent_to_que_action,
       'zest_web_checkin_second_authentication_action': $scope.checkinData.zest_web_checkin_second_authentication_action,
-      'zest_web_always_ask_for_mobile_number': $scope.checkinData.zest_web_always_ask_for_mobile_number
+      'zest_web_always_ask_for_mobile_number': $scope.checkinData.zest_web_always_ask_for_mobile_number,
+      'removed_excluded_from_checkin_notification': $scope.checkinEmailRoomExclusionConfig.selectedExcludedRoomIds,
+      'selected_excluded_from_checkin_notification': $scope.checkinEmailRoomExclusionConfig.unSelectedExcludedRoomIds
     };
 
     if($scope.surveyQuestionImage === $scope.checkinData.survey_question_image){
