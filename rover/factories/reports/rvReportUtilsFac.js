@@ -371,6 +371,8 @@ angular.module('reportsModule')
         factory.processFilters = function ( report, data ) {
 
             if ( report.hasUserFilter ) {
+                //label change as per CICO-29528
+                report.filterTitle = (report.title === reportNames['RESERVATIONS_BY_USER']) ? 'Users' : 'Employees';
                 report.empList = {
                     data: angular.copy( data.activeUserList ),
                     options: {
