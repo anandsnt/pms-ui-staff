@@ -11,15 +11,9 @@
 
         <!-- Room Search + Timeline -->
         <div class="grid-timeline">
-            <!-- Room Search -->
-            <div class="grid-room-search">
-                <button class="clear-query"> <!-- Add class 'visible' when searching. Tap clears L33 value and removes search. -->
-                    <span class="icons icon-clear-search">Clear query</span>
-                </button>
-                <!-- Add class .hidden when edit screen is displayed -->
-                <input type="text" placeholder="Go to Room No." value="">
-            </div>
 
+            <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRoomSearch.html'"></div>
+            
             <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryTimeline.html'"></div>
 
             <!-- Stay Range | Remove .hidden to show-->
