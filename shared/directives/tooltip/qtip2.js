@@ -27,8 +27,9 @@ angular.module('qtip2', [])
                 url: api.elements.target.attr('url') // Use href attribute as URL
               })
                 .then(function(resultSet) {
-                  scope.isActiveDateRange = function(beginDateTime, endDateTime){
+                  scope.isActiveDateRange = function(beginDateTime, endDateTime) {
                     var hotelBusinessDateTime = new tzIndependentDate($rootScope.businessDate).getTime();
+
                     return (beginDateTime <= hotelBusinessDateTime && hotelBusinessDateTime <= endDateTime);
                   };
                   switch (category) {
@@ -40,7 +41,8 @@ angular.module('qtip2', [])
                         var endDate = $filter('date')(result.end_date, "MMM dd, yyyy");
                         var beginDateTime = new tzIndependentDate(result.begin_date).getTime();
                         var endDateTime = new tzIndependentDate(result.end_date).getTime();
-                        htmlString += "<li ng-class='{active : isActiveDateRange("+beginDateTime+ "," +endDateTime+ ")}'>" + beginDate + " to " + endDate + "</li>";
+
+                        htmlString += "<li ng-class='{active : isActiveDateRange(" + beginDateTime + "," + endDateTime + ")}'>" + beginDate + " to " + endDate + "</li>";
                       });
                       htmlString += "</ul>";
                       break;

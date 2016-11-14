@@ -4,7 +4,7 @@
 
 sntZestStation.service('zsUtilitySrv', ['$http', '$q', 'zsBaseWebSrv',
     function($http, $q, zsBaseWebSrv) {
-        //service provider for common utilities
+        // service provider for common utilities
         var that = this;
 
         this.CommaFormatted = function(amount) {
@@ -12,21 +12,25 @@ sntZestStation.service('zsUtilitySrv', ['$http', '$q', 'zsBaseWebSrv',
                 amount = parseFloat(amount).toFixed(2) + '';
             }
             var delimiter = ",";
-            var a = amount.split('.', 2)
+            var a = amount.split('.', 2);
             var d = a[1];
             var i = parseInt(a[0]);
+
             if (isNaN(i)) {
                 return '';
             }
             var minus = '';
+
             if (i < 0) {
                 minus = '-';
             }
             i = Math.abs(i);
             var n = new String(i);
             var a = [];
+
             while (n.length > 3) {
                 var nn = n.substr(n.length - 3);
+
                 a.unshift(nn);
                 n = n.substr(0, n.length - 3);
             }
@@ -44,26 +48,26 @@ sntZestStation.service('zsUtilitySrv', ['$http', '$q', 'zsBaseWebSrv',
         };
 
 
-
         this.formatCurrency = function(amt) {
             return parseFloat(amt).toFixed(2);
         };
 
         this.getFloat = function(n) {
-            //to check/remove any commas in a string..
+            // to check/remove any commas in a string..
             var num = n + '';
-            num = num.replace(/,/gi, "");
-            return this.CommaFormatted(parseFloat(num).toFixed(2) + ''); //return with comma back in
-        };
 
+            num = num.replace(/,/gi, "");
+            return this.CommaFormatted(parseFloat(num).toFixed(2) + ''); // return with comma back in
+        };
 
 
         this.getMonthN = function(mo) {
             var monthNames = ["January", "February", "March", "April", "May", "June",
                 "July", "August", "September", "October", "November", "December"
             ];
+
             for (var i in monthNames) {
-                if (monthNames[i].toLowerCase() == mo.toLowerCase() || monthNames[i].toLowerCase().indexOf(mo.toLowerCase()) != -1) { //exact or not
+                if (monthNames[i].toLowerCase() == mo.toLowerCase() || monthNames[i].toLowerCase().indexOf(mo.toLowerCase()) != -1) { // exact or not
                     return i;
                 }
             }
@@ -72,6 +76,7 @@ sntZestStation.service('zsUtilitySrv', ['$http', '$q', 'zsBaseWebSrv',
             var monthNames = ["January", "February", "March", "April", "May", "June",
                 "July", "August", "September", "October", "November", "December"
             ];
+
             for (var i = 0; i < monthNames.length; i++) {
                 if (i === parseInt(mo)) {
                     return monthNames[i];
@@ -93,14 +98,14 @@ sntZestStation.service('zsUtilitySrv', ['$http', '$q', 'zsBaseWebSrv',
         };
 
         this.returnLanguageList = function() {
-            return [ //in our admin/API, these are saved in english, we will keep reference here if needed
+            return [ // in our admin/API, these are saved in english, we will keep reference here if needed
                 {
                     'language': 'Castellano',
                     'info': {
                         'prefix': '',
                         'code': 'cl',
                         'flag': 'flag-ca',
-                        'name': 'Castellano' //using name as an english reference (which is in the api call)
+                        'name': 'Castellano' // using name as an english reference (which is in the api call)
                     }
                 }, {
                     'language': 'Deutsche',
@@ -152,7 +157,7 @@ sntZestStation.service('zsUtilitySrv', ['$http', '$q', 'zsBaseWebSrv',
                     }
                 }
             ];
-        }
+        };
 
     }
 ]);

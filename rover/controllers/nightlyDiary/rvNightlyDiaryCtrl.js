@@ -7,6 +7,7 @@ angular.module('sntRover')
         '$filter',
         'roomsList',
         'datesList',
+        'reservationsList',
         function(
             $scope,
             $rootScope,
@@ -14,8 +15,10 @@ angular.module('sntRover')
             $stateParams,
             $filter,
             roomsList,
-            datesList
+            datesList,
+            reservationsList
         ){
+
 
         BaseCtrl.call(this, $scope);
         $scope.heading = $filter('translate')('MENU_ROOM_DIARY');
@@ -26,20 +29,23 @@ angular.module('sntRover')
         $scope.diaryData = {
             isSevenSelected : true,
             datesGridData   : datesList,
-            businessDate    : $rootScope.businessDate,
-            diaryRoomsList  : roomsList,
-            numberOfDays    : 7,
             fromDate        : '',
             toDate          : '',
             roomFilterCount : 0,
-            filterCount     : 0
+            filterCount     : 0,
+            businessDate    : $rootScope.businessDate,
+            diaryRoomsList  : roomsList,
+            numberOfDays    : 7,
+            reservationsList:reservationsList.reservationsList
         };
 
         //Initial State
         var initialState = {
-            roomsList : roomsList.rooms
+            roomsList : roomsList.rooms,
+            reservationsList: reservationsList.rooms,
+            initialDayOfDateGrid: $rootScope.businessDate,
+            numberOfDays: 7
         };
-        
         const store = configureStore(initialState);
 
         const {render} = ReactDOM;

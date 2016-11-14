@@ -1,6 +1,6 @@
  
 
-sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
+sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise("/noOptionAvailable");
 
@@ -9,22 +9,22 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
     $stateProvider.state('externalVerification', {
 	 	url: '/externalVerification',
 	 	templateUrl: '/assets/common_templates/partials/MGM/gwExternal.html',
-	 	controller : 'externalVerificationViewController',
+	 	controller: 'externalVerificationViewController',
 	 	title: 'External verification'
 	 });
 
 
-    //room and cc verification 
+    // room and cc verification 
 
 	 $stateProvider.state('checkoutRoomVerification', {
 	 	url: '/checkoutRoomVerification',
 	 	templateUrl: '/assets/common_templates/partials/MGM/gwRoomVerification.html',
-	 	controller : 'checkoutRoomVerificationViewController',
+	 	controller: 'checkoutRoomVerificationViewController',
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
 	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
 	 	templateUrl: '/assets/common_templates/partials/MGM/gwCcEntry.html',
-	 	controller : 'ccVerificationViewController',
+	 	controller: 'ccVerificationViewController',
 	 	title: 'CC verification'
 	 });
 
@@ -38,7 +38,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
        	controller: 'checkOutConfirmationController',
-       	templateUrl:  '/assets/common_templates/partials/MGM/gwCheckout.html',
+       	templateUrl: '/assets/common_templates/partials/MGM/gwCheckout.html',
 		title: 'Confirm - Check-out Now'
     });
 
@@ -66,22 +66,22 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	$stateProvider.state('checkinConfirmation', {
 	 	url: '/checkinConfirmation',
 	 	templateUrl: '/assets/common_templates/partials/MGM/gwCheckin.html',
-	 	controller : 'checkInConfirmationViewController',
+	 	controller: 'checkInConfirmationViewController',
 	 	title: 'Check-in'
 	 }).state('checkinReservationDetails', {
 	 	url: '/checkinReservationDetails',
 	 	templateUrl: '/assets/common_templates/partials/MGM/gwCheckinDetails.html',
-	 	controller : 'checkInReservationDetails',
+	 	controller: 'checkInReservationDetails',
 	 	title: 'Details - Check-in'
 	 }).state('checkinUpgrade', {
 	 	url: '/checkinUpgrade',
 	 	templateUrl: '/assets/common_templates/partials/MGM/gwRoomUpgrades.html',
-	 	controller : 'checkinUpgradeRoomController',
+	 	controller: 'checkinUpgradeRoomController',
 	    title: 'Upgrade - Check-in'
 	 }).state('checkinKeys', {
 	 	url: '/checkinKeys',
 	 	templateUrl: '/assets/common_templates/partials/MGM/gwCheckinFinal.html',
-	 	controller : 'checkInKeysController',
+	 	controller: 'checkInKeysController',
 	 	title: 'Keys - Check-in'
 	 }).state('checkinSuccess', {
 	 	url: '/checkinSuccess',
@@ -89,13 +89,13 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	title: 'Status - Check-in'
 	 }).state('checkinArrival', {
 	 	url: '/checkinArrival',
-	 	controller:'checkinArrivalDetailsController',
+	 	controller: 'checkinArrivalDetailsController',
 	 	templateUrl: '/assets/common_templates/partials/MGM/gwArrivalTime.html',
 	 	title: 'Arrival Details - Check-in'
 	 }).state('guestDetails', {
 	 	url: '/guestDetails',
 	 	templateUrl: '/assets/common_templates/partials/MGM/gwGuestDetail.html',
-	 	controller : 'guestDetailsController',
+	 	controller: 'guestDetailsController',
 	    title: 'Guest Details'
 	 });
 	 // state('birthDateDetails', {
@@ -120,24 +120,24 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
     $stateProvider.state('preCheckinStatus', {
 		url: '/preCheckinStatus',
 		templateUrl: '/assets/common_templates/partials/MGM/gwPreCheckinFinal.html',
-		controller : 'preCheckinStatusController',
+		controller: 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
 	 });
 
 	$stateProvider.state('earlyCheckinOptions', {
 	 	url: '/earlyCheckinOptions/:time/:charge/:id/:isFromCheckinNow/:roomAssignedFromZestWeb',
 	 	templateUrl: '/assets/common_templates/partials/MGM/gwEarlyCheckinOptions.html',
-	 	controller : 'earlyCheckinOptionsController',
+	 	controller: 'earlyCheckinOptionsController',
 	 	title: 'Early Check-in'
 	 }).state('earlyCheckinFinal', {
 	 	url: '/earlyCheckinFinal/:time/:charge/:id/:isFromCheckinNow',
 	 	templateUrl: '/assets/common_templates/partials/MGM/gwEarlyCheckinFinal.html',
-	 	controller : 'earlyCheckinFinalController',
+	 	controller: 'earlyCheckinFinalController',
 	 	title: 'Early Check-in'
 	 }).state('laterArrival', {
 	 	url: '/laterArrival/:time/:isearlycheckin',
 	 	templateUrl: '/assets/common_templates/partials/MGM/gwLateArrivalTime.html',
-	 	controller : 'checkinArrivalDetailsController',
+	 	controller: 'checkinArrivalDetailsController',
 	    title: 'Early Check-in'
 	 });
 
@@ -152,7 +152,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		templateUrl: '/assets/common_templates/partials/MGM/gwExternalCheckin.html',
 		controller: 'externalCheckinVerificationViewController',
 		title: 'External Check in verification'
-	}).state('guestCheckinTurnedOff',{
+	}).state('guestCheckinTurnedOff', {
 	 	url: '/guestCheckinTurnedOff',
 	 	templateUrl: '/assets/common_templates/partials/MGM/gwExternalCheckInTurnedOff.html',
 	 	title: 'Check-in'
@@ -205,7 +205,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	});
 
 
-	//checkin now states
+	// checkin now states
 	$stateProvider.state('guestCheckinOptions', {
 		url: '/guestCheckinOptions',
 		templateUrl: '/assets/common_templates/partials/MGM/gwCheckinOptions.html',
@@ -213,7 +213,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		title: 'Checkin options'
 	}).state('earlyCheckinReady', {
 		url: '/earlyCheckinReady',
-		controller:'earlyCheckinReadyController',
+		controller: 'earlyCheckinReadyController',
 		templateUrl: '/assets/common_templates/partials/MGM/gwEarlyCheckinReady.html',
 		title: 'Early Check in ready'
 	}).state('roomNotReady', {

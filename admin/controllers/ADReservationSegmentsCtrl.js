@@ -21,6 +21,7 @@ admin.controller('ADReservationSegmentsCtrl', ['$scope', '$state', 'ADSegmentsSr
 				$scope.$emit('hideLoader');
 				$scope.segmentData.baseData = data;
 			};
+
 			$scope.invokeApi(ADSegmentsSrv.fetch, {}, onFetchSuccess);
 		};
 
@@ -58,6 +59,7 @@ admin.controller('ADReservationSegmentsCtrl', ['$scope', '$state', 'ADSegmentsSr
 				$scope.segmentData.currentSegment = false;
 				fetchSegments();
 			};
+
 			$scope.invokeApi(ADSegmentsSrv.save, $scope.segmentData.newSegmentData, onSaveSuccess);
 		};
 
@@ -67,6 +69,7 @@ admin.controller('ADReservationSegmentsCtrl', ['$scope', '$state', 'ADSegmentsSr
 				$scope.$emit('hideLoader');
 				$scope.segmentData.currentSegment = false;
 			};
+
 			$scope.invokeApi(ADSegmentsSrv.update, segment, onUpdateSuccess);
 		};
 
@@ -77,6 +80,7 @@ admin.controller('ADReservationSegmentsCtrl', ['$scope', '$state', 'ADSegmentsSr
 				$scope.segmentData.currentSegment = false;
 				fetchSegments();
 			};
+
 			$scope.invokeApi(ADSegmentsSrv.delete, segment, onDeleteSuccess);
 		};
 
@@ -103,6 +107,7 @@ admin.controller('ADReservationSegmentsCtrl', ['$scope', '$state', 'ADSegmentsSr
 				$scope.$emit('hideLoader');
 				$scope.segmentData.currentSegment = false;
 			};
+
 			$scope.invokeApi(ADSegmentsSrv.toggleSegmentsUse, {
 				is_use_segments: $scope.segmentData.baseData.is_use_segments
 			}, onToggleSuccess);

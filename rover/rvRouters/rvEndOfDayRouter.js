@@ -1,5 +1,5 @@
 angular.module('EndOfDayModule', [])
-    .config(function($stateProvider, $urlRouterProvider, $translateProvider){
+    .config(function($stateProvider, $urlRouterProvider, $translateProvider) {
 
         $stateProvider.state('rover.endOfDay', {
             abstract: true,

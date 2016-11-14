@@ -1,10 +1,10 @@
 sntRover.controller('RVMoveChargeCtrl',
-	['$scope','$timeout','RVMoveChargeSrv',
-	function($scope,$timeout,RVMoveChargeSrv) {
+	['$scope', '$timeout', 'RVMoveChargeSrv',
+	function($scope, $timeout, RVMoveChargeSrv) {
 
 		BaseCtrl.call(this, $scope);
 
-		var initiate = function(){
+		var initiate = function() {
 			$scope.numberQuery    = "";
 			$scope.textQuery      = "";
 			$scope.searchResults  = [];
@@ -21,11 +21,12 @@ sntRover.controller('RVMoveChargeCtrl',
 		/**
          * return - An array of Bills except current acive bill
          */
-		var createBillOptions = function(){
-			//Bills are collected from reservationBillData or transactionsDetails		
-			var data = $scope.reservationBillData ||$scope.transactionsDetails;			
-			_.each(data.bills, function(result,index){
-				if(index !== $scope.currentActiveBill){
+		var createBillOptions = function() {
+			// Bills are collected from reservationBillData or transactionsDetails		
+			var data = $scope.reservationBillData || $scope.transactionsDetails;			
+
+			_.each(data.bills, function(result, index) {
+				if (index !== $scope.currentActiveBill) {
 					$scope.billOptions.push(result);
 				}
 			});
@@ -46,19 +47,20 @@ sntRover.controller('RVMoveChargeCtrl',
          * Handle bill selected Action
          * TODO : Disable search Portion
          */
-        $scope.billSelected = function(){
-        	if($scope.selectedBillId!==""){
+        $scope.billSelected = function() {
+        	if ($scope.selectedBillId !== "") {
         		$scope.targetBillId = parseInt($scope.selectedBillId);
         		$scope.targetBillSelected = true;
-        	}else{
+        	} else {
         		$scope.targetBillSelected = false;
         		$scope.searching = false;
-        		};
+        		}
         };
 
 
 		$scope.getGuestStatusIcon = function(reservationStatus, isLateCheckoutOn, isPrecheckin) {
 			var viewStatus = "";
+
 			if (isLateCheckoutOn && "CHECKING_OUT" === reservationStatus) {
 				viewStatus = "late-check-out";
 				return viewStatus;
@@ -90,16 +92,16 @@ sntRover.controller('RVMoveChargeCtrl',
 			}, 500);
 		};
 
-		$scope.$on("NG_REPEAT_COMPLETED_RENDERING", function(event){
+		$scope.$on("NG_REPEAT_COMPLETED_RENDERING", function(event) {
 			refreshSearchList ();
 		});
 
-		var unsetSearchList = function(){
+		var unsetSearchList = function() {
 			$scope.searchResults = [];
 			refreshSearchList();
 		};
 
-		$scope.clearTextQuery = function(){
+		$scope.clearTextQuery = function() {
 			$scope.textQuery = '';
 			unsetSearchList();
 			$scope.searching = false;
@@ -107,7 +109,7 @@ sntRover.controller('RVMoveChargeCtrl',
 		};
 
 
-		$scope.clearNumberQuery = function(){
+		$scope.clearNumberQuery = function() {
 			$scope.numberQuery = '';
 			unsetSearchList();
 			$scope.searching = false;
@@ -119,19 +121,19 @@ sntRover.controller('RVMoveChargeCtrl',
 		 *
 		 */
 
-		var fetchFilterdData = function(){
+		var fetchFilterdData = function() {
 
-			var fetchSucces = function(data){
+			var fetchSucces = function(data) {
 				$scope.$emit("hideLoader");
 				$scope.searchResults = data.results;
-    			_.each($scope.searchResults, function(result,index) {
+    			_.each($scope.searchResults, function(result, index) {
     				result.entity_id = index;
-    				(result.type === 'RESERVATION') ? result.displaytext = result.last_name+', '+result.first_name : '';
+    				(result.type === 'RESERVATION') ? result.displaytext = result.last_name + ', ' + result.first_name : '';
     			});
     			refreshSearchList();
 			};
 
-			$scope.invokeApi(RVMoveChargeSrv.fetchSearchedItems, {"text_search":$scope.textQuery,"number_search":$scope.numberQuery,"bill_id":$scope.moveChargeData.fromBillId}, fetchSucces);
+			$scope.invokeApi(RVMoveChargeSrv.fetchSearchedItems, {"text_search": $scope.textQuery, "number_search": $scope.numberQuery, "bill_id": $scope.moveChargeData.fromBillId}, fetchSucces);
 		};
 
 		/**
@@ -147,7 +149,7 @@ sntRover.controller('RVMoveChargeCtrl',
 					refreshSearchList();
 				} else {
 					fetchFilterdData();
-				};
+				}
 				runDigestCycle();
 			}, 200);
 		};
@@ -158,13 +160,13 @@ sntRover.controller('RVMoveChargeCtrl',
 		 *
 		 */
 
-		$scope.targetClicked =  function(selectedId){
+		$scope.targetClicked =  function(selectedId) {
 
 			_.each($scope.searchResults, function(result) {
-				if(result.entity_id === selectedId){
+				if (result.entity_id === selectedId) {
 					$scope.selectedTarget               = result;
-					$scope.selectedTarget.displayNumber = (result.type ==="ACCOUNT" ||result.type ==="GROUP") ? result.account_number : result.confirm_no;
-					$scope.selectedTarget.displaytext   = (result.type ==="ACCOUNT" ||result.type ==="GROUP") ? result.account_name : (result.last_name+' ,'+result.first_name);
+					$scope.selectedTarget.displayNumber = (result.type === "ACCOUNT" || result.type === "GROUP") ? result.account_number : result.confirm_no;
+					$scope.selectedTarget.displaytext   = (result.type === "ACCOUNT" || result.type === "GROUP") ? result.account_name : (result.last_name + ' ,' + result.first_name);
 					$scope.targetBillId                 = $scope.selectedTarget.bills[0].id;
 					$scope.targetSelected               = true;
 				}
@@ -177,7 +179,7 @@ sntRover.controller('RVMoveChargeCtrl',
 		 * Discard current selection and go to search list
 		 *
 		 */
-		$scope.changeSelection =  function(){
+		$scope.changeSelection =  function() {
 			$scope.selectedTarget = {};
 			$scope.targetSelected = false;
 			$scope.searching = true;
@@ -186,7 +188,7 @@ sntRover.controller('RVMoveChargeCtrl',
 		 * show Move/Cancel button
 		 *
 		 */
-		$scope.showMoveButton = function(){
+		$scope.showMoveButton = function() {
 			return ($scope.targetSelected || $scope.targetBillSelected);
 		};
 
@@ -196,14 +198,14 @@ sntRover.controller('RVMoveChargeCtrl',
 		 * reservation or account
 		 *
 		 */
-		$scope.moveCharges = function(){
+		$scope.moveCharges = function() {
 
 			var params = {
 				 "from_bill": $scope.moveChargeData.fromBillId,
    				 "to_bill": $scope.targetBillId,
-    			 "financial_transaction_ids":$scope.moveChargeData.selectedTransactionIds
+    			 "financial_transaction_ids": $scope.moveChargeData.selectedTransactionIds
 			};
-			var chargesMovedSuccess = function(){
+			var chargesMovedSuccess = function() {
 				$scope.$emit("hideLoader");
 				$scope.$emit('moveChargeSuccsess');
 				$scope.closeDialog();
@@ -214,6 +216,7 @@ sntRover.controller('RVMoveChargeCtrl',
                 $scope.errorMessage = data;
                 $scope.$emit('hideLoader');
             };
+
 			$scope.invokeApi(RVMoveChargeSrv.moveChargesToTargetEntity, params, chargesMovedSuccess, failureCallback );
 		};
 		initiate();

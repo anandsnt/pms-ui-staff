@@ -1,24 +1,25 @@
-admin.controller('ADCampaignsListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADCampaignSrv', 'ngTableParams','$filter','$timeout', '$location', '$anchorScroll',
-	function($scope, $state, ADRatesSrv, ADCampaignSrv, ngTableParams, $filter, $timeout, $location, $anchorScroll){
+admin.controller('ADCampaignsListCtrl', ['$scope', '$state', 'ADRatesSrv', 'ADCampaignSrv', 'ngTableParams', '$filter', '$timeout', '$location', '$anchorScroll',
+	function($scope, $state, ADRatesSrv, ADCampaignSrv, ngTableParams, $filter, $timeout, $location, $anchorScroll) {
 
 	$scope.errorMessage = '';
 	$scope.successMessage = "";
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
 
-	$scope.fetchTableData = function($defer, params){
+	$scope.fetchTableData = function($defer, params) {
 		var getParams = $scope.calculateGetParams(params);
-		var fetchSuccessOfItemList = function(data){
+		var fetchSuccessOfItemList = function(data) {
 			$scope.$emit('hideLoader');
-			//No expanded rate view
+			// No expanded rate view
 			$scope.currentClickedElement = -1;
 			$scope.totalCount = data.total_count;
-			$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
+			$scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
 			$scope.data = data.results;
 			$scope.currentPage = params.page();
         	params.total(data.total_count);
             $defer.resolve($scope.data);
 		};
+
 		$scope.invokeApi(ADCampaignSrv.fetchCampaigns, getParams, fetchSuccessOfItemList);
 	};
 
@@ -38,17 +39,17 @@ admin.controller('ADCampaignsListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADCam
 		);
 	};
 
-	$scope.editCampaign = function(id , index){
-		$state.go('admin.addCampaign', {'id' : id, 'type': 'EDIT'});
+	$scope.editCampaign = function(id, index) {
+		$state.go('admin.addCampaign', {'id': id, 'type': 'EDIT'});
 	};
 
-	$scope.deleteCampaign = function(id, index){
+	$scope.deleteCampaign = function(id, index) {
 
-		var deleteSuccess = function(){
+		var deleteSuccess = function() {
 			$scope.$emit('hideLoader');
 
-			for(var i in $scope.data){
-				if($scope.data[i].id === id){
+			for (var i in $scope.data) {
+				if ($scope.data[i].id === id) {
 					$scope.data.splice(i, 1);
 					break;
 				}
@@ -56,7 +57,8 @@ admin.controller('ADCampaignsListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADCam
 
 			$scope.reloadTable();
 		};
-		var params = {"id" : id};
+		var params = {"id": id};
+
 		$scope.invokeApi(ADCampaignSrv.deleteCampaign, params, deleteSuccess);
 	};
 
@@ -65,6 +67,7 @@ admin.controller('ADCampaignsListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADCam
 			return "";
 		}
 		var timeDict = tConvert(time);
+
 		return (timeDict.hh + ":" + timeDict.mm + " " + timeDict.ampm);
 	};
 

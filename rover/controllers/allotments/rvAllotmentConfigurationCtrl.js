@@ -14,7 +14,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
     function($scope, $rootScope, rvAllotmentSrv, $filter, $stateParams, rvAllotmentConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout, rvAccountTransactionsSrv) {
 
         BaseCtrl.call(this, $scope);
-        $scope.isDisabledDatePicker = ($stateParams.id !== "NEW_ALLOTMENT")? true :  false;
+        $scope.isDisabledDatePicker = ($stateParams.id !== "NEW_ALLOTMENT") ? true :  false;
         /**
          * to run angular digest loop,
          * will check if it is not running
@@ -54,7 +54,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 title = $filter('translate')('NEW_ALLOTMENT');
             }
 
-            //yes, we are setting the headting and title
+            // yes, we are setting the headting and title
             $scope.setHeadingTitle(title);
         };
 
@@ -63,7 +63,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          * @return {Boolean} [description]
          */
         $scope.shouldShowRoomingListTab = function() {
-            //we will not show it in add mode
+            // we will not show it in add mode
             return (!$scope.isInAddMode());
         };
 
@@ -74,8 +74,9 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          */
         var ifMandatoryValuesEntered = function() {
             var summary = $scope.allotmentConfigData.summary;
+
             return !!summary.allotment_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to;
-        }
+        };
 
 
         /**
@@ -84,6 +85,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          */
         var fetchSuccessOfSummaryData = function(data) {
             var summaryData = $scope.allotmentConfigData.summary; // ref for summary
+
             summaryData = _.extend(summaryData, data.allotmentSummary);
 
             if (!$scope.isInAddMode()) {
@@ -153,7 +155,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             // If allotment name is passsed to create a new one
             if ( !!$stateParams.newAllotmentName ) {
                 $scope.allotmentConfigData.summary.allotment_name = $stateParams.newAllotmentName;
-            };
+            }
         };
 
         /**
@@ -171,10 +173,10 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          */
         $scope.switchTabTo = function(tab) {
 
-            //if there was any error message there, we are clearing
+            // if there was any error message there, we are clearing
             $scope.errorMessage = '';
 
-            //allow to swith to "transactions" tab only if the user has its permission
+            // allow to swith to "transactions" tab only if the user has its permission
             if (tab === "TRANSACTIONS" && !$scope.hasPermissionToViewTransactionsTab()) {
                 $scope.errorMessage = ["Sorry, you don't have the permission to access the transactions"];
                 return;
@@ -184,6 +186,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
 
             // we will restrict tab swithing if we are in add mode
             var tryingFromSummaryToOther = isInSummaryTab && tab !== 'SUMMARY';
+
             if ($scope.isInAddMode() && tryingFromSummaryToOther) {
                 $scope.errorMessage = ['Sorry, Please save the entered information and try to switch the tab'];
                 return;
@@ -191,7 +194,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
 
             $scope.allotmentConfigData.activeTab = tab;
 
-            //propogating an event that next clients are
+            // propogating an event that next clients are
             $timeout(function() {
                 $scope.$broadcast('ALLOTMENT_TAB_SWITCHED', $scope.allotmentConfigData.activeTab);
             }, 100);
@@ -213,7 +216,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             angular.forEach($scope.transactionsDetails.bills, function(value, key) {
                 angular.forEach(value.total_fees.fees_details, function(feesValue, feesKey) {
 
-                    feesValue.billValue = value.bill_number; //Bill value append with bill details
+                    feesValue.billValue = value.bill_number; // Bill value append with bill details
                     feesValue.oldBillValue = value.bill_number; // oldBillValue used to identify the old billnumber
                 });
             });
@@ -224,6 +227,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             var params = {
                 "account_id": $scope.accountConfigData.summary.posting_account_id
             };
+
             $scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, {
                 successCallBack: onTransactionFetchSuccess,
                 params: params
@@ -302,6 +306,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                             summary: $scope.allotmentConfigData.summary
                         }
                     };
+
                     $scope.callAPI(rvAllotmentConfigurationSrv.saveAllotmentSummary, options);
                 } else {
                     $scope.errorMessage = ["Allotment's name, from date, to date and hold status are mandatory"];
@@ -314,7 +319,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
 
         var refreshSummaryDataAfterUpdate = false;
         var onAllotmentUpdateSuccess = function(data) {
-            //client controllers should get an infromation whether updation was success
+            // client controllers should get an infromation whether updation was success
             $scope.$broadcast("UPDATED_ALLOTMENT_INFO", angular.copy($scope.allotmentConfigData.summary));
             $scope.allotmentSummaryMemento = angular.copy($scope.allotmentConfigData.summary);
 
@@ -326,7 +331,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             return true;
         };
         var onAllotmentUpdateFailure = function(errorMessage) {
-            //client controllers should get an infromation whether updation was a failure
+            // client controllers should get an infromation whether updation was a failure
             $scope.$broadcast("FAILED_TO_UPDATE_ALLOTMENT_INFO", errorMessage);
             $scope.errorMessage = errorMessage;
             refreshSummaryDataAfterUpdate = false;
@@ -347,6 +352,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                     refreshSummaryDataAfterUpdate = true;
                 }
                 var summaryData = _.extend({}, $scope.allotmentConfigData.summary);
+
                 summaryData.block_from = $filter('date')(summaryData.block_from, $rootScope.dateFormatForAPI);
                 summaryData.block_to = $filter('date')(summaryData.block_to, $rootScope.dateFormatForAPI);
                 summaryData.release_date = $filter('date')(summaryData.release_date, $rootScope.dateFormatForAPI);
@@ -371,7 +377,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          * @return undefined
          */
         $scope.duplicateAllotment = function() {
-            //TODO: Duplicate Allotment - Future functionality
+            // TODO: Duplicate Allotment - Future functionality
         };
 
         /**
@@ -390,14 +396,14 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             return ( !$scope.isInAddMode() && (null !== $scope.allotmentConfigData.summary.travel_agent && !!$scope.allotmentConfigData.summary.travel_agent.id) );
         };
 
-        $scope.goToTACard = function(){
+        $scope.goToTACard = function() {
             $state.go('rover.companycarddetails', {
                 id: summaryData.allotmentSummary.travel_agent.id,
                 type: 'TRAVELAGENT'
             });
         };
 
-        $scope.goToCompanyCard = function(){
+        $scope.goToCompanyCard = function() {
             $state.go('rover.companycarddetails', {
                 id: summaryData.allotmentSummary.company.id,
                 type: 'COMPANY'
@@ -414,6 +420,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
 
         $scope.onCompanyCardChange = function() {
             var summaryData = $scope.allotmentConfigData.summary;
+
             if (summaryData.company && summaryData.company.name === "") {
                 summaryData.company = null;
             }
@@ -430,7 +437,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          * @return {None}
          */
         var initializeAutoCompletions = function() {
-            //this will be common for both company card & travel agent
+            // this will be common for both company card & travel agent
             var cardsAutoCompleteCommon = {
 
                 focus: function(event, ui) {
@@ -438,13 +445,14 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 }
             };
 
-            //merging auto complete setting for company card with common auto cmplt options
+            // merging auto complete setting for company card with common auto cmplt options
             $scope.companyAutoCompleteOptions = angular.extend({
                 source: function(request, response) {
                     rvAllotmentConfigurationSrv.searchCompanyCards(request.term)
                         .then(function(data) {
                             var list = [];
                             var entry = {};
+
                             $.map(data, function(each) {
                                 entry = {
                                     label: each.account_name,
@@ -478,13 +486,14 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 }
             }, cardsAutoCompleteCommon);
 
-            //merging auto complete setting for travel agent with common auto cmplt options
+            // merging auto complete setting for travel agent with common auto cmplt options
             $scope.travelAgentAutoCompleteOptions = angular.extend({
                 source: function(request, response) {
                     rvAllotmentConfigurationSrv.searchTravelAgentCards(request.term)
                         .then(function(data) {
                             var list = [];
                             var entry = {};
+
                             $.map(data, function(each) {
                                 entry = {
                                     label: each.account_name,
@@ -524,6 +533,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          */
         $scope.computeAddonsCount = function() {
             var count = 0;
+
             angular.forEach($scope.allotmentConfigData.selectedAddons, function(addon) {
                 count += parseInt(addon.addon_count);
             });
@@ -553,7 +563,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 callback: 'updateAndBack',
                 scope: $scope
             };
-            //setting title and things
+            // setting title and things
             setTitle();
         };
 
@@ -583,13 +593,13 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          */
         var initAllotmentConfig = function() {
 
-            //forming the data model if it is in add mode or populating the data if it is in edit mode
+            // forming the data model if it is in add mode or populating the data if it is in edit mode
             $scope.initializeDataModelForSummaryScreen();
 
-            //auto completion things
+            // auto completion things
             initializeAutoCompletions();
 
-            //back navigation
+            // back navigation
             setBackNavigation();
         };
 

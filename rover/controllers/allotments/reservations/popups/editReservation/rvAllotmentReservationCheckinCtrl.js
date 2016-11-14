@@ -11,7 +11,7 @@ sntRover.controller('rvAllotmentReservationCheckinCtrl', [
             $state) {
 
       var completeCheckinSuccessCallback = function(data) {
-        //As we have checked in a reservation we need to update rooming list data.
+        // As we have checked in a reservation we need to update rooming list data.
         $scope.$emit('REFRESH_ALLOTMENT_RESERVATIONS_LIST_DATA');
         $timeout(function() {
           $scope.closeDialog();
@@ -37,6 +37,7 @@ sntRover.controller('rvAllotmentReservationCheckinCtrl', [
           successCallBack: completeCheckinSuccessCallback,
           failureCallBack: completeCheckinFailureCallback
         };
+
         $scope.callAPI(rvAllotmentReservationsListSrv.performMassCheckin, options);
       };
     }]);

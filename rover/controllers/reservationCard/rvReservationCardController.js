@@ -12,6 +12,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 		$scope.setHeadingTitle($scope.heading);
 
 		var title = "Staycard";
+
 		$scope.setTitle(title);
 		$scope.prevTimeLineEmpty = false;
 		$scope.reservationCardClick = function() {
@@ -27,11 +28,10 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 		$scope.$on('passReservationParams', function(event, data) {
 
 
-
 			$scope.$emit('staycardGuestData', data);
 			$scope.data = data;
 
-			$scope.timeline = data.reservation_details.timeline;;
+			$scope.timeline = data.reservation_details.timeline;
 
 			$scope.countCurrent = data.reservation_list.current_reservations_arr.length;
 			$scope.countUpcoming = data.reservation_list.upcoming_reservations_arr.length;
@@ -60,7 +60,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 				$scope.$emit('hideLoader');
 			};
 
-			//Make this call IFF a guest is available in the card
+			// Make this call IFF a guest is available in the card
 			if (typeof $scope.data.guest_details.reservation_id !== "undefined" && $scope.data.guest_details.reservation_id !== null) {
 				var param = {
 					'fakeDataToAvoidCache': new Date(),
@@ -70,6 +70,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 					"user_id": $scope.data.guest_details.user_id,
 					"guest_id": $scope.data.guest_details.guest_id
 				};
+
 				$scope.$emit('SETGUESTDATA', guestInfo);
 				$scope.showGuestPaymentList(guestInfo);
 
@@ -77,17 +78,17 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 
 			if ($scope.timeline === "current") {
 				$scope.reservationList = data.reservation_list.current_reservations_arr;
-				//This status is used to show appr message if count of reservations in selected time line is zero
+				// This status is used to show appr message if count of reservations in selected time line is zero
 				$scope.reservationDisplayStatus = ($scope.countCurrent > 0) ? true : false;
 			}
 			if ($scope.timeline === "upcoming") {
 				$scope.reservationList = data.reservation_list.upcoming_reservations_arr;
-				//This status is used to show appr message if count of reservations in selected time line is zero
+				// This status is used to show appr message if count of reservations in selected time line is zero
 				$scope.reservationDisplayStatus = ($scope.countUpcoming > 0) ? true : false;
 			}
 			if ($scope.timeline === "history") {
 				$scope.reservationList = data.reservation_list.history_reservations_arr;
-				//This status is used to show appr message if count of reservations in selected time line is zero
+				// This status is used to show appr message if count of reservations in selected time line is zero
 				$scope.reservationDisplayStatus = ($scope.countHistory > 0) ? true : false;
 			}
 
@@ -104,6 +105,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 		$scope.showTimeLineReservation = function(timeline) {
 			$scope.timeline = timeline;
 			var count = 0;
+
 			if (timeline === "current") {
 				$scope.reservationList = $scope.data.reservation_list.current_reservations_arr;
 				count = $scope.countCurrent;
@@ -117,15 +119,15 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 				count = $scope.countHistory;
 			}
 
-			//prevTimeLineEmpty - flag indicates if the "FROM timeline" was empty
-			//Bug fix CICO-10184
-			if(count > 0 && !$scope.prevTimeLineEmpty){
+			// prevTimeLineEmpty - flag indicates if the "FROM timeline" was empty
+			// Bug fix CICO-10184
+			if (count > 0 && !$scope.prevTimeLineEmpty) {
 				$scope.reservationDisplayStatus = true;
 			} else {
 				$scope.reservationDisplayStatus = false;
 			}
 
-			if (count>0){
+			if (count > 0) {
 				$scope.prevTimeLineEmpty = false;
 				$scope.currentReservationId = $scope.reservationList[0].confirmation_num;
 				$scope.getReservationDetails($scope.reservationList[0].confirmation_num, $scope.reservationList[0].id);
@@ -139,7 +141,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 			$scope.$broadcast('RESERVATIONLISTUPDATED');
 
 		};
-		$scope.$on("REFRESH_LIST_SCROLL", function(){
+		$scope.$on("REFRESH_LIST_SCROLL", function() {
 			$scope.$broadcast("RESERVATIONLISTUPDATED");
 		});
 		/*
@@ -148,10 +150,10 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 		 */
 		$scope.getReservationDetails = function(currentConfirmationNumber, currentId) {
 			// CICO-9709 - Reintiate reservation main data
-			//$scope.initReservationData(); // commenting code as per CICO-10077
+			// $scope.initReservationData(); // commenting code as per CICO-10077
 
 			$scope.clearArrivalAndDepartureTime();
-                        //set flag to show reservation is being refreshed
+                        // set flag to show reservation is being refreshed
                         $scope.$parent.refreshingReservation = true;
 			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 					"id": currentId,
@@ -174,11 +176,12 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 					"user_id": userId,
 					"guest_id": guestId
 				};
+
 				$scope.$emit('GUESTPAYMENTDATA', paymentData);
 				$scope.$emit('SHOWGUESTLIKES');
 			};
 
-			if($stateParams.isrefresh === "true"){
+			if ($stateParams.isrefresh === "true") {
 				$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, userId, paymentSuccess, '', 'NONE');
 			}
 

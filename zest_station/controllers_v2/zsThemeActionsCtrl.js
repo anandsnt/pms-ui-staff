@@ -10,7 +10,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 		BaseCtrl.call(this, $scope);
 		
 
-		/********************************************************************************
+		/** ******************************************************************************
 		 *  Theme based actions starts here
 		 ********************************************************************************/
 
@@ -21,27 +21,28 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 		var setThemeByName = function(theme) {
 			$('body').css('display', 'none');
 			var link, logo;
+
 			$scope.$emit('updateIconPath', theme);
 			zsHotelDetailsSrv.data.theme = theme.toLowerCase();
 			setTimeout(function() {
 				$('body').css('display', 'block');
 			}, 50);
-			//based upon admin settings set printer css styles
+			// based upon admin settings set printer css styles
 			// setPrinterOptions(); - to do
 		};
 
 
-		$scope.setSvgsToBeLoaded(iconsPath, iconsPath, true); //(icons path, default path, use default icons)
+		$scope.setSvgsToBeLoaded(iconsPath, iconsPath, true); // (icons path, default path, use default icons)
 
 		var setPrinterOptions = function(theme) {
-			//zsUtils function
+			// zsUtils function
 			if ($scope.zestStationData.zest_printer_option === "STAR_TAC") {
-				(theme === 'yotel') ? applyStylesForYotelStarTac(): applyStarTacStyles();
+				(theme === 'yotel') ? applyStylesForYotelStarTac() : applyStarTacStyles();
 			} else if ($scope.zestStationData.zest_printer_option === "RECEIPT") {
-				(theme === 'yotel') ? applyStylesForYotelReceipt(): "";
+				(theme === 'yotel') ? applyStylesForYotelReceipt() : "";
 			} else {
-				applyPrintMargin(); //zsUtils function
-			};
+				applyPrintMargin(); // zsUtils function
+			}
 		};
 		var setHotelBasedTheme = function(theme) {
 			/*
@@ -54,6 +55,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 			if (theme !== null) {
 				var url = $scope.cssMappings[theme.toLowerCase()];
 				var fileref = document.createElement("link");
+
 				fileref.setAttribute("rel", "stylesheet");
 				fileref.setAttribute("type", "text/css");
 				fileref.setAttribute("href", url);
@@ -62,17 +64,17 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 				setThemeByName(theme);
 			} else {
 				return;
-			};
+			}
 		};
 
 
-		/********************************************************************************
+		/** ******************************************************************************
 		 *  Theme based actions ends here
 		 ********************************************************************************/
 
 
-		var getHotelStationTheme = function() {
+		var getHotelStationTheme = (function() {
 			setHotelBasedTheme(zsGeneralSrv.hotelTheme);
-		}();
+		}());
 	}
 ]);

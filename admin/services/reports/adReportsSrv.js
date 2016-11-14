@@ -1,7 +1,7 @@
 admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$http',
     function($q, ADBaseWebSrvV2, adReportsFilterSrv, $http) {
         var self = this;
-        /*-------------------------------------------------------------------------------------------------------------- A. CONFIGURATION
+        /* -------------------------------------------------------------------------------------------------------------- A. CONFIGURATION
                                                Reports are identified by their "KEY"
                                            ENSURE that the key of the reports stays UNIQUE
                                      The below objects (self.reports, self.filters) contain
@@ -25,7 +25,7 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
             subTitle: "",
             title: "Client Usage"
         }];
-        /*-------------------------------------------------------------------------------------------------------------- 
+        /* -------------------------------------------------------------------------------------------------------------- 
                   Filters to reports must be mapped in the below Object if prefetching is required
                                           Note: ONLY IF PREFETCHING is REQUIRED
                                 i.e. The values must be available for selection from start
@@ -40,11 +40,12 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
             "PMS_TYPES": ["CLIENT_USAGE"],
             "HOTELS": ["CLIENT_USAGE"],
             "HOTEL_CHAINS": ["CLIENT_USAGE"]
-        }
+        };
 
         // ------------------------------------------------------------------------------------------------------------- B. EXPOSED SERVICES
         self.fetchReportsList = function() {
             var deferred = $q.defer();
+
             deferred.resolve(reportsList);
             return deferred.promise;
         };
@@ -52,9 +53,10 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
         // Pre Fetch Iniital Dependencies Reqiured to show the filters
         self.fetchFilterData = function(ReportKey) {
             var filters = _.filter(_.keys(reportFiltersMap), function(key) {
-                return _.indexOf(reportFiltersMap[key], ReportKey) > -1
+                return _.indexOf(reportFiltersMap[key], ReportKey) > -1;
             });
             var deferred = $q.defer();
+
             if (!self.cache.filters[ReportKey] || Date.now() > self.cache.filters[ReportKey]['expiryDate']) {
                 $q.when(adReportsFilterSrv.fetchFilterData(filters), function(filters) {
                     self.cache.filters[ReportKey] = {
@@ -64,22 +66,24 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
                     deferred.resolve("success");
                 }, function(error) {
                     deferred.reject(error);
-                })
+                });
             } else {
                 deferred.resolve(self.cache.filters[ReportKey]['data']);
             }
             return deferred.promise;
         };
 
-        //gets pre fetched filter data
+        // gets pre fetched filter data
         self.getFilterData = function(ReportKey) {
             var deferred = $q.defer();
+
             deferred.resolve(self.cache.filters[ReportKey].data);
             return deferred.promise;
-        }
+        };
 
         self.exportCSV = function(params) {
             var deferred = $q.defer();
+
             $http({
                 method: 'POST',
                 url: params.url,
@@ -98,13 +102,14 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
                 // http://stackoverflow.com/questions/24673612/element-click-does-not-work-in-firefox-and-ie-but-works-in-chrome
                 if (document.createEvent) {
                     var ev = document.createEvent("MouseEvent");
+
                     ev.initMouseEvent(
                         "click",
-                        true /* bubble */ , true /* cancelable */ ,
+                        true /* bubble */, true /* cancelable */,
                         window, null,
                         0, 0, 0, 0, /* coordinates */
                         false, false, false, false, /* modifier keys */
-                        0 /*left*/ , null
+                        0 /* left*/, null
                     );
                     hiddenAnchor[0].dispatchEvent(ev);
                 } else {
@@ -122,10 +127,10 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
 
         self.cache = {
             config: {
-                lifeSpan: 600 //in seconds
+                lifeSpan: 600 // in seconds
             },
             filters: {}
-        }
+        };
 
 
     }
