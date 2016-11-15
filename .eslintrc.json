@@ -12,10 +12,12 @@
         "Provider": false,
         "ReactRedux": false,
         "ReduxThunk": false,
+        "_": false,
+        "cordova": false,
         "BaseCtrl": true,
         "sntRover":true,
         "sntapp": true,
-        "cordova": false
+        "isEmptyObject": true
     },
     "installedESLint":true,
     "parserOptions":{
