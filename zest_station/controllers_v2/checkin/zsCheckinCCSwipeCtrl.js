@@ -164,10 +164,11 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
 
         var processSwipeCardData = function(swipedCardData) {
-            if (typeof swipedCardData === typeof 'str') {
+            // TODO: need to update this comment and determine why we're handling both cases.
+            if (_.isString(swipedCardData)) {
                 $scope.swipeData = JSON.parse(swipedCardData);
 
-            } else if (typeof swipedCardData === typeof {'object': true}) {
+            } else if (_.isObject(swipedCardData)) {
                 $scope.swipeData = swipedCardData;
 
             } else {
@@ -362,11 +363,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         };
 
         var atCardSwipeScreen = function() {
-            if ($state.current.name === 'zest_station.checkInCardSwipe') { // using for debugging & demo mode, 
-                // please leave this here until next release as it wont hurt any functionality currently
-                return true;
-            }
-            return false;
+            return $state.current.name === 'zest_station.checkInCardSwipe';
         };
 
         var initiateiPadCardReader = function() {
