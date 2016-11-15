@@ -12,7 +12,7 @@ angular.module('sntRover').controller('allotmentAvailabilityMainController', [
 
 	$scope.page.title = "Allotments";
 	// default number of selected days is 14
-	$scope.numberOfDaysSelected = 14;
+	$scope.numberOfDaysSelected = '14';
 
 
 	$scope.data = {};
