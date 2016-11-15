@@ -1,7 +1,13 @@
 <div class="group-content with-pagination holder">
+    <div class="form-subtitle-title">
+        <h6>
+            <span translate="" ng-show="selectionConfig.activeTab === 'SELECTED'">SELECT_ITEMS_TO_REMOVE_FROM_EXCLUDED</span> 
+             <span translate="" ng-show="selectionConfig.activeTab === 'UNSELECTED'">SELECT_ITEMS_TO_EXCLUDE</span>
+        </h6>
+    </div>
     <div class="group-filters">
         <ul class="filters">
-            <li ng-click="toggleAvailableItems()" ng-class="{'active' : selectionConfig.activeTab === 'UNSELECTED'}">Unselected</li>
+            <li ng-click="toggleAvailableItems()" ng-class="{'active' : selectionConfig.activeTab === 'UNSELECTED'}">Available</li>
             <li ng-click="toggleAvailableItems()" ng-class="{'active' : selectionConfig.activeTab === 'SELECTED'}">Selected</li>
         </ul>
         <div class="entry search">
@@ -47,16 +53,4 @@
             <p>Showing {{startCount}} to {{endCount}} of {{totalCount}} items</p>
         </div>
     </script>
-    <!-- Action Buttons Here -->
-    <div class="actions margin-bottom-50">
-        <button type="button" id="cancel" class="button blank" ng-click="toggleRoomExlusionSettings(false)" translate>
-            CANCEL
-        </button>
-        <button type="button" ng-hide="selectionConfig.activeTab === 'SELECTED'" like-type="common" ng-show="" class="button " ng-click="onSaveChanges()" ng-disabled="!selectionConfig.areSomeItemsSelected && !selectionConfig.areAllItemsSelected" ng-class="{'green': selectionConfig.areAllItemsSelected || selectionConfig.areSomeItemsSelected, 'grey': !selectionConfig.areSomeItemsSelected && !selectionConfig.areAllItemsSelected}" translate>
-            ASSIGN_SELECTED
-        </button>
-        <button type="button" ng-show="selectionConfig.activeTab === 'SELECTED'" like-type="common" class="button " ng-click="onSaveChanges()" ng-disabled="!selectionConfig.areSomeItemsSelected && !selectionConfig.areAllItemsSelected" ng-class="{'red': selectionConfig.areAllItemsSelected || selectionConfig.areSomeItemsSelected, 'grey': !selectionConfig.areSomeItemsSelected && !selectionConfig.areAllItemsSelected}" translate>
-            UNASSIGN_SELECTED
-        </button>
-    </div>
 </div>
