@@ -87,6 +87,7 @@ admin.controller('adFilterTableController', ['$scope', 'ngTableParams', '$inject
 				item.isSelected = $scope.selectionConfig.areAllItemsSelected;
 			});
 			$scope.updateSelectedList();
+			updateDataSet();
 		};
 
 		$scope.toggleSelectItem = function(item) {
