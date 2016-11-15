@@ -16,7 +16,7 @@
             <span class="icons icon-clear-search">Clear query</span>
         </button>
         <button type="submit" class="icons icon-search">Search</button>
-        <input id="neighbors-query" class="query" placeholder="Search" type="search" autocomplete="off" />
+        <input id="neighbors-query" class="query" placeholder="Search" type="search" autocomplete="off" focus-me="focusSearchField" ng-change="queryEntered()" ng-click="focusOnSearchText()" ng-model="textInQueryBox"/>
     </div>
 
 </form> 

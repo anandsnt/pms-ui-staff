@@ -17,6 +17,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
         $scope.newComment = "";
         $scope.middle_page1 = 2, $scope.middle_page2 = 3, $scope.middle_page3 = 4;
         
+        
         var deleteIndex = "";
 
         var COMMENT_LIST_SCROLL = 'comment-list-scroll';
@@ -179,6 +180,8 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
                 $scope.middle_page1 = $scope.totalCommentPages -3;
             }
         }
+
+        
 
     }
 

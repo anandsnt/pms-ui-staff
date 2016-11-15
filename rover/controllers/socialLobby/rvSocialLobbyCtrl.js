@@ -16,6 +16,8 @@ sntRover.controller('RVSocialLobbyCrl', [
         $scope.newPost = "";
         $scope.middle_page1 = 2, $scope.middle_page2 = 3, $scope.middle_page3 = 4;
         $scope.$emit("updateRoverLeftMenu", "sociallobby");
+        $scope.textInQueryBox = "";
+        $scope.showSearchResultsArea = false;
         
         var deleteIndex = "";
 
@@ -95,7 +97,13 @@ sntRover.controller('RVSocialLobbyCrl', [
 
         $scope.fetchPosts();
 
+        var clearSearchResults = function(){
+            $scope.textInQueryBox = "";
+            $scope.showSearchResultsArea = false;
+        }
+
         $scope.refreshPosts = function(){
+            clearSearchResults();
             $scope.postParams.page = 1;
             $scope.middle_page1 = 2, $scope.middle_page2 = 3, $scope.middle_page3 = 4;
             $scope.newPost = "";
@@ -209,6 +217,64 @@ sntRover.controller('RVSocialLobbyCrl', [
                 refreshPostScroll();
             }
         );
+
+        var search = function(){
+
+            var options = {};
+            options.params = $scope.postParams;
+            options.params.search = $scope.textInQueryBox;
+            $scope.errorMessage = "";
+            options.onSuccess = function(data){
+                
+                $scope.posts = data.results.posts;
+                $scope.totalPostPages = data.results.total_count % $scope.postParams.per_page > 0 ? Math.floor(data.results.total_count / $scope.postParams.per_page) + 1 : Math.floor(data.results.total_count / $scope.postParams.per_page);
+                $scope.$emit('hideLoader');
+                $scope.refreshPostScroll();
+            }
+            $scope.callAPI(RVSocilaLobbySrv.search, options);
+        
+        }
+
+        $scope.queryEntered = function() {
+            
+            var queryText = $scope.textInQueryBox;
+
+            
+            // if (!$scope.isTyping) {
+            //     $scope.isTyping = true;
+            // }
+
+            //setting first letter as captial: soumya
+            // $scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
+
+            if ($scope.textInQueryBox.length === 0 ) {
+                $scope.refreshPosts();
+                return;
+            }
+            if(!$scope.showSearchResultsArea){
+                $scope.showSearchResultsArea = true;
+                $scope.middle_page1 = 2, $scope.middle_page2 = 3, $scope.middle_page3 = 4;
+            }
+            if ($scope.textInQueryBox.length >=  3) {
+                
+                search();
+            }
+
+
+
+
+        }; //end of query entered
+
+        /**
+         * function to execute on focusing on search box
+         */
+        $scope.focusOnSearchText = function() {
+            //we are showing the search area
+            
+            
+            
+            refreshScroller();
+        };
 
     }
 
