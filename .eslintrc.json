@@ -8,7 +8,8 @@
         "sntRover":true,
         "angular":true,
         "BaseCtrl":true,
-        "_":true
+        "_":true,
+        "isEmptyObject":true
     },
     "installedESLint":true,
     "parserOptions":{

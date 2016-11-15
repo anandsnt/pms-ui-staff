@@ -8,11 +8,10 @@ sntRover.controller('RVNightlyDiaryDatePickerController',['$scope','$rootScope',
 		   changeYear: true,
 		   changeMonth: true,
 		   minDate: minDateSelected,
-		   maxDate: tzIndependentDate($rootScope.businessDate),
-		   yearRange: "-100:+0",
+		   yearRange: "-100:+5",
 		   onSelect: function(dateText, inst) {
 				$scope.diaryData.fromDate = $scope.date;
-				$scope.$emit('DATE_CAHNGED');
+				$scope.$emit('DATE_CHANGED');
 				ngDialog.close();
 			}
 		};
