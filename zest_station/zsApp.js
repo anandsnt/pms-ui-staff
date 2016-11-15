@@ -29,7 +29,7 @@ sntZestStation.config(function($httpProvider, $translateProvider) {
     // $translateProvider.fallbackLanguage('EN_snt');
 });
 
-sntZestStation.run(['$rootScope', '$state', '$stateParams', '$location', function($rootScope, $state, $stateParams, $location) {
+sntZestStation.run(['$rootScope', '$state', '$stateParams', function($rootScope, $state, $stateParams) {
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
 
@@ -48,7 +48,7 @@ var GlobalZestStationApp = function() {
 
     var that = this;
 
-    this.browser = "other";
+    this.browser = 'other';
     this.cordovaLoaded = false;
     this.cardReader = null;
     this.iBeaconLinker = null;
@@ -56,20 +56,22 @@ var GlobalZestStationApp = function() {
     try {
         this.desktopCardReader = new DesktopCardOperations();
         this.MLIOperator = new MLIOperation();
-    } catch (er) {}
+    } catch (er) {
+        console.warn(er);
+    }
 
 
     this.DEBUG = true;
 
     this.setBrowser = function(browser) {
         if (typeof browser === 'undefined' || browser === '') {
-            that.browser = "other";
+            that.browser = 'other';
         } else {
             that.browser = browser;
         }
         if (browser === 'rv_native' && !that.cordovaLoaded) {
             // TODO: check URL
-            var url = "/assets/shared/cordova.js";
+            var url = '/assets/shared/cordova.js';
 
             /* Using XHR instead of $HTTP service, to avoid angular dependency, as this will be invoked from
              * webview of iOS / Android.
@@ -83,7 +85,7 @@ var GlobalZestStationApp = function() {
                     that.fetchFailedOfCordovaPlugins();
                 }
             };
-            xhr.open("GET", url, true);
+            xhr.open('GET', url, true);
 
             xhr.send(); // TODO: Loading indicator
 
@@ -92,7 +94,7 @@ var GlobalZestStationApp = function() {
     }; 
 
     // success function of coddova plugin's appending
-    this.fetchCompletedOfCordovaPlugins = function(data) {
+    this.fetchCompletedOfCordovaPlugins = function() {
         that.cordovaLoaded = true;
         try {
             that.cardReader = new CardOperation();
@@ -101,86 +103,91 @@ var GlobalZestStationApp = function() {
         }
         try {
             that.iBeaconLinker = new iBeaconOperation();
-        } catch (er) {}
+        } catch (er) {
+            console.warn(er);
+        }
 
     };
     this.fetchCompletedOfCordovaPlugins();
 
     // success function of coddova plugin's appending
-    this.fetchFailedOfCordovaPlugins = function(errorMessage) {
+    this.fetchFailedOfCordovaPlugins = function() {
         that.cordovaLoaded = false;
     };
 
-    this.demoMode = function(){
+    this.demoMode = function() {
         var el = angular.element('#header');
-        if (el){
+
+        if (el) {
             var demoModeEnabled = el.scope().$parent.zestStationData.demoModeEnabled;
-            if (demoModeEnabled === 'true'){
+
+            if (demoModeEnabled === 'true') {
                 angular.element('#header').scope().$parent.zestStationData.demoModeEnabled = 'false';
             } else {
                 angular.element('#header').scope().$parent.zestStationData.demoModeEnabled = 'true';
             }
             angular.element('#header').scope().$apply();
         }
-    }
-    this.debugTimers = function(workstationFetchTimer, languageResetTimer, refreshTimer, idlePopupTimer, backToHomeTimer){
-            if (arguments.length === 0 || workstationFetchTimer === false){//ie. debugTimers(false) or debugTimers() will turn off timer debugging
-                console.info('Please pass the timer values as an argument, ie. debugTimers(','workstationFetchTimer,', 
+    };
+    this.debugTimers = function(workstationFetchTimer, languageResetTimer, refreshTimer, idlePopupTimer, backToHomeTimer) {
+        if (arguments.length === 0 || workstationFetchTimer === false) {// ie. debugTimers(false) or debugTimers() will turn off timer debugging
+            console.info('Please pass the timer values as an argument, ie. debugTimers(', 'workstationFetchTimer,', 
                 'languageResetTimer,', 
                 'refreshTimer,', 
                 'idlePopupTimer,', 
                 'backToHomeTimer )');  
-                console.info('Passing null, or empty string will assume default setting');
-                console.info(':: turning off timer debugger ::');
-                that.timeDebugger = false;
-                try {
-                    setTimeout(function(){
-                        //angular.element('#header').scope().$parent.runDigestCycle();
-                        angular.element('#header').scope().$parent.$digest();
-                    },500);
+            console.info('Passing null, or empty string will assume default setting');
+            console.info(':: turning off timer debugger ::');
+            that.timeDebugger = false;
+            try {
+                setTimeout(function() {
+                        // angular.element('#header').scope().$parent.runDigestCycle();
+                    angular.element('#header').scope().$parent.$digest();
+                }, 500);
 
-                } catch (err){
-                    console.warn('unable to run digest ',err);
-                }
+            } catch (err) {
+                console.warn('unable to run digest ', err);
+            }
                 
-            } else {    
-                var isValidArg = function(a){
-                    return (typeof a === typeof 123 && a > 0);
+        } else {    
+            var isValidArg = function(a) {
+                return typeof a === typeof 123 && a > 0;
+            };
+
+            if (typeof _ !== typeof undefined) {
+                if (isValidArg(workstationFetchTimer)) {
+                    that.workstationFetchTimer = workstationFetchTimer;
+                    that.timeDebugger = true;
                 }
-                if (typeof _ !== typeof undefined){
-                    if (isValidArg(workstationFetchTimer)){
-                        that.workstationFetchTimer = workstationFetchTimer;
-                        that.timeDebugger = true;
-                    }
-                    if (isValidArg(languageResetTimer)){
-                        that.languageResetTimer = languageResetTimer;
-                        that.timeDebugger = true;
-                    }
-                    if (isValidArg(refreshTimer)){
-                        that.refreshTimer = refreshTimer;
-                        that.timeDebugger = true;
-                    }
-                    if (isValidArg(idlePopupTimer)){
-                        that.idlePopupTimer = idlePopupTimer;
-                        that.timeDebugger = true;
-                    }
-                    if (isValidArg(backToHomeTimer)){
-                        that.backToHomeTimer = backToHomeTimer;
-                        that.timeDebugger = true;
-                    }
-                    console.info('Timers Set: (',' [ workstationFetchTimer:', that.workstationFetchTimer,
+                if (isValidArg(languageResetTimer)) {
+                    that.languageResetTimer = languageResetTimer;
+                    that.timeDebugger = true;
+                }
+                if (isValidArg(refreshTimer)) {
+                    that.refreshTimer = refreshTimer;
+                    that.timeDebugger = true;
+                }
+                if (isValidArg(idlePopupTimer)) {
+                    that.idlePopupTimer = idlePopupTimer;
+                    that.timeDebugger = true;
+                }
+                if (isValidArg(backToHomeTimer)) {
+                    that.backToHomeTimer = backToHomeTimer;
+                    that.timeDebugger = true;
+                }
+                console.info('Timers Set: (', ' [ workstationFetchTimer:', that.workstationFetchTimer,
                         '] [ languageResetTimer,', that.languageResetTimer,
                         '] [ refreshTimer: ', that.refreshTimer,
                         '] [ idlePopupTimer: ', that.idlePopupTimer,
-                        '] [ backToHomeTimer: ',that.backToHomeTimer,'] )');
-                } else {
-                    console.warn(':: debugger out of date ::');
-                }
+                        '] [ backToHomeTimer: ', that.backToHomeTimer, '] )');
+            } else {
+                console.warn(':: debugger out of date ::');
             }
+        }
         return;
-    }
-    this.debugTheme = function(theme){
-        //thats right, quick-switching of themes...
+    };
+    this.debugTheme = function(theme) {
+        // thats right, quick-switching of themes...
         angular.element('#header').scope().$parent.quickSetHotelTheme(theme);
     };
     this.virtualKeyBoardEnabled = false;
