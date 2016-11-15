@@ -19,8 +19,8 @@ angular.module('sntRover')
                 $scope.toggleStatusOf['roomInventory'] = false;
             };
 
+            // we need horizonat scroller so adding option 'scrollX', also need to get the click event on toggling button on available room
             var init = function () {
-                // we need horizonat scroller so adding option 'scrollX', also need to get the click event on toggling button on available room
                 var scrollerOptions = {
                     scrollX: true,
                     preventDefault: false
@@ -32,7 +32,7 @@ angular.module('sntRover')
                 initToggleStatus();
                 $scope.data = rvAvailabilitySrv.getGridData();
 
-                // if already fetched we will show without calling the API
+            // if already fetched we will show without calling the API
                 if ( !isEmptyObject($scope.data) ) {
                     $scope.refreshScroller('room_availability_scroller');
                     $scope.hideMeBeforeFetching = true;
@@ -40,15 +40,13 @@ angular.module('sntRover')
                 }
             };
 
-            BaseCtrl.call(this, $scope);
-            
-
-            // -------------------------------------------------------------------------------------------------------------- GRID DETAILED VIEW
+            /** ------------------------------------------------------------------------------ */
             /**
              * NOTE: The below three methods handle the Expanded view of the Availability Grid
              * To start with A. Occupancy B. Available Rooms C. Rooms Sold are collapsed
              * The data required to show these sections are catered through different APIs.
              */
+            /** ------------------------------------------------------------------------------ */
 
             var isSectionOpen = function(name) {
                 return $scope.toggleStatusOf.hasOwnProperty(name) && !! $scope.toggleStatusOf[name];
@@ -77,7 +75,9 @@ angular.module('sntRover')
             };
 
             var hasSoldRooms = function () {
-                return hasAdditionalData() && (!! $scope.data.additionalData.roomTypeWiseDetails || !! $scope.data.additionalData.adultsChildrenCounts);
+                return hasAdditionalData() && (
+                    !! $scope.data.additionalData.roomTypeWiseDetails || !! $scope.data.additionalData.adultsChildrenCounts
+                );
             };
 
             /** 
@@ -94,7 +94,9 @@ angular.module('sntRover')
                  * The generated function that:
                  * either toggle to show the section, when data is present
                  * fetch data first and then toggle the section
-                 *  
+                 *
+                 * @param {boolean} open - explicity tell to open or close the section
+                 * @param {boolean} multiple - explicity telling 'handleDataChange' that there are multiple data fetch in pipeline
                  * @return {object} - a promise object
                  */
                 return function (open, multiple) {
@@ -120,53 +122,6 @@ angular.module('sntRover')
 
                     return deferred.promise;
                 };
-            };
-
-            /** */
-            $scope.toggleOccupancy = toggleSectionGenerator(
-                    'occupancy',
-                    rvAvailabilitySrv.fetchBARs,
-                    function() {
-                        return isSectionOpen('occupancy') || hasBestAvailabilityRate();
-                    }
-                );
-
-            $scope.toggleAvailableRooms = toggleSectionGenerator(
-                    'availableRooms',
-                    rvAvailabilitySrv.getRoomsAvailability,
-                    function() {
-                        return isSectionOpen('availableRooms') || hasRoomTypeWiseDetails();
-                    }
-                );
-
-            $scope.toggleSoldRooms = toggleSectionGenerator(
-                    'roomsSold',
-                    rvAvailabilitySrv.getOccupancyCount,
-                    function() {
-                        return isSectionOpen('roomsSold') || hasSoldRooms();
-                    }
-                );
-
-            $scope.toggleRoomInventory = function (show) {
-                toggleSection( 'roomInventory', show );
-                $scope.refreshScroller('room_availability_scroller');
-            };
-
-            $scope.toggleShowGroupAllotmentTotals = function () {
-                var deferred = $q.defer(),
-                    delay = 100;
-
-                if ($scope.showShowGroupAllotmentTotals) {
-                    $scope.showShowGroupAllotmentTotals = false;
-                    $scope.refreshScroller('room_availability_scroller');
-                    $timeout(deferred.resolve, delay);
-                } else {
-                    $scope.$parent.fetchGrpNAllotData().then(function () {
-                        $timeout(deferred.resolve, delay);
-                    });
-                }
-
-                return deferred.promise;
             };
 
             var openAllSections = function () {
@@ -198,6 +153,71 @@ angular.module('sntRover')
                 $scope.toggleShowGroupAllotmentTotals(show);
             };
 
+            /** ------------------------------------------------------------------------------ */
+            /**
+             * NOTE: The below three methods handle the Expanded view of the Availability Grid
+             * To start with A. Occupancy B. Available Rooms C. Rooms Sold are collapsed
+             * The data required to show these sections are catered through different APIs.
+             */
+            /** ------------------------------------------------------------------------------ */
+
+            BaseCtrl.call(this, $scope);
+
+
+            // -------------------------------------------------------------------------------------------------------------- GRID DETAILED VIEW
+            /**
+             * NOTE: The below three methods handle the Expanded view of the Availability Grid
+             * To start with A. Occupancy B. Available Rooms C. Rooms Sold are collapsed
+             * The data required to show these sections are catered through different APIs.
+             */
+            
+
+            $scope.toggleOccupancy = toggleSectionGenerator(
+                'occupancy',
+                rvAvailabilitySrv.fetchBARs,
+                function() {
+                    return isSectionOpen('occupancy') || hasBestAvailabilityRate();
+                }
+            );
+
+            $scope.toggleAvailableRooms = toggleSectionGenerator(
+                'availableRooms',
+                rvAvailabilitySrv.getRoomsAvailability,
+                function() {
+                    return isSectionOpen('availableRooms') || hasRoomTypeWiseDetails();
+                }
+            );
+
+            $scope.toggleSoldRooms = toggleSectionGenerator(
+                'roomsSold',
+                rvAvailabilitySrv.getOccupancyCount,
+                function() {
+                    return isSectionOpen('roomsSold') || hasSoldRooms();
+                }
+            );
+
+            $scope.toggleRoomInventory = function (show) {
+                toggleSection( 'roomInventory', show );
+                $scope.refreshScroller('room_availability_scroller');
+            };
+
+            $scope.toggleShowGroupAllotmentTotals = function () {
+                var deferred = $q.defer(),
+                    delay = 100;
+
+                if ($scope.showShowGroupAllotmentTotals) {
+                    $scope.showShowGroupAllotmentTotals = false;
+                    $scope.refreshScroller('room_availability_scroller');
+                    $timeout(deferred.resolve, delay);
+                } else {
+                    $scope.$parent.fetchGrpNAllotData().then(function () {
+                        $timeout(deferred.resolve, delay);
+                    });
+                }
+
+                return deferred.promise;
+            };
+
             $scope.$on('PRINT_AVAILABILITY', function (event) {
                 openAllSections().then(function() {
                     var delay = 500,
@@ -215,15 +235,15 @@ angular.module('sntRover')
                     $timeout(closeAllSections, closeDelay);
                 });
             });
-        // --------------------------------------------------------------------------------------------------------------
+            // --------------------------------------------------------------------------------------------------------------
 
             $scope.$on('$includeContentLoaded', function (event) {
                 $scope.$emit('hideLoader');
                 $scope.refreshScroller('room_availability_scroller');
             });
-        /*
-        *  Checks whether additional data available or not
-        */
+            /*
+            *  Checks whether additional data available or not
+            */
             var isFullDataAvaillable = function () {
                 return $scope.data.hasOwnProperty('additionalData');
             };
@@ -236,14 +256,14 @@ angular.module('sntRover')
                 }
                 $scope.refreshScroller('room_availability_scroller');
                 $scope.hideMeBeforeFetching = true;
-                
+
                 if ( ! multiple ) {
                     $scope.$emit( 'hideLoader' );
                 } 
             };
-        /**
-        * when data changed from super controller, it will broadcast an event 'changedRoomAvailableData'
-        */
+            /**
+            * when data changed from super controller, it will broadcast an event 'changedRoomAvailableData'
+            */
 
             $scope.$on('changedRoomAvailableData', handleDataChange);
 
@@ -257,16 +277,16 @@ angular.module('sntRover')
                 $scope.$emit('hideLoader');
             });
 
-        /*
-        * function to toggle the display of individual group/allotmet on clicking
-        * the toogle button
-        */
-            
+            /*
+            * function to toggle the display of individual group/allotmet on clicking
+            * the toogle button
+            */
 
-        /*
-        * param - Holdstatus id
-        * return Hold status name
-        */
+
+            /*
+            * param - Holdstatus id
+            * return Hold status name
+            */
             $scope.getGroupAllotmentName = function (source, id) {
                 var found = _.findWhere(source.holdStatus, { id: id });
 
@@ -274,10 +294,10 @@ angular.module('sntRover')
             };
 
 
-        /**
-         * For iScroll, we need width of the table
-         * @return {Integer}
-         */
+            /**
+             * For iScroll, we need width of the table
+             * @return {Integer} the width value
+             */
             $scope.getWidthForTable = function () {
 
                 var leftMostRowCaptionWidth = 130, // 120px cell width + 10px cell spacing
@@ -315,6 +335,5 @@ angular.module('sntRover')
             };
 
             init();
-
         }
     ]);

@@ -1,14 +1,21 @@
 {
-    "env":{
-        "browser":true,
-        "es6":true,
-        "jquery":true
+    "env": {  
+        "browser": true,
+        "es6": true,
+        "jquery": true,
+        "node": true
     },
-    "globals":{
+    "globals": {
+        "angular": false,
+        "React": false,
+        "ReactDOM": false,
+        "Provider": false,
+        "ReactRedux": false,
+        "ReduxThunk": false,
+        "BaseCtrl": true,
         "sntRover":true,
-        "angular":true,
-        "BaseCtrl":true,
-        "_":true
+        "sntapp": true,
+        "cordova": false
     },
     "installedESLint":true,
     "parserOptions":{

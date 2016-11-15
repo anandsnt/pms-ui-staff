@@ -7,6 +7,15 @@ angular.module('sntRover')
         'jsMappings',
         function($scope, $timeout, $filter, rvAvailabilitySrv, jsMappings) {
 
+            var addPrintStyles = function () {
+                $('html').addClass('availability-print');
+            };
+
+            var removePrintStyles = function () {
+                $('html').removeClass('availability-print');
+            };
+            
+
             /**
             * Controller class for availability  button in header section,
             * will do only showing/hiding the template only.
@@ -26,15 +35,9 @@ angular.module('sntRover')
             * and will show the availability section if successful
             */
             $scope.clickedOnAvailabilityButton = function($event) {
-
-                var addPrintStyles = function () {
-                    $('html').addClass('availability-print');
-                };
-
-                var removePrintStyles = function () {
-                    $('html').removeClass('availability-print');
-                };
-
+                // setting data loaded as null, will be using to hide the data showing area on loading in availiable room grid display
+                var emptyDict = {},
+                    delay = 1000;
 
                 /*
                 in order to compromise with stjepan's animation class we need write like this
@@ -43,19 +46,13 @@ angular.module('sntRover')
                 */
 
                 if ($scope.showAvailability) {
-                    // adding the class for closing animation
                     $scope.isClosing = true;
-                    // after some time we are removing the section and resetiing values to older
                     $timeout(function() {
                         $scope.isClosing = false;
-                        // hiding/removing the availability section
                         $scope.showAvailability = false;
-                    }, 1000);
-
-                    // setting data loaded as null, will be using to hide the data showing area on loading in availiable room grid display
-                    var emptyDict = {};
-
-                    rvAvailabilitySrv.updateData (emptyDict);
+                    }, delay);
+                
+                    rvAvailabilitySrv.updateData(emptyDict);
 
                     removePrintStyles();
                 } else {
