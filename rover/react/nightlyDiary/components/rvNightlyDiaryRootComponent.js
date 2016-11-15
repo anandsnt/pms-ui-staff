@@ -22,7 +22,12 @@ const NightlyDiaryRootComponent = createClass ({
     this.refreshScroller();
   },
   refreshScroller(){
-    setTimeout(() => {this.scroller.refresh()},1000);
+    this.scroller.refresh();
+  },
+  componentDidUpdate(){
+    this.refreshScroller();
+    //scroll is moving to top
+    this.scroller.scrollToElement($(findDOMNode(this)).find(".room")[0], 1000, null, true);
   },
   render() {
     return (
