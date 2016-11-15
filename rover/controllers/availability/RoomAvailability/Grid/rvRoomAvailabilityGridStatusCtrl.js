@@ -2,11 +2,10 @@ angular.module('sntRover')
     .controller('rvRoomAvailabilityGridStatusController', [
         '$scope',
         'rvAvailabilitySrv',
-        '$rootScope',
         '$q',
         '$window',
         '$timeout',
-        function ($scope, rvAvailabilitySrv, $rootScope, $q, $window, $timeout) {
+        function ($scope, rvAvailabilitySrv, $q, $window, $timeout) {
 
             /*
             * Function to set all toggle to close
