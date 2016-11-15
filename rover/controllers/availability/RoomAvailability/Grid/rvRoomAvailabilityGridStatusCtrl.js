@@ -5,7 +5,8 @@ angular.module('sntRover')
         '$rootScope',
         '$q',
         '$window',
-        function ($scope, rvAvailabilitySrv, $rootScope, $q, $window) {
+        '$timeout',
+        function ($scope, rvAvailabilitySrv, $rootScope, $q, $window, $timeout) {
 
             /*
             * Function to set all toggle to close
@@ -85,7 +86,7 @@ angular.module('sntRover')
              * @param {string} section - name of the section to be toggled
              * @param {function} APIMethod - the deep method from the service
              * @param {function} toggleOnly - a funtion that return if we have data and the section only needs to be toggled
-             * @returns {function} - the actual repeated functionality as function
+             * @returns {function} the actual repeated functionality as function
              */
             var toggleSectionGenerator = function (section, APIMethod, toggleOnly) {
 
@@ -98,12 +99,13 @@ angular.module('sntRover')
                  */
                 return function (open, multiple) {
                     var SCROLL = 'room_availability_scroller',
-                        deferred = $q.defer();
+                        deferred = $q.defer(),
+                        delay = 100;
 
                     if ( toggleOnly() ) {
                         toggleSection( section, open );
                         $scope.refreshScroller( SCROLL );
-                        deferred.resolve( true );
+                        $timeout(deferred.resolve, delay);
                     } else {
                         $scope.invokeApi(
                             APIMethod,
@@ -111,7 +113,7 @@ angular.module('sntRover')
                             function () {
                                 handleDataChange(multiple);
                                 toggleSection( section, true );
-                                deferred.resolve( true );
+                                $timeout(deferred.resolve, delay);
                             }
                         );
                     }
@@ -125,7 +127,7 @@ angular.module('sntRover')
                     'occupancy',
                     rvAvailabilitySrv.fetchBARs,
                     function() {
-                        return isSectionOpen('occupancy') && hasBestAvailabilityRate();
+                        return isSectionOpen('occupancy') || hasBestAvailabilityRate();
                     }
                 );
 
@@ -133,7 +135,7 @@ angular.module('sntRover')
                     'availableRooms',
                     rvAvailabilitySrv.getRoomsAvailability,
                     function() {
-                        return isSectionOpen('availableRooms') && hasRoomTypeWiseDetails();
+                        return isSectionOpen('availableRooms') || hasRoomTypeWiseDetails();
                     }
                 );
 
@@ -141,7 +143,7 @@ angular.module('sntRover')
                     'roomsSold',
                     rvAvailabilitySrv.getOccupancyCount,
                     function() {
-                        return isSectionOpen('roomsSold') && hasSoldRooms();
+                        return isSectionOpen('roomsSold') || hasSoldRooms();
                     }
                 );
 
@@ -151,15 +153,16 @@ angular.module('sntRover')
             };
 
             $scope.toggleShowGroupAllotmentTotals = function () {
-                var deferred = $q.defer();
+                var deferred = $q.defer(),
+                    delay = 100;
 
                 if ($scope.showShowGroupAllotmentTotals) {
                     $scope.showShowGroupAllotmentTotals = false;
                     $scope.refreshScroller('room_availability_scroller');
-                    deferred.resolve( true );
+                    $timeout(deferred.resolve, delay);
                 } else {
                     $scope.$parent.fetchGrpNAllotData().then(function () {
-                        deferred.resolve( true );
+                        $timeout(deferred.resolve, delay);
                     });
                 }
 
@@ -175,24 +178,41 @@ angular.module('sntRover')
                         $scope.toggleSoldRooms(show, multiple),
                         $scope.toggleRoomInventory(show, multiple),
                         $scope.toggleShowGroupAllotmentTotals(show, multiple)
-                    ];
+                    ],
+                    delay = 500;
 
                 $q.all(promises).then(function() {
                     $scope.toggleRoomInventory(show);
-                    deferred.resolve( true );
+                    $timeout(deferred.resolve, delay);
                 });
 
                 return deferred.promise;
             };
 
+            var closeAllSections = function () {
+                var show = false;
+
+                $scope.toggleOccupancy(show);
+                $scope.toggleSoldRooms(show);
+                $scope.toggleRoomInventory(show);
+                $scope.toggleShowGroupAllotmentTotals(show);
+            };
+
             $scope.$on('PRINT_AVAILABILITY', function (event) {
                 openAllSections().then(function() {
+                    var delay = 500,
+                        closeDelay = 1000;
 
                     $( '#loading' ).addClass( 'ng-hide' );
-                    $window.print();
-                    if ( sntapp.cordovaLoaded ) {
-                        cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-                    }
+
+                    $timeout(function () {
+                        $window.print();
+                        if ( sntapp.cordovaLoaded ) {
+                            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+                        }
+                    }, delay);
+
+                    $timeout(closeAllSections, closeDelay);
                 });
             });
         // --------------------------------------------------------------------------------------------------------------
