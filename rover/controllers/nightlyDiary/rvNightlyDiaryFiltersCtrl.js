@@ -66,7 +66,6 @@ angular.module('sntRover')
         };
 
         var init = function(){
-            $scope.diaryData.isSevenSelected = true;
             $scope.diaryData.numberOfDays = 7;
             $scope.diaryData.fromDate = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
             $scope.diaryData.toDate   = getDateShift( $rootScope.businessDate, 7, true);
@@ -84,10 +83,10 @@ angular.module('sntRover')
                 scope: $scope
             });
         };
-
+        // Catching event from date picker controller while date is changed.
         $scope.$on('DATE_CHANGED',function () {
             var isRightShift = true;
-            if($scope.diaryData.isSevenSelected){
+            if($scope.diaryData.numberOfDays === 7){
                 $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 7, isRightShift);
             }
             else{
@@ -96,7 +95,7 @@ angular.module('sntRover')
             $scope.$emit('REFRESH_DIARY_TIMELINE');
             $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
         });
-
+        // Catching event from main controller, when API is completed.
         $scope.$on('FETCH_COMPLETED_DATE_LIST_DATA',function () {
             $scope.diaryData.hasMultipleMonth = checkDateRangeHaveMultipleMonths();
         });
@@ -104,8 +103,8 @@ angular.module('sntRover')
         // To toggle 7/21 button.
         $scope.toggleSwitchMode = function(){
             var isRightShift = true;
-            $scope.diaryData.isSevenSelected = !$scope.diaryData.isSevenSelected;
-            if($scope.diaryData.isSevenSelected){
+            //$scope.diaryData.isSevenSelected = !$scope.diaryData.isSevenSelected;
+            if($scope.diaryData.numberOfDays === 21){
                 $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 7, isRightShift);
                 $scope.diaryData.numberOfDays = 7;
             }
@@ -131,7 +130,7 @@ angular.module('sntRover')
                 // If the fromDate is a shift to the left, then the toDate is a shift right from the new fromDate.
                 nextShift = true;
             }
-            if($scope.diaryData.isSevenSelected){
+            if($scope.diaryData.numberOfDays === 7){
                 $scope.diaryData.fromDate = getDateShift(fromDate, 7, isRightShift);
                 $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 7, nextShift);
             }
