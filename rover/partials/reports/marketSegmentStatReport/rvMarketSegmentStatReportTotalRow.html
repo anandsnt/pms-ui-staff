@@ -13,9 +13,9 @@
      <td ng-show='isBookingsSelected'>{{ resultsTotalRow.bookings_mtd }}</td>
      <td class="break" ng-show='isBookingsSelected'>{{ resultsTotalRow.bookings_ytd }}</td>
 
-     <td ng-show='!isBookingsSelected'>{{ resultsTotalRow.average_length_of_stay_today | number : 2}}</td>
-     <td ng-show='!isBookingsSelected'>{{ resultsTotalRow.average_length_of_stay_mtd | number : 2}}</td>
-     <td class="break" ng-show='!isBookingsSelected'>{{ resultsTotalRow.average_length_of_stay_ytd | number : 2}}</td>
+     <td ng-show='!isBookingsSelected'>{{ resultsTotalRow.average_length_of_stay_today }}</td>
+     <td ng-show='!isBookingsSelected'>{{ resultsTotalRow.average_length_of_stay_mtd }}</td>
+     <td class="break" ng-show='!isBookingsSelected'>{{ resultsTotalRow.average_length_of_stay_ytd }}</td>
 
      <td>{{ resultsTotalRow.room_nights_today }}</td>
      <td>{{ resultsTotalRow.room_nights_mtd }}</td>
