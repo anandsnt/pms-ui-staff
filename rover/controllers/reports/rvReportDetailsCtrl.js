@@ -1237,6 +1237,24 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.$on( '$destroy', reportPageChanged );
 		$scope.$on( '$destroy', reportPrinting );
 		$scope.$on( '$destroy', reportAPIfailed );
+
+        //Added for CICO-33172
+        $scope.isRoomRevenueSelected = true;
+        $scope.isBookingsSelected = true;
+
+        /**
+         * Toggle Revenue columns for market segment statistics report
+         */
+        $scope.toggleRevenue = function() {
+            $scope.isRoomRevenueSelected = !$scope.isRoomRevenueSelected;
+        };
+
+        /**
+         * Toggle Bookings columns for market segment statistics report
+         */
+        $scope.toggleBookings = function() {
+            $scope.isBookingsSelected = !$scope.isBookingsSelected;
+        };
     }
 
 ]);
