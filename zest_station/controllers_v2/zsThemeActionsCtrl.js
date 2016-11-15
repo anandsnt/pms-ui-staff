@@ -83,7 +83,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 
             for (var i in oldLink) {
                 if (oldLink[i].href) {
-                    if (oldLink[i].href.indexOf('.css') != -1) {
+                    if (oldLink[i].href.indexOf('.css') !== -1) {
                         oldLink[i].href = '';
                     }
                 }
