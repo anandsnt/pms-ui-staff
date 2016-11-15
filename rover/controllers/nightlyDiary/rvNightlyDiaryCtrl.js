@@ -29,7 +29,6 @@ angular.module('sntRover')
             $scope.$emit("updateRoverLeftMenu", "nightlyDiaryReservation");
             // data set for diary used for Angular code.
             $scope.diaryData = {
-                isSevenSelected : true,
                 datesGridData   : datesList,
                 businessDate    : $rootScope.businessDate,
                 diaryRoomsList  : roomsList,
@@ -94,13 +93,15 @@ angular.module('sntRover')
         };
 
 
-        var goToPrevPage = ()=>{
+        var goToPrevPage = () => {
+            console.log("Implement Prev button action")
             $scope.diaryData.paginationData.page--;
             fetchRoomListDataAndReservationListData();
         };
 
         var goToNextPage = ()=>{
             $scope.diaryData.paginationData.page++;
+            console.log("Implement Next button action");
             fetchRoomListDataAndReservationListData();
         };
         /**
@@ -130,7 +131,6 @@ angular.module('sntRover')
 
         // angular method to update diary view via react dispatch method.
         var updateDiaryView = function(){
-
             var dispatchData = {
                 type                : 'DIARY_VIEW_CHANGED',
                 numberOfDays        : $scope.diaryData.numberOfDays,
@@ -157,7 +157,7 @@ angular.module('sntRover')
          */
         var renderDiaryView = () => render(
             <Provider store={store}>
-                <NightlyDiaryRootContainer/>
+                <NightlyDiaryRootComponent/>
             </Provider>,
             document.querySelector('#nightlyDiaryMain')
         );
