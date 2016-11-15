@@ -92,6 +92,10 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         $scope.clickedMenuItem = function ($event, stateToGo, state) {
             var currentTime = new Date();
 
+            if(!state){
+                state = {};
+            }
+
             if (lastDropedTime !== '' && typeof lastDropedTime === 'object') {
                 var diff = currentTime - lastDropedTime;
 
@@ -199,7 +203,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                         name: data.mapping_type[x].sntvalues[vals].name
                     };
                     if (typeof data.mapping_type[x].sntvalues[vals].description !== "undefined") {
-                        mappingTypeRefObject.description = data.mapping_type[x].sntvalues[vals].description; 
+                        mappingTypeRefObject.description = data.mapping_type[x].sntvalues[vals].description;
                     }
                     $scope.mappingInterface.mappingTypeRefs[mTypeName].push(mappingTypeRefObject);
                 }

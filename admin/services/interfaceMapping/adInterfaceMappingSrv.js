@@ -122,4 +122,55 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function 
             return deferred.promise;
         };
 
+        this.fetchInterfaceExternalMappingsList = function (data) {
+            var interface_id = data.interface_type_id,
+                deferred = $q.defer(),
+                url = '/admin/external_mappings/' + interface_id;
+
+            ADBaseWebSrv.getJSON(url,data).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchInterfaceMappingTypes = function(data) {
+            var hotel_id = data.hotel_id,
+                interface_id = data.interface_type_id,
+                deferred = $q.defer(),
+                url = '/admin/external_mappings/' + hotel_id + '/' + interface_id + '/interface_mappings.json';
+
+            ADBaseWebSrv.getJSON(url).then(function (data) {
+                deferred.resolve(data.mapping_type);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.deleteMappingWithId = function(params) {
+            var deferred = $q.defer(),
+                url = '/admin/external_mappings/' + params.mapping_id;
+
+            ADBaseWebSrv.deleteJSON(url).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchMappingWithId = function(params) {
+            var deferred = $q.defer(),
+                url = '/admin/external_mappings/' + params.mapping_id;
+
+            ADBaseWebSrv.getJSON(url).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
     }]);

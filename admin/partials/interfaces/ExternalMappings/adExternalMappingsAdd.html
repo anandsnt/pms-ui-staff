@@ -1,0 +1,61 @@
+<div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+    <header class="content-title float">
+        <h2>New {{interface.name}} mapping</h2>
+        <a ng-click="navigateBack()" class="action back" translate>BACK</a>
+        <div class="actions float pull-right">
+            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleMappingMode('MANUAL')"
+                    ng-class="{'orange' : interface.activeTab === 'MANUAL', 'white' : interface.activeTab !== 'MANUAL'}">
+                MAP MANUALLY
+            </button>
+            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleMappingMode('AUT0')"
+                    ng-class="{'orange' : interface.activeTab === 'AUT0', 'white' : interface.activeTab !== 'AUT0'}">
+                AUTO MAPPING
+            </button>
+        </div>
+    </header>
+    <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+        <form class="form float">
+            <fieldset class="holder full-width">
+                <div class="form-title">
+                    <h3 translate><span>Add&nbsp;</span>Mapping</h3>
+                    <em class="status">{{'ALL_FIELDS_MANDIATORY' | translate}}</em>
+                </div>
+            </fieldset>
+            <fieldset class="holder left">
+                <ad-dropdown-name savemodel="mapping.mapping_type"
+                                  valueproperty="name"
+                                  property="text"
+                                  list="mappingTypes"
+                                  label="{{'MAPPING_TYPE'| translate}}"
+                                  div-class="full-width">
+                </ad-dropdown-name>
+            </fieldset>
+            <fieldset class="holder left">
+                <ad-dropdown-name savemodel="mapping.snt_value"
+                                  valueproperty="description"
+                                  property="name"
+                                  list="sntValues"
+                                  label="{{'SNT_VALUE'| translate}}"
+                                  div-class="full-width">
+                </ad-dropdown-name>
+            </fieldset>
+            <fieldset class="holder right">
+                <ad-textbox inputtype="text"
+                            value="mapping.ext_value"
+                            label="{{'EXTERNAL_VALUE'| translate}}"
+                            styleclass="full-width"></ad-textbox>
+            </fieldset>
+            <div class="actions float">
+                <button type="button"
+                        class="button blank add-data-inline" ng-click="navigateBack()" translate>
+                    CANCEL
+                </button>
+                <button type="button" class="button green" ng-click="onClickSaveNewMapping()" translate>
+                    SAVE_NEW_MAPPING
+                </button>
+            </div>
+        </form>
+    </section>
+</div>
