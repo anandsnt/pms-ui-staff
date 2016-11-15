@@ -155,5 +155,12 @@ admin.controller('adFilterTableController', ['$scope', 'ngTableParams', '$inject
 
 		$scope.loadTable();
 
+		$scope.$on('SAVE_SETTINGS_SUCCESS',function(){
+			$scope.filterConfig.selectedExcludedRoomIds = [];
+			$scope.filterConfig.unSelectedExcludedRoomIds = [];
+			$scope.selectionConfig.activeTab = "SELECTED";
+			$scope.reloadTable();
+		});
+
 	}
 ]);
