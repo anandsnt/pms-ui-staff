@@ -14,13 +14,11 @@ admin.controller('ADExternalMappingsAddCtrl', ['$scope', '$state', '$stateParams
         };
 
         $scope.onClickSaveNewMapping = function() {
-            $scope.callAPI(ADInterfaceMappingSrv.saveMapping, {
+            $scope.callAPI(ADInterfaceMappingSrv.createNewMapping, {
                 params: {
-                    hotel_id: $stateParams.hotel_id,
-                    interface_type_id: $stateParams.interface_id,
-                    interface_name: $stateParams.interface_name,
+                    interface_id: $stateParams.interface_id,
                     snt_value: $scope.mapping.snt_value,
-                    external_value: $scope.mapping.ext_value,
+                    ext_value: $scope.mapping.ext_value,
                     mapping_type: $scope.mapping.mapping_type
                 },
                 onSuccess: function() {

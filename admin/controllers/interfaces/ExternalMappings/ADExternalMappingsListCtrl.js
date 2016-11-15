@@ -28,7 +28,7 @@ admin.controller('ADExternalMappingsListCtrl', ['$scope', '$state', '$stateParam
                     $defer.resolve($scope.data);
                 };
             getParams = _.extend(getParams, {
-                interface_type_id: $stateParams.interface_id
+                interface_id: $stateParams.interface_id
             });
             $scope.invokeApi(ADInterfaceMappingSrv.fetchInterfaceExternalMappingsList, getParams, fetchSuccessOfItemList);
         };

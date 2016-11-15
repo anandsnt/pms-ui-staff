@@ -1,4 +1,5 @@
-admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function ($http, $q, ADBaseWebSrv) {
+admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2',
+    function ($http, $q, ADBaseWebSrv, ADBaseWebSrvV2) {
         /*
          * Service function to fetch the mapping list
          * @return {object} mapping list
@@ -123,11 +124,10 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function 
         };
 
         this.fetchInterfaceExternalMappingsList = function (data) {
-            var interface_id = data.interface_type_id,
-                deferred = $q.defer(),
-                url = '/admin/external_mappings/' + interface_id;
+            var deferred = $q.defer(),
+                url = '/admin/interface_mappings.json';
 
-            ADBaseWebSrv.getJSON(url,data).then(function (data) {
+            ADBaseWebSrvV2.getJSON(url, data).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
                 deferred.reject(data);
@@ -151,9 +151,9 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function 
 
         this.deleteMappingWithId = function(params) {
             var deferred = $q.defer(),
-                url = '/admin/external_mappings/' + params.mapping_id;
+                url = '/admin/interface_mappings/' + params.mapping_id + '.json';
 
-            ADBaseWebSrv.deleteJSON(url).then(function (data) {
+            ADBaseWebSrvV2.deleteJSON(url).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
                 deferred.reject(data);
@@ -163,9 +163,33 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function 
 
         this.fetchMappingWithId = function(params) {
             var deferred = $q.defer(),
-                url = '/admin/external_mappings/' + params.mapping_id;
+                url = '/admin/interface_mappings/' + params.mapping_id + '.json';
 
-            ADBaseWebSrv.getJSON(url).then(function (data) {
+            ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.createNewMapping = function(params) {
+            var deferred = $q.defer(),
+                url = '/admin/interface_mappings.json';
+
+            ADBaseWebSrvV2.postJSON(url, params).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.updateMapping = function(params) {
+            var deferred = $q.defer(),
+                url = '/admin/interface_mappings/' + params.mapping_id + '.json';
+
+            ADBaseWebSrvV2.putJSON(url, params).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
                 deferred.reject(data);

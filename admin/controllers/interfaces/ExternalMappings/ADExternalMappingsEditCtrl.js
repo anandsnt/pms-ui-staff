@@ -1,11 +1,11 @@
-admin.controller('ADExternalMappingsEditCtrl', ['$scope', '$state', '$stateParams', 'mappingTypes', 'ADInterfaceMappingSrv',
-    function($scope, $state, $stateParams, mappingTypes, ADInterfaceMappingSrv) {
+admin.controller('ADExternalMappingsEditCtrl', ['$scope', '$state', '$stateParams', 'mappingTypes', 'mapping', 'ADInterfaceMappingSrv',
+    function($scope, $state, $stateParams, mappingTypes, mapping, ADInterfaceMappingSrv) {
 
         $scope.toggleMappingMode = function(mode) {
             $scope.interface.activeTab = mode;
         };
 
-        $scope.navigateBack = function(){
+        $scope.navigateBack = function() {
             $state.go('admin.external-mappings', {
                 hotel_id: $stateParams.hotel_id,
                 interface_id: $stateParams.interface_id,
@@ -16,7 +16,7 @@ admin.controller('ADExternalMappingsEditCtrl', ['$scope', '$state', '$stateParam
         $scope.onClickDeleteMapping = function() {
             $scope.callAPI(ADInterfaceMappingSrv.deleteMappingWithId, {
                 params: {
-                    mapping_id: $scope.mapping.id
+                    mapping_id: $stateParams.mapping_id
                 },
                 onSuccess: function() {
                     $scope.navigateBack();
@@ -25,14 +25,10 @@ admin.controller('ADExternalMappingsEditCtrl', ['$scope', '$state', '$stateParam
         };
 
         $scope.onClickSaveMapping = function() {
-            $scope.callAPI(ADInterfaceMappingSrv.saveMapping, {
+            $scope.callAPI(ADInterfaceMappingSrv.updateMapping, {
                 params: {
-                    hotel_id: $stateParams.hotel_id,
-                    interface_type_id: $stateParams.interface_id,
-                    interface_name: $stateParams.interface_name,
-                    snt_value: $scope.mapping.snt_value,
-                    external_value: $scope.mapping.ext_value,
-                    mapping_type: $scope.mapping.mapping_type
+                    mapping_id: $stateParams.mapping_id,
+                    ext_value: $scope.mapping.ext_value
                 },
                 onSuccess: function() {
                     $scope.navigateBack();
@@ -50,11 +46,7 @@ admin.controller('ADExternalMappingsEditCtrl', ['$scope', '$state', '$stateParam
             $scope.mappingTypes = mappingTypes;
             $scope.sntValues = mappingTypes[0].sntvalues;
 
-            $scope.mapping = {
-                mapping_type: mappingTypes[0].name,
-                snt_value: "",
-                ext_value: ""
-            };
+            $scope.mapping = mapping;
 
             $scope.interface = {
                 name: $stateParams.interface_name,
