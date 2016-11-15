@@ -119,6 +119,9 @@ let  calculateReservationDurationAndPosition = (diaryInitialDayOfDateGrid, reser
      console.log(returnData)
      return returnData;
 };
+/*
+ * Adding different classes to the reservation
+ */
 
 let getReservationClasses = function(reservation, currentBusinessDate, diaryInitialDayOfDateGrid, numberOfDays){
     let diaryInitialDayOfDateGridSplit = diaryInitialDayOfDateGrid.split("-");
@@ -159,6 +162,14 @@ let findIsReservationDayStay = (reservation) => {
     let numberOfNights = getNumberOfDaysBetweenTwoDates(reservationArrivalDate, reservationDepartureDate);
     return (numberOfNights === 0) ? true : false;
 };
+// let getReservationIconFlags = (reservation) => {
+//     let iconFlags = {};
+//     iconFlags.isLocked = reservation.belongs_to_allotment
+
+// };
+/*
+ * Adding different logics to the reservations to pass to component
+ */
 
 let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateGrid, numberOfDays, currentBusinessDate) => {
 
@@ -170,10 +181,12 @@ let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateG
                 reservation.style = {};
                 reservation.style.width = duration;
                 reservation.style.transform = "translateX("+positionAndDuration.reservationPosition+"px)";
-                let reservationStatusClass = getReservationStatusClass(reservation.status);
+                let isReservationDayStay = findIsReservationDayStay(reservation);
+                let reservationStatusClass = (!isReservationDayStay) ? getReservationStatusClass(reservation.status):'';
                 let reservationClass = getReservationClasses(reservation, currentBusinessDate, diaryInitialDayOfDateGrid, numberOfDays);
-                reservation.isReservationDayStay = findIsReservationDayStay(reservation);
+                reservation.isReservationDayStay = isReservationDayStay;
                 reservation.reservationClass = "reservation "+reservationStatusClass+" "+reservationClass;
+               // let reservationIconFlags = getReservationIconFlags(reservation);
 
             })
         }
