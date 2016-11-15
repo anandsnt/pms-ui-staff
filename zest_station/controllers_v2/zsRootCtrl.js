@@ -547,8 +547,8 @@ sntZestStation.controller('zsRootCtrl', [
                     idlePopupTime = $scope.zestStationData.idle_timer.prompt,
                     idleToHomeTime = $scope.zestStationData.idle_timer.max,
                     idleTimerEnabled = $scope.zestStationData.idle_timer.enabled,
-                    getWorkstationsAtTime = 120, // refresh workstation data every 120seconds
-                    timeUntilRefreshCheck = 30; // check if workstation requires refresh, default every 30s
+                    getWorkstationsAtTime = 120; // refresh workstation data every 120seconds
+                    // timeUntilRefreshCheck = 30; // check if workstation requires refresh, default every 30s
 
 				/**
 				 * [CheckForWorkStationStatusContinously description]
@@ -611,7 +611,7 @@ sntZestStation.controller('zsRootCtrl', [
                         $scope.runDigestCycle();
                     }
                 }
-                //else do nothing
+                // else do nothing
                 return;
             }
 
@@ -860,9 +860,8 @@ sntZestStation.controller('zsRootCtrl', [
                     return station.station_identifier === stored_station_id;
                 });
                 return station;
-            } else {
-                return null;
             }
+            return null;
         };
 
         $scope.getStationIdFromName = function(name) {
@@ -891,9 +890,8 @@ sntZestStation.controller('zsRootCtrl', [
 
             if (typeof station !== typeof undefined) {
                 return station;
-            } else {
-                return null;
             }
+            return null;
         };
 
         $scope.getWorkStationSetting = function(id) {
@@ -914,8 +912,7 @@ sntZestStation.controller('zsRootCtrl', [
             refreshedKey = 'snt_zs_workstation.recent_refresh',
             storage = localStorage,
             storedWorkStation = '',
-            station;
-        var recently_refreshed;
+            recently_refreshed;
 
         try {
             recently_refreshed = storage.getItem(refreshedKey);
@@ -1166,7 +1163,8 @@ sntZestStation.controller('zsRootCtrl', [
 		 * [initializeMe description]
 		 * @return {[type]} [description]
 		 */
-        var initializeMe = (function() {
+        
+        (function() {// initializeMe
             $('body').css('display', 'none'); // this will hide contents until svg logos are loaded
 			// call Zest station settings API
             $scope.zestStationData = zestStationSettings;
