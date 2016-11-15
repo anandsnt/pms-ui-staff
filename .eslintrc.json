@@ -17,7 +17,10 @@
         "BaseCtrl": true,
         "sntRover":true,
         "sntapp": true,
-        "isEmptyObject": true
+        "isEmptyObject": true,
+        "sntGuestWeb": true,
+        "admin": true,
+        "ADBaseTableCtrl": true
     },
     "installedESLint":true,
     "parserOptions":{

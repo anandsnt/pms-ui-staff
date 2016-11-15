@@ -228,7 +228,7 @@ angular.module('sntRover')
                     $timeout(function () {
                         $window.print();
                         if ( sntapp.cordovaLoaded ) {
-                            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+                            cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
                         }
                     }, delay);
 
