@@ -37,9 +37,15 @@ sntZestStation.controller('zsThemeActionsCtrl', [
         var setPrinterOptions = function(theme) {
 			// zsUtils function
             if ($scope.zestStationData.zest_printer_option === 'STAR_TAC') {
-                theme === 'yotel' ? applyStylesForYotelStarTac() : applyStarTacStyles();
+                if (theme === 'yotel') {
+                    applyStylesForYotelStarTac();
+                } else {
+                    applyStarTacStyles();   
+                }
             } else if ($scope.zestStationData.zest_printer_option === 'RECEIPT') {
-                theme === 'yotel' ? applyStylesForYotelReceipt() : '';
+                if (theme === 'yotel') {
+                    applyStylesForYotelReceipt();
+                }
             } else {
                 applyPrintMargin(); // zsUtils function
             }
@@ -72,7 +78,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 		 ********************************************************************************/
 
         $scope.$on('QUICK_SET_HOTEL_THEME', function(evt, theme) {
-            console.log('Quick! Set theme to: ', theme);
+            // console.log('Quick! Set theme to: ', theme);
             var oldLink = $('link');
 
             for (var i in oldLink) {

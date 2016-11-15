@@ -127,6 +127,7 @@ var GlobalZestStationApp = function() {
                 angular.element('#header').scope().$parent.zestStationData.demoModeEnabled = 'true';
             }
             angular.element('#header').scope().$apply();
+            
         }
     };
     this.debugTimers = function(workstationFetchTimer, languageResetTimer, refreshTimer, idlePopupTimer, backToHomeTimer) {

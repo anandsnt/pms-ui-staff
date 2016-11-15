@@ -93,7 +93,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             return false;
         };
 
-        var onBackButtonClicked = function(event) {
+        var onBackButtonClicked = function() {
+
             var reservations = zsCheckinSrv.getCheckInReservations();
 
             if ($scope.zestStationData.check_in_collect_nationality) {
@@ -431,6 +432,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         };
         var continueRouting = function(settings) {
             var goToEarlyCheckin = fetchedEarlyCheckinSettingsCallback(settings);
+            
             console.info(': continueRouting :', settings);
             console.info('*goToEarlyCheckin: ', goToEarlyCheckin);
 
