@@ -91,10 +91,7 @@ admin.controller('adFilterTableController', ['$scope', 'ngTableParams', '$inject
 
 		$scope.toggleSelectItem = function(item) {
 			item.isSelected = !item.isSelected;
-			if (!item.isSelected) {
-				// if unselected delete the Item in the list
-				updateDataSet();
-			}
+			updateDataSet();
 			$scope.updateSelectedList();
 		};
 
@@ -154,11 +151,6 @@ admin.controller('adFilterTableController', ['$scope', 'ngTableParams', '$inject
 				total: 0, // length of data
 				getData: $scope.fetchTableData
 			});
-		};
-
-
-		$scope.onSaveChanges = function() {
-			updateDataSet();
 		};
 
 		$scope.loadTable();

@@ -218,7 +218,13 @@
                             </div>                  
 							
 						</fieldset>	
-						 <!--  -->
+
+						<fieldset class="holder left">
+							<ad-checkbox is-checked="require_cc_for_checkout_email_flag" label="{{'CC_GUARENTEED_LABEL' | translate}}" div-class="full-width"></ad-checkbox>	
+							
+							<ad-checkbox is-checked="include_cash_reservationsy_flag" label=" {{'CASH_PAYMENT_LABEL' | translate}}" div-class="full-width"></ad-checkbox>
+						</fieldset>	
+						<!--  -->
 		                <fieldset class="holder full-width">
 		                    <div class="form-title">
 		                        <h3>
@@ -243,12 +249,6 @@
 		                    </section>
 		                </fieldset>
 		                <!--  -->
-
-						<fieldset class="holder left">
-							<ad-checkbox is-checked="require_cc_for_checkout_email_flag" label="{{'CC_GUARENTEED_LABEL' | translate}}" div-class="full-width"></ad-checkbox>	
-							
-							<ad-checkbox is-checked="include_cash_reservationsy_flag" label=" {{'CASH_PAYMENT_LABEL' | translate}}" div-class="full-width"></ad-checkbox>
-						</fieldset>	
 						<fieldset class="holder full-width">
 							<div class="entry">
 								<label translate>EXCLUDE_FOLLOWING_ROOM_TYPES_FROM_EMAIL_INVITE</label>
