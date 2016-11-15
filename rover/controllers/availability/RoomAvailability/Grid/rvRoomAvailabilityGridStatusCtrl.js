@@ -4,7 +4,8 @@ angular.module('sntRover')
         'rvAvailabilitySrv',
         '$rootScope',
         '$q',
-        function ($scope, rvAvailabilitySrv, $rootScope, $q) {
+        '$window',
+        function ($scope, rvAvailabilitySrv, $rootScope, $q, $window) {
 
             /*
             * Function to set all toggle to close
