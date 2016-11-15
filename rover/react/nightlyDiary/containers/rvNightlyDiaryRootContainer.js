@@ -1,5 +1,8 @@
 const {connect} = ReactRedux;
-
+/**
+ * utility method to get visibility status of Next Button
+* @return {Bool} visibility status of next Button
+*/
 const getNextPageButtonStatus = function(state){
 	var total_count = state.paginationData.total_count,
 	per_page = state.paginationData.per_page,
@@ -10,6 +13,10 @@ const getNextPageButtonStatus = function(state){
 		return false;
 	}
 };
+/**
+ * utility method to get visibility status of Prev Button
+* @return {Bool} visibility status of Prev Button
+*/
 const getPrevPageButtonStatus = function(state){
 	if(state.paginationData.page === 1){
 		return false;
@@ -17,14 +24,19 @@ const getPrevPageButtonStatus = function(state){
 		return true;
 	}
 };
-
+/**
+ * utility method to get class for grid content
+* @return {String} classnames
+*/
 const getClassForRootDiv = function(state){
 	if(getNextPageButtonStatus(state)&&getPrevPageButtonStatus(state)){
 		return 'grid-content scrollable dual-pagination';
 	}else if(getPrevPageButtonStatus(state)){
 		return 'grid-content scrollable top-pagination';
-	}else{
+	}else if(getNextPageButtonStatus(state)){
 		return 'grid-content scrollable bottom-pagination';
+	}else{
+		return 'grid-content scrollable';
 	}
 };
 
