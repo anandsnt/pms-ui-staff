@@ -88,8 +88,6 @@ sntZestStation.controller('zsRootCtrl', [
             if ($scope.isIpad) {
                 document.activeElement.blur();
                 $('input').blur();
-            } else {
-				// do nothing
             }
         };
 		/*
@@ -150,8 +148,6 @@ sntZestStation.controller('zsRootCtrl', [
             if ($state.current.name !== 'zest_station.admin') {
                 $scope.hideKeyboardIfUp();
                 $state.go('zest_station.outOfService');
-            } else {
-				// do nothing
             }
         });
         $scope.goToAdmin = function() {
@@ -251,47 +247,41 @@ sntZestStation.controller('zsRootCtrl', [
         };
 
         var forDemo = function() {
-            console.info('readLocally() : ', readLocally());
             if (readLocally() && $scope.zestStationData.theme === 'snt') {
                 console.info('forDemo: !!!');
                 return true;
-            } else {
-                console.info('not forDemo: ');
-                return false;
             }
+            console.info('not forDemo: ');
+            return false;
         };
 
 
         $scope.keyFromSocket = function() {
             if ($scope.zestStationData.keyWriter === 'websocket') {
                 return true;
-            } else {
-                return false;
             }
+            return false;
         };
         $scope.writeLocally = function() {
             if ($scope.zestStationData.keyWriter === 'local') {
                 return true;
-            } else {
-                return false;
             }
+            return false;
         };
 
         $scope.inDemoMode = function() {
             if ($scope.zestStationData.demoModeEnabled === 'true') {
                 console.warn('in demo mode');
                 return true;
-            } else {
-                return false;
             }
+            return false;
         };
 
         var readLocally = function() {
             if ($scope.zestStationData.ccReader === 'local') {
                 return true;
-            } else {
-                return false;
             }
+            return false;
         };
 		/**
 		 * This fetches hotel admin workstation settings
@@ -414,9 +404,8 @@ sntZestStation.controller('zsRootCtrl', [
 			// also attaching this to navigation, yotel has text back & cancel, instead of svg icons for back and close;
             if ($scope.zestStationData.theme === 'yotel') {
                 return true;
-            } else {
-                return false;
             }
+            return false;
         };
 
         $scope.setSvgsToBeLoaded = function(iconsPath, commonIconsPath, useCommonIcons, diffHomeIconsOnly) {
@@ -612,8 +601,6 @@ sntZestStation.controller('zsRootCtrl', [
                         }
                         $scope.runDigestCycle();
                         $scope.hideKeyboardIfUp();
-                    } else {
-						// do nothing;
                     }
 					// when user activity is not recorded for more than idle_timer.max
 					// time set in admin, got to home page
@@ -622,12 +609,10 @@ sntZestStation.controller('zsRootCtrl', [
 
                         $state.go('zest_station.home');
                         $scope.runDigestCycle();
-                    } else {
-						// do nothing;
                     }
-                } else {
-                    return;
                 }
+                //else do nothing
+                return;
             }
 
             setInterval(increment, 1000);
@@ -817,8 +802,6 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.$on('EJECT_KEYCARD', function() {
             if ($scope.zestStationData.keyCardInserted) {
                 $scope.socketOperator.EjectKeyCard();
-            } else {
-				// do nothing
             }
         });
 		/** ******************************************************************************
@@ -836,8 +819,6 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.$broadcast('QR_SCAN_SUCCESS', {
                     'reservation_id': response.reservation_id
                 });
-            } else {
-				// do nothing now
             }
         };
 
@@ -969,8 +950,6 @@ sntZestStation.controller('zsRootCtrl', [
                 } else {
                     if ($state.current.name !== 'zest_station.admin') {
                         $state.go('zest_station.outOfService');
-                    } else {
-						// do nothing
                     }
                 }
             } else {
@@ -992,8 +971,6 @@ sntZestStation.controller('zsRootCtrl', [
                 if (!($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad)) && $scope.zestStationData.workstationStatus === 'out-of-order') {
                     if ($state.current.name !== 'zest_station.admin') {
                         $state.go('zest_station.outOfService');
-                    } else {
-						// do nothing
                     }
                 } else {
 					// when status is changed from admin
@@ -1009,8 +986,6 @@ sntZestStation.controller('zsRootCtrl', [
                             $scope.zestStationData.isAdminFirstLogin = false;
                             if (previousWorkStationStatus === 'out-of-order' && newWorkStationStatus === 'in-order') {
                                 $state.go('zest_station.home');
-                            } else {
-								// do nothing
                             }
                         }
                     }
@@ -1107,8 +1082,6 @@ sntZestStation.controller('zsRootCtrl', [
 
                 if ($state.current.name !== 'zest_station.admin') {
                     $state.go('zest_station.outOfService');
-                } else {
-					// do nothing
                 }
                 $scope.callAPI(zsGeneralSrv.updateWorkStationOos, options);
             } else {
