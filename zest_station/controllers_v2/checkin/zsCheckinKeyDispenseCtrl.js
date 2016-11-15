@@ -68,7 +68,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
             $scope.zestStationData.workstationStatus = 'out-of-order';// go out of order when (printing or key encoding fails)
             $scope.runDigestCycle();
         };
-		/**
+		/*
 		 * [setFailureReason description]
 		 * we need to set the oos reason message in admin
 		 */
@@ -78,7 +78,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
             changePageModeToFailure();
         };
 
-		/**
+		/*
 		 * [resetFailureReason description]
 		 * we need to set the oos reason message in admin
 		 */
@@ -87,7 +87,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
             $scope.zestStationData.workstationStatus = 'in-order';
         };
 
-		/**
+		/*
 		 * [dispenseKey description]
 		 *  if webscoket ready state is not ready
 		 */
@@ -197,7 +197,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
         $scope.$on('continueFromCordovaKeyWrite', function() {
             remoteEncodingSuccsess();
         });
-		/**
+		/*
 		 * [initMakeKey description]
 		 * @return {[type]} [description]
 		 */
