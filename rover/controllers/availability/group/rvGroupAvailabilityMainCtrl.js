@@ -12,7 +12,7 @@ angular.module('sntRover').controller('groupAvailabilityMainController', [
 
 	$scope.page.title = "Groups";
 	// default number of selected days is 14
-	$scope.numberOfDaysSelected = 14;
+	$scope.numberOfDaysSelected = '14';
 
 
 	$scope.data = {};

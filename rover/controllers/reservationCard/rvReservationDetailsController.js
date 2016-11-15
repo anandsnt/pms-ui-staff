@@ -922,6 +922,9 @@ sntRover.controller('reservationDetailsController',
 						$scope.responseValidation = response.data;
 						$scope.stayDatesExtendedForOutsideGroup = (response.data.is_group_reservation && response.data.outside_group_stay_dates) ? true : false;
 						$scope.borrowForGroups = (response.data.is_group_reservation && ! response.data.is_room_type_available) ? true : false;
+                        // if user has over book permission, allow to extend even when room type not available CICO-35615
+                        $scope.shouldAllowDateExtend = (response.data.is_room_type_available || rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE')) ? true : false;
+                        $scope.showNotAvailableMessage = (!response.data.is_room_type_available && !rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE')) ? true : false;
 
 						ngDialog.open({
 							template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
