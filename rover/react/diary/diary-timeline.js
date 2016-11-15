@@ -1,5 +1,5 @@
 var Timeline = React.createClass({
-    __get_property_time_line_showing_point: function(){
+    __get_property_time_line_showing_point: function() {
         var props = this.props,
             display = props.display,
             prop_time = display.property_date_time.start_date,
@@ -49,7 +49,7 @@ var Timeline = React.createClass({
             spanClass,
             interval_counter = 1;
 
-        ;(function() {
+        (function() {
             var startingTime = new Date(props.filter.arrival_date),
                 timeBefore,
                 timeChnangeDiff,
@@ -88,7 +88,7 @@ var Timeline = React.createClass({
             tmrowShortDate = this.__get_date_for_timeline_displaying (tmrow);
         } else {
             todayShortDate = tmrowShortDate = '';
-        };
+        }
 
         /* CREATE TIMELINE */
         for (i = 0, len = display.hours; i < len; i++) {
@@ -112,7 +112,7 @@ var Timeline = React.createClass({
                         i < 23 ? todayShortDate : tmrowShortDate
                     )
                 );
-            };
+            }
 
             for (j = 0; j < display.intervals_per_hour; j++, interval_counter++) {
                 spanClass = 'interval-' + (j + 1);

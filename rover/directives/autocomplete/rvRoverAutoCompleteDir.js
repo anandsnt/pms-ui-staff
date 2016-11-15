@@ -15,6 +15,7 @@
     var defaultProcessEachItem = function (item, scope) {
         var $content = highlightFilter_(item.name, scope.ngModel),
             $result  = $("<a></a>").html($content);
+
         return $result;
     };
 
@@ -29,7 +30,7 @@
         $(el).autocomplete( scope.autoOptions )
         .data('ui-autocomplete')
         ._renderItem = function(ul, item) {
-            //CICO-26513
+            // CICO-26513
             ulElement = ul;
             ulElement.off('touchmove').on('touchmove', function(e) {
                 e.stopPropagation();
@@ -39,7 +40,7 @@
             
             ul.addClass(scope.ulClass);
             
-            //if no function passed for processing each item
+            // if no function passed for processing each item
             if (!_.isFunction(scope.processEachItem)) {
                 htmlForItem = defaultProcessEachItem (item, scope);
             }
@@ -53,13 +54,13 @@
         /**
          * we've to unbind something while removing the node from dom
          */
-        scope.$on('$destroy', function(){
+        scope.$on('$destroy', function() {
             autocompleteEl = $(el);
             autocompleteEl.autocomplete( "destroy" );
             
-            //unbinding the touch move
-            if(ulElement instanceof HTMLElement) {
-                ulElement.off('touchmove')
+            // unbinding the touch move
+            if (ulElement instanceof HTMLElement) {
+                ulElement.off('touchmove');
             }
         });    
     };
@@ -73,10 +74,10 @@
         highlightFilter_ = highlightFilter;
         return {
             restrict: 'A',
-            scope   : {
-                autoOptions : '=autoCompleteOptions',
-                ngModel     : '=',
-                ulClass     : '@ulClass',
+            scope: {
+                autoOptions: '=autoCompleteOptions',
+                ngModel: '=',
+                ulClass: '@ulClass',
                 processEachItem: '=processEachItem'
             },
             link: autoCompleteLinkFn

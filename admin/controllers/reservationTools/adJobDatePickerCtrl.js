@@ -45,7 +45,7 @@ admin.controller('ADJobDatePicker', [
             $scope.dateOptions = angular.extend({
                 maxDate: tzIndependentDate(weekAfter)
             }, datePickerCommon);
-        };
+        }
 
         $scope.cancelClicked = function() {
             ngDialog.close();

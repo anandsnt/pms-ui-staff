@@ -1,18 +1,18 @@
 admin.directive('adChargeCodeAutoComplete', ['ADChargeCodesSrv', function (ADChargeCodesSrv) {
 	return {
-		restrict 	: 'E',
-		replace 	: true,
-		scope 		: {
-			charge_code_id :'=selectedChargeCodeId',
+		restrict: 'E',
+		replace: true,
+		scope: {
+			charge_code_id: '=selectedChargeCodeId',
 			charge_code_name: '=ngModel',
 			label: '@label',
 			entryDivClass: '@entryDivClass',
 			delay: '@delay',
 			minLengthToTrigger: '@minLengthToTrigger',
-			excludePayments : '@',
+			excludePayments: '@',
 			onlyPayments: '@'
 		},
-		controller : function($scope) {
+		controller: function($scope) {
 			BaseCtrl.call(this, $scope);
 
 			var minLengthToTrigger;
@@ -35,21 +35,22 @@ admin.directive('adChargeCodeAutoComplete', ['ADChargeCodesSrv', function (ADCha
 		            query: $scope.charge_code_name
 		        };
 
-				if(!!$scope.excludePayments){
+				if (!!$scope.excludePayments) {
 					params.exclude_payments = true;
 				}
 
-				if(!!$scope.onlyPayments){
+				if (!!$scope.onlyPayments) {
 					params.only_payments = true;
 				}
 
 		        var options = {
-		            params 			: params,
-		            successCallBack : successCallBackOfFetchChargeCodes,
+		            params: params,
+		            successCallBack: successCallBackOfFetchChargeCodes,
 		            successCallBackParameters: {
 						callBackToAutoComplete: callBackToAutoComplete
 					}
 		        };
+
 		        $scope.callAPI(ADChargeCodesSrv.searchChargeCode, options);
 			};
 
@@ -98,24 +99,24 @@ admin.directive('adChargeCodeAutoComplete', ['ADChargeCodesSrv', function (ADCha
 			 * Initialization stuffs
 			 * @return {undefiend}
 			 */
-			var initializeMe = function() {
+			var initializeMe = (function() {
 				$scope.chargeCodeAutocompleteOptions = {
-		            delay		: _.isUndefined($scope.delay) ? 600 : parseInt($scope.delay),
-		            minLength	: 0,
-			        position	: {
-			            my 			: "right top",
-			            at 			: "right bottom",
-			            collision	: 'flip'
+		            delay: _.isUndefined($scope.delay) ? 600 : parseInt($scope.delay),
+		            minLength: 0,
+			        position: {
+			            my: "right top",
+			            at: "right bottom",
+			            collision: 'flip'
 			        },
-		            source 		: autoCompleteSourceHandler,
-		            select 		: autoCompleteSelectHandler
+		            source: autoCompleteSourceHandler,
+		            select: autoCompleteSelectHandler
 				};
 
 				$scope.label 			= _.isUndefined($scope.label) ? 'Charge Code' : $scope.label;
 				$scope.entryDivClass 	= _.isUndefined($scope.entryDivClass) ? '' : $scope.entryDivClass;
 				minLengthToTrigger 		= _.isUndefined($scope.minLengthToTrigger) ? 1 : parseInt($scope.minLengthToTrigger);
-			}();	
+			}());	
 		},
-		templateUrl : '/assets/directives/chargeCodeAutoComplete/adChargeCodeAutoCompleteDir.html',
+		templateUrl: '/assets/directives/chargeCodeAutoComplete/adChargeCodeAutoCompleteDir.html'
 	};
 }]);

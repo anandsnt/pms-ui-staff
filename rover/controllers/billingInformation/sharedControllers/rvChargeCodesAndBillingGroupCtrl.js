@@ -1,4 +1,4 @@
-sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope','$rootScope','$filter','RVBillinginfoSrv', 'RVGuestCardSrv', 'ngDialog', 'RVBillCardSrv', 'RVPaymentSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, RVGuestCardSrv, ngDialog, RVBillCardSrv, RVPaymentSrv) {
+sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope', '$rootScope', '$filter', 'RVBillinginfoSrv', 'RVGuestCardSrv', 'ngDialog', 'RVBillCardSrv', 'RVPaymentSrv', function($scope, $rootScope, $filter, RVBillinginfoSrv, RVGuestCardSrv, ngDialog, RVBillCardSrv, RVPaymentSrv) {
 
     BaseCtrl.call(this, $scope);
 
@@ -57,7 +57,7 @@ sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope','$rootScope','
      * @return {undefined}
      */
     $scope.removeChargeCode = function(chargeCode) {
-        for (var i=0; i < $scope.selectedEntity.attached_charge_codes.length; i++) {
+        for (var i = 0; i < $scope.selectedEntity.attached_charge_codes.length; i++) {
             if ($scope.selectedEntity.attached_charge_codes[i].id === chargeCode.id) {
                 $scope.selectedEntity.attached_charge_codes.splice(i, 1);
                 return;
@@ -114,6 +114,7 @@ sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope','$rootScope','
         $scope.billingInfoFlags.showChargeCodes = false;
         displayFilteredResultsChargeCodes();
         var queryText = $scope.chargeCodeSearchText;
+
         $scope.chargeCodeSearchText = queryText.charAt(0).toUpperCase() + queryText.slice(1);
     };
 
@@ -132,10 +133,10 @@ sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope','$rootScope','
      */
     var displayFilteredResultsChargeCodes = function() {
 
-        //if the entered text's length < 3, we will show everything, means no filtering
+        // if the entered text's length < 3, we will show everything, means no filtering
         if ($scope.chargeCodeSearchText.length < 3) {
 
-            //based on 'is_row_visible' parameter we are showing the data in the template
+            // based on 'is_row_visible' parameter we are showing the data in the template
             for (var i = 0; i < $scope.availableChargeCodes.length; i++) {
                 if ($scope.isChargeCodeSelected($scope.availableChargeCodes[i])) {
                     $scope.availableChargeCodes[i].is_row_visible = false;
@@ -151,8 +152,9 @@ sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope','$rootScope','
         }
         else {
             var value = "";
-            //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
-            //if it is zero, then we will request for webservice
+            // searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
+            // if it is zero, then we will request for webservice
+
             for (var i = 0; i < $scope.availableChargeCodes.length; i++) {
                 value = $scope.availableChargeCodes[i];
                 if ((($scope.escapeNull(value.code).toUpperCase()).indexOf($scope.chargeCodeSearchText.toUpperCase()) >= 0 ||

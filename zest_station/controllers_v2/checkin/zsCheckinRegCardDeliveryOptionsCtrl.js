@@ -11,7 +11,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 	'$window',
 	function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, zsUtilitySrv, zsGeneralSrv, $filter, $timeout, $window) {
 
-		/**********************************************************************************************
+		/** ********************************************************************************************
 		 **		Expected state params -----> reservation_id, room_no,  first_name, guest_id, key_success
 		 *       and email			  
 		 **		Exit function ->nextPageActions								
@@ -34,9 +34,9 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 		 * @return {[type]} 
 		 */
 		$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-			//back button action from email send mode page will
-			//take to 2 options page
-			$scope.mode = "DELIVERY_OPTIONS_MODE"; //hide back buttons in 2 options page
+			// back button action from email send mode page will
+			// take to 2 options page
+			$scope.mode = "DELIVERY_OPTIONS_MODE"; // hide back buttons in 2 options page
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 		});
 
@@ -47,6 +47,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 			var stateParams = {
 				key_success: $stateParams.key_success
 			};
+
 			if (printopted) {
 				stateParams.print_opted = 'true';
 				stateParams.print_status = actionStatus;
@@ -81,19 +82,21 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				var printopted = true;
 				var emailopted = false;
 				var actionStatus = 'failed';
+
 				nextPageActions(printopted, emailopted, actionStatus);
 			};
 			var printSuccessActions = function() {
 				var printopted = true;
 				var emailopted = false;
 				var actionStatus = 'success';
+
 				nextPageActions(printopted, emailopted, actionStatus);
 			};
 
 			var handleStarTacPrinterActions = function() {
 				var printData = "";
 
-				/**** Socket actions starts here *****/
+				/** ** Socket actions starts here *****/
 				$scope.$on('SOCKET_FAILED', function() {
 					printFailedActions();
 				});
@@ -106,11 +109,11 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				$scope.$on('SOCKET_CONNECTED', function() {
 					$scope.socketOperator.startPrint(printData);
 				});
-				/**** Socket actions ends here *****/
+				/** ** Socket actions ends here *****/
 
 				var fetchSatrTacDataSuccess = function(response) {
 					printData = response.bill_details;
-					//check if socket is open
+					// check if socket is open
 					if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
 						$scope.socketOperator.startPrint(printData);
 					} else {
@@ -128,6 +131,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 					successCallBack: fetchSatrTacDataSuccess,
 					failureCallBack: startTacDataFailedActions
 				};
+
 				$scope.callAPI(zsCheckinSrv.fetchStarTacPrinterData, options);
 			};
 
@@ -135,40 +139,40 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				// add the orientation
 				addPrintOrientation();
 				setBeforePrintSetup();
-				try {
-					// this will show the popup with full bill
-					$timeout(function() {
-						/*
-						 * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-						 */
+			try {
+				// this will show the popup with full bill
+				$timeout(function() {
+					/*
+					 * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+					 */
 
-						if (sntapp.cordovaLoaded) {
-							var printer = (sntZestStation.selectedPrinter);
-							cordova.exec(function(success) {
-								printSuccessActions();
-							}, function(error) {
-								printFailedActions();
-							}, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
+					if (sntapp.cordovaLoaded) {
+						var printer = (sntZestStation.selectedPrinter);
+
+						cordova.exec(function(success) {
+							printSuccessActions();
+						}, function(error) {
+							printFailedActions();
+						}, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
+					} else {
+						if ($scope.zestStationData.zest_printer_option === "STAR_TAC") {
+							// we will call websocket services to print
+							handleStarTacPrinterActions();
 						} else {
-							//REASON: API error . We cant push the starttac code.
-							//So uncomment and use the following line in next sprint
-							// if($scope.zestStationData.zest_printer_option === "STAR_TAC"){
-							// 	//we will call websocket services to print
-							// 	handleStarTacPrinterActions();
-							// } else {
-								$window.print();
-								setTimeout(function() {
-									printSuccessActions();
-								}, 100);
-							// }
-						}
-						// provide a delay for preview to appear 
 
-					}, 100);
-				} catch (e) {
-					console.info("something went wrong while attempting to print--->" + e);
-					printFailedActions();
-				};
+							$window.print();
+							setTimeout(function() {
+								printSuccessActions();
+							}, 100);
+						}
+					}
+					// provide a delay for preview to appear 
+
+				}, 100);
+			} catch (e) {
+				console.info("something went wrong while attempting to print--->" + e);
+				printFailedActions();
+			}
 				setTimeout(function() {
 					// CICO-9569 to solve the hotel logo issue
 					$("header .logo").removeClass('logo-hide');
@@ -181,6 +185,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 
 			var fetchPrintViewCompleted = function(data) {
 				var d = new Date();
+
 				$scope.currentDateTime = d.getTime();
 				$scope.$emit('hideLoader');
 				// print section - if its from device call cordova.
@@ -199,6 +204,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				successCallBack: fetchPrintViewCompleted,
 				failureCallBack: printFailedActions
 			};
+
 			$scope.callAPI(zsCheckinSrv.fetchRegistrationCardPrintData, options);
 		};
 		/**
@@ -207,7 +213,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 		 */
 		$scope.selectEmailDelivery = function() {
 			$scope.mode = "EMAIL_SEND_MODE";
-			//show back buttons in email send mode page
+			// show back buttons in email send mode page
 			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 		};
 		/**
@@ -219,12 +225,14 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				var printopted = false;
 				var emailopted = true;
 				var actionStatus = 'failed';
+
 				nextPageActions(printopted, emailopted, actionStatus);
 			};
 			var registrationCardSent = function(response) {
 				var printopted = false;
 				var emailopted = true;
 				var actionStatus = 'success';
+
 				nextPageActions(printopted, emailopted, actionStatus);
 			};
 
@@ -241,6 +249,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				successCallBack: registrationCardSent,
 				failureCallBack: registrationCardSendingFailed
 			};
+
 			$scope.callAPI(zsCheckinSrv.sendRegistrationByEmail, options);
 		};
 
@@ -268,13 +277,14 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 			 */
 			var updateGuestEmailFailed = function() {
 				var stateParams = {};
+
 				if ($scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2 !== '') {
 					stateParams.message = $scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2;
 				} else {
-					//do nothing
-				};
+					// do nothing
+				}
 				$state.go('zest_station.speakToStaff', stateParams);
-			}
+			};
 
 			var options = {
 				params: {
@@ -283,30 +293,33 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				},
 				successCallBack: updateComplete,
 				failureCallBack: updateGuestEmailFailed
-			}
+			};
+
 			$scope.callAPI(zsGeneralSrv.updateGuestEmail, options);
 		};
 		/**
 		 * [goToNext description]
 		 *  save email
 		 */
+
 		$scope.goToNext = function() {
 			var isValidEmail = $scope.email.length > 0 ? zsUtilitySrv.isValidEmail($scope.email) : false;
+
 			if (isValidEmail) {
 				updateGuestEmail();
 			} else {
 				$scope.mode = "EMAIL_INVLAID_MODE";
 				$scope.callBlurEventForIpad();
-			};
+			}
 		};
 
 		/**
 		 * [initializeMe description]
 		 */
-		var initializeMe = function() {
-			//show back button
-			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON); //hide back buttons in 2 options page
-			//show close button
+		var initializeMe = (function() {
+			// show back button
+			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON); // hide back buttons in 2 options page
+			// show close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			if ($stateParams.email) {
 				$scope.email = $stateParams.email.length > 0 ? $stateParams.email : "";
@@ -320,7 +333,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 			} else {
 				$scope.mode = "DELIVERY_OPTIONS_MODE";
 			}
-		}();
+		}());
 
 	}
 ]);

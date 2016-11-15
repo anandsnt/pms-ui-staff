@@ -1,8 +1,8 @@
-angular.module('dashboardModule', []).config(function($stateProvider, $urlRouterProvider, $translateProvider){
+angular.module('dashboardModule', []).config(function($stateProvider, $urlRouterProvider, $translateProvider) {
 
         $stateProvider.state('rover.search', {
-            //as we dont have a status called Mobile checkin, we still need to pass as PRE_CHECKIN
-            //along with that we will pass is mobile checkin variable. This will be null if not send
+            // as we dont have a status called Mobile checkin, we still need to pass as PRE_CHECKIN
+            // along with that we will pass is mobile checkin variable. This will be null if not send
             url: '/search/:type/:from_page/:useCache/:isMobileCheckin',
             templateUrl: '/assets/partials/search/rvSearchReservation.html',
             controller: 'rvReservationSearchController',
@@ -10,30 +10,32 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                 searchResultdata: function(RVSearchSrv, $stateParams, mappingList) {
                     var oldType = "";
                     var dataDict = {};
+
                     oldType = $stateParams.type;
 
-                    if( oldType !== null && oldType!== '' && oldType !=="RESET") {
-                        if(oldType === "LATE_CHECKOUT"){
+                    if ( oldType !== null && oldType !== '' && oldType !== "RESET") {
+                        if (oldType === "LATE_CHECKOUT") {
                             dataDict.is_late_checkout_only = true;
-                        } else if(oldType === "QUEUED_ROOMS"){
+                        } else if (oldType === "QUEUED_ROOMS") {
                         	dataDict.is_queued_rooms_only = true;
                         }
-                        else if(oldType === "VIP"){
+                        else if (oldType === "VIP") {
                             dataDict.vip = true;
                         }
-                        else{
+                        else {
                             dataDict.status = oldType;
                         }
-                        //The pagination should be set to page=1. for navigations from dashboard buttons.
-                        if($stateParams.from_page === "DASHBOARD"){
+                        // The pagination should be set to page=1. for navigations from dashboard buttons.
+                        if ($stateParams.from_page === "DASHBOARD") {
                             RVSearchSrv.page = 1;
                         }
-                        //calling the webservice
+                        // calling the webservice
                         return RVSearchSrv.fetch(dataDict, $stateParams.useCache);
-                    } else if ( !!$stateParams.useCache && oldType !=="RESET") {
+                    } else if ( !!$stateParams.useCache && oldType !== "RESET") {
                         return RVSearchSrv.fetch({}, $stateParams.useCache);
                     } else {
                         var results = [];
+
                         return results;
                     }
                 }
@@ -52,7 +54,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                 dashBoarddata: function(RVDashboardSrv, mappingList) {
                     return RVDashboardSrv.fetchDashboardDetails();
                 },
-                roomTypes : function(RVHkRoomStatusSrv) {
+                roomTypes: function(RVHkRoomStatusSrv) {
                     return RVHkRoomStatusSrv.fetchRoomTypes();
                 }
             }
@@ -66,19 +68,20 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
             url: '/frontoffice',
             templateUrl: '/assets/partials/dashboard/rvFrontDeskDashboard.html',
             controller: 'RVfrontDeskDashboardController',
-            resolve : {
-                statistics : function(RVDashboardSrv) {
+            resolve: {
+                statistics: function(RVDashboardSrv) {
                     var requestParams = {
-                        'show_adr' : false,
-                        'show_upsell' : true,
-                        'show_rate_of_day' : false
+                        'show_adr': false,
+                        'show_upsell': true,
+                        'show_rate_of_day': false
                     };
+
                     return RVDashboardSrv.fetchStatisticData(requestParams);
                 }
             }
         });
         $stateProvider.state('rover.dashboard.housekeeping', {
-            url: '/housekeeping',  //TODO: check can we reduced it to hk?
+            url: '/housekeeping',  // TODO: check can we reduced it to hk?
             templateUrl: '/assets/partials/dashboard/rvHouseKeepingDashboard.html',
             controller: 'RVhouseKeepingDashboardController'
         });
@@ -94,22 +97,22 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                 dashBoarddata: function(RVDashboardSrv, mappingList) {
                     return RVDashboardSrv.fetchDashboardDetails();
                 },
-                roomTypes : function(RVHkRoomStatusSrv, mappingList) {
+                roomTypes: function(RVHkRoomStatusSrv, mappingList) {
                     return RVHkRoomStatusSrv.fetchRoomTypes();
                 }
-            } ,
-             onEnter: function (ngDialog,$stateParams, mappingList, dashBoarddata, jsMappings) {
+            },
+             onEnter: function (ngDialog, $stateParams, mappingList, dashBoarddata, jsMappings) {
 
-               if($stateParams.type === 'changeBussinessDate'){
-                    jsMappings.fetchAssets(['endofday']).then(function(){
+               if ($stateParams.type === 'changeBussinessDate') {
+                    jsMappings.fetchAssets(['endofday']).then(function() {
                         ngDialog.open({
                             template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
                             controller: 'RVEndOfDayModalController'
                         });
                     });
                }
-               else if($stateParams.type === 'postCharge'){
-                    jsMappings.fetchAssets(['postcharge', 'directives']).then(function(){
+               else if ($stateParams.type === 'postCharge') {
+                    jsMappings.fetchAssets(['postcharge', 'directives']).then(function() {
                         ngDialog.open({
                             template: '/assets/partials/postCharge/rvPostChargeV2.html',
                             controller: 'RVOutsidePostChargeController'

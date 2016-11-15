@@ -133,7 +133,7 @@
         /* Header ***/
         .availability-header {
             position: relative;
-            padding: 0;
+            padding: 10px;
             background: @white;
             z-index: 990;
             .size(60px, 100%);
@@ -142,7 +142,7 @@
 
             .date {
                 width: 140px;
-                margin: 10px 0 10px 10px;
+                margin-right: 10px;
                 .pull-left;
 
                 input { 
@@ -153,44 +153,16 @@
 
             .select {
                 width: 160px;
-                margin: 10px 0 10px 10px;
+                margin-right: 10px;
                 .pull-left;
 
                 select,
                 &:after { background-color: @grey1; }
             }
 
-            .display {
-                width: 120px;
+            .button {
+                .square(40px);
                 .pull-right;
-
-                li {
-                    margin: 0;
-                    cursor: pointer;
-                    .square(60px);
-                    .show;
-                    .pull-left;
-
-                    &:first-child { .box-shadow(1px 0 0 rgba(0,0,0,.1)); }
-
-                    &.active {
-                        position: relative;
-                        .box-shadow(none);
-                        .gradient(@logoGradientStart, @logoGradientEnd);
-
-                        &:after {
-                            content: "";
-                            position: absolute;
-                            left: 20px;
-                            bottom: -10px;
-                            width: 0; 
-                            height: 0; 
-                            border-top: 10px solid @logoGradientEnd;
-                            border-left: 10px solid transparent;
-                            border-right: 10px solid transparent;
-                        }
-                    }
-                }
             }
         }
 

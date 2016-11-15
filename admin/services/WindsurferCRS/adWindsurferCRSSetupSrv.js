@@ -1,4 +1,4 @@
-admin.service('adWindsurferCRSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2){
+admin.service('adWindsurferCRSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
 
     /**
      * to get the WindsurferCRS configraton values
@@ -7,11 +7,11 @@ admin.service('adWindsurferCRSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', funct
     this.fetchWindsurferCRSConfiguration = function() {
         var deferred = $q.defer();
         var url = '/api/ota_config/windsurfer';
-        //var url = "ui/show?json_input=WindsurferCRS/settings.json&format=json";
+        // var url = "ui/show?json_input=WindsurferCRS/settings.json&format=json";
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
-        },function(data){
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;
@@ -27,22 +27,22 @@ admin.service('adWindsurferCRSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', funct
 
         ADBaseWebSrvV2.putJSON(url, params).then(function(data) {
             deferred.resolve(data);
-        },function(data){
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;
     };
 
-    this.runFullRefresh = function(params){
+    this.runFullRefresh = function(params) {
         var deferred = $q.defer();
         var url = '/api/ota_config/windsurfer/full_refresh';
 
         ADBaseWebSrvV2.putJSON(url, params).then(function(data) {
             deferred.resolve(data);
-        },function(data){
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;
-    }
+    };
 
 }]);

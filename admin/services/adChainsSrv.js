@@ -1,15 +1,15 @@
-admin.service('adChainsSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv){
+admin.service('adChainsSrv', ['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv) {
    /*
     * To fetch chains list
     * @return {object} chains list
     */
-	this.fetch = function(){
+	this.fetch = function() {
 		var deferred = $q.defer();
 		var url = '/admin/hotel_chains.json';
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(data){
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -19,14 +19,14 @@ admin.service('adChainsSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, 
     * @param {object} chain id
     * @return {object} chain data
     */
-	this.edit = function(data){
+	this.edit = function(data) {
 		var editID = data.editID;
 		var deferred = $q.defer();
-		var url = '/admin/hotel_chains/'+editID+'/edit.json';
+		var url = '/admin/hotel_chains/' + editID + '/edit.json';
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(data){
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -36,15 +36,15 @@ admin.service('adChainsSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, 
     * @param {object} chain id
     * @return {object} status
     */
-	this.update = function(data){
+	this.update = function(data) {
 		var id  = data.id;
 		var updateData = data.updateData;
 		var deferred = $q.defer();
-		var url = '/admin/hotel_chains/'+id;
+		var url = '/admin/hotel_chains/' + id;
 
-		ADBaseWebSrv.putJSON(url,updateData).then(function(data) {
+		ADBaseWebSrv.putJSON(url, updateData).then(function(data) {
 			deferred.resolve(data);
-		},function(data){
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -54,13 +54,13 @@ admin.service('adChainsSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, 
     * @param {object} new chain details
     * @return {object} status
     */
-	this.post = function(data){
+	this.post = function(data) {
 		var deferred = $q.defer();
 		var url = '/admin/hotel_chains';
 
-		ADBaseWebSrv.postJSON(url,data).then(function(data) {
+		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
-		},function(data){
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;

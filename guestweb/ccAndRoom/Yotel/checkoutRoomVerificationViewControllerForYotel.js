@@ -1,25 +1,25 @@
 (function() {
-	var checkoutRoomVerificationViewControllerForYotel = function($scope,$rootScope,$state,$modal,checkoutRoomVerificationService,$timeout) {
+	var checkoutRoomVerificationViewControllerForYotel = function($scope, $rootScope, $state, $modal, checkoutRoomVerificationService, $timeout) {
 
 	$scope.pageValid = false;
 	$rootScope.isRoomVerified =  false;
 	$scope.roomNumber = "";
 
-	if($rootScope.isExternalVerification){
+	if ($rootScope.isExternalVerification) {
 		$state.go('externalVerification');
 	}
-	else if($rootScope.isCheckedin){
+	else if ($rootScope.isCheckedin) {
 		$state.go('checkinSuccess');
 	}
-	else if($rootScope.isCheckin){
+	else if ($rootScope.isCheckin) {
 		$state.go('checkinConfirmation');
 	}
-	else{
+	else {
 		$scope.pageValid = true;
 	}
 
-	if($scope.pageValid){
-		//setup options for error popup
+	if ($scope.pageValid) {
+		// setup options for error popup
 		$scope.opts = {
 			backdrop: true,
 			backdropClick: true,
@@ -27,30 +27,31 @@
 			controller: roomVerificationErrorModalCtrl
 		};
 
-		$scope.continueButtonClicked = function(){
+		$scope.continueButtonClicked = function() {
 
 		var url = '/guest_web/verify_room.json';
-		var data = {'reservation_id':$rootScope.reservationID,"room_number":$scope.roomNumber};
+		var data = {'reservation_id': $rootScope.reservationID, "room_number": $scope.roomNumber};
+
 		$scope.isFetching = true;
-		checkoutRoomVerificationService.verifyRoom(url,data).then(function(response) {
+		checkoutRoomVerificationService.verifyRoom(url, data).then(function(response) {
 
 			   $timeout(function() {
 
-					if(response.status ==="success"){
+					if (response.status === "success") {
 						$rootScope.isRoomVerified =  true;
-						if($rootScope.isLateCheckoutAvailable ){
+						if ($rootScope.isLateCheckoutAvailable ) {
 								$state.go('checkOutOptions');
-					    }else {
+					    } else {
 					    	$state.go('checkOutConfirmation');
 						}
 					}
-					else{
+					else {
 						$scope.isFetching = false;
 						$modal.open($scope.opts); // error modal popup
 					}
 			    }, 2000);
 
-		},function(){
+		}, function() {
 			 $scope.isFetching = false;
 			 $scope.netWorkError = true;
 
@@ -62,7 +63,7 @@
 };
 
 var dependencies = [
-'$scope','$rootScope','$state','$modal','checkoutRoomVerificationService','$timeout',
+'$scope', '$rootScope', '$state', '$modal', 'checkoutRoomVerificationService', '$timeout',
 checkoutRoomVerificationViewControllerForYotel
 ];
 
@@ -76,7 +77,7 @@ sntGuestWeb.controller('checkoutRoomVerificationViewControllerForYotel', depende
 		$scope.closeDialog = function () {
 			$modalInstance.dismiss('cancel');
 		};
-		$scope.goToBrowserHomePage = function(){
+		$scope.goToBrowserHomePage = function() {
 			if (window.home) {
                 window.home ();
             } else {        // Internet Explorer

@@ -1,13 +1,13 @@
 admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'roomMappings', 'adComtrolRoomMappingSrv',
     function($scope, roomMappings, adComtrolRoomMappingSrv) {
 
-        //private methods and variables
+        // private methods and variables
         var resetNew = function() {
                 $scope.state.new = {
                     room_no: "",
                     external_room: "",
                     external_extension: ""
-                }
+                };
             },
             revertEdit = function() {
                 if ($scope.state.editRef) {
@@ -21,11 +21,11 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'roomMappings', 'adComtr
                         $scope.state.roomNumbers = response.roomNumbers;
                         cb();
                     }
-                })
+                });
             };
 
-        //scope method and variables
-        //-------------------------------------------------------------------------------------------------------------- ADD
+        // scope method and variables
+        // -------------------------------------------------------------------------------------------------------------- ADD
         /**
          * Method to open the add form
          */
@@ -72,7 +72,7 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'roomMappings', 'adComtr
                 }
             });
         };
-        //-------------------------------------------------------------------------------------------------------------- EDIT
+        // -------------------------------------------------------------------------------------------------------------- EDIT
         /**
          * Method to show the edit form
          * @param idx
@@ -112,7 +112,7 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'roomMappings', 'adComtr
                 }
             });
         };
-        //-------------------------------------------------------------------------------------------------------------- DELETE
+        // -------------------------------------------------------------------------------------------------------------- DELETE
         /**
          * Method to delete a Revenue Center
          * Deleted ones are  hidden in UI with help of isDeleted flag
@@ -127,7 +127,7 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'roomMappings', 'adComtr
                 }
             });
         };
-        //--------------------------------------------------------------------------------------------------------------
+        // --------------------------------------------------------------------------------------------------------------
         /**
          * Initialization method for the controller
          */
