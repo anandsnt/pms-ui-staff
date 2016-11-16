@@ -139,7 +139,7 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
             var hotel_id = data.hotel_id,
                 interface_id = data.interface_type_id,
                 deferred = $q.defer(),
-                url = '/admin/external_mappings/' + hotel_id + '/' + interface_id + '/interface_mappings.json';
+                url = '/admin/external_mappings/' + hotel_id + '/' + interface_id + '/interface_mappings.json?exclude_mappings=true';
 
             ADBaseWebSrv.getJSON(url).then(function (data) {
                 deferred.resolve(data.mapping_type);

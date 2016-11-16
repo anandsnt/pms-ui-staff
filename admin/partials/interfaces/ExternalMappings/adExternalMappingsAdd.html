@@ -16,7 +16,7 @@
     <section class="content-scroll">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-        <form class="form float">
+        <form ng-if="interface.activeTab === 'MANUAL'" class="form float">
             <fieldset class="holder full-width">
                 <div class="form-title">
                     <h3 translate><span>Add&nbsp;</span>Mapping</h3>
@@ -27,6 +27,7 @@
                 <ad-dropdown-name savemodel="mapping.mapping_type"
                                   valueproperty="name"
                                   property="text"
+                                  label-in-drop-down="Select Mapping Type"
                                   list="mappingTypes"
                                   label="{{'MAPPING_TYPE'| translate}}"
                                   div-class="full-width">
@@ -36,6 +37,7 @@
                 <ad-dropdown-name savemodel="mapping.snt_value"
                                   valueproperty="description"
                                   property="name"
+                                  label-in-drop-down="Select Value"
                                   list="sntValues"
                                   label="{{'SNT_VALUE'| translate}}"
                                   div-class="full-width">
@@ -54,6 +56,37 @@
                 </button>
                 <button type="button" class="button green" ng-click="onClickSaveNewMapping()" translate>
                     SAVE_NEW_MAPPING
+                </button>
+            </div>
+        </form>
+        <form ng-if="interface.activeTab === 'AUT0'" class="form float">
+            <fieldset class="holder left">
+                <fieldset class="holder left">
+                    <ad-checkbox is-checked="auto.all"
+                                 parent-label-class="checkbox-with-label"
+                                 top-label= "{{ 'ROOMS_TO_MAP' | translate}}"
+                                 label="{{ 'ALL_UNMAPPED_ROOMS' | translate}}"
+                                 div-class="full-width">
+                    </ad-checkbox>
+                </fieldset>
+                <fieldset class="holder right">
+                    <ad-textbox inputtype="text"
+                                value="auto.prefix"
+                                placeholder="{{'ENTER_ANY_LETTER_OR_NUMBER' | translate}}"
+                                label="{{'APPLY_PREFIX'| translate}}"
+                                styleclass="full-width"></ad-textbox>
+                </fieldset>
+            </fieldset>
+            <fieldset class="holder right">
+                <ad-toggle-button is-checked="auto.removeFirst" label="{{'REMOVE_FIRST_CHAR' | translate}}"></ad-toggle-button>
+            </fieldset>
+            <div class="actions float">
+                <button type="button"
+                        class="button blank add-data-inline" ng-click="navigateBack()" translate>
+                    CANCEL
+                </button>
+                <button type="button" class="button green" ng-click="onClickSaveNewMapping()" translate>
+                    MAP_ALL_ROOMS
                 </button>
             </div>
         </form>
