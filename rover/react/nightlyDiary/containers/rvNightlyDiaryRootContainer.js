@@ -10,9 +10,8 @@ const getNextPageButtonStatus = function(state) {
 
 	if ((perPage * page) < totalCount) {
 		return true;
-	} else {
-		return false;
 	}
+	return false;
 };
 /**
  * utility method to get visibility status of Prev Button
@@ -21,9 +20,8 @@ const getNextPageButtonStatus = function(state) {
 const getPrevPageButtonStatus = function(state) {
 	if (state.paginationData.page === 1) {
 		return false;
-	} else {
-		return true;
 	}
+	return true;
 };
 /**
  * utility method to get class for grid content
@@ -36,20 +34,19 @@ const getClassForRootDiv = function(state) {
 		return 'grid-content scrollable top-pagination';
 	} else if (getNextPageButtonStatus(state)) {
 		return 'grid-content scrollable bottom-pagination';
-	} else {
-		return 'grid-content scrollable';
 	}
+	return 'grid-content scrollable';
 };
 
 const mapStateToNightlyDiaryRootContainerProps = (state) => ({
-    showNextPageButton : getNextPageButtonStatus(state),
-    showPrevPageButton : getPrevPageButtonStatus(state),
-    ClassForRootDiv : getClassForRootDiv(state)
+    showNextPageButton: getNextPageButtonStatus(state),
+    showPrevPageButton: getPrevPageButtonStatus(state),
+    ClassForRootDiv: getClassForRootDiv(state)
 });
 
 const mapDispatchToNightlyDiaryGoToPreviousPageButtonContainer = (stateProps, dispatchProps, ownProps) => {
     return stateProps;
-}
+};
 
 const NightlyDiaryRootContainer = connect(
   mapStateToNightlyDiaryRootContainerProps,
