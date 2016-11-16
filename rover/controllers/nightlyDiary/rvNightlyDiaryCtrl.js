@@ -21,8 +21,8 @@ angular.module('sntRover')
             RVNightlyDiarySrv
         ){
 
-
         BaseCtrl.call(this, $scope);
+
         var initiateBasicConfig = function(){
             $scope.heading = $filter('translate')('MENU_ROOM_DIARY');
             $scope.setTitle($filter('translate')('MENU_ROOM_DIARY'));
@@ -34,27 +34,28 @@ angular.module('sntRover')
                 diaryRoomsList  : roomsList,
                 reservationList : [],
                 numberOfDays    : 7,
-                fromDate        : '',
-                toDate          : '',
+                fromDate: '',
+                toDate: '',
                 roomFilterCount : 0,
-                filterCount     : 0,
-                paginationData  : { perPage : 50,
-                                    page : 1,
-                                    totalCount : roomsList.total_count
+                filterCount: 0,
+                paginationData  : { perPage: 50,
+                                    page: 1,
+                                    totalCount: roomsList.total_count
                                 },
-                hasMultipleMonth    : false,
-                firstMonthDateList  : [],
-                secondMonthDateList : [],
+                hasMultipleMonth: false,
+                firstMonthDateList: [],
+                secondMonthDateList: [],
                 reservationsList:reservationsList.reservationsList
             };
-        }();
+        };
 
+        initiateBasicConfig();
 
         var getPaginationParams = function(){
             return {
-                per_page    : $scope.diaryData.paginationData.perPage,
-                page        : $scope.diaryData.paginationData.page,
-                total_count : $scope.diaryData.paginationData.totalCount
+                per_page: $scope.diaryData.paginationData.perPage,
+                page: $scope.diaryData.paginationData.page,
+                total_count: $scope.diaryData.paginationData.totalCount
             };
         };
 
@@ -92,16 +93,13 @@ angular.module('sntRover')
             $scope.invokeApi(RVNightlyDiarySrv.fetchRoomsListAndReservationList, postData, successCallBackFetchRoomList);
         };
 
-
         var goToPrevPage = () => {
-            console.log("Implement Prev button action")
             $scope.diaryData.paginationData.page--;
             fetchRoomListDataAndReservationListData();
         };
 
         var goToNextPage = ()=>{
             $scope.diaryData.paginationData.page++;
-            console.log("Implement Next button action");
             fetchRoomListDataAndReservationListData();
         };
         /**
@@ -122,8 +120,8 @@ angular.module('sntRover')
             initialDayOfDateGrid: $rootScope.businessDate,
             numberOfDays: 7,
             currentBusinessDate: $rootScope.businessDate,
-            callbackFromAngular : getTheCallbacksFromAngularToReact(),
-            paginationData : getPaginationParams()
+            callbackFromAngular: getTheCallbacksFromAngularToReact(),
+            paginationData: getPaginationParams()
         };
         const store = configureStore(initialState);
         const {render} = ReactDOM;
@@ -132,12 +130,12 @@ angular.module('sntRover')
         // angular method to update diary view via react dispatch method.
         var updateDiaryView = function(){
             var dispatchData = {
-                type                : 'DIARY_VIEW_CHANGED',
+                type: 'DIARY_VIEW_CHANGED',
                 numberOfDays        : $scope.diaryData.numberOfDays,
                 reservationsList    : $scope.diaryData.reservationsList.rooms,
                 roomsList           : $scope.diaryData.diaryRoomsList,
                 initialDayOfDateGrid: $scope.diaryData.fromDate,
-                currentBusinessDate : $rootScope.businessDate,
+                currentBusinessDate: $rootScope.businessDate,
                 callbackFromAngular : getTheCallbacksFromAngularToReact(),
                 paginationData      : getPaginationParams()
             };
@@ -145,11 +143,11 @@ angular.module('sntRover')
         };
         // Handle event emitted from child - rvNightlyDiaryFiltersController
         // To refresh diary data - rooms & reservations.
-        $scope.$on('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function(event){
+        $scope.$on('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function(){
             fetchRoomListDataAndReservationListData();
         });
         // To refresh timeline data
-        $scope.$on('REFRESH_DIARY_TIMELINE', function(event){
+        $scope.$on('REFRESH_DIARY_TIMELINE', function(){
             fetchTimelineListData();
         });
         /**
