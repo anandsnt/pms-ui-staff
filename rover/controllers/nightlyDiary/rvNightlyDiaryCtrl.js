@@ -29,23 +29,23 @@ angular.module('sntRover')
             $scope.$emit("updateRoverLeftMenu", "nightlyDiaryReservation");
             // data set for diary used for Angular code.
             $scope.diaryData = {
-                datesGridData   : datesList,
-                businessDate    : $rootScope.businessDate,
-                diaryRoomsList  : roomsList,
-                reservationList : [],
-                numberOfDays    : 7,
+                datesGridData: datesList,
+                businessDate: $rootScope.businessDate,
+                diaryRoomsList: roomsList,
+                reservationList: [],
+                numberOfDays: 7,
                 fromDate: '',
                 toDate: '',
                 roomFilterCount : 0,
                 filterCount: 0,
-                paginationData  : { perPage: 50,
+                paginationData: { perPage: 50,
                                     page: 1,
                                     totalCount: roomsList.total_count
                                 },
                 hasMultipleMonth: false,
                 firstMonthDateList: [],
                 secondMonthDateList: [],
-                reservationsList:reservationsList.reservationsList
+                reservationsList: reservationsList.reservationsList
             };
         };
 
@@ -115,7 +115,7 @@ angular.module('sntRover')
 
         //Initial State
         var initialState = {
-            roomsList : roomsList.rooms,
+            roomsList: roomsList.rooms,
             reservationsList: reservationsList.rooms,
             initialDayOfDateGrid: $rootScope.businessDate,
             numberOfDays: 7,
@@ -131,13 +131,13 @@ angular.module('sntRover')
         var updateDiaryView = function(){
             var dispatchData = {
                 type: 'DIARY_VIEW_CHANGED',
-                numberOfDays        : $scope.diaryData.numberOfDays,
-                reservationsList    : $scope.diaryData.reservationsList.rooms,
-                roomsList           : $scope.diaryData.diaryRoomsList,
+                numberOfDays: $scope.diaryData.numberOfDays,
+                reservationsList: $scope.diaryData.reservationsList.rooms,
+                roomsList: $scope.diaryData.diaryRoomsList,
                 initialDayOfDateGrid: $scope.diaryData.fromDate,
                 currentBusinessDate: $rootScope.businessDate,
-                callbackFromAngular : getTheCallbacksFromAngularToReact(),
-                paginationData      : getPaginationParams()
+                callbackFromAngular: getTheCallbacksFromAngularToReact(),
+                paginationData: getPaginationParams()
             };
             store.dispatch(dispatchData);
         };
