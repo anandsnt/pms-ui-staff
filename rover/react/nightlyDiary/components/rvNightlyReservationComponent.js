@@ -4,7 +4,7 @@ const ReservationComponent = ({reservation}) => (
             {
                 reservation.isReservationDayStay ? <span className="day-stay-icon"></span> : ''
             }
-            <span className="name">{reservation.guest_details.first_name +" "+ reservation.guest_details.last_name}</span>
+            <span className="name">{reservation.guest_details.first_name + " " + reservation.guest_details.last_name}</span>
             {
                 reservation.is_vip ? <span className="vip">VIP</span> : ''
             }

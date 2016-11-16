@@ -138,7 +138,7 @@ let getReservationClasses = function(reservation, currentBusinessDate, diaryInit
     let businessDate                   = new Date(currentBusinessDateSplit[0], currentBusinessDateSplit[1], currentBusinessDateSplit[2]);
     let reservationArrivalDate         = new Date(reservationArrivalDateSplit[0], reservationArrivalDateSplit[1], reservationArrivalDateSplit[2]);
     let reservationDepartureDate       = new Date(reservationDepartureDateSplit[0], reservationDepartureDateSplit[1], reservationDepartureDateSplit[2]);
-    let finalDayOfDiaryGrid            = diaryInitialDate.getTime()  + (numberOfDays - 1 ) * 24 * 60 * 60 * 1000;//Minusing 1 bcoz otherwise last date end value (gettime) and next days start will be same.
+    let finalDayOfDiaryGrid            = diaryInitialDate.getTime()  + (numberOfDays - 1 ) * 24 * 60 * 60 * 1000;// Minusing 1 bcoz otherwise last date end value (gettime) and next days start will be same.
     // {passed} - class 'passed' should be applied on all reservations that ended before today's date. If you don't have today's date shown in the diary, this class shoudl not be applied to reservations even if they're all in the past
 
     let passedClass                       = '';
@@ -185,7 +185,7 @@ let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateG
     roomsList.map((room) => {
        if (room.reservations.length > 0) {
             room.reservations.map((reservation) => {
-                let positionAndDuration = calculateReservationDurationAndPosition(diaryInitialDayOfDateGrid, reservation , numberOfDays);
+                let positionAndDuration = calculateReservationDurationAndPosition(diaryInitialDayOfDateGrid, reservation, numberOfDays);
                 let duration = positionAndDuration.durationOfReservation + "px";
 
                 reservation.style = {};
