@@ -30,11 +30,11 @@ angular
                 event = params.event,
                 condition = params.condition;
 
-            if( condition ) {
+            if ( condition ) {
                 $timeout(function() {
                     scope.$emit(event);
-                })
+                });
             }
         }
-    }
+    };
 }]);

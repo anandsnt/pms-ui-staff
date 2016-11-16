@@ -1,8 +1,8 @@
 const nightlyDiaryRoomsListReducer = (state = [], action) => {
   switch (action.type) {
-    case '7_DAYS':
-        return action.diaryRoomsListData.rooms;
+    case 'DIARY_VIEW_CHANGED':
+        return action.roomsList;
     default:
-        return state;
+        return state.roomsList;
   }
 };

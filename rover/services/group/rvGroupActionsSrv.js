@@ -55,7 +55,7 @@ angular.module('sntRover').service('rvGroupActionsSrv', ['$q', 'BaseWebSrvV2', f
     this.postNewAction = function (params) {
         var deferred = $q.defer();
         var url = "/api/action_tasks.json";
-        //ie::   reservation_id=1616903&action_task[description]=test
+        // ie::   reservation_id=1616903&action_task[description]=test
 
         BaseWebSrvV2.postJSON(url, params).then(function (data) {
             deferred.resolve(data);
@@ -79,7 +79,7 @@ angular.module('sntRover').service('rvGroupActionsSrv', ['$q', 'BaseWebSrvV2', f
 
     this.completeAction = function (params) {
         var deferred = $q.defer();
-        var url = "/api/action_tasks/" + params.action_task.id;//+'&is_complete='+params.is_complete;
+        var url = "/api/action_tasks/" + params.action_task.id;// +'&is_complete='+params.is_complete;
 
         BaseWebSrvV2.putJSON(url, params).then(function (data) {
             deferred.resolve(data);
@@ -123,10 +123,12 @@ angular.module('sntRover').service('rvGroupActionsSrv', ['$q', 'BaseWebSrvV2', f
 
         BaseWebSrvV2.getJSON(url, dataToSend).then(function (data) {
             var results = data.data.results;
+
             if (dataToSend.query) {
                 var first, last, room;
                 var str = dataToSend.query.toLowerCase();
                 var visible = 0;
+
                 for (var i in data.data.results) {
                     data.data.results[i].is_row_visible = false;
                     if (data.data.results[i].firstname) {
@@ -155,7 +157,7 @@ angular.module('sntRover').service('rvGroupActionsSrv', ['$q', 'BaseWebSrvV2', f
             data.queryTime = dataToSend.queryTime;
             data.visibleRowCount = visible;
             data.querySent = dataToSend.query;
-            //self.searchTypeStatus = dataToSend.status;
+            // self.searchTypeStatus = dataToSend.status;
             deferred.resolve(data);
         }, function (data) {
             deferred.reject(data);
@@ -177,9 +179,9 @@ angular.module('sntRover').service('rvGroupActionsSrv', ['$q', 'BaseWebSrvV2', f
         return deferred.promise;
     };
 
-    this.getActionDetails = function(actionId){
+    this.getActionDetails = function(actionId) {
         var deferred = $q.defer(),
-            url = "api/action_tasks/"+actionId;
+            url = "api/action_tasks/" + actionId;
 
         BaseWebSrvV2.getJSON(url).then(function (data) {
             deferred.resolve(data);
@@ -190,32 +192,28 @@ angular.module('sntRover').service('rvGroupActionsSrv', ['$q', 'BaseWebSrvV2', f
     };
 
 
-    //-------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
+    // -------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
 
     this.cache = {
         config: {
-            lifeSpan: 900 //in seconds
+            lifeSpan: 900 // in seconds
         },
         responses: {
             departments: null
         }
-    }
+    };
 
-    self.setFilterState = function(params){
+    self.setFilterState = function(params) {
         filterState = angular.copy(params);
     };
 
-    self.getFilterState = function(params){
+    self.getFilterState = function(params) {
         return filterState;
     };
 
-    self.clearFilterState = function(params){
+    self.clearFilterState = function(params) {
         filterState = null;
     };
-
-
-
-
 
 
 }]);

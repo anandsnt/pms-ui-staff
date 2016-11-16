@@ -18,8 +18,8 @@ angular.module('sntRover').controller('RVHkAppCtrl', [
 			byEmployee: -1
 		};
 
-		//when state change start happens, we need to show the activity activator to prevent further clicking
-		//this will happen when prefetch the data
+		// when state change start happens, we need to show the activity activator to prevent further clicking
+		// this will happen when prefetch the data
 		$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 			// Show a loading message until promises are not resolved
 			$scope.$emit('showLoader');

@@ -50,8 +50,9 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 		};
 
 		var data = {
-			"id" : id
+			"id": id
 		};
+
 		$scope.invokeApi(ADRateTypeSrv.getRateTypesDetails, data, successCallbackRender);
 	};
 
@@ -85,8 +86,8 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 		//
 		var isActivated = !$scope.data[index].activated;
 		var data = {
-			'id' : $scope.data[index].id,
-			'status' : isActivated
+			'id': $scope.data[index].id,
+			'status': isActivated
 		};
 
 		var postSuccess = function() {
@@ -106,20 +107,22 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 				// To add new data to scope
 				$scope.data.push(data);
 				var l = $scope.data.length;
+
 				$scope.data[(l - 1)].name = $scope.rateTypeData.name;
-				if($scope.rateTypeData.classification !== null && typeof $scope.rateTypeData.classification !== "undefined") {
-         	$scope.data[(l - 1)].classification = _.findWhere($scope.rateClassifications,{id: parseInt($scope.rateTypeData.classification.id,10)});
+				if ($scope.rateTypeData.classification !== null && typeof $scope.rateTypeData.classification !== "undefined") {
+         	$scope.data[(l - 1)].classification = _.findWhere($scope.rateClassifications, {id: parseInt($scope.rateTypeData.classification.id, 10)});
         }
 				$scope.data[(l - 1)].rate_count = 0;
 			} else {
-				//To update data with new value
+				// To update data with new value
 				$scope.data[parseInt($scope.currentClickedElement)].name = $scope.rateTypeData.name;
-				if($scope.rateTypeData.classification !== null && typeof $scope.rateTypeData.classification !== "undefined") {
-					$scope.data[parseInt($scope.currentClickedElement)].classification = _.findWhere($scope.rateClassifications,{id: parseInt($scope.rateTypeData.classification.id,10)});
+				if ($scope.rateTypeData.classification !== null && typeof $scope.rateTypeData.classification !== "undefined") {
+					$scope.data[parseInt($scope.currentClickedElement)].classification = _.findWhere($scope.rateClassifications, {id: parseInt($scope.rateTypeData.classification.id, 10)});
         }
 			}
 			$scope.currentClickedElement = -1;
 		};
+
 		if ($scope.isAddMode) {
 			$scope.invokeApi(ADRateTypeSrv.saveRateType, $scope.rateTypeData, successCallbackSave);
 		} else {
@@ -144,6 +147,7 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 			$scope.data.splice(index, 1);
 			$scope.currentClickedElement = -1;
 		};
+
 		$scope.invokeApi(ADRateTypeSrv.deleteRateType, id, deleteRateSuccess);
 	};
 
@@ -153,8 +157,8 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 	* @param {string} id of the selected rate type
 	* @param {string} number of rates available for the rate type
 	*/
-	$scope.showRates = function(index, rateTypeId, rateCount){
-		if(rateCount <= 0) {
+	$scope.showRates = function(index, rateTypeId, rateCount) {
+		if (rateCount <= 0) {
 			return false;
 		}
 		var rateFetchSuccess = function(data) {
@@ -163,8 +167,8 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 			$scope.mouseEnterPopover = true;
 		};
 
-		//Fetch the rates only when we enter the popover area.
-		if(!$scope.mouseEnterPopover){
+		// Fetch the rates only when we enter the popover area.
+		if (!$scope.mouseEnterPopover) {
 			$scope.popoverRates = "";
 			$scope.currentHoverElement = index;
 			$scope.invokeApi(ADRatesSrv.fetchRates, {'rate_type_id': rateTypeId}, rateFetchSuccess, undefined, 'NOOP');
@@ -174,7 +178,7 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 	/**
 	* To handle the popover state. Reset the flag, rates dict while leaving the popover area
 	*/
-	$scope.mouseLeavePopover = function(){
+	$scope.mouseLeavePopover = function() {
 		$scope.popoverRates = "";
 		$scope.mouseEnterPopover = false;
 	};

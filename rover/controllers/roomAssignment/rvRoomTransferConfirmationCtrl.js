@@ -1,25 +1,25 @@
-sntRover.controller('rvRoomTransferConfirmationCtrl',['$scope','$rootScope','$filter', 'ngDialog', '$timeout',
-	function($scope, $rootScope,$filter, ngDialog , $timeout){
+sntRover.controller('rvRoomTransferConfirmationCtrl', ['$scope', '$rootScope', '$filter', 'ngDialog', '$timeout',
+	function($scope, $rootScope, $filter, ngDialog, $timeout) {
 
 	BaseCtrl.call(this, $scope);
 
-	var newRate =parseInt($scope.roomTransfer.newRoomRate);
-	var oldRate =parseInt($scope.roomTransfer.oldRoomRate);
+	var newRate = parseInt($scope.roomTransfer.newRoomRate);
+	var oldRate = parseInt($scope.roomTransfer.oldRoomRate);
 
-	$scope.isSmallerRate = function(){
-		if(newRate<oldRate){
+	$scope.isSmallerRate = function() {
+		if (newRate < oldRate) {
 			return true;
 		}
-		else{
+		else {
 			return false;
 		}
 	};
 
-	$scope.isLargerRate = function(){
-		if(newRate>oldRate){
+	$scope.isLargerRate = function() {
+		if (newRate > oldRate) {
 			return true;
 		}
-		else{
+		else {
 			return false;
 		}
 	};

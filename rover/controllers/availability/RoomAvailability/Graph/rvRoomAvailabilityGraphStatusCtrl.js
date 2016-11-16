@@ -4,21 +4,21 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
 	'dateFilter',
 	'$rootScope',
 	'$timeout',
-	function($scope, rvAvailabilitySrv, dateFilter, $rootScope, $timeout){
+	function($scope, rvAvailabilitySrv, dateFilter, $rootScope, $timeout) {
 		BaseCtrl.call(this, $scope);
 
 		var plottedChart = null;
 
 
 		var isAlreadyRemoved = false;
+
   		$scope.hideMeBeforeFetching = false;
 
   		$scope.graphWidth = '1000';
-		//we need horizonat scroller so adding option 'scrollX', also need to get the click event on toggling button on available room
+		// we need horizonat scroller so adding option 'scrollX', also need to get the click event on toggling button on available room
 		var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: false};
+
   		$scope.setScroller ('graph-scroller', scrollerOptionsForGraph);
-
-
 
 
  		var colors = ['#c1c1c1', '#dc829c', '#83c3df', '#82de89', '#f6981a', '#f2d6af'];
@@ -27,49 +27,52 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
 
  		var timeoutFunction = null;
 
- 		for(var i = 0 ;i < colors.length; i++){
- 			legendClasses.push("background: "+colors[i]+" !important;");
+ 		for (var i = 0 ;i < colors.length; i++) {
+ 			legendClasses.push("background: " + colors[i] + " !important;");
 		}
 
-		$scope.returnLegendStyle  = function(index, legendModel){
-			if(legendModel){
+		$scope.returnLegendStyle  = function(index, legendModel) {
+			if (legendModel) {
 				return legendClasses[index];
 			}
-			else{
+			else {
 				return "";
 			}
 		};
 
-		var resizedWindow = function(){
+		var resizedWindow = function() {
 			/*
 				Caution, DOM accessing, TODO: try to convert it into angular way
 			*/
 			var navListNode = $("#graph-showing-area #nav-listing");
 			var LabelElements = navListNode.find("ul li");
-        	navListNode.css({"left" :plottedChart.plotLeft, "width": plottedChart.plotSizeX});
+
+        	navListNode.css({"left": plottedChart.plotLeft, "width": plottedChart.plotSizeX});
         	var labelWidthToSet = 0;
+
         	$scope.graphWidth = getMaxSeriesLengthData() * 75;
-        	if(getMaxSeriesLengthData() !== 0){
-        		labelWidthToSet = (100/getMaxSeriesLengthData());
+        	if (getMaxSeriesLengthData() !== 0) {
+        		labelWidthToSet = (100 / getMaxSeriesLengthData());
         	}
-        	else{
+        	else {
         		navListNode.css("width", 0);
         	}
         	LabelElements.css("width", labelWidthToSet + "%");
         	$scope.refreshScroller('graph-scroller');
 
 		};
-		var getMaxSeriesLengthData = function(){
+		var getMaxSeriesLengthData = function() {
 			var max = 0;
-			for(var i = 0; i < plottedChart.series.length; i++){
-				if(plottedChart.series[i].visible){
+
+			for (var i = 0; i < plottedChart.series.length; i++) {
+				if (plottedChart.series[i].visible) {
 					max = max < plottedChart.series[i].data.length ? plottedChart.series[i].data.length  : max;
 				}
 			}
 			return max;
 		};
 
-		var formGraphData = function(){
+		var formGraphData = function() {
 			$scope.graphData = [{
 				name: 'Bookable Rooms',
 				data: $scope.data.bookableRooms,
@@ -106,8 +109,8 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
 				color: colors[4]
 			}];
 
-			//we are adding occupancy target between if it has setuped in rate manager
-			if($scope.data.IsOccupancyTargetSetBetween){
+			// we are adding occupancy target between if it has setuped in rate manager
+			if ($scope.data.IsOccupancyTargetSetBetween) {
 				$scope.graphData.push({
 					name: 'Occupancy Target',
 					data: $scope.data.occupanciesTargeted,
@@ -118,13 +121,13 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
 
  		};
 
- 		$scope.clickedOnLegend = function(legendName, model){
- 			for(var i = 0; i < plottedChart.series.length; i++){
- 				if(plottedChart.series[i].name === legendName){
- 					if (model){
+ 		$scope.clickedOnLegend = function(legendName, model) {
+ 			for (var i = 0; i < plottedChart.series.length; i++) {
+ 				if (plottedChart.series[i].name === legendName) {
+ 					if (model) {
  						plottedChart.series[i].hide();
  					}
- 					else{
+ 					else {
  						plottedChart.series[i].show();
  					}
  					break;
@@ -135,7 +138,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
  		};
 
 
-		var doInitialOperation = function(){
+		var doInitialOperation = function() {
 			$scope.data = rvAvailabilitySrv.getGraphData();
 
 			formGraphData();
@@ -149,7 +152,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
 					plotBackgroundColor: '#F7F7F7',
 					plotBorderColor: '#FFF',
 					plotBorderWidth: 2,
-					marginLeft:4
+					marginLeft: 4
 
 				},
 
@@ -217,18 +220,19 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
 
 			// Apply the theme
 			var highchartsOptions = Highcharts.setOptions(Highcharts.theme);
+
 			$scope.availabilityGraphCongif = {
-				options : {
+				options: {
 					chart: {
 						type: 'area'
 					},
-					legend : {
-						enabled : false
+					legend: {
+						enabled: false
 					},
 					tooltip: {
 			            formatter: function () {
-			                return '<b>' + dateFilter(this.x.dateObj, $rootScope.dayInWeek) + " " + dateFilter(this.x.dateObj, $rootScope.shortMonthAndDate) +'</b><br/>' +
-			                       this.series.name +  ': ' + Math.round((this.y/100) * $scope.data.totalRooms) + " Rooms (" + this.y.toFixed(2) + "%)";
+			                return '<b>' + dateFilter(this.x.dateObj, $rootScope.dayInWeek) + " " + dateFilter(this.x.dateObj, $rootScope.shortMonthAndDate) + '</b><br/>' +
+			                       this.series.name +  ': ' + Math.round((this.y / 100) * $scope.data.totalRooms) + " Rooms (" + this.y.toFixed(2) + "%)";
 			            }
 				    }
 				},
@@ -257,14 +261,14 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
 				{
 					showLastLabel: true,
     				endOnTick: true,
-					floor : 0,
-					ceiling : 100,
-					title:{
+					floor: 0,
+					ceiling: 100,
+					title: {
 						text: ''
 					},
 					max: 100,
-					minRange : 100,
-					tickInterval : 10,
+					minRange: 100,
+					tickInterval: 10,
 					labels: {
 						    align: 'left',
                 			x: 0,
@@ -272,7 +276,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
                				style: {
 				            	color: '#f6981a'
 				         	},
-				         	formatter: function(){
+				         	formatter: function() {
 				         		return this.value + "%";
 				         	}
 					},
@@ -285,10 +289,10 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
 				series: $scope.graphData,
 			    func: function (chart) { // on complete
 			        	plottedChart = chart;
-			        	setTimeout(function(){
-			        		$scope.$apply(function(){
+			        	setTimeout(function() {
+			        		$scope.$apply(function() {
 
-					        	for(var i = 0; i < $scope.graphData.length; i++){
+					        	for (var i = 0; i < $scope.graphData.length; i++) {
 					        		$scope.clickedOnLegend($scope.graphData[i].name, !$scope.graphData[i].checked);
 					        	}
 					        	$scope.graphWidth = getMaxSeriesLengthData() * 75;
@@ -298,8 +302,8 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
 
 			        	}, 150);
 
-			        	$(window).resize(function(){
-			        		timeoutFunction = $timeout(function(){
+			        	$(window).resize(function() {
+			        		timeoutFunction = $timeout(function() {
 			        			resizedWindow();
 			        			$scope.refreshScroller('graph-scroller');
 			        		}, 500);
@@ -314,14 +318,14 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
 		};
 
 		$scope.data = rvAvailabilitySrv.getGraphData();
-  		//if already fetched we will show without calling the API
-		if(!isEmptyObject($scope.data)){
+  		// if already fetched we will show without calling the API
+		if (!isEmptyObject($scope.data)) {
 			doInitialOperation();
 			$scope.$emit("hideLoader");
 
-	       setTimeout(function(){
+	       setTimeout(function() {
 
-        		$scope.$apply(function(){
+        		$scope.$apply(function() {
         			resizedWindow();
         			$scope.hideMeBeforeFetching = true;
         		});
@@ -329,24 +333,24 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
 
         	}, 500);
 
-		}else{
-			//If additional data are not available, fetch the same	
+		} else {
+			// If additional data are not available, fetch the same	
 			$scope.$parent.fetchAdditionalData();
 		}
 
 		/**
 		* when data changed from super controller, it will broadcast an event 'changedRoomAvailableData'
 		*/
-		var cr = $scope.$on("changedRoomAvailableData", function(event){			
-			if(!isAlreadyRemoved){
+		var cr = $scope.$on("changedRoomAvailableData", function(event) {			
+			if (!isAlreadyRemoved) {
 				$scope.hideMeBeforeFetching = false;
 				doInitialOperation();
-	        	setTimeout(function(){
+	        	setTimeout(function() {
 
-		        	for(var i = 0; i < $scope.graphData.length; i++){
+		        	for (var i = 0; i < $scope.graphData.length; i++) {
 		        		$scope.clickedOnLegend($scope.graphData[i].name, !$scope.graphData[i].checked);
 		        	}
-		        	$scope.$apply(function(){
+		        	$scope.$apply(function() {
 		        		resizedWindow();
 		        		$scope.hideMeBeforeFetching = true;
 		        	});
@@ -360,10 +364,10 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
 		/**
 		*
 		*/
-		$scope.$on("$destroy", function(){
+		$scope.$on("$destroy", function() {
 			isAlreadyRemoved = true;
 			$(window).unbind('resize');
-			if(timeoutFunction){
+			if (timeoutFunction) {
 				$timeout.cancel(timeoutFunction);
 			}
 		});

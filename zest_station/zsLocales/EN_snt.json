@@ -439,6 +439,14 @@
 
    "ADMIN_ENABLED": "Enabled",
    "ADMIN_DISABLED": "Disabled",
-   "RE_TYPE": "Re-Type"
+   "RE_TYPE": "Re-Type",
+
+  "PRINTER_ERROR_PRINTER_IS_OFFLINE": "Printer is offline",
+  "PRINTER_ERROR_PAPER_ROLL_IS_NEAR_EMPTY": "Printer paper roll is near empty",
+  "PRINTER_ERROR_PRINTER_OUT_OF_ORDER": "Printer is out of order",
+  "PRINTER_ERROR_PRINTER_ERROR": "Printer Error",
+  "PRINTER_ERROR_UNABLE_TO_GET_PRINTER_STATUS": "Printer Error",
+  "PRINTER_ERROR_UNABLE_TO_WRITE_TO_PRINTER_PORT": "Printer Port Error",
+  "PRINTER_ERROR_PRINT_ERROR": "Printer Error"
    
 }

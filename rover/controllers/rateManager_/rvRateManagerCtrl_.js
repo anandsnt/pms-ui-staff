@@ -506,18 +506,14 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         
         //scroll focus
         var allRatesShowingData = _.where(showingData, { actionType: RM_RX_CONST.RATE_VIEW_CHANGED});
-        for(let i = 0; i < allRatesShowingData.length; i++) {
-            let rateFoundIndex = _.findIndex(allRatesShowingData[i].bottomData, { id: rateID });
-            if(rateFoundIndex !== -1) {
-                if(_.isUndefined(lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo)) {
-                    lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo = {};
-                }
-                lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo.row = rateFoundIndex;
-                lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo.col = 1;
-                break;
-            }
-        }
-        
+        //we will attach scrollTo if attached filter from somewhere
+        if(_.has(lastSelectedFilterValues[activeFilterIndex].allRate, 'scrollTo')) {
+           reduxActionForAllRateView.scrollTo = lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo;
+
+           //dropping scrollTo from
+           lastSelectedFilterValues[activeFilterIndex].allRate = 
+               _.omit(lastSelectedFilterValues[activeFilterIndex].allRate, 'scrollTo');
+        };        
     };
 
     /**

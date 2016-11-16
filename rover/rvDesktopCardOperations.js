@@ -1,12 +1,13 @@
-var DesktopCardOperations = function(){
+var DesktopCardOperations = function() {
 	var that = this;
 	var ws = {};
-	//Set to true if the desktop swipe is enabled and a WebSocket connection is established.
+	// Set to true if the desktop swipe is enabled and a WebSocket connection is established.
+
     that.isActive = false;
     that.isDesktopUUIDServiceInvoked = false;
 
 	this.swipeCallbacks;
-	this.startDesktopReader = function(portNumber, swipeCallbacks){
+	this.startDesktopReader = function(portNumber, swipeCallbacks) {
 		that.portNumber = portNumber;
 		that.swipeCallbacks = swipeCallbacks;
 		createConnection();
@@ -16,15 +17,15 @@ var DesktopCardOperations = function(){
 		that.isDesktopUUIDServiceInvoked = true;
 	};
 
-	var createConnection = function(){
-		try{
-			ws = new WebSocket("wss://localhost:" + that.portNumber +"/CCSwipeService");
+	var createConnection = function() {
+		try {
+			ws = new WebSocket("wss://localhost:" + that.portNumber + "/CCSwipeService");
 		}
-		catch(e){
+		catch (e) {
 			console.warn("Could not connect to card reader. Please check if the port number is valid!!");
 		}
 
-		//Triggers when websocket connection is established.
+		// Triggers when websocket connection is established.
 	    ws.onopen = function () {
 	    	that.isActive = true;
 			ws.send("observeForSwipe");
@@ -39,7 +40,8 @@ var DesktopCardOperations = function(){
 		ws.onmessage = function (event) {
 			var cardData = event.data;
 			var cardDataJSON = JSON.parse(cardData);
-			if(cardDataJSON.ResponseType) {
+
+			if (cardDataJSON.ResponseType) {
 				that.swipeCallbacks.uuidServiceSuccessCallBack(cardDataJSON);
 			}
 			else {
@@ -53,10 +55,6 @@ var DesktopCardOperations = function(){
             that.swipeCallbacks.failureCallBack();
         };
 	};
-
-
-
-
 
 
 };

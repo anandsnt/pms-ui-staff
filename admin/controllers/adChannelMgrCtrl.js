@@ -7,20 +7,21 @@ admin.controller('ADChannelMgrCtrl', ['$scope', '$rootScope', '$state', 'ADChann
         $scope.addRemoveShow = true;
         $scope.roomTypes = [];
         
-        $scope.loadRoomTypes = function(){
+        $scope.loadRoomTypes = function() {
             
             var fetchSuccess = function (data) {
                 $scope.$emit('hideLoader');
-                if (data.data){
+                if (data.data) {
                     $scope.roomTypes = data.data.room_types;
                 }
             };
+
             $scope.invokeApi(ADChannelMgrSrv.fetchRoomTypes, {}, fetchSuccess);
         };
         $scope.loadRoomTypes();
-        $scope.selectInterface = function(interface){
+        $scope.selectInterface = function(interface) {
             $scope.lastSelectedInterface = interface;
-            //store to state to pick up in adChannelMgrEditCtrl.js
+            // store to state to pick up in adChannelMgrEditCtrl.js
             $state.selectedInterface = interface;
         };
 
@@ -32,6 +33,7 @@ admin.controller('ADChannelMgrCtrl', ['$scope', '$rootScope', '$state', 'ADChann
                 $scope.totalPage = Math.ceil(data.length / $scope.displyCount);
                 $scope.data = data.data;
             };
+
             $scope.invokeApi(ADChannelMgrSrv.fetchManagers, {}, fetchSuccess);
 
         };
@@ -43,7 +45,7 @@ admin.controller('ADChannelMgrCtrl', ['$scope', '$rootScope', '$state', 'ADChann
             var params = {'id': id, active: !active};
             var toggleSuccess = function () {
                 $scope.$emit('hideLoader');
-                //on success
+                // on success
                 angular.forEach($scope.data, function (interface, key) {
                     if (interface.id === id) {
                         interface.active = !interface.active;
@@ -54,10 +56,11 @@ admin.controller('ADChannelMgrCtrl', ['$scope', '$rootScope', '$state', 'ADChann
                 $scope.$emit('hideLoader');
                 $scope.errorMessage = data;
             };
+
             $scope.invokeApi(ADChannelMgrSrv.toggleActivate, params, toggleSuccess, toggleFailure);
         };
         
-        $scope.editChannelManager = function(interface){
+        $scope.editChannelManager = function(interface) {
             $scope.selectInterface(interface);
             $state.go('admin.channelManagerEditRates', interface);
         };

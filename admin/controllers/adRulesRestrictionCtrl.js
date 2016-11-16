@@ -6,12 +6,12 @@ admin.controller('ADRulesRestrictionCtrl', [
     'ADRulesRestrictionSrv',
     function($scope, $state, $filter, dateFilter, ADRulesRestrictionSrv) {
 
-        var init = function(){
+        var init = function() {
             BaseCtrl.call(this, $scope);
             // lets empty lists all before fetch
             $scope.cancelRulesList = [];
             $scope.depositRuleslList = [];
-            $scope.selectedSchedule =null;
+            $scope.selectedSchedule = null;
             $scope.ruleList = {};
             fetchRestrictions();
         };
@@ -30,6 +30,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                 var cancelPolicy = _.find($scope.ruleList, function(item) {
                     return item.description === 'Cancellation Penalties';
                 });
+
                 fetchRuleCancellationPenalitiesList(cancelPolicy);
 
 
@@ -37,6 +38,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                 var depositPolicy = _.find($scope.ruleList, function(item) {
                     return item.description === 'Deposit Requests';
                 });
+
                 fetchRuleDepositPoliciesList(depositPolicy);
             };
 
@@ -63,9 +65,9 @@ admin.controller('ADRulesRestrictionCtrl', [
         /*
         * To handle switch
         */
-        $scope.switchClicked = function(item){
+        $scope.switchClicked = function(item) {
 
-            //on success
+            // on success
             var toggleSwitchLikesSuccessCallback = function(data) {
                 item.activated = item.activated ? false : true;
                 $scope.$emit('hideLoader');
@@ -84,19 +86,19 @@ admin.controller('ADRulesRestrictionCtrl', [
 
             if ( !this.item ) {
                 return;
-            };
+            }
             // if this is sysdef return
             if ( !this.item.editable || this.item.description === 'Levels' ) {
                 return;
-            };
+            }
 
             if ( this.item.description === 'Cancellation Penalties' ) {
                 return '/assets/partials/rulesRestriction/adCancellationPenaltiesRules.html';
-            };
+            }
 
             if ( this.item.description === 'Deposit Requests' ) {
                 return '/assets/partials/rulesRestriction/adDepositRequestRules.html';
-            };
+            }
         };
 
         // fetch rules under editable restrictions
@@ -108,13 +110,14 @@ admin.controller('ADRulesRestrictionCtrl', [
             // if this is sysdef return
             if ( !item.editable || item.description === 'Levels' ) {
                 return;
-            };
-            var ruleType ='CANCELLATION_POLICY';
+            }
+            var ruleType = 'CANCELLATION_POLICY';
             // fetch the appropriate policy
             var callback = function(data) {
                 $scope.cancelRulesList = data.results;
                 $scope.$emit('hideLoader');
             };
+
             $scope.invokeApi(ADRulesRestrictionSrv.fetchCancellationRules, { policy_type: ruleType }, callback);
         };
         var fetchRuleDepositPoliciesList = function(item) {
@@ -124,34 +127,35 @@ admin.controller('ADRulesRestrictionCtrl', [
             // if this is sysdef return
             if ( !item.editable || item.description === 'Levels' ) {
                 return;
-            };
+            }
             var ruleType = 'DEPOSIT_REQUEST';
             // fetch the appropriate policy
             var callback = function(data) {
                 $scope.depositRuleslList = data.results;
                 $scope.$emit('hideLoader');
             };
-            $scope.invokeApi(ADRulesRestrictionSrv.fetchDepositeRules, {},callback);
+
+            $scope.invokeApi(ADRulesRestrictionSrv.fetchDepositeRules, {}, callback);
         };
 
         $scope.showPolicyArrow = function() {
             if ( this.item.description === 'Cancellation Penalties' ) {
                 return $scope.cancelRulesList.length ? true : false;
-            };
+            }
 
             if ( this.item.description === 'Deposit Requests' ) {
                 return $scope.depositRuleslList.length ? true : false;
-            };
+            }
         };
 
         $scope.toggleRulesListShow = function() {
             if ( this.item.description === 'Cancellation Penalties' ) {
                 $scope.showCancelList = $scope.showCancelList ? false : true;
-            };
+            }
 
             if ( this.item.description === 'Deposit Requests' ) {
                 $scope.showDepositList = $scope.showDepositList ? false : true;
-            };
+            }
         };
 
         // open the form to add a new rule
@@ -159,14 +163,15 @@ admin.controller('ADRulesRestrictionCtrl', [
             $scope.rulesTitle = 'New';
             $scope.updateRule = false;
             $scope.singleRule = {};
-            $scope.singleRule.schedules =[];
+            $scope.singleRule.schedules = [];
                 var newSchedule = {
-                "amount":null,
-                "amount_type":"",
-                "auto_charge_on_due_date":false,
-                "advance_days":null,
-                "post_type_id":null
+                "amount": null,
+                "amount_type": "",
+                "auto_charge_on_due_date": false,
+                "advance_days": null,
+                "post_type_id": null
                 };
+
             $scope.singleRule.schedules.push(newSchedule);
             $scope.selectedSchedule =  $scope.singleRule.schedules[0];
             // identify the restriction
@@ -186,7 +191,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             $scope.singleRule.advance_primetime = "AM";
             $scope.singleRule.policy_type = 'CANCELLATION_POLICY';
         };
-        $scope.selectSchedule = function(index){
+        $scope.selectSchedule = function(index) {
             $scope.selectedSchedule = $scope.singleRule.schedules[index];
             $scope.selectedScheduleIndex = index;
         };
@@ -198,7 +203,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                 $scope.singleRule = data;
                 $scope.selectedSchedule =  $scope.singleRule.schedules[0];
                 $scope.selectedScheduleIndex = 0;
-                $scope.singleRule.allow_deposit_edit = (data.allow_deposit_edit !=="" &&  data.allow_deposit_edit)? true : false;
+                $scope.singleRule.allow_deposit_edit = (data.allow_deposit_edit !== "" &&  data.allow_deposit_edit) ? true : false;
                 $scope.showCancelForm = false;
                 $scope.showDepositForm = true;
                 $scope.rulesTitle = 'Edit';
@@ -207,6 +212,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                 $scope.updateRule = true;
                 $scope.$emit('hideLoader');
             };
+
             $scope.invokeApi(ADRulesRestrictionSrv.fetchSingleDepositeRule, { id: rule.id }, callback);
         };
 
@@ -215,21 +221,8 @@ admin.controller('ADRulesRestrictionCtrl', [
             var callback = function(data) {
                 // clear any previous data
                 $scope.singleRule = data;
-                $scope.singleRule.allow_deposit_edit = (data.allow_deposit_edit !=="" &&  data.allow_deposit_edit)? true : false;
+                $scope.singleRule.allow_deposit_edit = (data.allow_deposit_edit !== "" &&  data.allow_deposit_edit) ? true : false;
                 $scope.singleRule.policy_type = 'CANCELLATION_POLICY';
-                // need to split HH:MM into individual keys
-                var hhmm, hh, mm, ampm;
-                if ( $scope.singleRule.advance_time ) {
-                    var hhmm = dateFilter( $scope.singleRule.advance_time, 'hh:mm a' );
-                    hh = hhmm.split(':')[0];
-                    mm = hhmm.split(':')[1].split(' ')[0];
-                    ampm = hhmm.split(':')[1].split(' ')[1];
-                    // convert string to number
-                    hh *= 1;
-                    $scope.singleRule.advance_hour = hh;
-                    $scope.singleRule.advance_min = mm;
-                    $scope.singleRule.advance_primetime = ampm;
-                };
                 $scope.showCancelForm = true;
                 $scope.showDepositForm = false;
                 $scope.rulesTitle = 'Edit';
@@ -238,6 +231,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                 $scope.updateRule = true;
                 $scope.$emit('hideLoader');
             };
+
             $scope.invokeApi(ADRulesRestrictionSrv.fetchCancellationSingleRule, { id: rule.id }, callback);
         };
         // hide all forms
@@ -246,17 +240,18 @@ admin.controller('ADRulesRestrictionCtrl', [
             $scope.showDepositForm = false;
         };
 
-        $scope.addNewSchedule = function(){
+        $scope.addNewSchedule = function() {
             var newSchedule = {
-                "amount":null,
-                "amount_type":"",
-                "auto_charge_on_due_date":false,
-                "advance_days":null,
-                "post_type_id":null
+                "amount": null,
+                "amount_type": "",
+                "auto_charge_on_due_date": false,
+                "advance_days": null,
+                "post_type_id": null
             };
+
             $scope.singleRule.schedules.push(newSchedule);
-             $scope.selectedSchedule = $scope.singleRule.schedules[$scope.singleRule.schedules.length-1];
-             $scope.selectedScheduleIndex = $scope.singleRule.schedules.length-1;
+             $scope.selectedSchedule = $scope.singleRule.schedules[$scope.singleRule.schedules.length - 1];
+             $scope.selectedScheduleIndex = $scope.singleRule.schedules.length - 1;
         };
 
         // save a new rule or update an edited rule
@@ -290,7 +285,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                 };
 
                 $scope.invokeApi(ADRulesRestrictionSrv.saveDepositeRule, $scope.singleRule, saveCallback);
-            };
+            }
 
         };
         // save a new rule or update an edited rule
@@ -298,20 +293,6 @@ admin.controller('ADRulesRestrictionCtrl', [
             var from = from,
                 saveCallback,
                 updateCallback;
-            // need to combine individuals HH:MM:ap to single hours entry
-            // and remove the individuals before posting
-            if ( $scope.singleRule.advance_hour || $scope.singleRule.advance_min ) {
-                $scope.singleRule.advance_time = getTimeFormated($scope.singleRule.advance_hour,
-                                                                $scope.singleRule.advance_min,
-                                                                $scope.singleRule.advance_primetime);
-                // remove these before sending
-                var withoutEach = _.omit($scope.singleRule, 'advance_hour');
-                withoutEach = _.omit(withoutEach, 'advance_min');
-                withoutEach = _.omit(withoutEach, 'advance_primetime');
-
-                $scope.singleRule = withoutEach;
-            };
-
             // if we are in update (or edit) mode
             if ( $scope.updateRule ) {
                 updateCallback = function(data) {
@@ -337,24 +318,25 @@ admin.controller('ADRulesRestrictionCtrl', [
                     $scope.$emit('hideLoader');
                 };
                 $scope.invokeApi(ADRulesRestrictionSrv.saveRule, $scope.singleRule, saveCallback);
-            };
+            }
         };
 
-         $scope.deleteSchedule = function(index){
-            $scope.singleRule.schedules.splice(index , 1);
-            if($scope.singleRule.schedules.length!==0){
-                if($scope.selectedScheduleIndex === $scope.singleRule.schedules.length){
-                    $scope.selectedSchedule = $scope.singleRule.schedules[$scope.singleRule.schedules.length-1];
-                    $scope.selectedScheduleIndex = $scope.singleRule.schedules.length-1;
+         $scope.deleteSchedule = function(index) {
+            $scope.singleRule.schedules.splice(index, 1);
+            if ($scope.singleRule.schedules.length !== 0) {
+                if ($scope.selectedScheduleIndex === $scope.singleRule.schedules.length) {
+                    $scope.selectedSchedule = $scope.singleRule.schedules[$scope.singleRule.schedules.length - 1];
+                    $scope.selectedScheduleIndex = $scope.singleRule.schedules.length - 1;
                 }
-            }else{
+            } else {
             var newSchedule = {
-                "amount":null,
-                "amount_type":"",
-                "auto_charge_on_due_date":false,
-                "advance_days":null,
-                "post_type_id":null
+                "amount": null,
+                "amount_type": "",
+                "auto_charge_on_due_date": false,
+                "advance_days": null,
+                "post_type_id": null
                 };
+
             $scope.singleRule.schedules.push(newSchedule);
             $scope.selectedSchedule = $scope.singleRule.schedules[0];
             $scope.selectedScheduleIndex = 0;
@@ -369,9 +351,11 @@ admin.controller('ADRulesRestrictionCtrl', [
             var rule = rule;
             var callback = function() {
                 var withoutThis = _.without( $scope.depositRuleslList, rule );
+
                 $scope.depositRuleslList = withoutThis;
                 $scope.$emit('hideLoader');
             };
+
             $scope.invokeApi(ADRulesRestrictionSrv.deleteDepositeRule, { id: rule.id }, callback);
         };
 
@@ -379,9 +363,11 @@ admin.controller('ADRulesRestrictionCtrl', [
             var rule = rule;
             var callback = function() {
                 var withoutThis = _.without( $scope.cancelRulesList, rule );
+
                 $scope.cancelRulesList = withoutThis;
                 $scope.$emit('hideLoader');
             };
+
             $scope.invokeApi(ADRulesRestrictionSrv.deleteRule, { id: rule.id }, callback);
         };
         /*
