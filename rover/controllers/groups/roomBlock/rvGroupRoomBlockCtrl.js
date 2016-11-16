@@ -267,7 +267,9 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean} checking if the single entry row needs to be displayed
 		 */
         $scope.shouldHideSingleEntryRow = function() {
-            return !!$scope.roomtype_rate && 
+            var hasScopeItems = !!$scope.roomtype_rate && $scope.groupConfigData;
+
+            return hasScopeItems &&
                 !! $scope.roomtype_rate.can_edit && 
                 ! $scope.groupConfigData.summary.rate !== -1 && 
                 $scope.roomtype_rate.rate_config.single_rate === null;
@@ -277,7 +279,9 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean} checking if the doulbe entry row needs to be displayed
 		 */
         $scope.shouldHideDoubleEntryRow = function() {
-            return !! $scope.roomtype_rate && 
+            var hasScopeItems = !!$scope.roomtype_rate && $scope.groupConfigData;
+
+            return hasScopeItems && 
                 !! $scope.roomtype_rate.can_edit && 
                 ! $scope.groupConfigData.summary.rate !== -1 && 
                 $scope.roomtype_rate.rate_config.double_rate === null;
