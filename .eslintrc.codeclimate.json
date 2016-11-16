@@ -5,16 +5,21 @@
         "jquery": true
     },
     "globals": {
-        "_": false,
         "angular": false,
         "React": false,
         "ReactDOM": false,
         "Provider": false,
         "ReactRedux": false,
         "ReduxThunk": false,
+        "_": false,
+        "cordova": false,
         "BaseCtrl": true,
-        "sntRover": true,
-        "sntGuestWeb": true
+        "sntRover":true,
+        "sntapp": true,
+        "isEmptyObject": true,
+        "sntGuestWeb": true,
+        "admin": true,
+        "ADBaseTableCtrl": true
     },
     "installedESLint": true,
     "parserOptions": {

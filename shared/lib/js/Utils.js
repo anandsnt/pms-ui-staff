@@ -308,6 +308,20 @@ function getServiceStatusValue(service_status){
 };
 
 
+var reservationStatusClassesDiary = {
+    "RESERVED" : "check-in",
+    "CANCELED" : "cancel",
+    "CHECKEDIN" : "inhouse",
+    "CHECKEDOUT" : "departed",
+    "NOSHOW" : "no-show",
+    "PRE_CHECKIN" : "pre-check-in",
+    "CHECKING_OUT" : "check-out",
+    "CHECKING_IN": "check-in"
+    };
+function getReservationStatusClass(status){
+    return reservationStatusClassesDiary[status];
+};
+
 var avatharImgs = {
     'mr' : 'avatar-male.png',
     'mrs': 'avatar-female.png',
@@ -495,6 +509,18 @@ function getTextWidth(text){
         tester.remove();
         return w;
 }
+/*
+ * Function to get the number of days between two days
+ * firstDate{date object} will be the first data
+ * Second date{date object} will be the second date
+ */
+var getNumberOfDaysBetweenTwoDates = function(firstDate, secondDate){
+    var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+    //Get the number of days between initial day of diary grid and arrival date
+    var noOfDaysBtwFirstDateAndSecondDate = Math.abs((secondDate.getTime() - firstDate.getTime()) / (oneDay));
+    return noOfDaysBtwFirstDateAndSecondDate
+
+};
 
 //function that converts a null value to a desired string.
 //if no replace value is passed, it returns an empty string
@@ -535,7 +561,7 @@ var getJqDateFormat = function(dateFormat) {
     }
 };
 
-/** 
+/**
  * Convert 24hr format into 12hr (am/pm) format.
  * @param {string} time string in format 'HH:MM' may contain blanks
  * @returns {object} converted time array
