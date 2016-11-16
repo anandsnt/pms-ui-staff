@@ -31,6 +31,7 @@ angular.module('sntPay').controller('payShijiCtrl',
                     data: angular.toJson(response.data),
                     preCloseCallback: function() {
                         if ($scope.shijiPaymentState.isSuccess || $scope.shijiPaymentState.isFailure) {
+                            $scope.$emit('HIDE_SIX_PAY_LOADER');
                             $timeout(()=> {
                                 if ($scope.shijiPaymentState.isSuccess) {
                                     $scope.$emit('SHIJI_PAYMENT_SUCCESS', $scope.shijiPaymentState.response);
@@ -38,7 +39,6 @@ angular.module('sntPay').controller('payShijiCtrl',
                                     $scope.$emit('SHIJI_PAYMENT_FAILED', $scope.shijiPaymentState.response);
                                 }
                                 initScopeState();
-                                $scope.$emit('HIDE_SIX_PAY_LOADER');
                             }, 700);
                             return true;
                         }
