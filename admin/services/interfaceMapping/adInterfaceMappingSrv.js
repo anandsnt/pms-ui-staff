@@ -197,4 +197,16 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
             return deferred.promise;
         };
 
+        this.fetchUnMappedRooms = function(params) {
+            var deferred = $q.defer(),
+                url = '/admin/hotel_rooms.json';
+
+            ADBaseWebSrv.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
     }]);

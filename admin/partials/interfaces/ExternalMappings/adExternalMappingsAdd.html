@@ -80,6 +80,13 @@
             <fieldset class="holder right">
                 <ad-toggle-button is-checked="auto.removeFirst" label="{{'REMOVE_FIRST_CHAR' | translate}}"></ad-toggle-button>
             </fieldset>
+            <section class="holder full-width">
+                <ad-filter-table
+                        hide-sub-title="true"
+                        single-tab="true"
+                        filter-config="unmappedRoomsFilterConfig"
+                        class="full-width"></ad-filter-table>
+            </section>
             <div class="actions float">
                 <button type="button"
                         class="button blank add-data-inline" ng-click="navigateBack()" translate>

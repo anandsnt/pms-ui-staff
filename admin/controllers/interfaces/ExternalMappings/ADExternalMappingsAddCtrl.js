@@ -5,12 +5,34 @@ admin.controller('ADExternalMappingsAddCtrl', ['$scope', '$state', '$stateParams
             $scope.interface.activeTab = mode;
         };
 
-        $scope.navigateBack = function(){
+        $scope.navigateBack = function() {
             $state.go('admin.external-mappings', {
                 hotel_id: $stateParams.hotel_id,
                 interface_id: $stateParams.interface_id,
                 interface_name: $stateParams.interface_name
             });
+        };
+
+        $scope.unmappedRoomsFilterConfig = {
+            item_number: {
+                active: true,
+                label: 'ROOM NO.',
+                column_width: 'width-20'
+            },
+            item_description: {
+                active: true,
+                label: 'ROOM TYPE.',
+                column_width: 'width-40'
+            },
+            selectedExcludedRoomIds: [],
+            unSelectedExcludedRoomIds: [],
+            apiService: 'ADInterfaceMappingSrv',
+            serviceMethodName: 'fetchUnMappedRooms',
+            serviceMethodParams: {
+                interface_id: $stateParams.interface_id
+            },
+            noOfItemsSelected: 0,
+            resultsKey: 'rooms'
         };
 
         $scope.onClickSaveNewMapping = function() {
@@ -39,8 +61,8 @@ admin.controller('ADExternalMappingsAddCtrl', ['$scope', '$state', '$stateParams
 
             $scope.mapping = {
                 mapping_type: mappingTypes[0].name,
-                snt_value: "",
-                ext_value: ""
+                snt_value: '',
+                ext_value: ''
             };
 
             $scope.interface = {

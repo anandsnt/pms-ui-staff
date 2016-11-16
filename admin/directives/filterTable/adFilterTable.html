@@ -1,12 +1,12 @@
-<div class="group-content with-pagination holder">
-    <div class="form-subtitle-title">
+<div class="group-content with-pagination holder full-width">
+    <div class="form-subtitle-title" ng-if="!hideSubTitle">
         <h6>
             <span translate="" ng-show="selectionConfig.activeTab === 'SELECTED'">SELECT_ITEMS_TO_REMOVE_FROM_EXCLUDED</span> 
              <span translate="" ng-show="selectionConfig.activeTab === 'UNSELECTED'">SELECT_ITEMS_TO_EXCLUDE</span>
         </h6>
     </div>
     <div class="group-filters">
-        <ul class="filters">
+        <ul class="filters" ng-if="!singleTab">
             <li ng-click="toggleAvailableItems()" ng-class="{'active' : selectionConfig.activeTab === 'UNSELECTED'}">INCLUDED</li>
             <li ng-click="toggleAvailableItems()" ng-class="{'active' : selectionConfig.activeTab === 'SELECTED'}">EXCLUDED</li>
         </ul>
