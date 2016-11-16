@@ -318,7 +318,7 @@ angular.module('sntRover')
                     retCls;
 
                 if (!$scope.showShowGroupAllotmentTotals || !source) {
-                    retCls = 'hidden';
+                    retCls = 'hide-row';
                 } else {
                     group = _.findWhere(source.holdStatus, { id: id });
                     isDeduct = group && group['is_take_from_inventory'];
@@ -326,7 +326,7 @@ angular.module('sntRover')
                     if (group && isDeduct) {
                         retCls = '';
                     } else {
-                        retCls = 'hidden';
+                        retCls = 'hide-row';
                     }
                 }
 
