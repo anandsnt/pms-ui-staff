@@ -55,16 +55,21 @@
                     CANCEL
                 </button>
                 <button type="button" class="button green" ng-click="onClickSaveNewMapping()" translate>
-                    SAVE_NEW_MAPPING
+                    {{'SAVE_NEW_MAPPING' | translate}}
                 </button>
             </div>
         </form>
         <form ng-if="interface.activeTab === 'AUT0'" class="form float">
+            <fieldset class="holder full-width">
+                <div class="form-title">
+                    <h3 translate><span>Select&nbsp;</span>Rooms to map</h3>
+                </div>
+            </fieldset>
             <fieldset class="holder left">
                 <fieldset class="holder left">
                     <ad-checkbox is-checked="auto.all"
                                  parent-label-class="checkbox-with-label"
-                                 top-label= "{{ 'ROOMS_TO_MAP' | translate}}"
+                                 top-label="{{ 'ROOMS_TO_MAP' | translate}}"
                                  label="{{ 'ALL_UNMAPPED_ROOMS' | translate}}"
                                  div-class="full-width">
                     </ad-checkbox>
@@ -78,9 +83,10 @@
                 </fieldset>
             </fieldset>
             <fieldset class="holder right">
-                <ad-toggle-button is-checked="auto.removeFirst" label="{{'REMOVE_FIRST_CHAR' | translate}}"></ad-toggle-button>
+                <ad-toggle-button is-checked="auto.removeFirst"
+                                  label="{{'REMOVE_FIRST_CHAR' | translate}}"></ad-toggle-button>
             </fieldset>
-            <section class="holder full-width">
+            <section ng-if="!auto.all" class="holder full-width">
                 <ad-filter-table
                         hide-sub-title="true"
                         single-tab="true"
@@ -92,8 +98,13 @@
                         class="button blank add-data-inline" ng-click="navigateBack()" translate>
                     CANCEL
                 </button>
-                <button type="button" class="button green" ng-click="onClickSaveNewMapping()" translate>
-                    MAP_ALL_ROOMS
+                <button type="button" ng-if="auto.all" class="button green" ng-click="onClickSaveAllMappings()"
+                        translate>
+                    {{'MAP_ALL_ROOMS'|translate}}
+                </button>
+                <button type="button" ng-if="!auto.all" class="button green" ng-click="onClickSaveRangeMapping()"
+                        translate>
+                    {{'MAP_SELECTED_ROOMS' | translate}}
                 </button>
             </div>
         </form>

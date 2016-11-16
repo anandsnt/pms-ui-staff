@@ -10,12 +10,17 @@
             <li ng-click="toggleAvailableItems()" ng-class="{'active' : selectionConfig.activeTab === 'UNSELECTED'}">INCLUDED</li>
             <li ng-click="toggleAvailableItems()" ng-class="{'active' : selectionConfig.activeTab === 'SELECTED'}">EXCLUDED</li>
         </ul>
-        <div class="entry search">
-            <button type="submit" name="submit" class="icons icon-search">Search</button>
+        <!--<div class="entry search pull-right">-->
+            <!--<button type="submit" name="submit" class="icons icon-search">Search</button>-->
+            <!--<input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000" function-to-fire="searchEntered" />-->
+        <!--</div>-->
+        <div class="table-search three-column" style="margin: 15px">
+            <span class="search-text">Search</span>
+            <span class="icons icon-search" name="submit" type="submit"></span>
             <input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000" function-to-fire="searchEntered" />
         </div>
     </div>
-    <div>
+    <div class="table-filter-wrapper group group-grey" style="padding: 15px">
         <table class="grid" ng-table="tableParams" template-pagination="custom/pager">
             <tbody>
                 <tr ng-repeat="item in $data" ng-click="toggleSelectItem(item)" ng-class="{'selected': item.isSelected}">
@@ -28,11 +33,12 @@
                     </td>
                     <td data-title="filterConfig.item_number.label" sortable="'item_no'" header-class="{{filterConfig.item_number.column_width}}">
                         <a class="room-number">
-                            <strong ng-class="{'selected': item.isSelected, 'green': selectionConfig.activeTab === 'UNSELECTED', 'red': selectionConfig.activeTab === 'SELECTED'}"> {{item.item_number}} </strong>
+                            <strong ng-class="{'selected': item.isSelected, 'green': selectionConfig.activeTab === 'UNSELECTED', 'red': selectionConfig.activeTab === 'SELECTED'}">
+                                {{item[filterConfig.item_number.mappedKey || 'item_number']}} </strong>
                         </a>
                     </td>
                     <td data-title="filterConfig.item_description.label" sortable="'item_desc'" header-class="{{filterConfig.item_description.column_width}}">
-                        {{item.item_desc}}
+                        {{item[filterConfig.item_description.mappedKey || 'item_desc']}}
                     </td>
                 </tr>
             </tbody>
@@ -40,7 +46,7 @@
     </div>
     <!--Custom pagination footer goes here-->
     <script type="text/ng-template" id="custom/pager">
-        <div class="search-pagination">
+            <div class="search-pagination">
             <div class="entry">
                 Show
                 <div class="select">
@@ -50,7 +56,7 @@
             </div>
             <button type="button" class="button dark-grey next" ng-repeat="page in pages" ng-show="page.type == 'next'" ng-click="params.page(page.number)" ng-class="{'disabled': !page.active}">Next</button>
             <button type="button" class="button dark-grey prev" ng-repeat="page in pages" ng-show="page.type == 'prev'" ng-click="params.page(page.number)" ng-class="{'disabled': !page.active}">Prev</button>
-            <p>Showing {{startCount}} to {{endCount}} of {{totalCount}} items</p>
+            <p>Showing {{startCount}} to {{endCount}} of {{totalCount}} {{ filterConfig.listItemName || 'items'}}</p>
         </div>
     </script>
 </div>

@@ -199,9 +199,9 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
 
         this.fetchUnMappedRooms = function(params) {
             var deferred = $q.defer(),
-                url = '/admin/hotel_rooms.json';
+                url = '/admin/interface_mappings/' + params.interface_id + '/unmapped_rooms.json';
 
-            ADBaseWebSrv.getJSON(url, params).then(function(data) {
+            ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);

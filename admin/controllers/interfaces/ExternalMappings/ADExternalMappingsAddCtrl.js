@@ -16,13 +16,15 @@ admin.controller('ADExternalMappingsAddCtrl', ['$scope', '$state', '$stateParams
         $scope.unmappedRoomsFilterConfig = {
             item_number: {
                 active: true,
-                label: 'ROOM NO.',
-                column_width: 'width-20'
+                label: 'ROOM NO',
+                column_width: 'width-20',
+                mappedKey: 'room_no'
             },
             item_description: {
                 active: true,
-                label: 'ROOM TYPE.',
-                column_width: 'width-40'
+                label: 'ROOM TYPE',
+                column_width: 'width-40',
+                mappedKey: 'room_type_name'
             },
             selectedExcludedRoomIds: [],
             unSelectedExcludedRoomIds: [],
@@ -32,7 +34,17 @@ admin.controller('ADExternalMappingsAddCtrl', ['$scope', '$state', '$stateParams
                 interface_id: $stateParams.interface_id
             },
             noOfItemsSelected: 0,
-            resultsKey: 'rooms'
+            resultsKey: 'unmapped_rooms',
+            trackByKey: 'room_no',
+            listItemName: 'rooms'
+        };
+
+        $scope.onClickSaveRangeMapping = function() {
+            console.log('onClickSaveRangeMapping', $scope.unmappedRoomsFilterConfig);
+        };
+
+        $scope.onClickSaveAllMappings = function() {
+            console.log('onClickSaveAllMappings', $scope.unmappedRoomsFilterConfig);
         };
 
         $scope.onClickSaveNewMapping = function() {
@@ -63,6 +75,10 @@ admin.controller('ADExternalMappingsAddCtrl', ['$scope', '$state', '$stateParams
                 mapping_type: mappingTypes[0].name,
                 snt_value: '',
                 ext_value: ''
+            };
+
+            $scope.auto = {
+                all: true
             };
 
             $scope.interface = {

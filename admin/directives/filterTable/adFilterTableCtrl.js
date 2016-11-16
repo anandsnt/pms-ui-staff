@@ -35,7 +35,7 @@ admin.controller('adFilterTableController', ['$scope', 'ngTableParams', '$inject
             var selectedRooms = _.where(currentPageList, {
                     isSelected: true
                 }),
-                currentPageRoomIds = _.pluck(selectedRooms, 'id');
+                currentPageRoomIds = _.pluck(selectedRooms, $scope.filterConfig.trackByKey || 'id');
 
             itemIds = _.union(itemIds, currentPageRoomIds);
 
@@ -117,7 +117,7 @@ admin.controller('adFilterTableController', ['$scope', 'ngTableParams', '$inject
                     $scope.currentClickedElement = -1;
                     $scope.totalCount = data.total_count;
                     $scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
-                    $scope.data = data[ $scope.filterConfig.resultsKey || 'items'];
+                    $scope.data = data[$scope.filterConfig.resultsKey || 'items'];
                     if ($scope.selectionConfig.activeTab === "SELECTED") {
                         // set the isSelected Flag for items if in already
                         // selected list
@@ -132,6 +132,10 @@ admin.controller('adFilterTableController', ['$scope', 'ngTableParams', '$inject
                     $defer.resolve($scope.data);
                     $scope.updateSelectedList();
                 };
+
+            if ($scope.filterConfig.serviceMethodParams) {
+                getParams = _.extend(getParams, $scope.filterConfig.serviceMethodParams);
+            }
 
             if ($scope.singleTab) {
                 $scope.invokeApi(filterService[$scope.filterConfig.serviceMethodName], getParams, fetchSuccessOfItemList);

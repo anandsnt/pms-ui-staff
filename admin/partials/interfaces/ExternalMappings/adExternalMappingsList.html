@@ -6,20 +6,17 @@
         <button ng-click="onClickAdd()" class="action add" scrollup="replacing-div-first">Add new</button>
     </header>
     <section class="content-scroll">
-        <form class="form float ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-expanded="true"
+        <form class="form with-grid float ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel"
+              aria-expanded="true"
               id="externalMappings"
               aria-hidden="false">
             <!-- Config section and search come here! -->
             <div class="controls-holder filters">
-                <span class="count-show">Show</span>
-                <div class="select floor-room-count">
-                    <select ng-model="displyCount" ng-options="opt for opt in displayCountList"></select>
-                </div>
-                <span class="count-entries">entries</span>
                 <div class="table-search three-column">
                     <span class="search-text">Search</span>
                     <span class="icons icon-search" name="submit" type="submit"></span>
-                    <input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000" function-to-fire="searchEntered" />
+                    <input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm"
+                           delay="1000" function-to-fire="searchEntered"/>
                 </div>
             </div>
             <!--ng-table component -->
@@ -27,13 +24,16 @@
                 <tbody>
                 <tr ng-repeat="mapping in $data"
                     ng-class="{'selected': room.isSelected}">
-                    <td data-title="'MAPPING TYPE'" sortable="'mapping_type'" header-class="width-30" ng-click="onEditMapping(mapping)">
+                    <td data-title="'MAPPING TYPE'" sortable="'mapping_type'" header-class="width-30"
+                        ng-click="onEditMapping(mapping)">
                         {{mapping.mapping_type}}
                     </td>
-                    <td data-title="'SNT VALUE'" sortable="'snt_value'" header-class="width-30" ng-click="onEditMapping(mapping)">
+                    <td data-title="'SNT VALUE'" sortable="'snt_value'" header-class="width-30"
+                        ng-click="onEditMapping(mapping)">
                         {{mapping.snt_value}}
                     </td>
-                    <td data-title="'EXTERNAL VALUE'" sortable="'ext_value'" header-class="width-30" ng-click="onEditMapping(mapping)">
+                    <td data-title="'EXTERNAL VALUE'" sortable="'ext_value'" header-class="width-30"
+                        ng-click="onEditMapping(mapping)">
                         {{mapping.ext_value}}
                     </td>
                     <td data-title="'DELETE'" header-class="width-10" class="delete">
@@ -44,27 +44,24 @@
             </table>
             <!--Custom pagination footer goes here-->
             <script type="text/ng-template" id="custom/pager">
-                <div class="pager">
-                    <span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
-                    <span ng-show="totalCount==0">Showing 0 items</span>
-                    <ul class="ng-cloak">
-                        <li ng-repeat="page in pages"
-                            ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}"
-                            ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
-                            <a ng-switch-when="prev" ng-click="params.page(1)" class="page"
-                               ng-class="{'disabled': !page.active}">First</a>
-                            <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page"
-                               ng-class="{'disabled': !page.active}">Previous</a>
-                            <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page"
-                               ng-class="{'disabled': !page.active}">{{page.number}}</a>
-                            <a ng-switch-when="next" ng-click="params.page(page.number)" class="page"
-                               ng-class="{'disabled': !page.active}">{{page.number}}</a>
-                            <a ng-switch-when="next" ng-click="params.page(page.number)" class="page"
-                               ng-class="{'disabled': !page.active}">Next</a>
-                            <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page"
-                               ng-class="{'disabled': !page.active}">Last</a>
-                        </li>
-                    </ul>
+                <div class="search-pagination">
+                    <div class="entry">
+                        Show
+                        <div class="select">
+                            <select ng-model="displyCount" ng-options="opt for opt in displayCountList"
+                                    ng-change="displayCountChanged(displyCount)"></select>
+                        </div>
+                        mappings per page
+                    </div>
+                    <button type="button" class="button dark-grey next" ng-repeat="page in pages"
+                            ng-show="page.type == 'next'" ng-click="params.page(page.number)"
+                            ng-class="{'disabled': !page.active}">Next
+                    </button>
+                    <button type="button" class="button dark-grey prev" ng-repeat="page in pages"
+                            ng-show="page.type == 'prev'" ng-click="params.page(page.number)"
+                            ng-class="{'disabled': !page.active}">Prev
+                    </button>
+                    <p>Showing {{startCount}} to {{endCount}} of {{totalCount}} items</p>
                 </div>
             </script>
             <!--end-->
