@@ -33,22 +33,19 @@ angular.module('admin').controller('adCRSCommonCtrl', ['$scope', '$rootScope', '
                     $scope.sync.end_date = $scope.sync.start_date;
                 }
                 $scope.endDatePickerOptions.maxDate = getFutureDate($scope.sync.start_date, MAX_REFRESH_SPAN_DAYS);
+            }, getSyncItems = function(full_sync_items) {
+                var arr = [];
+
+                _.each(full_sync_items, function(item) {
+                    arr.push({id: item});
+                });
+                return arr;
             };
 
         $scope.sync = {
             start_date: null,
             end_date: null,
-            items: [{
-                id: 'group'
-            }, {
-                id: 'inventory'
-            }, {
-                id: 'rate'
-            }, {
-                id: 'reservation'
-            }, {
-                id: 'restriction'
-            }]
+            items: getSyncItems(config.full_sync_items)
         };
 
         $scope.toggleEnabled = function() {
@@ -73,7 +70,7 @@ angular.module('admin').controller('adCRSCommonCtrl', ['$scope', '$rootScope', '
 
             if (!items.length) {
                 $scope.successMessage = '';
-                $scope.errorMessage = ['ERROR: Select at least one Item to Synchronize!'];
+                $scope.errorMessage = ['ERROR: Please select at least one Item to Synchronize!'];
                 return;
             }
 
