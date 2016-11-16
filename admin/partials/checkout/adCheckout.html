@@ -6,6 +6,7 @@
 		</header
 >		<section class="content-scroll">
 					<div ng-include="'/assets/partials/common/notification_message.html'"  ></div>
+					<div ng-include="'/assets/partials/common/notification_success_message.html'"  ></div>
 					<form style="overflow-y:auto;" name="edit-social-lobby" method="post" class="form float">
 						<fieldset>
 							<div class="entry full-width">
@@ -218,7 +219,13 @@
                             </div>                  
 							
 						</fieldset>	
-						 <!--  -->
+
+						<fieldset class="holder left">
+							<ad-checkbox is-checked="require_cc_for_checkout_email_flag" label="{{'CC_GUARENTEED_LABEL' | translate}}" div-class="full-width"></ad-checkbox>	
+							
+							<ad-checkbox is-checked="include_cash_reservationsy_flag" label=" {{'CASH_PAYMENT_LABEL' | translate}}" div-class="full-width"></ad-checkbox>
+						</fieldset>	
+						<!--  -->
 		                <fieldset class="holder full-width">
 		                    <div class="form-title">
 		                        <h3>
@@ -243,12 +250,6 @@
 		                    </section>
 		                </fieldset>
 		                <!--  -->
-
-						<fieldset class="holder left">
-							<ad-checkbox is-checked="require_cc_for_checkout_email_flag" label="{{'CC_GUARENTEED_LABEL' | translate}}" div-class="full-width"></ad-checkbox>	
-							
-							<ad-checkbox is-checked="include_cash_reservationsy_flag" label=" {{'CASH_PAYMENT_LABEL' | translate}}" div-class="full-width"></ad-checkbox>
-						</fieldset>	
 						<fieldset class="holder full-width">
 							<div class="entry">
 								<label translate>EXCLUDE_FOLLOWING_ROOM_TYPES_FROM_EMAIL_INVITE</label>
