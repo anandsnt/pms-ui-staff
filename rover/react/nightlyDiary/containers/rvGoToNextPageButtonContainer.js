@@ -1,13 +1,13 @@
 const {connect} = ReactRedux;
 const mapStateToNightlyDiaryGoToNextPageButtonContainerProps = (state) => (
 {
-    goToNext : state.callBackFromAngular.goToNextPage,
-    perPage :state.paginationData.per_page
+    goToNext: state.callBackFromAngular.goToNextPage,
+    perPage:state.paginationData.per_page
 });
 
-const mapDispatchToNightlyDiaryGoToNextPageButtonContainer = (stateProps, dispatchProps, ownProps) => {
+const mapDispatchToNightlyDiaryGoToNextPageButtonContainer = (stateProps) => {
     var  goToNextButtonClicked = () => {};
-    goToNextButtonClicked = (e) => {
+    goToNextButtonClicked = () => {
         return stateProps.goToNext();
         };
     return {
