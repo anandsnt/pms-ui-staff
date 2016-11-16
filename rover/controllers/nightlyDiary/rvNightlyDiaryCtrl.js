@@ -23,6 +23,10 @@ angular.module('sntRover')
 
         BaseCtrl.call(this, $scope);
 
+        /**
+         * utility method Initiate controller
+         * @return {}
+         */
         var initiateBasicConfig = function(){
             $scope.heading = $filter('translate')('MENU_ROOM_DIARY');
             $scope.setTitle($filter('translate')('MENU_ROOM_DIARY'));
@@ -50,7 +54,10 @@ angular.module('sntRover')
         };
 
         initiateBasicConfig();
-
+        /**
+         * method to get Pagination parametrs
+         * @return {Object} with pagination params
+         */
         var getPaginationParams = function(){
             return {
                 per_page: $scope.diaryData.paginationData.perPage,
@@ -93,11 +100,19 @@ angular.module('sntRover')
             $scope.invokeApi(RVNightlyDiarySrv.fetchRoomsListAndReservationList, postData, successCallBackFetchRoomList);
         };
 
+        /**
+         * Handle Next Button in Dairy.
+         * @return {}
+         */
         var goToPrevPage = () => {
             $scope.diaryData.paginationData.page--;
             fetchRoomListDataAndReservationListData();
         };
 
+        /**
+         * Handle Prev Button in Dairy.
+         * @return {}
+         */
         var goToNextPage = ()=>{
             $scope.diaryData.paginationData.page++;
             fetchRoomListDataAndReservationListData();
