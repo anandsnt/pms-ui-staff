@@ -3,13 +3,14 @@ const {connect} = ReactRedux;
  * utility method to get visibility status of Next Button
 * @return {Bool} visibility status of next Button
 */
-const getNextPageButtonStatus = function(state){
-	var total_count = state.paginationData.total_count,
-	per_page = state.paginationData.per_page,
+const getNextPageButtonStatus = function(state) {
+	var totalCount = state.paginationData.total_count,
+	perPage = state.paginationData.per_page,
 	page = state.paginationData.page;
-	if((per_page*page) < total_count){
+
+	if ((perPage * page) < totalCount) {
 		return true;
-	}else{
+	} else {
 		return false;
 	}
 };
@@ -17,10 +18,10 @@ const getNextPageButtonStatus = function(state){
  * utility method to get visibility status of Prev Button
 * @return {Bool} visibility status of Prev Button
 */
-const getPrevPageButtonStatus = function(state){
-	if(state.paginationData.page === 1){
+const getPrevPageButtonStatus = function(state) {
+	if (state.paginationData.page === 1) {
 		return false;
-	}else{
+	} else {
 		return true;
 	}
 };
@@ -28,24 +29,30 @@ const getPrevPageButtonStatus = function(state){
  * utility method to get class for grid content
 * @return {String} classnames
 */
-const getClassForRootDiv = function(state){
-	if(getNextPageButtonStatus(state)&&getPrevPageButtonStatus(state)){
+const getClassForRootDiv = function(state) {
+	if (getNextPageButtonStatus(state)&&getPrevPageButtonStatus(state)) {
 		return 'grid-content scrollable dual-pagination';
-	}else if(getPrevPageButtonStatus(state)){
+	} else if (getPrevPageButtonStatus(state)) {
 		return 'grid-content scrollable top-pagination';
-	}else if(getNextPageButtonStatus(state)){
+	} else if (getNextPageButtonStatus(state)) {
 		return 'grid-content scrollable bottom-pagination';
-	}else{
+	} else {
 		return 'grid-content scrollable';
 	}
 };
 
 const mapStateToNightlyDiaryRootContainerProps = (state) => ({
-    showNextPageButton		: getNextPageButtonStatus(state),
-    showPrevPageButton		: getPrevPageButtonStatus(state),
-    ClassForRootDiv       	: getClassForRootDiv(state)
+    showNextPageButton : getNextPageButtonStatus(state),
+    showPrevPageButton : getPrevPageButtonStatus(state),
+    ClassForRootDiv : getClassForRootDiv(state)
 });
 
+const mapDispatchToNightlyDiaryGoToPreviousPageButtonContainer = (stateProps, dispatchProps, ownProps) => {
+    return stateProps;
+}
+
 const NightlyDiaryRootContainer = connect(
-  mapStateToNightlyDiaryRootContainerProps
+  mapStateToNightlyDiaryRootContainerProps,
+  null,
+  mapDispatchToNightlyDiaryGoToPreviousPageButtonContainer
 )(NightlyDiaryRootComponent);
