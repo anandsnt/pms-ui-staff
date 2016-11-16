@@ -155,7 +155,7 @@ angular.module('sntRover')
          */
         var renderDiaryView = () => render(
             <Provider store={store}>
-                <NightlyDiaryRootComponent/>
+                <NightlyDiaryRootContainer/>
             </Provider>,
             document.querySelector('#nightlyDiaryMain')
         );
