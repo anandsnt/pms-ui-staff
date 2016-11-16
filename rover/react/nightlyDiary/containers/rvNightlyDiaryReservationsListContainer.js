@@ -2,7 +2,7 @@ const {connect} = ReactRedux;
 
 
 let  calculateReservationDurationAndPosition = (diaryInitialDayOfDateGrid, reservation, numberOfDays) => {
-    let nightDuration = NIGHTLY_DIARY_CONST.RESERVATION_ROW_WIDTH/numberOfDays;
+    let nightDuration = NIGHTLY_DIARY_CONST.RESERVATION_ROW_WIDTH / numberOfDays;
 
     let diaryInitialDayOfDateGridSplit = diaryInitialDayOfDateGrid.split("-");
     let reservationArrivalDateSplit    = reservation.arrival_date.split("-");
@@ -10,7 +10,7 @@ let  calculateReservationDurationAndPosition = (diaryInitialDayOfDateGrid, reser
     let diaryInitialDate               = new Date(diaryInitialDayOfDateGridSplit[0], diaryInitialDayOfDateGridSplit[1], diaryInitialDayOfDateGridSplit[2]);
     let reservationArrivalDate         = new Date(reservationArrivalDateSplit[0], reservationArrivalDateSplit[1], reservationArrivalDateSplit[2]);
     let reservationDepartureDate       = new Date(reservationDepartureDateSplit[0], reservationDepartureDateSplit[1], reservationDepartureDateSplit[2]);
-    let finalDayOfDiaryGrid            = diaryInitialDate.getTime()  + (numberOfDays - 1)*24*60*60*1000; // Minusing 1 bcoz otherwise last date end value (gettime) and next days start will be same.
+    let finalDayOfDiaryGrid            = diaryInitialDate.getTime()  + (numberOfDays - 1) * 24 * 60 * 60 * 1000; // Minusing 1 bcoz otherwise last date end value (gettime) and next days start will be same.
 
     let oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
     // Get the number of days between initial day of diary grid and arrival date
@@ -35,10 +35,10 @@ let  calculateReservationDurationAndPosition = (diaryInitialDayOfDateGrid, reser
     // - Add 10 to that number if showing 21 days, or 15 if showing 7 days
     let reservationPosition = 0;
 
-    if (noOfDaysBtwInitialAndArrivalDate > 0){
+    if (noOfDaysBtwInitialAndArrivalDate > 0) {
       reservationPosition = noOfDaysBtwInitialAndArrivalDate * nightDuration;
     }
-    if (noOfDaysBtwInitialAndArrivalDate >= 0){
+    if (noOfDaysBtwInitialAndArrivalDate >= 0) {
         if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_7) {
           reservationPosition = reservationPosition + NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_7;
         } else if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_21) {
@@ -99,19 +99,19 @@ let  calculateReservationDurationAndPosition = (diaryInitialDayOfDateGrid, reser
         } else if(reservationPosition > 0){
           durationOfReservation = durationOfReservation - 5;
         }
-    } else if (reservationArrivalDate.getTime() === reservationDepartureDate.getTime()){
+    } else if (reservationArrivalDate.getTime() === reservationDepartureDate.getTime()) {
         if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_7) {
           durationOfReservation = nightDuration - NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_7;
         } else if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_21) {
           durationOfReservation = reservationPosition - NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_21;
         }
-     } else if(reservationDepartureDate.getTime() >= finalDayOfDiaryGrid){
+     } else if(reservationDepartureDate.getTime() >= finalDayOfDiaryGrid) {
         let noOfDaysBtwFinalAndArrivalDate = Math.abs((finalDayOfDiaryGrid - reservationArrivalDate.getTime()) / (oneDay));
        // Considering the day when the reservation starts (if past or first day = 1, second day = 2, ....)
        // let reservationArrivalDay = noOfDaysBtwFinalAndDepartureDate + 1;
         let daysInsideTheGrid = 0;
 
-        if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_7){
+        if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_7) {
           daysInsideTheGrid = noOfDaysBtwFinalAndArrivalDate + 1;
           durationOfReservation = (nightDuration * daysInsideTheGrid) - NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_7;
         } else if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_21) {
@@ -140,19 +140,19 @@ let getReservationClasses = function(reservation, currentBusinessDate, diaryInit
     let reservationArrivalDate         = new Date(reservationArrivalDateSplit[0], reservationArrivalDateSplit[1], reservationArrivalDateSplit[2]);
     let reservationDepartureDate       = new Date(reservationDepartureDateSplit[0], reservationDepartureDateSplit[1], reservationDepartureDateSplit[2]);
     let finalDayOfDiaryGrid            = diaryInitialDate.getTime()  + (numberOfDays -1)*24*60*60*1000;//Minusing 1 bcoz otherwise last date end value (gettime) and next days start will be same.
-    //{passed} - class 'passed' should be applied on all reservations that ended before today's date. If you don't have today's date shown in the diary, this class shoudl not be applied to reservations even if they're all in the past
+    // {passed} - class 'passed' should be applied on all reservations that ended before today's date. If you don't have today's date shown in the diary, this class shoudl not be applied to reservations even if they're all in the past
 
     let passedClass                       = '';
 
-    if (businessDate.getTime() >= diaryInitialDate.getTime() && businessDate.getTime() <= finalDayOfDiaryGrid){
-        if (reservationDepartureDate.getTime() < businessDate.getTime()){
+    if (businessDate.getTime() >= diaryInitialDate.getTime() && businessDate.getTime() <= finalDayOfDiaryGrid) {
+        if (reservationDepartureDate.getTime() < businessDate.getTime()) {
             passedClass = 'passed';
         }
     }
-    //{day-stay} - class 'day-stay' should be applied to all reservations or OOO/OOS statuses which have the same arrival and departure date, even if in the past or future. This class enables us to show person initials instad of full name.
+    // {day-stay} - class 'day-stay' should be applied to all reservations or OOO/OOS statuses which have the same arrival and departure date, even if in the past or future. This class enables us to show person initials instad of full name.
     let dayStayClass = '';
 
-    if (reservationArrivalDate.getTime() === reservationDepartureDate.getTime()){
+    if (reservationArrivalDate.getTime() === reservationDepartureDate.getTime()) {
       dayStayClass = 'day-stay';
     }
     return passedClass+" "+dayStayClass;
@@ -184,9 +184,9 @@ let findIsReservationDayStay = (reservation) => {
 let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateGrid, numberOfDays, currentBusinessDate) => {
 
     roomsList.map((room) => {
-       if (room.reservations.length > 0){
+       if (room.reservations.length > 0) {
             room.reservations.map((reservation) => {
-                let positionAndDuration = calculateReservationDurationAndPosition(diaryInitialDayOfDateGrid, reservation , numberOfDays)
+                let positionAndDuration = calculateReservationDurationAndPosition(diaryInitialDayOfDateGrid, reservation , numberOfDays);
                 let duration = positionAndDuration.durationOfReservation + "px";
 
                 reservation.style = {};
@@ -199,12 +199,11 @@ let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateG
 
                 reservation.isReservationDayStay = isReservationDayStay;
                 reservation.reservationClass = "reservation "+ reservationStatusClass +" "+ reservationClass;
-               // let reservationIconFlags = getReservationIconFlags(reservation);
 
-            })
+            });
         }
 
-    })
+    });
     return roomsList;
 };
 
