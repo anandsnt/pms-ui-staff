@@ -28,7 +28,7 @@ const getPrevPageButtonStatus = function(state) {
 * @return {String} classnames
 */
 const getClassForRootDiv = function(state) {
-	if (getNextPageButtonStatus(state)&&getPrevPageButtonStatus(state)) {
+	if (getNextPageButtonStatus(state) && getPrevPageButtonStatus(state)) {
 		return 'grid-content scrollable dual-pagination';
 	} else if (getPrevPageButtonStatus(state)) {
 		return 'grid-content scrollable top-pagination';
@@ -41,10 +41,11 @@ const getClassForRootDiv = function(state) {
 const mapStateToNightlyDiaryRootContainerProps = (state) => ({
     showNextPageButton: getNextPageButtonStatus(state),
     showPrevPageButton: getPrevPageButtonStatus(state),
-    ClassForRootDiv: getClassForRootDiv(state)
+    ClassForRootDiv: getClassForRootDiv(state),
+    page: state.paginationData.page
 });
 
-const mapDispatchToNightlyDiaryGoToPreviousPageButtonContainer = (stateProps, dispatchProps, ownProps) => {
+const mapDispatchToNightlyDiaryGoToPreviousPageButtonContainer = (stateProps) => {
     return stateProps;
 };
 
