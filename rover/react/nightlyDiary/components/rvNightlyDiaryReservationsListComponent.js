@@ -32,4 +32,4 @@ const { PropTypes } = React;
 
 NightlyDiaryReservationsListComponent.propTypes = {
   reservationsListToComponent: PropTypes.array.isRequired
-}
+};
