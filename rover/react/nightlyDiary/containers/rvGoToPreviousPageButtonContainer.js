@@ -7,6 +7,7 @@ const mapStateToNightlyDiaryGoToPreviousPageButtonContainerProps = (state) => (
 
 const mapDispatchToNightlyDiaryGoToPreviousPageButtonContainer = (stateProps) => {
     var  goToPrevButtonClicked = () => {};
+    
     goToPrevButtonClicked = () => {
         return stateProps.goToPrev();
         };
