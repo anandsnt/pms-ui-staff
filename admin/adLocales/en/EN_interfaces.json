@@ -20,4 +20,5 @@
 	"DEFAULT_RATE": "Default Rate",
 	"DEFAULT_BOOKING_ORIGIN": "Default Booking Origin",
 	"DEFAULT_PAYMENT_METHOD": "Default Payment Method",
-	"TRAVELCLICK_HEADER": "TravelClick CRS Setup"
+	"TRAVELCLICK_HEADER": "TravelClick CRS Setup",
+	"ACCOUNTVIEW_HEADER": "AccountView Back Office Setup"
