@@ -209,4 +209,16 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
             return deferred.promise;
         };
 
+        this.saveAutoMapping = function(params) {
+            var deferred = $q.defer(),
+                url = 'admin/interface_mappings/auto_mapping.json';
+
+            ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
     }]);

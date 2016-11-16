@@ -40,11 +40,34 @@ admin.controller('ADExternalMappingsAddCtrl', ['$scope', '$state', '$stateParams
         };
 
         $scope.onClickSaveRangeMapping = function() {
-            console.log('onClickSaveRangeMapping', $scope.unmappedRoomsFilterConfig);
+            $scope.callAPI(ADInterfaceMappingSrv.saveAutoMapping, {
+                params: {
+                    interface_id: $stateParams.interface_id,
+                    mapping_type: $scope.mapping.mapping_type,
+                    prefix: $scope.auto.prefix,
+                    remove_char: $scope.auto.removeFirst,
+                    all_unmapped_rooms: $scope.auto.all,
+                    room_no: $scope.unmappedRoomsFilterConfig.selectedExcludedRoomIds
+                },
+                onSuccess: function() {
+                    $scope.navigateBack();
+                }
+            });
         };
 
         $scope.onClickSaveAllMappings = function() {
-            console.log('onClickSaveAllMappings', $scope.unmappedRoomsFilterConfig);
+            $scope.callAPI(ADInterfaceMappingSrv.saveAutoMapping, {
+                params: {
+                    interface_id: $stateParams.interface_id,
+                    mapping_type: $scope.mapping.mapping_type,
+                    prefix: $scope.auto.prefix,
+                    remove_char: $scope.auto.removeFirst,
+                    all_unmapped_rooms: $scope.auto.all
+                },
+                onSuccess: function() {
+                    $scope.navigateBack();
+                }
+            });
         };
 
         $scope.onClickSaveNewMapping = function() {
@@ -78,7 +101,9 @@ admin.controller('ADExternalMappingsAddCtrl', ['$scope', '$state', '$stateParams
             };
 
             $scope.auto = {
-                all: true
+                all: true,
+                prefix: '',
+                removeFirst: false
             };
 
             $scope.interface = {

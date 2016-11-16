@@ -20,6 +20,11 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         $scope.isAdd = false;
         $scope.addFormView = false;
 
+
+        $scope.navigateBack = function() {
+            $state.go('admin.dashboard', {menu: 8});
+        };
+
         /*
          * To close inline tabs on cancel/save clicks
          */

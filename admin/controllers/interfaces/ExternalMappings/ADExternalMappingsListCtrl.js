@@ -12,7 +12,7 @@ admin.controller('ADExternalMappingsListCtrl', ['$scope', '$state', '$stateParam
         };
 
         $scope.navigateBack = function() {
-            $state.go('admin.mapping');
+            $state.go('admin.externalMappings');
         };
 
         $scope.fetchTableData = function($defer, params) {
