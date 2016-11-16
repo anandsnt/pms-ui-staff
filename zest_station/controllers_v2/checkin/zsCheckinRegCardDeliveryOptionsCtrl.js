@@ -327,7 +327,8 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 			// show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
             if ($stateParams.email) {
-                $scope.email = $stateParams.email.length > 0 ? $stateParams.email : '';
+                $scope.email = $stateParams.email.length > 0 && zsUtilitySrv.isValidEmail($stateParams.email) ? $stateParams.email : '';
+
             } else {
                 $scope.email = '';
             }
