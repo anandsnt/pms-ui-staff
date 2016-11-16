@@ -11,7 +11,7 @@ angular.module('sntRover').controller('rvGroupReservationCheckoutCtrl', [
             $state) {
 
     var completeCheckoutSuccessCallback = function(data) {
-        //calling initially required APIs
+        // calling initially required APIs
         $scope.$emit("REFRESH_GROUP_ROOMING_LIST_DATA");
         $timeout(function() {
             $scope.closeDialog();
@@ -27,7 +27,7 @@ angular.module('sntRover').controller('rvGroupReservationCheckoutCtrl', [
      */
     $scope.completeCheckOut = function(reservationID) {
         var params = {
-            "reservation_id" : reservationID
+            "reservation_id": reservationID
         };
 
         var options = {
@@ -35,6 +35,7 @@ angular.module('sntRover').controller('rvGroupReservationCheckoutCtrl', [
             successCallBack: completeCheckoutSuccessCallback,
             failureCallBack: completeCheckoutFailureCallback
         };
+
         $scope.callAPI(RVBillCardSrv.completeCheckout, options);
     };
 

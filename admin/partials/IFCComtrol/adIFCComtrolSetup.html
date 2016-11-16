@@ -24,8 +24,13 @@
                     <fieldset class="holder left">
                         <ad-textbox inputtype="text" value="ifc_comtrol.url" name="url" id="url" label="{{'IFC_COMTROL_URL' | translate}}" styleclass="full-width" ng-if="ifc_comtrol.enabled"></ad-textbox>
                     </fieldset>
-                    <fieldset class="holder right">
-                        <ad-textbox inputtype="text" value="ifc_comtrol.authentication_token" name="authentication-token" id="authentication-token" label="{{'IFC_COMTROL_AUTHENTICATION_TOKEN' | translate}}" styleclass="full-width"></ad-textbox>
+                    <fieldset class="holder full-width">
+                        <ad-textbox inputtype="text" value="ifc_comtrol.authentication_token" name="authentication-token" id="authentication-token" label="{{'IFC_COMTROL_AUTHENTICATION_TOKEN' | translate}}"
+                                    readonly="yes">
+                        </ad-textbox>
+                        <button type="button" style="margin: 24px 0 0 10px" class="button blue sm-refresh-btn" ng-click="onClickRegenerate()">
+                            REGENERATE
+                        </button>
                     </fieldset>
                     <div class="form-title full-width">
                         <h3><span translate>IFC_COMTROL_KEY_SYSTEM_SETTINGS</span></h3>

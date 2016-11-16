@@ -126,6 +126,55 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 if ($scope.isEditable !== false) {
                     $scope.payment.isEditable = true;
                 }
+            },
+            isCardSelectionDisabled = function() {
+                return !!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].disableCardSelection;
+            },
+            handlePaymentError = function(errorMessage) {
+                $timeout(()=> {
+                    $scope.paymentAttempted = true;
+                    $scope.isPaymentFailure = true;
+                    $scope.paymentErrorMessage = errorMessage[0];
+                    console.log("payment failed" + errorMessage);
+                    $scope.$emit('PAYMENT_FAILED', errorMessage);
+                    $scope.$emit('hideLoader');
+                }, 300)
+            },
+            initiateCBAlisteners = function() {
+                var listenerCBAPaymentFailure = $scope.$on("CBA_PAYMENT_FAILED", (event, errorMessage)=> {
+                    handlePaymentError(errorMessage);
+                });
+                var listenerCBAPaymentSuccess = $scope.$on("CBA_PAYMENT_SUCCESS", (event, response)=> {
+                    //we need to notify the parent controllers to show loader
+                    //as this is an external directive
+                    $scope.$emit('showLoader');
+                    var params = intiateSubmitPaymentParams();
+
+                    params.postData.payment_type_id = response.payment_method_id;
+                    params.postData.credit_card_transaction_id = response.id;
+
+                    sntPaymentSrv.submitPayment(params).then(response => {
+                            $scope.onPaymentSuccess(response);
+                            $scope.$emit('hideLoader');
+                        }, errorMessage => {
+                            handlePaymentError(errorMessage);
+                        }
+                    );
+                });
+
+                $scope.$on("$destroy", listenerCBAPaymentFailure);
+                $scope.$on("$destroy", listenerCBAPaymentSuccess);
+            }, initiateSHIJIListeners = function() {
+                var listenerSHIJIPaymentFailure = $scope.$on('SHIJI_PAYMENT_FAILED', (event, errorMessage)=> {
+                    handlePaymentError(errorMessage);
+                });
+
+                var listenerSHIJIPaymentSuccess = $scope.$on('SHIJI_PAYMENT_SUCCESS', (event, response)=> {
+                    $scope.onPaymentSuccess(response);
+                });
+
+                $scope.$on("$destroy", listenerSHIJIPaymentFailure);
+                $scope.$on("$destroy", listenerSHIJIPaymentSuccess);
             };
 
         /**
@@ -167,8 +216,8 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             var isManualEntry = !!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl &&
                 $scope.payment.isManualEntryInsideIFrame;
 
-            return (isCCPresent && $scope.payment.screenMode === "PAYMENT_MODE" &&
-            (isManualEntry || $scope.hotelConfig.paymentGateway !== 'sixpayments'));
+            return !isCardSelectionDisabled() && (isCCPresent && $scope.payment.screenMode === "PAYMENT_MODE" &&
+                (isManualEntry || $scope.hotelConfig.paymentGateway !== 'sixpayments'));
         };
 
         /**
@@ -253,12 +302,18 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
         $scope.payLater = function() {
             $scope.$emit('PAY_LATER', {
                 paymentType: $scope.selectedPaymentType,
-                cardDetails: $scope.selectedCC
+                cardDetails: $scope.selectedCC,
+                addToGuestCard: $scope.payment.addToGuestCardSelected
             });
         };
 
         $scope.continueAction = function(arg) {
             $scope.$emit('PAYMENT_ACTION_CONTINUE', arg);
+        };
+
+        $scope.resetPaymentAttempt = function() {
+            $scope.paymentAttempted = false;
+            $scope.isPaymentFailure = false;
         };
 
         /**
@@ -278,6 +333,14 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
          *    Request Params: {reservation_id: 1348897, payment_type: "CK", workstation_id: 159, user_payment_type_id: "1171"}
          */
         $scope.saveReservationPaymentMethod = function() {
+
+            // in case of CBA and the card is not tokenized yet
+            if ($scope.selectedPaymentType === "CC" &&
+                $scope.hotelConfig.paymentGateway === 'CBA' && !$scope.payment.tokenizedCardData) {
+                $scope.$broadcast('INITIATE_CBA_TOKENIZATION');
+                return;
+            }
+
             //check if chip and pin is selected in case of six payments
             //the rest of actions will in paySixPayController
             if ($scope.selectedPaymentType === "CC" && $scope.hotelConfig.paymentGateway === 'sixpayments' && !$scope.payment.isManualEntryInsideIFrame) {
@@ -348,17 +411,18 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                     ...$scope.payment.tokenizedCardData.apiParams,
                     workstation_id: $scope.hotelConfig.workstationId,
                     reservation_id: $scope.reservationId,
-                    bill_number: $scope.billNumber
+                    bill_number: $scope.billNumber,
+                    add_to_guest_card: $scope.payment.addToGuestCardSelected
                 }).then(response => {
                     var cardDetails = $scope.payment.tokenizedCardData;
                     $scope.$emit('SUCCESS_LINK_PAYMENT', {
-                        response: response.data,
+                        response: {...response.data, addToGuestCard: $scope.payment.addToGuestCardSelected},
                         selectedPaymentType: $scope.selectedPaymentType,
                         cardDetails: {
                             "card_code": cardDetails.cardDisplayData.card_code,
                             "ending_with": cardDetails.cardDisplayData.ending_with,
                             "expiry_date": cardDetails.cardDisplayData.expiry_date,
-                            "card_name": cardDetails.apiParams.name_on_card
+                            "card_name": cardDetails.apiParams.name_on_card || cardDetails.apiParams.card_name
                         }
                     });
                     $scope.$emit('hideLoader');
@@ -537,6 +601,20 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 return;
             }
 
+            // --- CBA ---
+            if ($scope.selectedPaymentType === "CC" &&
+                $scope.hotelConfig.paymentGateway === 'CBA') {
+                $scope.$broadcast('INITIATE_CBA_PAYMENT', params);
+                return;
+            }
+
+            // --- Shiji ---
+            if ($scope.hotelConfig.paymentGateway === 'SHIJI' &&
+                ($scope.selectedPaymentType === 'ALIPAY' || $scope.selectedPaymentType === 'WECHAT')) {
+                $scope.$broadcast('INITIATE_SHIJI_PAYMENT', params);
+                return;
+            }
+
             //for CC payments, we need payment type id
             var paymentTypeId;
 
@@ -561,13 +639,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                     $scope.onPaymentSuccess(response);
                     $scope.$emit('hideLoader');
                 }, errorMessage => {
-                    $scope.paymentAttempted = true;
-                    $scope.isPaymentFailure = true;
-
-                    $scope.paymentErrorMessage = errorMessage[0];
-                    console.log("payment failed" + errorMessage);
-                    $scope.$emit('PAYMENT_FAILED', errorMessage);
-                    $scope.$emit('hideLoader');
+                    handlePaymentError(errorMessage);
                 }
             );
 
@@ -662,7 +734,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                     //Add to guestcard feature for C&P
                     $scope.payment.showAddToGuestCard = !!$scope.reservationId && ($scope.payment.isManualEntryInsideIFrame ? false : true);
                     refreshIFrame();
-                } else {
+                } else if (!isCardSelectionDisabled()) {
                     // In case no card has been selected yet, move to add card mode
                     !$scope.showSelectedCard() && changeToCardAddMode();
                 }
@@ -674,6 +746,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
         $scope.onFeeOverride = function() {
             var totalAmount = parseFloat($scope.feeData.calculatedFee) + parseFloat($scope.payment.amount);
             $scope.feeData.totalOfValueAndFee = totalAmount.toFixed(2);
+        };
+
+        $scope.propagateAddToggle = function() {
+            $scope.$emit('PAYMENT_TOGGLE_ATTACH_TO_GUEST_CARD', $scope.payment.addToGuestCardSelected);
         };
 
         /**************** CC handling ********************/
@@ -855,15 +931,19 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             var paymentData = data.paymentData;
 
             if (/^ADD_PAYMENT_/.test($scope.actionType) || !!paymentData.apiParams.mli_token) {
+
+                showAddtoGuestCardBox();
+
                 $scope.payment.tokenizedCardData = paymentData;
                 $scope.selectedCC = $scope.selectedCC || {};
                 $scope.selectedCC.card_code = paymentData.cardDisplayData.card_code;
                 $scope.selectedCC.ending_with = paymentData.cardDisplayData.ending_with;
                 $scope.selectedCC.expiry_date = paymentData.cardDisplayData.expiry_date;
-                $scope.selectedCC.holder_name = paymentData.apiParams.name_on_card;
+                $scope.selectedCC.holder_name = paymentData.apiParams.name_on_card || paymentData.apiParams.card_name;
                 $timeout(()=> {
                     $scope.selectedPaymentType = "CC";
                     $scope.payment.screenMode = "PAYMENT_MODE";
+                    data.forceSaveRoutine && $scope.saveReservationPaymentMethod();
                 }, 600);
             } else {
                 $scope.payment.tokenizedCardData = null;
@@ -986,9 +1066,15 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             $scope.hotelConfig.emvTimeout = $scope.hotelConfig.emvTimeout || 120;
             $scope.hotelConfig.paymentGateway = $scope.hotelConfig.paymentGateway || "";
 
+            if ($scope.hotelConfig.paymentGateway === "CBA") {
+                initiateCBAlisteners();
+            } else if ($scope.hotelConfig.paymentGateway === "SHIJI") {
+                initiateSHIJIListeners();
+            }
+
             $scope.currencySymbol = $scope.hotelConfig.currencySymbol;
 
-            if ($scope.fetchLinkedCards) {
+            if ($scope.fetchLinkedCards && !isCardSelectionDisabled()) {
                 fetchAttachedCreditCards();
             }
 
@@ -1023,7 +1109,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             /**
              *
              */
-            if (!$scope.hotelConfig.isStandAlone) {
+            if (!$scope.hotelConfig.isStandAlone && !isCardSelectionDisabled()) {
                 changeToCardAddMode();
             }
 
@@ -1031,6 +1117,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             $timeout($scope.onPaymentInfoChange, 1000);
 
             setScroller('cardsList', {'click': true, 'tap': true});
+
+            $scope.$watch('payment.screenMode', ()=> {
+                $scope.$emit('PAYMENT_SCREEN_MODE_CHANGED', $scope.payment.screenMode);
+            });
         })();
 
     }

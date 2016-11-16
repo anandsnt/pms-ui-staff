@@ -46,6 +46,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		$scope.shouldHideHoldStatus = function() {
 			var addModeCondition = (!$scope.shouldHideCreateBlockButton() && $scope.isInAddMode());
 			var editModeCondition = ($scope.isInAddMode());
+
 			return (addModeCondition || editModeCondition);
 		};
 
@@ -57,6 +58,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		$scope.shouldHideRoomsAndPickUpArea = function() {
 			var addModeCondition = (!$scope.shouldHideCreateBlockButton() && $scope.isInAddMode());
 			var editModeCondition = ($scope.isInAddMode());
+
 			return (addModeCondition || editModeCondition);
 		};
 
@@ -67,6 +69,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		var startDateOrEndDateIsEmpty = function() {
 			var isStartDateIsEmpty = $scope.isEmpty($scope.startDate.toString());
 			var isEndDateIsEmpty = $scope.isEmpty($scope.endDate.toString());
+
 			return (isEndDateIsEmpty && isEndDateIsEmpty);
 		};
 
@@ -277,7 +280,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			else if (customRateSelected || isBorrowedRoomType) {
 				var list_of_triples = _.pluck(roomType.dates, 'triple');
 
-				//throwing undefined items
+				// throwing undefined items
 				list_of_triples = _.filter(list_of_triples, function(element) {
 					return (typeof element !== "undefined");
 				});
@@ -303,7 +306,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			if (customRateSelected || isBorrowedRoomType) {
 				var list_of_quadruples = _.pluck(roomType.dates, 'quadruple');
 
-				//throwing undefined items
+				// throwing undefined items
 				list_of_quadruples = _.filter(list_of_quadruples, function(element) {
 					return (typeof element !== "undefined");
 				});
@@ -328,7 +331,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				element.triple_pickup = 0;
 			});
 
-			//we added something
+			// we added something
 			$scope.bookingDataChanging();
 			refreshScroller();
 		};
@@ -346,7 +349,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				element.quadruple_pickup = 0;
 			});
 
-			//we added something
+			// we added something
 			$scope.bookingDataChanging();
 			refreshScroller();
 		};
@@ -428,9 +431,10 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				occupancy: 'single',
 				value: cellData.single
 			};
+
 			$scope.selectedRoomType = rowData;
 			$scope.showMassUpdateEndDateConfirmation(data);
-			//we chnged something
+			// we chnged something
 			$scope.bookingDataChanging();
 		};
 
@@ -451,9 +455,10 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				occupancy: 'double',
 				value: cellData.double
 			};
+
 			$scope.selectedRoomType = rowData;
 			$scope.showMassUpdateEndDateConfirmation(data);
-			//we chnged something
+			// we chnged something
 			$scope.bookingDataChanging();
 		};
 
@@ -474,9 +479,10 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				occupancy: 'triple',
 				value: cellData.triple
 			};
+
 			$scope.selectedRoomType = rowData;
 			$scope.showMassUpdateEndDateConfirmation(data);
-			//we chnged something
+			// we chnged something
 			$scope.bookingDataChanging();
 		};
 
@@ -497,9 +503,10 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				occupancy: 'quadruple',
 				value: cellData.quadruple
 			};
+
 			$scope.selectedRoomType = rowData;
 			$scope.showMassUpdateEndDateConfirmation(data);
-			//we chnged something
+			// we chnged something
 			$scope.bookingDataChanging();
 		};
 
@@ -527,6 +534,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 */
 		$scope.shouldShowLoadNextSetButton = function() {
 			var nextStart = new tzIndependentDate($scope.timeLineStartDate);
+
 					nextStart.setDate(nextStart.getDate() + 14);
 			var hasNextSet = nextStart < $scope.groupConfigData.summary.block_to;
 
@@ -542,7 +550,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		};
 
 		$scope.fetchCurrentSetOfRoomBlockData = function() {
-			//for pagination in group room block CICO-20097
+			// for pagination in group room block CICO-20097
 			var groupStartDate = $scope.groupConfigData.summary.block_from,
 			groupEndDate   = $scope.groupConfigData.summary.block_to;
 
@@ -566,12 +574,13 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			var options = {
 				start_date: formatDateForAPI($scope.timeLineStartDate),
 				end_date: formatDateForAPI($scope.timeLineEndDate)
-			}
+			};
+
 			$scope.fetchRoomBlockGridDetails(options);
-        }
+        };
 
         var formatDateForAPI = function(date) {
-			return $filter('date')(date, $rootScope.dateFormatForAPI)
+			return $filter('date')(date, $rootScope.dateFormatForAPI);
 		};
 
 		/**
@@ -596,7 +605,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return undefined
 		 */
 		$scope.bookingDataChanging = function() {
-			//we are changing the model to
+			// we are changing the model to
 			$scope.hasBookingDataChanged = true;
 			runDigestCycle();
 			$scope.getTotalBookedRooms();
@@ -623,7 +632,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			$scope.startDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 			$scope.groupConfigData.summary.block_from = $scope.startDate;
 
-			//referring data source
+			// referring data source
 			var refData 		= $scope.groupConfigData.summary,
 				newBlockFrom 	= refData.block_from,
 				oldBlockFrom	= new tzIndependentDate(summaryMemento.block_from),
@@ -632,35 +641,36 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			if (refData.release_date.toString().trim() === '') {
 				$scope.groupConfigData.summary.release_date = refData.block_from;
 			}
-			//if it is is Move Date mode
+			// if it is is Move Date mode
 			if ($scope.changeDatesActions.isInCompleteMoveMode()) {
 				var originalStayLength = (util.getDatesBetweenTwoDates (new tzIndependentDate(util.deepCopy(summaryMemento.block_from)), new tzIndependentDate(util.deepCopy(summaryMemento.block_to))).length - 1);
+
 				$scope.groupConfigData.summary.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 				$scope.groupConfigData.summary.block_to.setDate(refData.block_to.getDate() + originalStayLength);
 				$scope.endDate = $scope.groupConfigData.summary.block_to;
-				//for goto and mass update calender popup on group move
+				// for goto and mass update calender popup on group move
 				$scope.timeLineStartDate = $scope.groupConfigData.summary.block_from;
 				$scope.timeLineEndDate = $scope.endDate;
 				$scope.massUpdateEndDate = new tzIndependentDate($scope.endDate - 86400000);
 			}
 
-			//arrival left date change
-			else if(newBlockFrom < oldBlockFrom && chActions.arrDateLeftChangeAllowed()) {
+			// arrival left date change
+			else if (newBlockFrom < oldBlockFrom && chActions.arrDateLeftChangeAllowed()) {
 				triggerEarlierArrivalDateChange();
 
 			}
 
-			//arrival right date change
-			else if(newBlockFrom > oldBlockFrom && chActions.arrDateRightChangeAllowed()) {
+			// arrival right date change
+			else if (newBlockFrom > oldBlockFrom && chActions.arrDateRightChangeAllowed()) {
 				// check move validity
-				if(new tzIndependentDate(refData.first_dep_date) < newBlockFrom)
+				if (new tzIndependentDate(refData.first_dep_date) < newBlockFrom)
 					triggerLaterArrivalDateChangeInvalidError();
 				else
 					triggerLaterArrivalDateChange();
 			}
 
 			// let the date update if it is future group as well is in edit mode
-			else if (!$scope.isInAddMode() && !refData.is_a_past_group){
+			else if (!$scope.isInAddMode() && !refData.is_a_past_group) {
 				$timeout(function() {
 					$scope.updateGroupSummary();
 				}, 100);
@@ -670,10 +680,10 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			if ($scope.startDate > $scope.endDate) {
 				$scope.endDate = '';
 			}
-			//setting the min date for end Date
+			// setting the min date for end Date
 			$scope.endDateOptions.minDate = $scope.startDate;
 
-			//we have to show create button
+			// we have to show create button
 
 
 			runDigestCycle();
@@ -688,39 +698,39 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			$scope.endDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 			$scope.groupConfigData.summary.block_to = $scope.endDate;
 
-			//referring data source
+			// referring data source
 			var refData 	= $scope.groupConfigData.summary,
 				newBlockTo 	= refData.block_to,
 				oldBlockTo	= new tzIndependentDate(summaryMemento.block_to),
 				chActions 	= $scope.changeDatesActions;
 
-			//departure left date change
-			if(newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {
+			// departure left date change
+			if (newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {
 				// check move validity
-				if(new tzIndependentDate(refData.last_arrival_date) > newBlockTo)
+				if (new tzIndependentDate(refData.last_arrival_date) > newBlockTo)
 					triggerEarlierDepartureDateChangeInvalidError();
 				else
 					triggerEarlierDepartureDateChange();
 			}
 
-			//departure right date change
-			else if(newBlockTo > oldBlockTo && chActions.depDateRightChangeAllowed()) {
+			// departure right date change
+			else if (newBlockTo > oldBlockTo && chActions.depDateRightChangeAllowed()) {
 				triggerLaterDepartureDateChange();
 			}
 
 			// let the date update if it is future group as well is in edit mode
-			else if (!$scope.isInAddMode() && !refData.is_a_past_group){
+			else if (!$scope.isInAddMode() && !refData.is_a_past_group) {
 				$timeout(function() {
 					$scope.updateGroupSummary();
-					//for updating the room block after udating the summary
-					$scope.hasBlockDataUpdated = true; //as per variable name, it should be false, but in this contrler it should be given as true other wise its not working
+					// for updating the room block after udating the summary
+					$scope.hasBlockDataUpdated = true; // as per variable name, it should be false, but in this contrler it should be given as true other wise its not working
 				}, 100);
 			}
 
-			//setting the max date for start Date
+			// setting the max date for start Date
 			$scope.startDateOptions.maxDate = $scope.endDate;
 
-			//we have to show create button
+			// we have to show create button
 
 
 			runDigestCycle();
@@ -730,7 +740,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * every logic to disable the from date picker should be here
 		 * @return {Boolean} [description]
 		 */
-		var shouldDisableStartDatePicker = function(){
+		var shouldDisableStartDatePicker = function() {
 			var sData 					= $scope.groupConfigData.summary,
 				noOfInhouseIsNotZero 	= (sData.total_checked_in_reservations > 0),
 				cancelledGroup 			= sData.is_cancelled,
@@ -750,7 +760,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * every logic to disable the end date picker should be here
 		 * @return {Boolean} [description]
 		 */
-		var shouldDisableEndDatePicker = function(){
+		var shouldDisableEndDatePicker = function() {
 			var sData 					= $scope.groupConfigData.summary,
 				endDateHasPassed 		= new tzIndependentDate(sData.block_to) < new tzIndependentDate($rootScope.businessDate),
 				cancelledGroup 			= sData.is_cancelled,
@@ -773,30 +783,30 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 */
 		var setDatePickers = function() {
 
-			//default start date
+			// default start date
 			$scope.startDate = '';
 
-			//default to date
+			// default to date
 			$scope.endDate = '';
 			var maxEndDate = '';
 
-			//referring data model -> from group summary
+			// referring data model -> from group summary
 			var refData = $scope.groupConfigData.summary;
 
-			//default to goto date
-			if(!$scope.timeLineStartDate) {
+			// default to goto date
+			if (!$scope.timeLineStartDate) {
 				$scope.timeLineStartDate = (refData.block_from !== '') ? new tzIndependentDate(refData.block_from) : new tzIndependentDate($rootScope.businessDate);
 			}
 
 			$scope.timeLineEndDate = new tzIndependentDate(refData.block_to);
 
 
-			//if from date is not null from summary screen, we are setting it as busines date
+			// if from date is not null from summary screen, we are setting it as busines date
 			if (!$scope.isEmpty(refData.block_from.toString())) {
 				$scope.startDate = refData.block_from;
 			}
 
-			//if to date is null from summary screen, we are setting it from date
+			// if to date is null from summary screen, we are setting it from date
 			if (!$scope.isEmpty(refData.block_to.toString())) {
 				$scope.endDate = refData.block_to;
 				maxEndDate = new tzIndependentDate($scope.endDate - 86400000);
@@ -804,13 +814,13 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 			$scope.massUpdateEndDate = maxEndDate;
 
-			//date picker options - Common
+			// date picker options - Common
 			var commonDateOptions = {
 				dateFormat: $rootScope.jqDateFormat,
 				numberOfMonths: 1
 			};
 
-			//date picker options - Start Date
+			// date picker options - Start Date
 			$scope.startDateOptions = _.extend({
 				minDate: new tzIndependentDate($rootScope.businessDate),
 				maxDate: $scope.groupConfigData.summary.block_to,
@@ -818,25 +828,25 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				onSelect: onStartDatePicked
 			}, commonDateOptions);
 
-			//date picker options - End Date
+			// date picker options - End Date
 			$scope.endDateOptions = _.extend({
-				minDate: ($scope.startDate !== '') ? new tzIndependentDate($scope.startDate): new tzIndependentDate($rootScope.businessDate),
+				minDate: ($scope.startDate !== '') ? new tzIndependentDate($scope.startDate) : new tzIndependentDate($rootScope.businessDate),
 				disabled: shouldDisableEndDatePicker(),
 				onSelect: onEndDatePicked
 			}, commonDateOptions);
 
-			//date picker options - Goto Date
+			// date picker options - Goto Date
 			$scope.timeLineStartDateOptions = _.extend({
 				minDate: ($scope.startDate !== '') ? new tzIndependentDate($scope.startDate) : new tzIndependentDate($rootScope.businessDate),
 				maxDate: maxEndDate,
-				onSelect: $scope.onTimeLineStartDatePicked,
+				onSelect: $scope.onTimeLineStartDatePicked
 			}, commonDateOptions);
 
-			//date picker options - mass update end Date
+			// date picker options - mass update end Date
 			$scope.massUpdateEndDateOptions = _.extend({
 				minDate: $scope.timeLineStartDate,
 				maxDate: maxEndDate,
-				onSelect: $scope.onMassUpdateEndDatePicked,
+				onSelect: $scope.onMassUpdateEndDatePicked
 			}, commonDateOptions);
 		};
 
@@ -847,7 +857,6 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		$scope.clickedOnCreateButton = function() {
 			$scope.createButtonClicked = true;
 		};
-
 
 
 		/**
@@ -868,7 +877,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			$scope.groupConfigData.summary.selected_room_types_and_bookings =
 				util.deepCopy($scope.copy_selected_room_types_and_bookings);
 
-			//and our isn't changed
+			// and our isn't changed
 			$scope.hasBookingDataChanged = false;
 		};
 
@@ -881,22 +890,22 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 			if ( !(isRoomTypeOverbooked || isHouseOverbooked) ) {
 				return false;
-			};
+			}
 
 			// show appropriate overbook message.
 			if (isHouseOverbooked && isRoomTypeOverbooked && canOverBookBoth) {
 				return "HOUSE_AND_ROOMTYPE_OVERBOOK";
 			}
-			else if(isHouseOverbooked && canOverbookHouse) {
+			else if (isHouseOverbooked && canOverbookHouse) {
 				return "HOUSE_OVERBOOK";
 			}
-			else if(isRoomTypeOverbooked && canOverbookRoomType){
+			else if (isRoomTypeOverbooked && canOverbookRoomType) {
 				return "ROOMTYPE_OVERBOOK";
 			}
 			// Overbooking occurs and has no permission.
 			else {
-				return "NO_PERMISSION"
-			};
+				return "NO_PERMISSION";
+			}
 
 		};
 
@@ -908,16 +917,16 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				return false;
 			}
 
-			//we have saved everything we have
-			//so our data is new
+			// we have saved everything we have
+			// so our data is new
 			$scope.copy_selected_room_types_and_bookings =
 				angular.copy($scope.groupConfigData.summary.selected_room_types_and_bookings);
 
 			$scope.hasBookingDataChanged = false;
 			$scope.groupConfigData.summary.rooms_total = $scope.getMaxOfBookedRooms();
 
-			//as per CICO-16087, we have to refetch the occupancy and availability after saving
-			//so, callinng the API again
+			// as per CICO-16087, we have to refetch the occupancy and availability after saving
+			// so, callinng the API again
 			$scope.fetchCurrentSetOfRoomBlockData();
 		};
 
@@ -928,15 +937,16 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @returns {undefined}
 		 */
 		var failureCallBackOfSaveRoomBlock = function(error) {
-			if(error.hasOwnProperty ('httpStatus')) {
+			if (error.hasOwnProperty ('httpStatus')) {
 				if (error.httpStatus === 470) {
 					var message = $scope.checkOverBooking(error);
+
 					if (!message) {
 						// overbooking condition does not exist
 						$scope.saveRoomBlock(true);
 					}
 					else {
-						if (message === "NO_PERMISSION"){
+						if (message === "NO_PERMISSION") {
 							showNoPermissionOverBookingPopup();
 						} else {
 							showOverBookingPopup(message);
@@ -956,15 +966,16 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @param {boolean} forceOverbook
 		 * @return undefined
 		 */
-		$scope.saveRoomBlock = function(forceOverbook) {
+		$scope.saveRoomBlock = function(forceOverbook, isOverbooking) {
 			forceOverbook = forceOverbook || false;
 
 			$timeout(function() {
-				//TODO : Make API call to save the room block.
+				// TODO : Make API call to save the room block.
 				var params = {
 					group_id: $scope.groupConfigData.summary.group_id,
 					results: $scope.groupConfigData.summary.selected_room_types_and_bookings,
-					forcefully_overbook_and_assign_rooms: forceOverbook
+					forcefully_overbook_and_assign_rooms: forceOverbook,
+					overbook_chosen: isOverbooking
 				};
 
 				var options = {
@@ -972,6 +983,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 					successCallBack: successCallBackOfSaveRoomBlock,
 					failureCallBack: failureCallBackOfSaveRoomBlock
 				};
+
 				$scope.callAPI(rvGroupConfigurationSrv.saveRoomBlockBookings, options);
 			}, 0);
 		};
@@ -999,7 +1011,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			// Show overbooking message
 			var dialogData = {
 				message: message
-			}
+			};
 
 			ngDialog.open({
 				template: '/assets/partials/groups/roomBlock/rvGroupWarnOverBookingPopup.html',
@@ -1033,6 +1045,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			var roomType = _.findWhere($scope.roomTypes, {
 				id: id
 			});
+
 			if (roomType) {
 				return roomType.name;
 			}
@@ -1047,17 +1060,19 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		$scope.getTotalBookedOfIndividualRoomType = function(roomType) {
 			var cInt = util.convertToInteger;
 
-			//since user may have entered wrong input
+			// since user may have entered wrong input
 			roomType.single = (roomType.single !== '') ? cInt(roomType.single) : '';
 			roomType.double = (roomType.double !== '') ? cInt(roomType.double) : '';
 
-			//the area of 'night watch man', they may be active or sleeping
+			// the area of 'night watch man', they may be active or sleeping
 			var quadruple = 0;
+
 			if (roomType.quadruple) {
 				roomType.quadruple = cInt(roomType.quadruple);
 				quadruple = roomType.quadruple;
 			}
 			var triple = 0;
+
 			if (roomType.triple) {
 				roomType.triple = cInt(roomType.triple);
 				triple = roomType.triple;
@@ -1075,17 +1090,19 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		$scope.getTotalPickedUpOfIndividualRoomType = function(roomType) {
 			var cInt = util.convertToInteger;
 
-			//since user may have entered wrong input
+			// since user may have entered wrong input
 			roomType.single_pickup = (roomType.single_pickup !== '') ? cInt(roomType.single_pickup) : '';
 			roomType.double_pickup = (roomType.double_pickup !== '') ? cInt(roomType.double_pickup) : '';
 
-			//the area of 'night watch man', they may be active or sleeping
+			// the area of 'night watch man', they may be active or sleeping
 			var quadruple_pickup = 0;
+
 			if (roomType.quadruple_pickup) {
 				roomType.quadruple_pickup = cInt(roomType.quadruple_pickup);
 				quadruple_pickup = roomType.quadruple_pickup;
 			}
 			var triple_pickup = 0;
+
 			if (roomType.triple_pickup) {
 				roomType.triple_pickup = cInt(roomType.triple_pickup);
 				triple_pickup = roomType.triple_pickup;
@@ -1109,7 +1126,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			if (!ref.length) {
 				return 0;
 			}
-			//first of all, we need group by 'date' data as our current data is room type row based
+			// first of all, we need group by 'date' data as our current data is room type row based
 			// we need these 'datewisedata' in single array
 			_.each(ref, function(el) {
 				_.each(el.dates, function(el1) {
@@ -1117,11 +1134,11 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				});
 			});
 
-			//now we have all 'tomatoes' in a single bag
-			//we are going to group by them on the basis of quality :D (date)
+			// now we have all 'tomatoes' in a single bag
+			// we are going to group by them on the basis of quality :D (date)
 			dateWiseGroupedData = _.groupBy(arrayOfDateData, 'date');
 
-			//forming sum of individual
+			// forming sum of individual
 			_.each(dateWiseGroupedData, function(el) {
 				sum = 0;
 				_.each(el, function(eachDateData) {
@@ -1130,7 +1147,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				totalBookedOfEachDate.push(sum);
 			});
 
-			//returning max among them, simple
+			// returning max among them, simple
 			var max = _.max(totalBookedOfEachDate);
 
 			return max;
@@ -1170,26 +1187,29 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return None
 		 */
 		$scope.clickedOnAddRoomsAndRatesButton = function() {
-			//if it has no permission to do this, we will not alloq
+			// if it has no permission to do this, we will not alloq
 			var hasNoPermissionToProceed = $scope.shouldDisableAddRoomsAndRate();
+
 			if (hasNoPermissionToProceed) {
 				return;
 			}
 
 			var promises = [];
-			//we are not using our normal API calling since we have multiple API calls needed
+			// we are not using our normal API calling since we have multiple API calls needed
+
 			$scope.$emit('showLoader');
 
-			//get Room type & rates for this group
+			// get Room type & rates for this group
 			var paramsForRoomTypeAndRates = {
 				id: $scope.groupConfigData.summary.group_id
 			};
+
 			promises.push(rvGroupConfigurationSrv
 				.getSelectedRoomTypesAndRates(paramsForRoomTypeAndRates)
 				.then(successCallBackOfRoomTypeAndRatesFetch)
 			);
 
-			//Lets start the processing
+			// Lets start the processing
 			$q.all(promises)
 				.then(successFetchOfAllReqdForRoomAndRatesPopup, failedToFetchAllReqdForRoomAndRatesPopup);
 		};
@@ -1206,7 +1226,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				closeByDocument: false,
 				closeByEscape: false
 			});
-		}
+		};
 
 		/**
 		 * To check whether inhouse reservations exists.
@@ -1214,6 +1234,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		$scope.checkIfInhouseReservationsExists = function () {
 			ngDialog.close();
 			var isInhouseReservationsExists = false;
+
 			angular.forEach (roomsAndRatesSelected, function (row) {
 				if (row.total_inhouse_reservations_count > 0) {
 					isInhouseReservationsExists = true;
@@ -1263,8 +1284,9 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				params: formSaveNewRoomTypesAndRatesParams(roomsAndRatesSelected),
 				successCallBack: successCallBackOfSaveNewRoomTypesAndRates
 			};
+
 			$scope.callAPI(rvGroupConfigurationSrv.updateSelectedRoomTypesAndRates, options);
-		}
+		};
 
 		var successCallBackOfSaveNewRoomTypesAndRates = function () {
 			$scope.fetchCurrentSetOfRoomBlockData();
@@ -1275,18 +1297,20 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return {Object}
 		 */
 		var formSaveNewRoomTypesAndRatesParams = function(roomsAndRatesSelected) {
-			//we only want rows who have room type choosed
+			// we only want rows who have room type choosed
 			var selectedRoomTypeAndRates = _.filter(roomsAndRatesSelected, function(obj) {
 				return (typeof obj.room_type_id !== "undefined" && obj.room_type_id !== '');
 			});
-			//since selectedRoomTypeAndRates containst some unwanted keys
+			// since selectedRoomTypeAndRates containst some unwanted keys
 			var wanted_keys = ["room_type_id", "single_rate", "double_rate", "extra_adult_rate", "rate_id", "best_available_rate_id", "update_existing_reservations_rate"];
+
 			selectedRoomTypeAndRates = util.getListOfKeyValuesFromAnArray(selectedRoomTypeAndRates, wanted_keys);
 
 			var params = {
 				group_id: $scope.groupConfigData.summary.group_id,
 				room_type_and_rates: selectedRoomTypeAndRates
 			};
+
 			return params;
 		};
 
@@ -1296,14 +1320,14 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return None
 		 */
 		$scope.clickedOnUpdateButton = function() {
-			//we dont wanted to show room block details for some time
+			// we dont wanted to show room block details for some time
 			$scope.groupConfigData.summary.selected_room_types_and_bookings = [];
 			$scope.groupConfigData.summary.selected_room_types_and_occupanies = [];
 
-			//unsetting the copied details
+			// unsetting the copied details
 			$scope.copy_selected_room_types_and_bookings = [];
 
-			//updating central model with newly formed data
+			// updating central model with newly formed data
 			_.extend(
 				$scope.groupConfigData.summary, {
 					block_from: $scope.startDate,
@@ -1312,9 +1336,9 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				}
 			);
 
-			//callinng the update API calling
+			// callinng the update API calling
 			$scope.updateGroupSummary();
-			//has data updated from this view, block from date or to date
+			// has data updated from this view, block from date or to date
 			$scope.hasBlockDataUpdated = true;
 		};
 
@@ -1325,28 +1349,28 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			// We have resetted the data.
 			$scope.hasBookingDataChanged = false;
 
-			//we need indivual room type total bookings of each date initially,
-			//we are using this for overbooking calculation
+			// we need indivual room type total bookings of each date initially,
+			// we are using this for overbooking calculation
 			_.each(data.results, function(eachRoomType) {
 				eachRoomType.start_date = formatDateForAPI($scope.timeLineStartDate);
 				_.each(eachRoomType.dates, function(dateData) {
 					dateData.old_total = $scope.getTotalBookedOfIndividualRoomType(dateData);
-				//need to keep track of old single,double and triple values
+				// need to keep track of old single,double and triple values
 				});
 			});
 
 			$scope.groupConfigData.summary.selected_room_types_and_bookings = data.results;
 			$scope.groupConfigData.summary.selected_room_types_and_occupanies = data.occupancy;
 
-			//our total pickup count may change on coming from other tab (CICO-16835)
+			// our total pickup count may change on coming from other tab (CICO-16835)
 			$scope.totalPickups = data.total_picked_count;
 			$scope.totalBlockedCount = data.total_blocked;
 
-			//we need the copy of selected_room_type, we ned to use these to show save/discard button
+			// we need the copy of selected_room_type, we ned to use these to show save/discard button
 			$scope.copy_selected_room_types_and_bookings = util.deepCopy(data.results);
 
 			$scope.getTotalBookedRooms();
-			//we changed data, so
+			// we changed data, so
 			refreshScroller();
 		};
 
@@ -1372,6 +1396,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				params: params,
 				successCallBack: successCallBackOfFetchRoomBlockGridDetails
 			};
+
 			$scope.callAPI(rvGroupConfigurationSrv.getRoomBlockGridDetails, options);
 		};
 
@@ -1398,7 +1423,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * Save roomblock data with selected mass update end date.
 		 * @return {undefined}
 		 */
-		$scope.clickedOnMassUpdateSaveButton = function (ngDialogData) {
+		$scope.clickedOnMassUpdateSaveButton = function (ngDialogData, isOverbooking) {
 
 			var value 		  = ngDialogData.value,
 				timeLineStart = $scope.timeLineStartDate,
@@ -1408,6 +1433,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				occupancy 	  	 = ngDialogData.occupancy;
 
 			var data = _.omit(roomTypeData, ['dates']);
+
 			data = _.extend(data, roomTypeData.dates[0]);
 			data[occupancy] = value;
 
@@ -1415,6 +1441,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				start_date: formatDateForAPI(timeLineStart),
 				end_date: formatDateForAPI($scope.massUpdateEndDate),
 				bulk_updated_for: occupancy.toUpperCase(),
+				overbook_chosen: isOverbooking
 			});
 
 			// Save room block now.
@@ -1429,18 +1456,19 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			// Room block saved
 			$scope.fetchCurrentSetOfRoomBlockData();
 			$scope.closeDialog();
-		}
+		};
 
 		var failureCallBackOfSaveMassUpdate = function(error) {
-			if(error.hasOwnProperty ('httpStatus')) {
+			if (error.hasOwnProperty ('httpStatus')) {
 				if (error.httpStatus === 470) {
 					var message = $scope.checkOverBooking(error);
+
 					if (!message) {
 						// overbooking condition does not exist
 						$scope.saveMassUpdate(true, lastCalledMassUpdateConfig);
 					}
 					else {
-						if (message === "NO_PERMISSION"){
+						if (message === "NO_PERMISSION") {
 							$scope.disableButtons = true;
 						} else {
 							$scope.overBookingMessage = message;
@@ -1452,7 +1480,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				$scope.errorMessage = error;
 				$scope.closeDialog();
 			}
-		}
+		};
 
 		/**
 		 * For mass update triggered by clicking > button
@@ -1460,9 +1488,9 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		$scope.saveMassUpdate = function(forceOverbook, config) {
 			forceOverbook = forceOverbook || false;
 			config = config || {};
-			config = _.pick(config, ["group_id", "forcefully_overbook_and_assign_rooms","start_date","end_date",
+			config = _.pick(config, ["group_id", "overbook_chosen", "forcefully_overbook_and_assign_rooms", "start_date", "end_date",
 				'bulk_updated_for', "room_type_id", "room_type_name",
-				"single", "double","quadruple","triple", "old_total"]);
+				"single", "double", "quadruple", "triple", "old_total"]);
 
 			var params = _.extend(config, {
 				group_id: $scope.groupConfigData.summary.group_id,
@@ -1475,6 +1503,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				successCallBack: successCallBackOfSaveMassUpdate,
 				failureCallBack: failureCallBackOfSaveMassUpdate
 			};
+
 			$scope.callAPI(rvGroupConfigurationSrv.saveMassUpdate, options);
 
 			lastCalledMassUpdateConfig = config;
@@ -1487,7 +1516,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
          * @return {[type]} [description]
          */
         var callInitialAPIs = function() {
-			//default start date
+			// default start date
 			$scope.timeLineStartDate = new tzIndependentDate($rootScope.businessDate);
 
 			// call API. date range end will be calculated in next function.
@@ -1506,9 +1535,9 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			$scope.$emit("FETCH_SUMMARY");
 			callInitialAPIs();
 
-			//end date picker will be in disabled in move mode
-			//in order to fix the issue of keeping that state even after coming back to this
-			//tab after going to some other tab
+			// end date picker will be in disabled in move mode
+			// in order to fix the issue of keeping that state even after coming back to this
+			// tab after going to some other tab
 			_.extend($scope.endDateOptions,
 			{
 				disabled: shouldDisableEndDatePicker()
@@ -1523,7 +1552,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 */
 		$scope.$on("UPDATED_GROUP_INFO", function(event) {
 			summaryMemento = _.extend({}, $scope.groupConfigData.summary);
-			//to prevent from initial API calling and only exectutes when group from_date, to_date,status updaet success
+			// to prevent from initial API calling and only exectutes when group from_date, to_date,status updaet success
 			if ($scope.hasBlockDataUpdated) {
 				$scope.fetchCurrentSetOfRoomBlockData();
 			}
@@ -1547,12 +1576,12 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				dateFormat = (dateFormat ? dateFormat : $rootScope.dateFormat);
 
 			switch (type_) {
-				//if date string passed
+				// if date string passed
 				case 'string':
 					returnString = $filter('date')(new tzIndependentDate(date_), dateFormat);
 					break;
 
-					//if date object passed
+					// if date object passed
 				case 'object':
 					returnString = $filter('date')(date_, dateFormat);
 					break;
@@ -1575,19 +1604,19 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return {undefined}
 		 */
 		var setUpAccordion = function() {
-			//accordion options, will add/remove class on toggling
+			// accordion options, will add/remove class on toggling
 			$scope.accordionInitiallyNotCollapsedOptions = {
 				header: 'p.line-toggle',
 				heightStyle: 'content',
 				collapsible: true,
 				activate: function(event, ui) {
-					if (isEmpty(ui.newHeader) && isEmpty(ui.newPanel)) { //means accordion was previously collapsed, activating..
+					if (isEmpty(ui.newHeader) && isEmpty(ui.newPanel)) { // means accordion was previously collapsed, activating..
 						ui.oldHeader.removeClass('open');
-					} else if (isEmpty(ui.oldHeader)) { //means activating..
+					} else if (isEmpty(ui.oldHeader)) { // means activating..
 						ui.newHeader.addClass('open');
 					}
 
-					//we have to refresh scroller afetr that
+					// we have to refresh scroller afetr that
 					refreshScroller();
 
 
@@ -1600,26 +1629,26 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return None
 		 */
 		var initializeAddOrEditModeVariables = function() {
-			//variable used to track Create Button, as per sice we are only handling edit mode we are
-			//proceeding with true TODO: Add reference here
+			// variable used to track Create Button, as per sice we are only handling edit mode we are
+			// proceeding with true TODO: Add reference here
 			$scope.createButtonClicked = true;
 
-			//total pickup & rooms
+			// total pickup & rooms
 			$scope.totalPickups = $scope.totalRooms = 0;
 
-			//has data updated from this view, block from date or to date
+			// has data updated from this view, block from date or to date
 			$scope.hasBlockDataUpdated = false;
 
-			//selected Hold status:
+			// selected Hold status:
 			$scope.selectedHoldStatus = "";
 
 			var isInEditMode = !$scope.isInAddMode(),
 				refData = $scope.groupConfigData;
 
-			//room block grid data
+			// room block grid data
 			$scope.roomBlockGridTimeLine = [];
 
-			//whether the booking data changed
+			// whether the booking data changed
 			$scope.hasBookingDataChanged = false;
 
 			_.extend($scope.groupConfigData.summary, {
@@ -1636,7 +1665,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				$scope.selectedHoldStatus = util.convertToInteger(refData.summary.hold_status);
 			}
 
-			//list of holding status list
+			// list of holding status list
 			$scope.holdStatusList = refData.holdStatusList;
 		};
 
@@ -1650,12 +1679,13 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * return - None
 		 */
 		var setScroller = function() {
-			//setting scroller things
+			// setting scroller things
 			var scrollerOptions = {
 				tap: true,
 				preventDefault: false,
 				probeType: 3
 			};
+
 			$scope.setScroller(BLOCK_SCROLL, scrollerOptions);
 
 			var scrollerOptionsForRoomRatesTimeline = _.extend({
@@ -1694,13 +1724,13 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 					block.scrollTo(xPos, block.y);
 					// check if edge reached next button
-					if (Math.abs(this.maxScrollX) - Math.abs(this.x) <= 150 ){
-						if (!timeLineScrollEndReached){
+					if (Math.abs(this.maxScrollX) - Math.abs(this.x) <= 150 ) {
+						if (!timeLineScrollEndReached) {
 								timeLineScrollEndReached = true;
 								runDigestCycle();
 							}
 						} else {
-							if (timeLineScrollEndReached){
+							if (timeLineScrollEndReached) {
 								timeLineScrollEndReached = false;
 								runDigestCycle();
 						}
@@ -1709,6 +1739,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				$scope.$parent.myScroll[BLOCK_SCROLL].on('scroll', function() {
 					var yPos = this.y;
 					var block = $scope.$parent.myScroll[RATE_GRID_SCROLL];
+
 					block.scrollTo(block.x, yPos);
 				});
 				$scope.$parent.myScroll[RATE_GRID_SCROLL].on('scroll', function() {
@@ -1716,17 +1747,16 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 						var yPos = this.y;
 
 
-
 						$scope.$parent.myScroll[RATE_TIMELINE].scrollTo(xPos, 0);
 						$scope.$parent.myScroll[BLOCK_SCROLL].scrollTo(0, yPos);
 					// check if edge reached next button
-					if (Math.abs(this.maxScrollX) - Math.abs(this.x) <= 150 ){
-						if (!timeLineScrollEndReached){
+					if (Math.abs(this.maxScrollX) - Math.abs(this.x) <= 150 ) {
+						if (!timeLineScrollEndReached) {
 								timeLineScrollEndReached = true;
 								runDigestCycle();
 							}
 						} else {
-							if (timeLineScrollEndReached){
+							if (timeLineScrollEndReached) {
 								timeLineScrollEndReached = false;
 								runDigestCycle();
 						}
@@ -1739,6 +1769,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		};
 
 		var allRendered = $scope.$on( 'ALL_RENDERED', setScrollListner );
+
 		$scope.$on( '$destroy', allRendered );
 		$scope.$on( '$destroy', clearTimer );
 
@@ -1748,7 +1779,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 */
 		var refreshScroller = function() {
 			$scope.refreshScroller(BLOCK_SCROLL);
-			//CICO-27063 - scroll issue
+			// CICO-27063 - scroll issue
 			// $scope.refreshScroller(RATE_TIMELINE);
 			$scope.refreshScroller(RATE_GRID_SCROLL);
 		};
@@ -1758,7 +1789,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return {undefined}
 		 */
 		var setActiveLeftSideMenu = function () {
-			var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup": "menuManageGroup";
+			var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup" : "menuManageGroup";
+
 			$scope.$emit("updateRoverLeftMenu", activeMenu);
 		};
 
@@ -1767,16 +1799,16 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return {undefined}
 		 */
 		var resetDatePickers = function() {
-			//resetting the calendar date's to actual one
+			// resetting the calendar date's to actual one
 			$scope.groupConfigData.summary.block_from 	= new tzIndependentDate(summaryMemento.block_from);
 			$scope.groupConfigData.summary.block_to  	= new tzIndependentDate(summaryMemento.block_to);
 			$scope.startDate = $scope.groupConfigData.summary.block_to;
 			$scope.endDate   = $scope.groupConfigData.summary.block_to;
 
-			//setting the min date for end Date
+			// setting the min date for end Date
 			$scope.endDateOptions.minDate = $scope.groupConfigData.summary.block_from;
 
-			//setting max date of from date
+			// setting max date of from date
 			$scope.startDateOptions.maxDate = $scope.groupConfigData.summary.block_to;
 		};
 
@@ -1788,12 +1820,12 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 			$scope.changeDatesActions = {};
 
-			//we use this to ensure that we will call the API only if there is any change in the data
+			// we use this to ensure that we will call the API only if there is any change in the data
 			summaryMemento = _.extend({}, $scope.groupConfigData.summary);
 
-			//since we are recieving two ouside click event on tapping outside, we wanted to check and act
+			// since we are recieving two ouside click event on tapping outside, we wanted to check and act
 			$scope.isUpdateInProgress = false;
-		}
+		};
 
 		/**
 		 * Our Move date, start date, end date change are defined in parent controller
@@ -1801,10 +1833,10 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return undefined
 		 */
 		var initializeChangeDateActions = function () {
-			//things are defined in parent controller (getMoveDatesActions)
+			// things are defined in parent controller (getMoveDatesActions)
 			$scope.changeDatesActions = $scope.getMoveDatesActions();
 
-			//initially we will be in DEFAULT mode
+			// initially we will be in DEFAULT mode
 			$scope.changeDatesActions.setToDefaultMode();
 		};
 
@@ -1824,13 +1856,14 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			var sumryData = $scope.groupConfigData.summary,
 				oldSumryData = summaryMemento,
 				options = {
-					fromDate 		: sumryData.block_from,
-					toDate 			: sumryData.block_to,
-					oldFromDate 	: oldSumryData.block_from,
-					oldToDate 		: oldSumryData.block_to,
-					successCallBack : successCallBackOfMoveButton,
-					failureCallBack : failureCallBackOfMoveButton
+					fromDate: sumryData.block_from,
+					toDate: sumryData.block_to,
+					oldFromDate: oldSumryData.block_from,
+					oldToDate: oldSumryData.block_to,
+					successCallBack: successCallBackOfMoveButton,
+					failureCallBack: failureCallBackOfMoveButton
 				};
+
 			$scope.changeDatesActions.clickedOnMoveSaveButton (options);
 		};
 
@@ -1844,35 +1877,37 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				disabled: true
 			});
 
-			//resetting the calendar date's to actual one
+			// resetting the calendar date's to actual one
 			resetDatePickers();
 
-			//setting max date of from date
+			// setting max date of from date
 			$scope.startDateOptions.maxDate = '';
 
 			$scope.changeDatesActions.clickedOnMoveButton ();
 
 		};
-		var getTotalOfIndividualDate = function(passedDate){
+		var getTotalOfIndividualDate = function(passedDate) {
 			var totalRoomsBlockedCountIndividualDate = 0;
 			var totalRoomsPickedIndividulaDate 		 = 0;
 			var cInt = util.convertToInteger;
+
 			angular.forEach($scope.groupConfigData.summary.selected_room_types_and_bookings, function(value, key) {
 
 				angular.forEach(value.dates, function(eachDateValue, eachDateKey) {
-					if(eachDateValue.date === passedDate){
+					if (eachDateValue.date === passedDate) {
 						totalRoomsBlockedCountIndividualDate = totalRoomsBlockedCountIndividualDate + cInt(eachDateValue.single) + cInt(eachDateValue.double) + cInt(eachDateValue.triple) + cInt(eachDateValue.quadruple);
 						totalRoomsPickedIndividulaDate = totalRoomsPickedIndividulaDate + cInt(eachDateValue.single_pickup) + cInt(eachDateValue.double_pickup) + cInt(eachDateValue.triple_pickup) + cInt(eachDateValue.quadruple_pickup);
 					}
 				});
 			});
 			var totalOfIndividualDateData = [];
+
 			totalOfIndividualDateData["totalBlocked"] = totalRoomsBlockedCountIndividualDate;
 			totalOfIndividualDateData["totalPicked"]  = totalRoomsPickedIndividulaDate;
 			return totalOfIndividualDateData;
-		}
+		};
 
-		$scope.getTotalBookedRooms = function(){
+		$scope.getTotalBookedRooms = function() {
 
 			angular.forEach($scope.groupConfigData.summary.selected_room_types_and_occupanies, function(value, key) {
 				value.totalRoomsBlockedCountPerDay = getTotalOfIndividualDate(value.date)["totalBlocked"];
@@ -1897,7 +1932,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 		var cancelCallBackofDateChange = function () {
 			resetDatePickers();
-		}
+		};
 
 		var successCallBackOfEarlierArrivalDateChange = function() {
 			$scope.reloadPage("ROOM_BLOCK");
@@ -1915,12 +1950,13 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			var sumryData = $scope.groupConfigData.summary,
 				oldSumryData = summaryMemento,
 				options = {
-					fromDate 			: sumryData.block_from,
-					oldFromDate 		: oldSumryData.block_from,
-					successCallBack 	: successCallBackOfEarlierArrivalDateChange,
-					failureCallBack 	: failureCallBackOfEarlierArrivalDateChange,
-					cancelPopupCallBack	: cancelCallBackofDateChange
+					fromDate: sumryData.block_from,
+					oldFromDate: oldSumryData.block_from,
+					successCallBack: successCallBackOfEarlierArrivalDateChange,
+					failureCallBack: failureCallBackOfEarlierArrivalDateChange,
+					cancelPopupCallBack: cancelCallBackofDateChange
 				};
+
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerEarlierArrDateChange (options);
 		};
@@ -1935,18 +1971,20 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 		var triggerEarlierDepartureDateChangeInvalidError = function() {
 			var options = {
-				cancelPopupCallBack	: cancelCallBackofDateChange,
-				message 			: "GROUP_EARLIER_DEP_DATE_CHANGE_WARNING"
-			}
+				cancelPopupCallBack: cancelCallBackofDateChange,
+				message: "GROUP_EARLIER_DEP_DATE_CHANGE_WARNING"
+			};
+
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.showDateChangeInvalidWarning(options);
 		};
 
 		var triggerLaterArrivalDateChangeInvalidError = function() {
 			var options = {
-				cancelPopupCallBack	: cancelCallBackofDateChange,
-				message 			: "GROUP_LATER_ARR_DATE_CHANGE_WARNING"
-			}
+				cancelPopupCallBack: cancelCallBackofDateChange,
+				message: "GROUP_LATER_ARR_DATE_CHANGE_WARNING"
+			};
+
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.showDateChangeInvalidWarning(options);
 		};
@@ -1959,12 +1997,13 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			var sumryData = $scope.groupConfigData.summary,
 				oldSumryData = summaryMemento,
 				options = {
-					fromDate 			: sumryData.block_from,
-					oldFromDate 		: oldSumryData.block_from,
-					successCallBack 	: successCallBackOfEarlierArrivalDateChange,
-					failureCallBack 	: failureCallBackOfEarlierArrivalDateChange,
-					cancelPopupCallBack	: cancelCallBackofDateChange
+					fromDate: sumryData.block_from,
+					oldFromDate: oldSumryData.block_from,
+					successCallBack: successCallBackOfEarlierArrivalDateChange,
+					failureCallBack: failureCallBackOfEarlierArrivalDateChange,
+					cancelPopupCallBack: cancelCallBackofDateChange
 				};
+
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerLaterArrDateChange (options);
 		};
@@ -1997,12 +2036,13 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			var sumryData = $scope.groupConfigData.summary,
 				oldSumryData = summaryMemento,
 				options = {
-					toDate 				: sumryData.block_to,
-					oldToDate 			: oldSumryData.block_to,
-					successCallBack 	: successCallBackOfEarlierDepartureDateChange,
-					failureCallBack 	: failureCallBackOfEarlierDepartureDateChange,
-					cancelPopupCallBack	: cancelCallBackofDateChange
+					toDate: sumryData.block_to,
+					oldToDate: oldSumryData.block_to,
+					successCallBack: successCallBackOfEarlierDepartureDateChange,
+					failureCallBack: failureCallBackOfEarlierDepartureDateChange,
+					cancelPopupCallBack: cancelCallBackofDateChange
 				};
+
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerEarlierDepDateChange (options);
 		};
@@ -2032,12 +2072,13 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			var sumryData = $scope.groupConfigData.summary,
 				oldSumryData = summaryMemento,
 				options = {
-					toDate 				: sumryData.block_to,
-					oldToDate 			: oldSumryData.block_to,
-					successCallBack 	: successCallBackOfLaterDepartureDateChange,
-					failureCallBack 	: failureCallBackOfLaterDepartureDateChange,
-					cancelPopupCallBack	: cancelCallBackofDateChange
+					toDate: sumryData.block_to,
+					oldToDate: oldSumryData.block_to,
+					successCallBack: successCallBackOfLaterDepartureDateChange,
+					failureCallBack: failureCallBackOfLaterDepartureDateChange,
+					cancelPopupCallBack: cancelCallBackofDateChange
 				};
+
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerLaterDepDateChange (options);
 		};
@@ -2047,9 +2088,9 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * This function sets tab data
 		 * @return {undefined}
 		 */
-		var initializeRoomBlockDetails = function(){
+		var initializeRoomBlockDetails = function() {
 			callInitialAPIs();
-			//on tab switching, we have change min date
+			// on tab switching, we have change min date
 			setDatePickers();
 
 		};
@@ -2058,31 +2099,31 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * Function to initialise room block details
 		 * @return - None
 		 */
-		var initializeMe = function() {
+		var initializeMe = (function() {
 			BaseCtrl.call(this, $scope);
 
-			//updating the left side menu
+			// updating the left side menu
 			setActiveLeftSideMenu();
 
-			//we have a list of scope varibales which we wanted to initialize
+			// we have a list of scope varibales which we wanted to initialize
 			initializeVariables();
 
-			//IF you are looking for where the hell the API is CALLING
-			//scroll above, and look for the event 'GROUP_TAB_SWITCHED'
+			// IF you are looking for where the hell the API is CALLING
+			// scroll above, and look for the event 'GROUP_TAB_SWITCHED'
 
-			//start date change, end date change, move date actions
+			// start date change, end date change, move date actions
 			initializeChangeDateActions();
 
-			//date related setups and things
+			// date related setups and things
 			setDatePickers();
 
-			//setting scrollers
+			// setting scrollers
 			setScroller();
 
 			// accoridion
 			setUpAccordion();
 
-			//we have a list of scope varibales which we wanted to assign when it is in add/edit mode
+			// we have a list of scope varibales which we wanted to assign when it is in add/edit mode
 			initializeAddOrEditModeVariables();
 
 			// as per CICO-17081 we can enter a tab directly without TAB_SWITCHING
@@ -2091,8 +2132,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			}
 
 
-
-		}();
+		}());
 
 
 	}

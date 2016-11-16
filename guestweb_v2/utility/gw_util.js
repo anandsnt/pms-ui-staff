@@ -7,6 +7,7 @@ var dclone = function(object, unwanted_keys) {
     return object;
   } else {
     var newObject = JSON.parse(JSON.stringify(object));
+
     for (var i = 0; i < unwanted_keys.length; i++) {
       delete newObject[unwanted_keys[i]];
     }
@@ -39,6 +40,7 @@ var getJqDateFormat = function(dateFormat) {
 };
 var loseFocus = function() {
   var inputs = document.getElementsByTagName('input');
+
   for (var i = 0; i < inputs.length; ++i) {
     inputs[i].blur();
   }
@@ -49,7 +51,7 @@ var returnEmptyScreenDetails = function() {
     "title": "",
     "description": ""
   };
-}
+};
 
 var replaceStringWithScopeVariable = function(string, substring_to_be_replaced, new_string) {
   return string = string.length > 0 ? string.replace(substring_to_be_replaced, new_string) : '';
@@ -63,6 +65,7 @@ var extractScreenDetails = function(identifier, screen_mappings, cms_data) {
     "description": ""
   };
   // refer GwScreenMappingSrv for screen_mappings
+
   selected_screen_details = _.find(screen_mappings, function(mapping) {
     return mapping.value === identifier;
   });
@@ -71,7 +74,7 @@ var extractScreenDetails = function(identifier, screen_mappings, cms_data) {
   screen_details = _.find(cms_data, function(cms_item) {
     return cms_item.screen_id === screen_id;
   });
-  //rename the varaiables for easy usage
+  // rename the varaiables for easy usage
   if (typeof screen_details !== "undefined") {
     screen_details.title = screen_details.screen_title;
     screen_details.description = screen_details.item_description;
@@ -87,25 +90,28 @@ var returnYears = function() {
   var years = [];
   var startYear = new Date().getFullYear();
   var endYear = parseInt(startYear) + 100;
+
   for (year = parseInt(startYear); year <= parseInt(endYear); year++) {
     years.push(year);
-  };
+  }
   return years;
 };
 
-var returnYearsInReverseOrder = function(){
+var returnYearsInReverseOrder = function() {
   var years = [];
   var startYear = new Date().getFullYear();
   var endYear = parseInt(startYear) - 150;
+
   for (year = startYear; year >= parseInt(endYear); year--) {
      years.push(year);
-  };
+  }
   return years;
 };
 
-var returnSelectedMonth = function(month_to_check){
+var returnSelectedMonth = function(month_to_check) {
   var months = returnMonthsArray();
   var selectedMonth = {};
+
   selectedMonth = _.find(months, function(month) {
     return month.value === month_to_check;
   });
@@ -150,7 +156,7 @@ var returnMonthsArray = function() {
     'name': 'DEC',
     'value': '12'
   }];
-}
+};
 
 var returnTimeArray = function() {
   return ['12:00 am', '12:15 am', '12:30 am', '12:45 am', '01:00 am', '01:15 am',
@@ -173,10 +179,11 @@ var returnTimeArray = function() {
 };
 
 var getFormattedTime = function(timeToFormat) {
-  //change format to 24 hours
+  // change format to 24 hours
   var timeHour = parseInt(timeToFormat.slice(0, 2));
   var timeMinute = timeToFormat.slice(3, 5);
   var primeTime = timeToFormat.slice(-2).toLowerCase();
+
   if (primeTime === 'pm' && timeHour < 12) {
     timeHour = timeHour + 12;
   } else if (primeTime === 'am' && timeHour === 12) {
@@ -188,12 +195,13 @@ var getFormattedTime = function(timeToFormat) {
 
 
 var getIndexOfSelectedTime = function(time) {
-  //extract time components
+  // extract time components
   var timeHour = time.slice(0, 2);
   var timeMinute = time.slice(3, 5);
   var primeTime = time.slice(-2).toLowerCase();
-  //set the minute to next available level, ie 00,15,30,45
+  // set the minute to next available level, ie 00,15,30,45
   var timeLimit = "00";
+
   if (timeMinute === "00" || timeMinute < 15) {
     timeMinute = "15";
   } else if (timeMinute >= 15 && timeMinute < 30) {
@@ -204,33 +212,35 @@ var getIndexOfSelectedTime = function(time) {
     timeHour = parseInt(timeHour) + 1;
     timeHour = (timeHour < 10) ? ("0" + timeHour) : timeHour;
     timeMinute = "00";
-  };
+  }
 
   var switchAMPM = function() {
     primeTime = (primeTime === "pm") ? "am" : "pm";
   };
-  //if hour is 12, need to switch primetimes
-  (timeHour === 12 && timeMinute === "00") ? switchAMPM(): "";
+  // if hour is 12, need to switch primetimes
+
+  (timeHour === 12 && timeMinute === "00") ? switchAMPM() : "";
   timeLimit = timeHour + ":" + timeMinute + " " + primeTime;
-  //find the index of the hoteltime inside the list we have
+  // find the index of the hoteltime inside the list we have
   var timeList = returnTimeArray();
   var index = _.findIndex(timeList, function(time) {
     return time === timeLimit;
   });
+
   return index;
 };
 
 
-
-var checkIfDateIsValid = function(month,day,year){
-  var birthday = month+"/"+day+"/"+year;  
+var checkIfDateIsValid = function(month, day, year) {
+  var birthday = month + "/" + day + "/" + year;  
   var comp = birthday.split('/');
   var m = parseInt(comp[0], 10);
   var d = parseInt(comp[1], 10);
   var y = parseInt(comp[2], 10);
-  var date = new Date(y,m-1,d);
+  var date = new Date(y, m - 1, d);
+
   if (date.getFullYear() == y && date.getMonth() + 1 == m && date.getDate() == d) {
-     return true
+     return true;
   } else {
      return false;
   }

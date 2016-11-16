@@ -1,9 +1,9 @@
 angular.module('sntRover').service('rvMenuSrv',
-	['rvPermissionSrv', 'RVDashboardSrv', 'RVHotelDetailsSrv',
-	function(rvPermissionSrv, RVDashboardSrv, RVHotelDetailsSrv) {
+	['rvPermissionSrv', 'RVDashboardSrv', 'RVHotelDetailsSrv', '$rootScope',
+	function(rvPermissionSrv, RVDashboardSrv, RVHotelDetailsSrv, $rootScope ) {
 
 
-	//we have to keep reference
+	// we have to keep reference
 	var self = this;
 
 	/**
@@ -18,6 +18,7 @@ angular.module('sntRover').service('rvMenuSrv',
 			'FRONT_DESK': 'rover.dashboard.frontoffice',
 			'MANAGER': 'rover.dashboard.manager'
 		};
+
 		return statesForDashbaord[dashboard];
     };
 
@@ -26,7 +27,7 @@ angular.module('sntRover').service('rvMenuSrv',
     * @param {string}, dashboard
 	* @return {boolean}
     */
-    var isFrontDeskDashboard = function (dashboard){
+    var isFrontDeskDashboard = function (dashboard) {
     	return dashboard === 'FRONT_DESK';
     };
 
@@ -61,9 +62,19 @@ angular.module('sntRover').service('rvMenuSrv',
     * @param {string}, user role
 	* @return {boolean}
 	*/
-    var isFloorMaintananceStaff= function() {
+    var isFloorMaintananceStaff = function() {
     	var userDetails = RVDashboardSrv.getUserDetails();
+
     	return (userDetails.user_role === "Floor & Maintenance Staff");
+    };
+
+    /**
+     * Decide whether the neighbours submenu is to be shown in Front desk menu
+     * will use the hotel details API response
+     * @return {Boolean}
+     */
+    var isNeighboursEnabled = function() {
+    	return RVHotelDetailsSrv.hotelDetails.social_lobby_settings.is_neighbours_enabled;
     };
 
     /**
@@ -73,7 +84,7 @@ angular.module('sntRover').service('rvMenuSrv',
     * @return {array of Objects}
     */
     var processMenuList = function (menuList) {
-    	//deep copying the obeject before proceeding
+    	// deep copying the obeject before proceeding
     	menuList = JSON.parse(JSON.stringify(menuList));
 
     	var menuToReturn = [],
@@ -81,17 +92,17 @@ angular.module('sntRover').service('rvMenuSrv',
     		subMenuVisibleCount,
     		hasSubMenu = false;
 
-    	//we are processing on the menu list we have
+    	// we are processing on the menu list we have
 		_.each (menuList, function(menuItem) {
-			//if the menu is hi
+			// if the menu is hi
 			isMenuItemVisible = self.shouldShowMenuItem(menuItem.menuIndex);
-			if(isMenuItemVisible) {
+			if (isMenuItemVisible) {
 				subMenuCount = menuItem.submenu ? menuItem.submenu.length : 0;
 				hasSubMenu = (subMenuCount > 0) ? true : false;
 				subMenuVisibleCount = 0;
 
-				//looping through submenus
-				menuItem.submenu = _.filter (menuItem.submenu, function (subMenuItem){
+				// looping through submenus
+				menuItem.submenu = _.filter (menuItem.submenu, function (subMenuItem) {
 					isMenuItemVisible = self.shouldShowMenuItem(subMenuItem.menuIndex);
 
 					if (isMenuItemVisible) {
@@ -101,12 +112,12 @@ angular.module('sntRover').service('rvMenuSrv',
 				});
 
 				// if it has submenu & none of them are visible we will not show that menu
-				if(hasSubMenu && subMenuVisibleCount !== 0){
+				if (hasSubMenu && subMenuVisibleCount !== 0) {
 					menuToReturn.push (menuItem);
 				}
 
-				//if it has no submenu, we will just push them
-				if(!hasSubMenu) {
+				// if it has no submenu, we will just push them
+				if (!hasSubMenu) {
 					menuToReturn.push (menuItem);
 				}
 			}
@@ -124,7 +135,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		var defaultDashboardState 	= getDefaultDashboardState (),
 			menuFrontDeskIndex 		= -1,
 			isMenuItemVisible		= true,
-            menuList = []; //storing the menu list, will process on this and return
+            menuList = []; // storing the menu list, will process on this and return
 
 		menuList = [{
 		        title: "MENU_DASHBOARD",
@@ -134,7 +145,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        iconClass: "icon-dashboard"
 		    }, {
 		        title: "MENU_FRONT_DESK",
-		        //hidden: true,
+		        // hidden: true,
 		        action: "",
 		        iconClass: "icon-frontdesk",
 		        menuIndex: "front_desk",
@@ -149,8 +160,13 @@ angular.module('sntRover').service('rvMenuSrv',
 		        }, {
 		            title: "MENU_ROOM_DIARY",
 		            action: 'rover.diary',
-		            //hidden: !isHourlyRateOn,
+		            // hidden: !isHourlyRateOn,
 		            menuIndex: 'diaryReservation'
+		        }, {
+		            title: "MENU_ROOM_DIARY",
+		            action: 'rover.nightlyDiary',
+		            // hidden: !isHourlyRateOn,
+		            menuIndex: 'nightlyDiaryReservation'
 		        },  {
 		            title: "MENU_POST_CHARGES",
 		            action: "",
@@ -169,10 +185,15 @@ angular.module('sntRover').service('rvMenuSrv',
 	                action: "rover.endOfDay.starteod",
 	                actionPopup: false,
 	                menuIndex: "endOfDay"
+            	}, {
+	                title: "MENU_SOCIAL_LOBBY",
+	                action: "rover.socialLobby",
+	                hidden: !isNeighboursEnabled(),
+	                menuIndex: "sociallobby"
             	}]
 		    }, {
 		        title: "MENU_GROUPS",
-		        //hidden: true,
+		        // hidden: true,
 		        action: "",
 		        iconClass: "icon-groups",
 		        menuIndex: "menuGroups",
@@ -195,7 +216,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        }]
 		    }, {
 		        title: "MENU_CONVERSATIONS",
-		        //hidden: true,
+		        // hidden: true,
 		        action: "",
 		        iconClass: "icon-conversations",
 		        menuIndex: "conversations",
@@ -229,7 +250,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        }]
 		    }, {
 		        title: "MENU_HOUSEKEEPING",
-		        //hidden: true,
+		        // hidden: true,
 		        action: "",
 		        iconClass: "icon-housekeeping",
 		        menuIndex: "housekeeping",
@@ -250,7 +271,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        }]
 		    }, {
 		        title: "MENU_FINANCIALS",
-		        //hidden: true,
+		        // hidden: true,
 		        action: "",
 		        iconClass: "icon-financials",
 		        menuIndex: "financials",
@@ -277,7 +298,7 @@ angular.module('sntRover').service('rvMenuSrv',
                 menuIndex: "actionManager",
                 iconClass: "icon-actions",
                 submenu: []
-            },{
+            }, {
 		        title: "MENU_REPORTS",
 		        action: "rover.reports",
 		        menuIndex: "reports",
@@ -408,6 +429,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        	}
 				]
 		    }];
+
 		return processMenuList (menu);
 	};
 
@@ -421,47 +443,47 @@ angular.module('sntRover').service('rvMenuSrv',
 
 		// NOTE:- {key: menuIndex, value: [PERMISSIONS]}
 		var menuPermissions = {
-			'search': 				['SEARCH_RESERVATIONS'],
-			'createReservation': 	['CREATE_EDIT_RESERVATIONS'],
-			'postcharges': 			['ACCESS_POST_CHARGES'],
+			'search': ['SEARCH_RESERVATIONS'],
+			'createReservation': ['CREATE_EDIT_RESERVATIONS'],
+			'postcharges': ['ACCESS_POST_CHARGES'],
 
-			'cashier': 				['ACCESS_CASHIERING'],
-			'endOfDay': 			['ACCESS_RUN_END_OF_DAY'],
-			'rateManager': 			['ACCESS_RATE_MANAGER'],
+			'cashier': ['ACCESS_CASHIERING'],
+			'endOfDay': ['ACCESS_RUN_END_OF_DAY'],
+			'rateManager': ['ACCESS_RATE_MANAGER'],
 
-			'cards': 				['ACCESS_COMPANY_TA_CARDS'],
+			'cards': ['ACCESS_COMPANY_TA_CARDS'],
 			'distribution_manager': ['ACCESS_DISTRIBUTION_MENU'],
-			'roomStatus': 			['HOUSEKEEPING_ROOM_STATUS_ACCESS'],
+			'roomStatus': ['HOUSEKEEPING_ROOM_STATUS_ACCESS'],
 
-			'workManagement': 		['ACCESS_TASK_MANAGEMENT'],
-			'maintanance': 			['ACCESS_TASK_MAINTENANCE'],
-			'journals': 			['ACCESS_JOURNAL'],
-			'ccTransactions':   	['VIEW_CC_TRANSACTIONS'],
+			'workManagement': ['ACCESS_TASK_MANAGEMENT'],
+			'maintanance': ['ACCESS_TASK_MAINTENANCE'],
+			'journals': ['ACCESS_JOURNAL'],
+			'ccTransactions': ['VIEW_CC_TRANSACTIONS'],
 
-			'accountsReceivables': 	['ACCESS_ACCOUNTING_INTERFACE'],
-			'accounting': 			['ACCESS_ACCOUNTING_INTERFACE'],
-			'commisions': 			['ACCESS_COMMISSIONS'],
-			'diaryReservation': 	['CREATE_EDIT_RESERVATIONS'],
+			'accountsReceivables': ['ACCESS_ACCOUNTING_INTERFACE'],
+			'accounting': ['ACCESS_ACCOUNTING_INTERFACE'],
+			'commisions': ['ACCESS_COMMISSIONS'],
+			'diaryReservation': ['CREATE_EDIT_RESERVATIONS'],
+			'nightlyDiaryReservation': ['ACCESS_ROOM_DIARY'],
 
+			'menuGroups': [],
+			'menuCreateGroup': ['GROUP_CREATE'],
+			'menuManageGroup': ['GROUP_MANAGE'],
 
-			'menuGroups': 			[],
-			'menuCreateGroup': 		['GROUP_CREATE'],
-			'menuManageGroup': 		['GROUP_MANAGE'],
+			'menuCreateAllotment': ['ALLOTMENTS_CREATE'],
+			'menuManageAllotment': ['ALLOTMENTS_MANAGE'],
 
-			'menuCreateAllotment': 	['ALLOTMENTS_CREATE'],
-			'menuManageAllotment': 	['ALLOTMENTS_MANAGE'],
+			'accounts': ['ACCESS_ACCOUNTS'],
 
-			'accounts':        		['ACCESS_ACCOUNTS'],
-
-			'changePassword':       ['SETTINGS_CHANGE_PASSWORD_MENU'],
-			'adminSettings':        ['SETTINGS_ACCESS_TO_HOTEL_ADMIN']
+			'changePassword': ['SETTINGS_CHANGE_PASSWORD_MENU'],
+			'adminSettings': ['SETTINGS_ACCESS_TO_HOTEL_ADMIN']
 
 
 		};
 
 		var permissions = null, collectivePermissionValue = true;
 
-		if(menuIndex in menuPermissions) {
+		if (menuIndex in menuPermissions) {
 			permissions = menuPermissions[menuIndex];
 
 			_.each(permissions, function(item) {
@@ -484,7 +506,7 @@ angular.module('sntRover').service('rvMenuSrv',
 			isHotelStaff = user.is_staff,
 			returnValue = false;
 
-		//currently every menu is available for Hotel Admin & Hotel Staff
+		// currently every menu is available for Hotel Admin & Hotel Staff
 		returnValue = (isHotelAdmin || isHotelStaff);
 
 
@@ -497,24 +519,30 @@ angular.module('sntRover').service('rvMenuSrv',
 	* @return {boolean}
 	*/
 	this.hasSettingsPermission = function(menuIndex) {
+		
 		var returnValue = true;
-		switch (menuIndex){
+
+		switch (menuIndex) {
 			case 'diaryReservation':
 				returnValue = isHourlyRateOn();
 				break;
 
-			//dont wanted to show on hourly enabled hotels
+			case 'nightlyDiaryReservation':
+				returnValue = !isHourlyRateOn() && $rootScope.isPmsDevEnv;
+				break;
+
+			// dont wanted to show on hourly enabled hotels
 			case 'menuGroups':
 				returnValue = !isHourlyRateOn();
 				break;
 
-			//if auto change business is not enabled, we have to show EOD menu
+			// if auto change business is not enabled, we have to show EOD menu
 			// hote admin -> Hotel & Staff -> Settings & Parameter -> AUTO CHANGE BUSINESS DATE
 			case 'endOfDay':
 				returnValue = true;
 				break;
 
-			//we are hiding conversations for now
+			// we are hiding conversations for now
 			case 'conversations':
 				returnValue = false;
 				break;
@@ -526,6 +554,11 @@ angular.module('sntRover').service('rvMenuSrv',
 			case 'workManagement':
 				returnValue = !isHourlyRateOn();
 				break;
+
+			case 'sociallobby':
+				returnValue = isNeighboursEnabled();
+				break;
+				// we display social lobby to only
 
 			default:
         		break;

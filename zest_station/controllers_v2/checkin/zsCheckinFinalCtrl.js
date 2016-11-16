@@ -6,7 +6,7 @@ sntZestStation.controller('zsCheckinFinalCtrl', [
 	function($scope, $stateParams, $state, zsEventConstants) {
 
 
-		/**********************************************************************************************
+		/** ********************************************************************************************
 		 **		Please note that, not all the stateparams passed to this state will not be used in this state, 
 		 **      however we will have to pass this so as to pass again to future states which will use these.
 		 **       
@@ -19,12 +19,12 @@ sntZestStation.controller('zsCheckinFinalCtrl', [
 		/**
 		 * [initializeMe description]
 		 */
-		var initializeMe = function() {
-			//hide back button
+		var initializeMe = (function() {
+			// hide back button
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
-			//hide close button
+			// hide close button
 			$scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
-			//show subtexts based upon actions selected
+			// show subtexts based upon actions selected
 			var printOpted = $stateParams.print_opted === 'true';
 			var emailOpted = $stateParams.email_opted === 'true';
 			var printSuccess = $stateParams.print_status === "success";
@@ -56,13 +56,8 @@ sntZestStation.controller('zsCheckinFinalCtrl', [
 					$scope.subtext = "";
 				}
 			}
+		}());
 
-
-		}();
-
-		$scope.navToHome = function() {
-			$state.go('zest_station.home');
-		};
 
 	}
 ]);

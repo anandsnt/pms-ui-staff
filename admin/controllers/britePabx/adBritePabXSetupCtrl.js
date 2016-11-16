@@ -32,6 +32,7 @@ admin.controller('adBritePabXSetupCtrl', ['$scope', 'britePabXSetupValues', 'adB
 	 * when we clicked on save button
 	 * @return {undefiend}
 	 */
+
 	$scope.savePabXSetup = function() {
 		var params 	= {
 			brite: _.omit( dclone($scope.brite), 'charge_code_name')
@@ -50,9 +51,10 @@ admin.controller('adBritePabXSetupCtrl', ['$scope', 'britePabXSetupValues', 'adB
 		}
 
         var options = {
-            params 			: params,
-            successCallBack : successCallBackOfSaveBritePabXSetup
+            params: params,
+            successCallBack: successCallBackOfSaveBritePabXSetup
         };
+
         $scope.callAPI(adBritePabXSetupSrv.saveBritePabXConfiguration, options);
 	};
 
@@ -60,7 +62,7 @@ admin.controller('adBritePabXSetupCtrl', ['$scope', 'britePabXSetupValues', 'adB
 	 * Initialization stuffs
 	 * @return {undefiend}
 	 */
-	var initializeMe = function() {
+	var initializeMe = (function() {
 		$scope.brite = britePabXSetupValues;
-	}();
-}])
+	}());
+}]);

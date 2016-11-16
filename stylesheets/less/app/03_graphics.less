@@ -32,7 +32,6 @@
 		&.icon-allotments { background-position: 0 -870px; }
 		&.icon-settings { background-position: 0 -930px; }
         &.icon-layers { background-position: 0 -990px; }
-        &.icon-alert { background-position: 0 -1050px; } 
 
 		@media only screen and (min-width: 600px) {
 			background-size: 125px;
@@ -56,7 +55,6 @@
 			&.icon-allotments { background-position: 0 -1800px; }
 			&.icon-settings { background-position: 0 -1920px; }
             &.icon-layers { background-position: 0 -2040px; }
-            &.icon-alert { background-position: 0 -2160px; }  
 		}
 
 		@media @highdpi { background-image: @iconNoContent2x; }
@@ -412,6 +410,14 @@
 			&.icon-diary-oos { background-position: 0 -6158px; }
 			&.icon-diary-lock { background-position: 0 -9100px; }
 
+			&.icon-filter-room { 
+                background-position: 0px -10300px;
+
+                &.active {
+                    background-position: 0px -10420px;
+                }
+            }
+
 		/* Social Lobby ***/
 			&.icon-show-conversations {
 				background-position: 1px -2199px;
@@ -470,7 +476,7 @@
                 &.active { background-position: 14px -9390px; }
             }
 
-			&.icon-pencil-blue { background-position: 3px -2137px; }
+			&.icon-pencil-blue { background-position: 0 -2140px; }
 
 		/* Add / Remove / Reset ***/
 			&.icon-add-60 {
@@ -673,7 +679,7 @@
         &.icon-group { background-position: 0 -420px;}
         &.icon-balance { background-position: 0 -450px; }
         &.icon-cards { background-position: 0 -480px; }
-        &.icon-action { background-position: 0px -691px; }
+        &.icon-room { background-position: 0 -660px; }
 
 		@media @highdpi {
 			background-image: @iconReports2x;

@@ -23,6 +23,7 @@ angular.module('sntRover').controller('rvGroupActivityCtrl', [
 			var fetchCompleted = function(data) {
 				$scope.$broadcast('PopulateLogData', data);
 			};
+
 			$scope.invokeApi(rvGroupAccountActivitySrv.fetchActivityLog, params, fetchCompleted);
 		};
 		$scope.$on('updateLogdata', function(e, params) {
@@ -31,6 +32,7 @@ angular.module('sntRover').controller('rvGroupActivityCtrl', [
 				var fetchCompleted = function(data) {
 					$scope.$broadcast('PopulateLogData', data);
 				};
+
 				$scope.invokeApi(rvGroupAccountActivitySrv.fetchActivityLog, params, fetchCompleted);
 
 			});
@@ -41,7 +43,7 @@ angular.module('sntRover').controller('rvGroupActivityCtrl', [
 		 * @param  {String} currentTab - Active tab in the view
 		 * @return undefined
 		 */
-		$scope.$on ('GROUP_TAB_SWITCHED', function(event, currentTab){
+		$scope.$on ('GROUP_TAB_SWITCHED', function(event, currentTab) {
 			if (currentTab === "ACTIVITY") {
 				$scope.init();
 			}
@@ -53,7 +55,7 @@ angular.module('sntRover').controller('rvGroupActivityCtrl', [
 		 * @param  {String} currentTab - Active tab in the view
 		 * @return undefined
 		 */
-		$scope.$on ('ACCOUNT_TAB_SWITCHED', function(event, currentTab){
+		$scope.$on ('ACCOUNT_TAB_SWITCHED', function(event, currentTab) {
 			if (currentTab === "ACTIVITY") {
 				$scope.init();
 			}

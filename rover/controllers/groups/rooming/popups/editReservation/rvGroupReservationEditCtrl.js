@@ -22,7 +22,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
 
     BaseCtrl.call(this, $scope);
     var parentScope = $scope.$parent;
-    //variables
+    // variables
     var initialPopupData = {};
 
     var fieldsEnabled = {
@@ -49,6 +49,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
     $scope.shouldDisableChangeRoom = function(reservation) {
         var rStatus = reservation.reservation_status,
             validResStatuses = ["RESERVED", "CHECKING_IN"];
+
         return !(fieldsEnabled['room'] && _.contains(validResStatuses, rStatus));
     };
 
@@ -60,6 +61,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
     $scope.shouldDisableFromDateChange = function(reservation) {
         var rStatus = reservation.reservation_status,
             validResStatuses = ["RESERVED", "CHECKING_IN"];
+
         return !(fieldsEnabled['date'] && _.contains(validResStatuses, rStatus));
     };
 
@@ -71,6 +73,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
     $scope.shouldDisableToDateChange = function(reservation) {
         var rStatus = reservation.reservation_status,
             validResStatuses = ["RESERVED", "CHECKING_IN", "CHECKEDIN", "CHECKING_OUT"];
+
         return !(fieldsEnabled['date'] && _.contains(validResStatuses, rStatus));
     };
 
@@ -132,22 +135,22 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
      * @return {Boolean}
      */
     $scope.shouldDisableReservationRoomTypeChange = function(reservation) {
-        //as per CICO-17082, we need to show the room type in select box of edit with others
-        //but should be disabled
+        // as per CICO-17082, we need to show the room type in select box of edit with others
+        // but should be disabled
         var room_type_id_list = _.pluck($scope.roomTypesAndData, 'room_type_id'),
             containNonEditableRoomType = !_.contains(room_type_id_list, parseInt(reservation.room_type_id)),
             rStatus = reservation.reservation_status,
-            basicDisableCondition = !( rStatus === "RESERVED" || rStatus === "CHECKING_IN")|| containNonEditableRoomType;
+            basicDisableCondition = !( rStatus === "RESERVED" || rStatus === "CHECKING_IN") || containNonEditableRoomType;
 
-        //CICO-18717: disable room type switch once a user checks in
-        return (!fieldsEnabled['roomType'] || basicDisableCondition)
+        // CICO-18717: disable room type switch once a user checks in
+        return (!fieldsEnabled['roomType'] || basicDisableCondition);
     };
 
     $scope.shouldDisableReservationOccuppancyChange = function(reservation) {
       var basicDisableCondition = $scope.reservationStatusFlags.isUneditable ||
                                   $scope.reservationStatusFlags.isCheckedOut;
 
-        return !fieldsEnabled['occupancy'] || basicDisableCondition
+        return !fieldsEnabled['occupancy'] || basicDisableCondition;
     };
 
     /**
@@ -156,11 +159,12 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
      * @return {Boolean}
      */
     $scope.shouldShowThisOccupancyAgainstRoomType = function(keyToCheck) {
-        //finding the selected room type data
+        // finding the selected room type data
         var selectedRoomType = _.findWhere($scope.ngDialogData.allowedRoomTypes, {
             room_type_id: parseInt($scope.ngDialogData.room_type_id)
         });
-        //we are hiding the occupancy if selected room type is undefined
+        // we are hiding the occupancy if selected room type is undefined
+
         if (typeof selectedRoomType === "undefined") {
             return false;
         }
@@ -235,6 +239,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
               params: reservation,
               successCallBack: onUpdateReservationSuccess
             };
+
             $scope.callAPI(rvGroupConfigurationSrv.updateRoomingListItem, options);
 
     };
@@ -336,7 +341,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
             }];
         }
 
-        //Since we have to include already assigned rooms in the select box, merging with rooms coming from the api
+        // Since we have to include already assigned rooms in the select box, merging with rooms coming from the api
         $scope.ngDialogData.roomsFreeToAssign = assignedRoom.concat(data.rooms);
     };
 
@@ -377,7 +382,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
     * @return {undefined}
     */
     var onRemoveReservationSuccess = function(data) {
-        //calling initially required APIs
+        // calling initially required APIs
         $scope.$emit("REFRESH_GROUP_ROOMING_LIST_DATA");
 
         $timeout(function() {
@@ -434,6 +439,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
 
     var computeReservationStatusFlags = function(reservation) {
         var rStatus = reservation.reservation_status;
+
         return {
             isCheckedOut: rStatus === "CHECKEDOUT",
             isUneditable: rStatus === "CANCELED",
@@ -443,7 +449,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
             isNoShow: rStatus === "NOSHOW",
             isGuestAttached: !!reservation.lastname,
             isPastArrival: new tzIndependentDate($rootScope.businessDate) >= new tzIndependentDate(reservation.arrival_date)
-        }
+        };
     };
 
     /**
@@ -460,10 +466,10 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
      * return - None
      */
     var setDatePickerOptions = function() {
-        //referring data model -> from group summary
+        // referring data model -> from group summary
         var refData = $scope.groupConfigData.summary;
 
-        //date picker options - Common
+        // date picker options - Common
         var commonDateOptions = {
             dateFormat: $rootScope.jqDateFormat,
             numberOfMonths: 1,
@@ -487,12 +493,12 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
             }
         };
 
-        //date picker options - From
+        // date picker options - From
         $scope.reservationFromDateOptions = _.extend({
             onSelect: reservationFromDateChoosed
         }, commonDateOptions);
 
-        //date picker options - Departute
+        // date picker options - Departute
         $scope.reservationToDateOptions = _.extend({
             onSelect: reservationToDateChoosed
         }, commonDateOptions);
@@ -501,11 +507,12 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
     * Initialization of pop
     * @return {[type]} [description]
     */
+
     (function initilizeMe() {
-        //variable initilizations
+        // variable initilizations
         initializeVariables();
 
-        //date picker
+        // date picker
         setDatePickerOptions();
     }());
 }]);

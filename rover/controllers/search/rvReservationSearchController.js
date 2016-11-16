@@ -7,15 +7,16 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
      */
 
     var that = this;
+
     BaseCtrl.call(this, $scope);
     $scope.shouldShowLateCheckout = true;
     $scope.shouldShowQueuedRooms = true;
-    //changing the header
+    // changing the header
     $scope.heading = 'SEARCH_TITLE';
-    //updating the left side menu
+    // updating the left side menu
     $scope.$emit("updateRoverLeftMenu", "search");
 
-    //setting search back button caption
+    // setting search back button caption
     $scope.$emit("UpdateSearchBackbuttonCaption", "");
 
     var headingDict = {
@@ -27,12 +28,12 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
       'VIP': 'DASHBOARD_SEARCH_VIP',
       'NORMAL_SEARCH': 'SEARCH_NORMAL',
       'PRE_CHECKIN': 'PRE_CHECKIN',
-      'MOBILE_CHECKIN' : 'MOBILE_CHECKIN'
+      'MOBILE_CHECKIN': 'MOBILE_CHECKIN'
     };
 
-    //Special case: Search by swipe in back navigation. We have to display the card number as well.
-    //So we store the title as sucn in $vault
-    if($stateParams.type === "BY_SWIPE"){
+    // Special case: Search by swipe in back navigation. We have to display the card number as well.
+    // So we store the title as sucn in $vault
+    if ($stateParams.type === "BY_SWIPE") {
       heading = $vault.get('title');
     } else {
       if ($stateParams.type in headingDict) {
@@ -58,9 +59,9 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
 
     $scope.backtoDash = function() {
       $vault.set('searchType', '');
-      //$scope.$broadcast("showSearchResultsArea", false);
+      // $scope.$broadcast("showSearchResultsArea", false);
 
-      setTimeout(function(){
+      setTimeout(function() {
          $state.go('rover.dashboard', {
           useCache: true
         });
@@ -74,7 +75,6 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
     // resetting the scroll position to 0, so that it dont jump anywhere else
     // check CICO-9247
     $vault.set('result_showing_area', 0);
-
 
 
     $scope.heading = heading;
@@ -92,12 +92,13 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
     // we are returning to this screen
     if ($rootScope.isReturning()) {
       scrollerOptions.scrollToPrevLoc = !!$vault.get('result_showing_area') ? $vault.get('result_showing_area') : 0;
-    };
+    }
 
     // finally
     $scope.setScroller('result_showing_area', scrollerOptions);
     var totalNgIncludeRequested = 0;
-    //click function on search area, mainly for closing the drawer
+    // click function on search area, mainly for closing the drawer
+
     $scope.clickedOnSearchArea = function($event) {
       $scope.$emit("closeDrawer");
     };
@@ -105,8 +106,8 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
     /**
     * When the ng-include content request started, we will show activity indicator
     */
-    $scope.$on("$includeContentRequested", function(event){
-      totalNgIncludeRequested++; //variable used to track total number of nginlude requested
+    $scope.$on("$includeContentRequested", function(event) {
+      totalNgIncludeRequested++; // variable used to track total number of nginlude requested
       $scope.$emit('showLoader');
     });
 
@@ -115,14 +116,14 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
     */
     $scope.$on("$viewContentLoaded", function(event) {
       totalNgIncludeRequested--;
-      if(totalNgIncludeRequested === 0){
+      if (totalNgIncludeRequested === 0) {
         $scope.$emit('hideLoader');
       }
       setTimeout(function() {
         $scope.$apply(function() {
-          //we are showing the search results area
+          // we are showing the search results area
           $scope.$broadcast("showSearchResultsArea", true);
-          //we are showing the data in search results area
+          // we are showing the data in search results area
           if (typeof searchResultdata !== 'undefined') {
             $scope.$broadcast("updateDataFromOutside", searchResultdata);
           }
@@ -142,9 +143,9 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
       $scope.heading = headingDict['NORMAL_SEARCH'];
     });
     $stateParams.type = "";
-    //Regarding rvReservationSearchWidgetCtrl.js's ng-repeat on large data set
-    //Even though we are showing loader on ng-repeat start, it is not showing :(, so adding here
-    //we are hiding this loader on data ng-repeat complete in rvReservationSearchWidgetCtrl.js
-    $scope.$emit('showLoader'); //Please see above comment
+    // Regarding rvReservationSearchWidgetCtrl.js's ng-repeat on large data set
+    // Even though we are showing loader on ng-repeat start, it is not showing :(, so adding here
+    // we are hiding this loader on data ng-repeat complete in rvReservationSearchWidgetCtrl.js
+    $scope.$emit('showLoader'); // Please see above comment
   }
 ]);

@@ -1,12 +1,13 @@
 	(function() {
-		var checkinConfirmationService = function($q,$http,$rootScope) {
+		var checkinConfirmationService = function($q, $http, $rootScope) {
 
 			var responseData = {};
 
-			var login = function(data) {
+			var verifyCheckinReservation = function(data) {
 				var deferred = $q.defer();
 				var url = '/guest_web/search.json';
-				$http.post(url,data).success(function(response) {
+
+				$http.post(url, data).success(function(response) {
 					this.responseData = response;
 					deferred.resolve(this.responseData);
 				}.bind(this))
@@ -16,13 +17,15 @@
 				return deferred.promise;
 			};
 
-			var searchReservation =  function(data){
+			var searchReservation =  function(data) {
 				var deferred = $q.defer();
-				data.application = (typeof $rootScope.application !=="undefined") ? $rootScope.application : "";
+
+				data.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "";
 				var url = '/guest_web/checkin_reservation_search.json';
-				$http.get(url,{params: data}).success(function(response) {
+
+				$http.get(url, {params: data}).success(function(response) {
 					deferred.resolve(response);
-				}.bind(this))
+				})
 				.error(function() {
 					deferred.reject();
 				});
@@ -30,13 +33,15 @@
 			};
 
 
-			var getToken = function(data){
+			var getToken = function(data) {
 				var deferred = $q.defer();
-				data.application = (typeof $rootScope.application !=="undefined") ? $rootScope.application : "";
+
+				data.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "";
 				var url = '/guest_web/authenticate_checkin_guest';
-				$http.post(url,data).success(function(response) {
+
+				$http.post(url, data).success(function(response) {
 					deferred.resolve(response);
-				}.bind(this))
+				})
 				.error(function() {
 					deferred.reject();
 				});
@@ -45,14 +50,14 @@
 
 			return {
 				responseData: responseData,
-				login : login,
-				searchReservation:searchReservation,
-				getToken:getToken
+				verifyCheckinReservation: verifyCheckinReservation,
+				searchReservation: searchReservation,
+				getToken: getToken
 			};
 		};
 
 		var dependencies = [
-		'$q','$http','$rootScope',
+		'$q', '$http', '$rootScope',
 		checkinConfirmationService
 		];
 

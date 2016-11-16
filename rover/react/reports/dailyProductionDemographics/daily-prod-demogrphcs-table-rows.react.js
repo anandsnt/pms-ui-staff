@@ -10,9 +10,9 @@ var DailyProductionByDemographicsTableRows = React.createClass({
     visibleColCounter 	= 0;
 
     if (!header.showRevenue) {
-      totalColumnsVisible = totalColumnsVisible - 3; //we are hiding 3 columns
+      totalColumnsVisible = totalColumnsVisible - 3; // we are hiding 3 columns
     } else if (!header.showAvailable) {
-      totalColumnsVisible = totalColumnsVisible - 2; //we are hiding 2 column
+      totalColumnsVisible = totalColumnsVisible - 2; // we are hiding 2 column
     }
     var rows = _.map(this.props.data.listing, function(row, index) {
 
@@ -22,7 +22,7 @@ var DailyProductionByDemographicsTableRows = React.createClass({
         if ((visibleColCounter + 1) % totalColumnsVisible === 0) {
           className = 'day-end';
         }
-        if (_.indexOf(['rate_revenue', 'adr', 'actual_revenue'], colData.key) >= 0 && !header.showRevenue) {
+        if (_.indexOf(['future_revenue', 'adr', 'rate_revenue'], colData.key) >= 0 && !header.showRevenue) {
           className += ' hidden';
         } else if (_.indexOf(['available', 'res_count'], colData.key) >= 0 && !header.showAvailable) {
           className += ' hidden';
@@ -34,6 +34,7 @@ var DailyProductionByDemographicsTableRows = React.createClass({
         return React.DOM.td({className: className}, colText);
       }));
     });
+
     return React.DOM.tbody({}, rows);
   }
 });

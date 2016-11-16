@@ -2,7 +2,7 @@
 	var guestwebSurveyController = function($scope, $state, guestDetailsService, $rootScope) {
 
 
-		var init = function() {
+		var init = (function() {
 
 			var params = {
 				'reservation_id': $rootScope.reservationID
@@ -10,6 +10,7 @@
 
 			var fetchSurveyDetailsSuccessCallback = function(response) {
 				var screenCMSDetails = {};
+
 				screenCMSDetails.title = response.survey_question_title;
 				screenCMSDetails.description = response.survey_question;
 				$scope.screenDetails = screenCMSDetails;
@@ -24,7 +25,7 @@
 
 				for (i = 1; i <= response.numeric_answer_max_limit; i++) {
 					$scope.responseArray.push(i);
-				};
+				}
 				
 				var questionType = _.find(response.survey_question_types, function(survey_question_type) {
 				    return survey_question_type.id === response.survey_question_type_id;
@@ -32,14 +33,15 @@
 
 				$scope.surveyDetails.survey_question_type = !!questionType.description ? questionType.description : "Numeric";
 
-				//set initial values
+				// set initial values
 				if ($scope.surveyDetails.survey_question_type === 'Boolean') {
 					$scope.survey_response = 'Yes';
 				} else if ($scope.surveyDetails.survey_question_type === 'Numeric') {
 					$scope.survey_response = 1;
-				};
+				}
 			};
-			//call API
+			// call API
+
 			$scope.isLoading = true;
 			guestDetailsService.fetchSurveyDetails(params).then(function(response) {
 
@@ -50,11 +52,11 @@
 				$rootScope.netWorkError = true;
 				$scope.isLoading = false;
 			});
-		}();
+		}());
 
 		$scope.goToNextPage = function() {
 			$rootScope.skipBalanceconductSurvey = true;
-			$rootScope.netWorkError = false; //unset error flag
+			$rootScope.netWorkError = false; // unset error flag
 			$state.go('preCheckinStatus');
 		};
 
@@ -68,6 +70,7 @@
 				'survey_response': $scope.survey_response,
 				'reservation_id': $rootScope.reservationID
 			};
+
 			guestDetailsService.submitSurvey(params).then(function(response) {
 				$scope.isLoading = false;
 				$scope.goToNextPage();

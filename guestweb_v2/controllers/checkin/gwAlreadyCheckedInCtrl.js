@@ -7,10 +7,11 @@ sntGuestWeb.controller('gwAlreadyCheckedInController', ['$scope', '$state', '$st
 		$controller('BaseController', {
 			$scope: $scope
 		});
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "ALREADY_CHECKED_IN";
+
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
-		}();
+		}());
 
 
 	}

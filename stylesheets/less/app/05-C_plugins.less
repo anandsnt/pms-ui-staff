@@ -271,6 +271,19 @@
                         }
                     }
 
+                    &.company,
+                    &.travel-agent {
+                        font-size: 16px;
+                        line-height: 18px;
+                    }
+
+                    .location {
+                        display: block;
+                        font-size: 12px;
+                        font-weight: normal;
+                        line-height: 14px;
+                    }
+
                     .group-info {
                         font-size: 18px;
                         line-height: 30px;
@@ -361,6 +374,25 @@
         }
 
         &.find-user { width: auto; }
+
+        .autocomplete-result {
+            position: relative;
+            padding: 10px 20px 10px 20px;
+            font-size: 18px;
+            line-height: 30px;
+            font-weight: 600;
+            color: @textColor;
+            .show;
+
+            .highlight { color: @logoPrimary; }
+ 
+            .location {
+                display: block;
+                font-size: 12px;
+                font-weight: normal;
+                line-height: 14px;
+            } 
+        }
     }
 
     .ui-helper-hidden-accessible { .hide; }
@@ -376,6 +408,25 @@
 
         .modal-content {
 
+            .alipay {
+                .hide();
+                text-align: center;
+                padding: 0 20px;
+            }
+
+            &.show-alipay {
+                .h2,
+                .text,
+                .payment-form,
+                .notice {
+                    .hide();
+                } 
+
+                .alipay {
+                    .show();
+                }
+            }
+            
             /* Alert ***/
             &.alert {
                 padding: 30px 20px;
@@ -3193,6 +3244,30 @@
                         width: 300px; 
                     }
 
+                    .data {
+                        margin: 0 10px;
+                        .size(30px, 300px);
+                        .pull-left;
+
+                        h2 { 
+                            margin: 0;
+                            line-height: 18px;
+                            float: none;
+                        }
+
+                         
+                        .location {
+                            width: 100%;
+                            display: inline-block;
+                            font-size: 13px;
+                            text-transform: uppercase;
+                            line-height: 16px;
+                            .nowrap();
+
+                             
+                        } 
+                    }
+
                     .type,
                     .bill {
                         font-size: 18px;
@@ -3284,13 +3359,20 @@
                             }
 
                             .confirmation,
-                            .room {
+                            .room,
+                            .location {
                                 display: inline-block;
                                 font-size: 13px;
                                 line-height: 1em;
                                 text-transform: uppercase;
 
                                 &.confirmation { margin-right: 10px; }
+                            }
+
+                            .location {
+                                width: 100%;
+                                line-height: 16px;
+                                .nowrap();
                             }
                         }
 
@@ -3299,6 +3381,13 @@
                             .pull-right;
                             .square(20px);
                             .hide-text;
+                        }
+
+                        &.travel-agent,
+                        &.company {
+                            .data {
+                                width: 220px;
+                            }
                         }
 
                         &.guest,
@@ -3357,6 +3446,15 @@
                             right: 2px;
 
                             .iScrollIndicator { background: rgba(0,0,0,.1); }
+                        }
+
+                        .entity {
+                            &.travel-agent,
+                            &.company {
+                                .data {
+                                    width: 240px;
+                                }
+                            }
                         }
 
                         .title {
@@ -5209,7 +5307,7 @@
                     }
 
                     &.no-content { 
-                        width: 680px;
+                        width: 768px;
                         height: auto;
                     }
                 }

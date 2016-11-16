@@ -338,11 +338,28 @@
 					</div>
 				</div>
 
+				<div class="entry is-pms-tokenized" ng-if="isAdminSnt">
+					<label for="Neighbours">ENABLE NEIGHBOURS</label>
+					<div class="switch-button single" ng-class="{ on : data.is_neighbours_enabled}" >
+						<input type="checkbox" ng-model="data.is_neighbours_enabled" name="Neighbours" id="Neighbours">
+						<span class="switch-icon"></span>
+					</div>
+				</div>
+
 				<!-- will show only for standalone  & snt admin -->
 				<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ===''">
 					<label for="hold-status-flag-enabled">Enable HOLD - flag for IBE</label>
 					<div class="switch-button single" ng-class="{ on : data.is_hold_flag_enabled }" ng-click="toggleTheHoldStatusValue()">
 						<input type="checkbox" value="{{data.is_hold_flag_enabled}}" name="hold-status-flag-enabled" id="hold-status-flag-enabled">
+						<span class="switch-icon"></span>
+					</div>
+				</div>
+
+				<!-- will show only for overlay  & snt admin -->
+				<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
+					<label for="hold-status-flag-enabled">OWS Logging</label>
+					<div class="switch-button single" ng-class="{ on : data.is_ows_logging_enabled }" ng-click="toggleOWSLogging()">
+						<input type="checkbox" value="{{data.is_ows_logging_enabled}}" name="is_ows_logging_enabled" id="is_ows_logging">
 						<span class="switch-icon"></span>
 					</div>
 				</div>
@@ -494,40 +511,20 @@
                         <input type="radio" ng-model="data.payment_gateway" value="CBA" class="change-data">
                         Commonwealth Bank Australia (CBA)
                     </label>
+                    <label class="radio" ng-class="{checked:data.payment_gateway == 'SHIJI'}">
+                        <span class="icon-form icon-radio " ng-class="{checked:data.payment_gateway == 'SHIJI'}"></span>
+                        <input type="radio" ng-model="data.payment_gateway" value="SHIJI" class="change-data">
+                        SHIJI Payment
+                    </label>
 				</div>
 				<div class="entry full-width"></div>
-                <!--CBA starts-->
+
                 <div class="entry" ng-if="data.payment_gateway === 'CBA'" >
                     <label>
-                        Merchant Index
+                        Default Opera Payment Type
                     </label>
-                    <input type="text" ng-model="data.cba_merchant">
+                    <input type="text" ng-model="data.cba_default_payment_type">
                 </div>
-                <div class="entry" ng-if="data.payment_gateway === 'CBA'" >
-                    <label>
-                        Card Acceptor Terminal ID
-                    </label>
-                    <input type="text" ng-model="data.cba_catid">
-                </div>
-                <div class="entry" ng-if="data.payment_gateway === 'CBA'" >
-                    <label>
-                        Card Acceptor ID (Merchant ID)
-                    </label>
-                    <input type="text" ng-model="data.cba_caid">
-                </div>
-                <div class="entry" ng-if="data.payment_gateway === 'CBA'" >
-                    <label>
-                        Acquiring Institution Id Code
-                    </label>
-                    <input type="text" ng-model="data.cba_aiic">
-                </div>
-                <div class="entry" ng-if="data.payment_gateway === 'CBA'" >
-                    <label>
-                        Network International Identifier
-                    </label>
-                    <input type="text" ng-model="data.cba_nii">
-                </div>
-                <!-- CBA ENDS -->
 
 				<div class="entry" ng-if="data.payment_gateway === 'SAFERPAY'" >
 					<label>
@@ -653,7 +650,7 @@
 					<label for="six-server-port">
 						Six Payments Communication Protocol
 					</label>
-					<label class="radio" ng-class="{checked:data.payment_gateway === 'MLI'}">
+					<label class="radio" ng-class="{checked:data.payment_gateway === 'sixpayments'}">
 						<span class="icon-form icon-radio " ng-class="{checked:data.six_connection_mode === 'PORT'}"></span>
 						<input type="radio" ng-model="data.six_connection_mode" value="PORT" class="change-data">
 						TCP/IP Socket
@@ -664,6 +661,33 @@
 						HTTPS
 					</label>
 				</div>
+                <!--SHIJI STARTS-->
+                <div class="entry" ng-if="data.payment_gateway === 'SHIJI'">
+                    <label for="shiji-merchant-id">
+                        Merchant ID
+                    </label>
+                    <input type="text" ng-model="data.shiji_merchant_id" value="{{data.shiji_merchant_id}}">
+                </div>
+                <div class="entry" ng-if="data.payment_gateway === 'SHIJI'">
+                    <label for="shiji-partner-id">
+                        Partner ID
+                    </label>
+                    <input type="text" ng-model="data.shiji_partner_id" value="{{data.shiji_partner_id}}">
+                </div>
+                <div class="entry" ng-if="data.payment_gateway === 'SHIJI'">
+                    <label for="shiji-key">
+                        Platform SSL Key
+                    </label>
+                    <input type="text" ng-model="data.shiji_key" value="{{data.shiji_key}}">
+                </div>
+                
+                <div class="entry" ng-if="data.payment_gateway === 'SHIJI'">
+                    <label for="shiji-payment-gateway-url">
+                        Gateway URL
+                    </label>
+                    <input type="text" value="{{data.shiji_payment_gateway_url}}" readonly="readonly">
+                </div>
+                <!--SHIJI ENDS-->
 				<div class="entry full-width">
 					<label>Allow CC processors per payment methods</label>
 					<div class="switch-button single" ng-class="{ on : data.allow_cc_processors_per_payment_methods == true }" ng-click="data.allow_cc_processors_per_payment_methods = !data.allow_cc_processors_per_payment_methods">

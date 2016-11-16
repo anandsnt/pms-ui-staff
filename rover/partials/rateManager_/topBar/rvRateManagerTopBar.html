@@ -19,6 +19,10 @@
             <span>{{selectedRateNames.join()}}</span>
             
         </li>
+        <li class="card" ng-show="selectedAccountName[0]">
+            <strong>{{selectedAccountName.join()}}</strong>
+            <span>{{selectedAddress.join()}}</span>
+        </li>
          
         <!-- show .card if there are any cards selected -->
         <li class="card" ng-show="selectedCardNames.length">
@@ -29,6 +33,18 @@
             
         </li>
          
+    </ul>
+    <ul class="actions">
+        <li>
+            <button class="button rm-buttonOpenClose green" ng-click="openAll()">
+                Open All
+            </button>  
+        </li>
+        <li>
+            <button class="button  rm-buttonOpenClose red" ng-click ="closeAll()">
+                Close All
+            </button>
+        </li>
     </ul>
     <!-- CICO-27447 Temporarily Hiding Chart View -->
     <ul class="display-mode" ng-if="false">

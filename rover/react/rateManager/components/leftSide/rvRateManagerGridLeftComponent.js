@@ -1,5 +1,5 @@
-const RateManagerGridLeftSideComponent = () => ( 
-	<div className='pinnedLeft'>
+const RateManagerGridLeftSideComponent = ({expandedClass}) => ( 
+	<div className={'pinnedLeft '+ expandedClass}>
 		<RateManagerGridLeftSideHeadButtonContainer/>
 		 <table className='rate-calendar'>
 	        <RateManagerGridLeftFirstRowContainer/>

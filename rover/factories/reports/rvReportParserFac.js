@@ -61,9 +61,8 @@ sntRover.factory('RVReportParserFac', [
             // this can be reused by the parsers defined above
             else {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseDataToInfo( reportName, apiResponse, options );
-            };
+            }
         };
-
 
 
         /**
@@ -91,7 +90,7 @@ sntRover.factory('RVReportParserFac', [
                 for (key in source) {
                     if ( ! source.hasOwnProperty(key) ) {
                         continue;
-                    };
+                    }
 
                     for ( i = 0, j = source[key].length; i < j; i++ ) {
                         idBy = source[key].created_by + '__' + source[key].creator_id;
@@ -101,11 +100,11 @@ sntRover.factory('RVReportParserFac', [
                                 'adjustments': [],
                                 'deleted_charges': []
                             };
-                        };
+                        }
 
                         returnObj[idBy][toKey].push( source[key] );
                     }
-                };
+                }
             };
 
             var fillMissingIds = function(ary) {
@@ -113,12 +112,12 @@ sntRover.factory('RVReportParserFac', [
                     if ( ary[i]['creator_id'] === null ) {
                         ary[i]['creator_id'] = 'UNDEF';
                     }
-                };
+                }
             };
 
             if ( ! apiResponse.length ) {
                 return [];
-            };
+            }
 
             for ( i = 0, j = apiResponse.length; i < j; i++ ) {
                 adjustments = apiResponse[i]['adjustments'],
@@ -129,7 +128,7 @@ sntRover.factory('RVReportParserFac', [
 
                 groupByIdAdjustments = _.groupBy( adjustments, 'creator_id' );
                 groupByIdDeleteCharges = _.groupBy( deletedCharges, 'creator_id' );
-            };
+            }
 
             fillEntries( groupByIdAdjustments, 'adjustments' );
             fillEntries( groupByIdDeleteCharges, 'deleted_charges' );
@@ -137,13 +136,13 @@ sntRover.factory('RVReportParserFac', [
             for (key in returnObj) {
                 if ( ! returnObj.hasOwnProperty(key) ) {
                     continue;
-                };
+                }
 
                 returnObj[key] = $_parseFinTransAdjustReport(reportName, returnObj[key], options);
-            };
+            }
 
             return returnObj;
-        };
+        }
 
         function $_parseFinTransAdjustReport ( reportName, apiResponse, options ) {
             var returnAry  = [],
@@ -154,7 +153,8 @@ sntRover.factory('RVReportParserFac', [
 
             var getRemarksAry = function(remark) {
                 var ary = remark.split('<br />');
-                return _.reject(ary, function(i){ return i === '' || i === ' ' });
+
+                return _.reject(ary, function(i) { return i === '' || i === ' '; });
             };
 
             var processAry = function(source, type) {
@@ -171,44 +171,44 @@ sntRover.factory('RVReportParserFac', [
 
                     if ( 0 === k ) {
                         angular.extend(makeCopy, {
-                            isReport     : true,
-                            rowspan      : l + 1,
-                            charge_type  : type,
-                            amount_class : type === 'Adjustments' ? 'purple' : 'red',
-                            posted_date  : makeCopy.posted.substring(0, 10),
-                            posted_time  : makeCopy.posted.substring(11),
-                            modified_date  : makeCopy.modified.substring(0, 10),
-                            modified_time  : makeCopy.modified.substring(11),
-                            remarkAry    : getRemarksAry( makeCopy.remark )
+                            isReport: true,
+                            rowspan: l + 1,
+                            charge_type: type,
+                            amount_class: type === 'Adjustments' ? 'purple' : 'red',
+                            posted_date: makeCopy.posted.substring(0, 10),
+                            posted_time: makeCopy.posted.substring(11),
+                            modified_date: makeCopy.modified.substring(0, 10),
+                            modified_time: makeCopy.modified.substring(11),
+                            remarkAry: getRemarksAry( makeCopy.remark )
                         });
                         returnAry.push( makeCopy );
                     } else {
                         angular.extend(makeCopy, {
-                            isReport     : true,
-                            amount_class : type === 'Adjustments' ? 'purple' : 'red',
-                            posted_date  : makeCopy.posted.substring(0, 10),
-                            posted_time  : makeCopy.posted.substring(11),
-                            modified_date  : makeCopy.modified.substring(0, 10),
-                            modified_time  : makeCopy.modified.substring(11),
-                            remarkAry    : getRemarksAry( makeCopy.remark )
+                            isReport: true,
+                            amount_class: type === 'Adjustments' ? 'purple' : 'red',
+                            posted_date: makeCopy.posted.substring(0, 10),
+                            posted_time: makeCopy.posted.substring(11),
+                            modified_date: makeCopy.modified.substring(0, 10),
+                            modified_time: makeCopy.modified.substring(11),
+                            remarkAry: getRemarksAry( makeCopy.remark )
                         });
                         returnAry.push( makeCopy );
                     }
 
                     if ( 1 === l - k ) {
                         returnAry.push({
-                            isReportSubTotal : true,
-                            break_class      : 'row-break',
-                            amount_class     : type === 'Adjustments' ? 'purple' : 'red',
-                            total_amount     : totalAmount
+                            isReportSubTotal: true,
+                            break_class: 'row-break',
+                            amount_class: type === 'Adjustments' ? 'purple' : 'red',
+                            total_amount: totalAmount
                         });
-                    };
+                    }
                 }
             };
 
             if ( ! apiResponse.length ) {
                 return [];
-            };
+            }
 
             for ( i = 0, j = apiResponse.length; i < j; i++ ) {
                 adjustments = apiResponse[i]['adjustments'],
@@ -216,7 +216,7 @@ sntRover.factory('RVReportParserFac', [
 
                 processAry(adjustments, 'Adjustments');
                 processAry(deletedCharges, 'Deleted Charges');
-            };
+            }
 
             return returnAry;
         }
@@ -269,7 +269,7 @@ sntRover.factory('RVReportParserFac', [
             for ( i = 0, j = zerothData.length; i < j; i++ ) {
                 uuid = zerothData[i]['room_type'] + '__' + zerothData[i]['room_type_id'];
                 returnObj[uuid] = {};
-            };
+            }
 
             var dateData,
                 makeCopy,
@@ -279,7 +279,7 @@ sntRover.factory('RVReportParserFac', [
             for (dateKey in apiResponse) {
                 if ( ! apiResponse.hasOwnProperty(dateKey) ) {
                     continue;
-                };
+                }
 
                 var dateData = apiResponse[dateKey];
 
@@ -288,8 +288,8 @@ sntRover.factory('RVReportParserFac', [
                     ithUuid  = makeCopy['room_type'] + '__' + makeCopy['room_type_id'];
 
                     returnObj[ithUuid][dateKey] = angular.copy( makeCopy );
-                };
-            };
+                }
+            }
 
             /**
              * so we need to transform the resultTotalRow for
@@ -301,17 +301,17 @@ sntRover.factory('RVReportParserFac', [
             for (i = 0, j = resultTotalRow.length; i < j; i ++) {
                 totalDatekey = _.keys( resultTotalRow[i] )[0];
                 returnObj['Totals'][totalDatekey] = angular.copy( resultTotalRow[i][totalDatekey] );
-            };
+            }
 
             return returnObj;
-        };
+        }
         
         var initPrdDemoGrphcsRow = function(showInBold, displayLabel, keyInAPI) {
             return {
-                'showInBold'    : showInBold,
-                'displayLabel'  : displayLabel,
-                'key-in-api'    : keyInAPI,
-                'valueList'     : []
+                'showInBold': showInBold,
+                'displayLabel': displayLabel,
+                'key-in-api': keyInAPI,
+                'valueList': []
             };
         };
 
@@ -326,43 +326,43 @@ sntRover.factory('RVReportParserFac', [
                 e = null;
 
             /* forming the left side */
-            //market
+            // market
             parsedDataListing.push (initPrdDemoGrphcsRow(true, 'Market', 'market_totals'));
-            markets.map(function(value){
+            markets.map(function(value) {
                 parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'markets'));
             });
 
-            //sources
+            // sources
             parsedDataListing.push (initPrdDemoGrphcsRow(true, 'Source', 'source_totals'));
-            sources.map(function(value){
+            sources.map(function(value) {
                 parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'sources'));   
             });
 
-            //origins
+            // origins
             parsedDataListing.push (initPrdDemoGrphcsRow(true, 'Origin', 'origin_totals'));
-            origins.map(function(value){
+            origins.map(function(value) {
                 parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'origins'));  
             });
 
-            //segments
+            // segments
             parsedDataListing.push (initPrdDemoGrphcsRow(true, 'Segment', 'segment_totals'));
-            segments.map(function(value){
+            segments.map(function(value) {
                 parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'segments'));  
             });
 
-            _.each(parsedDataListing, function(rowData){
-                _.each(apiResponse, function(dateData){
+            _.each(parsedDataListing, function(rowData) {
+                _.each(apiResponse, function(dateData) {
                     e = dateData[rowData['key-in-api']];
                     if (e instanceof Array) {
-                        //as per db model, a demogrphics' name is a unique for hotel
+                        // as per db model, a demogrphics' name is a unique for hotel
                         e = _.findWhere(e, { 'name': rowData.displayLabel }); 
                     }
                     rowData.valueList = rowData.valueList.concat([
-                       { key: 'res_count' , value: e.total_reservations_count },
-                       { key: 'available' , value: e.available_rooms_count },
-                       { key: 'rate_revenue' , value: e.rate_revenue },
-                       { key: 'adr' , value: e.adr },
-                       { key: 'actual_revenue' , value: e.actual_revenue }
+                       { key: 'res_count', value: e.total_reservations_count },
+                       { key: 'available', value: e.available_rooms_count },
+                       { key: 'future_revenue', value: e.future_revenue },
+                       { key: 'adr', value: e.adr },
+                       { key: 'rate_revenue', value: e.rate_revenue }
                     ]);
                 });
             });
@@ -371,10 +371,7 @@ sntRover.factory('RVReportParserFac', [
                 listing: parsedDataListing,
                 dates: dateList
             };
-        };
-
-
-
+        }
 
 
         function $_parseDataToInfo ( reportName, apiResponse, options ) {
@@ -398,36 +395,43 @@ sntRover.factory('RVReportParserFac', [
 
             var checkGuest = function(item) {
                 var check = !!options['checkGuest'] && !!item['accompanying_names'] && !!item['accompanying_names'].length;
+
                 return check;
             };
 
             var checkCompTrvlGrp = function(item) {
                 var check = !!item['company_name'] || !!item['travel_agent_name'] || !!item['group_name'];
+
                 return check;
             };
 
             var checkAddOns = function(item) {
                 var check = (!!item['add_ons'] && !!item['add_ons'].length) || !!item['addon_details'];
+
                 return check;
             };
 
             var checkNote = function(item) {
                 var check = !!options['checkNote'] && !!item['notes'] && !!item['notes'].length;
+
                 return check;
             };
 
             var checkAction = function(item) {
                 var check = !!options['checkAction'] && !!item['actions'] && !!item['actions'].length;
+
                 return check;
             };
 
             var checkCancel = function(item) {
                 var check = !!options['checkCancel'] && excludeReports( [reportNames['ARRIVAL'], reportNames['IN_HOUSE_GUEST']] );
+
                 return check ? !!item['cancel_reason'] : false;
             };
 
             var checkRateAdjust = function(item) {
                 var check = !!options['checkRateAdjust'] && !!item['rate_adjustment_reasons'] && !!item['rate_adjustment_reasons'].length;
+
                 return check;
             };
 
@@ -441,7 +445,7 @@ sntRover.factory('RVReportParserFac', [
                     'RESERVATIONS_BY_USER'
                 ];
 
-                return !! _.find(allowNames, function(name) { return reportName == reportNames[name] });
+                return !! _.find(allowNames, function(name) { return reportName == reportNames[name]; });
             };
 
             if ( isForGenericReports(reportName) ) {
@@ -455,64 +459,64 @@ sntRover.factory('RVReportParserFac', [
 
                     if ( checkGuest(makeCopy) ) {
                         angular.extend(guestData, {
-                            isGuestData : true,
-                            guestNames  : angular.copy( makeCopy['accompanying_names'] )
+                            isGuestData: true,
+                            guestNames: angular.copy( makeCopy['accompanying_names'] )
                         });
-                    };
+                    }
 
                     if ( checkCompTrvlGrp(makeCopy) ) {
                         angular.extend(guestData, {
-                            isGuestData       : true,
-                            company_name      : makeCopy.company_name,
-                            travel_agent_name : makeCopy.travel_agent_name,
-                            group_name        : makeCopy.group_name
+                            isGuestData: true,
+                            company_name: makeCopy.company_name,
+                            travel_agent_name: makeCopy.travel_agent_name,
+                            group_name: makeCopy.group_name
                         });
-                    };
+                    }
 
                     if ( checkAddOns(makeCopy) ) {
                         angular.extend(guestData, {
-                            isGuestData  : true,
-                            addOns       : angular.copy( makeCopy['add_ons'] ),
-                            addOnDetails : angular.copy( makeCopy['addon_details'] )
+                            isGuestData: true,
+                            addOns: angular.copy( makeCopy['add_ons'] ),
+                            addOnDetails: angular.copy( makeCopy['addon_details'] )
                         });
-                    };
+                    }
 
                     if ( _.size(guestData) ) {
                         customData.push( guestData );
-                    };
+                    }
 
                     if ( checkCancel(makeCopy) ) {
                         cancelData = {
-                            isCancelData : true,
-                            reason       : angular.copy( makeCopy['cancel_reason'] )
+                            isCancelData: true,
+                            reason: angular.copy( makeCopy['cancel_reason'] )
                         };
                         customData.push( cancelData );
-                    };
+                    }
 
 
                     if ( checkNote(makeCopy) ) {
                         noteData = {
-                            isNoteData : true,
-                            notes      : angular.copy( makeCopy['notes'] )
+                            isNoteData: true,
+                            notes: angular.copy( makeCopy['notes'] )
                         };
                         customData.push( noteData );
-                    };
+                    }
 
                     if ( checkAction(makeCopy) ) {
                         actionData = {
-                            isActionData : true,
-                            actions      : angular.copy( makeCopy['actions'] )
+                            isActionData: true,
+                            actions: angular.copy( makeCopy['actions'] )
                         };
                         customData.push( actionData );
-                    };
+                    }
 
                     if ( checkRateAdjust(makeCopy) ) {
                         adjustData = {
-                            isAdjustData : true,
-                            reasons      : angular.copy( makeCopy['rate_adjustment_reasons'] )
+                            isAdjustData: true,
+                            reasons: angular.copy( makeCopy['rate_adjustment_reasons'] )
                         };
                         customData.push( adjustData );
-                    };
+                    }
 
                     // IF: we found custom items
                         // set row span for the parent tr a rowspan
@@ -523,7 +527,7 @@ sntRover.factory('RVReportParserFac', [
                         customData[customData.length - 1]['className'] = 'row-break';
                     } else {
                         makeCopy.className = 'row-break';
-                    };
+                    }
 
                     // do this only after the above code that adds
                     // 'row-break' class to the row
@@ -531,13 +535,13 @@ sntRover.factory('RVReportParserFac', [
                         if ( makeCopy.hasOwnProperty('action_type') && makeCopy['action_type'] === 'INVALID_LOGIN' ) {
                             makeCopy['action_type'] = 'INVALID LOGIN';
                             makeCopy.className = 'row-break invalid';
-                        };
+                        }
 
                         if ( makeCopy.hasOwnProperty('date') ) {
                             makeCopy['uiDate'] = makeCopy['date'].split( ', ' )[0];
                             makeCopy['uiTime'] = makeCopy['date'].split( ', ' )[1];
-                        };
-                    };
+                        }
+                    }
 
 
                     // push 'makeCopy' into 'returnAry'
@@ -547,17 +551,14 @@ sntRover.factory('RVReportParserFac', [
                     // push each item in 'customData' in to 'returnAry'
                     for (m = 0, n = customData.length; m < n; m++) {
                         returnAry.push( customData[m] );
-                    };
-                };
+                    }
+                }
             } else {
                 returnAry = apiResponse;
-            };
+            }
 
             return returnAry;
-        };
-
-
-
+        }
 
 
         function $_parseDataToSubArrays ( reportName, apiResponse, options ) {
@@ -569,8 +570,8 @@ sntRover.factory('RVReportParserFac', [
             for (i = 0, j = apiResponse.length; i < j; i++) {
                 if ( apiResponse[i][groupByKey] === '' ) {
                     apiResponse[i][groupByKey] = 'N/A';
-                };
-            };
+                }
+            }
 
             var returnObj = _.groupBy( apiResponse, groupByKey );
 
@@ -579,10 +580,7 @@ sntRover.factory('RVReportParserFac', [
             });
 
             return returnObj;
-        };
-
-
-
+        }
 
 
         function $_parseNumeralData ( reportName, apiResponse, options ) {
@@ -602,10 +600,10 @@ sntRover.factory('RVReportParserFac', [
                 for (key in makeCopy) {
                     if ( !makeCopy.hasOwnProperty(key) || key === '0' || key === 0 ) {
                         continue;
-                    };
+                    }
                     objKeyName = key;
                     chargeGrpObj = makeCopy[key];
-                };
+                }
 
                 // loop through the "details" in api response
                 if ( chargeGrpObj['details'].length ) {
@@ -615,12 +613,12 @@ sntRover.factory('RVReportParserFac', [
                         if ( k === 0) {
                             itemCopy.chargeGroupName = objKeyName;
                             itemCopy.rowspan = l + 1;  // which is chargeGrpObj['details'].length
-                        };
+                        }
 
                         itemCopy.isReport = true;
 
                         returnAry.push( itemCopy );
-                    };
+                    }
                 }
                 // if there are no entries in "details", we need to fill 'NA'
                 else {
@@ -631,19 +629,17 @@ sntRover.factory('RVReportParserFac', [
                     itemCopy.isReport = true;
 
                     returnAry.push( itemCopy );
-                };
+                }
 
                 // next insert "sub_total" from api response to retrunAry
                 chargeGrpObj['sub_total']['isReportSubTotal'] = true;
                 chargeGrpObj['sub_total']['chargeGroupName']  = objKeyName;
                 chargeGrpObj['sub_total']['className']        = 'row-break';
                 returnAry.push( chargeGrpObj['sub_total'] );
-            };
+            }
 
             return returnAry;
-        };
-
-
+        }
 
 
         function $_parseRateAdjustments ( reportName, apiResponse, options ) {
@@ -670,14 +666,14 @@ sntRover.factory('RVReportParserFac', [
                         // same row as that of the main reservation details
                         if ( k === 0 ) {
                             angular.extend(makeCopy, {
-                                'isReport'        : true,
-                                'rowspan'         : l + 1,
-                                'stay_date'       : stayDates.stay_date,
-                                'original_amount' : stayDates.original_amount,
-                                'adjusted_amount' : stayDates.adjusted_amount,
-                                'variance'        : stayDates.variance,
-                                'reason'          : stayDates.reason,
-                                'adjusted_by'     : stayDates.adjusted_by
+                                'isReport': true,
+                                'rowspan': l + 1,
+                                'stay_date': stayDates.stay_date,
+                                'original_amount': stayDates.original_amount,
+                                'adjusted_amount': stayDates.adjusted_amount,
+                                'variance': stayDates.variance,
+                                'reason': stayDates.reason,
+                                'adjusted_by': stayDates.adjusted_by
                             });
                             returnAry.push( makeCopy );
                         }
@@ -687,20 +683,20 @@ sntRover.factory('RVReportParserFac', [
                         else {
                             customData = {};
                             angular.extend(customData, {
-                                'isSubReport'     : true,
-                                'stay_date'       : stayDates.stay_date,
-                                'original_amount' : stayDates.original_amount,
-                                'adjusted_amount' : stayDates.adjusted_amount,
-                                'variance'        : stayDates.variance,
-                                'reason'          : stayDates.reason,
-                                'adjusted_by'     : stayDates.adjusted_by
+                                'isSubReport': true,
+                                'stay_date': stayDates.stay_date,
+                                'original_amount': stayDates.original_amount,
+                                'adjusted_amount': stayDates.adjusted_amount,
+                                'variance': stayDates.variance,
+                                'reason': stayDates.reason,
+                                'adjusted_by': stayDates.adjusted_by
                             });
                             returnAry.push( customData );
-                        };
-                    };
+                        }
+                    }
                 } else {
                     returnAry.push( makeCopy );
-                };
+                }
 
                 // if we have 'stay_dates_total' for this reservation
                 if ( makeCopy.hasOwnProperty('stay_dates_total') && makeCopy['stay_dates_total'].hasOwnProperty('original_amount') ) {
@@ -708,21 +704,20 @@ sntRover.factory('RVReportParserFac', [
                     customData = {};
 
                     angular.extend(customData, {
-                        'isSubTotal'      : true,
-                        'className'       : 'row-break',
-                        'original_amount' : stayDatesTotal.original_amount,
-                        'adjusted_amount' : stayDatesTotal.adjusted_amount,
-                        'variance'        : stayDatesTotal.variance
+                        'isSubTotal': true,
+                        'className': 'row-break',
+                        'original_amount': stayDatesTotal.original_amount,
+                        'adjusted_amount': stayDatesTotal.adjusted_amount,
+                        'variance': stayDatesTotal.variance
                     });
                     returnAry.push( customData );
                 } else {
                     returnAry.push( makeCopy );
-                };
-            };
+                }
+            }
 
             return returnAry;
-        };
-
+        }
 
 
         function $_parseGroupPickupReport ( reportName, apiResponse, options ) {
@@ -752,16 +747,16 @@ sntRover.factory('RVReportParserFac', [
                         // same row as that of the main group details
                         if ( k === 0 ) {
                             angular.extend(makeCopy, {
-                                'isReport'              : true,
-                                'rowspan'               : l + 1,
-                                'date'                  : groupData.date,
-                                'hold_status'           : groupData.hold_status,
-                                'room_type'             : groupData.room_type,
-                                'rooms_available'       : groupData.rooms_available,
-                                'rooms_held_non_deduct' : groupData.rooms_held_non_deduct,
-                                'rooms_held_deduct'     : groupData.rooms_held_deduct,
-                                'rooms_held_picked_up'  : groupData.rooms_held_picked_up,
-                                'pickup_percentage'     : groupData.pickup_percentage,
+                                'isReport': true,
+                                'rowspan': l + 1,
+                                'date': groupData.date,
+                                'hold_status': groupData.hold_status,
+                                'room_type': groupData.room_type,
+                                'rooms_available': groupData.rooms_available,
+                                'rooms_held_non_deduct': groupData.rooms_held_non_deduct,
+                                'rooms_held_deduct': groupData.rooms_held_deduct,
+                                'rooms_held_picked_up': groupData.rooms_held_picked_up,
+                                'pickup_percentage': groupData.pickup_percentage
                             });
                             returnAry.push( makeCopy );
                         }
@@ -771,42 +766,42 @@ sntRover.factory('RVReportParserFac', [
                         else {
                             customData = {};
                             angular.extend(customData, {
-                                'isSubReport'           : true,
-                                'date'                  : groupData.date,
-                                'hold_status'           : groupData.hold_status,
-                                'room_type'             : groupData.room_type,
-                                'rooms_available'       : groupData.rooms_available,
-                                'rooms_held_non_deduct' : groupData.rooms_held_non_deduct,
-                                'rooms_held_deduct'     : groupData.rooms_held_deduct,
-                                'rooms_held_picked_up'  : groupData.rooms_held_picked_up,
-                                'pickup_percentage'     : groupData.pickup_percentage,
+                                'isSubReport': true,
+                                'date': groupData.date,
+                                'hold_status': groupData.hold_status,
+                                'room_type': groupData.room_type,
+                                'rooms_available': groupData.rooms_available,
+                                'rooms_held_non_deduct': groupData.rooms_held_non_deduct,
+                                'rooms_held_deduct': groupData.rooms_held_deduct,
+                                'rooms_held_picked_up': groupData.rooms_held_picked_up,
+                                'pickup_percentage': groupData.pickup_percentage
                             });
                             returnAry.push( customData );
-                        };
-                    };
+                        }
+                    }
                 } else {
                     hasData = false;
 
                     angular.extend(makeCopy, {
-                        'isReport'  : true,
-                        'rowspan'   : 0,
-                        'className' : 'row-break'
+                        'isReport': true,
+                        'rowspan': 0,
+                        'className': 'row-break'
                     });
                     returnAry.push( makeCopy );
-                };
+                }
 
                 // if we have data and 'group_total' for this group
                 if ( hasData && makeCopy.hasOwnProperty('group_total') ) {
                     groupDataTotal = makeCopy['group_total'];
                     customData = {};
                     angular.extend(customData, {
-                        'isSubTotal'            : true,
-                        'className'             : 'row-break',
-                        'rooms_available'       : groupDataTotal.rooms_available,
-                        'rooms_held_non_deduct' : groupDataTotal.rooms_held_non_deduct,
-                        'rooms_held_deduct'     : groupDataTotal.rooms_held_deduct,
-                        'rooms_held_picked_up'  : groupDataTotal.rooms_held_picked_up,
-                        'pickup_percentage'     : groupDataTotal.pickup_percentage,
+                        'isSubTotal': true,
+                        'className': 'row-break',
+                        'rooms_available': groupDataTotal.rooms_available,
+                        'rooms_held_non_deduct': groupDataTotal.rooms_held_non_deduct,
+                        'rooms_held_deduct': groupDataTotal.rooms_held_deduct,
+                        'rooms_held_picked_up': groupDataTotal.rooms_held_picked_up,
+                        'pickup_percentage': groupDataTotal.pickup_percentage
                     });
                     returnAry.push( customData );
                 // } else {
@@ -817,12 +812,11 @@ sntRover.factory('RVReportParserFac', [
                 //         'className'  : 'row-break'
                 //     });
                 //     returnAry.push( customData );
-                };
-            };
+                }
+            }
 
             return returnAry;
-        };
-
+        }
 
 
         function $_parseDepositReport ( reportName, apiResponse, options ) {
@@ -851,13 +845,13 @@ sntRover.factory('RVReportParserFac', [
                         // same row as that of the main reservation details
                         if ( k === 0 ) {
                             angular.extend(makeCopy, {
-                                'isReport'               : true,
-                                'rowspan'                : l + 1,
-                                'deposit_payment_status' : depositData.deposit_payment_status,
-                                'due_date'               : depositData.due_date,
-                                'deposit_due_amount'     : depositData.deposit_due_amount,
-                                'paid_date'              : depositData.paid_date,
-                                'paid_amount'            : depositData.paid_amount
+                                'isReport': true,
+                                'rowspan': l + 1,
+                                'deposit_payment_status': depositData.deposit_payment_status,
+                                'due_date': depositData.due_date,
+                                'deposit_due_amount': depositData.deposit_due_amount,
+                                'paid_date': depositData.paid_date,
+                                'paid_amount': depositData.paid_amount
                             });
                             returnAry.push( makeCopy );
                         }
@@ -867,16 +861,16 @@ sntRover.factory('RVReportParserFac', [
                         else {
                             customData = {};
                             angular.extend(customData, {
-                                'isSubReport'            : true,
-                                'deposit_payment_status' : depositData.deposit_payment_status,
-                                'due_date'               : depositData.due_date,
-                                'deposit_due_amount'     : depositData.deposit_due_amount,
-                                'paid_date'              : depositData.paid_date,
-                                'paid_amount'            : depositData.paid_amount
+                                'isSubReport': true,
+                                'deposit_payment_status': depositData.deposit_payment_status,
+                                'due_date': depositData.due_date,
+                                'deposit_due_amount': depositData.deposit_due_amount,
+                                'paid_date': depositData.paid_date,
+                                'paid_amount': depositData.paid_amount
                             });
                             returnAry.push( customData );
-                        };
-                    };
+                        }
+                    }
 
                     // if this is the last loop
                     if ( makeCopy.hasOwnProperty('deposit_totals') && ! _.isEmpty(makeCopy['deposit_totals']) ) {
@@ -884,10 +878,10 @@ sntRover.factory('RVReportParserFac', [
 
                         customData = {};
                         angular.extend(customData, {
-                            'isSubTotal'         : true,
-                            'className'          : 'row-break',
-                            'deposit_due_amount' : depositTotals.deposit_due_amount,
-                            'paid_amount'        : depositTotals.paid_amount
+                            'isSubTotal': true,
+                            'className': 'row-break',
+                            'deposit_due_amount': depositTotals.deposit_due_amount,
+                            'paid_amount': depositTotals.paid_amount
                         });
                         returnAry.push( customData );
                     }
@@ -901,9 +895,9 @@ sntRover.factory('RVReportParserFac', [
                     returnAry.push(makeCopy);
                 }
 
-            };
+            }
             return returnAry;
-        };
+        }
 
 
         /**
@@ -943,18 +937,18 @@ sntRover.factory('RVReportParserFac', [
 
             var i, j, k, l;
 
-            for( i = 0, j = apiResponse.length; i < j; i++ ) {
+            for ( i = 0, j = apiResponse.length; i < j; i++ ) {
 
                 // create a copy of ith apiResponse
                 makeCopy = angular.copy( apiResponse[i] );
 
                 // copy the reservation details and an empty 'stay_dates' array
                 withOutStay = angular.copy({
-                    'guest_name'      : makeCopy.guest_name,
-                    'confirmation_no' : makeCopy.confirmation_no,
-                    'arrival_date'    : makeCopy.arrival_date,
-                    'departure_date'  : makeCopy.departure_date,
-                    'stay_dates'      : []
+                    'guest_name': makeCopy.guest_name,
+                    'confirmation_no': makeCopy.confirmation_no,
+                    'arrival_date': makeCopy.arrival_date,
+                    'departure_date': makeCopy.departure_date,
+                    'stay_dates': []
                 });
 
                 // loop and generate an object
@@ -962,7 +956,7 @@ sntRover.factory('RVReportParserFac', [
                 // only that user, so a set of that will be
                 // an object of objects
                 usersInThisRes = {};
-                for( k = 0, l = makeCopy['stay_dates'].length; k < l; k++ ) {
+                for ( k = 0, l = makeCopy['stay_dates'].length; k < l; k++ ) {
                     kth = makeCopy['stay_dates'][k];
                     userId = kth['adjusted_user_id'] || 'Unknown';
                     userNa = kth['adjusted_by'] || 'Unknown';
@@ -972,46 +966,46 @@ sntRover.factory('RVReportParserFac', [
 
                     if ( usersInThisRes[uid] === undefined ) {
                         usersInThisRes[uid] = angular.copy( withOutStay );
-                    };
+                    }
 
                     // for each user just push only its associate 'stay_dates' changes
                     usersInThisRes[uid]['stay_dates'].push( kth );
-                };
+                }
 
                 // inset the just found reservation
                 // each with only details of 'stay_dates'
                 // changes of just one user, into a 'tempObj'
-                for( keyId in usersInThisRes ) {
+                for ( keyId in usersInThisRes ) {
                     if ( ! usersInThisRes.hasOwnProperty(keyId) ) {
                         continue;
-                    };
+                    }
 
                     if ( tempObj[keyId] === undefined ) {
                         tempObj[keyId] = [];
-                    };
+                    }
 
                     tempObj[keyId].push( usersInThisRes[keyId] );
-                };
-            };
+                }
+            }
 
             // now that all the data has been grouped
             // we need to remove the 'adjusted_user_id'
             // part from 'uid', and have the 'returnObj' in that format
             returnObj = {};
-            for( keyId in tempObj ) {
+            for ( keyId in tempObj ) {
                 if ( ! tempObj.hasOwnProperty(keyId) ) {
                     continue;
-                };
+                }
 
                 // only take the user name part
                 onlyUserNa = keyId.split('__')[1];
 
                 // oh, also we will parse each entry to nG repeat format
                 returnObj[onlyUserNa] = $_parseRateAdjustments( reportName, tempObj[keyId], options );
-            };
+            }
 
             return returnObj;
-        };
+        }
 
         function $_parseDataForRoomOOOOOSReport ( reportName, apiResponse, options ) {
             var groupedByKey = {},
@@ -1033,7 +1027,7 @@ sntRover.factory('RVReportParserFac', [
                                         rowspan: eachAry.length,
                                         isMainRow: true,
                                         // if there is only one entry!!
-                                        className: k === i ? 'row-break' : '',
+                                        className: k === i ? 'row-break' : ''
                                     }
                                 )
                             );
@@ -1050,7 +1044,7 @@ sntRover.factory('RVReportParserFac', [
                         } else {
                             returnAry.push(
                                 _.omit(eachAry[i], ['room_no', 'room_type'])
-                            )
+                            );
                         }
                     }
                 });
@@ -1062,7 +1056,7 @@ sntRover.factory('RVReportParserFac', [
                             result,
                             {
                                 className: 'row-break',
-                                isMainRow: true,
+                                isMainRow: true
                             }
                         )
                     );
@@ -1070,7 +1064,7 @@ sntRover.factory('RVReportParserFac', [
             }
 
             return returnAry;
-        };            
+        }            
 
         return factory;
     }
