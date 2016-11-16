@@ -6,11 +6,11 @@ sntRover.controller('RVNightlyDiaryDatePickerController', ['$scope', '$rootScope
 
 	$scope.setUpData = function() {
 		$scope.dateOptions = {
-		   	changeYear: true,
-		   	changeMonth: true,
-		   	minDate: minDateSelected,
-		   	yearRange: "-100:+5",
-		   	onSelect: function() {
+			changeYear: true,
+			changeMonth: true,
+			minDate: minDateSelected,
+			yearRange: "-100:+5",
+			onSelect: function() {
 				$scope.diaryData.fromDate = $scope.date;
 				$scope.$emit('DATE_CHANGED');
 				ngDialog.close();

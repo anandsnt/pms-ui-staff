@@ -61,7 +61,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
 
         BaseWebSrvV2.getJSON(url, data).then(function(response) {
             deferred.resolve(response);
-        }, function(error){
+        }, function(error) {
             deferred.reject(error);
         });
         return deferred.promise;

@@ -60,6 +60,7 @@ angular
             },
             reservationsList: function(RVNightlyDiarySrv, $rootScope, diaryAssets) {
                 var params = {};
+                
                 params.start_date = $rootScope.businessDate;
                 params.no_of_days = 7;
                 params.page = 1;
