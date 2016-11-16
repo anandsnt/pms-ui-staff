@@ -1963,6 +1963,31 @@ table {
                 }
 
                 &.medium-grid {
+                    thead {
+                        tr {
+                            th {
+                                .switch-button {
+                                     
+                                    .value,
+                                    input {
+                                        .hide();
+                                    }
+                                    
+                                    &:not(.on) {
+                                        .data-on {
+                                            .hide();
+                                        }
+                                    }
+
+                                    &.on {
+                                        .data-off {
+                                            .hide();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                     tbody {
                         tr {
                             &.grouped {
