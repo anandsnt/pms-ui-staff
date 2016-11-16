@@ -1,5 +1,5 @@
 <!-- If showing 7 days -->
-<div class="grid-dates" ng-show="diaryData.isSevenSelected">
+<div class="grid-dates" ng-show="diaryData.numberOfDays === 7">
     <div class="day" ng-repeat="item in diaryData.datesGridData | limitTo: 7" ng-class="{ 'today':(item.date === diaryData.businessDate ) , 'weekend': item.isWeekend }" >
         <span>{{ item.date | date: 'EEEE' }}</span>
         <strong>{{ item.date | date: 'MMMM dd' }}</strong>
@@ -7,7 +7,7 @@
 </div>
 
 <!-- If showing 21 days -->
-<div class="grid-dates" ng-show="!diaryData.isSevenSelected">
+<div class="grid-dates" ng-show="diaryData.numberOfDays === 21">
     
     <div class="month" ng-show="!diaryData.hasMultipleMonth">
         <strong>{{ diaryData.fromDate | date: 'MMMM yyyy' }}</strong>
