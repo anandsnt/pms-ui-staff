@@ -25,4 +25,4 @@ admin.controller('adAccountViewSetupCtrl', ['$scope', 'config', 'adInterfacesCom
             $scope.config = config;
         })();
     }
-])
+]);
