@@ -150,6 +150,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.accountViewSetup', {
+        templateUrl: '/assets/partials/interfaces/AccountView/adAccountViewSetup.html',
+        controller: 'adAccountViewSetupCtrl',
+        url: '/revinate/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('accountview');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.ifc_comtrol_settings', {
         templateUrl: '/assets/partials/IFCComtrol/adIFCComtrolSetup.html',
         controller: 'adIFCComtrolSetupCtrl',
