@@ -1,4 +1,6 @@
 @nightlyGridWidth: 840;
+@gridSingleSidebar: (@nightlyGridWidth+320);
+@gridDualSidebar: (@nightlyGridWidth+640);
 
 /* Reservation Search + Dates + Filters ***/
 .diary-nightly-search-form {
@@ -110,7 +112,7 @@
 
         &.search {
             position: relative;
-            .calc-width(100, 660);
+            .calc-width(100, 680);
 
             input {
                 position: relative;
@@ -134,14 +136,14 @@
                 top: 20px;
                 right: 50px;
                 color: @grey3;
-                font-size: 12px;
+                font-size: 13px;
                 text-transform: uppercase;
                 z-index: 420;
             }
         }
 
         &.switch {
-            width: 180px;
+            width: 200px;
 
             .switch-button {
                 background: rgba(0,0,0,.1);
@@ -280,7 +282,7 @@
                 #flexbox > .parent(column, center, '', '');
 
                 .icons {
-                    font-size: 12px;
+                    font-size: 13px;
                     padding-left: 14px;
                     background-size: 90px;
 
@@ -352,19 +354,76 @@
         }
     }
 
-    /* Desktop ***/
-    @media screen and (min-width: 1280px) {
+    /* Screen big enough to show two columns ***/
+    @media screen and (min-width: 1664px) {
         .entry {
             &.search {
-                .calc-width(100, 540);
+                .calc-width(100, 560);
             }
 
             &.filters{
                 .hide();
             }
-            
         }
-    }  
+    }
+}
+
+/* Reservation Edit */
+.diary-nightly-edit-form {
+    position: relative;
+    background: @purpleStart;
+    .show();
+    .size(60px, 100%);
+    .float();
+
+    .guest,
+    .actions { 
+        .pull-left;
+        padding: 10px;
+    }
+
+    .guest {
+        .calc-width(100, 400);
+        #flexbox .parent( row wrap, '', center, '' );
+
+        .button {
+            font-size: 14px;
+        }
+    }
+
+    .actions {
+        width: 400px;
+        #flexbox .parent( row wrap, flex-end, center, '' );
+        .box-shadow( -2px 0px 0px rgba(0,0,0,0.2));
+
+        .button {
+            font-size: 14px;
+            padding: 0 15px;
+
+            &.blank:hover {
+                color: @white;
+            }
+
+            &:not(:first-child) {
+                margin-left: 20px;
+            }
+        }
+    }
+
+    .guest-image {
+        .square(40px);
+        margin-right: 10px;
+    }
+
+    .name {
+        // Have a max with minus the guest image and stay card button
+        .calc-max-width(100, 185);
+        .nowrap();
+        margin-right: 20px;
+        font-size: 20px;
+        font-weight: 600;
+        color: @white;
+    }
 }
 
 /* Grid + Sidebar ***/
@@ -373,91 +432,79 @@
     .calc-height(100, 120);
     #flexbox > .parent(row wrap, '', '', '');
 
-    /* Grid ***/
-    .diary-nightly-main {
-        z-index: 60;
-        .square(100%);
+    .highlight {
+        color: @logoPrimary;
+    }
 
-        .highlight {
-            color: @logoPrimary;
+    .room {
+        position: relative;
+        font-size: 13px;
+        line-height: 1;
+        text-align: right;
+        background-color: @white;
+        text-transform: uppercase;
+        cursor: pointer;
+        padding: 5px;
+        .size(40px, 100%);
+        .box-shadow(inset 0 -1px 0 rgba(0,0,0,0.15));
+        #flexbox > .parent(column wrap, center, '', '' );
+
+        &.highlighted {
+            background-color: fade(@orange, 30%);
         }
+    }
 
-        .room {
-            position: relative;
-            font-size: 12px;
-            line-height: 1;
-            text-align: right;
-            background-color: @white;
-            text-transform: uppercase;
-            cursor: pointer;
-            padding: 5px;
-            .size(40px, 100%);
-            .box-shadow(inset 0 -1px 0 rgba(0,0,0,0.15));
-            #flexbox > .parent(column wrap, center, '', '' );
+    .room-number {
+        font-size: 18px; 
+        line-height: 14px;
+        font-weight: 600;
+
+        &.clean,
+        &.inspected{ color: @green; }
+
+        &.pickup { color: @orange; }
+
+        &.dirty { color: @red; }
+        &.out { color: @grey3; }
+    }
+
+    .room-type {
+        .nowrap();
+    }
+
+    .suite-room {
+        background-color: #dfac65;
+        color: @white;
+
+        .icon-suite-white {
+            background-position: 4px -6904px;
+            background-size: 80px;
         }
+    }
 
-        .room-number {
-            font-size: 18px; 
-            line-height: 14px;
-            font-weight: 600;
-
-            &.clean,
-            &.inspected{ color: @green; }
-
-            &.pickup { color: @orange; }
-
-            &.dirty { color: @red; }
-            &.out { color: @grey3; }
-        }
-
-        .room-type {
-            .nowrap();
-        }
+    .suites {
+        position: absolute;
+        top: 0;
+        left: 0;
+        max-width: 120px;
+        overflow: hidden;
+        #flexbox > .parent(row wrap, '', '', '');
 
         .suite-room {
-            background-color: #dfac65;
-            color: @white;
+            text-align: center;
+            font-weight: 600;
+            font-size: 10px;
+            .size(20px, 30px);
 
             .icon-suite-white {
-                background-position: 4px -6904px;
-                background-size: 80px;
+                height: 10px;
+                background-position: 8px -6904px;
+                .show();
             }
-        }
 
-        .suites {
-            position: absolute;
-            top: 0;
-            left: 0;
-            max-width: 120px;
-            overflow: hidden;
-            #flexbox > .parent(row wrap, '', '', '');
-
-            .suite-room {
-                text-align: center;
-                font-weight: 600;
-                font-size: 10px;
-                .size(20px, 30px);
-
-                .icon-suite-white {
-                    height: 10px;
-                    background-position: 8px -6904px;
-                    .show();
-                }
-
-                &:not(:first-child){
-                    .box-shadow(inset 1px 0 0 rgba(0,0,0,0.1));
-                }
+            &:not(:first-child){
+                .box-shadow(inset 1px 0 0 rgba(0,0,0,0.1));
             }
-        }
-
-        /* Desktop ***/
-        @media screen and (min-width: 1280px) {
-            .calc-width(100, 300);
-        }   
-
-        /* Large Desktop ***/
-        @media screen and (min-width: 1680px) {
-            .calc-width(100, 600);
         }
     }
 
@@ -465,9 +512,20 @@
     .grid-timeline {
         background-color: @gcard;
         z-index: 0;
-        .box-shadow(0 1px 2px rgba(0,0,0,.2));
+        position: relative;
         .size(40px, 100%);
+        .box-shadow(0 1px 2px rgba(0,0,0,.2));
         #flexbox > .parent(row wrap, '', '', '');
+
+        /* Screen big enough to show one column ***/
+        @media screen and (min-width: 1344px) {
+            .calc-width(100, 320);
+        }
+
+        /* Screen big enough to show two columns ***/
+        @media screen and (min-width: 1664px) {
+            .calc-width(100, 640);
+        }
     }
 
     /* Grid - Timeline - Room Search ***/
@@ -482,6 +540,7 @@
             line-height: 30px;
             min-height: 30px;
             height: 30px;
+            .placeholder-text(14px, 30px, 400, @grey3);
             .calc-width(100, 10);
         }
 
@@ -536,12 +595,106 @@
         }
     }
 
+    /* Grid Stay Range */
+    .grid-stay-range {
+        position: absolute;
+        top:0;
+        left: ~"calc(100% - @{nightlyGridWidth}px)";
+        width: ~'@{nightlyGridWidth}px';
+        height: 40px;
+        z-index: 201;
+
+        .handle {
+            top: 10px;
+            text-transform: uppercase; 
+            .size(40px, 85px);
+            position: absolute;
+
+            .title {
+                text-align: center;
+                font-size: 12px;
+                line-height: 1;
+                color: @white;
+                padding: 9px 5px 0 5px;
+                z-index: 9;
+                position: absolute;
+                top: 0;
+                left: 0;
+                .square(100%);
+                .show;
+                .gradient(@purpleStart, @purpleEnd);
+                #border-radius > .rounded(6px);
+
+                .date {
+                    font-weight: 600;
+                    font-size: 13px;
+                    .show;
+                }                        
+            }
+
+            .line {
+                position: absolute;
+                top: 40px;
+                left: 0;
+                background: @purpleEnd;
+                .size(2000px, 2px);
+                .show;
+            }
+
+            &:after {
+                content: "";
+                position: absolute;
+                bottom: -10px;
+                left: 0;
+                .square(0px);
+                border-top: 10px solid transparent;
+                border-bottom: 10px solid transparent;
+                border-left: 10px solid @purpleEnd;
+            }
+
+            &.departure:not(.right) {
+                .title {
+                    left: -83px;
+                }
+
+                &:after {
+                    border-left-color: transparent;
+                    left: -18px;
+                    border-right: 10px solid @purpleEnd;
+                }
+            }
+
+            &.arrival {
+                &.left {
+                    .title {
+                        left: -83px;
+                    }
+
+                    &:after {
+                        border-left-color: transparent;
+                        left: -18px;
+                        border-right: 10px solid @purpleEnd;
+                    }
+                }
+            }
+        }
+
+        /* Screen big enough to show one column ***/
+        @media screen and (min-width: 1344px) {
+            left: ~"calc(100% - @{gridSingleSidebar}px)";
+        }
+
+        /* Screen big enough to show two columns ***/
+        @media screen and (min-width: 1664px) {
+            left: ~"calc(100% - @{gridDualSidebar}px)";
+        }
+    }
+
     /* Grid - Room Search Results ***/
     .grid-room-search-results {
         position: absolute;
         top: 40px;
         left: 0;
-        /*left: ~'-@{nightlyGridWidth}px';*/
         background-color: @grey1;
         z-index: 200;
         .hide();
@@ -560,15 +713,62 @@
         &.visible {
             .show();
         }
+
+        /* Screen big enough to show one column ***/
+        @media screen and (min-width: 1344px) {
+            .calc-width(100, @gridSingleSidebar);
+        }
+
+        /* Screen big enough to show two columns ***/
+        @media screen and (min-width: 1664px) {
+            .calc-width(100, @gridDualSidebar);
+        }
     }    
 
     /* Grid Content - Rooms & Reservations ***/
     .grid-content {
         position: relative;
+        z-index: 70;
+        width: 100%;
         .calc-height(100, 40);
 
         .wrapper {
             #flexbox > .parent(row wrap, '', '', '');
+        }
+
+        .iScrollVerticalScrollbar {
+            right: 10px;
+        }
+
+        &.top-pagination {
+            .grid-rooms,
+            .grid-reservations {
+                padding-top: 40px;
+            }
+        }
+
+        &.bottom-pagination {
+            .grid-rooms,
+            .grid-reservations {
+                padding-bottom: 40px;
+            }
+        }
+
+        &.dual-pagination {
+            .grid-rooms,
+            .grid-reservations {
+                padding: 40px 0;
+            }
+        }
+
+        /* Screen big enough to show one column ***/
+        @media screen and (min-width: 1344px) {
+            .calc-width(100, 320);
+        }
+
+        /* Screen big enough to show two columns ***/
+        @media screen and (min-width: 1664px) {
+            .calc-width(100, 640);
         }
     }
 
@@ -579,10 +779,6 @@
         background-color: @white;
         .calc-width(100, @nightlyGridWidth);
         .box-shadow(2px 0 4px rgba(0, 0, 0, .2));
-
-        .room.highlighted {
-            background-color: fade(@orange, 30%);
-        }
     }
     
     /* Grid Content - Reservations ***/
@@ -623,27 +819,6 @@
 
         &.bottom {
             bottom: 0;
-        }
-    }
-
-    .grid-content.top-pagination {
-        .grid-rooms,
-        .grid-reservations {
-            padding-top: 40px;
-        }
-    }
-
-    .grid-content.bottom-pagination {
-        .grid-rooms,
-        .grid-reservations {
-            padding-bottom: 40px;
-        }
-    }
-
-    .grid-content.dual-pagination {
-        .grid-rooms,
-        .grid-reservations {
-            padding: 40px 0;
         }
     }
 
@@ -942,68 +1117,27 @@
                     background-position: 4px -82px;
                 }
             }
-        }        
+        }  
+
+        /** Reservation is being edited */
+        &.editing {
+            background-color: @purpleStart;
+            color: @white;
+        }      
     }
 
     /* Sidebar ***/
     .diary-nightly-sidebar {
         position: absolute;
         top: 0;
-        right: -300px;
+        right: -320px;
+        text-transform: uppercase;
+        padding: 0 10px;
         z-index: 80;
+        .size(100%, 320px);
         .background(@white);
         .transition();
-        .size(100%, 300px);
-        .box-shadow(-2px 0 4px rgba(0, 0, 0, .2));
-
-        /* Toggle Options ***/
-        .sidebar-options {
-            .float();
-            .hide();
-
-            .button {
-                position: relative;
-                overflow: visible;
-                font-size: 12px;
-                color: @textColor;
-                .pull-left;
-                .size(40px, 50%);
-                #border-radius > .rounded(0);
-
-                .count {
-                    position: absolute;
-                    top: 10px;
-                    right: 10px;
-                    background-color: @logoPrimary;
-                    color: @white;
-                    font-size: 11px;
-                    line-height: 20px;
-                    text-align: center;
-                    border-radius: 50%;
-                    text-indent: initial;
-                    z-index: 10;
-                    .square(20px);
-                }
-
-                &.active {
-                    color: @white;
-                    cursor: default;
-                    .box-shadow(inset 1px 1px 1px rgba(0,0,0,.3));
-                    .gradient (@logoGradientEnd, @logoGradientStart);
-
-                    .count {
-                        background-color: @white;
-                        color: @logoPrimary;
-                    }
-                }
-            }
-
-            /* Desktop ***/
-            @media screen and (min-width: 1280px) {
-                .show();
-            }
-        }
-
+        
         /* Title ***/
         .sidebar-header {
             text-align: center;
@@ -1012,91 +1146,41 @@
             height: 60px;
 
             h2 {
-                font-size: 16px;
+                font-size: 18px;
                 font-weight: 600;
             }
 
             p {
-                color: @grey4;
-                font-size: 12px;
+                color: @grey3;
+                font-size: 13px;
                 margin: 0;
             }
         } 
 
         /* Content ***/
-        .sidebar-content {
+        .scrollable {
             position: relative;
-            text-transform: uppercase;
-            .square(100%);
-            .hide();
 
-            .scrollable {
-                position: relative;
+            .iScrollVerticalScrollbar {
+                top: 0;
+                bottom: 0;
+                right: 0;
 
-                .iScrollVerticalScrollbar {
-                    top: 0;
-                    bottom: 0;
-                    right: 2px;
-
-                    .iScrollIndicator {
-                        background-color:rgba(0,0,0,0.15);
-                    }
+                .iScrollIndicator {
+                    background-color:rgba(0,0,0,0.15);
                 }
-            }
-
-            &.no-options {
-                height: 100%;
-            }
-
-            &.visible {
-                .show();
             }
         }
 
         &.visible {
-            .translate3d(-300px, 0, 0);
-        }
-
-        /* Desktop ***/
-        @media screen and (min-width: 1280px) {
-            position: static;
-            right: auto;
-            margin-left: auto;
-            .calc-height(100, 40);
-
-            &.visible {
-                .translate3d(0, 0, 0);
-            }
-        }
-
-        /* Large Desktop ***/
-        @media screen and (min-width: 1680px) {
-            .size(100%, 600px);
-            #flexbox > .parent(row wrap, '', '', '');
-
-            .sidebar-options {
-                .hide();
-            }
-
-            .sidebar-content {
-                .show();
-                .size(100%, 50%);
-
-                .scrollable {
-                    margin: 0 10px;
-                    .calc-width(100, 20);
-                }
-
-                &:last-child {
-                    .box-shadow(-1px 0 2px rgba(0, 0, 0, .2));
-                }
-            }
+            .box-shadow(-1px 0 2px 1px rgba(0, 0, 0, .2));
+            .translate3d(-320px, 0, 0);
         }
     }
 
     /* Sidebar - Blocks - Filters ***/
     .diary-nightly-filters {
-
+        
         .filters-list {
             .calc-height(100, 140);
 
@@ -1106,7 +1190,7 @@
         }
 
         .entry {
-            padding: 10px;
+            padding: 10px 0;
             .box-shadow(0 1px 0 rgba(0,0,0,.15));
         }
 
@@ -1139,8 +1223,8 @@
 
                 label {
                     position: absolute;
-                    top: 8px;
-                    font-size: 12px;
+                    top: 6px;
+                    font-size: 13px;
                     color: @grey3;
                     margin: 0;
                 }
@@ -1223,7 +1307,7 @@
             .size(80px, 100%);
 
             .button { width: 100%; }
-        }       
+        }
     }   
 
     /* Sidebar - Blocks - Unassigned ***/
@@ -1246,6 +1330,7 @@
 
         /* Columns ***/
         .data {
+            padding-right: 5px;
             .calc-width(100, 100);
             #flexbox > .parent(row wrap, '', '', '');
         }
@@ -1255,8 +1340,8 @@
             text-align: right;
         }
 
-        .arrival {
-            width: 60px;
+        .arrival { 
+            width: 60px; 
         }
 
         /* Row ***/
@@ -1275,6 +1360,7 @@
             .vip {
                 font-size: 8px;
                 line-height: 14px;
+                margin-left: 4px;
                 .square(14px);
             }
 
@@ -1286,7 +1372,7 @@
 
             .arrival,
             .room {
-                font-size: 12px;
+                font-size: 13px;
             }
 
             .name,
@@ -1295,11 +1381,15 @@
             }
 
             .name { 
-                .calc-max-width(100, 18);
+                max-width: 120px;
             }
 
             .room {
-                width: 100%;
+                text-align: left;
+                padding: 0;
+                height: auto;
+                background-color: transparent;
+                .box-shadow(none);
             }
 
             &:not(.no-status) {
@@ -1339,6 +1429,13 @@
                 cursor: @dragging 16 16, move; 
             }
         }
+
+        /* Screen big enough to show two columns ***/
+        @media screen and (min-width: 1664px) {
+            &.visible {
+                .translate3d(-640px, 0, 0);
+            }
+        } 
     }
 
     /* Overlay for search and filters ***/
