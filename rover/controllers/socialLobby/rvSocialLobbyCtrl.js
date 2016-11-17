@@ -65,15 +65,29 @@ sntRover.controller('RVSocialLobbyCrl', [
             
         };
 
+        var getNextPostWithComments = function(index) {
+            
+            for (var i = index; i < $scope.posts.length; i++) {
+                if ($scope.posts[i].comments.length > 0) {
+                    return $scope.posts[i];
+                }
+            };
+            return "";
+        };
+
         $scope.$on("socialLobbyHeightUpdated", function(event, data) {
             $scope.posts[data.index].expandedHeight = data.height;
-            if ( data.isSearchResultsView && data.index < $scope.posts.length - 1 ) {
-                setTimeout(function() {
+
+            if ( data.isSearchResultsView && data.index < $scope.posts.length - 1 && $scope.posts[data.index + 1].comments.length > 0) {
+                var nextPost = getNextPostWithComments(data.index + 1);
+                if ( nextPost != "" ) {
+                    setTimeout(function() {
                 
-                    $scope.posts[data.index + 1].isExpanded = true;
-                    $scope.posts[data.index + 1].isSearchResults = true;
-                    $scope.$apply();
-                }, 500);
+                        nextPost.isExpanded = true;
+                        nextPost.isSearchResults = true;
+                        $scope.$apply();
+                    }, 500);
+                }             
                 
             } else {
                refreshPostScroll(); 
@@ -249,9 +263,11 @@ sntRover.controller('RVSocialLobbyCrl', [
             options.onSuccess = function(data){
                 
                 $scope.posts = data.results.posts;
-                $scope.posts[0].isExpanded = true;
-                $scope.posts[0].isSearchResults = true;
-                
+                var nextPost = getNextPostWithComments(0);
+                if ( nextPost != "" ) {
+                        nextPost.isExpanded = true;
+                        nextPost.isSearchResults = true;
+                }
                 $scope.totalPostPages = data.results.total_count % $scope.postParams.per_page > 0 ? Math.floor(data.results.total_count / $scope.postParams.per_page) + 1 : Math.floor(data.results.total_count / $scope.postParams.per_page);
                 $scope.$emit('hideLoader');
                 
