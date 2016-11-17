@@ -93,46 +93,43 @@ sntZestStation.controller('zsPrintBillCtrl', [
             $scope.$emit('hideLoader');
             setBeforePrintSetup();
            
-            try {
-                // this will show the popup with full bill
-                $timeout(function() {
-                    /*
-                     * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-                     */
-                    if (sntapp.cordovaLoaded) {
-                        var printer = (sntZestStation.selectedPrinter);
+        try {
+            // this will show the popup with full bill
+            $timeout(function() {
+                /*
+                 * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+                 */
+                if (sntapp.cordovaLoaded) {
+                    var printer = (sntZestStation.selectedPrinter);
 
-                        cordova.exec(function(success) {
+                    cordova.exec(function(success) {
+                        var printopted = 'true';
+
+                        nextPageActions(printopted);
+                    }, function(error) {
+                        printFailedActions();
+                    }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
+                } else {
+                    if ($scope.zestStationData.zest_printer_option === "STAR_TAC") {
+                        // we will call websocket services to print
+                        handleStarTacPrinterActions();
+                    } else {
+                        $window.print();
+                        setTimeout(function() {
                             var printopted = 'true';
 
                             nextPageActions(printopted);
-                        }, function(error) {
-                            printFailedActions();
-                        }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
-                    } else {
-                        // REASON: API error . We cant push the starttac code.
-                        // So uncomment and use the following line in next sprint
-                        // if($scope.zestStationData.zest_printer_option === "STAR_TAC"){
-                        //     //we will call websocket services to print
-                        //     handleStarTacPrinterActions();
-                        // }
-                        // else{
-                            $window.print();
-                            setTimeout(function() {
-                                var printopted = 'true';
-
-                                nextPageActions(printopted);
-                            }, 100);
-                        // }
-                       
+                        }, 100);
                     }
-                    // provide a delay for preview to appear 
 
-                }, 100);
-            } catch (e) {
-                console.info("something went wrong while attempting to print--->" + e);
-                printFailedActions();
-            }
+                }
+                // provide a delay for preview to appear
+
+            }, 100);
+        } catch (e) {
+            console.info("something went wrong while attempting to print--->" + e);
+            printFailedActions();
+        }
             setTimeout(function() {
                 // CICO-9569 to solve the hotel logo issue
                 $("header .logo").removeClass('logo-hide');
