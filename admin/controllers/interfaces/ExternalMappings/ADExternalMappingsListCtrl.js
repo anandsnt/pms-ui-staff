@@ -27,6 +27,7 @@ admin.controller('ADExternalMappingsListCtrl', ['$scope', '$state', '$stateParam
                     params.total(data.total_count);
                     $defer.resolve($scope.data);
                 };
+
             getParams = _.extend(getParams, {
                 interface_id: $stateParams.interface_id
             });
@@ -51,7 +52,7 @@ admin.controller('ADExternalMappingsListCtrl', ['$scope', '$state', '$stateParam
                 interface_name: $stateParams.interface_name,
                 mapping_id: mapping.id
             });
-        }
+        };
 
         $scope.loadTable = function() {
             $scope.tableParams = new ngTableParams({

@@ -97,7 +97,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         $scope.clickedMenuItem = function ($event, stateToGo, state) {
             var currentTime = new Date();
 
-            if(!state){
+            if (!state) {
                 state = {};
             }
 
