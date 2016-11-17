@@ -42,32 +42,6 @@
         <!-- Rooms + Reservations. YOU CAN RELOAD THIS WHEN SWITCHING 7 or 21 DAYS, NO NEED TO RELOAD ENTIRE SCREEN.  -->
         <span id="nightlyDiaryMain"></span>
 
-        <div class="diary-nightly-sidebar diary-nightly-unassigned"> <!-- Add class 'visible' to show -->
-            <div class="sidebar-header">
-                <h2>Unassigned</h2>
-                <p>Drag & Drop to assign a room</p>
-            </div>
-            <div class="unassigned-labels">
-                <div class="data">Name / Room Type</div>
-                <div class="arrival">Arrival</div>
-                <div class="nights">Nights</div>
-            </div>
-            <div class="unassigned-list scrollable">
-                <div class="wrapper">
-                    <div class="guest {'check-in', 'pre-check-in' or 'no-status'}">
-                        <div class="data">
-                            <strong class="name">{Lastname Firstname}</strong>
-                            <!-- If VIP, show: <span class="vip">VIP</span> -->
-                            <span class="room">{Room Type}</span>
-                        </div>
-                        <div class="arrival">{Arrival Date}</div>
-                        <div class="nights">{No. of Nights}</div>
-                    </div>
-                    ... repeat
-                </div>
-            </div>
-        </div>
-
         <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRightFilterBar.html'"></div>
 
         <!-- Sidebar -->
