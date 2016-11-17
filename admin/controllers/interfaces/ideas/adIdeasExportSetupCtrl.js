@@ -117,7 +117,7 @@ admin.controller('adIdeasExportSetupCtrl', ['$scope', '$rootScope', 'adIdeasSetu
                 numberOfMonths: 1,
                 changeYear: true,
                 changeMonth: true,
-                beforeShow: function(input) {
+                beforeShow: function() {
                     $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
                 },
                 onClose: function() {

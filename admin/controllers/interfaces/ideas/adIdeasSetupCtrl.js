@@ -1,5 +1,5 @@
-admin.controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 'ideaSetup', 'adIdeasSetupSrv', 'dateFilter',
-    function($scope, $rootScope, ideaSetup, adIdeasSetupSrv, dateFilter) {
+admin.controller('adIdeasSetupCtrl', ['$scope', 'ideaSetup',
+    function($scope, ideaSetup) {
 
         BaseCtrl.call(this, $scope);
         $scope.$on('changeMenu', function(e, value) {
