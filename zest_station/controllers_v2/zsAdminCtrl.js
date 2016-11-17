@@ -17,7 +17,7 @@ sntZestStation.controller('zsAdminCtrl', [
         };
         // when the back button clicked
 
-        $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
+        $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function() {
             $state.go('zest_station.home');
         });
 
@@ -29,11 +29,11 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.refreshScroller('admin-screen');
         };
 
-        /**
+        /*
          * printer name convention has something like IPP://somename..
          * so lets pull out that IPP:// from the display to user, so they will see its
          * HP or other printer identifiers
-         ***/
+         */
         var setPrinterLabel = function(name) {
             if (name && typeof name === typeof 'str') {
                 if (name.length > 1) {
@@ -48,14 +48,14 @@ sntZestStation.controller('zsAdminCtrl', [
             } else {
                 name = 'Select';
             }
-            var dots = "...";
+            var dots = '...';
 
             name = (name.length > 25) ? name.substring(0, 25) + dots : name;
             $scope.printerLabel = name;
         };
 
         // set the selected workstation
-        if (typeof $scope.zestStationData.set_workstation_id !== "undefined") {
+        if (typeof $scope.zestStationData.set_workstation_id !== 'undefined') {
             var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
                 return workstation.id == $scope.zestStationData.set_workstation_id;
             });
@@ -65,8 +65,8 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.workstation.selected = parseInt(selectedWorkStation.id);
                 $scope.workstation.printer = selectedWorkStation.printer;
             } else {
-                $scope.workstation.selected = "";
-                $scope.workstation.printer = "";
+                $scope.workstation.selected = '';
+                $scope.workstation.printer = '';
             }
             // set printer label
             setPrinterLabel($scope.workstation.printer);
@@ -91,7 +91,7 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.callBlurEventForIpad();
             var onSuccess = function(response) {
                 if (response.admin) {
-                    $scope.mode = "admin-screen-active";
+                    $scope.mode = 'admin-screen-active';
                     $scope.adminLoginError = false;
                     $scope.subHeadingText = '';
                     refreshScroller();
@@ -114,8 +114,8 @@ sntZestStation.controller('zsAdminCtrl', [
 
             var options = {
                 params: {
-                    "apiUser": $scope.userName,
-                    "apiPass": $scope.passWord
+                    'apiUser': $scope.userName,
+                    'apiPass': $scope.passWord
                 },
                 successCallBack: onSuccess,
                 failureCallBack: onFail
@@ -123,9 +123,9 @@ sntZestStation.controller('zsAdminCtrl', [
 
             $scope.callAPI(zsGeneralSrv.validate, options);
         };
-        /**
+        /*
          * Go to home page
-         **/
+         */
         var lastDemoModeSetting = $scope.zestStationData.demoModeEnabled;
 
         $scope.cancelAdminSettings = function(a) {
@@ -141,29 +141,29 @@ sntZestStation.controller('zsAdminCtrl', [
                 });
             }, 500);
         };
-        /**
+        /*
          *  Login button actions
          *  Go to username entry page
-         **/
+         */
         $scope.loginAdmin = function() {
-            $scope.mode = "admin-name-mode";
+            $scope.mode = 'admin-name-mode';
             $scope.headingText = 'Admin Username'; // TODO: need to move this out to a tag.
             $scope.passwordField = false;
             showNavButtons();
             $scope.focusInputField('input_text');
             
         };
-        /**
+        /*
          *  Input field button actions
-         **/
+         */
         $scope.goToNext = function() {
             // $scope.hideKeyboardIfUp();
-            if ($scope.mode === "admin-name-mode") {
+            if ($scope.mode === 'admin-name-mode') {
                 // user has entered username
                 $scope.adminLoginError = false;
                 $scope.userName = angular.copy($scope.input.inputTextValue);
-                $scope.input.inputTextValue = "";
-                $scope.mode = "admin-password-mode";
+                $scope.input.inputTextValue = '';
+                $scope.mode = 'admin-password-mode';
                 $scope.headingText = 'Admin Password'; // TODO: need to move this out to a tag.
                 $scope.passwordField = true;
                 // prompt screen keyboard depending on the device, ios should call blur first for smooth transition
@@ -175,19 +175,19 @@ sntZestStation.controller('zsAdminCtrl', [
                 submitLogin();
             }
         };
-        /**
+        /*
          *  logout from the application
-         **/
+         */
         $scope.logOutApplication = function() {
-            if (typeof chrome !== "undefined") {
+            if (typeof chrome !== 'undefined') {
                 var chromeAppId = $scope.zestStationData.chrome_app_id; // chrome app id 
 
-                console.info("chrome app id" + chromeAppId);
+                console.info('' + chromeAppId);
                 // minimize the chrome app on loging out
-                (chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId, "zest-station-logout") : "";
-                console.info("login out from chrome");
+                (chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId, 'zest-station-logout') : '';
+                console.info('login out from chrome');
             } else {
-                console.info("login out");
+                console.info('login out');
             }
             $window.location.href = '/station_logout';
         };
@@ -210,14 +210,17 @@ sntZestStation.controller('zsAdminCtrl', [
 
             return selectedWorkStation;
         };
-        /**
+        /*
          *  save work station
-         **/
+         */
         var saveStation = function() {
             // save workstation printer 
             // save workstation to browser
-            var successCallBack = function(response) {
-                getTheSelectedWorkStation().printer = $scope.savedSettings.printer;
+            var successCallBack = function() {
+                var selectedWorkstation = getTheSelectedWorkStation();
+
+                selectedWorkstation.printer = $scope.savedSettings.printer;
+                $scope.zestStationData.workstationName = selectedWorkstation.name;
                 setStationVariables();
                 restartTimers();
                 $scope.zestStationData.set_workstation_id = station.id;
@@ -230,18 +233,24 @@ sntZestStation.controller('zsAdminCtrl', [
                 var workStationstorageKey = 'snt_zs_workstation';
 
                 localStorage.setItem(workStationstorageKey, $scope.savedSettings.kiosk.workstation.station_identifier);
-                $scope.zestStationData.workstationStatus === 'out-of-order' ? $state.go('zest_station.outOfService') : $scope.cancelAdminSettings(true); // navigate to home screen
+                // navigate to home screen
+                // 
+                if ($scope.zestStationData.workstationStatus === 'out-of-order') {
+                    $state.go('zest_station.outOfService');
+                } else {
+                    $scope.cancelAdminSettings(true);
+                }
             };
-            var failureCallBack = function(response) {
+            var failureCallBack = function() {
                 console.warn('unable to save workstation settings');
             };
             var params = {};
             var station = $scope.savedSettings.kiosk.workstation;
 
             if (station) {
-                station.is_out_of_order = ($scope.zestStationData.workstationStatus !== 'in-order' ? false : true);
+                station.is_out_of_order = $scope.zestStationData.workstationStatus !== 'in-order' ? false : true;
 
-                var params = {
+                params = {
                     'default_key_encoder_id': station.key_encoder_id,
                     'identifier': station.station_identifier,
                     'name': station.name,
@@ -269,7 +278,7 @@ sntZestStation.controller('zsAdminCtrl', [
             }
         };
 
-        /**
+        /*
          * Save the admin settings
          **/
         $scope.saveSettings = function() {
@@ -289,7 +298,7 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.savedSettings = angular.copy(params);
             delete params.kiosk.workstation;
             delete params.printer;
-            var successCallBack = function(response) {
+            var successCallBack = function() {
                 saveStation();
             };
             var failureCallBack = function(response) {
@@ -319,13 +328,15 @@ sntZestStation.controller('zsAdminCtrl', [
                 cordova.exec(
                     function(success) {
                         // sntZestStation.selectedPrinter = JSON.stringify(success);
-                        (typeof $scope.savedSettings === "undefined") ? $scope.savedSettings = {} : "";
+                        if (typeof $scope.savedSettings === 'undefined') {
+                            $scope.savedSettings = {};
+                        }
                         $scope.savedSettings.printer = success; // save to the save params here
                         $scope.workstation.printer = $scope.savedSettings.printer;
                         setPrinterLabel($scope.savedSettings.printer);
                         $scope.$digest();
                     },
-                    function(error) {
+                    function() {
                         alert('printer selection failed');
                     }, 'RVCardPlugin', 'selectPrinter'
                 );
@@ -353,20 +364,19 @@ sntZestStation.controller('zsAdminCtrl', [
         };
 
         $scope.showDebugModeOption = false;
+        // initialize
+        (function() {
+            var localDebugging = false, // change this if testing locally, be sure to make false if going up to dev/release/prod
+                scrollerRefreshTime = 1000;
 
-        var lastDemoModeSetting = $scope.zestStationData.demoModeEnabled;
-        var initialize = (function() {
             $scope.adminLoginError = false;
             $scope.input = {
-                "inputTextValue": ""
+                'inputTextValue': ''
             };
-            $scope.userName = "";
-            $scope.passWord = "";
+            $scope.userName = '';
+            $scope.passWord = '';
             hideNavButtons();
             $scope.setScroller('admin-screen');
-
-
-            var localDebugging = false; // change this if testing locally, be sure to make false if going up to dev/release/prod
 
             if (localDebugging && !($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad))) {
                 $scope.isIpad = true;
@@ -376,14 +386,14 @@ sntZestStation.controller('zsAdminCtrl', [
             // if invoked from chrome app or ipad
             // show direct admin without login
             if ($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad)) {
-                $scope.mode = "admin-screen-active";
+                $scope.mode = 'admin-screen-active';
                 $scope.zestStationData.isAdminFirstLogin = false;
             } else {
                 $scope.mode = 'login-mode';
             }
             setTimeout(function() {
                 refreshScroller(); // maybe need to update layout, but this works to fix scroll issue on admin after page load
-            }, 1000);
+            }, scrollerRefreshTime);
             $scope.setScreenIcon('checkin');
             if ($scope.zestStationData.theme === 'snt') {
                 $scope.showDebugModeOption = true;

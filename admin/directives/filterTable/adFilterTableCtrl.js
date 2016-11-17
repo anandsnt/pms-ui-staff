@@ -87,14 +87,12 @@ admin.controller('adFilterTableController', ['$scope', 'ngTableParams', '$inject
 				item.isSelected = $scope.selectionConfig.areAllItemsSelected;
 			});
 			$scope.updateSelectedList();
+			updateDataSet();
 		};
 
 		$scope.toggleSelectItem = function(item) {
 			item.isSelected = !item.isSelected;
-			if (!item.isSelected) {
-				// if unselected delete the Item in the list
-				updateDataSet();
-			}
+			updateDataSet();
 			$scope.updateSelectedList();
 		};
 
@@ -156,12 +154,14 @@ admin.controller('adFilterTableController', ['$scope', 'ngTableParams', '$inject
 			});
 		};
 
-
-		$scope.onSaveChanges = function() {
-			updateDataSet();
-		};
-
 		$scope.loadTable();
+
+		$scope.$on('SAVE_SETTINGS_SUCCESS',function(){
+			$scope.filterConfig.selectedExcludedRoomIds = [];
+			$scope.filterConfig.unSelectedExcludedRoomIds = [];
+			$scope.selectionConfig.activeTab = "SELECTED";
+			$scope.reloadTable();
+		});
 
 	}
 ]);

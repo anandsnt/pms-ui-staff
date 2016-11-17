@@ -2,6 +2,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     function ($scope, $rootScope, adCheckinSrv, $state, ADRoomTypesSrv, $q) {
 
   $scope.errorMessage = '';
+  $scope.successMessage = '';
 
   BaseCtrl.call(this, $scope);
 
@@ -397,7 +398,8 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
 
     var saveCheckinDetailsSuccessCallback = function (data) {
       $scope.$emit('hideLoader');
-      $scope.goBackToPreviousState();
+      $scope.successMessage = "Success!. Settings has been saved.";
+      $scope.$broadcast('SAVE_SETTINGS_SUCCESS');
     };
 
     $scope.invokeApi(adCheckinSrv.save, uploadData, saveCheckinDetailsSuccessCallback, saveCheckinDetailsFailureCallback);
