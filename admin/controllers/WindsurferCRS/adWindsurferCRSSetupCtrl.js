@@ -24,12 +24,13 @@ admin.controller('adWindsurferCRSSetupCtrl', ['$scope', '$rootScope', 'windsurfe
                 if ($scope.windsurferSetup.full_refresh) {
                     timer = $interval(function() {
                         var refreshDateObj = new Date($scope.windsurferSetup.full_refresh);
+
                         $scope.lastRefreshedTimeMark = timeSince(refreshDateObj.valueOf());
                     }, 1000);
                 }
-            }, //Method copied from adExternalInterfaceCtrl.js
+            }, // Method copied from adExternalInterfaceCtrl.js
             timeSince = function(date) {
-                var seconds = Math.floor((new Date() - date) / 1000); //local to the user
+                var seconds = Math.floor((new Date() - date) / 1000); // local to the user
 
                 var interval = Math.floor(seconds / 31536000);
 
@@ -67,6 +68,7 @@ admin.controller('adWindsurferCRSSetupCtrl', ['$scope', '$rootScope', 'windsurfe
                                 $scope.datepicker.to = $scope.datepicker.from;
                             }
                             var currFromDate = new tzIndependentDate($scope.datepicker.from);
+
                             $scope.datepicker.settings.to.maxDate = new Date(currFromDate.setDate(currFromDate.getDate() + MAX_REFRESH_SPAN_DAYS));
                         }
                     },
@@ -144,6 +146,7 @@ admin.controller('adWindsurferCRSSetupCtrl', ['$scope', '$rootScope', 'windsurfe
                 params: _.omit(params, ["default_payment_id", "default_origin", "default_rate"]),
                 successCallBack: successCallBackOfWindsurferCRSSetup
             };
+
             $scope.callAPI(adWindsurferCRSSetupSrv.saveWindsurferCRSConfiguration, options);
         };
 
@@ -151,14 +154,14 @@ admin.controller('adWindsurferCRSSetupCtrl', ['$scope', '$rootScope', 'windsurfe
          * Initialization stuffs
          * @return {undefiend}
          */
-        var initializeMe = function() {
+        var initializeMe = (function() {
             var onfetchMetaSuccess = function(response) {
                 $scope.channelManagerRates = _.pluck(response.rates, 'rate');
                 $scope.bookingOrigins = response.bookingOrigins;
                 $scope.paymentMethods = response.paymentMethods;
                 $scope.windsurferSetup = windsurferCRSSetupValues;
                 initTimeCopy();
-            }
+            };
 
             $scope.callAPI(adExternalInterfaceCommonSrv.fetchMetaData, {
                 params: {
@@ -166,10 +169,10 @@ admin.controller('adWindsurferCRSSetupCtrl', ['$scope', '$rootScope', 'windsurfe
                 },
                 onSuccess: onfetchMetaSuccess
             });
-        }();
+        }());
 
 
-        $scope.$on('$destroy', function(){
+        $scope.$on('$destroy', function() {
             $interval.cancel(timer);
         });
     }

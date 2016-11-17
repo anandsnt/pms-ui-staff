@@ -1,33 +1,34 @@
-admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$stateParams', 'ADRateActivityLogSrv', 'ngTableParams', '$filter',
-    function($scope, $rootScope, $state, $stateParams, ADRateActivityLogSrv, ngTableParams, $filter){
+admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADRateActivityLogSrv', 'ngTableParams', '$filter',
+    function($scope, $rootScope, $state, $stateParams, ADRateActivityLogSrv, ngTableParams, $filter) {
 	BaseCtrl.call(this, $scope);
 
 
-        $scope.init = function(){
+        $scope.init = function() {
         $scope.showActivityLog = false;
         $scope.activityLogData = {};
         $scope.fromDate = $rootScope.businessDate;
         $scope.toDate = $rootScope.businessDate;
         $scope.user_id = 0;
-        $scope.getRateLog = function(){
+        $scope.getRateLog = function() {
             $scope.showActivityLog = true;
             $scope.$emit('showLoader');
             var rateId = $stateParams.rateId;
-            var callback = function(response){
+            var callback = function(response) {
                 $scope.activityLogData = response;
                 $scope.$emit('hideLoader');
             };
-            $scope.invokeApi(ADRateActivityLogSrv.fetchRateLog, {'id':rateId},callback);
+
+            $scope.invokeApi(ADRateActivityLogSrv.fetchRateLog, {'id': rateId}, callback);
         };
         $scope.toggleActivityLogFilterON = false;
-        $scope.toggleActivityLogFilter = function(){
+        $scope.toggleActivityLogFilter = function() {
             $scope.toggleActivityLogFilterON = !$scope.toggleActivityLogFilterON;
-            if ($scope.toggleActivityLogFilterON){
+            if ($scope.toggleActivityLogFilterON) {
                 initializeAutoCompletion();
             }
         };
-        $scope.toggleActivityLog = function(){
-            if ($scope.detailsMenu !== 'adRateActivityLog'){
+        $scope.toggleActivityLog = function() {
+            if ($scope.detailsMenu !== 'adRateActivityLog') {
                 $scope.detailsMenu = 'adRateActivityLog';
                 $scope.getRateLog();
             } else {
@@ -35,18 +36,18 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
                 $scope.toggleActivityLogFilterON = false;
             }
         };
-        $scope.isOldValue = function(value){
-            if(value === "" || typeof value === "undefined" || value === null){
+        $scope.isOldValue = function(value) {
+            if (value === "" || typeof value === "undefined" || value === null) {
                 return false;
             }
-            else{
+            else {
                 return true;
             }
         };
 
 
-    var setDatePickerOptions = function(){
-        //I just changed this to a function, dont knw who written this
+    var setDatePickerOptions = function() {
+        // I just changed this to a function, dont knw who written this
         var datePickerCommon = {
             dateFormat: $rootScope.jqDateFormat,
             numberOfMonths: 1,
@@ -77,20 +78,20 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
         }, datePickerCommon);
     };
 
-    //setting date picker options
+    // setting date picker options
     setDatePickerOptions();
 
-    $scope.updateReportFilter = function(){
+    $scope.updateReportFilter = function() {
         $scope.isUpdateReportFilter = true;
         $scope.initPaginationParams();
         $scope.initSort();
         $scope.updateReport();
     };
     $scope.initPaginationParams = function() {
-        if($scope.activityLogData.total_count === 0){
+        if ($scope.activityLogData.total_count === 0) {
              $scope.start = 0;
-             $scope.end =0;
-        }else{
+             $scope.end = 0;
+        } else {
         $scope.start = 1;
         $scope.end = $scope.start + $scope.activityLogData.length - 1;
         }
@@ -99,7 +100,7 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
         $scope.nextAction = false;
         $scope.prevAction = false;
     };
-    $scope.updateReport = function(){
+    $scope.updateReport = function() {
         var callback = function(data) {
                 $scope.totalResults = data.total_count;
                 $scope.activityLogData = data.results;
@@ -121,17 +122,16 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
                 page: $scope.start,
                 per_page: 50
         };
-        if($scope.isUpdateReportFilter){
+
+        if ($scope.isUpdateReportFilter) {
             $scope.fromDate = $('#activity-range-from').val();
             $scope.toDate = $('#activity-range-to').val();
-            if ($scope.fromDate !== ''){
+            if ($scope.fromDate !== '') {
                 params['from_date'] = $filter('date')(new Date($scope.fromDate), 'yyyy-MM-dd');
             }
-            if ($scope.toDate !== ''){
-                params['to_date'] =$filter('date')(new Date($scope.toDate), 'yyyy-MM-dd');
+            if ($scope.toDate !== '') {
+                params['to_date'] = $filter('date')(new Date($scope.toDate), 'yyyy-MM-dd');
             }
-
-
 
 
         }
@@ -141,16 +141,16 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
         $scope.invokeApi(ADRateActivityLogSrv.filterActivityLog, params, callback);
     };
 
-    $scope.userChanged = function(){
-        if($scope.userEmail === ''){
-           $scope.user_id=0;
+    $scope.userChanged = function() {
+        if ($scope.userEmail === '') {
+           $scope.user_id = 0;
         }
     };
-    $scope.userEmail='';
+    $scope.userEmail = '';
     /*
     * Sorting
     */
-    $scope.initSort =function(){
+    $scope.initSort = function() {
         $scope.sortOrderOfUserASC = false;
         $scope.sortOrderOfDateASC = false;
         $scope.sortOrderOfActionASC = false;
@@ -159,47 +159,47 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
         $scope.sortOrderOfActionDSC = false;
     };
 
-    $scope.sortByUserName = function(){
-        $scope.sort_field ="USERNAME";
-        if($scope.sortOrderOfUserASC){
+    $scope.sortByUserName = function() {
+        $scope.sort_field = "USERNAME";
+        if ($scope.sortOrderOfUserASC) {
             $scope.initSort();
             $scope.sortOrderOfUserDSC = true;
-            $scope.sort_order="desc";
+            $scope.sort_order = "desc";
         }
-        else{
+        else {
             $scope.initSort();
             $scope.sortOrderOfUserASC = true;
-            $scope.sort_order="asc";
+            $scope.sort_order = "asc";
         }
         $scope.updateReport();
     };
 
-    $scope.sortByDate = function(){
-        $scope.sort_field ="DATE";
-        if($scope.sortOrderOfDateASC){
+    $scope.sortByDate = function() {
+        $scope.sort_field = "DATE";
+        if ($scope.sortOrderOfDateASC) {
             $scope.initSort();
             $scope.sortOrderOfDateDSC = true;
-            $scope.sort_order="desc";
+            $scope.sort_order = "desc";
         }
-        else{
+        else {
             $scope.initSort();
             $scope.sortOrderOfDateASC = true;
-            $scope.sort_order="asc";
+            $scope.sort_order = "asc";
         }
         $scope.updateReport();
     };
 
-    $scope.sortByAction = function(){
-        $scope.sort_field ="ACTION";
-        if($scope.sortOrderOfActionASC){
+    $scope.sortByAction = function() {
+        $scope.sort_field = "ACTION";
+        if ($scope.sortOrderOfActionASC) {
             $scope.initSort();
             $scope.sortOrderOfActionDSC = true;
-            $scope.sort_order="desc";
+            $scope.sort_order = "desc";
         }
-        else{
+        else {
             $scope.initSort();
             $scope.sortOrderOfActionASC = true;
-            $scope.sort_order="asc";
+            $scope.sort_order = "asc";
         }
         $scope.updateReport();
     };
@@ -212,9 +212,10 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
         return split(term).pop();
     }
 
-    var initializeAutoCompletion = function(){
-        //forming auto complte source object
+    var initializeAutoCompletion = function() {
+        // forming auto complte source object
         var activeUserAutoCompleteObj = [];
+
         _.each($scope.activeUserList, function(user) {
             activeUserAutoCompleteObj.push({
                 label: user.email,
@@ -230,6 +231,7 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
             select: function(event, ui) {
                 $scope.user_id = ui.item.value;
                 var uiValue = split(this.value);
+
                 uiValue.pop();
                 uiValue.push(ui.item.label);
                 uiValue.push("");
@@ -248,7 +250,7 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
 
                     if (!!match) {
                         modelVal.push(user.value);
-                    };
+                    }
                 });
 
             },
@@ -256,6 +258,7 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
                 return false;
             }
         };
+
         $scope.listUserAutoCompleteOptions = angular.extend({
             position: {
                 my: 'left bottom',
@@ -272,6 +275,7 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
         }, userAutoCompleteCommon);
 
     };
+
             initializeAutoCompletion();
         };
         $scope.init();

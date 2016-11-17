@@ -10,6 +10,7 @@
 "CC_GUARENTEED_LABEL":"Only if Reservation is CC guaranteed",
 "CASH_PAYMENT_LABEL":"Only if Reservation is CASH payment",
 "WEB_CHEKOUT_ALERT_LABEL":"Web Check Out staff alert",
+"WEB_CHEKOUT_OFFLINE_LABEL":"Enable Offline Checkout",
 "CHECKOUT_NOT_SUCESSFULL":"Only when check out is NOT successful",
 "EMAIL_ACCOUNTS_LABEL":"Email Accounts (Seperated by semicolon [;]) ",
 "EMAIL_ACCOUNTS_LABEL2":"EMAIL ACCOUNTS TO RECEIVE LATE CHECK OUT ALERT ONLY (Seperated by semicolon [;]) ",
@@ -123,7 +124,14 @@
 "QUESTION" : "Question",
 "MAXIMUM" : "Maximum",
 "RESPONSE_MANDATORY" : "Response is mandatory?",
-"IMAGE" : "Image"
+"IMAGE" : "Image",
+
+"URL_CHECKIN_SECOND_AUTH_HEADING" : "URL Checkin In - Second Authentication Factor to Find Reservation",
+"URL_CHECKIN_SECOND_AUTH_SUB_HEADING" : "Guests must provide the Last Name as the first authentication factor when attempting a checkin through the following origins: Email from Guest, SMS from Guest, Direct URL. Select the second authentication factor(s) offered to the guest to find the reservation",
+"CHECKIN_SECOND_AUTH_FACTOR" : "Second Authentication Factor",
+"CONFIRMATION_NUMBER" : "CONFIRMATION NUMBER",
+"CONF_NUMBER_AND_DEPART_DATE" : "CONFIRMATION NUMBER and DEPARTURE DATE - Guest must provide one",
+"ALWAYS_ASK_FOR_MOBILE_NUMBER" : "Always ask for guest mobile number"
 
 
 

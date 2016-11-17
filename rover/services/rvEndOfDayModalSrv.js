@@ -7,7 +7,8 @@ angular.module('sntRover').service('RVEndOfDayModalSrv', ['$q', 'rvBaseWebSrvV2'
 		this.login = function(data) {
 			var deferred = $q.defer();
 			var url = '/api/end_of_days/authenticate_user';
-			rvBaseWebSrvV2.postJSON(url,data).then(function(data) {
+
+			rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);
@@ -21,6 +22,7 @@ angular.module('sntRover').service('RVEndOfDayModalSrv', ['$q', 'rvBaseWebSrvV2'
 		this.startProcess = function(data) {
 			var deferred = $q.defer();
 			var url = '/api/end_of_days/change_business_date';
+
 			rvBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -33,7 +35,8 @@ angular.module('sntRover').service('RVEndOfDayModalSrv', ['$q', 'rvBaseWebSrvV2'
 		 */
 		this.restartFailedProcess = function(data) {
 			var deferred = $q.defer();
-			var url = '/api/eod_processes/'+data.id+'/re_run';
+			var url = '/api/eod_processes/' + data.id + '/re_run';
+
 			rvBaseWebSrvV2.postJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -47,7 +50,8 @@ angular.module('sntRover').service('RVEndOfDayModalSrv', ['$q', 'rvBaseWebSrvV2'
 		this.fetchLog = function(data) {
 			var deferred = $q.defer();
 			var url = '/api/eod_processes';
-			rvBaseWebSrvV2.getJSON(url,data).then(function(data) {
+
+			rvBaseWebSrvV2.getJSON(url, data).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);

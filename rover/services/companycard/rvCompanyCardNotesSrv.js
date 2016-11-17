@@ -52,7 +52,7 @@ angular.module('sntRover').service('rvCompanyCardNotesSrv', ['$q', 'rvBaseWebSrv
         var data = {
                 'description': params.text
             },
-            //url 		= 'ui/show?json_input=cards/new_note.json&format=json',
+            // url 		= 'ui/show?json_input=cards/new_note.json&format=json',
             url = '/api/accounts/' + params.accountID + '/save_account_note',
             deferred = $q.defer();
 

@@ -1,8 +1,26 @@
 {
-    "env":{
-        "browser":true,
-        "es6":true,
-        "jquery":true
+    "env": {  
+        "browser": true,
+        "es6": true,
+        "jquery": true,
+        "node": true
+    },
+    "globals": {
+        "angular": false,
+        "React": false,
+        "ReactDOM": false,
+        "Provider": false,
+        "ReactRedux": false,
+        "ReduxThunk": false,
+        "_": false,
+        "cordova": false,
+        "BaseCtrl": true,
+        "sntRover":true,
+        "sntapp": true,
+        "isEmptyObject": true,
+        "sntGuestWeb": true,
+        "admin": true,
+        "ADBaseTableCtrl": true
     },
     "installedESLint":true,
     "parserOptions":{

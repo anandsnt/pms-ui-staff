@@ -1,6 +1,6 @@
 
 
-sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
+sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise("/noOptionAvailable");
 
@@ -48,22 +48,22 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	$stateProvider.state('checkinConfirmation', {
 	 	url: '/checkinConfirmation',
 	 	templateUrl: '/assets/checkin/partials/Eden_resorts/checkInConfirmation.html',
-	 	controller : 'checkInConfirmationViewController',
+	 	controller: 'checkInConfirmationViewController',
 	 	title: 'Check-in'
 	 }).state('checkinReservationDetails', {
 	 	url: '/checkinReservationDetails',
 	 	templateUrl: '/assets/checkin/partials/Eden_resorts/checkInReservationDetails.html',
-	 	controller : 'checkInReservationDetails',
+	 	controller: 'checkInReservationDetails',
 	 	title: 'Details - Check-in'
 	 }).state('checkinUpgrade', {
 	 	url: '/checkinUpgrade',
 	 	templateUrl: '/assets/checkin/partials/Eden_resorts/checkinUpgradeRoom.html',
-	 	controller : 'checkinUpgradeRoomController',
+	 	controller: 'checkinUpgradeRoomController',
 	    title: 'Upgrade - Check-in'
 	 }).state('checkinKeys', {
 	 	url: '/checkinKeys',
 	 	templateUrl: '/assets/checkin/partials/Eden_resorts/checkInKeys.html',
-	 	controller : 'checkInKeysController',
+	 	controller: 'checkInKeysController',
 	 	title: 'Keys - Check-in'
 	 }).state('checkinSuccess', {
 	 	url: '/checkinSuccess',
@@ -71,23 +71,23 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	title: 'Status - Check-in'
 	 }).state('checkinArrival', {
 	 	url: '/checkinArrival',
-	 	controller:'checkinArrivalDetailsController',
+	 	controller: 'checkinArrivalDetailsController',
 	 	templateUrl: '/assets/checkin/partials/Eden_resorts/arrivalDetails.html',
 	 	title: 'Arrival Details - Check-in'
 	 });
 
 
-	 //room verification
+	 // room verification
 
 	 $stateProvider.state('checkoutRoomVerification', {
 	 	url: '/checkoutRoomVerification',
 	 	templateUrl: '/assets/checkoutnow/partials/Eden_resorts/checkoutRoomVerification.html',
-	 	controller : 'checkoutRoomVerificationViewController',
+	 	controller: 'checkoutRoomVerificationViewController',
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
 	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
 	 	templateUrl: '/assets/checkoutnow/partials/Eden_resorts/ccVerification.html',
-	 	controller : 'ccVerificationViewController',
+	 	controller: 'ccVerificationViewController',
 	 	title: 'CC verification'
 	 });
 
@@ -96,7 +96,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
     $stateProvider.state('preCheckinStatus', {
 		url: '/preCheckinStatus',
 		templateUrl: '/assets/preCheckin/partials/Eden/preCheckinStatus.html',
-		controller : 'preCheckinStatusController',
+		controller: 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
 	 });
 
@@ -104,33 +104,31 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
     $stateProvider.state('earlyCheckinOptions', {
 	 	url: '/earlyCheckinOptions/:time/:charge/:id',
 	 	templateUrl: '/assets/checkin/partials/Eden_resorts/earlyCheckinOptions.html',
-	 	controller : 'earlyCheckinOptionsController',
+	 	controller: 'earlyCheckinOptionsController',
 	 	title: 'Early Check-in'
 	 }).state('earlyCheckinFinal', {
 	 	url: '/earlyCheckinFinal/:time/:charge/:id',
 	 	templateUrl: '/assets/checkin/partials/Eden_resorts/earlyCheckinFinal.html',
-	 	controller : 'earlyCheckinFinalController',
+	 	controller: 'earlyCheckinFinalController',
 	 	title: 'Early Check-in'
 	 }).state('laterArrival', {
 	 	url: '/laterArrival/:time/:isearlycheckin',
 	 	templateUrl: '/assets/checkin/partials/Eden_resorts/lateArrivalDetails.html',
-	 	controller : 'checkinArrivalDetailsController',
+	 	controller: 'checkinArrivalDetailsController',
 	    title: 'Early Check-in'
 	 });
 
 	 $stateProvider.state('externalVerification', {
 	 	url: '/externalVerification',
 	 	templateUrl: '/assets/checkoutnow/partials/Eden_resorts/externalVerification.html',
-	 	controller : 'externalVerificationViewController',
+	 	controller: 'externalVerificationViewController',
 	 	title: 'External verification'
 	 }).state('externalVerificationError', {
 	 	url: '/verificationError',
 	 	templateUrl: '/assets/checkoutnow/partials/Eden_resorts/externalVerificationError.html',
-	 	controller:'verificationErrorController',
+	 	controller: 'verificationErrorController',
 	 	title: 'External verification Error'
 	 });
-
-
 
 
 	$stateProvider.state('noOptionAvailable', {

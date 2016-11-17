@@ -39,7 +39,7 @@ angular.module('reportsModule')
                         newChargeGroupsAry.push( each );
                     } else {
                         paymentId = each.id;
-                    };
+                    }
                 });
 
                 _.each(chargeCodesAryCopy, function (each) {
@@ -50,7 +50,7 @@ angular.module('reportsModule')
                     if ( !cgAssociated ) {
                         each.selected = selected;
                         newChargeCodesAry.push( each );
-                    };
+                    }
                 });
             } else if ( 'ONLY_PAYMENTS' === setting ) {
                 paymentEntry = _.find(chargeGroupsAryCopy, function(each) {
@@ -70,9 +70,9 @@ angular.module('reportsModule')
                         if ( !!cgAssociated ) {
                             each.selected = selected;
                             newChargeCodesAry.push(each);
-                        };
+                        }
                     });
-                };
+                }
             } else {
                 _.each(chargeGroupsAryCopy, function(each) {
                     each.selected = selected;
@@ -83,11 +83,11 @@ angular.module('reportsModule')
                     each.selected = selected;
                     newChargeCodesAry.push(each);
                 });
-            };
+            }
 
             return {
-                'chargeGroups' : newChargeGroupsAry,
-                'chargeCodes'  : newChargeCodesAry
+                'chargeGroups': newChargeGroupsAry,
+                'chargeCodes': newChargeCodesAry
             };
         };
 
@@ -115,9 +115,6 @@ angular.module('reportsModule')
         };
 
 
-
-
-
         /**
          * A generic method to properly and effeciently set data for report filters, or anything for that matter
          * @param  {Object} objRef   The Object where we are going to set/update the key value
@@ -129,7 +126,7 @@ angular.module('reportsModule')
             // if the key doesnt exist on the objRef, create it
             if ( ! objRef.hasOwnProperty(key) ) {
                 objRef[key] = {};
-            };
+            }
 
             // merge value when its an object, else just assign
             if ( 'object' === typeof value ) {
@@ -138,48 +135,48 @@ angular.module('reportsModule')
                 $.extend( true, objRef[key], value );
             } else {
                 objRef[key] = value;
-            };
+            }
         };
 
         /** @type {Object} Array of all the filter values, new values added in future can be included here */
         var __optionFilterNames = {
-            'INCLUDE_NOTES'      : true,
-            'VIP_ONLY'           : true,
-            'INCLUDE_VARIANCE'   : true,
-            'INCLUDE_LAST_YEAR'  : true,
-            'INCLUDE_CANCELLED'  : true,
-            'INCLUDE_CANCELED'   : true,
-            'INCLUDE_NO_SHOW'    : true,
-            'SHOW_GUESTS'        : true,
-            'ROVER'              : true,
-            'ZEST'               : true,
-            'ZEST_WEB'           : true,
-            'DEPOSIT_PAID'       : true,
-            'DEPOSIT_DUE'        : true,
-            'DEPOSIT_PAST'       : true,
-            'DUE_IN_ARRIVALS'    : true,
-            'DUE_OUT_DEPARTURES' : true,
-            'INCLUDE_NEW'        : true,
-            'INCLUDE_BOTH'       : true,
-            'EXCLUDE_NON_GTD'    : true,
-            'SHOW_RATE_ADJUSTMENTS_ONLY' : true,
-            'INCLUDE_TAX'        : true,
+            'INCLUDE_NOTES': true,
+            'VIP_ONLY': true,
+            'INCLUDE_VARIANCE': true,
+            'INCLUDE_LAST_YEAR': true,
+            'INCLUDE_CANCELLED': true,
+            'INCLUDE_CANCELED': true,
+            'INCLUDE_NO_SHOW': true,
+            'SHOW_GUESTS': true,
+            'ROVER': true,
+            'ZEST': true,
+            'ZEST_WEB': true,
+            'DEPOSIT_PAID': true,
+            'DEPOSIT_DUE': true,
+            'DEPOSIT_PAST': true,
+            'DUE_IN_ARRIVALS': true,
+            'DUE_OUT_DEPARTURES': true,
+            'INCLUDE_NEW': true,
+            'INCLUDE_BOTH': true,
+            'EXCLUDE_NON_GTD': true,
+            'SHOW_RATE_ADJUSTMENTS_ONLY': true,
+            'INCLUDE_TAX': true,
             'INCLUDE_TAX_RATE': true,
             'INCLUDE_ADDON_RATE': true,
             'INCLUDE_ADDONS': true,
-            'INCLUDE_ADDON_REVENUE' :true,
-            'INCLUDE_ACTIONS'    : true
+            'INCLUDE_ADDON_REVENUE': true,
+            'INCLUDE_ACTIONS': true
         };
 
         var __excludeFilterNames = {
-            'EXCLUDE_TAX' : true
+            'EXCLUDE_TAX': true
         };
 
         var __displayFilterNames = {
-            'INCLUDE_MARKET'  : true,
-            'INCLUDE_SOURCE'  : true,
-            'INCLUDE_ORIGIN'  : true,
-            'INCLUDE_SEGMENT' : true
+            'INCLUDE_MARKET': true,
+            'INCLUDE_SOURCE': true,
+            'INCLUDE_ORIGIN': true,
+            'INCLUDE_SEGMENT': true
         };
 
         var __guestOrAccountFilterNames = {
@@ -204,7 +201,7 @@ angular.module('reportsModule')
         var __chargeTypeFilterNames = {
             SHOW_DELETED_CHARGES: true,
             SHOW_ADJUSTMENTS: true
-        }
+        };
 
         /**
          * Create a DS representing the found filter into the general options DS
@@ -217,47 +214,47 @@ angular.module('reportsModule')
                 isRadioOption = false;
 
             var includeCancelled = {
-                        'INCLUDE_CANCELLED' : true,
-                        'INCLUDE_CANCELED'  : true
+                        'INCLUDE_CANCELLED': true,
+                        'INCLUDE_CANCELED': true
                     },
                 dueInDueOut = {
-                        'DUE_IN_ARRIVALS'    : true,
-                        'DUE_OUT_DEPARTURES' : true
+                        'DUE_IN_ARRIVALS': true,
+                        'DUE_OUT_DEPARTURES': true
                     },
                 depositStatus = {
-                        'DEPOSIT_PAID' : true,
-                        'DEPOSIT_DUE'  : true,
-                        'DEPOSIT_PAST' : true
+                        'DEPOSIT_PAID': true,
+                        'DEPOSIT_DUE': true,
+                        'DEPOSIT_PAST': true
                     };
 
             // if filter is this, make it selected by default
             if ( report['title'] === reportNames['CANCELLATION_NO_SHOW'] && includeCancelled[filter.value] ) {
                 selected = true;
-            };
+            }
 
             // if filter value is either of these, make it selected by default
             if ( dueInDueOut[filter.value] ) {
                 selected = true;
-            };
+            }
 
             // if filter value is either of these, must include when report submit
             if ( depositStatus[filter.value] ) {
                 mustSend = true;
-            };
+            }
 
             // if filter value is either of these, must include when report submit
             if ( report['title'] === reportNames['FORECAST_GUEST_GROUPS'] && filter.value === 'EXCLUDE_NON_GTD' ) {
                 selected = true;
-            };
+            }
 
-            if (report['title'] === reportNames['DAILY_PRODUCTION_DEMO'] && filter.value === 'EXCLUDE_TAX'){
+            if (report['title'] === reportNames['DAILY_PRODUCTION_DEMO'] && filter.value === 'EXCLUDE_TAX') {
                 selected = true;
             }
 
             // if filter is this, make it selected by default
             if ( report['title'] === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] && filter.value === 'INCLUDE_ADDONS' ) {
                 selected = true;
-            };
+            }
 
             if ( report['title'] === reportNames['RESERVATIONS_BY_USER'] && filter.value === 'INCLUDE_BOTH') {
                 if ( filter.value === 'INCLUDE_BOTH') {
@@ -274,21 +271,21 @@ angular.module('reportsModule')
                 if ( filter.value === 'VIP_ONLY' || filter.value === 'RESTRICTED_POST_ONLY' ) {
                     isRadioOption = true;
                 }
-            };
+            }
 
             report['hasGeneralOptions']['data'].push({
-                id          : filter.value.toLowerCase(),
-                paramKey    : filter.value.toLowerCase(),
-                description : filter.description,
-                selected    : selected,
-                mustSend    : mustSend,
-                isRadioOption : isRadioOption
+                id: filter.value.toLowerCase(),
+                paramKey: filter.value.toLowerCase(),
+                description: filter.description,
+                selected: selected,
+                mustSend: mustSend,
+                isRadioOption: isRadioOption
             });
 
             // if filter value is either of these, selectAll should be false
             if ( report['title'] === reportNames['ARRIVAL'] || report['title'] === reportNames['DEPARTURE'] ) {
                 report.hasGeneralOptions.options.noSelectAll = true;
-            };
+            }
         };
 
         /**
@@ -301,12 +298,12 @@ angular.module('reportsModule')
 
             if ( report['title'] === reportNames['DAILY_PRODUCTION_DEMO'] && filter.value === 'INCLUDE_MARKET' ) {
                 selected = true;
-            };
+            }
 
             report['hasDisplay']['data'].push({
-                paramKey    : filter.value.toLowerCase(),
-                description : filter.description,
-                selected    : selected
+                paramKey: filter.value.toLowerCase(),
+                description: filter.description,
+                selected: selected
             });
         };
 
@@ -317,25 +314,25 @@ angular.module('reportsModule')
          */
         var __pushGuestOrAccountData = function(report, filter) {
             report['hasGuestOrAccountFilter']['data'].push({
-                paramKey    : filter.value.toLowerCase(),
-                description : filter.description,
-                selected    : true
+                paramKey: filter.value.toLowerCase(),
+                description: filter.description,
+                selected: true
             });
         };
 
         var __pushShowData = function(report, filter) {
             report['hasShow']['data'].push({
-                paramKey    : filter.value.toLowerCase(),
-                description : filter.description,
-                selected    : true
+                paramKey: filter.value.toLowerCase(),
+                description: filter.description,
+                selected: true
             });
         };
 
         var __pushChargeTypeData = function(report, filter) {
             report['hasChargeTypes']['data'].push({
-                paramKey    : filter.value.toLowerCase(),
-                description : filter.description,
-                selected    : true
+                paramKey: filter.value.toLowerCase(),
+                description: filter.description,
+                selected: true
             });
         };
 
@@ -362,7 +359,7 @@ angular.module('reportsModule')
                 default:
                     // no op
                     break;
-            };
+            }
         };
 
 
@@ -382,8 +379,8 @@ angular.module('reportsModule')
                         key: 'full_name',
                         altKey: 'email'
                     }
-                }
-            };
+                };
+            }
 
             // create DS for options combo box
             report.hasGeneralOptions = {
@@ -393,7 +390,7 @@ angular.module('reportsModule')
                     hasSearch: false,
                     key: 'description'
                 }
-            }
+            };
 
             // create a name space for chosen options
             report.chosenOptions = {};
@@ -406,7 +403,7 @@ angular.module('reportsModule')
                     key: 'description',
                     defaultValue: 'Select displays'
                 }
-            }
+            };
 
             // create DS for Exclude combo box
             report.hasExclusions = {
@@ -417,7 +414,7 @@ angular.module('reportsModule')
                     key: 'description',
                     defaultValue: 'Exclude'
                 }
-            }
+            };
 
             // create DS for guest or account
             report.hasGuestOrAccountFilter = {
@@ -427,7 +424,7 @@ angular.module('reportsModule')
                     hasSearch: false,
                     key: 'description'
                 }
-            }
+            };
 
             // create DS for options combo box
             report.hasShow = {
@@ -439,7 +436,7 @@ angular.module('reportsModule')
                     allValue: 'Both',
                     defaultValue: 'Select options'
                 }
-            }
+            };
 
             // create DS for options combo box
             report.hasChargeTypes = {
@@ -449,49 +446,49 @@ angular.module('reportsModule')
                     hasSearch: false,
                     key: 'description'
                 }
-            }
+            };
 
             // going around and taking a note on filters
             _.each(report['filters'], function(filter) {
 
-                if(filter.value === 'RATE_TYPE') {
+                if (filter.value === 'RATE_TYPE') {
                     report['hasRateTypeFilter'] = filter;
                 }
 
-                if(filter.value === 'RATE') {
+                if (filter.value === 'RATE') {
                     report['hasRateFilter'] = filter;
                 }
 
-                if(filter.value === 'RATE_CODE') {
+                if (filter.value === 'RATE_CODE') {
                     report['hasRateCodeFilter'] = filter;
-                };
+                }
 
-                if(filter.value === 'ROOM_TYPE') {
+                if (filter.value === 'ROOM_TYPE') {
                     report['hasRoomTypeFilter'] = filter;
-                };
+                }
 
-                if(filter.value === 'RESTRICTION') {
+                if (filter.value === 'RESTRICTION') {
                     report['hasRestrictionListFilter'] = filter;
-                };
+                }
 
-                if(filter.value === 'ORIGIN') {
+                if (filter.value === 'ORIGIN') {
                     report['hasOriginFilter'] = filter;
-                };
+                }
 
-                if(filter.value === 'URLS') {
+                if (filter.value === 'URLS') {
                     report['hasURLsList'] = filter;
-                };
+                }
 
-                if(filter.value === 'CAMPAIGN_TYPES') {
+                if (filter.value === 'CAMPAIGN_TYPES') {
                     report['hasCampaignTypes'] = filter;
-                };
+                }
 
                 // check for time filter and keep a ref to that item
                 // create std 15min stepped time slots
                 if ( filter.value === 'TIME_RANGE' ) {
                     report['hasTimeFilter'] = filter;
                     report['timeFilterOptions'] = factory.createTimeSlots();
-                };
+                }
 
 
                 // check for CICO filter and keep a ref to that item
@@ -508,36 +505,36 @@ angular.module('reportsModule')
                         value: 'OUT',
                         label: 'Show only Check Outs'
                     }];
-                };
+                }
 
 
                 // check for include company/ta filter and keep a ref to that item
                 if ( filter.value === 'INCLUDE_COMPANYCARD_TA' ) {
                     report['hasIncludeCompanyTa'] = filter;
-                };
+                }
 
                 // check for include company/ta/group filter and keep a ref to that item
                 if ( filter.value === 'INCLUDE_COMPANYCARD_TA_GROUP' || filter.value === 'GROUP_COMPANY_TA_CARD' ) {
                     report['hasIncludeCompanyTaGroup'] = filter;
-                };
+                }
 
 
                 if ( filter.value === 'MIN_REVENUE' ) {
                     report['hasMinRevenue'] = filter;
-                };
+                }
                 if ( filter.value === 'MIN_ROOM_NIGHTS' ) {
                     report['hasMinRoomNights'] = filter;
-                };
+                }
 
                 if ( filter.value === 'MIN_NUMBER_OF_DAYS_NOT_OCCUPIED' ) {
                     report['hasMinNoOfDaysNotOccupied'] = filter;
-                };
+                }
 
 
                 // fill up DS for options combo box
                 if ( __optionFilterNames[filter.value] ) {
                     __pushGeneralOptionData( report, filter );
-                };
+                }
                 if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'INCLUDE_DUE_OUT' ) {
                     __pushGeneralOptionData( report, filter, true );
                 }
@@ -549,21 +546,21 @@ angular.module('reportsModule')
                 if ( __excludeFilterNames[filter.value] ) {
                     var selected = false;
 
-                    if (report['title'] === reportNames['DAILY_PRODUCTION_DEMO'] || reportNames['DAILY_PRODUCTION_RATE']) {
+                    if (report['title'] === reportNames['DAILY_PRODUCTION_DEMO'] || reportNames['DAILY_PRODUCTION_RATE'] || reportNames['DAILY_PRODUCTION_ROOM_TYPE']) {
                         report['hasExclusions'].options.selectAll = true;
-                    };
+                    }
 
                     report['hasExclusions'].data.push({
-                        paramKey    : filter.value.toLowerCase(),
-                        description : filter.description,
-                        selected    : selected
+                        paramKey: filter.value.toLowerCase(),
+                        description: filter.description,
+                        selected: selected
                     });
-                };
+                }
 
                 // fill up DS for display combo box
                 if ( __displayFilterNames[filter.value] ) {
 
-                    //__pushDisplayData( report, filter );
+                    // __pushDisplayData( report, filter );
                     //
                     // QUICK PATCH
                     // TODO: replace with a better solution
@@ -576,24 +573,24 @@ angular.module('reportsModule')
                             __pushDisplayData( report, filter );
                         } else if ( filter.value === 'INCLUDE_SOURCE' && data.codeSettings['is_source_on'] ) {
                             __pushDisplayData( report, filter );
-                        };
+                        }
                     } else {
                         __pushDisplayData( report, filter );
-                    };
-                };
+                    }
+                }
 
                 // fill up DS for options combo box
                 if ( __guestOrAccountFilterNames[filter.value] ) {
                     __pushGuestOrAccountData( report, filter );
-                };
+                }
 
                 if ( __showFilterNames[filter.value] && report.title !== reportNames['IN_HOUSE_GUEST'] ) {
                     __pushShowData( report, filter );
-                };
+                }
 
                 if ( __chargeTypeFilterNames[filter.value] ) {
                     __pushChargeTypeData( report, filter );
-                };
+                }
             });
         };
 
@@ -614,11 +611,11 @@ angular.module('reportsModule')
 
                     if ( undefined === anyFilterLeft ) {
                         reportItem.allFiltersProcessed = true;
-                    };
+                    }
 
                     // finally resolve the promise
                     deferred.resolve();
-                };
+                }
             };
 
             var filters       = reportItem['filters'],
@@ -664,7 +661,7 @@ angular.module('reportsModule')
 
                 else if ('RATE' === filter.value && ! filter.filled ) {
                     requested++;
-                    reportsSubSrv.fetchRateTypesAndRateList() //This would include custom rates
+                    reportsSubSrv.fetchRateTypesAndRateList() // This would include custom rates
                         .then( fillRateTypesAndRateList );
                 }
 
@@ -700,7 +697,7 @@ angular.module('reportsModule')
 
                             // along with that fetch addons
                             requested++;
-                            reportsSubSrv.fetchAddons({ 'addon_group_ids' : _.pluck(chargeNAddonGroups, 'id') })
+                            reportsSubSrv.fetchAddons({ 'addon_group_ids': _.pluck(chargeNAddonGroups, 'id') })
                                 .then( fillAGAs.bind(null, chargeNAddonGroups) );
                         });
                 }
@@ -726,22 +723,22 @@ angular.module('reportsModule')
                     requested++;
                     reportsSubSrv.fetchFloors()
                         .then( fillFloors );
-                } else if ( 'INCLUDE_DEPARTMENTS' === filter.value && ! filter.filled){
+                } else if ( 'INCLUDE_DEPARTMENTS' === filter.value && ! filter.filled) {
                     requested++;
                     reportsSubSrv.fetchDepartments()
                         .then( fillDepartments );
-                } else if ( 'INCLUDE_COMPLETION_STATUS' === filter.value && ! filter.filled){
-                    //requested++;
+                } else if ( 'INCLUDE_COMPLETION_STATUS' === filter.value && ! filter.filled) {
+                    // requested++;
                     fillCompletionStatus();
                 } else {
-                    //no op
-                };
+                    // no op
+                }
             });
 
             // lets just resolve the deferred already!
             if ( 0 === requested ) {
                 checkAllCompleted();
-            };
+            }
 
             function fillGarntTypes (data) {
                 var foundFilter;
@@ -760,13 +757,13 @@ angular.module('reportsModule')
                                 key: 'name',
                                 defaultValue: 'Select guarantees'
                             }
-                        }
-                    };
+                        };
+                    }
                 });
 
-                completed++
+                completed++;
                 checkAllCompleted();
-            };
+            }
 
             function fillMarkets (data) {
                 var foundFilter;
@@ -783,13 +780,13 @@ angular.module('reportsModule')
                                 hasSearch: false,
                                 key: 'name'
                             }
-                        }
-                    };
+                        };
+                    }
                 });
 
-                completed++
+                completed++;
                 checkAllCompleted();
-            };
+            }
 
             function fillSources (data) {
                 var foundFilter;
@@ -806,14 +803,14 @@ angular.module('reportsModule')
                                 hasSearch: false,
                                 key: 'name'
                             }
-                        }
+                        };
                         report['filters']['filled'] = true;
-                    };
+                    }
                 });
 
-                completed++
+                completed++;
                 checkAllCompleted();
-            };
+            }
 
             function fillBookingOrigins (data) {
                 var foundFilter;
@@ -830,13 +827,13 @@ angular.module('reportsModule')
                                 hasSearch: false,
                                 key: 'name'
                             }
-                        }
-                    };
+                        };
+                    }
                 });
 
-                completed++
+                completed++;
                 checkAllCompleted();
-            };
+            }
 
             function fillHoldStatus (data) {
                 var foundFilter;
@@ -853,13 +850,13 @@ angular.module('reportsModule')
                                 selectAll: false,
                                 key: 'name'
                             }
-                        }
-                    };
+                        };
+                    }
                 });
 
-                completed++
+                completed++;
                 checkAllCompleted();
-            };
+            }
 
             function fillResStatus (data) {
                 var foundFilter,
@@ -882,7 +879,7 @@ angular.module('reportsModule')
                                 {id: 4,  status: "NO SHOW", selected: true},
                                 {id: 5,  status: "CANCEL", selected: true}
                             ];
-                        };
+                        }
 
                         report.hasReservationStatus = {
                             data: customData,
@@ -892,15 +889,15 @@ angular.module('reportsModule')
                                 key: 'status',
                                 defaultValue: 'Select Status'
                             }
-                        }
-                    };
+                        };
+                    }
                 });
 
                 completed++;
                 checkAllCompleted();
-            };
+            }
 
-            function fillCompletionStatus(){
+            function fillCompletionStatus() {
                 customData = [
                                 {id: "UNASSIGNED", status: "UNASSIGNED", selected: true},
                                 {id: "ASSIGNED", status: "ASSIGNED", selected: true},
@@ -919,12 +916,12 @@ angular.module('reportsModule')
                                 key: 'status',
                                 defaultValue: 'Select Status'
                             }
-                        }
-                    };
+                        };
+                    }
                 });
-            };
+            }
 
-            function fillDepartments(data){
+            function fillDepartments(data) {
                 var foundFilter,
                     customData;
 
@@ -945,8 +942,8 @@ angular.module('reportsModule')
                                 key: 'name',
                                 defaultValue: 'Select Department'
                             }
-                        }
-                    };
+                        };
+                    }
                 });
 
                 completed++;
@@ -969,15 +966,15 @@ angular.module('reportsModule')
                                 key: 'description',
                                 defaultValue: 'Select Rate'
                             }
-                        }
-                    };
+                        };
+                    }
 
 
                 });
 
                 completed++;
                 checkAllCompleted();
-            };
+            }
 
             function fillRoomTypeList (data) {
                 _.each(reportList, function(report) {
@@ -992,13 +989,13 @@ angular.module('reportsModule')
                                 selectAll: true,
                                 key: 'name'
                             }
-                        }
-                    };
+                        };
+                    }
                 });
 
                 completed++;
                 checkAllCompleted();
-            };
+            }
 
             function fillRestrictionList (data) {
                 _.each(reportList, function(report) {
@@ -1014,13 +1011,13 @@ angular.module('reportsModule')
                                 key: 'description',
                                 defaultValue: 'Select Restriction(s)'
                             }
-                        }
-                    };
+                        };
+                    }
                 });
 
                 completed++;
                 checkAllCompleted();
-            };
+            }
             function fillOrigins (data) {
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'ORIGIN' });
@@ -1038,16 +1035,17 @@ angular.module('reportsModule')
                                 name: 'hasURLsList',
                                 process: function(filter, selectedItems) {
                                     var hasUrl = _.find(selectedItems, { value: 'URL' });
+
                                     filter.updateData(!hasUrl);
                                 }
                             }
-                        }
-                    };
+                        };
+                    }
                 });
 
                 completed++;
                 checkAllCompleted();
-            };
+            }
 
             function fillURLs (data) {
                 _.each(reportList, function(report) {
@@ -1066,13 +1064,13 @@ angular.module('reportsModule')
                             updateData: function(shouldHide) {
                                 this.data = shouldHide ? [] : this.originalData;
                             }
-                        }
-                    };
+                        };
+                    }
                 });
 
                 completed++;
                 checkAllCompleted();
-            };
+            }
 
             function fillCampaignTypes (data) {
                 _.each(reportList, function(report) {
@@ -1091,13 +1089,13 @@ angular.module('reportsModule')
                             updateData: function(shouldHide) {
                                 this.data = shouldHide ? [] : this.originalData;
                             }
-                        }
-                    };
+                        };
+                    }
                 });
 
                 completed++;
                 checkAllCompleted();
-            };
+            }
 
             function fillFloors (data) {
                 _.each(reportList, function(report) {
@@ -1112,8 +1110,8 @@ angular.module('reportsModule')
                                 key: 'floor_number',
                                 defaultValue: 'Select Floors(s)'
                             }
-                        }
-                    };
+                        };
+                    }
                 });
 
                 completed++;
@@ -1124,19 +1122,20 @@ angular.module('reportsModule')
                 var rateTypeListIds      = _.pluck(rateTypesAndRateList, "rate_type_id"),
                     rateTypeListIds      = _.unique(rateTypeListIds),
                     rateTypeObject       = {},
-                    rateTypeListToReturn = rateTypeListIds.map(function(id){
+                    rateTypeListToReturn = rateTypeListIds.map(function(id) {
                         rateTypeObject   =  _.findWhere(rateTypesAndRateList, {rate_type_id: id});
-                        if(rateTypeObject) {
+                        if (rateTypeObject) {
                             rateTypeObject.name = rateTypeObject.rate_type_name;
                             rateTypeObject = _.pick(rateTypeObject, "name", "rate_type_id", "selected");
                         }
                         return rateTypeObject;
                     });
+
                 return rateTypeListToReturn;
             };
 
             var extractRatesFromRateTypesAndRateList = function(rateTypesAndRateList) {
-                return rateTypesAndRateList.map(function(rate){
+                return rateTypesAndRateList.map(function(rate) {
                     rate.name = rate.rate_name;
                     return _.omit(rate, "rate_type_name");
                 });
@@ -1146,7 +1145,7 @@ angular.module('reportsModule')
             function fillRateTypesAndRateList(data) {
                 var foundFilter;
 
-                //default all are selected for rate & rate types
+                // default all are selected for rate & rate types
                 _.each(data, function(rate) {
                     rate.selected = true;
                 });
@@ -1163,7 +1162,7 @@ angular.module('reportsModule')
                                 hasSearch: true,
                                 key: 'name'
                             }
-                        }
+                        };
 
                         report.hasRateFilter = {
                             data: angular.copy( extractRatesFromRateTypesAndRateList(data) ),
@@ -1172,13 +1171,13 @@ angular.module('reportsModule')
                                 hasSearch: true,
                                 key: 'name'
                             }
-                        }
-                    };
+                        };
+                    }
                 });
 
                 completed++;
                 checkAllCompleted();
-            };
+            }
 
             // fill charge group and charge codes
             function fillCGCC (chargeNAddonGroups, chargeCodes) {
@@ -1211,7 +1210,7 @@ angular.module('reportsModule')
                     else {
                         selected = true;
                         processedCGCC = __adjustChargeGroupsCodes( chargeNAddonGroups, chargeCodes, 'NONE', selected );
-                    };
+                    }
 
                     foundCG = _.find(report['filters'], { value: 'INCLUDE_CHARGE_GROUP' });
 
@@ -1244,8 +1243,8 @@ angular.module('reportsModule')
                                     filter.updateData();
                                 }
                             }
-                        }
-                    };
+                        };
+                    }
 
                     foundCC = _.find(report['filters'], { value: 'INCLUDE_CHARGE_CODE' }) || _.find(report['filters'], { value: 'SHOW_CHARGE_CODES' });
 
@@ -1257,10 +1256,11 @@ angular.module('reportsModule')
                             options: {
                                 selectAll: selected,
                                 hasSearch: false,
-                                key: 'name',
+                                key: 'name'
                             },
                             updateData: function() {
                                 var enabled = [];
+
                                 _.each (this.originalData, function (od) {
                                     if ( ! od.disabled ) {
                                         enabled.push(od);
@@ -1268,13 +1268,13 @@ angular.module('reportsModule')
                                 });
                                 this.data = enabled;
                             }
-                        }
-                    };
+                        };
+                    }
                 });
 
                 completed += 2;
                 checkAllCompleted();
-            };
+            }
 
             // fill addon group and addons
             function fillAGAs (chargeNAddonGroups, addons) {
@@ -1283,6 +1283,7 @@ angular.module('reportsModule')
 
                 var flattenAddons = function(addons) {
                     var data = [];
+
                     _.each (addons, function (addon) {
                         if ( ! addon.disabled ) {
                             _.each(addon.list_of_addons, function(la) {
@@ -1291,7 +1292,7 @@ angular.module('reportsModule')
                         }
                     });
                     return data;
-                }
+                };
 
                 _.each(reportList, function(report) {
                     foundAG = _.find(report['filters'], { value: 'ADDON_GROUPS' });
@@ -1323,8 +1324,8 @@ angular.module('reportsModule')
                                     filter.updateData();
                                 }
                             }
-                        }
-                    };
+                        };
+                    }
 
                     foundAs = _.find(report['filters'], { value: 'ADDONS' });
 
@@ -1336,24 +1337,21 @@ angular.module('reportsModule')
                             options: {
                                 selectAll: true,
                                 hasSearch: true,
-                                key: 'addon_name',
+                                key: 'addon_name'
                             },
                             updateData: function() {
                                 this.data = flattenAddons(this.originalData);
                             }
-                        }
-                    };
+                        };
+                    }
                 });
 
-                completed++
+                completed++;
                 checkAllCompleted();
-            };
+            }
 
             return deferred.promise;
         };
-
-
-
 
 
         // to process the report group by
@@ -1361,17 +1359,13 @@ angular.module('reportsModule')
             // remove the value for 'BLANK'
             if ( report['group_fields'] && report['group_fields'].length ) {
                 report['groupByOptions'] = _.reject(report['group_fields'], { value: 'BLANK' });
-            };
+            }
 
             // patch
             if ( report['title'] === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] ) {
                 report['groupByOptions'] = undefined;
-            };
+            }
         };
-
-
-
-
 
 
         // to reorder the sort by to match the report details column positon
@@ -1390,7 +1384,7 @@ angular.module('reportsModule')
 
                 report['sort_fields'][0] = roomSortBy;
                 report['sort_fields'][2] = dateSortBy;
-            };
+            }
 
             // for AR Summary report the sort by items must be
             // ordered in a specific way as per the design
@@ -1405,7 +1399,7 @@ angular.module('reportsModule')
                 report['sort_fields'][2] = null;
                 report['sort_fields'][3] = null;
                 report['sort_fields'][4] = balanceSortBy;
-            };
+            }
 
             // for in-house report the sort by items must be
             // ordered in a specific way as per the design
@@ -1419,7 +1413,7 @@ angular.module('reportsModule')
 
                 report['sort_fields'][0] = roomSortBy;
                 report['sort_fields'][1] = nameSortBy;
-            };
+            }
 
             // for Login and out Activity report
             // the colspans should be adjusted
@@ -1430,7 +1424,7 @@ angular.module('reportsModule')
 
                 report['sort_fields'][0]['colspan'] = 2;
                 report['sort_fields'][1]['colspan'] = 2;
-            };
+            }
 
 
             // need to reorder the sort_by options
@@ -1446,7 +1440,7 @@ angular.module('reportsModule')
                 report['sort_fields'][3] = null;
                 report['sort_fields'][4] = paidDateSortBy;
                 report['sort_fields'][5] = null;
-            };
+            }
 
             // need to reorder the sort_by options
             // for group deposit report in the following order
@@ -1461,7 +1455,7 @@ angular.module('reportsModule')
                 report['sort_fields'][3] = null;
                 report['sort_fields'][4] = paidDateSortBy;
                 report['sort_fields'][5] = null;
-            };
+            }
 
             // need to reorder the sort_by options
             // for Reservation by User in the following order
@@ -1482,7 +1476,7 @@ angular.module('reportsModule')
                 report['sort_fields'][5] = guranteeType;
                 report['sort_fields'][6] = overrideAmount;
                 report['sort_fields'][7] = null;
-            };
+            }
 
             // need to reorder the sort_by options
             // for daily transactions in the following order
@@ -1504,7 +1498,7 @@ angular.module('reportsModule')
                 report['sort_fields'][7] = null;
                 report['sort_fields'][8] = null;
                 report['sort_fields'][9] = ytd;
-            };
+            }
 
             // need to reorder the sort_by options
             // for rate adjustment report in the following order
@@ -1520,7 +1514,7 @@ angular.module('reportsModule')
                 report['sort_fields'][4] = null;
                 report['sort_fields'][5] = null;
                 report['sort_fields'][6] = user;
-            };
+            }
 
             // need to reorder the sort_by options
             // for group pick report in the following order
@@ -1538,7 +1532,7 @@ angular.module('reportsModule')
                 report['sort_fields'][6] = null;
                 report['sort_fields'][7] = null;
                 report['sort_fields'][8] = null;
-            };
+            }
 
             // need to reorder the sort_by options
             // for guest balance report in the following order
@@ -1552,7 +1546,7 @@ angular.module('reportsModule')
                 report['sort_fields'][2] = null;
                 report['sort_fields'][3] = null;
                 report['sort_fields'][4] = balance;
-            };
+            }
 
             // need to reorder the sort_by options
             // for guest balance report in the following order
@@ -1571,7 +1565,7 @@ angular.module('reportsModule')
                 report['sort_fields'][7] = revenue;
                 report['sort_fields'][8] = null;
                 report['sort_fields'][9] = null;
-            };
+            }
 
             // need to reorder the sort_by options
             // for guest balance report in the following order
@@ -1589,7 +1583,7 @@ angular.module('reportsModule')
                 report['sort_fields'][7] = null;
                 report['sort_fields'][8] = null;
                 report['sort_fields'][9] = null;
-            };
+            }
 
             // need to reorder the sort_by options
             // for guest balance report in the following order
@@ -1604,7 +1598,7 @@ angular.module('reportsModule')
                 report['sort_fields'][3] = null;
                 report['sort_fields'][4] = debit;
                 report['sort_fields'][5] = credit;
-            };
+            }
 
             // need to reorder the sort_by options
             // for guest balance report in the following order
@@ -1637,7 +1631,7 @@ angular.module('reportsModule')
                     null,
                     null
                 ];
-            };
+            }
 
             if ( report['title'] === reportNames['VACANT_ROOMS_REPORT'] ) {
                 var roomNo = angular.copy( _.find(report['sort_fields'], { 'value': 'ROOM_NUMBER' }) ),
@@ -1649,11 +1643,8 @@ angular.module('reportsModule')
                 report['sort_fields'][1] = roomType;
                 report['sort_fields'][2] = daysVacant;
                 report['sort_fields'][3] = lastCheckoutDate;
-            };
+            }
         };
-
-
-
 
 
         // to process the report sort by
@@ -1667,41 +1658,41 @@ angular.module('reportsModule')
 
                     if ( !! item ) {
                         item['sortDir'] = undefined;
-                    };
+                    }
 
                 });
 
                 // making sort by room type default
                 if ( report['title'] === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ) {
                     var roomType = _.find(report['sortByOptions'], { 'value': 'ROOM_TYPE' });
+
                     if ( !! roomType ) {
                         roomType['sortDir'] = true;
                         report['chosenSortBy'] = roomType['value'];
-                    };
-                };
+                    }
+                }
 
                 // making sort by Revenue [desc] default
                 if ( report['title'] === reportNames['COMPANY_TA_TOP_PRODUCERS'] ) {
                     var revenue = _.find(report['sortByOptions'], { 'value': 'REVENUE' });
+
                     if ( !! revenue ) {
                         revenue['sortDir'] = false;
                         report['chosenSortBy'] = revenue['value'];
-                    };
-                };
+                    }
+                }
 
                 // making sort by Room Number [asc] default
                 if ( report['title'] === reportNames['CREDIT_CHECK_REPORT'] ) {
                     var roomNo = _.find(report['sortByOptions'], { 'value': 'ROOM_NO' });
+
                     if ( !! roomNo ) {
                         roomNo['sortDir'] = true;
                         report['chosenSortBy'] = roomNo['value'];
-                    };
-                };
+                    }
+                }
             }
         };
-
-
-
 
 
         // to assign inital date values for this report
@@ -1736,7 +1727,7 @@ angular.module('reportsModule')
                     report['groupStartDate']  = _getDates.businessDate;
                     report['groupEndDate'] = _getDates.twentyEightDaysAfter;
                     /**/
-                    /*report['fromDepositDate']  = _getDates.businessDate;
+                    /* report['fromDepositDate']  = _getDates.businessDate;
                     report['untilDepositDate'] = _getDates.businessDate;*/
                     /**/
                     report['fromPaidDate']  = _getDates.twentyEightDaysBefore;
@@ -1807,7 +1798,7 @@ angular.module('reportsModule')
                     report['untilCreateDate']      = _getDates.businessDate;
                     report['untilAdjustmentDate']  = _getDates.businessDate;
                     break;
-            };
+            }
         };
 
 
@@ -1822,29 +1813,26 @@ angular.module('reportsModule')
                 _date  = parseInt( _dateParts[2] );
 
             var returnObj = {
-                'businessDate' : new Date(_year, _month, _date),
-                'today'        : new Date(_year, _month, _date),
-                'yesterday'    : new Date(_year, _month, _date - 1),
-                'tomorrow'     : new Date(_year, _month, _date + 1),
-                'aWeekAgo'     : new Date(_year, _month, _date - 7),
-                'aWeekAfter'   : new Date(_year, _month, _date + 7),
-                'aMonthAfter'  : new Date(_year, _month, _date + 30),
-                'monthStart'   : new Date(_year, _month, 1),
+                'businessDate': new Date(_year, _month, _date),
+                'today': new Date(_year, _month, _date),
+                'yesterday': new Date(_year, _month, _date - 1),
+                'tomorrow': new Date(_year, _month, _date + 1),
+                'aWeekAgo': new Date(_year, _month, _date - 7),
+                'aWeekAfter': new Date(_year, _month, _date + 7),
+                'aMonthAfter': new Date(_year, _month, _date + 30),
+                'monthStart': new Date(_year, _month, 1),
                 'twentyEightDaysBefore': new Date(_year, _month, _date - 28),
-                'twentyEightDaysAfter' : new Date(_year, _month, _date + 28),
-                'aYearAfter'   : new Date(_year + 1, _month, _date - 1)
+                'twentyEightDaysAfter': new Date(_year, _month, _date + 28),
+                'aYearAfter': new Date(_year + 1, _month, _date - 1)
             };
 
             if ( parseInt(xDays) !== NaN ) {
                 returnObj.xDaysBefore = new Date(_year, _month, _date - xDays);
                 returnObj.xDaysAfter  = new Date(_year, _month, _date + xDays);
-            };
+            }
 
             return returnObj;
         };
-
-
-
 
 
         // HELPER: create time slots
@@ -1862,7 +1850,7 @@ angular.module('reportsModule')
             } else {
                 _step = 15;
                 _parts = 4;
-            };
+            }
 
             _total = _parts * 24;
 
@@ -1887,10 +1875,10 @@ angular.module('reportsModule')
                 _mm = m < 10 ? '0' + m : m;
 
                 _ret.push({
-                    'value' : _hh + ':' + _mm,
-                    'name'  : _hh + ':' + _mm
+                    'value': _hh + ':' + _mm,
+                    'name': _hh + ':' + _mm
                 });
-            };
+            }
 
             return _ret;
         };

@@ -3,9 +3,10 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	'rvAvailabilitySrv',
 	'$rootScope',
 	'ngDialog',
-	'$filter' ,
+	'$filter',
 	'$timeout',
-	function($scope, rvAvailabilitySrv, $rootScope, ngDialog, $filter, $timeout){
+    '$q',
+	function($scope, rvAvailabilitySrv, $rootScope, ngDialog, $filter, $timeout, $q) {
 
 
 	BaseCtrl.call(this, $scope);
@@ -13,29 +14,27 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	$scope.selectedView = 'grid';
 	$scope.page.title = "Availability";
 
-	$scope.setSelectedView = function(selectedView){
+	$scope.setSelectedView = function(selectedView) {
 		$scope.$emit("showLoader");
 		$scope.selectedView = selectedView;
 	};
 
-	$scope.loadSelectedView = function(){
-		if($scope.selectedView === 'grid'){
+	$scope.loadSelectedView = function() {
+		if ($scope.selectedView === 'grid') {
 			return '/assets/partials/availability/roomAvailabilityGridStatus.html';
 		}
-		else if($scope.selectedView === 'graph'){
+		else if ($scope.selectedView === 'graph') {
 			return '/assets/partials/availability/roomAvailabilityGraphStatus.html';
 		}
 	};
 
 
-
-	//default number of selected days is 14
-	$scope.numberOfDaysSelected = 14;
-
+	// default number of selected days is 14
+	$scope.numberOfDaysSelected = '14';
 
 	$scope.data = {};
 
-	//default date value
+	// default date value
 	$scope.data.selectedDate = $rootScope.businessDate;
 	$scope.data.formattedSelectedDate = $filter('date')($scope.data.selectedDate, $rootScope.dateFormat);
 
@@ -54,10 +53,10 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	/**
 	* success call of availability data fetch
 	*/
-	var successCallbackOfAvailabilityFetch = function(data){
-		if($scope.selectedView === 'graph'){
+	var successCallbackOfAvailabilityFetch = function(data) {
+		if ($scope.selectedView === 'graph') {
 			$scope.fetchAdditionalData();
-			}else{
+			} else {
 			$scope.$emit("hideLoader");
 			$scope.$broadcast("changedRoomAvailableData");
 		}
@@ -67,7 +66,7 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	* success call of availability additional data fetch
 	*/
 
-	var successCallbackOfAvailabilityAdditionalDataFetch = function(data){
+	var successCallbackOfAvailabilityAdditionalDataFetch = function(data) {
 		$scope.$emit("hideLoader");
 		$scope.$broadcast("changedRoomAvailableData");
 	};
@@ -75,18 +74,18 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	/**
 	* error call of availability data fetch
 	*/
-	var fetchApiFailed = function(errorMessage){
+	var fetchApiFailed = function(errorMessage) {
 		$scope.$emit("hideLoader");
 	};
 
-	//calculating date after number of dates selected in the select box
+	// calculating date after number of dates selected in the select box
 	$scope.getDateParams = function() {
 		var dateAfter = tzIndependentDate ($scope.data.selectedDate);
 
 		dateAfter.setDate (dateAfter.getDate() + parseInt($scope.numberOfDaysSelected) - 1);
 		var dataForWebservice = {
 			'from_date': $filter('date')(tzIndependentDate ($scope.data.selectedDate), $rootScope.dateFormatForAPI),
-			'to_date'  : $filter('date')(tzIndependentDate (dateAfter), $rootScope.dateFormatForAPI)
+			'to_date': $filter('date')(tzIndependentDate (dateAfter), $rootScope.dateFormatForAPI)
 		};
 
 		return dataForWebservice;
@@ -95,22 +94,19 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	/**
 	* Api to fetch additional data
 	*/
-	$scope.fetchAdditionalData = function(){
-		$timeout(function(){
+	$scope.fetchAdditionalData = function() {
+		$timeout(function() {
 			$scope.invokeApi(rvAvailabilitySrv.fetchAvailabilityAdditionalDetails, $scope.getDateParams(), successCallbackOfAvailabilityAdditionalDataFetch, fetchApiFailed);
 		}, 0);
 
-	};
-
-	var successCallbackOfGrpNAllotDataFetch = function(data){
-		$scope.$emit("hideLoader");
-		$scope.$broadcast("changedGrpNAllotData");
 	};
 
 	/**
 	* Api to fetch group AND Allotment data
 	*/
 	$scope.fetchGrpNAllotData = function() {
+        var deferred = $q.defer();
+
 		var isSameData = function() {
 			var newParams = $scope.getDateParams(),
 				oldParams = $scope.oldDateParams || { 'from_date': '', 'to_date': '' };
@@ -118,21 +114,45 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 			return newParams.from_date == oldParams.from_date && newParams.to_date == oldParams.to_date;
 		};
 
+        var successCallbackOfGrpNAllotDataFetch = function() {
+            $scope.$emit('hideLoader');
+            $scope.$broadcast('changedGrpNAllotData');
+            deferred.resolve( true );
+        };
+
 		if ( isSameData() ) {
 			successCallbackOfGrpNAllotDataFetch();
 		} else {
-			$timeout(function(){
+			$timeout(function() {
 				$scope.oldDateParams = $scope.getDateParams();
-				$scope.invokeApi(rvAvailabilitySrv.fetchGrpNAllotAvailDetails, $scope.getDateParams(), successCallbackOfGrpNAllotDataFetch, fetchApiFailed);
+				$scope.invokeApi(
+                    rvAvailabilitySrv.fetchGrpNAllotAvailDetails,
+                    $scope.getDateParams(),
+                    successCallbackOfGrpNAllotDataFetch,
+                    fetchApiFailed
+                );
 			}, 0);
-		};
+		}
+
+        return deferred.promise;
+	};
+
+	$scope.printAvaiability = function () {
+		$scope.$broadcast('PRINT_AVAILABILITY');
+	};
+
+	$scope.shouldShowPrint = function () {
+		var DAYS = '14',
+			ROOM = 'room';
+
+        return DAYS === $scope.numberOfDaysSelected && ROOM === $scope.availabilityToShow;
 	};
 
 	/**
 	* When there is any change of for availability data params we need to call the api
 	*/
-	$scope.changedAvailabilityDataParams = function(){
-		$timeout(function(){
+	$scope.changedAvailabilityDataParams = function() {
+		$timeout(function() {
 			$scope.invokeApi(rvAvailabilitySrv.fetchAvailabilityDetails, $scope.getDateParams(), successCallbackOfAvailabilityFetch, fetchApiFailed);
 		}, 0);
 

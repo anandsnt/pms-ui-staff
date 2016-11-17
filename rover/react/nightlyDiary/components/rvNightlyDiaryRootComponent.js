@@ -1,40 +1,50 @@
-const NightlyDiaryRootComponent = () => (
-    <div className="diary-nightly-main">
-        {/*This will be moved to another component*/}
-        <div className="grid-timeline">
-             {/*<!-- Room Search -->*/}
-            <div className="grid-room-search">
-                <button className="clear-query visible">
-                 {/*<!-- Add className 'visible' when searching. Tap clears L33 value and removes search. -->*/}
-                    <span className="icons icon-clear-search">Clear query</span>
-                </button>
-             {/* <!-- Add className .hidden when edit screen is displayed -->*/}
-                <input type="text" placeholder="Go to Room No." value="" />
-            </div>
-            <NightlyDiaryDatesContainer/>
+const { createClass, PropTypes } = React;
+const { findDOMNode } = ReactDOM;
+const NightlyDiaryRootComponent = createClass ({
+  componentDidMount() {
+    this.scrollOptions = {
+      probeType: 3,
+      scrollY: true,
+      preventDefault: true,
+      preventDefaultException: { tagName: /^(BUTTON)$/i },
+      mouseWheel: true,
+      deceleration: 0.0009,
+      click: false,
+      scrollbars: 'custom'
+    };
+    this.setScroller();
+  },
+  setScroller() {
+    if (!this.scrollableElement) {
+      this.scrollableElement = findDOMNode(this);
+    }
+    this.scroller = new IScroll(this.scrollableElement, this.scrollOptions);
+    this.refreshScroller();
+  },
+  refreshScroller() {
+    this.scroller.refresh();
+  },
+  componentDidUpdate() {
+    this.refreshScroller();
+    // scroll is moving to top
+    this.scroller.scrollToElement($(findDOMNode(this)).find(".room")[0], 1000, null, true);
+  },
+  render() {
+    return (
+      <div id="diary-nightly-grid" className={this.props.ClassForRootDiv}>
+        <div className="wrapper">
+            {(this.props.showPrevPageButton)?<GoToPreviousPageButtonContainer/>:''}
+            {(this.props.showNextPageButton)?<GoToNextPageButtonContainer/>:''}
+            <NightlyDiaryRoomsListContainer/>
+            <NightlyDiaryReservationsListContainer/>
         </div>
-        <div id="diary-nightly-grid" className="grid-content scrollable top-pagination">
-            <div className="wrapper">
+      </div>
+    );
+  }
+});
 
-                {/*<!-- Pagination (show only those in use) -->*/}
-                <div className="grid-pagination top">
-                    <button type="button" className="button blue">Prev 6 Rooms</button>
-                </div>
-                <div className="grid-pagination bottom">
-                    <button type="button" className="button blue">Next 10 Rooms</button>
-                </div>
-
-                {/*<!-- Rooms -->*/}
-
-                <NightlyDiaryRoomsListContainer/>
-
-
-                {/*<!-- Grid -->*/}
-                <div className="grid-reservations firstday-wed">
-
-                </div>
-            </div>
-        </div>
-
-    </div>
-);
+NightlyDiaryRootComponent.propTypes = {
+  showNextPageButton: PropTypes.bool.isRequired,
+  showPrevPageButton: PropTypes.bool.isRequired,
+  ClassForRootDiv: PropTypes.string.isRequired
+};

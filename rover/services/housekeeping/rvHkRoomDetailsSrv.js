@@ -15,7 +15,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 				} else if ( 3 === id ) {
 					return 'OUT_OF_ORDER';
 				} else {
-					return 'IN_SERVICE'
+					return 'IN_SERVICE';
 				}
 			};
 
@@ -24,10 +24,10 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 				JSON.stringify({
 					rooms: [].concat( options.room_id ),
 					status: {
-						to_date  : options.to_date,
-						end_time : options.end_time,
-						id       : options.room_service_status_id,
-						value    : getValue(options.room_service_status_id)
+						to_date: options.to_date,
+						end_time: options.end_time,
+						id: options.room_service_status_id,
+						value: getValue(options.room_service_status_id)
 					}
 				})
 			);
@@ -85,11 +85,11 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 		};
 
 
-
 		/* NOTE: using the new API structure */
 
 		// room service status list (will be cached)
 		var allServiceStatus = [];
+
 		this.fetchAllServiceStatus = function() {
 			var deferred = $q.defer(),
 				url = 'api/room_services/status_list';
@@ -101,16 +101,17 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 					.then(function(data) {
 						allServiceStatus = data.results;
 						deferred.resolve(allServiceStatus);
-					}.bind(this), function(data) {
+					}, function(data) {
 						deferred.reject(data);
 					});
-			};
+			}
 
 			return deferred.promise;
 		};
 
 		// maintenance reasons (will be cached)
 		var maintenanceReasons = [];
+
 		this.fetchMaintenanceReasons = function() {
 			var deferred = $q.defer(),
 				url = 'api/maintenance_reasons';
@@ -122,23 +123,23 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 					.then(function(data) {
 						maintenanceReasons = data.maintenance_reasons;
 						deferred.resolve(maintenanceReasons);
-					}.bind(this), function(data) {
+					}, function(data) {
 						deferred.reject(data);
 					});
-			};
+			}
 
 			return deferred.promise;
 		};
 
 		this.getRoomLog = function(params) {
 			var deferred = $q.defer(),
-				url = '/api/room_actions/'+params.id+'/?page='+params.page+'&per_page='+params.per_page;
+				url = '/api/room_actions/' + params.id + '/?page=' + params.page + '&per_page=' + params.per_page;
 
 
 				rvBaseWebSrvV2.getJSON(url)
 					.then(function(data) {
 						deferred.resolve(data);
-					}.bind(this), function(data) {
+					}, function(data) {
 						deferred.reject(data);
 					});
 
@@ -149,12 +150,18 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 		// fetch oo/os details from server
 		this.getRoomServiceStatus = function(params) {
 			var deferred = $q.defer(),
-				url = 'api/room_services/' + params.room_id;
+				url = '/api/room_services/service_info.json?',
+				from = tzIndependentDate(params.from_date),
+				year = from.getFullYear(),
+				month = from.getMonth(),
+				to = tzIndependentDate(new Date(year, month + 2, 1));
+
+			params.to_date = $filter('date')(to, 'yyyy-MM-dd');
 
 			rvBaseWebSrvV2.getJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -171,7 +178,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 					setRoomServiceInVault( params );
 
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -185,7 +192,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 			rvBaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -195,12 +202,12 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 		// POST: save from IN_SERVICE to OO/OS
 		this.postCheckOutReservation = function(params) {
 			var deferred = $q.defer(),
-				url = 'api/reservations/'+params.id+'/checkout_from_house_keeping';
+				url = 'api/reservations/' + params.id + '/checkout_from_house_keeping';
 
 			rvBaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -214,7 +221,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 			rvBaseWebSrvV2.putJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -234,7 +241,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 			rvBaseWebSrvV2.putJSON(url, options)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -243,6 +250,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 
 		// get all all WorkTypes
 		var workTypesList = [];
+
 		this.getWorkTypes = function() {
 			var deferred = $q.defer(),
 				url = 'api/work_types';
@@ -254,10 +262,10 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 					.then(function(data) {
 						workTypesList = data.results;
 						deferred.resolve(workTypesList);
-					}.bind(this), function(data) {
+					}, function(data) {
 						deferred.reject(data);
 					});
-			};
+			}
 
 			return deferred.promise;
 		};
@@ -271,14 +279,14 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 			rvBaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
 			return deferred.promise;
 		};
 
-		//CICO-12520 Room service status
+		// CICO-12520 Room service status
 		this.fetchRoomStatus = function(params) {
 			var queryString = {
 				from_date: $filter('date')(tzIndependentDate(new Date(params.year, params.month - 1, 1)), 'yyyy-MM-dd'),
@@ -287,12 +295,13 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 			};
 			var deferred = $q.defer(),
 				url = '/api/room_services/service_info.json?';
+
 			rvBaseWebSrvV2.getJSON(url, queryString)
 				.then(function(data) {
 					deferred.resolve({
 						service_status: data.service_status
 					});
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;
@@ -305,7 +314,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 			rvBaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 

@@ -39,7 +39,7 @@ sntGuestWeb.controller('BaseController', ['$scope', '$state', function($scope, $
 
 
 		return serviceApi(params).then(
-			//success call back
+			// success call back
 			function(data) {
 				if (showLoader) {
 					$scope.$emit('hideLoader');
@@ -52,7 +52,7 @@ sntGuestWeb.controller('BaseController', ['$scope', '$state', function($scope, $
 					}
 				}
 			},
-			//failure callback
+			// failure callback
 			function(error) {
 				if (showLoader) {
 					$scope.$emit('hideLoader');
