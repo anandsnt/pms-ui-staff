@@ -1,14 +1,16 @@
-sntRover.controller('RVfrontDeskDashboardController',['$scope', '$rootScope', 'statistics', function($scope, $rootScope, statistics){
-	//inheriting some useful things
+sntRover.controller('RVfrontDeskDashboardController', ['$scope', '$rootScope', 'statistics', function($scope, $rootScope, statistics) {
+	// inheriting some useful things
 	BaseCtrl.call(this, $scope);
     var that = this;
+
   $scope.statistics = statistics;
-	//scroller related settings
+	// scroller related settings
 	var scrollerOptions = {click: true, preventDefault: false};
+
   	$scope.setScroller('dashboard_scroller', scrollerOptions);
 
-  	$scope.showDashboard = true; //variable used to hide/show dabshboard
-    //changing the header
+  	$scope.showDashboard = true; // variable used to hide/show dabshboard
+    // changing the header
     $scope.$emit("UpdateHeading", 'DASHBOARD_FRONTDESK_HEADING');
 
     // we are hiding the search results area
@@ -25,7 +27,7 @@ sntRover.controller('RVfrontDeskDashboardController',['$scope', '$rootScope', 's
   	*    param1 {event}, javascript event
   	*    param2 {boolean}, value to determine whether dashboard should be visible
   	*/
-  	$scope.$on("showDashboardArea", function(event, showDashboard){
+  	$scope.$on("showDashboardArea", function(event, showDashboard) {
   		$scope.showDashboard = showDashboard;
   		$scope.refreshScroller('dashboard_scroller');
   	});
@@ -36,7 +38,7 @@ sntRover.controller('RVfrontDeskDashboardController',['$scope', '$rootScope', 's
     *   @param {Object} javascript event
     *   @param {array of Objects} data search results
     */
-    $scope.$on("updateDashboardSearchDataFromExternal", function(event, data){
+    $scope.$on("updateDashboardSearchDataFromExternal", function(event, data) {
         $scope.$broadcast("updateDataFromOutside", data);
         $scope.$broadcast("showSearchResultsArea", true);
     });
@@ -47,15 +49,15 @@ sntRover.controller('RVfrontDeskDashboardController',['$scope', '$rootScope', 's
     *   @param {Object} javascript event
     *   @param {array of Objects} data search results
     */
-    $scope.$on("updateDashboardSearchTypeFromExternal", function(event, type){
+    $scope.$on("updateDashboardSearchTypeFromExternal", function(event, type) {
         $scope.$broadcast("updateReservationTypeFromOutside", type);
     });
 
-    //show Latecheckout icon
+    // show Latecheckout icon
     $scope.shouldShowLateCheckout = true;
     $scope.shouldShowQueuedRooms  = true;
-    //scroller is not appearing after coming back from other screens
-    setTimeout(function(){
+    // scroller is not appearing after coming back from other screens
+    setTimeout(function() {
       $scope.refreshScroller('dashboard_scroller');
     }, 500);
 }]);

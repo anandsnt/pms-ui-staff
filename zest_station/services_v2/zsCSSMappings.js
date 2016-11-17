@@ -9,8 +9,9 @@ sntZestStation.service('zsCSSMappings', ['$q', 'zsBaseWebSrv',
      */
     this.fetchCSSMappingList = function() {
       var deferred = $q.defer();
-      //if you are updating the url, make sure that same in rover's gulp task
+      // if you are updating the url, make sure that same in rover's gulp task
       var url = '/assets/asset_list/____generatedThemeMappings/____generatedZestStation/css/____generatedZestStationCSSThemeMappings.json';
+
       zsBaseWebSrv.getJSON(url).then(function(data) {
         mappingList = data;
         deferred.resolve(data);
@@ -39,7 +40,7 @@ sntZestStation.service('zsCSSMappings', ['$q', 'zsBaseWebSrv',
       } else {
         console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
         return;
-      };
+      }
     };
 
   }

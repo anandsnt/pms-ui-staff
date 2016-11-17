@@ -11,7 +11,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
     'zsUtilitySrv',
     function($scope, $stateParams, $state, zsEventConstants, $controller, $timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv, zsUtilitySrv) {
 
-        /**********************************************************************************************
+        /** ********************************************************************************************
          **      Please note that, not all the stateparams passed to this state will not be used in this state, 
          **      however we will have to pass this so as to pass again to future states which will use these.
          **
@@ -45,9 +45,10 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
          * @return {[type]}          [description]
          */
         var afterGuestCheckinCallback = function(response) {
-            //if email is valid and is not blacklisted
+            // if email is valid and is not blacklisted
             var haveValidGuestEmail = checkIfEmailIsBlackListedOrValid();
-            console.warn('afterGuestCheckinCallback :: current state params: ', $stateParams)
+
+            console.warn('afterGuestCheckinCallback :: current state params: ', $stateParams);
             var stateParams = {
                 'guest_id': $stateParams.guest_id,
                 'reservation_id': $stateParams.reservation_id,
@@ -60,7 +61,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 stateParams.email = $stateParams.email;
                 $state.go('zest_station.checkinKeyDispense', stateParams);
             } else {
-                console.warn('to email collection: ', stateParams)
+                console.warn('to email collection: ', stateParams);
                 $state.go('zest_station.checkInEmailCollection', stateParams);
             }
 
@@ -82,12 +83,14 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 params: checkinParams,
                 successCallBack: afterGuestCheckinCallback
             };
+
             $scope.callAPI(zsCheckinSrv.checkInGuest, options);
         };
         /**
          * [submitSignature description]
          * @return {[type]} [description]
          */
+
         $scope.submitSignature = function() {
             /*
              * this method will check the guest in after swiping a card
@@ -110,10 +113,10 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
          * [initializeMe description]
          */
 
-        var initializeMe = function() {
-            //show back button
+        var initializeMe = (function() {
+            // show back button
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
-            //show close button
+            // show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
             $scope.mode = "SIGNATURE_MODE";
             $scope.signaturePluginOptions = {
@@ -122,7 +125,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 lineWidth: 1
             };
             $scope.setScreenIcon('card');
-        }();
+        }());
 
         var setTimedOut = function() {
             $scope.mode = 'TIMED_OUT';

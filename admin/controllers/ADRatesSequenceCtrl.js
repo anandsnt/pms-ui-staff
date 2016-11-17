@@ -19,6 +19,7 @@ admin.controller('ADRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$anchor
 				$scope.sequenceState.selectedOptions = data;
 				$scope.$emit('hideLoader');
 			};
+
 			$scope.invokeApi(ADRateSequenceSrv.fetchSelections, {}, onFetchSelectionsSuccess);
 		};
 
@@ -27,6 +28,7 @@ admin.controller('ADRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$anchor
 				$scope.sequenceState.availableOptions = data;
 				fetchSelections();
 			};
+
 			$scope.invokeApi(ADRateSequenceSrv.fetchOptions, {}, onFetchPrefereneOptions);
 		};
 
@@ -42,6 +44,7 @@ admin.controller('ADRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$anchor
 			var onSaveSuccess = function(data) {
 				$scope.$emit('hideLoader');
 			};
+
 			$scope.invokeApi(ADRateSequenceSrv.save, {
 				"room_rates": $scope.sequenceState.selectedOptions['room_rates'].id,
 				"rate_manager": $scope.sequenceState.selectedOptions['rate_manager'].id,

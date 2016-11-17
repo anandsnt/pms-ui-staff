@@ -1,22 +1,23 @@
 /**
  * Checkin - final
  */
-sntGuestWeb.controller('gwCheckinFinalController', ['$scope', '$state', '$stateParams', '$controller', 'GwWebSrv','GwCheckinSrv',
+sntGuestWeb.controller('gwCheckinFinalController', ['$scope', '$state', '$stateParams', '$controller', 'GwWebSrv', 'GwCheckinSrv',
 	function($scope, $state, $stateParams, $controller, GwWebSrv, GwCheckinSrv) {
 
 		$controller('BaseController', {
 			$scope: $scope
 		});
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "CHECKIN_FINAL";
+
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.confirmationNumber = GwWebSrv.zestwebData.confirmationNo;
 			$scope.isPosting = true;
-		}();
+		}());
 
-		var onSuccess = function(response){
+		var onSuccess = function(response) {
 			$scope.isPosting = false;
-			$scope.responseData =response;
+			$scope.responseData = response;
 		};
 		var options = {
 				params: {
@@ -24,6 +25,7 @@ sntGuestWeb.controller('gwCheckinFinalController', ['$scope', '$state', '$stateP
 				},
 				successCallBack: onSuccess
 		};
+
 		$scope.callAPI(GwCheckinSrv.checkinGuest, options);
 	}
 ]);

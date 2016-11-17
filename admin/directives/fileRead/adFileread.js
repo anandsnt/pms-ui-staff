@@ -1,27 +1,27 @@
-//File reader directive - in HTML <input type="file" ng-model="image" accept="image/*" app-filereader />
-admin.directive('appFilereader', function($q){
+// File reader directive - in HTML <input type="file" ng-model="image" accept="image/*" app-filereader />
+admin.directive('appFilereader', function($q) {
     var slice = Array.prototype.slice;
 
     return {
         restrict: 'A'
         , require: '?ngModel'
-        ,scope: {
-            fileNameKey:'@fileNameKey',
+        , scope: {
+            fileNameKey: '@fileNameKey',
             emitData: '@emitData'
         }
-        , link: function(scope, element, attrs, ngModel){
-            if(!ngModel) {
+        , link: function(scope, element, attrs, ngModel) {
+            if (!ngModel) {
                 return;
             }
 
-            ngModel.$render = function(){};
+            ngModel.$render = function() {};
 
-            element.bind('change', function(e){
+            element.bind('change', function(e) {
                 var element = e.target;
 
                 $q.all(slice.call(element.files, 0).map(readFile))
-                .then(function(values){
-                    if(element.multiple) {
+                .then(function(values) {
+                    if (element.multiple) {
                         ngModel.$setViewValue(values);
                     }
                     else {
@@ -34,9 +34,10 @@ admin.directive('appFilereader', function($q){
                     var deferred = $q.defer();
 
                     var reader = new FileReader();
-                    reader.onload = function(e){
-                    if (scope.emitData !== ''){
-                         $('#'+scope.emitData).val(e.target.result);
+
+                    reader.onload = function(e) {
+                    if (scope.emitData !== '') {
+                         $('#' + scope.emitData).val(e.target.result);
                     }
                         deferred.resolve(e.target.result);
                     };
@@ -45,20 +46,20 @@ admin.directive('appFilereader', function($q){
                     };
                     reader.readAsDataURL(file);
 
-                    if(typeof scope.fileNameKey !== 'undefined'){
+                    if (typeof scope.fileNameKey !== 'undefined') {
                         scope.$parent[scope.fileNameKey] = file.name;
-                    }else{
+                    } else {
                         scope.$parent.fileName = file.name;
                     }
                     scope.$apply();
                     return deferred.promise;
                 }
 
-            });//change
+            });// change
 
-        }//link
+        }// link
 
-    };//return
+    };// return
 
-})//appFilereader
+})// appFilereader
 ;

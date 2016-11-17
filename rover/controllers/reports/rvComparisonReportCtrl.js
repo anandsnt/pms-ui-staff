@@ -34,9 +34,9 @@ sntRover.controller('RVComparisonReportCtrl', [
 				} else if ( !!results[i]['is_static'] ) {
 					processed = postProcess(results[i]);
 					$scope.staticEntries.push( processed );
-				};
-			};
-		};
+				}
+			}
+		}
 
 		function postProcess (entry) {
 			switch ( entry.section ) {
@@ -62,17 +62,17 @@ sntRover.controller('RVComparisonReportCtrl', [
 				default:
 					// no op
 					break;
-			};
+			}
 
 			return entry;
-		};
+		}
 
 		init();
 
 		// re-render must be initiated before for taks like printing.
 		// thats why timeout time is set to min value 50ms
-		var reportSubmited = $scope.$on(reportMsgs['REPORT_SUBMITED'], function(){ 
-			$timeout(function(){
+		var reportSubmited = $scope.$on(reportMsgs['REPORT_SUBMITED'], function() { 
+			$timeout(function() {
 				init();
 			}, 50);
 		});

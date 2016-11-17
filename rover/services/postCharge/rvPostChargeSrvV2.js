@@ -1,4 +1,4 @@
-angular.module('sntRover').service('RVPostChargeSrvV2',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', function( $http, $q, BaseWebSrvV2, RVBaseWebSrv ){
+angular.module('sntRover').service('RVPostChargeSrvV2', ['$http', '$q', 'BaseWebSrvV2', 'RVBaseWebSrv', function( $http, $q, BaseWebSrvV2, RVBaseWebSrv ) {
 
 	var that = this;
 
@@ -29,10 +29,10 @@ angular.module('sntRover').service('RVPostChargeSrvV2',['$http', '$q', 'BaseWebS
 	};
 
 
-	this.getReservationBillDetails = function( reservationId ){
+	this.getReservationBillDetails = function( reservationId ) {
 
 		var deferred = $q.defer();
-		var url = '/api/reservations/'+reservationId+'/bills';
+		var url = '/api/reservations/' + reservationId + '/bills';
 
 		BaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
@@ -45,7 +45,7 @@ angular.module('sntRover').service('RVPostChargeSrvV2',['$http', '$q', 'BaseWebS
 	this.searchChargeItems = function ( params ) {
 
         var deferred = $q.defer();
-        var url = "/api/charge_codes/items_and_charge_codes.json?query="+params.query+"&page="+params.page+"&per_page="+params.per_page+"&charge_group_id="+params.charge_group_id+"&is_favorite="+params.is_favorite;
+        var url = "/api/charge_codes/items_and_charge_codes.json?query=" + params.query + "&page=" + params.page + "&per_page=" + params.per_page + "&charge_group_id=" + params.charge_group_id + "&is_favorite=" + params.is_favorite;
 
         BaseWebSrvV2.getJSON(url).then(function( data ) {
             deferred.resolve(data);
@@ -54,7 +54,6 @@ angular.module('sntRover').service('RVPostChargeSrvV2',['$http', '$q', 'BaseWebS
         });
         return deferred.promise;
     };
-
 
 
 }]);

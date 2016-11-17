@@ -10,7 +10,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.workTypeClickedElement = -1;
 		$scope.taskListClickedElement = -1;
 		$scope.workShiftClickedElement = -1;
-		//Have to change when default task is assigned for all work types.
+		// Have to change when default task is assigned for all work types.
 		$scope.defaultData = {};
 		$scope.defaultData.defaultTask = 0;
 
@@ -21,9 +21,10 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.$emit('hideLoader');
 			};
 			var param = {};
+
 			$scope.is_show_task_management_in_hk_menu = $scope.is_show_task_management_in_hk_menu ? false : true;
 			param.is_show_task_management_in_hk_menu = $scope.is_show_task_management_in_hk_menu;
-			$scope.invokeApi(ADDailyWorkAssignmentSrv.setTaskManagementShowInHK,param,callback);
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.setTaskManagementShowInHK, param, callback);
 
 		};
 
@@ -37,6 +38,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		/**/
 		var getScrollPos = function() {
 			var pos = parseInt( localStorage.getItem(SCROLL_POS_KEY) );
+
 			return isNaN(pos) ? 0 : pos;
 		};
 		/**/
@@ -56,9 +58,9 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.is_show_task_management_in_hk_menu = data.is_show_task_management_in_hk_menu;
 				$scope.$emit('hideLoader');
 				$scope.workType = data.results;
-				angular.forEach($scope.workType,function(item, index) {
-		            if(item.is_default === true){
-		            	angular.forEach(item.tasks,function(taskItem, taskIndex) {
+				angular.forEach($scope.workType, function(item, index) {
+		            if (item.is_default === true) {
+		            	angular.forEach(item.tasks, function(taskItem, taskIndex) {
 		            		$scope.defaultData.defaultTask = taskItem.id;
 		            	});
 		            }
@@ -69,6 +71,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.fetchWorkType, {}, callback);
 		};
+
 		fetchWorkType();
 
 		var resetEachWorkType = function() {
@@ -79,12 +82,13 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				is_show_on_stay_card: false
 			};
 		};
+
 		resetEachWorkType();
 
 		$scope.workTypeForm = 'add';
 
 		$scope.openWorkTypeForm = function(typeIndex, isSystemDefined) {
-			if(!isSystemDefined)
+			if (!isSystemDefined)
 			{
 				if (typeIndex === 'new') {
 					$scope.workTypeForm = 'add';
@@ -176,27 +180,26 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkType, $scope.eachWorkType, callback);
 		};
 
-		$scope.setShowOnStayCard= function() {
+		$scope.setShowOnStayCard = function() {
 			var callback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.workTypeClickedElement = -1;
 				fetchWorkType();
 			};
 			var isShowOnStayCard = this.item.is_show_on_stay_card = !this.item.is_show_on_stay_card;
+
 			this.item.hotel_id = $rootScope.hotelId;
 			this.item.default_task_id = $scope.defaultData.defaultTask;
-			var workTypeId = this.item.id
+			var workTypeId = this.item.id;
+
 			$scope.eachWorkType = this.item;
-			angular.forEach($scope.taskList,function(itemTask, index) {
-				if(itemTask.work_type_id === workTypeId){
+			angular.forEach($scope.taskList, function(itemTask, index) {
+				if (itemTask.work_type_id === workTypeId) {
 					itemTask.is_show_on_stay_card = isShowOnStayCard;
 				}
 	        });
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkType, $scope.eachWorkType, callback);
 		};
-
-
-
 
 
 		// fetch maid work shift
@@ -208,6 +211,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.fetchWorkShift, {}, callback);
 		};
+
 		fetchWorkShift();
 
 		var resetEachWorkShift = function() {
@@ -218,6 +222,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				hotel_id: $rootScope.hotelId
 			};
 		};
+
 		resetEachWorkShift();
 
 		$scope.workShiftForm = 'add';
@@ -236,6 +241,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.workShiftClickedElement = typeIndex;
 
 				var time = this.item.time;
+
 				$scope.eachWorkShift = {
 					name: this.item.name,
 					hours: (!!time && time !== "00:00") ? time.split(':')[0] : '00',
@@ -286,6 +292,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				time: $rootScope.businessDate + ' ' + $scope.eachWorkShift.hours + ':' + $scope.eachWorkShift.mins + ':00',
 				hotel_id: $rootScope.hotelId
 			};
+
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.postWorkShift, params, callback, onSaveFailure);
 		};
 
@@ -310,7 +317,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		};
 
 
-//=========== task list ================
+// =========== task list ================
 
 		// fetch task list
 		var fetchTaskList = function() {
@@ -321,6 +328,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.fetchTaskList, {}, callback);
 		};
+
 		fetchTaskList();
 
 		// fetch these additional API to show them in drop downs
@@ -329,9 +337,9 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.$emit('hideLoader');
 				$scope.roomTypesList = data;
 			};
-			//hide suite as per CICO-24369
+			// hide suite as per CICO-24369
 			var params = {
-				exclude_suite : true
+				exclude_suite: true
 			};
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.fetchRoomTypes, params, rtCallback);
@@ -339,30 +347,35 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			var resHkCallback = function(data) {
 				$scope.$emit('hideLoader');
 
-				angular.forEach(data,function(item, index) {
+				angular.forEach(data, function(item, index) {
 		           item.is_disabled = false;// Added for CICO-12563
 		        });
 		        $scope.resHkStatusList = data;
 
 			};
+
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.fetchResHkStatues, {}, resHkCallback);
 
 			var foCallback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.foStatusList = data;
 			};
+
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.fetchFoStatues, {}, foCallback);
 
 			var hksCallback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.HkStatusList = data;
 			};
+
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.fetchHkStatues, {}, hksCallback);
 		};
+
 		additionalAPIs();
 
 		var initateRoomTaskTimes = function(time, tasktimes) {
 			var initialTime = {};
+
 			_.each($scope.roomTypesList, function(room) {
 				if (tasktimes && tasktimes[room.id] === null) {
 					initialTime[room.id] = {
@@ -371,6 +384,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					};
 				} else {
 					var currTime = tasktimes && tasktimes[room.id] || time;
+
 					initialTime[room.id] = {
 						hours: !!currTime ? currTime.split(':')[0] : '',
 						mins: !!currTime ? currTime.split(':')[1] : ''
@@ -382,17 +396,18 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 		var getRoomTaskTimes = function() {
 			var times = {};
+
 			_.each($scope.roomTypesList, function(room, index) {
 				if ( !!$scope.eachTaskList.room_type_ids[index] ) {
 					if (!!$scope.eachTaskList.rooms_task_completion[room.id].mins || !!$scope.eachTaskList.rooms_task_completion[room.id].hours) {
-						//CICO-27994
-						console.log("reached here")
-						if(!!$scope.eachTaskList.rooms_task_completion[room.id].mins && !!$scope.eachTaskList.rooms_task_completion[room.id].hours)
+						// CICO-27994
+						console.log("reached here");
+						if (!!$scope.eachTaskList.rooms_task_completion[room.id].mins && !!$scope.eachTaskList.rooms_task_completion[room.id].hours)
 							times[room.id] = $rootScope.businessDate + ' ' + $scope.eachTaskList.rooms_task_completion[room.id].hours + ':' + $scope.eachTaskList.rooms_task_completion[room.id].mins + ':00';
-						else if(!!$scope.eachTaskList.rooms_task_completion[room.id].hours)
+						else if (!!$scope.eachTaskList.rooms_task_completion[room.id].hours)
 							times[room.id] = $rootScope.businessDate + ' ' + $scope.eachTaskList.rooms_task_completion[room.id].hours + ':00:00';
-						else if(!!$scope.eachTaskList.rooms_task_completion[room.id].mins)
-							times[room.id] = $rootScope.businessDate + ' ' + '00:'+ $scope.eachTaskList.rooms_task_completion[room.id].mins +':00';
+						else if (!!$scope.eachTaskList.rooms_task_completion[room.id].mins)
+							times[room.id] = $rootScope.businessDate + ' ' + '00:' + $scope.eachTaskList.rooms_task_completion[room.id].mins + ':00';
 					} else {
 						times[room.id] = '';
 					}
@@ -403,23 +418,24 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 		var resetEachTaskList = function() {
 			$scope.eachTaskList = {
-				name                         : '',
-				work_type_id                 : '',
-				room_type_ids                : [],
-				front_office_status_ids      : [],
-				reservation_statuses_ids     : [],
-				is_occupied                  : '',
-				is_vacant                    : '',
-				hours                        : '',
-				mins                         : '',
-				task_completion_hk_status_id : '',
-				rooms_task_completion        : initateRoomTaskTimes(),
-				is_pickup					 : false,
-				is_clean			 	 	 : false,
-				is_dirty					 : false
+				name: '',
+				work_type_id: '',
+				room_type_ids: [],
+				front_office_status_ids: [],
+				reservation_statuses_ids: [],
+				is_occupied: '',
+				is_vacant: '',
+				hours: '',
+				mins: '',
+				task_completion_hk_status_id: '',
+				rooms_task_completion: initateRoomTaskTimes(),
+				is_pickup: false,
+				is_clean: false,
+				is_dirty: false
 			};
 
 			var frequencyParams = {};
+
 			frequencyParams.monday = false;
 			frequencyParams.tuesday = false;
 			frequencyParams.wednesday = false;
@@ -430,6 +446,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			$scope.eachTaskList.frequency = frequencyParams;
 			$scope.eachTaskList.frequency.days = 0;
 		};
+
 		resetEachTaskList();
 
 		$scope.taskListForm = 'add';
@@ -448,6 +465,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		var applyIds = function(source, entry) {
 			var model = [];
 			var match;
+
 			_.each(source, function(item, index) {
 				model[index] = false;
 
@@ -457,17 +475,18 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 				if ( !!match ) {
 					model[index] = true;
-				};
+				}
 			});
 			return angular.copy( model );
 		};
 
 		var traceBackIds = function(source, model) {
 			var idAry = [];
+
 			_.each(source, function(item, index) {
 				if ( model[index] ) {
 					idAry.push(item.id);
-				};
+				}
 			});
 			return idAry;
 		};
@@ -478,23 +497,24 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			});
 		};
 
-		var checkForFrequencyType = function(frequencyObj){
+		var checkForFrequencyType = function(frequencyObj) {
 			var isCustom = false, isWeekDay = false, isWeekEnd = false, isByWeekDay = false, isByStayDay = false;
-			if(frequencyObj.days !== null && frequencyObj.days!== 0){
+
+			if (frequencyObj.days !== null && frequencyObj.days !== 0) {
 				isCustom = true;
 				isByStayDay = true;
 				isByWeekDay = false;
-			} else if(frequencyObj.sunday === true && frequencyObj.monday === true
+			} else if (frequencyObj.sunday === true && frequencyObj.monday === true
 				&& frequencyObj.tuesday === true && frequencyObj.wednesday === true
 				&& frequencyObj.thursday === true && frequencyObj.friday === true
-				&& frequencyObj.saturday === true){
+				&& frequencyObj.saturday === true) {
 					isWeekDay = true;
 					isWeekEnd = true;
-			} else if(frequencyObj.sunday === true && frequencyObj.saturday === true){
+			} else if (frequencyObj.sunday === true && frequencyObj.saturday === true) {
 					isWeekEnd = true;
-			} else if(frequencyObj.monday === true
+			} else if (frequencyObj.monday === true
 				&& frequencyObj.tuesday === true && frequencyObj.wednesday === true
-				&& frequencyObj.thursday === true && frequencyObj.friday === true){
+				&& frequencyObj.thursday === true && frequencyObj.friday === true) {
 					isWeekDay = true;
 			} else {
 				isCustom = true;
@@ -505,10 +525,11 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			var returnObj = {
 				"isCustom": isCustom,
 				"isWeekDay": isWeekDay,
-				"isWeekEnd" : isWeekEnd,
+				"isWeekEnd": isWeekEnd,
 				"isByWeekDay": isByWeekDay,
-				"isByStayDay" : isByStayDay
-			}
+				"isByStayDay": isByStayDay
+			};
+
 			return returnObj;
 		};
 
@@ -516,7 +537,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			// reset flag
 			_.map($scope.roomTypesList, function(roomType) {
 				roomType.show = false;
-				return roomType
+				return roomType;
 			});
 		};
 
@@ -531,7 +552,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		};
 
 		function openTaskListForm (item, typeIndex, isSystemDefined) {
-			if(!isSystemDefined)
+			if (!isSystemDefined)
 			{
 				if (typeIndex === 'new') {
 					$scope.taskListForm = 'add';
@@ -545,39 +566,40 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				} else {
 					$scope.taskListForm = 'edit';
 					var frequencyType = checkForFrequencyType(item.frequency);
+
 					$scope.taskListClickedElement = typeIndex;
 					var time = item.completion_time;
 
 					$scope.eachTaskList = {
-						name                         : item.name,
-						work_type_id                 : item.work_type_id,
-						room_type_ids                : applyIds( $scope.roomTypesList, item.room_type_ids ),
-						reservation_statuses_ids     : applyIds( $scope.resHkStatusList, item.reservation_statuses_ids ),
-						is_occupied                  : item.is_occupied,
-						is_vacant                    : item.is_vacant,
-						hours                        : !!time ? time.split(':')[0] : '',
-						mins                         : !!time ? time.split(':')[1] : '',
-						task_completion_hk_status_id : item.task_completion_hk_status_id,
-						id                           : item.id,
-						rooms_task_completion        : initateRoomTaskTimes(time, item.room_types_completion_time),
-						isWeekDay                    :frequencyType.isWeekDay,
-						isWeekEnd                    :frequencyType.isWeekEnd,
-						isCustom                     :frequencyType.isCustom,
-						frequency 					 : item.frequency,
-						is_active					 : item.is_active,
-						is_dirty					 : item.is_dirty,
-						is_clean 					 : item.is_clean,
-						is_pickup					 : item.is_pickup
+						name: item.name,
+						work_type_id: item.work_type_id,
+						room_type_ids: applyIds( $scope.roomTypesList, item.room_type_ids ),
+						reservation_statuses_ids: applyIds( $scope.resHkStatusList, item.reservation_statuses_ids ),
+						is_occupied: item.is_occupied,
+						is_vacant: item.is_vacant,
+						hours: !!time ? time.split(':')[0] : '',
+						mins: !!time ? time.split(':')[1] : '',
+						task_completion_hk_status_id: item.task_completion_hk_status_id,
+						id: item.id,
+						rooms_task_completion: initateRoomTaskTimes(time, item.room_types_completion_time),
+						isWeekDay: frequencyType.isWeekDay,
+						isWeekEnd: frequencyType.isWeekEnd,
+						isCustom: frequencyType.isCustom,
+						frequency: item.frequency,
+						is_active: item.is_active,
+						is_dirty: item.is_dirty,
+						is_clean: item.is_clean,
+						is_pickup: item.is_pickup
 					};
 					mapRoomShowflag($scope.eachTaskList);
-					if(frequencyType.isCustom === true){
+					if (frequencyType.isCustom === true) {
 					//	$scope.eachTaskList.isByWeekDay = frequencyType.isByWeekDay;
 					//	$scope.eachTaskList.isByStayDay = frequencyType.isByStayDay;
 						$scope.eachTaskList.customBy = (frequencyType.isByWeekDay === true) ? "weekday" : "stayday";
 					}
 				}
 			}
-		};
+		}
 
 		$scope.closeTaskListForm = function() {
 			$scope.taskListClickedElement = -1;
@@ -612,23 +634,24 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			};
 
 			var params = {
-				name                         : $scope.eachTaskList.name,
-				work_type_id                 : $scope.eachTaskList.work_type_id,
-				room_type_ids                : traceBackIds( $scope.roomTypesList, $scope.eachTaskList.room_type_ids ),
-				reservation_statuses_ids     : traceBackIds( $scope.resHkStatusList, $scope.eachTaskList.reservation_statuses_ids ),
-				is_occupied                  : $scope.eachTaskList.is_occupied, //as per CICO-33166 removed front_office_status_ids and used is_occupied and is_vacant instead
-				is_vacant                    : $scope.eachTaskList.is_vacant,
-				completion_time              : $rootScope.businessDate + ' ' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins + ':00',
-				task_completion_hk_status_id : $scope.eachTaskList.task_completion_hk_status_id,
-				rooms_task_completion        : getRoomTaskTimes(),
-				is_active   			     : true,
-				is_dirty					 : $scope.eachTaskList.is_dirty,
-				is_clean 					 : $scope.eachTaskList.is_clean,
-				is_pickup					 : $scope.eachTaskList.is_pickup
+				name: $scope.eachTaskList.name,
+				work_type_id: $scope.eachTaskList.work_type_id,
+				room_type_ids: traceBackIds( $scope.roomTypesList, $scope.eachTaskList.room_type_ids ),
+				reservation_statuses_ids: traceBackIds( $scope.resHkStatusList, $scope.eachTaskList.reservation_statuses_ids ),
+				is_occupied: $scope.eachTaskList.is_occupied, // as per CICO-33166 removed front_office_status_ids and used is_occupied and is_vacant instead
+				is_vacant: $scope.eachTaskList.is_vacant,
+				completion_time: $rootScope.businessDate + ' ' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins + ':00',
+				task_completion_hk_status_id: $scope.eachTaskList.task_completion_hk_status_id,
+				rooms_task_completion: getRoomTaskTimes(),
+				is_active: true,
+				is_dirty: $scope.eachTaskList.is_dirty,
+				is_clean: $scope.eachTaskList.is_clean,
+				is_pickup: $scope.eachTaskList.is_pickup
 
 			};
 
 			var frequencyParams = {};
+
 			frequencyParams.monday = false;
 			frequencyParams.tuesday = false;
 			frequencyParams.wednesday = false;
@@ -638,23 +661,23 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			frequencyParams.sunday = false;
 			params.frequency = frequencyParams;
 			params.frequency.days = 0;
-			if($scope.eachTaskList.isCustom === false){
+			if ($scope.eachTaskList.isCustom === false) {
 
-				if($scope.eachTaskList.isWeekDay === true){
+				if ($scope.eachTaskList.isWeekDay === true) {
 					frequencyParams.monday = true;
 					frequencyParams.tuesday = true;
 					frequencyParams.wednesday = true;
 					frequencyParams.thursday = true;
 					frequencyParams.friday = true;
 				}
-				if($scope.eachTaskList.isWeekEnd === true){
+				if ($scope.eachTaskList.isWeekEnd === true) {
 					frequencyParams.saturday = true;
 					frequencyParams.sunday = true;
 				}
 				params.frequency = frequencyParams;
 				params.frequency.days = 0;
 			} else {
-				if($scope.eachTaskList.customBy === "weekday"){
+				if ($scope.eachTaskList.customBy === "weekday") {
 					params.frequency = $scope.eachTaskList.frequency;
 					params.frequency.days = 0;
 				} else {
@@ -677,22 +700,23 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			};
 
 			var params = {
-				name                         : $scope.eachTaskList.name,
-				work_type_id                 : $scope.eachTaskList.work_type_id,
-				room_type_ids                : traceBackIds( $scope.roomTypesList, $scope.eachTaskList.room_type_ids ),
-				reservation_statuses_ids     : traceBackIds( $scope.resHkStatusList, $scope.eachTaskList.reservation_statuses_ids ),
-				is_occupied                  : $scope.eachTaskList.is_occupied, //as per CICO-33166 removed front_office_status_ids and used is_occupied and is_vacant instead
-				is_vacant                    : $scope.eachTaskList.is_vacant,
-				completion_time              : $rootScope.businessDate + ' ' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins + ':00',
-				task_completion_hk_status_id : $scope.eachTaskList.task_completion_hk_status_id,
-				id                           : $scope.eachTaskList.id,
-				rooms_task_completion        : getRoomTaskTimes(),
-				is_active					 : $scope.eachTaskList.is_active,
-				is_clean					 : $scope.eachTaskList.is_clean,
-				is_dirty 					 : $scope.eachTaskList.is_dirty,
-				is_pickup					 : $scope.eachTaskList.is_pickup
+				name: $scope.eachTaskList.name,
+				work_type_id: $scope.eachTaskList.work_type_id,
+				room_type_ids: traceBackIds( $scope.roomTypesList, $scope.eachTaskList.room_type_ids ),
+				reservation_statuses_ids: traceBackIds( $scope.resHkStatusList, $scope.eachTaskList.reservation_statuses_ids ),
+				is_occupied: $scope.eachTaskList.is_occupied, // as per CICO-33166 removed front_office_status_ids and used is_occupied and is_vacant instead
+				is_vacant: $scope.eachTaskList.is_vacant,
+				completion_time: $rootScope.businessDate + ' ' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins + ':00',
+				task_completion_hk_status_id: $scope.eachTaskList.task_completion_hk_status_id,
+				id: $scope.eachTaskList.id,
+				rooms_task_completion: getRoomTaskTimes(),
+				is_active: $scope.eachTaskList.is_active,
+				is_clean: $scope.eachTaskList.is_clean,
+				is_dirty: $scope.eachTaskList.is_dirty,
+				is_pickup: $scope.eachTaskList.is_pickup
 			};
 			var frequencyParams = {};
+
 			frequencyParams.monday = false;
 			frequencyParams.tuesday = false;
 			frequencyParams.wednesday = false;
@@ -700,23 +724,23 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			frequencyParams.friday = false;
 			frequencyParams.saturday = false;
 			frequencyParams.sunday = false;
-			if($scope.eachTaskList.isCustom === false){
+			if ($scope.eachTaskList.isCustom === false) {
 
-				if($scope.eachTaskList.isWeekDay === true){
+				if ($scope.eachTaskList.isWeekDay === true) {
 					frequencyParams.monday = true;
 					frequencyParams.tuesday = true;
 					frequencyParams.wednesday = true;
 					frequencyParams.thursday = true;
 					frequencyParams.friday = true;
 				}
-				if($scope.eachTaskList.isWeekEnd === true){
+				if ($scope.eachTaskList.isWeekEnd === true) {
 					frequencyParams.saturday = true;
 					frequencyParams.sunday = true;
 				}
 				params.frequency = frequencyParams;
 				params.frequency.days = 0;
 			} else {
-				if($scope.eachTaskList.customBy === "weekday"){
+				if ($scope.eachTaskList.customBy === "weekday") {
 					params.frequency = $scope.eachTaskList.frequency;
 					params.frequency.days = 0;
 				} else {
@@ -728,17 +752,17 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putTaskListItem, params, callback);
 		};
-		$scope.handleFrequencySetting = function(type){
-			setTimeout(function(){
-				if(type === "custom"){
+		$scope.handleFrequencySetting = function(type) {
+			setTimeout(function() {
+				if (type === "custom") {
 					$scope.eachTaskList.isWeekDay = $scope.eachTaskList.isWeekEnd = !$scope.eachTaskList.isCustom;
 				}
-				if(type === "weekday" || type == "weekend"){
+				if (type === "weekday" || type == "weekend") {
 					$scope.eachTaskList.isCustom = false;
 				}
 				$scope.$apply();
 
-			},100)
+			}, 100);
 
 		};
 		$scope.anySelected = function(bool) {
@@ -749,6 +773,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 		$scope.checkCopyBtnShow = function(id) {
 			var room = $scope.eachTaskList.rooms_task_completion[id];
+
 			return !!room.hours || !!room.mins ? true : false;
 		};
 
@@ -770,19 +795,20 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				room.mins = mins;
 			});
 		};
-		$scope.toggleActiveInactiveTask = function(){
+		$scope.toggleActiveInactiveTask = function() {
 			var params = {};
+
 			this.item.is_active = !this.item.is_active;
-			angular.copy(this.item , params);
+			angular.copy(this.item, params);
 			params.completion_time = $rootScope.businessDate + ' ' + this.item.completion_time;
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putTaskListItem, params);
 		};
 
-		$scope.clickedDefaultTaskChekbox = function (task){
+		$scope.clickedDefaultTaskChekbox = function (task) {
 
-			angular.forEach($scope.taskList,function(item, index) {
-				if(item.work_type_id === task.work_type_id){
-					if(item.id === task.id){
+			angular.forEach($scope.taskList, function(item, index) {
+				if (item.work_type_id === task.work_type_id) {
+					if (item.id === task.id) {
 						item.is_default = !item.is_default;
 					} else {
 						item.is_default = false;
@@ -794,45 +820,49 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			var dataToSrv =
 			{
-				"id" : task.id,
-				"work_type_id"    :task.work_type_id
+				"id": task.id,
+				"work_type_id": task.work_type_id
 			};
+
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.postDefaultTask, dataToSrv, successUpdateTask);
 
 		};
-		var successUpdateTask = function(){
+		var successUpdateTask = function() {
 			$scope.$emit('hideLoader');
 		};
 
-		$scope.updateDefaultTask = function(){
+		$scope.updateDefaultTask = function() {
 			var dataToSrv =
 			{
-				"id" : $scope.defaultData.defaultTask
+				"id": $scope.defaultData.defaultTask
 			};
+
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.postDefaultTask, dataToSrv, successUpdateTask);
 		};
 
-		$scope.onChangeWorkType = function(){
+		$scope.onChangeWorkType = function() {
 
-			//$scope.resHkStatusList
+			// $scope.resHkStatusList
 			var selectedWorkType = "";
-			angular.forEach($scope.workType,function(item, index) {
-	            if(item.value === "DEPARTURE_CLEAN" && item.id === $scope.eachTaskList.work_type_id){
+
+			angular.forEach($scope.workType, function(item, index) {
+	            if (item.value === "DEPARTURE_CLEAN" && item.id === $scope.eachTaskList.work_type_id) {
 	            	selectedWorkType = "DEPARTURE_CLEAN";
-	            } else if(item.value === "STAYOVER_CLEAN" && item.id === $scope.eachTaskList.work_type_id){
+	            } else if (item.value === "STAYOVER_CLEAN" && item.id === $scope.eachTaskList.work_type_id) {
 	            	selectedWorkType = "STAYOVER_CLEAN";
-	            } else if(item.value === "LINEN_CHANGE" && item.id === $scope.eachTaskList.work_type_id){
+	            } else if (item.value === "LINEN_CHANGE" && item.id === $scope.eachTaskList.work_type_id) {
 	            	selectedWorkType = "LINEN_CHANGE";
-	            } else if(item.value === "TURNDOWN" && item.id === $scope.eachTaskList.work_type_id){
+	            } else if (item.value === "TURNDOWN" && item.id === $scope.eachTaskList.work_type_id) {
 	            	selectedWorkType = "TURNDOWN";
 	            }
 
 	        });
 
 			var reservation_statuses_ids_array = [];
-			if(selectedWorkType === "DEPARTURE_CLEAN"){
-				angular.forEach($scope.resHkStatusList,function(item, index) {
-		            if(item.value === "DUEOUT" || item.value === "DEPARTED"){
+
+			if (selectedWorkType === "DEPARTURE_CLEAN") {
+				angular.forEach($scope.resHkStatusList, function(item, index) {
+		            if (item.value === "DUEOUT" || item.value === "DEPARTED") {
 		            	item.is_disabled = false;
 		            	reservation_statuses_ids_array.push(item.id);
 		            } else {
@@ -840,9 +870,9 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		            }
 
 		        });
-			} else if(selectedWorkType === "STAYOVER_CLEAN" || selectedWorkType === "LINEN_CHANGE"){
-				angular.forEach($scope.resHkStatusList,function(item, index) {
-		            if(item.value === "STAYOVER"){
+			} else if (selectedWorkType === "STAYOVER_CLEAN" || selectedWorkType === "LINEN_CHANGE") {
+				angular.forEach($scope.resHkStatusList, function(item, index) {
+		            if (item.value === "STAYOVER") {
 		            	item.is_disabled = false;
 		            	reservation_statuses_ids_array.push(item.id);
 		            } else {
@@ -850,9 +880,9 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		            }
 
 		        });
-			} else if(selectedWorkType === "TURNDOWN"){
-				angular.forEach($scope.resHkStatusList,function(item, index) {
-		            if(item.value === "STAYOVER" || item.value === "ARRIVALS" || item.value === "ARRIVED"){
+			} else if (selectedWorkType === "TURNDOWN") {
+				angular.forEach($scope.resHkStatusList, function(item, index) {
+		            if (item.value === "STAYOVER" || item.value === "ARRIVALS" || item.value === "ARRIVED") {
 		            	item.is_disabled = false;
 		            	reservation_statuses_ids_array.push(item.id);
 		            } else {
@@ -861,7 +891,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 		        });
 			} else {
-				angular.forEach($scope.resHkStatusList,function(item, index) {
+				angular.forEach($scope.resHkStatusList, function(item, index) {
 		            item.is_disabled = false;
 		        });
 			}

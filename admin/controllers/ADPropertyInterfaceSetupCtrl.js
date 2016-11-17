@@ -23,20 +23,21 @@ admin.controller('ADPropertyInterfaceSetupCtrl', ['$scope', '$controller', 'ADHo
             $scope.invokeApi(ADHotelPropertyInterfaceSrv.fetchList, {}, $scope.fetchListSuccessCallback);
         };
 
-        $scope.activateInactivate = function(name, currentStatus, index){
+        $scope.activateInactivate = function(name, currentStatus, index) {
 		var nextStatus = (currentStatus === true ? false : true);
 		var data = {
 			"set_active": nextStatus,
 			"id": name
 		};
-		var successCallbackActivateInactivate = function(data){
+		var successCallbackActivateInactivate = function(data) {
 			$scope.interfaceList[index].active = nextStatus;
 			$scope.$emit('hideLoader');
 		};
-                if (nextStatus){
-                    $scope.invokeApi(ADHotelPropertyInterfaceSrv.activate, data , successCallbackActivateInactivate);
+
+                if (nextStatus) {
+                    $scope.invokeApi(ADHotelPropertyInterfaceSrv.activate, data, successCallbackActivateInactivate);
                 } else {
-                    $scope.invokeApi(ADHotelPropertyInterfaceSrv.deActivate, data , successCallbackActivateInactivate);
+                    $scope.invokeApi(ADHotelPropertyInterfaceSrv.deActivate, data, successCallbackActivateInactivate);
                 }
 	};
 

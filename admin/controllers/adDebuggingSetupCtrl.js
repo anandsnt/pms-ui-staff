@@ -1,4 +1,4 @@
-admin.controller('adDebuggingSetupCtrl',['$scope','adDebuggingSetupSrv','$state','$filter','$stateParams', 'ngTableParams',function($scope,adDebuggingSetupSrv,$state,$filter,$stateParams, ngTableParams){
+admin.controller('adDebuggingSetupCtrl', ['$scope', 'adDebuggingSetupSrv', '$state', '$filter', '$stateParams', 'ngTableParams', function($scope, adDebuggingSetupSrv, $state, $filter, $stateParams, ngTableParams) {
 
  /*
   * To retrieve previous state
@@ -13,24 +13,24 @@ admin.controller('adDebuggingSetupCtrl',['$scope','adDebuggingSetupSrv','$state'
   BaseCtrl.call(this, $scope);
 
 
-  $scope.sortByName = function(){
-      if($scope.selectedDevice === "") {
-        $scope.tableParams.sorting({'device_name' : $scope.tableParams.isSortBy('device_name', 'asc') ? 'desc' : 'asc'});
+  $scope.sortByName = function() {
+      if ($scope.selectedDevice === "") {
+        $scope.tableParams.sorting({'device_name': $scope.tableParams.isSortBy('device_name', 'asc') ? 'desc' : 'asc'});
       }
   };
-  $scope.sortByUser = function(){
-      if($scope.selectedDevice === "") {
-        $scope.tableParams.sorting({'last_logged_in_user' : $scope.tableParams.isSortBy('last_logged_in_user', 'asc') ? 'desc' : 'asc'});
+  $scope.sortByUser = function() {
+      if ($scope.selectedDevice === "") {
+        $scope.tableParams.sorting({'last_logged_in_user': $scope.tableParams.isSortBy('last_logged_in_user', 'asc') ? 'desc' : 'asc'});
       }
   };
-  $scope.sortByDevice = function(){
-      if($scope.selectedDevice === "") {
-        $scope.tableParams.sorting({'device_type' : $scope.tableParams.isSortBy('device_type', 'asc') ? 'desc' : 'asc'});
+  $scope.sortByDevice = function() {
+      if ($scope.selectedDevice === "") {
+        $scope.tableParams.sorting({'device_type': $scope.tableParams.isSortBy('device_type', 'asc') ? 'desc' : 'asc'});
     }
   };
 
-  $scope.filterDevices = function(value, index, array){
-      if($scope.searchText == '')
+  $scope.filterDevices = function(value, index, array) {
+      if ($scope.searchText == '')
         return true;
       var searchRegExp = new RegExp($scope.searchText.toLowerCase());
       // if(value.device_name != undefined && value.device_name != null && value.device_name != "")
@@ -40,8 +40,8 @@ admin.controller('adDebuggingSetupCtrl',['$scope','adDebuggingSetupSrv','$state'
       // else
       //   return searchRegExp.test(value.device_uid.toLowerCase()) || searchRegExp.test(value.application.toLowerCase()) || searchRegExp.test(value.device_type.toLowerCase());
    
-      for(var key in value) {
-        if(value[key] != null && value[key] != "" && typeof value[key] == 'string' && searchRegExp.test((value[key]).toLowerCase())){
+      for (var key in value) {
+        if (value[key] != null && value[key] != "" && typeof value[key] == 'string' && searchRegExp.test((value[key]).toLowerCase())) {
             return true;
         }
       }
@@ -49,7 +49,7 @@ admin.controller('adDebuggingSetupCtrl',['$scope','adDebuggingSetupSrv','$state'
 
    };
 
-  $scope.fetchDeviceDebugSetup = function(){
+  $scope.fetchDeviceDebugSetup = function() {
 
     var fetchDeviceDebugSetupSuccessCallback = function(data) {
         $scope.isLoading = false;
@@ -73,23 +73,24 @@ admin.controller('adDebuggingSetupCtrl',['$scope','adDebuggingSetupSrv','$state'
           {
             if (params.settings().$scope == null) {
               params.settings().$scope = $scope;
-            };
+            }
             // use build-in angular filter
             var orderedData = params.sorting() ?
               $filter('orderBy')($scope.deviceList, params.orderBy()) :
               $scope.deviceList;
+
             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
           }
         });
         $scope.tableParams.reload();
   };
   
-  $scope.invokeApi(adDebuggingSetupSrv.fetchDevices, {},fetchDeviceDebugSetupSuccessCallback);
+  $scope.invokeApi(adDebuggingSetupSrv.fetchDevices, {}, fetchDeviceDebugSetupSuccessCallback);
 
   };
   $scope.fetchDeviceDebugSetup();
 
-  $scope.saveDebugSettings = function(){
+  $scope.saveDebugSettings = function() {
 
     var saveDebugSetupSuccessCallback = function(data) {
         $scope.isLoading = false;
@@ -101,47 +102,50 @@ admin.controller('adDebuggingSetupCtrl',['$scope','adDebuggingSetupSrv','$state'
   var unwantedKeys = ["app_version", "device_type", "logging_start_time", "logging_end_time"];
   var saveData = dclone($scope.selectedDevice, unwantedKeys);
 
-  $scope.invokeApi(adDebuggingSetupSrv.saveSetup, saveData,saveDebugSetupSuccessCallback);
+  $scope.invokeApi(adDebuggingSetupSrv.saveSetup, saveData, saveDebugSetupSuccessCallback);
 
   };
 
-  var setDurations = function(){
-    _.each($scope.deviceList, function(device){
-        if(device.logging_end_time != "" && device.logging_start_time != ""){
-          device.hours_log_enabled = (new Date(device.logging_end_time).getTime() - new Date(device.logging_start_time).getTime())/(1000*60*60) ;
+  var setDurations = function() {
+    _.each($scope.deviceList, function(device) {
+        if (device.logging_end_time != "" && device.logging_start_time != "") {
+          device.hours_log_enabled = (new Date(device.logging_end_time).getTime() - new Date(device.logging_start_time).getTime()) / (1000 * 60 * 60) ;
         }
-    })
-  }
+    });
+  };
 
-  $scope.getDisplayTime = function(date){
-    var dateObj = new Date(date)
+  $scope.getDisplayTime = function(date) {
+    var dateObj = new Date(date);
+
     return dateObj.toLocaleString();
-  }
+  };
 
-  $scope.changeDuration = function(hours){
+  $scope.changeDuration = function(hours) {
     $scope.selectedDevice.logging_start_time = new Date().toLocaleString();
-    $scope.selectedDevice.logging_end_time = new Date(new Date().getTime() + (hours * 1000 *60 *60)).toLocaleString();
-  }
+    $scope.selectedDevice.logging_end_time = new Date(new Date().getTime() + (hours * 1000 * 60 * 60)).toLocaleString();
+  };
 
-  $scope.selectDevice = function(event, device, index){
-    if($scope.selectedDevice !== "" && $scope.selectedDevice.device_uid == device.device_uid){
+  $scope.selectDevice = function(event, device, index) {
+    if ($scope.selectedDevice !== "" && $scope.selectedDevice.device_uid == device.device_uid) {
       $scope.selectedDevice = "";
       $scope.selectedIndex = "";
-    }else{
+    } else {
       $scope.selectedIndex = index;
       $scope.selectedDevice = device;
       $scope.selectedDevice.hours_log_enabled = $scope.selectedDevice.hours_log_enabled == "" ? 4 : $scope.selectedDevice.hours_log_enabled;
     }
       
-  }
+  };
 
-  var setHoursList = function(){
+  var setHoursList = function() {
     $scope.hours = [];
-    for(var i = 1; i < 25; i++){
-      var hour = {'name': i, 'value':i};
+    for (var i = 1; i < 25; i++) {
+      var hour = {'name': i, 'value': i};
+
       $scope.hours.push(hour);
     } 
   };
+
   setHoursList();
 
   }]);

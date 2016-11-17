@@ -27,13 +27,14 @@ admin
                     lastSelectedDate = '',
                     businessDate = tzIndependentDate($rootScope.businessDate),
                     toDate = tzIndependentDate($rootScope.businessDate);
+
                 toDate = new Date(toDate.setFullYear(toDate.getFullYear() + $rootScope.rateDateRangeLimit));
 
                 toDate.setDate(toDate.getDate() - 1);
         
                 $scope.fromDateOptions = _.extend({
                     minDate: businessDate,
-                    maxDate : toDate,
+                    maxDate: toDate,
                     onSelect: function() {
                         if (tzIndependentDate($scope.begin_date) > tzIndependentDate($scope.end_date)) {
                             $scope.end_date = $scope.begin_date;
@@ -43,7 +44,7 @@ admin
 
                 $scope.toDateOptions = _.extend({
                     minDate: businessDate,
-                    maxDate : toDate,
+                    maxDate: toDate,
                     onSelect: function() {
                         if (tzIndependentDate($scope.begin_date) > tzIndependentDate($scope.end_date)) {
                             $scope.begin_date = $scope.end_date;
@@ -53,7 +54,7 @@ admin
 
                 $scope.Sets = [];
                 $scope.Sets.push(createDefaultSet("Set 1"));
-                //if no date is selected .Make bussiness date as default CICO-8703
+                // if no date is selected .Make bussiness date as default CICO-8703
 
                 if (!$scope.begin_date) {
                     $scope.begin_date = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
@@ -62,7 +63,7 @@ admin
                     $scope.end_date = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
                 }
 
-                try { //Handle exception, in case of NaN, initially.
+                try { // Handle exception, in case of NaN, initially.
                     lastSelectedDate = $scope.rateData.date_ranges[$scope.rateData.date_ranges.length - 1].end_date;
                 } catch (e) {}
 
@@ -121,6 +122,7 @@ admin
 
                 angular.forEach($scope.Sets, function(set, key) {
                     var setDetails = {};
+
                     setDetails.name = set.setName;
                     setDetails.monday = set.days[0].checked;
                     setDetails.tuesday = set.days[1].checked;
@@ -147,6 +149,7 @@ admin
                     /*
                      * check if any day has already been checked,if else check it in new set
                      */
+
                     angular.forEach($scope.Sets, function(set, key) {
                         angular.forEach(set.days, function(day, key) {
                             if (day.checked) {
@@ -182,6 +185,7 @@ admin
              */
             $scope.checkboxClicked = function(dayIndex, SetIndex) {
                 var temp = $scope.Sets[SetIndex].days[dayIndex].checked;
+
                 angular.forEach($scope.Sets, function(set, key) {
                     angular.forEach(set.days, function(day, key) {
                         if ($scope.Sets[SetIndex].days[dayIndex].name === day.name) {
@@ -198,6 +202,7 @@ admin
             $scope.allFieldsFilled = function() {
 
                 var anyOneDayisChecked = false;
+
                 angular.forEach($scope.Sets, function(set, key) {
                     angular.forEach(set.days, function(day, key) {
                         if (day.checked) {
@@ -245,6 +250,7 @@ admin
                         'checked': true
                     }]
                 };
+
                 return sets;
 
             };
