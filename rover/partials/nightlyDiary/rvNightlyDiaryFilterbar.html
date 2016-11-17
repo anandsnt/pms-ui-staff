@@ -1,7 +1,7 @@
-<div class="diary-nightly-search-form">
+<div class="diary-nightly-search-form" ng-controller="rvNightlyDiaryFiltersController">
 
     <!-- Refresh -->
-    <div class="entry reset">
+    <div class="entry reset" ng-click="clickedResetButton()">
         <button type="button" class="button white with-icon only-icon">
             <span class="icons icon-reset"></span>
         </button>
@@ -9,14 +9,14 @@
 
     <!-- Set start date -->
     <div class="entry date">
-        <button type="button" class="button white with-icon only-icon">
+        <button type="button" class="button white with-icon only-icon" ng-click="clickedDateLeftShift()">
             <span class="icons icon-double-arrow black"></span>
         </button>
-        <div class="entry-data">
+        <div class="entry-data" ng-click="clickedDatePicker()">
             <input type="text" class="datepicker" value="" readonly />
-            <span class="date-range"></span>
+            <span class="date-range">{{ diaryData.fromDate | date: 'd MMM' }} - {{ diaryData.toDate | date: 'd MMM yyyy' }}</span>
         </div>
-        <button type="button" class="button white with-icon only-icon">
+        <button type="button" class="button white with-icon only-icon" ng-click="clickedDateRightShift()">
             <span class="icons icon-double-arrow black rotate-right"></span>
         </button>
     </div>
@@ -28,7 +28,7 @@
         </button>
         <!--- Show count when searching:
         <span class="result-count">{X} Matches</span> -->
-        <input class="query" placeholder="Search by Guest, Allotment/Group or Conf./Ext. red no." type="search" autocomplete="off">
+        <input class="query" placeholder="{{ 'PLACEHOLDER_NIGHTLY_DIARY_SEARCH' | translate }}" type="search" autocomplete="off">
 
 
         <!-- Search results, show only when searching: -->
@@ -77,15 +77,15 @@
 
     <!-- 7 or 21 Days -->
     <div class="entry switch">
-        <div class="switch-button overlay" ng-class="{'on' : diaryData.isSevenSelected}" ng-click="toggleSwitchMode()">
+        <div class="switch-button" ng-class="{'on' : diaryData.numberOfDays === 7 }" ng-click="toggleSwitchMode()">
             <input value="" type="checkbox" checked>
             <label class="data-off">
-                <span class="value">7 Days</span>
-                <span class="switch-icon">21 Days</span>
+                <span class="value" translate>7_DAYS</span>
+                <span class="switch-icon" translate>21_DAYS</span>
             </label>
             <label class="data-on">
-                <span class="switch-icon">7 Days</span>
-                <span class="value">21 Days</span>
+                <span class="switch-icon" translate>7_DAYS</span>
+                <span class="value" translate>21_DAYS</span>
             </label>
         </div>
     </div>
@@ -93,11 +93,11 @@
     <!-- Show / Hide Filters -->
     <div class="entry filters">
         <button type="button" class="button white with-icon only-icon">
-            <span class="count">33</span>
+            <span class="count">{{diaryData.roomFilterCount}}</span>
             <span class="icons icon-filter-room"></span>
         </button>
         <button type="button" class="button white with-icon only-icon">
-            <span class="count">4</span>
+            <span class="count">{{diaryData.filterCount}}</span>
             <span class="icons icon-filter"></span>
         </button>
     </div>
