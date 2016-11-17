@@ -1,19 +1,50 @@
-const NightlyDiaryRootComponent = ({showNextPageButton,showPrevPageButton,ClassForRootDiv}) => (
-
-
-	<div id="diary-nightly-grid" className={ClassForRootDiv}>
+const { createClass, PropTypes } = React;
+const { findDOMNode } = ReactDOM;
+const NightlyDiaryRootComponent = createClass ({
+  componentDidMount() {
+    this.scrollOptions = {
+      probeType: 3,
+      scrollY: true,
+      preventDefault: true,
+      preventDefaultException: { tagName: /^(BUTTON)$/i },
+      mouseWheel: true,
+      deceleration: 0.0009,
+      click: false,
+      scrollbars: 'custom'
+    };
+    this.setScroller();
+  },
+  setScroller() {
+    if (!this.scrollableElement) {
+      this.scrollableElement = findDOMNode(this);
+    }
+    this.scroller = new IScroll(this.scrollableElement, this.scrollOptions);
+    this.refreshScroller();
+  },
+  refreshScroller() {
+    this.scroller.refresh();
+  },
+  componentDidUpdate() {
+    this.refreshScroller();
+    // scroll is moving to top
+    this.scroller.scrollToElement($(findDOMNode(this)).find(".room")[0], 1000, null, true);
+  },
+  render() {
+    return (
+      <div id="diary-nightly-grid" className={this.props.ClassForRootDiv}>
         <div className="wrapper">
-            {(showPrevPageButton)?<GoToPreviousPageButtonContainer/>:''}
-            {(showNextPageButton)?<GoToNextPageButtonContainer/>:''}
+            {(this.props.showPrevPageButton)?<GoToPreviousPageButtonContainer/>:''}
+            {(this.props.showNextPageButton)?<GoToNextPageButtonContainer/>:''}
             <NightlyDiaryRoomsListContainer/>
             <NightlyDiaryReservationsListContainer/>
         </div>
-    </div>
-);
-const { PropTypes } = React;
+      </div>
+    );
+  }
+});
 
 NightlyDiaryRootComponent.propTypes = {
   showNextPageButton: PropTypes.bool.isRequired,
   showPrevPageButton: PropTypes.bool.isRequired,
-  ClassForRootDiv 	: PropTypes.string.isRequired
-}
+  ClassForRootDiv: PropTypes.string.isRequired
+};

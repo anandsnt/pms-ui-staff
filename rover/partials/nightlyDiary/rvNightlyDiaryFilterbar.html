@@ -77,7 +77,7 @@
 
     <!-- 7 or 21 Days -->
     <div class="entry switch">
-        <div class="switch-button" ng-class="{'on' : diaryData.isSevenSelected}" ng-click="toggleSwitchMode()">
+        <div class="switch-button" ng-class="{'on' : diaryData.numberOfDays === 7 }" ng-click="toggleSwitchMode()">
             <input value="" type="checkbox" checked>
             <label class="data-off">
                 <span class="value" translate>7_DAYS</span>

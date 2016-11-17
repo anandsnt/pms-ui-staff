@@ -1,6 +1,7 @@
 admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$state', 'roomTypes', function($scope, $rootScope, adCheckoutSrv, $state, roomTypes) {
 
 	$scope.errorMessage = '';
+    $scope.successMessage = '';
 
     BaseCtrl.call(this, $scope);
 
@@ -204,12 +205,13 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
                 'selected_excluded_from_checkout_notification': $scope.checkoutEmailRoomExclusionConfig.unSelectedExcludedRoomIds
 			};
 
-    	var saveCheckoutDetailsSuccessCallback = function(data) {
-    		$scope.$emit('hideLoader');
-            $scope.goBackToPreviousState();
-    	};
+        var saveCheckoutDetailsSuccessCallback = function(data) {
+            $scope.$emit('hideLoader');
+            $scope.$broadcast('SAVE_SETTINGS_SUCCESS');
+            $scope.successMessage = "Success!. Settings has been saved.";
+        };
 
-    	$scope.invokeApi(adCheckoutSrv.save, uploadData, saveCheckoutDetailsSuccessCallback);
+        $scope.invokeApi(adCheckoutSrv.save, uploadData, saveCheckoutDetailsSuccessCallback);
     };
 
     var setWatchers = function() {
