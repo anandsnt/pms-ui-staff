@@ -6,6 +6,7 @@
 		</header
 >		<section class="content-scroll">
 					<div ng-include="'/assets/partials/common/notification_message.html'"  ></div>
+					<div ng-include="'/assets/partials/common/notification_success_message.html'"  ></div>
 					<form style="overflow-y:auto;" name="edit-social-lobby" method="post" class="form float">
 						<fieldset>
 							<div class="entry full-width">
@@ -219,12 +220,36 @@
 							
 						</fieldset>	
 
-
 						<fieldset class="holder left">
 							<ad-checkbox is-checked="require_cc_for_checkout_email_flag" label="{{'CC_GUARENTEED_LABEL' | translate}}" div-class="full-width"></ad-checkbox>	
 							
 							<ad-checkbox is-checked="include_cash_reservationsy_flag" label=" {{'CASH_PAYMENT_LABEL' | translate}}" div-class="full-width"></ad-checkbox>
 						</fieldset>	
+						<!--  -->
+		                <fieldset class="holder full-width">
+		                    <div class="form-title">
+		                        <h3>
+		                <span>
+		                Exclude
+		                </span>
+		                </h3>
+		                    </div>
+		                    <section class="holder full-width group group-grey" ng-class="{'active':openRoomExclusionSettings}">
+		                        <div class="form-title has-toggle">
+		                            <h3 class="with-count">
+		                <!-- add .active if more than 0 -->
+		                <span class="count" ng-class="{'active' : checkoutEmailRoomExclusionConfig.noOfItemsSelected > 0}"> {{checkoutEmailRoomExclusionConfig.noOfItemsSelected}} </span>
+		                                                {{'CHECKOUT_EMAIL_ROOM_EXCLUSION_SETTINGS' | translate}}
+		                </h3>
+		                            <div class="toggle-arrows" ng-click="toggleRoomExlusionSettings(!openRoomExclusionSettings)">
+		                                <img class="toggle-down" src="/assets/cssimg/arrow-down.png">
+		                                <img class="toggle-up" src="/assets/cssimg/arrow-up.png">
+		                            </div>
+		                        </div>
+		                        <ad-filter-table filter-config="checkoutEmailRoomExclusionConfig"></ad-filter-table>
+		                    </section>
+		                </fieldset>
+		                <!--  -->
 						<fieldset class="holder full-width">
 							<div class="entry">
 								<label translate>EXCLUDE_FOLLOWING_ROOM_TYPES_FROM_EMAIL_INVITE</label>
