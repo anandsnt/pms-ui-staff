@@ -1,8 +1,8 @@
-const paginationDataReducer = (state = [], action) => {
+const callBackReducer = (state = [], action) => {
   switch (action.type) {
     case 'DIARY_VIEW_CHANGED':
-        return action.paginationData;
+        return action.callbackFromAngular;
     default:
-        return state.paginationData;
+        return state.callbackFromAngular;
   }
 };

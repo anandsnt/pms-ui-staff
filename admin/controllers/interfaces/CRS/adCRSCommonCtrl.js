@@ -33,12 +33,19 @@ angular.module('admin').controller('adCRSCommonCtrl', ['$scope', '$rootScope', '
                     $scope.sync.end_date = $scope.sync.start_date;
                 }
                 $scope.endDatePickerOptions.maxDate = getFutureDate($scope.sync.start_date, MAX_REFRESH_SPAN_DAYS);
+            }, getSyncItems = function(full_sync_items) {
+                var arr = [];
+
+                _.each(full_sync_items, function(item) {
+                    arr.push({id: item});
+                });
+                return arr;
             };
 
         $scope.sync = {
             start_date: null,
             end_date: null,
-            items: ['group', 'inventory', 'rate', 'reservation', 'restriction']
+            items: getSyncItems(config.full_sync_items)
         };
 
         $scope.toggleEnabled = function() {
@@ -58,10 +65,19 @@ angular.module('admin').controller('adCRSCommonCtrl', ['$scope', '$rootScope', '
         };
 
         $scope.startSync = function() {
-            var payLoad = {
+            var items = _.pluck(_.filter($scope.sync.items, {isSelected: true}), 'id'),
+                payLoad;
+
+            if (!items.length) {
+                $scope.successMessage = '';
+                $scope.errorMessage = ['ERROR: Please select at least one Item to Synchronize!'];
+                return;
+            }
+
+            payLoad = {
                 start_date: dateFilter($scope.sync.start_date, $rootScope.dateFormatForAPI),
                 end_date: dateFilter($scope.sync.end_date, $rootScope.dateFormatForAPI),
-                items: $scope.sync.items
+                items: items
             };
 
             $scope.callAPI(adInterfacesCommonConfigSrv.initSync, {
@@ -70,6 +86,7 @@ angular.module('admin').controller('adCRSCommonCtrl', ['$scope', '$rootScope', '
                     interfaceIdentifier: interfaceIdentifier
                 },
                 onSuccess: function() {
+                    $scope.errorMessage = '';
                     $scope.successMessage = 'SUCCESS: Synchronization Initiated!';
                 }
             });

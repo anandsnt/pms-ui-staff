@@ -1,13 +1,15 @@
-const GoToPreviousPageButtonComponent = ({goToPrevButtonClicked }) =>
+const GoToPreviousPageButtonComponent = ({goToPrevButtonClicked, perPage }) =>
      (
         <div className="grid-pagination top">
             {
-                <button type="button" className="button blue" onClick={(e) => goToPrevButtonClicked(e)}>Prev X Rooms</button>
+                <button type = "button" className = "button blue" onClick = {(e) => goToPrevButtonClicked(e)}>{"Prev "+perPage+" Rooms"}</button>
             }
         </div>
     );
 
 const { PropTypes } = React;
+
 GoToPreviousPageButtonComponent.propTypes = {
-  goToPrevButtonClicked: PropTypes.func
-}
+  goToPrevButtonClicked: PropTypes.func,
+  perPage: PropTypes.number
+};

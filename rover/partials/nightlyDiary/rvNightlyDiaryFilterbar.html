@@ -25,15 +25,15 @@
 
     <!-- 7 or 21 Days -->
     <div class="entry switch">
-        <div class="switch-button" ng-class="{'on' : diaryData.isSevenSelected}" ng-click="toggleSwitchMode()">
+        <div class="switch-button" ng-class="{'on' : diaryData.numberOfDays === 7 }" ng-click="toggleSwitchMode()">
             <input value="" type="checkbox" checked>
             <label class="data-off">
-                <span class="value">7 Days</span>
-                <span class="switch-icon">21 Days</span>
+                <span class="value" translate>7_DAYS</span>
+                <span class="switch-icon" translate>21_DAYS</span>
             </label>
             <label class="data-on">
-                <span class="switch-icon">7 Days</span>
-                <span class="value">21 Days</span>
+                <span class="switch-icon" translate>7_DAYS</span>
+                <span class="value" translate>21_DAYS</span>
             </label>
         </div>
     </div>
