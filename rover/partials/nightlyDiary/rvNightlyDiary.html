@@ -1,13 +1,11 @@
 <!-- Diary header -->
 <div ng-include="'/assets/partials/common/header.html'"></div>
 
-<div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryFilterbar.html'"></div>
+<div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryTopFilterBar.html'"></div>
 
 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
 <section id="diary-nightly" ng-class="{'diary-days-7': (diaryData.numberOfDays === 7) ,'diary-days-21': (diaryData.numberOfDays === 21) }" class="content" role="main">
-
-    <div class="diary-nightly-main">
 
         <!-- Room Search + Timeline -->
         <div class="grid-timeline">
@@ -44,28 +42,47 @@
         <!-- Rooms + Reservations. YOU CAN RELOAD THIS WHEN SWITCHING 7 or 21 DAYS, NO NEED TO RELOAD ENTIRE SCREEN.  -->
         <span id="nightlyDiaryMain"></span>
 
-    </div>
-
-
-    <!-- Sidebar -->
-    <div class="diary-nightly-sidebar hidden">
-        <!-- Toggle Sidebar View -->
-        <div class="sidebar-options">
-            <button type="button" class="button white"> <!-- Add class 'active' when showing unassigned reservations + add class 'visible' to .diary-nightly-unassigned in sidebar-unassigned.html -->
-                <span class="count">{Count of unassigned res.}</span>
-                Unassigned
-            </button>
-            <button type="button" class="button white"> <!-- Add class 'active' when showing filters + add class 'visible' to .diary-nightly-filters in sidebar-filters.html -->
-                <span class="count">{Count of active filters}</span>
-                Filters
-            </button>
+        <div class="diary-nightly-sidebar diary-nightly-unassigned"> <!-- Add class 'visible' to show -->
+            <div class="sidebar-header">
+                <h2>Unassigned</h2>
+                <p>Drag & Drop to assign a room</p>
+            </div>
+            <div class="unassigned-labels">
+                <div class="data">Name / Room Type</div>
+                <div class="arrival">Arrival</div>
+                <div class="nights">Nights</div>
+            </div>
+            <div class="unassigned-list scrollable">
+                <div class="wrapper">
+                    <div class="guest {'check-in', 'pre-check-in' or 'no-status'}">
+                        <div class="data">
+                            <strong class="name">{Lastname Firstname}</strong>
+                            <!-- If VIP, show: <span class="vip">VIP</span> -->
+                            <span class="room">{Room Type}</span>
+                        </div>
+                        <div class="arrival">{Arrival Date}</div>
+                        <div class="nights">{No. of Nights}</div>
+                    </div>
+                    ... repeat
+                </div>
+            </div>
         </div>
 
-        <!-- Unassigned Reservations -->
-        {_content/sidebar-unassigned.html}
+        <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRightFilterBar.html'"></div>
 
-        <!-- Filters -->
-        {_content/sidebar-filters.html}
-    </div>
+        <!-- Sidebar -->
+        <div class="diary-nightly-sidebar hidden11">
+            <!-- Toggle Sidebar View -->
+            <div class="sidebar-options">
+                <button type="button" class="button white"> <!-- Add class 'active' when showing unassigned reservations + add class 'visible' to .diary-nightly-unassigned in sidebar-unassigned.html -->
+                    <span class="count">{Count of unassigned res.}</span>
+                    Unassigned
+                </button>
+                <button type="button" class="button white"> <!-- Add class 'active' when showing filters + add class 'visible' to .diary-nightly-filters in sidebar-filters.html -->
+                    <span class="count">{Count of active filters}</span>
+                    Filters
+                </button>
+            </div>
+        </div>
 
 </section>
