@@ -282,6 +282,10 @@ sntZestStation.controller('zsAdminCtrl', [
          * Save the admin settings
          **/
         $scope.saveSettings = function() {
+            // if no workstation selected, do not save
+            if (!$scope.workstation.selected) {
+                return;
+            }
             var getParams = function() {
                 var params = {
                     'kiosk': {

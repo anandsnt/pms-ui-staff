@@ -46,7 +46,12 @@ sntZestStation.controller('zsRootCtrl', [
         window.history.pushState('initial', 'Showing Landing Page', '#/home');
 
         $scope.$on('GENERAL_ERROR', function() {
-            $state.go('zest_station.speakToStaff');
+            // resolve an issue where (if no workstation assigned, or the workstation was deleted, 
+            //   instead of staying at OOS, its going to speak to staff page)
+            if ($state.current.name !== 'zest_station.outOfService'){
+                $state.go('zest_station.speakToStaff');    
+            };
+            
         });
 
         $scope.trustAsHtml = function(string) {
