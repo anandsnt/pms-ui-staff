@@ -1,5 +1,5 @@
 angular.module('sntRover')
-.controller('rvNightlyDiaryFiltersController',
+.controller('rvNightlyDiaryTopFilterBarController',
     [   '$scope',
         '$rootScope',
         '$state',
