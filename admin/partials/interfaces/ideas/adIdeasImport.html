@@ -1,0 +1,18 @@
+<!-- Collapse View -->
+<div ng-hide="selectedMenu ==='import'" class="cursor_pointer">
+    <em class="rate_step_title">Import</em>
+    <div class="pull-right"><img src="/assets/cssimg/arrow-down.png"></div>
+</div>
+<!-- Expanded View -->
+<div class="form float" ng-show="selectedMenu ==='import'">
+    <form class="form zest-web-settins-form float">
+        <div class="form-title full-width expanded-menu-header">
+            <h3><span>Import</span></h3>
+            <div class="toggle-arrows pull-right" ng-click="cancelMenuSelection()">
+                <img class="toggle-up" src="/assets/cssimg/arrow-up.png">
+            </div>
+        </div>
+        </fieldset>
+        <ad-save-cancel-area save-action="saveSetup" cancel-action="goBackToPreviousState"></ad-save-cancel-area>
+    </form>
+</div>

@@ -90,17 +90,14 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             }]
         }
     });
-
+    
     $stateProvider.state('admin.travelClickSetup', {
-        templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
-        controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'travelclick';
-        }],
+        templateUrl: '/assets/partials/interfaces/TravelClick/adTravelClickCRSSetup.html',
+        controller: 'adTravelClickCRSSetupCtrl',
+        url: '/travelclick/setup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('travelclick');
+            CRSConfig: ['adTravelClickCRSSetupSrv', function(adTravelClickCRSSetupSrv) {
+                return adTravelClickCRSSetupSrv.fetchCRSConfiguration();
             }]
         }
     });
@@ -149,6 +146,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         resolve: {
             config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('revinate');
+            }]
+        }
+    });
+
+    $stateProvider.state('admin.accountViewSetup', {
+        templateUrl: '/assets/partials/interfaces/AccountView/adAccountViewSetup.html',
+        controller: 'adAccountViewSetupCtrl',
+        url: '/revinate/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('accountview');
             }]
         }
     });
