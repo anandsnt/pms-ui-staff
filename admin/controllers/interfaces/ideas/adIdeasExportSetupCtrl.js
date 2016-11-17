@@ -117,10 +117,10 @@ admin.controller('adIdeasExportSetupCtrl', ['$scope', '$rootScope', 'adIdeasSetu
                 numberOfMonths: 1,
                 changeYear: true,
                 changeMonth: true,
-                beforeShow: function(input, inst) {
+                beforeShow: function(input) {
                     $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
                 },
-                onClose: function(value) {
+                onClose: function() {
                     $('#ui-datepicker-overlay').remove();
                 },
                 yearRange: "-1:+5"
@@ -134,8 +134,9 @@ admin.controller('adIdeasExportSetupCtrl', ['$scope', '$rootScope', 'adIdeasSetu
          */
         $scope.saveSetup = function() {
             var params = angular.copy($scope.ideaSetup);
+
             // Convert date object to API format
-            params.deliver_by_ftp = (params.deliver_by_ftp === 'ftp') ? true : false;
+            params.deliver_by_ftp = (params.deliver_by_ftp === 'ftp');
 
             params.start_date = dateFilter(params.start_date, $rootScope.dateFormatForAPI);
             $scope.callAPI(adIdeasSetupSrv.postIdeasSetup, {
@@ -147,8 +148,8 @@ admin.controller('adIdeasExportSetupCtrl', ['$scope', '$rootScope', 'adIdeasSetu
             });
         };
 
-        var init = function() {
-            $scope.ideaSetup.deliver_by_ftp = $scope.ideaSetup.deliver_by_ftp ? "ftp" : "email";
-        }();
+    (function init() {
+        $scope.ideaSetup.deliver_by_ftp = $scope.ideaSetup.deliver_by_ftp ? "ftp" : "email";
+    })();
     }
 ]);

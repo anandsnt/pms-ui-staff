@@ -10,13 +10,12 @@ admin.controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 'ideaSetup', 'adId
             $scope.selectedMenu = '';
         };
 
-        // -------------------------------------------------------------------------------------------------------------- INIT
-        var init = (function() {
+        (function init() {
             $scope.ideaSetup = ideaSetup;
             // handle null in selected_charge_groups and available_charge_groups
             $scope.ideaSetup.selected_charge_groups = $scope.ideaSetup.selected_charge_groups || [];
             $scope.ideaSetup.available_charge_groups = $scope.ideaSetup.available_charge_groups || [];
             $scope.selectedMenu = "";
-        }());
+        })();
     }
 ]);
