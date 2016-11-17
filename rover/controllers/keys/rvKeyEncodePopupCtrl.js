@@ -141,8 +141,8 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			}
 		}, 1000);
 		if (secondsAfterCalled > that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK) {
-            if($scope.isRemoteEncodingEnabled) {
-                //hide tablet option if only remote encoders and no device connected
+            if ($scope.isRemoteEncodingEnabled) {
+                // hide tablet option if only remote encoders and no device connected
                 $scope.showTabletOption = false;
                 showPrintKeyOptions(true);
             } else {
@@ -152,10 +152,11 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
                 $scope.deviceNotConnected = true;
                 $scope.$apply();
             }
-            //remove tablet option from dropdown if no connected device found
+            // remove tablet option from dropdown if no connected device found
             var result = _.findWhere($scope.encoderTypes, {description: 'Tablet'});
-            if(typeof result !== 'undefined') {
-                 $scope.encoderTypes.splice(index, 1);
+
+            if (typeof result !== 'undefined') {
+                $scope.encoderTypes.splice(result, 1);
             }
 		}
 
@@ -220,14 +221,14 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		if ($scope.numberOfKeysSelected === 0) {
 			return;
 		}
-        //if tablet chosen it means we need to get the details of device connected
-        if($scope.encoderSelected === '-1') {
+        // if tablet chosen it means we need to get the details of device connected
+        if ($scope.encoderSelected === '-1') {
             $scope.writingInProgress = true;
             that.getCardInfo();
             return false;
         }
 		// CICO-11444. If saflok_msr we we ll be connecting to remote encoders in the network
-		else if($scope.isRemoteEncodingEnabled) {
+		else if ($scope.isRemoteEncodingEnabled) {
 			that.callKeyFetchAPI();
 			return false;
 		}
@@ -287,7 +288,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 	    if (typeof cardInfo !== 'undefined') {
 	    	postParams.card_info = cardInfo;
 	    	that.lastSuccessfulCardIDReaded = cardInfo.card_uid;
-	    } else if($scope.isRemoteEncodingEnabled) {
+	    } else if ($scope.isRemoteEncodingEnabled) {
 	    	postParams.card_info = "";
             postParams.key_encoder_id = $scope.encoderSelected;
 	    }
@@ -533,11 +534,12 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			return showDeviceNotConnected();
 		}
 
-        //if a device connected then add Tablet option and show as default
-        //We are keeping -1 as id for Tablet option since it is not used anywhere in APIs
-        if(!!$scope.showTabletOption) {
+        // if a device connected then add Tablet option and show as default
+        // We are keeping -1 as id for Tablet option since it is not used anywhere in APIs
+        if ($scope.showTabletOption) {
             var result = _.findWhere($scope.encoderTypes, {description: 'Tablet'});
-            if(typeof result === 'undefined') {
+
+            if (typeof result === 'undefined') {
                 $scope.encoderTypes.push({
                     id: '-1',
                     description: 'Tablet'
