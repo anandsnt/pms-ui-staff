@@ -58,7 +58,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             lastDropedTime = new Date();
         };
         $scope.clickedInterfaceMenuItem = function (event, state, submenu) {
-            if (submenu.name === 'SAFLOK') {
+            if (submenu.name === 'SAFLOK' || submenu.name === 'SALTO') {
                 state = 'admin.external-mappings';
             }
             // need to cache the submenu, then go to the next state with the interface id
