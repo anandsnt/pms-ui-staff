@@ -301,10 +301,10 @@
 
         <!-- item_08: Users -->
         <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasUserFilter && chosenReport.empList.data.length" ng-class="{'active': filterItemsToggle.item_08}" ng-click="toggleFilterItems('item_08')">
-            <span class="title">Employees</span>
+            <span class="title">{{ chosenReport.filterTitle }}</span>
         </a>
         <div class="report-col settings-content" ng-show="chosenReport.hasUserFilter && chosenReport.empList.data.length" ng-class="{'hidden': !filterItemsToggle.item_08}">
-            <multi-option-selection label="Employees"
+            <multi-option-selection label="{{ chosenReport.filterTitle }}"
                 on-update="refreshSidebarScroll"
                 data="chosenReport.empList.data"
                 options="chosenReport.empList.options"></multi-option-selection>
