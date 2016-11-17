@@ -2,10 +2,12 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
     ['$q',
     'BaseWebSrvV2',
     function($q, BaseWebSrvV2) {
+    var that = this;
 
     /*
-     * Service function to fetch room list.
-     * @return {Object} room list.
+     * To fetch the rooms list
+     * @param {data} object
+     * return object
      */
     this.fetchRoomsList = function (data) {
         var deferred = $q.defer(),
@@ -18,6 +20,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
         });
         return deferred.promise;
     };
+
 
     /*
      * Service function to fetch date list
@@ -45,5 +48,46 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             deferred.reject(error);
         });
         return deferred.promise;
+    };
+    /*
+     * To fetch the reservations list
+     * @param {data} object
+     * return object
+     */
+
+    this.fetchReservationsList = function(data) {
+        var deferred = $q.defer();
+        var url = '/api/nightly_diary/reservation_list';
+
+        BaseWebSrvV2.getJSON(url, data).then(function(response) {
+            deferred.resolve(response);
+        }, function(error) {
+            deferred.reject(error);
+        });
+        return deferred.promise;
+    };
+
+    this.fetchRoomsListAndReservationList = function(params) {
+        var deferred = $q.defer(),
+            promises = [],
+            data = {
+                roomList: null,
+                reservationList: null
+            };
+
+        promises.push(that.fetchRoomsList(params).then(function(response) {
+            data.roomList = response;
+        }));
+         promises.push(that.fetchReservationsList(params).then(function(response) {
+            data.reservationList = response;
+        }));
+
+        $q.all(promises).then(function() {
+            deferred.resolve(data);
+        }, function(errorMessage) {
+            deferred.reject(errorMessage);
+        });
+        return deferred.promise;
+
     };
 }]);

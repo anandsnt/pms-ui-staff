@@ -142,7 +142,10 @@
 "OUTSTANDING_BALANCE_COLLECTION_SUBHEADING": "Switch ‘ON’ to require the guest to pay the outstanding balance prior to completing check in.",
 
 "CHECKOUT_EMAIL_ROOM_EXCLUSION_SETTINGS": "CHECKOUT EMAIL ROOM EXCLUSION SETTINGS",
-"CHECKIN_EMAIL_ROOM_EXCLUSION_SETTINGS": "CHECK IN EMAIL ROOM EXCLUSION SETTINGS"
+"CHECKIN_EMAIL_ROOM_EXCLUSION_SETTINGS": "CHECK IN EMAIL ROOM EXCLUSION SETTINGS",
+
+"SELECT_ITEMS_TO_EXCLUDE": "Select one or more items and choose SAVE at the bottom of the screen to exclude them.",
+"SELECT_ITEMS_TO_REMOVE_FROM_EXCLUDED": "Select one or more items and choose SAVE at the bottom of the screen to include them."
 
 
 
