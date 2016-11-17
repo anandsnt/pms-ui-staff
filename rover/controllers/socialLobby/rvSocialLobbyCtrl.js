@@ -67,7 +67,7 @@ sntRover.controller('RVSocialLobbyCrl', [
 
         $scope.$on("socialLobbyHeightUpdated", function(event, data) {
             $scope.posts[data.index].expandedHeight = data.height;
-            if (data.isSearchResultsView && data.index < $scope.posts.length -1) {
+            if ( data.isSearchResultsView && data.index < $scope.posts.length - 1 ) {
                 setTimeout(function() {
                 
                     $scope.posts[data.index + 1].isExpanded = true;
