@@ -1,7 +1,8 @@
-//To fix the issue with csrf token in ajax requests
+// To fix the issue with csrf token in ajax requests
 login.config(function($httpProvider) {
 	$httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 	var m = document.getElementsByTagName('meta');
+
 	for (var i in m) {
 		if (m[i].name === 'csrf-token') {
 			$httpProvider.defaults.headers.common['X-CSRF-Token'] = m[i].content;
@@ -17,7 +18,9 @@ angular.module('login').service('BaseWebSrvV2', ['$http', '$q', '$window', '$roo
 		var urlStart = url.split('?')[0];
 		// please note the type of error expecting is array
 		// so form error as array if you modifying it
-		if (status === 406) { // 406- Network error
+		
+
+if (status === 406) { // 406- Network error
 			deferred.reject(errors);
 		} else if (status === 422) { // 422
 			deferred.reject(errors);
@@ -30,7 +33,7 @@ angular.module('login').service('BaseWebSrvV2', ['$http', '$q', '$window', '$roo
 			$window.location.href = '/logout';
 		}
 
-		//set of custom error emssage range http status
+		// set of custom error emssage range http status
 		else if (status >= 470 && status <= 490) {
 			errors.httpStatus = status;
 			errors.errorMessage = errors;
@@ -50,25 +53,28 @@ angular.module('login').service('BaseWebSrvV2', ['$http', '$q', '$window', '$roo
 	 *   @param {Object} data for webservice
 	 *   @return {promise}
 	 */
+
 	this.callWebService = function(httpMethod, url, params, data) {
 		var deferred = $q.defer();
+
 		if (typeof params === "undefined") {
 			params = "";
 		}
 
-		//Sample params {params:{fname: "fname", lname: "lname"}}
+		// Sample params {params:{fname: "fname", lname: "lname"}}
 		var httpDict = {};
+
  		httpDict.url = url;
  		httpDict.method = httpMethod;
- 		if(httpMethod === 'GET' || httpMethod === 'DELETE'){
+ 		if (httpMethod === 'GET' || httpMethod === 'DELETE') {
  			httpDict.params = params;
  		}
- 		else if(httpMethod === 'POST' || httpMethod === 'PUT'){
+ 		else if (httpMethod === 'POST' || httpMethod === 'PUT') {
  			httpDict.data = params;
- 			if(typeof $rootScope.workstation_id !== 'undefined') {
+ 			if (typeof $rootScope.workstation_id !== 'undefined') {
 				httpDict.data.workstation_id = $rootScope.workstation_id;
 			}
-  		};
+  		}
 
 		$http(httpDict).success(function(response, status) {
 			deferred.resolve(response);
@@ -95,8 +101,7 @@ angular.module('login').service('BaseWebSrvV2', ['$http', '$q', '$window', '$roo
 	};
 
 
-
-	/**************************************************************************************/
+	/** ************************************************************************************/
 
 	/**
 	 *   A http requester method for calling webservice
@@ -107,31 +112,34 @@ angular.module('login').service('BaseWebSrvV2', ['$http', '$q', '$window', '$roo
 	 */
 	this.callWebServiceWithSpecialStatusHandling = function(httpMethod, url, params, data) {
 		var deferred = $q.defer();
+
 		if (typeof params === "undefined") {
 			params = "";
 		}
 
-		//Sample params {params:{fname: "fname", lname: "lname"}}
+		// Sample params {params:{fname: "fname", lname: "lname"}}
 		var httpDict = {};
+
 		httpDict.url = url;
 		httpDict.method = httpMethod;
 		if (httpMethod === 'GET' || httpMethod === 'DELETE') {
 			httpDict.params = params;
 		} else if (httpMethod === 'POST' || httpMethod === 'PUT') {
 			httpDict.data = params;
-			if(typeof $rootScope.workstation_id !== 'undefined') {
+			if (typeof $rootScope.workstation_id !== 'undefined') {
 				httpDict.data.workstation_id = $rootScope.workstation_id;
 			}
-		};
+		}
 
 		$http(httpDict).success(function(response, status, headers) {
-			//202 ---> The request has been accepted for processing, but the processing has not been completed.
-			//102 ---> This code indicates that the server has received and is processing the request, but no response is available yet
+			// 202 ---> The request has been accepted for processing, but the processing has not been completed.
+			// 102 ---> This code indicates that the server has received and is processing the request, but no response is available yet
 			if (status === 202 || status === 102 || status === 250) {
 				var response = {
 					'status': 'processing_not_completed',
 					'location_header': headers('Location')
 				};
+
 				deferred.resolve(response);
 			} else {
 				deferred.resolve(response);

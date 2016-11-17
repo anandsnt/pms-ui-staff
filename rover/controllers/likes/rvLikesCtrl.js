@@ -7,9 +7,10 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 		$scope.guestCardData.likes = {};
 		$scope.guestLikesData = {};
 		$scope.setScroller('likes_info');
-		$scope.calculatedHeight = 274; //height of Preferences + News paper + Room type + error message div
+		$scope.calculatedHeight = 274; // height of Preferences + News paper + Room type + error message div
 		var presentLikeInfo  = {};
 		var updateData = {};
+
 		$scope.$on('clearNotifications', function() {
 			$scope.errorMessage = "";
 			$scope.successMessage = "";
@@ -25,6 +26,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 				'userId': $scope.guestCardData.contactInfo.user_id,
 				'isRefresh': $stateParams.isrefresh || 'true'
 			};
+
 			$scope.invokeApi(RVLikesSrv.fetchLikes, data, $scope.fetchLikesSuccessCallback, fetchLikesFailureCallback, 'NONE');
 		};
 		$scope.fetchLikesSuccessCallback = function(data) {
@@ -36,6 +38,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 
 			var i, j, k, l;
 			var each, values, match;
+
 			for ( i = 0, j = $scope.guestLikesData.preferences.length; i < j; i++ ) {
 				each   = $scope.guestLikesData.preferences[i];
 				values = each['values'];
@@ -55,18 +58,18 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 							each.isChecked = match.id;
 						} else {
 							each.isChecked = '';
-						};
-					};
+						}
+					}
 				}
 					for ( k = 0, l = values.length; k < l; k++ ) {
 						values[k]['isChecked'] = false;
 
 						if ( _.contains($scope.guestLikesData.user_preference, values[k]['id']) ) {
 							values[k]['isChecked'] = true;
-						};
-					};
+						}
+					}
 
-			};
+			}
 			// angular.forEach($scope.guestLikesData.preferences, function(eachPref) {
 			// 	$scope.calculatedHeight += 34;
 			// 	var rowCount = 0;
@@ -88,6 +91,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 
 
 			var rowCount = 0;
+
 			angular.forEach($scope.guestLikesData.room_features, function(value, key) {
 
 				angular.forEach(value.values, function(roomFeatureValue, roomFeatureKey) {
@@ -96,6 +100,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 						$scope.calculatedHeight += 50;
 					}
 					var userRoomFeature = value.user_selection;
+
 					if (userRoomFeature.indexOf(roomFeatureValue.id) !== -1) {
 						roomFeatureValue.isSelected = true;
 					} else {
@@ -108,8 +113,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 			$scope.guestCardData.likes = $scope.guestLikesData;
 
 
-
-			setTimeout(function(){
+			setTimeout(function() {
 				$scope.refreshScroller('likes_info');
 			}, 1000);
 
@@ -137,12 +141,14 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 				$scope.errorMessage = data;
 				$scope.$emit('likesInfoError', true);
 			};
+
 			 presentLikeInfo = JSON.parse(JSON.stringify(updateData));
 
 			updateData.guest_id = $scope.guestCardData.contactInfo.guest_id;
 			updateData.preference = [];
 			angular.forEach($scope.guestLikesData.newspapers, function(value, key) {
 				var newsPaperUpdateData = {};
+
 				if (value.id === $scope.guestLikesData.user_newspaper) {
 					newsPaperUpdateData.type = "NEWSPAPER";
 					newsPaperUpdateData.value = value.name;
@@ -151,6 +157,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 			});
 			angular.forEach($scope.guestLikesData.roomtype, function(value, key) {
 				var roomTypeUpdateData = {};
+
 				if (value.id === $scope.guestLikesData.user_roomtype) {
 					roomTypeUpdateData.type = "ROOM TYPE";
 					roomTypeUpdateData.value = value.name;
@@ -161,6 +168,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 			angular.forEach($scope.guestLikesData.room_features, function(value, key) {
 				angular.forEach(value.values, function(roomFeatureValue, roomFeatureKey) {
 					var roomFeatureUpdateData = {};
+
 					if (roomFeatureValue.isSelected) {
 						roomFeatureUpdateData.type = "ROOM FEATURE";
 						roomFeatureUpdateData.value = roomFeatureValue.details;
@@ -181,10 +189,10 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 
 					if ( prefValue.isChecked ) {
 						updateData.preference.push({
-							'type'  : value.name,
-							'value' : prefValue.details
+							'type': value.name,
+							'value': prefValue.details
 						});
-					};
+					}
 				});
 
 				// who the F&*K would want to push the value after the above loop!!
@@ -193,7 +201,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 			});
 
 			var dataToUpdate = JSON.parse(JSON.stringify(updateData));
-		    var dataUpdated = (angular.equals(dataToUpdate, presentLikeInfo))?true:false;
+		    var dataUpdated = (angular.equals(dataToUpdate, presentLikeInfo)) ? true : false;
 
 			var saveData = {
 				userId: $scope.guestCardData.contactInfo.user_id,
@@ -227,14 +235,15 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 
 				if ( item.id === $scope.guestLikesData.preferences[index]['isChecked'] ) {
 					item.isChecked = true;
-				};
+				}
 			});
 		};
 
 
 		$scope.getHalfArray = function(ar) {
-			//TODO: Cross check math.ceil for all browsers
+			// TODO: Cross check math.ceil for all browsers
 			var out = new Array(Math.ceil(ar.length / 2));
+
 			return out;
 		};
 		/*
@@ -242,6 +251,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 		 */
 		$scope.showLabel = function(featureName) {
 			var showDiv = true;
+
 			if (featureName === '' || featureName === undefined) {
 				showDiv = false;
 			}
@@ -251,12 +261,14 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 
 
 		$scope.getHalfArrayPref = function(ar) {
-			//TODO: Cross check math.ceil for all browsers
+			// TODO: Cross check math.ceil for all browsers
 			var out = new Array(Math.ceil(ar.length / 2));
+
 			return out;
 		};
 		$scope.shouldShowRoomFeatures = function(roomFeatures) {
 			var showRoomFeature = false;
+
 			angular.forEach(roomFeatures, function(value, key) {
 				if (value.values.length > 0) {
 					showRoomFeature = true;

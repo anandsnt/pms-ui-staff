@@ -8,8 +8,9 @@ sntGuestWeb.controller('GwCheckoutReviewBillController', ['$scope', '$state', '$
 			$scope: $scope
 		});
 
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "REVIEW_BILL";
+
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			var onSuccess = function(response) {
 				$scope.billData = response.bill_details;
@@ -26,20 +27,21 @@ sntGuestWeb.controller('GwCheckoutReviewBillController', ['$scope', '$state', '$
 				},
 				successCallBack: onSuccess
 			};
+
 			$scope.callAPI(GwCheckoutSrv.fetchBillDetails, options);
 			// varibale to handle bill popup
 			$scope.showBill = false;
-		}();
+		}());
 
 		$scope.gotToNextStep = function() {
-			//if payment gateway is MLI
+			// if payment gateway is MLI
 			// and balance >0 and CC is not attached
-			if(!GwWebSrv.zestwebData.isCCOnFile && parseInt($scope.billData.balance) > 0.00 && GwWebSrv.zestwebData.isMLI){
-				$state.go('ccAddition',{'fee':$scope.billData.balance,'message':'Check-out fee','isFromCheckoutNow':true});
+			if (!GwWebSrv.zestwebData.isCCOnFile && parseInt($scope.billData.balance) > 0.00 && GwWebSrv.zestwebData.isMLI) {
+				$state.go('ccAddition', {'fee': $scope.billData.balance, 'message': 'Check-out fee', 'isFromCheckoutNow': true});
 			}
-			else{
+			else {
 				$state.go('checkOutFinal');
-			};
+			}
 		};
 	}
 ]);

@@ -37,9 +37,10 @@
 
     // ensure the specified React component is accessible, and fail fast if it's not
     var reactComponent;
+
     try {
       reactComponent = $injector.get(name);
-    } catch(e) { }
+    } catch (e) { }
 
     if (!reactComponent) {
       try {
@@ -64,6 +65,7 @@
     var wrapped = function() {
       var args = arguments;
       var phase = scope.$root.$$phase;
+
         if (phase === "$apply" || phase === "$digest") {
           return fn.apply(null, args);
         } else {
@@ -72,6 +74,7 @@
           });
         }
     };
+
     wrapped.wrappedInApply = true;
     return wrapped;
   }
@@ -83,6 +86,7 @@
       // wrap functions in a function that ensures they are scope.$applied
       // ensures that when function is called from a React component
       // the Angular digest cycle is run
+
       prev[key] = angular.isFunction(value) ? applied(value, scope) : value;
       return prev;
     }, {});
@@ -96,9 +100,9 @@
    * Uses the watchDepth attribute to determine how to watch props on scope.
    * If watchDepth attribute is NOT reference or collection, watchDepth defaults to deep watching by value
    */
-  function watchProps (watchDepth, scope, watchExpressions, listener){
+  function watchProps (watchDepth, scope, watchExpressions, listener) {
     if (watchDepth === 'collection' && angular.isFunction(scope.$watchCollection)) {
-      watchExpressions.forEach(function(expr){
+      watchExpressions.forEach(function(expr) {
         scope.$watchCollection(expr, listener);
       });
     }
@@ -107,14 +111,14 @@
         scope.$watchGroup(watchExpressions, listener);
       }
       else {
-        watchExpressions.forEach(function(expr){
+        watchExpressions.forEach(function(expr) {
           scope.$watch(expr, listener);
         });
       }
     }
     else {
-      //default watchDepth to value if not reference or collection
-      watchExpressions.forEach(function(expr){
+      // default watchDepth to value if not reference or collection
+      watchExpressions.forEach(function(expr) {
         scope.$watch(expr, listener, true);
       });
     }
@@ -137,7 +141,8 @@
         var renderMyComponent = function() {
           var scopeProps = scope.$eval(attrs.props ? attrs.props : {scope: scope});
           var props = applyFunctions(scopeProps, scope);
-          if(!props){
+
+          if (!props) {
           	props = _.extend({}, {scope: scope});
           }
           props = _.extend({}, {scope: scope});
@@ -178,6 +183,7 @@
           // for each of the properties, get their scope value and set it to scope.props
           var renderMyComponent = function() {
             var props = {};
+
             propNames.forEach(function(propName) {
               props[propName] = scope.$eval(attrs[propName]);
             });
@@ -186,7 +192,7 @@
 
           // watch each property name and trigger an update whenever something changes,
           // to update scope.props with new values
-          var propExpressions = propNames.map(function(k){
+          var propExpressions = propNames.map(function(k) {
             return attrs[k];
           });
 
@@ -206,6 +212,7 @@
           });
         }
       };
+
       return angular.extend(directive, conf);
     };
   };

@@ -35,12 +35,13 @@
 	            query: $scope.rate_name
 	        };
 	        var options = {
-	            params 			: params,
-	            successCallBack : successCallBackOfFetchRates,
+	            params: params,
+	            successCallBack: successCallBackOfFetchRates,
 	            successCallBackParameters: {
 					callBackToAutoComplete: callBackToAutoComplete
 				}
 	        };
+
 	        $scope.callAPI(rvCompanyCardSrv.fetchRates, options);
 		};
 
@@ -86,7 +87,7 @@
 	        return false;    
 	    };
 
-		$scope.processEachItem = function(item, scope){
+		$scope.processEachItem = function(item, scope) {
 			var $content = highlightFilter_(item.name, $scope.rate_name),
 			    $result = $("<a></a>").html($content),
 			    defIconText = '',
@@ -102,7 +103,7 @@
 			        break;
 			    default:
 			        break;
-			};
+			}
 			$image = '<span class="label ' + defIconText + '">' + defIconText + '</span>';
 
 			if (item.classification_name) {
@@ -115,29 +116,29 @@
 		 * Initialization stuffs
 		 * @return {undefiend}
 		 */
-		var initializeMe = function() {
+		var initializeMe = (function() {
 			$scope.rateAutocompleteOptions = {
-	            delay		: _.isUndefined($scope.delay) ? 600 : parseInt($scope.delay),
-	            minLength	: 0,
-		        position	: {
-		            my 			: "left top",
-		            at 			: "left bottom",
-		            collision	: 'flip'		            
+	            delay: _.isUndefined($scope.delay) ? 600 : parseInt($scope.delay),
+	            minLength: 0,
+		        position: {
+		            my: "left top",
+		            at: "left bottom",
+		            collision: 'flip'		            
 		        },
-	            source 		: autoCompleteSourceHandler,
-	            select 		: autoCompleteSelectHandler
+	            source: autoCompleteSourceHandler,
+	            select: autoCompleteSelectHandler
 			};
-			setTimeout(function(){
-				$scope.$apply(function(){					
+			setTimeout(function() {
+				$scope.$apply(function() {					
 					$scope.label 			= _.isUndefined($scope.label) ? 'Contracted Rate' : $scope.label;
 					$scope.entryDivClass 	= _.isUndefined($scope.entryDivClass) ? 'find-rate margin' : $scope.entryDivClass;
 					minLengthToTrigger = _.isUndefined($scope.minLengthToTrigger) ? 1 : parseInt($scope.minLengthToTrigger);
 				});
 			}, 100);
-		}();	    
+		}());	    
     };
 
-    var linkFn = function(scope, el){
+    var linkFn = function(scope, el) {
     	autocompleteEl = el;
     };
   
@@ -146,15 +147,15 @@
         rvCompanyCardSrv = RVCompanyCardSrv,
         highlightFilter_ = highlightFilter;
         return {
-            restrict 	: 'AE',
-			replace 	: true,
-			scope 		: {
-				rate_id  			:'=selectedRateId',
-				rate_name 			: '=ngModel',
-				label 				: '@label',
-				entryDivClass 		: '@entryDivClass',
-				delay 				: '@delay',
-				minLengthToTrigger	: '@minLengthToTrigger'
+            restrict: 'AE',
+			replace: true,
+			scope: {
+				rate_id: '=selectedRateId',
+				rate_name: '=ngModel',
+				label: '@label',
+				entryDivClass: '@entryDivClass',
+				delay: '@delay',
+				minLengthToTrigger: '@minLengthToTrigger'
 			},
 			link: linkFn,
             controller: autoCompleteCtrlFn,

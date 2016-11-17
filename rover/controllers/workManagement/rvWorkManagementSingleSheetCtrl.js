@@ -3,8 +3,6 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 		BaseCtrl.call(this, $scope);
 
 
-
-
 		// flag to know if we interrupted the state change
 		var $_shouldSaveFirst = true,
 			$_afterSave = null;
@@ -20,10 +18,8 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 				};
 
 				$scope.saveWorkSheet();
-			};
+			}
 		});
-
-
 
 
 		// back button
@@ -31,6 +27,7 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 			title: ('Work Management'),
 			name: 'rover.workManagement.start'
 		};
+
 		if ($stateParams.from === 'multiple') {
 			prevState = {
 				title: ('Manage Worksheets'),
@@ -48,17 +45,15 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 		$rootScope.setPrevState = prevState;
 
 
-
-
-
-
 		$scope.dropToUnassign = function(event, dropped) {
 			var indexOfDropped = parseInt($(dropped.draggable).attr('id').split('-')[1]);
+
 			$scope.unAssignRoom($scope.singleState.assigned[indexOfDropped]);
 		};
 
 		$scope.dropToAssign = function(event, dropped) {
 			var indexOfDropped = parseInt($(dropped.draggable).attr('id').split('-')[1]);
+
 			$scope.assignRoom($scope.singleState.unassigned[indexOfDropped]);
 		};
 
@@ -146,6 +141,7 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 
 				// no more checking for worksheet id
 				var assignedRooms = [];
+
 				_.each(data.work_sheets[0].work_assignments, function(room) {
 					assignedRooms.push(room.room);
 				});
@@ -199,7 +195,6 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 					((sumMinutes % 60).toString().length < 2 ? "0" + (sumMinutes % 60).toString() : (sumMinutes % 60).toString());
 			});
 		};
-
 
 
 		$scope.setScroller("workSheetUnassigned");
@@ -260,7 +255,7 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 				$window.print();
 				if ( sntapp.cordovaLoaded ) {
 					cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-				};
+				}
 			}, 100);
 
 			/*
@@ -288,13 +283,11 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 					$scope.errorMessage = errorMessage;
 					$scope.$emit("hideLoader");
 				};
+
 			$scope.invokeApi(RVWorkManagementSrv.deleteWorkSheet, {
 				"id": $stateParams.id
 			}, onDeleteSuccess, onDeleteFailure);
 		};
-
-
-
 
 
 		// for all unassigned rooms
@@ -304,6 +297,7 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 		// how many different work type has been touched
 		// and how many save request must be created
 		var wtid = '';
+
 		_.each(allUnassigned, function(item) {
 			wtid = item.id;
 			_.each(item.unassigned, function(room) {
@@ -322,10 +316,10 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 					// delay are for avoiding collisions
 					if ( options && $scope[options.callNextMethod] ) {
 						$timeout($scope[options.callNextMethod], 50);
-					};
+					}
 					if ( $_shouldSaveFirst && !!$_afterSave ) {
 						$timeout($_afterSave, 60);
-					};
+					}
 				},
 				onSaveSuccess = function(data) {
 					saveCount--;
@@ -334,7 +328,7 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 						$scope.clearErrorMessage();
 
 						afterAPIcall();
-					};
+					}
 				},
 				onSaveFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
@@ -343,7 +337,7 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 					if ( saveCount === 0 ) {
 						$scope.$emit("hideLoader");
 						afterAPIcall();
-					};
+					}
 				};
 
 			if (!worktypeId) {
@@ -357,8 +351,6 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 
 			// lets create a set of worktypes that will hold
 			// rooms under each worktype id name - e.g:
-
-
 
 
 			worktypesSet = {};
@@ -379,7 +371,7 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 						worktypesSet[room.work_type_id.toString()].push(room);
 					} else {
 						worktypesSet[worktypeId.toString()].push(room);
-					};
+					}
 				});
 
 				// loop each worktypeSet
@@ -392,14 +384,14 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 						});
 
 						$scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, {
-							"date"        : $stateParams.date,
-							"task_id"     : parseInt(key),
-							"order"       : "",
-							"assignments" : [{
-								"shift_id"      : $scope.singleState.workSheet.shift_id,
-								"assignee_id"   : userId,
-								"room_ids"      : assignedRooms,
-								"work_sheet_id" : ""
+							"date": $stateParams.date,
+							"task_id": parseInt(key),
+							"order": "",
+							"assignments": [{
+								"shift_id": $scope.singleState.workSheet.shift_id,
+								"assignee_id": userId,
+								"room_ids": assignedRooms,
+								"work_sheet_id": ""
 							}]
 						}, onSaveSuccess, onSaveFailure);
 
@@ -408,25 +400,22 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 
 						// increment API call count
 						saveCount++;
-					};
+					}
 				});
 			} else {
 				_.each(worktypesSet, function(set, key) {
 				$scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, {
-							"date"        : $stateParams.date,
-							"task_id"     : parseInt(key),
-							"assignments" : [{
-								"assignee_id"   : userId,
-								"room_ids"      : []
+							"date": $stateParams.date,
+							"task_id": parseInt(key),
+							"assignments": [{
+								"assignee_id": userId,
+								"room_ids": []
 							}]
 						}, onSaveSuccess, onSaveFailure);
 				});
 				afterAPIcall();
-			};
+			}
 		};
-
-
-
 
 
 		$scope.startLoader = function() {
@@ -445,17 +434,13 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 		};
 
 
-
-
-
-
 		$scope.$watch('singleState.workSheet.work_type_id', function(newVal, oldVal) {
 			if (newVal !== oldVal) {
 				$scope.saveWorkSheet({
-					oldWorkTypeId  : oldVal,
-					callNextMethod : 'onWorkTypeChange'
+					oldWorkTypeId: oldVal,
+					callNextMethod: 'onWorkTypeChange'
 				});
-			};
+			}
 		});
 
 		$scope.onWorkTypeChange = function() {
@@ -465,10 +450,10 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 		$scope.$watch('singleState.workSheet.user_id', function(newVal, oldVal) {
 			if (newVal !== oldVal) {
 				$scope.saveWorkSheet({
-					oldUserId      : oldVal,
-					callNextMethod : 'onEmployeeChange'
+					oldUserId: oldVal,
+					callNextMethod: 'onEmployeeChange'
 				});
-			};
+			}
 		});
 
 		$scope.onEmployeeChange = function(options) {
@@ -482,9 +467,6 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 				callNextMethod: 'init'
 			});
 		};
-
-
-
 
 
 		$scope.onAssignmentDragStart = function() {

@@ -11,17 +11,18 @@
       $state.go('checkinSuccess');
     } else {
       $scope.pageValid = true;
-    };
+    }
 
     if ($scope.pageValid) {
       $scope.slides = [];
-      //set up flags related to webservice
+      // set up flags related to webservice
 
       $scope.isFetching = false;
       $rootScope.netWorkError = false;
       var data = {
         'reservation_id': $rootScope.reservationID
       };
+
       $scope.isFetching = true;
 
       var updateGoogleAnalyticsRoomUpgradeFetchFailed = function() {
@@ -32,13 +33,14 @@
           eventLabel: 'Room Upgrade Fetch Failed'
         });
       };
+
       checkinRoomUpgradeOptionsService.fetch(data).then(function(response) {
 
         $scope.isFetching = false;
         if (response.status === 'failure') {
-          //$rootScope.netWorkError = true;
-          //we needn't stop checkin process even if error occurs in fetching upgrades
-          //in this case we go to next screen
+          // $rootScope.netWorkError = true;
+          // we needn't stop checkin process even if error occurs in fetching upgrades
+          // in this case we go to next screen
           updateGoogleAnalyticsRoomUpgradeFetchFailed();
           $scope.noThanksClicked();
         } else {
@@ -51,10 +53,10 @@
           $scope.slides = response.data;
         }
       }, function() {
-        //$rootScope.netWorkError = true;
+        // $rootScope.netWorkError = true;
         $scope.isFetching = false;
-        //we needn't stop checkin process even if error occurs in fetching upgrades
-        //in this case we go to next screen
+        // we needn't stop checkin process even if error occurs in fetching upgrades
+        // in this case we go to next screen
         updateGoogleAnalyticsRoomUpgradeFetchFailed();
         $scope.noThanksClicked();
       });
@@ -82,6 +84,7 @@
             eventLabel: 'Room Upgrade failed'
           });
         };
+
         checkinRoomUpgradeService.post(data).then(function(response) {
 
           $scope.isFetching = false;

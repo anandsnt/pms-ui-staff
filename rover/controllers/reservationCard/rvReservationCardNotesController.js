@@ -6,6 +6,7 @@ sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$
          */
         var init = function() {
             var hideNotes = true;
+
             if ($scope.reservationData.reservation_card.notes.reservation_notes.length > 0) {
                 hideNotes = false;
             }

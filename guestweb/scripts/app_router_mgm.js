@@ -100,7 +100,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		templateUrl: '/assets/checkin/partials/MGM/guestNotEligible.html',
 		title: 'Guest Details'
 	});
-	//room verification
+	// room verification
 
 	$stateProvider.state('checkoutRoomVerification', {
 		url: '/checkoutRoomVerification',
@@ -139,7 +139,6 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		controller: 'checkinArrivalDetailsController',
 		title: 'Early Check-in'
 	});
-
 
 
 	$stateProvider.state('noOptionAvailable', {
@@ -196,7 +195,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		title: 'Checkin options'
 	}).state('earlyCheckinReady', {
 		url: '/earlyCheckinReady',
-		controller:'earlyCheckinReadyController',
+		controller: 'earlyCheckinReadyController',
 		templateUrl: '/assets/checkin/partials/MGM/earlyCheckinReady.html',
 		title: 'Early Check in ready'
 	}).state('roomNotReady', {

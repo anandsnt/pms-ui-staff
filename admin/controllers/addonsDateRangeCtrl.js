@@ -35,7 +35,7 @@ admin.controller('addonsDatesRangeCtrl',
                 ngDialog.close();
             };
 
-            $scope.resetDate =  function(){
+            $scope.resetDate =  function() {
                  // emit choosen date back
                 $scope.$emit('datepicker.reset', $scope.datePickerDate);
                 ngDialog.close();

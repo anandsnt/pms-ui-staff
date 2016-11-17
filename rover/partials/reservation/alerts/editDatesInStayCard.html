@@ -12,7 +12,7 @@
         </section>
         <section ng-if="!ngDialogData.is_invalid_move">
             <!-- Scenario 1: Room, Room Type, Rate & House is available  -->
-            <section ng-if="ngDialogData.is_house_available && ngDialogData.is_rate_available && ngDialogData.is_assigned_room_available">
+            <section ng-if="ngDialogData.is_house_available && !!shouldAllowDateExtend && ngDialogData.is_assigned_room_available">
                 <strong class="h2 message">Stay Dates change possible</strong>
 
                 <!-- This senario is currently discharged for now, may be in future -->
@@ -64,7 +64,7 @@
                 </div>
             </section>
             <!-- Scenario 4: Rate or Room Type not available or restricted. -->
-            <section ng-if="!ngDialogData.is_rate_available && ngDialogData.is_house_available">
+            <section ng-if="ngDialogData.is_house_available && !!showNotAvailableMessage">
                 <span class="notice error">Rate / Room Type not available for selected dates</span>
                 <div class="actions">
                     <button type="button" class="button blue" ng-click="moveToRoomRates();">Rooms &amp; Rates</button>

@@ -1,17 +1,50 @@
-const NightlyDiaryRootComponent = () => (
-
-	<div id="diary-nightly-grid" className="grid-content scrollable {'top-pagination' if you can only load previous, or 'bottom-pagination' if you can only load next, or 'dual-pagination' if you can load both}">
+const { createClass, PropTypes } = React;
+const { findDOMNode } = ReactDOM;
+const NightlyDiaryRootComponent = createClass ({
+  componentDidMount() {
+    this.scrollOptions = {
+      probeType: 3,
+      scrollY: true,
+      preventDefault: true,
+      preventDefaultException: { tagName: /^(BUTTON)$/i },
+      mouseWheel: true,
+      deceleration: 0.0009,
+      click: false,
+      scrollbars: 'custom'
+    };
+    this.setScroller();
+  },
+  setScroller() {
+    if (!this.scrollableElement) {
+      this.scrollableElement = findDOMNode(this);
+    }
+    this.scroller = new IScroll(this.scrollableElement, this.scrollOptions);
+    this.refreshScroller();
+  },
+  refreshScroller() {
+    this.scroller.refresh();
+  },
+  componentDidUpdate() {
+    this.refreshScroller();
+    // scroll is moving to top
+    this.scroller.scrollToElement($(findDOMNode(this)).find(".room")[0], 1000, null, true);
+  },
+  render() {
+    return (
+      <div id="diary-nightly-grid" className={this.props.ClassForRootDiv}>
         <div className="wrapper">
-
-                {/*<!-- Pagination (show only those in use) -->
-                <div className="grid-pagination top">
-                    <button type="button" className="button blue">Prev {X} Rooms</button>
-                </div>
-                <div className="grid-pagination bottom">
-                    <button type="button" className="button blue">Next {X} Rooms</button>
-                </div> */}
+            {(this.props.showPrevPageButton)?<GoToPreviousPageButtonContainer/>:''}
+            {(this.props.showNextPageButton)?<GoToNextPageButtonContainer/>:''}
             <NightlyDiaryRoomsListContainer/>
-
+            <NightlyDiaryReservationsListContainer/>
         </div>
-    </div>
-);
+      </div>
+    );
+  }
+});
+
+NightlyDiaryRootComponent.propTypes = {
+  showNextPageButton: PropTypes.bool.isRequired,
+  showPrevPageButton: PropTypes.bool.isRequired,
+  ClassForRootDiv: PropTypes.string.isRequired
+};

@@ -1,5 +1,5 @@
-	sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv', '$timeout', 'RVReservationCardSrv', '$state', '$filter', '$q','RVReservationSummarySrv','$window',
-		function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout, RVReservationCardSrv, $state, $filter, $q,RVReservationSummarySrv,$window) {
+	sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv', '$timeout', 'RVReservationCardSrv', '$state', '$filter', '$q', 'RVReservationSummarySrv', '$window',
+		function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout, RVReservationCardSrv, $state, $filter, $q, RVReservationSummarySrv, $window) {
 
 			BaseCtrl.call(this, $scope);
 			$scope.errorMessage = '';
@@ -24,13 +24,13 @@
 			};
 			$scope.cancellationData.paymentType = "";
 			$scope.DailogeState = typeof $scope.$parent.DailogeState !== 'undefined' ? $scope.$parent.DailogeState : {};
-			$scope.DailogeState.sendConfirmatonMailTo = typeof $scope.$parent.DailogeState!== 'undefined' ? $scope.$parent.DailogeState.sendConfirmatonMailTo : "";
+			$scope.DailogeState.sendConfirmatonMailTo = typeof $scope.$parent.DailogeState !== 'undefined' ? $scope.$parent.DailogeState.sendConfirmatonMailTo : "";
 			$scope.DailogeState.isCancelled = false;
 			
 			if ($scope.ngDialogData.penalty > 0) {
 				$scope.$emit("UPDATE_CANCEL_RESERVATION_PENALTY_FLAG", true);
 				$scope.ngDialogData.penalty = parseFloat($scope.ngDialogData.penalty).toFixed(2);
-			};
+			}
 
 			$scope.setScroller('cardsList', {
 				'click': true,
@@ -58,7 +58,7 @@
 					angular.forEach($scope.passData.details.creditCardTypes, function(value, key) {
 						if ($scope.cancellationData.card_type.toUpperCase() === value.cardcode) {
 							$scope.isDisplayReference = (value.is_display_reference) ? true : false;
-						};
+						}
 					});
 				}
 			};
@@ -67,8 +67,8 @@
 			$scope.changeOnsiteCallIn = function() {
 				$scope.isManual ? $scope.showCCPage = true : "";
 			};
-			 //to trigger from sixpayment partial
-	        $scope.$on('changeOnsiteCallIn', function(event){
+			 // to trigger from sixpayment partial
+	        $scope.$on('changeOnsiteCallIn', function(event) {
 	            $scope.isManual =  !$scope.isManual;
 	            $scope.changeOnsiteCallIn();
 	        });
@@ -79,7 +79,7 @@
 					($rootScope.paymentGateway === 'sixpayments') ? "" : $scope.showCCPage = true;
 				} else {
 					checkReferencetextAvailableForCC();
-				};
+				}
 			};
 
 			$scope.feeData = {};
@@ -89,6 +89,7 @@
 			$scope.isShowFees = function() {
 				var isShowFees = false;
 				var feesData = $scope.feeData;
+
 				if (typeof feesData === 'undefined' || typeof feesData.feesInfo === 'undefined' || feesData.feesInfo === null) {
 					isShowFees = false;
 				} else if ((feesData.defaultAmount >= feesData.minFees) && $scope.isStandAlone && feesData.feesInfo.amount) {
@@ -121,6 +122,7 @@
 					if ($scope.isShowFees()) {
 						if (amountSymbol === "percent") {
 							var calculatedFee = parseFloat(totalAmount * (feePercent / 100));
+
 							$scope.feeData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
 							$scope.feeData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
 						} else {
@@ -139,6 +141,7 @@
 					parseFloat($scope.ngDialogData.penalty) : zeroAmount;
 
 				var minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
+
 				$scope.feeData.minFees = minFees;
 				$scope.feeData.defaultAmount = defaultAmount;
 
@@ -147,6 +150,7 @@
 
 						var amountSymbol = feesInfo.amount_symbol;
 						var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
+
 						$scope.feeData.actualFees = feesAmount;
 
 						if (amountSymbol === "percent") {
@@ -179,6 +183,7 @@
 				var cardType = $scope.newPaymentInfo.tokenDetails.isSixPayment ?
 					getSixCreditCardType($scope.newPaymentInfo.tokenDetails.card_type).toLowerCase() :
 					getCreditCardType($scope.newPaymentInfo.cardDetails.cardType).toLowerCase();
+
 				return cardType;
 			};
 
@@ -186,6 +191,7 @@
 				var cardNumber = $scope.newPaymentInfo.tokenDetails.isSixPayment ?
 					$scope.newPaymentInfo.tokenDetails.token_no.substr($scope.newPaymentInfo.tokenDetails.token_no.length - 4) :
 					$scope.newPaymentInfo.cardDetails.cardNumber.slice(-4);
+
 				return cardNumber;
 			};
 
@@ -193,12 +199,14 @@
 				var expiryMonth = $scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(2, 4) : $scope.newPaymentInfo.cardDetails.expiryMonth;
 				var expiryYear = $scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(0, 2) : $scope.newPaymentInfo.cardDetails.expiryYear;
 				var expiryDate = expiryMonth + " / " + expiryYear;
+
 				return expiryDate;
 			};
 
 			var retrieveName = function() {
 				var cardName = $scope.newPaymentInfo.tokenDetails.isSixPayment ?
 					'' : $scope.newPaymentInfo.cardDetails.userName;
+
 				return cardName;
 			};
 
@@ -227,12 +235,13 @@
 					reservation_id: $scope.passData.reservationId,
 					token: cardToken
 				};
+
 				paymentData.card_code = $scope.newPaymentInfo.tokenDetails.isSixPayment ?
 					getSixCreditCardType($scope.newPaymentInfo.tokenDetails.card_type).toLowerCase() :
 					$scope.newPaymentInfo.cardDetails.cardType;
 				if (!$scope.newPaymentInfo.tokenDetails.isSixPayment) {
 					paymentData.card_expiry = cardExpiry;
-				};
+				}
 
 				$scope.invokeApi(RVPaymentSrv.savePaymentDetails, paymentData, onSaveSuccess);
 			};
@@ -255,14 +264,14 @@
 				$scope.ngDialogData.state = 'PENALTY';
 			};
 
-			$scope.completeCancellationProcess = function(){
-				if($scope.DailogeState.isCancelled){
+			$scope.completeCancellationProcess = function() {
+				if ($scope.DailogeState.isCancelled) {
 					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
 						"id": $scope.reservationData.reservationId || $scope.reservationParentData.reservationId,
 						"confirmationId": $scope.reservationData.confirmNum || $scope.reservationParentData.confirmNum,
 						"isrefresh": false
 					});
-				};
+				}
 				$scope.closeReservationCancelModal();
 			};
 
@@ -271,9 +280,9 @@
 						// Handle individual cancellations here if reqd.
 					},
 					onCancelSuccess = function(data) {
-						//OnCancelsuccess NgDialog shows sendcancelation as well as printcancelation pop up
-						//Since RVCancelReservation and RVCancelReservationDepositController do the same above,
-						//its functions are written in parent controller.Ie reservationActionsController
+						// OnCancelsuccess NgDialog shows sendcancelation as well as printcancelation pop up
+						// Since RVCancelReservation and RVCancelReservationDepositController do the same above,
+						// its functions are written in parent controller.Ie reservationActionsController
 						$scope.$emit('hideLoader');
 						$scope.DailogeState.isCancelled = true ;
 					},
@@ -283,8 +292,10 @@
 					};
 				// CICO-15808
 				// In case of multiple reservations - all reservations need to be cancelled
+
 				if ($scope.reservationData && $scope.reservationData.reservationIds && $scope.reservationData.reservationIds.length > 1) {
 					var promises = []; // Use this array to push the promises returned for every call
+
 					$scope.$emit('showLoader');
 					// Loop through the reservation ids and call the cancel API for each of them
 					_.each($scope.reservationData.reservationIds, function(reservationId) {
@@ -292,9 +303,10 @@
 							reason: $scope.cancellationData.reason,
 							payment_method_id: parseInt($scope.cancellationData.selectedCard) === -1 ? null : parseInt($scope.cancellationData.selectedCard),
 							id: reservationId,
-							application : "ROVER",
+							application: "ROVER",
 							is_with_penalty: isWithoutPenalty
 						};
+
 						if ($scope.ngDialogData.isDisplayReference) {
 							cancellationParameters.reference_text = $scope.referanceText;
 						}
@@ -306,12 +318,13 @@
 						reason: $scope.cancellationData.reason,
 						payment_method_id: parseInt($scope.cancellationData.selectedCard) === -1 ? null : parseInt($scope.cancellationData.selectedCard),
 						id: $scope.reservationData.reservationId || $scope.reservationParentData.reservationId || $scope.passData.reservationId,
-						application : "ROVER",
+						application: "ROVER",
 						is_with_penalty: isWithoutPenalty
 					};
+
 					if ($scope.ngDialogData.isDisplayReference) {
 						cancellationParameters.reference_text = $scope.referanceText;
-					};
+					}
 					$scope.invokeApi(RVReservationCardSrv.cancelReservation, cancellationParameters, onCancelSuccess, onCancelFailure);
 				}
 			};
@@ -332,6 +345,7 @@
 						"payment_type": "CC",
 						"payment_type_id": 1
 					};
+
 					$scope.cardsList.push(dataToGuestList);
 					$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 				}
@@ -358,6 +372,7 @@
 					},
 					"reservation_id": $scope.passData.reservationId
 				};
+
 				if ($scope.isShowFees()) {
 					if ($scope.feeData.calculatedFee) {
 						dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
@@ -371,10 +386,10 @@
 					dataToSrv.postData.add_to_guest_card = $scope.cancellationData.addToGuestCard;
 				} else {
 					dataToSrv.postData.add_to_guest_card = false;
-				};
+				}
 				if ($scope.isDisplayReference) {
 					dataToSrv.postData.reference_text = $scope.referanceText;
-				};
+				}
 				if ($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.cancellationData.paymentType === 'CC') {
 					dataToSrv.postData.is_emv_request = true;
 					$scope.shouldShowWaiting = true;
@@ -394,6 +409,7 @@
 
 			$scope.applyPenalty = function() {
 				var reservationId = $scope.passData.reservationId;
+
 				$scope.ngDialogData.applyPenalty = true;
 				$scope.invokeApi(RVPaymentSrv.getPaymentList, reservationId, onFetchPaymentsSuccess);
 
@@ -450,13 +466,15 @@
 			var successSwipePayment = function(data, successParams) {
 				$scope.$emit('hideLoader');
 				$scope.cancellationData.selectedCard = data.id;
-				$scope.cancellationData.cardNumber = successParams.cardNumber.slice(-4);;
+				$scope.cancellationData.cardNumber = successParams.cardNumber.slice(-4);
 				$scope.cancellationData.expiry_date = successParams.cardExpiryMonth + "/" + successParams.cardExpiryYear;
 				$scope.cancellationData.card_type = successParams.cardType.toLowerCase();
 				$scope.showCCPage = false;
 			};
+
 			$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave) {
 				var data = swipedCardDataToSave;
+
 				data.reservation_id = $scope.reservationData.reservation_card.reservation_id;
 				data.payment_credit_type = swipedCardDataToSave.cardType;
 				data.credit_card = swipedCardDataToSave.cardType;
@@ -469,6 +487,7 @@
 					successCallBack: successSwipePayment,
 					successCallBackParameters: swipedCardDataToSave
 				};
+
 				$scope.callAPI(RVPaymentSrv.savePaymentDetails, options);
 			});
 			$scope.closeReservationCancelModal = function() {
@@ -482,9 +501,10 @@
 			$scope.DailogeState.failureMessage = '';
 			$scope.DailogeState.isCancelled = $scope.passData.isCancelled || false;
 
-			//Checking whether email is attached with guest card or not
+			// Checking whether email is attached with guest card or not
 			$scope.isEmailAttached = function() {
 				var isEmailAttachedFlag = false;
+
 				if ($scope.guestCardData.contactInfo.email !== null && $scope.guestCardData.contactInfo.email !== "") {
 					isEmailAttachedFlag = true;
 				}
@@ -501,7 +521,7 @@
 				$scope.DailogeState.successMessage = '';
 			};
 
-			//Action against email button in staycard.
+			// Action against email button in staycard.
 			$scope.sendReservationCancellation = function() {
 				var postData = {
 					"type": "cancellation",
@@ -511,12 +531,14 @@
 					"postData": postData,
 					"reservationId": $scope.passData.reservationId
 				};
+
 				$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data, succesfullCallbackForEmailCancellation, failureCallbackForEmailCancellation);
 			};
 
 			// add the print orientation after printing
 			var addPrintOrientation = function() {
 				var orientation = 'portrait';
+
 				$('head').append("<style id='print-orientation'>@page { size: " + orientation + "; }</style>");
 			};
 			// remove the print orientation after printing
@@ -544,7 +566,7 @@
 				$timeout(removePrintOrientation, 100);
 			};
 
-			//Action against print button in staycard.
+			// Action against print button in staycard.
 			$scope.printReservationCancellation = function() {
 				var succesfullCallback = function(data) {
 					$scope.printData = data.data;
@@ -553,6 +575,7 @@
 				var failureCallbackPrint = function(error) {
 					$scope.DailogeState.failureMessage = error[0];
 				};
+
 				$scope.callAPI(RVReservationSummarySrv.fetchResservationCancellationPrintData, {
 					successCallBack: succesfullCallback,
 					failureCallBack: failureCallbackPrint,

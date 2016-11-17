@@ -3,15 +3,16 @@
 	The landing page when the guestweb is accessed without the link from the email.
 	This is accessed using URL set in admin settings WEB CHECK OUT URL in admin -> zest -> Checkout
 */
-sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$state', '$controller', 'GwCheckoutSrv', 'GwWebSrv', '$filter','$modal',
-	function($scope, $state, $controller, GwCheckoutSrv, GwWebSrv, $filter,$modal) {
+sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$state', '$controller', 'GwCheckoutSrv', 'GwWebSrv', '$filter', '$modal',
+	function($scope, $state, $controller, GwCheckoutSrv, GwWebSrv, $filter, $modal) {
 
 		$controller('BaseController', {
 			$scope: $scope
 		});
 
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "EXTERNAL_CHECKOUT";
+
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.stayDetails = {
 				"room_number": "",
@@ -20,7 +21,7 @@ sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$
 				"email": ""
 			};
 			$scope.date = $filter('date')(new Date(), 'yyyy-MM-dd');
-		}();
+		}());
 
 		var dateToSend = "";
 
@@ -57,9 +58,10 @@ sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$
 			};
 			var onFailure = function(data) {
 				var popupOptions = angular.copy($scope.errorOpts);
+
 				popupOptions.resolve = {
 					message: function() {
-						return "<b>We could not find your reservation</b>. Please check for typos, or call <hotelPhone>."
+						return "<b>We could not find your reservation</b>. Please check for typos, or call <hotelPhone>.";
 					}
 				};
 				$modal.open(popupOptions);
@@ -69,6 +71,7 @@ sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$
 				successCallBack: onSuccess,
 				failureCallBack: onFailure
 			};
+
 			$scope.callAPI(GwCheckoutSrv.verifyCheckoutUser, options);
 		};
 

@@ -339,6 +339,7 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
             switch (gateWay) {
                 case "MLI":
                 case "CBA":
+                case "SHIJI":
                     break;
                 case "sixpayments":
                     var time = new Date().getTime(),

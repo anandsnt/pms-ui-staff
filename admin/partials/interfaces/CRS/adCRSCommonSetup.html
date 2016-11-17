@@ -1,0 +1,115 @@
+<ad-common-parts-in-form-dir on-save-button-click="saveInterfaceConfig"
+                             header-caption="{{interface + '_HEADER' | translate}}">
+    <div class="entry full-width">
+        <fieldset class="holder left">
+            <ad-toggle-button is-checked="config.enabled"
+                              label="{{'ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
+        </fieldset>
+    </div>
+
+    <fieldset class="holder full-width" ng-if="config.enabled">
+        <div class="form-title">
+            <h3>Synchronize Data</h3>
+        </div>
+        <fieldset class="holder left">
+            <div class="entry has-datepicker margin">
+                <label>{{'FROM_DATE' | translate}}
+                </label>
+                <input type="text" ui-date="startDatePickerOptions"
+                       ng-model="sync.start_date"
+                       placeholder="Select Start Date"
+                       class="date-picker-input-small"
+                       readonly>
+            </div>
+            <div class="entry has-datepicker margin">
+                <label>{{'TO_DATE' | translate}}
+                </label>
+                <input type="text" ui-date="endDatePickerOptions"
+                       ng-model="sync.end_date"
+                       placeholder="Select End Date"
+                       class="date-picker-input-small"
+                       readonly>
+            </div>
+            <div class="entry full-width">
+                <label>
+                    Synchronize
+                </label>
+                <button type="button" like-type="common" class="button ng-binding blue sm-refresh-btn"
+                        ng-click="startSync()"
+                        ng-class="{'grey' : !sync.start_date || !sync.end_date}"
+                        ng-disabled="!sync.start_date || !sync.end_date"
+                        translate>
+                    SYNC
+                </button>
+            </div>
+        </fieldset>
+        <fieldset class="holder right">
+            <ad-checkbox ng-repeat="item in sync.items" is-checked="item.isSelected" label="{{item.id | uppercase}}" div-class="full-width" ></ad-checkbox>
+        </fieldset>
+    </fieldset>
+
+    <fieldset class="holder full-width">
+        <div class="form-title">
+            <h3>API Access Configuration</h3>
+        </div>
+
+        <fieldset class="holder left">
+            <ad-textbox ng-if="availableSettings.indexOf('user_name') > -1"
+                        inputtype="text" value="config.user_name"
+                        label="{{'USER_NAME'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+            <ad-textbox ng-if="availableSettings.indexOf('password') > -1"
+                        inputtype="password"
+                        value="config.password"
+                        label="{{'PASSWORD'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+        </fieldset>
+
+        <fieldset class="holder right">
+            <ad-textbox ng-if="availableSettings.indexOf('hotel_code') > -1"
+                        inputtype="text"
+                        value="config.hotel_code"
+                        label="{{'HOTEL_CODE'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+            <ad-textbox ng-if="availableSettings.indexOf('end_point') > -1"
+                        inputtype="text"
+                        value="config.end_point"
+                        label="{{'ACCESS_URL'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+        </fieldset>
+    </fieldset>
+
+    <fieldset class="holder full-width">
+        <div class="form-title">
+            <h3>Reservation Settings</h3>
+        </div>
+        <fieldset class="holder left">
+            <ad-dropdown-name ng-if="availableSettings.indexOf('rate_id') > -1"
+                              savemodel="config.rate_id"
+                              valueproperty="id"
+                              property="name"
+                              list="rates"
+                              label="{{'DEFAULT_RATE'| translate}}"
+                              div-class="full-width">
+            </ad-dropdown-name>
+            <ad-dropdown-name ng-if="availableSettings.indexOf('booking_origin_id') > -1"
+                              savemodel="config.booking_origin_id"
+                              valueproperty="value"
+                              property="name"
+                              list="bookingOrigins"
+                              label="{{'DEFAULT_BOOKING_ORIGIN'| translate}}"
+                              div-class="full-width">
+            </ad-dropdown-name>
+        </fieldset>
+        <fieldset class="holder right">
+            <ad-dropdown-name ng-if="availableSettings.indexOf('payment_type_id') > -1"
+                              savemodel="config.payment_type_id"
+                              valueproperty="id"
+                              property="description"
+                              list="paymentMethods"
+                              label="{{'DEFAULT_PAYMENT_METHOD'| translate}}"
+                              div-class="full-width">
+            </ad-dropdown-name>
+        </fieldset>
+    </fieldset>
+</ad-common-parts-in-form-dir>
