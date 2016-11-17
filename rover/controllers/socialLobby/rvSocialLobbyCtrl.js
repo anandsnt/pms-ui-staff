@@ -54,14 +54,12 @@ sntRover.controller('RVSocialLobbyCrl', [
 
         var refreshPostScroll = function(scrollUp) {
             
-            // $scope.$apply();
             setTimeout(function() {
                 setPostScrollHeight();
                 $scope.refreshScroller(POST_LIST_SCROLL);
                 if (scrollUp &&  $scope.myScroll.hasOwnProperty(POST_LIST_SCROLL) ) {
                     $scope.myScroll[POST_LIST_SCROLL].scrollTo(0, 0, 100);
-                }
-                
+                }                
 
             }, 1000);
             
@@ -69,8 +67,18 @@ sntRover.controller('RVSocialLobbyCrl', [
 
         $scope.$on("socialLobbyHeightUpdated", function(event, data) {
             $scope.posts[data.index].expandedHeight = data.height;
-            // if(!data.isSearchResultsView)
-                refreshPostScroll();
+            if (data.isSearchResultsView && data.index < $scope.posts.length -1) {
+                setTimeout(function() {
+                
+                    $scope.posts[data.index + 1].isExpanded = true;
+                    $scope.posts[data.index + 1].isSearchResults = true;
+                    $scope.$apply();
+                }, 500);
+                
+            } else {
+               refreshPostScroll(); 
+            }
+            
         });
 
         $scope.$on("SL_ERROR", function(event, error) {
@@ -109,7 +117,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         var clearSearchResults = function(){
             $scope.textInQueryBox = "";
             $scope.showSearchResultsArea = false;
-        }
+        };
         $scope.refreshPosts = function(){
             clearSearchResults();
             $scope.postParams.page = 1;
@@ -241,47 +249,34 @@ sntRover.controller('RVSocialLobbyCrl', [
             options.onSuccess = function(data){
                 
                 $scope.posts = data.results.posts;
-                var i = 0;
-                _.each($scope.posts, function(post){
-                    post.isExpanded = post.comments.length > 0;
-                        post.isSearchResults = true;
-                    var secs = (i++) * 1000;
-                    setTimeout(function() {
-                        
-                        $scope.$apply();
-                        // refreshCommentScroll();
-                    }, secs);
-                });
+                $scope.posts[0].isExpanded = true;
+                $scope.posts[0].isSearchResults = true;
+                
                 $scope.totalPostPages = data.results.total_count % $scope.postParams.per_page > 0 ? Math.floor(data.results.total_count / $scope.postParams.per_page) + 1 : Math.floor(data.results.total_count / $scope.postParams.per_page);
                 $scope.$emit('hideLoader');
                 
-                // setTimeout(function() {
-                //     refreshPostScroll();
-
-                // }, 5000);
-                
-            }
+            };
             $scope.callAPI(RVSocilaLobbySrv.search, options);
         
-        }
+        };
 
         $scope.queryEntered = function() {
             
-            var queryText = $scope.textInQueryBox;
+            // var queryText = $scope.textInQueryBox;
 
             
             // if (!$scope.isTyping) {
             //     $scope.isTyping = true;
             // }
 
-            //setting first letter as captial: soumya
+            // setting first letter as captial
             // $scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
 
             if ($scope.textInQueryBox.length === 0 ) {
                 $scope.refreshPosts();
                 return;
             }
-            if(!$scope.showSearchResultsArea){
+            if(!$scope.showSearchResultsArea) {
                 $scope.showSearchResultsArea = true;
                 $scope.postParams.page = 1;
                 $scope.middle_page1 = 2, $scope.middle_page2 = 3, $scope.middle_page3 = 4;
@@ -291,20 +286,6 @@ sntRover.controller('RVSocialLobbyCrl', [
                 search();
             }
 
-
-
-
-        }; //end of query entered
-
-        /**
-         * function to execute on focusing on search box
-         */
-        $scope.focusOnSearchText = function() {
-            //we are showing the search area
-            
-            
-            
-            // refreshScroller();
         };
 
     }
