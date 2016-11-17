@@ -19,6 +19,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
         
         
         var deleteIndex = "";
+        var isSearchResultsView = false;
 
         var COMMENT_LIST_SCROLL = 'comment-list-scroll';
 
@@ -57,10 +58,11 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
             var commentScrollData = {};
             commentScrollData.index = $scope.$index;
             commentScrollData.height = updatedHeight;
+            commentScrollData.isSearchResultsView = isSearchResultsView;
             $scope.$emit("socialLobbyHeightUpdated", commentScrollData);
         }
 
-        $scope.refreshCommentScroll = function() {
+        var refreshCommentScroll = function() {
             
             setTimeout(function() {
                 setCommentScrollHeight();
@@ -68,7 +70,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
                 if ( $scope.myScroll.hasOwnProperty(COMMENT_LIST_SCROLL) ) {
                     $scope.myScroll[COMMENT_LIST_SCROLL].scrollTo(0, 0, 100);
                 }
-                
+                $scope.$apply();
 
             }, 1000);
             
@@ -96,7 +98,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
                 $scope.comments = data.results.comments;
                 $scope.totalCommentPages = data.results.total_count % $scope.commentParams.per_page > 0 ? Math.floor(data.results.total_count / $scope.commentParams.per_page) + 1 : Math.floor(data.results.total_count / $scope.commentParams.per_page);
                 $scope.$emit('hideLoader');
-                $scope.refreshCommentScroll();
+                refreshCommentScroll();
             };
             options.failureCallBack = function(error) {
 
@@ -104,8 +106,20 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
             };
             $scope.callAPI(RVSocilaLobbySrv.fetchComments, options);
         };
-
-        $scope.fetchComments();
+        if($scope.parentPost.comments.length == 0 || !$scope.parentPost.isSearchResults){
+            $scope.fetchComments();
+        }else{
+            $scope.comments = $scope.parentPost.comments
+            $scope.totalCommentPages = 1;
+            isSearchResultsView = true;
+            refreshCommentScroll();
+            $scope.$on("ExpandComments", function(event, data) {
+                if(data.post_id == $scope.parentPost.id)
+                    $scope.fetchComments();
+            });
+            
+        }
+        
 
         $scope.refreshComments = function() {
             $scope.commentParams.page = 1;
