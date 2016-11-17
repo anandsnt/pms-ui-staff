@@ -20,4 +20,9 @@
 	"DEFAULT_RATE": "Default Rate",
 	"DEFAULT_BOOKING_ORIGIN": "Default Booking Origin",
 	"DEFAULT_PAYMENT_METHOD": "Default Payment Method",
-	"TRAVELCLICK_HEADER": "TravelClick CRS Setup"
+	"TRAVELCLICK_HEADER": "TravelClick CRS Setup",
+	"SNAPSHOT_SETUP": "Snapshot Setup",
+	"SNAPSHOT_PUBLISH_INSTRUCTIONS": "Publish a full export containing Reservations, Financials and Groups. Full export should occur only once and must be coordinated with Snapshot.",
+	"FULL_EXPORT": "Full Export",
+	"SYS_NAME": "System name",
+	"SYS_VERSION": "System name"

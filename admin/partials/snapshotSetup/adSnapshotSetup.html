@@ -1,0 +1,40 @@
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate>
+    <div>
+        <header class="content-title float">
+            <h2 translate="">SNAPSHOT_SETUP</h2>
+            <a id="go_back" data-type="load-details" class="action back" ng-click="goBackToPreviousState()">Back</a>
+        </header>
+        <section class="content-scroll">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+            <div style="overflow-y:auto;" name="edit-guest-review" method="post" class="form float">
+                <fieldset class="holder full-width">
+                    <ad-form-title full-width="true" form-title="General"></ad-form-title>
+                    <ad-toggle-button is-checked="snapChatData.enabled" label="{{'ACTIVE'| translate}}"></ad-toggle-button>
+                    <ad-form-title full-width="true" form-title="Access Details"></ad-form-title>
+                    <ad-textbox value="snapChatData.user" label="User name" required="yes"></ad-textbox>
+                    <ad-textbox value="snapChatData.password" label="Password" required="yes"></ad-textbox>
+                    <ad-textbox value="snapChatData.api_key" label="API key" required="yes"></ad-textbox>
+                    <ad-textbox value="snapChatData.url" label="URL" required="yes"></ad-textbox>
+                    <ad-textbox value="snapChatData.system_name" label="{{ 'SYS_NAME' | translate}}"></ad-textbox>
+                    <ad-textbox value="snapChatData.system_version" label="{{ 'SYS_VERSION' | translate}}"></ad-textbox>
+                    <ad-form-title full-width="true" form-title="{{'FULL_EXPORT' | translate}}"></ad-form-title>
+                    <div class="form-subtitle-title">
+                        <h6><span translate="">SNAPSHOT_PUBLISH_INSTRUCTIONS</span> </h6>
+                    </div>
+                    <button type="button" class="button green" ng-click="publishFullExport()">
+                        Publish
+                    </button>
+                </fieldset>
+                <div class="actions float">
+                    <button type="button" class="button blank add-data-inline" ng-click="goBackToPreviousState()">
+                        Cancel
+                    </button>
+                    <button type="button" class="button green" ng-click="saveSettings()">
+                        Save changes
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
