@@ -1,7 +1,7 @@
 angular.module('sntRover').service('rvAllotmentReservationsListSrv', ['$q', 'rvBaseWebSrvV2', 'rvUtilSrv',
 	function($q, rvBaseWebSrvV2, util) {
 		
-		//some default values
+		// some default values
 		this.DEFAULT_PER_PAGE = 50;
 		this.DEFAULT_PAGE = 1;
 		/**
@@ -100,10 +100,11 @@ angular.module('sntRover').service('rvAllotmentReservationsListSrv', ['$q', 'rvB
 		this.removeReservation = function(data) {
 			var deferred = $q.defer(),
 				url = 'api/group_reservations/' + data.id + '/cancel';
+
 			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;
@@ -121,7 +122,7 @@ angular.module('sntRover').service('rvAllotmentReservationsListSrv', ['$q', 'rvB
 			rvBaseWebSrvV2.postJSON(url, data).then(
 				function(data) {
 					deferred.resolve(data);
-				}.bind(this), 
+				}, 
 				function(data) {
 					deferred.reject(data);
 				}
@@ -137,7 +138,7 @@ angular.module('sntRover').service('rvAllotmentReservationsListSrv', ['$q', 'rvB
 		this.addReservations = function(params) {
 			var deferred = $q.defer(),
 				allotment_id = params.id,
-				url = '/api/allotments/'+allotment_id+'/reservations';
+				url = '/api/allotments/' + allotment_id + '/reservations';
 
 			var params = {
 				reservations_data: {
@@ -168,12 +169,13 @@ angular.module('sntRover').service('rvAllotmentReservationsListSrv', ['$q', 'rvB
 	 * @param  {[type]} params [description]
 	 * @return {[type]}        [description]
 	 */
-	this.toggleHideRate = function( params ){
+	this.toggleHideRate = function( params ) {
 		var deferred = $q.defer(),
-			url = 'api/allotments/'+params.id+'/hide_rates';
+			url = 'api/allotments/' + params.id + '/hide_rates';
+
 			rvBaseWebSrvV2.postJSON(url, _.without(params, 'id')).then(function(data) {
 			   	 deferred.resolve(data);
-			},function(data){
+			}, function(data) {
 			    deferred.reject(data);
 			});
 		return deferred.promise;
@@ -182,6 +184,7 @@ angular.module('sntRover').service('rvAllotmentReservationsListSrv', ['$q', 'rvB
 	this.fetchRegistrationCardPrintData = function(params) {
 		var deferred = $q.defer();
 		var url = '/api/allotments/' + params.id + '/batch_print_registration_cards';
+
 		rvBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {

@@ -24,7 +24,7 @@ sntRover
         },
         COLUMN_BORDER_WIDTH: {
             enumerable: true,
-            value: 8 //20
+            value: 8 // 20
         },
         TOP_BOTTOM_HEIGHT: {
             enumerable: true,
@@ -52,7 +52,7 @@ sntRover
             */
 
 
-            /*Considering base model class for later refactoring to avoid
+            /* Considering base model class for later refactoring to avoid
               firing observer code before model has resolved...
             */
             var Model = function(params) {
@@ -93,7 +93,7 @@ sntRover
 
             $scope.backbuttonEnabled = false;
 
-            //left side menu class, based on which it will appear or not
+            // left side menu class, based on which it will appear or not
             $scope.currentLeftMenuClass = 'slide_right';
 
             $scope.currentFilterData = new Model({
@@ -135,7 +135,7 @@ sntRover
                         COLUMN_BORDER_WIDTH = rateGridDefaults.COLUMN_BORDER_WIDTH,
                         TOP_BOTTOM_HEIGHT = rateGridDefaults.TOP_BOTTOM_HEIGHT;
 
-                    var totalwidth = $window.innerWidth - FILTER_OPTIONS_WIDTH - FIRST_COLUMN_WIDTH; //Adjusting for left side .
+                    var totalwidth = $window.innerWidth - FILTER_OPTIONS_WIDTH - FIRST_COLUMN_WIDTH; // Adjusting for left side .
 
                     var mywidth = totalwidth / parseInt($scope.currentFilterData.zoom_level_selected);
                     var numColumns = new Date($scope.currentFilterData.end_date) - new Date($scope.currentFilterData.begin_date);
@@ -149,7 +149,7 @@ sntRover
                     var columsTotalWidth = numColumns * mywidth;
 
                     if (columsTotalWidth < totalwidth) {
-                        columsTotalWidth = totalwidth; //@minimum, table should cover full view.
+                        columsTotalWidth = totalwidth; // @minimum, table should cover full view.
                     }
 
                     $scope.uiOptions.tableWidth = parseInt(FIRST_COLUMN_WIDTH + columsTotalWidth);
@@ -164,11 +164,11 @@ sntRover
 
             $scope.$on("computeColumWidth", computeColWidthOnResize);
 
-            $scope.getSortOption = function(option){
-                if(option === "HIGH_TO_LOW"){
+            $scope.getSortOption = function(option) {
+                if (option === "HIGH_TO_LOW") {
                     return "Highest Rate";
                 }
-                if(option === "LOW_TO_HIGH"){
+                if (option === "LOW_TO_HIGH") {
                     return "Lowest Rate";
                 }
                 return "Alphabetical";

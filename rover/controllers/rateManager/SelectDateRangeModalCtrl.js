@@ -35,7 +35,7 @@ angular.module('sntRover').controller('SelectDateRangeModalCtrl',
 				firstDay: 1,
 				changeYear: true,
 				changeMonth: true,
-				yearRange: "-5:+5", //Show 5 years in past & 5 years in future
+				yearRange: "-5:+5", // Show 5 years in past & 5 years in future
 				onSelect: function(dateText, datePicker) {
 					fromDate = $scope.fromDate;
 					if (tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {

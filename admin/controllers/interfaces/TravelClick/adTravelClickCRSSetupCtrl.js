@@ -24,12 +24,13 @@ admin.controller('adTravelClickCRSSetupCtrl', ['$scope', '$rootScope', 'CRSConfi
                 if ($scope.CRSConfig.full_refresh) {
                     timer = $interval(function() {
                         var refreshDateObj = new Date($scope.CRSConfig.full_refresh);
+
                         $scope.lastRefreshedTimeMark = timeSince(refreshDateObj.valueOf());
                     }, 1000);
                 }
-            }, //Method copied from adExternalInterfaceCtrl.js
+            }, // Method copied from adExternalInterfaceCtrl.js
             timeSince = function(date) {
-                var seconds = Math.floor((new Date() - date) / 1000); //local to the user
+                var seconds = Math.floor((new Date() - date) / 1000); // local to the user
 
                 var interval = Math.floor(seconds / 31536000);
 
@@ -67,6 +68,7 @@ admin.controller('adTravelClickCRSSetupCtrl', ['$scope', '$rootScope', 'CRSConfi
                                 $scope.datepicker.to = $scope.datepicker.from;
                             }
                             var currFromDate = new tzIndependentDate($scope.datepicker.from);
+
                             $scope.datepicker.settings.to.maxDate = new Date(currFromDate.setDate(currFromDate.getDate() + MAX_REFRESH_SPAN_DAYS));
                         }
                     },
@@ -150,7 +152,7 @@ admin.controller('adTravelClickCRSSetupCtrl', ['$scope', '$rootScope', 'CRSConfi
                 $scope.paymentMethods = response.paymentMethods;
                 $scope.CRSConfig = CRSConfig;
                 initTimeCopy();
-            }
+            };
 
             $scope.callAPI(adExternalInterfaceCommonSrv.fetchMetaData, {
                 params: {
@@ -161,7 +163,7 @@ admin.controller('adTravelClickCRSSetupCtrl', ['$scope', '$rootScope', 'CRSConfi
         })();
 
 
-        $scope.$on('$destroy', function(){
+        $scope.$on('$destroy', function() {
             $interval.cancel(timer);
         });
     }

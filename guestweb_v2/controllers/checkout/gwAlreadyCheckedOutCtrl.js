@@ -7,10 +7,11 @@ sntGuestWeb.controller('gwAlreadyCheckedOutController', ['$scope', '$state', '$s
 		$controller('BaseController', {
 			$scope: $scope
 		});
-		var init = function() {
+		var init = (function() {
 			var screenIdentifier = "ALREADY_CHECKED_OUT";
+
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
-		}();
+		}());
 
 
 	}

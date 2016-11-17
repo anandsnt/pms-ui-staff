@@ -1,10 +1,10 @@
 sntRover.directive('focus',
   function($timeout) {
     return {
-      scope : {
-        trigger : '@focus'
+      scope: {
+        trigger: '@focus'
       },
-      link : function(scope, element) {
+      link: function(scope, element) {
         scope.$watch('trigger', function(value) {
           if (value === "true") {
             $timeout(function() {

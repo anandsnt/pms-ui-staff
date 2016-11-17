@@ -1,4 +1,4 @@
-admin.controller('adZestAddonSetupCtrl',['$scope','adZestAddonSetupSrv','$state','$filter','$stateParams',function($scope,adZestAddonSetupSrv,$state,$filter,$stateParams){
+admin.controller('adZestAddonSetupCtrl', ['$scope', 'adZestAddonSetupSrv', '$state', '$filter', '$stateParams', function($scope, adZestAddonSetupSrv, $state, $filter, $stateParams) {
 
  /*
   * To retrieve previous state
@@ -10,9 +10,9 @@ admin.controller('adZestAddonSetupCtrl',['$scope','adZestAddonSetupSrv','$state'
 
   BaseCtrl.call(this, $scope);
 
-  var startWatching = function(){
-    $scope.$watch('addonSetup.is_zest_addon_actions_enabled', function(newValue, oldValue){
-        if(!$scope.addonSetup.is_zest_addon_actions_enabled){
+  var startWatching = function() {
+    $scope.$watch('addonSetup.is_zest_addon_actions_enabled', function(newValue, oldValue) {
+        if (!$scope.addonSetup.is_zest_addon_actions_enabled) {
            $scope.addonSetup.is_zest_display_purchased_addons = false;
            $scope.addonSetup.is_zest_allow_cancellation_of_addons = false;
            $scope.addonSetup.is_zest_enable_purchase = false;
@@ -21,7 +21,7 @@ admin.controller('adZestAddonSetupCtrl',['$scope','adZestAddonSetupSrv','$state'
   };
 
 
-  $scope.fetchAddonSetup = function(){
+  $scope.fetchAddonSetup = function() {
 
     var fetchAddonSetupSuccessCallback = function(data) {
         $scope.isLoading = false;
@@ -29,12 +29,13 @@ admin.controller('adZestAddonSetupCtrl',['$scope','adZestAddonSetupSrv','$state'
         $scope.addonSetup = data;
         startWatching();
   };
-  $scope.invokeApi(adZestAddonSetupSrv.fetchSetup, {},fetchAddonSetupSuccessCallback);
+
+  $scope.invokeApi(adZestAddonSetupSrv.fetchSetup, {}, fetchAddonSetupSuccessCallback);
 
   };
   $scope.fetchAddonSetup();
 
-  $scope.saveAddonSetup = function(){
+  $scope.saveAddonSetup = function() {
 
     var saveAddonSetupSuccessCallback = function(data) {
         $scope.isLoading = false;
@@ -43,7 +44,7 @@ admin.controller('adZestAddonSetupCtrl',['$scope','adZestAddonSetupSrv','$state'
 
   };
 
-  $scope.invokeApi(adZestAddonSetupSrv.saveSetup, $scope.addonSetup,saveAddonSetupSuccessCallback);
+  $scope.invokeApi(adZestAddonSetupSrv.saveSetup, $scope.addonSetup, saveAddonSetupSuccessCallback);
 
   };
 
