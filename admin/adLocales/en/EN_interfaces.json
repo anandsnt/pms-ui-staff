@@ -1,4 +1,4 @@
-	
+
 	"WORKSTATION": "Work Station",
 	"STATION_NAME": "Work Station Name",
 	"STATION_PRINTER": "Work Station Printer",
@@ -33,5 +33,5 @@
 	"MAP_ALL_ROOMS": "Map All Rooms",
 	"MAP_SELECTED_ROOMS": "Map Selected Rooms",
 	"DELETE_MAPPING": "Delete Mapping",
-	"SAVE_MAPPING": "Save Mapping"
-
+	"SAVE_MAPPING": "Save Mapping",
+	"ACCOUNTVIEW_HEADER": "AccountView Back Office Setup"
