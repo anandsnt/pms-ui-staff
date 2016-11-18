@@ -25,4 +25,4 @@
 	"SNAPSHOT_PUBLISH_INSTRUCTIONS": "Publish a full export containing Reservations, Financials and Groups. Full export should occur only once and must be coordinated with Snapshot.",
 	"FULL_EXPORT": "Full Export",
 	"SYS_NAME": "System name",
-	"SYS_VERSION": "System name"
+	"SYS_VERSION": "System Version"
