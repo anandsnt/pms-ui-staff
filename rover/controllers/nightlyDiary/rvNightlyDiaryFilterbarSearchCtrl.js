@@ -39,6 +39,7 @@ angular.module('sntRover')
             $scope.results = data.results;
             $scope.totalSearchResults = data.total_count;
             $scope.$parent.myScroll['result_showing_area'].scrollTo(0, 0, 0);
+            $scope.diaryData.hasOverlay = true;
             refreshScroller();
         };
 
@@ -51,6 +52,8 @@ angular.module('sntRover')
             var params = {};
 
             params.query = $scope.textInQueryBox.trim();
+            params.fromDate = $scope.diaryData.fromDate;
+            params.toDate = $scope.diaryData.toDate;
             $scope.invokeApi(RVNightlyDiarySearchSrv.fetchSearchResults, params, successCallBackofDataFetch, failureCallBackofDataFetch);
         };
 
@@ -121,6 +124,7 @@ angular.module('sntRover')
             $scope.textInQueryBox = '';
             $scope.results = [];
             $scope.totalSearchResults = 0;
+            $scope.diaryData.hasOverlay = false;
         };
 
     }]);

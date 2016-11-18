@@ -49,7 +49,8 @@ angular.module('sntRover')
                 hasMultipleMonth: false,
                 firstMonthDateList: [],
                 secondMonthDateList: [],
-                reservationsList: reservationsList.reservationsList
+                reservationsList: reservationsList.reservationsList,
+                hasOverlay: false
             };
         };
 
