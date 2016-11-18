@@ -84,6 +84,10 @@ admin.controller('ADExternalMappingsAddCtrl', ['$scope', '$state', '$stateParams
             });
         };
 
+        $scope.onChangeMappingType = function() {
+            $scope.sntValues = _.find(mappingTypes, {name: $scope.mapping.mapping_type}).sntvalues;
+        };
+
         (function() {
             _.each(mappingTypes, function(mappingType) {
                 mappingType.text = mappingType.name.replace(/(\_\w)/g, function(m) {
@@ -91,14 +95,20 @@ admin.controller('ADExternalMappingsAddCtrl', ['$scope', '$state', '$stateParams
                 });
             });
 
+            if (!mappingTypes.length) {
+                $scope.errorMessage = ['ERROR! No mapping types configured']
+                return;
+            }
+
             $scope.mappingTypes = mappingTypes;
-            $scope.sntValues = mappingTypes[0].sntvalues;
 
             $scope.mapping = {
                 mapping_type: mappingTypes[0].name,
                 snt_value: '',
                 ext_value: ''
             };
+
+            $scope.onChangeMappingType();
 
             $scope.auto = {
                 all: true,
