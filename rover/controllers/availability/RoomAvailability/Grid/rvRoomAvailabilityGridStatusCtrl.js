@@ -129,8 +129,8 @@ angular.module('sntRover')
                     multiple = true,
                     promises = [
                         $scope.toggleOccupancy(show, multiple),
+                        $scope.toggleAvailableRooms(show, multiple),
                         $scope.toggleSoldRooms(show, multiple),
-                        $scope.toggleRoomInventory(show, multiple),
                         $scope.toggleShowGroupAllotmentTotals(show, multiple)
                     ],
                     delay = 500;
@@ -145,10 +145,12 @@ angular.module('sntRover')
 
             var closeAllSections = function () {
                 var show = false;
-
+                
+                $scope.toggleRoomInventory();
+                /**/
                 $scope.toggleOccupancy(show);
+                $scope.toggleAvailableRooms(show);
                 $scope.toggleSoldRooms(show);
-                $scope.toggleRoomInventory(show);
                 $scope.toggleShowGroupAllotmentTotals(show);
             };
 
