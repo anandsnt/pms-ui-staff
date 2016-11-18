@@ -16,7 +16,7 @@ const NightlyDiaryRootComponent = createClass ({
   },
   setScroller() {
     if (!this.scrollableElement) {
-      this.scrollableElement = findDOMNode(this);
+      this.scrollableElement = $(findDOMNode(this)).find("#diary-nightly-grid")[0];
     }
     this.scroller = new IScroll(this.scrollableElement, this.scrollOptions);
     this.refreshScroller();
@@ -31,7 +31,7 @@ const NightlyDiaryRootComponent = createClass ({
   },
   render() {
     return (
-        <div className="grid-wrapper">
+        <div className="grid-inner">
             <div id="diary-nightly-grid" className={this.props.ClassForRootDiv}>
                 <div className="wrapper">
                     {(this.props.showPrevPageButton)?<GoToPreviousPageButtonContainer/>:''}
