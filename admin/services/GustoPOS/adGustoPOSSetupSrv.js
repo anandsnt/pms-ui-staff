@@ -1,4 +1,4 @@
-admin.service('adGustoPOSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2){
+admin.service('adGustoPOSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
 	
 	/**
 	 * to get the GustoPOS configraton values
@@ -7,11 +7,11 @@ admin.service('adGustoPOSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($
 	this.fetchGustoPOSConfiguration = function() {
 		var deferred = $q.defer();
 		var url = '/api/hotel_settings.json';
-		//var url = "ui/show?json_input=Gusto/settings.json&format=json";
+		// var url = "ui/show?json_input=Gusto/settings.json&format=json";
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data.gusto);
-		},function(data){
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -27,7 +27,7 @@ admin.service('adGustoPOSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($
 
 		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
-		},function(data){
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;

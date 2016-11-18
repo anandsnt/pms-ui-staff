@@ -3,7 +3,8 @@ angular.module('sntRover').service('RVReservationGuestSrv', ['$q', 'rvBaseWebSrv
 
     	this.fetchGuestTabDetails = function(data) {
             var deferred = $q.defer();
-            var url = '/api/reservations/'+data.reservation_id+'/reservations_guest_details';
+            var url = '/api/reservations/' + data.reservation_id + '/reservations_guest_details';
+
             RVBaseWebSrvV2.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -14,7 +15,8 @@ angular.module('sntRover').service('RVReservationGuestSrv', ['$q', 'rvBaseWebSrv
 
         this.updateGuestTabDetails = function(data) {
             var deferred = $q.defer();
-            var url = '/api/reservations/'+data.reservation_id+'/reservations_guest_details';
+            var url = '/api/reservations/' + data.reservation_id + '/reservations_guest_details';
+
             RVBaseWebSrvV2.postJSON(url, data).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {

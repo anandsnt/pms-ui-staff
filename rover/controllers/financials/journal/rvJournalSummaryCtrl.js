@@ -1,14 +1,14 @@
-sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJournalSrv','$timeout',function($scope, $rootScope, RVJournalSrv, $timeout) {
+sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJournalSrv', '$timeout', function($scope, $rootScope, RVJournalSrv, $timeout) {
 	BaseCtrl.call(this, $scope);
     $scope.errorMessage = "";
     $scope.perPage = 50;
 
-    $scope.setScroller('summary_content',{});
+    $scope.setScroller('summary_content', {});
     var refreshSummaryScroller = function () {
-        setTimeout(function(){$scope.refreshScroller('summary_content');}, 500);
+        setTimeout(function() {$scope.refreshScroller('summary_content');}, 500);
     };
 
-    $rootScope.$on('REFRESHSUMMARYCONTENT',function () {
+    $rootScope.$on('REFRESHSUMMARYCONTENT', function () {
         refreshSummaryScroller();
     });
 
@@ -17,7 +17,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
     });
 
     // CICO-28060 : Update dates for summary upon changing from-date from Revenue or Payments 
-    $rootScope.$on('REFRESH_SUMMARY_DATA',function( event, date ){
+    $rootScope.$on('REFRESH_SUMMARY_DATA', function( event, date ) {
         $scope.data.summaryDate = date;
         initSummaryData();
     });
@@ -26,11 +26,11 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
         @param  {string} will be { DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE }
         @return {object}
      */
-    var getSummaryItemByBalanceType = function( balance_type ){
+    var getSummaryItemByBalanceType = function( balance_type ) {
 
         var summaryItem = "";
 
-        switch( balance_type ) {
+        switch ( balance_type ) {
             case 'DEPOSIT_BALANCE'  :
                 summaryItem = $scope.data.summaryData.deposit_balance;
                 break;
@@ -44,8 +44,8 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
         return summaryItem;
     };
 
-    var updateTotalForBalanceType = function( balance_type, opening_balance, debit_sum, credit_sum, closing_balance ){
-        switch( balance_type ) {
+    var updateTotalForBalanceType = function( balance_type, opening_balance, debit_sum, credit_sum, closing_balance ) {
+        switch ( balance_type ) {
             case 'DEPOSIT_BALANCE'  :
                 $scope.data.summaryData.deposit_closing_balance = closing_balance;
                 $scope.data.summaryData.deposit_credits = credit_sum;
@@ -67,17 +67,17 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
         }
     };
 
-	var initSummaryData = function(){
+	var initSummaryData = function() {
 
-		var successCallBackFetchSummaryData = function(responce){
+		var successCallBackFetchSummaryData = function(responce) {
 
             $scope.data.summaryData = {};
             $scope.data.summaryData = responce.data;
 
             // Initializing objetcs for DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE sections.
-            $scope.data.summaryData.deposit_balance = { 'active' : false ,'page_no' : 1,'start' : 1,'end' : 1,'nextAction' : false,'prevAction' : false };
-            $scope.data.summaryData.guest_balance   = { 'active' : false ,'page_no' : 1,'start' : 1,'end' : 1,'nextAction' : false,'prevAction' : false };
-            $scope.data.summaryData.ar_balance      = { 'active' : false ,'page_no' : 1,'start' : 1,'end' : 1,'nextAction' : false,'prevAction' : false };
+            $scope.data.summaryData.deposit_balance = { 'active': false, 'page_no': 1, 'start': 1, 'end': 1, 'nextAction': false, 'prevAction': false };
+            $scope.data.summaryData.guest_balance   = { 'active': false, 'page_no': 1, 'start': 1, 'end': 1, 'nextAction': false, 'prevAction': false };
+            $scope.data.summaryData.ar_balance      = { 'active': false, 'page_no': 1, 'start': 1, 'end': 1, 'nextAction': false, 'prevAction': false };
 
             $scope.errorMessage = "";
             refreshSummaryScroller();
@@ -87,25 +87,26 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
         var params = {
             "date": $scope.data.summaryDate
         };
+
 		$scope.invokeApi(RVJournalSrv.fetchSummaryData, params, successCallBackFetchSummaryData);
     };
 
     // To handle date updation on summary tab
-    $rootScope.$on('summaryDateChanged',function(){
+    $rootScope.$on('summaryDateChanged', function() {
         initSummaryData();
         // CICO-28060 : Update dates for Revenue & Payments upon changing summary dates
-        $rootScope.$broadcast('REFRESH_REVENUE_PAYMENT_DATA', {"date":$scope.data.summaryDate, "origin" :"SUMMARY_DATE_CHANGED"});
+        $rootScope.$broadcast('REFRESH_REVENUE_PAYMENT_DATA', {"date": $scope.data.summaryDate, "origin": "SUMMARY_DATE_CHANGED"});
     });
 
     /* To fetch the details on each balance tab
         @param  {string} will be { DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE }
         @return {object}
      */
-    var fetchBalanceDetails = function( balance_type , isFromPagination ){
+    var fetchBalanceDetails = function( balance_type, isFromPagination ) {
 
         var summaryItem = getSummaryItemByBalanceType( balance_type );
 
-        var successCallBackFetchBalanceDetails = function(responce){
+        var successCallBackFetchBalanceDetails = function(responce) {
 
             summaryItem.transactions = [];
             summaryItem.transactions = responce.transactions;
@@ -113,7 +114,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
 
             updateTotalForBalanceType( balance_type, responce.opening_balance, responce.debit_sum, responce.credit_sum, responce.closing_balance );
 
-            if(!isFromPagination && summaryItem.transactions.length > 0){
+            if (!isFromPagination && summaryItem.transactions.length > 0) {
                 summaryItem.active = !summaryItem.active;
             }
 
@@ -124,16 +125,17 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
         };
 
         // Call api only while expanding the tab ..
-        if(!summaryItem.active || isFromPagination) {
+        if (!summaryItem.active || isFromPagination) {
             var params = {
                 "date": $scope.data.summaryDate,
                 "page_no": summaryItem.page_no,
                 "per_page": $scope.perPage,
                 "type": balance_type
             };
+
             $scope.invokeApi(RVJournalSrv.fetchBalanceDetails, params, successCallBackFetchBalanceDetails);
         }
-        else{
+        else {
             summaryItem.active = !summaryItem.active;
             refreshSummaryScroller();
         }
@@ -150,32 +152,33 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
 
 	initSummaryData();
 
-    //To load API data for pagination
-    var loadAPIData = function( balance_type, pageNo ){
+    // To load API data for pagination
+    var loadAPIData = function( balance_type, pageNo ) {
         var item        = getSummaryItemByBalanceType( balance_type );
+
         item.page_no    = pageNo;
         fetchBalanceDetails( balance_type, true );
     };
     
     // Pagination options for GUEST_BALANCE
     $scope.guestPagination = {
-        id      : 'GUEST_BALANCE',
-        api     : [ loadAPIData, 'GUEST_BALANCE' ],
-        perPage : $scope.perPage
+        id: 'GUEST_BALANCE',
+        api: [ loadAPIData, 'GUEST_BALANCE' ],
+        perPage: $scope.perPage
     };
 
     // Pagination options for DEPOSIT_BALANCE
     $scope.depositPagination = {
-        id      : 'DEPOSIT_BALANCE',
-        api     : [ loadAPIData, 'DEPOSIT_BALANCE' ],
-        perPage : $scope.perPage
+        id: 'DEPOSIT_BALANCE',
+        api: [ loadAPIData, 'DEPOSIT_BALANCE' ],
+        perPage: $scope.perPage
     };
 
     // Pagination options for AR_BALANCE
     $scope.arPagination = {
-        id      : 'AR_BALANCE',
-        api     : [ loadAPIData, 'AR_BALANCE' ],
-        perPage : $scope.perPage
+        id: 'AR_BALANCE',
+        api: [ loadAPIData, 'AR_BALANCE' ],
+        perPage: $scope.perPage
     };
 
 }]);

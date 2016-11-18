@@ -23,7 +23,7 @@ angular.module('prettyTimeAgoModule', [])
 					}
 				}
 			}
-		}
+		};
 	})
 	.directive('prettyTimeAgo', ['timeAgo', function(timeAgo) {
 		return {
@@ -37,5 +37,5 @@ angular.module('prettyTimeAgoModule', [])
 					element.html( timeAgo.convert(scope.prettyTimeAgo) );
 				}
 			}
-		}
-	}])
+		};
+	}]);

@@ -1,7 +1,7 @@
 
 angular.module('stayCardModule', [])
     .config(function($stateProvider, $urlRouterProvider, $translateProvider) {
-        //define module-specific routes here/
+        // define module-specific routes here/
         // +-----------------+--------------------------+
         // |            reservation                     |
         // |              +                             |
@@ -19,7 +19,7 @@ angular.module('stayCardModule', [])
             abstract: true,
             url: '/staycard',
             templateUrl: '/assets/partials/staycard/rvStaycard.html',
-            controller: 'RVReservationMainCtrl', //staycardController',
+            controller: 'RVReservationMainCtrl', // staycardController',
             resolve: {
                 loadPaymentMapping: function (jsMappings) {
                     return jsMappings.loadPaymentMapping();
@@ -113,12 +113,12 @@ angular.module('stayCardModule', [])
                 if (!$stateParams.promotion_code) {
                     $stateParams.promotion_code = null;
                 }
-                if(!$stateParams.room_type_id){
+                if (!$stateParams.room_type_id) {
                     $stateParams.room_type_id = null;
                 }
             },
             resolve: {
-                areReservationAddonsAvailable: function(RVReservationBaseSearchSrv, $stateParams, staycardJsAssets) { //CICO-16874
+                areReservationAddonsAvailable: function(RVReservationBaseSearchSrv, $stateParams, staycardJsAssets) { // CICO-16874
                     return RVReservationBaseSearchSrv.hasAnyConfiguredAddons({
                         from_date: $stateParams.from_date,
                         to_date: $stateParams.to_date,
@@ -127,32 +127,34 @@ angular.module('stayCardModule', [])
                 },
                 rates: function(RVRoomRatesSrv, $stateParams, staycardJsAssets, RVReservationBaseSearchSrv) {
                     var params = {};
+
                         params.from_date = $stateParams.from_date;
                         params.to_date   = $stateParams.to_date;
                         params.override_restrictions =  $stateParams.override_restrictions;
                         params.adults  = $stateParams.adults;
                         params.children = $stateParams.children;
-                    if($stateParams.company_id)
+                    if ($stateParams.company_id)
                         params.company_id = $stateParams.company_id;
-                    if($stateParams.travel_agent_id)
+                    if ($stateParams.travel_agent_id)
                         params.travel_agent_id = $stateParams.travel_agent_id;
-                    if($stateParams.group_id || $stateParams.allotment_id)
+                    if ($stateParams.group_id || $stateParams.allotment_id)
                         params.group_id = $stateParams.group_id || $stateParams.allotment_id;
-                    if($stateParams.promotion_code)
+                    if ($stateParams.promotion_code)
                         params.promotion_code = $stateParams.promotion_code;
-                    if($stateParams.promotion_id)
+                    if ($stateParams.promotion_id)
                         params.promotion_id = $stateParams.promotion_id;
-                    if($stateParams.room_type_id)
+                    if ($stateParams.room_type_id)
                         params.room_type_id = $stateParams.room_type_id;
-                    if($stateParams.is_member == "true")
+                    if ($stateParams.is_member == "true")
                         params.is_member = $stateParams.is_member;
 
                     var activeTab = RVReservationBaseSearchSrv.getRoomRatesDefaultView();
-                    if(params.company_id || params.travel_agent_id || params.group_id || params.promotion_id || params.is_member) {
+
+                    if (params.company_id || params.travel_agent_id || params.group_id || params.promotion_id || params.is_member) {
                         activeTab = 'RECOMMENDED';
                     }
                     RVRoomRatesSrv.setRoomAndRateActiveTab(activeTab);
-                    return RVRoomRatesSrv.fetchRatesInitial(params)
+                    return RVRoomRatesSrv.fetchRatesInitial(params);
                 },
                 ratesMeta: function(RVReservationBaseSearchSrv, staycardJsAssets) {
                     return RVReservationBaseSearchSrv.fetchRatesMeta();
@@ -179,6 +181,7 @@ angular.module('stayCardModule', [])
 
                 addonData: function(RVReservationAddonsSrv, $stateParams, staycardJsAssets) {
                     var params = {};
+
                     params.from_date = $stateParams.from_date;
                     params.to_date = $stateParams.to_date;
                     params.is_active = true;
@@ -230,6 +233,7 @@ angular.module('stayCardModule', [])
                         "reservationId": $stateParams.id,
                         "isRefresh": $stateParams.isrefresh
                     };
+
                     return RVReservationCardSrv.fetch(data);
                 },
                 reservationDetails: function(RVReservationCardSrv, $stateParams, staycardJsAssets) {
@@ -237,6 +241,7 @@ angular.module('stayCardModule', [])
                         "confirmationNumber": $stateParams.confirmationId,
                         "isRefresh": $stateParams.isrefresh
                     };
+
                     return RVReservationCardSrv.fetchReservationDetails(data);
                 },
                 baseData: function(RVReservationSummarySrv, staycardJsAssets) {
@@ -278,23 +283,26 @@ angular.module('stayCardModule', [])
                 roomsList: function(RVRoomAssignmentSrv, $stateParams, roomAssignmentJsAssets) {
 
                     var params = {};
+
                     params.reservation_id = $stateParams.reservation_id;
                    // params.room_type = $stateParams.room_type;
                     return RVRoomAssignmentSrv.getRooms(params);
                 },
                 roomPreferences: function(RVRoomAssignmentSrv, $stateParams, roomAssignmentJsAssets) {
                     var params = {};
+
                     params.reservation_id = $stateParams.reservation_id;
                     return RVRoomAssignmentSrv.getPreferences(params);
                 },
                 roomUpgrades: function(RVUpgradesSrv, $stateParams, roomAssignmentJsAssets) {
-                    //check if roomupgrade is available
-                    if($stateParams.upgrade_available ==="true"){
+                    // check if roomupgrade is available
+                    if ($stateParams.upgrade_available === "true") {
                         var params = {};
+
                         params.reservation_id = $stateParams.reservation_id;
                         return RVUpgradesSrv.getAllUpgrades(params);
                     }
-                    else{
+                    else {
                         return [];
                     }
 
@@ -311,6 +319,7 @@ angular.module('stayCardModule', [])
                 },
                 roomsList: function(RVRoomAssignmentSrv, $stateParams, roomAssignmentJsAssets) {
                     var params = {};
+
                     params.reservation_id = $stateParams.reservation_id;
                     return RVRoomAssignmentSrv.getRooms(params);
                 }
@@ -318,7 +327,7 @@ angular.module('stayCardModule', [])
             }
         });
 
-        //Change stay dates
+        // Change stay dates
         $stateProvider.state('rover.reservation.staycard.changestaydates', {
             url: '/changestaydates/:reservationId/:confirmNumber',
             templateUrl: '/assets/partials/changeStayDates/rvChangeStayDates.html',

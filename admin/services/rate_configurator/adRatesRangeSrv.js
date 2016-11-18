@@ -12,6 +12,7 @@ admin.service('ADRatesRangeSrv', ['$q', 'ADBaseWebSrvV2',
             var deferred = $q.defer();
 
             var url = "/api/rates/" + id + "/rate_date_ranges";
+
             ADBaseWebSrvV2.postJSON(url, postData).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {

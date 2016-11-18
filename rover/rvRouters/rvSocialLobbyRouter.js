@@ -1,5 +1,5 @@
 angular.module('SocialLobbyModule', [])
-    .config(function($stateProvider, $urlRouterProvider, $translateProvider){
+    .config(function($stateProvider, $urlRouterProvider, $translateProvider) {
 
         $stateProvider.state('rover.socialLobby', {
             abstract: false,

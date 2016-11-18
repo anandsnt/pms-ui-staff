@@ -7,7 +7,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
     '$timeout',
     function($scope, $state, zsEventConstants, zsCheckinSrv, $stateParams, $timeout) {
 
-        /**********************************************************************************************
+        /** ********************************************************************************************
          **      Expected state params -----> none           
          **      Exit function -> $scope.goToNext                              
          **                                                                       
@@ -22,7 +22,8 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
         $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
             zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
             var stateParams = {};
-            //check if this page was invoked through pickupkey flow
+            // check if this page was invoked through pickupkey flow
+
             if (!!$stateParams.pickup_key_mode) {
                 stateParams.pickup_key_mode = 'manual';
             }
@@ -34,7 +35,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
         };
         var getSelectedReservations = function() {
             $scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
-            //Deleting reservation details from zsCheckinSrv
+            // Deleting reservation details from zsCheckinSrv
             zsCheckinSrv.setSelectedCheckInReservation([]);
         };
 
@@ -59,34 +60,35 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 $scope.guest.firstName = $scope.guest.Name;
                 $scope.guest.Name = "";
                 $scope.headingText = 'ENTER_LAST';
-                if ($scope.isIpad){
+                if ($scope.isIpad) {
                     $scope.callBlurEventForIpad();
                 } else {
-                    $timeout(function(){
+                    $timeout(function() {
                         $scope.focusInputField('add-guest-name');
-                    },300);
+                    }, 300);
                 }
             } else {
                 $scope.guest.lastName = $scope.guest.Name;
                 $scope.guest.Name = "";
                 updateGuestDetails();
                 $scope.AddGuestMode = false;
-                //this needs to reset..the above code needs to be changed in future
-                //seems confusing
+                // this needs to reset..the above code needs to be changed in future
+                // seems confusing
                 $scope.guest.firstNameEntered = false;
-                if ($scope.isIpad){
+                if ($scope.isIpad) {
                     $scope.callBlurEventForIpad();
                 } else {
-                    $timeout(function(){
+                    $timeout(function() {
                         $scope.focusInputField('add-guest-name');
-                    },300);
+                    }, 300);
 
                 }
-            };
+            }
         };
         $scope.removeGuest = function(toDeleteId) {
-            //for API
+            // for API
             var accompanyingGuestData = angular.copy($scope.selectedReservation.guest_details);
+
             accompanyingGuestData = _.without($scope.selectedReservation.guest_details, _.findWhere($scope.selectedReservation.guest_details, _.find($scope.selectedReservation.guest_details, function(guest) {
                 return guest.is_primary === true;
             })));
@@ -94,6 +96,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
             var toDeleteItem = _.find(accompanyingGuestData, function(guest) {
                 return guest.id === toDeleteId;
             });
+
             toDeleteItem.last_name = null;
             toDeleteItem.first_name = null;
 
@@ -110,8 +113,9 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 })));
             };
             var onFailureResponse = function(response) {
-                //do nothing for now..i don't know what to be done in that case
+                // do nothing for now..i don't know what to be done in that case
             };
+
             $scope.callAPI(zsCheckinSrv.updateGuestTabDetails, {
                 params: guestDetails,
                 'successCallBack': onSuccessResponse,
@@ -121,6 +125,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
         var updateGuestDetails = function() {
 
             var accompanyingGuestData = angular.copy($scope.selectedReservation.guest_details);
+
             accompanyingGuestData = _.without($scope.selectedReservation.guest_details, _.findWhere($scope.selectedReservation.guest_details, _.find($scope.selectedReservation.guest_details, function(guest) {
                 return guest.is_primary === true;
             })));
@@ -133,7 +138,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 'reservation_id': $scope.selectedReservation.id
             };
             var onSuccessResponse = function(response) {
-                //push changes up to the reservation immediately
+                // push changes up to the reservation immediately
                 $scope.selectedReservation.guest_details.push({
                     last_name: $scope.guest.lastName,
                     first_name: $scope.guest.firstName,
@@ -141,8 +146,9 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 });
             };
             var onFailureResponse = function(response) {
-                //do nothing for now..i don't know what to be done in that case
+                // do nothing for now..i don't know what to be done in that case
             };
+
             $scope.callAPI(zsCheckinSrv.updateGuestTabDetails, {
                 params: guestDetails,
                 'successCallBack': onSuccessResponse,
@@ -159,14 +165,14 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
          * [initializeMe description]
          * @return {[type]} [description]
          */
-        var initializeMe = function() {
-            //show back button
+        var initializeMe = (function() {
+            // show back button
             $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
-            //show close button
+            // show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
             $scope.AddGuestMode = false;
             $scope.init();
-        }();
+        }());
 
 
     }

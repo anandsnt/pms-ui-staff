@@ -18,32 +18,28 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 			chosenReport     = detailsCtrlScope.chosenReport;
 
 
-
-
-
-
 		var LEFT_PANE_SCROLL  = 'left-pane-scroll',
 			RIGHT_PANE_SCROLL = 'right-pane-scroll';
 
 		$scope.setScroller(LEFT_PANE_SCROLL, {
-			'preventDefault' : false,
-			'probeType'      : 3
+			'preventDefault': false,
+			'probeType': 3
 		});
 
 		$scope.setScroller(RIGHT_PANE_SCROLL, {
-			'preventDefault' : false,
-			'probeType'      : 3,
-			'scrollX'        : true
+			'preventDefault': false,
+			'probeType': 3,
+			'scrollX': true
 		});
 
 		var refreshScrollers = function() {
 			if ( !! mainCtrlScope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL) ) {
 				$scope.refreshScroller( LEFT_PANE_SCROLL );
-			};
+			}
 
 			if ( !! mainCtrlScope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL) ) {
 				$scope.refreshScroller( RIGHT_PANE_SCROLL );
-			};
+			}
 		};
 
 		var setupScrollListner = function() {
@@ -65,8 +61,9 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 				setupScrollListner();
 			} else {
 				$timeout(isScrollReady, 1000);
-			};
+			}
 		};
+
 		isScrollReady();
 
 		var destroyScrolls = function() {
@@ -79,16 +76,14 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 
 		$scope.$on( '$destroy', destroyScrolls );
 
-		
-
 
 		// default colspan value
 		$scope.colSpan = 5;
 
 		// ui filter by default showing both avail. and rev.
 		$scope.uiFilter = {
-			'showAvailability' : true,
-			'showRevenue'      : true
+			'showAvailability': true,
+			'showRevenue': true
 		};
 
 		// cant disable both, when one disabled one the other should be enabled
@@ -105,7 +100,7 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 		$scope.$watch('uiFilter.showRevenue', function(newValue) {
 			if ( false == newValue && ! $scope.uiFilter.showAvailability ) {
 				$scope.uiFilter.showAvailability = true;
-			};
+			}
 
 			$scope.$emit('showLoader');
 			$timeout( reInit, 300 );
@@ -130,7 +125,7 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 				$scope.colSpan = 3;
 			} else if ( $scope.uiFilter.showAvailability && ! $scope.uiFilter.showRevenue ) {
 				$scope.colSpan = 2;
-			};
+			}
 
 			$scope.headerTop  = [];
 			$scope.headerBot  = [];
@@ -138,6 +133,7 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 
 			var allDatesValInRoom = [],
 				eachDateVal       = [];
+
 			$scope.reportData = [];	// this will be an array of arrays
 			$scope.roomNames = [];	// keeping seperate array so that we can avoid object being itrated aphabetically
 
@@ -155,10 +151,10 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 			var results = $scope.results,
 				actualNam;
 
-			for( roomKey in results ) {
+			for ( roomKey in results ) {
 				if ( ! results.hasOwnProperty(roomKey) ) {
 					continue;
-				};
+				}
 
 				actualName = roomKey.split('__')[0];
 				$scope.roomNames.push( actualName || 'NA' );
@@ -166,10 +162,10 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 				roomObj = results[roomKey];
 				allDatesValInRoom = [];
 
-				for( dateKey in roomObj ) {
+				for ( dateKey in roomObj ) {
 					if ( ! roomObj.hasOwnProperty(dateKey) ) {
 						continue;
-					};
+					}
 
 					if ( 0 == loopCount ) {
 						$scope.headerTop.push( $filter('date')(dateKey, $rootScope.shortMonthAndDate) );
@@ -186,16 +182,16 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 							startIndex   = 0;
 							endIndex     = 1 + 1;
 							triggerIndex = 1;
-						};
+						}
 						for (; startIndex < endIndex; startIndex++) {
 							$scope.headerBot.push({
-								'name' : SUB_HEADER_NAMES[startIndex],
-								'cls'  : startIndex == triggerIndex ? 'day-end' : ''
+								'name': SUB_HEADER_NAMES[startIndex],
+								'cls': startIndex == triggerIndex ? 'day-end' : ''
 							});
-						};
+						}
 
 						noOfDays += 1;
-					};
+					}
 					
 					dateObj = roomObj[dateKey];
 
@@ -203,59 +199,59 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 
 					if ( 2 == $scope.colSpan ) {
 						eachDateVal.push({
-							value   : dateObj['total_reservations_count'],
-							isAvail : true
+							value: dateObj['total_reservations_count'],
+							isAvail: true
 						});
 						eachDateVal.push({
-							value   : dateObj['available_rooms_count'],
-							isAvail : true,
-							cls     : 'last-day'
+							value: dateObj['available_rooms_count'],
+							isAvail: true,
+							cls: 'last-day'
 						});
 					} else if ( 3 == $scope.colSpan ) {
 						eachDateVal.push({
-							value : $filter('currency')(dateObj['rate_revenue'], $rootScope.currencySymbol, 2),
-							isRev : true
+							value: $filter('currency')(dateObj['rate_revenue'], $rootScope.currencySymbol, 2),
+							isRev: true
 						});
 						eachDateVal.push({
-							value : $filter('currency')(dateObj['adr'], $rootScope.currencySymbol, 2),
-							isRev : true
+							value: $filter('currency')(dateObj['adr'], $rootScope.currencySymbol, 2),
+							isRev: true
 						});
 						eachDateVal.push({
-							value : $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, 2),
-							isRev : true,
-							cls   : 'last-day'
+							value: $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, 2),
+							isRev: true,
+							cls: 'last-day'
 						});
 					} else if ( 5 == $scope.colSpan ) {
 						eachDateVal.push({
-							value   : dateObj['total_reservations_count'],
-							isAvail : true
+							value: dateObj['total_reservations_count'],
+							isAvail: true
 						});
 						eachDateVal.push({
-							value   : dateObj['available_rooms_count'],
-							isAvail : true
+							value: dateObj['available_rooms_count'],
+							isAvail: true
 						});
 						eachDateVal.push({
-							value : $filter('currency')(dateObj['rate_revenue'], $rootScope.currencySymbol, 2),
-							isRev : true
+							value: $filter('currency')(dateObj['rate_revenue'], $rootScope.currencySymbol, 2),
+							isRev: true
 						});
 						eachDateVal.push({
-							value : $filter('currency')(dateObj['adr'], $rootScope.currencySymbol, 2),
-							isRev : true
+							value: $filter('currency')(dateObj['adr'], $rootScope.currencySymbol, 2),
+							isRev: true
 						});
 						eachDateVal.push({
-							value : $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, 2),
-							isRev : true,
-							cls   : 'last-day'
+							value: $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, 2),
+							isRev: true,
+							cls: 'last-day'
 						});
-					};
+					}
 
 					allDatesValInRoom = allDatesValInRoom.concat( eachDateVal );
-				};
+				}
 
 				loopCount += 1;
 
 				$scope.reportData.push( allDatesValInRoom );
-			};
+			}
 
 			$scope.rightPaneWidth = noOfDays * cellWidth * $scope.colSpan;
 			
@@ -269,32 +265,31 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 		function renderReact (args) {
 			var args  = args || {},
 				props = _.extend(args, {
-					'rightPaneWidth' : $scope.rightPaneWidth,
-					'colspan'        : $scope.colSpan,
-					'headerTop'      : $scope.headerTop,
-					'headerBot'      : $scope.headerBot,
-					'reportData'     : $scope.reportData,
-					'isLastRowSum'   : true
+					'rightPaneWidth': $scope.rightPaneWidth,
+					'colspan': $scope.colSpan,
+					'headerTop': $scope.headerTop,
+					'headerBot': $scope.headerBot,
+					'reportData': $scope.reportData,
+					'isLastRowSum': true
  				});
 
 			ReactDOM.render(
 				React.createElement(DPContent, props),
 				document.getElementById('daily-production-render')
 			);
-		};
+		}
 
 		function init (argument) {
 			processData();
 			renderReact();
-		};
+		}
 
 		init();
 
 		function reInit (argument) {
 			processData();
 			renderReact();
-		};
-
+		}
 
 
 		// re-render must be initiated before for taks like printing.
