@@ -48,9 +48,9 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.$on('GENERAL_ERROR', function() {
             // resolve an issue where (if no workstation assigned, or the workstation was deleted, 
             //   instead of staying at OOS, its going to speak to staff page)
-            if ($state.current.name !== 'zest_station.outOfService'){
+            if ($state.current.name !== 'zest_station.outOfService') {
                 $state.go('zest_station.speakToStaff');    
-            };
+            }
             
         });
 
