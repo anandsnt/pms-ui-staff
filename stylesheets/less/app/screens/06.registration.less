@@ -937,6 +937,28 @@
 
                             strong {
                                 font-weight: 600;
+
+                                &.toggle {
+                                    cursor: pointer;
+
+                                    .icon-double-arrow {
+                                        display: inline-block; 
+                                        background-position: 1px -797px;
+                                        background-size: 60px;
+                                        .square(12px);
+                                        .icons > .rotate-down;
+                                    }
+
+                                    &.active {
+                                        padding-bottom: 5px;
+                                        .box-shadow(0px 1px 0 rgba(0, 0, 0, 0.15));
+
+                                        .icon-double-arrow {
+                                            background-position: 3px -798px;
+                                            .icons > .rotate-up;
+                                        }
+                                    } 
+                                }
                             }
 
                             span,
@@ -957,6 +979,33 @@
                             .adjusted {
                                 em {
                                     color: darken(@yellow, 10);
+                                }
+                            }
+
+                            .charge-items {
+                                font-size: 0.875em;
+                                margin-bottom: 10px;
+                                margin-top:5px;
+
+                                li {
+                                    margin:0;
+                                    .box-shadow(0px 1px 0 rgba(0, 0, 0, 0.10));
+                                }
+
+                                .cost,
+                                strong {
+                                    display:inline-block;
+                                    vertical-align: middle;
+                                }
+
+                                strong {
+                                    .calc-width(100, 100);
+                                    word-break:break-all;
+                                }
+
+                                .cost {
+                                    width: 100px;
+                                    text-align: right;
                                 }
                             }
                         }
