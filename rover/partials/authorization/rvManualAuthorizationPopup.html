@@ -75,7 +75,7 @@
                 <label for="auth-amount">
                     {{ 'ADDITIONAL_AMOUNT' | translate }} (<span>{{ currencySymbol }}</span>)
                 </label>
-                <input ng-model="authData.authAmount" id="auth-amount" value="" type="text" />
+                <input ng-model="authData.authAmount" id="auth-amount" value="" type="number" />
             </div>
 
             <div class="entry manual_auth full-width hidden">
@@ -89,7 +89,7 @@
             </div>
 
             <div class="actions">
-                <button ng-click="authorize()" ng-disabled="!authData.manualCCAuthPermission" ng-class="{'grey':!authData.manualCCAuthPermission }" type="button" class="button green" translate>AUTHORIZE</button>
+                <button ng-click="authorize()" ng-disabled="!authData.manualCCAuthPermission || authData.authAmount <= 0" ng-class="{'grey':!authData.manualCCAuthPermission || authData.authAmount <= 0 }" type="button" class="button green" translate>AUTHORIZE</button>
                 <button ng-click="closeDialog()" type="button" class="button blank" translate>CANCEL</button>
             </div>
         </fieldset>
