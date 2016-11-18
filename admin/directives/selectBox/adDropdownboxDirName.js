@@ -1,11 +1,11 @@
-admin.directive('adDropdownName', function($timeout) {
+admin.directive('adDropdownName', function() {
 
     return {
-    	restrict: 'AE',
+        restrict: 'AE',
         replace: 'true',
-      	scope: {
+        scope: {
             divStyle: '@divStyle',
-	        selboxStyle: '@selboxStyle',
+            selboxStyle: '@selboxStyle',
             divClass: '@divClass',
             selboxClass: '@selboxClass',
             required: '@required',
@@ -21,35 +21,35 @@ admin.directive('adDropdownName', function($timeout) {
             valueproperty: '@valueproperty',
             options: '=',
             prefixValue: '@',
-            labelProperties: "="
-	    },
-        link: function ($scope, $element, $attr)
-        {
+            labelProperties: '=',
+            isDisabled: '='
+        },
+        link: function($scope) {
             if (typeof $scope.options !== 'undefined') {
                 if ($scope.options.hasOwnProperty('showOptionsIf')) {
                     $scope.showOptionsIf = $scope.options.showOptionsIf;
                 }
             } else {
-                $scope.showOptionsIf = function(index) {
-                     return true;
+                $scope.showOptionsIf = function() {
+                    return true;
                 };
             }
 
             $scope.getLabel = function(row) {
-                var label = "";
+                var label = '';
 
                 _.each($scope.labelProperties, function(key, idx) {
                     if (idx === 0) {
                         label += row[key];
                     } else {
-                        label +=  " - " + row[key];
+                        label += ' - ' + row[key];
                     }
 
                 });
                 return label;
             };
         },
-    	templateUrl: '/assets/directives/selectBox/adDropdownboxName.html'
+        templateUrl: '/assets/directives/selectBox/adDropdownboxName.html'
     };
 
 });
