@@ -30,7 +30,7 @@ angular.module('sntRover')
         var initiateBasicConfig = function() {
             $scope.heading = $filter('translate')('MENU_ROOM_DIARY');
             $scope.setTitle($filter('translate')('MENU_ROOM_DIARY'));
-            $scope.$emit("updateRoverLeftMenu", "nightlyDiaryReservation");
+            $scope.$emit('updateRoverLeftMenu', 'nightlyDiaryReservation');
             // data set for diary used for Angular code.
             $scope.diaryData = {
                 datesGridData: datesList,
@@ -67,36 +67,22 @@ angular.module('sntRover')
             };
         };
 
-        // Method to update 7/21 time line data.
-        var fetchTimelineListData = function() {
-            var successCallBackFetchDatesList = function(data) {
-                $scope.$emit('hideLoader');
-                $scope.errorMessage = "";
-                $scope.diaryData.datesGridData = [];
-                $scope.diaryData.datesGridData = data;
-                $scope.$broadcast('FETCH_COMPLETED_DATE_LIST_DATA');
-            },
-            postData = {
-                "start_date": $scope.diaryData.fromDate,
-                "no_of_days": $scope.diaryData.numberOfDays
-            };
-            $scope.invokeApi(RVNightlyDiarySrv.fetchDatesList, postData, successCallBackFetchDatesList);
-        };
-
         // Method to update room list data.
         var fetchRoomListDataAndReservationListData = function() {
             var successCallBackFetchRoomList = function(data) {
                 $scope.$emit('hideLoader');
-                $scope.errorMessage = "";
+                $scope.errorMessage = '';
                 $scope.diaryData.diaryRoomsList = data.roomList.rooms;
                 $scope.diaryData.reservationsList = data.reservationList;
                 $scope.diaryData.paginationData.totalCount = data.roomList.total_count;
+                $scope.diaryData.datesGridData = data.dateList;
+                $scope.$broadcast('FETCH_COMPLETED_DATE_LIST_DATA');
                 updateDiaryView();
             },
             postData = {
                 ...getPaginationParams(),
-                "start_date": $scope.diaryData.fromDate,
-                "no_of_days": $scope.diaryData.numberOfDays
+                'start_date': $scope.diaryData.fromDate,
+                'no_of_days': $scope.diaryData.numberOfDays
             };
             $scope.invokeApi(RVNightlyDiarySrv.fetchRoomsListAndReservationList, postData, successCallBackFetchRoomList);
         };
@@ -161,10 +147,6 @@ angular.module('sntRover')
         // To refresh diary data - rooms & reservations.
         $scope.$on('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function() {
             fetchRoomListDataAndReservationListData();
-        });
-        // To refresh timeline data
-        $scope.$on('REFRESH_DIARY_TIMELINE', function() {
-            fetchTimelineListData();
         });
         /**
          * to render the grid view
