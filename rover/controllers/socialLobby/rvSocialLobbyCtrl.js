@@ -18,6 +18,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         $scope.$emit("updateRoverLeftMenu", "sociallobby");
         $scope.textInQueryBox = "";
         $scope.showSearchResultsArea = false;
+        $scope.searchResultsCount = 0;
         
         var deleteIndex = "";
 
@@ -78,7 +79,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         $scope.$on("socialLobbyHeightUpdated", function(event, data) {
             $scope.posts[data.index].expandedHeight = data.height;
 
-            if ( data.isSearchResultsView && data.index < $scope.posts.length - 1 && $scope.posts[data.index + 1].comments.length > 0) {
+            if ( data.isSearchResultsView && data.index < $scope.posts.length - 1 ) {
                 var nextPost = getNextPostWithComments(data.index + 1);
                 if ( nextPost != "" ) {
                     setTimeout(function() {
@@ -131,6 +132,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         var clearSearchResults = function(){
             $scope.textInQueryBox = "";
             $scope.showSearchResultsArea = false;
+            $scope.searchResultsCount = 0;
         };
         $scope.refreshPosts = function(){
             clearSearchResults();
@@ -211,7 +213,13 @@ sntRover.controller('RVSocialLobbyCrl', [
             if (page == $scope.postParams.page)
                 return;
             $scope.postParams.page = page;
-            $scope.fetchPosts();
+            if ($scope.textInQueryBox.length >=  3) {
+                
+                search();
+            }else{
+                $scope.fetchPosts();
+            }
+            
             if ($scope.postParams.page > $scope.middle_page3 && $scope.postParams.page < $scope.totalPostPages) {
                 $scope.middle_page3++;
                 $scope.middle_page2++;
