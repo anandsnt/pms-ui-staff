@@ -21,7 +21,7 @@
         </div>
 
         <!-- Room Search Results -->
-        <div class="grid-room-search-results" ng-show="diaryData.showSearchResultsArea" ng-class="{'visible': diaryData.showSearchResultsArea}">
+        <div class="grid-room-search-results scrollable"  ng-iscroll="result_showing_area" ng-iscroll-delay="1000" ng-show="diaryData.showSearchResultsArea" ng-class="{'visible': diaryData.showSearchResultsArea}">
             <div class="wrapper">
                 <div class="room" ng-repeat="row in diaryData.roomNumberSearchResults">
                     <span class="room-number {HK status or 'out' if OOO/OOS}" ng-bind-html="row.room_no | highlight:diaryData.textInQueryBox:false">
