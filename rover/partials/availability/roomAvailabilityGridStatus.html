@@ -110,7 +110,7 @@
 					</td>
 				</tr>
 				<!-- Adults / Children -->
-				<tr ng-class="{'hide-row': !toggleStatusOf.roomsSold }">
+				<tr ng-class="{'hide-row': !toggleStatusOf.roomsSold }" ng-if="!isHourlyRateOn">
 					<th scope="row">Adults / Children</th>
 					<td ng-repeat="count in data.additionalData.adultsChildrenCounts track by $index">
 						<div class="inner" ng-bind="count.bothCount"></div>

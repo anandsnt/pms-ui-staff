@@ -20,6 +20,11 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         $scope.isAdd = false;
         $scope.addFormView = false;
 
+
+        $scope.navigateBack = function() {
+            $state.go('admin.dashboard', {menu: 8});
+        };
+
         /*
          * To close inline tabs on cancel/save clicks
          */
@@ -53,11 +58,14 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             lastDropedTime = new Date();
         };
         $scope.clickedInterfaceMenuItem = function (event, state, submenu) {
+            if (submenu.name === 'SAFLOK' || submenu.name === 'SALTO') {
+                state = 'admin.external-mappings';
+            }
             // need to cache the submenu, then go to the next state with the interface id
             cacheInterfaceId(submenu);
             setTimeout(function () {
-                $scope.clickedMenuItem(event, state);
-            }, 1000);
+                $scope.clickedMenuItem(event, state, submenu);
+            }, 300);
 
         };
 
@@ -86,8 +94,12 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         };
 
 
-        $scope.clickedMenuItem = function ($event, stateToGo) {
+        $scope.clickedMenuItem = function ($event, stateToGo, state) {
             var currentTime = new Date();
+
+            if (!state) {
+                state = {};
+            }
 
             if (lastDropedTime !== '' && typeof lastDropedTime === 'object') {
                 var diff = currentTime - lastDropedTime;
@@ -100,11 +112,19 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                     return false;
                 } else {
                     lastDropedTime = '';
-                    $state.go(stateToGo);
+                    $state.go(stateToGo, {
+                        interface_id: state.id,
+                        hotel_id: $scope.hotelId,
+                        interface_name: state.name
+                    });
                 }
             } else {
                 lastDropedTime = '';
-                $state.go(stateToGo);
+                $state.go(stateToGo, {
+                    interface_id: state.id,
+                    hotel_id: $scope.hotelId,
+                    interface_name: state.name
+                });
             }
             if ($scope.menuOpen) {
                 $scope.menuOpen = !$scope.menuOpen;
@@ -188,7 +208,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                         name: data.mapping_type[x].sntvalues[vals].name
                     };
                     if (typeof data.mapping_type[x].sntvalues[vals].description !== "undefined") {
-                        mappingTypeRefObject.description = data.mapping_type[x].sntvalues[vals].description; 
+                        mappingTypeRefObject.description = data.mapping_type[x].sntvalues[vals].description;
                     }
                     $scope.mappingInterface.mappingTypeRefs[mTypeName].push(mappingTypeRefObject);
                 }

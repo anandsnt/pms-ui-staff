@@ -16,7 +16,7 @@ const NightlyDiaryRootComponent = createClass ({
   },
   setScroller() {
     if (!this.scrollableElement) {
-      this.scrollableElement = findDOMNode(this);
+      this.scrollableElement = $(findDOMNode(this)).find("#diary-nightly-grid")[0];
     }
     this.scroller = new IScroll(this.scrollableElement, this.scrollOptions);
     this.refreshScroller();
@@ -31,14 +31,40 @@ const NightlyDiaryRootComponent = createClass ({
   },
   render() {
     return (
-      <div id="diary-nightly-grid" className={this.props.ClassForRootDiv}>
-        <div className="wrapper">
-            {(this.props.showPrevPageButton)?<GoToPreviousPageButtonContainer/>:''}
-            {(this.props.showNextPageButton)?<GoToNextPageButtonContainer/>:''}
-            <NightlyDiaryRoomsListContainer/>
-            <NightlyDiaryReservationsListContainer/>
+        <div className="grid-inner">
+            <div id="diary-nightly-grid" className={this.props.ClassForRootDiv}>
+                <div className="wrapper">
+                    {(this.props.showPrevPageButton)?<GoToPreviousPageButtonContainer/>:''}
+                    {(this.props.showNextPageButton)?<GoToNextPageButtonContainer/>:''}
+                    <NightlyDiaryRoomsListContainer/>
+                    <NightlyDiaryReservationsListContainer/>
+                </div>
+            </div>
+            <div className="diary-nightly-sidebar diary-nightly-unassigned">
+                <div className="sidebar-header">
+                    <h2>Unassigned</h2>
+                    <p>Drag & Drop to assign a room</p>
+                </div>
+                <div className="unassigned-labels">
+                    <div className="data">Name / Room Type</div>
+                    <div className="arrival">Arrival</div>
+                    <div className="nights">Nights</div>
+                </div>
+                <div className="unassigned-list scrollable">
+                    <div className="wrapper">
+                        <div className="guest check-in">
+                            <div className="data">
+                                <strong className="name"></strong>
+                                <span className="vip"></span>
+                                <span className="room"></span>
+                            </div>
+                            <div className="arrival"></div>
+                            <div className="nights"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     );
   }
 });

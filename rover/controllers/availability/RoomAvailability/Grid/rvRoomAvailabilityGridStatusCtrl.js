@@ -129,9 +129,9 @@ angular.module('sntRover')
                     multiple = true,
                     promises = [
                         $scope.toggleOccupancy(show, multiple),
+                        $scope.toggleAvailableRooms(show, multiple),
                         $scope.toggleSoldRooms(show, multiple),
-                        $scope.toggleRoomInventory(show, multiple),
-                        $scope.toggleShowGroupAllotmentTotals(show, multiple)
+                        $scope.toggleShowGroupAllotmentTotals(show)
                     ],
                     delay = 500;
 
@@ -145,10 +145,12 @@ angular.module('sntRover')
 
             var closeAllSections = function () {
                 var show = false;
-
+                
+                $scope.toggleRoomInventory();
+                /**/
                 $scope.toggleOccupancy(show);
+                $scope.toggleAvailableRooms(show);
                 $scope.toggleSoldRooms(show);
-                $scope.toggleRoomInventory(show);
                 $scope.toggleShowGroupAllotmentTotals(show);
             };
 
@@ -200,18 +202,24 @@ angular.module('sntRover')
                 $scope.refreshScroller('room_availability_scroller');
             };
 
-            $scope.toggleShowGroupAllotmentTotals = function () {
+            $scope.toggleShowGroupAllotmentTotals = function (show) {
                 var deferred = $q.defer(),
                     delay = 100;
-
-                if ($scope.showShowGroupAllotmentTotals) {
-                    $scope.showShowGroupAllotmentTotals = false;
-                    $scope.refreshScroller('room_availability_scroller');
-                    $timeout(deferred.resolve, delay);
-                } else {
+                
+                if (show === true) {
                     $scope.$parent.fetchGrpNAllotData().then(function () {
                         $timeout(deferred.resolve, delay);
                     });
+                } else {
+                    if ($scope.showShowGroupAllotmentTotals) {
+                        $scope.showShowGroupAllotmentTotals = false;
+                        $scope.refreshScroller('room_availability_scroller');
+                        $timeout(deferred.resolve, delay);
+                    } else {
+                        $scope.$parent.fetchGrpNAllotData().then(function () {
+                            $timeout(deferred.resolve, delay);
+                        });
+                    }
                 }
 
                 return deferred.promise;

@@ -1,5 +1,5 @@
 angular.module('sntRover')
-.controller('rvNightlyDiaryFiltersController',
+.controller('rvNightlyDiaryTopFilterBarController',
     [   '$scope',
         '$rootScope',
         '$state',
@@ -101,7 +101,6 @@ angular.module('sntRover')
             else {
                 $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift, true);
             }
-            $scope.$emit('REFRESH_DIARY_TIMELINE');
             $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
         });
         // Catching event from main controller, when API is completed.
@@ -120,9 +119,6 @@ angular.module('sntRover')
             else {
                 $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift, true);
                 $scope.diaryData.numberOfDays = 21;
-                if ($scope.diaryData.datesGridData.length !== 21) {
-                    $scope.$emit('REFRESH_DIARY_TIMELINE');
-                }
             }
             $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
         };
@@ -155,7 +151,6 @@ angular.module('sntRover')
             var isRightShift = false;
 
             calculateFromDateAndToDate(isRightShift);
-            $scope.$emit('REFRESH_DIARY_TIMELINE');
             $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
         };
 
@@ -164,14 +159,12 @@ angular.module('sntRover')
             var isRightShift = true;
 
             calculateFromDateAndToDate(isRightShift);
-            $scope.$emit('REFRESH_DIARY_TIMELINE');
             $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
         };
 
         // To handle click on reset button.
         $scope.clickedResetButton = function() {
             init();
-            $scope.$emit('REFRESH_DIARY_TIMELINE');
             $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
         };
 
