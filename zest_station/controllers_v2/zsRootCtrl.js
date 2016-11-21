@@ -828,6 +828,7 @@ sntZestStation.controller('zsRootCtrl', [
         };
 
         $scope.chromeApp = new chromeApp(onChromeAppResponse, zestStationSettings.chrome_app_id);
+        $scope.chromeExtensionListener = new chromeExtensionListener();
 		/** ******************************************************************************
 		 *  Chrome App Communication code  
 		 *  ends here
