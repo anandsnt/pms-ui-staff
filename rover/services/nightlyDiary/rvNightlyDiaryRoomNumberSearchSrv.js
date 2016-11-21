@@ -10,8 +10,7 @@ angular.module('sntRover').service('RVNightlyDiaryRoomNumberSearchSrv',
 		 */
 		this.fetchRoomSearchResults = function (data) {
 			var deferred = $q.defer(),
-				url = '/api/nightly_diary/room_search';
-			var data = {};
+				url = '/api/nightly_diary/room_number_search';
 			BaseWebSrvV2.getJSON(url, data).then(function(response) {
 				deferred.resolve(response);
 			},function(error){
