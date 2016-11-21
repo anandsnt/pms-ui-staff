@@ -648,12 +648,9 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
          * [initializeMe description]
          *  setup controller
          */
-        (function() {
+        var init = function() {
             BaseCtrl.call(this, $scope);
             $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
-        }());
-
-        var init = (function() {
             $scope.setScreenIcon('card');
 
             console.warn('$stateParams: ', $stateParams);
@@ -699,7 +696,8 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 startSixPayPayment();
 
             }
-        }());
+        };
+        init();
 
     }
 ]);
