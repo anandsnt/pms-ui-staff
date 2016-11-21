@@ -167,7 +167,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                                 printFailedActions();
                             }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
                         } else {
-                            if ($scope.zestStationData.zest_printer_option === 'STAR_TAC') {
+                            if ($scope.zestStationData.zest_printer_option === 'STAR_TAC' && $scope.zestStationData.kiosk_use_socket_print) {
 							// we will call websocket services to print
                                 handleStarTacPrinterActions();
                             } else {
