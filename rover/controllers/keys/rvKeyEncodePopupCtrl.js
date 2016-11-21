@@ -141,6 +141,11 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			}
 		}, 1000);
 		if (secondsAfterCalled > that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK) {
+            // remove tablet option from dropdown if no connected device found
+            $scope.encoderTypes = _.filter($scope.encoderTypes, function(encoder) {
+                return encoder.description !== 'Tablet';
+            });
+
             if ($scope.isRemoteEncodingEnabled) {
                 // hide tablet option if only remote encoders and no device connected
                 $scope.showTabletOption = false;
@@ -151,12 +156,6 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
                 $scope.showPrintKeyOptions = false;
                 $scope.deviceNotConnected = true;
                 $scope.$apply();
-            }
-            // remove tablet option from dropdown if no connected device found
-            var result = _.findWhere($scope.encoderTypes, {description: 'Tablet'});
-
-            if (typeof result !== 'undefined') {
-                $scope.encoderTypes.splice(result, 1);
             }
 		}
 
