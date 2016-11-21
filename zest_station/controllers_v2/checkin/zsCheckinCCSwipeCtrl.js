@@ -648,9 +648,12 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
          * [initializeMe description]
          *  setup controller
          */
-        var init = function() {
+        (function() {
             BaseCtrl.call(this, $scope);
             $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
+        }());
+
+        var init = function() {
             $scope.setScreenIcon('card');
 
             console.warn('$stateParams: ', $stateParams);
