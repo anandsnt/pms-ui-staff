@@ -292,20 +292,20 @@ sntRover.controller('RVSocialLobbyCrl', [
         
         };
 
-        var filterSearch = function(comments) {
-            var results = _.filter(comments, function(comment) {
-                if (comment.user.first_name.indexOf($scope.textInQueryBox) != -1 
-                    || comment.user.last_name.indexOf($scope.textInQueryBox) != -1) {
-                    return true;
-                } else if (comment.comments && filterSearch(comment.comments).length > 0) {
-                    return true;
-                } else {
-                    return false;
-                }                    
-            });
+        // var filterSearch = function(comments) {
+        //     var results = _.filter(comments, function(comment) {
+        //         if (comment.user.first_name.indexOf($scope.textInQueryBox) != -1 
+        //             || comment.user.last_name.indexOf($scope.textInQueryBox) != -1) {
+        //             return true;
+        //         } else if (comment.comments && filterSearch(comment.comments).length > 0) {
+        //             return true;
+        //         } else {
+        //             return false;
+        //         }                    
+        //     });
 
-            return results;
-        };
+        //     return results;
+        // };
 
         $scope.queryEntered = function() {
             
