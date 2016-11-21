@@ -22,6 +22,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
             $state.go('zest_station.speakToStaff');
         };
         var nextPageActions = function(printopted) {
+            $scope.$emit('hideLoader');
             if ($scope.zestStationData.guest_bill.email) {
                 $scope.stateParamsForNextState.printopted = printopted;
                 $state.go('zest_station.emailBill', $scope.stateParamsForNextState);
@@ -36,6 +37,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
             }
         };
         var printFailedActions = function(errorMessage) {
+            $scope.$emit('hideLoader');
             errorMessage = _.isUndefined(errorMessage) ? 'CHECKOUT_PRINT_FAILED' : errorMessage;
             $scope.zestStationData.workstationOooReason =  $filter('translate')(errorMessage);
             $scope.zestStationData.workstationStatus = 'out-of-order';
@@ -62,6 +64,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
             });
             $scope.$on('SOCKET_CONNECTED', function() {
                $scope.socketOperator.startPrint(printData);
+               $scope.$emit('showLoader');
             });
             /** ** Socket actions ends here *****/
 
@@ -70,6 +73,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
                 // check if socket is open
                 if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
                     $scope.socketOperator.startPrint(printData);
+                    $scope.$emit('showLoader');
                 } else {
                     $scope.$emit('CONNECT_WEBSOCKET'); // connect socket
                 }

@@ -73,6 +73,8 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
             };
 
             var printFailedActions = function(errorMessage) {
+                
+                $scope.$emit('hideLoader');
                 var printopted = true;
                 var emailopted = false;
                 var actionStatus = 'failed';
@@ -89,6 +91,8 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                 nextPageActions(printopted, emailopted, actionStatus);
             };
             var printSuccessActions = function() {
+
+                $scope.$emit('hideLoader');
                 var printopted = true;
                 var emailopted = false;
                 var actionStatus = 'success';
@@ -111,6 +115,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                 });
                 $scope.$on('SOCKET_CONNECTED', function() {
                     $scope.socketOperator.startPrint(printData);
+                    $scope.$emit('showLoader');
                 });
 				/** ** Socket actions ends here *****/
 
@@ -119,6 +124,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 					// check if socket is open
                     if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
                         $scope.socketOperator.startPrint(printData);
+                        $scope.$emit('showLoader');
                     } else {
                         $scope.$emit('CONNECT_WEBSOCKET'); // connect socket
                     }
