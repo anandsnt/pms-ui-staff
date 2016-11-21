@@ -2,7 +2,7 @@
 <div ng-include="'/assets/partials/common/header.html'"></div>
 
 <!-- Search -->
-<form method="get" action="{action}" id="neighbors-search-form" class="search-form neighbors-search" role="search">
+<form id="neighbors-search-form" class="search-form neighbors-search" role="search">
 
     <!-- Refresh -->
     <button type="button" ng-click = "refreshPosts()" class="button white with-icon only-icon refresh">
@@ -16,7 +16,7 @@
             <span class="icons icon-clear-search">Clear query</span>
         </button>
         <button type="submit" class="icons icon-search">Search</button>
-        <input id="neighbors-query" class="query" placeholder="Search" type="search" autocomplete="off" focus-me="focusSearchField" ng-change="queryEntered()" ng-model="textInQueryBox"/>
+        <input id="neighbors-query" class="query" placeholder="Search" type="search" autocomplete="off" focus-me="isSearchFocussed" ng-click="isSearchFocussed = true" ng-change="queryEntered()" ng-model="textInQueryBox"/>
     </div>
 
 </form> 
@@ -35,7 +35,7 @@
 <!-- Posts scenario 2: Data exists (L51-L120) -->
 <section id="neighbors-activity"  ng-show="posts.length != 0"  role="main">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-    <div class="neighbours-search-results-label" ng-show="showSearchResultsArea" translate> SL_SEARCH_RESULTS_LABEL </div>
+    <div class="neighbours-search-results-label" ng-show="match_count > 0" translate> {{"We found " + match_count + " results"}} </div>
     <div ng-iscroll='post-list-scroll' class="content scrollable neighbours-post-scroll" ng-class="{'neighbours-post-scroll-error': errorMessage != ''}" >
         <div class="wrapper neighbours-post-container" >
             <div class="activity-post" ng-class="{'has-replies': post.comment_count > 0}" ng-repeat = "post in posts"> <!-- Add class 'has-replies' if there are replies in the conversation. -->

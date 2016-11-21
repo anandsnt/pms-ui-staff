@@ -106,17 +106,29 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
             };
             $scope.callAPI(RVSocilaLobbySrv.fetchComments, options);
         };
-        if ($scope.parentPost.comments.length == 0 || !$scope.parentPost.isSearchResults) {
-            $scope.fetchComments();
-        } else {
+
+        var commentsViewUpdateOnSearch = function() {
             $scope.comments = $scope.parentPost.comments;
             $scope.totalCommentPages = 1;
             isSearchResultsView = true;
             refreshCommentScroll();
+        };
+
+        if ($scope.parentPost.comments.length == 0 || !$scope.parentPost.isSearchResults) {
+            $scope.fetchComments();
+        } else {
+            commentsViewUpdateOnSearch();
             $scope.$on("ExpandComments", function(event, data) {
                 if (data.post_id == $scope.parentPost.id)
                     $scope.fetchComments();
             });
+            $scope.$on("SL_SEARCH_UPDATED", function(event, data) {
+                if (data.post_id == $scope.parentPost.id) {
+                    commentsViewUpdateOnSearch();
+                }
+                    
+            });
+            
 
         }        
 

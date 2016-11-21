@@ -18,6 +18,9 @@ sntRover.controller('RVSocialLobbyCrl', [
         $scope.$emit("updateRoverLeftMenu", "sociallobby");
         $scope.textInQueryBox = "";
         $scope.showSearchResultsArea = false;
+        $scope.searchResultsCount = 0;
+        $scope.isSearchFocussed = false;
+        $scope.match_count = 0;
         
         var deleteIndex = "";
 
@@ -78,13 +81,14 @@ sntRover.controller('RVSocialLobbyCrl', [
         $scope.$on("socialLobbyHeightUpdated", function(event, data) {
             $scope.posts[data.index].expandedHeight = data.height;
 
-            if ( data.isSearchResultsView && data.index < $scope.posts.length - 1 && $scope.posts[data.index + 1].comments.length > 0) {
+            if ( data.isSearchResultsView && data.index < $scope.posts.length - 1 ) {
                 var nextPost = getNextPostWithComments(data.index + 1);
                 if ( nextPost != "" ) {
                     setTimeout(function() {
                 
                         nextPost.isExpanded = true;
                         nextPost.isSearchResults = true;
+                        $scope.$broadcast("SL_SEARCH_UPDATED", {"post_id": nextPost.id});
                         $scope.$apply();
                     }, 500);
                 }             
@@ -131,6 +135,9 @@ sntRover.controller('RVSocialLobbyCrl', [
         var clearSearchResults = function(){
             $scope.textInQueryBox = "";
             $scope.showSearchResultsArea = false;
+            $scope.searchResultsCount = 0;
+            $scope.isSearchFocussed = false;
+            $scope.match_count = 0;
         };
         $scope.refreshPosts = function(){
             clearSearchResults();
@@ -211,7 +218,13 @@ sntRover.controller('RVSocialLobbyCrl', [
             if (page == $scope.postParams.page)
                 return;
             $scope.postParams.page = page;
-            $scope.fetchPosts();
+            if ($scope.textInQueryBox.length >=  3) {
+                
+                search();
+            }else{
+                $scope.fetchPosts();
+            }
+            
             if ($scope.postParams.page > $scope.middle_page3 && $scope.postParams.page < $scope.totalPostPages) {
                 $scope.middle_page3++;
                 $scope.middle_page2++;
@@ -263,10 +276,13 @@ sntRover.controller('RVSocialLobbyCrl', [
             options.onSuccess = function(data){
                 
                 $scope.posts = data.results.posts;
+                $scope.match_count = data.results.matched_count;
+                // $scope.$apply();
                 var nextPost = getNextPostWithComments(0);
                 if ( nextPost != "" ) {
                         nextPost.isExpanded = true;
                         nextPost.isSearchResults = true;
+                        $scope.$broadcast("SL_SEARCH_UPDATED", {"post_id": nextPost.id});
                 }
                 $scope.totalPostPages = data.results.total_count % $scope.postParams.per_page > 0 ? Math.floor(data.results.total_count / $scope.postParams.per_page) + 1 : Math.floor(data.results.total_count / $scope.postParams.per_page);
                 $scope.$emit('hideLoader');
@@ -275,6 +291,21 @@ sntRover.controller('RVSocialLobbyCrl', [
             $scope.callAPI(RVSocilaLobbySrv.search, options);
         
         };
+
+        // var filterSearch = function(comments) {
+        //     var results = _.filter(comments, function(comment) {
+        //         if (comment.user.first_name.indexOf($scope.textInQueryBox) != -1 
+        //             || comment.user.last_name.indexOf($scope.textInQueryBox) != -1) {
+        //             return true;
+        //         } else if (comment.comments && filterSearch(comment.comments).length > 0) {
+        //             return true;
+        //         } else {
+        //             return false;
+        //         }                    
+        //     });
+
+        //     return results;
+        // };
 
         $scope.queryEntered = function() {
             
@@ -300,7 +331,10 @@ sntRover.controller('RVSocialLobbyCrl', [
             if ($scope.textInQueryBox.length >=  3) {
                 
                 search();
-            }
+            } 
+            // else if ($scope.textInQueryBox.length >  3) {
+            //     $scope.posts = filterSearch($scope.posts);
+            // }
 
         };
 
