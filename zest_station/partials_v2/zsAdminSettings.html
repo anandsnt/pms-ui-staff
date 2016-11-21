@@ -107,7 +107,7 @@
         </div>
         <div id="actions" class="align-center">
             <button type="button" class="button" touch-press='cancelAdminSettings()'>Cancel</button>
-            <button type="button" class="button button-left-margin" touch-press='saveSettings()'>Save</button>
+            <button type="button" ng-disabled="!workstation.selected" ng-class="{'disabled-button':!workstation.selected}" class="button button-left-margin" touch-press='saveSettings()'>Save</button>
             <button type="button" class="button button-left-margin" touch-press='logOutApplication()'>Logout</button>
         </div>
     </div>

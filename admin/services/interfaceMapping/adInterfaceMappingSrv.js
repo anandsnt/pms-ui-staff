@@ -1,4 +1,5 @@
-admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function ($http, $q, ADBaseWebSrv) {
+admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2',
+    function ($http, $q, ADBaseWebSrv, ADBaseWebSrvV2) {
         /*
          * Service function to fetch the mapping list
          * @return {object} mapping list
@@ -117,6 +118,104 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function 
             ADBaseWebSrv.postJSON(url, data).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchInterfaceExternalMappingsList = function (data) {
+            var deferred = $q.defer(),
+                url = '/admin/interface_mappings.json';
+
+            ADBaseWebSrvV2.getJSON(url, data).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchInterfaceMappingTypes = function(data) {
+            var hotel_id = data.hotel_id,
+                interface_id = data.interface_type_id,
+                deferred = $q.defer(),
+                url = '/admin/external_mappings/' + hotel_id + '/' + interface_id + '/interface_mappings.json?exclude_mappings=true';
+
+            ADBaseWebSrv.getJSON(url).then(function (data) {
+                deferred.resolve(data.mapping_type);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.deleteMappingWithId = function(params) {
+            var deferred = $q.defer(),
+                url = '/admin/interface_mappings/' + params.mapping_id + '.json';
+
+            ADBaseWebSrvV2.deleteJSON(url).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchMappingWithId = function(params) {
+            var deferred = $q.defer(),
+                url = '/admin/interface_mappings/' + params.mapping_id + '.json';
+
+            ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.createNewMapping = function(params) {
+            var deferred = $q.defer(),
+                url = '/admin/interface_mappings.json';
+
+            ADBaseWebSrvV2.postJSON(url, params).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.updateMapping = function(params) {
+            var deferred = $q.defer(),
+                url = '/admin/interface_mappings/' + params.mapping_id + '.json';
+
+            ADBaseWebSrvV2.putJSON(url, params).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchUnMappedRooms = function(params) {
+            var deferred = $q.defer(),
+                url = '/admin/interface_mappings/' + params.interface_id + '/unmapped_rooms.json';
+
+            ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.saveAutoMapping = function(params) {
+            var deferred = $q.defer(),
+                url = 'admin/interface_mappings/auto_mapping.json';
+
+            ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
                 deferred.reject(data);
             });
             return deferred.promise;

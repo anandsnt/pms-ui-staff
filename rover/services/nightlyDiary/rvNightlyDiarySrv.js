@@ -72,14 +72,18 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             promises = [],
             data = {
                 roomList: null,
-                reservationList: null
+                reservationList: null,
+                dateList: null
             };
 
         promises.push(that.fetchRoomsList(params).then(function(response) {
             data.roomList = response;
         }));
-         promises.push(that.fetchReservationsList(params).then(function(response) {
+        promises.push(that.fetchReservationsList(params).then(function(response) {
             data.reservationList = response;
+        }));
+        promises.push(that.fetchDatesList(params).then(function(response) {
+            data.dateList = response;
         }));
 
         $q.all(promises).then(function() {

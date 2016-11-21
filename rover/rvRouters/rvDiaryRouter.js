@@ -28,7 +28,7 @@ angular
     $stateProvider.state('rover.nightlyDiary', {
         url: '/nightlyDiary/?reservation_id&start_date',
         templateUrl: '/assets/partials/nightlyDiary/rvNightlyDiary.html',
-        controller: 'rvNightlyDiaryController',
+        controller: 'rvNightlyDiaryMainController',
         resolve: {
             reactAssets: function(jsMappings, mappingList) {
                 return jsMappings.fetchAssets(['react.files', 'directives'], ['react']);
