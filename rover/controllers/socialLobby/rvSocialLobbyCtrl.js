@@ -298,9 +298,10 @@ sntRover.controller('RVSocialLobbyCrl', [
                     || comment.user.last_name.indexOf($scope.textInQueryBox) != -1) {
                     return true;
                 } else if (comment.comments && filterSearch(comment.comments).length > 0) {
-                    return true
-                } else 
+                    return true;
+                } else {
                     return false;
+                }                    
             });
 
             return results;

@@ -112,7 +112,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
             $scope.totalCommentPages = 1;
             isSearchResultsView = true;
             refreshCommentScroll();
-        }
+        };
 
         if ($scope.parentPost.comments.length == 0 || !$scope.parentPost.isSearchResults) {
             $scope.fetchComments();
@@ -123,7 +123,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
                     $scope.fetchComments();
             });
             $scope.$on("SL_SEARCH_UPDATED", function(event, data) {
-                if (data.post_id == $scope.parentPost.id){
+                if (data.post_id == $scope.parentPost.id) {
                     commentsViewUpdateOnSearch();
                 }
                     
