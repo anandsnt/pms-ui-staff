@@ -249,11 +249,17 @@ sntRover.controller('RVSocialLobbyCrl', [
         $scope.togglePostDetails = function(post) {
             $scope.errorMessage = "";
 
-            if(!post.isExpanded){
+            if(!post.isExpanded) {
                 post.isExpanded = true;
-            }else if(post.isSearchResults){
+            }else if(post.isSearchResults) {
                 post.isSearchResults = false;
-                $scope.$broadcast("ExpandComments", {"post_id": post.id});
+                post.isExpanded = false;
+                post.expandedHeight = "";
+                setTimeout(function() {
+                        post.isExpanded = true;
+                        $scope.$apply();
+                    }, 500);
+                // $scope.$broadcast("ExpandComments", {"post_id": post.id});
             }else{
                 post.isExpanded = false;
                 post.expandedHeight = "";
