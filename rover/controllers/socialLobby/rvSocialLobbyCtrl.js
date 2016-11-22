@@ -64,7 +64,7 @@ sntRover.controller('RVSocialLobbyCrl', [
                     $scope.myScroll[POST_LIST_SCROLL].scrollTo(0, 0, 100);
                 }                
 
-            }, 1000);
+            }, 500);
             
         };
 
@@ -92,7 +92,7 @@ sntRover.controller('RVSocialLobbyCrl', [
                         $scope.$apply();
                     }, 500);
                 }  else {
-                    refreshPostScroll(); 
+                    refreshPostScroll(true); 
                 }           
                 
             } else {
@@ -294,32 +294,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         
         };
 
-        // var filterSearch = function(comments) {
-        //     var results = _.filter(comments, function(comment) {
-        //         if (comment.user.first_name.indexOf($scope.textInQueryBox) != -1 
-        //             || comment.user.last_name.indexOf($scope.textInQueryBox) != -1) {
-        //             return true;
-        //         } else if (comment.comments && filterSearch(comment.comments).length > 0) {
-        //             return true;
-        //         } else {
-        //             return false;
-        //         }                    
-        //     });
-
-        //     return results;
-        // };
-
         $scope.queryEntered = function() {
-            
-            // var queryText = $scope.textInQueryBox;
-
-            
-            // if (!$scope.isTyping) {
-            //     $scope.isTyping = true;
-            // }
-
-            // setting first letter as captial
-            // $scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
 
             if ($scope.textInQueryBox.length === 0 ) {
                 $scope.refreshPosts();
@@ -333,10 +308,7 @@ sntRover.controller('RVSocialLobbyCrl', [
             if ($scope.textInQueryBox.length >=  3) {
                 
                 search();
-            } 
-            // else if ($scope.textInQueryBox.length >  3) {
-            //     $scope.posts = filterSearch($scope.posts);
-            // }
+            }
 
         };
 

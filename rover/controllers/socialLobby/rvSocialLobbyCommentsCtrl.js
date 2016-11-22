@@ -72,7 +72,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
                 }
                 $scope.$apply();
 
-            }, 1000);
+            }, 500);
             
         };
 
