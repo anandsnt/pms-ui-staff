@@ -138,6 +138,8 @@
                         <input type="radio" value="{{printer.value}}" ng-model="zestSettings.zest_printer_option"> {{ printer.description }}
                     </label>
                 </div>
+                <ad-toggle-button ng-show="zestSettings.zest_printer_option === 'STAR_TAC'" is-checked="zestSettings.kiosk_use_socket_print" label="{{'USE_SOCKET_PRINTING'| translate}}" div-class="full-width"></ad-toggle-button>
+                <br>
             </fieldset>
             <fieldset class="holder full-width">
                 <div class="form-title full-width">
