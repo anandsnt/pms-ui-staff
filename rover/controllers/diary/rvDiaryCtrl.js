@@ -1799,7 +1799,6 @@ angular.module('sntRover')
 				$scope.clearAvailability();
 				$scope.resetEdit();
 				$scope.renderGrid();
-				$scope.gridProps.unassignedRoomList.fetchCount();
 				// reservation trnsfr from one date to another started
 				if (rvDiarySrv.isReservationMovingFromOneDateToAnother) {
 
@@ -1819,6 +1818,9 @@ angular.module('sntRover')
 
 				$scope.$emit('hideLoader');
 			}
+
+            // call this anyway - CICO-35739
+            $scope.gridProps.unassignedRoomList.fetchCount();
 		});
 	};
 
