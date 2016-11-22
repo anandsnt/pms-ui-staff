@@ -25,4 +25,19 @@
 	"SNAPSHOT_PUBLISH_INSTRUCTIONS": "Publish a full export containing Reservations, Financials and Groups. Full export should occur only once and must be coordinated with Snapshot.",
 	"FULL_EXPORT": "Full Export",
 	"SYS_NAME": "System name",
-	"SYS_VERSION": "System Version"
+	"SYS_VERSION": "System Version",
+    "MAPPING_TYPE": "Mapping Type",
+	"SNT_VALUE": "SNT Value",
+	"EXTERNAL_VALUE" : "External Value",
+	"SAVE_NEW_MAPPING": "Save New Mapping",
+	"ROOMS_TO_MAP": "Rooms to Map",
+	"ALL_UNMAPPED_ROOMS": "All Unmapped Rooms",
+	"APPLY_PREFIX": "Apply Prefix",
+	"ENTER_ANY_LETTER_OR_NUMBER": "Enter any Letter or Number",
+	"REMOVE_FIRST_CHAR": "REMOVE FIRST CHARACTER/ DIGIT FROM RANGE",
+	"MAP_ALL_ROOMS": "Map All Rooms",
+	"MAP_SELECTED_ROOMS": "Map Selected Rooms",
+	"DELETE_MAPPING": "Delete Mapping",
+	"SAVE_MAPPING": "Save Mapping",
+	"ACCOUNTVIEW_HEADER": "AccountView Back Office Setup"
+

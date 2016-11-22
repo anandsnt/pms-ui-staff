@@ -28,7 +28,7 @@ angular
     $stateProvider.state('rover.nightlyDiary', {
         url: '/nightlyDiary/?reservation_id&start_date',
         templateUrl: '/assets/partials/nightlyDiary/rvNightlyDiary.html',
-        controller: 'rvNightlyDiaryController',
+        controller: 'rvNightlyDiaryMainController',
         resolve: {
             reactAssets: function(jsMappings, mappingList) {
                 return jsMappings.fetchAssets(['react.files', 'directives'], ['react']);
@@ -57,6 +57,15 @@ angular
                 }
                 params.no_of_days = 7;
                 return RVNightlyDiarySrv.fetchDatesList(params);
+            },
+            reservationsList: function(RVNightlyDiarySrv, $rootScope, diaryAssets) {
+                var params = {};
+                
+                params.start_date = $rootScope.businessDate;
+                params.no_of_days = 7;
+                params.page = 1;
+                params.per_page = 50;
+                return RVNightlyDiarySrv.fetchReservationsList(params);
             }
 
         }
