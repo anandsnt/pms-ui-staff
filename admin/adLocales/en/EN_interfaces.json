@@ -34,4 +34,9 @@
 	"MAP_SELECTED_ROOMS": "Map Selected Rooms",
 	"DELETE_MAPPING": "Delete Mapping",
 	"SAVE_MAPPING": "Save Mapping",
-	"ACCOUNTVIEW_HEADER": "AccountView Back Office Setup"
+	"ACCOUNTVIEW_HEADER": "AccountView Back Office Setup",
+	"SNAPSHOT_SETUP": "Snapshot Setup",
+	"SNAPSHOT_PUBLISH_INSTRUCTIONS": "Publish a full export containing Reservations, Financials and Groups. Full export should occur only once and must be coordinated with Snapshot.",
+	"FULL_EXPORT": "Full Export",
+	"SYS_NAME": "System name",
+	"SYS_VERSION": "System Version"
