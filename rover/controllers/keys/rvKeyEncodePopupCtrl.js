@@ -106,7 +106,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
         // check if it is a desktop or iPad
         $scope.isIpad = navigator.userAgent.match(/iPad/i) !== null && window.cordova;
 
-        if (!$scope.isIpad) {
+        if (!$scope.isIpad && $scope.isRemoteEncodingEnabled) {
             $scope.showTabletOption = false;
             showPrintKeyOptions(true);
         } else {
