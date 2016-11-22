@@ -1238,7 +1238,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.$on( '$destroy', reportPrinting );
 		$scope.$on( '$destroy', reportAPIfailed );
 
-        //Added for CICO-33172
+        // Added for CICO-33172
         $scope.isRoomRevenueSelected = true;
         $scope.isBookingsSelected = true;
 
