@@ -91,7 +91,9 @@ sntRover.controller('RVSocialLobbyCrl', [
                         $scope.$broadcast("SL_SEARCH_UPDATED", {"post_id": nextPost.id});
                         $scope.$apply();
                     }, 500);
-                }             
+                }  else {
+                    refreshPostScroll(); 
+                }           
                 
             } else {
                refreshPostScroll(); 

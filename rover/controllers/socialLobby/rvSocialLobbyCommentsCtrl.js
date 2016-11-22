@@ -98,6 +98,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
                 $scope.comments = data.results.comments;
                 $scope.totalCommentPages = data.results.total_count % $scope.commentParams.per_page > 0 ? Math.floor(data.results.total_count / $scope.commentParams.per_page) + 1 : Math.floor(data.results.total_count / $scope.commentParams.per_page);
                 $scope.$emit('hideLoader');
+                isSearchResultsView = false;
                 refreshCommentScroll();
             };
             options.failureCallBack = function(error) {
@@ -119,8 +120,9 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
         } else {
             commentsViewUpdateOnSearch();
             $scope.$on("ExpandComments", function(event, data) {
-                if (data.post_id == $scope.parentPost.id)
+                if (data.post_id == $scope.parentPost.id) {
                     $scope.fetchComments();
+                }                    
             });
             $scope.$on("SL_SEARCH_UPDATED", function(event, data) {
                 if (data.post_id == $scope.parentPost.id) {
