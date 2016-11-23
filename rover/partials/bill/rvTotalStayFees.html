@@ -231,10 +231,13 @@
 						<br />
 					</span>
 				</td>
-				<td class="description" ng-class = "{'toggle': isStandAlone && feesData.is_group_by_ref, 'active': feesData.isExpanded}">
-					<strong ng-repeat="description in feesData.description">
+				<td class="description">
+					<strong ng-repeat="description in feesData.description" ng-if = "!isStandAlone && !feesData.is_group_by_ref">
 						{{description.item_description}}
-						<span class="icons icon-double-arrow" ng-if = "isStandAlone && feesData.is_group_by_ref"  ng-click = "expandGroupedCharge(feesData)"></span>
+					</strong>
+					<strong ng-repeat="description in feesData.description" ng-class = "{'toggle': isStandAlone && feesData.is_group_by_ref, 'active': feesData.isExpanded}" ng-click = "expandGroupedCharge(feesData)" ng-if = "isStandAlone && feesData.is_group_by_ref">
+						{{description.item_description}}
+						<span class="icons icon-double-arrow"></span>
 					</strong>
 					<ul class = 'charge-items' ng-if = "isStandAlone && feesData.is_group_by_ref" ng-class = "{'hidden': !feesData.isExpanded}">
 						<li ng-repeat = "item in feesData.light_speed_data">
