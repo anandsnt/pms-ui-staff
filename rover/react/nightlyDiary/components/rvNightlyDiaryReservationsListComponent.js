@@ -1,4 +1,4 @@
-const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, roomRowClass }) => {
+const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, roomRowClass, goToReservationStayCard }) => {
 
     return (
         <div className={roomRowClass}>
@@ -10,7 +10,7 @@ const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, ro
                             item.reservations.length > 0 ?
                                 item.reservations.map((reservationItem) => (
 
-                                    <ReservationComponent reservation={reservationItem}/>
+                                    <ReservationComponent reservation={reservationItem} onClickMethod={(e, reservationItem) => goToReservationStayCard(e, reservationItem)} />
 
 
                                     )

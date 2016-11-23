@@ -1,5 +1,5 @@
-const ReservationComponent = ({reservation}) => (
-    <div style={reservation.style} className={reservation.reservationClass}>
+const ReservationComponent = ({reservation, onClickMethod}) => (
+    <div style={reservation.style} className={reservation.reservationClass} onClick={(e) => onClickMethod(e, reservation)}>
         <div className="reservation-data">
             {
                 reservation.isReservationDayStay ? <span className="day-stay-icon"></span> : ''

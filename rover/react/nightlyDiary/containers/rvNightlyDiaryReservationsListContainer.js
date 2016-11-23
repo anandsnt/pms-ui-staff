@@ -212,9 +212,38 @@ let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateG
 
 const mapStateToNightlyDiaryReservationsListContainerProps = (state) => ({
     reservationsListToComponent: convertReservationsListReadyToComponent(state.reservationsList, state.diaryInitialDayOfDateGrid, state.numberOfDays, state.currentBusinessDate),
-    roomRowClass: "grid-reservations firstday-" + getWeekDayName((new Date(state.diaryInitialDayOfDateGrid)).getDay(), 3)
+    roomRowClass: "grid-reservations firstday-" + getWeekDayName((new Date(state.diaryInitialDayOfDateGrid)).getDay(), 3),
+    goToReservationStayCard: state.callBackFromAngular.goToStayCard
 });
 
+// const NightlyDiaryReservationsListContainer = connect(
+//   mapStateToNightlyDiaryReservationsListContainerProps
+// )(NightlyDiaryReservationsListComponent);
+
+const mapDispatchToNightlyDiaryReservationsListContainerProps = (stateProps, dispatchProps, ownProps) => {
+    //  let clickedRate = stateProps;
+    //  let dis = dispatchProps;
+    //  let own = ownProps;
+    // // stateProps.goToReservationStayCard({
+    // //     //fromDate: stateProps.fromDate,
+    // //    // toDate: stateProps.toDate,
+    // //    // selectedRates: [{id: clickedRate.id, name: clickedRate.name, accountName: clickedRate.accountName, address: clickedRate.address}]
+    // // })
+
+    var goToReservationStayCard = () => {};
+
+    goToReservationStayCard = (reservation) => {
+        return stateProps.goToReservationStayCard();
+    };
+    return {
+        goToReservationStayCard,
+        ...stateProps
+    };
+
+};
+
 const NightlyDiaryReservationsListContainer = connect(
-  mapStateToNightlyDiaryReservationsListContainerProps
+  mapStateToNightlyDiaryReservationsListContainerProps,
+  null,
+  mapDispatchToNightlyDiaryReservationsListContainerProps
 )(NightlyDiaryReservationsListComponent);

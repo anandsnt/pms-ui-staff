@@ -104,6 +104,12 @@ angular.module('sntRover')
             $scope.diaryData.paginationData.page++;
             fetchRoomListDataAndReservationListData();
         };
+        var goToStayCard = (e, reservation)=>{
+            console.log("reached here");
+            console.log(reservation)
+            //$scope.diaryData.paginationData.page++;
+            //fetchRoomListDataAndReservationListData();
+        };
         /**
          * utility method to pass callbacks from
          * @return {Object} with callbacks
@@ -111,7 +117,8 @@ angular.module('sntRover')
         const getTheCallbacksFromAngularToReact = () => {
             return {
                 goToPrevPage,
-                goToNextPage
+                goToNextPage,
+                goToStayCard
             };
         };
 
