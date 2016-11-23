@@ -293,4 +293,24 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
 		return deferred.promise;
 	};
 
+    // Service that fetches the charge details of a grouped charge - CICO-34039.
+    this.groupChargeDetailsFetch = function(params) {
+        var deferred = $q.defer();
+        var light_speed_data = [{
+            'description': 'Beverage',
+            'amount': '60.00' 
+        }, {
+            'description': 'Food',
+            'amount': '70.00'
+        }, {
+            'description': 'VAT',
+            'amount': '19.00'
+        }];
+
+        // Needs to be modified when api becomes available.
+        setTimeout(function() {
+            deferred.resolve(light_speed_data);
+        }, 1500);
+        return deferred.promise;
+    };
 }]);

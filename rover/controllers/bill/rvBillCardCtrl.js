@@ -2666,5 +2666,30 @@ sntRover.controller('RVbillCardController',
     	return (!is_rate_suppressed || $scope.isSRViewRateBtnClicked);
     };
 
+    // Function which fetches and returns the charge details of a grouped charge - CICO-34039.
+    $scope.expandGroupedCharge = function(feesData) {
+        // Success callback for the charge detail fetch for grouped charges.
+        var fetchChargeDataSuccessCallback = function(data) {
+            feesData.light_speed_data = data;
+            feesData.isExpanded = true;
+            $scope.$emit('hideLoader');
+            $scope.calculateHeightAndRefreshScroll();
+        };
+        // Failure callback for the charge detail fetch for grouped charges.
+        var fetchChargeDataFailureCallback = function(errorMessage) {
+            $scope.errorMessage = errorMessage;
+            $scope.emit('hideLoader');
+        };
+
+        // If the flag for toggle is false, perform api call to get the data.
+        if (!feesData.isExpanded) {
+            $scope.invokeApi(RVBillCardSrv.groupChargeDetailsFetch, feesData, fetchChargeDataSuccessCallback, fetchChargeDataFailureCallback);
+        }
+        else {
+            // If the flag for toggle is true, then it is simply reverted to hide the data.
+            feesData.isExpanded = false;
+            $scope.calculateHeightAndRefreshScroll();
+        }
+    };
 
 }]);
