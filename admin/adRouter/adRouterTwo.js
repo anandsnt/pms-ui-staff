@@ -603,11 +603,6 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADZestStationCheckOutCtrl',
         url: '/zestStationCheckout'
     });
-    $stateProvider.state('admin.ZestStationColorsGraphics', {
-        templateUrl: '/assets/partials/zestStation/adZestStationColorsAndGraphics.html',
-        controller: 'ADZestStationColorsAndGraphicsCtrl',
-        url: '/zestStationColorsAndGraphics'
-    });
     $stateProvider.state('admin.ZestStationPickUpKeys', {
         templateUrl: '/assets/partials/zestStation/adZestStationPickUpKeys.html',
         controller: 'ADZestStationPickUpKeysCtrl',
