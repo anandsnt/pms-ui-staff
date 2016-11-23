@@ -653,7 +653,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
         }());
 
-        var init = (function() {
+        var init = function() {
             $scope.setScreenIcon('card');
 
             console.warn('$stateParams: ', $stateParams);
@@ -699,7 +699,8 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 startSixPayPayment();
 
             }
-        }());
+        };
+        init();
 
     }
 ]);
