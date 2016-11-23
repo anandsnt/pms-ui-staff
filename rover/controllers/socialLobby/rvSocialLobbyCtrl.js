@@ -64,7 +64,7 @@ sntRover.controller('RVSocialLobbyCrl', [
                     $scope.myScroll[POST_LIST_SCROLL].scrollTo(0, 0, 100);
                 }                
 
-            }, 1000);
+            }, 500);
             
         };
 
@@ -91,7 +91,9 @@ sntRover.controller('RVSocialLobbyCrl', [
                         $scope.$broadcast("SL_SEARCH_UPDATED", {"post_id": nextPost.id});
                         $scope.$apply();
                     }, 500);
-                }             
+                }  else {
+                    refreshPostScroll(true); 
+                }           
                 
             } else {
                refreshPostScroll(); 
@@ -247,11 +249,17 @@ sntRover.controller('RVSocialLobbyCrl', [
         $scope.togglePostDetails = function(post) {
             $scope.errorMessage = "";
 
-            if(!post.isExpanded){
+            if(!post.isExpanded) {
                 post.isExpanded = true;
-            }else if(post.isSearchResults){
+            }else if(post.isSearchResults) {
                 post.isSearchResults = false;
-                $scope.$broadcast("ExpandComments", {"post_id": post.id});
+                post.isExpanded = false;
+                post.expandedHeight = "";
+                setTimeout(function() {
+                        post.isExpanded = true;
+                        $scope.$apply();
+                    }, 500);
+                // $scope.$broadcast("ExpandComments", {"post_id": post.id});
             }else{
                 post.isExpanded = false;
                 post.expandedHeight = "";
@@ -292,32 +300,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         
         };
 
-        // var filterSearch = function(comments) {
-        //     var results = _.filter(comments, function(comment) {
-        //         if (comment.user.first_name.indexOf($scope.textInQueryBox) != -1 
-        //             || comment.user.last_name.indexOf($scope.textInQueryBox) != -1) {
-        //             return true;
-        //         } else if (comment.comments && filterSearch(comment.comments).length > 0) {
-        //             return true;
-        //         } else {
-        //             return false;
-        //         }                    
-        //     });
-
-        //     return results;
-        // };
-
         $scope.queryEntered = function() {
-            
-            // var queryText = $scope.textInQueryBox;
-
-            
-            // if (!$scope.isTyping) {
-            //     $scope.isTyping = true;
-            // }
-
-            // setting first letter as captial
-            // $scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
 
             if ($scope.textInQueryBox.length === 0 ) {
                 $scope.refreshPosts();
@@ -331,10 +314,7 @@ sntRover.controller('RVSocialLobbyCrl', [
             if ($scope.textInQueryBox.length >=  3) {
                 
                 search();
-            } 
-            // else if ($scope.textInQueryBox.length >  3) {
-            //     $scope.posts = filterSearch($scope.posts);
-            // }
+            }
 
         };
 
