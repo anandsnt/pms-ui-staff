@@ -1,5 +1,5 @@
 angular.module('sntRover')
-.controller('rvNightlyDiaryFiltersController',
+.controller('rvNightlyDiaryTopFilterBarController',
     [   '$scope',
         '$rootScope',
         '$state',
@@ -23,9 +23,13 @@ angular.module('sntRover')
          * @param {Boolean} - isRightShift : whether shift to future date or previous date.
          * @return {String} - calculated date.
          */
-        var getDateShift = function( startDate, shiftCount,  isRightShift ) {
+        var getDateShift = function( startDate, shiftCount,  isRightShift, isInclusive ) {
             var date = tzIndependentDate(startDate);
-
+            /* For calculating diaryData.toDate, the shiftCount is 6. In case of diaryData.fromDate the shiftCount is 7.
+               isInclusive is true in case of toDate. */
+            if (isInclusive) {
+                shiftCount -= 1;
+            }
             if (isRightShift) {
                 date.setDate(date.getDate() + shiftCount );
             }
@@ -72,7 +76,7 @@ angular.module('sntRover')
         var init = function() {
             $scope.diaryData.numberOfDays = 7;
             $scope.diaryData.fromDate = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
-            $scope.diaryData.toDate   = getDateShift( $rootScope.businessDate, 7, true);
+            $scope.diaryData.toDate   = getDateShift( $rootScope.businessDate, 7, true, true);
             $scope.diaryData.firstMonthDateList = [];
             $scope.diaryData.secondMonthDateList = [];
             $scope.diaryData.hasMultipleMonth = false;
@@ -92,12 +96,11 @@ angular.module('sntRover')
             var isRightShift = true;
 
             if ($scope.diaryData.numberOfDays === 7) {
-                $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 7, isRightShift);
+                $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 7, isRightShift, true);
             }
             else {
-                $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift);
+                $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift, true);
             }
-            $scope.$emit('REFRESH_DIARY_TIMELINE');
             $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
         });
         // Catching event from main controller, when API is completed.
@@ -110,15 +113,12 @@ angular.module('sntRover')
             var isRightShift = true;
 
             if ($scope.diaryData.numberOfDays === 21) {
-                $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 7, isRightShift);
+                $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 7, isRightShift, true);
                 $scope.diaryData.numberOfDays = 7;
             }
             else {
-                $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift);
+                $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift, true);
                 $scope.diaryData.numberOfDays = 21;
-                if ($scope.diaryData.datesGridData.length !== 21) {
-                    $scope.$emit('REFRESH_DIARY_TIMELINE');
-                }
             }
             $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
         };
@@ -137,12 +137,12 @@ angular.module('sntRover')
                 nextShift = true;
             }
             if ($scope.diaryData.numberOfDays === 7) {
-                $scope.diaryData.fromDate = getDateShift(fromDate, 7, isRightShift);
-                $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 7, nextShift);
+                $scope.diaryData.fromDate = getDateShift(fromDate, 7, isRightShift, false);
+                $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 7, nextShift, true);
             }
             else {
-                $scope.diaryData.fromDate = getDateShift(fromDate, 21, isRightShift);
-                $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, nextShift);
+                $scope.diaryData.fromDate = getDateShift(fromDate, 21, isRightShift, false);
+                $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, nextShift, true);
             }
         };
 
@@ -151,7 +151,6 @@ angular.module('sntRover')
             var isRightShift = false;
 
             calculateFromDateAndToDate(isRightShift);
-            $scope.$emit('REFRESH_DIARY_TIMELINE');
             $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
         };
 
@@ -160,14 +159,12 @@ angular.module('sntRover')
             var isRightShift = true;
 
             calculateFromDateAndToDate(isRightShift);
-            $scope.$emit('REFRESH_DIARY_TIMELINE');
             $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
         };
 
         // To handle click on reset button.
         $scope.clickedResetButton = function() {
             init();
-            $scope.$emit('REFRESH_DIARY_TIMELINE');
             $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
         };
 

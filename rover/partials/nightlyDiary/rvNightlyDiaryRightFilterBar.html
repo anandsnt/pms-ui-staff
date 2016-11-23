@@ -1,0 +1,59 @@
+<div class="diary-nightly-sidebar diary-nightly-filters"> <!-- Add class 'visible' to show -->
+    <div class="sidebar-header">
+        <h2>Filters</h2>
+        <p>Select filters and press "apply"</p>
+    </div>
+    <div class="filters-list scrollable">
+        <div class="wrapper">
+            <!-- Room Type -->
+            <div class="entry">
+                <div class="multi-select with-label">
+                    <label for="room-type">Room Type</label>
+                    <span class="value">{X} selected ...</span>
+                </div>
+                <div class="multi-select-options hidden"> <!-- Toggle class 'hidden' when L9 tapped -->
+                    <label class="checkbox inline"> <!-- Add class 'checked' when checked -->
+                        <span class="icon-form icon-checkbox"></span> <!-- Add class 'checked' when checked -->
+                        <input value="{value}" type="checkbox">
+                        <span class="text">{Room Type}</span>
+                    </label>
+                    ... repeat for all room types
+                </div>
+            </div>
+
+            <!-- Floor -->
+            <div class="entry">
+                <div class="multi-select with-label">
+                    <label for="room-type">Floor</label>
+                    <span class="value">{X} selected ...</span>
+                </div>
+                <div class="multi-select-options halfs hidden"> <!-- Toggle class 'hidden' when L26 tapped -->
+                    <label class="checkbox inline"> <!-- Add class 'checked' when checked -->
+                        <span class="icon-form icon-checkbox"></span> <!-- Add class 'checked' when checked -->
+                        <input value="{value}" type="checkbox">
+                        <span class="text">{Floor No.}</span>
+                    </label>
+                    ... repeat for floors 
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <button type="button" class="button green">Apply</button>
+    </div>
+</div>
+
+<!-- Sidebar -->
+<div class="diary-nightly-sidebar hidden11">
+    <!-- Toggle Sidebar View -->
+    <div class="sidebar-options">
+        <button type="button" class="button white"> <!-- Add class 'active' when showing unassigned reservations + add class 'visible' to .diary-nightly-unassigned in sidebar-unassigned.html -->
+            <span class="count">{Count of unassigned res.}</span>
+            Unassigned
+        </button>
+        <button type="button" class="button white"> <!-- Add class 'active' when showing filters + add class 'visible' to .diary-nightly-filters in sidebar-filters.html -->
+            <span class="count">{Count of active filters}</span>
+            Filters
+        </button>
+    </div>
+</div>

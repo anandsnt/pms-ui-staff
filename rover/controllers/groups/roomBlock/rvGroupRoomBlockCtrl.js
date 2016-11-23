@@ -1541,7 +1541,17 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
          */
         var callInitialAPIs = function() {
 			// default start date
-            $scope.timeLineStartDate = new tzIndependentDate($rootScope.businessDate);
+            var businessDate = new tzIndependentDate($rootScope.businessDate).getDate();
+            var startDateValue = new tzIndependentDate($scope.groupConfigData.summary.block_from).getDate();
+            var endDateValue = new tzIndependentDate($scope.groupConfigData.summary.block_to).getDate();
+
+            // Fixed as per CICO-35639, case: if end date equal to business date and start date not equal to business date
+            if (endDateValue === businessDate && startDateValue !== businessDate) {
+                // Goto date should not be business date
+               $scope.timeLineStartDate = new tzIndependentDate(new tzIndependentDate($rootScope.businessDate) - 86400000);
+            } else {
+                $scope.timeLineStartDate = new tzIndependentDate($rootScope.businessDate);
+            }
 
 			// call API. date range end will be calculated in next function.
             $scope.fetchCurrentSetOfRoomBlockData();

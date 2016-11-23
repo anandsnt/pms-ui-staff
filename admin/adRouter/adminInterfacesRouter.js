@@ -90,17 +90,14 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             }]
         }
     });
-
+    
     $stateProvider.state('admin.travelClickSetup', {
-        templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
-        controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'travelclick';
-        }],
+        templateUrl: '/assets/partials/interfaces/TravelClick/adTravelClickCRSSetup.html',
+        controller: 'adTravelClickCRSSetupCtrl',
+        url: '/travelclick/setup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('travelclick');
+            CRSConfig: ['adTravelClickCRSSetupSrv', function(adTravelClickCRSSetupSrv) {
+                return adTravelClickCRSSetupSrv.fetchCRSConfiguration();
             }]
         }
     });
@@ -269,6 +266,53 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'ADMappingCtrl',
         url: '/mapping/:hotelId'
     });
+
+    $stateProvider.state('admin.external-mappings', {
+        templateUrl: '/assets/partials/interfaces/ExternalMappings/adExternalMappingsList.html',
+        controller: 'ADExternalMappingsListCtrl',
+        url: '/mappings/show/:hotel_id/:interface_id/:interface_name'
+    });
+
+    $stateProvider.state('admin.add-external-mapping', {
+        templateUrl: '/assets/partials/interfaces/ExternalMappings/adExternalMappingsAdd.html',
+        url: '/mappings/add/:mapping_type/:hotel_id/:interface_id/:interface_name',
+        controller: 'ADExternalMappingsAddCtrl',
+        resolve: {
+            mappingTypes: ['ADInterfaceMappingSrv', '$stateParams',
+                function(ADInterfaceMappingSrv, $stateParams) {
+                    return ADInterfaceMappingSrv.fetchInterfaceMappingTypes({
+                        interface_type_id: $stateParams.interface_id,
+                        hotel_id: $stateParams.hotel_id
+                    });
+                }
+            ]
+        }
+    });
+
+    $stateProvider.state('admin.edit-external-mapping', {
+        templateUrl: '/assets/partials/interfaces/ExternalMappings/adExternalMappingsEdit.html',
+        url: '/mappings/add/:mapping_type/:hotel_id/:interface_id/:interface_name/:mapping_id',
+        controller: 'ADExternalMappingsEditCtrl',
+        resolve: {
+            mappingTypes: ['ADInterfaceMappingSrv', '$stateParams',
+                function(ADInterfaceMappingSrv, $stateParams) {
+                    return ADInterfaceMappingSrv.fetchInterfaceMappingTypes({
+                        interface_type_id: $stateParams.interface_id,
+                        hotel_id: $stateParams.hotel_id
+                    });
+                }
+            ],
+            mapping: ['ADInterfaceMappingSrv', '$stateParams',
+                function(ADInterfaceMappingSrv, $stateParams) {
+                    return ADInterfaceMappingSrv.fetchMappingWithId({
+                        mapping_id: $stateParams.mapping_id
+                    });
+                }
+            ]
+        }
+    });
+
+
     $stateProvider.state('admin.ffp', {
         templateUrl: '/assets/partials/frequentFlyerProgram/adFFPList.html',
         controller: 'ADFrequentFlyerProgramCtrl',

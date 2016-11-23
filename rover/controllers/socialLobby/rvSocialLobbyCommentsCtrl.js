@@ -15,16 +15,19 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
         $scope.commentParams = {'page': 1, 'per_page': 10, 'post_id': $scope.parentPost.id};
         $scope.selectedComment = "";
         $scope.newComment = "";
-        $scope.middle_page1 = 2, $scope.middle_page2 = 3, $scope.middle_page3 = 4;
+        $scope.middle_page1 = 2, $scope.middle_page2 = 3, $scope.middle_page3 = 4;        
         
         var deleteIndex = "";
+        var isSearchResultsView = false;
 
         var COMMENT_LIST_SCROLL = 'comment-list-scroll';
 
         var setCommentScrollHeight = function() {
-            var conversationWrapper = angular.element(document.querySelector(".conversation-wrapper"))[0];
-            var commentScroll = angular.element(document.querySelector(".neighbours-comment-scroll"))[0];
-            var commentContainer = angular.element(document.querySelector(".neighbours-comment-container"))[0];
+            var postEl = angular.element(document.querySelectorAll(".activity-post"))[$scope.$index];
+            var conversationWrapper = angular.element(postEl.querySelector(".conversation-wrapper"))[0];
+            var commentScroll = angular.element(postEl.querySelector(".neighbours-comment-scroll"))[0];
+            var commentContainer = angular.element(postEl.querySelector(".neighbours-comment-container"))[0];
+
             var comments = commentContainer.children;
             var height = 75 * comments.length ;
 
@@ -36,7 +39,6 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
             });
             var wrapperHeight;
 
-conversationWrapper.clientHeight;
             if (height < 300) {
                 wrapperHeight = height;
                 commentScroll.style.height = "" + height + "px";
@@ -49,14 +51,18 @@ conversationWrapper.clientHeight;
             
             commentContainer.style.height = "" + height + "px";
 
-            var parentPostEl =  angular.element(document.querySelector(".post-full"))[0];
+            var parentPostEl =  angular.element(postEl.querySelector(".post-full"))[0];
             var parentPostElHeight = parentPostEl.clientHeight - 20;
             var updatedHeight = wrapperHeight + 60 + parentPostElHeight;
+            var commentScrollData = {};
 
-            $scope.$emit("socialLobbyHeightUpdated", updatedHeight);
+            commentScrollData.index = $scope.$index;
+            commentScrollData.height = updatedHeight;
+            commentScrollData.isSearchResultsView = isSearchResultsView;
+            $scope.$emit("socialLobbyHeightUpdated", commentScrollData);
         };
 
-        $scope.refreshCommentScroll = function() {
+        var refreshCommentScroll = function() {
             
             setTimeout(function() {
                 setCommentScrollHeight();
@@ -64,9 +70,9 @@ conversationWrapper.clientHeight;
                 if ( $scope.myScroll.hasOwnProperty(COMMENT_LIST_SCROLL) ) {
                     $scope.myScroll[COMMENT_LIST_SCROLL].scrollTo(0, 0, 100);
                 }
-                
+                $scope.$apply();
 
-            }, 1000);
+            }, 500);
             
         };
 
@@ -92,7 +98,8 @@ conversationWrapper.clientHeight;
                 $scope.comments = data.results.comments;
                 $scope.totalCommentPages = data.results.total_count % $scope.commentParams.per_page > 0 ? Math.floor(data.results.total_count / $scope.commentParams.per_page) + 1 : Math.floor(data.results.total_count / $scope.commentParams.per_page);
                 $scope.$emit('hideLoader');
-                $scope.refreshCommentScroll();
+                isSearchResultsView = false;
+                refreshCommentScroll();
             };
             options.failureCallBack = function(error) {
 
@@ -101,7 +108,31 @@ conversationWrapper.clientHeight;
             $scope.callAPI(RVSocilaLobbySrv.fetchComments, options);
         };
 
-        $scope.fetchComments();
+        var commentsViewUpdateOnSearch = function() {
+            $scope.comments = $scope.parentPost.comments;
+            $scope.totalCommentPages = 1;
+            isSearchResultsView = true;
+            refreshCommentScroll();
+        };
+
+        if ($scope.parentPost.comments.length == 0 || !$scope.parentPost.isSearchResults) {
+            $scope.fetchComments();
+        } else {
+            commentsViewUpdateOnSearch();
+            $scope.$on("ExpandComments", function(event, data) {
+                if (data.post_id == $scope.parentPost.id) {
+                    $scope.fetchComments();
+                }                    
+            });
+            $scope.$on("SL_SEARCH_UPDATED", function(event, data) {
+                if (data.post_id == $scope.parentPost.id) {
+                    commentsViewUpdateOnSearch();
+                }
+                    
+            });
+            
+
+        }        
 
         $scope.refreshComments = function() {
             $scope.commentParams.page = 1;
@@ -181,7 +212,7 @@ conversationWrapper.clientHeight;
                 $scope.middle_page2 = $scope.totalCommentPages - 2;
                 $scope.middle_page1 = $scope.totalCommentPages - 3;
             }
-        };
+        };        
 
     }
 

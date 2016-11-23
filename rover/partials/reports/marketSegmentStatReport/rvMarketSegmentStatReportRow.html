@@ -25,13 +25,21 @@
 <tr ng-if="item.length" ng-repeat="each in item track by $index" ng-class="{ 'undefined': hasSubString('undefined', each.code) }">
 	<td class="code break">{{ each.code }}</td>
 
-	<td>{{ each.revenue_today | currency:currencySymbol:2 }}</td>
-	<td>{{ each.revenue_mtd | currency:currencySymbol:2 }}</td>
-	<td class="break">{{ each.revenue_ytd | currency:currencySymbol:2 }}</td>
+	<td ng-show='!isRoomRevenueSelected'>{{ each.other_revenue_today | currency:currencySymbol:2 }}</td>
+	<td ng-show='!isRoomRevenueSelected'>{{ each.other_revenue_mtd | currency:currencySymbol:2 }}</td>
+	<td class="break" ng-show='!isRoomRevenueSelected'>{{ each.other_revenue_ytd | currency:currencySymbol:2 }}</td>
 
-	<td>{{ each.bookings_today }}</td>
-	<td>{{ each.bookings_mtd }}</td>
-	<td class="break">{{ each.bookings_ytd }}</td>
+	<td ng-show='isRoomRevenueSelected'>{{ each.revenue_today | currency:currencySymbol:2 }}</td>
+	<td ng-show='isRoomRevenueSelected'>{{ each.revenue_mtd | currency:currencySymbol:2 }}</td>
+	<td class="break" ng-show='isRoomRevenueSelected'>{{ each.revenue_ytd | currency:currencySymbol:2 }}</td>
+
+	<td ng-show='isBookingsSelected'>{{ each.bookings_today }}</td>
+	<td ng-show='isBookingsSelected'>{{ each.bookings_mtd }}</td>
+	<td class="break" ng-show='isBookingsSelected'>{{ each.bookings_ytd }}</td>
+
+	<td ng-show='!isBookingsSelected'>{{ each.average_length_of_stay_today }}</td>
+	<td ng-show='!isBookingsSelected'>{{ each.average_length_of_stay_mtd }}</td>
+	<td class="break" ng-show='!isBookingsSelected'>{{ each.average_length_of_stay_ytd }}</td>
 
 	<td>{{ each.room_nights_today }}</td>
 	<td>{{ each.room_nights_mtd }}</td>

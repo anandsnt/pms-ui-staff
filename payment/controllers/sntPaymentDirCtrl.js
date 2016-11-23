@@ -130,7 +130,7 @@ angular.module('sntPay').controller('sntPaymentController',
                             $scope.$parent.myScroll[key].refresh();
                         }
                     }
-                    if ($scope.hasOwnProperty('myScroll') && (key in $scope.myScroll)) {
+                    if ($scope.hasOwnProperty('myScroll') && key in $scope.myScroll) {
                         $scope.myScroll[key].refresh();
                     }
                 }, timeOutForScrollerRefresh);
@@ -235,7 +235,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 // https:// stayntouch.atlassian.net/browse/CICO-34115?focusedCommentId=93132
                 // &page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-93132
                 return payableAmount < 0 || //  NOTE : We can't make a negative payment with a GIFT_CARD
-                    ($scope.giftCard.availableBalance && parseFloat($scope.giftCard.availableBalance) < payableAmount);
+                    $scope.giftCard.availableBalance && parseFloat($scope.giftCard.availableBalance) < payableAmount;
             };
 
             /**
@@ -243,9 +243,9 @@ angular.module('sntPay').controller('sntPaymentController',
              * @returns {boolean} boolean
              */
             $scope.shouldHidePaymentButton = function() {
-                return (!$scope.selectedPaymentType || !$scope.hasPermission ||
+                return !$scope.selectedPaymentType || !$scope.hasPermission ||
                 $scope.isGCBalanceShort() ||
-                (!$scope.splitBillEnabled && $scope.paymentAttempted && !$scope.isPaymentFailure));
+                (!$scope.splitBillEnabled && $scope.paymentAttempted && !$scope.isPaymentFailure);
             };
 
             /**
@@ -253,8 +253,8 @@ angular.module('sntPay').controller('sntPaymentController',
              * @returns {boolean} boolean
              */
             $scope.showSelectedCard = function() {
-                var isCCPresent = ($scope.selectedPaymentType === 'CC' &&
-                (!!$scope.selectedCC && (!!$scope.selectedCC.ending_with || !!$scope.selectedCC.card_number || !!$scope.selectedCC.value)));
+                var isCCPresent = $scope.selectedPaymentType === 'CC' &&
+                (!!$scope.selectedCC && (!!$scope.selectedCC.ending_with || !!$scope.selectedCC.card_number || !!$scope.selectedCC.value));
                 var isManualEntry = !!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl &&
                     $scope.payment.isManualEntryInsideIFrame;
 
@@ -730,19 +730,20 @@ angular.module('sntPay').controller('sntPaymentController',
                 selectedPaymentType = _.find($scope.paymentTypes, {
                     name: $scope.selectedPaymentType
                 });
-                feeInfo = (selectedPaymentType &&
+                feeInfo = selectedPaymentType &&
                     selectedPaymentType.charge_code
-                    && selectedPaymentType.charge_code.fees_information) || {};
+                    && selectedPaymentType.charge_code.fees_information || {};
 
                 //  In case a credit card is selected; the fee information is to be that of the card
-                if (!!selectedPaymentType && selectedPaymentType.name === 'CC' && $scope.selectedCC) {
-                    cardTypeInfo = _.find(selectedPaymentType.values, ({
-                        cardcode: $scope.selectedCC.card_code.toUpperCase()
-                    }));
+                if (!!selectedPaymentType && selectedPaymentType.name === 'CC' && $scope.selectedCC && $scope.selectedCC.hasOwnProperty('card_code')) {
 
-                    feeInfo = (cardTypeInfo &&
+                    cardTypeInfo = _.find(selectedPaymentType.values, {
+                        cardcode: $scope.selectedCC.card_code.toUpperCase()
+                    });
+
+                    feeInfo = cardTypeInfo &&
                         cardTypeInfo.charge_code &&
-                        cardTypeInfo.charge_code.fees_information) ||
+                        cardTypeInfo.charge_code.fees_information ||
                         feeInfo;
                 }
 
@@ -920,7 +921,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     name: 'CC'
                 });
 
-                return (creditCardTypes && creditCardTypes.values) || [];
+                return creditCardTypes && creditCardTypes.values || [];
             }
 
             /**
@@ -1062,7 +1063,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 if ($scope.actionType === 'AR_SUBMIT_PAYMENT') {
                     addBillPayment(paymentData);
                 }
-                else if (!(/^ADD_PAYMENT_/.test($scope.actionType))) {
+                else if (!/^ADD_PAYMENT_/.test($scope.actionType)) {
                     saveCCPayment(paymentData);
                 }
             });
