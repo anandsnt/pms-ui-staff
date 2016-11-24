@@ -21,7 +21,9 @@ angular.module('sntRover')
             RVNightlyDiarySrv
         ) {
 
-        BaseCtrl.call(this, $scope);
+
+            BaseCtrl.call(this, $scope);
+
 
         /**
          * utility method Initiate controller
@@ -31,6 +33,8 @@ angular.module('sntRover')
             $scope.heading = $filter('translate')('MENU_ROOM_DIARY');
             $scope.setTitle($filter('translate')('MENU_ROOM_DIARY'));
             $scope.$emit('updateRoverLeftMenu', 'nightlyDiaryReservation');
+
+
             // data set for diary used for Angular code.
             $scope.diaryData = {
                 datesGridData: datesList,
@@ -50,8 +54,10 @@ angular.module('sntRover')
                 firstMonthDateList: [],
                 secondMonthDateList: [],
                 reservationsList: reservationsList.reservationsList,
-                hasOverlay: false
+                hasOverlay: false,
+                isEditReservationMode : false
             };
+            $scope.currentSelectedReservation = {};
         };
 
         initiateBasicConfig();
@@ -104,12 +110,24 @@ angular.module('sntRover')
             $scope.diaryData.paginationData.page++;
             fetchRoomListDataAndReservationListData();
         };
-        var goToStayCard = (e, reservation)=>{
-            console.log("reached here");
-            console.log(reservation)
-            //$scope.diaryData.paginationData.page++;
-            //fetchRoomListDataAndReservationListData();
+        /*
+         * Show selected reservation highlighted and enable edit bar
+         * @param reservation - Current selected reservation
+         */
+        var selectReservation = (e, reservation)=>{
+            $scope.diaryData.isEditReservationMode = true;
+            $scope.currentSelectedReservation = reservation;
+            console.log($scope.currentSelectedReservation);
+            $scope.$apply();
         };
+        /*
+         * Cancel button click edit bar
+         *
+         */
+        $scope.$on("CANCEL_RESERVATION", function(){
+            $scope.diaryData.isEditReservationMode = false;
+            $scope.currentSelectedReservation = {};
+        });
         /**
          * utility method to pass callbacks from
          * @return {Object} with callbacks
@@ -118,7 +136,7 @@ angular.module('sntRover')
             return {
                 goToPrevPage,
                 goToNextPage,
-                goToStayCard
+                selectReservation
             };
         };
 

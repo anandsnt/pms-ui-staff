@@ -1,0 +1,17 @@
+<div class="diary-nightly-edit-form" ng-show="diaryData.isEditReservationMode" ng-class="{'hidden': !diaryData.isEditReservationMode}" ng-controller="rvNightlyDiaryTopEditBarController">
+    <div class="guest">
+        <figure class="guest-image">
+            <img src="{guest-image-src}" alt="">
+        </figure>
+        <h2 class="name">{{currentSelectedReservation.guest_details.first_name}} {{currentSelectedReservation.guest_details.last_name}}</h2>
+        <!-- Opens Stay Card of that guest -->
+        <button type="button" class="button orange">Stay Card</button>
+    </div>
+    <div class="actions">
+        <!-- Cancels editing, hides edit screen and stay-range, shows search -->
+        <button type="button" class="button blank" ng-click="cancelEditReservation()">Cancel</button>
+        <!-- Removes the reservation from the grid and moves it to the Unassigned sidebar (filter) -->
+        <button ng-hide="true" type="button" class="button white red-text>">Unassign Room</button>
+        <button ng-hide="true" type="button" class="button green">Save Changes</button>
+    </div>
+</div>

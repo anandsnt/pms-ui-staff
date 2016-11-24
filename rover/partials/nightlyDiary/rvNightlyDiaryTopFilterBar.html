@@ -1,4 +1,4 @@
-<div class="diary-nightly-search-form" ng-controller="rvNightlyDiaryTopFilterBarController">
+<div ng-show="!diaryData.isEditReservationMode" class="diary-nightly-search-form" ng-controller="rvNightlyDiaryTopFilterBarController" ng-class="{'hidden': diaryData.isEditReservationMode}">
 
     <!-- Refresh -->
     <div class="entry reset" ng-click="clickedResetButton()">

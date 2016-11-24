@@ -10,7 +10,7 @@ const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, ro
                             item.reservations.length > 0 ?
                                 item.reservations.map((reservationItem) => (
 
-                                    <ReservationComponent reservation={reservationItem} onClickMethod={(e, reservationItem) => goToReservationStayCard(e, reservationItem)} />
+                                    <NightlyDiaryReservationContainer reservation={reservationItem} />
 
 
                                     )

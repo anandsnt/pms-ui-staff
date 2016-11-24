@@ -130,7 +130,7 @@ let getReservationClasses = function(reservation, currentBusinessDate, diaryInit
     let businessDate                   = tzIndependentDate(currentBusinessDate);
     let reservationArrivalDate         = tzIndependentDate(reservation.arrival_date);
     let reservationDepartureDate       = tzIndependentDate(reservation.dept_date);
-    let finalDayOfDiaryGrid            = diaryInitialDate.getTime()  + (numberOfDays - 1 ) * 24 * 60 * 60 * 1000;// Minusing 1 bcoz otherwise last date end value (gettime) and next days start will be same.
+    let finalDayOfDiaryGrid            = diaryInitialDate.getTime()  + ((numberOfDays - 1 ) * 24 * 60 * 60 * 1000);// Minusing 1 bcoz otherwise last date end value (gettime) and next days start will be same.
     // {passed} - class 'passed' should be applied on all reservations that ended before today's date. If you don't have today's date shown in the diary, this class shoudl not be applied to reservations even if they're all in the past
     let passedClass                       = '';
 
@@ -191,6 +191,12 @@ let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateG
                 reservation.style = {};
                 reservation.style.width = duration;
                 reservation.style.transform = "translateX(" + positionAndDuration.reservationPosition + "px)";
+                // Added these params to reservation to avoid the calculation repetion
+                // Same values needed in rvNightlyDiaryStayRange.html
+
+                reservation.duration = positionAndDuration.durationOfReservation;
+                reservation.arrivalPosition = positionAndDuration.reservationPosition + "px";
+                reservation.departurePosition = (positionAndDuration.durationOfReservation + positionAndDuration.reservationPosition) + "px";
 
                 let isReservationFuture = findIsReservationFuture(reservation, currentBusinessDate);
                 let isReservationDayStay = findIsReservationDayStay(reservation);
@@ -212,38 +218,11 @@ let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateG
 
 const mapStateToNightlyDiaryReservationsListContainerProps = (state) => ({
     reservationsListToComponent: convertReservationsListReadyToComponent(state.reservationsList, state.diaryInitialDayOfDateGrid, state.numberOfDays, state.currentBusinessDate),
-    roomRowClass: "grid-reservations firstday-" + getWeekDayName((new Date(state.diaryInitialDayOfDateGrid)).getDay(), 3),
-    goToReservationStayCard: state.callBackFromAngular.goToStayCard
+    roomRowClass: "grid-reservations firstday-" + getWeekDayName((new Date(state.diaryInitialDayOfDateGrid)).getDay(), 3)
+
 });
 
-// const NightlyDiaryReservationsListContainer = connect(
-//   mapStateToNightlyDiaryReservationsListContainerProps
-// )(NightlyDiaryReservationsListComponent);
-
-const mapDispatchToNightlyDiaryReservationsListContainerProps = (stateProps, dispatchProps, ownProps) => {
-    //  let clickedRate = stateProps;
-    //  let dis = dispatchProps;
-    //  let own = ownProps;
-    // // stateProps.goToReservationStayCard({
-    // //     //fromDate: stateProps.fromDate,
-    // //    // toDate: stateProps.toDate,
-    // //    // selectedRates: [{id: clickedRate.id, name: clickedRate.name, accountName: clickedRate.accountName, address: clickedRate.address}]
-    // // })
-
-    var goToReservationStayCard = () => {};
-
-    goToReservationStayCard = (reservation) => {
-        return stateProps.goToReservationStayCard();
-    };
-    return {
-        goToReservationStayCard,
-        ...stateProps
-    };
-
-};
 
 const NightlyDiaryReservationsListContainer = connect(
-  mapStateToNightlyDiaryReservationsListContainerProps,
-  null,
-  mapDispatchToNightlyDiaryReservationsListContainerProps
+  mapStateToNightlyDiaryReservationsListContainerProps
 )(NightlyDiaryReservationsListComponent);

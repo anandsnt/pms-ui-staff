@@ -107,6 +107,10 @@ angular.module('sntRover')
         $scope.$on('FETCH_COMPLETED_DATE_LIST_DATA', function() {
             $scope.diaryData.hasMultipleMonth = checkDateRangeHaveMultipleMonths();
         });
+        // $scope.$on('EDIT_MODE_ACTIVATED', function(e, data) {
+        //     $scope.diaryData.isEditReservationMode = data.isEdit;
+        // });
+
 
         // To toggle 7/21 button.
         $scope.toggleSwitchMode = function() {
