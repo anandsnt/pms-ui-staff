@@ -17,7 +17,7 @@
             </div>
             <div class="list scrollable" ng-iscroll="result_showing_area" ng-iscroll-delay="1000">
                 <div class="wrapper">
-                    <div class="guest" ng-repeat = "row in results" ng-class = "{'no-room': escapeNull(row.room) === '', 'no-status': row.reservation_status === 'RESERVED'}">
+                    <div class="guest" ng-click="clickedOnResultItem(row.room_id)" ng-repeat = "row in results" ng-class = "{'no-room': escapeNull(row.room) === '', 'no-status': row.reservation_status === 'RESERVED'}">
                         <div class="data">
                             <span class="guest-status small-icon" ng-class="getReservationClass(row.reservation_status)"></span> <!-- _future_reservation_condition_here -->
                             <div class="information" ng-class = "{'with-card': escapeNull(row.company)!=='' || escapeNull(row.travel_agent)!=='' || escapeNull(row.group)!=='' || escapeNull(row.allotment)!==''}"> 

@@ -127,4 +127,14 @@ angular.module('sntRover')
             $scope.diaryData.hasOverlay = false;
         };
 
+        // To handle click on each search item.
+        $scope.clickedOnResultItem = function( roomId ) {
+            $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', roomId);
+        };
+
+        // To handle close search results after rendering new data set.
+        $scope.$on('CLOSE_SEARCH_RESULT', function() {
+            $scope.clearResults();
+        });
+
     }]);

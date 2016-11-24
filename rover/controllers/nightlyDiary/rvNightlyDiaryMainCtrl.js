@@ -68,7 +68,7 @@ angular.module('sntRover')
         };
 
         // Method to update room list data.
-        var fetchRoomListDataAndReservationListData = function() {
+        var fetchRoomListDataAndReservationListData = function(roomId) {
             var successCallBackFetchRoomList = function(data) {
                 $scope.$emit('hideLoader');
                 $scope.errorMessage = '';
@@ -78,12 +78,18 @@ angular.module('sntRover')
                 $scope.diaryData.datesGridData = data.dateList;
                 $scope.$broadcast('FETCH_COMPLETED_DATE_LIST_DATA');
                 updateDiaryView();
+                if(!!roomId) {
+                    $scope.$broadcast('CLOSE_SEARCH_RESULT');
+                }
             },
             postData = {
                 ...getPaginationParams(),
                 'start_date': $scope.diaryData.fromDate,
                 'no_of_days': $scope.diaryData.numberOfDays
             };
+            if(!!roomId) {
+                postData.room_id = roomId;
+            }
             $scope.invokeApi(RVNightlyDiarySrv.fetchRoomsListAndReservationList, postData, successCallBackFetchRoomList);
         };
 
@@ -143,10 +149,12 @@ angular.module('sntRover')
             };
             store.dispatch(dispatchData);
         };
-        // Handle event emitted from child - rvNightlyDiaryFiltersController
-        // To refresh diary data - rooms & reservations.
-        $scope.$on('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function() {
-            fetchRoomListDataAndReservationListData();
+        /* Handle event emitted from child controllers.
+         * To refresh diary data - rooms & reservations.
+         * @param {Number} RoomId - selected room id from search filters.
+        */
+        $scope.$on('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function( event, roomId ) {
+            fetchRoomListDataAndReservationListData(roomId);
         });
         /**
          * to render the grid view
