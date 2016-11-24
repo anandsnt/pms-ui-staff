@@ -103,7 +103,15 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
             $scope.buttonText = $filter('translate')('KEY_DUPLICATE_BUTTON_TEXT');
         }
         // as per CICO-31909 Initally we check if the device is connected
-        $scope.showDeviceConnectingMessge();
+        // check if it is a desktop or iPad
+        $scope.isIpad = navigator.userAgent.match(/iPad/i) !== null && window.cordova;
+
+        if (!$scope.isIpad && $scope.isRemoteEncodingEnabled) {
+            $scope.showTabletOption = false;
+            showPrintKeyOptions(true);
+        } else {
+            $scope.showDeviceConnectingMessge();
+        }
 	};
 
 	$scope.isPrintKeyEnabled = function() {
@@ -141,6 +149,11 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			}
 		}, 1000);
 		if (secondsAfterCalled > that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK) {
+            // remove tablet option from dropdown if no connected device found
+            $scope.encoderTypes = _.filter($scope.encoderTypes, function(encoder) {
+                return encoder.description !== 'Tablet';
+            });
+
             if ($scope.isRemoteEncodingEnabled) {
                 // hide tablet option if only remote encoders and no device connected
                 $scope.showTabletOption = false;
@@ -151,12 +164,6 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
                 $scope.showPrintKeyOptions = false;
                 $scope.deviceNotConnected = true;
                 $scope.$apply();
-            }
-            // remove tablet option from dropdown if no connected device found
-            var result = _.findWhere($scope.encoderTypes, {description: 'Tablet'});
-
-            if (typeof result !== 'undefined') {
-                $scope.encoderTypes.splice(result, 1);
             }
 		}
 

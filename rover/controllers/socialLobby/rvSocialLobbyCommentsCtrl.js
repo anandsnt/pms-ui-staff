@@ -72,7 +72,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
                 }
                 $scope.$apply();
 
-            }, 1000);
+            }, 500);
             
         };
 
@@ -98,6 +98,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
                 $scope.comments = data.results.comments;
                 $scope.totalCommentPages = data.results.total_count % $scope.commentParams.per_page > 0 ? Math.floor(data.results.total_count / $scope.commentParams.per_page) + 1 : Math.floor(data.results.total_count / $scope.commentParams.per_page);
                 $scope.$emit('hideLoader');
+                isSearchResultsView = false;
                 refreshCommentScroll();
             };
             options.failureCallBack = function(error) {
@@ -106,17 +107,30 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
             };
             $scope.callAPI(RVSocilaLobbySrv.fetchComments, options);
         };
-        if ($scope.parentPost.comments.length == 0 || !$scope.parentPost.isSearchResults) {
-            $scope.fetchComments();
-        } else {
+
+        var commentsViewUpdateOnSearch = function() {
             $scope.comments = $scope.parentPost.comments;
             $scope.totalCommentPages = 1;
             isSearchResultsView = true;
             refreshCommentScroll();
+        };
+
+        if ($scope.parentPost.comments.length == 0 || !$scope.parentPost.isSearchResults) {
+            $scope.fetchComments();
+        } else {
+            commentsViewUpdateOnSearch();
             $scope.$on("ExpandComments", function(event, data) {
-                if (data.post_id == $scope.parentPost.id)
+                if (data.post_id == $scope.parentPost.id) {
                     $scope.fetchComments();
+                }                    
             });
+            $scope.$on("SL_SEARCH_UPDATED", function(event, data) {
+                if (data.post_id == $scope.parentPost.id) {
+                    commentsViewUpdateOnSearch();
+                }
+                    
+            });
+            
 
         }        
 

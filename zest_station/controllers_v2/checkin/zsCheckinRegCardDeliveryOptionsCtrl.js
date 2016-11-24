@@ -73,6 +73,9 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
             };
 
             var printFailedActions = function(errorMessage) {
+                
+                $scope.$emit('hideLoader');
+                $scope.runDigestCycle();
                 var printopted = true;
                 var emailopted = false;
                 var actionStatus = 'failed';
@@ -89,6 +92,9 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                 nextPageActions(printopted, emailopted, actionStatus);
             };
             var printSuccessActions = function() {
+
+                $scope.$emit('hideLoader');
+                $scope.runDigestCycle();
                 var printopted = true;
                 var emailopted = false;
                 var actionStatus = 'success';
@@ -111,6 +117,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                 });
                 $scope.$on('SOCKET_CONNECTED', function() {
                     $scope.socketOperator.startPrint(printData);
+                    $scope.$emit('showLoader');
                 });
 				/** ** Socket actions ends here *****/
 
@@ -119,6 +126,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 					// check if socket is open
                     if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
                         $scope.socketOperator.startPrint(printData);
+                        $scope.$emit('showLoader');
                     } else {
                         $scope.$emit('CONNECT_WEBSOCKET'); // connect socket
                     }
@@ -161,7 +169,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                                 printFailedActions();
                             }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
                         } else {
-                            if ($scope.zestStationData.zest_printer_option === 'STAR_TAC') {
+                            if ($scope.zestStationData.zest_printer_option === 'STAR_TAC' && $scope.zestStationData.kiosk_use_socket_print) {
 							// we will call websocket services to print
                                 handleStarTacPrinterActions();
                             } else {

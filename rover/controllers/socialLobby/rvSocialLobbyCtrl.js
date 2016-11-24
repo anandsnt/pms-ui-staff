@@ -18,6 +18,9 @@ sntRover.controller('RVSocialLobbyCrl', [
         $scope.$emit("updateRoverLeftMenu", "sociallobby");
         $scope.textInQueryBox = "";
         $scope.showSearchResultsArea = false;
+        $scope.searchResultsCount = 0;
+        $scope.isSearchFocussed = false;
+        $scope.match_count = 0;
         
         var deleteIndex = "";
 
@@ -61,7 +64,7 @@ sntRover.controller('RVSocialLobbyCrl', [
                     $scope.myScroll[POST_LIST_SCROLL].scrollTo(0, 0, 100);
                 }                
 
-            }, 1000);
+            }, 500);
             
         };
 
@@ -78,16 +81,19 @@ sntRover.controller('RVSocialLobbyCrl', [
         $scope.$on("socialLobbyHeightUpdated", function(event, data) {
             $scope.posts[data.index].expandedHeight = data.height;
 
-            if ( data.isSearchResultsView && data.index < $scope.posts.length - 1 && $scope.posts[data.index + 1].comments.length > 0) {
+            if ( data.isSearchResultsView && data.index < $scope.posts.length - 1 ) {
                 var nextPost = getNextPostWithComments(data.index + 1);
                 if ( nextPost != "" ) {
                     setTimeout(function() {
                 
                         nextPost.isExpanded = true;
                         nextPost.isSearchResults = true;
+                        $scope.$broadcast("SL_SEARCH_UPDATED", {"post_id": nextPost.id});
                         $scope.$apply();
                     }, 500);
-                }             
+                }  else {
+                    refreshPostScroll(true); 
+                }           
                 
             } else {
                refreshPostScroll(); 
@@ -131,6 +137,9 @@ sntRover.controller('RVSocialLobbyCrl', [
         var clearSearchResults = function(){
             $scope.textInQueryBox = "";
             $scope.showSearchResultsArea = false;
+            $scope.searchResultsCount = 0;
+            $scope.isSearchFocussed = false;
+            $scope.match_count = 0;
         };
         $scope.refreshPosts = function(){
             clearSearchResults();
@@ -211,7 +220,13 @@ sntRover.controller('RVSocialLobbyCrl', [
             if (page == $scope.postParams.page)
                 return;
             $scope.postParams.page = page;
-            $scope.fetchPosts();
+            if ($scope.textInQueryBox.length >=  3) {
+                
+                search();
+            }else{
+                $scope.fetchPosts();
+            }
+            
             if ($scope.postParams.page > $scope.middle_page3 && $scope.postParams.page < $scope.totalPostPages) {
                 $scope.middle_page3++;
                 $scope.middle_page2++;
@@ -234,11 +249,17 @@ sntRover.controller('RVSocialLobbyCrl', [
         $scope.togglePostDetails = function(post) {
             $scope.errorMessage = "";
 
-            if(!post.isExpanded){
+            if(!post.isExpanded) {
                 post.isExpanded = true;
-            }else if(post.isSearchResults){
+            }else if(post.isSearchResults) {
                 post.isSearchResults = false;
-                $scope.$broadcast("ExpandComments", {"post_id": post.id});
+                post.isExpanded = false;
+                post.expandedHeight = "";
+                setTimeout(function() {
+                        post.isExpanded = true;
+                        $scope.$apply();
+                    }, 500);
+                // $scope.$broadcast("ExpandComments", {"post_id": post.id});
             }else{
                 post.isExpanded = false;
                 post.expandedHeight = "";
@@ -263,10 +284,13 @@ sntRover.controller('RVSocialLobbyCrl', [
             options.onSuccess = function(data){
                 
                 $scope.posts = data.results.posts;
+                $scope.match_count = data.results.matched_count;
+                // $scope.$apply();
                 var nextPost = getNextPostWithComments(0);
                 if ( nextPost != "" ) {
                         nextPost.isExpanded = true;
                         nextPost.isSearchResults = true;
+                        $scope.$broadcast("SL_SEARCH_UPDATED", {"post_id": nextPost.id});
                 }
                 $scope.totalPostPages = data.results.total_count % $scope.postParams.per_page > 0 ? Math.floor(data.results.total_count / $scope.postParams.per_page) + 1 : Math.floor(data.results.total_count / $scope.postParams.per_page);
                 $scope.$emit('hideLoader');
@@ -277,16 +301,6 @@ sntRover.controller('RVSocialLobbyCrl', [
         };
 
         $scope.queryEntered = function() {
-            
-            // var queryText = $scope.textInQueryBox;
-
-            
-            // if (!$scope.isTyping) {
-            //     $scope.isTyping = true;
-            // }
-
-            // setting first letter as captial
-            // $scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
 
             if ($scope.textInQueryBox.length === 0 ) {
                 $scope.refreshPosts();

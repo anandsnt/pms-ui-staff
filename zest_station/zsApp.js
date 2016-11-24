@@ -132,6 +132,17 @@ var GlobalZestStationApp = function() {
         }
     };
     this.debugTimers = function(workstationFetchTimer, languageResetTimer, refreshTimer, idlePopupTimer, backToHomeTimer) {
+        var runDigest = function(){
+            try {
+                setTimeout(function() {
+                    angular.element('#header').scope().$parent.$digest();
+                    angular.element('#header').scope().$parent.$digest();
+                }, 800);
+
+            } catch (err) {
+                console.warn('unable to run digest ', err);
+            }
+        };
         if (arguments.length === 0 || workstationFetchTimer === false) {// ie. debugTimers(false) or debugTimers() will turn off timer debugging
             console.info('Please pass the timer values as an argument, ie. debugTimers(', 'workstationFetchTimer,', 
                 'languageResetTimer,', 
@@ -141,15 +152,7 @@ var GlobalZestStationApp = function() {
             console.info('Passing null, or empty string will assume default setting');
             console.info(':: turning off timer debugger ::');
             that.timeDebugger = false;
-            try {
-                setTimeout(function() {
-                        // angular.element('#header').scope().$parent.runDigestCycle();
-                    angular.element('#header').scope().$parent.$digest();
-                }, 500);
-
-            } catch (err) {
-                console.warn('unable to run digest ', err);
-            }
+            runDigest();
                 
         } else {    
             var isValidArg = function(a) {
@@ -157,6 +160,18 @@ var GlobalZestStationApp = function() {
             };
 
             if (typeof _ !== typeof undefined) {
+                if (workstationFetchTimer === true) {
+                    // only (true), when being called to only debug timers, 
+                    // all other args will be ignored
+                    if (typeof that.timeDebugger !== typeof undefined) {
+                        that.timeDebugger = !that.timeDebugger;
+                        runDigest();
+                    } else {
+                        that.timeDebugger = true;
+                        runDigest();
+                    }
+                    
+                };
                 if (isValidArg(workstationFetchTimer)) {
                     that.workstationFetchTimer = workstationFetchTimer;
                     that.timeDebugger = true;

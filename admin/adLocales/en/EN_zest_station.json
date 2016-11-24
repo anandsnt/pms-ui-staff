@@ -81,7 +81,8 @@
 "KEY_CREATION_IMAGE":"Sankyo Create Key In Progress Image",
 "REMOTE_ENCODING_CHROME_IPAD":"Remote Encoding - Chrome or iPad - Ving, Salto, Saflok",
 "SANKYO_ENCODING":"Sankyo Encoding - Chrome only - Atlas (Saflok) only - Uses websocket",
-"INGENICO_INFINEA_KEY":"Infinea/Ingenico - iPad Only - Ving, Salto, Saflok"
+"INGENICO_INFINEA_KEY":"Infinea/Ingenico - iPad Only - Ving, Salto, Saflok",
+"USE_SOCKET_PRINTING" : "Use Socket print"
 
 
 
