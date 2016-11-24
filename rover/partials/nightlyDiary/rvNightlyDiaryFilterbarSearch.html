@@ -4,7 +4,7 @@
         <button class="clear-query" ng-class = "{'visible': textInQueryBox.length > 0}"> <!-- Class 'visible' added when searching. Clicking the button clears the query text. -->
             <span class="icons icon-clear-search" ng-click = "clearResults()">Clear query</span>
         </button>
-        <span class="result-count" ng-show = "totalSearchResults !== 0">{{totalSearchResults}} Matches</span> 
+        <span class="result-count" ng-show = "diaryData.totalSearchResults !== 0">{{diaryData.totalSearchResults}} Matches</span> 
         <input class="query" placeholder="Search by Guest, Allotment/Group or Conf./Ext. red no." type="search" autocomplete="off" ng-change = "queryEntered()" ng-model = "textInQueryBox">
 
 

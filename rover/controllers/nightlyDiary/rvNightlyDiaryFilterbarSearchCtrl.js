@@ -21,7 +21,7 @@ angular.module('sntRover')
         // Variable initialisations go inside init function.
         var init = function() {
             $scope.textInQueryBox = '';
-            $scope.totalSearchResults = 0;
+            $scope.diaryData.totalSearchResults = 0;
             $scope.results = [];
         };
 
@@ -37,7 +37,7 @@ angular.module('sntRover')
         var successCallBackofDataFetch = function(data) {
             $scope.$emit('hideLoader');
             $scope.results = data.results;
-            $scope.totalSearchResults = data.total_count;
+            $scope.diaryData.totalSearchResults = data.total_count;
             $scope.$parent.myScroll['result_showing_area'].scrollTo(0, 0, 0);
             $scope.diaryData.hasOverlay = true;
             refreshScroller();
@@ -123,7 +123,7 @@ angular.module('sntRover')
         $scope.clearResults = function() {
             $scope.textInQueryBox = '';
             $scope.results = [];
-            $scope.totalSearchResults = 0;
+            $scope.diaryData.totalSearchResults = 0;
             $scope.diaryData.hasOverlay = false;
         };
 
