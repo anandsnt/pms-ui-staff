@@ -216,7 +216,12 @@ sntRover.controller('RVbillCardController',
 		if (chargeCodes.length > 0) {
 			_.each(chargeCodes, function(chargeCode, index) {
 				if (chargeCode.isSelected) {
-					$scope.moveChargeData.selectedTransactionIds.push(chargeCode.id);
+					if(chargeCode.is_group_by_ref) {
+						$scope.moveChargeData.selectedTransactionIds.concat(chargeCode.ids);
+					}
+					else {
+						$scope.moveChargeData.selectedTransactionIds.push(chargeCode.id);
+					}
 				}
 		    });
 		    ngDialog.open({
@@ -720,16 +725,25 @@ sntRover.controller('RVbillCardController',
 	  */
 	 $scope.moveToBillAction = function(oldBillValue, feesIndex) {
 	 	var parseOldBillValue = parseInt(oldBillValue) - 1;
-		var newBillValue = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex].billValue;
-		var transactionId = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex].transaction_id;
-		var id  = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex].id;
+	 	var feesDetails = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details;
+		var newBillValue = feesDetails[feesIndex].billValue,
+			transactionId = feesDetails[feesIndex].transaction_id,
+			id  = (!!feesDetails[feesIndex].id) ? feesDetails[feesIndex].id : '',
+			ids = (!!feesDetails[feesIndex].ids) ? feesDetails[feesIndex].ids : [],
+			isGroupByRef = feesDetails[feesIndex].is_group_by_ref;
 		var dataToMove = {
 			"reservation_id": $scope.reservationBillData.reservation_id,
 			"to_bill": newBillValue,
 			"from_bill": oldBillValue,
-			"transaction_id": transactionId,
-			"id": id
+			"transaction_id": transactionId
 		};
+
+		if(isGroupByRef) {
+			dataToMove.ids = ids;
+		}
+		else {
+			dataToMove.id = id;
+		}
 		/*
 		 * Success Callback of move action
 		 */
@@ -2684,7 +2698,7 @@ sntRover.controller('RVbillCardController',
         // If the flag for toggle is false, perform api call to get the data.
         if (!feesData.isExpanded) {
             var params = {
-                'reference_text': feesData.reference_text,
+                'reference_number': feesData.reference_number,
                 'bill_id': $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id
             };
             $scope.invokeApi(RVBillCardSrv.groupChargeDetailsFetch, params, fetchChargeDataSuccessCallback, fetchChargeDataFailureCallback);
