@@ -2683,7 +2683,11 @@ sntRover.controller('RVbillCardController',
 
         // If the flag for toggle is false, perform api call to get the data.
         if (!feesData.isExpanded) {
-            $scope.invokeApi(RVBillCardSrv.groupChargeDetailsFetch, feesData, fetchChargeDataSuccessCallback, fetchChargeDataFailureCallback);
+            var params = {
+                'reference_text': feesData.reference_text,
+                'bill_id': $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id
+            };
+            $scope.invokeApi(RVBillCardSrv.groupChargeDetailsFetch, params, fetchChargeDataSuccessCallback, fetchChargeDataFailureCallback);
         }
         else {
             // If the flag for toggle is true, then it is simply reverted to hide the data.
