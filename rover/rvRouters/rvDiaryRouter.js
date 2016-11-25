@@ -26,7 +26,7 @@ angular
         }
     });
     $stateProvider.state('rover.nightlyDiary', {
-        url: '/nightlyDiary/?reservation_id&start_date',
+        url: '/nightlyDiary/?reservation_id&start_date&isFromStayCard',
         templateUrl: '/assets/partials/nightlyDiary/rvNightlyDiary.html',
         controller: 'rvNightlyDiaryMainController',
         resolve: {
