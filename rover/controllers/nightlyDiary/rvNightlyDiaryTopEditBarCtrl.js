@@ -1,8 +1,9 @@
 angular.module('sntRover')
 .controller('rvNightlyDiaryTopEditBarController',
     [   '$scope',
+        '$state',
         function(
-            $scope
+            $scope, $state
         ) {
 
         BaseCtrl.call(this, $scope);
@@ -14,6 +15,15 @@ angular.module('sntRover')
 
         $scope.cancelEditReservation = function(){
             $scope.$emit('CANCEL_RESERVATION');
+        };
+
+        $scope.goToStayCard = function(currentSelectedReservation){
+            $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+                id: currentSelectedReservation.id,
+                confirmationId: currentSelectedReservation.confirm_no,
+                isrefresh: true
+            });
+
         };
 
 
