@@ -24,6 +24,7 @@ angular.module('sntRover')
             // success callback of fetching search results
             var successCallbackFunction = function(data) {
                 $scope.$emit('hideLoader');
+                // $scope.diaryData is defined in (parent controller)rvNightlyDiaryController
                 $scope.diaryData.roomNumberSearchResults = data.rooms;
                 refreshScroller();
             };
