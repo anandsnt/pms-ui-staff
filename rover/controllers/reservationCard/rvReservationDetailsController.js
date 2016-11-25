@@ -80,6 +80,7 @@ sntRover.controller('reservationDetailsController',
 		} else if ($scope.previousState.name === "rover.allotments.config" || $rootScope.stayCardStateBookMark.previousState === 'rover.allotments.config') {
 			if ($scope.previousState.name === "rover.allotments.config") {
 				setNavigationBookMark();
+
 			}
 			$rootScope.setPrevState = {
 				title: 'ALLOTMENT DETAILS',
@@ -102,10 +103,20 @@ sntRover.controller('reservationDetailsController',
 				}
 			};
 
+		} else if ($scope.previousState.name === "rover.nightlyDiary" || $rootScope.stayCardStateBookMark.previousState === 'rover.nightlyDiary') {
+			if ($scope.previousState.name === "rover.nightlyDiary") {
+				setNavigationBookMark();
+
+			}
+			$rootScope.setPrevState = {
+				title: 'DIARY',
+				name: 'rover.nightlyDiary',
+			};
 		} else if ($stateParams.isFromDiary && !$rootScope.isReturning()) {
 			setNavigationBookMark();
 			$rootScope.setPrevState = {
 				title: 'Room Diary'
+				
 			};
 		} else if ($scope.previousState.name === "rover.reports" || $rootScope.stayCardStateBookMark.previousState === 'rover.reports') {
 			if ($scope.previousState.name === "rover.reports") {
