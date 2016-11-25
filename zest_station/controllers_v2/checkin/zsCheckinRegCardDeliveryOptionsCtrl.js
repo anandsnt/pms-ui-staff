@@ -75,6 +75,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
             var printFailedActions = function(errorMessage) {
                 
                 $scope.$emit('hideLoader');
+                $scope.runDigestCycle();
                 var printopted = true;
                 var emailopted = false;
                 var actionStatus = 'failed';
@@ -93,6 +94,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
             var printSuccessActions = function() {
 
                 $scope.$emit('hideLoader');
+                $scope.runDigestCycle();
                 var printopted = true;
                 var emailopted = false;
                 var actionStatus = 'success';
