@@ -728,22 +728,18 @@ sntRover.controller('RVbillCardController',
 	 	var feesDetails = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details;
 		var newBillValue = feesDetails[feesIndex].billValue,
 			transactionId = feesDetails[feesIndex].transaction_id,
-			id  = (!!feesDetails[feesIndex].id) ? feesDetails[feesIndex].id : '',
-			ids = (!!feesDetails[feesIndex].ids) ? feesDetails[feesIndex].ids : [],
+			id  = (feesDetails[feesIndex].id) ? feesDetails[feesIndex].id : '',
+			itemIdList = (feesDetails[feesIndex].item_ids) ? feesDetails[feesIndex].item_ids : [],
 			isGroupByRef = feesDetails[feesIndex].is_group_by_ref;
 		var dataToMove = {
-			"reservation_id": $scope.reservationBillData.reservation_id,
-			"to_bill": newBillValue,
-			"from_bill": oldBillValue,
-			"transaction_id": transactionId
+			'reservation_id': $scope.reservationBillData.reservation_id,
+			'to_bill': newBillValue,
+			'from_bill': oldBillValue,
+			'transaction_id': transactionId,
+			'id': id,
+			'item_ids': itemIdList
 		};
 
-		if(isGroupByRef) {
-			dataToMove.ids = ids;
-		}
-		else {
-			dataToMove.id = id;
-		}
 		/*
 		 * Success Callback of move action
 		 */
