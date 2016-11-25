@@ -10,15 +10,9 @@
 
         <!-- Room Search + Timeline -->
         <div class="grid-timeline">
-            <!-- Room Search -->
-            <div class="grid-room-search">
-                <button class="clear-query"> <!-- Add class 'visible' when searching. Tap clears L33 value and removes search. -->
-                    <span class="icons icon-clear-search">Clear query</span>
-                </button>
-                <!-- Add class .hidden when edit screen is displayed -->
-                <input type="text" placeholder="Go to Room No." value="">
-            </div>
 
+            <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRoomNumberSearch.html'" class="grid-room-search" ng-controller="rvNightlyDiaryRoomNumberSearchController"></div>
+            
             <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryTimeline.html'"></div>
 
             <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryStayRange.html'"></div>
@@ -30,15 +24,13 @@
         </div>
 
         <!-- Room Search Results -->
-        <div class="grid-room-search-results hidden"> <!-- Add class 'visible' to show -->
+        <div class="grid-room-search-results scrollable"  ng-iscroll="result_showing_area" ng-iscroll-delay="1000" ng-show="diaryData.showSearchResultsArea" ng-class="{'visible': diaryData.showSearchResultsArea}">
             <div class="wrapper">
-                <div class="room">
-                    <span class="room-number {HK status or 'out' if OOO/OOS}">
-                        {Room No} <!-- Highlight search query like this: <span class="highlight">{Query}</span> -->
+                <div class="room" ng-repeat="row in diaryData.roomNumberSearchResults">
+                    <span ng-class='(row.service_status === "IN_SERVICE") ? "room-number "+row.hk_status : "room-number out"' ng-bind-html="row.room_no | highlight:diaryData.textInQueryBox:false">
                     </span>
-                    <span class="room-type">{Room Type}</span>
+                    <span class="room-type">{{row.room_type_name}}</span>
                 </div>
-                ... repeat for every result
             </div>
         </div>
 
