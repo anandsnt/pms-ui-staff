@@ -728,7 +728,7 @@ sntRover.controller('RVbillCardController',
 	 	var feesDetails = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details;
 		var newBillValue = feesDetails[feesIndex].billValue,
 			transactionId = feesDetails[feesIndex].transaction_id,
-			id  = (feesDetails[feesIndex].id) ? feesDetails[feesIndex].id : '',
+			id  = (feesDetails[feesIndex].id) ? feesDetails[feesIndex].id : null,
 			itemIdList = (feesDetails[feesIndex].item_ids) ? feesDetails[feesIndex].item_ids : [],
 			isGroupByRef = feesDetails[feesIndex].is_group_by_ref;
 		var dataToMove = {
