@@ -2,22 +2,24 @@ angular.module('sntRover')
 .controller('rvNightlyDiaryTopEditBarController',
     [   '$scope',
         '$state',
+        'RVNightlyDiarySrv',
         function(
-            $scope, $state
+            $scope, $state, RVNightlyDiarySrv
         ) {
 
         BaseCtrl.call(this, $scope);
 
-        // $scope.$on('EDIT_MODE_ACTIVATED', function(e, data) {
-        //    $scope.currentSelectedReservation = data.reservation;
-        //    console.log($scope.currentSelectedReservation)
-        // });
 
-        $scope.cancelEditReservation = function(){
+        $scope.cancelEditReservation = function() {
             $scope.$emit('CANCEL_RESERVATION');
         };
 
-        $scope.goToStayCard = function(currentSelectedReservation){
+        $scope.goToStayCard = function(currentSelectedReservation) {
+
+
+            var params = RVNightlyDiarySrv.getCache();
+            params.currentSelectedReservation = currentSelectedReservation;
+            RVNightlyDiarySrv.updateCache(params);
             $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
                 id: currentSelectedReservation.id,
                 confirmationId: currentSelectedReservation.confirm_no,

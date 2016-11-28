@@ -6,6 +6,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
         var that = this;
 
         this.updateCache = function(data) {
+            console.log(data);
             that.searchParamsCached = data;
         };
         this.getCache = function() {

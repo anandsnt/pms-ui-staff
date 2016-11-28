@@ -188,5 +188,9 @@ angular.module('sntRover')
          */
         (() => {
             renderDiaryView();
+            if($stateParams.isFromStayCard) {
+                var params = RVNightlyDiarySrv.getCache();
+                selectReservation("", params.currentSelectedReservation);
+            }
         })();
 }]);
