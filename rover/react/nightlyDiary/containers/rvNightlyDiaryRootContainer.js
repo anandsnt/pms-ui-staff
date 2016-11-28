@@ -4,8 +4,8 @@ const {connect} = ReactRedux;
 * @return {Bool} visibility status of next Button
 */
 const getNextPageButtonStatus = function(state) {
-	var totalCount = state.paginationData.total_count,
-	perPage = state.paginationData.per_page,
+	var totalCount = state.paginationData.totalCount,
+	perPage = state.paginationData.perPage,
 	page = state.paginationData.page;
 
 	if ((perPage * page) < totalCount) {
@@ -42,7 +42,8 @@ const mapStateToNightlyDiaryRootContainerProps = (state) => ({
     showNextPageButton: getNextPageButtonStatus(state),
     showPrevPageButton: getPrevPageButtonStatus(state),
     ClassForRootDiv: getClassForRootDiv(state),
-    page: state.paginationData.page
+    page: state.paginationData.page,
+    scrollX: 20
 });
 
 const mapDispatchToNightlyDiaryGoToPreviousPageButtonContainer = (stateProps) => {

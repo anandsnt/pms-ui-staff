@@ -33,11 +33,10 @@ const NightlyDiaryRootComponent = createClass ({
         var width = $(findDOMNode(this)).find(".room")[0].clientHeight,
             scrollToX = n * width * -1;
 
-        this.scroller.scrollTo(0, scrollToX);
+        this.scroller.scrollTo(0, scrollToX, 1000, null);
     },
     componentDidUpdate(stateProps) {
-        this.refreshScroller();
-        // this.scrolToTop();
+        this.refreshScroller();        
         this.scrollToNthelement(stateProps.scrollX);
     },
     render() {
