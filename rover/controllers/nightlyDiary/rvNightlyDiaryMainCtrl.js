@@ -24,7 +24,7 @@ angular.module('sntRover')
 
             BaseCtrl.call(this, $scope);
 
-
+            
         /**
          * utility method Initiate controller
          * @return {}
@@ -34,6 +34,17 @@ angular.module('sntRover')
             $scope.setTitle($filter('translate')('MENU_ROOM_DIARY'));
             $scope.$emit('updateRoverLeftMenu', 'nightlyDiaryReservation');
 
+            var srvParams = {};
+            if($stateParams.isFromStayCard) {
+                srvParams = RVNightlyDiarySrv.getCache();
+            }
+            else {
+                srvParams.start_date = $rootScope.businessDate;
+                srvParams.no_of_days = 7;
+                srvParams.page = 1;
+                srvParams.per_page = 50;
+            }
+
 
             // data set for diary used for Angular code.
             $scope.diaryData = {
@@ -41,13 +52,13 @@ angular.module('sntRover')
                 businessDate: $rootScope.businessDate,
                 diaryRoomsList: roomsList,
                 reservationList: [],
-                numberOfDays: 7,
-                fromDate: '',
+                numberOfDays: srvParams.no_of_days,
+                fromDate: srvParams.start_date,
                 toDate: '',
                 roomFilterCount: 0,
                 filterCount: 0,
                 paginationData: { perPage: 50,
-                                    page: 1,
+                                    page: srvParams.page,
                                     totalCount: roomsList.total_count
                                 },
                 hasMultipleMonth: false,
@@ -98,6 +109,7 @@ angular.module('sntRover')
          * @return {}
          */
         var goToPrevPage = () => {
+            cancelReservationEditing();
             $scope.diaryData.paginationData.page--;
             fetchRoomListDataAndReservationListData();
         };
@@ -107,6 +119,7 @@ angular.module('sntRover')
          * @return {}
          */
         var goToNextPage = ()=>{
+            cancelReservationEditing();
             $scope.diaryData.paginationData.page++;
             fetchRoomListDataAndReservationListData();
         };
@@ -121,12 +134,18 @@ angular.module('sntRover')
             $scope.$apply();
         };
         /*
+         * Function to cancel editing of a reservation
+         */
+        var cancelReservationEditing = function(){
+            $scope.diaryData.isEditReservationMode = false;
+            $scope.currentSelectedReservation = {};
+        };
+        /*
          * Cancel button click edit bar
          *
          */
         $scope.$on("CANCEL_RESERVATION", function(){
-            $scope.diaryData.isEditReservationMode = false;
-            $scope.currentSelectedReservation = {};
+            cancelReservationEditing();
         });
         /**
          * utility method to pass callbacks from
@@ -144,7 +163,7 @@ angular.module('sntRover')
         var initialState = {
             roomsList: roomsList.rooms,
             reservationsList: reservationsList.rooms,
-            initialDayOfDateGrid: $rootScope.businessDate,
+            initialDayOfDateGrid: $scope.diaryData.fromDate,
             numberOfDays: 7,
             currentBusinessDate: $rootScope.businessDate,
             callbackFromAngular: getTheCallbacksFromAngularToReact(),
