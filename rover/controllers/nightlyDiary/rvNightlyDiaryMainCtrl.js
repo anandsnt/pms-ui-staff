@@ -66,6 +66,10 @@ angular.module('sntRover')
                 total_count: $scope.diaryData.paginationData.totalCount
             };
         };
+        var handlePaginationData = function(data) {
+             $scope.diaryData.paginationData.totalCount = data.roomList.total_count;
+            $scope.diaryData.paginationData.page = data.roomList.page_number;
+        };
 
         // Method to update room list data.
         var fetchRoomListDataAndReservationListData = function(roomId) {
@@ -74,7 +78,7 @@ angular.module('sntRover')
                 $scope.errorMessage = '';
                 $scope.diaryData.diaryRoomsList = data.roomList.rooms;
                 $scope.diaryData.reservationsList = data.reservationList;
-                $scope.diaryData.paginationData.totalCount = data.roomList.total_count;
+                handlePaginationData(data);               
                 $scope.diaryData.datesGridData = data.dateList;
                 $scope.$broadcast('FETCH_COMPLETED_DATE_LIST_DATA');
                 updateDiaryView();
@@ -156,6 +160,12 @@ angular.module('sntRover')
         $scope.$on('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function( event, roomId ) {
             fetchRoomListDataAndReservationListData(roomId);
         });
+        /* Fetch diary data - rooms & reservations.
+         * @param {Number} RoomId - selected room id from search filters.
+        */
+        $scope.gotoSelectedRoom = function(room) {
+            fetchRoomListDataAndReservationListData(room.id);
+        };
         /**
          * to render the grid view
          */
