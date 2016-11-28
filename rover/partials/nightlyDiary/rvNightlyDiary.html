@@ -5,7 +5,7 @@
 
 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
-<section id="diary-nightly" ng-class="{'diary-days-7': (diaryData.numberOfDays === 7) ,'diary-days-21': (diaryData.numberOfDays === 21) }" class="content" role="main">
+<section id="diary-nightly" ng-class="{'diary-days-7': (diaryData.numberOfDays === 7) ,'diary-days-21': (diaryData.numberOfDays === 21), 'with-overlay': diaryData.hasOverlay && $scope.diaryData.totalSearchResults > 0 }" class="content" role="main">
 
         <!-- Room Search + Timeline -->
         <div class="grid-timeline">
@@ -18,7 +18,7 @@
                 <input type="text" placeholder="Go to Room No." value="">
             </div>
 
-            <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryTimeline.html'"></div>
+            <span ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryTimeline.html'"></span>
 
             <!-- Stay Range | Remove .hidden to show-->
             <div class="grid-stay-range hidden">
