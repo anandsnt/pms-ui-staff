@@ -11,14 +11,13 @@
 
     <div class="month" ng-show="!diaryData.hasMultipleMonth">
         <strong>{{ diaryData.fromDate | date: 'MMMM yyyy' }}</strong>
-        <strong ng-if="diaryData.hasMultipleMonth">{{ diaryData.toDate | date: 'MMMM yyyy' }}</strong>
         <div class="days">
             <span ng-repeat="item in diaryData.datesGridData" class="day" ng-class="{ 'today':(item.date === diaryData.businessDate ) , 'weekend': item.isWeekend }">{{ item.date | date: 'dd' }}</span>
         </div>
     </div>
 
     <!-- If dates span over multiple months -->
-    <div class="month" ng-show="diaryData.hasMultipleMonth">
+    <div class="month first" ng-show="diaryData.hasMultipleMonth">
         <strong ng-if="diaryData.firstMonthDateList.length > 2">{{ diaryData.fromDate | date: 'MMMM yyyy' }}</strong>
         <strong ng-if="diaryData.firstMonthDateList.length <= 2"></strong>
         <div class="days">
@@ -26,7 +25,7 @@
         </div>
     </div>
 
-    <div class="month" ng-show="diaryData.hasMultipleMonth">
+    <div class="month last" ng-show="diaryData.hasMultipleMonth">
         <strong ng-if="diaryData.secondMonthDateList.length > 2">{{ diaryData.toDate | date: 'MMMM yyyy' }}</strong>
         <strong ng-if="diaryData.secondMonthDateList.length <= 2"></strong>
         <div class="days">
