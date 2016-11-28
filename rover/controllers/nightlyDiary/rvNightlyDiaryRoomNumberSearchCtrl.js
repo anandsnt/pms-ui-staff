@@ -13,6 +13,8 @@ angular.module('sntRover')
                 $scope.diaryData.textInQueryBox = '';
                 $scope.diaryData.showSearchResultsArea = false;
                 $scope.diaryData.roomNumberSearchResults = [];
+                $scope.setScroller('result_showing_area', scrollerOptions);
+                refreshScroller();
             };
             // Scroller options for search-results view.
             var scrollerOptions = {
@@ -44,7 +46,6 @@ angular.module('sntRover')
             };
 
             init();
-            $scope.setScroller('result_showing_area', scrollerOptions);
             // clear query box on clicking close button
             $scope.clearResults = function() {
                 $scope.diaryData.textInQueryBox = '';
@@ -62,4 +63,7 @@ angular.module('sntRover')
                     displayFilteredResults();
                 }
             };
+            $scope.$on('CLOSE_SEARCH_RESULT', function() {
+               $scope.diaryData.showSearchResultsArea = false;
+            });
         }]);

@@ -35,10 +35,10 @@ const NightlyDiaryRootComponent = createClass ({
 
         this.scroller.scrollTo(0, scrollToX);
     },
-    componentDidUpdate() {
+    componentDidUpdate(stateProps) {
         this.refreshScroller();
         // this.scrolToTop();
-        this.scrollToNthelement(30);
+        this.scrollToNthelement(stateProps.scrollX);
     },
     render() {
         return (
