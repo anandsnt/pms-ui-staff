@@ -1,8 +1,8 @@
-admin.controller('ADServiceProviderListCtrl',['$scope','$rootScope', '$state','$stateParams', 'ADServiceProviderSrv','ngTableParams', '$filter',  function($scope, $state,$rootScope, $stateParams, ADServiceProviderSrv, ngTableParams, $filter){
+admin.controller('ADServiceProviderListCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADServiceProviderSrv', 'ngTableParams', '$filter',  function($scope, $state, $rootScope, $stateParams, ADServiceProviderSrv, ngTableParams, $filter) {
     BaseCtrl.call(this, $scope);
 
     var fetchServiceProviderList = function() {
-        var onFetchSuccess = function(data){
+        var onFetchSuccess = function(data) {
             $scope.data = data;
             $scope.$emit('hideLoader');
 
@@ -24,19 +24,22 @@ admin.controller('ADServiceProviderListCtrl',['$scope','$rootScope', '$state','$
                     var orderedData = params.sorting() ?
                                         $filter('orderBy')($scope.data, params.orderBy()) :
                                         $scope.data;
+
                     $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                 }
             });
         };
+
         $scope.invokeApi(ADServiceProviderSrv.fetchServiceProviderList, {}, onFetchSuccess);
 
     };
 
-    //Delete a service provide with given id
+    // Delete a service provide with given id
     $scope.deleteServiceProvider = function(serviceProviderId) {
         var onDeleteSuccess = function(data) {
             fetchServiceProviderList();
-        }
+        };
+
         $scope.invokeApi(ADServiceProviderSrv.deleteServiceProvider, serviceProviderId, onDeleteSuccess);
     };
 

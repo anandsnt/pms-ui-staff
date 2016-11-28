@@ -63,6 +63,7 @@ sntRover.controller('rvAllotmentConfigurationAddonsCtrl', [
 			angular.forEach(data.results, function(item) {
 				if (item !== null) {
 					var addonItem = {};
+
 					addonItem.id = item.id;
 					addonItem.isBestSeller = item.bestseller;
 					addonItem.category = item.charge_group.name;
@@ -149,6 +150,7 @@ sntRover.controller('rvAllotmentConfigurationAddonsCtrl', [
 				failureCallBack: onEnhanceFailure,
 				params: params
 			};
+
 			$scope.callAPI(rvAllotmentConfigurationSrv.addAllotmentEnhancement, options);
 		};
 
@@ -170,7 +172,8 @@ sntRover.controller('rvAllotmentConfigurationAddonsCtrl', [
 				successCallBack: onRemoveAddonSuccess,
 				failureCallBack: onRemoveAddonFailure,
 				params: params
-			}
+			};
+
 			$scope.callAPI(rvAllotmentConfigurationSrv.removeAllotmentEnhancement, options);
 		};
 	}

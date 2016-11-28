@@ -5,7 +5,7 @@ admin.directive('adCheckbox', function($timeout) {
         replace: 'true',
       	scope: {
             label: '@label',
-	        required : '@required',
+	        required: '@required',
             isChecked: '=isChecked',
             parentLabelClass: '@parentLabelClass',
             divClass: '@divClass',
@@ -14,7 +14,8 @@ admin.directive('adCheckbox', function($timeout) {
             datagroup: '@datagroup',
             isDisabled: '=isDisabled',
             index: '@index',
-            ngHide: '@hide'
+            ngHide: '@hide',
+            topLabel: '@'
 	    },
 
     	templateUrl: '/assets/directives/checkBox/adCheckbox.html'

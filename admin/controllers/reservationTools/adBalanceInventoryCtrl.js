@@ -20,11 +20,10 @@ admin.controller('ADBalanceInventoryCtrl', [
 		$scope.lastRunStatus = '';
 
 		$scope.payload = {
-			'id'         : $scope.balanceInventoryJob['id'],
-			'begin_date' : '',
-			'end_date'   : ''
+			'id': $scope.balanceInventoryJob['id'],
+			'begin_date': '',
+			'end_date': ''
 		};
-
 
 
 		var calWeekAfter = function(fromDate) {
@@ -45,13 +44,13 @@ admin.controller('ADBalanceInventoryCtrl', [
 				return $filter('date')(calWeekAfter(beginDate), 'yyyy-MM-dd');
 			} else {
 				return end;
-			};
+			}
 		};
 
 
 		$scope.refreshStatus = function() {
 			var _param = {
-				'id' : $scope.balanceInventoryJob['id']
+				'id': $scope.balanceInventoryJob['id']
 			};
 
 			var _callback = function(status) {
@@ -61,7 +60,7 @@ admin.controller('ADBalanceInventoryCtrl', [
 					$scope.anyJobRunning = true;
 				} else {
 					$scope.anyJobRunning = false;
-				};
+				}
 
 				$scope.lastRunStatus = status;
 			};
@@ -108,7 +107,7 @@ admin.controller('ADBalanceInventoryCtrl', [
 				// make sure the dates are valid -> end is after begin
 				if ( $scope.payload.end_date ) {
 					$scope.payload.end_date = checkDates($scope.payload.begin_date, $scope.payload.end_date);
-				};
+				}
 			} else {
 				$scope.payload.end_date = chosenDate;
 			}

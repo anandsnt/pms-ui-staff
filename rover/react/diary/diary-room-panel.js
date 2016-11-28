@@ -1,5 +1,5 @@
 var RoomPanel = React.createClass({
-	componentDidUpdate: function(){
+	componentDidUpdate: function() {
 
 		this.props.iscroll.rooms.refresh();
 	},
@@ -39,8 +39,8 @@ var RoomPanel = React.createClass({
 		},
 		React.createElement( Rooms, {
 			display: props.display,
-			meta:    props.meta,
-			data:    props.data
+			meta: props.meta,
+			data: props.data
 		}));
 	}
 });

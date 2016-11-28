@@ -1,0 +1,59 @@
+<div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+    <header class="content-title float">
+        <h2>Edit {{interface.name}} mapping</h2>
+        <a ng-click="navigateBack()" class="action back" translate>BACK</a>
+    </header>
+    <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+        <form class="form float">
+            <fieldset class="holder full-width">
+                <div class="form-title">
+                    <h3 translate><span>Edit&nbsp;</span>Mapping</h3>
+                    <em class="status">{{'ALL_FIELDS_MANDIATORY' | translate}}</em>
+                </div>
+            </fieldset>
+            <fieldset class="holder left">
+                <ad-dropdown-name savemodel="mapping.mapping_type"
+                                  is-disabled="true"
+                                  valueproperty="name"
+                                  label-in-drop-down="Select Mapping Type"
+                                  property="text"
+                                  list="mappingTypes"
+                                  label="{{'MAPPING_TYPE'| translate}}"
+                                  div-class="full-width">
+                </ad-dropdown-name>
+            </fieldset>
+            <fieldset class="holder left">
+                <ad-dropdown-name savemodel="mapping.snt_value"
+                                  is-disabled="true"
+                                  label-in-drop-down="Select Value"
+                                  valueproperty="description"
+                                  property="name"
+                                  list="sntValues"
+                                  label="{{'SNT_VALUE'| translate}}"
+                                  div-class="full-width">
+                </ad-dropdown-name>
+            </fieldset>
+            <fieldset class="holder right">
+                <ad-textbox inputtype="text"
+                            value="mapping.ext_value"
+                            label="{{'EXTERNAL_VALUE'| translate}}"
+                            styleclass="full-width"></ad-textbox>
+            </fieldset>
+            <div class="actions float">
+                <button type="button"
+                        class="button blank" ng-click="navigateBack()" translate>
+                    CANCEL
+                </button>
+                <button type="button"
+                        class="button red" ng-click="onClickDeleteMapping()" translate>
+                    DELETE_MAPPING
+                </button>
+                <button type="button" class="button green" ng-click="onClickSaveMapping()" translate>
+                    SAVE_MAPPING
+                </button>
+            </div>
+        </form>
+    </section>
+</div>

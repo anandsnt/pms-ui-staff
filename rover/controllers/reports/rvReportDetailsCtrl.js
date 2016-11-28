@@ -18,7 +18,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		var REPORT_FILTER_SIDEBAR_SCROLL = 'report-filter-sidebar-scroll';
 
 		var setScroller = function() {
-			//setting scroller things
+			// setting scroller things
 			var scrollerOptions = {
 				tap: true,
 				preventDefault: false
@@ -44,6 +44,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		var reportDetailsFilterScrollRefresh = $scope.$on(reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'], function() {
 			$scope.refreshSidebarScroll();
 		});
+
 		$scope.$on( '$destroy', reportDetailsFilterScrollRefresh );
 
 
@@ -54,30 +55,31 @@ sntRover.controller('RVReportDetailsCtrl', [
         /**
         * inorder to refresh after list rendering
         */
-        $scope.$on("NG_REPEAT_COMPLETED_RENDERING", function(event){
-            $timeout(refreshScroll,1000);
+        $scope.$on("NG_REPEAT_COMPLETED_RENDERING", function(event) {
+            $timeout(refreshScroll, 1000);
         });
 
 		$scope.parsedApiFor = undefined;
 		$scope.currencySymbol = $rootScope.currencySymbol;
-        var setTotalsForReport = function(totals){
+        var setTotalsForReport = function(totals) {
                 var totalsForReport = [], v;
+
                 _.each(totals, function(item) {
-                    if (item.label.indexOf('Conversion')!==-1){
-                        if (typeof item.value == typeof 'str' && item.value.indexOf('%')!=-1){
-                        	v = item.value.split('%')[0]+'%';
-                        } else if (item.label.indexOf('Mobile Check In Conversion')!==-1 || item.label.indexOf('Auto Check In Conversion')!==-1){
-                        	v = item.value + '%';//these values are currently being passed without the percentage...just need to add the % sign
+                    if (item.label.indexOf('Conversion') !== -1) {
+                        if (typeof item.value == typeof 'str' && item.value.indexOf('%') != -1) {
+                        	v = item.value.split('%')[0] + '%';
+                        } else if (item.label.indexOf('Mobile Check In Conversion') !== -1 || item.label.indexOf('Auto Check In Conversion') !== -1) {
+                        	v = item.value + '%';// these values are currently being passed without the percentage...just need to add the % sign
                         } else {
                             v = 'N/A';
                         }
-                    } else if (item.label.indexOf('Revenue')!==-1){
-                    	if (typeof item.value == typeof 'str'){
+                    } else if (item.label.indexOf('Revenue') !== -1) {
+                    	if (typeof item.value == typeof 'str') {
                         	v = item.value;
                         } else {
                             v = 'N/A';
                         }
-                    } else if (item.label){
+                    } else if (item.label) {
                         v = parseInt(item.value);
                     } else {
                         v = 0;
@@ -160,7 +162,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['CHECK_IN_CHECK_OUT']:
 					if ( $scope.chosenReport.chosenCico === 'IN' || $scope.chosenReport.chosenCico === 'OUT' ) {
 						$scope.hasNoTotals = true;
-					};
+					}
 					break;
 
 				case reportNames['EMAIL_CHECKIN_SUMMARY']:
@@ -223,20 +225,20 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.hasReportTotals = true;
                     $scope.hasNoResults = false;
                     $scope.hasNoTotals = false;
-                    setTotalsForReport(totals);//refreshes Totals
+                    setTotalsForReport(totals);// refreshes Totals
 					break;
 				case reportNames['MOBILE_CHECKIN']:
                     $scope.hasReportTotals = true;
                     $scope.hasNoResults = false;
                     $scope.hasNoTotals = false;
-                    setTotalsForReport(totals);//refreshes Totals
+                    setTotalsForReport(totals);// refreshes Totals
 					break;
 
 				case reportNames['ROOM_UPSELL']:
                     $scope.hasReportTotals = true;
                     $scope.hasNoResults = false;
                     $scope.hasNoTotals = false;
-                    setTotalsForReport(totals);//refreshes Totals
+                    setTotalsForReport(totals);// refreshes Totals
 					break;
 				case reportNames['ACTIONS_MANAGER']:
                     $scope.isActionsManager = true;
@@ -247,7 +249,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				default:
 					break;
-			};
+			}
 
 
 			// hack to set the colspan for reports details tfoot
@@ -399,7 +401,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 2;
 					break;
-			};
+			}
 
 			// modify the summary count for certain reports as per the report totals
 			// these are done for old reports as for old reports 'totals' is what we
@@ -410,38 +412,38 @@ sntRover.controller('RVReportDetailsCtrl', [
 					if ( 'Total Check Ins' == totals[0]['label'] ) {
 						if ( totals.length == 10 ) {
 							$scope.$parent.summaryCounts = {
-								'has_both'     : true,
-								'check_ins'      : totals[0]['value'],
-								'ins_via_rover'  : totals[1]['value'],
-								'ins_via_web'    : totals[2]['value'],
-								'ins_via_zest'   : totals[3]['value'],
-								'ins_via_kiosk'  : totals[4]['value'],
-								'check_outs'     : totals[5]['value'],
-								'outs_via_rover' : totals[6]['value'],
-								'outs_via_web'   : totals[7]['value'],
-								'outs_via_zest'  : totals[8]['value'],
-								'outs_via_kiosk' : totals[9]['value']
+								'has_both': true,
+								'check_ins': totals[0]['value'],
+								'ins_via_rover': totals[1]['value'],
+								'ins_via_web': totals[2]['value'],
+								'ins_via_zest': totals[3]['value'],
+								'ins_via_kiosk': totals[4]['value'],
+								'check_outs': totals[5]['value'],
+								'outs_via_rover': totals[6]['value'],
+								'outs_via_web': totals[7]['value'],
+								'outs_via_zest': totals[8]['value'],
+								'outs_via_kiosk': totals[9]['value']
 							};
 						} else {
 							$scope.$parent.summaryCounts = {
-								'has_in'         : true,
-								'check_ins'      : totals[0]['value'],
-								'ins_via_rover'  : totals[1]['value'],
-								'ins_via_web'    : totals[2]['value'],
-								'ins_via_zest'   : totals[3]['value'],
-								'ins_via_kiosk'  : totals[4]['value']
+								'has_in': true,
+								'check_ins': totals[0]['value'],
+								'ins_via_rover': totals[1]['value'],
+								'ins_via_web': totals[2]['value'],
+								'ins_via_zest': totals[3]['value'],
+								'ins_via_kiosk': totals[4]['value']
 							};
-						};
+						}
 					} else if ( 'Total Check Outs' == totals[0]['label'] ) {
 						$scope.$parent.summaryCounts = {
-							'has_out'         : true,
-							'check_outs'     : totals[0]['value'],
-							'outs_via_rover' : totals[1]['value'],
-							'outs_via_web'   : totals[2]['value'],
-							'outs_via_zest'  : totals[3]['value'],
-							'outs_via_kiosk' : totals[4]['value']
+							'has_out': true,
+							'check_outs': totals[0]['value'],
+							'outs_via_rover': totals[1]['value'],
+							'outs_via_web': totals[2]['value'],
+							'outs_via_zest': totals[3]['value'],
+							'outs_via_kiosk': totals[4]['value']
 						};
-					};
+					}
 					break;
 
 				case reportNames['EMAIL_CHECKIN_SUMMARY']:
@@ -450,54 +452,54 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportNames['UPSELL']:
 					$scope.$parent.summaryCounts = {
-						'rooms_upsold'   : totals[0]['value'],
-						'upsell_revenue' : totals[1]['value'],
-						'rover_revenue' : totals[2]['value'],
-						'zest_app_revenue' : totals[3]['value'],
-						'zest_station_revenue' : totals[4]['value'],
-						'zest_web_revenue' : totals[5]['value']
+						'rooms_upsold': totals[0]['value'],
+						'upsell_revenue': totals[1]['value'],
+						'rover_revenue': totals[2]['value'],
+						'zest_app_revenue': totals[3]['value'],
+						'zest_station_revenue': totals[4]['value'],
+						'zest_web_revenue': totals[5]['value']
 					};
 					break;
 
 				case reportNames['WEB_CHECK_IN_CONVERSION']:
 					$scope.$parent.summaryCounts = {
-						'emails_sent'   : totals[0]['value'],
-						'up_sell_conv'  : totals[1]['value'],
-						'revenue'       : totals[2]['value'],
-						'conversion'    : totals[4]['value'],
-						'total_checkin' : totals[3]['value']
+						'emails_sent': totals[0]['value'],
+						'up_sell_conv': totals[1]['value'],
+						'revenue': totals[2]['value'],
+						'conversion': totals[4]['value'],
+						'total_checkin': totals[3]['value']
 					};
 					break;
 
 				case reportNames['WEB_CHECK_OUT_CONVERSION']:
 					$scope.$parent.summaryCounts = {
-						'emails_sent'        : totals[0]['value'],
-						'late_checkout_conv' : totals[1]['value'],
-						'revenue'            : totals[2]['value'],
-						'conversion'         : totals[4]['value'],
-						'total_checkout'     : totals[3]['value']
+						'emails_sent': totals[0]['value'],
+						'late_checkout_conv': totals[1]['value'],
+						'revenue': totals[2]['value'],
+						'conversion': totals[4]['value'],
+						'total_checkout': totals[3]['value']
 					};
 					break;
 
 				case reportNames['WEB_CHECK_IN_CONV_BY_DAY']:
 					$scope.$parent.summaryCounts = {
-						'emails_sent'   : totals[0]['value'],
-						'up_sell_conv'  : totals[1]['value'],
-						'revenue'       : totals[2]['value'],
-						'conversion'    : totals[4]['value'],
-						'total_checkin' : totals[3]['value']
+						'emails_sent': totals[0]['value'],
+						'up_sell_conv': totals[1]['value'],
+						'revenue': totals[2]['value'],
+						'conversion': totals[4]['value'],
+						'total_checkin': totals[3]['value']
 					};
 					break;
 
 				case reportNames['LATE_CHECK_OUT']:
 					$scope.$parent.summaryCounts = {
-						'rooms'   : totals[0]['value'],
-						'revenue' : totals[1]['value']
+						'rooms': totals[0]['value'],
+						'revenue': totals[1]['value']
 					};
 					break;
 				default:
 					// no op
-			};
+			}
 
 			// change date format for all
 			for (var i = 0, j = results.length; i < j; i++) {
@@ -512,7 +514,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			        // thus makin the value in template 'X:00 PM'
 			        results[i][ results[i].length - 2 ] += ':00 PM';
 			    }
-			};
+			}
 
 			// hack to edit the title 'LATE CHECK OUT TIME' to 'SELECTED LATE CHECK OUT TIME'
 			// notice the text case, they are as per api response and ui
@@ -521,9 +523,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 			        if ( headers[i] === 'Late Check Out Time' ) {
 			            headers[i] = 'Selected Late Check Out Time';
 			            break;
-			        };
-			    };
-			};
+			        }
+			    }
+			}
 
 			// new more detailed reports
 			$scope.parsedApiFor = $scope.chosenReport.title;
@@ -534,42 +536,43 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// to make sure API that doesnt requires any parsing will be returned with any parse
 			var checkGeneralOptions = (function() {
 				var retObj = {
-					include_actions            : false,
-					include_notes              : false,
-					show_guests                : false,
-					include_cancelled          : false,
-					show_rate_adjustments_only : false
+					include_actions: false,
+					include_notes: false,
+					show_guests: false,
+					include_cancelled: false,
+					show_rate_adjustments_only: false
 				};
 
 				_.each($scope.chosenReport.hasGeneralOptions.data, function(each) {
 					if ( each.paramKey === 'include_actions' && each.selected ) {
-						retObj.include_actions = true
+						retObj.include_actions = true;
 					}
 					if ( each.paramKey === 'include_notes' && each.selected ) {
-						retObj.include_notes = true
+						retObj.include_notes = true;
 					}
 					if ( each.paramKey === 'show_guests' && each.selected ) {
-						retObj.show_guests = true
+						retObj.show_guests = true;
 					}
 					if ( each.paramKey === 'include_cancelled' && each.selected ) {
-						retObj.include_cancelled = true
+						retObj.include_cancelled = true;
 					}
 					if ( each.paramKey === 'show_rate_adjustments_only' && each.selected ) {
-						retObj.show_rate_adjustments_only = true
+						retObj.show_rate_adjustments_only = true;
 					}
 				});
 
 				return retObj;
 			})();
 			var parseAPIoptions = {
-				'groupedByKey'    : $scope.$parent.reportGroupedBy,
-				'checkAction'     : checkGeneralOptions.include_actions,
-				'checkNote'       : checkGeneralOptions.include_notes,
-				'checkGuest'      : checkGeneralOptions.show_guests,
-				'checkCancel'     : checkGeneralOptions.include_cancelled,
-				'checkRateAdjust' : checkGeneralOptions.show_rate_adjustments_only,
-				'chosenSortBy'    : $scope.chosenReport.chosenSortBy
+				'groupedByKey': $scope.$parent.reportGroupedBy,
+				'checkAction': checkGeneralOptions.include_actions,
+				'checkNote': checkGeneralOptions.include_notes,
+				'checkGuest': checkGeneralOptions.show_guests,
+				'checkCancel': checkGeneralOptions.include_cancelled,
+				'checkRateAdjust': checkGeneralOptions.show_rate_adjustments_only,
+				'chosenSortBy': $scope.chosenReport.chosenSortBy
 			};
+
 			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, parseAPIoptions, $scope.$parent.resultsTotalRow) );
 			// if there are any results
 			$scope.hasNoResults = _.isEmpty( $scope.$parent.results );
@@ -605,7 +608,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 						$scope.hasReportTotals    = true;
 						$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
 						$scope.detailsTemplateUrl = '/assets/partials/reports/shared/rvCommonReportDetails.html';
-					};
+					}
 					break;
 				case reportNames['DEPOSIT_SUMMARY']:
 						$scope.hasReportTotals    = true;
@@ -627,8 +630,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportNames['MARKET_SEGMENT_STAT_REPORT']:
-					$scope.hasReportTotals    = false;
-					$scope.showReportHeader   = true;
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/marketSegmentStatReport/rvMarketSegmentStatReport.html';
 					break;
 
@@ -645,7 +648,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 						$scope.detailsTemplateUrl = '/assets/partials/reports/addonForecastReport/rvAddonForecastReportByAddon.html';
 					} else {
 						$scope.detailsTemplateUrl = '/assets/partials/reports/addonForecastReport/rvAddonForecastReportByDate.html';
-					};
+					}
 					break;
 
 				case reportNames['DAILY_PRODUCTION_ROOM_TYPE']:
@@ -695,7 +698,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/shared/rvCommonReportDetails.html';
 					break;
-			};
+			}
 		};
 
 		$scope.parsedApiTemplate = function() {
@@ -787,11 +790,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 				default:
 					template = '/assets/partials/reports/shared/rvCommonReportRow.html';
 					break;
-			};
+			}
 
 			return template;
 		};
-
 
 
 		// simple method to allow checking for report title from the template
@@ -803,9 +805,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 				return !! _.find(name, function(each) {
 					return $scope.parsedApiFor == reportNames[each];
 				});
-			};
+			}
 		};
-
 
 
 		// we are gonna need to drop some pagination
@@ -814,7 +815,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		var calPagination = function(response, pageNum) {
 			if ( ! $scope.hasPagination ) {
 				return;
-			};
+			}
 
 			// clear old results and update total counts
 			$scope.netTotalCount = $scope.$parent.totalCount;
@@ -826,9 +827,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 				_.each($scope.$parent.results, function(item) {
 					if ( typeof item === 'array' ) {
 						$scope.uiTotalCount += item.length;
-					};
+					}
 				});
-			};
+			}
 
 			if ( $scope.netTotalCount === 0 && $scope.uiTotalCount === 0 ) {
 				$scope.disablePrevBtn = true;
@@ -871,11 +872,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 					if ( !!match ) {
 						_userNames.push( user.full_name );
-					};
+					}
 				});
 
 				$scope.userNames = _userNames.join(', ');
-		    };
+		    }
 		};
 
 		// fetch next page on pagination change
@@ -891,7 +892,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				$_pageNo++;
 				$scope.genReport( false, $_pageNo );
-			};
+			}
 		};
 
 		// fetch prev page on pagination change
@@ -909,18 +910,18 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.sortResultBy = function(sortBy, report) {
 			if ( !sortBy ) {
 				return;
-			};
+			}
 
 			// if there a group by filter applied, reset it
 			if ( !!$scope.chosenReport.chosenGroupBy ) {
 				$scope.chosenReport.chosenGroupBy = 'BLANK';
-			};
+			}
 
 			// un-select sort dir of others
 			_.each($scope.chosenReport.sortByOptions, function(item) {
 				if ( item && item.value !== sortBy.value ) {
 					item.sortDir = undefined;
-				};
+				}
 			});
 
 			// select sort_dir for clicked item
@@ -930,7 +931,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				sortBy.sortDir = (sortBy.sortDir === undefined || sortBy.sortDir === true) ? false : true;
 			} else {
 				sortBy.sortDir = (sortBy.sortDir === undefined || sortBy.sortDir === false) ? true : false;
-			};
+			}
 
 			$scope.chosenReport.chosenSortBy = sortBy.value;
 
@@ -964,12 +965,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 				$scope.printOptions.showModal();
 			} else {
 				$_fetchFullReport();
-			};
+			}
 		};
 
 		// when user press submit from pre-print modal, continue our calls to '$_fetchFullReport'
 		// READ MORE: rvReportsMainCtrl:L#:61-75
 		var prePrintDone = $rootScope.$on( reportMsgs['REPORT_PRE_PRINT_DONE'], $_fetchFullReport );
+
 		$scope.$on( '$destroy', prePrintDone );
 
 		function $_fetchFullReport () {
@@ -980,13 +982,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			// should-we-change-view, specify-page, per-page-value
 			$scope.genReport( false, 1, 1000 );
-		};
+		}
 
 		// add the print orientation before printing
 		var addPrintOrientation = function() {
 			var orientation = 'portrait';
 
-			switch( $scope.chosenReport.title ) {
+			switch ( $scope.chosenReport.title ) {
 				case reportNames['AR_SUMMARY_REPORT']:
 				case reportNames['ARRIVAL']:
 				case reportNames['IN_HOUSE_GUEST']:
@@ -1059,7 +1061,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				    $window.print();
 				    if ( sntapp.cordovaLoaded ) {
 				        cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-				    };
+				    }
 				}, 1000);
 
 				/*
@@ -1078,7 +1080,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					// READ MORE: rvReportsMainCtrl:L#:61-75
 					if ( 'function' == typeof $scope.printOptions.afterPrint ) {
 						$scope.printOptions.afterPrint();
-					};
+					}
 
 				    // load the report with the original page
 				    $scope.fetchNextPage( $scope.returnToPage );
@@ -1103,16 +1105,19 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		$scope.hasSort = function(index) {
 			var s = $scope.chosenReport.sortByOptions || [];
+
 			return !! s[index];
-		}
+		};
 
 		$scope.isAsc = function(index) {
 			var s = $scope.chosenReport.sortByOptions || [];
+
 			return !! s[index] && s[index]['sortDir'] === true;
 		};
 
 		$scope.isDesc = function(index) {
 			var s = $scope.chosenReport.sortByOptions || [];
+
 			return !! s[index] && s[index]['sortDir'] === false;
 		};
 
@@ -1124,6 +1129,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 	     */
 	    $scope.getReservationClass = function (reservationStatus) {
 	        var class_ = '';
+
 	        switch (reservationStatus.toUpperCase()) {
 	            case "RESERVED":
 	                class_ = 'arrival';
@@ -1231,6 +1237,24 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.$on( '$destroy', reportPageChanged );
 		$scope.$on( '$destroy', reportPrinting );
 		$scope.$on( '$destroy', reportAPIfailed );
+
+        // Added for CICO-33172
+        $scope.isRoomRevenueSelected = true;
+        $scope.isBookingsSelected = true;
+
+        /**
+         * Toggle Revenue columns for market segment statistics report
+         */
+        $scope.toggleRevenue = function() {
+            $scope.isRoomRevenueSelected = !$scope.isRoomRevenueSelected;
+        };
+
+        /**
+         * Toggle Bookings columns for market segment statistics report
+         */
+        $scope.toggleBookings = function() {
+            $scope.isBookingsSelected = !$scope.isBookingsSelected;
+        };
     }
 
 ]);

@@ -1,16 +1,16 @@
 angular.module('sntRover').service('RVBillingInfoUtilSrv',
-    ['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv',
-    function($http, $q, BaseWebSrvV2, RVBaseWebSrv){
+    ['$http', '$q', 'BaseWebSrvV2', 'RVBaseWebSrv',
+    function($http, $q, BaseWebSrvV2, RVBaseWebSrv) {
 
     var guestStatusMappings = {
-        'RESERVED'       : ['arrival'],
-        'CHECKING_IN'    : ['check-in'],
-        'CHECKEDIN'      : ['inhouse'],
-        'CHECKEDOUT'     : ['departed'],
-        'CHECKING_OUT'   : ['check-out','late-check-out'],
-        'CANCELED'       : ['cancel'],
-        'NOSHOW'         : ['no-show'],
-        'NOSHOW_CURRENT' : ['no-show']
+        'RESERVED': ['arrival'],
+        'CHECKING_IN': ['check-in'],
+        'CHECKEDIN': ['inhouse'],
+        'CHECKEDOUT': ['departed'],
+        'CHECKING_OUT': ['check-out', 'late-check-out'],
+        'CANCELED': ['cancel'],
+        'NOSHOW': ['no-show'],
+        'NOSHOW_CURRENT': ['no-show']
     };
 
     /**
@@ -33,17 +33,17 @@ angular.module('sntRover').service('RVBillingInfoUtilSrv',
      * @param {Object} selected entity/route details
      * @return {String} class name
      */
-    this.getEntityRole = function(route){
-        if(route.entity_type === 'RESERVATION' &&  !route.has_accompanying_guests) {
+    this.getEntityRole = function(route) {
+        if (route.entity_type === 'RESERVATION' &&  !route.has_accompanying_guests) {
             return 'guest';
         }
-        else if(route.entity_type === 'RESERVATION') {
+        else if (route.entity_type === 'RESERVATION') {
             return 'accompany';
         }
-        else if(route.entity_type === 'TRAVEL_AGENT') {
+        else if (route.entity_type === 'TRAVEL_AGENT') {
             return 'travel-agent';
         }
-        else if(route.entity_type === 'COMPANY_CARD') {
+        else if (route.entity_type === 'COMPANY_CARD') {
             return 'company';
         }
     };
@@ -53,14 +53,14 @@ angular.module('sntRover').service('RVBillingInfoUtilSrv',
      * @param {Object} selected entity/route details
      * @return {String} class name
      */
-    this.getEntityIconClass = function(route){
-        if(route.entity_type === 'RESERVATION' &&  route.has_accompanying_guests ) {
+    this.getEntityIconClass = function(route) {
+        if (route.entity_type === 'RESERVATION' &&  route.has_accompanying_guests ) {
             return 'accompany';
         }
-        else if(route.entity_type === 'RESERVATION' || route.entity_type === 'COMPANY_CARD') {
+        else if (route.entity_type === 'RESERVATION' || route.entity_type === 'COMPANY_CARD') {
             return '';
         }
-        else if(route.entity_type === 'TRAVEL_AGENT') {
+        else if (route.entity_type === 'TRAVEL_AGENT') {
             return 'icons icon-travel-agent';
         }
     };

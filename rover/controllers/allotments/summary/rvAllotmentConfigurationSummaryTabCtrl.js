@@ -27,6 +27,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 */
 		var whetherSummaryDataChanged = function() {
 			var currentSummaryData = $scope.allotmentConfigData.summary;
+
 			for (key in summaryMemento) {
 				if (!_.isEqual(currentSummaryData[key], summaryMemento[key])) {
 					return true;
@@ -51,6 +52,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 * @param  {Object} data  - the clicked element
 		 * @return undefined
 		 */
+
 		$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
 			var isInaddMode 			= $scope.isInAddMode(),
 				incorrectTarget 		= (targetElement &&
@@ -68,10 +70,10 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				return;
 			}
 
-			//yes, summary data update is in progress
+			// yes, summary data update is in progress
 			$scope.isUpdateInProgress = true;
 
-			//call the updateAllotmentSummary method from the parent controller
+			// call the updateAllotmentSummary method from the parent controller
 			$scope.updateAllotmentSummary();
 		});
 
@@ -83,7 +85,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 * @return undefined
 		 */
 		$scope.$on('UPDATED_ALLOTMENT_INFO', function(event, data) {
-			//data has changed
+			// data has changed
 			summaryMemento = angular.copy($scope.allotmentConfigData.summary);
 			$scope.isUpdateInProgress = false;
 		});
@@ -97,14 +99,14 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		var fromDateChoosed = function(date, datePickerObj) {
 			$scope.allotmentConfigData.summary.block_from = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
-			//referring data source
+			// referring data source
 			var refData = $scope.allotmentConfigData.summary;
 
 			// we will clear end date if chosen start date is greater than end date
 			if (refData.block_from > refData.block_to) {
 				$scope.allotmentConfigData.summary.block_to = '';
 			}
-			//setting the min date for end Date
+			// setting the min date for end Date
 			$scope.toDateOptions.minDate = refData.block_from;
 
 			$scope.computeSegment();
@@ -113,7 +115,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				fetchApplicableRates();
 			}
 
-			//we are in outside of angular world
+			// we are in outside of angular world
 			runDigestCycle();
 		};
 
@@ -131,11 +133,12 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				demographics 	= $scope.allotmentSummaryData.demographics,
 				blockFromDate	= configSummaryData.block_from,
 				blockToDate		= configSummaryData.block_to,
-				aptSegment		= ""; //Variable to store the suitable segment ID;
+				aptSegment		= ""; // Variable to store the suitable segment ID;
 
 			// CICO-15107 --
 			if (!!blockToDate && !!blockFromDate) {
 				var dayDiff = Math.floor((new tzIndependentDate(blockToDate) - new tzIndependentDate(blockFromDate)) / 86400000);
+
 				_.each(demographics.segments, function(segment) {
 					if (dayDiff < segment.los) {
 						if (!aptSegment) {
@@ -153,12 +156,14 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 * [computeSegment description]
 		 * @return {[type]} [description]
 		 */
+
 		$scope.computeSegment = function() {
 			if ($scope.allotmentSummaryData.demographics === null) {
 				var options = {
 					successCallBack: onFetchSegmentDataSuccess,
 					failureCallBack: onFetchSegmentDataFailure
 				};
+
 				$scope.callAPI(RVReservationSummarySrv.fetchInitialData, options);
 			} else {
 				updateSegment();
@@ -177,7 +182,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			summaryData.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
 			$scope.computeSegment();
-			//we are in outside of angular world
+			// we are in outside of angular world
 
 			if (!!summaryData.block_from && !!summaryData.block_to) {
 				fetchApplicableRates();
@@ -194,7 +199,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		var releaseDateChoosed = function(date, datePickerObj) {
 			$scope.allotmentConfigData.summary.release_date = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
-			//we are in outside of angular world
+			// we are in outside of angular world
 			runDigestCycle();
 		};
 
@@ -203,7 +208,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 * @return {undefined} [description]
 		 */
 		var setDatePickerOptions = function() {
-			//date picker options - Common
+			// date picker options - Common
 			var commonDateOptions = {
 				dateFormat: $rootScope.jqDateFormat,
 				numberOfMonths: 1,
@@ -217,17 +222,17 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				}
 			};
 
-			//from Date options
+			// from Date options
 			$scope.fromDateOptions = _.extend({
 				onSelect: fromDateChoosed
 			}, commonDateOptions);
 
-			//to date options
+			// to date options
 			$scope.toDateOptions = _.extend({
 				onSelect: toDateChoosed
 			}, commonDateOptions);
 
-			//release date options
+			// release date options
 			$scope.releaseDateOptions = _.extend({
 				onSelect: releaseDateChoosed
 			}, commonDateOptions);
@@ -318,7 +323,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				successCallBack: successCallBackOfCopyDefaultBilling,
 				failureCallBack: failureCallBackOfCopyDefaultBilling,
 				params: params
-			}
+			};
+
 			$scope.callAPI(rvAllotmentConfigurationSrv.copyDefaultBillingInfo, options);
 		};
 
@@ -340,6 +346,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 
 		var openBillingInformationPopup = function() {
 			var summaryData = $scope.allotmentConfigData.summary;
+
 			$scope.billingEntity = "ALLOTMENT_DEFAULT_BILLING";
 			$scope.billingInfoModalOpened = true;
 			$scope.attachedEntities = {};
@@ -351,9 +358,9 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			});
             $scope.$emit('showLoader'); 
             jsMappings.fetchAssets(['addBillingInfo', 'directives'])
-            .then(function(){
+            .then(function() {
                 $scope.$emit('hideLoader');
-                if($rootScope.UPDATED_BI_ENABLED_ON['ALLOTMENT']){
+                if ($rootScope.UPDATED_BI_ENABLED_ON['ALLOTMENT']) {
                 	console.log("##Billing-info updated version");
 	                ngDialog.open({
 	                    template: '/assets/partials/billingInformation/allotment/rvBillingInfoAllotmentMain.html',
@@ -362,7 +369,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 	                    scope: $scope
 	                });
 	            }
-	            else{
+	            else {
 	            	console.log("##Billing-info old version");
 	            	ngDialog.open({
 	                	template: '/assets/partials/bill/rvBillingInformationPopup.html',
@@ -383,6 +390,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 
 			var summaryData = $scope.allotmentConfigData.summary;
 			// check if billing info does not exist and default biling info can be copied from either company or TA.
+
 			if (summaryData.default_billing_info_present) {
 				openBillingInformationPopup();
 				return;
@@ -444,7 +452,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			if (!data.is_changed && !data.is_room_rate_available) {
 				showChangeDateNotPossiblePopup();
 				$scope.allotmentConfigData.summary.rate = summaryMemento.rate;
-			} else{
+			} else {
 			  summaryMemento.rate = $scope.allotmentConfigData.summary.rate;
 			}
 		};
@@ -466,6 +474,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 */
 		$scope.onRateChange = function() {
 			var summaryData = $scope.allotmentConfigData.summary;
+
 			if (!summaryData.allotment_id) {
 				return false;
 			}
@@ -480,6 +489,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				failureCallBack: onRateChangeFailure,
 				params: params
 			};
+
 			$scope.callAPI(rvAllotmentConfigurationSrv.updateRate, options);
 		};
 
@@ -565,6 +575,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				failureCallBack: onCancelAllotmentFailure,
 				params: params
 			};
+
 			$scope.callAPI(rvAllotmentConfigurationSrv.cancelAllotment, options);
 		};
 
@@ -573,6 +584,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				var selectedStatus = _.findWhere($scope.allotmentConfigData.holdStatusList, {
 					id: parseInt($scope.allotmentConfigData.summary.hold_status)
 				});
+
 				if (selectedStatus && selectedStatus.name === 'Cancel' && !!selectedStatus.is_system) {
 					ngDialog.open({
 						template: '/assets/partials/allotments/summary/warnCancelAllotmentPopup.html',
@@ -623,6 +635,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 					"id": $scope.allotmentConfigData.summary.allotment_id
 				}
 			};
+
 			$scope.callAPI(rvAllotmentConfigurationSrv.getAllotmentEnhancements, options);
 		};
 
@@ -680,6 +693,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 					failureCallBack: onFetchAddonsListFailure,
 					params: params
 				};
+
 			$scope.callAPI(RVReservationAddonsSrv.fetchAddonData, options);
 		};
 
@@ -706,6 +720,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 					failureCallBack: onRemoveAddonFailure,
 					params: params
 				};
+
 			$scope.callAPI(rvAllotmentConfigurationSrv.removeAllotmentEnhancement, options);
 		};
 
@@ -740,6 +755,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 					failureCallBack: onSaveAllotmentNoteFailure,
 					params: params
 				};
+
 			if ($scope.allotmentSummaryData.newNote) {
 				$scope.callAPI(rvAllotmentConfigurationSrv.saveAllotmentNote, options);
 			}
@@ -747,6 +763,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 
 		var onRemoveAllotmentNoteSuccess = function(data, params) {
 			var summaryData = $scope.allotmentConfigData.summary;
+
 			summaryData.notes = _.without(summaryData.notes,
 									_.findWhere(summaryData.notes, {
 										note_id: params.noteId
@@ -774,6 +791,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 					"noteId": noteId
 				}
 			};
+
 			$scope.callAPI(rvAllotmentConfigurationSrv.removeAllotmentNote, options);
 		};
 
@@ -785,6 +803,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 					"lastName": ""
 				}
 			};
+
 			return passData;
 		};
 
@@ -800,6 +819,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			var passData = getPassData();
 			var swipeOperationObj = new SwipeOperation();
 			var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
+
 			passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
 			$scope.$broadcast('SHOW_SWIPED_DATA_ON_BILLING_SCREEN', swipedCardDataToRender);
 		};
@@ -819,6 +839,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 					swipedCardData.token = tokenValue;
 					processSwipedData(swipedCardData);
 				};
+
 				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
 			}
 		});
@@ -839,6 +860,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 
 		var fetchApplicableRates = function() {
 			var summaryData = $scope.allotmentConfigData.summary;
+
 			if (!!summaryData.block_from && !!summaryData.block_to) {
 				var params = {
 					from_date: $filter('date')(tzIndependentDate(summaryData.block_from), 'yyyy-MM-dd'),
@@ -869,10 +891,10 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			}
 			$scope.$emit("FETCH_SUMMARY");
 
-			//we are resetting the API call in progress check variable
+			// we are resetting the API call in progress check variable
 			$scope.isUpdateInProgress = false;
 
-			//we have to refresh this data on tab siwtch
+			// we have to refresh this data on tab siwtch
 			$scope.computeSegment();
 		});
 
@@ -890,7 +912,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				isDemographicsPopupOpen: false,
 				newNote: "",
 
-				//This is required to reset Cancel when selected in dropdown but not proceeded with in the popup
+				// This is required to reset Cancel when selected in dropdown but not proceeded with in the popup
 				existingHoldStatus: parseInt($scope.allotmentConfigData.summary.hold_status),
 				computedSegment: false,
 				rates: [],
@@ -899,11 +921,11 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 
 			$scope.billingInfoModalOpened = false;
 
-			//we use this to ensure that we will call the API only if there is any change in the data
+			// we use this to ensure that we will call the API only if there is any change in the data
 			summaryMemento = _.extend({}, $scope.allotmentConfigData.summary);
 			demographicsMemento = {};
 
-			//since we are recieving two ouside click event on tapping outside, we wanted to check and act
+			// since we are recieving two ouside click event on tapping outside, we wanted to check and act
 			$scope.isUpdateInProgress = false;
 		};
 
@@ -912,7 +934,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 * @return {undefined}
 		 */
 		var setActiveLeftSideMenu = function () {
-			var activeMenu = ($scope.isInAddMode()) ? "menuCreateAllotment": "menuManageAllotment";
+			var activeMenu = ($scope.isInAddMode()) ? "menuCreateAllotment" : "menuManageAllotment";
+
 			$scope.$emit("updateRoverLeftMenu", activeMenu);
 		};
 
@@ -920,16 +943,16 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 * Function used to initialize summary view
 		 * @return undefined
 		 */
-		var initializeMe = function() {
+		var initializeMe = (function() {
 			BaseCtrl.call(this, $scope);
 
-			//summary scroller
+			// summary scroller
 			$scope.setScroller("allotmentSummaryScroller");
 
-			//updating the left side menu
+			// updating the left side menu
 			setActiveLeftSideMenu();
 
-			//we have a list of scope varibales which we wanted to initialize
+			// we have a list of scope varibales which we wanted to initialize
 			initializeVariables();
 
 			// Fetch rates to show in dropdown
@@ -948,6 +971,6 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			setDatePickerOptions();
 
 			$scope.computeSegment();
-		}();
+		}());
 	}
 ]);

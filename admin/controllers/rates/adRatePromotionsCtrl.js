@@ -34,6 +34,7 @@ admin.controller('ADRatePromotionsCtrl', [
 					var promoDetails = _.findWhere(data.promotion_rates, {
 						promotion_id: promo.id
 					});
+
 					if (promoDetails) {
 						$scope.state.assignedPromotions.push(promo);
 					} else {
@@ -41,6 +42,7 @@ admin.controller('ADRatePromotionsCtrl', [
 					}
 				});
 			};
+
 			if (!!$scope.rateData && !!$scope.rateData.id) {
 				$scope.invokeApi(ADPromotionsSrv.fetchRatePromos, $scope.rateData.id, onFetchSuccess);
 			}
@@ -81,11 +83,13 @@ admin.controller('ADRatePromotionsCtrl', [
 				}
 			}, function() {
 				$scope.$emit('hideLoader');
-				//Navigate to next level. If date ranges are available move to config rate screen
-				//If no date range added, move to add_date_range screen
+				// Navigate to next level. If date ranges are available move to config rate screen
+				// If no date range added, move to add_date_range screen
 				var menuName = "ADD_NEW_DATE_RANGE";
+
 				if ($scope.rateData.date_ranges.length > 0) {
 					var dateRangeId = $scope.rateData.date_ranges[$scope.rateData.date_ranges.length - 1].id;
+
 					menuName = dateRangeId;
 					$rootScope.$broadcast("needToShowDateRange", dateRangeId);
 				}

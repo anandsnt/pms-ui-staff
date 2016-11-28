@@ -2,10 +2,10 @@
 		var checkinDetailsService = function() {
 
 			this.responseData = {};
-			this.setResponseData = function (responseData){
+			this.setResponseData = function (responseData) {
 				this.responseData = responseData;
 			};
-			this.getResponseData = function (){
+			this.getResponseData = function () {
 				return this.responseData;
 			};
 		};

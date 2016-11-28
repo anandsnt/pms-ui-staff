@@ -5,6 +5,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		$scope.guestData = {};
 		var presentGuestInfo = {};
 		var initialGuestInfo = {};
+
 		$scope.errorMessage = '';
 
 		/**
@@ -12,7 +13,8 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		 * @return boolean [description]
 		 */
 		function isWithinMaxOccupancy() {
-			var maxOccupancy = $scope.reservationData.reservation_card.max_occupancy; //TODO: Get the max occupancy here
+			var maxOccupancy = $scope.reservationData.reservation_card.max_occupancy; // TODO: Get the max occupancy here
+
 			if (!!maxOccupancy) {
 				var currentTotal = parseInt($scope.guestData.adult_count || 0) +
 					parseInt($scope.guestData.children_count || 0);
@@ -34,9 +36,11 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				var stayDate = _.findWhere($scope.reservationData.reservation_card.stay_dates, {
 					date: $scope.reservationData.reservation_card.arrival_date
 				});
+
 				return (!!(stayDate && stayDate.rate_config && stayDate.rate_config.single));
 			} else {
 				var flag = true;
+
 				angular.forEach($scope.reservationData.reservation_card.stay_dates, function(item, index) {
 					if (flag) {
 						if ($scope.guestData.adult_count && parseInt($scope.guestData.adult_count) === 1) {
@@ -102,19 +106,20 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		};
 
 		$scope.keepCurrentRate = function() {
-			//Save data variables keeping the Current Rate .
+			// Save data variables keeping the Current Rate .
 			saveChanges(false, true, {"isBackToStayCard": true});
 			closeDialog();
 		};
 
 		$scope.ChangeToNewRate = function() {
-			//Save data variables taking the New Rate .
+			// Save data variables taking the New Rate .
 			saveChanges(undefined, undefined, {"isBackToStayCard": true});
 			closeDialog();
 		};
 
 		var isRateChangeOcuured = function() {
 			var isRateChangeOcuured = false;
+
 			angular.forEach($scope.reservationParentData.rooms[0].stayDates, function(item, index) {
 				if (item.rateDetails.actual_amount !== item.rateDetails.modified_amount) {
 					isRateChangeOcuured = true;
@@ -133,6 +138,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 					var adults = parseInt($scope.guestData.adult_count || 0),
 						children = parseInt($scope.guestData.children_count || 0),
 						rateToday = item.rate_config;
+
 					$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].guests = {
 						adults: adults,
 						children: children,
@@ -176,7 +182,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
 			var successCallback = function(data) {
 				$scope.errorMessage = '';
-				if(params.isBackToStayCard){
+				if (params.isBackToStayCard) {
 					saveReservation();
 				}
 				else {
@@ -187,12 +193,13 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			var errorCallback = function(errorMessage) {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorMessage;
-				if(params.isBackToStayCard){
+				if (params.isBackToStayCard) {
 					$scope.$emit("OPENGUESTTAB");
 				}
 			};
 
 			var dataToSend = dclone($scope.guestData, ["primary_guest_details", "accompanying_guests_details"]);
+
 			dataToSend.accompanying_guests_details = [];
 			dataToSend.reservation_id = $scope.reservationData.reservation_card.reservation_id;
 
@@ -220,7 +227,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		}
 
 		$scope.applyCurrentRate = function() {
-			saveChanges(true, undefined, {"isBackToStayCard": true}); //override
+			saveChanges(true, undefined, {"isBackToStayCard": true}); // override
 			closeDialog();
 		};
 
@@ -234,6 +241,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		/* To save guest details */
 		$scope.saveGuestDetails = function(params) {
 			var data = JSON.parse(JSON.stringify($scope.guestData));
+
 			if (!angular.equals(data, initialGuestInfo)) {
 				$scope.$emit('showLoader');
 
@@ -267,9 +275,9 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		 */
 		$scope.onStayCardOccupancyChange = function() {
 			if (isWithinMaxOccupancy()) {
-				////////
+				// //////
 				// Step 1 : Check against max occupancy and let know the user if the occupancy is not allowed
-				////////
+				// //////
 				ngDialog.open({
 					template: '/assets/partials/reservation/alerts/occupancy.html',
 					className: '',
@@ -298,8 +306,8 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				$scope.reservationParentData.rooms[0].accompanying_guest_details = data.accompanying_guests_details;
 				$scope.errorMessage = '';
 
-				if($scope.reservationParentData.group.id){
-					if($scope.otherData.maxAdults > 4){
+				if ($scope.reservationParentData.group.id) {
+					if ($scope.otherData.maxAdults > 4) {
 						$scope.maxAdultsForReservation = 4;
 					} else {
 						scope.maxAdultsForReservation = $scope.otherData.maxAdults;
@@ -321,12 +329,12 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
 			$scope.invokeApi(RVReservationGuestSrv.fetchGuestTabDetails, data, successCallback, errorCallback);
 
-                        var fetchGuestPrefSuccess = function(data){
-                            if (data.data){
-                                for (var i in data.data){
-                                    if (data.data[i].name === 'wakeup_call'){
+                        var fetchGuestPrefSuccess = function(data) {
+                            if (data.data) {
+                                for (var i in data.data) {
+                                    if (data.data[i].name === 'wakeup_call') {
                                         $scope.activeWakeUp = data.data[i].active;
-                                        $scope.$emit("wakeup_call_ON",{'active':data.data[i].active});
+                                        $scope.$emit("wakeup_call_ON", {'active': data.data[i].active});
                                     }
                                 }
                             }

@@ -8,21 +8,21 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 	'zsCheckoutSrv', '$timeout',
 	function($scope, $state, zsEventConstants, zsModeConstants, $stateParams, $sce, zsCheckoutSrv, $timeout) {
 
-		/********************************************************************************
+		/** ******************************************************************************
 		 **		Expected state params -----> nothing			  
 		 **		Exit function -> findReservationSuccess								
 		 **																		 
 		 *********************************************************************************/
 
 
-		var init = function() {
+		var init = (function() {
 			BaseCtrl.call(this, $scope);
 			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			$scope.reservationSearchFailed = false;
 			$scope.zestStationData.isKeyCardLookUp = true;
 			$scope.socketBeingConnected = true;
-		}();
+		}());
 
 		/**
 		 * when the back button clicked
@@ -30,7 +30,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		 * @return {[type]} 
 		 */
 		$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-			$state.go('zest_station.checkoutSearchOptions'); //go back to checkout options
+			$state.go('zest_station.checkoutSearchOptions'); // go back to checkout options
 		});
 
 		$scope.navToPrev = function() {
@@ -68,7 +68,8 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 					"last_name": data.last_name,
 					"days_of_stay": data.days_of_stay,
 					"hours_of_stay": data.hours_of_stay
-				}
+				};
+
 				$state.go('zest_station.checkoutReservationBill', stateParams);
 			}
 		};
@@ -95,15 +96,16 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 				successCallBack: findReservationSuccess,
 				failureCallBack: findReservationFailed
 			};
+
 			$scope.callAPI(zsCheckoutSrv.fetchReservationFromUId, options);
 		};
-		/********************************************************************************
+		/** ******************************************************************************
 		 *  Websocket actions related to keycard lookup
 		 *  starts here
 		 ********************************************************************************/
 
 		$scope.$on('UID_FETCH_SUCCESS', function(event, data) {
-			findReservation(data.uid)
+			findReservation(data.uid);
 		});
 		$scope.$on('UID_FETCH_FAILED', function() {
 			findReservationFailed();
@@ -114,7 +116,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		$scope.$on('SOCKET_CONNECTED', function() {
 			$scope.socketOperator.InsertKeyCard();
 		});
-		/********************************************************************************
+		/** ******************************************************************************
 		 *  Websocket actions related to keycard lookup
 		 *  ends here
 		 ********************************************************************************/
@@ -123,16 +125,17 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 			$timeout(function() {
 				// so inorder to avoid a possible error because of
 				// wrong timing adding a buffer of 1.5 seconds
-				$scope.socketBeingConnected = false; //connection success
+				$scope.socketBeingConnected = false; // connection success
 			}, 1000);
 
 		};
 		var init = function() {
 			setTimeOutFunctionToEnsureSocketIsOpened();
 			console.info("websocket: readyState -> " + $scope.socketOperator.returnWebSocketObject().readyState);
-			//open socket if not in open state
-			($scope.socketOperator.returnWebSocketObject().readyState !== 1) ? $scope.$emit('CONNECT_WEBSOCKET'): $scope.socketOperator.InsertKeyCard();
+			// open socket if not in open state
+			($scope.socketOperator.returnWebSocketObject().readyState !== 1) ? $scope.$emit('CONNECT_WEBSOCKET') : $scope.socketOperator.InsertKeyCard();
 		};
+
 		init();
 
 		/** 

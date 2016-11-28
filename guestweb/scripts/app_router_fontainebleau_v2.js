@@ -1,117 +1,116 @@
+sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
-sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
+	$urlRouterProvider.otherwise("/noOptionAvailable");
 
-    $urlRouterProvider.otherwise("/noOptionAvailable");
+	// External verification
 
-    // External verification
-
-    $stateProvider.state('externalVerification', {
-	 	url: '/externalVerification',
-	 	templateUrl: '/assets/common_templates/partials/fontainebleau/checkout/gwExternal.html',
-	 	controller : 'externalVerificationViewController',
-	 	title: 'External verification'
-	 });
+	$stateProvider.state('externalVerification', {
+		url: '/externalVerification',
+		templateUrl: '/assets/common_templates/partials/fontainebleau/checkout/gwExternal.html',
+		controller: 'externalVerificationViewController',
+		title: 'External verification'
+	});
 
 
-    //room and cc verification 
+	// room and cc verification 
 
-	 $stateProvider.state('checkoutRoomVerification', {
-	 	url: '/checkoutRoomVerification',
-	 	templateUrl: '/assets/common_templates/partials/fontainebleau/checkout/gwRoomVerification.html',
-	 	controller : 'checkoutRoomVerificationViewController',
-	 	title: 'Room verification'
-	 }).state('ccVerification', {
-	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
-	 	templateUrl: '/assets/common_templates/partials/fontainebleau/checkout/gwCcEntry.html',
-	 	controller : 'ccVerificationViewController',
-	 	title: 'CC verification'
-	 });
+	$stateProvider.state('checkoutRoomVerification', {
+		url: '/checkoutRoomVerification',
+		templateUrl: '/assets/common_templates/partials/fontainebleau/checkout/gwRoomVerification.html',
+		controller: 'checkoutRoomVerificationViewController',
+		title: 'Room verification'
+	}).state('ccVerification', {
+		url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
+		templateUrl: '/assets/common_templates/partials/fontainebleau/checkout/gwCcEntry.html',
+		controller: 'ccVerificationViewController',
+		title: 'CC verification'
+	});
 
-    // checkout now states
+	// checkout now states
 
 	$stateProvider.state('checkoutBalance', {
-        url: '/checkoutBalance',
-        controller: 'checkOutBalanceController',
-       	templateUrl: '/assets/common_templates/partials/fontainebleau/checkout/gwBill.html',
-	    title: 'Balance - Check-out Now'
-    }).state('checkOutStatus', {
-        url: '/checkOutStatus',
-       	controller: 'checkOutStatusController',
-       	templateUrl: '/assets/common_templates/partials/fontainebleau/checkout/gwCheckoutfinal.html',
+		url: '/checkoutBalance',
+		controller: 'checkOutBalanceController',
+		templateUrl: '/assets/common_templates/partials/fontainebleau/checkout/gwBill.html',
+		title: 'Balance - Check-out Now'
+	}).state('checkOutStatus', {
+		url: '/checkOutStatus',
+		controller: 'checkOutStatusController',
+		templateUrl: '/assets/common_templates/partials/fontainebleau/checkout/gwCheckoutfinal.html',
 		title: 'Status - Check-out Now'
-    }).state('checkOutConfirmation', {
-        url: '/checkOutConfirmation',
-       	controller: 'checkOutConfirmationController',
-       	templateUrl:  '/assets/common_templates/partials/fontainebleau/checkout/gwCheckout.html',
+	}).state('checkOutConfirmation', {
+		url: '/checkOutConfirmation',
+		controller: 'checkOutConfirmationController',
+		templateUrl: '/assets/common_templates/partials/fontainebleau/checkout/gwCheckout.html',
 		title: 'Confirm - Check-out Now'
-    });
+	});
 
-    // late checkout states
+	// late checkout states
 
-    $stateProvider.state('checkOutOptions', {
-    	url: '/checkOutOptions',
-	 	templateUrl: '/assets/common_templates/partials/fontainebleau/checkout/gwCheckoutoptions.html',
-	 	controller: 'checkOutLandingController',
-	 	title: 'Check-out'
-	 }).state('checkOutLaterOptions', {
-	 	url: '/checkOutLaterOptions',
+	$stateProvider.state('checkOutOptions', {
+		url: '/checkOutOptions',
+		templateUrl: '/assets/common_templates/partials/fontainebleau/checkout/gwCheckoutoptions.html',
+		controller: 'checkOutLandingController',
+		title: 'Check-out'
+	}).state('checkOutLaterOptions', {
+		url: '/checkOutLaterOptions',
 		templateUrl: '/assets/common_templates/partials/fontainebleau/checkout/gwLatecheckoutoptions.html',
-	 	controller: 'checkOutLaterController',
+		controller: 'checkOutLaterController',
 		title: 'Check-out Later'
 	}).state('checkOutLaterSuccess', {
 		url: '/checkOutLaterOptions/:id',
 		templateUrl: '/assets/common_templates/partials/fontainebleau/checkout/gwLateCheckoutfinal.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Check-out Later'
-	 });
+	});
 
 	// checkin states
 
 	$stateProvider.state('checkinConfirmation', {
-	 	url: '/checkinConfirmation',
-	 	templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwCheckin.html',
-	 	controller : 'checkInConfirmationViewController',
-	 	title: 'Check-in'
-	 }).state('checkinReservationDetails', {
-	 	url: '/checkinReservationDetails',
-	 	templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwCheckinDetails.html',
-	 	controller : 'checkInReservationDetails',
-	 	title: 'Details - Check-in'
-	 }).state('checkinUpgrade', {
-	 	url: '/checkinUpgrade',
-	 	templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwRoomUpgrades.html',
-	 	controller : 'checkinUpgradeRoomController',
-	    title: 'Upgrade - Check-in'
-	 }).state('checkinKeys', {
-	 	url: '/checkinKeys',
-	 	templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwCheckinFinal.html',
-	 	controller : 'checkInKeysController',
-	 	title: 'Keys - Check-in'
-	 }).state('checkinSuccess', {
-	 	url: '/checkinSuccess',
-	 	templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwAlreadyCheckedIn.html',
-	 	title: 'Status - Check-in'
-	 }).state('checkinArrival', {
-	 	url: '/checkinArrival',
-	 	controller:'checkinArrivalDetailsController',
-	 	templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwArrivalTime.html',
-	 	title: 'Arrival Details - Check-in'
-	 }).state('guestDetails', {
-	 	url: '/guestDetails',
-	 	templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwGuestDetail.html',
-	 	controller : 'guestDetailsController',
-	    title: 'Guest Details'
-	 })
-	 
+		url: '/checkinConfirmation',
+		templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwCheckin.html',
+		controller: 'checkInConfirmationViewController',
+		title: 'Check-in'
+	}).state('checkinReservationDetails', {
+		url: '/checkinReservationDetails',
+		templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwCheckinDetails.html',
+		controller: 'checkInReservationDetails',
+		title: 'Details - Check-in'
+	}).state('checkinUpgrade', {
+		url: '/checkinUpgrade',
+		templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwRoomUpgrades.html',
+		controller: 'checkinUpgradeRoomController',
+		title: 'Upgrade - Check-in'
+	}).state('checkinKeys', {
+		url: '/checkinKeys',
+		templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwCheckinFinal.html',
+		controller: 'checkInKeysController',
+		title: 'Keys - Check-in'
+	}).state('checkinSuccess', {
+		url: '/checkinSuccess',
+		templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwAlreadyCheckedIn.html',
+		title: 'Status - Check-in'
+	}).state('checkinArrival', {
+		url: '/checkinArrival',
+		controller: 'checkinArrivalDetailsController',
+		templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwArrivalTime.html',
+		title: 'Arrival Details - Check-in'
+	}).state('guestDetails', {
+		url: '/guestDetails',
+		templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwGuestDetail.html',
+		controller: 'guestDetailsController',
+		title: 'Guest Details'
+	});
+
 
 	// pre checkin states
 
-    $stateProvider.state('preCheckinStatus', {
+	$stateProvider.state('preCheckinStatus', {
 		url: '/preCheckinStatus',
 		templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwPreCheckinFinal.html',
-		controller : 'preCheckinStatusController',
+		controller: 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
-	 }).state('checkinCcVerification', {
+	}).state('checkinCcVerification', {
 		url: '/checkinCcVerification',
 		templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwCheckinCCAddition.html',
 		controller: 'checkinCcVerificationController',
@@ -119,31 +118,31 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	});
 
 	$stateProvider.state('earlyCheckinOptions', {
-	 	url: '/earlyCheckinOptions/:time/:charge/:id',
-	 	templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwEarlyCheckinOptions.html',
-	 	controller : 'earlyCheckinOptionsController',
-	 	title: 'Early Check-in'
-	 }).state('earlyCheckinFinal', {
-	 	url: '/earlyCheckinFinal/:time/:charge/:id',
-	 	templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwEarlyCheckinFinal.html',
-	 	controller : 'earlyCheckinFinalController',
-	 	title: 'Early Check-in'
-	 }).state('laterArrival', {
-	 	url: '/laterArrival/:time/:isearlycheckin',
-	 	templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwLateArrivalTime.html',
-	 	controller : 'checkinArrivalDetailsController',
-	    title: 'Early Check-in'
-	 }).state('depositPayment', {
-	 	url: '/depositPayment',
-	 	templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwDepositPayment.html',
-	 	controller : 'checkinDepositPaymentController',
-	    title: 'Pay Deposit'
-	 });
+		url: '/earlyCheckinOptions/:time/:charge/:id',
+		templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwEarlyCheckinOptions.html',
+		controller: 'earlyCheckinOptionsController',
+		title: 'Early Check-in'
+	}).state('earlyCheckinFinal', {
+		url: '/earlyCheckinFinal/:time/:charge/:id',
+		templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwEarlyCheckinFinal.html',
+		controller: 'earlyCheckinFinalController',
+		title: 'Early Check-in'
+	}).state('laterArrival', {
+		url: '/laterArrival/:time/:isearlycheckin',
+		templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwLateArrivalTime.html',
+		controller: 'checkinArrivalDetailsController',
+		title: 'Early Check-in'
+	}).state('depositPayment', {
+		url: '/depositPayment',
+		templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwDepositPayment.html',
+		controller: 'checkinDepositPaymentController',
+		title: 'Pay Deposit'
+	});
 
-	 $stateProvider.state('noOptionAvailable', {
-    	url: '/noOptionAvailable',
-	 	templateUrl: '/assets/common_templates/partials/gwNoOption.html',
-	 	title: 'Feature not available'
+	$stateProvider.state('noOptionAvailable', {
+		url: '/noOptionAvailable',
+		templateUrl: '/assets/common_templates/partials/gwNoOption.html',
+		title: 'Feature not available'
 	});
 
 	$stateProvider.state('externalCheckinVerification', {
@@ -151,11 +150,11 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwExternalCheckin.html',
 		controller: 'externalCheckinVerificationViewController',
 		title: 'External Check in verification'
-	}).state('guestCheckinTurnedOff',{
-	 	url: '/guestCheckinTurnedOff',
-	 	templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwExternalCheckInTurnedOff.html',
-	 	title: 'Check-in'
-	 }).state('guestCheckinEarly', {
+	}).state('guestCheckinTurnedOff', {
+		url: '/guestCheckinTurnedOff',
+		templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwExternalCheckInTurnedOff.html',
+		title: 'Check-in'
+	}).state('guestCheckinEarly', {
 		url: '/guestCheckinEarly/:date',
 		templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwEarlyToCheckin.html',
 		controller: 'earlyToCheckinCtrl',
@@ -181,5 +180,11 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwMobielNUmberOptions.html',
 		controller: 'mobileOptionsController',
 		title: 'Phone number entry'
+	}).state('roomReadyAlertUsingText', {
+		url: '/roomReadyAlertUsingText',
+		templateUrl: '/assets/common_templates/partials/fontainebleau/checkin/gwRoomReadyAlertUsingText.html',
+		controller: 'roomReadyAlertUsingTextController',
+		title: 'Text Alert'
 	});
+
 }]);

@@ -16,7 +16,7 @@ angular.module('reportsModule')
                             params[fromKey]  = $filter('date')(report.fromDate, 'yyyy/MM/dd');
                             if ( shouldChangeFilters ) {
                                 filters.fromDate = angular.copy( report.fromDate );
-                            };
+                            }
                         }
 
                         if ( !! report.untilDate ) {
@@ -24,16 +24,16 @@ angular.module('reportsModule')
                             params[untilKey]  = $filter('date')(report.untilDate, 'yyyy/MM/dd');
                             if ( shouldChangeFilters ) {
                                 filters.toDate = angular.copy( report.untilDate );
-                            };
+                            }
                         }
-                    };
+                    }
 
                     return {
                         params: params,
                         filters: filters
                     };
                 }
-            }
+            };
         }
     ])
     .factory('cancelDateFilterFac', [
@@ -57,15 +57,15 @@ angular.module('reportsModule')
                         if ( shouldChangeFilters ) {
                             filters.cancelFromDate = angular.copy( report.fromCancelDate );
                             filters.cancelToDate = angular.copy( report.untilCancelDate );
-                        };
-                    };
+                        }
+                    }
 
                     return {
                         params: params,
                         filters: filters
                     };
                 }
-            }
+            };
         }
     ])
     .factory('arrivalDateFilterFac', [
@@ -89,15 +89,15 @@ angular.module('reportsModule')
                         if ( shouldChangeFilters ) {
                             filters.arrivalFromDate = angular.copy( report.fromArrivalDate );
                             filters.arrivalToDate = angular.copy( report.untilArrivalDate );
-                        };
-                    };
+                        }
+                    }
 
                     return {
                         params: params,
                         filters: filters
                     };
                 }
-            }
+            };
         }
     ])
     .service('RVReportParamsAndFiltersSrv', [
@@ -133,12 +133,12 @@ angular.module('reportsModule')
             var addParams = function(obj) {
                 params = _.extend(params, obj);
                 return params;
-            }
+            };
 
             var resetParams = function() {
                 params = {};
                 return params;
-            }
+            };
 
             var addFilter = function(obj) {
                 appliedFilters = _.extend(appliedFilters, obj);
@@ -158,7 +158,7 @@ angular.module('reportsModule')
                     return appliedFilters;
                 },
                 genParamsAndFilters: function(report, page, perPage, shouldChangeFilters) {
-                    var shouldChangeFilters = 'boolean' === typeof shouldChangeFilters ? shouldChangeFilters: true;
+                    var shouldChangeFilters = 'boolean' === typeof shouldChangeFilters ? shouldChangeFilters : true;
 
                     if ( shouldChangeFilters ) {
                         resetFilters();
@@ -171,22 +171,25 @@ angular.module('reportsModule')
                     });
 
                     var dateFilter = dateFilterFac.check(report, shouldChangeFilters);
+
                     addParam(dateFilter.params);
                     addFilter(dateFilter.filters);
 
                     var cancelDateFilter = cancelDateFilterFac.check(report, shouldChangeFilters);
+
                     addParam(cancelDateFilter.params);
                     addFilter(cancelDateFilter.filters);
 
                     var arrivalDateFilter = arrivalDateFilterFac.check(report, shouldChangeFilters);
+
                     addParam(arrivalDateFilter.params);
                     addFilter(arrivalDateFilter.filters);
 
                     return {
                         params: params,
                         filters: filters
-                    }
+                    };
                 }
-            }
+            };
         }
-    ])
+    ]);
