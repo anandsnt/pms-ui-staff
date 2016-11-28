@@ -164,7 +164,7 @@ angular.module('sntRover')
             roomsList: roomsList.rooms,
             reservationsList: reservationsList.rooms,
             initialDayOfDateGrid: $scope.diaryData.fromDate,
-            numberOfDays: 7,
+            numberOfDays: $scope.diaryData.numberOfDays,
             currentBusinessDate: $rootScope.businessDate,
             callbackFromAngular: getTheCallbacksFromAngularToReact(),
             paginationData: getPaginationParams()

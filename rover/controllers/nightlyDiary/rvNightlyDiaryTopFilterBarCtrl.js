@@ -74,9 +74,9 @@ angular.module('sntRover')
         };
 
         var init = function() {
-            $scope.diaryData.numberOfDays = 7;
-            $scope.diaryData.fromDate = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
-            $scope.diaryData.toDate   = getDateShift( $rootScope.businessDate, 7, true, true);
+           
+            $scope.diaryData.fromDate = $filter('date')(tzIndependentDate($scope.diaryData.fromDate), 'yyyy-MM-dd');
+            $scope.diaryData.toDate   = getDateShift( $scope.diaryData.fromDate, $scope.diaryData.numberOfDays, true, true);
             $scope.diaryData.firstMonthDateList = [];
             $scope.diaryData.secondMonthDateList = [];
             $scope.diaryData.hasMultipleMonth = false;
