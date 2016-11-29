@@ -90,7 +90,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             }]
         }
     });
-    
+
     $stateProvider.state('admin.travelClickSetup', {
         templateUrl: '/assets/partials/interfaces/TravelClick/adTravelClickCRSSetup.html',
         controller: 'adTravelClickCRSSetupCtrl',
@@ -112,6 +112,20 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         resolve: {
             config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('cubilis');
+            }]
+        }
+    });
+
+    $stateProvider.state('admin.verticalBookingSetup', {
+        templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
+        controller: 'adCRSCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'verticalbooking';
+        }],
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('verticalbooking');
             }]
         }
     });
