@@ -150,7 +150,7 @@ angular.module('sntRover')
                 $scope.currentSelectedReservation = reservation;
                 //console.log($scope.currentSelectedReservation);
                 $scope.$apply();
-                updateDiaryView();
+                showReservationSelected();
             };
 
             /*
@@ -209,11 +209,21 @@ angular.module('sntRover')
                 };
                 store.dispatch(dispatchData);
             };
+            var showReservationSelected = function() {
+                var dispatchData = {
+                    type: 'RESERVATION_SELECTED',
+                    selectReservationId: $scope.currentSelectedReservation.id
+
+                };
+                store.dispatch(dispatchData);
+            };
+
             /* Handle event emitted from child controllers.
              * To refresh diary data - rooms & reservations.
              * @param {Number} RoomId - selected room id from search filters.
             */
             $scope.$on('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function( event, roomId ) {
+                cancelReservationEditing();
                 fetchRoomListDataAndReservationListData(roomId);
             });
             /* Fetch diary data - rooms & reservations.
