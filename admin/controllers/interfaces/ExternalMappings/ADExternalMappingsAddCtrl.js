@@ -85,7 +85,12 @@ admin.controller('ADExternalMappingsAddCtrl', ['$scope', '$state', '$stateParams
         };
 
         $scope.onChangeMappingType = function() {
+            // Reset the snt_value and ext_value
+            $scope.mapping.snt_value = '';
+            $scope.mapping.ext_value = '';
+            // Map the available values
             $scope.sntValues = _.find(mappingTypes, {name: $scope.mapping.mapping_type}).sntvalues;
+            $scope.extValues = _.find(mappingTypes, {name: $scope.mapping.mapping_type}).extvalues;
         };
 
         (function() {

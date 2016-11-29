@@ -15,6 +15,7 @@ admin.controller('ADExternalMappingsEditCtrl', ['$scope', '$state', '$stateParam
 
         $scope.onChangeMappingType = function() {
             $scope.sntValues = _.find(mappingTypes, {name: $scope.mapping.mapping_type}).sntvalues;
+            $scope.extValues = _.find(mappingTypes, {name: $scope.mapping.mapping_type}).extvalues;
         };
 
         $scope.onClickDeleteMapping = function() {

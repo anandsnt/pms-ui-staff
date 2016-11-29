@@ -33,10 +33,25 @@
                                   list="sntValues"
                                   label="{{'SNT_VALUE'| translate}}"
                                   div-class="full-width">
+                    <ad-textbox inputtype="text"
+                                ng-if="sntValues.length === 0"
+                                value="mapping.snt_value"
+                                label="{{'SNT_VALUE'| translate}}"
+                                styleclass="full-width"></ad-textbox>
                 </ad-dropdown-name>
             </fieldset>
             <fieldset class="holder right">
+                <ad-dropdown-name savemodel="mapping.ext_value"
+                                  ng-if="extValues.length > 0"
+                                  valueproperty="description"
+                                  property="name"
+                                  label-in-drop-down="Select Value"
+                                  list="extValues"
+                                  label="{{'EXTERNAL_VALUE'| translate}}"
+                                  div-class="full-width">
+                </ad-dropdown-name>
                 <ad-textbox inputtype="text"
+                            ng-if="extValues.length === 0"
                             value="mapping.ext_value"
                             label="{{'EXTERNAL_VALUE'| translate}}"
                             styleclass="full-width"></ad-textbox>
