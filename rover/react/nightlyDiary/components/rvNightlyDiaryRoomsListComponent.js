@@ -4,7 +4,7 @@ const NightlyDiaryRoomsListComponent = ({ roomListToComponent }) =>
             <div className="grid-rooms">
             {
                 roomListToComponent.map((item) =>
-                    <div className="room">
+                    <div className={item.main_room_class}>
                     {/* <!-- Add className 'highlighted' if jumped to this room -->*/}
                         <span className={item.room_class}>{item.room_no}</span>
                         <span className="room-type">{item.room_type_name}</span>
