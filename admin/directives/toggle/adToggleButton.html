@@ -1,6 +1,6 @@
 <div class="entry {{divClass}}" ng-hide="isHide">
 	<label ng-class="{'help-space':description}" ng-hide="label.length ==0" for="">{{label}}</label>
-	<span ng-class="{'no-tip':!description}">
+	<span ng-if="description">
 		<div class="help-tip">
 			<p>{{description}}</p>
 		</div>
