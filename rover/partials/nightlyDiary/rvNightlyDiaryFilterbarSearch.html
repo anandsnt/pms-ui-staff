@@ -21,7 +21,7 @@
                         <div class="data">
                             <span class="guest-status small-icon" ng-class="getReservationClass(row.reservation_status)"></span> <!-- _future_reservation_condition_here -->
                             <div class="information" ng-class = "{'with-card': escapeNull(row.company)!=='' || escapeNull(row.travel_agent)!=='' || escapeNull(row.group)!=='' || escapeNull(row.allotment)!==''}"> 
-                                <span class="name" ng-show="escapeNull(row.lastname) !== '' || escapeNull(row.firstname) !== ''" ng-bind-html="getGuestName(row.firstname, row.lastname)| highlightWords:searchWords"></span>
+                                <span class="name" ng-show="escapeNull(row.lastname) !== '' || escapeNull(row.firstname) !== ''" ng-bind-html="getGuestName(escapeNull(row.firstname), escapeNull(row.lastname))| highlightWords:searchWords"></span>
                                 <span class="name" ng-class = "{'pending': escapeNull(row.lastname)=== '' && escapeNull(row.firstname)=== ''}" translate="" ng-if = "escapeNull(row.lastname)=== '' && escapeNull(row.firstname)=== ''">PENDING</span>
 
 
