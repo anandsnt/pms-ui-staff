@@ -26,11 +26,11 @@ admin.controller('adFilterTableController', ['$scope', 'ngTableParams', '$inject
         };
 
         /**
-         * [processSelectedRooms remove the unselected item]
+         * [processSelectedItems remove the unselected item]
          * @param  {[type]} itemIds [description]
          * @return {[type]}         [description]
          */
-        var processSelectedRooms = function(itemIds, currentPageList) {
+        var processSelectedItems = function(itemIds, currentPageList) {
 
             var selectedRooms = _.where(currentPageList, {
                     isSelected: true
@@ -71,9 +71,9 @@ admin.controller('adFilterTableController', ['$scope', 'ngTableParams', '$inject
          */
         var updateDataSet = function() {
             if ($scope.selectionConfig.activeTab === "SELECTED") {
-                $scope.filterConfig.selectedExcludedRoomIds = processSelectedRooms($scope.filterConfig.selectedExcludedRoomIds, $scope.data);
+                $scope.filterConfig.selectedExcludedIds = processSelectedItems($scope.filterConfig.selectedExcludedIds, $scope.data);
             } else {
-                $scope.filterConfig.unSelectedExcludedRoomIds = processSelectedRooms($scope.filterConfig.unSelectedExcludedRoomIds, $scope.data);
+                $scope.filterConfig.unSelectedExcludedIds = processSelectedItems($scope.filterConfig.unSelectedExcludedIds, $scope.data);
             }
         };
 
@@ -121,11 +121,11 @@ admin.controller('adFilterTableController', ['$scope', 'ngTableParams', '$inject
                     if ($scope.selectionConfig.activeTab === "SELECTED") {
                         // set the isSelected Flag for items if in already
                         // selected list
-                        $scope.data = handleCurrentSelectedPage($scope.filterConfig.selectedExcludedRoomIds, $scope.data);
+                        $scope.data = handleCurrentSelectedPage($scope.filterConfig.selectedExcludedIds, $scope.data);
                         // $scope.selectionConfig.noOfItemsSelected = data.total_count;
                         $scope.filterConfig.noOfItemsSelected = data.total_count;
                     } else {
-                        $scope.data = handleCurrentSelectedPage($scope.filterConfig.unSelectedExcludedRoomIds, $scope.data);
+                        $scope.data = handleCurrentSelectedPage($scope.filterConfig.unSelectedExcludedIds, $scope.data);
                     }
                     $scope.currentPage = params.page();
                     params.total(data.total_count);
@@ -163,8 +163,8 @@ admin.controller('adFilterTableController', ['$scope', 'ngTableParams', '$inject
         $scope.loadTable();
 
         $scope.$on('SAVE_SETTINGS_SUCCESS', function() {
-            $scope.filterConfig.selectedExcludedRoomIds = [];
-            $scope.filterConfig.unSelectedExcludedRoomIds = [];
+            $scope.filterConfig.selectedExcludedIds = [];
+            $scope.filterConfig.unSelectedExcludedIds = [];
             $scope.selectionConfig.activeTab = "SELECTED";
             $scope.reloadTable();
         });
