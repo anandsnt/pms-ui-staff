@@ -9,7 +9,7 @@ const mapStateToNightlyDiaryReservationContainerProps = (state, ownProps) => ({
 // //   mapStateToNightlyDiaryReservationsListContainerProps
 // // )(NightlyDiaryReservationsListComponent);
 
-const mapDispatchToNightlyDiaryReservationContainerProps = (stateProps, dispatchProps, ownProps) => {
+const mapDispatchToNightlyDiaryReservationContainerProps = (stateProps, dispatchProps) => {
     //  let clickedRate = stateProps;
     //  let dis = dispatchProps;
     //  let own = ownProps;

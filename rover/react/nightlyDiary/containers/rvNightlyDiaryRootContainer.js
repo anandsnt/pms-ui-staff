@@ -4,8 +4,8 @@ const {connect} = ReactRedux;
 * @return {Bool} visibility status of next Button
 */
 const getNextPageButtonStatus = function(state) {
-	var totalCount = state.paginationData.total_count,
-	perPage = state.paginationData.per_page,
+	var totalCount = state.paginationData.totalCount,
+	perPage = state.paginationData.perPage,
 	page = state.paginationData.page;
 
 	if ((perPage * page) < totalCount) {
@@ -37,11 +37,30 @@ const getClassForRootDiv = function(state) {
 	}
 	return 'grid-content scrollable';
 };
+var getRoomIndex = function (selectedRoomId, roomsList) {   
+    return _.findLastIndex(roomsList, {
+        id: selectedRoomId
+    });
+};
+
+var calculateScrollIndex = function(state) {
+    var roomindex = getRoomIndex(state.paginationData.selectedRoomId, state.roomsList);
+
+    // There is no room selected, so move to top
+    if (roomindex === -1 ) {
+        return 0;
+    }
+    if (getPrevPageButtonStatus(state)) {
+        return roomindex + 1;
+    }
+    return roomindex;   
+};             
 
 const mapStateToNightlyDiaryRootContainerProps = (state) => ({
     showNextPageButton: getNextPageButtonStatus(state),
     showPrevPageButton: getPrevPageButtonStatus(state),
     ClassForRootDiv: getClassForRootDiv(state),
+    index: calculateScrollIndex(state),
     page: state.paginationData.page
 });
 
