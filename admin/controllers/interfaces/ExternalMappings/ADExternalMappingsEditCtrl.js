@@ -49,7 +49,7 @@ admin.controller('ADExternalMappingsEditCtrl', ['$scope', '$state', '$stateParam
             });
 
             if (!mappingTypes.length) {
-                $scope.errorMessage = ['ERROR! No mapping types configured']
+                $scope.errorMessage = ['ERROR! No mapping types configured'];
                 return;
             }
 
