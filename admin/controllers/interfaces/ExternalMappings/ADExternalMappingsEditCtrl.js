@@ -13,6 +13,11 @@ admin.controller('ADExternalMappingsEditCtrl', ['$scope', '$state', '$stateParam
             });
         };
 
+        $scope.onChangeMappingType = function() {
+            $scope.sntValues = _.find(mappingTypes, {name: $scope.mapping.mapping_type}).sntvalues;
+            $scope.extValues = _.find(mappingTypes, {name: $scope.mapping.mapping_type}).extvalues;
+        };
+
         $scope.onClickDeleteMapping = function() {
             $scope.callAPI(ADInterfaceMappingSrv.deleteMappingWithId, {
                 params: {
@@ -43,10 +48,15 @@ admin.controller('ADExternalMappingsEditCtrl', ['$scope', '$state', '$stateParam
                 });
             });
 
-            $scope.mappingTypes = mappingTypes;
-            $scope.sntValues = mappingTypes[0].sntvalues;
+            if (!mappingTypes.length) {
+                $scope.errorMessage = ['ERROR! No mapping types configured'];
+                return;
+            }
 
+            $scope.mappingTypes = mappingTypes;
             $scope.mapping = mapping;
+
+            $scope.onChangeMappingType();
 
             $scope.interface = {
                 name: $stateParams.interface_name,

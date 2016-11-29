@@ -2,7 +2,7 @@
     <header class="content-title float">
         <h2>New {{interface.name}} mapping</h2>
         <a ng-click="navigateBack()" class="action back" translate>BACK</a>
-        <div class="actions float pull-right">
+        <div class="actions float pull-right" ng-if="mapping.mapping_type === 'ROOM_NUMBER'">
             <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleMappingMode('MANUAL')"
                     ng-class="{'orange' : interface.activeTab === 'MANUAL', 'white' : interface.activeTab !== 'MANUAL'}">
                 MAP MANUALLY
@@ -25,6 +25,7 @@
             </fieldset>
             <fieldset class="holder left">
                 <ad-dropdown-name savemodel="mapping.mapping_type"
+                                  change-handler="onChangeMappingType"
                                   valueproperty="name"
                                   property="text"
                                   label-in-drop-down="Select Mapping Type"
@@ -35,6 +36,7 @@
             </fieldset>
             <fieldset class="holder left">
                 <ad-dropdown-name savemodel="mapping.snt_value"
+                                  ng-if="sntValues.length > 0"
                                   valueproperty="description"
                                   property="name"
                                   label-in-drop-down="Select Value"
@@ -42,9 +44,24 @@
                                   label="{{'SNT_VALUE'| translate}}"
                                   div-class="full-width">
                 </ad-dropdown-name>
+                <ad-textbox inputtype="text"
+                            ng-if="sntValues.length === 0"
+                            value="mapping.snt_value"
+                            label="{{'SNT_VALUE'| translate}}"
+                            styleclass="full-width"></ad-textbox>
             </fieldset>
             <fieldset class="holder right">
+                <ad-dropdown-name savemodel="mapping.ext_value"
+                                  ng-if="extValues.length > 0"
+                                  valueproperty="description"
+                                  property="name"
+                                  label-in-drop-down="Select Value"
+                                  list="extValues"
+                                  label="{{'EXTERNAL_VALUE'| translate}}"
+                                  div-class="full-width">
+                </ad-dropdown-name>
                 <ad-textbox inputtype="text"
+                            ng-if="extValues.length === 0"
                             value="mapping.ext_value"
                             label="{{'EXTERNAL_VALUE'| translate}}"
                             styleclass="full-width"></ad-textbox>
