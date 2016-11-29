@@ -26,8 +26,8 @@ admin.controller('ADExternalMappingsAddCtrl', ['$scope', '$state', '$stateParams
                 column_width: 'width-40',
                 mappedKey: 'room_type_name'
             },
-            selectedExcludedRoomIds: [],
-            unSelectedExcludedRoomIds: [],
+            selectedExcludedIds: [],
+            unSelectedExcludedIds: [],
             apiService: 'ADInterfaceMappingSrv',
             serviceMethodName: 'fetchUnMappedRooms',
             serviceMethodParams: {
@@ -47,7 +47,7 @@ admin.controller('ADExternalMappingsAddCtrl', ['$scope', '$state', '$stateParams
                     prefix: $scope.auto.prefix,
                     remove_char: $scope.auto.removeFirst,
                     all_unmapped_rooms: $scope.auto.all,
-                    room_no: $scope.unmappedRoomsFilterConfig.selectedExcludedRoomIds
+                    room_no: $scope.unmappedRoomsFilterConfig.selectedExcludedIds
                 },
                 onSuccess: function() {
                     $scope.navigateBack();
