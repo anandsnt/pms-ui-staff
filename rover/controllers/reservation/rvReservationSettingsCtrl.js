@@ -101,6 +101,12 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             $scope.setNumberOfNights();
             initStayDates(0);
             $scope.stayDatesClicked();
+
+            if ($scope.groupConfigData !== undefined) {
+                if ($scope.reservationData.arrivalDate < $scope.groupConfigData.summary.block_from || $scope.reservationData.departureDate > $scope.groupConfigData.summary.block_to) {
+                    clearGroupSelection();
+                }
+            }
         };
 
 
@@ -109,8 +115,20 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             $scope.setNumberOfNights();
             initStayDates(0);
             $scope.stayDatesClicked();
-        };
 
+            if ($scope.groupConfigData !== undefined) {
+                if ($scope.reservationData.arrivalDate < $scope.groupConfigData.summary.block_from || $scope.reservationData.departureDate > $scope.groupConfigData.summary.block_to) {
+                    clearGroupSelection();
+                }
+            }
+        };
+        var clearGroupSelection = function() {
+            if ( $scope.reservationData.group && $scope.reservationData.group.id) {
+               $scope.reservationData.group = {};
+               $scope.companySearchText = "";
+               $scope.codeSearchText = "";
+            }
+        };
         $scope.setDepartureDate = function() {
 
             var dateOffset = $scope.reservationData.numNights;
