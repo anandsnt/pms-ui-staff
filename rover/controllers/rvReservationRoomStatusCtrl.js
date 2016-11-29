@@ -91,9 +91,12 @@ angular.module('sntRover').controller('reservationRoomStatus',
 
 
 	$scope.showKeysButton = function(reservationStatus) {
+        var keySettings = $scope.reservationData.reservation_card.key_settings;
+
 		var showKey = false;
 
-		if ((reservationStatus === 'CHECKING_IN' && $scope.reservationData.reservation_card.room_number !== '') || reservationStatus === 'CHECKING_OUT' || reservationStatus === 'CHECKEDIN') {
+        // Check if no key encode as per CICO-29735
+		if (keySettings !== "no_key_encode" && ((reservationStatus === 'CHECKING_IN' && $scope.reservationData.reservation_card.room_number !== '') || reservationStatus === 'CHECKING_OUT' || reservationStatus === 'CHECKEDIN')) {
 			showKey = true;
 		}
                 // then check if the current user has permission
