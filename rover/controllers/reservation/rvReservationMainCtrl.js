@@ -963,7 +963,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
 
                     depositAmount = data.results.deposit_amount;
-                    var isOutOfCancellationPeriod = (typeof data.results.cancellation_policy_id !== 'undefined');
+                    var isOutOfCancellationPeriod = !data.results.is_inside_cancellation_period;
 
                     if (isOutOfCancellationPeriod) {
                         if (data.results.penalty_type === 'day') {
