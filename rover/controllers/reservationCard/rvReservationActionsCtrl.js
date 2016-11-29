@@ -629,7 +629,7 @@ sntRover.controller('reservationActionsController', [
 
 
 					depositAmount = data.results.deposit_amount;
-					var isOutOfCancellationPeriod = !!data.results.cancellation_policy_id;
+					var isOutOfCancellationPeriod = !data.results.is_inside_cancellation_period;
 
 					if (isOutOfCancellationPeriod) {
 						if (data.results.penalty_type === 'day') {
