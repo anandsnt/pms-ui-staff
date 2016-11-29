@@ -24,7 +24,7 @@ angular.module('sntRover')
 
             BaseCtrl.call(this, $scope);
 
-            
+
         /**
          * utility method Initiate controller
          * @return {}
@@ -50,8 +50,7 @@ angular.module('sntRover')
             $scope.diaryData = {
                 datesGridData: datesList,
                 businessDate: $rootScope.businessDate,
-                diaryRoomsList: roomsList,
-                reservationList: [],
+                diaryRoomsList: roomsList.rooms,
                 numberOfDays: srvParams.no_of_days,
                 fromDate: srvParams.start_date,
                 toDate: '',
@@ -64,7 +63,7 @@ angular.module('sntRover')
                 hasMultipleMonth: false,
                 firstMonthDateList: [],
                 secondMonthDateList: [],
-                reservationsList: reservationsList.reservationsList,
+                reservationsList: reservationsList,
                 hasOverlay: false,
                 isEditReservationMode : false
             };
@@ -124,7 +123,7 @@ angular.module('sntRover')
          * Handle Prev Button in Dairy.
          * @return {}
          */
-        var goToNextPage = ()=>{
+        var goToNextPage = () => {
             cancelReservationEditing();
             $scope.diaryData.paginationData.page++;
             fetchRoomListDataAndReservationListData();
@@ -133,12 +132,21 @@ angular.module('sntRover')
          * Show selected reservation highlighted and enable edit bar
          * @param reservation - Current selected reservation
          */
-        var selectReservation = (e, reservation)=>{
+        var selectReservation = (e, reservation) => {
             $scope.diaryData.isEditReservationMode = true;
             $scope.currentSelectedReservation = reservation;
-            console.log($scope.currentSelectedReservation);
+            //console.log($scope.currentSelectedReservation);
             $scope.$apply();
+            updateDiaryView();
+            //showReservationSelectedColor(reservation);
         };
+        //  var showReservationSelectedColor = function(reservation) {
+        //     var dispatchData = {
+        //         type: 'RESERVATION_SELECTED',
+        //         selectReservationId : reservation.id
+        //     };
+        //     store.dispatch(dispatchData);
+        // };
         /*
          * Function to cancel editing of a reservation
          */
@@ -189,7 +197,8 @@ angular.module('sntRover')
                 initialDayOfDateGrid: $scope.diaryData.fromDate,
                 currentBusinessDate: $rootScope.businessDate,
                 callbackFromAngular: getTheCallbacksFromAngularToReact(),
-                paginationData: getPaginationParams()
+                paginationData: getPaginationParams(),
+                selectReservationId: $scope.currentSelectedReservation.id
             };
             store.dispatch(dispatchData);
         };
