@@ -78,7 +78,7 @@ angular.module('sntRover')
                 $scope.diaryData.datesGridData = data.dateList;
                 $scope.$broadcast('FETCH_COMPLETED_DATE_LIST_DATA');
                 updateDiaryView();
-                if(!!roomId) {
+                if (roomId) {
                     $scope.$broadcast('CLOSE_SEARCH_RESULT');
                 }
             },
@@ -87,7 +87,7 @@ angular.module('sntRover')
                 'start_date': $scope.diaryData.fromDate,
                 'no_of_days': $scope.diaryData.numberOfDays
             };
-            if(!!roomId) {
+            if (roomId) {
                 postData.room_id = roomId;
             }
             $scope.invokeApi(RVNightlyDiarySrv.fetchRoomsListAndReservationList, postData, successCallBackFetchRoomList);
