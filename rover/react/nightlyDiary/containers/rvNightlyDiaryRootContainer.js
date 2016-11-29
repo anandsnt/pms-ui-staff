@@ -37,13 +37,23 @@ const getClassForRootDiv = function(state) {
 	}
 	return 'grid-content scrollable';
 };
+var getRoomIndex = function (selectedRoomId, roomsList) {   
+    if (selectedRoomId) {
+        for ( var i = 0; i <  roomsList.length; i++) {
+            if (roomsList[i].id === selectedRoomId) {
+                    return i;
+                }
+            }
+        }
+        return 0;
+    };                
 
 const mapStateToNightlyDiaryRootContainerProps = (state) => ({
     showNextPageButton: getNextPageButtonStatus(state),
     showPrevPageButton: getPrevPageButtonStatus(state),
     ClassForRootDiv: getClassForRootDiv(state),
-    page: state.paginationData.page,
-    scrollX: 20
+    testValue: getRoomIndex(state.paginationData.selectedRoomId, state.roomsList),
+    page: state.paginationData.page
 });
 
 const mapDispatchToNightlyDiaryGoToPreviousPageButtonContainer = (stateProps) => {
