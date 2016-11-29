@@ -217,7 +217,8 @@ sntRover.controller('RVbillCardController',
 			_.each(chargeCodes, function(chargeCode, index) {
 				if (chargeCode.isSelected) {
 					if(chargeCode.is_group_by_ref) {
-						$scope.moveChargeData.selectedTransactionIds.concat(chargeCode.ids);
+						var concatObject = $scope.moveChargeData.selectedTransactionIds.concat(chargeCode.item_ids);
+						$scope.moveChargeData.selectedTransactionIds = concatObject;
 					}
 					else {
 						$scope.moveChargeData.selectedTransactionIds.push(chargeCode.id);
