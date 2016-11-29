@@ -41,7 +41,8 @@ angular
             },
             roomsList: function(RVNightlyDiarySrv, $rootScope, diaryAssets, $stateParams) {
                 var params = {};
-                if($stateParams.isFromStayCard) {
+
+                if ($stateParams.isFromStayCard) {
                     params = RVNightlyDiarySrv.getCache();
                 }
                 else {
@@ -52,7 +53,8 @@ angular
             },
             datesList: function(RVNightlyDiarySrv, $rootScope, diaryAssets, $stateParams) {
                 var params = {};
-                if($stateParams.isFromStayCard) {
+
+                if ($stateParams.isFromStayCard) {
                     params = RVNightlyDiarySrv.getCache();
                 }
                 else {
@@ -69,7 +71,7 @@ angular
             reservationsList: function(RVNightlyDiarySrv, $rootScope, diaryAssets, $stateParams) {
                 var params = {};
                 
-                if($stateParams.isFromStayCard) {
+                if ($stateParams.isFromStayCard) {
                     params = RVNightlyDiarySrv.getCache();
                 }
                 else {
