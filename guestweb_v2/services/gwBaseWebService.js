@@ -1,4 +1,4 @@
-sntGuestWeb.service('GWBaseWebSrv',['$http', '$q', '$window', function($http, $q, $window){
+sntGuestWeb.service('GWBaseWebSrv', ['$http', '$q', '$window', function($http, $q, $window) {
 
     /**
     *   A http requester method for calling webservice
@@ -9,46 +9,48 @@ sntGuestWeb.service('GWBaseWebSrv',['$http', '$q', '$window', function($http, $q
     */
 
 
-	this.callWebService = function(httpMethod, url, params){
+	this.callWebService = function(httpMethod, url, params) {
 
 		var deferred = $q.defer();
-		if(typeof params === "undefined"){
+
+		if (typeof params === "undefined") {
 			params = "";
 		}
 
-		//Sample params {params:{fname: "fname", lname: "lname"}}
+		// Sample params {params:{fname: "fname", lname: "lname"}}
 		var httpDict = {};
+
  		httpDict.url = url;
  		httpDict.method = httpMethod;
- 		if(httpMethod === 'GET' || httpMethod === 'DELETE'){
+ 		if (httpMethod === 'GET' || httpMethod === 'DELETE') {
  			httpDict.params = params;
  		}
- 		else if(httpMethod === 'POST' || httpMethod === 'PUT'){
+ 		else if (httpMethod === 'POST' || httpMethod === 'PUT') {
  			httpDict.data = params;
-  		};
+  		}
 
 		$http(httpDict).success(function(response, status) {
-	    	if(response.status === "success"){
+	    	if (response.status === "success") {
 		    	deferred.resolve(response.data);
-			}else{
+			} else {
 				// please note the type of error expecting is array
 		    	deferred.reject(response.errors);
 			}
 		}).error(function(errors, status) {
 			// please note the type of error expecting is array
 			// so form error as array if you modifying it
-			if(status === 406){ // 406- Network error
+			if (status === 406) { // 406- Network error
 				deferred.reject(errors);
 			}
-			else if(status === 500){ // 500- Internal Server Error
+			else if (status === 500) { // 500- Internal Server Error
 				deferred.reject(['Internal server error occured']);
-			}else if(status === 501 || status === 502 || status === 503){ // 500- Internal Server Error
+			} else if (status === 501 || status === 502 || status === 503) { // 500- Internal Server Error
 				$window.location.href = '/500' ;
 			}
-			else if(status === 401){ // 401- Unauthorized
+			else if (status === 401) { // 401- Unauthorized
 				// so lets redirect to login page
 				$window.location.href = '/logout' ;
-			}else{
+			} else {
 				deferred.reject(errors);
 			}
 
@@ -56,19 +58,19 @@ sntGuestWeb.service('GWBaseWebSrv',['$http', '$q', '$window', function($http, $q
 		return deferred.promise;
 	};
 
-   	this.getJSON = function(url, params){
+   	this.getJSON = function(url, params) {
     	return this.callWebService('GET', url, params);
    	};
 
-   	this.putJSON = function(url, params){
+   	this.putJSON = function(url, params) {
    		return this.callWebService('PUT', url, params);
    	};
 
-   	this.postJSON = function(url, params){
+   	this.postJSON = function(url, params) {
    		return this.callWebService('POST', url, params);
    	};
 
-   	this.deleteJSON = function(url, params){
+   	this.deleteJSON = function(url, params) {
    		return this.callWebService('DELETE', url, params);
    	};
 

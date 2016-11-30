@@ -1,18 +1,18 @@
-admin.controller('ADItemListCtrl', ['$scope','ADItemSrv', 'ngTableParams', '$filter', function($scope, ADItemSrv, ngTableParams, $filter){
+admin.controller('ADItemListCtrl', ['$scope', 'ADItemSrv', 'ngTableParams', '$filter', function($scope, ADItemSrv, ngTableParams, $filter) {
    /*
 	* Controller class for Room List
 	*/
 	$scope.errorMessage = '';
-	//inheriting from base controller
+	// inheriting from base controller
 	BaseCtrl.call(this, $scope);
    /*
     * Success call back of fetch
     * @param {object} items list
     */
-	var fetchSuccessOfItemList = function(data){
+	var fetchSuccessOfItemList = function(data) {
 		$scope.$emit('hideLoader');
 		$scope.data = data;
-		//applying sorting functionality in item list
+		// applying sorting functionality in item list
 		$scope.itemList = new ngTableParams({
 		        page: 1,            // show first page
 		        count: $scope.data.items.length,    // count per page - Need to change when on pagination implemntation
@@ -26,12 +26,13 @@ admin.controller('ADItemListCtrl', ['$scope','ADItemSrv', 'ngTableParams', '$fil
 		            var orderedData = params.sorting() ?
 		                                $filter('orderBy')($scope.data.items, params.orderBy()) :
 		                                $scope.data.items;
+
 		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 		        }
 		    });
 	};
 
-	//To list items
+	// To list items
 	$scope.invokeApi(ADItemSrv.fetchItemList, {}, fetchSuccessOfItemList);
 
 	/*
@@ -40,7 +41,7 @@ admin.controller('ADItemListCtrl', ['$scope','ADItemSrv', 'ngTableParams', '$fil
 	* @param {boolean} checked status
 	* will call the web service for toggling status
 	*/
-	$scope.toggleFavourite = function(itemId, isFavourite){
+	$scope.toggleFavourite = function(itemId, isFavourite) {
 		$scope.invokeApi(ADItemSrv.toggleFavourite, {'item_id': itemId, 'toggle_status': isFavourite});
 	};
    /*
@@ -48,9 +49,9 @@ admin.controller('ADItemListCtrl', ['$scope','ADItemSrv', 'ngTableParams', '$fil
     * @param {int} index of the item
     * @param {string} id of the selected item
     */
-	$scope.deleteItem = function(index, id){
+	$scope.deleteItem = function(index, id) {
 
-		var successCallBack = function(){
+		var successCallBack = function() {
 			$scope.$emit('hideLoader');
 			$scope.data.items.splice(index, 1);
 			$scope.itemList = new ngTableParams({
@@ -70,10 +71,12 @@ admin.controller('ADItemListCtrl', ['$scope','ADItemSrv', 'ngTableParams', '$fil
 		            var orderedData = params.sorting() ?
 		                                $filter('orderBy')($scope.data.items, params.orderBy()) :
 		                                $scope.data.items;
+
 		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 		        }
 		    });
 		};
+
 		$scope.invokeApi(ADItemSrv.deleteItem, {'item_id': id}, successCallBack);
 	};
 }]);

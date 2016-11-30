@@ -13,7 +13,7 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 		},
 		hop = Object.prototype.hasOwnProperty;
 
-		if(!(this instanceof Model)) {
+		if (!(this instanceof Model)) {
 			return new Model(params);
 		}
 
@@ -23,8 +23,8 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 			isDirty: defDec(false)
 		});
 
-		for(var k in params) {
-			if(hop.call(params, k)) {
+		for (var k in params) {
+			if (hop.call(params, k)) {
 				this[k] = params[k];
 			}
 		}
@@ -40,14 +40,14 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 	};
 
 	function Time(obj) {
-		if(!(this instanceof Time)) {
+		if (!(this instanceof Time)) {
 			return new Time(obj);
 		}
 
 		obj = (function(val) {
 			var cnv = {};
 
-			if(val.toFixed) {
+			if (val.toFixed) {
 				cnv.milliseconds = val % 1000;
 				cnv.seconds = Math.floor(val / 1000);
 				cnv.minutes =  Math.floor(val / 60000);
@@ -81,7 +81,7 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 
 		time_shift = (this.minutes / interval).toFixed() * interval;
 
-		if(this.minutes > 45.0) {
+		if (this.minutes > 45.0) {
 			this.hours += 1;
 			this.minutes = 0;
 		} else {
@@ -96,7 +96,7 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 	Time.prototype.getOffsetFromReference = function(reference_time) {
 		var sec_delta;
 
-		if(reference_time instanceof Time) {
+		if (reference_time instanceof Time) {
 			sec_delta = this.getTotalMilliseconds() - reference_time.getTotalMilliseconds();
 		} else {
 			throw new Error('invalid parameter');
@@ -118,17 +118,17 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 	};
 	Time.prototype.padZeroes = function(time) {
 		time = +time;
-		return time < 10 ? '0' + time :time;
+		return time < 10 ? '0' + time : time;
 	};
 	Time.prototype.toString = function(asAMPM) {
 		var hours = this.padZeroes(this.hours),
 			min = this.padZeroes(this.minutes),
 			ampm = '';
 
-		if(asAMPM) {
+		if (asAMPM) {
 			hours = hours % 12;
 
-			if(hours === 0) {
+			if (hours === 0) {
 				hours = 12;
 			}
 
@@ -146,15 +146,16 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 			amPM: this.AMPM()
 		};
 
-		if(asObject) {
+		if (asObject) {
 			return ret;
-		}else{
+		} else {
 			return ret.hh + ':' + ret.mm + ' ' + ret.amPM;
 		}
 	};
 
 	Time.prototype.toHourAndMinute = function(seperator, format) {
 		var ret;
+
 		if (typeof format === 'undefined') {
 			format = 12;
 		}
@@ -174,15 +175,15 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 		var pos = time.indexOf(':'),
 		    hours, minutes;
 
-		if(pos > -1) {
+		if (pos > -1) {
 			hours = time.substr(0, pos);
 
-			if(pos < time.length) {
+			if (pos < time.length) {
 				minutes = time.substr(pos + 1);
 			}
 		}
 
-		if(hours && minutes) {
+		if (hours && minutes) {
 			return Time({hours: hours, minutes: minutes});
 		}
 
@@ -231,10 +232,11 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 				monthNameShort: __MONTHS_SHORT[this.getMonth()],
 				year: this.getFullYear(),
 				toDateString: function() {
-					return this.year + '-' + (this.month+1) + '-' + (this.day.length < 2 ? '0' : '') + this.day;
+					return this.year + '-' + (this.month + 1) + '-' + (this.day.length < 2 ? '0' : '') + this.day;
 				},
 				fromDate: function() {
 					var tmp = this.toLocaleDateString().replace(/\//g, '-').split('-').reverse();
+
 					return tmp.shift() + '-' + temp.reverse().join('-');
 				},
 				toShortDateString: function() {

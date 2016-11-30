@@ -25,14 +25,14 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 
 		// keep ref to room details in local scope
 		var $_updateRoomDetails = $scope.$parent.updateRoomDetails;
+
 		$scope.roomDetails = $scope.$parent.roomDetails;
 
 		$scope.taskDetails = $scope.roomDetails.task_details;
-		if($scope.isTaskPresent()) { 
+		if ($scope.isTaskPresent()) { 
 			$scope.currentTask = $scope.taskDetails[0];
 			$scope.currentTaskID = $scope.currentTask.id;
 		}
-
 
 
 		// default cleaning status
@@ -91,7 +91,7 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 				isOOS = room.room_reservation_hk_status === 2;
 			}
 
-			return isOOS? OOSTitle : (isOOO ? OOOTitle : false);
+			return isOOS ? OOSTitle : (isOOO ? OOOTitle : false);
 		};
 
 		// default room HK status
@@ -101,21 +101,21 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 		$scope.checkShow = function(from) {
 			if ( from === 'clean' && ($scope.roomDetails.current_hk_status === 'CLEAN' || $scope.roomDetails.current_hk_status === 'INSPECTED') ) {
 				return true;
-			};
+			}
 
 			if ( from === 'dirty' && $scope.roomDetails.current_hk_status === 'DIRTY' ) {
 				return true;
-			};
+			}
 
 			if ( from === 'pickup' && $scope.roomDetails.current_hk_status === 'PICKUP' ) {
 				return true;
-			};
+			}
 
 			return false;
 		};
 
 		$scope.manualRoomStatusChanged = function() {
-			var callback = function(data){
+			var callback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.refreshScroller('room-status-content');
 				$_updateRoomDetails( 'current_hk_status', $scope.roomDetails.current_hk_status );
@@ -169,7 +169,7 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 			var params = {
 				room_id: $scope.roomDetails.id,
 				work_sheet_id: $scope.currentTask.work_sheet_id,
-				task_id : $scope.currentTask.id
+				task_id: $scope.currentTask.id
 			};
 
 			$scope.invokeApi(RVHkRoomDetailsSrv.postRecordTime, params, callback);
@@ -189,14 +189,14 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 				if ( !!$scope.currentTask.task_completion_status ) {
 					// update 'current_hk_status' to 'task_completion_status', this should call '$scope.manualRoomStatusChanged'
 					$scope.roomDetails.current_hk_status = $scope.currentTask.task_completion_status;
-				};
+				}
 			};
 
 			var params = {
 				room_id: $scope.roomDetails.id,
 				work_sheet_id: $scope.currentTask.work_sheet_id,
-				task_completion_status : $scope.currentTask.task_completion_status_id,
-				task_id : $scope.currentTask.id
+				task_completion_status: $scope.currentTask.task_completion_status_id,
+				task_id: $scope.currentTask.id
 			};
 
 			$scope.invokeApi(RVHkRoomDetailsSrv.postRecordTime, params, callback);

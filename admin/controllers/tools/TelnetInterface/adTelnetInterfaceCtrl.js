@@ -1,4 +1,4 @@
-admin.controller('adTelnetInterfaceCtrl', ['$scope', 'adTelnetInterfaceSrv', function($scope, adTelnetInterfaceSrv){
+admin.controller('adTelnetInterfaceCtrl', ['$scope', 'adTelnetInterfaceSrv', function($scope, adTelnetInterfaceSrv) {
 
     BaseCtrl.call(this, $scope);
 
@@ -28,6 +28,7 @@ admin.controller('adTelnetInterfaceCtrl', ['$scope', 'adTelnetInterfaceSrv', fun
             onSuccess: onTelnetConnectivitySuccess,
             failureCallBack: onTelnetConnectivityFailure
         };
+
         $scope.callAPI(adTelnetInterfaceSrv.testTelnetConnectivity, options);
     };
 

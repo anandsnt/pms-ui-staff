@@ -17,7 +17,7 @@ var TimelineResizeGrip = React.createClass({
 		this.setState({
 			mouse_down: true,
 			origin_x: e.pageX,
-			element_x: page_offset.left -props.display.x_0 - props.iscroll.grid.x
+			element_x: page_offset.left - props.display.x_0 - props.iscroll.grid.x
 		});
 
 	},
@@ -36,15 +36,15 @@ var TimelineResizeGrip = React.createClass({
 			direction = 			props.itemProp,
 			newValue = ((((state.element_x + delta_x) / px_per_ms) + x_origin) / 900000).toFixed() * 900000,
 			opposite =      		((direction === 'departure') ? 'arrival' : 'departure'),
-			isResizable=			this.__whetherResizable( opposite, newValue),
+			isResizable =			this.__whetherResizable( opposite, newValue),
 			last_left;
 
 
-		if(!isResizable){
+		if (!isResizable) {
 			newValue = model[direction];
 		}
 
-		if(!state.resizing &&
+		if (!state.resizing &&
 		   state.mouse_down &&
 		   (Math.abs(delta_x) > 10)) {
 
@@ -56,13 +56,13 @@ var TimelineResizeGrip = React.createClass({
 			});
 
 			this.props.__onResizeCommand(model);
-		} else if(state.resizing) {
+		} else if (state.resizing) {
 			last_left = model[direction];
 
 			model[direction] = newValue;
 
 			this.setState({
-				currentResizeItem: 	model
+				currentResizeItem: model
 			}, function() {
 				props.__onResizeCommand(model);
 			});
@@ -86,7 +86,7 @@ var TimelineResizeGrip = React.createClass({
 		document.removeEventListener(this.mouseLeavingEvent, this.__onMouseUp);
 		document.removeEventListener(this.mouseMovingEvent, this.__onMouseMove);
 
-		if(this.state.resizing) {
+		if (this.state.resizing) {
 			props.iscroll.timeline.enable();
 
 			setTimeout(function() {
@@ -94,9 +94,9 @@ var TimelineResizeGrip = React.createClass({
 			}, 250);
 
 			this.setState({
-				mouse_down: 		false,
-				resizing: 			false,
-				currentResizeItem: 	model
+				mouse_down: false,
+				resizing: false,
+				currentResizeItem: model
 			}, function() {
 				props.__onResizeEnd(state.row, model);
 
@@ -105,26 +105,26 @@ var TimelineResizeGrip = React.createClass({
 		}
 
 	},
-	__whetherResizable: function(opposite, value){
+	__whetherResizable: function(opposite, value) {
 		var props = 				this.props,
 			state =					this.state,
 			original_item = 		state.currentResizeItem,
 			direction = 			props.itemProp.toUpperCase(),
 			fifteenMin =			900000,
 			reservation_status = 	original_item.reservation_status.toUpperCase(),
-			difference	= (opposite === 'departure' ? (original_item[opposite] - value) :(value - original_item[opposite]) );
+			difference	= (opposite === 'departure' ? (original_item[opposite] - value) : (value - original_item[opposite]) );
 
-		if((difference) < (fifteenMin)) {
+		if ((difference) < (fifteenMin)) {
 			return false;
 		}
 		else if ((reservation_status === "RESERVED" || reservation_status === "CHECK-IN" ||
 			reservation_status === "AVAILABLE" )) {
 			return true;
 		}
-		else if ( (reservation_status === "INHOUSE" || reservation_status === "DEPARTED") && direction === "DEPARTURE"){
+		else if ( (reservation_status === "INHOUSE" || reservation_status === "DEPARTED") && direction === "DEPARTURE") {
 			return true;
 		}
-		else if((reservation_status === "INHOUSE" || reservation_status === "DEPARTED") && direction === "ARRIVAL"){
+		else if ((reservation_status === "INHOUSE" || reservation_status === "DEPARTED") && direction === "ARRIVAL") {
 			return false;
 		}
 		return false;
@@ -150,9 +150,9 @@ var TimelineResizeGrip = React.createClass({
 	componentWillUnmount: function() {
   		ReactDOM.findDOMNode(this).removeEventListener(this.mouseStartingEvent, this.__onMouseDown);
   	},
-	componentDidMount: function(){
+	componentDidMount: function() {
 		this.isTouchEnabled 	= 'ontouchstart' in window;
-		this.mouseStartingEvent = this.isTouchEnabled ? 'touchstart': 'mousedown';
+		this.mouseStartingEvent = this.isTouchEnabled ? 'touchstart' : 'mousedown';
 		this.mouseMovingEvent 	= this.isTouchEnabled ? 'touchmove' : 'mousemove';
 		this.mouseLeavingEvent 	= this.isTouchEnabled ? 'touchend'	: 'mouseup';
 
@@ -167,17 +167,19 @@ var TimelineResizeGrip = React.createClass({
 			px_per_ms 	= display.px_per_ms,
 			x_origin 	= display.x_n, // instanceof Date ? display.x_n.getTime() : display.x_n),
 			m 			= props.meta.occupancy;
-		if(!this.state.resizing) {
-			if(!props.currentResizeItem && nextProps.currentResizeItem) {
+
+		if (!this.state.resizing) {
+			if (!props.currentResizeItem && nextProps.currentResizeItem) {
 				model = nextProps.currentResizeItem;
-				if(nextProps.edit.passive) {
+				if (nextProps.edit.passive) {
 					this.setState({
 						mode: model[props.meta.occupancy.id],
 						currentResizeItem: model,
 						currentResizeItemRow: model[props.meta.occupancy.id]
 					});
 					var scrollToPos = (model[m.start_date] - x_origin - 7200000) * px_per_ms;
-					if(scrollToPos < 0){
+
+					if (scrollToPos < 0) {
 						scrollToPos = 0;
 					}
 					props.iscroll.grid.scrollTo(-scrollToPos, 0, 0, 1000);
@@ -188,23 +190,23 @@ var TimelineResizeGrip = React.createClass({
 
 				} else {
 					this.setState({
-						mode: 					undefined,
-						currentResizeItem: 		model,
-						currentResizeItemRow: 	nextProps.currentResizeItemRow
+						mode: undefined,
+						currentResizeItem: model,
+						currentResizeItemRow: nextProps.currentResizeItemRow
 					});
 				}
-			} else if(this.props.currentResizeItem && !nextProps.currentResizeItem) {
+			} else if (this.props.currentResizeItem && !nextProps.currentResizeItem) {
 				this.setState({
-					mode: 					undefined,
-					currentResizeItem: 		undefined,
-					currentResizeItemRow: 	undefined
+					mode: undefined,
+					currentResizeItem: undefined,
+					currentResizeItemRow: undefined
 				});
 			}
-			else if(this.props.currentResizeItem && nextProps.currentResizeItem){
+			else if (this.props.currentResizeItem && nextProps.currentResizeItem) {
 				this.setState({
-					mode: 					undefined,
-					currentResizeItem: 		nextProps.currentResizeItem,
-					currentResizeItemRow: 	nextProps.currentResizeItemRow
+					mode: undefined,
+					currentResizeItem: nextProps.currentResizeItem,
+					currentResizeItemRow: nextProps.currentResizeItemRow
 				});
 			}
 		}
@@ -224,30 +226,33 @@ var TimelineResizeGrip = React.createClass({
 				time_txt            = '';
 
 
-			if(currentResizeItem) {
+			if (currentResizeItem) {
 				var dateDirection = new Date(currentResizeItem[direction]);
+
 				time_txt = dateDirection.toComponents().time.toString(true);
 				var display_start_time = (props.display.x_n instanceof Date ? props.display.x_n : new Date (props.display.x_n) );
 
-				if(display_start_time.isOnDST()===false && dateDirection.isOnDST() ===true ) {
+				if (display_start_time.isOnDST() === false && dateDirection.isOnDST() === true ) {
 					var dateForCalculatingLeft = new Date(currentResizeItem[direction]);
+
 					dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
 					left = (dateForCalculatingLeft.getTime() - x_origin) * px_per_ms;
 
 				}
 
-				else if(display_start_time.isOnDST()===true && dateDirection.isOnDST() ===false ) {
+				else if (display_start_time.isOnDST() === true && dateDirection.isOnDST() === false ) {
 					var dateForCalculatingLeft = new Date(currentResizeItem[direction]);
+
 					dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
 					left = (dateForCalculatingLeft.getTime() - x_origin) * px_per_ms;
-					//The special case adjustment
-					if(dateForCalculatingLeft.isOnDST()){
+					// The special case adjustment
+					if (dateForCalculatingLeft.isOnDST()) {
 						left = (dateForCalculatingLeft.getTime() + 3600000 - x_origin) * px_per_ms;
 					}
 				}
 			}
 
-			if(this.props.edit.active) {
+			if (this.props.edit.active) {
 				classes += " editing";
 			}
 

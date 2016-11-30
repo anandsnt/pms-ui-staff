@@ -1,4 +1,4 @@
-/*FOR POTENTIAL FUTURE USE
+/* FOR POTENTIAL FUTURE USE
 
   Designed to leave a shadow/footprint of where the drag item originated
 */

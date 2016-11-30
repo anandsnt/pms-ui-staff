@@ -1,4 +1,4 @@
-sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog','RVCompanyCardSearchSrv','RVSearchSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog, RVCompanyCardSearchSrv, RVSearchSrv){
+sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$filter', 'RVBillinginfoSrv', 'ngDialog', 'RVCompanyCardSearchSrv', 'RVSearchSrv', function($scope, $rootScope, $filter, RVBillinginfoSrv, ngDialog, RVCompanyCardSearchSrv, RVSearchSrv) {
 	
 	BaseCtrl.call(this, $scope);
 
@@ -10,19 +10,21 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 		$scope.textInQueryBox      = "";
 	  	$scope.isReservationActive = true;
 
-	  	//Setting scroller
+	  	// Setting scroller
 	  	var scrollerOptions = {click: true, preventDefault: false};
+
 	    $scope.setScroller('cards_search_scroller', scrollerOptions);
 	    $scope.setScroller('res_search_scroller', scrollerOptions);
 	    $scope.refreshScroller('cards_search_scroller');
 	    $scope.refreshScroller('res_search_scroller');
 
 	    var scrollerOptions = { preventDefault: false};
+
 	    $scope.setScroller('entities', scrollerOptions);
 
 	    setTimeout(function() {
 	        $scope.refreshScroller('entities');
-	    },500);
+	    }, 500);
 	};
 
     /**
@@ -56,6 +58,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 	    	displayFilteredResultsReservations();
 	   	}
 	   	var queryText = $scope.textInQueryBox;
+
 	   	$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
   	};
 
@@ -91,10 +94,10 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
      */
   	var displayFilteredResultsCards = function() {
 
-	    //show everything, means no filtering
+	    // show everything, means no filtering
 	    if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
 
-			//based on 'is_row_visible' parameter we are showing the data in the template
+			// based on 'is_row_visible' parameter we are showing the data in the template
 			for (var i = 0; i < $scope.searchResults.cards.length; i++) {
 				$scope.searchResults.cards[i].is_row_visible = true;
 			}
@@ -110,8 +113,8 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 			var value = "";
 			var visibleElementsCount = 0;
 
-			//searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
-			//if it is zero, then we will request for webservice
+			// searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
+			// if it is zero, then we will request for webservice
 			for (var i = 0; i < $scope.searchResults.cards.length; i++) {
 				value = $scope.searchResults.cards[i];
 
@@ -141,6 +144,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 			// last hope, we are looking in webservice.
 			if (visibleElementsCount === 0) {
 				var dataDict = {'query': $scope.textInQueryBox.trim()};
+
 				$scope.invokeApi(RVCompanyCardSearchSrv.fetch, dataDict, searchSuccessCards);
 			}
 
@@ -183,13 +187,13 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 
 				excludeActiveReservationFromsSearch();
 		}
-		setTimeout(function(){$scope.refreshScroller('res_search_scroller');}, 750);
+		setTimeout(function() {$scope.refreshScroller('res_search_scroller');}, 750);
 	};
 
 	/**
 	 * failure call back of search result fetch
 	 */
-	var failureCallBackofDataFetch= function(errorMessage) {
+	var failureCallBackofDataFetch = function(errorMessage) {
 		$scope.$emit('hideLoader');
 		$scope.$emit('displayErrorMessage', errorMessage);
 	};
@@ -201,10 +205,10 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
      */
 	var displayFilteredResultsReservations = function() {
 
-	    //show everything, means no filtering
+	    // show everything, means no filtering
 	    if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
 
-	      	//based on 'is_row_visible' parameter we are showing the data in the template
+	      	// based on 'is_row_visible' parameter we are showing the data in the template
 	      	for (var i = 0; i < $scope.searchResults.length; i++) {
 	        	$scope.searchResults.reservations[i].is_row_visible = true;
 	      	}
@@ -224,8 +228,8 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 		    	$scope.searchResults.reservations.length > 0) {
 
 		        var value = "";
-		        //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
-		        //if it is zero, then we will request for webservice
+		        // searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
+		        // if it is zero, then we will request for webservice
 		        var totalCountOfFound = 0;
 
 		        for (var i = 0; i < $scope.searchResults.reservations.length; i++) {
@@ -263,6 +267,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
      */
 	var fetchSearchResults = function() {
 		var dataDict = {'query': $scope.textInQueryBox.trim()};
+
 		if ($rootScope.isSingleDigitSearch && !isNaN($scope.textInQueryBox) && 
 			$scope.textInQueryBox.length < 3) {
 
@@ -297,37 +302,38 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
         if (type === 'RESERVATIONS') {
         	var data = $scope.searchResults.reservations[index];
         	var selectedEntityDetails = {
-			    "attached_charge_codes"   : [],
-			    "attached_billing_groups" : [],
-                "images"                  : data.images,
-                "reservation_status"      : data.reservation_status,
-                "is_opted_late_checkout"  : data.is_opted_late_checkout,
-                "name"                    : data.firstname + " " + data.lastname,
-                "entity_type"             : "RESERVATION",
-                "has_accompanying_guests" : ( data.images.length >1 ) ? true : false,
-                "bill_no"                 : "",
-                "is_new"                  : true,
-                "credit_card_details"     : {},
-                "id"                      : data.id
+			    "attached_charge_codes": [],
+			    "attached_billing_groups": [],
+                "images": data.images,
+                "reservation_status": data.reservation_status,
+                "is_opted_late_checkout": data.is_opted_late_checkout,
+                "name": data.firstname + " " + data.lastname,
+                "entity_type": "RESERVATION",
+                "has_accompanying_guests": ( data.images.length > 1 ) ? true : false,
+                "bill_no": "",
+                "is_new": true,
+                "credit_card_details": {},
+                "id": data.id
 			};
+
 			$scope.setSelectedEntity(selectedEntityDetails, type);
         }
         else if (type === 'ACCOUNT') {
         	var data = $scope.searchResults.cards[index];
         	var selectedEntityDetails = {
-			    "id"                      : data.id,
-			    "name"                    : data.account_name,
-			    "bill_no"                 : "",
-			    "images"                  : [{
-                                            "is_primary":true,
+			    "id": data.id,
+			    "name": data.account_name,
+			    "bill_no": "",
+			    "images": [{
+                                            "is_primary": true,
 		                                    "guest_image": data.company_logo
 		                                  }],
-			    "attached_charge_codes"   : [],
-			    "attached_billing_groups" : [],
-                "is_new"                  : true,
-                "is_allow_direct_debit"   : data.is_allow_direct_debit,
-                "selected_payment"        : "",
-                "credit_card_details"     : {}
+			    "attached_charge_codes": [],
+			    "attached_billing_groups": [],
+                "is_new": true,
+                "is_allow_direct_debit": data.is_allow_direct_debit,
+                "selected_payment": "",
+                "credit_card_details": {}
 			};
 
     		if (data.account_type === 'COMPANY') {
@@ -342,6 +348,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
         else if (type === 'GROUP' || type === 'HOUSE') {
             if ($scope.isRoutingForPostingAccountExist()) {
                 var errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
+
                 $scope.$emit('displayErrorMessage', errorMessage);
                 $scope.billingInfoFlags.isEntitySelected = false;
                 $scope.billingInfoFlags.isInitialPage    = true;
@@ -349,16 +356,17 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
             else {
                 var data = $scope.searchResults.posting_accounts[index];
                 var selectedEntityDetails = {
-                    "id"                      : data.id,
-                    "name"                    : data.account_name,
-                    "bill_no"                 : "",
-                    "attached_charge_codes"   : [],
-                    "attached_billing_groups" : [],
-                    "is_new"                  : true,
-                    "selected_payment"        : "",
-                    "credit_card_details"     : {},
-                    "entity_type"             : data.account_type
+                    "id": data.id,
+                    "name": data.account_name,
+                    "bill_no": "",
+                    "attached_charge_codes": [],
+                    "attached_billing_groups": [],
+                    "is_new": true,
+                    "selected_payment": "",
+                    "credit_card_details": {},
+                    "entity_type": data.account_type
                 };
+
                 $scope.setSelectedEntity(selectedEntityDetails, type);
             }
         }
@@ -370,20 +378,21 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
      * @param {Number} type of entity
      * @return {undefined}
      */
-    $scope.selectAttachedEntity = function(index,type) {
+    $scope.selectAttachedEntity = function(index, type) {
     	$scope.setDefaultRoutingDates();
         $scope.setRoutingDateOptions();
         $scope.billingInfoFlags.isEntitySelected = true;
         $scope.billingInfoFlags.isInitialPage = false;
 
         var selectedEntityDetails = {
-            "bill_no"                 : "",
-            "has_accompanying_guests" : false,
-            "attached_charge_codes"   : [],
-            "attached_billing_groups" : [],
-            "is_new"                  : true,
-            "credit_card_details"     : {}
+            "bill_no": "",
+            "has_accompanying_guests": false,
+            "attached_charge_codes": [],
+            "attached_billing_groups": [],
+            "is_new": true,
+            "credit_card_details": {}
         };
+
         $scope.setSelectedEntity(selectedEntityDetails);
 
         if (type === 'GUEST') {
@@ -395,8 +404,8 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
        		$scope.selectedEntity.is_opted_late_checkout = $scope.reservationData.is_opted_late_checkout;
 
             $scope.selectedEntity.images = [{
-                "is_primary"  : true,
-                "guest_image" : $scope.attachedEntities.primary_guest_details.avatar
+                "is_primary": true,
+                "guest_image": $scope.attachedEntities.primary_guest_details.avatar
             }];
             $scope.selectedEntity.entity_type = "RESERVATION";
         }
@@ -409,8 +418,8 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
         	$scope.selectedEntity.is_opted_late_checkout = $scope.reservationData.is_opted_late_checkout;
 
             $scope.selectedEntity.images = [{
-                "is_primary"   : false,
-                "guest_image"  : $scope.attachedEntities.accompanying_guest_details[index].avatar
+                "is_primary": false,
+                "guest_image": $scope.attachedEntities.accompanying_guest_details[index].avatar
             }];
 
             $scope.selectedEntity.has_accompanying_guests = true;
@@ -421,8 +430,8 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
             $scope.selectedEntity.name = $scope.attachedEntities.company_card.name;
 
             $scope.selectedEntity.images = [{
-                "is_primary"  : true,
-                "guest_image" : $scope.attachedEntities.company_card.logo
+                "is_primary": true,
+                "guest_image": $scope.attachedEntities.company_card.logo
             }];
             $scope.selectedEntity.entity_type = "COMPANY_CARD";
             $scope.selectedEntity.is_allow_direct_debit = $scope.attachedEntities.company_card.is_allow_direct_debit;
@@ -432,15 +441,16 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
             $scope.selectedEntity.name = $scope.attachedEntities.travel_agent.name;
 
             $scope.selectedEntity.images = [{
-                "is_primary":true,
+                "is_primary": true,
                 "guest_image": $scope.attachedEntities.travel_agent.logo
             }];
             $scope.selectedEntity.entity_type = "TRAVEL_AGENT";
             $scope.selectedEntity.is_allow_direct_debit = $scope.attachedEntities.travel_agent.is_allow_direct_debit;
         }
-        else if (type ==='GROUP' || type === 'HOUSE') {
+        else if (type === 'GROUP' || type === 'HOUSE') {
             if ($scope.isRoutingForPostingAccountExist()) {
                 var errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
+
                 $scope.$emit('displayErrorMessage', errorMessage);
                 $scope.billingInfoFlags.isEntitySelected = false;
                 $scope.billingInfoFlags.isInitialPage    = true;

@@ -81,6 +81,7 @@
                     workstation-id="{{workstation_id}}"
                     reservation-id="{{reservationBillData.reservation_id}}"
                     bill-number="renderData.billNumberSelected"
+                    bill-id="reservationBillData.bills[currentActiveBill || 0].bill_id"
                     payment-types="paymentTypes"
                     selected-payment-type="defaultPaymentTypeOfBill"
                     selected-c-c="reservationBillData.bills[currentActiveBill || 0].selectedCC"

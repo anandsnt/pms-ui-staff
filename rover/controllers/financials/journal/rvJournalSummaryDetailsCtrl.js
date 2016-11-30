@@ -1,11 +1,11 @@
-sntRover.controller('RVJournalSummaryDetailsController', ['$scope','$rootScope', 'RVJournalSrv','$timeout',function($scope, $rootScope, RVJournalSrv, $timeout) {
+sntRover.controller('RVJournalSummaryDetailsController', ['$scope', '$rootScope', 'RVJournalSrv', '$timeout', function($scope, $rootScope, RVJournalSrv, $timeout) {
     BaseCtrl.call(this, $scope);
     $scope.errorMessage = "";
 
-    $scope.setScroller('summary_content',{});
+    $scope.setScroller('summary_content', {});
 
     var refreshSummaryScroller = function () {
-        setTimeout(function(){$scope.refreshScroller('summary_content');}, 500);
+        setTimeout(function() {$scope.refreshScroller('summary_content');}, 500);
     };
 
     $scope.$on("INITIALIZESUMMARYDETAILS", function() {
@@ -13,10 +13,10 @@ sntRover.controller('RVJournalSummaryDetailsController', ['$scope','$rootScope',
     });
 
 
-    var getSummaryItemByBalanceType = function( balance_type ){
+    var getSummaryItemByBalanceType = function( balance_type ) {
         var summaryItem = "";
 
-        switch( balance_type ) {
+        switch ( balance_type ) {
             case 'DEPOSIT_BALANCE'  :
                 summaryItem = $scope.details.summaryData.deposit_balance;
                 break;
@@ -30,8 +30,8 @@ sntRover.controller('RVJournalSummaryDetailsController', ['$scope','$rootScope',
         return summaryItem;
     };
 
-    var updateTotalForBalanceType = function( balance_type, opening_balance, debit_sum, credit_sum, closing_balance ){
-        switch( balance_type ) {
+    var updateTotalForBalanceType = function( balance_type, opening_balance, debit_sum, credit_sum, closing_balance ) {
+        switch ( balance_type ) {
             case 'DEPOSIT_BALANCE'  :
                 $scope.details.summaryData.deposit_closing_balance = closing_balance;
                 $scope.details.summaryData.deposit_credits = credit_sum;
@@ -53,23 +53,23 @@ sntRover.controller('RVJournalSummaryDetailsController', ['$scope','$rootScope',
         }
     };
 
-    var initSummaryData = function(){
+    var initSummaryData = function() {
 
-        var successCallBackFetchSummaryData = function(responce){
+        var successCallBackFetchSummaryData = function(responce) {
             $scope.details = {};
             $scope.details.summaryData = {};
             $scope.details.summaryData = responce.data;
 
             // Initializing objetcs for DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE sections.
-            $scope.details.summaryData.deposit_balance = { 'active' : false ,'page_no' : 1,'start' : 1,'end' : 1,'nextAction' : false,'prevAction' : false };
-            $scope.details.summaryData.guest_balance   = { 'active' : false ,'page_no' : 1,'start' : 1,'end' : 1,'nextAction' : false,'prevAction' : false };
-            $scope.details.summaryData.ar_balance      = { 'active' : false ,'page_no' : 1,'start' : 1,'end' : 1,'nextAction' : false,'prevAction' : false };
+            $scope.details.summaryData.deposit_balance = { 'active': false, 'page_no': 1, 'start': 1, 'end': 1, 'nextAction': false, 'prevAction': false };
+            $scope.details.summaryData.guest_balance   = { 'active': false, 'page_no': 1, 'start': 1, 'end': 1, 'nextAction': false, 'prevAction': false };
+            $scope.details.summaryData.ar_balance      = { 'active': false, 'page_no': 1, 'start': 1, 'end': 1, 'nextAction': false, 'prevAction': false };
 
             $scope.errorMessage = "";
 
             fetchBalanceDetails("DEPOSIT_BALANCE", function() {
                 fetchBalanceDetails("GUEST_BALANCE", function() {
-                    fetchBalanceDetails("AR_BALANCE", function(){
+                    fetchBalanceDetails("AR_BALANCE", function() {
                         refreshSummaryScroller();
                         $scope.$emit('hideLoader');
                         $rootScope.$broadcast('PRINTSUMMARY');
@@ -81,6 +81,7 @@ sntRover.controller('RVJournalSummaryDetailsController', ['$scope','$rootScope',
         var params = {
             "date": $scope.data.summaryDate
         };
+
         $scope.invokeApi(RVJournalSrv.fetchSummaryData, params, successCallBackFetchSummaryData);
     };
 
@@ -88,11 +89,11 @@ sntRover.controller('RVJournalSummaryDetailsController', ['$scope','$rootScope',
         @param  {string} will be { DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE }
         @return {object}
      */
-    var fetchBalanceDetails = function( balance_type , callback){
+    var fetchBalanceDetails = function( balance_type, callback) {
 
         var summaryItem = getSummaryItemByBalanceType( balance_type );
 
-        var successCallBackFetchBalanceDetails = function(responce){
+        var successCallBackFetchBalanceDetails = function(responce) {
 
             summaryItem.transactions = [];
             summaryItem.transactions = responce.transactions;
@@ -111,6 +112,7 @@ sntRover.controller('RVJournalSummaryDetailsController', ['$scope','$rootScope',
                 "per_page": 2000, // Giving this value to fetch all the records without making any changes in API
                 "type": balance_type
             };
+
         $scope.invokeApi(RVJournalSrv.fetchBalanceDetails, params, successCallBackFetchBalanceDetails);
 
     };

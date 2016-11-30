@@ -1,116 +1,116 @@
 /* 1. ROOT
 ==========================================================*/
-* {
-    text-shadow: none !important;
-    filter:none !important;
-    -ms-filter: none !important;
-    -webkit-print-color-adjust:exact;
-}
+    * {
+        text-shadow: none !important;
+        filter:none !important;
+        -ms-filter: none !important;
+        -webkit-print-color-adjust:exact;
+    }
 
-@page { margin: 1cm; }
+    @page { margin: 1cm; }
 
-html {
-    #font > .sans-serif(8pt, 400, 1.3);
-    color: @textColor;
-    background: transparent;
-}
+    html {
+        #font > .sans-serif(8pt, 400, 1.3);
+        color: @textColor;
+        background: transparent;
+    }
 
-body { overflow: visible; height:auto; }
+    body { overflow: visible; height:auto; }
 
-#main-menu,
-#availability,
-.logo-hide,
-.text-hide,
-.no-print,
-.numbers-pagination,
-.search-pagination,
-.reservation-tabs-nav,
-.reservation-list,
-.search-form,
-.release-notes { display: none !important; }
+    #main-menu,
+    #availability,
+    .logo-hide,
+    .text-hide,
+    .no-print,
+    .numbers-pagination,
+    .search-pagination,
+    .reservation-tabs-nav,
+    .reservation-list,
+    .search-form,
+    .release-notes { display: none !important; }
 
 /* 2. TYPOGRAPHY
 ==========================================================*/
-p,
-h1, .h1,
-h2, .h2,
-h3, .h3,
-h4, .h4 { orphans: 3; widows: 3; }
+    p,
+    h1, .h1,
+    h2, .h2,
+    h3, .h3,
+    h4, .h4 { orphans: 3; widows: 3; }
 
-h1, .h1,
-h2, .h2,
-h3, .h3,
-h4, .h4 { page-break-after: avoid; }
+    h1, .h1,
+    h2, .h2,
+    h3, .h3,
+    h4, .h4 { page-break-after: avoid; }
 
-q {quotes: none}
-q:before, q:after {content: ""}
+    q {quotes: none}
+    q:before, q:after {content: ""}
 
-a { .no-transition(); }
+    a { .no-transition(); }
 
-table {
-    margin: 0;
-    width: 100%;
-    text-transform: uppercase;
-    table-layout: auto;
-    border-collapse: collapse;
-    border-spacing: 0;
+    table {
+        margin: 0;
+        width: 100%;
+        text-transform: uppercase;
+        table-layout: auto;
+        border-collapse: collapse;
+        border-spacing: 0;
 
-    tr {
-        page-break-inside: avoid;
-        page-break-after: auto;
-
-        th { white-space: normal; }
-
-        th,
-        td {
-            font-size: 8pt;
-            line-height: 1;
-            vertical-align: top;
-            text-align: left;
-            white-space: normal;
-            page-break-after: auto;
+        tr {
             page-break-inside: avoid;
-        }
+            page-break-after: auto;
 
-        th {
-            padding: 4pt 4pt 4pt 0;
+            th { white-space: normal; }
 
-            &:first-child { padding-left: 4pt; }
-            &:last-child { padding-right: 0; }
-        }
-
-        td {
-            padding: 4pt 8pt 4pt 0;
-            border-bottom: 1px solid @grey2;
-
-            /* Fix for line break as first child ***/
-            br {
-                content: "" !important;
-                display: block !important;
+            th,
+            td {
+                font-size: 8pt;
+                line-height: 1;
+                vertical-align: top;
+                text-align: left;
+                white-space: normal;
+                page-break-after: auto;
+                page-break-inside: avoid;
             }
 
-            &:first-child { padding-left: 4pt; }
-            &:last-child { padding-right: 0; }
+            th {
+                padding: 4pt 4pt 4pt 0;
+
+                &:first-child { padding-left: 4pt; }
+                &:last-child { padding-right: 0; }
+            }
+
+            td {
+                padding: 4pt 8pt 4pt 0;
+                border-bottom: 1px solid @grey2;
+
+                /* Fix for line break as first child ***/
+                br {
+                    content: "" !important;
+                    display: block !important;
+                }
+
+                &:first-child { padding-left: 4pt; }
+                &:last-child { padding-right: 0; }
+            }
+
+            &:last-child {
+                td { border-bottom: 0; }
+            }
         }
 
-        &:last-child {
+        thead {
+            tr {
+               th {
+                    font-weight: 600;
+                    background: @grey1;
+                }
+            }
+        }
+
+        tfoot {
             td { border-bottom: 0; }
         }
     }
-
-    thead {
-        tr {
-           th {
-                font-weight: 600;
-                background: @grey1;
-            }
-        }
-    }
-
-    tfoot {
-        td { border-bottom: 0; }
-    }
-}
 
 /* 3. GRAPHICAL ELEMENTS
 ==========================================================*/
@@ -289,6 +289,90 @@ table {
 
 /* 5. COMPONENTS
 ==========================================================*/
+
+/* Availability             ==============================*/
+    
+    /* Hide everything except availability ***/
+    .availability-print {
+        .container,
+        .availability-header,
+        .availability-toggle {
+            display: none !important;
+        }
+
+        #availability {
+            display: block !important;
+        }
+    }
+
+    #availability {
+
+        .dates-grid {
+
+            col {
+                width: 16%;
+                
+                &.grid-col { width: 6%; }
+            }
+
+            th,
+            td {
+                text-align: right;
+                padding: 4pt;
+            }
+
+            thead {
+                th {
+
+                    span {
+                        font-weight: 400;
+                        .show();
+                    }
+
+                    &.heading {
+                        background: transparent;
+                    }
+                }
+            }
+
+            tbody {
+                tr {
+                    th,
+                    td {
+                        border-bottom: 1px solid @grey2;
+                    }
+
+                    &.main {
+                        th,
+                        td {
+                            font-size: 10pt;
+                            font-weight: 600;
+                        }
+                    }
+
+                    &:last-child {
+                        th,
+                        td {
+                            border-bottom: 2px solid @grey2;
+                        }
+                    }
+                }                
+            }
+        }
+
+        /* Reset hidden rows icon and visibility ***/
+        .rows-toggle {
+            background-image: none !important;
+        }
+
+        tr.hidden {
+            display: table-row !important;
+        }
+
+        tr.hide-row {
+            display: none;
+        }
+    }
 
 /* Search                   ==============================*/
     .search-results {
@@ -1963,6 +2047,31 @@ table {
                 }
 
                 &.medium-grid {
+                    thead {
+                        tr {
+                            th {
+                                .switch-button {
+                                     
+                                    .value,
+                                    input {
+                                        .hide();
+                                    }
+                                    
+                                    &:not(.on) {
+                                        .data-on {
+                                            .hide();
+                                        }
+                                    }
+
+                                    &.on {
+                                        .data-off {
+                                            .hide();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                     tbody {
                         tr {
                             &.grouped {
@@ -3488,116 +3597,119 @@ table {
         }
     }
 
-/* Commisions        =============================*/
-.commisions-content {
-    margin: 0 2cm;
-    .commisions-totals {
-        margin-bottom: .5cm;
-        li {
-            margin:0 10pt;
+/* Commisions               ==============================*/
+    .commisions-content {
+        margin: 0 2cm;
+        .commisions-totals {
+            margin-bottom: .5cm;
+            li {
+                margin:0 10pt;
 
-            span {
-                &.amount {
-                    &.red {
-                        color:@grey3;
+                span {
+                    &.amount {
+                        &.red {
+                            color:@grey3;
+                        }
                     }
                 }
             }
+            .check {
+                display: none;
+            }
         }
-        .check {
-            display: none;
-        }
+
+         /* Commision Item***/
+        .commision-item {
+                    position: relative;
+                    .float;
+                    .data {
+                         
+                        width: 40%;
+                        .pull-left();
+                        .meta-data {
+                            display: block;
+                            width: 100%;
+                            clear: both;
+                        }
+
+                        h2 {
+                            line-height: 1;
+                            white-space: normal;
+                            margin-bottom: 6px;
+                            padding-right: 5px;
+                            display: block;
+                            vertical-align: top;
+                        }
+       
+                        .icons {
+                            display: inline;
+                            line-height: 20px;
+                            height: 20px;
+                            overflow: hidden; 
+                        }
+
+                        .icon-hold {
+                            position: absolute;
+                            left: -40px;
+                            top: 0;
+                            bottom: 0;
+                            margin: auto;
+                        }
+
+                        .icons {
+                            color: @grey3;
+                            padding-left: 20px;
+                        }
+
+                        .icon-location,
+                        .icon-guest-travelagent {
+                            background: none;
+                            padding: 0;
+                            display: block;
+                            .pull-left();
+                        }
+
+                        .icon-location {
+                                width: 70%;
+                        }
+                         .icon-guest-travelagent { 
+                                width: 30%;
+                         }
+                    }
+
+                    .info-holder {
+                        float: right;
+                        width: 60%;
+                    }
+
+                    .info {
+                        margin-top: 5px;
+                        text-align: center;
+                        width: 25%;
+                        color: @grey3;
+                        .pull-left;
+
+                        strong {
+                            font-size: 20px;
+                            line-height: 1.25em;
+                            font-weight: 600;
+                            text-transform: uppercase;
+                            color: @textColor;
+                            .show;
+                            &.red { color: @grey3; }
+                        }
+
+                        span {
+                            font-size: 14px;
+                            text-transform: uppercase;
+                        }
+                    }
+                }
     }
 
-     /* Commision Item***/
-    .commision-item {
-                position: relative;
-                .float;
-                .data {
-                     
-                    width: 40%;
-                    .pull-left();
-                    .meta-data {
-                        display: block;
-                        width: 100%;
-                        clear: both;
-                    }
-
-                    h2 {
-                        line-height: 1;
-                        white-space: normal;
-                        margin-bottom: 6px;
-                        padding-right: 5px;
-                        display: block;
-                        vertical-align: top;
-                    }
-   
-                    .icons {
-                        display: inline;
-                        line-height: 20px;
-                        height: 20px;
-                        overflow: hidden; 
-                    }
-
-                    .icon-hold {
-                        position: absolute;
-                        left: -40px;
-                        top: 0;
-                        bottom: 0;
-                        margin: auto;
-                    }
-
-                    .icons {
-                        color: @grey3;
-                        padding-left: 20px;
-                    }
-
-                    .icon-location,
-                    .icon-guest-travelagent {
-                        background: none;
-                        padding: 0;
-                        display: block;
-                        .pull-left();
-                    }
-
-                    .icon-location {
-                            width: 70%;
-                    }
-                     .icon-guest-travelagent { 
-                            width: 30%;
-                     }
-                }
-
-                .info-holder {
-                    float: right;
-                    width: 60%;
-                }
-
-                .info {
-                    margin-top: 5px;
-                    text-align: center;
-                    width: 25%;
-                    color: @grey3;
-                    .pull-left;
-
-                    strong {
-                        font-size: 20px;
-                        line-height: 1.25em;
-                        font-weight: 600;
-                        text-transform: uppercase;
-                        color: @textColor;
-                        .show;
-                        &.red { color: @grey3; }
-                    }
-
-                    span {
-                        font-size: 14px;
-                        text-transform: uppercase;
-                    }
-                }
-            }
-}
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE
 ==========================================================*/
+
+

@@ -76,10 +76,12 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 		$timeout(function() {
 			$scope.$parent.myScroll['leftPanelScroll'].on('scroll', function() {
 				var yPos = this.y;
+
 				$scope.$parent.myScroll['rightPanelScroll'].scrollTo(0, yPos);
 			});
 			$scope.$parent.myScroll['rightPanelScroll'].on('scroll', function() {
 				var yPos = this.y;
+
 				$scope.$parent.myScroll['leftPanelScroll'].scrollTo(0, yPos);
 			});
 
@@ -101,6 +103,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 
 		$scope.getValue = function(key, columnIndex) {
 			var candidate = $scope.results[key][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]];
+
 			if (candidate) {
 				if (!!$scope.chosenLastYear && !!$scope.chosenVariance) {
 					return (columnIndex % 3 === 0) ? candidate.this_year : (columnIndex % 3 === 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
@@ -117,6 +120,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 
 		$scope.getNigtlyValue = function(key, columnIndex) {
 			var candidate = $scope.results.nightly[key][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]];
+
 			if (candidate) {
 				if (!!$scope.chosenLastYear && !!$scope.chosenVariance) {
 					return (columnIndex % 3 === 0) ? candidate.this_year : (columnIndex % 3 === 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
@@ -142,6 +146,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 
 		$scope.getChargeCodeValue = function(chargeGroupIndex, columnIndex) {
 			var candidate = $scope.results.charge_groups[chargeGroupIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]];
+
 			if (candidate) {
 				if (!!$scope.chosenLastYear && !!$scope.chosenVariance) {
 					return (columnIndex % 3 === 0) ? candidate.this_year : (columnIndex % 3 === 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
@@ -173,6 +178,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 
 		$scope.getMarketRevenueValue = function(marketIndex, columnIndex) {
 			var candidate = $scope.results.market_revenue[marketIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]];
+
 			if (candidate) {
 				if (!!$scope.chosenLastYear && !!$scope.chosenVariance) {
 					return (columnIndex % 3 === 0) ? candidate.this_year : (columnIndex % 3 === 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
@@ -196,7 +202,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			// dont init if there is an API error
 			if ( $scope.$parent.errorMessage.length ) {
 				return;
-			};
+			}
 
 			var chosenReport = RVreportsSrv.getChoosenReport();
 
@@ -208,8 +214,8 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			// since we moved these from main controller
 			$scope.markets = chosenReport.hasMarketsList;
 
-			angular.forEach($scope.markets.data,function(marketValue, index){
-				if(marketValue.hasOwnProperty("selected")) {
+			angular.forEach($scope.markets.data, function(marketValue, index) {
+				if (marketValue.hasOwnProperty("selected")) {
 					$scope.marketExists = true;
 					return true;
 				}
@@ -217,9 +223,11 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 
 			// deep check if we have these flags choosen by the user
 			var hasIncludeLastYear = _.find(chosenReport.hasGeneralOptions.data, { paramKey: 'include_last_year' });
+
 			$scope.chosenLastYear = !! hasIncludeLastYear ? hasIncludeLastYear.selected : false;
 
 			var hasIncludeVariance = _.find(chosenReport.hasGeneralOptions.data, { paramKey: 'include_variance' });
+
 			$scope.chosenVariance = !! hasIncludeVariance ? hasIncludeVariance.selected : false;
 
 			$scope.selectedDays = [];
@@ -230,10 +238,9 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			$timeout(function() {
 				refreshScrollers();
 			}, 400);
-		};
+		}
 
 		init();
-
 		
 
 		// re-render must be initiated before for taks like printing.
@@ -253,8 +260,6 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 		$scope.$on( '$destroy', reportPrinting );
 		$scope.$on( '$destroy', reportPageChanged );
 		$scope.$on( '$destroy', reportFilterChanged );
-
-
 
 
 		var detailsCtrlScope = $scope.$parent,
@@ -292,7 +297,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			// diff should be 14 (15 - 1), including fromdate
 			else {
 				allowedDateRange = 14;
-			};
+			}
 
 			// if the current chosen dates are within
 			// the allowedDateRange, dont show pop
@@ -310,16 +315,16 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			// show popup
 			if ( checkDateGap() ) {
 				ngDialog.open({
-					controller      : 'RVOccRevPrintPopupCtrl',
-				    template        : '/assets/partials/reports/occupancyRevenueReport/rvOccRevPrintPopup.html',
-				    className       : 'ngdialog-theme-default',
-				    closeByDocument : true,
-				    scope           : $scope,
-				    data            : []
+					controller: 'RVOccRevPrintPopupCtrl',
+				    template: '/assets/partials/reports/occupancyRevenueReport/rvOccRevPrintPopup.html',
+				    className: 'ngdialog-theme-default',
+				    closeByDocument: true,
+				    scope: $scope,
+				    data: []
 				});
 			} else {
 				$scope.$emit( reportMsgs['REPORT_PRE_PRINT_DONE'] );
-			};
+			}
 		};
 
 		mainCtrlScope.printOptions.afterPrint = function() {
