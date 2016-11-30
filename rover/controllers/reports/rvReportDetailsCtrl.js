@@ -1247,6 +1247,8 @@ sntRover.controller('RVReportDetailsCtrl', [
          */
         $scope.toggleRevenue = function() {
             $scope.isRoomRevenueSelected = !$scope.isRoomRevenueSelected;
+            reportsSrv.setReportRequestParam('showRoomRevenue', $scope.isRoomRevenueSelected);
+            $scope.genReport( false );
         };
 
         /**
