@@ -216,7 +216,14 @@ sntRover.controller('RVbillCardController',
 		if (chargeCodes.length > 0) {
 			_.each(chargeCodes, function(chargeCode, index) {
 				if (chargeCode.isSelected) {
-					$scope.moveChargeData.selectedTransactionIds.push(chargeCode.id);
+					if (chargeCode.is_group_by_ref) {
+						var concatObject = $scope.moveChargeData.selectedTransactionIds.concat(chargeCode.item_ids);
+
+						$scope.moveChargeData.selectedTransactionIds = concatObject;
+					}
+					else {
+						$scope.moveChargeData.selectedTransactionIds.push(chargeCode.id);
+					}
 				}
 		    });
 		    ngDialog.open({
@@ -720,16 +727,21 @@ sntRover.controller('RVbillCardController',
 	  */
 	 $scope.moveToBillAction = function(oldBillValue, feesIndex) {
 	 	var parseOldBillValue = parseInt(oldBillValue) - 1;
-		var newBillValue = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex].billValue;
-		var transactionId = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex].transaction_id;
-		var id  = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex].id;
+	 	var feesDetails = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details;
+		var newBillValue = feesDetails[feesIndex].billValue,
+			transactionId = feesDetails[feesIndex].transaction_id,
+			id  = (feesDetails[feesIndex].id) ? feesDetails[feesIndex].id : null,
+			itemIdList = (feesDetails[feesIndex].item_ids) ? feesDetails[feesIndex].item_ids : [],
+			isGroupByRef = feesDetails[feesIndex].is_group_by_ref;
 		var dataToMove = {
-			"reservation_id": $scope.reservationBillData.reservation_id,
-			"to_bill": newBillValue,
-			"from_bill": oldBillValue,
-			"transaction_id": transactionId,
-			"id": id
+			'reservation_id': $scope.reservationBillData.reservation_id,
+			'to_bill': newBillValue,
+			'from_bill': oldBillValue,
+			'transaction_id': transactionId,
+			'id': id,
+			'item_ids': itemIdList
 		};
+
 		/*
 		 * Success Callback of move action
 		 */
@@ -2677,5 +2689,35 @@ sntRover.controller('RVbillCardController',
     	return (!is_rate_suppressed || $scope.isSRViewRateBtnClicked);
     };
 
+    // Function which fetches and returns the charge details of a grouped charge - CICO-34039.
+    $scope.expandGroupedCharge = function(feesData) {
+        // Success callback for the charge detail fetch for grouped charges.
+        var fetchChargeDataSuccessCallback = function(data) {
+            feesData.light_speed_data = data;
+            feesData.isExpanded = true;
+            $scope.$emit('hideLoader');
+            $scope.calculateHeightAndRefreshScroll();
+        };
+        // Failure callback for the charge detail fetch for grouped charges.
+        var fetchChargeDataFailureCallback = function(errorMessage) {
+            $scope.errorMessage = errorMessage;
+            $scope.emit('hideLoader');
+        };
+
+        // If the flag for toggle is false, perform api call to get the data.
+        if (!feesData.isExpanded) {
+            var params = {
+                'reference_number': feesData.reference_number,
+                'bill_id': $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id
+            };
+            
+            $scope.invokeApi(RVBillCardSrv.groupChargeDetailsFetch, params, fetchChargeDataSuccessCallback, fetchChargeDataFailureCallback);
+        }
+        else {
+            // If the flag for toggle is true, then it is simply reverted to hide the data.
+            feesData.isExpanded = false;
+            $scope.calculateHeightAndRefreshScroll();
+        }
+    };
 
 }]);
