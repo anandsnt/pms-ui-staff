@@ -19,7 +19,7 @@
                 <div class="wrapper">
                     <div class="guest" ng-click="clickedOnResultItem(row.room_id)" ng-repeat = "row in results" ng-class = "{'no-room': escapeNull(row.room) === '', 'no-status': row.reservation_status === 'RESERVED'}">
                         <div class="data">
-                            <span class="guest-status small-icon" ng-class="getReservationClass(row.reservation_status)"></span> <!-- _future_reservation_condition_here -->
+                            <span ng-if="row.reservation_status !== 'RESERVED'" class="guest-status small-icon" ng-class="getReservationClass(row.reservation_status)"></span>
                             <div class="information" ng-class = "{'with-card': escapeNull(row.company)!=='' || escapeNull(row.travel_agent)!=='' || escapeNull(row.group)!=='' || escapeNull(row.allotment)!==''}"> 
                                 <span class="name" ng-show="escapeNull(row.lastname) !== '' || escapeNull(row.firstname) !== ''" ng-bind-html="getGuestName(escapeNull(row.firstname), escapeNull(row.lastname))| highlightWords:searchWords"></span>
                                 <span class="name" ng-class = "{'pending': escapeNull(row.lastname)=== '' && escapeNull(row.firstname)=== ''}" translate="" ng-if = "escapeNull(row.lastname)=== '' && escapeNull(row.firstname)=== ''">PENDING</span>
@@ -33,11 +33,12 @@
 
                                 <span class="icons icon-allotment" ng-if="escapeNull(row.allotment)!==''" ng-bind-html="escapeNull(row.allotment)|highlight:textInQueryBox:false"></span>
                             </div>
+                            <div class="arrival" ng-show = "row.reservation_status === 'RESERVED'">
+                                <span class="guest-status small-icon check-in"></span>
+                                {{ row.arrival_date }}
+                            </div>
                         </div>
-                        <div class="arrival" ng-show = "row.reservation_status === 'RESERVED'">
-                            <span class="guest-status small-icon check-in"></span>
-                            {{ row.arrival_date }}
-                        </div>
+
                         <div class="room" ng-show = "escapeNull(row.room) !== ''">{{ row.room }}
                         </div>
                         <div class="room pending" ng-if = "escapeNull(row.room) === ''">N/A

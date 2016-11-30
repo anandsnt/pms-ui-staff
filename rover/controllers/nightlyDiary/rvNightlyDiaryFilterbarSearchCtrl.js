@@ -80,8 +80,8 @@ angular.module('sntRover')
                 'CHECKEDOUT': 'departed',
                 'CHECKING_OUT': 'check-out',
                 'CHECKEDIN': 'inhouse',
-                'NOSHOW': 'guest-no-show',
-                'NOSHOW_CURRENT': 'guest-no-show'
+                'NOSHOW': 'no-show',
+                'NOSHOW_CURRENT': 'no-show'
             };
 
             if (reservationStatus.toUpperCase() in classes) {
