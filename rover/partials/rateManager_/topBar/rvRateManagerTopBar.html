@@ -18,19 +18,19 @@
             <!-- add ',' for each rate except the last one-->
             <span>{{selectedRateNames.join()}}</span>
             
-        </li>
-        <li class="card" ng-show="selectedAccountName[0]">
-            <strong>{{selectedAccountName.join()}}</strong>
-            <span>{{selectedAddress.join()}}</span>
-        </li>
+        </li>        
+        <li class="card" ng-show="selectedAccountName.length">
+           <strong ng-show="selectedAccountName[0] == null">{{selectedCardNames.join()}}</strong>
+           <strong>{{selectedAccountName.join()}}</strong>
+           <span>{{selectedAddress.join()}}</span>
+       </li>
          
         <!-- show .card if there are any cards selected -->
-        <li class="card" ng-show="selectedCardNames.length" ng-hide="selectedAccountName[0]">
-            <strong>Name Card</strong>
+        <li class="card" ng-hide="selectedAccountName.length">
+           <strong>Name Card</strong>
 
-            <!-- add ',' for each company card,IATA etc except the last one-->
-            <span>{{selectedCardNames.join()}}</span>
-            
+           <!-- add ',' for each company card,IATA etc except the last one-->
+           <span>{{selectedCardNames.join()}}</span>           
         </li>
          
     </ul>
