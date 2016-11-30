@@ -75,7 +75,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 
             } else {
 				// check if socket is open
-                if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
+                if (!_.isUndefined($scope.socketOperator.returnWebSocketObject()) && $scope.socketOperator.returnWebSocketObject().readyState === 1) {
                     $scope.socketOperator.DispenseKey($scope.dispenseKeyData);
                 } else {
                     $scope.$emit('CONNECT_WEBSOCKET'); // connect socket
