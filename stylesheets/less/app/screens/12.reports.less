@@ -2299,6 +2299,12 @@
                                     border-bottom: 0;
                                 }
                             }
+
+                            &.before-total {
+                                td {
+                                    border-bottom: 0;
+                                }
+                            }
                         }
                     }
 
@@ -2372,6 +2378,46 @@
                                         &:last-child { border-bottom: 0; }
                                     }
                                 }
+                            }
+                        }
+                    }
+                }
+
+                &.forecast-group {
+                    thead {
+                        tr {
+                            &.top-row {
+                                th {
+
+                                    font-size: 13px;
+                                }
+                            }
+
+                            &.bottom-row {
+                                th {
+                                    font-size: 12px;
+                                }
+                            }
+                        }
+                    }
+
+                    tbody {
+                        tr {
+                            &.total {
+                             
+                                td {
+                                    border-top: 1px solid @black;
+                                    border-bottom: 1px solid @black;
+
+                                    &.vertical {
+                                        .row {
+                                            strong {
+                                                font-weight: 600;
+                                            }
+                                        }
+                                    }
+                                }
+                                
                             }
                         }
                     }
