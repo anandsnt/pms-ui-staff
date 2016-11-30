@@ -76,7 +76,6 @@ angular.module('sntRover')
             var classes = {
                 'CHECKING_IN': 'check-in',
                 'PRE_CHECKIN': 'pre-check-in',
-                'RESERVED': 'arrival',
                 'CANCELED': 'cancel',
                 'CHECKED_OUT': 'departed',
                 'CHECKING_OUT': 'check-out',
@@ -88,6 +87,7 @@ angular.module('sntRover')
             if (reservationStatus.toUpperCase() in classes) {
                 return classes[reservationStatus.toUpperCase()];
             }
+            return '';
         };
 
         // Watches the query text box to get the list of text for highlight.
