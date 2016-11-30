@@ -492,13 +492,17 @@ sntRover.controller('reservationActionsController', [
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.reservation_id, $scope.reservationData);
 
                         var useAdvancedQueFlow = $rootScope.advanced_queue_flow_enabled;
+                        // as per CICO-29735
+                        var keySettings = $scope.reservationData.reservation_card.key_settings;
 
-                        if (useAdvancedQueFlow) {
+                        if (useAdvancedQueFlow && keySettings !== "no_key_delivery") {
                             $rootScope.$emit('goToStayCardFromAddToQueue');
                             setTimeout(function() {
                                 // then prompt for keys
                                 $rootScope.$broadcast('clickedIconKeyFromQueue');// signals rvReservationRoomStatusCtrl to init the keys popup
                             }, 500);
+                        } else {
+                            $rootScope.$emit('goToStayCardFromAddToQueue');
                         }
 		};
 
@@ -629,7 +633,7 @@ sntRover.controller('reservationActionsController', [
 
 
 					depositAmount = data.results.deposit_amount;
-					var isOutOfCancellationPeriod = !!data.results.cancellation_policy_id;
+					var isOutOfCancellationPeriod = !data.results.is_inside_cancellation_period;
 
 					if (isOutOfCancellationPeriod) {
 						if (data.results.penalty_type === 'day') {
