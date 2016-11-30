@@ -960,7 +960,6 @@ sntZestStation.controller('zsRootCtrl', [
                 $rootScope.workstation_id = $scope.zestStationData.set_workstation_id;
                 $scope.zestStationData.key_encoder_id = $scope.getStationIdFromName(station.name).key_encoder_id;
                 var previousWorkStationStatus = angular.copy($scope.zestStationData.workstationStatus);
-
                 $scope.zestStationData.workstationStatus = station.is_out_of_order ? 'out-of-order' : 'in-order';
                 var newWorkStationStatus = angular.copy($scope.zestStationData.workstationStatus);
 
@@ -970,26 +969,23 @@ sntZestStation.controller('zsRootCtrl', [
                     console.warn(err);
                 }
 
-                if ($scope.zestStationData.isAdminFirstLogin){
-                     if (newWorkStationStatus === 'in-order'){
+                if ($scope.zestStationData.isAdminFirstLogin) {
+                    if (newWorkStationStatus === 'in-order') {
                         $scope.zestStationData.isAdminFirstLogin = false;
                         $state.go('zest_station.home');
-                    }else{
-                         // if the selected workstation status is out of order for first login, go to admin page
-                         $state.go('zest_station.admin');
+                    } else {
+                        // if the selected workstation status is out of order for first login, go to admin page
+                        $state.go('zest_station.admin');
                     }
-                }
-                else if(previousWorkStationStatus === 'out-of-order' && newWorkStationStatus === 'in-order' && $state.current.name !== 'zest_station.admin') {
-                     // if the selected workstation status changed to in order, go to home page
-                     $state.go('zest_station.home');
-                }else if(newWorkStationStatus ==='out-of-order' && $state.current.name !== 'zest_station.admin'){
+                } else if (previousWorkStationStatus === 'out-of-order' && newWorkStationStatus === 'in-order' && $state.current.name !== 'zest_station.admin') {
+                    // if the selected workstation status changed to in order, go to home page
+                    $state.go('zest_station.home');
+                } else if (newWorkStationStatus === 'out-of-order' && $state.current.name !== 'zest_station.admin') {
                     // if the selected workstation status is out of order and user is not in admin page
                     $state.go('zest_station.outOfService');
-                }
-                else if($state.current.name ==='zest_station.outOfService' && newWorkStationStatus === 'in-order'){
+                } else if ($state.current.name === 'zest_station.outOfService' && newWorkStationStatus === 'in-order') {
                     $state.go('zest_station.home');
-                }
-                else{
+                } else {
                     return;
                 }
             }
