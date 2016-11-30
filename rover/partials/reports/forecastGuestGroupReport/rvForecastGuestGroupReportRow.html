@@ -102,4 +102,4 @@
 	<td>{{ each.actual_rooms_last_year }}%</td>
 	<td class="break" ng-class="{ 'red': (each.variance * 1) < 0 }">{{ each.variance }}%</td> <!-- Add class "red" if negative -->
 </tr>
-<tr ng-include="'/assets/partials/reports/forecastGuestGroupReport/rvForecastGuestGroupReportTotalRow.html'"></tr>
+<tr ng-include="'/assets/partials/reports/forecastGuestGroupReport/rvForecastGuestGroupReportTotalRow.html'" ng-class="total"></tr>
