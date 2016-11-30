@@ -19,7 +19,7 @@ const mapDispatchToNightlyDiaryGoToNextPageButtonContainer = (stateProps) => {
     var goToNextButtonClicked = () => {};
 
     goToNextButtonClicked = () => {
-        return stateProps.goToNext();
+        return stateProps.goToNextPage();
     };
     return {
         goToNextButtonClicked,

@@ -24,7 +24,6 @@ angular.module('sntRover')
 
             BaseCtrl.call(this, $scope);
 
-
             /*
              * utility method Initiate controller
              * @return {}
@@ -44,7 +43,6 @@ angular.module('sntRover')
                     srvParams.page = 1;
                     srvParams.per_page = 50;
                 }
-
 
                 // data set for diary used for Angular code.
                 $scope.diaryData = {
@@ -69,7 +67,6 @@ angular.module('sntRover')
                 };
                 $scope.currentSelectedReservation = {};
             };
-
 
             initiateBasicConfig();
             /**
@@ -120,7 +117,6 @@ angular.module('sntRover')
                 }
                 $scope.invokeApi(RVNightlyDiarySrv.fetchRoomsListAndReservationList, postData, successCallBackFetchRoomList);
             };
-
 
             /*
              * Handle Next Button in Dairy.
@@ -178,7 +174,10 @@ angular.module('sntRover')
                 };
             };
 
-
+            if($stateParams.isFromStayCard) {
+                var params = RVNightlyDiarySrv.getCache();
+                $scope.currentSelectedReservation = params.currentSelectedReservation;
+            }
             // Initial State
             var initialState = {
                 roomsList: roomsList.rooms,
@@ -245,7 +244,7 @@ angular.module('sntRover')
                 if($stateParams.isFromStayCard) {
                     var params = RVNightlyDiarySrv.getCache();
                     $scope.currentSelectedReservation = params.currentSelectedReservation;
-                    selectReservation("", params.currentSelectedReservation);
+                    selectReservation("", $scope.currentSelectedReservation);
                 }
             })();
 }]);

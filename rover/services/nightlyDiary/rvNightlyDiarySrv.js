@@ -30,7 +30,6 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             return deferred.promise;
         };
 
-
         /*
          * Service function to fetch date list
          * UI calculations to check the date is weekend or not.
@@ -63,7 +62,6 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
          * @param {data} object
          * return object
          */
-
         this.fetchReservationsList = function(data) {
             that.updateCache(data);
             var deferred = $q.defer();

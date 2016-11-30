@@ -1,10 +1,6 @@
 const { createClass, PropTypes } = React;
 const { findDOMNode } = ReactDOM;
 const ReservationComponent = createClass ({
-    componentDidUpdate() {
-        console.log("update")
-
-    },
 
     render() {
         return (
