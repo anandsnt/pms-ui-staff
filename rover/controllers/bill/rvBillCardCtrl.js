@@ -1305,7 +1305,7 @@ sntRover.controller('RVbillCardController',
 		$scope.viewFromBillScreen = true;
 		$scope.fromView = "checkin";
         // As per CICO-29735
-		if (keySettings !== "no_key_encode") {
+		if (keySettings !== "no_key_delivery") {
 			// show email popup
 			if (keySettings === "email") {
 
@@ -1456,7 +1456,7 @@ sntRover.controller('RVbillCardController',
                     // as per CICO-29735
                     var keySettings = $scope.reservationData.reservation_card.key_settings;
 
-                    if (useAdvancedQueFlow && keySettings !== "no_key_encode") {
+                    if (useAdvancedQueFlow && keySettings !== "no_key_delivery") {
                         setTimeout(function() {
                             // then prompt for keys
                             $rootScope.$broadcast('clickedIconKeyFromQueue');// signals rvReservationRoomStatusCtrl to init the keys popup

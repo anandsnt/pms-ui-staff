@@ -495,7 +495,7 @@ sntRover.controller('reservationActionsController', [
                         // as per CICO-29735
                         var keySettings = $scope.reservationData.reservation_card.key_settings;
 
-                        if (useAdvancedQueFlow && keySettings !== "no_key_encode") {
+                        if (useAdvancedQueFlow && keySettings !== "no_key_delivery") {
                             $rootScope.$emit('goToStayCardFromAddToQueue');
                             setTimeout(function() {
                                 // then prompt for keys
