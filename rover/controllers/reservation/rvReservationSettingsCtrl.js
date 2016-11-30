@@ -1,4 +1,4 @@
-sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSearchSrv', '$state', '$stateParams', 'dateFilter', '$timeout', 'RVReservationTabService','$rootScope',
+sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSearchSrv', '$state', '$stateParams', 'dateFilter', '$timeout', 'RVReservationTabService', '$rootScope',
     function($scope, RVReservationBaseSearchSrv, $state, $stateParams, dateFilter, $timeout, RVReservationTabService, $rootScope) {
         $scope.reservationSettingsVisible = false;
 
@@ -102,7 +102,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             initStayDates(0);
             $scope.stayDatesClicked();
 
-            if ($scope.groupConfigData !== undefined) {
+            if (typeof $scope.groupConfigData !== 'undefined') {
                 if ($scope.reservationData.arrivalDate < $scope.groupConfigData.summary.block_from || $scope.reservationData.departureDate > $scope.groupConfigData.summary.block_to) {
                     clearGroupSelection();
                     $rootScope.$broadcast("groupCardDetached");
@@ -116,8 +116,8 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             $scope.setNumberOfNights();
             initStayDates(0);
             $scope.stayDatesClicked();
-            
-            if ($scope.groupConfigData !== undefined) {
+
+            if (typeof $scope.groupConfigData !== 'undefined') {
                 if ($scope.reservationData.arrivalDate < $scope.groupConfigData.summary.block_from || $scope.reservationData.departureDate > $scope.groupConfigData.summary.block_to) {
                     clearGroupSelection();
                     $rootScope.$broadcast("groupCardDetached");
@@ -131,6 +131,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
                $scope.codeSearchText = "";
             }
         };
+
         $scope.setDepartureDate = function() {
 
             var dateOffset = $scope.reservationData.numNights;
