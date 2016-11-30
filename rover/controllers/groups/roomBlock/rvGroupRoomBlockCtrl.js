@@ -270,8 +270,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             var hasScopeItems = !!$scope.roomtype_rate && $scope.groupConfigData;
 
             return hasScopeItems &&
-                !! $scope.roomtype_rate.can_edit && 
-                ! $scope.groupConfigData.summary.rate !== -1 && 
+                !! $scope.roomtype_rate.can_edit &&
+                ! $scope.groupConfigData.summary.rate !== -1 &&
                 $scope.roomtype_rate.rate_config.single_rate === null;
         };
 
@@ -281,9 +281,9 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
         $scope.shouldHideDoubleEntryRow = function() {
             var hasScopeItems = !!$scope.roomtype_rate && $scope.groupConfigData;
 
-            return hasScopeItems && 
-                !! $scope.roomtype_rate.can_edit && 
-                ! $scope.groupConfigData.summary.rate !== -1 && 
+            return hasScopeItems &&
+                !! $scope.roomtype_rate.can_edit &&
+                ! $scope.groupConfigData.summary.rate !== -1 &&
                 $scope.roomtype_rate.rate_config.double_rate === null;
         };
 
@@ -385,7 +385,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
         $scope.shouldDisableSingleEntryBox = function(dateData, roomType) {
-            return !roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled;
+            return !roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled || !dateData.isModifiable;
         };
 
 		/**
@@ -395,7 +395,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
         $scope.shouldDisableDoubleEntryBox = function(dateData, roomType) {
-            return !roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled;
+            // Fix for CICO-35779 added.
+            return !roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled || !dateData.isModifiable;
         };
 
 		/**
@@ -405,7 +406,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
         $scope.shouldDisableTripleEntryBox = function(dateData, roomType) {
-            return !roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled;
+            // Fix for CICO-35779 added.
+            return !roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled || !dateData.isModifiable;
         };
 
 		/**
@@ -415,7 +417,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
         $scope.shouldDisableQuadrupleEntryBox = function(dateData, roomType) {
-            return !roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled;
+            // Fix for CICO-35779 added.
+            return !roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled || !dateData.isModifiable;
         };
 
 		/**
@@ -1370,7 +1373,12 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * Success callback of room block details API
 		 */
         var successCallBackOfFetchRoomBlockGridDetails = function(data) {
-			// We have resetted the data.
+
+            // Fix for CICO-35779.
+            var businessDate = new tzIndependentDate($rootScope.businessDate);
+
+            // We have resetted the data.
+
             $scope.hasBookingDataChanged = false;
 
 			// we need indivual room type total bookings of each date initially,
@@ -1378,6 +1386,11 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             _.each(data.results, function(eachRoomType) {
                 eachRoomType.start_date = formatDateForAPI($scope.timeLineStartDate);
                 _.each(eachRoomType.dates, function(dateData) {
+                    var formattedDate = new tzIndependentDate(dateData.date);
+
+                    /* Fix for CICO-35779 - flag which denotes whether the fields are modifiable or not
+                        based on comparison of the date with current business date.*/
+                    dateData.isModifiable = formattedDate >= businessDate;
                     dateData.old_total = $scope.getTotalBookedOfIndividualRoomType(dateData);
 				// need to keep track of old single,double and triple values
                 });
