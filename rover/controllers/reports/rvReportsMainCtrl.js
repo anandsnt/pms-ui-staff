@@ -1948,6 +1948,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				}
 			}
 
+            //CICO-35959 - show room revenue by default
+            if(report.title === reportNames['MARKET_SEGMENT_STAT_REPORT']) {
+                params['show_room_revenue'] = _.isUndefined(report.showRoomRevenue) ? true : report.showRoomRevenue;
+            }
 			// keep a copy of the current params
 			$scope.oldParams = angular.copy( params );
 
