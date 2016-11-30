@@ -78,7 +78,7 @@ angular.module('sntRover')
                 'PRE_CHECKIN': 'pre-check-in',
                 'RESERVED': 'arrival',
                 'CANCELED': 'cancel',
-                'CHECKED_OUT': 'departed',
+                'CHECKEDOUT': 'departed',
                 'CHECKING_OUT': 'check-out',
                 'CHECKEDIN': 'inhouse',
                 'NOSHOW': 'guest-no-show',
