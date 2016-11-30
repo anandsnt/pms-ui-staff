@@ -301,7 +301,7 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
         BaseWebSrvV2.getJSON(url, params).then(function(response) {
             deferred.resolve(response.data);
         }, function (data) {
-            deferred.reject(response.errors);
+            deferred.reject(data);
         });
         return deferred.promise;
     };

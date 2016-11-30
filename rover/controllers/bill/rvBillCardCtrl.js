@@ -216,8 +216,9 @@ sntRover.controller('RVbillCardController',
 		if (chargeCodes.length > 0) {
 			_.each(chargeCodes, function(chargeCode, index) {
 				if (chargeCode.isSelected) {
-					if(chargeCode.is_group_by_ref) {
+					if (chargeCode.is_group_by_ref) {
 						var concatObject = $scope.moveChargeData.selectedTransactionIds.concat(chargeCode.item_ids);
+
 						$scope.moveChargeData.selectedTransactionIds = concatObject;
 					}
 					else {
@@ -2709,6 +2710,7 @@ sntRover.controller('RVbillCardController',
                 'reference_number': feesData.reference_number,
                 'bill_id': $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id
             };
+            
             $scope.invokeApi(RVBillCardSrv.groupChargeDetailsFetch, params, fetchChargeDataSuccessCallback, fetchChargeDataFailureCallback);
         }
         else {
