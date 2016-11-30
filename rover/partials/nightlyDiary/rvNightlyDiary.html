@@ -9,17 +9,9 @@
 
         <!-- Room Search + Timeline -->
         <div class="grid-timeline">
-            <!-- Room Search -->
-            <div class="grid-room-search">
-                <button class="clear-query"> <!-- Add class 'visible' when searching. Tap clears L33 value and removes search. -->
-                    <span class="icons icon-clear-search">Clear query</span>
-                </button>
-                <!-- Add class .hidden when edit screen is displayed -->
-                <input type="text" placeholder="Go to Room No." value="">
-            </div>
-
-            <span ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryTimeline.html'"></span>
-
+            <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRoomNumberSearch.html'" class="grid-room-search" ng-controller="rvNightlyDiaryRoomNumberSearchController"></div>
+            
+            <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryTimeline.html'"></div>
             <!-- Stay Range | Remove .hidden to show-->
             <div class="grid-stay-range hidden">
                 {_content/stay-range.html}
@@ -27,16 +19,7 @@
         </div>
 
         <!-- Room Search Results -->
-        <div class="grid-room-search-results hidden"> <!-- Add class 'visible' to show -->
-            <div class="wrapper">
-                <div class="room">
-                    <span class="room-number {HK status or 'out' if OOO/OOS}">
-                        {Room No} <!-- Highlight search query like this: <span class="highlight">{Query}</span> -->
-                    </span>
-                    <span class="room-type">{Room Type}</span>
-                </div>
-                ... repeat for every result
-            </div>
+        <div class="grid-room-search-results scrollable"  ng-iscroll="result_showing_area" ng-iscroll-delay="1000" ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRoomNumberSearchResult.html'" ng-show="diaryData.showSearchResultsArea" ng-class="{'visible': diaryData.showSearchResultsArea}">            
         </div>
 
         <!-- REACT APP :: Rooms list + Reservations list + Un-assigned Reservations list -->
