@@ -87,8 +87,8 @@ module.exports = {
             'guestweb_freehand': [ themeCSSRoot + 'guestweb_freehand.css'],
             'guestweb_dewberry': [ themeCSSRoot + 'guestweb_dewberry.css'],
             'guestweb_park_valkenburg': [ themeCSSRoot + 'guestweb_park_valkenburg.css'],
-            'guestweb_sohotel': [ themeCSSRoot + 'guestweb_sohotel.css']
+            'guestweb_sohotel': [ themeCSSRoot + 'guestweb_sohotel.css'],
+            'guestweb_hive': [ themeCSSRoot + 'guestweb_hive.css']
         };     
     }
 };
-
