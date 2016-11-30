@@ -1,4 +1,4 @@
-admin.controller('adRevinateSetupCtrl', ['$scope', '$rootScope, ','config', 'adInterfacesCommonConfigSrv','dateFilter', '$stateParams',
+admin.controller('adRevinateSetupCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesCommonConfigSrv','dateFilter', '$stateParams',
     function($scope, $rootScope, config, adInterfacesCommonConfigSrv, dateFilter, $stateParams) {
 
         var interfaceIdentifier = 'revinate',
@@ -33,21 +33,12 @@ admin.controller('adRevinateSetupCtrl', ['$scope', '$rootScope, ','config', 'adI
                     $scope.sync.end_date = $scope.sync.start_date;
                 }
                 $scope.endDatePickerOptions.maxDate = getFutureDate($scope.sync.start_date, MAX_REFRESH_SPAN_DAYS);
-            }, getSyncItems = function(full_sync_items) {
-                var arr = [];
-
-                _.each(full_sync_items, function(item) {
-                    arr.push({id: item});
-                });
-                return arr;
             };
 
         $scope.sync = {
             start_date: null,
-            end_date: null,
-            items: getSyncItems(config.full_sync_items)
+            end_date: null
         };
-
 
         $scope.toggleEnabled = function() {
             config.enabled = !config.enabled;
@@ -66,21 +57,11 @@ admin.controller('adRevinateSetupCtrl', ['$scope', '$rootScope, ','config', 'adI
         };
 
         // sync
-        
         $scope.startSync = function() {
-            var items = _.pluck(_.filter($scope.sync.items, {isSelected: true}), 'id'),
-                payLoad;
-
-            if (!items.length) {
-                $scope.successMessage = '';
-                $scope.errorMessage = ['ERROR: Please select at least one Item to Synchronize!'];
-                return;
-            }
-
-            payLoad = {
+            var payLoad = {
                 start_date: dateFilter($scope.sync.start_date, $rootScope.dateFormatForAPI),
                 end_date: dateFilter($scope.sync.end_date, $rootScope.dateFormatForAPI),
-                items: items
+                items: ['reservation']
             };
 
             $scope.callAPI(adInterfacesCommonConfigSrv.initSync, {
@@ -94,11 +75,6 @@ admin.controller('adRevinateSetupCtrl', ['$scope', '$rootScope, ','config', 'adI
                 }
             });
         };
-
-
-
-
-
 
         (function() {
             //    init
