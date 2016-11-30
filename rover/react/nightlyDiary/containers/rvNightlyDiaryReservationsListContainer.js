@@ -217,7 +217,7 @@ let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateG
                 reservation.reservationClass = "reservation " + reservationStatusClass + " " + reservationClass + " " + reservationEditClass;
             });
         }
-        room.main_room_class = (room.id === selectedRoomId) ? 'grid-row highlighted' : 'room';
+        room.roomClass = (room.id === selectedRoomId) ? 'grid-row highlighted' : 'grid-row';
     });
     return roomsList;
 };
