@@ -2,10 +2,12 @@ angular.module('sntRover')
 .controller('rvNightlyDiaryRoomNumberSearchController', 
     [   '$scope',
         '$filter',
+        '$rootScope',
         'RVNightlyDiaryRoomNumberSearchSrv',
         function(
             $scope,
             $filter,
+            $rootScope,
             RVNightlyDiaryRoomNumberSearchSrv
         ) {
             var init = function() {
@@ -54,16 +56,16 @@ angular.module('sntRover')
 
             // function to perform filtering data, on change-event of query box
             $scope.queryEntered = function() {
-                if ($scope.diaryData.textInQueryBox === '' || $scope.diaryData.textInQueryBox.length < 2) {
-                    $scope.diaryData.showSearchResultsArea = false;
-                    $scope.diaryData.roomNumberSearchResults = [];
-                }
-                else {
+                if ($rootScope.isSingleDigitSearch || $scope.diaryData.textInQueryBox.length > 2) {
                     $scope.diaryData.showSearchResultsArea = true;
                     displayFilteredResults();
+                } else {
+                    $scope.diaryData.showSearchResultsArea = false;
+                    $scope.diaryData.roomNumberSearchResults = [];
                 }
             };
             $scope.$on('CLOSE_SEARCH_RESULT', function() {
                $scope.diaryData.showSearchResultsArea = false;
+               $scope.clearResults();
             });
         }]);

@@ -167,13 +167,8 @@ angular.module('sntRover')
             $scope.$on('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function( event, roomId ) {
                 fetchRoomListDataAndReservationListData(roomId);
             });
-            /* Fetch diary data - rooms & reservations.
-             * @param {Number} RoomId - selected room id from search filters.
-            */
-            $scope.gotoSelectedRoom = function(room) {
-                fetchRoomListDataAndReservationListData(room.id);
-            };
-            /**
+            
+            /*
              * to render the grid view
              */
             var renderDiaryView = () => render(
