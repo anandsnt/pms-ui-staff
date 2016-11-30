@@ -1453,12 +1453,16 @@ sntRover.controller('RVbillCardController',
                     RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.reservation_id, $scope.reservationData);
 
                     var useAdvancedQueFlow = $rootScope.advanced_queue_flow_enabled;
+                    // as per CICO-29735
+                    var keySettings = $scope.reservationData.reservation_card.key_settings;
 
-                    if (useAdvancedQueFlow) {
+                    if (useAdvancedQueFlow && keySettings !== "no_key_encode") {
                         setTimeout(function() {
                             // then prompt for keys
                             $rootScope.$broadcast('clickedIconKeyFromQueue');// signals rvReservationRoomStatusCtrl to init the keys popup
                         }, 1250);
+                        $scope.goToStayCardFromAddToQueue();
+                    } else {
                         $scope.goToStayCardFromAddToQueue();
                     }
             };
