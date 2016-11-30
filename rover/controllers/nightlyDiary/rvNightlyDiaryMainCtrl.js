@@ -148,7 +148,6 @@ angular.module('sntRover')
             var selectReservation = (e, reservation) => {
                 $scope.diaryData.isEditReservationMode = true;
                 $scope.currentSelectedReservation = reservation;
-                //console.log($scope.currentSelectedReservation);
                 $scope.$apply();
                 showReservationSelected();
             };
