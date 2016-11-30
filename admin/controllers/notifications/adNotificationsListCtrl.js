@@ -44,6 +44,10 @@ admin.controller('ADNotificatinsListCtrl',
         return (diffDays - 1);
     };
 
+    $scope.getStartDate = function(startDate) {
+        return $filter('date')(tzIndependentDate(startDate), 'yyyy-MM-dd');
+    };
+
 	$scope.deleteNotification = function(index, id) {		
 		var deleteSuccess = function(data) {
 			FetchNotificationsList();

@@ -6,7 +6,6 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
         var that = this;
 
         this.updateCache = function(data) {
-            console.log(data);
             that.searchParamsCached = data;
         };
         this.getCache = function() {
@@ -66,11 +65,10 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
          */
 
         this.fetchReservationsList = function(data) {
-
+            that.updateCache(data);
             var deferred = $q.defer();
             var url = '/api/nightly_diary/reservation_list';
 
-            that.updateCache(data);
             BaseWebSrvV2.getJSON(url, data).then(function(response) {
                 deferred.resolve(response);
             }, function(error) {

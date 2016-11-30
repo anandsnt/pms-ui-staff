@@ -88,7 +88,9 @@ module.exports = {
                 themeJsRoot + 'app_router_national_harbor.js'],
             'guestweb_freehand': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_dewberry': [ themeJsRoot + 'app_router_common.js'],
-            'guestweb_park_valkenburg': [ themeJsRoot + 'app_router_common.js']
+            'guestweb_park_valkenburg': [ themeJsRoot + 'app_router_common.js'],
+            'guestweb_sohotel': [ themeJsRoot + 'app_router_common.js']
         };
     }
 };
+

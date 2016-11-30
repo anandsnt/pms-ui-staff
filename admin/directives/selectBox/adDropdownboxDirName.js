@@ -1,4 +1,4 @@
-admin.directive('adDropdownName', function() {
+admin.directive('adDropdownName', function($timeout) {
 
     return {
         restrict: 'AE',
@@ -22,7 +22,8 @@ admin.directive('adDropdownName', function() {
             options: '=',
             prefixValue: '@',
             labelProperties: '=',
-            isDisabled: '='
+            isDisabled: '=',
+            changeHandler: '='
         },
         link: function($scope) {
             if (typeof $scope.options !== 'undefined') {
@@ -34,6 +35,14 @@ admin.directive('adDropdownName', function() {
                     return true;
                 };
             }
+
+            $scope.onChange = function() {
+                if ($scope.changeHandler) {
+                    $timeout(function() {
+                        $scope.changeHandler($scope.ngModel);
+                    });
+                }
+            };
 
             $scope.getLabel = function(row) {
                 var label = '';

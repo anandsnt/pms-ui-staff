@@ -187,7 +187,8 @@ angular.module('sntRover')
                 numberOfDays: 7,
                 currentBusinessDate: $rootScope.businessDate,
                 callBackFromAngular: getTheCallbacksFromAngularToReact(),
-                paginationData: $scope.diaryData.paginationData
+                paginationData: $scope.diaryData.paginationData,
+                selectReservationId: $scope.currentSelectedReservation.id
             };
             const store = configureStore(initialState);
             const {render} = ReactDOM;
@@ -225,14 +226,8 @@ angular.module('sntRover')
                 cancelReservationEditing();
                 fetchRoomListDataAndReservationListData(roomId);
             });
-            /* Fetch diary data - rooms & reservations.
-             * @param {Number} RoomId - selected room id from search filters.
-            */
-            $scope.gotoSelectedRoom = function(room) {
-                cancelReservationEditing();
-                fetchRoomListDataAndReservationListData(room.id);
-            };
-            /**
+
+            /*
              * to render the grid view
              */
             var renderDiaryView = () => render(
@@ -242,7 +237,6 @@ angular.module('sntRover')
                 document.querySelector('#nightlyDiaryMain')
             );
 
-
             /**
              * initialisation function
              */
@@ -250,6 +244,7 @@ angular.module('sntRover')
                 renderDiaryView();
                 if($stateParams.isFromStayCard) {
                     var params = RVNightlyDiarySrv.getCache();
+                    $scope.currentSelectedReservation = params.currentSelectedReservation;
                     selectReservation("", params.currentSelectedReservation);
                 }
             })();
