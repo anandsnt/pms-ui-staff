@@ -17,6 +17,7 @@
 	"END_POINT" : "End Point",
 	"ACTIVATE_INACTIVATE" : "Activate / Inactivate",
 	"CUBILIS_HEADER": "Cubilis CRS Setup",
+	"VERTICALBOOKING_HEADER": "Vertical Booking CRS Setup",
 	"DEFAULT_RATE": "Default Rate",
 	"DEFAULT_BOOKING_ORIGIN": "Default Booking Origin",
 	"DEFAULT_PAYMENT_METHOD": "Default Payment Method",
