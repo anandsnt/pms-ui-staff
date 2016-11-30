@@ -184,10 +184,10 @@ angular.module('sntRover')
             var initialState = {
                 roomsList: roomsList.rooms,
                 reservationsList: reservationsList.rooms,
-                initialDayOfDateGrid: $rootScope.businessDate,
+                diaryInitialDayOfDateGrid: $rootScope.businessDate,
                 numberOfDays: 7,
                 currentBusinessDate: $rootScope.businessDate,
-                callbackFromAngular: getTheCallbacksFromAngularToReact(),
+                callBackFromAngular: getTheCallbacksFromAngularToReact(),
                 paginationData: $scope.diaryData.paginationData
             };
             const store = configureStore(initialState);
@@ -201,19 +201,20 @@ angular.module('sntRover')
                     numberOfDays: $scope.diaryData.numberOfDays,
                     reservationsList: $scope.diaryData.reservationsList.rooms,
                     roomsList: $scope.diaryData.diaryRoomsList,
-                    initialDayOfDateGrid: $scope.diaryData.fromDate,
+                    diaryInitialDayOfDateGrid: $scope.diaryData.fromDate,
                     currentBusinessDate: $rootScope.businessDate,
-                    callbackFromAngular: getTheCallbacksFromAngularToReact(),
+                    callBackFromAngular: getTheCallbacksFromAngularToReact(),
                     paginationData: $scope.diaryData.paginationData,
                     selectReservationId: $scope.currentSelectedReservation.id
                 };
                 store.dispatch(dispatchData);
             };
             var showReservationSelected = function() {
+                $scope.diaryData.reservationsList.rooms[0].reservations[1].guest_details.first_name="Check";
                 var dispatchData = {
                     type: 'RESERVATION_SELECTED',
-                    selectReservationId: $scope.currentSelectedReservation.id
-
+                    selectReservationId: $scope.currentSelectedReservation.id,
+                    reservationsList: $scope.diaryData.reservationsList.rooms
                 };
                 store.dispatch(dispatchData);
             };

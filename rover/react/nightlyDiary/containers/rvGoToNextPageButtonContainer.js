@@ -11,7 +11,7 @@ const calculateNextPageItemCount = (state) => {
 };
 
 const mapStateToNightlyDiaryGoToNextPageButtonContainerProps = (state) => ({
-    goToNext: state.callBackFromAngular.goToNextPage,
+    goToNextPage: state.callBackFromAngular.goToNextPage,
     nextPageItemCount: calculateNextPageItemCount(state)
 });
 

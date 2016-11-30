@@ -2,7 +2,7 @@ const nightlyDiaryRootReducer = (state, action) => (
     {
         roomsList: nightlyDiaryRoomsListReducer(state, action),
         reservationsList: nightlyDiaryReservationsListReducer(state, action),
-        diaryInitialDayOfDateGrid: (action.type === 'DIARY_VIEW_CHANGED') ? action.initialDayOfDateGrid : state.initialDayOfDateGrid,
+        diaryInitialDayOfDateGrid: (action.type === 'DIARY_VIEW_CHANGED') ? action.diaryInitialDayOfDateGrid : state.diaryInitialDayOfDateGrid,
         numberOfDays: (action.type === 'DIARY_VIEW_CHANGED') ? action.numberOfDays : state.numberOfDays,
         currentBusinessDate: (action.type === 'DIARY_VIEW_CHANGED') ? action.currentBusinessDate : state.currentBusinessDate,
         callBackFromAngular: callBackReducer(state, action),

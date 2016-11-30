@@ -185,6 +185,7 @@ let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateG
     roomsList.map((room) => {
        if (room.reservations.length > 0) {
             room.reservations.map((reservation) => {
+                console.log(reservation)
                 let positionAndDuration = calculateReservationDurationAndPosition(diaryInitialDayOfDateGrid, reservation, numberOfDays);
                 let duration = positionAndDuration.durationOfReservation + "px";
 
