@@ -180,12 +180,11 @@ let findIsReservationFuture = (reservation, currentBusinessDate) => {
  * Adding different logics to the reservations to pass to component
  */
 
-let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateGrid, numberOfDays, currentBusinessDate, selectReservationId) => {
+let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateGrid, numberOfDays, currentBusinessDate, selectReservationId, selectedRoomId) => {
 
     roomsList.map((room) => {
        if (room.reservations.length > 0) {
             room.reservations.map((reservation) => {
-                console.log(reservation)
                 let positionAndDuration = calculateReservationDurationAndPosition(diaryInitialDayOfDateGrid, reservation, numberOfDays);
                 let duration = positionAndDuration.durationOfReservation + "px";
 
@@ -212,21 +211,24 @@ let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateG
                 reservation.isReservationDayStay = isReservationDayStay;
 
                 let reservationEditClass = '';
-
                 if(reservation.id === selectReservationId) {
                     reservationEditClass = "editing";
                 }
                 reservation.reservationClass = "reservation " + reservationStatusClass + " " + reservationClass + " " + reservationEditClass;
             });
         }
+        room.main_room_class = (room.id === selectedRoomId) ? 'grid-row highlighted' : 'room';
     });
     return roomsList;
 };
 
 const mapStateToNightlyDiaryReservationsListContainerProps = (state) => ({
-    reservationsListToComponent: convertReservationsListReadyToComponent(state.reservationsList, state.diaryInitialDayOfDateGrid, state.numberOfDays, state.currentBusinessDate, state.selectReservationId),
-    roomRowClass: "grid-reservations firstday-" + getWeekDayName((new Date(state.diaryInitialDayOfDateGrid)).getDay(), 3)
-
+    reservationsListToComponent: convertReservationsListReadyToComponent(
+        state.reservationsList, state.diaryInitialDayOfDateGrid,
+        state.numberOfDays, state.currentBusinessDate, state.selectReservationId, state.paginationData.selectedRoomId),
+    roomRowClass: "grid-reservations firstday-" + getWeekDayName((new Date(state.diaryInitialDayOfDateGrid)).getDay(), 3),
+    selectReservationId: state.selectReservationId,
+    selectedRoomId: state.paginationData.selectedRoomId
 });
 
 

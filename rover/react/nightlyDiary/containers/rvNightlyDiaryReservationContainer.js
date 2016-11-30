@@ -2,7 +2,8 @@ const {connect} = ReactRedux;
 
 const mapStateToNightlyDiaryReservationContainerProps = (state, ownProps) => ({
     reservation: ownProps.reservation,
-    selectReservation: state.callBackFromAngular.selectReservation
+    selectReservation: state.callBackFromAngular.selectReservation,
+    selectReservationId : state.selectReservationId
 });
 
 // // const NightlyDiaryReservationsListContainer = connect(

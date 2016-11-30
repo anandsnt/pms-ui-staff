@@ -210,7 +210,6 @@ angular.module('sntRover')
                 store.dispatch(dispatchData);
             };
             var showReservationSelected = function() {
-                $scope.diaryData.reservationsList.rooms[0].reservations[1].guest_details.first_name="Check";
                 var dispatchData = {
                     type: 'RESERVATION_SELECTED',
                     selectReservationId: $scope.currentSelectedReservation.id,

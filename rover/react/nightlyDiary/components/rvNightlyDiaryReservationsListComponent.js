@@ -4,7 +4,7 @@ const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, ro
         <div className={roomRowClass}>
         {
             reservationsListToComponent.map((item) => (
-                    <div className="grid-row">
+                    <div className={item.main_room_class}>
                         {
 
                             item.reservations.length > 0 ?
