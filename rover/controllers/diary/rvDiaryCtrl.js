@@ -517,6 +517,7 @@ angular.module('sntRover')
 					self.unassignedCount = count;
 					self.isUnassignedPresent = (count > 0);
 					$scope.renderGrid();
+                    $scope.$emit('hideLoader');
 				};
 				var _failed = function(error) {
 					$scope.$emit('hideLoader');

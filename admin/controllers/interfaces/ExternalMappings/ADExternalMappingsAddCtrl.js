@@ -26,8 +26,8 @@ admin.controller('ADExternalMappingsAddCtrl', ['$scope', '$state', '$stateParams
                 column_width: 'width-40',
                 mappedKey: 'room_type_name'
             },
-            selectedExcludedRoomIds: [],
-            unSelectedExcludedRoomIds: [],
+            selectedExcludedIds: [],
+            unSelectedExcludedIds: [],
             apiService: 'ADInterfaceMappingSrv',
             serviceMethodName: 'fetchUnMappedRooms',
             serviceMethodParams: {
@@ -47,7 +47,7 @@ admin.controller('ADExternalMappingsAddCtrl', ['$scope', '$state', '$stateParams
                     prefix: $scope.auto.prefix,
                     remove_char: $scope.auto.removeFirst,
                     all_unmapped_rooms: $scope.auto.all,
-                    room_no: $scope.unmappedRoomsFilterConfig.selectedExcludedRoomIds
+                    room_no: $scope.unmappedRoomsFilterConfig.selectedExcludedIds
                 },
                 onSuccess: function() {
                     $scope.navigateBack();
@@ -84,6 +84,15 @@ admin.controller('ADExternalMappingsAddCtrl', ['$scope', '$state', '$stateParams
             });
         };
 
+        $scope.onChangeMappingType = function() {
+            // Reset the snt_value and ext_value
+            $scope.mapping.snt_value = '';
+            $scope.mapping.ext_value = '';
+            // Map the available values
+            $scope.sntValues = _.find(mappingTypes, {name: $scope.mapping.mapping_type}).sntvalues;
+            $scope.extValues = _.find(mappingTypes, {name: $scope.mapping.mapping_type}).extvalues;
+        };
+
         (function() {
             _.each(mappingTypes, function(mappingType) {
                 mappingType.text = mappingType.name.replace(/(\_\w)/g, function(m) {
@@ -91,14 +100,20 @@ admin.controller('ADExternalMappingsAddCtrl', ['$scope', '$state', '$stateParams
                 });
             });
 
+            if (!mappingTypes.length) {
+                $scope.errorMessage = ['ERROR! No mapping types configured'];
+                return;
+            }
+
             $scope.mappingTypes = mappingTypes;
-            $scope.sntValues = mappingTypes[0].sntvalues;
 
             $scope.mapping = {
                 mapping_type: mappingTypes[0].name,
                 snt_value: '',
                 ext_value: ''
             };
+
+            $scope.onChangeMappingType();
 
             $scope.auto = {
                 all: true,
