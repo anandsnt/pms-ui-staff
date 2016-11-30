@@ -1304,50 +1304,57 @@ sntRover.controller('RVbillCardController',
 
 		$scope.viewFromBillScreen = true;
 		$scope.fromView = "checkin";
-		// show email popup
-		if (keySettings === "email") {
+        // As per CICO-29735
+		if (keySettings !== "no_key_delivery") {
+			// show email popup
+			if (keySettings === "email") {
 
-			ngDialog.open({
-				 template: '/assets/partials/keys/rvKeyEmailPopup.html',
-				 controller: 'RVKeyEmailPopupController',
-				 className: '',
-				 closeByDocument: false,
-				 scope: $scope
-			});
-		}
-		else if (keySettings === "qr_code_tablet") {
-
-			// Fetch and show the QR code in a popup
-			var	reservationId = $scope.reservationBillData.reservation_id;
-
-			var successCallback = function(data) {
-				$scope.$emit('hideLoader');
-				$scope.data = data;
 				ngDialog.open({
-					 template: '/assets/partials/keys/rvKeyQrcodePopup.html',
-					 controller: 'RVKeyQRCodePopupController',
+					 template: '/assets/partials/keys/rvKeyEmailPopup.html',
+					 controller: 'RVKeyEmailPopupController',
 					 className: '',
+					 closeByDocument: false,
 					 scope: $scope
 				});
-			};
+			}
+			else if (keySettings === "qr_code_tablet") {
 
-			$scope.invokeApi(RVKeyPopupSrv.fetchKeyQRCodeData, { "reservationId": reservationId }, successCallback);
-		}
+				// Fetch and show the QR code in a popup
+				var	reservationId = $scope.reservationBillData.reservation_id;
 
-		// Display the key encoder popup
-		// https://stayntouch.atlassian.net/browse/CICO-21898?focusedCommentId=58632&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-58632
-		else if (keySettings === "encode"  || keySettings === "mobile_key_encode") {
-			// when checking in we are creating a new key, popup controller expects this flag.
-			if ($scope.reservationData && $scope.reservationData.status && $scope.reservationData.status === 'CHECKING_IN') {
-				$scope.keyType = 'New';
-    			$rootScope.$broadcast('MAKE_KEY_TYPE', {type: 'New'});
+				var successCallback = function(data) {
+					$scope.$emit('hideLoader');
+					$scope.data = data;
+					ngDialog.open({
+						 template: '/assets/partials/keys/rvKeyQrcodePopup.html',
+						 controller: 'RVKeyQRCodePopupController',
+						 className: '',
+						 scope: $scope
+					});
+				};
+
+				$scope.invokeApi(RVKeyPopupSrv.fetchKeyQRCodeData, { "reservationId": reservationId }, successCallback);
 			}
 
-			if ($scope.reservationBillData.is_remote_encoder_enabled && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0) {
-				fetchEncoderTypes();
-			} else {
-				openKeyEncodePopup();
+			// Display the key encoder popup
+			// https://stayntouch.atlassian.net/browse/CICO-21898?focusedCommentId=58632&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-58632
+			else if (keySettings === "encode"  || keySettings === "mobile_key_encode") {
+				// when checking in we are creating a new key, popup controller expects this flag.
+				if ($scope.reservationData && $scope.reservationData.status && $scope.reservationData.status === 'CHECKING_IN') {
+					$scope.keyType = 'New';
+                    $rootScope.$broadcast('MAKE_KEY_TYPE', {type: 'New'});
+				}
+
+				if ($scope.reservationBillData.is_remote_encoder_enabled && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0) {
+					fetchEncoderTypes();
+				} else {
+					openKeyEncodePopup();
+				}
 			}
+		} else {
+            // if No key encode chosen, skip key display and proceed straight to stay card
+            $scope.isRefreshOnBackToStaycard = true;
+			$scope.goBackToStayCard();
 		}
 	};
 
@@ -1446,12 +1453,16 @@ sntRover.controller('RVbillCardController',
                     RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.reservation_id, $scope.reservationData);
 
                     var useAdvancedQueFlow = $rootScope.advanced_queue_flow_enabled;
+                    // as per CICO-29735
+                    var keySettings = $scope.reservationData.reservation_card.key_settings;
 
-                    if (useAdvancedQueFlow) {
+                    if (useAdvancedQueFlow && keySettings !== "no_key_delivery") {
                         setTimeout(function() {
                             // then prompt for keys
                             $rootScope.$broadcast('clickedIconKeyFromQueue');// signals rvReservationRoomStatusCtrl to init the keys popup
                         }, 1250);
+                        $scope.goToStayCardFromAddToQueue();
+                    } else {
                         $scope.goToStayCardFromAddToQueue();
                     }
             };
