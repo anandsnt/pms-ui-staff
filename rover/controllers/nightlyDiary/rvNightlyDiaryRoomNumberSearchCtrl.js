@@ -4,11 +4,13 @@ angular.module('sntRover')
         '$filter',
         '$rootScope',
         'RVNightlyDiaryRoomNumberSearchSrv',
+        '$timeout',
         function(
             $scope,
             $filter,
             $rootScope,
-            RVNightlyDiaryRoomNumberSearchSrv
+            RVNightlyDiaryRoomNumberSearchSrv,
+            $timeout
         ) {
             var init = function() {
                 BaseCtrl.call(this, $scope);
@@ -18,6 +20,7 @@ angular.module('sntRover')
                 $scope.setScroller('result_showing_area', scrollerOptions);
                 refreshScroller();
             };
+            var searchRoomCall = null;
             // Scroller options for search-results view.
             var scrollerOptions = {
                 tap: true,
@@ -58,7 +61,16 @@ angular.module('sntRover')
             $scope.queryEntered = function() {
                 if ($rootScope.isSingleDigitSearch || $scope.diaryData.textInQueryBox.length > 2) {
                     $scope.diaryData.showSearchResultsArea = true;
-                    displayFilteredResults();
+                    if (searchRoomCall !== null) {
+                        clearTimeout(searchRoomCall);
+                    }
+                    searchRoomCall = setTimeout(function() {
+                        $scope.$apply(function() {
+                            displayFilteredResults();
+                        });
+                    }, 800);
+
+
                 } else {
                     $scope.diaryData.showSearchResultsArea = false;
                     $scope.diaryData.roomNumberSearchResults = [];
