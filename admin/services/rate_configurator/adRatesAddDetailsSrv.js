@@ -54,7 +54,8 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
                     "is_not_reservation_only": true,
                     "per_page": 1000,
                     "page": 1,
-                    "ignore_inventory": true
+                    "ignore_inventory": true,
+                    "ignore_tax": true
                 };
                 var url = "/api/addons";
 
