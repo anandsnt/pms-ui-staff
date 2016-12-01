@@ -144,11 +144,14 @@ angular.module('sntRover')
              */
             var selectReservation = (e, reservation) => {
                 $scope.diaryData.isEditReservationMode = true;
+                console.log(reservation);
                 $scope.currentSelectedReservation = reservation;
-
                 if(!$stateParams.isFromStayCard) {
                     $scope.$apply();
                     showReservationSelected();
+                } else {
+                    // To fix issue point 3 - QA failed comment - CICO-34410
+                    $stateParams.isFromStayCard = false;
                 }
 
             };
