@@ -112,9 +112,9 @@ angular.module('sntRover')
 
                 if (roomId) {
                     postData.room_id = roomId;
-                    $scope.diaryData.paginationData.selectedRoomId = roomId;
+                    $scope.diaryData.selectedRoomId = roomId;
                 } else {
-                    $scope.diaryData.paginationData.selectedRoomId = null;
+                    $scope.diaryData.selectedRoomId = null;
                 }
                 $scope.invokeApi(RVNightlyDiarySrv.fetchRoomsListAndReservationList, postData, successCallBackFetchRoomList);
             };
@@ -193,7 +193,8 @@ angular.module('sntRover')
                 currentBusinessDate: $rootScope.businessDate,
                 callBackFromAngular: getTheCallbacksFromAngularToReact(),
                 paginationData: $scope.diaryData.paginationData,
-                selectReservationId: $scope.currentSelectedReservation.id
+                selectReservationId: $scope.currentSelectedReservation.id,
+                selectedRoomId: $scope.diaryData.selectedRoomId
             };
             const store = configureStore(initialState);
             const {render} = ReactDOM;
@@ -210,7 +211,8 @@ angular.module('sntRover')
                     currentBusinessDate: $rootScope.businessDate,
                     callBackFromAngular: getTheCallbacksFromAngularToReact(),
                     paginationData: $scope.diaryData.paginationData,
-                    selectReservationId: $scope.currentSelectedReservation.id
+                    selectReservationId: $scope.currentSelectedReservation.id,
+                    selectedRoomId: $scope.diaryData.selectedRoomId
                 };
                 store.dispatch(dispatchData);
             };

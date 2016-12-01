@@ -226,10 +226,10 @@ let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateG
 const mapStateToNightlyDiaryReservationsListContainerProps = (state) => ({
     reservationsListToComponent: convertReservationsListReadyToComponent(
         state.reservationsList, state.diaryInitialDayOfDateGrid,
-        state.numberOfDays, state.currentBusinessDate, state.selectReservationId, state.paginationData.selectedRoomId),
+        state.numberOfDays, state.currentBusinessDate, state.selectReservationId, state.selectedRoomId),
     roomRowClass: "grid-reservations firstday-" + getWeekDayName((new Date(state.diaryInitialDayOfDateGrid)).getDay(), 3),
     selectReservationId: state.selectReservationId,
-    selectedRoomId: state.paginationData.selectedRoomId
+    selectedRoomId: state.selectedRoomId
 });
 
 
