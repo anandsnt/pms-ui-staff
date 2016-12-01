@@ -66,11 +66,13 @@ angular.module('sntRover')
                     }
                     searchRoomCall = setTimeout(function() {
                         $scope.$apply(function() {
-                            displayFilteredResults();
+                            if ( $scope.diaryData.textInQueryBox.length !==0 ) {
+                                displayFilteredResults();
+                            } else {
+                                $scope.diaryData.showSearchResultsArea = false;  
+                            }
                         });
                     }, 800);
-
-
                 } else {
                     $scope.diaryData.showSearchResultsArea = false;
                     $scope.diaryData.roomNumberSearchResults = [];
