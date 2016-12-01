@@ -148,9 +148,9 @@ angular.module('sntRover')
 
                 if(!$stateParams.isFromStayCard) {
                     $scope.$apply();
-
+                    showReservationSelected();
                 }
-                showReservationSelected();
+
             };
 
             /*
