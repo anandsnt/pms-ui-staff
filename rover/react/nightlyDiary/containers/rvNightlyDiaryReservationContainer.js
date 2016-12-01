@@ -178,7 +178,7 @@ let findIsReservationFuture = (reservation, currentBusinessDate) => {
  * Adding different logics to the reservations to pass to component
  */
 
-let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDateGrid, numberOfDays, currentBusinessDate, selectReservationId, selectedRoomId) => {
+let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDateGrid, numberOfDays, currentBusinessDate, selectReservationId) => {
 
     let positionAndDuration = calculateReservationDurationAndPosition(diaryInitialDayOfDateGrid, reservation, numberOfDays);
     let duration = positionAndDuration.durationOfReservation + "px";
@@ -224,7 +224,7 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
 const mapStateToNightlyDiaryReservationContainerProps = (state, ownProps) => ({
     reservation: convertReservationsListReadyToComponent(
         ownProps.reservation, state.diaryInitialDayOfDateGrid,
-        state.numberOfDays, state.currentBusinessDate, state.selectReservationId, state.paginationData.selectedRoomId),
+        state.numberOfDays, state.currentBusinessDate, state.selectReservationId),
     selectReservation: state.callBackFromAngular.selectReservation,
     selectReservationId: state.selectReservationId
 });
