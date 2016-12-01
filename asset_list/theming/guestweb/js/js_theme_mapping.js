@@ -90,7 +90,8 @@ module.exports = {
             'guestweb_dewberry': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_park_valkenburg': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_sohotel': [ themeJsRoot + 'app_router_common.js'],
-            'guestweb_hive': [ themeJsRoot + 'app_router_common.js']
+            'guestweb_hive': [ themeJsRoot + 'app_router_common.js'],
+            'guestweb_pod_dc': [ themeJsRoot + 'app_router_common.js']
         };
     }
 };
