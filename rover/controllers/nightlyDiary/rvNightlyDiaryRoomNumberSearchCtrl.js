@@ -4,13 +4,11 @@ angular.module('sntRover')
         '$filter',
         '$rootScope',
         'RVNightlyDiaryRoomNumberSearchSrv',
-        '$timeout',
         function(
             $scope,
             $filter,
             $rootScope,
-            RVNightlyDiaryRoomNumberSearchSrv,
-            $timeout
+            RVNightlyDiaryRoomNumberSearchSrv
         ) {
             var init = function() {
                 BaseCtrl.call(this, $scope);
@@ -66,7 +64,7 @@ angular.module('sntRover')
                     }
                     searchRoomCall = setTimeout(function() {
                         $scope.$apply(function() {
-                            if ( $scope.diaryData.textInQueryBox.length !==0 ) {
+                            if ( $scope.diaryData.textInQueryBox.length !== 0 ) {
                                 displayFilteredResults();
                             } else {
                                 $scope.diaryData.showSearchResultsArea = false;  
