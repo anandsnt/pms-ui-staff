@@ -9,7 +9,7 @@ angular.module('sntRover').service('RVNightlyDiarySearchSrv',
         
         that.fetchSearchResults = function (data) {
             var deferred = $q.defer(),
-                url = 'search.json?per_page=' + that.searchPerPage + '&page=' + that.page + '&is_from_diary=true';
+                url = 'search.json?per_page=' + that.searchPerPage + '&page=' + that.page + '&is_from_nightly_diary=true';
 
             data.fakeDataToAvoidCache = new Date();
             // Edit URL according to api specs.
