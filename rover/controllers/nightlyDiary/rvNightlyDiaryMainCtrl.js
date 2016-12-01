@@ -252,7 +252,6 @@ angular.module('sntRover')
                 if ($stateParams.isFromStayCard) {
                     var params = RVNightlyDiarySrv.getCache();
                     $scope.currentSelectedReservation = params.currentSelectedReservation;
-                   // updateDiaryView();
                     selectReservation("", $scope.currentSelectedReservation);
                 }
             })();
