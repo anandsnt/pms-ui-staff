@@ -751,8 +751,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
          * @param  {array} dates [description]
          */
         const showAndFormDataForTopBar = (dates) => {
-            var cards = [];
-            var index = 0; 
+            var cards = [],
+                index = 0; 
 
             $scope.fromDate = dates[0];
             $scope.toDate = dates[dates.length - 1];
