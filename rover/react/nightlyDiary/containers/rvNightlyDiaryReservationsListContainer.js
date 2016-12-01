@@ -211,7 +211,8 @@ let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateG
                 reservation.isReservationDayStay = isReservationDayStay;
 
                 let reservationEditClass = '';
-                if(reservation.id === selectReservationId) {
+
+                if (reservation.id === selectReservationId) {
                     reservationEditClass = "editing";
                 }
                 reservation.reservationClass = "reservation " + reservationStatusClass + " " + reservationClass + " " + reservationEditClass;

@@ -16,6 +16,7 @@ angular.module('sntRover')
             $scope.goToStayCard = function(currentSelectedReservation) {
 
                 var params = RVNightlyDiarySrv.getCache();
+
                 params.currentSelectedReservation = currentSelectedReservation;
                 RVNightlyDiarySrv.updateCache(params);
                 $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {

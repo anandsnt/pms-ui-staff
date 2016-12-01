@@ -34,7 +34,8 @@ angular.module('sntRover')
                 $scope.$emit('updateRoverLeftMenu', 'nightlyDiaryReservation');
 
                 var srvParams = {};
-                if($stateParams.isFromStayCard) {
+
+                if ($stateParams.isFromStayCard) {
                     srvParams = RVNightlyDiarySrv.getCache();
                 }
                 else {
@@ -63,7 +64,7 @@ angular.module('sntRover')
                     secondMonthDateList: [],
                     reservationsList: reservationsList,
                     hasOverlay: false,
-                    isEditReservationMode : false
+                    isEditReservationMode: false
                 };
                 $scope.currentSelectedReservation = {};
             };
@@ -144,14 +145,18 @@ angular.module('sntRover')
             var selectReservation = (e, reservation) => {
                 $scope.diaryData.isEditReservationMode = true;
                 $scope.currentSelectedReservation = reservation;
-                $scope.$apply();
+
+                if(!$stateParams.isFromStayCard) {
+                    $scope.$apply();
+
+                }
                 showReservationSelected();
             };
 
             /*
              * Function to cancel editing of a reservation
              */
-            var cancelReservationEditing = function(){
+            var cancelReservationEditing = function() {
                 $scope.diaryData.isEditReservationMode = false;
                 $scope.currentSelectedReservation = {};
             };
@@ -159,7 +164,7 @@ angular.module('sntRover')
              * Cancel button click edit bar
              *
              */
-            $scope.$on("CANCEL_RESERVATION", function(){
+            $scope.$on("CANCEL_RESERVATION", function() {
                 cancelReservationEditing();
             });
             /**
@@ -174,7 +179,7 @@ angular.module('sntRover')
                 };
             };
 
-            if($stateParams.isFromStayCard) {
+            if ($stateParams.isFromStayCard) {
                 var params = RVNightlyDiarySrv.getCache();
                 $scope.currentSelectedReservation = params.currentSelectedReservation;
             }
@@ -241,7 +246,7 @@ angular.module('sntRover')
              */
             (() => {
                 renderDiaryView();
-                if($stateParams.isFromStayCard) {
+                if ($stateParams.isFromStayCard) {
                     var params = RVNightlyDiarySrv.getCache();
                     $scope.currentSelectedReservation = params.currentSelectedReservation;
                     selectReservation("", $scope.currentSelectedReservation);
