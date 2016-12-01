@@ -159,7 +159,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         url: '/revinate/setup',
         resolve: {
             config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                //return {'enabled':true} // uncomment if needing to test UI without IFC connection
+                // return {'enabled':true} // uncomment if needing to test UI without IFC connection
                 return adInterfacesCommonConfigSrv.fetchConfiguration('revinate');
             }]
         }
