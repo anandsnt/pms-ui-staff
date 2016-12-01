@@ -148,9 +148,9 @@ angular.module('sntRover')
 
                 if(!$stateParams.isFromStayCard) {
                     $scope.$apply();
-
+                    showReservationSelected();
                 }
-                showReservationSelected();
+
             };
 
             /*
@@ -183,12 +183,13 @@ angular.module('sntRover')
                 var params = RVNightlyDiarySrv.getCache();
                 $scope.currentSelectedReservation = params.currentSelectedReservation;
             }
+
             // Initial State
             var initialState = {
                 roomsList: roomsList.rooms,
                 reservationsList: reservationsList.rooms,
-                diaryInitialDayOfDateGrid: $rootScope.businessDate,
-                numberOfDays: 7,
+                diaryInitialDayOfDateGrid: $scope.diaryData.fromDate,
+                numberOfDays: $scope.diaryData.numberOfDays,
                 currentBusinessDate: $rootScope.businessDate,
                 callBackFromAngular: getTheCallbacksFromAngularToReact(),
                 paginationData: $scope.diaryData.paginationData,
@@ -249,7 +250,7 @@ angular.module('sntRover')
                 if ($stateParams.isFromStayCard) {
                     var params = RVNightlyDiarySrv.getCache();
                     $scope.currentSelectedReservation = params.currentSelectedReservation;
-                    updateDiaryView();
+                   // updateDiaryView();
                     selectReservation("", $scope.currentSelectedReservation);
                 }
             })();
