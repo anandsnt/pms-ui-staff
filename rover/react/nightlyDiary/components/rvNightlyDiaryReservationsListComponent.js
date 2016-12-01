@@ -9,10 +9,7 @@ const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, ro
 
                             item.reservations.length > 0 ?
                                 item.reservations.map((reservationItem) => (
-
-                                    <NightlyDiaryReservationContainer reservation={reservationItem} />
-
-
+                                        <NightlyDiaryReservationContainer reservation={reservationItem} />
                                     )
                                 )
 
