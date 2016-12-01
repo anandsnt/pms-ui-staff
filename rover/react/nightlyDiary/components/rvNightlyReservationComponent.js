@@ -11,8 +11,8 @@ const ReservationComponent = createClass ({
             }
             {
                 this.props.reservation.isReservationDayStay ?
-                <span className="name" data-initials={this.props.reservation.guest_details.first_name + "." + this.props.reservation.guest_details.last_name} > {this.props.reservation.guest_details.first_name + " " + this.props.reservation.guest_details.last_name}</span> :
-                <span className="name">{this.props.reservation.guest_details.first_name + " " + this.props.reservation.guest_details.last_name}</span>
+                <span className="name" data-initials={this.props.reservation.guest_details.short_name} >{this.props.reservation.guest_details.short_name}</span> :
+                <span className="name">{this.props.reservation.guest_details.full_name}</span>
             }
 
             {

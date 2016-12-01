@@ -1,9 +1,9 @@
 <div class="diary-nightly-edit-form" ng-show="diaryData.isEditReservationMode" ng-class="{'hidden': !diaryData.isEditReservationMode}" ng-controller="rvNightlyDiaryTopEditBarController">
     <div class="guest">
         <figure class="guest-image">
-            <img src="{guest-image-src}" alt="">
+            <img src="{{currentSelectedReservation.guest_details.image}}" alt="Guest-Image">
         </figure>
-        <h2 class="name">{{currentSelectedReservation.guest_details.first_name}} {{currentSelectedReservation.guest_details.last_name}}</h2>
+        <h2 class="name">{{currentSelectedReservation.guest_details.full_name}}</h2>
         <!-- Opens Stay Card of that guest -->
         <button type="button" class="button orange" ng-click="goToStayCard(currentSelectedReservation)">Stay Card</button>
     </div>
