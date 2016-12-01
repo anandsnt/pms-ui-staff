@@ -205,12 +205,6 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
 
     reservation.guest_details.full_name = reservation.guest_details.first_name + " " + reservation.guest_details.last_name;
     reservation.guest_details.short_name = reservation.guest_details.first_name.substring(0, 1) + "." + reservation.guest_details.last_name.substring(0, 1);
-    // reservation.guest_details.first_name = (isReservationDayStay)
-    //                                         ? reservation.guest_details.first_name.substring(0, 1)
-    //                                         : reservation.guest_details.first_name;
-    // reservation.guest_details.last_name = (isReservationDayStay)
-    //                                       ? reservation.guest_details.last_name.substring(0, 1)
-    //                                       : reservation.guest_details.last_name;
     reservation.isReservationDayStay = isReservationDayStay;
 
     let reservationEditClass = '';
