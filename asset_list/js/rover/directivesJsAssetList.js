@@ -34,7 +34,8 @@ module.exports = {
                     'shared/directives/limitInputRange/limitInputRange.js',
                     'rover/directives/multiOptionSelection/multiOptionSelection.js',
                     'shared/directives/prettyTimeAgo/prettyTimeAgo.js',
-                    jsLibRoot + 'fullcalender/**/*.js'
+                    jsLibRoot + 'fullcalender/**/*.js',
+                    'rover/directives/includeReplaceDir.js',
 				]
 			};
 		return assetsForScreen;
