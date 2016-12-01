@@ -2,6 +2,7 @@
 <div ng-include="'/assets/partials/common/header.html'"></div>
 
 <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryTopFilterBar.html'"></div>
+<div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryTopEditBar.html'"></div>
 
 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
@@ -9,17 +10,22 @@
 
         <!-- Room Search + Timeline -->
         <div class="grid-timeline">
+
             <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRoomNumberSearch.html'" class="grid-room-search" ng-controller="rvNightlyDiaryRoomNumberSearchController"></div>
-            
+
             <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryTimeline.html'"></div>
+
+
+            <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryStayRange.html'"></div>
+
             <!-- Stay Range | Remove .hidden to show-->
-            <div class="grid-stay-range hidden">
+            <!-- <div class="grid-stay-range hidden">
                 {_content/stay-range.html}
-            </div>
+            </div> -->
         </div>
 
         <!-- Room Search Results -->
-        <div class="grid-room-search-results scrollable"  ng-iscroll="result_showing_area" ng-iscroll-delay="1000" ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRoomNumberSearchResult.html'" ng-show="diaryData.showSearchResultsArea" ng-class="{'visible': diaryData.showSearchResultsArea}"  ng-controller="rvNightlyDiaryRoomNumberSearchResultController">            
+        <div class="grid-room-search-results scrollable"  ng-iscroll="result_showing_area" ng-iscroll-delay="1000" ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRoomNumberSearchResult.html'" ng-show="diaryData.showSearchResultsArea" ng-class="{'visible': diaryData.showSearchResultsArea}"  ng-controller="rvNightlyDiaryRoomNumberSearchResultController">
         </div>
 
         <!-- REACT APP :: Rooms list + Reservations list + Un-assigned Reservations list -->
