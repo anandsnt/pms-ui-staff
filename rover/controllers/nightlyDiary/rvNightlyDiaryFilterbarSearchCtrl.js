@@ -52,8 +52,8 @@ angular.module('sntRover')
             var params = {};
 
             params.query = $scope.textInQueryBox.trim();
-            params.fromDate = $scope.diaryData.fromDate;
-            params.toDate = $scope.diaryData.toDate;
+            params.from_date = $scope.diaryData.fromDate;
+            params.to_date = $scope.diaryData.toDate;
             $scope.invokeApi(RVNightlyDiarySearchSrv.fetchSearchResults, params, successCallBackofDataFetch, failureCallBackofDataFetch);
         };
 
