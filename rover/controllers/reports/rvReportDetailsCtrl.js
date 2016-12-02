@@ -119,6 +119,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.isCancellationReport = false;
 			$scope.isActionsManager = false;
 			$scope.isVacantRoomsReport = false;
+            $scope.isForecastGuestGroup = false;
 
 			$scope.hasNoSorting  = false;
 			$scope.hasNoTotals   = false;
@@ -246,6 +247,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['VACANT_ROOMS_REPORT']:
                     $scope.isVacantRoomsReport = true;
 					break;
+                case reportNames['FORECAST_GUEST_GROUPS']:
+                    $scope.isForecastGuestGroup = true;
 
 				default:
 					break;
