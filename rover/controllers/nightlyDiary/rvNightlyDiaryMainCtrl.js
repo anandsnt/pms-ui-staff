@@ -50,7 +50,10 @@ angular.module('sntRover')
                     firstMonthDateList: [],
                     secondMonthDateList: [],
                     reservationsList: reservationsList.reservationsList,
-                    hasOverlay: false
+                    hasOverlay: false,
+                    filterList: {},
+                    showUnassignedPanel: false,
+                    showFilterPanel: false
                 };
             };
 

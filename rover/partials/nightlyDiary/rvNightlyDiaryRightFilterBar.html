@@ -1,4 +1,4 @@
-<div class="diary-nightly-sidebar diary-nightly-filters visible">
+<div class="diary-nightly-sidebar diary-nightly-filters visible" ng-controller="rvNightlyDiaryRightFilterBarController">
     <div class="sidebar-header">
         <h2>Filters</h2>
         <p>Select filters and press "apply"</p>
@@ -9,15 +9,14 @@
             <div class="entry">
                 <div class="multi-select with-label">
                     <label for="room-type">Room Type</label>
-                    <span class="value">{X} selected ...</span>
+                    <span class="value">{{selectedRoomCount}} selected ...</span>
                 </div>
-                <div class="multi-select-options hidden"> <!-- Toggle class 'hidden' when L9 tapped -->
-                    <label class="checkbox inline"> <!-- Add class 'checked' when checked -->
-                        <span class="icon-form icon-checkbox"></span> <!-- Add class 'checked' when checked -->
-                        <input value="{value}" type="checkbox">
-                        <span class="text">{Room Type}</span>
+                <div class="multi-select-options"> <!-- Toggle class 'hidden' when L9 tapped -->
+                    <label class="checkbox inline" ng-repeat="roomType in diaryData.filterList.room_type" ng-class="{'checked':roomType.is_selected}">
+                        <span class="icon-form icon-checkbox" ng-class="{'checked':roomType.is_selected}"></span>
+                        <input type="checkbox">
+                        <span class="text">{{roomType.room_type}}</span>
                     </label>
-                    ... repeat for all room types
                 </div>
             </div>
 
@@ -25,15 +24,14 @@
             <div class="entry">
                 <div class="multi-select with-label">
                     <label for="room-type">Floor</label>
-                    <span class="value">{X} selected ...</span>
+                    <span class="value">{{selectedFloorCount}} selected ...</span>
                 </div>
-                <div class="multi-select-options halfs hidden"> <!-- Toggle class 'hidden' when L26 tapped -->
-                    <label class="checkbox inline"> <!-- Add class 'checked' when checked -->
-                        <span class="icon-form icon-checkbox"></span> <!-- Add class 'checked' when checked -->
-                        <input value="{value}" type="checkbox">
-                        <span class="text">{Floor No.}</span>
+                <div class="multi-select-options halfs"> <!-- Toggle class 'hidden' when L26 tapped -->
+                    <label class="checkbox inline" ng-repeat="floorList in diaryData.filterList.floor_list" ng-class="{'checked':floorList.is_selected}">
+                        <span class="icon-form icon-checkbox" ng-class="{'checked':floorList.is_selected}"></span>
+                        <input type="checkbox">
+                        <span class="text">{{floorList.floor_name}}</span>
                     </label>
-                    ... repeat for floors 
                 </div>
             </div>
         </div>
