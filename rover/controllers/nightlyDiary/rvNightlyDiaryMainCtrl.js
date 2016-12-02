@@ -67,6 +67,7 @@ angular.module('sntRover')
                     isEditReservationMode: false
                 };
                 $scope.currentSelectedReservation = {};
+                $scope.currentSelectedRoom = {};
             };
 
             initiateBasicConfig();
@@ -112,9 +113,9 @@ angular.module('sntRover')
 
                 if (roomId) {
                     postData.room_id = roomId;
-                    $scope.diaryData.paginationData.selectedRoomId = roomId;
+                    $scope.diaryData.selectedRoomId = roomId;
                 } else {
-                    $scope.diaryData.paginationData.selectedRoomId = null;
+                    $scope.diaryData.selectedRoomId = null;
                 }
                 $scope.invokeApi(RVNightlyDiarySrv.fetchRoomsListAndReservationList, postData, successCallBackFetchRoomList);
             };
@@ -142,9 +143,10 @@ angular.module('sntRover')
              * Show selected reservation highlighted and enable edit bar
              * @param reservation - Current selected reservation
              */
-            var selectReservation = (e, reservation) => {
+            var selectReservation = (e, reservation, room) => {
                 $scope.diaryData.isEditReservationMode = true;
                 $scope.currentSelectedReservation = reservation;
+                $scope.currentSelectedRoom = room;
                 if (!$stateParams.isFromStayCard) {
                     $scope.$apply();
                     showReservationSelected();
@@ -189,6 +191,7 @@ angular.module('sntRover')
             if ($stateParams.isFromStayCard) {
                 var params = RVNightlyDiarySrv.getCache();
                 $scope.currentSelectedReservation = params.currentSelectedReservation;
+                $scope.diaryData.selectedRoomId = params.currentSelectedRoom.id;
             }
 
             // Initial State
@@ -200,7 +203,8 @@ angular.module('sntRover')
                 currentBusinessDate: $rootScope.businessDate,
                 callBackFromAngular: getTheCallbacksFromAngularToReact(),
                 paginationData: $scope.diaryData.paginationData,
-                selectReservationId: $scope.currentSelectedReservation.id
+                selectReservationId: $scope.currentSelectedReservation.id,
+                selectedRoomId: $scope.diaryData.selectedRoomId
             };
             const store = configureStore(initialState);
             const {render} = ReactDOM;
@@ -217,7 +221,8 @@ angular.module('sntRover')
                     currentBusinessDate: $rootScope.businessDate,
                     callBackFromAngular: getTheCallbacksFromAngularToReact(),
                     paginationData: $scope.diaryData.paginationData,
-                    selectReservationId: $scope.currentSelectedReservation.id
+                    selectReservationId: $scope.currentSelectedReservation.id,
+                    selectedRoomId: $scope.diaryData.selectedRoomId
                 };
                 store.dispatch(dispatchData);
             };
@@ -225,7 +230,8 @@ angular.module('sntRover')
                 var dispatchData = {
                     type: 'RESERVATION_SELECTED',
                     selectReservationId: $scope.currentSelectedReservation.id,
-                    reservationsList: $scope.diaryData.reservationsList.rooms
+                    reservationsList: $scope.diaryData.reservationsList.rooms,
+                    selectedRoomId: $scope.diaryData.selectedRoomId
                 };
 
                 store.dispatch(dispatchData);
@@ -257,8 +263,7 @@ angular.module('sntRover')
                 renderDiaryView();
                 if ($stateParams.isFromStayCard) {
                     var params = RVNightlyDiarySrv.getCache();
-                    $scope.currentSelectedReservation = params.currentSelectedReservation;
-                    selectReservation("", $scope.currentSelectedReservation);
+                    selectReservation("", params.currentSelectedReservation, params.currentSelectedRoom);
                 }
             })();
 }]);

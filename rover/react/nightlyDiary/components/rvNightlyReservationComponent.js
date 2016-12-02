@@ -4,7 +4,7 @@ const ReservationComponent = createClass ({
 
     render() {
         return (
-        <div style={this.props.reservation.style} className={this.props.reservation.reservationClass} onClick={(e) => this.props.selectReservation(e, this.props.reservation)}>
+        <div style={this.props.reservation.style} className={this.props.reservation.reservationClass} onClick={(e) => this.props.selectReservation(e, this.props.reservation, this.props.selectedRoom)}>
         <div className="reservation-data">
             {
                 this.props.reservation.isReservationDayStay ? <span className="day-stay-icon"></span> : ''

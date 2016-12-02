@@ -13,11 +13,12 @@ angular.module('sntRover')
                 $scope.$emit('CANCEL_RESERVATION_EDITING');
             };
 
-            $scope.goToStayCard = function(currentSelectedReservation) {
+            $scope.goToStayCard = function(currentSelectedReservation, currentSelectedRoom) {
 
                 var params = RVNightlyDiarySrv.getCache();
 
                 params.currentSelectedReservation = currentSelectedReservation;
+                params.currentSelectedRoom = currentSelectedRoom;
                 RVNightlyDiarySrv.updateCache(params);
                 $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
                     id: currentSelectedReservation.id,

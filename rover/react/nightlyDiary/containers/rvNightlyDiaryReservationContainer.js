@@ -222,7 +222,8 @@ const mapStateToNightlyDiaryReservationContainerProps = (state, ownProps) => ({
         ownProps.reservation, state.diaryInitialDayOfDateGrid,
         state.numberOfDays, state.currentBusinessDate, state.selectReservationId),
     selectReservation: state.callBackFromAngular.selectReservation,
-    selectReservationId: state.selectReservationId
+    selectReservationId: state.selectReservationId,
+    selectedRoom: ownProps.room
 });
 
 const mapDispatchToNightlyDiaryReservationContainerProps = (stateProps) => {
