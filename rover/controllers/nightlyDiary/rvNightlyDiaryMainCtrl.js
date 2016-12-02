@@ -145,14 +145,13 @@ angular.module('sntRover')
             var selectReservation = (e, reservation) => {
                 $scope.diaryData.isEditReservationMode = true;
                 $scope.currentSelectedReservation = reservation;
-                if(!$stateParams.isFromStayCard) {
+                if (!$stateParams.isFromStayCard) {
                     $scope.$apply();
                     showReservationSelected();
                 } else {
                     // To fix issue point 3 - QA failed comment - CICO-34410
                     $stateParams.isFromStayCard = false;
                 }
-
             };
 
             /*
@@ -161,12 +160,18 @@ angular.module('sntRover')
             var cancelReservationEditing = function() {
                 $scope.diaryData.isEditReservationMode = false;
                 $scope.currentSelectedReservation = {};
+                var dispatchData = {
+                    type: 'CANCEL_RESERVATION_EDITING',
+                    reservationsList: $scope.diaryData.reservationsList.rooms
+                };
+
+                store.dispatch(dispatchData);
             };
             /*
              * Cancel button click edit bar
              *
              */
-            $scope.$on("CANCEL_RESERVATION", function() {
+            $scope.$on("CANCEL_RESERVATION_EDITING", function() {
                 cancelReservationEditing();
             });
             /**
@@ -222,6 +227,7 @@ angular.module('sntRover')
                     selectReservationId: $scope.currentSelectedReservation.id,
                     reservationsList: $scope.diaryData.reservationsList.rooms
                 };
+
                 store.dispatch(dispatchData);
             };
 

@@ -10,7 +10,7 @@ angular.module('sntRover')
             BaseCtrl.call(this, $scope);
 
             $scope.cancelEditReservation = function() {
-                $scope.$emit('CANCEL_RESERVATION');
+                $scope.$emit('CANCEL_RESERVATION_EDITING');
             };
 
             $scope.goToStayCard = function(currentSelectedReservation) {
