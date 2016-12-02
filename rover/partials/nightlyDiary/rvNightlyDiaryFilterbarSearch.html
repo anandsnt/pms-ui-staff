@@ -4,19 +4,20 @@
         <span class="icons icon-clear-search" ng-click = "clearResults()">Clear query</span>
     </button>
     <span class="result-count" ng-show = "diaryData.totalSearchResults !== 0">{{diaryData.totalSearchResults}} Matches</span> 
+    <span class="result-count" ng-show = "(diaryData.totalSearchResults === 0 && textInQueryBox.length > 0 )">0 Matches</span> 
     <input class="query" placeholder="Search by Guest, Allotment/Group or Conf./Ext. red no." type="search" autocomplete="off" ng-change = "queryEntered()" ng-model = "textInQueryBox">
 
 
     <!-- Search results, show only when searching: -->
-    <div class="diary-search" ng-show = "results.length > 0">
+    <div class="diary-search" ng-show = "diaryData.reservationSearchResults.length > 0">
         <div class="list-header">
             <span class="name">Name</span>
             <span class="room">Room</span>
             <span class="nights">Nights</span>
         </div>
-        <div class="list scrollable" ng-iscroll="result_showing_area" ng-iscroll-delay="1000">
+        <div class="list scrollable" ng-iscroll="reservationSearchResultList" ng-iscroll-delay="1000">
             <div class="wrapper">
-                <div class="guest" ng-click="clickedOnResultItem(row.room_id)" ng-repeat = "row in results" ng-class = "{'no-room': escapeNull(row.room) === '', 'no-status': row.reservation_status === 'RESERVED'}">
+                <div class="guest" ng-click="clickedOnResultItem(row.room_id)" ng-repeat = "row in diaryData.reservationSearchResults" ng-class = "{'no-room': escapeNull(row.room) === '', 'no-status': row.reservation_status === 'RESERVED'}">
                     <div class="data">
                         <span ng-if="row.reservation_status !== 'RESERVED'" class="guest-status small-icon" ng-class="getReservationClass(row.reservation_status)"></span>
                         <div class="information" ng-class = "{'with-card': escapeNull(row.company)!=='' || escapeNull(row.travel_agent)!=='' || escapeNull(row.group)!=='' || escapeNull(row.allotment)!==''}"> 
