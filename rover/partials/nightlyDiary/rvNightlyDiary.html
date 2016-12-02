@@ -11,10 +11,9 @@
         <!-- Room Search + Timeline -->
         <div class="grid-timeline">
 
-            <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRoomNumberSearch.html'" class="grid-room-search" ng-controller="rvNightlyDiaryRoomNumberSearchController"></div>
+            <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRoomNumberSearch.html'" include-replace></div>
 
             <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryTimeline.html'"></div>
-
 
             <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryStayRange.html'"></div>
 
@@ -25,7 +24,7 @@
         </div>
 
         <!-- Room Search Results -->
-        <div class="grid-room-search-results scrollable"  ng-iscroll="result_showing_area" ng-iscroll-delay="1000" ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRoomNumberSearchResult.html'" ng-show="diaryData.showSearchResultsArea" ng-class="{'visible': diaryData.showSearchResultsArea}"  ng-controller="rvNightlyDiaryRoomNumberSearchResultController">
+        <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRoomNumberSearchResult.html'" include-replace>
         </div>
 
         <!-- REACT APP :: Rooms list + Reservations list + Un-assigned Reservations list -->
