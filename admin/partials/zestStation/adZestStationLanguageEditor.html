@@ -1,0 +1,33 @@
+<div class='sation-lang-download-popup' class="scrollable" ng-iscroll="languageEditor" ng-iscroll-delay="100">
+	<p>You can edit the tags in-line, please remember to click the save button before leaving this area</p>
+	<br>
+		<table class="grid" id="likes" >
+			<thead>
+				<th>
+					Language Tag
+				</th>
+				<th>
+					Value
+				</th>
+			</thead>
+			<tbody>
+				<tr ng-repeat="(key, value) in languageEditorData" style="padding:50px;">
+					<td>
+						{{key}}
+					</td>
+					<td>
+		 		   	<div class="entry">
+		                <input type='text' class="room-likes" value='{{value}}'>
+	                </div>
+					</td>
+				</tr>
+			</tbody>
+
+		</table>
+
+	<p>
+		<button class='button orange' ng-click="closePrompt()" style='position:relative; left: 40%'>Close</button>
+		<button class='button orange' ng-click="saveLanguageEditorChanges()" style='position:relative; left: 40%'>Save Changes</button>
+	</p>
+</div>
+

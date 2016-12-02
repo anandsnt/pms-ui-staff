@@ -193,6 +193,37 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             closeByDocument: true
         });
     };
+
+    $scope.editLang = function(lang){
+        // shows user an on-screen prompt, with the tags and values, so they can edit in-screen
+
+        $scope.showLoader();
+        var jsonRefUrl = 'staff/locales/download/' + lang + '.json';
+        console.log('going to fetch language json file for editing');
+
+        $.getJSON(jsonRefUrl, function(json) {
+            console.log('done!');
+            var loaderScope = angular.element('#loading-spinner').scope();
+            loaderScope.hasLoader = false;
+            console.log(json); // this will show the info it in firebug console
+            loaderScope.$digest();
+
+            // converts object into a plyable array
+            $scope.languageEditorData = json;
+
+            ngDialog.open({
+                template: '/assets/partials/zestStation/adZestStationLanguageEditor.html',
+                className: 'ngdialog-theme-default single-calendar-modal language-editor',
+                scope: $scope,
+                closeByDocument: true
+            });
+            $scope.refreshScroller('languageEditor');
+
+        });
+    };
+    $scope.showLoader = function(){
+        $scope.$emit('showLoader');
+    }
     $scope.saveAsText = '';
     $scope.isChrome = (window.navigator.userAgent.toLowerCase().indexOf("chrome") !== -1);
 
