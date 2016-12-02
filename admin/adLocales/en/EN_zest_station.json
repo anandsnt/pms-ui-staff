@@ -83,8 +83,8 @@
 "SANKYO_ENCODING":"Sankyo Encoding - Chrome only - Atlas (Saflok) only - Uses websocket",
 "INGENICO_INFINEA_KEY":"Infinea/Ingenico - iPad Only - Ving, Salto, Saflok",
 "USE_SOCKET_PRINTING" : "Use Socket print",
-"USE_SOCKET_PRINTING_DESC" : "turn this ON if Station is being run on a Windows-touchscreen computer, not a Tablet device"
-
+"USE_SOCKET_PRINTING_DESC" : "turn this ON if Station is being run on a Windows-touchscreen computer, not a Tablet device",
+"USE_ZEST_STATION_HANDLER" : "Use Zest Station Handler"
 
 
 

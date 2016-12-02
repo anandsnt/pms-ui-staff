@@ -68,6 +68,8 @@ admin.controller('ADExternalMappingsListCtrl', ['$scope', '$state', '$stateParam
         };
 
         (function() {
+            $scope.totalCount = 0;
+
             $scope.interface = {
                 name: $stateParams.interface_name
             };

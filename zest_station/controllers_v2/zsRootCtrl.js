@@ -977,7 +977,7 @@ sntZestStation.controller('zsRootCtrl', [
                     }
                 } else {
 					// when status is changed from admin
-                    if (previousWorkStationStatus === 'out-of-order' && newWorkStationStatus === 'in-order') {
+                    if (previousWorkStationStatus === 'out-of-order' && newWorkStationStatus === 'in-order' && $state.current.name === 'zest_station.admin') {
                         $state.go('zest_station.home');
                     } else {
 						// if application is launched either in chrome app or ipad go to login page

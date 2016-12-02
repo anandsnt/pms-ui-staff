@@ -113,7 +113,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		title: 'Status - Pre Check-In'
 	 }).state('checkinCcVerification', {
 		url: '/checkinCcVerification',
-		templateUrl: '/assets/common_templates/partials/checkin/gwCheckinCCAddition.html',
+		templateUrl: '/assets/common_templates/partials/greatWolf/gwCheckinCCAddition.html',
 		controller: 'checkinCcVerificationController',
 		title: 'CC verification'
 	});

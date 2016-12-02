@@ -326,8 +326,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportNames['FORECAST_GUEST_GROUPS']:
-					$scope.leftColSpan = 6;
-					$scope.rightColSpan = 7;
+					$scope.leftColSpan = 9;
+					$scope.rightColSpan = 5;
 					break;
 
 				case reportNames['MARKET_SEGMENT_STAT_REPORT']:
@@ -1247,6 +1247,8 @@ sntRover.controller('RVReportDetailsCtrl', [
          */
         $scope.toggleRevenue = function() {
             $scope.isRoomRevenueSelected = !$scope.isRoomRevenueSelected;
+            reportsSrv.setReportRequestParam('showRoomRevenue', $scope.isRoomRevenueSelected);
+            $scope.genReport( false );
         };
 
         /**

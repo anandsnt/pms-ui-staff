@@ -140,22 +140,6 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         // get rate details
         this.fetchDetails = function (params) {
             var deferred = $q.defer();
-             /*
-             * Service function to fetch add ons
-             * @return {object} add ons
-             */
-
-            that.fetchAddons = function () {
-                var params = {"is_active": true, "is_not_reservation_only": true};
-                var url = "/api/addons";
-
-                ADBaseWebSrvV2.getJSON(url, params).then(function (data) {
-                    that.rateDetails.allAddOns = data.results;
-                    deferred.resolve(that.rateDetails);
-                }, function (data) {
-                    deferred.reject(data);
-                });
-            };
 
             // fetch hotel business date
             that.fetchHotelInfo = function () {
@@ -164,7 +148,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     data = data.data;
                     that.rateDetails.business_date = data.business_date;
-                    that.fetchAddons();
+                    deferred.resolve(that.rateDetails);
                 }, function (data) {
                     deferred.reject(data);
                 });
