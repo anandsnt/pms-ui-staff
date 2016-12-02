@@ -89,7 +89,11 @@
             </div>
 
             <div class="actions">
-                <button ng-click="authorize()" ng-disabled="!authData.manualCCAuthPermission || authData.authAmount <= 0" ng-class="{'grey':!authData.manualCCAuthPermission || authData.authAmount <= 0 }" type="button" class="button green" translate>AUTHORIZE</button>
+                <button ng-click="authorize()" ng-disabled="!authData.manualCCAuthPermission || (authData.authAmount|number) <= 0"
+                        ng-class="{'grey':!authData.manualCCAuthPermission || (authData.authAmount|number) <= 0 }"
+                        type="button" class="button green" translate>
+                    AUTHORIZE
+                </button>
                 <button ng-click="closeDialog()" type="button" class="button blank" translate>CANCEL</button>
             </div>
         </fieldset>

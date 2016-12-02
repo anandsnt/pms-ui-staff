@@ -11,7 +11,7 @@ const calculateNextPageItemCount = (state) => {
 };
 
 const mapStateToNightlyDiaryGoToNextPageButtonContainerProps = (state) => ({
-    goToNext: state.callBackFromAngular.goToNextPage,
+    goToNextPage: state.callBackFromAngular.goToNextPage,
     nextPageItemCount: calculateNextPageItemCount(state)
 });
 
@@ -19,7 +19,7 @@ const mapDispatchToNightlyDiaryGoToNextPageButtonContainer = (stateProps) => {
     var goToNextButtonClicked = () => {};
 
     goToNextButtonClicked = () => {
-        return stateProps.goToNext();
+        return stateProps.goToNextPage();
     };
     return {
         goToNextButtonClicked,
