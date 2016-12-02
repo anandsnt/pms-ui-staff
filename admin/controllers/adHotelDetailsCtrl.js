@@ -241,6 +241,13 @@ admin.controller('ADHotelDetailsCtrl', [
 	};
 
 	/**
+	 * when clicked on Ignore Room Status for Pre-Assigned Rooms
+	 */
+	$scope.toggleTheIgnoreRoomStatusValue = function() {
+		$scope.data.ignore_room_status_for_pre_assigned = !$scope.data.ignore_room_status_for_pre_assigned;
+	};
+
+	/**
     *   Method to toggle data for 'is_pms_tokenized' as true/false.
     */
 	$scope.toggleClicked = function() {

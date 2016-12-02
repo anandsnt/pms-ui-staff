@@ -22,6 +22,8 @@ sntZestStation.controller('zsPrintBillCtrl', [
             $state.go('zest_station.speakToStaff');
         };
         var nextPageActions = function(printopted) {
+            $scope.$emit('hideLoader');
+            $scope.runDigestCycle();
             if ($scope.zestStationData.guest_bill.email) {
                 $scope.stateParamsForNextState.printopted = printopted;
                 $state.go('zest_station.emailBill', $scope.stateParamsForNextState);
@@ -36,11 +38,12 @@ sntZestStation.controller('zsPrintBillCtrl', [
             }
         };
         var printFailedActions = function(errorMessage) {
+            $scope.$emit('hideLoader');
             errorMessage = _.isUndefined(errorMessage) ? 'CHECKOUT_PRINT_FAILED' : errorMessage;
             $scope.zestStationData.workstationOooReason =  $filter('translate')(errorMessage);
             $scope.zestStationData.workstationStatus = 'out-of-order';
             var printopted = 'false';
-
+            $scope.runDigestCycle();
             nextPageActions(printopted);
         };
 
@@ -62,6 +65,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
             });
             $scope.$on('SOCKET_CONNECTED', function() {
                $scope.socketOperator.startPrint(printData);
+               $scope.$emit('showLoader');
             });
             /** ** Socket actions ends here *****/
 
@@ -70,6 +74,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
                 // check if socket is open
                 if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
                     $scope.socketOperator.startPrint(printData);
+                    $scope.$emit('showLoader');
                 } else {
                     $scope.$emit('CONNECT_WEBSOCKET'); // connect socket
                 }
@@ -93,46 +98,43 @@ sntZestStation.controller('zsPrintBillCtrl', [
             $scope.$emit('hideLoader');
             setBeforePrintSetup();
            
-            try {
-                // this will show the popup with full bill
-                $timeout(function() {
-                    /*
-                     * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-                     */
-                    if (sntapp.cordovaLoaded) {
-                        var printer = (sntZestStation.selectedPrinter);
+        try {
+            // this will show the popup with full bill
+            $timeout(function() {
+                /*
+                 * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+                 */
+                if (sntapp.cordovaLoaded) {
+                    var printer = (sntZestStation.selectedPrinter);
 
-                        cordova.exec(function(success) {
+                    cordova.exec(function(success) {
+                        var printopted = 'true';
+
+                        nextPageActions(printopted);
+                    }, function(error) {
+                        printFailedActions();
+                    }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
+                } else {
+                    if ($scope.zestStationData.zest_printer_option === "STAR_TAC" && $scope.zestStationData.kiosk_use_socket_print) {
+                        // we will call websocket services to print
+                        handleStarTacPrinterActions();
+                    } else {
+                        $window.print();
+                        setTimeout(function() {
                             var printopted = 'true';
 
                             nextPageActions(printopted);
-                        }, function(error) {
-                            printFailedActions();
-                        }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
-                    } else {
-                        // REASON: API error . We cant push the starttac code.
-                        // So uncomment and use the following line in next sprint
-                        // if($scope.zestStationData.zest_printer_option === "STAR_TAC"){
-                        //     //we will call websocket services to print
-                        //     handleStarTacPrinterActions();
-                        // }
-                        // else{
-                            $window.print();
-                            setTimeout(function() {
-                                var printopted = 'true';
-
-                                nextPageActions(printopted);
-                            }, 100);
-                        // }
-                       
+                        }, 100);
                     }
-                    // provide a delay for preview to appear 
 
-                }, 100);
-            } catch (e) {
-                console.info("something went wrong while attempting to print--->" + e);
-                printFailedActions();
-            }
+                }
+                // provide a delay for preview to appear
+
+            }, 100);
+        } catch (e) {
+            console.info("something went wrong while attempting to print--->" + e);
+            printFailedActions();
+        }
             setTimeout(function() {
                 // CICO-9569 to solve the hotel logo issue
                 $("header .logo").removeClass('logo-hide');

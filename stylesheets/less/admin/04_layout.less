@@ -539,6 +539,11 @@ body { overflow: hidden; }
             &.delete { text-align: center; }
             &.activate { width: 110px; }
             &.delete { width: 60px; }
+            
+            &.check { width: 40px; padding-left: 15px; }
+            &.with-shadow {
+                .box-shadow(1px 0px 0px rgba(0,0,0,0.1));
+            }
         }
 
         thead,
@@ -804,6 +809,93 @@ body { overflow: hidden; }
   padding:0 20px;
 }
 
+/* Search Pagination        ==============================*/
+   
+    @media not print {
+        
+        .search-pagination {
+            left: 0;
+            bottom: 0;
+            padding: 10px 20px;
+            overflow: hidden;
+            z-index: 1030;
+            background: @grey2 @darkTexture repeat;
+            .hide();
+            .box-shadow(0 -1px 1px rgba(0,0,0,.2));
+            .size(60px, 100%);
+        }
+
+        .search-pagination {
+            text-align: right;
+            .float();
+            font-size: 14px;
+
+            p { 
+                line-height: 40px;
+                margin: 0 20px 0 0; 
+                .pull-right;
+            }
+
+            .select {
+                display: inline-block;
+                padding-right: 15px;
+                margin:0 10px;
+                .box-shadow();
+
+                select {
+                    .box-shadow(none);
+                }
+            }
+
+            .entry {
+                margin:0;
+                text-align: left;
+            }
+
+            .button {
+                position: relative;
+                .size(40px, 80px);
+                .pull-right;
+                font-size: 12px;
+
+                &.disabled {
+                    .gradient( fade(@black, 5), fade(@black, 10));
+                }
+
+                &:before {
+                    content: "";
+                    position: absolute;
+                    top: 15px;
+                    border-top: 5px solid transparent;
+                    border-bottom: 5px solid transparent;
+                    .square(0px);
+                }
+
+                &.prev {
+                    margin-right: 10px;
+
+                    &:before {
+                        left: 10px;
+                        border-right: 5px solid @white;
+                    }
+                }
+
+                &.next {
+                    &:before {
+                        right: 10px;
+                        border-left: 5px solid @white;
+                    }
+                }
+            }
+        }
+    }
+
+    @media only screen and (min-width: 600px) {
+
+        .search-pagination {
+            .show();
+        }
+    }
 /* ADDED BY QBURST */
 
     .table-count {

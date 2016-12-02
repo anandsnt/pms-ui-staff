@@ -12,7 +12,7 @@ angular.module('sntRover').controller('itemInventoryMainController', [
 	$scope.selectedView = 'grid';
 	$scope.page.title = "Item Inventory";
 	// default number of selected days is 14
-	$scope.numberOfDaysSelected = 14;
+	$scope.numberOfDaysSelected = '14';
 
 	$scope.data = {};
 

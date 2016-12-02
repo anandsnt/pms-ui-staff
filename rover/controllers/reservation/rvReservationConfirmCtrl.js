@@ -309,7 +309,11 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				postData.confirmation_custom_title 	= $scope.reservationData.confirmation_custom_title;
 				postData.confirmation_custom_text 	= $scope.reservationData.confirmation_custom_text;
 				postData.locale = $scope.reservationData.languageData.selected_language_code;
-				if ($scope.reservationData.isHourly) {
+				
+                // CICO-35425
+                postData.hide_rates = $scope.reservationData.hide_rates;
+
+                if ($scope.reservationData.isHourly) {
 					$scope.invokeApi(RVReservationSummarySrv.sendHourlyConfirmationEmail, postData, emailSentSuccess);
 				} else {
 					var reservations = $scope.reservationData.reservations;

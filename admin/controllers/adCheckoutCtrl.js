@@ -1,6 +1,7 @@
 admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$state', 'roomTypes', function($scope, $rootScope, adCheckoutSrv, $state, roomTypes) {
 
 	$scope.errorMessage = '';
+    $scope.successMessage = '';
 
     BaseCtrl.call(this, $scope);
 
@@ -19,10 +20,29 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
         $scope.roomTypes = roomTypes.room_types;
         $scope.excludedRoomTypes = [];
         $scope.isStandAlone = $rootScope.isStandAlone;
+        $scope.checkoutEmailRoomExclusionConfig = {
+            "item_number": {
+                "active": true,
+                "label": "ROOM NO.",
+                "column_width": "width-20"
+            },
+            "item_description": {
+                "active": true,
+                "label": "ROOM TYPE.",
+                "column_width": "width-40"
+            },
+            "selectedExcludedIds": [],
+            "unSelectedExcludedIds": [],
+            "apiService": "ADCheckoutEmailRoomFilterSrv",
+            "noOfItemsSelected": 0
+        };
     };
 
     $scope.init();
 
+    $scope.toggleRoomExlusionSettings = function(bool) {
+        $scope.openRoomExclusionSettings = bool;
+    };
 
     // to add to excluded room types
     $scope.clickExcludeRoomType = function() {
@@ -48,7 +68,6 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
           item.ticked = false;
         }
       });
-
     };
 
     /*
@@ -67,7 +86,6 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
         } else {
             return [];
         }
-
     };
 
   /*
@@ -80,7 +98,8 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
         };
 		var fetchCheckoutDetailsSuccessCallback = function(data) {
 
-			$scope.$emit('hideLoader');
+			// $scope.$emit('hideLoader');
+            // don't hide loader, as the rooms API will be still running
             $scope.isLoading = false;
 			$scope.checkoutData = data;
             $scope.checkoutData.checkout_email_alert_time_hour = $scope.checkoutData.checkout_email_alert_time_hour === null ? "HH" : $scope.checkoutData.checkout_email_alert_time_hour;
@@ -181,15 +200,18 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
                 'room_verification_instruction': $scope.checkoutData.room_verification_instruction,
                 'excluded_room_types': excluded_room_types,
                 'enable_offline_checkout': $scope.checkoutData.enable_offline_checkout,
-                'checkout_static_uri': $scope.checkoutData.checkout_static_uri
+                'checkout_static_uri': $scope.checkoutData.checkout_static_uri,
+                'removed_excluded_from_checkout_notification': $scope.checkoutEmailRoomExclusionConfig.selectedExcludedIds,
+                'selected_excluded_from_checkout_notification': $scope.checkoutEmailRoomExclusionConfig.unSelectedExcludedIds
 			};
 
-        
-    	var saveCheckoutDetailsSuccessCallback = function(data) {
-    		$scope.$emit('hideLoader');
-    	};
+        var saveCheckoutDetailsSuccessCallback = function(data) {
+            $scope.$emit('hideLoader');
+            $scope.$broadcast('SAVE_SETTINGS_SUCCESS');
+            $scope.successMessage = "Success!. Settings has been saved.";
+        };
 
-    	$scope.invokeApi(adCheckoutSrv.save, uploadData, saveCheckoutDetailsSuccessCallback);
+        $scope.invokeApi(adCheckoutSrv.save, uploadData, saveCheckoutDetailsSuccessCallback);
     };
 
     var setWatchers = function() {
@@ -199,7 +221,6 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
                     if ($scope.checkoutData.zest_hourly_checkout_alert_time_hour === 4 ) {
                          $scope.checkoutData.zest_hourly_checkout_alert_time_minute = "00";
                     }
-
                 }
             );
             $scope.$watch(function() {
@@ -208,10 +229,8 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
                     if ($scope.checkoutData.weekends_zest_hourly_checkout_alert_time_hour === 4 ) {
                          $scope.checkoutData.weekends_zest_hourly_checkout_alert_time_minute = "00";
                     }
-
                 }
             );
     };
     
-
 }]);

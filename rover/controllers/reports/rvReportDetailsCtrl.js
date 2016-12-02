@@ -326,8 +326,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportNames['FORECAST_GUEST_GROUPS']:
-					$scope.leftColSpan = 6;
-					$scope.rightColSpan = 7;
+					$scope.leftColSpan = 9;
+					$scope.rightColSpan = 5;
 					break;
 
 				case reportNames['MARKET_SEGMENT_STAT_REPORT']:
@@ -630,8 +630,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportNames['MARKET_SEGMENT_STAT_REPORT']:
-					$scope.hasReportTotals    = false;
-					$scope.showReportHeader   = true;
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/marketSegmentStatReport/rvMarketSegmentStatReport.html';
 					break;
 
@@ -1237,6 +1237,26 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.$on( '$destroy', reportPageChanged );
 		$scope.$on( '$destroy', reportPrinting );
 		$scope.$on( '$destroy', reportAPIfailed );
+
+        // Added for CICO-33172
+        $scope.isRoomRevenueSelected = true;
+        $scope.isBookingsSelected = true;
+
+        /**
+         * Toggle Revenue columns for market segment statistics report
+         */
+        $scope.toggleRevenue = function() {
+            $scope.isRoomRevenueSelected = !$scope.isRoomRevenueSelected;
+            reportsSrv.setReportRequestParam('showRoomRevenue', $scope.isRoomRevenueSelected);
+            $scope.genReport( false );
+        };
+
+        /**
+         * Toggle Bookings columns for market segment statistics report
+         */
+        $scope.toggleBookings = function() {
+            $scope.isBookingsSelected = !$scope.isBookingsSelected;
+        };
     }
 
 ]);

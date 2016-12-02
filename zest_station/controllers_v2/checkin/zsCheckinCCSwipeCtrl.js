@@ -69,7 +69,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
         $scope.reTryCardSwipe = function() {
             $scope.resetTime();
-            init();
+            init();// TODO, need to remove this init call and just run logic neeed to listen for CC swipe again
         };
 
         var onActivityTimeout = function() {
@@ -78,13 +78,10 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
             } else if (isDepositMode()) {
                 swipeTimeoutDeposit();
-
-            } else {
-
             }
         };
 
-        var onClickBack = function(event) {
+        var onClickBack = function() {
             if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
                 $state.go('zest_station.checkInReservationDetails', $stateParams);
             } else {
@@ -112,7 +109,6 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             }
         };
 
-
         $scope.swipeData;
 
         var onFetchMLITokenResponse = function(response) {
@@ -134,7 +130,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         $scope.payingDeposit = false;
         var payDeposit = function(debugging) {
             $scope.payingDeposit = true;
-            console.info("paying deposit");
+            console.info('paying deposit');
             var params = {
                 'is_emv_request': true, // the current session workstation emv terminal (from setWorkstation) will be used
                 'reservation_id': $stateParams.reservation_id,
@@ -159,7 +155,8 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                         'failureCallBack': onSwipeError,
                         'loader': 'none'
                     });
-                    // $scope.invokeApi(zsPaymentSrv.submitDeposit, params, successSixPayDeposit, onSwipeError, "NONE"); //dont show loader using "NONE"
+                    // $scope.invokeApi(zsPaymentSrv.submitDeposit, params, successSixPayDeposit, onSwipeError, "NONE"); 
+                    // dont show loader using "NONE"
 
                 }, 500);
             }
@@ -167,14 +164,16 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
 
         var processSwipeCardData = function(swipedCardData) {
-            if (typeof swipedCardData === typeof 'str') {
+            // TODO: need to update this comment and determine why we're handling both cases.
+            if (_.isString(swipedCardData)) {
                 $scope.swipeData = JSON.parse(swipedCardData);
-            } else if (typeof swipedCardData === typeof {
-                    'object': true
-                }) {
+
+            } else if (_.isObject(swipedCardData)) {
                 $scope.swipeData = swipedCardData;
+
             } else {
                 $scope.swipeData = {};
+
             }
             var swipeOperationObj = new SwipeOperation();
             var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
@@ -194,17 +193,17 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         var swipeFromSocket = function() {
             if ($scope.zestStationData.ccReader === 'websocket') {
                 return true;
-            } else {
-                return false;
             }
+            return false;
         };
+
         var readLocally = function() {
             if ($scope.zestStationData.ccReader === 'local') {
                 return true;
-            } else {
-                return false;
             }
+            return false;
         };
+
         var onCardSwipeResponse = function(evt, swipedCardData) {
             if (readLocally() || swipeFromSocket()) {
                 console.log('processing local read from local reader: ' + JSON.stringify(swipedCardData));
@@ -291,12 +290,14 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             // and send the amount to the emv terminal for the amount if needed
             if ($stateParams.mode === 'DEPOSIT' && !$scope.paidDeposit) {
                 return true;
-            } else return false;
+            }
+            return false;
         };
         var isCCAuthMode = function() {
             if ($stateParams.mode === 'CREDIT_CARD_AUTH') {
                 return true;
-            } else return false;
+            }
+            return false;
         };
 
         var setTimeOutFunctionToEnsureSocketIsOpened = function() {
@@ -314,6 +315,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             $scope.showSwipeNav = true;
             $scope.waitingForSwipe = true;
         };
+
         var setCCAuthSettings = function() {
             $scope.waitingForSwipe = true;
             $scope.swipeError = false;
@@ -344,6 +346,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
         var initWsSwipe = function() {
             if ($scope.inDemoMode()) {
+                // in demo mode, give some delay then move onto card signature
                 setTimeout(function() {
                     goToCardSign();
                 }, 2000);
@@ -357,20 +360,15 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             var socketReady = $scope.socketOperator.returnWebSocketObject().readyState === 1;
 
             !socketReady ? $scope.$emit('CONNECT_WEBSOCKET') : listenForSwipe();
-
         };
+
         var atCardSwipeScreen = function() {
-            if ($state.current.name === 'zest_station.checkInCardSwipe') { // using for debugging & demo mode, 
-                // please leave this here until next release as it wont hurt any functionality currently
-                return true;
-            } else {
-                return false;
-            }
+            return $state.current.name === 'zest_station.checkInCardSwipe';
         };
-
 
         var initiateiPadCardReader = function() {
             if ($scope.inDemoMode()) {
+                // in demo mode, give some delay then move onto card signature
                 setTimeout(function() {
                     goToCardSign();
                 }, 2000);
@@ -398,12 +396,12 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 }
             }
         };
+
         var isSixpay = function() {
             if ($scope.zestStationData.paymentGateway === 'sixpayments') {
                 return true;
-            } else {
-                return false;
             }
+            return false;
         };
 
         var reader = $scope.zestStationData.ccReader,
@@ -469,6 +467,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 }
             }
         };
+
         var fetchRemainingAuthAmountDue = function() { // remaining authorization required for reservation
             console.log(':: fetchRemainingAuthAmountDue :: $stateParams: ', $stateParams);
 
@@ -636,16 +635,29 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             initiateiPadCardReader();
         };
 
+        /** ************** Listeners ****************/
+
+        $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onClickBack);
+        $scope.$on('SWIPE_ACTION', onCardSwipeResponse);
+        $scope.$on('USER_ACTIVITY_TIMEOUT', onActivityTimeout);
+
+        /** ************** END Listeners ************/
+
 
         /**
-         * [setup controller]
+         * [initializeMe description]
+         *  setup controller
          */
+        (function() {
+            BaseCtrl.call(this, $scope);
+            $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
+        }());
+
         var init = function() {
             $scope.setScreenIcon('card');
 
             console.warn('$stateParams: ', $stateParams);
-                // if at the deposit screen, set the currency symbol and amount due, which should be passed from reservation details
-
+            // if at the deposit screen, set the currency symbol and amount due, which should be passed from reservation details
             /*
              * 
              * on Init, we need to check if we are making a deposit, or just authorizing a card for the reservation
@@ -687,30 +699,8 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 startSixPayPayment();
 
             }
-
-
         };
-
-
         init();
-
-
-        /**
-         * [initializeMe description]
-         */
-
-        var initializeMe = (function() {
-            BaseCtrl.call(this, $scope);
-            $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
-
-        }());
-
-        /** ************** Listeners ****************/
-
-        // back button action
-        $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onClickBack);
-        $scope.$on('SWIPE_ACTION', onCardSwipeResponse);
-        $scope.$on('USER_ACTIVITY_TIMEOUT', onActivityTimeout);
 
     }
 ]);

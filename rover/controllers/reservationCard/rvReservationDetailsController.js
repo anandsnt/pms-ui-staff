@@ -102,10 +102,24 @@ sntRover.controller('reservationDetailsController',
 				}
 			};
 
+		} else if ($scope.previousState.name === "rover.nightlyDiary" || $rootScope.stayCardStateBookMark.previousState === 'rover.nightlyDiary') {
+			if ($scope.previousState.name === "rover.nightlyDiary") {
+				setNavigationBookMark();
+			}
+			$rootScope.setPrevState = {
+				title: 'DIARY',
+				name: 'rover.nightlyDiary',
+				param: {
+					id: $rootScope.stayCardStateBookMark.previousStateParams.id,
+					activeTab: "DIARY",
+					isFromStayCard: true
+				}
+			};
 		} else if ($stateParams.isFromDiary && !$rootScope.isReturning()) {
 			setNavigationBookMark();
 			$rootScope.setPrevState = {
 				title: 'Room Diary'
+				
 			};
 		} else if ($scope.previousState.name === "rover.reports" || $rootScope.stayCardStateBookMark.previousState === 'rover.reports') {
 			if ($scope.previousState.name === "rover.reports") {
@@ -922,6 +936,9 @@ sntRover.controller('reservationDetailsController',
 						$scope.responseValidation = response.data;
 						$scope.stayDatesExtendedForOutsideGroup = (response.data.is_group_reservation && response.data.outside_group_stay_dates) ? true : false;
 						$scope.borrowForGroups = (response.data.is_group_reservation && ! response.data.is_room_type_available) ? true : false;
+                        // if user has over book permission, allow to extend even when room type not available CICO-35615
+                        $scope.shouldAllowDateExtend = (response.data.is_room_type_available || rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE')) ? true : false;
+                        $scope.showNotAvailableMessage = (!response.data.is_room_type_available && !rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE')) ? true : false;
 
 						ngDialog.open({
 							template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',

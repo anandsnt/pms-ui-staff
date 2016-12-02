@@ -25,11 +25,11 @@
             <input name="guest-email" id="guest-email" value="" type="text" autocomplete="off" ng-model="DailogeState.sendConfirmatonMailTo"/>
         </div>
         <div class="actions">
-            <button type="button" class="button with-icon Grey" ng-show ="!DailogeState.sendConfirmatonMailTo&&!isEmailAttached()">
+            <button type="button" class="button with-icon Grey" ng-show ="sendCancellationLetter && (!DailogeState.sendConfirmatonMailTo&&!isEmailAttached())">
                 <span class="icons icon-email"></span> 
                 {{'EMAIL_CANCELLATION' | translate}}
             </button>
-            <button type="button" class="button with-icon blue" ng-show ="DailogeState.sendConfirmatonMailTo||isEmailAttached()"  ng-click="sendReservationCancellation()">
+            <button type="button" class="button with-icon blue" ng-show ="sendCancellationLetter && (DailogeState.sendConfirmatonMailTo||isEmailAttached())" ng-click="sendReservationCancellation()">
                 <span class="icons icon-email"></span>
                 {{'EMAIL_CANCELLATION' | translate}}
             </button>

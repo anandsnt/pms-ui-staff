@@ -2018,6 +2018,70 @@
 
                 .red { color: @red; }
 
+                .switch-button {
+                    margin: 5px;
+                    height: 50px;
+                    .show();
+                    .calc-width(100, 10);
+                    #border-radius > .rounded();
+
+                    input { .square(100%); }
+
+                    .data-off,
+                    .data-on {
+                        padding: 5px;
+                        line-height: 20px;
+                        margin: 0;
+                        .square(100%);
+
+                        .switch-icon,
+                        .value {
+                            font-size: 12px;
+                            text-transform: uppercase;
+                            text-align: center;
+                            font-weight: 400;
+                            margin: 0;
+                            .show();
+                            .size(20px, 100%);                            
+                        }
+
+                        .switch-icon {
+                            #border-radius > .rounded();
+                        }
+
+                        .value {
+                            background: transparent;
+                            .box-shadow(none);
+                        }
+                    }
+
+                    .data-off {
+                        left: 0;
+                        right: 0;
+                        top: 0;
+                    }
+
+                    .data-on {
+                        left: 0;
+                        right: 0;
+                        top: 100%;
+                    }
+
+                    &.on {
+                        .data-off {
+                            left: 0;
+                            right: 0;
+                            top: -100%;
+                        }
+
+                        .data-on {
+                            left: 0;
+                            right: 0;
+                            top: 0;
+                        }
+                    }
+                }
+
                 thead {
                     tr {
                         th {
@@ -2077,6 +2141,12 @@
                                 &:last-child {
                                     span { width: 100%; }
                                 }
+                            }
+                        }
+
+                        &.vertical-align {
+                            th {
+                                vertical-align: middle;
                             }
                         }
                     }
@@ -2229,6 +2299,12 @@
                                     border-bottom: 0;
                                 }
                             }
+
+                            &.before-total {
+                                td {
+                                    border-bottom: 0;
+                                }
+                            }
                         }
                     }
 
@@ -2302,6 +2378,46 @@
                                         &:last-child { border-bottom: 0; }
                                     }
                                 }
+                            }
+                        }
+                    }
+                }
+
+                &.forecast-group {
+                    thead {
+                        tr {
+                            &.top-row {
+                                th {
+
+                                    font-size: 13px;
+                                }
+                            }
+
+                            &.bottom-row {
+                                th {
+                                    font-size: 12px;
+                                }
+                            }
+                        }
+                    }
+
+                    tbody {
+                        tr {
+                            &.total {
+                             
+                                td {
+                                    border-top: 1px solid @black;
+                                    border-bottom: 1px solid @black;
+
+                                    &.vertical {
+                                        .row {
+                                            strong {
+                                                font-weight: 600;
+                                            }
+                                        }
+                                    }
+                                }
+                                
                             }
                         }
                     }
