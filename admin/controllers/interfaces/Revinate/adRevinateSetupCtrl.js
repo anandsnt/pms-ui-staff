@@ -24,8 +24,9 @@ admin.controller('adRevinateSetupCtrl', ['$scope', '$rootScope', 'config', 'adIn
             });
         };
         var validDateSelection = function(from, to) {
-            fromInTime = new Date(from).getTime(),
+            var fromInTime = new Date(from).getTime(),
                 toInTime = new Date(to).getTime();
+
             if (fromInTime > toInTime) {
                 return false;
             }
