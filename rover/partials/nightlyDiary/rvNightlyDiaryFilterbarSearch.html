@@ -4,7 +4,7 @@
         <span class="icons icon-clear-search" ng-click = "clearResults()">Clear query</span>
     </button>
     <span class="result-count" ng-show = "diaryData.totalSearchResults !== 0">{{diaryData.totalSearchResults}} Matches</span> 
-    <span class="result-count" ng-show = "(diaryData.totalSearchResults === 0 && textInQueryBox.length > 3 )">0 Matches</span> 
+    <span class="result-count" ng-show = "(diaryData.totalSearchResults === 0 && textInQueryBox.length > 2 )">0 Matches</span> 
     <input class="query" placeholder="{{ 'PLACEHOLDER_NIGHTLY_DIARY_SEARCH' | translate }}" type="search" autocomplete="off" ng-change = "queryEntered()" ng-model = "textInQueryBox">
 
 

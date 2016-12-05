@@ -52,7 +52,7 @@ const NightlyDiaryRootComponent = createClass ({
                     <NightlyDiaryReservationsListContainer/>
                 </div>
             </div>
-            <div className="diary-nightly-sidebar diary-nightly-unassigned">
+            <div className="diary-nightly-sidebar diary-nightly-unassigned hidden">
                 <div className="sidebar-header">
                     <h2>Unassigned</h2>
                     <p>Drag & Drop to assign a room</p>

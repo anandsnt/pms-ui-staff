@@ -55,13 +55,14 @@ angular.module('sntRover')
                         clearTimeout(searchRoomCall);
                     }
                     searchRoomCall = setTimeout(function() {
-                        $scope.$apply(function() {
-                            if ( $scope.diaryData.textInQueryBox.length !== 0 ) {
-                                displayFilteredResults();
-                            } else {
-                                $scope.diaryData.showSearchResultsArea = false;  
-                            }
-                        });
+                        if ( $scope.diaryData.textInQueryBox.length !== 0 ) {
+                            displayFilteredResults();
+                        } else {
+                            $scope.$apply(function() {
+                                $scope.diaryData.showSearchResultsArea = false;
+                                $scope.diaryData.roomNumberSearchResults = [];
+                            });
+                        }
                     }, 800);
                 } else {
                     $scope.diaryData.showSearchResultsArea = false;
