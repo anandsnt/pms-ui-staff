@@ -90,7 +90,7 @@
 			<strong>{{ each.adr_guest | currency:currencySymbol:2 }}<em>(Gst.)</em></strong>
 		</div>
 		<div class="row">
-			<strong>{{ each.adr_group | currency:currencySymbol:2 }}<em>(Gst.)</em></strong>
+			<strong>{{ each.adr_group | currency:currencySymbol:2 }}<em>(Grp.)</em></strong>
 		</div>
 		<div class="row">
 			<strong>{{ each.adr | currency:currencySymbol:2 }}<em>(Tot.)</em></strong>
@@ -102,4 +102,4 @@
 	<td>{{ each.actual_rooms_last_year }}%</td>
 	<td class="break" ng-class="{ 'red': (each.variance * 1) < 0 }">{{ each.variance }}%</td> <!-- Add class "red" if negative -->
 </tr>
-<tr ng-include="'/assets/partials/reports/forecastGuestGroupReport/rvForecastGuestGroupReportTotalRow.html'" ng-class="total"></tr>
+<tr ng-include="'/assets/partials/reports/forecastGuestGroupReport/rvForecastGuestGroupReportTotalRow.html'" ng-class="{total : isForecastGuestGroup}"></tr>
