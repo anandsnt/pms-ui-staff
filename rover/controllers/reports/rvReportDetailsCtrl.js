@@ -249,7 +249,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
                 case reportNames['FORECAST_GUEST_GROUPS']:
                     $scope.isForecastGuestGroup = true;
-
+                    break;
 				default:
 					break;
 			}
