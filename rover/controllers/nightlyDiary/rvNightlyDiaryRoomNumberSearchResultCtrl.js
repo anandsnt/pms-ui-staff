@@ -12,6 +12,7 @@ angular.module('sntRover')
             */
             $scope.gotoSelectedRoom = function(room) {
                 $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', room.id);
+                $scope.diaryData.reservationSearchResults = [];
             };
 
             // Scroller options for search-results view.
