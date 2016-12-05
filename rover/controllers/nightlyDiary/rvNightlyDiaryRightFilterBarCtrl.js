@@ -13,6 +13,8 @@ angular.module('sntRover')
              * Initiate controller
              */
             var initiate = function() {
+                $scope.hideRoomType = true;
+                $scope.hideFloorList = true;
                 var postData = {};
                 var successCallBackFetchFilterList = function(data) {
                     $scope.$emit('hideLoader');
@@ -34,6 +36,22 @@ angular.module('sntRover')
                     }
                 });
                 return count;
+            };
+
+            /*
+             * To toggle room selection
+             */
+            $scope.toggleRoomSelection = function(index) {
+                $scope.diaryData.filterList.room_type[index].is_selected = !$scope.diaryData.filterList.room_type[index].is_selected;
+                $scope.diaryData.filterList.room_type[index].is_selected === true ? $scope.selectedRoomCount++ : $scope.selectedRoomCount--;
+            };
+
+            /*
+             * To toggle floor selection
+             */
+            $scope.toggleFloorSelection = function(index) {
+                $scope.diaryData.filterList.floor_list[index].is_selected = !$scope.diaryData.filterList.floor_list[index].is_selected;
+                $scope.diaryData.filterList.floor_list[index].is_selected === true ? $scope.selectedFloorCount++ : $scope.selectedFloorCount--;
             };
 
             initiate();       

@@ -7,12 +7,12 @@
         <div class="wrapper">
             <!-- Room Type -->
             <div class="entry">
-                <div class="multi-select with-label">
+                <div class="multi-select with-label" ng-click="hideRoomType=!hideRoomType">
                     <label for="room-type">Room Type</label>
                     <span class="value">{{selectedRoomCount}} selected ...</span>
                 </div>
-                <div class="multi-select-options"> <!-- Toggle class 'hidden' when L9 tapped -->
-                    <label class="checkbox inline" ng-repeat="roomType in diaryData.filterList.room_type" ng-class="{'checked':roomType.is_selected}">
+                <div class="multi-select-options" ng-class="{'hidden': hideRoomType}">
+                    <label class="checkbox inline" ng-repeat="roomType in diaryData.filterList.room_type" ng-class="{'checked':roomType.is_selected}" ng-click="toggleRoomSelection($index)">
                         <span class="icon-form icon-checkbox" ng-class="{'checked':roomType.is_selected}"></span>
                         <input type="checkbox">
                         <span class="text">{{roomType.room_type}}</span>
@@ -22,12 +22,12 @@
 
             <!-- Floor -->
             <div class="entry">
-                <div class="multi-select with-label">
+                <div class="multi-select with-label" ng-click="hideFloorList=!hideFloorList">
                     <label for="room-type">Floor</label>
                     <span class="value">{{selectedFloorCount}} selected ...</span>
                 </div>
-                <div class="multi-select-options halfs"> <!-- Toggle class 'hidden' when L26 tapped -->
-                    <label class="checkbox inline" ng-repeat="floorList in diaryData.filterList.floor_list" ng-class="{'checked':floorList.is_selected}">
+                <div class="multi-select-options halfs" ng-class="{'hidden': hideFloorList}">
+                    <label class="checkbox inline" ng-repeat="floorList in diaryData.filterList.floor_list" ng-class="{'checked':floorList.is_selected}" ng-click="toggleFloorSelection($index)">
                         <span class="icon-form icon-checkbox" ng-class="{'checked':floorList.is_selected}"></span>
                         <input type="checkbox">
                         <span class="text">{{floorList.floor_name}}</span>
