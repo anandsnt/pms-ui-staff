@@ -22,8 +22,9 @@ angular.module('sntRover')
         var init = function() {
             $scope.textInQueryBox = '';
             $scope.diaryData.totalSearchResults = 0;
-            $scope.results = [];
+            $scope.diaryData.reservationSearchResults = [];
         };
+        var searchFilteringCall = null;
 
         // Scroller options for search-results view.
         var scrollerOptions = {
@@ -36,9 +37,8 @@ angular.module('sntRover')
         // Success callback for search results fetch from service.
         var successCallBackofDataFetch = function(data) {
             $scope.$emit('hideLoader');
-            $scope.results = data.results;
+            $scope.diaryData.reservationSearchResults = data.results;
             $scope.diaryData.totalSearchResults = data.total_count;
-            $scope.$parent.myScroll['result_showing_area'].scrollTo(0, 0, 0);
             $scope.diaryData.hasOverlay = true;
             refreshScroller();
         };
@@ -52,19 +52,19 @@ angular.module('sntRover')
             var params = {};
 
             params.query = $scope.textInQueryBox.trim();
-            params.fromDate = $scope.diaryData.fromDate;
-            params.toDate = $scope.diaryData.toDate;
+            params.from_date = $scope.diaryData.fromDate;
+            params.to_date = $scope.diaryData.toDate;
             $scope.invokeApi(RVNightlyDiarySearchSrv.fetchSearchResults, params, successCallBackofDataFetch, failureCallBackofDataFetch);
         };
 
         var refreshScroller = function() {
-            $scope.refreshScroller('result_showing_area');
+            $scope.refreshScroller('reservationSearchResultList');
         };
 
         BaseCtrl.call(vm, $scope);
         init();
 
-        $scope.setScroller('result_showing_area', scrollerOptions);
+        $scope.setScroller('reservationSearchResultList', scrollerOptions);
 
         // Get full name of each guest.
         $scope.getGuestName = function(firstName, lastName) {
@@ -76,18 +76,18 @@ angular.module('sntRover')
             var classes = {
                 'CHECKING_IN': 'check-in',
                 'PRE_CHECKIN': 'pre-check-in',
-                'RESERVED': 'arrival',
                 'CANCELED': 'cancel',
-                'CHECKED_OUT': 'departed',
+                'CHECKEDOUT': 'departed',
                 'CHECKING_OUT': 'check-out',
                 'CHECKEDIN': 'inhouse',
-                'NOSHOW': 'guest-no-show',
-                'NOSHOW_CURRENT': 'guest-no-show'
+                'NOSHOW': 'no-show',
+                'NOSHOW_CURRENT': 'no-show'
             };
 
             if (reservationStatus.toUpperCase() in classes) {
                 return classes[reservationStatus.toUpperCase()];
             }
+            return '';
         };
 
         // Watches the query text box to get the list of text for highlight.
@@ -115,14 +115,21 @@ angular.module('sntRover')
                 return;
             }
             else if ($scope.textInQueryBox.length >= 3) {
-                initiateSearch();
+                if (searchFilteringCall !== null) {
+                    clearTimeout(searchFilteringCall);
+                }
+                searchFilteringCall = setTimeout(function() {
+                    if ($scope.textInQueryBox.length >= 3) {
+                        initiateSearch();
+                    }
+                }, 800);
             }
         };
 
         // Function to clear query text as well as results object.
         $scope.clearResults = function() {
             $scope.textInQueryBox = '';
-            $scope.results = [];
+            $scope.diaryData.reservationSearchResults = [];
             $scope.diaryData.totalSearchResults = 0;
             $scope.diaryData.hasOverlay = false;
         };

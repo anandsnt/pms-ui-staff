@@ -320,7 +320,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             } else {
                 $scope.$emit("changeMenu", 'Details');
             }
-            fetchBasedOnRateDetails(false);
             $scope.$emit('hideLoader');
             $scope.$broadcast('ratesChanged');
         };

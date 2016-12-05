@@ -8,7 +8,7 @@
 
 <!-- If showing 21 days -->
 <div class="grid-dates" ng-show="diaryData.numberOfDays === 21">
-    
+
     <div class="month" ng-show="!diaryData.hasMultipleMonth">
         <strong>{{ diaryData.fromDate | date: 'MMMM yyyy' }}</strong>
         <div class="days">
@@ -32,4 +32,4 @@
             <span ng-repeat="item in diaryData.secondMonthDateList" class="day" ng-class="{ 'today':(item.date === diaryData.businessDate ) , 'weekend': item.isWeekend }">{{ item.date | date: 'dd' }}</span>
         </div>
     </div>
-</div> 
+</div>
