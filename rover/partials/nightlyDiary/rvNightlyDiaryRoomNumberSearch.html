@@ -1,0 +1,8 @@
+<div class="grid-room-search" ng-controller="rvNightlyDiaryRoomNumberSearchController">
+	<!-- Room Search -->
+	<button class="clear-query" ng-click="clearResults()" ng-class="{'visible': diaryData.textInQueryBox.length>0}"> <!-- Add class 'visible' when searching. Tap clears L33 value and removes search. -->
+		<span class="icons icon-clear-search">Clear query</span>
+	</button>
+	<!-- Add class .hidden when edit screen is displayed -->
+	<input type="search" placeholder="Go to Room No." ng-change="queryEntered()" ng-model="diaryData.textInQueryBox" >
+</div>
