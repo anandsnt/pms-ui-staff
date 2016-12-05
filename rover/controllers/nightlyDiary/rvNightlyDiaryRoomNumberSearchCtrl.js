@@ -44,6 +44,7 @@ angular.module('sntRover')
             $scope.clearResults = function() {
                 $scope.diaryData.textInQueryBox = '';
                 $scope.diaryData.showSearchResultsArea = false;
+                $scope.diaryData.roomNumberSearchResults = [];
             };
 
             // function to perform filtering data, on change-event of query box
@@ -69,8 +70,7 @@ angular.module('sntRover')
             };
 
             $scope.$on('CLOSE_SEARCH_RESULT', function() {
-               $scope.diaryData.showSearchResultsArea = false;
                $scope.clearResults();
             });
-            
+
         }]);
