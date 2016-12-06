@@ -203,8 +203,9 @@ angular.module('sntRover')
                 currentBusinessDate: $rootScope.businessDate,
                 callBackFromAngular: getTheCallbacksFromAngularToReact(),
                 paginationData: $scope.diaryData.paginationData,
-                selectReservationId: $scope.currentSelectedReservation.id,
-                selectedRoomId: $scope.diaryData.selectedRoomId
+                selectedReservationId: $scope.currentSelectedReservation.id,
+                selectedRoomId: $scope.diaryData.selectedRoomId,
+                isFromStayCard: $stateParams.isFromStayCard
             };
             const store = configureStore(initialState);
             const {render} = ReactDOM;
@@ -221,7 +222,7 @@ angular.module('sntRover')
                     currentBusinessDate: $rootScope.businessDate,
                     callBackFromAngular: getTheCallbacksFromAngularToReact(),
                     paginationData: $scope.diaryData.paginationData,
-                    selectReservationId: $scope.currentSelectedReservation.id,
+                    selectedReservationId: $scope.currentSelectedReservation.id,
                     selectedRoomId: $scope.diaryData.selectedRoomId
                 };
                 store.dispatch(dispatchData);
@@ -229,7 +230,7 @@ angular.module('sntRover')
             var showReservationSelected = function() {
                 var dispatchData = {
                     type: 'RESERVATION_SELECTED',
-                    selectReservationId: $scope.currentSelectedReservation.id,
+                    selectedReservationId: $scope.currentSelectedReservation.id,
                     reservationsList: $scope.diaryData.reservationsList.rooms,
                     selectedRoomId: $scope.diaryData.selectedRoomId
                 };
@@ -261,10 +262,6 @@ angular.module('sntRover')
              */
             (() => {
                 renderDiaryView();
-                if ($stateParams.isFromStayCard) {
-                    var params = RVNightlyDiarySrv.getCache();
-                    selectReservation("", params.currentSelectedReservation, params.currentSelectedRoom);
-                }
             })();
 }]);
 
