@@ -390,16 +390,16 @@
             background-color: @white;
             text-transform: uppercase;
             cursor: pointer;
-            padding: 5px;
+            padding: 7px 5px;
             .size(40px, 100%);
             .box-shadow(inset 0 -1px 0 rgba(0,0,0,0.15));
-            #flexbox > .parent(column wrap, center, '', '' );
         }
 
         .room-number {
             font-size: 18px; 
             line-height: 14px;
             font-weight: 600;
+            .show();
 
             &.clean,
             &.inspected{ color: @green; }
@@ -411,6 +411,7 @@
         }
 
         .room-type {
+            .show();
             .nowrap();
         }
 
@@ -552,7 +553,8 @@
 
         .iScrollVerticalScrollbar { 
             top:0; 
-            right: 10px; 
+            left: 5px;
+            right: auto;
 
             .iScrollIndicator { background:rgba(0,0,0,0.1); }
         }
@@ -724,7 +726,7 @@
         }
 
         /* Clickable reservations ***/
-        &:not(.oos):not(.ooo):not(.blocked):not(.departed) {
+        &:not(.oos):not(.ooo) {
             cursor: pointer;
         }
 
@@ -1266,8 +1268,7 @@
             line-height: 1;
             padding: 5px 10px;
             background-color: @white;
-            cursor: @draggable, pointer;
-            cursor: @draggable 16 16, pointer;
+            cursor: pointer;
             .box-shadow();
             #flexbox > .parent(row wrap, '', center, '');
             #border-radius > .rounded();
@@ -1332,11 +1333,6 @@
             
             &:not(:last-child) {
                 margin-bottom: 10px;
-            }
-
-            &:active {
-                cursor: @dragging, move;
-                cursor: @dragging 16 16, move; 
             }
         }
     }
