@@ -303,7 +303,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                             // get the rateId of the first value in the $scope.reservationData.taxDetail
                             var rateIdExisting = currentTaxes[taxType][Object.keys(currentTaxes[taxType])[0]].rate;
 
-                            if (rateIdExisting === description.rate) {
+                            // Expression below was modified to fix CICO-32466.
+                            if (rateIdExisting !== description.rate) {
                                 currentTaxes[taxType][taxId] = description;
                             }
                         }
