@@ -13,6 +13,8 @@ const NightlyDiaryRootComponent = createClass ({
             scrollbars: 'custom'
         };
         this.setScroller();
+        this.scrollToNthelement(this.props.index);
+        this.refreshScroller();
     },
     setScroller() {
         if (!this.scrollableElement) {
@@ -50,7 +52,7 @@ const NightlyDiaryRootComponent = createClass ({
                     <NightlyDiaryReservationsListContainer/>
                 </div>
             </div>
-            <div className="diary-nightly-sidebar diary-nightly-unassigned">
+            <div className="diary-nightly-sidebar diary-nightly-unassigned hidden">
                 <div className="sidebar-header">
                     <h2>Unassigned</h2>
                     <p>Drag & Drop to assign a room</p>

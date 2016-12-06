@@ -751,6 +751,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
          * @param  {array} dates [description]
          */
         const showAndFormDataForTopBar = (dates) => {
+            var cards = [],
+                index = 0; 
+
             $scope.fromDate = dates[0];
             $scope.toDate = dates[dates.length - 1];
             $scope.showTopBar = true;
@@ -758,14 +761,15 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             $scope.selectedRateNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'name');
             $scope.selectedAccountName = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'accountName');
             $scope.selectedAddress = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'address');
-            if ($scope.selectedAccountName[0] === null) {
-               var cards = lastSelectedFilterValues[activeFilterIndex].selectedCards;
 
-               for (var index = 0; index < cards.length; index++ ) {
-                   if (cards[index].current_contracts === '') {
-                       $scope.selectedCardNames.splice(index, 1);
-                   }
-               }
+            if ($scope.selectedAccountName[0] === undefined) {
+                cards = lastSelectedFilterValues[activeFilterIndex].selectedCards;
+                $scope.selectedCardNames = [];
+                for (index = 0; index < cards.length; index++ ) {
+                    if (cards[index].current_contracts.length !== 0) {
+                       $scope.selectedCardNames.push(cards[index].account_name);
+                    }
+                }
             }
 
         };

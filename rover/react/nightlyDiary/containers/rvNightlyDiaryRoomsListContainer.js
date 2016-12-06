@@ -11,7 +11,7 @@ let convertRoomsListReadyToComponent = (roomsList, selectedRoomId) => {
 
 
 const mapStateToNightlyDiaryRoomsListContainerProps = (state) => ({
-    roomListToComponent: convertRoomsListReadyToComponent(state.roomsList, state.paginationData.selectedRoomId)
+    roomListToComponent: convertRoomsListReadyToComponent(state.roomsList, state.selectedRoomId)
 });
 
 const NightlyDiaryRoomsListContainer = connect(

@@ -27,8 +27,8 @@ admin.controller('ADNotificationCtrl', ['$scope', '$rootScope', '$state', '$stat
     };
     // returns no of days
     var getDuration = function(activates_at, expires_at) {
-        var activates_at = new Date(activates_at);
-        var expires_at = new Date(expires_at);
+        var activates_at = new tzIndependentDate(activates_at);
+        var expires_at = new tzIndependentDate(expires_at);
         var timeDiff = Math.abs(expires_at.getTime() - activates_at.getTime());
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
@@ -39,7 +39,7 @@ admin.controller('ADNotificationCtrl', ['$scope', '$rootScope', '$state', '$stat
         var fetchSuccess = function(data) {
             $scope.notification.message = data.message;
             $scope.notification.activates_at = $filter('date')(tzIndependentDate(data.activates_at), 'yyyy-MM-dd');
-            $scope.notification.duration = getDuration(data.activates_at, $filter('date')(tzIndependentDate(data.expires_at), 'yyyy-MM-dd'));
+            $scope.notification.duration = getDuration(data.activates_at, data.expires_at);
             $scope.notification.pms_type = data.pms_type;
             $scope.notification.action_source = data.action_source;
             $scope.$emit('hideLoader');

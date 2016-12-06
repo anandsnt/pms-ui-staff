@@ -1,31 +1,36 @@
-const ReservationComponent = ({reservation}) => (
-    <div style={reservation.style} className={reservation.reservationClass}>
+const { createClass, PropTypes } = React;
+const { findDOMNode } = ReactDOM;
+const ReservationComponent = createClass ({
+
+    render() {
+        return (this.props.isFromStayCard && (this.props.selectedReservationId === this.props.reservation.id)) ? (
+        <div style={this.props.reservation.style} className={this.props.reservation.reservationClass} onTouchEnd={this.props.selectReservation("", this.props.reservation, this.props.selectedRoom)} onClick={this.props.selectReservation("", this.props.reservation, this.props.selectedRoom)}>
         <div className="reservation-data">
             {
-                reservation.isReservationDayStay ? <span className="day-stay-icon"></span> : ''
+                this.props.reservation.isReservationDayStay ? <span className="day-stay-icon"></span> : ''
             }
             {
-                reservation.isReservationDayStay ?
-                <span className="name" data-initials={reservation.guest_details.first_name + "." + reservation.guest_details.last_name} > {reservation.guest_details.first_name + " " + reservation.guest_details.last_name}</span> :
-                <span className="name">{reservation.guest_details.first_name + " " + reservation.guest_details.last_name}</span>
+                this.props.reservation.isReservationDayStay ?
+                <span className="name" data-initials={this.props.reservation.guest_details.short_name} >{this.props.reservation.guest_details.short_name}</span> :
+                <span className="name">{this.props.reservation.guest_details.full_name}</span>
             }
 
             {
-                reservation.is_vip ? <span className="vip">VIP</span> : ''
+                this.props.reservation.is_vip ? <span className="vip">VIP</span> : ''
             }
          </div>
          {
-            (reservation.belongs_to_allotment || reservation.belongs_to_group || reservation.no_room_move || reservation.is_suite_reservation) ?
+            (this.props.reservation.belongs_to_allotment || this.props.reservation.belongs_to_group || this.props.reservation.no_room_move || this.props.reservation.is_suite_reservation) ?
             <div className="reservation-icons">
-                {reservation.no_room_move ?  <span className="icons icon-diary-lock"></span> : ''}
-                {reservation.belongs_to_group ?  <span className="icons icon-group-large"></span> : ''}
-                {reservation.belongs_to_allotment ?  <span className="icons icon-allotment-large"></span> : ''}
+                {this.props.reservation.no_room_move ?  <span className="icons icon-diary-lock"></span> : ''}
+                {this.props.reservation.belongs_to_group ?  <span className="icons icon-group-large"></span> : ''}
+                {this.props.reservation.belongs_to_allotment ?  <span className="icons icon-allotment-large"></span> : ''}
                 {
 
-                    reservation.is_suite_reservation ?
+                    this.props.reservation.is_suite_reservation ?
                         (<span className="suite-room">
                         {
-                             reservation.suite_room_details.map((suiteItem) => (
+                             this.props.reservation.suite_room_details.map((suiteItem) => (
                                     <span>
                                         <span className="icons icon-suite-white"></span>
                                         {suiteItem.room_no}
@@ -41,5 +46,50 @@ const ReservationComponent = ({reservation}) => (
          }
 
     </div>
-);
+    ) : (
+        <div style={this.props.reservation.style} className={this.props.reservation.reservationClass} onTouchEnd={(e) => this.props.selectReservation(e, this.props.reservation, this.props.selectedRoom)} onClick={(e) => this.props.selectReservation(e, this.props.reservation, this.props.selectedRoom)}>
+        <div className="reservation-data">
+            {
+                this.props.reservation.isReservationDayStay ? <span className="day-stay-icon"></span> : ''
+            }
+            {
+                this.props.reservation.isReservationDayStay ?
+                <span className="name" data-initials={this.props.reservation.guest_details.short_name} >{this.props.reservation.guest_details.short_name}</span> :
+                <span className="name">{this.props.reservation.guest_details.full_name} </span>
+            }
+
+            {
+                this.props.reservation.is_vip ? <span className="vip">VIP</span> : ''
+            }
+         </div>
+         {
+            (this.props.reservation.belongs_to_allotment || this.props.reservation.belongs_to_group || this.props.reservation.no_room_move || this.props.reservation.is_suite_reservation) ?
+            <div className="reservation-icons">
+                {this.props.reservation.no_room_move ?  <span className="icons icon-diary-lock"></span> : ''}
+                {this.props.reservation.belongs_to_group ?  <span className="icons icon-group-large"></span> : ''}
+                {this.props.reservation.belongs_to_allotment ?  <span className="icons icon-allotment-large"></span> : ''}
+                {
+
+                    this.props.reservation.is_suite_reservation ?
+                        (<span className="suite-room">
+                        {
+                             this.props.reservation.suite_room_details.map((suiteItem) => (
+                                    <span>
+                                        <span className="icons icon-suite-white"></span>
+                                        {suiteItem.room_no}
+                                    </span>
+                                    )
+                                )
+                        }
+                        </span>)
+                    : ''
+                }
+            </div> :
+            ''
+         }
+
+    </div>
+    );
+    }
+});
 

@@ -311,7 +311,6 @@ sntRover.controller('reservationActionsController', [
                 };
 
                 $scope.promptCardAddition = function() {
-                    $scope.errorMessage = ['Please select a Guest Card to check in'];
                     var templateUrl = '/assets/partials/cards/alerts/cardAdditionPrompt.html';
 
                     ngDialog.open({
@@ -744,6 +743,21 @@ sntRover.controller('reservationActionsController', [
 
 			$scope.$emit('hideLoader');
 			$scope.depositBalanceData = data;
+            /**
+			 * NOTE
+			 * CICO-36113
+			 * The APIs requested for getting deposit balance data are different and so are their responses
+			 * http://pms.dev/staff/reservations/1481599/deposit_and_balance.json - RESERVATION MODULE
+			 * http://pms.dev/api/posting_accounts/245/deposit_and_balance - ACCOUNTS
+			 *
+			 * The former is used to resolve the required data in this controller. And its response doesn't have
+			 * the primary_bill_id. As both the controllers use the same template for the modal; we are
+			 * assigning the primary_bill_id in the depositBalanceData object; This would be available
+			 * in the reservationData object
+			 *
+             */
+            $scope.depositBalanceData['primary_bill_id'] = $scope.reservationData.reservation_card.default_bill_id;
+
 			$scope.passData = {
 				"origin": "STAYCARD",
 				"details": {

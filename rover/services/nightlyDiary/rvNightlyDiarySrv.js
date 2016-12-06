@@ -2,6 +2,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
     ['$q',
     'BaseWebSrvV2',
     function($q, BaseWebSrvV2) {
+
         var that = this;
 
         this.updateCache = function(data) {
@@ -10,13 +11,14 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
         this.getCache = function() {
             return that.searchParamsCached;
         };
+
         /*
          * To fetch the rooms list
          * @param {data} object
          * return object
          */
         this.fetchRoomsList = function (data) {
-            that.updateCache(data);
+
             var deferred = $q.defer(),
                 url = '/api/nightly_diary/room_list';
 
@@ -27,7 +29,6 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             });
             return deferred.promise;
         };
-
 
         /*
          * Service function to fetch date list
@@ -61,8 +62,8 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
          * @param {data} object
          * return object
          */
-
         this.fetchReservationsList = function(data) {
+            that.updateCache(data);
             var deferred = $q.defer();
             var url = '/api/nightly_diary/reservation_list';
 

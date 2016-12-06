@@ -232,7 +232,19 @@
 					</span>
 				</td>
 				<td class="description">
-					<strong ng-repeat="description in feesData.description">{{description.item_description}}</strong>
+					<strong ng-repeat="description in feesData.description" ng-if = "!isStandAlone && !feesData.is_group_by_ref">
+						{{description.item_description}}
+					</strong>
+					<strong ng-repeat="description in feesData.description" ng-class = "{'toggle': isStandAlone && feesData.is_group_by_ref, 'active': feesData.isExpanded}" ng-click = "expandGroupedCharge(feesData)" ng-if = "isStandAlone && feesData.is_group_by_ref">
+						{{description.item_description}}
+						<span class="icons icon-double-arrow"></span>
+					</strong>
+					<ul class = 'charge-items' ng-if = "isStandAlone && feesData.is_group_by_ref" ng-class = "{'hidden': !feesData.isExpanded}">
+						<li ng-repeat = "item in feesData.light_speed_data">
+							<strong>{{item.description}}</strong>
+							<span class = "cost">{{item.amount}}</span>
+						</li>
+					</ul>
 					<span ng-repeat="description in feesData.description" class="charge" ng-class="{ 'icons edited' : feesData.is_description_edited }">
 						{{description.fees_desc}}
 						<br />
@@ -282,7 +294,7 @@
 					</div>
 				</td>
 				<td ng-if="isStandAlone">
-					<button type="button" ng-show="showEditChargeButton(feesData.type.value)" class="button with-icon only-icon purple edit" ng-click="openActionsPopup(feesData.id,feesData.description[0].fees_desc,feesData.description[0].fees_amount,feesData.type.value,feesData.credits)">
+					<button type="button" ng-show="showEditChargeButton(feesData.type.value)" class="button with-icon only-icon purple edit" ng-click="openActionsPopup(feesData.id,feesData.description[0].fees_desc,feesData.description[0].fees_amount,feesData.type.value,feesData.credits)" ng-if = "!feesData.is_group_by_ref">
 						<span class="icons icon-pencil"></span>
 						<span translate>EDIT</span>
 					</button>
