@@ -190,8 +190,8 @@ angular.module('sntRover')
 
             if ($stateParams.isFromStayCard) {
                 var params = RVNightlyDiarySrv.getCache();
-                $scope.currentSelectedReservation = params.currentSelectedReservation;
-                $scope.diaryData.selectedRoomId = params.currentSelectedRoom.id;
+                $scope.currentSelectedReservationId = params.currentSelectedReservationId;
+                $scope.diaryData.selectedRoomId = params.currentSelectedRoomId;
             }
 
             // Initial State
@@ -203,7 +203,7 @@ angular.module('sntRover')
                 currentBusinessDate: $rootScope.businessDate,
                 callBackFromAngular: getTheCallbacksFromAngularToReact(),
                 paginationData: $scope.diaryData.paginationData,
-                selectedReservationId: $scope.currentSelectedReservation.id,
+                selectedReservationId: $scope.currentSelectedReservationId,
                 selectedRoomId: $scope.diaryData.selectedRoomId,
                 isFromStayCard: $stateParams.isFromStayCard
             };
