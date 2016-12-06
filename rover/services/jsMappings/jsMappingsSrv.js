@@ -11,8 +11,9 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
 	 */
   this.fetchMappingList = function() {
     var deferred = $q.defer();
-    //if you are updating the url, make sure that same in rover's gulp task
+    // if you are updating the url, make sure that same in rover's gulp task
     var url = '/assets/asset_list/____generatedStateJsMappings/____generatedrover/____generatedroverStateJsMappings.json';
+
     rvBaseWebSrvV2.getJSON(url).then(function(data) {
       mappingList = data;
       deferred.resolve(data);
@@ -30,8 +31,9 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
   	 */
   this.fetchAssets = function(keys, modules_to_inject) {
     var promises = [], length = keys.length, i = 0;
+
     if (!!mappingList) {
-      for(; i < length; i++) {
+      for (; i < length; i++) {
         promises.push( $ocLazyLoad.load({ serie: true, files: mappingList[keys[i]] }) );
       }
       return $q.all(promises).then(function() {
@@ -42,9 +44,8 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
     } else {
       console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
       return;
-    };
+    }
   };    
-
 
 
     this.loadPaymentMapping = function() {
@@ -56,7 +57,7 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
       } else {
         locMappingFile = "/assets/asset_list/____generatedgatewayJsMappings/____generatedpayment/____generatedpaymentTemplateJsMappings.json";
 
-        rvBaseWebSrvV2.getJSON(locMappingFile).then(function(data){
+        rvBaseWebSrvV2.getJSON(locMappingFile).then(function(data) {
           paymentMappingList = data;
           deferred.resolve(paymentMappingList);
         }, function() {
@@ -66,7 +67,7 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
       }
 
       return deferred.promise;
-    }
+    };
 
     /**
      * [loadPaymentModule description]
@@ -103,9 +104,9 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
             deferred.resolve();
           }, function(err) {
              console.log('Error on loading Payment Module', err);
-          })
+          });
 
-        },function(err) {
+        }, function(err) {
           console.log('Error on loading Payment Module', err);
 
         });

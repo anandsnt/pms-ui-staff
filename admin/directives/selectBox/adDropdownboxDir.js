@@ -5,29 +5,29 @@ admin.directive('adDropdown', function($timeout) {
         replace: 'true',
       	scope: {
             divStyle: '@divStyle',
-	        selboxStyle : '@selboxStyle',
+	        selboxStyle: '@selboxStyle',
             divClass: '@divClass',
-            selboxClass : '@selboxClass',
+            selboxClass: '@selboxClass',
             required: '@required',
             id: '@id',
-            label:'@label',
+            label: '@label',
             labelInDropDown: '@labelInDropDown',
-            list:'=list',
-            name:'@name',
-            selectedId:'=selectedId',
-            labelClass:'@labelClass',
+            list: '=list',
+            name: '@name',
+            selectedId: '=selectedId',
+            labelClass: '@labelClass',
             options: '=',
             ngHide: '@hide',
             onChange: '='
 	    },
         link: function ($scope, $element, $attr)
         {
-            if(typeof $scope.options !== 'undefined'){
-                if($scope.options.hasOwnProperty('showOptionsIf')) {
+            if (typeof $scope.options !== 'undefined') {
+                if ($scope.options.hasOwnProperty('showOptionsIf')) {
                     $scope.showOptionsIf = $scope.options.showOptionsIf;
                 }
-            }else{
-                $scope.showOptionsIf = function(index){
+            } else {
+                $scope.showOptionsIf = function(index) {
                      return true;
                 };
             }

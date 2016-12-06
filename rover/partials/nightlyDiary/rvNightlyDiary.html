@@ -1,8 +1,45 @@
 <!-- Diary header -->
 <div ng-include="'/assets/partials/common/header.html'"></div>
 
-<div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryFilterbar.html'"></div>
+<div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryTopFilterBar.html'"></div>
 
 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
-<section id="diary-nightly" class="content diary-days-7" role="main"></section>
+<section id="diary-nightly" ng-class="{'diary-days-7': (diaryData.numberOfDays === 7) ,'diary-days-21': (diaryData.numberOfDays === 21), 'with-overlay': diaryData.hasOverlay && $scope.diaryData.totalSearchResults > 0 }" class="content" role="main">
+
+        <!-- Room Search + Timeline -->
+        <div class="grid-timeline">
+            <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRoomNumberSearch.html'" class="grid-room-search" ng-controller="rvNightlyDiaryRoomNumberSearchController"></div>
+            
+            <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryTimeline.html'"></div>
+            <!-- Stay Range | Remove .hidden to show-->
+            <div class="grid-stay-range hidden">
+                {_content/stay-range.html}
+            </div>
+        </div>
+
+        <!-- Room Search Results -->
+        <div class="grid-room-search-results scrollable"  ng-iscroll="result_showing_area" ng-iscroll-delay="1000" ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRoomNumberSearchResult.html'" ng-show="diaryData.showSearchResultsArea" ng-class="{'visible': diaryData.showSearchResultsArea}">            
+        </div>
+
+        <!-- REACT APP :: Rooms list + Reservations list + Un-assigned Reservations list -->
+        <div id="nightlyDiaryMain" class="grid-wrapper"></div>
+
+        <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRightFilterBar.html'"></div>
+
+        <!-- Sidebar -->
+        <div class="diary-nightly-sidebar hidden11">
+            <!-- Toggle Sidebar View -->
+            <div class="sidebar-options">
+                <button type="button" class="button white"> <!-- Add class 'active' when showing unassigned reservations + add class 'visible' to .diary-nightly-unassigned in sidebar-unassigned.html -->
+                    <span class="count">{Count of unassigned res.}</span>
+                    Unassigned
+                </button>
+                <button type="button" class="button white"> <!-- Add class 'active' when showing filters + add class 'visible' to .diary-nightly-filters in sidebar-filters.html -->
+                    <span class="count">{Count of active filters}</span>
+                    Filters
+                </button>
+            </div>
+        </div>
+
+</section>

@@ -20,7 +20,7 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
             init = function() {
                 var onGetFilterSuccess = function(filters) {
                         $scope.$emit('hideLoader');
-                        //backUp the entire list
+                        // backUp the entire list
                         $scope.filterState.store = angular.copy(filters);
                         $scope.filterState.filters = filters;
                     },
@@ -30,6 +30,7 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
                     };
                 // Get Filters and Sort Options for this report
                 // NOTE: $scope.reportKey is initiated in the partial so that it is availble in the respective controllers
+
                 $scope.invokeApi(adReportsSrv.getFilterData, $scope.reportKey, onGetFilterSuccess);
                 $scope.invokeApi(adReportsSortOptionsSrv.getSortOptions, $scope.reportKey, onGetSortOptionsSuccess);
             },
@@ -42,7 +43,7 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
                         from_date: $filter('date')(state.fromDate, "yyyy-MM-dd"),
                         to_date: $filter('date')(state.toDate, "yyyy-MM-dd"),
                         hotel_ids: _.pluck(selectedHotels, 'value')
-                    }
+                    };
 
                 payLoad['sort_field'] = state.sortByValue || "hotel_name";
                 payLoad['sort_dir'] = true;
@@ -53,7 +54,7 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
         $scope.filterState = {
             fromDate: initDay,
             toDate: initDay,
-            sortByValue: 'hotel_name', //DEFAULT SORT
+            sortByValue: 'hotel_name', // DEFAULT SORT
             fromDateOptions: angular.extend({
                 onSelect: function(value) {
                     $scope.filterState.toDateOptions.minDate = value;
@@ -101,6 +102,7 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
 
             _.each($scope.filterState.store["HOTELS"], function(hotel) {
                 var pmsType = hotel.isStandAlone ? "STANDALONE" : "OVERLAY";
+
                 if (_.indexOf(selectedTypes, pmsType) > -1 &&
                     _.indexOf(selectedChains, hotel.chain) > -1) {
                     filteredHotels.push(_.extend(hotel, {

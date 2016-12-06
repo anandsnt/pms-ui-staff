@@ -1,51 +1,53 @@
 
-sntRover.controller('RVRoomFiltersController',['$scope','$state', '$stateParams', 'RVRoomAssignmentSrv', function($scope, $state, $stateParams, RVRoomAssignmentSrv){
+sntRover.controller('RVRoomFiltersController', ['$scope', '$state', '$stateParams', 'RVRoomAssignmentSrv', function($scope, $state, $stateParams, RVRoomAssignmentSrv) {
 
 	BaseCtrl.call(this, $scope);
 
 	$scope.roomFeatures = $scope.$parent.roomFeatures;
 	$scope.floor_details = $scope.$parent.floors;
-	$scope.data ={};
-	$scope.data.isNoFloorSelected =true;
+	$scope.data = {};
+	$scope.data.isNoFloorSelected = true;
 	/**
 	* Listener to set the room filters when loaded
 	*/
-	$scope.$on('roomFeaturesLoaded', function(event, data){
+	$scope.$on('roomFeaturesLoaded', function(event, data) {
 			$scope.roomFeatures = data;
 	});
 	/**
 	* function to handle the floor filter selection Explictily.
 	*/
-	$scope.selectedFloorChanged = function(){
-		//resetting selected floor while selecting Show all check box
-		if($scope.data.isNoFloorSelected)
+	$scope.selectedFloorChanged = function() {
+		// resetting selected floor while selecting Show all check box
+		if ($scope.data.isNoFloorSelected)
 		{
-		$scope.data.selectedFloor='';
+		$scope.data.selectedFloor = '';
 		}
-		if($scope.data.selectedFloor!=='')
+		if ($scope.data.selectedFloor !== '')
 		{
 			$scope.$emit('roomFeaturesUpdated', $scope.roomFeatures);
-			var floorFilterdata ={
-				"isNoFloorSelected":$scope.data.isNoFloorSelected,
-				"selectedFloorId":$scope.data.selectedFloor
+			var floorFilterdata = {
+				"isNoFloorSelected": $scope.data.isNoFloorSelected,
+				"selectedFloorId": $scope.data.selectedFloor
 			};
+
 			$scope.$parent.applyFloorFilter(floorFilterdata);
-		}else{
+		} else {
 			$scope.$emit('roomFeaturesUpdated', $scope.roomFeatures);
-			var floorFilterdata ={
-				"isNoFloorSelected":$scope.data.isNoFloorSelected,
-				"selectedFloorId":''
+			var floorFilterdata = {
+				"isNoFloorSelected": $scope.data.isNoFloorSelected,
+				"selectedFloorId": ''
 			};
+
 			$scope.$parent.applyFloorFilter(floorFilterdata);
 		}
 	};
 	/**
 	* function to handle the filter selection
 	*/
-	$scope.setSelectionForFeature = function(group, feature){
-			if(!$scope.roomFeatures[group].multiple_allowed){
-				for(var i = 0; i < $scope.roomFeatures[group].items.length; i++){
-					if(feature !== i){
+	$scope.setSelectionForFeature = function(group, feature) {
+			if (!$scope.roomFeatures[group].multiple_allowed) {
+				for (var i = 0; i < $scope.roomFeatures[group].items.length; i++) {
+					if (feature !== i) {
 						$scope.roomFeatures[group].items[i].selected = false;
 					}
 				}
@@ -56,9 +58,9 @@ sntRover.controller('RVRoomFiltersController',['$scope','$state', '$stateParams'
 	/**
 	* function to handle the filter clearing
 	*/
-	$scope.clearAllFilters = function(){
-				for(var i = 0; i < $scope.roomFeatures.length; i++){
-					for(var j = 0; j < $scope.roomFeatures[i].items.length; j++){
+	$scope.clearAllFilters = function() {
+				for (var i = 0; i < $scope.roomFeatures.length; i++) {
+					for (var j = 0; j < $scope.roomFeatures[i].items.length; j++) {
 						$scope.roomFeatures[i].items[j].selected = false;
 					}
 				}

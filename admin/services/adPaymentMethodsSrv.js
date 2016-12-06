@@ -47,13 +47,13 @@ function($q, ADBaseWebSrv) {
     * @param {array} data of the payment type
     * @return {object} status of new/updated payment type
     */
-	this.savePaymentMethod = function(data){
+	this.savePaymentMethod = function(data) {
 		var deferred = $q.defer();
 		var url = '/admin/hotel_payment_types.json';
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data){
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -63,13 +63,13 @@ function($q, ADBaseWebSrv) {
     * @param {array} data of the credit card type
     * @return {object} status of new/updated credit card type
     */
-	this.saveCreditCardMethod = function(data){
+	this.saveCreditCardMethod = function(data) {
 		var deferred = $q.defer();
 		var url = '/admin/hotel_payment_types/update_credit_card';
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data){
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -79,13 +79,13 @@ function($q, ADBaseWebSrv) {
     * @param {int} id of the selected payment type
     * @return {object} status of delete
     */
-	this.deletePaymentMethod = function(id){
+	this.deletePaymentMethod = function(id) {
 		var deferred = $q.defer();
-		var url = '/admin/hotel_payment_types/'+id;
+		var url = '/admin/hotel_payment_types/' + id;
 
 		ADBaseWebSrv.deleteJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data){
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;

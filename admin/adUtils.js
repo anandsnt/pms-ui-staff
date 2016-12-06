@@ -1,11 +1,12 @@
 
 // Function to remove unwanted key elements from hash.
-var dclone = function(object, unwanted_keys){
-  	if(typeof unwanted_keys === "undefined"){
+var dclone = function(object, unwanted_keys) {
+  	if (typeof unwanted_keys === "undefined") {
   		unwanted_keys = [];
   	}
   	var newObject = JSON.parse(JSON.stringify(object));
-  	for(var i=0; i < unwanted_keys.length; i++){
+
+  	for (var i = 0; i < unwanted_keys.length; i++) {
   		delete newObject[unwanted_keys[i]];
   	}
   	return newObject;
@@ -69,10 +70,11 @@ var CurrencyInfoMappings = {
 * @param {string/integer} is the value to be checked
 * @param {array} is the set of values to be evaluated
 */
-var isAnyMatch = function(val, arr){
+var isAnyMatch = function(val, arr) {
     var ret = false;
-    for(var i=0, j= arr.length ; i<j ; i++){
-        if(arr[i] === val){
+
+    for (var i = 0, j = arr.length ; i < j ; i++) {
+        if (arr[i] === val) {
             ret = true;
             break;
         }
@@ -95,28 +97,28 @@ function isEmpty(obj) {
 
 var DateFormatInfoMappings = {
 
-    'MM-DD-YYYY': ['MM-dd-yyyy','mm-dd-yy'],
-    'MM/DD/YYYY': ['MM/dd/yyyy','mm/dd/yy'],
-    'DD-MM-YYYY': ['dd-MM-yyyy','dd-mm-yy'],
-    'DD/MM/YYYY': ['dd/MM/yyyy','dd/mm/yy']
+    'MM-DD-YYYY': ['MM-dd-yyyy', 'mm-dd-yy'],
+    'MM/DD/YYYY': ['MM/dd/yyyy', 'mm/dd/yy'],
+    'DD-MM-YYYY': ['dd-MM-yyyy', 'dd-mm-yy'],
+    'DD/MM/YYYY': ['dd/MM/yyyy', 'dd/mm/yy']
 
 };
 
 var getDateFormat = function(dateFormat) {
 
-    if(typeof dateFormat === 'undefined'){
+    if (typeof dateFormat === 'undefined') {
         return DateFormatInfoMappings['MM-DD-YYYY'][0];
     }
-    else{
+    else {
         return DateFormatInfoMappings[dateFormat][0];
     }
 };
 
 var getJqDateFormat = function(dateFormat) {
-    if(typeof dateFormat === 'undefined'){
+    if (typeof dateFormat === 'undefined') {
         return DateFormatInfoMappings['MM-DD-YYYY'][1];
     }
-    else{
+    else {
         return DateFormatInfoMappings[dateFormat][1];
     }
 };

@@ -6,7 +6,7 @@ angular.module('sntRover').service('RVReservationTabService', ['$rootScope', 'da
 			return RVReservationDataService.getTabDataModel(count);
 		};
 
-		self.newRoom = function(count){
+		self.newRoom = function(count) {
 			return RVReservationDataService.getRoomDataModel(count);	
 		};
 	}

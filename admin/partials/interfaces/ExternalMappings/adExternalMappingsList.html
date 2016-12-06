@@ -1,0 +1,71 @@
+<div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate
+     ng-click="clearErrorMessage()" ng-cloak="">
+    <header class="content-title float">
+        <h2>{{interface.name}}</h2>
+        <span class="count">({{totalCount}})</span>
+        <a ng-click="navigateBack()" class="action back" translate>BACK</a>
+        <button ng-click="onClickAdd()" class="action add" scrollup="replacing-div-first">Add new</button>
+    </header>
+    <section class="content-scroll" ng-show="totalCount">
+        <form class="form with-grid float ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel"
+              aria-expanded="true"
+              id="externalMappings"
+              aria-hidden="false">
+            <!-- Config section and search come here! -->
+            <div class="controls-holder filters">
+                <div class="table-search three-column">
+                    <span class="search-text">Search</span>
+                    <span class="icons icon-search" name="submit" type="submit"></span>
+                    <input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm"
+                           delay="1000" function-to-fire="searchEntered"/>
+                </div>
+            </div>
+            <!--ng-table component -->
+            <table class="grid" ng-table="tableParams" template-pagination="custom/pager">
+                <tbody>
+                <tr ng-repeat="mapping in $data"
+                    ng-class="{'selected': room.isSelected}">
+                    <td data-title="'MAPPING TYPE'" sortable="'mapping_type'" header-class="width-30"
+                        ng-click="onEditMapping(mapping)">
+                        {{mapping.mapping_type}}
+                    </td>
+                    <td data-title="'SNT VALUE'" sortable="'snt_value'" header-class="width-30"
+                        ng-click="onEditMapping(mapping)">
+                        {{mapping.snt_value}}
+                    </td>
+                    <td data-title="'EXTERNAL VALUE'" sortable="'ext_value'" header-class="width-30"
+                        ng-click="onEditMapping(mapping)">
+                        {{mapping.ext_value}}
+                    </td>
+                    <td data-title="'DELETE'" header-class="width-10" class="delete">
+                        <a class="icons icon-delete large-icon" ng-click="onClickDelete(mapping)"></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <!--Custom pagination footer goes here-->
+            <script type="text/ng-template" id="custom/pager">
+                <div class="search-pagination">
+                    <div class="entry">
+                        Show
+                        <div class="select">
+                            <select ng-model="displyCount" ng-options="opt for opt in displayCountList"
+                                    ng-change="displayCountChanged(displyCount)"></select>
+                        </div>
+                        mappings per page
+                    </div>
+                    <button type="button" class="button dark-grey next" ng-repeat="page in pages"
+                            ng-show="page.type == 'next'" ng-click="params.page(page.number)"
+                            ng-class="{'disabled': !page.active}">Next
+                    </button>
+                    <button type="button" class="button dark-grey prev" ng-repeat="page in pages"
+                            ng-show="page.type == 'prev'" ng-click="params.page(page.number)"
+                            ng-class="{'disabled': !page.active}">Prev
+                    </button>
+                    <p>Showing {{startCount}} to {{endCount}} of {{totalCount}} items</p>
+                </div>
+            </script>
+            <!--end-->
+        </form>
+    </section>
+</div>

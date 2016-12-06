@@ -17,7 +17,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             // activate Rate Details View
             $scope.rateMenu = 'Details';
             $scope.prevMenu = "";
-            //set here so as to avoid page reloading resulting in bussinness date being accessed before its being set in rootscope.
+            // set here so as to avoid page reloading resulting in bussinness date being accessed before its being set in rootscope.
             $scope.businessDate = rateInitialData.business_date;
             // intialize rateData dictionary - START
             $scope.rateData = {
@@ -30,7 +30,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                     "type": "",
                     "value_abs": "",
                     "value_sign": "",
-                    "is_copied" : false
+                    "is_copied": false
                 },
                 "rate_type": {
                     "id": "",
@@ -43,8 +43,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "addOns": [],
                 "end_date": "",
                 "end_date_for_display": "",
-                "commission_details":{},
-                "is_discount_allowed_on": true //CICO-25305 - For new rates we are enabling default,
+                "commission_details": {},
+                "is_discount_allowed_on": true // CICO-25305 - For new rates we are enabling default,
 
             };
             // intialize rateData dictionary - END
@@ -52,9 +52,9 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.allAddOns = [];
             $scope.basedonRateData = {};
             $scope.errorMessage = '';
-            //Added for CICO-24988
+            // Added for CICO-24988
             $scope.isOriginOfBookingEnabled = ADRatesAddDetailsSrv.addRatesDetailsData.hotel_settings.reservation_type.is_origin_of_booking_enabled;
-            if($scope.isOriginOfBookingEnabled) {
+            if ($scope.isOriginOfBookingEnabled) {
                fetchOriginOfBookings();
             }
             fetchCommissionDetails();
@@ -63,7 +63,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             if ($stateParams.rateId) {
                 setRateDetails(rateDetails);
                 $scope.is_edit = true;
-                if(rateDetails.based_on && rateDetails.based_on.id){
+                if (rateDetails.based_on && rateDetails.based_on.id) {
                     $scope.otherData.notIsBasedOn = (rateDetails.based_on.is_copied) ? false :  true;
                 }
                 $scope.otherData.isEdit = true;
@@ -71,18 +71,20 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         };
 
 
-        var fetchCommissionDetails = function(){
-            var fetchCommissionDetailsSuccess = function(data){
-                if(_.isEmpty($scope.rateData.commission_details)){
+        var fetchCommissionDetails = function() {
+            var fetchCommissionDetailsSuccess = function(data) {
+                if (_.isEmpty($scope.rateData.commission_details)) {
                     $scope.rateData.commission_details = data.commission_details;
                 }
             };
+
             $scope.invokeApi(ADRatesSrv.fetchCommissionDetails, {}, fetchCommissionDetailsSuccess);
         };
+
         $scope.rateInitialData = rateInitialData;
 
         var setRateAdditionalDetails = function() {
-            //add ons
+            // add ons
             $scope.allAddOns = rateInitialData.addons;
             angular.forEach($scope.allAddOns, function(addOns) {
                 addOns.isSelected = false;
@@ -91,8 +93,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.addOns = rateInitialData.addons;
 
 
-
-            //restriction type
+            // restriction type
             $scope.restrictionDetails = rateInitialData.restrictionDetails;
             angular.forEach($scope.restrictionDetails, function(restrictionType) {
                 if (restrictionType.value === 'CANCEL_PENALTIES') {
@@ -103,7 +104,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 }
             });
 
-            //selected restrictions
+            // selected restrictions
             angular.forEach(rateInitialData.selectedRestrictions, function(selectedRestriction) {
                 if (selectedRestriction.activated) {
                     if (selectedRestriction.value === 'MAX_ADV_BOOKING') {
@@ -171,10 +172,11 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 });
                 $scope.basedonRateData.rate_type = (data.rate_type !== null) ? data.rate_type.id : '';
                 $scope.basedonRateData.based_on = (data.based_on !== null) ? data.based_on.id : '';
-                //Broadcast an event to child classed to notify that the based on rates are changed.
+                // Broadcast an event to child classed to notify that the based on rates are changed.
                 $scope.$broadcast('basedonRatesChanged');
                 $scope.$emit('hideLoader');
             };
+
             $scope.invokeApi(ADRatesSrv.fetchDetails, {
                 rateId: $scope.rateData.based_on.id
             }, fetchBasedonSuccess);
@@ -192,11 +194,11 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.deposit_policy_id = data.deposit_policy_id;
             $scope.rateData.cancellation_policy_id = data.cancellation_policy_id;
 
-            //Additional details
+            // Additional details
             $scope.rateData.is_suppress_rate_on = (data.is_suppress_rate_on) ? true : false;
             $scope.rateData.is_discount_allowed_on = (data.is_discount_allowed_on) ? true : false;
             $scope.rateData.is_member_rate = (data.is_member) ? true : false;
-            //CICO-18614
+            // CICO-18614
             $scope.rateData.is_pms_only = !!data.is_pms_only;
             $scope.rateData.is_channel_only = !!data.is_channel_only;
 
@@ -213,12 +215,10 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.booking_origin_id = data.booking_origin_id;
 
 
-
-
-
             // addons -mark as activated for selected addons
             if ($scope.rateData.addOns.length > 0) {
                 var tempData = $scope.rateData.addOns;
+
                 $scope.rateData.addOns = [];
                 angular.forEach($scope.allAddOns, function(addOns) {
                     angular.forEach(tempData, function(addOnsSelected) {
@@ -330,6 +330,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             var beginDate = '';
             var endDate = '';
             var hotelBusinessDate = null;
+
             if ($scope.is_edit) {
                 hotelBusinessDate = new Date($scope.hotel_business_date).getTime();
             } else {
@@ -337,6 +338,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             }
             var keepGoing = true;
             var activeDateRange = $scope.rateData.date_ranges[$scope.rateData.date_ranges.length - 1].id;
+
             angular.forEach($scope.rateData.date_ranges, function(dateRange, index) {
                 if (keepGoing) {
                     beginDate = new Date(dateRange.begin_date).getTime();
@@ -349,7 +351,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             });
             return activeDateRange;
         };
-
 
 
         $scope.$on('deletedAllDateRangeSets', function(e, dateRangeId) {
@@ -404,6 +405,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         $scope.$on("activateSetTab", function(e, value) {
             if ($scope.rateData.date_ranges.length > 0) {
                 var dateRange = getActiveDateRange();
+
                 $scope.changeMenu(dateRange);
             }
         });
@@ -412,11 +414,12 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         * Fetches the list of origin of bookings available, sets only the active ones
         */
         var fetchOriginOfBookings = function() {
-            var onOriginOfBookingFetchSuccess = function(data){
+            var onOriginOfBookingFetchSuccess = function(data) {
                 $scope.originOfBookings = _.filter(data.booking_origins, function(origin) {
                     return origin.is_active;
                 });
             };
+
             $scope.invokeApi(ADOriginsSrv.fetch, {}, onOriginOfBookingFetchSuccess);
         };
 

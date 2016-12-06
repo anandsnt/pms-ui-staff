@@ -28,6 +28,7 @@
 					'id': offerId,
 					'isFromCheckinNow': !!$stateParams.isFromCheckinNow
 				};
+
 				$state.go('earlyCheckinFinal', stateParams);
 			};
 
@@ -37,13 +38,14 @@
 					'time': $scope.checkinTime,
 					'isearlycheckin': true
 				});
-			}
+			};
 
 			var releaseRoom = function() {
 				$scope.isPosting = true;
 				var params = {
 					'reservation_id': $rootScope.reservationID
 				};
+
 				checkinNowService.releaseRoomRoom(params).then(function(response) {
 					changeArrivalTime();
 				}, function() {
@@ -53,7 +55,7 @@
 			};
 
 			$scope.changeArrivalTime = function() {
-				//if room is assigned inside zestweb , release it
+				// if room is assigned inside zestweb , release it
 				if ((!!$stateParams.isFromCheckinNow && $stateParams.isFromCheckinNow === 'true') && (!!$stateParams.roomAssignedFromZestWeb  && $stateParams.roomAssignedFromZestWeb === 'true')) {
 					releaseRoom();
 				} else {

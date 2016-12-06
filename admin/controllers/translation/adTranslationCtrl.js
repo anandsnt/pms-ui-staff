@@ -1,4 +1,4 @@
-admin.controller('ADTranslationCtrl',['$scope','$rootScope','$state','ADTranslationSrv','ngTableParams','$filter','availableLanguages','menuDetails', function($scope, $rootScope,$state,ADTranslationSrv, ngTableParams, $filter, availableLanguages, menuDetails){
+admin.controller('ADTranslationCtrl', ['$scope', '$rootScope', '$state', 'ADTranslationSrv', 'ngTableParams', '$filter', 'availableLanguages', 'menuDetails', function($scope, $rootScope, $state, ADTranslationSrv, ngTableParams, $filter, availableLanguages, menuDetails) {
 
     BaseCtrl.call(this, $scope);
 
@@ -7,6 +7,7 @@ admin.controller('ADTranslationCtrl',['$scope','$rootScope','$state','ADTranslat
     */
     var getRequestParams = function() {
         var params = {};
+
         params.locale = $scope.filter.locale;
         params.menu_option_id = $scope.filter.menuOption;
         params.option_item_id = $scope.filter.item;
@@ -24,7 +25,7 @@ admin.controller('ADTranslationCtrl',['$scope','$rootScope','$state','ADTranslat
                 }
 
             },
-            onFetchFailure = function(error){
+            onFetchFailure = function(error) {
                 $scope.data = [];
                 $scope.$emit('hideLoader');
             };
@@ -34,6 +35,7 @@ admin.controller('ADTranslationCtrl',['$scope','$rootScope','$state','ADTranslat
     */
     var getLabelTranslations = function() {
         var params = getRequestParams();
+
         $scope.invokeApi(ADTranslationSrv.getLabelTranslationForLocale, params, onFetchSuccess, onFetchFailure);
     };
 
@@ -42,6 +44,7 @@ admin.controller('ADTranslationCtrl',['$scope','$rootScope','$state','ADTranslat
     */
     var getTranslationsForSave = function() {
         var requestData = {};
+
         requestData.locale = $scope.filter.locale;
         requestData.labels = $scope.data;
         return requestData;
@@ -60,6 +63,7 @@ admin.controller('ADTranslationCtrl',['$scope','$rootScope','$state','ADTranslat
                 $scope.errorMessage.push(error);
             };
         var request = getTranslationsForSave();
+
         $scope.errorMessage = [];
         $scope.successMessage = "";
         $scope.invokeApi(ADTranslationSrv.saveLabelTranslationForLocale, request, onSaveSuccess, onSaveFailure);
@@ -91,6 +95,7 @@ admin.controller('ADTranslationCtrl',['$scope','$rootScope','$state','ADTranslat
     */
     $scope.searchEntered = function() {
         var params = {};
+
         params.locale = $scope.filter.locale;
         params.option_item_id = $scope.filter.item;
         params.query = $scope.filter.searchText;
@@ -106,6 +111,7 @@ admin.controller('ADTranslationCtrl',['$scope','$rootScope','$state','ADTranslat
         var translation = _.find($scope.data, function(trans) {
                                 return trans.id == id;
                             });
+
         translation.value = value;
     };
 
@@ -130,6 +136,7 @@ admin.controller('ADTranslationCtrl',['$scope','$rootScope','$state','ADTranslat
                     var orderedData = params.sorting() ?
                                         $filter('orderBy')($scope.data, params.orderBy()) :
                                         $scope.data;
+
                     $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                 }
         });
@@ -142,10 +149,10 @@ admin.controller('ADTranslationCtrl',['$scope','$rootScope','$state','ADTranslat
         $scope.languages = availableLanguages;
         $scope.menuDetails = menuDetails;
         $scope.filter = {
-            locale : $scope.languages.default_locale,
-            menuOption : $scope.menuDetails.menu_options[0].id,
-            item : $scope.menuDetails.menu_options[0].option_items[0].id,
-            searchText : ""
+            locale: $scope.languages.default_locale,
+            menuOption: $scope.menuDetails.menu_options[0].id,
+            item: $scope.menuDetails.menu_options[0].option_items[0].id,
+            searchText: ""
         };
 
         $scope.items = $scope.menuDetails.menu_options[0].option_items;
