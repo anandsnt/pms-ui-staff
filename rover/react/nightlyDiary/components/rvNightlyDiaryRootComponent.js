@@ -25,7 +25,10 @@ const NightlyDiaryRootComponent = createClass ({
     },
     refreshScroller() {
         let that = this;
-        setTimeout(function(){that.scroller.refresh(); }, 1000);
+
+        setTimeout(function() {
+            that.scroller.refresh(); 
+        }, 1000);
 
     },
     scrolToTop() {
