@@ -3,7 +3,7 @@ admin.controller('adIdeasImportSetupCtrl', ['$scope', '$rootScope', 'adIdeasSetu
         BaseCtrl.call(this, $scope);
 
         $scope.saveSetup = function() {
-            var params = _.pick($scope.ideaSetup, 'import_enabled', 'import_url', 'hotel_code');
+            var params = _.pick($scope.ideaSetup, 'import_enabled', 'hotel_code');
             $scope.errorMessage = '';
             $scope.callAPI(adIdeasSetupSrv.postIdeasSetup, {
                 params: params,
