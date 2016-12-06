@@ -34,7 +34,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         }
         return langs;
     };
-    
+
     $scope.updateDefaultLanguageDropdown = function() {
         console.info('update lang dropdown');
         $scope.enabledLangs = getEnabledLanguages();
@@ -153,7 +153,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         checkIfFileWasAdded(zestLanguageDataCopy.castellano_translations_file) ? zestLanguageDataCopy.castellano_translations_file_updated = true : "";
     };
 
-    $scope.saveSettings = function() {
+    $scope.saveSettings = function(dontReturn) {
         // /handling for the api for now, api has some issue with the default image setting back to snt logo...
         // api dev should resolve this at some point
         if ($scope.zestSettings.key_create_file_uploaded.indexOf('/logo.png') !== -1) {
@@ -163,7 +163,10 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             $scope.zestSettings.zest_lang = angular.copy(zestLanguageDataCopy);
             $scope.successMessage = 'Success';
             $scope.$emit('hideLoader');
-            $scope.goBackToPreviousState();
+            if (!dontReturn){
+                $scope.goBackToPreviousState();    
+            }
+            
         };
 
         setUpTranslationFilesStatus();
@@ -194,7 +197,29 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         });
     };
 
-    $scope.editLang = function(lang){
+    $scope.saveLanguageEditorChanges = function(){
+        // current language being edited, for saving, need to save with long-name (ie. "english" instead of "en")
+        var lang = $scope.editingLanguage;
+
+        // check for default
+        if (lang === 'en') {
+            lang = 'english';
+
+        } else if (lang === 'fr') {
+            lang = 'french';
+
+        }
+        
+        var encoded = 'data:application/json;base64,' + window.btoa(unescape(encodeURIComponent(JSON.stringify($scope.languageEditorData))));
+      
+        $scope.zestSettings.zest_lang[lang + '_translations_file'] = encoded;
+        $scope.closePrompt();
+    };
+    //  track which languages were fetched/edited already, 
+    //  we dont want to re-fetch when user accidentily closes the window and needs to re-open it
+    $scope.editLang = function(lang) {
+
+        $scope.editingLanguage = lang;
         // shows user an on-screen prompt, with the tags and values, so they can edit in-screen
 
         $scope.showLoader();
@@ -217,7 +242,6 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
                 scope: $scope,
                 closeByDocument: true
             });
-            $scope.refreshScroller('languageEditor');
 
         });
     };

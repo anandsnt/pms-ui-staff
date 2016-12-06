@@ -1,6 +1,10 @@
-<div class='sation-lang-download-popup' class="scrollable" ng-iscroll="languageEditor" ng-iscroll-delay="100">
-	<p>You can edit the tags in-line, please remember to click the save button before leaving this area</p>
+<div class='station-lang-download-popup'>
+	<p class='station-lang-header'>You can edit the tags in-line, please remember to click the save button before leaving this area
+		<!--p class='station-lang-filter'>Filter: <input ng-model='searchbarValue'></p-->
+	</p>
+	
 	<br>
+		<div class='station-lang-content'>
 		<table class="grid" id="likes" >
 			<thead>
 				<th>
@@ -12,22 +16,24 @@
 			</thead>
 			<tbody>
 				<tr ng-repeat="(key, value) in languageEditorData" style="padding:50px;">
-					<td>
+					<td ng-class='{"searchResult" : searchbarValue.indexOf(key) !== -1 || searchbarValue.indexOf(value) !== -1}'>
 						{{key}}
 					</td>
 					<td>
 		 		   	<div class="entry">
-		                <input type='text' class="room-likes" value='{{value}}'>
+		                <input type='text' class="room-likes" ng-model='languageEditorData[key]' value='{{value}}'>
 	                </div>
 					</td>
 				</tr>
 			</tbody>
-
+	
 		</table>
+	</div>
 
-	<p>
-		<button class='button orange' ng-click="closePrompt()" style='position:relative; left: 40%'>Close</button>
-		<button class='button orange' ng-click="saveLanguageEditorChanges()" style='position:relative; left: 40%'>Save Changes</button>
+	<p class='station-lang-footer'>
+		<button class='button orange' ng-click="closePrompt()">Close</button>
+		<button class='button orange' ng-click="saveLanguageEditorChanges()">Accept Changes</button>
 	</p>
+
 </div>
 

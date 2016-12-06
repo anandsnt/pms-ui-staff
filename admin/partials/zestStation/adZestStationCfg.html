@@ -54,6 +54,8 @@
                             
                             <button type="button" class="button brand-colors">Attach file</button>
                             <button type="button" class="button download-arrow icons " ng-click="downloadLang('fr')" ng-show="hasFileUpdatedOrUploading('french')"></button>
+
+                            <button type="button" ng-show="hasFileUpdatedOrUploading('french')" class="button download-arrow icons right " ng-click="editLang('fr')"></button>
                         </div>
                     </div>
                 </div>
