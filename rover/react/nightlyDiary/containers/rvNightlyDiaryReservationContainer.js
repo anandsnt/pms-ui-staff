@@ -178,7 +178,7 @@ let findIsReservationFuture = (reservation, currentBusinessDate) => {
  * Adding different logics to the reservations to pass to component
  */
 
-let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDateGrid, numberOfDays, currentBusinessDate, selectReservationId) => {
+let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDateGrid, numberOfDays, currentBusinessDate, selectedReservationId) => {
 
     let positionAndDuration = calculateReservationDurationAndPosition(diaryInitialDayOfDateGrid, reservation, numberOfDays);
     let duration = positionAndDuration.durationOfReservation + "px";
@@ -209,7 +209,7 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
 
     let reservationEditClass = '';
 
-    if (reservation.id === selectReservationId) {
+    if (reservation.id === selectedReservationId) {
         reservationEditClass = "editing";
     }
     reservation.reservationClass = "reservation " + reservationStatusClass + " " + reservationClass + " " + reservationEditClass;
@@ -220,9 +220,11 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
 const mapStateToNightlyDiaryReservationContainerProps = (state, ownProps) => ({
     reservation: convertReservationsListReadyToComponent(
         ownProps.reservation, state.diaryInitialDayOfDateGrid,
-        state.numberOfDays, state.currentBusinessDate, state.selectReservationId),
+        state.numberOfDays, state.currentBusinessDate, state.selectedReservationId),
     selectReservation: state.callBackFromAngular.selectReservation,
-    selectReservationId: state.selectReservationId
+    selectedReservationId: state.selectedReservationId,
+    selectedRoom: ownProps.room,
+    isFromStayCard: state.isFromStayCard
 });
 
 const mapDispatchToNightlyDiaryReservationContainerProps = (stateProps) => {
