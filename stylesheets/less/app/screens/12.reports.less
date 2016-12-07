@@ -82,7 +82,7 @@
         .box-shadow(inset 0 2px 0 rgba(0,0,0,.1));
         .calc-height(100, 270);
 
-        .wrapper { padding-bottom: 20px; }            
+        .wrapper { padding-bottom: 20px; }
         .iScrollIndicator { background: rgba(0,0,0,.05); }
 
         .icon-report { top: 5px; }
@@ -108,12 +108,12 @@
     .box-shadow();
     .show;
     .transition;
-    
+
     .icons,
     .icon-report,
     .guest-status {
         .pull-left;
-        .square(30px); 
+        .square(30px);
     }
 
     .highlight { color: @logoPrimary; }
@@ -147,7 +147,7 @@
         .box-shadow(inset 1px 1px 1px rgba(0,0,0,.3));
 
         h2,
-        em { 
+        em {
             color: @white;
             text-shadow: 1px 1px rgba(0,0,0,.1);
         }
@@ -168,7 +168,7 @@
     &:not(:last-child) { margin-bottom: 10px; }
 
     &:hover,
-    &:active { 
+    &:active {
         .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
     }
 }
@@ -215,7 +215,7 @@
     .checkbox,
     .radio,
     input.icon-search,
-    .faux-select { 
+    .faux-select {
         background-color: @grey1;
         .size(40px, 100%);
     }
@@ -224,15 +224,15 @@
         &:after { background-color: @grey1; }
     }
 
-    .entry { 
+    .entry {
         padding: 0 20px;
         .float();
 
         &:not(:last-child) {
             padding-bottom: 20px;
-            margin-bottom: 15px; 
+            margin-bottom: 15px;
             .box-shadow(0 1px 0 rgba(0,0,0,.1));
-        }                
+        }
     }
 
     /* Date / Time ***/
@@ -262,17 +262,17 @@
                 #border-radius > .rounded(15px);
             }
 
-            &.visible { 
+            &.visible {
                 visibility: visible;
 
-                .icons {    
-                    .opacity(100); 
-                    #fade > .in(); 
+                .icons {
+                    .opacity(100);
+                    #fade > .in();
                 }
             }
 
             &:hover,
-            &.active { 
+            &.active {
                 .icons { background-color: @logoPrimary; }
             }
         }
@@ -294,7 +294,7 @@
 
     /* Multi select dropdown ***/
     .faux-select,
-    .multi-select { 
+    .multi-select {
         position: relative;
         padding: 0 10px;
         line-height: 40px;
@@ -356,8 +356,8 @@
             .box-shadow(0 1px 0 rgba(0,0,0,.15));
             .flex(center);
 
-            .icon-form { 
-                left: 10px; 
+            .icon-form {
+                left: 10px;
             }
 
             &:last-child { .box-shadow(none); }
@@ -401,7 +401,7 @@
                 font-size: 18px;
                 font-weight: 700;
                 padding-left: 30px;
-                color: @logoPrimary; 
+                color: @logoPrimary;
                 z-index: 9;
                 background: @grey1;
                 .box-shadow(inset 1px 1px 0 rgba(0,0,0,.15));
@@ -431,15 +431,15 @@
                     #border-radius > .rounded(15px);
                 }
 
-                &.visible { 
+                &.visible {
                     .icons {
-                        .opacity(100); 
-                        #fade > .in(); 
+                        .opacity(100);
+                        #fade > .in();
                     }
                 }
 
                 &:hover,
-                &.active { 
+                &.active {
                     .icons { background-color: @logoPrimary; }
                 }
             }
@@ -448,7 +448,7 @@
         .checkbox {
             padding: 0 10px 0 40px;
 
-            .icon-form { 
+            .icon-form {
                 left: 10px;
             }
 
@@ -487,17 +487,17 @@
                 #border-radius > .rounded(15px);
             }
 
-            &.visible { 
+            &.visible {
                 visibility: visible;
 
-                .icons {    
-                    .opacity(100); 
-                    #fade > .in(); 
+                .icons {
+                    .opacity(100);
+                    #fade > .in();
                 }
             }
 
             &:hover,
-            &.active { 
+            &.active {
                 .icons { background-color: @logoPrimary; }
             }
         }
@@ -584,13 +584,13 @@
         position: relative;
         .calc-height(100, 60);
 
-        .wrapper { 
-            padding: 20px 0; 
+        .wrapper {
+            padding: 20px 0;
         }
 
-        .iScrollVerticalScrollbar { 
+        .iScrollVerticalScrollbar {
             right: 5px;
-            
+
             .iScrollIndicator {
                 background: rgba(0,0,0,.1);
             }
@@ -622,7 +622,7 @@
         width: 100%;
         .show();
 
-        .button { 
+        .button {
             font-size: 16px;
             width: 100%;
             padding: 0 10px;
@@ -707,7 +707,7 @@
             .pull-right;
         }
 
-        .button {  
+        .button {
             font-size: 16px;
             .pull-right;
 
@@ -730,12 +730,12 @@
             background-color: rgba(0,0,0,.1);
             z-index: 1;
             .show();
-            .square(100%); 
+            .square(100%);
         }
     }
 
     /* Margins ***/
-    &:not(:last-child) { 
+    &:not(:last-child) {
         margin-right: 20px;
 
         &.main-col { margin-right: 0; }
@@ -776,7 +776,7 @@
         .cols-wrapper { padding-right: 20px; }
         > .wrapper { min-width: 790px; }
     }
-    
+
     &.cols-3 {
         .report-col.main-col { .calc-width(100, 540); }
         .cols-wrapper { padding-right: 20px; }
@@ -804,15 +804,15 @@
                 .pull-left;
             }
 
-            .count { 
+            .count {
                 width: 30px;
                 text-align: right;
                 .pull-right;
                 .show;
-            }       
+            }
 
-            &.undefined { 
-                color: @grey3; 
+            &.undefined {
+                color: @grey3;
                 font-style: italic;
             }
 
@@ -833,7 +833,7 @@
                 width: 100%;
                 .float;
 
-                .label { 
+                .label {
                     color: @textColor;
                     text-transform: none;
                     margin-right: 20px;
@@ -841,7 +841,7 @@
                     .nowrap();
 
                     &.undefined {
-                        color: @grey3; 
+                        color: @grey3;
                         font-style: italic;
                     }
                 }
@@ -854,7 +854,7 @@
                     .show;
                     .float;
 
-                    .fill { 
+                    .fill {
                         position: absolute;
                         top: 0;
                         left: 0;
@@ -889,7 +889,7 @@
 
                             .left-num { text-indent: -8px; }
 
-                            .right-num { 
+                            .right-num {
                                 text-indent: 12px;
                                 text-align: right;
                             }
@@ -908,7 +908,7 @@
     #report-update {
 
         .settings-content {
-            
+
             .entry {
                 padding-bottom: 20px;
                 margin-bottom: 20px;
@@ -921,7 +921,7 @@
                 }
             }
 
-            strong { 
+            strong {
                 font-size: 14px;
                 text-transform: uppercase;
                 font-weight: 600;
@@ -971,7 +971,7 @@
                 }
             }
 
-            .date-range { 
+            .date-range {
                 .has-datepicker {
                     position: relative;
                     margin-bottom: 10px;
@@ -999,17 +999,17 @@
                             #border-radius > .rounded(15px);
                         }
 
-                        &.visible { 
+                        &.visible {
                             visibility: visible;
 
-                            .icons {    
-                                .opacity(100); 
-                                #fade > .in(); 
+                            .icons {
+                                .opacity(100);
+                                #fade > .in();
                             }
                         }
 
                         &:hover,
-                        &.active { 
+                        &.active {
                             .icons { background-color: @logoPrimary; }
                         }
                     }
@@ -1031,10 +1031,10 @@
                     &:last-child { margin-bottom: 0; }
                 }
 
-                .button { 
+                .button {
                     font-size: 14px;
                     padding: 0;
-                    width: 100%; 
+                    width: 100%;
                 }
             }
         }
@@ -1065,7 +1065,7 @@
                 margin: 0 10px 0 8px;
                 padding-right: 10px;
                 border-right: 1px solid rgba(0,0,0,.1);
-                
+
                 span {
                     font-size: 21px;
                     line-height: 18px;
@@ -1082,7 +1082,7 @@
 
                 &.sub {
                     border-right: 0;
-                    color: @grey3; 
+                    color: @grey3;
                 }
 
                 &:last-child {
@@ -1190,7 +1190,7 @@
             line-height: 1.2;
             text-transform: uppercase;
             table-layout: auto;
-            border-collapse: separate; 
+            border-collapse: separate;
             border-spacing: 0 10px;
             margin: 0;
 
@@ -1283,7 +1283,7 @@
                     td { padding: 10px 5px; }
 
                     &.totals {
-                        td { 
+                        td {
                             padding: 10px 5px;
                             font-size: 14px;
                         }
@@ -1295,7 +1295,7 @@
                         td {font-size: 13px; }
 
                         &.totals {
-                            td { 
+                            td {
                                 padding: 10px 5px;
                                 font-size: 14px;
                             }
@@ -1311,8 +1311,8 @@
             &.deposit-reports,
             &.balance-reports,
             &.log-table,
-            &.action-manager-reports,
-            &.card-authorization-check-reports {
+            &.card-authorization-check-reports,
+            &.not-occupied-rooms-reports {
                 th {
                     line-height: 35px;
                     height: 45px;
@@ -1374,7 +1374,7 @@
                                 background: @textureImage;
                                 .size(10px, 100%);
                             }
-                        } 
+                        }
                     }
 
                     &.row-break {
@@ -1406,6 +1406,27 @@
                 }
             }
 
+            &.not-occupied-rooms-reports {
+                table-layout: fixed;
+
+                thead {
+                    th {
+
+                        &.number {
+                            width:150px;
+                        }
+
+                        &.date {
+                            width: 200px;
+                        }
+
+                        &.days {
+                            width: 100px;
+                        }
+                    }
+                }
+            }
+
             &.guest-reports {
                 text-transform: none;
 
@@ -1415,7 +1436,7 @@
                         vertical-align: top;
                         padding: 10px 0 0 0;
 
-                        strong { 
+                        strong {
                             font-weight: 600;
                             .show;
 
@@ -1446,10 +1467,10 @@
                                 .show;
                             }
 
-                            &.rate { 
+                            &.rate {
                                 color: @logoPrimary;
 
-                                strong { 
+                                strong {
                                     display: inline;
                                     font-weight: 600;
                                 }
@@ -1474,8 +1495,8 @@
                                 .pull-left;
                             }
 
-                            &.payment { 
-                                line-height: 18px; 
+                            &.payment {
+                                line-height: 18px;
                                 color: @textColor;
 
                                 span { color: @grey3; }
@@ -1484,7 +1505,7 @@
 
                         .guest-status {
                             margin-right: 5px;
-                            .square(30px); 
+                            .square(30px);
 
                             &.small-icon { .square(20px); }
 
@@ -1519,8 +1540,8 @@
 
                         &.name { min-width: 240px; }
 
-                        &.date { 
-                            min-width: 120px; 
+                        &.date {
+                            min-width: 120px;
 
                             &.hour { min-width: 170px; }
                             &.guarantee { min-width: 240px; }
@@ -1550,8 +1571,8 @@
                             color: @grey3;
                             font-weight: 400;
 
-                            span { 
-                                .show(); 
+                            span {
+                                .show();
 
                                 &.red,
                                 &.orange,
@@ -1560,7 +1581,7 @@
                                 }
                             }
 
-                            strong { 
+                            strong {
                                 color: @grey4;
                                 text-transform: uppercase;
                                 font-weight: 600;
@@ -1570,7 +1591,7 @@
                                 &.red { color: @red; }
                             }
 
-                            p { 
+                            p {
                                 line-height: 1;
                             }
 
@@ -1590,54 +1611,11 @@
                                         left: 0;
                                     }
 
-                                    
+
                                 }
                             }
 
                             &:first-child { padding-left: 0; }
-                        }
-                    }
-                }                    
-            }
-
-            &.action-manager-reports {
-                table-layout: fixed;
-
-                thead {
-                    th {
-                        &.department {
-                            width: 150px;
-                        }
-
-                        &.date {
-                            width: 100px;
-                        }
-
-                        &.status {
-                            width:120px;
-                        }
-
-                        &.guest {
-                            width:250px;
-                        }
-                    }
-                }
-                tr {
-
-                    td {
-
-                        .status {
-                            &.unassigned {
-                                color: @red;
-                            }
-
-                            &.assigned {
-                                color: @orangeStart;
-                            }
-
-                            &.completed {
-                                color: @green;
-                            }
                         }
                     }
                 }
@@ -1645,7 +1623,7 @@
 
             &.log-reports {
                 tr {
-                    &.invalid { 
+                    &.invalid {
                         td {
                             color: @grey3;
                             font-style: italic;
@@ -1653,9 +1631,9 @@
                     }
 
                     td {
-                        &.details { 
+                        &.details {
                             color: @grey3;
-                            width: 480px;   
+                            width: 480px;
 
                             strong {
                                 position: relative;
@@ -1678,14 +1656,14 @@
 
                             .green { color: @green; }
                             .red { color: @red; }
-                            .old { 
+                            .old {
                                 text-decoration: line-through;
 
                                 strong {
                                     color: @grey3;
                                     &:after { .show; }
                                 }
-                            }                                
+                            }
                         }
                     }
                 }
@@ -1693,7 +1671,7 @@
 
             &.transaction-reports {
                 text-transform: none;
-                
+
                 tbody {
                     tr {
                         td {
@@ -1702,8 +1680,8 @@
 
                             .number { margin-right: 5px; }
 
-                            &.group { 
-                                font-weight: 600; 
+                            &.group {
+                                font-weight: 600;
                                 border-bottom: 0;
                             }
                             &.code { width: 240px; }
@@ -1760,11 +1738,11 @@
 
                             .number { margin-right: 5px; }
 
-                            &.group { 
-                                font-weight: 600; 
+                            &.group {
+                                font-weight: 600;
                                 border-bottom: 0;
                             }
-                             
+
                         }
 
                         &.row-break {
@@ -1795,17 +1773,17 @@
                             &.name {
                                 min-width: 320px;
                                 height: auto;
-                                border-bottom: 0;                                
+                                border-bottom: 0;
 
                                 > div {
                                     line-height: 20px;
-                                    .float; 
+                                    .float;
 
                                     &:not(:last-child) { margin-bottom: 5px; }
                                 }
 
                                 .info {
-                                    em { 
+                                    em {
                                         color: @grey3;
                                         .pull-right;
                                     }
@@ -1835,7 +1813,7 @@
                                         background-color: @grey1;
                                         .square(20px);
                                         .pull-left;
-                                        
+
                                         &.check-in { background-position: 6px -368px; }
                                         &.check-out { background-position: 6px -395px; }
                                     }
@@ -1881,9 +1859,9 @@
                                 &:not(:last-child) { margin-right: 20px; }
                             }
 
-                            .guest-status { 
+                            .guest-status {
                                 float: none;
-                                .square(20px); 
+                                .square(20px);
                             }
 
                             .icons.time {
@@ -1892,15 +1870,15 @@
                                 background-color: @grey1;
                                 .square(20px);
                                 .pull-left;
-                                
+
                                 &.check-in { background-position: 6px -368px; }
                                 &.check-out { background-position: 6px -395px; }
                             }
 
                             &.name {
-                                em { 
-                                    color: @grey3; 
-                                    .pull-right; 
+                                em {
+                                    color: @grey3;
+                                    .pull-right;
                                 }
                             }
 
@@ -1965,8 +1943,8 @@
                             background-color: @gcard;
                             width: 80px;
 
-                            &[colspan] { 
-                                border-right: 1px solid rgba(0,0,0,.4); 
+                            &[colspan] {
+                                border-right: 1px solid rgba(0,0,0,.4);
 
                                 &:last-child { border-right: 0; }
                             }
@@ -1978,11 +1956,11 @@
                         }
 
                         &.bottom-row {
-                            th { 
+                            th {
                                 font-size: 13px;
                                 text-transform: none;
                                 font-style: italic;
-                                font-weight: 400; 
+                                font-weight: 400;
                                 border-right: 1px solid rgba(0,0,0,.1);
                                 .box-shadow(inset 0 1px 0 rgba(0,0,0,.1));
 
@@ -2021,8 +1999,8 @@
                                 strong,
                                 span { .show; }
 
-                                span { 
-                                    color: @grey3; 
+                                span {
+                                    color: @grey3;
                                     margin-top: -2px;
                                 }
                             }
@@ -2039,13 +2017,77 @@
                 table-layout: fixed;
 
                 .red { color: @red; }
-                
+
+                .switch-button {
+                    margin: 5px;
+                    height: 50px;
+                    .show();
+                    .calc-width(100, 10);
+                    #border-radius > .rounded();
+
+                    input { .square(100%); }
+
+                    .data-off,
+                    .data-on {
+                        padding: 5px;
+                        line-height: 20px;
+                        margin: 0;
+                        .square(100%);
+
+                        .switch-icon,
+                        .value {
+                            font-size: 12px;
+                            text-transform: uppercase;
+                            text-align: center;
+                            font-weight: 400;
+                            margin: 0;
+                            .show();
+                            .size(20px, 100%);                            
+                        }
+
+                        .switch-icon {
+                            #border-radius > .rounded();
+                        }
+
+                        .value {
+                            background: transparent;
+                            .box-shadow(none);
+                        }
+                    }
+
+                    .data-off {
+                        left: 0;
+                        right: 0;
+                        top: 0;
+                    }
+
+                    .data-on {
+                        left: 0;
+                        right: 0;
+                        top: 100%;
+                    }
+
+                    &.on {
+                        .data-off {
+                            left: 0;
+                            right: 0;
+                            top: -100%;
+                        }
+
+                        .data-on {
+                            left: 0;
+                            right: 0;
+                            top: 0;
+                        }
+                    }
+                }
+
                 thead {
                     tr {
-                        th { 
+                        th {
                             text-align: left;
                             vertical-align: top;
-                            padding: 0; 
+                            padding: 0;
 
                             span {
                                 color: @white;
@@ -2071,13 +2113,13 @@
                             th {
                                 font-size: 15px;
                                 line-height: 30px;
-                                
+
                                 &.date,
                                 &.code { font-size: 15px; }
 
-                                &[colspan] { 
+                                &[colspan] {
                                     color: @white;
-                                    background-color: @gcard; 
+                                    background-color: @gcard;
                                     text-align: center;
                                 }
                             }
@@ -2101,15 +2143,21 @@
                                 }
                             }
                         }
+
+                        &.vertical-align {
+                            th {
+                                vertical-align: middle;
+                            }
+                        }
                     }
                 }
 
                 tbody {
                     tr {
                         &.weekend {
-                            td { 
+                            td {
                                 color: @darkBlue;
-                                background-color: rgba(0,0,0,.05); 
+                                background-color: rgba(0,0,0,.05);
 
                                 &.red { color: @red; }
                             }
@@ -2121,7 +2169,7 @@
                         }
 
                         &.total {
-                            td { 
+                            td {
                                 background-color: transparent;
                                 padding-top: 0;
                                 vertical-align: top;
@@ -2131,7 +2179,7 @@
                         &.grouped {
                             td {
                                 text-transform: uppercase;
-                                
+
                                 strong {
                                     font-size: 15px;
                                     font-weight: 600;
@@ -2149,11 +2197,11 @@
                     }
                 }
 
-                .break { 
+                .break {
                     position: relative;
                     padding-right: 10px;
 
-                    span { 
+                    span {
                         margin-right: 0;
                         width: 100%;
                     }
@@ -2184,14 +2232,14 @@
                             th {
                                 border-right: 1px solid rgba(0,0,0,.3);
 
-                                &.break { 
-                                    padding-right: 0; 
-                                    border-right: 2px solid rgba(0,0,0,.3); 
+                                &.break {
+                                    padding-right: 0;
+                                    border-right: 2px solid rgba(0,0,0,.3);
                                 }
                             }
 
                             &.bottom-row {
-                                th { 
+                                th {
                                     text-align: center;
                                     border-right: 1px solid @grey2;
                                     border-bottom: 1px solid @grey2;
@@ -2246,8 +2294,14 @@
                             }
 
                             &.total {
-                                td { 
-                                    background-color: transparent; 
+                                td {
+                                    background-color: transparent;
+                                    border-bottom: 0;
+                                }
+                            }
+
+                            &.before-total {
+                                td {
                                     border-bottom: 0;
                                 }
                             }
@@ -2259,7 +2313,7 @@
                         padding-right: auto;
 
                         &:after { .hide; }
-                    }                    
+                    }
                 }
 
                 &.medium-grid {
@@ -2282,22 +2336,22 @@
                     tbody {
                         tr {
                             td {
-                                &.vertical { 
-                                    text-align: left; 
+                                &.vertical {
+                                    text-align: left;
                                     padding: 0;
 
                                     .row {
-                                        padding: 5px; 
+                                        padding: 5px;
                                         border-bottom: 1px solid rgba(0,0,0,.1);
                                         .show;
 
                                         strong {
                                             font-weight: 400;
-                                            
-                                            em { 
+
+                                            em {
                                                 font-size: 12px;
                                                 padding-left: 5px;
-                                                color: @grey3; 
+                                                color: @grey3;
                                                 width: 80px;
                                             }
                                         }
@@ -2307,15 +2361,15 @@
                                             display: -webkit-flex;
                                             display: flex;
 
-                                            strong { 
+                                            strong {
                                                 width: 50%;
                                                 overflow: hidden;
                                                 .pull-left;
 
-                                                &:first-child { 
+                                                &:first-child {
                                                     text-align: left;
                                                     border-right: 1px solid rgba(0,0,0,.1);
-                                                } 
+                                                }
 
                                                 &:last-child { text-align: right; }
                                             }
@@ -2327,7 +2381,47 @@
                             }
                         }
                     }
-                }        
+                }
+
+                &.forecast-group {
+                    thead {
+                        tr {
+                            &.top-row {
+                                th {
+
+                                    font-size: 13px;
+                                }
+                            }
+
+                            &.bottom-row {
+                                th {
+                                    font-size: 12px;
+                                }
+                            }
+                        }
+                    }
+
+                    tbody {
+                        tr {
+                            &.total {
+                             
+                                td {
+                                    border-top: 1px solid @black;
+                                    border-bottom: 1px solid @black;
+
+                                    &.vertical {
+                                        .row {
+                                            strong {
+                                                font-weight: 600;
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                            }
+                        }
+                    }
+                }
             }
 
             &.production-reports {
@@ -2346,7 +2440,7 @@
                                 margin-right: 5px;
                                 .show;
                                 .nowrap();
-                                
+
                             }
 
                             &:last-child {
@@ -2357,7 +2451,7 @@
                         &.top-row {
                             th {
                                 span {
-                                    background-color: @gcard; 
+                                    background-color: @gcard;
                                     text-align: center;
                                 }
                             }
@@ -2447,7 +2541,7 @@
                 .show;
                 .size(100%, 10px);
             }
-            
+
             .report-block {
                 .float;
 
@@ -2530,7 +2624,7 @@
 
                         li {
 
-                            .label { 
+                            .label {
                                 line-height: 20px;
                                 width: 120px;
                             }
@@ -2539,24 +2633,24 @@
                                 left: 140px;
                                 .calc-width(100, 140);
 
-                                .fill { 
+                                .fill {
                                     height: 20px;
 
                                     &.blue { background-color: @blue; }
                                     &.purple { background-color: @purpleStart; }
                                 }
 
-                                .mark { 
-                                    .box-shadow(-1px 0 0 rgba(0,0,0,.3)); 
+                                .mark {
+                                    .box-shadow(-1px 0 0 rgba(0,0,0,.3));
 
                                     &:last-child { .box-shadow(~'-1px 0 0 rgba(0,0,0,.3), inset -1px 0 0 rgba(0,0,0,.3)'); }
                                 }
                             }
 
-                            &.legend { 
+                            &.legend {
                                 margin-left: 140px;
                                 .calc-width(100, 140);
-                                .box-shadow(0 -1px 0 rgba(0,0,0,.3)); 
+                                .box-shadow(0 -1px 0 rgba(0,0,0,.3));
                             }
                         }
                     }
@@ -2569,7 +2663,7 @@
         &.statistics {
             z-index: 1;
             overflow: hidden;
-            .float; 
+            .float;
 
             .statistics-headings {
                 position: absolute;
@@ -2579,7 +2673,7 @@
                 z-index: 999;
                 .size(100%, 225px);
                 .transition(width, .2s, cubic-bezier(.10, .10, .25, .90));
-                .show; 
+                .show;
 
                 .scrollable {
                     height: 100%;
@@ -2657,7 +2751,7 @@
                                 }
                             }
 
-                            &:first-child { 
+                            &:first-child {
                                 margin-right: 5px;
                                 .calc-width(50, 5);
                             }
@@ -2676,8 +2770,8 @@
                             border: 0;
                         }
 
-                        &.double-row { 
-                            line-height: 60px; 
+                        &.double-row {
+                            line-height: 60px;
                             height: 60px;
                         }
 
@@ -2698,7 +2792,7 @@
 
                 > .iScrollHorizontalScrollbar {
                     top: auto;
-                    bottom: 5px; 
+                    bottom: 5px;
                     left: 10px;
                     right: 10px;
                 }
@@ -2723,9 +2817,9 @@
                     &.name { .calc-width(100, 400); }
                 }
 
-                &.dates { 
+                &.dates {
                     font-weight: 600;
-                    padding-right: 20px; 
+                    padding-right: 20px;
                 }
 
                 &.addons { color: @grey3; }
@@ -2756,12 +2850,12 @@
                 .float;
 
                 strong,
-                span { 
+                span {
                     .nowrap();
                     .pull-left;
                 }
 
-                strong { 
+                strong {
                     font-weight: 600;
                     .calc-width(100, 200);
 
@@ -2794,8 +2888,8 @@
                 }
             }
 
-            .grid-content { 
-                padding: 0 10px; 
+            .grid-content {
+                padding: 0 10px;
 
                 tr {
                     th {
@@ -2834,9 +2928,9 @@
 
                         strong { font-weight: 600; }
 
-                        .guest-status { 
+                        .guest-status {
                             margin-right: 10px;
-                            .square(20px); 
+                            .square(20px);
                         }
 
                         .unassigned,
@@ -2852,8 +2946,8 @@
                             max-width: 280px;
                             .nowrap();
 
-                            span { 
-                                margin: 0 5px; 
+                            span {
+                                margin: 0 5px;
 
                                 &:first-child { margin-left: 0; }
                                 &:last-child { margin-right: 0; }
@@ -2869,7 +2963,7 @@
                         td {
                             padding: 0;
                             background-color: transparent;
-                            
+
                             .numbers-pagination,
                             .search-pagination {
                                 position: static;
@@ -2926,7 +3020,7 @@
             .graph-chart {
                 li {
                     .label { width: 220px; }
-                    
+
                     .fill-container {
                         left: 260px;
                         .calc-width(100, 260);
@@ -2939,7 +3033,7 @@
                 }
             }
         }
-    }                
+    }
 }
 
 @media only screen and (min-width: 1440px) {
@@ -2956,5 +3050,5 @@
                 }
             }
         }
-    }                
+    }
 }

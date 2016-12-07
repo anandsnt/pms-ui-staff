@@ -47,6 +47,21 @@
     </div>
 </section>
 
+<!--------------------- key one success, key two failed------------------------>
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'KEY_ONE_SUCCESS_KEY_TWO_FAILED'">
+    <div id="content">
+        <h1 translate>{{'KEY_TWO_FAILED' |translate}}</h1>
+        <h2 translate>{{'RETRY_CREATING_KEY_TWO' |translate}}</h2>
+        <div class='uploaded-key-image' id="keys" ng-show="zestStationData.keyWriter == 'websocket'">
+            <img src="{{icons.url.createkey}}">
+        </div>
+        <div id="keys" ng-show="icmp">
+            <div ng-include="icons.url.createkey_icmp"></div>
+        </div>
+        <button ng-show="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(2)">{{'MAKE_KEY_TEXT_TWO' |translate}} </button>
+    </div>
+</section>
+
 <!--------------------- key one in success ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'KEY_ONE_CREATION_SUCCESS_MODE'">
     <div id="content">
@@ -75,7 +90,7 @@
 </section>   
 
 <!--------------------- failure ------------------------>
-<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'DISPENSE_KEY_FAILRURE_MODE'">
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'DISPENSE_KEY_FAILURE_MODE'">
     <div id="content">
         <h1 translate>NO_KEYS_MADE</h1>
         <h2 translate>NO_KEYS_MADE_SUB</h2>

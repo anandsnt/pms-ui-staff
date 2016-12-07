@@ -31,16 +31,16 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			"notes": []
 		};
 
-		//---------------------------- cache 
+		// ---------------------------- cache 
 		// Used to cache the demographics information of the last fetched group so that it can be used to capture the
 		// info while creating a reservation from the Create Reservation module 
 		
 		this.lastFetchedGroup = {
-			group_id : null,
-			demographics : null
-		}
+			group_id: null,
+			demographics: null
+		};
 
-		/*----------------------------*/
+		/* ----------------------------*/
 
 		/**
 		 * Function to get list of Hold status to display
@@ -190,7 +190,8 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 
 		this.cancelGroup = function(params) {
 			var deferred = $q.defer(),
-				url = '/api/groups/'+params.group_id+'/cancel';
+				url = '/api/groups/' + params.group_id + '/cancel';
+
 			rvBaseWebSrvV2.postJSON(url, params).then(
 				function(data) {
 					deferred.resolve(data);
@@ -210,7 +211,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 		this.sendGroupConfirmationEmail = function(params) {
 			var deferred = $q.defer(),
 			data = params.postData,
-			url = ' api/groups/'+params.groupId+'/group_email_confirmation';
+			url = ' api/groups/' + params.groupId + '/group_email_confirmation';
 
 			rvBaseWebSrvV2.postJSON(url, data).then(
 				function(data) {
@@ -245,7 +246,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			return deferred.promise;
 		};
 
-		/*** DEPRICATED 'summaryHolder{}' & 'getAccountSummary()' ***/
+		/** * DEPRICATED 'summaryHolder{}' & 'getAccountSummary()' ***/
 		var summaryHolder = {},
 			getAccountSummary = function(deferred, params) {
 				if (params.accountId === "NEW_ACCOUNT") {
@@ -266,7 +267,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 				}
 				return deferred.promise;
 			};
-		/*** DEPRICATED 'summaryHolder{}' & 'getAccountSummary()' ***/
+		/** * DEPRICATED 'summaryHolder{}' & 'getAccountSummary()' ***/
 
 		this.getGroupSummary = function(params) {
 			var deferred = $q.defer();
@@ -282,14 +283,14 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 						var postingAccId = groupSummary.posting_account_id,
 							url;
 
-						if ( groupSummary.rate === null ){
+						if ( groupSummary.rate === null ) {
 							groupSummary.rate = -1;
 						}
 
 						self.lastFetchedGroup = {
 							id: groupSummary.group_id,
 							demographics: angular.copy(groupSummary.demographics)
-						}
+						};
 
 						if ( postingAccId === 'NEW_ACCOUNT' ) {
 							deferred.resolve({
@@ -320,7 +321,6 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 		};
 
 
-
 		this.searchCompanyCards = function(query) {
 			var deferred = $q.defer(),
 				url = 'api/accounts?account_type=COMPANY&query=' + query;
@@ -328,7 +328,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					deferred.resolve(data.accounts);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -342,7 +342,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					deferred.resolve(data.accounts);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -356,7 +356,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.putJSON(url, data.summary)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -370,7 +370,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.postJSON(url, data.summary)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -384,7 +384,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -399,7 +399,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.deleteJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -415,7 +415,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 
@@ -429,13 +429,25 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;
 		};
 
+		// CICO-24928 
+		this.updateGroupNote = function(data) {
+			var deferred = $q.defer(),
+				url = 'api/notes/' + data.id;
 
+			rvBaseWebSrvV2.putJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function(data) {
+					deferred.reject(data);
+				});
+			return deferred.promise;
+		};
 
 		this.removeGroupNote = function(data) {
 			var deferred = $q.defer(),
@@ -444,7 +456,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.deleteJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;
@@ -453,10 +465,11 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 		this.updateRoomingListItem = function(data) {
 			var deferred = $q.defer(),
 				url = 'api/group_reservations/' + data.id;
+
 			rvBaseWebSrvV2.putJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;
@@ -465,10 +478,11 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 		this.removeRoomingListItem = function(data) {
 			var deferred = $q.defer(),
 				url = 'api/group_reservations/' + data.id + '/cancel';
+
 			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;
@@ -477,10 +491,11 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 		this.releaseRooms = function(data) {
 			var deferred = $q.defer(),
 				url = 'api/groups/' + data.groupId + '/release_now';
+
 			rvBaseWebSrvV2.getJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;
@@ -494,21 +509,23 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 		this.getRates = function(data) {
 			var deferred = $q.defer(),
 				url = 'api/groups/rates';
+
 			rvBaseWebSrvV2.getJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;
 		};
 
-		this.toggleHideRate = function( params ){
+		this.toggleHideRate = function( params ) {
 			var deferred = $q.defer(),
-				url = 'api/groups/'+params.group_id+'/hide_rates';
+				url = 'api/groups/' + params.group_id + '/hide_rates';
+
 				rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 				   	 deferred.resolve(data);
-				},function(data){
+				}, function(data) {
 				    deferred.reject(data);
 				});
 			return deferred.promise;
@@ -516,10 +533,11 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 
 		this.updateRate = function(params) {
 			var deferred = $q.defer(),
-				url = 'api/groups/'+params.group_id+'/change_rate';
+				url = 'api/groups/' + params.group_id + '/change_rate';
+
 				rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 				   	 deferred.resolve(data);
-				},function(data){
+				}, function(data) {
 				    deferred.reject(data);
 				});
 			return deferred.promise;	
@@ -544,7 +562,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;
@@ -563,7 +581,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data) {
+				}, function(data) {
 					deferred.reject(data);
 				});
 			return deferred.promise;

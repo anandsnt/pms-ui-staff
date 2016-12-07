@@ -1,0 +1,81 @@
+<ad-common-parts-in-form-dir on-save-button-click="saveInterfaceConfig"
+                             header-caption="{{'REVINATE_SETUP_HEADER'|translate}}">
+    <div class="form-title full-width">
+        <h3><span translate>REVINATE_SUB_TITLE</span></h3>
+    </div>
+    <div class="entry full-width">
+        <label><span translate>ACTIVATE_INACTIVATE</span></label>
+        <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.enabled }"
+             ng-click="toggleEnabled()">
+            <input type="checkbox">
+            <span class="switch-icon"></span>
+        </div>
+    </div>
+
+    <fieldset class="holder left">
+        <ad-textbox inputtype="text"
+                    value="config.hotel_code"
+                    label="{{'HOTEL_CODE'| translate}}"
+                    styleclass="full-width"></ad-textbox>
+        <ad-textbox inputtype="text"
+                    value="config.system_id"
+                    label="{{'REVINATE_SYSTEM_ID'| translate}}"
+                    styleclass="full-width"></ad-textbox>
+        <ad-textbox inputtype="text"
+                    value="config.end_point"
+                    label="{{'END_POINT'| translate}}"
+                    styleclass="full-width"></ad-textbox>
+    </fieldset>
+
+    <fieldset class="holder right">
+        <ad-textbox inputtype="text" value="config.user_name"
+                    label="{{'USER_NAME'| translate}}"
+                    styleclass="full-width"></ad-textbox>
+        <ad-textbox inputtype="password"
+                    value="config.password"
+                    label="{{'PASSWORD'| translate}}"
+                    styleclass="full-width"></ad-textbox>
+    </fieldset>
+
+
+<!-- revinate resync -->
+
+    <fieldset class="holder full-width" ng-if="config.enabled">
+        <div class="form-title">
+            <h3>Synchronize Data</h3>
+        </div>
+        <fieldset class="holder left">
+            <div class="entry has-datepicker margin">
+                <label>{{'FROM_DATE' | translate}}
+                </label>
+                <input type="text" ui-date="startDatePickerOptions"
+                       ng-model="sync.start_date"
+                       placeholder="Select Start Date"
+                       class="date-picker-input-small"
+                       readonly>
+            </div>
+            <div class="entry has-datepicker margin">
+                <label>{{'TO_DATE' | translate}}
+                </label>
+                <input type="text" ui-date="endDatePickerOptions"
+                       ng-model="sync.end_date"
+                       placeholder="Select End Date"
+                       class="date-picker-input-small"
+                       readonly>
+            </div>
+            <div class="entry full-width">
+                <label>
+                    Synchronize
+                </label>
+                <button type="button" like-type="common" class="button ng-binding blue sm-refresh-btn"
+                        ng-click="startSync()"
+                        ng-class="{'grey' : !sync.start_date || !sync.end_date}"
+                        ng-disabled="!sync.start_date || !sync.end_date"
+                        translate>
+                    SYNC
+                </button>
+            </div>
+        </fieldset>
+    </fieldset>
+
+</ad-common-parts-in-form-dir>

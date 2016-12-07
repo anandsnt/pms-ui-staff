@@ -7,7 +7,7 @@ angular.module('sntRover').directive('autoCompleteReservations', ['RVSearchSrv',
             templateUrl: "/assets/directives/autocomplete/rvAutoCompleteReservations/rvAutoCompleteReservations.html",
             link: function (scope, el, attrs, ngModel) {
                 BaseCtrl.call(this, scope);
-                //CICO-26513
+                // CICO-26513
                 var ulElement = null;
 
                 var lastSearchText = "",
@@ -49,10 +49,10 @@ angular.module('sntRover').directive('autoCompleteReservations', ['RVSearchSrv',
                     delay: scope.delay ? 600 : parseInt(scope.delay),
                     minLength: scope.minLengthToTrigger ? 0 : parseInt(scope.minLengthToTrigger),
                     position: {
-                        of : el.find("input"),
+                        of: el.find("input"),
                         my: "right top",
                         at: "right bottom",
-                        collision : 'flip',
+                        collision: 'flip',
                         within: 'body'
                     },
                     source: reservationsACSourceHandler,
@@ -70,6 +70,7 @@ angular.module('sntRover').directive('autoCompleteReservations', ['RVSearchSrv',
                             class: "room",
                             html: item.room ? "Room " + highlightFilter(item.room, lastSearchText) : ''
                         });
+
                     _.each(item.images, function (image) {
                         avatar.append(angular.element('<img>', {
                             src: image.guest_image
@@ -78,13 +79,13 @@ angular.module('sntRover').directive('autoCompleteReservations', ['RVSearchSrv',
 
                     ul.addClass("find-guest");
                     
-                    //For fixing CICO-26513
+                    // For fixing CICO-26513
                     ulElement = ul;
                     ul.off('touchmove').on('touchmove', function(e) {
                         e.stopPropagation();
                     });
 
-                    avatar.append(angular.element('<img>'))
+                    avatar.append(angular.element('<img>'));
                     reservation.append(avatar).append(guestName).append(roomNumber);
 
                     return angular.element('<li></li>').append(reservation).appendTo(ul);
@@ -93,10 +94,10 @@ angular.module('sntRover').directive('autoCompleteReservations', ['RVSearchSrv',
                 scope.$on('$destroy', function () {
                     el.find("input").autocomplete("destroy");
                     
-                    //CICO-26513
-                    //unbinding the touch move
-                    if(ulElement instanceof HTMLElement) {
-                        ulElement.off('touchmove')
+                    // CICO-26513
+                    // unbinding the touch move
+                    if (ulElement instanceof HTMLElement) {
+                        ulElement.off('touchmove');
                     }
                 });
 

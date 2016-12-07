@@ -1,5 +1,5 @@
-sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', '$stateParams', 'RVPaymentSrv', 'RVDepositBalanceSrv','rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'ngDialog', 'rvPermissionSrv', 'RVReservationCardSrv',
-	function($scope, $rootScope, $filter, $stateParams, RVPaymentSrv, RVDepositBalanceSrv, rvAccountsConfigurationSrv, RVReservationSummarySrv, ngDialog, rvPermissionSrv , RVReservationCardSrv) {
+sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', '$stateParams', 'RVPaymentSrv', 'RVDepositBalanceSrv', 'rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'ngDialog', 'rvPermissionSrv', 'RVReservationCardSrv',
+	function($scope, $rootScope, $filter, $stateParams, RVPaymentSrv, RVDepositBalanceSrv, rvAccountsConfigurationSrv, RVReservationSummarySrv, ngDialog, rvPermissionSrv, RVReservationCardSrv) {
 		BaseCtrl.call(this, $scope);
 
 		var summaryMemento = {};
@@ -22,12 +22,12 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		$scope.updateAccountSummary = function() {
 			if (rvPermissionSrv.getPermissionValue('EDIT_ACCOUNT')) {
 				var onAccountUpdateSuccess = function(data) {
-						//client controllers should get an infromation whether updation was success
+						// client controllers should get an infromation whether updation was success
 						$scope.$broadcast("UPDATED_ACCOUNT_INFO");
 						$scope.$emit('hideloader');
 					},
 					onAccountUpdateFailure = function(errorMessage) {
-						//client controllers should get an infromation whether updation was a failure
+						// client controllers should get an infromation whether updation was a failure
 						$scope.$broadcast("FAILED_TO_UPDATE_ACCOUNT_INFO");
 						$scope.$emit('showErrorMessage', errorMessage);
 						$scope.$emit('hideloader');
@@ -50,9 +50,10 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		 * used to remove the unneccessary API calls
 		 * @return {Boolean} [description]
 		 */
-		var whetherSummaryDataChanged = function (){
+		var whetherSummaryDataChanged = function () {
 			var currentSummaryData = $scope.accountConfigData.summary;
-			for (key in summaryMemento){
+
+			for (key in summaryMemento) {
 				if (!angular.equals(currentSummaryData[key], summaryMemento[key])) {
 					return false;
 				}
@@ -68,15 +69,17 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 				promptMandatoryDemographics: false,
 				isDemographicsPopupOpen: false,
 				newNote: "",
+				// CICO-24928
+				editingNote: null,
 				demographics: null
 			};
 			summaryMemento = angular.copy($scope.accountConfigData.summary);
 			// Have a handler to update the summary - IFF in edit mode
 			var callUpdate = function() {
 				if (!whetherSummaryDataChanged() && !$scope.accountSummaryData.isDemographicsPopupOpen) {
-					//data has changed
+					// data has changed
 					summaryMemento = angular.copy($scope.accountConfigData.summary);
-					//call the updateAccountSummary method from the parent controller
+					// call the updateAccountSummary method from the parent controller
 					$scope.updateAccountSummary();
 				}
 			};
@@ -104,7 +107,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			return $rootScope.currencySymbol + $filter('number')(amount, 2);
 		};
 
-		//Update the balance after payment
+		// Update the balance after payment
 		$scope.$on("BALANCE_AFTER_PAYMENT", function (event, balance) {
 			$scope.accountConfigData.summary.balance = balance;
 		});
@@ -127,6 +130,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		 * @return undefined
 		 */
 		var demographicsMemento = {};
+
 		$scope.openDemographicsPopup = function() {
 			$scope.errorMessage = "";
 			var showDemographicsPopup = function() {
@@ -209,17 +213,20 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			}
 		};
 
-		$scope.removeAccountNote = function(noteId) {
+		$scope.removeAccountNote = function(event, noteId) {
 			var onRemoveAccountNoteSuccess = function(data, params) {
 					$scope.accountConfigData.summary.notes = _.without($scope.accountConfigData.summary.notes, _.findWhere($scope.accountConfigData.summary.notes, {
 						note_id: params.noteId
 					}));
 					$scope.refreshScroller("rvAccountSummaryScroller");
+					// CICO-24928
+					$scope.cancelEditModeAccountNote();
 				},
 				onRemoveAccountNoteFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
 				};
 
+			event.stopPropagation();
 			$scope.callAPI(rvAccountsConfigurationSrv.removeAccountNote, {
 				successCallBack: onRemoveAccountNoteSuccess,
 				failureCallBack: onRemoveAccountNoteFailure,
@@ -232,14 +239,57 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			});
 		};
 
+		// CICO-24928
+		$scope.updateActiveAccountNote = function() {
+			if (!$scope.accountSummaryData.editingNote) {
+	            $scope.errorMessage = ['Something went wrong, please switch tab and comeback'];
+	            return;
+        	}
+      		$scope.errorMessage = '';
+      		if ($scope.accountSummaryData.newNote) {
+				var onUpdateAccountNoteSuccess = function(data) {
+					$scope.accountSummaryData.editingNote.description = $scope.accountSummaryData.newNote;
+					var noteArrayIndex = _.findIndex($scope.accountConfigData.summary.notes, {note_id: data.note_id});
+
+					$scope.accountConfigData.summary.notes[noteArrayIndex] = $scope.accountSummaryData.editingNote;
+					$scope.refreshScroller("rvAccountSummaryScroller");
+					$scope.cancelEditModeAccountNote();
+				},
+				onUpdateAccountNoteFailure = function(errorMessage) {
+					$scope.errorMessage = errorMessage;
+				};
+
+				$scope.callAPI(rvAccountsConfigurationSrv.updateAccountNote, {
+					successCallBack: onUpdateAccountNoteSuccess,
+					failureCallBack: onUpdateAccountNoteFailure,
+					params: {
+						"id": $scope.accountSummaryData.editingNote.note_id,
+						"text": $scope.accountSummaryData.newNote,
+						"associated_id": $scope.accountConfigData.summary.posting_account_id,
+						"associated_type": 'PostingAccount'
+					}
+				});
+			}
+		};
+		// CICO-24928
+		$scope.clickedOnNote = function(note) {
+	      $scope.accountSummaryData.editingNote  = note;
+	      $scope.accountSummaryData.newNote = note.description;
+    	};
+    	// CICO-24928
+	    $scope.cancelEditModeAccountNote = function() {
+	      $scope.accountSummaryData.editingNote  = null;
+	      $scope.accountSummaryData.newNote = '';
+	    };
+
 		$scope.onCloseWarningPopup = function() {
 			$scope.accountConfigData.summary.posting_account_status = "OPEN";
 			$scope.closeDialog();
 		};
 
 		$scope.onAccountTypeModification = function() {
-			//Call only if the account is already saved
-			if(!!$scope.accountConfigData.summary.posting_account_id) {
+			// Call only if the account is already saved
+			if (!!$scope.accountConfigData.summary.posting_account_id) {
 				$scope.updateAccountSummary();
 			}
 		};
@@ -273,7 +323,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		 * when we are switching between tabs, we need to update the summary data
 		 * @return undefined
 		 */
-		var refreshSummaryData = function(){
+		var refreshSummaryData = function() {
 			var params = {
 				"accountId": $scope.accountConfigData.summary.posting_account_id
 			};
@@ -293,7 +343,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		 * @param  {String} currentTab - Active tab in the view
 		 * @return undefined
 		 */
-		$scope.$on ('ACCOUNT_TAB_SWITCHED', function(event, currentTab){
+		$scope.$on ('ACCOUNT_TAB_SWITCHED', function(event, currentTab) {
 			if (currentTab === "ACCOUNT") {
 				initAccountSummaryView();
 				refreshSummaryData();
@@ -306,7 +356,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		 * @param  {String} currentTab - Active tab in the view
 		 * @return undefined
 		 */
-		$scope.$on ('GROUP_TAB_SWITCHED', function(event, currentTab){
+		$scope.$on ('GROUP_TAB_SWITCHED', function(event, currentTab) {
 			if (currentTab === "ACCOUNT") {
 				initAccountSummaryView();
 				refreshSummaryData();
@@ -323,17 +373,19 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			$scope.$emit('hideLoader');
 			$scope.paymentTypes = data;
 			angular.forEach($scope.paymentTypes, function (item, key) {
-				if(item.name == 'CC'){
+				if (item.name == 'CC') {
 					$scope.creditCardTypes = item.values;
 				}
 			});
 		};
+
 		$scope.invokeApi(RVPaymentSrv.fetchAvailPayments, {}, successCallBackOfFetchPayment);
 		// Show DEPOSIT/BALANCE popup
 		$scope.openDepositBalanceModal = function() {
 			var dataToSrv = {
 				"posting_account_id": $scope.accountConfigData.summary.posting_account_id
 			};
+
 			$scope.invokeApi(RVDepositBalanceSrv.getRevenueDetails, dataToSrv, $scope.successCallBackFetchDepositBalance);
 		};
 
@@ -347,7 +399,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 					"firstName": "",
 					"lastName": "",
 					"paymentTypes": $scope.paymentTypes,
-					"accountId" : $scope.accountConfigData.summary.posting_account_id
+					"accountId": $scope.accountConfigData.summary.posting_account_id
 				}
 			};
 
@@ -366,9 +418,11 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		var processSwipedData = function(swipedCardData) {
 			var swipeOperationObj = new SwipeOperation();
 			var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
+
 			$scope.$broadcast('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN', swipedCardDataToRender);
 		};
 		// Catching Swipe here
+
 		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
 			var swipeOperationObj = new SwipeOperation();
 			var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
@@ -377,6 +431,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 				swipedCardData.token = tokenValue;
 				processSwipedData(swipedCardData);
 			};
+
 			$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback );
 		});
 

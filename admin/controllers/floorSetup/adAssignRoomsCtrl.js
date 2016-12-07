@@ -26,7 +26,7 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
                 $scope.reloadTable();
                 $scope.$emit("ASSIGNMENT_CHANGED");
                 updateSelectedList();
-            }
+            };
 
         // /===================/ METHODS IN SCOPE /===================/ //
 
@@ -64,6 +64,7 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
                     $defer.resolve($scope.data);
                     updateSelectedList();
                 };
+
             if ($scope.roomAssignment.activeTab === "AVAILABLE") {
                 $scope.invokeApi(ADFloorSetupSrv.getUnAssignedRooms, getParams, fetchSuccessOfItemList);
             } else {
@@ -117,7 +118,7 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
             } else {
                 $scope.invokeApi(ADFloorSetupSrv.unAssignRooms, params, onSaveSuccess);
             }
-        }
+        };
 
         $scope.onSaveChanges = function() {
             $scope.commitChanges();

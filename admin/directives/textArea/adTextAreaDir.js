@@ -5,17 +5,18 @@ admin.directive('adTextarea', function($timeout) {
         replace: 'true',
       	scope: {
 	        value: '=value',
-	        name : '@name',
+	        name: '@name',
             label: '@label',
-	        placeholder : '@placeholder',
-	        required : '@required',
-            id : '@id',
+	        placeholder: '@placeholder',
+	        required: '@required',
+            id: '@id',
             divClass: '@divClass',
             textAreaClass: '@textAreaClass',
             rows: '@rows',
             required: '=required',
             maxlength: '@maxlength',
-            disabled: '=disabled'
+            disabled: '=disabled',
+            ngHide: '=hide'
 	    },
     	templateUrl: '/assets/directives/textArea/adTextArea.html'
 

@@ -4,9 +4,10 @@ sntRover.config([
     '$translateProvider',
     function($stateProvider, $urlRouterProvider, $translateProvider) {
         var currentTime = new Date();
+
         $translateProvider.useStaticFilesLoader({
           prefix: '/assets/rvLocales/',
-          suffix: '.json?time='+currentTime
+          suffix: '.json?time=' + currentTime
         });
         $translateProvider.fallbackLanguage('EN');
 

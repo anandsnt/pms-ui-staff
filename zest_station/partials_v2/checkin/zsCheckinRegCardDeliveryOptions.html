@@ -62,7 +62,7 @@
                 <input type="text" id="input_text" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" class="start-focused" ng-keydown="resetTime()" ng-model='email' enter-press="goToNext()" value="" touch-press />
             </div>
             <div class="entry action">
-                <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': email.length < 1}" translate>NEXT_BTN</button>
+                <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': email.length < 1}">{{'NEXT_BTN' | translate}}</button>
             </div>
         </form>
     </div>
@@ -79,7 +79,7 @@
                         <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
-                    Re-Type
+                    {{'RE_TYPE' | translate}}
                     <span>"{{email}}"</span>
                 </li>
             </ul>
@@ -133,7 +133,7 @@
                     <strong class="large_txt">{{printRegCardData.room_number}}</strong>
                 <br><br><br>
                     <span ng-hide="zestStationData.isHourlyRateOn">{{'REGISTRATION_READY_PRINT_DEPART_DATE' | translate}} {{departDate | date:'dd-MMM yyyy'}}</span>
-                    <span ng-show="zestStationData.isHourlyRateOn">{{'REGISTRATION_READY_PRINT_DEPART_DATE' | translate}} {{departDate | date:'dd-MMM yyyy'}} @ {{printRegCardData.arrival_time}}</span>
+                    <span ng-show="zestStationData.isHourlyRateOn">{{'REGISTRATION_READY_PRINT_DEPART_DATE' | translate}} {{departDate | date:'dd-MMM yyyy'}} @ {{printRegCardData.departure_time}}</span>
                 <br>    
                    <!--  {{'REGISTRATION_READY_PRINT_STD_CHECKOUT' | translate}} {{zestStationData.check_out_time.hour}}:{{zestStationData.check_out_time.minute}} {{zestStationData.check_out_time.primetime|lowercase}} -->
                 </span>

@@ -59,14 +59,16 @@ angular.module('sntRover').service('RVreportsSrv', [
 			return deferred.promise;
 		};
 
-		service.exportCSV = function(params){
+		service.exportCSV = function(params) {
 			var deferred = $q.defer();
+
 			$http({
-				method: 'POST', 
-				url: params.url, 
+				method: 'POST',
+				url: params.url,
 				data: params.payload
 			}).success(function(data, status, headers, config) {
                  var hiddenAnchor = angular.element('<a/>');
+
 			     hiddenAnchor.attr({
 			         href: 'data:attachment/csv;charset=utf-8,' + encodeURI(data),
 			         target: '_blank',
@@ -76,7 +78,7 @@ angular.module('sntRover').service('RVreportsSrv', [
             }).error(function(errorMessage) {
                 deferred.reject(errorMessage);
             });
-			return deferred.promise;		
+			return deferred.promise;
 		};
 
 		/**
@@ -94,6 +96,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 
 			var shallWeResolve = function() {
 				var payloadCount = _.keys( payload ).length;
+
 				if ( payloadCount === 3 ) {
 
 					// save it to $vault
@@ -101,7 +104,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 					$vault.set( cacheKey, JSON.stringify(service.payloadCache) );
 
 					deferred.resolve( payload );
-				};
+				}
 			};
 
 			var success = function(key, data) {
@@ -125,8 +128,8 @@ angular.module('sntRover').service('RVreportsSrv', [
 			if ( hasFilter['ACTIVE_USERS'] ) {
 				subSrv.fetchActiveUsers()
 					.then( success.bind(null, 'activeUserList'), failed.bind(null, 'activeUserList', []) );
-			};
-		};
+			}
+		}
 
 		/**
 		 * parse report list data to determine the additional apis to load
@@ -136,9 +139,9 @@ angular.module('sntRover').service('RVreportsSrv', [
 		 */
 		function checkUserFilters (data) {
 			var loadUsersFor = {
-                'Arrival'                : true,
-                'Login and out Activity' : true,
-                'Rate Adjustment Report' : true,
+                'Arrival': true,
+                'Login and out Activity': true,
+                'Rate Adjustment Report': true,
                 'Financial Transactions - Adjustment Report': true
             };
 
@@ -147,11 +150,11 @@ angular.module('sntRover').service('RVreportsSrv', [
 			_.each(data.results, function(eachResult) {
 				if ( ! hasFilter.hasOwnProperty('ACTIVE_USERS') && loadUsersFor[eachResult.title] ) {
 					hasFilter['ACTIVE_USERS'] = true;
-				};
+				}
 			});
 
 			return hasFilter;
-		};
+		}
 
 		service.reportSchedulesPayload = function() {
 			var deferred = $q.defer(),
@@ -159,6 +162,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 
 			var shallWeResolve = function() {
 				var payloadCount = _.keys( payload ).length;
+
 				if ( payloadCount === 4 ) {
 					deferred.resolve( payload );
 				}
@@ -264,7 +268,11 @@ angular.module('sntRover').service('RVreportsSrv', [
 
 			return deferred.promise;
 		};
-		
+
+        service.setReportRequestParam = function(name, value) {
+            choosenReport[name] = value;
+        };
+
 
 		return service;
 	}

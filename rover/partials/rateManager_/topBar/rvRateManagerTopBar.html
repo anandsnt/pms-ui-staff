@@ -18,17 +18,33 @@
             <!-- add ',' for each rate except the last one-->
             <span>{{selectedRateNames.join()}}</span>
             
-        </li>
+        </li>        
+        <li class="card" ng-show="selectedAccountName.length">
+           <strong ng-show="selectedAccountName[0] == null">{{selectedCardNames.join()}}</strong>
+           <strong>{{selectedAccountName.join()}}</strong>
+           <span>{{selectedAddress.join()}}</span>
+       </li>
          
         <!-- show .card if there are any cards selected -->
-        <li class="card" ng-show="selectedCardNames.length">
-            <strong>Name Card</strong>
+        <li class="card" ng-hide="selectedAccountName.length">
+           <strong>Name Card</strong>
 
-            <!-- add ',' for each company card,IATA etc except the last one-->
-            <span>{{selectedCardNames.join()}}</span>
-            
+           <!-- add ',' for each company card,IATA etc except the last one-->
+           <span>{{selectedCardNames.join()}}</span>           
         </li>
          
+    </ul>
+    <ul class="actions">
+        <li>
+            <button class="button rm-buttonOpenClose green" ng-click="openAll()">
+                Open All
+            </button>  
+        </li>
+        <li>
+            <button class="button  rm-buttonOpenClose red" ng-click ="closeAll()">
+                Close All
+            </button>
+        </li>
     </ul>
     <!-- CICO-27447 Temporarily Hiding Chart View -->
     <ul class="display-mode" ng-if="false">

@@ -1,5 +1,7 @@
 <!-- Check in out -->
 <ul ng-if="isThisReport( 'CHECK_IN_CHECK_OUT' )" class="totals">
+
+
     <li ng-if="summaryCounts.has_both || summaryCounts.has_in" class="sub">Check Ins<span>{{  summaryCounts.check_ins }}</span></li>
     <li ng-if="summaryCounts.has_both || summaryCounts.has_in" class="sub">Via Rover<span>{{ summaryCounts.ins_via_rover }}</span></li>
     <li ng-if="summaryCounts.has_both || summaryCounts.has_in" class="sub">Via Web<span>{{ summaryCounts.ins_via_web }}</span></li>
@@ -143,16 +145,16 @@
 
 <!-- Daily production report -->
 <ul ng-if="isThisReport('DAILY_PRODUCTION_ROOM_TYPE')" class="totals">
-    <li>Rate Revenue<span>{{ summaryCounts.actual_revenue | currency:currencySymbol:2 }}</span></li>
+    <li>Forecast Room Revenue<span>{{ summaryCounts.rate_revenue | currency:currencySymbol:2 }}</span></li>
     <li>ADR<span>{{ summaryCounts.adr | currency:currencySymbol:2 }}</span></li>
-    <li>Actual Revenue<span>{{ summaryCounts.rate_revenue | currency:currencySymbol:2 }}</span></li>
+    <li>Actual Room Revenue<span>{{ summaryCounts.actual_revenue | currency:currencySymbol:2 }}</span></li>
 </ul>
 
 <!-- Daily production by demographics -->
 <ul ng-if="isThisReport( 'DAILY_PRODUCTION_DEMO' )" class="totals">
-    <li>Rate Revenue<span>{{ summaryCounts.rate_revenue | currency:currencySymbol:2 }}</span></li>
+    <li>Forecast Revenue<span>{{ summaryCounts.future_revenue | currency:currencySymbol:2 }}</span></li>
     <li>ADR<span>{{ summaryCounts.adr | currency:currencySymbol:2 }}</span></li>
-    <li>Actual Revenue<span>{{ summaryCounts.actual_revenue | currency:currencySymbol:2 }}</span></li>
+    <li>Actual Room Revenue<span>{{ summaryCounts.rate_revenue | currency:currencySymbol:2 }}</span></li>
 </ul>
 
 <!-- Guest Balance Report -->
@@ -190,4 +192,16 @@
 <ul ng-if="isThisReport( 'ACTIONS_MANAGER' )" class="totals">
     <li>Total Actions<span>{{ totalCount}}</span></li>
 
+</ul>
+<!-- Vacant Rooms -->
+<ul ng-if="isThisReport( 'VACANT_ROOMS_REPORT' )" class="totals">
+    <li>Rooms<span>{{ summaryCounts}}</span></li>
+
+</ul>
+
+<!--Market segment statistics report -->
+<ul ng-if="isThisReport('MARKET_SEGMENT_STAT_REPORT')" class="totals">
+    <li>Total Revenue for Today<span>{{summaryCounts.total_today_revenue}}</span></li>
+    <li>Total Revenue for MTD<span>{{summaryCounts.total_mtd_revenue}}</span></li>
+    <li>Total Revenue for YTD<span>{{summaryCounts.total_ytd_revenue}}</span></li>
 </ul>

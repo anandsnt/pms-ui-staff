@@ -17,10 +17,70 @@ angular
             },
             payload: function($rootScope, rvDiarySrv, $stateParams, $vault, baseSearchData, propertyTime, diaryAssets) {
                 var start_date = propertyTime.hotel_time.date;
-                if($stateParams.checkin_date){
+
+                if ($stateParams.checkin_date) {
                     start_date = $stateParams.checkin_date;
                 }
                 return rvDiarySrv.load(rvDiarySrv.properDateTimeCreation(start_date), rvDiarySrv.ArrivalFromCreateReservation());
+            }
+        }
+    });
+    $stateProvider.state('rover.nightlyDiary', {
+        url: '/nightlyDiary/?reservation_id&start_date&isFromStayCard',
+        templateUrl: '/assets/partials/nightlyDiary/rvNightlyDiary.html',
+        controller: 'rvNightlyDiaryMainController',
+        resolve: {
+            reactAssets: function(jsMappings, mappingList) {
+                return jsMappings.fetchAssets(['react.files', 'directives'], ['react']);
+            },
+            reduxAssets: function(jsMappings, reactAssets) {
+                return jsMappings.fetchAssets(['redux.files']);
+            },
+            diaryAssets: function(jsMappings, reduxAssets) {
+                return jsMappings.fetchAssets(['rover.nightlyDiary']);
+            },
+            roomsList: function(RVNightlyDiarySrv, $rootScope, diaryAssets, $stateParams) {
+                var params = {};
+
+                if ($stateParams.isFromStayCard) {
+                    params = RVNightlyDiarySrv.getCache();
+                }
+                else {
+                    params.page = 1;
+                    params.per_page = 50;
+                }
+                return RVNightlyDiarySrv.fetchRoomsList(params);
+            },
+            datesList: function(RVNightlyDiarySrv, $rootScope, diaryAssets, $stateParams) {
+                var params = {};
+
+                if ($stateParams.isFromStayCard) {
+                    params = RVNightlyDiarySrv.getCache();
+                }
+                else {
+                    if (!!$stateParams.start_date) {
+                        params.start_date = $stateParams.start_date;
+                    }
+                    else {
+                        params.start_date = $rootScope.businessDate;
+                    }
+                    params.no_of_days = 7;
+                }
+                return RVNightlyDiarySrv.fetchDatesList(params);
+            },
+            reservationsList: function(RVNightlyDiarySrv, $rootScope, diaryAssets, $stateParams) {
+                var params = {};
+                
+                if ($stateParams.isFromStayCard) {
+                    params = RVNightlyDiarySrv.getCache();
+                }
+                else {
+                    params.start_date = $rootScope.businessDate;
+                    params.no_of_days = 7;
+                    params.page = 1;
+                    params.per_page = 50;
+                }
+                return RVNightlyDiarySrv.fetchReservationsList(params);
             }
         }
     });

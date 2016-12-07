@@ -426,7 +426,27 @@
    "CHECKIN_TOO_EARLY_SUB_HEADER": "",
    "CHECKIN_TOO_EARLY_SUB_MSG": "Please try again in a little while",
    "CHECKIN_TOO_EARLY_DONE": "Done",
-   "SELECT_COUNTRY": "-- Select Country --translated"
-   
+   "SELECT_COUNTRY": "-- Select Country --",
 
+
+   "ADMIN_SELECT": "Select",
+   "ADMIN_STATUS": "Status",
+
+   "ADMIN_IN_ORDER": "In Order",
+   "ADMIN_OUTOF_ORDER": "Out of Order",
+
+   "ADMIN_OUT_OF_ORDER_REASON": "Out of Order Reason",
+
+   "ADMIN_ENABLED": "Enabled",
+   "ADMIN_DISABLED": "Disabled",
+   "RE_TYPE": "Re-Type",
+
+  "PRINTER_ERROR_PRINTER_IS_OFFLINE": "Printer is offline",
+  "PRINTER_ERROR_PAPER_ROLL_IS_NEAR_EMPTY": "Printer paper roll is near empty",
+  "PRINTER_ERROR_PRINTER_OUT_OF_ORDER": "Printer is out of order",
+  "PRINTER_ERROR_PRINTER_ERROR": "Printer Error",
+  "PRINTER_ERROR_UNABLE_TO_GET_PRINTER_STATUS": "Printer Error",
+  "PRINTER_ERROR_UNABLE_TO_WRITE_TO_PRINTER_PORT": "Printer Port Error",
+  "PRINTER_ERROR_PRINT_ERROR": "Printer Error"
+   
 }

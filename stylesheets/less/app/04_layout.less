@@ -264,6 +264,12 @@ body { overflow: hidden; }
 				top: 60px;
 				.calc-height(100, 120);
 			}
+
+			/* Neighbors ***/
+	        &#neighbors-activity {
+	            top: 120px;
+	            .calc-height(100, 180);
+	        }
 		}
 	}
 
@@ -323,7 +329,7 @@ body { overflow: hidden; }
 		z-index: 99;
 		.show;
 		.background(@white);
-		.box-shadow(0 1px 2px rgba(0,0,0,.1));
+		.box-shadow(0 1px 2px 1px rgba(0,0,0,.1));
 
 		h1 {
 			font-size: 18px;
@@ -988,6 +994,13 @@ body { overflow: hidden; }
 					height: 110px;
 				}
 			}
+
+			/* Neighbors ***/
+	        &.neighbors-search {
+	            .search { 
+	                .calc-width(100, 50); 
+	            }
+	        }
 		}
 	}
 

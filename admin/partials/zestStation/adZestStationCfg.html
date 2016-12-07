@@ -29,7 +29,7 @@
                 <ad-toggle-button is-checked="zestSettings.zest_lang.enabled" label="{{'STATION_LANGUAGE_SUPPORT_SWITCH'| translate}}" div-class=""></ad-toggle-button>
                 <ad-dropdown ng-click="updateDefaultLanguageDropdown()" label="{{'STATION_LANGUAGE_DEFAULT' | translate}}" label-in-drop-down="{{'STATION_LANGUAGE_DEFAULT_PLACEHOLDER' | translate}}" list="enabledLangs" savemodel="zestSettings.zest_lang.default_language" valueproperty="value" property="name" selected-Id='zestSettings.zest_lang.default_language' required='no' selbox-class='placeholder' div-class="{{defaultLangsDivClass}}"></ad-dropdown>
                 <!-- english -->
-                <div class="entry full-width">
+                <div class="entry full-width station-language-entry">
                     <ad-checkbox ng-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.English" label="{{ 'STATION_LANGUAGE_ENGLISH' | translate}}"></ad-checkbox>
                     <div class="entry">
                         <div class="file-upload">
@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <!-- french -->
-                <div class="entry full-width">
+                <div class="entry full-width station-language-entry">
                     <ad-checkbox ng-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.French" label="{{ 'STATION_LANGUAGE_FRENCH' | translate}}"></ad-checkbox>
                     <div class="entry">
                         <div class="file-upload">
@@ -56,7 +56,7 @@
                     </div>
                 </div>
                 <!-- spanish -->
-                <div class="entry full-width">
+                <div class="entry full-width station-language-entry">
                     <ad-checkbox ng-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.Spanish" label="{{ 'STATION_LANGUAGE_SPANISH' | translate}}"></ad-checkbox>
                     <div class="entry">
                         <div class="file-upload">
@@ -70,7 +70,7 @@
                     </div>
                 </div>
                 <!-- german -->
-                <div class="entry full-width">
+                <div class="entry full-width station-language-entry">
                     <ad-checkbox ng-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.German" label="{{ 'STATION_LANGUAGE_GERMAN' | translate}}"></ad-checkbox>
                     <div class="entry">
                         <div class="file-upload">
@@ -84,7 +84,7 @@
                     </div>
                 </div>
                 <!-- italian -->
-                <div class="entry full-width">
+                <div class="entry full-width station-language-entry">
                     <ad-checkbox ng-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.Italian" label="{{ 'STATION_LANGUAGE_ITALIAN' | translate}}"></ad-checkbox>
                     <div class="entry">
                         <div class="file-upload">
@@ -98,7 +98,7 @@
                     </div>
                 </div>
                 <!-- castelleno -->
-                <div class="entry full-width">
+                <div class="entry full-width station-language-entry">
                     <ad-checkbox ng-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.Castellano" label="{{ 'STATION_LANGUAGE_CASTELLANO' | translate}}"></ad-checkbox>
                     <div class="entry">
                         <div class="file-upload">
@@ -138,6 +138,8 @@
                         <input type="radio" value="{{printer.value}}" ng-model="zestSettings.zest_printer_option"> {{ printer.description }}
                     </label>
                 </div>
+                <ad-toggle-button ng-show="zestSettings.zest_printer_option === 'STAR_TAC'" is-checked="zestSettings.kiosk_use_socket_print" label="{{'USE_ZEST_STATION_HANDLER'| translate}}" div-class="full-width"></ad-toggle-button>
+                <br>
             </fieldset>
             <fieldset class="holder full-width">
                 <div class="form-title full-width">

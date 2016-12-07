@@ -1,0 +1,21 @@
+<ad-common-parts-in-form-dir on-save-button-click="saveInterfaceConfig"
+                             header-caption="{{interface + '_HEADER' | translate}}">
+    <div class="entry full-width">
+        <fieldset class="holder left">
+            <ad-toggle-button is-checked="config.enabled"
+                              label="{{'ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
+            <div class="entry full-width">
+            </div>
+        </fieldset>
+        <fieldset class="holder">
+            <ad-textarea rows="4"
+                         div-class="full-width"
+                         text-area-class="full-width"
+                         value="config.email_addresses"
+                         label = "{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}"
+                         placeholder = "">
+            </ad-textarea>
+        </fieldset>
+    </div>
+
+</ad-common-parts-in-form-dir>

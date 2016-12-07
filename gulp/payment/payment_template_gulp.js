@@ -27,8 +27,7 @@ module.exports = function (gulp, $, options) {
         return gulp.src(PAYMENT_PARTIALS, {cwd: 'payment/'})
             .pipe($.templateCache(PAYMENT_TEMPLATES_FILE, {
                 module: MODULE_NAME,
-                root: URL_APPENDER,
-                standalone: true
+                root: URL_APPENDER
             }))
             .pipe(gulp.dest(DEST_ROOT_PATH));
     });
@@ -44,8 +43,7 @@ module.exports = function (gulp, $, options) {
             }))
             .pipe($.templateCache(PAYMENT_TEMPLATES_FILE, {
                 module: MODULE_NAME,
-                root: URL_APPENDER,
-                standalone: true
+                root: URL_APPENDER
             }))
             .pipe($.uglify({compress:true}))
             .pipe($.rev())

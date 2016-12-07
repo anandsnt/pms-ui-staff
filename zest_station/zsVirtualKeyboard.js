@@ -9,13 +9,15 @@
  *  this code will need to be dropped in lieu of some other extension for onscreen keyboards
  */
 
-this.initScreenKeyboardListener = function(from, id, show) {
+this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
   var that = this;
+
   this.bound = false;
-  //open virtual keyboard
+  // open virtual keyboard
   $.keyboard.language.love = $.extend($.keyboard.language.en);
   var focused, isCountrySelector = (id === 'country-selector');
-  if (isCountrySelector){
+
+  if (isCountrySelector) {
      focused = $('input')[0];  
      elementObj = $(focused)[0];
   } else {
@@ -25,6 +27,7 @@ this.initScreenKeyboardListener = function(from, id, show) {
   
 
   var defaultLayout, shift, zestStationNonPasswordField, zestStationNumDaysField, zestStationNationalityField;
+
   isPasswordField = function(i) {
     return (i && i.indexOf('pass') !== -1);
   };
@@ -44,14 +47,14 @@ this.initScreenKeyboardListener = function(from, id, show) {
     zestStationNumDaysField = false;
     zestStationNationalityField = false;
     
-  } else if (isNumOfDaysField(id)){
+  } else if (isNumOfDaysField(id)) {
     zestStationNonPasswordField = true;
     zestStationNumDaysField = true;
     zestStationNationalityField = false;
 
     defaultLayout = 'station_num_keyboard';
     shift = '';
-  } else if (isNationalityField(id)){
+  } else if (isNationalityField(id)) {
     zestStationNonPasswordField = true;
     zestStationNumDaysField = false;
     zestStationNationalityField = true;
@@ -67,8 +70,9 @@ this.initScreenKeyboardListener = function(from, id, show) {
   }
 
   var applyKeyboardInput = function() {
-    if (from === 'login') { //fixes an issue where data values are not set from virtual keyboard
+    if (from === 'login') { // fixes an issue where data values are not set from virtual keyboard
       var el = $(elementObj[0]);
+
       if ( angular.element(el).scope() ) {
         angular.element(el).scope().data[id] = $(elementObj[0]).val();
       }
@@ -79,7 +83,7 @@ this.initScreenKeyboardListener = function(from, id, show) {
   var keyboardOptions = {
     language: ['love'],
     rtl: false,
-    //layout: 'qwerty',
+    // layout: 'qwerty',
     layout: defaultLayout,
     customLayout: {
       'default': [
@@ -105,7 +109,7 @@ this.initScreenKeyboardListener = function(from, id, show) {
       'station_num_keyboard': [
         '1 2 3 4 5 6 7 8 9 0 {bksp}'
       ],
-      'shift': [ //zest station on screen is always caps,default to this
+      'shift': [ // zest station on screen is always caps,default to this
         '! @ # $ % ^ & * ( )',
         'Q W E R T Y U I O P {bksp}',
         "A S D F G H J K L ' @",
@@ -151,9 +155,9 @@ this.initScreenKeyboardListener = function(from, id, show) {
       'alt': 'AltGr:Alternate Graphemes',
       // Left arrow (same as &larr;)
       'b': '\u2190:Backspace',
-      'bksp': '\Del:Backspace',
-      //'bksp': '\u2421:Backspace',
-      //'bksp': '\u2421:Backspace',
+      'bksp': ' ',
+      // 'bksp': '\u2421:Backspace',
+      // 'bksp': '\u2421:Backspace',
       // big X, close/cancel
       'c': '\u2716:Cancel (Esc)',
       'cancel': 'Cancel:Cancel (Esc)',
@@ -266,19 +270,25 @@ this.initScreenKeyboardListener = function(from, id, show) {
     beforeVisible: function(e, keyboard, el) {},
     visible: function(e, keyboard, el) {},
     change: function(e, keyboard, el) {
-      //country selector uses another jquery plugin, which does not recognize the input event from virtual keyboard,
-      //we just need to trigger the search method from autocomplete to trigger filtering
-      if (isCountrySelector){
+       if (onChangeEvent) {
+        onChangeEvent();  
+      }
+      // country selector uses another jquery plugin, which does not recognize the input event from virtual keyboard,
+      // we just need to trigger the search method from autocomplete to trigger filtering
+      if (isCountrySelector) {
         $(elementObj).autocomplete('search', $(elementObj).val());
+        // workaround to fix css updating for nationality in yotel..need to fire the scope.showingAutoComplete
+        angular.element(elementObj).scope().showingAutoComplete();
       }
 
     },
     beforeClose: function(e, keyboard, el, accepted) {
-      if (isCountrySelector && ('ontouchstart' in window)){//only for touchscreen devices
+      if (isCountrySelector && ('ontouchstart' in window)) {// only for touchscreen devices
         var beforeCloseVal = $(elementObj).val();
-        setTimeout(function(){
+
+        setTimeout(function() {
           $(elementObj).autocomplete('search', beforeCloseVal);
-        },0);
+        }, 0);
       }
       applyKeyboardInput();
     },
@@ -299,20 +309,21 @@ this.initScreenKeyboardListener = function(from, id, show) {
   };
 
   if (zestStationNonPasswordField && !zestStationNumDaysField && !zestStationNationalityField) {
-    //custom keyboard for zest station
+    // custom keyboard for zest station
     keyboardOptions.customLayout.default = keyboardOptions.customLayout.station_keyboard;
     $('.ui-keyboard').removeClass('top-align-keyboard');
-  } else if (zestStationNumDaysField){
-    //number of days keyboard, only number input with backspace button
+  } else if (zestStationNumDaysField) {
+    // number of days keyboard, only number input with backspace button
     keyboardOptions.customLayout.default = keyboardOptions.customLayout.station_num_keyboard;
     $('.ui-keyboard').addClass('top-align-keyboard');
-  } else if (zestStationNationalityField){
-    //number of days keyboard, only number input with backspace button
+  } else if (zestStationNationalityField) {
+    // number of days keyboard, only number input with backspace button
     keyboardOptions.customLayout.default = keyboardOptions.customLayout.station_keyboard_no_numbers;
     $('.ui-keyboard').addClass('bottom-align-keyboard');
   }
   var focused, isCountrySelector = (id === 'country-selector');
-  if (isCountrySelector){
+
+  if (isCountrySelector) {
      focused = $('input')[0];  
      elementObj = $(focused);
   } else {
@@ -325,11 +336,14 @@ this.initScreenKeyboardListener = function(from, id, show) {
   * if the keyboard is used in conjunction with the autocomplete jquery plugin, then
   * it should be configured slightly differently...
   */
-  if (isCountrySelector){
+  if (isCountrySelector) {
       keyboardOptions.ignoreEsc = true;
   }
   elementObj.keyboard(keyboardOptions);
 
+  if (from === 'login') {
+    keyboardOptions.display.bksp = '\u2421:Backspace';
+   }
 
 
   this.focusHandler = function() {
@@ -346,7 +360,7 @@ this.initScreenKeyboardListener = function(from, id, show) {
       }
   };
   elementObj.focus(this.focusHandler).blur(this.blurHandler).keydown(function(e) {
-    if (e.keyCode == 13) { //enter
+    if (e.keyCode == 13) { // enter
       that.blurHandler();
     }
   });

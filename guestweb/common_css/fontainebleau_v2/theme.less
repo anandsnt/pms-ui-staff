@@ -1,0 +1,185 @@
+/*------------------------------- Themes ----------------------------------------------------*/
+
+@import "../style.less";
+body{
+  background: #fff;
+}
+.back-text{
+    color:#000 !important;
+}
+.main-text{
+  color:#2EB0F1;
+}
+a,a:hover,
+.res-date,
+.footer-sub-text,.footer-sub-text:hover,.phone-label{
+    color:#000;
+}
+.sub-main-text{
+    color:#787880;
+}
+
+.logo-image {
+    margin: 3% auto;
+}
+
+.template-text,.footer-text,
+.balance-amount,.phone-text,
+.phone-text:hover,.request-text,
+.error-text {
+    color: #787880 !important;
+}
+.view-bill{
+    color:#2EB0F1;
+}
+.sub-text,.sub-text:hover,.query-text,.query-text:hover,.light-text{
+    color: #787880 !important;
+}
+.btn,.btn:hover{
+    background:#2EAEEF;
+    color:@white;
+}
+.dark-button,.dark-button:hover{
+    background: #2EAEEF !important;
+}
+.light-button,.light-button:hover{
+    background: #97DEFA !important;
+}
+.checkouttime1,.checkouttime1:hover{
+    background: #97DEFA;
+}
+.checkouttime2,.checkouttime2:hover{
+    background: #64CEF6;
+}
+.checkouttime3,.checkouttime3:hover{
+    background: #0AADF0;
+}
+.no-thanks,.no-thanks:hover{
+    color:#000 !important;
+    text-decoration: underline;
+    text-transform:none;
+}
+
+.down-arrow-button{
+    background-image:url('/assets/guestweb/common_images/light_blue/down_arrow.png'); 
+}
+.right-arrow-button{
+    background-image:url('/assets/guestweb/common_images/light_blue/right_arrow.png'); 
+}
+
+.upgrade-details .upgrades-btn {
+    background: #2EAEEF;
+}
+
+.proceed-to-checkin {
+      background: #3F3F3D;
+}
+.upgrades-label{
+    color:#2EAEEF;
+}
+.table > thead + tbody {
+    border-top: 10px solid #f6f6f6!important;
+}
+.table > tbody + tfoot {
+    border-top: 20px solid #f6f6f6!important;
+}
+.bill-contain-wrap {
+    background-color: #f6f6f6;
+}
+/*----------------- date picker -------------------------*/
+
+.pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
+  color: #363634;
+  color: transparent;
+}
+
+.pickadate-cell .pickadate-enabled ,.pickadate-centered-heading{
+  color: #000 !important;
+}
+
+.pickadate-cell .pickadate-active {
+  background-color: #2EAEEF !important;
+  color:#fff !important;
+}
+.pickadate-head{
+    color:#70655F;
+}
+.calendar-selection {
+    color: #fff;
+}
+.pickadate-cell li:nth-child(1),
+.pickadate-cell li:nth-child(8),
+.pickadate-cell li:nth-child(15),
+.pickadate-cell li:nth-child(22),
+.pickadate-cell li:nth-child(29),
+.pickadate-cell li:nth-child(36) {
+  border-left: 1px solid #fff;
+}
+
+.pickadate-cell .pickadate-disabled,
+.pickadate-cell .pickadate-enabled,
+.pickadate-cell .pickadate-outofrange-disabled {
+  background-color: #DEDCD0;
+}
+
+.pickadate-cell .pickadate-disabled,
+.pickadate-cell .pickadate-disabled a {
+  color: #ac9557;
+}
+
+
+.pickadate-cell li {
+  border: 1px solid #fff;
+}
+.pickadate a:visited, .pickadate a {
+  color: #666666;
+}
+.date-picker-header{
+  background-color: #2EAEEF;
+}
+.calendar-back {
+  background-image: url('/assets/guestweb/common_images/back_icon.png');
+}
+
+
+.calendar-done{
+   background-image: url('/assets/guestweb/common_images/done_white.png');
+}
+
+.pickadate-prev,.pickadate-next,.pickadate-prev:hover,.pickadate-next:hover{
+  color:#000 !important;
+}
+
+.date-picker-wrap {
+  background-color: #fff !important;
+}
+.date-picker-bg {
+  background: rgba(0,0,0,0.5);
+}
+.horizontal-line-sep-mobile{
+  border-top: 1px solid #9b9b9b;
+}
+
+@media (max-width: 990px) {
+    .logo-image {
+        margin: 6% auto;
+        max-width: 150px;
+        max-height: 75px;
+    }
+    .back-to-checkout{
+        display:none;
+    }
+    .back-icon{
+        padding-top:20px;
+    }
+}
+
+@media (min-width: 990px){
+  .content-container {
+      border-bottom: 1px black solid;
+      border-top: 1px black solid;
+      margin-bottom: 2%;
+      padding-bottom: 3%;
+      padding-top: 3%;
+  }
+}

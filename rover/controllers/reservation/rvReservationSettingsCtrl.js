@@ -1,9 +1,10 @@
-sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSearchSrv', '$state', '$stateParams', 'dateFilter', '$timeout', 'RVReservationTabService',
-    function($scope, RVReservationBaseSearchSrv, $state, $stateParams, dateFilter, $timeout, RVReservationTabService) {
+sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSearchSrv', '$state', '$stateParams', 'dateFilter', '$timeout', 'RVReservationTabService', '$rootScope',
+    function($scope, RVReservationBaseSearchSrv, $state, $stateParams, dateFilter, $timeout, RVReservationTabService, $rootScope) {
         $scope.reservationSettingsVisible = false;
 
         var resizableMinWidth = 30;
         var resizableMaxWidth = 260;
+
         $scope.reservationSettingsWidth = resizableMinWidth;
         $scope.isHourly = ($stateParams.reservation === 'HOURLY') ? true : false;
         /**
@@ -91,7 +92,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
                         name: ""
                     }
                 };
-            };
+            }
         };
 
         $scope.arrivalDateChanged = function() {
@@ -100,6 +101,13 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             $scope.setNumberOfNights();
             initStayDates(0);
             $scope.stayDatesClicked();
+
+            if (typeof $scope.groupConfigData !== 'undefined') {
+                if ($scope.reservationData.arrivalDate < $scope.groupConfigData.summary.block_from || $scope.reservationData.departureDate > $scope.groupConfigData.summary.block_to) {
+                    clearGroupSelection();
+                    $rootScope.$broadcast("groupCardDetached");
+                }
+            }
         };
 
 
@@ -108,15 +116,31 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             $scope.setNumberOfNights();
             initStayDates(0);
             $scope.stayDatesClicked();
+
+            if (typeof $scope.groupConfigData !== 'undefined') {
+                if ($scope.reservationData.arrivalDate < $scope.groupConfigData.summary.block_from || $scope.reservationData.departureDate > $scope.groupConfigData.summary.block_to) {
+                    clearGroupSelection();
+                    $rootScope.$broadcast("groupCardDetached");
+                }
+            }
+        };
+        var clearGroupSelection = function() {
+            if ( $scope.reservationData.group && $scope.reservationData.group.id) {
+               $scope.reservationData.group = {};
+               $scope.companySearchText = "";
+               $scope.codeSearchText = "";
+            }
         };
 
         $scope.setDepartureDate = function() {
 
             var dateOffset = $scope.reservationData.numNights;
+
             if ($scope.reservationData.numNights === null || $scope.reservationData.numNights === '') {
                 dateOffset = 1;
             }
             var newDate = tzIndependentDate($scope.reservationData.arrivalDate);
+
             newDay = newDate.getDate() + parseInt(dateOffset);
             newDate.setDate(newDay);
             $scope.reservationData.departureDate = dateFilter(newDate, 'yyyy-MM-dd');
@@ -124,8 +148,10 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
 
         $scope.setNumberOfNights = function() {
             var arrivalDate = tzIndependentDate($scope.reservationData.arrivalDate);
+
             arrivalDay = arrivalDate.getDate();
             var departureDate = tzIndependentDate($scope.reservationData.departureDate);
+
             departureDay = departureDate.getDate();
             var dayDiff = Math.floor((Date.parse(departureDate) - Date.parse(arrivalDate)) / 86400000);
 
@@ -150,9 +176,9 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             heightStyle: 'content',
             collapsible: true,
             activate: function(event, ui) {
-                if (isEmpty(ui.newHeader) && isEmpty(ui.newPanel)) { //means accordion was previously collapsed, activating..
+                if (isEmpty(ui.newHeader) && isEmpty(ui.newPanel)) { // means accordion was previously collapsed, activating..
                     ui.oldHeader.removeClass('active');
-                } else if (isEmpty(ui.oldHeader)) { //means activating..
+                } else if (isEmpty(ui.oldHeader)) { // means activating..
                     ui.newHeader.addClass('active');
                 }
                 $scope.refreshScroll();
@@ -166,9 +192,9 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             heightStyle: 'content',
             active: false,
             activate: function(event, ui) {
-                if (isEmpty(ui.newHeader) && isEmpty(ui.newPanel)) { //means accordion was previously collapsed, activating..
+                if (isEmpty(ui.newHeader) && isEmpty(ui.newPanel)) { // means accordion was previously collapsed, activating..
                     ui.oldHeader.removeClass('active');
-                } else if (isEmpty(ui.oldHeader)) { //means activating..
+                } else if (isEmpty(ui.oldHeader)) { // means activating..
                     ui.newHeader.addClass('active');
                 }
                 $scope.refreshScroll();

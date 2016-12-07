@@ -10,6 +10,7 @@ var DailyProductionRightSide = React.createClass({
       mouseWheel: true,
       useTransition: true
     });
+
     setTimeout(function() {
       scroll.refresh();
     }, 150);
@@ -17,14 +18,15 @@ var DailyProductionRightSide = React.createClass({
   componentDidUpdate: function() {
     $('#stats-report-content .wrapper')[0].style.width = (this.props.header.colspan * 110 * this.props.data.dates.length) + 'px';
     var scroll = this.props.scroll.right;
+
     setTimeout(function() {
       scroll.refresh();
     }, 150);
   },
   render: function() {
     return React.DOM.div({
-      id      : 'stats-report-content',
-      className   : 'statistics-content scrollable'
+      id: 'stats-report-content',
+      className: 'statistics-content scrollable'
     },
   React.DOM.div({
       className: 'wrapper'

@@ -18,6 +18,7 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 			var reservationId = data.reservationId;
 			var isRefresh = data.isRefresh;
 			var isReservationIdAlreadyCalled = false;
+
 			angular.forEach(that.reservationIdsArray, function(value, key) {
 				if (!isRefresh || isRefresh === null || isRefresh === '') {
 					if (value === reservationId) {
@@ -69,6 +70,7 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 			var confirmationNumber = data.confirmationNumber;
 			var isRefresh = data.isRefresh;
 			var isConfirmationNumberAlreadyCalled = false;
+
 			angular.forEach(that.confirmationNumbersArray, function(value, key) {
 				if (!isRefresh || isRefresh === null) {
 					if (value === confirmationNumber) {
@@ -114,6 +116,7 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 		this.fetchGuestcardData = function(param) {
 			var deferred = $q.defer();
 			var url = '/staff/guestcard/show.json';
+
 			RVBaseWebSrv.getJSON(url, param).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -125,6 +128,7 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 		this.fetchCancellationPolicies = function(param) {
 			var deferred = $q.defer();
 			var url = '/api/reservations/' + param.id + '/cancellation_policies';
+
 			rvBaseWebSrvV2.getJSON(url, param).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -136,6 +140,7 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 		this.cancelReservation = function(param) {
 			var deferred = $q.defer();
 			var url = '/api/reservations/' + param.id + '/cancel';
+
 			rvBaseWebSrvV2.postJSON(url, param).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -178,6 +183,7 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 		this.saveReservationNote = function(data) {
 			var deferred = $q.defer();
 			var url = '/reservation_notes';
+
 			RVBaseWebSrv.postJSON(url, data).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -188,6 +194,7 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 		this.deleteReservationNote = function(reservationID) {
 			var deferred = $q.defer();
 			var url = '/reservation_notes/' + reservationID;
+
 			RVBaseWebSrv.deleteJSON(url, "").then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -196,9 +203,24 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 			return deferred.promise;
 		};
 
+		// CICO-24928 
+		this.updateReservationNote = function(data) {
+			var deferred = $q.defer(),
+				url = 'api/notes/' + data.id;
+
+			rvBaseWebSrvV2.putJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function(data) {
+					deferred.reject(data);
+				});
+			return deferred.promise;
+		};
+
 		this.getGuestDetails = function(guestData) {
 			var deferred = $q.defer();
 			var url = '/api/guest_details/' + guestData.id;
+
 			rvBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -211,12 +233,14 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 			var postData = {
 				"status": data.status
 			};
-                        if (data.viaAdvancedQueue){
+
+                        if (data.viaAdvancedQueue) {
                             postData.signature = data.signature;
                             postData.is_promotions_and_email_set = data.is_promotions_and_email_set;
                         }
 
 			var url = '/api/reservations/' + data.reservationId + '/queue';
+
 			rvBaseWebSrvV2.postJSON(url, postData).then(function(postData) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -227,6 +251,7 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 		this.fetchDepositDetails = function(id) {
 			var deferred = $q.defer();
 			var url = 'api/reservations/' + id + '/deposit_policy';
+
 			rvBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -238,6 +263,7 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 		this.sendConfirmationEmail = function(data) {
 			var deferred = $q.defer();
 			var url = '/api/reservations/' + data.reservationId + '/email_confirmation';
+
 			rvBaseWebSrvV2.postJSON(url, data.postData).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -249,6 +275,7 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 		this.validateStayDateChange = function(param) {
 			var deferred = $q.defer();
 			var url = '/staff/change_stay_dates/validate_stay_dates_change';
+
 			rvBaseWebSrvV2.postJSON(url, param).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -259,6 +286,7 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 		this.detachGroupReservation = function(param) {
 			var deferred = $q.defer();
 			var url = '/api/group_reservations/' + param.id + '/detach_group_reservation';
+
 			rvBaseWebSrvV2.postJSON(url, param).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -270,6 +298,7 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 		this.reinstateReservation = function(param) {
 			var deferred = $q.defer(),
 				url = '/api/reservations/' + param.reservationId + '/reinstate';
+
 			rvBaseWebSrvV2.postJSON(url, param).then(function(response) {
 				deferred.resolve(response);
 			}, function(response) {
@@ -281,6 +310,7 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 		this.checkReinstationAvailbility = function(reservationId) {
 			var deferred = $q.defer(),
 				url = '/api/reservations/' + reservationId + '/check_reinstate_availability';
+
 			rvBaseWebSrvV2.getJSON(url).then(function(response) {
 				deferred.resolve(response);
 			}, function(response) {
@@ -291,13 +321,14 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 
 		this.checkGiftCardBalance = function(params) {
                         var data = {
-                            'card_number':params.card_number
+                            'card_number': params.card_number
                         };
 			var deferred = $q.defer(),
 				url = '/api/gift_cards/balance_inquiry';
-			rvBaseWebSrvV2.postJSON(url,data).then(function(response) {
-                            if (response){
-                                if (typeof response.amount === typeof 123){
+
+			rvBaseWebSrvV2.postJSON(url, data).then(function(response) {
+                            if (response) {
+                                if (typeof response.amount === typeof 123) {
                                     response.amount = parseFloat(response.amount).toFixed(2);
                                 }
                             }

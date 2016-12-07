@@ -1,5 +1,5 @@
 
-var sntRover = angular.module('sntRover',[
+var sntRover = angular.module('sntRover', [
 		'ui.router',
 		'ui.utils',
 		'ng-iscroll',
@@ -12,6 +12,7 @@ var sntRover = angular.module('sntRover',[
 		'companyCardModule',
 		'stayCardModule',
 		'EndOfDayModule',
+		'SocialLobbyModule',
 		'housekeepingModule',
 		'reportsModule',
 		'diaryModule',
@@ -32,6 +33,7 @@ var sntRover = angular.module('sntRover',[
 		'clickTouch',
 		'oc.lazyLoad',
 		'limitInputRange',
+		'iscrollStopPropagation',
 		'emitWhen']);
 
 sntRover.config([
@@ -40,7 +42,7 @@ sntRover.config([
 	'$provide',
 	function($httpProvider, ngDialogProvider, $provide) {
 
-		//adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
+		// adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 		$httpProvider.interceptors.push('sharedHttpInterceptor');
 
 	    ngDialogProvider.setDefaults({
@@ -51,7 +53,7 @@ sntRover.config([
 	    // transform -13 -> ($13), and keep it like -> -$13
 	    // SF: http://stackoverflow.com/questions/17441254/why-angularjs-currency-filter-formats-negative-numbers-with-parenthesis/30122327#30122327
 	    $provide.decorator('$locale', ['$delegate', function($delegate) {
-			if($delegate.id == 'en-us') {
+			if ($delegate.id == 'en-us') {
 				$delegate.NUMBER_FORMATS.PATTERNS[1].negPre = '-\u00A4';
 				$delegate.NUMBER_FORMATS.PATTERNS[1].negSuf = '';
 			}
@@ -97,7 +99,7 @@ sntRover.run([
 			this.update = function(toState, fromState, fromParam) {
 				if ( toState !== this.stateName ) {
 					return;
-				};
+				}
 
 				for (var i = 0; i < self.checkAgainst.length; i++) {
 					if ( self.checkAgainst[i] === fromState ) {
@@ -105,8 +107,8 @@ sntRover.run([
 						self.fromParam = fromParam;
 						self.fromTitle = $rootScope.getPrevStateTitle();
 						break;
-					};
-				};
+					}
+				}
 			};
 
 			this.getOriginState = function() {
@@ -118,9 +120,9 @@ sntRover.run([
 					title = self.fromTitle;
 
 					ret = {
-						'name'  : name,
-						'param' : param,
-						'title' : title
+						'name': name,
+						'param': param,
+						'title': title
 					};
 
 					this.fromState = false;
@@ -142,12 +144,13 @@ sntRover.run([
 
 
 		var $_backTitleDict = {
-			'SHOWING DASHBOARD' : 'DASHBOARD',
-			'RESERVATIONS'      : 'CREATE RESERVATION'
+			'SHOWING DASHBOARD': 'DASHBOARD',
+			'RESERVATIONS': 'CREATE RESERVATION'
 		};
 
 		var $_savePrevStateTitle = function(title) {
 			var upperCase = title.toUpperCase();
+
 			$_prevStateTitle = $_backTitleDict[upperCase] ? $_backTitleDict[upperCase] : title;
 		};
 
@@ -172,20 +175,20 @@ sntRover.run([
 		*	@private
 		*/
 		var $_revAnimList = [{
-			fromState : 'rover.housekeeping.roomDetails',
-			toState   : 'rover.housekeeping.roomStatus'
+			fromState: 'rover.housekeeping.roomDetails',
+			toState: 'rover.housekeeping.roomStatus'
 		}, {
-			fromState : 'rover.reservation.staycard.billcard',
-			toState   : 'rover.reservation.staycard.reservationcard.reservationdetails'
+			fromState: 'rover.reservation.staycard.billcard',
+			toState: 'rover.reservation.staycard.reservationcard.reservationdetails'
 		}, {
-			fromState : 'rover.staycard.nights',
-			toState   : 'rover.reservation.staycard.reservationcard.reservationdetails'
+			fromState: 'rover.staycard.nights',
+			toState: 'rover.reservation.staycard.reservationcard.reservationdetails'
 		}, {
-			fromState : 'rover.companycarddetails',
-			toState   : 'rover.companycardsearch'
+			fromState: 'rover.companycarddetails',
+			toState: 'rover.companycardsearch'
 		}, {
-			fromState : 'rover.reservation.staycard.roomassignment',
-			toState   : 'rover.reservation.staycard.reservationcard.reservationdetails'
+			fromState: 'rover.reservation.staycard.roomassignment',
+			toState: 'rover.reservation.staycard.reservationcard.reservationdetails'
 		}];
 
 
@@ -205,8 +208,8 @@ sntRover.run([
 				if ( $_revAnimList[i].fromState === fromState && $_revAnimList[i].toState === toState ) {
 					return true;
 					break;
-				};
-			};
+				}
+			}
 
 			return false;
 		};
@@ -239,7 +242,7 @@ sntRover.run([
 			// if currently disabled, return
 			if ( options.disable ) {
 				return;
-			};
+			}
 
 			// ok boys we are gonna sit this one out
 			// 'scope.callback' is will be running the show
@@ -251,13 +254,13 @@ sntRover.run([
 
 				options.scope[options.callback]();
 				return;
-			};
+			}
 
 			// check necessary as we can have a case where both can be null
 			if ( !!name ) {
 				$_mustRevAnim = reverse ? options.reverse : true;
 				$state.go( name, param );
-			};
+			}
 		};
 
 		$rootScope.returnBack = false;
@@ -276,8 +279,8 @@ sntRover.run([
 		*	app/assets/rover/partials/staycard/rvStaycard.html
 		*/
 		$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-	        if (fromState.name === 'rover.reservation.staycard.roomassignment' && toState.name === 'rover.diary'){
-	            //cico-13697, fix until proper workflow routes are developed
+	        if (fromState.name === 'rover.reservation.staycard.roomassignment' && toState.name === 'rover.diary') {
+	            // cico-13697, fix until proper workflow routes are developed
 	            return;
 	        }
 
@@ -290,17 +293,18 @@ sntRover.run([
 	        	localStorage.removeItem( 'roomListScrollTopPos' );
 
 	        	// please keep this log
-	        	console.log( 'HK.Filters.Cleared' )
+	        	console.log( 'HK.Filters.Cleared' );
 	        };
+
 	        if ( 'rover.housekeeping.roomStatus' == fromState.name ) {
 	        	if ( 'rover.housekeeping.roomDetails' != toState.name ) {
 	        		resetHkFilter();
-	        	};
+	        	}
 	        } else if ( 'rover.housekeeping.roomDetails' == fromState.name ) {
 	        	if ( 'rover.housekeeping.roomStatus' != toState.name ) {
 	        		resetHkFilter();
-	        	};
-	        };
+	        	}
+	        }
 			
 
 			// FOR DEV WORK
@@ -351,13 +355,13 @@ sntRover.run([
 			if ( $_userReqBack ) {
 				toParams.useCache = true;
 				$_userReqBack = false;
-			};
+			}
 
 			// reset this flag
 			$rootScope.returnBack = false;
 
 			// capture the prev state document title
-			if (fromState.name === 'rover.reservation.staycard.roomassignment' && toState.name === 'rover.diary'){
+			if (fromState.name === 'rover.reservation.staycard.roomassignment' && toState.name === 'rover.diary') {
 	            // cico-13697, fix until proper workflow routes are developed
 	            return;
 	        }
@@ -366,7 +370,7 @@ sntRover.run([
 			if ( $rootScope.setNextState.data ) {
 				_.extend(toParams, $rootScope.setNextState.data);
 				$rootScope.setNextState = {};
-			};
+			}
 
 			$rootScope.diaryState.update(toState.name, fromState.name, fromParams);
 		});

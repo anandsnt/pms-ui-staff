@@ -3,31 +3,18 @@
         <section ng-init="fetchExternalMappingItems()">
             <header class="content-title float">
                 <h2>External Mappings</h2>
-                <span class="count">({{extMappingSubComponents.length}})</span>
-                <a ng-click ="goBackToPreviousState()" class="action back" translate>BACK</a>
+                <a ng-click="navigateBack()" class="action back" translate>BACK</a>
             </header>
         </section>
     </div>
     <section class="content-scroll">
         <ul class="dashboard-items float">
-            <li ng-repeat="submenu in extMappingSubComponents" >
-                <a data-type="load-listing"  
-                   class="icon-admin-menu" 
-
-                   data-drag="{{bookMarks.length <= 7 && !submenu.is_bookmarked}}"
-                   data-jqyoui-options="{revert: 'invalid', helper: 'clone',appendTo: 'body'}" 
-
-                   jqyoui-draggable="{index: {{submenu.id}}, placeholder:'keep', animate:'true', onStart: 'onDragStart', onStop: 'onDragStop'}" 
-
-                   ng-model="selectedMenu.components" 
-
-                   ng-class="{'moved': submenu.is_bookmarked}">
+            <li ng-repeat="submenu in extMappingSubComponents">
+                <a class="icon-admin-menu"></a>
+                <a class="text" ng-click="clickedMenuItem($event, 'admin.external-mappings', submenu)">
                     {{submenu.description}}
                 </a>
-
-                <a ng-controller="ADMappingCtrl" class="text" data-type="load-listing" ng-click="clickedInterfaceMenuItem($event, 'admin.mapping', submenu)">{{submenu.description}}</a>
             </li>
-        </ul>  
-    </section>  
-
+        </ul>
+    </section>
 </section>

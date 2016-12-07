@@ -25,9 +25,9 @@ admin.service('ADDailyWorkAssignmentSrv', [
             return deferred.promise;
 
         };
-        this.postDefaultTask = function(params){
+        this.postDefaultTask = function(params) {
             var deferred = $q.defer(),
-                url = 'api/tasks/'+params.id+'/default_task';
+                url = 'api/tasks/' + params.id + '/default_task';
 
             ADBaseWebSrvV2.postJSON(url, params)
                 .then(function(data) {
@@ -147,7 +147,6 @@ admin.service('ADDailyWorkAssignmentSrv', [
         };
 
 
-
         /*
          * To fetch work shifts
          * @param {object}
@@ -231,7 +230,6 @@ admin.service('ADDailyWorkAssignmentSrv', [
         };
 
 
-
         /*
          * fetch additional APIs and preserve
          * @param {object}
@@ -240,11 +238,13 @@ admin.service('ADDailyWorkAssignmentSrv', [
 
 
         var roomTypesList = [];
+
         this.fetchRoomTypes = function(params) {
             var deferred = $q.defer(), url;
             // hide suite as per CICO-24369
-            if(params) {
-                url = 'api/room_types.json?exclude_suite='+ params.exclude_suite;
+
+            if (params) {
+                url = 'api/room_types.json?exclude_suite=' + params.exclude_suite;
             } else {
                 url = 'api/room_types';
             }
@@ -269,6 +269,7 @@ admin.service('ADDailyWorkAssignmentSrv', [
         };
 
         var resHkStatusList = [];
+
         this.fetchResHkStatues = function() {
             var deferred = $q.defer(),
                 url = '/api/reservation_hk_statuses';
@@ -289,6 +290,7 @@ admin.service('ADDailyWorkAssignmentSrv', [
         };
 
         var foStatusList = [];
+
         this.fetchFoStatues = function() {
             var deferred = $q.defer(),
                 url = '/api/front_office_statuses';
@@ -309,6 +311,7 @@ admin.service('ADDailyWorkAssignmentSrv', [
         };
 
         var HkStatusList = [];
+
         this.fetchHkStatues = function() {
             var deferred = $q.defer(),
                 url = '/api/tasks/hk_applicable_statuses'; // CICO-8620 Need to get only valid statuses here
@@ -374,7 +377,8 @@ admin.service('ADDailyWorkAssignmentSrv', [
         this.postTaskListItem = function(params) {
             var deferred = $q.defer(),
                 url = 'api/tasks/';
-                params = _.omit(params,'is_default');
+
+                params = _.omit(params, 'is_default');
 
 
             ADBaseWebSrvV2.postJSON(url, params)
@@ -395,7 +399,7 @@ admin.service('ADDailyWorkAssignmentSrv', [
         this.putTaskListItem = function(params) {
             var deferred = $q.defer(),
                 url = 'api/tasks/' + params.id,
-                params = _.omit(params, 'id','is_default');
+                params = _.omit(params, 'id', 'is_default');
 
             ADBaseWebSrvV2.putJSON(url, params)
                 .then(function(data) {

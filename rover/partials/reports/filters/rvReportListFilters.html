@@ -211,7 +211,7 @@
 </div>
 
 <multi-option-selection ng-show="uiChosenReport.hasUserFilter && uiChosenReport.empList.data.length"
-    label="Employees"
+    label="{{ uiChosenReport.filterTitle }}"
     on-update="refreshFilterScroll"
     data="uiChosenReport.empList.data"
     options="uiChosenReport.empList.options"></multi-option-selection>
@@ -355,6 +355,11 @@
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasDepartments.data"
     options="uiChosenReport.hasDepartments.options"></multi-option-selection>
+
+<div class="entry" ng-show="uiChosenReport.hasMinNoOfDaysNotOccupied">
+    <label>Min. Days Not Occupied</label>
+    <input ng-model="uiChosenReport.hasMinNoOfDaysNotOccupied.data" value="" numbers-only placeholder="Min.number of day" />
+</div>
 
 <div class="entry" ng-show="uiChosenReport.sortByOptions">
     <label>Sort By</label>

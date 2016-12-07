@@ -42,19 +42,22 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             var correctHours = function(value) {
                 $scope.reservationData.resHours = value;
             };
+
             if (!isInteger($scope.reservationData.resHours) || $scope.reservationData.resHours && $scope.reservationData.resHours < $rootScope.minimumHourlyReservationPeriod) {
                 $timeout(correctHours.bind(null, $rootScope.minimumHourlyReservationPeriod), 100);
-            };
+            }
 
             var checkinHour = parseInt($scope.reservationData.checkinTime.hh);
             var checkoutHour = parseInt($scope.reservationData.checkoutTime.hh);
             var checkinAmPm = $scope.reservationData.checkinTime.ampm;
             var checkoutAmPm = $scope.reservationData.checkoutTime.ampm;
             var selectedHours = parseInt($scope.reservationData.resHours);
-            //if selected hours is greater than a day
+            // if selected hours is greater than a day
+
             if ((checkinHour + selectedHours) > 24) {
                 var extraHours = (checkinHour + selectedHours) % 24;
-                //if extra hours is greater than half a day
+                // if extra hours is greater than half a day
+
                 if (extraHours >= 12) {
                     $scope.reservationData.checkoutTime.hh = (extraHours === 12 || extraHours === 0) ? 12 : extraHours - 12;
                     $scope.reservationData.checkoutTime.ampm = (checkinAmPm === "AM") ? "PM" : "AM";
@@ -64,9 +67,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     $scope.reservationData.checkoutTime.hh = ($scope.reservationData.checkoutTime.hh.toString().length === 1) ? ("0" + $scope.reservationData.checkoutTime.hh) : $scope.reservationData.checkoutTime.hh;
                 }
             }
-            //if selected hours is greater than half a day
+            // if selected hours is greater than half a day
             else if ((checkinHour + selectedHours) >= 12) {
                 var extraHours = (checkinHour + selectedHours) % 12;
+
                 $scope.reservationData.checkoutTime.hh = (extraHours === 0) ? 12 : extraHours;
                 $scope.reservationData.checkoutTime.ampm = ($scope.reservationData.checkinTime.ampm === "AM") ? "PM" : "AM";
             } else {
@@ -161,7 +165,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                             break;
                         }
                     } while (intMins !== 15 || intMins !== 30 || intMins !== 45);
-                };
+                }
 
                 // finally append zero and convert to string -- only for $scope.reservationData.checkinTime
                 $scope.reservationData.checkinTime = {
@@ -194,8 +198,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
          *   The number of '$parent' used is based on how deep this state is wrt 'rover.reservation' state
          */
         var rvReservationMainCtrl = $scope.$parent.$parent;
-        rvReservationMainCtrl.callFromChildCtrl(baseData);
 
+        rvReservationMainCtrl.callFromChildCtrl(baseData);
 
 
         var init = function() {
@@ -205,8 +209,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             $scope.heading = 'Reservations';
             $scope.setHeadingTitle($scope.heading);
 
-            //Reset to firstTab in case in case of returning to the base screen by clicking "Create a new reservation for the same guest"
-            //in the confirmation screen
+            // Reset to firstTab in case in case of returning to the base screen by clicking "Create a new reservation for the same guest"
+            // in the confirmation screen
             $scope.viewState.currentTab = 0;
 
             // Check flag to retain the card details
@@ -215,10 +219,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.initReservationDetails();
             } else {
 
-                //TODO: 1. User gets diverted to the Search screen (correct)
-                //but Guest Name and Company / TA cards are not copied into the respective search fields.
-                //They are added to the reservation by default later on,
-                //but should be copied to the Search screen as well
+                // TODO: 1. User gets diverted to the Search screen (correct)
+                // but Guest Name and Company / TA cards are not copied into the respective search fields.
+                // They are added to the reservation by default later on,
+                // but should be copied to the Search screen as well
                 $scope.viewState.reservationStatus.confirm = false;
                 // Reset addons as part CICO-10657
                 $scope.resetAddons();
@@ -288,6 +292,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         $scope.setDepartureDate = function() {
             $scope.errorMessage = [];
             var dateOffset = $scope.reservationData.numNights;
+
             if (!isInteger(dateOffset) || $scope.reservationData.numNights === null || $scope.reservationData.numNights === '') {
                 dateOffset = 1;
                 $scope.reservationData.numNights = '';
@@ -295,9 +300,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             if (dateOffset > RESV_LIMIT) {
                 dateOffset = RESV_LIMIT;
                 $scope.reservationData.numNights = '';
-                $scope.errorMessage = ["Maximum number of nights of " + RESV_LIMIT + " exceeded"]
+                $scope.errorMessage = ["Maximum number of nights of " + RESV_LIMIT + " exceeded"];
             }
             var newDate = tzIndependentDate($scope.reservationData.arrivalDate);
+
             newDay = newDate.getDate() + parseInt(dateOffset);
             newDate.setDate(newDay);
             $scope.reservationData.departureDate = dateFilter(newDate, 'yyyy-MM-dd');
@@ -306,8 +312,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
         $scope.setNumberOfNights = function() {
             var arrivalDate = tzIndependentDate($scope.reservationData.arrivalDate);
+
             arrivalDay = arrivalDate.getDate();
             var departureDate = tzIndependentDate($scope.reservationData.departureDate);
+
             departureDay = departureDate.getDate();
             var dayDiff = Math.floor((Date.parse(departureDate) - Date.parse(arrivalDate)) / 86400000);
 
@@ -340,7 +348,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             $scope.reservationData.departureDate = dateFilter($scope.reservationData.departureDate, 'yyyy-MM-dd');
             $scope.setNumberOfNights();
             $scope.errorMessage = [];
-            //CICO-31353
+            // CICO-31353
             clearGroupSelection();
         };
         /*  The following method helps to initiate the staydates object across the period of
@@ -374,7 +382,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         name: ""
                     }
                 };
-            };
+            }
         };
 
         $scope.navigate = function() {
@@ -382,7 +390,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             // CICO-19685: if user moves back and forth in create reservation, before saving
             $scope.reservationGuestSearchChanged();
 
-            //if selected thing is 'hours'
+            // if selected thing is 'hours'
             if (!$scope.isNightsActive) {
                 var reservationDataToKeepinVault = {},
                     roomData = $scope.reservationData.rooms[0],
@@ -414,7 +422,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     isfromcreatereservation: true
                 });
             }
-            //if selected thing is 'nights'
+            // if selected thing is 'nights'
             else {
                 /*  For every room initate the stayDates object
                  *   The total room count is taken from the roomCount value in the reservationData object
@@ -446,7 +454,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         'promotion_id': $scope.reservationData.promotionId,
                         'adults': $scope.reservationData.tabs[0]['numAdults'],
                         'children': $scope.reservationData.tabs[0]['numChildren'],
-                        'room_type_id':$scope.reservationData.tabs[0].roomTypeId,
+                        'room_type_id': $scope.reservationData.tabs[0].roomTypeId,
                         'is_member': !!$scope.reservationData.member.isSelected
                     });
                 }
@@ -457,13 +465,15 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         $scope.alertOverbooking = function(close) {
             var tabIndex = 0,
                 timer = 0;
+
             if (close) {
                 $scope.closeDialog();
-                timer = 1000
+                timer = 1000;
             }
             $timeout(function() {
                 for (; tabIndex < $scope.reservationData.tabs.length; tabIndex++) {
                     var tab = $scope.reservationData.tabs[tabIndex];
+
                     if ((!tab.overbookingStatus.room || !tab.overbookingStatus.house) && !tab.overbookingStatus.alerted) {
                         tab.overbookingStatus.alerted = true;
                         ngDialog.open({
@@ -494,8 +504,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.availabilityData = availability;
                 var houseAvailable = true,
                     roomtypesAvailable = _($scope.reservationData.tabs.length).times(function(n) {
-                        return true
+                        return true;
                     });
+
                 _.each(availability, function(dailyStat) {
                     houseAvailable = houseAvailable && (dailyStat.house.availability > 0);
                     _.each($scope.reservationData.tabs, function(tab, tabIndex) {
@@ -507,7 +518,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 });
 
                 if (houseAvailable && _.reduce(roomtypesAvailable, function(a, b) {
-                        return a && b
+                        return a && b;
                     })) {
                     $scope.navigate();
                 } else {
@@ -517,7 +528,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                             house: houseAvailable,
                             room: roomtypesAvailable[tabIndex],
                             alerted: false
-                        }
+                        };
                     });
                     $scope.alertOverbooking();
                 }
@@ -530,7 +541,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             });
             //
         };
-
 
 
         // jquery autocomplete Souce handler
@@ -561,7 +571,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         type: item.account_type,
                         id: item.id,
                         corporateid: '',
-                        iataNumber: ''
+                        iataNumber: '',
+                        /* Address*/
+                        address: item.account_address  
                     };
 
                     // making sure that the newly created 'eachItem'
@@ -576,7 +588,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     // will loop the entire 'companyCardResults'
                     if (!hasItem) {
                         companyCardResults.push(eachItem);
-                    };
+                    }
                 });
 
                 if ($scope.reservationData.rooms.length === 1 && !!data.groups && data.groups.length > 0) {
@@ -619,7 +631,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         'include_group': $scope.reservationData.rooms.length === 1,
                         'include_allotment': $scope.reservationData.rooms.length === 1,
                         'from_date': $scope.reservationData.arrivalDate,
-                        'to_date': $scope.reservationData.departureDate,
+                        'to_date': $scope.reservationData.departureDate
                     }, processDisplay);
                     lastSearchText = request.term;
                 }
@@ -662,7 +674,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.reservationData.travelAgent.corporateid = "";
 
 
-
             } else if (request.term.length > 2) {
                 fetchData();
             }
@@ -695,7 +706,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.reservationData.travelAgent.id = ui.item.id;
                 $scope.reservationData.travelAgent.name = ui.item.label;
                 $scope.reservationData.travelAgent.iataNumber = ui.item.iataNumber;
-            };
+            }
 
             // DO NOT return false
         };
@@ -704,10 +715,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             delay: 0,
             minLength: 0,
             position: {
-                of : "#company-or-agent",
+                of: "#company-or-agent",
                 my: 'left top',
                 at: 'left bottom',
-                collision : 'flip',
+                collision: 'flip',
                 within: '#company-promo'
             },
             source: autoCompleteSourceHandler,
@@ -721,6 +732,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             var dateObj = tzIndependentDate(fromDate),
                 dateString = $filter('date')(dateObj, 'yyyy-MM-dd'),
                 dateParts = dateString.match(/(\d+)/g);
+
             return new Date(dateParts[0], parseInt(dateParts[1]) - 1, parseInt(dateParts[2], 10) + RESV_LIMIT);
         };
 
@@ -735,7 +747,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $('#ui-datepicker-div').addClass('reservation arriving');
             },
             onClose: function(dateText, inst) {
-                //in order to remove the that flickering effect while closing
+                // in order to remove the that flickering effect while closing
                 $timeout(function() {
                     $('#ui-datepicker-div').removeClass('reservation arriving');
                 }, 200);
@@ -754,7 +766,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $('#ui-datepicker-div').addClass('reservation departing');
             },
             onClose: function(dateText, inst) {
-                //in order to remove the that flickering effect while closing
+                // in order to remove the that flickering effect while closing
                 $timeout(function() {
                     $('#ui-datepicker-div').removeClass('reservation arriving');
                 }, 200);
@@ -780,7 +792,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             } else {
                 $scope.shouldShowNights = true;
                 $scope.shouldShowHours = false;
-            };
+            }
         };
 
         // CICO-18204
@@ -794,6 +806,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         var codeACSourceHandler = function(request, response) {
             var codeResults = [],
                 lastSearchText = '';
+
             if (request.term.length === 0) {
                 codeResults = [];
                 lastSearchText = "";
@@ -837,7 +850,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         'include_group': $scope.reservationData.rooms.length === 1,
                         'include_allotment': $scope.reservationData.rooms.length === 1,
                         'from_date': $scope.reservationData.arrivalDate,
-                        'to_date': $scope.reservationData.departureDate,
+                        'to_date': $scope.reservationData.departureDate
                     }, function(filteredCodes) {
                         codeResults = [];
                         angular.forEach(filteredCodes.promotions, function(item) {
@@ -925,7 +938,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             position: {
                 my: 'left top',
                 at: 'left bottom',
-                collision : 'flip',
+                collision: 'flip',
                 of: '#codes-value',
                 within: '#company-promo'
             },
@@ -957,6 +970,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 currentRoomCount = parseInt($scope.reservationData.tabs[tabIndex].roomCount, 10),
                 roomType = parseInt($scope.reservationData.tabs[tabIndex].roomTypeId, 10) || "",
                 i;
+
             $scope.reservationData.tabs[tabIndex].roomTypeId = roomType;
             for (i = 0; i < tabIndex; i++) {
                 index += parseInt($scope.reservationData.tabs[i].roomCount, 10);
@@ -975,6 +989,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     roomTypeId: currentRoomTypeId
                 }))),
                 i;
+
             for (i = firstIndex; i <= lastIndex; i++) {
                 // Ensure that the adults and children dont go to zero at the same time
                 if (type == 'numChildren' && $scope.reservationData.tabs[tabIndex]['numChildren'] == 0 && $scope.reservationData.tabs[tabIndex]['numAdults'] == 0) {
@@ -990,6 +1005,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
         $scope.isRoomTypeSelected = function(tabIndex, roomTypeId) {
             var chosen = false;
+
             _.each($scope.reservationData.tabs, function(tabData, index) {
                 if (parseInt(tabData.roomTypeId, 10) === roomTypeId && tabIndex != index) {
                     chosen = true;
@@ -1000,11 +1016,11 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
         $scope.restrictMultipleBookings = function() {
             return !!$rootScope.isHourlyRateOn || !!$scope.reservationData.group.id;
-        }
+        };
 
-        //Clear the group selection when the departure date is changed
+        // Clear the group selection when the departure date is changed
         var clearGroupSelection = function() {
-            if( $scope.reservationData.group && $scope.reservationData.group.id) {
+            if ( $scope.reservationData.group && $scope.reservationData.group.id) {
                $scope.reservationData.group = {};
                $scope.companySearchText = "";
                $scope.codeSearchText = "";

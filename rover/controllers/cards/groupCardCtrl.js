@@ -20,14 +20,14 @@ angular.module('sntRover').controller('RVGroupCardCtrl', ['$scope', '$rootScope'
 
 		$scope.isInAddMode = function() {
 			return false;
-		}
+		};
 
 		$scope.getMoveDatesActions = function() {
 			return {
 				setToDefaultMode: function() {
 					return false;
 				}
-			}
+			};
 		};
 
 		$scope.fetchGroupAllotmentCardId = function(section) {
@@ -115,11 +115,11 @@ angular.module('sntRover').controller('RVGroupCardCtrl', ['$scope', '$rootScope'
 				'id': data.id
 			});
 			callCompanyCardServices();
-			//New Card Handler
+			// New Card Handler
 			if ($scope.viewState.isAddNewCard && typeof data.id !== "undefined") {
 				if ($scope.viewState.identifier === "STAY_CARD" || ($scope.viewState.identifier === "CREATION" && $scope.viewState.reservationStatus.confirm)) {
 					$scope.viewState.pendingRemoval.status = false;
-					//if a new card has been added, reset the future count to zero
+					// if a new card has been added, reset the future count to zero
 					$scope.viewState.pendingRemoval.cardType = "";
 					if ($scope.reservationDetails.companyCard.futureReservations <= 0) {
 						$scope.replaceCardCaller('company', {
@@ -142,8 +142,8 @@ angular.module('sntRover').controller('RVGroupCardCtrl', ['$scope', '$rootScope'
 				}
 			}
 
-			//taking a deep copy of copy of contact info. for handling save operation
-			//we are not associating with scope in order to avoid watch
+			// taking a deep copy of copy of contact info. for handling save operation
+			// we are not associating with scope in order to avoid watch
 			presentContactInfo = angular.copy($scope.contactInformation);
 		};
 
@@ -169,13 +169,14 @@ angular.module('sntRover').controller('RVGroupCardCtrl', ['$scope', '$rootScope'
 		$scope.formatDateForUI = function(date_) {
 			var type_ = typeof date_,
 				returnString = '';
+
 			switch (type_) {
-				//if date string passed
+				// if date string passed
 				case 'string':
 					returnString = $filter('date')(new tzIndependentDate(date_), $rootScope.dateFormat);
 					break;
 
-					//if date object passed
+					// if date object passed
 				case 'object':
 					returnString = $filter('date')(date_, $rootScope.dateFormat);
 					break;
@@ -190,14 +191,16 @@ angular.module('sntRover').controller('RVGroupCardCtrl', ['$scope', '$rootScope'
 		 */
 		var saveContactInformation = function(data) {
 			var dataUpdated = false;
+
 			if (!angular.equals(data, presentContactInfo)) {
 				dataUpdated = true;
 			}
 			if (typeof data !== 'undefined' && (dataUpdated || $scope.viewState.isAddNewCard)) {
 				var dataToSend = JSON.parse(JSON.stringify(data));
+
 				for (key in dataToSend) {
 					if (typeof dataToSend[key] !== "undefined" && data[key] !== null && data[key] !== "") {
-						//in add case's first api call, presentContactInfo will be empty object
+						// in add case's first api call, presentContactInfo will be empty object
 						if (JSON.stringify(presentContactInfo) !== '{}') {
 							for (subDictKey in dataToSend[key]) {
 								if (typeof dataToSend[key][subDictKey] === 'undefined' || dataToSend[key][subDictKey] === presentContactInfo[key][subDictKey]) {
@@ -228,6 +231,7 @@ angular.module('sntRover').controller('groupResults', ['$scope', '$timeout',
 			click: true,
 			preventDefault: false
 		};
+
 		$scope.setScroller('groupResultsScroll', scrollerOptionsForGraph);
 
 		$scope.$on("refreshGroupsListScroller", function() {

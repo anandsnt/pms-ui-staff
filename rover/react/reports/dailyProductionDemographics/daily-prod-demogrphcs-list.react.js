@@ -12,6 +12,7 @@ var DailyProductionListDemographics = React.createClass({
 
 	_.map(this.props.data, function(row, index) {
 	  var listItem = React.DOM.em({}, row.displayLabel);
+
 	  if (row.showInBold) {
 	    listItem = React.DOM.strong({}, row.displayLabel);
 	  }

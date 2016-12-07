@@ -1,11 +1,11 @@
-admin.controller('adEndDatePickerController',['$scope','ngDialog','$rootScope','$filter','$rootScope',function($scope,ngDialog,$rootScope,$filter,$rootScope){
+admin.controller('adEndDatePickerController', ['$scope', 'ngDialog', '$rootScope', '$filter', '$rootScope', function($scope, ngDialog, $rootScope, $filter, $rootScope) {
 
-//if no date is selected .Make bussiness date as default CICO-8703
-if(!$scope.rateData.end_date){
+// if no date is selected .Make bussiness date as default CICO-8703
+if (!$scope.rateData.end_date) {
 	$scope.rateData.end_date = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
 }
 
-$scope.setUpData = function(){
+$scope.setUpData = function() {
     $scope.dateOptions = {
         changeYear: true,
         changeMonth: true,
