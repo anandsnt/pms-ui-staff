@@ -1,7 +1,7 @@
 this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
     var that = this;
 
-    if (typeof chrome !== "undefined" && typeof chrome.runtime !== "undefined") {
+    if (typeof chrome !== 'undefined' && typeof chrome.runtime !== 'undefined') {
         // only init these if using chrome, this is for the chromeapp virtual keyboard
         that.onChromeAppMsgResponse = function(response) {
             console.log(response);
@@ -31,7 +31,7 @@ this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
         that.listenerForQRCodeResponse = function(response) {
             var msg = {
                 listening: true,
-                attempt: (this.qrAttempt + 1)
+                attempt: this.qrAttempt + 1
             };
 
             if (!response.qr_code) {
@@ -74,4 +74,34 @@ this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
         }
     }
     return that;
+};
+
+this.chromeExtensionListener = function(onMessageCallback, chromeAppId, fetchQRCode) {
+    var initExtensionSocket = function() {
+        window.addEventListener('message', function(evt) {
+            if (evt.source !== window) {
+                return;
+            }
+            var passedDataObject = evt.data;
+
+            if (passedDataObject.switchToTheme) {
+                    // switch theme requested from our SNT chrome extension for debugging/testing
+                console.info('theme switch requested from extension, switching to [', passedDataObject.switchToTheme, ']');
+                zestSntApp.debugTheme(passedDataObject.switchToTheme);
+            } else if (passedDataObject.toggleDebuggerOnOff) {
+                    // pass toggle argument to station app, not direct on/off
+                    // - this turns on the on-screen timer and workstation details so an admin can verify settings/and proper times
+                    // possible args = //workstationFetchTimer, languageResetTimer, refreshTimer, idlePopupTimer, backToHomeTimer, toggleOnly
+                    // if (debugTimers(true), like here, then the method is only used for toggling on/off the timer view);
+                zestSntApp.debugTimers(true);
+            }
+        }, false);
+    };
+
+    try {
+        initExtensionSocket();
+    } catch (err) {
+        console.warn(err);
+    }
+
 };

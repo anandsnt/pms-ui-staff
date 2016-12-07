@@ -1,8 +1,7 @@
 sntZestStation.controller('zsOutOfServiceCtrl', [
 	'$scope',
 	'zsEventConstants',
-	'$timeout',
-	function($scope, zsEventConstants, $timeout) {
+	function($scope, zsEventConstants) {
 
 		/**
 		 * [initializeMe description]

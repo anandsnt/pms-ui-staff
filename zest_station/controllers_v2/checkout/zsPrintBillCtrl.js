@@ -23,6 +23,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
         };
         var nextPageActions = function(printopted) {
             $scope.$emit('hideLoader');
+            $scope.runDigestCycle();
             if ($scope.zestStationData.guest_bill.email) {
                 $scope.stateParamsForNextState.printopted = printopted;
                 $state.go('zest_station.emailBill', $scope.stateParamsForNextState);
@@ -42,7 +43,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
             $scope.zestStationData.workstationOooReason =  $filter('translate')(errorMessage);
             $scope.zestStationData.workstationStatus = 'out-of-order';
             var printopted = 'false';
-
+            $scope.runDigestCycle();
             nextPageActions(printopted);
         };
 

@@ -46,7 +46,12 @@ sntZestStation.controller('zsRootCtrl', [
         window.history.pushState('initial', 'Showing Landing Page', '#/home');
 
         $scope.$on('GENERAL_ERROR', function() {
-            $state.go('zest_station.speakToStaff');
+            // resolve an issue where (if no workstation assigned, or the workstation was deleted, 
+            //   instead of staying at OOS, its going to speak to staff page)
+            if ($state.current.name !== 'zest_station.outOfService') {
+                $state.go('zest_station.speakToStaff');    
+            }
+            
         });
 
         $scope.trustAsHtml = function(string) {
@@ -823,6 +828,7 @@ sntZestStation.controller('zsRootCtrl', [
         };
 
         $scope.chromeApp = new chromeApp(onChromeAppResponse, zestStationSettings.chrome_app_id);
+        $scope.chromeExtensionListener = new chromeExtensionListener();
 		/** ******************************************************************************
 		 *  Chrome App Communication code  
 		 *  ends here
@@ -971,7 +977,7 @@ sntZestStation.controller('zsRootCtrl', [
                     }
                 } else {
 					// when status is changed from admin
-                    if (previousWorkStationStatus === 'out-of-order' && newWorkStationStatus === 'in-order') {
+                    if (previousWorkStationStatus === 'out-of-order' && newWorkStationStatus === 'in-order' && $state.current.name === 'zest_station.admin') {
                         $state.go('zest_station.home');
                     } else {
 						// if application is launched either in chrome app or ipad go to login page
