@@ -76,6 +76,18 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
             });
         };
 
+        $scope.onToggleHistoricalSync = function(adCheckbox) {
+            var fromDate;
+
+            if (adCheckbox) {
+                $scope.toDate = new Date();
+                fromDate = new Date();
+                $scope.fromDate = new Date(fromDate.setFullYear(fromDate.getFullYear() - 3));
+            } else {
+                $scope.toDate = new Date();
+                $scope.fromDate = new Date();
+            }
+        };
 
         $scope.startDatePickerOptions = Object.assign({
             onSelect: fromDateSelected

@@ -10,6 +10,7 @@
             </label>
             <input type="text" ui-date="startDatePickerOptions"
                    ng-model="fromDate"
+                   ng-disabled="syncHistoricalData"
                    placeholder="Select Start Date"
                    class="date-picker-input-small"
                    readonly>
@@ -19,10 +20,18 @@
             </label>
             <input type="text" ui-date="endDatePickerOptions"
                    ng-model="toDate"
+                   ng-disabled="syncHistoricalData"
                    placeholder="Select End Date"
                    class="date-picker-input-small"
                    readonly>
         </div>
+
+        <ad-checkbox is-checked="syncHistoricalData"
+                     change="onToggleHistoricalSync"
+                     label="{{ 'SYNC_HISTORICAL_DATA' | translate}}"
+                     div-class="full-width">
+        </ad-checkbox>
+
         <div class="entry full-width">
             <label>
                 Synchronize
