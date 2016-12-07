@@ -44,6 +44,7 @@ angular.module('sntRover')
             $scope.clearResults = function() {
                 $scope.diaryData.textInQueryBox = '';
                 $scope.diaryData.showSearchResultsArea = false;
+                $scope.diaryData.roomNumberSearchResults = [];
             };
 
             // function to perform filtering data, on change-event of query box
@@ -54,13 +55,14 @@ angular.module('sntRover')
                         clearTimeout(searchRoomCall);
                     }
                     searchRoomCall = setTimeout(function() {
-                        $scope.$apply(function() {
-                            if ( $scope.diaryData.textInQueryBox.length !== 0 ) {
-                                displayFilteredResults();
-                            } else {
-                                $scope.diaryData.showSearchResultsArea = false;  
-                            }
-                        });
+                        if ( $scope.diaryData.textInQueryBox.length !== 0 ) {
+                            displayFilteredResults();
+                        } else {
+                            $scope.$apply(function() {
+                                $scope.diaryData.showSearchResultsArea = false;
+                                $scope.diaryData.roomNumberSearchResults = [];
+                            });
+                        }
                     }, 800);
                 } else {
                     $scope.diaryData.showSearchResultsArea = false;
@@ -69,8 +71,7 @@ angular.module('sntRover')
             };
 
             $scope.$on('CLOSE_SEARCH_RESULT', function() {
-               $scope.diaryData.showSearchResultsArea = false;
                $scope.clearResults();
             });
-            
+
         }]);

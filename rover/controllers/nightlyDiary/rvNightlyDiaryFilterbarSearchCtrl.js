@@ -39,7 +39,6 @@ angular.module('sntRover')
             $scope.$emit('hideLoader');
             $scope.diaryData.reservationSearchResults = data.results;
             $scope.diaryData.totalSearchResults = data.total_count;
-            $scope.diaryData.hasOverlay = true;
             refreshScroller();
         };
 
@@ -68,7 +67,7 @@ angular.module('sntRover')
 
         // Get full name of each guest.
         $scope.getGuestName = function(firstName, lastName) {
-            return lastName.toUpperCase() + ' ' + firstName.toUpperCase();
+            return firstName.toUpperCase() + ' ' + lastName.toUpperCase();
         };
 
         // CSS class for icons corresponding to each reservation status gets returned.
@@ -131,7 +130,6 @@ angular.module('sntRover')
             $scope.textInQueryBox = '';
             $scope.diaryData.reservationSearchResults = [];
             $scope.diaryData.totalSearchResults = 0;
-            $scope.diaryData.hasOverlay = false;
         };
 
         // To handle click on each search item.

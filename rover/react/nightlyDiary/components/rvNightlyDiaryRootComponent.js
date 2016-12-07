@@ -24,7 +24,12 @@ const NightlyDiaryRootComponent = createClass ({
         this.refreshScroller();
     },
     refreshScroller() {
-        this.scroller.refresh();
+        let that = this;
+
+        setTimeout(function() {
+            that.scroller.refresh(); 
+        }, 1000);
+
     },
     scrolToTop() {
         // scroll is moving to top
@@ -52,7 +57,7 @@ const NightlyDiaryRootComponent = createClass ({
                     <NightlyDiaryReservationsListContainer/>
                 </div>
             </div>
-            <div className="diary-nightly-sidebar diary-nightly-unassigned">
+            <div className="diary-nightly-sidebar diary-nightly-unassigned hidden">
                 <div className="sidebar-header">
                     <h2>Unassigned</h2>
                     <p>Drag & Drop to assign a room</p>

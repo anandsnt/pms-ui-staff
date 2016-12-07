@@ -4,8 +4,8 @@
         <span class="icons icon-clear-search" ng-click = "clearResults()">Clear query</span>
     </button>
     <span class="result-count" ng-show = "diaryData.totalSearchResults !== 0">{{diaryData.totalSearchResults}} Matches</span> 
-    <span class="result-count" ng-show = "(diaryData.totalSearchResults === 0 && textInQueryBox.length > 0 )">0 Matches</span> 
-    <input class="query" placeholder="Search by Guest, Allotment/Group or Conf./Ext. red no." type="search" autocomplete="off" ng-change = "queryEntered()" ng-model = "textInQueryBox">
+    <span class="result-count" ng-show = "(diaryData.totalSearchResults === 0 && textInQueryBox.length > 2 )">0 Matches</span> 
+    <input class="query" placeholder="{{ 'PLACEHOLDER_NIGHTLY_DIARY_SEARCH' | translate }}" type="search" autocomplete="off" ng-change = "queryEntered()" ng-model = "textInQueryBox">
 
 
     <!-- Search results, show only when searching: -->
