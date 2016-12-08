@@ -2,7 +2,7 @@ admin.directive('adSyncBlock', function() {
         return {
             restrict: 'E',
             scope: {
-                syncItemsList: "=",
+                config: "=",
                 interface: "@"
             },
             templateUrl: '/assets/directives/adSyncBlock/adSyncBlockPartial.html',

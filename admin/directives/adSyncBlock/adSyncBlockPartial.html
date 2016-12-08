@@ -1,16 +1,23 @@
 <fieldset class="holder full-width">
     <div class="form-title">
-        <h3>Synchronize Data</h3>
+        <h3>Synchronize <span>Data</span></h3>
     </div>
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
     <fieldset class="holder left">
+
+        <ad-checkbox ng-if="config.historical_data_sync_items"
+                     is-checked="syncHistoricalData"
+                     change="onToggleHistoricalSync"
+                     label="{{ 'SYNC_HISTORICAL_DATA' | translate}}"
+                     div-class="full-width">
+        </ad-checkbox>
+
         <div class="entry has-datepicker margin">
             <label>{{'FROM_DATE' | translate}}
             </label>
             <input type="text" ui-date="startDatePickerOptions"
                    ng-model="fromDate"
-                   ng-disabled="syncHistoricalData"
                    placeholder="Select Start Date"
                    class="date-picker-input-small"
                    readonly>
@@ -20,17 +27,10 @@
             </label>
             <input type="text" ui-date="endDatePickerOptions"
                    ng-model="toDate"
-                   ng-disabled="syncHistoricalData"
                    placeholder="Select End Date"
                    class="date-picker-input-small"
                    readonly>
         </div>
-
-        <ad-checkbox is-checked="syncHistoricalData"
-                     change="onToggleHistoricalSync"
-                     label="{{ 'SYNC_HISTORICAL_DATA' | translate}}"
-                     div-class="full-width">
-        </ad-checkbox>
 
         <div class="entry full-width">
             <label>
