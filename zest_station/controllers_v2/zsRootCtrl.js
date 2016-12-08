@@ -493,21 +493,16 @@ sntZestStation.controller('zsRootCtrl', [
             } else if (theme === 'fontainebleau') {
                 $scope.useNavIcons = true;
 				// nothing else
-            } else if (theme === 'epik') {
-                $scope.useNavIcons = true;
-                $scope.theme = theme;
-                $scope.iconsPath = '/assets/zest_station/css/icons/epik'; // uses the same home icons as avenue
-                $scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true, true); // last arg, is to only show different icons on Home, other icons use default
-
             } else if (theme === 'conscious') {
                 $scope.useNavIcons = true;
                 $scope.theme = theme;
                 $scope.iconsPath = '/assets/zest_station/css/icons/conscious';
                 $scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true);
-            } else if (theme === 'avenue') {
+
+            } else if (theme === 'avenue' || theme === 'sohotel' || theme === 'epik') {
                 $scope.useNavIcons = true;
                 $scope.theme = theme;
-                $scope.iconsPath = '/assets/zest_station/css/icons/avenue';
+                $scope.iconsPath = '/assets/zest_station/css/icons/' + theme;
                 $scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true, true); // last arg, is to only show different icons on Home, other icons use default
 
             } else { // zoku and snt use default path
