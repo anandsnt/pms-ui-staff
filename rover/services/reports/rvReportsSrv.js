@@ -63,8 +63,8 @@ angular.module('sntRover').service('RVreportsSrv', [
 			var deferred = $q.defer();
 
 			$http({
-				method: 'POST', 
-				url: params.url, 
+				method: 'POST',
+				url: params.url,
 				data: params.payload
 			}).success(function(data, status, headers, config) {
                  var hiddenAnchor = angular.element('<a/>');
@@ -78,7 +78,7 @@ angular.module('sntRover').service('RVreportsSrv', [
             }).error(function(errorMessage) {
                 deferred.reject(errorMessage);
             });
-			return deferred.promise;		
+			return deferred.promise;
 		};
 
 		/**
@@ -268,7 +268,11 @@ angular.module('sntRover').service('RVreportsSrv', [
 
 			return deferred.promise;
 		};
-		
+
+        service.setReportRequestParam = function(name, value) {
+            choosenReport[name] = value;
+        };
+
 
 		return service;
 	}

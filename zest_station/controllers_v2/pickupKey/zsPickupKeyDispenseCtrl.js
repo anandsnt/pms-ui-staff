@@ -57,10 +57,6 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
             'margin-top': marginTop
         };
 
-        $scope.reEncodeKey = function() {
-            $scope.mode = 'DISPENSE_KEY_MODE';
-        };
-
         var onGeneralFailureCase = function() {
             $scope.mode = 'DISPENSE_KEY_FAILURE_MODE';
             $scope.zestStationData.workstationStatus = 'out-of-order';// go out of order when (printing or key encoding fails)
@@ -79,7 +75,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 
             } else {
 				// check if socket is open
-                if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
+                if (!_.isUndefined($scope.socketOperator.returnWebSocketObject()) && $scope.socketOperator.returnWebSocketObject().readyState === 1) {
                     $scope.socketOperator.DispenseKey($scope.dispenseKeyData);
                 } else {
                     $scope.$emit('CONNECT_WEBSOCKET'); // connect socket
@@ -87,6 +83,30 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
             }
         };
 
+        var noOfKeysCreated = 0;
+        
+        $scope.reEncodeKey = function() {
+
+            var executeKeyOperations = function() {
+                if ($scope.zestStationData.keyWriter === 'websocket') {
+                    // provide some timeout for user to grab keys
+                    $timeout(dispenseKey, 2000);
+                } else {
+                    $timeout(function() {
+                        $scope.readyForUserToPressMakeKey = true;
+                    }, 1000);
+                }
+            };
+
+            // check if one of the selected no of keys was created or not
+            if (noOfKeysCreated === 1 && $scope.noOfKeysSelected === 2) {
+                $scope.mode = 'KEY_ONE_SUCCESS_KEY_TWO_FAILED';
+                executeKeyOperations();
+            } else {
+                $scope.mode = $scope.noOfKeysSelected === 1 ? 'SOLO_KEY_CREATION_IN_PROGRESS_MODE' : 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
+                executeKeyOperations();
+            }
+        };
 		/**
 		 * [setFailureReason description]
 		 * we need to set the oos reason message in admin
@@ -106,7 +126,6 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
             $scope.zestStationData.workstationStatus = 'in-order';
         };
 
-        var noOfKeysCreated = 0;
 		/**
 		 * [saveUIDToReservation description]
 		 * @param  {[type]} uid [description]

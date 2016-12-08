@@ -1,0 +1,97 @@
+<td class = "date">Totals</td>
+
+<td class = "break">{{ resultsTotalRow.ooo_count }}</td>
+
+<td class="vertical break">
+    <div class="row">
+        <strong>{{ resultsTotalRow.guest_arrival_count }}<em>(Arr.)</em></strong>
+    </div>
+    <div class="row">
+        <strong>{{ resultsTotalRow.guest_inhouse_count }}<em>(Inh.)</em></strong>
+    </div>
+    <div class="row">
+        <strong>{{ resultsTotalRow.guest_departure_count }}<em>(Dep.)</em></strong>
+    </div>
+</td>
+
+<td class="vertical break">
+    <div class="row cells">
+        <strong>{{ resultsTotalRow.group_arrival_count }}<em>(Arr.)</em></strong>
+        <strong>{{ resultsTotalRow.group_arrival_gtd }}<em>(GTD)</em></strong>
+    </div>
+    <div class="row cells">
+        <strong>{{ resultsTotalRow.group_inhouse_count }}<em>(Inh.)</em></strong>
+        <strong>{{ resultsTotalRow.group_occupied_rooms_gtd }}<em>(GTD)</em></strong>
+    </div>
+    <div class="row cells">
+        <strong>{{ resultsTotalRow.group_departure_count }}<em>(Dep.)</em></strong>
+        <strong>{{ resultsTotalRow.group_departure_gtd }}<em>(GTD)</em></strong>
+    </div>
+</td>
+
+<td class="vertical">
+    <div class="row">
+        <strong>{{ resultsTotalRow.total_arrival_count }}<em>(Arr.)</em></strong>
+    </div>
+    <div class="row">
+        <strong>{{ resultsTotalRow.total_inhouse_count }}<em>(Inh.)</em></strong>
+    </div>
+    <div class="row">
+        <strong>{{ resultsTotalRow.total_departure_count }}<em>(Dep.)</em></strong>
+    </div>
+</td>
+<td>{{ resultsTotalRow.total_rooms }}</td>
+
+<td class="vertical break">
+    <div class="row">
+        <strong>{{ resultsTotalRow.guest_occupied_count }}<em>(Gst.)</em></strong>
+    </div>
+    <div class="row">
+        <strong>{{ resultsTotalRow.group_occupied_count }}<em>(Grp.)</em></strong>
+    </div>
+    <div class="row">
+        <strong>{{ resultsTotalRow.total_occupied_count }}<em>(Tot.)</em></strong>
+    </div>
+</td>
+
+
+<td class="vertical">
+    <div class="row">
+        <strong>{{ resultsTotalRow.guest_occupied_room_percentage }}%<em>(Gst.)</em></strong>
+    </div>
+    <div class="row">
+        <strong>{{ resultsTotalRow.group_occupied_room_percentage }}%<em>(Grp.)</em></strong>
+    </div>
+    <div class="row">
+        <strong>{{ resultsTotalRow.total_occupied_room_percentage }}%<em>(Tot.)</em></strong>
+    </div>
+</td>
+<td class="break">{{ resultsTotalRow.total_available_room_percentage }}%</td>
+
+<td class="vertical">
+    <div class="row">
+        <strong>{{ resultsTotalRow.guest_room_revenue | currency:currencySymbol:2 }}<em>(Gst.)</em></strong>
+    </div>
+    <div class="row">
+        <strong>{{ resultsTotalRow.group_room_revenue | currency:currencySymbol:2 }}<em>(Grp.)</em></strong>
+    </div>
+    <div class="row">
+        <strong>{{ resultsTotalRow.total_room_revenue | currency:currencySymbol:2 }}<em>(Tot.)</em></strong>
+    </div>
+</td>
+
+<td class = "vertical">
+    <div class="row">
+        <strong>{{ resultsTotalRow.adr_guest | currency:currencySymbol:2 }}<em>(Gst.)</em></strong>
+    </div>
+    <div class="row">
+        <strong>{{ resultsTotalRow.adr_group | currency:currencySymbol:2 }}<em>(Gst.)</em></strong>
+    </div>
+    <div class="row">
+        <strong>{{ resultsTotalRow.adr | currency:currencySymbol:2 }}<em>(Tot.)</em></strong>
+    </div>
+</td>
+<td class="break">{{ resultsTotalRow.rev_par | currency:currencySymbol:2 }}</td>
+
+<td>{{ resultsTotalRow.actual_rooms_last_year }}%</td>
+<td class="break" ng-class="{ 'red': (resultsTotalRow.variance * 1) < 0 }">{{ resultsTotalRow.variance }}%</td> <!-- Add class "red" if negative -->

@@ -71,6 +71,12 @@
 								{{'USE_MOBILE_PHONE_KEY' | translate }}
 							</label>
 
+							<label class="radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'no_key_delivery'}">
+								<span class="icon-form icon-radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'no_key_delivery'}"></span>
+								<input ng-model="data.room_key_delivery_for_rover_check_in" type="radio" value="no_key_delivery" name="guest-zest" id="type4" class="change-data">
+								No Key Delivery
+							</label>
+
 							<ad-checkbox is-checked="data.offer_mobilekey_from_rover" label="{{'OFFER_MOBILEKEY_LABEL' | translate }}" div-class="key-delivery-checkbox" span-class="checkbox-background"></ad-checkbox>
 
 						</div>
