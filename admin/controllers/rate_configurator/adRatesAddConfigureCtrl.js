@@ -41,15 +41,16 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
          */
         $scope.isAllSetsSaved = function() {
 
-             if ($scope.data.sets && $scope.rateData.based_on.id > 1 ) {  
+             if ($scope.data.sets && $scope.rateData.based_on.id > 1 ) {
                 if (!$scope.otherData.isEdit ) {
                     if ($scope.data.sets) {
                         var isSaved = true;
+
                         if ($scope.data.sets[$scope.data.sets.length - 1].id === null) {
                         isSaved = false;
                         }
                         return isSaved;
-                    }    
+                    }
                 }
                 return false;
              }
@@ -61,8 +62,8 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                     isSaved = false;
                 }
                 return isSaved;
-            } 
-    
+            }
+
             else
             {
                 return true;
