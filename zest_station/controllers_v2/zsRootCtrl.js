@@ -41,9 +41,9 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.cssMappings = cssMappings;
 		
 
-        // $rootScope.$on('$locationChangeStart', routeChange);
-		// // we are forcefully setting top url, please refer routerFile
-        // window.history.pushState('initial', 'Showing Landing Page', '#/home');
+        $rootScope.$on('$locationChangeStart', routeChange);
+		// we are forcefully setting top url, please refer routerFile
+        window.history.pushState('initial', 'Showing Landing Page', '#/home');
 
         $scope.$on('GENERAL_ERROR', function() {
             // resolve an issue where (if no workstation assigned, or the workstation was deleted, 
@@ -959,9 +959,8 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.zestStationData.set_workstation_id = $scope.getStationIdFromName(station.name).id;
                 $rootScope.workstation_id = $scope.zestStationData.set_workstation_id;
                 $scope.zestStationData.key_encoder_id = $scope.getStationIdFromName(station.name).key_encoder_id;
-                
                 var previousWorkStationStatus = angular.copy($scope.zestStationData.workstationStatus);
-
+                
                 $scope.zestStationData.workstationStatus = station.is_out_of_order ? 'out-of-order' : 'in-order';
                 var newWorkStationStatus = angular.copy($scope.zestStationData.workstationStatus);
 
