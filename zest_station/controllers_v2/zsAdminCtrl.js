@@ -385,7 +385,7 @@ sntZestStation.controller('zsAdminCtrl', [
 
             // if invoked from chrome app or ipad
             // show direct admin without login
-            if ($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad)) {
+            if ($scope.zestStationData.isAdminFirstLogin) {
                 $scope.mode = 'admin-screen-active';
                 $scope.zestStationData.isAdminFirstLogin = false;
             } else {
