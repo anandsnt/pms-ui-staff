@@ -1263,4 +1263,3 @@ sntRover.controller('RVReportDetailsCtrl', [
     }
 
 ]);
-
