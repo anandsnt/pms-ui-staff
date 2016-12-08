@@ -18,9 +18,15 @@
 	// CICO-34045 we should allow the user to enter their email address if it is not on the database
 	var originsNeedEmailEntering = ["SMS", "EMAIL", "URL"];
 
+    // collect oustanding stay total
+    if (parseFloat($rootScope.outStandingBalance) > 0 &&
+        $rootScope.isMLI && $rootScope.collectOutStandingBalance && !$rootScope.skipBalanceCollection) {
+        $state.go('balancePaymentCCCollection');
+    }
+
 	// if prompt for cc is turned on
 	// we will always ask for CC addition in case of MLI
-	if ($rootScope.collectCCOnCheckin && $rootScope.isMLI && !$rootScope.isCcAttachedFromGuestWeb ) {
+	else if ($rootScope.collectCCOnCheckin && $rootScope.isMLI && !$rootScope.isCcAttachedFromGuestWeb ) {
 		$state.go('checkinCcVerification');
 	}
 	// CICO-34045 we should allow the user to enter their email address if it is not on the database
