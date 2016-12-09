@@ -27,26 +27,13 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
          * 2.EMAIL_INVLAID_MODE
          */
         
-         
-        /**
-         * [initializeMe description]
-         */
-        var initializeMe = (function() {
-            // show back button
-            $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
-            // show close button
-            $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-            $scope.email = "";
-            $scope.mode = "EMAIL_ENTRY_MODE";
-            $scope.focusInputField('email-entry');
-        }());
 
         /**
          * [reEnterText description]
          * @return {[type]} [description]
          */
         $scope.reEnterText = function() {
-            $scope.mode = "EMAIL_ENTRY_MODE";
+            $scope.mode = 'EMAIL_ENTRY_MODE';
             $scope.focusInputField('email-entry');
         };
         /*
@@ -81,37 +68,33 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
          * @return {[type]} [description]
          */
         var setInvalidEmailMode = function() {
-            $scope.mode = "EMAIL_INVLAID_MODE";
+            $scope.mode = 'EMAIL_INVLAID_MODE';
         };
+
         var updateGuestEmail = function() {
             var updateComplete = function(response) {
                 console.info('updateGuestEmail :: updateComplete: ', response);
                 var stateParams = {
-                    "reservation_id": $stateParams.reservation_id,
-                    "guest_id": $stateParams.guest_id,
-                    "room_no": $stateParams.room_no,
-                    "room": $stateParams.room_no,
-                    "first_name": $stateParams.first_name,
-                    "email": $scope.email
+                    'reservation_id': $stateParams.reservation_id,
+                    'guest_id': $stateParams.guest_id,
+                    'room_no': $stateParams.room_no,
+                    'room': $stateParams.room_no,
+                    'first_name': $stateParams.first_name,
+                    'email': $scope.email
                 };
 
                 $state.go('zest_station.checkinKeyDispense', stateParams);
             };
-            /**
+            /*
              * [updateGuestEmailFailed description]
              * @return {[type]} [description]
              */
             var updateGuestEmailFailed = function(response) {
                 console.warn('updateGuestEmailFailed: ', response); // if this fails would help give clues as to why
                 var stateParams = {
-                    "first_name": $stateParams.first_name
+                    'first_name': $stateParams.first_name
                 };
 
-                if ($scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2 !== '') {
-                    stateParams.message = $scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2;
-                } else {
-                    // do nothing
-                }
                 $state.go('zest_station.speakToStaff', stateParams);
             };
 
@@ -159,16 +142,30 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
          */
         $scope.skipEmail = function() {
             var stateParams = {
-                "reservation_id": $stateParams.reservation_id,
-                "room": $stateParams.room,
-                "room_no": $stateParams.room_no,
-                "guest_id": $stateParams.guest_id,
-                "email": $stateParams.email,
-                "first_name": $stateParams.first_name
+                'reservation_id': $stateParams.reservation_id,
+                'room': $stateParams.room,
+                'room_no': $stateParams.room_no,
+                'guest_id': $stateParams.guest_id,
+                'email': $stateParams.email,
+                'first_name': $stateParams.first_name
             };
 
             console.info(' :: skipEmail :: ', stateParams);
             $state.go('zest_station.checkinKeyDispense', stateParams);
         };
+
+        /**
+         * [initializeMe description]
+         */
+        (function() {// initializeMe
+            // show back button
+            $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+            // show close button
+            $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
+            $scope.email = '';
+            $scope.mode = 'EMAIL_ENTRY_MODE';
+            $scope.focusInputField('email-entry');
+        }());
+
     }
 ]);

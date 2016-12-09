@@ -7,6 +7,7 @@
         </header>
         <section class="content-scroll">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
             <form style="overflow-y:auto;" class="form float">
                 <fieldset class="holder left">
                     <ad-toggle-button is-checked="checkinData.is_send_alert_flag" label="{{ 'SEND_CHECKIN_ALERT' | translate}}"></ad-toggle-button>
@@ -375,7 +376,7 @@
                         <h3><span  translate="">ADDRESS_COLLECTION</span> </h3>
                     </div>
                      <div class="form-subtitle-title">
-                        <h6><span translate="">CHECKIN_NOW_SUB_HEADING</span> </h6>
+                        <h6><span translate="">COLLECT_ADDRESS_IN_ONE_SCREEN</span> </h6>
                     </div>
                     <!-- flag to check if we need to ask for guest address -->
                     <ad-toggle-button is-checked="checkinData.prompt_for_address_on" label="{{ 'PROMPT_FOR_GUEST_ADDRESS' | translate}}" div-class="full-width"></ad-toggle-button>

@@ -43,6 +43,10 @@
                 </button>
             </div>
         </fieldset>
+        <fieldset class="holder right">
+            <ad-checkbox ng-repeat="item in sync.items" is-checked="item.isSelected" label="{{item.id | uppercase}}"
+                         div-class="full-width"></ad-checkbox>
+        </fieldset>
     </fieldset>
 
     <fieldset class="holder full-width">
@@ -73,6 +77,28 @@
                         value="config.end_point"
                         label="{{'ACCESS_URL'| translate}}"
                         styleclass="full-width"></ad-textbox>
+        </fieldset>
+    </fieldset>
+
+    <fieldset class="holder full-width">
+        <div class="form-title">
+            <h3>Feature Settings</h3>
+        </div>
+        <fieldset class="holder left">
+            <ad-toggle-button negative-logic="true"
+                              is-checked="config.disable_feature_download_reservation"
+                              label="{{'FEATURE_DOWNLOAD_RESERVATION'| translate}}"></ad-toggle-button>
+            <ad-toggle-button negative-logic="true"
+                              is-checked="config.disable_feature_upload_inventory"
+                              label="{{'FEATURE_UPLOAD_INVENTORY'| translate}}"></ad-toggle-button>
+        </fieldset>
+        <fieldset class="holder left">
+            <ad-toggle-button negative-logic="true"
+                              is-checked="config.disable_feature_upload_rate"
+                              label="{{'FEATURE_UPLOAD_RATE'| translate}}"></ad-toggle-button>
+            <ad-toggle-button negative-logic="true"
+                              is-checked="config.disable_feature_upload_restriction"
+                              label="{{'FEATURE_UPLOAD_RESTRICTION'| translate}}"></ad-toggle-button>
         </fieldset>
     </fieldset>
 

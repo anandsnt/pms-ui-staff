@@ -303,7 +303,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                             // get the rateId of the first value in the $scope.reservationData.taxDetail
                             var rateIdExisting = currentTaxes[taxType][Object.keys(currentTaxes[taxType])[0]].rate;
 
-                            if (rateIdExisting === description.rate) {
+                            // Expression below was modified to fix CICO-32466.
+                            if (rateIdExisting !== description.rate) {
                                 currentTaxes[taxType][taxId] = description;
                             }
                         }
@@ -963,7 +964,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
 
                     depositAmount = data.results.deposit_amount;
-                    var isOutOfCancellationPeriod = (typeof data.results.cancellation_policy_id !== 'undefined');
+                    var isOutOfCancellationPeriod = !data.results.is_inside_cancellation_period;
 
                     if (isOutOfCancellationPeriod) {
                         if (data.results.penalty_type === 'day') {

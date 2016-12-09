@@ -1,6 +1,7 @@
 admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$state', 'roomTypes', function($scope, $rootScope, adCheckoutSrv, $state, roomTypes) {
 
 	$scope.errorMessage = '';
+    $scope.successMessage = '';
 
     BaseCtrl.call(this, $scope);
 
@@ -30,8 +31,8 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
                 "label": "ROOM TYPE.",
                 "column_width": "width-40"
             },
-            "selectedExcludedRoomIds": [],
-            "unSelectedExcludedRoomIds": [],
+            "selectedExcludedIds": [],
+            "unSelectedExcludedIds": [],
             "apiService": "ADCheckoutEmailRoomFilterSrv",
             "noOfItemsSelected": 0
         };
@@ -200,16 +201,17 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
                 'excluded_room_types': excluded_room_types,
                 'enable_offline_checkout': $scope.checkoutData.enable_offline_checkout,
                 'checkout_static_uri': $scope.checkoutData.checkout_static_uri,
-                'removed_excluded_from_checkout_notification': $scope.checkoutEmailRoomExclusionConfig.selectedExcludedRoomIds,
-                'selected_excluded_from_checkout_notification': $scope.checkoutEmailRoomExclusionConfig.unSelectedExcludedRoomIds
+                'removed_excluded_from_checkout_notification': $scope.checkoutEmailRoomExclusionConfig.selectedExcludedIds,
+                'selected_excluded_from_checkout_notification': $scope.checkoutEmailRoomExclusionConfig.unSelectedExcludedIds
 			};
 
-    	var saveCheckoutDetailsSuccessCallback = function(data) {
-    		$scope.$emit('hideLoader');
-            $scope.goBackToPreviousState();
-    	};
+        var saveCheckoutDetailsSuccessCallback = function(data) {
+            $scope.$emit('hideLoader');
+            $scope.$broadcast('SAVE_SETTINGS_SUCCESS');
+            $scope.successMessage = "Success!. Settings has been saved.";
+        };
 
-    	$scope.invokeApi(adCheckoutSrv.save, uploadData, saveCheckoutDetailsSuccessCallback);
+        $scope.invokeApi(adCheckoutSrv.save, uploadData, saveCheckoutDetailsSuccessCallback);
     };
 
     var setWatchers = function() {

@@ -2,6 +2,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     function ($scope, $rootScope, adCheckinSrv, $state, ADRoomTypesSrv, $q) {
 
   $scope.errorMessage = '';
+  $scope.successMessage = '';
 
   BaseCtrl.call(this, $scope);
 
@@ -41,8 +42,8 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
         "label": "ROOM TYPE.",
         "column_width": "width-40"
       },
-      "selectedExcludedRoomIds": [],
-      "unSelectedExcludedRoomIds": [],
+      "selectedExcludedIds": [],
+      "unSelectedExcludedIds": [],
       "apiService": "ADCheckinEmailRoomFilterSrv",
       "noOfItemsSelected": 0
     };
@@ -383,8 +384,8 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       'zest_web_use_new_sent_to_que_action' : $scope.checkinData.zest_web_use_new_sent_to_que_action,
       'zest_web_checkin_second_authentication_action': $scope.checkinData.zest_web_checkin_second_authentication_action,
       'zest_web_always_ask_for_mobile_number': $scope.checkinData.zest_web_always_ask_for_mobile_number,
-      'removed_excluded_from_checkin_notification': $scope.checkinEmailRoomExclusionConfig.selectedExcludedRoomIds,
-      'selected_excluded_from_checkin_notification': $scope.checkinEmailRoomExclusionConfig.unSelectedExcludedRoomIds
+      'removed_excluded_from_checkin_notification': $scope.checkinEmailRoomExclusionConfig.selectedExcludedIds,
+      'selected_excluded_from_checkin_notification': $scope.checkinEmailRoomExclusionConfig.unSelectedExcludedIds
     };
 
     if($scope.surveyQuestionImage === $scope.checkinData.survey_question_image){
@@ -397,7 +398,8 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
 
     var saveCheckinDetailsSuccessCallback = function (data) {
       $scope.$emit('hideLoader');
-      $scope.goBackToPreviousState();
+      $scope.successMessage = "Success!. Settings has been saved.";
+      $scope.$broadcast('SAVE_SETTINGS_SUCCESS');
     };
 
     $scope.invokeApi(adCheckinSrv.save, uploadData, saveCheckinDetailsSuccessCallback, saveCheckinDetailsFailureCallback);

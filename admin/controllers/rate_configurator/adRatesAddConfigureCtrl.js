@@ -40,6 +40,21 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
          * @retun true {Boolean} If all the sets are saved
          */
         $scope.isAllSetsSaved = function() {
+
+             if ($scope.data.sets && $scope.rateData.based_on.id > 1 ) {
+                if (!$scope.otherData.isEdit ) {
+                    if ($scope.data.sets) {
+                        var isSaved = true;
+
+                        if ($scope.data.sets[$scope.data.sets.length - 1].id === null) {
+                        isSaved = false;
+                        }
+                        return isSaved;
+                    }
+                }
+                return false;
+             }
+
             if ($scope.data.sets) {
                 var isSaved = true;
 
@@ -47,7 +62,10 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                     isSaved = false;
                 }
                 return isSaved;
-            } else {
+            }
+
+            else
+            {
                 return true;
             }
         };

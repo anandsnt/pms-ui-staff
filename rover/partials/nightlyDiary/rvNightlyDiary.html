@@ -1,71 +1,36 @@
 <!-- Diary header -->
 <div ng-include="'/assets/partials/common/header.html'"></div>
 
-<div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryFilterbar.html'"></div>
+<div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryTopFilterBar.html'" include-replace></div>
+
+<div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryTopEditBar.html'" include-replace></div>
 
 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
-<section id="diary-nightly" ng-class="{'diary-days-7': diaryData.isSevenSelected ,'diary-days-21': !diaryData.isSevenSelected }" class="content" role="main">
-
-    <div class="diary-nightly-main">
+<section id="diary-nightly" ng-class="{'diary-days-7': (diaryData.numberOfDays === 7) ,'diary-days-21': (diaryData.numberOfDays === 21), 'with-overlay': diaryData.hasOverlay && diaryData.totalSearchResults > 0 }" class="content" role="main">
 
         <!-- Room Search + Timeline -->
         <div class="grid-timeline">
-            <!-- Room Search -->
-            <div class="grid-room-search">
-                <button class="clear-query"> <!-- Add class 'visible' when searching. Tap clears L33 value and removes search. -->
-                    <span class="icons icon-clear-search">Clear query</span>
-                </button>
-                <!-- Add class .hidden when edit screen is displayed -->
-                <input type="text" placeholder="Go to Room No." value="">
-            </div>
 
-            <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryTimeline.html'"></div>
+            <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRoomNumberSearch.html'" include-replace></div>
+
+            <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryTimeline.html'" include-replace></div>
+
+            <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryStayRange.html'"></div>
 
             <!-- Stay Range | Remove .hidden to show-->
-            <div class="grid-stay-range hidden">
+            <!-- <div class="grid-stay-range hidden">
                 {_content/stay-range.html}
-            </div>
+            </div> -->
         </div>
 
         <!-- Room Search Results -->
-        <div class="grid-room-search-results hidden"> <!-- Add class 'visible' to show -->
-            <div class="wrapper">
-                <div class="room">
-                    <span class="room-number {HK status or 'out' if OOO/OOS}">
-                        {Room No} <!-- Highlight search query like this: <span class="highlight">{Query}</span> -->
-                    </span>
-                    <span class="room-type">{Room Type}</span>
-                </div>
-                ... repeat for every result
-            </div>
+        <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRoomNumberSearchResult.html'" include-replace>
         </div>
 
-        <!-- Rooms + Reservations. YOU CAN RELOAD THIS WHEN SWITCHING 7 or 21 DAYS, NO NEED TO RELOAD ENTIRE SCREEN.  -->
-        <span id="nightlyDiaryMain"></span>
+        <!-- REACT APP :: Rooms list + Reservations list + Un-assigned Reservations list -->
+        <div id="nightlyDiaryMain" class="grid-wrapper"></div>
 
-    </div>
-
-
-    <!-- Sidebar -->
-    <div class="diary-nightly-sidebar hidden">
-        <!-- Toggle Sidebar View -->
-        <div class="sidebar-options">
-            <button type="button" class="button white"> <!-- Add class 'active' when showing unassigned reservations + add class 'visible' to .diary-nightly-unassigned in sidebar-unassigned.html -->
-                <span class="count">{Count of unassigned res.}</span>
-                Unassigned
-            </button>
-            <button type="button" class="button white"> <!-- Add class 'active' when showing filters + add class 'visible' to .diary-nightly-filters in sidebar-filters.html -->
-                <span class="count">{Count of active filters}</span>
-                Filters
-            </button>
-        </div>
-
-        <!-- Unassigned Reservations -->
-        {_content/sidebar-unassigned.html}
-
-        <!-- Filters -->
-        {_content/sidebar-filters.html}
-    </div>
+        <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRightFilterBar.html'" include-replace></div>
 
 </section>

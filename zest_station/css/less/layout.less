@@ -1095,12 +1095,17 @@
 /* Admin Screen */
 .admin-screen {
     &#main {
-        padding-top: 60px;
+        padding-top: 120px;
     }
 
     #textual {
         #calc  > #height > .remove( 100%, 120px ); 
     }
+}
+.admin-screen-title{
+    font-size: 1.7em;
+    position: absolute;
+    top: 75px;
 }
 
 /* QR Code ***/
@@ -1399,8 +1404,8 @@
             height: 50px;
             font-size: 16px;
             &.selected  {
-                color: @actionBackground;
-                background: transparent;
+                color: @actionBackground !important;
+                background: transparent !important;
             }
         }
     }
@@ -1415,6 +1420,23 @@
     color: #d8d8d8;
     z-index: 999;
 }
+
+
+.timer-debugger-left{
+    float: right;
+    left: 5.5%;
+    position: absolute;
+    color: #d8d8d8;
+    z-index: 999;
+}
+.timer-debugger-right{
+    float: right;
+    right: 5.5%;
+    position: absolute;
+    color: #d8d8d8;
+    z-index: 999;
+}
+
 
 .add-guest-mode-content{
     height: 75% !important;

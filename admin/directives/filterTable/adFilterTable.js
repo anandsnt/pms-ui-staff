@@ -3,7 +3,10 @@ admin.directive('adFilterTable', function() {
 		restrict: 'AE',
 		replace: 'true',
 		scope: {
-			filterConfig: '='
+			filterConfig: '=',
+			hideSubTitle: '=',
+			singleTab: '=',
+			responseKey: '='
 		},
 		templateUrl: '/assets/directives/filterTable/adFilterTable.html',
 		controller: 'adFilterTableController'
