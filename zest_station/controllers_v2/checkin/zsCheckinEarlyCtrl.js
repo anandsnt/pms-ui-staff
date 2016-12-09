@@ -25,6 +25,7 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
             console.info('init early checkin ctrl: ', $stateParams);
 
             var params = JSON.parse($stateParams.early_checkin_data);
+            
             $scope.selectedReservation = JSON.parse($stateParams.selected_reservation);
 
             setEarlyParams(params);
