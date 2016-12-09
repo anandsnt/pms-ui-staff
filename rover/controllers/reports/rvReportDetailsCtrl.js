@@ -118,6 +118,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.isDepositBalanceReport = false;
 			$scope.isCancellationReport = false;
 			$scope.isActionsManager = false;
+			$scope.isArAgingReport = false;
 			$scope.isVacantRoomsReport = false;
             $scope.isForecastGuestGroup = false;
 
@@ -244,8 +245,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['ACTIONS_MANAGER']:
                     $scope.isActionsManager = true;
 					break;
-				case reportNames['VACANT_ROOMS_REPORT']:
-                    $scope.isVacantRoomsReport = true;
+				case reportNames['A/R_AGING']:
+                    $scope.isArAgingReport = true;
 					break;
                 case reportNames['FORECAST_GUEST_GROUPS']:
                     $scope.isForecastGuestGroup = true;
@@ -785,6 +786,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['ACTIONS_MANAGER']:
 					template = '/assets/partials/reports/actionManager/reportRow.html';
 					break;
+
+			  //   case reportNames['ACTIONS_MANAGER']:
+					// template = '/assets/partials/reports/actionManager/reportRow.html';
+					// break;
+
 				case reportNames['VACANT_ROOMS_REPORT']:
 					template = '/assets/partials/reports/vacantRoomsReport/rvVacantRoomsReportRow.html';
 					break;

@@ -240,9 +240,6 @@
     data="uiChosenReport.hasGuaranteeType.data"
     options="uiChosenReport.hasGuaranteeType.options"></multi-option-selection>
 
-
-
-
 <multi-option-selection ng-show="uiChosenReport.hasByChargeGroup && uiChosenReport.hasByChargeGroup.data.length"
     label="Charge Group(s)"
     on-update="refreshFilterScroll"
@@ -257,8 +254,6 @@
     data="uiChosenReport.hasByChargeCode.data"
     options="uiChosenReport.hasByChargeCode.options"></multi-option-selection>
 
-
-
 <multi-option-selection ng-show="uiChosenReport.hasRateTypeFilter && uiChosenReport.hasRateTypeFilter.data.length"
     label="Rate Type"
     on-update="refreshFilterScroll"
@@ -271,7 +266,6 @@
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasRateFilter.data"
     options="uiChosenReport.hasRateFilter.options"></multi-option-selection>
-
 
 
 <multi-option-selection ng-show="uiChosenReport.hasDisplay && uiChosenReport.hasDisplay.data.length"
@@ -331,8 +325,17 @@
     data="uiChosenReport.hasAddons.data"
     options="uiChosenReport.hasAddons.options"></multi-option-selection>
 
+<multi-option-selection ng-show="uiChosenReport.hasIncludeAgingBalance && uiChosenReport.hasIncludeAgingBalance.data.length"
+    label="Aging Balance"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasIncludeAgingBalance.data"
+    options="uiChosenReport.hasIncludeAgingBalance.options"></multi-option-selection>
 
-
+<div class="entry search" ng-show="uiChosenReport.hasIncludeAccountName">
+    <label>Account Name</label>
+    <input class="icons icon-search" auto-complete auto-options="compTaGrpAutoCompleteOnList" data-card-type="" type="text" placeholder="Search by Name" value="" autocomplete="off" ng-model="uiChosenReport.chosenIncludeAccountName" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnuiChosenReport(uiChosenReport)" ng-change="removeCompTaGrpId(uiChosenReport, 'uiChosenIncludeCompanyTaGroup', 'chosenIncludeCompanyTaGroup')">
+    <input type="text" class="hidden" ng-model="uiChosenReport.chosenIncludeAccountName">
+</div>
 
 <multi-option-selection ng-show="uiChosenReport.hasReservationStatus && uiChosenReport.hasReservationStatus.data.length"
     label="Reservation Status"

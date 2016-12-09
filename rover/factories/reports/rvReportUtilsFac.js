@@ -354,6 +354,16 @@ angular.module('reportsModule')
                         'value': "INCLUDE_DEPARTMENTS",
                         'description': "Include Departments"
                     });
+                case reportNames['A/R_AGING']:
+                    report['filters'].push({
+                        'value': "INCLUDE_AGING_BALANCE",
+                        'description': "Include Aging Balance"
+                    }
+                    // , {
+                    //     'value': "INCLUDE_DEPARTMENTS",
+                    //     'description': "Include Departments"
+                    // }
+                    );
 
 
                 default:
@@ -509,6 +519,9 @@ angular.module('reportsModule')
                     }];
                 }
 
+                if ( filter.value === 'DAYS_0_30' ) {
+                    report['hasIncludeAgingBalance'] = filter;
+                }
 
                 // check for include company/ta filter and keep a ref to that item
                 if ( filter.value === 'INCLUDE_COMPANYCARD_TA' ) {
@@ -520,13 +533,17 @@ angular.module('reportsModule')
                     report['hasIncludeCompanyTaGroup'] = filter;
                 }
 
-
                 if ( filter.value === 'MIN_REVENUE' ) {
                     report['hasMinRevenue'] = filter;
                 }
                 if ( filter.value === 'MIN_ROOM_NIGHTS' ) {
                     report['hasMinRoomNights'] = filter;
                 }
+
+                if ( filter.value === 'ACCOUNT_NAME' ) {
+                    report['hasIncludeAccountName'] = filter;
+                }
+
 
                 if ( filter.value === 'MIN_NUMBER_OF_DAYS_NOT_OCCUPIED' ) {
                     report['hasMinNoOfDaysNotOccupied'] = filter;
@@ -732,6 +749,9 @@ angular.module('reportsModule')
                 } else if ( 'INCLUDE_COMPLETION_STATUS' === filter.value && ! filter.filled) {
                     // requested++;
                     fillCompletionStatus();
+                } else if ( 'INCLUDE_AGING_BALANCE' === filter.value && ! filter.filled) {
+                    // requested++;
+                    fillAgingBalance();
                 } else {
                     // no op
                 }
@@ -917,6 +937,40 @@ angular.module('reportsModule')
                                 selectAll: true,
                                 key: 'status',
                                 defaultValue: 'Select Status'
+                            }
+                        };
+                    }
+                });
+            }
+            function fillAgingBalance(){
+                customData = [
+                                {id: "DAYS_0_30", status: "0-30 DAYS", selected: true},
+                                {id: "DAYS_31_60", status: "31-60 DAYS", selected: true},
+                                {id: "DAYS_61_90",  status: "61-90 DAYS", selected: true},
+                                {id: "DAYS_91_120",  status: "91-120 DAYS", selected: true},
+                                {id: "DAYS_120_plus",  status: "120+ DAYS", selected: true}
+                            ];
+
+
+// {value: "DAYS_0_30", description: "0 - 30 DAYS"}
+// 1: {value: "DAYS_120_plus", description: "120+ DAYS"}
+// 2: {value: "DAYS_31_60", description: "31 - 60 DAYS"}
+// 3: {value: "DAYS_61_90", description: "61 - 90 DAYS"}
+// 4: {value: "DAYS_91_120", description: "91 - 120 DAYS"}
+
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'INCLUDE_AGING_BALANCE' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+
+                        report.hasIncludeAgingBalance = {
+                            data: customData,
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'status',
+                                defaultValue: 'Select Aging Balance'
                             }
                         };
                     }
