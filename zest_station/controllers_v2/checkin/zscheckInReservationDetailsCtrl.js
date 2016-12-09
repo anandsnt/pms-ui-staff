@@ -275,6 +275,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 params.early_checkin_data = JSON.stringify(response);
                 params.early_charge_symbol = $scope.selectedReservation.earlyCheckinChargeSymbol;
             }
+            params.selected_reservation = JSON.stringify($scope.selectedReservation);
             console.info('sending stateparams: ', params);
             $state.go('zest_station.earlyCheckin', params);
         };
