@@ -41,7 +41,7 @@
                     <div class="eta-container">
                         <div class="select-style">
                             <select ng-model="stayDetails.hour"
-                            ng-options="hour as hour  for hour in hours">
+                            ng-options="hour as hour  for hour in hoursWithRestrictions" ng-change="hoursChanged()">
                                 <option value="">HH</option>
                             </select>
                         </div>
@@ -49,16 +49,15 @@
                     <div class="eta-container eta-date">
                         <div class="select-style">
                             <select ng-model="stayDetails.minute"
-                            ng-options="minute as minute  for minute in minutes">
+                            ng-options="minute as minute  for minute in minutesWithRestrictions">
                                 <option value="">MM</option>
                             </select>
                         </div>
                     </div>
                     <div class="eta-container">
                         <div class="select-style">
-                            <select ng-model="stayDetails.primeTime">
-                                <option value="AM" selected="" >AM</option>
-                                <option value="PM" >PM</option>
+                            <select ng-model="stayDetails.primeTime"
+                                ng-options="primeTime as primeTime  for primeTime in primeTimesNewWithRestrictions" ng-change="primeTimeChanged()">
                                 <option value="">AM/PM</option>
                             </select>
                         </div>
