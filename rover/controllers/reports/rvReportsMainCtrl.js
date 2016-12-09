@@ -1074,7 +1074,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					'floorList': [],
 					'rates': [],
 					'assigned_departments': [],
-					'completion_status': []
+					'completion_status': [],
+					'aging_balance': []
 				};
 			}
 
