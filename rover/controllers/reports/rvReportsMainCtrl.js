@@ -1768,7 +1768,30 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					}
 				}
 			}
-			// include departments
+
+			// include Aging days
+			if ( report.hasOwnProperty('hasIncludeAgingBalance') ) {
+				selected = _.where(report['hasIncludeAgingBalance']['data'], { selected: true });
+
+				if ( selected.length > 0 ) {
+					key         = reportParams['ASSIGNED_DEPARTMENTS'];
+					params[key] = [];
+					/**/
+					_.each(selected, function(each) {
+						params[key].push( each.id.toString() );
+						/**/
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.assigned_departments.push( each.name );
+						}
+					});
+
+					// in case if all reservation status are selected
+					if ( changeAppliedFilter && report['hasDepartments']['data'].length === selected.length ) {
+						$scope.appliedFilter.assigned_departments = ['All Departments'];
+					}
+				}
+			}
+			// include completion status
 			if ( report.hasOwnProperty('hasCompletionStatus') ) {
 				selected = _.where(report['hasCompletionStatus']['data'], { selected: true });
 
