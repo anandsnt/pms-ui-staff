@@ -38,12 +38,12 @@
         <div class="col-md-4 top-spacing sm-no-top-spacing section-container">
              <!--  -->
             <div class="section-container">
-                <p class="sub-text left-align">ESTIMATED ARRIVAL TIME</span>
+                <p class="sub-text left-align">ESTIMATED ARRIVAL TIME</p>
                 <div class="row">
                     <div class="eta-container">
                         <div class="select-style">
                             <select ng-model="stayDetails.hour"
-                            ng-options="hour as hour  for hour in hoursWithRestrictions" ng-change="hoursChanged()">
+                            ng-options="hour as hour  for hour in hours">
                                 <option value="">HH</option>
                             </select>
                         </div>
@@ -51,7 +51,7 @@
                     <div class="eta-container">
                         <div class="select-style">
                             <select ng-model="stayDetails.minute"
-                            ng-options="minute as minute  for minute in minutesWithRestrictions">
+                            ng-options="minute as minute  for minute in minutes">
                                 <option value="">MM</option>
                             </select>
                         </div>
@@ -59,7 +59,7 @@
                     <div class="eta-container">
                         <div class="select-style">
                             <select ng-model="stayDetails.primeTime"
-                                ng-options="primeTime as primeTime  for primeTime in primeTimesNewWithRestrictions" ng-change="primeTimeChanged()">
+                                ng-options="primeTime as primeTime  for primeTime in primeTimes">
                                 <option value="">AM/PM</option>
                             </select>
                         </div>
