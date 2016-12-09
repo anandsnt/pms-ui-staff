@@ -15,27 +15,18 @@ angular.module('sntRover')
                 $scope.diaryData.textInQueryBox = '';
                 $scope.diaryData.showSearchResultsArea = false;
                 $scope.diaryData.roomNumberSearchResults = [];
-                $scope.setScroller('result_showing_area', scrollerOptions);
-                refreshScroller();
             };
             var searchRoomCall = null;
-            // Scroller options for search-results view.
-            var scrollerOptions = {
-                tap: true,
-                preventDefault: false,
-                deceleration: 0.0001,
-                shrinkScrollbars: 'clip'
-            };
+  
             // success callback of fetching search results
             var successCallbackFunction = function(data) {
                 $scope.$emit('hideLoader');
                 // $scope.diaryData is defined in (parent controller)rvNightlyDiaryController
                 $scope.diaryData.roomNumberSearchResults = data.rooms;
-                refreshScroller();
+                $rootScope.$broadcast('REFRESH_ROOM_SEARCH_RESULT');
+                $scope.diaryData.hasOverlay = true;
             };
-            var refreshScroller = function() {
-                $scope.refreshScroller('result_showing_area');
-            };
+
             // failure callback of fetching search results
             var failureCallbackFunction = function(error) {
                 $scope.errorMessage = error;
@@ -53,6 +44,7 @@ angular.module('sntRover')
             $scope.clearResults = function() {
                 $scope.diaryData.textInQueryBox = '';
                 $scope.diaryData.showSearchResultsArea = false;
+                $scope.diaryData.roomNumberSearchResults = [];
             };
 
             // function to perform filtering data, on change-event of query box
@@ -63,21 +55,23 @@ angular.module('sntRover')
                         clearTimeout(searchRoomCall);
                     }
                     searchRoomCall = setTimeout(function() {
-                        $scope.$apply(function() {
-                            if ( $scope.diaryData.textInQueryBox.length !== 0 ) {
-                                displayFilteredResults();
-                            } else {
-                                $scope.diaryData.showSearchResultsArea = false;  
-                            }
-                        });
+                        if ( $scope.diaryData.textInQueryBox.length !== 0 ) {
+                            displayFilteredResults();
+                        } else {
+                            $scope.$apply(function() {
+                                $scope.diaryData.showSearchResultsArea = false;
+                                $scope.diaryData.roomNumberSearchResults = [];
+                            });
+                        }
                     }, 800);
                 } else {
                     $scope.diaryData.showSearchResultsArea = false;
                     $scope.diaryData.roomNumberSearchResults = [];
                 }
             };
+
             $scope.$on('CLOSE_SEARCH_RESULT', function() {
-               $scope.diaryData.showSearchResultsArea = false;
                $scope.clearResults();
             });
+
         }]);

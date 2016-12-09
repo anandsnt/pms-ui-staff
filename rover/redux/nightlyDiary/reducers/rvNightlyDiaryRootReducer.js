@@ -7,8 +7,11 @@ const nightlyDiaryRootReducer = (state, action) => (
         currentBusinessDate: (action.type === 'DIARY_VIEW_CHANGED') ? action.currentBusinessDate : state.currentBusinessDate,
         callBackFromAngular: callBackReducer(state, action),
         paginationData: paginationDataReducer(state, action),
-        selectReservationId:  (action.type === 'RESERVATION_SELECTED') ? action.selectReservationId : state.selectReservationId,
-        selectedRoomId: action.selectedRoomId
+        selectedReservationId: (action.type === 'RESERVATION_SELECTED' || action.type === 'CANCEL_RESERVATION_EDITING')
+                            ? action.selectedReservationId
+                            : state.selectedReservationId,
+        selectedRoomId: (action.type === 'DIARY_VIEW_CHANGED') ? action.selectedRoomId : state.selectedRoomId,
+        isFromStayCard: state.isFromStayCard
     }
 );
 

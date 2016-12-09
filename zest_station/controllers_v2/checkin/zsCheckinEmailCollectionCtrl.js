@@ -95,10 +95,6 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
                     'first_name': $stateParams.first_name
                 };
 
-                if ($scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2 !== '') {
-                    stateParams.message = $scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2;
-                }
-                
                 $state.go('zest_station.speakToStaff', stateParams);
             };
 

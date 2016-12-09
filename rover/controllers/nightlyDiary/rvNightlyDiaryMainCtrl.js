@@ -67,6 +67,7 @@ angular.module('sntRover')
                     isEditReservationMode: false
                 };
                 $scope.currentSelectedReservation = {};
+                $scope.currentSelectedRoom = {};
             };
 
             initiateBasicConfig();
@@ -142,17 +143,17 @@ angular.module('sntRover')
              * Show selected reservation highlighted and enable edit bar
              * @param reservation - Current selected reservation
              */
-            var selectReservation = (e, reservation) => {
+            var selectReservation = (e, reservation, room) => {
                 $scope.diaryData.isEditReservationMode = true;
                 $scope.currentSelectedReservation = reservation;
-                if(!$stateParams.isFromStayCard) {
+                $scope.currentSelectedRoom = room;
+                if (!$stateParams.isFromStayCard) {
                     $scope.$apply();
                     showReservationSelected();
                 } else {
                     // To fix issue point 3 - QA failed comment - CICO-34410
                     $stateParams.isFromStayCard = false;
                 }
-
             };
 
             /*
@@ -161,12 +162,18 @@ angular.module('sntRover')
             var cancelReservationEditing = function() {
                 $scope.diaryData.isEditReservationMode = false;
                 $scope.currentSelectedReservation = {};
+                var dispatchData = {
+                    type: 'CANCEL_RESERVATION_EDITING',
+                    reservationsList: $scope.diaryData.reservationsList.rooms
+                };
+
+                store.dispatch(dispatchData);
             };
             /*
              * Cancel button click edit bar
              *
              */
-            $scope.$on("CANCEL_RESERVATION", function() {
+            $scope.$on("CANCEL_RESERVATION_EDITING", function() {
                 cancelReservationEditing();
             });
             /**
@@ -183,7 +190,8 @@ angular.module('sntRover')
 
             if ($stateParams.isFromStayCard) {
                 var params = RVNightlyDiarySrv.getCache();
-                $scope.currentSelectedReservation = params.currentSelectedReservation;
+                $scope.currentSelectedReservationId = params.currentSelectedReservationId;
+                $scope.diaryData.selectedRoomId = params.currentSelectedRoomId;
             }
 
             // Initial State
@@ -195,8 +203,9 @@ angular.module('sntRover')
                 currentBusinessDate: $rootScope.businessDate,
                 callBackFromAngular: getTheCallbacksFromAngularToReact(),
                 paginationData: $scope.diaryData.paginationData,
-                selectReservationId: $scope.currentSelectedReservation.id,
-                selectedRoomId: $scope.diaryData.selectedRoomId
+                selectedReservationId: $scope.currentSelectedReservationId,
+                selectedRoomId: $scope.diaryData.selectedRoomId,
+                isFromStayCard: $stateParams.isFromStayCard
             };
             const store = configureStore(initialState);
             const {render} = ReactDOM;
@@ -213,7 +222,7 @@ angular.module('sntRover')
                     currentBusinessDate: $rootScope.businessDate,
                     callBackFromAngular: getTheCallbacksFromAngularToReact(),
                     paginationData: $scope.diaryData.paginationData,
-                    selectReservationId: $scope.currentSelectedReservation.id,
+                    selectedReservationId: $scope.currentSelectedReservation.id,
                     selectedRoomId: $scope.diaryData.selectedRoomId
                 };
                 store.dispatch(dispatchData);
@@ -221,9 +230,11 @@ angular.module('sntRover')
             var showReservationSelected = function() {
                 var dispatchData = {
                     type: 'RESERVATION_SELECTED',
-                    selectReservationId: $scope.currentSelectedReservation.id,
-                    reservationsList: $scope.diaryData.reservationsList.rooms
+                    selectedReservationId: $scope.currentSelectedReservation.id,
+                    reservationsList: $scope.diaryData.reservationsList.rooms,
+                    selectedRoomId: $scope.diaryData.selectedRoomId
                 };
+
                 store.dispatch(dispatchData);
             };
 
@@ -251,11 +262,6 @@ angular.module('sntRover')
              */
             (() => {
                 renderDiaryView();
-                if ($stateParams.isFromStayCard) {
-                    var params = RVNightlyDiarySrv.getCache();
-                    $scope.currentSelectedReservation = params.currentSelectedReservation;
-                    selectReservation("", $scope.currentSelectedReservation);
-                }
             })();
 }]);
 
