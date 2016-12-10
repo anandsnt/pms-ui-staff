@@ -81,7 +81,7 @@ let  calculateReservationDurationAndPosition = (diaryInitialDayOfDateGrid, reser
     let numberOfNightsVisibleInGrid = Math.abs((reservationDepartureDate.getTime() - reservationArrivalDate.getTime()) / (oneDay));
 
     if ((reservationDepartureDate.getTime() >= diaryInitialDate.getTime())
-        && (reservationDepartureDate.getTime() < finalDayOfDiaryGrid)
+        && (reservationDepartureDate.getTime() <= finalDayOfDiaryGrid)
         && (reservationArrivalDate.getTime() !== reservationDepartureDate.getTime()))
     {
         
@@ -101,7 +101,7 @@ let  calculateReservationDurationAndPosition = (diaryInitialDayOfDateGrid, reser
         } else if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_21) {
             durationOfReservation = nightDuration - NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_21;
         }
-    } else if (reservationDepartureDate.getTime() >= finalDayOfDiaryGrid) {
+    } else if (reservationDepartureDate.getTime() > finalDayOfDiaryGrid) {
         let noOfDaysBtwFinalAndArrivalDate = Math.abs((finalDayOfDiaryGrid - reservationArrivalDate.getTime()) / (oneDay));
        // Considering the day when the reservation starts (if past or first day = 1, second day = 2, ....)
        // let reservationArrivalDay = noOfDaysBtwFinalAndDepartureDate + 1;
@@ -117,7 +117,7 @@ let  calculateReservationDurationAndPosition = (diaryInitialDayOfDateGrid, reser
 
     }
     var returnData = {};
-
+   
     returnData.durationOfReservation = durationOfReservation;
     returnData.reservationPosition   = reservationPosition;
     returnData.numberOfNightsVisibleInGrid = numberOfNightsVisibleInGrid;
