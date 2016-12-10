@@ -13,6 +13,7 @@ admin.controller('adsnapshotSetupCtrl', ['$scope',
 					params: {},
 					successCallBack: onpublishFullExportSucces
 				};
+				
 			$scope.callAPI(adSnapShotSetupSrv.publishFullExport, options);
 		};
 

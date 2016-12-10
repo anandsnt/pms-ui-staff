@@ -12,11 +12,11 @@
         <nav id="options" role="nav" ng-if="ableToPurchaseEarly">
             <!-- Early Checkin Purchase Nav -->
             <ul role="menu">
-                <li translate>
+                <li>
                     <button type="button" class="button option" click-touch="acceptEarlyCheckinOffer()">
                         <div ng-include="icons.url.key"></div>
                     </button>
-                    EARLY_AVAIL_PURCHASE
+                    {{EARLY_AVAIL_PURCHASE |translate}}
                     <span translate>
                         EARLY_AVAIL_PURCHASE_SUB
                         {{early_charge_symbol}}{{early_checkin_charge}} 
@@ -26,11 +26,11 @@
                 <li class="break">
                     <span translate>OR_TEXT</span>
                 </li>
-                <li translate>
+                <li>
                     <button type="button" class="button option" click-touch='checkinLater()'>
                         <div ng-include="icons.url.watch"></div>
                     </button>
-                    EARLY_AVAIL_LATER
+                    {{EARLY_AVAIL_LATER |translate}}
                 </li>
             </ul>
         </nav>

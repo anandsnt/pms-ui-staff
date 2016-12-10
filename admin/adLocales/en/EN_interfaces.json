@@ -1,4 +1,4 @@
-	
+
 	"WORKSTATION": "Work Station",
 	"STATION_NAME": "Work Station Name",
 	"STATION_PRINTER": "Work Station Printer",
@@ -17,6 +17,7 @@
 	"END_POINT" : "End Point",
 	"ACTIVATE_INACTIVATE" : "Activate / Inactivate",
 	"CUBILIS_HEADER": "Cubilis CRS Setup",
+	"VERTICALBOOKING_HEADER": "Vertical Booking CRS Setup",
 	"DEFAULT_RATE": "Default Rate",
 	"DEFAULT_BOOKING_ORIGIN": "Default Booking Origin",
 	"DEFAULT_PAYMENT_METHOD": "Default Payment Method",
@@ -39,5 +40,8 @@
 	"MAP_SELECTED_ROOMS": "Map Selected Rooms",
 	"DELETE_MAPPING": "Delete Mapping",
 	"SAVE_MAPPING": "Save Mapping",
-	"ACCOUNTVIEW_HEADER": "AccountView Back Office Setup"
-
+	"ACCOUNTVIEW_HEADER": "AccountView Back Office Setup",
+	"FEATURE_DOWNLOAD_RESERVATION": "Download Reservation",
+	"FEATURE_UPLOAD_INVENTORY": "Upload Inventory",
+	"FEATURE_UPLOAD_RATE": "Upload Rate",
+	"FEATURE_UPLOAD_RESTRICTION":"Upload Restriction"

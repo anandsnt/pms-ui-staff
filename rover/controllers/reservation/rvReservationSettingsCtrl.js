@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSearchSrv', '$state', '$stateParams', 'dateFilter', '$timeout', 'RVReservationTabService',
-    function($scope, RVReservationBaseSearchSrv, $state, $stateParams, dateFilter, $timeout, RVReservationTabService) {
+sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSearchSrv', '$state', '$stateParams', 'dateFilter', '$timeout', 'RVReservationTabService', '$rootScope',
+    function($scope, RVReservationBaseSearchSrv, $state, $stateParams, dateFilter, $timeout, RVReservationTabService, $rootScope) {
         $scope.reservationSettingsVisible = false;
 
         var resizableMinWidth = 30;
@@ -101,6 +101,13 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             $scope.setNumberOfNights();
             initStayDates(0);
             $scope.stayDatesClicked();
+
+            if (typeof $scope.groupConfigData !== 'undefined') {
+                if ($scope.reservationData.arrivalDate < $scope.groupConfigData.summary.block_from || $scope.reservationData.departureDate > $scope.groupConfigData.summary.block_to) {
+                    clearGroupSelection();
+                    $rootScope.$broadcast("groupCardDetached");
+                }
+            }
         };
 
 
@@ -109,6 +116,20 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             $scope.setNumberOfNights();
             initStayDates(0);
             $scope.stayDatesClicked();
+
+            if (typeof $scope.groupConfigData !== 'undefined') {
+                if ($scope.reservationData.arrivalDate < $scope.groupConfigData.summary.block_from || $scope.reservationData.departureDate > $scope.groupConfigData.summary.block_to) {
+                    clearGroupSelection();
+                    $rootScope.$broadcast("groupCardDetached");
+                }
+            }
+        };
+        var clearGroupSelection = function() {
+            if ( $scope.reservationData.group && $scope.reservationData.group.id) {
+               $scope.reservationData.group = {};
+               $scope.companySearchText = "";
+               $scope.codeSearchText = "";
+            }
         };
 
         $scope.setDepartureDate = function() {

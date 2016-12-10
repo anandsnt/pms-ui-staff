@@ -7,7 +7,11 @@
 		 */
 		$scope.goToNextPage = function() {
 			$rootScope.skipBalanceCollection = true;
-			$state.go('preCheckinStatus');
+            if ($rootScope.isAutoCheckinOn) {
+                $state.go('preCheckinStatus');
+            } else {
+                $state.go('checkinKeys');
+            }
 		};
 
 		/*
@@ -49,6 +53,8 @@
 			guestDetailsService.submitPayment(params).then(function(response) {
 				$scope.isLoading = false;
 				$scope.paymentSuccess = true;
+                $rootScope.isCcAttachedFromGuestWeb = true;
+
 			}, function() {
 				$scope.isLoading = false;
 				$scope.paymentError = true;

@@ -102,10 +102,24 @@ sntRover.controller('reservationDetailsController',
 				}
 			};
 
+		} else if ($scope.previousState.name === "rover.nightlyDiary" || $rootScope.stayCardStateBookMark.previousState === 'rover.nightlyDiary') {
+			if ($scope.previousState.name === "rover.nightlyDiary") {
+				setNavigationBookMark();
+			}
+			$rootScope.setPrevState = {
+				title: 'DIARY',
+				name: 'rover.nightlyDiary',
+				param: {
+					id: $rootScope.stayCardStateBookMark.previousStateParams.id,
+					activeTab: "DIARY",
+					isFromStayCard: true
+				}
+			};
 		} else if ($stateParams.isFromDiary && !$rootScope.isReturning()) {
 			setNavigationBookMark();
 			$rootScope.setPrevState = {
 				title: 'Room Diary'
+				
 			};
 		} else if ($scope.previousState.name === "rover.reports" || $rootScope.stayCardStateBookMark.previousState === 'rover.reports') {
 			if ($scope.previousState.name === "rover.reports") {

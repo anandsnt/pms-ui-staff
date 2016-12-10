@@ -1,46 +1,63 @@
 const { createClass, PropTypes } = React;
 const { findDOMNode } = ReactDOM;
 const NightlyDiaryRootComponent = createClass ({
-  componentDidMount() {
-    this.scrollOptions = {
-      probeType: 3,
-      scrollY: true,
-      preventDefault: true,
-      preventDefaultException: { tagName: /^(BUTTON)$/i },
-      mouseWheel: true,
-      deceleration: 0.0009,
-      click: false,
-      scrollbars: 'custom'
-    };
-    this.setScroller();
-  },
-  setScroller() {
-    if (!this.scrollableElement) {
-      this.scrollableElement = $(findDOMNode(this)).find("#diary-nightly-grid")[0];
-    }
-    this.scroller = new IScroll(this.scrollableElement, this.scrollOptions);
-    this.refreshScroller();
-  },
-  refreshScroller() {
-    this.scroller.refresh();
-  },
-  componentDidUpdate() {
-    this.refreshScroller();
-    // scroll is moving to top
-    this.scroller.scrollToElement($(findDOMNode(this)).find(".room")[0], 1000, null, true);
-  },
-  render() {
-    return (
+    componentDidMount() {
+        this.scrollOptions = {
+            probeType: 3,
+            scrollY: true,
+            preventDefault: true,
+            preventDefaultException: { tagName: /^(BUTTON)$/i },
+            mouseWheel: true,
+            deceleration: 0.0009,
+            click: false,
+            scrollbars: 'custom'
+        };
+        this.setScroller();
+        this.scrollToNthelement(this.props.index);
+        this.refreshScroller();
+    },
+    setScroller() {
+        if (!this.scrollableElement) {
+            this.scrollableElement = $(findDOMNode(this)).find('#diary-nightly-grid')[0];
+        }
+        this.scroller = new IScroll(this.scrollableElement, this.scrollOptions);
+        this.refreshScroller();
+    },
+    refreshScroller() {
+        let that = this;
+
+        setTimeout(function() {
+            that.scroller.refresh(); 
+        }, 1000);
+
+    },
+    scrolToTop() {
+        // scroll is moving to top
+        // this.scroller.scrollToElement($(findDOMNode(this)).find(".room")[20], 1000, null, true);
+        this.scroller.scrollTo(0, 0, 1000, null);
+    },
+    scrollToNthelement(n) {
+        var width = $(findDOMNode(this)).find(".room")[0].clientHeight,
+            scrollToX = n * width * -1;
+
+        this.scroller.scrollTo(0, scrollToX, 1000, null);
+    },
+    componentDidUpdate() {
+        this.scrollToNthelement(this.props.index);
+        this.refreshScroller();
+    },
+    render() {
+        return (
         <div className="grid-inner">
             <div id="diary-nightly-grid" className={this.props.ClassForRootDiv}>
                 <div className="wrapper">
-                    {(this.props.showPrevPageButton)?<GoToPreviousPageButtonContainer/>:''}
-                    {(this.props.showNextPageButton)?<GoToNextPageButtonContainer/>:''}
+                    {this.props.showPrevPageButton ? <GoToPreviousPageButtonContainer/> : ''}
+                    {this.props.showNextPageButton ? <GoToNextPageButtonContainer/> : ''}
                     <NightlyDiaryRoomsListContainer/>
                     <NightlyDiaryReservationsListContainer/>
                 </div>
             </div>
-            <div className="diary-nightly-sidebar diary-nightly-unassigned">
+            <div className="diary-nightly-sidebar diary-nightly-unassigned hidden">
                 <div className="sidebar-header">
                     <h2>Unassigned</h2>
                     <p>Drag & Drop to assign a room</p>
@@ -66,11 +83,11 @@ const NightlyDiaryRootComponent = createClass ({
             </div>
         </div>
     );
-  }
+    }
 });
 
 NightlyDiaryRootComponent.propTypes = {
-  showNextPageButton: PropTypes.bool.isRequired,
-  showPrevPageButton: PropTypes.bool.isRequired,
-  ClassForRootDiv: PropTypes.string.isRequired
+    showNextPageButton: PropTypes.bool.isRequired,
+    showPrevPageButton: PropTypes.bool.isRequired,
+    ClassForRootDiv: PropTypes.string.isRequired
 };
