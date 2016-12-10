@@ -51,6 +51,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			// yes, we are setting the headting and title
 			$scope.setHeadingTitle(title);
 		};
+        
 		$scope.updateAndBackFlag = false;
 		$scope.updateAndBack = function() {
 			$scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');
@@ -313,10 +314,10 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 				var onAccountUpdateSuccess = function(data) {
 						// client controllers should get an infromation whether updation was success
 						$scope.$broadcast("UPDATED_ACCOUNT_INFO");
-						if($scope.updateAndBackFlag){
+						if($scope.updateAndBackFlag) {
 							$state.go('rover.accounts.search');					
 						}
-						else{
+						else {
 							$scope.$emit('hideloader');
 						}
 					},
