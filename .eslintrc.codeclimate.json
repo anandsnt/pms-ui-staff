@@ -19,7 +19,8 @@
         "isEmptyObject": true,
         "sntGuestWeb": true,
         "admin": true,
-        "ADBaseTableCtrl": true
+        "ADBaseTableCtrl": true,
+        "tzIndependentDate": true
     },
     "installedESLint": true,
     "parserOptions": {

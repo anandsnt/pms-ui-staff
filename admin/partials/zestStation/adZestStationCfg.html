@@ -16,12 +16,16 @@
                 <ad-checkbox is-checked="zestSettings.home_screen.check_out" label="{{ 'CHECKOUT' | translate}}"></ad-checkbox>
                 <ad-checkbox is-checked="zestSettings.home_screen.check_in" label="{{ 'CHECKIN' | translate}}"></ad-checkbox>
             </fieldset>
+
             <fieldset class="holder right">
                 <div class="form-title full-width">
-                    <h3><span translate> Speak To Staff Message</span> </h3>
+                    <h3><span translate>ACTIVATE_BOOKING_ENGINE_POPUP</span> </h3>
                 </div>
-                <ad-textbox value="zestSettings.zest_station_message_texts.speak_to_crew_mod_message2" name="zest-web" id="zest-web" label="" placeholder="{{'ZEST_CHECK_IN_MESSAGE' | translate }}" styleclass="full-width"></ad-textbox>
+                <ad-toggle-button is-checked="zestSettings.home_screen.booking_pop_up.enable_pop_up" label="{{'ACTIVATE_BOOKING_ENGINE_POPUP'| translate}}" div-class="full-width"></ad-toggle-button>
+                
+                <ad-textbox value="zestSettings.home_screen.booking_pop_up.booking_engine_url" name="zest-web" id="zest-web" label="{{'BOOKING_URL'| translate}}" placeholder="" styleclass="full-width" ng-hide="!zestSettings.home_screen.booking_pop_up.enable_pop_up"></ad-textbox>
             </fieldset>
+
             <fieldset class="holder left">
                 <div class="form-title full-width">
                     <h3><span translate> STATION_LANGUAGE_SUPPORT</span> </h3>
@@ -112,40 +116,35 @@
                     </div>
                 </div>
             </fieldset>
-            <fieldset class="holder right">
-                <div class="form-title full-width">
-                    <h3><span translate>ACTIVATE_BOOKING_ENGINE_POPUP</span> </h3>
-                </div>
-                <ad-toggle-button is-checked="zestSettings.home_screen.booking_pop_up.enable_pop_up" label="{{'ACTIVATE_BOOKING_ENGINE_POPUP'| translate}}" div-class="full-width"></ad-toggle-button>
-                
-                <ad-textbox value="zestSettings.home_screen.booking_pop_up.booking_engine_url" name="zest-web" id="zest-web" label="{{'BOOKING_URL'| translate}}" placeholder="" styleclass="full-width" ng-hide="!zestSettings.home_screen.booking_pop_up.enable_pop_up"></ad-textbox>
-            </fieldset>
+
+
             <fieldset class="holder right">
                 <div class="form-title full-width">
                     <h3><span translate>CHROME_APP_ID</span> </h3>
                 </div>
                 <ad-textbox value="zestSettings.chrome_app_id" name="zest-web" id="zest-web" label="{{'CHROME_APP_ID'| translate}}" placeholder="" styleclass="full-width"></ad-textbox>
             </fieldset>
+
             <!-- printer options -->
             <fieldset class="holder left holder_margin">
                 <div class="form-title full-width">
                     <h3><span translate>STATION_PRINTER_OPTIONS</span> </h3>
                 </div>
-                <div id="options" class="entry">
+                <div id="options" class="entry full-width">
                     <label translate>STATION_PRINTER_OPTIONS </label>
                     <label class="radio" ng-repeat="printer in zestStationData.printer_options" ng-class="{'checked':zestSettings.zest_printer_option == printer.value}">
                         <span class="icon-form icon-radio " ng-class="{'checked':zestSettings.zest_printer_option == printer.value}"></span>
                         <input type="radio" value="{{printer.value}}" ng-model="zestSettings.zest_printer_option"> {{ printer.description }}
                     </label>
                 </div>
-                <ad-toggle-button ng-show="zestSettings.zest_printer_option === 'STAR_TAC'" is-checked="zestSettings.kiosk_use_socket_print" label="{{'USE_SOCKET_PRINTING'| translate}}" div-class="full-width"></ad-toggle-button>
+                <ad-toggle-button ng-show="zestSettings.zest_printer_option === 'STAR_TAC'" is-checked="zestSettings.kiosk_use_socket_print" label="{{'USE_ZEST_STATION_HANDLER'| translate}}" div-class="full-width"></ad-toggle-button>
                 <br>
             </fieldset>
-            <fieldset class="holder full-width">
+            <fieldset class="holder right">
                 <div class="form-title full-width">
                     <h3><span translate>CC_ENTRY_METHOD</span> </h3>
                 </div>
-                <div id="options" class="entry" ng-hide="hideAddOption">
+                <div id="options" class="entry full-width" ng-hide="hideAddOption">
                     <label translate>CC_ENTRY_METHOD</label>
                     <label class="radio" ng-class="{'checked':zestSettings.kiosk_cc_entry_method== 'six_pay'}">
                         <span class="icon-form icon-radio " ng-class="{checked:zestSettings.kiosk_cc_entry_method=='six_pay'}"></span>

@@ -58,9 +58,8 @@
                     </div>
                     <div class="eta-container">
                         <div class="select-style">
-                            <select ng-model="stayDetails.primeTime">
-                                <option value="AM" selected="" >AM</option>
-                                <option value="PM" >PM</option>
+                            <select ng-model="stayDetails.primeTime"
+                                ng-options="primeTime as primeTime  for primeTime in primeTimes">
                                 <option value="">AM/PM</option>
                             </select>
                         </div>
