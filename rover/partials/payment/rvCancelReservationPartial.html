@@ -1,4 +1,4 @@
-<section ng-if="!paymentAttempted && !isPaymentFailure">
+<section ng-hide="paymentAttempted && !isPaymentFailure">
     <div class="entry full-width" ng-class="{'amount': feeData.showFee}">
 
         <label>Amount to pay (<span>{{currencySymbol}}</span>)</label>
