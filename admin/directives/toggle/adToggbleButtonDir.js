@@ -11,7 +11,8 @@ admin.directive('adToggleButton', function() {
             buttonClass: '@buttonClass',
             label: '@label',
             isDisabled: '=isDisabled',
-            isHide: '=isHide'
+            isHide: '=isHide',
+            description: '@description'
 	    },
 
     	templateUrl: '/assets/directives/toggle/adToggleButton.html'
