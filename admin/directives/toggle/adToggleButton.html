@@ -1,5 +1,10 @@
 <div class="entry {{divClass}}" ng-hide="isHide">
-	<label ng-hide="label.length ==0" for="">{{label}}</label>
+	<label ng-class="{'help-space':description}" ng-hide="label.length ==0" for="">{{label}}</label>
+	<span ng-if="description">
+		<div class="help-tip">
+			<p>{{description}}</p>
+		</div>
+	</span>
 	<div class="switch-button single {{buttonClass}}" ng-class="{'on': negativeLogic? !isChecked: isChecked}">
 		<input type="checkbox"  ng-checked="isChecked" ng-model="isChecked" ng-disabled="isDisabled">
 		<span class="switch-icon"></span>

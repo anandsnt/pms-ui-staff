@@ -78,12 +78,13 @@ let  calculateReservationDurationAndPosition = (diaryInitialDayOfDateGrid, reser
     //         - Substract 15 from it
 
     let durationOfReservation = 0;
+    let numberOfNightsVisibleInGrid = Math.abs((reservationDepartureDate.getTime() - reservationArrivalDate.getTime()) / (oneDay));
 
     if ((reservationDepartureDate.getTime() >= diaryInitialDate.getTime())
-        && (reservationDepartureDate.getTime() < finalDayOfDiaryGrid)
+        && (reservationDepartureDate.getTime() <= finalDayOfDiaryGrid)
         && (reservationArrivalDate.getTime() !== reservationDepartureDate.getTime()))
     {
-        let numberOfNightsVisibleInGrid = Math.abs((reservationDepartureDate.getTime() - reservationArrivalDate.getTime()) / (oneDay));
+        
 
         if (reservationArrivalDate.getTime() < diaryInitialDate.getTime()) {
             numberOfNightsVisibleInGrid = Math.abs((reservationDepartureDate.getTime() - diaryInitialDate.getTime()) / (oneDay));
@@ -100,7 +101,7 @@ let  calculateReservationDurationAndPosition = (diaryInitialDayOfDateGrid, reser
         } else if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_21) {
             durationOfReservation = nightDuration - NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_21;
         }
-    } else if (reservationDepartureDate.getTime() >= finalDayOfDiaryGrid) {
+    } else if (reservationDepartureDate.getTime() > finalDayOfDiaryGrid) {
         let noOfDaysBtwFinalAndArrivalDate = Math.abs((finalDayOfDiaryGrid - reservationArrivalDate.getTime()) / (oneDay));
        // Considering the day when the reservation starts (if past or first day = 1, second day = 2, ....)
        // let reservationArrivalDay = noOfDaysBtwFinalAndDepartureDate + 1;
@@ -116,9 +117,10 @@ let  calculateReservationDurationAndPosition = (diaryInitialDayOfDateGrid, reser
 
     }
     var returnData = {};
-
+   
     returnData.durationOfReservation = durationOfReservation;
     returnData.reservationPosition   = reservationPosition;
+    returnData.numberOfNightsVisibleInGrid = numberOfNightsVisibleInGrid;
     return returnData;
 };
 /*
@@ -189,6 +191,7 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
     // Added these params to reservation to avoid the calculation repetion
     // Same values needed in rvNightlyDiaryStayRange.html
 
+    reservation.numberOfNightsVisibleInGrid = positionAndDuration.numberOfNightsVisibleInGrid;
     reservation.duration = positionAndDuration.durationOfReservation;
     reservation.arrivalPosition = positionAndDuration.reservationPosition + "px";
     reservation.departurePosition = (positionAndDuration.durationOfReservation + positionAndDuration.reservationPosition) + "px";
@@ -224,7 +227,8 @@ const mapStateToNightlyDiaryReservationContainerProps = (state, ownProps) => ({
     selectReservation: state.callBackFromAngular.selectReservation,
     selectedReservationId: state.selectedReservationId,
     selectedRoom: ownProps.room,
-    isFromStayCard: state.isFromStayCard
+    isFromStayCard: state.isFromStayCard,
+    gridDays: state.numberOfDays
 });
 
 const mapDispatchToNightlyDiaryReservationContainerProps = (stateProps) => {
