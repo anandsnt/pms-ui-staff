@@ -1,5 +1,5 @@
 <div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
-   <form ng-hide="showSixPayLoader" class="modal-content billing-information" ng-class="{'add-card':saveData.newPaymentFormVisible}">
+   <form ng-hide="showSixPayLoader" class="modal-content billing-information" ng-class="{'add-card':saveData.newPaymentFormVisible, 'has-error': escapeNull(errorMessage) !== ''}">
    <button id="modal-close" type="button" class="dark-title modal-close" ng-click="handleCloseDialog()"><span class="icons icon-close"></button>
       <div class="modal-header">
          <h1 translate>BILLING_INFO_TITLE</h1>

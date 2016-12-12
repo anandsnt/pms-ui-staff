@@ -14,7 +14,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 	'$timeout',
 	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvAccountsConfigurationSrv, rvGroupConfigurationSrv, accountData, $state, rvPermissionSrv, rvAccountTransactionsSrv, $vault, $timeout) {
 
-		BaseCtrl.call(this, $scope);
+    BaseCtrl.call(this, $scope);
 
 		/**
 		 * to run angular digest loop,
@@ -51,11 +51,12 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			// yes, we are setting the headting and title
 			$scope.setHeadingTitle(title);
 		};
-
+        
+		$scope.updateAndBackFlag = false;
 		$scope.updateAndBack = function() {
 			$scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');
 			$scope.updateAccountSummary();
-			$state.go('rover.accounts.search');
+			$scope.updateAndBackFlag = true;
 		};
 
 
@@ -313,7 +314,12 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 				var onAccountUpdateSuccess = function(data) {
 						// client controllers should get an infromation whether updation was success
 						$scope.$broadcast("UPDATED_ACCOUNT_INFO");
-						$scope.$emit('hideloader');
+						if($scope.updateAndBackFlag) {
+							$state.go('rover.accounts.search');					
+						}
+						else {
+							$scope.$emit('hideloader');
+						}
 					},
 					onAccountUpdateFailure = function(errorMessage) {
 						// client controllers should get an infromation whether updation was a failure

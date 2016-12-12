@@ -1,14 +1,6 @@
 /*------------------------------- Themes ----------------------------------------------------*/
 
 @import "../style.less";
-@font-face {
-    font-family: 'Gotham Light';
-    src: url('/assets/type/GothamLight.eot');
-    src: url('/assets/type/GothamLight.eot?#iefix') format('embedded-opentype'), url('/assets/type/GothamLight.woff') format('woff'), url('//assets/type/GothamLight.ttf') format('truetype');
-    font-weight: 300;
-    font-style: normal;
-}
-
 html,
 body {
     height: auto !important;
@@ -182,7 +174,10 @@ textarea.sub-text:hover {
 .input-field {
     background-color: white;
 }
-
+input {
+    border-radius: 1px;
+    -webkit-box-shadow: 2px 2px 3px #d1d1d1 inset;
+}
 .calendar-button {
     background-color: #fff!important;
     font-size: 18px;
