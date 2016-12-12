@@ -51,7 +51,14 @@
                         <ad-textbox inputtype="text" value="ifc_comtrol.room_type" label="{{'IFC_COMTROL_DEFAULT_ROOM_TYPE' | translate}}" styleclass="full-width" ng-if="ifc_comtrol.enabled"></ad-textbox>
                     </fieldset>
                     <fieldset class="holder right">
-                        <ad-textbox inputtype="text" value="ifc_comtrol.language" label="{{'IFC_COMTROL_LANGUAGE' | translate}}" styleclass="full-width" ng-if="ifc_comtrol.enabled"></ad-textbox>
+                        <ad-dropdown-name ng-if="ifc_comtrol.enabled"
+                                          savemodel="ifc_comtrol.language"
+                                          valueproperty="id"
+                                          property="name"
+                                          list="languages"
+                                          label="{{'IFC_COMTROL_LANGUAGE' | translate}}"
+                                          div-class="full-width">
+                        </ad-dropdown-name>
                     </fieldset>
                 </div>
             </fieldset>
