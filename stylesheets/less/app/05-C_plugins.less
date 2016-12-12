@@ -3132,6 +3132,14 @@
                     &.loading { #fade > .out; }
                 }
 
+                &.has-error {
+                    .content-wrapper {
+                        .calc-height(100, 226);
+
+                        &.no-action { .calc-height(100, 136); }
+                    }
+                }
+
                 /* Entity details ***/
                 .billing-list,
                 .entity {
