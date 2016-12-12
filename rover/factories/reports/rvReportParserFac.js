@@ -8,6 +8,18 @@ sntRover.factory('RVReportParserFac', [
 
         factory.parseAPI = function ( reportName, apiResponse, options, resultTotalRow ) {
 
+            var gogo = function(apiResponse) {
+                var v = apiResponse.map(function (each, index) {
+                    if ( each.is_charge_group ) {
+                        return _.extend(each, {id: index+1 })
+                    } else {
+                        return each;
+                    }
+                });
+                console.log(v);
+                return v;
+            }
+
             if ( reportName === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseFinTransAdjustReport( reportName, apiResponse, options );
             }
@@ -57,6 +69,11 @@ sntRover.factory('RVReportParserFac', [
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseDataForRoomOOOOOSReport( reportName, apiResponse, options );
             }
 
+            else if ( reportName === reportNames['COMPARISION_BY_DATE'] ) {
+                return gogo(apiResponse);
+            }
+
+
             // a common parser that data into meaningful info like - notes, guests, addons, compTAgrp
             // this can be reused by the parsers defined above
             else {
@@ -71,7 +88,7 @@ sntRover.factory('RVReportParserFac', [
          * keys have a array of values. Each value representing an adjustment
          * or deleted charge respectively.
          *
-         * The purpose of this function to filter the API reponse based on 
+         * The purpose of this function to filter the API reponse based on
          * created_id. So we are gonna modify the API reponse array to an object
          * with keys for "created_id_by" and value an object with 'adjustments' and 'deleted_charges'
          * So under each created_id_by all 'adjustments' and 'deleted_charges' associated.
@@ -225,12 +242,12 @@ sntRover.factory('RVReportParserFac', [
         function $_parseDailyProduction ( reportName, apiResponse, options, resultTotalRow ) {
             /**
              * we are gonna transform the actual api response with the following strucutre:
-             * 
+             *
              * {
              *      '2015-04-01': [{room_type, room_type_id}, {room_type, room_type_id}],
              *      '2015-04-02': [{room_type, room_type_id}, {room_type, room_type_id}]
              * }
-             * 
+             *
              * to the following structure:
              *
              * {
@@ -305,7 +322,7 @@ sntRover.factory('RVReportParserFac', [
 
             return returnObj;
         }
-        
+
         var initPrdDemoGrphcsRow = function(showInBold, displayLabel, keyInAPI) {
             return {
                 'showInBold': showInBold,
@@ -335,19 +352,19 @@ sntRover.factory('RVReportParserFac', [
             // sources
             parsedDataListing.push (initPrdDemoGrphcsRow(true, 'Source', 'source_totals'));
             sources.map(function(value) {
-                parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'sources'));   
+                parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'sources'));
             });
 
             // origins
             parsedDataListing.push (initPrdDemoGrphcsRow(true, 'Origin', 'origin_totals'));
             origins.map(function(value) {
-                parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'origins'));  
+                parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'origins'));
             });
 
             // segments
             parsedDataListing.push (initPrdDemoGrphcsRow(true, 'Segment', 'segment_totals'));
             segments.map(function(value) {
-                parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'segments'));  
+                parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'segments'));
             });
 
             _.each(parsedDataListing, function(rowData) {
@@ -355,7 +372,7 @@ sntRover.factory('RVReportParserFac', [
                     e = dateData[rowData['key-in-api']];
                     if (e instanceof Array) {
                         // as per db model, a demogrphics' name is a unique for hotel
-                        e = _.findWhere(e, { 'name': rowData.displayLabel }); 
+                        e = _.findWhere(e, { 'name': rowData.displayLabel });
                     }
                     rowData.valueList = rowData.valueList.concat([
                        { key: 'res_count', value: e.total_reservations_count },
@@ -366,7 +383,7 @@ sntRover.factory('RVReportParserFac', [
                     ]);
                 });
             });
-            
+
             return {
                 listing: parsedDataListing,
                 dates: dateList
@@ -1064,7 +1081,7 @@ sntRover.factory('RVReportParserFac', [
             }
 
             return returnAry;
-        }            
+        }
 
         return factory;
     }

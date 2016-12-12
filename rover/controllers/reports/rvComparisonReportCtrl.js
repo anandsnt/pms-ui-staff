@@ -26,13 +26,13 @@ angular.module('sntRover')
         /**
          * getter - generates a get method. this is similar to a get prototype method
          *
-         * @param  {object} data - the hidden store
+         * @param  {object} source - the hidden store
          * @returns {function}     the implementation of get function
          */
-        var getter = function(data) {
+        var getter = function(source) {
             return {
                 get: function(key) {
-                    return data[key] || undefined;
+                    return source[key] || undefined;
                 }
             };
         };
@@ -40,14 +40,14 @@ angular.module('sntRover')
         /**
          * setter - generates a set method. this is similar to a set prototype method
          *
-         * @param  {object} data - the hidden store
+         * @param  {object} source - the hidden store
          * @returns {function}     the implementation of set function
          */
-        var setter = function (data) {
+        var setter = function (source) {
             return {
                 set: function (key, value) {
-                    data[key] = value;
-                    return data[key];
+                    source[key] = value;
+                    return source[key];
                 }
             };
         };
@@ -55,17 +55,18 @@ angular.module('sntRover')
         /**
          * ccStore - the actual store object generated via composition
          *
-         * @returns {object}     a normal object that gets and sets internal data
+         * @returns {object}     a normal object that gets and sets internal source
          */
-        var ccStore = function () {
-            var data = {};
+        var genStore = function () {
+            var source = {};
 
             return _.extend(
                 {},
-                getter(data),
-                setter(data)
+                getter(source),
+                setter(source)
             );
         };
+        var ccStore = genStore();
 
         /** Ending data store composition section for storing CGs */
 
@@ -121,7 +122,7 @@ angular.module('sntRover')
             if (index === source.length - 1) {
                 newSource = [].concat(
                     source,
-                    ccStore.get(cgId),
+                    ccData,
                     [{
                         isChargeCodePagination: true
                     }]
@@ -129,13 +130,15 @@ angular.module('sntRover')
             } else {
                 newSource = [].concat(
                     source.slice(0, split),
-                    ccStore.get(cgId),
+                    ccData,
                     [{
                         isChargeCodePagination: true
                     }],
                     source.slice(split)
                 );
             }
+
+            console.log(cgId, index, ccData, newSource);
 
             return newSource;
         }
@@ -159,28 +162,60 @@ angular.module('sntRover')
             var success = function(data) {
                 item.pageNo = pageNo;
 
+                angular.forEach(data.charge_codes, function(each) {
+                    each.isChargeCode = true;
+                    each.isActive = false;
+                });
+
                 ccStore.set(item.id, data.charge_codes);
-                insertOneChargeCode($scope.cgEntries, item.id);
+                $scope.cgEntries = insertOneChargeCode($scope.cgEntries, item.id);
                 item.chageGroupActive = true;
 
                 $timeout(function () {
-                    $scope.$emit('hideloader');
+                    $scope.$emit('hideLoader');
                 }, delay);
             };
 
             var failed = function () {
-                $scope.$emit('hideloader');
+                $scope.$emit('hideLoader');
             };
 
-            var date = $scope.uiChosenReport.singleValueDate;
             var params = {
-                date: $filter('date')(date, 'yyyy-MM-dd'),
+                date: $filter('date')($scope.chosenReport.singleValueDate, 'yyyy-MM-dd'),
+                report_id: $scope.chosenReport.id,
                 charge_group_id: item.id,
                 page_no: pageNo,
                 per_page: 50
             };
 
-            $scope.invokeApi(RVreportsSubSrv.getChargeCodes, params, success, failed);
+            // $scope.invokeApi(RVreportsSubSrv.getChargeCodes, params, success, failed);
+            success({
+                charge_codes:  [{
+		"id": 7990,
+		"name": "Room charge",
+		"code": "100",
+		"last_year_mtd": 5365,
+		"last_year_ytd": 61590,
+		"mtd": 5356,
+		"mtd_variance": -9,
+		"today": 185,
+		"ytd": 61304,
+		"ytd_variance": -286
+	}, {
+		"id": 7991,
+		"name": "VAT room",
+		"code": "900",
+		"last_year_mtd": 5365,
+		"last_year_ytd": 61590,
+		"mtd": 5356,
+		"mtd_variance": -9,
+		"today": 185,
+		"ytd": 61304,
+		"ytd_variance": -286
+
+
+	}], total_count:  121
+            })
         };
 
         /**
@@ -260,7 +295,7 @@ angular.module('sntRover')
                 }
             });
 
-            insetAllChargeCodes($scope.cgEntries);
+            $scope.cgEntries = insetAllChargeCodes($scope.cgEntries);
         }
 
         init();
