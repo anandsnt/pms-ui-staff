@@ -382,6 +382,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                         "begin_date": $scope.dateRange.begin_date,
                         "end_date": $scope.dateRange.end_date
                     };
+
                     $scope.invokeApi(ADRatesConfigureSrv.updateDateRange, data, successUpdateRange, failureUpdateRange);
                 }
                 $scope.invokeApi(ADRatesConfigureSrv.saveSet, setData, saveSetSuccessCallback);

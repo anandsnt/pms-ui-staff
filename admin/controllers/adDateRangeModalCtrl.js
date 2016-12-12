@@ -75,6 +75,7 @@ admin.controller('ADDateRangeModalCtrl', ['$scope',
             "begin_date": $scope.fromDate,
             "end_date": $scope.toDate
         };
+
         if (dataSets[currentClickedSet].id !== null) {
             $scope.invokeApi(ADRatesConfigureSrv.updateDateRange, data, successUpdateRange, failureUpdateRange);
         }
