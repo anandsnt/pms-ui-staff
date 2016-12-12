@@ -54,30 +54,40 @@ admin.controller('ADDateRangeModalCtrl', ['$scope',
     $scope.setUpData();
 
     $scope.updateClicked = function() {
-      var successUpdateRange = function() {
-        $scope.$emit('hideLoader');
-        $scope.dateRange.begin_date = $scope.data.begin_date = $scope.fromDate;
-        $scope.dateRange.end_date = $scope.data.end_date = $scope.toDate;
-        ngDialog.close();
-      };
+        var currentClickedSet = $scope.currentClickedSet,
+            dataSets = $scope.data.sets;
 
-      var failureUpdateRange = function(data) {
-        $scope.$emit('hideLoader');
-        $scope.errorMessage = data;
-      };
+        var successUpdateRange = function() {
+            $scope.$emit('hideLoader');
+            $scope.dateRange.begin_date = $scope.data.begin_date = $scope.fromDate;
+            $scope.dateRange.end_date = $scope.data.end_date = $scope.toDate;
+            ngDialog.close();
+        };
 
-      var data = {
-        "dateId": $scope.dateRange.id,
-        "begin_date": $scope.fromDate,
-        "end_date": $scope.toDate
-      };
+        var failureUpdateRange = function(data) {
+            $scope.$emit('hideLoader');
+            $scope.errorMessage = data;
+            $scope.oldDateRange.dateChanged = false;
+        };
 
-      $scope.invokeApi(ADRatesConfigureSrv.updateDateRange, data, successUpdateRange, failureUpdateRange);
+        var data = {
+            "dateId": $scope.dateRange.id,
+            "begin_date": $scope.fromDate,
+            "end_date": $scope.toDate
+        };
+
+        if (dataSets[currentClickedSet].id !== null) {
+            $scope.invokeApi(ADRatesConfigureSrv.updateDateRange, data, successUpdateRange, failureUpdateRange);
+        }
+        else {
+            // Changes dateRange, but doesnt send api in case the date change was done from a New-Set in the rate.
+            $scope.oldDateRange.dateChanged = true;
+            successUpdateRange();
+        }
     };
     $scope.cancelClicked = function() {
       ngDialog.close();
 
     };
-
   }
 ]);
