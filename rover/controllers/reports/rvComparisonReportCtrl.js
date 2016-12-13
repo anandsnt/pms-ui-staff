@@ -60,7 +60,7 @@ angular.module('sntRover')
         var genStore = function () {
             var source = {};
 
-            return _.extend(
+            return angular.extend(
                 {},
                 getter(source),
                 setter(source)
@@ -80,7 +80,7 @@ angular.module('sntRover')
 
                     // augment charge group entry
                     chargeGroupsCodes.push(
-                        _.extend(
+                        angular.extend(
                             {},
                             results[i],
                             {
@@ -107,7 +107,7 @@ angular.module('sntRover')
                         isChargeCodePagination: true,
                         isEmpty: true,
                         pageOptions: {
-                            id: results[i].id.toString(),
+                            id: results[i].charge_group_id.toString(),
                             api: ['fetchChargeCodes', i]
                         }
                     });
@@ -123,18 +123,18 @@ angular.module('sntRover')
                 var sourceNextIndex = sourceIndex + 1;
                 var item = data[dataIndex] || {};
 
-                _.extend(
+                angular.extend(
                     $scope.cgEntries[sourceIndex],
                     item,
                     {
-                        isEmpty: false
+                        isEmpty: item.id ? false : true
                     }
                 );
 
                 if ( $scope.cgEntries[sourceNextIndex] && $scope.cgEntries[sourceNextIndex].isChargeCode ) {
                     process(data, dataNextIndex, sourceNextIndex);
                 }
-            }
+            };
 
             process(ccData, 0, sourceIndex);
         }
@@ -143,7 +143,7 @@ angular.module('sntRover')
             var i, j, id, match, sourceIndex;
 
             for (i = 0, j = source.length; i < j; i++) {
-                id = source[i].id;
+                id = source[i].charge_group_id;
                 match = ccStore.get(id);
                 sourceIndex = i + 1;
 
@@ -154,20 +154,15 @@ angular.module('sntRover')
         }
 
         function toggleChargeCodes (source, sourceIndex, active) {
-            var process = function(sourceIndex, active) {
-                var sourceNextIndex = sourceIndex + 1;
+            var process = function(source, index, active) {
+                var nextIndex = index + 1;
 
-                _.extend(
-                    source[sourceIndex],
-                    {
-                        isChargeCodeActive: active
-                    }
-                );
+                source[index].isChargeCodeActive = active;
 
-                if ( source[sourceNextIndex] && source[sourceNextIndex].isChargeCode ) {
-                    process(sourceNextIndex, active);
+                if ( source[nextIndex] && source[nextIndex].isChargeCode ) {
+                    process(source, nextIndex, active);
                 }
-            }
+            };
 
             process(source, sourceIndex, active);
         }
@@ -294,7 +289,7 @@ angular.module('sntRover')
         $scope.toggleChargeGroup = function (index) {
             var item = $scope.cgEntries[index];
             var state;
-            var hasCC = ccStore.get(item.id);
+            var hasCC = ccStore.get(item.charge_group_id);
             var sourceIndex = index + 1;
 
             if ( angular.isDefined(hasCC) ) {
@@ -306,6 +301,10 @@ angular.module('sntRover')
 
                 toggleChargeCodes($scope.cgEntries, sourceIndex, state);
                 item.isChageGroupActive = state;
+
+                $timeout(function () {
+                    $scope.refreshScroll();
+                }, 500);
             } else {
                 $scope.fetchChargeCodes(index);
             }
@@ -321,13 +320,17 @@ angular.module('sntRover')
 
                 item.pageNo = pageNo;
 
-                ccStore.set(item.id, data.charge_codes);
-                fillChargeCodes(ccStore.get(item.id), sourceIndex);
+                ccStore.set(item.charge_group_id, data.charge_codes);
+                fillChargeCodes(ccStore.get(item.charge_group_id), sourceIndex);
 
                 $timeout(function () {
                     toggleChargeCodes($scope.cgEntries, sourceIndex, true);
                     item.isChargeGroupActive = true;
                     $scope.$emit('hideLoader');
+
+                    $timeout(function () {
+                        $scope.refreshScroll();
+                    }, 500);
                 }, delay);
             };
 
@@ -338,12 +341,24 @@ angular.module('sntRover')
             var params = {
                 date: $filter('date')($scope.chosenReport.singleValueDate, 'yyyy-MM-dd'),
                 report_id: $scope.chosenReport.id,
-                charge_group_id: item.id,
+                charge_group_id: item.charge_group_id,
                 page_no: pageNo,
                 per_page: 50
             };
 
             $scope.invokeApi(RVreportsSubSrv.getChargeCodes, params, success, failed);
         };
+
+        $scope.isHidden = function (item) {
+            var hidden = false;
+
+            if ( item.isChargeCode && item.isEmpty ) {
+                hidden = true;
+            } else if ( item.isChargeCode && ! item.isChargeCodeActive ) {
+                hidden = true;
+            }
+
+            return hidden;
+        }
     }
 ]);

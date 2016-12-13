@@ -39,14 +39,13 @@
     'active': item.isChageGroupActive,
 
     'charge-code': item.isChargeCode,
-    'hidden': (item.isChargeCode && (item.isEmpty && !item.chargeCodeActive)),
+    'hidden': isHidden(item),
     'charge-pagination': item.isChargeCodePagination,
 
     'odd': $odd,
     'even': $even,
     'last': (item.isChargeCode && $last)
   }"
-  ng-click="toggleChargeGroup($index)"
 >
   <td ng-if="item.isChargeCodePagination" colspan="8">
     <rv-pagination page-options="item.pageOptions"></rv-pagination>
@@ -55,9 +54,10 @@
 	<td ng-if="!item.isChargeCodePagination"
     class="code long-code break"
   >
-    <em ng-if="item.isChargeGroup">{{ item.section }}</em>
+    <em ng-if="item.isChargeGroup" ng-click="toggleChargeGroup($index)">{{ item.section }}</em>
     <span ng-if="item.isChargeGroup"
-      class="icons icon-double-arrow"></span>
+      class="icons icon-double-arrow"
+      ng-click="toggleChargeGroup($index)"></span>
     <em ng-if="item.isChargeCode">Attractions</em>
   </td>
 
