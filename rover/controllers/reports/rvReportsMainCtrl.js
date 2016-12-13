@@ -277,7 +277,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			item_42: false,
 			item_43: false,
 			item_44: false,
-			item_45: false
+			item_45: false,
+			item_46: false,
+			item_47: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( ! $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -1075,7 +1077,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					'rates': [],
 					'assigned_departments': [],
 					'completion_status': [],
-					'aging_balance': []
+					'aging_balance': [],
+					'accounts': []
 				};
 			}
 
@@ -1788,10 +1791,34 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 					// in case if all reservation status are selected
 					if ( changeAppliedFilter && report['hasIncludeAgingBalance']['data'].length === selected.length ) {
-						$scope.appliedFilter.aging_balance = ['All Departments'];
+						$scope.appliedFilter.aging_balance = ['All Aging Balance'];
 					}
 				}
 			}
+
+			//Include accounts
+			if ( report.hasOwnProperty('hasAccountSearch') ) {
+				selected = _.where( report['hasAccountSearch']['data'], { selected: true } );
+
+				if ( selected.length > 0) {
+					key         = reportParams['ACCOUNT_SEARCH'];
+					params[key] = [];
+					/**/
+					_.each(selected, function(accounts) {
+						params[key].push( accounts.id );
+						/**/
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.accounts.push( accounts.id );
+						}
+					});
+
+					// in case if all guarantee type is selected
+					if ( changeAppliedFilter && report['hasAccountSearch']['data'].length === selected.length ) {
+						$scope.appliedFilter.guarantees = ['All Accounts'];
+					}
+				}
+			}
+
 			// include completion status
 			if ( report.hasOwnProperty('hasCompletionStatus') ) {
 				selected = _.where(report['hasCompletionStatus']['data'], { selected: true });

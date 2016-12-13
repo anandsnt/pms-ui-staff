@@ -787,9 +787,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 					template = '/assets/partials/reports/actionManager/reportRow.html';
 					break;
 
-			  //   case reportNames['ACTIONS_MANAGER']:
-					// template = '/assets/partials/reports/actionManager/reportRow.html';
-					// break;
+			    case reportNames['A/R_AGING']:
+					template = '/assets/partials/reports/aging/reportRow.html';
+					break;
 
 				case reportNames['VACANT_ROOMS_REPORT']:
 					template = '/assets/partials/reports/vacantRoomsReport/rvVacantRoomsReportRow.html';

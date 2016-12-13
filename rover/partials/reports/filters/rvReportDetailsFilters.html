@@ -454,20 +454,28 @@
             </div>
         </div>
 
-
-        <multi-option-selection ng-show="uiChosenReport.hasIncludeAgingBalance && uiChosenReport.hasIncludeAgingBalance.data.length"
+        <!--item_46 -->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasIncludeAgingBalance && chosenReport.hasIncludeAgingBalance.data.length" ng-class="{'active': filterItemsToggle.item_46}" ng-click="toggleFilterItems('item_46')">
+            <span class="title">Completion Status</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasIncludeAgingBalance && chosenReport.hasIncludeAgingBalance.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_46 }">
+            <multi-option-selection ng-show="chosenReport.hasIncludeAgingBalance && chosenReport.hasIncludeAgingBalance.data.length"
             label="Aging Balance"
             on-update="refreshFilterScroll"
-            data="uiChosenReport.hasIncludeAgingBalance.data"
-            options="uiChosenReport.hasIncludeAgingBalance.options"></multi-option-selection>
+            data="chosenReport.hasIncludeAgingBalance.data"
+            options="chosenReport.hasIncludeAgingBalance.options"></multi-option-selection>
+        </div>
 
-       <!--  <div class="entry search" ng-show="uiChosenReport.hasIncludeAccountName">
-            <label>Account Name</label>
-            <input class="icons icon-search" auto-complete auto-options="compTaGrpAutoCompleteOnList" data-card-type="" type="text" placeholder="Search by Name" value="" autocomplete="off" ng-model="uiChosenReport.chosenIncludeAccountName" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnuiChosenReport(uiChosenReport)" ng-change="removeCompTaGrpId(uiChosenReport, 'uiChosenIncludeCompanyTaGroup', 'chosenIncludeCompanyTaGroup')">
-            <input type="text" class="hidden" ng-model="uiChosenReport.chosenIncludeAccountName">
-        </div> -->
-
-
+        <!--item-47-->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasAccountSearch && chosenReport.hasAccountSearch.data.length" ng-class="{ 'active': filterItemsToggle.item_47 }" ng-click="toggleFilterItems('item_47')">
+            <span class="title">Accounts</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasAccountSearch && chosenReport.hasAccountSearch.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_47 }">
+            <multi-option-selection label="Guarantee Type(s)"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasAccountSearch.data"
+                options="chosenReport.hasAccountSearch.options"></multi-option-selection>
+        </div>
 
         <!-- item_14: Group by -->
         <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.groupByOptions" ng-class="{'active': filterItemsToggle.item_14}" ng-click="toggleFilterItems('item_14')">

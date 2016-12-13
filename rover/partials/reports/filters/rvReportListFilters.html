@@ -331,11 +331,12 @@
     data="uiChosenReport.hasIncludeAgingBalance.data"
     options="uiChosenReport.hasIncludeAgingBalance.options"></multi-option-selection>
 
-<div class="entry search" ng-show="uiChosenReport.hasAccountSearch">
-    <label>Account Name dfdf</label>
-    <input class="icons icon-search" auto-complete auto-options="compTaGrpAutoCompleteOnList" data-card-type="" type="text" placeholder="Search by Name" value="" autocomplete="off" ng-model="uiChosenReport.chosenIncludeAccountName" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnuiChosenReport(uiChosenReport)" ng-change="removeCompTaGrpId(uiChosenReport, 'uiChosenIncludeCompanyTaGroup', 'chosenIncludeCompanyTaGroup')">
-    <input type="text" class="hidden" ng-model="uiChosenReport.chosenIncludeAccountName">
-</div>
+<multi-option-selection ng-show="uiChosenReport.hasAccountSearch && uiChosenReport.hasAccountSearch.data.length"
+    label="Account Name"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasAccountSearch.data"
+    options="uiChosenReport.hasAccountSearch.options"></multi-option-selection>
+
 
 <multi-option-selection ng-show="uiChosenReport.hasReservationStatus && uiChosenReport.hasReservationStatus.data.length"
     label="Reservation Status"
