@@ -39,13 +39,13 @@
     'active': item.isChageGroupActive,
 
     'charge-code': item.isChargeCode,
-    'hidden': isHidden(item),
     'charge-pagination': item.isChargeCodePagination,
 
     'odd': $odd,
     'even': $even,
     'last': (item.isChargeCode && $last)
   }"
+  ng-hide="isHidden(item)"
 >
   <td ng-if="item.isChargeCodePagination" colspan="8">
     <rv-pagination page-options="item.pageOptions"></rv-pagination>
