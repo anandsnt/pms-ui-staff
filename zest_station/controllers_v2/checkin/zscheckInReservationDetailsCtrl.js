@@ -448,8 +448,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
             console.info('\n\nReservation arrival  time =>', $scope.selectedReservation.reservation_details.arrival_time, '------ Hotel current  time => ', currentHotelTime+'\n\n');
 
-            if (arrivalTime > hotelTime) {
-                // if arrival time is greater than current time allow guest to check-in
+            if (hotelTime > arrivalTime) {
+                // if hotel time is greater than arrival time allow guest to check-in
                 return true;
             } else if (hotelTime + 3600000 > arrivalTime) {
                 // current time plus an hour is greater than arrival time,
