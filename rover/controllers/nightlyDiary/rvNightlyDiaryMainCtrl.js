@@ -160,14 +160,18 @@ angular.module('sntRover')
              * Function to cancel editing of a reservation
              */
             var cancelReservationEditing = function() {
-                $scope.diaryData.isEditReservationMode = false;
-                $scope.currentSelectedReservation = {};
-                var dispatchData = {
-                    type: 'CANCEL_RESERVATION_EDITING',
-                    reservationsList: $scope.diaryData.reservationsList.rooms
-                };
+                if ($scope.diaryData.isEditReservationMode) {
+                    $scope.diaryData.isEditReservationMode = false;
+                    $scope.currentSelectedReservation = {};
+                    var dispatchData = {
+                        type: 'CANCEL_RESERVATION_EDITING',
+                        reservationsList: $scope.diaryData.reservationsList.rooms,
+                        paginationData: angular.copy($scope.diaryData.paginationData)
+                    };
 
-                store.dispatch(dispatchData);
+                    store.dispatch(dispatchData);
+                }
+                
             };
             /*
              * Cancel button click edit bar
