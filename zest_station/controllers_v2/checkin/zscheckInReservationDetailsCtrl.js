@@ -446,7 +446,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             var arrivalTime = d1.getTime();
             var hotelTime = d2.getTime();
 
-            console.info('\n\nReservation arrival  time =>', $scope.selectedReservation.reservation_details.arrival_time, '------ Hotel current  time => ', currentHotelTime+'\n\n');
+            console.info('\n\nReservation arrival  time =>', $scope.selectedReservation.reservation_details.arrival_time, '------ Hotel current  time => ', currentHotelTime + '\n\n');
 
             if (hotelTime > arrivalTime) {
                 // if hotel time is greater than arrival time allow guest to check-in
@@ -465,7 +465,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             if ($scope.zestStationData.theme === 'yotel' && currentHotelTime.length === 0) {
                 // fetch hotel time to check with reservation arrival time
                 fetchHotelTime();
-            }else {
+            } else {
                 var roomAssigned = roomIsAssigned(),
                 roomReady = roomIsReady();
 
