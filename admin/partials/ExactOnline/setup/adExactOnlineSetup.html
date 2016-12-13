@@ -5,13 +5,24 @@
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
         <form class="form float">
-            <ad-form-title full-width="true" form-title="{{'EXACT_ONLINE_SUB_TITLE'| translate}}"></ad-form-title>
             <fieldset class="holder left">
                 <ad-toggle-button is-checked="exactOnlineSetup.enabled"
                                   is-disabled="!exactOnlineSetup.authorized"
                                   label="{{'EXACT_ONLINE_ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
             </fieldset>
+
+            <ad-form-title full-width="true" form-title="{{'EXACT_ONLINE_SUB_TITLE'| translate}}"></ad-form-title>
+
             <fieldset class="holder left">
+                <ad-dropdown-name savemodel="exactOnlineSetup.endpoint"
+                                  valueproperty="endpoint"
+                                  property="description"
+                                  list="endPoints"
+                                  label="{{'ENDPOINT'| translate}}"
+                                  div-class="full-width"
+                                  prefix-value="true">
+                </ad-dropdown-name>
+
                 <div class="entry full-width">
                     <label>
                         EXACT ONLINE
@@ -28,7 +39,7 @@
                 </div>
             </fieldset>
 
-            <fieldset class="holder left">
+            <fieldset class="holder right">
                 <ad-dropdown-name savemodel="exactOnlineSetup.journal_code"
                                   valueproperty="code"
                                   property="description"

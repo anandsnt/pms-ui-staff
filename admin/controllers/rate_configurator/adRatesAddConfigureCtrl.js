@@ -3,6 +3,8 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         // expand first set
         $scope.currentClickedSet = 0;
         $scope.init = function() {
+            $scope.oldDateRange = angular.copy($scope.dateRange);
+            $scope.oldDateRange.dateChanged = false;
             // in edit mode last date range data will be expanded and details can't fetch by click
             // so intiating fetch data
             if ($scope.rateMenu === ("dateRange." + $scope.dateRange.id)) {
@@ -42,7 +44,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         $scope.isAllSetsSaved = function() {
 
              if ($scope.data.sets && $scope.rateData.based_on.id > 1 ) {
-                if (!$scope.otherData.isEdit ) {
+                if ($scope.rateData.based_on.is_copied ) {
                     if ($scope.data.sets) {
                         var isSaved = true;
 
@@ -92,7 +94,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             newSet.saturday = true;
             newSet.sunday = true;
             // The day will be enabled in current set,
-            // only if it is not enabled in any other sets in current date range
+            // only if it is night_checkout_cut_off_time enabled in any other sets in current date range
             for (var i in $scope.data.sets) {
                 if ($scope.data.sets[i].monday === true) {
                     newSet.monday = false;
@@ -338,6 +340,14 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         var setData = {};
         var selectedIndex = -1;
 
+        var resetDates = function () {
+            if ($scope.oldDateRange.dateChanged) {
+                $scope.dateRange.begin_date = $scope.data.begin_date = $scope.oldDateRange.begin_date;
+                $scope.dateRange.end_date = $scope.data.end_date = $scope.oldDateRange.end_date;
+                $scope.oldDateRange.dateChanged = false;
+            }
+        };
+
         var callSaveOrUpdateSet = function() {
 
             var saveSetSuccessCallback = function(data) {
@@ -355,6 +365,26 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
             // if set id is null, then it is a new set - save it
             if (setData.id === null) {
+                if ($scope.oldDateRange.dateChanged) {
+                    var successUpdateRange = function() {
+                        $scope.oldDateRange = angular.copy($scope.dateRange);
+                        $scope.oldDateRange.dateChanged = false;
+                    };
+
+                    var failureUpdateRange = function(data) {
+                        $scope.$emit('hideLoader');
+                        $scope.errorMessage = data;
+                        resetDates();
+                    };
+
+                    var data = {
+                        "dateId": $scope.dateRange.id,
+                        "begin_date": $scope.dateRange.begin_date,
+                        "end_date": $scope.dateRange.end_date
+                    };
+
+                    $scope.invokeApi(ADRatesConfigureSrv.updateDateRange, data, successUpdateRange, failureUpdateRange);
+                }
                 $scope.invokeApi(ADRatesConfigureSrv.saveSet, setData, saveSetSuccessCallback);
             // Already existing set - update
             } else {
@@ -682,6 +712,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
             $scope.data.sets[index].isEnabled = false;
             $scope.otherData.setChanged = false;
+            resetDates();
 
             if (setLength > 1) {
                 if (index === 0) {
