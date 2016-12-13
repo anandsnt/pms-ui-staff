@@ -76,6 +76,23 @@ admin.service('adExactOnlineSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', functio
             deferred.reject(data);
         });
 
+        return deferred.promise;
+    };
+
+    /**
+     * to get the ExactOnLine endpoints list
+     * The endpoint vary based on regions
+     * @returns {promise|{then, catch, finally}|*}
+     */
+    this.fetchEndpointsList = function() {
+        var deferred = $q.defer();
+        var url = '/api/hotel_settings/exactonline/endpoints';
+
+        ADBaseWebSrvV2.getJSON(url).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
 
         return deferred.promise;
     };
