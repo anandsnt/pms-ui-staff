@@ -389,7 +389,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 
         service.getChargeCodes = function(params) {
             return callApi({
-                method: 'postJSON',
+                method: 'getJSON',
                 url: 'api/reports/' + params.report_id + '/revenue_by_charge_codes',
                 params: _.omit(params, 'report_id')
             });
