@@ -384,6 +384,8 @@
 					</div>
 				</div>
 
+				<ad-toggle-button is-checked="data.enable_offline_checkout" label="{{'WEB_CHEKOUT_OFFLINE_LABEL' | translate}}" is-hide="!isAdminSnt || data.hotel_pms_type !=='OWS'"></ad-toggle-button>
+
 				<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
 					<label>Privacy Check</label>
 					<div class="switch-button single" ng-class="{ on : data.is_email_privacy_check == true }" ng-click="data.is_email_privacy_check = !data.is_email_privacy_check">
