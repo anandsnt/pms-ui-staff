@@ -246,13 +246,9 @@ angular.module('sntRover')
          * init - bootstrap initial execution
          * @returns {object} undefined
          */
-        function chargeGroupInit (results, toggleAll) {
+        function chargeGroupInit (results) {
             $scope.cgEntries = prepareChargeGroupsCodes(results);
             fillAllChargeCodes($scope.cgEntries);
-
-            if ( toggleAll ) {
-                toggleAllChargeCodes();
-            }
         }
 
         /**
@@ -276,7 +272,10 @@ angular.module('sntRover')
                 init();
             }, reInitDelay);
         });
-        reportPrinting = $scope.$on(RVReportMsgsConst['REPORT_PRINTING'], init);
+        reportPrinting = $scope.$on(RVReportMsgsConst['REPORT_PRINTING'], function () {
+            init();
+            toggleAllChargeCodes( $scope.cgEntries, true );
+        });
         reportUpdated = $scope.$on(RVReportMsgsConst['REPORT_UPDATED'], init);
         reportPageChanged = $scope.$on(RVReportMsgsConst['REPORT_PAGE_CHANGED'], init);
 
