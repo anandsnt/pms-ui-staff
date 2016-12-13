@@ -197,10 +197,10 @@ sntRover.controller('reservationActionsController', [
 		}
 
 	    var getTwentyFourHourTime = function(resDate, amPmString) {
-            var d = new Date(resDate +" "+ amPmString);
+            var d = new Date(resDate + " " + amPmString);
 
             return d.getTime();
-        }
+        };
 
         /**
          * //CICO-14777 Yotel - Hourly Setup: Checkin with not ready room assigned should redirect to diary
