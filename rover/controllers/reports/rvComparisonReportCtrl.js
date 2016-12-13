@@ -303,7 +303,7 @@ angular.module('sntRover')
                 item.isChageGroupActive = state;
 
                 $timeout(function () {
-                    $scope.refreshScroll();
+                    $scope.refreshScroll(true);
                 }, 500);
             } else {
                 $scope.fetchChargeCodes(index);

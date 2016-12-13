@@ -51,14 +51,18 @@
     <rv-pagination page-options="item.pageOptions"></rv-pagination>
   </td>
 
-	<td ng-if="!item.isChargeCodePagination"
+	<td ng-if="!item.isChargeCodePagination && item.isChargeGroup"
+    class="code long-code break"
+    ng-click="toggleChargeGroup($index)"
+  >
+    <em ng-if="item.isChargeGroup">{{ item.section }}</em>
+    <span ng-if="item.isChargeGroup"
+      class="icons icon-double-arrow"></span>
+  </td>
+  <td ng-if="!item.isChargeCodePagination  && item.isChargeCode"
     class="code long-code break"
   >
-    <em ng-if="item.isChargeGroup" ng-click="toggleChargeGroup($index)">{{ item.section }}</em>
-    <span ng-if="item.isChargeGroup"
-      class="icons icon-double-arrow"
-      ng-click="toggleChargeGroup($index)"></span>
-    <em ng-if="item.isChargeCode">Attractions</em>
+    <em ng-if="item.isChargeCode">{{ item.name }}</em>
   </td>
 
 	<td ng-if="!item.isChargeCodePagination"

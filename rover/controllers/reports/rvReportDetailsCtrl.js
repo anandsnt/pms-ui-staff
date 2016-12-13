@@ -30,9 +30,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		setScroller();
 
-		$scope.refreshScroll = function() {
+		$scope.refreshScroll = function(stay) {
 			$scope.refreshScroller( REPORT_DETAILS_SCROLL );
-			if ( $scope.myScroll && $scope.myScroll.hasOwnProperty(REPORT_DETAILS_SCROLL) ) {
+			if ( !stay && $scope.myScroll && $scope.myScroll.hasOwnProperty(REPORT_DETAILS_SCROLL) ) {
 				$scope.myScroll[REPORT_DETAILS_SCROLL].scrollTo(0, 0, 100);
 			}
 		};
