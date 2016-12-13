@@ -71,6 +71,13 @@ angular.module('sntRover')
         /** Ending data store composition section for storing CGs */
 
 
+        /**
+         * prepareChargeGroupsCodes - fill up the charge group + 50 charge code + 1 pagination space allready
+         * this allows us to pass around the $index since they will never change
+         *
+         * @param  {array} results actual api respose
+         * @returns {array}         final array with all the placeholders
+         */
         function prepareChargeGroupsCodes (results) {
             var chargeGroupsCodes = [];
             var i, j, k, l = 51;
@@ -117,6 +124,14 @@ angular.module('sntRover')
             return chargeGroupsCodes;
         }
 
+
+        /**
+         * fillChargeCodes - fill the recived charge codes for a charge group in its created placeholder
+         *
+         * @param  {array} ccData      charge code data
+         * @param  {number} sourceIndex index of the charge group
+         * @returns {object}             undefined
+         */
         function fillChargeCodes (ccData, sourceIndex) {
             var process = function (data, dataIndex, sourceIndex) {
                 var dataNextIndex = dataIndex + 1;
@@ -139,6 +154,12 @@ angular.module('sntRover')
             process(ccData, 0, sourceIndex);
         }
 
+        /**
+         * fillAllChargeCodes - loop through the entire cgcc array and fill any already fetched cc
+         *
+         * @param  {array} source full array
+         * @returns {object}             undefined
+         */
         function fillAllChargeCodes (source) {
             var i, j, id, match, sourceIndex;
 
@@ -153,6 +174,15 @@ angular.module('sntRover')
             }
         }
 
+
+        /**
+         * toggleChargeCodes - toggle the visibility of a set of cc under a cg
+         *
+         * @param  {array} source      full array
+         * @param  {type} sourceIndex the index from the full array we need to look from
+         * @param  {type} active      show or hide
+         * @returns {object}             undefined
+         */
         function toggleChargeCodes (source, sourceIndex, active) {
             var process = function(source, index, active) {
                 var nextIndex = index + 1;
@@ -167,6 +197,13 @@ angular.module('sntRover')
             process(source, sourceIndex, active);
         }
 
+        /**
+         * toggleAllChargeCodes - toggle all the cc available on the ui
+         *
+         * @param  {array} source      full array
+         * @param  {type} active      show or hide        
+         * @returns {object}             undefined
+         */
         function toggleAllChargeCodes (source, active) {
             var i, j;
 
@@ -179,16 +216,35 @@ angular.module('sntRover')
 
 
         /**
-         * init - bootstrap initial execution
+         * ledgerInit - bootstrap initial execution
+         *
+         * @param {array} results fetched data from API
+         * @returns {object} undefined
+         */
+        function ledgerInit (results) {
+            var i, j;
+
+            $scope.ledgerEntries = [];
+            for (i = 0, j = results.length; i < j; i++) {
+                if ( results[i].is_ledger ) {
+                    $scope.ledgerEntries.push( results[i] );
+                }
+            }
+        }
+
+        /**
+         * totalRevenueInit - bootstrap initial execution
+         *
+         * @param {array} results fetched data from API
          * @returns {object} undefined
          */
         function totalRevenueInit (results) {
             var i, j;
 
-            $scope.totalEntry = [];
+            $scope.totalEntries = [];
             for (i = 0, j = results.length; i < j; i++) {
                 if ( results[i].is_total_revenue ) {
-                    $scope.totalEntry.push( results[i] );
+                    $scope.totalEntries.push( results[i] );
                 }
             }
         }
@@ -197,8 +253,8 @@ angular.module('sntRover')
          * processStatic - a helper function that will suffix '%'
          * and add currency symbols
          *
-         * @param  {object} entry each data node
-         * @returns {object}       modified data node
+         * @param {array} results fetched data from API
+         * @returns {object} undefined
          */
         function staticInit (results) {
             var i, j;
@@ -243,7 +299,9 @@ angular.module('sntRover')
         }
 
         /**
-         * init - bootstrap initial execution
+         * chargeGroupInit - bootstrap initial execution
+         *
+         * @param {array} results fetched data from API
          * @returns {object} undefined
          */
         function chargeGroupInit (results) {
@@ -258,6 +316,7 @@ angular.module('sntRover')
         function init () {
             var results = $scope.$parent.results;
 
+            ledgerInit(results);
             totalRevenueInit(results);
             staticInit(results);
             chargeGroupInit(results);
@@ -290,6 +349,7 @@ angular.module('sntRover')
             var state;
             var hasCC = ccStore.get(item.charge_group_id);
             var sourceIndex = index + 1;
+            var delay = 500;
 
             if ( angular.isDefined(hasCC) ) {
                 if ( item.isChageGroupActive ) {
@@ -303,7 +363,7 @@ angular.module('sntRover')
 
                 $timeout(function () {
                     $scope.refreshScroll(true);
-                }, 500);
+                }, delay);
             } else {
                 $scope.fetchChargeCodes(index);
             }
@@ -314,6 +374,7 @@ angular.module('sntRover')
             var pageNo = item.pageNo === 0 ? item.pageNo + 1 : 1;
 
             var delay = 100;
+            var refreshDelay = 500;
             var success = function(data) {
                 var sourceIndex = index + 1;
 
@@ -329,7 +390,7 @@ angular.module('sntRover')
 
                     $timeout(function () {
                         $scope.refreshScroll();
-                    }, 500);
+                    }, refreshDelay);
                 }, delay);
             };
 
@@ -358,6 +419,6 @@ angular.module('sntRover')
             }
 
             return hidden;
-        }
+        };
     }
 ]);
