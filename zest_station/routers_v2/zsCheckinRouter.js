@@ -108,7 +108,7 @@ sntZestStation.config(['$stateProvider',
                 
       	// early check-in
       	$stateProvider.state('zest_station.earlyCheckin', {
-			url: '/checkinEarly/:early_checkin_data:/:early_charge_symbol',
+			url: '/checkinEarly/:early_checkin_data:/:early_charge_symbol/:selected_reservation',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinEarly.html',
 			controller: 'zsCheckinEarlyCtrl'
 		});

@@ -291,11 +291,6 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
             var updateGuestEmailFailed = function() {
                 var stateParams = {};
 
-                if ($scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2 !== '') {
-                    stateParams.message = $scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2;
-                } else {
-					// do nothing
-                }
                 $state.go('zest_station.speakToStaff', stateParams);
             };
 

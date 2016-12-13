@@ -39,7 +39,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 			var refreshIntervalId = setInterval(incrementTimer, 1000);
 
 			var pollToReport = function(async_callback_url) {
-				// we will continously communicate with the server 
+				// we will continously communicate with the server
 				// the timeout set for the hotel
 				if (timeStampInSeconds >= 300) {
 					var errors = ["Request timed out. Unable to process report !!"];
@@ -111,7 +111,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 
 			// if there is a request params object
 			else if ( !! options.params ) {
-			
+
 				if ( options.params.reportTitle === "Credit Check Report" ) {
 					options.params = _.omit(options.params, 'reportTitle');
 					rvBaseWebSrvV2.postJSONWithSpecialStatusHandling( options.url, options.params ).then( success, failed );
@@ -390,6 +390,15 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 				url: 'admin/departments.json',
 				resKey: 'data',
 				resKey2: 'departments'
+			});
+		};
+
+		service.fetchAccounts = function() {
+			return callApi({
+				name: 'accounts',
+				method: 'getJSON',
+				url: '/api/posting_accounts/search?account_type=&is_non_zero=true&page=1&per_page=50&q=&status=',
+				resKey: 'posting_accounts'
 			});
 		};
 

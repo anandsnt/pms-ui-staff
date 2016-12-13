@@ -36,12 +36,14 @@
         <div class="col-md-4 top-spacing sm-no-top-spacing section-container mob-padding-bottom-10">
              <!--  -->
             <div class="section-container mob-padding-bottom-10">
-                <p class="sub-text left-align">ESTIMATED ARRIVAL TIME</span>
+                <p class="sub-text left-align">ESTIMATED ARRIVAL TIME</p>
+                <span ng-show="showHotelTime" class="sub-main-text">(Please select an arrival time. Your arrival time options are displayed in the hotel’s local time. It is currently  {{hotelTime}} in the hotel’s local time.)</span></p>
+                <br/><br/>
                 <div class="row">
                     <div class="eta-container">
                         <div class="select-style">
                             <select ng-model="stayDetails.hour"
-                            ng-options="hour as hour  for hour in hours">
+                            ng-options="hour as hour  for hour in hoursWithRestrictions" ng-change="hoursChanged()">
                                 <option value="">HH</option>
                             </select>
                         </div>
@@ -49,16 +51,15 @@
                     <div class="eta-container eta-date">
                         <div class="select-style">
                             <select ng-model="stayDetails.minute"
-                            ng-options="minute as minute  for minute in minutes">
+                            ng-options="minute as minute  for minute in minutesWithRestrictions">
                                 <option value="">MM</option>
                             </select>
                         </div>
                     </div>
                     <div class="eta-container">
                         <div class="select-style">
-                            <select ng-model="stayDetails.primeTime">
-                                <option value="AM" selected="" >AM</option>
-                                <option value="PM" >PM</option>
+                            <select ng-model="stayDetails.primeTime"
+                                ng-options="primeTime as primeTime  for primeTime in primeTimesNewWithRestrictions" ng-change="primeTimeChanged()">
                                 <option value="">AM/PM</option>
                             </select>
                         </div>

@@ -359,10 +359,10 @@ angular.module('reportsModule')
                         'value': "INCLUDE_AGING_BALANCE",
                         'description': "Include Aging Balance"
                     }
-                    // , {
-                    //     'value': "INCLUDE_DEPARTMENTS",
-                    //     'description': "Include Departments"
-                    // }
+                    , {
+                        'value': "ACCOUNT_SEARCH",
+                        'description': "Include Account Search"
+                    }
                     );
 
 
@@ -523,6 +523,10 @@ angular.module('reportsModule')
                     report['hasIncludeAgingBalance'] = filter;
                 }
 
+                if ( filter.value === 'ACCOUNT_SEARCH' ) {
+                    report['hasAccountSearch'] = filter;
+                }
+
                 // check for include company/ta filter and keep a ref to that item
                 if ( filter.value === 'INCLUDE_COMPANYCARD_TA' ) {
                     report['hasIncludeCompanyTa'] = filter;
@@ -648,6 +652,12 @@ angular.module('reportsModule')
                         .then( fillGarntTypes );
                 }
 
+                else if ( 'INCLUDE_GUARANTEE_TYPE' === filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchGuaranteeTypes()
+                        .then( fillGarntTypes );
+                }
+
                 else if ( 'CHOOSE_MARKET' === filter.value && ! filter.filled ) {
                     requested++;
                     reportsSubSrv.fetchMarkets()
@@ -752,6 +762,10 @@ angular.module('reportsModule')
                 } else if ( 'INCLUDE_AGING_BALANCE' === filter.value && ! filter.filled) {
                     // requested++;
                     fillAgingBalance();
+                } else if ( 'ACCOUNT_SEARCH' === filter.value && ! filter.filled) {
+                    requested++;
+                    reportsSubSrv.fetchAccounts()
+                        .then( fillAccounts );
                 } else {
                     // no op
                 }
@@ -786,6 +800,32 @@ angular.module('reportsModule')
                 completed++;
                 checkAllCompleted();
             }
+
+            function fillAccounts (data) {
+                var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'ACCOUNT_SEARCH' });
+
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+
+                        report.hasAccountSearch = {
+                            data: angular.copy( data ),
+                            options: {
+                                selectAll: false,
+                                hasSearch: true,
+                                key: 'name',
+                                defaultValue: 'Select Accounts'
+                            }
+                        };
+                    }
+                });
+
+                completed++;
+                checkAllCompleted();
+            }
+
 
             function fillMarkets (data) {
                 var foundFilter;
@@ -950,13 +990,6 @@ angular.module('reportsModule')
                                 {id: "DAYS_91_120",  status: "91-120 DAYS", selected: true},
                                 {id: "DAYS_120_plus",  status: "120+ DAYS", selected: true}
                             ];
-
-
-// {value: "DAYS_0_30", description: "0 - 30 DAYS"}
-// 1: {value: "DAYS_120_plus", description: "120+ DAYS"}
-// 2: {value: "DAYS_31_60", description: "31 - 60 DAYS"}
-// 3: {value: "DAYS_61_90", description: "61 - 90 DAYS"}
-// 4: {value: "DAYS_91_120", description: "91 - 120 DAYS"}
 
 
                 _.each(reportList, function(report) {

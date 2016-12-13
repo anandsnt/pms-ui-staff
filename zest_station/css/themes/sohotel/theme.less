@@ -1,0 +1,134 @@
+/* StayNTouch | Zoku Kiosk styles */
+
+/* 1. COLORS
+==========================================================*/
+	@brandColor:			#fbcb36;
+	
+	@textColor: 			@white;
+	@backgroundColor: 		@black;
+	
+	@actionColor: 			@white;
+	@actionBackground: 		@brandColor;
+	
+	@inputBackground: 		#707070;
+	@transparentColor: 		rgba(255,255,255,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+	@fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+/* 3. IMAGES
+==========================================================*/
+	@background: url("../css/themes/sohotel/background.png") no-repeat;
+	@backgroundSize: 		cover;
+	
+
+	@headerIconsColor: 		@white;
+	@headerIconsActive:		@brandColor;
+
+	.icons { 
+		&.icon-create-key {
+			fill: @black;
+			stroke: @black;
+		}
+
+		&.icon-no-print { stroke: @black; }
+
+		&.icon-oos {
+			fill: @brandColor;
+		}
+	}
+
+    .logo-svg{
+        background-image: url("../css/themes/sohotel/logo.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 100%;
+	    height: 100%;
+	    background-position: center;
+	    margin-top: 5%;
+    }
+
+/* 4. LAYOUT
+==========================================================*/
+	
+	#sohotel {
+
+		.button:not(.transparent):not(.blank):not(.option) {
+			background: fade(@actionBackground, 80%);
+			color: @black;
+		}
+
+		#options li.break {
+			&:after,
+			&:before {
+				width: 4px;
+				border-radius:4px;
+				left: calc( 50% - 2px);
+			}
+		}
+
+		#logo {
+			padding-top:70px;
+			.logo {
+				width:75px;
+				height: auto;
+			}
+		}
+
+		#actions {
+			&.pull-right {
+				p {
+					strong {
+						font-size: 18px;
+						font-weight: 400;
+						color: @white;
+					}
+					color: #dedfdc
+				}
+			}
+		}
+
+		#header {
+			.button {
+				.icons {
+					width: 50px;
+					height: 50px;
+					fill: #c6c6c6;
+				}
+			}
+		}
+		
+		#options {
+			.icon-text {
+				color: @black;
+			}
+			.icons {
+				fill: @black;
+
+			}
+		}
+
+		#guests {
+			.button {
+				color: @white;
+				background-color: @black;
+			}
+		} 
+
+		#textual,
+		.popup {
+			.icons {
+				fill: @black;
+			}
+		}
+
+		#selection {
+			li {
+				.details {
+					color: @black;
+				}
+			}
+		}
+		
+	}

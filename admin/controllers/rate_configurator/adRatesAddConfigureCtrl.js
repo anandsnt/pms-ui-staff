@@ -40,6 +40,21 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
          * @retun true {Boolean} If all the sets are saved
          */
         $scope.isAllSetsSaved = function() {
+
+             if ($scope.data.sets && $scope.rateData.based_on.id > 1 ) {
+                if ($scope.rateData.based_on.is_copied ) {
+                    if ($scope.data.sets) {
+                        var isSaved = true;
+
+                        if ($scope.data.sets[$scope.data.sets.length - 1].id === null) {
+                        isSaved = false;
+                        }
+                        return isSaved;
+                    }
+                }
+                return false;
+             }
+
             if ($scope.data.sets) {
                 var isSaved = true;
 
@@ -47,7 +62,10 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                     isSaved = false;
                 }
                 return isSaved;
-            } else {
+            }
+
+            else
+            {
                 return true;
             }
         };
@@ -74,7 +92,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             newSet.saturday = true;
             newSet.sunday = true;
             // The day will be enabled in current set,
-            // only if it is not enabled in any other sets in current date range
+            // only if it is night_checkout_cut_off_time enabled in any other sets in current date range
             for (var i in $scope.data.sets) {
                 if ($scope.data.sets[i].monday === true) {
                     newSet.monday = false;

@@ -1771,24 +1771,24 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			}
 
 			// include Aging days
-			if ( report.hasOwnProperty('hasIncludeAgingBalance') ) {
+            if ( report.hasOwnProperty('hasIncludeAgingBalance') ) {
 				selected = _.where(report['hasIncludeAgingBalance']['data'], { selected: true });
 
 				if ( selected.length > 0 ) {
-					key         = reportParams['ASSIGNED_DEPARTMENTS'];
+					key         = reportParams['AGING_BALANCE'];
 					params[key] = [];
 					/**/
 					_.each(selected, function(each) {
 						params[key].push( each.id.toString() );
 						/**/
 						if ( changeAppliedFilter ) {
-							$scope.appliedFilter.assigned_departments.push( each.name );
+							$scope.appliedFilter.aging_balance.push( each.name );
 						}
 					});
 
 					// in case if all reservation status are selected
-					if ( changeAppliedFilter && report['hasDepartments']['data'].length === selected.length ) {
-						$scope.appliedFilter.assigned_departments = ['All Departments'];
+					if ( changeAppliedFilter && report['hasIncludeAgingBalance']['data'].length === selected.length ) {
+						$scope.appliedFilter.aging_balance = ['All Departments'];
 					}
 				}
 			}

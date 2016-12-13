@@ -21,5 +21,5 @@ sntRover.constant('RVReportFiltersConst', {
 	'CHOOSE_BOOKING_ORIGIN': true,
 	'HOLD_STATUS': true,
 	'DAYS_0_30': true,
-	'ACCOUNT_NAME': true
+	'ACCOUNT_SEARCH': true
 });
