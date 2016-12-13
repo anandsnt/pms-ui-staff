@@ -205,3 +205,11 @@
     <li>Total Revenue for MTD<span>{{summaryCounts.total_mtd_revenue}}</span></li>
     <li>Total Revenue for YTD<span>{{summaryCounts.total_ytd_revenue}}</span></li>
 </ul>
+
+<!--Comparision by date report -->
+<ul ng-if="isThisReport('COMPARISION_BY_DATE')" class="totals">
+    <li>Balance Brought forward<span>{{summaryCounts.total_today_revenue}}</span></li>
+    <li>Deposit Ledger Summary<span>{{summaryCounts.total_mtd_revenue}}</span></li>
+    <li>Guest ledger Summary<span>{{summaryCounts.total_ytd_revenue}}</span></li>
+    <li>AR ledger Summary<span>{{summaryCounts.total_ytd_revenue}}</span></li>
+</ul>
