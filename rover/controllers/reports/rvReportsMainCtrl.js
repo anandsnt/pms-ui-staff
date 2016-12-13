@@ -1077,7 +1077,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					'rates': [],
 					'assigned_departments': [],
 					'completion_status': [],
-					'aging_balance': [],
+					'age_buckets': [],
 					'accounts': []
 				};
 			}
@@ -1785,13 +1785,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						params[key].push( each.id.toString() );
 						/**/
 						if ( changeAppliedFilter ) {
-							$scope.appliedFilter.aging_balance.push( each.name );
+							$scope.appliedFilter.age_buckets.push( each.id );
 						}
 					});
 
 					// in case if all reservation status are selected
 					if ( changeAppliedFilter && report['hasIncludeAgingBalance']['data'].length === selected.length ) {
-						$scope.appliedFilter.aging_balance = ['All Aging Balance'];
+						$scope.appliedFilter.age_buckets = ['All Aging Balance'];
 					}
 				}
 			}

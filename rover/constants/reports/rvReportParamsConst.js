@@ -56,6 +56,6 @@ angular.module('reportsModule')
         'FLOOR': 'floor',
         'ASSIGNED_DEPARTMENTS': 'assigned_departments',
         'COMPLETION_STATUS': 'status',
-        'AGING_BALANCE': 'aging_balance',
+        'AGING_BALANCE': 'age_buckets',
         'ACCOUNT_SEARCH': 'accounts'
     });
