@@ -8,18 +8,6 @@ sntRover.factory('RVReportParserFac', [
 
         factory.parseAPI = function ( reportName, apiResponse, options, resultTotalRow ) {
 
-            var gogo = function(apiResponse) {
-                var v = apiResponse.map(function (each, index) {
-                    if ( each.is_charge_group ) {
-                        return _.extend(each, {id: index+1 })
-                    } else {
-                        return each;
-                    }
-                });
-                console.log(v);
-                return v;
-            }
-
             if ( reportName === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseFinTransAdjustReport( reportName, apiResponse, options );
             }
@@ -68,11 +56,6 @@ sntRover.factory('RVReportParserFac', [
             else if ( reportName === reportNames['ROOMS_OOO_OOS'] ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseDataForRoomOOOOOSReport( reportName, apiResponse, options );
             }
-
-            else if ( reportName === reportNames['COMPARISION_BY_DATE'] ) {
-                return gogo(apiResponse);
-            }
-
 
             // a common parser that data into meaningful info like - notes, guests, addons, compTAgrp
             // this can be reused by the parsers defined above

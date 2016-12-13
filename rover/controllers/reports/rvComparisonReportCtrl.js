@@ -86,11 +86,7 @@ angular.module('sntRover')
                             {
                                 isChargeGroup: true,
                                 isChageGroupActive: false,
-                                pageNo: 0,
-                                pageOptions: {
-                                    id: results[i].id.toString(),
-                                    api: ['fetchChargeCodes', i]
-                                }
+                                pageNo: 0
                             }
                         )
                     );
@@ -109,7 +105,11 @@ angular.module('sntRover')
                         isChargeCode: true,
                         isChargeCodeActive: false,
                         isChargeCodePagination: true,
-                        isEmpty: true
+                        isEmpty: true,
+                        pageOptions: {
+                            id: results[i].id.toString(),
+                            api: ['fetchChargeCodes', i]
+                        }
                     });
                 }
             }
