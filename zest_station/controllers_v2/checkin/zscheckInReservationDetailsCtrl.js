@@ -416,27 +416,27 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         };
 
         var currentHotelTime = '',
-        fetchHotelTime = function(){
-            var fetchHotelTimeSuccess = function(response){
-                currentHotelTime = response.hote_time;
-                // once hoteltime is fetched, try to proceed
-                $scope.onNextFromDetails();
+            fetchHotelTime = function() {
+                var fetchHotelTimeSuccess = function(response) {
+                    currentHotelTime = response.hote_time;
+                    // once hoteltime is fetched, try to proceed
+                    $scope.onNextFromDetails();
+                };
+                $scope.callAPI(zsCheckinSrv.fetchHotelTime, {
+                    params: {
+                        'reservation_id': $scope.selectedReservation.id
+                    },
+                    'successCallBack': fetchHotelTimeSuccess
+                });
             };
-            $scope.callAPI(zsCheckinSrv.fetchHotelTime, {
-                params: {
-                    'reservation_id': $scope.selectedReservation.id
-                },
-                'successCallBack': fetchHotelTimeSuccess
-            });
-        };
 
         var checkinTimeWithinTheHourForHotel = function() {
             // date is assumed to be current day,
             //  since due_in on the reservation should already be checked from API
-            var t = new Date();
-            d = t.getDate();
-            m = t.getMonth() + 1;
-            y = t.getFullYear();
+            var t = new Date(),
+                d = t.getDate(),
+                m = t.getMonth() + 1,
+                y = t.getFullYear();
 
             //Convert time into date object
             var d1 = new Date(m + "/" + d + "/" + y + " " + $scope.selectedReservation.reservation_details.arrival_time);
@@ -460,7 +460,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 return false;
             }
         };
-        
+            
 
         $scope.onNextFromDetails = function() {
             if ($scope.zestStationData.theme === 'yotel' && currentHotelTime.length === 0){
