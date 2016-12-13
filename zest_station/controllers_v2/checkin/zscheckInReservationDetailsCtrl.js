@@ -438,47 +438,42 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 m = t.getMonth() + 1,
                 y = t.getFullYear();
 
-            //Convert time into date object
+            // Convert time into date object
             var d1 = new Date(m + "/" + d + "/" + y + " " + $scope.selectedReservation.reservation_details.arrival_time);
             var d2 = new Date(m + "/" + d + "/" + y + " " + currentHotelTime);
 
-            //Get timestamp
+            // Get timestamp
             var arrivalTime = d1.getTime();
             var hotelTime = d2.getTime();
 
+            console.info('\n\nReservation arrival  time =>', $scope.selectedReservation.reservation_details.arrival_time, '------ Hotel current  time => ', currentHotelTime+'\n\n');
+
             if (arrivalTime > hotelTime) {
-                //if arrival time is greater than current time allow guest to check-in
-                console.warn('guest is within arrival time');
+                // if arrival time is greater than current time allow guest to check-in
                 return true;
             } else if (arrivalTime + 3600000 > hotelTime) {
                 // current time plus an hour is greater than arrival time,
-                //  (within 60-minutes from arrival time, allow guest to check in (for yotel))
-                console.warn('guest is within an hour of arrival time');
+                // (within 60-minutes from arrival time, allow guest to check in (for yotel))
                 return true;
             } else {
-                console.warn('guest is not within 1 hour of arrival time');
                 return false;
             }
         };
             
 
         $scope.onNextFromDetails = function() {
-            if ($scope.zestStationData.theme === 'yotel' && currentHotelTime.length === 0){
+            if ($scope.zestStationData.theme === 'yotel' && currentHotelTime.length === 0) {
                 // fetch hotel time to check with reservation arrival time
                 fetchHotelTime();
-            }else{
+            }else {
                 var roomAssigned = roomIsAssigned(),
                 roomReady = roomIsReady();
 
-                console.log('$scope.selectedReservation: ', $scope.selectedReservation);
-                console.log($scope.selectedReservation.reservation_details.reservation_id);
                 console.info('roomAssigned: ', roomAssigned, ', roomReady: ', roomReady);
-
                 console.info('reservation_details: ', $scope.selectedReservation.reservation_details);
                 // the reservation at this point, for check-in, should have a due-in status + arrival time,
                 // if this is for Yotel, we need to check the arrival time vs current time at the hotel,
                 // to make sure the arriving guest is within the arrival time (within the first hour);
-                console.warn('$scope.zestStationData.theme: ', $scope.zestStationData.theme);
 
 
                 if ($scope.zestStationData.theme === 'yotel' && !checkinTimeWithinTheHourForHotel()) {
