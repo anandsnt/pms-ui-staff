@@ -451,7 +451,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             if (arrivalTime > hotelTime) {
                 // if arrival time is greater than current time allow guest to check-in
                 return true;
-            } else if (arrivalTime + 3600000 > hotelTime) {
+            } else if (hotelTime + 3600000 > arrivalTime) {
                 // current time plus an hour is greater than arrival time,
                 // (within 60-minutes from arrival time, allow guest to check in (for yotel))
                 return true;
