@@ -13,7 +13,6 @@ const NightlyDiaryRootComponent = createClass ({
             scrollbars: 'custom'
         };
         this.setScroller();
-        this.scrollToNthelement(this.props.index);
         this.refreshScroller();
     },
     setScroller() {
@@ -27,8 +26,9 @@ const NightlyDiaryRootComponent = createClass ({
         let that = this;
 
         setTimeout(function() {
-            that.scroller.refresh(); 
-        }, 1000);
+            that.scroller.refresh();
+            that.scrollToNthelement(that.props.index); 
+        }, 500);
 
     },
     scrolToTop() {

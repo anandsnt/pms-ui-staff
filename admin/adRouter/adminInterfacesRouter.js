@@ -13,6 +13,9 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             }],
             balancingAccounts: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
                 return adExactOnlineSetupSrv.fetchBalancingAccounts();
+            }],
+            endPoints: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
+                return adExactOnlineSetupSrv.fetchEndpointsList();
             }]
         }
     });
