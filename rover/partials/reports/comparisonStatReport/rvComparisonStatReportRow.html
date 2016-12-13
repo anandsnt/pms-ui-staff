@@ -36,23 +36,20 @@
   ng-class="{
     'charge-group': item.isChargeGroup,
     'toggle': item.isChargeGroup,
-    'active': item.chageGroupActive,
+    'active': item.isChageGroupActive,
 
     'charge-code': item.isChargeCode,
-    'hidden': (item.isChargeCode && !item.chageGroupActive),
+    'hidden': (item.isChargeCode && (item.isEmpty && !item.chargeCodeActive)),
     'charge-pagination': item.isChargeCodePagination,
 
     'odd': $odd,
     'even': $even,
     'last': (item.isChargeCode && $last)
   }"
-  ng-click="toggleChargeCode(item)"
+  ng-click="toggleChargeGroup($index)"
 >
   <td ng-if="item.isChargeCodePagination" colspan="8">
-    <rv-pagination page-options="{
-      id: item.id.toString(),
-      api: [fetchChargeCodes, item]
-    }"></rv-pagination>
+    <rv-pagination page-options="item.pageOptions"></rv-pagination>
   </td>
 
 	<td ng-if="!item.isChargeCodePagination"
