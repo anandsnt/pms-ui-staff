@@ -988,7 +988,7 @@ angular.module('reportsModule')
                                 {id: "31_60", status: "31-60 DAYS", selected: true},
                                 {id: "61_90",  status: "61-90 DAYS", selected: true},
                                 {id: "91_120",  status: "91-120 DAYS", selected: true},
-                                {id: "120+",  status: "120+ DAYS", selected: true}
+                                {id: "120_plus",  status: "120+ DAYS", selected: true}
                             ];
 
 
