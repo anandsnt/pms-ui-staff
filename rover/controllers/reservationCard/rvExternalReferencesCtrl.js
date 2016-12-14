@@ -110,6 +110,7 @@ sntRover.controller('rvExternalReferencesCtrl', ['$rootScope', '$scope', 'RVExte
             var externalSys = _.find($scope.stateExternalRef.thirdParties, {
                 id: reference
             });
+            
             return externalSys.name + (description ? " [" + description + "]" : "");
         };
     }
