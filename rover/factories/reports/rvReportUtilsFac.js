@@ -815,7 +815,7 @@ angular.module('reportsModule')
                             options: {
                                 selectAll: false,
                                 hasSearch: true,
-                                key: 'posting_accounts_name',
+                                key: 'account_name',
                                 defaultValue: 'Select Accounts'
                             }
                         };

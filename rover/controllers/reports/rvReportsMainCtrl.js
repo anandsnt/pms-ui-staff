@@ -1078,7 +1078,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					'assigned_departments': [],
 					'completion_status': [],
 					'age_buckets': [],
-					'accounts': []
+					'account_ids': []
 				};
 			}
 
@@ -1808,7 +1808,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						params[key].push( accounts.id );
 						/**/
 						if ( changeAppliedFilter ) {
-							$scope.appliedFilter.accounts.push( accounts.id );
+							$scope.appliedFilter.account_ids.push( accounts.id );
 						}
 					});
 
