@@ -132,9 +132,9 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 
 			};
 
-			 $scope.$on('FETCH_OWS_MESSAGES',function(){
-			 	fetchOwsMessages();
-			 });
+			$scope.$on('FETCH_OWS_MESSAGES', function() {
+				fetchOwsMessages();
+			});
 
 		}());
 
