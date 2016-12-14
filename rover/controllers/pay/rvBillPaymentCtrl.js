@@ -395,11 +395,11 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 	/*
 	* Success call back of success payment
 	*/
-	var successPayment = function(data) {
+	var successPayment = function(e, data) {
 		$scope.errorMessage = "";
 		$scope.authorizedCode = data.authorization_code;
-		processeRestOfPaymentOperations();
 		paymentFinalDetails =  data;
+		processeRestOfPaymentOperations();
 	};
 
 	/*

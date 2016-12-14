@@ -11,6 +11,7 @@
     </div>
 
     <ad-sync-block ng-if="config.enabled"
+                   interface="{{interface}}"
                    config="config">
     </ad-sync-block>
 
@@ -63,9 +64,10 @@
                          div-class="full-width"
                          text-area-class="full-width"
                          value="config.emails"
-                         label = "{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}"
-                         placeholder = "">
+                         label="{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}"
+                         placeholder="">
             </ad-textarea>
         </div>
     </fieldset>
 </ad-common-parts-in-form-dir>
+

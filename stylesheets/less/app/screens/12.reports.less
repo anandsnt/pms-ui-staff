@@ -2293,6 +2293,94 @@
                                 }
                             }
 
+                            // Used in Comparison Report
+                            &.charge-group,
+                            &.charge-code {
+                                &.odd {
+                                    td { background-color: @white; }
+                                }
+
+                                &.even {
+                                    td { background-color: @grey1; }
+                                }
+                            }
+
+                            &.charge-group {
+                                 
+                                &.toggle {
+
+                                    cursor: pointer;
+
+                                    .icon-double-arrow {
+                                        display: inline-block; 
+                                        background-position: 1px -797px;
+                                        background-size: 60px;
+                                        .square(12px);
+                                        .icons > .rotate-down;
+                                    }
+
+                                    &.active {
+                                        td {
+                                            border-bottom-color: rgba(0,0,0,0.04);  
+                                        }
+                                          
+                                        .icon-double-arrow {
+                                            background-position: 3px -798px;
+                                            .icons > .rotate-up;
+                                        }
+                                    } 
+                                }
+                            }
+                            
+                            // Used in Comparison Report
+                            &.charge-code {
+                                td {
+                                    &.code {
+                                        padding-left: 20px;
+                                    }
+                                    border-bottom-color: rgba(0,0,0,0.03);  
+                                } 
+
+                                &.last {
+                                    td {
+                                        border-bottom-color: @grey2;
+                                    }
+                                }
+
+                            }
+
+                            &.charge-pagination {
+                                td {
+                                    padding: 0;
+                                    border-bottom-color: @grey2; 
+                                    .numbers-pagination {
+                                        position: static;
+                                        padding: 5px;
+                                        background: transparent;
+                                        height: 40px;
+                                        .box-shadow(none);
+
+                                        .delimeter {
+                                            height: 30px;
+                                        }
+
+                                        .button {
+                                            .square(30px);
+                                            line-height: 30px;
+                                            font-size: 12px;
+
+                                            &.next,
+                                            &.prev {
+                                                &:before {
+                                                    top: 10px;
+                                                    left: 12px;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
                             &.total {
                                 td {
                                     background-color: transparent;

@@ -31,6 +31,7 @@ admin.controller('adDuettoSetupCtrl', ['$scope', 'config', 'adInterfacesCommonCo
             });
 
             $scope.config = config;
+            $scope.interface = interfaceIdentifier.toUpperCase();
         })();
     }
 ])
