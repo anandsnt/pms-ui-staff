@@ -119,7 +119,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 
 			};
 
-			var fetchOwsMessages = (function() {
+			var fetchOwsMessages = function() {
 				$scope.owsMsgOpenPoup = false;
 				var options = {
 					params: {
@@ -130,7 +130,11 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 
 				$scope.callAPI(zsCheckinSrv.fetchOwsMessage, options);
 
-			}());
+			};
+
+			 $scope.$on('FETCH_OWS_MESSAGES',function(){
+			 	fetchOwsMessages();
+			 });
 
 		}());
 
