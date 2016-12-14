@@ -40,6 +40,10 @@ sntGuestWeb.service('GwCheckinSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'GwW
 		var deferred = $q.defer();
 
 		params.application = (typeof GwWebSrv.zestwebData.application !== "undefined") ? GwWebSrv.zestwebData.application : "";
+		//if controller didn't send the url suffix
+		if(typeof params.url_suffix === "undefined") {
+			params.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "";
+		}
 		var url = '/guest_web/authenticate_checkin_guest';
 
 		GWBaseWebSrv2.postJSON(url, params).then(function(data) {
@@ -118,8 +122,8 @@ sntGuestWeb.service('GwCheckinSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'GwW
 		var url = '/api/reservations/' + params.reservation_id + '/pre_checkin';
 		var data = {};
 
-		data.application = (typeof GwWebSrv.zestwebData.application !== "undefined") ? GwWebSrv.zestwebData.application : "";
-		data.url_suffix = (typeof GwWebSrv.zestwebData.urlSuffix !== "undefined") ? GwWebSrv.zestwebData.urlSuffix : "";
+		params.application = (typeof GwWebSrv.zestwebData.application !== "undefined") ? GwWebSrv.zestwebData.application : "";
+		params.url_suffix = (typeof GwWebSrv.zestwebData.urlSuffix !== "undefined") ? GwWebSrv.zestwebData.urlSuffix : "";
 		GWBaseWebSrv.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
@@ -131,6 +135,11 @@ sntGuestWeb.service('GwCheckinSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'GwW
 	this.verifyCheckinUser = function(params) {
 		var deferred = $q.defer();
 		var url = '/guest_web/search.json';
+
+		//if controller didn't send the url suffix
+		if(typeof params.url_suffix === "undefined") {
+			params.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "";
+		}
 
 		GWBaseWebSrv.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
