@@ -5,7 +5,7 @@
     </button>
     <span class="result-count" ng-show = "diaryData.totalSearchResults !== 0">{{diaryData.totalSearchResults}} Matches</span> 
     <span class="result-count" ng-show = "(diaryData.totalSearchResults === 0 && textInQueryBox.length > 2 )">0 Matches</span> 
-    <input class="query" placeholder="{{ 'PLACEHOLDER_NIGHTLY_DIARY_SEARCH' | translate }}" type="search" autocomplete="off" ng-change = "queryEntered()" ng-model = "textInQueryBox">
+    <input class="query" placeholder="{{getPlaceholderText()}}" type="search" autocomplete="off" ng-change = "queryEntered()" ng-model = "textInQueryBox">
 
 
     <!-- Search results, show only when searching: -->

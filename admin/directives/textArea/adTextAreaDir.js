@@ -13,7 +13,7 @@ admin.directive('adTextarea', function($timeout) {
             divClass: '@divClass',
             textAreaClass: '@textAreaClass',
             rows: '@rows',
-            required: '=required',
+            required: '@required',
             maxlength: '@maxlength',
             disabled: '=disabled',
             ngHide: '=hide'
