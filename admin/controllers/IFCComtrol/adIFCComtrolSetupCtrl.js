@@ -31,6 +31,8 @@ admin.controller('adIFCComtrolSetupCtrl', ['$scope', 'ifcComtrolSetupValues', 'a
 	$scope.saveIFCComtrolSetup = function() {
 		var params = _.pick($scope.ifc_comtrol,
 				'authentication_token',
+				"language",
+				"room_type",
 				'url',
 				'site_name',
 				'operator_id',
@@ -77,5 +79,6 @@ admin.controller('adIFCComtrolSetupCtrl', ['$scope', 'ifcComtrolSetupValues', 'a
 	 */
 	(function() {
 		$scope.ifc_comtrol = ifcComtrolSetupValues;
+		$scope.languages = adIFCComtrolSetupSrv.getLanguagesList();
 	})();
 }]);
