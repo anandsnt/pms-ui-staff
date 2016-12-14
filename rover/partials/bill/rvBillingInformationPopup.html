@@ -18,11 +18,11 @@
       <div ng-include="'/assets/partials/common/notification_message.html'"></div>
          
       <!-- Billing Info Content include-replace -->
-      <div ng-show = "isInitialPage" ng-include="'/assets/partials/bill/rvAllRoutes.html'"></div>
+      <div ng-if = "isInitialPage" ng-include="'/assets/partials/bill/rvAllRoutes.html'"></div>
 
-      <div ng-show = "(!isInitialPage && !isEntitySelected)" ng-include="'/assets/partials/bill/rvSelectEntity.html'"></div>
+      <div ng-if = "(!isInitialPage && !isEntitySelected)" ng-include="'/assets/partials/bill/rvSelectEntity.html'"></div>
 
-      <div ng-show = "(!isInitialPage && isEntitySelected)" ng-include="'/assets/partials/bill/rvRouteDetails.html'"> </div>
+      <div ng-if = "(!isInitialPage && isEntitySelected)" ng-include="'/assets/partials/bill/rvRouteDetails.html'"> </div>
       
    </form>
 </div>
