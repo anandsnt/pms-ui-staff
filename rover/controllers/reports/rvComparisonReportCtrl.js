@@ -7,6 +7,7 @@ angular.module('sntRover')
     'RVReportMsgsConst',
     '$timeout',
     'RVreportsSubSrv',
+    '$q',
     function (
         $rootScope,
         $scope,
@@ -14,7 +15,8 @@ angular.module('sntRover')
         RVReportUtilsFac,
         RVReportMsgsConst,
         $timeout,
-        RVreportsSubSrv
+        RVreportsSubSrv,
+        $q
     ) {
 
         var currencySymbol = $rootScope.currencySymbol;
@@ -184,6 +186,8 @@ angular.module('sntRover')
          * @returns {object}             undefined
          */
         function toggleChargeCodes (source, sourceIndex, active) {
+            var deferred = $q.defer();
+
             var process = function(source, index, active) {
                 var nextIndex = index + 1;
 
@@ -191,17 +195,20 @@ angular.module('sntRover')
 
                 if ( source[nextIndex] && source[nextIndex].isChargeCode ) {
                     process(source, nextIndex, active);
+                } else {
+                    deferred.resolve();
                 }
             };
 
             process(source, sourceIndex, active);
+            return deferred.promise;
         }
 
         /**
          * toggleAllChargeCodes - toggle all the cc available on the ui
          *
          * @param  {array} source      full array
-         * @param  {type} active      show or hide        
+         * @param  {type} active      show or hide
          * @returns {object}             undefined
          */
         function toggleAllChargeCodes (source, active) {
@@ -358,12 +365,13 @@ angular.module('sntRover')
                     state = true;
                 }
 
-                toggleChargeCodes($scope.cgEntries, sourceIndex, state);
-                item.isChageGroupActive = state;
-
-                $timeout(function () {
-                    $scope.refreshScroll(true);
-                }, delay);
+                toggleChargeCodes($scope.cgEntries, sourceIndex, state)
+                    .then(function () {
+                        item.isChageGroupActive = state;
+                        $timeout(function () {
+                            $scope.refreshScroll(true);
+                        }, delay);
+                    });
             } else {
                 $scope.fetchChargeCodes(index);
             }
@@ -384,13 +392,15 @@ angular.module('sntRover')
                 fillChargeCodes(ccStore.get(item.charge_group_id), sourceIndex);
 
                 $timeout(function () {
-                    toggleChargeCodes($scope.cgEntries, sourceIndex, true);
-                    item.isChargeGroupActive = true;
-                    $scope.$emit('hideLoader');
+                    toggleChargeCodes($scope.cgEntries, sourceIndex, true)
+                        .then(function () {
+                            item.isChargeGroupActive = true;
+                            $scope.$emit('hideLoader');
 
-                    $timeout(function () {
-                        $scope.refreshScroll();
-                    }, refreshDelay);
+                            $timeout(function () {
+                                $scope.refreshScroll(true);
+                            }, refreshDelay);
+                        });
                 }, delay);
             };
 
