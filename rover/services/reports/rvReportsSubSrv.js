@@ -397,7 +397,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 			return callApi({
 				name: 'accounts',
 				method: 'getJSON',
-				url: '/api/posting_accounts/search?account_type=&is_non_zero=true&page=1&per_page=50&q=&status=',
+				url: '/api/accounts/list',
 				resKey: 'posting_accounts'
 			});
 		};
