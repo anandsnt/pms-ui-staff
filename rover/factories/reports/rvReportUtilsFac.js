@@ -984,7 +984,7 @@ angular.module('reportsModule')
                 });
             }
 
-            function fillAgingBalance(){
+            function fillAgingBalance() {
                 customData = [
                                 {id: "0_30", status: "0-30 DAYS", selected: true},
                                 {id: "31_60", status: "31-60 DAYS", selected: true},
