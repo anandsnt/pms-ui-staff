@@ -277,7 +277,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			item_42: false,
 			item_43: false,
 			item_44: false,
-			item_45: false
+			item_45: false,
+			item_46: false,
+			item_47: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( ! $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -1074,7 +1076,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					'floorList': [],
 					'rates': [],
 					'assigned_departments': [],
-					'completion_status': []
+					'completion_status': [],
+					'age_buckets': [],
+					'account_ids': []
 				};
 			}
 
@@ -1768,7 +1772,54 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					}
 				}
 			}
-			// include departments
+
+			// include Aging days
+            if ( report.hasOwnProperty('hasIncludeAgingBalance') ) {
+				selected = _.where(report['hasIncludeAgingBalance']['data'], { selected: true });
+
+				if ( selected.length > 0 ) {
+					key         = reportParams['AGING_BALANCE'];
+					params[key] = [];
+					/**/
+					_.each(selected, function(each) {
+						params[key].push( each.id.toString() );
+						/**/
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.age_buckets.push( each.id );
+						}
+					});
+
+					// in case if all reservation status are selected
+					if ( changeAppliedFilter && report['hasIncludeAgingBalance']['data'].length === selected.length ) {
+						$scope.appliedFilter.age_buckets = ['All Aging Balance'];
+					}
+				}
+			}
+
+			//Include accounts
+			if ( report.hasOwnProperty('hasAccountSearch') ) {
+				selected = _.where( report['hasAccountSearch']['data'], { selected: true } );
+
+				if ( selected.length > 0) {
+					key         = reportParams['ACCOUNT_SEARCH'];
+					params[key] = [];
+					/**/
+					_.each(selected, function(accounts) {
+						params[key].push( accounts.id );
+						/**/
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.account_ids.push( accounts.id );
+						}
+					});
+
+					// in case if all guarantee type is selected
+					if ( changeAppliedFilter && report['hasAccountSearch']['data'].length === selected.length ) {
+						$scope.appliedFilter.guarantees = ['All Accounts'];
+					}
+				}
+			}
+
+			// include completion status
 			if ( report.hasOwnProperty('hasCompletionStatus') ) {
 				selected = _.where(report['hasCompletionStatus']['data'], { selected: true });
 
