@@ -98,7 +98,7 @@ sntRover.controller('rvExternalReferencesCtrl', ['$rootScope', '$scope', 'RVExte
             resetScroller(100);
         };
 
-        $scope.onEditReference = function(reference, event) {
+        $scope.onEditReference = function(reference) {
             if (!reference.id && reference.external_interface_type_id && reference.external_confirm_no) {
                 save(reference);
             } else if (reference.id) {
@@ -110,7 +110,8 @@ sntRover.controller('rvExternalReferencesCtrl', ['$rootScope', '$scope', 'RVExte
             var externalSys = _.find($scope.stateExternalRef.thirdParties, {
                 id: reference
             });
-            return externalSys.name + (description ? " [" + description + "]" : "");
+
+            return externalSys.name + (description && description !== externalSys.name ? " [" + description + "]" : "");
         };
     }
 ]);
