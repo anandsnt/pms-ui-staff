@@ -118,6 +118,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.isDepositBalanceReport = false;
 			$scope.isCancellationReport = false;
 			$scope.isActionsManager = false;
+			$scope.isArAgingReport = false;
 			$scope.isVacantRoomsReport = false;
             $scope.isForecastGuestGroup = false;
 
@@ -244,8 +245,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['ACTIONS_MANAGER']:
                     $scope.isActionsManager = true;
 					break;
-				case reportNames['VACANT_ROOMS_REPORT']:
-                    $scope.isVacantRoomsReport = true;
+				case reportNames['A/R_AGING']:
+					$scope.hasNoTotals = false;
+					$scope.isBalanceReport = true;
+                    $scope.isArAgingReport = true;
 					break;
                 case reportNames['FORECAST_GUEST_GROUPS']:
                     $scope.isForecastGuestGroup = true;
@@ -696,6 +699,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.detailsTemplateUrl = '/assets/partials/reports/roomOooOosReport/rvRoomOooOosReport.html';
 					break;
 
+				// case reportNames['A/R_AGING']:
+				// 	$scope.hasReportTotals    = true;
+				// 	$scope.showReportHeader   = true;
+				// 	$scope.detailsTemplateUrl = '/assets/partials/reports/roomOooOosReport/rvRoomOooOosReport.html';
+				// 	break;
+
 				default:
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
@@ -785,6 +794,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['ACTIONS_MANAGER']:
 					template = '/assets/partials/reports/actionManager/reportRow.html';
 					break;
+
+			    case reportNames['A/R_AGING']:
+					template = '/assets/partials/reports/aging/reportRow.html';
+					break;
+
 				case reportNames['VACANT_ROOMS_REPORT']:
 					template = '/assets/partials/reports/vacantRoomsReport/rvVacantRoomsReportRow.html';
 					break;
@@ -1016,6 +1030,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['CREDIT_CHECK_REPORT']:
 				case reportNames['DEPOSIT_SUMMARY']:
 				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
+				case reportNames['A/R_AGING']:
 					orientation = 'landscape';
 					break;
 

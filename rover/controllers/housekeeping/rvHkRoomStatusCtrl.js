@@ -916,6 +916,8 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			} else {
 				$_roomList = {};
 			}
+			$scope.topFilter.byWorkType = '';
+			$scope.topFilter.byEmployee = '';
 
 			// clear old results and update total counts
 			$scope.rooms              = [];
@@ -954,9 +956,22 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 					$_defaultWorkType = $scope.currentFilters.filterByWorkType;
 					$_defaultEmp      = $scope.currentFilters.filterByEmployeeName;
 
-					// time to decide if this is an employee
-					// who has an active work sheets
-					$_checkHasActiveWorkSheet(alreadyFetched);
+					// if already fetched assigned rooms, no need to call api again CICO-32781
+					if (alreadyFetched) {
+
+						$scope.hasActiveWorkSheet = $scope.employees && $scope.employees.room_tasks && $scope.employees.room_tasks.length || false;
+
+						$scope.topFilter.byWorkType = $_defaultWorkType;
+						$scope.topFilter.byEmployee = $_defaultEmp;
+						// need delay
+						$timeout(function() {
+							$_postProcessRooms();
+						}, 10);
+					} else {
+						// time to decide if this is an employee
+						// who has an active work sheets
+						$_checkHasActiveWorkSheet(alreadyFetched);
+					}
 				};
 
 				if ( (!!$scope.workTypes && $scope.workTypes.length) && (!!$scope.employees && $scope.employees.length) ) {
