@@ -30,9 +30,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		setScroller();
 
-		var refreshScroll = function() {
+		$scope.refreshScroll = function(stay) {
 			$scope.refreshScroller( REPORT_DETAILS_SCROLL );
-			if ( $scope.myScroll && $scope.myScroll.hasOwnProperty(REPORT_DETAILS_SCROLL) ) {
+			if ( !stay && $scope.myScroll && $scope.myScroll.hasOwnProperty(REPORT_DETAILS_SCROLL) ) {
 				$scope.myScroll[REPORT_DETAILS_SCROLL].scrollTo(0, 0, 100);
 			}
 		};
@@ -1197,7 +1197,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			afterFetch();
 			findBackNames();
 			calPagination();
-			refreshScroll();
+			$scope.refreshScroll();
 		});
 
 		var reportUpdated = $scope.$on(reportMsgs['REPORT_UPDATED'], function() {
@@ -1207,7 +1207,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			afterFetch();
 			findBackNames();
 			calPagination();
-			refreshScroll();
+			$scope.refreshScroll();
 		});
 
 		var reportPageChanged = $scope.$on(reportMsgs['REPORT_PAGE_CHANGED'], function() {
@@ -1215,7 +1215,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			/**/
 			afterFetch();
 			calPagination();
-			refreshScroll();
+			$scope.refreshScroll();
 		});
 
 		var reportPrinting = $scope.$on(reportMsgs['REPORT_PRINTING'], function() {
@@ -1231,7 +1231,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			/**/
 			afterFetch();
 			calPagination();
-			refreshScroll();
+			$scope.refreshScroll();
 		});
 
 		// removing event listners when scope is destroyed
@@ -1263,4 +1263,3 @@ sntRover.controller('RVReportDetailsCtrl', [
     }
 
 ]);
-

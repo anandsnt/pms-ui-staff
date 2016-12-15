@@ -10,7 +10,7 @@
 <!-- Report content -->
 <div id="report-content" class="report-content scrollable" ng-hide="hasNoResults" ng-class="{ 'with-pagination': (!disablePrevBtn || !disableNextBtn) }" ng-iscroll="report-details-scroll">
     <div class="wrapper">
-        <table class="forecast-reports medium-grid" ng-controller="RVComparisonReportCtrl">
+        <table class="forecast-reports medium-grid" ng-controller="RVComparisonReport.Controller">
             <thead>
                 <tr class="top-row">
                     <th class="long-code break"></th>
@@ -23,7 +23,7 @@
                     <th colspan="1">Variance</th>
                 </tr>
             </thead>
-            
+
             <!-- Reports table footer -->
             <tfoot ng-include="'/assets/partials/reports/shared/rvReportDetailsFooter.html'"></tfoot>
 
