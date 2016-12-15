@@ -354,6 +354,7 @@ angular.module('reportsModule')
                         'value': "INCLUDE_DEPARTMENTS",
                         'description': "Include Departments"
                     });
+                    break;
                 case reportNames['A/R_AGING']:
                     report['filters'].push({
                         'value': "INCLUDE_AGING_BALANCE",
@@ -364,7 +365,7 @@ angular.module('reportsModule')
                         'description': "Include Account Search"
                     }
                     );
-
+                    break;
 
                 default:
                     // no op
@@ -982,6 +983,7 @@ angular.module('reportsModule')
                     }
                 });
             }
+
             function fillAgingBalance(){
                 customData = [
                                 {id: "0_30", status: "0-30 DAYS", selected: true},
