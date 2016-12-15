@@ -69,48 +69,50 @@
 					</div>
 				</div>
 			</div>
-			<!-- Search results -->
-			<div class="scrollable" ng-iscroll='search_results' ng-iscroll-delay="100" ng-hide="targetSelected||targetBillSelected">
-				<ul class="search-results wrapper"> 
-					<!-- if no search is done -->
-					<li class="no-content" ng-show="(textQuery.length<3 && numberQuery.length<3) && searchResults.length === 0">
-						<div class="info">
-							<span class="icon-no-content icon-groups"></span>
-							<strong class="h1">Find Account or Guest</strong>
-							<span class="h2">Search by Account/Guest Name or Account/Room No.</span>
-						</div>
-					</li>
-					<!-- if no search results are found -->
-					<li class="no-content" ng-show="(textQuery.length >= 3 || numberQuery.length >=3) && searchResults.length === 0">
-						<div class="info">
-							<span class="icon-no-content icon-groups"></span>
-							<strong class="h1">No Matches</strong>
-							<span class="h2">Check that you didn't mispell the Group <strong>Name</strong> or <strong>Code</strong>.</span>
-						</div>
-					</li>
+			<div class="account-search">
+				<!-- Search results -->
+				<div class="scrollable" ng-iscroll='search_results' ng-iscroll-delay="100" ng-hide="targetSelected||targetBillSelected">
+					<ul class="search-results wrapper"> 
+						<!-- if no search is done -->
+						<li class="no-content" ng-show="(textQuery.length<3 && numberQuery.length<3) && searchResults.length === 0">
+							<div class="info">
+								<span class="icon-no-content icon-groups"></span>
+								<strong class="h1">Find Account or Guest</strong>
+								<span class="h2">Search by Account/Guest Name or Account/Room No.</span>
+							</div>
+						</li>
+						<!-- if no search results are found -->
+						<li class="no-content" ng-show="(textQuery.length >= 3 || numberQuery.length >=3) && searchResults.length === 0">
+							<div class="info">
+								<span class="icon-no-content icon-groups"></span>
+								<strong class="h1">No Matches</strong>
+								<span class="h2">Check that you didn't mispell the Group <strong>Name</strong> or <strong>Code</strong>.</span>
+							</div>
+						</li>
 
-					<li class="group-account" ng-show="searchResults.length !== 0" ng-repeat="item in searchResults" ngrepeatend ng-click="targetClicked(item.entity_id)">
-						<div class="room" ng-show="item.type === 'RESERVATION'">
-							<strong ng-bind-html="escapeNull(item.room_no)|highlight:numberQuery:false"></strong>
-						</div>
-						<div class="data guest"  ng-show="item.type === 'RESERVATION'">
-							<h2 ng-bind-html="escapeNull(item.displaytext)|highlight:textQuery:false"></h2>
-						</div>
-						  <div class="reservation" ng-show="item.type === 'RESERVATION'">
-	                    	<!-- If not inhouse/departure, show:-->
-	                   		<span class="date" ng-bind-html="escapeNull(item.arrival_date)" ng-hide="item.status === 'CHECKEDIN'"></span> 
-	                    	<span class="guest-status {{getGuestStatusIcon(item.status,item.is_opted_late_checkout,item.is_pre_checkin)}}" ng-class="">{{item.status}}</span>
-	               		 </div>
-						<div class="group-info" ng-show="item.type === 'ACCOUNT' || item.type === 'GROUP'">
-							<strong ng-bind-html="escapeNull(item.account_number)|highlight:numberQuery:false"></strong>
-							<span class="type" ng-show="item.type === 'ACCOUNT'">Account</span>
-							<span class="type" ng-show="item.type === 'GROUP'">Group</span>
-						</div>
-						<div class="data" ng-show="item.type === 'ACCOUNT' || item.type === 'GROUP'">
-							<h2 ng-bind-html="escapeNull(item.account_name)|highlight:textQuery:false"></h2>
-						</div>
-					</li>
-				</ul>
+						<li class="group-account" ng-show="searchResults.length !== 0" ng-repeat="item in searchResults" ngrepeatend ng-click="targetClicked(item.entity_id)">
+							<div class="room" ng-show="item.type === 'RESERVATION'">
+								<strong ng-bind-html="escapeNull(item.room_no)|highlight:numberQuery:false"></strong>
+							</div>
+							<div class="data guest"  ng-show="item.type === 'RESERVATION'">
+								<h2 ng-bind-html="escapeNull(item.displaytext)|highlight:textQuery:false"></h2>
+							</div>
+							  <div class="reservation" ng-show="item.type === 'RESERVATION'">
+		                    	<!-- If not inhouse/departure, show:-->
+		                   		<span class="date" ng-bind-html="escapeNull(item.arrival_date)" ng-hide="item.status === 'CHECKEDIN'"></span> 
+		                    	<span class="guest-status {{getGuestStatusIcon(item.status,item.is_opted_late_checkout,item.is_pre_checkin)}}" ng-class="">{{item.status}}</span>
+		               		 </div>
+							<div class="group-info" ng-show="item.type === 'ACCOUNT' || item.type === 'GROUP'">
+								<strong ng-bind-html="escapeNull(item.account_number)|highlight:numberQuery:false"></strong>
+								<span class="type" ng-show="item.type === 'ACCOUNT'">Account</span>
+								<span class="type" ng-show="item.type === 'GROUP'">Group</span>
+							</div>
+							<div class="data" ng-show="item.type === 'ACCOUNT' || item.type === 'GROUP'">
+								<h2 ng-bind-html="escapeNull(item.account_name)|highlight:textQuery:false"></h2>
+							</div>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 		<!-- Actions - hidden when search is opened -->
