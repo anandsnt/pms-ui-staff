@@ -38,7 +38,7 @@
                         </label>
                     </div>
                 </li>
-                <li ng-repeat="label in yAxisLabels track by $index">
+                <li ng-repeat="label in yAxisLabelsV2 track by $index">
                     <em ng-show="!label.is_rate_type">{{ label.name }}</em>
                     <strong ng-show="label.is_rate_type">{{ label.name }}</strong>
                 </li>

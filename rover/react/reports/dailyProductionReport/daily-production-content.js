@@ -24,7 +24,7 @@ var DPHeadPanel = function (props) {
     var topRowCells = props.headerTop.map(function (item, i) {
         return React.createElement( DPthCell, {
             colspan: props.colspanArray ? props.colspanArray[i] : props.colspan,
-            data: item
+            data: item.name
         });
     });
 
