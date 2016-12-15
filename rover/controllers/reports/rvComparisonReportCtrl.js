@@ -94,7 +94,7 @@ angular.module('sntRover')
                             results[i],
                             {
                                 isChargeGroup: true,
-                                isChageGroupActive: false,
+                                isChargeGroupActive: false,
                                 pageNo: 0
                             }
                         )
@@ -359,7 +359,7 @@ angular.module('sntRover')
             var delay = 500;
 
             if ( angular.isDefined(hasCC) ) {
-                if ( item.isChageGroupActive ) {
+                if ( item.isChargeGroupActive ) {
                     state = false;
                 } else {
                     state = true;
@@ -367,7 +367,7 @@ angular.module('sntRover')
 
                 toggleChargeCodes($scope.cgEntries, sourceIndex, state)
                     .then(function () {
-                        item.isChageGroupActive = state;
+                        item.isChargeGroupActive = state;
                         $timeout(function () {
                             $scope.refreshScroll(true);
                         }, delay);
