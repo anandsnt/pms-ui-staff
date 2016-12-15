@@ -48,4 +48,20 @@ admin.service('adIFCComtrolSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function
 		});
 		return deferred.promise;
 	};
+
+	this.getLanguagesList = function() {
+		var languages = [
+			{ id: "0", name: "English" },
+      { id: "1", name: "Spanish" },
+      { id: "2", name: "French" },
+      { id: "3", name: "Italian" },
+      { id: "4", name: "Japanese" },
+      { id: "5", name: "Slovenian" },
+      { id: "6", name: "German" },
+			{ id: "7", name: "Russian" }
+		];
+
+		return angular.copy(languages);
+    };
+
 }]);

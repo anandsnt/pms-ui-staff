@@ -114,6 +114,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
                 params.first_name = $scope.reservationParams.first_name;
                 params.validate_first_name_first_letter = true;
             }
+            params.is_kiosk = true;
             var options = {
                 params: params,
                 successCallBack: checkinVerificationSuccess,

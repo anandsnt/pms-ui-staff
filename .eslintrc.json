@@ -1,5 +1,5 @@
 {
-    "env": {  
+    "env": {
         "browser": true,
         "es6": true,
         "jquery": true,
@@ -204,6 +204,8 @@
         "spaced-comment":[
             "error",
             "always"
-        ]
+        ],
+        "angular/controller-as": "off",
+        "angular/di": ["off", "array"]
     }
 }
