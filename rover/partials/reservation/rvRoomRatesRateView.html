@@ -104,6 +104,16 @@
                             <td class="total-value" ng-if="!rate.isSuppressed">{{currencySymbol}}{{room.total | number:2}}</td>
                             <td ng-if="rate.isSuppressed">SR</td>
                         </tr>
+                        <tr class="tax">
+                            <td colspan="5" class="total-label">Stay Taxes (INCL.)</td>
+                            <td colspan="2" class="total-value">{{currencySymbol}} {{room.stayTaxIncl | number:2}}</td>
+                            <td class="edit"></td>
+                        </tr>
+                        <tr class="tax">
+                            <td colspan="5" class="total-label">Stay Taxes (EXCL.)</td>
+                            <td colspan="2" class="total-value">{{currencySymbol}} {{room.stayTaxExcl | number:2}}</td>
+                            <td class="edit"></td>
+                        </tr>
                     </tfoot>
                     <tbody>
                         <tr ng-repeat="day in room.dates">

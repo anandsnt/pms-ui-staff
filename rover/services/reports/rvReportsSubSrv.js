@@ -395,6 +395,15 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
+        service.fetchAccounts = function() {
+            return callApi({
+                name: 'accounts',
+                method: 'getJSON',
+                url: '/api/accounts/list',
+                resKey: 'accounts'
+            });
+        };
+
         return service;
     }
 ]);
