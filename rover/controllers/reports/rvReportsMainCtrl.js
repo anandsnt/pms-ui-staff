@@ -2099,6 +2099,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
             //CICO-36186 - Implemented the new pagination for Comparison report
             if(chosenReport.title === reportNames["COMPARISION_BY_DATE"]) {
+                
                 var loadAPIData = function(pageNo) {
                     $scope.genReport(false, pageNo);
                 };
