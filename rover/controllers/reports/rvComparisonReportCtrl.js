@@ -94,7 +94,7 @@ angular.module('sntRover')
                             results[i],
                             {
                                 isChargeGroup: true,
-                                isChageGroupActive: false,
+                                isChargeGroupActive: false,
                                 pageNo: 0
                             }
                         )
