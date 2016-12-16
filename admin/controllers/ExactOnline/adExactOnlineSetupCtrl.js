@@ -13,10 +13,10 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
             maxDate: $scope.exportOptions.date,
             changeYear: true,
             changeMonth: true,
-            beforeShow: function (input, inst) {
+            beforeShow: function() {
                 $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
             },
-            onClose: function (value) {
+            onClose: function() {
                 $('#ui-datepicker-overlay').remove();
             }
         };
@@ -25,7 +25,7 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
          * when clicked on check box to enable/diable pabx
          * @return {undefined}
          */
-        $scope.toggleExactOnlineEnabled = function () {
+        $scope.toggleExactOnlineEnabled = function() {
             $scope.exactOnlineSetup.enabled = !$scope.exactOnlineSetup.enabled;
         };
 
@@ -33,7 +33,7 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
          * when the save is success
          * @return {undefined}
          */
-        var successCallBackOfExactOnlineSetup = function (data) {
+        var successCallBackOfExactOnlineSetup = function() {
             $scope.goBackToPreviousState();
         };
 
@@ -41,7 +41,7 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
          * when we clicked on save button
          * @return {undefined}
          */
-        $scope.saveExactOnlineSetup = function () {
+        $scope.saveExactOnlineSetup = function() {
             var options = {
                 params: {
                     enabled: $scope.exactOnlineSetup.enabled,
@@ -55,14 +55,14 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
             $scope.callAPI(adExactOnlineSetupSrv.saveExactOnLineConfiguration, options);
         };
 
-        $scope.runExport = function () {
+        $scope.runExport = function() {
             var options = {
                 params: {
                     data: {
                         "date": dateFilter($scope.exportOptions.date, $rootScope.dateFormatForAPI)
                     }
                 },
-                successCallBack: function () {
+                successCallBack: function() {
                     $scope.successMessage = 'Exact Online Export Started!';
                 }
             };
@@ -70,11 +70,27 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
             $scope.callAPI(adExactOnlineSetupSrv.runExactOnlineExport, options);
         };
 
+        $scope.onURLChange = function() {
+            var options = {
+                params: {
+                    enabled: $scope.exactOnlineSetup.enabled,
+                    journal_code: $scope.exactOnlineSetup.journal_code,
+                    balancing_account_code: $scope.exactOnlineSetup.balancing_account_code,
+                    endpoint: $scope.exactOnlineSetup.endpoint
+                },
+                successCallBack: function(exactOnlineSetupValues) {
+                    $scope.exactOnlineSetup = exactOnlineSetupValues;
+                }
+            };
+
+            $scope.callAPI(adExactOnlineSetupSrv.saveExactOnLineConfiguration, options);
+        };
+
         /**
          * Initialization stuffs
          * @return {undefined}
          */
-        var initializeMe = (function() {
+        (function() {
             /**
              * CICO-33067
              * After exactonline authorization, the application would be redirected to

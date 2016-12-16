@@ -2091,6 +2091,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				// track the total count
 				$scope.totalCount = response.total_count || 0;
 				$scope.currCount = response.results ? response.results.length : 0;
+
+                //CICO-36186
+                if(chosenReport.title === reportNames["COMPARISION_BY_DATE"]) {
+                    $timeout(function() {
+                        $scope.$broadcast('updatePagination', "COMPARISION_BY_DATE");
+                    }, 50);
+                }
 			};
 
 			var sucssCallback = function(response) {
@@ -2140,6 +2147,20 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			$scope.clearErrorMessage();
 
 			params.reportTitle = chosenReport.title;
+
+            //CICO-36186 - Implemented the new pagination for Comparison report
+            if(chosenReport.title === reportNames["COMPARISION_BY_DATE"]) {           
+                var loadAPIData = function(pageNo) {
+                    $scope.genReport(false, pageNo);
+                };
+                
+                $scope.comparisonByDatePagination = {
+                    id: 'COMPARISION_BY_DATE',
+                    api: loadAPIData,
+                    perPage: 25
+                };
+            }
+
 			$scope.invokeApi(reportsSubSrv.fetchReportDetails, params, sucssCallback, errorCallback);
 		};
 
