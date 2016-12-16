@@ -411,4 +411,16 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         simple_name: 'TravelTripper',
         url: '/travelTripperSetup'
     });
+
+
+    $stateProvider.state('admin.snapshotSetup', {
+        templateUrl: '/assets/partials/snapshotSetup/adSnapshotSetup.html',
+        controller: 'adsnapshotSetupCtrl',
+        url: '/snapshotSetup',
+        resolve: {
+            snapshotSetupData: ['adSnapShotSetupSrv', function(adSnapShotSetupSrv) {
+                return adSnapShotSetupSrv.getSettings();
+            }]
+        }
+    });
 });
