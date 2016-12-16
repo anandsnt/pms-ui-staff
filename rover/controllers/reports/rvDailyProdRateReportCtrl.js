@@ -12,6 +12,11 @@ angular.module('sntRover')
         '$timeout',
         function($rootScope, $scope, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout) {
 
+            var UNDEFINED = {
+                id: 'UNDEFINED',
+                rate_type_id: 'UNDEFINED',
+                name: 'Undefined'
+            };
 
             var detailsCtrlScope = $scope.$parent,
                 mainCtrlScope = detailsCtrlScope.$parent,
@@ -443,17 +448,28 @@ angular.module('sntRover')
                 _.each(resultCopy, function (dates) {
                     _.each(dates, function (post) {
                         matchedRate = allMappedRates[post.rate_id];
-                        matchedRateType = allMappedRateTypes[matchedRate.rate_type_id];
 
-                        post.rate_name = matchedRate.rate_name || matchedRate.name;
+                        if ( _.isUndefined(matchedRate) ) {
+                            matchedRateType = UNDEFINED;
+                            post.rate_name = UNDEFINED.name;
+                        } else {
+                            matchedRateType = allMappedRateTypes[matchedRate.rate_type_id];
+                            post.rate_name = matchedRate.rate_name || matchedRate.name;
+                        }
+
                         post.rate_type_id = matchedRateType.rate_type_id;
                         post.rate_type_name = matchedRateType.name;
 
                         if ( _.has(rateTypesInResults, post.rate_type_id) ) {
-                            rateTypesInResults[post.rate_type_id].rates_data.push({
-                                id: post.rate_id,
-                                name: post.rate_name
-                            });
+
+                            if ( _.find(rateTypesInResults[post.rate_type_id].rates_data, { id: post.rate_id }) ) {
+                                // do nothing, already pushed
+                            } else {
+                                rateTypesInResults[post.rate_type_id].rates_data.push({
+                                    id: post.rate_id,
+                                    name: post.rate_name
+                                });
+                            }
                         } else {
                             rateTypesInResults[post.rate_type_id] = {
                                 id: post.rate_type_id,
@@ -467,6 +483,8 @@ angular.module('sntRover')
                     });
                 });
 
+                console.log( rateTypesInResults );
+
                 _.each(rateTypesInResults, function (rateType) {
                     yAxis.push({
                         rate_type_id: rateType.id,
@@ -474,13 +492,15 @@ angular.module('sntRover')
                         is_rate_type: true
                     });
 
-                    _.each(rateType.rates_data, function (rates) {
-                        yAxis.push({
-                            rate_id: rates.id,
-                            name: rates.name,
-                            is_rate_type: false
+                    if ( rateType.name !== UNDEFINED.name ) {
+                        _.each(rateType.rates_data, function (rates) {
+                            yAxis.push({
+                                rate_id: rates.id,
+                                name: rates.name,
+                                is_rate_type: false
+                            });
                         });
-                    });
+                    }
                 });
 
                 return {
@@ -642,6 +662,14 @@ angular.module('sntRover')
                 modifiedResults = genYAxis.modifiedResults;
 
                 $scope.reportData = generateResultData($scope.yAxisLabels, $scope.headerTop, modifiedResults);
+
+                console.log($scope.yAxisLabels);
+                renderReact();
+
+                $timeout(function() {
+                    refreshScrollers();
+                    $scope.$emit('hideLoader');
+                }, 300);
             }
 
             function reInit() {
