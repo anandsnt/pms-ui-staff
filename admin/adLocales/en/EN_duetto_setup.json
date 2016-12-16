@@ -1,2 +1,5 @@
 "DUETTO_SETUP_HEADER" : "Duetto",
-"DUETTO_SUB_TITLE" : "Duetto Interface Configuration"
+"DUETTO_SUB_TITLE" : "Duetto Interface Configuration",
+"DUETTO_EXPORT_CONFIG" : "Export Configuration",
+"DATA_SET_ID": "Dataset ID",
+"DEFAULT_RATE": "Default Rate"

@@ -70,6 +70,9 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 setDisplayContentHeight();
                 refreshScroller();
                 $scope.isReservationDetailsFetched = true;
+                if($scope.zestStationData.is_kiosk_ows_messages_active && !$scope.zestStationData.is_standalone){
+                     $scope.$broadcast('FETCH_OWS_MESSAGES');
+                }
             };
 
 
@@ -254,13 +257,29 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             };
 
 
-            $scope.callAPI(zsCheckinSrv.fetchUpsellDetails, {
+
+
+            var onSuccessHandleUpsell = function() {
+                // now that reservation has updated the arrival time via backend, 
+                // we should fetch upsell details and continue
+                $scope.callAPI(zsCheckinSrv.fetchUpsellDetails, {
+                    params: {
+                        id: $scope.selectedReservation.id
+                    },
+                    'successCallBack': onSuccessResponse,
+                    'failureCallBack': generalError
+                });
+            };
+
+            
+            $scope.callAPI(zsCheckinSrv.updateReservationArrivalTime, {
                 params: {
                     id: $scope.selectedReservation.id
                 },
-                'successCallBack': onSuccessResponse,
+                'successCallBack': onSuccessHandleUpsell,
                 'failureCallBack': generalError
             });
+
         };
 
 
@@ -363,74 +382,6 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             }
         };
 
-
-        var checkinTimeWithinTheHour = function() {
-            if (!$scope.zestStationData.isHourlyRateOn) {
-                console.log('Non-Hourly Hotel, not checking arrival time');
-                return true;
-            }
-            /*
-             * for hourly hotels, we just need to check that the reservation is checking in during their arrival time, otherwise, ask they wait until later
-             */
-            console.log(' :: Hourly Hotel, Checking if arrival time is within an hour ::');
-            var current = new Date();
-
-            var nowHour = current.getHours(),
-                nowMin = current.getMinutes(),
-                arrival = $scope.selectedReservation.reservation_details.arrival_time.split(':');
-            // depart = $scope.selectedReservation.reservation_details.departure_time.split(':');
-
-            var arrival_am_pm = arrival[1].split(' ')[1];
-            //  depart_am_pm = depart[1].split(' ')[1];
-
-            var arrivalHour = getMilTime(parseInt(arrival[0]), arrival_am_pm);
-            // departHour = getMilTime(depart[0], depart_am_pm);
-
-            var arrivalMin = parseInt(arrival[1].split(' ')[0]);
-            //  departMin = parseInt(depart[1].split(' ')[0]);
-
-            console.warn('arrival time : ', arrivalHour);
-            // console.warn('hour time : ', departHour);
-            console.log('');
-            console.log('current time: ', nowHour, nowMin);
-            console.log('');
-            console.info('arrival time for this reservation: ', arrival, ' - [ ', arrivalHour, arrivalMin, arrival_am_pm, ' ]');
-            // console.info('departure time for this reservation: ', depart, ' - [ ',departHour,departMin, depart_am_pm,' ]');
-
-            var tA = new Date(); // , tD = new Date();
-
-            tA.setHours(arrivalHour);
-            tA.setMinutes(arrivalMin);
-            console.log(tA);
-                // we dont need departure time, only arrival time here, keeping this for generic use if wanted in the future
-                // tD.setHours(departHour);
-                // tD.setMinutes(departMin);
-
-            console.log('');
-            console.log('current: ', current);
-            console.log('arrival: ', tA);
-            // console.log('depart : ',tD);
-            console.log('');
-            var a = tA.getTime(),
-                c = current.getTime();
-
-            if (c > a) { // && (d < c)){//if arrival time is greater than current time allow guest to check-in
-                console.warn('guest is within arrival time');
-                return true;
-            } else if (c + 3600000 > a) { // current time plus an hour is greater than arrival time, (within 60-minutes from arrival time, allow guest to check in (for yotel))
-                console.warn('guest is within an hour of arrival time');
-                return true;
-            } else {
-                console.warn('guest is not within 1 hour of arrival time');
-                return false;
-            }
-            /*
-             *
-             *  just need to check hour and minutes (of arrival time) are within/before (current time),
-             *    -date is assumed to be current day, since due_in on the reservation should already be checked from API
-             *
-             */
-        };
         var continueRouting = function(settings) {
             var goToEarlyCheckin = fetchedEarlyCheckinSettingsCallback(settings);
             
@@ -482,45 +433,87 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 'first_name': $scope.selectedReservation.guest_details[0].first_name
             });
         };
-        //
-        // scope methods below here
-        //
+
+        var currentHotelTime = '',
+            fetchHotelTime = function() {
+                var fetchHotelTimeSuccess = function(response) {
+                    currentHotelTime = response.hote_time;
+                    // once hoteltime is fetched, try to proceed
+                    $scope.onNextFromDetails();
+                };
+                $scope.callAPI(zsCheckinSrv.fetchHotelTime, {
+                    params: {
+                        'reservation_id': $scope.selectedReservation.id
+                    },
+                    'successCallBack': fetchHotelTimeSuccess
+                });
+            };
+
+        var checkinTimeWithinTheHourForHotel = function() {
+            // date is assumed to be current day,
+            //  since due_in on the reservation should already be checked from API
+            var t = new Date(),
+                d = t.getDate(),
+                m = t.getMonth() + 1,
+                y = t.getFullYear();
+
+            // Convert time into date object
+            var d1 = new Date(m + "/" + d + "/" + y + " " + $scope.selectedReservation.reservation_details.arrival_time);
+            var d2 = new Date(m + "/" + d + "/" + y + " " + currentHotelTime);
+
+            // Get timestamp
+            var arrivalTime = d1.getTime();
+            var hotelTime = d2.getTime();
+
+            console.info('\n\nReservation arrival  time =>', $scope.selectedReservation.reservation_details.arrival_time, '------ Hotel current  time => ', currentHotelTime + '\n\n');
+
+            if (hotelTime > arrivalTime) {
+                // if hotel time is greater than arrival time allow guest to check-in
+                return true;
+            } else if (hotelTime + 3600000 > arrivalTime) {
+                // current time plus an hour is greater than arrival time,
+                // (within 60-minutes from arrival time, allow guest to check in (for yotel))
+                return true;
+            } else {
+                return false;
+            }
+        };
+            
 
         $scope.onNextFromDetails = function() {
-            var roomAssigned = roomIsAssigned(),
-                roomReady = roomIsReady(),
-                withinTheHour = checkinTimeWithinTheHour();
-
-            console.log('$scope.selectedReservation: ', $scope.selectedReservation);
-            console.log($scope.selectedReservation.reservation_details.reservation_id);
-            console.info('roomAssigned: ', roomAssigned, ', roomReady: ', roomReady);
-
-            console.info('reservation_details: ', $scope.selectedReservation.reservation_details);
-            // the reservation at this point, for check-in, should have a due-in status + arrival time,
-            // if this is for Yotel, we need to check the arrival time vs current time at the hotel,
-            // to make sure the arriving guest is within the arrival time (within the first hour);
-            console.warn('$scope.zestStationData.theme: ', $scope.zestStationData.theme);
-
-
-            if ($scope.zestStationData.theme === 'yotel' && !withinTheHour) {
-                initCheckinTimeError();
-
+            if ($scope.zestStationData.theme === 'yotel' && currentHotelTime.length === 0) {
+                // fetch hotel time to check with reservation arrival time
+                fetchHotelTime();
             } else {
-                if (!roomIsAssigned()) {
-                    console.info('assigning room');
-                    assignRoomToReseravtion(); // assigns room, if success- goes to terms
+                var roomAssigned = roomIsAssigned(),
+                roomReady = roomIsReady();
 
-                } else if (roomIsAssigned() && roomIsReady()) {
-                    console.info('room is assigned and ready, continuing');
-                    routeToNext();
+                console.info('roomAssigned: ', roomAssigned, ', roomReady: ', roomReady);
+                console.info('reservation_details: ', $scope.selectedReservation.reservation_details);
+                // the reservation at this point, for check-in, should have a due-in status + arrival time,
+                // if this is for Yotel, we need to check the arrival time vs current time at the hotel,
+                // to make sure the arriving guest is within the arrival time (within the first hour);
 
-                } else if (roomIsAssigned() && !roomIsReady()) {
-                    console.info('room assigned but not ready, show room error');
-                    initRoomError();
 
+                if ($scope.zestStationData.theme === 'yotel' && !checkinTimeWithinTheHourForHotel()) {
+                    initCheckinTimeError();
+
+                } else {
+                    if (!roomIsAssigned()) {
+                        console.info('assigning room');
+                        assignRoomToReseravtion(); // assigns room, if success- goes to terms
+
+                    } else if (roomIsAssigned() && roomIsReady()) {
+                        console.info('room is assigned and ready, continuing');
+                        routeToNext();
+
+                    } else if (roomIsAssigned() && !roomIsReady()) {
+                        console.info('room assigned but not ready, show room error');
+                        initRoomError();
+
+                    }
                 }
             }
-
         };
     }
 ]);
