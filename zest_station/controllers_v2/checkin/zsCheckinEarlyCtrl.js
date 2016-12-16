@@ -110,7 +110,6 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
             $scope.early_checkin_unavailable = true;
             $scope.show_early_unavailable_from_checkin_later = true;
 
-            ///NEW
             $scope.mode = 'CHECKIN_LATER';
         };
 
