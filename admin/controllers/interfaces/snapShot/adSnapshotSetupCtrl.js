@@ -27,7 +27,7 @@ admin.controller('adsnapshotSetupCtrl', ['$scope',
 					$scope.successMessage = 'Success, Your settings has been saved.';
 				},
 				options = {
-					params: $scope.snapChatData,
+					params: $scope.snapshotData,
 					successCallBack: onSaveSettingsSucces
 				};
 

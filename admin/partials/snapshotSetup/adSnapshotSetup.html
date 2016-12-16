@@ -34,7 +34,7 @@
                             <input type="radio" value="once" ng-model="snapshotData.incremental_export_option"> {{ 'ONCE_PER_DAY_LABEL' | translate}}
                         </label>
                 <fieldset class="holder left holder_margin">
-                    <div class="entry full-width">
+                    <div class="entry full-width increental-export-time-margin">
                         <label>
                             {{ 'START_TIME_LABEL' | translate}}
                         </label>
@@ -63,7 +63,7 @@
                         <label>
                             {{ 'RETRY_INTERVAL_LABEL' | translate}}
                         </label>
-                        <div class="select select-col width-40">
+                        <div class="select select-col select-width-25">
                                 <select ng-model="snapshotData.incremental_export_once_retry_interval">
                                     <option value="">MM</option>
                                     <option ng-repeat="minute  in minutes" value="{{minute}}" ng-bind="minute"></option>
@@ -74,7 +74,7 @@
                         <label>
                             {{ 'NO_OF_RETRIES_LABEL' | translate}}
                         </label>
-                        <div class="select select-col width-40">
+                        <div class="select select-col">
                                 <select ng-model="snapshotData.incremental_export_once_retry_count">
                                     <option value="">MM</option>
                                     <option ng-repeat="retry  in retry_count_options" value="{{retry}}" ng-bind="retry"></option>
@@ -89,7 +89,7 @@
                         </label>
 
                 <fieldset class="holder left holder_margin">
-                    <div class="entry full-width">
+                    <div class="entry full-width increental-export-time-margin">
                         <label>
                             {{ 'START_FIRST_EXPORT_LABEL' | translate}}
                         </label>
