@@ -125,202 +125,203 @@ angular.module('sntRover')
             $scope.$on('$destroy', watchshowRevenue);
 
 
-            function parseDailyData(dateObj, isRateType) {
-                var limiter = 2;
-                var parsedData = [];
+            // function parseDailyData(dateObj, isRateType) {
+            //     var limiter = 2;
+            //     var parsedData = [];
 
-                _.each(dateObj, function(dateObj, currDate) {
+            //     _.each(dateObj, function(dateObj, currDate) {
 
-                    var eachDateVal = [],
-                        isPastDay = new tzIndependentDate(currDate) < new tzIndependentDate($rootScope.businessDate);
-
-
-                    if ($scope.uiFilter.showAvailability && !$scope.uiFilter.showRevenue) {
-                        eachDateVal.push({
-                            value: dateObj['total_reservations_count'],
-                            isAvail: true,
-                            isRateType: isRateType
-                        });
-                        eachDateVal.push({
-                            value: dateObj['available_rooms_count'],
-                            isAvail: true,
-                            isRateType: isRateType
-                        });
-                    } else if (!$scope.uiFilter.showAvailability && $scope.uiFilter.showRevenue) {
-                        if (!isPastDay) {
-                            eachDateVal.push({
-                                value: $filter('currency')(dateObj['room_revenue'], $rootScope.currencySymbol, limiter),
-                                isRev: true,
-                                isRateType: isRateType
-                            });
-                        }
-                        eachDateVal.push({
-                            value: $filter('currency')(dateObj['adr'], $rootScope.currencySymbol, limiter),
-                            isRev: true,
-                            isRateType: isRateType
-                        });
-                        if (isPastDay) {
-                            eachDateVal.push({
-                                value: $filter('currency')(dateObj['room_revenue'], $rootScope.currencySymbol, limiter),
-                                isRev: true,
-                                isRateType: isRateType
-                            });
-                        }
-                    } else if ($scope.uiFilter.showAvailability && $scope.uiFilter.showRevenue) {
-                        eachDateVal.push({
-                            value: dateObj['total_reservations_count'],
-                            isAvail: true,
-                            isRateType: isRateType
-                        });
-                        eachDateVal.push({
-                            value: dateObj['available_rooms_count'],
-                            isAvail: true,
-                            isRateType: isRateType
-                        });
-                        if (!isPastDay) {
-                            eachDateVal.push({
-                                value: $filter('currency')(dateObj['room_revenue'], $rootScope.currencySymbol, limiter),
-                                isRev: true,
-                                isRateType: isRateType
-                            });
-                        }
-                        eachDateVal.push({
-                            value: $filter('currency')(dateObj['adr'], $rootScope.currencySymbol, limiter),
-                            isRev: true,
-                            isRateType: isRateType
-                        });
-
-                        if (isPastDay) {
-                            eachDateVal.push({
-                                value: $filter('currency')(dateObj['room_revenue'], $rootScope.currencySymbol, limiter),
-                                isRev: true,
-                                isRateType: isRateType
-                            });
-                        }
-                    }
-
-                    // TODO: If user has opted to show addon revenue, add that as a column
-                    if (isPastDay && $scope.chosenReport.chosenOptions['include_addon_revenue'] && $scope.uiFilter.showRevenue) {
-                        eachDateVal.push({
-                            value: $filter('currency')(dateObj['addon_revenue'], $rootScope.currencySymbol, limiter),
-                            isRev: true,
-                            cls: 'last-day',
-                            isRateType: isRateType
-                        });
-                    } else {
-                        eachDateVal[eachDateVal.length - 1]['cls'] = 'last-day';
-                    }
-
-                    parsedData = parsedData.concat(eachDateVal);
-
-                });
-
-                return parsedData;
-            }
+            //         var eachDateVal = [],
+            //             isPastDay = new tzIndependentDate(currDate) < new tzIndependentDate($rootScope.businessDate);
 
 
-            function processData() {
-                var SUB_HEADER_NAMES = {
-                        'ROOMS': 'Occ Rooms',
-                        'AVAILABLE_ROOMS': 'Avl. Rooms',
-                        /**/
-                        'FORECAST': 'Forecast.',
-                        'ADR': 'ADR',
-                        'ACTUAL': 'Room Rev.',
-                        /**/
-                        'ADDON': 'Add-on' // >> This is to be shown IFF 'Options'->'Include Add-on Revenue' is checked
-                    },
-                    headers,
-                    noOfDays = 0,
-                    cellWidth = 80;
+            //         if ($scope.uiFilter.showAvailability && !$scope.uiFilter.showRevenue) {
+            //             eachDateVal.push({
+            //                 value: dateObj['total_reservations_count'],
+            //                 isAvail: true,
+            //                 isRateType: isRateType
+            //             });
+            //             eachDateVal.push({
+            //                 value: dateObj['available_rooms_count'],
+            //                 isAvail: true,
+            //                 isRateType: isRateType
+            //             });
+            //         } else if (!$scope.uiFilter.showAvailability && $scope.uiFilter.showRevenue) {
+            //             if (!isPastDay) {
+            //                 eachDateVal.push({
+            //                     value: $filter('currency')(dateObj['room_revenue'], $rootScope.currencySymbol, limiter),
+            //                     isRev: true,
+            //                     isRateType: isRateType
+            //                 });
+            //             }
+            //             eachDateVal.push({
+            //                 value: $filter('currency')(dateObj['adr'], $rootScope.currencySymbol, limiter),
+            //                 isRev: true,
+            //                 isRateType: isRateType
+            //             });
+            //             if (isPastDay) {
+            //                 eachDateVal.push({
+            //                     value: $filter('currency')(dateObj['room_revenue'], $rootScope.currencySymbol, limiter),
+            //                     isRev: true,
+            //                     isRateType: isRateType
+            //                 });
+            //             }
+            //         } else if ($scope.uiFilter.showAvailability && $scope.uiFilter.showRevenue) {
+            //             eachDateVal.push({
+            //                 value: dateObj['total_reservations_count'],
+            //                 isAvail: true,
+            //                 isRateType: isRateType
+            //             });
+            //             eachDateVal.push({
+            //                 value: dateObj['available_rooms_count'],
+            //                 isAvail: true,
+            //                 isRateType: isRateType
+            //             });
+            //             if (!isPastDay) {
+            //                 eachDateVal.push({
+            //                     value: $filter('currency')(dateObj['room_revenue'], $rootScope.currencySymbol, limiter),
+            //                     isRev: true,
+            //                     isRateType: isRateType
+            //                 });
+            //             }
+            //             eachDateVal.push({
+            //                 value: $filter('currency')(dateObj['adr'], $rootScope.currencySymbol, limiter),
+            //                 isRev: true,
+            //                 isRateType: isRateType
+            //             });
 
-                $scope.headerTop = [];
-                $scope.headerBot = [];
-                $scope.colspanArray = [];
-                $scope.reportData = []; // this will be an array of arrays
-                $scope.yAxisLabels = []; // keeping seperate array so that we can avoid object being itrated aphabetically
-                $scope.rightPaneWidth = 0;
+            //             if (isPastDay) {
+            //                 eachDateVal.push({
+            //                     value: $filter('currency')(dateObj['room_revenue'], $rootScope.currencySymbol, limiter),
+            //                     isRev: true,
+            //                     isRateType: isRateType
+            //                 });
+            //             }
+            //         }
 
-                if ($scope.uiFilter.showAvailability && $scope.uiFilter.showRevenue) {
-                    // Header is initialized to FORECAST, If past date is selected it will be replaced with ACTUAL column
-                    headers = ['ROOMS', 'AVAILABLE_ROOMS', 'FORECAST', 'ADR'];
-                } else if (!$scope.uiFilter.showAvailability && $scope.uiFilter.showRevenue) {
-                    headers = ['FORECAST', 'ADR'];
-                } else if ($scope.uiFilter.showAvailability && !$scope.uiFilter.showRevenue) {
-                    headers = ['ROOMS', 'AVAILABLE_ROOMS'];
-                }
+            //         // TODO: If user has opted to show addon revenue, add that as a column
+            //         if (isPastDay && $scope.chosenReport.chosenOptions['include_addon_revenue'] && $scope.uiFilter.showRevenue) {
+            //             eachDateVal.push({
+            //                 value: $filter('currency')(dateObj['addon_revenue'], $rootScope.currencySymbol, limiter),
+            //                 isRev: true,
+            //                 cls: 'last-day',
+            //                 isRateType: isRateType
+            //             });
+            //         } else {
+            //             eachDateVal[eachDateVal.length - 1]['cls'] = 'last-day';
+            //         }
 
-                $scope.colSpan = headers.length;
+            //         parsedData = parsedData.concat(eachDateVal);
 
-                // compute Number of Days here!
-                var hrs = 24;
-                var secInHr = 3600;
-                var msInSec = 1000;
-                var ONE_DAY_MS = hrs * secInHr * msInSec;
-                var ms = new tzIndependentDate($scope.chosenReport.fromDate) * 1;
-                var last = new tzIndependentDate($scope.chosenReport.untilDate) * 1;
-                for (; ms <= last; ms += ONE_DAY_MS) {
+            //     });
 
-                    var isPastDay = new tzIndependentDate(ms) < new tzIndependentDate($rootScope.businessDate);
+            //     return parsedData;
+            // }
 
-                    $scope.headerTop.push($filter('date')(ms, $rootScope.shortMonthAndDate));
-                    var currentHeaders = headers;
 
-                    if (isPastDay && $scope.uiFilter.showRevenue) {
-                        // Remove FORECAST header and push ACTUAL
-                        currentHeaders = _.without(currentHeaders, 'FORECAST').concat(['ACTUAL']);
-                        if ($scope.chosenReport.chosenOptions['include_addon_revenue']) {
-                            currentHeaders.push('ADDON');
-                        }
-                    }
+            // function processData() {
+            //     var SUB_HEADER_NAMES = {
+            //             'ROOMS': 'Occ Rooms',
+            //             'AVAILABLE_ROOMS': 'Avl. Rooms',
+            //             /**/
+            //             'FORECAST': 'Forecast.',
+            //             'ADR': 'ADR',
+            //             'ACTUAL': 'Room Rev.',
+            //             /**/
+            //             'ADDON': 'Add-on' // >> This is to be shown IFF 'Options'->'Include Add-on Revenue' is checked
+            //         },
+            //         headers,
+            //         noOfDays = 0,
+            //         cellWidth = 80;
 
-                    $scope.colspanArray.push(currentHeaders.length);
+            //     $scope.headerTop = [];
+            //     $scope.headerBot = [];
+            //     $scope.colspanArray = [];
+            //     $scope.reportData = []; // this will be an array of arrays
+            //     $scope.yAxisLabels = []; // keeping seperate array so that we can avoid object being itrated aphabetically
+            //     $scope.rightPaneWidth = 0;
 
-                    _.each(currentHeaders, function(idx) {
-                        $scope.headerBot.push({
-                            'name': SUB_HEADER_NAMES[idx],
-                            'cls': idx === headers.length - 1 ? 'day-end' : ''
-                        });
-                    });
+            //     if ($scope.uiFilter.showAvailability && $scope.uiFilter.showRevenue) {
+            //         // Header is initialized to FORECAST, If past date is selected it will be replaced with ACTUAL column
+            //         headers = ['ROOMS', 'AVAILABLE_ROOMS', 'FORECAST', 'ADR'];
+            //     } else if (!$scope.uiFilter.showAvailability && $scope.uiFilter.showRevenue) {
+            //         headers = ['FORECAST', 'ADR'];
+            //     } else if ($scope.uiFilter.showAvailability && !$scope.uiFilter.showRevenue) {
+            //         headers = ['ROOMS', 'AVAILABLE_ROOMS'];
+            //     }
 
-                    noOfDays += 1;
-                }
+            //     $scope.colSpan = headers.length;
 
-                var results = $scope.results;
+            //     // compute Number of Days here!
+            //     var hrs = 24;
+            //     var secInHr = 3600;
+            //     var msInSec = 1000;
+            //     var ONE_DAY_MS = hrs * secInHr * msInSec;
+            //     var ms = new tzIndependentDate($scope.chosenReport.fromDate) * 1;
+            //     var last = new tzIndependentDate($scope.chosenReport.untilDate) * 1;
+            //     for (; ms <= last; ms += ONE_DAY_MS) {
 
-                // Parse Rates OR Rate Types based on the filter here
-                _.each(results.rate_types, function(rateTypeData) {
-                    $scope.yAxisLabels.push({
-                        name: rateTypeData.rate_type_name,
-                        rate_type_id: rateTypeData.rate_type_id,
-                        is_rate_type: true
-                    });
+            //         var isPastDay = new tzIndependentDate(ms) < new tzIndependentDate($rootScope.businessDate);
 
-                    $scope.reportData.push(parseDailyData(rateTypeData.data, true));
-                    // Put rates under the rate type
-                    var rates = _.filter(results.rates, {
-                        rate_type_id: rateTypeData.rate_type_id
-                    });
+            //         $scope.headerTop.push($filter('date')(ms, $rootScope.shortMonthAndDate));
+            //         var currentHeaders = headers;
 
-                    _.each(rates, function(rate) {
-                        $scope.yAxisLabels.push({
-                            name: rate.rate_name,
-                            rate_type_id: rate.rate_type_id,
-                            is_rate_type: false
-                        });
-                        $scope.reportData.push(parseDailyData(rate.data, false));
-                    });
-                });
+            //         if (isPastDay && $scope.uiFilter.showRevenue) {
+            //             // Remove FORECAST header and push ACTUAL
+            //             currentHeaders = _.without(currentHeaders, 'FORECAST').concat(['ACTUAL']);
+            //             if ($scope.chosenReport.chosenOptions['include_addon_revenue']) {
+            //                 currentHeaders.push('ADDON');
+            //             }
+            //         }
 
-                $scope.rightPaneWidth = noOfDays * cellWidth * _.max($scope.colspanArray);
+            //         $scope.colspanArray.push(currentHeaders.length);
 
-                $timeout(function() {
-                    refreshScrollers();
-                    $scope.$emit('hideLoader');
-                }, TIMEOUT);
+            //         _.each(currentHeaders, function(idx) {
+            //             $scope.headerBot.push({
+            //                 'name': SUB_HEADER_NAMES[idx],
+            //                 'cls': idx === headers.length - 1 ? 'day-end' : ''
+            //             });
+            //         });
 
-                window.results = $scope.results;
-            };
+            //         noOfDays += 1;
+            //     }
+
+            //     var results = $scope.results;
+
+            //     // Parse Rates OR Rate Types based on the filter here
+            //     _.each(results.rate_types, function(rateTypeData) {
+            //         $scope.yAxisLabels.push({
+            //             name: rateTypeData.rate_type_name,
+            //             rate_type_id: rateTypeData.rate_type_id,
+            //             is_rate_type: true
+            //         });
+
+            //         $scope.reportData.push(parseDailyData(rateTypeData.data, true));
+            //         // Put rates under the rate type
+            //         var rates = _.filter(results.rates, {
+            //             rate_type_id: rateTypeData.rate_type_id
+            //         });
+
+            //         _.each(rates, function(rate) {
+            //             $scope.yAxisLabels.push({
+            //                 name: rate.rate_name,
+            //                 rate_type_id: rate.rate_type_id,
+            //                 is_rate_type: false
+            //             });
+            //             $scope.reportData.push(parseDailyData(rate.data, false));
+            //         });
+            //     });
+
+            //     $scope.rightPaneWidth = noOfDays * cellWidth * _.max($scope.colspanArray);
+
+            //     $timeout(function() {
+            //         refreshScrollers();
+            //         $scope.$emit('hideLoader');
+            //     }, TIMEOUT);
+
+            //     window.results = $scope.results;
+            //     window.chosenReport = chosenReport;
+            // };
 
             function renderReact(args) {
                 var options = args || {},
@@ -340,14 +341,311 @@ angular.module('sntRover')
                 );
             }
 
-            function init() {
-                processData();
-                renderReact();
+            // function init() {
+            //     processData();
+            //     renderReact();
+            // }
+
+            // function reInit() {
+            //     processData();
+            //     renderReact();
+            // }
+
+            function generateXaxisData (uiFilter, chosenReport, shortMonthAndDate) {
+                var SUB_HEADER_NAMES = {
+                        'ROOMS': 'Occ Rooms',
+                        'AVAILABLE_ROOMS': 'Avl. Rooms',
+                        /**/
+                        'FORECAST': 'Forecast.',
+                        'ADR': 'ADR',
+                        'ACTUAL': 'Room Rev.',
+                        /**/
+                        'ADDON': 'Add-on' // >> This is to be shown IFF 'Options'->'Include Add-on Revenue' is checked
+                    },
+                    headers,
+                    noOfDays = 0,
+                    cellWidth = 80;
+
+                var headerTop = [];
+                var headerBot = [];
+                var colspanArray = [];
+                var rightPaneWidth = 0;
+                var colSpan = 0;
+
+                var ms = new tzIndependentDate(chosenReport.fromDate) * 1;
+                var last = new tzIndependentDate(chosenReport.untilDate) * 1;
+                var ONE_DAY = 86400000;
+                var isPastDay, currentHeaders;
+
+                if (uiFilter.showAvailability && uiFilter.showRevenue) {
+                    headers = ['ROOMS', 'AVAILABLE_ROOMS', 'FORECAST', 'ADR']; 
+                    // Header is initialized to FORECAST, If past date is selected it will be replaced with ACTUAL column
+                } else if (!uiFilter.showAvailability && uiFilter.showRevenue) {
+                    headers = ['FORECAST', 'ADR'];
+                } else if (uiFilter.showAvailability && !uiFilter.showRevenue) {
+                    headers = ['ROOMS', 'AVAILABLE_ROOMS'];
+                }
+
+                colSpan = headers.length;
+
+                // compute Number of Days here!
+                for (; ms <= last; ms += ONE_DAY) {
+                    isPastDay = new tzIndependentDate(ms) < new tzIndependentDate($rootScope.businessDate);
+
+                    headerTop.push({
+                        ms: ms,
+                        name: $filter('date')(ms, shortMonthAndDate)
+                    });
+                    currentHeaders = headers;
+
+                    if (isPastDay && uiFilter.showRevenue) {
+                        // Remove FORECAST header and push ACTUAL
+                        currentHeaders = _.without(currentHeaders, 'FORECAST').concat(['ACTUAL']);
+                        if (chosenReport.chosenOptions['include_addon_revenue']) {
+                            currentHeaders.push('ADDON');
+                        }
+                    }
+
+                    colspanArray.push(currentHeaders.length);
+
+                    _.each(currentHeaders, function(idx) {
+                        headerBot.push({
+                            'name': SUB_HEADER_NAMES[idx],
+                            'cls': idx === headers.length - 1 ? 'day-end' : ''
+                        });
+                    });
+
+                    noOfDays += 1;
+                }
+
+                rightPaneWidth = noOfDays * cellWidth * _.max(colspanArray);
+
+                return {
+                    headerTop: headerTop,
+                    headerBot: headerBot,
+                    colSpan: colSpan,
+                    colspanArray: colspanArray,
+                    rightPaneWidth: rightPaneWidth
+                };
+            }
+
+            function generateYaxisData (results, allRates, allRateTypes) {
+                var yAxis = [];
+                var resultCopy = angular.copy(results);
+
+                var allMappedRates = _.indexBy(allRates, 'id');
+                var allMappedRateTypes = _.indexBy(allRateTypes, 'rate_type_id');
+
+                var matchedRate;
+                var matchedRateType;
+                var rateTypesInResults = {};
+
+                _.each(resultCopy, function (dates) {
+                    _.each(dates, function (post) {
+                        matchedRate = allMappedRates[post.rate_id];
+                        matchedRateType = allMappedRateTypes[matchedRate.rate_type_id];
+
+                        post.rate_name = matchedRate.rate_name || matchedRate.name;
+                        post.rate_type_id = matchedRateType.rate_type_id;
+                        post.rate_type_name = matchedRateType.name;
+
+                        if ( _.has(rateTypesInResults, post.rate_type_id) ) {
+                            rateTypesInResults[post.rate_type_id].rates_data.push({
+                                id: post.rate_id,
+                                name: post.rate_name
+                            });
+                        } else {
+                            rateTypesInResults[post.rate_type_id] = {
+                                id: post.rate_type_id,
+                                name: post.rate_type_name,
+                                rates_data: [{
+                                    id: post.rate_id,
+                                    name: post.rate_name
+                                }]
+                            };
+                        }
+                    });
+                });
+
+                _.each(rateTypesInResults, function (rateType) {
+                    yAxis.push({
+                        rate_type_id: rateType.id,
+                        name: rateType.name,
+                        is_rate_type: true
+                    });
+
+                    _.each(rateType.rates_data, function (rates) {
+                        yAxis.push({
+                            rate_id: rates.id,
+                            name: rates.name,
+                            is_rate_type: false
+                        });
+                    });
+                });
+
+                return {
+                    yAxis: yAxis,
+                    modifiedResults: resultCopy
+                };
+            }
+
+            // function fillRateTypesToResults (modifiedResults) {
+            //     var finalResults;
+            //
+            //     return finalResults = modifiedResults;
+            // }
+
+            function generateResultData(yAxis, headerTop, results) {
+                var resultData = [];
+
+                var totals;
+                var lastIndex = -1;
+                var matchedPost;
+                var insertedData;
+
+                _.each(yAxis, function (yAxisItem, index) {
+                    resultData.push([]);
+
+                    _.each(results, function (dateObj, date) {
+
+                        if ( ! yAxisItem.is_rate_type ) {
+                            matchedPost = _.find(dateObj, { rate_id: yAxisItem.rate_id });
+
+                            insertedData = insetDateData({
+                                date: date,
+                                businessDate: $rootScope.businessDate,
+                                currencySymbol: $rootScope.currencySymbol,
+                                data: matchedPost,
+                                showAvailability: $scope.uiFilter.showAvailability,
+                                showRevenue: $scope.uiFilter.showRevenue,
+                                isRateType: false
+                            });
+                            resultData[index] = resultData[index].concat( insertedData );
+
+                            totals.adr += matchedPost.adr;
+                            totals.available_rooms_count += matchedPost.available_rooms_count;
+                            totals.occupied_rooms_count += matchedPost.occupied_rooms_count;
+                            totals.room_revenue += matchedPost.room_revenue;
+                        } else {
+                            if ( lastIndex > -1 ) {
+                                insertedData = insetDateData({
+                                    date: date,
+                                    businessDate: $rootScope.businessDate,
+                                    data: totals,
+                                    showAvailability: $scope.uiFilter.showAvailability,
+                                    showRevenue: $scope.uiFilter.showRevenue,
+                                    isRateType: true
+                                });
+                                resultData[lastIndex] = resultData[lastIndex].concat( insertedData );
+                            }
+
+                            lastIndex = index;
+                            totals = {
+                                adr: 0,
+                                available_rooms_count: 0,
+                                occupied_rooms_count: 0,
+                                room_revenue: 0
+                            };
+                        }
+
+                    });
+                });
+
+                return resultData;
+            }
+
+            function insetDateData(options) {
+                var limiter = 2,
+                    eachDateVal = [],
+                    isPastDay = new tzIndependentDate(options.date) < new tzIndependentDate(options.businessDate);
+
+                if ( options.showAvailability && !options.showRevenue ) {
+                    eachDateVal.push({
+                        value: options.data.occupied_rooms_count,
+                        isAvail: true,
+                        isRateType: options.isRateType
+                    });
+                    eachDateVal.push({
+                        value: options.data.available_rooms_count,
+                        isAvail: true,
+                        isRateType: options.isRateType
+                    });
+                } else if ( !options.showAvailability && options.showRevenue ) {
+                    if ( !isPastDay ) {
+                        eachDateVal.push({
+                            value: $filter('currency')(options.data.room_revenue, options.currencySymbol, limiter),
+                            isRev: true,
+                            isRateType: options.isRateType
+                        });
+                    }
+                    eachDateVal.push({
+                        value: $filter('currency')(options.data.adr, options.currencySymbol, limiter),
+                        isRev: true,
+                        isRateType: options.isRateType
+                    });
+                    if (isPastDay) {
+                        eachDateVal.push({
+                            value: $filter('currency')(options.data.room_revenue, options.currencySymbol, limiter),
+                            isRev: true,
+                            isRateType: options.isRateType
+                        });
+                    }
+                } else if ( options.showAvailability && options.showRevenue ) {
+                    eachDateVal.push({
+                        value: options.data.occupied_rooms_count,
+                        isAvail: true,
+                        isRateType: options.isRateType
+                    });
+                    eachDateVal.push({
+                        value: options.data.available_rooms_count,
+                        isAvail: true,
+                        isRateType: options.isRateType
+                    });
+                    if ( !isPastDay ) {
+                        eachDateVal.push({
+                            value: $filter('currency')(options.data.room_revenue, options.currencySymbol, limiter),
+                            isRev: true,
+                            isRateType: options.isRateType
+                        });
+                    }
+                    eachDateVal.push({
+                        value: $filter('currency')(options.data.adr, options.currencySymbol, limiter),
+                        isRev: true,
+                        isRateType: options.isRateType
+                    });
+
+                    if (isPastDay) {
+                        eachDateVal.push({
+                            value: $filter('currency')(options.data.room_revenue, options.currencySymbol, limiter),
+                            isRev: true,
+                            isRateType: options.isRateType
+                        });
+                    }
+                }
+
+                return eachDateVal;
+            }
+
+            function init () {
+                var genXAxis, genYAxis, modifiedResults;
+
+                genXAxis = generateXaxisData($scope.uiFilter, $scope.chosenReport, $rootScope.shortMonthAndDate);
+
+                $scope.headerTop = genXAxis.headerTop;
+                $scope.headerBot = genXAxis.headerBot;
+                $scope.colSpan = genXAxis.colSpan;
+                $scope.colspanArray = genXAxis.colspanArray;
+                $scope.rightPaneWidth = genXAxis.rightPaneWidth;
+
+                genYAxis = generateYaxisData($scope.results, $scope.chosenReport.hasRateFilter.data, $scope.chosenReport.hasRateTypeFilter.data);
+                $scope.yAxisLabels = genYAxis.yAxis;
+                modifiedResults = genYAxis.modifiedResults;
+
+                $scope.reportData = generateResultData($scope.yAxisLabels, $scope.headerTop, modifiedResults);
             }
 
             function reInit() {
-                processData();
-                renderReact();
+                init();
             }
 
             init();
