@@ -25,6 +25,7 @@
 	"SNAPSHOT_SETUP": "Snapshot Setup",
 	"SNAPSHOT_PUBLISH_INSTRUCTIONS": "Publish a full export containing Reservations, Financials and Groups. Full export should occur only once and must be coordinated with Snapshot.",
 	"INCREMENTAL_EXPORT_LABEL": "Incremental Export Schedule",
+	"INCREMENTAL_EXPORT_SWITCH_LABEL": "ENABLE INCREMENTAL EXPORT",
 	"ONCE_PER_DAY_LABEL": "ONCE PER DAY",
 	"START_TIME_LABEL": "Start time",
 	"RETRY_INTERVAL_LABEL": "Retry interval (if failure)",
