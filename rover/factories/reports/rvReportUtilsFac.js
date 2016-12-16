@@ -354,7 +354,18 @@ angular.module('reportsModule')
                         'value': "INCLUDE_DEPARTMENTS",
                         'description': "Include Departments"
                     });
-
+                    break;
+                case reportNames['A/R_AGING']:
+                    report['filters'].push({
+                        'value': "INCLUDE_AGING_BALANCE",
+                        'description': "Include Aging Balance"
+                    }
+                    , {
+                        'value': "ACCOUNT_SEARCH",
+                        'description': "Include Account Search"
+                    }
+                    );
+                    break;
 
                 default:
                     // no op
@@ -509,6 +520,13 @@ angular.module('reportsModule')
                     }];
                 }
 
+                if ( filter.value === 'DAYS_0_30' ) {
+                    report['hasIncludeAgingBalance'] = filter;
+                }
+
+                if ( filter.value === 'ACCOUNT_SEARCH' ) {
+                    report['hasAccountSearch'] = filter;
+                }
 
                 // check for include company/ta filter and keep a ref to that item
                 if ( filter.value === 'INCLUDE_COMPANYCARD_TA' ) {
@@ -520,13 +538,17 @@ angular.module('reportsModule')
                     report['hasIncludeCompanyTaGroup'] = filter;
                 }
 
-
                 if ( filter.value === 'MIN_REVENUE' ) {
                     report['hasMinRevenue'] = filter;
                 }
                 if ( filter.value === 'MIN_ROOM_NIGHTS' ) {
                     report['hasMinRoomNights'] = filter;
                 }
+
+                if ( filter.value === 'ACCOUNT_NAME' ) {
+                    report['hasIncludeAccountName'] = filter;
+                }
+
 
                 if ( filter.value === 'MIN_NUMBER_OF_DAYS_NOT_OCCUPIED' ) {
                     report['hasMinNoOfDaysNotOccupied'] = filter;
@@ -626,6 +648,12 @@ angular.module('reportsModule')
             _.each(filters, function(filter) {
 
                 if ( 'INCLUDE_GUARANTEE_TYPE' === filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchGuaranteeTypes()
+                        .then( fillGarntTypes );
+                }
+
+                else if ( 'INCLUDE_GUARANTEE_TYPE' === filter.value && ! filter.filled ) {
                     requested++;
                     reportsSubSrv.fetchGuaranteeTypes()
                         .then( fillGarntTypes );
@@ -732,6 +760,13 @@ angular.module('reportsModule')
                 } else if ( 'INCLUDE_COMPLETION_STATUS' === filter.value && ! filter.filled) {
                     // requested++;
                     fillCompletionStatus();
+                } else if ( 'INCLUDE_AGING_BALANCE' === filter.value && ! filter.filled) {
+                    // requested++;
+                    fillAgingBalance();
+                } else if ( 'ACCOUNT_SEARCH' === filter.value && ! filter.filled) {
+                    requested++;
+                    reportsSubSrv.fetchAccounts()
+                        .then( fillAccounts );
                 } else {
                     // no op
                 }
@@ -766,6 +801,32 @@ angular.module('reportsModule')
                 completed++;
                 checkAllCompleted();
             }
+
+            function fillAccounts (data) {
+                var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'ACCOUNT_SEARCH' });
+
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+
+                        report.hasAccountSearch = {
+                            data: angular.copy( data ),
+                            options: {
+                                selectAll: false,
+                                hasSearch: true,
+                                key: 'account_name',
+                                defaultValue: 'Select Accounts'
+                            }
+                        };
+                    }
+                });
+
+                completed++;
+                checkAllCompleted();
+            }
+
 
             function fillMarkets (data) {
                 var foundFilter;
@@ -917,6 +978,34 @@ angular.module('reportsModule')
                                 selectAll: true,
                                 key: 'status',
                                 defaultValue: 'Select Status'
+                            }
+                        };
+                    }
+                });
+            }
+
+            function fillAgingBalance() {
+                customData = [
+                                {id: "0_30", status: "0-30 DAYS", selected: true},
+                                {id: "31_60", status: "31-60 DAYS", selected: true},
+                                {id: "61_90",  status: "61-90 DAYS", selected: true},
+                                {id: "91_120",  status: "91-120 DAYS", selected: true},
+                                {id: "120_plus",  status: "120+ DAYS", selected: true}
+                            ];
+
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'INCLUDE_AGING_BALANCE' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+
+                        report.hasIncludeAgingBalance = {
+                            data: customData,
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'status',
+                                defaultValue: 'Select Aging Balance'
                             }
                         };
                     }

@@ -1211,10 +1211,16 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				var datesArray = secondary.dates;
 
 				secondary.total = 0.0;
+                secondary.stayTaxExcl = 0.0;
 				var stayTax = {
 					excl: {}
 				};
+
 				var updateStayTaxes = function(stayTaxDayInfo) {
+                    secondary.stayTaxIncl = 0.0;
+                    _.each(stayTaxDayInfo.incl, function(tax) {
+                        secondary.stayTaxIncl = parseFloat(secondary.stayTaxIncl) + parseFloat(tax);
+                    });
 					_.each(stayTaxDayInfo.excl, function(taxAmount, taxId) {
 						if (stayTax.excl[taxId] === undefined) {
 							stayTax.excl[taxId] = parseFloat(taxAmount);
@@ -1259,6 +1265,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					totalStayTaxes = parseFloat(totalStayTaxes) + parseFloat(tax);
 				});
 				secondary.total = parseFloat(secondary.total) + parseFloat(totalStayTaxes);
+                secondary.stayTaxExcl = totalStayTaxes;
 				secondary.restrictions = rateDetails.summary;
 				cb && cb();
 				$scope.refreshScroll();
