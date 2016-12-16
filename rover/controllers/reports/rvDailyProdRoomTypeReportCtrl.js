@@ -168,7 +168,10 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 					}
 
 					if ( 0 == loopCount ) {
-						$scope.headerTop.push( $filter('date')(dateKey, $rootScope.shortMonthAndDate) );
+						$scope.headerTop.push({
+	                        ms: ms,
+	                        name: $filter('date')(ms, shortMonthAndDate)
+	                    });
 
 						if ( 5 == $scope.colSpan ) {
 							startIndex   = 0;

@@ -114,10 +114,18 @@ var DPBodyPanel = function (props) {
 
 var DPContent = React.createClass({
     componentDidMount: function() {
+        if ( typeof this.props.reactRenderDone === typeof function() {} ) {
+            this.props.reactRenderDone();
+        }
+
         document.getElementById('daily-production-render').style.width = this.props.rightPaneWidth;
     },
 
     componentDidUpdate: function() {
+        if ( typeof this.props.reactRenderDone === typeof function() {} ) {
+            this.props.reactRenderDone();
+        }
+        
         document.getElementById('daily-production-render').style.width = this.props.rightPaneWidth;
     },
 
