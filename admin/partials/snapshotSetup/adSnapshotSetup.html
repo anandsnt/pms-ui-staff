@@ -64,10 +64,10 @@
                         <label>
                             {{ 'RETRY_INTERVAL_LABEL' | translate}}
                         </label>
-                        <div class="select select-col select-width-25">
+                        <div class="select select-col select-width-30">
                                 <select ng-model="snapshotData.incremental_export_once_retry_interval">
                                     <option value="">MM</option>
-                                    <option ng-repeat="minute  in minutes" value="{{minute}}" ng-bind="minute"></option>
+                                    <option ng-repeat="minute in minutes" value="{{minute}}" ng-bind="minute"></option>
                                 </select>
                             </div>
                     </div>
@@ -75,10 +75,13 @@
                         <label>
                             {{ 'NO_OF_RETRIES_LABEL' | translate}}
                         </label>
-                        <div class="select select-col">
-                                <select ng-model="snapshotData.incremental_export_once_retry_count">
-                                    <option value="">MM</option>
+                        <div class="select select-col select-width-30">
+                                <!-- <select ng-model="snapshotData.incremental_export_once_retry_count">
+                                    <option value="">0</option>
                                     <option ng-repeat="retry  in retry_count_options" value="{{retry}}" ng-bind="retry"></option>
+                                </select> -->
+
+                                <select ng-options="retry for retry  in retry_count_options" ng-model="snapshotData.incremental_export_once_retry_count">
                                 </select>
                             </div>
                     </div>
