@@ -5,6 +5,11 @@ admin.controller('adsnapshotSetupCtrl', ['$scope',
 	function($scope, $state, snapshotSetupData, adSnapShotSetupSrv) {
 		BaseCtrl.call(this, $scope);
 
+		$scope.hours = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+    	$scope.minutes = ["00", "15", "30", "45"];
+    	$scope.primeTimes = ["AM", "PM"];
+    	$scope.retry_count_options = ["1", "2", "3", "4", "5"];
+
 		$scope.publishFullExport = function() {
 			var onpublishFullExportSucces = function() {
 					$scope.successMessage = 'Publishing was Success';
@@ -32,7 +37,7 @@ admin.controller('adsnapshotSetupCtrl', ['$scope',
 		(function init() {
 			$scope.errorMessage = '';
 			$scope.successMessage = '';
-			$scope.snapChatData = snapshotSetupData;
+			$scope.snapshotData = snapshotSetupData;
 		}());
 
 	}
