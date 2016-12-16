@@ -207,6 +207,7 @@
             "always"
         ],
         "angular/controller-as": "off",
-        "angular/di": ["off", "array"]
+        "angular/di": ["off", "array"],
+        "angular/controller-as-vm": "off"
     }
 }

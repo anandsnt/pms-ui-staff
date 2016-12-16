@@ -8,7 +8,7 @@
 </div>
 
 <!-- <div ng-hide="hasNoResults" -->
-<div ng-hide="hasNoResults" id="report-content" class="report-content statistics" ng-controller="RVDailyProdRateReportCtrl">
+<div ng-hide="hasNoResults" id="report-content" class="report-content statistics" ng-controller="RVDailyProdRateReport.Controller">
 
     <!-- Left side - table legend. Number of list items here should be identical to the number of table rows on the right side  -->
     <div class="statistics-headings">
@@ -38,7 +38,7 @@
                         </label>
                     </div>
                 </li>
-                <li ng-repeat="label in yAxisLabels track by $index">
+                <li ng-repeat="label in yAxisLabelsV2 track by $index">
                     <em ng-show="!label.is_rate_type">{{ label.name }}</em>
                     <strong ng-show="label.is_rate_type">{{ label.name }}</strong>
                 </li>
@@ -50,13 +50,13 @@
     <div class="statistics-content scrollable" ng-iscroll="right-pane-scroll"><!-- Attach iscroll here, should scroll vertically and horizontally. While scrolling vertically it should update iscoll on the left side as well -->
 
         <div class="wrapper" id="daily-production-render"></div>
-        
+
     </div>
 </div>
 
-<!-- 
+<!--
     RIGHT SIDE WRAPPER WIDTH NEEDS TO BE SET INLINE IN ORDER FOR SCROLLING TO WORK OK
-    Table cell width 80px, which is our base to calculate wrapper's width. 
+    Table cell width 80px, which is our base to calculate wrapper's width.
     Other parameters are: L156 and L167 can be on or off
         - If we're showing both L156 AND L167, wrapper = number of days * 400 ==> 80px * 5 cells
         - If we're showing ONLY L156, wrapper = number of days * 160 ==> 80px * 2 cells
