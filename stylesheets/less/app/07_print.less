@@ -2042,6 +2042,43 @@
                                     }
                                 }
                             }
+
+                            // Used in Comparison Report
+
+                            &.charge-group {
+                                &.toggle {
+
+                                    .icon-double-arrow {
+                                        .hide();
+                                    }
+
+                                    &.active {
+                                        td {
+                                            border-bottom-color: rgba(0,0,0,0.04);  
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                            // Used in Comparison Report
+                            &.charge-code {
+                                td {
+                                    &.code {
+                                        padding-left: 20px;
+                                    }
+                                    border-bottom-color: rgba(0,0,0,0.03);  
+                                } 
+
+                                &.last {
+                                    td {
+                                        border-bottom-color: @grey2;
+                                    }
+                                }
+
+                                &.charge-pagination {
+                                    .hide();
+                                }
+                            }
                         }
                     }
                 }

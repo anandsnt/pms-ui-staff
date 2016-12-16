@@ -1,3 +1,23 @@
+is_ledger
+  today
+  mtd
+  last_year_mtd
+  mtd_variance
+  ytd
+  last_year_ytd
+  ytd_variance
+
+<tr ng-repeat="item in ledgerEntries">
+	<td class="code long-code break">{{ item.section }}</td>
+	<td class="break">{{ item.today | currency:currencySymbol:2 }}</td>
+	<td>{{ item.mtd | currency:currencySymbol:2 }}</td>
+	<td>{{ item.last_year_mtd | currency:currencySymbol:2 }}</td>
+	<td class="break" ng-class="{ 'red': item.mtd_variance < 0 }">{{ item.mtd_variance | currency:currencySymbol:2 }}</td>
+	<td>{{ item.ytd | currency:currencySymbol:2 }}</td>
+	<td>{{ item.last_year_ytd | currency:currencySymbol:2 }}</td>
+	<td ng-class="{ 'red': item.ytd_variance < 0 }">{{ item.ytd_variance | currency:currencySymbol:2 }}</td>
+</tr>
+
 <tr ng-repeat="item in staticEntries">
 	<td class="code long-code break">{{ item.section }}</td>
 	<td class="break">{{ item.today }}</td>
@@ -9,7 +29,7 @@
 	<td ng-class="{ 'red': item.ytd_variance < 0 }">{{ item.ytd_variance }}</td>
 </tr>
 
-<tr class="total" ng-repeat="item in totalEntry">
+<tr class="total" ng-repeat="item in totalEntries">
 	<td class="code long-code break">{{ item.section }}</td>
 	<td class="break">{{ item.today | currency:currencySymbol:2 }}</td>
 	<td>{{ item.mtd | currency:currencySymbol:2 }}</td>
@@ -32,13 +52,71 @@
     <td>Last Year YTD</td>
     <td>Variance</td>
 </tr>
-<tr ng-repeat="item in cgEntries">
-	<td class="code long-code break"><em>{{ item.section }}</em></td>
-	<td class="break">{{ item.today | currency:currencySymbol:2 }}</td>
-	<td>{{ item.mtd | currency:currencySymbol:2 }}</td>
-	<td>{{ item.last_year_mtd | currency:currencySymbol:2 }}</td>
-	<td class="break" ng-class="{ 'red': item.mtd_variance < 0 }">{{ item.mtd_variance | currency:currencySymbol:2 }}</td>
-	<td>{{ item.ytd | currency:currencySymbol:2 }}</td>
-	<td>{{ item.last_year_ytd | currency:currencySymbol:2 }}</td>
-	<td ng-class="{ 'red': item.ytd_variance < 0 }">{{ item.ytd_variance | currency:currencySymbol:2 }}</td>
+<tr ng-repeat="item in cgEntries track by $index"
+  ng-class="{
+    'charge-group': item.isChargeGroup,
+    'toggle': item.isChargeGroup ,
+    'active': item.isChargeGroupActive,
+
+    'charge-code': item.isChargeCode,
+    'charge-pagination': item.isChargeCodePagination,
+
+    'odd': $odd,
+    'even': $even,
+    'last': (item.isChargeCode && $last)
+  }"
+  ng-hide="isHidden(item)"
+>
+  <td ng-if="item.isChargeCodePagination" colspan="8">
+    <rv-pagination page-options="item.pageOptions"></rv-pagination>
+  </td>
+
+	<td ng-if="!item.isChargeCodePagination && item.isChargeGroup"
+    class="code long-code break"
+    ng-click="toggleChargeGroup($index)"
+  >
+    <em ng-if="item.isChargeGroup">{{ item.section }}</em>
+    <span ng-if="item.isChargeGroup"
+      class="icons icon-double-arrow"></span>
+  </td>
+  <td ng-if="!item.isChargeCodePagination  && item.isChargeCode"
+    class="code long-code break"
+  >
+    <em ng-if="item.isChargeCode">{{ item.name }}</em>
+  </td>
+
+	<td ng-if="!item.isChargeCodePagination"
+    class="break"
+  >
+    {{ item.today | currency:currencySymbol:2 }}
+  </td>
+
+	<td ng-if="!item.isChargeCodePagination">
+    {{ item.mtd | currency:currencySymbol:2 }}
+  </td>
+
+	<td ng-if="!item.isChargeCodePagination">
+    {{ item.last_year_mtd | currency:currencySymbol:2 }}
+  </td>
+
+	<td ng-if="!item.isChargeCodePagination"
+    class="break"
+    ng-class="{ 'red': item.mtd_variance < 0 }"
+  >
+    {{ item.mtd_variance | currency:currencySymbol:2 }}
+  </td>
+
+	<td ng-if="!item.isChargeCodePagination">
+    {{ item.ytd | currency:currencySymbol:2 }}
+  </td>
+
+	<td ng-if="!item.isChargeCodePagination">
+    {{ item.last_year_ytd | currency:currencySymbol:2 }}
+  </td>
+
+	<td ng-if="!item.isChargeCodePagination"
+    ng-class="{ 'red': item.ytd_variance < 0 }"
+  >
+    {{ item.ytd_variance | currency:currencySymbol:2 }}
+  </td>
 </tr>
