@@ -257,13 +257,29 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             };
 
 
-            $scope.callAPI(zsCheckinSrv.fetchUpsellDetails, {
+
+
+            var onSuccessHandleUpsell = function() {
+                // now that reservation has updated the arrival time via backend, 
+                // we should fetch upsell details and continue
+                $scope.callAPI(zsCheckinSrv.fetchUpsellDetails, {
+                    params: {
+                        id: $scope.selectedReservation.id
+                    },
+                    'successCallBack': onSuccessResponse,
+                    'failureCallBack': generalError
+                });
+            };
+
+            
+            $scope.callAPI(zsCheckinSrv.updateReservationArrivalTime, {
                 params: {
                     id: $scope.selectedReservation.id
                 },
-                'successCallBack': onSuccessResponse,
+                'successCallBack': onSuccessHandleUpsell,
                 'failureCallBack': generalError
             });
+
         };
 
 

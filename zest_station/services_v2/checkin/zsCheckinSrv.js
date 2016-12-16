@@ -287,6 +287,23 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+
+        that.updateReservationArrivalTime = function(reservation) {
+            var params = {
+                set_arrival_time_to_current_time: true
+            };
+            var deferred = $q.defer(),
+                url = 'api/reservations/' + reservation.id + '/update_stay_details';
+
+            zsBaseWebSrv.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+
         this.fetchStarTacPrinterData = function(params) {
             var deferred = $q.defer();
             var url = 'api/reservations/' + params.reservation_id + '/bill_print_data?is_checkout=false';
