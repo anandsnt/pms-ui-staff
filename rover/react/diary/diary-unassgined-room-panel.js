@@ -138,7 +138,8 @@ var UnassignedRoomPanel = React.createClass({
             scrollX: false,
             scrollY: true,
             tap: true,
-            mouseWheel: true
+            mouseWheel: true,
+            disablePointer: true
             // bounce: false,
             // useTransition: true
         });
