@@ -44,4 +44,6 @@
 	"FEATURE_DOWNLOAD_RESERVATION": "Download Reservation",
 	"FEATURE_UPLOAD_INVENTORY": "Upload Inventory",
 	"FEATURE_UPLOAD_RATE": "Upload Rate",
-	"FEATURE_UPLOAD_RESTRICTION":"Upload Restriction"
+	"FEATURE_UPLOAD_RESTRICTION":"Upload Restriction",
+	"SYNC_HISTORICAL_DATA": "Synchronize Historical Data"
+

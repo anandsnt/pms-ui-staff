@@ -1,3 +1,4 @@
-"PLACEHOLDER_NIGHTLY_DIARY_SEARCH" : "Search by Guest, Allotment/Group or Conf./Ext. ref no.",
+"PLACEHOLDER_NIGHTLY_DIARY_SEARCH_FULL" : "Search by Guest, Allotment/Group or Conf./Ext. ref no.",
+"PLACEHOLDER_NIGHTLY_DIARY_SEARCH_SHORT" : "Search by Name / Conf./Ext. ref no.",
 "7_DAYS" : "7 Days",
 "21_DAYS" : "21 Days"

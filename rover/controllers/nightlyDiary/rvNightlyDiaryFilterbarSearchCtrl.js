@@ -141,5 +141,12 @@ angular.module('sntRover')
         $scope.$on('CLOSE_SEARCH_RESULT', function() {
             $scope.clearResults();
         });
+        // Load placeholder text based on screen width.
+        $scope.getPlaceholderText = function() {
+            if (window.innerWidth > 1024) {
+                return $filter('translate')('PLACEHOLDER_NIGHTLY_DIARY_SEARCH_FULL');
+            }
+            return $filter('translate')('PLACEHOLDER_NIGHTLY_DIARY_SEARCH_SHORT');
+        };
 
     }]);
