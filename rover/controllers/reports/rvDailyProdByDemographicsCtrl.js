@@ -46,29 +46,15 @@ angular.module('sntRover')
         };
         
         var reRenderReport = function() {
-            $timeout(function() {
-                startedRendering();
-            }, DELAY_50);
-
-            $timeout(function() {
-                renderReport();
-            }, DELAY_100);
+            $timeout(renderReport, DELAY_100);
         };
 
         var initializeMe = function() {
-            $timeout(function() {
-                startedRendering();
-            }, 0);
-
-            $timeout(function() {
-                renderReport();
-            }, DELAY_10);
+            $timeout(renderReport, DELAY_10);
         };
 
         var reportSubmited = $scope.$on(reportMsgs['REPORT_SUBMITED'], function() { 
-            $timeout(function() {
-                renderReport();
-            }, DELAY_50);
+            $timeout(renderReport, DELAY_50);
         });
         var reportPrinting = $scope.$on(reportMsgs['REPORT_PRINTING'], renderReport);
         var reportUpdated = $scope.$on(reportMsgs['REPORT_UPDATED'], reRenderReport);

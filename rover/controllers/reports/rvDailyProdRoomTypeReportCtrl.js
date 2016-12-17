@@ -1,5 +1,5 @@
 angular.module('sntRover')
-.controller('RVDailyProdRoomTypeReportCtrl', [
+.controller('RVDailyProdRoomTypeReport.Controller', [
     '$rootScope',
     '$scope',
     'RVreportsSrv',
@@ -10,7 +10,16 @@ angular.module('sntRover')
     'RVReportNamesConst',
     '$filter',
     '$timeout',
+    // eslint-disable-next-line max-params
     function($rootScope, $scope, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout) {
+        var DELAY_100 = 100;
+        var DELAY_300 = 300;
+        var DELAY_1000 = 1000;
+        var LIMITER = 2;
+        var COL_5 = 5;
+        var COL_3 = 3;
+        var COL_2 = 2;
+
         var detailsCtrlScope = $scope.$parent,
             mainCtrlScope = detailsCtrlScope.$parent;
 
@@ -45,7 +54,7 @@ angular.module('sntRover')
             if ( mainCtrlScope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL) && mainCtrlScope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL) ) {
                 setupScrollListner();
             } else {
-                $timeout(isScrollReady, 1000);
+                $timeout(isScrollReady, DELAY_1000);
             }
         };
 
@@ -90,9 +99,9 @@ angular.module('sntRover')
             if ( false === newValue && ! $scope.uiFilter.showRevenue ) {
                 $scope.uiFilter.showRevenue = true;
             }
-
+            
             $scope.$emit('showLoader');
-            $timeout( reInit, 100 );
+            $timeout( reInit, DELAY_100 );
         });
 
         // cant disable both, when one disabled one the other should be enabled
@@ -102,7 +111,7 @@ angular.module('sntRover')
             }
 
             $scope.$emit('showLoader');
-            $timeout( reInit, 300 );
+            $timeout( reInit, DELAY_300 );
         });
 
         // re-render must be initiated before for taks like printing.
@@ -118,7 +127,6 @@ angular.module('sntRover')
         $scope.$on( '$destroy', reportUpdated );
         $scope.$on( '$destroy', reportPrinting );
         $scope.$on( '$destroy', reportPageChanged );
-
 
         function processData() {
             var SUB_HEADER_NAMES = [
@@ -148,11 +156,11 @@ angular.module('sntRover')
             var roomKey, dateKey;
 
             if ( $scope.uiFilter.showAvailability && $scope.uiFilter.showRevenue ) {
-                $scope.colSpan = 5;
+                $scope.colSpan = COL_5;
             } else if ( ! $scope.uiFilter.showAvailability && $scope.uiFilter.showRevenue ) {
-                $scope.colSpan = 3;
+                $scope.colSpan = COL_3;
             } else if ( $scope.uiFilter.showAvailability && ! $scope.uiFilter.showRevenue ) {
-                $scope.colSpan = 2;
+                $scope.colSpan = COL_2;
             }
 
             $scope.headerTop = [];
@@ -184,15 +192,15 @@ angular.module('sntRover')
                             name: $filter('date')(dateKey, $rootScope.shortMonthAndDate)
                         });
 
-                        if ( 5 === $scope.colSpan ) {
+                        if ( COL_5 === $scope.colSpan ) {
                             startIndex = 0;
-                            endIndex  = SUB_HEADER_NAMES.length;
-                            triggerIndex = SUB_HEADER_NAMES.length - 1;
-                        } else if ( 3 === $scope.colSpan ) {
-                            startIndex = 2;
                             endIndex = SUB_HEADER_NAMES.length;
                             triggerIndex = SUB_HEADER_NAMES.length - 1;
-                        } else if ( 2 === $scope.colSpan ) {
+                        } else if ( COL_3 === $scope.colSpan ) {
+                            startIndex = COL_2;
+                            endIndex = SUB_HEADER_NAMES.length;
+                            triggerIndex = SUB_HEADER_NAMES.length - 1;
+                        } else if ( COL_2 === $scope.colSpan ) {
                             startIndex = 0;
                             endIndex = 1 + 1;
                             triggerIndex = 1;
@@ -212,7 +220,7 @@ angular.module('sntRover')
 
                     eachDateVal = [];
 
-                    if ( 2 === $scope.colSpan ) {
+                    if ( COL_2 === $scope.colSpan ) {
                         eachDateVal.push({
                             value: dateObj['total_reservations_count'],
                             isAvail: true
@@ -222,21 +230,21 @@ angular.module('sntRover')
                             isAvail: true,
                             cls: 'last-day'
                         });
-                    } else if ( 3 === $scope.colSpan ) {
+                    } else if ( COL_3 === $scope.colSpan ) {
                         eachDateVal.push({
-                            value: $filter('currency')(dateObj['rate_revenue'], $rootScope.currencySymbol, 2),
+                            value: $filter('currency')(dateObj['rate_revenue'], $rootScope.currencySymbol, LIMITER),
                             isRev: true
                         });
                         eachDateVal.push({
-                            value: $filter('currency')(dateObj['adr'], $rootScope.currencySymbol, 2),
+                            value: $filter('currency')(dateObj['adr'], $rootScope.currencySymbol, LIMITER),
                             isRev: true
                         });
                         eachDateVal.push({
-                            value: $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, 2),
+                            value: $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, LIMITER),
                             isRev: true,
                             cls: 'last-day'
                         });
-                    } else if ( 5 === $scope.colSpan ) {
+                    } else if ( COL_5 === $scope.colSpan ) {
                         eachDateVal.push({
                             value: dateObj['total_reservations_count'],
                             isAvail: true
@@ -246,15 +254,15 @@ angular.module('sntRover')
                             isAvail: true
                         });
                         eachDateVal.push({
-                            value: $filter('currency')(dateObj['rate_revenue'], $rootScope.currencySymbol, 2),
+                            value: $filter('currency')(dateObj['rate_revenue'], $rootScope.currencySymbol, LIMITER),
                             isRev: true
                         });
                         eachDateVal.push({
-                            value: $filter('currency')(dateObj['adr'], $rootScope.currencySymbol, 2),
+                            value: $filter('currency')(dateObj['adr'], $rootScope.currencySymbol, LIMITER),
                             isRev: true
                         });
                         eachDateVal.push({
-                            value: $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, 2),
+                            value: $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, LIMITER),
                             isRev: true,
                             cls: 'last-day'
                         });
@@ -272,13 +280,12 @@ angular.module('sntRover')
 
             $timeout(function() {
                 refreshScrollers();
-                    $scope.$emit('hideLoader');
-                }, 300 );
-            };
+                $scope.$emit('hideLoader');
+            }, DELAY_300 );
         }
 
         function renderReact (options) {
-            var args  = options || {},
+            var args = options || {},
                 props = _.extend(args, {
                     'rightPaneWidth': $scope.rightPaneWidth,
                     'colspan': $scope.colSpan,
@@ -289,19 +296,21 @@ angular.module('sntRover')
                 });
 
             ReactDOM.render(
+                // eslint-disable-next-line no-undef
                 React.createElement(DPContent, props),
+                // eslint-disable-next-line angular/document-service
                 document.getElementById('daily-production-render')
             );
         }
 
-        function init (argument) {
+        function init () {
             processData();
             renderReact();
         }
 
         init();
 
-        function reInit (argument) {
+        function reInit () {
             processData();
             renderReact();
         }
