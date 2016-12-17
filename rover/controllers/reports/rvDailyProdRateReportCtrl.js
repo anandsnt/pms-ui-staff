@@ -314,38 +314,51 @@ angular.module('sntRover')
                 };
             }
 
-            function generateResultData(yAxis, headerTop, results) {
-                var resultData = [];
+            function groupByKeyValue (source, key, value) {
+                var grouped = [];
 
-                var totals;
-                var lastIndex = -1;
-                var matchedPost;
+                _.each(source, function(item) {
+                    if ( item[key] === value ) {
+                        grouped.push(item);
+                    }
+                });
 
-                var dateData;
-                var insertedData;
+                return grouped;
+            }
 
-                var trackRow = {
-                    index: -1,
+            function valueAdder (source) {
+                var totals = {
                     adr: 0,
                     available_rooms_count: 0,
                     occupied_rooms_count: 0,
-                    rate_id: 0,
                     room_revenue: 0
                 };
 
-                var adder = function(state, next) {
-                    var parsedNext = parseFloat(next);
-
-                    if ( isNaN(parsedNext) ) {
-                        return state;
-                    } else {
-                        return state + parsedNext;
-                    }
+                var parser = function(value) {
+                    var parsed = parseFloat(value);
+                    return isNaN(parsed) ? 0 : parsed;
                 };
+
+                _.each(source, function(item) {
+                    totals.adr += parser(item.adr);
+                    totals.available_rooms_count += parser(item.available_rooms_count);
+                    totals.occupied_rooms_count += parser(item.occupied_rooms_count);
+                    totals.room_revenue += parser(item.room_revenue);
+                });
+
+                return totals;
+            }
+
+            function generateResultData(yAxis, headerTop, results) {
+                var resultData = [];
+                var matchedPost;
+                var dateData;
+                var insertedData;
 
                 _.each(yAxis, function (yAxisItem, index) {
                     resultData.push([]);
 
+                    i = 0;
                     _.each(results, function (dateObj, date) {
                         dateData = {
                             date: date,
@@ -359,10 +372,9 @@ angular.module('sntRover')
                         // fill the placeholders anyway
                         if ( yAxisItem.is_rate_type ) {
                             dateData.isRateType = true;
-                            dateData.data = {};
+                            dateData.data = valueAdder( groupByKeyValue(dateObj, 'rate_type_id', yAxisItem.rate_type_id) );
                         } else {
                             matchedPost = _.find(dateObj, { rate_id: yAxisItem.rate_id });
-
                             dateData.isRateType = false;
                             dateData.data = matchedPost;
                         }
@@ -461,7 +473,7 @@ angular.module('sntRover')
             function init () {
                 var genXAxis, genYAxis, modifiedResults;
 
-                if ( _.isEmpty($scope.uiFilter) ) {
+                if ( ! _.has($scope.chosenReport, 'hasRateFilter') ) {
                     return;
                 }
 
