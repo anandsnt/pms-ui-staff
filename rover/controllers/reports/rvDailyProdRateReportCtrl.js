@@ -10,8 +10,8 @@ angular.module('sntRover')
         'RVReportNamesConst',
         '$filter',
         '$timeout',
+        // eslint-disable-next-line max-params
         function($rootScope, $scope, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout) {
-
             var UNDEFINED = {
                 id: 'UNDEFINED',
                 rate_type_id: 'UNDEFINED',
@@ -19,8 +19,7 @@ angular.module('sntRover')
             };
 
             var detailsCtrlScope = $scope.$parent,
-                mainCtrlScope = detailsCtrlScope.$parent,
-                chosenReport = detailsCtrlScope.chosenReport;
+                mainCtrlScope = detailsCtrlScope.$parent;
 
             var LEFT_PANE_SCROLL = 'left-pane-scroll',
                 RIGHT_PANE_SCROLL = 'right-pane-scroll',
@@ -51,13 +50,13 @@ angular.module('sntRover')
                     });
             };
 
-            var isScrollReady = (function () {
+            var isScrollReady = function () {
                 if (mainCtrlScope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL) && mainCtrlScope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL)) {
                     setupScrollListner();
                 } else {
                     $timeout(isScrollReady, POLL);
                 }
-            })();
+            };
 
             var destroyScrolls = function() {
                 mainCtrlScope.myScroll[LEFT_PANE_SCROLL].destroy();
@@ -76,11 +75,6 @@ angular.module('sntRover')
             var reportUpdated = $scope.$on(reportMsgs['REPORT_UPDATED'], reInit);
             var reportPageChanged = $scope.$on(reportMsgs['REPORT_PAGE_CHANGED'], reInit);
 
-            $scope.$on('$destroy', reportSubmited);
-            $scope.$on('$destroy', reportUpdated);
-            $scope.$on('$destroy', reportPrinting);
-            $scope.$on('$destroy', reportPageChanged);
-
             BaseCtrl.call(this, $scope);
 
             $scope.setScroller(LEFT_PANE_SCROLL, {
@@ -96,6 +90,7 @@ angular.module('sntRover')
 
             $scope.$on('$destroy', destroyScrolls);
 
+            isScrollReady();
 
             // default colspan value
             $scope.colSpan = 5;
@@ -128,6 +123,10 @@ angular.module('sntRover')
 
             $scope.$on('$destroy', watchShowAvailability);
             $scope.$on('$destroy', watchshowRevenue);
+            $scope.$on('$destroy', reportSubmited);
+            $scope.$on('$destroy', reportUpdated);
+            $scope.$on('$destroy', reportPrinting);
+            $scope.$on('$destroy', reportPageChanged);
 
             $scope.reactRenderDone = function() {
                 refreshScrollers();
@@ -148,20 +147,12 @@ angular.module('sntRover')
                     });
 
                 ReactDOM.render(
+                    // eslint-disable-next-line no-undef
                     React.createElement(DPContent, props),
+                    // eslint-disable-next-line angular/document-service
                     document.getElementById('daily-production-render')
                 );
             }
-
-            // function init() {
-            //     processData();
-            //     renderReact();
-            // }
-
-            // function reInit() {
-            //     processData();
-            //     renderReact();
-            // }
 
             function generateXaxisData (uiFilter, chosenReport, shortMonthAndDate) {
                 var SUB_HEADER_NAMES = {
@@ -336,6 +327,7 @@ angular.module('sntRover')
 
                 var parser = function(value) {
                     var parsed = parseFloat(value);
+
                     return isNaN(parsed) ? 0 : parsed;
                 };
 
@@ -358,7 +350,6 @@ angular.module('sntRover')
                 _.each(yAxis, function (yAxisItem, index) {
                     resultData.push([]);
 
-                    i = 0;
                     _.each(results, function (dateObj, date) {
                         dateData = {
                             date: date,
