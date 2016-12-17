@@ -21,7 +21,8 @@
         "sntGuestWeb": true,
         "admin": true,
         "ADBaseTableCtrl": true,
-        "tzIndependentDate": true
+        "tzIndependentDate": true,
+        "getJqDateFormat": false
     },
     "installedESLint":true,
     "parserOptions":{
