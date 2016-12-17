@@ -13,6 +13,7 @@ var ReactIscroll = React.createClass({
 			momentum: false,
 			preventDefaultException: { className: /(^|\s)(occupied|available|reserved)(\s|$)/ },
 			mouseWheel: true,
+            disablePointer: true,
 			useTransition: true
 		});
 

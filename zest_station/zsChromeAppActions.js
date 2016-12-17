@@ -1,4 +1,4 @@
-this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
+this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCodeRightNow) {
     var that = this;
 
     if (typeof chrome !== 'undefined' && typeof chrome.runtime !== 'undefined') {
@@ -34,7 +34,7 @@ this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
                 attempt: this.qrAttempt + 1
             };
 
-            if (!response.qr_code) {
+            if (!response) {
                 setTimeout(function() {
                     console.log('listening for QR code scan...');
                     if (!that.cancelNextMsg) {
@@ -44,7 +44,7 @@ this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
                     }
 
                 }, 2000);
-            } else {
+            } else if (response.qr_code) {
                 that.cancelNextMsg = true;
                 console.log('GOT QR CODE BACK FROM CHROMEAPP !!! : ', response.reservation_id);
                 msg.listening = false;
@@ -62,14 +62,14 @@ this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
         that.qrAttempt = 0;
         that.fetchQRCode = function() {
             var msg = 'initQRCodeScan';
-
+            console.log('SENDING message: ', msg, ' to: ', chromeAppId);
             chrome.runtime.sendMessage(chromeAppId, msg, that.listenerForQRCodeResponse);
-            console.log('SENDING message: ', msg);
         };
-
-        if (fetchQRCode) {
+        console.log('fetchQRCodeRightNow: ', fetchQRCodeRightNow);
+        if (fetchQRCodeRightNow) {
             that.fetchQRCode();
         } else {
+            console.log(':: setting up chromeapp listener ::');
             that.setupChromeAppListener();
         }
     }
