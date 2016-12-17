@@ -171,6 +171,10 @@ sntRover
 				// destroy the $watch when the $scope is destroyed
 				$scope.$on('$destroy', unWatchData);
 				$scope.$on('$destroy', unWatchOptions);
+
+				$scope.$on('FILTER_SELECTION_UPDATED', function(filter_selected_value){
+					updateSelectedValue();
+       			});
 			}
 		};
 	}]);
