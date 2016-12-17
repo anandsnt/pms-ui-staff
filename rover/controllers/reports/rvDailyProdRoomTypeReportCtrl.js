@@ -128,6 +128,12 @@ angular.module('sntRover')
         $scope.$on( '$destroy', reportPrinting );
         $scope.$on( '$destroy', reportPageChanged );
 
+        /**
+         * generate the 2D matrix data that will fill the content part of the report
+         * @return {object} undefined
+         *
+         * @todo Need to break this into smaller functions
+         */
         function processData() {
             var SUB_HEADER_NAMES = [
                 'Rooms Occ',
@@ -284,6 +290,11 @@ angular.module('sntRover')
             }, DELAY_300 );
         }
 
+        /**
+         * initiates the rendering of the react component
+         * @param  {any} options any additional config data
+         * @return {object}      undefined
+         */
         function renderReact (options) {
             var args = options || {},
                 props = _.extend(args, {
@@ -303,6 +314,10 @@ angular.module('sntRover')
             );
         }
 
+        /**
+         * initialize everything
+         * @return {object} undefined
+         */
         function init () {
             processData();
             renderReact();
@@ -310,6 +325,10 @@ angular.module('sntRover')
 
         init();
 
+        /**
+         * re-initialize everything
+         * @return {object} undefined
+         */
         function reInit () {
             processData();
             renderReact();

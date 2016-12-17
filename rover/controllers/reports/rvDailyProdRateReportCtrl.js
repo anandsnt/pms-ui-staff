@@ -68,8 +68,6 @@ angular.module('sntRover')
 
             var watchShowAvailability, watchshowRevenue;
 
-            // re-render must be initiated before for taks like printing.
-            // thats why timeout time is set to min value 50ms
             var reportSubmited = $scope.$on(reportMsgs['REPORT_SUBMITED'], reInit);
             var reportPrinting = $scope.$on(reportMsgs['REPORT_PRINTING'], reInit);
             var reportUpdated = $scope.$on(reportMsgs['REPORT_UPDATED'], reInit);
@@ -133,6 +131,11 @@ angular.module('sntRover')
                 $scope.$emit('hideLoader');
             };
 
+            /**
+             * initiates the rendering of the react component
+             * @param  {any} args any additional config data
+             * @return {object}      undefined
+             */
             function renderReact(args) {
                 var options = args || {},
                     props = _.extend(options, {
@@ -154,6 +157,14 @@ angular.module('sntRover')
                 );
             }
 
+            /**
+             * generated the header data with dates and each sub-header values
+             * this also allows to calculate few other things like total width
+             * @param  {object} uiFilter          the two ui filter status
+             * @param  {object} chosenReport      the choosen report from the report list page
+             * @param  {string} shortMonthAndDate info on how we want to show the date
+             * @return {object}                   computed datas { headerTop, headerBot, colSpan, colspanArray, rightPaneWidth }
+             */
             function generateXaxisData (uiFilter, chosenReport, shortMonthAndDate) {
                 var SUB_HEADER_NAMES = {
                         'ROOMS': 'Occ Rooms',
@@ -232,7 +243,17 @@ angular.module('sntRover')
                 };
             }
 
-            function generateYaxisData (results, allRates, allRateTypes) {
+            /**
+             * generate the rate type name and in it the child rate name data which is
+             * drawn on the left side as yAxis
+             * generated a modified copy of results with each entry having its -
+             * rate_name, rate_type_id and rate_type_name augmented.
+             * @param  {array} results      results from the api
+             * @param  {array} allRates     all rates info from list page
+             * @param  {array} allRateTypes all rate types info from list page
+             * @return {object}             computed data { yAxis, modifiedResults }
+             */
+            function genYaxisDataAndResults (results, allRates, allRateTypes) {
                 var yAxis = [];
                 var resultCopy = angular.copy(results);
 
@@ -305,6 +326,14 @@ angular.module('sntRover')
                 };
             }
 
+            /**
+             * similar to the groupBy method on Underscore, except we specify the
+             * exact value we are looking for in the subset/modified-set groupBy creates
+             * @param  {array} source array of items
+             * @param  {string} key    name of the key in each item
+             * @param  {number|string} value  the exact value we are looking for
+             * @return {array}        the found sub-set of source
+             */
             function groupByKeyValue (source, key, value) {
                 var grouped = [];
 
@@ -317,6 +346,11 @@ angular.module('sntRover')
                 return grouped;
             }
 
+            /**
+             * adds up the key-values of entries in an array, specifically for rate postings
+             * @param  {array} source the array of entries
+             * @return {object}        calculated totals
+             */
             function valueAdder (source) {
                 var totals = {
                     adr: 0,
@@ -341,7 +375,13 @@ angular.module('sntRover')
                 return totals;
             }
 
-            function generateResultData(yAxis, headerTop, results) {
+            /**
+             * generate the 2D matrix data that will fill the content part of the report
+             * @param  {array} yAxis     generated yAxis data with rate types and rates to help fill horizontally
+             * @param  {array} results   modified api results that will help fill vertically
+             * @return {array}           composed array of array representing the data
+             */
+            function generateResultData(yAxis, results) {
                 var resultData = [];
                 var matchedPost;
                 var dateData;
@@ -370,7 +410,7 @@ angular.module('sntRover')
                             dateData.data = matchedPost;
                         }
 
-                        insertedData = insetDateData(dateData);
+                        insertedData = insertDateData(dateData);
                         resultData[index] = resultData[index].concat( insertedData );
                     });
                 });
@@ -378,7 +418,12 @@ angular.module('sntRover')
                 return resultData;
             }
 
-            function insetDateData(options) {
+            /**
+             * insert each date rate/type data into the 2D matrix horizontally
+             * @param  {object} options config and data passed in
+             * @return {array}         partial array containing data of a single date
+             */
+            function insertDateData(options) {
                 var limiter = 2,
                     eachDateVal = [],
                     isPastDay = new tzIndependentDate(options.date) < new tzIndependentDate(options.businessDate);
@@ -461,6 +506,10 @@ angular.module('sntRover')
                 return eachDateVal;
             }
 
+            /**
+             * initialize everything
+             * @return {object} undefined
+             */
             function init () {
                 var genXAxis, genYAxis, modifiedResults;
 
@@ -476,15 +525,19 @@ angular.module('sntRover')
                 $scope.colspanArray = genXAxis.colspanArray;
                 $scope.rightPaneWidth = genXAxis.rightPaneWidth;
 
-                genYAxis = generateYaxisData($scope.results, $scope.chosenReport.hasRateFilter.data, $scope.chosenReport.hasRateTypeFilter.data);
+                genYAxis = genYaxisDataAndResults($scope.results, $scope.chosenReport.hasRateFilter.data, $scope.chosenReport.hasRateTypeFilter.data);
                 $scope.yAxisLabels = genYAxis.yAxis;
                 modifiedResults = genYAxis.modifiedResults;
 
-                $scope.reportData = generateResultData($scope.yAxisLabels, $scope.headerTop, modifiedResults);
+                $scope.reportData = generateResultData($scope.yAxisLabels, modifiedResults);
 
                 renderReact();
             }
 
+            /**
+             * re-initialize everything
+             * @return {object} undefined
+             */
             function reInit() {
                 init();
             }
