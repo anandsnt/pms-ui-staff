@@ -31,7 +31,7 @@
 				<ad-checkbox is-checked="addData.is_display_reference" label="{{ 'DISPLAY_REFERENCE' | translate}}" div-class="full-width"></ad-checkbox>
 
 
-				<div class="entry radio-check " ng-if="isStandAlone && !isHourlyRatesEnabled">
+				<div class="entry radio-check " ng-if="isStandAlone">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class="{'checked': addData.restrict_post}"></span>
                     {{ 'RESTRICT_POST' | translate }}

@@ -153,34 +153,50 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
              * this reaches out to 
              */
             var onSuccess = function(data) {
-              $scope.actions.totalCount = data.total_count;
-              $scope.actions.pendingCount = data.pending_count;
-              $scope.actionsSyncd = true;
-              $scope.$emit('hideLoader');
+                $scope.actions.totalCount = data.total_count;
+                $scope.actions.pendingCount = data.pending_count;
+                $scope.actionsSyncd = true;
+                $scope.$emit('hideLoader');
+
+                // Update the actionsCount variable in $scope; This is used to manage the style of the actions button
+                setActionsCount();
             };
-            var onFailure = function(response) {
-                
+
+            var onFailure = function() {
               $scope.actionsSyncd = true;
             };
 
             $scope.invokeApi(rvActionTasksSrv.syncActionCount, id, onSuccess, onFailure);
         };
 
+        /**
+         * @returns {undefined} undefined
+         */
+        function setActionsCount() {
+            var pending = $scope.actions.pendingCount,
+                total = $scope.actions.totalCount;
+
+            if (total === 0) {
+                $scope.actionsCount = 'none';// none, pending, all-completed
+            } else if (total > 0 && pending === 0) {
+                $scope.actionsCount = 'all-completed';
+            } else if (total > 0 && total === pending) {
+                $scope.actionsCount = 'only-pending';
+            } else {
+                $scope.actionsCount = 'pending';
+            }
+        }
+
         $scope.setInitialActionsCount = function(data) {
             if (data) {
                 $scope.actions.totalCount = data.action_count;
                 $scope.actions.pendingCount = data.pending_action_count;
-                var pending = $scope.actions.pendingCount, total = $scope.actions.totalCount;
 
-                if (total === 0) {
-                    $scope.actionsCount = 'none';// none, pending, all-completed
-                } else if (total > 0 && pending === 0) {
-                    $scope.actionsCount = 'all-completed';
-                } else if (total > 0 && total === pending) {
-                    $scope.actionsCount = 'only-pending';
-                } else {
-                    $scope.actionsCount = 'pending';
-                }
+                // CICO-35660 The initial count is taken from
+                // Request URL:https://pms-release.stayntouch.com/api/reservations/:reservation_id.json
+                // action_count provided in this response is not uptodate
+
+                setActionsCount();
             }
         };
 
