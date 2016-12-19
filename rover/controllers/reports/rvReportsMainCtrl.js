@@ -2123,6 +2123,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					msg = reportMsgs['REPORT_SUBMITED'];
 				}
 
+				$scope.$broadcast("FILTER_SELECTION_UPDATED", $scope.filter_selected_value);
 				if ( !! msg ) {
 					console.info( msg );
 					$scope.$broadcast( msg );
