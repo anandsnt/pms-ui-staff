@@ -30,11 +30,11 @@
                 </fieldset>
                 <ad-form-title full-width="true" form-title="{{'INCREMENTAL_EXPORT_LABEL' | translate}}"></ad-form-title>
                 <ad-toggle-button is-checked="snapshotData.incremental_export_enabled" label="{{'INCREMENTAL_EXPORT_SWITCH_LABEL'| translate}}"></ad-toggle-button>
-                    <label class="radio" ng-class="{'checked':snapshotData.incremental_export_option== 'once'}">
+                    <label class="radio" ng-class="{'checked':snapshotData.incremental_export_option== 'once'}" ng-show="snapshotData.incremental_export_enabled">
                             <span class="icon-form icon-radio " ng-class="{checked:snapshotData.incremental_export_option=='once'}"></span>
                             <input type="radio" value="once" ng-model="snapshotData.incremental_export_option"> {{ 'ONCE_PER_DAY_LABEL' | translate}}
                         </label>
-                <fieldset class="holder left holder_margin" ng-show="snapshotData.incremental_export_option=='once'">
+                <fieldset class="holder left holder_margin" ng-show="snapshotData.incremental_export_option=='once' && snapshotData.incremental_export_enabled">
                     <div class="entry full-width increental-export-time-margin">
                         <label>
                             {{ 'START_TIME_LABEL' | translate}}
@@ -59,7 +59,7 @@
                         </div>
                     </div>
                 </fieldset>
-                <fieldset class="holder right holder_margin" ng-show="snapshotData.incremental_export_option=='once'">
+                <fieldset class="holder right holder_margin" ng-show="snapshotData.incremental_export_option=='once' && snapshotData.incremental_export_enabled">
                     <div class="entry ">
                         <label>
                             {{ 'RETRY_INTERVAL_LABEL' | translate}}
@@ -87,12 +87,12 @@
                     </div>
                 </fieldset>
 
-                <label class="radio" ng-class="{'checked':snapshotData.incremental_export_option== 'multiple'}">
+                <label class="radio" ng-class="{'checked':snapshotData.incremental_export_option== 'multiple'}" ng-show="snapshotData.incremental_export_enabled">
                             <span class="icon-form icon-radio " ng-class="{checked:snapshotData.incremental_export_option=='multiple'}"></span>
                             <input type="radio" value="multiple" ng-model="snapshotData.incremental_export_option"> {{ 'MULTIPLE_PER_DAY_LABEL' | translate}}
                         </label>
 
-                <fieldset class="holder left holder_margin" ng-show="snapshotData.incremental_export_option=='multiple'">
+                <fieldset class="holder left holder_margin" ng-show="snapshotData.incremental_export_option=='multiple' && snapshotData.incremental_export_enabled">
                     <div class="entry full-width increental-export-time-margin">
                         <label>
                             {{ 'START_FIRST_EXPORT_LABEL' | translate}}
