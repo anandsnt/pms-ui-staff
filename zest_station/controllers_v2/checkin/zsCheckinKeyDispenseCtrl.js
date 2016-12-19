@@ -136,6 +136,8 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 		 * @return {[type]}     [description]
 		 */
         var saveUIDToReservationSuccsess = function() {
+            // reset timer so as to avoid unwanted timeouts
+            $scope.resetTime();
             noOfKeysCreated++;
 
             if ($scope.noOfKeysSelected === noOfKeysCreated) {
@@ -188,6 +190,8 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 		 * @return {[type]}          [description]
 		 */
         var localEncodingSuccsess = function(response) {
+            // reset timer so as to avoid unwanted timeouts
+            $scope.resetTime();
             if ($scope.inDemoMode()) {
                 setTimeout(function() {
                     $scope.mode = $scope.noOfKeysSelected === 1 ? 'SOLO_KEY_CREATION_IN_PROGRESS_MODE' : 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
@@ -315,6 +319,8 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
         };
 
         function remoteEncodingSuccsess(response) {
+            // reset timer so as to avoid unwanted timeouts
+            $scope.resetTime();
             noOfKeysCreated++;
             if ($scope.noOfKeysSelected === noOfKeysCreated) {
 				// all keys are made
