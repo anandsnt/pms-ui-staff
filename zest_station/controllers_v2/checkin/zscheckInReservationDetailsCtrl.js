@@ -70,6 +70,9 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 setDisplayContentHeight();
                 refreshScroller();
                 $scope.isReservationDetailsFetched = true;
+                if($scope.zestStationData.is_kiosk_ows_messages_active && !$scope.zestStationData.is_standalone){
+                     $scope.$broadcast('FETCH_OWS_MESSAGES');
+                }
             };
 
 
