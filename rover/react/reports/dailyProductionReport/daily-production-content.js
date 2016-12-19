@@ -132,8 +132,7 @@ var DPContent = React.createClass({
     render: function() {
         return React.DOM.table(
             {
-                className: 'statistics-reports',
-                style: { tableLayout: 'auto' }
+                className: 'statistics-reports'
             },
             React.createElement(
                 DPHeadPanel,
