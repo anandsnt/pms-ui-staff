@@ -367,7 +367,7 @@ angular.module('sntRover')
 
                 _.each(source, function(item) {
                     totals.adr += parser(item.adr);
-                    totals.available_rooms_count += parser(item.available_rooms_count);
+                    totals.available_rooms_count = item.available_rooms_count;
                     totals.occupied_rooms_count += parser(item.occupied_rooms_count);
                     totals.room_revenue += parser(item.room_revenue);
                 });
@@ -512,6 +512,7 @@ angular.module('sntRover')
              */
             function init () {
                 var genXAxis, genYAxis, modifiedResults;
+                var results = mainCtrlScope.results;
 
                 if ( ! _.has($scope.chosenReport, 'hasRateFilter') ) {
                     return;
@@ -525,7 +526,7 @@ angular.module('sntRover')
                 $scope.colspanArray = genXAxis.colspanArray;
                 $scope.rightPaneWidth = genXAxis.rightPaneWidth;
 
-                genYAxis = genYaxisDataAndResults($scope.results, $scope.chosenReport.hasRateFilter.data, $scope.chosenReport.hasRateTypeFilter.data);
+                genYAxis = genYaxisDataAndResults(results, $scope.chosenReport.hasRateFilter.data, $scope.chosenReport.hasRateTypeFilter.data);
                 $scope.yAxisLabels = genYAxis.yAxis;
                 modifiedResults = genYAxis.modifiedResults;
 
