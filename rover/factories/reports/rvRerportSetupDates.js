@@ -89,7 +89,6 @@ angular.module('reportsModule')
                             'untilDate': getDates.businessDate
                         },
                         'A/R_AGING': {
-                            //'fromDate': '',
                             'untilDate': getDates.yesterday
                         },
             			/**/
