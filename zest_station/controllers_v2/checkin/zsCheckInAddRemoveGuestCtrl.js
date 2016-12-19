@@ -135,7 +135,8 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
             });
             var guestDetails = {
                 'accompanying_guests_details': accompanyingGuestData,
-                'reservation_id': $scope.selectedReservation.id
+                'reservation_id': $scope.selectedReservation.id,
+                'is_added_from_kiosk': true
             };
             var onSuccessResponse = function(response) {
                 // push changes up to the reservation immediately

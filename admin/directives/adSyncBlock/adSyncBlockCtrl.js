@@ -4,7 +4,7 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
         BaseCtrl.call(this, $scope);
 
         var MAX_REFRESH_SPAN_DAYS = 40,
-            HISTORICAL_SYNC_LIMIT = 3, // IN YEARS
+            HISTORICAL_SYNC_LIMIT = 2, // IN YEARS
             commonDatePickerOptions = {
                 dateFormat: $rootScope.jqDateFormat,
                 numberOfMonths: 1,

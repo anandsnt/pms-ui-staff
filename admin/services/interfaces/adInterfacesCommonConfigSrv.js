@@ -46,20 +46,30 @@ admin.service('adInterfacesCommonConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2', '
          *
          * @return {deferred.promise|{then, catch, finally}} Promise for an object containing list of paymentMethods, bookingOrigins and rates
          */
-        service.fetchOptionsList = function() {
+        service.fetchOptionsList = function(list) {
             var deferred = $q.defer(),
                 promises = [],
                 meta = {};
 
-            promises.push(adExternalInterfaceCommonSrv.fetchPaymethods().then(function(response) {
-                meta.paymentMethods = response.payments;
-            }));
-            promises.push(adExternalInterfaceCommonSrv.fetchOrigins().then(function(response) {
-                meta.bookingOrigins = response.booking_origins;
-            }));
-            promises.push(service.fetchRatesMinimal().then(function(response) {
-                meta.rates = response.results;
-            }));
+            var metaLists = list || ['PAYMENT_METHODS', 'BOOKING_ORIGINS', 'RATES'];
+
+            if (metaLists.indexOf('PAYMENT_METHODS') > -1) {
+                promises.push(adExternalInterfaceCommonSrv.fetchPaymethods().then(function(response) {
+                    meta.paymentMethods = response.payments;
+                }));
+            }
+
+            if (metaLists.indexOf('BOOKING_ORIGINS') > -1) {
+                promises.push(adExternalInterfaceCommonSrv.fetchOrigins().then(function(response) {
+                    meta.bookingOrigins = response.booking_origins;
+                }));
+            }
+
+            if (metaLists.indexOf('RATES') > -1) {
+                promises.push(service.fetchRatesMinimal().then(function(response) {
+                    meta.rates = response.results;
+                }));
+            }
 
             $q.all(promises).then(function() {
                 deferred.resolve(meta);
