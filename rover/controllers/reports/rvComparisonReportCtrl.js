@@ -105,7 +105,13 @@ angular.module('sntRover')
                         chargeGroupsCodes.push({
                             isChargeCode: true,
                             isChargeCodeActive: false,
-                            isEmpty: true
+                            //isChargeCodePagination: true,
+                            isEmpty: true,
+                            /*pageOptions: {
+                                id: results[i].charge_group_id.toString(),
+                                api: [$scope.fetchChargeCodes, i],
+                                perPage: 2
+                            }*/
                         });
                     }
 
@@ -117,7 +123,8 @@ angular.module('sntRover')
                         isEmpty: true,
                         pageOptions: {
                             id: results[i].charge_group_id.toString(),
-                            api: ['fetchChargeCodes', i]
+                            api: [$scope.fetchChargeCodes, i],
+                            perPage: 2
                         }
                     });
                 }
@@ -134,19 +141,25 @@ angular.module('sntRover')
          * @param  {number} sourceIndex index of the charge group
          * @returns {object}             undefined
          */
-        function fillChargeCodes (ccData, sourceIndex) {
+        function fillChargeCodes (ccData, sourceIndex, totalCount) {
+            console.log("totalcount", totalCount);
             var process = function (data, dataIndex, sourceIndex) {
                 var dataNextIndex = dataIndex + 1;
                 var sourceNextIndex = sourceIndex + 1;
                 var item = data[dataIndex] || {};
+                var isEmpty = data[dataIndex] ? false : true;
+
 
                 angular.extend(
                     $scope.cgEntries[sourceIndex],
                     item,
                     {
-                        isEmpty: item.id ? false : true
+                        isEmpty: isEmpty
                     }
                 );
+                if ( $scope.cgEntries[sourceIndex].isChargeCodePagination ) {
+                    $scope.cgEntries[sourceIndex].pageOptions.totalCount = totalCount;
+                }
 
                 if ( $scope.cgEntries[sourceNextIndex] && $scope.cgEntries[sourceNextIndex].isChargeCode ) {
                     process(data, dataNextIndex, sourceNextIndex);
@@ -192,6 +205,9 @@ angular.module('sntRover')
                 var nextIndex = index + 1;
 
                 source[index].isChargeCodeActive = active;
+                if ( source[index].isChargeCodePagination ) {
+                    source[index].isEmpty = false;
+                }
 
                 if ( source[nextIndex] && source[nextIndex].isChargeCode ) {
                     process(source, nextIndex, active);
@@ -375,9 +391,19 @@ angular.module('sntRover')
             } else {
                 $scope.fetchChargeCodes(index);
             }
+            
+            item.pageOptions = {
+                id: item.charge_group_id.toString(),
+                api: [$scope.fetchChargeCodes, index],
+                perPage: 2
+            };
+            item.isChargeCodePagination = true;
+
+            console.log(item);
         };
 
         $scope.fetchChargeCodes = function (index) {
+            console.log("fetchChargeCodes");
             var item = $scope.cgEntries[index];
             var pageNo = item.pageNo === 0 ? item.pageNo + 1 : 1;
 
@@ -389,7 +415,7 @@ angular.module('sntRover')
                 item.pageNo = pageNo;
 
                 ccStore.set(item.charge_group_id, data.charge_codes);
-                fillChargeCodes(ccStore.get(item.charge_group_id), sourceIndex);
+                fillChargeCodes(ccStore.get(item.charge_group_id), sourceIndex, data.total_count);
 
                 $timeout(function () {
                     toggleChargeCodes($scope.cgEntries, sourceIndex, true)
@@ -413,7 +439,7 @@ angular.module('sntRover')
                 report_id: $scope.chosenReport.id,
                 charge_group_id: item.charge_group_id,
                 page_no: pageNo,
-                per_page: 50
+                per_page: 2
             };
 
             $scope.invokeApi(RVreportsSubSrv.getChargeCodes, params, success, failed);
