@@ -272,11 +272,10 @@ angular.module('sntRover')
                             matchedRateType = UNDEFINED;
                         } else {
                             post.rate_name = matchedRate.rate_name || matchedRate.name;
-                            matchedRateType = didOnce.allMappedRateTypes[rateTypeId];
-
-                            rateTypeId = matchedRateType.rate_type_id;
+                            matchedRateType = didOnce.allMappedRateTypes[matchedRate.rate_type_id];
                         }
 
+                        rateTypeId = matchedRateType.rate_type_id;
                         post.rate_type_id = matchedRateType.rate_type_id;
                         post.rate_type_name = matchedRateType.name;
 
@@ -515,8 +514,7 @@ angular.module('sntRover')
                     allMappedRateTypes: _.indexBy(allRateTypes, 'rate_type_id')
                 };
             }
-            didOnce = doOnce($scope.chosenReport.hasRateFilter.data, $scope.chosenReport.hasRateTypeFilter.data);
-
+            
             /**
              * initialize everything
              * @return {object} undefined
@@ -553,6 +551,7 @@ angular.module('sntRover')
                 init();
             }
 
+            didOnce = doOnce($scope.chosenReport.hasRateFilter.data, $scope.chosenReport.hasRateTypeFilter.data);
             init();
         }
     ]);
