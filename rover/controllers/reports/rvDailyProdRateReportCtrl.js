@@ -18,8 +18,6 @@ angular.module('sntRover')
                 name: 'Undefined'
             };
 
-            var didOnce;
-
             var detailsCtrlScope = $scope.$parent,
                 mainCtrlScope = detailsCtrlScope.$parent;
 
@@ -194,7 +192,7 @@ angular.module('sntRover')
                 var isPastDay, currentHeaders;
 
                 if (uiFilter.showAvailability && uiFilter.showRevenue) {
-                    headers = ['ROOMS', 'AVAILABLE_ROOMS', 'FORECAST', 'ADR']; 
+                    headers = ['ROOMS', 'AVAILABLE_ROOMS', 'FORECAST', 'ADR'];
                     // Header is initialized to FORECAST, If past date is selected it will be replaced with ACTUAL column
                 } else if (!uiFilter.showAvailability && uiFilter.showRevenue) {
                     headers = ['FORECAST', 'ADR'];
@@ -251,26 +249,30 @@ angular.module('sntRover')
              * generated a modified copy of results with each entry having its -
              * rate_name, rate_type_id and rate_type_name augmented.
              * @param  {array} results      results from the api
-             * @param  {object} didOnce     processed data
+             * @param  {array} allRates     all rates info from list page
+             * @param  {array} allRateTypes all rate types info from list page
              * @return {object}             computed data { yAxis, modifiedResults }
              */
-            function genYaxisDataAndResults (results, didOnce) {
+            function genYaxisDataAndResults (results, allRates, allRateTypes) {
                 var yAxis = [];
                 var resultCopy = angular.copy(results);
+
+                var allMappedRates = _.indexBy(allRates, 'id');
+                var allMappedRateTypes = _.indexBy(allRateTypes, 'rate_type_id');
 
                 var matchedRate;
                 var matchedRateType;
                 var rateTypesInResults = {};
 
-                _.each(resultCopy, function (dateObj, date) {
-                    _.each(dateObj, function (post) {
-                        matchedRate = didOnce.allMappedRates[post.rate_id];
+                _.each(resultCopy, function (dates) {
+                    _.each(dates, function (post) {
+                        matchedRate = allMappedRates[post.rate_id];
 
                         if ( _.isUndefined(matchedRate) ) {
                             matchedRateType = UNDEFINED;
                             post.rate_name = UNDEFINED.name;
                         } else {
-                            matchedRateType = didOnce.allMappedRateTypes[matchedRate.rate_type_id];
+                            matchedRateType = allMappedRateTypes[matchedRate.rate_type_id];
                             post.rate_name = matchedRate.rate_name || matchedRate.name;
                         }
 
@@ -278,26 +280,26 @@ angular.module('sntRover')
                         post.rate_type_name = matchedRateType.name;
 
                         if ( _.has(rateTypesInResults, post.rate_type_id) ) {
-                            rateTypesInResults[post.rate_type_id]
-                                .rates_data[post.rate_id] = {
+
+                            if ( _.find(rateTypesInResults[post.rate_type_id].rates_data, { id: post.rate_id }) ) {
+                                // do nothing, already pushed
+                            } else {
+                                rateTypesInResults[post.rate_type_id].rates_data.push({
                                     id: post.rate_id,
                                     name: post.rate_name
-                                };
+                                });
+                            }
                         } else {
                             rateTypesInResults[post.rate_type_id] = {
                                 id: post.rate_type_id,
                                 name: post.rate_type_name,
-                                rates_data: {
-                                    [post.rate_id]: {
-                                        id: post.rate_id,
-                                        name: post.rate_name
-                                    }
-                                }
+                                rates_data: [{
+                                    id: post.rate_id,
+                                    name: post.rate_name
+                                }]
                             };
                         }
                     });
-
-                    resultCopy[date] = _.indexBy(dateObj, 'rate_id');
                 });
 
                 _.each(rateTypesInResults, function (rateType) {
@@ -350,7 +352,7 @@ angular.module('sntRover')
              * @return {object}        calculated totals
              */
             function valueAdder (source) {
-                var adr = 0;
+                var adr;
                 var totals = {
                     adr: 0,
                     available_rooms_count: 0,
@@ -369,10 +371,8 @@ angular.module('sntRover')
                     totals.occupied_rooms_count += parser(item.occupied_rooms_count);
                     totals.room_revenue += parser(item.room_revenue);
                 });
-
                 adr = totals.room_revenue / totals.occupied_rooms_count;
                 totals.adr = _.isFinite( adr ) ? adr : 0;
-
                 return totals;
             }
 
@@ -386,7 +386,7 @@ angular.module('sntRover')
                 var resultData = [];
                 var matchedPost;
                 var dateData;
-                // var insertedData;
+                var insertedData;
 
                 _.each(yAxis, function (yAxisItem, index) {
                     resultData.push([]);
@@ -406,14 +406,13 @@ angular.module('sntRover')
                             dateData.isRateType = true;
                             dateData.data = valueAdder( groupByKeyValue(dateObj, 'rate_type_id', yAxisItem.rate_type_id) );
                         } else {
-                            matchedPost = dateObj[yAxisItem.rate_id];
+                            matchedPost = _.find(dateObj, { rate_id: yAxisItem.rate_id });
                             dateData.isRateType = false;
                             dateData.data = matchedPost;
                         }
 
-                        // insertedData = insertDateData(dateData);
-                        // resultData[index] = resultData[index].concat( insertedData );
-                        insertDateData(resultData[index], dateData);
+                        insertedData = insertDateData(dateData);
+                        resultData[index] = resultData[index].concat( insertedData );
                     });
                 });
 
@@ -422,12 +421,12 @@ angular.module('sntRover')
 
             /**
              * insert each date rate/type data into the 2D matrix horizontally
-             * @param  {array} source snow-balling row from matrix
              * @param  {object} options config and data passed in
              * @return {array}         partial array containing data of a single date
              */
-            function insertDateData(source, options) {
+            function insertDateData(options) {
                 var limiter = 2,
+                    eachDateVal = [],
                     isPastDay = new tzIndependentDate(options.date) < new tzIndependentDate(options.businessDate);
 
                 var data = _.extend(
@@ -442,62 +441,62 @@ angular.module('sntRover')
                 );
 
                 if ( options.showAvailability && !options.showRevenue ) {
-                    source.push({
+                    eachDateVal.push({
                         value: data.occupied_rooms_count,
                         isAvail: true,
                         isRateType: options.isRateType
                     });
-                    source.push({
+                    eachDateVal.push({
                         value: data.available_rooms_count,
                         isAvail: true,
                         isRateType: options.isRateType
                     });
                 } else if ( !options.showAvailability && options.showRevenue ) {
                     if ( !isPastDay ) {
-                        source.push({
+                        eachDateVal.push({
                             value: $filter('currency')(data.room_revenue, options.currencySymbol, limiter),
                             isRev: true,
                             isRateType: options.isRateType
                         });
                     }
-                    source.push({
+                    eachDateVal.push({
                         value: $filter('currency')(data.adr, options.currencySymbol, limiter),
                         isRev: true,
                         isRateType: options.isRateType
                     });
                     if (isPastDay) {
-                        source.push({
+                        eachDateVal.push({
                             value: $filter('currency')(data.room_revenue, options.currencySymbol, limiter),
                             isRev: true,
                             isRateType: options.isRateType
                         });
                     }
                 } else if ( options.showAvailability && options.showRevenue ) {
-                    source.push({
+                    eachDateVal.push({
                         value: data.occupied_rooms_count,
                         isAvail: true,
                         isRateType: options.isRateType
                     });
-                    source.push({
+                    eachDateVal.push({
                         value: data.available_rooms_count,
                         isAvail: true,
                         isRateType: options.isRateType
                     });
                     if ( !isPastDay ) {
-                        source.push({
+                        eachDateVal.push({
                             value: $filter('currency')(data.room_revenue, options.currencySymbol, limiter),
                             isRev: true,
                             isRateType: options.isRateType
                         });
                     }
-                    source.push({
+                    eachDateVal.push({
                         value: $filter('currency')(data.adr, options.currencySymbol, limiter),
                         isRev: true,
                         isRateType: options.isRateType
                     });
 
                     if (isPastDay) {
-                        source.push({
+                        eachDateVal.push({
                             value: $filter('currency')(data.room_revenue, options.currencySymbol, limiter),
                             isRev: true,
                             isRateType: options.isRateType
@@ -505,20 +504,7 @@ angular.module('sntRover')
                     }
                 }
 
-                return source;
-            }
-
-            /**
-             * preform these just once
-             * @param  {array} allRates     all rates
-             * @param  {array} allRateTypes all rate types
-             * @return {object}              processed data source
-             */
-            function doOnce (allRates, allRateTypes) {
-                return {
-                    allMappedRates: _.indexBy(allRates, 'id'),
-                    allMappedRateTypes: _.indexBy(allRateTypes, 'rate_type_id')
-                };
+                return eachDateVal;
             }
 
             /**
@@ -533,16 +519,15 @@ angular.module('sntRover')
                     return;
                 }
 
-                didOnce = doOnce($scope.chosenReport.hasRateFilter.data, $scope.chosenReport.hasRateTypeFilter.data);
-
                 genXAxis = generateXaxisData($scope.uiFilter, $scope.chosenReport, $rootScope.shortMonthAndDate);
+
                 $scope.headerTop = genXAxis.headerTop;
                 $scope.headerBot = genXAxis.headerBot;
                 $scope.colSpan = genXAxis.colSpan;
                 $scope.colspanArray = genXAxis.colspanArray;
                 $scope.rightPaneWidth = genXAxis.rightPaneWidth;
 
-                genYAxis = genYaxisDataAndResults(results, didOnce);
+                genYAxis = genYaxisDataAndResults(results, $scope.chosenReport.hasRateFilter.data, $scope.chosenReport.hasRateTypeFilter.data);
                 $scope.yAxisLabels = genYAxis.yAxis;
                 modifiedResults = genYAxis.modifiedResults;
 
