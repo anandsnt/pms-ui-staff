@@ -8,6 +8,7 @@ angular.module('sntRover')
     '$timeout',
     'RVreportsSubSrv',
     '$q',
+    // eslint-disable-next-line max-params
     function (
         $rootScope,
         $scope,
@@ -68,10 +69,110 @@ angular.module('sntRover')
                 setter(source)
             );
         };
+
         var ccStore = genStore();
 
         /** Ending data store composition section for storing CGs */
 
+        // re-render must be initiated before for taks like printing.
+        // thats why timeout time is set to min value 50ms
+        reportSubmited = $scope.$on(RVReportMsgsConst['REPORT_SUBMITED'], function() {
+            $timeout(function() {
+                init();
+            }, reInitDelay);
+        });
+        reportPrinting = $scope.$on(RVReportMsgsConst['REPORT_PRINTING'], function () {
+            init();
+            toggleAllChargeCodes( $scope.cgEntries, true );
+        });
+        reportUpdated = $scope.$on(RVReportMsgsConst['REPORT_UPDATED'], init);
+        reportPageChanged = $scope.$on(RVReportMsgsConst['REPORT_PAGE_CHANGED'], init);
+
+        $scope.$on('$destroy', reportSubmited);
+        $scope.$on('$destroy', reportUpdated);
+        $scope.$on('$destroy', reportPrinting);
+        $scope.$on('$destroy', reportPageChanged);
+
+        $scope.toggleChargeGroup = function (index) {
+            var item = $scope.cgEntries[index];
+            var state;
+            var hasCC = ccStore.get(item.charge_group_id);
+            var sourceIndex = index + 1;
+            var delay = 500;
+
+            if ( item.isChargeGroupActive ) {
+                state = false;
+                toggleChargeCodes($scope.cgEntries, sourceIndex, false)
+                    .then(function () {
+                        item.isChargeGroupActive = false;
+                        $timeout(function () {
+                            $scope.refreshScroll(true);
+                        }, delay);
+                    });
+            } else {
+                state = true;
+                $scope.fetchChargeCodes(index, 1);
+            }
+        };
+
+        $scope.fetchChargeCodes = function (index, pageNo) {
+            
+            var item = $scope.cgEntries[index];
+            var pageNo = pageNo || 1;
+
+            var delay = 100;
+            var refreshDelay = 500;
+            var success = function(data) {
+                var sourceIndex = index + 1;
+
+                item.pageNo = pageNo;
+
+                ccStore.set(item.charge_group_id, data.charge_codes);
+                fillChargeCodes(ccStore.get(item.charge_group_id), sourceIndex, data.total_count);
+                
+                $timeout(function () {
+                    toggleChargeCodes($scope.cgEntries, sourceIndex, true)
+                        .then(function () {
+                            item.isChargeGroupActive = true;
+                            $scope.$emit('hideLoader');
+
+                            $timeout(function () {
+                                var paginationID = item.charge_group_id.toString();
+
+                                $scope.$broadcast('updatePagination', paginationID );
+                                $scope.refreshScroll(true);
+
+                            }, refreshDelay);
+                        });
+                }, delay);
+            };
+
+            var failed = function () {
+                $scope.$emit('hideLoader');
+            };
+
+            var params = {
+                date: $filter('date')($scope.chosenReport.singleValueDate, 'yyyy-MM-dd'),
+                report_id: $scope.chosenReport.id,
+                charge_group_id: item.charge_group_id,
+                page_no: pageNo,
+                per_page: 50
+            };
+
+            $scope.invokeApi(RVreportsSubSrv.getChargeCodes, params, success, failed);
+        };
+
+        $scope.isHidden = function (item) {
+            var hidden = false;
+
+            if ( item.isChargeCode && item.isEmpty ) {
+                hidden = true;
+            } else if ( item.isChargeCode && ! item.isChargeCodeActive ) {
+                hidden = true;
+            }
+
+            return hidden;
+        };
 
         /**
          * prepareChargeGroupsCodes - fill up the charge group + 50 charge code + 1 pagination space allready
@@ -82,16 +183,17 @@ angular.module('sntRover')
          */
         function prepareChargeGroupsCodes (results) {
             var chargeGroupsCodes = [];
-            var i, j, k, l = 3;
+            var i, j, k, l = 51;
+            var cgEntries = _.where(results, { is_charge_group: true });
 
-            for (i = 0, j = results.length; i < j; i++) {
-                if ( results[i].is_charge_group ) {
+            for (i = 0, j = cgEntries.length; i < j; i++) {
+                if ( cgEntries[i].is_charge_group ) {
 
                     // augment charge group entry
                     chargeGroupsCodes.push(
                         angular.extend(
                             {},
-                            results[i],
+                            cgEntries[i],
                             {
                                 isChargeGroup: true,
                                 isChargeGroupActive: false,
@@ -116,9 +218,9 @@ angular.module('sntRover')
                         isChargeCodePagination: true,
                         isEmpty: true,
                         pageOptions: {
-                            id: results[i].charge_group_id.toString(),
+                            id: cgEntries[i].charge_group_id.toString(),
                             api: [ $scope.fetchChargeCodes, i ],
-                            perPage: 2
+                            perPage: 50
                         }
                     });
                 }
@@ -141,7 +243,6 @@ angular.module('sntRover')
                 var sourceNextIndex = sourceIndex + 1;
                 var item = data[dataIndex] || {};
                 var isEmpty = data[dataIndex] ? false : true;
-
 
                 angular.extend(
                     $scope.cgEntries[sourceIndex],
@@ -181,7 +282,6 @@ angular.module('sntRover')
                 }
             }
         }
-
 
         /**
          * toggleChargeCodes - toggle the visibility of a set of cc under a cg
@@ -339,106 +439,6 @@ angular.module('sntRover')
         }
 
         init();
-
-        // re-render must be initiated before for taks like printing.
-        // thats why timeout time is set to min value 50ms
-        reportSubmited = $scope.$on(RVReportMsgsConst['REPORT_SUBMITED'], function() {
-            $timeout(function() {
-                init();
-            }, reInitDelay);
-        });
-        reportPrinting = $scope.$on(RVReportMsgsConst['REPORT_PRINTING'], function () {
-            init();
-            toggleAllChargeCodes( $scope.cgEntries, true );
-        });
-        reportUpdated = $scope.$on(RVReportMsgsConst['REPORT_UPDATED'], init);
-        reportPageChanged = $scope.$on(RVReportMsgsConst['REPORT_PAGE_CHANGED'], init);
-
-        $scope.$on('$destroy', reportSubmited);
-        $scope.$on('$destroy', reportUpdated);
-        $scope.$on('$destroy', reportPrinting);
-        $scope.$on('$destroy', reportPageChanged);
-
-
-        $scope.toggleChargeGroup = function (index) {
-            var item = $scope.cgEntries[index];
-            var state;
-            var hasCC = ccStore.get(item.charge_group_id);
-            var sourceIndex = index + 1;
-            var delay = 500;
-
-            if ( item.isChargeGroupActive ) {
-                state = false;
-                toggleChargeCodes($scope.cgEntries, sourceIndex, false)
-                    .then(function () {
-                        item.isChargeGroupActive = false;
-                        $timeout(function () {
-                            $scope.refreshScroll(true);
-                        }, delay);
-                    });
-            } else {
-                state = true;
-                $scope.fetchChargeCodes(index, 1);
-            }
-
-        };
-
-        $scope.fetchChargeCodes = function (index, pageNo) {
-            
-            var item = $scope.cgEntries[index];
-            var pageNo = pageNo || 1;
-
-            var delay = 100;
-            var refreshDelay = 500;
-            var success = function(data) {
-                var sourceIndex = index + 1;
-
-                item.pageNo = pageNo;
-
-                ccStore.set(item.charge_group_id, data.charge_codes);
-                fillChargeCodes(ccStore.get(item.charge_group_id), sourceIndex, data.total_count);
-                var paginationID = item.charge_group_id.toString();
-                
-                $timeout(function () {
-                    toggleChargeCodes($scope.cgEntries, sourceIndex, true)
-                        .then(function () {
-                            item.isChargeGroupActive = true;
-                            $scope.$emit('hideLoader');
-
-                            $timeout(function () {
-                                $scope.$broadcast('updatePagination', paginationID );
-                                $scope.refreshScroll(true);
-
-                            }, refreshDelay);
-                        });
-                }, delay);
-            };
-
-            var failed = function () {
-                $scope.$emit('hideLoader');
-            };
-
-            var params = {
-                date: $filter('date')($scope.chosenReport.singleValueDate, 'yyyy-MM-dd'),
-                report_id: $scope.chosenReport.id,
-                charge_group_id: item.charge_group_id,
-                page_no: pageNo,
-                per_page: 2
-            };
-
-            $scope.invokeApi(RVreportsSubSrv.getChargeCodes, params, success, failed);
-        };
-
-        $scope.isHidden = function (item) {
-            var hidden = false;
-
-            if ( item.isChargeCode && item.isEmpty ) {
-                hidden = true;
-            } else if ( item.isChargeCode && ! item.isChargeCodeActive ) {
-                hidden = true;
-            }
-
-            return hidden;
-        };
+        
     }
 ]);
