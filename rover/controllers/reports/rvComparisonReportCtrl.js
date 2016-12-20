@@ -155,7 +155,7 @@ angular.module('sntRover')
                 date: $filter('date')($scope.chosenReport.singleValueDate, 'yyyy-MM-dd'),
                 report_id: $scope.chosenReport.id,
                 charge_group_id: item.charge_group_id,
-                page_no: pageNo,
+                page: pageNo,
                 per_page: 50
             };
 
