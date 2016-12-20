@@ -251,8 +251,7 @@ angular.module('sntRover')
              * generated a modified copy of results with each entry having its -
              * rate_name, rate_type_id and rate_type_name augmented.
              * @param  {array} results      results from the api
-             * @param  {array} allRates     all rates info from list page
-             * @param  {array} allRateTypes all rate types info from list page
+             * @param  {object} didOnce     processed data
              * @return {object}             computed data { yAxis, modifiedResults }
              */
             function genYaxisDataAndResults (results, didOnce) {
@@ -509,13 +508,18 @@ angular.module('sntRover')
                 return source;
             }
 
+            /**
+             * preform these just once
+             * @param  {array} allRates     all rates
+             * @param  {array} allRateTypes all rate types
+             * @return {object}              processed data source
+             */
             function doOnce (allRates, allRateTypes) {
                 return {
                     allMappedRates: _.indexBy(allRates, 'id'),
                     allMappedRateTypes: _.indexBy(allRateTypes, 'rate_type_id')
                 };
             }
-            didOnce = doOnce($scope.chosenReport.hasRateFilter.data, $scope.chosenReport.hasRateTypeFilter.data);
 
             /**
              * initialize everything
@@ -529,8 +533,9 @@ angular.module('sntRover')
                     return;
                 }
 
-                genXAxis = generateXaxisData($scope.uiFilter, $scope.chosenReport, $rootScope.shortMonthAndDate);
+                didOnce = doOnce($scope.chosenReport.hasRateFilter.data, $scope.chosenReport.hasRateTypeFilter.data);
 
+                genXAxis = generateXaxisData($scope.uiFilter, $scope.chosenReport, $rootScope.shortMonthAndDate);
                 $scope.headerTop = genXAxis.headerTop;
                 $scope.headerBot = genXAxis.headerBot;
                 $scope.colSpan = genXAxis.colSpan;
