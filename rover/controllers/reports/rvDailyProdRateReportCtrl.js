@@ -372,7 +372,7 @@ angular.module('sntRover')
                 });
 
                 adr = totals.room_revenue / totals.occupied_rooms_count;
-                totals.adr = isNaN( adr ) ? 0 : adr;
+                totals.adr = _.isFinite( adr ) ? adr : 0;
 
                 return totals;
             }
@@ -508,7 +508,7 @@ angular.module('sntRover')
 
                 return source;
             }
-            
+
             function doOnce (allRates, allRateTypes) {
                 return {
                     allMappedRates: _.indexBy(allRates, 'id'),
