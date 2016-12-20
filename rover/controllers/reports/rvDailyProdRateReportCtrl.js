@@ -271,33 +271,28 @@ angular.module('sntRover')
                             post.rate_name = UNDEFINED.name;
                             matchedRateType = UNDEFINED;
                         } else {
-                            rateTypeId = matchedRateType.rate_type_id;
-
                             post.rate_name = matchedRate.rate_name || matchedRate.name;
                             matchedRateType = didOnce.allMappedRateTypes[rateTypeId];
+
+                            rateTypeId = matchedRateType.rate_type_id;
                         }
 
                         post.rate_type_id = matchedRateType.rate_type_id;
                         post.rate_type_name = matchedRateType.name;
 
-                        if ( rateTypesInResults.hasOwnProperty(rateTypeId) ) {
-                            rateTypesInResults[rateTypeId]
-                                .rates_data[rateId] = {
-                                    id: rateId,
-                                    name: post.rate_name
-                                };
-                        } else {
+                        if ( ! rateTypesInResults.hasOwnProperty(rateTypeId) ) {
                             rateTypesInResults[rateTypeId] = {
                                 id: rateTypeId,
                                 name: post.rate_type_name,
                                 rates_data: {}
                             };
-                            rateTypesInResults[rateTypeId]
-                                .rates_data[rateId] = {
-                                    id: rateId,
-                                    name: post.rate_name
-                                };
                         }
+
+                        rateTypesInResults[rateTypeId]
+                            .rates_data[rateId] = {
+                                id: rateId,
+                                name: post.rate_name
+                            };
                     });
 
                     resultCopy[date] = _.indexBy(dateObj, 'rate_id');
