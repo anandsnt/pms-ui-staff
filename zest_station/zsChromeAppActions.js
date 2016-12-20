@@ -1,4 +1,4 @@
-this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCodeRightNow) {
+this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
     var that = this;
 
     if (typeof chrome !== 'undefined' && typeof chrome.runtime !== 'undefined') {
@@ -33,18 +33,18 @@ this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCodeRightNow) {
                 listening: true,
                 attempt: this.qrAttempt + 1
             };
-
-            if (!response) {
+            console.log('response from Datalogic: ', response);
+            if (!response.qr_code) {
                 setTimeout(function() {
                     console.log('listening for QR code scan...');
-                    if (!that.cancelNextMsg) {
+                    // if (!that.cancelNextMsg) {
                         chrome.runtime.sendMessage(chromeAppId, msg, that.listenerForQRCodeResponse);
-                    } else {
-                        console.log('should stop sending messages to chrome app now :)');
-                    }
+                    // } else {
+                        // console.log('should stop sending messages to chrome app now :)');
+                    // }
 
                 }, 2000);
-            } else if (response.qr_code) {
+            } else {
                 that.cancelNextMsg = true;
                 console.log('GOT QR CODE BACK FROM CHROMEAPP !!! : ', response.reservation_id);
                 msg.listening = false;
@@ -62,14 +62,15 @@ this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCodeRightNow) {
         that.qrAttempt = 0;
         that.fetchQRCode = function() {
             var msg = 'initQRCodeScan';
-            console.log('SENDING message: ', msg, ' to: ', chromeAppId);
+
             chrome.runtime.sendMessage(chromeAppId, msg, that.listenerForQRCodeResponse);
+            console.log('SENDING message: ', msg);
         };
-        console.log('fetchQRCodeRightNow: ', fetchQRCodeRightNow);
-        if (fetchQRCodeRightNow) {
+
+        if (fetchQRCode) {
+            that.cancelNextMsg = false;
             that.fetchQRCode();
         } else {
-            console.log(':: setting up chromeapp listener ::');
             that.setupChromeAppListener();
         }
     }
