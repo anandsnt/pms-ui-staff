@@ -12,6 +12,7 @@ angular.module('sntRover')
         '$timeout',
         // eslint-disable-next-line max-params
         function($rootScope, $scope, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout) {
+            var didOnce;
             var UNDEFINED = {
                 id: 'UNDEFINED',
                 rate_type_id: 'UNDEFINED',
@@ -249,57 +250,57 @@ angular.module('sntRover')
              * generated a modified copy of results with each entry having its -
              * rate_name, rate_type_id and rate_type_name augmented.
              * @param  {array} results      results from the api
-             * @param  {array} allRates     all rates info from list page
-             * @param  {array} allRateTypes all rate types info from list page
+             * @param  {object} didOnce     processed data
              * @return {object}             computed data { yAxis, modifiedResults }
              */
-            function genYaxisDataAndResults (results, allRates, allRateTypes) {
+            function genYaxisDataAndResults (results, didOnce) {
                 var yAxis = [];
-                var resultCopy = angular.copy(results);
-
-                var allMappedRates = _.indexBy(allRates, 'id');
-                var allMappedRateTypes = _.indexBy(allRateTypes, 'rate_type_id');
+                var resultCopy = {};
 
                 var matchedRate;
                 var matchedRateType;
                 var rateTypesInResults = {};
+                var rateTypeId, rateId;
 
-                _.each(resultCopy, function (dates) {
-                    _.each(dates, function (post) {
-                        matchedRate = allMappedRates[post.rate_id];
+                _.each(results, function (dateObj, date) {
+                    _.each(dateObj, function (post) {
+                        rateId = post.rate_id;
+                        matchedRate = didOnce.allMappedRates[rateId];
 
                         if ( _.isUndefined(matchedRate) ) {
-                            matchedRateType = UNDEFINED;
                             post.rate_name = UNDEFINED.name;
+                            matchedRateType = UNDEFINED;
                         } else {
-                            matchedRateType = allMappedRateTypes[matchedRate.rate_type_id];
+                            rateTypeId = matchedRateType.rate_type_id;
+
                             post.rate_name = matchedRate.rate_name || matchedRate.name;
+                            matchedRateType = didOnce.allMappedRateTypes[rateTypeId];
                         }
 
                         post.rate_type_id = matchedRateType.rate_type_id;
                         post.rate_type_name = matchedRateType.name;
 
-                        if ( _.has(rateTypesInResults, post.rate_type_id) ) {
-
-                            if ( _.find(rateTypesInResults[post.rate_type_id].rates_data, { id: post.rate_id }) ) {
-                                // do nothing, already pushed
-                            } else {
-                                rateTypesInResults[post.rate_type_id].rates_data.push({
-                                    id: post.rate_id,
+                        if ( rateTypesInResults.hasOwnProperty(rateTypeId) ) {
+                            rateTypesInResults[rateTypeId]
+                                .rates_data[rateId] = {
+                                    id: rateId,
                                     name: post.rate_name
-                                });
-                            }
+                                };
                         } else {
-                            rateTypesInResults[post.rate_type_id] = {
-                                id: post.rate_type_id,
+                            rateTypesInResults[rateTypeId] = {
+                                id: rateTypeId,
                                 name: post.rate_type_name,
-                                rates_data: [{
-                                    id: post.rate_id,
-                                    name: post.rate_name
-                                }]
+                                rates_data: {}
                             };
+                            rateTypesInResults[rateTypeId]
+                                .rates_data[rateId] = {
+                                    id: rateId,
+                                    name: post.rate_name
+                                };
                         }
                     });
+
+                    resultCopy[date] = _.indexBy(dateObj, 'rate_id');
                 });
 
                 _.each(rateTypesInResults, function (rateType) {
@@ -508,6 +509,20 @@ angular.module('sntRover')
             }
 
             /**
+             * preform these just once
+             * @param  {array} allRates     all rates
+             * @param  {array} allRateTypes all rate types
+             * @return {object}              processed data source
+             */
+            function doOnce (allRates, allRateTypes) {
+                return {
+                    allMappedRates: _.indexBy(allRates, 'id'),
+                    allMappedRateTypes: _.indexBy(allRateTypes, 'rate_type_id')
+                };
+            }
+            didOnce = doOnce($scope.chosenReport.hasRateFilter.data, $scope.chosenReport.hasRateTypeFilter.data);
+
+            /**
              * initialize everything
              * @return {object} undefined
              */
@@ -520,14 +535,13 @@ angular.module('sntRover')
                 }
 
                 genXAxis = generateXaxisData($scope.uiFilter, $scope.chosenReport, $rootScope.shortMonthAndDate);
-
                 $scope.headerTop = genXAxis.headerTop;
                 $scope.headerBot = genXAxis.headerBot;
                 $scope.colSpan = genXAxis.colSpan;
                 $scope.colspanArray = genXAxis.colspanArray;
                 $scope.rightPaneWidth = genXAxis.rightPaneWidth;
 
-                genYAxis = genYaxisDataAndResults(results, $scope.chosenReport.hasRateFilter.data, $scope.chosenReport.hasRateTypeFilter.data);
+                genYAxis = genYaxisDataAndResults(results, didOnce);
                 $scope.yAxisLabels = genYAxis.yAxis;
                 modifiedResults = genYAxis.modifiedResults;
 
