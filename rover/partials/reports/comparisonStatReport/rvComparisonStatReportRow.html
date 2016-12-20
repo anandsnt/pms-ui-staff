@@ -67,7 +67,7 @@ is_ledger
   }"
   ng-hide="isHidden(item)"
 >
-  <td ng-show="item.isChargeCodePagination" colspan="8">
+  <td ng-if="item.isChargeCodePagination" colspan="8">
     <rv-pagination page-options="item.pageOptions" page-data="item.pageOptions.totalCount"></rv-pagination>
   </td>
 

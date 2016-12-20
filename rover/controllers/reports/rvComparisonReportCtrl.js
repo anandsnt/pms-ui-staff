@@ -82,7 +82,7 @@ angular.module('sntRover')
          */
         function prepareChargeGroupsCodes (results) {
             var chargeGroupsCodes = [];
-            var i, j, k, l = 51;
+            var i, j, k, l = 3;
 
             for (i = 0, j = results.length; i < j; i++) {
                 if ( results[i].is_charge_group ) {
@@ -105,13 +105,7 @@ angular.module('sntRover')
                         chargeGroupsCodes.push({
                             isChargeCode: true,
                             isChargeCodeActive: false,
-                            //isChargeCodePagination: true,
-                            isEmpty: true,
-                            /*pageOptions: {
-                                id: results[i].charge_group_id.toString(),
-                                api: [$scope.fetchChargeCodes, i],
-                                perPage: 2
-                            }*/
+                            isEmpty: true
                         });
                     }
 
@@ -123,7 +117,7 @@ angular.module('sntRover')
                         isEmpty: true,
                         pageOptions: {
                             id: results[i].charge_group_id.toString(),
-                            api: [$scope.fetchChargeCodes, i],
+                            api: [ $scope.fetchChargeCodes, i ],
                             perPage: 2
                         }
                     });
@@ -142,7 +136,6 @@ angular.module('sntRover')
          * @returns {object}             undefined
          */
         function fillChargeCodes (ccData, sourceIndex, totalCount) {
-            console.log("totalcount", totalCount);
             var process = function (data, dataIndex, sourceIndex) {
                 var dataNextIndex = dataIndex + 1;
                 var sourceNextIndex = sourceIndex + 1;
@@ -374,38 +367,26 @@ angular.module('sntRover')
             var sourceIndex = index + 1;
             var delay = 500;
 
-            if ( angular.isDefined(hasCC) ) {
-                if ( item.isChargeGroupActive ) {
-                    state = false;
-                } else {
-                    state = true;
-                }
-
-                toggleChargeCodes($scope.cgEntries, sourceIndex, state)
+            if ( item.isChargeGroupActive ) {
+                state = false;
+                toggleChargeCodes($scope.cgEntries, sourceIndex, false)
                     .then(function () {
-                        item.isChargeGroupActive = state;
+                        item.isChargeGroupActive = false;
                         $timeout(function () {
                             $scope.refreshScroll(true);
                         }, delay);
                     });
             } else {
-                $scope.fetchChargeCodes(index);
+                state = true;
+                $scope.fetchChargeCodes(index, 1);
             }
-            
-            item.pageOptions = {
-                id: item.charge_group_id.toString(),
-                api: [$scope.fetchChargeCodes, index],
-                perPage: 2
-            };
-            item.isChargeCodePagination = true;
 
-            console.log(item);
         };
 
-        $scope.fetchChargeCodes = function (index) {
-            console.log("fetchChargeCodes");
+        $scope.fetchChargeCodes = function (index, pageNo) {
+            
             var item = $scope.cgEntries[index];
-            var pageNo = item.pageNo === 0 ? item.pageNo + 1 : 1;
+            var pageNo = pageNo || 1;
 
             var delay = 100;
             var refreshDelay = 500;
@@ -416,7 +397,8 @@ angular.module('sntRover')
 
                 ccStore.set(item.charge_group_id, data.charge_codes);
                 fillChargeCodes(ccStore.get(item.charge_group_id), sourceIndex, data.total_count);
-
+                var paginationID = item.charge_group_id.toString();
+                
                 $timeout(function () {
                     toggleChargeCodes($scope.cgEntries, sourceIndex, true)
                         .then(function () {
@@ -424,7 +406,9 @@ angular.module('sntRover')
                             $scope.$emit('hideLoader');
 
                             $timeout(function () {
+                                $scope.$broadcast('updatePagination', paginationID );
                                 $scope.refreshScroll(true);
+
                             }, refreshDelay);
                         });
                 }, delay);

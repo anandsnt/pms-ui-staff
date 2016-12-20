@@ -2,7 +2,7 @@
  * Number pagination directive - controller.
  */
 sntRover.controller('rvPaginationCtrl', ['$scope', '$attrs', function($scope, $attrs) {
-    console.log("$scope.pageOptions",$scope.pageOptions);
+    
     // Initializing variables
     $scope.showCount    = 5;
     $scope.pageChange   = false;    // Variable for detecting external changes
@@ -91,7 +91,7 @@ sntRover.controller('rvPaginationCtrl', ['$scope', '$attrs', function($scope, $a
      *   @param  {string} [paginationId(optional)]
      */
     $scope.$on('updatePagination', function( event, paginationId ) {
-console.log("$scope.pageData =",$scope.pageData);
+
         if (!($scope.pageOptions.id) || ($scope.pageOptions.id === paginationId)) {
 
             // Only either no pagination Id or both in match
