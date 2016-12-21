@@ -196,18 +196,43 @@ sntRover.controller('reservationActionsController', [
 			}
 		}
 
-		/**
-		 * //CICO-14777 Yotel - Hourly Setup: Checkin with not ready room assigned should redirect to diary
-		 * @return {Boolean}
-		 */
-		var shouldRedirectToDiary = function() {
-			var reservationData = $scope.reservationData.reservation_card;
+	    var getTwentyFourHourTime = function(resDate, amPmString) {
+            var d = new Date(resDate + " " + amPmString);
 
-			if ((reservationData.room_status === 'NOTREADY' || reservationData.room_reservation_hk_status === 3 ) && reservationData.is_hourly_reservation) {
-				return true;
-			}
-			return false;
-		};
+            return d.getTime();
+        };
+
+        /**
+         * //CICO-14777 Yotel - Hourly Setup: Checkin with not ready room assigned should redirect to diary
+         * @return {Boolean}
+         */
+        var shouldRedirectToDiary = function() {
+            var reservationData = $scope.reservationData.reservation_card;
+
+            var res_start = getTwentyFourHourTime(reservationData.arrival_date, reservationData.arrival_time),
+                res_end = getTwentyFourHourTime(reservationData.departure_date, reservationData.departure_time),
+                isOOORoom = false;
+
+            //CICO-36544
+            if (reservationData.ooo_array) {
+                // loop through all the ooo date and times
+                reservationData.ooo_array.forEach(function(oooTimings) {
+                    var ooo_start = getTwentyFourHourTime(oooTimings.ooo_start_date, oooTimings.ooo_start_time),
+                        ooo_end = getTwentyFourHourTime(oooTimings.ooo_end_date, oooTimings.ooo_end_time);
+
+                    // if reservation time falls into/touches any of the ooo times and hk status is 3
+                    if (res_start <= ooo_end && res_end >= ooo_start && reservationData.room_reservation_hk_status === 3) {
+                        isOOORoom = true;
+                        return;
+                    }
+                });
+            }
+
+            if ((reservationData.room_status === 'NOTREADY' || isOOORoom ) && reservationData.is_hourly_reservation) {
+                return true;
+            }
+            return false;
+        };
 
 		var gotoDiaryInEditMode = function() {
 			RVReservationCardSrv.checkinDateForDiary = $scope.reservationData.reservation_card.arrival_date.replace(/-/g, '/');
@@ -414,7 +439,9 @@ sntRover.controller('reservationActionsController', [
 						$scope.reservationData.reservation_card.room_status = data.is_ready === "true" ? 'READY' : 'NOTREADY';
 						$scope.reservationData.reservation_card.fo_status = data.is_occupied === "true" ? 'OCCUPIED' : 'VACANT';
 						$scope.reservationData.reservation_card.room_reservation_hk_status = data.room_reservation_hk_status;
-						// CICO-14777 Yotel - Hourly Setup: Checkin with not ready room assigned should redirect to diary
+						$scope.reservationData.reservation_card.ooo_array = data.ooo_timings;
+
+                        // CICO-14777 Yotel - Hourly Setup: Checkin with not ready room assigned should redirect to diary
 
 
 						if (shouldRedirectToDiary()) {

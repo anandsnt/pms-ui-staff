@@ -16,7 +16,7 @@
             <button type="button" class="button blue" ng-click="cancelReservation()" translate>PENALTY_SKIP</a>
             <button type="button" class="button blank modal-close" ng-click="closeReservationCancelModal()" translate>CANCEL</button> 
         </div>
-        <div class="actions" ng-show="ngDialogData.penalty == 0">            
+        <div class="actions" ng-show="ngDialogData.penalty <= 0">            
             <button type="button" class="button blue" ng-click="cancelReservation()" translate>PROCEED</a>
             <button type="button" class="button blank modal-close" ng-click="closeReservationCancelModal()" translate>CANCEL</button> 
         </div>
