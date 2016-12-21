@@ -213,17 +213,20 @@ sntRover.controller('reservationActionsController', [
                 res_end = getTwentyFourHourTime(reservationData.departure_date, reservationData.departure_time),
                 isOOORoom = false;
 
-            // loop through all the ooo date and times
-            reservationData.ooo_array.forEach(function(oooTimings) {
-                var ooo_start = getTwentyFourHourTime(oooTimings.ooo_start_date, oooTimings.ooo_start_time),
-                    ooo_end = getTwentyFourHourTime(oooTimings.ooo_end_date, oooTimings.ooo_end_time);
+            //CICO-36544
+            if (reservationData.ooo_array) {
+                // loop through all the ooo date and times
+                reservationData.ooo_array.forEach(function(oooTimings) {
+                    var ooo_start = getTwentyFourHourTime(oooTimings.ooo_start_date, oooTimings.ooo_start_time),
+                        ooo_end = getTwentyFourHourTime(oooTimings.ooo_end_date, oooTimings.ooo_end_time);
 
-                // if reservation time falls into/touches any of the ooo times and hk status is 3
-                if (res_start <= ooo_end && res_end >= ooo_start && reservationData.room_reservation_hk_status === 3) {
-                    isOOORoom = true;
-                    return;
-                }
-            });
+                    // if reservation time falls into/touches any of the ooo times and hk status is 3
+                    if (res_start <= ooo_end && res_end >= ooo_start && reservationData.room_reservation_hk_status === 3) {
+                        isOOORoom = true;
+                        return;
+                    }
+                });
+            }
 
             if ((reservationData.room_status === 'NOTREADY' || isOOORoom ) && reservationData.is_hourly_reservation) {
                 return true;

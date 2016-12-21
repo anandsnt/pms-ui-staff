@@ -815,7 +815,8 @@ sntZestStation.controller('zsRootCtrl', [
 		 ********************************************************************************/
         var onChromeAppResponse = function(response) {
             console.log('msg from ChromeApp: ', response);
-            if (!!response && response.qr_code) {
+
+            if (response && response.qr_code) {
                 $scope.$broadcast('QR_SCAN_SUCCESS', {
                     'reservation_id': response.reservation_id
                 });
@@ -973,7 +974,10 @@ sntZestStation.controller('zsRootCtrl', [
                         // if the selected workstation status is out of order for first login, go to admin page
                         $state.go('zest_station.admin');
                     }
-                } else if (previousWorkStationStatus === 'out-of-order' && newWorkStationStatus === 'in-order' && $state.current.name !== 'zest_station.admin') {
+                } else if (previousWorkStationStatus === 'out-of-order' && newWorkStationStatus === 'in-order' && $state.current.name !== 'zest_station.admin' && $state.current.name === 'zest_station.outOfService') {
+                    // if the selected workstation status changed to in order, go to home page
+                    // had to add $state.current.name === 'zest_station.outOfService' , because this was forcing user to .home
+                    // //when they were still going through the check-in flow when the workstations refreshed
                     // if the selected workstation status changed to in order, go to home page
                     $state.go('zest_station.home');
                 } else if (newWorkStationStatus === 'out-of-order' && $state.current.name !== 'zest_station.admin') {
