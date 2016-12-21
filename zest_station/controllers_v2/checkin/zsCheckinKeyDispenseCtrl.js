@@ -61,7 +61,10 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 
         var changePageModeToFailure = function() {
             $scope.mode = 'DISPENSE_KEY_FAILURE_MODE';
-            $scope.zestStationData.workstationStatus = 'out-of-order';// go out of order when (printing or key encoding fails)
+            $scope.zestStationData.consecutiveKeyFailure++;
+            if($scope.zestStationData.consecutiveKeyFailure >= $scope.zestStationData.kiosk_out_of_order_treshold){
+               $scope.zestStationData.workstationStatus = 'out-of-order';// go out of order when (printing or key encoding fails)
+            }
             $scope.runDigestCycle();
         };
 		/*
@@ -70,7 +73,6 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 		 */
         var onGeneralFailureCase = function(response) {
             $scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_KEY_FAIL');
-            $scope.zestStationData.workstationStatus = 'out-of-order';// go out of order when (printing or key encoding fails)
             changePageModeToFailure();
             $scope.zestStationData.consecutiveKeyFailure++;
         };

@@ -59,7 +59,10 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 
         var onGeneralFailureCase = function() {
             $scope.mode = 'DISPENSE_KEY_FAILURE_MODE';
-            $scope.zestStationData.workstationStatus = 'out-of-order';// go out of order when (printing or key encoding fails)
+            $scope.zestStationData.consecutiveKeyFailure++;
+            if($scope.zestStationData.consecutiveKeyFailure >= $scope.zestStationData.kiosk_out_of_order_treshold){
+               $scope.zestStationData.workstationStatus = 'out-of-order';// go out of order when (printing or key encoding fails)
+            }
             $scope.runDigestCycle();
         };
 		/**
@@ -113,9 +116,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 		 */
         var setFailureReason = function(response) {
             $scope.zestStationData.workstationOooReason = $filter('translate')('PICKUP_KEY_FAIL');
-            $scope.zestStationData.workstationStatus = 'out-of-order';
             onGeneralFailureCase();
-            $scope.zestStationData.consecutiveKeyFailure++;
         };
 
 		/**

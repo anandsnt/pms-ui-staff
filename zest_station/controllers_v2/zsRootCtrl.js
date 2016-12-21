@@ -1185,6 +1185,9 @@ sntZestStation.controller('zsRootCtrl', [
 
 			// flag to check if default language was set or not
             $scope.zestStationData.IsDefaultLanguageSet = false;
+            $scope.zestStationData.kiosk_out_of_order_treshold =
+                _.isNaN(parseInt($scope.zestStationData.kiosk_out_of_order_treshold)) ? 1 : parseInt($scope.zestStationData.kiosk_out_of_order_treshold);
+            $scope.zestStationData.consecutiveKeyFailure = 0;
         }());
     }
 ]);
