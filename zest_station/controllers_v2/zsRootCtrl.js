@@ -493,21 +493,16 @@ sntZestStation.controller('zsRootCtrl', [
             } else if (theme === 'fontainebleau') {
                 $scope.useNavIcons = true;
 				// nothing else
-            } else if (theme === 'epik') {
-                $scope.useNavIcons = true;
-                $scope.theme = theme;
-                $scope.iconsPath = '/assets/zest_station/css/icons/epik'; // uses the same home icons as avenue
-                $scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true, true); // last arg, is to only show different icons on Home, other icons use default
-
             } else if (theme === 'conscious') {
                 $scope.useNavIcons = true;
                 $scope.theme = theme;
                 $scope.iconsPath = '/assets/zest_station/css/icons/conscious';
                 $scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true);
-            } else if (theme === 'avenue') {
+
+            } else if (theme === 'avenue' || theme === 'sohotel' || theme === 'epik') {
                 $scope.useNavIcons = true;
                 $scope.theme = theme;
-                $scope.iconsPath = '/assets/zest_station/css/icons/avenue';
+                $scope.iconsPath = '/assets/zest_station/css/icons/' + theme;
                 $scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true, true); // last arg, is to only show different icons on Home, other icons use default
 
             } else { // zoku and snt use default path
@@ -820,7 +815,8 @@ sntZestStation.controller('zsRootCtrl', [
 		 ********************************************************************************/
         var onChromeAppResponse = function(response) {
             console.log('msg from ChromeApp: ', response);
-            if (!!response && response.qr_code) {
+
+            if (response && response.qr_code) {
                 $scope.$broadcast('QR_SCAN_SUCCESS', {
                     'reservation_id': response.reservation_id
                 });
@@ -947,14 +943,9 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.zestStationData.set_workstation_id = '';
                 $scope.zestStationData.key_encoder_id = '';
                 $scope.zestStationData.workstationStatus = 'out-of-order';
-
-                if ($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad)) {
-                    $state.go('zest_station.admin');
-                } else {
-                    if ($state.current.name !== 'zest_station.admin') {
-                        $state.go('zest_station.outOfService');
-                    }
-                }
+                $scope.zestStationData.workstationOooReason = $filter('translate')('WORK_STATION_NOT_SELECTED');
+                // if no workstation is selected, go to admin directly
+                $state.go('zest_station.admin');
             } else {
                 $scope.workstation = {
                     'selected': station
@@ -965,39 +956,37 @@ sntZestStation.controller('zsRootCtrl', [
                 $rootScope.workstation_id = $scope.zestStationData.set_workstation_id;
                 $scope.zestStationData.key_encoder_id = $scope.getStationIdFromName(station.name).key_encoder_id;
                 var previousWorkStationStatus = angular.copy($scope.zestStationData.workstationStatus);
-
+                
                 $scope.zestStationData.workstationStatus = station.is_out_of_order ? 'out-of-order' : 'in-order';
                 var newWorkStationStatus = angular.copy($scope.zestStationData.workstationStatus);
-				// if app is invoked from ipad, chrome app etc
-				// don't go to OOS even if workstation status is oos
 
-                if (!($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad)) && $scope.zestStationData.workstationStatus === 'out-of-order') {
-                    if ($state.current.name !== 'zest_station.admin') {
-                        $state.go('zest_station.outOfService');
-                    }
-                } else {
-					// when status is changed from admin
-                    if (previousWorkStationStatus === 'out-of-order' && newWorkStationStatus === 'in-order' && $state.current.name === 'zest_station.admin') {
-                        $state.go('zest_station.home');
-                    } else {
-						// if application is launched either in chrome app or ipad go to login page
-                        if ($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad) && !recently_refreshed) {
-                            $state.go('zest_station.admin');
-                        } else {
-							// we want to treat other clients are normal, ie need to provide 
-							// user credentials before accesing admin
-                            $scope.zestStationData.isAdminFirstLogin = false;
-                            if (previousWorkStationStatus === 'out-of-order' && newWorkStationStatus === 'in-order') {
-                                $state.go('zest_station.home');
-                            }
-                        }
-                    }
-                }
-				// set oos reason from local storage
                 try {
                     $scope.zestStationData.workstationOooReason = storage.getItem(oosReasonKey);
                 } catch (err) {
                     console.warn(err);
+                }
+
+                if ($scope.zestStationData.isAdminFirstLogin) {
+                    if (newWorkStationStatus === 'in-order') {
+                        $scope.zestStationData.isAdminFirstLogin = false;
+                        $state.go('zest_station.home');
+                    } else {
+                        // if the selected workstation status is out of order for first login, go to admin page
+                        $state.go('zest_station.admin');
+                    }
+                } else if (previousWorkStationStatus === 'out-of-order' && newWorkStationStatus === 'in-order' && $state.current.name !== 'zest_station.admin' && $state.current.name === 'zest_station.outOfService') {
+                    // if the selected workstation status changed to in order, go to home page
+                    // had to add $state.current.name === 'zest_station.outOfService' , because this was forcing user to .home
+                    // //when they were still going through the check-in flow when the workstations refreshed
+                    // if the selected workstation status changed to in order, go to home page
+                    $state.go('zest_station.home');
+                } else if (newWorkStationStatus === 'out-of-order' && $state.current.name !== 'zest_station.admin') {
+                    // if the selected workstation status is out of order and user is not in admin page
+                    $state.go('zest_station.outOfService');
+                } else if ($state.current.name === 'zest_station.outOfService' && newWorkStationStatus === 'in-order') {
+                    $state.go('zest_station.home');
+                } else {
+                    return;
                 }
             }
         };

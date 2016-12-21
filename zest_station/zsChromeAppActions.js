@@ -33,15 +33,15 @@ this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
                 listening: true,
                 attempt: this.qrAttempt + 1
             };
-
+            console.log('response from Datalogic: ', response);
             if (!response.qr_code) {
                 setTimeout(function() {
                     console.log('listening for QR code scan...');
-                    if (!that.cancelNextMsg) {
+                    // if (!that.cancelNextMsg) {
                         chrome.runtime.sendMessage(chromeAppId, msg, that.listenerForQRCodeResponse);
-                    } else {
-                        console.log('should stop sending messages to chrome app now :)');
-                    }
+                    // } else {
+                        // console.log('should stop sending messages to chrome app now :)');
+                    // }
 
                 }, 2000);
             } else {
@@ -68,6 +68,7 @@ this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
         };
 
         if (fetchQRCode) {
+            that.cancelNextMsg = false;
             that.fetchQRCode();
         } else {
             that.setupChromeAppListener();

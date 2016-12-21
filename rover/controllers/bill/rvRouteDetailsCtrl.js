@@ -666,9 +666,11 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
      * function to know if the charge code is selected, to adjust in UI
      */
     $scope.isChargeCodeSelected = function(chargeCode) {
-        for (var i = 0; i < $scope.selectedEntity.attached_charge_codes.length; i++) {
-            if ($scope.selectedEntity.attached_charge_codes[i].id === chargeCode.id) {
-                return true;
+        if (!!$scope.selectedEntity.attached_charge_codes) {
+            for (var i = 0; i < $scope.selectedEntity.attached_charge_codes.length; i++) {
+                if ($scope.selectedEntity.attached_charge_codes[i].id === chargeCode.id) {
+                    return true;
+                }
             }
         }
         return false;

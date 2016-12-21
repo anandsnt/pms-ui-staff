@@ -36,6 +36,9 @@ sntZestStation.run(['$rootScope', '$state', '$stateParams', function($rootScope,
     $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
         $rootScope.previousState = from.name;
         $rootScope.previousStateParam = fromParams.menu;
+        // on state changes hide the keyboard always in case of iPad
+        document.activeElement.blur();
+        $("input").blur();
     });
 }]);
 

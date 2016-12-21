@@ -88,6 +88,9 @@ angular.module('reportsModule')
                             'fromDate': getDates.businessDate,
                             'untilDate': getDates.businessDate
                         },
+                        'A/R_AGING': {
+                            'untilDate': getDates.yesterday
+                        },
             			/**/
             			'DEFAULT': {
             				'fromDate': getDates.aWeekAgo,
@@ -109,7 +112,7 @@ angular.module('reportsModule')
 
             		var reportName = _.findKey(reportNames, function(value, key) { return value === report['title']; });
 
-            		var dates = datesConfig[reportName] || datesConfig['DEFAULT']; 
+            		var dates = datesConfig[reportName] || datesConfig['DEFAULT'];
 
             		_.each(dates, function(value, key) {
             		    report[key] = value;

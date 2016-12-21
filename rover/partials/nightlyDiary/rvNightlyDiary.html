@@ -16,13 +16,10 @@
 
             <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryTimeline.html'" include-replace></div>
 
-            <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryStayRange.html'"></div>
-
-            <!-- Stay Range | Remove .hidden to show-->
-            <!-- <div class="grid-stay-range hidden">
-                {_content/stay-range.html}
-            </div> -->
         </div>
+
+        <!-- Stay Range | Remove .hidden to show-->
+        <div class="grid-stay-range" ng-if="diaryData.isEditReservationMode" ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryStayRange.html'"></div>
 
         <!-- Room Search Results -->
         <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRoomNumberSearchResult.html'" include-replace>
