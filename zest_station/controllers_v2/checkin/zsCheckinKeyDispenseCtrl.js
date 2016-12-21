@@ -63,7 +63,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
             $scope.mode = 'DISPENSE_KEY_FAILURE_MODE';
             $scope.zestStationData.consecutiveKeyFailure++;
             if($scope.zestStationData.consecutiveKeyFailure >= $scope.zestStationData.kioskOutOfOrderTreshold){
-               $scope.zestStationData.workstationOooReason = $filter('translate')('KEY_FAILURE');
+               $scope.zestStationData.workstationOooReason = $filter('translate')('KEY_CREATION_FAILED');
                $scope.zestStationData.workstationStatus = 'out-of-order';// go out of order when (printing or key encoding fails)
             }
             $scope.runDigestCycle();
