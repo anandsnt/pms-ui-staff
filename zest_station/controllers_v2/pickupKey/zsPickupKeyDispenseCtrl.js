@@ -115,6 +115,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
             $scope.zestStationData.workstationOooReason = $filter('translate')('PICKUP_KEY_FAIL');
             $scope.zestStationData.workstationStatus = 'out-of-order';
             onGeneralFailureCase();
+            $scope.zestStationData.consecutiveKeyFailure++;
         };
 
 		/**
@@ -124,6 +125,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
         var revertFailureReason = function(response) {
             $scope.zestStationData.workstationOooReason = '';
             $scope.zestStationData.workstationStatus = 'in-order';
+            $scope.zestStationData.consecutiveKeyFailure = 0;
         };
 
 		/**

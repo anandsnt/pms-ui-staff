@@ -186,6 +186,8 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.selectedLanguage = language;
         };
 
+        $scope.zestStationData.consecutiveKeyFailure = 0;
+
 		/**
 		 * [initializeMe description]
 		 */
@@ -232,7 +234,7 @@ sntZestStation.controller('zsHomeCtrl', [
             }
 
             $scope.resetHomeScreenTimer();
-            if ($scope.zestStationData.workstationStatus === 'out-of-order') {
+            if ($scope.zestStationData.workstationStatus === 'out-of-order' && $scope.zestStationData.consecutiveKeyFailure > $scope.zestStationData.kiosk_out_of_order_treshold) {
                 var params = {};
 
                 params.reason = $scope.zestStationData.workstationOooReason;
