@@ -835,7 +835,9 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.focusInputField = function(elementId) {
             $timeout(function() {
                 if (!$scope.isIpad) {
-                    document.getElementById(elementId).click();
+                    if (document.getElementById(elementId)) {// fixes an error that occurs from user clicking too early while screen initializing
+                        document.getElementById(elementId).click();    
+                    }
                 } else {
                     $scope.callBlurEventForIpad();
                 }
