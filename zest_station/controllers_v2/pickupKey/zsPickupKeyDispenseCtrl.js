@@ -6,8 +6,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
     '$controller',
     'zsGeneralSrv',
     '$timeout',
-    '$filter',
-    function($scope, $stateParams, $state, zsEventConstants, $controller, zsGeneralSrv, $timeout, $filter) {
+    function($scope, $stateParams, $state, zsEventConstants, $controller, zsGeneralSrv, $timeout) {
 
         /** ********************************************************************************************
          **     Expected state params -----> reservation_id, room_no and first_name'              

@@ -441,11 +441,11 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			$scope.dispenseKey();
 		});
 
-		$scope.$on('DISPENSE_FAILED', function(event, data) {
+		$scope.$on('DISPENSE_FAILED', function(event) {
 			$scope.onGeneralFailureCase();
 		});
 		$scope.$on('SOCKET_FAILED', function() {
-			if($scope.noOfKeysSelected !== $scope.noOfKeysCreated){
+			if ($scope.noOfKeysSelected !== $scope.noOfKeysCreated) {
 				$scope.zestStationData.workstationOooReason = $filter('translate')('SOCKET_FAILED');
 				$scope.onGeneralFailureCase();
 			}
