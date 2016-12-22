@@ -207,6 +207,10 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			}
 		};
 
+		$scope.updateLogForKeyActions = function(keyNo,keyStatus){
+			console.log("reservation_id :"+$stateParams.reservation_id+" key :"+keyNo+" -----status :"+keyStatus);
+		};
+
 
 	}
 ]);

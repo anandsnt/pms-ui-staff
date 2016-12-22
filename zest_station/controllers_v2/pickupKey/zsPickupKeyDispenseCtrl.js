@@ -56,6 +56,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
         $scope.doneButtonStyle = {
             'margin-top': marginTop
         };
+        var noOfKeysCreated = 0;
 
         var onGeneralFailureCase = function() {
             $scope.mode = 'DISPENSE_KEY_FAILURE_MODE';
@@ -64,6 +65,9 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
                 $scope.zestStationData.workstationOooReason = $filter('translate')('KEY_CREATION_FAILED');
                 $scope.zestStationData.workstationStatus = 'out-of-order'; // go out of order when (printing or key encoding fails)
             }
+            var keyNo = (noOfKeysCreated === 0) ? 1 :2 ;
+
+            $scope.updateLogForKeyActions(keyNo,"failed");
             $scope.runDigestCycle();
         };
 		/**
@@ -86,8 +90,6 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
                 }
             }
         };
-
-        var noOfKeysCreated = 0;
         
         $scope.reEncodeKey = function() {
 
@@ -151,6 +153,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 				// provide some timeout for user to grab keys
                 $timeout(dispenseKey, 6000);
             }
+            $scope.updateLogForKeyActions(noOfKeysCreated,"success");
         };
         var saveUIDToReservation = function(uid) {
             $scope.callAPI(zsGeneralSrv.saveUIDtoRes, {
@@ -335,6 +338,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 				// provide some timeout for user to grab keys
                 $timeout(initMakeKey, 3000);
             }
+            $scope.updateLogForKeyActions(noOfKeysCreated,"success");
             $scope.runDigestCycle();
         }
 
