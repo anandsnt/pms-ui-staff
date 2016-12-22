@@ -66,30 +66,48 @@
                 </div>
                 <ad-toggle-button is-checked="zestSettings.is_kiosk_ows_messages_active" label="{{'OWS_GUEST_MESSAGES'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
+
+
             <fieldset class="holder left">
                 <div class="form-title full-width">
                     <h3><span translate>BYPASS_CC_FOR_PREPAID_RESERVATIOIN </span> </h3>
                 </div>
                 <ad-toggle-button is-checked="zestSettings.bypass_cc_for_prepaid_reservation" label="{{'BYPASS_CC_FOR_PREPAID_RESERVATIOIN'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
+
+
             <fieldset class="holder right">
                 <div class="form-title full-width">
                     <h3><span translate>DISPLAY_TERMS_AND_CONDITIONS </span> </h3>
                 </div>
                 <ad-toggle-button is-checked="zestSettings.kiosk_display_terms_and_condition" label="{{'DISPLAY_TERMS_AND_CONDITIONS'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
+
+
             <fieldset class="holder left">
-                <div class="form-title half-width-title">
+                <div class="form-title full-width">
                     <h3><span translate>ADDRESS_COUNTRY_LIST </span> </h3>
                 </div>
                 <ad-toggle-button is-checked="zestSettings.kiosk_enforce_country_sort" label="{{'ENFORCE_COUNTRY_SORT'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
+
+
             <fieldset class="holder right">
-                <div class="form-title half-width-title">
+                <div class="form-title full-width">
                     <h3><span translate>VALIDATE_FIRST_NAME </span> </h3>
                 </div>
                 <ad-toggle-button is-checked="zestSettings.kiosk_validate_first_name" label="{{'VALIDATE_FIRST_NAME'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
+
+
+            <fieldset class="holder left">
+                <div class="form-title full-width">
+                    <h3><span translate>USE_ADD_REMOVE_GUESTS </span> </h3>
+                </div>
+                <ad-toggle-button is-checked="zestSettings.add_remove_guests" label="{{'USE_ADD_REMOVE_GUESTS'| translate}}" div-class="full-width"></ad-toggle-button>
+            </fieldset>
+
+
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
                     CANCEL
