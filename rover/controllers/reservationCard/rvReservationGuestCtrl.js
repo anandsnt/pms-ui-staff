@@ -249,7 +249,8 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 					// CICO-13491
 					// If the occupancy Rate is configured and a rate change occured
 					// We have to show the popup for 'Keep Current Rate' & 'Change to new Rate'
-					if (isRateChangeOcuured()) {
+                    // As per CICO-34496 - hide this pop up in hourly mode. Custom rate should never get updated as a result.
+					if (isRateChangeOcuured() && !$scope.reservationData.reservation_card.is_hourly_reservation) {
 						calculateRateForCurrentGuest();
 						confirmForRateChange();
 					} else {
