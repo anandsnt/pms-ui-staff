@@ -1,140 +1,155 @@
-// React.initializeTouchEvents(true);
+var DPthCell = function(props) {
+    return React.DOM.th({
+        className: props.className,
+        colSpan: props.colspan,
+        style: {'whiteSpace': 'nowrap'}
+    }, props.data);
+};
 
-var DPthCell = React.createClass({
-	render: function() {
-		return React.DOM.th({
-			'className': this.props.className,
-			'colSpan': this.props.colspan,
-			'style': {'whiteSpace': 'nowrap'}
-		}, this.props.data);
-	}
-});
+DPthCell.propTypes = {
+    className: React.PropTypes.string.isRequired,
+    colspan: React.PropTypes.any.isRequired,
+    data: React.PropTypes.any
+};
+DPthCell.defaultProps = {
+    className: '',
+    colspan: 1,
+    data: 'NA'
+};
 
-var DPHeadPanel = React.createClass({
-	render: function() {
-		var i, j;
+var DPHeadPanel = function (props) {
+    var topRow,
+        botRow;
 
-		var topRow,
-			botRow;
+    var topRowCells = props.headerTop.map(function (item, i) {
+        return React.createElement( DPthCell, {
+            colspan: props.colspanArray ? props.colspanArray[i] : props.colspan,
+            data: item.name
+        });
+    });
 
-		var topRowCells = [],
-			botRowCells = [];
+    var botRowCells = props.headerBot.map(function (item) {
+        return React.createElement( DPthCell, {
+            className: item.cls,
+            data: item.name
+        });
+    });
 
-		for (i = 0, j = this.props.headerTop.length; i < j; i++) {
-			topRowCells.push(
-				React.createElement( DPthCell, {
-					'colspan': this.props.colspanArray && this.props.colspanArray[i] || this.props.colspan,
-					'data': this.props.headerTop[i]
-				})
-			);
-		}
+    topRow = React.DOM.tr({}, topRowCells);
+    botRow = React.DOM.tr(
+        {
+            'className': 'bottom-row'
+        },
+        botRowCells
+    );
 
-		topRow = React.DOM.tr({}, topRowCells);
+    return React.DOM.thead({}, topRow, botRow);
+};
 
-		for (i = 0, j = this.props.headerBot.length; i < j; i++) {
-			botRowCells.push(
-					React.createElement( DPthCell, {
-					'className': this.props.headerBot[i]['cls'],
-					'data': this.props.headerBot[i]['name']
-				})
-			);
-		}
+var DPtdCell = function(props) {
+    var tag;
 
-		botRow = React.DOM.tr({
-				'className': 'bottom-row'
-			}, botRowCells
-		);
+    if ( props.isLastRow || props.isBold ) {
+        tag = 'strong';
+    } else if ( props.isAvail ) {
+        tag = 'em';
+    } else if ( props.isRev ) {
+        tag = 'span';
+    }
 
-		return React.DOM.thead({}, topRow, botRow);
-	}
-});
+    return React.DOM.td(
+        {
+            className: props.className
+        },
+        React.DOM[tag]({}, props.data)
+    );
+};
+DPtdCell.propTypes = {
+    isLastRow: React.PropTypes.bool,
+    isBold: React.PropTypes.bool,
+    isAvail: React.PropTypes.bool,
+    isRev: React.PropTypes.bool,
+    data: React.PropTypes.any,
+    className: React.PropTypes.string
+};
+DPtdCell.defaultProps = {
+    isRev: true,
+    data: '0',
+    className: ''
+};
 
-var DPtdCell = React.createClass({
-	render: function() {
-		var tag;
+var DPBodyRow = function (props) {
+    var cells = props.rowData.map(function (item) {
+        return React.createElement(
+            DPtdCell,
+            {
+                isLastRow: props.isLastRow,
+                isAvail: item.isAvail,
+                isRev: item.isRev,
+                className: item.cls,
+                data: item.value,
+                isBold: item.isRateType
+            }
+        );
+    });
 
-		if ( this.props.isLastRow || this.props.isBold ) {
-			tag = 'strong';
-		} else if ( this.props.isAvail ) {
-			tag = 'em';
-		} else if ( this.props.isRev ) {
-			tag = 'span';
-		}
+    return React.DOM.tr({}, cells);
+};
 
-		return React.DOM.td({
-				'className': this.props.className
-			},
-			React.DOM[tag]({}, this.props.data)
-		);
-	}
-});
+var DPBodyPanel = function (props) {
+    var lastIndex = props.reportData.length - 1;
 
-var DPBodyRow = React.createClass({
-	render: function() {
-		var cells = [];
+    var rows = props.reportData.map(function (item, i) {
+        return React.createElement(
+            DPBodyRow,
+            {
+                rowData: item,
+                isLastRow: props.isLastRowSum && lastIndex === i
+            }
+        );
+    });
 
-		var i, j;
-
-		for (i = 0, j = this.props.rowData.length; i < j; i++) {
-			cells.push(
-				React.createElement( DPtdCell, {
-					'isLastRow': this.props.isLastRow,
-					'isAvail': this.props.rowData[i]['isAvail'],
-					'isRev': this.props.rowData[i]['isRev'],
-					'className': this.props.rowData[i]['cls'],
-					'data': this.props.rowData[i]['value'],
-					'isBold': this.props.rowData[i]['isRateType']
-				})
-			);
-		}
-
-		return React.DOM.tr({}, cells);
-	}
-});
-
-var DPBodyPanel = React.createClass({
-	render: function() {
-		var rows = [];
-
-		var i, j;
-
-		for (i = 0, j = this.props.reportData.length; i < j; i++) {
-			rows.push(
-				React.createElement( DPBodyRow, {
-					'rowData': this.props.reportData[i],
-					'isLastRow': this.props.isLastRowSum && 1 == j - i
-				})
-			);
-		}
-
-		return React.DOM.tbody({}, rows);
-	}
-});
+    return React.DOM.tbody({}, rows);
+};
 
 var DPContent = React.createClass({
-	render: function() {
-		return React.DOM.table({
-				'className': 'statistics-reports',
-				 'style': { 'tableLayout': 'auto'}
-			},
-			React.createElement( DPHeadPanel, {
-				'colspan': this.props.colspan,
-				'headerTop': this.props.headerTop,
-				'headerBot': this.props.headerBot,
-				'colspanArray': this.props.colspanArray
-			}),
-			React.createElement( DPBodyPanel, {
-				'reportData': this.props.reportData,
-				'isLastRowSum': this.props.isLastRowSum
-			})
-		);
-	},
+    componentDidMount: function() {
+        if ( typeof this.props.reactRenderDone === typeof function() {} ) {
+            this.props.reactRenderDone();
+        }
 
-	componentDidMount: function() {
-		document.getElementById('daily-production-render').style.width = this.props.rightPaneWidth;
-	},
+        document.getElementById('daily-production-render').style.width = this.props.rightPaneWidth;
+    },
 
-	componentDidUpdate: function() {
-		document.getElementById('daily-production-render').style.width = this.props.rightPaneWidth;
-	}
+    componentDidUpdate: function() {
+        if ( typeof this.props.reactRenderDone === typeof function() {} ) {
+            this.props.reactRenderDone();
+        }
+        
+        document.getElementById('daily-production-render').style.width = this.props.rightPaneWidth;
+    },
+
+    render: function() {
+        return React.DOM.table(
+            {
+                className: 'statistics-reports'
+            },
+            React.createElement(
+                DPHeadPanel,
+                {
+                    colspan: this.props.colspan,
+                    headerTop: this.props.headerTop,
+                    headerBot: this.props.headerBot,
+                    colspanArray: this.props.colspanArray
+                }
+            ),
+            React.createElement(
+                DPBodyPanel,
+                {
+                    reportData: this.props.reportData,
+                    isLastRowSum: this.props.isLastRowSum
+                }
+            )
+        );
+    }
 });
