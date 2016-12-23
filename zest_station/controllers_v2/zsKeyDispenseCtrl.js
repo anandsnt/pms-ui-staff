@@ -264,6 +264,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 				$timeout($scope.initMakeKey(), 6000);
 			}
 			updateLogForKeyActions($scope.noOfKeysCreated, "success");
+			$scope.runDigestCycle();
 		};
 
 		var startMakingKey = function(keyNo) {
@@ -467,7 +468,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		});
 
 		$scope.$on('continueFromCordovaKeyWrite', function() {
-			$scope.remoteEncodingSuccsess();
+			remoteEncodingSuccsess();
 		});
 
 		/* ********************************************* iPad Operations Starts here ***************************************/
