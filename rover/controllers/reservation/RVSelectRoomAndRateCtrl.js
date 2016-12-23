@@ -919,20 +919,23 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				navigateOut();
 			},
 			populateStayDates = function(stayDetails, rateId, roomIndex) {
+                var businessDate = tzIndependentDate($rootScope.businessDate);
 				_.each(ROOMS[roomIndex].stayDates, function(details, date) {
-					details.rate.id = rateId;
-					var dayInfo = stayDetails[date],
-						calculatedAmount = dayInfo && dayInfo.amount || stayDetails[ARRIVAL_DATE].amount;
+                    if(tzIndependentDate(date) >= businessDate) {
+    					details.rate.id = rateId;
+    					var dayInfo = stayDetails[date],
+    						calculatedAmount = dayInfo && dayInfo.amount || stayDetails[ARRIVAL_DATE].amount;
 
-					calculatedAmount = Number(parseFloat(calculatedAmount).toFixed(2));
-					details.rateDetails = {
-						actual_amount: calculatedAmount,
-						modified_amount: calculatedAmount,
-						is_discount_allowed: $scope.reservationData.ratesMeta[rateId].is_discount_allowed_on === null ? 'false' : $scope
-							.reservationData.ratesMeta[rateId].is_discount_allowed_on.toString(), // API returns true / false as a string ... Hence true in a string to maintain consistency
-						is_suppressed: $scope.reservationData.ratesMeta[rateId].is_suppress_rate_on === null ? 'false' : $scope.reservationData
-							.ratesMeta[rateId].is_suppress_rate_on.toString()
-					};
+    					calculatedAmount = Number(parseFloat(calculatedAmount).toFixed(2));
+    					details.rateDetails = {
+    						actual_amount: calculatedAmount,
+    						modified_amount: calculatedAmount,
+    						is_discount_allowed: $scope.reservationData.ratesMeta[rateId].is_discount_allowed_on === null ? 'false' : $scope
+    							.reservationData.ratesMeta[rateId].is_discount_allowed_on.toString(), // API returns true / false as a string ... Hence true in a string to maintain consistency
+    						is_suppressed: $scope.reservationData.ratesMeta[rateId].is_suppress_rate_on === null ? 'false' : $scope.reservationData
+    							.ratesMeta[rateId].is_suppress_rate_on.toString()
+    					};
+                    }
 				});
 			},
 			saveAndGotoStayCard = function() {
@@ -1334,6 +1337,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						.id];
 
 					if (isGroupReservation) {
+
 						if (lastFetchedGroup.id === $scope.reservationData.group.id && $scope.viewState.identifier === "CREATION") {
 							// In case of a group reservation; copy the group's demographics to the reservation
 							var groupDemographics = lastFetchedGroup.demographics;
