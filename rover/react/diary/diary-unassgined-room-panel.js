@@ -148,8 +148,32 @@ var UnassignedRoomPanel = React.createClass({
         }, 0);
     },
 
+
+    /**
+     * Find if browser supports touch events or not. handles most cases
+     * @return {Boolean} supports touch or not
+     */
+    _hasTouchSupport: function () {
+        var hasSupport = false;
+
+        try {
+            if (navigator.maxTouchPoints !== 'undefined') {
+                // for modern browsers
+                // even if touchpoints test is supported event support is also needed
+                hasSupport = navigator.maxTouchPoints > 0 && 'ontouchstart' in window;
+            } else {
+                // for browsers with no support of navigator.maxTouchPoints
+                hasSupport = 'ontouchstart' in window;
+            }
+        } catch (e) {
+            hasSupport = 'ontouchstart' in window;
+        }
+
+        return hasSupport;
+    },
+
     componentWillMount: function() {
-        this.isTouchEnabled = 'ontouchstart' in window;
+        this.isTouchEnabled = this._hasTouchSupport();
         this.clickEvent = this.isTouchEnabled ? 'onTouchEnd' : 'onClick';
     },
 
