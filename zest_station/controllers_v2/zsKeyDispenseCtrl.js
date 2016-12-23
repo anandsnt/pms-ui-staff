@@ -211,7 +211,9 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			}
 		};
 
-		$scope.updateLogForKeyActions = function(keyNo, keyStatus) {
+		/* ******************************************************************************************************* */
+
+		var updateLogForKeyActions = function(keyNo, keyStatus) {
 			console.log("reservation_id :" + $stateParams.reservation_id + " key :" + keyNo + " -----status :" + keyStatus);
 		};
 
@@ -261,7 +263,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 				// provide some timeout for user to grab keys
 				$timeout($scope.initMakeKey(), 6000);
 			}
-			$scope.updateLogForKeyActions($scope.noOfKeysCreated, "success");
+			updateLogForKeyActions($scope.noOfKeysCreated, "success");
 		};
 
 		var startMakingKey = function(keyNo) {
@@ -361,7 +363,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			}
 			var keyNo = ($scope.noOfKeysCreated === 0) ? 1 : 2;
 
-			$scope.updateLogForKeyActions(keyNo, "failed");
+			updateLogForKeyActions(keyNo, "failed");
 			$scope.runDigestCycle();
 		};
 		/**
@@ -416,7 +418,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 				$timeout($scope.dispenseKey, 6000);
 			}
 			revertFailureReason();
-			$scope.updateLogForKeyActions($scope.noOfKeysCreated, "success");
+			updateLogForKeyActions($scope.noOfKeysCreated, "success");
 		};
 
 		var saveUIDToReservation = function(uid) {

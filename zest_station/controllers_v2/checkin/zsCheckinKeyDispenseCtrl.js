@@ -4,9 +4,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
     '$state',
     'zsEventConstants',
     '$controller',
-    'zsGeneralSrv',
-    '$timeout',
-    function($scope, $stateParams, $state, zsEventConstants, $controller, zsGeneralSrv, $timeout) {
+    function($scope, $stateParams, $state, zsEventConstants, $controller) {
 
         /** ********************************************************************************************
          **     Please note that, not all the stateparams passed to this state will not be used in this state, 
