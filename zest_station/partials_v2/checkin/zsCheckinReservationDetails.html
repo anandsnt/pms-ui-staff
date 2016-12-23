@@ -18,7 +18,7 @@
                             {{selectedReservation.stay_dates[0].room_type}}
                         </p>
                         <p ng-hide="{{selectedReservation.guest_details.length == 1}}">{{'ADDTL_RESIDENTS' |translate}} ({{selectedReservation.guest_details.length-1}})</p>
-                        <button type="button" class="button" touch-press="addRemove()" >{{'ADD_REMOVE_GUESTS' |translate}} </button>
+                        <button ng-hide='{{!zestStationData.add_remove_guests}}' type="button" class="button" touch-press="addRemove()" >{{'ADD_REMOVE_GUESTS' |translate}} </button>
                     </div>
                     <ul id="rate" class="reservation-details">
                         <li >

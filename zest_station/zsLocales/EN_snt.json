@@ -45,6 +45,7 @@
    "ROOM_NOT_AVAIL_MSG": "We can take care of your luggage until a room becomes available.",
    "DONE_BTN": "DONE",
 
+    "DONE": "DONE",
 
    "SEL_RES_HEADER":"Select a Reservation",
    "SEL_RES_NAME":"Name",
@@ -155,7 +156,6 @@
 
    "MAKE_KEY": "Just one moment as we make keys…",
    "MAKE_KEY_MSG": "Select a blank key and place it on the target below. When the green light appears, the key is made",
-   "GRAB_KEY_BELOW": "Please grab your key from the target below",
    "MAKE_FIRST_KEY": "Make your first key!",
    "MAKE_FIRST_KEY_SUB": "Select a Blank Key and place it on the target below. When the green light appears, the key is made.",
    "MADE_FIRST_KEY_MSG": "Success! Make your second key",
