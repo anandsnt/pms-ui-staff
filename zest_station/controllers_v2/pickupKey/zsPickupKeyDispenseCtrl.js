@@ -52,23 +52,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 
         $scope.doneButtonStyle = {
             'margin-top': marginTop
-        };
-        $scope.noOfKeysCreated = 0;
-
-
-        $scope.$on('ON_GENERAL_ERROR', function() {
-            $scope.onGeneralFailureCase();
-        });
-
-        /**
-         * [makeKeys description]
-         * @param  {[type]} no_of_keys [description]
-         * @return {[type]}            [description]
-         */
-        $scope.makeKeys = function(no_of_keys) {
-            $scope.noOfKeysSelected = no_of_keys;
-            $scope.initMakeKey();
-        };
+        }; 
 
     }
 ]);

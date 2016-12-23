@@ -500,6 +500,16 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			}
 		};
 
+		/**
+         * [makeKeys description]
+         * @param  {[type]} no_of_keys [description]
+         * @return {[type]}            [description]
+         */
+        $scope.makeKeys = function(no_of_keys) {
+            $scope.noOfKeysSelected = no_of_keys;
+            $scope.initMakeKey();
+        };
+
 
 	}
 ]);
