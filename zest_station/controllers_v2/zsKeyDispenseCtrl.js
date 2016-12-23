@@ -443,7 +443,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			$scope.dispenseKey();
 		});
 
-		$scope.$on('DISPENSE_FAILED', function(event) {
+		$scope.$on('DISPENSE_FAILED', function() {
 			$scope.onGeneralFailureCase();
 		});
 		$scope.$on('SOCKET_FAILED', function() {
