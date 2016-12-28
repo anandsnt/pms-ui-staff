@@ -85,7 +85,8 @@
 "USE_SOCKET_PRINTING" : "Use Socket print",
 "USE_SOCKET_PRINTING_DESC" : "turn this ON if Station is being run on a Windows-touchscreen computer, not a Tablet device",
 "USE_ZEST_STATION_HANDLER" : "Use Zest Station Handler",
-"USE_ADD_REMOVE_GUESTS" : "Add/Remove Guests"
+"USE_ADD_REMOVE_GUESTS" : "Add/Remove Guests",
+"ZEST_STATION_OUT_OF_ORDER_TRESHOLD" : "Out of order treshold"
 
 
 
