@@ -214,7 +214,16 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		/* ******************************************************************************************************* */
 
 		var updateLogForKeyActions = function(keyNo, keyStatus) {
-			console.log("reservation_id :" + $stateParams.reservation_id + " key :" + keyNo + " -----status :" + keyStatus);
+			var params = {
+				"reservation_id": $stateParams.reservation_id,
+				"key_no": keyNo,
+				"status": keyStatus
+			};
+			//console.log("reservation_id :" + $stateParams.reservation_id + " key :" + keyNo + " -----status :" + keyStatus);
+			$scope.callAPI(zsGeneralSrv.logKeyStatus, {
+				params: params,
+				'loader': 'none' // to hide loader
+			});
 		};
 
 		/**
