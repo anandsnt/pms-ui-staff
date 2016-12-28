@@ -449,6 +449,7 @@
   "PRINTER_ERROR_UNABLE_TO_WRITE_TO_PRINTER_PORT": "Printer Port Error",
   "PRINTER_ERROR_PRINT_ERROR": "Printer Error",
 
-  "WORK_STATION_NOT_SELECTED":"Workstation not selected"
+  "WORK_STATION_NOT_SELECTED":"Workstation not selected",
+  "KEY_CREATION_FAILED" : "Key creation failed"
    
 }
