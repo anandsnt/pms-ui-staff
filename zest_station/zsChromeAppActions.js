@@ -95,7 +95,22 @@ this.chromeExtensionListener = function(onMessageCallback, chromeAppId, fetchQRC
                     // possible args = //workstationFetchTimer, languageResetTimer, refreshTimer, idlePopupTimer, backToHomeTimer, toggleOnly
                     // if (debugTimers(true), like here, then the method is only used for toggling on/off the timer view);
                 zestSntApp.debugTimers(true);
+
+            } else if (passedDataObject.stationSelectLang) {
+                zestSntApp.setLanguage(passedDataObject.stationSelectLang);
+
+            } else if (passedDataObject.toggleEditorOnOff) {
+                   // pass toggle argument to station app, to turn on/off Language-Tag-Editor
+                zestSntApp.toggleEditorMode();
+
+            } else if (passedDataObject.toggleTags) {
+                   // pass toggle argument to station app, to turn on/off Language-Tags (to view tags behind text)
+                zestSntApp.toggleLanguageTags();
+
             }
+            // TODO show language tags method;
+
+
         }, false);
     };
 

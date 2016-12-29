@@ -399,6 +399,23 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.quickSetHotelTheme = function(theme) {
             $scope.$broadcast('QUICK_SET_HOTEL_THEME', theme);
         };
+        // allows to toggle language tags via console/chrome extension
+        $scope.toggleLanguageTags = function() {
+            $scope.$broadcast('TOGGLE_LANGUAGE_TAGS');
+        };
+
+        // for chrome extension or console switching of languages
+        $scope.switchLanguage = function(langCode) {
+            if ($state.current.name === 'zest_station.home') {
+                $scope.$broadcast('SWITCH_LANGUAGE', langCode);
+            } else {
+                $translate.use(langCode);
+                $timeout(function() {
+                    $scope.$digest();
+                }, 100);
+            }
+        };
+        
 
 
 		/**

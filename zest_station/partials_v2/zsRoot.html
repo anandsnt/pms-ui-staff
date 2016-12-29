@@ -1,7 +1,11 @@
 <div ng-show="hasLoader" id="loading">
     <div id="loading-spinner"></div>
 </div>
+
 <span ng-show="zestStationData.demoModeEnabled == 'true'" class="demo-text">demo</span>
+
+<span ng-show="zestStationData.editorModeEnabled == 'true'" class="demo-text" style='left:45%'>Editor Mode Enabled</span>
+
 <span ng-show="zestStationData.timeDebugger == 'true'" class="timer-debugger-left">
      <br> <span> [ {{zestStationData.workstationTimer}}/{{zestStationData.getWorkstationsAtTime}} ] Fetch Workstation Data & Refresh Station Check from OOS <br> </span>
     <span> [ {{zestStationData.userInActivityTimeInHomeScreenInSeconds}}/{{zestStationData.timeUntilLanguageResetCheck}} ] Language Reset  <br> </span>
