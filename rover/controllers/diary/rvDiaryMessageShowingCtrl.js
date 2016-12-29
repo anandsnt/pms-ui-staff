@@ -20,5 +20,10 @@ sntRover.controller('RVDiaryMessageShowingCtrl', ['$scope',
 
     		}
     	};
+
+        //Use this function to just close the popup while clicking on the close btn at the top left corner
+        $scope.exitPopup = function() {
+           ngDialog.close(); 
+        }
 	}
 ]);
