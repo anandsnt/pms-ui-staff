@@ -1,7 +1,7 @@
 
 admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', 'ngDialog', '$timeout', function ($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter, ngDialog, $timeout) {
     BaseCtrl.call(this, $scope);
-    $scope.$emit("changedSelectedMenu", 10);
+    $scope.$emit('changedSelectedMenu', 10);
 
     $scope.data = {};
     var zestLanguageDataCopy = {};
@@ -61,14 +61,14 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             if ($scope.zestSettings.zest_lang[name + '_translations_file_updated'] ||
                 $scope.zestSettings.zest_lang[name + '_translations_file']) {return true;}
             return false;
-        } else return false;
+        } else {return false;}
     };
 
     $scope.hasKeyImageFileUpdatedOrUploading = function(name) {
         if ($scope.zestSettings && $scope.zestSettings.key_create_file_uploaded) {
             if ($scope.zestSettings.key_create_file_uploaded !== '' && $scope.zestSettings.key_create_file_uploaded !== 'false' && $scope.zestSettings.key_create_file_uploaded.indexOf('/logo.png') === -1) {return true;}
             return false;
-        } else return false;
+        } else {return false;}
     };
     
     var getEnabledLanguages = function() {
@@ -107,19 +107,19 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
     
     var setupDefaultLanguageDropdown = function() {
         $scope.enabledLangs = getEnabledLanguages();
-            if ($scope.enabledLangs === null) {
-                $scope.defaultLangsDivClass = 'overlay';
-            } else {
-                $scope.defaultLangsDivClass = '';
-                if (!$scope.zestSettings.zest_lang.default_language || $scope.zestSettings.zest_lang.default_language === '') {
-                    $scope.zestSettings.zest_lang.default_language = '';
-                }
+        if ($scope.enabledLangs === null) {
+            $scope.defaultLangsDivClass = 'overlay';
+        } else {
+            $scope.defaultLangsDivClass = '';
+            if (!$scope.zestSettings.zest_lang.default_language || $scope.zestSettings.zest_lang.default_language === '') {
+                $scope.zestSettings.zest_lang.default_language = '';
             }
+        }
     };
     
-    var fetchZestStationData =  function() {
+    var fetchZestStationData = function() {
         
-         var fetchSuccess = function (data) {
+        var fetchSuccess = function (data) {
             $scope.$emit('hideLoader');
             $scope.zestStationData = data;
             setupDefaultLanguageDropdown();
@@ -140,17 +140,17 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         $scope.invokeApi(ADZestStationSrv.fetch, {}, fetchSuccess);
     };
     var checkIfFileWasAdded = function(file) {
-        return (!!file && file.length > 0) ? true : false;
+        return !!file && file.length > 0 ? true : false;
     };
 
     var setUpTranslationFilesStatus = function() {
         zestLanguageDataCopy = angular.copy($scope.zestSettings.zest_lang);
-        checkIfFileWasAdded(zestLanguageDataCopy.english_translations_file) ? zestLanguageDataCopy.english_translations_file_updated = true : "";
-        checkIfFileWasAdded(zestLanguageDataCopy.french_translations_file)  ? zestLanguageDataCopy.french_translations_file_updated = true : "";
-        checkIfFileWasAdded(zestLanguageDataCopy.spanish_translations_file) ? zestLanguageDataCopy.spanish_translations_file_updated = true : "" ;
-        checkIfFileWasAdded(zestLanguageDataCopy.german_translations_file)  ? zestLanguageDataCopy.german_translations_file_updated = true : "";
-        checkIfFileWasAdded(zestLanguageDataCopy.italian_translations_file) ? zestLanguageDataCopy.italian_translations_file_updated = true : "";
-        checkIfFileWasAdded(zestLanguageDataCopy.castellano_translations_file) ? zestLanguageDataCopy.castellano_translations_file_updated = true : "";
+        checkIfFileWasAdded(zestLanguageDataCopy.english_translations_file) ? zestLanguageDataCopy.english_translations_file_updated = true : '';
+        checkIfFileWasAdded(zestLanguageDataCopy.french_translations_file) ? zestLanguageDataCopy.french_translations_file_updated = true : '';
+        checkIfFileWasAdded(zestLanguageDataCopy.spanish_translations_file) ? zestLanguageDataCopy.spanish_translations_file_updated = true : '' ;
+        checkIfFileWasAdded(zestLanguageDataCopy.german_translations_file) ? zestLanguageDataCopy.german_translations_file_updated = true : '';
+        checkIfFileWasAdded(zestLanguageDataCopy.italian_translations_file) ? zestLanguageDataCopy.italian_translations_file_updated = true : '';
+        checkIfFileWasAdded(zestLanguageDataCopy.castellano_translations_file) ? zestLanguageDataCopy.castellano_translations_file_updated = true : '';
     };
 
     $scope.saveSettings = function(dontReturn) {
@@ -163,7 +163,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             $scope.zestSettings.zest_lang = angular.copy(zestLanguageDataCopy);
             $scope.successMessage = 'Success';
             $scope.$emit('hideLoader');
-            if (!dontReturn){
+            if (!dontReturn) {
                 $scope.goBackToPreviousState();    
             }
             
@@ -183,13 +183,13 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
     };
     $scope.downloadPromptFileName = '';
     $scope.downloadLang = function(lang) {
-         $timeout(function() {
+        $timeout(function() {
             $scope.downloadPromptFileName = lang + '.json';
             var link = document.getElementById('download-link-popup');// ie. en-download-link
 
             link.href = 'staff/locales/download/' + lang + '.json';
-         }, 500);
-         ngDialog.open({
+        }, 500);
+        ngDialog.open({
             template: '/assets/partials/zestStation/adZestStationLanguageFile.html',
             className: 'ngdialog-theme-default single-calendar-modal',
             scope: $scope,
@@ -197,7 +197,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         });
     };
 
-    $scope.saveLanguageEditorChanges = function(){
+    $scope.saveLanguageEditorChanges = function() {
         // current language being edited, for saving, need to save with long-name (ie. "english" instead of "en")
         var lang = $scope.editingLanguage;
 
@@ -224,11 +224,13 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
 
         $scope.showLoader();
         var jsonRefUrl = 'staff/locales/download/' + lang + '.json';
+
         console.log('going to fetch language json file for editing');
 
         $.getJSON(jsonRefUrl, function(json) {
             console.log('done!');
             var loaderScope = angular.element('#loading-spinner').scope();
+
             loaderScope.hasLoader = false;
             console.log(json); // this will show the info it in firebug console
             loaderScope.$digest();
@@ -245,11 +247,11 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
 
         });
     };
-    $scope.showLoader = function(){
+    $scope.showLoader = function() {
         $scope.$emit('showLoader');
-    }
+    };
     $scope.saveAsText = '';
-    $scope.isChrome = (window.navigator.userAgent.toLowerCase().indexOf("chrome") !== -1);
+    $scope.isChrome = window.navigator.userAgent.toLowerCase().indexOf('chrome') !== -1;
 
     $scope.init = function() {
         fetchSettings();
