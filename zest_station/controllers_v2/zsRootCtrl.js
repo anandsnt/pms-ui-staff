@@ -399,6 +399,23 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.quickSetHotelTheme = function(theme) {
             $scope.$broadcast('QUICK_SET_HOTEL_THEME', theme);
         };
+        // allows to toggle language tags via console/chrome extension
+        $scope.toggleLanguageTags = function() {
+            $scope.$broadcast('TOGGLE_LANGUAGE_TAGS');
+        };
+
+        // for chrome extension or console switching of languages
+        $scope.switchLanguage = function(langCode) {
+            if ($state.current.name === 'zest_station.home') {
+                $scope.$broadcast('SWITCH_LANGUAGE', langCode);
+            } else {
+                $translate.use(langCode);
+                $timeout(function() {
+                    $scope.$digest();
+                }, 100);
+            }
+        };
+        
 
 
 		/**
@@ -835,7 +852,9 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.focusInputField = function(elementId) {
             $timeout(function() {
                 if (!$scope.isIpad) {
-                    document.getElementById(elementId).click();
+                    if (document.getElementById(elementId)) {// fixes an error that occurs from user clicking too early while screen initializing
+                        document.getElementById(elementId).click();    
+                    }
                 } else {
                     $scope.callBlurEventForIpad();
                 }
@@ -1185,6 +1204,15 @@ sntZestStation.controller('zsRootCtrl', [
 
 			// flag to check if default language was set or not
             $scope.zestStationData.IsDefaultLanguageSet = false;
+            
+            // if ooo treshold is not set or not active, set th treshold as 1
+            if (!$scope.zestStationData.kiosk_out_of_order_treshold_is_active || _.isNaN(parseInt($scope.zestStationData.kiosk_out_of_order_treshold_value))) {
+                $scope.zestStationData.kioskOutOfOrderTreshold = 1;
+            } else {
+                $scope.zestStationData.kioskOutOfOrderTreshold = parseInt($scope.zestStationData.kiosk_out_of_order_treshold_value);
+            }
+
+            $scope.zestStationData.consecutiveKeyFailure = 0;
         }());
     }
 ]);

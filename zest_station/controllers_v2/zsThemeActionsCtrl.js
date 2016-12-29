@@ -93,6 +93,34 @@ sntZestStation.controller('zsThemeActionsCtrl', [
             $scope.$emit('RUN_APPLY');
         });
 
+        /** ******************************************************************************
+         *  
+         ********************************************************************************/
+
+        $scope.$on('TOGGLE_LANGUAGE_TAGS', function(evt) {
+             // enables user (via conosle or developer tools) to show tags on-screen instead of the 
+             // translated text
+            console.log('toggle tags');
+             // TODO: figure out how to show/hide tags PLUS edit
+            var tags = $('text'), el;
+
+            for (var i = 0; i < tags.length; i++) {
+
+                el = $(tags[i]);
+
+                if ( el.text() === el.attr('editable-text')) {
+                    // if showing the tag, show translated text
+                    el.text(el.attr('old-text'));
+
+                } else {
+                    // to show the TAG instead of translated text, swap out with the
+                    // tag, which is also in the attribute 'editable-text'
+                    el.attr('old-text', el.text());
+                    el.text(el.attr('editable-text'));
+
+                }
+            }
+        });
         
         (function() {// initializeMe
             setHotelBasedTheme(zsGeneralSrv.hotelTheme);

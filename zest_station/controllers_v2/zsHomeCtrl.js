@@ -176,6 +176,23 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * to change the default language
 		 * @param  {object} language
 		 */
+
+        $scope.$on('SWITCH_LANGUAGE', function(evt, lang) {
+            // for debugging | testing only via developer tools or console
+            // allows dev/user to switch language during-a flow, instead of just at home
+            var obj;
+            for (var i in $scope.languages) {
+                
+                obj = $scope.languages[i];
+                if (obj.code === lang) {
+                    $scope.selectLanguage(obj);
+                    setTimeout(function() {
+                        $scope.$digest();
+                    },100);
+                    return;
+                }
+            }
+        });
         $scope.selectLanguage = function(language) {
 			// Reset idle timer to 0, on language selection, otherwise counter is still going
             userInActivityTimeInHomeScreenInSeconds = 0;

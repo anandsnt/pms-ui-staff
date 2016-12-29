@@ -8,37 +8,44 @@
                         <button type="button" class="button option" touch-press='clickedOnPickUpKey()'>
                             <div ng-include="icons.url.key"></div>
                         </button>
-                        {{'PICKUP_KEY' |translate}}
+
+                        <text editable-text="PICKUP_KEY">{{'PICKUP_KEY' |translate}}</text>
+                        
                         <span>
-                    {{'HOME_PUK_SUB' |translate}}
-                    </span>
+
+                            <text editable-text="HOME_PUK_SUB">{{'HOME_PUK_SUB' |translate}}</text>
+
+                        </span>
                     </li>
                     <li ng-if="zestStationData.home_screen.check_in">
                         <button type="button" class="button option" touch-press='clickedOnCheckinButton()'>
                             <div ng-include="icons.url.checkin"></div>
                         </button>
-                        {{'CHECK_IN' |translate}}
+
+                        <text editable-text="CHECK_IN">{{'CHECK_IN' |translate}}</text>
+
                     </li>
                     <li ng-if="zestStationData.home_screen.check_out">
                         <button type="button" class="button option" touch-press='clickedOnCheckoutButton()'>
                             <div ng-include="icons.url.checkout"></div>
                         </button>
-                        {{'CHECK_OUT' |translate}}
+
+                        <text editable-text="CHECK_OUT"> {{'CHECK_OUT' |translate}}</text>
+
                     </li>
-                     <li ng-if="zestStationData.home_screen.booking_pop_up.enable_pop_up">
+                    <li ng-if="zestStationData.home_screen.booking_pop_up.enable_pop_up">
                         <button type="button" class="button option" touch-press='openExternalWebPage()'>
-                                <div ng-include="icons.url.booknow"></div>
+                            <div ng-include="icons.url.booknow"></div>
                         </button>
-                        {{'BOOK_NOW' |translate}}
+
+                        <text editable-text="BOOK_NOW">{{'BOOK_NOW' |translate}}</text>
+
                     </li>
                 </ul>
             </nav>
         </div>
         <div id="actions" class="align-center languages">
-            <button type="button" class="button language" ng-hide="!zestStationData.zest_lang.enabled"
-            touch-press="selectLanguage(language)"
-            ng-class="{'selected': language.name === selectedLanguage.name }"
-            ng-repeat="language in languages">
+            <button type="button" class="button language" ng-hide="!zestStationData.zest_lang.enabled" touch-press="selectLanguage(language)" ng-class="{'selected': language.name === selectedLanguage.name }" ng-repeat="language in languages">
                 {{language.language_name_in_local}}
             </button>
         </div>

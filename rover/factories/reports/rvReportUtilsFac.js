@@ -425,7 +425,8 @@ angular.module('reportsModule')
                     selectAll: false,
                     hasSearch: false,
                     key: 'description',
-                    defaultValue: 'Exclude'
+                    defaultValue: 'Exclude',
+                    visible: true
                 }
             };
 
@@ -572,6 +573,7 @@ angular.module('reportsModule')
 
                     if (report['title'] === reportNames['DAILY_PRODUCTION_DEMO'] || reportNames['DAILY_PRODUCTION_RATE'] || reportNames['DAILY_PRODUCTION_ROOM_TYPE']) {
                         report['hasExclusions'].options.selectAll = true;
+                        report['hasExclusions'].options.visible = false;
                     }
 
                     report['hasExclusions'].data.push({

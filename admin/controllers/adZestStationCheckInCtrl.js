@@ -1,46 +1,44 @@
-admin.controller('ADZestStationCheckInCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter',  function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter) {
-	BaseCtrl.call(this, $scope);
-	$scope.$emit("changedSelectedMenu", 10);
+admin.controller('ADZestStationCheckInCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter) {
+    BaseCtrl.call(this, $scope);
+    $scope.$emit('changedSelectedMenu', 10);
 
-        $scope.data = {};
+    $scope.data = {};
 
-        $scope.fetchSettings = function() {
-            var fetchSuccess = function(data) {
-                $scope.zestSettings = data;
-                $scope.$emit('hideLoader');
-            };
-
-            $scope.invokeApi(ADZestStationSrv.fetch, {}, fetchSuccess);
+    $scope.fetchSettings = function() {
+        var fetchSuccess = function(data) {
+            $scope.zestSettings = data;
+            $scope.$emit('hideLoader');
         };
 
-        $scope.saveSettings = function() {
-            var saveSuccess = function(response) {
-                $scope.successMessage = 'Success';
-                $scope.$emit('hideLoader');
-            };
-            var saveFailed = function(response) {
-                console.warn(response);
-                var message = '';
+        $scope.invokeApi(ADZestStationSrv.fetch, {}, fetchSuccess);
+    };
 
-                if (response) {
-                    message = response;
-                }
-                $scope.errorMessage = message;
-                $scope.$emit('hideLoader');
-            };
+    $scope.saveSettings = function() {
+        var saveSuccess = function() {
+            $scope.successMessage = 'Success';
+            $scope.$emit('hideLoader');
+        };
+        var saveFailed = function(response) {
+            var message = response ? response : ['Save Failed'];
+            
+            console.log(response);
 
-            var params = {
-                                'kiosk': $scope.zestSettings
-                             };
-
-            $scope.invokeApi(ADZestStationSrv.save, params, saveSuccess, saveFailed);
+            $scope.errorMessage = message;
+            $scope.$emit('hideLoader');
         };
 
-        $scope.init = function() {
-            $scope.fetchSettings();
+        var params = {
+            'kiosk': $scope.zestSettings
         };
 
-        $scope.init();
+        $scope.invokeApi(ADZestStationSrv.save, params, saveSuccess, saveFailed);
+    };
+
+    $scope.init = function() {
+        $scope.fetchSettings();
+    };
+
+    $scope.init();
 
 
 }]);

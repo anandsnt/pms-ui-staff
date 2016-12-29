@@ -15,8 +15,7 @@ var DailyProductionByDemographicsTable = React.createClass({
 
         return React.DOM.table(
             {
-                className: 'statistics-reports',
-                style: { tableLayout: 'auto' }
+                className: 'statistics-reports'
             },
             React.createElement( DailyProductionByDemographicsTableHeader, headerProps), React.createElement( DailyProductionByDemographicsTableRows, rowProps)
         );

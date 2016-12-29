@@ -366,10 +366,10 @@
 
 
         <!-- item_29: Exclude options -->
-        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasExclusions && chosenReport.hasExclusions.data.length" ng-class="{ 'active': filterItemsToggle.item_29 }" ng-click="toggleFilterItems('item_29')">
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasExclusions && chosenReport.hasExclusions.data.length && chosenReport.hasExclusions.data.visible" ng-class="{ 'active': filterItemsToggle.item_29 }" ng-click="toggleFilterItems('item_29')">
             <span class="title">Exclude </span>
         </a>
-        <div class="report-col settings-content" ng-show="chosenReport.hasExclusions && chosenReport.hasExclusions.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_29 }">
+        <div class="report-col settings-content" ng-show="chosenReport.hasExclusions && chosenReport.hasExclusions.data.length && chosenReport.hasExclusions.data.visible" ng-class="{ 'hidden': !filterItemsToggle.item_29 }">
             <multi-option-selection label="Exclude"
                 on-update="refreshSidebarScroll"
                 data="chosenReport.hasExclusions.data"

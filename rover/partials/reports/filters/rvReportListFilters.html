@@ -274,7 +274,7 @@
     data="uiChosenReport.hasDisplay.data"
     options="uiChosenReport.hasDisplay.options"></multi-option-selection>
 
-<multi-option-selection ng-show="uiChosenReport.hasExclusions && uiChosenReport.hasExclusions.data.length"
+<multi-option-selection ng-show="uiChosenReport.hasExclusions && uiChosenReport.hasExclusions.data.length && uiChosenReport.hasExclusions.data.visible"
     label="Exclude"
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasExclusions.data"
