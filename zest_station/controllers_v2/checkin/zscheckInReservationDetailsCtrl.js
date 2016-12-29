@@ -44,13 +44,20 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
         var fetchReservationDetails = function() {
             var onSuccessFetchReservationDetails = function(data) {
-                $scope.selectedReservation.reservation_details = data.data.reservation_card;
-                if ($scope.isRateSuppressed()) {
-                    $scope.selectedReservation.reservation_details.balance = 0;
+
+                if (data.data) {
+                    $scope.selectedReservation.reservation_details = data.data.reservation_card;
+                    if ($scope.isRateSuppressed()) {
+                        $scope.selectedReservation.reservation_details.balance = 0;
+                    }
+                    fetchAddons();
+                    setDisplayContentHeight(); // utils function
+                    refreshScroller();
+                } else {
+                    // else some error occurred
+                    generalError();   
                 }
-                fetchAddons();
-                setDisplayContentHeight(); // utils function
-                refreshScroller();
+
             };
 
 

@@ -45,6 +45,7 @@
    "ROOM_NOT_AVAIL_MSG": "We can take care of your luggage until a room becomes available.",
    "DONE_BTN": "DONE",
 
+    "DONE": "DONE",
 
    "SEL_RES_HEADER":"Select a Reservation",
    "SEL_RES_NAME":"Name",
@@ -155,7 +156,6 @@
 
    "MAKE_KEY": "Just one moment as we make keys…",
    "MAKE_KEY_MSG": "Select a blank key and place it on the target below. When the green light appears, the key is made",
-   "GRAB_KEY_BELOW": "Please grab your key from the target below",
    "MAKE_FIRST_KEY": "Make your first key!",
    "MAKE_FIRST_KEY_SUB": "Select a Blank Key and place it on the target below. When the green light appears, the key is made.",
    "MADE_FIRST_KEY_MSG": "Success! Make your second key",
@@ -383,26 +383,15 @@
      "ADMIN_TIME_POP": "Idle Screen Prompt After (Seconds)",
      "ADMIN_WORKSTATION": "Work Station",
      "ADMIN_STATION_PRINTER": "Select Printer",
-     "ADMIN_STATION_DEMOMODE": "Demo Mode",
 
 
      "CHECKIN_KEY_FAIL" : "Check-In Key Fail",
-     "CHECKIN_KEY_FAIL_RESERVATION" : "Check-In Key Fail, Reservation Error",
      "CHECKIN_KEY_FAIL_EMPTY" : "Check-In Key Fail, Empty Key Dispenser",
      
      "CHECKIN_PRINT_FAIL" : "Check-In Print Fail",
      
-     "ADMIN_OR_NETWORK_OOS" : "Admin or Network OOS",
-     "CHECKIN_KEY_SUCCESS_PRINT_FAIL" : "Check-In Print & Key Fail",
      "CHECKIN_KEY_FAIL_PRINT_FAIL" : "Check-In Key & Print Fail",
-     "CHECKIN_KEY_FAIL_PRINT_SUCCESS" : "Check-In Key Fail & Print Success",
-     "CHECKIN_KEY_FAIL_PRINT_SUCCESS" : "Check-In Key Fail & Print Success",
-     
-     
-     "RESERVATION_AUTH_REMAIN_SUB" : "Please Swipe to Authorize Remaining Balance",
      "PICKUP_KEY_FAIL" : "Pickup Key Fail",
-     "PICKUP_KEY_FAIL_RESERVATION" : "Pickup Key Fail, Reservation Error",
-     "SERVICE_FAILURE" : " : Service Failure, Restart Service",
      "PICKUP_KEY_FAIL_EMPTY" : "Pickup Key Fail, Empty Key Dispenser",
      "CHECKOUT_PRINT_FAILED" : "Check-Out Print Fail",
 
@@ -428,17 +417,6 @@
    "CHECKIN_TOO_EARLY_DONE": "Done",
    "SELECT_COUNTRY": "-- Select Country --",
 
-
-   "ADMIN_SELECT": "Select",
-   "ADMIN_STATUS": "Status",
-
-   "ADMIN_IN_ORDER": "In Order",
-   "ADMIN_OUTOF_ORDER": "Out of Order",
-
-   "ADMIN_OUT_OF_ORDER_REASON": "Out of Order Reason",
-
-   "ADMIN_ENABLED": "Enabled",
-   "ADMIN_DISABLED": "Disabled",
    "RE_TYPE": "Re-Type",
 
   "PRINTER_ERROR_PRINTER_IS_OFFLINE": "Printer is offline",
