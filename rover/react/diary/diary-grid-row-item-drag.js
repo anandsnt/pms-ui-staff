@@ -1,28 +1,25 @@
 var GridRowItemDrag = React.createClass({
-    _update: function(row_item_data) {
-        return _.extend({}, row_item_data);
-    },
-
-    __dbMouseMove: undefined,
-    componentWillMount: function() {
-        this.__dbMouseMove = _.debounce(this.__onMouseMove, 1);
-    },
-
-    componentWillUnmount: function() {
-        this._removeEventListeners(true);
-    },
-
-    isInProperDraggingCycle: false,
-
+	_update: function(row_item_data) {
+		return _.extend({}, row_item_data);
+	},
+	__dbMouseMove: undefined,
+	componentWillMount: function() {
+		this.__dbMouseMove = _.debounce(this.__onMouseMove, 1);
+	},
+	componentWillUnmount: function() {
+		this.getDOMNode().removeEventListener(this.mouseStartingEvent, this.__onMouseDown);
+	},
+	isInProperDraggingCycle: false,
 	__onMouseDown: function(e) {
 		var page_offset, el, props = this.props, state = this.state, display = props.display;
 
 		this.isInProperDraggingCycle =  true;
 		e.stopPropagation();
 		e.preventDefault();
-		e = e.changedTouches ? e.changedTouches[0] : e;
+		e = this.isTouchEnabled ? e.changedTouches[0] : e;
 
-        this._setMoveEventListners();
+		document.addEventListener (this.mouseLeavingEvent, this.__onMouseUp);
+		document.addEventListener (this.mouseMovingEvent, this.__dbMouseMove);
 
 		page_offset = this.getDOMNode().getBoundingClientRect();
 
@@ -56,7 +53,7 @@ var GridRowItemDrag = React.createClass({
 		if (!this.isInProperDraggingCycle) {
 			return;
 		}
-		e = e.changedTouches ? e.changedTouches[0] : e;
+		e = this.isTouchEnabled ? e.changedTouches[0] : e;
 		var state 		= this.state,
 			props 		= this.props,
 			viewport 	= props.viewport.element(),
@@ -226,7 +223,7 @@ var GridRowItemDrag = React.createClass({
 		e.stopPropagation();
 		e.preventDefault();
 
-		e = e.changedTouches ? e.changedTouches[0] : e;
+		e = this.isTouchEnabled ? e.changedTouches[0] : e;
 		var state = this.state,
 			props = this.props,
 			item = this.state.currentDragItem,
@@ -236,8 +233,8 @@ var GridRowItemDrag = React.createClass({
 			px_per_int = 			display.px_per_int,
 			px_per_ms = 			display.px_per_ms;
 
-		this._removeEventListeners(false);
-
+		document.removeEventListener (this.mouseLeavingEvent, this.__onMouseUp);
+		document.removeEventListener (this.mouseMovingEvent, this.__dbMouseMove);
 		var page_offset = this.getDOMNode().getBoundingClientRect();
 
 		if (state.dragging && props.edit.active && (props.data.key !== props.currentDragItem.key)) {
@@ -293,87 +290,13 @@ var GridRowItemDrag = React.createClass({
 			});
 		}
 	},
-
-    /**
-     * Find if browser supports touch events or not. handles most cases
-     * @return {Boolean} supports touch or not
-     */
-    _hasTouchSupport: function () {
-        var hasSupport = false;
-
-        try {
-            if (navigator.maxTouchPoints !== 'undefined') {
-                // for modern browsers
-                // even if touchpoints test is supported event support is also needed
-                hasSupport = navigator.maxTouchPoints > 0 && 'ontouchstart' in window;
-            } else {
-                // for browsers with no support of navigator.maxTouchPoints
-                hasSupport = 'ontouchstart' in window;
-            }
-        } catch (e) {
-            hasSupport = 'ontouchstart' in window;
-        }
-
-        return hasSupport;
-    },
-
-    /**
-     * Remove events for safty
-     * @param  {Boolean} removeStartEvent flag to remove click event
-     * @return {undfefined} none
-     */
-    _removeEventListeners: function (removeStartEvent) {
-        try {
-            if (removeStartEvent) {
-                document.removeEventListener('touchstart', this.__onMouseDown);
-                document.removeEventListener('mousedown', this.__onMouseDown);
-            }
-
-            document.removeEventListener('touchend', this.__onMouseUp);
-            document.removeEventListener('mouseup', this.__onMouseUp);
-            document.removeEventListener('mousemove', this.__dbMouseMove); 
-            document.removeEventListener('touchmove', this.__dbMouseMove);
-        } catch (e) {
-            // noop
-        }
-    },
-
-    _setMoveEventListners: function () {
-        document.addEventListener (this.mouseLeavingEvent, this.__onMouseUp);
-        document.addEventListener (this.mouseMovingEvent, this.__dbMouseMove);
-
-        // CICO-36620 - handle devices with touch and mouse inputs
-        // PointerEvent could do it if supported on all platforms 
-        if (this.isTouchEnabled && this.isMouseEnabled) {
-            document.addEventListener ('mouseup', this.__onMouseUp);
-            document.addEventListener ('mousemove', this.__dbMouseMove);
-        }
-    },
-
-    _setClickEventListners: function () {
-        var node = this.getDOMNode();
-
-        this.isTouchEnabled = this._hasTouchSupport();
-        this.isMouseEnabled = 'onmousemove' in window;
-        this.mouseStartingEvent = this.isTouchEnabled ? 'touchstart' : 'mousedown';
-        this.mouseMovingEvent = this.isTouchEnabled ? 'touchmove' : 'mousemove';
-        this.mouseLeavingEvent = this.isTouchEnabled ? 'touchend' : 'mouseup';
-
-        // CICO-36620 - handle devices with touch and mouse inputs
-        // PointerEvent could do it if supported on all platforms
-        if (this.isTouchEnabled && this.isMouseEnabled) {
-            node.addEventListener(this.mouseStartingEvent, this.__onMouseDown);
-            node.addEventListener('mousedown', this.__onMouseDown);
-        } else {
-            node.addEventListener(this.mouseStartingEvent, this.__onMouseDown);
-        }
-    },
-
-    componentDidMount: function() {
-        this._removeEventListeners(true);
-        this._setClickEventListners();
-    },
-
+	componentDidMount: function() {
+		this.isTouchEnabled 	= 'ontouchstart' in window;
+		this.mouseStartingEvent = this.isTouchEnabled ? 'touchstart' : 'mousedown';
+		this.mouseMovingEvent 	= this.isTouchEnabled ? 'touchmove' : 'mousemove';
+		this.mouseLeavingEvent 	= this.isTouchEnabled ? 'touchend'	: 'mouseup';
+		this.getDOMNode().addEventListener(this.mouseStartingEvent, this.__onMouseDown);
+	},
 	getInitialState: function() {
 		return {
 			dragging: false,
