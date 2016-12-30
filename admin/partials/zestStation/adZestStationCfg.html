@@ -40,9 +40,13 @@
                             <span class="input" ng-show="hasFileUpdatedOrUploading('english')">File Attached</span>
                             <span class="input" ng-show="!hasFileUpdatedOrUploading('english')">Choose file..</span>
                             <input type="file" ng-model="zestSettings.zest_lang.english_translations_file" accept="*" app-filereader emit-data="english_translations_file" />
+                            
                             <button type="button" class="button brand-colors">Attach file</button>
                             <button type="button" ng-show="hasFileUpdatedOrUploading('english')" class="button download-arrow icons " ng-click="downloadLang('en')"></button>
-                            <button type="button" ng-show="hasFileUpdatedOrUploading('english')" class="button download-arrow icons right " ng-click="editLang('en')"></button>
+
+                            <button type="button" ng-show="hasFileUpdatedOrUploading('english')" class="button download-arrow icons right editor" ng-click="editLang('en')">
+                                <text ng-include="'/assets/cssimg/admin/adEditorIconSvg.svg'"></text>
+                            </button>
 
                         </div>
                     </div>
@@ -59,7 +63,9 @@
                             <button type="button" class="button brand-colors">Attach file</button>
                             <button type="button" class="button download-arrow icons " ng-click="downloadLang('fr')" ng-show="hasFileUpdatedOrUploading('french')"></button>
 
-                            <button type="button" ng-show="hasFileUpdatedOrUploading('french')" class="button download-arrow icons right " ng-click="editLang('fr')"></button>
+                            <button type="button" ng-show="hasFileUpdatedOrUploading('french')" class="button download-arrow icons right " ng-click="editLang('fr')">
+                                <text ng-include="'/assets/cssimg/admin/adEditorIconSvg.svg'"></text>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -74,6 +80,10 @@
                             
                             <button type="button" class="button brand-colors">Attach file</button>
                             <button type="button" class="button download-arrow icons " ng-click="downloadLang('es')" ng-show="hasFileUpdatedOrUploading('spanish')"></button>
+
+                            <button type="button" ng-show="hasFileUpdatedOrUploading('french')" class="button download-arrow icons right " ng-click="editLang('es')">
+                                <text ng-include="'/assets/cssimg/admin/adEditorIconSvg.svg'"></text>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -88,6 +98,10 @@
                             
                             <button type="button" class="button brand-colors">Attach file</button>
                             <button type="button" class="button download-arrow icons " ng-click="downloadLang('de')" ng-show="hasFileUpdatedOrUploading('german')"></button>
+
+                            <button type="button" ng-show="hasFileUpdatedOrUploading('french')" class="button download-arrow icons right " ng-click="editLang('de')">
+                                <text ng-include="'/assets/cssimg/admin/adEditorIconSvg.svg'"></text>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -102,6 +116,10 @@
                             
                             <button type="button" class="button brand-colors">Attach file</button>
                             <button  type="button" class="button download-arrow icons " ng-click="downloadLang('it')" ng-show="hasFileUpdatedOrUploading('italian')"></button>
+
+                            <button type="button" ng-show="hasFileUpdatedOrUploading('french')" class="button download-arrow icons right " ng-click="editLang('it')">
+                                <text ng-include="'/assets/cssimg/admin/adEditorIconSvg.svg'"></text>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -116,6 +134,10 @@
                             
                             <button type="button" class="button brand-colors">Attach file</button>
                             <button type="button" class="button download-arrow icons " ng-click="downloadLang('cl')" ng-show="hasFileUpdatedOrUploading('castellano')"></button>
+
+                            <button type="button" ng-show="hasFileUpdatedOrUploading('french')" class="button download-arrow icons right " ng-click="editLang('cs')">
+                                <text ng-include="'/assets/cssimg/admin/adEditorIconSvg.svg'"></text>
+                            </button>
                         </div>
                     </div>
                 </div>

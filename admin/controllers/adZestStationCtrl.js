@@ -199,8 +199,9 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
 
     $scope.saveLanguageEditorChanges = function() {
         // current language being edited, for saving, need to save with long-name (ie. "english" instead of "en")
-        var lang = $scope.editingLanguage;
-
+        var lang = $scope.editingLanguage,
+            encoded = 'data:application/json;base64,' + window.btoa(unescape(encodeURIComponent(JSON.stringify($scope.languageEditorData))));
+            
         // check for default
         if (lang === 'en') {
             lang = 'english';
@@ -208,9 +209,21 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         } else if (lang === 'fr') {
             lang = 'french';
 
+        } else if (lang === 'es') {
+            lang = 'spanish';
+
+        } else if (lang === 'de') {
+            lang = 'german';
+
+        } else if (lang === 'it') {
+            lang = 'italian';
+
+        } else if (lang === 'cs') {
+            lang = 'castellano';
+
+        } else {
+            console.log('need to add new language code here');
         }
-        
-        var encoded = 'data:application/json;base64,' + window.btoa(unescape(encodeURIComponent(JSON.stringify($scope.languageEditorData))));
       
         $scope.zestSettings.zest_lang[lang + '_translations_file'] = encoded;
         $scope.closePrompt();

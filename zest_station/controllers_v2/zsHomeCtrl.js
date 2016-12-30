@@ -124,10 +124,14 @@ sntZestStation.controller('zsHomeCtrl', [
                     }
 
                     if (userInActivityTimeInHomeScreenInSeconds >= timeUntilLanguageResetCheck) {
-                        console.info('translating to default lanaguage');
 						// highlighting active language buttons. We need not do that again and again , if we already have a 
 						// default language set.So on timer limit(120s), we need to check if the current language is default or not.
-                        setToDefaultLanguage(true);// checkIfDefaultLanguagIsSet = true
+                        // when Not in language Editor mode, go ahead and reset back to default language
+                        if ($scope.zestStationData.editorModeEnabled !== 'true') {
+                            console.info('translating to default lanaguage');
+                            setToDefaultLanguage(true);// checkIfDefaultLanguagIsSet = true    
+                        }
+
                         $scope.runDigestCycle();
                         userInActivityTimeInHomeScreenInSeconds = 0;
 						// $state.current.name === 'zest_station.admin' - if going to hotel admin, 
