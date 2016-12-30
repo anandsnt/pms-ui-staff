@@ -415,9 +415,50 @@ sntZestStation.controller('zsRootCtrl', [
                 }, 100);
             }
         };
-        
 
+        $scope.languageCodeSelected = function(langCode) {
+            $scope.currentLanguageCode = langCode;
 
+        };
+
+        $scope.saveLanguageEditorChanges = function(tag, newValueForText) {
+            console.log(':: saving language editor changes ::');
+            var langCode = $scope.currentLanguageCode;
+
+            var langObj = {}, // zsGeneralSrv.languageJSONs[langCode],
+                langName = zsGeneralSrv.langName[langCode];
+
+            // save Just the (tag + value), for fastest Api call
+            langObj[tag] = newValueForText;
+                
+            var encoded = 'data:application/json;base64,' + window.btoa(unescape(encodeURIComponent(JSON.stringify(langObj))));
+
+            var onSuccess = function(response) {
+                console.info('Success Save Language text update ');
+                
+            };
+            var onFail = function(response) {
+                console.warn('Failure, Save Language text update failed: ', response);
+                //TODO: need to somehow alert user save failed, ie. alert('Saving failed, please try again later'), or other popup
+            };
+            var options = {
+                params: {
+                    'kiosk': {
+                        'hotel_id': $scope.zestStationData.hotel_id,
+                        'zest_lang': {}
+                    }
+                },
+                successCallBack: onSuccess,
+                failureCallBack: onFail,
+                'loader': 'none'
+            };
+            // use the currently selected language for saving the language text
+            options.params.kiosk.zest_lang[langName + '_translations_file'] = encoded;
+            options.params.kiosk.zest_lang[langName + '_translations_file_updated'] = true;
+
+            $scope.callAPI(zsGeneralSrv.updateLanguageTranslationText, options);
+
+        };
 		/**
 		 * SVGs are ng-included inside HTML
 		 **/
@@ -644,7 +685,7 @@ sntZestStation.controller('zsRootCtrl', [
 		 *   *Refresh-workstation --> Triggered from Hotel Admin - interfaces - workstation > toggle (Refresh Station)
 		 ********************************************************************************/
         $scope.checkIfWorkstationRefreshRequested = function() {
-            console.info('checkIfWorkstationRefreshRequested');
+            // console.info('checkIfWorkstationRefreshRequested');
 			// Workstation trigger for Refresh Station is set to TRUE, --Refresh Station at next (idle) opportunity--
             var station = $scope.getWorkStationSetting($rootScope.workstation_id);
 			// send back to workstation that kiosk is being/has been refreshed 

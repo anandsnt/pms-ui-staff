@@ -83,7 +83,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         /**
          * to fetch the translation file against languages
          * @param  {Object} language
+         * langName is a mapping for code to name values
          */
+        this.langName = [];
         this.fetchTranslations = function(languages) {
             var deferred = $q.defer();
 
@@ -92,6 +94,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             languages.map(function(language) {
                 languageConfig = that.languageValueMappingsForUI[language.name];
                 langShortCode = languageConfig.code;
+
+                that.langName[langShortCode] = language.name;
+
                 url = '/api/locales/' + langShortCode + '.json';
                 promises.push(
                     zsBaseWebSrv.getJSON(url)
@@ -103,9 +108,21 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
 
             $q.all(promises).then(function(data) {
+                // that.languageJSONs = results; // for reference if needed in octopus work
                 deferred.resolve(results);
             });
 
+            return deferred.promise;
+        };
+        this.updateLanguageTranslationText = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/hotel_settings/change_settings';
+
+            zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
             return deferred.promise;
         };
 

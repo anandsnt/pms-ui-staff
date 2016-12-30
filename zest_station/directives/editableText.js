@@ -22,43 +22,48 @@ sntZestStation.directive('editableText', ['$timeout', function($timeout) {
           ngModel: '=ngModel'
 	    },
     	link: function(scope, element, attrs) {
-            var textEditor = function() {
+        var textEditor = function() {
                 // handle double-click
                 // 
-                var rootScope = element.scope().$parent.zestStationData;
-                if (rootScope.editorModeEnabled === 'true') {
-                    //console.log('start editing : ', element);  
-                    //console.log(element, scope, attrs);
+            var rootScope = element.scope().$parent.zestStationData;
 
-                    var tag = attrs.editableText,
-                        el = $(element);
+            if (rootScope.editorModeEnabled === 'true') {
+                    // console.log('start editing : ', element);  
+                    // console.log(element, scope, attrs);
 
-                    var $inputField = $('<input class="editor-mode-cls"/>').val( el.text() );
+                var tag = attrs.editableText,
+                    el = $(element);
 
-                    el.replaceWith( $inputField );
+                var $inputField = $('<input class="editor-mode-cls"/>').val( el.text() );
 
-                    var save = function() {
-                        var newValueForText = $inputField.val();
+                el.replaceWith( $inputField );
 
-                        el.text( newValueForText );
-                        el.dblclick( textEditor );
+                var save = function() {
+                    var newValueForText = $inputField.val();
 
-                        $inputField.replaceWith( element );
-                    };
+                    el.text( newValueForText );
+                    el.dblclick( textEditor );
 
-                    $inputField.one('blur', save).focus();
-                } else {
-                    console.log('editor mode currently is OFF');
-                }
-            };
+                    $inputField.replaceWith( element );
+
+                    console.log('updating: ', tag, ' to be: ', newValueForText);
+                    element.scope().$parent.saveLanguageEditorChanges(tag, newValueForText);
+
+                };
+
+                $inputField.one('blur', save).focus();
+            } else {
+                console.log('editor mode currently is OFF');
+            }
+        };
 
         element.dblclick(textEditor);
-
-        element.bind('click', function(event) {
-             // handle single-click
+        // placeholder--
+        // element.bind('click', function(event) {
+            // handle single-click
             // 
-            //console.log('single click!');
-        });
+            // console.log('single click!');
+        // });
 
 
     }

@@ -228,7 +228,6 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         console.log('going to fetch language json file for editing');
 
         $.getJSON(jsonRefUrl, function(json) {
-            console.log('done!');
             var loaderScope = angular.element('#loading-spinner').scope();
 
             loaderScope.hasLoader = false;

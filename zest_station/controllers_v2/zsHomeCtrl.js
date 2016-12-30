@@ -188,7 +188,7 @@ sntZestStation.controller('zsHomeCtrl', [
                     $scope.selectLanguage(obj);
                     setTimeout(function() {
                         $scope.$digest();
-                    },100);
+                    }, 100);
                     return;
                 }
             }
@@ -198,6 +198,9 @@ sntZestStation.controller('zsHomeCtrl', [
             userInActivityTimeInHomeScreenInSeconds = 0;
             var languageConfig = zsGeneralSrv.languageValueMappingsForUI[language.name],
                 langShortCode = languageConfig.code;
+
+                // keep track of lang short code, for editor to save / update tags when needed
+               $scope.languageCodeSelected(langShortCode, language.name);
 
             $translate.use(langShortCode);
             $scope.selectedLanguage = language;
