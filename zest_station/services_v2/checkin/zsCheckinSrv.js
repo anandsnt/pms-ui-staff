@@ -60,17 +60,17 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 // we will continously communicate with the terminal till 
                 // the timeout set for the hotel
                 if (timeStampInSeconds >= $rootScope.emvTimeout) {
-                    var errors = ["Request timed out. Unable to process the transaction"];
+                    var errors = ['Request timed out. Unable to process the transaction'];
 
                     clearInterval(refreshIntervalId);
                     deferred.reject(errors);
                 } else {
                     zsBaseWebSrv.getJSONWithSpecialStatusHandling(async_callback_url).then(function(data) {
                         // if the request is still not proccesed
-                        if ((!!data.status && data.status === 'processing_not_completed') || data === "null") {
+                        if (!!data.status && data.status === 'processing_not_completed' || data === 'null') {
                             // is this same URL ?
                             setTimeout(function() {
-                                console.info("POLLING::-> for emv terminal response");
+                                console.info('POLLING::-> for emv terminal response');
                                 pollToTerminal(async_callback_url);
                             }, 5000);
                         } else {
@@ -165,7 +165,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
             url = '/api/guest_details/' + params.guest_id;
             var param = {
-                "nationality_id": params.nationality_id
+                'nationality_id': params.nationality_id
             };
 
             zsBaseWebSrv.putJSON(url, param).then(function(data) {
@@ -221,7 +221,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var id = data.id;
             var url = '/api/reservations/' + id + '/email_registration_card';
             var params = {
-                "application": data.application
+                'application': data.application
             };
 
             zsBaseWebSrv.getJSON(url, params).then(function(data) {
@@ -260,12 +260,11 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.fetchReservationBalanceDetails = function(params) {
 
-            var deferred = $q.defer();
-
-            url = 'zest_station/reservations/' + params.reservation_id;
-            var param = {
-                "nationality_id": params.nationality_id
-            };
+            var deferred = $q.defer(),
+                url = 'zest_station/reservations/' + params.reservation_id,
+                param = {
+                    'nationality_id': params.nationality_id
+                };
 
             zsBaseWebSrv2.getJSON(url, param).then(function(data) {
                 deferred.resolve(data);
@@ -276,16 +275,20 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         };
         
         this.fetchUpsellDetails = function(reservation) {
+             var params = {
+                set_arrival_time_to_current_time: true
+            };
             var deferred = $q.defer(),
                 url = 'guest_web/reservations/' + reservation.id + '.json';
 
-            zsBaseWebSrv.getJSON(url).then(function(data) {
+            zsBaseWebSrv.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
             });
             return deferred.promise;
         };
+
 
         this.fetchStarTacPrinterData = function(params) {
             var deferred = $q.defer();

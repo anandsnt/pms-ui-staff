@@ -2,6 +2,7 @@
  * Number pagination directive - controller.
  */
 sntRover.controller('rvPaginationCtrl', ['$scope', '$attrs', function($scope, $attrs) {
+    
     // Initializing variables
     $scope.showCount    = 5;
     $scope.pageChange   = false;    // Variable for detecting external changes
