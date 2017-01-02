@@ -1,9 +1,9 @@
 admin.controller('adsnapshotSetupCtrl', ['$scope',
 	'$state',
-	'snapshotSetupData',
 	'adSnapShotSetupSrv',
+	'ADChargeGroupsSrv',
 	'$timeout',
-	function($scope, $state, snapshotSetupData, adSnapShotSetupSrv, $timeout) {
+	function($scope, $state, adSnapShotSetupSrv, ADChargeGroupsSrv, $timeout) {
 		BaseCtrl.call(this, $scope);
 
 		$scope.hours = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
@@ -45,10 +45,21 @@ admin.controller('adsnapshotSetupCtrl', ['$scope',
 			$scope.callAPI(adSnapShotSetupSrv.getSettings, options);
 		};
 
+		/*
+	    * To fetch charge groups list
+	    */
+		var fetchChargeGroupsSuccessCallback = function(data) {
+			$scope.$emit('hideLoader');
+			$scope.chargeGroups = data.charge_groups;
+		};
+
+	
+
 		(function init() {
 			$scope.errorMessage = '';
 			$scope.successMessage = '';
 			$scope.fetchSettings();
+			$scope.invokeApi(ADChargeGroupsSrv.fetch, {}, fetchChargeGroupsSuccessCallback);
 		}());
 
 	}
