@@ -929,7 +929,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				existingHoldStatus: parseInt($scope.allotmentConfigData.summary.hold_status),
 				computedSegment: false,
 				rates: [],
-				contractedRates: []
+				contractedRates: [],
+                rateSelectDataObject: []
 			};
 
 			$scope.billingInfoModalOpened = false;
