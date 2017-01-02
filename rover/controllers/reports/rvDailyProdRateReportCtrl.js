@@ -12,7 +12,7 @@ angular.module('sntRover')
         '$timeout',
         // eslint-disable-next-line max-params
         function($rootScope, $scope, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout) {
-            var didOnce;
+            var refData;
             var UNDEFINED = {
                 id: 'UNDEFINED',
                 rate_type_id: 'UNDEFINED',
@@ -69,10 +69,10 @@ angular.module('sntRover')
 
             var watchShowAvailability, watchshowRevenue;
 
-            var reportSubmited = $scope.$on(reportMsgs['REPORT_SUBMITED'], reInit);
-            var reportPrinting = $scope.$on(reportMsgs['REPORT_PRINTING'], reInit);
-            var reportUpdated = $scope.$on(reportMsgs['REPORT_UPDATED'], reInit);
-            var reportPageChanged = $scope.$on(reportMsgs['REPORT_PAGE_CHANGED'], reInit);
+            var reportSubmited;
+            var reportPrinting;
+            var reportUpdated;
+            var reportPageChanged;
 
             BaseCtrl.call(this, $scope);
 
@@ -101,31 +101,35 @@ angular.module('sntRover')
             };
 
             // cant disable both, when one disabled one the other should be enabled
-            watchShowAvailability = $scope.$watch('uiFilter.showAvailability', function(newValue) {
+            watchShowAvailability = $scope.$watch('uiFilter.showAvailability', function(newValue, oldValue) {
+                if ( newValue === oldValue ) {
+                    return;
+                }
+
                 if (false === newValue && !$scope.uiFilter.showRevenue) {
                     $scope.uiFilter.showRevenue = true;
                 }
 
                 $scope.$emit('showLoader');
-                $timeout(reInit, TIMEOUT);
+                $timeout(reInit.bind(this, 'uiFilter.showAvailability'), TIMEOUT);
             });
 
             // cant disable both, when one disabled one the other should be enabled
-            watchshowRevenue = $scope.$watch('uiFilter.showRevenue', function(newValue) {
+            watchshowRevenue = $scope.$watch('uiFilter.showRevenue', function(newValue, oldValue) {
+                if ( newValue === oldValue ) {
+                    return;
+                }
+
                 if (false === newValue && !$scope.uiFilter.showAvailability) {
                     $scope.uiFilter.showAvailability = true;
                 }
 
                 $scope.$emit('showLoader');
-                $timeout(reInit, TIMEOUT);
+                $timeout(reInit.bind(this, 'uiFilter.showRevenue'), TIMEOUT);
             });
 
             $scope.$on('$destroy', watchShowAvailability);
             $scope.$on('$destroy', watchshowRevenue);
-            $scope.$on('$destroy', reportSubmited);
-            $scope.$on('$destroy', reportUpdated);
-            $scope.$on('$destroy', reportPrinting);
-            $scope.$on('$destroy', reportPageChanged);
 
             $scope.reactRenderDone = function() {
                 refreshScrollers();
@@ -166,7 +170,7 @@ angular.module('sntRover')
              * @param  {string} shortMonthAndDate info on how we want to show the date
              * @return {object}                   computed datas { headerTop, headerBot, colSpan, colspanArray, rightPaneWidth }
              */
-            function generateXaxisData (uiFilter, chosenReport, shortMonthAndDate) {
+            function generateXaxisData (uiFilter, chosenReport, dates, shortMonthAndDate) {
                 var SUB_HEADER_NAMES = {
                         'ROOMS': 'Occ Rooms',
                         'AVAILABLE_ROOMS': 'Avl. Rooms',
@@ -187,8 +191,8 @@ angular.module('sntRover')
                 var rightPaneWidth = 0;
                 var colSpan = 0;
 
-                var ms = new tzIndependentDate(chosenReport.fromDate) * 1;
-                var last = new tzIndependentDate(chosenReport.untilDate) * 1;
+                var ms = new tzIndependentDate(dates.fromDate) * 1;
+                var last = new tzIndependentDate(dates.untilDate) * 1;
                 var ONE_DAY = 86400000;
                 var isPastDay, currentHeaders;
 
@@ -250,10 +254,10 @@ angular.module('sntRover')
              * generated a modified copy of results with each entry having its -
              * rate_name, rate_type_id and rate_type_name augmented.
              * @param  {array} results      results from the api
-             * @param  {object} didOnce     processed data
+             * @param  {object} refData     processed data
              * @return {object}             computed data { yAxis, modifiedResults }
              */
-            function genYaxisDataAndResults (results, didOnce) {
+            function genYaxisDataAndResults (results, refData) {
                 var yAxis = [];
                 var resultCopy = {};
 
@@ -265,14 +269,14 @@ angular.module('sntRover')
                 _.each(results, function (dateObj, date) {
                     _.each(dateObj, function (post) {
                         rateId = post.rate_id;
-                        matchedRate = didOnce.allMappedRates[rateId];
+                        matchedRate = refData.allMappedRates[rateId];
 
                         if ( _.isUndefined(matchedRate) ) {
                             post.rate_name = UNDEFINED.name;
                             matchedRateType = UNDEFINED;
                         } else {
                             post.rate_name = matchedRate.rate_name || matchedRate.name;
-                            matchedRateType = didOnce.allMappedRateTypes[matchedRate.rate_type_id];
+                            matchedRateType = refData.allMappedRateTypes[matchedRate.rate_type_id];
                         }
 
                         rateTypeId = matchedRateType.rate_type_id;
@@ -508,33 +512,49 @@ angular.module('sntRover')
              * @param  {array} allRateTypes all rate types
              * @return {object}              processed data source
              */
-            function doOnce (allRates, allRateTypes) {
+            function processOnce (allRates, allRateTypes) {
                 return {
                     allMappedRates: _.indexBy(allRates, 'id'),
                     allMappedRateTypes: _.indexBy(allRateTypes, 'rate_type_id')
                 };
+            }         
+
+            function getFromUntilDates(chunk) {
+                var fullDates = _.keys(chunk);
+                var singleDate;
+                var dayNum;
+
+                var dates = _.map(fullDates, function(date) {
+                    singleDate = date;
+                    dayNum = parseInt( date.split('-')[2], 10 );
+                    return isNaN(dayNum) ? 1 : dayNum;
+                });
+
+                var fromDay = _.min(dates);
+                var untilDay = _.max(dates);
+                var sdSplit = singleDate.split('-');
+
+                return {
+                    fromDate: sdSplit[0] + '-' + sdSplit[1] + '-' + fromDay,
+                    untilDate: sdSplit[0] + '-' + sdSplit[1] + '-' + untilDay
+                };
             }
-            
-            /**
-             * initialize everything
-             * @return {object} undefined
-             */
-            function init () {
+
+            function processChunks(chunk) {
                 var genXAxis, genYAxis, modifiedResults;
-                var results = mainCtrlScope.results;
 
                 if ( ! _.has($scope.chosenReport, 'hasRateFilter') ) {
                     return;
                 }
 
-                genXAxis = generateXaxisData($scope.uiFilter, $scope.chosenReport, $rootScope.shortMonthAndDate);
+                genXAxis = generateXaxisData($scope.uiFilter, $scope.chosenReport, getFromUntilDates(chunk), $rootScope.shortMonthAndDate);
                 $scope.headerTop = genXAxis.headerTop;
                 $scope.headerBot = genXAxis.headerBot;
                 $scope.colSpan = genXAxis.colSpan;
                 $scope.colspanArray = genXAxis.colspanArray;
                 $scope.rightPaneWidth = genXAxis.rightPaneWidth;
 
-                genYAxis = genYaxisDataAndResults(results, didOnce);
+                genYAxis = genYaxisDataAndResults(chunk, refData);
                 $scope.yAxisLabels = genYAxis.yAxis;
                 modifiedResults = genYAxis.modifiedResults;
 
@@ -543,15 +563,203 @@ angular.module('sntRover')
                 renderReact();
             }
 
+            function startProcessChunk() {
+                $scope.$emit('showLoader');
+                $timeout(function() {
+                    var currentMonthIndex;
+
+                    processChunks( chunksStore.getCurChunk() );
+                    $scope.reportMonths = [];
+                    $scope.reportMonths = chunksStore.getChunkNames();
+                    $scope.reportMonthTrack = {};
+
+                    currentMonthIndex = _.findIndex($scope.reportMonths, { isActive: true });
+                    $scope.reportMonthTrack.curr = $scope.reportMonths[currentMonthIndex];
+
+                    if ( currentMonthIndex > 0 ) {
+                        $scope.reportMonthTrack.prev = $scope.reportMonths[ currentMonthIndex - 1 ];
+                    } else {
+                       $scope.reportMonthTrack.prev = false; 
+                    }
+
+                    if ( currentMonthIndex < $scope.reportMonths.length ) {
+                        $scope.reportMonthTrack.next = $scope.reportMonths[ currentMonthIndex + 1 ];
+                    } else {
+                        $scope.reportMonthTrack.next = false;
+                    }
+                }, TIMEOUT);
+            }
+
+            var chunksStore;
+            function newInit() {
+                var results = mainCtrlScope.results;
+
+                chunksStore = chunksStoreComposer(results);
+                startProcessChunk();
+            }
+
+            $scope.jumpToMonth = function(index) {
+                chunksStore.jumpToChunk(index);
+                startProcessChunk();
+            };
+
             /**
              * re-initialize everything
              * @return {object} undefined
              */
-            function reInit() {
-                init();
+            function reInit(place) {
+                newInit();
             }
 
-            didOnce = doOnce($scope.chosenReport.hasRateFilter.data, $scope.chosenReport.hasRateTypeFilter.data);
-            init();
+            refData = processOnce($scope.chosenReport.hasRateFilter.data, $scope.chosenReport.hasRateTypeFilter.data);
+            newInit();
+
+            /**
+             * [chunksStoreComposer description]
+             * @return {object} composed object
+             */
+            function chunksStoreComposer(data) {
+                var apiData = data || {};
+
+                var chunks = {};
+                var meta = {
+                    keys: [],
+                    length: 0,
+                    index: 0
+                };
+
+                var beautifyName = function(date) {
+                    var split = date.split('-');
+                    var year = split[0];
+                    var month = split[1];
+                    var monthName = 'Default';
+
+                    switch (month) {
+                    case '01':
+                        monthName = 'Jan';
+                        break;
+
+                    case '02':
+                        monthName = 'Feb';
+                        break;
+
+                    case '03':
+                        monthName = 'Mar';
+                        break;
+
+                    case '04':
+                        monthName = 'Apr';
+                        break;
+
+                    case '05':
+                        monthName = 'May';
+                        break;
+
+                    case '06':
+                        monthName = 'Jun';
+                        break;
+
+                    case '07':
+                        monthName = 'Jul';
+                        break;
+
+                    case '08':
+                        monthName = 'Aug';
+                        break;
+
+                    case '09':
+                        monthName = 'Sep';
+                        break;
+
+                    case '10':
+                        monthName = 'Oct';
+                        break;
+
+                    case '11':
+                        monthName = 'Nov';
+                        break;
+
+                    case '12':
+                        monthName = 'Dec';
+                        break;
+
+
+                    default:
+                        break;
+                    }
+
+                    return monthName + ' ' + year;
+                };
+
+                var getChunkNamesGetter = function(meta) {
+                    return function() {
+                        var names = [];
+
+                        names = _.map(meta.keys, function(key, index) {
+                            return {
+                                isActive: index === meta.index,
+                                index: index,
+                                name: beautifyName(key)
+                            };
+                        });
+
+                        return names;
+                    };
+                };
+
+                var getCurChunkGetter = function(chunks, meta) {
+                    return function() {
+                        return chunks[ meta.keys[meta.index] ] || {};
+                    };
+                };
+
+                var jumpToChunkGetter = function(chunks, meta) {
+                    return function(index) {
+                        var chunk;
+
+                        if ( index >= 0 && index < meta.length ) {
+                            meta.index = index;
+                            chunk = chunks[ meta.keys[index] ]; 
+                        } else {
+                            chunk = {};
+                        }
+
+                        return chunk;
+                    };
+                };
+
+                var YM_LEN = 7;
+                var yymm;
+
+                _.each(apiData, function(dateObj, date) {
+                    yymm = date.slice(0, YM_LEN);
+
+                    if ( ! chunks.hasOwnProperty(yymm) ) {
+                        chunks[yymm] = {};
+                    }
+
+                    chunks[yymm][date] = dateObj;
+                });
+
+                meta.keys = _.keys(chunks);
+                meta.length = meta.keys.length;
+                meta.index = 0;
+
+                return {
+                    getChunkNames: getChunkNamesGetter(meta),
+                    getCurChunk: getCurChunkGetter(chunks, meta),
+                    jumpToChunk: jumpToChunkGetter(chunks, meta)
+                };
+            }
+
+            reportSubmited = $scope.$on(reportMsgs['REPORT_SUBMITED'], reInit);
+            reportPrinting = $scope.$on(reportMsgs['REPORT_PRINTING'], reInit);
+            reportUpdated = $scope.$on(reportMsgs['REPORT_UPDATED'], reInit);
+            reportPageChanged = $scope.$on(reportMsgs['REPORT_PAGE_CHANGED'], reInit);
+
+            $scope.$on('$destroy', reportSubmited);
+            $scope.$on('$destroy', reportUpdated);
+            $scope.$on('$destroy', reportPrinting);
+            $scope.$on('$destroy', reportPageChanged);
         }
     ]);
