@@ -22,6 +22,24 @@ sntZestStation.directive('editableText', ['$timeout', function($timeout) {
           ngModel: '=ngModel'
 	    },
     	link: function(scope, element, attrs) {
+
+        var addListeners = function(el, fnToFire) {
+            // double-click listener
+            el.dblclick( fnToFire );
+
+            // touch-device tap listener
+            $(el).on('touchend', fnToFire);
+
+            var pressHoldtimeoutId;
+            // press-and-hold for 1 sec listener
+            $(el).on('mousedown', function() {
+                pressHoldtimeoutId = setTimeout(fnToFire, 1000);
+            }).on('mouseup mouseleave', function() {
+                clearTimeout(pressHoldtimeoutId);
+            });
+
+        };
+
         var textEditor = function() {
                 // handle double-click
                 // 
@@ -42,7 +60,9 @@ sntZestStation.directive('editableText', ['$timeout', function($timeout) {
                     var newValueForText = $inputField.val();
 
                     el.text( newValueForText );
-                    el.dblclick( textEditor );
+
+                    // re-add listeners to new element
+                    addListeners(el, textEditor);
 
                     $inputField.replaceWith( element );
 
@@ -57,13 +77,7 @@ sntZestStation.directive('editableText', ['$timeout', function($timeout) {
             }
         };
 
-        element.dblclick(textEditor);
-        // placeholder--
-        // element.bind('click', function(event) {
-            // handle single-click
-            // 
-            // console.log('single click!');
-        // });
+        addListeners(element, textEditor);
 
 
     }

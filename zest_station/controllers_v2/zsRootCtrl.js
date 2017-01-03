@@ -1245,6 +1245,8 @@ sntZestStation.controller('zsRootCtrl', [
 
 			// flag to check if default language was set or not
             $scope.zestStationData.IsDefaultLanguageSet = false;
+
+            $scope.zestStationData.editorModeEnabled = 'false';
             
             // if ooo treshold is not set or not active, set th treshold as 1
             if (!$scope.zestStationData.kiosk_out_of_order_treshold_is_active || _.isNaN(parseInt($scope.zestStationData.kiosk_out_of_order_treshold_value))) {
