@@ -815,7 +815,8 @@ sntZestStation.controller('zsRootCtrl', [
 		 ********************************************************************************/
         var onChromeAppResponse = function(response) {
             console.log('msg from ChromeApp: ', response);
-            if (!!response && response.qr_code) {
+
+            if (response && response.qr_code) {
                 $scope.$broadcast('QR_SCAN_SUCCESS', {
                     'reservation_id': response.reservation_id
                 });
@@ -834,7 +835,9 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.focusInputField = function(elementId) {
             $timeout(function() {
                 if (!$scope.isIpad) {
-                    document.getElementById(elementId).click();
+                    if (document.getElementById(elementId)) {// fixes an error that occurs from user clicking too early while screen initializing
+                        document.getElementById(elementId).click();    
+                    }
                 } else {
                     $scope.callBlurEventForIpad();
                 }
@@ -973,7 +976,10 @@ sntZestStation.controller('zsRootCtrl', [
                         // if the selected workstation status is out of order for first login, go to admin page
                         $state.go('zest_station.admin');
                     }
-                } else if (previousWorkStationStatus === 'out-of-order' && newWorkStationStatus === 'in-order' && $state.current.name !== 'zest_station.admin') {
+                } else if (previousWorkStationStatus === 'out-of-order' && newWorkStationStatus === 'in-order' && $state.current.name !== 'zest_station.admin' && $state.current.name === 'zest_station.outOfService') {
+                    // if the selected workstation status changed to in order, go to home page
+                    // had to add $state.current.name === 'zest_station.outOfService' , because this was forcing user to .home
+                    // //when they were still going through the check-in flow when the workstations refreshed
                     // if the selected workstation status changed to in order, go to home page
                     $state.go('zest_station.home');
                 } else if (newWorkStationStatus === 'out-of-order' && $state.current.name !== 'zest_station.admin') {
@@ -1176,11 +1182,25 @@ sntZestStation.controller('zsRootCtrl', [
             zestSntApp.setBrowser();
             if ($scope.inChromeApp) {
                 optimizeTouchEventsForChromeApp();
+                // disable right click options for chromeapp to restrict user from escaping the app
+                document.addEventListener('contextmenu', function(e) {
+                    e.preventDefault();
+                });
             }
+
 			// initCardReadTest(); //debugging, comment out when done
 
 			// flag to check if default language was set or not
             $scope.zestStationData.IsDefaultLanguageSet = false;
+            
+            // if ooo treshold is not set or not active, set th treshold as 1
+            if (!$scope.zestStationData.kiosk_out_of_order_treshold_is_active || _.isNaN(parseInt($scope.zestStationData.kiosk_out_of_order_treshold_value))) {
+                $scope.zestStationData.kioskOutOfOrderTreshold = 1;
+            } else {
+                $scope.zestStationData.kioskOutOfOrderTreshold = parseInt($scope.zestStationData.kiosk_out_of_order_treshold_value);
+            }
+
+            $scope.zestStationData.consecutiveKeyFailure = 0;
         }());
     }
 ]);
