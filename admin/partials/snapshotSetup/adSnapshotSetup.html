@@ -126,35 +126,6 @@
                         Save changes
                     </button>
                 </div>
-
-                <ad-form-title full-width="true" form-title="{{'CHARGE_CODE_GROUP_MAPPING_TITLE' | translate}}"></ad-form-title>
-
-                <fieldset class="holder full-width holder_margin" >
-                    <div class="entry full-width">
-                        <label>
-                            {{ 'DEFAULT_CHARGE_GROUP_TITLE' | translate}}
-                        </label>
-                        <label>
-                            {{ 'DEFAULT_CHARGE_GROUP_DESCRIPTION' | translate}}
-                        </label>
-                        <div class="entry full-width float">
-                            <div class="select select-col select-margin">
-                                <select ng-model="snapshotData.default_charge_group">
-                                    <option value="">Select</option>
-                                    <option ng-repeat="chargeGroup  in chargeGroups" value="{{chargeGroup.value}}" ng-bind="chargeGroup.name"></option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-                <div class="actions float">
-                    <button type="button" class="button blank add-data-inline" ng-click="goBackToPreviousState()">
-                        Cancel
-                    </button>
-                    <button type="button" class="button green" ng-click="saveSettings()">
-                        Save changes
-                    </button>
-                </div>
             </div>
         </section>
     </div>

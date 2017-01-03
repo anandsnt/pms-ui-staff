@@ -48,4 +48,21 @@ admin.service('adSnapShotSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($
 		});
 		return deferred.promise;
 	};
+
+	/**
+	 * [save snapshot sub group mapping description]
+	 * @param  {[type]} params [description]
+	 * @return {[type]}        [description]
+	 */
+	this.saveSubgroupMapping = function(params) {
+		var deferred = $q.defer(),
+			url = '/api/hotel_settings/snapshot_settings.json';
+
+		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
 }]);

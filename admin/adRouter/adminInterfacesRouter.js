@@ -413,11 +413,11 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     
-    // $stateProvider.state('admin.snapshotSetup', {
-    //     templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
-    //     controller: 'ADInterfaceSubMenuCtrl',
-    //     url: '/snapshotSetup'
-    // });
+    $stateProvider.state('admin.snapshotSetup', {
+        templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+        controller: 'ADInterfaceSubMenuCtrl',
+        url: '/snapshotSetup'
+    });
 
 
     $stateProvider.state('admin.snapshotGeneralSetup', {
@@ -432,14 +432,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         url: '/snapshotSetup/chargeGroupMapping',
     });
 
-    // $stateProvider.state('admin.snapshotSubGroupMapping', {
-    //     templateUrl: '/assets/partials/snapshotSetup/adSnapshotSubGroupMapping.html',
-    //     controller: 'adsnapshotSubGroupMappingCtrl',
-    //     url: '/snapshotSetup/subGroupMapping',
-    // });
-    $stateProvider.state('admin.snapshotSetup', {
+    $stateProvider.state('admin.snapshotSubGroupMapping', {
         templateUrl: '/assets/partials/snapshotSetup/adSnapshotSubGroupMapping.html',
         controller: 'adsnapshotSubGroupMappingCtrl',
         url: '/snapshotSetup/subGroupMapping',
     });
+
 });
