@@ -314,6 +314,7 @@ module.exports = {
                 'guestweb/**/common_templates/partials/checkout/**.html',
                 'guestweb/**/common_templates/partials/gwNoOption.html',
                 'guestweb/**/common_templates/partials/ponchartrain/gwCheckoutfinal.html',
+                'guestweb/**/common_templates/partials/ponchartrain/gwLateCheckoutfinal.html',
                 checkoutNowPartials + '*.html',
                 checkinPartials + '*.html',
                 precheckinPartials + '*.html'],
