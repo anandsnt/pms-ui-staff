@@ -45,21 +45,12 @@ admin.controller('adsnapshotSetupCtrl', ['$scope',
 			$scope.callAPI(adSnapShotSetupSrv.getSettings, options);
 		};
 
-		/*
-	    * To fetch charge groups list
-	    */
-		var fetchChargeGroupsSuccessCallback = function(data) {
-			$scope.$emit('hideLoader');
-			$scope.chargeGroups = data.charge_groups;
-		};
-
 	
 
 		(function init() {
 			$scope.errorMessage = '';
 			$scope.successMessage = '';
 			$scope.fetchSettings();
-			$scope.invokeApi(ADChargeGroupsSrv.fetch, {}, fetchChargeGroupsSuccessCallback);
 		}());
 
 	}

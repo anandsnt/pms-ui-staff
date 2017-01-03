@@ -7,6 +7,7 @@
 			<span class="count">
 				({{totalCount}})
 			</span>
+			<a id="go_back" data-type="load-details" class="action back" ng-click="goBackToPreviousState()">Back</a>
 		</header>
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -52,7 +53,10 @@
 							<div class="select">
 								<select ng-model="item.snapshot_subgroup">
 	                                    <option value="">none</option>
-	                                    <option ng-repeat="subgroup  in ['FB', 'AUX', 'ACC']" value="{{subgroup}}" ng-bind="subgroup"></option>
+	                                    <option value="FB">FB</option>
+	                                    <option value="AUX">AUX</option>
+	                                    <option value="ACC">ACC</option>
+	                                    <!-- <option ng-repeat="subgroup  in subgroups" value="{{subgroup}}" ng-bind="subgroup"></option> -->
 	                                </select>
 	                        </div>
 						</td>

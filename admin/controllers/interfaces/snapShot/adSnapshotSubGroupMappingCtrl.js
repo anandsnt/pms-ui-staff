@@ -2,18 +2,9 @@ admin.controller('adsnapshotSubGroupMappingCtrl', ['$scope', 'ADChargeCodesSrv',
 	function($scope, ADChargeCodesSrv, adSnapShotSetupSrv, ngTableParams, $filter, $timeout, $state, $rootScope, $location, $anchorScroll, adSnapShotSetupSrv) {
 
 		ADBaseTableCtrl.call(this, $scope, ngTableParams);
-		$scope.$emit("changedSelectedMenu", 5);
-		$scope.currentClickedElement = -1;
-		$scope.currentClickedTaxElement = -1;
-		$scope.isAdd = false;
-		$scope.isAddTax = false;
-		$scope.isEditTax = false;
-		$scope.isEdit = false;
+		
 		$scope.successMessage = "";
-
-		$scope.selected_payment_type = {};
-		$scope.selected_payment_type.id = -1;
-		$scope.prefetchData = {};
+		$scope.subgroups = ['FB', 'AUX', 'ACC'];
 
 
 		$scope.fetchTableData = function($defer, params) {

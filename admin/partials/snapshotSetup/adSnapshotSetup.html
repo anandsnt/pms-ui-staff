@@ -28,7 +28,7 @@
 
                     
                 </fieldset>
-                <ad-form-title full-width="true" form-title="{{'INCREMENTAL_EXPORT_LABEL' | translate}}"></ad-form-title>
+                <!-- <ad-form-title full-width="true" form-title="{{'INCREMENTAL_EXPORT_LABEL' | translate}}"></ad-form-title>
                 <ad-toggle-button is-checked="snapshotData.incremental_export_enabled" label="{{'INCREMENTAL_EXPORT_SWITCH_LABEL'| translate}}"></ad-toggle-button>
                     <label class="radio" ng-class="{'checked':snapshotData.incremental_export_option== 'once'}" ng-show="snapshotData.incremental_export_enabled">
                             <span class="icon-form icon-radio " ng-class="{checked:snapshotData.incremental_export_option=='once'}"></span>
@@ -76,10 +76,6 @@
                             {{ 'NO_OF_RETRIES_LABEL' | translate}}
                         </label>
                         <div class="select select-col select-width-30">
-                                <!-- <select ng-model="snapshotData.incremental_export_once_retry_count">
-                                    <option value="">0</option>
-                                    <option ng-repeat="retry  in retry_count_options" value="{{retry}}" ng-bind="retry"></option>
-                                </select> -->
 
                                 <select ng-options="retry for retry  in retry_count_options" ng-model="snapshotData.incremental_export_once_retry_count">
                                 </select>
@@ -116,7 +112,7 @@
                             </div>
                         </div>
                     </div>
-                </fieldset>
+                </fieldset> -->
 
                 <div class="actions float">
                     <button type="button" class="button blank add-data-inline" ng-click="goBackToPreviousState()">

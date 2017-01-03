@@ -428,7 +428,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
 
     $stateProvider.state('admin.snapshotChargeGroupMapping', {
         templateUrl: '/assets/partials/snapshotSetup/adSnapshotChargeGroupMapping.html',
-        controller: 'adsnapshotSetupCtrl',
+        controller: 'adSnapshotChargeGroupMappingCtrl',
         url: '/snapshotSetup/chargeGroupMapping',
     });
 
