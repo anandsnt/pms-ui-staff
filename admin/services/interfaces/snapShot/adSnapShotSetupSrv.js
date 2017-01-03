@@ -56,7 +56,7 @@ admin.service('adSnapShotSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($
 	 */
 	this.saveSubgroupMapping = function(params) {
 		var deferred = $q.defer(),
-			url = '/api/hotel_settings/snapshot_settings.json';
+			url = 'api/snapshot_settings/assign_charge_code_sub_group';
 
 		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
