@@ -15,7 +15,7 @@
             <span class="room">Room</span>
             <span class="nights">Nights</span>
         </div>
-        <div class="list scrollable" ng-iscroll="reservationSearchResultList" ng-iscroll-delay="1000">
+        <div class="list scrollable scroll-vertical">
             <div class="wrapper">
                 <div class="guest" ng-click="clickedOnResultItem(row.room_id)" ng-repeat = "row in diaryData.reservationSearchResults" ng-class = "{'no-room': escapeNull(row.room) === '', 'no-status': row.reservation_status === 'RESERVED'}">
                     <div class="data">

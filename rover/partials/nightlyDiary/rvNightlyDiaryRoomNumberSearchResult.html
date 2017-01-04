@@ -1,4 +1,4 @@
- <div class="grid-room-search-results scrollable"  ng-iscroll="roomSearchResultList" ng-iscroll-delay="1000" ng-show="diaryData.showSearchResultsArea" ng-class="{'visible': diaryData.showSearchResultsArea}"  ng-controller="rvNightlyDiaryRoomNumberSearchResultController">
+ <div class="grid-room-search-results scroll-vertical" ng-show="diaryData.showSearchResultsArea" ng-class="{'visible': diaryData.showSearchResultsArea}"  ng-controller="rvNightlyDiaryRoomNumberSearchResultController">
 	<div class="wrapper">
 		<div class="room" ng-repeat="row in diaryData.roomNumberSearchResults" ng-click="gotoSelectedRoom(row)">
 			<span ng-class='(row.service_status === "IN_SERVICE") ? "room-number "+row.hk_status : "room-number out"' ng-bind-html="row.room_no | highlight:diaryData.textInQueryBox:false">
