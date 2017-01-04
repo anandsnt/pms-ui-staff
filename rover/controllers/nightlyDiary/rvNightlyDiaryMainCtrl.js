@@ -23,7 +23,11 @@ angular.module('sntRover')
 
 
             BaseCtrl.call(this, $scope);
-
+            //fix for scroll
+            document.removeEventListener('touchmove',window.fu,false);
+            $scope.$on("$destroy", function(){
+                document.addEventListener('touchmove',window.fu,false);
+            });
             /*
              * utility method Initiate controller
              * @return {}
