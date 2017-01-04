@@ -1,307 +1,337 @@
-sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
-	'$rootScope',
-	'$scope',
-	'RVreportsSrv',
-	'RVreportsSubSrv',
-	'RVReportUtilsFac',
-	'RVReportParamsConst',
-	'RVReportMsgsConst',
-	'RVReportNamesConst',
-	'$filter',
-	'$timeout',
-	'ngDialog',
-	function($rootScope, $scope, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, ngDialog) {
-		BaseCtrl.call(this, $scope);
+angular.module('sntRover')
+.controller('RVDailyProdRoomTypeReport.Controller', [
+    '$rootScope',
+    '$scope',
+    'RVreportsSrv',
+    'RVreportsSubSrv',
+    'RVReportUtilsFac',
+    'RVReportParamsConst',
+    'RVReportMsgsConst',
+    'RVReportNamesConst',
+    '$filter',
+    '$timeout',
+    // eslint-disable-next-line max-params
+    function($rootScope, $scope, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout) {
+        var DELAY_100 = 100;
+        var DELAY_300 = 300;
+        var DELAY_1000 = 1000;
+        var LIMITER = 2;
+        var COL_5 = 5;
+        var COL_3 = 3;
+        var COL_2 = 2;
 
-		var detailsCtrlScope = $scope.$parent,
-			mainCtrlScope    = detailsCtrlScope.$parent,
-			chosenReport     = detailsCtrlScope.chosenReport;
+        var detailsCtrlScope = $scope.$parent,
+            mainCtrlScope = detailsCtrlScope.$parent;
 
+        var LEFT_PANE_SCROLL = 'left-pane-scroll',
+            RIGHT_PANE_SCROLL = 'right-pane-scroll';
 
-		var LEFT_PANE_SCROLL  = 'left-pane-scroll',
-			RIGHT_PANE_SCROLL = 'right-pane-scroll';
+        var refreshScrollers = function() {
+            if ( mainCtrlScope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL) ) {
+                $scope.refreshScroller( LEFT_PANE_SCROLL );
+            }
 
-		$scope.setScroller(LEFT_PANE_SCROLL, {
-			'preventDefault': false,
-			'probeType': 3
-		});
+            if ( mainCtrlScope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL) ) {
+                $scope.refreshScroller( RIGHT_PANE_SCROLL );
+            }
+        };
 
-		$scope.setScroller(RIGHT_PANE_SCROLL, {
-			'preventDefault': false,
-			'probeType': 3,
-			'scrollX': true
-		});
+        var setupScrollListner = function() {
+            mainCtrlScope.myScroll[ LEFT_PANE_SCROLL ]
+                .on('scroll', function() {
+                    mainCtrlScope.myScroll[ RIGHT_PANE_SCROLL ]
+                        .scrollTo( 0, this.y );
+                });
 
-		var refreshScrollers = function() {
-			if ( !! mainCtrlScope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL) ) {
-				$scope.refreshScroller( LEFT_PANE_SCROLL );
-			}
+            mainCtrlScope.myScroll[ RIGHT_PANE_SCROLL ]
+                .on('scroll', function() {
+                    mainCtrlScope.myScroll[ LEFT_PANE_SCROLL ]
+                        .scrollTo( 0, this.y );
+                });
+        };
 
-			if ( !! mainCtrlScope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL) ) {
-				$scope.refreshScroller( RIGHT_PANE_SCROLL );
-			}
-		};
+        var isScrollReady = function isScrollReady () {
+            if ( mainCtrlScope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL) && mainCtrlScope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL) ) {
+                setupScrollListner();
+            } else {
+                $timeout(isScrollReady, DELAY_1000);
+            }
+        };
 
-		var setupScrollListner = function() {
-			mainCtrlScope.myScroll[ LEFT_PANE_SCROLL ]
-				.on('scroll', function() {
-					mainCtrlScope.myScroll[ RIGHT_PANE_SCROLL ]
-						.scrollTo( 0, this.y );
-				});
+        var destroyScrolls = function() {
+            mainCtrlScope.myScroll[ LEFT_PANE_SCROLL ].destroy();
+            delete mainCtrlScope.myScroll[ LEFT_PANE_SCROLL ];
 
-			mainCtrlScope.myScroll[ RIGHT_PANE_SCROLL ]
-				.on('scroll', function() {
-					mainCtrlScope.myScroll[ LEFT_PANE_SCROLL ]
-						.scrollTo( 0, this.y );
-				});
-		};
+            mainCtrlScope.myScroll[ RIGHT_PANE_SCROLL ].destroy();
+            delete mainCtrlScope.myScroll[ RIGHT_PANE_SCROLL ];
+        };
 
-		var isScrollReady = function isScrollReady () {
-			if ( !! mainCtrlScope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL) && !! mainCtrlScope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL) ) {
-				setupScrollListner();
-			} else {
-				$timeout(isScrollReady, 1000);
-			}
-		};
+        var watchShowAvailability, watchshowRevenue, reportSubmited, reportPrinting, reportUpdated, reportPageChanged;
 
-		isScrollReady();
+        BaseCtrl.call(this, $scope);
+        
+        $scope.setScroller(LEFT_PANE_SCROLL, {
+            'preventDefault': false,
+            'probeType': 3
+        });
 
-		var destroyScrolls = function() {
-			mainCtrlScope.myScroll[ LEFT_PANE_SCROLL ].destroy();
-			delete mainCtrlScope.myScroll[ LEFT_PANE_SCROLL ];
+        $scope.setScroller(RIGHT_PANE_SCROLL, {
+            'preventDefault': false,
+            'probeType': 3,
+            'scrollX': true
+        });
 
-			mainCtrlScope.myScroll[ RIGHT_PANE_SCROLL ].destroy();
-			delete mainCtrlScope.myScroll[ RIGHT_PANE_SCROLL ];
-		};
+        isScrollReady();
 
-		$scope.$on( '$destroy', destroyScrolls );
+        $scope.$on( '$destroy', destroyScrolls );
 
+        // default colspan value
+        $scope.colSpan = 5;
 
-		// default colspan value
-		$scope.colSpan = 5;
+        // ui filter by default showing both avail. and rev.
+        $scope.uiFilter = {
+            'showAvailability': true,
+            'showRevenue': true
+        };
 
-		// ui filter by default showing both avail. and rev.
-		$scope.uiFilter = {
-			'showAvailability': true,
-			'showRevenue': true
-		};
+        // cant disable both, when one disabled one the other should be enabled
+        watchShowAvailability = $scope.$watch('uiFilter.showAvailability', function(newValue) {
+            if ( false === newValue && ! $scope.uiFilter.showRevenue ) {
+                $scope.uiFilter.showRevenue = true;
+            }
+            
+            $scope.$emit('showLoader');
+            $timeout( reInit, DELAY_100 );
+        });
 
-		// cant disable both, when one disabled one the other should be enabled
-		$scope.$watch('uiFilter.showAvailability', function(newValue) {
-			if ( false == newValue && ! $scope.uiFilter.showRevenue ) {
-				$scope.uiFilter.showRevenue = true;
-			}
+        // cant disable both, when one disabled one the other should be enabled
+        watchshowRevenue = $scope.$watch('uiFilter.showRevenue', function(newValue) {
+            if ( false === newValue && ! $scope.uiFilter.showAvailability ) {
+                $scope.uiFilter.showAvailability = true;
+            }
 
-			$scope.$emit('showLoader');
-			$timeout( reInit, 100 );
-		});
+            $scope.$emit('showLoader');
+            $timeout( reInit, DELAY_300 );
+        });
 
-		// cant disable both, when one disabled one the other should be enabled
-		$scope.$watch('uiFilter.showRevenue', function(newValue) {
-			if ( false == newValue && ! $scope.uiFilter.showAvailability ) {
-				$scope.uiFilter.showAvailability = true;
-			}
+        // re-render must be initiated before for taks like printing.
+        // thats why timeout time is set to min value 50ms
+        reportSubmited = $scope.$on( reportMsgs['REPORT_SUBMITED'], reInit );
+        reportPrinting = $scope.$on( reportMsgs['REPORT_PRINTING'], reInit );
+        reportUpdated = $scope.$on( reportMsgs['REPORT_UPDATED'], reInit );
+        reportPageChanged = $scope.$on( reportMsgs['REPORT_PAGE_CHANGED'], reInit );
 
-			$scope.$emit('showLoader');
-			$timeout( reInit, 300 );
-		});
+        $scope.$on( '$destroy', watchShowAvailability );
+        $scope.$on( '$destroy', watchshowRevenue );
+        $scope.$on( '$destroy', reportSubmited );
+        $scope.$on( '$destroy', reportUpdated );
+        $scope.$on( '$destroy', reportPrinting );
+        $scope.$on( '$destroy', reportPageChanged );
 
+        /**
+         * generate the 2D matrix data that will fill the content part of the report
+         * @return {object} undefined
+         *
+         * @todo Need to break this into smaller functions
+         */
+        function processData() {
+            var SUB_HEADER_NAMES = [
+                'Rooms Occ',
+                'Rooms Available',
+                /**/
+                'Forecast Room Revenue',
+                'ADR',
+                'Actual Room Revenue'
+            ];
 
-		var processData = function() {
-			var SUB_HEADER_NAMES = [
-				'Rooms Occ',
-				'Rooms Available',
-				/**/
-				'Forecast Room Revenue',
-				'ADR',
-				'Actual Room Revenue'
-			];
+            var startIndex, endIndex, triggerIndex;
 
-			var startIndex, endIndex, triggerIndex;
+            var roomObj, dateObj;
 
-			if ( $scope.uiFilter.showAvailability && $scope.uiFilter.showRevenue ) {
-				$scope.colSpan = 5;
-			} else if ( ! $scope.uiFilter.showAvailability && $scope.uiFilter.showRevenue ) {
-				$scope.colSpan = 3;
-			} else if ( $scope.uiFilter.showAvailability && ! $scope.uiFilter.showRevenue ) {
-				$scope.colSpan = 2;
-			}
+            var loopCount = 0;
 
-			$scope.headerTop  = [];
-			$scope.headerBot  = [];
-			
+            var allDatesValInRoom = [],
+                eachDateVal = [];
 
-			var allDatesValInRoom = [],
-				eachDateVal       = [];
+            var noOfDays = 0,
+                cellWidth = 145;
 
-			$scope.reportData = [];	// this will be an array of arrays
-			$scope.roomNames = [];	// keeping seperate array so that we can avoid object being itrated aphabetically
+            var results = $scope.results,
+                actualName;
 
+            var roomKey, dateKey;
 
-			var roomObj, dateObj;
+            if ( $scope.uiFilter.showAvailability && $scope.uiFilter.showRevenue ) {
+                $scope.colSpan = COL_5;
+            } else if ( ! $scope.uiFilter.showAvailability && $scope.uiFilter.showRevenue ) {
+                $scope.colSpan = COL_3;
+            } else if ( $scope.uiFilter.showAvailability && ! $scope.uiFilter.showRevenue ) {
+                $scope.colSpan = COL_2;
+            }
 
-			var loopCount = 0;
+            $scope.headerTop = [];
+            $scope.headerBot = [];
 
+            $scope.reportData = [];	// this will be an array of arrays
+            $scope.roomNames = [];	// keeping seperate array so that we can avoid object being itrated aphabetically            
 
-			var noOfDays = 0,
-				cellWidth = 145;
+            $scope.rightPaneWidth = 0;
 
-			$scope.rightPaneWidth = 0;
+            for ( roomKey in results ) {
+                if ( ! results.hasOwnProperty(roomKey) ) {
+                    continue;
+                }
 
-			var results = $scope.results,
-				actualNam;
+                actualName = roomKey.split('__')[0];
+                $scope.roomNames.push( actualName || 'NA' );
 
-			for ( roomKey in results ) {
-				if ( ! results.hasOwnProperty(roomKey) ) {
-					continue;
-				}
+                roomObj = results[roomKey];
+                allDatesValInRoom = [];
 
-				actualName = roomKey.split('__')[0];
-				$scope.roomNames.push( actualName || 'NA' );
+                for ( dateKey in roomObj ) {
+                    if ( ! roomObj.hasOwnProperty(dateKey) ) {
+                        continue;
+                    }
 
-				roomObj = results[roomKey];
-				allDatesValInRoom = [];
+                    if ( 0 === loopCount ) {
+                        $scope.headerTop.push({
+                            name: $filter('date')(dateKey, $rootScope.shortMonthAndDate)
+                        });
 
-				for ( dateKey in roomObj ) {
-					if ( ! roomObj.hasOwnProperty(dateKey) ) {
-						continue;
-					}
+                        if ( COL_5 === $scope.colSpan ) {
+                            startIndex = 0;
+                            endIndex = SUB_HEADER_NAMES.length;
+                            triggerIndex = SUB_HEADER_NAMES.length - 1;
+                        } else if ( COL_3 === $scope.colSpan ) {
+                            startIndex = COL_2;
+                            endIndex = SUB_HEADER_NAMES.length;
+                            triggerIndex = SUB_HEADER_NAMES.length - 1;
+                        } else if ( COL_2 === $scope.colSpan ) {
+                            startIndex = 0;
+                            endIndex = 1 + 1;
+                            triggerIndex = 1;
+                        }
 
-					if ( 0 == loopCount ) {
-						$scope.headerTop.push( $filter('date')(dateKey, $rootScope.shortMonthAndDate) );
+                        for (; startIndex < endIndex; startIndex++) {
+                            $scope.headerBot.push({
+                                'name': SUB_HEADER_NAMES[startIndex],
+                                'cls': startIndex === triggerIndex ? 'day-end' : ''
+                            });
+                        }
 
-						if ( 5 == $scope.colSpan ) {
-							startIndex   = 0;
-							endIndex     = SUB_HEADER_NAMES.length;
-							triggerIndex = SUB_HEADER_NAMES.length - 1;
-						} else if ( 3 == $scope.colSpan ) {
-							startIndex   = 2;
-							endIndex     = SUB_HEADER_NAMES.length;
-							triggerIndex = SUB_HEADER_NAMES.length - 1;
-						} else if ( 2 == $scope.colSpan ) {
-							startIndex   = 0;
-							endIndex     = 1 + 1;
-							triggerIndex = 1;
-						}
-						for (; startIndex < endIndex; startIndex++) {
-							$scope.headerBot.push({
-								'name': SUB_HEADER_NAMES[startIndex],
-								'cls': startIndex == triggerIndex ? 'day-end' : ''
-							});
-						}
+                        noOfDays += 1;
+                    }
 
-						noOfDays += 1;
-					}
-					
-					dateObj = roomObj[dateKey];
+                    dateObj = roomObj[dateKey];
 
-					eachDateVal = [];
+                    eachDateVal = [];
 
-					if ( 2 == $scope.colSpan ) {
-						eachDateVal.push({
-							value: dateObj['total_reservations_count'],
-							isAvail: true
-						});
-						eachDateVal.push({
-							value: dateObj['available_rooms_count'],
-							isAvail: true,
-							cls: 'last-day'
-						});
-					} else if ( 3 == $scope.colSpan ) {
-						eachDateVal.push({
-							value: $filter('currency')(dateObj['rate_revenue'], $rootScope.currencySymbol, 2),
-							isRev: true
-						});
-						eachDateVal.push({
-							value: $filter('currency')(dateObj['adr'], $rootScope.currencySymbol, 2),
-							isRev: true
-						});
-						eachDateVal.push({
-							value: $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, 2),
-							isRev: true,
-							cls: 'last-day'
-						});
-					} else if ( 5 == $scope.colSpan ) {
-						eachDateVal.push({
-							value: dateObj['total_reservations_count'],
-							isAvail: true
-						});
-						eachDateVal.push({
-							value: dateObj['available_rooms_count'],
-							isAvail: true
-						});
-						eachDateVal.push({
-							value: $filter('currency')(dateObj['rate_revenue'], $rootScope.currencySymbol, 2),
-							isRev: true
-						});
-						eachDateVal.push({
-							value: $filter('currency')(dateObj['adr'], $rootScope.currencySymbol, 2),
-							isRev: true
-						});
-						eachDateVal.push({
-							value: $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, 2),
-							isRev: true,
-							cls: 'last-day'
-						});
-					}
+                    if ( COL_2 === $scope.colSpan ) {
+                        eachDateVal.push({
+                            value: dateObj['total_reservations_count'],
+                            isAvail: true
+                        });
+                        eachDateVal.push({
+                            value: dateObj['available_rooms_count'],
+                            isAvail: true,
+                            cls: 'last-day'
+                        });
+                    } else if ( COL_3 === $scope.colSpan ) {
+                        eachDateVal.push({
+                            value: $filter('currency')(dateObj['rate_revenue'], $rootScope.currencySymbol, LIMITER),
+                            isRev: true
+                        });
+                        eachDateVal.push({
+                            value: $filter('currency')(dateObj['adr'], $rootScope.currencySymbol, LIMITER),
+                            isRev: true
+                        });
+                        eachDateVal.push({
+                            value: $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, LIMITER),
+                            isRev: true,
+                            cls: 'last-day'
+                        });
+                    } else if ( COL_5 === $scope.colSpan ) {
+                        eachDateVal.push({
+                            value: dateObj['total_reservations_count'],
+                            isAvail: true
+                        });
+                        eachDateVal.push({
+                            value: dateObj['available_rooms_count'],
+                            isAvail: true
+                        });
+                        eachDateVal.push({
+                            value: $filter('currency')(dateObj['rate_revenue'], $rootScope.currencySymbol, LIMITER),
+                            isRev: true
+                        });
+                        eachDateVal.push({
+                            value: $filter('currency')(dateObj['adr'], $rootScope.currencySymbol, LIMITER),
+                            isRev: true
+                        });
+                        eachDateVal.push({
+                            value: $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, LIMITER),
+                            isRev: true,
+                            cls: 'last-day'
+                        });
+                    }
 
-					allDatesValInRoom = allDatesValInRoom.concat( eachDateVal );
-				}
+                    allDatesValInRoom = allDatesValInRoom.concat( eachDateVal );
+                }
 
-				loopCount += 1;
+                loopCount += 1;
 
-				$scope.reportData.push( allDatesValInRoom );
-			}
+                $scope.reportData.push( allDatesValInRoom );
+            }
 
-			$scope.rightPaneWidth = noOfDays * cellWidth * $scope.colSpan;
-			
-			$timeout(function() {
-				refreshScrollers();
-				$scope.$emit('hideLoader');
-			}, 300 );
-		};
+            $scope.rightPaneWidth = noOfDays * cellWidth * $scope.colSpan;
 
+            $timeout(function() {
+                refreshScrollers();
+                $scope.$emit('hideLoader');
+            }, DELAY_300 );
+        }
 
-		function renderReact (args) {
-			var args  = args || {},
-				props = _.extend(args, {
-					'rightPaneWidth': $scope.rightPaneWidth,
-					'colspan': $scope.colSpan,
-					'headerTop': $scope.headerTop,
-					'headerBot': $scope.headerBot,
-					'reportData': $scope.reportData,
-					'isLastRowSum': true
- 				});
+        /**
+         * initiates the rendering of the react component
+         * @param  {any} options any additional config data
+         * @return {object}      undefined
+         */
+        function renderReact (options) {
+            var args = options || {},
+                props = _.extend(args, {
+                    'rightPaneWidth': $scope.rightPaneWidth,
+                    'colspan': $scope.colSpan,
+                    'headerTop': $scope.headerTop,
+                    'headerBot': $scope.headerBot,
+                    'reportData': $scope.reportData,
+                    'isLastRowSum': true
+                });
 
-			ReactDOM.render(
-				React.createElement(DPContent, props),
-				document.getElementById('daily-production-render')
-			);
-		}
+            ReactDOM.render(
+                // eslint-disable-next-line no-undef
+                React.createElement(DPContent, props),
+                // eslint-disable-next-line angular/document-service
+                document.getElementById('daily-production-render')
+            );
+        }
 
-		function init (argument) {
-			processData();
-			renderReact();
-		}
+        /**
+         * initialize everything
+         * @return {object} undefined
+         */
+        function init () {
+            processData();
+            renderReact();
+        }
 
-		init();
+        init();
 
-		function reInit (argument) {
-			processData();
-			renderReact();
-		}
-
-
-		// re-render must be initiated before for taks like printing.
-		// thats why timeout time is set to min value 50ms
-		var reportSubmited    = $scope.$on( reportMsgs['REPORT_SUBMITED'], reInit );
-		var reportPrinting    = $scope.$on( reportMsgs['REPORT_PRINTING'], reInit );
-		var reportUpdated     = $scope.$on( reportMsgs['REPORT_UPDATED'], reInit );
-		var reportPageChanged = $scope.$on( reportMsgs['REPORT_PAGE_CHANGED'], reInit );
-
-		$scope.$on( '$destroy', reportSubmited );
-		$scope.$on( '$destroy', reportUpdated );
-		$scope.$on( '$destroy', reportPrinting );
-		$scope.$on( '$destroy', reportPageChanged );
-	}
+        /**
+         * re-initialize everything
+         * @return {object} undefined
+         */
+        function reInit () {
+            processData();
+            renderReact();
+        }
+    }
 ]);

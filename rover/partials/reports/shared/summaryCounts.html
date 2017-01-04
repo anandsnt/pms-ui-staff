@@ -138,7 +138,7 @@
 
 <!-- Daily production by rate report -->
 <ul ng-if="isThisReport('DAILY_PRODUCTION_RATE')" class="totals">
-    <li>Total Revenue<span>{{ summaryCounts.actual_revenue | currency:currencySymbol:2 }}</span></li>
+    <li>Total Revenue<span>{{ summaryCounts.total_revenue | currency:currencySymbol:2 }}</span></li>
     <li>ADR<span>{{ summaryCounts.adr | currency:currencySymbol:2 }}</span></li>
     <li>Room Revenue<span>{{ summaryCounts.room_revenue | currency:currencySymbol:2 }}</span></li>
 </ul>
