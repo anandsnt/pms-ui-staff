@@ -59,9 +59,9 @@ sntZestStation.directive('editableText', ['$timeout', function($timeout) {
                 var save = function() {
                     var newValueForText = $inputField.val();
 
-                    el.text( newValueForText );
+                    //  translation updated in locale, pushed
+                    el.text( newValueForText ); // show immediate change in text, save happens next
 
-                    // re-add listeners to new element
                     addListeners(el, textEditor);
 
                     $inputField.replaceWith( element );

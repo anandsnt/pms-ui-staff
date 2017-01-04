@@ -406,6 +406,8 @@ sntZestStation.controller('zsRootCtrl', [
 
         // for chrome extension or console switching of languages
         $scope.switchLanguage = function(langCode) {
+            $scope.languageCodeSelected(langCode);// keep this here for switching languages while editing text in editor mode
+
             if ($state.current.name === 'zest_station.home') {
                 $scope.$broadcast('SWITCH_LANGUAGE', langCode);
             } else {
@@ -446,7 +448,12 @@ sntZestStation.controller('zsRootCtrl', [
                     'kiosk': {
                         'hotel_id': $scope.zestStationData.hotel_id,
                         'zest_lang': {}
-                    }
+                    },
+                    // these params (below) get removed by service controller before api call
+                    'langCode': langCode,
+                    'newValueForText': newValueForText,
+                    'tag': tag
+
                 },
                 successCallBack: onSuccess,
                 failureCallBack: onFail,

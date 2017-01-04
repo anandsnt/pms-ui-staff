@@ -26,9 +26,14 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 
 					return zsGeneralSrv.fetchTranslations(sortedLanguages)
 						.then(function(translationFiles) {
+							zsGeneralSrv.$translateProvider = $translateProvider;
+							zsGeneralSrv.refToLatestPulledTranslations = translationFiles;
+
 							for (langShortCode in translationFiles) {
 								$translateProvider.translations(langShortCode, translationFiles[langShortCode]);
 							}
+
+
 							$translate.use(defaultLangShortCode);
 						});
 				},
