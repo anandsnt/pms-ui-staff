@@ -1240,7 +1240,12 @@ sntZestStation.controller('zsRootCtrl', [
             zestSntApp.setBrowser();
             if ($scope.inChromeApp) {
                 optimizeTouchEventsForChromeApp();
+                // disable right click options for chromeapp to restrict user from escaping the app
+                document.addEventListener('contextmenu', function(e) {
+                    e.preventDefault();
+                });
             }
+
 			// initCardReadTest(); //debugging, comment out when done
 
 			// flag to check if default language was set or not
