@@ -2708,7 +2708,8 @@ sntRover.controller('RVbillCardController',
         if (!feesData.isExpanded) {
             var params = {
                 'reference_number': feesData.reference_number,
-                'bill_id': $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id
+                'bill_id': $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id,
+                'date': feesData.date
             };
             
             $scope.invokeApi(RVBillCardSrv.groupChargeDetailsFetch, params, fetchChargeDataSuccessCallback, fetchChargeDataFailureCallback);
