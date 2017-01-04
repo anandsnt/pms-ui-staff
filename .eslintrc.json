@@ -1,5 +1,5 @@
 {
-    "env": {  
+    "env": {
         "browser": true,
         "es6": true,
         "jquery": true,
@@ -21,7 +21,8 @@
         "sntGuestWeb": true,
         "admin": true,
         "ADBaseTableCtrl": true,
-        "tzIndependentDate": true
+        "tzIndependentDate": true,
+        "getJqDateFormat": false
     },
     "installedESLint":true,
     "parserOptions":{
@@ -204,6 +205,9 @@
         "spaced-comment":[
             "error",
             "always"
-        ]
+        ],
+        "angular/controller-as": "off",
+        "angular/di": ["off", "array"],
+        "angular/controller-as-vm": "off"
     }
 }

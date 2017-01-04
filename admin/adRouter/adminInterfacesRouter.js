@@ -13,6 +13,9 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             }],
             balancingAccounts: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
                 return adExactOnlineSetupSrv.fetchBalancingAccounts();
+            }],
+            endPoints: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
+                return adExactOnlineSetupSrv.fetchEndpointsList();
             }]
         }
     });
@@ -407,5 +410,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         interface_id: 'TRAVELTRIPPER',
         simple_name: 'TravelTripper',
         url: '/travelTripperSetup'
+    });
+
+
+    $stateProvider.state('admin.snapshotSetup', {
+        templateUrl: '/assets/partials/snapshotSetup/adSnapshotSetup.html',
+        controller: 'adsnapshotSetupCtrl',
+        url: '/snapshotSetup',
+        resolve: {
+            snapshotSetupData: ['adSnapShotSetupSrv', function(adSnapShotSetupSrv) {
+                return adSnapShotSetupSrv.getSettings();
+            }]
+        }
     });
 });

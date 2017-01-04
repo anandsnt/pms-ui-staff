@@ -18,16 +18,14 @@
                             {{selectedReservation.stay_dates[0].room_type}}
                         </p>
                         <p ng-hide="{{selectedReservation.guest_details.length == 1}}">{{'ADDTL_RESIDENTS' |translate}} ({{selectedReservation.guest_details.length-1}})</p>
-                        <button type="button" class="button" touch-press="addRemove()" >{{'ADD_REMOVE_GUESTS' |translate}} </button>
+                        <button ng-if='zestStationData.kiosk_add_remove_guests' type="button" class="button" touch-press="addRemove()" >{{'ADD_REMOVE_GUESTS' |translate}} </button>
                     </div>
                     <ul id="rate" class="reservation-details">
                         <li >
-                            <!-- handling some logics in HTML. Forced to use coz of bad handling in ctrlr -->
-                            {{zestStationData.isHourlyRateOn ? 'HOURS' :'DAY_NIGHTS'|translate}}<span>{{zestStationData.isHourlyRateOn ? selectedReservation.reservation_details.total_hours :
+                            {{zestStationData.isHourlyRateOn ? 'HOURS' :'DAY_NIGHTS'|translate}}<span>{{zestStationData.isHourlyRateOn ? selectedReservation.reservation_details.no_of_hours :
                             selectedReservation.reservation_details.total_nights}}</span>
                         </li>
                         <li ng-hide="isRateSuppressed()">
-                            <!-- handling some logics in HTML. Forced to use coz of bad handling in ctrlr -->
                             {{zestStationData.isHourlyRateOn ? 'HOURLY_RATE' : 'AVG_DAILY' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.avg_daily_rate | number :2}}</span>
                         </li>
                         <li ng-hide="isRateSuppressed()" ng-repeat="addon in selectedReservation.addons">
@@ -60,7 +58,7 @@
 
 
 <!-- neeed to change this to requires html -->
-<div ng-include="'/assets/partials/zsOwsMsgListing.html'" ng-controller="zsOwsMsgListingCtrl" ng-if="zestStationData.is_kiosk_ows_messages_active && !zestStationData.is_standalone"></div>
+<div ng-include="'/assets/partials_v2/zsOwsMsgListing.html'" ng-controller="zsOwsMsgListingCtrl" ng-if="zestStationData.is_kiosk_ows_messages_active && !zestStationData.is_standalone"></div>
 
 <div class="page-print">
     <section id="registration-card" class="page-print">

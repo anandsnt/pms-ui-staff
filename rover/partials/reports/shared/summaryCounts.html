@@ -138,7 +138,7 @@
 
 <!-- Daily production by rate report -->
 <ul ng-if="isThisReport('DAILY_PRODUCTION_RATE')" class="totals">
-    <li>Total Revenue<span>{{ summaryCounts.actual_revenue | currency:currencySymbol:2 }}</span></li>
+    <li>Total Revenue<span>{{ summaryCounts.total_revenue | currency:currencySymbol:2 }}</span></li>
     <li>ADR<span>{{ summaryCounts.adr | currency:currencySymbol:2 }}</span></li>
     <li>Room Revenue<span>{{ summaryCounts.room_revenue | currency:currencySymbol:2 }}</span></li>
 </ul>
@@ -204,4 +204,12 @@
     <li>Total Revenue for Today<span>{{summaryCounts.total_today_revenue}}</span></li>
     <li>Total Revenue for MTD<span>{{summaryCounts.total_mtd_revenue}}</span></li>
     <li>Total Revenue for YTD<span>{{summaryCounts.total_ytd_revenue}}</span></li>
+</ul>
+
+<!--Comparision by date report -->
+<ul ng-if="isThisReport('COMPARISION_BY_DATE')" class="totals">
+    <li>Balance Brought forward<span>{{summaryCounts.total_today_revenue}}</span></li>
+    <li>Deposit Ledger Summary<span>{{summaryCounts.total_mtd_revenue}}</span></li>
+    <li>Guest ledger Summary<span>{{summaryCounts.total_ytd_revenue}}</span></li>
+    <li>AR ledger Summary<span>{{summaryCounts.total_ytd_revenue}}</span></li>
 </ul>
