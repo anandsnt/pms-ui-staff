@@ -131,7 +131,14 @@
 "CHECKIN_SECOND_AUTH_FACTOR" : "Second Authentication Factor",
 "CONFIRMATION_NUMBER" : "CONFIRMATION NUMBER",
 "CONF_NUMBER_AND_DEPART_DATE" : "CONFIRMATION NUMBER and DEPARTURE DATE - Guest must provide one",
-"ALWAYS_ASK_FOR_MOBILE_NUMBER" : "Always ask for guest mobile number"
+"ALWAYS_ASK_FOR_MOBILE_NUMBER" : "Always ask for guest mobile number",
+"CONFIRMATION": "Confirmation",
+"CHECKIN_CONFIRMATION_INSTRUCTIONS": "Control what appears when the guest completes the opt-in for automatic check in (also known as the 'pre-checkin')",
+"INCLUDE_DETAILS_ABOUT_MOBILE_APP": "include details about mobile app",
+"MOBILE_APP_CALL_TO_ACTION": "Mobile app call action",
+"INCLUDE_BANNERS": "INCLUDE BANNERS",
+"APP_STORE": "App store",
+"GOOGLE_PLAY": "Google play"
 
 
 

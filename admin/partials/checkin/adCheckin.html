@@ -140,9 +140,27 @@
                         </label>
                     </div>
                     <div class="entry full-width">
+                        <div class="form-title half-width-title">
+                            <h3><span translate="">CONFIRMATION</span> </h3>
+                        </div>
+                        <div class="form-subtitle-title">
+                            <h6>
+                                <span translate="">CHECKIN_CONFIRMATION_INSTRUCTIONS</span> 
+                            </h6>
+                        </div>
                         <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.checkin_complete_confirmation_screen_text" label="{{ 'CHECK_IN_COMPLETE_CONFIRMATION_SCREEN_TEXT' | translate}}" placeholder=""></ad-textarea>
+                        <ad-toggle-button is-checked="checkinData.zest_web_checkin_details_about_mobile_app" label="{{ 'INCLUDE_DETAILS_ABOUT_MOBILE_APP' | translate}}"></ad-toggle-button>
+                        <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.zest_web_checkin_mobile_app_call_to_action" label="{{ 'MOBILE_APP_CALL_TO_ACTION' | translate}}" placeholder=""></ad-textarea>
+                         <div class="form-subtitle-title">
+                            <h6>
+                                <span translate="">INCLUDE_BANNERS</span> 
+                            </h6>
+                        </div>
+                         <ad-toggle-button is-checked="checkinData.zest_web_include_app_store_banner" label="{{ 'APP_STORE' | translate}}"></ad-toggle-button>
+                          <ad-toggle-button is-checked="checkinData.zest_web_include_google_play_banner" label="{{ 'GOOGLE_PLAY' | translate}}"></ad-toggle-button>
                     </div>
                     <div class="entry" ng-show="checkinData.checkin_action == 'sent_to_queue' || checkinData.checkin_action == 'auto_checkin'">
+                        <br/><br/>
                         <label>
                             {{ 'MINUTES_PRIOR_TO_ETA' | translate}}
                         </label>
