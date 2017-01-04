@@ -1,5 +1,5 @@
-admin.controller('adsnapshotSubGroupMappingCtrl', ['$scope', 'ADChargeCodesSrv', 'adSnapShotSetupSrv', 'ngTableParams', '$filter', '$timeout', '$state', '$rootScope', '$location', '$anchorScroll', 'adSnapShotSetupSrv',
-	function($scope, ADChargeCodesSrv, adSnapShotSetupSrv, ngTableParams, $filter, $timeout, $state, $rootScope, $location, $anchorScroll, adSnapShotSetupSrv) {
+admin.controller('adsnapshotSubGroupMappingCtrl', ['$scope', 'ADChargeCodesSrv', 'adSnapShotSetupSrv', 'ngTableParams', '$filter', '$timeout', '$state', '$rootScope', '$location', '$anchorScroll',
+	function($scope, ADChargeCodesSrv, adSnapShotSetupSrv, ngTableParams, $filter, $timeout, $state, $rootScope, $location, $anchorScroll) {
 
 		ADBaseTableCtrl.call(this, $scope, ngTableParams);
 		
@@ -18,8 +18,8 @@ admin.controller('adsnapshotSubGroupMappingCtrl', ['$scope', 'ADChargeCodesSrv',
 				$scope.data = data.charge_codes;
 				$scope.is_connected_to_pms = data.is_connected_to_pms;
 				$scope.currentPage = params.page();
-	        	params.total(data.total_count);
-	            $defer.resolve($scope.data);
+				params.total(data.total_count);
+				$defer.resolve($scope.data);
 			};
 
 			$scope.invokeApi(ADChargeCodesSrv.fetch, getParams, fetchSuccessOfItemList);
@@ -28,23 +28,23 @@ admin.controller('adsnapshotSubGroupMappingCtrl', ['$scope', 'ADChargeCodesSrv',
 
 		$scope.loadTable = function() {
 			$scope.tableParams = new ngTableParams({
-			        page: 1,  // show first page
-			        count: $scope.displyCount, // count per page
-			        sorting: {
-			            charge_code: 'asc' // initial sorting
-			        }
-			    }, {
-			        total: 0, // length of data
-			        getData: $scope.fetchTableData
-			    }
-			);
+					page: 1,  // show first page
+					count: $scope.displyCount, // count per page
+					sorting: {
+						charge_code: 'asc' // initial sorting
+					}
+				}, {
+					total: 0, // length of data
+					getData: $scope.fetchTableData
+				});
 		};
 
 		$scope.loadTable();
 
-		$scope.saveMapping = function(){
+		$scope.saveMapping = function() {
 			var mappedChargeCodes = [], mapped_charge_code;
-			_.each($scope.data, function(chargeCode){
+
+			_.each($scope.data, function(chargeCode) {
 				mapped_charge_code = {};
 				mapped_charge_code.id = chargeCode.value;
 				mapped_charge_code.snapshot_subgroup = chargeCode.snapshot_subgroup;
@@ -61,7 +61,7 @@ admin.controller('adsnapshotSubGroupMappingCtrl', ['$scope', 'ADChargeCodesSrv',
 
 			$scope.callAPI(adSnapShotSetupSrv.saveSubgroupMapping, options);
 			
-		}
+		};
 
 	}
 ]);
