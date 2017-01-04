@@ -1440,6 +1440,28 @@
     position: absolute;
     color: #d8d8d8;
     z-index: 999;
+
+    text-align:right;
+}
+
+.dev-cls{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    background-color: rgba(55, 55, 55, .7);
+    padding: 3px;
+    border-bottom-left-radius: .5em;
+    border-bottom-right-radius: .5em;
+    padding-top: 0px;
+    border-color: rgba(155, 155, 155, 0.3);
+    border-style: double;
+    border-width: 1px;
+    border-top-width: 0px;
+    &.non-center{
+        width: 36%;
+        margin-top: -15px;
+    }
 }
 
 
