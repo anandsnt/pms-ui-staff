@@ -2,14 +2,12 @@ admin.controller('adsnapshotSetupCtrl', ['$scope',
 	'$state',
 	'adSnapShotSetupSrv',
 	'ADChargeGroupsSrv',
-	'$timeout',
-	function($scope, $state, adSnapShotSetupSrv, ADChargeGroupsSrv, $timeout) {
+	function($scope, $state, adSnapShotSetupSrv, ADChargeGroupsSrv) {
 		BaseCtrl.call(this, $scope);
-
 		$scope.hours = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
-    	$scope.minutes = ["00", "15", "30", "45"];
-    	$scope.primeTimes = [ "AM", "PM"];
-    	$scope.retry_count_options = ["1", "2", "3", "4", "5"];
+		$scope.minutes = ["00", "15", "30", "45"];
+		$scope.primeTimes = [ "AM", "PM"];
+		$scope.retry_count_options = ["1", "2", "3", "4", "5"];
 
 		$scope.publishFullExport = function() {
 			var onpublishFullExportSucces = function() {
@@ -42,10 +40,9 @@ admin.controller('adsnapshotSetupCtrl', ['$scope',
 				options = {					
 					successCallBack: onFetchSettingsSucces
 				};
-			$scope.callAPI(adSnapShotSetupSrv.getSettings, options);
-		};
 
-	
+			$scope.callAPI(adSnapShotSetupSrv.getSettings, options);
+		};	
 
 		(function init() {
 			$scope.errorMessage = '';

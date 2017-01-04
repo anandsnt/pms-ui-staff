@@ -2,10 +2,8 @@ admin.controller('adSnapshotChargeGroupMappingCtrl', ['$scope',
 	'$state',
 	'adSnapShotSetupSrv',
 	'ADChargeGroupsSrv',
-	'$timeout',
-	function($scope, $state, adSnapShotSetupSrv, ADChargeGroupsSrv, $timeout) {
+	function($scope, $state, adSnapShotSetupSrv, ADChargeGroupsSrv) {
 		BaseCtrl.call(this, $scope);	
-
 		
 		$scope.saveSettings = function() {
 			var onSaveSettingsSucces = function() {
@@ -26,6 +24,7 @@ admin.controller('adSnapshotChargeGroupMappingCtrl', ['$scope',
 				options = {					
 					successCallBack: onFetchSettingsSucces
 				};
+
 			$scope.callAPI(adSnapShotSetupSrv.fetchChargeGroupMapping, options);
 		};
 
@@ -35,14 +34,11 @@ admin.controller('adSnapshotChargeGroupMappingCtrl', ['$scope',
 		var fetchChargeGroupsSuccessCallback = function(data) {
 			$scope.chargeGroups = data.charge_groups;
 			$scope.fetchSettings();
-		};
-
-	
+		};	
 
 		(function init() {
 			$scope.errorMessage = '';
-			$scope.successMessage = '';
-			
+			$scope.successMessage = '';			
 			$scope.invokeApi(ADChargeGroupsSrv.fetch, {}, fetchChargeGroupsSuccessCallback);
 		}());
 
