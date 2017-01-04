@@ -1,5 +1,5 @@
-admin.controller('adsnapshotSubGroupMappingCtrl', ['$scope', 'ADChargeCodesSrv', 'adSnapShotSetupSrv', 'ngTableParams', '$filter', '$timeout', '$state', '$rootScope', '$location', '$anchorScroll',
-	function($scope, ADChargeCodesSrv, adSnapShotSetupSrv, ngTableParams, $filter, $timeout, $state, $rootScope, $location, $anchorScroll) {
+admin.controller('adsnapshotSubGroupMappingCtrl', ['$scope', 'ADChargeCodesSrv', 'adSnapShotSetupSrv', 'ngTableParams',
+	function($scope, ADChargeCodesSrv, adSnapShotSetupSrv, ngTableParams) {
 
 		ADBaseTableCtrl.call(this, $scope, ngTableParams);
 		

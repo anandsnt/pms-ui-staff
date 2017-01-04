@@ -1,8 +1,7 @@
 admin.controller('adSnapshotChargeGroupMappingCtrl', ['$scope',
-	'$state',
 	'adSnapShotSetupSrv',
 	'ADChargeGroupsSrv',
-	function($scope, $state, adSnapShotSetupSrv, ADChargeGroupsSrv) {
+	function($scope, adSnapShotSetupSrv, ADChargeGroupsSrv) {
 		BaseCtrl.call(this, $scope);	
 		
 		$scope.saveSettings = function() {

@@ -429,13 +429,13 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.snapshotChargeGroupMapping', {
         templateUrl: '/assets/partials/snapshotSetup/adSnapshotChargeGroupMapping.html',
         controller: 'adSnapshotChargeGroupMappingCtrl',
-        url: '/snapshotSetup/chargeGroupMapping',
+        url: '/snapshotSetup/chargeGroupMapping'
     });
 
     $stateProvider.state('admin.snapshotSubGroupMapping', {
         templateUrl: '/assets/partials/snapshotSetup/adSnapshotSubGroupMapping.html',
         controller: 'adsnapshotSubGroupMappingCtrl',
-        url: '/snapshotSetup/subGroupMapping',
+        url: '/snapshotSetup/subGroupMapping'
     });
 
 });
