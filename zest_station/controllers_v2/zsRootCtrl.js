@@ -835,7 +835,9 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.focusInputField = function(elementId) {
             $timeout(function() {
                 if (!$scope.isIpad) {
-                    document.getElementById(elementId).click();
+                    if (document.getElementById(elementId)) {// fixes an error that occurs from user clicking too early while screen initializing
+                        document.getElementById(elementId).click();    
+                    }
                 } else {
                     $scope.callBlurEventForIpad();
                 }
@@ -1180,11 +1182,25 @@ sntZestStation.controller('zsRootCtrl', [
             zestSntApp.setBrowser();
             if ($scope.inChromeApp) {
                 optimizeTouchEventsForChromeApp();
+                // disable right click options for chromeapp to restrict user from escaping the app
+                document.addEventListener('contextmenu', function(e) {
+                    e.preventDefault();
+                });
             }
+
 			// initCardReadTest(); //debugging, comment out when done
 
 			// flag to check if default language was set or not
             $scope.zestStationData.IsDefaultLanguageSet = false;
+            
+            // if ooo treshold is not set or not active, set th treshold as 1
+            if (!$scope.zestStationData.kiosk_out_of_order_treshold_is_active || _.isNaN(parseInt($scope.zestStationData.kiosk_out_of_order_treshold_value))) {
+                $scope.zestStationData.kioskOutOfOrderTreshold = 1;
+            } else {
+                $scope.zestStationData.kioskOutOfOrderTreshold = parseInt($scope.zestStationData.kiosk_out_of_order_treshold_value);
+            }
+
+            $scope.zestStationData.consecutiveKeyFailure = 0;
         }());
     }
 ]);
