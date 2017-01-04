@@ -259,9 +259,30 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
 
         });
     };
+
+    $scope.searchbar = {
+        value: ''
+    };
+
     $scope.showLoader = function() {
         $scope.$emit('showLoader');
     };
+
+    $scope.showResult = function(key, value) {
+        var v = $scope.searchbar.value.toLowerCase();
+        k = key.toLowerCase(),
+        txt = value.toLowerCase();
+
+        if (v.length === 0) {
+            return 'true';
+        } else if (k.indexOf(v) !== -1) {
+            return 'true';
+        } else if (txt.indexOf(v) !== -1) {
+            return 'true';
+        }
+        return 'false';
+    };
+
     $scope.saveAsText = '';
     $scope.isChrome = window.navigator.userAgent.toLowerCase().indexOf('chrome') !== -1;
 

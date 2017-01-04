@@ -1,6 +1,8 @@
 <div class='station-lang-download-popup'>
 	<p class='station-lang-header'>You can edit the tags in-line, please remember to click the save button before leaving this area
-		<!--p class='station-lang-filter'>Filter: <input ng-model='searchbarValue'></p-->
+	</p>
+	<p class='station-lang-filter'>
+		Filter: <input type="text" ng-model='searchbar.value'>
 	</p>
 	
 	<br>
@@ -15,14 +17,14 @@
 				</th>
 			</thead>
 			<tbody>
-				<tr ng-repeat="(key, value) in languageEditorData" style="padding:50px;">
-					<td ng-class='{"searchResult" : searchbarValue.indexOf(key) !== -1 || searchbarValue.indexOf(value) !== -1}'>
+				<tr ng-repeat="(key, value) in languageEditorData" style="padding:50px;"  ng-class='{"station-lang-not-result": showResult(key, value) == "false"}' >
+					<td>
 						{{key}}
 					</td>
 					<td>
-		 		   	<div class="entry">
-		                <input type='text' class="room-likes" ng-model='languageEditorData[key]' value='{{value}}'>
-	                </div>
+			 		   	<div class="entry">
+			                <input type='text' class="room-likes" ng-model='languageEditorData[key]' value='{{value}}'>
+		                </div>
 					</td>
 				</tr>
 			</tbody>
