@@ -264,16 +264,31 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         value: ''
     };
 
+    // when editing a tags value with some filter
+    // if the text is not in the tag/value, the field
+    // may disappear, but if we track what is being editing/
+    // has-focus, we can allow that tag to stay until user is done editing
+    $scope.editingTag = '';
+    $scope.editingTagKey = function(k) {
+        $scope.editingTag = k;
+    };
+
     $scope.showLoader = function() {
         $scope.$emit('showLoader');
     };
 
     $scope.showResult = function(key, value) {
-        var v = $scope.searchbar.value.toLowerCase();
-        k = key.toLowerCase(),
-        txt = value.toLowerCase();
+        // show key/value as a result if returning true
+        // hide the field if user is searching/filtering
+        // and neither match the value entered
+        // 
+        var v = $scope.searchbar.value.toLowerCase(),
+            k = key.toLowerCase(),
+            txt = value.toLowerCase();
 
-        if (v.length === 0) {
+        if ($scope.editingTag === key) {// see editingTagKey comments
+            return 'true';
+        } else if (v.length === 0) {
             return 'true';
         } else if (k.indexOf(v) !== -1) {
             return 'true';
