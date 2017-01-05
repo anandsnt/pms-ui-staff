@@ -435,13 +435,15 @@ sntZestStation.controller('zsRootCtrl', [
                 
             var encoded = 'data:application/json;base64,' + window.btoa(unescape(encodeURIComponent(JSON.stringify(langObj))));
 
-            var onSuccess = function(response) {
+            var onSuccess = function() {
+                $scope.$emit('hideLoader');
                 console.info('Success Save Language text update ');
                 
             };
-            var onFail = function(response) {
+            var onFail = function() {
+                $scope.$emit('hideLoader');
                 console.warn('Failure, Save Language text update failed: ', response);
-                //TODO: need to somehow alert user save failed, ie. alert('Saving failed, please try again later'), or other popup
+                // TODO: need to somehow alert user save failed, ie. alert('Saving failed, please try again later'), or other popup
             };
             var options = {
                 params: {

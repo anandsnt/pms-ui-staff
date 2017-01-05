@@ -52,7 +52,9 @@ sntZestStation.directive('editableText', ['$timeout', function($timeout) {
                 var tag = attrs.editableText,
                     el = $(element);
 
-                var $inputField = $('<input class="editor-mode-cls"/>').val( el.text() );
+                var oldText =  el.text();
+
+                var $inputField = $('<input class="editor-mode-cls"/>').val( oldText );
 
                 el.replaceWith( $inputField );
 
@@ -66,8 +68,13 @@ sntZestStation.directive('editableText', ['$timeout', function($timeout) {
 
                     $inputField.replaceWith( element );
 
-                    console.log('updating: ', tag, ' to be: ', newValueForText);
-                    element.scope().$parent.saveLanguageEditorChanges(tag, newValueForText);
+                    if (oldText !== newValueForText) {
+                        // show saving-indicator for slow networks need to show that save in-progress
+                        element.scope().$parent.$emit('showLoader');
+                        
+                        console.log('updating: ', tag, ' to be: ', newValueForText);
+                        element.scope().$parent.saveLanguageEditorChanges(tag, newValueForText);
+                    }
 
                 };
 
