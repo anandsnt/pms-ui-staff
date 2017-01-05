@@ -15,7 +15,8 @@ var Grid = React.createClass({
 			momentum: false,
 			preventDefaultException: { className: /(^|\s)(occupied|available|reserved)(\s|$)/ },
 			mouseWheel: true,
-			useTransition: true
+			useTransition: true,
+            disablePointer: true
 		});
 
 		iscroll.grid._scrollFn = _.throttle(this.props.__onGridScroll.bind(null, iscroll.grid), 10, { leading: false, trailing: true });

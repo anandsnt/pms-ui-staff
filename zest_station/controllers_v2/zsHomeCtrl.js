@@ -52,15 +52,18 @@ sntZestStation.controller('zsHomeCtrl', [
                     defaultLanguage = _.findWhere($scope.languages, {
                         name: defaultLangName
                     });
-                var languageConfig = zsGeneralSrv.languageValueMappingsForUI[defaultLanguage.name],
-                    langShortCode = languageConfig.code;
 
-                if ( $translate.use() === langShortCode && checkIfDefaultLanguagIsSet) {
-					// do nothing, current language is already the default one
-                } else {
-                    console.info('translating to default lanaguage after ' + userInActivityTimeInHomeScreenInSeconds + ' seconds');
-                    $scope.selectLanguage(defaultLanguage);
-                }
+                    if (defaultLanguage && defaultLanguage.name) {
+                        var languageConfig = zsGeneralSrv.languageValueMappingsForUI[defaultLanguage.name],
+                            langShortCode = languageConfig.code;
+
+                        if ( $translate.use() === langShortCode && checkIfDefaultLanguagIsSet ) {
+                            // do nothing, current language is already the default one or no default is selected from hotel admin
+                        } else {
+                            console.info('translating to default lanaguage after ' + userInActivityTimeInHomeScreenInSeconds + ' seconds');
+                            $scope.selectLanguage(defaultLanguage);
+                        }
+                    }
             }
         };
 

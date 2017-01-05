@@ -13,6 +13,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'zoku': 'zoku',
             'yotel': 'yotel',
             'avenue': 'avenue',
+            'sohotel': 'sohotel',
             'epik': 'Hotel epik',
             'conscious': 'Conscious vondelpark',
             'fontainebleau': 'fontainebleau'
@@ -435,6 +436,18 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var url = '/api/reservations?reservation_id=' + params.reservation_id;
 
             zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.logKeyStatus = function(params) {
+            var deferred = $q.defer(),
+                url = '/zest_station/log_key_activities';
+
+            zsBaseWebSrv.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);

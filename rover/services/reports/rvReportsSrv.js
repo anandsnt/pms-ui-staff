@@ -63,14 +63,15 @@ angular.module('sntRover').service('RVreportsSrv', [
 			var deferred = $q.defer();
 
 			$http({
-				method: 'POST', 
-				url: params.url, 
+				method: 'POST',
+				url: params.url,
 				data: params.payload
 			}).success(function(data, status, headers, config) {
-                 var hiddenAnchor = angular.element('<a/>');
+                 var hiddenAnchor = angular.element('<a/>'),
+                 	blob = new Blob([data]);
 
 			     hiddenAnchor.attr({
-			         href: 'data:attachment/csv;charset=utf-8,' + encodeURI(data),
+			         href: window.URL.createObjectURL(blob),
 			         target: '_blank',
 			         download: headers()['content-disposition'].match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1].replace(/['"]+/g, '')
 			     })[0].click();
@@ -78,7 +79,7 @@ angular.module('sntRover').service('RVreportsSrv', [
             }).error(function(errorMessage) {
                 deferred.reject(errorMessage);
             });
-			return deferred.promise;		
+			return deferred.promise;
 		};
 
 		/**
@@ -268,7 +269,11 @@ angular.module('sntRover').service('RVreportsSrv', [
 
 			return deferred.promise;
 		};
-		
+
+        service.setReportRequestParam = function(name, value) {
+            choosenReport[name] = value;
+        };
+
 
 		return service;
 	}

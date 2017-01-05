@@ -97,17 +97,12 @@
             <div class="entry full-width with-button">
                 <label for="allotment-rate" translate>RATE</label>
                 <div class="select">
-                    <select id="allotment-rate" ng-model="allotmentConfigData.summary.rate" iscroll-stop-propagation ng-change="onRateChange()" ng-disabled="allotmentConfigData.summary.is_cancelled">
-                        <optgroup>Group Rates</optgroup>
-                        <option value="" ng-if="!allotmentConfigData.summary.rate" selected>Select Rate</option>
-                        <option value="-1" ng-selected="allotmentConfigData.summary.rate == -1">Custom Rate</option>
-                        <optgroup ng-show="!!allotmentSummaryData.rates.length" label="Group Rates">
-                            <!-- ... repeat for all rates -->
-                            <option ng-repeat="rate in allotmentSummaryData.rates" ng-selected="allotmentConfigData.summary.rate == rate.id" value="{{rate.id}}">{{rate.name}}</option>
-                        </optgroup>
-                        <optgroup ng-show="!!allotmentSummaryData.contractedRates.length" label="Company/ Travel Agent Contract">
-                            <option ng-repeat="rate in allotmentSummaryData.contractedRates" ng-selected="allotmentConfigData.summary.rate == rate.id" value="{{rate.id}}">{{rate.name}}</option>
-                        </optgroup>
+                    <select id="allotment-rate" iscroll-stop-propagation
+                            ng-model="allotmentConfigData.summary.rate"
+                            ng-change="onRateChange()"
+                            ng-disabled="allotmentConfigData.summary.is_cancelled"
+                            ng-options="rate.id as rate.name group by rate.groupName for rate in allotmentSummaryData.rateSelectDataObject">
+                        <option value="" selected disabled>Select Rate</option>
                     </select>
                 </div>
                 <a ng-click="!allotmentConfigData.summary.is_cancelled ? (isInAddMode() ? manageAddons() : viewAddons()) : false" class="button with-icon" ng-class="{'brand-colors' : !isInAddMode() && !allotmentConfigData.summary.is_cancelled, 'grey' : isInAddMode() || !!allotmentConfigData.summary.is_cancelled}">

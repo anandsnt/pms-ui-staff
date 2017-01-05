@@ -1,6 +1,34 @@
-@nightlyGridWidth: 840;
-@gridSingleSidebar: (@nightlyGridWidth+320);
-@gridDualSidebar: (@nightlyGridWidth+640);
+@containerWidth: 1024;
+@containerEl: @containerWidth + 3;
+@roomsWidth: 184;
+@gridWidth: 840;
+@filtersWidth: ~'calc(100% - @{containerWidth}px)';
+
+@breakpointNoRooms: 840;
+@breakpointSingleSidebar: 1280;
+@breakpointDoubleSidebar: 1600;
+
+.leftColumn() {
+    .calc-width(100, @gridWidth);
+
+    /* Hide Rooms ***/
+    @media screen and (max-width: ~'@{gridWidth}px') {
+        .hide();
+    }
+
+    /* Fixed Width from this point ***/
+    @media screen and (min-width: ~'@{containerWidth}px') {
+        width: ~'@{roomsWidth}px';
+    }
+}
+
+.rightColumn() {
+    width: ~'@{gridWidth}px';
+
+    @media screen and (max-width: ~'@{gridWidth}px') {
+        width: 100%;
+    }
+}
 
 /* Reservation Search + Dates + Filters ***/
 .diary-nightly-search-form {
@@ -8,7 +36,7 @@
     background: rgba(0,0,0,.1);
     .show();
     .size(60px, 100%);
-    .float();
+    #flexbox > .parent(row wrap, '', '', '');
 
     .button {
         position: relative;
@@ -54,7 +82,6 @@
 
     .entry {
         padding: 10px;
-        .pull-left;
 
         &.reset {
             width: 60px;
@@ -354,8 +381,8 @@
         }
     }
 
-    /* Screen big enough to show two columns ***/
-    @media screen and (min-width: 1664px) {
+    /* Screen big enough to show two columns  ***/
+    @media screen and (min-width: ~'@{breakpointDoubleSidebar}px') {
         .entry {
             &.search {
                 .calc-width(100, 560);
@@ -416,19 +443,20 @@
     }
 
     .name {
-        // Have a max with minus the guest image and stay card button
-        .calc-max-width(100, 185);
-        .nowrap();
+        /* Have a max with minus the guest image and stay card button ***/
         margin-right: 20px;
         font-size: 20px;
         font-weight: 600;
         color: @white;
+        .calc-max-width(100, 185);
+        .nowrap();
     }
 }
 
 /* Grid + Sidebar ***/
 #diary-nightly {
     top: 120px;
+    background-color: rgba(0,0,0,.05);
     .calc-height(100, 120);
     #flexbox > .parent(row wrap, '', '', '');
 
@@ -436,28 +464,31 @@
         color: @logoPrimary;
     }
 
+
     .room {
         position: relative;
-        font-size: 13px;
+        font-size: 12px;
         line-height: 1;
         text-align: right;
         background-color: @white;
         text-transform: uppercase;
         cursor: pointer;
-        padding: 5px;
+        padding: 7px 5px;
         .size(40px, 100%);
         .box-shadow(inset 0 -1px 0 rgba(0,0,0,0.15));
-        #flexbox > .parent(column wrap, center, '', '' );
-
+ 
         &.highlighted {
             background-color: fade(@orange, 30%);
+ 
         }
     }
+
 
     .room-number {
         font-size: 18px; 
         line-height: 14px;
         font-weight: 600;
+        .show();
 
         &.clean,
         &.inspected{ color: @green; }
@@ -468,9 +499,12 @@
         &.out { color: @grey3; }
     }
 
+
     .room-type {
+        .show();
         .nowrap();
     }
+
 
     .suite-room {
         background-color: #dfac65;
@@ -516,22 +550,12 @@
         .size(40px, 100%);
         .box-shadow(0 1px 2px rgba(0,0,0,.2));
         #flexbox > .parent(row wrap, '', '', '');
-
-        /* Screen big enough to show one column ***/
-        @media screen and (min-width: 1344px) {
-            .calc-width(100, 320);
-        }
-
-        /* Screen big enough to show two columns ***/
-        @media screen and (min-width: 1664px) {
-            .calc-width(100, 640);
-        }
     }
 
     /* Grid - Timeline - Room Search ***/
     .grid-room-search {
         position: relative;
-        .calc-width(100, @nightlyGridWidth);
+        .leftColumn();
 
         input {
             margin: 5px;
@@ -555,7 +579,7 @@
         font-size: 13px;
         line-height: 20px;
         text-transform: uppercase;
-        width: ~'@{nightlyGridWidth}px';
+        .rightColumn();
         #flexbox > .parent(row wrap, '', center, '');
 
         strong {
@@ -598,9 +622,11 @@
     /* Grid Stay Range */
     .grid-stay-range {
         position: absolute;
-        top:0;
-        left: ~"calc(100% - @{nightlyGridWidth}px)";
-        width: ~'@{nightlyGridWidth}px';
+        top: 0;
+        /*left: ~'@{roomsWidth}px';
+        left: ~"calc(100% - @{gridWidth}px)";*/
+        left: ~"calc(100% - @{gridWidth}px)";
+        width: ~'@{gridWidth}px';
         height: 40px;
         z-index: 201;
 
@@ -679,15 +705,40 @@
             }
         }
 
-        /* Screen big enough to show one column ***/
-        @media screen and (min-width: 1344px) {
-            left: ~"calc(100% - @{gridSingleSidebar}px)";
+        /* Hide Rooms ***/
+        @media screen and (max-width: ~'@{gridWidth}px') {
+            left: 0;
+            width: 100%;
         }
 
-        /* Screen big enough to show two columns ***/
-        @media screen and (min-width: 1664px) {
-            left: ~"calc(100% - @{gridDualSidebar}px)";
+        /* Show Rooms ***/
+        @media screen and (min-width: ~'@{containerWidth}px') {
+            left: ~'@{roomsWidth}px';
         }
+
+
+
+        /*@media screen and (min-width: 1024px) {
+            left: ~'@{roomsWidth}px';
+        }*/
+
+        /*@media screen and (max-width: 840px) {
+            left: 0;
+        }
+
+        @media screen and (min-width: 1024px) {
+            left: ~"@{roomsWidth}px";
+        }*/
+
+        /* Screen big enough to show one column
+        @media screen and (min-width: ~'@{gridSingleSidebar}px') {
+            left: ~"calc(100% - @{gridSingleSidebar}px)";
+        } ***/
+
+        /* Screen big enough to show two columns
+        @media screen and (min-width: ~'@{gridDualSidebar}px') {
+            left: ~"calc(100% - @{gridDualSidebar}px)";
+        } ***/
     }
 
     /* Grid - Room Search Results ***/
@@ -699,13 +750,14 @@
         z-index: 200;
         .hide();
         .calc-height(100, 40);
-        .calc-width(100, @nightlyGridWidth);
+        .leftColumn();
         .transition();
         .box-shadow(0 -2px 4px rgba(0,0,0,.3));
 
         .iScrollVerticalScrollbar { 
             top:0; 
-            right: 10px; 
+            left: 5px;
+            right: auto;
 
             .iScrollIndicator { background:rgba(0,0,0,0.1); }
         }
@@ -714,15 +766,15 @@
             .show();
         }
 
-        /* Screen big enough to show one column ***/
-        @media screen and (min-width: 1344px) {
+        /* Screen big enough to show one column 
+        @media screen and (min-width: ~'@{gridSingleSidebar}px') {
             .calc-width(100, @gridSingleSidebar);
-        }
+        } ***/
 
-        /* Screen big enough to show two columns ***/
-        @media screen and (min-width: 1664px) {
+        /* Screen big enough to show two columns 
+        @media screen and (min-width: ~'@{gridDualSidebar}px') {
             .calc-width(100, @gridDualSidebar);
-        }
+        } ***/
     }    
 
     /* Grid Content - Rooms & Reservations ***/
@@ -731,7 +783,7 @@
         .show();
         .square(100%);
     }
-    
+
     .grid-content {
         position: relative;
         z-index: 70;
@@ -767,14 +819,8 @@
             }
         }
 
-        /* Screen big enough to show one column ***/
-        @media screen and (min-width: 1344px) {
-            .calc-width(100, 320);
-        }
-
-        /* Screen big enough to show two columns ***/
-        @media screen and (min-width: 1664px) {
-            .calc-width(100, 640);
+        @media screen and (min-width: ~'@{containerWidth}px') {
+            width: ~'@{containerEl}px';
         }
     }
 
@@ -783,15 +829,15 @@
         position: relative;
         z-index: 40;
         background-color: @white;
-        .calc-width(100, @nightlyGridWidth);
+        .leftColumn();
         .box-shadow(2px 0 4px rgba(0, 0, 0, .2));
     }
     
     /* Grid Content - Reservations ***/
     .grid-reservations {
         z-index: 30;
-        background-color: rgba(0,0,0,.05);
-        width: ~'@{nightlyGridWidth}px';
+        .box-shadow(1px 0 2px 1px rgba(0, 0, 0, .2));
+        .rightColumn();
 
         .grid-row {
             position: relative;
@@ -810,7 +856,7 @@
         height: 40px;
         z-index: 50;
         padding: 5px;
-        .calc-width(100, @nightlyGridWidth);
+        .leftColumn();
 
         .button {
             font-size: 14px;
@@ -905,7 +951,7 @@
         }
 
         /* Clickable reservations ***/
-        &:not(.oos):not(.ooo):not(.blocked):not(.departed) {
+        &:not(.oos):not(.ooo) {
             cursor: pointer;
         }
 
@@ -1068,8 +1114,6 @@
             }
         }
 
-        
-
         /* Day Stay - Today & Future Reservations ***/
         &.day-stay {
             .reservation-data {
@@ -1136,11 +1180,11 @@
     .diary-nightly-sidebar {
         position: absolute;
         top: 0;
-        right: -320px;
+        right: -400px;
         text-transform: uppercase;
         padding: 0 10px;
         z-index: 80;
-        .size(100%, 320px);
+        .size(100%, ~'@{filtersWidth}');
         .background(@white);
         .transition();
         
@@ -1179,14 +1223,15 @@
         }
 
         &.visible {
+            .translate3d(-400px, 0, 0);
             .box-shadow(-1px 0 2px 1px rgba(0, 0, 0, .2));
-            .translate3d(-320px, 0, 0);
         }
     }
 
     /* Sidebar - Blocks - Filters ***/
     .diary-nightly-filters {
-        
+        min-width: 256px;
+
         .filters-list {
             .calc-height(100, 140);
 
@@ -1309,15 +1354,24 @@
             padding: 20px;
             background: #bfbfbf @darkTexture;
             z-index: 9;
+            text-align: center;
             .box-shadow(0 -1px 1px rgba(0,0,0,.15));
             .size(80px, 100%);
 
-            .button { width: 100%; }
+            .button {
+                width: 120px;
+            }
+        }
+        
+        /* Screen big enough to show two columns ***/
+        @media screen and (min-width: ~'@{breakpointDoubleSidebar}px') {
+            width: 256px;
         }
     }   
 
     /* Sidebar - Blocks - Unassigned ***/
     .diary-nightly-unassigned {
+        min-width: 320px;
 
         .unassigned-labels {
             font-size: 13px;
@@ -1357,8 +1411,7 @@
             line-height: 1;
             padding: 5px 10px;
             background-color: @white;
-            cursor: @draggable, pointer;
-            cursor: @draggable 16 16, pointer;
+            cursor: pointer;
             .box-shadow();
             #flexbox > .parent(row wrap, '', center, '');
             #border-radius > .rounded();
@@ -1387,7 +1440,7 @@
             }
 
             .name { 
-                max-width: 120px;
+                .calc-max-width(100, 20);
             }
 
             .room {
@@ -1429,19 +1482,16 @@
             &:not(:last-child) {
                 margin-bottom: 10px;
             }
-
-            &:active {
-                cursor: @dragging, move;
-                cursor: @dragging 16 16, move; 
-            }
         }
 
         /* Screen big enough to show two columns ***/
-        @media screen and (min-width: 1664px) {
+        @media screen and (min-width: ~'@{breakpointDoubleSidebar}px') {
+            width: ~'calc(100% - @{breakpointSingleSidebar}px)';
+
             &.visible {
-                .translate3d(-640px, 0, 0);
+                .translate3d(-656px, 0, 0);
             }
-        } 
+        }
     }
 
     /* Overlay for search and filters ***/

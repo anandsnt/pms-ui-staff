@@ -240,9 +240,6 @@
     data="uiChosenReport.hasGuaranteeType.data"
     options="uiChosenReport.hasGuaranteeType.options"></multi-option-selection>
 
-
-
-
 <multi-option-selection ng-show="uiChosenReport.hasByChargeGroup && uiChosenReport.hasByChargeGroup.data.length"
     label="Charge Group(s)"
     on-update="refreshFilterScroll"
@@ -256,8 +253,6 @@
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasByChargeCode.data"
     options="uiChosenReport.hasByChargeCode.options"></multi-option-selection>
-
-
 
 <multi-option-selection ng-show="uiChosenReport.hasRateTypeFilter && uiChosenReport.hasRateTypeFilter.data.length"
     label="Rate Type"
@@ -273,14 +268,13 @@
     options="uiChosenReport.hasRateFilter.options"></multi-option-selection>
 
 
-
 <multi-option-selection ng-show="uiChosenReport.hasDisplay && uiChosenReport.hasDisplay.data.length"
     label="Display(s)"
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasDisplay.data"
     options="uiChosenReport.hasDisplay.options"></multi-option-selection>
 
-<multi-option-selection ng-show="uiChosenReport.hasExclusions && uiChosenReport.hasExclusions.data.length"
+<multi-option-selection ng-show="uiChosenReport.hasExclusions && uiChosenReport.hasExclusions.data.length && uiChosenReport.hasExclusions.data.visible"
     label="Exclude"
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasExclusions.data"
@@ -331,7 +325,17 @@
     data="uiChosenReport.hasAddons.data"
     options="uiChosenReport.hasAddons.options"></multi-option-selection>
 
+<multi-option-selection ng-show="uiChosenReport.hasIncludeAgingBalance && uiChosenReport.hasIncludeAgingBalance.data.length"
+    label="Aging Balance"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasIncludeAgingBalance.data"
+    options="uiChosenReport.hasIncludeAgingBalance.options"></multi-option-selection>
 
+<multi-option-selection ng-show="uiChosenReport.hasAccountSearch && uiChosenReport.hasAccountSearch.data.length"
+    label="Account Name"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasAccountSearch.data"
+    options="uiChosenReport.hasAccountSearch.options"></multi-option-selection>
 
 
 <multi-option-selection ng-show="uiChosenReport.hasReservationStatus && uiChosenReport.hasReservationStatus.data.length"

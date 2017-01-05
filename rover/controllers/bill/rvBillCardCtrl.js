@@ -216,7 +216,14 @@ sntRover.controller('RVbillCardController',
 		if (chargeCodes.length > 0) {
 			_.each(chargeCodes, function(chargeCode, index) {
 				if (chargeCode.isSelected) {
-					$scope.moveChargeData.selectedTransactionIds.push(chargeCode.id);
+					if (chargeCode.is_group_by_ref) {
+						var concatObject = $scope.moveChargeData.selectedTransactionIds.concat(chargeCode.item_ids);
+
+						$scope.moveChargeData.selectedTransactionIds = concatObject;
+					}
+					else {
+						$scope.moveChargeData.selectedTransactionIds.push(chargeCode.id);
+					}
 				}
 		    });
 		    ngDialog.open({
@@ -720,16 +727,21 @@ sntRover.controller('RVbillCardController',
 	  */
 	 $scope.moveToBillAction = function(oldBillValue, feesIndex) {
 	 	var parseOldBillValue = parseInt(oldBillValue) - 1;
-		var newBillValue = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex].billValue;
-		var transactionId = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex].transaction_id;
-		var id  = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex].id;
+	 	var feesDetails = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details;
+		var newBillValue = feesDetails[feesIndex].billValue,
+			transactionId = feesDetails[feesIndex].transaction_id,
+			id  = (feesDetails[feesIndex].id) ? feesDetails[feesIndex].id : null,
+			itemIdList = (feesDetails[feesIndex].item_ids) ? feesDetails[feesIndex].item_ids : [],
+			isGroupByRef = feesDetails[feesIndex].is_group_by_ref;
 		var dataToMove = {
-			"reservation_id": $scope.reservationBillData.reservation_id,
-			"to_bill": newBillValue,
-			"from_bill": oldBillValue,
-			"transaction_id": transactionId,
-			"id": id
+			'reservation_id': $scope.reservationBillData.reservation_id,
+			'to_bill': newBillValue,
+			'from_bill': oldBillValue,
+			'transaction_id': transactionId,
+			'id': id,
+			'item_ids': itemIdList
 		};
+
 		/*
 		 * Success Callback of move action
 		 */
@@ -1304,50 +1316,57 @@ sntRover.controller('RVbillCardController',
 
 		$scope.viewFromBillScreen = true;
 		$scope.fromView = "checkin";
-		// show email popup
-		if (keySettings === "email") {
+        // As per CICO-29735
+		if (keySettings !== "no_key_delivery") {
+			// show email popup
+			if (keySettings === "email") {
 
-			ngDialog.open({
-				 template: '/assets/partials/keys/rvKeyEmailPopup.html',
-				 controller: 'RVKeyEmailPopupController',
-				 className: '',
-				 closeByDocument: false,
-				 scope: $scope
-			});
-		}
-		else if (keySettings === "qr_code_tablet") {
-
-			// Fetch and show the QR code in a popup
-			var	reservationId = $scope.reservationBillData.reservation_id;
-
-			var successCallback = function(data) {
-				$scope.$emit('hideLoader');
-				$scope.data = data;
 				ngDialog.open({
-					 template: '/assets/partials/keys/rvKeyQrcodePopup.html',
-					 controller: 'RVKeyQRCodePopupController',
+					 template: '/assets/partials/keys/rvKeyEmailPopup.html',
+					 controller: 'RVKeyEmailPopupController',
 					 className: '',
+					 closeByDocument: false,
 					 scope: $scope
 				});
-			};
+			}
+			else if (keySettings === "qr_code_tablet") {
 
-			$scope.invokeApi(RVKeyPopupSrv.fetchKeyQRCodeData, { "reservationId": reservationId }, successCallback);
-		}
+				// Fetch and show the QR code in a popup
+				var	reservationId = $scope.reservationBillData.reservation_id;
 
-		// Display the key encoder popup
-		// https://stayntouch.atlassian.net/browse/CICO-21898?focusedCommentId=58632&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-58632
-		else if (keySettings === "encode"  || keySettings === "mobile_key_encode") {
-			// when checking in we are creating a new key, popup controller expects this flag.
-			if ($scope.reservationData && $scope.reservationData.status && $scope.reservationData.status === 'CHECKING_IN') {
-				$scope.keyType = 'New';
-    			$rootScope.$broadcast('MAKE_KEY_TYPE', {type: 'New'});
+				var successCallback = function(data) {
+					$scope.$emit('hideLoader');
+					$scope.data = data;
+					ngDialog.open({
+						 template: '/assets/partials/keys/rvKeyQrcodePopup.html',
+						 controller: 'RVKeyQRCodePopupController',
+						 className: '',
+						 scope: $scope
+					});
+				};
+
+				$scope.invokeApi(RVKeyPopupSrv.fetchKeyQRCodeData, { "reservationId": reservationId }, successCallback);
 			}
 
-			if ($scope.reservationBillData.is_remote_encoder_enabled && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0) {
-				fetchEncoderTypes();
-			} else {
-				openKeyEncodePopup();
+			// Display the key encoder popup
+			// https://stayntouch.atlassian.net/browse/CICO-21898?focusedCommentId=58632&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-58632
+			else if (keySettings === "encode"  || keySettings === "mobile_key_encode") {
+				// when checking in we are creating a new key, popup controller expects this flag.
+				if ($scope.reservationData && $scope.reservationData.status && $scope.reservationData.status === 'CHECKING_IN') {
+					$scope.keyType = 'New';
+                    $rootScope.$broadcast('MAKE_KEY_TYPE', {type: 'New'});
+				}
+
+				if ($scope.reservationBillData.is_remote_encoder_enabled && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0) {
+					fetchEncoderTypes();
+				} else {
+					openKeyEncodePopup();
+				}
 			}
+		} else {
+            // if No key encode chosen, skip key display and proceed straight to stay card
+            $scope.isRefreshOnBackToStaycard = true;
+			$scope.goBackToStayCard();
 		}
 	};
 
@@ -1446,12 +1465,16 @@ sntRover.controller('RVbillCardController',
                     RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.reservation_id, $scope.reservationData);
 
                     var useAdvancedQueFlow = $rootScope.advanced_queue_flow_enabled;
+                    // as per CICO-29735
+                    var keySettings = $scope.reservationData.reservation_card.key_settings;
 
-                    if (useAdvancedQueFlow) {
+                    if (useAdvancedQueFlow && keySettings !== "no_key_delivery") {
                         setTimeout(function() {
                             // then prompt for keys
                             $rootScope.$broadcast('clickedIconKeyFromQueue');// signals rvReservationRoomStatusCtrl to init the keys popup
                         }, 1250);
+                        $scope.goToStayCardFromAddToQueue();
+                    } else {
                         $scope.goToStayCardFromAddToQueue();
                     }
             };
@@ -2666,5 +2689,36 @@ sntRover.controller('RVbillCardController',
     	return (!is_rate_suppressed || $scope.isSRViewRateBtnClicked);
     };
 
+    // Function which fetches and returns the charge details of a grouped charge - CICO-34039.
+    $scope.expandGroupedCharge = function(feesData) {
+        // Success callback for the charge detail fetch for grouped charges.
+        var fetchChargeDataSuccessCallback = function(data) {
+            feesData.light_speed_data = data;
+            feesData.isExpanded = true;
+            $scope.$emit('hideLoader');
+            $scope.calculateHeightAndRefreshScroll();
+        };
+        // Failure callback for the charge detail fetch for grouped charges.
+        var fetchChargeDataFailureCallback = function(errorMessage) {
+            $scope.errorMessage = errorMessage;
+            $scope.emit('hideLoader');
+        };
+
+        // If the flag for toggle is false, perform api call to get the data.
+        if (!feesData.isExpanded) {
+            var params = {
+                'reference_number': feesData.reference_number,
+                'bill_id': $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id,
+                'date': feesData.date
+            };
+            
+            $scope.invokeApi(RVBillCardSrv.groupChargeDetailsFetch, params, fetchChargeDataSuccessCallback, fetchChargeDataFailureCallback);
+        }
+        else {
+            // If the flag for toggle is true, then it is simply reverted to hide the data.
+            feesData.isExpanded = false;
+            $scope.calculateHeightAndRefreshScroll();
+        }
+    };
 
 }]);
