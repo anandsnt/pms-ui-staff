@@ -360,9 +360,9 @@ sntRover.factory('RVReportParserFac', [
                     rowData.valueList = rowData.valueList.concat([
                        { key: 'res_count', value: e.total_reservations_count },
                        { key: 'available', value: e.available_rooms_count },
-                       { key: 'future_revenue', value: e.future_revenue },
-                       { key: 'adr', value: e.adr },
-                       { key: 'rate_revenue', value: e.rate_revenue }
+                       { key: 'future_revenue', value: $filter('currency')(e.future_revenue, $rootScope.currencySymbol, 2) }, 
+                       { key: 'adr', value: $filter('currency')(e.adr, $rootScope.currencySymbol, 2) },
+                       { key: 'rate_revenue', value: $filter('currency')(e.rate_revenue, $rootScope.currencySymbol, 2) }
                     ]);
                 });
             });
