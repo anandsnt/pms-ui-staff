@@ -251,7 +251,6 @@ var GlobalZestStationApp = function() {
 
 
     this.toggleLanguageTags = function() {
-        console.log('toggle showing tags');
         that.showingTags = !that.showingTags;
         that.callRootMethod('toggleLanguageTags');
     };

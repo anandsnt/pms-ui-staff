@@ -49,10 +49,11 @@ sntZestStation.directive('editableText', ['$timeout', function($timeout) {
                     // console.log('start editing : ', element);  
                     // console.log(element, scope, attrs);
 
-                var tag = attrs.editableText,
+                var tag = $.trim(attrs.editableText),
+                    keepShowingTag,
                     el = $(element);
 
-                var oldText =  el.text();
+                var oldText =  $.trim(el.text());
 
                 var $inputField = $('<input class="editor-mode-cls"/>').val( oldText );
 
@@ -64,6 +65,10 @@ sntZestStation.directive('editableText', ['$timeout', function($timeout) {
                     //  translation updated in locale, pushed
                     // el.text( newValueForText ); // show immediate change in text, save happens afterwards
 
+                    if (oldText !== tag || oldText !== newValueForText) {
+                        el.attr('old-text', newValueForText);
+                    } 
+
                     addListeners(el, textEditor);
 
                     $inputField.replaceWith( element );
@@ -71,9 +76,16 @@ sntZestStation.directive('editableText', ['$timeout', function($timeout) {
                     if (oldText !== newValueForText) {
                         // show saving-indicator for slow networks need to show that save in-progress
                         element.scope().$parent.$emit('showLoader');
-                        
-                        console.log('updating: ', tag, ' to be: ', newValueForText);
-                        element.scope().$parent.saveLanguageEditorChanges(tag, newValueForText);
+
+                        // If editing a Tag WHILE the tag was toggled ON, 
+                        // need to still show that tag value until user toggles Tags back OFF
+                        // 
+                        keepShowingTag = false;
+                        if (oldText === tag) {
+                            keepShowingTag = true;
+                        }
+                        element.scope().$parent.saveLanguageEditorChanges(tag, newValueForText, false, keepShowingTag);
+
                     }
 
                 };

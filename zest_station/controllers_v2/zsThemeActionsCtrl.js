@@ -98,28 +98,38 @@ sntZestStation.controller('zsThemeActionsCtrl', [
          ********************************************************************************/
 
         $scope.$on('TOGGLE_LANGUAGE_TAGS', function(evt) {
+
              // enables user (via conosle or developer tools) to show tags on-screen instead of the 
              // translated text
-            console.log('toggle tags');
              // TODO: figure out how to show/hide tags PLUS edit
-            var tags = $('text'), el;
+            var tags = $('text'), // grab all <text> selectors, which should only be used for locales
+                el, tag, currentText, old;
 
+            // for each field with tag, on current screen, replace
+            // the current text with the tag text, keep ref to the current text
+            // 
             for (var i = 0; i < tags.length; i++) {
 
                 el = $(tags[i]);
+                tag = $.trim(el.attr('editable-text'));
+                currentText = $.trim(el.text());
+                old = el.attr('old-text');
 
-                if ( el.text() === el.attr('editable-text')) {
-                    // if showing the tag, show translated text
-                    el.text(el.attr('old-text'));
+                if ( currentText === tag ) {
+                    // if showing the tag, switch back to text, 
+                    // just swap the old-text with current value in json file
+                    $scope.saveLanguageEditorChanges(tag, old, true);
 
                 } else {
                     // to show the TAG instead of translated text, swap out with the
                     // tag, which is also in the attribute 'editable-text'
-                    el.attr('old-text', el.text());
-                    el.text(el.attr('editable-text'));
+                    el.attr('old-text', currentText);
+                    // to show the tag instead of the text, make the tag value, same as the tag itself
 
+                    $scope.saveLanguageEditorChanges(tag, tag, true);
                 }
             }
+            $scope.runDigestCycle();
         });
         
         (function() {// initializeMe

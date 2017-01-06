@@ -423,8 +423,9 @@ sntZestStation.controller('zsRootCtrl', [
 
         };
 
-        $scope.saveLanguageEditorChanges = function(tag, newValueForText) {
-            console.log(':: saving language editor changes ::');
+
+        $scope.saveLanguageEditorChanges = function(tag, newValueForText, skipSaving, keepShowingTag) {
+            // console.log(':: saving language editor changes ::');
             var langCode = $scope.currentLanguageCode;
 
             var langObj = {}, // zsGeneralSrv.languageJSONs[langCode],
@@ -454,18 +455,27 @@ sntZestStation.controller('zsRootCtrl', [
                     // these params (below) get removed by service controller before api call
                     'langCode': langCode,
                     'newValueForText': newValueForText,
-                    'tag': tag
+                    'tag': tag,
+                    'keepShowingTag':keepShowingTag ? keepShowingTag : false
 
                 },
                 successCallBack: onSuccess,
                 failureCallBack: onFail,
                 'loader': 'none'
             };
-            // use the currently selected language for saving the language text
-            options.params.kiosk.zest_lang[langName + '_translations_file'] = encoded;
-            options.params.kiosk.zest_lang[langName + '_translations_file_updated'] = true;
 
-            $scope.callAPI(zsGeneralSrv.updateLanguageTranslationText, options);
+            if (skipSaving) {
+                // locale sync of Locale
+                zsGeneralSrv.syncTranslationText(langCode, newValueForText, tag);
+
+            } else {
+                // use the currently selected language for saving the language text
+                options.params.kiosk.zest_lang[langName + '_translations_file'] = encoded;
+                options.params.kiosk.zest_lang[langName + '_translations_file_updated'] = true;
+
+                $scope.callAPI(zsGeneralSrv.updateLanguageTranslationText, options);
+            }
+
 
         };
 		/**

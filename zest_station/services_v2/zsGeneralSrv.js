@@ -116,21 +116,14 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
             return deferred.promise;
         };
-        this.updateLanguageTranslationText = function(params) {
-            var deferred = $q.defer(),
-                url = '/api/hotel_settings/change_settings';
-            var langCode = params.langCode, 
-                newValueForText = params.newValueForText,
-                tag = params.tag;
+        this.syncTranslationText = function(langCode, newValueForText, tag) {
 
-            zsBaseWebSrv.postJSON(url, params).then(function(data) {
-                deferred.resolve(data);
-                
                 var translationFiles = that.refToLatestPulledTranslations;
                 // sync local translated file for current shortcode, which just updated
 
                 for (langShortCode in translationFiles) {
                     if (langShortCode === langCode) {
+                        // console.log(':: ',tag,' :: --> ',newValueForText);
                         // updates locale translation so we dont have to call another fetch languages api which takes time
                         translationFiles[langShortCode][tag] = newValueForText;
 
@@ -140,9 +133,24 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
                     }
                 }
+        };
 
-                // $translate.use(defaultLangShortCode);
+        this.updateLanguageTranslationText = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/hotel_settings/change_settings';
+            var langCode = params.langCode, 
+                newValueForText = params.newValueForText,
+                tag = params.tag,
+                keepShowingTag = params.keepShowingTag;
 
+            zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+                if (keepShowingTag) {
+                    that.syncTranslationText(langCode, tag, tag);
+                } else {
+                    that.syncTranslationText(langCode, newValueForText, tag);    
+                }
+                
 
             }, function(data) {
                 deferred.reject(data);
