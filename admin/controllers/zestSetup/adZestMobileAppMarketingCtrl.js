@@ -3,11 +3,11 @@ admin.controller('ADZestMobileAppMarketingCtrl', [
 	'adZestMobileAppMarketingSrv',
 	'data',
 	function($scope,
-			adZestMobileAppMarketingSrv,data){
+			adZestMobileAppMarketingSrv,data) {
 
 	BaseCtrl.call(this, $scope);
 
-	var successCallbackOfZestMobileAppMarketing = function(response) {
+	var successCallbackOfZestMobileAppMarketing = function() {
 		$scope.goBackToPreviousState();
 	};
 
@@ -19,10 +19,11 @@ admin.controller('ADZestMobileAppMarketingCtrl', [
             params: $scope.data,
             successCallBack: successCallbackOfZestMobileAppMarketing
         };
+
         $scope.callAPI(adZestMobileAppMarketingSrv.saveZestMobileAppMarketing, options);
 	};
 
-	(function(){
+	(function() {
 		$scope.data = data;
 	})();
 }]);
