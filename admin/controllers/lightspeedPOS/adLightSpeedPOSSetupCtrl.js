@@ -26,7 +26,9 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
             $scope.callAPI(adLightSpeedPOSSetupSrv.fetchLightSpeedPOSConfiguration, {
                 successCallBack: function(settings) {
                     $scope.lightspeed = settings;
-                    cb && _.isFunction(cb) && cb();
+                    if(typeof cb === "function") {
+                      cb();
+                    }
                 }
             });
         };
