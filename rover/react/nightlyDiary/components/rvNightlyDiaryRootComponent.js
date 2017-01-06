@@ -27,7 +27,7 @@ const NightlyDiaryRootComponent = createClass ({
 
         setTimeout(function() {
             that.scroller.refresh();
-            that.scrollToNthelement(that.props.index); 
+            that.scrollToNthelement(that.props.index);
         }, 500);
 
     },
@@ -54,6 +54,7 @@ const NightlyDiaryRootComponent = createClass ({
                     {this.props.showPrevPageButton ? <GoToPreviousPageButtonContainer/> : ''}
                     {this.props.showNextPageButton ? <GoToNextPageButtonContainer/> : ''}
                     <NightlyDiaryRoomsListContainer/>
+                    <NightlyDiaryStayRangeContainer/>
                     <NightlyDiaryReservationsListContainer/>
                 </div>
             </div>

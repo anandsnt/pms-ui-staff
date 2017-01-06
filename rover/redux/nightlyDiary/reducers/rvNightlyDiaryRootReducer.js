@@ -10,6 +10,9 @@ const nightlyDiaryRootReducer = (state, action) => (
         selectedReservationId: (action.type === 'RESERVATION_SELECTED' || action.type === 'CANCEL_RESERVATION_EDITING')
                             ? action.selectedReservationId
                             : state.selectedReservationId,
+        currentSelectedReservation: (action.type === 'RESERVATION_SELECTED' || action.type === 'CANCEL_RESERVATION_EDITING')
+                            ? action.currentSelectedReservation
+                            : state.currentSelectedReservation,
         selectedRoomId: (action.type === 'DIARY_VIEW_CHANGED') ? action.selectedRoomId : state.selectedRoomId,
         isFromStayCard: state.isFromStayCard
     }
