@@ -424,8 +424,6 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			} else if ($scope.noOfKeysSelected > $scope.noOfKeysCreated) {
 				// if more key is needed
 				$scope.mode = 'KEY_ONE_CREATION_SUCCESS_MODE';
-				// provide some timeout for user to grab keys
-				$timeout($scope.dispenseKey, 6000);
 			}
 			revertFailureReason();
 			updateLogForKeyActions($scope.noOfKeysCreated, "success");
