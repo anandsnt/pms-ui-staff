@@ -45,5 +45,8 @@
 	"FEATURE_UPLOAD_INVENTORY": "Upload Inventory",
 	"FEATURE_UPLOAD_RATE": "Upload Rate",
 	"FEATURE_UPLOAD_RESTRICTION":"Upload Restriction",
-	"SYNC_HISTORICAL_DATA": "Synchronize Historical Data"
+	"SYNC_HISTORICAL_DATA": "Synchronize Historical Data",
+	"CONFIGURE": "Configure",
+	"CONFIGURATION": "Configuration",
+	"API_CONFIGURATION_PREFIX": "API Access"
 
