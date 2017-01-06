@@ -92,7 +92,7 @@ module.exports = {
             'guestweb_sohotel': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_hive': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_pod_dc': [ themeJsRoot + 'app_router_common.js'],
-            'guestweb_snt': [ themeCSSRoot + 'guestweb_snt.css']
+            'guestweb_snt': [ themeJsRoot + 'app_router_new_common.js']
         };
     }
 };
