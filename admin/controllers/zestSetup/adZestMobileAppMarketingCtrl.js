@@ -1,9 +1,4 @@
-admin.controller('ADZestMobileAppMarketingCtrl', [
-	'$scope',
-	'adZestMobileAppMarketingSrv',
-	'data',
-	function($scope,
-			adZestMobileAppMarketingSrv,data) {
+admin.controller('ADZestMobileAppMarketingCtrl', function($scope, adZestMobileAppMarketingSrv,data) {
 
 	BaseCtrl.call(this, $scope);
 
@@ -26,4 +21,4 @@ admin.controller('ADZestMobileAppMarketingCtrl', [
 	(function() {
 		$scope.data = data;
 	})();
-}]);
+});
