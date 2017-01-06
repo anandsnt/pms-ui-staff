@@ -1,6 +1,8 @@
 <section id="main" class="centered" role="main">
     <div id="content" class="input-field-contents">
-        <h1 translate>NATIONALITY</h1>
+        <h1>
+            <text editable-text="NATIONALITY"> {{'NATIONALITY' |translate}}</text>
+        </h1>
         <!-- <h3>Subheading text here</h3> -->
         <form method="post" class="form">
 
@@ -44,7 +46,9 @@
             <div ng-if="zestStationData.theme === 'yotel'" ng-include="icons.url.clear_icon" click-touch="clearNationality()"></div>
 
             <div class="action">
-                <button type="button" class="button left-aligned-next" ng-click="saveNationality()">{{'NEXT_BTN' |translate}}</button>
+                <button type="button" class="button left-aligned-next" ng-click="saveNationality()">
+                    <text editable-text="NEXT_BTN"> {{'NEXT_BTN' |translate}}</text>
+                </button>
             </div>
         </form>
     </div>
