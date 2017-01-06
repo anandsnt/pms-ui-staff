@@ -180,6 +180,6 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 					return adZestMobileAppMarketingSrv.getZestMobileAppMarketingData();
 				}
 			}
-		})
+		});
 
 });
