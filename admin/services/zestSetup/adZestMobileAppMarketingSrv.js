@@ -1,4 +1,4 @@
-admin.service('adZestMobileAppMarketingSrv', ['ADBaseWebSrvV2', function(ADBaseWebSrvV2) {
+admin.service('adZestMobileAppMarketingSrv', function(ADBaseWebSrvV2) {
 
 	this.saveZestMobileAppMarketing = function(data) {
 		var url = '/admin/mobile_app_marketing';
@@ -11,4 +11,4 @@ admin.service('adZestMobileAppMarketingSrv', ['ADBaseWebSrvV2', function(ADBaseW
 
 		return ADBaseWebSrvV2.getJSON(url);
 	};
-}]);
+});
