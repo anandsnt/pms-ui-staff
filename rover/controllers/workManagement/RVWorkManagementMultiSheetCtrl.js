@@ -981,7 +981,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				case 'Due out':
 				case 'Arrived / Day use / Due out':
 				case 'Due out / Arrival':
-					return room.checkout_time ? room.checkout_time : 'OUT';
+					return room.checkout_time ? room.checkout_time : 'DUE OUT';
 
 				case 'Stayover':
 					return 'STAYOVER';
@@ -991,7 +991,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 				case 'Arrival':
                 case 'Departed / Arrival':
-					return room.checkin_time ? room.checkin_time : 'IN';
+					return room.checkin_time ? room.checkin_time : 'DUE IN';
 
                 case 'Not Reserved':
                     return 'NOT RESERVED';
