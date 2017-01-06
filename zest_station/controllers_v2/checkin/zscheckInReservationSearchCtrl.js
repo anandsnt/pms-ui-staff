@@ -245,7 +245,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
         };
 
         $scope.dateEntered = function() {
-
+            $scope.showDatePick = false;
             var params = angular.copy($scope.reservationParams);
 
             delete params.no_of_nights;
