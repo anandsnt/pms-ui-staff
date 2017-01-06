@@ -26,7 +26,7 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
             $scope.callAPI(adLightSpeedPOSSetupSrv.fetchLightSpeedPOSConfiguration, {
                 successCallBack: function(settings) {
                     $scope.lightspeed = settings;
-                    cb && cb();
+                    cb && _.isFunction(cb) && cb();
                 }
             });
         };
@@ -41,19 +41,17 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
             $scope.lightspeed.enabled = !$scope.lightspeed.enabled;
         };
 
-        $scope.addRestaurant = function() {
-            console.log("to add restaurant");
-        };
-
         $scope.onUpdate = function() {
-            console.log($scope.lightspeed);
+            $scope.saveLightSpeedPOSSetup(function() {
+                refreshSettings($scope.onCancelEdit);
+            });
         };
 
         /**
          * when we clicked on save button
          * @return {undefined}
          */
-        $scope.saveLightSpeedPOSSetup = function() {
+        $scope.saveLightSpeedPOSSetup = function(cb) {
             var params = {
                 lightspeed: _.omit(dclone($scope.lightspeed), 'charge_code_name', 'payment_charge_code_name')
             };
@@ -80,7 +78,7 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
 
             var options = {
                 params: params.lightspeed,
-                successCallBack: successCallBackOfLightSpeedPOSSetup
+                successCallBack: cb || successCallBackOfLightSpeedPOSSetup
             };
 
             $scope.callAPI(adLightSpeedPOSSetupSrv.saveLightSpeedPOSConfiguration, options);
@@ -122,7 +120,9 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
 
         $scope.onSave = function() {
             $scope.lightspeed.restaurants.push(angular.copy($scope.state.new));
-            $scope.saveLightSpeedPOSSetup();
+            $scope.saveLightSpeedPOSSetup(function() {
+                refreshSettings($scope.onCancelAdd);
+            });
         };
 
         /**
