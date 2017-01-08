@@ -29,8 +29,12 @@
 <div class="popup" ng-class="{'open':zestStationData.timeOut && !showLanguagePopup}">
     <!-- Remove class "open" to hide popup content -->
     <div class="popup-content">
-        <h2 class="nocaps">{{'IDLE_TIMEOUT_MSG'|translate}}</h2>
-        <button type="button" class="button" click-touch='resetTime();'>{{'IDLE_TIMEOUT_YES'|translate}}</button>
+        <h2 class="nocaps">
+            <text editable-text="IDLE_TIMEOUT_MSG"> {{'IDLE_TIMEOUT_MSG' |translate}}</text>
+        </h2>
+        <button type="button" class="button" click-touch='resetTime();'>
+            <text editable-text="IDLE_TIMEOUT_YES"> {{'IDLE_TIMEOUT_YES' |translate}}</text>
+        </button>
     </div>
 </div>
 <div class="popup" ng-class="{'open':showLanguagePopup}">
