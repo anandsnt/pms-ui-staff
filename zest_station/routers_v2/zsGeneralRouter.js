@@ -29,7 +29,7 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 							zsGeneralSrv.$translateProvider = $translateProvider;
 							zsGeneralSrv.refToLatestPulledTranslations = translationFiles;
 
-							for (langShortCode in translationFiles) {
+							for (var langShortCode in translationFiles) {
 								$translateProvider.translations(langShortCode, translationFiles[langShortCode]);
 							}
 

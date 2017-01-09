@@ -1,4 +1,4 @@
-sntZestStation.directive('editableText', ['$timeout', function($timeout) {
+sntZestStation.directive('editableText', [function() {
     /*
         this directive used with an Editor-Mode flag
         when the Editor-Mode flag is set to true,
@@ -32,6 +32,7 @@ sntZestStation.directive('editableText', ['$timeout', function($timeout) {
 
             var pressHoldtimeoutId;
             // press-and-hold for 1 sec listener
+
             $(el).on('mousedown', function() {
                 pressHoldtimeoutId = setTimeout(fnToFire, 1000);
             }).on('mouseup mouseleave', function() {
@@ -53,7 +54,7 @@ sntZestStation.directive('editableText', ['$timeout', function($timeout) {
                     keepShowingTag,
                     el = $(element);
 
-                var oldText =  $.trim(el.text());
+                var oldText = $.trim(el.text());
 
                 var $inputField = $('<input class="editor-mode-cls"/>').val( oldText );
 
@@ -91,8 +92,6 @@ sntZestStation.directive('editableText', ['$timeout', function($timeout) {
                 };
 
                 $inputField.one('blur', save).focus();
-            } else {
-                console.log('editor mode currently is OFF');
             }
         };
 

@@ -97,11 +97,10 @@ sntZestStation.controller('zsThemeActionsCtrl', [
          *  
          ********************************************************************************/
 
-        $scope.$on('TOGGLE_LANGUAGE_TAGS', function(evt) {
+        $scope.$on('TOGGLE_LANGUAGE_TAGS', function() {
 
              // enables user (via conosle or developer tools) to show tags on-screen instead of the 
              // translated text
-             // TODO: figure out how to show/hide tags PLUS edit
             var tags = $('text'), // grab all <text> selectors, which should only be used for locales
                 el, tag, currentText, old;
 

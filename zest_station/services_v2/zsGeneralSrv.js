@@ -6,7 +6,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
     function($http, $q, zsBaseWebSrv, zsBaseWebSrv2, $translate) {
         var that = this;
 
-        this.refToLatestPulledTranslations; // used by generalRouter to fetch and store Language Locale files
+        // this.refToLatestPulledTranslations; // used by generalRouter to fetch and store Language Locale files
         /*
         * The configuredHotels list are the hotels which zest station has added stylesheets / images / icons, and we 'officially' support
         * all other hotels should default to the SNT theme until which time we add the styling into our product or until a CMS is integrated
@@ -118,21 +118,21 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         };
         this.syncTranslationText = function(langCode, newValueForText, tag) {
 
-                var translationFiles = that.refToLatestPulledTranslations;
+            var translationFiles = that.refToLatestPulledTranslations, langShortCode;
                 // sync local translated file for current shortcode, which just updated
 
-                for (langShortCode in translationFiles) {
-                    if (langShortCode === langCode) {
+            for (langShortCode in translationFiles) {
+                if (langShortCode === langCode) {
                         // console.log(':: ',tag,' :: --> ',newValueForText);
                         // updates locale translation so we dont have to call another fetch languages api which takes time
-                        translationFiles[langShortCode][tag] = newValueForText;
+                    translationFiles[langShortCode][tag] = newValueForText;
 
                         // syncing language change for local translation files
                         // sets that tag value for the locale language (re-translates pages)
-                        that.$translateProvider.translations(langShortCode, translationFiles[langShortCode]);
+                    that.$translateProvider.translations(langShortCode, translationFiles[langShortCode]);
 
-                    }
                 }
+            }
         };
 
         this.updateLanguageTranslationText = function(params) {

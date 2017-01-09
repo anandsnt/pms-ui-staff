@@ -456,7 +456,7 @@ sntZestStation.controller('zsRootCtrl', [
                     'langCode': langCode,
                     'newValueForText': newValueForText,
                     'tag': tag,
-                    'keepShowingTag':keepShowingTag ? keepShowingTag : false
+                    'keepShowingTag': keepShowingTag ? keepShowingTag : false
 
                 },
                 successCallBack: onSuccess,

@@ -53,17 +53,17 @@ sntZestStation.controller('zsHomeCtrl', [
                         name: defaultLangName
                     });
 
-                    if (defaultLanguage && defaultLanguage.name) {
-                        var languageConfig = zsGeneralSrv.languageValueMappingsForUI[defaultLanguage.name],
-                            langShortCode = languageConfig.code;
+                if (defaultLanguage && defaultLanguage.name) {
+                    var languageConfig = zsGeneralSrv.languageValueMappingsForUI[defaultLanguage.name],
+                        langShortCode = languageConfig.code;
 
-                        if ( $translate.use() === langShortCode && checkIfDefaultLanguagIsSet ) {
+                    if ( $translate.use() === langShortCode && checkIfDefaultLanguagIsSet ) {
                             // do nothing, current language is already the default one or no default is selected from hotel admin
-                        } else {
-                            console.info('translating to default lanaguage after ' + userInActivityTimeInHomeScreenInSeconds + ' seconds');
-                            $scope.selectLanguage(defaultLanguage);
-                        }
+                    } else {
+                        console.info('translating to default lanaguage after ' + userInActivityTimeInHomeScreenInSeconds + ' seconds');
+                        $scope.selectLanguage(defaultLanguage);
                     }
+                }
             }
         };
 
@@ -185,6 +185,7 @@ sntZestStation.controller('zsHomeCtrl', [
             // for debugging | testing only via developer tools or console
             // allows dev/user to switch language during-a flow, instead of just at home
             var obj;
+
             for (var i in $scope.languages) {
                 
                 obj = $scope.languages[i];
@@ -204,7 +205,7 @@ sntZestStation.controller('zsHomeCtrl', [
                 langShortCode = languageConfig.code;
 
                 // keep track of lang short code, for editor to save / update tags when needed
-               $scope.languageCodeSelected(langShortCode, language.name);
+            $scope.languageCodeSelected(langShortCode, language.name);
 
             $translate.use(langShortCode);
             $scope.selectedLanguage = language;
