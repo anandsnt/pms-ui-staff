@@ -74,6 +74,7 @@
             <div ng-include="icons.url.createkey_icmp"></div>
         </div>
         <button ng-show="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(2)">{{'MAKE_KEY_TEXT_TWO' |translate}} </button>
+        <button ng-hide="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="dispenseKey()">{{'MAKE_KEY_TEXT_TWO' |translate}} </button>
     </div>
 </section>
 

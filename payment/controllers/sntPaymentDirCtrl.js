@@ -737,9 +737,11 @@ angular.module('sntPay').controller('sntPaymentController',
                 //  In case a credit card is selected; the fee information is to be that of the card
                 if (!!selectedPaymentType && selectedPaymentType.name === 'CC' && $scope.selectedCC && $scope.selectedCC.hasOwnProperty('card_code')) {
 
-                    cardTypeInfo = _.find(selectedPaymentType.values, {
-                        cardcode: $scope.selectedCC.card_code.toUpperCase()
-                    });
+                    if ($scope.selectedCC.card_code) {
+                        cardTypeInfo = _.find(selectedPaymentType.values, {
+                            cardcode: $scope.selectedCC.card_code.toUpperCase()
+                        });
+                    }
 
                     feeInfo = cardTypeInfo &&
                         cardTypeInfo.charge_code &&
