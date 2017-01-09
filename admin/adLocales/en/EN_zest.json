@@ -138,7 +138,17 @@
 "MOBILE_APP_CALL_TO_ACTION": "Mobile app call action",
 "INCLUDE_BANNERS": "INCLUDE BANNERS",
 "APP_STORE": "App store",
-"GOOGLE_PLAY": "Google play"
+"GOOGLE_PLAY": "Google play",
+
+"SETUP_ROOM_READY_EMAIL_INSTRUCTIONS": "Control the information shown in the Room Ready email",
+"SUBJECT": "Subject",
+"TEXT_1": "Text 1 (Begining)",
+"INCLUDE_DETAILS_ABOUT_MOBILE_APP": "Include details about mobile app",
+"ALWAYS": "Always",
+"ONLY_WHEN_ROOM_SUPPORTS_MOBILE_KEY" : "Only when room supports mobile key",
+"MOBILE_APP_CALL_ACTION": "Mobile App call to action",
+"TEXT_2": "Text 2 (Ending)"
+
 
 
 
