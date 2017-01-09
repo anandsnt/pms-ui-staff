@@ -42,8 +42,8 @@
             </p>
             <br>
             <div ng-class="{'dual-app-icons-container': apps.app_store.available && apps.play_store.available, 'single-app-icon-container': ((apps.app_store.available && !apps.play_store.available) || (!apps.app_store.available && apps.play_store.available))}" ng-if="mobileMarketingOn">
-                <a ng-if="apps.app_store.available" href="{{apps.app_store.url}}"><img src="{{apps.app_store.img}}"</a>
-                <a ng-if="apps.play_store.available" href="{{apps.play_store.url}}"><img src="{{apps.play_store.img}}"</a>
+                <a ng-if="apps.app_store.available" href="{{apps.app_store.url}}" target='_blank'><img src="{{apps.app_store.img}}"</a>
+                <a ng-if="apps.play_store.available" href="{{apps.play_store.url}}" target='_blank'><img src="{{apps.play_store.img}}"</a>
             </div>
             <br>
             <br>
