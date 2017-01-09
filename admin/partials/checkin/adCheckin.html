@@ -156,8 +156,8 @@
                                 <span translate="">INCLUDE_BANNERS</span> 
                             </h6>
                         </div>
-                         <ad-toggle-button is-checked="checkinData.zest_web_include_app_store_banner" label="{{ 'APP_STORE' | translate}}"></ad-toggle-button>
-                          <ad-toggle-button is-checked="checkinData.zest_web_include_google_play_banner" label="{{ 'GOOGLE_PLAY' | translate}}"></ad-toggle-button>
+                         <ad-toggle-button is-checked="checkinData.zest_web_include_app_store_banner" label="{{ 'APP_STORE' | translate}}" is-disabled="!checkinData.ios_app_enabled"></ad-toggle-button>
+                          <ad-toggle-button is-checked="checkinData.zest_web_include_google_play_banner" label="{{ 'GOOGLE_PLAY' | translate}}" is-disabled="!checkinData.android_app_enabled"></ad-toggle-button>
                     </div>
                     <div class="entry" ng-show="checkinData.checkin_action == 'sent_to_queue' || checkinData.checkin_action == 'auto_checkin'">
                         <br/><br/>
