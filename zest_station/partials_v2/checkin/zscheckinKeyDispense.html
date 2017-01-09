@@ -87,6 +87,9 @@
         <button ng-show="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(2)">
             <text editable-text="MAKE_KEY_TEXT_TWO"> {{'MAKE_KEY_TEXT_TWO' |translate}}</text>
         </button>
+        <button ng-hide="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="dispenseKey()">
+            <text editable-text="MAKE_KEY_TEXT_TWO"> {{'MAKE_KEY_TEXT_TWO' |translate}}</text>
+        </button>
     </div>
 </section>
 
@@ -105,7 +108,10 @@
         <div id="keys" ng-show="icmp">
             <div ng-include="icons.url.createkey_icmp"></div>
         </div>
-        <button ng-show="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="dispenseKey()">
+        <button ng-show="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(2)">
+            <text editable-text="MAKE_KEY_TEXT_TWO"> {{'MAKE_KEY_TEXT_TWO' |translate}}</text>
+        </button>
+        <button ng-hide="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="dispenseKey()">
             <text editable-text="MAKE_KEY_TEXT_TWO"> {{'MAKE_KEY_TEXT_TWO' |translate}}</text>
         </button>
     </div>
