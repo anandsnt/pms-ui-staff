@@ -595,6 +595,14 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.$digest();
         });
 
+        var reconnectToWebSocket = function() {
+            console.log(':: attempting websocket re-connect ::');
+            var socketReady = $scope.socketOperator.returnWebSocketObject().readyState === 1;
+
+            if (!socketReady) {
+                connectToWebSocket();
+            }
+        };
 
 		/** ******************************************************************************
 		 *  User activity timer
@@ -658,10 +666,15 @@ sntZestStation.controller('zsRootCtrl', [
                     getWorkstationsAtTime = 120;
                     $scope.zestStationData.timeDebugger = 'false';
                 }
+
                 if (workstationTimer >= getWorkstationsAtTime) {
                     getAdminWorkStations(); // fetch workstations with latest status details
+                    if ($scope.inChromeApp) {
+                        reconnectToWebSocket();// if disconnected, will attempt to re-connect to the websocket
+                    }
                     workstationTimer = 0;
                 }
+
 				// the user inactivity actions need not be done when user in 
 				// home screen or in admin screen or in OOS screen
 				// include the states, which don't need the timeout to be handled 
@@ -865,15 +878,31 @@ sntZestStation.controller('zsRootCtrl', [
 
         var socketOpenedFailed = function() {
             console.info('Websocket:-> socket connection failed');
+            $scope.zestStationData.stationHandlerConnectedStatus = 'Not-Connected';
+            $scope.runDigestCycle();
             $scope.$broadcast('SOCKET_FAILED');
         };
+
         var socketOpenedSuccess = function() {
             console.info('Websocket:-> socket connected');
+            $scope.zestStationData.stationHandlerConnectedStatus = 'Connected';
+            $scope.runDigestCycle();
             $scope.$broadcast('SOCKET_CONNECTED');
         };
 
+        $scope.connectToWebSocket = function() {
+            $scope.zestStationData.stationHandlerConnectedStatus = 'Connecting...';
+            if ($scope.socketOperator) {
+                // if socketOperator is already defined, it may have an open connection, close that first before reconnect
+                $scope.socketOperator.closeWebSocket();
+            }
+            $timeout(function() {
+                $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
+            }, 300);
+        };
+
         $scope.$on('CONNECT_WEBSOCKET', function() {
-            $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
+            $scope.connectToWebSocket();
         });
 
         $scope.$on('EJECT_KEYCARD', function() {
