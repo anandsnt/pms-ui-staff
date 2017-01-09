@@ -213,11 +213,11 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		if (reservationAndhotelData.checkin_url_verification === "true" && reservationAndhotelData.is_zest_checkin === "false") {
 			$state.go('guestCheckinTurnedOff');
 		} else if (reservationAndhotelData.checkin_url_verification === "true") {
-			$state.go('preCheckinStatus'); // external checkin URL available and is on
+			$state.go('externalCheckinVerification'); // external checkin URL available and is on
 		} else if (reservationAndhotelData.is_external_verification === "true") {
 			$state.go('externalVerification'); //external checkout URL
 		} else if (reservationAndhotelData.is_precheckin_only === 'true' && reservationAndhotelData.reservation_status === 'RESERVED' && (reservationAndhotelData.is_auto_checkin === 'true' || (reservationAndhotelData.is_sent_to_que === 'true' && !!reservationAndhotelData.zest_web_use_new_sent_to_que_action))) {
-			$state.go('preCheckinStatus'); //checkin starting -> page precheckin + auto checkin
+			$state.go('checkinConfirmation'); //checkin starting -> page precheckin + auto checkin
 		} else if (reservationAndhotelData.is_precheckin_only === 'true' && reservationAndhotelData.reservation_status === 'RESERVED' && (reservationAndhotelData.is_sent_to_que === 'true')) {
 			$state.go('preCheckinTripDetails'); // only available for Fontainbleau -> precheckin + sent to que
 		} else if ($rootScope.isCheckedin) {
