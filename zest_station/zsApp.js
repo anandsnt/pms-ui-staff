@@ -118,7 +118,7 @@ var GlobalZestStationApp = function() {
         that.cordovaLoaded = false;
     };
 
-    this.demoMode = function() {
+    this.toggleDemoModeOnOff = function() {
         var el = angular.element('#header');
 
         if (el) {

@@ -107,10 +107,10 @@ this.chromeExtensionListener = function(onMessageCallback, chromeAppId, fetchQRC
                    // pass toggle argument to station app, to turn on/off Language-Tags (to view tags behind text)
                 zestSntApp.toggleLanguageTags();
 
-            }else if (passedDataObject.toggleDemo) {
+            } else if (passedDataObject.toggleDemo) {
                    // pass toggle argument to station app, to turn on/off Demo Mode, 
                    // *demo mode does not encode keys, only shows success flow
-                zestSntApp.demoMode();
+                zestSntApp.toggleDemoModeOnOff();
 
             }
 
