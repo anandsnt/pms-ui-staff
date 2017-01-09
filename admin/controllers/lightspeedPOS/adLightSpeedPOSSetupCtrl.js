@@ -27,7 +27,7 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
                 successCallBack: function(settings) {
                     $scope.lightspeed = settings;
                     if (typeof cb === "function") {
-                      cb();
+                        cb();
                     }
                 }
             });
@@ -78,6 +78,16 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
                 return;
             }
 
+            if ($scope.state.mode === "ADD") {
+                params.lightspeed.restaurants.push(angular.copy($scope.state.new));
+            } else {
+                _.each(params.lightspeed.restaurants, function(restaurant) {
+                    if (!restaurant.password) {
+                        restaurant = _.omit(restaurant, 'password');
+                    }
+                });
+            }
+
             var options = {
                 params: params.lightspeed,
                 successCallBack: cb || successCallBackOfLightSpeedPOSSetup
@@ -121,7 +131,6 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
         };
 
         $scope.onSave = function() {
-            $scope.lightspeed.restaurants.push(angular.copy($scope.state.new));
             $scope.saveLightSpeedPOSSetup(function() {
                 refreshSettings($scope.onCancelAdd);
             });
