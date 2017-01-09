@@ -898,7 +898,9 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.socketOperator.closeWebSocket();
             }
             $timeout(function() {
-                $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
+                if ($scope.zestStationData.stationHandlerConnectedStatus !== 'Connected') {
+                    $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);   
+                }
             }, 300);
         };
 
