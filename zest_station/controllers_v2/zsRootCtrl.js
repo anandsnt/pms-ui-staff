@@ -600,7 +600,7 @@ sntZestStation.controller('zsRootCtrl', [
             var socketReady = $scope.socketOperator.returnWebSocketObject().readyState === 1;
 
             if (!socketReady) {
-                connectToWebSocket();
+                $scope.connectToWebSocket();
             }
         };
 
