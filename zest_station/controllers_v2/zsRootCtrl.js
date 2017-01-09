@@ -892,6 +892,7 @@ sntZestStation.controller('zsRootCtrl', [
 
         $scope.connectToWebSocket = function() {
             $scope.zestStationData.stationHandlerConnectedStatus = 'Connecting...';
+            $scope.runDigestCycle();
             if ($scope.socketOperator) {
                 // if socketOperator is already defined, it may have an open connection, close that first before reconnect
                 $scope.socketOperator.closeWebSocket();
