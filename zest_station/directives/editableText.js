@@ -17,88 +17,90 @@ sntZestStation.directive('editableText', [function() {
      */
 
     return {
-    	restrict: 'A',
-      	scope: {
-          ngModel: '=ngModel'
-	    },
-    	link: function(scope, element, attrs) {
+        restrict: 'A',
+        scope: {
+            ngModel: '=ngModel'
+        },
+        link: function(scope, element, attrs) {
 
-        var addListeners = function(el, fnToFire) {
+            var addListeners = function(el, fnToFire) {
             // double-click listener
-            el.dblclick( fnToFire );
+                el.dblclick( fnToFire );
 
             // touch-device tap listener
-            $(el).on('touchend', fnToFire);
+                $(el).on('touchend', fnToFire);
 
-            var pressHoldtimeoutId;
+                var pressHoldtimeoutId;
             // press-and-hold for 1 sec listener
 
-            $(el).on('mousedown', function() {
-                pressHoldtimeoutId = setTimeout(fnToFire, 1000);
-            }).on('mouseup mouseleave', function() {
-                clearTimeout(pressHoldtimeoutId);
-            });
+                $(el).on('mousedown', function() {
+                    pressHoldtimeoutId = setTimeout(fnToFire, 1000);
 
-        };
+                })
+                .on('mouseup mouseleave', function() {
+                    clearTimeout(pressHoldtimeoutId);
 
-        var textEditor = function() {
+                });
+
+            };
+
+            var textEditor = function() {
                 // handle double-click
                 // 
-            var rootScope = element.scope().$parent.zestStationData;
+                var rootScope = element.scope().$parent.zestStationData;
 
-            if (rootScope.editorModeEnabled === 'true') {
+                if (rootScope.editorModeEnabled === 'true') {
                     // console.log('start editing : ', element);  
                     // console.log(element, scope, attrs);
 
-                var tag = $.trim(attrs.editableText),
-                    keepShowingTag,
-                    el = $(element);
+                    var tag = $.trim(attrs.editableText),
+                        keepShowingTag,
+                        el = $(element);
 
-                var oldText = $.trim(el.text());
+                    var oldText = $.trim(el.text());
 
-                var $inputField = $('<input class="editor-mode-cls"/>').val( oldText );
+                    var $inputField = $('<input class="editor-mode-cls"/>').val( oldText );
 
-                el.replaceWith( $inputField );
+                    el.replaceWith( $inputField );
 
-                var save = function() {
-                    var newValueForText = $inputField.val();
+                    var save = function() {
+                        var newValueForText = $inputField.val();
 
                     //  translation updated in locale, pushed
                     // el.text( newValueForText ); // show immediate change in text, save happens afterwards
 
-                    if (oldText !== tag || oldText !== newValueForText) {
-                        el.attr('old-text', newValueForText);
-                    } 
+                        if (oldText !== tag || oldText !== newValueForText) {
+                            el.attr('old-text', newValueForText);
+                        } 
 
-                    addListeners(el, textEditor);
+                        addListeners(el, textEditor);
 
-                    $inputField.replaceWith( element );
+                        $inputField.replaceWith( element );
 
-                    if (oldText !== newValueForText) {
+                        if (oldText !== newValueForText) {
                         // show saving-indicator for slow networks need to show that save in-progress
-                        element.scope().$parent.$emit('showLoader');
+                            element.scope().$parent.$emit('showLoader');
 
                         // If editing a Tag WHILE the tag was toggled ON, 
                         // need to still show that tag value until user toggles Tags back OFF
                         // 
-                        keepShowingTag = false;
-                        if (oldText === tag) {
-                            keepShowingTag = true;
+                            keepShowingTag = false;
+                            if (oldText === tag) {
+                                keepShowingTag = true;
+                            }
+                            element.scope().$parent.saveLanguageEditorChanges(tag, newValueForText, false, keepShowingTag);
+
                         }
-                        element.scope().$parent.saveLanguageEditorChanges(tag, newValueForText, false, keepShowingTag);
 
-                    }
+                    };
 
-                };
+                    $inputField.one('blur', save).focus();
+                }
+            };
 
-                $inputField.one('blur', save).focus();
-            }
-        };
+            addListeners(element, textEditor);
 
-        addListeners(element, textEditor);
-
-
-    }
+        }
     };
 
 }]);

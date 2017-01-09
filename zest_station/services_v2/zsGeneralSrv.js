@@ -229,7 +229,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.ValidateEmail = function(email) {
             if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
                 return false;
-            } else {return true;}
+            } 
+            return true;
         };
 
 
@@ -239,8 +240,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             }
             email = email.replace(/\s+/g, '');
             if (that.ValidateEmail(email)) {
-                return false;
-            } else {return true;}
+                return false; 
+            }
+            return true;
 
         };
 
