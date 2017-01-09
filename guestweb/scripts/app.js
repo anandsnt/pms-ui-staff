@@ -134,6 +134,22 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		// Footer Settings
 		$rootScope.footerSettings = reservationAndhotelData.zest_web_footer_settings;
 
+		// Marketting apps
+		$rootScope.mobileMarketingOn = reservationAndhotelData.zest_web_checkin_details_about_mobile_app;
+		$rootScope.mobileAppText = reservationAndhotelData.zest_web_checkin_mobile_app_call_to_action;
+		$rootScope.apps = {
+			app_store : {
+				available: reservationAndhotelData.zest_web_include_app_store_banner,
+				url: reservationAndhotelData.ios_app_url,
+				img: reservationAndhotelData.ios_app_banner_image
+			},
+			play_store : {
+				available: reservationAndhotelData.zest_web_include_google_play_banner,
+				url: reservationAndhotelData.android_app_url,
+				img: reservationAndhotelData.android_app_banner_image
+			}
+		};
+
 		if (!!$rootScope.footerSettings.display_footer) {
 			// active footer count
 			var footerCount = _.filter($rootScope.footerSettings.footers, function(footer) {
@@ -197,11 +213,11 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		if (reservationAndhotelData.checkin_url_verification === "true" && reservationAndhotelData.is_zest_checkin === "false") {
 			$state.go('guestCheckinTurnedOff');
 		} else if (reservationAndhotelData.checkin_url_verification === "true") {
-			$state.go('externalCheckinVerification'); // external checkin URL available and is on
+			$state.go('preCheckinStatus'); // external checkin URL available and is on
 		} else if (reservationAndhotelData.is_external_verification === "true") {
 			$state.go('externalVerification'); //external checkout URL
 		} else if (reservationAndhotelData.is_precheckin_only === 'true' && reservationAndhotelData.reservation_status === 'RESERVED' && (reservationAndhotelData.is_auto_checkin === 'true' || (reservationAndhotelData.is_sent_to_que === 'true' && !!reservationAndhotelData.zest_web_use_new_sent_to_que_action))) {
-			$state.go('checkinConfirmation'); //checkin starting -> page precheckin + auto checkin
+			$state.go('preCheckinStatus'); //checkin starting -> page precheckin + auto checkin
 		} else if (reservationAndhotelData.is_precheckin_only === 'true' && reservationAndhotelData.reservation_status === 'RESERVED' && (reservationAndhotelData.is_sent_to_que === 'true')) {
 			$state.go('preCheckinTripDetails'); // only available for Fontainbleau -> precheckin + sent to que
 		} else if ($rootScope.isCheckedin) {
