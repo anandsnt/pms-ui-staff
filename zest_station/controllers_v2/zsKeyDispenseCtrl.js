@@ -394,7 +394,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		$scope.dispenseKey = function() {
 			if ($scope.inDemoMode()) {
 				setTimeout(function() {
-					$scope.saveUIDToReservationSuccsess();
+					saveUIDToReservationSuccsess();
 					$scope.runDigestCycle();
 				}, 3500);
 
