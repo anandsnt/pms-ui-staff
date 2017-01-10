@@ -52,8 +52,8 @@
                 <div id="handler-connected-status" class="entry with-label" ng-show='inChromeApp'>
                     <label>Zest Station Handler</label>
                     <!--label class='admin-label-description'></label-->
-                    <input readonly="" class="read-only" ng-model="zestStationData.stationHandlerConnectedStatus">
-                    <div class='refresh-svg' touch-press='refreshSocketConnection()'></div>
+                    <input readonly="" class="read-only visible" ng-model="zestStationData.stationHandlerConnectedStatus" ng-class='{"green-text":zestStationData.stationHandlerConnectedStatus == "Connected","red-text":zestStationData.stationHandlerConnectedStatus == "Not-Connected"}'>
+                    <div class='refresh-svg' touch-press='refreshSocketConnection()' ng-class='{"station-mini-loading":zestStationData.stationHandlerConnectedStatus == "Connecting..."}'></div>
 
                 </div>
 
