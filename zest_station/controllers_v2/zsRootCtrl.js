@@ -898,21 +898,26 @@ sntZestStation.controller('zsRootCtrl', [
             console.info('Websocket:-> socket connected');
             $scope.zestStationData.stationHandlerConnectedStatus = 'Connected';
             $scope.runDigestCycle();
+            
             $scope.$broadcast('SOCKET_CONNECTED');
         };
 
         $scope.connectToWebSocket = function() {
-            $scope.zestStationData.stationHandlerConnectedStatus = 'Connecting...';
-            $scope.runDigestCycle();
+
             if ($scope.socketOperator) {
                 // if socketOperator is already defined, it may have an open connection, close that first before reconnect
                 $scope.socketOperator.closeWebSocket();
             }
             $timeout(function() {
-                if ($scope.zestStationData.stationHandlerConnectedStatus !== 'Connected') {
+                $scope.zestStationData.stationHandlerConnectedStatus = 'Connecting...';
+                $scope.runDigestCycle();
+            },75);
+
+            $timeout(function() {
+                if ($scope.zestStationData.stationHandlerConnectedStatus === 'Connecting...') {
                     $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);   
                 }
-            }, 300);
+            }, 400);
         };
 
         $scope.$on('CONNECT_WEBSOCKET', function() {
