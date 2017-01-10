@@ -627,6 +627,14 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.runDigestCycle();
             };
 
+            // return true/false if user is in the process of dispensing key
+            // -CICO-36896- if user is dispensing key, the API may take some time depending
+            // on network / key-server conditions, we will rely on the API timeout to fail out
+            // if taking too long
+            var isDispensingKey = function() {
+                return $scope.zestStationData.makingKeyInProgress;
+            };
+
             function increment() {
                 var currentState = $state.current.name,
                     idlePopupTime = $scope.zestStationData.idle_timer.prompt,
@@ -675,11 +683,13 @@ sntZestStation.controller('zsRootCtrl', [
                     workstationTimer = 0;
                 }
 
-				// the user inactivity actions need not be done when user in 
-				// home screen or in admin screen or in OOS screen
+				// the user inactivity actions do Not need be done when user is in 
+				// home screen, admin screen, or OOS screen
 				// include the states, which don't need the timeout to be handled 
 				// in the below condition
-                if (idleTimerEnabled === 'true' && !(currentState === 'zest_station.admin' || currentState === 'zest_station.home' || currentState === 'zest_station.outOfService')) {
+                var ignoreTimeoutOnStates = ['zest_station.admin', 'zest_station.home', 'zest_station.outOfService'];
+
+                if (idleTimerEnabled === 'true' && !(ignoreTimeoutOnStates.indexOf(currentState) !== -1) || isDispensingKey()) {// see isDispensingKey() comments
                     userInActivityTimeInSeconds = userInActivityTimeInSeconds + 1;
 					// when user activity is not recorded for more than idle_timer.prompt
 					// time set in admin, display inactivity popup
@@ -687,6 +697,7 @@ sntZestStation.controller('zsRootCtrl', [
                         if (currentState === 'zest_station.checkInSignature' || currentState === 'zest_station.checkInCardSwipe') {
                             $scope.$broadcast('USER_ACTIVITY_TIMEOUT');
                         } else {
+                            // opens timeout popup w/ ng-class/css
                             $scope.zestStationData.timeOut = true;
                         }
                         $scope.runDigestCycle();
@@ -1274,6 +1285,7 @@ sntZestStation.controller('zsRootCtrl', [
             $('body').css('display', 'none'); // this will hide contents until svg logos are loaded
 			// call Zest station settings API
             $scope.zestStationData = zestStationSettings;
+            $scope.zestStationData.makingKeyInProgress = false;
             $scope.zestStationData.demoModeEnabled = 'false'; // demo mode for hitech, only used in snt-theme
             $scope.zestStationData.isAdminFirstLogin = true;
 			// $scope.zestStationData.checkin_screen.authentication_settings.departure_date = true;//left from debuggin?
