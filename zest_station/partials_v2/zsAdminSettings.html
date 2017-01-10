@@ -37,12 +37,26 @@
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
 </section>
+
+
 <!-- Content -->
+
+
 <section id="main" class="admin-screen" role="main" ng-show="mode === 'admin-screen-active'" ng-class="{'no-main-bg':zestStationData.theme === 'zoku'}">
     <label class='admin-screen-title'>Zest Station Local Admin Settings</label>
     <div id="content" class="input-field-contents">
         <div id="textual" class="tabled-options" style="max-height: 559px;" ng-iscroll="admin-screen" ng-iscroll-delay="100" ng-init="setScroll()">
             <div class="wrapper">
+
+
+                <div id="handler-connected-status" class="entry with-label" ng-show='inChromeApp'>
+                    <label>Zest Station Handler</label>
+                    <!--label class='admin-label-description'></label-->
+                    <input readonly="" class="read-only visible" ng-model="zestStationData.stationHandlerConnectedStatus" ng-class='{"green-text":zestStationData.stationHandlerConnectedStatus == "Connected","red-text":zestStationData.stationHandlerConnectedStatus == "Not-Connected"}'>
+                    <div class='refresh-svg' touch-press='refreshSocketConnection()' ng-class='{"station-mini-loading":zestStationData.stationHandlerConnectedStatus == "Connecting..."}'></div>
+
+                </div>
+
                 <div class="entry with-label">
                     <label>Workstation</label>
                     <div class="entry select">
@@ -51,6 +65,7 @@
                         </select>
                     </div>
                 </div>
+
                 <div class="entry with-label">
                     <label>Workstation Status</label>
                     <div class="entry select">
@@ -61,10 +76,12 @@
                         </select>
                     </div>
                 </div>
+
                 <div id="order-reason" class="entry with-label" ng-show="zestStationData.workstationStatus === 'out-of-order'">
                     <label>Out of Order Reason</label>
                     <input readonly="" class="read-only" ng-model="zestStationData.workstationOooReason">
                 </div>
+
                 <div class="entry with-label">
                     <label class='admin-item-label'>Station Idle Timer</label>
                     <div class="entry select">
@@ -74,16 +91,19 @@
                         </select>
                     </div>
                 </div>
+
                 <div class="entry with-label">
                     <label>Idle Screen Prompt After (seconds)</label>
                     <label class='admin-label-description'>Prompt user to see if they are still using the Station after {{zestStationData.idle_timer.prompt}} seconds of no activity</label>
                     <input touch-press id="prompt_text" ng-focus="showOnScreenKeyboard('prompt_text')" click-touch="showOnScreenKeyboard('prompt_text')" type="number" min='1' max='{{zestStationData.idle_timer.max}}' ng-model='zestStationData.idle_timer.prompt' />
                 </div>
+
                 <div class="entry with-label">
                     <label>Idle Time-Out (seconds)</label>
                     <label class='admin-label-description'>Return to Home Screen after {{zestStationData.idle_timer.max}} seconds of no activity</label>
                     <input touch-press id="timeout_text" ng-focus="showOnScreenKeyboard('timeout_text')" click-touch="showOnScreenKeyboard('timeout_text')" type="number" min='1' max='9999' ng-model='zestStationData.idle_timer.max' class='admin-input admin-input' />
                 </div>
+
                 <div class="entry with-label">
                     <label>Printer</label>
                     <!-- <input touch-press id="prompt_text" disabled="true" ng-model='zestStationData.printerLabel' click-touch='openPrinterMenu()'/> -->
@@ -93,6 +113,7 @@
                         </select>
                     </div>
                 </div>
+
                 <div class="entry with-label" ng-show="showDebugModeOption">
                     <label>Demo Mode</label>
                     <label class='admin-label-description'>Allows Station to simulate a check-in card swipe and key encoding</label>
@@ -114,6 +135,7 @@
                         </select>
                     </div>
                 </div>
+
             </div>
         </div>
         <div id="actions" class="align-center">

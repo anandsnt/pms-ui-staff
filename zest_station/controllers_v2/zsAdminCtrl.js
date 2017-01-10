@@ -366,6 +366,12 @@ sntZestStation.controller('zsAdminCtrl', [
             }, 2000);
         };
 
+        $scope.refreshSocketConnection = function() {
+            if ($scope.zestStationData.stationHandlerConnectedStatus !== "Connecting...") {
+                $scope.$emit('CONNECT_WEBSOCKET');    
+            }
+        };
+
         $scope.showDebugModeOption = false;
         // initialize
         (function() {
