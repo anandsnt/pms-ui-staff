@@ -9,9 +9,6 @@ var TimelineResizeGrip = React.createClass({
 
 		props.iscroll.timeline.disable();
 
-		document.addEventListener(this.mouseLeavingEvent, this.__onMouseUp);
-		document.addEventListener(this.mouseMovingEvent, this.__onMouseMove);
-
 		page_offset = ReactDOM.findDOMNode(this).getBoundingClientRect();
 
 		this.setState({
@@ -20,6 +17,12 @@ var TimelineResizeGrip = React.createClass({
 			element_x: page_offset.left - props.display.x_0 - props.iscroll.grid.x
 		});
 
+		if ( props.reservatonFlow.cannotResizeDuration() ) {
+			props.reservatonFlow.showNotAllowedMsg();
+		} else {
+			document.addEventListener(this.mouseLeavingEvent, this.__onMouseUp);
+			document.addEventListener(this.mouseMovingEvent, this.__onMouseMove);
+		}
 	},
 	__onMouseMove: function(e) {
 		e.stopPropagation();
