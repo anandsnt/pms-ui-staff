@@ -62,17 +62,11 @@ angular.module('sntRover')
                     hasMultipleMonth: false,
                     firstMonthDateList: [],
                     secondMonthDateList: [],
-<<<<<<< HEAD
-                    reservationsList: reservationsList.reservationsList,
-                    hasOverlay: false,
-                    filterList: {},
-                    showUnassignedPanel: false,
-                    showFilterPanel: false
-=======
                     reservationsList: reservationsList,
                     hasOverlay: false,
-                    isEditReservationMode: false
->>>>>>> 0f905dd3a2b41fbf4ba0c9b1b7b325fd70fcf853
+                    isEditReservationMode: false,
+                    showUnassignedPanel: false,
+                    showFilterPanel: false
                 };
                 $scope.currentSelectedReservation = {};
                 $scope.currentSelectedRoom = {};
