@@ -91,6 +91,6 @@ module.exports = {
             'guestweb_hive': [ themeCSSRoot + 'guestweb_hive.css'],
             'guestweb_pod_dc': [ themeCSSRoot + 'guestweb_pod_dc.css'],
             'guestweb_snt': [ themeCSSRoot + 'guestweb_snt.css']
-        };     
+        }; 
     }
 };
