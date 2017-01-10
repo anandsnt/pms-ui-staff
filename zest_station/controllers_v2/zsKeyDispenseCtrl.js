@@ -398,6 +398,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		 *  if webscoket ready state is not ready
 		 */
 		$scope.dispenseKey = function() {
+			$scope.zestStationData.makingKeyInProgress = true;
 			if ($scope.inDemoMode()) {
 				setTimeout(function() {
 					saveUIDToReservationSuccsess();
@@ -437,6 +438,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			}, 1000);
 			revertFailureReason();
 			updateLogForKeyActions($scope.noOfKeysCreated, "success");
+			$scope.zestStationData.makingKeyInProgress = false;
 		};
 
 		var saveUIDToReservation = function(uid) {
