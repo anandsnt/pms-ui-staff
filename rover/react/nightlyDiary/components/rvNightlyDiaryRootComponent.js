@@ -1,50 +1,18 @@
 const { createClass, PropTypes } = React;
 const { findDOMNode } = ReactDOM;
 const NightlyDiaryRootComponent = createClass ({
-    componentDidMount() {
-        this.scrollOptions = {
-            probeType: 3,
-            scrollY: true,
-            preventDefault: true,
-            preventDefaultException: { tagName: /^(BUTTON)$/i },
-            mouseWheel: true,
-            deceleration: 0.0009,
-            click: false,
-            scrollbars: 'custom'
-        };
-        this.setScroller();
-        this.refreshScroller();
-    },
-    setScroller() {
-        if (!this.scrollableElement) {
-            this.scrollableElement = $(findDOMNode(this)).find('#diary-nightly-grid')[0];
-        }
-        this.scroller = new IScroll(this.scrollableElement, this.scrollOptions);
-        this.refreshScroller();
-    },
-    refreshScroller() {
-        let that = this;
-
-        setTimeout(function() {
-            that.scroller.refresh();
-            that.scrollToNthelement(that.props.index);
-        }, 500);
-
-    },
-    scrolToTop() {
-        // scroll is moving to top
-        // this.scroller.scrollToElement($(findDOMNode(this)).find(".room")[20], 1000, null, true);
-        this.scroller.scrollTo(0, 0, 1000, null);
+    scrollToPos(pos) {
+        const node = document.getElementById('diary-nightly-grid');
+        node.scrollTop = pos;
     },
     scrollToNthelement(n) {
-        var width = $(findDOMNode(this)).find(".room")[0].clientHeight,
-            scrollToX = n * width * -1;
+        let width = document.getElementsByClassName("room")[1].clientHeight,
+            scrollTo = n * width ;
 
-        this.scroller.scrollTo(0, scrollToX, 1000, null);
+        this.scrollToPos(scrollTo);
     },
     componentDidUpdate() {
         this.scrollToNthelement(this.props.index);
-        this.refreshScroller();
     },
     render() {
         return (
