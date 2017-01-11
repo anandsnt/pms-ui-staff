@@ -1,7 +1,43 @@
 <section id="main" role="main" class="centered" click-touch='resetTime()'>
     <div id="content">
-        <h1 translate>CHECKIN_COMPLETED_HEADER</h1>
-        <h3 translate>{{subtext}}</h3>
+        <h1>
+        	<text editable-text="CHECKIN_COMPLETED_HEADER"> {{'CHECKIN_COMPLETED_HEADER' |translate}}</text>
+    	</h1>
+
+
+        <h3 ng-show="subtext === 'PRINT_SUCCESS_AND_KEY_SUCCESS'">
+        	<text editable-text="PRINT_SUCCESS_AND_KEY_SUCCESS"> {{'PRINT_SUCCESS_AND_KEY_SUCCESS' |translate}}</text>
+        </h3>
+
+        <h3 ng-show="subtext === 'PRINT_FAILED_AND_KEY_SUCCESS'">
+        	<text editable-text="PRINT_FAILED_AND_KEY_SUCCESS"> {{'PRINT_FAILED_AND_KEY_SUCCESS' |translate}}</text>
+        </h3>
+
+        <h3 ng-show="subtext === 'PRINT_SUCCESS_AND_KEY_FAILED'">
+        	<text editable-text="PRINT_SUCCESS_AND_KEY_FAILED"> {{'PRINT_SUCCESS_AND_KEY_FAILED' |translate}}</text>
+        </h3>
+
+        <h3 ng-show="subtext === 'PRINT_FAILED_AND_KEY_FAILED'">
+        	<text editable-text="PRINT_FAILED_AND_KEY_FAILED"> {{'PRINT_FAILED_AND_KEY_FAILED' |translate}}</text>
+        </h3>
+
+        <h3 ng-show="subtext === 'EMAIL_SUCCESS_AND_KEY_SUCCESS'">
+        	<text editable-text="EMAIL_SUCCESS_AND_KEY_SUCCESS"> {{'EMAIL_SUCCESS_AND_KEY_SUCCESS' |translate}}</text>
+        </h3>
+
+        <h3 ng-show="subtext === 'EMAIL_FAILED_AND_KEY_SUCCESS'">
+        	<text editable-text="EMAIL_FAILED_AND_KEY_SUCCESS"> {{'EMAIL_FAILED_AND_KEY_SUCCESS' |translate}}</text>
+        </h3>
+
+        <h3 ng-show="subtext === 'EMAIL_SUCCESS_AND_KEY_FAILED'">
+        	<text editable-text="EMAIL_SUCCESS_AND_KEY_FAILED"> {{'EMAIL_SUCCESS_AND_KEY_FAILED' |translate}}</text>
+        </h3>
+
+        <h3 ng-show="subtext === 'EMAIL_FAILED_AND_KEY_FAILED'">
+        	<text editable-text="EMAIL_FAILED_AND_KEY_FAILED"> {{'EMAIL_FAILED_AND_KEY_FAILED' |translate}}</text>
+        </h3>
+
+
         <button type="button" class="button" click-touch='navToHome()' translate>CHECKIN_DONE_BTN</button>
     </div>
 </section>

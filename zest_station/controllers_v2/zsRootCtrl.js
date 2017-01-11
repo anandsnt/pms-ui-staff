@@ -399,8 +399,85 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.quickSetHotelTheme = function(theme) {
             $scope.$broadcast('QUICK_SET_HOTEL_THEME', theme);
         };
+        // allows to toggle language tags via console/chrome extension
+        $scope.toggleLanguageTags = function() {
+            $scope.$broadcast('TOGGLE_LANGUAGE_TAGS');
+        };
+
+        // for chrome extension or console switching of languages
+        $scope.switchLanguage = function(langCode) {
+            $scope.languageCodeSelected(langCode);// keep this here for switching languages while editing text in editor mode
+
+            if ($state.current.name === 'zest_station.home') {
+                $scope.$broadcast('SWITCH_LANGUAGE', langCode);
+            } else {
+                $translate.use(langCode);
+                $timeout(function() {
+                    $scope.$digest();
+                }, 100);
+            }
+        };
+
+        $scope.languageCodeSelected = function(langCode) {
+            $scope.currentLanguageCode = langCode;
+
+        };
 
 
+        $scope.saveLanguageEditorChanges = function(tag, newValueForText, skipSaving, keepShowingTag) {
+            // console.log(':: saving language editor changes ::');
+            var langCode = $scope.currentLanguageCode;
+
+            var langObj = {}, // zsGeneralSrv.languageJSONs[langCode],
+                langName = zsGeneralSrv.langName[langCode];
+
+            // save Just the (tag + value), for fastest Api call
+            langObj[tag] = newValueForText;
+                
+            var encoded = 'data:application/json;base64,' + window.btoa(unescape(encodeURIComponent(JSON.stringify(langObj))));
+
+            var onSuccess = function() {
+                $scope.$emit('hideLoader');
+                console.info('Success Save Language text update ');
+                
+            };
+            var onFail = function() {
+                $scope.$emit('hideLoader');
+                console.warn('Failure, Save Language text update failed: ', response);
+                // TODO: need to somehow alert user save failed, ie. alert('Saving failed, please try again later'), or other popup
+            };
+            var options = {
+                params: {
+                    'kiosk': {
+                        'hotel_id': $scope.zestStationData.hotel_id,
+                        'zest_lang': {}
+                    },
+                    // these params (below) get removed by service controller before api call
+                    'langCode': langCode,
+                    'newValueForText': newValueForText,
+                    'tag': tag,
+                    'keepShowingTag': keepShowingTag ? keepShowingTag : false
+
+                },
+                successCallBack: onSuccess,
+                failureCallBack: onFail,
+                'loader': 'none'
+            };
+
+            if (skipSaving) {
+                // locale sync of Locale
+                zsGeneralSrv.syncTranslationText(langCode, newValueForText, tag);
+
+            } else {
+                // use the currently selected language for saving the language text
+                options.params.kiosk.zest_lang[langName + '_translations_file'] = encoded;
+                options.params.kiosk.zest_lang[langName + '_translations_file_updated'] = true;
+
+                $scope.callAPI(zsGeneralSrv.updateLanguageTranslationText, options);
+            }
+
+
+        };
 		/**
 		 * SVGs are ng-included inside HTML
 		 **/
@@ -518,6 +595,14 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.$digest();
         });
 
+        var reconnectToWebSocket = function() {
+            console.log(':: attempting websocket re-connect ::');
+            var socketReady = $scope.socketOperator.returnWebSocketObject().readyState === 1;
+
+            if (!socketReady) {
+                $scope.connectToWebSocket();
+            }
+        };
 
 		/** ******************************************************************************
 		 *  User activity timer
@@ -540,6 +625,14 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.zestStationData.refreshStationTimer = refreshStationTimer;
 
                 $scope.runDigestCycle();
+            };
+
+            // return true/false if user is in the process of dispensing key
+            // -CICO-36896- if user is dispensing key, the API may take some time depending
+            // on network / key-server conditions, we will rely on the API timeout to fail out
+            // if taking too long
+            var isDispensingKey = function() {
+                return $scope.zestStationData.makingKeyInProgress;
             };
 
             function increment() {
@@ -581,15 +674,22 @@ sntZestStation.controller('zsRootCtrl', [
                     getWorkstationsAtTime = 120;
                     $scope.zestStationData.timeDebugger = 'false';
                 }
+
                 if (workstationTimer >= getWorkstationsAtTime) {
                     getAdminWorkStations(); // fetch workstations with latest status details
+                    if ($scope.inChromeApp) {
+                        reconnectToWebSocket();// if disconnected, will attempt to re-connect to the websocket
+                    }
                     workstationTimer = 0;
                 }
-				// the user inactivity actions need not be done when user in 
-				// home screen or in admin screen or in OOS screen
+
+				// the user inactivity actions do Not need be done when user is in 
+				// home screen, admin screen, or OOS screen
 				// include the states, which don't need the timeout to be handled 
 				// in the below condition
-                if (idleTimerEnabled === 'true' && !(currentState === 'zest_station.admin' || currentState === 'zest_station.home' || currentState === 'zest_station.outOfService')) {
+                var ignoreTimeoutOnStates = ['zest_station.admin', 'zest_station.home', 'zest_station.outOfService'];
+
+                if (idleTimerEnabled === 'true' && !(ignoreTimeoutOnStates.indexOf(currentState) !== -1) || isDispensingKey()) {// see isDispensingKey() comments
                     userInActivityTimeInSeconds = userInActivityTimeInSeconds + 1;
 					// when user activity is not recorded for more than idle_timer.prompt
 					// time set in admin, display inactivity popup
@@ -597,6 +697,7 @@ sntZestStation.controller('zsRootCtrl', [
                         if (currentState === 'zest_station.checkInSignature' || currentState === 'zest_station.checkInCardSwipe') {
                             $scope.$broadcast('USER_ACTIVITY_TIMEOUT');
                         } else {
+                            // opens timeout popup w/ ng-class/css
                             $scope.zestStationData.timeOut = true;
                         }
                         $scope.runDigestCycle();
@@ -627,7 +728,7 @@ sntZestStation.controller('zsRootCtrl', [
 		 *   *Refresh-workstation --> Triggered from Hotel Admin - interfaces - workstation > toggle (Refresh Station)
 		 ********************************************************************************/
         $scope.checkIfWorkstationRefreshRequested = function() {
-            console.info('checkIfWorkstationRefreshRequested');
+            // console.info('checkIfWorkstationRefreshRequested');
 			// Workstation trigger for Refresh Station is set to TRUE, --Refresh Station at next (idle) opportunity--
             var station = $scope.getWorkStationSetting($rootScope.workstation_id);
 			// send back to workstation that kiosk is being/has been refreshed 
@@ -788,15 +889,34 @@ sntZestStation.controller('zsRootCtrl', [
 
         var socketOpenedFailed = function() {
             console.info('Websocket:-> socket connection failed');
+            $scope.zestStationData.stationHandlerConnectedStatus = 'Not-Connected';
+            $scope.runDigestCycle();
             $scope.$broadcast('SOCKET_FAILED');
         };
+
         var socketOpenedSuccess = function() {
             console.info('Websocket:-> socket connected');
+            $scope.zestStationData.stationHandlerConnectedStatus = 'Connected';
+            $scope.runDigestCycle();
             $scope.$broadcast('SOCKET_CONNECTED');
         };
 
+        $scope.connectToWebSocket = function() {
+            $scope.zestStationData.stationHandlerConnectedStatus = 'Connecting...';
+            $scope.runDigestCycle();
+            if ($scope.socketOperator) {
+                // if socketOperator is already defined, it may have an open connection, close that first before reconnect
+                $scope.socketOperator.closeWebSocket();
+            }
+            $timeout(function() {
+                if ($scope.zestStationData.stationHandlerConnectedStatus !== 'Connected') {
+                    $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);   
+                }
+            }, 300);
+        };
+
         $scope.$on('CONNECT_WEBSOCKET', function() {
-            $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
+            $scope.connectToWebSocket();
         });
 
         $scope.$on('EJECT_KEYCARD', function() {
@@ -1165,6 +1285,7 @@ sntZestStation.controller('zsRootCtrl', [
             $('body').css('display', 'none'); // this will hide contents until svg logos are loaded
 			// call Zest station settings API
             $scope.zestStationData = zestStationSettings;
+            $scope.zestStationData.makingKeyInProgress = false;
             $scope.zestStationData.demoModeEnabled = 'false'; // demo mode for hitech, only used in snt-theme
             $scope.zestStationData.isAdminFirstLogin = true;
 			// $scope.zestStationData.checkin_screen.authentication_settings.departure_date = true;//left from debuggin?
@@ -1192,6 +1313,8 @@ sntZestStation.controller('zsRootCtrl', [
 
 			// flag to check if default language was set or not
             $scope.zestStationData.IsDefaultLanguageSet = false;
+
+            $scope.zestStationData.editorModeEnabled = 'false';
             
             // if ooo treshold is not set or not active, set th treshold as 1
             if (!$scope.zestStationData.kiosk_out_of_order_treshold_is_active || _.isNaN(parseInt($scope.zestStationData.kiosk_out_of_order_treshold_value))) {
