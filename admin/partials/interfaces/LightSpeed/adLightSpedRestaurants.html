@@ -1,0 +1,120 @@
+<div class="form-title full-width">
+    <h3>
+        <span translate>CONFIGURE</span>
+        {{'LS_RESTAURANTS' | translate}}
+        <a ng-show="state.selected == null && state.mode != 'ADD'"
+           style="background-position: 0 -342px; margin-left: 20px" class="action add"
+           ng-click="onClickAdd()">
+            {{'LS_RESTAURANTS_ADD' | translate}}
+        </a>
+    </h3>
+</div>
+<div id="add-new" ng-show="state.mode === 'ADD'">
+    <div class="data-holder">
+        <form class="form inline-form float">
+            <div class="form-title">
+                <h3><span></span> {{'LS_ADD_RESTAURANT'| translate}} </h3>
+                <em class="status"> {{'MANDATORY_FIELDS_MESSAGE1' | translate}} <strong>*</strong>
+                    {{'MANDATORY_FIELDS_MESSAGE2' | translate}} </em>
+            </div>
+            <fieldset class="holder left float">
+                <ad-textbox styleclass="full-width" value="state.new.name"
+                            label="{{'LS_RESTAURANT_NAME' | translate}}"
+                            required="yes"
+                            placeholder="{{'RESTAURANT_NAME_PLACEHOLDER' | translate}}"></ad-textbox>
+                <ad-textbox styleclass="full-width" value="state.new.username"
+                            label="{{'USERNAME' | translate}}"
+                            required="yes"
+                            placeholder="{{'USERNAME_PLACEHOLDER' | translate}}"></ad-textbox>
+            </fieldset>
+            <fieldset class="holder right float">
+                <ad-textbox styleclass="full-width" value="state.new.password"
+                            inputtype="password"
+                            label="{{'PASSWORD' | translate}}"
+                            required="yes"
+                            placeholder="{{'PASSWORD_PLACEHOLDER' | translate}}"></ad-textbox>
+            </fieldset>
+
+            <div class="actions float">
+                <button type="button" ng-click="onCancelAdd()" class="button blank edit-data-inline"
+                        translate>
+                    CANCEL
+                </button>
+                <button type="button" ng-click="onSave()"
+                        class="button green edit-data-inline"
+                        ng-class="{'grey' : state.new.name == '' || state.new.username == '' || state.new.password == ''}"
+                        ng-disabled="state.new.name == '' || state.new.username == '' || state.new.password == ''"
+                        translate>
+                    SAVE_CHANGES
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<table class="grid datatable dataTable"
+       ng-show="lightspeed.restaurants.length > 0"
+       ng-table="itemList" template-pagination="nil">
+    <tbody>
+    <tr ng-repeat="restaurant in lightspeed.restaurants track by $index" ng-hide="restaurant.isDeleted">
+        <td data-item="1" data-title="'Restaurant Name'" ng-click="onSelect($index, mapping)"
+            header-class="width-30" ng-hide="state.selected === $index">
+            <a class="edit-data-inline">{{restaurant.name}}</a>
+        </td>
+        <td data-item="2" data-title="'User Name'" ng-click="onSelect($index, mapping)"
+            header-class="width-60" ng-hide="state.selected === $index">
+            <a class="edit-data-inline">{{restaurant.username}}</a>
+        </td>
+
+        <td header-class="width-10" data-title="'Delete'" class="delete"
+            ng-hide="state.selected === $index">
+            <a class="icons icon-delete large-icon" ng-click="onClickDelete(restaurant)"></a>
+        </td>
+
+        <td colspan="3" ng-show="state.selected === $index">
+            <div style="display: block;" id="add-new" class="edit-data">
+                <div class="data-holder">
+                    <form class="form inline-form float">
+                        <div class="form-title">
+                            <h3><span></span> {{'LS_EDIT_RESTAURANT'| translate}} </h3>
+                            <em class="status"> {{'MANDATORY_FIELDS_MESSAGE1' | translate}} <strong>*</strong>
+                                {{'MANDATORY_FIELDS_MESSAGE2' | translate}} </em>
+                        </div>
+
+                        <fieldset class="holder left float">
+                            <ad-textbox styleclass="full-width" value="restaurant.name"
+                                        label="{{'LS_RESTAURANT_NAME' | translate}}"
+                                        required="yes"
+                                        placeholder="{{'RESTAURANT_NAME_PLACEHOLDER' | translate}}"></ad-textbox>
+                            <ad-textbox styleclass="full-width" value="restaurant.username"
+                                        label="{{'USERNAME' | translate}}"
+                                        required="yes"
+                                        placeholder="{{'USERNAME_PLACEHOLDER' | translate}}"></ad-textbox>
+                        </fieldset>
+                        <fieldset class="holder right float">
+                            <ad-textbox styleclass="full-width" value="restaurant.password"
+                                        inputtype="password"
+                                        label="{{'PASSWORD' | translate}}"
+                                        required="yes"
+                                        placeholder="{{'PASSWORD_PLACEHOLDER' | translate}}"></ad-textbox>
+                        </fieldset>
+
+                        <div class="actions float">
+                            <button type="button" ng-click="onCancelEdit()" class="button blank edit-data-inline"
+                                    translate>
+                                CANCEL
+                            </button>
+                            <button type="button" ng-click="onUpdate()"
+                                    class="button green edit-data-inline"
+                                    ng-class="{'grey' : restaurant.name == '' || restaurant.username == ''}"
+                                    ng-disabled="restaurant.name == '' || restaurant.username == ''"
+                                    translate>
+                                SAVE_CHANGES
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>

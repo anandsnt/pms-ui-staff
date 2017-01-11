@@ -1,7 +1,11 @@
 <div>
     <div id="actions" class="add-guests-footer sign" ng-hide='at !== "cc-sign"'>
-        <button type="button" class="button transparent prev" touch-press='clearSignature()'>{{'CLEAR_BTN' |translate}}</button>
-        <button type="button" class="button next" ng-mode="{{signature}}" touch-press="submitSignature()">{{'NEXT_BTN' |translate}}</button>
+        <button type="button" class="button transparent prev" touch-press='clearSignature()'>
+        	<text editable-text="CLEAR_BTN"> {{'CLEAR_BTN' |translate}}</text>
+		</button>
+        <button type="button" class="button next" ng-mode="{{signature}}" touch-press="submitSignature()">
+        	<text editable-text="NEXT_BTN"> {{'NEXT_BTN' |translate}}</text>
+    	</button>
     </div>
 
     <button class='button blue invis bottom-right' click-touch="goToAdmin()">

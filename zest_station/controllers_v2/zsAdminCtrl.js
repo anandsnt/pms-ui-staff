@@ -126,12 +126,14 @@ sntZestStation.controller('zsAdminCtrl', [
         /*
          * Go to home page
          */
-        var lastDemoModeSetting = $scope.zestStationData.demoModeEnabled;
+        var lastDemoModeSetting = $scope.zestStationData.demoModeEnabled,
+            lastEditorModeSetting = $scope.zestStationData.editorModeEnabled;
 
         $scope.cancelAdminSettings = function(a) {
             if (!a) {
-                console.info('setting demo mode back to: ', lastDemoModeSetting);
+                console.info('setting demo and editor modes back to: ', lastDemoModeSetting, lastEditorModeSetting);
                 $scope.zestStationData.demoModeEnabled = lastDemoModeSetting;
+                $scope.zestStationData.editorModeEnabled = lastEditorModeSetting;
             }
             $state.go('zest_station.home');
             setTimeout(function() {
@@ -304,8 +306,9 @@ sntZestStation.controller('zsAdminCtrl', [
             var failureCallBack = function(response) {
                 console.warn('failed to save settings');
                 console.log(response);
-                console.info('save setting failed, set demo mode to last setting');
+                console.info('save setting failed, set demo and editor mode to last setting');
                 $scope.zestStationData.demoModeEnabled = lastDemoModeSetting;
+                $scope.zestStationData.editorModeEnabled = lastEditorModeSetting;
             };
             var options = {
                 params: params,
@@ -361,6 +364,12 @@ sntZestStation.controller('zsAdminCtrl', [
                     }, 3000);
                 }
             }, 2000);
+        };
+
+        $scope.refreshSocketConnection = function() {
+            if ($scope.zestStationData.stationHandlerConnectedStatus !== "Connecting...") {
+                $scope.$emit('CONNECT_WEBSOCKET');    
+            }
         };
 
         $scope.showDebugModeOption = false;

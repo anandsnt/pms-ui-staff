@@ -290,6 +290,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 			console.info( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
 			$rootScope.$broadcast( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
+
+			refreshScroller();
 		};
 		$scope.resetFilterItemsToggle = function() {
 			_.each($scope.filterItemsToggle, function(value, key) {

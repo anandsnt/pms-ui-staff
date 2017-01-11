@@ -1,7 +1,7 @@
 
 admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', 'ngDialog', '$timeout', function ($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter, ngDialog, $timeout) {
     BaseCtrl.call(this, $scope);
-    $scope.$emit("changedSelectedMenu", 10);
+    $scope.$emit('changedSelectedMenu', 10);
 
     $scope.data = {};
     var zestLanguageDataCopy = {};
@@ -34,7 +34,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         }
         return langs;
     };
-    
+
     $scope.updateDefaultLanguageDropdown = function() {
         console.info('update lang dropdown');
         $scope.enabledLangs = getEnabledLanguages();
@@ -61,14 +61,14 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             if ($scope.zestSettings.zest_lang[name + '_translations_file_updated'] ||
                 $scope.zestSettings.zest_lang[name + '_translations_file']) {return true;}
             return false;
-        } else return false;
+        } else {return false;}
     };
 
     $scope.hasKeyImageFileUpdatedOrUploading = function(name) {
         if ($scope.zestSettings && $scope.zestSettings.key_create_file_uploaded) {
             if ($scope.zestSettings.key_create_file_uploaded !== '' && $scope.zestSettings.key_create_file_uploaded !== 'false' && $scope.zestSettings.key_create_file_uploaded.indexOf('/logo.png') === -1) {return true;}
             return false;
-        } else return false;
+        } else {return false;}
     };
     
     var getEnabledLanguages = function() {
@@ -107,19 +107,19 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
     
     var setupDefaultLanguageDropdown = function() {
         $scope.enabledLangs = getEnabledLanguages();
-            if ($scope.enabledLangs === null) {
-                $scope.defaultLangsDivClass = 'overlay';
-            } else {
-                $scope.defaultLangsDivClass = '';
-                if (!$scope.zestSettings.zest_lang.default_language || $scope.zestSettings.zest_lang.default_language === '') {
-                    $scope.zestSettings.zest_lang.default_language = '';
-                }
+        if ($scope.enabledLangs === null) {
+            $scope.defaultLangsDivClass = 'overlay';
+        } else {
+            $scope.defaultLangsDivClass = '';
+            if (!$scope.zestSettings.zest_lang.default_language || $scope.zestSettings.zest_lang.default_language === '') {
+                $scope.zestSettings.zest_lang.default_language = '';
             }
+        }
     };
     
-    var fetchZestStationData =  function() {
+    var fetchZestStationData = function() {
         
-         var fetchSuccess = function (data) {
+        var fetchSuccess = function (data) {
             $scope.$emit('hideLoader');
             $scope.zestStationData = data;
             setupDefaultLanguageDropdown();
@@ -140,20 +140,20 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         $scope.invokeApi(ADZestStationSrv.fetch, {}, fetchSuccess);
     };
     var checkIfFileWasAdded = function(file) {
-        return (!!file && file.length > 0) ? true : false;
+        return !!file && file.length > 0 ? true : false;
     };
 
     var setUpTranslationFilesStatus = function() {
         zestLanguageDataCopy = angular.copy($scope.zestSettings.zest_lang);
-        checkIfFileWasAdded(zestLanguageDataCopy.english_translations_file) ? zestLanguageDataCopy.english_translations_file_updated = true : "";
-        checkIfFileWasAdded(zestLanguageDataCopy.french_translations_file)  ? zestLanguageDataCopy.french_translations_file_updated = true : "";
-        checkIfFileWasAdded(zestLanguageDataCopy.spanish_translations_file) ? zestLanguageDataCopy.spanish_translations_file_updated = true : "" ;
-        checkIfFileWasAdded(zestLanguageDataCopy.german_translations_file)  ? zestLanguageDataCopy.german_translations_file_updated = true : "";
-        checkIfFileWasAdded(zestLanguageDataCopy.italian_translations_file) ? zestLanguageDataCopy.italian_translations_file_updated = true : "";
-        checkIfFileWasAdded(zestLanguageDataCopy.castellano_translations_file) ? zestLanguageDataCopy.castellano_translations_file_updated = true : "";
+        checkIfFileWasAdded(zestLanguageDataCopy.english_translations_file) ? zestLanguageDataCopy.english_translations_file_updated = true : '';
+        checkIfFileWasAdded(zestLanguageDataCopy.french_translations_file) ? zestLanguageDataCopy.french_translations_file_updated = true : '';
+        checkIfFileWasAdded(zestLanguageDataCopy.spanish_translations_file) ? zestLanguageDataCopy.spanish_translations_file_updated = true : '' ;
+        checkIfFileWasAdded(zestLanguageDataCopy.german_translations_file) ? zestLanguageDataCopy.german_translations_file_updated = true : '';
+        checkIfFileWasAdded(zestLanguageDataCopy.italian_translations_file) ? zestLanguageDataCopy.italian_translations_file_updated = true : '';
+        checkIfFileWasAdded(zestLanguageDataCopy.castellano_translations_file) ? zestLanguageDataCopy.castellano_translations_file_updated = true : '';
     };
 
-    $scope.saveSettings = function() {
+    $scope.saveSettings = function(dontReturn) {
         // /handling for the api for now, api has some issue with the default image setting back to snt logo...
         // api dev should resolve this at some point
         if ($scope.zestSettings.key_create_file_uploaded.indexOf('/logo.png') !== -1) {
@@ -163,7 +163,10 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             $scope.zestSettings.zest_lang = angular.copy(zestLanguageDataCopy);
             $scope.successMessage = 'Success';
             $scope.$emit('hideLoader');
-            $scope.goBackToPreviousState();
+            if (!dontReturn) {
+                $scope.goBackToPreviousState();    
+            }
+            
         };
 
         setUpTranslationFilesStatus();
@@ -180,21 +183,123 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
     };
     $scope.downloadPromptFileName = '';
     $scope.downloadLang = function(lang) {
-         $timeout(function() {
+        $timeout(function() {
             $scope.downloadPromptFileName = lang + '.json';
             var link = document.getElementById('download-link-popup');// ie. en-download-link
 
             link.href = 'staff/locales/download/' + lang + '.json';
-         }, 500);
-         ngDialog.open({
+        }, 500);
+        ngDialog.open({
             template: '/assets/partials/zestStation/adZestStationLanguageFile.html',
             className: 'ngdialog-theme-default single-calendar-modal',
             scope: $scope,
             closeByDocument: true
         });
     };
+
+    $scope.saveLanguageEditorChanges = function() {
+        // current language being edited, for saving, need to save with long-name (ie. "english" instead of "en")
+        var lang = $scope.editingLanguage,
+            encoded = 'data:application/json;base64,' + window.btoa(unescape(encodeURIComponent(JSON.stringify($scope.languageEditorData))));
+            
+        // check for default
+        if (lang === 'en') {
+            lang = 'english';
+
+        } else if (lang === 'fr') {
+            lang = 'french';
+
+        } else if (lang === 'es') {
+            lang = 'spanish';
+
+        } else if (lang === 'de') {
+            lang = 'german';
+
+        } else if (lang === 'it') {
+            lang = 'italian';
+
+        } else if (lang === 'cs') {
+            lang = 'castellano';
+
+        } else {
+            console.log('need to add new language code here');
+        }
+      
+        $scope.zestSettings.zest_lang[lang + '_translations_file'] = encoded;
+        $scope.closePrompt();
+    };
+    //  track which languages were fetched/edited already, 
+    //  we dont want to re-fetch when user accidentily closes the window and needs to re-open it
+    $scope.editLang = function(lang) {
+
+        $scope.editingLanguage = lang;
+        // shows user an on-screen prompt, with the tags and values, so they can edit in-screen
+
+        $scope.showLoader();
+        var jsonRefUrl = 'staff/locales/download/' + lang + '.json';
+
+        console.log('going to fetch language json file for editing');
+
+        $.getJSON(jsonRefUrl, function(json) {
+            var loaderScope = angular.element('#loading-spinner').scope();
+
+            loaderScope.hasLoader = false;
+            console.log(json); // this will show the info it in firebug console
+            loaderScope.$digest();
+
+            // converts object into a plyable array
+            $scope.languageEditorData = json;
+
+            ngDialog.open({
+                template: '/assets/partials/zestStation/adZestStationLanguageEditor.html',
+                className: 'ngdialog-theme-default single-calendar-modal language-editor',
+                scope: $scope,
+                closeByDocument: true
+            });
+
+        });
+    };
+
+    $scope.searchbar = {
+        value: ''
+    };
+
+    // when editing a tags value with some filter
+    // if the text is not in the tag/value, the field
+    // may disappear, but if we track what is being editing/
+    // has-focus, we can allow that tag to stay until user is done editing
+    $scope.editingTag = '';
+    $scope.editingTagKey = function(k) {
+        $scope.editingTag = k;
+    };
+
+    $scope.showLoader = function() {
+        $scope.$emit('showLoader');
+    };
+
+    $scope.showResult = function(key, value) {
+        // show key/value as a result if returning true
+        // hide the field if user is searching/filtering
+        // and neither match the value entered
+        // 
+        var v = $scope.searchbar.value.toLowerCase(),
+            k = key.toLowerCase(),
+            txt = value.toLowerCase();
+
+        if ($scope.editingTag === key) {// see editingTagKey comments
+            return 'true';
+        } else if (v.length === 0) {
+            return 'true';
+        } else if (k.indexOf(v) !== -1) {
+            return 'true';
+        } else if (txt.indexOf(v) !== -1) {
+            return 'true';
+        }
+        return 'false';
+    };
+
     $scope.saveAsText = '';
-    $scope.isChrome = (window.navigator.userAgent.toLowerCase().indexOf("chrome") !== -1);
+    $scope.isChrome = window.navigator.userAgent.toLowerCase().indexOf('chrome') !== -1;
 
     $scope.init = function() {
         fetchSettings();

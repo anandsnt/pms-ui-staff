@@ -1,0 +1,42 @@
+<div class='station-lang-download-popup'>
+	<p class='station-lang-header'>You can edit the tags in-line, please remember to click the save button before leaving this area
+	</p>
+	<p class='station-lang-filter'>
+		 <input type="text" ng-model='searchbar.value' placeholder="Search by Tag or Current Text">
+		 <button type="submit" name="submit" class="icons icon-search" ></button>
+	</p>
+	
+	<br>
+		<div class='station-lang-content'>
+			<table class="grid" id="likes" >
+				<thead>
+					<th>
+						Language Tag
+					</th>
+					<th>
+						Current Text
+					</th>
+				</thead>
+				<tbody>
+					<tr ng-repeat="(key, value) in languageEditorData" ng-class='{"station-lang-not-result": showResult(key, value) == "false"}'>
+						<td>
+							{{key}}
+						</td>
+						<td>
+				 		   	<div class="entry">
+				                <input ng-focus='editingTagKey(key)' ng-blur='editingTagKey("")' type='text' class="room-likes" ng-model='languageEditorData[key]' value='{{value}}'>
+			                </div>
+						</td>
+					</tr>
+				</tbody>
+	
+			</table>
+		</div>
+
+	<p class='station-lang-footer'>
+		<button class='button orange' ng-click="closePrompt()">Close</button>
+		<button class='button orange' ng-click="saveLanguageEditorChanges()">Accept Changes</button>
+	</p>
+
+</div>
+

@@ -385,7 +385,11 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       'zest_web_checkin_second_authentication_action': $scope.checkinData.zest_web_checkin_second_authentication_action,
       'zest_web_always_ask_for_mobile_number': $scope.checkinData.zest_web_always_ask_for_mobile_number,
       'removed_excluded_from_checkin_notification': $scope.checkinEmailRoomExclusionConfig.selectedExcludedIds,
-      'selected_excluded_from_checkin_notification': $scope.checkinEmailRoomExclusionConfig.unSelectedExcludedIds
+      'selected_excluded_from_checkin_notification': $scope.checkinEmailRoomExclusionConfig.unSelectedExcludedIds,
+      'zest_web_checkin_details_about_mobile_app' : $scope.checkinData.zest_web_checkin_details_about_mobile_app,
+      'zest_web_checkin_mobile_app_call_to_action' : $scope.checkinData.zest_web_checkin_mobile_app_call_to_action,
+      'zest_web_include_app_store_banner' : $scope.checkinData.zest_web_include_app_store_banner,
+      'zest_web_include_google_play_banner' : $scope.checkinData.zest_web_include_google_play_banner
     };
 
     if($scope.surveyQuestionImage === $scope.checkinData.survey_question_image){
