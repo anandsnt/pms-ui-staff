@@ -14,8 +14,8 @@ let convertCurrentSelectedReservation = (currentSelectedReservation, selectedRes
     currentSelectedReservation.class = stayRangeArrivalClass;
     // TO DO: Add momentjs and do date formatting using momentjs
     // We have to show date in hotel's date format
-    //currentSelectedReservation.arrival_date = moment(currentSelectedReservation.arrival_date, "YYYY-MM-DD").format(dateFormat.toUpperCase());
-    //currentSelectedReservation.dept_date = moment(currentSelectedReservation.dept_date, "YYYY-MM-DD").format(dateFormat.toUpperCase());
+    currentSelectedReservation.arrivalDate = moment(currentSelectedReservation.arrival_date, "YYYY-MM-DD").format(dateFormat.toUpperCase());
+    currentSelectedReservation.deptDate = moment(currentSelectedReservation.dept_date, "YYYY-MM-DD").format(dateFormat.toUpperCase());
     return currentSelectedReservation;
 };
 
