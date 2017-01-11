@@ -912,12 +912,13 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.socketOperator.closeWebSocket();
             }
             $timeout(function() {
+                // show user activity 'connecting..' on admin screen
                 $scope.zestStationData.stationHandlerConnectedStatus = 'Connecting...';
                 $scope.runDigestCycle();
-            },75);
+            }, 75);
 
             $timeout(function() {
-                
+                // give some time for old socket to close, show activity of re-connecting and visible UI transition to 'connected' status
                     $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
             }, 400);
         };
