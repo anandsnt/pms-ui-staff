@@ -49,6 +49,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
             var printFailedActions = function(errorMessage) {
                 $scope.$emit('hideLoader');
                 var printSuccess = false;
+                $scope.showDoneButton = true;
                 setMessage(printSuccess);
                 errorMessage = _.isUndefined(errorMessage) ? 'DISPENSE_KEY_PRINT_FAIL' : errorMessage;
                 $scope.zestStationData.workstationOooReason = $filter('translate')(errorMessage);
@@ -59,6 +60,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
             var printSuccessActions = function() {
 
                 $scope.$emit('hideLoader');
+                $scope.showDoneButton = true;
                 var printSuccess = true;
                 setMessage(printSuccess);
                 $scope.runDigestCycle();
@@ -199,6 +201,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON); // hide back buttons in 2 options page
 			// show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
+            $scope.showDoneButton = false;
         }());
 
     }
