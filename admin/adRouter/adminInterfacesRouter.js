@@ -156,6 +156,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.delphi', {
+        templateUrl: '/assets/partials/interfaces/Delphi/adDelphiSetup.html',
+        controller: 'adDelphiCtrl',
+        url: '/delphi/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('delphi');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.revinateSetup', {
         templateUrl: '/assets/partials/interfaces/Revinate/adRevinateSetup.html',
         controller: 'adRevinateSetupCtrl',
