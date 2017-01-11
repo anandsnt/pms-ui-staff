@@ -215,9 +215,9 @@ sntZestStation.controller('zsAdminCtrl', [
         };
         $scope.setEditorModeCls = function() {
             if ($scope.zestStationData.editorModeEnabled === 'true') {
-                angular.element('body').scope().cls = {editor: 'true'};
+                $rootScope.cls.editor = 'true';
             } else {
-                angular.element('body').scope().cls = {editor: 'false'};
+                $rootScope.cls.editor = 'false';
             }
         };
         /*

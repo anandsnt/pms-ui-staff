@@ -32,6 +32,9 @@ sntZestStation.config(function($httpProvider, $translateProvider) {
 sntZestStation.run(['$rootScope', '$state', '$stateParams', function($rootScope, $state, $stateParams) {
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
+    $rootScope.cls = {
+        'editor': 'false'
+    };
 
     $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
         $rootScope.previousState = from.name;
