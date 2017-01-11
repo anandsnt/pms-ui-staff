@@ -1330,7 +1330,7 @@ sntZestStation.controller('zsRootCtrl', [
             } else {
                 $scope.zestStationData.kioskOutOfOrderTreshold = parseInt($scope.zestStationData.kiosk_out_of_order_treshold_value);
             }
-
+            $scope.zestStationData.collect_nationality_after_details = false;
             $scope.zestStationData.consecutiveKeyFailure = 0;
         }());
     }

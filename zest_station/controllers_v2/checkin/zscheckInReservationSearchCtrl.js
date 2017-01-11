@@ -93,7 +93,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
                         return guest_detail.is_primary === true;
                     });
 
-                    if ($scope.zestStationData.check_in_collect_nationality) {
+                    if ($scope.zestStationData.check_in_collect_nationality && !$scope.zestStationData.collect_nationality_after_details) {
                         $state.go('zest_station.collectNationality', {
                             'guestId': primaryGuest.id
                         });
