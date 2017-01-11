@@ -217,9 +217,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 data.early_checkin_on // hotel admin > promos & upsell > early checkin upsell
             ) {
                 return true; // proceed to early checkin flow
-            } else {
-                return false; // continue without early checkin offer
             }
+            return false; // else continue without early checkin offer
         };
 
         var reservationIncludesEarlyCheckin = function(data) {
