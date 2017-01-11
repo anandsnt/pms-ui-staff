@@ -394,11 +394,12 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		$scope.dispenseKey = function() {
 			if ($scope.inDemoMode()) {
 				setTimeout(function() {
-					$scope.saveUIDToReservationSuccsess();
+					saveUIDToReservationSuccsess();
 					$scope.runDigestCycle();
 				}, 3500);
 
 			} else {
+				$scope.readyForUserToPressMakeKey = false;
 				// check if socket is open
 				if (!_.isUndefined($scope.socketOperator.returnWebSocketObject()) && $scope.socketOperator.returnWebSocketObject().readyState === 1) {
 					$scope.socketOperator.DispenseKey($scope.dispenseKeyData);
@@ -424,9 +425,10 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			} else if ($scope.noOfKeysSelected > $scope.noOfKeysCreated) {
 				// if more key is needed
 				$scope.mode = 'KEY_ONE_CREATION_SUCCESS_MODE';
-				// provide some timeout for user to grab keys
-				$timeout($scope.dispenseKey, 6000);
 			}
+			$timeout(function() {
+				$scope.readyForUserToPressMakeKey = true;
+			}, 1000);
 			revertFailureReason();
 			updateLogForKeyActions($scope.noOfKeysCreated, "success");
 		};
@@ -491,8 +493,17 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 
 			var executeKeyOperations = function() {
 				if ($scope.zestStationData.keyWriter === 'websocket') {
-					// provide some timeout for user to grab keys
-					$timeout($scope.dispenseKey, 2000);
+					if($scope.noOfKeysCreated === 0){
+						// when no key is created dipense keys
+						// provide some timeout for user to grab keys
+						$timeout($scope.dispenseKey, 2000);
+					}
+					else{
+						// need to show button to dispense key
+						$timeout(function() {
+							$scope.readyForUserToPressMakeKey = true;
+						}, 1000);
+					}
 				} else {
 					$timeout(function() {
 						$scope.readyForUserToPressMakeKey = true;

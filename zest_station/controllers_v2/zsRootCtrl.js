@@ -399,8 +399,85 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.quickSetHotelTheme = function(theme) {
             $scope.$broadcast('QUICK_SET_HOTEL_THEME', theme);
         };
+        // allows to toggle language tags via console/chrome extension
+        $scope.toggleLanguageTags = function() {
+            $scope.$broadcast('TOGGLE_LANGUAGE_TAGS');
+        };
+
+        // for chrome extension or console switching of languages
+        $scope.switchLanguage = function(langCode) {
+            $scope.languageCodeSelected(langCode);// keep this here for switching languages while editing text in editor mode
+
+            if ($state.current.name === 'zest_station.home') {
+                $scope.$broadcast('SWITCH_LANGUAGE', langCode);
+            } else {
+                $translate.use(langCode);
+                $timeout(function() {
+                    $scope.$digest();
+                }, 100);
+            }
+        };
+
+        $scope.languageCodeSelected = function(langCode) {
+            $scope.currentLanguageCode = langCode;
+
+        };
 
 
+        $scope.saveLanguageEditorChanges = function(tag, newValueForText, skipSaving, keepShowingTag) {
+            // console.log(':: saving language editor changes ::');
+            var langCode = $scope.currentLanguageCode;
+
+            var langObj = {}, // zsGeneralSrv.languageJSONs[langCode],
+                langName = zsGeneralSrv.langName[langCode];
+
+            // save Just the (tag + value), for fastest Api call
+            langObj[tag] = newValueForText;
+                
+            var encoded = 'data:application/json;base64,' + window.btoa(unescape(encodeURIComponent(JSON.stringify(langObj))));
+
+            var onSuccess = function() {
+                $scope.$emit('hideLoader');
+                console.info('Success Save Language text update ');
+                
+            };
+            var onFail = function() {
+                $scope.$emit('hideLoader');
+                console.warn('Failure, Save Language text update failed: ', response);
+                // TODO: need to somehow alert user save failed, ie. alert('Saving failed, please try again later'), or other popup
+            };
+            var options = {
+                params: {
+                    'kiosk': {
+                        'hotel_id': $scope.zestStationData.hotel_id,
+                        'zest_lang': {}
+                    },
+                    // these params (below) get removed by service controller before api call
+                    'langCode': langCode,
+                    'newValueForText': newValueForText,
+                    'tag': tag,
+                    'keepShowingTag': keepShowingTag ? keepShowingTag : false
+
+                },
+                successCallBack: onSuccess,
+                failureCallBack: onFail,
+                'loader': 'none'
+            };
+
+            if (skipSaving) {
+                // locale sync of Locale
+                zsGeneralSrv.syncTranslationText(langCode, newValueForText, tag);
+
+            } else {
+                // use the currently selected language for saving the language text
+                options.params.kiosk.zest_lang[langName + '_translations_file'] = encoded;
+                options.params.kiosk.zest_lang[langName + '_translations_file_updated'] = true;
+
+                $scope.callAPI(zsGeneralSrv.updateLanguageTranslationText, options);
+            }
+
+
+        };
 		/**
 		 * SVGs are ng-included inside HTML
 		 **/
@@ -627,7 +704,7 @@ sntZestStation.controller('zsRootCtrl', [
 		 *   *Refresh-workstation --> Triggered from Hotel Admin - interfaces - workstation > toggle (Refresh Station)
 		 ********************************************************************************/
         $scope.checkIfWorkstationRefreshRequested = function() {
-            console.info('checkIfWorkstationRefreshRequested');
+            // console.info('checkIfWorkstationRefreshRequested');
 			// Workstation trigger for Refresh Station is set to TRUE, --Refresh Station at next (idle) opportunity--
             var station = $scope.getWorkStationSetting($rootScope.workstation_id);
 			// send back to workstation that kiosk is being/has been refreshed 
@@ -1192,6 +1269,8 @@ sntZestStation.controller('zsRootCtrl', [
 
 			// flag to check if default language was set or not
             $scope.zestStationData.IsDefaultLanguageSet = false;
+
+            $scope.zestStationData.editorModeEnabled = 'false';
             
             // if ooo treshold is not set or not active, set th treshold as 1
             if (!$scope.zestStationData.kiosk_out_of_order_treshold_is_active || _.isNaN(parseInt($scope.zestStationData.kiosk_out_of_order_treshold_value))) {

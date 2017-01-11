@@ -3,7 +3,9 @@
     
     
     <div id="content" ng-show="isReservationDetailsFetched">
-        <h1>{{'RES_DETAIL_HEADER' |translate}}</h1>
+        <h1>
+            <text editable-text="RES_DETAIL_HEADER"> {{'RES_DETAIL_HEADER' |translate}}</text>
+        </h1>
         <div id="flex-holder">
             <!-- Calculate {maxheight} with this formula: window.height - combined heights of <h1>, <h2> and <h3> elements + 8
                 - if some <h> elements are missing just exclude them or use 0. 
@@ -14,11 +16,17 @@
                     <div id="guests">
                         <p class="px-space">
                             <strong>{{selectedReservation.guest_details[0].last_name}}, {{selectedReservation.guest_details[0].first_name}} </strong>                          
-                            <span>{{selectedReservation.guest_details.length}} {{'RESIDENTS' |translate}} </span>
+                            <span>{{selectedReservation.guest_details.length}} 
+                                <text editable-text="RESIDENTS"> {{'RESIDENTS' |translate}}</text>
+                            </span>
                             {{selectedReservation.stay_dates[0].room_type}}
                         </p>
-                        <p ng-hide="{{selectedReservation.guest_details.length == 1}}">{{'ADDTL_RESIDENTS' |translate}} ({{selectedReservation.guest_details.length-1}})</p>
-                        <button ng-if='zestStationData.kiosk_add_remove_guests' type="button" class="button" touch-press="addRemove()" >{{'ADD_REMOVE_GUESTS' |translate}} </button>
+                        <p ng-hide="{{selectedReservation.guest_details.length == 1}}">
+                            <text editable-text="ADDTL_RESIDENTS"> {{'ADDTL_RESIDENTS' |translate}}</text>
+                             ({{selectedReservation.guest_details.length-1}})</p>
+                        <button ng-if='zestStationData.kiosk_add_remove_guests' type="button" class="button" touch-press="addRemove()" >
+                            <text editable-text="ADD_REMOVE_GUESTS"> {{'ADD_REMOVE_GUESTS' |translate}}</text>
+                        </button>
                     </div>
                     <ul id="rate" class="reservation-details">
                         <li >
@@ -31,22 +39,41 @@
                         <li ng-hide="isRateSuppressed()" ng-repeat="addon in selectedReservation.addons">
                             {{addon.name}} ({{addon.addon_count}})
                             <span ng-show='{{!addon.is_inclusive}}'>{{zestStationData.currencySymbol}}{{addon.amount | number :2}}</span>
-                            <span ng-show='{{addon.is_inclusive}}'>{{'INCLUDED' |translate}}</span>
+                            <span ng-show='{{addon.is_inclusive}}'>
+                                <text editable-text="INCLUDED"> {{'INCLUDED' |translate}}</text>
+                            </span>
                         </li>
                         
                         <li class="break"></li>
                         
-                        <li ng-hide="isRateSuppressed()" class="sub">{{'RES_TAX_FEES' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.fees | number :2}}</span></li>
-                        <li ng-hide="isRateSuppressed()" class="sub">{{'RES_SUB' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.sub_total | number :2}}</span></li>
-                        <li ng-hide="isRateSuppressed()" class="sub">{{'RES_DEPOSITS' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.deposit_paid | number :2}}</span></li>
-                        <li ng-if="isRateSuppressed()"class="total">{{'RES_BAL_DUE' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.balance | number :2}}</span></li>
-                        <li ng-if="!isRateSuppressed()"class="total">{{'RES_BAL_DUE' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.outstanding_stay_total | number :2}}</span></li>
+                        <li ng-hide="isRateSuppressed()" class="sub">
+                            <text editable-text="RES_TAX_FEES"> {{'RES_TAX_FEES' |translate}}</text>
+                        <span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.fees | number :2}}</span></li>
+                        <li ng-hide="isRateSuppressed()" class="sub">
+                            <text editable-text="RES_SUB"> {{'RES_SUB' |translate}}</text>
+                        <span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.sub_total | number :2}}</span></li>
+                        <li ng-hide="isRateSuppressed()" class="sub">
+                            <text editable-text="RES_DEPOSITS"> {{'RES_DEPOSITS' |translate}}</text>
+                        <span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.deposit_paid | number :2}}</span></li>
+                        <li ng-if="isRateSuppressed()" class="total">
+                            <text editable-text="RES_BAL_DUE"> {{'RES_BAL_DUE' |translate}}</text>
+                        <span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.balance | number :2}}</span></li>
+                        <li ng-if="!isRateSuppressed()" class="total">
+                            <text editable-text="RES_BAL_DUE"> {{'RES_BAL_DUE' |translate}}</text>
+                        <span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.outstanding_stay_total | number :2}}</span></li>
                     </ul>
                 </div>
             </div>
             <div id="actions" class="pull-right">
-                <button type="button" class="button" touch-press="onNextFromDetails()">{{'RES_NEXT' |translate}}</button>
-                <p><strong>{{'RES_Q' |translate}}</strong>{{'RES_Q_SUB' |translate}}</p>
+                <button type="button" class="button" touch-press="onNextFromDetails()">
+                    <text editable-text="RES_NEXT"> {{'RES_NEXT' |translate}}</text>
+                </button>
+                <p>
+                    <strong>
+                        <text editable-text="RES_Q"> {{'RES_Q' |translate}}</text>
+                    </strong>
+                    <text editable-text="RES_Q_SUB"> {{'RES_Q_SUB' |translate}}</text>
+                </p>
             </div>
         </div>
     </div>

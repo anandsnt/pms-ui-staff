@@ -1,9 +1,16 @@
 "LIGHT_SPEED_POS_SETUP_HEADER": "Lightspeed POS Setup",
 "LIGHT_SPEED_POS_ACTIVATE_INACTIVATE": "Activate / Inactivate",
-"LIGHT_SPEED_POS_SUB_TITLE": "API Access Configuration",
 "LIGHT_SPEED_POS_URL": "Url",
 "LIGHT_SPEED_POS_USERNAME": "Username",
 "LIGHT_SPEED_POS_PASSWORD": "Password",
 "LIGHT_SPEED_POS_ROVER_UNIQUE_ID": "Rover Unique ID",
 "LIGHT_SPEED_POS_ACCOUNT_NUMBER": "Account Number",
-"LIGHT_SPEED_COUNTERPART_PAYMENT_CODE": "Default Lightspeed Room Charge Code"
+"LIGHT_SPEED_COUNTERPART_PAYMENT_CODE": "Default Lightspeed Room Charge Code",
+"LS_RESTAURANTS": "Restaurants",
+"LS_RESTAURANTS_ADD": "Add New",
+"LS_EDIT_RESTAURANT": "Edit Restaurant Configuration",
+"LS_ADD_RESTAURANT": "Add Restaurant Configuration",
+"LS_RESTAURANT_NAME": "Restaurant Name",
+"RESTAURANT_NAME_PLACEHOLDER": "Enter Restaurant Name",
+"USERNAME_PLACEHOLDER": "Enter Username",
+"PASSWORD_PLACEHOLDER": "Enter password"

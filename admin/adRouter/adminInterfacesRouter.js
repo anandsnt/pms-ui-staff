@@ -423,15 +423,30 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         url: '/travelTripperSetup'
     });
 
-
+    
     $stateProvider.state('admin.snapshotSetup', {
+        templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+        controller: 'ADInterfaceSubMenuCtrl',
+        url: '/snapshotSetup'
+    });
+
+
+    $stateProvider.state('admin.snapshotGeneralSetup', {
         templateUrl: '/assets/partials/snapshotSetup/adSnapshotSetup.html',
         controller: 'adsnapshotSetupCtrl',
-        url: '/snapshotSetup',
-        resolve: {
-            snapshotSetupData: ['adSnapShotSetupSrv', function(adSnapShotSetupSrv) {
-                return adSnapShotSetupSrv.getSettings();
-            }]
-        }
+        url: '/snapshotSetup/general'
     });
+
+    $stateProvider.state('admin.snapshotChargeGroupMapping', {
+        templateUrl: '/assets/partials/snapshotSetup/adSnapshotChargeGroupMapping.html',
+        controller: 'adSnapshotChargeGroupMappingCtrl',
+        url: '/snapshotSetup/chargeGroupMapping'
+    });
+
+    $stateProvider.state('admin.snapshotSubGroupMapping', {
+        templateUrl: '/assets/partials/snapshotSetup/adSnapshotSubGroupMapping.html',
+        controller: 'adsnapshotSubGroupMappingCtrl',
+        url: '/snapshotSetup/subGroupMapping'
+    });
+
 });

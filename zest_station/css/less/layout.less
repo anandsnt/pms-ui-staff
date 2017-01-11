@@ -1413,13 +1413,22 @@
 .ui-icon {
     text-indent: 0px !important; 
 }
+
 .demo-text{
     float: right;
     left: 0;
     position: absolute;
     color: #d8d8d8;
     z-index: 999;
+    &.editor{
+        left:45% !important;
+    }
 }
+.top-left-demo{
+    border-left-width: 0px !important;
+    border-bottom-left-radius: 0 !important;
+}
+
 
 
 .timer-debugger-left{
@@ -1435,6 +1444,28 @@
     position: absolute;
     color: #d8d8d8;
     z-index: 999;
+
+    text-align:right;
+}
+
+.dev-cls{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    background-color: rgba(55, 55, 55, .7);
+    padding: 3px;
+    border-bottom-left-radius: .5em;
+    border-bottom-right-radius: .5em;
+    padding-top: 0px;
+    border-color: rgba(155, 155, 155, 0.3);
+    border-style: double;
+    border-width: 1px;
+    border-top-width: 0px;
+    &.non-center{
+        width: 36%;
+        margin-top: -15px;
+    }
 }
 
 
@@ -1445,4 +1476,10 @@
 .signature-pad-layout {
     height: 295px; 
     border-radius: 8px;
+}
+.editor-mode-border{
+    border-style: groove;
+    border-width: 2.5px;
+    border-color: lightgreen;
+    border-radius: 0.2em;
 }

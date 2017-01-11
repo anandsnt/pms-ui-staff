@@ -1,18 +1,36 @@
 <section id="main" class="centered" role="main" click-touch='resetTime()'>
     <div id="content">
         <!-- normal flow, no deposit required, just swiping for reservation -->
-        <h1 ng-show='waitingForSwipe && !authAfterDeposit && !payingDeposit' translate>TO_COMPLETE</h1>
-        <h2 ng-show='waitingForSwipe && !authAfterDeposit && !payingDeposit' translate>SWIPE_CARD_PLEASE</h2>
+        <h1 ng-show='waitingForSwipe && !authAfterDeposit && !payingDeposit'>
+            <text editable-text="TO_COMPLETE"> {{'TO_COMPLETE' |translate}}</text>
+        </h1>
+        <h2 ng-show='waitingForSwipe && !authAfterDeposit && !payingDeposit'>
+            <text editable-text="SWIPE_CARD_PLEASE"> {{'SWIPE_CARD_PLEASE' |translate}}</text>
+        </h2>
         <!-- timeout / error -->
-        <h1 ng-show='swipeError && !waitingForSwipe' translate>SWIPE_ERR_HEADER</h1>
-        <h1 ng-show='swipeTimeout && !waitingForSwipe' translate>CC_SWIPE_TIMEOUT</h1>
-        <h2 ng-show='swipeTimeout && !waitingForSwipe' translate>CC_SWIPE_TIMEOUT_SUB</h2>
+        <h1 ng-show='swipeError && !waitingForSwipe'>
+            <text editable-text="SWIPE_ERR_HEADER"> {{'SWIPE_ERR_HEADER' |translate}}</text>
+        </h1>
+        <h1 ng-show='swipeTimeout && !waitingForSwipe'>
+            <text editable-text="CC_SWIPE_TIMEOUT"> {{'CC_SWIPE_TIMEOUT' |translate}}</text>
+        </h1>
+        <h2 ng-show='swipeTimeout && !waitingForSwipe'>
+            <text editable-text="CC_SWIPE_TIMEOUT_SUB"> {{'CC_SWIPE_TIMEOUT_SUB' |translate}}</text>
+        </h2>
         <!-- collect CC authorization after taking a deposit payment -->
-        <h1 ng-show="authAfterDeposit && waitingForSwipe" translate>RES_AUTH_REMAIN</h2>
-        <h2 ng-show="authAfterDeposit && waitingForSwipe" translate>RES_AUTH_REMAIN_SUB</h2>
+        <h1 ng-show="authAfterDeposit && waitingForSwipe">
+            <text editable-text="RES_AUTH_REMAIN"> {{'RES_AUTH_REMAIN' |translate}}</text>
+        </h2>
+        <h2 ng-show="authAfterDeposit && waitingForSwipe">
+            <text editable-text="RES_AUTH_REMAIN_SUB"> {{'RES_AUTH_REMAIN_SUB' |translate}}</text>
+        </h2>
         <!-- collecting deposit payment -->
-        <h1 ng-show="!authAfterDeposit && waitingForSwipe && payingDeposit" translate>RES_AUTH_DEPOSIT</h2>
-        <h2 ng-show="!authAfterDeposit && waitingForSwipe && payingDeposit" translate>RES_AUTH_DEPOSIT_SUB</h2>
+        <h1 ng-show="!authAfterDeposit && waitingForSwipe && payingDeposit">
+            <text editable-text="RES_AUTH_DEPOSIT"> {{'RES_AUTH_DEPOSIT' |translate}}</text>
+        </h2>
+        <h2 ng-show="!authAfterDeposit && waitingForSwipe && payingDeposit">
+            <text editable-text="RES_AUTH_DEPOSIT_SUB"> {{'RES_AUTH_DEPOSIT_SUB' |translate}}</text>
+        </h2>
         
         <nav id="options" role="nav">
             <ul role="menu">
@@ -22,14 +40,19 @@
                         <div ng-include="icons.url.creditcard"></div>
                         
                     </button>
-                    <span translate>SWIPE_CARD_PLEASE</span>
+                    <span>
+                        <text editable-text="SWIPE_CARD_PLEASE"> {{'SWIPE_CARD_PLEASE' |translate}}</text>
+                    </span>
                     <div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div>
                 </li>
+
                 <li ng-show='waitingForSwipe && icmp' touch-press='continue()'>
                    <div class="margin-adj">
                         <div ng-include="icons.url.creditcard_icmp"></div>
                     </div>
-                    <span translate>SWIPE_CARD_PLEASE</span>
+                    <span>
+                        <text editable-text="SWIPE_CARD_PLEASE"> {{'SWIPE_CARD_PLEASE' |translate}}</text>
+                    </span>
                     <div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div>
                 </li>
                 
@@ -37,11 +60,15 @@
                     <button type="button" class="button option" touch-press='reTryCardSwipe()'>
                         <div ng-include="icons.url.creditcard"></div>
                     </button>
-                    <h1 translate>TRY_AGAIN</h1>
+                    <h1>
+                        <text editable-text="TRY_AGAIN"> {{'TRY_AGAIN' |translate}}</text>
+                    </h1>
                 </li>
                 
                 <li class="break" ng-show='(swipeTimeout || swipeError) && !waitingForSwipe'>
-                    <span translate>OR_TEXT</span>
+                    <span>
+                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                    </span>
                 </li>
                 
 
@@ -49,8 +76,12 @@
                     <button type="button" class="button option" touch-press='initStaff()'>
                         <div ng-include="icons.url.staff"></div>
                     </button>
-                    <h1 translate>SPEAK</h1>
-                    <h4 translate>SPEAK_SUB</h4>
+                    <h1>
+                        <text editable-text="SPEAK"> {{'SPEAK' |translate}}</text>
+                    </h1>
+                    <h4>
+                        <text editable-text="SPEAK_SUB"> {{'SPEAK_SUB' |translate}}</text>
+                    </h4>
                 </li>
 
             </ul>
