@@ -903,7 +903,10 @@ sntZestStation.controller('zsRootCtrl', [
         };
 
         $scope.connectToWebSocket = function() {
-
+            if ($scope.zestStationData.stationHandlerConnectedStatus === 'Connecting...') {
+                // if already connecting, do nothing (ie. if user double-clicks the refresh button, just handle once)
+                return;
+            }
             if ($scope.socketOperator) {
                 // if socketOperator is already defined, it may have an open connection, close that first before reconnect
                 $scope.socketOperator.closeWebSocket();
@@ -914,9 +917,8 @@ sntZestStation.controller('zsRootCtrl', [
             },75);
 
             $timeout(function() {
-                if ($scope.zestStationData.stationHandlerConnectedStatus === 'Connecting...') {
-                    $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);   
-                }
+                
+                    $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
             }, 400);
         };
 
