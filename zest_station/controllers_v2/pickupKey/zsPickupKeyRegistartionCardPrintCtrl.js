@@ -9,19 +9,19 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
     '$window',
     function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, $filter, $timeout, $window) {
 
-		/** ********************************************************************************************
-		 **		Expected state params -----> reservation_id						
-		 **																		 
-		 ***********************************************************************************************/
+        /** ********************************************************************************************
+         **     Expected state params -----> reservation_id                     
+         **                                                                      
+         ***********************************************************************************************/
 
         BaseCtrl.call(this, $scope);
 
 
-    
-		/**
-		 * [clickedPrint description]
-		 * @return {[type]} [description]
-		 */
+
+        /**
+         * [clickedPrint description]
+         * @return {[type]} [description]
+         */
         var startPrint = function() {
             var getTermsPrintable = function(terms) {
                 sntZestStation.filter('unsafe', function($sce) {
@@ -31,7 +31,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
                 });
             };
 
-            var setMessage = function(printSuccess){
+            var setMessage = function(printSuccess) {
                 var keySucess = $stateParams.key_created === 'true';
                 if (printSuccess && keySucess) {
                     $scope.mode = 'PRINT_SUCCESS_AND_KEY_SUCCESS';
@@ -70,7 +70,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
             var handleStarTacPrinterActions = function() {
                 var printData = '';
 
-				/** ** Socket actions starts here *****/
+                /** ** Socket actions starts here *****/
                 $scope.$on('SOCKET_FAILED', function() {
                     printFailedActions();
                 });
@@ -84,11 +84,11 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
                     $scope.socketOperator.startPrint(printData);
                     $scope.$emit('showLoader');
                 });
-				/** ** Socket actions ends here *****/
+                /** ** Socket actions ends here *****/
 
                 var fetchSatrTacDataSuccess = function(response) {
                     printData = response.bill_details;
-					// check if socket is open
+                    // check if socket is open
                     if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
                         $scope.socketOperator.startPrint(printData);
                         $scope.$emit('showLoader');
@@ -115,15 +115,15 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
             };
 
             var handleBillPrint = function() {
-				// add the orientation
+                // add the orientation
                 addPrintOrientation();
                 setBeforePrintSetup();
                 try {
-				// this will show the popup with full bill
+                    // this will show the popup with full bill
                     $timeout(function() {
-					/*
-					 * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-					 */
+                        /*
+                         * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+                         */
 
                         if (sntapp.cordovaLoaded) {
                             var printer = sntZestStation.selectedPrinter;
@@ -135,7 +135,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
                             }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
                         } else {
                             if ($scope.zestStationData.zest_printer_option === 'STAR_TAC' && $scope.zestStationData.kiosk_use_socket_print) {
-							// we will call websocket services to print
+                                // we will call websocket services to print
                                 handleStarTacPrinterActions();
                             } else {
 
@@ -145,7 +145,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
                                 }, 100);
                             }
                         }
-					// provide a delay for preview to appear 
+                        // provide a delay for preview to appear 
 
                     }, 100);
 
@@ -156,11 +156,11 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
                 }
 
                 setTimeout(function() {
-					// CICO-9569 to solve the hotel logo issue
+                    // CICO-9569 to solve the hotel logo issue
                     $('header .logo').removeClass('logo-hide');
                     $('header .h2').addClass('text-hide');
 
-					// remove the orientation after similar delay
+                    // remove the orientation after similar delay
                     removePrintOrientation();
 
                 }, 100);
@@ -171,7 +171,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
 
                 $scope.currentDateTime = d.getTime();
                 $scope.$emit('hideLoader');
-				// print section - if its from device call cordova.
+                // print section - if its from device call cordova.
                 $scope.printRegCardData = data;
                 $scope.departDate = $scope.printRegCardData.dep_date;
                 $scope.departDate = $scope.returnDateObjBasedOnDateFormat($scope.printRegCardData.dep_date);
@@ -191,15 +191,15 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
             $scope.callAPI(zsCheckinSrv.fetchRegistrationCardPrintData, options);
         };
         startPrint();
-	
 
-		/**
-		 * [initializeMe description]
-		 */
-        (function() {// initializeMe
-			// show back button
+
+        /**
+         * [initializeMe description]
+         */
+        (function() { // initializeMe
+            // show back button
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON); // hide back buttons in 2 options page
-			// show close button
+            // show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
             $scope.showDoneButton = false;
         }());
