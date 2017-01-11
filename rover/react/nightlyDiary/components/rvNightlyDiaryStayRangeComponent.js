@@ -1,25 +1,19 @@
 const NightlyDiaryStayRangeComponent = createClass ({
 
-    componentDidMount() {
-
-    },
-    mouseMove: function(e) {
-        console.log("jphme");
-        console.log(e.clientX);
-        console.log(this.props.currentSelectedReservation.arrivalPosition);
-        this.props.currentSelectedReservation.style.transform = 'translateX(' + e.clientX - 184 + ')';
-        //currentSelectedReservation.arrivalPosition = e.clientX - 184;
-        this.setState({currentSelectedReservation: this.props.currentSelectedReservation})
-        console.log("===============");
-        console.log(this.props.currentSelectedReservation)
-    },
     render() {
         return (
             <div className={this.props.currentSelectedReservation.class}>
-                <a style={this.props.currentSelectedReservation.style} className="handle arrival left" onMouseMove={(e) => this.mouseMove(e)} >
+                <a style={this.props.currentSelectedReservation.arrivalStyle} className="handle arrival left"  >
                     <span className="title">
                         Arrival
                         <span className="date">{this.props.currentSelectedReservation.arrival_date}</span>
+                    </span>
+                    <span className="line"></span>
+                </a>
+                <a style={this.props.currentSelectedReservation.departureStyle} className="handle departure">
+                    <span className="title">
+                        Departure
+                        <span className="date">{this.props.currentSelectedReservation.dept_date}</span>
                     </span>
                     <span className="line"></span>
                 </a>
