@@ -7,7 +7,11 @@ const NightlyDiaryStayRangeComponent = createClass ({
         console.log("jphme");
         console.log(e.clientX);
         console.log(this.props.currentSelectedReservation.arrivalPosition);
-
+        this.props.currentSelectedReservation.style.transform = 'translateX(' + e.clientX - 184 + ')';
+        //currentSelectedReservation.arrivalPosition = e.clientX - 184;
+        this.setState({currentSelectedReservation: this.props.currentSelectedReservation})
+        console.log("===============");
+        console.log(this.props.currentSelectedReservation)
     },
     render() {
         return (
