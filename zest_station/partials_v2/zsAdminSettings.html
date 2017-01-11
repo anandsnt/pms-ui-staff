@@ -129,7 +129,7 @@
                     <label>Text Editor Mode</label>
                     <label class='admin-label-description'>Allows Station user to edit text by double-clicking current text. *Works best via Internet Browser</label>
                     <div class="entry select">
-                        <select ng-model="zestStationData.editorModeEnabled">
+                        <select ng-model="zestStationData.editorModeEnabled" ng-change='setEditorModeCls()'>
                             <option value="true">Enabled</option>
                             <option value="false">Disabled</option>
                         </select>
