@@ -47,7 +47,14 @@ sntZestStation.directive('editableText', [function() {
             var textEditor = function() {
                 // handle double-click
                 // 
-                var rootScope = element.scope().$parent.zestStationData;
+                var rootScope = element.scope().$parent.zestStationData,
+                    scope = element.scope().$parent;
+
+                if (_.isUndefined(rootScope)) {
+                    // then request came from popup or element from zsRoot.html, which is outside parent scope
+                    rootScope = element.scope().zestStationData;
+                    scope = element.scope();                    
+                }
 
                 if (rootScope.editorModeEnabled === 'true') {
                     // console.log('start editing : ', element);  
@@ -79,7 +86,7 @@ sntZestStation.directive('editableText', [function() {
 
                         if (oldText !== newValueForText) {
                         // show saving-indicator for slow networks need to show that save in-progress
-                            element.scope().$parent.$emit('showLoader');
+                            scope.$emit('showLoader');
 
                         // If editing a Tag WHILE the tag was toggled ON, 
                         // need to still show that tag value until user toggles Tags back OFF
@@ -88,7 +95,7 @@ sntZestStation.directive('editableText', [function() {
                             if (oldText === tag) {
                                 keepShowingTag = true;
                             }
-                            element.scope().$parent.saveLanguageEditorChanges(tag, newValueForText, false, keepShowingTag);
+                            scope.saveLanguageEditorChanges(tag, newValueForText, false, keepShowingTag);
 
                         }
 

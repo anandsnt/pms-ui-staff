@@ -214,6 +214,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		/* ******************************************************************************************************* */
 
 		var updateLogForKeyActions = function(keyNo, keyStatus) {
+			$scope.resetTime();
 			var params = {
 				"reservation_id": $stateParams.reservation_id,
 				"key_no": keyNo,
@@ -398,6 +399,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		 *  if webscoket ready state is not ready
 		 */
 		$scope.dispenseKey = function() {
+			$scope.zestStationData.makingKeyInProgress = true;
 			if ($scope.inDemoMode()) {
 				setTimeout(function() {
 					saveUIDToReservationSuccsess();
@@ -434,6 +436,8 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			}
 			$timeout(function() {
 				$scope.readyForUserToPressMakeKey = true;
+				$scope.zestStationData.makingKeyInProgress = false;
+
 			}, 1000);
 			revertFailureReason();
 			updateLogForKeyActions($scope.noOfKeysCreated, "success");
