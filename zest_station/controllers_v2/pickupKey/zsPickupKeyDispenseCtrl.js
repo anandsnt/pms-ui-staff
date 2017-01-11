@@ -52,7 +52,28 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 
         $scope.doneButtonStyle = {
             'margin-top': marginTop
-        }; 
+        };
+
+
+        $scope.onKeyFailureGoToPrintPage = function(){
+            var stateParams = {
+                'reservation_id': $stateParams.reservation_id,
+                'key_created': 'false'
+            };
+            $state.go('zest_station.pickUpKeyDispenseRegistrationCardPrint', stateParams);
+        };
+
+        $scope.pickupKeyNextPageAction = function() {
+            if ($scope.zestStationData.pickup_key_reg_print === 'auto_print') {
+                var stateParams = {
+                    'reservation_id': $stateParams.reservation_id,
+                    'key_created': 'true'
+                };
+                $state.go('zest_station.pickUpKeyDispenseRegistrationCardPrint', stateParams);
+            } else {
+                $state.go('zest_station.home');
+            }
+        };
 
     }
 ]);
