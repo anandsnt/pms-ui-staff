@@ -239,11 +239,11 @@ var GlobalZestStationApp = function() {
             var editorModeEnabled = el.scope().$parent.zestStationData.editorModeEnabled;
 
             if (editorModeEnabled === 'true') {
-                $('body').removeClass('editor-mode-border');
                 angular.element('#header').scope().$parent.zestStationData.editorModeEnabled = 'false';
+                angular.element('body').scope().cls = {editor: 'false'};// alt to: // $('body').removeClass('editor-mode-border');
             } else {
-                $('body').addClass('editor-mode-border');
                 angular.element('#header').scope().$parent.zestStationData.editorModeEnabled = 'true';
+                angular.element('body').scope().cls = {editor: 'true'};
             }
             angular.element('#header').scope()
                                       .$apply();
