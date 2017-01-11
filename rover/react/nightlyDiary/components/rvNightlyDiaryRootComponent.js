@@ -4,14 +4,16 @@ const NightlyDiaryRootComponent = createClass ({
     componentDidMount() {
        
     },
-    scrollToPos(pos,width) {
+    scrollToPos(pos) {
         const node = document.getElementById('diary-nightly-grid');
+
         node.scrollTop = pos;
     },
     scrollToNthelement(n) {
         let width = document.getElementsByClassName("room")[1].clientHeight,
             scrollTo = n * width ;
-        this.scrollToPos(scrollTo,width)     
+
+        this.scrollToPos(scrollTo); 
     },
     componentDidUpdate() {
         this.scrollToNthelement(this.props.index);
