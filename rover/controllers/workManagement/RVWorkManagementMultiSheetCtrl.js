@@ -721,6 +721,9 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			$scope.multiSheetState._selectedIndexMap = {};
 			$scope.multiSheetState._lastSelectedIds  = [];
 
+            if (fetchHKStaffs) {
+                $scope.employeeList = fetchHKStaffs.results;
+            }
 			_.each($scope.employeeList, function(emp) {
 				emp.ticked = true;
 				initingEmpList(emp);

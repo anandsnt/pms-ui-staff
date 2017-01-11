@@ -234,18 +234,20 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 
 			var processData = function(data) {
 				var results = [],
-					emp_ids = [];
+					emp_ids = [],
+                    empResults;
 
 				_.each(data.results, function(emp) {
 					emp_ids
 						.push( emp.id );
 
-					results =  $.extend(
+					empResults =  $.extend(
 							{},
 							emp,
 							{ ticked: false },
 							{ checkboxDisabled: false }
 						);
+                    results.push(empResults);
 				});
 
 				return {
