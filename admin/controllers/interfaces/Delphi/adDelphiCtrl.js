@@ -34,4 +34,4 @@ admin.controller('adDelphiCtrl', ['$scope', 'config', 'adInterfacesCommonConfigS
             $scope.interface = interfaceIdentifier.toUpperCase();
         })();
     }
-])
+]);
