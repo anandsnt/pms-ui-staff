@@ -126,12 +126,15 @@ sntZestStation.controller('zsAdminCtrl', [
         /*
          * Go to home page
          */
-        var lastDemoModeSetting = $scope.zestStationData.demoModeEnabled;
+        var lastDemoModeSetting = $scope.zestStationData.demoModeEnabled,
+            lastEditorModeSetting = $scope.zestStationData.editorModeEnabled;
 
         $scope.cancelAdminSettings = function(a) {
             if (!a) {
-                console.info('setting demo mode back to: ', lastDemoModeSetting);
+                console.info('setting demo and editor modes back to: ', lastDemoModeSetting, lastEditorModeSetting);
                 $scope.zestStationData.demoModeEnabled = lastDemoModeSetting;
+                $scope.zestStationData.editorModeEnabled = lastEditorModeSetting;
+                $scope.setEditorModeCls();
             }
             $state.go('zest_station.home');
             setTimeout(function() {
@@ -210,6 +213,13 @@ sntZestStation.controller('zsAdminCtrl', [
 
             return selectedWorkStation;
         };
+        $scope.setEditorModeCls = function() {
+            if ($scope.zestStationData.editorModeEnabled === 'true') {
+                $rootScope.cls.editor = 'true';
+            } else {
+                $rootScope.cls.editor = 'false';
+            }
+        };
         /*
          *  save work station
          */
@@ -223,6 +233,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.zestStationData.workstationName = selectedWorkstation.name;
                 setStationVariables();
                 restartTimers();
+                $scope.setEditorModeCls();
                 $scope.zestStationData.set_workstation_id = station.id;
                 $rootScope.workstation_id = $scope.zestStationData.set_workstation_id;
                 $scope.zestStationData.key_encoder_id = station.key_encoder_id;
@@ -304,8 +315,10 @@ sntZestStation.controller('zsAdminCtrl', [
             var failureCallBack = function(response) {
                 console.warn('failed to save settings');
                 console.log(response);
-                console.info('save setting failed, set demo mode to last setting');
+                console.info('save setting failed, set demo and editor mode to last setting');
                 $scope.zestStationData.demoModeEnabled = lastDemoModeSetting;
+                $scope.zestStationData.editorModeEnabled = lastEditorModeSetting;
+                $scope.setEditorModeCls();
             };
             var options = {
                 params: params,
@@ -361,6 +374,12 @@ sntZestStation.controller('zsAdminCtrl', [
                     }, 3000);
                 }
             }, 2000);
+        };
+
+        $scope.refreshSocketConnection = function() {
+            if ($scope.zestStationData.stationHandlerConnectedStatus !== "Connecting...") {
+                $scope.$emit('CONNECT_WEBSOCKET');    
+            }
         };
 
         $scope.showDebugModeOption = false;

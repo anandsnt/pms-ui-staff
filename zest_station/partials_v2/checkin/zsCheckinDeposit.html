@@ -1,10 +1,18 @@
 <section id="main" class="centered" role="main" click-touch='resetTime()'>
     <div id="content">
-        <h1>{{'DEPOSIT_REMAIN' |translate}}</h1>
-        <h2>{{'DEPOSIT_REMAIN_SUB' |translate}} {{currencySymbol}}{{depositAmount}}</h2>
-        <h2>{{'DEPOSIT_REMAIN_SUB_SUB' |translate}}</h2>
+        <h1>
+            <text editable-text="DEPOSIT_REMAIN"> {{'DEPOSIT_REMAIN' |translate}}</text>
+        </h1>
+        <h2>
+            <text editable-text="DEPOSIT_REMAIN_SUB"> {{'DEPOSIT_REMAIN_SUB' |translate}}</text> {{currencySymbol}}{{depositAmount}}
+            </h2>
+        <h2>
+            <text editable-text="DEPOSIT_REMAIN_SUB_SUB"> {{'DEPOSIT_REMAIN_SUB_SUB' |translate}}</text> 
+        </h2>
         
-        <h1 ng-if='swipeError'>{{'SWIPE_ERR_HEADER' |translate}}</h1>
+        <h1 ng-if='swipeError'>
+            <text editable-text="SWIPE_ERR_HEADER"> {{'SWIPE_ERR_HEADER' |translate}}</text>
+        </h1>
         
         <nav id="options" role="nav">
             <ul role="menu">
@@ -12,17 +20,25 @@
                     <button type="button" class="button option" touch-press='proceedToDeposit()'>
                         <div ng-include="icons.url.creditcard"></div>
                     </button>
-                    <h1>{{'DEPOSIT_NEXT_BUTTON' |translate}}</h1>
+                    <h1>
+                        <text editable-text="DEPOSIT_NEXT_BUTTON"> {{'DEPOSIT_NEXT_BUTTON' |translate}}</text>
+                    </h1>
                 </li>
                 <li class="break">
-                    <span translate>OR_TEXT</span>
+                    <span>
+                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                    </span>
                 </li>
                 <li> 
                     <button type="button" class="button option" touch-press='talkToStaff()'>
                         <div ng-include="icons.url.staff"></div>
                     </button>
-                    <h1>{{'SPEAK' |translate}}</h1>
-                    <h4>{{'SPEAK_SUB' |translate}}</h4>
+                    <h1>
+                        <text editable-text="SPEAK"> {{'SPEAK' |translate}}</text>
+                    </h1>
+                    <h4>
+                        <text editable-text="SPEAK_SUB"> {{'SPEAK_SUB' |translate}}</text>
+                    </h4>
                 </li>
             </ul>
         </nav>

@@ -1,55 +1,75 @@
 <section id="main" role="main" class="centered" click-touch='resetTime()' ng-hide="alreadyCheckedOut">
     <!---- wait ---->
     <div id="content" ng-show="socketBeingConnected">
-        <h1 translate>PLEASE_WAIT_FOR_KEY_CARD_FOR_CHECKOUT</h1>
-        <h2 class="nocaps" translate>PLEASE_WAIT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT</h2>
+        <h1>
+            <text editable-text="PLEASE_WAIT_FOR_KEY_CARD_FOR_CHECKOUT"> {{'PLEASE_WAIT_FOR_KEY_CARD_FOR_CHECKOUT' |translate}}</text>
+        </h1>
+        <h2 class="nocaps">
+            <text editable-text="PLEASE_WAIT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT"> {{'PLEASE_WAIT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT' |translate}}</text>
+        </h2>
     </div>
     <!-- card insert mode -->
     <div id="content" ng-hide="reservationSearchFailed || socketBeingConnected">
-        <h1 translate>INSERT_KEY_CARD_FOR_CHECKOUT</h1>
-        <h2 class="nocaps" translate>INSERT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT</h2>
+        <h1>
+            <text editable-text="INSERT_KEY_CARD_FOR_CHECKOUT"> {{'INSERT_KEY_CARD_FOR_CHECKOUT' |translate}}</text>
+        </h1>
+        <h2 class="nocaps">
+            <text editable-text="INSERT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT"> {{'INSERT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT' |translate}}</text>
+        </h2>
         <nav id="options" role="nav">
             <ul role="menu">
                 <li>
                     <button type="button" class="button option">
                         <div ng-include="icons.url.creditcard"></div>
                     </button>
-                    {{'INSERT_KEY_CARD' | translate}}
+                    <text editable-text="INSERT_KEY_CARD"> {{'INSERT_KEY_CARD' |translate}}</text>
                 </li>
             </ul>
         </nav>
     </div>
     <!-- reservation search failed -->
     <div id="content" ng-show="reservationSearchFailed && !socketBeingConnected">
-        <h1 translate>KEY_CARD_LOOKUP_FAILURE_ERROR_HEADING</h1>
-        <h2 class="nocaps" translate>KEY_CARD_LOOKUP_FAILURE_ERROR_SUBTEXT</h2>
+        <h1>
+            <text editable-text="KEY_CARD_LOOKUP_FAILURE_ERROR_HEADING"> {{'KEY_CARD_LOOKUP_FAILURE_ERROR_HEADING' |translate}}</text>
+        </h1>
+        <h2 class="nocaps">
+            <text editable-text="KEY_CARD_LOOKUP_FAILURE_ERROR_SUBTEXT"> {{'KEY_CARD_LOOKUP_FAILURE_ERROR_SUBTEXT' |translate}}</text>
+        </h2>
         <nav id="options" role="nav">
             <ul role="menu">
                 <li>
                     <button type="button" class="button option" touch-press='retrySearch()'>
                         <div ng-include="icons.url.creditcard"></div>
                     </button>
-                    {{'RETRY' |translate}}
+                    <text editable-text="RETRY"> {{'RETRY' |translate}}</text>
                 </li>
                 <li class="break">
-                    <span translate>OR_TEXT</span>
+                    <span>
+                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                    </span>
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press='searchByName()'>
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
-                    {{'SEARCH' |translate}}
-                    <span>{{'BY_NAME' |translate}}</span>
+                    <text editable-text="SEARCH"> {{'SEARCH' |translate}}</text>
+                    <span>
+                        <text editable-text="BY_NAME"> {{'BY_NAME' |translate}}</text>
+                    </span>
                 </li>
                 <li class="break">
-                    <span translate>OR_TEXT</span>
+                    <span>
+                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                    </span>
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press='talkToStaff()'>
                         <div ng-include="icons.url.staff"></div>
                     </button>
-                    {{'RES_SRCH_TALK' |translate}}
-                    <span>{{'RES_SRCH_TALK_SUB' |translate}}</span>
+                    <text editable-text="RES_SRCH_TALK"> {{'RES_SRCH_TALK' |translate}}</text>
+                    <span>
+                        <text editable-text="RES_SRCH_TALK_SUB"> {{'RES_SRCH_TALK_SUB' |translate}}</text>
+                    </span>
                 </li>
             </ul>
         </nav>
@@ -58,9 +78,15 @@
 <!-- user has already checkout -->
 <section id="main" class="centered" role="main" ng-show="alreadyCheckedOut">
     <div id="content">
-        <h1>{{'USER_CHECKED_OUT_ALRDY_HEADER' |translate}}</h1>
-        <h2 class="nocaps">{{'USER_CHECKED_OUT_ALRDY_SUB' |translate}}</h2>
-        <button type="button" class="button" click-touch="alreadyCheckedOutActions()">{{'USER_CHECKED_OUT_ALRDY_RTN' |translate}}</button>
+        <h1>
+            <text editable-text="USER_CHECKED_OUT_ALRDY_HEADER"> {{'USER_CHECKED_OUT_ALRDY_HEADER' |translate}}</text>
+        </h1>
+        <h2 class="nocaps">
+            <text editable-text="USER_CHECKED_OUT_ALRDY_SUB"> {{'USER_CHECKED_OUT_ALRDY_SUB' |translate}}</text>
+        </h2>
+        <button type="button" class="button" click-touch="alreadyCheckedOutActions()">
+            <text editable-text="USER_CHECKED_OUT_ALRDY_RTN"> {{'USER_CHECKED_OUT_ALRDY_RTN' |translate}}</text>
+        </button>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>

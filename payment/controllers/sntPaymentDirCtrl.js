@@ -254,7 +254,7 @@ angular.module('sntPay').controller('sntPaymentController',
              */
             $scope.showSelectedCard = function() {
                 var isCCPresent = $scope.selectedPaymentType === 'CC' &&
-                (!!$scope.selectedCC && (!!$scope.selectedCC.ending_with || !!$scope.selectedCC.card_number || !!$scope.selectedCC.value));
+                (!!$scope.selectedCC && $scope.selectedCC.is_credit_card && (!!$scope.selectedCC.ending_with || !!$scope.selectedCC.card_number || !!$scope.selectedCC.value));
                 var isManualEntry = !!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl &&
                     $scope.payment.isManualEntryInsideIFrame;
 
@@ -737,9 +737,11 @@ angular.module('sntPay').controller('sntPaymentController',
                 //  In case a credit card is selected; the fee information is to be that of the card
                 if (!!selectedPaymentType && selectedPaymentType.name === 'CC' && $scope.selectedCC && $scope.selectedCC.hasOwnProperty('card_code')) {
 
-                    cardTypeInfo = _.find(selectedPaymentType.values, {
-                        cardcode: $scope.selectedCC.card_code.toUpperCase()
-                    });
+                    if ($scope.selectedCC.card_code) {
+                        cardTypeInfo = _.find(selectedPaymentType.values, {
+                            cardcode: $scope.selectedCC.card_code.toUpperCase()
+                        });
+                    }
 
                     feeInfo = cardTypeInfo &&
                         cardTypeInfo.charge_code &&

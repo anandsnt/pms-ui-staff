@@ -90,6 +90,7 @@ module.exports = {
             'guestweb_sohotel': [ themeCSSRoot + 'guestweb_sohotel.css'],
             'guestweb_hive': [ themeCSSRoot + 'guestweb_hive.css'],
             'guestweb_pod_dc': [ themeCSSRoot + 'guestweb_pod_dc.css'],
+            'guestweb_snt': [ themeCSSRoot + 'guestweb_snt.css'],
             'guestweb_silver_stone': [ themeCSSRoot + 'guestweb_silver_stone.css']
         };     
     }

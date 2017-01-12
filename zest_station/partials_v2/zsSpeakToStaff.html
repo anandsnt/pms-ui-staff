@@ -1,10 +1,16 @@
 <!-- speak to staff -->
 <section id="main" class="centered" role="main" click-touch='resetTime()'>
     <div id="content">
-        <h1 ng-hide="customMessagePresent" translate>SPEAK_TO_STAFF</h1>
+        <h1 ng-hide="customMessagePresent">
+        	<text editable-text="SPEAK_TO_STAFF"> {{'SPEAK_TO_STAFF' |translate}}</text>
+    	</h1>
         <h1 ng-show="customMessagePresent" ng-bind="customMessage"></h1>
-        <h2 class="nocaps" translate>SPEAK_TO_STAFF_SUB</h2>
-        <button type="button" class="button" click-touch="navToHome()" translate>SPEAK_TO_STAFF_RETURN</button>
+        <h2 class="nocaps">
+        	<text editable-text="SPEAK_TO_STAFF_SUB"> {{'SPEAK_TO_STAFF_SUB' |translate}}</text>
+    	</h2>
+        <button type="button" class="button" click-touch="navToHome()">
+        	<text editable-text="SPEAK_TO_STAFF_RETURN"> {{'SPEAK_TO_STAFF_RETURN' |translate}}</text>
+    	</button>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" ></span>
 </section>

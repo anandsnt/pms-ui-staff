@@ -23,7 +23,11 @@ angular.module('sntRover')
 
 
             BaseCtrl.call(this, $scope);
-
+            // CICO-36654 fix for touch events not getting detected iPad.
+            document.removeEventListener('touchmove', window.touchmovepreventdefault, false);
+            $scope.$on('$destroy', function() {
+                document.addEventListener('touchmove', window.touchmovepreventdefault, false);
+            });
             /*
              * utility method Initiate controller
              * @return {}

@@ -32,13 +32,16 @@ sntZestStation.config(function($httpProvider, $translateProvider) {
 sntZestStation.run(['$rootScope', '$state', '$stateParams', function($rootScope, $state, $stateParams) {
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
+    $rootScope.cls = {
+        'editor': 'false'
+    };
 
     $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
         $rootScope.previousState = from.name;
         $rootScope.previousStateParam = fromParams.menu;
         // on state changes hide the keyboard always in case of iPad
         document.activeElement.blur();
-        $("input").blur();
+        $('input').blur();
     });
 }]);
 
@@ -118,7 +121,7 @@ var GlobalZestStationApp = function() {
         that.cordovaLoaded = false;
     };
 
-    this.demoMode = function() {
+    this.toggleDemoModeOnOff = function() {
         var el = angular.element('#header');
 
         if (el) {
@@ -135,7 +138,7 @@ var GlobalZestStationApp = function() {
         }
     };
     this.debugTimers = function(workstationFetchTimer, languageResetTimer, refreshTimer, idlePopupTimer, backToHomeTimer) {
-        var runDigest = function(){
+        var runDigest = function() {
             try {
                 setTimeout(function() {
                     angular.element('#header').scope().$parent.$digest();
@@ -146,6 +149,7 @@ var GlobalZestStationApp = function() {
                 console.warn('unable to run digest ', err);
             }
         };
+
         if (arguments.length === 0 || workstationFetchTimer === false) {// ie. debugTimers(false) or debugTimers() will turn off timer debugging
             console.info('Please pass the timer values as an argument, ie. debugTimers(', 'workstationFetchTimer,', 
                 'languageResetTimer,', 
@@ -174,7 +178,7 @@ var GlobalZestStationApp = function() {
                         runDigest();
                     }
                     
-                };
+                }
                 if (isValidArg(workstationFetchTimer)) {
                     that.workstationFetchTimer = workstationFetchTimer;
                     that.timeDebugger = true;
@@ -206,9 +210,13 @@ var GlobalZestStationApp = function() {
         }
         return;
     };
+    this.callRootMethod = function(m, args) {// m == method to call
+        angular.element('#header').scope().$parent[m](args);
+
+    };
     this.debugTheme = function(theme) {
         // thats right, quick-switching of themes...
-        angular.element('#header').scope().$parent.quickSetHotelTheme(theme);
+        that.callRootMethod('quickSetHotelTheme', theme);
     };
     this.virtualKeyBoardEnabled = false;
 
@@ -224,6 +232,40 @@ var GlobalZestStationApp = function() {
         }
         console.warn('cardSwipeDebug: ', that.cardSwipeDebug);
     };
+
+    this.showingTags = false;
+
+    this.toggleEditorMode = function() {
+        var el = angular.element('#header');
+
+        if (el) {
+            var editorModeEnabled = el.scope().$parent.zestStationData.editorModeEnabled;
+
+            if (editorModeEnabled === 'true') {
+                angular.element('#header').scope().$parent.zestStationData.editorModeEnabled = 'false';
+                angular.element('body').scope().cls = {editor: 'false'};// alt to: // $('body').removeClass('editor-mode-border');
+            } else {
+                angular.element('#header').scope().$parent.zestStationData.editorModeEnabled = 'true';
+                angular.element('body').scope().cls = {editor: 'true'};
+            }
+            angular.element('#header').scope()
+                                      .$apply();
+
+        }
+    };
+
+
+    this.toggleLanguageTags = function() {
+        that.showingTags = !that.showingTags;
+        that.callRootMethod('toggleLanguageTags');
+    };
+
+    this.setLanguage = function(langCode) {
+        console.log('select language requested: ', langCode);
+        that.callRootMethod('switchLanguage', langCode);
+    };
+
+
 };
 
 zestSntApp = new GlobalZestStationApp();

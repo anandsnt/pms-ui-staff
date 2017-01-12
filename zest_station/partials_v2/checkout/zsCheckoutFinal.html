@@ -1,9 +1,19 @@
 <section id="main" role="main" class="centered" click-touch='resetTime()'>
     <div id="content">
-        <h1>{{'THANKS_FOR_STAY' |translate}}</h1>
-        <h3 ng-show="printOpted">{{'PRINTED_BELOW' |translate}}</h3>
-        <h3 ng-show="emailSent">{{'EMAIL_BILL_SENT_MSG' |translate}}</h3>
-        <h3 ng-show="emailSendingFailed">{{'EMAIL_BILL_NOT_SENT_MSG' |translate}}</h3>
-        <button type="button" class="button" click-touch='navToHome()'>{{'DONE_BTN' |translate}}</button>
+        <h1>
+        	<text editable-text="THANKS_FOR_STAY"> {{'THANKS_FOR_STAY' |translate}}</text>
+    	</h1>
+        <h3 ng-show="printOpted">
+        	<text editable-text="PRINTED_BELOW"> {{'PRINTED_BELOW' |translate}}</text>
+    	</h3>
+        <h3 ng-show="emailSent">
+        	<text editable-text="EMAIL_BILL_SENT_MSG"> {{'EMAIL_BILL_SENT_MSG' |translate}}</text>
+    	</h3>
+        <h3 ng-show="emailSendingFailed">
+        	<text editable-text="EMAIL_BILL_NOT_SENT_MSG"> {{'EMAIL_BILL_NOT_SENT_MSG' |translate}}</text>
+    	</h3>
+        <button type="button" class="button" click-touch='navToHome()'>
+        	<text editable-text="DONE_BTN"> {{'DONE_BTN' |translate}}</text>
+    	</button>
     </div>
 </section>

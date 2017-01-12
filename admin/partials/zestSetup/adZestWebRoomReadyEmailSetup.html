@@ -1,0 +1,19 @@
+<ad-common-parts-in-form-dir on-save-button-click="saveZestMobileAppMarketingDetails" header-caption="Setup Room Ready Email">
+    <fieldset class="holder left">
+        <ad-form-sub-title title="SETUP_ROOM_READY_EMAIL_INSTRUCTIONS"></ad-form-sub-title>
+        <ad-textbox value="data.room_ready_email_subject" name="app-name" id="app-name" label="SUBJECT" styleclass="full-width"></ad-textbox>
+        <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.room_ready_email_greetings_text" label="{{ 'TEXT_1' | translate}}" placeholder=""></ad-textarea>
+        <div id="options" class="entry">
+            <label>
+                {{ 'INCLUDE_DETAILS_ABOUT_MOBILE_APP' | translate}}
+            </label>
+            <ad-radio-dir dir-model="data.room_ready_email_include_details_about_mobile_app" dir-value="ALWAYS" dir-label="ALWAYS"></ad-radio-dir>
+            <ad-radio-dir dir-model="data.room_ready_email_include_details_about_mobile_app" dir-value="ONLY_WHEN_ROOM_SUPPORTS_MOBILE_KEY" dir-label="ONLY_WHEN_ROOM_SUPPORTS_MOBILE_KEY"></ad-radio-dir>
+        </div>
+        <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.room_ready_email_mobile_app_call_to_action" label="{{ 'MOBILE_APP_CALL_ACTION' | translate}}" placeholder=""></ad-textarea>
+        <ad-form-sub-title title="INCLUDE_BANNERS"></ad-form-sub-title>
+        <ad-toggle-button is-checked="data.room_ready_email_ios_banner_include" label="{{'APP_STORE'| translate}}" div-class="full-width" is-disabled="!data.ios_app_enabled"></ad-toggle-button>
+        <ad-toggle-button is-checked="data.room_ready_email_android_banner_include" label="{{'GOOGLE_PLAY'| translate}}" div-class="full-width" is-disabled="!data.android_app_enabled"></ad-toggle-button>
+        <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.room_ready_email_bottom_text" label="{{ 'TEXT_2' | translate}}" placeholder=""></ad-textarea>
+    </fieldset>
+</ad-common-parts-in-form-dir>
