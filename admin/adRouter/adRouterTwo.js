@@ -526,6 +526,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         url: '/backOfficeInterfaces'
     });
 
+    $stateProvider.state('admin.scInterfaces', {
+        templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+        controller: 'ADInterfaceSubMenuCtrl',
+        url: '/backOfficeInterfaces'
+    });
+
     $stateProvider.state('admin.revenueManagementSystemGroup', {
         templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
         controller: 'ADInterfaceSubMenuCtrl',

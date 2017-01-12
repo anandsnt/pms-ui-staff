@@ -62,5 +62,6 @@
 	"SYNC_HISTORICAL_DATA": "Synchronize Historical Data",
 	"CONFIGURE": "Configure",
 	"CONFIGURATION": "Configuration",
-	"API_CONFIGURATION_PREFIX": "API Access"
+	"API_CONFIGURATION_PREFIX": "API Access",
+	"VENDOR_ID": "Vendor ID"
 
