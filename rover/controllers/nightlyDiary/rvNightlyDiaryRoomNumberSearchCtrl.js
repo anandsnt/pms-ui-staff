@@ -23,7 +23,6 @@ angular.module('sntRover')
                 $scope.$emit('hideLoader');
                 // $scope.diaryData is defined in (parent controller)rvNightlyDiaryController
                 $scope.diaryData.roomNumberSearchResults = data.rooms;
-                $rootScope.$broadcast('REFRESH_ROOM_SEARCH_RESULT');
                 $scope.diaryData.hasOverlay = true;
             };
 

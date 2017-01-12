@@ -648,4 +648,15 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
             }
         }
     });
+
+    $stateProvider.state('admin.zestWebRoomReadyEmailSetup', {
+        templateUrl: '/assets/partials/zestSetup/adZestWebRoomReadyEmailSetup.html',
+        controller: 'ADZestWebRoomReadyEmailSetupCtrl',
+        url: '/zestWebRoomReadyEmailSetup',
+        resolve: {
+            data: function(ADZestWebRoomReadyEmailSetupSrv) {
+                return ADZestWebRoomReadyEmailSetupSrv.getRoomReayEmailSettings();
+            }
+        }
+    });
 });

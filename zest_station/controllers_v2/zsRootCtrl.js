@@ -595,6 +595,14 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.$digest();
         });
 
+        var reconnectToWebSocket = function() {
+            console.log(':: attempting websocket re-connect ::');
+            var socketReady = $scope.socketOperator.returnWebSocketObject().readyState === 1;
+
+            if (!socketReady) {
+                $scope.connectToWebSocket();
+            }
+        };
 
 		/** ******************************************************************************
 		 *  User activity timer
@@ -617,6 +625,14 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.zestStationData.refreshStationTimer = refreshStationTimer;
 
                 $scope.runDigestCycle();
+            };
+
+            // return true/false if user is in the process of dispensing key
+            // -CICO-36896- if user is dispensing key, the API may take some time depending
+            // on network / key-server conditions, we will rely on the API timeout to fail out
+            // if taking too long
+            var isDispensingKey = function() {
+                return $scope.zestStationData.makingKeyInProgress;
             };
 
             function increment() {
@@ -658,15 +674,22 @@ sntZestStation.controller('zsRootCtrl', [
                     getWorkstationsAtTime = 120;
                     $scope.zestStationData.timeDebugger = 'false';
                 }
+
                 if (workstationTimer >= getWorkstationsAtTime) {
                     getAdminWorkStations(); // fetch workstations with latest status details
+                    if ($scope.inChromeApp) {
+                        reconnectToWebSocket();// if disconnected, will attempt to re-connect to the websocket
+                    }
                     workstationTimer = 0;
                 }
-				// the user inactivity actions need not be done when user in 
-				// home screen or in admin screen or in OOS screen
+
+				// the user inactivity actions do Not need be done when user is in 
+				// home screen, admin screen, or OOS screen
 				// include the states, which don't need the timeout to be handled 
 				// in the below condition
-                if (idleTimerEnabled === 'true' && !(currentState === 'zest_station.admin' || currentState === 'zest_station.home' || currentState === 'zest_station.outOfService')) {
+                var ignoreTimeoutOnStates = ['zest_station.admin', 'zest_station.home', 'zest_station.outOfService'];
+
+                if (idleTimerEnabled === 'true' && !(ignoreTimeoutOnStates.indexOf(currentState) !== -1) || isDispensingKey()) {// see isDispensingKey() comments
                     userInActivityTimeInSeconds = userInActivityTimeInSeconds + 1;
 					// when user activity is not recorded for more than idle_timer.prompt
 					// time set in admin, display inactivity popup
@@ -674,6 +697,7 @@ sntZestStation.controller('zsRootCtrl', [
                         if (currentState === 'zest_station.checkInSignature' || currentState === 'zest_station.checkInCardSwipe') {
                             $scope.$broadcast('USER_ACTIVITY_TIMEOUT');
                         } else {
+                            // opens timeout popup w/ ng-class/css
                             $scope.zestStationData.timeOut = true;
                         }
                         $scope.runDigestCycle();
@@ -865,15 +889,42 @@ sntZestStation.controller('zsRootCtrl', [
 
         var socketOpenedFailed = function() {
             console.info('Websocket:-> socket connection failed');
+            $scope.zestStationData.stationHandlerConnectedStatus = 'Not-Connected';
+            $scope.runDigestCycle();
             $scope.$broadcast('SOCKET_FAILED');
         };
+
         var socketOpenedSuccess = function() {
             console.info('Websocket:-> socket connected');
+            $scope.zestStationData.stationHandlerConnectedStatus = 'Connected';
+            $scope.runDigestCycle();
+            
             $scope.$broadcast('SOCKET_CONNECTED');
         };
 
+        $scope.connectToWebSocket = function() {
+            if ($scope.zestStationData.stationHandlerConnectedStatus === 'Connecting...') {
+                // if already connecting, do nothing (ie. if user double-clicks the refresh button, just handle once)
+                return;
+            }
+            if ($scope.socketOperator) {
+                // if socketOperator is already defined, it may have an open connection, close that first before reconnect
+                $scope.socketOperator.closeWebSocket();
+            }
+            $timeout(function() {
+                // show user activity 'connecting..' on admin screen
+                $scope.zestStationData.stationHandlerConnectedStatus = 'Connecting...';
+                $scope.runDigestCycle();
+            }, 75);
+
+            $timeout(function() {
+                // give some time for old socket to close, show activity of re-connecting and visible UI transition to 'connected' status
+                    $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
+            }, 400);
+        };
+
         $scope.$on('CONNECT_WEBSOCKET', function() {
-            $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
+            $scope.connectToWebSocket();
         });
 
         $scope.$on('EJECT_KEYCARD', function() {
@@ -1242,6 +1293,7 @@ sntZestStation.controller('zsRootCtrl', [
             $('body').css('display', 'none'); // this will hide contents until svg logos are loaded
 			// call Zest station settings API
             $scope.zestStationData = zestStationSettings;
+            $scope.zestStationData.makingKeyInProgress = false;
             $scope.zestStationData.demoModeEnabled = 'false'; // demo mode for hitech, only used in snt-theme
             $scope.zestStationData.isAdminFirstLogin = true;
 			// $scope.zestStationData.checkin_screen.authentication_settings.departure_date = true;//left from debuggin?

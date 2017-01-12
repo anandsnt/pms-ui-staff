@@ -29,13 +29,13 @@ const getPrevPageButtonStatus = function(state) {
 */
 const getClassForRootDiv = function(state) {
     if (getNextPageButtonStatus(state) && getPrevPageButtonStatus(state)) {
-        return 'grid-content scrollable dual-pagination';
+        return 'grid-content scrollable dual-pagination scroll-vertical';
     } else if (getPrevPageButtonStatus(state)) {
-        return 'grid-content scrollable top-pagination';
+        return 'grid-content scrollable top-pagination scroll-vertical';
     } else if (getNextPageButtonStatus(state)) {
-        return 'grid-content scrollable bottom-pagination';
+        return 'grid-content scrollable bottom-pagination scroll-vertical';
     }
-    return 'grid-content scrollable';
+    return 'grid-content scrollable scroll-vertical';
 };
 /*
  * utility method to find index of room
