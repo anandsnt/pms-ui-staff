@@ -105,10 +105,13 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
         var onBackButtonClicked = function() {
 
-            var reservations = zsCheckinSrv.getCheckInReservations();
+            var reservations = zsCheckinSrv.getCheckInReservations(),
+                collectNationalityEnabled = $scope.zestStationData.check_in_collect_nationality,
+                collectNationalityAfterDetails = $scope.zestStationData.collect_nationality_after_details;
             // on-back from Reservation Details (if collect nationality enabled+ not after details)
             // 
-            if ($scope.zestStationData.check_in_collect_nationality && !$scope.zestStationData.collect_nationality_after_details) {
+
+            if (collectNationalityEnabled && !collectNationalityAfterDetails) {
                 var collectNationalityParams = {
                     'guestId': $scope.selectedReservation.guest_details[0].id,
                     'first_name': $scope.selectedReservation.guest_details[0].first_name

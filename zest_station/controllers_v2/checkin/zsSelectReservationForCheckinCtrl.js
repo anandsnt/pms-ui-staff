@@ -24,7 +24,9 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
 
             $scope.$emit('showLoader');
 
-            var selectedReservation = [];
+            var selectedReservation = [],
+                collectNationalityEnabled = $scope.zestStationData.check_in_collect_nationality,
+                collectNationalityAfterDetails = $scope.zestStationData.collect_nationality_after_details;
 
             selectedReservation.push(reservation);
             zsCheckinSrv.setSelectedCheckInReservation(selectedReservation);
@@ -32,7 +34,7 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
                 return guest_detail.is_primary === true;
             });
 
-            if ($scope.zestStationData.check_in_collect_nationality && !$scope.zestStationData.collect_nationality_after_details) {
+            if (collectNationalityEnabled && !collectNationalityAfterDetails) {
                 $state.go('zest_station.collectNationality', {
                     'guestId': primaryGuest.id,
                     'first_name': primaryGuest.first_name

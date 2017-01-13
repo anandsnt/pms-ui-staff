@@ -1330,6 +1330,8 @@ sntZestStation.controller('zsRootCtrl', [
             } else {
                 $scope.zestStationData.kioskOutOfOrderTreshold = parseInt($scope.zestStationData.kiosk_out_of_order_treshold_value);
             }
+            // CICO-36953 - moves nationality collection to after res. details, using this flag to make optional
+            // and may move to an admin in a future story 
             $scope.zestStationData.collect_nationality_after_details = false;
             $scope.zestStationData.consecutiveKeyFailure = 0;
         }());
