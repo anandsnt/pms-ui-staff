@@ -240,7 +240,8 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				that.showRoomTypeAvailable($scope.availabilityDetails);
 			} else if ($scope.availabilityDetails.availability_status === "not_available") {
 				if (hasPermissionToOverBookRoomType()) {
-					$scope.showRoomAvailable();
+                    //CICO-36733
+                    $scope.showOverBookingAlertForStayExtension();
 				}
 				else {
 					that.showRoomNotAvailable();
@@ -802,6 +803,26 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 			$scope.refreshMyScroller();
 		});
+
+        /**
+         * Shows the overbooking alert while extending the stay
+         */
+        $scope.showOverBookingAlertForStayExtension = function() {
+            ngDialog.open({
+                template: '/assets/partials/reservation/alerts/overBookingAlertStayExtension.html',
+                className: '',
+                closeByDocument: false,
+                scope: $scope
+            });
+        };
+
+        /**
+         * Proceed to overbooking while closing the overbooking alert
+         */
+        $scope.proceedToOverBooking = function() {
+            $scope.showRoomAvailable();
+            $scope.closeDialog();
+        };
 
 		this.initialise();
 
