@@ -266,6 +266,24 @@ var GlobalZestStationApp = function() {
     };
 
 
+    this.toggleNoCheckIns = function() {
+        var el = angular.element('#header');
+
+        if (el) {
+            var enabled = el.scope().$parent.zestStationData.noCheckInsDebugger;
+
+            if (enabled === 'true') {
+                angular.element('#header').scope().$parent.zestStationData.noCheckInsDebugger = 'false';
+            } else {
+                angular.element('#header').scope().$parent.zestStationData.noCheckInsDebugger = 'true';
+            }
+            angular.element('#header').scope()
+                                      .$apply();
+
+        }
+    };
+
+
 };
 
 zestSntApp = new GlobalZestStationApp();

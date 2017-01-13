@@ -51,7 +51,9 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 		 */
         var afterGuestCheckinCallback = function(response) {
 			// if email is valid and is not blacklisted
-            var haveValidGuestEmail = checkIfEmailIsBlackListedOrValid();
+            var haveValidGuestEmail = checkIfEmailIsBlackListedOrValid(),
+                collectNationalityEnabled = $scope.zestStationData.check_in_collect_nationality,
+                collectNationalityAfterDetails = $scope.zestStationData.collect_nationality_after_details;
 
             console.warn('afterGuestCheckinCallback :: current state params: ', $stateParams);
             var stateParams = {
@@ -62,10 +64,23 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
             };
 
             console.info('haveValidGuestEmail: ', haveValidGuestEmail);
-            if (haveValidGuestEmail) {
+
+
+            // if collectiing nationality after email, but email is already valid
+            if (collectNationalityEnabled && collectNationalityAfterDetails && haveValidGuestEmail) {
+                var collectNationalityParams = {
+                    'guest_id': $stateParams.guest_id,
+                    'first_name': $stateParams.first_name
+                };
+
+                $state.go('zest_station.collectNationality', collectNationalityParams);
+
+            } else if (haveValidGuestEmail) {
                 stateParams.email = $stateParams.email;
                 $state.go('zest_station.checkinKeyDispense', stateParams);
+
             } else {
+                // if email is invalid, collect email
                 console.warn('to email collection: ', stateParams);
                 $state.go('zest_station.checkInEmailCollection', stateParams);
             }
@@ -89,7 +104,13 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
                 successCallBack: afterGuestCheckinCallback
             };
 
-            $scope.callAPI(zsCheckinSrv.checkInGuest, options);
+
+            if ($scope.zestStationData.noCheckInsDebugger === 'true') {
+                console.log('skipping checkin guest, no-check-ins debugging is ON');
+                afterGuestCheckinCallback({'status': 'success'});
+            } else {
+                $scope.callAPI(zsCheckinSrv.checkInGuest, options); 
+            }
         };
 
 

@@ -112,10 +112,41 @@ this.chromeExtensionListener = function(onMessageCallback, chromeAppId, fetchQRC
                    // *demo mode does not encode keys, only shows success flow
                 zestSntApp.toggleDemoModeOnOff();
 
+            } else if (passedDataObject.noCheckIns) {
+                   // pass toggle argument to station app, to turn on/off No-Check-Ins Mode, 
+                   // *this will allow a user to re-use the same check-in, by simulating successful check-in
+                   // and not actually checking in the reservation.
+                   // 
+                   // *Will Not be able to go through check-in with this ON then onto pickup
+                   // -since they wont actually be checked-in.
+                zestSntApp.toggleNoCheckIns();
+
             }
 
 
         }, false);
+        /*
+            listen for Hotkey events to work with chrome extension, to fire off the above events
+         */
+        function doc_keyDown(e) {
+            // Hotkeys!
+            // this would listen for the alt key + some other key to fire an event, in this case to tell our chrome extension
+            // to run one of its methods
+            // 
+            if (e.altKey && e.keyCode === 69) {// E
+                zestSntApp.toggleEditorMode();
+            } else if (e.altKey && e.keyCode === 84) {// T
+                zestSntApp.toggleLanguageTags();
+            } else if (e.altKey && e.keyCode === 67) {// C
+                zestSntApp.toggleNoCheckIns();
+            } else if (e.altKey && e.keyCode === 68) {// D
+                zestSntApp.toggleDemoModeOnOff();
+            }
+
+        }
+        document.addEventListener('keydown', doc_keyDown, false);// listen for hotkeys to work with chrome extension
+
+
     };
 
     try {

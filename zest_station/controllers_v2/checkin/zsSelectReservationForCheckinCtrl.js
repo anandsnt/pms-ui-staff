@@ -36,7 +36,7 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
 
             if (collectNationalityEnabled && !collectNationalityAfterDetails) {
                 $state.go('zest_station.collectNationality', {
-                    'guestId': primaryGuest.id,
+                    'guest_id': primaryGuest.id,
                     'first_name': primaryGuest.first_name
                 });
             } else {

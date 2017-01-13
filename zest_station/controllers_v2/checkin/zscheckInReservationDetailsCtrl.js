@@ -113,7 +113,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
             if (collectNationalityEnabled && !collectNationalityAfterDetails) {
                 var collectNationalityParams = {
-                    'guestId': $scope.selectedReservation.guest_details[0].id,
+                    'guest_id': $scope.selectedReservation.guest_details[0].id,
                     'first_name': $scope.selectedReservation.guest_details[0].first_name
                 };
 

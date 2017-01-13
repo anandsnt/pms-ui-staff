@@ -21,7 +21,7 @@ sntZestStation.config(['$stateProvider',
         });
 		// select nationality
         $stateProvider.state('zest_station.collectNationality', {
-            url: '/collect_nationality/:guestId/:pickup_key_mode',
+            url: '/collect_nationality/:pickup_key_mode/:reservation_id/:room_no/:first_name/:guest_id/:email',
             templateUrl: '/assets/partials_v2/checkin/zsCollectNationality.html',
             controller: 'zsCollectNationalityCtrl',
             resolve: {

@@ -74,7 +74,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
         var goToNextScreenInFlow = function(stateParams) {
             console.log('next screen in flow: ');
             // if nationality collection enabled + After details requested, then show here, otherwise straight to Dispense keys
-            if ($scope.zestStationData.check_in_collect_nationality && !$scope.zestStationData.collect_nationality_after_details) {
+            if ($scope.zestStationData.check_in_collect_nationality && $scope.zestStationData.collect_nationality_after_details) {
                 console.log('next screen in flow: nationality');
                 $state.go('zest_station.collectNationality', stateParams);
             }

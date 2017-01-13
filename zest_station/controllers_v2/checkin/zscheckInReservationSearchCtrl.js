@@ -98,7 +98,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 
                     if (collectNationalityEnabled && !collectNationalityAfterDetails) {
                         $state.go('zest_station.collectNationality', {
-                            'guestId': primaryGuest.id
+                            'guest_id': primaryGuest.id
                         });
                     } else {
                         $state.go('zest_station.checkInReservationDetails');

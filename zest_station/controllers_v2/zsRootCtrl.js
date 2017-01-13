@@ -1332,7 +1332,7 @@ sntZestStation.controller('zsRootCtrl', [
             }
             // CICO-36953 - moves nationality collection to after res. details, using this flag to make optional
             // and may move to an admin in a future story 
-            $scope.zestStationData.collect_nationality_after_details = false;
+            $scope.zestStationData.collect_nationality_after_details = true;
             $scope.zestStationData.consecutiveKeyFailure = 0;
         }());
     }
