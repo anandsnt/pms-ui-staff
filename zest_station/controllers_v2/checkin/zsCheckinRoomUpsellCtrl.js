@@ -44,6 +44,10 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 			$scope.displayMode = 'ROOM_DETAILS';
 		};
 
+		var generalError = function(){
+			$scope.displayMode = 'ERROR_MODE';
+		};
+
 		$scope.buyRoomUpsell = function() {
 			var upsellSuccess = function() {
 				$state.go('zest_station.checkInReservationDetails');
@@ -59,8 +63,8 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 
 			$scope.callAPI(zsCheckinSrv.selectRoomUpgrade, {
 				params: params,
-				'successCallBack': upsellSuccess
-					//'failureCallBack': generalError
+				'successCallBack': upsellSuccess,
+				'failureCallBack': generalError
 			});
 		};
 		/**
@@ -83,8 +87,7 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 		 * the upgradable room type]
 		 * @return {[type]} [description]
 		 */
-		var fetchHotelRooms = function() {
-			var upsellRoomsTypes = JSON.parse($stateParams.upsell_rooms);
+		var fetchHotelRooms = function(upsellRoomsTypes) {
 
 			var fetchHotelRoomsSuccess = function(response) {
 				var roomUpgradesList = [];
@@ -118,8 +121,27 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 				params: {
 					reservation_id: $scope.selectedReservation.reservation_details.reservation_id
 				},
-				'successCallBack': fetchHotelRoomsSuccess
-					//'failureCallBack': generalError
+				'successCallBack': fetchHotelRoomsSuccess,
+			    'failureCallBack': generalError
+			});
+		};
+
+		/**
+		 * [fetchUpsellRoomTypes fetch upgradable room types]
+		 * @return {[type]} [description]
+		 */
+		var fetchUpsellRoomTypes = function() {
+			var fetchUpsellRoomTypeSuccess = function(response) {
+				fetchHotelRooms(response.upsell_mapping)
+			};
+
+
+			$scope.callAPI(zsCheckinSrv.fetchRoomUpsellDetails, {
+				params: {
+					reservation_id: $scope.selectedReservation.id
+				},
+				'successCallBack': fetchUpsellRoomTypeSuccess,
+				'failureCallBack': generalError
 			});
 		};
 
@@ -135,7 +157,7 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
 			$scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
 			$scope.selectedRoom = {};
-			fetchHotelRooms();
+			fetchUpsellRoomTypes();
 
 		}());
 

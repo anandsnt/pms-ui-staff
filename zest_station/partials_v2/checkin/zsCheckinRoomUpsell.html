@@ -21,4 +21,14 @@
         <button type="button" click-touch="skipRoomUpsell()">SKIP</button>
         <button type="button" click-touch="buyRoomUpsell()">BUY</button>
     </div>
+     <div id="content" class='add-guest-mode-content' ng-show="displayMode === 'ERROR_MODE'">
+        <h1>
+            ERROR
+        </h1>
+        <h2>
+           ERROR_SUB
+        </h2>
+        <button type="button" click-touch="skipRoomUpsell()">CONTINUE</button>
+    </div>
 </section>
+

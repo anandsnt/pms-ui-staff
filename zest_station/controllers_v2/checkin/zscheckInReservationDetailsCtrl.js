@@ -376,31 +376,6 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             }
         };
 
-        var fetchRoomUpsells = function() {
-            var fetRoomUpsellSuccess = function(response){
-            console.log(response);
-            var upsellRooms = response.upsell_mapping;
-            if (upsellRooms.length > 0) {
-                var roomUpsellStateParams = {
-                    'reservation_id': $scope.selectedReservation.id,
-                    'upsell_rooms': JSON.stringify(upsellRooms)
-                };
-                $state.go('zest_station.roomUpsell', roomUpsellStateParams);
-            } else {
-                initTermsPage();
-            }
-        };
-           
-
-            $scope.callAPI(zsCheckinSrv.fetchRoomUpsellDetails, {
-                params: {
-                    reservation_id : $scope.selectedReservation.id
-                },
-                'successCallBack': fetRoomUpsellSuccess,
-                'failureCallBack': generalError
-            });
-        };
-
         var continueRouting = function(settings) {
             var goToEarlyCheckin = fetchedEarlyCheckinSettingsCallback(settings);
             
@@ -408,13 +383,12 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             console.info('*goToEarlyCheckin: ', goToEarlyCheckin);
 
               // TO DELETE
-            var globalRoomUpsellOn = true,
-                zestStationRoomUpsellOn = true;
+            var zestStationRoomUpsellOn = true;
 
             if (goToEarlyCheckin) {
                 beginEarlyCheckin(settings);
-            } else if (globalRoomUpsellOn && zestStationRoomUpsellOn) {
-                fetchRoomUpsells();
+            } else if ($scope.selectedReservation.reservation_details.is_upsell_available  === 'true' && zestStationRoomUpsellOn) {
+                $state.go('zest_station.roomUpsell', { 'reservation_id': $scope.selectedReservation.id});
             } else {
                 // terms and condition skip is done in terms and conditions page
                 initTermsPage();
