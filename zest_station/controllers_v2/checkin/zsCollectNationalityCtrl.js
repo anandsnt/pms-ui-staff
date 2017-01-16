@@ -103,23 +103,18 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 			// check if this page was invoked through pickupkey flow
             // 
 
-            if ($stateParams.pickup_key_mode && !$scope.zestStationData.collect_nationality_after_details) {
+            if (!!$stateParams.pickup_key_mode) {
                 $state.go('zest_station.checkOutReservationSearch', {
                     'mode': 'PICKUP_KEY'
                 });
 
-            } else if (!$scope.zestStationData.collect_nationality_after_details && reservations.length > 0) {
+            } else if (reservations.length > 0) {
                 $state.go('zest_station.selectReservationForCheckIn');
 
-            } else if ($scope.zestStationData.collect_nationality_after_details) {
-                $state.go('zest_station.checkInEmailCollection', $stateParams);
-
-            } else if (!$scope.zestStationData.collect_nationality_after_details) {
+            } else {
                 $state.go('zest_station.checkInReservationSearch');
 
             } 
-
-
 
 
         });
@@ -140,14 +135,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
         $scope.saveNationality = function() {
 
             var successCallBack = function() {
-                var collectNationalityAfterDetails = $scope.zestStationData.collect_nationality_after_details;
-
-                if (!collectNationalityAfterDetails) {
-                    $state.go('zest_station.checkInReservationDetails', $stateParams);
-                } else {
-                    $state.go('zest_station.checkinKeyDispense', $stateParams);
-                }
-                
+                $state.go('zest_station.checkinKeyDispense', $stateParams);
 
             };
             var options = {
