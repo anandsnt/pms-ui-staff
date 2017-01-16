@@ -19,7 +19,7 @@
                             <span>{{selectedReservation.guest_details.length}} 
                                 <text editable-text="RESIDENTS"> {{'RESIDENTS' |translate}}</text>
                             </span>
-                            {{selectedReservation.stay_dates[0].room_type}}
+                            {{selectedReservation.reservation_details.room_type_description}}
                         </p>
                         <p ng-hide="{{selectedReservation.guest_details.length == 1}}">
                             <text editable-text="ADDTL_RESIDENTS"> {{'ADDTL_RESIDENTS' |translate}}</text>

@@ -8,9 +8,6 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 
 
 		var onBackButtonClicked = function() {
-
-			var reservations = zsCheckinSrv.getCheckInReservations();
-
 			if ($scope.displayMode === 'ROOM_DETAILS' && $scope.upsellRooms.length !== 1) {
 				$scope.displayMode = 'ROOM_UPSELL_LIST';
 			} else {
@@ -66,7 +63,11 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 					//'failureCallBack': generalError
 			});
 		};
-
+		/**
+		 * [isRoomReadyToAssign check if roomn is ready to be assigned]
+		 * @param  {obj}  room
+		 * @return {Boolean}      
+		 */
 		var isRoomReadyToAssign = function(room) {
 			if (room.room_status === "READY" && room.fo_status === "VACANT" && !room.is_preassigned) {
 				if (room.checkin_inspected_only === "true" && room.room_ready_status === "INSPECTED") {
@@ -77,7 +78,11 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 			}
 			return false;
 		};
-
+		/**
+		 * [fetchHotelRooms fectch the rooms in hotel and find which all rooms are available for
+		 * the upgradable room type]
+		 * @return {[type]} [description]
+		 */
 		var fetchHotelRooms = function() {
 			var upsellRoomsTypes = JSON.parse($stateParams.upsell_rooms);
 
