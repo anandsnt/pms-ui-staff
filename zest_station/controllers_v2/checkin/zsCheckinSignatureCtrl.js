@@ -54,6 +54,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 'guest_id': $stateParams.guest_id,
                 'reservation_id': $stateParams.reservation_id,
                 'room_no': $stateParams.room_no,
+                'email': $stateParams.email,
                 'first_name': $stateParams.first_name
             };
 
