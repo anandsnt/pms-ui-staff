@@ -376,16 +376,42 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             }
         };
 
+        var fetchRoomUpsells = function() {
+            var upsellRooms = [];
+            //To delete
+            upsellRooms = [{
+                'id': 2,
+                'room_name': 'Room 1'
+            }, {
+                'id': 3,
+                'room_name': 'Room 2'
+            }];
+            if (upsellRooms.length > 0) {
+                var roomUpsellStateParams = {
+                    'reservation_id': $scope.selectedReservation.id,
+                    'upsell_rooms': JSON.stringify(upsellRooms)
+                };
+
+                $state.go('zest_station.roomUpsell', roomUpsellStateParams);
+            } else {
+                initTermsPage();
+            }
+        };
+
         var continueRouting = function(settings) {
             var goToEarlyCheckin = fetchedEarlyCheckinSettingsCallback(settings);
             
             console.info(': continueRouting :', settings);
             console.info('*goToEarlyCheckin: ', goToEarlyCheckin);
 
+              // TO DELETE
+            var globalRoomUpsellOn = true,
+                zestStationRoomUpsellOn = true;
 
             if (goToEarlyCheckin) {
                 beginEarlyCheckin(settings);
-
+            } else if (globalRoomUpsellOn && zestStationRoomUpsellOn) {
+                fetchRoomUpsells();
             } else {
                 // terms and condition skip is done in terms and conditions page
                 initTermsPage();

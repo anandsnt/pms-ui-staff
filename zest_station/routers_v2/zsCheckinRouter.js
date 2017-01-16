@@ -112,6 +112,13 @@ sntZestStation.config(['$stateProvider',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinEarly.html',
 			controller: 'zsCheckinEarlyCtrl'
 		});
+
+		// room upsells
+		$stateProvider.state('zest_station.roomUpsell', {
+			url: '/checkinEarly/:reservation_id/:upsell_rooms',
+			templateUrl: '/assets/partials_v2/checkin/zsCheckinRoomUpsell.html',
+			controller: 'zsCheckinRoomUpsellCtrl'
+		});
       	
 	}
 ]);

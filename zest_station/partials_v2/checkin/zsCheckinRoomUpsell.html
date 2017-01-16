@@ -1,0 +1,21 @@
+<!-- Content -->
+<section id="main" class="centered test" role="main" click-touch='resetTime()'>
+    <div id="content" class='add-guest-mode-content' ng-show="displayMode === 'ROOM_UPSELL_LIST'">
+        <h1>
+            <text editable-text="ADDTL_RESIDENTS"> ROOM UPGRADES</text>
+        </h1>
+        <ul id="selection" class="editable">
+            <li ng-repeat='room in upsellRooms track by $index'>
+                <span class="details">{{room.room_name}}</span>
+                <button type="button" class="button" click-touch='viewSelectedRoomDetails(room)'>View Details</button>
+            </li>
+        </ul>
+    </div>
+    <div id="content" class='add-guest-mode-content' ng-show="displayMode === 'ROOM_DETAILS'">
+        <h1>
+            {{selectedRoom.room_name}}
+        </h1>
+        <button type="button" click-touch="skipRoomUpsell()">SKIP</button>
+        <button type="button" click-touch="buyRoomUpsell()">BUY</button>
+    </div>
+</section>
