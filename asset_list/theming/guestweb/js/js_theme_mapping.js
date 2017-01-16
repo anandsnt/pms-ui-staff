@@ -93,8 +93,8 @@ module.exports = {
             'guestweb_hive': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_pod_dc': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_snt': [ themeJsRoot + 'app_router_new_common.js'],
-            'guestweb_silver_stone': [ themeJsRoot + 'app_router_common.js']
+            'guestweb_silver_stone': [ themeJsRoot + 'app_router_common.js'],
+            'guestweb_koa_kea': [ themeJsRoot + 'app_router_common.js']
         };
     }
 };
-

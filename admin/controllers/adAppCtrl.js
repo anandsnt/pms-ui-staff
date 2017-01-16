@@ -1,5 +1,5 @@
-admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate', '$timeout', 'adminDashboardConfigData', 'ngDialog',
-	function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate, $timeout,  adminDashboardConfigData, ngDialog) {
+admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate', '$timeout', 'adminDashboardConfigData',
+	function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate, $timeout,  adminDashboardConfigData) {
 
 		// hide the loading text that is been shown when entering Admin
 		$( ".loading-container" ).hide();
@@ -666,14 +666,4 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 	      refreshScroll(MENU_SCROLLER, reset);
 	    };
 
-        $rootScope.showTimeoutError = function() {
-            $scope.$emit('hideLoader');
-            ngDialog.open({
-                template: '/assets/partials/errorPopup/rvTimeoutError.html',
-                className: 'ngdialog-theme-default1 modal-theme1',
-                controller: 'ADTimeoutErrorCtrl',
-                closeByDocument: false,
-                scope: $scope
-            });
-        };
 }]);
