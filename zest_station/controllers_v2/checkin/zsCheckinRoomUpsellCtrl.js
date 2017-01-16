@@ -19,7 +19,7 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 		};
 
 		var navigateToTermsPage = function() {
-			
+
 			var stateParams = {
 				'guest_id': $scope.selectedReservation.guest_details[0].id,
 				'reservation_id': $scope.selectedReservation.reservation_details.reservation_id,
@@ -42,17 +42,80 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 			navigateToTermsPage();
 		};
 
+		$scope.viewSelectedRoomDetails = function(selectedRoom) {
+			$scope.selectedRoom = selectedRoom;
+			$scope.displayMode = 'ROOM_DETAILS';
+		};
+
 		$scope.buyRoomUpsell = function() {
 			var upsellSuccess = function() {
 				$state.go('zest_station.checkInReservationDetails');
 			};
 
-			upsellSuccess();
+			var params = {
+				reservation_id: $scope.selectedReservation.reservation_details.reservation_id,
+				upsell_amount_id: parseInt($scope.selectedRoom.upsell_amount_id, 10),
+				room_no: $scope.selectedRoom.upgrade_room_number,
+				upgrade_room_type_id: $scope.selectedRoom.upgrade_room_type_id,
+				is_preassigned: $scope.selectedRoom.is_preassigned
+			};
+
+			$scope.callAPI(zsCheckinSrv.selectRoomUpgrade, {
+				params: params,
+				'successCallBack': upsellSuccess
+					//'failureCallBack': generalError
+			});
 		};
 
-		$scope.viewSelectedRoomDetails = function(selectedRoom) {
-			$scope.selectedRoom = selectedRoom;
-			$scope.displayMode = 'ROOM_DETAILS';
+		var isRoomReadyToAssign = function(room) {
+			if (room.room_status === "READY" && room.fo_status === "VACANT" && !room.is_preassigned) {
+				if (room.checkin_inspected_only === "true" && room.room_ready_status === "INSPECTED") {
+					return true;
+				} else if (room.checkin_inspected_only === "false") {
+					return true;
+				}
+			}
+			return false;
+		};
+
+		var fetchHotelRooms = function() {
+			var upsellRoomsTypes = JSON.parse($stateParams.upsell_rooms);
+
+			var fetchHotelRoomsSuccess = function(response) {
+				var roomUpgradesList = [];
+
+				_.each(upsellRoomsTypes, function(roomType) {
+					// select rooms of the available upgradable room type
+					var roomsInRoomType = _.where(response.rooms, {
+						"room_type_id": roomType.upgrade_room_type_id_int
+					});
+
+					// check if the room is ready to be assigned
+					var roomToUpgrade = _.filter(roomsInRoomType, isRoomReadyToAssign)[0];
+
+					if (!_.isUndefined(roomToUpgrade)) {
+						roomType.upgrade_room_number = roomToUpgrade.room_number;
+						roomType.donot_move_room = roomToUpgrade.donot_move_room;
+						roomUpgradesList.push(roomType);
+					}
+				});
+				$scope.upsellRooms = roomUpgradesList;
+
+				if ($scope.upsellRooms.length === 1) {
+					$scope.selectedRoom = $scope.upsellRooms[0];
+					$scope.displayMode = 'ROOM_DETAILS';
+				} else {
+					$scope.displayMode = 'ROOM_UPSELL_LIST';
+				}
+			};
+
+			$scope.callAPI(zsCheckinSrv.fethHotelRooms, {
+				params: {
+					reservation_id: $scope.selectedReservation.reservation_details.reservation_id
+				},
+				'successCallBack': fetchHotelRoomsSuccess
+					//'failureCallBack': generalError
+			});
 		};
 
 		/**
@@ -66,16 +129,9 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 			// back button action
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
 			$scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
-
-			$scope.upsellRooms = JSON.parse($stateParams.upsell_rooms);
 			$scope.selectedRoom = {};
+			fetchHotelRooms();
 
-			if ($scope.upsellRooms.length === 1) {
-				$scope.selectedRoom = $scope.upsellRooms[0];
-				$scope.displayMode = 'ROOM_DETAILS';
-			} else {
-				$scope.displayMode = 'ROOM_UPSELL_LIST';
-			}
 		}());
 
 	}

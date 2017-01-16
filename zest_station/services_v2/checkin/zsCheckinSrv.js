@@ -325,7 +325,19 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             }, function(data) {
                 deferred.reject(data);
             });
-                return deferred.promise;
+            return deferred.promise;
+        };
+
+        this.fethHotelRooms = function(params){
+            var deferred = $q.defer();
+            var url =  ' /staff/rooms/get_rooms';
+
+            zsBaseWebSrv2.postJSON(url,params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
         };
 
         this.selectRoomUpgrade = function(param) {
