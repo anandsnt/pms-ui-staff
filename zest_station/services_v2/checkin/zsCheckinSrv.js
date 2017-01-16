@@ -315,5 +315,30 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+
+        this.fetchRoomUpsellDetails = function(param) {
+            var deferred = $q.defer();
+            var url =  '/staff/reservations/upgrade_room_type_upsell_options.json';
+
+            zsBaseWebSrv2.getJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+                return deferred.promise;
+        };
+
+        this.selectRoomUpgrade = function(param) {
+            var deferred = $q.defer();
+            var url =  '/staff/reservations/upgrade_room.json';
+
+            zsBaseWebSrv2.postJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+                return deferred.promise;
+        };
+
     }
 ]);

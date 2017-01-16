@@ -377,25 +377,28 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         };
 
         var fetchRoomUpsells = function() {
-            var upsellRooms = [];
-            //To delete
-            upsellRooms = [{
-                'id': 2,
-                'room_name': 'Room 1'
-            }, {
-                'id': 3,
-                'room_name': 'Room 2'
-            }];
+            var fetRoomUpsellSuccess = function(response){
+            console.log(response);
+            var upsellRooms = response.upsell_mapping;
             if (upsellRooms.length > 0) {
                 var roomUpsellStateParams = {
                     'reservation_id': $scope.selectedReservation.id,
                     'upsell_rooms': JSON.stringify(upsellRooms)
                 };
-
                 $state.go('zest_station.roomUpsell', roomUpsellStateParams);
             } else {
                 initTermsPage();
             }
+        };
+           
+
+            $scope.callAPI(zsCheckinSrv.fetchRoomUpsellDetails, {
+                params: {
+                    reservation_id : $scope.selectedReservation.id
+                },
+                'successCallBack': fetRoomUpsellSuccess,
+                'failureCallBack': generalError
+            });
         };
 
         var continueRouting = function(settings) {

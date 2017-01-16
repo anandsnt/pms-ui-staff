@@ -6,15 +6,18 @@
         </h1>
         <ul id="selection" class="editable">
             <li ng-repeat='room in upsellRooms track by $index'>
-                <span class="details">{{room.room_name}}</span>
+                <span class="details">{{room.upgrade_room_type_name}}</span>
                 <button type="button" class="button" click-touch='viewSelectedRoomDetails(room)'>View Details</button>
             </li>
         </ul>
     </div>
     <div id="content" class='add-guest-mode-content' ng-show="displayMode === 'ROOM_DETAILS'">
         <h1>
-            {{selectedRoom.room_name}}
+            {{selectedRoom.upgrade_room_type_name}}
         </h1>
+        <h2>
+            {{selectedRoom.upsell_amount}}
+        </h2>
         <button type="button" click-touch="skipRoomUpsell()">SKIP</button>
         <button type="button" click-touch="buyRoomUpsell()">BUY</button>
     </div>
