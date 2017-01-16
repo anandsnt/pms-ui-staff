@@ -93,16 +93,8 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
                         return guest_detail.is_primary === true;
                     });
 
-                    var collectNationalityEnabled = $scope.zestStationData.check_in_collect_nationality,
-                        collectNationalityAfterDetails = $scope.zestStationData.collect_nationality_after_details;
-
-                    if (collectNationalityEnabled && !collectNationalityAfterDetails) {
-                        $state.go('zest_station.collectNationality', {
-                            'guest_id': primaryGuest.id
-                        });
-                    } else {
-                        $state.go('zest_station.checkInReservationDetails');
-                    }
+                    $state.go('zest_station.checkInReservationDetails');
+                    
                 } else {
                     zsCheckinSrv.setCheckInReservations(data.results);
                     $state.go('zest_station.selectReservationForCheckIn');

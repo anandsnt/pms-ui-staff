@@ -105,25 +105,9 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
         var onBackButtonClicked = function() {
 
-            var reservations = zsCheckinSrv.getCheckInReservations(),
-                collectNationalityEnabled = $scope.zestStationData.check_in_collect_nationality,
-                collectNationalityAfterDetails = $scope.zestStationData.collect_nationality_after_details;
-            // on-back from Reservation Details (if collect nationality enabled+ not after details)
-            // 
-
-            if (collectNationalityEnabled && !collectNationalityAfterDetails) {
-                var collectNationalityParams = {
-                    'guest_id': $scope.selectedReservation.guest_details[0].id,
-                    'first_name': $scope.selectedReservation.guest_details[0].first_name
-                };
-
-                if ($stateParams.pickup_key_mode) {
-                    collectNationalityParams.pickup_key_mode = 'manual';
-                }
-                $state.go('zest_station.collectNationality', collectNationalityParams);
-            }
-            // check if this page was invoked through pickupkey flow
-            else if ($stateParams.pickup_key_mode) {
+            var reservations = zsCheckinSrv.getCheckInReservations();
+            
+            if ($stateParams.pickup_key_mode) {
                 $state.go('zest_station.checkOutReservationSearch', {
                     'mode': 'PICKUP_KEY'
                 });

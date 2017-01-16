@@ -47,8 +47,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
         var afterGuestCheckinCallback = function(response) {
             // if email is valid and is not blacklisted
             var haveValidGuestEmail = checkIfEmailIsBlackListedOrValid(),
-                collectNationalityEnabled = $scope.zestStationData.check_in_collect_nationality,
-                collectNationalityAfterDetails = $scope.zestStationData.collect_nationality_after_details;
+                collectNationalityEnabled = $scope.zestStationData.check_in_collect_nationality;
 
             console.warn('afterGuestCheckinCallback :: current state params: ', $stateParams);
             var stateParams = {
@@ -61,7 +60,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
             console.info('haveValidGuestEmail: ', haveValidGuestEmail);
 
             // if collectiing nationality after email, but email is already valid
-            if (collectNationalityEnabled && collectNationalityAfterDetails && haveValidGuestEmail) {
+            if (collectNationalityEnabled && haveValidGuestEmail) {
                 $state.go('zest_station.collectNationality', stateParams);
 
             } else if (haveValidGuestEmail) {
