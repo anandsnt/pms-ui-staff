@@ -1295,6 +1295,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData = zestStationSettings;
             $scope.zestStationData.makingKeyInProgress = false;
             $scope.zestStationData.demoModeEnabled = 'false'; // demo mode for hitech, only used in snt-theme
+            $scope.zestStationData.noCheckInsDebugger = 'false';
             $scope.zestStationData.isAdminFirstLogin = true;
 			// $scope.zestStationData.checkin_screen.authentication_settings.departure_date = true;//left from debuggin?
             setAUpIdleTimer();

@@ -33,12 +33,13 @@ this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
                 listening: true,
                 attempt: this.qrAttempt + 1
             };
+
             console.log('response from Datalogic: ', response);
             if (!response.qr_code) {
                 setTimeout(function() {
                     console.log('listening for QR code scan...');
                     // if (!that.cancelNextMsg) {
-                        chrome.runtime.sendMessage(chromeAppId, msg, that.listenerForQRCodeResponse);
+                    chrome.runtime.sendMessage(chromeAppId, msg, that.listenerForQRCodeResponse);
                     // } else {
                         // console.log('should stop sending messages to chrome app now :)');
                     // }
@@ -133,14 +134,16 @@ this.chromeExtensionListener = function(onMessageCallback, chromeAppId, fetchQRC
             // this would listen for the alt key + some other key to fire an event, in this case to tell our chrome extension
             // to run one of its methods
             // 
-            if (e.altKey && e.keyCode === 69) {// E
+            if (e.altKey && e.keyCode === 69) {// E - Editor Mode
                 zestSntApp.toggleEditorMode();
-            } else if (e.altKey && e.keyCode === 84) {// T
+            } else if (e.altKey && e.keyCode === 84) {// T - Toggle Tags
                 zestSntApp.toggleLanguageTags();
-            } else if (e.altKey && e.keyCode === 67) {// C
+            } else if (e.altKey && e.keyCode === 67) {// C - No-Check-in
                 zestSntApp.toggleNoCheckIns();
-            } else if (e.altKey && e.keyCode === 68) {// D
+            } else if (e.altKey && e.keyCode === 68) {// D - Demo mode
                 zestSntApp.toggleDemoModeOnOff();
+            } else if (e.altKey && e.keyCode === 73) {// I - info
+                zestSntApp.debugTimers(true);
             }
 
         }

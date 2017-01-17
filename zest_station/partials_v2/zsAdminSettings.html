@@ -125,6 +125,17 @@
                     </div>
                 </div>
 
+                <div class="entry with-label" ng-show="showDebugModeOption">
+                    <label>Skip Check-In</label>
+                    <label class='admin-label-description'>Allows Station to simulate a successful Check-In (so you can re-use your reservation)</label>
+                    <div class="entry select">
+                        <select ng-model="zestStationData.noCheckInsDebugger">
+                            <option value="true">Enabled</option>
+                            <option value="false">Disabled</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="entry with-label">
                     <label>Text Editor Mode</label>
                     <label class='admin-label-description'>Allows Station user to edit text by double-clicking current text. *Works best via Internet Browser</label>
@@ -142,6 +153,9 @@
             <button type="button" class="button" touch-press='cancelAdminSettings()'>Cancel</button>
             <button type="button" ng-disabled="!workstation.selected" ng-class="{'disabled-button':!workstation.selected}" class="button button-left-margin" touch-press='saveSettings()'>Save</button>
             <button type="button" class="button button-left-margin" touch-press='logOutApplication()'>Logout</button>
+
+            <button ng-show="showDebugModeOption" type="button" class="button button-left-margin" touch-press='toggleDiagnostics()'>Diagnostics</button>
+
         </div>
     </div>
     <div>

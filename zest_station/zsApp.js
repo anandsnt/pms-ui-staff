@@ -236,22 +236,8 @@ var GlobalZestStationApp = function() {
     this.showingTags = false;
 
     this.toggleEditorMode = function() {
-        var el = angular.element('#header');
+        that.toggleFun('editorModeEnabled', true);
 
-        if (el) {
-            var editorModeEnabled = el.scope().$parent.zestStationData.editorModeEnabled;
-
-            if (editorModeEnabled === 'true') {
-                angular.element('#header').scope().$parent.zestStationData.editorModeEnabled = 'false';
-                angular.element('body').scope().cls = {editor: 'false'};// alt to: // $('body').removeClass('editor-mode-border');
-            } else {
-                angular.element('#header').scope().$parent.zestStationData.editorModeEnabled = 'true';
-                angular.element('body').scope().cls = {editor: 'true'};
-            }
-            angular.element('#header').scope()
-                                      .$apply();
-
-        }
     };
 
 
@@ -267,15 +253,25 @@ var GlobalZestStationApp = function() {
 
 
     this.toggleNoCheckIns = function() {
+        that.toggleFun('noCheckInsDebugger');
+    };
+
+    this.toggleFun = function(prop, editor){
         var el = angular.element('#header');
 
         if (el) {
-            var enabled = el.scope().$parent.zestStationData.noCheckInsDebugger;
+            var enabled = el.scope().$parent.zestStationData[prop];
 
             if (enabled === 'true') {
-                angular.element('#header').scope().$parent.zestStationData.noCheckInsDebugger = 'false';
+                angular.element('#header').scope().$parent.zestStationData[prop] = 'false';
+                if (editor) {
+                    angular.element('body').scope().cls = {editor: 'false'};
+                }
             } else {
-                angular.element('#header').scope().$parent.zestStationData.noCheckInsDebugger = 'true';
+                angular.element('#header').scope().$parent.zestStationData[prop] = 'true';
+                if (editor) {
+                    angular.element('body').scope().cls = {editor: 'true'};
+                }
             }
             angular.element('#header').scope()
                                       .$apply();
