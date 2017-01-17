@@ -144,7 +144,7 @@
                             <em class="rate_roomtype_text">Available Rates</em>
                         </label>
                         <ul class="boxes sortable ui-sortable short-list" data-type="source" ng-model="singleAddon.availableRates" data-drop="true" style="overflow-y: scroll !important;" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:'.assigned-room-types'}">
-                            <li ng-repeat="rate in singleAddon.availableRates" data-drag="true" ng-model="singleAddon.availableRates" jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" class="non-assigned-room-types li-draggable" ng-click="toggleAvailableRate($index)" ng-class='{selected: state.selectedAvailableRate === $index, overlay : !!rate.based_on}'>
+                            <li ng-repeat="rate in singleAddon.availableRates" data-drag="true" ng-model="singleAddon.availableRates" jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" class="non-assigned-room-types li-draggable" ng-click="toggleAvailableRate($index)" ng-class='{selected: state.selectedAvailableRate === $index, overlay : rate.is_contract_rate}'>
                                 <span class="icons icon-handle"></span>
                                 <span class="icons icon-handle"></span> {{rate.name}}
                             </li>
