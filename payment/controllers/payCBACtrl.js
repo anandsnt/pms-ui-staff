@@ -8,6 +8,7 @@ angular.module('sntPay').controller('payCBACtrl',
                 },
                 onAddCardSuccess = function(cardDetails) {
                     var paymentData = sntCBAGatewaySrv.generateApiParams(cardDetails);
+
                     $scope.$emit(payEvntConst.CC_TOKEN_GENERATED, {
                         paymentData,
                         forceSaveRoutine: true
@@ -15,6 +16,8 @@ angular.module('sntPay').controller('payCBACtrl',
                 },
                 onAddCardFailure = function(err) {
                     var errorMessage = [err.RVErrorCode + " " + err.RVErrorDesc];
+
+                    $log.error(errorMessage);
                 },
                 onSubmitSuccess = function(response) {
                     sntCBAGatewaySrv.updateTransactionSuccess(
@@ -73,7 +76,7 @@ angular.module('sntPay').controller('payCBACtrl',
 
             // ----------- init -------------
             (() => {
-                console.log("CBA controller init");
+                $log.info("CBA controller init");
 
                 // Initiate Listeners
                 var listenerPayment = $scope.$on("INITIATE_CBA_PAYMENT", initiatePaymentProcess);
