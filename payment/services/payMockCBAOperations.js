@@ -46,7 +46,7 @@ var CBAMockOperation = function() {
         },
         getLastTransactionSuccessResponse = {
             'txn_id': '1',
-            'last_txn_success': () => Math.random() > 0.5 ? 0 : 1,
+            'last_txn_success': (() => Math.random() > 0.5 ? 0 : 1)(),
             'amount': '1.00',
             'tid': '12356',
             'transaction_date': '',
@@ -106,8 +106,9 @@ var CBAMockOperation = function() {
                 break;
             case 'getLastTransaction':
                 window.setTimeout(() => {
+                    options.successCallBack(getLastTransactionSuccessResponse);
                     Math.random() > 0.5 ? options.successCallBack(getLastTransactionSuccessResponse)
-                        : options.failureCallBack(getLastTransactionFailureResponse[parseInt(Math.random() * 100 % 4, 10)]);
+                        : options.failureCallBack(getLastTransactionFailureResponse[1]);
                 }, 2000);
                 break;
             default:

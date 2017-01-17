@@ -1,8 +1,8 @@
 sntRover.controller('RVdashboardController',
     ['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata',
-        '$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes',
+        '$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes', 'jsMappings',
         function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,
-                 $rootScope, $filter, $state, RVWorkstationSrv, roomTypes) {
+                 $rootScope, $filter, $state, RVWorkstationSrv, roomTypes, jsMappings) {
 
             // setting the heading of the screen
             $scope.heading = 'DASHBOARD_HEADING';
@@ -17,10 +17,18 @@ sntRover.controller('RVdashboardController',
             $scope.shouldShowQueuedRooms = true;
             BaseCtrl.call(this, $scope);
 
+            /**
+             * @returns {undefined} undefined
+             */
+            function doCBAPowerFailureCheck() {
+                jsMappings.loadPaymentMapping().then(function() {
+                    jsMappings.loadPaymentModule().then(function() {
+                        $scope.$emit('CBA_PAYMENT_POWER_FAILURE_CHECK');
+                    });
+                });
+            }
 
             var init = function() {
-
-
                 // setting the heading of the screen
                 $scope.heading = "DASHBOARD_HEADING";
                 $scope.userDetails = RVDashboardSrv.getUserDetails();
@@ -64,6 +72,10 @@ sntRover.controller('RVdashboardController',
 
                 if (!$rootScope.isWorkstationSet) {
                     setWorkStation();
+                }
+
+                if ($rootScope.paymentGateway === "CBA") {
+                    doCBAPowerFailureCheck();
                 }
 
                 // TODO: Add conditionally redirecting from API results
