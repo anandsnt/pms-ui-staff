@@ -175,7 +175,7 @@ angular.module('sntRover')
 
                     store.dispatch(dispatchData);
                 }
-                
+
             };
             /*
              * Cancel button click edit bar
@@ -213,7 +213,9 @@ angular.module('sntRover')
                 paginationData: $scope.diaryData.paginationData,
                 selectedReservationId: $scope.currentSelectedReservationId,
                 selectedRoomId: $scope.diaryData.selectedRoomId,
-                isFromStayCard: $stateParams.isFromStayCard
+                isFromStayCard: $stateParams.isFromStayCard,
+                currentSelectedReservation: $scope.currentSelectedReservation,
+                dateFormat: $rootScope.dateFormat
             };
             const store = configureStore(initialState);
             const {render} = ReactDOM;
@@ -240,7 +242,8 @@ angular.module('sntRover')
                     type: 'RESERVATION_SELECTED',
                     selectedReservationId: $scope.currentSelectedReservation.id,
                     reservationsList: $scope.diaryData.reservationsList.rooms,
-                    selectedRoomId: $scope.diaryData.selectedRoomId
+                    selectedRoomId: $scope.diaryData.selectedRoomId,
+                    currentSelectedReservation: $scope.currentSelectedReservation
                 };
 
                 store.dispatch(dispatchData);

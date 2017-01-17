@@ -194,6 +194,7 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
     reservation.numberOfNightsVisibleInGrid = positionAndDuration.numberOfNightsVisibleInGrid;
     reservation.duration = positionAndDuration.durationOfReservation;
     reservation.arrivalPosition = positionAndDuration.reservationPosition + "px";
+    reservation.arrivalPosition123 = positionAndDuration.reservationPosition ;
     reservation.departurePosition = (positionAndDuration.durationOfReservation + positionAndDuration.reservationPosition) + "px";
 
     let isReservationFuture = findIsReservationFuture(reservation, currentBusinessDate);
