@@ -695,9 +695,9 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.zestStationData.makingKeyInProgress = false;
                 }
 
-                var currentlyDispensingKey = isDispensingKey();
+                var currentlyDispensingKey = isDispensingKey();// see isDispensingKey() comments
 
-                if ( (idleTimerEnabled === 'true' && !inAnIgnoreState && !currentlyDispensingKey) ) {// see isDispensingKey() comments
+                if (idleTimerEnabled === 'true' && !inAnIgnoreState && !currentlyDispensingKey) {
                     userInActivityTimeInSeconds = userInActivityTimeInSeconds + 1;
 					// when user activity is not recorded for more than idle_timer.prompt
 					// time set in admin, display inactivity popup
