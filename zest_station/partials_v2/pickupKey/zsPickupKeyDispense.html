@@ -88,6 +88,9 @@
         <button ng-show="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(2)">
             <text editable-text="MAKE_KEY_TEXT_TWO"> {{'MAKE_KEY_TEXT_TWO' |translate}}</text>
         </button>
+        <button ng-hide="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="dispenseKey()">
+            <text editable-text="MAKE_KEY_TEXT_TWO"> {{'MAKE_KEY_TEXT_TWO' |translate}}</text>
+        </button>
     </div>
 </section>
 
@@ -106,7 +109,10 @@
         <div id="keys" ng-show="icmp">
             <div ng-include="icons.url.createkey_icmp"></div>
         </div>
-        <button ng-show="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="dispenseKey()">
+        <button ng-show="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(2)">
+            <text editable-text="MAKE_KEY_TEXT_TWO"> {{'MAKE_KEY_TEXT_TWO' |translate}}</text>
+        </button>
+        <button ng-hide="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="dispenseKey()">
             <text editable-text="MAKE_KEY_TEXT_TWO"> {{'MAKE_KEY_TEXT_TWO' |translate}}</text>
         </button>
     </div>
@@ -125,7 +131,7 @@
         <div id="room" ng-show="zestStationData.show_room_number">
             <span class="number">{{selectedReservation.room}}</span>
         </div>
-        <button type="button" class="button" click-touch="clickedOnCloseButton()" ng-style="doneButtonStyle">
+        <button type="button" class="button" click-touch="pickupKeyNextPageAction()" ng-style="doneButtonStyle">
             <text editable-text="DONE"> {{'DONE' |translate}}</text>
         </button>
     </div>
@@ -153,6 +159,19 @@
                     </h1>
                 </li>
                 <li class="break">
+                    <span>
+                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                    </span>
+                </li>
+                <li ng-if="zestStationData.pickup_key_reg_print === 'auto_print'"> 
+                    <button type="button" class="button option" click-touch="onKeyFailureGoToPrintPage()">
+                        <div ng-include="icons.url.keyboard"></div>
+                    </button>
+                    <h1>
+                        <text editable-text="CONTINUE"> {{'CONTINUE' |translate}}</text>
+                    </h1>
+                </li>
+                <li class="break" ng-if="zestStationData.pickup_key_reg_print === 'auto_print'">
                     <span>
                         <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
                     </span>

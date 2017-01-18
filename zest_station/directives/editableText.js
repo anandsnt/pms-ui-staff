@@ -47,7 +47,16 @@ sntZestStation.directive('editableText', [function() {
             var textEditor = function() {
                 // handle double-click
                 // 
-                var rootScope = element.scope().$parent.zestStationData;
+                var rootScope = element.scope().$parent.zestStationData,
+                    scope = element.scope().$parent,
+                    elType = element[0].parentElement.nodeName,
+                    isNavButton = element[0].parentElement.parentElement.nodeName === 'BUTTON';
+
+                if (_.isUndefined(rootScope)) {
+                    // then request came from popup or element from zsRoot.html, which is outside parent scope
+                    rootScope = element.scope().zestStationData;
+                    scope = element.scope();                    
+                }
 
                 if (rootScope.editorModeEnabled === 'true') {
                     // console.log('start editing : ', element);  
@@ -62,6 +71,19 @@ sntZestStation.directive('editableText', [function() {
                     var $inputField = $('<input class="editor-mode-cls"/>').val( oldText );
 
                     el.replaceWith( $inputField );
+                    if (elType === 'BUTTON' || isNavButton) {
+                        $($inputField).on('keydown', function(event) {
+                            if (event.keyCode === 32) {// Spacebar
+                                // when editing a button and user hits space key
+                                // the onclick/enter event gets fired
+                                // need to prevent that event but inject the value
+                                event.preventDefault();
+                                event.stopPropagation();
+
+                                $($inputField).val($($inputField).val() + ' ');
+                            }
+                        });
+                    }
 
                     var save = function() {
                         var newValueForText = $inputField.val();
@@ -79,7 +101,7 @@ sntZestStation.directive('editableText', [function() {
 
                         if (oldText !== newValueForText) {
                         // show saving-indicator for slow networks need to show that save in-progress
-                            element.scope().$parent.$emit('showLoader');
+                            scope.$emit('showLoader');
 
                         // If editing a Tag WHILE the tag was toggled ON, 
                         // need to still show that tag value until user toggles Tags back OFF
@@ -88,7 +110,7 @@ sntZestStation.directive('editableText', [function() {
                             if (oldText === tag) {
                                 keepShowingTag = true;
                             }
-                            element.scope().$parent.saveLanguageEditorChanges(tag, newValueForText, false, keepShowingTag);
+                            scope.saveLanguageEditorChanges(tag, newValueForText, false, keepShowingTag);
 
                         }
 

@@ -13,5 +13,12 @@ sntZestStation.config(['$stateProvider',
 			templateUrl: '/assets/partials_v2/pickupKey/zsPickupKeyDispense.html',
 			controller: 'zsPickupKeyDispenseCtrl'
 		});
+
+		// pickup key reg card print
+		$stateProvider.state('zest_station.pickUpKeyDispenseRegistrationCardPrint', {
+			url: '/pickUpKeyDispenseRegistrationCardPrint/:reservation_id/:key_created',
+			templateUrl: '/assets/partials_v2/pickupKey/zsPickupKeyRegistartionCardPrint.html',
+			controller: 'zsPickupKeyRegistartionCardPrintCtrl'
+		});
 	}
 ]);

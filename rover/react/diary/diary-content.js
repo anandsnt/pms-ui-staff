@@ -325,7 +325,8 @@ var DiaryContent = React.createClass({
 			__onResizeStart: self.__onResizeStart,
 			__onResizeEnd: self.__onResizeEnd,
 			__onGridScroll: self.__onGridScroll,
-			__onGridScrollEnd: self.__onGridScrollEnd
+			__onGridScrollEnd: self.__onGridScrollEnd,
+			reservatonFlow: state.reservatonFlow
 		}),
 		React.createElement( GridPanel, {
 			refs: 'grid',
