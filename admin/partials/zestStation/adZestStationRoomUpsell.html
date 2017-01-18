@@ -22,11 +22,11 @@
         <div class="entry full-width" ng-show="data.enforce_max_upsell_offered">
             <label translate>OFFER_LEVEL_MIX_INSTRUCTIONS</label>
             <span class="numeric-input-label" translate>TIER_2</span>
-            <input type="text" ng-model="data.upsell_compositions_in_percerntage.tier_2" placeholder="" class="numeric-input-field" ng-change="percentageChanged('tier2')">
+            <input type="text" ng-model="data.upsell_compositions_in_percerntage.tier_2" placeholder="" class="numeric-input-field" ng-change="percentageChanged('tier2')" maxlength="2">
         </div>
         <div class="entry full-width" ng-show="data.enforce_max_upsell_offered">
             <span class="numeric-input-label" translate>TIER_3</span>
-            <input type="text" ng-model="data.upsell_compositions_in_percerntage.tier_3" placeholder="" class="numeric-input-field" ng-change="percentageChanged('tier3')">
+            <input type="text" ng-model="data.upsell_compositions_in_percerntage.tier_3" placeholder="" class="numeric-input-field" ng-change="percentageChanged('tier3')" maxlength="2">
         </div>
         <div id="options" class="full-width entry">
             <br/>

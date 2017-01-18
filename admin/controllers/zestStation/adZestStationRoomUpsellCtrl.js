@@ -13,9 +13,9 @@ admin.controller('ADZestStationRoomUpsellCtrl', ['$scope', '$rootScope', '$state
             var isTier2Changed = type === 'tier2';
             var tier2Value = parseInt($scope.data.upsell_compositions_in_percerntage.tier_2);
             var tier3Value = parseInt($scope.data.upsell_compositions_in_percerntage.tier_3);
-            if (isTier2Changed && tier2Value < 100) {
+            if (isTier2Changed && !_.isNaN(tier2Value) && tier2Value < 100) {
                 $scope.data.upsell_compositions_in_percerntage.tier_3 = 100 - tier2Value;
-            } else if (tier3Value < 100) {
+            } else if (!isTier2Changed && !_.isNaN(tier3Value) && tier3Value < 100) {
                 $scope.data.upsell_compositions_in_percerntage.tier_2 = 100 - tier3Value;
             } else {
                 return;
