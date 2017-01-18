@@ -44,7 +44,7 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 			$scope.displayMode = 'ROOM_DETAILS';
 		};
 
-		var generalError = function(){
+		var generalError = function() {
 			$scope.displayMode = 'ERROR_MODE';
 		};
 
@@ -122,7 +122,7 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 					reservation_id: $scope.selectedReservation.reservation_details.reservation_id
 				},
 				'successCallBack': fetchHotelRoomsSuccess,
-			    'failureCallBack': generalError
+				'failureCallBack': generalError
 			});
 		};
 
@@ -132,7 +132,7 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 		 */
 		var fetchUpsellRoomTypes = function() {
 			var fetchUpsellRoomTypeSuccess = function(response) {
-				fetchHotelRooms(response.upsell_mapping)
+				fetchHotelRooms(response.upsell_mapping);
 			};
 
 
