@@ -40,15 +40,11 @@ admin.controller('ADZestStationRoomUpsellCtrl', ['$scope', 'ADZestStationSrv', '
             upsellData.maximum_room_upsell_offers = roomUpsellData.maximum_room_upsell_offers;
             upsellData.upsell_compositions_in_percerntage = roomUpsellData.upsell_compositions_in_percerntage;
             upsellData.room_upsell_style = roomUpsellData.room_upsell_style;
-
+            upsellData.hotel_room_upsell_on = roomUpsellData.hotel_room_upsell_on;
             $scope.data = upsellData;
-
-            $scope.data.hotel_upsell_is_on = true;
-
-            var maxUpsellPresent = 5;
-
+            var maxUpsellPresent =7;
             $scope.maxUpsellOptions = _.range(1, maxUpsellPresent + 1);
-            console.log($scope.maxUpsellOptions);
+            //console.log($scope.maxUpsellOptions);
         })();
     }
 ]);

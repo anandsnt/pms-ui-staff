@@ -1,7 +1,7 @@
 <ad-common-parts-in-form-dir on-save-button-click="saveUpsellData" header-caption="Upsell Rooms">
     <fieldset class="holder left">
         <ad-form-sub-title title="UPSELL_INSTRUCTIONS"></ad-form-sub-title>
-        <ad-toggle-button is-checked="data.offer_kiosk_room_upsell" label="{{'OFFER_ROOM_UPSELLS_TO_GUEST'| translate}}" div-class="full-width" is-disabled="!data.hotel_upsell_is_on"></ad-toggle-button>
+        <ad-toggle-button is-checked="data.offer_kiosk_room_upsell" label="{{'OFFER_ROOM_UPSELLS_TO_GUEST'| translate}}" div-class="full-width" is-disabled="!data.hotel_room_upsell_on"></ad-toggle-button>
         <div id="options" class="full-width entry">
             <label translate>DISPLAY_ROOM_UPSELL_OFFER_BY</label>
             <ad-radio-dir dir-model="data.room_upsell_options_order" dir-value="lower_price_to_higher" dir-label="LOWER_PRICE_TO_HIGHER"></ad-radio-dir>
