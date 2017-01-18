@@ -10,7 +10,7 @@
                     <button type="button" class="button blank" ng-click="closeDialog();">Close</button>
                 </div>
         </section>
-        <section ng-if="!ngDialogData.is_invalid_move">
+        <section ng-if="!ngDialogData.is_invalid_move && !showOverBookingAlert">
             <!-- Scenario 1: Room, Room Type, Rate & House is available  -->
             <section ng-if="ngDialogData.is_house_available && !!shouldAllowDateExtend && ngDialogData.is_assigned_room_available">
                 <strong class="h2 message">Stay Dates change possible</strong>
@@ -71,6 +71,13 @@
                     <button type="button" class="button blank" ng-click="closeDialog();">Close</button>
                 </div>
             </section>
+        </section>
+        <!-- Show this when the user have the overbook permission and room type is not available -->
+        <section ng-if="showOverBookingAlert">
+                <span class="notice error">Room Type not available, you are about to overbook the Room Type</span>
+                <div class="actions">
+                    <button type="button" class="button blank" ng-click="toggleOverBookingAlert();">Ok</button>
+                </div>
         </section>
     </form>
 </div>
