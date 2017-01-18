@@ -240,7 +240,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				that.showRoomTypeAvailable($scope.availabilityDetails);
 			} else if ($scope.availabilityDetails.availability_status === "not_available") {
 				if (hasPermissionToOverBookRoomType()) {
-                    //CICO-36733
+                    // CICO-36733
                     $scope.showOverBookingAlertForStayExtension();
 				}
 				else {
