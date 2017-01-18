@@ -256,7 +256,7 @@ var GlobalZestStationApp = function() {
         that.toggleFun('noCheckInsDebugger');
     };
 
-    this.toggleFun = function(prop, editor){
+    this.toggleFun = function(prop, editor) {
         var el = angular.element('#header');
 
         if (el) {
