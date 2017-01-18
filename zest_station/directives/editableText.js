@@ -48,7 +48,9 @@ sntZestStation.directive('editableText', [function() {
                 // handle double-click
                 // 
                 var rootScope = element.scope().$parent.zestStationData,
-                    scope = element.scope().$parent;
+                    scope = element.scope().$parent,
+                    elType = element[0].parentElement.nodeName,
+                    isNavButton = element[0].parentElement.parentElement.nodeName === 'BUTTON';
 
                 if (_.isUndefined(rootScope)) {
                     // then request came from popup or element from zsRoot.html, which is outside parent scope
@@ -69,6 +71,19 @@ sntZestStation.directive('editableText', [function() {
                     var $inputField = $('<input class="editor-mode-cls"/>').val( oldText );
 
                     el.replaceWith( $inputField );
+                    if (elType === 'BUTTON' || isNavButton) {
+                        $($inputField).on('keydown', function(event) {
+                            if (event.keyCode === 32) {// Spacebar
+                                // when editing a button and user hits space key
+                                // the onclick/enter event gets fired
+                                // need to prevent that event but inject the value
+                                event.preventDefault();
+                                event.stopPropagation();
+
+                                $($inputField).val($($inputField).val() + ' ');
+                            }
+                        });
+                    }
 
                     var save = function() {
                         var newValueForText = $inputField.val();
