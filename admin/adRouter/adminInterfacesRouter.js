@@ -95,12 +95,15 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.travelClickSetup', {
-        templateUrl: '/assets/partials/interfaces/TravelClick/adTravelClickCRSSetup.html',
-        controller: 'adTravelClickCRSSetupCtrl',
-        url: '/travelclick/setup',
+        templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
+        controller: 'adCRSCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'travelclick';
+        }],
         resolve: {
-            CRSConfig: ['adTravelClickCRSSetupSrv', function(adTravelClickCRSSetupSrv) {
-                return adTravelClickCRSSetupSrv.fetchCRSConfiguration();
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('travelclick');
             }]
         }
     });

@@ -1,5 +1,5 @@
-angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$filter', 'PAYMENT_CONFIG',
-    function($q, $http, $filter, PAYMENT_CONFIG) {
+angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$log', '$timeout',
+    function($q, $http, $log, $timeout) {
         var service = this,
             cordovaAPI = new CardOperation(),
             // This has to be consistent with Setting.cba_payment_card_types in  lib/seeds/production/product_config.rb
@@ -44,12 +44,13 @@ angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$filter', 
 
             var expiryDate = cordovaResponse.expiry_date,
                 formattedExpiry = "20";
-            //NOTE : Expiry Date from cordovaResponse would be in MMYY format; This has to be changed to YYYY-MM-DD format
+            // NOTE : Expiry Date from cordovaResponse would be in MMYY format; This has to be changed to YYYY-MM-DD format
 
             if (expiryDate.length === 4) {
                 // Rover expects all dates to be formatted in YYYY-MM-DD; Here we are converting the MMYY string coming in
                 // to YYYY-MM-DD with simple string manipulations
                 var dateParts = expiryDate.match(/.{1,2}/g);
+
                 formattedExpiry += [dateParts[1], dateParts[0], "01"].join("-");
             } else {
                 throw new Error("The UI expects MMYY format date as the cordovaResponse!")
@@ -128,6 +129,65 @@ angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$filter', 
                 action: "addCard",
                 successCallBack: onSuccess,
                 failureCallBack: onFailure
+            });
+        };
+
+        service.finishTransaction = function(transactionId) {
+            $log.info('finishTransaction');
+            cordovaAPI.callCordovaService({
+                service: "RVCardPlugin",
+                action: "finishTransaction",
+                arguments: transactionId.toString(),
+                successCallBack: response => {
+                    $log.info('finishTransaction', response);
+                },
+                failureCallBack: error => {
+                    $log.error('finishTransaction', error);
+                }
+            });
+        };
+
+        /**
+         * @returns {undefined} undefined
+         */
+        service.checkLastTransactionStatus = function() {
+            $log.info('checkLastTransactionStatus');
+            cordovaAPI.callCordovaService({
+                service: "RVCardPlugin",
+                action: "getLastTransaction",
+                successCallBack: (data) => {
+                    $log.info('checkLastTransactionStatus', data);
+                    // In case last transaction was a success
+                    if (parseInt('data.last_txn_success', 10) > 0) {
+                        service.updateTransactionSuccess(data.txn_id, data).then(response => {
+                            service.finishTransaction(data.txn_id);
+                            $log.info('updateTransactionSuccess', response);
+                        }, error => {
+                            $log.error('updateTransactionSuccess', error);
+                        });
+                    } else { // In case last transaction was a failure
+                        service.updateTransactionFailure(data.txn_id, data).then(response => {
+                            service.finishTransaction(data.txn_id);
+                            $log.info('updateTransactionSuccess', response);
+                        }, error => {
+                            $log.error('updateTransactionSuccess', error);
+                        });
+                    }
+                },
+                failureCallBack: (error) => {
+                    $log.info('checkLastTransactionStatus', error);
+                    /**
+                     * Code : 104 Desc : Device not connected.
+                     * Code : 148 Desc : Transaction was not processed by the PINpad.
+                     * Code : 147 Desc : No transaction pending.
+                     * Code : 146 Desc : Failed to get the transaction details.
+                     */
+                    if (parseInt(error.RVRVErrorCode, 10) === 104) {
+                        $log.info('device not ready---- repeat cordova API call to check for pending transactions');
+                        $timeout(service.checkLastTransactionStatus, 2000);
+                    }
+                    $log.warn(error);
+                }
             });
         };
 

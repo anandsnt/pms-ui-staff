@@ -1295,6 +1295,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData = zestStationSettings;
             $scope.zestStationData.makingKeyInProgress = false;
             $scope.zestStationData.demoModeEnabled = 'false'; // demo mode for hitech, only used in snt-theme
+            $scope.zestStationData.noCheckInsDebugger = 'false';
             $scope.zestStationData.isAdminFirstLogin = true;
 			// $scope.zestStationData.checkin_screen.authentication_settings.departure_date = true;//left from debuggin?
             setAUpIdleTimer();
@@ -1330,7 +1331,8 @@ sntZestStation.controller('zsRootCtrl', [
             } else {
                 $scope.zestStationData.kioskOutOfOrderTreshold = parseInt($scope.zestStationData.kiosk_out_of_order_treshold_value);
             }
-
+            // CICO-36953 - moves nationality collection to after res. details, using this flag to make optional
+            // and may move to an admin in a future story 
             $scope.zestStationData.consecutiveKeyFailure = 0;
         }());
     }
