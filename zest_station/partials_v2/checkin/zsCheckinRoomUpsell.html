@@ -1,7 +1,7 @@
 <!-- Content -->
 <section id="main" class="centered test" role="main" click-touch='resetTime()'>
-    <div id="content" class='add-guest-mode-content' ng-show="displayMode === 'ROOM_UPSELL_LIST'">
-        <h1>
+    <div id="content" ng-show="displayMode === 'ROOM_UPSELL_LIST'">
+        <!-- <h1>
             <text editable-text="ADDTL_RESIDENTS"> ROOM UPGRADES</text>
         </h1>
         <ul id="selection" class="editable">
@@ -9,17 +9,73 @@
                 <span class="details">{{room.upgrade_room_number}} {{room.upgrade_room_type_name}}</span>
                 <button type="button" class="button" click-touch='viewSelectedRoomDetails(room)'>View Details</button>
             </li>
-        </ul>
+        </ul> -->
+          <h1>Upgrade your Room?</h1>
+                <h3>Select a card to see room details before you upgrade</h3>
+                
+                <!--Layout V4: add  .upgrade-list-v2 -->
+                <ul class="upgrade-list">
+                    <li ng-repeat='room in upsellRooms track by $index'>
+                        <div class="upgrade-picture">
+                          <img src="{{room.room_type_image}}">
+                        </div>
+                        <div class="upgrade-content">
+                            <h2>{{room.upgrade_room_type_name}}</h2>
+                           
+                            <div class="price">
+                                <strong>+${{room.upsell_amount}}</strong>
+                                <small>Per Night<br>(+TAX)</small>
+                                <button type="button" class="button" click-touch='viewSelectedRoomDetails(room)'>
+                                    Room Details
+                                </button>
+                            </div>
+                     
+                        </div>
+                    </li>
+                </ul>
+
+                <div id="actions">
+                    <button type="button" class="button transparent">No Thanks</button> 
+                    <p class="text">Showing {# list}-{# list3} of {# listTotal} rooms</p>
+                    <div class="button-group">
+                        <button type="button" class="button">Prev</button>
+                        <button type="button" class="button">Next</button>
+                    </div>
+                </div>
     </div>
-    <div id="content" class='add-guest-mode-content' ng-show="displayMode === 'ROOM_DETAILS'">
-        <h1>
+    <div id="content" ng-show="displayMode === 'ROOM_DETAILS'">
+        <!-- <h1>
             {{selectedRoom.upgrade_room_type_name}}
         </h1>
         <h2>
             {{selectedRoom.upsell_amount}}
         </h2>
         <button type="button" click-touch="skipRoomUpsell()">SKIP</button>
-        <button type="button" click-touch="buyRoomUpsell()">BUY</button>
+        <button type="button" click-touch="buyRoomUpsell()">BUY</button> -->
+
+             <h1>Upgrade your Room?</h1>
+                <div id="upgrade" class="tabled-options">
+                    <div class="upgrade-picture">
+                      <img src="{{selectedRoom.room_type_image}}">
+                    </div>
+                    <!-- Add scroll on it -->
+                    <div class="upgrade-info">
+                      <div class="wrapper" ng-bind-html="selectedRoom.upgrade_room_description">
+                      </div>
+                    </div>
+                    <div class="upgrade-price">
+                        <h2>{{selectedRoom.upgrade_room_type_name}}</h2>
+                        <div class="price">
+                            <strong>+${{selectedRoom.upsell_amount}}</strong>
+                            <small>Per Night(+TAX)</small>
+                        </div>
+                    </div>   
+                </div>
+                <div id="actions">
+                    <button type="button" class="button transparent" click-touch="skipRoomUpsell()">No Thanks</button> 
+
+                    <button type="button" class="button" click-touch="buyRoomUpsell()">Upgrade</button>
+                </div>
     </div>
      <div id="content" class='add-guest-mode-content' ng-show="displayMode === 'ERROR_MODE'">
         <h1>
