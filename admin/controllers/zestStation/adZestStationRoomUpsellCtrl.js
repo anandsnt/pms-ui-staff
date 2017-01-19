@@ -10,6 +10,8 @@ admin.controller('ADZestStationRoomUpsellCtrl', ['$scope', 'ADZestStationSrv', '
             var isTier2Changed = type === 'tier2';
             var tier2Value = parseInt($scope.data.upsell_compositions_in_percentage.tier_2);
             var tier3Value = parseInt($scope.data.upsell_compositions_in_percentage.tier_3);
+            // if the changed value is valid(ie, a number and is less than 100, to adjust the perscentage)
+            // change the other value
             if (isTier2Changed && !_.isNaN(tier2Value) && tier2Value < 100) {
                 $scope.data.upsell_compositions_in_percentage.tier_3 = 100 - tier2Value;
                 $scope.data.upsell_compositions_in_percentage.tier_2 = tier2Value;
