@@ -1,8 +1,8 @@
 @containerWidth: 1024;
 @containerEl: @containerWidth + 3;
-@roomsWidth: 184;
+@roomsWidth: 183;
 @gridWidth: 840;
-@filtersWidth: ~'calc(100% - @{containerWidth}px)';
+@filtersWidth: ~'calc(100% - @{containerEl}px)';
 
 @breakpointNoRooms: 840;
 @breakpointSingleSidebar: 1280;
@@ -62,7 +62,7 @@
         &:active {
 
             &.with-icon {
-                &.only-icon {
+                &.only-iconÂ {
                     overflow: visible;
                 }
             }
@@ -464,31 +464,28 @@
         color: @logoPrimary;
     }
 
-
     .room {
         position: relative;
-        font-size: 12px;
+        font-size: 13px;
         line-height: 1;
         text-align: right;
         background-color: @white;
         text-transform: uppercase;
         cursor: pointer;
-        padding: 7px 5px;
+        padding: 5px;
         .size(40px, 100%);
         .box-shadow(inset 0 -1px 0 rgba(0,0,0,0.15));
- 
+        #flexbox > .parent(column wrap, center, '', '' );
+
         &.highlighted {
             background-color: fade(@orange, 30%);
- 
         }
     }
-
 
     .room-number {
         font-size: 18px; 
         line-height: 14px;
         font-weight: 600;
-        .show();
 
         &.clean,
         &.inspected{ color: @green; }
@@ -499,12 +496,9 @@
         &.out { color: @grey3; }
     }
 
-
     .room-type {
-        .show();
         .nowrap();
     }
-
 
     .suite-room {
         background-color: #dfac65;
@@ -756,8 +750,7 @@
 
         .iScrollVerticalScrollbar { 
             top:0; 
-            left: 5px;
-            right: auto;
+            right: 10px; 
 
             .iScrollIndicator { background:rgba(0,0,0,0.1); }
         }
@@ -951,7 +944,7 @@
         }
 
         /* Clickable reservations ***/
-        &:not(.oos):not(.ooo) {
+        &:not(.oos):not(.ooo):not(.blocked):not(.departed) {
             cursor: pointer;
         }
 
@@ -1180,7 +1173,7 @@
     .diary-nightly-sidebar {
         position: absolute;
         top: 0;
-        right: -400px;
+        right: -413px;
         text-transform: uppercase;
         padding: 0 10px;
         z-index: 80;
@@ -1223,7 +1216,7 @@
         }
 
         &.visible {
-            .translate3d(-400px, 0, 0);
+            .translate3d(-413px, 0, 0);
             .box-shadow(-1px 0 2px 1px rgba(0, 0, 0, .2));
         }
     }
@@ -1411,7 +1404,8 @@
             line-height: 1;
             padding: 5px 10px;
             background-color: @white;
-            cursor: pointer;
+            cursor: @draggable, pointer;
+            cursor: @draggable 16 16, pointer;
             .box-shadow();
             #flexbox > .parent(row wrap, '', center, '');
             #border-radius > .rounded();
@@ -1482,6 +1476,11 @@
             &:not(:last-child) {
                 margin-bottom: 10px;
             }
+
+            &:active {
+                cursor: @dragging, move;
+                cursor: @dragging 16 16, move; 
+            }
         }
 
         /* Screen big enough to show two columns ***/
@@ -1489,7 +1488,7 @@
             width: ~'calc(100% - @{breakpointSingleSidebar}px)';
 
             &.visible {
-                .translate3d(-656px, 0, 0);
+                .translate3d(-665px, 0, 0);
             }
         }
     }

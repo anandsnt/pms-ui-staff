@@ -33,7 +33,14 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
   };
 
   isNumOfDaysField = function(i) {
-    return (i && i.indexOf('no-of-nights') !== -1);
+    // show number keyboard on these fields: prompt_text, timeout_text, no-of-nights
+    var fields = ['prompt_text', 'timeout_text', 'no-of-nights'];
+    return (i && fields.indexOf(i) !== -1);
+  };
+  isAdminNumberField = function(i) {
+    // show number keyboard on these fields: prompt_text, timeout_text, no-of-nights
+      var adminNumberFields = ['prompt_text', 'timeout_text'];
+      return (i && adminNumberFields.indexOf(i) !== -1);
   };
 
   isNationalityField = function(i) {
@@ -312,10 +319,16 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
     // custom keyboard for zest station
     keyboardOptions.customLayout.default = keyboardOptions.customLayout.station_keyboard;
     $('.ui-keyboard').removeClass('top-align-keyboard');
+    $('.ui-keyboard').removeClass('station-admin-align-keyboard');
   } else if (zestStationNumDaysField) {
     // number of days keyboard, only number input with backspace button
     keyboardOptions.customLayout.default = keyboardOptions.customLayout.station_num_keyboard;
     $('.ui-keyboard').addClass('top-align-keyboard');
+    if (isAdminNumberField(id)) {
+        $('.ui-keyboard').addClass('station-admin-align-keyboard');
+
+    }
+
   } else if (zestStationNationalityField) {
     // number of days keyboard, only number input with backspace button
     keyboardOptions.customLayout.default = keyboardOptions.customLayout.station_keyboard_no_numbers;

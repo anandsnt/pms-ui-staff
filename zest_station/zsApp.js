@@ -32,6 +32,9 @@ sntZestStation.config(function($httpProvider, $translateProvider) {
 sntZestStation.run(['$rootScope', '$state', '$stateParams', function($rootScope, $state, $stateParams) {
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
+    $rootScope.cls = {
+        'editor': 'false'
+    };
 
     $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
         $rootScope.previousState = from.name;
@@ -233,22 +236,8 @@ var GlobalZestStationApp = function() {
     this.showingTags = false;
 
     this.toggleEditorMode = function() {
-        var el = angular.element('#header');
+        that.toggleFun('editorModeEnabled', true);
 
-        if (el) {
-            var editorModeEnabled = el.scope().$parent.zestStationData.editorModeEnabled;
-
-            if (editorModeEnabled === 'true') {
-                $('body').removeClass('editor-mode-border');
-                angular.element('#header').scope().$parent.zestStationData.editorModeEnabled = 'false';
-            } else {
-                $('body').addClass('editor-mode-border');
-                angular.element('#header').scope().$parent.zestStationData.editorModeEnabled = 'true';
-            }
-            angular.element('#header').scope()
-                                      .$apply();
-
-        }
     };
 
 
@@ -260,6 +249,34 @@ var GlobalZestStationApp = function() {
     this.setLanguage = function(langCode) {
         console.log('select language requested: ', langCode);
         that.callRootMethod('switchLanguage', langCode);
+    };
+
+
+    this.toggleNoCheckIns = function() {
+        that.toggleFun('noCheckInsDebugger');
+    };
+
+    this.toggleFun = function(prop, editor) {
+        var el = angular.element('#header');
+
+        if (el) {
+            var enabled = el.scope().$parent.zestStationData[prop];
+
+            if (enabled === 'true') {
+                angular.element('#header').scope().$parent.zestStationData[prop] = 'false';
+                if (editor) {
+                    angular.element('body').scope().cls = {editor: 'false'};
+                }
+            } else {
+                angular.element('#header').scope().$parent.zestStationData[prop] = 'true';
+                if (editor) {
+                    angular.element('body').scope().cls = {editor: 'true'};
+                }
+            }
+            angular.element('#header').scope()
+                                      .$apply();
+
+        }
     };
 
 

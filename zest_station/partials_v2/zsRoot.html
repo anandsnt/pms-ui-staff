@@ -3,6 +3,7 @@
 </div>
 
 <span ng-show="zestStationData.demoModeEnabled == 'true'" class="demo-text dev-cls top-left-demo">demo</span>
+<span ng-show="zestStationData.noCheckInsDebugger == 'true'" class="demo-text dev-cls top-left-demo" ng-class="{'demo-second-cls':zestStationData.demoModeEnabled == 'true'}">NCI</span>
 
 <span ng-show="zestStationData.editorModeEnabled == 'true'" class="demo-text editor dev-cls" >Editor Mode Enabled</span>
 
@@ -16,6 +17,12 @@
 </span>
 <span ng-show="zestStationData.timeDebugger == 'true'" class="timer-debugger-right dev-cls non-center">
      <br> <span>Assigned Workstation ({{zestStationData.workstationName}}) <br> </span>
+     <span>Encoding Keys - <span ng-class='{"key-in-progress":zestStationData.makingKeyInProgress}'>({{zestStationData.makingKeyInProgress}})</span><br> </span>
+     <span ng-show='inChromeApp'>
+        Zest Station Handler - <span ng-class='{"key-in-progress":zestStationData.stationHandlerConnectedStatus == "Not-Connected"}'>({{zestStationData.stationHandlerConnectedStatus}})</span><br> 
+    </span>
+
+
 </span>
 <div ng-include="'/assets/partials_v2/zsTabletHeader.html'"></div>
 <!--PopUp For External webPage-->

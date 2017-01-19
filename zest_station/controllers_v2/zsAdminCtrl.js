@@ -127,13 +127,16 @@ sntZestStation.controller('zsAdminCtrl', [
          * Go to home page
          */
         var lastDemoModeSetting = $scope.zestStationData.demoModeEnabled,
-            lastEditorModeSetting = $scope.zestStationData.editorModeEnabled;
+            lastEditorModeSetting = $scope.zestStationData.editorModeEnabled,
+            lastNCIModeSetting = $scope.zestStationData.noCheckInsDebugger;
 
         $scope.cancelAdminSettings = function(a) {
             if (!a) {
-                console.info('setting demo and editor modes back to: ', lastDemoModeSetting, lastEditorModeSetting);
+                console.info('setting Demo, Editor, and NCI modes back to: ', lastDemoModeSetting, lastEditorModeSetting, lastNCIModeSetting);
                 $scope.zestStationData.demoModeEnabled = lastDemoModeSetting;
+                $scope.zestStationData.noCheckInsDebugger = lastNCIModeSetting;
                 $scope.zestStationData.editorModeEnabled = lastEditorModeSetting;
+                $scope.setEditorModeCls();
             }
             $state.go('zest_station.home');
             setTimeout(function() {
@@ -212,6 +215,21 @@ sntZestStation.controller('zsAdminCtrl', [
 
             return selectedWorkStation;
         };
+        $scope.setEditorModeCls = function() {
+            if ($scope.zestStationData.editorModeEnabled === 'true') {
+                $rootScope.cls.editor = 'true';
+            } else {
+                $rootScope.cls.editor = 'false';
+            }
+        };
+
+        $scope.toggleDiagnostics = function() {
+            console.log(arguments);
+            zestSntApp.debugTimers(true);
+              $timeout(function() {
+                $scope.runDigestCycle();
+            }, 900);
+        };
         /*
          *  save work station
          */
@@ -225,6 +243,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.zestStationData.workstationName = selectedWorkstation.name;
                 setStationVariables();
                 restartTimers();
+                $scope.setEditorModeCls();
                 $scope.zestStationData.set_workstation_id = station.id;
                 $rootScope.workstation_id = $scope.zestStationData.set_workstation_id;
                 $scope.zestStationData.key_encoder_id = station.key_encoder_id;
@@ -308,7 +327,9 @@ sntZestStation.controller('zsAdminCtrl', [
                 console.log(response);
                 console.info('save setting failed, set demo and editor mode to last setting');
                 $scope.zestStationData.demoModeEnabled = lastDemoModeSetting;
+                $scope.zestStationData.noCheckInsDebugger = lastNCIModeSetting;
                 $scope.zestStationData.editorModeEnabled = lastEditorModeSetting;
+                $scope.setEditorModeCls();
             };
             var options = {
                 params: params,
