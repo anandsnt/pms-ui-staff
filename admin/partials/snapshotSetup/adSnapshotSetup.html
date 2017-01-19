@@ -1,0 +1,128 @@
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate>
+    <div>
+        <header class="content-title float">
+            <h2 translate="">SNAPSHOT_SETUP</h2>
+            <a id="go_back" data-type="load-details" class="action back" ng-click="goBackToPreviousState()">Back</a>
+        </header>
+        <section class="content-scroll">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+            <div style="overflow-y:auto;" name="edit-guest-review" method="post" class="form float">
+                <fieldset class="holder full-width">
+                    <ad-form-title full-width="true" form-title="General"></ad-form-title>
+                    <ad-toggle-button is-checked="snapshotData.enabled" label="{{'ACTIVE'| translate}}"></ad-toggle-button>
+                    <ad-form-title full-width="true" form-title="Access Details"></ad-form-title>
+                    <ad-textbox value="snapshotData.user" label="User name" required="yes"></ad-textbox>
+                    <ad-textbox value="snapshotData.password" label="Password" required="yes"></ad-textbox>
+                    <ad-textbox value="snapshotData.api_key" label="API key" required="yes"></ad-textbox>
+                    <ad-textbox value="snapshotData.url" label="URL" required="yes"></ad-textbox>
+                    <ad-textbox value="snapshotData.system_name" label="{{ 'SYS_NAME' | translate}}"></ad-textbox>
+                    <ad-textbox value="snapshotData.system_version" label="{{ 'SYS_VERSION' | translate}}"></ad-textbox>
+                    <ad-form-title full-width="true" form-title="{{'FULL_EXPORT' | translate}}"></ad-form-title>
+                    <div class="form-subtitle-title">
+                        <h6><span translate>SNAPSHOT_PUBLISH_INSTRUCTIONS</span> </h6>
+                    </div>
+                    <button type="button" class="button green" ng-click="publishFullExport()">
+                        Publish
+                    </button>
+
+                    
+                </fieldset>
+                <ad-form-title full-width="true" form-title="{{'INCREMENTAL_EXPORT_LABEL' | translate}}"></ad-form-title>
+                <ad-toggle-button is-checked="snapshotData.incremental_export_enabled" label="{{'INCREMENTAL_EXPORT_SWITCH_LABEL'| translate}}"></ad-toggle-button>
+                    <label class="radio" ng-class="{'checked':snapshotData.incremental_export_option== 'once'}" ng-show="snapshotData.incremental_export_enabled">
+                            <span class="icon-form icon-radio " ng-class="{checked:snapshotData.incremental_export_option=='once'}"></span>
+                            <input type="radio" value="once" ng-model="snapshotData.incremental_export_option"> {{ 'ONCE_PER_DAY_LABEL' | translate}}
+                        </label>
+                <fieldset class="holder left holder_margin" ng-show="snapshotData.incremental_export_option=='once' && snapshotData.incremental_export_enabled">
+                    <div class="entry full-width increental-export-time-margin">
+                        <label>
+                            {{ 'START_TIME_LABEL' | translate}}
+                        </label>
+                        <div class="entry full-width float">
+                            <div class="select select-col select-margin">
+                                <select ng-model="snapshotData.incremental_export_once_start_hours">
+                                    <option value="">HH</option>
+                                    <option ng-repeat="hour  in hours" value="{{hour}}" ng-bind="hour"></option>
+                                </select>
+                            </div>
+                            <div class="select select-col select-margin">
+                                <select ng-model="snapshotData.incremental_export_once_start_minutes">
+                                    <option value="">MM</option>
+                                    <option ng-repeat="minute  in minutes" value="{{minute}}" ng-bind="minute"></option>
+                                </select>
+                            </div>
+                            <div class="select select-col select-margin">
+                                <select ng-options="primeTime for primeTime  in primeTimes" ng-model="snapshotData.incremental_export_once_prime_time">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="holder right holder_margin" ng-show="snapshotData.incremental_export_option=='once' && snapshotData.incremental_export_enabled">
+                    <div class="entry ">
+                        <label>
+                            {{ 'RETRY_INTERVAL_LABEL' | translate}}
+                        </label>
+                        <div class="select select-col select-width-30">
+                                <select ng-model="snapshotData.incremental_export_once_retry_interval">
+                                    <option value="">MM</option>
+                                    <option ng-repeat="minute in minutes" value="{{minute}}" ng-bind="minute"></option>
+                                </select>
+                            </div>
+                    </div>
+                    <div class="entry ">
+                        <label>
+                            {{ 'NO_OF_RETRIES_LABEL' | translate}}
+                        </label>
+                        <div class="select select-col select-width-30">
+
+                                <select ng-options="retry for retry  in retry_count_options" ng-model="snapshotData.incremental_export_once_retry_count">
+                                </select>
+                            </div>
+                    </div>
+                </fieldset>
+
+                <label class="radio" ng-class="{'checked':snapshotData.incremental_export_option== 'multiple'}" ng-show="snapshotData.incremental_export_enabled">
+                            <span class="icon-form icon-radio " ng-class="{checked:snapshotData.incremental_export_option=='multiple'}"></span>
+                            <input type="radio" value="multiple" ng-model="snapshotData.incremental_export_option"> {{ 'MULTIPLE_PER_DAY_LABEL' | translate}}
+                        </label>
+
+                <fieldset class="holder left holder_margin" ng-show="snapshotData.incremental_export_option=='multiple' && snapshotData.incremental_export_enabled">
+                    <div class="entry full-width increental-export-time-margin">
+                        <label>
+                            {{ 'START_FIRST_EXPORT_LABEL' | translate}}
+                        </label>
+                        <div class="entry full-width float">
+                            <div class="select select-col select-margin">
+                                <select ng-model="snapshotData.incremental_export_multiple_start_hours">
+                                    <option value="">HH</option>
+                                    <option ng-repeat="hour  in hours" value="{{hour}}" ng-bind="hour"></option>
+                                </select>
+                            </div>
+                            <div class="select select-col select-margin">
+                                <select ng-model="snapshotData.incremental_export_multiple_start_minutes">
+                                    <option value="">MM</option>
+                                    <option ng-repeat="minute  in minutes" value="{{minute}}" ng-bind="minute"></option>
+                                </select>
+                            </div>
+                            <div class="select select-col select-margin">
+                                <select ng-options="primeTime for primeTime  in primeTimes" ng-model="snapshotData.incremental_export_multiple_prime_time">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="actions float">
+                    <button type="button" class="button blank add-data-inline" ng-click="goBackToPreviousState()">
+                        Cancel
+                    </button>
+                    <button type="button" class="button green" ng-click="saveSettings()">
+                        Save changes
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>

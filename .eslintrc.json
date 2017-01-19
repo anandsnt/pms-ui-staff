@@ -21,7 +21,8 @@
         "sntGuestWeb": true,
         "admin": true,
         "ADBaseTableCtrl": true,
-        "tzIndependentDate": true
+        "tzIndependentDate": true,
+        "getJqDateFormat": false
     },
     "installedESLint":true,
     "parserOptions":{
@@ -206,6 +207,7 @@
             "always"
         ],
         "angular/controller-as": "off",
-        "angular/di": ["off", "array"]
+        "angular/di": ["off", "array"],
+        "angular/controller-as-vm": "off"
     }
 }

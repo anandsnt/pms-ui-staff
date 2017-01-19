@@ -11,25 +11,18 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
             var url = "/admin/external_mappings/" + hotel_id + "/interface_types.json";
 
             ADBaseWebSrv.getJSON(url).then(function (data) {
-                deferred.resolve(data);
-            }, function (data) {
-                deferred.reject(data);
-            });
-            return deferred.promise;
-        };
-        this.fetchInterfaceMappingsList = function (data) {
-            var hotel_id = data.hotel_id,
-                    interface_id = data.interface_type_id;
-            var deferred = $q.defer();
-            var url = "/admin/external_mappings/" + hotel_id + "/" + interface_id + "/interface_mappings.json";
+                var sortedInterfaceList = _.sortBy(data.interfaces, function(interface) {
+                    return interface.description.toLowerCase();
+                });
 
-            ADBaseWebSrv.getJSON(url).then(function (data) {
-                deferred.resolve(data);
+                // CICO-36466 Admin Interfaces Menu to be sorted by alphabetical
+                deferred.resolve(sortedInterfaceList);
             }, function (data) {
                 deferred.reject(data);
             });
             return deferred.promise;
         };
+
         /*
          * Service function to render add mapping screen
          * @return {object} mapping type,snt values to render its dropdowns

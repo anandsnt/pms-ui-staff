@@ -1921,7 +1921,7 @@
             }
 
             &.statistics-reports {
-                table-layout: fixed;
+                table-layout: auto;
                 border-collapse: collapse;
                 border-spacing: 0;
 
@@ -1930,6 +1930,7 @@
                     td {
                         line-height: 30px;
                         padding: 0 10px;
+                        width: 80px;
                     }
                 }
 
@@ -1986,6 +1987,10 @@
                             &.negative { color: @red; }
 
                             &.day-end { border-right: 1px solid @grey4; }
+
+                            strong, em, span {
+                                .nowrap();
+                            }
 
                             strong {font-weight: 600;}
 

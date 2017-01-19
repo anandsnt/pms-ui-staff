@@ -29,7 +29,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                     'hotel_id': $rootScope.hotelId
                 },
                 onSuccess: function(response) {
-                    $scope.extMappingSubComponents = response.interfaces;
+                    $scope.extMappingSubComponents = response;
                 }
             });
 

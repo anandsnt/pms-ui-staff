@@ -267,12 +267,12 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             return callApi({
                 name: 'rateTypeAndRateList',
                 method: 'getJSON',
-                url: '/api/rates/active',
-                resKey: 'rates',
-                params: {
-                    include_custom_rates: true
-                    // This service is used ONLY for the Daily Production Rate Report Filters & hence this param is added to the request
-                }
+                url: '/api/rates/list',
+                resKey: 'rates'
+                // params: {
+                //     include_custom_rates: true
+                //     // This service is used ONLY for the Daily Production Rate Report Filters & hence this param is added to the request
+                // }
             });
         };
 
@@ -392,6 +392,15 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 method: 'getJSON',
                 url: 'api/reports/' + params.report_id + '/revenue_by_charge_codes',
                 params: _.omit(params, 'report_id')
+            });
+        };
+
+        service.fetchAccounts = function() {
+            return callApi({
+                name: 'accounts',
+                method: 'getJSON',
+                url: '/api/accounts/list',
+                resKey: 'accounts'
             });
         };
 

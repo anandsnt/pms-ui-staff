@@ -845,14 +845,27 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		});
 
 		var onFetchRatesSuccess = function(data) {
-			// split result to contracted vs others for enabling grouping on the dropdown
-			$scope.allotmentSummaryData.rates = _.where(data.results, {
-				is_contracted: false
+
+			var sumData = $scope.allotmentSummaryData;
+
+	        sumData.rateSelectDataObject = [];
+
+	        // add custom rate obect
+	        sumData.rateSelectDataObject.push({
+	            id: '-1',
+	            name: 'Custom Rate'
+	        });
+	        // group rates by contracted and group rates.
+	        _.each(data.results, function(rate) {
+	            if (rate.is_contracted) {
+	                rate.groupName = 'Company/ Travel Agent Contract';
+	            }
+	            else {
+	                rate.groupName = 'Group Rates';
+	            }
+	            sumData.rateSelectDataObject.push(rate);
 			});
 
-			$scope.allotmentSummaryData.contractedRates = _.where(data.results, {
-				is_contracted: true
-			});
 		};
 		var onFetchRatesFailure = function(errorMessage) {
 			$scope.errorMessage = errorMessage;
@@ -916,7 +929,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				existingHoldStatus: parseInt($scope.allotmentConfigData.summary.hold_status),
 				computedSegment: false,
 				rates: [],
-				contractedRates: []
+				contractedRates: [],
+                rateSelectDataObject: []
 			};
 
 			$scope.billingInfoModalOpened = false;

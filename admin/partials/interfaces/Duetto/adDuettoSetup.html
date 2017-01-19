@@ -39,4 +39,35 @@
                     label="{{'PASSWORD'| translate}}"
                     styleclass="full-width"></ad-textbox>
     </fieldset>
+
+    <div class="form-title full-width">
+        <h3><span translate>DUETTO_EXPORT_CONFIG</span></h3>
+    </div>
+
+    <fieldset class="holder left">
+        <ad-textbox inputtype="text"
+                    value="config.data_set_id"
+                    label="{{'DATA_SET_ID'| translate}}"
+                    styleclass="full-width"></ad-textbox>
+        <ad-dropdown-name savemodel="config.default_rate_code"
+                          valueproperty="id"
+                          property="name"
+                          list="rates"
+                          label="{{'DEFAULT_RATE'| translate}}"
+                          div-class="full-width">
+        </ad-dropdown-name>
+    </fieldset>
+
+    <fieldset class="holder right">
+        <div class="entry full-width">
+            <ad-textarea rows="5"
+                         div-class="full-width"
+                         text-area-class="full-width"
+                         value="config.emails"
+                         label="{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}"
+                         placeholder="">
+            </ad-textarea>
+        </div>
+    </fieldset>
 </ad-common-parts-in-form-dir>
+

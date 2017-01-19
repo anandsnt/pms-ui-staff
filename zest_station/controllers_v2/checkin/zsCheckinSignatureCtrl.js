@@ -46,18 +46,25 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
          */
         var afterGuestCheckinCallback = function(response) {
             // if email is valid and is not blacklisted
-            var haveValidGuestEmail = checkIfEmailIsBlackListedOrValid();
+            var haveValidGuestEmail = checkIfEmailIsBlackListedOrValid(),
+                collectNationalityEnabled = $scope.zestStationData.check_in_collect_nationality;
 
             console.warn('afterGuestCheckinCallback :: current state params: ', $stateParams);
             var stateParams = {
                 'guest_id': $stateParams.guest_id,
                 'reservation_id': $stateParams.reservation_id,
                 'room_no': $stateParams.room_no,
+                'email': $stateParams.email,
                 'first_name': $stateParams.first_name
             };
 
             console.info('haveValidGuestEmail: ', haveValidGuestEmail);
-            if (haveValidGuestEmail) {
+
+            // if collectiing nationality after email, but email is already valid
+            if (collectNationalityEnabled && haveValidGuestEmail) {
+                $state.go('zest_station.collectNationality', stateParams);
+
+            } else if (haveValidGuestEmail) {
                 stateParams.email = $stateParams.email;
                 $state.go('zest_station.checkinKeyDispense', stateParams);
             } else {
@@ -84,7 +91,13 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 successCallBack: afterGuestCheckinCallback
             };
 
-            $scope.callAPI(zsCheckinSrv.checkInGuest, options);
+            if ($scope.zestStationData.noCheckInsDebugger === 'true') {
+                console.log('skipping checkin guest, no-check-ins debugging is ON');
+                afterGuestCheckinCallback({'status': 'success'});
+            } else {
+                $scope.callAPI(zsCheckinSrv.checkInGuest, options);    
+            }
+            
         };
         /**
          * [submitSignature description]

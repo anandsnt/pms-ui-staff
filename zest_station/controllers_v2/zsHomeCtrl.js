@@ -52,14 +52,17 @@ sntZestStation.controller('zsHomeCtrl', [
                     defaultLanguage = _.findWhere($scope.languages, {
                         name: defaultLangName
                     });
-                var languageConfig = zsGeneralSrv.languageValueMappingsForUI[defaultLanguage.name],
-                    langShortCode = languageConfig.code;
 
-                if ( $translate.use() === langShortCode && checkIfDefaultLanguagIsSet) {
-					// do nothing, current language is already the default one
-                } else {
-                    console.info('translating to default lanaguage after ' + userInActivityTimeInHomeScreenInSeconds + ' seconds');
-                    $scope.selectLanguage(defaultLanguage);
+                if (defaultLanguage && defaultLanguage.name) {
+                    var languageConfig = zsGeneralSrv.languageValueMappingsForUI[defaultLanguage.name],
+                        langShortCode = languageConfig.code;
+
+                    if ( $translate.use() === langShortCode && checkIfDefaultLanguagIsSet ) {
+                            // do nothing, current language is already the default one or no default is selected from hotel admin
+                    } else {
+                        console.info('translating to default lanaguage after ' + userInActivityTimeInHomeScreenInSeconds + ' seconds');
+                        $scope.selectLanguage(defaultLanguage);
+                    }
                 }
             }
         };
@@ -121,10 +124,14 @@ sntZestStation.controller('zsHomeCtrl', [
                     }
 
                     if (userInActivityTimeInHomeScreenInSeconds >= timeUntilLanguageResetCheck) {
-                        console.info('translating to default lanaguage');
 						// highlighting active language buttons. We need not do that again and again , if we already have a 
 						// default language set.So on timer limit(120s), we need to check if the current language is default or not.
-                        setToDefaultLanguage(true);// checkIfDefaultLanguagIsSet = true
+                        // when Not in language Editor mode, go ahead and reset back to default language
+                        if ($scope.zestStationData.editorModeEnabled !== 'true') {
+                            console.info('translating to default lanaguage');
+                            setToDefaultLanguage(true);// checkIfDefaultLanguagIsSet = true    
+                        }
+
                         $scope.runDigestCycle();
                         userInActivityTimeInHomeScreenInSeconds = 0;
 						// $state.current.name === 'zest_station.admin' - if going to hotel admin, 
@@ -173,11 +180,32 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * to change the default language
 		 * @param  {object} language
 		 */
+
+        $scope.$on('SWITCH_LANGUAGE', function(evt, lang) {
+            // for debugging | testing only via developer tools or console
+            // allows dev/user to switch language during-a flow, instead of just at home
+            var obj;
+
+            for (var i in $scope.languages) {
+                
+                obj = $scope.languages[i];
+                if (obj.code === lang) {
+                    $scope.selectLanguage(obj);
+                    setTimeout(function() {
+                        $scope.$digest();
+                    }, 100);
+                    return;
+                }
+            }
+        });
         $scope.selectLanguage = function(language) {
 			// Reset idle timer to 0, on language selection, otherwise counter is still going
             userInActivityTimeInHomeScreenInSeconds = 0;
             var languageConfig = zsGeneralSrv.languageValueMappingsForUI[language.name],
                 langShortCode = languageConfig.code;
+
+                // keep track of lang short code, for editor to save / update tags when needed
+            $scope.languageCodeSelected(langShortCode, language.name);
 
             $translate.use(langShortCode);
             $scope.selectedLanguage = language;

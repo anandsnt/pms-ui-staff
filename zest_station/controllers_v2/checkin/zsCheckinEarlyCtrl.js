@@ -45,18 +45,7 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
             } 
             return true;
         };
-        var earlyCheckinUnavailable = function(data) {
-            var reservationNotReady = !data.early_checkin_available && // if no early checkin is available but early checkin flow is On, go to unavailable screen
-                $scope.zestStationData.offer_early_checkin &&
-                data.early_checkin_on;
-            // if early checkin is off in settings, and its too early, let user know that...
-            var justTooEarly = !data.early_checkin_available;
 
-            if (reservationNotReady || justTooEarly) {
-                return true;
-            } 
-            return false;
-        };
         var setEarlyParams = function(response) {
             console.info('===============');
             console.info('===============', response);
@@ -73,24 +62,20 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
                 $scope.is_early_prepaid = true; // or was bundled in an add-on (the add-on could be paid or free, so show prepaid either way)
             }
             
-            console.log('is_early_prepaid: ', $scope.is_early_prepaid);
 
             $scope.standardCheckinTime = response.checkin_time;
-            $scope.early_checkin_unavailable = earlyCheckinUnavailable(response);
-
-            console.info('$scope.early_checkin_unavailable: ', $scope.early_checkin_unavailable);
+            $scope.early_checkin_unavailable = !earlyCheckinOn(response);
 
             if ($scope.early_checkin_unavailable) {
                 $scope.bypass = false;
                 $scope.is_early_prepaid = false;
                 $scope.reservation_in_early_checkin_window = false;
             }
-            console.log('reservation_in_early_checkin_window: ', $scope.reservation_in_early_checkin_window);
 
             $scope.ableToPurchaseEarly = !$scope.early_checkin_unavailable && !$scope.is_early_prepaid && $scope.reservation_in_early_checkin_window && !$scope.bypass;
             $scope.early_checkin_charge = response.early_checkin_charge;
 
-            $scope.prepaidEarlyCheckin = $scope.bypass && $scope.is_early_prepaid && $scope.reservation_in_early_checkin_window;
+            $scope.prepaidEarlyCheckin = ($scope.bypass || $scope.is_early_prepaid) && !$scope.early_checkin_unavailable;
             $scope.freeEarlyCheckin = $scope.bypass && !$scope.is_early_prepaid && $scope.reservation_in_early_checkin_window;
 
             $scope.early_charge_symbol = $scope.zestStationData.currencySymbol;
@@ -98,17 +83,40 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
 
             $scope.offerId = response.early_checkin_offer_id;
             $scope.reservation_id = $scope.selectedReservation.reservation_details.reservation_id;
+
+            if ($scope.ableToPurchaseEarly && 
+                !$scope.prepaidEarlyCheckin && 
+                !$scope.freeEarlyCheckin) {
+                // ask the guest if they want to purchase early check-in
+                    $scope.mode = 'EARLY_CHECKIN_SELECT';
+            }
+
+            if ($scope.prepaidEarlyCheckin) {
+                $scope.mode = 'EARLY_CHECKIN_PREPAID';
+            }
+
+            if ($scope.freeEarlyCheckin && !$scope.early_checkin_unavailable) {
+                $scope.mode = 'EARLY_CHECKIN_FREE';
+            }
+
+            if ($scope.is_early_prepaid && !$scope.reservation_in_early_checkin_window) {
+                $scope.mode = 'EARLY_CHECKIN_PREPAID_NOT_READY';   
+            }
+
+            console.info('MODE: ', $scope.mode);
         };
 
         $scope.checkinLater = function() {
             $scope.early_checkin_unavailable = true;
             $scope.show_early_unavailable_from_checkin_later = true;
+
+            $scope.mode = 'CHECKIN_LATER';
         };
 
         $scope.acceptEarlyCheckinOffer = function() {
             var postData = {
                 'reservation_id': $scope.reservation_id,
-                'early_checkin_offer_id': $scope.offerId
+                'early_checkin_offer_id': $scope.offerId // TODO: move this to API logic,...shouldnt need to also send this via UI...
             };
 
             var onSuccess = function() {

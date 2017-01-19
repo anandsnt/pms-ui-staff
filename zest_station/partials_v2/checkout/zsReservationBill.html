@@ -1,7 +1,9 @@
 <!-- The bill display section -->
 <section id="main" role="main" class="centered" ng-hide="printOpted" click-touch='resetTime()'>
     <div id="content">
-        <h1>{{'BILL_REVIEW' |translate}}</h1>
+        <h1>
+            <text editable-text="BILL_REVIEW"> {{'BILL_REVIEW' |translate}}</text>
+        </h1>
         <div id="flex-holder">
             <div id="textual" class="review-bill pull-left scrollable" ng-iscroll="bill-list">
                 <div class="wrapper">
@@ -14,9 +16,15 @@
                         <div id="bill-grid">
                             <div id="grid-head">
                                 <div class="row">
-                                    <span class="cell date" translate>BILL_DATE</span>
-                                    <span class="cell desc" translate>BILL_DESC</span>
-                                    <span class="cell amount" translate>BILL_AMT</span>
+                                    <span class="cell date">
+                                        <text editable-text="BILL_DATE"> {{'BILL_DATE' |translate}}</text>
+                                    </span>
+                                    <span class="cell desc">
+                                        <text editable-text="BILL_DESC"> {{'BILL_DESC' |translate}}</text>
+                                    </span>
+                                    <span class="cell amount">
+                                        <text editable-text="BILL_AMT"> {{'BILL_AMT' |translate}}</text>
+                                    </span>
                                 </div>
                             </div>
                             <div id="grid-body">
@@ -29,15 +37,27 @@
                         </div>
                     </div>
                     <ul id="rate">
-                        <li class="sub">{{'BILL_SUB' |translate}}<span>{{zestStationData.currency}}{{net_amount}}</span></li>
-                        <li class="sub">{{'BILL_DEP' |translate}}<span>{{zestStationData.currency}}{{deposit}}</span></li>
-                        <li class="total">{{'BILL_BAL' |translate}}<span>{{zestStationData.currency}}{{balance}}</span></li>
+                        <li class="sub">
+                            <text editable-text="BILL_SUB"> {{'BILL_SUB' |translate}}</text>
+                        <span>{{zestStationData.currency}}{{net_amount}}</span></li>
+                        <li class="sub">
+                            <text editable-text="BILL_DEP"> {{'BILL_DEP' |translate}}</text>
+                        <span>{{zestStationData.currency}}{{deposit}}</span></li>
+                        <li class="total">
+                            <text editable-text="BILL_BAL"> {{'BILL_BAL' |translate}}</text>
+                        <span>{{zestStationData.currency}}{{balance}}</span></li>
                     </ul>
                 </div>
             </div>
             <div id="actions" class="pull-right">
-                <button type="button" class="button" touch-press='nextClicked()'>{{'BILL_NEXT' |translate}}</button>
-                <p><strong>{{'BILL_QUEST' |translate}}</strong>{{'BILL_SUB_QUESTION' |translate}}</p>
+                <button type="button" class="button" touch-press='nextClicked()'>
+                    <text editable-text="BILL_NEXT"> {{'BILL_NEXT' |translate}}</text>
+                </button>
+                <p><strong>
+                    <text editable-text="BILL_QUEST"> {{'BILL_QUEST' |translate}}</text>
+                </strong>
+                    <text editable-text="BILL_SUB_QUESTION"> {{'BILL_SUB_QUESTION' |translate}}</text>
+                </p>
             </div>
         </div>
     </div>
@@ -46,7 +66,9 @@
 <div ng-controller="zsPrintBillCtrl">
     <section id="main" role="main" class="centered" ng-show="printOpted">
         <div id="content">
-            <h1>{{'END_THANKS' |translate}}</h1>
+            <h1>
+                <text editable-text="END_THANKS"> {{'END_THANKS' |translate}}</text>
+            </h1>
             <!--h3 ng-show="email.length>0">{{'EMAILED_BILL' |translate}}
         </h3-->
             <nav id="options" role="nav">
@@ -56,17 +78,19 @@
                             <!--div ng-include="'/assets/zest_station/css/icons/print.svg'"></div-->
                             <div ng-include="icons.url.print"></div>
                         </button>
-                        {{'PRINT_BILL' |translate}}
+                        <text editable-text="PRINT_BILL"> {{'PRINT_BILL' |translate}}</text>
                     </li>
                     <li class="break">
-                        <span translate>OR_TEXT</span>
+                        <span>
+                            <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                        </span>
                     </li>
                     <li>
                         <button type="button" class="button option" touch-press='clickedNoThanks()'>
                             <!--div ng-include="'/assets/zest_station/css/icons/no-print.svg'"></div-->
                             <div ng-include="icons.url.noprint"></div>
                         </button>
-                        {{'NO_THX' |translate}}
+                        <text editable-text="NO_THX"> {{'NO_THX' |translate}}</text>
                     </li>
                 </ul>
             </nav>

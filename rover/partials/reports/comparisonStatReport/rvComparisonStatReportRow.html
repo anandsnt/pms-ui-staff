@@ -55,8 +55,8 @@ is_ledger
 <tr ng-repeat="item in cgEntries track by $index"
   ng-class="{
     'charge-group': item.isChargeGroup,
-    'toggle': item.isChargeGroup,
-    'active': item.isChageGroupActive,
+    'toggle': item.isChargeGroup ,
+    'active': item.isChargeGroupActive,
 
     'charge-code': item.isChargeCode,
     'charge-pagination': item.isChargeCodePagination,
@@ -68,7 +68,7 @@ is_ledger
   ng-hide="isHidden(item)"
 >
   <td ng-if="item.isChargeCodePagination" colspan="8">
-    <rv-pagination page-options="item.pageOptions"></rv-pagination>
+    <rv-pagination page-options="item.pageOptions" page-data="item.pageOptions.totalCount"></rv-pagination>
   </td>
 
 	<td ng-if="!item.isChargeCodePagination && item.isChargeGroup"

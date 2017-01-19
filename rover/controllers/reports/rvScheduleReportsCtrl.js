@@ -13,6 +13,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 	function($rootScope, $scope, reportsSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, util, ngDialog) {
 		BaseCtrl.call(this, $scope);
 
+    var scheduleTimePeriods = [];
+
 		// helper function
 		var findOccurance = function(item) {
 			var occurance = 'Runs ',
@@ -479,7 +481,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			// this filter for few reports could also be listed
 			// under SHOW and not OPTIONS
 			INCLUDE_DUE_OUT: 'INCLUDE_DUE_OUT',
-			RESTRICTED_POST_ONLY: 'RESTRICTED_POST_ONLY'
+			RESTRICTED_POST_ONLY: 'RESTRICTED_POST_ONLY',
+			INCLUDE_TAX: 'INCLUDE_TAX'
 		};
 
 		var matchSortFields = {
@@ -494,7 +497,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			'Arriving Guests': 'guest-status check-in',
 			'Departing Guests': 'guest-status check-out',
 			'All In-House Guests': 'guest-status inhouse',
-			'Balance for all Outstanding Accounts': 'icon-report icon-balance'
+			'Balance for all Outstanding Accounts': 'icon-report icon-balance',
+			'Statistics Report by Comparison': 'icon-report icon-comparison'
 		};
 
 		// this is a temporary setup
@@ -543,6 +547,21 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
 					if ( $scope.selectedEntityDetails.report.description === 'Restricted Post only' && filter.value === 'RESTRICTED_POST_ONLY' ) {
 					    selected = false;
+					}
+
+					if ( $scope.selectedEntityDetails.report.description === 'Statistics Report by Comparison' ) {
+							var filteredTimePeriods = _.filter( scheduleTimePeriods, function(item) {
+							     return item.value === 'YESTERDAY';
+							});
+
+							$scope.scheduleTimePeriods = filteredTimePeriods;
+					}
+					else {
+							var filteredTimePeriods = _.filter( scheduleTimePeriods, function(item) {
+							     return item.value !== 'YESTERDAY';
+							});
+
+							$scope.scheduleTimePeriods = filteredTimePeriods;
 					}
 
 					$scope.filters.hasGeneralOptions.data.push({
@@ -678,6 +697,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			var success = function(payload) {
 				$scope.scheduleFrequency = payload.scheduleFrequency;
 				$scope.scheduleTimePeriods = payload.scheduleTimePeriods;
+				scheduleTimePeriods = payload.scheduleTimePeriods;
 				$scope.$parent.$parent.schedulesList = [];
 				$scope.$parent.$parent.schedulableReports = [];
 

@@ -93,6 +93,43 @@ sntZestStation.controller('zsThemeActionsCtrl', [
             $scope.$emit('RUN_APPLY');
         });
 
+        /** ******************************************************************************
+         *  
+         ********************************************************************************/
+
+        $scope.$on('TOGGLE_LANGUAGE_TAGS', function() {
+
+             // enables user (via conosle or developer tools) to show tags on-screen instead of the 
+             // translated text
+            var tags = $('text'), // grab all <text> selectors, which should only be used for locales
+                el, tag, currentText, old;
+
+            // for each field with tag, on current screen, replace
+            // the current text with the tag text, keep ref to the current text
+            // 
+            for (var i = 0; i < tags.length; i++) {
+
+                el = $(tags[i]);
+                tag = $.trim(el.attr('editable-text'));
+                currentText = $.trim(el.text());
+                old = el.attr('old-text');
+
+                if ( currentText === tag ) {
+                    // if showing the tag, switch back to text, 
+                    // just swap the old-text with current value in json file
+                    $scope.saveLanguageEditorChanges(tag, old, true);
+
+                } else {
+                    // to show the TAG instead of translated text, swap out with the
+                    // tag, which is also in the attribute 'editable-text'
+                    el.attr('old-text', currentText);
+                    // to show the tag instead of the text, make the tag value, same as the tag itself
+
+                    $scope.saveLanguageEditorChanges(tag, tag, true);
+                }
+            }
+            $scope.runDigestCycle();
+        });
         
         (function() {// initializeMe
             setHotelBasedTheme(zsGeneralSrv.hotelTheme);

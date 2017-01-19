@@ -19,7 +19,7 @@
     	<!-- Room Status Form -->
 	    <div id="room-status" class="status-container" ng-if="isRoomStatusUpdate">
         	<div class="entry radio-check">
-		       	<label ng-repeat="status in hkStatusList" class="radio" for="status.id">
+				<label ng-repeat="status in hkStatusList" class="radio" for="{{status.id}}">
 		       		<span class="icon-form icon-radio" ng-class="{ 'checked' : multiRoomAction.hkStatusId == status.id }"></span>
 		       		<input name="room-status" type="radio" id="{{ status.id }}" value="{{ status.id }}" ng-model="multiRoomAction.hkStatusId" />
 		       		{{ status.description }}
