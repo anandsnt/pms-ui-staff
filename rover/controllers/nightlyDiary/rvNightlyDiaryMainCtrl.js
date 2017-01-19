@@ -159,6 +159,15 @@ angular.module('sntRover')
                     $stateParams.isFromStayCard = false;
                 }
             };
+            var extendShortenReservation = (newArrivalPosition) => {
+                console.log("extendShortenReservation");
+                var dispatchData = {
+                    type: 'EXTEND_SHORTEN_RESERVATION',
+                    newArrivalPosition: newArrivalPosition
+                };
+
+                store.dispatch(dispatchData);
+            };
 
             /*
              * Function to cancel editing of a reservation
@@ -192,7 +201,8 @@ angular.module('sntRover')
                 return {
                     goToPrevPage,
                     goToNextPage,
-                    selectReservation
+                    selectReservation,
+                    extendShortenReservation
                 };
             };
 

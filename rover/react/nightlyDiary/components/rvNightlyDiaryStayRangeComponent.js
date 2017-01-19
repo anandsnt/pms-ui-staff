@@ -1,6 +1,6 @@
 const NightlyDiaryStayRangeComponent = createClass ({
     getInitialState: function() {
-        return {            
+        return {
             isMouseDragging: false,
             mouseClikedX: 0,
             mouseLastPositionX: 0,
@@ -51,7 +51,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
     },
 
     moveArrivalFlag(diff) {
-        let newPosition = this.state.arrivalPosition + diff;        
+        let newPosition = this.state.arrivalPosition + diff;
         if (this.state.isMouseDragging) {
             this.setState({
                 arrivalStyle: {
@@ -59,6 +59,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
                 },
                 arrivalPosition: newPosition
             });
+            this.props.extendShortenReservation(newPosition);
         }
     },
 
