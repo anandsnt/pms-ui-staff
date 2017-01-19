@@ -185,16 +185,12 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
     let positionAndDuration = calculateReservationDurationAndPosition(diaryInitialDayOfDateGrid, reservation, numberOfDays);
     let duration = positionAndDuration.durationOfReservation + "px";
 
-    reservation.style = {};
-    reservation.style.width = duration;
-
     // Added these params to reservation to avoid the calculation repetion
     // Same values needed in rvNightlyDiaryStayRange.html
 
     reservation.numberOfNightsVisibleInGrid = positionAndDuration.numberOfNightsVisibleInGrid;
     reservation.duration = positionAndDuration.durationOfReservation;
     reservation.arrivalPosition = positionAndDuration.reservationPosition + "px";
-    reservation.arrivalPosition123 = positionAndDuration.reservationPosition ;
     reservation.departurePosition = (positionAndDuration.durationOfReservation + positionAndDuration.reservationPosition) + "px";
 
     let isReservationFuture = findIsReservationFuture(reservation, currentBusinessDate);
@@ -213,15 +209,16 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
 
     let reservationEditClass = '';
 
+    reservation.style = {};
+    reservation.style.width = duration;
     reservation.style.transform = "translateX(" + positionAndDuration.reservationPosition + "px)";
     if (reservation.id === selectedReservationId) {
         reservationEditClass = "editing";
         if (newArrivalPosition !== '') {
+            let newDuration = (positionAndDuration.durationOfReservation + positionAndDuration.reservationPosition) - newArrivalPosition;
+            reservation.style.width = newDuration;
             reservation.style.transform = "translateX(" + newArrivalPosition + "px)";
-            console.log("-----"+newArrivalPosition)
-        console.log(reservation)
         }
-
     }
 
     reservation.reservationClass = "reservation " + reservationStatusClass + " " + reservationClass + " " + reservationEditClass;
