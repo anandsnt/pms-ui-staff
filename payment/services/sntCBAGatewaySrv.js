@@ -133,11 +133,11 @@ angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$log', '$t
         };
 
         service.finishTransaction = function(transactionId) {
-            $log.info('finishTransaction');
+            $log.info('finishTransaction for :', transactionId);
             cordovaAPI.callCordovaService({
                 service: "RVCardPlugin",
                 action: "finishTransaction",
-                arguments: transactionId.toString(),
+                arguments: [transactionId.toString()],
                 successCallBack: response => {
                     $log.info('finishTransaction', response);
                 },
