@@ -1,14 +1,21 @@
 const NightlyDiaryStayRangeComponent = createClass ({
     getInitialState: function() {
+        let currentSelectedReservation = this.props.currentSelectedReservation,
+            departurePos = parseInt(currentSelectedReservation.arrivalPosition) + currentSelectedReservation.duration,
+            daysMode = NIGHTLY_DIARY_CONST.DAYS_7,
+            oneDayWidth = NIGHTLY_DIARY_CONST.RESERVATION_ROW_WIDTH / daysMode;
         return {            
             isMouseDragging: false,
             mouseClikedX: 0,
             mouseLastPositionX: 0,
-            arrivalStyle: this.props.currentSelectedReservation.arrivalStyle,
+            arrivalStyle: currentSelectedReservation.arrivalStyle,
             // this.props.currentSelectedReservation.arrivalPosition / departurePosition is in the form of xxPX
-            arrivalPosition: parseInt(this.props.currentSelectedReservation.arrivalPosition),
-            departurePosition: parseInt(this.props.currentSelectedReservation.departurePosition),
-            daysMode: 7
+            arrivalPosition: parseInt(currentSelectedReservation.arrivalPosition),
+            maxArrivalFlagPos: Math.min(departurePos, NIGHTLY_DIARY_CONST.RESERVATION_ROW_WIDTH) - oneDayWidth,
+            minArrivalFlagPos: NIGHTLY_DIARY_CONST.DAYS_7_OFFSET,
+            departurePos: departurePos,
+            reservationDuration: currentSelectedReservation.duration,            
+            daysMode: daysMode
         };
     },
 
@@ -63,6 +70,14 @@ const NightlyDiaryStayRangeComponent = createClass ({
     moveArrivalFlag(diff) {
         let state = this.state,
             curentPosition = state.arrivalPosition + diff;
+
+        if (curentPosition < state.minArrivalFlagPos) {
+            curentPosition = state.minArrivalFlagPos;
+        }
+
+        if (curentPosition > state.maxArrivalFlagPos) {
+            curentPosition = state.maxArrivalFlagPos;
+        }
 
         if (state.isMouseDragging) {
             this.setState({
