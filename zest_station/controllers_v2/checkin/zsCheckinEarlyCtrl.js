@@ -40,82 +40,77 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
                 earlyCheckinNotAvailable = !data.early_checkin_available,
                 stationNotOfferingEarlyCheckin = !$scope.zestStationData.offer_early_checkin;
 
-            if (earlyCheckinIsOFF || earlyCheckinNotAvailable || stationNotOfferingEarlyCheckin) {
-                return false;
-            } 
-            return true;
+            return !(earlyCheckinIsOFF || earlyCheckinNotAvailable || stationNotOfferingEarlyCheckin);
         };
 
+
+
+
         var setEarlyParams = function(response) {
-            console.info('===============');
-            console.info('===============', response);
-            console.info('===============');
-            $scope.reservation_in_early_checkin_window = response.reservation_in_early_checkin_window;
-            $scope.is_early_prepaid = false;
+            // Set the hotel Check-in Time
+            $scope.standardCheckinTime = response.checkin_time; // maybe move, dont need for all modes?
 
-            if (response.offer_eci_bypass) { // if bypass is true, early checkin may be part of their Rate
-                $scope.is_early_prepaid = false;
-                $scope.bypass = response.offer_eci_bypass;
-            }
-
-            if (response.is_early_checkin_purchased || response.is_early_checkin_bundled_by_addon) { // user probably purchased an early checkin from zest web, or through zest station
-                $scope.is_early_prepaid = true; // or was bundled in an add-on (the add-on could be paid or free, so show prepaid either way)
-            }
-            
-
-            $scope.standardCheckinTime = response.checkin_time;
-            $scope.early_checkin_unavailable = !earlyCheckinOn(response);
-
-            if ($scope.early_checkin_unavailable) {
-                $scope.bypass = false;
-                $scope.is_early_prepaid = false;
-                $scope.reservation_in_early_checkin_window = false;
-            }
-
-            $scope.ableToPurchaseEarly = !$scope.early_checkin_unavailable && !$scope.is_early_prepaid && $scope.reservation_in_early_checkin_window && !$scope.bypass;
             $scope.early_checkin_charge = response.early_checkin_charge;
-
-            $scope.prepaidEarlyCheckin = ($scope.bypass || $scope.is_early_prepaid) && !$scope.early_checkin_unavailable;
-            $scope.freeEarlyCheckin = $scope.bypass && !$scope.is_early_prepaid && $scope.reservation_in_early_checkin_window;
+            $scope.offerId = response.early_checkin_offer_id;
 
             $scope.early_charge_symbol = $scope.zestStationData.currencySymbol;
-            $scope.show_early_unavailable_from_checkin_later = false;
 
-            $scope.offerId = response.early_checkin_offer_id;
-            $scope.reservation_id = $scope.selectedReservation.reservation_details.reservation_id;
+            $scope.early_checkin_unavailable = !earlyCheckinOn(response);
 
-            if ($scope.ableToPurchaseEarly && 
-                !$scope.prepaidEarlyCheckin && 
-                !$scope.freeEarlyCheckin) {
-                // ask the guest if they want to purchase early check-in
-                    $scope.mode = 'EARLY_CHECKIN_SELECT';
+            var eciAvailable = !$scope.early_checkin_unavailable && response.reservation_in_early_checkin_window,
+                wasPurchased = response.is_early_checkin_purchased,
+                isBundled = response.is_early_checkin_bundled_by_addon;
+
+                // user probably purchased an early checkin from zest web, or through zest station
+                // or was bundled in an add-on (the add-on could be paid or free, so show prepaid either way)
+            var isPrepaid = eciAvailable && (isBundled || wasPurchased) ? true : false,
+                bypass = (response.offer_eci_bypass && !eciAvailable) ? true : false;
+
+
+            var ableToPurchaseEarly = eciAvailable && !isPrepaid && !bypass,
+                freeEarlyCheckin = bypass && !isPrepaid && eciAvailable;
+            
+                // can remove? if bypass is true; they are 'elligible' for early checkin, but prepaid is seen by other attributes
+                // 
+                  //  if (response.offer_eci_bypass) { // if bypass is true, early checkin may be part of their Rate
+                  //      isPrepaid = false;
+                        //$scope.bypass = response.offer_eci_bypass;
+                  //  }
+                  
+
+            // ask the guest if they want to purchase early check-in
+            if (ableToPurchaseEarly && !isPrepaid && !freeEarlyCheckin) {
+                $scope.mode = 'EARLY_CHECKIN_SELECT';
+
             }
 
-            if ($scope.prepaidEarlyCheckin) {
+            if (isPrepaid && eciAvailable) {
                 $scope.mode = 'EARLY_CHECKIN_PREPAID';
             }
 
-            if ($scope.freeEarlyCheckin && !$scope.early_checkin_unavailable) {
+            if (freeEarlyCheckin && eciAvailable) {
                 $scope.mode = 'EARLY_CHECKIN_FREE';
             }
 
-            if ($scope.is_early_prepaid && !$scope.reservation_in_early_checkin_window) {
+            if (isPrepaid && !eciAvailable) {// may be unavailbe since outside of eci window of time
                 $scope.mode = 'EARLY_CHECKIN_PREPAID_NOT_READY';   
             }
 
             console.info('MODE: ', $scope.mode);
+
+
+            // thats all folks 
         };
 
         $scope.checkinLater = function() {
             $scope.early_checkin_unavailable = true;
-            $scope.show_early_unavailable_from_checkin_later = true;
 
             $scope.mode = 'CHECKIN_LATER';
         };
 
         $scope.acceptEarlyCheckinOffer = function() {
             var postData = {
-                'reservation_id': $scope.reservation_id,
+                'reservation_id': $scope.selectedReservation.reservation_details.reservation_id,
                 'early_checkin_offer_id': $scope.offerId // TODO: move this to API logic,...shouldnt need to also send this via UI...
             };
 
