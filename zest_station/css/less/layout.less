@@ -902,18 +902,17 @@
         }
 
              #message-content {
-            padding: 0 80px;
+            padding: 0 80px 20px;
             #flexbox > .flex();
             #flexbox > .parent(row wrap, center, '', '');
 
             h3 { 
-                text-align: center; 
+                text-align: left; 
                 width:100%;
             }
 
             .button {
                 text-align: center;
-                padding: 0 0 0 32px;
                 width: 162px;
 
                 .icons {
@@ -954,6 +953,11 @@
                 background: transparent;
                 margin-left: auto;
                 .box-shadow(none);
+                &.print,&.email{
+                    background: @brandColor !important;
+                    color: @white !important;
+                    margin-left: 20px !important;
+                }
 
                 &.next {
                     position: relative;

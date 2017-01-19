@@ -119,21 +119,8 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 
 			};
 
-			var fetchOwsMessages = function() {
-				$scope.owsMsgOpenPoup = false;
-				var options = {
-					params: {
-						"reservation_id": $scope.selectedReservation.id
-					},
-					successCallBack: onOwsMsgFetchSuccess
-				};
-
-				$scope.callAPI(zsCheckinSrv.fetchOwsMessage, options);
-
-			};
-
-			$scope.$on('FETCH_OWS_MESSAGES', function() {
-				fetchOwsMessages();
+			$scope.$on('FETCH_OWS_MESSAGES_SUCCESS', function(e,response) {
+				onOwsMsgFetchSuccess(response);
 			});
 
 		}());
