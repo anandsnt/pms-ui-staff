@@ -25,12 +25,12 @@ angular.module('sntPay').controller('payCBACtrl',
                         response
                     ).then(response => {
                         sntCBAGatewaySrv.finishTransaction(transaction.id);
-                        $scope.$emit("hideLoader");
-                        $scope.$emit("CBA_PAYMENT_SUCCESS", response.data);
+                        $scope.$emit('hideLoader');
+                        $scope.$emit('CBA_PAYMENT_SUCCESS', response.data);
                     }, errorMessage => {
                         $log.error('update to server failed...');
-                        $scope.$emit("hideLoader");
-                        $scope.$emit("CBA_PAYMENT_FAILED", errorMessage.data);
+                        $scope.$emit('hideLoader');
+                        $scope.$emit('CBA_PAYMENT_FAILED', errorMessage.data);
                     });
                 },
                 onSubmitFailure = function(err) {
@@ -38,13 +38,14 @@ angular.module('sntPay').controller('payCBACtrl',
                         transaction.id,
                         err
                     ).then(() => {
-                        $scope.$emit("hideLoader");
-                        var errorMessage = [err.RVErrorCode + " " + err.RVErrorDesc];
+                        var errorMessage = [err.RVErrorCode + ' ' + err.RVErrorDesc];
 
-                        $scope.$emit("CBA_PAYMENT_FAILED", errorMessage);
+                        sntCBAGatewaySrv.finishTransaction(transaction.id);
+                        $scope.$emit('CBA_PAYMENT_FAILED', errorMessage);
+                        $scope.$emit('hideLoader');
                     }, errorMessage => {
-                        $scope.$emit("hideLoader");
-                        $scope.$emit("CBA_PAYMENT_FAILED", errorMessage.data);
+                        $scope.$emit('hideLoader');
+                        $scope.$emit('CBA_PAYMENT_FAILED', errorMessage.data);
                     });
                 },
                 doPayment = function() {
@@ -60,34 +61,34 @@ angular.module('sntPay').controller('payCBACtrl',
                     }, onSubmitSuccess, onSubmitFailure);
                 },
                 initiatePaymentProcess = function(event, params) {
-                    $scope.$emit("showLoader");
+                    $scope.$emit('showLoader');
                     sntCBAGatewaySrv.initiateTransaction(
                         params.postData.amount,
                         params.bill_id
                     ).then(response => {
-                        $scope.$emit("hideLoader");
+                        $scope.$emit('hideLoader');
                         transaction.id = response.data.id;
                         Number(params.postData.amount) > 0 ? doPayment() : doRefund();
                     }, errorMessage => {
-                        $scope.$emit("hideLoader");
-                        $scope.$emit("CBA_PAYMENT_FAILED", errorMessage.data);
+                        $scope.$emit('hideLoader');
+                        $scope.$emit('CBA_PAYMENT_FAILED', errorMessage.data);
                     });
                 };
 
             // ----------- init -------------
             (() => {
-                $log.info("CBA controller init");
+                $log.info('CBA controller init');
 
                 // Initiate Listeners
-                var listenerPayment = $scope.$on("INITIATE_CBA_PAYMENT", initiatePaymentProcess);
+                var listenerPayment = $scope.$on('INITIATE_CBA_PAYMENT', initiatePaymentProcess);
 
-                var listenerAddCard = $scope.$on("INITIATE_CBA_TOKENIZATION", () => {
+                var listenerAddCard = $scope.$on('INITIATE_CBA_TOKENIZATION', () => {
                     sntCBAGatewaySrv.addCard(onAddCardSuccess, onAddCardFailure);
                 });
 
                 // Cleaning listeners
-                $scope.$on("$destroy", listenerPayment);
-                $scope.$on("$destroy", listenerAddCard);
+                $scope.$on('$destroy', listenerPayment);
+                $scope.$on('$destroy', listenerAddCard);
             })();
 
         }
