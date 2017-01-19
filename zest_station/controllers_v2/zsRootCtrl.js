@@ -687,9 +687,17 @@ sntZestStation.controller('zsRootCtrl', [
 				// home screen, admin screen, or OOS screen
 				// include the states, which don't need the timeout to be handled 
 				// in the below condition
-                var ignoreTimeoutOnStates = ['zest_station.admin', 'zest_station.home', 'zest_station.outOfService'];
+                var ignoreTimeoutOnStates = ['zest_station.admin', 'zest_station.home', 'zest_station.outOfService'],
+                    inAnIgnoreState = ignoreTimeoutOnStates.indexOf(currentState) !== -1;
 
-                if (idleTimerEnabled === 'true' && !(ignoreTimeoutOnStates.indexOf(currentState) !== -1) || isDispensingKey()) {// see isDispensingKey() comments
+                if (inAnIgnoreState) {
+                    // in case station goes OOS or home During encoding due to User or other Error
+                    $scope.zestStationData.makingKeyInProgress = false;
+                }
+
+                var currentlyDispensingKey = isDispensingKey();// see isDispensingKey() comments
+
+                if (idleTimerEnabled === 'true' && !inAnIgnoreState && !currentlyDispensingKey) {
                     userInActivityTimeInSeconds = userInActivityTimeInSeconds + 1;
 					// when user activity is not recorded for more than idle_timer.prompt
 					// time set in admin, display inactivity popup
