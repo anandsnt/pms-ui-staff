@@ -140,7 +140,8 @@ angular.module('reportsModule')
 
         /** @type {Object} Array of all the filter values, new values added in future can be included here */
         var __optionFilterNames = {
-            'INCLUDE_NOTES': true,
+            'INCLUDE_GUEST_NOTES': true,
+            'INCLUDE_RESERVATION_NOTES': true,
             'VIP_ONLY': true,
             'INCLUDE_VARIANCE': true,
             'INCLUDE_LAST_YEAR': true,
