@@ -1,8 +1,11 @@
 admin.controller('ADZestStationRoomUpsellCtrl', ['$scope', 'ADZestStationSrv', 'roomUpsellData',
     function($scope, ADZestStationSrv, roomUpsellData) {
-
-
-
+        /**
+         * [percentageChanged if any of the tier's percentage is changed, the other tier's 
+         * percentage is recalculated]
+         * @param  {[type]} type [description]
+         * @return {[type]}      [description]
+         */
         $scope.percentageChanged = function(type) {
             var isTier2Changed = type === 'tier2';
             var tier2Value = parseInt($scope.data.upsell_compositions_in_percentage.tier_2);
@@ -17,7 +20,6 @@ admin.controller('ADZestStationRoomUpsellCtrl', ['$scope', 'ADZestStationSrv', '
                 return;
             }
         };
-
         /**
          * function to save the details
          */
@@ -26,11 +28,9 @@ admin.controller('ADZestStationRoomUpsellCtrl', ['$scope', 'ADZestStationSrv', '
                 params: $scope.data,
                 successCallBack: $scope.goBackToPreviousState
             };
-
             $scope.callAPI(ADZestStationSrv.save, options);
         };
         (function() {
-
             BaseCtrl.call(this, $scope);
             var upsellData = {};
             // extract the required values
@@ -42,9 +42,10 @@ admin.controller('ADZestStationRoomUpsellCtrl', ['$scope', 'ADZestStationSrv', '
             upsellData.room_upsell_style = roomUpsellData.room_upsell_style;
             upsellData.hotel_room_upsell_on = roomUpsellData.hotel_room_upsell_on;
             $scope.data = upsellData;
-            var maxUpsellPresent = 7;
-            $scope.maxUpsellOptions = _.range(1, maxUpsellPresent + 1);
-            //console.log($scope.maxUpsellOptions);
+            //upsellData.number_of_room_types_in_higher_level = 1;
+            // create an array with max number as the number
+            // of upsell room types available
+            $scope.maxUpsellOptions = _.range(1, roomUpsellData.number_of_room_types_in_higher_level + 1);
         })();
     }
 ]);
