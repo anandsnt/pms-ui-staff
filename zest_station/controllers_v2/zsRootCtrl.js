@@ -687,9 +687,17 @@ sntZestStation.controller('zsRootCtrl', [
 				// home screen, admin screen, or OOS screen
 				// include the states, which don't need the timeout to be handled 
 				// in the below condition
-                var ignoreTimeoutOnStates = ['zest_station.admin', 'zest_station.home', 'zest_station.outOfService'];
+                var ignoreTimeoutOnStates = ['zest_station.admin', 'zest_station.home', 'zest_station.outOfService'],
+                    inAnIgnoreState = ignoreTimeoutOnStates.indexOf(currentState) !== -1;
 
-                if (idleTimerEnabled === 'true' && !(ignoreTimeoutOnStates.indexOf(currentState) !== -1) || isDispensingKey()) {// see isDispensingKey() comments
+                if (inAnIgnoreState) {
+                    // in case station goes OOS or home During encoding due to User or other Error
+                    $scope.zestStationData.makingKeyInProgress = false;
+                }
+
+                var currentlyDispensingKey = isDispensingKey();// see isDispensingKey() comments
+
+                if (idleTimerEnabled === 'true' && !inAnIgnoreState && !currentlyDispensingKey) {
                     userInActivityTimeInSeconds = userInActivityTimeInSeconds + 1;
 					// when user activity is not recorded for more than idle_timer.prompt
 					// time set in admin, display inactivity popup
@@ -1295,6 +1303,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData = zestStationSettings;
             $scope.zestStationData.makingKeyInProgress = false;
             $scope.zestStationData.demoModeEnabled = 'false'; // demo mode for hitech, only used in snt-theme
+            $scope.zestStationData.noCheckInsDebugger = 'false';
             $scope.zestStationData.isAdminFirstLogin = true;
 			// $scope.zestStationData.checkin_screen.authentication_settings.departure_date = true;//left from debuggin?
             setAUpIdleTimer();
@@ -1330,7 +1339,8 @@ sntZestStation.controller('zsRootCtrl', [
             } else {
                 $scope.zestStationData.kioskOutOfOrderTreshold = parseInt($scope.zestStationData.kiosk_out_of_order_treshold_value);
             }
-
+            // CICO-36953 - moves nationality collection to after res. details, using this flag to make optional
+            // and may move to an admin in a future story 
             $scope.zestStationData.consecutiveKeyFailure = 0;
         }());
     }
