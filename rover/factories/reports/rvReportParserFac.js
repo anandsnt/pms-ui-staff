@@ -360,7 +360,7 @@ sntRover.factory('RVReportParserFac', [
                     rowData.valueList = rowData.valueList.concat([
                        { key: 'res_count', value: e.total_reservations_count },
                        { key: 'available', value: e.available_rooms_count },
-                       { key: 'future_revenue', value: $filter('currency')(e.future_revenue, $rootScope.currencySymbol, 2) }, 
+                       { key: 'future_revenue', value: $filter('currency')(e.future_revenue, $rootScope.currencySymbol, 2) },
                        { key: 'adr', value: $filter('currency')(e.adr, $rootScope.currencySymbol, 2) },
                        { key: 'rate_revenue', value: $filter('currency')(e.rate_revenue, $rootScope.currencySymbol, 2) }
                     ]);
@@ -411,8 +411,13 @@ sntRover.factory('RVReportParserFac', [
                 return check;
             };
 
-            var checkNote = function(item) {
-                var check = !!options['checkNote'] && !!item['notes'] && !!item['notes'].length;
+            var checkGuestNote = function(item) {
+                var check = !!options['checkGuestNote'] && !!item['guest_notes'] && !!item['guest_notes'].length;
+
+                return check;
+            };
+            var checkReservationNote = function(item) {
+                var check = !!options['checkReservationNote'] && !!item['reservation_notes'] && !!item['reservation_notes'].length;
 
                 return check;
             };
@@ -453,7 +458,8 @@ sntRover.factory('RVReportParserFac', [
                     makeCopy   = angular.copy( apiResponse[i] );
                     customData = [];
                     guestData  = {};
-                    noteData   = {};
+                    guestNoteData = {};
+                    reservationNoteData = {};
                     cancelData = {};
                     adjustData = [];
 
@@ -494,10 +500,17 @@ sntRover.factory('RVReportParserFac', [
                     }
 
 
-                    if ( checkNote(makeCopy) ) {
-                        noteData = {
-                            isNoteData: true,
-                            notes: angular.copy( makeCopy['notes'] )
+                    if ( checkGuestNote(makeCopy) ) {
+                        guestNoteData = {
+                            isGuestNoteData: true,
+                            guestNotes: angular.copy( makeCopy['guest_notes'] )
+                        };
+                        customData.push( noteData );
+                    }
+                    if ( checkReservationNote(makeCopy) ) {
+                        reservationNoteData = {
+                            isReservationNoteData: true,
+                            reservationNotes: angular.copy( makeCopy['reservation_notes'] )
                         };
                         customData.push( noteData );
                     }
