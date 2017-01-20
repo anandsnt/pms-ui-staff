@@ -595,6 +595,16 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 showMoveConfirmationPopup(dataForPopup);
             };
 
+            var showBillingInfoExistPopup = function() {
+                ngDialog.open({
+                    template: '/assets/partials/groups/summary/warnBillingInfoPresent.html',
+                    className: '',
+                    scope: $scope,
+                    closeByDocument: false,
+                    closeByEscape: false
+                });
+            };
+
             /**
              * [successCallBackOfMoveDatesAPI description]
              * @param  {[type]} data [description]
@@ -602,7 +612,14 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
              */
             var successCallBackOfMoveDatesAPI = function (data) {
                 $scope.closeDialog ();
-                lastSuccessCallback ();
+                // check if billing info exist, if so show a warn popup CICO-36383
+                if ($scope.groupConfigData.summary.posting_account_billing_info) {
+                    $timeout(function() {
+                        showBillingInfoExistPopup ();
+                    }, 750);
+                } else {
+                    lastSuccessCallback ();
+                }
             };
 
             /**
