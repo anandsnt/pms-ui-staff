@@ -115,14 +115,14 @@ sntZestStation.config(['$stateProvider',
 
         // early check-in
         $stateProvider.state('zest_station.checkinSuccess', {
-          url: '/checkinSuccess/:guest_id/:reservation_id/:room_no/:email/:first_name',
+          url: '/checkinSuccess/:guest_id/:reservation_id/:room_no/:email/:first_name/:guest_email_blacklisted',
           templateUrl: '/assets/partials_v2/checkin/zsCheckinSuccess.html',
           controller: 'zsCheckinSuccessCtrl'
       });
 
       // ows msgs
         $stateProvider.state('zest_station.owsMsgsPresent', {
-          url: '/owsMsgPresent/:guest_id/:reservation_id/:room_no/:email/:first_name/:ows_msgs',
+          url: '/owsMsgPresent/:guest_id/:reservation_id/:room_no/:email/:first_name/:ows_msgs/:guest_email_blacklisted',
           templateUrl: '/assets/partials_v2/checkin/zsOwsMsgsPresent.html',
           controller: 'zsOwsMsgListingCtrl'
       });

@@ -31,16 +31,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 			var haveValidGuestEmail = checkIfEmailIsBlackListedOrValid(),
 				collectNationalityEnabled = $scope.zestStationData.check_in_collect_nationality;
 
-			console.warn('afterGuestCheckinCallback :: current state params: ', $stateParams);
-			var stateParams = {
-				'guest_id': $stateParams.guest_id,
-				'reservation_id': $stateParams.reservation_id,
-				'room_no': $stateParams.room_no,
-				'email': $stateParams.email,
-				'first_name': $stateParams.first_name
-			};
-
-			console.info('haveValidGuestEmail: ', haveValidGuestEmail);
+			var stateParams = $stateParams;
 
 			// if collectiing nationality after email, but email is already valid
 			if (collectNationalityEnabled && haveValidGuestEmail) {

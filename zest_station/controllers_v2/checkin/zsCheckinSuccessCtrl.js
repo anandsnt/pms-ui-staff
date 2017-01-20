@@ -7,15 +7,8 @@ sntZestStation.controller('zsCheckinSuccessCtrl', [
     'zsUtilitySrv',
     function($scope, $stateParams, $state, zsEventConstants, zsCheckinSrv, zsUtilitySrv) {
 
-        var stateParams = {
-                'guest_id': $stateParams.guest_id,
-                'reservation_id': $stateParams.reservation_id,
-                'room_no': $stateParams.room_no,
-                'email': $stateParams.email,
-                'first_name': $stateParams.first_name
-        };
-
-
+        var stateParams = $stateParams;
+        
         var checkIfEmailIsBlackListedOrValid = function() {
             return ($stateParams.email.length > 0 && !($stateParams.guest_email_blacklisted === 'true') && zsUtilitySrv.isValidEmail($stateParams.email));
         };
