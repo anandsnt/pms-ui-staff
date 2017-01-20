@@ -8,7 +8,8 @@ sntZestStation.controller('zsCheckinSuccessCtrl', [
     function($scope, $stateParams, $state, zsEventConstants, zsCheckinSrv, zsUtilitySrv) {
 
         var stateParams = $stateParams;
-        
+
+        $scope.user_name = stateParams.first_name;
         var checkIfEmailIsBlackListedOrValid = function() {
             return ($stateParams.email.length > 0 && !($stateParams.guest_email_blacklisted === 'true') && zsUtilitySrv.isValidEmail($stateParams.email));
         };
