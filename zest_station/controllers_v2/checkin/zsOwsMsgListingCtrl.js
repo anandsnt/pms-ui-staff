@@ -13,6 +13,9 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 
 
 		BaseCtrl.call(this, $scope);
+		$scope.owsMessages = JSON.parse($stateParams.ows_msgs);
+		$scope.mode = "VIEW_MSG_MODE";
+
 
 		var printActions = function() {
 			// emit this to paretnt ctrl to show in print
@@ -55,75 +58,59 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 			}, 100);
 		};
 
-		var init = (function() {
+		$scope.viewMessages = function() {
+			// open popup only if there are any OWS messages
+			$scope.owsMsgOpenPoup = true;
+			// select first message
+			$scope.currentOwsMessage = $scope.owsMessages[0].message;
+			var selectedOwsMessageIndex = 0;
+			// on reaching last message, we need to show exit button
 
-			var showEmailButton = function() {
-				// check if reservation had email id
-				$scope.showEmailButton = ($scope.selectedReservation.guest_details[0].email.length > 0) ? true : false;
+			$scope.isLastOwsMsg = $scope.owsMessages.length === 1 ? true : false;
+
+			// set page number
+			var setPageNumber = function() {
+				$scope.currentpageNumber = selectedOwsMessageIndex + 1;
+			};
+			setPageNumber();
+
+			$scope.currentpageNumber = selectedOwsMessageIndex + 1;
+
+			var checkifItsLastOwsMsg = function() {
+				$scope.isLastOwsMsg = (selectedOwsMessageIndex + 1 === $scope.owsMessages.length) ? true : false;
+			};
+			// check if reservation had email id
+			$scope.showEmailButton = (!_.isNull($stateParams.email) && $stateParams.email.length > 0) ? true : false;
+
+			// load next ows message
+			$scope.loadNextOwsMsg = function() {
+				selectedOwsMessageIndex++;
+				setPageNumber();
+				$scope.currentOwsMessage = $scope.owsMessages[selectedOwsMessageIndex].message;
+				checkifItsLastOwsMsg();
+			};
+			// print action
+			$scope.printOwsMsg = function() {
+				printActions();
+			};
+			// email the message to the guest
+			$scope.emailOwsMsg = function() {
+				var options = {
+					params: {
+						"message_id": $scope.owsMessages[selectedOwsMessageIndex].id,
+						"reservation_id": $stateParams.reservation_id
+					}
+				};
+
+				$scope.callAPI(zsCheckinSrv.sendOWSMsgAsMail, options);
 			};
 
-			var onOwsMsgFetchSuccess = function(response) {
-
-				$scope.owsMessages = response.messages;
-				if ($scope.owsMessages.length > 0) {
-					// popup in zeststation was implemented in other way, not using ngdialog
-					// open popup only if there are any OWS messages
-					$scope.owsMsgOpenPoup = true;
-					// select first message
-					$scope.currentOwsMessage = $scope.owsMessages[0].message;
-					var selectedOwsMessageIndex = 0;
-					// on reaching last message, we need to show exit button
-
-					$scope.isLastOwsMsg = $scope.owsMessages.length === 1 ? true : false;
-					// set page number
-					var setPageNumber = function() {
-						$scope.currentpageNumber = selectedOwsMessageIndex + 1;
-					};
-					var checkifItsLastOwsMsg = function() {
-						$scope.isLastOwsMsg = (selectedOwsMessageIndex + 1 === $scope.owsMessages.length) ? true : false;
-					};
-
-					setPageNumber();
-					showEmailButton();
-
-					// load next ows message
-					$scope.loadNextOwsMsg = function() {
-						selectedOwsMessageIndex++;
-						setPageNumber();
-						$scope.currentOwsMessage = $scope.owsMessages[selectedOwsMessageIndex].message;
-						checkifItsLastOwsMsg();
-					};
-					// print action
-					$scope.printOwsMsg = function() {
-						printActions();
-					};
-					// email the message to the guest
-					$scope.emailOwsMsg = function() {
-						var options = {
-							params: {
-								"message_id": $scope.owsMessages[selectedOwsMessageIndex].id,
-								"reservation_id": $scope.selectedReservation.id
-							}
-						};
-
-						$scope.callAPI(zsCheckinSrv.sendOWSMsgAsMail, options);
-					};
-
-					$scope.closePopup = function() {
-						$scope.owsMsgOpenPoup = false;
-
-					};
-				} else {
-					return;
-				}
-
+			$scope.closePopup = function() {
+				$scope.owsMsgOpenPoup = false;
+				$scope.mode = "MSG_READ_MODE";
 			};
+		};
 
-			$scope.$on('FETCH_OWS_MESSAGES_SUCCESS', function(e,response) {
-				onOwsMsgFetchSuccess(response);
-			});
-
-		}());
 
 	}
 ]);

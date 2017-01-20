@@ -93,7 +93,7 @@ sntZestStation.config(['$stateProvider',
 
 		// checkin final screen
       	$stateProvider.state('zest_station.zsCheckinFinal', {
-          url: '/zsCheckinFinal/:print_opted/:email_opted/:print_status/:email_status/:key_success',
+          url: '/zsCheckinFinal/:print_opted/:email_opted/:print_status/:email_status/:key_success/:email/:reservation_id',
           templateUrl: '/assets/partials_v2/checkin/zsCheckinFinal.html',
           controller: 'zsCheckinFinalCtrl'
       });
@@ -111,6 +111,13 @@ sntZestStation.config(['$stateProvider',
           url: '/checkinEarly/:early_checkin_data:/:early_charge_symbol/:selected_reservation',
           templateUrl: '/assets/partials_v2/checkin/zsCheckinEarly.html',
           controller: 'zsCheckinEarlyCtrl'
+      });
+
+      // ows msgs
+        $stateProvider.state('zest_station.owsMsgsPresent', {
+          url: '/owsMsgPresent/:email/:reservation_id/:ows_msgs',
+          templateUrl: '/assets/partials_v2/checkin/zsOwsMsgsPresent.html',
+          controller: 'zsOwsMsgListingCtrl'
       });
       	
     }
