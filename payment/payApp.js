@@ -5,7 +5,11 @@ angular.module('sntPay', [
     'oc.lazyLoad',
     'ng-iscroll',
     'ngDialog'
-])
-.run(['$rootScope', 'PAYMENT_CONFIG', function($rootScope, PAYMENT_CONFIG) {
-
+]).run(['$rootScope', 'sntCBAGatewaySrv', function($rootScope, sntCBAGatewaySrv) {
+    /**
+     * This listener initiates the power failure mitigation routine in case of CBA
+     */
+    $rootScope.$on('CBA_PAYMENT_POWER_FAILURE_CHECK', () => {
+        sntCBAGatewaySrv.checkLastTransactionStatus();
+    });
 }]);

@@ -91,7 +91,8 @@ module.exports = {
             'guestweb_hive': [ themeCSSRoot + 'guestweb_hive.css'],
             'guestweb_pod_dc': [ themeCSSRoot + 'guestweb_pod_dc.css'],
             'guestweb_snt': [ themeCSSRoot + 'guestweb_snt.css'],
-            'guestweb_silver_stone': [ themeCSSRoot + 'guestweb_silver_stone.css']
+            'guestweb_silver_stone': [ themeCSSRoot + 'guestweb_silver_stone.css'],
+            'guestweb_koa_kea': [ themeCSSRoot + 'guestweb_koa_kea.css']
         };     
     }
 };
