@@ -46,19 +46,19 @@
 		<span ng-if="each.group_name" class="icons icon-group">{{ each.group_name }}</span>
 	</td>
 
-	<!-- guest notes -->
-	<td ng-if="each.isGuestNoteData" class="secondary notes" colspan="5">
-		<strong>Guest Notes</strong>
-		<p ng-repeat="note in each.guestNotes">
+	<!-- reservation notes -->
+	<td ng-if="each.isReservationNoteData" class="secondary notes" colspan="5">
+		<strong>Res. Notes</strong>
+		<p ng-repeat="note in each.reservationNotes">
 			{{ note.date | date : dateFormat }} &#8226; {{ note.name }}
 			<span>{{ note.note }}</span>
 		</p>
 	</td>
-
-	<!-- reservation notes -->
-	<td ng-if="each.isReservationNoteData" class="secondary notes" colspan="5">
-		<strong>Reservation Notes</strong>
-		<p ng-repeat="note in each.reservationNotes">
+	
+	<!-- guest notes -->
+	<td ng-if="each.isGuestNoteData" class="secondary notes" colspan="5">
+		<strong>Guest Notes</strong>
+		<p ng-repeat="note in each.guestNotes">
 			{{ note.date | date : dateFormat }} &#8226; {{ note.name }}
 			<span>{{ note.note }}</span>
 		</p>
