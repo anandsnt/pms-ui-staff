@@ -58,54 +58,5 @@ sntZestStation.controller('zsCheckinFinalCtrl', [
                 }
             }
         }());
-
-        /* OWS MSG starts here **/
-
-        var owsMsgsPresent = false,
-            owsMsgs = [],
-            fetchOwsMessages = function() {
-                var onOwsMsgFetchSuccess = function(response) {
-                    if (response.messages.length > 0) {
-                        owsMsgsPresent = true;
-                        owsMsgs = response.messages;
-                    }else{
-                        return;
-                    }
-                };
-                $scope.owsMsgOpenPoup = false;
-                var options = {
-                    params: {
-                        "reservation_id": $stateParams.reservation_id
-                    },
-                    successCallBack: onOwsMsgFetchSuccess
-                };
-
-                $scope.callAPI(zsCheckinSrv.fetchOwsMessage, options);
-
-            };
-
-        var isOwsMsgEnabled = function() {
-            // if ows settings is turned for station and is connected property
-            return $scope.zestStationData.is_kiosk_ows_messages_active && !$scope.zestStationData.is_standalone;
-        };
-        
-        // fetch OWS messages
-        if (isOwsMsgEnabled()) {
-            fetchOwsMessages();
-        }
-
-        $scope.checkinFinalDoneAction = function() {
-            if (owsMsgsPresent) {
-                var stateparams = {
-                    reservation_id: $stateParams.reservation_id,
-                    email: $stateParams.email,
-                    ows_msgs: JSON.stringify(owsMsgs)
-                };
-                $state.go('zest_station.owsMsgsPresent', stateparams);
-            } else {
-                $scope.navToHome();
-            }
-        };
-
     }
 ]);

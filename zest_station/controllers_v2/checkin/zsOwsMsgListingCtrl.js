@@ -2,8 +2,8 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 	'$scope',
 	'$state',
 	'zsEventConstants',
-	'$stateParams', 'zsCheckinSrv', '$rootScope', '$window',
-	function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, $rootScope, $window) {
+	'$stateParams', 'zsCheckinSrv', '$rootScope', '$window', 'zsUtilitySrv',
+	function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, $rootScope, $window, zsUtilitySrv) {
 
 		/** ********************************************************************************************
 		 **      Expected state params -----> guest_id    
@@ -16,6 +16,45 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 		$scope.owsMessages = JSON.parse($stateParams.ows_msgs);
 		$scope.mode = "VIEW_MSG_MODE";
 
+
+		var checkIfEmailIsBlackListedOrValid = function() {
+			return ($stateParams.email.length > 0 && !($stateParams.guest_email_blacklisted === 'true') && zsUtilitySrv.isValidEmail($stateParams.email));
+		};
+
+		/**
+		 * [afterGuestCheckinCallback description]
+		 * @param  {[type]} response [description]
+		 * @return {[type]}          [description]
+		 */
+		$scope.nextPageActions = function(response) {
+			// if email is valid and is not blacklisted
+			var haveValidGuestEmail = checkIfEmailIsBlackListedOrValid(),
+				collectNationalityEnabled = $scope.zestStationData.check_in_collect_nationality;
+
+			console.warn('afterGuestCheckinCallback :: current state params: ', $stateParams);
+			var stateParams = {
+				'guest_id': $stateParams.guest_id,
+				'reservation_id': $stateParams.reservation_id,
+				'room_no': $stateParams.room_no,
+				'email': $stateParams.email,
+				'first_name': $stateParams.first_name
+			};
+
+			console.info('haveValidGuestEmail: ', haveValidGuestEmail);
+
+			// if collectiing nationality after email, but email is already valid
+			if (collectNationalityEnabled && haveValidGuestEmail) {
+				$state.go('zest_station.collectNationality', stateParams);
+
+			} else if (haveValidGuestEmail) {
+				stateParams.email = $stateParams.email;
+				$state.go('zest_station.checkinKeyDispense', stateParams);
+			} else {
+				console.warn('to email collection: ', stateParams);
+				$state.go('zest_station.checkInEmailCollection', stateParams);
+			}
+
+		};
 
 		var printActions = function() {
 			// emit this to paretnt ctrl to show in print
