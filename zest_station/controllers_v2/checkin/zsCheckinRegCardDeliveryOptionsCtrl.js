@@ -9,7 +9,8 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
     '$filter',
     '$timeout',
     '$window',
-    function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, zsUtilitySrv, zsGeneralSrv, $filter, $timeout, $window) {
+    '$translate',
+    function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, zsUtilitySrv, zsGeneralSrv, $filter, $timeout, $window, $translate) {
 
 		/** ********************************************************************************************
 		 **		Expected state params -----> reservation_id, room_no,  first_name, guest_id, key_success
@@ -133,7 +134,8 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                 };
 
                 var data = {
-                    'reservation_id': $stateParams.reservation_id
+                    'reservation_id': $stateParams.reservation_id,
+                    'language_code' : $translate.use()
                 };
 
                 var startTacDataFailedActions = function() {
