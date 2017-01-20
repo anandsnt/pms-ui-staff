@@ -68,8 +68,8 @@ sntZestStation.controller('zsCheckinFinalCtrl', [
                     if (response.messages.length > 0) {
                         owsMsgsPresent = true;
                         owsMsgs = response.messages;
-                    } else {
-                        $scope.navToHome();
+                    }else{
+                        return;
                     }
                 };
                 $scope.owsMsgOpenPoup = false;
@@ -83,12 +83,12 @@ sntZestStation.controller('zsCheckinFinalCtrl', [
                 $scope.callAPI(zsCheckinSrv.fetchOwsMessage, options);
 
             };
-        $scope.zestStationData.is_kiosk_ows_messages_active = true;
-        $scope.zestStationData.is_standalone = false;
 
         var isOwsMsgEnabled = function() {
+            // if ows settings is turned for station and is connected property
             return $scope.zestStationData.is_kiosk_ows_messages_active && !$scope.zestStationData.is_standalone;
         };
+        
         // fetch OWS messages
         if (isOwsMsgEnabled()) {
             fetchOwsMessages();
