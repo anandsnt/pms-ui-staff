@@ -3,8 +3,7 @@ sntZestStation.controller('zsCheckinFinalCtrl', [
     '$stateParams',
     '$state',
     'zsEventConstants',
-    'zsCheckinSrv',
-    function($scope, $stateParams, $state, zsEventConstants, zsCheckinSrv) {
+    function($scope, $stateParams, $state, zsEventConstants) {
 
 
         /** ********************************************************************************************
@@ -20,7 +19,7 @@ sntZestStation.controller('zsCheckinFinalCtrl', [
         /**
          * [initializeMe description]
          */
-        var initializeMe = (function() {        
+        var initializeMe = (function() {
             // hide back button
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
             // hide close button
@@ -58,5 +57,7 @@ sntZestStation.controller('zsCheckinFinalCtrl', [
                 }
             }
         }());
+
+
     }
 ]);

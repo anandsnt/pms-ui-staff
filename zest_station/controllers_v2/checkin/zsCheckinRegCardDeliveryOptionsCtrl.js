@@ -56,8 +56,6 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                 stateParams.email_opted = 'true';
                 stateParams.email_status = actionStatus;
             }
-            stateParams.reservation_id = $stateParams.reservation_id;
-            stateParams.email = $stateParams.email;
             $state.go('zest_station.zsCheckinFinal', stateParams);
         };
 

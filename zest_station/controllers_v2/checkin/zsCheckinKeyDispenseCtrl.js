@@ -59,15 +59,12 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
         $scope.goToNextScreen = function(status) {
 
             stateParams.key_success = status === 'success';
-            stateParams.reservation_id = $stateParams.reservation_id;
-            stateParams.email = $stateParams.email;
-
             console.warn('goToNextScreen: ', stateParams);
             // check if a registration card delivery option is present (from Admin>Station>Check-in), if none are checked, go directly to final screen
             var registration_card = $scope.zestStationData.registration_card;
 
             if (!registration_card.email && !registration_card.print && !registration_card.auto_print) {
-                $state.go('zest_station.zsCheckinFinal',stateParams);
+                $state.go('zest_station.zsCheckinFinal');
             } else {
                 $state.go('zest_station.zsCheckinBillDeliveryOptions', stateParams);
             }
