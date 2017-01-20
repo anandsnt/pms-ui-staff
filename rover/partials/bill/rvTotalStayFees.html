@@ -9,7 +9,7 @@
 			{{'SUPPRESSED_RATES_TEXT' | translate}}
 		</span>
 	</button>
-	<button type="button" class="button with-icon green" click-touch='showAdvancedBillDialog()' ng-show="( showPayButton) || allowPmtWithGiftCard === true || ( billData.credit_card_details.payment_type ==='DB' && reservationBillData.reservation_status === 'CHECKEDOUT')">
+	<button type="button" class="button with-icon green" click-touch='showAdvancedBillDialog()' ng-show="( showPayButton ) || allowPmtWithGiftCard === true">
 		<span class="icons icon-wallet"></span>
 		{{ 'PAY' | translate }}
 	</button>
@@ -41,7 +41,7 @@
 		<span class="value" ng-show="reservationBillData.is_rate_suppressed_present_in_stay_dates" translate>
 			SUPPRESSED_RATES_TEXT
 		</span>
-		<button type="button" class="button with-icon green" ng-click='showAdvancedBillDialog()' ng-show="( showPayButton ) || allowPmtWithGiftCard === true || ( billData.credit_card_details.payment_type ==='DB' && reservationBillData.reservation_status === 'CHECKEDOUT')">
+		<button type="button" class="button with-icon green" ng-click='showAdvancedBillDialog()' ng-show="( showPayButton ) || allowPmtWithGiftCard === true">
 			<span class="icons icon-wallet"></span>
 			{{ 'PAY' | translate }}
 		</button>

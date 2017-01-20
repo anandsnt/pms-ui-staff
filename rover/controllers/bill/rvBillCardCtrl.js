@@ -970,8 +970,7 @@ sntRover.controller('RVbillCardController',
 		 /*
 		  *	CICO-6089 => Enable Direct Bill payment option for OPEN BILLS.
 		  */
-		 if ($scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type === "DB" &&
-			 $scope.reservationBillData.reservation_status === "CHECKEDOUT") {
+		 if ($scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type === "DB") {
 			 paymentParams.direct_bill = true;
 		 }
 
