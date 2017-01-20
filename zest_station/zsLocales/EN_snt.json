@@ -429,6 +429,18 @@
 
   "WORK_STATION_NOT_SELECTED":"Workstation not selected",
   "KEY_CREATION_FAILED" : "Key creation failed",
-  "DISPENSE_KEY_COMPLETED_HEADER" : "Your Keys are dispensed"
+  "DISPENSE_KEY_COMPLETED_HEADER" : "Your Keys are dispensed",
+
+  "OWS_MESSAGE_HEADER" : "Message",
+  "OWS_MSG_PRESENT_HEADER" : "OWS messages",
+  "SINGLE_MESSAGE_SUB_HEADER" : "You have a message",
+  "MULTIPLE_MESSAGE_SUB_HEADER_PART_1" : "You have",
+  "MULTIPLE_MESSAGE_SUB_HEADER_PART_2" : "messages",
+  "VIEW_OWS_MSG" : "View Message(s)",
+  "ALL_MESSAGES_READ_HEADER" : "You have read all message(s)",
+  "ALL_MESSAGES_READ_SUB_HEADER"  : "Please click any of the below",
+  "VIEW_OWS_MSG_AGAIN" : "View messages again",
+  "OWS_MSG_DONE" : "DONE"
+
    
 }
