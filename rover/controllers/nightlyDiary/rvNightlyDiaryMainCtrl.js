@@ -148,16 +148,19 @@ angular.module('sntRover')
              * @param reservation - Current selected reservation
              */
             var selectReservation = (e, reservation, room) => {
-                $scope.diaryData.isEditReservationMode = true;
-                $scope.currentSelectedReservation = reservation;
-                $scope.currentSelectedRoom = room;
-                if (!$stateParams.isFromStayCard) {
-                    $scope.$apply();
-                    showReservationSelected();
-                } else {
-                    // To fix issue point 3 - QA failed comment - CICO-34410
-                    $stateParams.isFromStayCard = false;
+                if (!$scope.diaryData.isEditReservationMode) {
+                    $scope.diaryData.isEditReservationMode = true;
+                    $scope.currentSelectedReservation = reservation;
+                    $scope.currentSelectedRoom = room;
+                    if (!$stateParams.isFromStayCard) {
+                        $scope.$apply();
+                        showReservationSelected();
+                    } else {
+                        // To fix issue point 3 - QA failed comment - CICO-34410
+                        $stateParams.isFromStayCard = false;
+                    }
                 }
+
             };
             var extendShortenReservation = (newArrivalPosition) => {
                 console.log("extendShortenReservation");

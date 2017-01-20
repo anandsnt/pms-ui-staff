@@ -80,13 +80,17 @@ const NightlyDiaryStayRangeComponent = createClass ({
         }
 
         if (state.isMouseDragging) {
-            this.setState({
-                arrivalStyle: {
-                    transform: 'translateX(' + curentPosition + 'px)'
-                },
-                arrivalPosition: curentPosition
-            });
             this.props.extendShortenReservation(curentPosition);
+
+            this.setState({
+                    arrivalStyle: {
+                        transform: 'translateX(' + curentPosition + 'px)'
+                    },
+                    arrivalPosition: curentPosition
+            });
+
+
+
         }
     },
 
