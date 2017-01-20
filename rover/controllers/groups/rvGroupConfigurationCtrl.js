@@ -405,7 +405,14 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
              */
             var successCallBackOfChangeDatesAPI = function (data) {
                 $scope.closeDialog ();
-                lastSuccessCallback ();
+                // check if billing info exist, if so show a warn popup CICO-36383
+                if ($scope.groupConfigData.summary.posting_account_billing_info) {
+                    $timeout(function() {
+                        showBillingInfoExistPopup ();
+                    }, 750);
+                } else {
+                    lastSuccessCallback ();
+                }
             };
 
             /**
