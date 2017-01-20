@@ -505,14 +505,14 @@ sntRover.factory('RVReportParserFac', [
                             isGuestNoteData: true,
                             guestNotes: angular.copy( makeCopy['guest_notes'] )
                         };
-                        customData.push( noteData );
+                        customData.push( guestNoteData );
                     }
                     if ( checkReservationNote(makeCopy) ) {
                         reservationNoteData = {
                             isReservationNoteData: true,
                             reservationNotes: angular.copy( makeCopy['reservation_notes'] )
                         };
-                        customData.push( noteData );
+                        customData.push( reservationNoteData );
                     }
 
                     if ( checkAction(makeCopy) ) {
