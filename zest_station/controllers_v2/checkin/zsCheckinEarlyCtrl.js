@@ -59,47 +59,37 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
 
             var eciAvailable = !$scope.early_checkin_unavailable && response.reservation_in_early_checkin_window,
                 wasPurchased = response.is_early_checkin_purchased,
-                isBundled = response.is_early_checkin_bundled_by_addon;
+                isBundled = response.is_early_checkin_bundled_by_addon,
+                freeFromVIPStatus = response.free_eci_for_vips && response.is_vip,
+                eciLimitReached = response.eci_upsell_limit_reached;
 
                 // user probably purchased an early checkin from zest web, or through zest station
                 // or was bundled in an add-on (the add-on could be paid or free, so show prepaid either way)
-            var isPrepaid = eciAvailable && (isBundled || wasPurchased) ? true : false,
-                bypass = (response.offer_eci_bypass && !eciAvailable) ? true : false;
+            var isPrepaid = eciAvailable && (isBundled || wasPurchased),
+                bypass = response.offer_eci_bypass && !eciAvailable;
 
 
-            var ableToPurchaseEarly = eciAvailable && !isPrepaid && !bypass,
-                freeEarlyCheckin = bypass && !isPrepaid && eciAvailable;
-            
-                // can remove? if bypass is true; they are 'elligible' for early checkin, but prepaid is seen by other attributes
-                // 
-                  //  if (response.offer_eci_bypass) { // if bypass is true, early checkin may be part of their Rate
-                  //      isPrepaid = false;
-                        //$scope.bypass = response.offer_eci_bypass;
-                  //  }
-                  
+            var ableToPurchaseEarly = eciAvailable && !isPrepaid && !bypass && !eciLimitReached,
+                freeEarlyCheckin = ((bypass && !isPrepaid) || freeFromVIPStatus) && eciAvailable && !eciLimitReached;
+
+                console.log('free early checkin? ', freeEarlyCheckin);
 
             // ask the guest if they want to purchase early check-in
             if (ableToPurchaseEarly && !isPrepaid && !freeEarlyCheckin) {
                 $scope.mode = 'EARLY_CHECKIN_SELECT';
 
-            }
-
-            if (isPrepaid && eciAvailable) {
+            } else if (isPrepaid && eciAvailable) {
                 $scope.mode = 'EARLY_CHECKIN_PREPAID';
-            }
 
-            if (freeEarlyCheckin && eciAvailable) {
+            } else if (freeEarlyCheckin && eciAvailable) {
                 $scope.mode = 'EARLY_CHECKIN_FREE';
-            }
 
-            if (isPrepaid && !eciAvailable) {// may be unavailbe since outside of eci window of time
+            } else if (isPrepaid && !eciAvailable) {// may be unavailbe since outside of eci window of time
                 $scope.mode = 'EARLY_CHECKIN_PREPAID_NOT_READY';   
+
             }
 
             console.info('MODE: ', $scope.mode);
-
-
-            // thats all folks 
         };
 
         $scope.checkinLater = function() {
