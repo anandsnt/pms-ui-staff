@@ -370,8 +370,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             console.info(': continueRouting :', settings);
             console.info('*goToEarlyCheckin: ', goToEarlyCheckin);
 
-              // TO DELETE
-            var zestStationRoomUpsellOn = true;
+            var zestStationRoomUpsellOn = $scope.zestStationData.offer_kiosk_room_upsell;
 
             if (goToEarlyCheckin) {
                 beginEarlyCheckin(settings);
