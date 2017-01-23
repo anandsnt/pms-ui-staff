@@ -374,7 +374,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
             if (goToEarlyCheckin) {
                 beginEarlyCheckin(settings);
-            } else if ($scope.selectedReservation.reservation_details.is_upsell_available  === 'true' && zestStationRoomUpsellOn) {
+            } else if ($stateParams.is_room_upgraded !== 'true' && $scope.selectedReservation.reservation_details.is_upsell_available  === 'true' && zestStationRoomUpsellOn) {
                 $state.go('zest_station.roomUpsell', { 'reservation_id': $scope.selectedReservation.id});
             } else {
                 // terms and condition skip is done in terms and conditions page

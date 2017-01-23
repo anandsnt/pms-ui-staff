@@ -50,7 +50,7 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 
 		$scope.buyRoomUpsell = function() {
 			var upsellSuccess = function() {
-				$state.go('zest_station.checkInReservationDetails');
+				$state.go('zest_station.checkInReservationDetails',{'is_room_upgraded':true});
 			};
 
 			var params = {

@@ -9,7 +9,7 @@ sntZestStation.config(['$stateProvider',
                 
         // checkin reservation details 
         $stateProvider.state('zest_station.checkInReservationDetails', {
-            url: '/checkInReservationDetails/:pickup_key_mode',
+            url: '/checkInReservationDetails/:pickup_key_mode/:is_room_upgraded',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinReservationDetails.html',
             controller: 'zsCheckInReservationDetailsCtrl'
         });
@@ -129,7 +129,7 @@ sntZestStation.config(['$stateProvider',
 
     // room upsells
     $stateProvider.state('zest_station.roomUpsell', {
-      url: '/checkinEarly/:reservation_id/:upsell_rooms',
+      url: '/checkinEarly/:reservation_id/',
       templateUrl: '/assets/partials_v2/checkin/zsCheckinRoomUpsell.html',
       controller: 'zsCheckinRoomUpsellCtrl'
     });
