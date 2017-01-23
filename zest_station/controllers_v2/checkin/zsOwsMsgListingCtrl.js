@@ -96,7 +96,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 			var selectedOwsMessageIndex = 0;
 			// on reaching last message, we need to show exit button
 
-			$scope.isLastOwsMsg = $scope.owsMessages.length === 1 ? true : false;
+			$scope.isLastOwsMsg = $scope.owsMessages.length === 1;
 
 			// set page number
 			var setPageNumber = function() {
