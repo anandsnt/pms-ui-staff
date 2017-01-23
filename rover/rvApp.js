@@ -40,9 +40,17 @@ sntRover.config([
 	'$httpProvider',
 	'ngDialogProvider',
 	'$provide',
-	function($httpProvider, ngDialogProvider, $provide) {
+	'$provide',
+	function($httpProvider, ngDialogProvider, $provide, $provide) {
 
-		// adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
+        // $provide.decorator('$browser', ['$delegate', function ($delegate) {
+        //     $delegate.onUrlChange = function () {};
+        //     $delegate.url = function () { return ""};
+        //     return $delegate;
+        // }]);
+
+
+        // adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 		$httpProvider.interceptors.push('sharedHttpInterceptor');
 
 	    ngDialogProvider.setDefaults({

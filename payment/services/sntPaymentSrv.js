@@ -55,25 +55,23 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
                 dataToSrv.postData.payment_method_id = dataToSrv.postData.payment_type_id;
             }
 
-            $http.post(url, dataToSrv.postData).success(function(response) {
-                deferred.resolve(response);
-            }.bind(this))
-                .error(function(error) {
-                    deferred.reject(error);
-                });
+            $http.post(url, dataToSrv.postData).then(function(response) {
+                deferred.resolve(response.data);
+            }, function(response) {
+                deferred.reject(response.data);
+            });
             return deferred.promise;
         };
 
         service.getLinkedCardList = function(reservationId) {
-
             var deferred = $q.defer();
             var url = '/staff/staycards/get_credit_cards.json?reservation_id=' + reservationId;
-            $http.get(url).success(function(response) {
+
+            $http.get(url).then(function(response) {
                 deferred.resolve(response.data);
-            }.bind(this))
-                .error(function(error) {
-                    deferred.reject(error);
-                });
+            }, function(response) {
+                deferred.reject(response.data);
+            });
             return deferred.promise;
         };
 
@@ -436,14 +434,16 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
             var deferred = $q.defer();
             var url = 'staff/payments/save_new_payment';
 
-            $http.post(url, data).success(data => {
+            $http.post(url, data).then(response => {
+                var data = response.data;
+
                 if (data.errors && data.errors.length > 0) {
                     deferred.reject(data.errors);
                 } else {
                     deferred.resolve(data);
                 }
 
-            }).error(data => {
+            }, data => {
                 deferred.reject(data);
             });
 
@@ -455,10 +455,10 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
             var deferred = $q.defer();
             var url = 'api/posting_accounts/' + postingAccountId + '/is_ar_account_attached';
 
-            $http.get(url).success(data => {
-                deferred.resolve(data);
-            }).error(data => {
-                deferred.reject(data);
+            $http.get(url).then(response => {
+                deferred.resolve(response.data);
+            }, response => {
+                deferred.reject(response.data);
             });
 
             return deferred.promise;
@@ -467,6 +467,7 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
         service.saveARDetails = function(data) {
             var deferred = $q.defer();
             var url = 'api/accounts/save_ar_details';
+
             $http.post(url, data).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {

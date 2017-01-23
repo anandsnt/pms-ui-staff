@@ -5,39 +5,41 @@ login.service('resetSrv', ['$http', '$q', function($http, $q) {
     * @param successcallbackasction
     * @param failureCallback action
     */
-	this.resetPassword = function(data, successCallback, failureCallBack) {
-
+    this.resetPassword = function(data, successCallback, failureCallBack) {
 		var deferred = $q.defer();
 
-		$http.put("/api/password_resets/" + data.token + "/update.json", data).success(function(response, status) {
-			if (response.status === "success") {
-		    	successCallback(response.data);
-			} else {
-				// please note the type of error expecting is array
-		    	failureCallBack(response.errors);
-			}
-		}).error(function(response, status) {
-			// please note the type of error expecting is array
-			// so form error as array if you modifying it
-			if (status === 406) { // 406- Network error
-				deferred.reject(response.errors);
-			}
-			else if (status === 500) { // 500- Internal Server Error
+        $http.put("/api/password_resets/" + data.token + "/update.json", data).then(function(response) {
+            if (response.status === "success") {
+                successCallback(response.data.data);
+            } else {
+                // please note the type of error expecting is array
+                failureCallBack(response.data.errors);
+            }
+        }, function(response) {
+            var status = response.status,
+                errors = response.data.errrors;
 
-				failureCallBack(['Internal server error occured']);
-			}
-			else if (status === 401) { // 401- Unauthorized
-				// so lets redirect to login page
-				$window.location.href = '/logout' ;
-			} else {
-				deferred.reject(response.errors);
-			}
+            // please note the type of error expecting is array
+            // so form error as array if you modifying it
+            if (status === 406) { // 406- Network error
+                deferred.reject(errors);
+            }
+            else if (status === 500) { // 500- Internal Server Error
 
-		});
-		return deferred.promise;
+                failureCallBack(['Internal server error occured']);
+            }
+            else if (status === 401) { // 401- Unauthorized
+                // so lets redirect to login page
+                $window.location.href = '/logout';
+            } else {
+                deferred.reject(errors);
+            }
+
+        });
+        return deferred.promise;
 
 
-	};
+    };
    /*
     * Activate user by changing Password
     * @param object of data
