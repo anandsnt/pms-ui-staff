@@ -667,6 +667,12 @@ angular.module('reportsModule')
                         .then( fillMarkets );
                 }
 
+                else if ( 'CHOOSE_SEGMENT' === filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchSegments()
+                        .then( fillSegments );
+                }
+
                 else if ( 'CHOOSE_SOURCE' === filter.value && ! filter.filled ) {
                     requested++;
                     reportsSubSrv.fetchSources()
@@ -839,6 +845,29 @@ angular.module('reportsModule')
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
                         report.hasMarketsList = {
+                            data: angular.copy( data ),
+                            options: {
+                                selectAll: false,
+                                hasSearch: false,
+                                key: 'name'
+                            }
+                        };
+                    }
+                });
+
+                completed++;
+                checkAllCompleted();
+            }
+
+            function fillSegments (data) {
+                var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'CHOOSE_SEGMENT' });
+
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        report.hasSegmentsList = {
                             data: angular.copy( data ),
                             options: {
                                 selectAll: false,

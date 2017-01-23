@@ -506,7 +506,16 @@
         </div>
 
 
-
+        <!-- Segment(s) -->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasSegmentsList && chosenReport.hasSegmentsList.data.length" ng-class="{ 'active': filterItemsToggle.item_15 }" ng-click="toggleFilterItems('item_15')">
+            <span class="title">Segment(s)</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasSegmentsList && chosenReport.hasSegmentsList.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_15 }">
+            <multi-option-selection label="Segment(s)"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasSegmentsList.data"
+                options="chosenReport.hasSegmentsList.options"></multi-option-selection>
+        </div>
 
 
 
