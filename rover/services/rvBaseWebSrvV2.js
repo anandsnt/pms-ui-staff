@@ -54,35 +54,32 @@ if (status === 406) { // 406- Network error
 	 *   @return {promise}
 	 */
 
-	this.callWebService = function(httpMethod, url, params, data) {
-		var deferred = $q.defer();
+    this.callWebService = function(httpMethod, url, params, data) {
+        var deferred = $q.defer(),
+            httpDict = {};
 
-		if (typeof params === "undefined") {
-			params = "";
-		}
+        if (angular.isUndefined(params)) {
+            params = "";
+        }
+        httpDict.url = url;
+        httpDict.method = httpMethod;
+        if (httpMethod === 'GET' || httpMethod === 'DELETE') {
+            httpDict.params = params;
+        }
+        else if (httpMethod === 'POST' || httpMethod === 'PUT') {
+            httpDict.data = params;
+            if (angular.isDefined($rootScope.workstation_id)) {
+                httpDict.data.workstation_id = $rootScope.workstation_id;
+            }
+        }
 
-		// Sample params {params:{fname: "fname", lname: "lname"}}
-		var httpDict = {};
-
- 		httpDict.url = url;
- 		httpDict.method = httpMethod;
- 		if (httpMethod === 'GET' || httpMethod === 'DELETE') {
- 			httpDict.params = params;
- 		}
- 		else if (httpMethod === 'POST' || httpMethod === 'PUT') {
- 			httpDict.data = params;
- 			if (typeof $rootScope.workstation_id !== 'undefined') {
-				httpDict.data.workstation_id = $rootScope.workstation_id;
-			}
-  		}
-
-		$http(httpDict).success(function(response, status) {
-			deferred.resolve(response);
-		}).error(function(errors, status) {
-			webserviceErrorActions(url, deferred, errors, status);
-		});
-		return deferred.promise;
-	};
+        $http(httpDict).then(function(response) {
+            deferred.resolve(response.data);
+        }, function(response) {
+            webserviceErrorActions(url, deferred, response.data, response.status);
+        });
+        return deferred.promise;
+    };
 
 	this.getJSON = function(url, params) {
 		return this.callWebService("GET", url, params);

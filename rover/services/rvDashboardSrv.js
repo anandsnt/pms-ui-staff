@@ -8,24 +8,24 @@ angular.module('sntRover').service('RVDashboardSrv', ['$q', 'RVBaseWebSrv', 'rvB
     this.getUserDetails = function() {
         return userDetails;
     };
- 	/*
+
+	/*
   	* To fetch user details
   	* @return {object} user details
   	*/
-	this.fetchUserInfo = function() {
-		var deferred = $q.defer();
-		var url =  '/api/rover_header_info.json';
+    this.fetchUserInfo = function() {
+        var deferred = $q.defer();
+        var url = '/api/rover_header_info.json';
 
-		RVBaseWebSrv.getJSON(url).then(function(data) {
+        rvBaseWebSrvV2.getJSON(url).then(function(data) {
+            userDetails = data;
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
 
-		userDetails = data;
-
-			deferred.resolve(data);
-		}, function(data) {
-			deferred.reject(data);
-		});
-		return deferred.promise;
-	};
+        return deferred.promise;
+    };
 
  	this.fetchDashboardStatisticData = function() {
 	    var deferred = $q.defer();
