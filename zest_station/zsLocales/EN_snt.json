@@ -446,7 +446,19 @@
   "CHECKIN_SUCCESS_HEADER": "Congratulations",
   "CHECKIN_SUCCESS_HEADER_ENDING": ",",
   "CHECKIN_SUCCESS_SUB_HEADER": "Welocme to the hotel",
-  "CHECKIN_SUCCESS_DONE_BTN": "NEXT"
+  "CHECKIN_SUCCESS_DONE_BTN": "NEXT",
+
+  "ROOM_UPGRADE_HEADER" : "Upgrade your Room?",
+  "BUY_UPGRADE" : "Upgrade",
+  "ROOM_UPGRADE_SKIP" : "No Thanks",
+  "ROOM_UPGRADE_LIST_SUB_HEADER": "Select a card to see room details before you upgrade",
+  "ROOM_DETAILS": "Room Details",
+  "ROOM_UPGRADE_NEXT": "NEXT",
+  "ROOM_UPGRADE_PREV": "PREV",
+  "ROOM_UPGRADE_ERROR": "Room Upsell failed",
+  "ROOM_UPGRADE_ERROR_SUB" : "Speak to the staff or continue",
+  "ROOM_UPGRADE_ERROR_CONTINUE": "Continue"
+
 
 
    

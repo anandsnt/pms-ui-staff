@@ -1,11 +1,11 @@
 <!-- Content -->
-<section id="main" class="centered" role="main" click-touch='resetTime()'>
+<section id="main" role="main" click-touch='resetTime()'>
     <div id="content" ng-show="displayMode === 'ROOM_UPSELL_LIST'">
-        <h1>Upgrade your Room?</h1>
-        <h3>Select a card to see room details before you upgrade</h3>
+        <h1><text editable-text="ROOM_UPGRADE_HEADER"> {{'ROOM_UPGRADE_HEADER' |translate}}</text></h1>
+        <h3><text editable-text="ROOM_UPGRADE_LIST_SUB_HEADER"> {{'ROOM_UPGRADE_LIST_SUB_HEADER' |translate}}</text></h3>
         <!--Layout V4: add  .upgrade-list-v2 -->
-        <ul class="upgrade-list">
-            <li ng-repeat='room in upsellRooms track by $index'>
+        <ul class="upgrade-list" ng-class="{'upgrade-list-v2' :  zestStationData.room_upsell_style === 'STYLE_B'}">
+            <li ng-repeat='room in viewableRoomUpgrades track by $index'>
                 <div class="upgrade-picture">
                     <img src="{{room.room_type_image}}">
                 </div>
@@ -15,23 +15,29 @@
                         <strong>+${{room.upsell_amount}}</strong>
                         <small>Per Night<br>(+TAX)</small>
                         <button type="button" class="button" click-touch='viewSelectedRoomDetails(room)'>
-                            Room Details
+                            <text editable-text="ROOM_DETAILS"> {{'ROOM_DETAILS' |translate}}</text>
                         </button>
                     </div>
                 </div>
             </li>
         </ul>
         <div id="actions">
-            <button type="button" class="button transparent">No Thanks</button>
-            <p class="text">Showing {# list}-{# list3} of {# listTotal} rooms</p>
+            <button type="button" class="button transparent" click-touch="skipRoomUpsell()">
+                <text editable-text="ROOM_UPGRADE_SKIP"> {{'ROOM_UPGRADE_SKIP' |translate}}</text>
+            </button>
+            <p class="text" ng-show="showPageNumberDetails">Showing {{pageStartingIndex}}-{{pageEndingIndex}} of {{upsellRooms.length}} rooms</p>
             <div class="button-group">
-                <button type="button" class="button">Prev</button>
-                <button type="button" class="button">Next</button>
+                <button type="button" class="button" click-touch="viewPreviousPage()" ng-hide="hidePreviousButton">
+                    <text editable-text="ROOM_UPGRADE_PREV"> {{'ROOM_UPGRADE_PREV' |translate}}</text>
+                </button>
+                <button type="button" class="button" click-touch="viewNextPage()" ng-hide="hideNextButton">
+                    <text editable-text="ROOM_UPGRADE_NEXT"> {{'ROOM_UPGRADE_NEXT' |translate}}</text>
+                </button>
             </div>
         </div>
     </div>
     <div id="content" ng-show="displayMode === 'ROOM_DETAILS'">
-        <h1>Upgrade your Room?</h1>
+        <h1><text editable-text="ROOM_UPGRADE_HEADER"> {{'ROOM_UPGRADE_HEADER' |translate}}</text></h1>
         <div id="upgrade" class="tabled-options">
             <div class="upgrade-picture">
                 <img src="{{selectedRoom.room_type_image}}">
@@ -50,17 +56,23 @@
             </div>
         </div>
         <div id="actions">
-            <button type="button" class="button transparent" click-touch="skipRoomUpsell()">No Thanks</button>
-            <button type="button" class="button" click-touch="buyRoomUpsell()">Upgrade</button>
+            <button type="button" class="button transparent" click-touch="skipRoomUpsell()">
+                <text editable-text="ROOM_UPGRADE_SKIP"> {{'ROOM_UPGRADE_SKIP' |translate}}</text>
+            </button>
+            <button type="button" class="button" click-touch="buyRoomUpsell()">
+                <text editable-text="BUY_UPGRADE"> {{'BUY_UPGRADE' |translate}}</text>
+            </button>
         </div>
     </div>
     <div id="content" class='add-guest-mode-content' ng-show="displayMode === 'ERROR_MODE'">
         <h1>
-            ROOM_UPGRADE_ERROR
+            <text editable-text="ROOM_UPGRADE_ERROR"> {{'ROOM_UPGRADE_ERROR' |translate}}</text>
         </h1>
         <h2>
-           ROOM_UPGRADE_ERROR_SUB
+           <text editable-text="ROOM_UPGRADE_ERROR_SUB"> {{'ROOM_UPGRADE_ERROR_SUB' |translate}}</text>
         </h2>
-        <button type="button" click-touch="skipRoomUpsell()">CONTINUE</button>
+        <button type="button" click-touch="skipRoomUpsell()">
+            <text editable-text="ROOM_UPGRADE_ERROR_CONTINUE"> {{'ROOM_UPGRADE_ERROR_CONTINUE' |translate}}</text>
+        </button>
     </div>
 </section>
