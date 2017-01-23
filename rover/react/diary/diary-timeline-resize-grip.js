@@ -5,9 +5,11 @@ var TimelineResizeGrip = React.createClass({
 
 		e.stopPropagation();
 		e.preventDefault();
-		e = this.isTouchEnabled ? e.changedTouches[0] : e;
+		e = e.changedTouches ? e.changedTouches[0] : e;
 
 		props.iscroll.timeline.disable();
+
+		this._setMoveEventListners();
 
 		page_offset = ReactDOM.findDOMNode(this).getBoundingClientRect();
 
@@ -27,7 +29,7 @@ var TimelineResizeGrip = React.createClass({
 	__onMouseMove: function(e) {
 		e.stopPropagation();
 		e.preventDefault();
-		e = this.isTouchEnabled ? e.changedTouches[0] : e;
+		e = e.changedTouches ? e.changedTouches[0] : e;
 		var props = 				this.props,
 			state = 				this.state,
 			display = 				props.display,
@@ -74,7 +76,7 @@ var TimelineResizeGrip = React.createClass({
 	__onMouseUp: function(e) {
 		e.stopPropagation();
 		e.preventDefault();
-		e = this.isTouchEnabled ? e.changedTouches[0] : e;
+		e = e.changedTouches ? e.changedTouches[0] : e;
 		var props = 		this.props,
 			state = 		this.state,
 			display = 		props.display,
@@ -86,8 +88,7 @@ var TimelineResizeGrip = React.createClass({
 			m =      		props.meta.occupancy,
 			direction = 	props.itemProp;
 
-		document.removeEventListener(this.mouseLeavingEvent, this.__onMouseUp);
-		document.removeEventListener(this.mouseMovingEvent, this.__onMouseMove);
+		this._removeEventListeners(false);
 
 		if (this.state.resizing) {
 			props.iscroll.timeline.enable();
@@ -147,20 +148,96 @@ var TimelineResizeGrip = React.createClass({
 			currentResizeItemRow: this.props.currentResizeItemRow
 		};
 	},
-	componentWillMount: function() {
-		this.__dbMouseMove = _.throttle(this.__onMouseMove, 10);
-	},
-	componentWillUnmount: function() {
-  		ReactDOM.findDOMNode(this).removeEventListener(this.mouseStartingEvent, this.__onMouseDown);
-  	},
-	componentDidMount: function() {
-		this.isTouchEnabled 	= 'ontouchstart' in window;
-		this.mouseStartingEvent = this.isTouchEnabled ? 'touchstart' : 'mousedown';
-		this.mouseMovingEvent 	= this.isTouchEnabled ? 'touchmove' : 'mousemove';
-		this.mouseLeavingEvent 	= this.isTouchEnabled ? 'touchend'	: 'mouseup';
 
-		ReactDOM.findDOMNode(this).addEventListener(this.mouseStartingEvent, this.__onMouseDown);
-	},
+    componentWillMount: function() {
+        this.__dbMouseMove = _.throttle(this.__onMouseMove, 10);
+    },
+
+    componentWillUnmount: function() {
+        this._removeEventListeners(true);
+    },
+
+
+    /**
+     * Find if browser supports touch events or not. handles most cases
+     * @return {Boolean} supports touch or not
+     */
+    _hasTouchSupport: function () {
+        var hasSupport = false;
+
+        try {
+            if (navigator.maxTouchPoints !== undefined) {
+                // for modern browsers
+                // even if touchpoints test is supported event support is also needed
+                hasSupport = navigator.maxTouchPoints > 0 && 'ontouchstart' in window;
+            } else {
+                // for browsers with no support of navigator.maxTouchPoints
+                hasSupport = 'ontouchstart' in window;
+            }
+        } catch (e) {
+            hasSupport = 'ontouchstart' in window;
+        }
+
+        return hasSupport;
+    },
+
+    /**
+     * Remove events for safty
+     * @param  {Boolean} removeStartEvent flag to remove click event
+     * @return {undfefined} none
+     */
+    _removeEventListeners: function (removeStartEvent) {
+        try {
+            if (removeStartEvent) {
+                document.removeEventListener('touchstart', this.__onMouseDown);
+                document.removeEventListener('mousedown', this.__onMouseDown);
+            }
+
+            document.removeEventListener('touchend', this.__onMouseUp);
+            document.removeEventListener('mouseup', this.__onMouseUp);
+            document.removeEventListener('mousemove', this.__onMouseMove); 
+            document.removeEventListener('touchmove', this.__onMouseMove);
+        } catch (e) {
+            // noop
+        }
+    },
+
+    _setMoveEventListners: function () {
+        document.addEventListener (this.mouseLeavingEvent, this.__onMouseUp);
+        document.addEventListener (this.mouseMovingEvent, this.__onMouseMove);
+
+        // CICO-36620 - handle devices with touch and mouse inputs
+        // PointerEvent could do it if supported on all platforms 
+        if (this.isTouchEnabled && this.isMouseEnabled) {
+            document.addEventListener ('mouseup', this.__onMouseUp);
+            document.addEventListener ('mousemove', this.__onMouseMove);
+        }
+    },
+
+    _setClickEventListners: function () {
+        var node = this.getDOMNode();
+
+        this.isTouchEnabled = this._hasTouchSupport();
+        this.isMouseEnabled = 'onmousemove' in window;
+        this.mouseStartingEvent = this.isTouchEnabled ? 'touchstart' : 'mousedown';
+        this.mouseMovingEvent = this.isTouchEnabled ? 'touchmove' : 'mousemove';
+        this.mouseLeavingEvent = this.isTouchEnabled ? 'touchend' : 'mouseup';
+
+        // CICO-36620 - handle devices with touch and mouse inputs
+        // PointerEvent could do it if supported on all platforms
+        if (this.isTouchEnabled && this.isMouseEnabled) {
+            node.addEventListener(this.mouseStartingEvent, this.__onMouseDown);
+            node.addEventListener('mousedown', this.__onMouseDown);
+        } else {
+            node.addEventListener(this.mouseStartingEvent, this.__onMouseDown);
+        }
+    },
+
+    componentDidMount: function() {
+        this._removeEventListeners(true);
+        this._setClickEventListners();	
+    },
+
 	componentWillReceiveProps: function(nextProps) {
 		var model,
 			props 		= this.props,

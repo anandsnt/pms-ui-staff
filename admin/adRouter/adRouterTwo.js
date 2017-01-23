@@ -659,4 +659,15 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
             }
         }
     });
+   
+   $stateProvider.state('admin.ZestStationRoomUpsells', {
+        templateUrl: '/assets/partials/zestStation/adZestStationRoomUpsell.html',
+       controller: 'ADZestStationRoomUpsellCtrl',
+        url: '/zestStationRoomUpsell',
+        resolve: {
+            roomUpsellData : function(ADZestStationSrv){
+                return ADZestStationSrv.fetch();
+            }
+        }
+    });
 });

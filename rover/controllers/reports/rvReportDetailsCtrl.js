@@ -543,7 +543,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 			var checkGeneralOptions = (function() {
 				var retObj = {
 					include_actions: false,
-					include_notes: false,
+					include_guest_notes: false,
+					include_reservation_notes: false,
 					show_guests: false,
 					include_cancelled: false,
 					show_rate_adjustments_only: false
@@ -553,8 +554,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					if ( each.paramKey === 'include_actions' && each.selected ) {
 						retObj.include_actions = true;
 					}
-					if ( each.paramKey === 'include_notes' && each.selected ) {
-						retObj.include_notes = true;
+					if ( each.paramKey === 'include_guest_notes' && each.selected ) {
+						retObj.include_guest_notes = true;
+					}
+					if ( each.paramKey === 'include_reservation_notes' && each.selected ) {
+						retObj.include_reservation_notes = true;
 					}
 					if ( each.paramKey === 'show_guests' && each.selected ) {
 						retObj.show_guests = true;
@@ -572,6 +576,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 			var parseAPIoptions = {
 				'groupedByKey': $scope.$parent.reportGroupedBy,
 				'checkAction': checkGeneralOptions.include_actions,
+				'checkGuestNote': checkGeneralOptions.include_guest_notes,
+				'checkReservationNote': checkGeneralOptions.include_reservation_notes,
 				'checkNote': checkGeneralOptions.include_notes,
 				'checkGuest': checkGeneralOptions.show_guests,
 				'checkCancel': checkGeneralOptions.include_cancelled,
