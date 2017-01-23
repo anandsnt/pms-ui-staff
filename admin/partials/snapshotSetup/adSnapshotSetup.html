@@ -36,14 +36,14 @@
 
                     <tbody> 
                         <tr ng-repeat="exportData in $data"> 
-                            <td  sortable="'date'" data-title="'Date'">
+                            <td  data-title="'Date'">
                                 <a  class="edit-data-inline">
-                                    {{exportData.date}} 
+                                    {{exportData.created_at_date}} 
                                 </a>                        
                             </td>
 
                             <td  data-title="'Time'">
-                                <a class="edit-data-inline">{{exportData.time}} </a>
+                                <a class="edit-data-inline">{{exportData.created_at_time}} </a>
                             </td>
 
                             <td  data-title="'Url'">
@@ -156,14 +156,14 @@
 
                     <tbody> 
                         <tr ng-repeat="exportData in $data"> 
-                            <td  sortable="'date'" data-title="'Date'">
-                                <a  class="edit-data-inline">
-                                    {{exportData.date}} 
+                            <td  data-title="'Date'">
+                                <a class="edit-data-inline" >
+                                    {{exportData.created_at_date}} 
                                 </a>                        
                             </td>
 
                             <td  data-title="'Time'">
-                                <a class="edit-data-inline">{{exportData.time}} </a>
+                                <a class="edit-data-inline">{{exportData.created_at_time}} </a>
                             </td>
 
                             <td  data-title="'Url'">
