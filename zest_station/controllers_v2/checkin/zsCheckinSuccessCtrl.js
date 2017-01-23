@@ -19,13 +19,11 @@ sntZestStation.controller('zsCheckinSuccessCtrl', [
          * @param  {[type]} response [description]
          * @return {[type]}          [description]
          */
-        var nextPageActions = function(response) {
+        var nextPageActions = function() {
             // if email is valid and is not blacklisted
             var haveValidGuestEmail = checkIfEmailIsBlackListedOrValid(),
                 collectNationalityEnabled = $scope.zestStationData.check_in_collect_nationality;
         
-            console.info('haveValidGuestEmail: ', haveValidGuestEmail);
-
             // if collectiing nationality after email, but email is already valid
             if (collectNationalityEnabled && haveValidGuestEmail) {
                 $state.go('zest_station.collectNationality', stateParams);
@@ -34,7 +32,6 @@ sntZestStation.controller('zsCheckinSuccessCtrl', [
                 stateParams.email = $stateParams.email;
                 $state.go('zest_station.checkinKeyDispense', stateParams);
             } else {
-                console.warn('to email collection: ', stateParams);
                 $state.go('zest_station.checkInEmailCollection', stateParams);
             }
 
@@ -50,10 +47,11 @@ sntZestStation.controller('zsCheckinSuccessCtrl', [
                     if (response.messages.length > 0) {
                         owsMsgsPresent = true;
                         owsMsgs = response.messages;
-                    }else{
+                    } else {
                         return;
                     }
                 };
+                
                 $scope.owsMsgOpenPoup = false;
                 var options = {
                     params: {

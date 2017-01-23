@@ -56,12 +56,12 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 'room_no': $stateParams.room_no,
                 'email': $stateParams.email,
                 'first_name': $stateParams.first_name,
-                'guest_email_blacklisted' : $stateParams.guest_email_blacklisted
+                'guest_email_blacklisted': $stateParams.guest_email_blacklisted
             };
 
             console.info('haveValidGuestEmail: ', haveValidGuestEmail);
-            if($scope.theme === 'yotel'){
-                $state.go('zest_station.checkinSuccess',stateParams);
+            if ($scope.theme === 'yotel') {
+                $state.go('zest_station.checkinSuccess', stateParams);
             }
             // if collectiing nationality after email, but email is already valid
             else if (collectNationalityEnabled && haveValidGuestEmail) {

@@ -26,7 +26,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 		 * @param  {[type]} response [description]
 		 * @return {[type]}          [description]
 		 */
-		$scope.nextPageActions = function(response) {
+		$scope.nextPageActions = function() {
 			// if email is valid and is not blacklisted
 			var haveValidGuestEmail = checkIfEmailIsBlackListedOrValid(),
 				collectNationalityEnabled = $scope.zestStationData.check_in_collect_nationality;
@@ -41,7 +41,6 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 				stateParams.email = $stateParams.email;
 				$state.go('zest_station.checkinKeyDispense', stateParams);
 			} else {
-				console.warn('to email collection: ', stateParams);
 				$state.go('zest_station.checkInEmailCollection', stateParams);
 			}
 
@@ -109,6 +108,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 			var checkifItsLastOwsMsg = function() {
 				$scope.isLastOwsMsg = (selectedOwsMessageIndex + 1 === $scope.owsMessages.length) ? true : false;
 			};
+			
 			// check if reservation had email id
 			$scope.showEmailButton = (!_.isNull($stateParams.email) && $stateParams.email.length > 0) ? true : false;
 
