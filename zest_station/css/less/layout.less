@@ -598,6 +598,15 @@
             }
         }
 
+        .button-group {
+            .button {
+                float:left;
+                &:not(:first-child) {
+                    margin-left: 10px;
+                }
+            }
+        }
+
         &.align-left { .show; }
 
         &.align-right { #flexbox > .parent('', flex-end, '', ''); }
@@ -612,6 +621,12 @@
 
             p,
             .button { font-size: 14px; }
+        }
+
+        .text {
+            line-height: 64px;
+            margin: 0;
+            font-size: 18px;
         }
     }
 
