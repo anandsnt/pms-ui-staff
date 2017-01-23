@@ -687,6 +687,12 @@ angular.module('sntPay').controller('sntPaymentController',
                     return;
                 }
 
+                // -- CICO-33971 :: Direct Bill Payment --
+                if($scope.selectedPaymentType === 'DB') {
+                    $scope.$broadcast('INITIATE_DB_PAYMENT');
+                    return;
+                }
+
                 if ($scope.selectedPaymentType === 'CC' && $scope.selectedCard !== -1) {
                     paymentTypeId = $scope.selectedCC.value;
                 } else {
@@ -805,6 +811,11 @@ angular.module('sntPay').controller('sntPaymentController',
                     name: $scope.selectedPaymentType
                 });
                 $scope.$emit('PAYMENT_TYPE_CHANGED', $scope.selectedPaymentType);
+                
+                // -- CICO-33971 :: Direct Bill Payment --
+                if ($scope.selectedPaymentType === 'DB') {
+                    $scope.payment.isEditable = false;
+                }
 
                 // If the changed payment type is CC and payment gateway is MLI show CC addition options
                 // If there are attached cards, show them first

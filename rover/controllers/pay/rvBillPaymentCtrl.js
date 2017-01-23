@@ -211,7 +211,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		/*
 		 *	CICO-6089 => Enable Direct Bill payment option for OPEN BILLS.
 		*/
-		if ($scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type === "DB" && $scope.reservationBillData.reservation_status === "CHECKEDOUT") {
+		if ($scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type === "DB") {
 			paymentParams.direct_bill = true;
 		}
 		$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, paymentParams, $scope.getPaymentListSuccess);
@@ -541,6 +541,10 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
             resetSplitPayment();
         }
     });
+
+   	$scope.$on('INITIATE_DB_PAYMENT', function() {
+	 	console.log("Show Confrm popup- bill pay ctrl");
+	});
 
     $scope.$watch("reservationBillData.bills", matchCardObjectSchema);
 
