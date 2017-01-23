@@ -1061,6 +1061,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					'display': [],
 					'show': [],
 					'markets': [],
+                    'segments': [],
 					'sources': [],
 					'origins': [],
 					'origin_urls': [],

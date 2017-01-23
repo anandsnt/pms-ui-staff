@@ -256,8 +256,9 @@ angular.module('reportsModule')
                 selected = true;
             }
 
-            if ( report['title'] === reportNames['RESERVATIONS_BY_USER'] && filter.value === 'INCLUDE_BOTH') {
-                if ( filter.value === 'INCLUDE_BOTH') {
+            //  Include New option the default selected option CICO-34593
+            if ( report['title'] === reportNames['RESERVATIONS_BY_USER'] && filter.value === 'INCLUDE_NEW') {
+                if ( filter.value === 'INCLUDE_NEW') {
                     selected = true;
                 }
 
@@ -839,6 +840,15 @@ angular.module('reportsModule')
             function fillMarkets (data) {
                 var foundFilter;
 
+                // Add UNDEFINED option to market drop down CICO-34593
+                var UNDEFINED = {
+                    is_active: true,
+                    name: 'UNDEFINED',
+                    value: -1
+                };
+
+                data.push(UNDEFINED);
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CHOOSE_MARKET' });
 
@@ -847,7 +857,7 @@ angular.module('reportsModule')
                         report.hasMarketsList = {
                             data: angular.copy( data ),
                             options: {
-                                selectAll: false,
+                                selectAll: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? true : false,
                                 hasSearch: false,
                                 key: 'name'
                             }
