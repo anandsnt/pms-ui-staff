@@ -119,11 +119,8 @@ select {
     }
 
     &.select-with-button {
-        padding-bottom: 0;
-        margin: 0 10px 0 0;
-        margin-right: 10px;
-        #calc > #width > .remove(85%, 10px);
-        .box-shadow(none);
+        width: 84.1%;
+        margin-right: 0%;
     }
 
     &.with-label {
@@ -175,22 +172,33 @@ select {
         width: 15%;
     }
 }
-    .ui-autocomplete{
-        overflow:hidden;
-        max-height: 215px !important;
-        border: 2px solid @white;
-        border-radius: 2px;
-    }
-    .ui-autocomplete .ui-menu-item {
-      background:@white;
-      color:@brandColor;
-      padding:20px;
-      font-size: 1.389em;
-    }
-    .ui-autocomplete .ui-menu-item.ui-state-focus {
-      background-color: @white;
-      color: @brandColor;
-    }
+
+.clear-nationality-btn{
+    margin-right: -35px;
+}
+.save-nationality-btn{
+    max-width:100%;
+    display:inline-block;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+.ui-autocomplete{
+    overflow:hidden;
+    max-height: 215px !important;
+    border: 2px solid @white;
+    border-radius: 2px;
+}
+.ui-autocomplete .ui-menu-item {
+  background:@white;
+  color:@brandColor;
+  padding:20px;
+  font-size: 1.389em;
+}
+.ui-autocomplete .ui-menu-item.ui-state-focus {
+  background-color: @white;
+  color: @brandColor;
+}
 
 .clear-text-icon{
     top: 15px;
@@ -216,4 +224,8 @@ select {
 .disabled-button{
     opacity: 0.5;
     pointer-events: none;
+}
+
+.demo-second-cls{
+    top: 20px !important;
 }

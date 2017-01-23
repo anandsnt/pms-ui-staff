@@ -32,16 +32,10 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
                 return guest_detail.is_primary === true;
             });
 
-            if ($scope.zestStationData.check_in_collect_nationality) {
-                $state.go('zest_station.collectNationality', {
-                    'guestId': primaryGuest.id,
-                    'first_name': primaryGuest.first_name
-                });
-            } else {
-                $state.go('zest_station.checkInReservationDetails', {
-                    'first_name': primaryGuest.first_name
-                });
-            }
+            $state.go('zest_station.checkInReservationDetails', {
+                'first_name': primaryGuest.first_name
+            });
+        
 
         };
         var initPagination = function() {
