@@ -789,6 +789,14 @@ angular.module('reportsModule')
             function fillGarntTypes (data) {
                 var foundFilter;
 
+                // Add UNDEFINED option to garantee drop down CICO-34593
+                var UNDEFINED = {
+                    is_active: true,
+                    name: 'UNDEFINED',
+                    value: -1
+                };
+
+                data.push(UNDEFINED);
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'INCLUDE_GUARANTEE_TYPE' });
 
@@ -798,7 +806,7 @@ angular.module('reportsModule')
                         report.hasGuaranteeType = {
                             data: angular.copy( data ),
                             options: {
-                                selectAll: false,
+                                selectAll: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? true : false,
                                 hasSearch: true,
                                 key: 'name',
                                 defaultValue: 'Select guarantees'
@@ -872,6 +880,14 @@ angular.module('reportsModule')
             function fillSegments (data) {
                 var foundFilter;
 
+                // Add UNDEFINED option to segment drop down CICO-34593
+                var UNDEFINED = {
+                    is_active: true,
+                    name: 'UNDEFINED',
+                    value: -1
+                };
+
+                data.push(UNDEFINED);
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CHOOSE_SEGMENT' });
 
@@ -880,7 +896,7 @@ angular.module('reportsModule')
                         report.hasSegmentsList = {
                             data: angular.copy( data ),
                             options: {
-                                selectAll: false,
+                                selectAll: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? true : false,
                                 hasSearch: false,
                                 key: 'name'
                             }
@@ -895,6 +911,14 @@ angular.module('reportsModule')
             function fillSources (data) {
                 var foundFilter;
 
+                // Add UNDEFINED option to source drop down CICO-34593
+                var UNDEFINED = {
+                    is_active: true,
+                    name: 'UNDEFINED',
+                    value: -1
+                };
+
+                data.push(UNDEFINED);
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CHOOSE_SOURCE' });
 
@@ -903,7 +927,7 @@ angular.module('reportsModule')
                         report.hasSourcesList = {
                             data: angular.copy( data ),
                             options: {
-                                selectAll: false,
+                                selectAll: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? true : false,
                                 hasSearch: false,
                                 key: 'name'
                             }
@@ -919,6 +943,14 @@ angular.module('reportsModule')
             function fillBookingOrigins (data) {
                 var foundFilter;
 
+                // Add UNDEFINED option to origin drop down CICO-34593
+                var UNDEFINED = {
+                    is_active: true,
+                    name: 'UNDEFINED',
+                    value: -1
+                };
+
+                data.push(UNDEFINED);
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CHOOSE_BOOKING_ORIGIN' });
 
@@ -927,7 +959,7 @@ angular.module('reportsModule')
                         report.hasOriginsList = {
                             data: angular.copy( data ),
                             options: {
-                                selectAll: false,
+                                selectAll: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? true : false,
                                 hasSearch: false,
                                 key: 'name'
                             }
