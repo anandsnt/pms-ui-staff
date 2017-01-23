@@ -318,7 +318,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.fetchRoomUpsellDetails = function(param) {
             var deferred = $q.defer();
-            var url =  '/staff/reservations/upgrade_room_type_upsell_options.json';
+            var url =  '/zest_station/upgrade_options.json';
 
             zsBaseWebSrv2.getJSON(url, param).then(function(data) {
                 deferred.resolve(data);
@@ -344,6 +344,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var deferred = $q.defer();
             var url =  '/staff/reservations/upgrade_room.json';
 
+            param.is_kiosk = true;
             zsBaseWebSrv2.postJSON(url, param).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {

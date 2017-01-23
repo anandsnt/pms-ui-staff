@@ -50,7 +50,9 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 
 		$scope.buyRoomUpsell = function() {
 			var upsellSuccess = function() {
-				$state.go('zest_station.checkInReservationDetails',{'is_room_upgraded':true});
+				$scope.selectedReservation.isRoomUpraded = true;
+				zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
+				$state.go('zest_station.checkInReservationDetails');
 			};
 
 			var params = {
@@ -116,6 +118,7 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 			// hide/show next previous
 			$scope.hideNextButton = ($scope.pageEndingIndex === $scope.upsellRooms.length);
 			$scope.hidePreviousButton = $scope.pageStartingIndex === 1;
+
 		};
 
 		$scope.viewNextPage = function() {
@@ -182,7 +185,7 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 		 */
 		var fetchUpsellRoomTypes = function() {
 			var fetchUpsellRoomTypeSuccess = function(response) {
-				fetchHotelRooms(response.upsell_mapping);
+				fetchHotelRooms(response);
 			};
 
 
