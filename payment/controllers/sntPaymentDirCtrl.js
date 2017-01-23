@@ -690,7 +690,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 // -- CICO-33971 :: Direct Bill Payment --
                 if($scope.selectedPaymentType === 'DB') {
                     $scope.$broadcast('INITIATE_DB_PAYMENT');
-                    return;
+                    // return;
                 }
 
                 if ($scope.selectedPaymentType === 'CC' && $scope.selectedCard !== -1) {
@@ -815,6 +815,9 @@ angular.module('sntPay').controller('sntPaymentController',
                 // -- CICO-33971 :: Direct Bill Payment --
                 if ($scope.selectedPaymentType === 'DB') {
                     $scope.payment.isEditable = false;
+                }
+                else {
+                    $scope.payment.isEditable = true;
                 }
 
                 // If the changed payment type is CC and payment gateway is MLI show CC addition options
