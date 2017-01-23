@@ -211,6 +211,14 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 			$scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
 			$scope.selectedRoom = {};
 			fetchUpsellRoomTypes();
+
+			if( $scope.zestStationData.room_upsell_options_order === 'higher_price_to_lower'){
+				$scope.upsellOrderByProperty = 'upsell_amount';
+			}else if( $scope.zestStationData.room_upsell_options_order === 'lower_price_to_higher'){
+				$scope.upsellOrderByProperty = '-upsell_amount';
+			}else{
+				$scope.upsellOrderByProperty = null;
+			}
 		}());
 
 	}

@@ -129,7 +129,7 @@ sntZestStation.config(['$stateProvider',
 
     // room upsells
     $stateProvider.state('zest_station.roomUpsell', {
-      url: '/checkinEarly/:reservation_id/',
+      url: '/checkinRoomUpsell',
       templateUrl: '/assets/partials_v2/checkin/zsCheckinRoomUpsell.html',
       controller: 'zsCheckinRoomUpsellCtrl'
     });
