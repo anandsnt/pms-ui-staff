@@ -5,6 +5,7 @@ angular.module('sntPay').controller('sntPaymentController',
                  $rootScope, $timeout, ngDialog, $filter) {
             // ---------------------------------------------------------------------------------------------------------
             var timeOutForScrollerRefresh = 300,
+                initialPaymentAmount = 0,
                 defaultScrollerOptions = {
                     snap: false,
                     scrollbars: 'custom',
@@ -654,7 +655,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
             var confrimDialogueId = null;
 
-            // Confirm Direct Bill payment.
+            // CICO-33971 : Confirm Direct Bill payment.
             let confirmDirectBillPayment = function(params) {
                 $timeout(()=> {
                     ngDialog.open({
@@ -667,7 +668,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     });
                 }, 0);
             };
-            
+
             // To catch ngDialog id - to handle multiple popups.
             $rootScope.$on('ngDialog.opened', function(e, $dialog) {
                 confrimDialogueId = $dialog.attr('id');
@@ -847,6 +848,8 @@ angular.module('sntPay').controller('sntPaymentController',
                 // -- CICO-33971 :: Direct Bill Payment --
                 if ($scope.selectedPaymentType === 'DB') {
                     $scope.payment.isEditable = false;
+                    $scope.payment.amount = initialPaymentAmount;
+                    calculateFee();
                 }
                 else {
                     $scope.payment.isEditable = true;
@@ -1143,6 +1146,7 @@ angular.module('sntPay').controller('sntPaymentController',
              */
             function onAmountChange() {
                 $scope.payment.amount = $scope.amount || 0;
+                initialPaymentAmount = angular.copy($scope.payment.amount);
                 calculateFee();
             }
 
