@@ -123,7 +123,8 @@
 					guestDetailsService.postGuestDetails(dataToSave).then(function() {
 						$scope.isLoading = false;
 						$rootScope.isGuestAddressVerified = true;
-						if ($rootScope.upgradesAvailable) {
+						// (for checkin now room has to be available)
+						if ($rootScope.upgradesAvailable && ($rootScope.isAutoCheckinOn || (!$rootScope.isAutoCheckinOn && $rootScope.isUpgradeAvailableNow))) {
 							$state.go('checkinUpgrade');
 						} else {
 							if ($rootScope.isAutoCheckinOn) {
