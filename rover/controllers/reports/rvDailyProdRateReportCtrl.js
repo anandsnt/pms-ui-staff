@@ -74,50 +74,8 @@ angular.module('sntRover')
             var detailsCtrlScope = $scope.$parent,
                 mainCtrlScope = detailsCtrlScope.$parent;
 
-            var LEFT_PANE_SCROLL = 'left-pane-scroll',
-                RIGHT_PANE_SCROLL = 'right-pane-scroll',
-                TIMEOUT = 300,
+            var TIMEOUT = 300,
                 POLL = 1000;
-
-            var refreshScrollers = function() {
-                if (mainCtrlScope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL)) {
-                    $scope.refreshScroller(LEFT_PANE_SCROLL);
-                }
-
-                if (mainCtrlScope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL)) {
-                    $scope.refreshScroller(RIGHT_PANE_SCROLL);
-                }
-            };
-
-            var setupScrollListner = function() {
-                mainCtrlScope.myScroll[LEFT_PANE_SCROLL]
-                    .on('scroll', function() {
-                        mainCtrlScope.myScroll[RIGHT_PANE_SCROLL]
-                            .scrollTo(0, this.y);
-                    });
-
-                mainCtrlScope.myScroll[RIGHT_PANE_SCROLL]
-                    .on('scroll', function() {
-                        mainCtrlScope.myScroll[LEFT_PANE_SCROLL]
-                            .scrollTo(0, this.y);
-                    });
-            };
-
-            var isScrollReady = function () {
-                if (mainCtrlScope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL) && mainCtrlScope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL)) {
-                    setupScrollListner();
-                } else {
-                    $timeout(isScrollReady, POLL);
-                }
-            };
-
-            var destroyScrolls = function() {
-                mainCtrlScope.myScroll[LEFT_PANE_SCROLL].destroy();
-                delete mainCtrlScope.myScroll[LEFT_PANE_SCROLL];
-
-                mainCtrlScope.myScroll[RIGHT_PANE_SCROLL].destroy();
-                delete mainCtrlScope.myScroll[RIGHT_PANE_SCROLL];
-            };
 
             var watchShowAvailability, watchshowRevenue;
 
@@ -127,21 +85,6 @@ angular.module('sntRover')
             var reportPageChanged;
 
             BaseCtrl.call(this, $scope);
-
-            $scope.setScroller(LEFT_PANE_SCROLL, {
-                'preventDefault': false,
-                'probeType': 3
-            });
-
-            $scope.setScroller(RIGHT_PANE_SCROLL, {
-                'preventDefault': false,
-                'probeType': 3,
-                'scrollX': true
-            });
-
-            $scope.$on('$destroy', destroyScrolls);
-
-            isScrollReady();
 
             // default colspan value
             $scope.colSpan = 5;
@@ -183,11 +126,6 @@ angular.module('sntRover')
             $scope.$on('$destroy', watchShowAvailability);
             $scope.$on('$destroy', watchshowRevenue);
 
-            $scope.reactRenderDone = function() {
-                refreshScrollers();
-                $scope.$emit('hideLoader');
-            };
-
             /**
              * initiates the rendering of the react component
              * @param  {any} args any additional config data
@@ -202,8 +140,7 @@ angular.module('sntRover')
                         'headerBot': $scope.headerBot,
                         'reportData': $scope.reportData,
                         'colspanArray': $scope.colspanArray,
-                        'isLastRowSum': false,
-                        reactRenderDone: $scope.reactRenderDone
+                        'isLastRowSum': false
                     });
 
                 ReactDOM.render(
@@ -212,6 +149,9 @@ angular.module('sntRover')
                     // eslint-disable-next-line angular/document-service
                     document.getElementById('daily-production-render')
                 );
+
+                // move the scroll to the very start
+                $scope.connectedScrolls.scrollToStart();
             }
 
             /**
