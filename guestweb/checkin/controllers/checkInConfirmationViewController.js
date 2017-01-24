@@ -41,7 +41,7 @@
 				$scope.isResponseSuccess = true;
 				checkinDetailsService.setResponseData(response);
 				$rootScope.upgradesAvailable = (response.is_upgrades_available === "true") ? true : false;
-				$rootScope.isUpgradeAvailableNow = res_data.is_upsell_available_now;
+				$rootScope.isUpgradeAvailableNow = response.is_upsell_available_now;
 				$rootScope.outStandingBalance = response.outstanding_balance;
 				$rootScope.payment_method_used = response.payment_method_used;
 				$rootScope.paymentDetails = response.payment_details;
