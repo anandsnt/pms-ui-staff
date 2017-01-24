@@ -43,6 +43,13 @@ admin.controller('ADZestStationRoomUpsellCtrl', ['$scope', 'ADZestStationSrv', '
             upsellData.upsell_compositions_in_percentage = roomUpsellData.upsell_compositions_in_percentage;
             upsellData.room_upsell_style = roomUpsellData.room_upsell_style;
             upsellData.hotel_room_upsell_on = roomUpsellData.hotel_room_upsell_on;
+            var chechAndAssignValue = function(value){
+                // if no value is present, set value as 50%
+                value = !_.isNull(value) ? value : 50;
+                return value;
+            };
+            upsellData.upsell_compositions_in_percentage.tier_2 = chechAndAssignValue(upsellData.upsell_compositions_in_percentage.tier_2);
+            upsellData.upsell_compositions_in_percentage.tier_3 = chechAndAssignValue(upsellData.upsell_compositions_in_percentage.tier_3);
             $scope.data = upsellData;
             //upsellData.number_of_room_types_in_higher_level = 1;
             // create an array with max number as the number
