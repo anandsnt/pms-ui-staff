@@ -1,4 +1,4 @@
-sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSrv', 'RVGuestCardSrv', 'RVReservationCardSrv', 'ngDialog', '$rootScope', '$timeout', '$filter', function($scope, RVBillPaymentSrv, RVPaymentSrv, RVGuestCardSrv, RVReservationCardSrv, ngDialog, $rootScope, $timeout, $filter) {
+sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSrv', 'RVGuestCardSrv', 'RVReservationCardSrv', 'ngDialog', '$rootScope', '$timeout', '$filter', 'rvPermissionSrv', function($scope, RVBillPaymentSrv, RVPaymentSrv, RVGuestCardSrv, RVReservationCardSrv, ngDialog, $rootScope, $timeout, $filter, rvPermissionSrv) {
 	BaseCtrl.call(this, $scope);
 
 	var setupbasicBillData = function() {
@@ -186,6 +186,14 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 			$scope.splitSelected = false;
 		}
 	};
+	/**
+	* function to check whether the user has permission
+	* to to proceed Direct Bill payment
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToDirectBillPayment = function() {
+		return rvPermissionSrv.getPermissionValue ('DIRECT_BILL_PAYMENT');
+	};
 	/*
 	* Initial function - To render screen with data
 	* Initial screen - filled with deafult amount on bill
@@ -211,7 +219,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		/*
 		 *	CICO-6089 => Enable Direct Bill payment option for OPEN BILLS.
 		*/
-		if ($scope.billsArray[$scope.currentActiveBill].is_account_attached) {
+		if ($scope.billsArray[$scope.currentActiveBill].is_account_attached && $scope.hasPermissionToDirectBillPayment()) {
 			paymentParams.direct_bill = true;
 		}
 		$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, paymentParams, $scope.getPaymentListSuccess);

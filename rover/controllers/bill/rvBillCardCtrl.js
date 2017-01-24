@@ -832,11 +832,20 @@ sntRover.controller('RVbillCardController',
 	 	 return showGuestBalance;
 	 };
 
+	/**
+	* function to check whether the user has permission
+	* to to proceed Direct Bill payment
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToDirectBillPayment = function() {
+		return rvPermissionSrv.getPermissionValue ('DIRECT_BILL_PAYMENT');
+	};
+
 	// Method to check whether the current active bill is having payment type = DB.
 	var checkPaymentTypeIsDirectBill = function() {
 		var isPaymentTypeDirectBill = false;
 
-		if ($scope.reservationBillData.bills[$scope.currentActiveBill].is_account_attached) {
+		if ($scope.reservationBillData.bills[$scope.currentActiveBill].is_account_attached && $scope.hasPermissionToDirectBillPayment()) {
 			isPaymentTypeDirectBill = true;
 		}
 		
