@@ -126,6 +126,14 @@ angular.module('sntRover')
             $scope.$on('$destroy', watchShowAvailability);
             $scope.$on('$destroy', watchshowRevenue);
 
+            $scope.reactRenderDone = function() {
+
+                // move the scroll to the very start
+                $scope.connectedScrolls.scrollToStart();
+
+                $scope.$emit('hideLoader');
+            };
+
             /**
              * initiates the rendering of the react component
              * @param  {any} args any additional config data
@@ -140,7 +148,8 @@ angular.module('sntRover')
                         'headerBot': $scope.headerBot,
                         'reportData': $scope.reportData,
                         'colspanArray': $scope.colspanArray,
-                        'isLastRowSum': false
+                        'isLastRowSum': false,
+                        reactRenderDone: $scope.reactRenderDone
                     });
 
                 ReactDOM.render(
@@ -149,9 +158,6 @@ angular.module('sntRover')
                     // eslint-disable-next-line angular/document-service
                     document.getElementById('daily-production-render')
                 );
-
-                // move the scroll to the very start
-                $scope.connectedScrolls.scrollToStart();
             }
 
             /**
