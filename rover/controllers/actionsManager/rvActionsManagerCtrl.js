@@ -1,5 +1,22 @@
-sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDialog', 'rvActionTasksSrv', 'departments', 'dateFilter', 'rvUtilSrv', '$state', 'RVreportsSubSrv', '$timeout',
-    function ($scope, $rootScope, ngDialog, rvActionTasksSrv, departments, dateFilter, rvUtilSrv, $state, reportsSubSrv, $timeout) {
+sntRover.controller('RVActionsManagerController',
+    ['$scope',
+    '$rootScope',
+    'ngDialog',
+    'rvActionTasksSrv',
+    'departments',
+    'dateFilter',
+    'rvUtilSrv',
+    '$state',
+    'RVreportsSubSrv',
+    '$window',
+    '$timeout',
+    '$filter',
+    function ($scope, $rootScope,
+             ngDialog, rvActionTasksSrv,
+             departments, dateFilter,
+             rvUtilSrv, $state,
+             reportsSubSrv, $window,
+            $timeout, $filter ) {
         BaseCtrl.call(this, $scope);
 
         // -------------------------------------------------------------------------------------------------------------- B. Local Methods
@@ -349,11 +366,12 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             $( '#print-orientation' ).remove();
         };
 
+        //Get the parameters required for the report
         var getReportParams = function() {
             var params = {};
             //report id for Action manager report
             params.id = 61;
-            params.from_date = dateFilter($scope.filterOptions.selectedDay, $rootScope.dateFormatForAPI);
+            params.from_date = $filter('date')($scope.filterOptions.selectedDay, 'yyyy/MM/dd');
             params.to_date = params.from_date;
             params.assigned_departments = [];
 
@@ -371,10 +389,37 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                 params.status = [$scope.filterOptions.selectedStatus];
             }
 
+            params.actionables = $scope.filterOptions.selectedView;
+
             return params;
 
         };
 
+        //Set the filters that are applied to the report
+        var setAppliedFilter = function() {
+            $scope.appliedFilter = {};
+
+            $scope.appliedFilter.date = dateFilter($scope.filterOptions.selectedDay, $rootScope.dateFormatForAPI);
+            if ($scope.filterOptions.selectedStatus === 'ALL') {
+               $scope.appliedFilter.completion_status = ['ALL STATUS'];
+            } else {
+               $scope.appliedFilter.completion_status = [$scope.filterOptions.selectedStatus];
+            }
+
+            if ($scope.filterOptions.department === '') {
+                $scope.appliedFilter.assigned_departments = ['ALL DEPARTMENTS'];
+            } else {
+                $scope.appliedFilter.assigned_departments = [$scope.filterOptions.department.name];
+            }
+
+            $scope.appliedFilter.show = [$scope.filterOptions.selectedView];
+
+            $scope.leftColSpan = 2;
+            $scope.rightColSpan = 2;
+
+        };
+
+        //Print the action manager report from the action manager screen
         $scope.printActionManager = function() {
 
             var sucessCallback = function(data) {
@@ -383,11 +428,8 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                 $scope.printActionManagerData = data;
                 $scope.errorMessage = "";
 
-
-
                 // add the orientation
                 addPrintOrientation();
-
                 /*
                 *   ======[ READY TO PRINT ]======
                 */
@@ -423,6 +465,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             };
 
             var params = getReportParams();
+            setAppliedFilter();
 
             $scope.invokeApi(reportsSubSrv.fetchReportDetails, params, sucessCallback, failureCallback);
         };

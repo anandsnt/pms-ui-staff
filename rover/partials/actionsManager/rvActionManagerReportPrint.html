@@ -1,6 +1,7 @@
-<div class="report-header">
+<section id="report-details" class="content reports-wrapper" role="main">
+    <div class="report-header">
         <ul class="totals">
-            <li>Total Actions<span>{total-actions}</span></li>
+            <li>Total Actions<span>{{printActionManagerData.total_count}}</span></li>
         </ul>
     </div>
 
@@ -20,8 +21,7 @@
                         <th class="status"><span>Status</span></th>
                     </tr>
                 </thead>
-                <tfoot>
-                </tfoot>
+                <tfoot ng-include="'/assets/partials/reports/shared/rvReportDetailsFooter.html'"></tfoot>
                 <tbody>
                     <tr ng-repeat="item in printActionManagerData.results">
                         <td class="name">
@@ -36,3 +36,4 @@
             </table>
         </div>
     </div>
+</section>

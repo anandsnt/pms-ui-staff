@@ -2005,13 +2005,21 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             if (report.hasShowActionables) {
                 if ( report.showActionables ) {
                     key         = reportParams['SHOW_ACTIONABLES'];
-                    params[key] = report.showActionables;
+                    if (report.showActionables === 'BOTH') {
+                       params[key] = ['GUESTS', 'GROUPS'];
+                    } else {
+                        params[key] = [report.showActionables];
+                    }
 
                     if ( changeAppliedFilter ) {
-                        $scope.appliedFilter.show.push(report.showActionables);
+                        if (report.showActionables === 'BOTH') {
+                            $scope.appliedFilter.show.push("GUESTS");
+                            $scope.appliedFilter.show.push("GROUPS");
+                        } else {
+                            $scope.appliedFilter.show.push(report.showActionables);
+                        }
                     }
                 }
-
             }
 
             //CICO-35959 - show room revenue by default
