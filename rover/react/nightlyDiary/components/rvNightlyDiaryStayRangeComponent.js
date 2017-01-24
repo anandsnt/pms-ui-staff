@@ -15,7 +15,8 @@ const NightlyDiaryStayRangeComponent = createClass ({
             minArrivalFlagPos: NIGHTLY_DIARY_CONST.DAYS_7_OFFSET,
             departurePos: departurePos,
             reservationDuration: currentSelectedReservation.duration,
-            daysMode: daysMode
+            daysMode: daysMode,
+            onedayWidth: oneDayWidth
         };
     },
 
@@ -48,12 +49,10 @@ const NightlyDiaryStayRangeComponent = createClass ({
 
         e.preventDefault ();
         e.stopPropagation ();
-        // TODO - remove this check and remove 'mouseleave' listner
         if (state.isMouseDragging) {
             state.isMouseDragging = false;
             this.calculateArrivalDate();
         }
-
         flagarea.removeEventListener(this.mouseMovingEvent, () =>{});
         flagarea.removeEventListener(this.mouseLeavingEvent, () =>{});
     },
@@ -88,14 +87,24 @@ const NightlyDiaryStayRangeComponent = createClass ({
                     },
                     arrivalPosition: curentPosition
             });
-
-
-
         }
     },
 
     calculateArrivalDate() {
-        console.log("calculateArrivalDate");
+        let state = this.state,
+            props = this.props,
+            initialArrivalPosition = parseInt(props.currentSelectedReservation.arrivalPosition),
+            differenceInPosition = state.arrivalPosition - initialArrivalPosition,
+            differenceInDays = Math.round(differenceInPosition / state.onedayWidth),
+            curentPosition = initialArrivalPosition + (differenceInDays * state.onedayWidth);
+
+        props.extendShortenReservation(curentPosition);
+        this.setState({
+            arrivalStyle: {
+                transform: 'translateX(' + curentPosition + 'px)'
+            },
+            arrivalPosition: curentPosition
+        });
     },
 
     render() {
