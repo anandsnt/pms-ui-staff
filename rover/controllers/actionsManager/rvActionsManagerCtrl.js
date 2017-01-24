@@ -1,5 +1,5 @@
-sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDialog', 'rvActionTasksSrv', 'departments', 'dateFilter', 'rvUtilSrv', '$state',
-    function ($scope, $rootScope, ngDialog, rvActionTasksSrv, departments, dateFilter, rvUtilSrv, $state) {
+sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDialog', 'rvActionTasksSrv', 'departments', 'dateFilter', 'rvUtilSrv', '$state', 'RVreportsSubSrv', '$timeout',
+    function ($scope, $rootScope, ngDialog, rvActionTasksSrv, departments, dateFilter, rvUtilSrv, $state, reportsSubSrv, $timeout) {
         BaseCtrl.call(this, $scope);
 
         // -------------------------------------------------------------------------------------------------------------- B. Local Methods
@@ -338,6 +338,94 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
 
         $scope.$on('$destroy', listenerClosePopup);
         $scope.$on('$destroy', listenerNewActionPosted);
+
+        // add the print orientation before printing
+        var addPrintOrientation = function() {
+            $( 'head' ).append( "<style id='print-orientation'>@page { size: portrait; }</style>" );
+        };
+
+        // add the print orientation after printing
+        var removePrintOrientation = function() {
+            $( '#print-orientation' ).remove();
+        };
+
+        var getReportParams = function() {
+            var params = {};
+            //report id for Action manager report
+            params.id = 61;
+            params.from_date = dateFilter($scope.filterOptions.selectedDay, $rootScope.dateFormatForAPI);
+            params.to_date = params.from_date;
+            params.assigned_departments = [];
+
+            if ($scope.filterOptions.department == "") {
+                _.each($scope.departments, function(department) {
+                    params.assigned_departments.push(department.value);
+                });
+            } else {
+                params.assigned_departments.push($scope.filterOptions.department.value);
+            }
+
+            if($scope.filterOptions.selectedStatus === "ALL") {
+                params.status = ["UNASSIGNED", "ASSIGNED", "COMPLETED"];
+            } else {
+                params.status = [$scope.filterOptions.selectedStatus];
+            }
+
+            return params;
+
+        };
+
+        $scope.printActionManager = function() {
+
+            var sucessCallback = function(data) {
+
+                $scope.$emit('hideLoader');
+                $scope.printActionManagerData = data;
+                $scope.errorMessage = "";
+
+
+
+                // add the orientation
+                addPrintOrientation();
+
+                /*
+                *   ======[ READY TO PRINT ]======
+                */
+                // this will show the popup with full bill
+                $timeout(function() {
+
+                    /*
+                    *   ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+                    */
+                    $window.print();
+                    if ( sntapp.cordovaLoaded ) {
+                        cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+                    }
+                }, 200);
+
+                /*
+                *   ======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
+                */
+                $timeout(function() {
+
+                    // CICO-9569 to solve the hotel logo issue
+                    $("header .logo").removeClass('logo-hide');
+                    $("header .h2").addClass('text-hide');
+                    // remove the orientation after similar delay
+                    removePrintOrientation();
+                }, 200);
+
+            };
+
+            var failureCallback = function(errorData) {
+                $scope.$emit('hideLoader');
+                $scope.errorMessage = errorData;
+            };
+
+            var params = getReportParams();
+
+            $scope.invokeApi(reportsSubSrv.fetchReportDetails, params, sucessCallback, failureCallback);
+        };
 
         init();
     }

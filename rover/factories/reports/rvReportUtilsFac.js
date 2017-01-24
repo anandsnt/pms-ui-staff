@@ -555,6 +555,30 @@ angular.module('reportsModule')
                     report['hasMinNoOfDaysNotOccupied'] = filter;
                 }
 
+                if ( filter.value === 'SHOW_ACTIONABLES' ) {
+                     var customData = [
+                        {
+                            value : "Guests",
+                            name : "Guests"
+                        }
+                     ];
+                     report.showActionables = "Guests";
+
+                     if (!$rootScope.isHourlyRateOn) {
+                        customData.push({value : "Groups", name : "Groups"});
+                        customData.push({value : "Both", name : "Both"});
+                        report.showActionables = "Both";
+                     }
+                    report['hasShowActionables'] = {
+                        data : customData,
+                        options: {
+                                key: 'name'
+                        }
+                    };
+
+
+                }
+
 
                 // fill up DS for options combo box
                 if ( __optionFilterNames[filter.value] ) {
@@ -566,6 +590,7 @@ angular.module('reportsModule')
                  if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'RESTRICTED_POST_ONLY' && $rootScope.isStandAlone) {
                     __pushGeneralOptionData( report, filter, false );
                 }
+
 
                  // fill up DS for options combo box
                 if ( __excludeFilterNames[filter.value] ) {
