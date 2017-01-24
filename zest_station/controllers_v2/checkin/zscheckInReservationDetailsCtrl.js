@@ -34,10 +34,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         var refreshScroller = function() {
             $scope.refreshScroller('res-details');
         };
-        var getSelectedReservation = function() {
-            // the data is service will be reset after the process from zscheckInReservationSearchCtrl
-            $scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
-        };
+
         var setSelectedReservation = function() {
             zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
         };
@@ -120,9 +117,14 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             //  if more than 1 reservation was found? else go back to input 2nd screen (confirmation, no of nites, etc..)
         };
 
-        (function() {// init
-            // hide back button
-            $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
+        (function() {
+            // init
+            // the data is service will be reset after the process from zscheckInReservationSearchCtrl
+            $scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
+            // show back button if not from upsell rooms
+            if($scope.selectedReservation.isRoomUpraded){
+                $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+            }
             // show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
             // back button action
@@ -130,7 +132,6 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             $scope.$emit('hideLoader');
             // starting mode
             $scope.mode = 'RESERVATION_DETAILS';
-            getSelectedReservation();
             fetchReservationDetails();
             // set flag to show the contents of the page
             // when all the data are loaded
@@ -369,10 +370,12 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             console.info(': continueRouting :', settings);
             console.info('*goToEarlyCheckin: ', goToEarlyCheckin);
 
+            var zestStationRoomUpsellOn = $scope.zestStationData.offer_kiosk_room_upsell;
 
             if (goToEarlyCheckin) {
                 beginEarlyCheckin(settings);
-
+            } else if (!$scope.selectedReservation.isRoomUpraded && $scope.selectedReservation.reservation_details.is_upsell_available  === 'true' && zestStationRoomUpsellOn) {
+                $state.go('zest_station.roomUpsell');
             } else {
                 // terms and condition skip is done in terms and conditions page
                 initTermsPage();
