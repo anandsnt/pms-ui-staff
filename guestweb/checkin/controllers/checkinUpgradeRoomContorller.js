@@ -92,6 +92,7 @@
         var data = {
           'reservation_id': $rootScope.reservationID,
           'upsell_amount_id': upgradeSelected.upsell_amount_id,
+          'room_no': roomNumber,
           'upgrade_room_type_id': upgradeRoomTypeId
         };
         if (!$rootScope.isAutoCheckinOn) {
