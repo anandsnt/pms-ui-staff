@@ -164,11 +164,12 @@ angular.module('sntRover')
                 }
 
             };
-            var extendShortenReservation = (newArrivalPosition) => {
-                console.log("extendShortenReservation");
+            var extendShortenReservation = (newArrivalPosition, newDeparturePosition) => {
+
                 var dispatchData = {
                     type: 'EXTEND_SHORTEN_RESERVATION',
-                    newArrivalPosition: newArrivalPosition
+                    newArrivalPosition: newArrivalPosition,
+                    newDeparturePosition: newDeparturePosition
                 };
 
                 store.dispatch(dispatchData);
