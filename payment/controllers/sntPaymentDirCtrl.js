@@ -34,7 +34,8 @@ angular.module('sntPay').controller('sntPaymentController',
                 guestLastName: '',
                 isManualEntryInsideIFrame: false,
                 workstationId: '',
-                emvTimeout: 120
+                emvTimeout: 120,
+                isConfirmDBpayment: false
             };
 
             $scope.giftCard = {
@@ -651,6 +652,37 @@ angular.module('sntPay').controller('sntPaymentController',
                 }
             };
 
+            var confrimDialogueId = null;
+
+            // Confirm Direct Bill payment.
+            let confirmDirectBillPayment = function(params) {
+                $timeout(()=> {
+                    ngDialog.open({
+                        template: '/assets/partials/rvConfirmDirectBillPaymentPopup.html',
+                        className: '',
+                        controller: 'confirmDirectBillPopupCtrl',
+                        scope: $scope,
+                        closeByDocument: false,
+                        data: JSON.stringify(params)
+                    });
+                }, 0);
+            };
+            
+            // To catch ngDialog id - to handle multiple popups.
+            $rootScope.$on('ngDialog.opened', function(e, $dialog) {
+                confrimDialogueId = $dialog.attr('id');
+            });
+            // Submit payment process after confrim as DB.
+            $scope.$on('CONFIRM_DB_PAYMENT', ( event, params )=> {
+                $scope.payment.isConfirmDBpayment = true;
+                $scope.submitPayment(params);
+                ngDialog.close(confrimDialogueId);
+            });
+            // Close confirmation popup.
+            $scope.$on('CLOSE_CONFIRM_DB_PAYMENT', ()=> {
+                ngDialog.close(confrimDialogueId);
+            });
+
             $scope.submitPayment = function(payLoad) {
                 var errorMessage = ['Please enter a valid amount'],
                     paymentTypeId, // for CC payments, we need payment type id
@@ -688,9 +720,9 @@ angular.module('sntPay').controller('sntPaymentController',
                 }
 
                 // -- CICO-33971 :: Direct Bill Payment --
-                if($scope.selectedPaymentType === 'DB') {
-                    $scope.$broadcast('INITIATE_DB_PAYMENT');
-                    // return;
+                if ($scope.selectedPaymentType === 'DB' && !$scope.payment.isConfirmDBpayment) {
+                    confirmDirectBillPayment();
+                    return;
                 }
 
                 if ($scope.selectedPaymentType === 'CC' && $scope.selectedCard !== -1) {

@@ -542,10 +542,6 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
         }
     });
 
-   	$scope.$on('INITIATE_DB_PAYMENT', function() {
-	 	console.log("Show Confrm popup- bill pay ctrl");
-	});
-
     $scope.$watch("reservationBillData.bills", matchCardObjectSchema);
 
 	$scope.$on('$destroy', listenerPaymentFailure);

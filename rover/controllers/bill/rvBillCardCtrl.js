@@ -832,10 +832,22 @@ sntRover.controller('RVbillCardController',
 	 	 return showGuestBalance;
 	 };
 
+	// Method to check whether the current active bill is having payment type = DB.
+	var checkPaymentTypeIsDirectBill = function() {
+		var isPaymentTypeDirectBill = false;
+
+		if ($scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type === "DB") {
+			isPaymentTypeDirectBill = true;
+		}
+		
+		return isPaymentTypeDirectBill;
+	};
+
 	 var fetchPaymentTypesAndOpenPaymentModal = function(passData, paymentData) {
+
 		 $scope.callAPI(RVPaymentSrv.renderPaymentScreen, {
 			 params: {
-			     direct_bill: false
+			     direct_bill: checkPaymentTypeIsDirectBill()
 			 },
 			 onSuccess: function(response) {
 				 paymentData.paymentTypes = response;
@@ -942,6 +954,7 @@ sntRover.controller('RVbillCardController',
 
 
 	});
+
 	 /*
 	  * Clicked pay button function
 	  */
@@ -967,24 +980,19 @@ sntRover.controller('RVbillCardController',
 
 		var paymentParams = $scope.reservationBillData.isCheckout ? reservationData : {};
 
-		 /*
-		  *	CICO-6089 => Enable Direct Bill payment option for OPEN BILLS.
-		  */
-		 if ($scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type === "DB") {
-			 paymentParams.direct_bill = true;
-		 }
+		paymentParams.direct_bill = checkPaymentTypeIsDirectBill();
 
-		 $scope.invokeApi(RVPaymentSrv.renderPaymentScreen, paymentParams, function(data) {
-			 // NOTE: Obtain the payment methods and then open the payment popup
-			 $scope.paymentTypes = data;
-			 ngDialog.open({
-				 template: '/assets/partials/payment/rvReservationBillPaymentPopup.html',
-				 className: '',
-				 controller: 'RVBillPayCtrl',
-				 closeByDocument: false,
-				 scope: $scope
-			 });
-		 });
+		$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, paymentParams, function(data) {
+			// NOTE: Obtain the payment methods and then open the payment popup
+			$scope.paymentTypes = data;
+			ngDialog.open({
+				template: '/assets/partials/payment/rvReservationBillPaymentPopup.html',
+				className: '',
+				controller: 'RVBillPayCtrl',
+				closeByDocument: false,
+				scope: $scope
+			});
+		});
 	 };
 	 $scope.clickedAddUpdateCCButton = function() {
 	 	$scope.fromViewToPaymentPopup = "billcard";
