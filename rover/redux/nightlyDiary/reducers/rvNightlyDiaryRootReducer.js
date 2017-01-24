@@ -16,7 +16,8 @@ const nightlyDiaryRootReducer = (state, action) => (
         selectedRoomId: (action.type === 'DIARY_VIEW_CHANGED') ? action.selectedRoomId : state.selectedRoomId,
         isFromStayCard: state.isFromStayCard,
         dateFormat: state.dateFormat,
-        newArrivalPosition: (action.type === 'EXTEND_SHORTEN_RESERVATION') ? action.newArrivalPosition : ''
+        newArrivalPosition: (action.type === 'EXTEND_SHORTEN_RESERVATION') ? action.newArrivalPosition : '',
+        newDeparturePosition: (action.type === 'EXTEND_SHORTEN_RESERVATION') ? action.newDeparturePosition : ''
     }
 );
 

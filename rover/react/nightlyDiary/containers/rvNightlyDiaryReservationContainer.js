@@ -180,7 +180,7 @@ let findIsReservationFuture = (reservation, currentBusinessDate) => {
  * Adding different logics to the reservations to pass to component
  */
 
-let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDateGrid, numberOfDays, currentBusinessDate, selectedReservationId, newArrivalPosition) => {
+let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDateGrid, numberOfDays, currentBusinessDate, selectedReservationId, newArrivalPosition, newDeparturePosition) => {
 
     let positionAndDuration = calculateReservationDurationAndPosition(diaryInitialDayOfDateGrid, reservation, numberOfDays);
     let duration = positionAndDuration.durationOfReservation + "px";
@@ -219,6 +219,12 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
             reservation.style.width = newDuration;
             reservation.style.transform = "translateX(" + newArrivalPosition + "px)";
         }
+        if (newDeparturePosition !== '') {
+            let newDuration = (newDeparturePosition - positionAndDuration.reservationPosition);
+            reservation.style.width = newDuration;
+            // reservation.style.transform = "translateX(" + newArrivalPosition + "px)";
+        }
+
     }
 
     reservation.reservationClass = "reservation " + reservationStatusClass + " " + reservationClass + " " + reservationEditClass;
@@ -229,13 +235,14 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
 const mapStateToNightlyDiaryReservationContainerProps = (state, ownProps) => ({
     reservation: convertReservationsListReadyToComponent(
         ownProps.reservation, state.diaryInitialDayOfDateGrid,
-        state.numberOfDays, state.currentBusinessDate, state.selectedReservationId, state.newArrivalPosition),
+        state.numberOfDays, state.currentBusinessDate, state.selectedReservationId, state.newArrivalPosition, state.newDeparturePosition),
     selectReservation: state.callBackFromAngular.selectReservation,
     selectedReservationId: state.selectedReservationId,
     selectedRoom: ownProps.room,
     isFromStayCard: state.isFromStayCard,
     gridDays: state.numberOfDays,
-    newArrivalPosition: state.newArrivalPosition
+    newArrivalPosition: state.newArrivalPosition,
+    newDeparturePosition: state.newDeparturePosition
 });
 
 const mapDispatchToNightlyDiaryReservationContainerProps = (stateProps) => {
