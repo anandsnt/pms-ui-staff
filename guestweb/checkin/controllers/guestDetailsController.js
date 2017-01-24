@@ -124,7 +124,7 @@
 						$scope.isLoading = false;
 						$rootScope.isGuestAddressVerified = true;
 						// (for checkin now room has to be available)
-						if ($rootScope.upgradesAvailable && ($rootScope.isAutoCheckinOn || (!$rootScope.isAutoCheckinOn && $rootScope.isUpgradeAvailableNow))) {
+						if ($rootScope.upgradesAvailable && ($rootScope.isAutoCheckinOn || $rootScope.isUpgradeAvailableNow)) {
 							$state.go('checkinUpgrade');
 						} else {
 							if ($rootScope.isAutoCheckinOn) {

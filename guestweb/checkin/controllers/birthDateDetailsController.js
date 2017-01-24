@@ -85,7 +85,7 @@
 			else if (!$rootScope.guestAddressOn || $rootScope.isGuestAddressVerified) {
 				// if room upgrades are available
 				// (for checkin now room has to be available)
-				if ($rootScope.upgradesAvailable && ($rootScope.isAutoCheckinOn || (!$rootScope.isAutoCheckinOn && $rootScope.isUpgradeAvailableNow))) {
+				if ($rootScope.upgradesAvailable && ($rootScope.isAutoCheckinOn || $rootScope.isUpgradeAvailableNow)) {
 					$state.go('checkinUpgrade');
 				}
 				else {
