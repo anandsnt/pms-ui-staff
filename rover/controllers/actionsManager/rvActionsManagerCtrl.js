@@ -389,7 +389,7 @@ sntRover.controller('RVActionsManagerController',
                 params.status = [$scope.filterOptions.selectedStatus];
             }
 
-            params.actionables = $scope.filterOptions.selectedView;
+            params.actionables = [$scope.filterOptions.selectedView];
 
             return params;
 

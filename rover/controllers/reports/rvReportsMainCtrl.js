@@ -2006,7 +2006,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 if ( report.showActionables ) {
                     key         = reportParams['SHOW_ACTIONABLES'];
                     if (report.showActionables === 'BOTH') {
-                       params[key] = ['GUESTS', 'GROUPS'];
+                       params[key] = ['GUEST', 'GROUP'];
                     } else {
                         params[key] = [report.showActionables];
                     }

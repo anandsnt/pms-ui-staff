@@ -558,14 +558,14 @@ angular.module('reportsModule')
                 if ( filter.value === 'SHOW_ACTIONABLES' ) {
                      var customData = [
                         {
-                            value : "GUESTS",
+                            value : "GUEST",
                             name : "Guests"
                         }
                      ];
-                     report.showActionables = "GUESTS";
+                     report.showActionables = "GUEST";
 
                      if (!$rootScope.isHourlyRateOn) {
-                        customData.push({value : "GROUPS", name : "Groups"});
+                        customData.push({value : "GROUP", name : "Groups"});
                         customData.push({value : "BOTH", name : "Both"});
                         report.showActionables = "BOTH";
                      }
