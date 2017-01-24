@@ -480,8 +480,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 // the reservation at this point, for check-in, should have a due-in status + arrival time,
                 // if this is for Yotel, we need to check the arrival time vs current time at the hotel,
                 // to make sure the arriving guest is within the arrival time (within the first hour);
-
-                if ($scope.zestStationData.theme === 'yotel' && !checkinTimeWithinTheHourForHotel()) {
+                if ($scope.zestStationData.theme === 'yotel' && !checkinTimeWithinTheHourForHotel() && $scope.zestStationData.isHourlyRateOn) {
                     
                     initCheckinTimeError();
 
