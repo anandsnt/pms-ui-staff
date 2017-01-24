@@ -32,6 +32,7 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 				'pre_auth_amount_for_zest_station': $scope.selectedReservation.reservation_details.pre_auth_amount_for_zest_station,
 				'authorize_cc_at_checkin': $scope.selectedReservation.reservation_details.authorize_cc_at_checkin
 			};
+
 			$state.go('zest_station.checkInTerms', stateParams);
 		};
 
@@ -106,6 +107,7 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 			$scope.viewableRoomUpgrades = [];
 			// set 3 or less items based on availablity
 			var startingUpsell = $scope.upsellRooms[$scope.pageStartingIndex - 1];
+			
 			$scope.viewableRoomUpgrades.push(startingUpsell);
 			// check if second room for the page is available
 			if (!_.isUndefined($scope.upsellRooms[$scope.pageStartingIndex])) {
@@ -212,11 +214,11 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 			$scope.selectedRoom = {};
 			fetchUpsellRoomTypes();
 
-			if( $scope.zestStationData.room_upsell_options_order === 'higher_price_to_lower'){
+			if ($scope.zestStationData.room_upsell_options_order === 'higher_price_to_lower') {
 				$scope.upsellOrderByProperty = 'upsell_amount';
-			}else if( $scope.zestStationData.room_upsell_options_order === 'lower_price_to_higher'){
+			} else if ($scope.zestStationData.room_upsell_options_order === 'lower_price_to_higher') {
 				$scope.upsellOrderByProperty = '-upsell_amount';
-			}else{
+			} else {
 				$scope.upsellOrderByProperty = null;
 			}
 		}());
