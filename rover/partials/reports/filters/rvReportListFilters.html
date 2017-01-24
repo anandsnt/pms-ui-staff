@@ -395,6 +395,12 @@
     data="uiChosenReport.hasMarketsList.data"
     options="uiChosenReport.hasMarketsList.options"></multi-option-selection>
 
+<multi-option-selection ng-show="uiChosenReport.hasSegmentsList && uiChosenReport.hasSegmentsList.data.length"
+    label="Segment(s)"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasSegmentsList.data"
+    options="uiChosenReport.hasSegmentsList.options"></multi-option-selection>
+
 <multi-option-selection ng-show="uiChosenReport.hasSourcesList && uiChosenReport.hasSourcesList.data.length"
     label="Source(s)"
     on-update="refreshFilterScroll"
