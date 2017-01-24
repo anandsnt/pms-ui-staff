@@ -47,12 +47,12 @@ const NightlyDiaryStayRangeComponent = createClass ({
         state.mouseClikedX = e.clientX;
         state.mouseLastPositionX = e.clientX;
         flagarea.removeEventListener(this.mouseLeavingEvent, () =>{});
-        flagarea.addEventListener (this.mouseMovingEvent, e => this.arrivalFlagMouseMove (e));
-        flagarea.addEventListener (this.mouseLeavingEvent, e => this.arrivalFlagMouseLeave (e));
-        flagarea.addEventListener ('mouseleave', e => this.arrivalFlagMouseLeave (e));
+        flagarea.addEventListener (this.mouseMovingEvent, e => this.mouseMove (e));
+        flagarea.addEventListener (this.mouseLeavingEvent, e => this.mouseLeave (e));
+        flagarea.addEventListener ('mouseleave', e => this.mouseLeave (e));
     },
 
-    arrivalFlagMouseLeave(e) {
+    mouseLeave(e) {
         let state = this.state,
             flagarea = this.flagarea;
 
@@ -62,16 +62,25 @@ const NightlyDiaryStayRangeComponent = createClass ({
             state.isArrivalDragging = false;
             this.calculateArrivalDate();
         }
-        flagarea.removeEventListener(this.mouseMovingEvent, (e) =>{ console.log(e);});
+        if(state.isDepartureDragging) {
+            state.isDepartureDragging = false;
+        }
+        flagarea.removeEventListener(this.mouseMovingEvent, () =>{});
         flagarea.removeEventListener(this.mouseLeavingEvent, () =>{});
     },
 
-    arrivalFlagMouseMove(e) {
+    mouseMove(e) {
         e.preventDefault ();
         e.stopPropagation ();
-        let diff = e.clientX - this.state.mouseLastPositionX;
+        let state = this.state,
+            diff = e.clientX - this.state.mouseLastPositionX;
 
-        this.moveArrivalFlag(diff);
+        if(state.isArrivalDragging) {            
+            this.moveArrivalFlag(diff);
+        }
+        if(state.isDepartureDragging) {            
+            this.moveDepartureFlag(diff);
+        }
         this.state.mouseLastPositionX = e.clientX;
     },
 
@@ -87,8 +96,6 @@ const NightlyDiaryStayRangeComponent = createClass ({
             curentPosition = state.maxArrivalFlagPos;
         }
         if (state.isArrivalDragging) {
-
-            console.log("arruval --"+state.isArrivalDragging)
             this.props.extendShortenReservation(curentPosition, this.departurePosition);
             this.setState({
                 arrivalStyle: {
@@ -109,32 +116,11 @@ const NightlyDiaryStayRangeComponent = createClass ({
         state.isDepartureDragging = true;
         state.mouseClikedX = e.clientX;
         state.mouseLastPositionX = e.clientX;
-        flagarea.addEventListener (this.mouseMovingEvent, e => this.departureFlagMouseMove (e));
-        flagarea.addEventListener (this.mouseLeavingEvent, e => this.departureFlagMouseLeave (e));
-        flagarea.addEventListener ('mouseleave', e => this.departureFlagMouseLeave (e));
+        flagarea.addEventListener (this.mouseMovingEvent, e => this.mouseMove (e));
+        flagarea.addEventListener (this.mouseLeavingEvent, e => this.mouseLeave (e));
+        flagarea.addEventListener ('mouseleave', e => this.mouseLeave (e));
     },
-    departureFlagMouseMove(e) {
-        e.preventDefault ();
-        e.stopPropagation ();
-        let diff = e.clientX - this.state.mouseLastPositionX;
-        this.moveDepartureFlag(diff);
-        this.state.mouseLastPositionX = e.clientX;
-    },
-
-    departureFlagMouseLeave(e) {
-        let state = this.state,
-            flagarea = this.flagarea;
-
-        e.preventDefault ();
-        e.stopPropagation ();
-        if (state.isDepartureDragging) {
-            state.isDepartureDragging = false;
-            //this.calculateArrivalDate();
-        }
-        flagarea.removeEventListener(this.mouseMovingEvent, () =>{});
-        flagarea.removeEventListener(this.mouseLeavingEvent, () =>{});
-    },
-
+    
     moveDepartureFlag(diff) {
         let state = this.state,
             curentPosition = state.departurePosition + diff;
@@ -148,8 +134,6 @@ const NightlyDiaryStayRangeComponent = createClass ({
         }
 
         if (state.isDepartureDragging) {
-            console.log("Moveee");
-            console.log(curentPosition);
             this.props.extendShortenReservation(this.arrivalPosition, curentPosition);
             this.setState({
                 departureStyle: {
@@ -175,6 +159,10 @@ const NightlyDiaryStayRangeComponent = createClass ({
             },
             arrivalPosition: curentPosition
         });
+    },
+    // TODO : -
+    updateFlagRanges() {
+
     },
 
     render() {
