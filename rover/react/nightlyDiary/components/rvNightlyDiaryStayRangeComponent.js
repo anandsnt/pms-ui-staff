@@ -32,13 +32,17 @@ const NightlyDiaryStayRangeComponent = createClass ({
         this.mouseStartingEvent = this.isTouchEnabled ? 'touchstart' : 'mousedown';
         this.mouseMovingEvent   = this.isTouchEnabled ? 'touchmove' : 'mousemove';
         this.mouseLeavingEvent  = this.isTouchEnabled ? 'touchend'  : 'mouseup';
+        let flagarea = this.flagarea;
+
         this.arrivalFlag.addEventListener (this.mouseStartingEvent, e => this.arrivalFlagMouseDown (e));
         this.departureFlag.addEventListener (this.mouseStartingEvent, e => this.departureFlagMouseDown (e));
+        flagarea.addEventListener (this.mouseMovingEvent, e => this.mouseMove (e));
+        flagarea.addEventListener (this.mouseLeavingEvent, e => this.mouseLeave (e));
+        flagarea.addEventListener ('mouseleave', e => this.mouseLeave (e));
     },
 
     arrivalFlagMouseDown(e) {
-        let state = this.state,
-            flagarea = this.flagarea;
+        let state = this.state;
 
         e.preventDefault ();
         e.stopPropagation ();
@@ -46,10 +50,6 @@ const NightlyDiaryStayRangeComponent = createClass ({
         state.isArrivalDragging = true;
         state.mouseClikedX = e.clientX;
         state.mouseLastPositionX = e.clientX;
-        flagarea.removeEventListener(this.mouseLeavingEvent, () =>{});
-        flagarea.addEventListener (this.mouseMovingEvent, e => this.mouseMove (e));
-        flagarea.addEventListener (this.mouseLeavingEvent, e => this.mouseLeave (e));
-        flagarea.addEventListener ('mouseleave', e => this.mouseLeave (e));
     },
 
     mouseLeave(e) {
@@ -62,7 +62,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
             state.isArrivalDragging = false;
             this.calculateArrivalDate();
         }
-        if(state.isDepartureDragging) {
+        if (state.isDepartureDragging) {
             state.isDepartureDragging = false;
         }
         flagarea.removeEventListener(this.mouseMovingEvent, () =>{});
@@ -75,10 +75,10 @@ const NightlyDiaryStayRangeComponent = createClass ({
         let state = this.state,
             diff = e.clientX - this.state.mouseLastPositionX;
 
-        if(state.isArrivalDragging) {            
+        if (state.isArrivalDragging) {            
             this.moveArrivalFlag(diff);
         }
-        if(state.isDepartureDragging) {            
+        if (state.isDepartureDragging) {            
             this.moveDepartureFlag(diff);
         }
         this.state.mouseLastPositionX = e.clientX;
@@ -107,8 +107,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
     },
 
     departureFlagMouseDown(e) {
-        let state = this.state,
-            flagarea = this.flagarea;
+        let state = this.state;
 
         e.preventDefault ();
         e.stopPropagation ();
@@ -116,9 +115,6 @@ const NightlyDiaryStayRangeComponent = createClass ({
         state.isDepartureDragging = true;
         state.mouseClikedX = e.clientX;
         state.mouseLastPositionX = e.clientX;
-        flagarea.addEventListener (this.mouseMovingEvent, e => this.mouseMove (e));
-        flagarea.addEventListener (this.mouseLeavingEvent, e => this.mouseLeave (e));
-        flagarea.addEventListener ('mouseleave', e => this.mouseLeave (e));
     },
     
     moveDepartureFlag(diff) {
