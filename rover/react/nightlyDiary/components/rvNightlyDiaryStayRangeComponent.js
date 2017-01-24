@@ -1,25 +1,26 @@
 const NightlyDiaryStayRangeComponent = createClass ({
     getInitialState: function() {
         let currentSelectedReservation = this.props.currentSelectedReservation,
-            departurePos = parseInt(currentSelectedReservation.arrivalPosition) + currentSelectedReservation.duration,
+            departurePosition = parseInt(currentSelectedReservation.arrivalPosition) + currentSelectedReservation.duration,
             arrivalPositionInt = parseInt(currentSelectedReservation.arrivalPosition),
             minAllowedPositionForDeparture = (this.props.numberOfDays === NIGHTLY_DIARY_CONST.DAYS_21) ? NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_21 : NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_7,
             daysMode = this.props.numberOfDays,
             oneDayWidth = NIGHTLY_DIARY_CONST.RESERVATION_ROW_WIDTH / daysMode;
 
         return {
-            isMouseDragging: false,
+            isArrivalDragging: false,
+            isDepartureDragging: false,
             mouseClikedX: 0,
             mouseLastPositionX: 0,
             arrivalStyle: currentSelectedReservation.arrivalStyle,
             departureStyle: currentSelectedReservation.departureStyle,
             // this.props.currentSelectedReservation.arrivalPosition / departurePosition is in the form of xxPX
             arrivalPosition: parseInt(currentSelectedReservation.arrivalPosition),
-            maxArrivalFlagPos: Math.min(departurePos, NIGHTLY_DIARY_CONST.RESERVATION_ROW_WIDTH) - oneDayWidth,
+            maxArrivalFlagPos: Math.min(departurePosition, NIGHTLY_DIARY_CONST.RESERVATION_ROW_WIDTH) - oneDayWidth,
             minArrivalFlagPos: NIGHTLY_DIARY_CONST.DAYS_7_OFFSET,
             maxDepartureFlagPos: (daysMode - 1) * (NIGHTLY_DIARY_CONST.RESERVATION_ROW_WIDTH / daysMode),
             minDepartureFlagPos: Math.max(arrivalPositionInt, minAllowedPositionForDeparture),
-            departurePosition: departurePos,
+            departurePosition: departurePosition,
             reservationDuration: currentSelectedReservation.duration,
             daysMode: daysMode,
             onedayWidth: oneDayWidth
@@ -42,9 +43,10 @@ const NightlyDiaryStayRangeComponent = createClass ({
         e.preventDefault ();
         e.stopPropagation ();
         e = this.isTouchEnabled ? e.changedTouches[0] : e;
-        state.isMouseDragging = true;
+        state.isArrivalDragging = true;
         state.mouseClikedX = e.clientX;
         state.mouseLastPositionX = e.clientX;
+        flagarea.removeEventListener(this.mouseLeavingEvent, () =>{});
         flagarea.addEventListener (this.mouseMovingEvent, e => this.arrivalFlagMouseMove (e));
         flagarea.addEventListener (this.mouseLeavingEvent, e => this.arrivalFlagMouseLeave (e));
         flagarea.addEventListener ('mouseleave', e => this.arrivalFlagMouseLeave (e));
@@ -56,11 +58,11 @@ const NightlyDiaryStayRangeComponent = createClass ({
 
         e.preventDefault ();
         e.stopPropagation ();
-        if (state.isMouseDragging) {
-            state.isMouseDragging = false;
+        if (state.isArrivalDragging) {
+            state.isArrivalDragging = false;
             this.calculateArrivalDate();
         }
-        flagarea.removeEventListener(this.mouseMovingEvent, () =>{});
+        flagarea.removeEventListener(this.mouseMovingEvent, (e) =>{ console.log(e);});
         flagarea.removeEventListener(this.mouseLeavingEvent, () =>{});
     },
 
@@ -84,8 +86,9 @@ const NightlyDiaryStayRangeComponent = createClass ({
         if (curentPosition > state.maxArrivalFlagPos) {
             curentPosition = state.maxArrivalFlagPos;
         }
+        if (state.isArrivalDragging) {
 
-        if (state.isMouseDragging) {
+            console.log("arruval --"+state.isArrivalDragging)
             this.props.extendShortenReservation(curentPosition, this.departurePosition);
             this.setState({
                 arrivalStyle: {
@@ -95,6 +98,43 @@ const NightlyDiaryStayRangeComponent = createClass ({
             });
         }
     },
+
+    departureFlagMouseDown(e) {
+        let state = this.state,
+            flagarea = this.flagarea;
+
+        e.preventDefault ();
+        e.stopPropagation ();
+        e = this.isTouchEnabled ? e.changedTouches[0] : e;
+        state.isDepartureDragging = true;
+        state.mouseClikedX = e.clientX;
+        state.mouseLastPositionX = e.clientX;
+        flagarea.addEventListener (this.mouseMovingEvent, e => this.departureFlagMouseMove (e));
+        flagarea.addEventListener (this.mouseLeavingEvent, e => this.departureFlagMouseLeave (e));
+        flagarea.addEventListener ('mouseleave', e => this.departureFlagMouseLeave (e));
+    },
+    departureFlagMouseMove(e) {
+        e.preventDefault ();
+        e.stopPropagation ();
+        let diff = e.clientX - this.state.mouseLastPositionX;
+        this.moveDepartureFlag(diff);
+        this.state.mouseLastPositionX = e.clientX;
+    },
+
+    departureFlagMouseLeave(e) {
+        let state = this.state,
+            flagarea = this.flagarea;
+
+        e.preventDefault ();
+        e.stopPropagation ();
+        if (state.isDepartureDragging) {
+            state.isDepartureDragging = false;
+            //this.calculateArrivalDate();
+        }
+        flagarea.removeEventListener(this.mouseMovingEvent, () =>{});
+        flagarea.removeEventListener(this.mouseLeavingEvent, () =>{});
+    },
+
     moveDepartureFlag(diff) {
         let state = this.state,
             curentPosition = state.departurePosition + diff;
@@ -107,7 +147,9 @@ const NightlyDiaryStayRangeComponent = createClass ({
             curentPosition = state.minDepartureFlagPos;
         }
 
-        if (state.isMouseDragging) {
+        if (state.isDepartureDragging) {
+            console.log("Moveee");
+            console.log(curentPosition);
             this.props.extendShortenReservation(this.arrivalPosition, curentPosition);
             this.setState({
                 departureStyle: {
@@ -116,28 +158,6 @@ const NightlyDiaryStayRangeComponent = createClass ({
                 departurePosition: curentPosition
             });
         }
-    },
-
-    departureFlagMouseDown(e) {
-        let state = this.state,
-            flagarea = this.flagarea;
-
-        e.preventDefault ();
-        e.stopPropagation ();
-        e = this.isTouchEnabled ? e.changedTouches[0] : e;
-        state.isMouseDragging = true;
-        state.mouseClikedX = e.clientX;
-        state.mouseLastPositionX = e.clientX;
-        flagarea.addEventListener (this.mouseMovingEvent, e => this.departureFlagMouseMove (e));
-        flagarea.addEventListener (this.mouseLeavingEvent, e => this.arrivalFlagMouseLeave (e));
-        flagarea.addEventListener ('mouseleave', e => this.arrivalFlagMouseLeave (e));
-    },
-    departureFlagMouseMove(e) {
-        e.preventDefault ();
-        e.stopPropagation ();
-        let diff = e.clientX - this.state.mouseLastPositionX;
-        this.moveDepartureFlag(diff);
-        this.state.mouseLastPositionX = e.clientX;
     },
 
     calculateArrivalDate() {
