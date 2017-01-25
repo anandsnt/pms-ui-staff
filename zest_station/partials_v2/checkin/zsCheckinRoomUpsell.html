@@ -4,8 +4,8 @@
         <h1><text editable-text="ROOM_UPGRADE_HEADER"> {{'ROOM_UPGRADE_HEADER' |translate}}</text></h1>
         <h3><text editable-text="ROOM_UPGRADE_LIST_SUB_HEADER"> {{'ROOM_UPGRADE_LIST_SUB_HEADER' |translate}}</text></h3>
         <!--Layout V4: add  .upgrade-list-v2 -->
-        <ul class="upgrade-list" ng-class="{'upgrade-list-v2' :  zestStationData.room_upsell_style === 'STYLE_B'}">
-            <li ng-repeat='room in viewableRoomUpgrades | orderBy:upsellOrderByProperty'>
+        <ul class="upgrade-list" ng-class="{'upgrade-list-v2' :  zestStationData.room_upsell_style === 'STYLE_B','two-upgrades-list':viewableRoomUpgrades.length === 2,'single-upgrade-list':viewableRoomUpgrades.length === 1}">
+            <li ng-repeat='room in viewableRoomUpgrades'>
                 <div class="upgrade-picture">
                     <img src="{{room.room_type_image}}">
                 </div>
