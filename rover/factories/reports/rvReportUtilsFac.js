@@ -898,6 +898,7 @@ angular.module('reportsModule')
                             data: angular.copy( data ),
                             options: {
                                 selectAll: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? true : false,
+                                singleSelect: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? false : true,
                                 hasSearch: false,
                                 key: 'name'
                             }
@@ -1145,7 +1146,16 @@ angular.module('reportsModule')
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'ROOM_TYPE' });
                     if ( !! foundFilter ) {
-                        foundFilter['filled'] = true;
+                        // hidden since we need to go through the list for diff reports
+                        // foundFilter['filled'] = true;
+
+                        //  we need suite room type for reservation by user report
+                        if (reportItem['title'] !== reportNames['RESERVATIONS_BY_USER']) {
+                            var selectedData = _.filter(data, function(rooms) {
+                                return !rooms.is_suite && !rooms.is_pseudo;
+                            });
+                            data = selectedData;
+                        }
 
                         report.hasRoomTypeFilter = {
                             data: angular.copy( data ),
