@@ -560,19 +560,20 @@ angular.module('reportsModule')
                 if ( filter.value === 'ACTIONS_BY' ) {
                      var customData = [
                         {
-                            value : "GUEST",
-                            name : "Guests"
+                            value: "GUEST",
+                            name: "Guests"
                         }
                      ];
+
                      report.showActionables = "GUEST";
 
                      if (!$rootScope.isHourlyRateOn) {
-                        customData.push({value : "GROUP", name : "Groups"});
-                        customData.push({value : "BOTH", name : "Both"});
+                        customData.push({value: "GROUP", name: "Groups"});
+                        customData.push({value: "BOTH", name: "Both"});
                         report.showActionables = "BOTH";
                      }
                     report['hasShowActionables'] = {
-                        data : customData,
+                        data: customData,
                         options: {
                                 key: 'name'
                         }

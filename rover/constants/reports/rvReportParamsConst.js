@@ -59,5 +59,5 @@ angular.module('reportsModule')
         'COMPLETION_STATUS': 'status',
         'AGING_BALANCE': 'age_buckets',
         'ACCOUNT_SEARCH': 'account_ids',
-        "SHOW_ACTIONABLES" : "actions_by"
+        "SHOW_ACTIONABLES": "actions_by"
     });

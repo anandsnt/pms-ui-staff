@@ -366,10 +366,11 @@ sntRover.controller('RVActionsManagerController',
             $( '#print-orientation' ).remove();
         };
 
-        //Get the parameters required for the report
+        // Get the parameters required for the report
         var getReportParams = function() {
             var params = {};
-            //report id for Action manager report
+
+            // report id for Action manager report
             params.id = 61;
             params.from_date = $filter('date')($scope.filterOptions.selectedDay, 'yyyy/MM/dd');
             params.to_date = params.from_date;
@@ -383,7 +384,7 @@ sntRover.controller('RVActionsManagerController',
                 params.assigned_departments.push($scope.filterOptions.department.value);
             }
 
-            if($scope.filterOptions.selectedStatus === "ALL") {
+            if ($scope.filterOptions.selectedStatus === "ALL") {
                 params.status = ["UNASSIGNED", "ASSIGNED", "COMPLETED"];
             } else {
                 params.status = [$scope.filterOptions.selectedStatus];
@@ -397,7 +398,7 @@ sntRover.controller('RVActionsManagerController',
 
         };
 
-        //Set the filters that are applied to the report
+        // Set the filters that are applied to the report
         var setAppliedFilter = function() {
             $scope.appliedFilter = {};
 
@@ -467,6 +468,7 @@ sntRover.controller('RVActionsManagerController',
             };
 
             var params = getReportParams();
+
             setAppliedFilter();
 
             $scope.invokeApi(reportsSubSrv.fetchReportDetails, params, sucessCallback, failureCallback);
