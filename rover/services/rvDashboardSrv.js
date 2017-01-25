@@ -18,8 +18,8 @@ angular.module('sntRover').service('RVDashboardSrv', ['$q', 'RVBaseWebSrv', 'rvB
         var url = '/api/rover_header_info.json';
 
         rvBaseWebSrvV2.getJSON(url).then(function(data) {
-            userDetails = data;
-            deferred.resolve(data);
+            userDetails = data.data;
+            deferred.resolve(data.data);
         }, function(data) {
             deferred.reject(data);
         });

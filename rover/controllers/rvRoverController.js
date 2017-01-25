@@ -514,7 +514,7 @@ sntRover.controller('roverController',
       return;
     };
 
-    $rootScope.$on('$locationChangeStart', routeChange);
+    // $rootScope.$on('$locationChangeStart', routeChange);
     // window.history.pushState("initial", "Showing Dashboard", "#/"); // we are forcefully setting top url, please refer routerFile
 
     //
