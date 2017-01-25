@@ -47,5 +47,31 @@ admin.service('adLightSpeedPOSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2',
             return deferred.promise;
         };
 
+        service.getProviderCredentials = function() {
+            var deferred = $q.defer(),
+                url = 'admin/lightspeed_connection_settings.json';
+
+            ADBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
+        service.setProviderCredentials = function(data) {
+            var deferred = $q.defer(),
+                url = 'admin/lightspeed_connection_settings.json';
+
+            ADBaseWebSrvV2.postJSON(url, data.config).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
+
+
     }
 ]);
