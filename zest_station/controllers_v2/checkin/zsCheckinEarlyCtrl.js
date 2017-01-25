@@ -29,6 +29,10 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
 
             setEarlyParams(params);
         };
+        
+        var onBackButtonClicked = function() {
+            $state.go('zest_station.checkInReservationDetails');
+        };
 
         var earlyCheckinOn = function(data) {
             // check 3 settings: 
@@ -67,7 +71,7 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
 
 
             var ableToPurchaseEarly = eciAvailable && !isPrepaid && !bypass && !eciLimitReached,
-                freeEarlyCheckin = eciAvailable && !eciLimitReached && ((bypass && !isPrepaid) || freeFromVIPStatus);
+                freeEarlyCheckin = eciAvailable && !eciLimitReached && (bypass && !isPrepaid || freeFromVIPStatus);
 
             // ask the guest if they want to purchase early check-in
             if (ableToPurchaseEarly && !isPrepaid && !freeEarlyCheckin) {
@@ -103,7 +107,7 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
                 var zestStationRoomUpsellOn = $scope.zestStationData.offer_kiosk_room_upsell;
 
                 $scope.$emit('hideLoader');
-                if (!$scope.selectedReservation.isRoomUpraded && $scope.selectedReservation.reservation_details.is_upsell_available  === 'true' && zestStationRoomUpsellOn) {
+                if (!$scope.selectedReservation.isRoomUpraded && $scope.selectedReservation.reservation_details.is_upsell_available === 'true' && zestStationRoomUpsellOn) {
                     $state.go('zest_station.roomUpsell');
                 } else {
                     $scope.initTermsPage();    
@@ -130,13 +134,13 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
 
         $scope.continue = function() {
             var zestStationRoomUpsellOn = $scope.zestStationData.offer_kiosk_room_upsell;
-            if (!$scope.selectedReservation.isRoomUpraded && $scope.selectedReservation.reservation_details.is_upsell_available  === 'true' && zestStationRoomUpsellOn) {
-                    $state.go('zest_station.roomUpsell');
+
+            if (!$scope.selectedReservation.isRoomUpraded && $scope.selectedReservation.reservation_details.is_upsell_available === 'true' && zestStationRoomUpsellOn) {
+                $state.go('zest_station.roomUpsell');
             } else {
                 $scope.initTermsPage();    
             }
-        }
-
+        };
 
 
         $scope.initTermsPage = function() {
@@ -169,6 +173,8 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
         var initializeMe = (function() {
             // hide back button
             $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
+
+            $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
             // show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 
