@@ -170,7 +170,7 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
         if (sntapp.cordovaLoaded) {
             ngDialog.open({
                 template: '/assets/partials/freshdesk.html',
-                className: 'inline-modal',
+                className: '',
                 controller: '',
                 scope: $scope
             });
