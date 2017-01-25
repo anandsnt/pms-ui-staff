@@ -2,6 +2,16 @@
     ng-iscroll="report-filter-sidebar-scroll"
     ng-iscroll-delay="200">
     <div class="wrapper" id="report-filter">
+        <!-- item_49: Room Types Filter CICO-34593 same as report list filters-->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasRoomTypeFilter && chosenReport.hasRoomTypeFilter.data.length" ng-class="{'active': filterItemsToggle.item_49}" ng-click="toggleFilterItems('item_49')">
+            <span class="title">Room Types</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasRoomTypeFilter && chosenReport.hasRoomTypeFilter.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_49 }">
+            <multi-option-selection label="Room Types"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasRoomTypeFilter.data"
+                options="chosenReport.hasRoomTypeFilter.options"></multi-option-selection>
+        </div>
 
         <!-- item_01: cancellation date range -->
         <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasCancelDateFilter" ng-class="{'active': filterItemsToggle.item_01}" ng-click="toggleFilterItems('item_01')">
@@ -506,7 +516,16 @@
         </div>
 
 
-
+        <!-- Segment(s) -->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasSegmentsList && chosenReport.hasSegmentsList.data.length" ng-class="{ 'active': filterItemsToggle.item_48 }" ng-click="toggleFilterItems('item_48')">
+            <span class="title">Segment(s)</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasSegmentsList && chosenReport.hasSegmentsList.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_48 }">
+            <multi-option-selection label="Segment(s)"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasSegmentsList.data"
+                options="chosenReport.hasSegmentsList.options"></multi-option-selection>
+        </div>
 
 
 

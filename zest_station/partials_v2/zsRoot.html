@@ -18,6 +18,11 @@
 <span ng-show="zestStationData.timeDebugger == 'true'" class="timer-debugger-right dev-cls non-center">
      <br> <span>Assigned Workstation ({{zestStationData.workstationName}}) <br> </span>
      <span>Encoding Keys - <span ng-class='{"key-in-progress":zestStationData.makingKeyInProgress}'>({{zestStationData.makingKeyInProgress}})</span><br> </span>
+     <span ng-show='inChromeApp'>
+        Zest Station Handler - <span ng-class='{"key-in-progress":zestStationData.stationHandlerConnectedStatus == "Not-Connected"}'>({{zestStationData.stationHandlerConnectedStatus}})</span><br> 
+    </span>
+
+
 </span>
 <div ng-include="'/assets/partials_v2/zsTabletHeader.html'"></div>
 <!--PopUp For External webPage-->

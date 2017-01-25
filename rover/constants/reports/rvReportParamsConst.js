@@ -35,6 +35,7 @@ angular.module('reportsModule')
 
         'USER_IDS': 'user_ids',
         'MARKET_IDS': 'market_ids',
+        'SEGMENT_IDS': 'segment_ids',
         'SOURCE_IDS': 'source_ids',
         'BOOKING_ORIGIN_IDS': 'booking_origin_ids',
         'INCLUDE_GUARANTEE_TYPE': 'include_guarantee_type',
