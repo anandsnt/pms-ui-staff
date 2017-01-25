@@ -1,5 +1,8 @@
 const {connect} = ReactRedux;
-
+/*
+ * To convert current selected reservation params to use in stay range component
+ * @param object currentSelectedReservation
+ */
 let convertCurrentSelectedReservation = (currentSelectedReservation, selectedReservationId, dateFormat) => {
 
     let stayRangeArrivalClass = "grid-stay-range";
