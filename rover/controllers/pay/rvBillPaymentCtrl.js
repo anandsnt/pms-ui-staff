@@ -36,6 +36,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		$scope.splitSelected = false;
 		$scope.disableMakePaymentButton = false;
 		$scope.splitBillEnabled = false;
+		$scope.showDBconfirmation = false;
 	};
 
 	var startingAmount = 0;
@@ -548,6 +549,14 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
         if (paymentType === "GIFT_CARD") {
             resetSplitPayment();
         }
+    });
+    // CICO-33971 : Hide Payment popup while confrimation is active.
+    $scope.$on("HIDE_BILL_PAYMENT_POPUP", function() {
+      	$scope.showDBconfirmation = true;
+    });
+    // CICO-33971 : Show Payment popup while confirmation is proceeded/cancelled.
+    $scope.$on("SHOW_BILL_PAYMENT_POPUP", function() {
+      	$scope.showDBconfirmation = false;
     });
 
     $scope.$watch("reservationBillData.bills", matchCardObjectSchema);

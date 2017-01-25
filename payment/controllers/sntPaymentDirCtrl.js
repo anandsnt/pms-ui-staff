@@ -36,7 +36,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 isManualEntryInsideIFrame: false,
                 workstationId: '',
                 emvTimeout: 120,
-                isConfirmDBpayment: false
+                isConfirmedDBpayment: false
             };
 
             $scope.giftCard = {
@@ -653,7 +653,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 }
             };
 
-            var confrimDialogueId = null;
+            var paymentDialogId = null;
 
             // CICO-33971 : Confirm Direct Bill payment.
             let confirmDirectBillPayment = function(params) {
@@ -669,18 +669,20 @@ angular.module('sntPay').controller('sntPaymentController',
                 }, 0);
             };
 
-            // To catch ngDialog id - to handle multiple popups.
+            // CICO-33971 : To catch ngDialog id - to handle multiple popups.
             $rootScope.$on('ngDialog.opened', function(e, $dialog) {
-                confrimDialogueId = $dialog.attr('id');
+                paymentDialogId = $dialog.attr('id');
             });
-            // Submit payment process after confrim as DB.
-            $scope.$on('CONFIRM_DB_PAYMENT', ( event, params )=> {
-                $scope.payment.isConfirmDBpayment = true;
+            // CICO-33971 : Submit payment process after confirming as DB.
+            $scope.$on('CONFIRMED_DB_PAYMENT', ( event, params )=> {
+                $scope.payment.isConfirmedDBpayment = true;
                 $scope.submitPayment(params);
+                $scope.$emit("SHOW_BILL_PAYMENT_POPUP");
                 ngDialog.close(confrimDialogueId);
             });
-            // Close confirmation popup.
-            $scope.$on('CLOSE_CONFIRM_DB_PAYMENT', ()=> {
+            // CICO-33971 : Close confirmation popup.
+            $scope.$on('CANCELLED_CONFIRM_DB_PAYMENT', ()=> {
+                $scope.$emit("SHOW_BILL_PAYMENT_POPUP");
                 ngDialog.close(confrimDialogueId);
             });
 
@@ -721,7 +723,8 @@ angular.module('sntPay').controller('sntPaymentController',
                 }
 
                 // -- CICO-33971 :: Direct Bill Payment --
-                if ($scope.selectedPaymentType === 'DB' && !$scope.payment.isConfirmDBpayment) {
+                if ($scope.selectedPaymentType === 'DB' && !$scope.payment.isConfirmedDBpayment) {
+                    $scope.$emit("HIDE_BILL_PAYMENT_POPUP");
                     confirmDirectBillPayment();
                     return;
                 }
