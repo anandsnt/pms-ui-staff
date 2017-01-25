@@ -898,7 +898,6 @@ angular.module('reportsModule')
                             data: angular.copy( data ),
                             options: {
                                 selectAll: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? true : false,
-                                singleSelect: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? false : true,
                                 hasSearch: false,
                                 key: 'name'
                             }
