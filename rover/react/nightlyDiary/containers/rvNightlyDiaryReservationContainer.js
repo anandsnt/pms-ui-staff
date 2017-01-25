@@ -215,12 +215,12 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
     if (reservation.id === selectedReservationId) {
         reservationEditClass = "editing";
         if (newArrivalPosition !== '') {
-            let newDuration = (positionAndDuration.durationOfReservation + positionAndDuration.reservationPosition) - newArrivalPosition;
+            let newDuration = newDeparturePosition - newArrivalPosition;
             reservation.style.width = newDuration;
             reservation.style.transform = "translateX(" + newArrivalPosition + "px)";
         }
         if (newDeparturePosition !== '') {
-            let newDuration = (newDeparturePosition - positionAndDuration.reservationPosition);
+            let newDuration = (newDeparturePosition - newArrivalPosition);
             reservation.style.width = newDuration;
             // reservation.style.transform = "translateX(" + newArrivalPosition + "px)";
         }

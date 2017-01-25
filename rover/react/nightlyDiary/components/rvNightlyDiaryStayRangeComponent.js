@@ -64,10 +64,28 @@ const NightlyDiaryStayRangeComponent = createClass ({
         }
         if (state.isDepartureDragging) {
             state.isDepartureDragging = false;
+            this.calculateDepartureDate();
         }
         flagarea.removeEventListener(this.mouseMovingEvent, () =>{});
         flagarea.removeEventListener(this.mouseLeavingEvent, () =>{});
         this.updateFlagRanges();
+    },
+    calculateDepartureDate() {
+         let state = this.state,
+            props = this.props,
+            initialDeparturePosition = parseInt(props.currentSelectedReservation.arrivalPosition) + props.currentSelectedReservation.duration,
+            differenceInPosition = state.departurePosition - initialDeparturePosition,
+            differenceInDays = Math.round(differenceInPosition / state.oneDayWidth),
+            curentPosition = initialDeparturePosition + (differenceInDays * state.oneDayWidth);
+
+        props.extendShortenReservation(state.arrivalPosition, curentPosition);
+        this.setState({
+            departureStyle: {
+                transform: 'translateX(' + curentPosition + 'px)'
+            },
+            departurePosition: curentPosition
+        });
+
     },
 
     mouseMove(e) {
@@ -97,7 +115,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
             curentPosition = state.maxArrivalFlagPos;
         }
         if (state.isArrivalDragging) {
-            this.props.extendShortenReservation(curentPosition, this.departurePosition);
+            this.props.extendShortenReservation(curentPosition, state.departurePosition);
             this.setState({
                 arrivalStyle: {
                     transform: 'translateX(' + curentPosition + 'px)'
@@ -131,7 +149,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
         }
 
         if (state.isDepartureDragging) {
-            this.props.extendShortenReservation(this.arrivalPosition, curentPosition);
+            this.props.extendShortenReservation(state.arrivalPosition, curentPosition);
             this.setState({
                 departureStyle: {
                     transform: 'translateX(' + curentPosition + 'px)'
@@ -149,7 +167,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
             differenceInDays = Math.round(differenceInPosition / state.oneDayWidth),
             curentPosition = initialArrivalPosition + (differenceInDays * state.oneDayWidth);
 
-        props.extendShortenReservation(curentPosition);
+        props.extendShortenReservation(curentPosition, state.departurePosition);
         this.setState({
             arrivalStyle: {
                 transform: 'translateX(' + curentPosition + 'px)'
