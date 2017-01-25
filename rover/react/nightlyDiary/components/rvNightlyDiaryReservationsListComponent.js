@@ -1,4 +1,4 @@
-const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, roomRowClass, currentSelectedReservationArrivalStyle }) => {
+const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, roomRowClass }) => {
 
     return (
         <div className={roomRowClass}>
