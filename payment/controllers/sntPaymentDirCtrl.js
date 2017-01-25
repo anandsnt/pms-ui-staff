@@ -677,13 +677,12 @@ angular.module('sntPay').controller('sntPaymentController',
             $scope.$on('CONFIRMED_DB_PAYMENT', ( event, params )=> {
                 $scope.payment.isConfirmedDBpayment = true;
                 $scope.submitPayment(params);
-                $scope.$emit("SHOW_BILL_PAYMENT_POPUP");
-                ngDialog.close(confrimDialogueId);
+                ngDialog.close(paymentDialogId);
             });
             // CICO-33971 : Close confirmation popup.
             $scope.$on('CANCELLED_CONFIRM_DB_PAYMENT', ()=> {
                 $scope.$emit("SHOW_BILL_PAYMENT_POPUP");
-                ngDialog.close(confrimDialogueId);
+                ngDialog.close(paymentDialogId);
             });
 
             $scope.submitPayment = function(payLoad) {

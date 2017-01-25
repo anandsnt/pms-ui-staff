@@ -990,7 +990,8 @@ sntRover.controller('RVbillCardController',
 		var paymentParams = $scope.reservationBillData.isCheckout ? reservationData : {};
 
 		paymentParams.direct_bill = checkPaymentTypeIsDirectBill();
-
+		paymentParams.bill_id = $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id;
+		
 		$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, paymentParams, function(data) {
 			// NOTE: Obtain the payment methods and then open the payment popup
 			$scope.paymentTypes = data;
