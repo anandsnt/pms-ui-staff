@@ -1,4 +1,4 @@
-var login = angular.module('login', ['ui.router', 'documentTouchMovePrevent', 'ngSanitize', 'ng-iscroll']);
+var login = angular.module('login', ['ui.router', 'documentTouchMovePrevent', 'ngSanitize', 'ng-iscroll', 'ngDialog', 'clickTouch']);
 
 /*
  * Set page Titles
@@ -23,7 +23,7 @@ login.controller('loginRootCtrl', ['$scope', function($scope) {
  * Login Controller - Handles login and local storage on succesfull login
  * Redirects to specific ur on succesfull login
  */
-login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', function($scope, loginSrv, $window, $state, resetSrv) {
+login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', '$window', function($scope, loginSrv, $window, $state, resetSrv, ngDialog, $window) {
 	 $scope.data = {};
 
 	 if (localStorage.email) {
@@ -161,6 +161,23 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
  			loginSrv.forgotPassword(dataToPost, $scope.successCallbackForgotPassword, $scope.failureCallBackForgotPassword);
 	 	}
 	 };
+
+    $scope.closeDialog = function () {
+        ngDialog.closeAll();
+    };
+
+    $scope.onClickSupportLink = function () {
+        if (sntapp.cordovaLoaded) {
+            ngDialog.open({
+                template: '/assets/partials/freshdesk.html',
+                className: 'inline-modal',
+                controller: '',
+                scope: $scope
+            });
+        } else {
+            $window.open('http://freshdesk.com/', '_blank');
+        }
+    };
          
 }]);
 /*
