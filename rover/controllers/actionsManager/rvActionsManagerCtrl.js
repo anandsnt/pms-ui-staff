@@ -422,7 +422,7 @@ sntRover.controller('RVActionsManagerController',
 
         };
 
-        //Print the action manager report from the action manager screen
+        // Print the action manager report from the action manager screen
         $scope.printActionManager = function() {
 
             var sucessCallback = function(data) {
