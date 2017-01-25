@@ -21,14 +21,17 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
         BaseCtrl.call(this, $scope);
 
         var init = function() {
-            $scope.$emit('hideLoader'); // need to fix why loader is still appearing after init/success call
-            console.info('init early checkin ctrl: ', $stateParams);
+            $scope.$emit('hideLoader'); 
 
             var params = JSON.parse($stateParams.early_checkin_data);
             
             $scope.selectedReservation = JSON.parse($stateParams.selected_reservation);
 
             setEarlyParams(params);
+        };
+        
+        var onBackButtonClicked = function() {
+            $state.go('zest_station.checkInReservationDetails');
         };
 
         var earlyCheckinOn = function(data) {
@@ -40,67 +43,49 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
                 earlyCheckinNotAvailable = !data.early_checkin_available,
                 stationNotOfferingEarlyCheckin = !$scope.zestStationData.offer_early_checkin;
 
-            if (earlyCheckinIsOFF || earlyCheckinNotAvailable || stationNotOfferingEarlyCheckin) {
-                return false;
-            } 
-            return true;
+            return !(earlyCheckinIsOFF || earlyCheckinNotAvailable || stationNotOfferingEarlyCheckin);
         };
 
+
         var setEarlyParams = function(response) {
-            console.info('===============');
-            console.info('===============', response);
-            console.info('===============');
-            $scope.reservation_in_early_checkin_window = response.reservation_in_early_checkin_window;
-            $scope.is_early_prepaid = false;
+            // Set the hotel Check-in Time
+            $scope.standardCheckinTime = response.checkin_time; // maybe move, dont need for all modes?
 
-            if (response.offer_eci_bypass) { // if bypass is true, early checkin may be part of their Rate
-                $scope.is_early_prepaid = false;
-                $scope.bypass = response.offer_eci_bypass;
-            }
-
-            if (response.is_early_checkin_purchased || response.is_early_checkin_bundled_by_addon) { // user probably purchased an early checkin from zest web, or through zest station
-                $scope.is_early_prepaid = true; // or was bundled in an add-on (the add-on could be paid or free, so show prepaid either way)
-            }
-            
-
-            $scope.standardCheckinTime = response.checkin_time;
-            $scope.early_checkin_unavailable = !earlyCheckinOn(response);
-
-            if ($scope.early_checkin_unavailable) {
-                $scope.bypass = false;
-                $scope.is_early_prepaid = false;
-                $scope.reservation_in_early_checkin_window = false;
-            }
-
-            $scope.ableToPurchaseEarly = !$scope.early_checkin_unavailable && !$scope.is_early_prepaid && $scope.reservation_in_early_checkin_window && !$scope.bypass;
             $scope.early_checkin_charge = response.early_checkin_charge;
-
-            $scope.prepaidEarlyCheckin = ($scope.bypass || $scope.is_early_prepaid) && !$scope.early_checkin_unavailable;
-            $scope.freeEarlyCheckin = $scope.bypass && !$scope.is_early_prepaid && $scope.reservation_in_early_checkin_window;
+            $scope.offerId = response.early_checkin_offer_id;
 
             $scope.early_charge_symbol = $scope.zestStationData.currencySymbol;
-            $scope.show_early_unavailable_from_checkin_later = false;
 
-            $scope.offerId = response.early_checkin_offer_id;
-            $scope.reservation_id = $scope.selectedReservation.reservation_details.reservation_id;
+            $scope.early_checkin_unavailable = !earlyCheckinOn(response);
 
-            if ($scope.ableToPurchaseEarly && 
-                !$scope.prepaidEarlyCheckin && 
-                !$scope.freeEarlyCheckin) {
-                // ask the guest if they want to purchase early check-in
-                    $scope.mode = 'EARLY_CHECKIN_SELECT';
-            }
+            var eciAvailable = !$scope.early_checkin_unavailable && response.reservation_in_early_checkin_window,
+                wasPurchased = response.is_early_checkin_purchased,
+                isBundled = response.is_early_checkin_bundled_by_addon,
+                freeFromVIPStatus = response.free_eci_for_vips && response.is_vip,
+                eciLimitReached = response.eci_upsell_limit_reached;
 
-            if ($scope.prepaidEarlyCheckin) {
+                // user probably purchased an early checkin from zest web, or through zest station
+                // or was bundled in an add-on (the add-on could be paid or free, so show prepaid either way)
+            var isPrepaid = eciAvailable && (isBundled || wasPurchased),
+                bypass = response.offer_eci_bypass && !eciAvailable;
+
+
+            var ableToPurchaseEarly = eciAvailable && !isPrepaid && !bypass && !eciLimitReached,
+                freeEarlyCheckin = eciAvailable && !eciLimitReached && (bypass && !isPrepaid || freeFromVIPStatus);
+
+            // ask the guest if they want to purchase early check-in
+            if (ableToPurchaseEarly && !isPrepaid && !freeEarlyCheckin) {
+                $scope.mode = 'EARLY_CHECKIN_SELECT';
+
+            } else if (isPrepaid && eciAvailable) {
                 $scope.mode = 'EARLY_CHECKIN_PREPAID';
-            }
 
-            if ($scope.freeEarlyCheckin && !$scope.early_checkin_unavailable) {
+            } else if (freeEarlyCheckin && eciAvailable) {
                 $scope.mode = 'EARLY_CHECKIN_FREE';
-            }
 
-            if ($scope.is_early_prepaid && !$scope.reservation_in_early_checkin_window) {
+            } else if (isPrepaid && !eciAvailable) {// may be unavailbe since outside of eci window of time
                 $scope.mode = 'EARLY_CHECKIN_PREPAID_NOT_READY';   
+
             }
 
             console.info('MODE: ', $scope.mode);
@@ -108,20 +93,26 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
 
         $scope.checkinLater = function() {
             $scope.early_checkin_unavailable = true;
-            $scope.show_early_unavailable_from_checkin_later = true;
 
             $scope.mode = 'CHECKIN_LATER';
         };
 
         $scope.acceptEarlyCheckinOffer = function() {
             var postData = {
-                'reservation_id': $scope.reservation_id,
+                'reservation_id': $scope.selectedReservation.reservation_details.reservation_id,
                 'early_checkin_offer_id': $scope.offerId // TODO: move this to API logic,...shouldnt need to also send this via UI...
             };
 
             var onSuccess = function() {
+                var zestStationRoomUpsellOn = $scope.zestStationData.offer_kiosk_room_upsell;
+
                 $scope.$emit('hideLoader');
-                $scope.initTermsPage();
+                if (!$scope.selectedReservation.isRoomUpraded && $scope.selectedReservation.reservation_details.is_upsell_available === 'true' && zestStationRoomUpsellOn) {
+                    $state.go('zest_station.roomUpsell');
+                } else {
+                    $scope.initTermsPage();    
+                }
+                
             };
 
             var onFailure = function(response) {
@@ -140,6 +131,17 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
 
             $scope.invokeApi(zsPaymentSrv.acceptEarlyCheckinOffer, postData, onSuccess, onFailure);
         };
+
+        $scope.continue = function() {
+            var zestStationRoomUpsellOn = $scope.zestStationData.offer_kiosk_room_upsell;
+
+            if (!$scope.selectedReservation.isRoomUpraded && $scope.selectedReservation.reservation_details.is_upsell_available === 'true' && zestStationRoomUpsellOn) {
+                $state.go('zest_station.roomUpsell');
+            } else {
+                $scope.initTermsPage();    
+            }
+        };
+
 
         $scope.initTermsPage = function() {
             
@@ -171,6 +173,8 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
         var initializeMe = (function() {
             // hide back button
             $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
+
+            $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
             // show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 
