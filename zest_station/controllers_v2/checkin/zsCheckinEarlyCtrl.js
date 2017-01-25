@@ -67,8 +67,7 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
 
 
             var ableToPurchaseEarly = eciAvailable && !isPrepaid && !bypass && !eciLimitReached,
-                freeEarlyCheckin = ((bypass && !isPrepaid) || freeFromVIPStatus) && eciAvailable && !eciLimitReached;
-
+                freeEarlyCheckin = eciAvailable && !eciLimitReached && ((bypass && !isPrepaid) || freeFromVIPStatus);
 
             // ask the guest if they want to purchase early check-in
             if (ableToPurchaseEarly && !isPrepaid && !freeEarlyCheckin) {
