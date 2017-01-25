@@ -3,6 +3,7 @@ const { findDOMNode } = ReactDOM;
 const NightlyDiaryRootComponent = createClass ({
     scrollToPos(pos) {
         const node = document.getElementById('diary-nightly-grid');
+
         node.scrollTop = pos;
     },
     scrollToNthelement(n) {
