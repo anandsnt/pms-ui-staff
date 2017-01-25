@@ -1,7 +1,7 @@
 /* StayNTouch | Login Screen */
 
-@import "common/01-B_variables.less"; 
-@import "common/01-C_mixins.less";
+@import "common/01-B_variables.less";
+@import "common/01-C_mixins.less"; 
 @import "common/01-D_mixins-animations.less"; 
 @import "app/01-B_variables.less";
 @import "app/03_graphics.less";
@@ -586,13 +586,13 @@
                     .size(98%, 100%);
                 }
 
-                @media only screen and (max-width: 600px) {
+                @media only screen and (min-width: 600px) {
                     .square(640px);
                 }
             }
         }
 
-        @media only screen and (max-width: 600px) {
+        @media only screen and (min-width: 600px) {
             width: auto;
         }
     }
@@ -604,6 +604,7 @@
 		left: 0;
 		height: 100%;
 		z-index: 9999;
+		visibility: hidden;
 
 		#modal-close {
 			position: absolute;
@@ -634,6 +635,8 @@
 			z-index: 9990;
 			.background(@white);
 			#border-radius > .rounded(3px);
+			.scale3d(0.5, 0.5, 1);
+			.opacity(0);
 			.transition;
 
 			.status {
@@ -837,7 +840,7 @@
 
 	}
 
-	@media only screen and (max-width: 600px) {
+	@media only screen and (min-width: 600px) {
 		#modal,
 		.inline-modal {
 			top: 50%;
