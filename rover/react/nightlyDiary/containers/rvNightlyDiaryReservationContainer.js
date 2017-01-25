@@ -214,21 +214,16 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
     reservation.style.transform = "translateX(" + positionAndDuration.reservationPosition + "px)";
     if (reservation.id === selectedReservationId) {
         reservationEditClass = "editing";
-        if (newArrivalPosition !== '') {
+        if (newArrivalPosition !== '' || newDeparturePosition !== '') {
             let newDuration = newDeparturePosition - newArrivalPosition;
+
             reservation.style.width = newDuration;
             reservation.style.transform = "translateX(" + newArrivalPosition + "px)";
-        }
-        if (newDeparturePosition !== '') {
-            let newDuration = (newDeparturePosition - newArrivalPosition);
-            reservation.style.width = newDuration;
-            // reservation.style.transform = "translateX(" + newArrivalPosition + "px)";
         }
 
     }
 
     reservation.reservationClass = "reservation " + reservationStatusClass + " " + reservationClass + " " + reservationEditClass;
-
     return reservation;
 };
 
