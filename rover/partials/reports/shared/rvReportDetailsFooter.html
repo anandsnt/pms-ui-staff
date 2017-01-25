@@ -8,6 +8,12 @@
 			From: <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> To: <span>{{ appliedFilter.toDate | date:dateFormat }}</span>
 		</div>
 
+		<!-- common date range -->
+		<div ng-if="appliedFilter.date">
+			<label>Date:</label>
+			<span>{{ appliedFilter.date | date:dateFormat }}</span>
+		</div>
+
 		<!-- chosen addonGroups -->
         <div ng-if="appliedFilter.addonGroups.length">
             Add-On Groups: <span>{{ appliedFilter.addonGroups.join(', ') }}</span>

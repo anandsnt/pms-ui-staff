@@ -62,6 +62,7 @@
 		    checkinConfirmationService.getToken(data).then(function(res_data) {
 	    		// set guestweb token
 	    		$rootScope.accessToken 				= res_data.guest_web_token;
+	    		$rootScope.isUpgradeAvailableNow = res_data.is_upsell_available_now;
 				// display options for room upgrade screen
 				$rootScope.ShowupgradedLabel = false;
 				$rootScope.roomUpgradeheading = "Your trip details";
