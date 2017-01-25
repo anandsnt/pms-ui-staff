@@ -20,6 +20,7 @@ angular.module('sntPay').controller('payCBACtrl',
                     $log.error(errorMessage);
                 },
                 onSubmitSuccess = function(response) {
+                    $log.info('doPayment Success response', response);
                     sntCBAGatewaySrv.updateTransactionSuccess(
                         transaction.id,
                         response
@@ -34,12 +35,14 @@ angular.module('sntPay').controller('payCBACtrl',
                     });
                 },
                 onSubmitFailure = function(err) {
+                    $log.warn('doPayment Failure response', err);
                     sntCBAGatewaySrv.updateTransactionFailure(
                         transaction.id,
                         err
                     ).then(() => {
                         var errorMessage = [err.RVErrorCode + ' ' + err.RVErrorDesc];
 
+                        $log.warn('doPayment Failure response', errorMessage);
                         sntCBAGatewaySrv.finishTransaction(transaction.id);
                         $scope.$emit('CBA_PAYMENT_FAILED', errorMessage);
                         $scope.$emit('hideLoader');
