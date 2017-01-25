@@ -162,8 +162,15 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
 	 	}
 	 };
 
-    $scope.closeDialog = function () {
-        ngDialog.closeAll();
+	$scope.modalClosing = false;
+
+    $scope.closeDialog = function() {
+      $scope.modalClosing = true;
+		setTimeout(function () {
+			ngDialog.close();
+			$scope.modalClosing = false;
+			$scope.$apply();
+		}, 700);
     };
 
     $scope.onClickSupportLink = function () {
@@ -175,7 +182,7 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
                 scope: $scope
             });
         } else {
-            $window.open('http://freshdesk.com/', '_blank');
+            $window.open('https://stayntouch.freshdesk.com/support/home', '_blank');
         }
     };
          
@@ -225,6 +232,30 @@ login.controller('resetCtrl', ['$scope', 'resetSrv', '$window', '$state', '$stat
 	 	$scope.hasLoader = true;
 		resetSrv.resetPassword($scope.data, $scope.successCallback, $scope.failureCallBack);
 	};
+
+	$scope.modalClosing = false;
+
+    $scope.closeDialog = function() {
+      $scope.modalClosing = true;
+		setTimeout(function () {
+			ngDialog.close();
+			$scope.modalClosing = false;
+			$scope.$apply();
+		}, 700);
+    };
+
+    $scope.onClickSupportLink = function () {
+        if (sntapp.cordovaLoaded) {
+            ngDialog.open({
+                template: '/assets/partials/freshdesk.html',
+                className: '',
+                controller: '',
+                scope: $scope
+            });
+        } else {
+            $window.open('https://stayntouch.freshdesk.com/support/home', '_blank');
+        }
+    };
 
 }]);
 /*
@@ -311,10 +342,58 @@ login.controller('activateCtrl', ['$scope', 'resetSrv', '$window', '$state', '$s
 		 resetSrv.activateUser($scope.data, $scope.successCallback, $scope.failureCallBack);
 	};
 
+	$scope.modalClosing = false;
+
+    $scope.closeDialog = function() {
+      $scope.modalClosing = true;
+		setTimeout(function () {
+			ngDialog.close();
+			$scope.modalClosing = false;
+			$scope.$apply();
+		}, 700);
+    };
+
+    $scope.onClickSupportLink = function () {
+        if (sntapp.cordovaLoaded) {
+            ngDialog.open({
+                template: '/assets/partials/freshdesk.html',
+                className: '',
+                controller: '',
+                scope: $scope
+            });
+        } else {
+            $window.open('https://stayntouch.freshdesk.com/support/home', '_blank');
+        }
+    };
+
 }]);
 
 login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', function($scope, loginSrv, $window, $state, resetSrv) {
         $scope.data = {};
+
+        $scope.modalClosing = false;
+
+	    $scope.closeDialog = function() {
+	      $scope.modalClosing = true;
+			setTimeout(function () {
+				ngDialog.close();
+				$scope.modalClosing = false;
+				$scope.$apply();
+			}, 700);
+	    };
+
+	    $scope.onClickSupportLink = function () {
+	        if (sntapp.cordovaLoaded) {
+	            ngDialog.open({
+	                template: '/assets/partials/freshdesk.html',
+	                className: '',
+	                controller: '',
+	                scope: $scope
+	            });
+	        } else {
+	            $window.open('https://stayntouch.freshdesk.com/support/home', '_blank');
+	        }
+	    };
 
         if (localStorage.email) {
                $scope.data.email = localStorage.email;
