@@ -23,7 +23,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
             departurePosition: departurePosition,
             reservationDuration: currentSelectedReservation.duration,
             daysMode: daysMode,
-            onedayWidth: oneDayWidth
+            oneDayWidth: oneDayWidth
         };
     },
 
@@ -67,6 +67,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
         }
         flagarea.removeEventListener(this.mouseMovingEvent, () =>{});
         flagarea.removeEventListener(this.mouseLeavingEvent, () =>{});
+        this.updateFlagRanges();
     },
 
     mouseMove(e) {
@@ -145,8 +146,8 @@ const NightlyDiaryStayRangeComponent = createClass ({
             props = this.props,
             initialArrivalPosition = parseInt(props.currentSelectedReservation.arrivalPosition),
             differenceInPosition = state.arrivalPosition - initialArrivalPosition,
-            differenceInDays = Math.round(differenceInPosition / state.onedayWidth),
-            curentPosition = initialArrivalPosition + (differenceInDays * state.onedayWidth);
+            differenceInDays = Math.round(differenceInPosition / state.oneDayWidth),
+            curentPosition = initialArrivalPosition + (differenceInDays * state.oneDayWidth);
 
         props.extendShortenReservation(curentPosition);
         this.setState({
@@ -158,7 +159,8 @@ const NightlyDiaryStayRangeComponent = createClass ({
     },
     // TODO : -
     updateFlagRanges() {
-
+        this.state.maxArrivalFlagPos = this.state.departurePosition - this.state.oneDayWidth;
+        this.state.minDepartureFlagPos = this.state.arrivalPosition + this.state.oneDayWidth;
     },
 
     render() {
