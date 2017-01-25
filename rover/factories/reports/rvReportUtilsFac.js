@@ -1153,6 +1153,7 @@ angular.module('reportsModule')
                             var selectedData = _.filter(data, function(rooms) {
                                 return !rooms.is_suite && !rooms.is_pseudo;
                             });
+
                             data = selectedData;
                         }
 
