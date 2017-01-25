@@ -52,7 +52,7 @@ admin.controller('adsnapshotSetupCtrl', ['$scope', 'adSnapShotSetupSrv', 'ngTabl
             // sorting: { floor_number: 'asc'     // initial sorting
             // }
         }, {
-            total: $scope.incrementalExportData.length ,
+            total: $scope.incrementalExportData.length,
             counts: [], // hides page sizes
             getData: function($defer, params) {
                 // use build-in angular filter
@@ -75,7 +75,7 @@ admin.controller('adsnapshotSetupCtrl', ['$scope', 'adSnapShotSetupSrv', 'ngTabl
             // sorting: { floor_number: 'asc'     // initial sorting
             // }
         }, {
-            total: $scope.fullExportData.length ,
+            total: $scope.fullExportData.length,
             counts: [], // hides page sizes
             getData: function($defer, params) {
                 // use build-in angular filter
