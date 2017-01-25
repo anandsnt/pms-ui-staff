@@ -140,7 +140,8 @@ angular.module('reportsModule')
 
         /** @type {Object} Array of all the filter values, new values added in future can be included here */
         var __optionFilterNames = {
-            'INCLUDE_NOTES': true,
+            'INCLUDE_GUEST_NOTES': true,
+            'INCLUDE_RESERVATION_NOTES': true,
             'VIP_ONLY': true,
             'INCLUDE_VARIANCE': true,
             'INCLUDE_LAST_YEAR': true,
@@ -256,8 +257,9 @@ angular.module('reportsModule')
                 selected = true;
             }
 
-            if ( report['title'] === reportNames['RESERVATIONS_BY_USER'] && filter.value === 'INCLUDE_BOTH') {
-                if ( filter.value === 'INCLUDE_BOTH') {
+            //  Include New option the default selected option CICO-34593
+            if ( report['title'] === reportNames['RESERVATIONS_BY_USER'] && filter.value === 'INCLUDE_NEW') {
+                if ( filter.value === 'INCLUDE_NEW') {
                     selected = true;
                 }
 
@@ -667,6 +669,12 @@ angular.module('reportsModule')
                         .then( fillMarkets );
                 }
 
+                else if ( 'CHOOSE_SEGMENT' === filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchSegments()
+                        .then( fillSegments );
+                }
+
                 else if ( 'CHOOSE_SOURCE' === filter.value && ! filter.filled ) {
                     requested++;
                     reportsSubSrv.fetchSources()
@@ -782,6 +790,14 @@ angular.module('reportsModule')
             function fillGarntTypes (data) {
                 var foundFilter;
 
+                // Add UNDEFINED option to garantee drop down CICO-34593
+                var UNDEFINED = {
+                    is_active: true,
+                    name: 'UNDEFINED',
+                    value: -1
+                };
+
+                data.push(UNDEFINED);
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'INCLUDE_GUARANTEE_TYPE' });
 
@@ -791,7 +807,7 @@ angular.module('reportsModule')
                         report.hasGuaranteeType = {
                             data: angular.copy( data ),
                             options: {
-                                selectAll: false,
+                                selectAll: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? true : false,
                                 hasSearch: true,
                                 key: 'name',
                                 defaultValue: 'Select guarantees'
@@ -833,6 +849,15 @@ angular.module('reportsModule')
             function fillMarkets (data) {
                 var foundFilter;
 
+                // Add UNDEFINED option to market drop down CICO-34593
+                var UNDEFINED = {
+                    is_active: true,
+                    name: 'UNDEFINED',
+                    value: -1
+                };
+
+                data.push(UNDEFINED);
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CHOOSE_MARKET' });
 
@@ -841,7 +866,38 @@ angular.module('reportsModule')
                         report.hasMarketsList = {
                             data: angular.copy( data ),
                             options: {
-                                selectAll: false,
+                                selectAll: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? true : false,
+                                hasSearch: false,
+                                key: 'name'
+                            }
+                        };
+                    }
+                });
+
+                completed++;
+                checkAllCompleted();
+            }
+
+            function fillSegments (data) {
+                var foundFilter;
+
+                // Add UNDEFINED option to segment drop down CICO-34593
+                var UNDEFINED = {
+                    is_active: true,
+                    name: 'UNDEFINED',
+                    value: -1
+                };
+
+                data.push(UNDEFINED);
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'CHOOSE_SEGMENT' });
+
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        report.hasSegmentsList = {
+                            data: angular.copy( data ),
+                            options: {
+                                selectAll: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? true : false,
                                 hasSearch: false,
                                 key: 'name'
                             }
@@ -856,6 +912,14 @@ angular.module('reportsModule')
             function fillSources (data) {
                 var foundFilter;
 
+                // Add UNDEFINED option to source drop down CICO-34593
+                var UNDEFINED = {
+                    is_active: true,
+                    name: 'UNDEFINED',
+                    value: -1
+                };
+
+                data.push(UNDEFINED);
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CHOOSE_SOURCE' });
 
@@ -864,7 +928,7 @@ angular.module('reportsModule')
                         report.hasSourcesList = {
                             data: angular.copy( data ),
                             options: {
-                                selectAll: false,
+                                selectAll: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? true : false,
                                 hasSearch: false,
                                 key: 'name'
                             }
@@ -880,6 +944,14 @@ angular.module('reportsModule')
             function fillBookingOrigins (data) {
                 var foundFilter;
 
+                // Add UNDEFINED option to origin drop down CICO-34593
+                var UNDEFINED = {
+                    is_active: true,
+                    name: 'UNDEFINED',
+                    value: -1
+                };
+
+                data.push(UNDEFINED);
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CHOOSE_BOOKING_ORIGIN' });
 
@@ -888,7 +960,7 @@ angular.module('reportsModule')
                         report.hasOriginsList = {
                             data: angular.copy( data ),
                             options: {
-                                selectAll: false,
+                                selectAll: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? true : false,
                                 hasSearch: false,
                                 key: 'name'
                             }

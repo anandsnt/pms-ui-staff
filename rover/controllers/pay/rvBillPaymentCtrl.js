@@ -213,17 +213,6 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 
 		$scope.referenceTextAvailable = false;
 		$scope.showInitalPaymentScreen = true;
-		// changes for CICO-13763
-		var reservationData = { "reservation_id": $scope.reservationData.reservationId, "is_checkout": $scope.reservationBillData.isCheckout};
-		var paymentParams = $scope.reservationBillData.isCheckout ? reservationData : {};
-		
-		/*
-		 *	CICO-6089 => Enable Direct Bill payment option for OPEN BILLS.
-		*/
-		if ($scope.billsArray[$scope.currentActiveBill].is_account_attached && $scope.hasPermissionToDirectBillPayment()) {
-			paymentParams.direct_bill = true;
-		}
-		$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, paymentParams, $scope.getPaymentListSuccess);
 
 		$scope.invokeApi(RVPaymentSrv.getPaymentList, $scope.reservationData.reservationId, $scope.cardsListSuccess);
 	};

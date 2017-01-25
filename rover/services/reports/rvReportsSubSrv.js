@@ -194,6 +194,15 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
+        service.fetchSegments = function(params) {
+            return callApi({
+                name: 'segments',
+                method: 'getJSON',
+                url: '/api/segments?is_active=true',
+                resKey: 'segments'
+            });
+        };
+
         service.fetchSources = function() {
             return callApi({
                 name: 'sources',

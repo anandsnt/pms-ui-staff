@@ -1061,6 +1061,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					'display': [],
 					'show': [],
 					'markets': [],
+                    'segments': [],
 					'sources': [],
 					'origins': [],
 					'origin_urls': [],
@@ -1543,6 +1544,29 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					}
 				}
 			}
+
+            // selected segments
+            if ( report.hasOwnProperty('hasSegmentsList') ) {
+                selected = _.where( report['hasSegmentsList']['data'], { selected: true } );
+
+                if ( selected.length > 0 ) {
+                    key         = reportParams['SEGMENT_IDS'];
+                    params[key] = [];
+                    /**/
+                    _.each(selected, function(segment) {
+                        params[key].push( segment.value );
+                        /**/
+                        if ( changeAppliedFilter ) {
+                            $scope.appliedFilter.segments.push( segment.name );
+                        }
+                    });
+
+                    // in case if all segments are selected
+                    if ( changeAppliedFilter && report['hasSegmentsList']['data'].length === selected.length ) {
+                        $scope.appliedFilter.segments = ['All Segments'];
+                    }
+                }
+            }
 
 			// selected source
 			if ( report.hasOwnProperty('hasSourcesList') ) {

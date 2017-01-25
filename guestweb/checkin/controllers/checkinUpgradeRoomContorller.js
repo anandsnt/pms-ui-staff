@@ -23,6 +23,10 @@
         'reservation_id': $rootScope.reservationID
       };
 
+      if (!$rootScope.isAutoCheckinOn) {
+          data.is_checkin_now = true;
+      }
+
       $scope.isFetching = true;
 
       var updateGoogleAnalyticsRoomUpgradeFetchFailed = function() {
@@ -32,6 +36,24 @@
           eventAction: 'fetch failed',
           eventLabel: 'Room Upgrade Fetch Failed'
         });
+      };
+
+      var setUpUpsellRoomTypeData = function(response) {
+        if ($rootScope.isAutoCheckinOn) {
+          $scope.slides = response.data.upsell_room_types;
+        } else {
+          // if checkin now, need to assign a room instantly, so assign the first room in 
+          // the upgradable room type
+          var roomUpgradesList = [];
+
+          _.each(response.data.upsell_room_types, function(roomType) {
+            var roomNumber = response.data.available_upgrade_rooms[roomType.upgrade_room_type_id_int][0];
+            
+            roomType.upgrade_room_number = roomNumber;
+            roomUpgradesList.push(roomType);
+          });
+          $scope.slides = roomUpgradesList;
+        }
       };
 
       checkinRoomUpgradeOptionsService.fetch(data).then(function(response) {
@@ -50,7 +72,7 @@
             eventAction: 'fetch success',
             eventLabel: 'Room Upgrade Fetch success'
           });
-          $scope.slides = response.data;
+          setUpUpsellRoomTypeData(response);
         }
       }, function() {
         // $rootScope.netWorkError = true;
@@ -67,15 +89,21 @@
 
         $scope.isFetching = true;
         var upgradeSelected = _.find($scope.slides, function(slide) {
-          return slide.upsell_amount_id === upgradeID;
+          return slide.upgrade_room_type_id === upgradeID;
         });
+
         var upgradeRoomTypeId = upgradeSelected.upgrade_room_type_id;
+        
         var data = {
           'reservation_id': $rootScope.reservationID,
-          'upsell_amount_id': upgradeID,
+          'upsell_amount_id': upgradeSelected.upsell_amount_id,
           'room_no': roomNumber,
           'upgrade_room_type_id': upgradeRoomTypeId
         };
+
+        if (!$rootScope.isAutoCheckinOn) {
+          data.upsell_room_no = roomNumber;
+        }
         var updateGoogleAnalyticsRoomUpgradeFailed = function() {
           $window.ga('send', {
             hitType: 'event',
@@ -84,7 +112,7 @@
             eventLabel: 'Room Upgrade failed'
           });
         };
-
+        
         checkinRoomUpgradeService.post(data).then(function(response) {
 
           $scope.isFetching = false;
@@ -99,6 +127,7 @@
               eventLabel: 'Room Upgrade succes'
             });
             $rootScope.upgradesAvailable = false;
+            $rootScope.isUpgradeAvailableNow = false;
             $rootScope.ShowupgradedLabel = true;
             $rootScope.roomUpgradeheading = "Your new trip details";
             checkinDetailsService.setResponseData(response.data);
