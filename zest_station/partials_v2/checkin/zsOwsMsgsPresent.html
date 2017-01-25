@@ -7,9 +7,7 @@
             <text editable-text="SINGLE_MESSAGE_SUB_HEADER"> {{'SINGLE_MESSAGE_SUB_HEADER' |translate}}</text>
         </h2>
         <h2 ng-show="owsMessages.length !== 1 ">
-            <text editable-text="MULTIPLE_MESSAGE_SUB_HEADER_PART_1"> {{'MULTIPLE_MESSAGE_SUB_HEADER_PART_1' |translate}}</text>
-            {{owsMessages.length}}
-            <text editable-text="MULTIPLE_MESSAGE_SUB_HEADER_PART_2"> {{'MULTIPLE_MESSAGE_SUB_HEADER_PART_2' |translate}}</text>
+            <text editable-text="MULTIPLE_MESSAGE_SUB_HEADER_PART_1"> {{'MULTIPLE_MESSAGE_SUB_HEADER_PART_1' |translate}}</text>&nbsp;{{owsMessages.length}}&nbsp;<text editable-text="MULTIPLE_MESSAGE_SUB_HEADER_PART_2"> {{'MULTIPLE_MESSAGE_SUB_HEADER_PART_2' |translate}}</text>
 
         </h2>
         <!-- General error -->
