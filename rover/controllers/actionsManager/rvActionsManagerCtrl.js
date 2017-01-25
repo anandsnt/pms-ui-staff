@@ -390,6 +390,8 @@ sntRover.controller('RVActionsManagerController',
             }
 
             params.actionables = [$scope.filterOptions.selectedView];
+            params.per_page = 1000;
+            params.page = 1;
 
             return params;
 
