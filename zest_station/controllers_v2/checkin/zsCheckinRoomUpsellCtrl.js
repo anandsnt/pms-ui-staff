@@ -8,8 +8,8 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 
 
 		var onBackButtonClicked = function() {
-			if ($scope.displayMode === 'ROOM_DETAILS' && $scope.upsellRooms.length !== 1) {
-				$scope.displayMode = 'ROOM_UPSELL_LIST';
+			if ($scope.mode === 'ROOM_DETAILS' && $scope.upsellRooms.length !== 1) {
+				$scope.mode = 'ROOM_UPSELL_LIST';
 			} else {
 				$state.go('zest_station.checkInReservationDetails');
 			}
@@ -42,11 +42,11 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 
 		$scope.viewSelectedRoomDetails = function(selectedRoom) {
 			$scope.selectedRoom = selectedRoom;
-			$scope.displayMode = 'ROOM_DETAILS';
+			$scope.mode = 'ROOM_DETAILS';
 		};
 
 		var generalError = function() {
-			$scope.displayMode = 'ERROR_MODE';
+			$scope.mode = 'ERROR_MODE';
 		};
 
 		$scope.buyRoomUpsell = function() {
@@ -168,9 +168,9 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 
 				if ($scope.upsellRooms.length === 1) {
 					$scope.selectedRoom = $scope.upsellRooms[0];
-					$scope.displayMode = 'ROOM_DETAILS';
+					$scope.mode = 'ROOM_DETAILS';
 				} else {
-					$scope.displayMode = 'ROOM_UPSELL_LIST';
+					$scope.mode = 'ROOM_UPSELL_LIST';
 				}
 			};
 
