@@ -4,8 +4,7 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
     '$state',
     'zsEventConstants',
     'zsCheckinSrv',
-    '$stateParams',
-    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $stateParams) {
+    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv) {
 
         /** ********************************************************************************************
          **      Please note that, not all the stateparams passed to this state will not be used in this state, 
