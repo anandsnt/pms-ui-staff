@@ -3,6 +3,7 @@ const {connect} = ReactRedux;
 let convertCurrentSelectedReservation = (currentSelectedReservation, selectedReservationId, dateFormat) => {
 
     let stayRangeArrivalClass = "grid-stay-range";
+
     if (selectedReservationId) {
         currentSelectedReservation.arrivalStyle = {};
         currentSelectedReservation.departureStyle = {};
@@ -13,6 +14,8 @@ let convertCurrentSelectedReservation = (currentSelectedReservation, selectedRes
         currentSelectedReservation.arrivalDate = moment(currentSelectedReservation.arrival_date, "YYYY-MM-DD").format(dateFormat.toUpperCase());
         currentSelectedReservation.deptDate = moment(currentSelectedReservation.dept_date, "YYYY-MM-DD").format(dateFormat.toUpperCase());
         currentSelectedReservation.class = stayRangeArrivalClass;
+        currentSelectedReservation.arrivalClass = (currentSelectedReservation.isArrivalFlagVisible) ? "handle arrival left" : "handle arrival left hidden";
+        currentSelectedReservation.departureClass = (currentSelectedReservation.isDepartureFlagVisible) ? "handle departure" : "handle departure hidden";
     }
     return currentSelectedReservation;
 };

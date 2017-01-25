@@ -94,10 +94,10 @@ const NightlyDiaryStayRangeComponent = createClass ({
         let state = this.state,
             diff = e.clientX - this.state.mouseLastPositionX;
 
-        if (state.isArrivalDragging) {            
+        if (state.isArrivalDragging) {
             this.moveArrivalFlag(diff);
         }
-        if (state.isDepartureDragging) {            
+        if (state.isDepartureDragging) {
             this.moveDepartureFlag(diff);
         }
         this.state.mouseLastPositionX = e.clientX;
@@ -135,7 +135,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
         state.mouseClikedX = e.clientX;
         state.mouseLastPositionX = e.clientX;
     },
-    
+
     moveDepartureFlag(diff) {
         let state = this.state,
             curentPosition = state.departurePosition + diff;
@@ -188,14 +188,14 @@ const NightlyDiaryStayRangeComponent = createClass ({
 
         return (
             <div className={reservationClass} ref={node => this.flagarea = node}>
-                <a style={arrivalStyle} className="handle arrival left" >
+                <a style={arrivalStyle} className={this.props.currentSelectedReservation.arrivalClass} >
                     <span className="title" ref={node => this.arrivalFlag = node}>
                         Arrival
                         <span className="date">{this.props.currentSelectedReservation.arrivalDate}</span>
                     </span>
                     <span className="line"></span>
                 </a>
-                <a style={departureStyle} className="handle departure">
+                <a style={departureStyle} className={this.props.currentSelectedReservation.departureClass}>
                     <span className="title" ref={node => this.departureFlag = node}>
                         Departure
                         <span className="date">{this.props.currentSelectedReservation.deptDate}</span>
