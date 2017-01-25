@@ -8,7 +8,8 @@ module.exports = {
 			minifiedFiles: [
 				jsLibRoot + 'angular.min.js',
 				jsLibRoot + 'angular-ui-router.min.js',
-				jsLibRoot + 'angular-sanitize.min.js'
+                jsLibRoot + 'angular-sanitize.min.js',
+				jsLibRoot + 'ngDialog.min.js'
 			],
 			nonMinifiedFiles: [
 				sharedRoot + 'directives/documentTouchMovePrevent/*.js',
