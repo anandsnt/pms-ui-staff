@@ -557,7 +557,7 @@ angular.module('reportsModule')
                     report['hasMinNoOfDaysNotOccupied'] = filter;
                 }
 
-                if ( filter.value === 'SHOW_ACTIONABLES' ) {
+                if ( filter.value === 'ACTIONS_BY' ) {
                      var customData = [
                         {
                             value : "GUEST",
