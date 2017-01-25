@@ -674,14 +674,14 @@ angular.module('sntPay').controller('sntPaymentController',
                 paymentDialogId = $dialog.attr('id');
             });
             // CICO-33971 : Submit payment process after confirming as DB.
-            $scope.$on('CONFIRMED_DB_PAYMENT', ( event, params )=> {
+            $scope.$on('CONFIRMED_DB_PAYMENT', ( event, params ) => {
                 $scope.payment.isConfirmedDBpayment = true;
                 $scope.submitPayment(params);
                 ngDialog.close(paymentDialogId);
             });
             // CICO-33971 : Close confirmation popup.
-            $scope.$on('CANCELLED_CONFIRM_DB_PAYMENT', ()=> {
-                $scope.$emit("SHOW_BILL_PAYMENT_POPUP");
+            $scope.$on('CANCELLED_CONFIRM_DB_PAYMENT', () => {
+                $scope.$emit('SHOW_BILL_PAYMENT_POPUP');
                 ngDialog.close(paymentDialogId);
             });
 
