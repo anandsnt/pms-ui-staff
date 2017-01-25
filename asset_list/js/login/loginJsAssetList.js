@@ -13,6 +13,7 @@ module.exports = {
 			],
 			nonMinifiedFiles: [
 				sharedRoot + 'directives/documentTouchMovePrevent/*.js',
+                sharedRoot + 'directives/clickTouch/clickTouch.js',
 				sharedRoot + 'baseCtrl.js',
 				jsLibRoot + 'iscroll.js',
 				jsLibRoot + 'ng-iscroll.js',
