@@ -315,5 +315,43 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+
+        this.fetchRoomUpsellDetails = function(param) {
+            var deferred = $q.defer();
+            var url =  '/zest_station/upgrade_options.json';
+
+            zsBaseWebSrv2.getJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fethHotelRooms = function(params){
+            var deferred = $q.defer();
+            var url =  ' /staff/rooms/get_rooms';
+
+            zsBaseWebSrv2.postJSON(url,params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.selectRoomUpgrade = function(param) {
+            var deferred = $q.defer();
+            var url =  '/staff/reservations/upgrade_room.json';
+
+            param.is_kiosk = true;
+            zsBaseWebSrv2.postJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+                return deferred.promise;
+        };
+
     }
 ]);
