@@ -486,6 +486,7 @@
             }
 
             .upgrade-content {
+                background-color: @backgroundColor;
                 padding: 10px;
                 text-align: left;
                 position: relative;
@@ -533,8 +534,9 @@
                 }
 
                 .upgrade-content {
+                    background: @white;
                     color: @black;
-                    padding: 10px 15px 15px;
+                    padding: 10px 15px 105px 15px;
                     #calc > #height > .remove( 100%, 160px );
 
                     .price {
@@ -548,6 +550,75 @@
                         } 
                         small {
                             line-height: 16px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    @media (max-width: 1025px) {   
+
+            .upgrade-list { 
+                li {
+                    position: relative;
+
+                    .upgrade-content {
+                        height: 140px;
+                        width: 100%;
+                        position: absolute;
+                        bottom: 0; 
+                        left: 0;
+                        z-index: 99;
+
+                        h2 {
+                            font-size: 1em;
+                        }
+
+                        .price {
+                            strong {
+                                font-size: 2em;
+                            }
+                            small {
+                                font-size: 0.75em;
+                            }
+                        }
+                    }
+
+                }
+                &.upgrade-list-v2 {
+
+                    li {
+                        
+                        .upgrade-content {
+                            height: 175px;
+
+                            .button {
+                                height: 48px;
+                                line-height: 48px;
+                                font-size: 1em;
+                            }
+                        }
+                    }
+                }
+            }
+    }
+
+    @media only screen and (min-device-width : 768px) and (max-device-width : 1024px)  {  
+        .upgrade-list {
+            li{
+                .upgrade-picture {
+                    height: 100px;
+                    img { 
+                        height: 100px;
+                    }
+                }
+            }
+            &.upgrade-list-v2 {
+                 li{
+                    .upgrade-picture {
+                        height: 100px;
+                        img { 
+                            height: 100px;
                         }
                     }
                 }
