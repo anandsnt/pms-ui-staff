@@ -161,9 +161,9 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 
 				// set page number details
 				$scope.pageNumber = 1;
-				if($scope.upsellRooms.length > 0){
+				if ($scope.upsellRooms.length > 0) {
 					setPageNumberDetails();
-				}else{
+				} else {
 					generalError();
 				}
 				$scope.showPageNumberDetails = true;
@@ -207,7 +207,7 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 		$scope.showRoomDetailsForStyleA = function(room) {
 			if ($scope.zestStationData.room_upsell_style === 'STYLE_A') {
 				$scope.viewSelectedRoomDetails(room);
-			}else{
+			} else {
 				return;
 			}
 		};
