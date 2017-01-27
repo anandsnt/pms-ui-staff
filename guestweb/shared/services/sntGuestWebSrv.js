@@ -6,22 +6,23 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 		cms_screen_details = [],
 		that = this;
 
-	this.fetchScreenWiseData = function(hotel_identifier) {
-		var deferred = $q.defer();
-		var url = '/api/hotels/custom_cms_messages.json?application=ZEST_WEB&hotel_identifier=' + hotel_identifier;
+    this.fetchScreenWiseData = function(hotel_identifier) {
+        var deferred = $q.defer();
+        var url = '/api/hotels/custom_cms_messages.json?application=ZEST_WEB&hotel_identifier=' + hotel_identifier;
 
-		$http.get(url).success(function(response) {
-				that.cms_screen_details = _.find(response.screen_list, function(cms_item) {
-					return cms_item.screen_name === "ECI SCREENS";
-				});
-				that.cms_screen_details = typeof that.cms_screen_details !== 'undefined' ? that.cms_screen_details : [];
-				deferred.resolve(response);
-			})
-			.error(function() {
-				deferred.reject();
-			});
-		return deferred.promise;
-	};
+        $http.get(url).then(function(response) {
+            var data = response.data;
+
+            that.cms_screen_details = _.find(data.screen_list, function(cms_item) {
+                return cms_item.screen_name === "ECI SCREENS";
+            });
+            that.cms_screen_details = typeof that.cms_screen_details !== 'undefined' ? that.cms_screen_details : [];
+            deferred.resolve(data);
+        }, function() {
+            deferred.reject();
+        });
+        return deferred.promise;
+    };
 
 	// call CMS details only for checkin URLs now
 	var absUrl = window.location.href;
@@ -41,93 +42,91 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 		return extractScreenDetails(screen_identifier, that.cms_screen_details);
 	};
 
-	this.fetchHotelDetailsFromUrl = function(url) {
-		var deferred = $q.defer();
+    this.fetchHotelDetailsFromUrl = function(url) {
+        var deferred = $q.defer();
 
-		$http.get(url).success(function(response) {
-				if (response.status === "success") {
-					deferred.resolve(response.data);
-				} else {
-					// when some thing is broken , need to redirect to error page with default theme
-					response.data.hotel_theme = "guestweb";
-					response.data.error_occured = true;
-					deferred.resolve(response.data);
-				}
+        $http.get(url).then(function(res) {
+            var response = res.response;
 
-			})
-			.error(function() {
-				deferred.reject();
-			});
-		return deferred.promise;
-	};
+            if (response.status === "success") {
+                deferred.resolve(response.data);
+            } else {
+                // when some thing is broken , need to redirect to error page with default theme
+                response.data.hotel_theme = "guestweb";
+                response.data.error_occured = true;
+                deferred.resolve(response.data);
+            }
+        }, function() {
+            deferred.reject();
+        });
 
-	this.fetchHotelDetailsOnExtCheckoutUrl = function() {
-		var deferred = $q.defer();
-		var url = "/ui/show?json_input=opt_dashboard/checkout_row_nyc.json&format=json";
+        return deferred.promise;
+    };
 
-		$http.get(url).success(function(response) {
-				deferred.resolve(response);
-			})
-			.error(function() {
-				deferred.reject();
-			});
-		return deferred.promise;
-	};
+    this.fetchHotelDetailsOnExtCheckoutUrl = function() {
+        var deferred = $q.defer();
+        var url = "/ui/show?json_input=opt_dashboard/checkout_row_nyc.json&format=json";
 
-	this.fetchHotelDetailsOnExtCheckinUrl = function() {
-		var deferred = $q.defer();
-		var url = "ui/show?json_input=opt_dashboard/checkout_row_nyc.json&format=json";
+        $http.get(url).then(function(response) {
+            deferred.resolve(response.data);
+        }, function() {
+            deferred.reject();
+        });
 
-		$http.get(url).success(function(response) {
-				deferred.resolve(response);
-			})
-			.error(function() {
-				deferred.reject();
-			});
-		return deferred.promise;
-	};
+        return deferred.promise;
+    };
 
-	this.fetchJsHotelThemeList = function() {
-		var deferred = $q.defer();
-		var url = "/assets/asset_list/____generatedThemeMappings/____generatedGuestweb/js/____generatedGuestWebJsThemeMappings.json";
+    this.fetchHotelDetailsOnExtCheckinUrl = function() {
+        var deferred = $q.defer();
+        var url = "ui/show?json_input=opt_dashboard/checkout_row_nyc.json&format=json";
 
-		$http.get(url).success(function(response) {
-				jsMappingList = response;
-				deferred.resolve(response);
-			})
-			.error(function() {
-				deferred.reject();
-			});
-		return deferred.promise;
-	};
+        $http.get(url).then(function(response) {
+            deferred.resolve(response.data);
+        }, function() {
+            deferred.reject();
+        });
 
-	this.fetchCSSHotelThemeList = function() {
-		var deferred = $q.defer();
-		var url = "/assets/asset_list/____generatedThemeMappings/____generatedGuestweb/css/____generatedGuestWebCSSThemeMappings.json";
+        return deferred.promise;
+    };
 
-		$http.get(url).success(function(response) {
-				cssMappingList = response;
-				deferred.resolve(response);
-			})
-			.error(function() {
-				deferred.reject();
-			});
-		return deferred.promise;
-	};
+    this.fetchJsHotelThemeList = function() {
+        var deferred = $q.defer();
+        var url = "/assets/asset_list/____generatedThemeMappings/____generatedGuestweb/js/____generatedGuestWebJsThemeMappings.json";
 
-	this.fetchTemplateHotelThemeList = function() {
-		var deferred = $q.defer();
-		var url = "/assets/asset_list/____generatedThemeMappings/____generatedGuestweb/template/____generatedGuestWebTemplateThemeMappings.json";
+        $http.get(url).then(function(response) {
+            jsMappingList = response.data;
+            deferred.resolve(response.data);
+        }, function() {
+            deferred.reject();
+        });
+        return deferred.promise;
+    };
 
-		$http.get(url).success(function(response) {
-				templateMappingList = response;
-				deferred.resolve(response);
-			})
-			.error(function() {
-				deferred.reject();
-			});
-		return deferred.promise;
-	};
+    this.fetchCSSHotelThemeList = function() {
+        var deferred = $q.defer();
+        var url = "/assets/asset_list/____generatedThemeMappings/____generatedGuestweb/css/____generatedGuestWebCSSThemeMappings.json";
+
+        $http.get(url).then(function(response) {
+            cssMappingList = response.data;
+            deferred.resolve(response.data);
+        }, function() {
+            deferred.reject();
+        });
+        return deferred.promise;
+    };
+
+    this.fetchTemplateHotelThemeList = function() {
+        var deferred = $q.defer();
+        var url = "/assets/asset_list/____generatedThemeMappings/____generatedGuestweb/template/____generatedGuestWebTemplateThemeMappings.json";
+
+        $http.get(url).then(function(response) {
+            templateMappingList = response.data;
+            deferred.resolve(response.data);
+        }, function() {
+            deferred.reject();
+        });
+        return deferred.promise;
+    };
 
 	/**
 	 * [fetchJsAssets description]

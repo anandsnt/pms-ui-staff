@@ -9,23 +9,21 @@
 
 		$http.get(url, {
 			params: parameters
-		}).success(function(response) {
-			this.charges = response;
+		}).then(function(response) {
+			this.charges = response.data;
 			deferred.resolve(this.charges);
-		}.bind(this))
-		.error(function() {
+		}, function() {
 			deferred.reject();
 		});
 		return deferred.promise;
 	};
 
 	var postNewCheckoutOption = function(url, data) {
-
 		var deferred = $q.defer();
 
-		$http.post(url, data).success(function(response) {
-			deferred.resolve(response);
-		}).error(function() {
+		$http.post(url, data).then(function(response) {
+			deferred.resolve(response.data);
+		}, function() {
 			deferred.reject();
 		});
 		return deferred.promise;

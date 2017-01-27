@@ -11,11 +11,10 @@
 
 		data.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "";
 		data.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "";
-		$http.post(url, data).success(function(response) {
-			this.responseData = response;
+		$http.post(url, data).then(function(response) {
+			this.responseData = response.data;
 			deferred.resolve(this.responseData);
-		}.bind(this))
-		.error(function() {
+		}, function() {
 			deferred.reject();
 		});
 		return deferred.promise;

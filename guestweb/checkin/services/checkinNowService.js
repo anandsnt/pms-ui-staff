@@ -1,5 +1,5 @@
 	(function() {
-		var checkinNowService = function($q, $http, $rootScope) {
+		var checkinNowService = function($q, $http) {
 
 			var responseData = {};
 
@@ -7,12 +7,12 @@
 				var deferred = $q.defer();
 				var url = ' /staff/reservation/modify_reservation.json';
 
-				$http.post(url, data).success(function(response) {
-					deferred.resolve(response);
-				})
-				.error(function() {
+				$http.post(url, data).then(function(response) {
+					deferred.resolve(response.data);
+				}, function() {
 					deferred.reject();
 				});
+
 				return deferred.promise;
 			};
 
@@ -20,12 +20,12 @@
 				var deferred = $q.defer();
 				var url = '/api/reservations/' + data.reservation_id + '/unassign_room';
 
-				$http.post(url).success(function(response) {
-					deferred.resolve(response);
-				})
-				.error(function() {
+				$http.post(url).then(function(response) {
+					deferred.resolve(response.data);
+				}, function() {
 					deferred.reject();
 				});
+
 				return deferred.promise;
 			};
 
@@ -33,12 +33,12 @@
 				var deferred = $q.defer();
 				var url = '/guest_web/reservations/' + data.reservation_id + '.json';
 
-				$http.get(url, {params: data}).success(function(response) {
-					deferred.resolve(response);
-				})
-				.error(function() {
+				$http.post(url, {params: data}).then(function(response) {
+					deferred.resolve(response.data);
+				}, function() {
 					deferred.reject();
 				});
+
 				return deferred.promise;
 			};
 

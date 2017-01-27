@@ -62,9 +62,12 @@ if (status === 406) { // 406- Network error
 			}
 		}
 
-		$http(httpDict).success(function(response, status) {
-			deferred.resolve(response);
-		}).error(function(errors, status) {
+		$http(httpDict).then(function(response) {
+			deferred.resolve(response.data);
+		}, function(response) {
+			var errors = response.data,
+				status = response.status;
+
 			webserviceErrorActions(url, deferred, errors, status);
 		});
 		return deferred.promise;
@@ -118,7 +121,11 @@ if (status === 406) { // 406- Network error
 		}
 		
 
-		$http(httpDict).success(function(response, status, headers) {
+		$http(httpDict).then(function(res) {
+			var response = res.data,
+				status = res.status,
+				headers = res.headers;
+
 			// 202 ---> The request has been accepted for processing, but the processing has not been completed.
 			// 102 ---> This code indicates that the server has received and is processing the request, but no response is available yet
 			if (status === 202 || status === 102 || status === 250) {
@@ -131,7 +138,10 @@ if (status === 406) { // 406- Network error
 			} else {
 				deferred.resolve(response);
 			}
-		}).error(function(errors, status) {
+		}, function(response) {
+			var errors = response.data,
+				status = response.status;
+
 			webserviceErrorActions(url, deferred, errors, status);
 		});
 		return deferred.promise;

@@ -54,14 +54,19 @@ login.service('resetSrv', ['$http', '$q', '$window',
             var url = "/api/password_resets/" + data.token + "/update.json";
 
 
-            $http.put(url, data).success(function(response, status) {
+            $http.put(url, data).then(function(res) {
+                var response = res.data;
+
                 if (response.status === "success") {
                     successCallback(response.data);
                 } else {
                     // please note the type of error expecting is array
                     failureCallBack(response.errors);
                 }
-            }).error(function(response, status) {
+            }, function(res) {
+                var status = res.status,
+                    response = res.data;
+
                 // please note the type of error expecting is array
                 // so form error as array if you modifying it
                 if (status === 406) { // 406- Network error
@@ -95,11 +100,14 @@ login.service('resetSrv', ['$http', '$q', '$window',
 
             var url = "/api/password_resets/validate_token.json";
 
-            $http.post(url, data).success(function(response, status) {
-                if (response.status !== "success") {
-                    failureCallBack(response.errors);
+            $http.post(url, data).then(function(response) {
+                if (response.data.status !== "success") {
+                    failureCallBack(response.data.errors);
                 }
-            }).error(function(response, status) {
+            }, function(res) {
+                var status = res.status,
+                    response = res.data;
+
                 // please note the type of error expecting is array
                 // so form error as array if you modifying it
                 if (status === 406) { // 406- Network error

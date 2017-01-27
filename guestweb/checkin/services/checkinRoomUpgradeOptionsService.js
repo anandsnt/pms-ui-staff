@@ -14,11 +14,10 @@
 		data.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "";
 		$http.get(url, {
 			params: data
-		}).success(function(response) {
-			this.responseData = response;
+		}).then(function(response) {
+			this.responseData = response.data;
 			deferred.resolve(this.responseData);
-		}.bind(this))
-		.error(function() {
+		}, function() {
 			deferred.reject();
 		});
 		return deferred.promise;

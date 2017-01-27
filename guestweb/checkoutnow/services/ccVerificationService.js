@@ -9,9 +9,9 @@ var ccVerificationService = function($q, $http, $rootScope) {
 
 			data.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "WEB";
 			data.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "";
-			$http.post(url, data).success(function(response) {
-				deferred.resolve(response);
-			}).error(function() {
+			$http.post(url, data).then(function(response) {
+				deferred.resolve(response.data);
+			}, function() {
 				deferred.reject();
 			});
 			return deferred.promise;

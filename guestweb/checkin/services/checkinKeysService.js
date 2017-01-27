@@ -9,11 +9,10 @@
 
 			data.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "WEB";
 			data.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "WEB";
-			$http.post(url, data).success(function(response) {
-					this.responseData = response;
+			$http.post(url, data).then(function(response) {
+					this.responseData = response.data;
 					deferred.resolve(this.responseData);
-				}.bind(this))
-				.error(function() {
+				}, function() {
 					deferred.reject();
 				});
 			return deferred.promise;
@@ -24,10 +23,9 @@
 				// var url = '/guest_web/reservations/'+data.reservation_id+'.json';
 				var url = '/guest_web/zest_web_keys/' + data.reservation_id + '.json';
 
-				$http.get(url, {params: data}).success(function(response) {
-					deferred.resolve(response);
-				})
-				.error(function() {
+				$http.get(url, {params: data}).then(function(response) {
+					deferred.resolve(response.data);
+				}, function() {
 					deferred.reject();
 				});
 				return deferred.promise;
@@ -39,11 +37,10 @@
 
 			data.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "WEB";
 			data.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "WEB";
-			$http.put(url, data).success(function(response) {
-					this.responseData = response;
+			$http.put(url, data).then(function(response) {
+					this.responseData = response.data;
 					deferred.resolve(this.responseData);
-				}.bind(this))
-				.error(function() {
+				}, function() {
 					deferred.reject();
 				});
 			return deferred.promise;

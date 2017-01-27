@@ -207,7 +207,7 @@
 						<li id="items-list" ng-repeat="each in fetchedItems" ng-click="addItem(each)">
 
 							<a class="button white" ng-if="each.type === 'ITEM'">
-								<span ng-bind-html="{{convertToJSONString(each.name)}} | highlight:query:false"></span>
+								<span ng-bind-html="escapeNull(each.name)| highlight:query:false"></span>
 								<span class="price">
 									{{ currencySymbol }} <span class="value">{{ each.unit_price | number : 2 }}</span>
 								</span>
@@ -215,9 +215,9 @@
 							</a>
 
 							<a class="button white" ng-if="each.type === 'CHARGE_CODE'">
-								<span ng-bind-html="each.name | highlight:query:false"></span>
+								<span ng-bind-html="escapeNull(each.name) | highlight:query:false"></span>
 								<span class="price">
-									<span class="value" ng-bind-html="'{{ each.charge_code }}' | highlight:query:false"></span>
+									<span class="value" ng-bind-html="each.charge_code | highlight:query:false"></span>
 								</span>
 								<span ng-if="each.count > 0" class="count">{{ each.count }}</span>
 							</a>

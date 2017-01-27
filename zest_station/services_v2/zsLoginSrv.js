@@ -3,14 +3,19 @@ sntZestStation.service('zsLoginSrv', ['$http', '$q', function($http, $q) {
 		var deferred = $q.defer();
 
 		// Sample params {params:{fname: "fname", lname: "lname"}}
-		$http.post("/login/submit", data).success(function(response, status) {
+		$http.post("/login/submit", data).then(function(res) {
+			var response = res.data;
+
 			if (response.status === "success") {
 		    	successCallback(response.data);
 			} else {
 				// please note the type of error expecting is array
 		    	failureCallBack(response.errors);
 			}
-		}).error(function(response, status) {
+		}, function(res) {
+			var response = res.data,
+				status = res.status;
+
 			// please note the type of error expecting is array
 			// so form error as array if you modifying it
 			if (status === 406) { // 406- Network error

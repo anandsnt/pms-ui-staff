@@ -8,10 +8,9 @@ var preCheckinSrv = function($q, baseWebService, $rootScope, $http) {
 		var deferred = $q.defer();
 		var url = '/api/reservations/' + reservationId + '/web_checkin_reservation_details';
 
-		$http.get(url).success(function(response) {
-			deferred.resolve(response);
-		})
-		.error(function() {
+		$http.get(url).then(function(response) {
+			deferred.resolve(response.data);
+		}, function() {
 			deferred.reject();
 		});
 		return deferred.promise;
@@ -22,10 +21,9 @@ var preCheckinSrv = function($q, baseWebService, $rootScope, $http) {
 		var deferred = $q.defer();
 		var url = '/api/reservations/' + reservationId + '/update_stay_details';
 
-		$http.post(url, data).success(function(response) {
-			deferred.resolve(response);
-		})
-		.error(function() {
+		$http.post(url, data).then(function(response) {
+			deferred.resolve(response.data);
+		}, function() {
 			deferred.reject();
 		});
 		return deferred.promise;
@@ -38,10 +36,9 @@ var preCheckinSrv = function($q, baseWebService, $rootScope, $http) {
 
 		data.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "";
 		data.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "";
-		$http.post(url, data).success(function(response) {
-			deferred.resolve(response);
-		})
-		.error(function() {
+		$http.post(url, data).then(function(response) {
+			deferred.resolve(response.data);
+		}, function() {
 			deferred.reject();
 		});
 		return deferred.promise;
