@@ -14,8 +14,10 @@ const NightlyDiaryStayRangeComponent = createClass ({
             mouseLastPositionX: 0,
             arrivalStyle: currentSelectedReservation.arrivalStyle,
             departureStyle: currentSelectedReservation.departureStyle,
+            departureDate: currentSelectedReservation.deptDate,
             // this.props.currentSelectedReservation.arrivalPosition / departurePosition is in the form of xxPX
             arrivalPosition: parseInt(currentSelectedReservation.arrivalPosition),
+            arrivalDate: currentSelectedReservation.arrivalDate,
             maxArrivalFlagPos: Math.min(departurePosition, NIGHTLY_DIARY_CONST.RESERVATION_ROW_WIDTH) - oneDayWidth,
             minArrivalFlagPos: NIGHTLY_DIARY_CONST.DAYS_7_OFFSET,
             maxDepartureFlagPos: (daysMode - 1) * (NIGHTLY_DIARY_CONST.RESERVATION_ROW_WIDTH / daysMode),
@@ -71,19 +73,24 @@ const NightlyDiaryStayRangeComponent = createClass ({
         this.updateFlagRanges();
     },
     calculateDepartureDate() {
-         let state = this.state,
+        let state = this.state,
             props = this.props,
             initialDeparturePosition = parseInt(props.currentSelectedReservation.arrivalPosition) + props.currentSelectedReservation.duration,
             differenceInPosition = state.departurePosition - initialDeparturePosition,
             differenceInDays = Math.round(differenceInPosition / state.oneDayWidth),
-            curentPosition = initialDeparturePosition + (differenceInDays * state.oneDayWidth);
+            curentPosition = initialDeparturePosition + (differenceInDays * state.oneDayWidth),
+            currentDay = moment(props.currentSelectedReservation.deptDate, "DDMMYYYY")
+                        .add(differenceInDays - 1, 'days')
+                        .format('DD/MM/YYYY');
 
         props.extendShortenReservation(state.arrivalPosition, curentPosition);
         this.setState({
             departureStyle: {
                 transform: 'translateX(' + curentPosition + 'px)'
             },
-            departurePosition: curentPosition
+            departurePosition: curentPosition,
+            departureDate: currentDay
+
         });
 
     },
@@ -105,7 +112,14 @@ const NightlyDiaryStayRangeComponent = createClass ({
 
     moveArrivalFlag(diff) {
         let state = this.state,
-            curentPosition = state.arrivalPosition + diff;
+            props = this.props,
+            initialArrivalPosition = parseInt(props.currentSelectedReservation.arrivalPosition),
+            differenceInPosition = state.arrivalPosition - initialArrivalPosition,
+            differenceInDays = parseInt(differenceInPosition / state.oneDayWidth),
+            curentPosition = state.arrivalPosition + diff,
+            currentDay = moment(props.currentSelectedReservation.arrivalDate, "DDMMYYYY")
+                        .add(differenceInDays, 'days')
+                        .format('DD/MM/YYYY');
 
         if (curentPosition < state.minArrivalFlagPos) {
             curentPosition = state.minArrivalFlagPos;
@@ -120,7 +134,8 @@ const NightlyDiaryStayRangeComponent = createClass ({
                 arrivalStyle: {
                     transform: 'translateX(' + curentPosition + 'px)'
                 },
-                arrivalPosition: curentPosition
+                arrivalPosition: curentPosition,
+                arrivalDate: currentDay
             });
         }
     },
@@ -138,7 +153,14 @@ const NightlyDiaryStayRangeComponent = createClass ({
     
     moveDepartureFlag(diff) {
         let state = this.state,
-            curentPosition = state.departurePosition + diff;
+            props = this.props,
+            curentPosition = state.departurePosition + diff,
+            initialDeparturePosition = parseInt(props.currentSelectedReservation.arrivalPosition) + props.currentSelectedReservation.duration,
+            differenceInPosition = state.departurePosition - initialDeparturePosition,
+            differenceInDays = parseInt(differenceInPosition / state.oneDayWidth),
+            currentDay = moment(props.currentSelectedReservation.deptDate, "DDMMYYYY")
+                        .add(differenceInDays - 1, 'days')
+                        .format('DD/MM/YYYY');
 
 
         if (curentPosition > state.maxDepartureFlagPos) {
@@ -154,7 +176,8 @@ const NightlyDiaryStayRangeComponent = createClass ({
                 departureStyle: {
                     transform: 'translateX(' + curentPosition + 'px)'
                 },
-                departurePosition: curentPosition
+                departurePosition: curentPosition,
+                departureDate: currentDay
             });
         }
     },
@@ -165,17 +188,21 @@ const NightlyDiaryStayRangeComponent = createClass ({
             initialArrivalPosition = parseInt(props.currentSelectedReservation.arrivalPosition),
             differenceInPosition = state.arrivalPosition - initialArrivalPosition,
             differenceInDays = Math.round(differenceInPosition / state.oneDayWidth),
-            curentPosition = initialArrivalPosition + (differenceInDays * state.oneDayWidth);
+            curentPosition = initialArrivalPosition + (differenceInDays * state.oneDayWidth),
+            currentDay = moment(props.currentSelectedReservation.arrivalDate, "DDMMYYYY")
+                        .add(differenceInDays, 'days')
+                        .format('DD/MM/YYYY');
 
         props.extendShortenReservation(curentPosition, state.departurePosition);
+
         this.setState({
             arrivalStyle: {
                 transform: 'translateX(' + curentPosition + 'px)'
             },
-            arrivalPosition: curentPosition
+            arrivalPosition: curentPosition,
+            arrivalDate: currentDay
         });
     },
-    // TODO : -
     updateFlagRanges() {
         this.state.maxArrivalFlagPos = this.state.departurePosition - this.state.oneDayWidth;
         this.state.minDepartureFlagPos = this.state.arrivalPosition + this.state.oneDayWidth;
@@ -191,14 +218,14 @@ const NightlyDiaryStayRangeComponent = createClass ({
                 <a style={arrivalStyle} className="handle arrival left" >
                     <span className="title" ref={node => this.arrivalFlag = node}>
                         Arrival
-                        <span className="date">{this.props.currentSelectedReservation.arrivalDate}</span>
+                        <span className="date">{this.state.arrivalDate}</span>
                     </span>
                     <span className="line"></span>
                 </a>
                 <a style={departureStyle} className="handle departure">
                     <span className="title" ref={node => this.departureFlag = node}>
                         Departure
-                        <span className="date">{this.props.currentSelectedReservation.deptDate}</span>
+                        <span className="date">{this.state.departureDate}</span>
                     </span>
                     <span className="line"></span>
                 </a>
