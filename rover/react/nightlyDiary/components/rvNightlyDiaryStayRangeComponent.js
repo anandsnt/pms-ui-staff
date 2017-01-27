@@ -7,6 +7,9 @@ const NightlyDiaryStayRangeComponent = createClass ({
             daysMode = this.props.numberOfDays,
             oneDayWidth = NIGHTLY_DIARY_CONST.RESERVATION_ROW_WIDTH / daysMode;
 
+        /*
+         *  Set up initial state in component
+         */
         return {
             isArrivalDragging: false,
             isDepartureDragging: false,
@@ -28,7 +31,10 @@ const NightlyDiaryStayRangeComponent = createClass ({
             oneDayWidth: oneDayWidth
         };
     },
-
+    /*
+     * Add event listeners on component mount
+     * Event listeners added for both arrival and departure flag
+     */
     componentDidMount: function() {
         this.isTouchEnabled     = 'ontouchstart' in window;
         this.mouseStartingEvent = this.isTouchEnabled ? 'touchstart' : 'mousedown';
@@ -42,7 +48,10 @@ const NightlyDiaryStayRangeComponent = createClass ({
         flagarea.addEventListener (this.mouseLeavingEvent, e => this.mouseLeave (e));
         flagarea.addEventListener ('mouseleave', e => this.mouseLeave (e));
     },
-
+    /*
+     * Mouse down event handling
+     * setting up initial position of arrival flag in state
+     */
     arrivalFlagMouseDown(e) {
         let state = this.state;
 
@@ -53,7 +62,10 @@ const NightlyDiaryStayRangeComponent = createClass ({
         state.mouseClikedX = e.clientX;
         state.mouseLastPositionX = e.clientX;
     },
-
+    /*
+     * Mouse leave event handling
+     * removing event listeners on mouse leaving
+     */
     mouseLeave(e) {
         let state = this.state,
             flagarea = this.flagarea;
@@ -72,6 +84,11 @@ const NightlyDiaryStayRangeComponent = createClass ({
         flagarea.removeEventListener(this.mouseLeavingEvent, () =>{});
         this.updateFlagRanges();
     },
+    /*
+     * Function to calculate departure date
+     * state is set to new position
+     * Duration of reservation also updated with respect to new position
+     */
     calculateDepartureDate() {
         let state = this.state,
             props = this.props,
@@ -94,22 +111,28 @@ const NightlyDiaryStayRangeComponent = createClass ({
         });
 
     },
-
+    /*
+     * Handle mouse moving event
+     * On each move reservation and flag updated with the new position
+     */
     mouseMove(e) {
         e.preventDefault ();
         e.stopPropagation ();
         let state = this.state,
             diff = e.clientX - this.state.mouseLastPositionX;
 
-        if (state.isArrivalDragging) {            
+        if (state.isArrivalDragging) {
             this.moveArrivalFlag(diff);
         }
-        if (state.isDepartureDragging) {            
+        if (state.isDepartureDragging) {
             this.moveDepartureFlag(diff);
         }
         this.state.mouseLastPositionX = e.clientX;
     },
-
+    /*
+     * Handle mouse moving event of arrival flag
+     * Update reservation and flag
+     */
     moveArrivalFlag(diff) {
         let state = this.state,
             props = this.props,
@@ -139,7 +162,10 @@ const NightlyDiaryStayRangeComponent = createClass ({
             });
         }
     },
-
+    /*
+     * Mouse down event handling
+     * setting up initial position of departure flag in state
+     */
     departureFlagMouseDown(e) {
         let state = this.state;
 
@@ -150,7 +176,10 @@ const NightlyDiaryStayRangeComponent = createClass ({
         state.mouseClikedX = e.clientX;
         state.mouseLastPositionX = e.clientX;
     },
-    
+    /*
+     * Handle mouse moving event of departure flag
+     * Update reservation and flag
+     */
     moveDepartureFlag(diff) {
         let state = this.state,
             props = this.props,
@@ -181,7 +210,11 @@ const NightlyDiaryStayRangeComponent = createClass ({
             });
         }
     },
-
+    /*
+     * Function to calculate arrival date
+     * state is set to new position
+     * Duration of reservation also updated with respect to new position
+     */
     calculateArrivalDate() {
         let state = this.state,
             props = this.props,
@@ -203,6 +236,12 @@ const NightlyDiaryStayRangeComponent = createClass ({
             arrivalDate: currentDay
         });
     },
+<<<<<<< HEAD
+=======
+    /*
+     * Update the flag ranges after moving the flags to different position
+     */
+>>>>>>> 369c5349785f1f5e141b522e051c9633db1f06b8
     updateFlagRanges() {
         this.state.maxArrivalFlagPos = this.state.departurePosition - this.state.oneDayWidth;
         this.state.minDepartureFlagPos = this.state.arrivalPosition + this.state.oneDayWidth;
@@ -215,14 +254,14 @@ const NightlyDiaryStayRangeComponent = createClass ({
 
         return (
             <div className={reservationClass} ref={node => this.flagarea = node}>
-                <a style={arrivalStyle} className="handle arrival left" >
+                <a style={arrivalStyle} className={this.props.currentSelectedReservation.arrivalClass} >
                     <span className="title" ref={node => this.arrivalFlag = node}>
                         Arrival
                         <span className="date">{this.state.arrivalDate}</span>
                     </span>
                     <span className="line"></span>
                 </a>
-                <a style={departureStyle} className="handle departure">
+                <a style={departureStyle} className={this.props.currentSelectedReservation.departureClass}>
                     <span className="title" ref={node => this.departureFlag = node}>
                         Departure
                         <span className="date">{this.state.departureDate}</span>

@@ -77,7 +77,8 @@ let  calculateReservationDurationAndPosition = (diaryInitialDayOfDateGrid, reser
     //       7 Days:
     //         - Substract 15 from it
 
-    let durationOfReservation = 0;
+    let durationOfReservation = 0,
+        isDepartureFlagVisible = true;
     let numberOfNightsVisibleInGrid = Math.abs((reservationDepartureDate.getTime() - reservationArrivalDate.getTime()) / (oneDay));
 
     if ((reservationDepartureDate.getTime() >= diaryInitialDate.getTime())
@@ -107,6 +108,7 @@ let  calculateReservationDurationAndPosition = (diaryInitialDayOfDateGrid, reser
        // let reservationArrivalDay = noOfDaysBtwFinalAndDepartureDate + 1;
         let daysInsideTheGrid = 0;
 
+        isDepartureFlagVisible = false;
         if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_7) {
             daysInsideTheGrid = noOfDaysBtwFinalAndArrivalDate + 1;
             durationOfReservation = (nightDuration * daysInsideTheGrid) - NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_7;
@@ -121,6 +123,8 @@ let  calculateReservationDurationAndPosition = (diaryInitialDayOfDateGrid, reser
     returnData.durationOfReservation = durationOfReservation;
     returnData.reservationPosition   = reservationPosition;
     returnData.numberOfNightsVisibleInGrid = numberOfNightsVisibleInGrid;
+    returnData.isArrivalFlagVisible = (diffBtwInitialAndArrivalDate < 0) ? false : true;
+    returnData.isDepartureFlagVisible = isDepartureFlagVisible;
     return returnData;
 };
 /*
@@ -192,6 +196,9 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
     reservation.duration = positionAndDuration.durationOfReservation;
     reservation.arrivalPosition = positionAndDuration.reservationPosition + "px";
     reservation.departurePosition = (positionAndDuration.durationOfReservation + positionAndDuration.reservationPosition) + "px";
+    // used in stayrange container and component
+    reservation.isArrivalFlagVisible = positionAndDuration.isArrivalFlagVisible;
+    reservation.isDepartureFlagVisible = positionAndDuration.isDepartureFlagVisible;
 
     let isReservationFuture = findIsReservationFuture(reservation, currentBusinessDate);
     let isReservationDayStay = findIsReservationDayStay(reservation);
@@ -214,21 +221,16 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
     reservation.style.transform = "translateX(" + positionAndDuration.reservationPosition + "px)";
     if (reservation.id === selectedReservationId) {
         reservationEditClass = "editing";
-        if (newArrivalPosition !== '') {
+        if (newArrivalPosition !== '' || newDeparturePosition !== '') {
             let newDuration = newDeparturePosition - newArrivalPosition;
+
             reservation.style.width = newDuration;
             reservation.style.transform = "translateX(" + newArrivalPosition + "px)";
-        }
-        if (newDeparturePosition !== '') {
-            let newDuration = (newDeparturePosition - newArrivalPosition);
-            reservation.style.width = newDuration;
-            // reservation.style.transform = "translateX(" + newArrivalPosition + "px)";
         }
 
     }
 
     reservation.reservationClass = "reservation " + reservationStatusClass + " " + reservationClass + " " + reservationEditClass;
-
     return reservation;
 };
 
