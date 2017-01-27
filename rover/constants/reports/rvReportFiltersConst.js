@@ -17,6 +17,7 @@ sntRover.constant('RVReportFiltersConst', {
 	'INCLUDE_CHARGE_GROUP': true,
 	'INCLUDE_CHARGE_CODE': true,
 	'CHOOSE_MARKET': true,
+    'CHOOSE_SEGMENT': true,
 	'CHOOSE_SOURCE': true,
 	'CHOOSE_BOOKING_ORIGIN': true,
 	'HOLD_STATUS': true,

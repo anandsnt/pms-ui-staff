@@ -1,7 +1,7 @@
 <div role="dialog" id="modal" class="modal-show" ng-cloak ng-click="clearErrorMessage()"
      ng-class="{'modal-show': !modalClosing}">
     <!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
-    <form ng-show="!showSixPayLoader" class="modal-content form pay-bill"
+    <form ng-show="!showSixPayLoader && !showDBconfirmation" class="modal-content form pay-bill"
           ng-class="{'select-card':showCCPage}">
 
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
