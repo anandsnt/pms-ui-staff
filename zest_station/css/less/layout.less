@@ -331,6 +331,294 @@
         &.full { width: 100%; }
     }
 
+
+/* Upgrade Box **/
+    #upgrade {
+        position: relative;
+        color: @black;
+        background-color: @white;
+        padding:5px;
+        overflow: hidden;
+        #calc > #height > .remove( 100%, 185px );
+        #rounded > .round();
+
+        .upgrade-picture,
+        .upgrade-info {
+            float: left;
+            width: 50%;
+             #calc > #height > .remove( 100%, 80px );
+             overflow: hidden;
+             position: relative;
+        }
+
+        .upgrade-picture {
+            #rounded > .top-left();
+            > img {
+                min-width: 100%;
+                width: auto;
+                height: 100%;
+            }
+        }
+
+        .upgrade-info {
+            padding: 15px 25px;
+            position: relative;
+            font-size: 1rem;
+            #rounded > .top-right();
+
+            h1,h2,h3,h4,h5 {
+                text-transform: none;
+                text-align: left;
+
+            }
+
+            h2 {
+                font-size: 1.3em;
+            } 
+
+            p, ul {
+                font-size: 1em;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            ul { 
+                margin-top: 10px;
+                padding-left: 20px;
+                list-style:none;
+
+                li {
+                    position: relative;
+                    &:before {
+                        position: absolute;
+                        content: "-"; 
+                        left: -20px;
+                    }
+                   
+                }
+            }
+
+            .wrapper {
+                padding-bottom: 20px;
+            }
+
+            .iScrollVerticalScrollbar {
+                position: absolute;
+                width: 5px;
+                top: 10px;
+                right: 10px;
+                bottom: 10px;
+                z-index: 99;
+                
+                .iScrollIndicator {
+                    position: absolute;
+                    width: 100%;
+                    background: @brandColor;
+                    #rounded > .round();
+                }
+            }
+        }
+ 
+        .upgrade-price {
+            clear: both;
+            width: 100%;
+            background-color: @backgroundColor;
+            color: @textColor;
+            height: 80px;
+            padding: 0 10px;
+            
+            #rounded > .bottom();
+            #flexbox > .flex();
+            #flexbox > .parent('', space-between, center, '');
+
+            h2 {
+                margin: 0;
+            }
+
+            .price {
+                text-align: right;
+                strong {
+                    font-size: 32px;
+                    font-weight: 600;
+                    display: block;
+                }
+                small {
+                    text-transform: uppercase;
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+
+    .upgrade-list {
+        width: 100%;
+        #calc > #height > .remove( 100%, 230px );
+        &:after {
+            clear:both;
+            content:'';
+        }
+
+        li {
+            border: 3px solid @white;
+            background-color: @backgroundColor;
+            width: 32%;
+            float:left;
+            #rounded > .round();
+            overflow: hidden;
+            height: 100%;
+
+            &:not(:first-child) {
+                margin-left: 2%;
+            }
+
+            .upgrade-picture {
+                width: 100%;
+                height: 40%;
+                overflow: hidden;
+
+                img {
+                    min-width: 100%;
+                    width: auto;
+                    height: 100%;
+                }
+            }
+
+            .upgrade-content {
+                background-color: @backgroundColor;
+                padding: 10px;
+                text-align: left;
+                position: relative;
+                padding-bottom: 50px;
+                #calc > #height > .remove( 100%, 185px );
+
+                h2 {
+                    text-align: left;
+                }
+
+                .price {
+                    position: absolute;
+                    bottom: 10px;
+                    right: 10px;
+                    text-align: right;
+                    #calc > #width > .remove( 100%, 20px );
+
+                    strong {
+                        font-size: 36px;
+                        display: block;
+                        line-height: 1;
+                    }
+                    small {
+                        font-size: 14px;
+                        text-transform: uppercase;
+                    }
+
+                    .button {
+                        width: 100%;
+                        margin-top: 5px;
+                    }
+                }
+            }
+        }
+
+        &.upgrade-list-v2 {
+            li {
+                background: @white;
+
+                .upgrade-picture {
+                    height: 40%;
+                    img { 
+                        height: 100%;
+                    }
+                }
+
+                .upgrade-content {
+                    background: @white;
+                    color: @black;
+                    padding: 10px 15px 105px 15px;
+                    #calc > #height > .remove( 100%, 160px );
+
+                    .price {
+                        bottom: 15px;
+                        right: 15px;
+                        #calc > #width > .remove( 100%, 30px );
+                        text-align: left;
+                        strong,
+                        small {
+                            display: inline-block;
+                        } 
+                        small {
+                            line-height: 16px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    @media (max-width: 1025px) {   
+
+            .upgrade-list { 
+                li {
+                    position: relative;
+
+                    .upgrade-content {
+                        height: 140px;
+                        width: 100%;
+                        position: absolute;
+                        bottom: 0; 
+                        left: 0;
+                        z-index: 99;
+
+                        h2 {
+                            font-size: 1em;
+                        }
+
+                        .price {
+                            strong {
+                                font-size: 2em;
+                            }
+                            small {
+                                font-size: 0.75em;
+                            }
+                        }
+                    }
+
+                }
+                &.upgrade-list-v2 {
+
+                    li {
+                        
+                        .upgrade-content {
+                            height: 175px;
+
+                            .button {
+                                height: 48px;
+                                line-height: 48px;
+                                font-size: 1em;
+                            }
+                        }
+                    }
+                }
+            }
+    }
+
+
+    .two-upgrades-list{
+        width: 66%;
+        margin: 0 auto;
+        li{
+            width:49%;
+        }
+    }
+    .single-upgrade-list{
+        width: 33%;
+        margin: 0 auto;
+        li{
+            width:100%;
+        }
+    }
+    
 /* Actions ***/
     #actions {
         position: absolute; 
@@ -374,6 +662,15 @@
             }
         }
 
+        .button-group {
+            .button {
+                float:left;
+                &:not(:first-child) {
+                    margin-left: 10px;
+                }
+            }
+        }
+
         &.align-left { .show; }
 
         &.align-right { #flexbox > .parent('', flex-end, '', ''); }
@@ -388,6 +685,12 @@
 
             p,
             .button { font-size: 14px; }
+        }
+
+        .text {
+            line-height: 64px;
+            margin: 0;
+            font-size: 18px;
         }
     }
 
@@ -1602,3 +1905,16 @@
             transform: rotate(360deg); 
         }
     }
+
+
+.select-with-room-number{
+    position: absolute;
+    right:15px;
+    font-size: x-large;
+    margin-top: -5px;
+}
+.select-with-conf-number{
+    position: absolute;
+    right:15px;
+    margin-top: 25px;   
+}

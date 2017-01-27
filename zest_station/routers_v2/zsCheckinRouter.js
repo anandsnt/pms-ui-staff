@@ -126,6 +126,13 @@ sntZestStation.config(['$stateProvider',
           templateUrl: '/assets/partials_v2/checkin/zsOwsMsgsPresent.html',
           controller: 'zsOwsMsgListingCtrl'
       });
+
+    // room upsells
+    $stateProvider.state('zest_station.roomUpsell', {
+      url: '/checkinRoomUpsell',
+      templateUrl: '/assets/partials_v2/checkin/zsCheckinRoomUpsell.html',
+      controller: 'zsCheckinRoomUpsellCtrl'
+    });
       	
     }
 ]);

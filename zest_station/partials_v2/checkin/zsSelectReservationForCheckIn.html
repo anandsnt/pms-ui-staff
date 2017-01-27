@@ -17,6 +17,13 @@
         <ul id="selection"> <!-- Show no more than 3 results per page -->
             <li ng-repeat="reservation in listedReservations track by $index">
                 <div class="details" touch-press="selectReservation(reservation)">
+                    <!-- only show room number and confirmation number when diagnostic info is Enabled -->
+                    <div ng-show="zestStationData.timeDebugger == 'true'" class="">
+                        <span class='select-with-room-number'>{{reservation.room}}</span>
+                        <span class='select-with-conf-number'>{{reservation.confirmation_number}}</span>
+                    </div>
+
+
                     <strong class="name">{{reservation.guest_details[0].last_name}}, {{reservation.guest_details[0].first_name}}</strong>
                     <div class="date">
                         {{reservation.departure_date | date:dateFormat}} ({{reservation.stay_dates.length-1}} <text editable-text="FIND_RESERVATION_HOURLY_NIGHTLY"> {{'FIND_RESERVATION_HOURLY_NIGHTLY' |translate}}</text>)

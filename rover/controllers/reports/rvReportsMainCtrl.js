@@ -279,7 +279,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			item_44: false,
 			item_45: false,
 			item_46: false,
-			item_47: false
+			item_47: false,
+            item_48: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( ! $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -2025,6 +2026,26 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				}
 			}
 
+            if (report.hasShowActionables) {
+                if ( report.showActionables ) {
+                    key         = reportParams['SHOW_ACTIONABLES'];
+                    if (report.showActionables === 'BOTH') {
+                       params[key] = ['GUEST', 'GROUP'];
+                    } else {
+                        params[key] = [report.showActionables];
+                    }
+
+                    if ( changeAppliedFilter ) {
+                        if (report.showActionables === 'BOTH') {
+                            $scope.appliedFilter.show.push("GUESTS");
+                            $scope.appliedFilter.show.push("GROUPS");
+                        } else {
+                            $scope.appliedFilter.show.push(report.showActionables);
+                        }
+                    }
+                }
+            }
+
             //CICO-35959 - show room revenue by default
             if(report.title === reportNames['MARKET_SEGMENT_STAT_REPORT']) {
                 params['show_room_revenue'] = _.isUndefined(report.showRoomRevenue) ? true : report.showRoomRevenue;
@@ -2176,11 +2197,11 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			params.reportTitle = chosenReport.title;
 
             //CICO-36186 - Implemented the new pagination for Comparison report
-            if(chosenReport.title === reportNames["COMPARISION_BY_DATE"]) {           
+            if(chosenReport.title === reportNames["COMPARISION_BY_DATE"]) {
                 var loadAPIData = function(pageNo) {
                     $scope.genReport(false, pageNo);
                 };
-                
+
                 $scope.comparisonByDatePagination = {
                     id: 'COMPARISION_BY_DATE',
                     api: loadAPIData,

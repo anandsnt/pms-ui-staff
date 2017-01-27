@@ -1,9 +1,6 @@
 const { createClass, PropTypes } = React;
 const { findDOMNode } = ReactDOM;
 const NightlyDiaryRootComponent = createClass ({
-    componentDidMount() {
-       
-    },
     scrollToPos(pos) {
         const node = document.getElementById('diary-nightly-grid');
 
@@ -13,7 +10,7 @@ const NightlyDiaryRootComponent = createClass ({
         let width = document.getElementsByClassName("room")[1].clientHeight,
             scrollTo = n * width ;
 
-        this.scrollToPos(scrollTo); 
+        this.scrollToPos(scrollTo);
     },
     componentDidUpdate() {
         this.scrollToNthelement(this.props.index);
@@ -21,11 +18,14 @@ const NightlyDiaryRootComponent = createClass ({
     render() {
         return (
         <div className="grid-inner">
+            {this.props.selectedReservationId !== undefined ? <NightlyDiaryStayRangeContainer/> : ''}
             <div id="diary-nightly-grid" className={this.props.ClassForRootDiv}>
                 <div className="wrapper">
                     {this.props.showPrevPageButton ? <GoToPreviousPageButtonContainer/> : ''}
                     {this.props.showNextPageButton ? <GoToNextPageButtonContainer/> : ''}
+
                     <NightlyDiaryRoomsListContainer/>
+
                     <NightlyDiaryReservationsListContainer/>
                 </div>
             </div>
