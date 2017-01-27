@@ -1,0 +1,48 @@
+<section id="main" class="centered" role="main" click-touch='resetTime()'>
+    <div id="content" ng-show="mode === 'VIEW_MSG_MODE'">
+        <h1>
+            <text editable-text="OWS_MSG_PRESENT_HEADER"> {{'OWS_MSG_PRESENT_HEADER' |translate}}</text>
+        </h1>
+        <h2 ng-show="owsMessages.length === 1 ">
+            <text editable-text="SINGLE_MESSAGE_SUB_HEADER"> {{'SINGLE_MESSAGE_SUB_HEADER' |translate}}</text>
+        </h2>
+        <h2 ng-show="owsMessages.length !== 1 ">
+            <text editable-text="MULTIPLE_MESSAGE_SUB_HEADER_PART_1"> {{'MULTIPLE_MESSAGE_SUB_HEADER_PART_1' |translate}}</text>&nbsp;{{owsMessages.length}}&nbsp;<text editable-text="MULTIPLE_MESSAGE_SUB_HEADER_PART_2"> {{'MULTIPLE_MESSAGE_SUB_HEADER_PART_2' |translate}}</text>
+
+        </h2>
+        <!-- General error -->
+        <button type="button" class="button" touch-press="viewMessages()">
+            <text editable-text="VIEW_OWS_MSG"> {{'VIEW_OWS_MSG' |translate}}</text>
+        </button>
+    </div>
+    <div id="content" ng-show="mode === 'MSG_READ_MODE'">
+        <h1>
+            <text editable-text="ALL_MESSAGES_READ_HEADER"> {{'ALL_MESSAGES_READ_HEADER' |translate}}</text>
+        </h1>
+        <h2>
+            <text editable-text="ALL_MESSAGES_READ_SUB_HEADER"> {{'ALL_MESSAGES_READ_SUB_HEADER' |translate}}</text>
+        </h2>
+        <!-- General error -->
+        <button type="button" class="button" touch-press="viewMessages()">
+            <text editable-text="VIEW_OWS_MSG_AGAIN"> {{'VIEW_OWS_MSG_AGAIN' |translate}}</text>
+        </button>
+        <button type="button" class="button" touch-press="nextPageActions()">
+            <text editable-text="OWS_MSG_DONE"> {{'OWS_MSG_DONE' |translate}}</text>
+        </button>
+    </div>
+</section>
+<div ng-include="'/assets/partials_v2/zsOwsMsgListing.html'"></div>
+<div class="page-print">
+    <section id="registration-card" class="page-print">
+        <div class="logo centered-logo">
+            <div ng-include="icons.url.logo"></div>
+        </div>
+        <div class="content ows-content">
+            <span class="reg_text">{{currentOwsMessage}}</span>
+            <br>
+            <br>
+            <!-- to add some space in bottom of the page. else the page will be cut once the message is over -->
+            <span class="ows-footer">&nbsp;.</span>
+        </div>
+    </section>
+</div>

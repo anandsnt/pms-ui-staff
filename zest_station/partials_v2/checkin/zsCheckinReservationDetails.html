@@ -11,6 +11,7 @@
                 - if some <h> elements are missing just exclude them or use 0. 
                 - 8 is added to make sure bottom rounded corner is set off screen
             -->
+            
             <div id="textual" class="reservation-details pull-left scrollable fill-height" ng-iscroll="res-details" ng-iscroll-delay="100" ng-init="setScroll()"> <!-- Add ng-scroll here style="max-height:{maxheight}px;" -->
                 <div class="wrapper">
                     <div id="guests">
@@ -19,7 +20,7 @@
                             <span>{{selectedReservation.guest_details.length}} 
                                 <text editable-text="RESIDENTS"> {{'RESIDENTS' |translate}}</text>
                             </span>
-                            {{selectedReservation.stay_dates[0].room_type}}
+                            {{selectedReservation.reservation_details.room_type_description}}
                         </p>
                         <p ng-hide="{{selectedReservation.guest_details.length == 1}}">
                             <text editable-text="ADDTL_RESIDENTS"> {{'ADDTL_RESIDENTS' |translate}}</text>
@@ -82,21 +83,3 @@
     
 <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" ></span>
 </section>
-
-
-<!-- neeed to change this to requires html -->
-<div ng-include="'/assets/partials_v2/zsOwsMsgListing.html'" ng-controller="zsOwsMsgListingCtrl" ng-if="zestStationData.is_kiosk_ows_messages_active && !zestStationData.is_standalone"></div>
-
-<div class="page-print">
-    <section id="registration-card" class="page-print">
-        <div class="logo centered-logo">
-            <div ng-include="icons.url.logo"></div>
-        </div>
-        <div class="content ows-content">
-            <span class="reg_text">{{currentOwsMessage}}</span>
-            <br><br>
-            <!-- to add some space in bottom of the page. else the page will be cut once the message is over -->
-            <span class="ows-footer">&nbsp;.</span>
-        </div>
-    </section>
-</div>
