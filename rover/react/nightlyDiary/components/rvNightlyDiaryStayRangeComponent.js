@@ -236,12 +236,9 @@ const NightlyDiaryStayRangeComponent = createClass ({
             arrivalDate: currentDay
         });
     },
-<<<<<<< HEAD
-=======
     /*
      * Update the flag ranges after moving the flags to different position
      */
->>>>>>> 369c5349785f1f5e141b522e051c9633db1f06b8
     updateFlagRanges() {
         this.state.maxArrivalFlagPos = this.state.departurePosition - this.state.oneDayWidth;
         this.state.minDepartureFlagPos = this.state.arrivalPosition + this.state.oneDayWidth;
