@@ -63,6 +63,38 @@ const NightlyDiaryStayRangeComponent = createClass ({
         state.mouseLastPositionX = e.clientX;
     },
     /*
+     * Mouse down event handling
+     * setting up initial position of departure flag in state
+     */
+    departureFlagMouseDown(e) {
+        let state = this.state;
+
+        e.preventDefault ();
+        e.stopPropagation ();
+        e = this.isTouchEnabled ? e.changedTouches[0] : e;
+        state.isDepartureDragging = true;
+        state.mouseClikedX = e.clientX;
+        state.mouseLastPositionX = e.clientX;
+    },
+    /*
+     * Handle mouse moving event
+     * On each move reservation and flag updated with the new position
+     */
+    mouseMove(e) {
+        e.preventDefault ();
+        e.stopPropagation ();
+        let state = this.state,
+            diff = e.clientX - this.state.mouseLastPositionX;
+
+        if (state.isArrivalDragging) {
+            this.moveArrivalFlag(diff);
+        }
+        if (state.isDepartureDragging) {
+            this.moveDepartureFlag(diff);
+        }
+        this.state.mouseLastPositionX = e.clientX;
+    },
+    /*
      * Mouse leave event handling
      * removing event listeners on mouse leaving
      */
@@ -83,6 +115,72 @@ const NightlyDiaryStayRangeComponent = createClass ({
         flagarea.removeEventListener(this.mouseMovingEvent, () =>{});
         flagarea.removeEventListener(this.mouseLeavingEvent, () =>{});
         this.updateFlagRanges();
+    },
+    /*
+     * Handle mouse moving event of arrival flag
+     * Update reservation and flag
+     */
+    moveArrivalFlag(diff) {
+        let state = this.state,
+            props = this.props,
+            initialArrivalPosition = parseInt(props.currentSelectedReservation.arrivalPosition),
+            differenceInPosition = state.arrivalPosition - initialArrivalPosition,
+            differenceInDays = Math.ceil(differenceInPosition / state.oneDayWidth),
+            curentPosition = state.arrivalPosition + diff,
+            currentDay = moment(props.currentSelectedReservation.arrivalDate, "DDMMYYYY")
+                        .add(differenceInDays - 1, 'days')
+                        .format('DD/MM/YYYY');
+
+        if (curentPosition < state.minArrivalFlagPos) {
+            curentPosition = state.minArrivalFlagPos;
+        }
+
+        if (curentPosition > state.maxArrivalFlagPos) {
+            curentPosition = state.maxArrivalFlagPos;
+        }
+        if (state.isArrivalDragging) {
+            this.props.extendShortenReservation(curentPosition, state.departurePosition);
+            this.setState({
+                arrivalStyle: {
+                    transform: 'translateX(' + curentPosition + 'px)'
+                },
+                arrivalPosition: curentPosition,
+                arrivalDate: currentDay
+            });
+        }
+    },
+    /*
+     * Handle mouse moving event of departure flag
+     * Update reservation and flag
+     */
+    moveDepartureFlag(diff) {
+        let state = this.state,
+            props = this.props,
+            curentPosition = state.departurePosition + diff,
+            initialDeparturePosition = parseInt(props.currentSelectedReservation.arrivalPosition) + props.currentSelectedReservation.duration,
+            differenceInPosition = state.departurePosition - initialDeparturePosition,
+            differenceInDays = Math.ceil(differenceInPosition / state.oneDayWidth),
+            currentDay = moment(props.currentSelectedReservation.deptDate, "DDMMYYYY")
+                        .add(differenceInDays - 1, 'days')
+                        .format('DD/MM/YYYY');
+
+        if (curentPosition > state.maxDepartureFlagPos) {
+            curentPosition = state.maxDepartureFlagPos;
+        }
+        if (curentPosition < state.minDepartureFlagPos) {
+            curentPosition = state.minDepartureFlagPos;
+        }
+
+        if (state.isDepartureDragging) {
+            this.props.extendShortenReservation(state.arrivalPosition, curentPosition);
+            this.setState({
+                departureStyle: {
+                    transform: 'translateX(' + curentPosition + 'px)'
+                },
+                departurePosition: curentPosition,
+                departureDate: currentDay
+            });
+        }
     },
     /*
      * Function to calculate departure date
@@ -110,105 +208,6 @@ const NightlyDiaryStayRangeComponent = createClass ({
 
         });
 
-    },
-    /*
-     * Handle mouse moving event
-     * On each move reservation and flag updated with the new position
-     */
-    mouseMove(e) {
-        e.preventDefault ();
-        e.stopPropagation ();
-        let state = this.state,
-            diff = e.clientX - this.state.mouseLastPositionX;
-
-        if (state.isArrivalDragging) {
-            this.moveArrivalFlag(diff);
-        }
-        if (state.isDepartureDragging) {
-            this.moveDepartureFlag(diff);
-        }
-        this.state.mouseLastPositionX = e.clientX;
-    },
-    /*
-     * Handle mouse moving event of arrival flag
-     * Update reservation and flag
-     */
-    moveArrivalFlag(diff) {
-        let state = this.state,
-            props = this.props,
-            initialArrivalPosition = parseInt(props.currentSelectedReservation.arrivalPosition),
-            differenceInPosition = state.arrivalPosition - initialArrivalPosition,
-            differenceInDays = parseInt(differenceInPosition / state.oneDayWidth),
-            curentPosition = state.arrivalPosition + diff,
-            currentDay = moment(props.currentSelectedReservation.arrivalDate, "DDMMYYYY")
-                        .add(differenceInDays, 'days')
-                        .format('DD/MM/YYYY');
-
-        if (curentPosition < state.minArrivalFlagPos) {
-            curentPosition = state.minArrivalFlagPos;
-        }
-
-        if (curentPosition > state.maxArrivalFlagPos) {
-            curentPosition = state.maxArrivalFlagPos;
-        }
-        if (state.isArrivalDragging) {
-            this.props.extendShortenReservation(curentPosition, state.departurePosition);
-            this.setState({
-                arrivalStyle: {
-                    transform: 'translateX(' + curentPosition + 'px)'
-                },
-                arrivalPosition: curentPosition,
-                arrivalDate: currentDay
-            });
-        }
-    },
-    /*
-     * Mouse down event handling
-     * setting up initial position of departure flag in state
-     */
-    departureFlagMouseDown(e) {
-        let state = this.state;
-
-        e.preventDefault ();
-        e.stopPropagation ();
-        e = this.isTouchEnabled ? e.changedTouches[0] : e;
-        state.isDepartureDragging = true;
-        state.mouseClikedX = e.clientX;
-        state.mouseLastPositionX = e.clientX;
-    },
-    /*
-     * Handle mouse moving event of departure flag
-     * Update reservation and flag
-     */
-    moveDepartureFlag(diff) {
-        let state = this.state,
-            props = this.props,
-            curentPosition = state.departurePosition + diff,
-            initialDeparturePosition = parseInt(props.currentSelectedReservation.arrivalPosition) + props.currentSelectedReservation.duration,
-            differenceInPosition = state.departurePosition - initialDeparturePosition,
-            differenceInDays = parseInt(differenceInPosition / state.oneDayWidth),
-            currentDay = moment(props.currentSelectedReservation.deptDate, "DDMMYYYY")
-                        .add(differenceInDays - 1, 'days')
-                        .format('DD/MM/YYYY');
-
-
-        if (curentPosition > state.maxDepartureFlagPos) {
-            curentPosition = state.maxDepartureFlagPos;
-        }
-        if (curentPosition < state.minDepartureFlagPos) {
-            curentPosition = state.minDepartureFlagPos;
-        }
-
-        if (state.isDepartureDragging) {
-            this.props.extendShortenReservation(state.arrivalPosition, curentPosition);
-            this.setState({
-                departureStyle: {
-                    transform: 'translateX(' + curentPosition + 'px)'
-                },
-                departurePosition: curentPosition,
-                departureDate: currentDay
-            });
-        }
     },
     /*
      * Function to calculate arrival date
