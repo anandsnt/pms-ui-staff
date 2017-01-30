@@ -4,8 +4,7 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
     '$state',
     'zsEventConstants',
     'zsCheckinSrv',
-    '$stateParams',
-    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $stateParams) {
+    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv) {
 
         /** ********************************************************************************************
          **      Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -68,7 +67,6 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
             $scope.reservations = zsCheckinSrv.getCheckInReservations();
         };
         var init = function() {
-            console.info('init at select reservation stateparams: ', $stateParams);
             // hide back button
             $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
             // show close button
