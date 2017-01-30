@@ -1,8 +1,11 @@
 <section id="main" class="centered" role="main" click-touch='resetTime()'>
     <div id="content" ng-show="early_checkin_unavailable != 'true'">
+        
         <h1>
             <text editable-text="TALK_TO_STAFF"> {{'TALK_TO_STAFF' |translate}}</text>
         </h1>
+
+        <!-- TODO: above message but for PRE-Assigned room, ie (you're room is not ready yet, please find a staff member) -->
         <h2>
             <text editable-text="ROOM_NOT_AVAIL_MSG"> {{'ROOM_NOT_AVAIL_MSG' |translate}}</text>
         </h2>

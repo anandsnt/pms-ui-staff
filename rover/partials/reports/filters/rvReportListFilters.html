@@ -395,6 +395,12 @@
     data="uiChosenReport.hasMarketsList.data"
     options="uiChosenReport.hasMarketsList.options"></multi-option-selection>
 
+<multi-option-selection ng-show="uiChosenReport.hasSegmentsList && uiChosenReport.hasSegmentsList.data.length"
+    label="Segment(s)"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasSegmentsList.data"
+    options="uiChosenReport.hasSegmentsList.options"></multi-option-selection>
+
 <multi-option-selection ng-show="uiChosenReport.hasSourcesList && uiChosenReport.hasSourcesList.data.length"
     label="Source(s)"
     on-update="refreshFilterScroll"
@@ -434,4 +440,17 @@
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasChargeTypes.data"
     options="uiChosenReport.hasChargeTypes.options"></multi-option-selection>
+
+<div class="entry date-range" ng-show="uiChosenReport.hasShowActionables">
+    <label>Show</label>
+    <div class="select">
+        <select name="show-actionables" ng-model="uiChosenReport.showActionables" ng-options="action.value as action.name for action in uiChosenReport.hasShowActionables.data"  iscroll-stop-propagation>
+
+        </select>
+    </div>
+</div>
+
+
+
+
 
