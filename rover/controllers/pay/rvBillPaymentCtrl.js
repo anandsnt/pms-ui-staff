@@ -550,7 +550,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 
     $scope.$on("PAYMENT_TYPE_CHANGED", function(event, paymentType) {
         $scope.showCCPage = paymentType === "CC";
-        if (paymentType === "GIFT_CARD") {
+        if (paymentType === "GIFT_CARD" || paymentType === "DB") {
             resetSplitPayment();
         }
     });
