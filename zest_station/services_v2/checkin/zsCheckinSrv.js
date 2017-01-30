@@ -57,7 +57,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var deferred = $q.defer();
             var url = '/api/cc/authorize';
             var pollToTerminal = function(async_callback_url) {
-                // we will continously communicate with the terminal till 
+                // we will continously communicate with the terminal till
                 // the timeout set for the hotel
                 if (timeStampInSeconds >= $rootScope.emvTimeout) {
                     var errors = ['Request timed out. Unable to process the transaction'];
@@ -87,7 +87,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                     });
                 }
             };
-           
+
 
             zsBaseWebSrv.postJSONWithSpecialStatusHandling(url, postData).then(function(data) {
                 // if connect to emv terminal is neeeded
@@ -123,11 +123,11 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         };
         this.fetchReservationDetails = function(param) {
             var url;
-
+            param.is_kiosk = true;
             url = '/staff/staycards/reservation_details.json?reservation=' + param.id;
             var deferred = $q.defer();
 
-            zsBaseWebSrv.getJSON(url).then(function(data) {
+            zsBaseWebSrv.getJSON(url,param).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -244,7 +244,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
             return deferred.promise;
         };
-        
+
         this.assignGuestRoom = function(params) {
             // params['reservation_id'] = some id...
             var deferred = $q.defer(),
@@ -273,7 +273,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
-        
+
         this.fetchUpsellDetails = function(reservation) {
              var params = {
                 set_arrival_time_to_current_time: true
