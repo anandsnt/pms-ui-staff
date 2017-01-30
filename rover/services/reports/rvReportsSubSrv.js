@@ -298,7 +298,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             return callApi({
                 name: 'roomTypeList',
                 method: 'getJSON',
-                url: 'api/room_types?exclude_pseudo=true&exclude_suite=true',
+                url: 'api/room_types',
                 resKey: 'results'
             });
         };
