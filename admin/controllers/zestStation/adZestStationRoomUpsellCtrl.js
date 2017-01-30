@@ -12,10 +12,10 @@ admin.controller('ADZestStationRoomUpsellCtrl', ['$scope', 'ADZestStationSrv', '
             var tier3Value = parseInt($scope.data.upsell_compositions_in_percentage.tier_3);
             // if the changed value is valid(ie, a number and is less than 100, to adjust the perscentage)
             // change the other value
-            if (isTier2Changed && !_.isNaN(tier2Value) && tier2Value < 100) {
+            if (isTier2Changed && !_.isNaN(tier2Value)) {
                 $scope.data.upsell_compositions_in_percentage.tier_3 = 100 - tier2Value;
                 $scope.data.upsell_compositions_in_percentage.tier_2 = tier2Value;
-            } else if (!isTier2Changed && !_.isNaN(tier3Value) && tier3Value < 100) {
+            } else if (!isTier2Changed && !_.isNaN(tier3Value)) {
                 $scope.data.upsell_compositions_in_percentage.tier_2 = 100 - tier3Value;
                 $scope.data.upsell_compositions_in_percentage.tier_3 = tier3Value;
             } else {
@@ -43,11 +43,19 @@ admin.controller('ADZestStationRoomUpsellCtrl', ['$scope', 'ADZestStationSrv', '
             upsellData.upsell_compositions_in_percentage = roomUpsellData.upsell_compositions_in_percentage;
             upsellData.room_upsell_style = roomUpsellData.room_upsell_style;
             upsellData.hotel_room_upsell_on = roomUpsellData.hotel_room_upsell_on;
+            var chechAndAssignValue = function(value){
+                // if no value is present, set value as 50%
+                value = !_.isNull(value) ? value : 50;
+                return value;
+            };
+            upsellData.upsell_compositions_in_percentage.tier_2 = chechAndAssignValue(upsellData.upsell_compositions_in_percentage.tier_2);
+            upsellData.upsell_compositions_in_percentage.tier_3 = chechAndAssignValue(upsellData.upsell_compositions_in_percentage.tier_3);
             $scope.data = upsellData;
             //upsellData.number_of_room_types_in_higher_level = 1;
             // create an array with max number as the number
             // of upsell room types available
             $scope.maxUpsellOptions = _.range(1, roomUpsellData.number_of_room_types_in_higher_level + 1);
+            $scope.perscentages = _.range(0,105,5);
         })();
     }
 ]);

@@ -1,4 +1,4 @@
-sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSrv', 'RVGuestCardSrv', 'RVReservationCardSrv', 'ngDialog', '$rootScope', '$timeout', '$filter', function($scope, RVBillPaymentSrv, RVPaymentSrv, RVGuestCardSrv, RVReservationCardSrv, ngDialog, $rootScope, $timeout, $filter) {
+sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSrv', 'RVGuestCardSrv', 'RVReservationCardSrv', 'ngDialog', '$rootScope', '$timeout', '$filter', 'rvPermissionSrv', function($scope, RVBillPaymentSrv, RVPaymentSrv, RVGuestCardSrv, RVReservationCardSrv, ngDialog, $rootScope, $timeout, $filter, rvPermissionSrv) {
 	BaseCtrl.call(this, $scope);
 
 	var setupbasicBillData = function() {
@@ -36,6 +36,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		$scope.splitSelected = false;
 		$scope.disableMakePaymentButton = false;
 		$scope.splitBillEnabled = false;
+		$scope.showDBconfirmation = false;
 	};
 
 	var startingAmount = 0;
@@ -186,6 +187,14 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 			$scope.splitSelected = false;
 		}
 	};
+	/**
+	* function to check whether the user has permission
+	* to to proceed Direct Bill payment
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToDirectBillPayment = function() {
+		return rvPermissionSrv.getPermissionValue ('DIRECT_BILL_PAYMENT');
+	};
 	/*
 	* Initial function - To render screen with data
 	* Initial screen - filled with deafult amount on bill
@@ -211,9 +220,13 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		/*
 		 *	CICO-6089 => Enable Direct Bill payment option for OPEN BILLS.
 		*/
-		if ($scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type === "DB" && $scope.reservationBillData.reservation_status === "CHECKEDOUT") {
+		if ($scope.billsArray[$scope.currentActiveBill].is_account_attached && $scope.hasPermissionToDirectBillPayment()) {
 			paymentParams.direct_bill = true;
 		}
+		else {
+			paymentParams.direct_bill = false;
+		}
+		paymentParams.bill_id = $scope.billsArray[$scope.currentActiveBill].bill_id;
 		$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, paymentParams, $scope.getPaymentListSuccess);
 
 		$scope.invokeApi(RVPaymentSrv.getPaymentList, $scope.reservationData.reservationId, $scope.cardsListSuccess);
@@ -535,11 +548,37 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
         $scope.splitSelected = false;
     };
 
+    var resetSplitPaymentDB = function() {
+        // Same as resetSplitPayment function but the amount is not made zero.
+        $scope.splitBillEnabled = false;
+        $scope.splitePaymentDetail = {
+            totalNoOfsplits: 1,
+            completedSplitPayments: 0,
+            totalAmount: 0,
+            splitAmount: 0,
+            carryAmount: 0
+        };
+        $scope.messageOfSuccessSplitPayment = '';
+        $scope.paymentErrorMessage = '';
+        $scope.splitSelected = false;
+    };
+
     $scope.$on("PAYMENT_TYPE_CHANGED", function(event, paymentType) {
         $scope.showCCPage = paymentType === "CC";
         if (paymentType === "GIFT_CARD") {
             resetSplitPayment();
         }
+        else if (paymentType === "DB") {
+            resetSplitPaymentDB();
+        }
+    });
+    // CICO-33971 : Hide Payment popup while confrimation is active.
+    $scope.$on("HIDE_BILL_PAYMENT_POPUP", function() {
+      	$scope.showDBconfirmation = true;
+    });
+    // CICO-33971 : Show Payment popup while confirmation is proceeded/cancelled.
+    $scope.$on("SHOW_BILL_PAYMENT_POPUP", function() {
+      	$scope.showDBconfirmation = false;
     });
 
     $scope.$watch("reservationBillData.bills", matchCardObjectSchema);

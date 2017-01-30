@@ -257,8 +257,9 @@ angular.module('reportsModule')
                 selected = true;
             }
 
-            if ( report['title'] === reportNames['RESERVATIONS_BY_USER'] && filter.value === 'INCLUDE_BOTH') {
-                if ( filter.value === 'INCLUDE_BOTH') {
+            //  Include New option the default selected option CICO-34593
+            if ( report['title'] === reportNames['RESERVATIONS_BY_USER'] && filter.value === 'INCLUDE_NEW') {
+                if ( filter.value === 'INCLUDE_NEW') {
                     selected = true;
                 }
 
@@ -556,6 +557,31 @@ angular.module('reportsModule')
                     report['hasMinNoOfDaysNotOccupied'] = filter;
                 }
 
+                if ( filter.value === 'ACTIONS_BY' ) {
+                     var customData = [
+                        {
+                            value: "GUEST",
+                            name: "Guests"
+                        }
+                     ];
+
+                     report.showActionables = "GUEST";
+
+                     if (!$rootScope.isHourlyRateOn) {
+                        customData.push({value: "GROUP", name: "Groups"});
+                        customData.push({value: "BOTH", name: "Both"});
+                        report.showActionables = "BOTH";
+                     }
+                    report['hasShowActionables'] = {
+                        data: customData,
+                        options: {
+                                key: 'name'
+                        }
+                    };
+
+
+                }
+
 
                 // fill up DS for options combo box
                 if ( __optionFilterNames[filter.value] ) {
@@ -567,6 +593,7 @@ angular.module('reportsModule')
                  if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'RESTRICTED_POST_ONLY' && $rootScope.isStandAlone) {
                     __pushGeneralOptionData( report, filter, false );
                 }
+
 
                  // fill up DS for options combo box
                 if ( __excludeFilterNames[filter.value] ) {
@@ -666,6 +693,12 @@ angular.module('reportsModule')
                     requested++;
                     reportsSubSrv.fetchMarkets()
                         .then( fillMarkets );
+                }
+
+                else if ( 'CHOOSE_SEGMENT' === filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchSegments()
+                        .then( fillSegments );
                 }
 
                 else if ( 'CHOOSE_SOURCE' === filter.value && ! filter.filled ) {
@@ -783,6 +816,14 @@ angular.module('reportsModule')
             function fillGarntTypes (data) {
                 var foundFilter;
 
+                // Add UNDEFINED option to garantee drop down CICO-34593
+                var UNDEFINED = {
+                    is_active: true,
+                    name: 'UNDEFINED',
+                    value: -1
+                };
+
+                data.push(UNDEFINED);
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'INCLUDE_GUARANTEE_TYPE' });
 
@@ -792,7 +833,7 @@ angular.module('reportsModule')
                         report.hasGuaranteeType = {
                             data: angular.copy( data ),
                             options: {
-                                selectAll: false,
+                                selectAll: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? true : false,
                                 hasSearch: true,
                                 key: 'name',
                                 defaultValue: 'Select guarantees'
@@ -834,6 +875,15 @@ angular.module('reportsModule')
             function fillMarkets (data) {
                 var foundFilter;
 
+                // Add UNDEFINED option to market drop down CICO-34593
+                var UNDEFINED = {
+                    is_active: true,
+                    name: 'UNDEFINED',
+                    value: -1
+                };
+
+                data.push(UNDEFINED);
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CHOOSE_MARKET' });
 
@@ -842,7 +892,38 @@ angular.module('reportsModule')
                         report.hasMarketsList = {
                             data: angular.copy( data ),
                             options: {
-                                selectAll: false,
+                                selectAll: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? true : false,
+                                hasSearch: false,
+                                key: 'name'
+                            }
+                        };
+                    }
+                });
+
+                completed++;
+                checkAllCompleted();
+            }
+
+            function fillSegments (data) {
+                var foundFilter;
+
+                // Add UNDEFINED option to segment drop down CICO-34593
+                var UNDEFINED = {
+                    is_active: true,
+                    name: 'UNDEFINED',
+                    value: -1
+                };
+
+                data.push(UNDEFINED);
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'CHOOSE_SEGMENT' });
+
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        report.hasSegmentsList = {
+                            data: angular.copy( data ),
+                            options: {
+                                selectAll: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? true : false,
                                 hasSearch: false,
                                 key: 'name'
                             }
@@ -857,6 +938,14 @@ angular.module('reportsModule')
             function fillSources (data) {
                 var foundFilter;
 
+                // Add UNDEFINED option to source drop down CICO-34593
+                var UNDEFINED = {
+                    is_active: true,
+                    name: 'UNDEFINED',
+                    value: -1
+                };
+
+                data.push(UNDEFINED);
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CHOOSE_SOURCE' });
 
@@ -865,7 +954,7 @@ angular.module('reportsModule')
                         report.hasSourcesList = {
                             data: angular.copy( data ),
                             options: {
-                                selectAll: false,
+                                selectAll: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? true : false,
                                 hasSearch: false,
                                 key: 'name'
                             }
@@ -881,6 +970,14 @@ angular.module('reportsModule')
             function fillBookingOrigins (data) {
                 var foundFilter;
 
+                // Add UNDEFINED option to origin drop down CICO-34593
+                var UNDEFINED = {
+                    is_active: true,
+                    name: 'UNDEFINED',
+                    value: -1
+                };
+
+                data.push(UNDEFINED);
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CHOOSE_BOOKING_ORIGIN' });
 
@@ -889,7 +986,7 @@ angular.module('reportsModule')
                         report.hasOriginsList = {
                             data: angular.copy( data ),
                             options: {
-                                selectAll: false,
+                                selectAll: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? true : false,
                                 hasSearch: false,
                                 key: 'name'
                             }
@@ -1074,7 +1171,17 @@ angular.module('reportsModule')
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'ROOM_TYPE' });
                     if ( !! foundFilter ) {
-                        foundFilter['filled'] = true;
+                        // hidden since we need to go through the list for diff reports
+                        // foundFilter['filled'] = true;
+
+                        //  we need suite room type for reservation by user report
+                        if (reportItem['title'] !== reportNames['RESERVATIONS_BY_USER']) {
+                            var selectedData = _.filter(data, function(rooms) {
+                                return !rooms.is_suite && !rooms.is_pseudo;
+                            });
+
+                            data = selectedData;
+                        }
 
                         report.hasRoomTypeFilter = {
                             data: angular.copy( data ),

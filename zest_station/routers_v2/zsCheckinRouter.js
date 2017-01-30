@@ -112,6 +112,27 @@ sntZestStation.config(['$stateProvider',
           templateUrl: '/assets/partials_v2/checkin/zsCheckinEarly.html',
           controller: 'zsCheckinEarlyCtrl'
       });
+
+        // early check-in
+        $stateProvider.state('zest_station.checkinSuccess', {
+          url: '/checkinSuccess/:guest_id/:reservation_id/:room_no/:email/:first_name/:guest_email_blacklisted',
+          templateUrl: '/assets/partials_v2/checkin/zsCheckinSuccess.html',
+          controller: 'zsCheckinSuccessCtrl'
+      });
+
+      // ows msgs
+        $stateProvider.state('zest_station.owsMsgsPresent', {
+          url: '/owsMsgPresent/:guest_id/:reservation_id/:room_no/:email/:first_name/:ows_msgs/:guest_email_blacklisted',
+          templateUrl: '/assets/partials_v2/checkin/zsOwsMsgsPresent.html',
+          controller: 'zsOwsMsgListingCtrl'
+      });
+
+    // room upsells
+    $stateProvider.state('zest_station.roomUpsell', {
+      url: '/checkinRoomUpsell',
+      templateUrl: '/assets/partials_v2/checkin/zsCheckinRoomUpsell.html',
+      controller: 'zsCheckinRoomUpsellCtrl'
+    });
       	
     }
 ]);
