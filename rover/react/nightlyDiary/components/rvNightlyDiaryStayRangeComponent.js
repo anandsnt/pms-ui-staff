@@ -28,7 +28,8 @@ const NightlyDiaryStayRangeComponent = createClass ({
             departurePosition: departurePosition,
             reservationDuration: currentSelectedReservation.duration,
             daysMode: daysMode,
-            oneDayWidth: oneDayWidth
+            oneDayWidth: oneDayWidth,
+            dateFormat: currentSelectedReservation.dateFormat
         };
     },
     /*
@@ -129,7 +130,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
             curentPosition = state.arrivalPosition + diff,
             currentDay = moment(props.currentSelectedReservation.arrivalDate, "DDMMYYYY")
                         .add(differenceInDays - 1, 'days')
-                        .format('DD/MM/YYYY');
+                        .format(state.dateFormat.toUpperCase());
 
         if (curentPosition < state.minArrivalFlagPos) {
             curentPosition = state.minArrivalFlagPos;
@@ -162,7 +163,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
             differenceInDays = Math.ceil(differenceInPosition / state.oneDayWidth),
             currentDay = moment(props.currentSelectedReservation.deptDate, "DDMMYYYY")
                         .add(differenceInDays - 1, 'days')
-                        .format('DD/MM/YYYY');
+                        .format(state.dateFormat.toUpperCase());
 
         if (curentPosition > state.maxDepartureFlagPos) {
             curentPosition = state.maxDepartureFlagPos;
@@ -196,7 +197,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
             curentPosition = initialDeparturePosition + (differenceInDays * state.oneDayWidth),
             currentDay = moment(props.currentSelectedReservation.deptDate, "DDMMYYYY")
                         .add(differenceInDays, 'days')
-                        .format('DD/MM/YYYY');
+                        .format(state.dateFormat.toUpperCase());
 
         props.extendShortenReservation(state.arrivalPosition, curentPosition);
         this.setState({
@@ -223,7 +224,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
             curentPosition = initialArrivalPosition + (differenceInDays * state.oneDayWidth),
             currentDay = moment(props.currentSelectedReservation.arrivalDate, "DDMMYYYY")
                         .add(differenceInDays, 'days')
-                        .format('DD/MM/YYYY');
+                        .format(state.dateFormat.toUpperCase());
 
         props.extendShortenReservation(curentPosition, state.departurePosition);
 
