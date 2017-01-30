@@ -548,10 +548,28 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
         $scope.splitSelected = false;
     };
 
+    var resetSplitPaymentDB = function() {
+        // Same as resetSplitPayment function but the amount is not made zero.
+        $scope.splitBillEnabled = false;
+        $scope.splitePaymentDetail = {
+            totalNoOfsplits: 1,
+            completedSplitPayments: 0,
+            totalAmount: 0,
+            splitAmount: 0,
+            carryAmount: 0
+        };
+        $scope.messageOfSuccessSplitPayment = '';
+        $scope.paymentErrorMessage = '';
+        $scope.splitSelected = false;
+    };
+
     $scope.$on("PAYMENT_TYPE_CHANGED", function(event, paymentType) {
         $scope.showCCPage = paymentType === "CC";
         if (paymentType === "GIFT_CARD") {
             resetSplitPayment();
+        }
+        else if (paymentType === "DB") {
+            resetSplitPaymentDB();
         }
     });
     // CICO-33971 : Hide Payment popup while confrimation is active.

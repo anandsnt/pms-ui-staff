@@ -55,19 +55,6 @@
     </div>
 </div>
 
-<multi-option-selection ng-show="uiChosenReport.hasRoomTypeFilter && uiChosenReport.hasRoomTypeFilter.data.length"
-    label="Room Types"
-    on-update="refreshFilterScroll"
-    data="uiChosenReport.hasRoomTypeFilter.data"
-    options="uiChosenReport.hasRoomTypeFilter.options"></multi-option-selection>
-
-
-<multi-option-selection ng-show="uiChosenReport.hasRestrictionListFilter && uiChosenReport.hasRestrictionListFilter.data.length"
-    label="Restriction"
-    on-update="refreshFilterScroll"
-    data="uiChosenReport.hasRestrictionListFilter.data"
-    options="uiChosenReport.hasRestrictionListFilter.options"></multi-option-selection>
-
 <div class="entry date-range" ng-show="uiChosenReport.hasDateFilter">
     <label>{{ uiChosenReport.hasDateFilter.description }} <span>(From)</span></label>
     <div class="has-datepicker">
@@ -234,12 +221,6 @@
     <input type="text" class="hidden" ng-model="uiChosenReport.chosenIncludeCompanyTaGroup">
 </div>
 
-<multi-option-selection ng-show="uiChosenReport.hasGuaranteeType && uiChosenReport.hasGuaranteeType.data.length"
-    label="Guarantee Type(s)"
-    on-update="refreshFilterScroll"
-    data="uiChosenReport.hasGuaranteeType.data"
-    options="uiChosenReport.hasGuaranteeType.options"></multi-option-selection>
-
 <multi-option-selection ng-show="uiChosenReport.hasByChargeGroup && uiChosenReport.hasByChargeGroup.data.length"
     label="Charge Group(s)"
     on-update="refreshFilterScroll"
@@ -365,41 +346,30 @@
     <input ng-model="uiChosenReport.hasMinNoOfDaysNotOccupied.data" value="" numbers-only placeholder="Min.number of day" />
 </div>
 
-<div class="entry" ng-show="uiChosenReport.sortByOptions">
-    <label>Sort By</label>
-    <div class="select">
-        <select ng-model="uiChosenReport.chosenSortBy" ng-options="sortBy.value as sortBy.description for sortBy in uiChosenReport.sortByOptions | filter:showValidSortBy" ng-change="sortByChanged(uiChosenReport)" iscroll-stop-propagation>
-            <option value="">Sort By</option>
-        </select>
-    </div>
-</div>
-
-<div class="entry" ng-show="uiChosenReport.groupByOptions">
-    <label>Group By</label>
-    <div class="select">
-        <select ng-model="uiChosenReport.chosenGroupBy" ng-options="groupBy.value as groupBy.description for groupBy in uiChosenReport.groupByOptions" ng-change="groupByChanged(uiChosenReport)" iscroll-stop-propagation>
-            <option value="">Group By</option>
-        </select>
-    </div>
-</div>
-
 <multi-option-selection ng-show="uiChosenReport.hasRateCodeFilter && uiChosenReport.hasRateCodeFilter.data.length"
     label="Rate"
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasRateCodeFilter.data"
     options="uiChosenReport.hasRateCodeFilter.options"></multi-option-selection>
 
+<multi-option-selection ng-show="uiChosenReport.hasRoomTypeFilter && uiChosenReport.hasRoomTypeFilter.data.length"
+    label="Room Types"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasRoomTypeFilter.data"
+    options="uiChosenReport.hasRoomTypeFilter.options"></multi-option-selection>
+
+
+<multi-option-selection ng-show="uiChosenReport.hasRestrictionListFilter && uiChosenReport.hasRestrictionListFilter.data.length"
+    label="Restriction"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasRestrictionListFilter.data"
+    options="uiChosenReport.hasRestrictionListFilter.options"></multi-option-selection>
+
 <multi-option-selection ng-show="uiChosenReport.hasMarketsList && uiChosenReport.hasMarketsList.data.length"
     label="Market(s)"
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasMarketsList.data"
     options="uiChosenReport.hasMarketsList.options"></multi-option-selection>
-
-<multi-option-selection ng-show="uiChosenReport.hasSegmentsList && uiChosenReport.hasSegmentsList.data.length"
-    label="Segment(s)"
-    on-update="refreshFilterScroll"
-    data="uiChosenReport.hasSegmentsList.data"
-    options="uiChosenReport.hasSegmentsList.options"></multi-option-selection>
 
 <multi-option-selection ng-show="uiChosenReport.hasSourcesList && uiChosenReport.hasSourcesList.data.length"
     label="Source(s)"
@@ -412,6 +382,19 @@
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasOriginsList.data"
     options="uiChosenReport.hasOriginsList.options"></multi-option-selection>
+
+
+<multi-option-selection ng-show="uiChosenReport.hasSegmentsList && uiChosenReport.hasSegmentsList.data.length"
+    label="Segment(s)"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasSegmentsList.data"
+    options="uiChosenReport.hasSegmentsList.options"></multi-option-selection>
+
+<multi-option-selection ng-show="uiChosenReport.hasGuaranteeType && uiChosenReport.hasGuaranteeType.data.length"
+    label="Guarantee Type(s)"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasGuaranteeType.data"
+    options="uiChosenReport.hasGuaranteeType.options"></multi-option-selection>
 
 <multi-option-selection ng-show="uiChosenReport.hasFloorList && uiChosenReport.hasFloorList.data.length"
     label="Floor"
@@ -441,16 +424,28 @@
     data="uiChosenReport.hasChargeTypes.data"
     options="uiChosenReport.hasChargeTypes.options"></multi-option-selection>
 
-<div class="entry date-range" ng-show="uiChosenReport.hasShowActionables">
-    <label>Show</label>
+<div class="entry" ng-show="uiChosenReport.sortByOptions">
+    <label>Sort By</label>
     <div class="select">
-        <select name="show-actionables" ng-model="uiChosenReport.showActionables" ng-options="action.value as action.name for action in uiChosenReport.hasShowActionables.data"  iscroll-stop-propagation>
-
+        <select ng-model="uiChosenReport.chosenSortBy" ng-options="sortBy.value as sortBy.description for sortBy in uiChosenReport.sortByOptions | filter:showValidSortBy" ng-change="sortByChanged(uiChosenReport)" iscroll-stop-propagation>
+            <option value="">Sort By</option>
         </select>
     </div>
 </div>
 
+<div class="entry" ng-show="uiChosenReport.groupByOptions">
+    <label>Group By</label>
+    <div class="select">
+        <select ng-model="uiChosenReport.chosenGroupBy" ng-options="groupBy.value as groupBy.description for groupBy in uiChosenReport.groupByOptions" ng-change="groupByChanged(uiChosenReport)" iscroll-stop-propagation>
+            <option value="">Group By</option>
+        </select>
+     </div>
+</div>
 
-
-
-
+<div class="entry date-range" ng-show="uiChosenReport.hasShowActionables">
+    <label>Show</label>
+    <div class="select">
+        <select name="show-actionables" ng-model="uiChosenReport.showActionables" ng-options="action.value as action.name for action in uiChosenReport.hasShowActionables.data"  iscroll-stop-propagation>
+        </select>
+    </div>
+</div>

@@ -19,6 +19,7 @@ angular.module('sntRover')
 
                 params.currentSelectedReservationId = currentSelectedReservation.id;
                 params.currentSelectedRoomId = currentSelectedRoom.id;
+                params.currentSelectedReservation = currentSelectedReservation;
                 RVNightlyDiarySrv.updateCache(params);
                 $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
                     id: currentSelectedReservation.id,
