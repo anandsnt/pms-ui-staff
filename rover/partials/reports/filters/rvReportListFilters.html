@@ -438,6 +438,9 @@
     <div class="select">
         <select ng-model="uiChosenReport.chosenGroupBy" ng-options="groupBy.value as groupBy.description for groupBy in uiChosenReport.groupByOptions" ng-change="groupByChanged(uiChosenReport)" iscroll-stop-propagation>
             <option value="">Group By</option>
+        </select>
+     </div>
+</div>
 
 <div class="entry date-range" ng-show="uiChosenReport.hasShowActionables">
     <label>Show</label>
