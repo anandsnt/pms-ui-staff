@@ -123,6 +123,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         };
         this.fetchReservationDetails = function(param) {
             var url;
+
             param.is_kiosk = true;
             url = '/staff/staycards/reservation_details.json?reservation=' + param.id;
             var deferred = $q.defer();
