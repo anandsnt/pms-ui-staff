@@ -195,7 +195,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
             differenceInDays = Math.round(differenceInPosition / state.oneDayWidth),
             curentPosition = initialDeparturePosition + (differenceInDays * state.oneDayWidth),
             currentDay = moment(props.currentSelectedReservation.deptDate, "DDMMYYYY")
-                        .add(differenceInDays - 1, 'days')
+                        .add(differenceInDays, 'days')
                         .format('DD/MM/YYYY');
 
         props.extendShortenReservation(state.arrivalPosition, curentPosition);
