@@ -62,8 +62,8 @@ angular.module('sntRover')
 
             $scope.options = {
                 enableKinetics: true,
-                movingAverage: 0.2
-            }
+                movingAverage: 0.09
+            };
 
             var UNDEFINED = {
                 id: 'UNDEFINED',
@@ -74,8 +74,7 @@ angular.module('sntRover')
             var detailsCtrlScope = $scope.$parent,
                 mainCtrlScope = detailsCtrlScope.$parent;
 
-            var TIMEOUT = 300,
-                POLL = 1000;
+            var TIMEOUT = 300;
 
             var watchShowAvailability, watchshowRevenue;
 
@@ -129,7 +128,7 @@ angular.module('sntRover')
             $scope.reactRenderDone = function() {
 
                 // move the scroll to the very start
-                $scope.connectedScrolls.scrollToStart();
+                $scope.augNs.scrollToStart();
 
                 $scope.$emit('hideLoader');
             };
