@@ -786,6 +786,19 @@
         </div>
 
 
+        <!-- item_48: Show guests/groups/both; added for action manager -->
+        <a href="" class="settings-title toggle has-arrow" class="settings-title toggle has-arrow" ng-show="chosenReport.hasShowActionables && chosenReport.hasShowActionables.data.length" ng-class="{'active': filterItemsToggle.item_48}" ng-click="toggleFilterItems('item_48')">
+            <span class="title">Show</span>
+        </a>
+        <div  class="settings-content" ng-show="chosenReport.hasShowActionables" ng-class="{'hidden': !filterItemsToggle.item_48}">
+            <label>Show</label>
+            <div class="select">
+                 <select name="show-actionables" ng-model="chosenReport.showActionables" ng-options="action.value as action.name for action in chosenReport.hasShowActionables.data"  iscroll-stop-propagation>
+                </select>
+            </div>
+        </div>
+
+
     </div>
 
     <div class="actions">

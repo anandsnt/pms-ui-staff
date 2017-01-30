@@ -975,9 +975,11 @@ body { overflow: hidden; }
 					&.dates { width: 60px; }
 
 					&.search { 
-						margin: 0;
-						.calc-width(100, 110); 
-					}
+                    margin: 0;
+	                    .calc-width(100, 170); 
+	                }
+
+	                &.actions { width: 50px; }
 				}
 
 				.filters {
@@ -2590,6 +2592,10 @@ body { overflow: hidden; }
 		.actions-content {
 			position: relative;
 			overflow: hidden;
+
+			.reports-wrapper {
+	            display: none;
+	        }
 
 		    .content-left,
 		    .content-right {
