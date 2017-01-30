@@ -15,6 +15,7 @@ sntZestStation.controller('zsHomeCtrl', [
         $scope.clickedOnPickUpKey = function() {
             clearInterval($scope.activityTimer);
             if ($scope.zestStationData.pickup_qr_scan) {
+                $scope.setScreenIcon('key');
                 $state.go('zest_station.qrPickupKey');
             } else {
                 $state.go('zest_station.checkOutReservationSearch', {
