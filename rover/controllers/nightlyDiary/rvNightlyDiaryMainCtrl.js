@@ -154,9 +154,9 @@ angular.module('sntRover')
                     $scope.diaryData.isEditReservationMode = true;
                     $scope.currentSelectedReservation = reservation;
                     $scope.currentSelectedRoom = room;
+                    showReservationSelected();
                     if (!$stateParams.isFromStayCard) {
                         $scope.$apply();
-                        showReservationSelected();
                     } else {
                         // To fix issue point 3 - QA failed comment - CICO-34410
                         $stateParams.isFromStayCard = false;
@@ -185,7 +185,8 @@ angular.module('sntRover')
                     var dispatchData = {
                         type: 'CANCEL_RESERVATION_EDITING',
                         reservationsList: $scope.diaryData.reservationsList.rooms,
-                        paginationData: angular.copy($scope.diaryData.paginationData)
+                        paginationData: angular.copy($scope.diaryData.paginationData),
+                        currentSelectedReservation: $scope.currentSelectedReservation
                     };
 
                     store.dispatch(dispatchData);
@@ -216,6 +217,7 @@ angular.module('sntRover')
                 var params = RVNightlyDiarySrv.getCache();
                 $scope.currentSelectedReservationId = params.currentSelectedReservationId;
                 $scope.diaryData.selectedRoomId = params.currentSelectedRoomId;
+                $scope.currentSelectedReservation = params.currentSelectedReservation;
             }
 
             // Initial State

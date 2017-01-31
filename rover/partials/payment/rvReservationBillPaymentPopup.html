@@ -12,7 +12,7 @@
             <div class="select">
                 <!-- number of options should match the number of bills created -->
                 <select name="post-charge-to-bill" ng-model="renderData.billNumberSelected"
-                        ng-change="billNumberChanged()">
+                        ng-change="billNumberChanged()" ng-disabled="checkPaymentTypeIsDirectBill()">
                     <option ng-repeat="bills in billsArray"
                             value="{{bills.bill_number}}"
                             ng-selected="bills.bill_number == renderData.billNumberSelected">
@@ -43,7 +43,7 @@
         <div class="payment-form">
             <!-- Split payment -->
             <div class="entry split" ng-class="{active: splitBillEnabled }"
-                 ng-hide="depositPaidSuccesFully || defaultPaymentTypeOfBill === 'GIFT_CARD' || !isStandAlone">
+                 ng-hide="depositPaidSuccesFully || defaultPaymentTypeOfBill === 'GIFT_CARD' || defaultPaymentTypeOfBill === 'DB' || !isStandAlone">
 
                 <label class="checkbox inline" ng-class="{checked: splitBillEnabled }">
                     <span class="icon-form icon-checkbox" ng-class="{checked: splitBillEnabled }">
