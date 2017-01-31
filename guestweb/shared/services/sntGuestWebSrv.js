@@ -46,7 +46,7 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
         var deferred = $q.defer();
 
         $http.get(url).then(function(res) {
-            var response = res.response;
+            var response = res.data;
 
             if (response.status === "success") {
                 deferred.resolve(response.data);
