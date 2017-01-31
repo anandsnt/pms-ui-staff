@@ -2,16 +2,6 @@
     ng-iscroll="report-filter-sidebar-scroll"
     ng-iscroll-delay="200">
     <div class="wrapper" id="report-filter">
-        <!-- item_49: Room Types Filter CICO-34593 same as report list filters-->
-        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasRoomTypeFilter && chosenReport.hasRoomTypeFilter.data.length" ng-class="{'active': filterItemsToggle.item_49}" ng-click="toggleFilterItems('item_49')">
-            <span class="title">Room Types</span>
-        </a>
-        <div class="report-col settings-content" ng-show="chosenReport.hasRoomTypeFilter && chosenReport.hasRoomTypeFilter.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_49 }">
-            <multi-option-selection label="Room Types"
-                on-update="refreshSidebarScroll"
-                data="chosenReport.hasRoomTypeFilter.data"
-                options="chosenReport.hasRoomTypeFilter.options"></multi-option-selection>
-        </div>
 
         <!-- item_01: cancellation date range -->
         <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasCancelDateFilter" ng-class="{'active': filterItemsToggle.item_01}" ng-click="toggleFilterItems('item_01')">
@@ -351,18 +341,6 @@
 
 
 
-        <!-- item_11: Guarantee Type -->
-        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasGuaranteeType && chosenReport.hasGuaranteeType.data.length" ng-class="{ 'active': filterItemsToggle.item_11 }" ng-click="toggleFilterItems('item_11')">
-            <span class="title">Guarantee Type(s)</span>
-        </a>
-        <div class="report-col settings-content" ng-show="chosenReport.hasGuaranteeType && chosenReport.hasGuaranteeType.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_11 }">
-            <multi-option-selection label="Guarantee Type(s)"
-                on-update="refreshSidebarScroll"
-                data="chosenReport.hasGuaranteeType.data"
-                options="chosenReport.hasGuaranteeType.options"></multi-option-selection>
-        </div>
-
-
         <!-- item_12: Display options -->
         <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasDisplay && chosenReport.hasDisplay.data.length" ng-class="{ 'active': filterItemsToggle.item_12 }" ng-click="toggleFilterItems('item_12')">
             <span class="title">Display(s)</span>
@@ -452,17 +430,7 @@
             on-update="refreshFilterScroll"
             data="uiChosenReport.hasDepartments.data"
             options="uiChosenReport.hasDepartments.options"></multi-option-selection>
-        <!-- item_13: Sort by -->
-        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.sortByOptions" ng-class="{'active': filterItemsToggle.item_13}" ng-click="toggleFilterItems('item_13')">
-            <span class="title">Sort by</span>
-        </a>
-        <div class="settings-content" ng-show="chosenReport.sortByOptions" ng-class="{'hidden': !filterItemsToggle.item_13}">
-            <div class="select">
-                <select ng-model="chosenReport.chosenSortBy" ng-options="sortBy.value as sortBy.description for sortBy in chosenReport.sortByOptions | filter:showValidSortBy" ng-change="sortByChanged(chosenReport)">
-                    <option value="">Sort By</option>
-                </select>
-            </div>
-        </div>
+
 
         <!--item_46 -->
         <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasIncludeAgingBalance && chosenReport.hasIncludeAgingBalance.data.length" ng-class="{'active': filterItemsToggle.item_46}" ng-click="toggleFilterItems('item_46')">
@@ -486,79 +454,6 @@
                 data="chosenReport.hasAccountSearch.data"
                 options="chosenReport.hasAccountSearch.options"></multi-option-selection>
         </div>
-
-        <!-- item_14: Group by -->
-        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.groupByOptions" ng-class="{'active': filterItemsToggle.item_14}" ng-click="toggleFilterItems('item_14')">
-            <span class="title">Group by</span>
-        </a>
-        <div class="settings-content" ng-show="chosenReport.groupByOptions" ng-class="{'hidden': !filterItemsToggle.item_14}">
-            <div class="select">
-                <select ng-model="chosenReport.chosenGroupBy" ng-options="groupBy.value as groupBy.description for groupBy in chosenReport.groupByOptions" ng-change="groupByChanged(chosenReport)" iscroll-stop-propagation>
-                    <option value="">Group By</option>
-                </select>
-            </div>
-        </div>
-
-
-
-
-
-
-        <!-- item_15: Market(s) -->
-        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasMarketsList && chosenReport.hasMarketsList.data.length" ng-class="{ 'active': filterItemsToggle.item_15 }" ng-click="toggleFilterItems('item_15')">
-            <span class="title">Market(s)</span>
-        </a>
-        <div class="report-col settings-content" ng-show="chosenReport.hasMarketsList && chosenReport.hasMarketsList.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_15 }">
-            <multi-option-selection label="Market(s)"
-                on-update="refreshSidebarScroll"
-                data="chosenReport.hasMarketsList.data"
-                options="chosenReport.hasMarketsList.options"></multi-option-selection>
-        </div>
-
-
-        <!-- Segment(s) -->
-        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasSegmentsList && chosenReport.hasSegmentsList.data.length" ng-class="{ 'active': filterItemsToggle.item_48 }" ng-click="toggleFilterItems('item_48')">
-            <span class="title">Segment(s)</span>
-        </a>
-        <div class="report-col settings-content" ng-show="chosenReport.hasSegmentsList && chosenReport.hasSegmentsList.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_48 }">
-            <multi-option-selection label="Segment(s)"
-                on-update="refreshSidebarScroll"
-                data="chosenReport.hasSegmentsList.data"
-                options="chosenReport.hasSegmentsList.options"></multi-option-selection>
-        </div>
-
-
-
-        <!-- item_19: Sources(s) -->
-        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasSourcesList && chosenReport.hasSourcesList.data.length" ng-class="{ 'active': filterItemsToggle.item_19 }" ng-click="toggleFilterItems('item_19')">
-            <span class="title">Sources(s)</span>
-        </a>
-        <div class="report-col settings-content" ng-show="chosenReport.hasSourcesList && chosenReport.hasSourcesList.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_19 }">
-            <multi-option-selection label="Source(s)"
-                on-update="refreshSidebarScroll"
-                data="chosenReport.hasSourcesList.data"
-                options="chosenReport.hasSourcesList.options"></multi-option-selection>
-        </div>
-
-
-
-
-
-
-
-        <!-- item_20: Origins(s) -->
-        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasOriginsList && chosenReport.hasOriginsList.data.length" ng-class="{'active': filterItemsToggle.item_20}" ng-click="toggleFilterItems('item_20')">
-            <span class="title">Origin(s)</span>
-        </a>
-        <div class="report-col settings-content" ng-show="chosenReport.hasOriginsList && chosenReport.hasOriginsList.data.length" ng-class="{'hidden': !filterItemsToggle.item_20}">
-            <multi-option-selection label="Origin(s)"
-                on-update="refreshSidebarScroll"
-                data="chosenReport.hasOriginsList.data"
-                options="chosenReport.hasOriginsList.options"></multi-option-selection>
-        </div>
-
-
-
 
 
         <!-- item_32: Rate Type -->
@@ -596,6 +491,82 @@
                 options="chosenReport.hasRateCodeFilter.options"></multi-option-selection>
         </div>
 
+        <!-- item_49: Room Types Filter CICO-34593 same as report list filters-->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasRoomTypeFilter && chosenReport.hasRoomTypeFilter.data.length" ng-class="{'active': filterItemsToggle.item_49}" ng-click="toggleFilterItems('item_49')">
+            <span class="title">Room Types</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasRoomTypeFilter && chosenReport.hasRoomTypeFilter.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_49 }">
+            <multi-option-selection label="Room Types"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasRoomTypeFilter.data"
+                options="chosenReport.hasRoomTypeFilter.options"></multi-option-selection>
+        </div>
+
+        <!-- item_15: Market(s) -->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasMarketsList && chosenReport.hasMarketsList.data.length" ng-class="{ 'active': filterItemsToggle.item_15 }" ng-click="toggleFilterItems('item_15')">
+            <span class="title">Market(s)</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasMarketsList && chosenReport.hasMarketsList.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_15 }">
+            <multi-option-selection label="Market(s)"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasMarketsList.data"
+                options="chosenReport.hasMarketsList.options"></multi-option-selection>
+        </div>
+
+
+
+        <!-- item_19: Sources(s) -->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasSourcesList && chosenReport.hasSourcesList.data.length" ng-class="{ 'active': filterItemsToggle.item_19 }" ng-click="toggleFilterItems('item_19')">
+            <span class="title">Sources(s)</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasSourcesList && chosenReport.hasSourcesList.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_19 }">
+            <multi-option-selection label="Source(s)"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasSourcesList.data"
+                options="chosenReport.hasSourcesList.options"></multi-option-selection>
+        </div>
+
+
+
+
+
+
+
+        <!-- item_20: Origins(s) -->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasOriginsList && chosenReport.hasOriginsList.data.length" ng-class="{'active': filterItemsToggle.item_20}" ng-click="toggleFilterItems('item_20')">
+            <span class="title">Origin(s)</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasOriginsList && chosenReport.hasOriginsList.data.length" ng-class="{'hidden': !filterItemsToggle.item_20}">
+            <multi-option-selection label="Origin(s)"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasOriginsList.data"
+                options="chosenReport.hasOriginsList.options"></multi-option-selection>
+        </div>
+
+
+
+        <!-- Segment(s) -->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasSegmentsList && chosenReport.hasSegmentsList.data.length" ng-class="{ 'active': filterItemsToggle.item_48 }" ng-click="toggleFilterItems('item_48')">
+            <span class="title">Segment(s)</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasSegmentsList && chosenReport.hasSegmentsList.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_48 }">
+            <multi-option-selection label="Segment(s)"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasSegmentsList.data"
+                options="chosenReport.hasSegmentsList.options"></multi-option-selection>
+        </div>
+
+
+        <!-- item_11: Guarantee Type -->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasGuaranteeType && chosenReport.hasGuaranteeType.data.length" ng-class="{ 'active': filterItemsToggle.item_11 }" ng-click="toggleFilterItems('item_11')">
+            <span class="title">Guarantee Type(s)</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasGuaranteeType && chosenReport.hasGuaranteeType.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_11 }">
+            <multi-option-selection label="Guarantee Type(s)"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasGuaranteeType.data"
+                options="chosenReport.hasGuaranteeType.options"></multi-option-selection>
+        </div>
 
         <!-- item_16: charge groups -->
         <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasByChargeGroup && chosenReport.hasByChargeGroup.data.length" ng-class="{ 'active': filterItemsToggle.item_16 }" ng-click="toggleFilterItems('item_16')">
@@ -789,6 +760,44 @@
             <input class="icons icon-search" auto-complete auto-options="compTaGrpAutoCompleteOnList" data-card-type="" type="text" placeholder="Search by Name" value="" autocomplete="off" ng-model="uiChosenReport.chosenIncludeAccountName" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnuiChosenReport(uiChosenReport)" ng-change="removeCompTaGrpId(uiChosenReport, 'uiChosenIncludeCompanyTaGroup', 'chosenIncludeCompanyTaGroup')">
             <input type="text" class="hidden" ng-model="uiChosenReport.chosenIncludeAccountName">
         </div>
+        <!-- item_13: Sort by -->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.sortByOptions" ng-class="{'active': filterItemsToggle.item_13}" ng-click="toggleFilterItems('item_13')">
+            <span class="title">Sort by</span>
+        </a>
+        <div class="settings-content" ng-show="chosenReport.sortByOptions" ng-class="{'hidden': !filterItemsToggle.item_13}">
+            <div class="select">
+                <select ng-model="chosenReport.chosenSortBy" ng-options="sortBy.value as sortBy.description for sortBy in chosenReport.sortByOptions | filter:showValidSortBy" ng-change="sortByChanged(chosenReport)">
+                    <option value="">Sort By</option>
+                </select>
+            </div>
+        </div>
+
+
+        <!-- item_14: Group by -->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.groupByOptions" ng-class="{'active': filterItemsToggle.item_14}" ng-click="toggleFilterItems('item_14')">
+            <span class="title">Group by</span>
+        </a>
+        <div class="settings-content" ng-show="chosenReport.groupByOptions" ng-class="{'hidden': !filterItemsToggle.item_14}">
+            <div class="select">
+                <select ng-model="chosenReport.chosenGroupBy" ng-options="groupBy.value as groupBy.description for groupBy in chosenReport.groupByOptions" ng-change="groupByChanged(chosenReport)" iscroll-stop-propagation>
+                    <option value="">Group By</option>
+                </select>
+            </div>
+        </div>
+
+
+        <!-- item_48: Show guests/groups/both; added for action manager -->
+        <a href="" class="settings-title toggle has-arrow" class="settings-title toggle has-arrow" ng-show="chosenReport.hasShowActionables && chosenReport.hasShowActionables.data.length" ng-class="{'active': filterItemsToggle.item_48}" ng-click="toggleFilterItems('item_48')">
+            <span class="title">Show</span>
+        </a>
+        <div  class="settings-content" ng-show="chosenReport.hasShowActionables" ng-class="{'hidden': !filterItemsToggle.item_48}">
+            <label>Show</label>
+            <div class="select">
+                 <select name="show-actionables" ng-model="chosenReport.showActionables" ng-options="action.value as action.name for action in chosenReport.hasShowActionables.data"  iscroll-stop-propagation>
+                </select>
+            </div>
+        </div>
+
 
     </div>
 

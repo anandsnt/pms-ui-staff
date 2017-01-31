@@ -5,7 +5,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
     'zsEventConstants',
     'zsCheckinSrv',
     '$stateParams',
-    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $stateParams) {
+    '$log',
+    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $stateParams, $log) {
 
 
         // This controller is used for viewing reservation details 
@@ -34,10 +35,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         var refreshScroller = function() {
             $scope.refreshScroller('res-details');
         };
-        var getSelectedReservation = function() {
-            // the data is service will be reset after the process from zscheckInReservationSearchCtrl
-            $scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
-        };
+
         var setSelectedReservation = function() {
             zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
         };
@@ -120,9 +118,14 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             //  if more than 1 reservation was found? else go back to input 2nd screen (confirmation, no of nites, etc..)
         };
 
-        (function() {// init
-            // hide back button
-            $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
+        (function() {
+            // init
+            // the data is service will be reset after the process from zscheckInReservationSearchCtrl
+            $scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
+            // show back button if not from upsell rooms
+            if ($scope.selectedReservation.isRoomUpraded) {
+                $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+            }
             // show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
             // back button action
@@ -130,7 +133,6 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             $scope.$emit('hideLoader');
             // starting mode
             $scope.mode = 'RESERVATION_DETAILS';
-            getSelectedReservation();
             fetchReservationDetails();
             // set flag to show the contents of the page
             // when all the data are loaded
@@ -151,21 +153,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         // will need to check for ECI & Terms bypass, happy path for now
 
 
-        var goToSignaturePage = function() {
-            var stateParams = {
-                'email': $scope.selectedReservation.guest_details[0].email,
-                'reservation_id': $scope.selectedReservation.reservation_details.reservation_id,
-                'room_no': $scope.selectedReservation.reservation_details.room_no,
-                'first_name': $scope.selectedReservation.guest_details[0].first_name
-            };
-
-            $state.go('zest_station.checkInSignature', stateParams);
-        };
-
-
         var shouldGoToEarlyCheckInFlow = function(response) {
-            console.log('early checkin on reservation response: ', response);
-            if (!response.reservation_in_early_checkin_window) {
+            if (!response.reservation_in_early_checkin_window || $scope.selectedReservation.skipECI) {
                 return false;
             }
 
@@ -179,18 +168,17 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         var earlyCheckinActiveForReservation = function(data) { // early check-in (room available)
             var early_checkin_free = data.offer_eci_bypass;
 
-            console.log('--HOTEL--');
-            console.log('early checkin active: ', data.early_checkin_on);
-            console.log('early checkin available   : ', data.early_checkin_available);
-            console.log('---------');
-            console.log('--STATION--');
-            console.log('early checkin active : ', $scope.zestStationData.offer_early_checkin);
-            console.log('---------');
-            console.log('--RESERVATION--');
-            // console.log('early Checkin Purchased: ', $state.earlyCheckinPurchased);
-            console.log('in early window: ', data.reservation_in_early_checkin_window);
-            console.log('has free early chkin   : ', early_checkin_free);
-            console.log('---------');
+            $log.log('--HOTEL--');
+            $log.log('early checkin active: ', data.early_checkin_on);
+            $log.log('early checkin available   : ', data.early_checkin_available);
+            $log.log('---------');
+            $log.log('--STATION--');
+            $log.log('early checkin active : ', $scope.zestStationData.offer_early_checkin);
+            $log.log('---------');
+            $log.log('--RESERVATION--');
+            $log.log('in early window: ', data.reservation_in_early_checkin_window);
+            $log.log('has free early chkin   : ', early_checkin_free);
+            $log.log('---------');
 
             if (!data.early_checkin_available && // if no early checkin is available but early checkin flow is On, go to unavailable screen
                 $scope.zestStationData.offer_early_checkin &&
@@ -217,37 +205,37 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 return false;
             }
 
-            console.log('data.offer_eci_free_vip: ', data.offer_eci_free_vip);
-            console.log('data.offer_eci_bypass: ', data.offer_eci_bypass);
-            console.log('data.free_eci_for_vips: ', data.free_eci_for_vips);
-
             // data.offer_eci_free_vip - later story s54+ ~ offer free ECI when reservation has vip code &
             //  -matches a free ECI vip code (admin section to be added)
             // for now, using toggle switch - if free_eci_for_vips is enabled, and guest is VIP, then they get free ECI :)
-            if (data.guest_arriving_today && (data.offer_eci_bypass || data.free_eci_for_vips && data.is_vip)) {
+            var guestArrivingToday = data.guest_arriving_today, 
+                bypass = data.offer_eci_bypass, 
+                isFreeForVip = data.free_eci_for_vips && data.is_vip;
+
+            if (guestArrivingToday && (bypass || isFreeForVip)) {
                 var freeForVip = '';
 
                 if (data.free_eci_for_vips && data.is_vip) {
                     freeForVip = ' [ for vip guest ]';
                 }
-                console.info('selected reservation includes free early check-in! ' + freeForVip);
+                $log.info('selected reservation includes free early check-in! ' + freeForVip);
                 return true;
-            } else {
-                console.info('selected reservation does Not include free early check-in.');
-                return false;
-            }
+            } 
+            // else
+            $log.info('selected reservation does Not include free early check-in.');
+            return false;
         };
 
         var generalError = function(response) {
-            console.warn(response);
+            $log.warn(response);
             $scope.$emit('GENERAL_ERROR');
         };
 
         var fetchEarlyCheckinSettings = function(onSuccessCallback) {
-            console.warn(': fetchEarlyCheckinSettings :');
+            $log.warn(': fetchEarlyCheckinSettings :');
 
             var onSuccessResponse = function(response) {
-                console.info(': fetchEarlyCheckinSettings => onSuccessResponse :', response);
+                $log.info(': fetchEarlyCheckinSettings => onSuccessResponse :', response);
                 onSuccessCallback(response);
             };
 
@@ -265,7 +253,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
 
         var beginEarlyCheckin = function(response) {
-            console.info(':: begin early checkin ::  ');
+            $log.info(':: begin early checkin ::  ');
             var params = {
                 'early_checkin_data': ''
             };
@@ -276,13 +264,13 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 params.early_charge_symbol = $scope.selectedReservation.earlyCheckinChargeSymbol;
             }
             params.selected_reservation = JSON.stringify($scope.selectedReservation);
-            console.info('sending stateparams: ', params);
+            $log.info('sending stateparams: ', params);
             $state.go('zest_station.earlyCheckin', params);
         };
 
         var initTermsPage = function() {
-            console.log($scope.zestStationData);
-            console.info('$scope.selectedReservation: ', $scope.selectedReservation);
+            $log.log($scope.zestStationData);
+            $log.info('$scope.selectedReservation: ', $scope.selectedReservation);
             var stateParams = {
                 'guest_id': $scope.selectedReservation.guest_details[0].id,
                 'reservation_id': $scope.selectedReservation.reservation_details.reservation_id,
@@ -303,7 +291,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             if ($stateParams.pickup_key_mode) {
                 stateParams.pickup_key_mode = 'manual';
             }
-            console.warn('to checkin terms: ', stateParams);
+            $log.warn('to checkin terms: ', stateParams);
             $state.go('zest_station.checkInTerms', stateParams);
         };
 
@@ -315,7 +303,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         var assignRoomToReseravtion = function() {
             var reservation_id = $scope.selectedReservation.id;
 
-            console.info('::assigning room to reservation::', reservation_id);
+            $log.info('::assigning room to reservation::', reservation_id);
 
 
             $scope.callAPI(zsCheckinSrv.assignGuestRoom, {
@@ -338,48 +326,24 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             }
         };
 
-        var fetchedEarlyCheckinSettingsCallback = function(response) {
-            console.info(': fetchedEarlyCheckinSettingsCallback :', response);
-            var earlyCheckinWasPurchasedAtStation = $stateParams.earlyCheckinPurchased;
-            var shouldGoThroughECI = shouldGoToEarlyCheckInFlow(response);
-
-            console.info('earlyCheckinWasPurchasedAtStation: ', earlyCheckinWasPurchasedAtStation);
-            console.info('shouldGoThroughECI: ', shouldGoThroughECI);
-            if (!earlyCheckinWasPurchasedAtStation && // if they purchased it through zest station a minute ago...dont re-prompt the user
-                shouldGoThroughECI) {
-                // fetch reservation info with upsell data from /guest_web/reservations/{res_id}.json
-                return true;
-            } else {return false;}
-        };
-
-        var getMilTime = function(t, am_pm) {
-            console.info(arguments);
-            if (am_pm === 'PM') {
-                var hour = [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
-
-                return hour[t];
-            } else {
-                return t;
-            }
-        };
-
         var continueRouting = function(settings) {
-            var goToEarlyCheckin = fetchedEarlyCheckinSettingsCallback(settings);
+            var goToEarlyCheckin = shouldGoToEarlyCheckInFlow(settings);
             
-            console.info(': continueRouting :', settings);
-            console.info('*goToEarlyCheckin: ', goToEarlyCheckin);
+            $log.info(': continueRouting :', settings);
+            $log.info('*goToEarlyCheckin: ', goToEarlyCheckin);
 
+            var zestStationRoomUpsellOn = $scope.zestStationData.offer_kiosk_room_upsell;
 
             if (goToEarlyCheckin) {
                 beginEarlyCheckin(settings);
-
+            } else if (!$scope.selectedReservation.isRoomUpraded && $scope.selectedReservation.reservation_details.is_upsell_available === 'true' && zestStationRoomUpsellOn) {
+                $state.go('zest_station.roomUpsell');
             } else {
                 // terms and condition skip is done in terms and conditions page
                 initTermsPage();
             }
         };
         var routeToNext = function() {
-            console.info(': routeToNext :');
             // in order to route to the next screen, check if we should go through early checkin,
             // also check terms and conditions (bypass) setting,
             // first fetch fresh early checkin settings, and continue from there
@@ -387,7 +351,6 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         };
 
         var roomIsAssigned = function() {
-            console.log('::reservation current room :: [ ', $scope.selectedReservation.room, ' ]');
             if ($scope.selectedReservation.room) {
                 return true;
             }
@@ -447,7 +410,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             var arrivalTime = d1.getTime();
             var hotelTime = d2.getTime();
 
-            console.info('\n\nReservation arrival  time =>', $scope.selectedReservation.reservation_details.arrival_time, '------ Hotel current  time => ', currentHotelTime + '\n\n');
+            $log.info('\n\nReservation arrival  time =>', $scope.selectedReservation.reservation_details.arrival_time, '------ Hotel current  time => ', currentHotelTime + '\n\n');
 
             if (hotelTime > arrivalTime) {
                 // if hotel time is greater than arrival time allow guest to check-in
@@ -456,9 +419,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 // current time plus an hour is greater than arrival time,
                 // (within 60-minutes from arrival time, allow guest to check in (for yotel))
                 return true;
-            } else {
-                return false;
             }
+            return false;
         };
             
 
@@ -472,27 +434,26 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 var roomAssigned = roomIsAssigned(),
                     roomReady = roomIsReady();
 
-                console.info('roomAssigned: ', roomAssigned, ', roomReady: ', roomReady);
-                console.info('reservation_details: ', $scope.selectedReservation.reservation_details);
+                $log.info('roomAssigned: ', roomAssigned, ', roomReady: ', roomReady);
+                $log.info('reservation_details: ', $scope.selectedReservation.reservation_details);
                 // the reservation at this point, for check-in, should have a due-in status + arrival time,
                 // if this is for Yotel, we need to check the arrival time vs current time at the hotel,
                 // to make sure the arriving guest is within the arrival time (within the first hour);
-
-                if ($scope.zestStationData.theme === 'yotel' && !checkinTimeWithinTheHourForHotel()) {
+                if ($scope.zestStationData.theme === 'yotel' && !checkinTimeWithinTheHourForHotel() && $scope.zestStationData.isHourlyRateOn) {
                     
                     initCheckinTimeError();
 
                 } else {
                     if (!roomIsAssigned()) {
-                        console.info('assigning room');
+                        $log.info('assigning room');
                         assignRoomToReseravtion(); // assigns room, if success- goes to terms
 
                     } else if (roomIsAssigned() && roomIsReady()) {
-                        console.info('room is assigned and ready, continuing');
+                        $log.info('room is assigned and ready, continuing');
                         routeToNext();
 
                     } else if (roomIsAssigned() && !roomIsReady()) {
-                        console.info('room assigned but not ready, show room error');
+                        $log.info('room assigned but not ready, show room error');
                         initRoomError();
                     }
                 }

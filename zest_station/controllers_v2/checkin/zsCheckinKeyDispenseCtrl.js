@@ -41,7 +41,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
             $scope.mode = 'DISPENSE_KEY_MODE';
             console.info('station settings;', $scope.zestStationData);
-            $scope.setScreenIcon('card');
+            $scope.setScreenIcon('key');
         }());
 
         var stateParams = {
@@ -62,6 +62,8 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
             console.warn('goToNextScreen: ', stateParams);
             // check if a registration card delivery option is present (from Admin>Station>Check-in), if none are checked, go directly to final screen
             var registration_card = $scope.zestStationData.registration_card;
+
+            $scope.setScreenIcon('bed');
 
             if (!registration_card.email && !registration_card.print && !registration_card.auto_print) {
                 $state.go('zest_station.zsCheckinFinal');

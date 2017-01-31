@@ -61,6 +61,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
 
             console.info('haveValidGuestEmail: ', haveValidGuestEmail);
             if ($scope.theme === 'yotel') {
+                $scope.setScreenIcon('checkin');
                 $state.go('zest_station.checkinSuccess', stateParams);
             }
             // if collectiing nationality after email, but email is already valid

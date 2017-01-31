@@ -214,6 +214,10 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		/* ******************************************************************************************************* */
 
 		var updateLogForKeyActions = function(keyNo, keyStatus) {
+			if ($scope.inDemoMode()) {
+				return;
+			}
+
 			$scope.resetTime();
 			var params = {
 				"reservation_id": $stateParams.reservation_id,
