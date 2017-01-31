@@ -134,8 +134,8 @@
 				                    			</figure>
 
 				                    			<div class="data" ng-class="{'no-guest-info': escapeNull(row.company)=='' && escapeNull(row.travel_agent)=='' && escapeNull(row.group)=='' && escapeNull(row.allotment)==''}">
-				                    				<h2 ng-bind-html="'{{row.lastname}}, {{row.firstname}}'|highlight:search.guest_company_agent:false" ng-class="{'grey' : row.is_accompanying_guest=='1'}"></h2>
-				                    				<span class="confirmation" ng-bind-html="'{{row.confirmation}}'|highlight:search.guest_company_agent:false">{{row.confirmation}}</span>
+				                    				<h2 ng-bind-html="row.lastname + ' ' +row.firstname|highlight:search.guest_company_agent:false" ng-class="{'grey' : row.is_accompanying_guest=='1'}"></h2>
+				                    				<span class="confirmation" ng-bind-html="row.confirmation|highlight:search.guest_company_agent:false">{{row.confirmation}}</span>
 				                    				<span class="icons icon-location" ng-hide="escapeNull(row.location)==''" >{{escapeNull(row.location)}}</span>
 				                    			</div>
 

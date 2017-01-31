@@ -41,7 +41,8 @@ sntRover.config([
 	'ngDialogProvider',
 	'$provide',
 	'$provide',
-	function($httpProvider, ngDialogProvider, $provide, $provide) {
+	'$locationProvider',
+	function($httpProvider, ngDialogProvider, $provide, $provide, $locationProvider) {
 
         // $provide.decorator('$browser', ['$delegate', function ($delegate) {
         //     $delegate.onUrlChange = function () {};

@@ -414,6 +414,7 @@ sntRover.controller('roverController',
             event.preventDefault();
             $location.path('#!/');
             $location.replace();
+            // window.history.pushState(null,'any', $location.absUrl());
             return false;
 
         };
@@ -431,6 +432,7 @@ sntRover.controller('roverController',
      */
     $scope.$on("updateRoverLeftMenu", function(e, value) {
       $scope.selectedMenuIndex = value;
+      window.history.pushState("initial", "Showing Dashboard", "#!/");
     });
 
 
