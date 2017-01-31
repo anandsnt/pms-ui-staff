@@ -272,6 +272,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         } else {
 
             var jsonRefUrl = 'staff/locales/download/' + lang + '.json';
+            
             $log.log('fetching language json file for editing');
 
             $scope.showLoader();
