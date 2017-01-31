@@ -1,7 +1,6 @@
 <!-- First column - Reports list -->
-<div class="report-col main-col scrollable"
-    ng-iscroll="report-list-scroll"
-    ng-iscroll-delay="200"> <!-- Add vertical scroller here -->
+<kinetic-scroll>
+<div class="report-col main-col scrollable scroll-vertical"> <!-- Add vertical scroller here -->
     <ul class="wrapper">
         <li class="report-item"
             ng-repeat="item in reportList"
@@ -17,17 +16,18 @@
         </li>
     </ul>
 </div>
+</kinetic-scroll>
 
 <!-- Second column - filters -->
 <div class="report-col" ng-show="uiChosenReport">
-    <div class="scrollable"
-        ng-iscroll="report-filters-scroll"
-        ng-iscroll-delay="200"> <!-- Add vertical scroller here -->
+    <kinetic-scroll>
+    <div class="scrollable scroll-vertical"> <!-- Add vertical scroller here -->
         <div class="wrapper">
             <h3>{{ uiChosenReport.title }}<span>Configure report</span></h3>
             <div class="configure-report" ng-include="'/assets/partials/reports/filters/rvReportListFilters.html'"></div>
         </div>
     </div>
+    </kinetic-scroll>
     <div class="column-actions" ng-class="{'two-buttons': uiChosenReport.display_export_button && !hideExportOption}">
             <button type="button" class="button purple"
                 ng-click="exportCSV(uiChosenReport)"

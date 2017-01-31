@@ -19,14 +19,16 @@
         <div id="reports-menu" ng-include="'/assets/partials/reports/shared/rvReportMainMenu.html'"></div>
 
         <!-- Content -->
-        <div id="reports-dashboard" class="scrollable" ng-class="getViewColClass()" ng-iscroll="FULL_REPORT_SCROLL"> <!-- Classes cols-2,cols-3 and cols-4 are added when showing 2,3 or 4 columns. Add horizontal scroller here -->
-            <div class="wrapper">
-                <div class="cols-wrapper">
-                    <span ng-if="isReportView(reportViews[0])" ng-controller="RVReportListCrl" ng-include="'/assets/partials/reports/shared/rvViewAllReports.html'"></span>
-                    <span ng-if="!isReportView(reportViews[0])" ng-controller="RVScheduleReportsCtrl" ng-include="'/assets/partials/reports/scheduleReport/rvScheduleReport.html'"></span>
+        <kinetic-scroll>
+            <div id="reports-dashboard" class="scrollable  scroll-horizontal" ng-class="getViewColClass()"> <!-- Classes cols-2,cols-3 and cols-4 are added when showing 2,3 or 4 columns. Add horizontal scroller here -->
+                <div class="wrapper">
+                    <div class="cols-wrapper">
+                        <span ng-if="isReportView(reportViews[0])" ng-controller="RVReportListCrl" ng-include="'/assets/partials/reports/shared/rvViewAllReports.html'"></span>
+                        <span ng-if="!isReportView(reportViews[0])" ng-controller="RVScheduleReportsCtrl" ng-include="'/assets/partials/reports/scheduleReport/rvScheduleReport.html'"></span>
+                    </div>
                 </div>
             </div>
-        </div>
+        </kinetic-scroll>
         
         <!-- If there are no reports, replace L31-L70 with this:
         <div class="no-content">
