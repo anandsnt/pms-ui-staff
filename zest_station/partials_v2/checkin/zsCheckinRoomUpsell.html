@@ -1,11 +1,11 @@
 <!-- Content -->
-<section id="main" role="main" click-touch='resetTime()' ng-class="{'centered':mode === 'ERROR_MODE'}">
+<section id="main" role="main" click-touch='resetTime()' ng-class="{'centered':mode === 'ERROR_MODE'}" class="upgrades-section">
     <div id="content" ng-show="mode === 'ROOM_UPSELL_LIST'">
         <h1><text editable-text="ROOM_UPGRADE_HEADER"> {{'ROOM_UPGRADE_HEADER' |translate}}</text></h1>
         <h3><text editable-text="ROOM_UPGRADE_LIST_SUB_HEADER"> {{'ROOM_UPGRADE_LIST_SUB_HEADER' |translate}}</text></h3>
         <!--Layout V4: add  .upgrade-list-v2 -->
         <ul class="upgrade-list" ng-class="{'upgrade-list-v2' :  zestStationData.room_upsell_style === 'STYLE_B','two-upgrades-list':viewableRoomUpgrades.length === 2,'single-upgrade-list':viewableRoomUpgrades.length === 1}">
-            <li ng-repeat='room in viewableRoomUpgrades'>
+            <li ng-repeat='room in viewableRoomUpgrades' click-touch="showRoomDetailsForStyleA(room)">
                 <div class="upgrade-picture">
                     <img src="{{room.room_type_image}}">
                 </div>
@@ -14,7 +14,7 @@
                     <div class="price">
                         <strong>+${{room.upsell_amount}}</strong>
                         <small>Per Night<br>(+TAX)</small>
-                        <button type="button" class="button" click-touch='viewSelectedRoomDetails(room)'>
+                        <button type="button" class="button" click-touch='viewSelectedRoomDetails(room)' ng-show="zestStationData.room_upsell_style === 'STYLE_B'">
                             <text editable-text="ROOM_DETAILS"> {{'ROOM_DETAILS' |translate}}</text>
                         </button>
                     </div>

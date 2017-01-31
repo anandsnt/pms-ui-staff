@@ -163,7 +163,11 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 
 				// set page number details
 				$scope.pageNumber = 1;
-				setPageNumberDetails();
+				if ($scope.upsellRooms.length > 0) {
+					setPageNumberDetails();
+				} else {
+					generalError();
+				}
 				$scope.showPageNumberDetails = true;
 
 				if ($scope.upsellRooms.length === 1) {
@@ -200,6 +204,14 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 				'successCallBack': fetchUpsellRoomTypeSuccess,
 				'failureCallBack': generalError
 			});
+		};
+
+		$scope.showRoomDetailsForStyleA = function(room) {
+			if ($scope.zestStationData.room_upsell_style === 'STYLE_A') {
+				$scope.viewSelectedRoomDetails(room);
+			} else {
+				return;
+			}
 		};
 
 		/**
