@@ -84,6 +84,8 @@
 
    "ENTER_LAST": "Enter the Guest’s Last Name",
    "ENTER_FIRST": "Enter the Guest’s First Name",
+   "ENTER_FIRST_SUB": "",
+   "ENTER_LAST_SUB": "",
 
 
    "DEPOSIT_REMAIN": "Your remaining deposit is due",

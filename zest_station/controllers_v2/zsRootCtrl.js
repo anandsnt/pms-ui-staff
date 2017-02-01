@@ -505,6 +505,9 @@ sntZestStation.controller('zsRootCtrl', [
                     clear_icon: iconBasePath + '/x.svg'
                 }
             };
+            if (useCommonIcons) {
+                $scope.icons.url.qr_noarrow = iconsPath + '/key.svg';
+            }
 
             if (diffHomeIconsOnly) {
                 $scope.icons.url.checkin = iconsPath + '/checkin.svg';
