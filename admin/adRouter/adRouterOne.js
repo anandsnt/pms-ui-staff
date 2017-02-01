@@ -182,15 +182,4 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			}
 		});
 
-    $stateProvider.state('admin.lightspeed', {
-        templateUrl: '/assets/partials/interfaces/LightSpeed/adSntAdminLightSpeedCredentialsSetup.html',
-        controller: 'adSntAdminLightSpeedCredentialSetupCtrl',
-        url: '/admin/lightspeed',
-        resolve: {
-            config: function(adLightSpeedPOSSetupSrv) {
-                return adLightSpeedPOSSetupSrv.getProviderCredentials();
-            }
-        }
-    });
-
 });
