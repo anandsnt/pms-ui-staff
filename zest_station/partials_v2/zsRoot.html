@@ -21,9 +21,13 @@
      <span ng-show='inChromeApp'>
         Zest Station Handler - <span ng-class='{"key-in-progress":zestStationData.stationHandlerConnectedStatus == "Not-Connected"}'>({{zestStationData.stationHandlerConnectedStatus}})</span><br> 
     </span>
-
-
 </span>
+
+<div class='jumper' ng-show='showJumpList'>
+    <div ng-include="'/assets/partials_v2/zsJumpList.html'"></div>
+</div>
+
+
 <div ng-include="'/assets/partials_v2/zsTabletHeader.html'"></div>
 <!--PopUp For External webPage-->
 <div class="popup iframe-popup open" ng-if="showExternalWebPage">

@@ -1923,3 +1923,63 @@
     right:15px;
     margin-top: 25px;   
 }
+
+.jumper{
+    position: absolute;
+    top: 0;
+
+    background-color: @brandColor;
+
+    width: 100%;
+    z-index:999;
+    height:150px;
+    overflow:hidden;
+    padding-right: 5px;
+    padding-left: 5px;
+    >div>button{
+        position: absolute;
+        top: 35%;
+        background:none;
+        border:none;
+        font-size:1em;
+        color:blue;
+        left: .5%;
+        &.right-most{
+            left: 98%;
+        }
+    }
+    border-color: @textColor;
+    border-style: solid;
+    border-bottom-width: 2px;
+    border-right-width: 2px;
+    border-left-width: 2px;
+    border-bottom-left-radius: 2em;
+    border-bottom-right-radius: 2em;
+}
+
+.jumper-box{
+    width:10%;
+    min-width:150px;
+    float: left;
+    margin-left: 20px;
+    opacity: .5;
+}
+.jumper-box:hover{
+    opacity: 1;
+    /*background-color: @headerIconsColor;*/
+    padding-top: 1px;
+    cursor: pointer;
+
+    background:
+        opacity: .7;
+}
+
+.jumper-no-wrap {
+    display: flex;
+    list-style: none;
+    overflow:auto;
+}
+
+
+
+

@@ -371,6 +371,10 @@ sntZestStation.controller('zsRootCtrl', [
 
         };
 
+        $scope.jumpTo = function(state) {
+            $log.log('jumping to: ', state);
+            $state.go(state);
+        };
 
         $scope.quickSetHotelTheme = function(theme) {
             $scope.$broadcast('QUICK_SET_HOTEL_THEME', theme);
@@ -378,6 +382,13 @@ sntZestStation.controller('zsRootCtrl', [
         // allows to toggle language tags via console/chrome extension
         $scope.toggleLanguageTags = function() {
             $scope.$broadcast('TOGGLE_LANGUAGE_TAGS');
+        };
+        $scope.showJumpList = false;
+        $scope.jumpList = [];
+        $scope.toggleJumpList = function(list) {
+            $scope.showJumpList = !$scope.showJumpList;
+            $scope.jumpList = list;
+            $scope.runDigestCycle();
         };
 
         // for chrome extension or console switching of languages
@@ -1021,7 +1032,6 @@ sntZestStation.controller('zsRootCtrl', [
             }
             return {};
         };
-
 
         var workStationstorageKey = 'snt_zs_workstation',
             oosStorageKey = 'snt_zs_workstation.in_oos',
