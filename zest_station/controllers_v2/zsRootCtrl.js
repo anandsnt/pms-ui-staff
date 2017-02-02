@@ -371,9 +371,19 @@ sntZestStation.controller('zsRootCtrl', [
 
         };
 
-        $scope.jumpTo = function(state) {
-            $log.log('jumping to: ', state);
-            $state.go(state);
+        $scope.jumpTo = function(state, selectedMode) {
+            $log.log('jumping to: ', state.name);
+
+            var params = {};
+
+            if (selectedMode) {
+                params = {
+                    'isQuickJump': true, 
+                    'quickJumpMode': selectedMode
+                };
+            }
+
+            $state.go(state.name, params);
         };
 
         $scope.quickSetHotelTheme = function(theme) {

@@ -6,7 +6,9 @@ sntZestStation.config(['$stateProvider',
             templateUrl: '/assets/partials_v2/checkin/zscheckInReservationSearch.html',
             controller: 'zscheckInReservationSearchCtrl',
             jumper: true,
-            label: 'Checkin | Reservation Search'
+            section: 'Checkin',
+            label: 'Reservation Search',
+            tags: ['sign_screen']
         });
                 
         // checkin reservation details 
@@ -15,7 +17,8 @@ sntZestStation.config(['$stateProvider',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinReservationDetails.html',
             controller: 'zsCheckInReservationDetailsCtrl',
             jumper: false,
-            label: 'Checkin | Reservation Details'
+            section: 'Checkin',
+            label: 'Reservation Details'
         });
 		// select checkin reservation from array of reservations.
         $stateProvider.state('zest_station.selectReservationForCheckIn', {
@@ -23,7 +26,8 @@ sntZestStation.config(['$stateProvider',
             templateUrl: '/assets/partials_v2/checkin/zsSelectReservationForCheckIn.html',
             controller: 'zsSelectReservationForCheckInCtrl',
             jumper: false,
-            label: 'Checkin | Select Reservation'
+            section: 'Checkin',
+            label: 'Select Reservation'
         });
 		// select nationality
         $stateProvider.state('zest_station.collectNationality', {
@@ -39,6 +43,7 @@ sntZestStation.config(['$stateProvider',
                 }
             },
             jumper: true,
+            section: 'Checkin',
             label: 'Collect Nationality'
         });
 
@@ -47,7 +52,8 @@ sntZestStation.config(['$stateProvider',
             templateUrl: '/assets/partials_v2/checkin/zsCheckInAddRemoveGuest.html',
             controller: 'zsCheckInAddRemoveGuestCtrl',
             jumper: true,
-            label: 'Checkin | Add/Remove Guest'
+            section: 'Checkin',
+            label: 'Add/Remove Guest'
         });
 		// checkin key dispense
         $stateProvider.state('zest_station.checkInKeyDispense', {
@@ -55,7 +61,8 @@ sntZestStation.config(['$stateProvider',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinKey.html',
             controller: 'zsCheckinKeyDispenseCtrl',
             jumper: false,
-            label: 'Checkin | Key Dispense'
+            section: 'Checkin',
+            label: 'Key Dispense'
         });
                 
 		// checking credit card swipe                 
@@ -64,7 +71,8 @@ sntZestStation.config(['$stateProvider',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinCCSwipe.html',
             controller: 'zsCheckinCCSwipeCtrl',
             jumper: false,
-            label: 'Checkin | Card Swipe'
+            section: 'Checkin',
+            label: 'Card Swipe'
         });
 		// terms and conditions                
       	$stateProvider.state('zest_station.checkInTerms', {
@@ -72,7 +80,8 @@ sntZestStation.config(['$stateProvider',
           templateUrl: '/assets/partials_v2/checkin/zsCheckinTermsConditions.html',
           controller: 'zsCheckInTermsConditionsCtrl',
           jumper: true,
-          label: 'Checkin | Terms'
+          section: 'Checkin',
+          label: 'Terms'
       });
 		// reservation deposit                
       	$stateProvider.state('zest_station.checkInDeposit', {
@@ -80,7 +89,8 @@ sntZestStation.config(['$stateProvider',
           templateUrl: '/assets/partials_v2/checkin/zsCheckinDeposit.html',
           controller: 'zsCheckinDepositCtrl',
           jumper: true,
-          label: 'Checkin | Deposit'
+          section: 'Checkin',
+          label: 'Deposit'
       });
 		// pickup key dispense
         $stateProvider.state('zest_station.checkinKeyDispense', {
@@ -88,7 +98,8 @@ sntZestStation.config(['$stateProvider',
             templateUrl: '/assets/partials_v2/checkin/zscheckinKeyDispense.html',
             controller: 'zsCheckinKeyDispenseCtrl',
             jumper: true,
-            label: 'Checkin | Key Dispense'
+            section: 'Checkin',
+            label: 'Key Dispense'
         });
 		// signature screen
         $stateProvider.state('zest_station.checkInSignature', {
@@ -96,7 +107,8 @@ sntZestStation.config(['$stateProvider',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinSignature.html',
             controller: 'zsCheckinSignatureCtrl',
             jumper: true,
-            label: 'Checkin | Signature'
+            section: 'Checkin',
+            label: 'Signature'
         });
 
 		// email entry screen
@@ -105,7 +117,8 @@ sntZestStation.config(['$stateProvider',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinEmailCollection.html',
             controller: 'zsCheckinEmailCollectionCtrl',
             jumper: true,
-            label: 'Checkin | Collect Email'
+            section: 'Checkin',
+            label: 'Collect Email'
         });
 
       	// email /print entry screen
@@ -114,7 +127,8 @@ sntZestStation.config(['$stateProvider',
           templateUrl: '/assets/partials_v2/checkin/zsCheckinRegCardDeliveryOptions.html',
           controller: 'zsCheckinRegCardDeliveryOptionsCtrl',
           jumper: true,
-          label: 'Checkin | Registration Delivery Options'
+          section: 'Checkin',
+          label: 'Registration Delivery Options'
       });
 
 		// checkin final screen
@@ -123,7 +137,8 @@ sntZestStation.config(['$stateProvider',
           templateUrl: '/assets/partials_v2/checkin/zsCheckinFinal.html',
           controller: 'zsCheckinFinalCtrl',
           jumper: true,
-          label: 'Checkin | Final Screen'
+          section: 'Checkin',
+          label: 'Final Screen'
       });
       	
       	// check-in room error
@@ -132,7 +147,8 @@ sntZestStation.config(['$stateProvider',
           templateUrl: '/assets/partials_v2/checkin/zsCheckinRoomError.html',
           controller: 'zsRoomErrorCtrl',
           jumper: true,
-          label: 'Checkin | Room Error'
+          section: 'Checkin',
+          label: 'Room Error'
       });
                 
                 
@@ -141,8 +157,22 @@ sntZestStation.config(['$stateProvider',
           url: '/checkinEarly/:early_checkin_data:/:early_charge_symbol/:selected_reservation',
           templateUrl: '/assets/partials_v2/checkin/zsCheckinEarly.html',
           controller: 'zsCheckinEarlyCtrl',
-          jumper: false,
-          label: 'Checkin | Early Checkin'
+          // These are for navigating directly to a screen
+          // for editing text quickly / debugging / demos /etc
+          jumper: true,
+          section: 'Checkin',
+          label: 'Early Checkin',
+          modes: [
+              {
+                  'mode': 'EARLY_CHECKIN_SELECT',
+                  'label': 'Purchase Early Checkin'
+              }, {
+                  'mode': 'EARLY_CHECKIN_PREPAID',
+                  'label': 'Prepaid Early Checkin'
+              }, {
+                  'mode': 'EARLY_CHECKIN_FREE',
+                  'label': 'FREE Early Checkin'
+              }]
       });
 
         // early check-in
@@ -151,7 +181,8 @@ sntZestStation.config(['$stateProvider',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinSuccess.html',
             controller: 'zsCheckinSuccessCtrl',
             jumper: true,
-            label: 'Checkin | Checkin Success'
+            section: 'Checkin',
+            label: 'Checkin Success'
         });
 
       // ows msgs
@@ -160,7 +191,8 @@ sntZestStation.config(['$stateProvider',
             templateUrl: '/assets/partials_v2/checkin/zsOwsMsgsPresent.html',
             controller: 'zsOwsMsgListingCtrl',
             jumper: false,
-            label: 'Checkin | Guest Message'
+            section: 'Checkin',
+            label: 'Guest Message'
         });
 
     // room upsells
@@ -169,7 +201,8 @@ sntZestStation.config(['$stateProvider',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinRoomUpsell.html',
             controller: 'zsCheckinRoomUpsellCtrl',
             jumper: false,
-            label: 'Checkin | Room Upsell'
+            section: 'Checkin',
+            label: 'Room Upsell'
         });
       	
     }
