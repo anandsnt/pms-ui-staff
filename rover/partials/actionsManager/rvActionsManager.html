@@ -31,6 +31,11 @@
                        class="query" autocomplete="off" rv-delay-textbox delay="1000"
                        function-to-fire="queryActions"/>
             </div>
+            <div class="entry actions">
+                <button type="button" class="button with-icon only-icon blue" ng-click="printActionManager()">
+                    <span class="icons icon-print"></span>
+                </button>
+            </div>
 
             <!-- Advanced search fields -->
             <ul id="extra_filters" class="filters">
@@ -206,6 +211,7 @@
         <div class="summary add-content form" ng-include="'/assets/partials/actionsManager/rvAddAction.html'">
         </div>
     </div>
+    <div ng-include="'/assets/partials/actionsManager/rvActionManagerReportPrint.html'"></div>
 </section>
 
 <!-- Post form -->
@@ -237,3 +243,4 @@
     <button type="button" ng-hide="actions.length === 0" class="button green" ng-click='initNewAction()'>New Action
     </button>
 </form>
+

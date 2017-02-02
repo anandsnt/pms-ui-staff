@@ -40,14 +40,16 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
         };
 
         $scope.init = function() {
-            $scope.addGuestsHeading = 'ADDTL_RESIDENTS';
             $scope.guest = {};
             $scope.guest.firstNameEntered = false;
             getSelectedReservations();
         };
         $scope.addAGuest = function() {
             $scope.AddGuestMode = true;
-            $scope.headingText = 'ENTER_FIRST';
+            $scope.mode = 'ENTER_FIRST';
+
+            // $scope.headingText = 'ENTER_FIRST';
+
             $scope.focusInputField('add-guest-name');
         };
         $scope.NameEntered = function() {
@@ -59,7 +61,10 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 $scope.guest.firstNameEntered = true;
                 $scope.guest.firstName = $scope.guest.Name;
                 $scope.guest.Name = "";
-                $scope.headingText = 'ENTER_LAST';
+                
+                $scope.mode = 'ENTER_LAST';
+                // $scope.headingText = 'ENTER_LAST';
+
                 if ($scope.isIpad) {
                     $scope.callBlurEventForIpad();
                 } else {

@@ -29,19 +29,19 @@ const getPrevPageButtonStatus = function(state) {
 */
 const getClassForRootDiv = function(state) {
     if (getNextPageButtonStatus(state) && getPrevPageButtonStatus(state)) {
-        return 'grid-content scrollable dual-pagination';
+        return 'grid-content scrollable dual-pagination scroll-vertical';
     } else if (getPrevPageButtonStatus(state)) {
-        return 'grid-content scrollable top-pagination';
+        return 'grid-content scrollable top-pagination scroll-vertical';
     } else if (getNextPageButtonStatus(state)) {
-        return 'grid-content scrollable bottom-pagination';
+        return 'grid-content scrollable bottom-pagination scroll-vertical';
     }
-    return 'grid-content scrollable';
+    return 'grid-content scrollable scroll-vertical';
 };
 /*
  * utility method to find index of room
 * @return {Number} index
 */
-var getRoomIndex = function (selectedRoomId, roomsList) {   
+var getRoomIndex = function (selectedRoomId, roomsList) {
     return _.findLastIndex(roomsList, {
         id: selectedRoomId
     });
@@ -60,15 +60,16 @@ var calculateScrollIndex = function(state) {
     if (getPrevPageButtonStatus(state)) {
         return roomindex + 1;
     }
-    return roomindex;   
-};             
+    return roomindex;
+};
 
 const mapStateToNightlyDiaryRootContainerProps = (state) => ({
     showNextPageButton: getNextPageButtonStatus(state),
     showPrevPageButton: getPrevPageButtonStatus(state),
     ClassForRootDiv: getClassForRootDiv(state),
     index: calculateScrollIndex(state),
-    page: state.paginationData.page
+    page: state.paginationData.page,
+    selectedReservationId: state.selectedReservationId
 });
 
 const mapDispatchToNightlyDiaryGoToPreviousPageButtonContainer = (stateProps) => {

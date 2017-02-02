@@ -1,0 +1,13 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
+    <form method="post" id="change-stay-dates" name="change-stay-dates" class="modal-content change-stay-dates" ng-cloak>
+        <!-- Add class "success" for Scenario 1 -->
+        <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog();"><span class="icons icon-close invert"></span>
+        </button>
+        <section>
+                <span class="notice error">Room Type not available, you are about to overbook the Room Type</span>
+                <div class="actions">
+                    <button type="button" class="button blank" ng-click="proceedToOverBooking()">Ok</button>
+                </div>
+        </section>
+    </form>
+</div>

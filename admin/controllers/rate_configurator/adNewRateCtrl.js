@@ -68,6 +68,11 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 }
                 $scope.otherData.isEdit = true;
             }
+
+            //CICO-36412
+            if (!!$scope.rateData.based_on.id) {
+                fetchBasedOnRateDetails();
+            }
         };
 
 

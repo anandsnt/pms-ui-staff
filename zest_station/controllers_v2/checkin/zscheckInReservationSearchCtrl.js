@@ -83,23 +83,15 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 
         var searchReservation = function(params) {
             var checkinVerificationSuccess = function(data) {
-                if (data.results.length == 0) {
+                if (data.results.length === 0) {
                     $scope.mode = 'NO_MATCH';
                     $scope.callBlurEventForIpad();
-                } else if (data.results.length == 1) {
+                } else if (data.results.length === 1) {
                     $scope.$emit('showLoader');
                     zsCheckinSrv.setSelectedCheckInReservation(data.results);
-                    var primaryGuest = _.find(data.results[0].guest_details, function(guest_detail) {
-                        return guest_detail.is_primary === true;
-                    });
 
-                    if ($scope.zestStationData.check_in_collect_nationality) {
-                        $state.go('zest_station.collectNationality', {
-                            'guestId': primaryGuest.id
-                        });
-                    } else {
-                        $state.go('zest_station.checkInReservationDetails');
-                    }
+                    $state.go('zest_station.checkInReservationDetails');
+                    
                 } else {
                     zsCheckinSrv.setCheckInReservations(data.results);
                     $state.go('zest_station.selectReservationForCheckIn');
@@ -245,7 +237,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
         };
 
         $scope.dateEntered = function() {
-
+            $scope.showDatePick = false;
             var params = angular.copy($scope.reservationParams);
 
             delete params.no_of_nights;

@@ -1,8 +1,12 @@
 <!--delivery options -->
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show=" mode === 'DELIVERY_OPTIONS_MODE'">
     <div id="content">
-        <h1 translate>REGISTRATION_READY_HEADER</h1>
-        <h2 translate>REGISTRATION_READY_HEADER_SUB</h2>
+        <h1>
+            <text editable-text="REGISTRATION_READY_HEADER"> {{'REGISTRATION_READY_HEADER' |translate}}</text>
+        </h1>
+        <h2>
+            <text editable-text="REGISTRATION_READY_HEADER_SUB"> {{'REGISTRATION_READY_HEADER_SUB' |translate}}</text>
+        </h2>
         <nav id="options" role="nav">
             <ul role="menu">
                 <!-- deliver-registration -->
@@ -10,17 +14,22 @@
                     <button type="button" class="button option" touch-press='clickedPrint()'>
                         <div ng-include="icons.url.print"></div>
                     </button>
-                    <span translate>PRINT_TEXT
+                    <span>
+                        <text editable-text="PRINT_TEXT"> {{'PRINT_TEXT' |translate}}</text>
                     </span>
                 </li>
                 <li class="break" ng-show='zestStationData.registration_card.print && zestStationData.registration_card.email && !zestStationData.registration_card.auto_print'>
-                    <span translate>OR_TEXT</span>
+                    <span>
+                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                    </span>
                 </li>
                 <li ng-show='zestStationData.registration_card.email'>
                     <button type="button" class="button option" touch-press='selectEmailDelivery()'>
                         <div ng-include="icons.url.email"></div>
                     </button>
-                    <span translate>EMAIL_TEXT</span>
+                    <span>
+                        <text editable-text="EMAIL_TEXT"> {{'EMAIL_TEXT' |translate}}</text>
+                    </span>
                 </li>
             </ul>
         </nav>
@@ -29,7 +38,9 @@
 <!--delivery options -->
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show=" mode === 'EMAIL_SEND_MODE'">
     <div id="content">
-        <h1 translate>SEND_REGISTRATION_TO</h1>
+        <h1>
+            <text editable-text="SEND_REGISTRATION_TO"> {{'SEND_REGISTRATION_TO' |translate}}</text>
+        </h1>
         <h2 ng-bind="email"></h2>
         <nav id="options" role="nav">
             <ul role="menu">
@@ -37,16 +48,22 @@
                     <button type="button" class="button option" touch-press='editEmailAddress()'>
                         <div ng-include="icons.url.pen"></div>
                     </button>
-                    <span translate>EDIT_EMAIL</span>
+                    <span>
+                        <text editable-text="EDIT_EMAIL"> {{'EDIT_EMAIL' |translate}}</text>
+                    </span>
                 </li>
                 <li class="break">
-                    <span translate>OR_TEXT</span>
+                    <span>
+                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                    </span>
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press='sendEmail()'>
                         <div ng-include="icons.url.email"></div>
                     </button>
-                    <span translate>SEND_EMAIL</span>
+                    <span>
+                        <text editable-text="SEND_EMAIL"> {{'SEND_EMAIL' |translate}}</text>
+                    </span>
                 </li>
             </ul>
         </nav>
@@ -55,14 +72,20 @@
 <!-- email entry mode -->
 <section id="main" role="main" class="centered" ng-show=" mode === 'EMAIL_ENTRY_MODE'">
     <div id="content" class="input-field-contents">
-        <h1 translate>TYPE_EMAIL_IN</h1>
-        <h3 translate>TYPE_EMAIL_IN_SUB</h3>
+        <h1>
+            <text editable-text="TYPE_EMAIL_IN"> {{'TYPE_EMAIL_IN' |translate}}</text>
+        </h1>
+        <h3>
+            <text editable-text="TYPE_EMAIL_IN_SUB"> {{'TYPE_EMAIL_IN_SUB' |translate}}</text>
+        </h3>
         <form method="post" class="form">
             <div class="entry input">
                 <input type="text" id="input_text" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" class="start-focused" ng-keydown="resetTime()" ng-model='email' enter-press="goToNext()" value="" touch-press />
             </div>
             <div class="entry action">
-                <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': email.length < 1}">{{'NEXT_BTN' | translate}}</button>
+                <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': email.length < 1}">
+                    <text editable-text="NEXT_BTN"> {{'NEXT_BTN' |translate}}</text>
+                </button>
             </div>
         </form>
     </div>
@@ -70,8 +93,12 @@
 <!-- email invalid mode -->
 <section id="main" role="main" ng-show=" mode === 'EMAIL_INVLAID_MODE'">
     <div id="content">
-        <h1 translate>EMAIL_ERR_HEADER</h1>
-        <h2 translate>EMAIL_ERR_HEADER_SUB</h2>
+        <h1>
+            <text editable-text="EMAIL_ERR_HEADER"> {{'EMAIL_ERR_HEADER' |translate}}</text>
+        </h1>
+        <h2>
+            <text editable-text="EMAIL_ERR_HEADER_SUB"> {{'EMAIL_ERR_HEADER_SUB' |translate}}</text>
+        </h2>
         <nav id="options" role="nav">
             <ul role="menu">
                 <li>
@@ -79,7 +106,7 @@
                         <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
-                    {{'RE_TYPE' | translate}}
+                    <text editable-text="RE_TYPE"> {{'RE_TYPE' |translate}}</text>
                     <span>"{{email}}"</span>
                 </li>
             </ul>
@@ -107,7 +134,9 @@
     <div id="logo" ng-hide="theme === 'zoku'">
     </div>
     <div class="room">
-        <span translate>IN_ROOM</span>
+        <span>
+            <text editable-text="IN_ROOM"> {{'IN_ROOM' |translate}}</text>
+        </span>
         <strong>{{printRegCardData.room_number}}</strong>
     </div>
     <!-- If text outputs multiple <p> tags then wrap it with <div class="terms"> instead of <p id="terms"> -->
@@ -128,21 +157,27 @@
                 <br>
                 <br>
                 
-                <span>{{'REGISTRATION_READY_PRINT_ROOM_NO' | translate}}</span>
+                <span>
+                    <text editable-text="REGISTRATION_READY_PRINT_ROOM_NO"> {{'REGISTRATION_READY_PRINT_ROOM_NO' |translate}}</text>
+                </span>
                 <br><br><br>
                     <strong class="large_txt">{{printRegCardData.room_number}}</strong>
                 <br><br><br>
-                    <span ng-hide="zestStationData.isHourlyRateOn">{{'REGISTRATION_READY_PRINT_DEPART_DATE' | translate}} {{departDate | date:'dd-MMM yyyy'}}</span>
-                    <span ng-show="zestStationData.isHourlyRateOn">{{'REGISTRATION_READY_PRINT_DEPART_DATE' | translate}} {{departDate | date:'dd-MMM yyyy'}} @ {{printRegCardData.departure_time}}</span>
+                    <span ng-hide="zestStationData.isHourlyRateOn">
+                        <text editable-text="REGISTRATION_READY_PRINT_DEPART_DATE"> {{'REGISTRATION_READY_PRINT_DEPART_DATE' |translate}}</text> {{departDate | date:'dd-MMM yyyy'}}</span>
+                    <span ng-show="zestStationData.isHourlyRateOn">
+                        <text editable-text="REGISTRATION_READY_PRINT_DEPART_DATE"> {{'REGISTRATION_READY_PRINT_DEPART_DATE' |translate}}</text>{{departDate | date:'dd-MMM yyyy'}} @ {{printRegCardData.departure_time}}</span>
                 <br>    
                    <!--  {{'REGISTRATION_READY_PRINT_STD_CHECKOUT' | translate}} {{zestStationData.check_out_time.hour}}:{{zestStationData.check_out_time.minute}} {{zestStationData.check_out_time.primetime|lowercase}} -->
                 </span>
                 <br><br><br>
 
-                <span class="reg_text">{{printRegCardData.reg_card_text}}</span>
+                <span class="reg-text" translate>REGISTRATION_READY_PRINT_MSG_1</span>
                 <br><br><br>
 
-                <strong class='footer large_txt'>{{'REGISTRATION_READY_PRINT_FOOTER' | translate}}</strong>
+                <strong class='footer large_txt'>
+                    <text editable-text="REGISTRATION_READY_PRINT_FOOTER"> {{'REGISTRATION_READY_PRINT_FOOTER' |translate}}</text>
+                </strong>
                 <br><br>
             </div>
         </section>

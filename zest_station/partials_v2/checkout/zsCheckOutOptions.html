@@ -1,23 +1,27 @@
 <!-- Content -->
 <section id="main" class="centered" role="main"  click-touch='resetTime()'>
     <div id="content">
-        <h1>{{'FIND_YOUR_BILL_SUMMARY' |translate}}</h1>
+        <h1>
+            <text editable-text="FIND_YOUR_BILL_SUMMARY"> {{'FIND_YOUR_BILL_SUMMARY' |translate}}</text>
+        </h1>
         <nav id="options" role="nav">
           <ul role="menu">
                 <li>
                     <button type="button" class="button option" touch-press="captureKey()">
-                        <div ng-include="icons.url.creditcard"></div>
+                        <div ng-include="icons.url.key"></div>
                     </button>
-                    {{'USE_KEY_CARD' | translate}}
+                    <text editable-text="USE_KEY_CARD"> {{'USE_KEY_CARD' |translate}}</text>
                 </li>
                 <li class="break">
-                    <span>{{'OR_TEXT' | translate}}</span>
+                    <span>
+                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                    </span>
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press="searchByName()">
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
-                     {{'ENTER_NAME' | translate}}
+                    <text editable-text="ENTER_NAME"> {{'ENTER_NAME' |translate}}</text>
                 </li>
             </ul>
         </nav>

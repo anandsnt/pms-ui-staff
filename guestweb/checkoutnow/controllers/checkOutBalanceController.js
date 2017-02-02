@@ -47,7 +47,7 @@
 
 		// If the user has a non-zero balance and no cc attached to the reservation
 		$scope.gotToNextStep = function() {
-			if ($rootScope.isCCOnFile || parseInt($scope.billData.balance) === 0.00 || $rootScope.isSixpayments) {
+			if ($rootScope.isCCOnFile || parseInt($scope.billData.balance) === 0.00 || !$rootScope.isMLI) {
 				$state.go('checkOutStatus');
 			}
 			else {

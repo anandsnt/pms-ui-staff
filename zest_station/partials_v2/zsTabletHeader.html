@@ -1,7 +1,9 @@
 <nav id="header" role="nav" class="kiosk">
     <!-- Back button, if applicable -->
     <button type="button" id="back-button" class="button blank" click-touch='clickedOnBackButton()' ng-hide="hideBackButton">
-        <span ng-hide="useNavIcons" translate>NAV_BACK</span>
+        <span ng-hide="useNavIcons">
+            <text editable-text="NAV_BACK"> {{'NAV_BACK' |translate}}</text>
+        </span>
         <div ng-show="useNavIcons" ng-include="icons.url.back"></div>
     </button>
     <div id="logo" class='logo-svg'></div>
@@ -9,7 +11,9 @@
     
     <button type="button" id="close-button" class="button blank" click-touch='clickedOnCloseButton()' ng-hide="hideCloseButton">
         
-        <span ng-hide="useNavIcons" translate>NAV_CANCEL</span>
+        <span ng-hide="useNavIcons">
+            <text editable-text="NAV_CANCEL"> {{'NAV_CANCEL' |translate}}</text>
+        </span>
         
         <div ng-show="useNavIcons" ng-include="icons.url.close"></div>
         
