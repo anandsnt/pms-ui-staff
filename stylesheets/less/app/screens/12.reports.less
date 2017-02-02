@@ -2016,6 +2016,17 @@
                         }
                     }
                 }
+
+                &.business-books {
+                    tr {
+                        th,
+                        td {
+                            &.rooms {
+                                width: 60px;
+                            }
+                        }
+                    }
+                }
             }
 
             &.forecast-reports {
@@ -2888,6 +2899,33 @@
                     bottom: 5px;
                     left: 10px;
                     right: 10px;
+                }
+            }
+
+            &.books {
+                .statistics-headings { 
+                    width: 150px;
+
+                    .scrollable {
+                        li {
+                            &.action-row {
+                                padding: 0 10px;
+                            }
+
+                            &.totals {
+                                font-weight: 600;
+                                text-transform: uppercase;
+                            }
+                        }
+                    }
+                }
+                .statistics-content {
+                    .calc-width(100, 125);
+                    left: 125px;
+
+                    .wrapper {
+                        width: 2200px;
+                    }
                 }
             }
         }

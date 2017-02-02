@@ -1699,6 +1699,18 @@
                         }
                     }
                 }
+
+                &.business-books {
+                    thead {
+                        tr {
+                            &.bottom-row {
+                                th {
+                                    font-size: 7pt;
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             &.transaction-reports {
@@ -2458,6 +2470,15 @@
                 .pull-left;
 
                 > .wrapper { width: 100% !important; }
+            }
+
+            &.books {
+                .statistics-headings { 
+                    width: 75px;
+                }
+                .statistics-content {
+                    .calc-width(100, 75);
+                }
             }
         }
 
