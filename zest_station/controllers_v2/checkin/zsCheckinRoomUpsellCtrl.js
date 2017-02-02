@@ -30,7 +30,8 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 				'balance_amount': $scope.selectedReservation.reservation_details.balance_amount,
 				'confirmation_number': $scope.selectedReservation.confirmation_number,
 				'pre_auth_amount_for_zest_station': $scope.selectedReservation.reservation_details.pre_auth_amount_for_zest_station,
-				'authorize_cc_at_checkin': $scope.selectedReservation.reservation_details.authorize_cc_at_checkin
+				'authorize_cc_at_checkin': $scope.selectedReservation.reservation_details.authorize_cc_at_checkin,
+				'is_from_room_upsell': 'true'
 			};
 
 			$state.go('zest_station.checkInTerms', stateParams);
