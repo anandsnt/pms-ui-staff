@@ -13,9 +13,9 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 
 		/** ********************************************************************************************
 		 **		Expected state params -----> reservation_id, room_no,  first_name, guest_id, key_success
-		 *       and email			  
-		 **		Exit function ->nextPageActions								
-		 **																		 
+		 *       and email
+		 **		Exit function ->nextPageActions
+		 **
 		 ***********************************************************************************************/
 
         BaseCtrl.call(this, $scope);
@@ -31,7 +31,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 		/**
 		 * when the back button clicked
 		 * @param  {[type]} event
-		 * @return {[type]} 
+		 * @return {[type]}
 		 */
         $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function() {
 			// back button action from email send mode page will
@@ -73,7 +73,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
             };
 
             var printFailedActions = function(errorMessage) {
-                
+
                 $scope.$emit('hideLoader');
                 $scope.runDigestCycle();
                 var printopted = true;
@@ -87,7 +87,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                     $scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_KEY_FAIL_PRINT_FAIL');
                 }
                 $scope.zestStationData.workstationStatus = 'out-of-order';
-                
+
 
                 nextPageActions(printopted, emailopted, actionStatus);
             };
@@ -180,7 +180,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                                 }, 100);
                             }
                         }
-					// provide a delay for preview to appear 
+					// provide a delay for preview to appear
 
                     }, 100);
 
@@ -217,7 +217,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
             var options = {
                 params: {
                     'id': $stateParams.reservation_id,
-                    'application': 'ZEST_STATION'
+                    'application': 'KIOSK'
                 },
                 successCallBack: fetchPrintViewCompleted,
                 failureCallBack: printFailedActions
@@ -257,7 +257,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
             var options = {
                 params: {
                     'id': $stateParams.reservation_id,
-                    'application': 'ZEST_STATION'
+                    'application': 'KIOSK'
                 },
                 successCallBack: registrationCardSent,
                 failureCallBack: registrationCardSendingFailed
