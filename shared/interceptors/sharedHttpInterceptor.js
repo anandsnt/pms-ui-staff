@@ -48,7 +48,7 @@ angular.module('sharedHttpInterceptor', []).factory('sharedHttpInterceptor', [
         return;
       }
       if (rejection.status === 504) {
-        $rootScope.showOWSError && $rootScope.showTimeoutError();
+        $rootScope.showTimeoutError && $rootScope.showTimeoutError();
         return;
       }
       /*
