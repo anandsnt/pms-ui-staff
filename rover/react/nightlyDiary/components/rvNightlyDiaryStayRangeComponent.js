@@ -128,7 +128,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
             differenceInPosition = state.arrivalPosition - initialArrivalPosition,
             differenceInDays = Math.ceil(differenceInPosition / state.oneDayWidth),
             curentPosition = state.arrivalPosition + diff,
-            currentDay = moment(props.currentSelectedReservation.arrivalDate, "DDMMYYYY")
+            currentDay = moment(props.currentSelectedReservation.arrivalDate, state.dateFormat.toUpperCase())
                         .add(differenceInDays - 1, 'days')
                         .format(state.dateFormat.toUpperCase());
 
@@ -161,7 +161,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
             initialDeparturePosition = parseInt(props.currentSelectedReservation.arrivalPosition) + props.currentSelectedReservation.duration,
             differenceInPosition = state.departurePosition - initialDeparturePosition,
             differenceInDays = Math.ceil(differenceInPosition / state.oneDayWidth),
-            currentDay = moment(props.currentSelectedReservation.deptDate, "DDMMYYYY")
+            currentDay = moment(props.currentSelectedReservation.deptDate, state.dateFormat.toUpperCase())
                         .add(differenceInDays - 1, 'days')
                         .format(state.dateFormat.toUpperCase());
 
@@ -195,7 +195,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
             differenceInPosition = state.departurePosition - initialDeparturePosition,
             differenceInDays = Math.round(differenceInPosition / state.oneDayWidth),
             curentPosition = initialDeparturePosition + (differenceInDays * state.oneDayWidth),
-            currentDay = moment(props.currentSelectedReservation.deptDate, "DDMMYYYY")
+            currentDay = moment(props.currentSelectedReservation.deptDate, state.dateFormat.toUpperCase())
                         .add(differenceInDays, 'days')
                         .format(state.dateFormat.toUpperCase());
 
@@ -222,7 +222,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
             differenceInPosition = state.arrivalPosition - initialArrivalPosition,
             differenceInDays = Math.round(differenceInPosition / state.oneDayWidth),
             curentPosition = initialArrivalPosition + (differenceInDays * state.oneDayWidth),
-            currentDay = moment(props.currentSelectedReservation.arrivalDate, "DDMMYYYY")
+            currentDay = moment(props.currentSelectedReservation.arrivalDate, state.dateFormat.toUpperCase())
                         .add(differenceInDays, 'days')
                         .format(state.dateFormat.toUpperCase());
 

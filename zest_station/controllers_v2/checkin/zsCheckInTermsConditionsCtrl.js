@@ -30,7 +30,11 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			// back button action
             $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-                $state.go('zest_station.checkInReservationDetails', $stateParams);
+                if ($stateParams.is_from_room_upsell === 'true') {
+                    $state.go('zest_station.roomUpsell');
+                } else {
+                    $state.go('zest_station.checkInReservationDetails', $stateParams);
+                }
             });
 			// starting mode
             $scope.mode = 'TERMS_CONDITIONS';
