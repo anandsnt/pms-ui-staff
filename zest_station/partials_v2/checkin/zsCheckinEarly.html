@@ -2,52 +2,61 @@
 <section id="main" class="centered" role="main" click-touch='resetTime()'>
     <div id="content">
         <!-- Early Checkin Unavailable -->
-        <h1 ng-show="mode === 'CHECKIN_LATER'"> {{'EARLY_HEADER'|translate}}</h1>
-        <h2 ng-show="mode === 'CHECKIN_LATER'" class="nocaps" >{{'EARLY_SUB_1' |translate}} {{standardCheckinTime}}</h2>
-        <h3 ng-show="mode === 'CHECKIN_LATER'">{{'EARLY_SUB_2' |translate}}<br /> {{'EARLY_SUB_3' |translate}}</h3>
+        <h1 ng-show="mode === 'CHECKIN_LATER'"> 
+            <text editable-text="EARLY_HEADER"> {{'EARLY_HEADER' |translate}}</text>
+        </h1>
+        <h2 ng-show="mode === 'CHECKIN_LATER'" class="nocaps" >
+            <text editable-text="EARLY_SUB_1"> {{'EARLY_SUB_1' |translate}}</text> {{standardCheckinTime}}
+        </h2>
+        <h3 ng-show="mode === 'CHECKIN_LATER'">
+            <text editable-text="EARLY_SUB_2"> {{'EARLY_SUB_2' |translate}}</text>
+        <br /> 
+            <text editable-text="EARLY_SUB_3"> {{'EARLY_SUB_3' |translate}}</text>
+        </h3>
 
         <!-- prepaid early not ready yet -->
-        <h1 ng-show="mode === 'EARLY_CHECKIN_PREPAID_NOT_READY'"> {{'EARLY_AVAIL_PURCHASED_REALLY_EARLY_HEADER'|translate}}</h1>
-        <h3 ng-show="mode === 'EARLY_CHECKIN_PREPAID_NOT_READY'">{{'EARLY_AVAIL_PURCHASED_REALLY_EARLY' |translate}} </h3>
+        <h1 ng-show="mode === 'EARLY_CHECKIN_PREPAID_NOT_READY'"> 
+            <text editable-text="EARLY_AVAIL_PURCHASED_REALLY_EARLY_HEADER"> {{'EARLY_AVAIL_PURCHASED_REALLY_EARLY_HEADER' |translate}}</text>
+        </h1>
+        <h3 ng-show="mode === 'EARLY_CHECKIN_PREPAID_NOT_READY'">
+            <text editable-text="EARLY_AVAIL_PURCHASED_REALLY_EARLY"> {{'EARLY_AVAIL_PURCHASED_REALLY_EARLY' |translate}}</text>
+        </h3>
 
-        <button ng-show="mode === 'CHECKIN_LATER' || mode === 'EARLY_CHECKIN_PREPAID_NOT_READY'" type="button" class="button" touch-press='clickedOnCloseButton()'>{{'EARLY_DONE' |translate}}</button>
+        <button ng-show="mode === 'CHECKIN_LATER' || mode === 'EARLY_CHECKIN_PREPAID_NOT_READY'" type="button" class="button" touch-press='clickedOnCloseButton()'>
+            <text editable-text="EARLY_DONE"> {{'EARLY_DONE' |translate}}</text>
+        </button>
     
 
 
         <!-- Early Checkin Purchase Nav -->
         <h1 ng-show="mode === 'EARLY_CHECKIN_SELECT' || mode === 'EARLY_CHECKIN_PREPAID'">
-            {{'EARLY_AVAIL_HEADER'|translate}}
+            <text editable-text="EARLY_AVAIL_HEADER"> {{'EARLY_AVAIL_HEADER' |translate}}</text>
         </h1>
         <h3 ng-show="mode === 'EARLY_CHECKIN_SELECT'">
-            {{'EARLY_AVAIL_SUB_HEADER' |translate}} {{standardCheckinTime}} <br>
+            <text editable-text="EARLY_AVAIL_SUB_HEADER"> {{'EARLY_AVAIL_SUB_HEADER' |translate}}</text> {{standardCheckinTime}} <br>
              
-             {{'EARLY_AVAIL_SUB_HEADER_2' |translate}} {{early_checkin_charge}} 
+            <text editable-text="EARLY_AVAIL_SUB_HEADER_2"> {{'EARLY_AVAIL_SUB_HEADER_2' |translate}}</text> {{early_checkin_charge}} 
         </h3>
 
         <!-- pre-paid -->
-        <h3 ng-show="mode === 'EARLY_CHECKIN_PREPAID'">{{'EARLY_AVAIL_SUB_HEADER' |translate}} {{standardCheckinTime}} </h3>
+        <h3 ng-show="mode === 'EARLY_CHECKIN_PREPAID'">
+            <text editable-text="EARLY_AVAIL_SUB_HEADER"> {{'EARLY_AVAIL_SUB_HEADER' |translate}}</text>  {{standardCheckinTime}} 
+        </h3>
 
         <!-- Early Checkin Available (pre-paid or free) -->
         <div id="message" ng-show="mode === 'EARLY_CHECKIN_PREPAID' || mode === 'EARLY_CHECKIN_FREE'">
             <h2 ng-show="mode === 'EARLY_CHECKIN_PREPAID'" class="nocaps" >
-                {{'EARLY_AVAIL_PURCHASED' |translate}}
+                <text editable-text="EARLY_AVAIL_PURCHASED"> {{'EARLY_AVAIL_PURCHASED' |translate}}</text>
             </h2>
             <h2 ng-show="mode === 'EARLY_CHECKIN_FREE'"  class="nocaps" >
-                {{'EARLY_AVAIL_FREE' |translate}}
+                <text editable-text="EARLY_AVAIL_FREE"> {{'EARLY_AVAIL_FREE' |translate}}</text>
             </h2>
             <!-- assuming within  -->
-            <button type="button" class="button" touch-press='initTermsPage(true)'>
-                {{'EARLY_CONTINUE' |translate}}
+            <button type="button" class="button" touch-press='continue(true)'>
+                <text editable-text="EARLY_CONTINUE"> {{'EARLY_CONTINUE' |translate}}</text>
             </button>
 
-            <!-- done should be shown at unavailable, or checkin LATER screen only -->
-            <!--button ng-show="!reservation_in_early_checkin_window" type="button" class="button" touch-press='clickedOnCloseButton()'>
-                {{'EARLY_DONE' |translate}}
-            </button-->
         </div>
-
-
-
 
 
 
@@ -59,28 +68,29 @@
                     <button type="button" class="button option" click-touch="acceptEarlyCheckinOffer()">
                         <div ng-include="icons.url.key"></div>
                     </button>
-                    {{'EARLY_AVAIL_PURCHASE' |translate}}
+                    <text editable-text="EARLY_AVAIL_PURCHASE"> {{'EARLY_AVAIL_PURCHASE' |translate}}</text>
                     <span>
-                        {{'EARLY_AVAIL_PURCHASE_SUB' |translate}}
+                        <text editable-text="EARLY_AVAIL_PURCHASE_SUB"> {{'EARLY_AVAIL_PURCHASE_SUB' |translate}}</text>
 
                         {{early_checkin_charge}} 
 
-                        {{'EARLY_AVAIL_PURCHASE_SUB_2' |translate}}
+                        <text editable-text="EARLY_AVAIL_PURCHASE_SUB_2"> {{'EARLY_AVAIL_PURCHASE_SUB_2' |translate}}</text>
                     </span>
                 </li>
                 <li class="break">
-                    <span translate>OR_TEXT</span>
+                    <span>
+                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                    </span>
                 </li>
                 <li>
                     <button type="button" class="button option" click-touch='checkinLater()'>
                         <div ng-include="icons.url.watch"></div>
                     </button>
-                    {{'EARLY_AVAIL_LATER' |translate}}
+                    <text editable-text="EARLY_AVAIL_LATER"> {{'EARLY_AVAIL_LATER' |translate}}</text>
                 </li>
             </ul>
         </nav>
         
-            
         
     </div>
 </section>

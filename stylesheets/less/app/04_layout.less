@@ -499,6 +499,22 @@ body { overflow: hidden; }
 ==========================================================*/
 
 /* Scrollable content 		==============================*/
+
+	::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+        background-color: transparent;
+    }
+     
+    ::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+     
+    ::-webkit-scrollbar-thumb {
+        background-color: @logoPrimary;
+        #border-radius > .rounded(25px);
+    }
+
 	.scrollable {
 		width: 100%;
 		overflow: hidden;
@@ -524,6 +540,25 @@ body { overflow: hidden; }
 			-o-transform: translateZ(0);
 			transform: translateZ(0);
 		}
+	}
+
+	[class*="scroll-"] {
+	    -webkit-overflow-scrolling: touch;
+	}
+
+	.scroll-vertical {
+	    overflow-x: hidden;
+	    overflow-y: auto !important;
+	}
+
+	.scroll-horizontal {
+	    overflow-x: auto !important;
+	    overflow-y: hidden;
+	}
+
+	.scroll-both {
+	    overflow-x: auto !important;
+	    overflow-y: auto !important;
 	}
 
 /* Search bar				==============================*/
@@ -940,9 +975,11 @@ body { overflow: hidden; }
 					&.dates { width: 60px; }
 
 					&.search { 
-						margin: 0;
-						.calc-width(100, 110); 
-					}
+                    margin: 0;
+	                    .calc-width(100, 170); 
+	                }
+
+	                &.actions { width: 50px; }
 				}
 
 				.filters {
@@ -2555,6 +2592,10 @@ body { overflow: hidden; }
 		.actions-content {
 			position: relative;
 			overflow: hidden;
+
+			.reports-wrapper {
+	            display: none;
+	        }
 
 		    .content-left,
 		    .content-right {

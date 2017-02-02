@@ -253,6 +253,11 @@ function BaseCtrl($scope) {
       $scope.$parent.myScrollOptions = {};
     }
 
+    if (key === 'res-details') {
+        scrollerOptions.click = true;
+        scrollerOptions.preventDefault = false;
+    }
+
     $scope.$parent.myScrollOptions[key] = scrollerOptions;
   };
 

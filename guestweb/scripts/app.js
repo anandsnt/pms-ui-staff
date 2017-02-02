@@ -134,6 +134,22 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		// Footer Settings
 		$rootScope.footerSettings = reservationAndhotelData.zest_web_footer_settings;
 
+		// Marketting apps
+		$rootScope.mobileMarketingOn = reservationAndhotelData.zest_web_checkin_details_about_mobile_app;
+		$rootScope.mobileAppText = reservationAndhotelData.zest_web_checkin_mobile_app_call_to_action;
+		$rootScope.apps = {
+			app_store : {
+				available: reservationAndhotelData.zest_web_include_app_store_banner,
+				url: reservationAndhotelData.ios_app_url,
+				img: reservationAndhotelData.ios_app_banner_image
+			},
+			play_store : {
+				available: reservationAndhotelData.zest_web_include_google_play_banner,
+				url: reservationAndhotelData.android_app_url,
+				img: reservationAndhotelData.android_app_banner_image
+			}
+		};
+
 		if (!!$rootScope.footerSettings.display_footer) {
 			// active footer count
 			var footerCount = _.filter($rootScope.footerSettings.footers, function(footer) {
