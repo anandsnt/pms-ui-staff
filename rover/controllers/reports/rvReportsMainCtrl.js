@@ -93,7 +93,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 
 		/** Report views managing area */
-		$scope.reportViews = ['ALL_REPORT', 'SCHEDULED_REPORT', 'SCHEDULED_A_REPORT'];
+		$scope.reportViews = ['ALL_REPORT', 'SCHEDULED_REPORT', 'EXPORT_REPORTS'];
 		var _selectedReportView = $scope.reportViews[0];
 		/**/
 
