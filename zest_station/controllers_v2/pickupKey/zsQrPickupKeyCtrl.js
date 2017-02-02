@@ -173,6 +173,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 				$state.go('zest_station.home');
 			});
 			$scope.qrCodeScanFailed = false;
+			$scope.setScreenIcon('key');
 
 		}());
 

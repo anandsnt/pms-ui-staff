@@ -842,7 +842,7 @@ sntRover.controller('RVbillCardController',
 	};
 
 	// Method to check whether the current active bill is having payment type = DB.
-	var checkPaymentTypeIsDirectBill = function() {
+	$scope.checkPaymentTypeIsDirectBill = function() {
 		var isPaymentTypeDirectBill = false;
 
 		if ($scope.reservationBillData.bills[$scope.currentActiveBill].is_account_attached && $scope.hasPermissionToDirectBillPayment()) {
@@ -856,7 +856,7 @@ sntRover.controller('RVbillCardController',
 
 		 $scope.callAPI(RVPaymentSrv.renderPaymentScreen, {
 			 params: {
-			     direct_bill: checkPaymentTypeIsDirectBill()
+			     direct_bill: $scope.checkPaymentTypeIsDirectBill()
 			 },
 			 onSuccess: function(response) {
 				 paymentData.paymentTypes = response;
@@ -989,7 +989,7 @@ sntRover.controller('RVbillCardController',
 
 		var paymentParams = $scope.reservationBillData.isCheckout ? reservationData : {};
 
-		paymentParams.direct_bill = checkPaymentTypeIsDirectBill();
+		paymentParams.direct_bill = $scope.checkPaymentTypeIsDirectBill();
 		paymentParams.bill_id = $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id;
 		
 		$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, paymentParams, function(data) {

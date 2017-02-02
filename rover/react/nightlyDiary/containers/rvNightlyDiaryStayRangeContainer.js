@@ -19,6 +19,7 @@ let convertCurrentSelectedReservation = (currentSelectedReservation, selectedRes
         currentSelectedReservation.class = stayRangeArrivalClass;
         currentSelectedReservation.arrivalClass = (currentSelectedReservation.isArrivalFlagVisible) ? "handle arrival left" : "handle arrival left hidden";
         currentSelectedReservation.departureClass = (currentSelectedReservation.isDepartureFlagVisible) ? "handle departure" : "handle departure hidden";
+        currentSelectedReservation.dateFormat = dateFormat;
     }
     return currentSelectedReservation;
 };
