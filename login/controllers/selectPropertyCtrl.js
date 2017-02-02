@@ -1,5 +1,5 @@
-login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window', '$state', '$stateParams',
-    function($scope, selectPropertySrv, $window, $state, $stateParams) {
+login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window', '$state', '$stateParams', 'ngDialog',
+    function($scope, selectPropertySrv, $window, $state, $stateParams, ngDialog) {
         
         BaseCtrl.call(this, $scope);
         var init = function() {
@@ -9,6 +9,7 @@ login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window'
             $scope.selectedPropertyId = "";
             $scope.$emit('hideloader');
             $scope.setScroller('property-results', {click: true});
+            $scope.modalClosing = false;
         };
 
         /*
@@ -100,6 +101,28 @@ login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window'
             };
 
             $scope.invokeApi(selectPropertySrv.setProperty, data, successCallback, failureCallBack);
+        };
+
+        $scope.closeDialog = function() {
+          $scope.modalClosing = true;
+            setTimeout(function () {
+                ngDialog.close();
+                $scope.modalClosing = false;
+                $scope.$apply();
+            }, 700);
+        };
+
+        $scope.onClickSupportLink = function () {
+            if (sntapp.cordovaLoaded) {
+                ngDialog.open({
+                    template: '/assets/partials/freshdesk.html',
+                    className: '',
+                    controller: '',
+                    scope: $scope
+                });
+            } else {
+                $window.open('https://stayntouch.freshdesk.com/support/home', '_blank');
+            }
         };
 
         init();
