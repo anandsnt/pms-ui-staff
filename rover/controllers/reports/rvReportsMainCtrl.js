@@ -280,7 +280,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			item_45: false,
 			item_46: false,
 			item_47: false,
-            item_48: false
+            item_48: false,
+            item_49: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( ! $scope.filterItemsToggle.hasOwnProperty(item) ) {
