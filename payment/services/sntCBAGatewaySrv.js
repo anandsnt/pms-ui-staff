@@ -44,12 +44,13 @@ angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$log', '$t
 
             var expiryDate = cordovaResponse.expiry_date,
                 formattedExpiry = "20";
-            //NOTE : Expiry Date from cordovaResponse would be in MMYY format; This has to be changed to YYYY-MM-DD format
+            // NOTE : Expiry Date from cordovaResponse would be in MMYY format; This has to be changed to YYYY-MM-DD format
 
             if (expiryDate.length === 4) {
                 // Rover expects all dates to be formatted in YYYY-MM-DD; Here we are converting the MMYY string coming in
                 // to YYYY-MM-DD with simple string manipulations
                 var dateParts = expiryDate.match(/.{1,2}/g);
+
                 formattedExpiry += [dateParts[1], dateParts[0], "01"].join("-");
             } else {
                 throw new Error("The UI expects MMYY format date as the cordovaResponse!")
@@ -132,11 +133,11 @@ angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$log', '$t
         };
 
         service.finishTransaction = function(transactionId) {
-            $log.info('finishTransaction');
+            $log.info('finishTransaction for :', transactionId);
             cordovaAPI.callCordovaService({
                 service: "RVCardPlugin",
                 action: "finishTransaction",
-                arguments: transactionId.toString(),
+                arguments: [transactionId.toString()],
                 successCallBack: response => {
                     $log.info('finishTransaction', response);
                 },

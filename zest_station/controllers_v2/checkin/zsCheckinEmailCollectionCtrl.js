@@ -71,6 +71,19 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
             $scope.mode = 'EMAIL_INVLAID_MODE';
         };
 
+        var goToNextScreenInFlow = function(stateParams) {
+            console.log('next screen in flow: ');
+            // if nationality collection enabled then show here, otherwise straight to Dispense keys
+            if ($scope.zestStationData.check_in_collect_nationality) {
+                console.log('next screen in flow: nationality');
+                $state.go('zest_station.collectNationality', stateParams);
+            }
+            else {
+                console.log('next screen in flow: key dispense');
+                $state.go('zest_station.checkinKeyDispense', stateParams);
+            }
+        };
+
         var updateGuestEmail = function() {
             var updateComplete = function(response) {
                 console.info('updateGuestEmail :: updateComplete: ', response);
@@ -83,7 +96,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
                     'email': $scope.email
                 };
 
-                $state.go('zest_station.checkinKeyDispense', stateParams);
+                goToNextScreenInFlow(stateParams);
             };
             /*
              * [updateGuestEmailFailed description]
@@ -151,7 +164,9 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
             };
 
             console.info(' :: skipEmail :: ', stateParams);
-            $state.go('zest_station.checkinKeyDispense', stateParams);
+
+            goToNextScreenInFlow(stateParams);
+            // $state.go('zest_station.checkinKeyDispense', stateParams);
         };
 
         /**

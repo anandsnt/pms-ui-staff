@@ -41,7 +41,7 @@ const getClassForRootDiv = function(state) {
  * utility method to find index of room
 * @return {Number} index
 */
-var getRoomIndex = function (selectedRoomId, roomsList) {   
+var getRoomIndex = function (selectedRoomId, roomsList) {
     return _.findLastIndex(roomsList, {
         id: selectedRoomId
     });
@@ -60,15 +60,16 @@ var calculateScrollIndex = function(state) {
     if (getPrevPageButtonStatus(state)) {
         return roomindex + 1;
     }
-    return roomindex;   
-};             
+    return roomindex;
+};
 
 const mapStateToNightlyDiaryRootContainerProps = (state) => ({
     showNextPageButton: getNextPageButtonStatus(state),
     showPrevPageButton: getPrevPageButtonStatus(state),
     ClassForRootDiv: getClassForRootDiv(state),
     index: calculateScrollIndex(state),
-    page: state.paginationData.page
+    page: state.paginationData.page,
+    selectedReservationId: state.selectedReservationId
 });
 
 const mapDispatchToNightlyDiaryGoToPreviousPageButtonContainer = (stateProps) => {

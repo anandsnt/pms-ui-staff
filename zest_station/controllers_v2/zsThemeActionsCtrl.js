@@ -78,7 +78,6 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 		 ********************************************************************************/
 
         $scope.$on('QUICK_SET_HOTEL_THEME', function(evt, theme) {
-            // console.log('Quick! Set theme to: ', theme);
             var oldLink = $('link');
 
             for (var i in oldLink) {

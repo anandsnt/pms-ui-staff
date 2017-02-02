@@ -214,6 +214,10 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		/* ******************************************************************************************************* */
 
 		var updateLogForKeyActions = function(keyNo, keyStatus) {
+			if ($scope.inDemoMode()) {
+				return;
+			}
+
 			$scope.resetTime();
 			var params = {
 				"reservation_id": $stateParams.reservation_id,
@@ -501,7 +505,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		 * @return {[type]} [description]
 		 */
 		$scope.reEncodeKey = function() {
-
+            $scope.resetTime();
 			var executeKeyOperations = function() {
 				if ($scope.zestStationData.keyWriter === 'websocket') {
 					if($scope.noOfKeysCreated === 0){

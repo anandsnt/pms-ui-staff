@@ -22,7 +22,17 @@ sntZestStation.controller('zsAdminCtrl', [
         });
 
         $scope.navToPrev = function() {
-            $state.go('zest_station.home');
+            // go home, unless there is no workstation or workstation is OOS
+            var noWorkstationSelected = $scope.workstation.selected === '',
+                workstationInOrder = $scope.zestStationData.workstationStatus === 'in-order';
+
+            if (!workstationInOrder || noWorkstationSelected) {
+                $state.go('zest_station.outOfService');
+            } else {
+                $state.go('zest_station.home');    
+            }
+            
+
         };
 
         var refreshScroller = function() {
@@ -127,13 +137,18 @@ sntZestStation.controller('zsAdminCtrl', [
          * Go to home page
          */
         var lastDemoModeSetting = $scope.zestStationData.demoModeEnabled,
-            lastEditorModeSetting = $scope.zestStationData.editorModeEnabled;
+            lastEditorModeSetting = $scope.zestStationData.editorModeEnabled,
+            lastNCIModeSetting = $scope.zestStationData.noCheckInsDebugger,
+            lastStationStatus = $scope.zestStationData.workstationStatus;
 
         $scope.cancelAdminSettings = function(a) {
             if (!a) {
-                console.info('setting demo and editor modes back to: ', lastDemoModeSetting, lastEditorModeSetting);
+                console.info('setting Demo, Editor, and NCI modes back to: ', lastDemoModeSetting, lastEditorModeSetting, lastNCIModeSetting);
                 $scope.zestStationData.demoModeEnabled = lastDemoModeSetting;
+                $scope.zestStationData.noCheckInsDebugger = lastNCIModeSetting;
                 $scope.zestStationData.editorModeEnabled = lastEditorModeSetting;
+                $scope.zestStationData.workstationStatus = lastStationStatus;
+
                 $scope.setEditorModeCls();
             }
             $state.go('zest_station.home');
@@ -219,6 +234,14 @@ sntZestStation.controller('zsAdminCtrl', [
             } else {
                 $rootScope.cls.editor = 'false';
             }
+        };
+
+        $scope.toggleDiagnostics = function() {
+            console.log(arguments);
+            zestSntApp.debugTimers(true);
+              $timeout(function() {
+                $scope.runDigestCycle();
+            }, 900);
         };
         /*
          *  save work station
@@ -317,7 +340,9 @@ sntZestStation.controller('zsAdminCtrl', [
                 console.log(response);
                 console.info('save setting failed, set demo and editor mode to last setting');
                 $scope.zestStationData.demoModeEnabled = lastDemoModeSetting;
+                $scope.zestStationData.noCheckInsDebugger = lastNCIModeSetting;
                 $scope.zestStationData.editorModeEnabled = lastEditorModeSetting;
+                $scope.zestStationData.workstationStatus = lastStationStatus;
                 $scope.setEditorModeCls();
             };
             var options = {
