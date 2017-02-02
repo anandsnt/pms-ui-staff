@@ -29,7 +29,6 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
                 $stateParams = getDummyData($stateParams.quickJumpMode);
             }
 
-            console.log($stateParams.early_checkin_data);
             var params = JSON.parse($stateParams.early_checkin_data);
             
             $scope.selectedReservation = JSON.parse($stateParams.selected_reservation);
