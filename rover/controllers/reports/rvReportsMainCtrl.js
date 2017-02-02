@@ -2146,6 +2146,12 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                         $scope.$broadcast('updatePagination', "COMPARISION_BY_DATE");
                     }, 50);
                 }
+
+                if(chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) {
+                    $timeout(function() {
+                        $scope.$broadcast('updatePagination', "TA_COMMISSION_REPORT_MAIN");
+                    }, 50);
+                }
 			};
 
 			var sucssCallback = function(response) {
@@ -2209,6 +2215,20 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     perPage: 25
                 };
             }
+
+            if(chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) {
+               console.log("reached inside =====")
+                var loadAPIData = function(pageNo) {
+                    $scope.genReport(false, pageNo);
+                };
+
+                $scope.commisionReportTAPagination = {
+                    id: 'TA_COMMISSION_REPORT_MAIN',
+                    api: loadAPIData,
+                    perPage: 10
+                };
+            }
+
 
 			$scope.invokeApi(reportsSubSrv.fetchReportDetails, params, sucssCallback, errorCallback);
 		};

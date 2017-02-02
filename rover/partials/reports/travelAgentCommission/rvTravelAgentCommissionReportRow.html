@@ -1,3 +1,115 @@
-<div ng-controller="RVTravelAgentsCommissionReportCtrl">
-TA Commisions report
-</div>
+<!-- Report content -->
+    <div ng-controller="RVTravelAgentsCommissionReportCtrl" id="report-content" class="report-content grid scrollable"> <!-- Add class "with-pagination" if pagination is shown -->
+        <div class="wrapper" ng-repeat="travel_agents in results">
+
+            <h2>{{travel_agents.account_name}}, IATA: {{travel_agents.account_no}}</h2>
+            <table class="commission-reports">
+                <thead>
+                    <tr>
+                        <th class="room" rowspan="2">Room</th>
+                        <th class="guest" rowspan="2">Guest</th>
+                        <th class="code" rowspan="2">Rate Code</th>
+                        <th class="amount" rowspan="2">Rate Amount</th>
+                        <th class="comission" colspan="3">Commission</th>
+                    </tr>
+                    <tr class="bottom-row">
+
+                        <th class="amount break">Revenue</th>
+                        <th>%/{{currencySymbol}}</th>
+                        <th class="amount">Net Amt</th>
+                    </tr>
+
+                </thead>
+                <tfoot>
+                    <!-- Travel Agent pagination // Shown when needed
+                     <tr class="pagination">
+                        <td colspan="7">
+                        {../_shared/pagination.html}
+                        </td>
+                    </tr>-->
+                    <tr class="totals">
+                        <td colspan="3"></td>
+                        <td>
+                            Subtotals
+                        </td>
+                        <td>
+                           {{currencySymbol}}{subtotal-commission-revenue}
+                        </td>
+                        <td></td>
+                        <td>
+                            {{currencySymbol}}{subtotal-commission-net-amount}
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody>
+
+                    <!--
+                        $rowspan - number of rates per this reservation
+                    -->
+                    <tr>
+                        <td rowspan="{$rowspan}">
+                            <strong class="title">{room}</strong>
+                        </td>
+                        <td class="name" rowspan="{$rowspan}">
+                            <strong class="title">
+                                <a href="#">{Last Name, First Name}</a>
+                            </strong>
+                            <span class="data">{reservation-#}, Nights: {nights}</span>
+                            <div class="guest-date">
+                                <!-- check in -->
+                                <div class="date">
+                                    <span class="guest-status check-in">check-in</span>
+                                    <time datetime="{datetime | exp.: 2017-02-01T12:00:00}">
+                                        <span>{Date | exp.: 02-01-2017}</span>
+                                        <span>{Time | exp.: 6:00 PM}</span>
+                                    </time>
+                                </div>
+                                <!-- check out -->
+                                <div class="date">
+                                    <span class="guest-status check-out">check-out</span>
+                                    <time datetime="{datetime | exp.: 2017-02-01T12:00:00}">
+                                        <span>{Date | exp.: 02-01-2017}</span>
+                                        <span>{Time | exp.: 6:00 PM}</span>
+                                    </time>
+                                </div>
+                            </div>
+                        </td>
+                        <!-- First Rate in row is displayed here,
+                             if there are more than 1 rate, others will be display in rows below
+                         -->
+                        <td>
+                            {Rate Code}
+                        </td>
+                        <td>
+                            {{currencySymbol}}{rate-amount}
+                        </td>
+                        <td rowspan="{$rowspan}">
+                            {{currencySymbol}}{commission-revenue}
+                        </td>
+                        <td rowspan="{$rowspan}">
+                            <!-- If admin settings are set to show comission amount:
+                            {currency-symbol}{subtotal-commission-net-amount}
+                            --
+                                else if admin settings are set to show comission %:
+                            -->
+                            {percentage}%
+                        </td>
+                        <td rowspan="{$rowspan}">
+                            {{currencySymbol}}{commission-net-amount}
+                        </td>
+                    </tr>
+                    <!-- If more than 1 rate per reservation:
+                    <tr class="rate-row">
+                        <td>{rate-code}</td>
+                        <td>{rate-amount}</td>
+                    </tr>-->
+                   <!--  .. repeat per guest/reservation -->
+                </tbody>
+            </table>
+            ... repeat per travel-agent L88-L191
+            ====={{totalCount}}
+        </div>
+    </div>
+
+    <rv-pagination  page-options="commisionReportTAPagination" page-data="totalCount" >
+ </rv-pagination>
