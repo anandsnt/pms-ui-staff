@@ -1,5 +1,5 @@
-login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window', '$state', '$stateParams',
-    function($scope, selectPropertySrv, $window, $state, $stateParams) {
+login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window', '$state', '$stateParams', 'ngDialog',
+    function($scope, selectPropertySrv, $window, $state, $stateParams, ngDialog) {
         
         BaseCtrl.call(this, $scope);
         var init = function() {

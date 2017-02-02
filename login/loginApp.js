@@ -23,7 +23,7 @@ login.controller('loginRootCtrl', ['$scope', function($scope) {
  * Login Controller - Handles login and local storage on succesfull login
  * Redirects to specific ur on succesfull login
  */
-login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', '$window', function($scope, loginSrv, $window, $state, resetSrv, ngDialog, $window) {
+login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', function($scope, loginSrv, $window, $state, resetSrv, ngDialog) {
 	 $scope.data = {};
 
 	 if (localStorage.email) {
@@ -190,7 +190,7 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
 /*
  * Reset Password Controller - First time login of snt admin
  */
-login.controller('resetCtrl', ['$scope', 'resetSrv', '$window', '$state', '$stateParams', function($scope, resetSrv, $window, $state, $stateParams) {
+login.controller('resetCtrl', ['$scope', 'resetSrv', '$window', '$state', '$stateParams', 'ngDialog', function($scope, resetSrv, $window, $state, $stateParams, ngDialog) {
 	 $scope.data = {};
 	 $scope.data.token = $stateParams.token;
 
@@ -261,7 +261,7 @@ login.controller('resetCtrl', ['$scope', 'resetSrv', '$window', '$state', '$stat
 /*
  * Activate User Controller - Activate user when clicks on activation link in mail
  */
-login.controller('activateCtrl', ['$scope', 'resetSrv', '$window', '$state', '$stateParams', function($scope, resetSrv, $window, $state, $stateParams) {
+login.controller('activateCtrl', ['$scope', 'resetSrv', '$window', '$state', '$stateParams', 'ngDialog', function($scope, resetSrv, $window, $state, $stateParams, ngDialog) {
 	 $scope.data = {};
 	 $scope.data.token = $stateParams.token;
 	 $scope.data.user  = $stateParams.user;
@@ -368,7 +368,7 @@ login.controller('activateCtrl', ['$scope', 'resetSrv', '$window', '$state', '$s
 
 }]);
 
-login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', function($scope, loginSrv, $window, $state, resetSrv) {
+login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', function($scope, loginSrv, $window, $state, resetSrv, ngDialog) {
         $scope.data = {};
 
         $scope.modalClosing = false;
