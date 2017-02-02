@@ -12,10 +12,11 @@
 					data.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "";
 				}
 
-				$http.post(url, data).then(function(response) {
-					this.responseData = response.data;
+				$http.post(url, data).success(function(response) {
+					this.responseData = response;
 					deferred.resolve(this.responseData);
-				},function() {
+				}.bind(this))
+				.error(function() {
 					deferred.reject();
 				});
 				return deferred.promise;
@@ -27,9 +28,10 @@
 				data.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "";
 				var url = '/guest_web/checkin_reservation_search.json';
 
-				$http.get(url, {params: data}).then(function(response) {
-					deferred.resolve(response.data);
-				}, function() {
+				$http.get(url, {params: data}).success(function(response) {
+					deferred.resolve(response);
+				})
+				.error(function() {
 					deferred.reject();
 				});
 				return deferred.promise;
@@ -48,9 +50,10 @@
 
 				var url = '/guest_web/authenticate_checkin_guest';
 
-				$http.post(url, data).then(function(response) {
-					deferred.resolve(response.data);
-				}, function() {
+				$http.post(url, data).success(function(response) {
+					deferred.resolve(response);
+				})
+				.error(function() {
 					deferred.reject();
 				});
 				return deferred.promise;

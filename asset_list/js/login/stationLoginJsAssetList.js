@@ -1,7 +1,7 @@
 module.exports = {	
 	getList : function() {
 		var sharedRoot 	= 'shared/',
-		jsLibRoot 		= sharedRoot + 'lib/js/',
+		jsLibRoot 		= sharedRoot + 'lib-legacy/js/',
 		loginRoot 		= 'login/',
                 //remove ref when virtual keyboard files have updated loading
 		zestRoot 		= 'zest_station/',

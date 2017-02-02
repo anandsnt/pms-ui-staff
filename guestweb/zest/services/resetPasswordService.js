@@ -1,31 +1,32 @@
 (function() {
-    var resetPasswordService = function($q, $http) {
+		var resetPasswordService = function($q, $http, $rootScope) {
 
-        var responseData = {};
+			var responseData = {};
 
-        var resetPassword = function(data) {
-            var deferred = $q.defer(),
-                url = '/guest/users/update_password.json';
+			var resetPassword = function(data) {
+				var deferred = $q.defer();
+				var url = '/guest/users/update_password.json';
 
-            $http.post(url, data).then(function(response) {
-                this.responseData = response.data;
-                deferred.resolve(this.responseData);
-            }, function() {
-                deferred.reject();
-            });
-            return deferred.promise;
-        };
+				$http.post(url, data).success(function(response) {
+					this.responseData = response;
+					deferred.resolve(this.responseData);
+				}.bind(this))
+				.error(function() {
+					deferred.reject();
+				});
+				return deferred.promise;
+			};
 
-        return {
-            responseData: responseData,
-            resetPassword: resetPassword
-        };
-    };
+			return {
+				responseData: responseData,
+				resetPassword: resetPassword
+			};
+		};
 
-    var dependencies = [
-        '$q', '$http', '$rootScope',
-        resetPasswordService
-    ];
+		var dependencies = [
+		'$q', '$http', '$rootScope',
+		resetPasswordService
+		];
 
-    sntGuestWeb.factory('resetPasswordService', dependencies);
-})();
+		sntGuestWeb.factory('resetPasswordService', dependencies);
+	})();

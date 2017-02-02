@@ -1,30 +1,31 @@
 (function() {
-    var checkoutRoomVerificationService = function($q, $rootScope, $http) {
-        var response = {};
+var checkoutRoomVerificationService = function($q, $rootScope, $http) {
+	var response = {};
 
-        var verifyRoom = function(url, data) {
+	var verifyRoom = function(url, data) {
 
-            var deferred = $q.defer();
+		var deferred = $q.defer();
 
-            $http.post(url, data).then(function(response) {
-                deferred.resolve(response.data);
-            }, function() {
-                $rootScope.netWorkError = true;
-                deferred.reject();
-            });
-            return deferred.promise;
-        };
+		$http.post(url, data).success(function(response) {
+			deferred.resolve(response);
+		}).error(function() {
+		$rootScope.netWorkError = true;
+			deferred.reject();
+		});
+		return deferred.promise;
+		};
 
-        return {
-            response: response,
-            verifyRoom: verifyRoom
-        };
-    };
+		return {
+			response: response,
+			verifyRoom: verifyRoom
 
-    var dependencies = [
-        '$q', '$rootScope', '$http',
-        checkoutRoomVerificationService
-    ];
+		};
+};
 
-    sntGuestWeb.factory('checkoutRoomVerificationService', dependencies);
+var dependencies = [
+'$q', '$rootScope', '$http',
+checkoutRoomVerificationService
+];
+
+sntGuestWeb.factory('checkoutRoomVerificationService', dependencies);
 })();

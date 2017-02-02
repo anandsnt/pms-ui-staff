@@ -10,10 +10,11 @@
 		var deferred = $q.defer();
 		var url = '/api/reservations/apply_early_checkin_offer';
 
-		$http.post(url, data).then(function(response) {
-			this.responseData = response.data;
+		$http.post(url, data).success(function(response) {
+			this.responseData = response;
 			deferred.resolve(this.responseData);
-		}, function() {
+		}.bind(this))
+		.error(function() {
 			deferred.reject();
 		});
 		return deferred.promise;

@@ -8,10 +8,11 @@
 
 			$http.get(url, {
     		params: parameters
-			}).then(function(response) {
-					this.details = response.data;
+			}).success(function(response) {
+					this.details = response;
 					deferred.resolve(this.details);
-				}, function() {
+				}.bind(this))
+				.error(function() {
 					deferred.reject();
 					$rootScope.netWorkError = true;
 				});
@@ -19,13 +20,16 @@
 			return deferred.promise;
 		};
 		var post = function(url, parameters) {
+
+
 			var deferred = $q.defer();
 
 			$http.post(url, parameters
-			).then(function(response) {
-					this.details = response.data;
+			).success(function(response) {
+					this.details = response;
 					deferred.resolve(this.details);
-				}, function() {
+				}.bind(this))
+				.error(function() {
 					deferred.reject();
 					$rootScope.netWorkError = true;
 				});

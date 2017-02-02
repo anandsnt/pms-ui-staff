@@ -43,7 +43,7 @@ sntZestStation.controller('zsRootCtrl', [
 
         $rootScope.$on('$locationChangeStart', routeChange);
 		// we are forcefully setting top url, please refer routerFile
-        // window.history.pushState('initial', 'Showing Landing Page', '#/home');
+        window.history.pushState('initial', 'Showing Landing Page', '#/home');
 
         $scope.$on('GENERAL_ERROR', function() {
             // resolve an issue where (if no workstation assigned, or the workstation was deleted, 

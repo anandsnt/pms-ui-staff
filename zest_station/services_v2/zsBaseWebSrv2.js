@@ -44,19 +44,14 @@ sntZestStation.service('zsBaseWebSrv2', ['$http', '$q', '$window', '$rootScope',
   		}
 
 		// Sample params {params:{fname: "fname", lname: "lname"}}
-		$http(httpDict).then(function(res) {
-			var response = res.data;
-
+		$http(httpDict).success(function(response, status) {
 			if (response.status === "success") {
 		    	deferred.resolve(response.data);
 			} else {
 				// please note the type of error expecting is array
 		    	deferred.reject(response.errors);
 			}
-		}, function(res) {
-			var response = res.data,
-				status = res.status;
-
+		}).error(function(response, status) {
 			var urlStart = url.split('?')[0];
 			// please note the type of error expecting is array
 			// so form error as array if you modifying it

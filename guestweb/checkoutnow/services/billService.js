@@ -11,13 +11,13 @@ var BillService = function($q, baseWebService, $rootScope, $http) {
 
 		$http.get(url, {
 			params: parameters
-		}).then(function(response) {
-			this.bills = response.data;
+		}).success(function(response) {
+			this.bills = response;
 			deferred.resolve(this.bills);
-		}, function() {
+		}.bind(this))
+		.error(function() {
 			deferred.reject();
 		});
-
 		return deferred.promise;
 	};
 
