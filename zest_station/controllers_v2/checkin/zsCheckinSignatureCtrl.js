@@ -55,13 +55,17 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 'reservation_id': $stateParams.reservation_id,
                 'room_no': $stateParams.room_no,
                 'email': $stateParams.email,
-                'first_name': $stateParams.first_name
+                'first_name': $stateParams.first_name,
+                'guest_email_blacklisted': $stateParams.guest_email_blacklisted
             };
 
             console.info('haveValidGuestEmail: ', haveValidGuestEmail);
-
+            if ($scope.theme === 'yotel') {
+                $scope.setScreenIcon('checkin');
+                $state.go('zest_station.checkinSuccess', stateParams);
+            }
             // if collectiing nationality after email, but email is already valid
-            if (collectNationalityEnabled && haveValidGuestEmail) {
+            else if (collectNationalityEnabled && haveValidGuestEmail) {
                 $state.go('zest_station.collectNationality', stateParams);
 
             } else if (haveValidGuestEmail) {

@@ -1,5 +1,5 @@
 
-admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', 'ngDialog', '$timeout', function ($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter, ngDialog, $timeout) {
+admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', 'ngDialog', '$timeout', '$log', function ($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter, ngDialog, $timeout, $log) {
     BaseCtrl.call(this, $scope);
     $scope.$emit('changedSelectedMenu', 10);
 
@@ -36,7 +36,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
     };
 
     $scope.updateDefaultLanguageDropdown = function() {
-        console.info('update lang dropdown');
+        $log.info('update lang dropdown');
         $scope.enabledLangs = getEnabledLanguages();
         validateDefaultLang();
     };
@@ -61,14 +61,16 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             if ($scope.zestSettings.zest_lang[name + '_translations_file_updated'] ||
                 $scope.zestSettings.zest_lang[name + '_translations_file']) {return true;}
             return false;
-        } else {return false;}
+        } 
+        return false;
     };
 
-    $scope.hasKeyImageFileUpdatedOrUploading = function(name) {
+    $scope.hasKeyImageFileUpdatedOrUploading = function() {
         if ($scope.zestSettings && $scope.zestSettings.key_create_file_uploaded) {
             if ($scope.zestSettings.key_create_file_uploaded !== '' && $scope.zestSettings.key_create_file_uploaded !== 'false' && $scope.zestSettings.key_create_file_uploaded.indexOf('/logo.png') === -1) {return true;}
             return false;
-        } else {return false;}
+        } 
+        return false;
     };
     
     var getEnabledLanguages = function() {
@@ -198,10 +200,16 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
     };
 
     $scope.saveLanguageEditorChanges = function() {
+
+        var lang = $scope.editingLanguage;
+
+        $scope.languageEditorData = angular.copy($scope.languageEditorDataTmp);
+        // save ref in case needed for continuing to edit
+        languagesEditedInSession[lang].json = angular.copy($scope.languageEditorData);
+
+        var encoded = 'data:application/json;base64,' + window.btoa(unescape(encodeURIComponent(JSON.stringify($scope.languageEditorData))));
+
         // current language being edited, for saving, need to save with long-name (ie. "english" instead of "en")
-        var lang = $scope.editingLanguage,
-            encoded = 'data:application/json;base64,' + window.btoa(unescape(encodeURIComponent(JSON.stringify($scope.languageEditorData))));
-            
         // check for default
         if (lang === 'en') {
             lang = 'english';
@@ -222,12 +230,34 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             lang = 'castellano';
 
         } else {
-            console.log('need to add new language code here');
+            $log.log('need to add new language code here');
         }
       
         $scope.zestSettings.zest_lang[lang + '_translations_file'] = encoded;
         $scope.closePrompt();
     };
+    // when editing on-screen, need to fetch the language then show on-screen
+    // if a user closes the window, we need to persist the reference in case they
+    // want to continue editing
+    var languagesEditedInSession = [];
+    var continueEditing = function(lang) {
+        if (languagesEditedInSession[lang]) {
+            return true;
+        }// else
+        return false;
+    };
+    var openEditor = function(json) {
+         // converts object into a plyable array
+        $scope.languageEditorDataTmp = angular.copy(json);
+
+        ngDialog.open({
+            template: '/assets/partials/zestStation/adZestStationLanguageEditor.html',
+            className: 'ngdialog-theme-default single-calendar-modal language-editor',
+            scope: $scope,
+            closeByDocument: true
+        });
+    };
+
     //  track which languages were fetched/edited already, 
     //  we dont want to re-fetch when user accidentily closes the window and needs to re-open it
     $scope.editLang = function(lang) {
@@ -235,29 +265,35 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         $scope.editingLanguage = lang;
         // shows user an on-screen prompt, with the tags and values, so they can edit in-screen
 
-        $scope.showLoader();
-        var jsonRefUrl = 'staff/locales/download/' + lang + '.json';
+        if (continueEditing(lang)) {
 
-        console.log('going to fetch language json file for editing');
+            $log.log('continuing to edit...');
+            openEditor(languagesEditedInSession[lang].json);
+        } else {
 
-        $.getJSON(jsonRefUrl, function(json) {
-            var loaderScope = angular.element('#loading-spinner').scope();
+            var jsonRefUrl = 'staff/locales/download/' + lang + '.json';
+            
+            $log.log('fetching language json file for editing');
 
-            loaderScope.hasLoader = false;
-            console.log(json); // this will show the info it in firebug console
-            loaderScope.$digest();
+            $scope.showLoader();
 
-            // converts object into a plyable array
-            $scope.languageEditorData = json;
+            $.getJSON(jsonRefUrl, function(json) {
+                var loaderScope = angular.element('#loading-spinner').scope();
 
-            ngDialog.open({
-                template: '/assets/partials/zestStation/adZestStationLanguageEditor.html',
-                className: 'ngdialog-theme-default single-calendar-modal language-editor',
-                scope: $scope,
-                closeByDocument: true
+                loaderScope.hasLoader = false;
+                $log.log(json); // show the info in console
+
+                // reference to downloaded data in case user wants to continue editing after closing window
+                languagesEditedInSession[lang] = {
+                    'json': json
+                };
+
+                loaderScope.$digest();
+                openEditor(json);
             });
+        }
 
-        });
+
     };
 
     $scope.searchbar = {

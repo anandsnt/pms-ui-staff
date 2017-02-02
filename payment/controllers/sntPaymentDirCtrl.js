@@ -5,6 +5,7 @@ angular.module('sntPay').controller('sntPaymentController',
                  $rootScope, $timeout, ngDialog, $filter) {
             // ---------------------------------------------------------------------------------------------------------
             var timeOutForScrollerRefresh = 300,
+                initialPaymentAmount = 0,
                 defaultScrollerOptions = {
                     snap: false,
                     scrollbars: 'custom',
@@ -34,7 +35,8 @@ angular.module('sntPay').controller('sntPaymentController',
                 guestLastName: '',
                 isManualEntryInsideIFrame: false,
                 workstationId: '',
-                emvTimeout: 120
+                emvTimeout: 120,
+                isConfirmedDBpayment: false
             };
 
             $scope.giftCard = {
@@ -254,7 +256,7 @@ angular.module('sntPay').controller('sntPaymentController',
              */
             $scope.showSelectedCard = function() {
                 var isCCPresent = $scope.selectedPaymentType === 'CC' &&
-                (!!$scope.selectedCC && (!!$scope.selectedCC.ending_with || !!$scope.selectedCC.card_number || !!$scope.selectedCC.value));
+                (!!$scope.selectedCC && (!!$scope.selectedCC.ending_with || !!$scope.selectedCC.card_number));
                 var isManualEntry = !!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl &&
                     $scope.payment.isManualEntryInsideIFrame;
 
@@ -651,6 +653,38 @@ angular.module('sntPay').controller('sntPaymentController',
                 }
             };
 
+            var paymentDialogId = null;
+
+            // CICO-33971 : Confirm Direct Bill payment.
+            let confirmDirectBillPayment = function(params) {
+                $timeout(()=> {
+                    ngDialog.open({
+                        template: '/assets/partials/rvConfirmDirectBillPaymentPopup.html',
+                        className: '',
+                        controller: 'confirmDirectBillPopupCtrl',
+                        scope: $scope,
+                        closeByDocument: false,
+                        data: JSON.stringify(params)
+                    });
+                }, 0);
+            };
+
+            // CICO-33971 : To catch ngDialog id - to handle multiple popups.
+            $rootScope.$on('ngDialog.opened', function(e, $dialog) {
+                paymentDialogId = $dialog.attr('id');
+            });
+            // CICO-33971 : Submit payment process after confirming as DB.
+            $scope.$on('CONFIRMED_DB_PAYMENT', ( event, params ) => {
+                $scope.payment.isConfirmedDBpayment = true;
+                $scope.submitPayment(params);
+                ngDialog.close(paymentDialogId);
+            });
+            // CICO-33971 : Close confirmation popup.
+            $scope.$on('CANCELLED_CONFIRM_DB_PAYMENT', () => {
+                $scope.$emit('SHOW_BILL_PAYMENT_POPUP');
+                ngDialog.close(paymentDialogId);
+            });
+
             $scope.submitPayment = function(payLoad) {
                 var errorMessage = ['Please enter a valid amount'],
                     paymentTypeId, // for CC payments, we need payment type id
@@ -684,6 +718,13 @@ angular.module('sntPay').controller('sntPaymentController',
                 if ($scope.hotelConfig.paymentGateway === 'SHIJI' &&
                     ($scope.selectedPaymentType === 'ALIPAY' || $scope.selectedPaymentType === 'WECHAT')) {
                     $scope.$broadcast('INITIATE_SHIJI_PAYMENT', params);
+                    return;
+                }
+
+                // -- CICO-33971 :: Direct Bill Payment --
+                if ($scope.selectedPaymentType === 'DB' && !$scope.payment.isConfirmedDBpayment) {
+                    $scope.$emit("HIDE_BILL_PAYMENT_POPUP");
+                    confirmDirectBillPayment();
                     return;
                 }
 
@@ -805,6 +846,16 @@ angular.module('sntPay').controller('sntPaymentController',
                     name: $scope.selectedPaymentType
                 });
                 $scope.$emit('PAYMENT_TYPE_CHANGED', $scope.selectedPaymentType);
+                
+                // -- CICO-33971 :: Direct Bill Payment --
+                if ($scope.selectedPaymentType === 'DB') {
+                    $scope.payment.isEditable = false;
+                    $scope.payment.amount = initialPaymentAmount;
+                    calculateFee();
+                }
+                else {
+                    $scope.payment.isEditable = true;
+                }
 
                 // If the changed payment type is CC and payment gateway is MLI show CC addition options
                 // If there are attached cards, show them first
@@ -1097,6 +1148,7 @@ angular.module('sntPay').controller('sntPaymentController',
              */
             function onAmountChange() {
                 $scope.payment.amount = $scope.amount || 0;
+                initialPaymentAmount = angular.copy($scope.payment.amount);
                 calculateFee();
             }
 

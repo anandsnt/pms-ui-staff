@@ -54,7 +54,7 @@ sntZestStation.config(['$stateProvider',
       });
 		// terms and conditions                
       	$stateProvider.state('zest_station.checkInTerms', {
-          url: '/checkInTermsAndConditions/:guest_id/:reservation_id/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:first_name/:balance_amount/:pre_auth_amount_for_zest_station/:authorize_cc_at_checkin/:confirmation_number/:pickup_key_mode',
+          url: '/checkInTermsAndConditions/:guest_id/:reservation_id/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:first_name/:balance_amount/:pre_auth_amount_for_zest_station/:authorize_cc_at_checkin/:confirmation_number/:pickup_key_mode/:is_from_room_upsell',
           templateUrl: '/assets/partials_v2/checkin/zsCheckinTermsConditions.html',
           controller: 'zsCheckInTermsConditionsCtrl'
       });
@@ -112,6 +112,27 @@ sntZestStation.config(['$stateProvider',
           templateUrl: '/assets/partials_v2/checkin/zsCheckinEarly.html',
           controller: 'zsCheckinEarlyCtrl'
       });
+
+        // early check-in
+        $stateProvider.state('zest_station.checkinSuccess', {
+          url: '/checkinSuccess/:guest_id/:reservation_id/:room_no/:email/:first_name/:guest_email_blacklisted',
+          templateUrl: '/assets/partials_v2/checkin/zsCheckinSuccess.html',
+          controller: 'zsCheckinSuccessCtrl'
+      });
+
+      // ows msgs
+        $stateProvider.state('zest_station.owsMsgsPresent', {
+          url: '/owsMsgPresent/:guest_id/:reservation_id/:room_no/:email/:first_name/:ows_msgs/:guest_email_blacklisted',
+          templateUrl: '/assets/partials_v2/checkin/zsOwsMsgsPresent.html',
+          controller: 'zsOwsMsgListingCtrl'
+      });
+
+    // room upsells
+    $stateProvider.state('zest_station.roomUpsell', {
+      url: '/checkinRoomUpsell',
+      templateUrl: '/assets/partials_v2/checkin/zsCheckinRoomUpsell.html',
+      controller: 'zsCheckinRoomUpsellCtrl'
+    });
       	
     }
 ]);
