@@ -1,0 +1,44 @@
+<h3>Select a view to navigate to</h3>
+<ul class="jumper-no-wrap">
+
+    <li class='jumper-box-li header' >
+        <div class="jumper-box" click-touch='accordionSection(checkin)'>
+            <h2>Check-In</h2>
+            <div class="">
+                
+            </div>
+        </div><br><br>
+    </li>
+
+    <li ng-repeat='view in jumpList' class='jumper-box-li' >
+        <div class="jumper-box" click-touch='jumpTo(view)'>
+            <h2>{{view.label}}</h2>
+            <div class="">
+                
+            </div>
+        </div><br><br>
+    </li>
+
+
+    <!--li ng-repeat='view in jumpList' class='jumper-box-li' >
+        <div class="jumper-box" click-touch='jumpTo(view)'>
+            <h2>{{view.label}}</h2>
+            <div class="">
+                
+            </div>
+        </div><br><br>
+    </li-->
+
+
+    <!--li ng-repeat='view in jumpList' class='jumper-box-li' >
+        <div class="jumper-box" click-touch='jumpTo(view)'>
+            <h2>{{view.label}}</h2>
+            <div class="">
+                
+            </div>
+        </div><br><br>
+    </li-->
+
+
+
+</ul>
