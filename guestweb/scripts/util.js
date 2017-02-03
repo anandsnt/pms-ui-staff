@@ -17,8 +17,77 @@ var dclone = function(object, unwanted_keys) {
 
   	return newObject;
 };
+var returnTimeArray = function() {
+  return ['12:00 am', '12:15 am', '12:30 am', '12:45 am', '1:00 am', '1:15 am',
+    '1:30 am', '1:45 am', '2:00 am', '2:15 am', '2:30 am', '2:45 am',
+    '3:00 am', '3:15 am', '3:30 am', '3:45 am', '4:00 am', '4:15 am',
+    '4:30 am', '4:45 am', '5:00 am', '5:15 am', '5:30 am', '5:45 am',
+    '6:00 am', '6:15 am', '6:30 am', '6:45 am', '7:00 am', '7:15 am',
+    '7:30 am', '7:45 am', '8:00 am', '8:15 am', '8:30 am', '8:45 am',
+    '9:00 am', '9:15 am', '9:30 am', '9:45 am', '10:00 am', '10:15 am',
+    '10:30 am', '10:45 am', '11:00 am', '11:15 am', '11:30 am', '11:45 am',
+    '12:00 pm', '12:15 pm', '12:30 pm', '12:45 pm', '01:00 pm', '01:15 pm',
+    '1:30 pm', '1:45 pm', '2:00 pm', '2:15 pm', '2:30 pm', '2:45 pm',
+    '3:00 pm', '3:15 pm', '3:30 pm', '3:45 pm', '4:00 pm', '4:15 pm',
+    '4:30 pm', '4:45 pm', '5:00 pm', '5:15 pm', '5:30 pm', '5:45 pm',
+    '6:00 pm', '6:15 pm', '6:30 pm', '6:45 pm', '7:00 pm', '7:15 pm',
+    '7:30 pm', '7:45 pm', '8:00 pm', '8:15 pm', '8:30 pm', '8:45 pm',
+    '9:00 pm', '9:15 pm', '9:30 pm', '9:45 pm', '10:00 pm', '10:15 pm',
+    '10:30 pm', '10:45 pm', '11:00 pm', '11:15 pm', '11:30 pm', '11:45 pm'
+  ];
+};
+
+var getFormattedTime = function(timeToFormat) {
+  // change format to 24 hours
+  var timeHour = parseInt(timeToFormat.slice(0, 2));
+  var timeMinute = timeToFormat.slice(3, 5);
+  var primeTime = timeToFormat.slice(-2).toLowerCase();
+
+  if (primeTime === 'pm' && timeHour < 12) {
+    timeHour = timeHour + 12;
+  } else if (primeTime === 'am' && timeHour === 12) {
+    timeHour = timeHour - 12;
+  }
+  // timeHour = (timeHour < 10) ? ("0" + timeHour) : timeHour;
+  return timeHour + ":" + timeMinute;
+};
 
 
+var getIndexOfSelectedTime = function(time) {
+  // extract time components
+  var timeHour = time.slice(0, 2);
+  var timeMinute = time.slice(3, 5);
+  var primeTime = time.slice(-2).toLowerCase();
+  // set the minute to next available level, ie 00,15,30,45
+  var timeLimit = "00";
+
+  timeHour = (parseInt(timeHour) < 10) ? parseInt(timeHour).toString() : timeHour;
+  if (timeMinute === "00" || timeMinute < 15) {
+    timeMinute = "15";
+  } else if (timeMinute >= 15 && timeMinute < 30) {
+    timeMinute = "30";
+  } else if (timeMinute >= 30 && timeMinute < 45) {
+    timeMinute = "45";
+  } else {
+    timeHour = parseInt(timeHour) + 1;
+    timeMinute = "00";
+  }
+
+  var switchAMPM = function() {
+    primeTime = (primeTime === "pm") ? "am" : "pm";
+  };
+  // if hour is 12, need to switch primetimes
+
+  (timeHour === 12 && timeMinute === "00") ? switchAMPM() : "";
+  timeLimit = timeHour + ":" + timeMinute + " " + primeTime;
+  // find the index of the hoteltime inside the list we have
+  var timeList = returnTimeArray();
+  var index = _.findIndex(timeList, function(time) {
+    return time === timeLimit;
+  });
+
+  return index;
+};
 var DateFormatInfoMappings = {
 
     'MM-DD-YYYY': ['MM-dd-yyyy', 'mm-dd-yy'],
