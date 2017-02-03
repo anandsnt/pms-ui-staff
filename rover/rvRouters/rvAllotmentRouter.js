@@ -53,10 +53,10 @@ angular.module('allotmentModule', [])
             templateUrl: '/assets/partials/allotments/rvAllotmentConfiguration.html',
             controller: 'rvAllotmentConfigurationCtrl',
             onEnter: ['$stateParams', function($stateParams) {
-                if (typeof $stateParams.id === "undefined" || $stateParams.id === null) {
+                if (!$stateParams.id) {
                     $stateParams.id = "NEW_ALLOTMENT";
                 }
-                if (typeof $stateParams.activeTab === "undefined" || $stateParams.activeTab === null) {
+                if (!$stateParams.activeTab) {
                     $stateParams.activeTab = "SUMMARY";
                 }
             }],
