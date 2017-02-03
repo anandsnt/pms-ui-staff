@@ -704,6 +704,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.showReportHeader   = true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/roomOooOosReport/rvRoomOooOosReport.html';
 					break;
+                case reportNames['BUSINESS_ON_BOOKS']:
+                    $scope.showReportHeader   = true;
+                    $scope.detailsTemplateUrl = '/assets/partials/reports/businessOnBooks/rvBusinessOnBooksReport.html';
+                    break;
+
 
 				// case reportNames['A/R_AGING']:
 				// 	$scope.hasReportTotals    = true;

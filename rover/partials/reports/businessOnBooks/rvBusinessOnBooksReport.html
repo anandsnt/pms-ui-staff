@@ -1,0 +1,96 @@
+<!-- Report content -->
+<div id="report-content" class="report-content statistics books">
+    <!-- Left side - table legend. Number of list items here should be identical to the number of table rows on the right side  -->
+    <div class="statistics-headings">
+        <!-- Attach iscroll here, should scroll vertically. While scrolling it should update iscoll on the right side as well -->
+        <div class="scrollable">
+            <ul class="wrapper">
+                <li class="main-heading action-row">
+                    DATE
+                </li>
+                <li>2017-02-01</li>
+                ... repeat for each date
+                <li class="totals">
+                    Totals
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- Right side - table numbers. Number of table rows here should be identical to the number of list items on the left side -->
+    <div class="statistics-content scrollable">
+        <div class="wrapper">
+            <table class="statistics-reports business-books">
+                <thead>
+                    <tr>
+                        <th class="rooms" rowspan="2">Rms</th>
+                        <th class="rooms" rowspan="2">Occ %</th>
+                        <th class="rooms" rowspan="2">Avl. Rms</th>
+                        <th class="rooms" rowspan="2">OOO</th>
+                        <th colspan="2">Total Rms</th>
+                        <th colspan="4">Group Rooms</th>
+                        <th colspan="4">Allotment Rooms</th>
+                        <th colspan="3">Individual Rooms</th>
+                    </tr>
+                    <tr class="bottom-row">
+                        <th>Rvn</th>
+                        <th>ADR/day</th>
+                        <th class="rooms">Picked Up</th>
+                        <th class="rooms">Not Picked Up</th>
+                        <th>Rvn</th>
+                        <th>ADR</th>
+                        <th class="rooms">Picked Up</th>
+                        <th class="rooms">Not Picked Up</th>
+                        <th>Rvn</th>
+                        <th>ADR</th>
+                        <th class="rooms">Count</th>
+                        <th>Rvn</th>
+                        <th>ADR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="rooms">{rooms}</td>
+                        <td class="rooms">{occupancy}</td>
+                        <td class="rooms">{available rooms}</td>
+                        <td class="rooms">{ooo}</td>
+                        <td>${total-rooms-revenue}</td>
+                        <td>${total-rooms-adr-day}</td>
+                        <td class="rooms">{group-rooms-picked-up}</td>
+                        <td class="rooms">{group-rooms-not-picked-up}</td>
+                        <td>${group-rooms-revenue}</td>
+                        <td>${group-rooms-adr}</td>
+                        <td class="rooms">{allotment-rooms-picked-up}</td>
+                        <td class="rooms">{allotment-rooms-not-picked-up}</td>
+                        <td>${allotment-rooms-revenue}</td>
+                        <td>${allotment-rooms-adr}</td>
+                        <td class="rooms">{individual-rooms-count}</td>
+                        <td>${individual-rooms-revenue}</td>
+                        <td>${individual-rooms-adr}</td>
+                    </tr>
+                    ... repeat for each date
+                </tbody>
+                <tfoot>
+                    <tr class="totals">
+                        <td class="rooms">{rooms}</td>
+                        <td class="rooms">{occupancy}</td>
+                        <td class="rooms">{available rooms}</td>
+                        <td class="rooms">{ooo}</td>
+                        <td>${total-rooms-revenue}</td>
+                        <td>${total-rooms-adr-day}</td>
+                        <td class="rooms">{group-rooms-picked-up}</td>
+                        <td class="rooms">{group-rooms-not-picked-up}</td>
+                        <td>${group-rooms-revenue}</td>
+                        <td>${group-rooms-adr}</td>
+                        <td class="rooms">{allotment-rooms-picked-up}</td>
+                        <td class="rooms">{allotment-rooms-not-picked-up}</td>
+                        <td>${allotment-rooms-revenue}</td>
+                        <td>${allotment-rooms-adr}</td>
+                        <td class="rooms">{individual-rooms-count}</td>
+                        <td>${individual-rooms-revenue}</td>
+                        <td>${individual-rooms-adr}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
