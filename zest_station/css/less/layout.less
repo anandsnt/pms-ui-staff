@@ -1982,7 +1982,7 @@
     li:hover {
         background-color: @textColor;
         color: @inputBackground;
-               
+        fill: @inputBackground;
         cursor: pointer;
     }
 }
@@ -1990,7 +1990,23 @@
     padding-left: 25px !important;
 }
 
+.closeJumpListDiv{
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 40px;
+    height: 40px;
+}
 
+.closeJumpListIcon{
+    margin: 2px;
+    width: 90%;
+    height: 90%;
+}
+
+.closeJumpListIcon:hover{
+    fill: @white;
+}
 
 
 
