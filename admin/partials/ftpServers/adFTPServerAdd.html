@@ -1,0 +1,51 @@
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()"><!-- Add new Item -->
+    <div id="add-new-item" data-view="ItemsDetailsView">
+        <header class="content-title float">
+            <h2 ng-show="mode == 'edit'">Edit <span>{{serverDetails.description}} </span></h2>
+            <h2 ng-show="mode == 'add'" translate>Add New FTP Server</h2>
+            
+            <a data-type="load-details" class="action back" ng-click="goBack()" translate>Back to FTP Servers</a>
+            <em class="status required" ng-show="mode == 'edit'">
+                {{'MANDATORY_FIELDS_MESSAGE1' | translate}}
+                <strong>*</strong>
+                {{'MANDATORY_FIELDS_MESSAGE2' | translate}}
+            </em>
+        </header>
+        <section class="content-scroll">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <form name="item-details" method="post" class="form float">
+                <fieldset class="holder full-width float" ng-show="mode == 'add'">
+                    <div class="form-title" >
+                        <h3>
+                            <span translate>ADD_NEW</span>
+                            FTP Servers
+                        </h3>
+                        <em class="status">
+                            {{'MANDATORY_FIELDS_MESSAGE1' | translate}}
+                            <strong>*</strong>
+                            {{'MANDATORY_FIELDS_MESSAGE2' | translate}}
+                        </em>
+                    </div>
+                </fieldset>
+                <fieldset class="holder left float">
+                    <ad-textbox value="serverDetails.description" name = "ftp_description" id = "ftp_description" label = "Server Description" placeholder = "Enter Server Description" required = "yes" styleclass="full-width" ></ad-textbox>
+
+                    <ad-textbox value="serverDetails.url" name = "address" id = "address" label = "FTP address" placeholder = "Enter FTP address" required = "no" styleclass="full-width" ></ad-textbox>
+
+                </fieldset>
+                <fieldset>
+                     <ad-textbox value="serverDetails.username" name = "username" id = "username" label = "Username" placeholder = "Enter Username" required = "no" styleclass="full-width" ></ad-textbox>
+
+                    <ad-textbox inputtype="password" value="serverDetails.password" name = "password" id = "password" label = "Password" placeholder = "Enter Password" required = "no" styleclass="full-width" ></ad-textbox>
+
+                </fieldset>
+            <div class="actions float">
+                <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBack()" translate>CANCEL</button>
+
+                <button type="button" id="save" class="button green add-data-inline"  ng-click="saveServerDetails()" translate>SAVE_CHANGES</button>
+
+            </div>
+        </form>
+    </section>
+</div>
+</section>
