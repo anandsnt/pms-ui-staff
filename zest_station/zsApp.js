@@ -218,6 +218,32 @@ var GlobalZestStationApp = function() {
         // thats right, quick-switching of themes...
         that.callRootMethod('quickSetHotelTheme', theme);
     };
+
+    this.getStateList = function() {
+        // will fetch and pass back a list of all $states that can be 'jumped to'
+        // for use with octopus | testing | development of certain areas
+        // without having to go through normal check-in methods
+        
+        var viewList = angular.element('#header').scope().$parent.$state.get(),
+            jumperStates = [], 
+            jumperStateLabels = [];
+
+        for (var state in viewList) {
+
+            if (viewList[state].jumper) {
+                // push label with state name
+                jumperStates.push({
+                    'label': viewList[state].label,
+                    'name': viewList[state].name
+                });
+                // create list of just labels for UI to show
+                jumperStateLabels.push(viewList[state].label);
+            }
+        }
+
+        that.callRootMethod('toggleJumpList', jumperStates);
+    };  
+
     this.virtualKeyBoardEnabled = false;
 
     this.enableCardSwipeDebug = function(toggle) {
