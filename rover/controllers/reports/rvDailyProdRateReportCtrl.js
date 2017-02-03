@@ -4,7 +4,7 @@
  * CSC is a composer function. It takes the API data and chunks it into months
  * The chunks itself is private protected within the closure generated when CSC is invoked
  * CSC returns a pure object (no inheritance) with three methods to interact with the protected chunks:
- * 
+ *
  * getChunkNames
  * getCurChunk
  * jumpToChunk
@@ -24,7 +24,7 @@
  * 1. Generate "refDat" once. Recalculating can be tedious.
  * 2. Invote "init". Which creates the "chunkStore" an invoke "startProcessChunk"
  * 3. "startProcessChunk" calculates data for pagination and invokes "processChunk"
- * 3. "processChunk" invokes a set of functions to generate the yAxis rates, xAxis headers, xAxis data matrix 
+ * 3. "processChunk" invokes a set of functions to generate the yAxis rates, xAxis headers, xAxis data matrix
  * .. these datas are then loaded onto $scope. Finally it invokes "renderReact"
  * 4. "renderReact" takes the data from scope and renders the react component on screen
  *
@@ -60,6 +60,11 @@ angular.module('sntRover')
             var refData;
             var chunksStore;
 
+            $scope.options = {
+                enableKinetics: true,
+                movingAverage: 0.09
+            };
+
             var UNDEFINED = {
                 id: 'UNDEFINED',
                 rate_type_id: 'UNDEFINED',
@@ -69,50 +74,7 @@ angular.module('sntRover')
             var detailsCtrlScope = $scope.$parent,
                 mainCtrlScope = detailsCtrlScope.$parent;
 
-            var LEFT_PANE_SCROLL = 'left-pane-scroll',
-                RIGHT_PANE_SCROLL = 'right-pane-scroll',
-                TIMEOUT = 300,
-                POLL = 1000;
-
-            var refreshScrollers = function() {
-                if (mainCtrlScope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL)) {
-                    $scope.refreshScroller(LEFT_PANE_SCROLL);
-                }
-
-                if (mainCtrlScope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL)) {
-                    $scope.refreshScroller(RIGHT_PANE_SCROLL);
-                }
-            };
-
-            var setupScrollListner = function() {
-                mainCtrlScope.myScroll[LEFT_PANE_SCROLL]
-                    .on('scroll', function() {
-                        mainCtrlScope.myScroll[RIGHT_PANE_SCROLL]
-                            .scrollTo(0, this.y);
-                    });
-
-                mainCtrlScope.myScroll[RIGHT_PANE_SCROLL]
-                    .on('scroll', function() {
-                        mainCtrlScope.myScroll[LEFT_PANE_SCROLL]
-                            .scrollTo(0, this.y);
-                    });
-            };
-
-            var isScrollReady = function () {
-                if (mainCtrlScope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL) && mainCtrlScope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL)) {
-                    setupScrollListner();
-                } else {
-                    $timeout(isScrollReady, POLL);
-                }
-            };
-
-            var destroyScrolls = function() {
-                mainCtrlScope.myScroll[LEFT_PANE_SCROLL].destroy();
-                delete mainCtrlScope.myScroll[LEFT_PANE_SCROLL];
-
-                mainCtrlScope.myScroll[RIGHT_PANE_SCROLL].destroy();
-                delete mainCtrlScope.myScroll[RIGHT_PANE_SCROLL];
-            };
+            var TIMEOUT = 300;
 
             var watchShowAvailability, watchshowRevenue;
 
@@ -122,21 +84,6 @@ angular.module('sntRover')
             var reportPageChanged;
 
             BaseCtrl.call(this, $scope);
-
-            $scope.setScroller(LEFT_PANE_SCROLL, {
-                'preventDefault': false,
-                'probeType': 3
-            });
-
-            $scope.setScroller(RIGHT_PANE_SCROLL, {
-                'preventDefault': false,
-                'probeType': 3,
-                'scrollX': true
-            });
-
-            $scope.$on('$destroy', destroyScrolls);
-
-            isScrollReady();
 
             // default colspan value
             $scope.colSpan = 5;
@@ -179,7 +126,10 @@ angular.module('sntRover')
             $scope.$on('$destroy', watchshowRevenue);
 
             $scope.reactRenderDone = function() {
-                refreshScrollers();
+
+                // move the scroll to the very start
+                $scope.augNs.scrollToStart();
+
                 $scope.$emit('hideLoader');
             };
 
@@ -504,7 +454,7 @@ angular.module('sntRover')
                 }
 
                 return eachDateVal;
-            }         
+            }
 
             /**
              * Take each chunk passed onto and generate the data (yaxis, headers, xaxis) etc
@@ -559,7 +509,7 @@ angular.module('sntRover')
                     if ( currentMonthIndex > 0 ) {
                         $scope.reportMonthTrack.prev = $scope.reportMonths[ currentMonthIndex - 1 ];
                     } else {
-                        $scope.reportMonthTrack.prev = false; 
+                        $scope.reportMonthTrack.prev = false;
                     }
 
                     if ( currentMonthIndex < $scope.reportMonths.length ) {
@@ -597,7 +547,7 @@ angular.module('sntRover')
              * Utility helper functions used by the above code
              * keeping this section seperated from above
              */
-            
+
             /**
              * preform these just once
              * @param  {array} allRates     all rates
@@ -693,7 +643,7 @@ angular.module('sntRover')
              * takes in the full api data and chunks it out into smaller pieces for each month
              * the chunks is private to the closure created when this funtion is invokes
              * the returned pure object provides method to interact with the private chunks
-             * 
+             *
              * @param  {object} data the full api response recieved
              * @return {object}      the composed object that can access the private data
              */
@@ -798,7 +748,7 @@ angular.module('sntRover')
 
                         if ( index >= 0 && index < meta.length ) {
                             meta.index = index;
-                            chunk = chunks[ meta.keys[index] ]; 
+                            chunk = chunks[ meta.keys[index] ];
                         } else {
                             chunk = {};
                         }

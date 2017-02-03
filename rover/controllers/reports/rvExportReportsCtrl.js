@@ -1,4 +1,4 @@
-angular.module('sntRover').controller('RVScheduleReportsCtrl', [
+angular.module('sntRover').controller('RVExportReportsCtrl', [
     '$rootScope',
     '$scope',
     'RVreportsSrv',
@@ -406,7 +406,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
         $scope.deleteSchedule = function() {
             var success = function() {
-                $scope.errorMessage = '';
+                $scope.errorMessage = "";
                 $scope.$emit( 'hideLoader' );
                 if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
                     $scope.selectedReport.active = false;

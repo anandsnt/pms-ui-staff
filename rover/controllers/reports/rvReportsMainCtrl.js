@@ -48,34 +48,34 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		$scope.showReportDetails = false;
 
 
-		var FULL_REPORT_SCROLL = 'FULL_REPORT_SCROLL';
-		/**/
-		var setupScroll = (function() {
-			$scope.setScroller(FULL_REPORT_SCROLL, {
-			    tap: true,
-			    preventDefault: false,
-			    scrollX: true,
-			    scrollY: false
-			});
-		})();
-		/**/
-		var refreshScroll = function( noReset ) {
-			$scope.refreshScroller(FULL_REPORT_SCROLL);
-
-			if ( !! noReset ) {
-				return;
-			} else if ( $scope.$parent.myScroll.hasOwnProperty(FULL_REPORT_SCROLL) ) {
-			    $scope.$parent.myScroll[FULL_REPORT_SCROLL].scrollTo(0, 0, 100);
-			}
-		};
-
-		$scope.scrollToLast = function() {
-			setTimeout(function() {
-				if ( $scope.$parent.myScroll.hasOwnProperty(FULL_REPORT_SCROLL) ) {
-				    $scope.$parent.myScroll[FULL_REPORT_SCROLL].scrollTo($scope.myScroll[FULL_REPORT_SCROLL].maxScrollX, 0, 299);
-				}
-			}, 300);
-		};
+		// var FULL_REPORT_SCROLL = 'FULL_REPORT_SCROLL';
+		// /**/
+		// var setupScroll = (function() {
+		// 	$scope.setScroller(FULL_REPORT_SCROLL, {
+		// 	    tap: true,
+		// 	    preventDefault: false,
+		// 	    scrollX: true,
+		// 	    scrollY: false
+		// 	});
+		// })();
+		// /**/
+		// var refreshScroll = function( noReset ) {
+		// 	$scope.refreshScroller(FULL_REPORT_SCROLL);
+        //
+		// 	if ( !! noReset ) {
+		// 		return;
+		// 	} else if ( $scope.$parent.myScroll.hasOwnProperty(FULL_REPORT_SCROLL) ) {
+		// 	    $scope.$parent.myScroll[FULL_REPORT_SCROLL].scrollTo(0, 0, 100);
+		// 	}
+		// };
+        //
+		// $scope.scrollToLast = function() {
+		// 	setTimeout(function() {
+		// 		if ( $scope.$parent.myScroll.hasOwnProperty(FULL_REPORT_SCROLL) ) {
+		// 		    $scope.$parent.myScroll[FULL_REPORT_SCROLL].scrollTo($scope.myScroll[FULL_REPORT_SCROLL].maxScrollX, 0, 299);
+		// 		}
+		// 	}, 300);
+		// };
 		/**/
 		$scope.viewCols = [1, 2, 3, 4];
 		var _currentViewCol = $scope.viewCols[0];

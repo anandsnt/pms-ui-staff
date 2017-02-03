@@ -6,7 +6,8 @@ module.exports = {
 			servicesRoot 	= 'rover/services/',
 			assetsForScreen = {
 				minifiedFiles: [
-                         jsLibRoot + 'angular-multi-select.js'
+                         jsLibRoot + 'angular-multi-select.js',
+                         'shared/directives/ngAugmentNativeScroll/ngAugmentNativeScroll.js'
 				],
 				nonMinifiedFiles: [
 
@@ -29,13 +30,13 @@ module.exports = {
                     'rover/directives/onetimemousemove/*.js',
                     'rover/directives/fullCalendar/twoMonthCalendar.js', // FOR ROOM & RATES CALENDAR
                     'rover/directives/ngrepeatend/ngrepeatend.js',
-                    'shared/directives/tooltip/qtipfc.js',// FOR ROOM & RATES CALENDAR
+                    'shared/directives/tooltip/qtipfc.js', // FOR ROOM & RATES CALENDAR
                     'shared/directives/emitWhen/emitWhen.js',
                     'shared/directives/limitInputRange/limitInputRange.js',
                     'rover/directives/multiOptionSelection/multiOptionSelection.js',
                     'shared/directives/prettyTimeAgo/prettyTimeAgo.js',
                     jsLibRoot + 'fullcalender/**/*.js',
-                    'rover/directives/includeReplaceDir.js',
+                    'rover/directives/includeReplaceDir.js'
 				]
 			};
 		return assetsForScreen;
