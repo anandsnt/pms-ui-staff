@@ -354,5 +354,13 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 return deferred.promise;
         };
 
+        /*
+            dummy data for demo / development mode
+         */
+        this.getECIPrePaid = '{"early_checkin_on":true,"early_checkin_available":true,"checkin_time":" 6:00 PM","eci_upsell_limit_reached":false,"offer_eci_bypass":false,"is_room_already_assigned":true,"is_room_ready":true,"is_donot_move_room_marked":false,"guest_arriving_today":true,"reservation_in_early_checkin_window":true,"early_checkin_charge":"£51.00","is_early_checkin_purchased":true,"is_early_checkin_bundled":true,"is_early_checkin_bundled_by_addon":false,"free_eci_for_vips":false,"is_vip":false,"early_checkin_restrict_hour_for_display":" 5","early_checkin_restrict_hour":"05","early_checkin_restrict_minute":"45","early_checkin_restrict_primetime":"PM","early_checkin_restrict_time":"05:45:00 PM","early_checkin_offer_id":1780}';
+        this.getECIFree = '{"early_checkin_on":true,"early_checkin_available":true,"checkin_time":" 6:00 PM","eci_upsell_limit_reached":false,"offer_eci_bypass":false,"is_room_already_assigned":true,"is_room_ready":true,"is_donot_move_room_marked":false,"guest_arriving_today":true,"reservation_in_early_checkin_window":true,"early_checkin_charge":"£51.00","is_early_checkin_purchased":false,"is_early_checkin_bundled":false,"is_early_checkin_bundled_by_addon":false,"free_eci_for_vips":true,"is_vip":true,"early_checkin_restrict_hour_for_display":" 5","early_checkin_restrict_hour":"05","early_checkin_restrict_minute":"45","early_checkin_restrict_primetime":"PM","early_checkin_restrict_time":"05:45:00 PM","early_checkin_offer_id":1783}';
+        this.getECISelect = '{"early_checkin_on":true,"early_checkin_available":true,"checkin_time":" 6:00 PM","eci_upsell_limit_reached":false,"offer_eci_bypass":true,"is_room_already_assigned":true,"is_room_ready":true,"is_donot_move_room_marked":false,"guest_arriving_today":true,"reservation_in_early_checkin_window":true,"early_checkin_charge":"£51.00","is_early_checkin_purchased":false,"is_early_checkin_bundled":false,"is_early_checkin_bundled_by_addon":false,"free_eci_for_vips":false,"is_vip":false,"early_checkin_restrict_hour_for_display":" 5","early_checkin_restrict_hour":"05","early_checkin_restrict_minute":"45","early_checkin_restrict_primetime":"PM","early_checkin_restrict_time":"05:45:00 PM","early_checkin_offer_id":1780}';
+
+
     }
 ]);
