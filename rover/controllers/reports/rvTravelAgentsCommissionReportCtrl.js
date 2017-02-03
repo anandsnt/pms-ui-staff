@@ -16,4 +16,27 @@ angular.module('sntRover')
        //               perPage: 5
        //           };
 
+       var SCROLL_NAME  = 'report-content-travel-agents-commission',
+            timer;
+
+        var refreshScroll = function() {
+            console.log("---scroll")
+            $scope.refreshScroller(SCROLL_NAME);
+        };
+
+        var setScroller = function() {
+            $scope.setScroller(SCROLL_NAME, {
+                probeType: 3,
+                tap: true,
+                preventDefault: false,
+                scrollX: false,
+                scrollY: true
+            });
+        };
+        console.log("scroollllllll")
+        setScroller();
+        $scope.$on("TRAVEL_AGENT_COMMISSIONS_SCROLL", function(){
+            refreshScroll();
+        });
+
     }]);

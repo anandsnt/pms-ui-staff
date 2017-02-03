@@ -1,6 +1,6 @@
 <!-- Report content -->
-    <div ng-controller="RVTravelAgentsCommissionReportCtrl" id="report-content" class="report-content grid scrollable"> <!-- Add class "with-pagination" if pagination is shown -->
-       <div class="wrapper" ng-repeat="travel_agents in results">
+    <div ng-controller="RVTravelAgentsCommissionReportCtrl" id="report-content" ng-iscroll="report-content-travel-agents-commission" class="report-content grid scrollable"> <!-- Add class "with-pagination" if pagination is shown -->
+        <div class="wrapper" ng-repeat="travel_agents in results">
 
             <h2>{{travel_agents.travel_agent_name}}, IATA: {{travel_agents.IATA_number}}</h2>
             <table class="commission-reports">
@@ -37,39 +37,40 @@
                         </td>
                         <td></td>
                         <td>
-                            {{currencySymbol}}{{travel_agents.sub_total.amount}}
+                            {{currencySymbol}}{{travel_agents.sub_total.net_amount}}
                         </td>
                     </tr>
                 </tfoot>
-                <tbody>
+                <tbody >
 
                     <!--
                         $rowspan - number of rates per this reservation
                     -->
-                    <tr ng-repeat="reservation in travel_agents.reservation.results">
+
+                    <tr ng-repeat-start="reservation in travel_agents.reservations">
                         <td rowspan="{{reservation.rate_details.length}}">
                             <strong class="title">{{reservation.room_no}}</strong>
                         </td>
                         <td class="name" rowspan="{{reservation.rate_details.length}}">
                             <strong class="title">
-                                <a href="#">{{reservation.lastname}}, {{reservation.firstname}}</a>
+                                <a href="#">{{reservation.last_name}}, {{reservation.first_name}}</a>
                             </strong>
-                            <span class="data">{{reservation.no_of_nights}}, Nights: {nights}</span>
+                            <span class="data">{{reservation.confirm_no}}, Nights: {{reservation.nights}}</span>
                             <div class="guest-date">
                                 <!-- check in -->
                                 <div class="date">
                                     <span class="guest-status check-in">check-in</span>
-                                    <time datetime="{datetime | exp.: 2017-02-01T12:00:00}">
-                                        <span>{Date | exp.: 02-01-2017}</span>
-                                        <span>{Time | exp.: 6:00 PM}</span>
+                                    <time datetime="">
+                                        <span>{{reservation.arrival_date}}</span>
+                                        <span>{{reservation.arrival_time}}</span>
                                     </time>
                                 </div>
                                 <!-- check out -->
                                 <div class="date">
                                     <span class="guest-status check-out">check-out</span>
                                     <time datetime="{datetime | exp.: 2017-02-01T12:00:00}">
-                                        <span>{Date | exp.: 02-01-2017}</span>
-                                        <span>{Time | exp.: 6:00 PM}</span>
+                                        <span>{{reservation.dep_date}}</span>
+                                        <span>{{reservation.departure_time}}</span>
                                     </time>
                                 </div>
                             </div>
@@ -78,36 +79,39 @@
                              if there are more than 1 rate, others will be display in rows below
                          -->
                         <td>
-                            {Rate Code}
+                            {{reservation.rate_details[0].rate_code}}
                         </td>
                         <td>
-                            {{currencySymbol}}{rate-amount}
+                            {{currencySymbol}} {{reservation.rate_details[0].rate_amount}}
                         </td>
-                        <td rowspan="{$rowspan}">
-                            {{currencySymbol}}{commission-revenue}
+                        <td rowspan="{{reservation.rate_details.length}}">
+                            {{currencySymbol}}{{reservation.commission_revenue}}
                         </td>
-                        <td rowspan="{$rowspan}">
+                        <td rowspan="{{reservation.rate_details.length}}">
                             <!-- If admin settings are set to show comission amount:
                             {currency-symbol}{subtotal-commission-net-amount}
                             --
                                 else if admin settings are set to show comission %:
                             -->
-                            {percentage}%
+                            <span ng-if="reservation.commission_type == currencySymbol">{{currencySymbol}}{{reservation.commission_amount}}</span>
+                            <span ng-if="reservation.commission_type == '%'">{{reservation.commission_amount}}%</span>
+
                         </td>
-                        <td rowspan="{$rowspan}">
-                            {{currencySymbol}}{commission-net-amount}
+                        <td rowspan="{{reservation.rate_details.length}}">
+                            {{currencySymbol}}{{reservation.net_amount}}
                         </td>
                     </tr>
-                    <!-- If more than 1 rate per reservation:
-                    <tr class="rate-row">
-                        <td>{rate-code}</td>
-                        <td>{rate-amount}</td>
-                    </tr>-->
+                    <!-- If more than 1 rate per reservation:-->
+                    <tr class="rate-row" ng-repeat="rate_details in reservation.rate_details"  ng-if="$index > 0" ng-repeat-end >
+                        <td>{{rate_details.rate_code}}</td>
+                        <td>{{rate_details.rate_amount}}</td>
+                    </tr>
+
                    <!--  .. repeat per guest/reservation -->
                 </tbody>
             </table>
-            ... repeat per travel-agent L88-L191
-            ====={{totalCount}}
+            <!-- ... repeat per travel-agent L88-L191 -->
+
         </div>
     </div>
 

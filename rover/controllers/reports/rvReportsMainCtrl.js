@@ -2182,6 +2182,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					console.info( msg );
 					$scope.$broadcast( msg );
 				}
+
+
 			};
 
 			var errorCallback = function (response) {
