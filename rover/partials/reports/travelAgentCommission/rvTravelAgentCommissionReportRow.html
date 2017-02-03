@@ -1,8 +1,8 @@
 <!-- Report content -->
     <div ng-controller="RVTravelAgentsCommissionReportCtrl" id="report-content" class="report-content grid scrollable"> <!-- Add class "with-pagination" if pagination is shown -->
-        <div class="wrapper" ng-repeat="travel_agents in results">
+       <div class="wrapper" ng-repeat="travel_agents in results">
 
-            <h2>{{travel_agents.account_name}}, IATA: {{travel_agents.account_no}}</h2>
+            <h2>{{travel_agents.travel_agent_name}}, IATA: {{travel_agents.IATA_number}}</h2>
             <table class="commission-reports">
                 <thead>
                     <tr>
@@ -33,11 +33,11 @@
                             Subtotals
                         </td>
                         <td>
-                           {{currencySymbol}}{subtotal-commission-revenue}
+                           {{currencySymbol}}{{travel_agents.sub_total.revenue}}
                         </td>
                         <td></td>
                         <td>
-                            {{currencySymbol}}{subtotal-commission-net-amount}
+                            {{currencySymbol}}{{travel_agents.sub_total.amount}}
                         </td>
                     </tr>
                 </tfoot>
@@ -46,15 +46,15 @@
                     <!--
                         $rowspan - number of rates per this reservation
                     -->
-                    <tr>
-                        <td rowspan="{$rowspan}">
-                            <strong class="title">{room}</strong>
+                    <tr ng-repeat="reservation in travel_agents.reservation.results">
+                        <td rowspan="{{reservation.rate_details.length}}">
+                            <strong class="title">{{reservation.room_no}}</strong>
                         </td>
-                        <td class="name" rowspan="{$rowspan}">
+                        <td class="name" rowspan="{{reservation.rate_details.length}}">
                             <strong class="title">
-                                <a href="#">{Last Name, First Name}</a>
+                                <a href="#">{{reservation.lastname}}, {{reservation.firstname}}</a>
                             </strong>
-                            <span class="data">{reservation-#}, Nights: {nights}</span>
+                            <span class="data">{{reservation.no_of_nights}}, Nights: {nights}</span>
                             <div class="guest-date">
                                 <!-- check in -->
                                 <div class="date">

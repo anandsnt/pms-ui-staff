@@ -2217,7 +2217,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             }
 
             if(chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) {
-               console.log("reached inside =====")
+
                 var loadAPIData = function(pageNo) {
                     $scope.genReport(false, pageNo);
                 };
@@ -2227,6 +2227,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     api: loadAPIData,
                     perPage: 10
                 };
+
             }
 
 

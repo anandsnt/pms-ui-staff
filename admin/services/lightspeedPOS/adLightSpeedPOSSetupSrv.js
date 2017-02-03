@@ -47,5 +47,20 @@ admin.service('adLightSpeedPOSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2',
             return deferred.promise;
         };
 
+
+        service.getCompaniesList = function() {
+            var deferred = $q.defer(),
+                url = 'api/hotel_settings/lightspeed/companies.json';
+
+            ADBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
+
+
     }
 ]);
