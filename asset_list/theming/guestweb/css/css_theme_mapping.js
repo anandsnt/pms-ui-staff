@@ -93,6 +93,7 @@ module.exports = {
             'guestweb_snt': [ themeCSSRoot + 'guestweb_snt.css'],
             'guestweb_silver_stone': [ themeCSSRoot + 'guestweb_silver_stone.css'],
             'guestweb_koa_kea': [ themeCSSRoot + 'guestweb_koa_kea.css'],
+            'guestweb_hotel_chicago': [ themeCSSRoot + 'guestweb_hotel_chicago.css'],
             'guestweb_public_ny': [ themeCSSRoot + 'guestweb_public_ny.css']
         };     
     }

@@ -1,5 +1,5 @@
-admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues', 'adLightSpeedPOSSetupSrv', '$timeout',
-    function($scope, lightSpeedSetupValues, adLightSpeedPOSSetupSrv, $timeout) {
+admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues', 'adLightSpeedPOSSetupSrv', '$timeout', '$log',
+    function($scope, lightSpeedSetupValues, adLightSpeedPOSSetupSrv, $timeout, $log) {
 
         BaseCtrl.call(this, $scope);
 
@@ -20,7 +20,8 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
             $scope.state.new = {
                 name: "",
                 username: "",
-                password: ""
+                password: "",
+                company_id: ""
             };
         }, refreshSettings = function(cb) {
             $scope.callAPI(adLightSpeedPOSSetupSrv.fetchLightSpeedPOSConfiguration, {
@@ -137,6 +138,43 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
         };
 
         /**
+         * ------------------ ------------------ ------------------ ------------------ ------------------ -------------
+         * @return {undefined}
+         * ------------------ ------------------ ------------------ ------------------ ------------------ -------------
+         */
+        function retrieveCompanies() {
+            $scope.callAPI(adLightSpeedPOSSetupSrv.getCompaniesList, {
+                successCallBack: function(response) {
+                    $scope.companies = response.companies;
+                },
+                failureCallBack: function() {
+                    $scope.errorMessage = ['Error while retrieving companies list.'];
+                }
+            });
+        }
+
+        /**
+         * ------------------ ------------------ ------------------ ------------------ ------------------ -------------
+         * @param {Integer} companyId id of company whose name needs to be resolved
+         * @returns {*} Company's name if found else '-'
+         * ------------------ ------------------ ------------------ ------------------ ------------------ -------------
+         */
+        $scope.getCompanyName = function(companyId) {
+            if ($scope.companies && $scope.companies.length) {
+                var company = _.findWhere($scope.companies, {id: parseInt(companyId, 10)});
+
+                if (!company) {
+                    $log.warn('Corresponding company not returned from API for companyId: ' + companyId);
+
+                } else {
+                    return company.name;
+                }
+            }
+
+            return '-';
+        };
+
+        /**
          * Initialization stuffs
          * @return {undefined}
          */
@@ -148,5 +186,7 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
             };
 
             $scope.lightspeed = lightSpeedSetupValues;
+
+            retrieveCompanies();
         }());
     }]);

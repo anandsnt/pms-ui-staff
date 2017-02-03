@@ -61,6 +61,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
                         $scope.focusInputField('country-selector');
                     }, 0);
                 }, 0);
+                $scope.setScreenIcon('checkin');
             }
 
         };

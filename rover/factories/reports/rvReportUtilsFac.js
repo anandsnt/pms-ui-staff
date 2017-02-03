@@ -557,6 +557,31 @@ angular.module('reportsModule')
                     report['hasMinNoOfDaysNotOccupied'] = filter;
                 }
 
+                if ( filter.value === 'ACTIONS_BY' ) {
+                     var customData = [
+                        {
+                            value: "GUEST",
+                            name: "Guests"
+                        }
+                     ];
+
+                     report.showActionables = "GUEST";
+
+                     if (!$rootScope.isHourlyRateOn) {
+                        customData.push({value: "GROUP", name: "Groups"});
+                        customData.push({value: "BOTH", name: "Both"});
+                        report.showActionables = "BOTH";
+                     }
+                    report['hasShowActionables'] = {
+                        data: customData,
+                        options: {
+                                key: 'name'
+                        }
+                    };
+
+
+                }
+
 
                 // fill up DS for options combo box
                 if ( __optionFilterNames[filter.value] ) {
@@ -568,6 +593,7 @@ angular.module('reportsModule')
                  if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'RESTRICTED_POST_ONLY' && $rootScope.isStandAlone) {
                     __pushGeneralOptionData( report, filter, false );
                 }
+
 
                  // fill up DS for options combo box
                 if ( __excludeFilterNames[filter.value] ) {
@@ -1145,7 +1171,17 @@ angular.module('reportsModule')
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'ROOM_TYPE' });
                     if ( !! foundFilter ) {
-                        foundFilter['filled'] = true;
+                        // hidden since we need to go through the list for diff reports
+                        // foundFilter['filled'] = true;
+
+                        //  we need suite room type for reservation by user report
+                        if (reportItem['title'] !== reportNames['RESERVATIONS_BY_USER']) {
+                            var selectedData = _.filter(data, function(rooms) {
+                                return !rooms.is_suite && !rooms.is_pseudo;
+                            });
+
+                            data = selectedData;
+                        }
 
                         report.hasRoomTypeFilter = {
                             data: angular.copy( data ),

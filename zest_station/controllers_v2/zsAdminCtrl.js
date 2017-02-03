@@ -22,7 +22,17 @@ sntZestStation.controller('zsAdminCtrl', [
         });
 
         $scope.navToPrev = function() {
-            $state.go('zest_station.home');
+            // go home, unless there is no workstation or workstation is OOS
+            var noWorkstationSelected = $scope.workstation.selected === '',
+                workstationInOrder = $scope.zestStationData.workstationStatus === 'in-order';
+
+            if (!workstationInOrder || noWorkstationSelected) {
+                $state.go('zest_station.outOfService');
+            } else {
+                $state.go('zest_station.home');    
+            }
+            
+
         };
 
         var refreshScroller = function() {
@@ -128,7 +138,8 @@ sntZestStation.controller('zsAdminCtrl', [
          */
         var lastDemoModeSetting = $scope.zestStationData.demoModeEnabled,
             lastEditorModeSetting = $scope.zestStationData.editorModeEnabled,
-            lastNCIModeSetting = $scope.zestStationData.noCheckInsDebugger;
+            lastNCIModeSetting = $scope.zestStationData.noCheckInsDebugger,
+            lastStationStatus = $scope.zestStationData.workstationStatus;
 
         $scope.cancelAdminSettings = function(a) {
             if (!a) {
@@ -136,6 +147,8 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.zestStationData.demoModeEnabled = lastDemoModeSetting;
                 $scope.zestStationData.noCheckInsDebugger = lastNCIModeSetting;
                 $scope.zestStationData.editorModeEnabled = lastEditorModeSetting;
+                $scope.zestStationData.workstationStatus = lastStationStatus;
+
                 $scope.setEditorModeCls();
             }
             $state.go('zest_station.home');
@@ -329,6 +342,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.zestStationData.demoModeEnabled = lastDemoModeSetting;
                 $scope.zestStationData.noCheckInsDebugger = lastNCIModeSetting;
                 $scope.zestStationData.editorModeEnabled = lastEditorModeSetting;
+                $scope.zestStationData.workstationStatus = lastStationStatus;
                 $scope.setEditorModeCls();
             };
             var options = {

@@ -1,6 +1,6 @@
 <section id="main" class="centered" role="main" click-touch='resetTime()'>
     <!-- scanning mode -->
-    <div id="content" ng-hide="qrCodeScanFailed"  touch-press='scanQRCode()'>
+    <div id="content" ng-hide="qrCodeScanFailed" touch-press='scanQRCode()'>
         <h1>
             <text editable-text="QR_LOOKUP_HEADER"> {{'QR_LOOKUP_HEADER' |translate}}</text>
         </h1>
@@ -8,13 +8,10 @@
             <text editable-text="QR_LOOKUP_SUB_HEADER"> {{'QR_LOOKUP_SUB_HEADER' |translate}}</text>
         </h3>
         <div id="qr-code">
-                      <button type="button" class="button arrow-{{arrowDirection}}">
-                        <span ng-include="icons.url.qr_noarrow"></span>
-                        <span ng-include="icons.url.qr_arrow"></span>
-                    </button>
-
-                </li>
-            </ul>
+            <button type="button" class="button arrow-{{arrowDirection}}">
+                <span ng-include="icons.url.qr_noarrow"></span>
+                <span ng-include="icons.url.qr_arrow"></span>
+            </button>
             <h1>
                 <text editable-text="QR_LOOKUP_BUTTON_TEXT"> {{'QR_LOOKUP_BUTTON_TEXT' |translate}}</text>
             </h1>

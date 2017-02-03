@@ -18,13 +18,13 @@
 					</th>
 				</thead>
 				<tbody>
-					<tr ng-repeat="(key, value) in languageEditorData" ng-class='{"station-lang-not-result": showResult(key, value) == "false"}'>
+					<tr ng-repeat="(key, value) in languageEditorDataTmp" ng-class='{"station-lang-not-result": showResult(key, value) == "false"}'>
 						<td>
 							{{key}}
 						</td>
 						<td>
 				 		   	<div class="entry">
-				                <input ng-focus='editingTagKey(key)' ng-blur='editingTagKey("")' type='text' class="room-likes" ng-model='languageEditorData[key]' value='{{value}}'>
+				                <input ng-focus='editingTagKey(key)' ng-blur='editingTagKey("")' type='text' class="room-likes" ng-model='languageEditorDataTmp[key]' value='{{value}}'>
 			                </div>
 						</td>
 					</tr>

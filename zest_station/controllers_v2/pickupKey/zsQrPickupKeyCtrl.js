@@ -36,27 +36,33 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 				onQRScanFail();
 			};
 			var onSuccessFetchReservation = function(response) {
-				var room_no = response.reservation_card.room_number;
-				var onFetchGuestDataSuccess = function(guest_response) {
-					var stateParams = {
-						'reservation_id': reservation_id,
-						'room_no': room_no,
-						'first_name': guest_response.primary_guest_details.first_name
+				var reservation_status = response.reservation_card.reservation_status;
+				
+				if (reservation_status !== 'CHECKEDIN' && reservation_status !== 'CHECKING_OUT') {
+					onFailureFetchReservation('Reservation Status: ' + reservation_status);
+				} else {
+					var room_no = response.reservation_card.room_number;
+					var onFetchGuestDataSuccess = function(guest_response) {
+						var stateParams = {
+							'reservation_id': reservation_id,
+							'room_no': room_no,
+							'first_name': guest_response.primary_guest_details.first_name
+						};
+
+						$state.go('zest_station.pickUpKeyDispense', stateParams);
 					};
 
-					$state.go('zest_station.pickUpKeyDispense', stateParams);
-				};
+					var options = {
+						params: {
+							'id': reservation_id
+						},
+						successCallBack: onFetchGuestDataSuccess,
+						failureCallBack: onFailureFetchReservation
+					};
 
+					$scope.callAPI(zsGeneralSrv.fetchGuestDetails, options);
+				}
 
-				var options = {
-					params: {
-						'id': reservation_id
-					},
-					successCallBack: onFetchGuestDataSuccess,
-					failureCallBack: onFailureFetchReservation
-				};
-
-				$scope.callAPI(zsGeneralSrv.fetchGuestDetails, options);
 			};
 
 
@@ -167,6 +173,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 				$state.go('zest_station.home');
 			});
 			$scope.qrCodeScanFailed = false;
+			$scope.setScreenIcon('key');
 
 		}());
 
