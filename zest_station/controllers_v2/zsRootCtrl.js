@@ -371,18 +371,38 @@ sntZestStation.controller('zsRootCtrl', [
 
         };
 
-        $scope.jumpTo = function(state, selectedMode) {
-            $log.log('jumping to: ', state.name);
+        $scope.jumperData = {
+            'viewJumpFilter': ''
+        };
 
+        $scope.showJumperItem = function(view) {
+            var viewJumpFilter = $scope.jumperData.viewJumpFilter.toLowerCase();
+
+            if (viewJumpFilter === '' || view.label.toLowerCase().indexOf(viewJumpFilter) !== -1) {
+                return true;
+            }
+            // if the view object has any Tags (like meta tags) check those
+            if (view.tags) {
+                for (var i in view.tags) {
+                    if (view.tags[i].toLowerCase().indexOf(viewJumpFilter) !== -1) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        };
+
+        $scope.jumpTo = function(state, isMode, selectedMode) {
+            if (state.modes && !isMode) {// do nothing if isMode==false, this is a header
+                return;
+            }
             var params = {};
-
-            if (selectedMode) {
+            if (isMode) {
                 params = {
                     'isQuickJump': true, 
                     'quickJumpMode': selectedMode
                 };
             }
-
             $state.go(state.name, params);
         };
 
@@ -396,6 +416,7 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.showJumpList = false;
         $scope.jumpList = [];
         $scope.toggleJumpList = function(list) {
+            $scope.jumperData.viewJumpFilter = '';
             $scope.showJumpList = !$scope.showJumpList;
             $scope.jumpList = list;
             $scope.runDigestCycle();
@@ -575,7 +596,7 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.iconsPath = '/assets/zest_station/css/icons/conscious';
                 $scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true);
 
-            } else if (theme === 'avenue' || theme === 'sohotel' || theme === 'epik') {
+            } else if (theme === 'avenue' || theme === 'sohotel' || theme === 'epik' || theme === 'public') {
                 $scope.useNavIcons = true;
                 $scope.theme = theme;
                 $scope.iconsPath = '/assets/zest_station/css/icons/' + theme;

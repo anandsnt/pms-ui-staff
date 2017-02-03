@@ -49,11 +49,19 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 		$stateProvider.state('zest_station.home', {
 			url: '/home',
 			templateUrl: '/assets/partials_v2/zsHomePage.html',
-			controller: 'zsHomeCtrl'
+			controller: 'zsHomeCtrl',
+         	jumper: true,
+	        section: 'General',
+	        label: 'Home',
+	        tags: []
 		}).state('zest_station.speakToStaff', {
             url: '/speakToStaff/:message',
             templateUrl: '/assets/partials_v2/zsSpeakToStaff.html',
-            controller: 'zsSpeakToStaffCtrl'
+            controller: 'zsSpeakToStaffCtrl',
+         	jumper: true,
+	        section: 'General',
+	        label: 'Speak to Staff',
+	        tags: ['talk']
         });
 
         $stateProvider.state('zest_station.admin', {
@@ -61,9 +69,13 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
              controller: 'zsAdminCtrl',
              templateUrl: '/assets/partials_v2/zsAdminSettings.html'
         }).state('zest_station.outOfService', {
-             url: '/outOfService', 
-             controller: 'zsOutOfServiceCtrl',
-             templateUrl: '/assets/partials_v2/zsOutOfService.html'
+            url: '/outOfService', 
+            controller: 'zsOutOfServiceCtrl',
+            templateUrl: '/assets/partials_v2/zsOutOfService.html',
+         	jumper: true,
+	        section: 'General',
+	        label: 'Out of Service',
+	        tags: ['sleepy']
         });
 
 	}
