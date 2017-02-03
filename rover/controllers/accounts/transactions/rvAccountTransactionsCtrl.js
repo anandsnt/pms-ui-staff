@@ -170,6 +170,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			// Scope variable to set active bill
 			$scope.currentActiveBill = 0;
 			$scope.dayRates = -1;
+
+			$scope.isStandAlone = $rootScope.isStandAlone;
+
 			$scope.setScroller('registration-content');
 			$scope.setScroller('bill-tab-scroller', {
 				scrollX: true
@@ -1148,5 +1151,38 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 	    };
 	    // Pagination block ends here ..
 
+	    /*
+	     *Function which fetches and returns the charge details of a grouped charge.
+	     */
+		$scope.expandGroupedCharge = function(feesData) {
+			// Success callback for the charge detail fetch for grouped charges.
+			var fetchChargeDataSuccessCallback = function(data) {
+				feesData.light_speed_data = data;
+				feesData.isExpanded = true;
+				$scope.$emit('hideLoader');
+				refreshRegContentScroller();
+			};
+			// Failure callback for the charge detail fetch for grouped charges.
+			var fetchChargeDataFailureCallback = function(errorMessage) {
+				$scope.errorMessage = errorMessage;
+				$scope.emit('hideLoader');
+			};
+
+			// If the flag for toggle is false, perform api call to get the data.
+			if (!feesData.isExpanded) {
+				var params = {
+					'reference_number': feesData.reference_number,
+					'bill_id': $scope.transactionsDetails.bills[$scope.currentActiveBill].bill_id,
+					'date': feesData.date
+				};
+
+				$scope.invokeApi(rvAccountTransactionsSrv.groupChargeDetailsFetch, params, fetchChargeDataSuccessCallback, fetchChargeDataFailureCallback);
+			}
+			else {
+				// If the flag for toggle is true, then it is simply reverted to hide the data.
+				feesData.isExpanded = false;
+				refreshRegContentScroller();
+			}
+		};
 	}
 ]);

@@ -9,6 +9,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 		var init = function() {
 			$scope.arTransactionDetails = {};
 			$scope.arTransactionDetails.ar_transactions = [];
+			$scope.isStandAlone = $rootScope.isStandAlone;
 			$scope.paymentModalOpened = false;
 			fetchData();
 		};
@@ -675,7 +676,6 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 			}
 			else {
 				var transaction = $scope.arTransactionDetails.ar_transactions[index];
-
 				transaction.details = [];
 
 				if (!transaction.active) {
@@ -700,6 +700,39 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 					transaction.active = ! transaction.active;
 					refreshArTabScroller();
 				}
+			}
+		};
+
+		/*
+	     *Function which fetches and returns the charge details of a grouped charge.
+	     */
+		$scope.expandGroupedCharge = function(item) {
+			// Success callback for the charge detail fetch for grouped charges.
+			var fetchChargeDataSuccessCallback = function(data) {
+				item.light_speed_data = data;
+				item.isExpanded = true;
+				$scope.$emit('hideLoader');
+				refreshArTabScroller();
+			};
+			// Failure callback for the charge detail fetch for grouped charges.
+			var fetchChargeDataFailureCallback = function(errorMessage) {
+				$scope.errorMessage = errorMessage;
+				$scope.emit('hideLoader');
+			};
+
+			// If the flag for toggle is false, perform api call to get the data.
+			if (!item.isExpanded) {
+				var params = {
+					'reference_number': item.reference_number,
+					'date': item.date
+				};
+				
+				$scope.invokeApi(RVCompanyCardSrv.groupChargeDetailsFetch, params, fetchChargeDataSuccessCallback, fetchChargeDataFailureCallback);
+			}
+			else {
+				// If the flag for toggle is true, then it is simply reverted to hide the data.
+				item.isExpanded = false;
+				refreshArTabScroller();
 			}
 		};
 

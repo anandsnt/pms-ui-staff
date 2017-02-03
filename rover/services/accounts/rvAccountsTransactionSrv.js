@@ -10,14 +10,14 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					angular.forEach(data.bills, function(bill, index2) {
-		            	bill.page_no = 1;
-		            	bill.start = 1;
-		            	bill.end = 1;
-		            	bill.nextAction = false;
-		        		bill.prevAction = false;
-		        		bill.transactions = [];
-		        		bill.activeDate = null;
-		            });
+						bill.page_no = 1;
+						bill.start = 1;
+						bill.end = 1;
+						bill.nextAction = false;
+						bill.prevAction = false;
+						bill.transactions = [];
+						bill.activeDate = null;
+					});
 					deferred.resolve(data);
 				}, function(data) {
 					deferred.reject(data);
@@ -32,7 +32,12 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
+
+					// Hard coded to set the first item as light group data.
+					data.transactions[0].is_group_by_ref = true;
+					
 					deferred.resolve(data);
+
 				}, function(data) {
 					deferred.reject(data);
 				});
@@ -83,9 +88,9 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			var url = 'api/financial_transactions/' + trasactionId;
 
 			rvBaseWebSrvV2.putJSON(url, updatedDate).then(function(data) {
-			   	 deferred.resolve(data);
+				 deferred.resolve(data);
 			}, function(data) {
-			    deferred.reject(data);
+				deferred.reject(data);
 			});
 
 			return deferred.promise;
@@ -104,9 +109,9 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			var url = 'api/financial_transactions/' + params.id + '/save_custom_description';
 
 			rvBaseWebSrvV2.postJSON(url, params.postData ).then(function(data) {
-			   	 deferred.resolve(data);
+				 deferred.resolve(data);
 			}, function(data) {
-			    deferred.reject(data);
+				deferred.reject(data);
 			});
 			return deferred.promise;
 		};
@@ -126,9 +131,9 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			var url = 'api/financial_transactions/' + trasactionId;
 
 			rvBaseWebSrvV2.putJSON(url, deleteData.data).then(function(data) {
-			   	 deferred.resolve(data);
+				 deferred.resolve(data);
 			}, function(data) {
-			    deferred.reject(data);
+				deferred.reject(data);
 			});
 
 			return deferred.promise;
@@ -146,9 +151,9 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			var url = 'api/financial_transactions/' + trasactionId;
 
 			rvBaseWebSrvV2.putJSON(url, splitData.data).then(function(data) {
-			   	 deferred.resolve(data);
+				 deferred.resolve(data);
 			}, function(data) {
-			    deferred.reject(data);
+				deferred.reject(data);
 			});
 			return deferred.promise;
 		};
@@ -165,9 +170,9 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			var url = '/api/bills/' + data.bill_id + '/add_payment_method';
 
 			rvBaseWebSrvV2.postJSON(url, data.data_to_pass).then(function(data) {
-				    deferred.resolve(data);
+					deferred.resolve(data);
 				}, function(data) {
-				    deferred.reject(data);
+					deferred.reject(data);
 				});
 			return deferred.promise;
 		};
@@ -313,6 +318,35 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 					deferred.reject(data);
 				});
 
+			return deferred.promise;
+		};
+
+		// Service that fetches the charge details of a grouped charge - CICO-34039.
+		this.groupChargeDetailsFetch = function(params) {
+			// var deferred = $q.defer(),
+			// 	url = '';
+
+			// BaseWebSrvV2.getJSON(url, params).then(function(response) {
+			// 	deferred.resolve(response.data);
+			// }, function (data) {
+			// 	deferred.reject(data);
+			// });
+
+			/*
+			 * To be removed after original api fetch.
+			 */
+			var deferred = $q.defer();
+			var data = [{
+				"description": "LK food",
+				"amount": 49.53
+			}, {
+				"description": "VAT on Food",
+				"amount": 2.97
+			}];
+
+			setTimeout(function() {
+				deferred.resolve(data);
+			}, 1000)
 			return deferred.promise;
 		};
 
