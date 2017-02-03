@@ -6,8 +6,9 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
     'zsCheckinSrv',
     'zsPaymentSrv',
     '$timeout',
+    '$log',
 
-    function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, zsPaymentSrv, $timeout) {
+    function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, zsPaymentSrv, $timeout, $log) {
 
         /** ********************************************************************************************
          **		Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -22,38 +23,56 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
 
         var init = function() {
             $scope.$emit('hideLoader');
-
+            $log.warn('init:: ',$stateParams);
             // Quick-jump from Screen-jumping feature
             // mainly for editing language text and demos
-            if ($stateParams.isQuickJump) {
-                $stateParams = getDummyData($stateParams.quickJumpMode);
+            if ($stateParams.isQuickJump === 'true') {
+                $log.log('Jumping to ECI with demo data');
+                setPlaceholderDataForDemo($stateParams.quickJumpMode);
+            } else {
+                var params = JSON.parse($stateParams.early_checkin_data);
+                setInitEciParams(params);
             }
 
-            var params = JSON.parse($stateParams.early_checkin_data);
             
+        };
+
+        var setInitEciParams = function(params) {
+            $log.log(params);
+
             $scope.selectedReservation = JSON.parse($stateParams.selected_reservation);
-
             setEarlyParams(params);
+
         };
 
-        var getDummyData = function(mode) {
-            if (mode === 'EARLY_CHECKIN_PREPAID') {
-                return zsCheckinSrv.getECIPrePaid;
 
-            } else if (mode === 'EARLY_CHECKIN_SELECT') {
-                return zsCheckinSrv.getECISelect;
+        var setPlaceholderDataForDemo = function(mode) {
+            var options = {
+                params: {
+                    'mode': mode
+                },
+                successCallBack: function(response) {
+                    var data = response.paths;
+                    for (var i in data) {
+                        if (data[i].name === mode) {
+                            setInitEciParams(data[i].data);        
+                        }
+                    }
+                }
+            };
 
-            } else if (mode === 'EARLY_CHECKIN_FREE') {
-                return zsCheckinSrv.getECIFree;
-
-            }
+            $scope.callAPI(zsCheckinSrv.fetchECIPlaceholderData, options);
         };
+
         
         var onBackButtonClicked = function() {
             $state.go('zest_station.checkInReservationDetails');
         };
 
         var earlyCheckinOn = function(data) {
+            if (data.debugWithECIOn) {
+                return true;
+            }
             // check 3 settings: 
             //    hotel > promo upsell > early checkin active
             //    hotel > promo upsell > early checkin available (limit not reached)
@@ -72,7 +91,6 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
 
             $scope.early_checkin_charge = response.early_checkin_charge;
             $scope.offerId = response.early_checkin_offer_id;
-
             $scope.early_charge_symbol = $scope.zestStationData.currencySymbol;
 
             $scope.early_checkin_unavailable = !earlyCheckinOn(response);
@@ -107,7 +125,7 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
 
             }
 
-            console.info('MODE: ', $scope.mode);
+            $log.info('MODE: ', $scope.mode);
         };
 
         $scope.checkinLater = function() {
@@ -135,7 +153,7 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
             };
 
             var onFailure = function(response) {
-                console.warn(response);
+                $log.warn(response);
                 $scope.$emit('hideLoader');
                 $scope.$emit('GENERAL_ERROR');
             };
@@ -164,7 +182,7 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
 
         $scope.initTermsPage = function() {
             
-            console.info('$scope.selectedReservation: ', $scope.selectedReservation);
+            $log.info('$scope.selectedReservation: ', $scope.selectedReservation);
             var stateParams = {
                 'guest_id': $scope.selectedReservation.guest_details[0].id,
                 'reservation_id': $scope.selectedReservation.reservation_details.reservation_id,
@@ -181,7 +199,7 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
                 'authorize_cc_at_checkin': $scope.selectedReservation.reservation_details.authorize_cc_at_checkin
             };
 
-            console.warn('to checkin terms: ', stateParams);
+            $log.warn('to checkin terms: ', stateParams);
             $state.go('zest_station.checkInTerms', stateParams);
         };
 

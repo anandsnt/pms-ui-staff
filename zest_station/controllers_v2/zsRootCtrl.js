@@ -371,18 +371,17 @@ sntZestStation.controller('zsRootCtrl', [
 
         };
 
-        $scope.jumpTo = function(state, selectedMode) {
-            $log.log('jumping to: ', state.name);
-
+        $scope.jumpTo = function(state, isMode, selectedMode) {
+            if (state.modes && !isMode) {// do nothing if isMode==false, this is a header
+                return;
+            }
             var params = {};
-
-            if (selectedMode) {
+            if (isMode) {
                 params = {
                     'isQuickJump': true, 
                     'quickJumpMode': selectedMode
                 };
             }
-
             $state.go(state.name, params);
         };
 

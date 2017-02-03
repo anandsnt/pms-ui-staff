@@ -1,44 +1,41 @@
-<h3>Select a view to navigate to</h3>
-<ul class="jumper-no-wrap">
+<div class='jumper-box-li'>
+      <ul>
+        <li>
+            <!-- img src="" -->
+            <h3 ng-show='!view.modes'>Find</h3>
 
-    <li class='jumper-box-li header' >
-        <div class="jumper-box" click-touch='accordionSection(checkin)'>
-            <h2>Check-In</h2>
-            <div class="">
-                
-            </div>
-        </div><br><br>
-    </li>
+            <input type='text' placeholder='ie. Reservation Details'/>
+              
+        </li>
+    </ul>
+</div>
 
-    <li ng-repeat='view in jumpList' class='jumper-box-li' >
-        <div class="jumper-box" click-touch='jumpTo(view)'>
-            <h2>{{view.label}}</h2>
-            <div class="">
-                
-            </div>
-        </div><br><br>
-    </li>
+<div ng-repeat='view in jumpList' class='jumper-box-li'>
+    <ul>
+        <li click-touch='jumpTo(view, false)'>
+            <!-- img src="" -->
+            <!-- clickable if [no modes] -->
+            <h3 ng-show='!view.modes'>{{view.label}}</h3>
+            <!-- clickable [modes] -->
+            <h3 ng-show='view.modes' class='modes-header'><hr>{{view.label}}</h3>
 
+            <p ng-hide='view.modes'>
+               Nam quis justo in augue auctor imperdiet.
+            </p>
+        </li>
+    </ul>
 
-    <!--li ng-repeat='view in jumpList' class='jumper-box-li' >
-        <div class="jumper-box" click-touch='jumpTo(view)'>
-            <h2>{{view.label}}</h2>
-            <div class="">
-                
-            </div>
-        </div><br><br>
-    </li-->
+    <ul ng-show='view.modes' ng-repeat='mode in view.modes'>
+        <li class='view-mode' click-touch='jumpTo(view, true, mode.name)'>
+            <!-- img src="" -->
+            <!-- clickable [modes] -->
+            <h3>{{mode.label}}</h3>
+            <p>
+               Nam quis justo in augue auctor imperdiet.
+            </p>
+        </li>
+    </ul>
 
+    <hr ng-show='view.modes'>
 
-    <!--li ng-repeat='view in jumpList' class='jumper-box-li' >
-        <div class="jumper-box" click-touch='jumpTo(view)'>
-            <h2>{{view.label}}</h2>
-            <div class="">
-                
-            </div>
-        </div><br><br>
-    </li-->
-
-
-
-</ul>
+</div>
