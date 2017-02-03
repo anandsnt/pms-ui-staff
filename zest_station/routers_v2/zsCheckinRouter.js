@@ -148,7 +148,8 @@ sntZestStation.config(['$stateProvider',
           controller: 'zsRoomErrorCtrl',
           jumper: true,
           section: 'Checkin',
-          label: 'Room Error'
+          label: 'Room Error',
+          tags: ['oops']
       });
                 
                 

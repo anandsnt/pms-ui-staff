@@ -12,14 +12,14 @@
 
             <h3 ng-show='!view.modes'>Find</h3>
 
-            <input type='text' placeholder='ie. Reservation Details'/>
+            <input type='text' ng-model='jumperData.viewJumpFilter' placeholder='ie. Reservation Details'/>
               
         </li>
     </ul>
 </div>
 
 <div ng-repeat='view in jumpList' class='jumper-box-li'>
-    <ul>
+    <ul ng-show='showJumperItem(view)'>
         <li click-touch='jumpTo(view, false)'>
             <!-- img src="" -->
             <!-- clickable if [no modes] -->
@@ -34,7 +34,7 @@
     </ul>
 
     <ul ng-show='view.modes' ng-repeat='mode in view.modes'>
-        <li class='view-mode' click-touch='jumpTo(view, true, mode.name)'>
+        <li ng-show='showJumperItem(mode)' class='view-mode' click-touch='jumpTo(view, true, mode.name)'>
             <!-- img src="" -->
             <!-- clickable [modes] -->
             <h3>{{mode.label}}</h3>
