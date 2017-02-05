@@ -18,7 +18,7 @@ angular.module('sntRover')
             roomsList,
             datesList,
             reservationsList,
-            RVNightlyDiarySrv
+            RVNightlyDiarySrv            
         ) {
 
 
@@ -164,6 +164,33 @@ angular.module('sntRover')
                 }
 
             };
+            var checkReservationAvailability = (arrivalDate, DepartureDate) => {
+                let params = {
+                        'arrival_date': arrivalDate,
+                        'dep_date': DepartureDate,
+                        'reservation_id': $scope.currentSelectedReservation.id
+                    },
+                    successCallBack = function(data) {
+                        $scope.$emit('hideLoader');
+                    },
+                    failureCallBack = function(err) {
+                        console.log("fail");
+                        $scope.$emit('hideLoader');
+                    };
+
+                    console.log(arrivalDate);
+                    console.log(DepartureDate);
+
+                
+                $scope.invokeApi(RVNightlyDiarySrv.checkUpdateAvaibale, 
+                    params,
+                    successCallBack,
+                    failureCallBack);
+            };
+            /*
+             * Show selected reservation highlighted and enable edit bar
+             * @param reservation - Current selected reservation
+             */
             var extendShortenReservation = (newArrivalPosition, newDeparturePosition) => {
 
                 var dispatchData = {
@@ -209,7 +236,8 @@ angular.module('sntRover')
                     goToPrevPage,
                     goToNextPage,
                     selectReservation,
-                    extendShortenReservation
+                    extendShortenReservation,
+                    checkReservationAvailability
                 };
             };
 
