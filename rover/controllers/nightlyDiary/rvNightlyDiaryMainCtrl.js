@@ -7,6 +7,7 @@ angular.module('sntRover')
         '$filter',
         'roomsList',
         'datesList',
+        'ngDialog',
         'reservationsList',
         'RVNightlyDiarySrv',
         function(
@@ -17,6 +18,7 @@ angular.module('sntRover')
             $filter,
             roomsList,
             datesList,
+            ngDialog,
             reservationsList,
             RVNightlyDiarySrv            
         ) {
@@ -172,9 +174,15 @@ angular.module('sntRover')
                     },
                     successCallBack = function(data) {
                         $scope.$emit('hideLoader');
+                        if (data.data.availability_status === 'room_available') {                            
+                            console.log("Rooms available");
+                        } else {
+                            $scope.messages = [data.data.availability_status];
+                            openMessagePopup();
+                        }                        
                     },
                     failureCallBack = function(err) {
-                        console.log("fail");
+                        console.log(err);
                         $scope.$emit('hideLoader');
                     };
 
@@ -201,6 +209,16 @@ angular.module('sntRover')
 
                 store.dispatch(dispatchData);
             };
+            /*
+            * Show messages
+            */
+            var openMessagePopup = function() {
+                ngDialog.open({
+                    template: '/assets/partials/nightlyDiary/rvNightlyDiaryMessages.html',                   
+                    scope: $scope
+                });
+            };
+
 
             /*
              * Function to cancel editing of a reservation
@@ -293,7 +311,7 @@ angular.module('sntRover')
                 };
 
                 store.dispatch(dispatchData);
-            };
+            };           
 
             /* Handle event emitted from child controllers.
              * To refresh diary data - rooms & reservations.

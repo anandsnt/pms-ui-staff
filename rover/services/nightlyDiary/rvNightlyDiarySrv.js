@@ -75,6 +75,20 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             return deferred.promise;
         };
 
+        this.checkUpdateAvaibale = function (data) {
+            var url = '/staff/change_stay_dates/' + data.reservation_id + '/update.json';
+
+            var data = {'arrival_date': data.arrival_date, 'dep_date': data.dep_date};
+            var deferred = $q.defer ();
+
+            BaseWebSrvV2.getJSON(url, data).then(function(data) {
+                deferred.resolve(data);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+            return deferred.promise;
+        };
+
         this.fetchRoomsListAndReservationList = function(params) {
             var deferred = $q.defer(),
                 promises = [],
