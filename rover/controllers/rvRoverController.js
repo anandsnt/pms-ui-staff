@@ -414,9 +414,7 @@ sntRover.controller('roverController',
             event.preventDefault();
             $location.path('#!/');
             $location.replace();
-            // window.history.pushState(null,'any', $location.absUrl());
             return false;
-
         };
 
         $rootScope.$on('$locationChangeStart', routeChange);
