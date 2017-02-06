@@ -459,9 +459,7 @@
   "ROOM_UPGRADE_PREV": "PREV",
   "ROOM_UPGRADE_ERROR": "Room Upsell failed",
   "ROOM_UPGRADE_ERROR_SUB" : "Speak to the staff or continue",
-  "ROOM_UPGRADE_ERROR_CONTINUE": "Continue"
+  "ROOM_UPGRADE_ERROR_CONTINUE": "Continue",
 
-
-
-   
+  "GUESTS": "Guests"
 }
