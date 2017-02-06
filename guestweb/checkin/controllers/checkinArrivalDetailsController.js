@@ -176,19 +176,20 @@
 				$modal.open($scope.errorOpts); // error modal popup
 				$scope.isLoading = false;
 			} else {
-				// change format to 24 hours
-				var hour = parseInt($scope.stayDetails.hour);
-
-				if ($scope.stayDetails.primeTime === 'PM' && hour < 12) {
-					hour = hour + 12;
-				} else if ($scope.stayDetails.primeTime === 'AM' && hour === 12) {
-					hour = hour - 12;
+				var dataTosend;
+				if($scope.arrivalTime){
+					// single dropdown
+					dataTosend = {
+						"arrival_time": convertTime12to24($scope.arrivalTime),
+						"comments": $scope.stayDetails.comment
+					};
+				}else{
+					// three dropdowns 
+					dataTosend = {
+						"arrival_time": get24HoursTime($scope.stayDetails.hour,$scope.stayDetails.minute,$scope.stayDetails.primeTime),
+						"comments": $scope.stayDetails.comment
+					};
 				}
-				hour = (hour < 10) ? ("0" + hour) : hour;
-				var dataTosend = {
-					"arrival_time": hour + ":" + $scope.stayDetails.minute,
-					"comments": $scope.stayDetails.comment
-				};
 
 				preCheckinSrv.postStayDetails(dataTosend).then(function(response) {
 					$rootScope.earlyCheckinHour = response.last_early_checkin_hour;
