@@ -1,7 +1,7 @@
 <!-- Report content -->
     <div ng-controller="RVTravelAgentsCommissionReportCtrl" id="report-content" ng-iscroll="report-content-travel-agents-commission" class="report-content grid scrollable"> <!-- Add class "with-pagination" if pagination is shown -->
-        <div class="wrapper" ng-repeat="travel_agents in results">
-
+        <div class="wrapper">
+            <div ng-repeat="travel_agents in results">
             <h2>{{travel_agents.travel_agent_name}}, IATA: {{travel_agents.IATA_number}}</h2>
             <table class="commission-reports">
                 <thead>
@@ -111,7 +111,7 @@
                 </tbody>
             </table>
             <!-- ... repeat per travel-agent L88-L191 -->
-
+            </div>
         </div>
     </div>
 

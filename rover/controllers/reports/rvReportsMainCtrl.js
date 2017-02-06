@@ -1040,6 +1040,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         };
 
 		function genParams (report, page, perPage, changeAppliedFilter) {
+
+			var chosenReport = reportsSrv.getChoosenReport();
+			//CICO-36269
+			perPage = (chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) ? 10 : perPage;
 			var params = {
 				'id': report.id,
 				'page': page,
@@ -2128,6 +2132,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 			// fill in data into seperate props
 			var updateDS = function (response) {
+				if(chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) {
+					response = responseWithInsidePagination(response);
+				}
 				$scope.totals          = response.totals || [];
 				$scope.headers         = response.headers || [];
 				$scope.subHeaders      = response.sub_headers || [];
@@ -2146,7 +2153,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                         $scope.$broadcast('updatePagination', "COMPARISION_BY_DATE");
                     }, 50);
                 }
-
+                //CICO-36269
                 if(chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) {
                     $timeout(function() {
                         $scope.$broadcast('updatePagination', "TA_COMMISSION_REPORT_MAIN");

@@ -25,6 +25,7 @@ angular.module('sntRover')
         };
 
         var setScroller = function() {
+            console.log("set scroll")
             $scope.setScroller(SCROLL_NAME, {
                 probeType: 3,
                 tap: true,
@@ -33,10 +34,13 @@ angular.module('sntRover')
                 scrollY: true
             });
         };
-        console.log("scroollllllll")
-        setScroller();
+        $timeout( function() {
+            setScroller(); }, 2000);
+
         $scope.$on("TRAVEL_AGENT_COMMISSIONS_SCROLL", function(){
-            refreshScroll();
+            $timeout(function() {
+                refreshScroll();
+            } , 2000);
         });
 
     }]);
