@@ -867,6 +867,7 @@ sntZestStation.controller('zsRootCtrl', [
                 if (typeof response.UID !== 'undefined' && response.UID !== null) {
                     $scope.$broadcast('UID_FETCH_SUCCESS', {
                         'uid': response.UID
+                        'KeyCardData' : response.KeyCardData
                     });
                 } else {
                     $scope.$broadcast('UID_FETCH_FAILED');
