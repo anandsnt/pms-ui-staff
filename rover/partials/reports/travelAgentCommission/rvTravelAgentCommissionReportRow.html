@@ -1,5 +1,5 @@
 <!-- Report content -->
-    <div ng-controller="RVTravelAgentsCommissionReportCtrl" id="report-content" ng-iscroll="report-content-travel-agents-commission" class="report-content grid scrollable"> <!-- Add class "with-pagination" if pagination is shown -->
+    <div ng-controller="RVTravelAgentsCommissionReportCtrl" id="report-content" ng-iscroll="report-content-travel-agents-commission" class="report-content grid scrollable with-pagination"> <!-- Add class "with-pagination" if pagination is shown -->
         <div class="wrapper">
             <div ng-repeat="travel_agents in results">
             <h2>{{travel_agents.travel_agent_name}}, IATA: {{travel_agents.IATA_number}}</h2>
@@ -21,12 +21,14 @@
 
                 </thead>
                 <tfoot>
-                    <!-- Travel Agent pagination // Shown when needed
+                    <!-- Travel Agent pagination // Shown when needed-->
                      <tr class="pagination">
-                        <td colspan="7">
-                        {../_shared/pagination.html}
+                        <td colspan="7"> {{travel_agents.insidePaginationData}}
+                        <!-- {../_shared/pagination.html} -->
+                        <rv-pagination  page-options="travel_agents.insidePaginationData" page-data="travel_agents.total_reservations" >
+ </rv-pagination>
                         </td>
-                    </tr>-->
+                    </tr>
                     <tr class="totals">
                         <td colspan="3"></td>
                         <td>

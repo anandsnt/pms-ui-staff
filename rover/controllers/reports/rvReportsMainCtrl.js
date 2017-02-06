@@ -2129,7 +2129,23 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				page         = !!loadPage ? loadPage : 1;
 
 			var params = genParams(chosenReport, page, resultPerPageOverride || $scope.resultsPerPage);
-
+			var loadAPIDataHello = function (one, two){
+				console.log("atleast here+"+one+"=="+two)
+			};
+			var responseWithInsidePagination = function (response) {
+				_.each(response.results, function (item) {
+					//var apiParams = [loadAPIDataHello, item.travel_agent_id];
+					item.insidePaginationData = {
+						id: item.travel_agent_id,
+	                    api: [loadAPIDataHello, item.travel_agent_id],
+	                    perPage: 1
+					};
+					$timeout(function() {
+                        $scope.$broadcast('updatePagination', item.travel_agent_id);
+                    }, 50);
+				});
+				return response;
+			};
 			// fill in data into seperate props
 			var updateDS = function (response) {
 				if(chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) {
