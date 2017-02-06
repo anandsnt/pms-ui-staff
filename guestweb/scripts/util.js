@@ -78,7 +78,9 @@ var getIndexOfSelectedTime = function(time) {
   };
   // if hour is 12, need to switch primetimes
 
-  (timeHour === 12 && timeMinute === "00") ? switchAMPM() : "";
+  if (timeHour === 12 && timeMinute === "00"){
+    switchAMPM();
+  }
   timeLimit = timeHour + ":" + timeMinute + " " + primeTime;
   // find the index of the hoteltime inside the list we have
   var timeList = returnTimeArray();

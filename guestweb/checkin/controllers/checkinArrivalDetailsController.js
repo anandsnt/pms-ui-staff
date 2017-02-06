@@ -13,6 +13,7 @@
 		var restrictMinute = "";
 		var restrictHour = "";
 		var isDayOfArrival = false;
+
 		$scope.timings = returnTimeArray();// utils function
 		$scope.arrivalTime = "";
 		var restrictHoursListByHour = function(restrictHour) {
@@ -55,6 +56,7 @@
 
 				// code for one dropdown select
 				var hotelTimeLimitInTimeIndex = getIndexOfSelectedTime($rootScope.earlyCheckinRestictTime); 
+
 				$scope.timings.splice(0, hotelTimeLimitInTimeIndex);
 
 			} else if ($rootScope.restrictByHotelTimeisOn) {
@@ -77,6 +79,7 @@
 
 						// code for one dropdown select
 						var hotelTimeLimitInTimeIndex = getIndexOfSelectedTime(response.hote_time);
+						
 						$scope.timings.splice(0, hotelTimeLimitInTimeIndex);
 					}
 
