@@ -17,7 +17,11 @@ var dclone = function(object, unwanted_keys) {
 
   	return newObject;
 };
-
+/**
+ * [convertTime12to24 to convert a single string of 12 hours format to 24 hours]
+ * @param  {[type]} time12h [string - 12 hour format time]
+ * @return {[type]}         [description]
+ */
 function convertTime12to24(time12h) {
   var time = time12h.split(' ')[0];
   var modifier = time12h.split(' ')[1];
@@ -32,6 +36,13 @@ function convertTime12to24(time12h) {
   }
   return hours + ':' + minutes;
 }
+/**
+ * [get24HoursTime to convert time in hours + minutes + primetime of 12 hours format to 24 hours]
+ * @param  {[type]} hour [string]
+ * @param  {[type]} minute [string]
+ * @param  {[type]} primetime [string]
+ * @return {[type]} [description]
+ */
 
 function get24HoursTime(hour, minute, primetime) {
   // change format to 24 hours
