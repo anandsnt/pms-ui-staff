@@ -75,7 +75,7 @@
                                 </li>
 
                                 <li class="days">
-                                    <button class="only-icon prev" ng-class="{'disabled': billData.disablePrev}" ng-show="billData.days" ng-click="summaryDateBtnGroup.prev(billData)">
+                                    <button class="only-icon prev" ng-class="{'disabled': billData.disablePrev}" ng-show="billData.days.length" ng-click="summaryDateBtnGroup.prev(billData)">
                                        <span class="icons icon-double-arrow rotate-left"></span>
                                     </button>
                                     <div class="days-wrapper">
@@ -88,7 +88,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <button class="only-icon next" ng-show="billData.days" ng-class="{'disabled': billData.disableNext}" ng-click="summaryDateBtnGroup.next(billData)">
+                                    <button class="only-icon next" ng-show="billData.days.length" ng-class="{'disabled': billData.disableNext}" ng-click="summaryDateBtnGroup.next(billData)">
                                        <span class="icons icon-double-arrow rotate-right"></span>
                                     </button>
                                 </li>
