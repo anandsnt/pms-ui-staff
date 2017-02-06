@@ -1,15 +1,22 @@
+<div ng-show="hasNoResults" class="report-content no-content">
+    <div class="info">
+        <span class="icon-no-content icon-reports"></span>
+        <strong class="h1">No reports found</strong>
+        <span class="h2">Try changing search criteria or modify dates</span>
+    </div>
+</div>
 <!-- Report content -->
-<div id="report-content" class="report-content statistics books">
+<!-- add .with-pagination if has pagination -->
+<div id="report-content" class="report-content statistics books" ng-hide="hasNoResults" ng-controller="RVBusinessOnBooksController">
     <!-- Left side - table legend. Number of list items here should be identical to the number of table rows on the right side  -->
     <div class="statistics-headings">
         <!-- Attach iscroll here, should scroll vertically. While scrolling it should update iscoll on the right side as well -->
-        <div class="scrollable">
+        <div class="scrollable" ng-iscroll="left-pane-scroll">
             <ul class="wrapper">
                 <li class="main-heading action-row">
                     DATE
                 </li>
-                <li>2017-02-01</li>
-                ... repeat for each date
+                <li ng-repeat="date in dates track by $index">{{date}}</li>
                 <li class="totals">
                     Totals
                 </li>
@@ -17,7 +24,7 @@
         </div>
     </div>
     <!-- Right side - table numbers. Number of table rows here should be identical to the number of list items on the left side -->
-    <div class="statistics-content scrollable">
+    <div class="statistics-content scrollable" ng-iscroll="right-pane-scroll">
         <div class="wrapper">
             <table class="statistics-reports business-books">
                 <thead>
@@ -35,11 +42,11 @@
                         <th>Rvn</th>
                         <th>ADR/day</th>
                         <th class="rooms">Picked Up</th>
-                        <th class="rooms">Not Picked Up</th>
+                        <th class="rooms">NotPicked Up</th>
                         <th>Rvn</th>
                         <th>ADR</th>
                         <th class="rooms">Picked Up</th>
-                        <th class="rooms">Not Picked Up</th>
+                        <th class="rooms">NotPicked Up</th>
                         <th>Rvn</th>
                         <th>ADR</th>
                         <th class="rooms">Count</th>
@@ -48,48 +55,45 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="rooms">{rooms}</td>
-                        <td class="rooms">{occupancy}</td>
-                        <td class="rooms">{available rooms}</td>
-                        <td class="rooms">{ooo}</td>
-                        <td>${total-rooms-revenue}</td>
-                        <td>${total-rooms-adr-day}</td>
-                        <td class="rooms">{group-rooms-picked-up}</td>
-                        <td class="rooms">{group-rooms-not-picked-up}</td>
-                        <td>${group-rooms-revenue}</td>
-                        <td>${group-rooms-adr}</td>
-                        <td class="rooms">{allotment-rooms-picked-up}</td>
-                        <td class="rooms">{allotment-rooms-not-picked-up}</td>
-                        <td>${allotment-rooms-revenue}</td>
-                        <td>${allotment-rooms-adr}</td>
-                        <td class="rooms">{individual-rooms-count}</td>
-                        <td>${individual-rooms-revenue}</td>
-                        <td>${individual-rooms-adr}</td>
+                    <tr ng-repeat="roomDet in roomDetails track by $index">
+                        <td class="rooms">{{roomDet.rooms_data.physical_rooms_count}}</td>
+                        <td class="rooms">{{roomDet.rooms_data.rooms_occ_percentage}}</td>
+                        <td class="rooms">{{roomDet.rooms_data.rooms_available_rooms}}</td>
+                        <td class="rooms">{{roomDet.rooms_data.rooms_ooo_rooms_count}}</td>
+                        <td>${{roomDet.rooms_data.rooms_revenue}}</td>
+                        <td>$0</td>
+                        <td class="rooms">{{roomDet.groups_data.group_picked_up_count}}</td>
+                        <td class="rooms">{{roomDet.groups_data.group_non_picked_up_count}}</td>
+                        <td>${{roomDet.groups_data.group_revenue}}</td>
+                        <td>$0</td>
+                        <td class="rooms">{{roomDet.allotments_data.allotment_picked_up_count}}</td>
+                        <td class="rooms">{{roomDet.allotments_data.allotment_non_picked_up_count}}</td>
+                        <td>${{roomDet.allotments_data.allotment_revenue}}</td>
+                        <td>$0</td>
+                        <td class="rooms">{{roomDet.individuals_data.individual_rooms_count}}</td>
+                        <td>${{roomDet.individuals_data.individual_revenue}}</td>
+                        <td>$0</td>
                     </tr>
-                    ... repeat for each date
+                    <tr class="totals" ng-show="resultsTotalRow">
+                        <td class="rooms">{{resultsTotalRow.total_rooms_count}}</td>
+                        <td class="rooms">{{resultsTotalRow.total_rooms_occ_percentage}}</td>
+                        <td class="rooms">{{resultsTotalRow.total_rooms_available_rooms}}</td>
+                        <td class="rooms">{{resultsTotalRow.total_rooms_ooo_rooms_count}}</td>
+                        <td>${{resultsTotalRow.total_rooms_revenue}}</td>
+                        <td>${{resultsTotalRow.total_rooms_adr}}</td>
+                        <td class="rooms">{{resultsTotalRow.total_group_picked_up_count}}</td>
+                        <td class="rooms">{{resultsTotalRow.total_group_non_picked_up_count}}</td>
+                        <td>${{resultsTotalRow.total_group_revenue}}</td>
+                        <td>${{resultsTotalRow.total_group_adr}}</td>
+                        <td class="rooms">{{resultsTotalRow.total_allotment_picked_up_count}}</td>
+                        <td class="rooms">{{resultsTotalRow.total_allotment_non_picked_up_count}}</td>
+                        <td>${{resultsTotalRow.total_allotment_revenue}}</td>
+                        <td>${{resultsTotalRow.total_allotment_adr}}</td>
+                        <td class="rooms">{{resultsTotalRow.total_individual_rooms_count}}</td>
+                        <td>${{resultsTotalRow.total_individual_revenue}}</td>
+                        <td>${{resultsTotalRow.total_individual_adr}}</td>
+                    </tr>
                 </tbody>
-                <tfoot>
-                    <tr class="totals">
-                        <td class="rooms">{rooms}</td>
-                        <td class="rooms">{occupancy}</td>
-                        <td class="rooms">{available rooms}</td>
-                        <td class="rooms">{ooo}</td>
-                        <td>${total-rooms-revenue}</td>
-                        <td>${total-rooms-adr-day}</td>
-                        <td class="rooms">{group-rooms-picked-up}</td>
-                        <td class="rooms">{group-rooms-not-picked-up}</td>
-                        <td>${group-rooms-revenue}</td>
-                        <td>${group-rooms-adr}</td>
-                        <td class="rooms">{allotment-rooms-picked-up}</td>
-                        <td class="rooms">{allotment-rooms-not-picked-up}</td>
-                        <td>${allotment-rooms-revenue}</td>
-                        <td>${allotment-rooms-adr}</td>
-                        <td class="rooms">{individual-rooms-count}</td>
-                        <td>${individual-rooms-revenue}</td>
-                        <td>${individual-rooms-adr}</td>
-                    </tr>
-                </tfoot>
             </table>
         </div>
     </div>
