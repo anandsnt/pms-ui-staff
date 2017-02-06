@@ -78,7 +78,7 @@ angular.module('sntRover')
            $timeout(function() {
                 refreshScrollers();
                 $scope.$emit('hideLoader');
-            }, DELAY_300 );
+            }, DELAY_1000 );
         };
 
         var init =  function() {

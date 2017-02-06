@@ -17,7 +17,7 @@
                     DATE
                 </li>
                 <li ng-repeat="date in dates track by $index">{{date}}</li>
-                <li class="totals">
+                <li class="totals" ng-show="resultsTotalRow">
                     Totals
                 </li>
             </ul>
@@ -56,23 +56,23 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="roomDet in roomDetails track by $index">
-                        <td class="rooms">{{roomDet.rooms_data.physical_rooms_count}}</td>
+                        <td class="rooms">{{roomDet.rooms_data.rooms_count}}</td>
                         <td class="rooms">{{roomDet.rooms_data.rooms_occ_percentage}}</td>
                         <td class="rooms">{{roomDet.rooms_data.rooms_available_rooms}}</td>
                         <td class="rooms">{{roomDet.rooms_data.rooms_ooo_rooms_count}}</td>
                         <td>${{roomDet.rooms_data.rooms_revenue}}</td>
-                        <td>$0</td>
-                        <td class="rooms">{{roomDet.groups_data.group_picked_up_count}}</td>
-                        <td class="rooms">{{roomDet.groups_data.group_non_picked_up_count}}</td>
-                        <td>${{roomDet.groups_data.group_revenue}}</td>
-                        <td>$0</td>
-                        <td class="rooms">{{roomDet.allotments_data.allotment_picked_up_count}}</td>
-                        <td class="rooms">{{roomDet.allotments_data.allotment_non_picked_up_count}}</td>
-                        <td>${{roomDet.allotments_data.allotment_revenue}}</td>
-                        <td>$0</td>
-                        <td class="rooms">{{roomDet.individuals_data.individual_rooms_count}}</td>
-                        <td>${{roomDet.individuals_data.individual_revenue}}</td>
-                        <td>$0</td>
+                        <td>${{roomDet.rooms_data.adr}}</td>
+                        <td class="rooms">{{roomDet.groups_data.picked_up_count}}</td>
+                        <td class="rooms">{{roomDet.groups_data.non_picked_up_count}}</td>
+                        <td>${{roomDet.groups_data.revenue}}</td>
+                        <td>${{roomDet.groups_data.adr}}</td>
+                        <td class="rooms">{{roomDet.allotments_data.picked_up_count}}</td>
+                        <td class="rooms">{{roomDet.allotments_data.non_picked_up_count}}</td>
+                        <td>${{roomDet.allotments_data.revenue}}</td>
+                        <td>${{roomDet.allotments_data.adr}}</td>
+                        <td class="rooms">{{roomDet.individuals_data.rooms_count}}</td>
+                        <td>${{roomDet.individuals_data.revenue}}</td>
+                        <td>${{roomDet.individuals_data.adr}}</td>
                     </tr>
                     <tr class="totals" ng-show="resultsTotalRow">
                         <td class="rooms">{{resultsTotalRow.total_rooms_count}}</td>
