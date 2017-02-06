@@ -18,7 +18,6 @@ sntZestStation.config(['$stateProvider',
             controller: 'zsPickupKeyDispenseCtrl',
             jumper: true,
             section: 'Pickup',
-	        icon: 'pickup_keys.png',
             label: 'Pickup Keys',
 	          // description: '', // Views With modes only show modes + mode descriptions
           	modes: [
@@ -34,8 +33,8 @@ sntZestStation.config(['$stateProvider',
 	              'icon': 'pickup_solo_progress.png'
 	            }, {
 	              'name': 'KEY_CREATION_SUCCESS_MODE',
-	              'label': 'Key 1 of 1 Success',
-	              'description': 'Completed Pickup [1] Key, final screen in pickup keys',
+	              'label': 'Key 1 of 1 Success & Key 2 of 2 Success',
+	              'description': 'Completed Pickup Key(s), final screen in pickup key flow, common screen',
 	              'icon': 'pickup_one_of_one_success.png'
 	            }, {
 	              'name': 'KEY_ONE_CREATION_IN_PROGRESS_MODE',

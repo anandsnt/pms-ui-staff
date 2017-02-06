@@ -376,7 +376,7 @@ sntZestStation.controller('zsRootCtrl', [
             'invalidGalleryImages': []
         };
         $scope.setGalleryIconInvalid = function(icon) {
-            $scope.jumperData.invalidGalleryImages[icon] = true;
+            $scope.jumperData.invalidGalleryImages[icon + ''] = true;
         };
 
         $scope.galleryIconInvalid = function(icon) {
