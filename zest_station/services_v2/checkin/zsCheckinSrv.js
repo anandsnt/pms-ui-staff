@@ -162,12 +162,11 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         };
 
         this.saveNationality = function(params) {
-            var deferred = $q.defer();
-
-            url = '/api/guest_details/' + params.guest_id;
-            var param = {
-                'nationality_id': params.nationality_id
-            };
+            var deferred = $q.defer(),
+                url = '/api/guest_details/' + params.guest_id;
+                param = {
+                    'nationality_id': params.nationality_id
+                };
 
             zsBaseWebSrv.putJSON(url, param).then(function(data) {
                 deferred.resolve(data);
@@ -180,8 +179,8 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.fetchOwsMessage = function(params) {
 
-            var deferred = $q.defer();
-            var url = '/api/reservation_guest_messages/' + params.reservation_id + '.json';
+            var deferred = $q.defer(),
+                url = '/api/reservation_guest_messages/' + params.reservation_id + '.json';
             // var url = '/sample_json/zest_station/ows_msgs.json';
 
             zsBaseWebSrv.getJSON(url, params).then(function(data) {
@@ -192,10 +191,23 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
-        this.sendOWSMsgAsMail = function(params) {
-            var deferred = $q.defer();
 
-            url = 'api/reservation_guest_messages/email_message.json';
+        this.fetchECIPlaceholderData = function(params) {
+            var deferred = $q.defer(),
+                url = '/sample_json/zest_station/early_checkin.json';
+
+            zsBaseWebSrv.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.sendOWSMsgAsMail = function(params) {
+            var deferred = $q.defer(),
+                url = 'api/reservation_guest_messages/email_message.json';
 
             zsBaseWebSrv.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
@@ -276,10 +288,10 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         };
 
         this.fetchUpsellDetails = function(reservation) {
-             var params = {
-                set_arrival_time_to_current_time: true
-            };
-            var deferred = $q.defer(),
+            var params = {
+                    set_arrival_time_to_current_time: true
+                },
+                deferred = $q.defer(),
                 url = 'guest_web/reservations/' + reservation.id + '.json';
 
             zsBaseWebSrv.getJSON(url, params).then(function(data) {
@@ -292,8 +304,8 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
 
         this.fetchStarTacPrinterData = function(params) {
-            var deferred = $q.defer();
-            var url = 'api/reservations/' + params.reservation_id + '/bill_print_data?is_checkout=false';
+            var deferred = $q.defer(),
+                url = 'api/reservations/' + params.reservation_id + '/bill_print_data?is_checkout=false';
 
             zsBaseWebSrv.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);
@@ -305,8 +317,8 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.fetchHotelTime = function(params) {
 
-            var deferred = $q.defer();
-            var url = 'guest_web/home/fetch_hotel_time.json?reservation_id=' + params.reservation_id;
+            var deferred = $q.defer(),
+                url = 'guest_web/home/fetch_hotel_time.json?reservation_id=' + params.reservation_id;
 
             zsBaseWebSrv.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);
@@ -318,8 +330,8 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
 
         this.fetchRoomUpsellDetails = function(param) {
-            var deferred = $q.defer();
-            var url =  '/zest_station/upgrade_options.json';
+            var deferred = $q.defer(),
+                url =  '/zest_station/upgrade_options.json';
 
             zsBaseWebSrv2.getJSON(url, param).then(function(data) {
                 deferred.resolve(data);
@@ -329,7 +341,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
-        this.fethHotelRooms = function(params){
+        this.fethHotelRooms = function(params) {
             var deferred = $q.defer();
             var url =  ' /staff/rooms/get_rooms';
 
@@ -353,6 +365,14 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
                 return deferred.promise;
         };
+
+        /*
+            dummy data for demo / development mode
+         */
+        this.getECIPrePaid = '{"early_checkin_on":true,"early_checkin_available":true,"checkin_time":" 6:00 PM","eci_upsell_limit_reached":false,"offer_eci_bypass":false,"is_room_already_assigned":true,"is_room_ready":true,"is_donot_move_room_marked":false,"guest_arriving_today":true,"reservation_in_early_checkin_window":true,"early_checkin_charge":"£51.00","is_early_checkin_purchased":true,"is_early_checkin_bundled":true,"is_early_checkin_bundled_by_addon":false,"free_eci_for_vips":false,"is_vip":false,"early_checkin_restrict_hour_for_display":" 5","early_checkin_restrict_hour":"05","early_checkin_restrict_minute":"45","early_checkin_restrict_primetime":"PM","early_checkin_restrict_time":"05:45:00 PM","early_checkin_offer_id":1780}';
+        this.getECIFree = '{"early_checkin_on":true,"early_checkin_available":true,"checkin_time":" 6:00 PM","eci_upsell_limit_reached":false,"offer_eci_bypass":false,"is_room_already_assigned":true,"is_room_ready":true,"is_donot_move_room_marked":false,"guest_arriving_today":true,"reservation_in_early_checkin_window":true,"early_checkin_charge":"£51.00","is_early_checkin_purchased":false,"is_early_checkin_bundled":false,"is_early_checkin_bundled_by_addon":false,"free_eci_for_vips":true,"is_vip":true,"early_checkin_restrict_hour_for_display":" 5","early_checkin_restrict_hour":"05","early_checkin_restrict_minute":"45","early_checkin_restrict_primetime":"PM","early_checkin_restrict_time":"05:45:00 PM","early_checkin_offer_id":1783}';
+        this.getECISelect = '{"early_checkin_on":true,"early_checkin_available":true,"checkin_time":" 6:00 PM","eci_upsell_limit_reached":false,"offer_eci_bypass":true,"is_room_already_assigned":true,"is_room_ready":true,"is_donot_move_room_marked":false,"guest_arriving_today":true,"reservation_in_early_checkin_window":true,"early_checkin_charge":"£51.00","is_early_checkin_purchased":false,"is_early_checkin_bundled":false,"is_early_checkin_bundled_by_addon":false,"free_eci_for_vips":false,"is_vip":false,"early_checkin_restrict_hour_for_display":" 5","early_checkin_restrict_hour":"05","early_checkin_restrict_minute":"45","early_checkin_restrict_primetime":"PM","early_checkin_restrict_time":"05:45:00 PM","early_checkin_offer_id":1780}';
+
 
     }
 ]);
