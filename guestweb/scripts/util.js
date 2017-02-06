@@ -17,6 +17,35 @@ var dclone = function(object, unwanted_keys) {
 
   	return newObject;
 };
+
+function convertTime12to24(time12h) {
+  var time = time12h.split(' ')[0];
+  var modifier = time12h.split(' ')[1];
+  var hours = time.split(':')[0];
+  var minutes = time.split(':')[1];
+
+  if (hours === '12') {
+    hours = '00';
+  }
+  if (modifier === 'pm') {
+    hours = parseInt(hours, 10) + 12;
+  }
+  return hours + ':' + minutes;
+}
+
+function get24HoursTime(hour, minute, primetime) {
+  // change format to 24 hours
+  var hour = parseInt(hour);
+
+  if (primetime === 'PM' && hour < 12) {
+    hour = hour + 12;
+  } else if (primetime === 'AM' && hour === 12) {
+    hour = hour - 12;
+  }
+  hour = (hour < 10) ? ("0" + hour) : hour;
+  return hour + ':' + minute;
+}
+
 var returnTimeArray = function() {
   return ['12:00 am', '12:15 am', '12:30 am', '12:45 am', '1:00 am', '1:15 am',
     '1:30 am', '1:45 am', '2:00 am', '2:15 am', '2:30 am', '2:45 am',
