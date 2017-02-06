@@ -2475,9 +2475,54 @@
             &.books {
                 .statistics-headings { 
                     width: 75px;
+
+                    th.action-row {
+                        height: 36px;
+                        border-bottom: 1px solid @grey2;
+                    }
+
+                    tr {
+                        td {
+                            line-height: 18px;
+                            height: 18px;
+                            padding:0 10px;
+                            background-color: @grey1;
+                            border-bottom: 1px solid @grey2;
+                        }
+
+                        &.totals {
+                            td {
+                                border-bottom:0;
+                            }
+                        }
+                    }
+
                 }
                 .statistics-content {
                     .calc-width(100, 75);
+
+                    th[rowspan="2"] {
+                        border-bottom: 1px solid @grey2;
+                    }
+
+                    th[colspan] {
+                        border-left: 1px solid @grey2;
+                        border-right:0;
+                    }
+
+                    .bottom-row {
+                        th {
+                            border-bottom: 1px solid @grey2;
+                        }
+
+                        th {
+                            &:first-child,
+                            &.rooms,
+                            &.picked-up {
+                                border-left: 1px solid @grey2;
+                            }
+                        }
+                    }
                 }
             }
         }

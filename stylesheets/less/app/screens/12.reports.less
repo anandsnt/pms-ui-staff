@@ -2915,6 +2915,39 @@
                     width: 150px;
 
                     .scrollable {
+                        table {
+                            border-collapse: collapse;
+
+                            th.action-row {
+                                padding: 0 10px;
+                                height: 60px;
+                                font-size: 16px;
+                                font-weight: 600;
+                                color: @white;
+                                background-color: @gcard;
+                                border: 0;
+                                line-height: 30px;
+                            }
+
+                            td {
+                                height: 30px;
+                                padding: 0 10px;
+                                line-height: 30px;
+                                border-bottom: 1px solid rgba(0,0,0,.1);
+                                background-color: @grey1;
+                            }
+
+                            tr.totals {
+
+                                td {
+                                    font-weight: 600;
+                                    text-transform: uppercase;
+                                    border-bottom:0;
+                                }
+                                
+
+                            }
+                        }
                         li {
                             &.action-row {
                                 padding: 0 10px;
