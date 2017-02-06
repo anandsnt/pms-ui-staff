@@ -2145,6 +2145,11 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                         $scope.$broadcast('updatePagination', "COMPARISION_BY_DATE");
                     }, 50);
                 }
+                if(chosenReport.title === reportNames["BUSINESS_ON_BOOKS"]) {
+                    $timeout(function() {
+                        $scope.$broadcast('updatePagination', "BUSINESS_ON_BOOKS");
+                    }, 50);
+                }
 			};
 
 			var sucssCallback = function(response) {
@@ -2204,6 +2209,18 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
                 $scope.comparisonByDatePagination = {
                     id: 'COMPARISION_BY_DATE',
+                    api: loadAPIData,
+                    perPage: 25
+                };
+            }
+
+            if(chosenReport.title === reportNames["BUSINESS_ON_BOOKS"]) {
+                var loadAPIData = function(pageNo) {
+                    $scope.genReport(false, pageNo);
+                };
+
+                $scope.businessOnBooksPagination = {
+                    id: 'BUSINESS_ON_BOOKS',
                     api: loadAPIData,
                     perPage: 25
                 };

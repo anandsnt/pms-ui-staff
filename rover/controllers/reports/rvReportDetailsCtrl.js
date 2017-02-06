@@ -1042,6 +1042,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['DEPOSIT_SUMMARY']:
 				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
 				case reportNames['A/R_AGING']:
+                case reportNames['BUSINESS_ON_BOOKS']:
 					orientation = 'landscape';
 					break;
 

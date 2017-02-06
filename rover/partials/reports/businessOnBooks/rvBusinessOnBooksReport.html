@@ -7,20 +7,30 @@
 </div>
 <!-- Report content -->
 <!-- add .with-pagination if has pagination -->
-<div id="report-content" class="report-content statistics books" ng-hide="hasNoResults" ng-controller="RVBusinessOnBooksController">
+<div id="report-content" class="report-content statistics books" ng-hide="hasNoResults" ng-controller="RVBusinessOnBooksController" ng-class="{'with-pagination' : totalCount >businessOnBooksPagination.perPage}">
     <!-- Left side - table legend. Number of list items here should be identical to the number of table rows on the right side  -->
     <div class="statistics-headings">
         <!-- Attach iscroll here, should scroll vertically. While scrolling it should update iscoll on the right side as well -->
         <div class="scrollable" ng-iscroll="left-pane-scroll">
-            <ul class="wrapper">
-                <li class="main-heading action-row">
-                    DATE
-                </li>
-                <li ng-repeat="date in dates track by $index">{{date}}</li>
-                <li class="totals" ng-show="resultsTotalRow">
-                    Totals
-                </li>
-            </ul>
+            <div class="wrapper">
+              <table>
+                  <thead>
+                      <tr>
+                          <th class="main-heading action-row">
+                              DATE
+                          </th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr ng-repeat="date in dates track by $index">
+                          <td>{{date}}</td>
+                      </tr>
+                      <tr class="totals" ng-show="resultsTotalRow">
+                          <td>Totals</td>
+                      </tr>
+                  </tbody>
+              </table>
+            </div>
         </div>
     </div>
     <!-- Right side - table numbers. Number of table rows here should be identical to the number of list items on the left side -->
@@ -41,12 +51,12 @@
                     <tr class="bottom-row">
                         <th>Rvn</th>
                         <th>ADR/day</th>
-                        <th class="rooms">Picked Up</th>
-                        <th class="rooms">NotPicked Up</th>
+                        <th class="picked-up">Picked Up</th>
+                        <th class="not-picked-up">Not Picked Up</th>
                         <th>Rvn</th>
                         <th>ADR</th>
-                        <th class="rooms">Picked Up</th>
-                        <th class="rooms">NotPicked Up</th>
+                        <th class="picked-up">Picked Up</th>
+                        <th class="not-picked-up">Not Picked Up</th>
                         <th>Rvn</th>
                         <th>ADR</th>
                         <th class="rooms">Count</th>
@@ -98,3 +108,5 @@
         </div>
     </div>
 </div>
+<rv-pagination  page-options="businessOnBooksPagination" page-data="totalCount" >
+</rv-pagination>
