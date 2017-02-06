@@ -4,21 +4,30 @@ sntZestStation.config(['$stateProvider',
 		$stateProvider.state('zest_station.qrPickupKey', {
 			url: '/qrPickupKey',
 			templateUrl: '/assets/partials_v2/pickupKey/zsQRPickupKey.html',
-			controller: 'zsQrPickupKeyCtrl'
+			controller: 'zsQrPickupKeyCtrl',
+            jumper: true,
+            section: 'Pickup',
+            label: 'Pickup Key'
 		});
 
 		// pickup key dispense
 		$stateProvider.state('zest_station.pickUpKeyDispense', {
 			url: '/pickUpKeyDispense/:reservation_id/:room_no/:first_name',
 			templateUrl: '/assets/partials_v2/pickupKey/zsPickupKeyDispense.html',
-			controller: 'zsPickupKeyDispenseCtrl'
+			controller: 'zsPickupKeyDispenseCtrl',
+            jumper: true,
+            section: 'Pickup',
+            label: 'Key Dispense'
 		});
 
 		// pickup key reg card print
 		$stateProvider.state('zest_station.pickUpKeyDispenseRegistrationCardPrint', {
 			url: '/pickUpKeyDispenseRegistrationCardPrint/:reservation_id/:key_created',
 			templateUrl: '/assets/partials_v2/pickupKey/zsPickupKeyRegistartionCardPrint.html',
-			controller: 'zsPickupKeyRegistartionCardPrintCtrl'
+			controller: 'zsPickupKeyRegistartionCardPrintCtrl',
+            jumper: true,
+            section: 'Pickup',
+            label: 'Pickup Registration Print'
 		});
 	}
 ]);

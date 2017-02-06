@@ -148,13 +148,14 @@ sntZestStation.config(['$stateProvider',
           controller: 'zsRoomErrorCtrl',
           jumper: true,
           section: 'Checkin',
-          label: 'Room Error'
+          label: 'Room Error',
+          tags: ['oops']
       });
                 
                 
       	// early check-in
       	$stateProvider.state('zest_station.earlyCheckin', {
-          url: '/checkinEarly/:early_checkin_data:/:early_charge_symbol/:selected_reservation',
+          url: '/checkinEarly/:early_checkin_data:/:early_charge_symbol/:selected_reservation/:isQuickJump/:quickJumpMode',
           templateUrl: '/assets/partials_v2/checkin/zsCheckinEarly.html',
           controller: 'zsCheckinEarlyCtrl',
           // These are for navigating directly to a screen
@@ -164,13 +165,13 @@ sntZestStation.config(['$stateProvider',
           label: 'Early Checkin',
           modes: [
               {
-                  'mode': 'EARLY_CHECKIN_SELECT',
+                  'name': 'EARLY_CHECKIN_SELECT',
                   'label': 'Purchase Early Checkin'
               }, {
-                  'mode': 'EARLY_CHECKIN_PREPAID',
+                  'name': 'EARLY_CHECKIN_PREPAID',
                   'label': 'Prepaid Early Checkin'
               }, {
-                  'mode': 'EARLY_CHECKIN_FREE',
+                  'name': 'EARLY_CHECKIN_FREE',
                   'label': 'FREE Early Checkin'
               }]
       });
