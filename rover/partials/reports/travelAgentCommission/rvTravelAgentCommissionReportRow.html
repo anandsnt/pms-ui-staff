@@ -25,7 +25,7 @@
                      <tr class="pagination">
                         <td colspan="7"> 
                         <!-- {../_shared/pagination.html} -->
-                        <rv-pagination  page-options="travel_agents.insidePaginationData" page-data="travel_agents.total_reservations" ></rv-pagination>
+                        <rv-pagination  page-options="travel_agents.insidePaginationData" page-data="travel_agents.reservation_details.total_reservations" ></rv-pagination>
                         </td>
                     </tr>
                     <tr class="totals">
@@ -48,7 +48,7 @@
                         $rowspan - number of rates per this reservation
                     -->
 
-                    <tr ng-repeat-start="reservation in travel_agents.reservation_details.reservations" ng-if="travel_agents.reservations.reservation_details.length > 0">
+                    <tr ng-repeat-start="reservation in travel_agents.reservation_details.reservations" ng-if="travel_agents.reservation_details.reservations.length > 0">
                         <td rowspan="{{reservation.rate_details.length}}">
                             <strong class="title">{{reservation.room_no}}</strong>
                         </td>
