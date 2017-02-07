@@ -7,6 +7,7 @@ angular.module('sntRover')
         '$filter',
         'roomsList',
         'datesList',
+        'ngDialog',
         'reservationsList',
         'RVNightlyDiarySrv',
         function(
@@ -17,6 +18,7 @@ angular.module('sntRover')
             $filter,
             roomsList,
             datesList,
+            ngDialog,
             reservationsList,
             RVNightlyDiarySrv
         ) {
@@ -164,6 +166,58 @@ angular.module('sntRover')
                 }
 
             };
+
+            var checkReservationAvailability = (arrivalDate, DepartureDate) => {
+                let params = {
+                        'arrival_date': arrivalDate,
+                        'dep_date': DepartureDate,
+                        'reservation_id': $scope.currentSelectedReservation.id
+                    },
+                    successCallBack = function(data) {
+                        $scope.$emit('hideLoader');
+                        if (data.data.availability_status === 'room_available') {                            
+                            $scope.extendShortenReservation = params;
+                        } else {
+                            $scope.messages = [data.data.availability_status];
+                            openMessagePopup();
+                        }                        
+                    },
+                    failureCallBack = function(err) {
+                        $scope.messages = err;
+                        openMessagePopup();
+                        $scope.$emit('hideLoader');
+                    };
+
+                $scope.invokeApi(RVNightlyDiarySrv.checkUpdateAvaibale, 
+                    params,
+                    successCallBack,
+                    failureCallBack);
+            };
+            /*
+             * Function to cancel message popup.
+             */
+            $scope.closeDialog = function() {
+                cancelReservationEditing();
+                ngDialog.close();
+            };
+            /*
+             * Function to save editing of a reservation
+             */
+            var saveReservationEditing = function() {
+                let successCallBack = function() {
+                    fetchRoomListDataAndReservationListData();
+                    cancelReservationEditing();
+                };
+                
+                $scope.invokeApi(RVNightlyDiarySrv.confirmUpdates, 
+                    $scope.extendShortenReservation,
+                    successCallBack);                
+            };
+
+            /*
+             * Show selected reservation highlighted and enable edit bar
+             * @param reservation - Current selected reservation
+             */
             var extendShortenReservation = (newArrivalPosition, newDeparturePosition) => {
 
                 var dispatchData = {
@@ -174,6 +228,16 @@ angular.module('sntRover')
 
                 store.dispatch(dispatchData);
             };
+            /*
+            * Show messages
+            */
+            var openMessagePopup = function() {
+                ngDialog.open({
+                    template: '/assets/partials/nightlyDiary/rvNightlyDiaryMessages.html',                   
+                    scope: $scope
+                });
+            };
+
 
             /*
              * Function to cancel editing of a reservation
@@ -192,13 +256,27 @@ angular.module('sntRover')
                     store.dispatch(dispatchData);
                 }
 
-            };
+            };             
+
             /*
              * Cancel button click edit bar
-             *
              */
             $scope.$on("CANCEL_RESERVATION_EDITING", function() {
                 cancelReservationEditing();
+            });
+            /*
+             * Save button click edit bar
+             */
+            $scope.$on("SAVE_RESERVATION_EDITING", function() {
+                saveReservationEditing();
+            });
+            /* Handle event emitted from child controllers.
+             * To refresh diary data - rooms & reservations.
+             * @param {Number} RoomId - selected room id from search filters.
+            */
+            $scope.$on('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function( event, roomId ) {
+                cancelReservationEditing();
+                fetchRoomListDataAndReservationListData(roomId);
             });
             /**
              * utility method to pass callbacks from
@@ -209,7 +287,8 @@ angular.module('sntRover')
                     goToPrevPage,
                     goToNextPage,
                     selectReservation,
-                    extendShortenReservation
+                    extendShortenReservation,
+                    checkReservationAvailability
                 };
             };
 
@@ -266,16 +345,6 @@ angular.module('sntRover')
 
                 store.dispatch(dispatchData);
             };
-
-            /* Handle event emitted from child controllers.
-             * To refresh diary data - rooms & reservations.
-             * @param {Number} RoomId - selected room id from search filters.
-            */
-            $scope.$on('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function( event, roomId ) {
-                cancelReservationEditing();
-                fetchRoomListDataAndReservationListData(roomId);
-            });
-
             /*
              * to render the grid view
              */
@@ -292,5 +361,5 @@ angular.module('sntRover')
             (() => {
                 renderDiaryView();
             })();
-}]);
+        }]);
 

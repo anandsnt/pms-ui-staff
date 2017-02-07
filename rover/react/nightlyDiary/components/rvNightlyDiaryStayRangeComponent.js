@@ -114,8 +114,9 @@ const NightlyDiaryStayRangeComponent = createClass ({
             this.calculateDepartureDate();
         }
         flagarea.removeEventListener(this.mouseMovingEvent, () =>{});
-        flagarea.removeEventListener(this.mouseLeavingEvent, () =>{});
+        flagarea.removeEventListener(this.mouseLeavingEvent, () =>{});        
         this.updateFlagRanges();
+
     },
     /*
      * Handle mouse moving event of arrival flag
@@ -200,6 +201,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
                         .format(state.dateFormat.toUpperCase());
 
         props.extendShortenReservation(state.arrivalPosition, curentPosition);
+        props.checkReservationAvailability(state.arrivalDate, currentDay);
         this.setState({
             departureStyle: {
                 transform: 'translateX(' + curentPosition + 'px)'
@@ -227,6 +229,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
                         .format(state.dateFormat.toUpperCase());
 
         props.extendShortenReservation(curentPosition, state.departurePosition);
+        props.checkReservationAvailability(state.arrivalDate, state.departureDate);
 
         this.setState({
             arrivalStyle: {
