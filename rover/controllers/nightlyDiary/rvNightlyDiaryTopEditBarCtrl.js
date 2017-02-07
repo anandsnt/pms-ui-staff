@@ -13,6 +13,10 @@ angular.module('sntRover')
                 $scope.$emit('CANCEL_RESERVATION_EDITING');
             };
 
+            $scope.saveEditedReservation = function() {
+                $scope.$emit('SAVE_RESERVATION_EDITING');
+            };
+
             $scope.goToStayCard = function(currentSelectedReservation, currentSelectedRoom) {
 
                 var params = RVNightlyDiarySrv.getCache();
