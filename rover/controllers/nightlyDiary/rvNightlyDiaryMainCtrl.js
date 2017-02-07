@@ -208,11 +208,12 @@ angular.module('sntRover')
                     fetchRoomListDataAndReservationListData();
                     cancelReservationEditing();
                 };
+                
                 $scope.invokeApi(RVNightlyDiarySrv.confirmUpdates, 
                     $scope.extendShortenReservation,
                     successCallBack);                
             };
-            
+
             /*
              * Show selected reservation highlighted and enable edit bar
              * @param reservation - Current selected reservation
