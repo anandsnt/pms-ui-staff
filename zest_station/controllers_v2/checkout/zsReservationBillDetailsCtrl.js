@@ -142,15 +142,11 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
 
         var setPlaceholderData = function(data) {
             // for demo | quick-jumping
-             // retrieve state variable to be displayed
-                $scope.from = data.from;
-                $scope.reservation_id = data.reservation_id;
-                $scope.has_cc = data.has_cc;
-                $scope.first_name = data.first_name;
-                $scope.last_name = data.last_name;
-                $scope.days_of_stay = data.days_of_stay;
-                $scope.hours_of_stay = data.hours_of_stay;
-                fetchBillSuccess(data.fees_sample);
+            $scope.first_name = data.first_name;
+            $scope.last_name = data.last_name;
+            $scope.days_of_stay = data.days_of_stay;
+            $scope.hours_of_stay = data.hours_of_stay;
+            fetchBillSuccess(data.fees_sample);
         };
         var setupBillPlaceholderData = function() {
             $log.log('Jumping to Screen with demo data');

@@ -31,18 +31,18 @@ sntZestStation.config(['$stateProvider',
             section: 'Checkout',
             label: 'Check-Out Card Lookup',
             description: '',
-            modes: [
+            modes: [{
+                  'name': 'FAILED',
+                  'label': 'Card Lookup Failed',
+                  'description': 'Show Failed Message to User for Retry',
+                  'icon': 'checkout_key_failed.png'
+              },
               {
                   'name': 'IN_PROGRESS',
                   'label': 'Card Lookup In-Progress',
                   'description': 'Waiting Message for User, Card Lookup In-Progress',
                   'icon': 'checkout_key_progress.png'
-              }, {
-                  'name': 'FAILED',
-                  'label': 'Card Lookup Failed',
-                  'description': 'Show Failed Message to User for Retry',
-                  'icon': 'checkout_key_failed.png'
-              }, {
+              },  {
                   'name': 'READY',
                   'label': 'Card Lookup Ready For User',
                   'description': 'Ready for user to insert their key card',
@@ -59,7 +59,7 @@ sntZestStation.config(['$stateProvider',
             section: 'Checkout',
             label: 'Check-Out Bill',
             description: '',
-            icon: 'checkout_search.png'// TODO: set w/ dummydata
+            icon: 'checkout_search.png'
 		});
 		// send emaill bill
 		$stateProvider.state('zest_station.emailBill', {
@@ -70,7 +70,7 @@ sntZestStation.config(['$stateProvider',
             section: 'Checkout',
             label: 'Check-Out Email Bill',
             description: '',
-            icon: 'checkout_edit_email.png'// TODO, quick jump for email invalid screen (common to email/edit email)
+            icon: 'checkout_edit_email.png'
 		});
 		// checkout final
 		$stateProvider.state('zest_station.reservationCheckedOut', {
