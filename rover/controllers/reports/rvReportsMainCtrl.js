@@ -1040,9 +1040,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 		function genParams (report, page, perPage, changeAppliedFilter) {
 			var params = {
-				'id': report.id,
 				'page': page,
-				'per_page': perPage
+				'per_page': perPage,
+				'report_name': report.method
 			};
 
 			var key         = '',
@@ -2090,7 +2090,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			if ( _.isEmpty(chosenReport) ) { // I dont know why chosenReport becoming undefined in one loop, need to check with Vijay
 				return exportUrl;
 			}
-			return "/api/reports/" + chosenReport.id + "/submit.csv?";
+			return "/api/reports/" + chosenReport.method + "/submit.csv?";
 		};
 
 
