@@ -430,8 +430,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             onSelect: function(value, datePickerObj) {
                 var selectedDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
-                $scope.toDateOptionsOneMonthLimit.minDate = selectedDate;
-                $scope.toDateOptionsOneMonthLimit.maxDate = reportUtils.processDate(selectedDate).sixMonthsAfter;
+                $scope.toDateOptionsSixMonthsLimit.minDate = selectedDate;
+                $scope.toDateOptionsSixMonthsLimit.maxDate = reportUtils.processDate(selectedDate).sixMonthsAfter;
             }
         }, datePickerCommon);
 
