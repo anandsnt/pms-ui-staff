@@ -63,9 +63,9 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             angular.forEach(billsData, function(billData, key) {
                 angular.forEach(billData.charge_details, function(chargeDetail, key) {
                     var bill_details = {
-                        "date": billData.date,
-                        "description": chargeDetail.description,
-                        "amount": chargeDetail.amount
+                        'date': billData.date,
+                        'description': chargeDetail.description,
+                        'amount': chargeDetail.amount
                     };
 
                     $scope.billData.push(bill_details);
@@ -80,7 +80,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
         $scope.setupBillData = function() {
             var options = {
                 params: {
-                    "reservation_id": $scope.reservation_id
+                    'reservation_id': $scope.reservation_id
                 },
                 successCallBack: fetchBillSuccess,
                 failureCallBack: failureCallBack
@@ -116,7 +116,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             };
             var params = {
                 reservation_id: $stateParams.reservation_id,
-                bill_number: "1"
+                bill_number: '1'
             };
             var options = {
                 params: params,
@@ -154,12 +154,13 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             var options = {
                 successCallBack: function(response) {
                     var data = response.paths;
+
                     setPlaceholderData(data[0].data);        
                 }
             };
 
             $scope.callAPI(zsCheckoutSrv.fetchBillPlaceholderData, options);
-        }
+        };
 
 
         /**
@@ -167,8 +168,8 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
          */
         $scope.checkOutGuest = function() {
             var params = {
-                "reservation_id": $scope.reservation_id,
-                "is_kiosk": true
+                'reservation_id': $scope.reservation_id,
+                'is_kiosk': true
             };
             var checkOutSuccess = function() {
                 if ($scope.zestStationData.keyCardInserted) {
@@ -233,7 +234,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
         $scope.nextClicked = function() {
 
             if (checkIfDueBalancePresent()) {
-                $log.warn("reservation has balance due");
+                $log.warn('reservation has balance due');
                 $state.go('zest_station.speakToStaff');
             } else {
                 $scope.checkOutGuest();
@@ -257,18 +258,18 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 $scope.setupBillData();
                 // storing state varibales to be used in print view also
                 $scope.stateParamsForNextState = {
-                    "from": $stateParams.from,
-                    "reservation_id": $stateParams.reservation_id,
-                    "email": $stateParams.email,
-                    "guest_detail_id": $stateParams.guest_detail_id,
-                    "has_cc": $stateParams.has_cc,
-                    "first_name": $stateParams.first_name,
-                    "last_name": $stateParams.last_name,
-                    "days_of_stay": $stateParams.days_of_stay,
-                    "hours_of_stay": $stateParams.hours_of_stay,
-                    "is_checked_out": $stateParams.is_checked_out
+                    'from': $stateParams.from,
+                    'reservation_id': $stateParams.reservation_id,
+                    'email': $stateParams.email,
+                    'guest_detail_id': $stateParams.guest_detail_id,
+                    'has_cc': $stateParams.has_cc,
+                    'first_name': $stateParams.first_name,
+                    'last_name': $stateParams.last_name,
+                    'days_of_stay': $stateParams.days_of_stay,
+                    'hours_of_stay': $stateParams.hours_of_stay,
+                    'is_checked_out': $stateParams.is_checked_out
                 };
-            };
+            }
         };
 
         /**

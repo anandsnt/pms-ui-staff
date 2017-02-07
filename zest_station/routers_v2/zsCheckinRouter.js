@@ -183,7 +183,7 @@ sntZestStation.config(['$stateProvider',
           jumper: true,
           section: 'Checkin',
           label: 'Early Checkin',
-          // description: '', // Views With modes only show modes + mode descriptions
+          // Views With modes only show modes + mode descriptions
           modes: [
               {
                   'name': 'EARLY_CHECKIN_SELECT',

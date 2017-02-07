@@ -293,7 +293,7 @@ sntZestStation.controller('zsRootCtrl', [
         var resetJumpGallerySettings = function() {
             $scope.jumperData.invalidGalleryImages = [];// need to clear this for screen jumper to work properly with theme switching
             $scope.jumpGalleryOn = false;
-        }
+        };
 
         $scope.useNavIcons = true;
 
@@ -424,6 +424,7 @@ sntZestStation.controller('zsRootCtrl', [
                 return;
             }
             var params = {};
+
             if (isMode || state.placeholderData) {
                 params = {
                     'isQuickJump': true, 
@@ -459,10 +460,7 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.jumpGalleryOn = false;
         $scope.jumpGalleryIconPath = '';
         $scope.toggleJumpListGallery = function() {
-            console.log('toggle gallery view :)');
             $scope.jumpGalleryOn = !$scope.jumpGalleryOn;
-
-
         };
 
         // for chrome extension or console switching of languages
@@ -704,6 +702,7 @@ sntZestStation.controller('zsRootCtrl', [
             var isDispensingKey = function() {
                 return $scope.zestStationData.makingKeyInProgress;
             };
+
             function increment() {
                 // pause timers when editor mode is enabled, so user doesnt get moved from the screen, 
                 // reflect in diagnostics with the editorModeEnabled attribute

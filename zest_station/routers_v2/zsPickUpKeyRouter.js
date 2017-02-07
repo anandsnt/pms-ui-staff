@@ -19,7 +19,7 @@ sntZestStation.config(['$stateProvider',
             jumper: true,
             section: 'Pickup',
             label: 'Pickup Keys',
-	          // description: '', // Views With modes only show modes + mode descriptions
+	        // Views With modes only show modes + mode descriptions
           	modes: [
 	            {
 	              'name': 'DISPENSE_KEY_MODE',
@@ -57,8 +57,6 @@ sntZestStation.config(['$stateProvider',
 	              'description': 'When Key 1 succeds but key 2 failed, user re-tries',
 	              'icon': 'pickup_dispense_key_two_fail_retry.png'
 	            }]
-
-
 
         });
 

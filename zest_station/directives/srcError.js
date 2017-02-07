@@ -22,18 +22,18 @@ sntZestStation.directive('srcError', [function() {
             ngModel: '=ngModel'
         },
         link: function(scope, element, attrs) {
-         element.bind('error', function() {
-            if (attrs.src != attrs.srcError) {
-                if (attrs.srcError.length > 0){
-                    scope.$parent.$parent.$parent.jumperData.invalidGalleryImages.push(attrs.srcError);
-                    setTimeout(function(){
-                        scope.$parent.$parent.$parent.runDigestCycle();
-                    },500);
-                }
+            element.bind('error', function() {
+                if (attrs.src !== attrs.srcError) {
+                    if (attrs.srcError.length > 0) {
+                        scope.$parent.$parent.$parent.jumperData.invalidGalleryImages.push(attrs.srcError);
+                        setTimeout(function() {
+                            scope.$parent.$parent.$parent.runDigestCycle();
+                        }, 500);
+                    }
 
-            } 
+                } 
 
-          });
+            });
         }
-    }
+    };
 }]);
