@@ -25,8 +25,7 @@
                      <tr class="pagination">
                         <td colspan="7"> {{travel_agents.insidePaginationData}}
                         <!-- {../_shared/pagination.html} -->
-                        <rv-pagination  page-options="travel_agents.insidePaginationData" page-data="travel_agents.total_reservations" >
- </rv-pagination>
+                        <rv-pagination  page-options="travel_agents.insidePaginationData" page-data="travel_agents.total_reservations" ></rv-pagination>
                         </td>
                     </tr>
                     <tr class="totals">
@@ -49,7 +48,7 @@
                         $rowspan - number of rates per this reservation
                     -->
 
-                    <tr ng-repeat-start="reservation in travel_agents.reservations">
+                    <tr ng-repeat-start="reservation in travel_agents.reservations" ng-if="travel_agents.reservations.length > 0">
                         <td rowspan="{{reservation.rate_details.length}}">
                             <strong class="title">{{reservation.room_no}}</strong>
                         </td>
@@ -95,8 +94,9 @@
                             --
                                 else if admin settings are set to show comission %:
                             -->
-                            <span ng-if="reservation.commission_type == currencySymbol">{{currencySymbol}}{{reservation.commission_amount}}</span>
-                            <span ng-if="reservation.commission_type == '%'">{{reservation.commission_amount}}%</span>
+                            <span>{{reservation.commission_amount}}</span>
+                          <!--   <span ng-if="reservation.commission_type == currencySymbol">{{currencySymbol}}{{reservation.commission_amount}}</span>
+                            <span ng-if="reservation.commission_type == '%'">{{reservation.commission_amount}}%</span> -->
 
                         </td>
                         <td rowspan="{{reservation.rate_details.length}}">
@@ -108,6 +108,13 @@
                         <td>{{rate_details.rate_code}}</td>
                         <td>{{rate_details.rate_amount}}</td>
                     </tr>
+
+                    <tr><td> 
+                        <div class="info">
+                        <span class="icon-no-content icon-reports"></span>
+                        <strong class="h1">No reservations found</strong>
+                        </div>
+                    </td></tr>
 
                    <!--  .. repeat per guest/reservation -->
                 </tbody>

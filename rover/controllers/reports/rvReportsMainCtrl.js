@@ -2134,7 +2134,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			};
 			var responseWithInsidePagination = function (response) {
 				_.each(response.results, function (item) {
-					//var apiParams = [loadAPIDataHello, item.travel_agent_id];
+	
 					item.insidePaginationData = {
 						id: item.travel_agent_id,
 	                    api: [loadAPIDataHello, item.travel_agent_id],
