@@ -866,7 +866,7 @@ sntZestStation.controller('zsRootCtrl', [
 				// if so find reservation using that
                 if (typeof response.UID !== 'undefined' && response.UID !== null) {
                     $scope.$broadcast('UID_FETCH_SUCCESS', {
-                        'uid': response.UID
+                        'uid': response.UID,
                         'KeyCardData' : response.KeyCardData
                     });
                 } else {
