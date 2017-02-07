@@ -704,8 +704,20 @@ sntZestStation.controller('zsRootCtrl', [
             var isDispensingKey = function() {
                 return $scope.zestStationData.makingKeyInProgress;
             };
-
             function increment() {
+                // pause timers when editor mode is enabled, so user doesnt get moved from the screen, 
+                // reflect in diagnostics with the editorModeEnabled attribute
+                if ($scope.zestStationData.editorModeEnabled === 'true') {
+
+                    if (zestSntApp.timeDebugger) {
+                        $scope.zestStationData.timeDebugger = 'true';
+                    } else {
+                        $scope.zestStationData.timeDebugger = 'false';
+                    }
+
+                    return;
+                }
+
                 var currentState = $state.current.name,
                     idlePopupTime = $scope.zestStationData.idle_timer.prompt,
                     idleToHomeTime = $scope.zestStationData.idle_timer.max,
@@ -760,6 +772,7 @@ sntZestStation.controller('zsRootCtrl', [
                 var ignoreTimeoutOnStates = ['zest_station.admin', 'zest_station.home', 'zest_station.outOfService'],
                     inAnIgnoreState = ignoreTimeoutOnStates.indexOf(currentState) !== -1;
 
+                // If Editor Mode is enabled, the idle timer is disabled
                 if (inAnIgnoreState) {
                     // in case station goes OOS or home During encoding due to User or other Error
                     $scope.zestStationData.makingKeyInProgress = false;
