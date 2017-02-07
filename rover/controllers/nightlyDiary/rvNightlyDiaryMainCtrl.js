@@ -166,7 +166,7 @@ angular.module('sntRover')
                 }
 
             };
-            
+
             var checkReservationAvailability = (arrivalDate, DepartureDate) => {
                 let params = {
                         'arrival_date': arrivalDate,
@@ -193,9 +193,16 @@ angular.module('sntRover')
                     failureCallBack);
             };
             /*
+             * Function to cancel message popup.
+             */
+            $scope.closeDialog = function() {
+                cancelReservationEditing();
+                ngDialog.close();
+            };
+            /*
              * Function to save editing of a reservation
              */
-            var SaveReservationEditing = function() {
+            var saveReservationEditing = function() {
                 let successCallBack = function(data) {
                     fetchRoomListDataAndReservationListData();
                     cancelReservationEditing();
@@ -258,7 +265,7 @@ angular.module('sntRover')
              * Save button click edit bar
              */
             $scope.$on("SAVE_RESERVATION_EDITING", function() {
-                SaveReservationEditing();
+                saveReservationEditing();
             });
             /* Handle event emitted from child controllers.
              * To refresh diary data - rooms & reservations.
