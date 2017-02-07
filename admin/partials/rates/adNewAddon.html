@@ -89,9 +89,9 @@
                     <ad-textbox styleclass="full-width" value="singleAddon.amount" name="amount" id="amount" label="{{'AMOUNT' | translate}} [{{currencySymbol}}]" placeholder="Enter the amount" required="yes"></ad-textbox>
                 </div>
 
-                <ad-toggle-button div-class="full-width" label="{{'ALTERNATE_DESCRIPTION_SWITCH_LABEL' | translate}}" ng-show="isConnectedToPMS" is-checked="singleAddon.enable_alternate_description"></ad-toggle-button>
+                <ad-toggle-button div-class="full-width" label="{{'ALTERNATE_DESCRIPTION_SWITCH_LABEL' | translate}}" ng-show="isConnectedToPMS" is-checked="singleAddon.is_alternate_description_active"></ad-toggle-button>
 
-                <ad-textarea rows="4" ng-show="isConnectedToPMS && singleAddon.enable_alternate_description" div-class="full-width" text-area-class="full-width" value="singleAddon.alternate_description" name="desc" id="desc" label="{{'ALTERNATE_DESCRIPTION' | translate}}" placeholder="{{'ENTER_ADDON_ALTERNATE_DESCRIPTION' | translate}}" required="yes"></ad-textarea>
+                <ad-textarea rows="4" ng-show="isConnectedToPMS && singleAddon.is_alternate_description_active" div-class="full-width" text-area-class="full-width" value="singleAddon.alternate_description" name="desc" id="desc" label="{{'ALTERNATE_DESCRIPTION' | translate}}" placeholder="{{'ENTER_ADDON_ALTERNATE_DESCRIPTION' | translate}}" required="yes"></ad-textarea>
 
                 <div ng-hide="isConnectedToPMS" class="entry">
                     <div class="entry full-width">
