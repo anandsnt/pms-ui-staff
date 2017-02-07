@@ -23,7 +23,7 @@
                 <tfoot>
                     <!-- Travel Agent pagination // Shown when needed-->
                      <tr class="pagination">
-                        <td colspan="7"> {{travel_agents.insidePaginationData}}
+                        <td colspan="7"> 
                         <!-- {../_shared/pagination.html} -->
                         <rv-pagination  page-options="travel_agents.insidePaginationData" page-data="travel_agents.total_reservations" ></rv-pagination>
                         </td>
@@ -48,7 +48,7 @@
                         $rowspan - number of rates per this reservation
                     -->
 
-                    <tr ng-repeat-start="reservation in travel_agents.reservations" ng-if="travel_agents.reservations.length > 0">
+                    <tr ng-repeat-start="reservation in travel_agents.reservation_details.reservations" ng-if="travel_agents.reservations.reservation_details.length > 0">
                         <td rowspan="{{reservation.rate_details.length}}">
                             <strong class="title">{{reservation.room_no}}</strong>
                         </td>
@@ -109,12 +109,13 @@
                         <td>{{rate_details.rate_amount}}</td>
                     </tr>
 
-                    <tr><td> 
-                        <div class="info">
-                        <span class="icon-no-content icon-reports"></span>
-                        <strong class="h1">No reservations found</strong>
-                        </div>
-                    </td></tr>
+                    <tr ng-if="travel_agents.reservation_details.reservations.length == 0">
+                        <td colspan="7" align="center"> 
+                            <div class="info">
+                            <strong class="h1">No reservations found</strong>
+                            </div>
+                        </td>
+                    </tr>
 
                    <!--  .. repeat per guest/reservation -->
                 </tbody>

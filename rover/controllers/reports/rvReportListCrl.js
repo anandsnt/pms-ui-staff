@@ -83,7 +83,8 @@ sntRover.controller('RVReportListCrl', [
                     'addons': $scope.$parent.addons,
                     'reservationStatus': $scope.$parent.reservationStatus,
                     'assigned_departments': $scope.$parent.assigned_departments,
-                    'activeUserList': $scope.$parent.activeUserList
+                    'activeUserList': $scope.$parent.activeUserList,
+                    'travel_agents': $scope.$parent.travel_agents
                 });
 
                 // to reorder & map the sort_by to report details columns - for this report

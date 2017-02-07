@@ -1087,7 +1087,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					'assigned_departments': [],
 					'completion_status': [],
 					'age_buckets': [],
-					'account_ids': []
+					'account_ids': [],
+					'travel_agents': []
 				};
 			}
 
@@ -1801,6 +1802,29 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					// in case if all reservation status are selected
 					if ( changeAppliedFilter && report['hasDepartments']['data'].length === selected.length ) {
 						$scope.appliedFilter.assigned_departments = ['All Departments'];
+					}
+				}
+			}
+
+			// include travel agents
+			if ( report.hasOwnProperty('hasTravelAgentsSearch') ) {
+				selected = _.where(report['hasTravelAgentsSearch']['data'], { selected: true });
+
+				if ( selected.length > 0 ) {
+					key         = reportParams['TRAVEL_AGENTS'];
+					params[key] = [];
+					/**/
+					_.each(selected, function(each) {
+						params[key].push( each.id.toString() );
+						/**/
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.travel_agents.push( each.name );
+						}
+					});
+
+					// in case if all reservation status are selected
+					if ( changeAppliedFilter && report['hasTravelAgentsSearch']['data'].length === selected.length ) {
+						$scope.appliedFilter.travel_agents = ['All Departments'];
 					}
 				}
 			}
