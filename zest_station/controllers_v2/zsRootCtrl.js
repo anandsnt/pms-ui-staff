@@ -290,6 +290,11 @@ sntZestStation.controller('zsRootCtrl', [
             return false;
         };
 
+        var resetJumpGallerySettings = function() {
+            $scope.jumperData.invalidGalleryImages = [];// need to clear this for screen jumper to work properly with theme switching
+            $scope.jumpGalleryOn = false;
+        }
+
         $scope.useNavIcons = true;
 
         $scope.$on('DONT_USE_NAV_ICONS', function() {
@@ -375,12 +380,9 @@ sntZestStation.controller('zsRootCtrl', [
             'viewJumpFilter': '',
             'invalidGalleryImages': []
         };
-        $scope.setGalleryIconInvalid = function(icon) {
-            $scope.jumperData.invalidGalleryImages[icon + ''] = true;
-        };
 
         $scope.galleryIconInvalid = function(icon) {
-            if ($scope.jumperData.invalidGalleryImages[icon]) {
+            if ($scope.jumperData.invalidGalleryImages.indexOf(icon) !== -1) {
                 return true;
             }
             return false;
@@ -418,11 +420,11 @@ sntZestStation.controller('zsRootCtrl', [
         };
 
         $scope.jumpTo = function(state, isMode, selectedMode) {
-            if (state.modes && !isMode) {// do nothing if isMode==false, this is a header
+            if (state.modes && !isMode && !state.placeholderData) {// do nothing if isMode==false, this is a header
                 return;
             }
             var params = {};
-            if (isMode) {
+            if (isMode || state.placeholderData) {
                 params = {
                     'isQuickJump': true, 
                     'quickJumpMode': selectedMode
@@ -433,6 +435,7 @@ sntZestStation.controller('zsRootCtrl', [
 
         $scope.quickSetHotelTheme = function(theme) {
             $scope.$broadcast('QUICK_SET_HOTEL_THEME', theme);
+            resetJumpGallerySettings();
         };
         // allows to toggle language tags via console/chrome extension
         $scope.toggleLanguageTags = function() {
@@ -648,7 +651,12 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true);
             }
 
-            $scope.jumpGalleryIconPath = '/assets/zest_station/css/themes/' + theme + '/gallery/';
+            if (theme === 'yotel') {
+                $scope.jumpGalleryIconPath = '/assets/zest_station/css/themes/' + theme + '/gallery/';
+            } else { // default icons for all other hotels (for now)
+                $scope.jumpGalleryIconPath = '/assets/zest_station/css/themes/snt/gallery/';
+            }
+            
 
         });
 

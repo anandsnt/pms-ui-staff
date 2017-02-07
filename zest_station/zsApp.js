@@ -238,7 +238,8 @@ var GlobalZestStationApp = function() {
                     'modes': viewList[state].modes,
                     'tags': viewList[state].tags,
                     'description': viewList[state].description,
-                    'icon': viewList[state].icon
+                    'icon': viewList[state].icon,
+                    'placeholderData': viewList[state].placeholderData,
                 });
                 // create list of just labels for UI to show
                 jumperStateLabels.push(viewList[state].label);

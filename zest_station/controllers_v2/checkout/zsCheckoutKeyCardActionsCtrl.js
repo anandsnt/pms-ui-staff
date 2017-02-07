@@ -120,6 +120,20 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		 *  Websocket actions related to keycard lookup
 		 *  ends here
 		 ********************************************************************************/
+		var setPlaceholderDataForDemo = function(mode) {
+			if (mode === 'FAILED'){
+				$scope.reservationSearchFailed = true;
+				$scope.socketBeingConnected = false;
+
+			} else if (mode === 'IN_PROGRESS') {
+				$scope.reservationSearchFailed = true;
+				$scope.socketBeingConnected = true;
+				
+			} else if (mode === 'READY') {
+				$scope.reservationSearchFailed = false;
+				$scope.socketBeingConnected = false;
+			}
+		}
 
 		var setTimeOutFunctionToEnsureSocketIsOpened = function() {
 			$timeout(function() {
@@ -130,10 +144,18 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 
 		};
 		var init = function() {
-			setTimeOutFunctionToEnsureSocketIsOpened();
-			console.info("websocket: readyState -> " + $scope.socketOperator.returnWebSocketObject().readyState);
-			// open socket if not in open state
-			($scope.socketOperator.returnWebSocketObject().readyState !== 1) ? $scope.$emit('CONNECT_WEBSOCKET') : $scope.socketOperator.InsertKeyCard();
+
+			if ($stateParams.isQuickJump === 'true'){
+                setPlaceholderDataForDemo($stateParams.quickJumpMode);
+
+			} else {
+
+				setTimeOutFunctionToEnsureSocketIsOpened();
+				console.info("websocket: readyState -> " + $scope.socketOperator.returnWebSocketObject().readyState);
+				// open socket if not in open state
+				($scope.socketOperator.returnWebSocketObject().readyState !== 1) ? $scope.$emit('CONNECT_WEBSOCKET') : $scope.socketOperator.InsertKeyCard();
+			}
+
 		};
 
 		init();

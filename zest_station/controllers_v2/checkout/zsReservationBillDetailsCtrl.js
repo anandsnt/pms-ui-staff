@@ -1,8 +1,8 @@
 sntZestStation.controller('zsReservationBillDetailsCtrl', [
     '$scope',
     '$state',
-    'zsCheckoutSrv', 'zsEventConstants', '$stateParams', 'zsModeConstants', '$window', '$timeout', 'zsUtilitySrv',
-    function($scope, $state, zsCheckoutSrv, zsEventConstants, $stateParams, zsModeConstants, $window, $timeout, zsUtilitySrv) {
+    'zsCheckoutSrv', 'zsEventConstants', '$stateParams', 'zsModeConstants', '$window', '$timeout', 'zsUtilitySrv', '$log',
+    function($scope, $state, zsCheckoutSrv, zsEventConstants, $stateParams, zsModeConstants, $window, $timeout, zsUtilitySrv, $log) {
 
 
         /** *********************************************************************************************
@@ -140,6 +140,31 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
 
         };
 
+        var setPlaceholderData = function(data) {
+            // for demo | quick-jumping
+             // retrieve state variable to be displayed
+                $scope.from = data.from;
+                $scope.reservation_id = data.reservation_id;
+                $scope.has_cc = data.has_cc;
+                $scope.first_name = data.first_name;
+                $scope.last_name = data.last_name;
+                $scope.days_of_stay = data.days_of_stay;
+                $scope.hours_of_stay = data.hours_of_stay;
+                fetchBillSuccess(data.fees_sample);
+        };
+        var setupBillPlaceholderData = function() {
+            $log.log('Jumping to Screen with demo data');
+
+            var options = {
+                successCallBack: function(response) {
+                    var data = response.paths;
+                    setPlaceholderData(data[0].data);        
+                }
+            };
+
+            $scope.callAPI(zsCheckoutSrv.fetchBillPlaceholderData, options);
+        }
+
 
         /**
          *  Checkout the Guest
@@ -212,7 +237,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
         $scope.nextClicked = function() {
 
             if (checkIfDueBalancePresent()) {
-                console.warn("reservation has balance due");
+                $log.warn("reservation has balance due");
                 $state.go('zest_station.speakToStaff');
             } else {
                 $scope.checkOutGuest();
@@ -220,27 +245,33 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
         };
 
         $scope.init = function() {
-            // retrieve state variable to be displayed
-            $scope.from = $stateParams.from;
-            $scope.reservation_id = $stateParams.reservation_id;
-            $scope.has_cc = $stateParams.has_cc;
-            $scope.first_name = $stateParams.first_name;
-            $scope.last_name = $stateParams.last_name;
-            $scope.days_of_stay = $stateParams.days_of_stay;
-            $scope.hours_of_stay = $stateParams.hours_of_stay;
-            $scope.setupBillData();
-            // storing state varibales to be used in print view also
-            $scope.stateParamsForNextState = {
-                "from": $stateParams.from,
-                "reservation_id": $stateParams.reservation_id,
-                "email": $stateParams.email,
-                "guest_detail_id": $stateParams.guest_detail_id,
-                "has_cc": $stateParams.has_cc,
-                "first_name": $stateParams.first_name,
-                "last_name": $stateParams.last_name,
-                "days_of_stay": $stateParams.days_of_stay,
-                "hours_of_stay": $stateParams.hours_of_stay,
-                "is_checked_out": $stateParams.is_checked_out
+            if ($stateParams.isQuickJump === 'true') {
+                setupBillPlaceholderData();
+
+            } else {
+                // !! IF THESE STATEPARAMS CHANGE, PLEASE Update setupBillPlaceholderData method/dummy data !!
+                // retrieve state variable to be displayed
+                $scope.from = $stateParams.from;
+                $scope.reservation_id = $stateParams.reservation_id;
+                $scope.has_cc = $stateParams.has_cc;
+                $scope.first_name = $stateParams.first_name;
+                $scope.last_name = $stateParams.last_name;
+                $scope.days_of_stay = $stateParams.days_of_stay;
+                $scope.hours_of_stay = $stateParams.hours_of_stay;
+                $scope.setupBillData();
+                // storing state varibales to be used in print view also
+                $scope.stateParamsForNextState = {
+                    "from": $stateParams.from,
+                    "reservation_id": $stateParams.reservation_id,
+                    "email": $stateParams.email,
+                    "guest_detail_id": $stateParams.guest_detail_id,
+                    "has_cc": $stateParams.has_cc,
+                    "first_name": $stateParams.first_name,
+                    "last_name": $stateParams.last_name,
+                    "days_of_stay": $stateParams.days_of_stay,
+                    "hours_of_stay": $stateParams.hours_of_stay,
+                    "is_checked_out": $stateParams.is_checked_out
+                };
             };
         };
 

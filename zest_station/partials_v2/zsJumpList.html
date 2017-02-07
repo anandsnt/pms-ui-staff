@@ -29,10 +29,10 @@
     <ul ng-show='showJumperItem(view)'>
         <li click-touch='jumpTo(view, false)'>
             <img ng-show='jumpGalleryOn && view.icon' 
-                ng-onError='{{setGalleryIconInvalid(view.icon)}' 
                 class='jump-icon' 
                 ng-src="{{jumpGalleryIconPath}}{{view.icon}}" 
-                ng-class='{"hide-invalid-icon" : galleryIconInvalid(view.icon)}'>
+                src-error='{{view.icon}}' 
+                ng-class='{"hide-invalid-icon" : galleryIconInvalid(view.icon) == true}'>
             <!--img ng-show='jumpGalleryOn' src="'/assets/zest_station/css/themes/yotel/gallery/'+{{}}"-->
             <!-- clickable if [no modes] -->
             <h3 ng-show='!view.modes'>{{view.label}}</h3>
@@ -52,10 +52,10 @@
         <li ng-show='showJumperItem(mode)' class='view-mode' click-touch='jumpTo(view, true, mode.name)'>
             
             <img ng-show='jumpGalleryOn && mode.icon' 
-                ng-onError='{{setGalleryIconInvalid(mode.icon)}}' 
                 class='jump-icon' 
-                ng-src="{{jumpGalleryIconPath}}{{mode.icon}}" 
-                ng-class='{"hide-invalid-icon" : galleryIconInvalid(mode.icon)}'>
+                ng-src="{{jumpGalleryIconPath}}{{mode.icon}}"
+                src-error='{{mode.icon}}' 
+                ng-class='{"hide-invalid-icon" : galleryIconInvalid(mode.icon) == true}'>
             <!-- clickable [modes] -->
             <h3>{{mode.label}}</h3>
             <p>
