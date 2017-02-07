@@ -20,7 +20,7 @@ angular.module('sntRover')
             datesList,
             ngDialog,
             reservationsList,
-            RVNightlyDiarySrv            
+            RVNightlyDiarySrv
         ) {
 
 
@@ -187,6 +187,7 @@ angular.module('sntRover')
                         openMessagePopup();
                         $scope.$emit('hideLoader');
                     };
+
                 $scope.invokeApi(RVNightlyDiarySrv.checkUpdateAvaibale, 
                     params,
                     successCallBack,
@@ -203,7 +204,7 @@ angular.module('sntRover')
              * Function to save editing of a reservation
              */
             var saveReservationEditing = function() {
-                let successCallBack = function(data) {
+                let successCallBack = function() {
                     fetchRoomListDataAndReservationListData();
                     cancelReservationEditing();
                 };
@@ -211,6 +212,7 @@ angular.module('sntRover')
                     $scope.extendShortenReservation,
                     successCallBack);                
             };
+            
             /*
              * Show selected reservation highlighted and enable edit bar
              * @param reservation - Current selected reservation
