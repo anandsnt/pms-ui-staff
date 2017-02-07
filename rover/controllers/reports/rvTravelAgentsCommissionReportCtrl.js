@@ -42,5 +42,9 @@ angular.module('sntRover')
                 refreshScroll();
             } , 2000);
         });
+        $scope.$on("updateReservations", function(){
+            
+        });
+
 
     }]);

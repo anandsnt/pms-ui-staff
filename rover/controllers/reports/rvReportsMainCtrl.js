@@ -2153,8 +2153,11 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				page         = !!loadPage ? loadPage : 1;
 
 			var params = genParams(chosenReport, page, resultPerPageOverride || $scope.resultsPerPage);
-			var loadAPIDataHello = function (one, two){
-				console.log("atleast here+"+one+"=="+two)
+			var loadAPIDataHello = function (travel_agent_id, pageNo){
+				var paramsToApi = {};
+				paramsToApi.travel_agent_id = travel_agent_id;
+				paramsToApi.pageNo = pageNo;
+				$scope.$broadcast('updateReservations', paramsToApi);
 			};
 			var responseWithInsidePagination = function (response) {
 				_.each(response.results, function (item) {
