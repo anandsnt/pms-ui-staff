@@ -166,6 +166,7 @@ angular.module('sntRover')
                 }
 
             };
+            
             var checkReservationAvailability = (arrivalDate, DepartureDate) => {
                 let params = {
                         'arrival_date': arrivalDate,
@@ -175,25 +176,33 @@ angular.module('sntRover')
                     successCallBack = function(data) {
                         $scope.$emit('hideLoader');
                         if (data.data.availability_status === 'room_available') {                            
-                            console.log("Rooms available");
+                            $scope.extendShortenReservation = params;
                         } else {
                             $scope.messages = [data.data.availability_status];
                             openMessagePopup();
                         }                        
                     },
                     failureCallBack = function(err) {
-                        console.log(err);
+                        $scope.messages = err;
+                        openMessagePopup();
                         $scope.$emit('hideLoader');
                     };
-
-                    console.log(arrivalDate);
-                    console.log(DepartureDate);
-
-                
                 $scope.invokeApi(RVNightlyDiarySrv.checkUpdateAvaibale, 
                     params,
                     successCallBack,
                     failureCallBack);
+            };
+            /*
+             * Function to save editing of a reservation
+             */
+            var SaveReservationEditing = function() {
+                let successCallBack = function(data) {
+                    fetchRoomListDataAndReservationListData();
+                    cancelReservationEditing();
+                };
+                $scope.invokeApi(RVNightlyDiarySrv.confirmUpdates, 
+                    $scope.extendShortenReservation,
+                    successCallBack);                
             };
             /*
              * Show selected reservation highlighted and enable edit bar
@@ -237,13 +246,27 @@ angular.module('sntRover')
                     store.dispatch(dispatchData);
                 }
 
-            };
+            };             
+
             /*
              * Cancel button click edit bar
-             *
              */
             $scope.$on("CANCEL_RESERVATION_EDITING", function() {
                 cancelReservationEditing();
+            });
+            /*
+             * Save button click edit bar
+             */
+            $scope.$on("SAVE_RESERVATION_EDITING", function() {
+                SaveReservationEditing();
+            });
+            /* Handle event emitted from child controllers.
+             * To refresh diary data - rooms & reservations.
+             * @param {Number} RoomId - selected room id from search filters.
+            */
+            $scope.$on('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function( event, roomId ) {
+                cancelReservationEditing();
+                fetchRoomListDataAndReservationListData(roomId);
             });
             /**
              * utility method to pass callbacks from
@@ -311,17 +334,7 @@ angular.module('sntRover')
                 };
 
                 store.dispatch(dispatchData);
-            };           
-
-            /* Handle event emitted from child controllers.
-             * To refresh diary data - rooms & reservations.
-             * @param {Number} RoomId - selected room id from search filters.
-            */
-            $scope.$on('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function( event, roomId ) {
-                cancelReservationEditing();
-                fetchRoomListDataAndReservationListData(roomId);
-            });
-
+            };
             /*
              * to render the grid view
              */
@@ -338,5 +351,5 @@ angular.module('sntRover')
             (() => {
                 renderDiaryView();
             })();
-}]);
+        }]);
 
