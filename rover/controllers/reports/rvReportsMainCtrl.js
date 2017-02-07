@@ -425,6 +425,21 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			maxDate: reportUtils.processDate(($rootScope.businessDate)).aMonthAfter
 		}, datePickerCommon);
 
+        // for some of the reports we need to restrict max date selection to 6 months (eg:- Business on Books report)
+        $scope.fromDateOptionsSixMonthsLimit = angular.extend({
+            onSelect: function(value, datePickerObj) {
+                var selectedDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+
+                $scope.toDateOptionsOneMonthLimit.minDate = selectedDate;
+                $scope.toDateOptionsOneMonthLimit.maxDate = reportUtils.processDate(selectedDate).sixMonthsAfter;
+            }
+        }, datePickerCommon);
+
+        $scope.toDateOptionsSixMonthsLimit = angular.extend({
+            minDate: new tzIndependentDate($rootScope.businessDate),
+            maxDate: reportUtils.processDate(($rootScope.businessDate)).sixMonthsAfter
+        }, datePickerCommon);
+
 		// custom from and untill date picker options
 		// with no limits to choose dates
 		$scope.fromDateOptionsNoLimit = angular.extend({}, datePickerCommon);
@@ -439,7 +454,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			$scope.touchedReport = item;
 			$scope.touchedDate = dateName;
 
-			if (item.title === reportNames['DAILY_PRODUCTION_RATE']) {
+			if ( (item.title === reportNames['DAILY_PRODUCTION_RATE']) || (item.title === reportNames['BUSINESS_ON_BOOKS']) ) {
 				if (item.fromDate > item.untilDate) {
 					item.untilDate = item.fromDate;
 				}
@@ -489,6 +504,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					item.chosenDueOutDepartures = false;
 				}
 			}
+
 		};
 
 		$scope.setTomorrowDate = function (item) {
