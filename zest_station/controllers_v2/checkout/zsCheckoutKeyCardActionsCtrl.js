@@ -90,10 +90,10 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 
 		var findReservation = function(data) {
 			var options = {
-				params: {
-					'uid': data.uid,
-					'keydata_ilco_34' : data.KeyCardData
-				},
+					params: {
+						'uid': data.uid,
+						'keydata_ilco_34': data.KeyCardData
+					},
 				successCallBack: findReservationSuccess,
 				failureCallBack: findReservationFailed
 			};
