@@ -112,6 +112,21 @@ sntZestStation.config(['$stateProvider',
             description: 'Select how many keys the guest would like, starts key dispense',
             label: 'Key Dispense'
         });
+
+
+      // pickup key dispense
+      $stateProvider.state('zest_station.checkinKeySelection', {
+        url: '/checkinKeyDispense/:reservation_id/:room_no/:first_name/:guest_id/:email/:for_demo/:isQuickJump/:quickJumpMode',
+        templateUrl: '/assets/partials_v2/checkin/zscheckinKeyDispense.html',
+        controller: 'zsCheckinKeyDispenseCtrl',
+        jumper: true,
+        section: 'Checkin',
+        icon: 'checkin_key_select.png',
+        description: 'Select what type of key to use',
+        label: 'Check-In Key Types'
+      });
+
+
 		// signature screen
         $stateProvider.state('zest_station.checkInSignature', {
             url: '/checkInReservationDeposit/:reservation_id/:email/:first_name/:room_no/:guest_id/:guest_email_blacklisted',

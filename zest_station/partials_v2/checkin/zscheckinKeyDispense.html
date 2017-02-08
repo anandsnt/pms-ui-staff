@@ -201,3 +201,263 @@
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>
+
+
+
+
+
+
+
+<!--------------------- mobile key or physical key start screen ------------------------>
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'MOBILE_OR_PHYSICAL_KEY_START'">
+    <div id="content">
+        <h2 class="no-margin">
+            <text editable-text="CHKED_IN_SUCCESS_HEADER"> {{'CHKED_IN_SUCCESS_HEADER' |translate}}</text> {{first_name}}.
+        </h2>
+
+        <h1 ng-show="!zestStationData.show_room_number">
+            <text editable-text="CHKED_IN_SUCCESS_MSG"> {{'CHKED_IN_SUCCESS_MSG' |translate}}</text>
+        </h1>
+
+        <h1 ng-show="zestStationData.show_room_number">
+            <text editable-text="CHKED_IN_SUCCESS_MSG_WITH_ROOM"> {{'CHKED_IN_SUCCESS_MSG_WITH_ROOM' |translate}}</text>
+        </h1>
+
+
+
+        <div id="room" ng-show="zestStationData.show_room_number">
+            <span class="number">{{room}}</span>
+        </div>
+
+        <!-- TODO: grey next button if no option selected -->
+    </div>
+        <div id="actions" class="add-guests-footer footer-centered">
+            <button type="button" class="button" click-touch="goToNextScreen('success')">
+                <text editable-text="NEXT"> {{'NEXT' |translate}}</text>
+            </button>
+        </div>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
+</section>
+
+
+
+
+
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'MOBILE_OR_PHYSICAL_KEY'">
+    <div id="content">
+        <h1>
+            <text editable-text="SELECT_KEY_TYPE_HEADER"> {{'SELECT_KEY_TYPE_HEADER' |translate}}</text>
+        </h1>
+        <h2>
+            <text editable-text="SELECT_KEY_TYPE_SUB"> {{'SELECT_KEY_TYPE_SUB' |translate}}</text>
+        </h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='selectMobileKey()'>
+                    <div ng-show="!mobileKeySelected" ng-include="icons.url.key"></div>
+                    <div ng-show="mobileKeySelected" class='select-icon-checked' ng-include="icons.url.checkmark"></div>
+                    </button>
+                    <h1>
+                        <text editable-text="SELECT_MOBILE_KEY"> {{'SELECT_MOBILE_KEY' |translate}}</text>
+                    </h1>
+                    <span class='select-sub-text'>
+                        <text editable-text="SELECT_MOBILE_KEY_SUB"> {{'SELECT_MOBILE_KEY_SUB' |translate}}</text>
+                    </span>
+                </li>
+                <li class="break">
+                    <span>
+                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                    </span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='selectPhysicalKey()'>
+                    
+                    <div ng-show="!physicalKeySelected" ng-include="icons.url.creditcard"></div>
+                    <div ng-show="physicalKeySelected" class='select-icon-checked' ng-include="icons.url.checkmark"></div>
+
+                    </button>
+                    <h1>
+                        <text editable-text="SELECT_PHYSICAL_KEY"> {{'SELECT_PHYSICAL_KEY' |translate}}</text>
+                    </h1>
+                    <span class='select-sub-text'>
+                        <text editable-text="SELECT_PHYSICAL_KEY_SUB"> {{'SELECT_PHYSICAL_KEY_SUB' |translate}}</text>
+                    </span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div id="actions" class="add-guests-footer footer-centered mobile-key-next">
+       <button type="button" 
+            ng-disabled="!physicalKeySelected && !mobileKeySelected" 
+            ng-class="{'disabled-button':!physicalKeySelected && !mobileKeySelected}"
+            class="button" 
+            click-touch="goToNextScreen('success')">
+                <text editable-text="NEXT"> {{'NEXT' |translate}}</text>
+        </button>
+    </div>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
+</section>
+<!--------------------- mobile key :: Sent to user account :: ------------------------>
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'MOBILE_KEY_SENT_SUCCESS'">
+    <div id="content">
+        <h1>
+            <text editable-text="MOBILE_KEY_SENT_TO_ACCOUNT_SUCCESS"> {{'MOBILE_KEY_SENT_TO_ACCOUNT_SUCCESS' |translate}}</text>
+        </h1>
+        <h2>
+            <text editable-text="MOBILE_KEY_SENT_TO_ACCOUNT_SUCCESS_SUB"> {{'MOBILE_KEY_SENT_TO_ACCOUNT_SUCCESS_SUB' |translate}}</text>
+        </h2>
+        <nav id="options" role="nav">
+            <h1 class='key-text-style'>
+                <text editable-text="MOBILE_KEY_SENT_TO_ACCOUNT_SUCCESS_MAIN_MSG"> {{'MOBILE_KEY_SENT_TO_ACCOUNT_SUCCESS_MAIN_MSG' |translate}}</text>
+            </h1>
+            <ul>
+                <h2>
+                    <text editable-text="MOBILE_KEY_SENT_TO_ACCOUNT_SUCCESS_MSG_SUB"> {{'MOBILE_KEY_SENT_TO_ACCOUNT_SUCCESS_MSG_SUB' |translate}}</text>
+                </h2>
+            </ul>
+        </nav>
+    </div>
+    <div id="actions" class="add-guests-footer footer-centered mobile-key-next">
+         <button type="button" ng-class='' class="button" click-touch="goToNextScreen('success')">
+            <text editable-text="NEXT"> {{'NEXT' |translate}}</text>
+        </button>
+    </div>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
+</section>
+
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'MOBILE_KEY_ACCOUNT_NOT_CONNECTED'">
+    <div id="content">
+        <h1>
+            <text editable-text="MOBILE_KEY_SENT_TO_ACCOUNT_NOT_SUCCESS"> {{'MOBILE_KEY_SENT_TO_ACCOUNT_NOT_SUCCESS' |translate}}</text>
+        </h1>
+        <h2>
+            <text editable-text="MOBILE_KEY_SENT_TO_ACCOUNT_NOT_SUCCESS_SUB"> {{'MOBILE_KEY_SENT_TO_ACCOUNT_NOT_SUCCESS_SUB' |translate}}</text>
+        </h2>
+        <nav id="options" role="nav">
+            <h2 class='key-text-style more'>
+                <text editable-text="MOBILE_KEY_SENT_TO_ACCOUNT_NOT_SUCCESS_MAIN_MSG"> {{'MOBILE_KEY_SENT_TO_ACCOUNT_NOT_SUCCESS_MAIN_MSG' |translate}}</text>
+            </h2>
+
+
+            <!--ol class='key-text-reasons'> --keep until final version accepted
+                <li>
+                    <h4 translate>MOBILE_KEY_SENT_TO_ACCOUNT_NOT_SUCCESS_MSG_SUB</h4>
+                </li>
+                <li>
+                    <h4 translate>&#8226;  if you have the key app you may need to complete the account signup and return here to get your key</h4>
+                </li>
+                <li>
+                    <h4 translate>&#8226;  if you dont have the key app we can send you a link to download it</h4>
+                </li>
+            </ol-->
+
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='sendAppLink()'>
+                    <div ng-include="icons.url.key"></div>
+                    </button>
+                    <h1>
+                        <text editable-text="SEND_APP_LINK"> {{'SEND_APP_LINK' |translate}}</text>
+                    </h1>
+                    <span class='select-sub-text'>
+                        <text editable-text="SEND_APP_LINK_SUB"> {{'SEND_APP_LINK_SUB' |translate}}</text>
+                    </span
+                    >
+                    <span class='select-sub-text'>
+                        <text editable-text="SEND_APP_LINK_SUB_EXTRA"> {{'SEND_APP_LINK_SUB_EXTRA' |translate}}</text>
+                    </span
+                    >
+                </li>
+                <li class="break">
+                    <span>
+                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                    </span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='getPhysicalKey()'>
+                    <div ng-include="icons.url.creditcard"></div>
+
+                    </button>
+                    <h1>
+                        <text editable-text="PHYSICAL_KEY"> {{'PHYSICAL_KEY' |translate}}</text>
+                    </h1>
+                    <span class='select-sub-text'>
+                        <text editable-text="PHYSICAL_KEY_SUB"> {{'PHYSICAL_KEY_SUB' |translate}}</text>
+                    </span>
+                </li>
+            </ul>
+        </nav>
+
+
+        </nav>
+    </div>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
+</section>
+
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'MOBILE_KEY_SETUP_ACCOUNT'">
+    <div id="content">
+        <h1>
+            <text editable-text="MOBILE_KEY_ACCOUNT_SETUP_SENT"> {{'MOBILE_KEY_ACCOUNT_SETUP_SENT' |translate}}</text>
+        </h1>
+        <h2 translate>{{app_email}}</h2>
+        <h2>
+            <text editable-text="MOBILE_KEY_SENT_TO_ACCOUNT_NOT_SUCCESS_MAIN_MSG"> {{'MOBILE_KEY_SENT_TO_ACCOUNT_NOT_SUCCESS_MAIN_MSG' |translate}}</text>
+        </h2>
+
+        <!--nav id="options" class='options-less-space' role="nav"> --substituting with talk to staff (per jeff), will remove once design/functionality accepted
+            <h2 class='key-text-style more' translate>MOBILE_KEY_SENT_TO_ACCOUNT_NOT_SUCCESS_MAIN_MSG</h2>
+
+            <ol class='key-text-reasons'>
+                <li>
+                    <h4 translate>1: proceed to get a physical key</h4>
+                </li>
+                <li>
+                    <h4 translate>2: download the app</h4>
+                </li>
+                <li>
+                    <h4 translate>3: set up an account on the app</h4>
+                </li>
+                <li>
+                    <h4 translate>4: return here for a mobile key</h4>
+                </li>
+            </ol>
+        </nav-->
+
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='getPhysicalKey()'>
+                    <div ng-include="icons.url.creditcard"></div>
+
+                    </button>
+                    <h1>
+                        <text editable-text="PHYSICAL_KEY"> {{'PHYSICAL_KEY' |translate}}</text>
+                    </h1>
+                    <span class='select-sub-text'>
+                        <text editable-text="PHYSICAL_KEY_SUB"> {{'PHYSICAL_KEY_SUB' |translate}}</text>
+                    </span>
+                </li>
+                <li class="break">
+                    <span>
+                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                    </span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='talkToStaff()'>
+                    <div ng-include="icons.url.staff"></div>
+                    </button>
+                    <h1>
+                        <text editable-text="SPEAK"> {{'SPEAK' |translate}}</text>
+                    </h1>
+                    <h4>
+                        <text editable-text="SPEAK_SUB"> {{'SPEAK_SUB' |translate}}</text>
+                    </h4>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
+</section>

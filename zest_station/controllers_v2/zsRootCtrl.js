@@ -568,6 +568,8 @@ sntZestStation.controller('zsRootCtrl', [
                     checkout: iconBasePath + '/checkout.svg',
                     key: iconBasePath + '/key.svg',
 
+                    checkmark: iconBasePath + '/checkmark.svg',
+
                     oos: iconBasePath + '/oos.svg',
                     back: iconBasePath + '/back.svg',
                     close: iconBasePath + '/close.svg',
