@@ -1712,8 +1712,6 @@
     &.languages {
         .language {
             margin-right: 15px;
-            background: @white;
-            color: @black;
             line-height: normal;
             height: 50px;
             font-size: 16px;
@@ -1928,8 +1926,10 @@
     position: absolute;
     top: 0;
     >div{
-        overflow:auto;
+        overflow-y: auto;
         height:100%;   
+        overflow-x: hidden;
+        margin-right:-8px;
     }
     opacity: .9; 
     background-color: @inputBackground;
@@ -1947,13 +1947,19 @@
     border-bottom-right-radius: 2em;
     border-left-width: 0px;
 }
-
-
+.jump-icon {
+    width: 20%; /* of a 320x200px image */
+    
+}
+.hide-invalid-icon {
+    display: none !important;
+};
 .jumper-box-li {
     * {margin: 0; padding: 0; text-align:left;}
 
     div {
-      margin: 20px;
+        margin: 21px;
+        margin-right: 7%;
     }
 
     ul {
@@ -1996,16 +2002,22 @@
     right: -15px;
     width: 40px;
     height: 40px;
+
+    &.gallery{
+        right: 3% !important;
+    }
 }
 
 .closeJumpListIcon{
-    margin: 2px;
     width: 90%;
     height: 90%;
+    &.gallery{
+        padding: 3px !important;
+    }
 }
 
 .closeJumpListIcon:hover{
-    fill: @white;
+    fill: @black;
 }
 
 

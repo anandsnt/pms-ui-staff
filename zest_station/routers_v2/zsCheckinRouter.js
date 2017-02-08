@@ -7,7 +7,9 @@ sntZestStation.config(['$stateProvider',
             controller: 'zscheckInReservationSearchCtrl',
             jumper: true,
             section: 'Checkin',
+            description: 'Guest enters last name',
             label: 'Reservation Search',
+            icon: 'checkin_res_search.png',
             tags: ['sign_screen']
         });
                 
@@ -18,6 +20,8 @@ sntZestStation.config(['$stateProvider',
             controller: 'zsCheckInReservationDetailsCtrl',
             jumper: false,
             section: 'Checkin',
+            description: 'Cost Details, Link to add/remove guests',
+            icon: 'checkin_res_details.png',
             label: 'Reservation Details'
         });
 		// select checkin reservation from array of reservations.
@@ -27,6 +31,8 @@ sntZestStation.config(['$stateProvider',
             controller: 'zsSelectReservationForCheckInCtrl',
             jumper: false,
             section: 'Checkin',
+            description: '',
+            icon: 'checkin_res_select.png',
             label: 'Select Reservation'
         });
 		// select nationality
@@ -44,6 +50,8 @@ sntZestStation.config(['$stateProvider',
             },
             jumper: true,
             section: 'Checkin',
+            icon: 'checkin_collect_nationality.png',
+            description: 'Allows guest to add their nationality',
             label: 'Collect Nationality'
         });
 
@@ -53,16 +61,9 @@ sntZestStation.config(['$stateProvider',
             controller: 'zsCheckInAddRemoveGuestCtrl',
             jumper: true,
             section: 'Checkin',
+            description: 'Screen to add/remove guests to reservation',
+            icon: 'checkin_add_remove.png',
             label: 'Add/Remove Guest'
-        });
-		// checkin key dispense
-        $stateProvider.state('zest_station.checkInKeyDispense', {
-            url: '/checkInKeyDispense/:reservation_id/:room_no/:first_name/:guest_id/:email',
-            templateUrl: '/assets/partials_v2/checkin/zsCheckinKey.html',
-            controller: 'zsCheckinKeyDispenseCtrl',
-            jumper: false,
-            section: 'Checkin',
-            label: 'Key Dispense'
         });
                 
 		// checking credit card swipe                 
@@ -72,6 +73,8 @@ sntZestStation.config(['$stateProvider',
             controller: 'zsCheckinCCSwipeCtrl',
             jumper: false,
             section: 'Checkin',
+            icon: 'checkin_card_swipe.png',
+            description: '',
             label: 'Card Swipe'
         });
 		// terms and conditions                
@@ -81,6 +84,8 @@ sntZestStation.config(['$stateProvider',
           controller: 'zsCheckInTermsConditionsCtrl',
           jumper: true,
           section: 'Checkin',
+          icon: 'checkin_terms.png',
+          description: 'Terms and Conditions',
           label: 'Terms'
       });
 		// reservation deposit                
@@ -90,6 +95,8 @@ sntZestStation.config(['$stateProvider',
           controller: 'zsCheckinDepositCtrl',
           jumper: true,
           section: 'Checkin',
+          icon: 'checkin_deposit.png',
+          description: 'Collect Reservation Deposit',
           label: 'Deposit'
       });
 		// pickup key dispense
@@ -99,6 +106,8 @@ sntZestStation.config(['$stateProvider',
             controller: 'zsCheckinKeyDispenseCtrl',
             jumper: true,
             section: 'Checkin',
+            icon: 'checkin_keys.png',
+            description: 'Select how many keys the guest would like, starts key dispense',
             label: 'Key Dispense'
         });
 		// signature screen
@@ -108,6 +117,8 @@ sntZestStation.config(['$stateProvider',
             controller: 'zsCheckinSignatureCtrl',
             jumper: true,
             section: 'Checkin',
+            icon: 'checkin_signature.png',
+            description: 'Reservation Signature to Check-In the guest',
             label: 'Signature'
         });
 
@@ -118,7 +129,10 @@ sntZestStation.config(['$stateProvider',
             controller: 'zsCheckinEmailCollectionCtrl',
             jumper: true,
             section: 'Checkin',
-            label: 'Collect Email'
+            icon: 'checkin_collect_email.png',
+            label: 'Collect Email',
+            description: 'Email collection screen, text-input with email validation'
+
         });
 
       	// email /print entry screen
@@ -128,6 +142,8 @@ sntZestStation.config(['$stateProvider',
           controller: 'zsCheckinRegCardDeliveryOptionsCtrl',
           jumper: true,
           section: 'Checkin',
+          icon: 'checkin_reg_delivery.png',
+          description: 'Select how registration should be delivered',
           label: 'Registration Delivery Options'
       });
 
@@ -138,6 +154,8 @@ sntZestStation.config(['$stateProvider',
           controller: 'zsCheckinFinalCtrl',
           jumper: true,
           section: 'Checkin',
+          icon: 'checkin_final.png',
+          description: 'Last screen in the Check-In flow',
           label: 'Final Screen'
       });
       	
@@ -149,6 +167,8 @@ sntZestStation.config(['$stateProvider',
           jumper: true,
           section: 'Checkin',
           label: 'Room Error',
+          icon: 'checkin_room_error.png',
+          description: 'Error screen if room or early check-in is unavailable',
           tags: ['oops']
       });
                 
@@ -163,16 +183,23 @@ sntZestStation.config(['$stateProvider',
           jumper: true,
           section: 'Checkin',
           label: 'Early Checkin',
+          // Views With modes only show modes + mode descriptions
           modes: [
               {
                   'name': 'EARLY_CHECKIN_SELECT',
-                  'label': 'Purchase Early Checkin'
+                  'label': 'Purchase Early Checkin',
+                  'description': 'Select to purchase early checkin or to check-in later',
+                  'icon': 'eci_purchase.png'
               }, {
                   'name': 'EARLY_CHECKIN_PREPAID',
-                  'label': 'Prepaid Early Checkin'
+                  'label': 'Prepaid Early Checkin',
+                  'description': 'User has prepaid for the early check-in, or it was part of a bundle/add-on',
+                  'icon': 'eci_prepaid.png'
               }, {
                   'name': 'EARLY_CHECKIN_FREE',
-                  'label': 'FREE Early Checkin'
+                  'label': 'FREE Early Checkin',
+                  'description': 'Guest has a free early check-in',
+                  'icon': 'eci_free.png'
               }]
       });
 
@@ -183,6 +210,8 @@ sntZestStation.config(['$stateProvider',
             controller: 'zsCheckinSuccessCtrl',
             jumper: true,
             section: 'Checkin',
+            icon: 'checkin_success.png',
+            description: 'Success screen after check-in',
             label: 'Checkin Success'
         });
 
@@ -193,6 +222,7 @@ sntZestStation.config(['$stateProvider',
             controller: 'zsOwsMsgListingCtrl',
             jumper: false,
             section: 'Checkin',
+            description: '',
             label: 'Guest Message'
         });
 
@@ -203,6 +233,7 @@ sntZestStation.config(['$stateProvider',
             controller: 'zsCheckinRoomUpsellCtrl',
             jumper: false,
             section: 'Checkin',
+            description: '',
             label: 'Room Upsell'
         });
       	
