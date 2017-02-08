@@ -10,8 +10,8 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
     function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, $filter, $timeout, $window) {
 
         /** ********************************************************************************************
-         **     Expected state params -----> reservation_id                     
-         **                                                                      
+         **     Expected state params -----> reservation_id
+         **
          ***********************************************************************************************/
 
         BaseCtrl.call(this, $scope);
@@ -145,7 +145,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
                                 }, 100);
                             }
                         }
-                        // provide a delay for preview to appear 
+                        // provide a delay for preview to appear
 
                     }, 100);
 
@@ -182,7 +182,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
             var options = {
                 params: {
                     'id': $stateParams.reservation_id,
-                    'application': 'ZEST_STATION'
+                    'application': 'KIOSK'
                 },
                 successCallBack: fetchPrintViewCompleted,
                 failureCallBack: printFailedActions

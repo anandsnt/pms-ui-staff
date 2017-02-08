@@ -50,6 +50,23 @@ admin.service('adSnapShotSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($
 	};
 
 	/**
+	 * [fetch snapshot export data for full and incremental export]
+	 * @param  {[type]} params [description]
+	 * @return {[type]}        [description]
+	 */
+	this.fetchExportData = function() {
+		var deferred = $q.defer(),
+			url = 'api/hotel_settings/snapshot_settings/snapshot_export_history';
+
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	/**
 	 * [fetch snapshot charge group mapping description]
 	 * @param  {[type]} params [description]
 	 * @return {[type]}        [description]

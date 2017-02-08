@@ -15,6 +15,7 @@ sntZestStation.controller('zsHomeCtrl', [
         $scope.clickedOnPickUpKey = function() {
             clearInterval($scope.activityTimer);
             if ($scope.zestStationData.pickup_qr_scan) {
+                $scope.setScreenIcon('key');
                 $state.go('zest_station.qrPickupKey');
             } else {
                 $state.go('zest_station.checkOutReservationSearch', {
@@ -88,6 +89,12 @@ sntZestStation.controller('zsHomeCtrl', [
             };
 
             var incrementHomeScreenTimer = function() {
+                // pause timers when editor mode is enabled, so user doesnt get moved from the screen, 
+                // reflect in diagnostics with the idleTimerPaused attribute
+                if ($scope.zestStationData.editorModeEnabled === 'true') {
+                    return;
+                }
+
 				// Debugging options available from the console for development and debugging purposes only
                 if (zestSntApp.timeDebugger) {
 					// refresh kiosk every x seconds (while idle) - at home screen
@@ -127,10 +134,8 @@ sntZestStation.controller('zsHomeCtrl', [
 						// highlighting active language buttons. We need not do that again and again , if we already have a 
 						// default language set.So on timer limit(120s), we need to check if the current language is default or not.
                         // when Not in language Editor mode, go ahead and reset back to default language
-                        if ($scope.zestStationData.editorModeEnabled !== 'true') {
-                            console.info('translating to default lanaguage');
-                            setToDefaultLanguage(true);// checkIfDefaultLanguagIsSet = true    
-                        }
+                        console.info('translating to default lanaguage');
+                        setToDefaultLanguage(true);// checkIfDefaultLanguagIsSet = true    
 
                         $scope.runDigestCycle();
                         userInActivityTimeInHomeScreenInSeconds = 0;
