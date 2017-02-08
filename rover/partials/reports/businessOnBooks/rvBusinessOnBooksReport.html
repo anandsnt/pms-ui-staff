@@ -67,41 +67,41 @@
                 <tbody>
                     <tr ng-repeat="roomDet in roomDetails track by $index">
                         <td class="rooms">{{roomDet.rooms_data.rooms_count}}</td>
-                        <td class="rooms">{{roomDet.rooms_data.occ_percentage}}</td>
+                        <td class="rooms">{{roomDet.rooms_data.occ_percentage | number:2}}</td>
                         <td class="rooms">{{roomDet.rooms_data.available_rooms}}</td>
                         <td class="rooms">{{roomDet.rooms_data.ooo_rooms_count}}</td>
-                        <td>${{roomDet.rooms_data.revenue}}</td>
-                        <td>${{roomDet.rooms_data.adr}}</td>
+                        <td>{{roomDet.rooms_data.revenue | currency:currencySymbol:2}}</td>
+                        <td>{{roomDet.rooms_data.adr | currency:currencySymbol:2}}</td>
                         <td class="rooms">{{roomDet.groups_data.picked_up_count}}</td>
                         <td class="rooms">{{roomDet.groups_data.non_picked_up_count}}</td>
-                        <td>${{roomDet.groups_data.revenue}}</td>
-                        <td>${{roomDet.groups_data.adr}}</td>
+                        <td>{{roomDet.groups_data.revenue | currency:currencySymbol:2}}</td>
+                        <td>{{roomDet.groups_data.adr | currency:currencySymbol:2}}</td>
                         <td class="rooms">{{roomDet.allotments_data.picked_up_count}}</td>
                         <td class="rooms">{{roomDet.allotments_data.non_picked_up_count}}</td>
-                        <td>${{roomDet.allotments_data.revenue}}</td>
-                        <td>${{roomDet.allotments_data.adr}}</td>
+                        <td>{{roomDet.allotments_data.revenue | currency:currencySymbol:2}}</td>
+                        <td>{{roomDet.allotments_data.adr | currency:currencySymbol:2}}</td>
                         <td class="rooms">{{roomDet.individuals_data.rooms_count}}</td>
-                        <td>${{roomDet.individuals_data.revenue}}</td>
-                        <td>${{roomDet.individuals_data.adr}}</td>
+                        <td>{{roomDet.individuals_data.revenue | currency:currencySymbol:2}}</td>
+                        <td>{{roomDet.individuals_data.adr | currency:currencySymbol:2}}</td>
                     </tr>
                     <tr class="totals" ng-show="resultsTotalRow">
                         <td class="rooms">{{resultsTotalRow.total_rooms_count}}</td>
-                        <td class="rooms">{{resultsTotalRow.total_rooms_occ_percentage}}</td>
+                        <td class="rooms">{{resultsTotalRow.total_rooms_occ_percentage | number:2}}</td>
                         <td class="rooms">{{resultsTotalRow.total_rooms_available_rooms}}</td>
                         <td class="rooms">{{resultsTotalRow.total_rooms_ooo_rooms_count}}</td>
-                        <td>${{resultsTotalRow.total_rooms_revenue}}</td>
-                        <td>${{resultsTotalRow.total_rooms_adr}}</td>
+                        <td>{{resultsTotalRow.total_rooms_revenue | currency:currencySymbol:2}}</td>
+                        <td>{{resultsTotalRow.total_rooms_adr | currency:currencySymbol:2}}</td>
                         <td class="rooms">{{resultsTotalRow.total_group_picked_up_count}}</td>
                         <td class="rooms">{{resultsTotalRow.total_group_non_picked_up_count}}</td>
-                        <td>${{resultsTotalRow.total_group_revenue}}</td>
-                        <td>${{resultsTotalRow.total_group_adr}}</td>
+                        <td>{{resultsTotalRow.total_group_revenue | currency:currencySymbol:2}}</td>
+                        <td>{{resultsTotalRow.total_group_adr | currency:currencySymbol:2}}</td>
                         <td class="rooms">{{resultsTotalRow.total_allotment_picked_up_count}}</td>
                         <td class="rooms">{{resultsTotalRow.total_allotment_non_picked_up_count}}</td>
-                        <td>${{resultsTotalRow.total_allotment_revenue}}</td>
-                        <td>${{resultsTotalRow.total_allotment_adr}}</td>
+                        <td>{{resultsTotalRow.total_allotment_revenue | currency:currencySymbol:2}}</td>
+                        <td>{{resultsTotalRow.total_allotment_adr | currency:currencySymbol:2}}</td>
                         <td class="rooms">{{resultsTotalRow.total_individual_rooms_count}}</td>
-                        <td>${{resultsTotalRow.total_individual_revenue}}</td>
-                        <td>${{resultsTotalRow.total_individual_adr}}</td>
+                        <td>{{resultsTotalRow.total_individual_revenue | currency:currencySymbol:2}}</td>
+                        <td>{{resultsTotalRow.total_individual_adr | currency:currencySymbol:2}}</td>
                     </tr>
                 </tbody>
             </table>
