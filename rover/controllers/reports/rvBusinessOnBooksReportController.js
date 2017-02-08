@@ -80,7 +80,7 @@ angular.module('sntRover')
             }, DELAY_1000 );
         };
 
-        //Initialize the controller and set up the listeners
+        // Initialize the controller and set up the listeners
         var init =  function() {
             setScroller();
             isScrollReady();
