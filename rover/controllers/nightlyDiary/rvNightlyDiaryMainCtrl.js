@@ -90,6 +90,7 @@ angular.module('sntRover')
                     total_count: $scope.diaryData.paginationData.totalCount
                 };
             };
+            
             /**
              * method to update Pagination parametrs
              */
@@ -167,7 +168,9 @@ angular.module('sntRover')
 
             };
 
-
+            /*
+             * Function to check room availability.
+             */
             var checkReservationAvailability = (arrivalDate, DepartureDate) => {
                 let params = {
                         'arrival_date': moment(arrivalDate, $rootScope.dateFormat.toUpperCase())
@@ -187,7 +190,6 @@ angular.module('sntRover')
                             $scope.extendShortenReservationDetails = params;
                         } else {
                             switch (data.data.availability_status) {
-
                             case 'to_be_unassigned' : $scope.messages = ['PREASSIGNED'];
                                 break;
                             case 'maintenance' : $scope.messages = ['MAINTENANCE'];
