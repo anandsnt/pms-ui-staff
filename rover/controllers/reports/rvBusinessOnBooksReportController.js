@@ -1,17 +1,10 @@
 angular.module('sntRover')
 .controller('RVBusinessOnBooksController', [
-    '$rootScope',
     '$scope',
-    'RVreportsSrv',
-    'RVreportsSubSrv',
-    'RVReportUtilsFac',
-    'RVReportParamsConst',
     'RVReportMsgsConst',
-    'RVReportNamesConst',
-    '$filter',
     '$timeout',
     // eslint-disable-next-line max-params
-    function($rootScope, $scope, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout) {
+    function($scope, reportMsgs, $timeout) {
 
         BaseCtrl.call(this, $scope);
 
