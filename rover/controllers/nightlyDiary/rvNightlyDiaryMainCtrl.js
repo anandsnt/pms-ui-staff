@@ -90,7 +90,7 @@ angular.module('sntRover')
                     total_count: $scope.diaryData.paginationData.totalCount
                 };
             };
-            
+
             /**
              * method to update Pagination parametrs
              */
@@ -178,14 +178,13 @@ angular.module('sntRover')
                         'dep_date': moment(DepartureDate, $rootScope.dateFormat.toUpperCase())
                                             .format('YYYY-MM-DD'),
                         'reservation_id': $scope.currentSelectedReservation.id
-                    },                    
-                    failureCallBack = function(err) {
-                        $scope.messages = err;
-                        openMessagePopup();
-                        $scope.$emit('hideLoader');
                     },
-                    successCallBackForReservationAvailability = function(data) {
+                    successCallBack = function(data) {
                         $scope.$emit('hideLoader');
+                        if (data.errors) {
+                            $scope.messages = data.errors;
+                            openMessagePopup();
+                        } else                       
                         if (data.data.availability_status === 'room_available') {                            
                             $scope.extendShortenReservationDetails = params;
                         } else {
@@ -201,13 +200,12 @@ angular.module('sntRover')
                             default : $scope.messages = ["Room Can't Move"];
                             }                    
                             openMessagePopup();
-                        }                        
+                        }                                                
                     };
 
                 $scope.invokeApi(RVNightlyDiarySrv.checkUpdateAvaibale, 
                     params,
-                    successCallBackForReservationAvailability,
-                    failureCallBack);
+                    successCallBack);
             };
             /*
              * Function to cancel message popup.
