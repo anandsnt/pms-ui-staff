@@ -10,11 +10,11 @@ angular.module('sntRover')
 
         var LEFT_PANE_SCROLL = 'left-pane-scroll',
             RIGHT_PANE_SCROLL = 'right-pane-scroll',
-            DELAY_1000 = 1000,
-            DELAY_300 = 300;
+            DELAY_1000 = 1000;
 
 
-        //Set scrollers for left and right pane
+
+        // Set scrollers for left and right pane
         var setScroller = function() {
             $scope.setScroller(LEFT_PANE_SCROLL, {
                 'preventDefault': false,
@@ -29,7 +29,7 @@ angular.module('sntRover')
 
         };
 
-        //Set up scroll listeners for left and right pane
+        // Set up scroll listeners for left and right pane
         var setupScrollListner = function() {
             $scope.myScroll[ LEFT_PANE_SCROLL ]
                 .on('scroll', function() {
@@ -53,7 +53,7 @@ angular.module('sntRover')
             }
         };
 
-        //Refresh scrollers for the left and right pane
+        // Refresh scrollers for the left and right pane
         var refreshScrollers = function() {
             if ( $scope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL) ) {
                 $scope.refreshScroller( LEFT_PANE_SCROLL );
@@ -64,11 +64,12 @@ angular.module('sntRover')
             }
         };
 
-        //Format data as required by the template to date array and RHS data array
+        // Format data as required by the template to date array and RHS data array
         var processData = function() {
            $scope.dates = [];
            $scope.roomDetails = [];
            var results = $scope.results;
+
            _.each(results, function(result) {
                 $scope.dates.push(result.date);
                 $scope.roomDetails.push(result);
@@ -85,10 +86,10 @@ angular.module('sntRover')
             isScrollReady();
             processData();
 
-            reportSubmited = $scope.$on( reportMsgs['REPORT_SUBMITED'], processData );
-            reportPrinting = $scope.$on( reportMsgs['REPORT_PRINTING'], processData );
-            reportUpdated = $scope.$on( reportMsgs['REPORT_UPDATED'], processData );
-            reportPageChanged = $scope.$on( reportMsgs['REPORT_PAGE_CHANGED'], processData );
+            var reportSubmited = $scope.$on( reportMsgs['REPORT_SUBMITED'], processData );
+            var reportPrinting = $scope.$on( reportMsgs['REPORT_PRINTING'], processData );
+            var reportUpdated = $scope.$on( reportMsgs['REPORT_UPDATED'], processData );
+            var reportPageChanged = $scope.$on( reportMsgs['REPORT_PAGE_CHANGED'], processData );
 
             $scope.$on( '$destroy', reportSubmited );
             $scope.$on( '$destroy', reportUpdated );

@@ -2217,11 +2217,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 			params.reportTitle = chosenReport.title;
 
+            // Load API data for the pagination directive
+            var loadAPIData = function(pageNo) {
+                $scope.genReport(false, pageNo);
+            };
+
             //CICO-36186 - Implemented the new pagination for Comparison report
             if(chosenReport.title === reportNames["COMPARISION_BY_DATE"]) {
-                var loadAPIData = function(pageNo) {
-                    $scope.genReport(false, pageNo);
-                };
 
                 $scope.comparisonByDatePagination = {
                     id: 'COMPARISION_BY_DATE',
@@ -2231,9 +2233,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             }
 
             if(chosenReport.title === reportNames["BUSINESS_ON_BOOKS"]) {
-                var loadAPIData = function(pageNo) {
-                    $scope.genReport(false, pageNo);
-                };
 
                 $scope.businessOnBooksPagination = {
                     id: 'BUSINESS_ON_BOOKS',
