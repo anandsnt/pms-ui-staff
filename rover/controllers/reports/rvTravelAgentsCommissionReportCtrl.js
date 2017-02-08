@@ -4,28 +4,17 @@ angular.module('sntRover')
     'RVReportParserFac',
     '$timeout',
     'RVReportMsgsConst',
-    function($scope, reportParser, $timeout, reportMsgs) {
-
-       //  console.log($scope.results)
-       // var loadAPIData = function(){
-       //  console.log("reached")
-       // }
-       //   $scope.commisionReportTAPagination = {
-       //               id: 'TA_COMMISSION_REPORT_MAIN',
-       //               api: loadAPIData,
-       //               perPage: 5
-       //           };
+    'RVreportsSubSrv',
+    function($scope, reportParser, $timeout, reportMsgs, RVreportsSubSrv) {
 
        var SCROLL_NAME  = 'report-content-travel-agents-commission',
             timer;
 
         var refreshScroll = function() {
-            console.log("---scroll")
             $scope.refreshScroller(SCROLL_NAME);
         };
 
         var setScroller = function() {
-            console.log("set scroll")
             $scope.setScroller(SCROLL_NAME, {
                 probeType: 3,
                 tap: true,
@@ -37,13 +26,22 @@ angular.module('sntRover')
         $timeout( function() {
             setScroller(); }, 2000);
 
-        $scope.$on("TRAVEL_AGENT_COMMISSIONS_SCROLL", function(){
+        $scope.$on("TRAVEL_AGENT_COMMISSIONS_SCROLL", function() {
             $timeout(function() {
                 refreshScroll();
-            } , 2000);
+            }, 3000);
         });
-        $scope.$on("updateReservations", function(){
-            
+
+        var successFetch = function (response) {
+            console.log(response);
+        };
+        var failureFetch = function (response) {
+            console.log("response== failed");
+        };
+        $scope.$on("updateReservations", function(e, paramsToApi) {
+            $scope.invokeApi(RVreportsSubSrv.getReservationsOfTravelAgents, paramsToApi, successFetch, failureFetch);
+            // $scope.results = [];
+            // $scope.$apply();
         });
 
 

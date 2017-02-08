@@ -2156,12 +2156,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			var loadAPIDataHello = function (travel_agent_id, pageNo){
 				var paramsToApi = {};
 				paramsToApi.travel_agent_id = travel_agent_id;
-				paramsToApi.pageNo = pageNo;
+				paramsToApi.page = pageNo;
+				paramsToApi.per_page = 10;
 				$scope.$broadcast('updateReservations', paramsToApi);
 			};
 			var responseWithInsidePagination = function (response) {
 				_.each(response.results, function (item) {
-	
+
 					item.insidePaginationData = {
 						id: item.travel_agent_id,
 	                    api: [loadAPIDataHello, item.travel_agent_id],

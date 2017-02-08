@@ -136,10 +136,21 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 // no name here since we dont want to cache it in the store ever
                 method: 'postJSON',
                 url: '/api/reports/' + params.id + '/submit',
-                //url: '/api/reports/64/submit',
                 params: _.omit(params, 'id')
             });
         };
+
+        service.getReservationsOfTravelAgents = function(params) {
+            console.log("------params")
+            console.log(params)
+            return callApi({
+                // no name here since we dont want to cache it in the store ever
+                method: 'getJSON',
+                url: 'api/reports/list_travel_agent_reservations',
+                params: params
+            });
+        };
+
 
         service.fetchActiveUsers = function() {
             return callApi({
