@@ -1043,7 +1043,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 			var chosenReport = reportsSrv.getChoosenReport();
 			//CICO-36269
-			perPage = (chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) ? 10 : perPage;
+			perPage = (chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) ? reportParams["TRAVEL_AGENTS_PER_PAGE_COUNT"] : perPage;
 			var params = {
 				'id': report.id,
 				'page': page,
@@ -2153,11 +2153,11 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				page         = !!loadPage ? loadPage : 1;
 
 			var params = genParams(chosenReport, page, resultPerPageOverride || $scope.resultsPerPage);
-			var loadAPIDataHello = function (travel_agent_id, pageNo){
+			var fetchTravelAgents = function (travel_agent_id, pageNo) {
 				var paramsToApi = {};
 				paramsToApi.travel_agent_id = travel_agent_id;
 				paramsToApi.page = pageNo;
-				paramsToApi.per_page = 10;
+				paramsToApi.per_page = reportParams['TRAVEL_AGENTS_PER_PAGE_COUNT'];
 				$scope.$broadcast('updateReservations', paramsToApi);
 			};
 			var responseWithInsidePagination = function (response) {
@@ -2165,12 +2165,12 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 					item.insidePaginationData = {
 						id: item.travel_agent_id,
-	                    api: [loadAPIDataHello, item.travel_agent_id],
-	                    perPage: 1
+	                    api: [fetchTravelAgents, item.travel_agent_id],
+	                    perPage: reportParams['TRAVEL_AGENTS_PER_PAGE_COUNT']
 					};
 					$timeout(function() {
                         $scope.$broadcast('updatePagination', item.travel_agent_id);
-                    }, 50);
+                    }, 1000);
 				});
 				return response;
 			};
@@ -2273,12 +2273,14 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
                 var loadAPIData = function(pageNo) {
                     $scope.genReport(false, pageNo);
+
+                    //$scope.$broadcast("TRAVEL_AGENT_COMMISSIONS_SCROLL");
                 };
 
                 $scope.commisionReportTAPagination = {
                     id: 'TA_COMMISSION_REPORT_MAIN',
                     api: loadAPIData,
-                    perPage: 10
+                    perPage: reportParams["TRAVEL_AGENTS_PER_PAGE_COUNT"]
                 };
 
             }

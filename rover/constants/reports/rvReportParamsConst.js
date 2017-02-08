@@ -60,5 +60,6 @@ angular.module('reportsModule')
         'AGING_BALANCE': 'age_buckets',
         'ACCOUNT_SEARCH': 'account_ids',
         "SHOW_ACTIONABLES": "actions_by",
-        "TRAVEL_AGENTS": "travel_agents"
+        "TRAVEL_AGENTS": "travel_agents",
+        "TRAVEL_AGENTS_PER_PAGE_COUNT": 10
     });

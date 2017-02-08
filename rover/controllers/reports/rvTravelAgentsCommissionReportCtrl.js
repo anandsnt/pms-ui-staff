@@ -32,16 +32,24 @@ angular.module('sntRover')
             }, 3000);
         });
 
+        var selectedTAAgentId;
         var successFetch = function (response) {
-            console.log(response);
+            $scope.results = _.each($scope.results, function(travelAgents) {
+                $scope.$emit( 'hideLoader' );
+                if(travelAgents.travel_agent_id === selectedTAAgentId) {
+                    travelAgents.reservation_details = response;
+                }
+                return travelAgents;
+            });
+
+            $timeout(function() {
+                refreshScroll();
+            }, 1000);
         };
-        var failureFetch = function (response) {
-            console.log("response== failed");
-        };
+
         $scope.$on("updateReservations", function(e, paramsToApi) {
-            $scope.invokeApi(RVreportsSubSrv.getReservationsOfTravelAgents, paramsToApi, successFetch, failureFetch);
-            // $scope.results = [];
-            // $scope.$apply();
+            selectedTAAgentId = paramsToApi.travel_agent_id;
+            $scope.invokeApi(RVreportsSubSrv.getReservationsOfTravelAgents, paramsToApi, successFetch);
         });
 
 

@@ -23,7 +23,7 @@
                 <tfoot>
                     <!-- Travel Agent pagination // Shown when needed-->
                      <tr class="pagination">
-                        <td colspan="7"> 
+                        <td colspan="7">
                         <!-- {../_shared/pagination.html} -->
                         <rv-pagination  page-options="travel_agents.insidePaginationData" page-data="travel_agents.reservation_details.total_reservations" ></rv-pagination>
                         </td>
@@ -110,9 +110,9 @@
                     </tr>
 
                     <tr ng-if="travel_agents.reservation_details.reservations.length == 0">
-                        <td colspan="7" align="center"> 
+                        <td colspan="7" style="text-align: center;" >
                             <div class="info">
-                            <strong class="h1">No reservations found</strong>
+                            <strong>No reservations found</strong>
                             </div>
                         </td>
                     </tr>
