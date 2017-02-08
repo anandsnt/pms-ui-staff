@@ -568,7 +568,7 @@ sntZestStation.controller('zsRootCtrl', [
                     checkout: iconBasePath + '/checkout.svg',
                     key: iconBasePath + '/key.svg',
 
-                    checkmark: iconBasePath + '/checkmark.svg',
+                    checkmark: commonIconsPath + '/checkmark.svg',
 
                     oos: iconBasePath + '/oos.svg',
                     back: iconBasePath + '/back.svg',
@@ -593,6 +593,7 @@ sntZestStation.controller('zsRootCtrl', [
                     clear_icon: iconBasePath + '/x.svg'
                 }
             };
+            $log.log('useCommonIcons: ',useCommonIcons, commonIconsPath);
             if (useCommonIcons) {
                 $scope.icons.url.qr_noarrow = iconsPath + '/key.svg';
             }
@@ -607,6 +608,10 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.icons.url.logo = iconsPath + '/logo-print.svg';
                 }
                 $scope.icons.url.logo = iconsPath + '/logo-print.svg';
+            }
+
+            if ($scope.zestStationData.theme === 'yotel') {
+                $scope.icons.url.checkmark = iconsPath + '/checkmark.svg';
             }
         };
 
