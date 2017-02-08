@@ -7,6 +7,7 @@ html,body{
 }
 body{
      background-color: #231f20;
+     font-family: 'Minion Regular';
 }
 .back-text{
     color:#000 !important;
@@ -93,7 +94,7 @@ a,a:hover,.main-text,
     color:#BA7A55;
 }
 textarea.sub-text, textarea.sub-text:hover{
-  color:#EDE8D3 !important;
+  color:#000 !important;
 }
 
 /*----------------- date picker -------------------------*/
@@ -103,7 +104,7 @@ textarea.sub-text, textarea.sub-text:hover{
   color: transparent;
 }
 
-.pickadate-cell .pickadate-enabled ,.pickadate-centered-heading{
+.pickadate-cell .pickadate-enabled{
   color: #000 !important;
 }
 
@@ -111,8 +112,8 @@ textarea.sub-text, textarea.sub-text:hover{
   background-color: #b87310 !important;
   color:#fff !important;
 }
-.pickadate-head{
-    color:#000000;
+.pickadate-head, .pickadate-centered-heading{
+    color:#fff;
 }
 .calendar-selection {
     color: #fff;
@@ -195,6 +196,14 @@ textarea.sub-text, textarea.sub-text:hover{
    .dual-button{
      font-size:35px;
     }
+.main-text {
+    font-size: 39px;
+}
+}
+@media (min-width: 890px){
+   .btn-template {
+    font-size: 26px;
+  }
 }
 @media (max-width: 480px){
   .main-text{
@@ -220,4 +229,7 @@ textarea.sub-text, textarea.sub-text:hover{
 
 .res-details-heading,.res-details-heading:hover{
   color:#b87310;
+}
+.right-arrow-button {
+    background-image: url(/assets/guestweb/common_images/white_arrow.png);
 }
