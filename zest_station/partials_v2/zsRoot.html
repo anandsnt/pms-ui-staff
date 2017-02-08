@@ -8,12 +8,17 @@
 <span ng-show="zestStationData.editorModeEnabled == 'true'" class="demo-text editor dev-cls" >Editor Mode Enabled</span>
 
 <span ng-show="zestStationData.timeDebugger == 'true'" class="timer-debugger-left dev-cls non-center">
-     <br> <span> [ {{zestStationData.workstationTimer}}/{{zestStationData.getWorkstationsAtTime}} ] Fetch Workstation Data & Refresh Station Check <br> </span>
+    
+     <br> 
+     <span ng-show="zestStationData.editorModeEnabled == 'true'">
+        In Editor-Mode - <span class='key-in-progress'>(Timers Paused)</span><br> 
+    </span>
+     <span> [ {{zestStationData.workstationTimer}}/{{zestStationData.getWorkstationsAtTime}} ] Fetch Workstation Data & Refresh Station Check <br> </span>
     <span> [ {{zestStationData.userInActivityTimeInHomeScreenInSeconds}}/{{zestStationData.timeUntilLanguageResetCheck}} ] Language Reset  <br> </span>
 
     <span> [ {{zestStationData.refreshStationTimer}} >= {{zestStationData.timeUntilRefreshCheck}} ] Refresh Station Check Home Idle  <br> </span>
-    <span> [ {{zestStationData.userInActivityTimeInSeconds}}/{{zestStationData.idlePopupTime}} ] Idle Time, Alert <br> </span>
-    <span> [ {{zestStationData.userInActivityTimeInSeconds}}/{{zestStationData.idleToHomeTime}} ]Idle Time, Back to Home </span>
+    <span> [ {{zestStationData.userInActivityTimeInSeconds}}/{{zestStationData.idlePopupTime}} ] Idle Time, Alert <span ng-show='zestStationData.idle_timer.enabled === "false"'>*disabled</span> <br> </span>
+    <span> [ {{zestStationData.userInActivityTimeInSeconds}}/{{zestStationData.idleToHomeTime}} ]Idle Time, Back to Home <span ng-show='zestStationData.idle_timer.enabled === "false"'>*disabled</span></span>
 </span>
 <span ng-show="zestStationData.timeDebugger == 'true'" class="timer-debugger-right dev-cls non-center">
      <br> <span>Assigned Workstation ({{zestStationData.workstationName}}) <br> </span>
