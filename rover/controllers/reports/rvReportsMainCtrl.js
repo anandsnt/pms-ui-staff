@@ -425,6 +425,21 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			maxDate: reportUtils.processDate(($rootScope.businessDate)).aMonthAfter
 		}, datePickerCommon);
 
+        // for some of the reports we need to restrict max date selection to 6 months (eg:- Business on Books report)
+        $scope.fromDateOptionsSixMonthsLimit = angular.extend({
+            onSelect: function(value, datePickerObj) {
+                var selectedDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+
+                $scope.toDateOptionsSixMonthsLimit.minDate = selectedDate;
+                $scope.toDateOptionsSixMonthsLimit.maxDate = reportUtils.processDate(selectedDate).sixMonthsAfter;
+            }
+        }, datePickerCommon);
+
+        $scope.toDateOptionsSixMonthsLimit = angular.extend({
+            minDate: new tzIndependentDate($rootScope.businessDate),
+            maxDate: reportUtils.processDate(($rootScope.businessDate)).sixMonthsAfter
+        }, datePickerCommon);
+
 		// custom from and untill date picker options
 		// with no limits to choose dates
 		$scope.fromDateOptionsNoLimit = angular.extend({}, datePickerCommon);
@@ -439,7 +454,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			$scope.touchedReport = item;
 			$scope.touchedDate = dateName;
 
-			if (item.title === reportNames['DAILY_PRODUCTION_RATE']) {
+			if ( (item.title === reportNames['DAILY_PRODUCTION_RATE']) || (item.title === reportNames['BUSINESS_ON_BOOKS']) ) {
 				if (item.fromDate > item.untilDate) {
 					item.untilDate = item.fromDate;
 				}
@@ -489,6 +504,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					item.chosenDueOutDepartures = false;
 				}
 			}
+
 		};
 
 		$scope.setTomorrowDate = function (item) {
@@ -2145,6 +2161,11 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                         $scope.$broadcast('updatePagination', "COMPARISION_BY_DATE");
                     }, 50);
                 }
+                if(chosenReport.title === reportNames["BUSINESS_ON_BOOKS"]) {
+                    $timeout(function() {
+                        $scope.$broadcast('updatePagination', "BUSINESS_ON_BOOKS");
+                    }, 50);
+                }
 			};
 
 			var sucssCallback = function(response) {
@@ -2196,14 +2217,25 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 			params.reportTitle = chosenReport.title;
 
+            // Load API data for the pagination directive
+            var loadAPIData = function(pageNo) {
+                $scope.genReport(false, pageNo);
+            };
+
             //CICO-36186 - Implemented the new pagination for Comparison report
             if(chosenReport.title === reportNames["COMPARISION_BY_DATE"]) {
-                var loadAPIData = function(pageNo) {
-                    $scope.genReport(false, pageNo);
-                };
 
                 $scope.comparisonByDatePagination = {
                     id: 'COMPARISION_BY_DATE',
+                    api: loadAPIData,
+                    perPage: 25
+                };
+            }
+
+            if(chosenReport.title === reportNames["BUSINESS_ON_BOOKS"]) {
+
+                $scope.businessOnBooksPagination = {
+                    id: 'BUSINESS_ON_BOOKS',
                     api: loadAPIData,
                     perPage: 25
                 };

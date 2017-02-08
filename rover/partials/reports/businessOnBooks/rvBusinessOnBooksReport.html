@@ -1,0 +1,112 @@
+<div ng-show="hasNoResults" class="report-content no-content">
+    <div class="info">
+        <span class="icon-no-content icon-reports"></span>
+        <strong class="h1">No reports found</strong>
+        <span class="h2">Try changing search criteria or modify dates</span>
+    </div>
+</div>
+<!-- Report content -->
+<!-- add .with-pagination if has pagination -->
+<div id="report-content" class="report-content statistics books" ng-hide="hasNoResults" ng-controller="RVBusinessOnBooksController" ng-class="{'with-pagination' : totalCount >businessOnBooksPagination.perPage}">
+    <!-- Left side - table legend. Number of list items here should be identical to the number of table rows on the right side  -->
+    <div class="statistics-headings">
+        <!-- Attach iscroll here, should scroll vertically. While scrolling it should update iscoll on the right side as well -->
+        <div class="scrollable" ng-iscroll="left-pane-scroll">
+            <div class="wrapper">
+              <table>
+                  <thead>
+                      <tr>
+                          <th class="main-heading action-row">
+                              DATE
+                          </th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr ng-repeat="date in dates track by $index">
+                          <td>{{date}}</td>
+                      </tr>
+                      <tr class="totals" ng-show="resultsTotalRow">
+                          <td>Totals</td>
+                      </tr>
+                  </tbody>
+              </table>
+            </div>
+        </div>
+    </div>
+    <!-- Right side - table numbers. Number of table rows here should be identical to the number of list items on the left side -->
+    <div class="statistics-content scrollable" ng-iscroll="right-pane-scroll">
+        <div class="wrapper">
+            <table class="statistics-reports business-books">
+                <thead>
+                    <tr>
+                        <th class="rooms" rowspan="2">Rms</th>
+                        <th class="occupancy" rowspan="2">Occ %</th>
+                        <th class="avl" rowspan="2">Avl. Rms</th>
+                        <th class="rooms" rowspan="2">OOO</th>
+                        <th colspan="2">Total Rms</th>
+                        <th colspan="4">Group Rooms</th>
+                        <th colspan="4">Allotment Rooms</th>
+                        <th colspan="3">Individual Rooms</th>
+                    </tr>
+                    <tr class="bottom-row">
+                        <th>Rvn</th>
+                        <th>ADR/day</th>
+                        <th class="picked-up">Picked Up</th>
+                        <th class="not-picked-up">Not Picked Up</th>
+                        <th>Rvn</th>
+                        <th>ADR</th>
+                        <th class="picked-up">Picked Up</th>
+                        <th class="not-picked-up">Not Picked Up</th>
+                        <th>Rvn</th>
+                        <th>ADR</th>
+                        <th class="rooms">Count</th>
+                        <th>Rvn</th>
+                        <th>ADR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="roomDet in roomDetails track by $index">
+                        <td class="rooms">{{roomDet.rooms_data.rooms_count}}</td>
+                        <td class="rooms">{{roomDet.rooms_data.occ_percentage | number:2}}</td>
+                        <td class="rooms">{{roomDet.rooms_data.available_rooms}}</td>
+                        <td class="rooms">{{roomDet.rooms_data.ooo_rooms_count}}</td>
+                        <td>{{roomDet.rooms_data.revenue | currency:currencySymbol:2}}</td>
+                        <td>{{roomDet.rooms_data.adr | currency:currencySymbol:2}}</td>
+                        <td class="rooms">{{roomDet.groups_data.picked_up_count}}</td>
+                        <td class="rooms">{{roomDet.groups_data.non_picked_up_count}}</td>
+                        <td>{{roomDet.groups_data.revenue | currency:currencySymbol:2}}</td>
+                        <td>{{roomDet.groups_data.adr | currency:currencySymbol:2}}</td>
+                        <td class="rooms">{{roomDet.allotments_data.picked_up_count}}</td>
+                        <td class="rooms">{{roomDet.allotments_data.non_picked_up_count}}</td>
+                        <td>{{roomDet.allotments_data.revenue | currency:currencySymbol:2}}</td>
+                        <td>{{roomDet.allotments_data.adr | currency:currencySymbol:2}}</td>
+                        <td class="rooms">{{roomDet.individuals_data.rooms_count}}</td>
+                        <td>{{roomDet.individuals_data.revenue | currency:currencySymbol:2}}</td>
+                        <td>{{roomDet.individuals_data.adr | currency:currencySymbol:2}}</td>
+                    </tr>
+                    <tr class="totals" ng-show="resultsTotalRow">
+                        <td class="rooms">{{resultsTotalRow.total_rooms_count}}</td>
+                        <td class="rooms">{{resultsTotalRow.total_rooms_occ_percentage | number:2}}</td>
+                        <td class="rooms">{{resultsTotalRow.total_rooms_available_rooms}}</td>
+                        <td class="rooms">{{resultsTotalRow.total_rooms_ooo_rooms_count}}</td>
+                        <td>{{resultsTotalRow.total_rooms_revenue | currency:currencySymbol:2}}</td>
+                        <td>{{resultsTotalRow.total_rooms_adr | currency:currencySymbol:2}}</td>
+                        <td class="rooms">{{resultsTotalRow.total_group_picked_up_count}}</td>
+                        <td class="rooms">{{resultsTotalRow.total_group_non_picked_up_count}}</td>
+                        <td>{{resultsTotalRow.total_group_revenue | currency:currencySymbol:2}}</td>
+                        <td>{{resultsTotalRow.total_group_adr | currency:currencySymbol:2}}</td>
+                        <td class="rooms">{{resultsTotalRow.total_allotment_picked_up_count}}</td>
+                        <td class="rooms">{{resultsTotalRow.total_allotment_non_picked_up_count}}</td>
+                        <td>{{resultsTotalRow.total_allotment_revenue | currency:currencySymbol:2}}</td>
+                        <td>{{resultsTotalRow.total_allotment_adr | currency:currencySymbol:2}}</td>
+                        <td class="rooms">{{resultsTotalRow.total_individual_rooms_count}}</td>
+                        <td>{{resultsTotalRow.total_individual_revenue | currency:currencySymbol:2}}</td>
+                        <td>{{resultsTotalRow.total_individual_adr | currency:currencySymbol:2}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<rv-pagination  page-options="businessOnBooksPagination" page-data="totalCount" >
+</rv-pagination>
