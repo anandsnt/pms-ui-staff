@@ -184,7 +184,7 @@ angular.module('sntRover')
                         if (data.errors) {
                             $scope.messages = data.errors;
                             openMessagePopup();
-                        }                        
+                        } else                       
                         if (data.data.availability_status === 'room_available') {                            
                             $scope.extendShortenReservationDetails = params;
                         } else {
