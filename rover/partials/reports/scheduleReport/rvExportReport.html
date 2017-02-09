@@ -47,12 +47,12 @@
             class="button blue with-icon"
         >
             <i class="icons icon-pencil"></i>
-            Schedule a Export
+            Schedule an Export
         </button>
         <button ng-show="isAddingNew"
             ng-click="checkCanCancel()"
-            class="back-button">Back to Exports</button>
-        <strong ng-show="isAddingNew">Scheduled an Export</strong>
+            class="back-button">Back to Export Reports</button>
+        <strong ng-show="isAddingNew">Select a Report</strong>
     </div>
 </div>
 
@@ -106,9 +106,9 @@
         <button class="button red"
             ng-click="confirmDelete()">Delete Export</button>
         <button class="button green"
-            ng-click="checkCanSaveSchedule()">Save Export</button>
+            ng-click="checkCanSaveSchedule()">Save Schedule</button>
         <button class="button blue"
-            ng-click="confirmDelete()">Run Now</button>
+            ng-click="">Run Now</button>
     </div>
 
     <div ng-show="isAddingNew"
@@ -177,6 +177,14 @@
             </div>
 
             <div class="entry">
+                <label for="schedule-repeats">Run Once</label>
+                <div class="switch-button single " ng-class="{'on': negativeLogic? !isChecked: isChecked}">
+                    <input type="checkbox" ng-checked="isChecked" ng-model="isChecked">
+                    <span class="switch-icon"></span>
+                </div>
+            </div>
+
+            <div class="entry">
                 <label>Ends On</label>
                 <div class="entry-data entry-first">
                     <label for="schedule-ends-on-number" class="radio inline">
@@ -219,14 +227,14 @@
         class="column-actions"
     >
         <button class="button green"
-            ng-click="checkCanSaveSchedule()">Save Export</button>
+            ng-click="checkCanSaveSchedule()">Save Schedule</button>
     </div>
 
     <div ng-show="isAddingNew"
         class="column-actions"
     >
-      <button class="button white blue-text next-view has-arrow"
-          ng-click="goToNext()">Export Details</button>
+        <button ng-click="goToNext()"
+            class="button white blue-text next-view has-arrow">Distribution List</button>
     </div>
 </div>
 
@@ -237,16 +245,6 @@
         <div class="wrapper">
             <h3>Distribution List<span>{{ selectedEntityDetails.report.title }}</span></h3>
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-            <div class="entry">
-                <label for="export-method">Delivery Method</label>
-                <div class="select">
-                    <select id="export-method">
-                        <option value="email">Email</option>
-                        <option value="ftp">FTP</option>
-                    </select>
-                </div>
-            </div>
-
             <div class="entry search">
                 <label for="distribution-list-add-user">Add Recipient</label>
                 <button class="clear-query">
@@ -263,16 +261,6 @@
                     </button>
                 </li>
             </ul>
-
-            <div class="entry">
-                <label for="export-ftp">Recipient</label>
-                <div class="select">
-                    <select id="export-ftp">
-                        <option value="{ftp-server}">{ftp-server}</option>
-                        ... repeat for each fpt server
-                    </select>
-                </div>
-            </div>
         </div>
     </div>
 

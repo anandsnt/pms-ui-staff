@@ -20,7 +20,7 @@
             <li ng-repeat="item in schedulableReports"
                 ng-hide="item.filteredOut"
                 ng-class="{'active': item.active}"
-                ng-click="checkCanPickReport(item, $index)"
+                ng-click="pickReport(item, $index)"
                 class="report-item"
             >
                 <span ng-class="item.reportIconCls"></span>
