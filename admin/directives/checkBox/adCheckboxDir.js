@@ -18,7 +18,18 @@ admin.directive('adCheckbox', function($timeout) {
             topLabel: '@'
 	    },
 
-    	templateUrl: '/assets/directives/checkBox/adCheckbox.html'
+    	templateUrl: '/assets/directives/checkBox/adCheckbox.html',
+        controller : function($scope) {
+            $scope.shouldHide = function () {
+              if ( typeof $scope.ngHide === typeof true) {
+                return $scope.ngHide;
+              } else if ( $scope.ngHide === 'true' ) {
+                return true;
+              }
+              return false;
+
+            };
+        }
     };
 
 });
