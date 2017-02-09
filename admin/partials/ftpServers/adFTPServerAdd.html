@@ -13,6 +13,7 @@
         </header>
         <section class="content-scroll">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
             <form name="item-details" method="post" class="form float">
                 <fieldset class="holder full-width float" ng-show="mode == 'add'">
                     <div class="form-title" >
@@ -43,6 +44,10 @@
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBack()" translate>CANCEL</button>
 
                 <button type="button" id="save" class="button green add-data-inline"  ng-click="saveServerDetails()" translate>SAVE_CHANGES</button>
+
+                <button type="button" class="button blue" ng-click="testConnectivity(serverDetails)">
+                    Test Connectivity
+                </button>
 
             </div>
         </form>
