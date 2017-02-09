@@ -2,7 +2,10 @@
 login.config([
 	'$stateProvider',
 	'$urlRouterProvider',
-	function($stateProvider, $urlRouterProvider) {
+	'$locationProvider',
+	function($stateProvider, $urlRouterProvider, $locationProvider) {
+
+        $locationProvider.html5Mode(true);
 
 		// dashboard state
 		$urlRouterProvider.otherwise('/login');

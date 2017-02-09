@@ -23,7 +23,8 @@ admin.directive('adDropdownName', function($timeout) {
             prefixValue: '@',
             labelProperties: '=',
             isDisabled: '=',
-            changeHandler: '='
+            changeHandler: '=',
+            bindNumber: '='
         },
         link: function($scope) {
             if (typeof $scope.options !== 'undefined') {

@@ -38,6 +38,7 @@ module.exports = {
 				sharedRoot + 'directives/fauxMultiSelect/*.js',
 				sharedRoot + 'directives/eventReachedRoot/*.js',
 				sharedRoot + 'directives/ngClassWithoutAnimation/*.js',
+                sharedRoot + 'directives/convertToNumber/*.js',
 				sharedRoot + 'directives/tooltip/qtip2.js',
 				sharedRoot + 'baseCtrl.js',
 				sharedRoot + 'iBeaconOperations.js',

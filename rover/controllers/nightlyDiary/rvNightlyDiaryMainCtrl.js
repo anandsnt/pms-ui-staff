@@ -90,6 +90,7 @@ angular.module('sntRover')
                     total_count: $scope.diaryData.paginationData.totalCount
                 };
             };
+
             /**
              * method to update Pagination parametrs
              */
@@ -167,31 +168,45 @@ angular.module('sntRover')
 
             };
 
+            /*
+             * Function to check room availability.
+             */
             var checkReservationAvailability = (arrivalDate, DepartureDate) => {
                 let params = {
-                        'arrival_date': arrivalDate,
-                        'dep_date': DepartureDate,
+                        'arrival_date': moment(arrivalDate, $rootScope.dateFormat.toUpperCase())
+                                            .format('YYYY-MM-DD'),
+                        'dep_date': moment(DepartureDate, $rootScope.dateFormat.toUpperCase())
+                                            .format('YYYY-MM-DD'),
                         'reservation_id': $scope.currentSelectedReservation.id
                     },
-                    successCallBack = function(data) {
+                    successCallBack = function(response) {
                         $scope.$emit('hideLoader');
-                        if (data.data.availability_status === 'room_available') {                            
-                            $scope.extendShortenReservation = params;
-                        } else {
-                            $scope.messages = [data.data.availability_status];
+                        if (response.status === 'failure') {
+                            $scope.messages = response.errors;
                             openMessagePopup();
-                        }                        
-                    },
-                    failureCallBack = function(err) {
-                        $scope.messages = err;
-                        openMessagePopup();
-                        $scope.$emit('hideLoader');
+                        } else {                      
+                            if (response.data.availability_status === 'room_available') {                            
+                                $scope.extendShortenReservationDetails = params;
+                            } else {
+                                switch (response.data.availability_status) {
+                                case 'to_be_unassigned' : $scope.messages = ['PREASSIGNED'];
+                                    break;
+                                case 'maintenance' : $scope.messages = ['MAINTENANCE'];
+                                    break;
+                                case 'do_not_move' : $scope.messages = ['ROOM_CANNOT_UNASSIGN'];
+                                    break;
+                                case 'room_ooo' : $scope.messages = ['ROOM_OOO'];
+                                    break;
+                                default : $scope.messages = ["Room Can't Move"];
+                                }                    
+                                openMessagePopup();
+                            }
+                        }                                                
                     };
 
                 $scope.invokeApi(RVNightlyDiarySrv.checkUpdateAvaibale, 
                     params,
-                    successCallBack,
-                    failureCallBack);
+                    successCallBack);
             };
             /*
              * Function to cancel message popup.
@@ -208,12 +223,11 @@ angular.module('sntRover')
                     fetchRoomListDataAndReservationListData();
                     cancelReservationEditing();
                 };
-                
+
                 $scope.invokeApi(RVNightlyDiarySrv.confirmUpdates, 
-                    $scope.extendShortenReservation,
+                    $scope.extendShortenReservationDetails,
                     successCallBack);                
             };
-
             /*
              * Show selected reservation highlighted and enable edit bar
              * @param reservation - Current selected reservation
