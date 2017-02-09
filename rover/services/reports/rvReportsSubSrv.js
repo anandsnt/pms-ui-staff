@@ -140,6 +140,16 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
+        service.getReservationsOfTravelAgents = function(params) {
+            return callApi({
+                // no name here since we dont want to cache it in the store ever
+                method: 'getJSON',
+                url: 'api/reports/list_travel_agent_reservations',
+                params: params
+            });
+        };
+
+
         service.fetchActiveUsers = function() {
             return callApi({
                 name: 'activeUsers',
@@ -410,6 +420,15 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 method: 'getJSON',
                 url: '/api/accounts/list',
                 resKey: 'accounts'
+            });
+        };
+
+        service.fetchTravelAgents = function() {
+            return callApi({
+                name: 'accounts',
+                method: 'getJSON',
+                url: ' /api/reports/list_travel_agents',
+                resKey: 'travel_agents'
             });
         };
 

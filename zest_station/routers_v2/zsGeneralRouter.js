@@ -53,6 +53,7 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
          	jumper: true,
 	        section: 'General',
 	        label: 'Home',
+	        icon: 'home.png',
 	        tags: []
 		}).state('zest_station.speakToStaff', {
             url: '/speakToStaff/:message',
@@ -61,6 +62,7 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
          	jumper: true,
 	        section: 'General',
 	        label: 'Speak to Staff',
+	        icon: 'speak_to_staff.png',
 	        tags: ['talk']
         });
 
@@ -75,6 +77,7 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
          	jumper: true,
 	        section: 'General',
 	        label: 'Out of Service',
+	        icon: 'out_of_service.png',
 	        tags: ['sleepy']
         });
 
