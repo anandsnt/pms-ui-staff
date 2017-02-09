@@ -47,7 +47,11 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
         var validateSchedule = function() {
             var hasTimePeriod = function() {
-                return $scope.isGuestBalanceReport ? true : !! $scope.scheduleParams.time_period_id;
+                if ( $scope.isGuestBalanceReport ) {
+                    return true;
+                } else {
+                    return !! $scope.scheduleParams.time_period_id;
+                }
             };
 
             var hasFrequency = function() {
@@ -402,7 +406,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
         $scope.deleteSchedule = function() {
             var success = function() {
-                $scope.errorMessage = "";
+                $scope.errorMessage = '';
                 $scope.$emit( 'hideLoader' );
                 if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
                     $scope.selectedReport.active = false;
@@ -813,8 +817,6 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
         };
 
         $scope.checkCanCancel = function() {
-            var msg = '';
-
             if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
                 ngDialog.open({
                     template: '/assets/partials/reports/scheduleReport/rvConfirmDiscard.html',
@@ -826,15 +828,15 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
         };
 
         $scope.cancelScheduleReport = function() {
+            var reset = true;
+
             $scope.isAddingNew = false;
             $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
 
             $scope.selectedReport.active = false;
 
-            $scope.updateView($scope.reportViewActions.SHOW_EXPORT_REPORTS);
+            $scope.updateView($scope.reportViewActions.SHOW_SCHEDULED_REPORTS);
             $scope.updateViewCol($scope.viewColsActions.ONE);
-
-            var reset = true;
 
             $scope.refreshReportSchedulesScroll(reset);
 

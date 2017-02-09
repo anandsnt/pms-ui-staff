@@ -1,66 +1,71 @@
-angular.module('login').service('loginSrv', ['$http', '$q', function($http, $q) {
-	this.login = function(data, successCallback, failureCallBack) {
-		var deferred = $q.defer();
+angular.module('login').service('loginSrv',
+    ['$http', '$q', '$window',
+        function($http, $q, $window) {
 
-		// Sample params {params:{fname: "fname", lname: "lname"}}
-		$http.post("/login/submit", data).success(function(response, status) {
-			if (response.status === "success") {
-		    	successCallback(response.data);
-			} else {
-				// please note the type of error expecting is array
-		    	failureCallBack(response.errors);
-			}
-		}).error(function(response, status) {
-			// please note the type of error expecting is array
-			// so form error as array if you modifying it
-			if (status === 406) { // 406- Network error
-				deferred.reject(response.errors);
-			}
-			else if (status === 500) { // 500- Internal Server Error
+            var service = this;
 
-				deferred.reject(['Internal server error occured']);
-			}
-			else if (status === 401) { // 401- Unauthorized
-				// so lets redirect to login page
-				$window.location.href = '/logout' ;
-			} else {
-				deferred.reject(response.errors);
-			}
+            service.login = function(data, successCallback, failureCallBack) {
+                var deferred = $q.defer();
 
-		});
-		return deferred.promise;
-	};
+                $http.post("/login/submit", data).then(function(response) {
+                    if (response.data.status === "success") {
+                        successCallback(response.data.data);
+                    } else {
+                        // please note the type of error expecting is array
+                        failureCallBack(response.data.errors);
+                    }
+                }, function(response) {
+                    // please note the type of error expecting is array
+                    // so form error as array if you modifying it
+                    if (response.status === 406) { // 406- Network error
+                        deferred.reject(response.errors);
+                    }
+                    else if (response.status === 500) { // 500- Internal Server Error
+                        deferred.reject(['Internal server error occured']);
+                    }
+                    else if (response.status === 401) { // 401- Unauthorized
+                        // so lets redirect to login page
+                        $window.location.href = '/logout';
+                    } else {
+                        deferred.reject(response.data.errors);
+                    }
 
-	this.forgotPassword = function(data, successCallback, failureCallBack) {
-		var deferred = $q.defer();
+                });
 
-		// Sample params {params:{"email":email}}
-		$http.post("/login/send_temporary_password", data).success(function(response, status) {
-			if (response.status === "success") {
-		    	successCallback(response.data);
-			} else {
-				// please note the type of error expecting is array
-		    	failureCallBack(response.errors);
-			}
-		}).error(function(response, status) {
-			// please note the type of error expecting is array
-			// so form error as array if you modifying it
-			if (status === 406) { // 406- Network error
-				deferred.reject(response.errors);
-			}
-			else if (status === 500) { // 500- Internal Server Error
+                return deferred.promise;
+            };
 
-				deferred.reject(['Internal server error occured']);
-			}
-			else if (status === 401) { // 401- Unauthorized
-				// so lets redirect to login page
-				$window.location.href = '/logout' ;
-			} else {
-				deferred.reject(response.errors);
-			}
+            service.forgotPassword = function(data, successCallback, failureCallBack) {
+                var deferred = $q.defer();
 
-		});
-		return deferred.promise;
-	};
+                // Sample params {params:{"email":email}}
+                $http.post("/login/send_temporary_password", data).then(function(response) {
+                    if (response.data.status === "success") {
+                        successCallback(response.data.data);
+                    } else {
+                        // please note the type of error expecting is array
+                        failureCallBack(response.data.errors);
+                    }
+                }, function(response) {
+                    // please note the type of error expecting is array
+                    // so form error as array if you modifying it
+                    if (response.status === 406) { // 406- Network error
+                        deferred.reject(response.errors);
+                    }
+                    else if (response.status === 500) { // 500- Internal Server Error
 
-}]);
+                        deferred.reject(['Internal server error occured']);
+                    }
+                    else if (response.status === 401) { // 401- Unauthorized
+                        // so lets redirect to login page
+                        $window.location.href = '/logout';
+                    } else {
+                        deferred.reject(response.data.errors);
+                    }
+
+                });
+                return deferred.promise;
+            };
+
+        }
+    ]);

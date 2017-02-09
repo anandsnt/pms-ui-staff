@@ -6,7 +6,7 @@ sntRover.controller('roverController',
   'ngDialog', '$translate', 'hotelDetails',
   'userInfoDetails', '$stateParams',
 
-  'rvMenuSrv', 'rvPermissionSrv', '$timeout', 'rvUtilSrv', 'jsMappings', '$q', '$sce', '$log',
+  'rvMenuSrv', 'rvPermissionSrv', '$timeout', 'rvUtilSrv', 'jsMappings', '$q', '$sce', '$log', '$location',
 
   function($rootScope, $scope, $state,
     $window, RVDashboardSrv, RVHotelDetailsSrv,
@@ -14,7 +14,7 @@ sntRover.controller('roverController',
     ngDialog, $translate, hotelDetails,
     userInfoDetails, $stateParams,
 
-    rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce, $log) {
+    rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce, $log, $location) {
 
 
     $rootScope.isOWSErrorShowing = false;
@@ -408,7 +408,18 @@ sntRover.controller('roverController',
         };
 
         $scope.menuOpen = false;        
-        $rootScope.showNotificationForCurrentUser = true;           
+        $rootScope.showNotificationForCurrentUser = true;
+
+        var routeChange = function(event) {
+            event.preventDefault();
+            $location.path('#!/');
+            $location.replace();
+            return false;
+        };
+
+        $rootScope.$on('$locationChangeStart', routeChange);
+
+        // window.history.pushState("initial", "Showing Dashboard", "#/"); // we are forcefully setting top url, please refer routerFile
 
     };
 
@@ -419,6 +430,7 @@ sntRover.controller('roverController',
      */
     $scope.$on("updateRoverLeftMenu", function(e, value) {
       $scope.selectedMenuIndex = value;
+      window.history.pushState("initial", "Showing Dashboard", "#!/");
     });
 
 
@@ -508,14 +520,6 @@ sntRover.controller('roverController',
 
     // in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
     // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
-
-    var routeChange = function(event, newURL) {
-      event.preventDefault();
-      return;
-    };
-
-    $rootScope.$on('$locationChangeStart', routeChange);
-    window.history.pushState("initial", "Showing Dashboard", "#/"); // we are forcefully setting top url, please refer routerFile
 
     //
     // DEPRICATED!

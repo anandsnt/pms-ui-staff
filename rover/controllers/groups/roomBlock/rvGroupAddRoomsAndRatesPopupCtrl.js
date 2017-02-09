@@ -38,6 +38,11 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 
 			// selected room types & its rates
 			$scope.selectedRoomTypeAndRates = util.deepCopy($scope.groupConfigData.summary.selected_room_types_and_rates);
+
+			_.each($scope.selectedRoomTypeAndRates, function(selectedRoomTypeAndRate) {
+                selectedRoomTypeAndRate.room_type_id = selectedRoomTypeAndRate.room_type_id.toString();
+            });
+
 			angular.forEach ($scope.selectedRoomTypeAndRates, function (row) {
 				if (row.is_configured_in_group) {
 					row.update_existing_reservations_rate = false;
@@ -84,7 +89,7 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 		 */
 		$scope.changeBestAvailableRate = function(row) {
 			var roomType = _.findWhere($scope.roomTypes, {
-				"room_type_id": parseInt(row.room_type_id)
+				"room_type_id": row.room_type_id
 			});
 
 			if (roomType) {
@@ -93,7 +98,7 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 				row.rate_id = roomType.rate_id;
 				if ($scope.groupConfigData.summary.rate !== -1) {
 					var selectedRateDetails = _.findWhere($scope.groupConfigData.summary.selected_room_types_and_rates, {
-						room_type_id: roomType.room_type_id
+						room_type_id: parseInt(roomType.room_type_id, 10)
 					});
 
 					row.single_rate = selectedRateDetails.single_rate;
@@ -249,11 +254,6 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 			// we are removing other selected
 			// list of selecetd room types' ids
 			var selectedIdList = _.pluck($scope.selectedRoomTypeAndRates, "room_type_id");
-			// Converting to integer
-
-			selectedIdList = _.map(selectedIdList, function(element) {
-				return parseInt(element);
-			});
 
 			// yes final Boolean is on the way
 			return (_.indexOf(selectedIdList, roomType.room_type_id) >= 0);
