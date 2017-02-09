@@ -2016,6 +2016,32 @@
                         }
                     }
                 }
+
+                &.business-books {
+                    tr {
+                        th,
+                        td {
+                            &.rooms {
+                                width: 60px;
+                            }
+
+                            &.occupancy {
+                                min-width: 70px;
+                            } 
+                            &.avl {
+                                min-width: 90px;
+                            }
+
+                            &.picked-up {
+                                min-width: 80px;
+                            }
+
+                            &.not-picked-up {
+                                min-width: 100px;
+                            }
+                        }
+                    }
+                }
             }
 
             &.forecast-reports {
@@ -3075,6 +3101,66 @@
                     bottom: 5px;
                     left: 10px;
                     right: 10px;
+                }
+            }
+
+            &.books {
+                .statistics-headings { 
+                    width: 150px;
+
+                    .scrollable {
+                        table {
+                            border-collapse: collapse;
+
+                            th.action-row {
+                                padding: 0 10px;
+                                height: 60px;
+                                font-size: 16px;
+                                font-weight: 600;
+                                color: @white;
+                                background-color: @gcard;
+                                border: 0;
+                                line-height: 30px;
+                            }
+
+                            td {
+                                height: 30px;
+                                padding: 0 10px;
+                                line-height: 30px;
+                                border-bottom: 1px solid rgba(0,0,0,.1);
+                                background-color: @grey1;
+                            }
+
+                            tr.totals {
+
+                                td {
+                                    font-weight: 600;
+                                    text-transform: uppercase;
+                                    border-bottom:0;
+                                }
+                                
+
+                            }
+                        }
+                        li {
+                            &.action-row {
+                                padding: 0 10px;
+                            }
+
+                            &.totals {
+                                font-weight: 600;
+                                text-transform: uppercase;
+                            }
+                        }
+                    }
+                }
+                .statistics-content {
+                    .calc-width(100, 125);
+                    left: 125px;
+
+                    .wrapper {
+                        width: 1600px;
+                    }
                 }
             }
         }

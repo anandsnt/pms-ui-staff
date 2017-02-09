@@ -46,6 +46,7 @@ angular.module('reportsModule')
     'ACTIONS_MANAGER': 'Action Manager',
     'VACANT_ROOMS_REPORT': 'Vacant Rooms Report',
     'A/R_AGING': 'A/R Aging',
-    'TRAVEL_AGENT_COMMISSIONS': 'Travel Agent Commissions'
+    'TRAVEL_AGENT_COMMISSIONS': 'Travel Agent Commissions',
+    'BUSINESS_ON_BOOKS': 'Business on the Books'
 });
 

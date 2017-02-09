@@ -27,10 +27,10 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 			for (i = 0; i < limit; i++) {
 				tabs.push({
 					roomTypeId: roomTypes && roomTypes[i] || '',
-					roomCount: 1,
-					numAdults: 1,
-					numChildren: 0,
-					numInfants: 0
+					roomCount: "1",
+					numAdults: "1",
+					numChildren: "0",
+					numInfants: "0"
 				});
 			}
 			return tabs;
@@ -43,9 +43,9 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 
 			for (i = 0; i < limit; i++) {
 				rooms.push({
-					numAdults: 1,
-					numChildren: 0,
-					numInfants: 0,
+					numAdults: '1',
+					numChildren: '0',
+					numInfants: '0',
 					roomTypeId: '',
 					roomTypeName: '',
 					rateId: '',

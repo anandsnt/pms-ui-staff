@@ -6,7 +6,7 @@ html,body{
   min-height:100% !important;
 }
 body{
-     background-color: #1b1a1e;
+     background-color:#F6F3DA ;
 }
 .back-text{
     color:#fff !important;
@@ -14,56 +14,61 @@ body{
 a,a:hover,.main-text,
 .res-date,
 .footer-sub-text,.footer-sub-text:hover,.phone-label{
-    color:#fff;
+    color:#000;
 }
 .sub-main-text{
-    color:#fff;
+    color:#000;
 }
 .header-bar{
-   background-color:#1b1a1e;
+   background-color: #fff;
 }
+.logo-image {
+   max-width: 85%;
+    margin: 4% auto 2%;
+}
+
 .template-text,.footer-text,
 .balance-amount,.phone-text,
 .phone-text:hover,.request-text,
 .error-text {
-    color: #fff ;
+    color: #000 !important;
 }
 .view-bill{
-    color: #b58b53;
+    color:#A68F2B;
 }
 .sub-text,.sub-text:hover,.query-text,.query-text:hover,.light-text{
-    color: #fff ;
+    color: #000 !important;
 }
-.btn,.btn:hover, .btn:focus{
-    background: #b58b53;
-    color: #fff;
+.btn,.btn:hover{
+    background:#A68F2B;
+    color:#ffffff;
 }
 .dual-button{
-  font-size:25px;
+  font-size:35px;
   font-weight:300;
 }
 .btn-template{
-  font-size:33px;
+  font-size:35px;
   font-weight:300;
   padding:4%;
 }
 .dark-button,.dark-button:hover{
-    background:  #bb9569 ;
+    background: #A68F2B !important;
 }
 .light-button,.light-button:hover{
-    background: #d1a779 ;
+    background: #BDA641 !important;
 }
 .checkouttime1,.checkouttime1:hover{
-    background: #d1a779;
+    background: #BDA641;
 }
 .checkouttime2,.checkouttime2:hover{
-    background:  #bb9569;
+    background: #A68F2B;
 }
 .checkouttime3,.checkouttime3:hover{
-    background: #a7855d;
+    background: #998116;
 }
 .no-thanks,.no-thanks:hover{
-    color:#fff !important;
+    color:fff !important;
     text-decoration: underline;
     text-transform:none;
 }
@@ -75,40 +80,42 @@ a,a:hover,.main-text,
   line-height:1.2;
 }
 .down-arrow-button{
-    background-image:url('/assets/guestweb/common_images/black/down_arrow.png'); 
-}
+    background-image:url('/assets/guestweb/common_images/black/down_arrow.png');
+  }
+
 .right-arrow-button{
-    background-image:url('/assets/guestweb/common_images/white_arrow.png');
+    background-image:url('/assets/guestweb/common_images/black/right_arrow.png'); 
 }
-.checkout-icon {
-    background-image: url('/assets/guestweb/common_images/checkout_icon.png');
-}
-.late-checkout-icon {
-    background-image: url('/assets/guestweb/common_images/checkout_later.png');
-}
-.circle-bg {
-    background: url('/assets/guestweb/common_images/circle-bg.png') center top no-repeat;
-}
-.accept-charge-icon {
-    background-image: url('/assets/guestweb/common_images/creditcard_icon.png');
-}
+
 .upgrade-details .upgrades-btn {
-    background: #b58b53; 
-    p {
-      color: #fff;
-    }
+    background: #A68F2B;
 }
+
 .proceed-to-checkin {
-      background: #b58b53;
-      color: #fff;
+      background: #3D3D3B;
 }
 .upgrades-label{
     color:#BA7A55;
 }
 textarea.sub-text, textarea.sub-text:hover{
-  color:#5d4f45 ;
+  color:#000 !important;
 }
+/*.checkout-icon{
+  background-image:url(/assets/guestweb/common_images/checkout-now-black.png);
+}
+.late-checkout-icon{
+  background-image:url(/assets/guestweb/common_images/late-checkout-black.png); 
+}
+.circle-bg {
+    background: url(/assets/guestweb/common_images/black/circle-bg.png) center top no-repeat;
+  }
+  .accept-charge-icon {
+    background-image: url(/assets/guestweb/common_images/black/creditcard_icon.png);
+}*/
 
+.accept-charge-icon, .checkout-icon, .late-checkout-icon, .upgrade-icon{
+  width:50px;
+}
 /*----------------- date picker -------------------------*/
 
 .pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
@@ -116,22 +123,19 @@ textarea.sub-text, textarea.sub-text:hover{
   color: transparent;
 }
 
-.pickadate-cell .pickadate-enabled ,{
-  color: #000 ;
-}
-.pickadate-centered-heading{
-  color: #b58b53;
+.pickadate-cell .pickadate-enabled ,.pickadate-centered-heading{
+  color: #000 !important;
 }
 
 .pickadate-cell .pickadate-active {
-  background-color: #b58b53 ;
-  color:#fff ;
+  background-color: #A68F2B !important;
+  color:#fff !important;
 }
 .pickadate-head{
     color:#000000;
 }
 .calendar-selection {
-    color: #000;
+    color: #fff;
 }
 .pickadate-cell li:nth-child(1),
 .pickadate-cell li:nth-child(8),
@@ -145,7 +149,7 @@ textarea.sub-text, textarea.sub-text:hover{
 .pickadate-cell .pickadate-disabled,
 .pickadate-cell .pickadate-enabled,
 .pickadate-cell .pickadate-outofrange-disabled {
-  background-color: #E5E5E5;
+  background-color: #DADADA;
 }
 
 .pickadate-cell .pickadate-disabled,
@@ -155,40 +159,29 @@ textarea.sub-text, textarea.sub-text:hover{
 
 
 .pickadate-cell li {
-  border: 1px solid #fff;
+  border: 1px solid #E6E6E6;
 }
 .pickadate a:visited, .pickadate a {
   color: #666666;
 }
 .date-picker-header{
-  background-color: #1b1a1e;
-}
-.calendar-selection {
-  div {
-    color: #fff;
-  }
+  background-color: #A68F2B;
 }
 .calendar-back {
   background-image: url('/assets/guestweb/common_images/back_icon.png');
 }
+
+
 .calendar-done{
    background-image: url('/assets/guestweb/common_images/done_white.png');
 }
-.back-to-checkout {
-    background: url('/assets/guestweb/common_images/left_arrow.png') center top no-repeat;
-    height: 36px;
-}
+
 .pickadate-prev,.pickadate-next,.pickadate-prev:hover,.pickadate-next:hover{
-  color:#b58b53 !important;
+  color:#A68F2B !important;
 }
-.green-button, .green-button:hover {
-    color: #fff;
-}
-.grey-terms-button, .grey-terms-button:hover {
-    color: #fff;
-}
+
 .date-picker-wrap {
-  background-color: #EEECE2 !important;
+  background-color: #fff !important;
 }
 .date-picker-bg {
   background: unset;
@@ -202,30 +195,28 @@ textarea.sub-text, textarea.sub-text:hover{
 .date-text{
   color:#fff;
 }
-.res-details-heading,.res-details-heading:hover{
-    font-size:18px !important;
-    color: #b58b53;
-}
 .logo-image {
         margin: 3% 0px !important;
-        max-width: 255px;
     }
 @media (max-width: 990px) {
     .logo-image {
         margin: 9% auto 7%;
-        max-width: 235px;
     }
     .back-to-checkout{
         display:none;
     }
-    .hide-in-desktop {
-       display: block;
+     .hide-in-desktop{
+      display:block;
+    }
+    .btn-template, .dual-button{
+       font-size:25px;
     }
 }
-@media (min-width: 990px){
-   .dual-button{
-     font-size:35px;
-    }
+@media (min-width:768px){
+  .checkout-alone-button {
+    float: left;
+    margin-left: 10px;
+  }
 }
 @media (max-width: 480px){
   .main-text{
@@ -240,11 +231,15 @@ textarea.sub-text, textarea.sub-text:hover{
   .footer-text{
      font-size:5.3vw;
   }
-  .logo-image {
-     max-width:200px;
-  }
   .dual-button{
     font-size:32px;
   }
+  .btn-template{
+    font-size:35px;
+  }
 
 }
+.res-details-heading, .res-details-heading:hover {
+     color: #A68F2B;
+}
+
