@@ -37,10 +37,9 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
             console.warn(':: mobileKeyOptionAvailable :: ', mobileKeyOptionAvailable);
 
 
-
             if ($stateParams.isQuickJump === 'true') {
                 $stateParams.for_demo = 'true';
-                $stateParams.email = 'guest@'+$scope.zestStationData.theme+'.com'
+                $stateParams.email = 'guest@' + $scope.zestStationData.theme + '.com';
                 $stateParams.room_no = 102;
                 $stateParams.first_name = 'james';
 
@@ -100,7 +99,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
             'first_name': $stateParams.first_name
         };
 
-        var initSNTMobileKeyFlow = function(){
+        var initSNTMobileKeyFlow = function() {
             console.log('request from API user has APP user account and is setup/associated?');
             
             // test failure first
@@ -127,10 +126,39 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
                 // $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 
             }
-        }
-        var initThirdPartyMobileKeyFlow = function(){
+        };
+        var initThirdPartyMobileKeyFlow = function() {
             $scope.mode = 'THIRD_PARTY_SELECTION';
 
+        };
+
+        $scope.thirdPartyHaveIt = function() {
+            $scope.mode = 'THIRD_PARTY_HAVE_IT_INFO';
+        };
+
+        $scope.thirdPartyGetIt = function() {
+            $scope.mode = 'THIRD_PARTY_GET_IT_INFO';
+            $scope.downloadAppShowEmail = '';// TODO link to API setting
+            $scope.email = $stateParams.email;
+        };
+
+        $scope.thirdPartyNoThanks = function() {
+            if ($scope.physicalKeySelected) {// probably dont need this check
+                $scope.getPhysicalKey();
+            } else {
+                $scope.goToNextScreen();
+            }
+
+        };
+
+        $scope.editEmail = function() {
+                
+        };
+
+        $scope.sendEmail = function() {
+            // TODO link with api call, onSuccess go to next screen (email sent)
+            // for now, just show sent*
+            $scope.mode = 'THIRD_PARTY_GET_IT_INFO_EMAIL_SENT';
         };
         
 
@@ -150,8 +178,8 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 
                 if (mobileKeyRequested) {
                     // MOBILE KEY FROM 1st (SNT) or 3rd party (..those guys -_-")
-
-                    if ($scope.zestStationData.thirdPartyMobileKey){
+                    console.log('type of mobile key requested [',($scope.zestStationData.thirdPartyMobileKey === 'true' ? 'Third-Party':'Default'),']');
+                    if ($scope.zestStationData.thirdPartyMobileKey === 'true') {
                         initThirdPartyMobileKeyFlow();
 
                     } else {
@@ -180,8 +208,6 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 
 
         };
-
-
 
         
         $scope.mobileKeySelected = false;

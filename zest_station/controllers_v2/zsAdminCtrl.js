@@ -461,6 +461,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.zestStationData.demoMobileKeyModeEmailLinked = 'true';
                 $scope.zestStationData.demoMobileKeyModeEnabled = 'true';
                 $scope.zestStationData.demoMobileKeyModeUserEmailOnFile = 'true';
+                $scope.zestStationData.thirdPartyMobileKey = 'false'; // TODO MOVE TO API SETTING
                 
             }
 

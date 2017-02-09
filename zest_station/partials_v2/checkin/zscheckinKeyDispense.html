@@ -297,6 +297,7 @@
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>
+
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'MOBILE_KEY_ACCOUNT_NOT_CONNECTED'">
     <div id="content">
         <h1>
@@ -421,6 +422,7 @@
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>
+
 <!-- THIRD PARTY SELECTION-->
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'THIRD_PARTY_SELECTION'">
     <div id="content">
@@ -449,14 +451,14 @@
                     </span>
                 </li>
                 <li>
-                    <button type="button" class="button option" touch-press='thirdPartyHelpGetIt()'>
+                    <button type="button" class="button option" touch-press='thirdPartyGetIt()'>
                         <div ng-include="icons.url.staff"></div>
                     </button>
                     <h1>
-                        <text editable-text="THIRD_PARTY_HAVE_HELP"> {{'THIRD_PARTY_HAVE_HELP' |translate}}</text>
+                        <text editable-text="THIRD_PARTY_GET_IT"> {{'THIRD_PARTY_GET_IT' |translate}}</text>
                     </h1>
                     <span class='select-sub-text'>
-                        <text editable-text="THIRD_PARTY_HAVE_HELP_SUB"> {{'THIRD_PARTY_HAVE_HELP_SUB' |translate}}</text>
+                        <text editable-text="THIRD_PARTY_GET_IT_SUB"> {{'THIRD_PARTY_GET_IT_SUB' |translate}}</text>
                     </span>
                 </li>
                 <li class="break">
@@ -481,3 +483,96 @@
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>
+
+<!--------------------- mobile key :: Sent to user account :: ------------------------>
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'THIRD_PARTY_HAVE_IT_INFO'">
+    <div id="content">
+        <h1>
+            <text editable-text="THIRD_PARTY_MOBILE_HAVE_IT_INFO_HEADER"> {{'THIRD_PARTY_MOBILE_HAVE_IT_INFO_HEADER' |translate}}</text>
+        </h1>
+        <h2>
+            <text editable-text="THIRD_PARTY_MOBILE_HAVE_IT_INFO_SUB_HEADER"> {{'THIRD_PARTY_MOBILE_HAVE_IT_INFO_SUB_HEADER' |translate}}</text>
+        </h2>
+        <nav id="options" role="nav">
+            <h1 class='key-text-style'>
+                <text editable-text="THIRD_PARTY_MOBILE_HAVE_IT_INFO_BODY_LARGE_TEXT"> {{'THIRD_PARTY_MOBILE_HAVE_IT_INFO_BODY_LARGE_TEXT' |translate}}</text>
+            </h1>
+            <ul>
+                <h2>
+                    <text editable-text="THIRD_PARTY_MOBILE_HAVE_IT_INFO_BODY_TEXT"> {{'THIRD_PARTY_MOBILE_HAVE_IT_INFO_BODY_TEXT' |translate}}</text>
+                </h2>
+            </ul>
+        </nav>
+    </div>
+    <div id="actions" class="add-guests-footer footer-centered mobile-key-next">
+        <button type="button" ng-class='' class="button" click-touch="goToNextScreen('success')">
+            <text editable-text="NEXT"> {{'NEXT' |translate}}</text>
+        </button>
+    </div>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
+</section>
+
+
+<!--------------------- mobile key :: Sent to user account :: ------------------------>
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'THIRD_PARTY_GET_IT_INFO'">
+    <div id="content">
+        <h1>
+            <text editable-text="THIRD_PARTY_MOBILE_GET_IT_INFO_HEADER"> {{'THIRD_PARTY_MOBILE_GET_IT_INFO_HEADER' |translate}}</text>
+        </h1>
+        <h2>
+            <text editable-text="THIRD_PARTY_MOBILE_GET_IT_INFO_SUB_HEADER"> {{'THIRD_PARTY_MOBILE_GET_IT_INFO_SUB_HEADER' |translate}}</text>
+            <span ng-show='downloadAppShowEmail'>{{email}}</span>
+            <text editable-text="THIRD_PARTY_MOBILE_GET_IT_INFO_SUB_HEADER_AFTER"> {{'THIRD_PARTY_MOBILE_GET_IT_INFO_SUB_HEADER_AFTER' |translate}}</text>
+        </h2>
+
+         <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='editEmailAddress()'>
+                        <div ng-include="icons.url.pen"></div>
+                    </button>
+                    <span>
+                        <text editable-text="EDIT_EMAIL"> {{'EDIT_EMAIL' |translate}}</text>
+                    </span>
+                </li>
+                <li class="break">
+                    <span>
+                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                    </span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='sendEmail()'>
+                        <div ng-include="icons.url.email"></div>
+                    </button>
+                    <span>
+                        <text editable-text="SEND_EMAIL"> {{'SEND_EMAIL' |translate}}</text>
+                    </span>
+                </li>
+            </ul>
+        </nav>
+
+
+    </div>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
+</section>
+
+<!--------------------- mobile key :: Sent to user account :: ------------------------>
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'THIRD_PARTY_GET_IT_INFO_EMAIL_SENT'">
+    <div id="content">
+        <h1>
+            <text editable-text="THIRD_PARTY_MOBILE_EMAIL_SENT_HEADER"> {{'THIRD_PARTY_MOBILE_EMAIL_SENT_HEADER' |translate}}</text>
+        </h1>
+        <h2>
+            <text editable-text="THIRD_PARTY_MOBILE_EMAIL_SENT_SUB_HEADER"> {{'THIRD_PARTY_MOBILE_EMAIL_SENT_SUB_HEADER' |translate}}</text>
+        </h2>
+    </div>
+    
+    <div id="actions" class="add-guests-footer footer-centered mobile-key-next">
+        <button type="button" ng-class='' class="button" click-touch="goToNextScreen()">
+            <text editable-text="NEXT"> {{'NEXT' |translate}}</text>
+        </button>
+    </div>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
+</section>
+
+

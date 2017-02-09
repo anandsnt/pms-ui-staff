@@ -481,6 +481,35 @@
   "CC_PLEASE_NOTE": "Please note:",
   "CC_INSTRUCTION_1": "Your card will be authorized for an incidental amount of $25.00 per night",
   "CC_INSTRUCTION_2": "Unused remaining balance will be released upon checkout",
-  "CC_INSTRUCTION_3": "If you choose to use a debit card then please note that some banks may take longer to release the funds back to your checking account"
+  "CC_INSTRUCTION_3": "If you choose to use a debit card then please note that some banks may take longer to release the funds back to your checking account",
+   "GET_KEYS_HEADER": "GET YOUR KEYS",
+   "GET_KEYS_SUB": "",
+   "GET_KEYS_HOW_MANY": "How many keys do you need?",
+
+
+
+
+   "THIRD_PARTY_MOBILE_SELECT_HEADER": "Get the app",
+   "THIRD_PARTY_MOBILE_SELECT_SUB_HEADER": "You need the [App Name] to use a mobile key. It supports both iPhone and Android devices",
+
+   "THIRD_PARTY_HAVE_IT": "Already Have it",
+   "THIRD_PARTY_HAVE_IT_SUB": "",
+   "THIRD_PARTY_GET_IT": "Help me get it",
+   "THIRD_PARTY_GET_IT_SUB": "",
+   "THIRD_PARTY_NO_THX": "No Thanks",
+   "THIRD_PARTY_NO_THX_SUB": "",
+
+   "THIRD_PARTY_MOBILE_HAVE_IT_INFO_HEADER": "Get the key from the app",
+   "THIRD_PARTY_MOBILE_HAVE_IT_INFO_SUB_HEADER": "To get your mobile key, sign in to the [Name of app] and do x",
+   "THIRD_PARTY_MOBILE_HAVE_IT_INFO_BODY_LARGE_TEXT": "You're all done here, so select Next",
+   "THIRD_PARTY_MOBILE_HAVE_IT_INFO_BODY_TEXT": "You're all done here, so select Next",
+
+   "THIRD_PARTY_MOBILE_GET_IT_INFO_HEADER": "Download the app",
+   "THIRD_PARTY_MOBILE_GET_IT_INFO_SUB_HEADER": "We will email you at",
+   "THIRD_PARTY_MOBILE_GET_IT_INFO_SUB_HEADER_AFTER": "It also includes our WiFi details so you can download it for free",
+
+   "THIRD_PARTY_MOBILE_EMAIL_SENT_HEADER": "Email Sent",
+   "THIRD_PARTY_MOBILE_EMAIL_SENT_SUB_HEADER": "Check your inbox for the email to download the app, sign up and get your key."
+
    
 }

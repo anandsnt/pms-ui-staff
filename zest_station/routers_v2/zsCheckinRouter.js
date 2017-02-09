@@ -127,7 +127,7 @@ sntZestStation.config(['$stateProvider',
         modes: [
               {
                   'name': 'MOBILE_OR_PHYSICAL_KEY_START',
-                  'label': 'Checked-In Success',
+                  'label': 'Checked-In Success (Mobile or Physical Key)',
                   'description': 'After Check-In, before Mobile Key selection screen',
                   'icon': 'placeholder.png'
               }, {
@@ -150,7 +150,23 @@ sntZestStation.config(['$stateProvider',
                   'label': 'Third-Party: Mobile Key Selection',
                   'description': 'Options to Get key, get instructions, or no thanks',
                   'icon': 'placeholder.png'
+              }, {
+                  'name': 'THIRD_PARTY_HAVE_IT_INFO',
+                  'label': 'Third-Party: Have it, What to do',
+                  'description': 'Instruct user on how to get or use the mobile key',
+                  'icon': 'placeholder.png'
+              }, {
+                  'name': 'THIRD_PARTY_GET_IT_INFO',
+                  'label': 'Third-Party: Help get it, What to do',
+                  'description': 'Instruct user on how download and use the mobile key',
+                  'icon': 'placeholder.png'
+              }, {
+                  'name': 'THIRD_PARTY_GET_IT_INFO_EMAIL_SENT',
+                  'label': 'Third-Party: Email Sent ',
+                  'description': 'Instructions in email for guest to get Mobile Key App',
+                  'icon': 'placeholder.png'
               }]
+
 
 
 
