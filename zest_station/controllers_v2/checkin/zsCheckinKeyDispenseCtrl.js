@@ -152,7 +152,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
         };
 
         $scope.editEmail = function() {
-                
+                $state.go('zest_station.checkInEmailCollection',$stateParams);
         };
 
         $scope.sendEmail = function() {
