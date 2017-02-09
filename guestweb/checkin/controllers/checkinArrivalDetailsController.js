@@ -13,6 +13,9 @@
 		var restrictMinute = "";
 		var restrictHour = "";
 		var isDayOfArrival = false;
+
+		$scope.timings = returnTimeArray();// utils function
+		$scope.arrivalTime = "";
 		var restrictHoursListByHour = function(restrictHour) {
 			// restrict hour selection based on a time
 			var hoursList = angular.copy($scope.hourCopy);
@@ -37,6 +40,7 @@
 
 			// when eta has to restricted bases on early checkin settings
 			if (typeof $rootScope.earlyCheckinRestrictHour !== "undefined") {
+				// The below are code for 3 dropdown select
 				$scope.earlyCheckinRestrictLimit = $rootScope.earlyCheckinRestrictHourForDisplay + ":" + $rootScope.earlyCheckinRestrictMinute + " " + $rootScope.earlyCheckinRestrictPrimetime;
 				// restrict time before earlyCheckinRestrictTime
 				$scope.primeTimes = ($rootScope.earlyCheckinRestrictPrimetime === "PM") ? $scope.primeTimes.slice(1) : $scope.primeTimes;
@@ -49,6 +53,12 @@
 					"minute": $rootScope.earlyCheckinRestrictMinute,
 					"primeTime": $rootScope.earlyCheckinRestrictPrimetime
 				};
+
+				// code for one dropdown select
+				var hotelTimeLimitInTimeIndex = getIndexOfSelectedTime($rootScope.earlyCheckinRestictTime); 
+
+				$scope.timings.splice(0, hotelTimeLimitInTimeIndex);
+
 			} else if ($rootScope.restrictByHotelTimeisOn) {
 				// eta restricted based on hotel time
 				$scope.isLoading = true;
@@ -66,6 +76,11 @@
 					if (isDayOfArrival) {
 						$scope.primeTimesNewWithRestrictions = (restrictPrimetime === "PM") ? $scope.primeTimesNewWithRestrictions.slice(1) : $scope.primeTimesNewWithRestrictions;
 						$scope.hoursWithRestrictions = restrictHoursListByHour(restrictHour);
+
+						// code for one dropdown select
+						var hotelTimeLimitInTimeIndex = getIndexOfSelectedTime(response.hote_time);
+						
+						$scope.timings.splice(0, hotelTimeLimitInTimeIndex);
 					}
 
 				}, function() {
@@ -157,23 +172,24 @@
 
 		$scope.postStayDetails = function() {
 			$scope.isLoading = true;
-			if (!$scope.stayDetails.hour || !$scope.stayDetails.minute || !$scope.stayDetails.primeTime) {
+			if (!$scope.arrivalTime && (!$scope.stayDetails.hour || !$scope.stayDetails.minute || !$scope.stayDetails.primeTime)) {
 				$modal.open($scope.errorOpts); // error modal popup
 				$scope.isLoading = false;
 			} else {
-				// change format to 24 hours
-				var hour = parseInt($scope.stayDetails.hour);
-
-				if ($scope.stayDetails.primeTime === 'PM' && hour < 12) {
-					hour = hour + 12;
-				} else if ($scope.stayDetails.primeTime === 'AM' && hour === 12) {
-					hour = hour - 12;
+				var dataTosend;
+				if($scope.arrivalTime){
+					// single dropdown
+					dataTosend = {
+						"arrival_time": convertTime12to24($scope.arrivalTime),
+						"comments": $scope.stayDetails.comment
+					};
+				}else{
+					// three dropdowns 
+					dataTosend = {
+						"arrival_time": get24HoursTime($scope.stayDetails.hour,$scope.stayDetails.minute,$scope.stayDetails.primeTime),
+						"comments": $scope.stayDetails.comment
+					};
 				}
-				hour = (hour < 10) ? ("0" + hour) : hour;
-				var dataTosend = {
-					"arrival_time": hour + ":" + $scope.stayDetails.minute,
-					"comments": $scope.stayDetails.comment
-				};
 
 				preCheckinSrv.postStayDetails(dataTosend).then(function(response) {
 					$rootScope.earlyCheckinHour = response.last_early_checkin_hour;
@@ -183,6 +199,7 @@
 					$rootScope.earlyCheckinRestrictHourForDisplay = response.early_checkin_restrict_hour_for_display;
 					$rootScope.earlyCheckinRestrictMinute = response.early_checkin_restrict_minute;
 					$rootScope.earlyCheckinRestrictPrimetime = response.early_checkin_restrict_primetime;
+					$rootScope.earlyCheckinRestictTime = response.early_checkin_restrict_time;
 
 					if (response.early_checkin_available && typeof response.early_checkin_offer_id !== "undefined" && !response.bypass_early_checkin) {
 						$state.go('earlyCheckinOptions', {

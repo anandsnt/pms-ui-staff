@@ -78,7 +78,7 @@ module.exports = {
             'guestweb_estencia_la_jolla': [ themeCSSRoot + 'guestweb_estencia_la_jolla.css'],
             'guestweb_el_castell': [ themeCSSRoot + 'guestweb_el_castell.css'],
             'guestweb_hotel_epik': [ themeCSSRoot + 'guestweb_hotel_epik.css'],
-            'guestweb_avenue_hotel': [ themeCSSRoot + 'guestweb_avenue_hotel.css'],
+            'guestweb_avenue': [ themeCSSRoot + 'guestweb_avenue.css'],
             'guestweb_fontainebleau_v2': [ themeCSSRoot + 'guestweb_fontainebleau_v2.css'],
             'guestweb_sandman_inn': [ themeCSSRoot + 'guestweb_sandman_inn.css'],
             'guestweb_nobu_miami': [ themeCSSRoot + 'guestweb_nobu_miami.css'],
@@ -93,7 +93,8 @@ module.exports = {
             'guestweb_snt': [ themeCSSRoot + 'guestweb_snt.css'],
             'guestweb_silver_stone': [ themeCSSRoot + 'guestweb_silver_stone.css'],
             'guestweb_koa_kea': [ themeCSSRoot + 'guestweb_koa_kea.css'],
-            'guestweb_hotel_chicago': [ themeCSSRoot + 'guestweb_hotel_chicago.css']
+            'guestweb_hotel_chicago': [ themeCSSRoot + 'guestweb_hotel_chicago.css'],
+            'guestweb_public_ny': [ themeCSSRoot + 'guestweb_public_ny.css']
         };     
     }
 };
