@@ -2171,6 +2171,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			var params = genParams(chosenReport, page, resultPerPageOverride || $scope.resultsPerPage);
 			var fetchTravelAgents = function (travel_agent_id, pageNo) {
 				var paramsToApi = {};
+
 				paramsToApi.travel_agent_id = travel_agent_id;
 				paramsToApi.page = pageNo;
 				paramsToApi.per_page = reportParams['TRAVEL_AGENTS_PER_PAGE_COUNT'];
@@ -2296,7 +2297,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 };
             }
 
-            if(chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) {
+            if (chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) {
 
                 var loadAPIData = function(pageNo) {
                     $scope.genReport(false, pageNo);

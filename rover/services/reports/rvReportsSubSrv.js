@@ -141,8 +141,6 @@ angular.module('sntRover').service('RVreportsSubSrv', [
         };
 
         service.getReservationsOfTravelAgents = function(params) {
-            console.log("------params")
-            console.log(params)
             return callApi({
                 // no name here since we dont want to cache it in the store ever
                 method: 'getJSON',

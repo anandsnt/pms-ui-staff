@@ -23,6 +23,7 @@ angular.module('sntRover')
                 scrollY: true
             });
         };
+
         $timeout( function() {
             setScroller();
         },
@@ -49,6 +50,7 @@ angular.module('sntRover')
                 refreshScroll();
             }, 1000);
         };
+
         // Invoke API to fetch reservations of the selected TA
         // Pagination
         $scope.$on("updateReservations", function(e, paramsToApi) {
