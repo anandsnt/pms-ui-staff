@@ -42,31 +42,34 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
                 $stateParams.for_demo = 'true';
                 $stateParams.email = 'guest@'+$scope.zestStationData.theme+'.com'
                 $stateParams.room_no = 102;
-                $stateParams.first_name = 'james'
-            } 
+                $stateParams.first_name = 'james';
 
-            $scope.first_name = $stateParams.first_name;
-            $scope.room = $stateParams.room_no;
-            console.info('room number is: ', $scope.room);
-
-            if (mobileKeyOptionAvailable) {
-                console.info('$stateParams: ', $stateParams);
-                if ($stateParams.for_demo === 'true') {
-                    // flag (for_demo) only here when continuing from email collection after selecting mobile key
-                    $scope.app_email = $stateParams.email;
-                    $scope.mode = 'MOBILE_KEY_SETUP_ACCOUNT';    
-                    return;
-                }
-
-                console.info('zestStationData.show_room_number: ', $scope.zestStationData.show_room_number);
-                
-                $scope.mode = 'MOBILE_OR_PHYSICAL_KEY_START';
-
-
+                $scope.mode = $stateParams.quickJumpMode;
             } else {
-                $scope.mode = 'DISPENSE_KEY_MODE';
+
+                $scope.first_name = $stateParams.first_name;
+                $scope.room = $stateParams.room_no;
+                console.info('room number is: ', $scope.room);
+
+                if (mobileKeyOptionAvailable) {
+                    console.info('$stateParams: ', $stateParams);
+                    if ($stateParams.for_demo === 'true') {
+                        // flag (for_demo) only here when continuing from email collection after selecting mobile key
+                        $scope.app_email = $stateParams.email;
+                        $scope.mode = 'MOBILE_KEY_SETUP_ACCOUNT';    
+                        return;
+                    }
+
+                    console.info('zestStationData.show_room_number: ', $scope.zestStationData.show_room_number);
+                    
+                    $scope.mode = 'MOBILE_OR_PHYSICAL_KEY_START';
+
+                } else {
+                    $scope.mode = 'DISPENSE_KEY_MODE';
+                }
+                console.info('MODE: -> ', $scope.mode);
+                
             }
-            console.info('MODE: -> ', $scope.mode);
         };
         /**
          * [initializeMe description]
@@ -97,6 +100,39 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
             'first_name': $stateParams.first_name
         };
 
+        var initSNTMobileKeyFlow = function(){
+            console.log('request from API user has APP user account and is setup/associated?');
+            
+            // test failure first
+            var userHasMobileAccountAlready = false;// debugging, check if user has email + if email is associated with the App
+                // TODO: remove this link once we add backend logic
+
+            userHasMobileAccountAlready = $scope.zestStationData.demoMobileKeyModeEmailLinked === 'true' ? true : false;
+
+            // TODO: check flag if user account is setup already, then wont need to add email,etc.
+            console.info('userHasMobileAccountAlready: ', userHasMobileAccountAlready);
+            if (userHasMobileAccountAlready) {
+                //  -- go to confirmation screen if success
+                //  next button will continue with Key Flow 
+                //  TODO--continue key flow logic(if only doing mobile, go to final, 
+                //  --else need to continue w/ Physical key making)
+                //  
+                $timeout(function() {// demo timeout, remove once connected to api
+                    $scope.mode = 'MOBILE_KEY_SENT_SUCCESS';
+                }, 1000);
+                
+
+            } else {
+                $scope.mode = 'MOBILE_KEY_ACCOUNT_NOT_CONNECTED';
+                // $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
+
+            }
+        }
+        var initThirdPartyMobileKeyFlow = function(){
+            $scope.mode = 'THIRD_PARTY_SELECTION';
+
+        };
+        
 
         $scope.goToNextScreen = function(status) {
             if ($scope.mode === 'MOBILE_OR_PHYSICAL_KEY_START') {
@@ -113,32 +149,15 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
                 var mobileKeyRequested = $scope.mobileKeySelected;// TODO, link w/ checkboxes
 
                 if (mobileKeyRequested) {
-                    console.log('request from API user has APP user account and is setup/associated?');
-                    
-                    // test failure first
-                    var userHasMobileAccountAlready = false;// debugging, check if user has email + if email is associated with the App
-                        // TODO: remove this link once we add backend logic
+                    // MOBILE KEY FROM 1st (SNT) or 3rd party (..those guys -_-")
 
-                    userHasMobileAccountAlready = $scope.zestStationData.demoMobileKeyModeEmailLinked === 'true' ? true : false;
-
-                    // TODO: check flag if user account is setup already, then wont need to add email,etc.
-                    console.info('userHasMobileAccountAlready: ', userHasMobileAccountAlready);
-                    if (userHasMobileAccountAlready) {
-                        //  -- go to confirmation screen if success
-                        //  next button will continue with Key Flow 
-                        //  TODO--continue key flow logic(if only doing mobile, go to final, 
-                        //  --else need to continue w/ Physical key making)
-                        //  
-                        $timeout(function() {// demo timeout, remove once connected to api
-                            $scope.mode = 'MOBILE_KEY_SENT_SUCCESS';
-                        }, 1000);
-                        
+                    if ($scope.zestStationData.thirdPartyMobileKey){
+                        initThirdPartyMobileKeyFlow();
 
                     } else {
-                        $scope.mode = 'MOBILE_KEY_ACCOUNT_NOT_CONNECTED';
-                        // $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
-
+                        initSNTMobileKeyFlow();
                     }
+
                 } else if ($scope.physicalKeySelected) {// probably dont need this check
                     $scope.getPhysicalKey();
                 }

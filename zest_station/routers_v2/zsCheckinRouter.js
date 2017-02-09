@@ -123,7 +123,37 @@ sntZestStation.config(['$stateProvider',
         section: 'Checkin',
         icon: 'checkin_key_select.png',
         description: 'Select what type of key to use',
-        label: 'Check-In Key Types'
+        label: 'Check-In Key Types (Mobile Key)',
+        modes: [
+              {
+                  'name': 'MOBILE_OR_PHYSICAL_KEY_START',
+                  'label': 'Checked-In Success',
+                  'description': 'After Check-In, before Mobile Key selection screen',
+                  'icon': 'placeholder.png'
+              }, {
+                  'name': 'MOBILE_KEY_SETUP_ACCOUNT',
+                  'label': 'Default: Mobile Key Setup Instructions',
+                  'description': 'Show user instructions on how to install the mobile app',
+                  'icon': 'placeholder.png'
+              }, {
+                  'name': 'MOBILE_KEY_SENT_SUCCESS',
+                  'label': 'Default: Mobile Key Successfuly Sent',
+                  'description': 'Key was sent to the guest\'s phone',
+                  'icon': 'placeholder.png'
+              }, {
+                  'name': 'MOBILE_KEY_ACCOUNT_NOT_CONNECTED',
+                  'label': 'Default: Mobile Key Not Connected',
+                  'description': 'Guest has a free early check-in',
+                  'icon': 'placeholder.png'
+              }, {
+                  'name': 'THIRD_PARTY_SELECTION',
+                  'label': 'Third-Party: Mobile Key Selection',
+                  'description': 'Options to Get key, get instructions, or no thanks',
+                  'icon': 'placeholder.png'
+              }]
+
+
+
       });
 
 

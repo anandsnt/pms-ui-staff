@@ -12,7 +12,7 @@
 </div>
 <!--------------------- select no of keys mode ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'DISPENSE_KEY_MODE'">
-   <div id="content">
+    <div id="content">
         <h1 class="no-margin">
             <text editable-text="CHKED_IN_SUCCESS_HEADER"> {{'CHKED_IN_SUCCESS_HEADER' |translate}}</text> &nbsp;{{first_name}}.
         </h1>
@@ -38,7 +38,6 @@
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>
-
 <!---------------------solo key one in progres ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'SOLO_KEY_CREATION_IN_PROGRESS_MODE'">
     <div id="content">
@@ -59,7 +58,6 @@
         </button>
     </div>
 </section>
-
 <!--------------------- key one in progres ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'KEY_ONE_CREATION_IN_PROGRESS_MODE'">
     <div id="content">
@@ -75,12 +73,11 @@
         <div id="keys" ng-show="icmp">
             <div ng-include="icons.url.createkey_icmp"></div>
         </div>
-        <button  ng-show="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(1)">
+        <button ng-show="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(1)">
             <text editable-text="MAKE_KEY_TEXT_ONE"> {{'MAKE_KEY_TEXT_ONE' |translate}}</text>
         </button>
     </div>
 </section>
-
 <!--------------------- key one success, key two failed------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'KEY_ONE_SUCCESS_KEY_TWO_FAILED'">
     <div id="content">
@@ -104,7 +101,6 @@
         </button>
     </div>
 </section>
-
 <!--------------------- key one in success ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'KEY_ONE_CREATION_SUCCESS_MODE'">
     <div id="content">
@@ -128,7 +124,6 @@
         </button>
     </div>
 </section>
-
 <!--------------------- key creation over ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'KEY_CREATION_SUCCESS_MODE'">
     <div id="content">
@@ -139,14 +134,15 @@
             <text editable-text="GRAB_KEYS"> {{'GRAB_KEYS' |translate}}</text>
         </h2>
         <div id="room" ng-show="zestStationData.show_room_number">
-            <span class="number">{{room}}</span><br><br>
+            <span class="number">{{room}}</span>
+            <br>
+            <br>
         </div>
         <button type="button" class="button" click-touch="goToNextScreen('success')">
             <text editable-text="DONE"> {{'DONE' |translate}}</text>
         </button>
     </div>
-</section>   
-
+</section>
 <!--------------------- failure ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'DISPENSE_KEY_FAILURE_MODE'">
     <div id="content">
@@ -159,7 +155,7 @@
         <nav id="options" role="nav">
             <ul role="menu">
                 <!-- retry-key -->
-                <li> 
+                <li>
                     <button type="button" class="button option" touch-press='reEncodeKey()'>
                         <div ng-include="icons.url.key"></div>
                     </button>
@@ -172,7 +168,7 @@
                         <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
                     </span>
                 </li>
-                <li> 
+                <li>
                     <button type="button" class="button option" click-touch="goToNextScreen('failed')">
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
@@ -185,7 +181,7 @@
                         <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
                     </span>
                 </li>
-                <li> 
+                <li>
                     <button type="button" class="button option" touch-press='talkToStaff()'>
                         <div ng-include="icons.url.staff"></div>
                     </button>
@@ -201,48 +197,30 @@
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>
-
-
-
-
-
-
-
 <!--------------------- mobile key or physical key start screen ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'MOBILE_OR_PHYSICAL_KEY_START'">
     <div id="content">
         <h2 class="no-margin">
             <text editable-text="CHKED_IN_SUCCESS_HEADER"> {{'CHKED_IN_SUCCESS_HEADER' |translate}}</text> {{first_name}}.
         </h2>
-
         <h1 ng-show="!zestStationData.show_room_number">
             <text editable-text="CHKED_IN_SUCCESS_MSG"> {{'CHKED_IN_SUCCESS_MSG' |translate}}</text>
         </h1>
-
         <h1 ng-show="zestStationData.show_room_number">
             <text editable-text="CHKED_IN_SUCCESS_MSG_WITH_ROOM"> {{'CHKED_IN_SUCCESS_MSG_WITH_ROOM' |translate}}</text>
         </h1>
-
-
-
         <div id="room" ng-show="zestStationData.show_room_number">
             <span class="number">{{room}}</span>
         </div>
-
         <!-- TODO: grey next button if no option selected -->
     </div>
-        <div id="actions" class="add-guests-footer footer-centered">
-            <button type="button" class="button" click-touch="goToNextScreen('success')">
-                <text editable-text="NEXT"> {{'NEXT' |translate}}</text>
-            </button>
-        </div>
+    <div id="actions" class="add-guests-footer footer-centered">
+        <button type="button" class="button" click-touch="goToNextScreen('success')">
+            <text editable-text="NEXT"> {{'NEXT' |translate}}</text>
+        </button>
+    </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>
-
-
-
-
-
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'MOBILE_OR_PHYSICAL_KEY'">
     <div id="content">
         <h1>
@@ -272,10 +250,8 @@
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press='selectPhysicalKey()'>
-                    
-                    <div ng-show="!physicalKeySelected" ng-include="icons.url.creditcard"></div>
-                    <div ng-show="physicalKeySelected" class='select-icon-checked' ng-include="icons.url.checkmark"></div>
-
+                        <div ng-show="!physicalKeySelected" ng-include="icons.url.creditcard"></div>
+                        <div ng-show="physicalKeySelected" class='select-icon-checked' ng-include="icons.url.checkmark"></div>
                     </button>
                     <h1>
                         <text editable-text="SELECT_PHYSICAL_KEY"> {{'SELECT_PHYSICAL_KEY' |translate}}</text>
@@ -288,12 +264,8 @@
         </nav>
     </div>
     <div id="actions" class="add-guests-footer footer-centered mobile-key-next">
-       <button type="button" 
-            ng-disabled="!physicalKeySelected && !mobileKeySelected" 
-            ng-class="{'disabled-button':!physicalKeySelected && !mobileKeySelected}"
-            class="button" 
-            click-touch="goToNextScreen('success')">
-                <text editable-text="NEXT"> {{'NEXT' |translate}}</text>
+        <button type="button" ng-disabled="!physicalKeySelected && !mobileKeySelected" ng-class="{'disabled-button':!physicalKeySelected && !mobileKeySelected}" class="button" click-touch="goToNextScreen('success')">
+            <text editable-text="NEXT"> {{'NEXT' |translate}}</text>
         </button>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
@@ -319,13 +291,12 @@
         </nav>
     </div>
     <div id="actions" class="add-guests-footer footer-centered mobile-key-next">
-         <button type="button" ng-class='' class="button" click-touch="goToNextScreen('success')">
+        <button type="button" ng-class='' class="button" click-touch="goToNextScreen('success')">
             <text editable-text="NEXT"> {{'NEXT' |translate}}</text>
         </button>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>
-
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'MOBILE_KEY_ACCOUNT_NOT_CONNECTED'">
     <div id="content">
         <h1>
@@ -338,8 +309,6 @@
             <h2 class='key-text-style more'>
                 <text editable-text="MOBILE_KEY_SENT_TO_ACCOUNT_NOT_SUCCESS_MAIN_MSG"> {{'MOBILE_KEY_SENT_TO_ACCOUNT_NOT_SUCCESS_MAIN_MSG' |translate}}</text>
             </h2>
-
-
             <!--ol class='key-text-reasons'> --keep until final version accepted
                 <li>
                     <h4 translate>MOBILE_KEY_SENT_TO_ACCOUNT_NOT_SUCCESS_MSG_SUB</h4>
@@ -351,17 +320,16 @@
                     <h4 translate>&#8226;  if you dont have the key app we can send you a link to download it</h4>
                 </li>
             </ol-->
-
-        <nav id="options" role="nav">
-            <ul role="menu">
-                <li>
-                    <button type="button" class="button option" touch-press='sendAppLink()'>
-                    <div ng-include="icons.url.key"></div>
-                    </button>
-                    <h1>
+            <nav id="options" role="nav">
+                <ul role="menu">
+                    <li>
+                        <button type="button" class="button option" touch-press='sendAppLink()'>
+                            <div ng-include="icons.url.key"></div>
+                        </button>
+                        <h1>
                         <text editable-text="SEND_APP_LINK"> {{'SEND_APP_LINK' |translate}}</text>
                     </h1>
-                    <span class='select-sub-text'>
+                        <span class='select-sub-text'>
                         <text editable-text="SEND_APP_LINK_SUB"> {{'SEND_APP_LINK_SUB' |translate}}</text>
                     </span
                     >
@@ -374,28 +342,24 @@
                     <span>
                         <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
                     </span>
-                </li>
-                <li>
-                    <button type="button" class="button option" touch-press='getPhysicalKey()'>
-                    <div ng-include="icons.url.creditcard"></div>
-
-                    </button>
-                    <h1>
+                    </li>
+                    <li>
+                        <button type="button" class="button option" touch-press='getPhysicalKey()'>
+                            <div ng-include="icons.url.creditcard"></div>
+                        </button>
+                        <h1>
                         <text editable-text="PHYSICAL_KEY"> {{'PHYSICAL_KEY' |translate}}</text>
                     </h1>
-                    <span class='select-sub-text'>
+                        <span class='select-sub-text'>
                         <text editable-text="PHYSICAL_KEY_SUB"> {{'PHYSICAL_KEY_SUB' |translate}}</text>
                     </span>
-                </li>
-            </ul>
-        </nav>
-
-
+                    </li>
+                </ul>
+            </nav>
         </nav>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>
-
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'MOBILE_KEY_SETUP_ACCOUNT'">
     <div id="content">
         <h1>
@@ -405,7 +369,6 @@
         <h2>
             <text editable-text="MOBILE_KEY_SENT_TO_ACCOUNT_NOT_SUCCESS_MAIN_MSG"> {{'MOBILE_KEY_SENT_TO_ACCOUNT_NOT_SUCCESS_MAIN_MSG' |translate}}</text>
         </h2>
-
         <!--nav id="options" class='options-less-space' role="nav"> --substituting with talk to staff (per jeff), will remove once design/functionality accepted
             <h2 class='key-text-style more' translate>MOBILE_KEY_SENT_TO_ACCOUNT_NOT_SUCCESS_MAIN_MSG</h2>
 
@@ -424,13 +387,11 @@
                 </li>
             </ol>
         </nav-->
-
         <nav id="options" role="nav">
             <ul role="menu">
                 <li>
                     <button type="button" class="button option" touch-press='getPhysicalKey()'>
-                    <div ng-include="icons.url.creditcard"></div>
-
+                        <div ng-include="icons.url.creditcard"></div>
                     </button>
                     <h1>
                         <text editable-text="PHYSICAL_KEY"> {{'PHYSICAL_KEY' |translate}}</text>
@@ -446,7 +407,7 @@
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press='talkToStaff()'>
-                    <div ng-include="icons.url.staff"></div>
+                        <div ng-include="icons.url.staff"></div>
                     </button>
                     <h1>
                         <text editable-text="SPEAK"> {{'SPEAK' |translate}}</text>
@@ -457,7 +418,66 @@
                 </li>
             </ul>
         </nav>
-
+    </div>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
+</section>
+<!-- THIRD PARTY SELECTION-->
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'THIRD_PARTY_SELECTION'">
+    <div id="content">
+        <h1>
+            <text editable-text="THIRD_PARTY_MOBILE_SELECT_HEADER"> {{'THIRD_PARTY_MOBILE_SELECT_HEADER' |translate}}</text>
+        </h1>
+        <h2>
+            <text editable-text="THIRD_PARTY_MOBILE_SELECT_SUB_HEADER"> {{'THIRD_PARTY_MOBILE_SELECT_SUB_HEADER' |translate}}</text>
+        </h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='thirdPartyHaveIt()'>
+                        <div ng-include="icons.url.key"></div>
+                    </button>
+                    <h1>
+                        <text editable-text="THIRD_PARTY_HAVE_IT"> {{'THIRD_PARTY_HAVE_IT' |translate}}</text>
+                    </h1>
+                    <span class='select-sub-text'>
+                        <text editable-text="THIRD_PARTY_HAVE_IT_SUB"> {{'THIRD_PARTY_HAVE_IT_SUB' |translate}}</text>
+                    </span>
+                </li>
+                <li class="break">
+                    <span>
+                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                    </span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='thirdPartyHelpGetIt()'>
+                        <div ng-include="icons.url.staff"></div>
+                    </button>
+                    <h1>
+                        <text editable-text="THIRD_PARTY_HAVE_HELP"> {{'THIRD_PARTY_HAVE_HELP' |translate}}</text>
+                    </h1>
+                    <span class='select-sub-text'>
+                        <text editable-text="THIRD_PARTY_HAVE_HELP_SUB"> {{'THIRD_PARTY_HAVE_HELP_SUB' |translate}}</text>
+                    </span>
+                </li>
+                <li class="break">
+                    <span>
+                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                    </span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='thirdPartyNoThanks()'>
+                        <div ng-include="icons.url.checkin"></div>
+                    </button>
+                    <h1>
+                        <text editable-text="THIRD_PARTY_NO_THX"> {{'THIRD_PARTY_NO_THX' |translate}}</text>
+                    </h1>
+                    <span class='select-sub-text'>
+                        <text editable-text="THIRD_PARTY_NO_THX_SUB"> {{'THIRD_PARTY_NO_THX_SUB' |translate}}</text>
+                    </span>
+                </li>
+            </ul>
+        </nav>
+        </nav>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>
