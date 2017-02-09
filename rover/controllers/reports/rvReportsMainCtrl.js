@@ -1088,7 +1088,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					'completion_status': [],
 					'age_buckets': [],
 					'account_ids': [],
-					'travel_agents': []
+					'travel_agent_ids': []
 				};
 			}
 
@@ -1818,13 +1818,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						params[key].push( each.id.toString() );
 						/**/
 						if ( changeAppliedFilter ) {
-							$scope.appliedFilter.travel_agents.push( each.name );
+							$scope.appliedFilter.travel_agent_ids.push( each.name );
 						}
 					});
 
 					// in case if all reservation status are selected
 					if ( changeAppliedFilter && report['hasTravelAgentsSearch']['data'].length === selected.length ) {
-						$scope.appliedFilter.travel_agents = ['All Departments'];
+						$scope.appliedFilter.travel_agent_ids = ['All Travel Agents'];
 					}
 				}
 			}
@@ -2199,9 +2199,11 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 }
                 //CICO-36269
                 if(chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) {
+                    $scope.$broadcast("UPDATE_RESULTS", $scope.results);
                     $timeout(function() {
                         $scope.$broadcast('updatePagination', "TA_COMMISSION_REPORT_MAIN");
                     }, 50);
+
                 }
 			};
 
@@ -2273,8 +2275,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
                 var loadAPIData = function(pageNo) {
                     $scope.genReport(false, pageNo);
-
-                    //$scope.$broadcast("TRAVEL_AGENT_COMMISSIONS_SCROLL");
+                    $scope.$broadcast("TRAVEL_AGENT_COMMISSIONS_SCROLL");
                 };
 
                 $scope.commisionReportTAPagination = {

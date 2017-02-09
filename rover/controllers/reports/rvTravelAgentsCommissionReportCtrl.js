@@ -24,12 +24,12 @@ angular.module('sntRover')
             });
         };
         $timeout( function() {
-            setScroller(); }, 2000);
+            setScroller(); }, 1000);
 
         $scope.$on("TRAVEL_AGENT_COMMISSIONS_SCROLL", function() {
             $timeout(function() {
                 refreshScroll();
-            }, 3000);
+            }, 1000);
         });
 
         var selectedTAAgentId;
@@ -50,6 +50,10 @@ angular.module('sntRover')
         $scope.$on("updateReservations", function(e, paramsToApi) {
             selectedTAAgentId = paramsToApi.travel_agent_id;
             $scope.invokeApi(RVreportsSubSrv.getReservationsOfTravelAgents, paramsToApi, successFetch);
+        });
+
+        $scope.$on("UPDATE_RESULTS", function(e, results) {
+            $scope.results = results;
         });
 
 
