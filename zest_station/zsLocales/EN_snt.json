@@ -501,7 +501,7 @@
 
    "THIRD_PARTY_MOBILE_HAVE_IT_INFO_HEADER": "Get the key from the app",
    "THIRD_PARTY_MOBILE_HAVE_IT_INFO_SUB_HEADER": "To get your mobile key, sign in to the [Name of app] and do x",
-   "THIRD_PARTY_MOBILE_HAVE_IT_INFO_BODY_LARGE_TEXT": "You're all done here, so select Next",
+   "THIRD_PARTY_MOBILE_HAVE_IT_INFO_BODY_LARGE_TEXT": "",
    "THIRD_PARTY_MOBILE_HAVE_IT_INFO_BODY_TEXT": "You're all done here, so select Next",
 
    "THIRD_PARTY_MOBILE_GET_IT_INFO_HEADER": "Download the app",
