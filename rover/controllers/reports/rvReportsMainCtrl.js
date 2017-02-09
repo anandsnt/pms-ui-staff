@@ -48,34 +48,34 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		$scope.showReportDetails = false;
 
 
-		// var FULL_REPORT_SCROLL = 'FULL_REPORT_SCROLL';
-		// /**/
-		// var setupScroll = (function() {
-		// 	$scope.setScroller(FULL_REPORT_SCROLL, {
-		// 	    tap: true,
-		// 	    preventDefault: false,
-		// 	    scrollX: true,
-		// 	    scrollY: false
-		// 	});
-		// })();
-		// /**/
-		// var refreshScroll = function( noReset ) {
-		// 	$scope.refreshScroller(FULL_REPORT_SCROLL);
-        //
-		// 	if ( !! noReset ) {
-		// 		return;
-		// 	} else if ( $scope.$parent.myScroll.hasOwnProperty(FULL_REPORT_SCROLL) ) {
-		// 	    $scope.$parent.myScroll[FULL_REPORT_SCROLL].scrollTo(0, 0, 100);
-		// 	}
-		// };
-        //
-		// $scope.scrollToLast = function() {
-		// 	setTimeout(function() {
-		// 		if ( $scope.$parent.myScroll.hasOwnProperty(FULL_REPORT_SCROLL) ) {
-		// 		    $scope.$parent.myScroll[FULL_REPORT_SCROLL].scrollTo($scope.myScroll[FULL_REPORT_SCROLL].maxScrollX, 0, 299);
-		// 		}
-		// 	}, 300);
-		// };
+		var FULL_REPORT_SCROLL = 'FULL_REPORT_SCROLL';
+		/**/
+		var setupScroll = (function() {
+			$scope.setScroller(FULL_REPORT_SCROLL, {
+			    tap: true,
+			    preventDefault: false,
+			    scrollX: true,
+			    scrollY: false
+			});
+		})();
+		/**/
+		var refreshScroll = function( noReset ) {
+			$scope.refreshScroller(FULL_REPORT_SCROLL);
+
+			if ( !! noReset ) {
+				return;
+			} else if ( $scope.$parent.myScroll.hasOwnProperty(FULL_REPORT_SCROLL) ) {
+			    $scope.$parent.myScroll[FULL_REPORT_SCROLL].scrollTo(0, 0, 100);
+			}
+		};
+
+		$scope.scrollToLast = function() {
+			setTimeout(function() {
+				if ( $scope.$parent.myScroll.hasOwnProperty(FULL_REPORT_SCROLL) ) {
+				    $scope.$parent.myScroll[FULL_REPORT_SCROLL].scrollTo($scope.myScroll[FULL_REPORT_SCROLL].maxScrollX, 0, 299);
+				}
+			}, 300);
+		};
 		/**/
 		$scope.viewCols = [1, 2, 3, 4];
 		var _currentViewCol = $scope.viewCols[0];
@@ -279,8 +279,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			item_44: false,
 			item_45: false,
 			item_46: false,
-			item_47: false,
-            item_48: false
+			item_47: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( ! $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -1062,7 +1061,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					'display': [],
 					'show': [],
 					'markets': [],
-                    'segments': [],
 					'sources': [],
 					'origins': [],
 					'origin_urls': [],
@@ -1546,29 +1544,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				}
 			}
 
-            // selected segments
-            if ( report.hasOwnProperty('hasSegmentsList') ) {
-                selected = _.where( report['hasSegmentsList']['data'], { selected: true } );
-
-                if ( selected.length > 0 ) {
-                    key         = reportParams['SEGMENT_IDS'];
-                    params[key] = [];
-                    /**/
-                    _.each(selected, function(segment) {
-                        params[key].push( segment.value );
-                        /**/
-                        if ( changeAppliedFilter ) {
-                            $scope.appliedFilter.segments.push( segment.name );
-                        }
-                    });
-
-                    // in case if all segments are selected
-                    if ( changeAppliedFilter && report['hasSegmentsList']['data'].length === selected.length ) {
-                        $scope.appliedFilter.segments = ['All Segments'];
-                    }
-                }
-            }
-
 			// selected source
 			if ( report.hasOwnProperty('hasSourcesList') ) {
 				selected = _.where( report['hasSourcesList']['data'], { selected: true } );
@@ -2025,26 +2000,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					}
 				}
 			}
-
-            if (report.hasShowActionables) {
-                if ( report.showActionables ) {
-                    key         = reportParams['SHOW_ACTIONABLES'];
-                    if (report.showActionables === 'BOTH') {
-                       params[key] = ['GUEST', 'GROUP'];
-                    } else {
-                        params[key] = [report.showActionables];
-                    }
-
-                    if ( changeAppliedFilter ) {
-                        if (report.showActionables === 'BOTH') {
-                            $scope.appliedFilter.show.push("GUESTS");
-                            $scope.appliedFilter.show.push("GROUPS");
-                        } else {
-                            $scope.appliedFilter.show.push(report.showActionables);
-                        }
-                    }
-                }
-            }
 
             //CICO-35959 - show room revenue by default
             if(report.title === reportNames['MARKET_SEGMENT_STAT_REPORT']) {

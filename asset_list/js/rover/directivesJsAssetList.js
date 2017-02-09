@@ -7,7 +7,6 @@ module.exports = {
 			assetsForScreen = {
 				minifiedFiles: [
                          jsLibRoot + 'angular-multi-select.js',
-                         'shared/directives/ngAugmentNativeScroll/ngAugmentNativeScroll.js'
 				],
 				nonMinifiedFiles: [
 

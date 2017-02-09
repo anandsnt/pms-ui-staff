@@ -9,52 +9,46 @@
 <span ng-hide="hasNoResults" ng-controller="RVDailyProdRateReport.Controller">
     <div id="report-content" class="report-content statistics">
 
-        <connect-scrolls options="options">
-          <!-- Left side - table legend. Number of list items here should be identical to the number of table rows on the right side  -->
-          <div class="statistics-headings">
-            <scroll-area>
-              <div class="scrollable scroll-vertical"> <!-- Attach iscroll here, should scroll vertically. While scrolling it should update iscoll on the right side as well -->
-                  <ul class="wrapper">
-                      <li class="main-heading action-row"> <!-- Toggle what's shown in grid (only 1 item can be disabled, never both!) -->
-                          <div class="switch-button" ng-class="{ 'on': uiFilter.showAvailability }"> <!-- Remove class 'on' if not checked, disable second switch button, update width set in L188, update colspan on L192 -->
-                              <input id="daily-production-availability" ng-model="uiFilter.showAvailability" type="checkbox" />
-                              <label class="data-off">
-                                  <span class="value">Availability</span>
-                                  <span class="switch-icon">Hidden</span>
-                              </label>
-                              <label class="data-on">
-                                  <span class="switch-icon">Showing</span>
-                                  <span class="value">Availability</span>
-                              </label>
-                          </div>
-                          <div class="switch-button" ng-class="{ 'on': uiFilter.showRevenue }"> <!-- Remove class 'on' if not checked, disable first switch button, update width set in L188, update colspan on L192-->
-                              <input id="daily-production-revenue" ng-model="uiFilter.showRevenue" type="checkbox" />
-                              <label class="data-off">
-                                  <span class="value">Revenue</span>
-                                  <span class="switch-icon">Hidden</span>
-                              </label>
-                              <label class="data-on">
-                                  <span class="switch-icon">Showing</span>
-                                  <span class="value">Revenue</span>
-                              </label>
-                          </div>
-                      </li>
-                      <li ng-repeat="label in yAxisLabels track by $index">
-                          <em ng-show="!label.is_rate_type">{{ label.name }}</em>
-                          <strong ng-show="label.is_rate_type">{{ label.name }}</strong>
-                      </li>
-                  </ul>
-              </div>
-            </scroll-area>
-          </div>
-
-          <!-- Right side - table numbers. Number of table rows here should be identical to the number of list items on the left side -->
-          <scroll-area>
-            <div class="statistics-content scrollable scroll-both"><!-- Attach iscroll here, should scroll vertically and horizontally. While scrolling vertically it should update iscoll on the left side as well -->
-                <div class="wrapper" id="daily-production-render"></div>
+        <!-- Left side - table legend. Number of list items here should be identical to the number of table rows on the right side  -->
+        <div class="statistics-headings">
+            <div class="scrollable" ng-iscroll="left-pane-scroll"> <!-- Attach iscroll here, should scroll vertically. While scrolling it should update iscoll on the right side as well -->
+                <ul class="wrapper">
+                    <li class="main-heading action-row"> <!-- Toggle what's shown in grid (only 1 item can be disabled, never both!) -->
+                        <div class="switch-button" ng-class="{ 'on': uiFilter.showAvailability }"> <!-- Remove class 'on' if not checked, disable second switch button, update width set in L188, update colspan on L192 -->
+                            <input id="daily-production-availability" ng-model="uiFilter.showAvailability" type="checkbox" />
+                            <label class="data-off">
+                                <span class="value">Availability</span>
+                                <span class="switch-icon">Hidden</span>
+                            </label>
+                            <label class="data-on">
+                                <span class="switch-icon">Showing</span>
+                                <span class="value">Availability</span>
+                            </label>
+                        </div>
+                        <div class="switch-button" ng-class="{ 'on': uiFilter.showRevenue }"> <!-- Remove class 'on' if not checked, disable first switch button, update width set in L188, update colspan on L192-->
+                            <input id="daily-production-revenue" ng-model="uiFilter.showRevenue" type="checkbox" />
+                            <label class="data-off">
+                                <span class="value">Revenue</span>
+                                <span class="switch-icon">Hidden</span>
+                            </label>
+                            <label class="data-on">
+                                <span class="switch-icon">Showing</span>
+                                <span class="value">Revenue</span>
+                            </label>
+                        </div>
+                    </li>
+                    <li ng-repeat="label in yAxisLabels track by $index">
+                        <em ng-show="!label.is_rate_type">{{ label.name }}</em>
+                        <strong ng-show="label.is_rate_type">{{ label.name }}</strong>
+                    </li>
+                </ul>
             </div>
-          </scroll-area>
-      </connect-scrolls>
+        </div>
+
+        <!-- Right side - table numbers. Number of table rows here should be identical to the number of list items on the left side -->
+        <div class="statistics-content scrollable" ng-iscroll="right-pane-scroll"><!-- Attach iscroll here, should scroll vertically and horizontally. While scrolling vertically it should update iscoll on the left side as well -->
+            <div class="wrapper" id="daily-production-render"></div>
+        </div>
 
     </div>
 

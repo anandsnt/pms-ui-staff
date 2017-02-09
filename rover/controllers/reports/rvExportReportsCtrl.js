@@ -47,11 +47,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
         var validateSchedule = function() {
             var hasTimePeriod = function() {
-                if ( $scope.isGuestBalanceReport ) {
-                    return true;
-                } else {
-                    return !! $scope.scheduleParams.time_period_id;
-                }
+                return $scope.isGuestBalanceReport ? true : !! $scope.scheduleParams.time_period_id;
             };
 
             var hasFrequency = function() {
