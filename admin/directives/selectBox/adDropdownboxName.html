@@ -5,6 +5,7 @@
 
     <div class='select'>
         <select ng-class="{'placeholder': ngModel == ''}"
+                ng-attr-convert-to-number="{{bindNumber}}"
                 id="{{id}}"
                 name="{{name}}"
                 class="{{selboxClass}}"
