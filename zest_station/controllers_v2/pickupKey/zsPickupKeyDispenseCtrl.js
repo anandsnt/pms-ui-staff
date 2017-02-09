@@ -4,7 +4,9 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
     '$state',
     'zsEventConstants',
     '$controller',
-    function($scope, $stateParams, $state, zsEventConstants, $controller) {
+    'zsCheckinSrv',
+    '$log',
+    function($scope, $stateParams, $state, zsEventConstants, $controller, zsCheckinSrv, $log) {
 
         /** ********************************************************************************************
          **     Expected state params -----> reservation_id, room_no and first_name'              
@@ -26,15 +28,25 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
         /**
          * [initializeMe description]
          */
-        var initializeMe = (function() {
+        var initializeMe = function() {
             // All the common actions for dispensing keys are to be included in
             // zsKeyDispenseCtrl
             $controller('zsKeyDispenseCtrl', {
                 $scope: $scope
             });
-            $scope.mode = 'DISPENSE_KEY_MODE';
-            $scope.readyForUserToPressMakeKey = true;
-        }());
+
+
+            if ($stateParams.isQuickJump === 'true') {
+
+                $log.log('Jumping to Screen with demo data');
+                $scope.mode = $stateParams.quickJumpMode;
+
+            } else {
+                $scope.mode = 'DISPENSE_KEY_MODE';
+                $scope.readyForUserToPressMakeKey = true;
+
+            }
+        };
 
         $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
             if ($scope.zestStationData.pickup_qr_scan) {
@@ -74,6 +86,8 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
                 $state.go('zest_station.home');
             }
         };
+
+        initializeMe();
 
     }
 ]);

@@ -75,7 +75,7 @@
                                 </li>
 
                                 <li class="days">
-                                    <button class="only-icon prev" ng-class="{'disabled': billData.disablePrev}" ng-show="billData.days" ng-click="summaryDateBtnGroup.prev(billData)">
+                                    <button class="only-icon prev" ng-class="{'disabled': billData.disablePrev}" ng-show="billData.days.length" ng-click="summaryDateBtnGroup.prev(billData)">
                                        <span class="icons icon-double-arrow rotate-left"></span>
                                     </button>
                                     <div class="days-wrapper">
@@ -88,7 +88,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <button class="only-icon next" ng-show="billData.days" ng-class="{'disabled': billData.disableNext}" ng-click="summaryDateBtnGroup.next(billData)">
+                                    <button class="only-icon next" ng-show="billData.days.length" ng-class="{'disabled': billData.disableNext}" ng-click="summaryDateBtnGroup.next(billData)">
                                        <span class="icons icon-double-arrow rotate-right"></span>
                                     </button>
                                 </li>
@@ -241,7 +241,7 @@
                                         </td>
                                         <td ng-show="showMoveCharges">
                                             <div class="select">
-                                                <select ng-change="moveToBillAction(feesData.oldBillValue, $index)" ng-model="feesData.billValue" iscroll-stop-propagation>
+                                                <select ng-change="moveToBillAction(feesData.oldBillValue, $index)" ng-model="feesData.billValue" convert-to-number iscroll-stop-propagation>
                                                     <option value="" disabled>Move to bill</option>
                                                     <option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in transactionsDetails.bills"> {{billNumbers.bill_number}} </option>
                                                     <option value="{{transactionsDetails.bills.length+1}}" ng-show="transactionsDetails.bills.length<10">{{transactionsDetails.bills.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>

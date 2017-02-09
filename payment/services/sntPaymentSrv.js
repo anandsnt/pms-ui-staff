@@ -1,8 +1,7 @@
-angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
-    function($q, $http, $location, PAYMENT_CONFIG) {
-        var service = this;
-
-        var state = {};
+angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG', '$log', '$timeout',
+    function($q, $http, $location, PAYMENT_CONFIG, $log, $timeout) {
+        var service = this,
+            state = {};
 
         service.set = function(key, status) {
             state[key] = status;
@@ -55,25 +54,25 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
                 dataToSrv.postData.payment_method_id = dataToSrv.postData.payment_type_id;
             }
 
-            $http.post(url, dataToSrv.postData).success(function(response) {
-                deferred.resolve(response);
-            }.bind(this))
-                .error(function(error) {
-                    deferred.reject(error);
-                });
+            $http.post(url, dataToSrv.postData).then(function(response) {
+                deferred.resolve(response.data);
+            }, function(error) {
+                deferred.reject(error.data);
+            });
+
             return deferred.promise;
         };
 
         service.getLinkedCardList = function(reservationId) {
 
-            var deferred = $q.defer();
-            var url = '/staff/staycards/get_credit_cards.json?reservation_id=' + reservationId;
-            $http.get(url).success(function(response) {
-                deferred.resolve(response.data);
-            }.bind(this))
-                .error(function(error) {
-                    deferred.reject(error);
-                });
+            var deferred = $q.defer(),
+                url = '/staff/staycards/get_credit_cards.json?reservation_id=' + reservationId;
+
+            $http.get(url).then(function(response) {
+                deferred.resolve(response.data.data);
+            }, function(error) {
+                deferred.reject(error);
+            });
             return deferred.promise;
         };
 
@@ -164,7 +163,7 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
                 url = 'api/reservations/' + dataToSrv.reservation_id + '/submit_payment';
             } else {
                 url = 'api/bills/' + dataToSrv.bill_id + '/submit_payment';
-                //TODO: clean up the above API so that the requests might be consistent
+                // TODO: clean up the above API so that the requests might be consistent
                 dataToSrv.postData.payment_method_id = dataToSrv.postData.payment_type_id;
             }
 
@@ -174,8 +173,8 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
             };
             var refreshIntervalId = setInterval(incrementTimer, 1000);
             var pollToTerminal = function(async_callback_url) {
-                //we will continously communicate with the terminal till 
-                //the timeout set for the hotel
+                // we will continously communicate with the terminal till
+                // the timeout set for the hotel
                 if (timeStampInSeconds >= dataToSrv.emvTimeout) {
                     var errors = ["Request timed out. Unable to process the transaction"];
                     deferred.reject(errors);
@@ -184,38 +183,49 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
                     // NOTE:This sample json helps to mock the response
                     // For further info : https://stayntouch.atlassian.net/wiki/display/ROV/SIXPayment+Service+Design+Document
                     // var async_callback_url = '/sample_json/payment/six_payment_sample.json';
-                    $http.get(async_callback_url).success(function(data, status) {
-                        //if the request is still not proccesed
+                    $http.get(async_callback_url).then(function(response) {
+                        var data = response.data,
+                            status = response.status;
+
+                        // if the request is still not proccesed
                         if (status === 202 || status === 102 || status === 250) {
-                            setTimeout(function() {
-                                console.info("POLLING::-> for emv terminal response");
+                            $timeout(function() {
+                                $log.info("POLLING::-> for emv terminal response");
                                 pollToTerminal(async_callback_url);
                             }, 5000);
                         } else {
                             clearInterval(refreshIntervalId);
                             deferred.resolve(data);
                         }
-                    }).error(function(data) {
-                        if (typeof data === 'undefined') {
+                    }, function(response) {
+                        if (typeof response.data === 'undefined') {
                             pollToTerminal(async_callback_url);
                         } else {
                             clearInterval(refreshIntervalId);
-                            deferred.reject(data);
+                            deferred.reject(response.data);
                         }
                     });
                 }
             };
 
-            $http.post(url, dataToSrv.postData).success(function(response, status, headers) {
-                //202 ---> The request has been accepted for processing, but the processing has not been completed.
-                //102 ---> This code indicates that the server has received and is processing the request, but no response is available yet
+            $http.post(url, dataToSrv.postData).then(function(response) {
+                var data = response.data,
+                    status = response.status,
+                    headers = response.headers;
+
+                // 202 ---> The request has been accepted for processing, but the processing has not been completed.
+                // 102 ---> This code indicates that the server has received and is processing the request, but no response is available yet
                 if (status === 202 || status === 102 || status === 250) {
                     var location_header = headers('Location');
+
                     pollToTerminal(location_header);
                 } else {
-                    deferred.resolve(response);
+                    deferred.resolve(data);
                 }
-            }).error(function(errors, status) {
+            }, function(response) {
+                var errors = response.data,
+                    status = response.staus;
+
                 webserviceErrorActions(url, deferred, errors, status);
             });
             return deferred.promise;
@@ -228,17 +238,19 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
          */
         service.getSixPaymentToken = function(dataToSrv) {
 
-            var deferred = $q.defer();
-            var url = '/api/cc/get_token.json';
+            var deferred = $q.defer(),
+                url = '/api/cc/get_token.json',
+                timeStampInSeconds = 0;
 
-            var timeStampInSeconds = 0;
             var incrementTimer = function() {
                 timeStampInSeconds++;
             };
+
             var refreshIntervalId = setInterval(incrementTimer, 1000);
+
             var pollToTerminal = function(async_callback_url) {
-                //we will continously communicate with the terminal till
-                //the timeout set for the hotel
+                // we will continously communicate with the terminal till
+                // the timeout set for the hotel
                 if (timeStampInSeconds >= dataToSrv.emvTimeout) {
                     var errors = ["Request timed out. Unable to process the transaction"];
                     deferred.reject(errors);
@@ -248,18 +260,23 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
                     // For further info : https://stayntouch.atlassian.net/wiki/display/ROV/SIXPayment+Service+Design+Document
                     // var async_callback_url = '/sample_json/payment/get_six_pay_token.json';
 
-                    $http.get(async_callback_url).success(function(data, status) {
-                        //if the request is still not proccesed
+                    $http.get(async_callback_url).then(function(response) {
+                        var data = response.data,
+                            status = response.status;
+
+                        // if the request is still not proccesed
                         if (status === 202 || status === 102 || status === 250) {
-                            setTimeout(function() {
-                                console.info("POLLING::-> for emv terminal response");
+                            $timeout(function() {
+                                $log.info("POLLING::-> for emv terminal response");
                                 pollToTerminal(async_callback_url);
                             }, 5000);
                         } else {
                             clearInterval(refreshIntervalId);
                             deferred.resolve(data);
                         }
-                    }).error(data => {
+                    }, response => {
+                        var data = response.data;
+
                         if (typeof data === 'undefined') {
                             pollToTerminal(async_callback_url);
                         } else {
@@ -270,16 +287,24 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
                 }
             };
 
-            $http.post(url, dataToSrv).success(function(response, status, headers) {
-                //202 ---> The request has been accepted for processing, but the processing has not been completed.
-                //102 ---> This code indicates that the server has received and is processing the request, but no response is available yet
+            $http.post(url, dataToSrv).then(function(response) {
+                var data = response.data,
+                    status = response.status,
+                    headers = response.headers;
+
+                // 202 ---> The request has been accepted for processing, but the processing has not been completed.
+                // 102 ---> This code indicates that the server has received and is processing the request, but no response is available yet
                 if (status === 202 || status === 102 || status === 250) {
                     var location_header = headers('Location');
+
                     pollToTerminal(location_header);
                 } else {
-                    deferred.resolve(response);
+                    deferred.resolve(data);
                 }
-            }).error(function(errors, status) {
+            }, function(response) {
+                var errors = response.data,
+                    status = response.staus;
+
                 webserviceErrorActions(url, deferred, errors, status);
             });
             return deferred.promise;
@@ -372,10 +397,10 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
 
             $http.post(url, {
                 'card_number': cardNo
-            }).success(function(response) {
-                deferred.resolve(response);
-            }).error(function(response) {
-                deferred.reject(response);
+            }).then(function(response) {
+                deferred.resolve(response.data);
+            }, function(response) {
+                deferred.reject(response.data);
             });
             return deferred.promise;
         };
@@ -384,28 +409,31 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
             var deferred = $q.defer();
             var url = '/staff/reservation/save_payment';
 
-            $http.post(url, data).success(data => {
+            $http.post(url, data).then(response => {
+                var data = response.data;
+
                 if (data.status === "failure") {
                     deferred.reject(data.errors);
                 } else {
                     deferred.resolve(data);
                 }
-            }).error(data => {
-                deferred.reject(data);
+            }, response => {
+                deferred.reject(response.data);
             });
             return deferred.promise;
 
         };
 
         service.addBillPaymentMethod = function(data) {
-            var deferred = $q.defer();
-            var url = '/api/bills/' + data.billId + '/add_payment_method';
+            var deferred = $q.defer(),
+                url = '/api/bills/' + data.billId + '/add_payment_method';
 
-            $http.post(url, data.payLoad).success(data => {
-                deferred.resolve(data);
-            }).error(data => {
-                deferred.reject(data);
+            $http.post(url, data.payLoad).then(response => {
+                deferred.resolve(response.data);
+            }, response => {
+                deferred.reject(response.data);
             });
+
             return deferred.promise;
         };
 
@@ -418,10 +446,11 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
             var deferred = $q.defer();
             var url = '/staff/reservation/link_payment';
 
-            $http.post(url, data).success(data => {
-                deferred.resolve(data);
-            }).error(data => {
-                deferred.reject(data);
+
+            $http.post(url, data).then(response => {
+                deferred.resolve(response.data);
+            }, response => {
+                deferred.reject(response.data);
             });
 
             return deferred.promise;
@@ -436,15 +465,17 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
             var deferred = $q.defer();
             var url = 'staff/payments/save_new_payment';
 
-            $http.post(url, data).success(data => {
+            $http.post(url, data).then(response => {
+                var data = response.data;
+
                 if (data.errors && data.errors.length > 0) {
                     deferred.reject(data.errors);
                 } else {
                     deferred.resolve(data);
                 }
 
-            }).error(data => {
-                deferred.reject(data);
+            }, response => {
+                deferred.reject(response.data);
             });
 
             return deferred.promise;
@@ -455,23 +486,25 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
             var deferred = $q.defer();
             var url = 'api/posting_accounts/' + postingAccountId + '/is_ar_account_attached';
 
-            $http.get(url).success(data => {
-                deferred.resolve(data);
-            }).error(data => {
-                deferred.reject(data);
+            $http.get(url).then(response => {
+                deferred.resolve(response.data);
+            }, response => {
+                deferred.reject(response.data);
             });
 
             return deferred.promise;
         };
 
         service.saveARDetails = function(data) {
-            var deferred = $q.defer();
-            var url = 'api/accounts/save_ar_details';
-            $http.post(url, data).then(function(data) {
-                deferred.resolve(data);
-            }, function(data) {
-                deferred.reject(data.data);
+            var deferred = $q.defer(),
+                url = 'api/accounts/save_ar_details';
+
+            $http.post(url, data).then(function(response) {
+                deferred.resolve(response.data);
+            }, function(response) {
+                deferred.reject(response.data);
             });
+
             return deferred.promise;
         };
 

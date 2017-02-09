@@ -290,6 +290,11 @@ sntZestStation.controller('zsRootCtrl', [
             return false;
         };
 
+        var resetJumpGallerySettings = function() {
+            $scope.jumperData.invalidGalleryImages = [];// need to clear this for screen jumper to work properly with theme switching
+            $scope.jumpGalleryOn = false;
+        };
+
         $scope.useNavIcons = true;
 
         $scope.$on('DONT_USE_NAV_ICONS', function() {
@@ -371,13 +376,91 @@ sntZestStation.controller('zsRootCtrl', [
 
         };
 
+        $scope.jumperData = {
+            'viewJumpFilter': '',
+            'invalidGalleryImages': []
+        };
+
+        $scope.galleryIconInvalid = function(icon) {
+            if ($scope.jumperData.invalidGalleryImages.indexOf(icon) !== -1) {
+                return true;
+            }
+            return false;
+        };
+
+        $scope.showJumperItem = function(view) {
+            var viewJumpFilter = $scope.jumperData.viewJumpFilter.toLowerCase(),
+                description = view.description ? view.description.toLowerCase() : '',
+                label = view.label ? view.label.toLowerCase() : '';
+
+
+            if (viewJumpFilter === '' || label.indexOf(viewJumpFilter) !== -1 || description.indexOf(viewJumpFilter) !== -1) {
+                return true;
+            }
+            // if the view object has any Tags (like meta tags) check those
+            if (view.tags) {
+                for (var i in view.tags) {
+                    if (view.tags[i].toLowerCase().indexOf(viewJumpFilter) !== -1) {
+                        return true;
+                    }
+                }
+            }
+
+            // If one of its Modes are showing, show the 'category header'
+            // ie. if showing (Pickup Keys) Key 1 of 2 Success..then show the header, Pickup Keys
+            if (view.modes) {
+                for (var m in view.modes) {
+                    if ($scope.showJumperItem(view.modes[m])) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        };
+
+        $scope.jumpTo = function(state, isMode, selectedMode) {
+            if (state.modes && !isMode && !state.placeholderData) {// do nothing if isMode==false, this is a header
+                return;
+            }
+            var params = {};
+
+            if (isMode || state.placeholderData) {
+                params = {
+                    'isQuickJump': true, 
+                    'quickJumpMode': selectedMode
+                };
+            }
+            $state.go(state.name, params);
+        };
 
         $scope.quickSetHotelTheme = function(theme) {
             $scope.$broadcast('QUICK_SET_HOTEL_THEME', theme);
+            resetJumpGallerySettings();
         };
         // allows to toggle language tags via console/chrome extension
         $scope.toggleLanguageTags = function() {
             $scope.$broadcast('TOGGLE_LANGUAGE_TAGS');
+        };
+        $scope.showJumpList = false;
+        $scope.jumpList = [];
+        $scope.toggleJumpList = function(list) {
+            $scope.jumperData.viewJumpFilter = '';
+            $scope.showJumpList = !$scope.showJumpList;
+            $scope.jumpList = list;
+            $scope.runDigestCycle();
+
+            if ($scope.showJumpList) {
+                $timeout(function() {
+                    $('#jumperFilter').focus();
+                }, 500);
+                
+            }
+        };
+        $scope.jumpGalleryOn = false;
+        $scope.jumpGalleryIconPath = '';
+        $scope.toggleJumpListGallery = function() {
+            $scope.jumpGalleryOn = !$scope.jumpGalleryOn;
         };
 
         // for chrome extension or console switching of languages
@@ -554,7 +637,7 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.iconsPath = '/assets/zest_station/css/icons/conscious';
                 $scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true);
 
-            } else if (theme === 'avenue' || theme === 'sohotel' || theme === 'epik') {
+            } else if (theme === 'avenue' || theme === 'sohotel' || theme === 'epik' || theme === 'public') {
                 $scope.useNavIcons = true;
                 $scope.theme = theme;
                 $scope.iconsPath = '/assets/zest_station/css/icons/' + theme;
@@ -565,6 +648,13 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.iconsPath = commonIconsPath;
                 $scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true);
             }
+
+            if (theme === 'yotel') {
+                $scope.jumpGalleryIconPath = '/assets/zest_station/css/themes/' + theme + '/gallery/';
+            } else { // default icons for all other hotels (for now)
+                $scope.jumpGalleryIconPath = '/assets/zest_station/css/themes/snt/gallery/';
+            }
+            
 
         });
 
@@ -614,6 +704,19 @@ sntZestStation.controller('zsRootCtrl', [
             };
 
             function increment() {
+                // pause timers when editor mode is enabled, so user doesnt get moved from the screen, 
+                // reflect in diagnostics with the editorModeEnabled attribute
+                if ($scope.zestStationData.editorModeEnabled === 'true') {
+
+                    if (zestSntApp.timeDebugger) {
+                        $scope.zestStationData.timeDebugger = 'true';
+                    } else {
+                        $scope.zestStationData.timeDebugger = 'false';
+                    }
+
+                    return;
+                }
+
                 var currentState = $state.current.name,
                     idlePopupTime = $scope.zestStationData.idle_timer.prompt,
                     idleToHomeTime = $scope.zestStationData.idle_timer.max,
@@ -668,6 +771,7 @@ sntZestStation.controller('zsRootCtrl', [
                 var ignoreTimeoutOnStates = ['zest_station.admin', 'zest_station.home', 'zest_station.outOfService'],
                     inAnIgnoreState = ignoreTimeoutOnStates.indexOf(currentState) !== -1;
 
+                // If Editor Mode is enabled, the idle timer is disabled
                 if (inAnIgnoreState) {
                     // in case station goes OOS or home During encoding due to User or other Error
                     $scope.zestStationData.makingKeyInProgress = false;
@@ -1021,7 +1125,6 @@ sntZestStation.controller('zsRootCtrl', [
             }
             return {};
         };
-
 
         var workStationstorageKey = 'snt_zs_workstation',
             oosStorageKey = 'snt_zs_workstation.in_oos',
