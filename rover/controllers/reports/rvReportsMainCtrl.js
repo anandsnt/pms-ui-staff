@@ -2162,7 +2162,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			};
 			var responseWithInsidePagination = function (response) {
 				_.each(response.results, function (item) {
-
+					// Pagination data added for each TA
 					item.insidePaginationData = {
 						id: item.travel_agent_id,
 	                    api: [fetchTravelAgents, item.travel_agent_id],
@@ -2176,7 +2176,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			};
 			// fill in data into seperate props
 			var updateDS = function (response) {
-				if(chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) {
+				if (chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) {
+					// Response modified to accomodate inside pagination
+					// For TA reservations
 					response = responseWithInsidePagination(response);
 				}
 				$scope.totals          = response.totals || [];
@@ -2285,8 +2287,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 };
 
             }
-
-
 			$scope.invokeApi(reportsSubSrv.fetchReportDetails, params, sucssCallback, errorCallback);
 		};
 
