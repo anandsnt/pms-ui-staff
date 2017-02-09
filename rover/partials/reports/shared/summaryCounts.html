@@ -198,6 +198,11 @@
     <li>Rooms<span>{{ summaryCounts}}</span></li>
 
 </ul>
+<!--Travel Agents Commision report -->
+<ul ng-if="isThisReport( 'TRAVEL_AGENT_COMMISSIONS' )" class="totals">
+    <li>Travel Agents<span>{{ totalCount}}</span></li>
+    <li>Total<span>{{ summaryCounts.total}}</span></li>
+</ul>
 
 <!--Market segment statistics report -->
 <ul ng-if="isThisReport('MARKET_SEGMENT_STAT_REPORT')" class="totals">

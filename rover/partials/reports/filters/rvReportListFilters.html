@@ -320,6 +320,12 @@
     data="uiChosenReport.hasAccountSearch.data"
     options="uiChosenReport.hasAccountSearch.options"></multi-option-selection>
 
+<multi-option-selection ng-show="uiChosenReport.hasTravelAgentsSearch && uiChosenReport.hasTravelAgentsSearch.data.length"
+    label="Travel Agents"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasTravelAgentsSearch.data"
+    options="uiChosenReport.hasTravelAgentsSearch.options"></multi-option-selection>
+
 
 <multi-option-selection ng-show="uiChosenReport.hasReservationStatus && uiChosenReport.hasReservationStatus.data.length"
     label="Reservation Status"
