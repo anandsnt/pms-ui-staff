@@ -142,7 +142,9 @@ a:hover,
 
 
 /*----------------- date picker -------------------------*/
-
+.pickadate{
+  font-family: 'Tsukushi';
+}
 .pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
     color: #000;
     color: transparent;
@@ -154,7 +156,7 @@ a:hover,
 }
 
 .pickadate-cell .pickadate-active {
-    background-color: #000;
+    background-color: #000 !important;
     color: #fff;
 }
 
@@ -205,7 +207,6 @@ a:hover,
 
 .calendar-done {
     background-image: url('/assets/guestweb/common_images/done_white.png');
-    height: 40px;
 }
 
 .pickadate-prev,
@@ -254,6 +255,9 @@ a:hover,
     .main-text {
         font-size: 36px;
     }
+    .sub-main-text {
+    font-size: 21px!important;
+}
 }
 
 @media (max-width: 990px) {
@@ -264,8 +268,13 @@ a:hover,
     .back-to-checkout {
         display: none;
     }
+     .dual-button {
+    font-size: 24px;
 }
-
+}
+// @media (max-width: 890px) {
+   
+// }
 @media (max-width: 480px) {
     .main-text {
         font-size: 11vw;
