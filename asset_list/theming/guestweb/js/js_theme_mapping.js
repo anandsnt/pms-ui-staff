@@ -97,8 +97,8 @@ module.exports = {
             'guestweb_koa_kea': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_hotel_chicago': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_public_ny': [ themeJsRoot + 'app_router_public_ny.js'],
+            'guestweb_Nobu_Ryokan_Malibu': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_ambrose': [ themeJsRoot + 'app_router_common.js']
         };
     }
 };
-
