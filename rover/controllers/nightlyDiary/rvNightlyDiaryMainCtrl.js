@@ -179,27 +179,28 @@ angular.module('sntRover')
                                             .format('YYYY-MM-DD'),
                         'reservation_id': $scope.currentSelectedReservation.id
                     },
-                    successCallBack = function(data) {
+                    successCallBack = function(response) {
                         $scope.$emit('hideLoader');
-                        if (data.errors) {
-                            $scope.messages = data.errors;
+                        if (response.status === 'failure') {
+                            $scope.messages = response.errors;
                             openMessagePopup();
-                        } else                       
-                        if (data.data.availability_status === 'room_available') {                            
-                            $scope.extendShortenReservationDetails = params;
-                        } else {
-                            switch (data.data.availability_status) {
-                            case 'to_be_unassigned' : $scope.messages = ['PREASSIGNED'];
-                                break;
-                            case 'maintenance' : $scope.messages = ['MAINTENANCE'];
-                                break;
-                            case 'do_not_move' : $scope.messages = ['ROOM_CANNOT_UNASSIGN'];
-                                break;
-                            case 'room_ooo' : $scope.messages = ['ROOM_OOO'];
-                                break;
-                            default : $scope.messages = ["Room Can't Move"];
-                            }                    
-                            openMessagePopup();
+                        } else {                      
+                            if (response.data.availability_status === 'room_available') {                            
+                                $scope.extendShortenReservationDetails = params;
+                            } else {
+                                switch (response.data.availability_status) {
+                                case 'to_be_unassigned' : $scope.messages = ['PREASSIGNED'];
+                                    break;
+                                case 'maintenance' : $scope.messages = ['MAINTENANCE'];
+                                    break;
+                                case 'do_not_move' : $scope.messages = ['ROOM_CANNOT_UNASSIGN'];
+                                    break;
+                                case 'room_ooo' : $scope.messages = ['ROOM_OOO'];
+                                    break;
+                                default : $scope.messages = ["Room Can't Move"];
+                                }                    
+                                openMessagePopup();
+                            }
                         }                                                
                     };
 
