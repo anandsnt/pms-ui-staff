@@ -135,8 +135,8 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             return callApi({
                 // no name here since we dont want to cache it in the store ever
                 method: 'postJSON',
-                url: '/api/reports/' + params.report_name + '/submit',
-                params: _.omit(params, 'report_name')
+                url: '/api/reports/' + params.id + '/submit',
+                params: _.omit(params, 'id')
             });
         };
 
