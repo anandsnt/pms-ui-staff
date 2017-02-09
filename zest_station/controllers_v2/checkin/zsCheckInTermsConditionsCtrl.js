@@ -67,9 +67,12 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
             };
 
             console.info('haveValidGuestEmail: ', haveValidGuestEmail);
-
+            if ($scope.theme === 'yotel') {
+                $scope.setScreenIcon('checkin');
+                $state.go('zest_station.checkinSuccess', stateParams);
+            }
             // if collectiing nationality after email, but email is already valid
-            if (collectNationalityEnabled && haveValidGuestEmail) {
+            else if (collectNationalityEnabled && haveValidGuestEmail) {
                 $state.go('zest_station.collectNationality', $stateParams);
 
             } else if (haveValidGuestEmail) {
