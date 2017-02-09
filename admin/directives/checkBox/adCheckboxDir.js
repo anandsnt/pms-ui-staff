@@ -19,7 +19,7 @@ admin.directive('adCheckbox', function($timeout) {
 	    },
 
     	templateUrl: '/assets/directives/checkBox/adCheckbox.html',
-        controller : function($scope) {
+        controller: function($scope) {
             $scope.shouldHide = function () {
               if ( typeof $scope.ngHide === typeof true) {
                 return $scope.ngHide;
