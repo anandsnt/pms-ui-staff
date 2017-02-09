@@ -778,7 +778,6 @@ sntRover.controller('roverController',
         var $dialog = ngDialog.open({
           template: '/assets/partials/common/bussinessDateChangingPopup.html',
           className: 'ngdialog-theme-default1 modal-theme1',
-          controller: 'bussinessDateChangingCtrl',
           closeByDocument: false,
           scope: $scope
         });
