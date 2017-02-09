@@ -30,6 +30,15 @@
                 </div>
             </li>
         </ul>
+
+        <div class="no-content"
+          ng-show="!schedulesList.length && !isAddingNew">
+            <div class="info">
+                <span class="icon-no-content icon-reports"></span>
+                <strong class="h1">Exports unavailable</strong>
+                <span class="h2">You have no exports configured</span>
+            </div>
+        </div>
     </div>
 
     <div class="main-column-actions">
@@ -38,7 +47,7 @@
             class="button blue with-icon"
         >
             <i class="icons icon-pencil"></i>
-            Schedule a Report
+            Schedule a Export
         </button>
         <button ng-show="isAddingNew"
             ng-click="checkCanCancel()"

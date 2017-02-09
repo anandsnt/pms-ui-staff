@@ -94,7 +94,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
                     $scope.selectedReport.active = false;
                 }
-                $scope.setViewCol( $scope.viewCols[0] );
+                $scope.updateViewCol($scope.viewColsActions.ONE);
                 $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
 
                 fetch_reportSchedules_frequency_timePeriod_scheduableReports();
@@ -179,7 +179,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 if ( !! $scope.selectedSchedule && $scope.selectedSchedule.active ) {
                     $scope.selectedSchedule.active = false;
                 }
-                $scope.setViewCol( $scope.viewCols[0] );
+                $scope.updateViewCol($scope.viewColsActions.ONE);
 
                 if ( updatedIndex >= 0 ) {
                     $scope.$parent.$parent.schedulesList[updatedIndex].frequency_id = params.frequency_id;
@@ -310,7 +310,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.selectedReport.active = false;
 
                 $scope.addingStage = STAGES.SHOW_DISTRIBUTION;
-                $scope.setViewCol( $scope.viewCols[3] );
+                $scope.updateViewCol($scope.viewColsActions.FOUR);
 
                 processScheduleDetails(item);
                 setupFilters();
@@ -353,7 +353,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             $scope.selectedSchedule.active = false;
 
             $scope.addingStage = STAGES.SHOW_PARAMETERS;
-            $scope.setViewCol( $scope.viewCols[1] );
+            $scope.updateViewCol($scope.viewColsActions.TWO);
 
             processScheduleDetails(item);
             setupFilters();
@@ -407,7 +407,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
                     $scope.selectedReport.active = false;
                 }
-                $scope.setViewCol( $scope.viewCols[0] );
+                $scope.updateViewCol($scope.viewColsActions.ONE);
                 $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
 
                 fetch_reportSchedules_frequency_timePeriod_scheduableReports();
@@ -804,8 +804,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             $scope.selectedSchedule.active = false;
 
-            $scope.switchReportView($scope.reportViews[2]);
-            $scope.setViewCol( $scope.viewCols[0] );
+            $scope.updateView($scope.reportViewActions.SHOW_EXPORT_A_REPORT);
+            $scope.updateViewCol($scope.viewColsActions.ONE);
 
             var reset = true;
 
@@ -831,8 +831,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             $scope.selectedReport.active = false;
 
-            $scope.switchReportView( $scope.reportViews[2] );
-            $scope.setViewCol( $scope.viewCols[0] );
+            $scope.updateView($scope.reportViewActions.SHOW_EXPORT_REPORTS);
+            $scope.updateViewCol($scope.viewColsActions.ONE);
 
             var reset = true;
 
@@ -847,11 +847,11 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             if ( $scope.addingStage === STAGES.SHOW_PARAMETERS ) {
                 $scope.addingStage = STAGES.SHOW_DETAILS;
-                $scope.setViewCol( $scope.viewCols[2], noReset );
+                $scope.updateViewCol($scope.viewColsActions.THREE, noReset);
                 $scope.refreshThirdColumnScroll(verReset);
             } else if ( $scope.addingStage === STAGES.SHOW_DETAILS ) {
                 $scope.addingStage = STAGES.SHOW_DISTRIBUTION;
-                $scope.setViewCol( $scope.viewCols[3], noReset );
+                $scope.updateViewCol($scope.viewColsActions.FOUR, noReset);
                 $scope.refreshFourthColumnScroll(verReset);
             }
 
