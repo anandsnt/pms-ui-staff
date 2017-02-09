@@ -151,7 +151,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 
         };
 
-        $scope.editEmail = function() {
+        $scope.editEmailAddress = function() {
                 $state.go('zest_station.checkInEmailCollection',$stateParams);
         };
 
