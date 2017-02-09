@@ -4,10 +4,15 @@ angular.module('sntRover').service('RVHKOWSTestSrv', ['$http', '$q', '$window', 
 		var deferred = $q.defer();
 		var url = '/admin/test_pms_connection';
 
-		$http.post(url).success(function(response, status) {
+		$http.post(url).then(function(res) {
+			var response = res.data;
+
 		    deferred.resolve(response.data);
 
-		}).error(function(response, status) {
+		}, function(res) {
+			var response = res.data,
+				status= res.status;
+
 			if (status === 401) { // 401- Unauthorized
 				// so lets redirect to login page
 				$window.location.href = '/house/logout' ;

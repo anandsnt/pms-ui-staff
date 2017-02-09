@@ -50,10 +50,10 @@ angular.module('accountsModule', [])
             templateUrl: '/assets/partials/accounts/rvAccountsConfiguration.html',
             controller: 'rvAccountsConfigurationCtrl',
             onEnter: ['$stateParams', function($stateParams) {
-                if (typeof $stateParams.id === "undefined" || $stateParams.id === null) {
+                if (!$stateParams.id) {
                     $stateParams.id = "NEW_ACCOUNT";
                 }
-                if (typeof $stateParams.activeTab === "undefined" || $stateParams.activeTab === null) {
+                if (!$stateParams.activeTab) {
                     $stateParams.activeTab = "ACCOUNT";
                 }
             }],

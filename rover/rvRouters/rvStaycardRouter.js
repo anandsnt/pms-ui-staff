@@ -173,7 +173,7 @@ angular.module('stayCardModule', [])
             templateUrl: '/assets/partials/reservation/rvAddonsList.html',
             controller: 'RVReservationAddonsCtrl',
             onEnter: function($stateParams) {
-                if (typeof $stateParams.reservation === "undefined" || $stateParams.reservation === null) {
+                if (!$stateParams.reservation) {
                     $stateParams.reservation = "DAILY";
                 }
             },
@@ -196,10 +196,10 @@ angular.module('stayCardModule', [])
             templateUrl: '/assets/partials/reservation/rvSummaryAndConfirm.html',
             controller: 'RVReservationSummaryCtrl',
             onEnter: function($stateParams) {
-                if (typeof $stateParams.reservation === "undefined" || $stateParams.reservation === null) {
+                if (!$stateParams.reservation) {
                     $stateParams.reservation = "DAILY";
                 }
-                if (typeof $stateParams.mode === "undefined" || $stateParams.mode === null) {
+                if (!$stateParams.mode) {
                     $stateParams.mode = "OTHER";
                 }
             },
