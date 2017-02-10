@@ -88,4 +88,21 @@ admin.service('ADFTPServersSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($htt
         });
         return deferred.promise;
     };
+
+    /*
+    * To test connectivity
+    * @param {array} data of the connectivity
+    * @return {object} status of the api
+    */
+    this.testConnectivity = function(data) {
+        var deferred = $q.defer();
+        var url = '/api/ftp_servers/test_connectivity';
+
+        ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
 }]);

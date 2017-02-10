@@ -20,6 +20,29 @@ admin.controller('ADFTPServersDetailsCtrl', ['$scope', 'ADFTPServersSrv', '$stat
         $state.go('admin.ftpservers');
     };
 
+   /*
+    * To handle success call back of test connectivity
+    */
+    $scope.successCallbackConnectionTest = function() {
+        $scope.$emit('hideLoader');
+        $scope.errorMessage = "";
+        // Success message to show connection valid
+        $scope.successMessage = "Valid FTP connection";
+    };
+    $scope.failureCallbackConnectionTest = function() {
+        $scope.$emit('hideLoader');
+        $scope.successMessage = "";
+        // Failure message to show connection invalid
+        $scope.errorMessage = ["Invalid"];
+    };
+
+   /*
+    * Function to test connectivity details
+    */
+    $scope.testConnectivity = function(ftpServerConnectivityData) {
+        $scope.invokeApi(ADFTPServersSrv.testConnectivity, ftpServerConnectivityData, $scope.successCallbackConnectionTest, $scope.failureCallbackConnectionTest);
+    };
+
     $scope.saveServerDetails = function() {
         var postData = {};
 
