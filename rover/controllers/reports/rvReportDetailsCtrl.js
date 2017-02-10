@@ -710,11 +710,11 @@ sntRover.controller('RVReportDetailsCtrl', [
                     break;
 
 
-				// case reportNames['A/R_AGING']:
-				// 	$scope.hasReportTotals    = true;
-				// 	$scope.showReportHeader   = true;
-				// 	$scope.detailsTemplateUrl = '/assets/partials/reports/roomOooOosReport/rvRoomOooOosReport.html';
-				// 	break;
+				case reportNames['TRAVEL_AGENT_COMMISSIONS']:
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl  = '/assets/partials/reports/travelAgentCommission/rvTravelAgentCommissionReportRow.html';
+					break;
 
 				default:
 					$scope.hasReportTotals    = true;
@@ -813,6 +813,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['VACANT_ROOMS_REPORT']:
 					template = '/assets/partials/reports/vacantRoomsReport/rvVacantRoomsReportRow.html';
 					break;
+
 
 				// Default report row
 				default:
