@@ -1,7 +1,7 @@
 <!-- Report content -->
-    <div ng-controller="RVTravelAgentsCommissionReportCtrl" id="report-content" ng-iscroll="report-content-travel-agents-commission" class="report-content grid scrollable with-pagination"> <!-- Add class "with-pagination" if pagination is shown -->
-        <div class="wrapper">
-            <div ng-repeat="travel_agents in results">
+<div  id="report-content" ng-iscroll="report-details-scroll" class="report-content grid scrollable with-pagination"> <!-- Add class "with-pagination" if pagination is shown -->
+    <div class="wrapper" ng-controller="RVTravelAgentsCommissionReportCtrl">
+        <div ng-repeat="travel_agents in results">
             <h2>{{travel_agents.travel_agent_name}}, IATA: {{travel_agents.IATA_number}}</h2>
             <table class="commission-reports">
                 <thead>
@@ -21,10 +21,9 @@
 
                 </thead>
                 <tfoot>
-                    <!-- Travel Agent pagination // Shown when needed-->
+                    <!-- Travel Agent pagination -->
                      <tr class="pagination">
                         <td colspan="7">
-                        <!-- {../_shared/pagination.html} -->
                         <rv-pagination  page-options="travel_agents.insidePaginationData" page-data="travel_agents.reservation_details.total_reservations" ></rv-pagination>
                         </td>
                     </tr>
@@ -43,10 +42,6 @@
                     </tr>
                 </tfoot>
                 <tbody >
-
-                    <!--
-                        $rowspan - number of rates per this reservation
-                    -->
 
                     <tr ng-repeat-start="reservation in travel_agents.reservation_details.reservations" ng-if="travel_agents.reservation_details.reservations.length > 0">
                         <td rowspan="{{reservation.rate_details.length}}">
@@ -76,9 +71,6 @@
                                 </div>
                             </div>
                         </td>
-                        <!-- First Rate in row is displayed here,
-                             if there are more than 1 rate, others will be display in rows below
-                         -->
                         <td>
                             {{reservation.rate_details[0].rate_code}}
                         </td>
@@ -89,21 +81,12 @@
                             {{currencySymbol}}{{reservation.commission_revenue}}
                         </td>
                         <td rowspan="{{reservation.rate_details.length}}">
-                            <!-- If admin settings are set to show comission amount:
-                            {currency-symbol}{subtotal-commission-net-amount}
-                            --
-                                else if admin settings are set to show comission %:
-                            -->
                             <span>{{reservation.commission_amount}}</span>
-                          <!--   <span ng-if="reservation.commission_type == currencySymbol">{{currencySymbol}}{{reservation.commission_amount}}</span>
-                            <span ng-if="reservation.commission_type == '%'">{{reservation.commission_amount}}%</span> -->
-
                         </td>
                         <td rowspan="{{reservation.rate_details.length}}">
                             {{currencySymbol}}{{reservation.net_amount}}
                         </td>
                     </tr>
-                    <!-- If more than 1 rate per reservation:-->
                     <tr class="rate-row" ng-repeat="rate_details in reservation.rate_details"  ng-if="$index > 0" ng-repeat-end >
                         <td>{{rate_details.rate_code}}</td>
                         <td>{{rate_details.rate_amount}}</td>
@@ -116,14 +99,12 @@
                             </div>
                         </td>
                     </tr>
-
-                   <!--  .. repeat per guest/reservation -->
+                   
                 </tbody>
             </table>
-            <!-- ... repeat per travel-agent L88-L191 -->
-            </div>
         </div>
     </div>
+</div>
 
-    <rv-pagination  page-options="commisionReportTAPagination" page-data="totalCount" >
- </rv-pagination>
+<rv-pagination  page-options="commisionReportTAPagination" page-data="totalCount" >
+</rv-pagination>
