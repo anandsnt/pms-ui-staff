@@ -15,7 +15,7 @@
                 <span id="revenue-date-year" class="year">{{data.summaryDate | date:'y'}}</span>
             </div>
             <div class="switch-button" ng-class="{'on': !isDetailsSelected}">
-                <input id="journal-summary-toggle" type="checkbox" ng-model="isDetailsSelected" ng-click="toggleOverviewDetailSelection()"/>
+                <input id="journal-summary-toggle" type="checkbox" ng-model="isDetailsSelected"/>
                 <label class="data-off">
                     <span class="value">Overview</span>
                     <span class="switch-icon">Details</span>

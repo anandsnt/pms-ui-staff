@@ -2,7 +2,10 @@
 login.config([
 	'$stateProvider',
 	'$urlRouterProvider',
-	function($stateProvider, $urlRouterProvider) {
+	'$locationProvider',
+	function($stateProvider, $urlRouterProvider, $locationProvider) {
+
+        $locationProvider.html5Mode(true);
 
 		// dashboard state
 		$urlRouterProvider.otherwise('/login');
@@ -13,7 +16,7 @@ login.config([
 			controller: 'loginCtrl',
 			title: 'Login'
 		});
-                
+
 		$stateProvider.state('stationlogin', {
 			url: '/stationlogin',
 			templateUrl: '/assets/partials/stationLogin.html',

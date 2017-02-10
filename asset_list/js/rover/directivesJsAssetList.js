@@ -36,6 +36,8 @@ module.exports = {
                     'shared/directives/prettyTimeAgo/prettyTimeAgo.js',
                     jsLibRoot + 'fullcalender/**/*.js',
                     'rover/directives/includeReplaceDir.js',
+
+                    'rover/directives/convertToNumber/*js'
 				]
 			};
 		return assetsForScreen;

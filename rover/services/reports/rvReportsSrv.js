@@ -66,7 +66,10 @@ angular.module('sntRover').service('RVreportsSrv', [
 				method: 'POST',
 				url: params.url,
 				data: params.payload
-			}).success(function(data, status, headers, config) {
+			}).then(function(response) {
+				var data = response.data,
+					headers = response.headers;
+
                  var hiddenAnchor = angular.element('<a/>'),
                  	blob = new Blob([data]);
 
@@ -76,8 +79,8 @@ angular.module('sntRover').service('RVreportsSrv', [
 			         download: headers()['content-disposition'].match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1].replace(/['"]+/g, '')
 			     })[0].click();
 			     deferred.resolve(true);
-            }).error(function(errorMessage) {
-                deferred.reject(errorMessage);
+            },function(response) {
+                deferred.reject(response.data);
             });
 			return deferred.promise;
 		};

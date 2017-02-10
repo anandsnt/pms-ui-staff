@@ -19,10 +19,11 @@
                     </div>
 
                     <div class="entry">
-                        <label for="rmSort">ORDER BY</label>
+                        <label>ORDER BY</label>
                         <div class="select">
-                            <select iscroll-stop-propagation="" id="rmSort" name="sort-order"
-                                    ng-model="orderBySelectedValue">
+                            <select iscroll-stop-propagation=""
+                                    ng-model="orderBySelectedValue"
+                                    convert-to-number>
                                 <option ng-selected="orderBy.id === orderBySelectedValue"
                                         ng-repeat="orderBy in orderByValues"
                                         class="placeholder" value="{{orderBy.id}}">
@@ -34,9 +35,9 @@
                     </div>
 
                     <div class="entry">
-                        <label for="rmGroup">GROUP BY</label>
+                        <label>GROUP BY</label>
                         <div class="select">
-                            <select iscroll-stop-propagation ng-model="groupBySelectedValue" id="rmGroup" name="group-order">
+                            <select iscroll-stop-propagation ng-model="groupBySelectedValue">
                                 <option value="" ng-selected="groupBySelectedValue === ''">Select Group Order</option>
                                 <option ng-repeat="groupBy in groupByValues"
                                     value="{{groupBy.value}}" ng-selected="groupBy.value === groupBySelectedValue">

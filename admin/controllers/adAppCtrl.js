@@ -76,13 +76,13 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 	    };
 
 	    $rootScope.$on('$locationChangeStart', routeChange);
-	    window.history.pushState("initial", "Showing Admin Dashboard", "#/"); // we are forcefully setting top url, please refer routerFile
+	    // window.history.pushState("initial", "Showing Admin Dashboard", "#/"); // we are forcefully setting top url, please refer routerFile
 
 		var setupLeftMenu = function() {
 			if ($scope.isStandAlone) {
 				$scope.menu = [{
 					title: "MENU_DASHBOARD",
-					action: "staff#/staff/dashboard/",
+					action: "staff#!/staff/dashboard/",
 					menuIndex: "dashboard",
 					submenu: [],
 					iconClass: "icon-dashboard"
@@ -97,40 +97,40 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					submenu: [
 					{
 						title: "MENU_SEARCH_RESERVATIONS",
-						action: "staff#/staff/search///"
+						action: "staff#!/staff/search///"
 					},
 					{
 						title: "MENU_CREATE_RESERVATION",
-						action: "staff#/staff/staycard/search",
+						action: "staff#!/staff/staycard/search",
 						standAlone: true
 					}, {
 						title: "MENU_ROOM_DIARY",
-						action: "staff#/staff/diary/",
+						action: "staff#!/staff/diary/",
 						standAlone: true,
 						hidden: !$rootScope.isHourlyRatesEnabled
 					}, {
 						title: "MENU_ROOM_DIARY",
-						action: "staff#/staff/nightlyDiary/?start_date=" + $rootScope.businessDate,
+						action: "staff#!/staff/nightlyDiary/?start_date=" + $rootScope.businessDate,
 						standAlone: true,
 						hidden: ($rootScope.isHourlyRatesEnabled || !$rootScope.isPmsDevEnv)
 					}, {
 						title: "MENU_POST_CHARGES",
-						action: "staff#/staff/dashboard/postCharge"
+						action: "staff#!/staff/dashboard/postCharge"
 					}, {
 						title: "MENU_CASHIER",
-						action: "staff#/staff/financials/journal/CASHIER"
+						action: "staff#!/staff/financials/journal/CASHIER"
 					}, {
 		            	title: "MENU_ACCOUNTS",
-		            	action: "staff#/staff/accounts/search",
+		            	action: "staff#!/staff/accounts/search",
 		            	menuIndex: "accounts"
 		            	// hidden: $rootScope.isHourlyRatesEnabled
 		       	 	}, {
 						title: "MENU_END_OF_DAY",
-						action: "staff#/staff/endofDay/starteod"
+						action: "staff#!/staff/endofDay/starteod"
 					}, {
 		                title: "MENU_SOCIAL_LOBBY",
 		                hidden: !isNeighboursEnabled,
-		                action: "staff#/staff/socialLobby"
+		                action: "staff#!/staff/socialLobby"
             		}]
 				}, {
 			        title: "MENU_GROUPS",
@@ -141,19 +141,19 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			        hidden: $rootScope.isHourlyRatesEnabled,
 			        submenu: [{
 			            title: "MENU_CREATE_GROUP",
-			            action: "staff#/staff/groups/config/NEW_GROUP/SUMMARY",
+			            action: "staff#!/staff/groups/config/NEW_GROUP/SUMMARY",
 			            menuIndex: "menuCreateGroup"
 			        }, {
 			            title: "MENU_MANAGE_GROUP",
-			            action: "staff#/staff/groups/search",
+			            action: "staff#!/staff/groups/search",
 			            menuIndex: "menuManageGroup"
 			        }, {
 			            title: "MENU_CREATE_ALLOTMENT",
-			            action: "staff#/staff/allotments/config/NEW_ALLOTMENT/SUMMARY",
+			            action: "staff#!/staff/allotments/config/NEW_ALLOTMENT/SUMMARY",
 			            menuIndex: "menuCreateAllotment"
 			        }, {
 			            title: "MENU_MANAGE_ALLOTMENT",
-			            action: "staff#/staff/allotments/search",
+			            action: "staff#!/staff/allotments/search",
 			            menuIndex: "menuManageAllotment"
 			        }]
 		    	}, {
@@ -178,12 +178,12 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					submenu: [
 					{
  		            title: "MENU_RATE_MANAGER",
-		            action: "staff#/staff/ratemanager/",
+		            action: "staff#!/staff/ratemanager/",
 		            menuIndex: "rateManager"
 		        	},
 		        	{
 						title: "MENU_TA_CARDS",
-						action: "staff#/staff/cardsearch/",
+						action: "staff#!/staff/cardsearch/",
 						menuIndex: "cards"
 					}, {
 						title: "MENU_DISTRIBUTION_MANAGER",
@@ -196,11 +196,11 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					iconClass: "icon-housekeeping",
 					submenu: [{
 						title: "MENU_ROOM_STATUS",
-						action: "staff#/staff/housekeeping/roomStatus?businessDate=" + $rootScope.businessDate,
+						action: "staff#!/staff/housekeeping/roomStatus?businessDate=" + $rootScope.businessDate,
 						menuIndex: "roomStatus"
 					}, {
 						title: "MENU_TASK_MANAGEMENT",
-						action: "staff#/staff/workmanagement/start",
+						action: "staff#!/staff/workmanagement/start",
 						menuIndex: "workManagement",
 			            hidden: ( $rootScope.isHourlyRatesEnabled || !showTaskManagementInHKMenu )
 					}, {
@@ -213,27 +213,27 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					iconClass: "icon-financials",
 					submenu: [{
 						title: "MENU_JOURNAL",
-						action: "staff#/staff/financials/journal/REVENUE"
+						action: "staff#!/staff/financials/journal/REVENUE"
 					}, {
 						title: "MENU_CC_TRANSACTIONS",
-						action: "staff#/staff/financials/ccTransactions/0"
+						action: "staff#!/staff/financials/ccTransactions/0"
 					}, {
 						title: "MENU_ACCOUNTS_RECEIVABLES",
-						action: "staff#/staff/financials/accountsReceivables"
+						action: "staff#!/staff/financials/accountsReceivables"
 					}, {
 						title: "MENU_COMMISIONS",
 						action: ""
 					}]
 				}, {
                         title: "MENU_ACTIONS_MANAGER",
-                        action: "staff#/staff/actions/",
+                        action: "staff#!/staff/actions/",
                         iconClass: "icon-actions",
                         menuIndex: "actionManager",
                         submenu: []
 
                     }, {
 					title: "MENU_REPORTS",
-					action: "staff#/staff/reports",
+					action: "staff#!/staff/reports",
 					menuIndex: "reports",
 					iconClass: "icon-reports",
 					submenu: []
@@ -241,13 +241,13 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				// menu for mobile views
 				$scope.mobileMenu = [{
 				  title: "MENU_DASHBOARD",
-				  action: "staff#/staff/dashboard/",
+				  action: "staff#!/staff/dashboard/",
 				  menuIndex: "dashboard",
 				  submenu: [],
 				  iconClass: "icon-dashboard"
 				}, {
 				  title: "MENU_ROOM_STATUS",
-				  action: "staff#/staff/housekeeping/roomStatus/",
+				  action: "staff#!/staff/housekeeping/roomStatus/",
 				  menuIndex: "roomStatus",
 				  submenu: [],
 				  iconClass: "icon-housekeeping"
@@ -256,7 +256,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			} else {
 					$scope.menu = [{
 					title: "MENU_DASHBOARD",
-					action: "staff#/staff/dashboard/",
+					action: "staff#!/staff/dashboard/",
 					menuIndex: "dashboard",
 					submenu: [],
 					iconClass: "icon-dashboard"
@@ -267,12 +267,12 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					iconClass: "icon-housekeeping",
 					submenu: [{
 						title: "MENU_ROOM_STATUS",
-						action: "staff#/staff/housekeeping/roomStatus?businessDate=" + $rootScope.businessDate,
+						action: "staff#!/staff/housekeeping/roomStatus?businessDate=" + $rootScope.businessDate,
 						menuIndex: "roomStatus"
 					}]
 				}, {
 					title: "MENU_REPORTS",
-					action: "staff#/staff/reports",
+					action: "staff#!/staff/reports",
 					menuIndex: "reports",
 					iconClass: "icon-reports",
 					submenu: []
@@ -281,13 +281,13 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				// menu for mobile views
 				$scope.mobileMenu = [{
 				  title: "MENU_DASHBOARD",
-				  action: "staff#/staff/dashboard/",
+				  action: "staff#!/staff/dashboard/",
 				  menuIndex: "dashboard",
 				  iconClass: "icon-dashboard"
 				}, {
 				  title: "MENU_ROOM_STATUS",
 				  action: "rover.housekeeping.roomStatus",
-				  menuIndex: "staff#/staff/housekeeping/roomStatus/",
+				  menuIndex: "staff#!/staff/housekeeping/roomStatus/",
 				  submenu: [],
 				  iconClass: "icon-housekeeping"
 				}];
