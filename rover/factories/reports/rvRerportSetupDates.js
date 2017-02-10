@@ -7,7 +7,7 @@ angular.module('reportsModule')
             	init: function( report ) {
             		var getDates = reportUtils.processDate();
 
-            		var datesConfig = {
+            		var DATE_CONFIGS = {
             			'ARRIVAL': {
             				'fromDate': getDates.businessDate,
             				'untilDate': getDates.businessDate
@@ -81,8 +81,8 @@ angular.module('reportsModule')
             				'singleValueDate': getDates.businessDate
             			},
                         'COMPANY_TA_TOP_PRODUCERS': {
-                            'fromDate': undefined,
-                            'untilDate': undefined
+                            'fromDate': getDates.aWeekAgo,
+            				'untilDate': getDates.businessDate
                         },
                         'FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT': {
                             'fromDate': getDates.businessDate,
@@ -112,7 +112,7 @@ angular.module('reportsModule')
 
             		var reportName = _.findKey(reportNames, function(value, key) { return value === report['title']; });
 
-            		var dates = datesConfig[reportName] || datesConfig['DEFAULT'];
+            		var dates = DATE_CONFIGS[reportName] || DATE_CONFIGS['DEFAULT'];
 
             		_.each(dates, function(value, key) {
             		    report[key] = value;
