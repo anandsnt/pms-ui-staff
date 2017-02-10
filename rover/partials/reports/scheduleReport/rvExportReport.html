@@ -168,33 +168,31 @@
             <div class="entry">
                 <label for="schedule-repeats">Starts At</label>
                 <div class="select">
-                    <div class="select">
-                        <select ng-model="scheduleParams.time" ng-options="time.value as time.name for time in timeSlots" iscroll-stop-propagation>
-                            <option value="">Time</option>
-                        </select>
-                    </div>
+                    <select ng-model="scheduleParams.time" ng-options="time.value as time.name for time in timeSlots" iscroll-stop-propagation>
+                        <option value="">Time</option>
+                    </select>
                 </div>
             </div>
 
             <div class="entry">
-                <label for="schedule-repeats">Run Once</label>
-                <div class="switch-button single " ng-class="{'on': negativeLogic? !isChecked: isChecked}">
-                    <input type="checkbox" ng-checked="isChecked" ng-model="isChecked">
-                    <span class="switch-icon"></span>
-                </div>
+                <label for="schedule-run-once" class="checkbox inline">
+                    <span class="icon-form icon-radio" ng-class="{ 'checked': scheduleParams.runOnce }"></span>
+                    <input id="schedule-run-once" type="checkbox" name="ends-on" checked="" ng-model="scheduleParams.runOnce" value="NUMBER">
+                    Run Once
+                </label>
             </div>
 
-            <div class="entry">
+            <div class="entry" ng-if="!scheduleParams.runOnce">
                 <label>Ends On</label>
                 <div class="entry-data entry-first">
                     <label for="schedule-ends-on-number" class="radio inline">
                         <span class="icon-form icon-radio" ng-class="{ 'checked': scheduleParams.scheduleEndsOn === 'NUMBER' }"></span>
-                        <input type="radio" name="ends-on" checked ng-model="scheduleParams.scheduleEndsOn" value="NUMBER">
+                        <input id="schedule-ends-on-number" type="radio" name="ends-on" checked ng-model="scheduleParams.scheduleEndsOn" value="NUMBER">
                         After
                     </label>
                 </div>
                 <div class="entry-data entry-second with-label">
-                    <input id="schedule-ends-on-number" type="number" placeholder="No." ng-model="scheduleParams.ends_on_after">
+                    <input type="number" placeholder="No." ng-model="scheduleParams.ends_on_after">
                     <span class="label" ng-bind="getRepeatPer()"></span>
                 </div>
                 <!-- next -->
@@ -245,7 +243,17 @@
         <div class="wrapper">
             <h3>Distribution List<span>{{ selectedEntityDetails.report.title }}</span></h3>
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-            <div class="entry search">
+
+            <div class="entry">
+                <label for="delivery_method">Delivery method</label>
+                <div class="select">
+                    <select id="delivery_method" ng-model="scheduleParams.delivery_id" ng-options="dist.id as dist.description for dist in distributionList" iscroll-stop-propagation>
+                        <option value="">Delivery method</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="entry search" ng-show="scheduleParams.delivery_id === 'EMAIL'">
                 <label for="distribution-list-add-user">Add Recipient</label>
                 <button class="clear-query">
                     <span class="icons icon-clear-search">Clear query</span>
@@ -253,7 +261,7 @@
                 <input class="icons icon-search" auto-complete auto-options="userAutoCompleteSimple" type="search" placeholder="Search by User Name" value="" autocomplete="off" insert-email="true">
             </div>
             <!-- Display search results like this -->
-            <ul class="col-list">
+            <ul class="col-list" ng-show="scheduleParams.delivery_id === 'EMAIL'">
                 <li ng-repeat="email in emailList track by $index">
                     {{ email }}
                     <button type="button" class="button only-icon icons icon-remove-10" ng-click="removeEmail($index)">
@@ -261,6 +269,15 @@
                     </button>
                 </li>
             </ul>
+
+            <div class="entry search" ng-show="scheduleParams.delivery_id === 'FTP'">
+                <label for="ftp-recipient">Recipient</label>
+                <div class="select">
+                    <select id="ftp-recipient" ng-model="scheduleParams.selectedFTPRecipient" ng-options="ftp.id as ftp.description for ftp in ftpList" iscroll-stop-propagation>
+                        <option value="">FTP Recipient</option>
+                    </select>
+                </div>
+            </div>
         </div>
     </div>
 

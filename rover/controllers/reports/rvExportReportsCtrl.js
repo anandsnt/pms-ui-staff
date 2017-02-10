@@ -908,6 +908,21 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             $scope.scheduleFreqType = [];
             $scope.emailList = [];
 
+            $scope.distributionList = [{
+                id: 'EMAIL',
+                description: 'Email'
+            }, {
+                id: 'FTP',
+                description: 'FTP'
+            }];
+            $scope.ftpList = [{
+                id: 1,
+                description: 'ftp.server.com'
+            }, {
+                id: 2,
+                description: 'ftp.client.com'
+            }]
+
             $scope.scheduleParams = {};
 
             setupScrolls();
