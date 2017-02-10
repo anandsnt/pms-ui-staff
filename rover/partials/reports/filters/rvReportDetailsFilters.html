@@ -763,7 +763,7 @@
             <input type="text" class="hidden" ng-model="uiChosenReport.chosenIncludeAccountName">
         </div>
         <!-- item_13: Sort by -->
-        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.sortByOptions" ng-class="{'active': filterItemsToggle.item_13}" ng-click="toggleFilterItems('item_13')">
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.sortByOptions.length" ng-class="{'active': filterItemsToggle.item_13}" ng-click="toggleFilterItems('item_13')">
             <span class="title">Sort by</span>
         </a>
         <div class="settings-content" ng-show="chosenReport.sortByOptions" ng-class="{'hidden': !filterItemsToggle.item_13}">
