@@ -84,13 +84,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             FOUR: 4
         };
         function viewColsReducer (action) {
-            console.log(action);
             return angular.isDefined(action) ? 'cols-' + action : 'cols-' + $scope.reportViewActions.ONE;
         }
         $scope.updateViewCol = function(cols, noReset) {
-            console.log(cols);
             $scope.viewColClassName = viewColsReducer(cols);
-            console.log( $scope.viewColClassName );
             refreshScroll(noReset);
         };
         $scope.updateViewCol($scope.viewColsActions.ONE);
