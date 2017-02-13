@@ -10,14 +10,15 @@
 				var deferred = $q.defer();
 				var url = '/api/hotels/custom_cms_messages.json?application=ZEST_WEB&hotel_identifier=' + hotel_identifier;
 
-				$http.get(url).success(function(response) {
-						that.cms_screen_details = _.find(response.screen_list, function(cms_item) {
+				$http.get(url).then(function(response) {
+					var data = response.data;
+
+						that.cms_screen_details = _.find(data.screen_list, function(cms_item) {
 							return cms_item.screen_name === "ZEST WEB SCREENS";
 						});
 						that.cms_screen_details = typeof that.cms_screen_details !== 'undefined' ? that.cms_screen_details.screen_messages : [];
-						deferred.resolve(response);
-					})
-					.error(function() {
+						deferred.resolve(data);
+					}, function() {
 						deferred.reject();
 					});
 				return deferred.promise;
@@ -63,19 +64,20 @@
 				 * To fetch reservation and hotel data
 				 * @return {object} CMS details
 				 */
-				$http.get(url).success(function(response) {
-						if (response.status === "success") {
-							that.zestwebData = response.data;
+				$http.get(url).then(function(res) {
+					var data = res.data;
+
+						if (data.status === "success") {
+							that.zestwebData = data.data;
 							deferred.resolve(that.zestwebData);
 						} else {
 							// when some thing is broken , need to redirect to error page with default theme
-							response.data.hotel_theme = "guestweb";
-							response.data.error_occured = true;
-							deferred.resolve(response.data);
+							data.data.hotel_theme = "guestweb";
+							data.data.error_occured = true;
+							deferred.resolve(data.data);
 						}
 
-					})
-					.error(function() {
+					}, function() {
 						deferred.reject();
 					});
 				return deferred.promise;

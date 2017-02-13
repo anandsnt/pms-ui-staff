@@ -457,6 +457,16 @@
                 options="chosenReport.hasAccountSearch.options"></multi-option-selection>
         </div>
 
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasTravelAgentsSearch && chosenReport.hasTravelAgentsSearch.data.length" ng-class="{ 'active': filterItemsToggle.item_49 }" ng-click="toggleFilterItems('item_49')">
+            <span class="title">Travel Agents</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasTravelAgentsSearch && chosenReport.hasTravelAgentsSearch.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_49 }">
+            <multi-option-selection label="Select TA"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasTravelAgentsSearch.data"
+                options="chosenReport.hasTravelAgentsSearch.options"></multi-option-selection>
+        </div>
+
 
         <!-- item_32: Rate Type -->
         <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasRateTypeFilter && chosenReport.hasRateTypeFilter.data.length" ng-class="{'active': filterItemsToggle.item_32}" ng-click="toggleFilterItems('item_32')">
