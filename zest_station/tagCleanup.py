@@ -59,6 +59,8 @@ def findMissingTags():
     line = masterFile.readline()
 
     while line:
+        # remove empty space first
+        line = line.replace(" ", "")
         registeredTag = find_between(line, '"', '":')
         if len(registeredTag) > 0:
             if registeredTag not in JSONMasterList:
@@ -122,6 +124,8 @@ for root, dirs, files in os.walk(passedDirectory):
             tagCount = 0
             while file_line:
 #print file_line
+                #remove empty space first
+                file_line = file_line.replace(" ", "")
                 foundTag = find_between(file_line, "{{", "translate")
                 foundTag = cleanTag(foundTag)
                 if len(foundTag) > 0:
