@@ -39,10 +39,6 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 			// selected room types & its rates
 			$scope.selectedRoomTypeAndRates = util.deepCopy($scope.allotmentConfigData.roomblock.selected_room_types_and_rates);
 
-            _.each($scope.selectedRoomTypeAndRates, function(selectedRoomTypeAndRate) {
-                selectedRoomTypeAndRate.room_type_id = selectedRoomTypeAndRate.room_type_id.toString();
-            });
-
             angular.forEach ($scope.selectedRoomTypeAndRates, function (row) {
 				if (row.is_configured_in_allotment) {
 					row.update_existing_reservations_rate = false;
@@ -73,6 +69,10 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 				$scope.selectedRoomTypeAndRates = [];
 				$scope.selectedRoomTypeAndRates.push(util.deepCopy($scope.allotmentConfigData.roomblock.selected_room_types_and_rates[0]));
 			}
+
+            _.each($scope.selectedRoomTypeAndRates, function(selectedRoomTypeAndRate) {
+                selectedRoomTypeAndRate.room_type_id = selectedRoomTypeAndRate.room_type_id.toString();
+            });
 
 			// adding currency symbol to best available rate
 			$scope.selectedRoomTypeAndRates = _.map($scope.selectedRoomTypeAndRates, function(row) {
