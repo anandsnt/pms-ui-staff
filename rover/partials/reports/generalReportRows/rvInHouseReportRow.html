@@ -51,10 +51,19 @@
 		</span>
 	</td>
 
-	<!-- notes -->
-	<td ng-if="each.isNoteData" class="secondary notes" colspan="5">
-		<strong>Notes</strong>
-		<p ng-repeat="note in each.notes">
+	<!-- reservation notes -->
+	<td ng-if="each.isReservationNoteData" class="secondary notes" colspan="5">
+		<strong>Res. Notes</strong>
+		<p ng-repeat="note in each.reservationNotes">
+			{{ note.date | date : dateFormat }} &#8226; {{ note.name }}
+			<span>{{ note.note }}</span>
+		</p>
+	</td>
+	
+	<!-- guest notes -->
+	<td ng-if="each.isGuestNoteData" class="secondary notes" colspan="5">
+		<strong>Guest Notes</strong>
+		<p ng-repeat="note in each.guestNotes">
 			{{ note.date | date : dateFormat }} &#8226; {{ note.name }}
 			<span>{{ note.note }}</span>
 		</p>

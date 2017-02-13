@@ -286,6 +286,12 @@
   transform: scale(1.5);
   cursor:pointer;
 }
+.select-style.eta-single {
+  background: url(/assets/guestweb/common_images/arrow_down.gif) 97% 50% no-repeat #fff;
+  select{
+      width:100%;
+  }
+}
 /*---------------- carousal ---------------------------*/
 .carousal,.carousal-container{
   padding-left: 0px !important;
@@ -390,7 +396,20 @@
       }
 }
 
-
+/*  App icons */
+.dual-app-icons-container{
+    img{
+       max-width:120px;
+    }
+     a:nth-child(2){
+      margin-left:15px;
+    }
+}
+.single-app-icon-container{
+    img{
+      max-width:140px;
+    }
+}
 @media (max-width: 480px) {
     .mob-margin-top-3{
         margin-top:3px !important;

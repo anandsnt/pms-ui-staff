@@ -33,12 +33,13 @@ this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
                 listening: true,
                 attempt: this.qrAttempt + 1
             };
+
             console.log('response from Datalogic: ', response);
             if (!response.qr_code) {
                 setTimeout(function() {
                     console.log('listening for QR code scan...');
                     // if (!that.cancelNextMsg) {
-                        chrome.runtime.sendMessage(chromeAppId, msg, that.listenerForQRCodeResponse);
+                    chrome.runtime.sendMessage(chromeAppId, msg, that.listenerForQRCodeResponse);
                     // } else {
                         // console.log('should stop sending messages to chrome app now :)');
                     // }
@@ -95,8 +96,67 @@ this.chromeExtensionListener = function(onMessageCallback, chromeAppId, fetchQRC
                     // possible args = //workstationFetchTimer, languageResetTimer, refreshTimer, idlePopupTimer, backToHomeTimer, toggleOnly
                     // if (debugTimers(true), like here, then the method is only used for toggling on/off the timer view);
                 zestSntApp.debugTimers(true);
+
+            } else if (passedDataObject.stationSelectLang) {
+                zestSntApp.setLanguage(passedDataObject.stationSelectLang);
+
+            } else if (passedDataObject.toggleEditorOnOff) {
+                   // pass toggle argument to station app, to turn on/off Language-Tag-Editor
+                zestSntApp.toggleEditorMode();
+
+            } else if (passedDataObject.toggleTags) {
+                   // pass toggle argument to station app, to turn on/off Language-Tags (to view tags behind text)
+                zestSntApp.toggleLanguageTags();
+
+            } else if (passedDataObject.toggleDemo) {
+                   // pass toggle argument to station app, to turn on/off Demo Mode, 
+                   // *demo mode does not encode keys, only shows success flow
+                zestSntApp.toggleDemoModeOnOff();
+
+            } else if (passedDataObject.noCheckIns) {
+                   // pass toggle argument to station app, to turn on/off No-Check-Ins Mode, 
+                   // *this will allow a user to re-use the same check-in, by simulating successful check-in
+                   // and not actually checking in the reservation.
+                   // 
+                   // *Will Not be able to go through check-in with this ON then onto pickup
+                   // -since they wont actually be checked-in.
+                zestSntApp.toggleNoCheckIns();
+
+            } else if (passedDataObject.getStateList) {
+                   // pass toggle argument to station app, to turn on/off Demo Mode, 
+                   // *demo mode does not encode keys, only shows success flow
+                zestSntApp.getStateList();
+
             }
+
+
         }, false);
+        /*
+            listen for Hotkey events to work with chrome extension, to fire off the above events
+         */
+        function doc_keyDown(e) {
+            // Hotkeys!
+            // this would listen for the alt key + some other key to fire an event, in this case to tell our chrome extension
+            // to run one of its methods
+            // 
+            if (e.altKey && e.keyCode === 69) {// E - Editor Mode
+                zestSntApp.toggleEditorMode();
+            } else if (e.altKey && e.keyCode === 84) {// T - Toggle Tags
+                zestSntApp.toggleLanguageTags();
+            } else if (e.altKey && e.keyCode === 67) {// C - No-Check-in
+                zestSntApp.toggleNoCheckIns();
+            } else if (e.altKey && e.keyCode === 68) {// D - Demo mode
+                zestSntApp.toggleDemoModeOnOff();
+            } else if (e.altKey && e.keyCode === 73) {// I - info
+                zestSntApp.debugTimers(true);
+            } else if (e.altKey && e.keyCode === 74) {// I - info
+                zestSntApp.getStateList();
+            }
+
+        }
+        document.addEventListener('keydown', doc_keyDown, false);// listen for hotkeys to work with chrome extension
+
+
     };
 
     try {

@@ -5,6 +5,8 @@
 sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWebSrv2', '$translate',
     function($http, $q, zsBaseWebSrv, zsBaseWebSrv2, $translate) {
         var that = this;
+
+        // this.refToLatestPulledTranslations; // used by generalRouter to fetch and store Language Locale files
         /*
         * The configuredHotels list are the hotels which zest station has added stylesheets / images / icons, and we 'officially' support
         * all other hotels should default to the SNT theme until which time we add the styling into our product or until a CMS is integrated
@@ -13,6 +15,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'zoku': 'zoku',
             'yotel': 'yotel',
             'avenue': 'avenue',
+            'public': 'public',
             'sohotel': 'sohotel',
             'epik': 'Hotel epik',
             'conscious': 'Conscious vondelpark',
@@ -21,7 +24,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.isThemeConfigured = function(theme) {
             // if theme is configured with stylesheets, use it, otherwise default to SNT Theme
-            return (typeof themeMappings[theme] !== "undefined");
+            return typeof themeMappings[theme] !== 'undefined';
         };
         this.hotelTheme = '';
         this.fetchSettings = function() {
@@ -83,7 +86,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         /**
          * to fetch the translation file against languages
          * @param  {Object} language
+         * langName is a mapping for code to name values
          */
+        this.langName = [];
         this.fetchTranslations = function(languages) {
             var deferred = $q.defer();
 
@@ -92,20 +97,65 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             languages.map(function(language) {
                 languageConfig = that.languageValueMappingsForUI[language.name];
                 langShortCode = languageConfig.code;
+
+                that.langName[langShortCode] = language.name;
+
                 url = '/api/locales/' + langShortCode + '.json';
                 promises.push(
                     zsBaseWebSrv.getJSON(url)
                         .then(function(langShortCode, data) {
-                                results[langShortCode] = data.data;
-                            }.bind(null, langShortCode)
+                            results[langShortCode] = data.data;
+                        }.bind(null, langShortCode)
                         )
                     );
             });
 
             $q.all(promises).then(function(data) {
+                // that.languageJSONs = results; // for reference if needed in octopus work
                 deferred.resolve(results);
             });
 
+            return deferred.promise;
+        };
+        this.syncTranslationText = function(langCode, newValueForText, tag) {
+
+            var translationFiles = that.refToLatestPulledTranslations, langShortCode;
+                // sync local translated file for current shortcode, which just updated
+
+            for (langShortCode in translationFiles) {
+                if (langShortCode === langCode) {
+                        // console.log(':: ',tag,' :: --> ',newValueForText);
+                        // updates locale translation so we dont have to call another fetch languages api which takes time
+                    translationFiles[langShortCode][tag] = newValueForText;
+
+                        // syncing language change for local translation files
+                        // sets that tag value for the locale language (re-translates pages)
+                    that.$translateProvider.translations(langShortCode, translationFiles[langShortCode]);
+
+                }
+            }
+        };
+
+        this.updateLanguageTranslationText = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/hotel_settings/change_settings';
+            var langCode = params.langCode, 
+                newValueForText = params.newValueForText,
+                tag = params.tag,
+                keepShowingTag = params.keepShowingTag;
+
+            zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+                if (keepShowingTag) {
+                    that.syncTranslationText(langCode, tag, tag);
+                } else {
+                    that.syncTranslationText(langCode, newValueForText, tag);    
+                }
+                
+
+            }, function(data) {
+                deferred.reject(data);
+            });
             return deferred.promise;
         };
 
@@ -180,7 +230,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.ValidateEmail = function(email) {
             if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
                 return false;
-            } else return true;
+            } 
+            return true;
         };
 
 
@@ -190,8 +241,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             }
             email = email.replace(/\s+/g, '');
             if (that.ValidateEmail(email)) {
-                return false;
-            } else return true;
+                return false; 
+            }
+            return true;
 
         };
 

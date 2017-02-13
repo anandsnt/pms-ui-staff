@@ -131,5 +131,19 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
             return deferred.promise;
         };
 
+        this.fetchBillPlaceholderData = function(params) {
+            var deferred = $q.defer(),
+                url = '/sample_json/zest_station/checkout_bill.json';
+
+            zsBaseWebSrv.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+
     }
 ]);

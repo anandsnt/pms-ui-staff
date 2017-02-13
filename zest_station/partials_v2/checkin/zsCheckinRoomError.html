@@ -1,18 +1,34 @@
 <section id="main" class="centered" role="main" click-touch='resetTime()'>
     <div id="content" ng-show="early_checkin_unavailable != 'true'">
-        <h1>{{'TALK_TO_STAFF' |translate}}</h1>
-        <h2>{{'ROOM_NOT_AVAIL_MSG' |translate}}</h2>
+        
+        <h1>
+            <text editable-text="TALK_TO_STAFF"> {{'TALK_TO_STAFF' |translate}}</text>
+        </h1>
+
+        <!-- TODO: above message but for PRE-Assigned room, ie (you're room is not ready yet, please find a staff member) -->
+        <h2>
+            <text editable-text="ROOM_NOT_AVAIL_MSG"> {{'ROOM_NOT_AVAIL_MSG' |translate}}</text>
+        </h2>
         <!-- General error -->
-        <button type="button" class="button" touch-press="clickedOnCloseButton()">{{'DONE_BTN' |translate}}</button>
+        <button type="button" class="button" touch-press="clickedOnCloseButton()">
+            <text editable-text="DONE_BTN"> {{'DONE_BTN' |translate}}</text>
+        </button>
     </div>
     <!-- Early Checkin Unavailable, too early to check-in -->
     <div id="message" ng-show="early_checkin_unavailable == 'true'">
-        <h1>{{'CHECKIN_TOO_EARLY' |translate}}</h1>
+        <h1>
+            <text editable-text="CHECKIN_TOO_EARLY"> {{'CHECKIN_TOO_EARLY' |translate}}</text>
+        </h1>
         <h2 class="nocaps">
-        {{'CHECKIN_TOO_EARLY_SUB_HEADER' |translate}}</h2>
-        <h3>{{'CHECKIN_TOO_EARLY_SUB_MSG' |translate}}</h3>
-        <button type="button" class="button" touch-press='clickedOnCloseButton()'>{{'CHECKIN_TOO_EARLY_DONE' |translate}}</button>
+            <text editable-text="CHECKIN_TOO_EARLY_SUB_HEADER"> {{'CHECKIN_TOO_EARLY_SUB_HEADER' |translate}}</text>
+        </h2>
+        <h3>
+            <text editable-text="CHECKIN_TOO_EARLY_SUB_MSG"> {{'CHECKIN_TOO_EARLY_SUB_MSG' |translate}}</text>
+        </h3>
+        <button type="button" class="button" touch-press='clickedOnCloseButton()'>
+            <text editable-text="CHECKIN_TOO_EARLY_DONE"> {{'CHECKIN_TOO_EARLY_DONE' |translate}}</text>
+        </button>
     </div>
     
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" ></span>
-</section>g
+</section>

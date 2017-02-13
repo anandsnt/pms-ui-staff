@@ -1,18 +1,38 @@
 <div ng-show="hasLoader" id="loading">
     <div id="loading-spinner"></div>
 </div>
-<span ng-show="zestStationData.demoModeEnabled == 'true'" class="demo-text">demo</span>
-<span ng-show="zestStationData.timeDebugger == 'true'" class="timer-debugger-left">
-     <br> <span> [ {{zestStationData.workstationTimer}}/{{zestStationData.getWorkstationsAtTime}} ] Fetch Workstation Data & Refresh Station Check from OOS <br> </span>
+
+<span ng-show="zestStationData.demoModeEnabled == 'true'" class="demo-text dev-cls top-left-demo">demo</span>
+<span ng-show="zestStationData.noCheckInsDebugger == 'true'" class="demo-text dev-cls top-left-demo" ng-class="{'demo-second-cls':zestStationData.demoModeEnabled == 'true'}">NCI</span>
+
+<span ng-show="zestStationData.editorModeEnabled == 'true'" class="demo-text editor dev-cls" >Editor Mode Enabled</span>
+
+<span ng-show="zestStationData.timeDebugger == 'true'" class="timer-debugger-left dev-cls non-center">
+    
+     <br> 
+     <span ng-show="zestStationData.editorModeEnabled == 'true'">
+        In Editor-Mode - <span class='key-in-progress'>(Timers Paused)</span><br> 
+    </span>
+     <span> [ {{zestStationData.workstationTimer}}/{{zestStationData.getWorkstationsAtTime}} ] Fetch Workstation Data & Refresh Station Check <br> </span>
     <span> [ {{zestStationData.userInActivityTimeInHomeScreenInSeconds}}/{{zestStationData.timeUntilLanguageResetCheck}} ] Language Reset  <br> </span>
 
     <span> [ {{zestStationData.refreshStationTimer}} >= {{zestStationData.timeUntilRefreshCheck}} ] Refresh Station Check Home Idle  <br> </span>
-    <span> [ {{zestStationData.userInActivityTimeInSeconds}}/{{zestStationData.idlePopupTime}} ] Idle Time, Alert <br> </span>
-    <span> [ {{zestStationData.userInActivityTimeInSeconds}}/{{zestStationData.idleToHomeTime}} ]Idle Time, Back to Home </span>
+    <span> [ {{zestStationData.userInActivityTimeInSeconds}}/{{zestStationData.idlePopupTime}} ] Idle Time, Alert <span ng-show='zestStationData.idle_timer.enabled === "false"'>*disabled</span> <br> </span>
+    <span> [ {{zestStationData.userInActivityTimeInSeconds}}/{{zestStationData.idleToHomeTime}} ]Idle Time, Back to Home <span ng-show='zestStationData.idle_timer.enabled === "false"'>*disabled</span></span>
 </span>
-<span ng-show="zestStationData.timeDebugger == 'true'" class="timer-debugger-right">
+<span ng-show="zestStationData.timeDebugger == 'true'" class="timer-debugger-right dev-cls non-center">
      <br> <span>Assigned Workstation ({{zestStationData.workstationName}}) <br> </span>
+     <span>Encoding Keys - <span ng-class='{"key-in-progress":zestStationData.makingKeyInProgress}'>({{zestStationData.makingKeyInProgress}})</span><br> </span>
+     <span ng-show='inChromeApp'>
+        Zest Station Handler - <span ng-class='{"key-in-progress":zestStationData.stationHandlerConnectedStatus == "Not-Connected"}'>({{zestStationData.stationHandlerConnectedStatus}})</span><br> 
+    </span>
 </span>
+
+<div class='jumper' ng-show='showJumpList'>
+    <div ng-include="'/assets/partials_v2/zsJumpList.html'"></div>
+</div>
+
+
 <div ng-include="'/assets/partials_v2/zsTabletHeader.html'"></div>
 <!--PopUp For External webPage-->
 <div class="popup iframe-popup open" ng-if="showExternalWebPage">
@@ -25,8 +45,12 @@
 <div class="popup" ng-class="{'open':zestStationData.timeOut && !showLanguagePopup}">
     <!-- Remove class "open" to hide popup content -->
     <div class="popup-content">
-        <h2 class="nocaps">{{'IDLE_TIMEOUT_MSG'|translate}}</h2>
-        <button type="button" class="button" click-touch='resetTime();'>{{'IDLE_TIMEOUT_YES'|translate}}</button>
+        <h2 class="nocaps">
+            <text editable-text="IDLE_TIMEOUT_MSG"> {{'IDLE_TIMEOUT_MSG' |translate}}</text>
+        </h2>
+        <button type="button" class="button" click-touch='resetTime();'>
+            <text editable-text="IDLE_TIMEOUT_YES"> {{'IDLE_TIMEOUT_YES' |translate}}</text>
+        </button>
     </div>
 </div>
 <div class="popup" ng-class="{'open':showLanguagePopup}">

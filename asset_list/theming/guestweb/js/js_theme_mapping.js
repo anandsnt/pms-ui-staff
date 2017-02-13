@@ -79,7 +79,7 @@ module.exports = {
             'guestweb_estencia_la_jolla': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_el_castell': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_hotel_epik': [ themeJsRoot + 'app_router_common.js'],
-            'guestweb_avenue_hotel': [ themeJsRoot + 'app_router_common.js'],
+            'guestweb_avenue': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_fontainebleau_v2': [ themeJsRoot + 'app_router_fontainebleau_v2.js'],
             'guestweb_sandman_inn': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_nobu_miami': [ themeJsRoot + 'app_router_common.js'],
@@ -91,7 +91,12 @@ module.exports = {
             'guestweb_park_valkenburg': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_sohotel': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_hive': [ themeJsRoot + 'app_router_common.js'],
-            'guestweb_pod_dc': [ themeJsRoot + 'app_router_common.js']
+            'guestweb_pod_dc': [ themeJsRoot + 'app_router_common.js'],
+            'guestweb_snt': [ themeJsRoot + 'app_router_new_common.js'],
+            'guestweb_silver_stone': [ themeJsRoot + 'app_router_common.js'],
+            'guestweb_koa_kea': [ themeJsRoot + 'app_router_common.js'],
+            'guestweb_hotel_chicago': [ themeJsRoot + 'app_router_common.js'],
+            'guestweb_public_ny': [ themeJsRoot + 'app_router_public_ny.js']
         };
     }
 };

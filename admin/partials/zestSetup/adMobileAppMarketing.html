@@ -1,0 +1,45 @@
+<ad-common-parts-in-form-dir on-save-button-click="saveZestMobileAppMarketingDetails" header-caption="Setup Mobile App Marketing Details">
+	<fieldset class="holder full-width">
+		<ad-form-title full-width="true" form-title="App Store (iOS)"></ad-form-title>
+		<fieldset class="holder left">
+			<ad-toggle-button div-class="full-width" is-checked="data.ios.enabled" label="Available" ></ad-toggle-button>
+			<ad-textbox value="data.ios.app_name" name="app-name" id="app-name" label="App Name" placeholder="iOS App Name" styleclass="full-width" ></ad-textbox>
+			<ad-textbox value="data.ios.app_url" name="app-url" id="app-url" label="App URL" placeholder="iOS App URL"  styleclass="full-width"></ad-textbox>
+		</fieldset>
+		<fieldset class="holder right">
+			<div class="entry full-width">
+				<label for="hotel-logo">Banner Image</label>
+				<div class="file-upload with-preview">
+					<span class="input">{{data.ios.banner_image_file}}{{hotel_logo_file}}</span>
+					<input type="file" ng-model="data.ios.banner_image" accept="image/*" app-filereader />
+					<button type="button" class="button brand-colors">
+						Choose file
+					</button>
+				</div>
+				<span class="file-preview"> <img ng-src="{{data.ios.banner_image}}" alt="" height="112" width="auto"> </span>
+			</div>
+		</fieldset>
+	</fieldset>
+	<fieldset class="holder full-width">
+		<ad-form-title full-width="true" form-title="Google Play (Android)"></ad-form-title>
+		<fieldset class="holder left">
+			<ad-toggle-button div-class="full-width" is-checked="data.android.enabled" label="Available" ></ad-toggle-button>
+			<ad-textbox value="data.android.app_name" name="app-name" id="app-name" label="App Name" placeholder="Android App Name"  styleclass="full-width"></ad-textbox>
+			<ad-textbox value="data.android.app_url" name="app-url" id="app-url" label="App URL" placeholder="iOS App URL"  styleclass="full-width"></ad-textbox>
+		</fieldset>
+		<fieldset class="holder right">
+			<div class="entry full-width">
+				<label for="hotel-logo">Banner Image</label>
+				<div class="file-upload with-preview">
+					<span class="input">{{data.android.banner_image_file}}{{hotel_logo_file}}</span>
+					<input type="file" ng-model="data.android.banner_image" accept="image/*" app-filereader />
+					<button type="button" class="button brand-colors">
+						Choose file
+					</button>
+				</div>
+				<span class="file-preview">
+				<img ng-src="{{data.android.banner_image}}" alt="" height="112" width="auto"> </span>
+			</div>
+		</fieldset>
+	</fieldset>
+</ad-common-parts-in-form-dir>

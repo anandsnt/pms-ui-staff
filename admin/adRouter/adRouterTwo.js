@@ -269,13 +269,6 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         url: '/restriction_types'
     });
 
-
-    $stateProvider.state('admin.hotelannouncementsettings', {
-        templateUrl: '/assets/partials/hotelAnnouncementSettings/adHotelAnnounceSettings.html',
-        controller: 'ADHotelAnnouncementSettingsCtrl',
-        url: '/hotelannouncementsettings'
-    });
-
     $stateProvider.state('admin.sociallobbysettings', {
         templateUrl: '/assets/partials/hotelSocialLobbySettings/adHotelSocialLobbySettings.html',
         controller: 'ADSocialLobbySettingsCtrl',
@@ -583,11 +576,6 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         url: '/debuggingSetup'
     });
 
-    $stateProvider.state('admin.zestAddons', {
-        templateUrl: '/assets/partials/zestAddonSetup/adZestAddonSetup.html',
-        controller: 'adZestAddonSetupCtrl',
-        url: '/zestAddonSetup'
-    });
     $stateProvider.state('admin.zestStationConfig', {
         templateUrl: '/assets/partials/zestStation/adZestStationCfg.html',
         controller: 'ADZestStationCtrl',
@@ -651,6 +639,28 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
             },
             initialFooterSettings: function(ADzestwebCommonSettingsSrv) {
                 return ADzestwebCommonSettingsSrv.fetchInitialFooterSettings();
+            }
+        }
+    });
+
+    $stateProvider.state('admin.zestWebRoomReadyEmailSetup', {
+        templateUrl: '/assets/partials/zestSetup/adZestWebRoomReadyEmailSetup.html',
+        controller: 'ADZestWebRoomReadyEmailSetupCtrl',
+        url: '/zestWebRoomReadyEmailSetup',
+        resolve: {
+            data: function(ADZestWebRoomReadyEmailSetupSrv) {
+                return ADZestWebRoomReadyEmailSetupSrv.getRoomReayEmailSettings();
+            }
+        }
+    });
+   
+   $stateProvider.state('admin.ZestStationRoomUpsells', {
+        templateUrl: '/assets/partials/zestStation/adZestStationRoomUpsell.html',
+       controller: 'ADZestStationRoomUpsellCtrl',
+        url: '/zestStationRoomUpsell',
+        resolve: {
+            roomUpsellData : function(ADZestStationSrv){
+                return ADZestStationSrv.fetch();
             }
         }
     });

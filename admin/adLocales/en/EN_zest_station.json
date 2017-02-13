@@ -86,7 +86,21 @@
 "USE_SOCKET_PRINTING_DESC" : "turn this ON if Station is being run on a Windows-touchscreen computer, not a Tablet device",
 "USE_ZEST_STATION_HANDLER" : "Use Zest Station Handler",
 "USE_ADD_REMOVE_GUESTS" : "Add/Remove Guests",
-"ZEST_STATION_OUT_OF_ORDER_TRESHOLD" : "Out of order treshold"
+"ZEST_STATION_OUT_OF_ORDER_TRESHOLD" : "Out of Order Threshold",
+"UPSELL_INSTRUCTIONS" : "Control the room upsells offered to the guest on Zest Station",
+"OFFER_ROOM_UPSELLS_TO_GUEST" : "Offer room upsells to guests",
+"DISPLAY_ROOM_UPSELL_OFFER_BY" : "Display the room upsell offers by:",
+"LOWER_PRICE_TO_HIGHER" : "Lower price to higher price",
+"HIGHER_PRICE_TO_LOWER" : "Higher price to lower price",
+"RANDOMLY" : "Randomly",
+"ENFORCE_MAX_ROOMN_UPSELL" : "Enforce Maximum number of room upsell offers",
+"MAX_NUMBER_OF_UPSELL_OFFERS" : "Maximum number of upsell offers",
+"OFFER_LEVEL_MIX_INSTRUCTIONS" : "Offer Mix when upsell from Tier 1 to Tier 2 and Tier 3",
+"TIER_2" : "Tier 2 (%)",
+"TIER_3" : "Tier 3 (%)",
+"MULTIPLE_ROOM_UPSELL_DISPLAY_STYLE" : "Multiple room upsell offer Display style:",
+"STYLE_A" : "Style A",
+"STYLE_B" : "Style B"
 
 
 

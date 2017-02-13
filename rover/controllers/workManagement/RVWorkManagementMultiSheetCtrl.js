@@ -721,6 +721,9 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			$scope.multiSheetState._selectedIndexMap = {};
 			$scope.multiSheetState._lastSelectedIds  = [];
 
+            if (fetchHKStaffs) {
+                $scope.employeeList = fetchHKStaffs.results;
+            }
 			_.each($scope.employeeList, function(emp) {
 				emp.ticked = true;
 				initingEmpList(emp);
@@ -959,6 +962,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 				case 'Arrival':
 				case 'Arrived':
+                case 'Departed / Arrival':
 					return 'guest green';
 
 				case 'Not Reserved':
@@ -980,7 +984,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				case 'Due out':
 				case 'Arrived / Day use / Due out':
 				case 'Due out / Arrival':
-					return room.checkout_time;
+					return room.checkout_time ? room.checkout_time : 'DUE OUT';
 
 				case 'Stayover':
 					return 'STAYOVER';
@@ -989,7 +993,11 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 					return 'IN';
 
 				case 'Arrival':
-					return room.checkin_time;
+                case 'Departed / Arrival':
+					return room.checkin_time ? room.checkin_time : 'DUE IN';
+
+                case 'Not Reserved':
+                    return 'NOT RESERVED';
 
 				default:
 					return 'default';

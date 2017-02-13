@@ -10,13 +10,17 @@
     </div>
     <!-- hotel logo -->
     <div class="invoice-logo">
-        <h1>{{'INVOICE_HEADER' |translate}}</h1>
+        <h1>
+            <text editable-text="INVOICE_HEADER"> {{'INVOICE_HEADER' |translate}}</text>
+        </h1>
         <div class="logo" ng-show="zestStationData.theme !== 'zoku'">
             <div ng-include="icons.url.logo"></div>
         </div>
     </div>
     <div class="caption bill-caption">
-        <p>INVOICE</p>
+        <p>
+            <text editable-text="INVOICE_HEADER"> {{'INVOICE_HEADER' |translate}}</text>
+        </p>
         <br>
         <br>
     </div>
@@ -34,19 +38,27 @@
     <!-- room detials -->
     <div class="caption bill-room-details">
         <div>
-            <div class="room-data-label">{{'INVOICE_ROOM' |translate}}:</div>
+            <div class="room-data-label">
+                <text editable-text="INVOICE_ROOM"> {{'INVOICE_ROOM' |translate}}</text>:
+            </div>
             <div class="room-data">{{printData.room_number}}</div>
         </div>
         <div>
-            <div class="room-data-label">{{'INVOICE_ARRIVAL' |translate}}:</div>
+            <div class="room-data-label">
+                <text editable-text="INVOICE_ARRIVAL"> {{'INVOICE_ARRIVAL' |translate}}</text>:
+            </div>
             <div class="room-data">{{ returnDateObj(printData.arrival_date) | date:'dd-MMM, yyyy'}}</div>
         </div>
         <div>
-            <div class="room-data-label">{{'INVOICE_DEPARTURE' |translate}}:</div>
+            <div class="room-data-label">
+                <text editable-text="INVOICE_DEPARTURE"> {{'INVOICE_DEPARTURE' |translate}}</text>:
+            </div>
             <div class="room-data">{{returnDateObj(printData.departure_date) | date:'dd-MMM, yyyy'}}</div>
         </div>
         <div>
-            <div class="room-data-label">{{'GUESTS' |translate}}:</div>
+            <div class="room-data-label">
+                <text editable-text="GUESTS"> {{'GUESTS' |translate}}</text>:
+            </div>
             <div class="room-data">{{printData.no_of_guests}}</div>
         </div>
     </div>
@@ -57,16 +69,24 @@
             <!-- Headings -->
             <div class="row">
                 <div class="cell date-cell">
-                    <span>{{'INVOICE_DATE_OF' |translate}}</span>
+                    <span>
+                        <text editable-text="INVOICE_DATE_OF"> {{'INVOICE_DATE_OF' |translate}}</text>
+                    </span>
                 </div>
                 <div class="cell desc-cell">
-                    <span>{{'INVOICE_CHARGE_DESC' |translate}}</span>
+                    <span>
+                        <text editable-text="INVOICE_CHARGE_DESC"> {{'INVOICE_CHARGE_DESC' |translate}}</text>
+                    </span>
                 </div>
                 <div class="cell align-right">
-                    <span>{{'INVOICE_CREDIT_AMT' |translate}}</span>
+                    <span>
+                        <text editable-text="INVOICE_CREDIT_AMT"> {{'INVOICE_CREDIT_AMT' |translate}}</text>
+                    </span>
                 </div>
                 <div class="cell align-right">
-                    <span>{{'INVOICE_CHARGE_AMT' |translate}}</span>
+                    <span>
+                        <text editable-text="INVOICE_CHARGE_AMT"> {{'INVOICE_CHARGE_AMT' |translate}}</text>
+                    </span>
                 </div>
             </div>
             <!-- Charges -->
@@ -94,7 +114,9 @@
         <!-- Totals -->
         <div class="caption bill-room-details">
              <div>
-            <div class="room-data-label">{{'INVOICE_TOTAL_BAL' |translate}}</div>
+            <div class="room-data-label">
+                <text editable-text="INVOICE_TOTAL_BAL"> {{'INVOICE_TOTAL_BAL' |translate}}</text>
+            </div>
             <div class="room-data">{{zestStationData.currency}}{{printData.balance}}</div>
         </div>
         </div>

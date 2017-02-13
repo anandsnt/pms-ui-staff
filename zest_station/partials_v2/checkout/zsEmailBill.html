@@ -1,7 +1,9 @@
 <!-- email options -->
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'EMAIL_BILL_GUEST_OPTIONS'">
     <div id="content">
-        <h1 translate>SEND_BILL_TO</h1>
+        <h1>
+            <text editable-text="SEND_BILL_TO"> {{'SEND_BILL_TO' |translate}}</text>
+        </h1>
         <h3>{{email}}</h3>
         <nav id="options" role="nav">
             <ul role="menu">
@@ -10,16 +12,22 @@
                     <button type="button" class="button option" touch-press='editEmailAddress()'>
                         <div ng-include="icons.url.pen"></div>
                     </button>
-                    <span translate>EDIT_EMAIL</span>
+                    <span>
+                        <text editable-text="EDIT_EMAIL"> {{'EDIT_EMAIL' |translate}}</text>
+                    </span>
                 </li>
                 <li class="break">
-                    <span translate>OR_TEXT</span>
+                    <span>
+                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                    </span>
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press='sendEmail()'>
                         <div ng-include="icons.url.email"></div>
                     </button>
-                    <span translate>SEND_EMAIL</span>
+                    <span>
+                        <text editable-text="SEND_EMAIL"> {{'SEND_EMAIL' |translate}}</text>
+                    </span>
                 </li>
             </ul>
         </nav>
@@ -28,32 +36,52 @@
 <!-- Final view-->
 <section id="main" role="main" class="centered" ng-show="mode === 'GUEST_BILL_EMAIL_SENT'">
     <div id="content">
-        <h1>{{'END_THANKS' |translate}}</h1>
-        <h3 ng-show="emailSent">{{'EMAIL_BILL_SENT_MSG' |translate}}</h3>
-        <h3 ng-show="emailSendingFailed">{{'EMAIL_BILL_NOT_SENT_MSG' |translate}}</h3>
-        <h3 ng-show="printOpted">{{'BILL_PRINTED_BELOW' |translate}}</h3>
-        <button type="button" class="button" click-touch='navToHome()'>{{'DONE_BTN' |translate}}</button>
+        <h1>
+            <text editable-text="END_THANKS"> {{'END_THANKS' |translate}}</text>
+        </h1>
+        <h3 ng-show="emailSent">
+            <text editable-text="EMAIL_BILL_SENT_MSG"> {{'EMAIL_BILL_SENT_MSG' |translate}}</text>
+        </h3>
+        <h3 ng-show="emailSendingFailed">
+            <text editable-text="EMAIL_BILL_NOT_SENT_MSG"> {{'EMAIL_BILL_NOT_SENT_MSG' |translate}}</text>
+        </h3>
+        <h3 ng-show="printOpted">
+            <text editable-text="BILL_PRINTED_BELOW"> {{'BILL_PRINTED_BELOW' |translate}}</text>
+        </h3>
+        <button type="button" class="button" click-touch='navToHome()'>
+            <text editable-text="DONE_BTN"> {{'DONE_BTN' |translate}}</text>
+        </button>
     </div>
 </section>
 <!-- Email entry -->
 <section id="main" role="main" class="centered" ng-show="mode === 'EMAIL_BILL_EDIT_MODE'">
     <!-- Type Email -->
     <div id="content" class="input-field-contents" ng-show="!emailError">
-        <h1>{{'TYPE_EMAIL' |translate}}</h1>
+        <h1>
+            <text editable-text="TYPE_EMAIL"> {{'TYPE_EMAIL' |translate}}</text>
+        </h1>
         <form method="post" class="form">
             <div class="entry input">
                 <input class="start-focused" id="email_text" ng-focus="showOnScreenKeyboard('email_text')" click-touch="showOnScreenKeyboard('email_text')" type="text" ng-keydown="resetTime()" ng-model="email" placeholder="" enter-press="saveEmail()" value="" touch-press />
             </div>
             <div class="entry action">
-                <button type="button" class="button" touch-press='saveEmail()' ng-class="{'overlay': email.length < 1}">{{'NEXT_BTN' |translate}}</button>
+                <button type="button" class="button" touch-press='saveEmail()' ng-class="{'overlay': email.length < 1}">
+                    <text editable-text="NEXT_BTN"> {{'NEXT_BTN' |translate}}</text>
+                </button>
             </div>
         </form>
-        <button id="skipEmailInputBtn" type='button' class='button' touch-press='goToNextScreen()'>{{'SKIP_BTN' |translate}}</button>
+        <button id="skipEmailInputBtn" type='button' class='button' touch-press='goToNextScreen()'>
+            <text editable-text="SKIP_BTN"> {{'SKIP_BTN' |translate}}</text>
+        </button>
     </div>
     <!-- Email invalid -->
     <div id="content" ng-show="emailError">
-        <h1>{{'EMAIL_ERR_HEADER' |translate}}</h1>
-        <h2>{{'EMAIL_ERR_HEADER_SUB' |translate}}</h2>
+        <h1>
+            <text editable-text="EMAIL_ERR_HEADER"> {{'EMAIL_ERR_HEADER' |translate}}</text>
+        </h1>
+        <h2>
+            <text editable-text="EMAIL_ERR_HEADER_SUB"> {{'EMAIL_ERR_HEADER_SUB' |translate}}</text>
+        </h2>
         <nav id="options" role="nav">
             <ul role="menu">
                 <li>
@@ -61,7 +89,7 @@
                         <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
-                    {{'RE_TYPE' |translate}}
+                    <text editable-text="RE_TYPE"> {{'RE_TYPE' |translate}}</text>
                     <span>{{email}}</span>
                 </li>
             </ul>
