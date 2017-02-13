@@ -835,7 +835,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             $scope.selectedReport.active = false;
 
-            $scope.updateView($scope.reportViewActions.SHOW_SCHEDULED_REPORTS);
+            $scope.updateView($scope.reportViewActions.SHOW_EXPORT_REPORTS);
             $scope.updateViewCol($scope.viewColsActions.ONE);
 
             $scope.refreshReportSchedulesScroll(reset);
