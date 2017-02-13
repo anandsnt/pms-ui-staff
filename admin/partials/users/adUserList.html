@@ -41,7 +41,7 @@
 						</div>
 					</td>
 					<td data-title="'Locked'" class="delete" header-class="delete">
-						<button type="button" ui-sref="admin.userdetails({ page: 'edit', id: user.id, hotelId: hotelId, isUnlocking: true})" class="icons icon-lock" ng-if="user.is_locked">Locked</button>
+						<button type="button" ui-sref="admin.userdetails({ page: 'edit', id: user.id, hotelId: hotelId, isUnlocking: true})" class="icons icon-lock" ng-if="user.is_locked === 'true'">Locked</button>
 					</td>
 					<!-- As a quick fix for defect CICO-33728 -->
 					<!-- <td data-title="'Delete'" class="delete" header-class="delete">

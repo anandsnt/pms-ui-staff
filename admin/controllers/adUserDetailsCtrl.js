@@ -32,7 +32,7 @@ admin.controller('ADUserDetailsCtrl',
 	$scope.errorMessage = "";
 	$scope.focusOnPassword = false;
 
-	$scope.getMyDashboards = function() {
+	function refreshDashboardsList() {
 
 		var rolesData = $scope.assignedRoles;
 
@@ -53,7 +53,7 @@ admin.controller('ADUserDetailsCtrl',
 				$scope.dashboardOptions.push(dashboard);
 			}
 		}
-		return $scope.dashboardOptions;
+
 	};
 
 	$scope.getRolesData = function() {
@@ -72,6 +72,8 @@ admin.controller('ADUserDetailsCtrl',
 				$scope.mod = "edit";
 				$scope.userDetailsEdit(id);
 			}
+
+            refreshDashboardsList();
 
 		};
 
@@ -162,6 +164,8 @@ admin.controller('ADUserDetailsCtrl',
 
 		$scope.assignedRoles.splice(index, 1);
 		$scope.selectedAssignedRole = -1;
+
+		refreshDashboardsList();
 	};
    /*
     * Handle action when clicked on left arrow button
@@ -177,6 +181,8 @@ admin.controller('ADUserDetailsCtrl',
 		$scope.assignedRoles.push(newElement);
 		$scope.unAssignedRoles.splice(index, 1);
 		$scope.selectedUnassignedRole = -1;
+
+        refreshDashboardsList();
 	};
 
 	/**
@@ -251,6 +257,8 @@ admin.controller('ADUserDetailsCtrl',
 
 	    		}
 			}
+
+            refreshDashboardsList();
 
 			if ($scope.isInUnlockingMode()) {
 				setFocusOnPasswordField();
@@ -342,5 +350,10 @@ admin.controller('ADUserDetailsCtrl',
 		$scope.selectedUnassignedRole = -1;
 		lastDropedTime = new Date();
 	};
+
+	$scope.onRoleChange = function() {
+		// CICO-37238 Find and update the dashboards related to the roles
+		refreshDashboardsList();
+    }
 
 }]);
