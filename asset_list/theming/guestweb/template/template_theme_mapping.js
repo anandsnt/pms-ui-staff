@@ -548,6 +548,7 @@ module.exports = {
                 'guestweb/**/common_templates/partials/checkout/**.html',
                 'guestweb/**/common_templates/partials/gwNoOption.html',
                 'guestweb/**/common_templates/partials/public_ny/gwLateCheckoutfinal.html',
+                 'guestweb/**/common_templates/partials/public_ny/gwCheckin.html',
                 checkoutNowPartials + '*.html',
                 checkinPartials + '*.html',
                 precheckinPartials + '*.html'],
