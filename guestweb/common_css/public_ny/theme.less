@@ -10,7 +10,6 @@ body {
 body {
     background-color: #FFF;
     font-family: "Gotham Book";
-    
 }
 
 .back-text {
@@ -48,7 +47,7 @@ a:hover,
 
 .logo-image {
     max-width: 100%;
-    margin: 4% auto 2%;
+    margin: 0%;
 }
 
 .template-text,
@@ -90,7 +89,7 @@ a:hover,
 
 .btn-template {
     font-size: 22px;
-    padding: 5%;
+    padding: 5% !important;
 }
 
 .dark-button,
@@ -154,9 +153,11 @@ a:hover,
     color: #BA7A55;
 }
 
-.circle-bg{
-  line-height: 1;
+.circle-bg {
+    line-height: 1;
 }
+
+
 /*----------------- date picker -------------------------*/
 
 .pickadate-cell,
@@ -257,7 +258,6 @@ a:hover,
 }
 
 .logo-image {
-    margin: 1% auto;
     max-width: unset;
 }
 
@@ -310,7 +310,11 @@ a:hover,
     height: 124px;
     padding-top: 0px;
 }
+
 @media (max-width: 480px) {
+    .logo-image {
+        max-width: 285px !important;
+    }
     .main-text {
         font-size: 10vw;
     }
@@ -325,7 +329,7 @@ a:hover,
     }
     .logo-image {
         max-width: 200px;
-        margin: 3% auto;
+        margin: 0% auto;
     }
     .dual-button {
         font-size: 23px;
@@ -336,6 +340,9 @@ a:hover,
     .checkout-alone-button {
         margin-left: 95px !important;
     }
+    .amount {
+    font-size: 21px;
+}
 }
 
 @media (max-width: 890px) {
@@ -346,14 +353,13 @@ a:hover,
         margin-left: 95px !important;
     }
 }
+
 @media (min-width: 890px) {
-   .back_check{
-     font-size: 17px;
-    
-    padding-top: 17px;
+    .back_check {
+        font-size: 17px;
+        padding-top: 17px;
     }
 }
-
 
 @media (min-width: 990px) {
     .main-text {
@@ -362,22 +368,21 @@ a:hover,
     .sub-main-text {
         font-size: 21px;
     }
-    .sub-text{
-      font-size: 15px !important;
+    .sub-text {
+        font-size: 15px !important;
     }
-    .query-text{
-      font-size: 11px;
+    .query-text {
+        font-size: 11px;
     }
     .checkout-alone-button {
-               margin-left: 126px;
+        margin-left: 126px;
     }
 }
 
-
 @media (max-width: 990px) {
     .logo-image {
-        margin: 9% auto 7%;
-        max-width: unset;
+        margin: 0px;
+        // max-width: 295px;
     }
     .back-to-checkout {
         display: none;
@@ -399,5 +404,4 @@ a:hover,
     .checkout-btn {
         padding: 10% 8%;
     }
-    
 }
