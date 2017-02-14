@@ -1,0 +1,110 @@
+<!-- Report content -->
+<div  id="report-content" ng-iscroll="report-details-scroll" class="report-content grid scrollable with-pagination"> <!-- Add class "with-pagination" if pagination is shown -->
+    <div class="wrapper" ng-controller="RVTravelAgentsCommissionReportCtrl">
+        <div ng-repeat="travel_agents in results">
+            <h2>{{travel_agents.travel_agent_name}}, IATA: {{travel_agents.IATA_number}}</h2>
+            <table class="commission-reports">
+                <thead>
+                    <tr>
+                        <th class="room" rowspan="2">Room</th>
+                        <th class="guest" rowspan="2">Guest</th>
+                        <th class="code" rowspan="2">Rate Code</th>
+                        <th class="amount" rowspan="2">Rate Amount</th>
+                        <th class="comission" colspan="3">Commission</th>
+                    </tr>
+                    <tr class="bottom-row">
+
+                        <th class="amount break">Revenue</th>
+                        <th>%/{{currencySymbol}}</th>
+                        <th class="amount">Net Amt</th>
+                    </tr>
+
+                </thead>
+                <tfoot>
+                    <!-- Travel Agent pagination -->
+                     <tr class="pagination">
+                        <td colspan="7">
+                        <rv-pagination  page-options="travel_agents.insidePaginationData" page-data="travel_agents.reservation_details.total_reservations" ></rv-pagination>
+                        </td>
+                    </tr>
+                    <tr class="totals">
+                        <td colspan="3"></td>
+                        <td>
+                            Subtotals
+                        </td>
+                        <td>
+                           {{currencySymbol}}{{travel_agents.sub_total.revenue}}
+                        </td>
+                        <td></td>
+                        <td>
+                            {{currencySymbol}}{{travel_agents.sub_total.net_amount}}
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody >
+
+                    <tr ng-repeat-start="reservation in travel_agents.reservation_details.reservations" ng-if="travel_agents.reservation_details.reservations.length > 0">
+                        <td rowspan="{{reservation.rate_details.length}}">
+                            <strong class="title">{{reservation.room_no}}</strong>
+                        </td>
+                        <td class="name" rowspan="{{reservation.rate_details.length}}">
+                            <strong class="title">
+                                <a href="#">{{reservation.last_name}}, {{reservation.first_name}}</a>
+                            </strong>
+                            <span class="data">{{reservation.confirm_no}}, Nights: {{reservation.nights}}</span>
+                            <div class="guest-date">
+                                <!-- check in -->
+                                <div class="date">
+                                    <span class="guest-status check-in">check-in</span>
+                                    <time datetime="">
+                                        <span>{{reservation.arrival_date}}</span>
+                                        <span>{{reservation.arrival_time}}</span>
+                                    </time>
+                                </div>
+                                <!-- check out -->
+                                <div class="date">
+                                    <span class="guest-status check-out">check-out</span>
+                                    <time datetime="{datetime | exp.: 2017-02-01T12:00:00}">
+                                        <span>{{reservation.dep_date}}</span>
+                                        <span>{{reservation.departure_time}}</span>
+                                    </time>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            {{reservation.rate_details[0].rate_code}}
+                        </td>
+                        <td>
+                            {{currencySymbol}} {{reservation.rate_details[0].rate_amount}}
+                        </td>
+                        <td rowspan="{{reservation.rate_details.length}}">
+                            {{currencySymbol}}{{reservation.commission_revenue}}
+                        </td>
+                        <td rowspan="{{reservation.rate_details.length}}">
+                            <span>{{reservation.commission_amount}}</span>
+                        </td>
+                        <td rowspan="{{reservation.rate_details.length}}">
+                            {{currencySymbol}}{{reservation.net_amount}}
+                        </td>
+                    </tr>
+                    <tr class="rate-row" ng-repeat="rate_details in reservation.rate_details"  ng-if="$index > 0" ng-repeat-end >
+                        <td>{{rate_details.rate_code}}</td>
+                        <td>{{rate_details.rate_amount}}</td>
+                    </tr>
+
+                    <tr ng-if="travel_agents.reservation_details.reservations.length == 0">
+                        <td colspan="7" style="text-align: center;" >
+                            <div class="info">
+                            <strong>No reservations found</strong>
+                            </div>
+                        </td>
+                    </tr>
+                   
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<rv-pagination  page-options="commisionReportTAPagination" page-data="totalCount" >
+</rv-pagination>

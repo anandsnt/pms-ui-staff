@@ -1336,10 +1336,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     RVReservationStateService.setReservationFlag('borrowForGroups', false);
 
                     if (nextState) {
-                        if (!nextStateParameters) {
-                            nextStateParameters = {};
+                        if ($state.$current.name === nextState) {
+                            $state.reload(nextState);
+                        } else {
+                            $state.go(nextState, nextStateParameters || {});
                         }
-                        $state.go(nextState, nextStateParameters);
                     } else {
                         $scope.$emit('hideLoader');
                     }

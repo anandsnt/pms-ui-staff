@@ -122,6 +122,11 @@ this.chromeExtensionListener = function(onMessageCallback, chromeAppId, fetchQRC
                    // -since they wont actually be checked-in.
                 zestSntApp.toggleNoCheckIns();
 
+            } else if (passedDataObject.getStateList) {
+                   // pass toggle argument to station app, to turn on/off Demo Mode, 
+                   // *demo mode does not encode keys, only shows success flow
+                zestSntApp.getStateList();
+
             }
 
 
@@ -144,6 +149,8 @@ this.chromeExtensionListener = function(onMessageCallback, chromeAppId, fetchQRC
                 zestSntApp.toggleDemoModeOnOff();
             } else if (e.altKey && e.keyCode === 73) {// I - info
                 zestSntApp.debugTimers(true);
+            } else if (e.altKey && e.keyCode === 74) {// I - info
+                zestSntApp.getStateList();
             }
 
         }

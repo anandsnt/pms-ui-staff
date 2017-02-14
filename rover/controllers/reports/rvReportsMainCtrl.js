@@ -280,7 +280,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			item_45: false,
 			item_46: false,
 			item_47: false,
-            item_48: false
+            item_48: false,
+            item_49: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( ! $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -425,6 +426,21 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			maxDate: reportUtils.processDate(($rootScope.businessDate)).aMonthAfter
 		}, datePickerCommon);
 
+        // for some of the reports we need to restrict max date selection to 6 months (eg:- Business on Books report)
+        $scope.fromDateOptionsSixMonthsLimit = angular.extend({
+            onSelect: function(value, datePickerObj) {
+                var selectedDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+
+                $scope.toDateOptionsSixMonthsLimit.minDate = selectedDate;
+                $scope.toDateOptionsSixMonthsLimit.maxDate = reportUtils.processDate(selectedDate).sixMonthsAfter;
+            }
+        }, datePickerCommon);
+
+        $scope.toDateOptionsSixMonthsLimit = angular.extend({
+            minDate: new tzIndependentDate($rootScope.businessDate),
+            maxDate: reportUtils.processDate(($rootScope.businessDate)).sixMonthsAfter
+        }, datePickerCommon);
+
 		// custom from and untill date picker options
 		// with no limits to choose dates
 		$scope.fromDateOptionsNoLimit = angular.extend({}, datePickerCommon);
@@ -439,7 +455,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			$scope.touchedReport = item;
 			$scope.touchedDate = dateName;
 
-			if (item.title === reportNames['DAILY_PRODUCTION_RATE']) {
+			if ( (item.title === reportNames['DAILY_PRODUCTION_RATE']) || (item.title === reportNames['BUSINESS_ON_BOOKS']) ) {
 				if (item.fromDate > item.untilDate) {
 					item.untilDate = item.fromDate;
 				}
@@ -489,6 +505,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					item.chosenDueOutDepartures = false;
 				}
 			}
+
 		};
 
 		$scope.setTomorrowDate = function (item) {
@@ -1039,6 +1056,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         };
 
 		function genParams (report, page, perPage, changeAppliedFilter) {
+
+			var chosenReport = reportsSrv.getChoosenReport();
+			//CICO-36269
+			perPage = (chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) ? reportParams["TRAVEL_AGENTS_PER_PAGE_COUNT"] : perPage;
 			var params = {
 				'id': report.id,
 				'page': page,
@@ -1082,7 +1103,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					'assigned_departments': [],
 					'completion_status': [],
 					'age_buckets': [],
-					'account_ids': []
+					'account_ids': [],
+					'travel_agent_ids': []
 				};
 			}
 
@@ -1800,6 +1822,29 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				}
 			}
 
+			// include travel agents
+			if ( report.hasOwnProperty('hasTravelAgentsSearch') ) {
+				selected = _.where(report['hasTravelAgentsSearch']['data'], { selected: true });
+
+				if ( selected.length > 0 ) {
+					key         = reportParams['TRAVEL_AGENTS'];
+					params[key] = [];
+					/**/
+					_.each(selected, function(each) {
+						params[key].push( each.id.toString() );
+						/**/
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.travel_agent_ids.push( each.name );
+						}
+					});
+
+					// in case if all reservation status are selected
+					if ( changeAppliedFilter && report['hasTravelAgentsSearch']['data'].length === selected.length ) {
+						$scope.appliedFilter.travel_agent_ids = ['All Travel Agents'];
+					}
+				}
+			}
+
 			// include Aging days
             if ( report.hasOwnProperty('hasIncludeAgingBalance') ) {
 				selected = _.where(report['hasIncludeAgingBalance']['data'], { selected: true });
@@ -2124,9 +2169,35 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				page         = !!loadPage ? loadPage : 1;
 
 			var params = genParams(chosenReport, page, resultPerPageOverride || $scope.resultsPerPage);
+			var fetchTravelAgents = function (travel_agent_id, pageNo) {
+				var paramsToApi = {};
 
+				paramsToApi.travel_agent_id = travel_agent_id;
+				paramsToApi.page = pageNo;
+				paramsToApi.per_page = reportParams['TRAVEL_AGENTS_PER_PAGE_COUNT'];
+				$scope.$broadcast('updateReservations', paramsToApi);
+			};
+			var responseWithInsidePagination = function (response) {
+				_.each(response.results, function (item) {
+					// Pagination data added for each TA
+					item.insidePaginationData = {
+						id: item.travel_agent_id,
+	                    api: [fetchTravelAgents, item.travel_agent_id],
+	                    perPage: reportParams['TRAVEL_AGENTS_PER_PAGE_COUNT']
+					};
+					$timeout(function() {
+                        $scope.$broadcast('updatePagination', item.travel_agent_id);
+                    }, 1000);
+				});
+				return response;
+			};
 			// fill in data into seperate props
 			var updateDS = function (response) {
+				if (chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) {
+					// Response modified to accomodate inside pagination
+					// For TA reservations
+					response = responseWithInsidePagination(response);
+				}
 				$scope.totals          = response.totals || [];
 				$scope.headers         = response.headers || [];
 				$scope.subHeaders      = response.sub_headers || [];
@@ -2143,6 +2214,19 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 if(chosenReport.title === reportNames["COMPARISION_BY_DATE"]) {
                     $timeout(function() {
                         $scope.$broadcast('updatePagination', "COMPARISION_BY_DATE");
+                    }, 50);
+                }
+                //CICO-36269
+                if(chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) {
+                    $scope.$broadcast("UPDATE_RESULTS", $scope.results);
+                    $timeout(function() {
+                        $scope.$broadcast('updatePagination', "TA_COMMISSION_REPORT_MAIN");
+                    }, 50);
+                }
+
+                if(chosenReport.title === reportNames["BUSINESS_ON_BOOKS"]) {
+                    $timeout(function() {
+                        $scope.$broadcast('updatePagination', "BUSINESS_ON_BOOKS");
                     }, 50);
                 }
 			};
@@ -2175,6 +2259,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					console.info( msg );
 					$scope.$broadcast( msg );
 				}
+
+
 			};
 
 			var errorCallback = function (response) {
@@ -2196,14 +2282,40 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 			params.reportTitle = chosenReport.title;
 
+            // Load API data for the pagination directive
+            var loadAPIData = function(pageNo) {
+                $scope.genReport(false, pageNo);
+            };
+
             //CICO-36186 - Implemented the new pagination for Comparison report
             if(chosenReport.title === reportNames["COMPARISION_BY_DATE"]) {
-                var loadAPIData = function(pageNo) {
-                    $scope.genReport(false, pageNo);
-                };
 
                 $scope.comparisonByDatePagination = {
                     id: 'COMPARISION_BY_DATE',
+                    api: loadAPIData,
+                    perPage: 25
+                };
+            }
+
+            if (chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) {
+
+                var loadAPIData = function(pageNo) {
+                    $scope.genReport(false, pageNo);
+                    $scope.$broadcast("TRAVEL_AGENT_COMMISSIONS_SCROLL");
+                };
+
+                $scope.commisionReportTAPagination = {
+                    id: 'TA_COMMISSION_REPORT_MAIN',
+                    api: loadAPIData,
+                    perPage: reportParams["TRAVEL_AGENTS_PER_PAGE_COUNT"]
+                };
+
+            }
+
+            if(chosenReport.title === reportNames["BUSINESS_ON_BOOKS"]) {
+
+                $scope.businessOnBooksPagination = {
+                    id: 'BUSINESS_ON_BOOKS',
                     api: loadAPIData,
                     perPage: 25
                 };

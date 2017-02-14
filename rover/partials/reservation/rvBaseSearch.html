@@ -193,7 +193,7 @@
             <div class="entry" ng-repeat="tab in reservationData.tabs" ng-init="tabIndex = $index">
                 <div class="entry-data">
                     <div class="select room-type">
-                        <select iscroll-stop-propagation ng-model="tab.roomTypeId" ng-change="onRoomTypeChange($index)">
+                        <select convert-to-number iscroll-stop-propagation ng-model="tab.roomTypeId" ng-change="onRoomTypeChange($index)">
                             <option value="" ng-if="tabIndex === 0 && reservationData.tabs.length === 1">All Room Types</option>
                             <option value="" ng-if="tabIndex >0 && !tab.roomTypeId" class="placeholder">Select Room Type</option>
                             <option value="{{roomType.id}}" ng-repeat="roomType in otherData.roomTypes" ng-hide="isRoomTypeSelected(tabIndex, roomType.id)" ng-selected="tab.roomTypeId == roomType.id">
