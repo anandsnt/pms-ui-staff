@@ -1,0 +1,23 @@
+<div class="entry {{divClass}}">
+    <label class="{{labelClass}}"
+           ng-hide="label.length==0">
+        {{labelClass}}{{label}}
+
+        <strong ng-show="required=='yes'"> * </strong>
+    </label>
+    <div class="select">
+        <select convert-to-number
+                class="{{selBoxClass}}"
+                ng-model="selectedId"
+                ng-class="{'placeholder': !selectedId}"
+                ng-change="onChange(selectedId)">
+            <option value="" ng-hide="labelInDropDown.length===0 || !labelInDropDown">
+                {{labelInDropDown}}
+            </option>
+            <option ng-repeat='item in items'
+                    value='{{item.value}}'>
+                {{item.name}}
+            </option>
+        </select>
+    </div>
+</div>

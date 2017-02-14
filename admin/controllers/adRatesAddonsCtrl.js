@@ -346,6 +346,8 @@ admin.controller('ADRatesAddonsCtrl', [
 				charge_code_id: $scope.singleAddon.charge_code_id,
 				charge_group_id: $scope.singleAddon.charge_group_id,
 				description: $scope.singleAddon.description,
+				is_alternate_description_active: $scope.singleAddon.is_alternate_description_active,
+				alternate_description: $scope.singleAddon.alternate_description,
 				is_reservation_only: $scope.singleAddon.is_reservation_only,
 				inventory_count: parseInt($scope.singleAddon.inventory_count),
 				name: $scope.singleAddon.name,

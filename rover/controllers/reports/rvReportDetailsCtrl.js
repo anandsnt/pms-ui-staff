@@ -61,6 +61,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		$scope.parsedApiFor = undefined;
 		$scope.currencySymbol = $rootScope.currencySymbol;
+		
         var setTotalsForReport = function(totals) {
                 var totalsForReport = [], v;
 
@@ -588,6 +589,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, parseAPIoptions, $scope.$parent.resultsTotalRow) );
 			// if there are any results
 			$scope.hasNoResults = _.isEmpty( $scope.$parent.results );
+			$scope.showPrintOption = true;
 
 
 			// a very different parent template / row template / content template for certain reports
@@ -710,11 +712,12 @@ sntRover.controller('RVReportDetailsCtrl', [
                     break;
 
 
-				// case reportNames['A/R_AGING']:
-				// 	$scope.hasReportTotals    = true;
-				// 	$scope.showReportHeader   = true;
-				// 	$scope.detailsTemplateUrl = '/assets/partials/reports/roomOooOosReport/rvRoomOooOosReport.html';
-				// 	break;
+				case reportNames['TRAVEL_AGENT_COMMISSIONS']:
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = true;
+					$scope.showPrintOption = false;
+					$scope.detailsTemplateUrl  = '/assets/partials/reports/travelAgentCommission/rvTravelAgentCommissionReportRow.html';
+					break;
 
 				default:
 					$scope.hasReportTotals    = true;
@@ -813,6 +816,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['VACANT_ROOMS_REPORT']:
 					template = '/assets/partials/reports/vacantRoomsReport/rvVacantRoomsReportRow.html';
 					break;
+
 
 				// Default report row
 				default:

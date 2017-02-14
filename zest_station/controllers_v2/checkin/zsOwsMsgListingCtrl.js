@@ -18,7 +18,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 
 
 		var checkIfEmailIsBlackListedOrValid = function() {
-			return ($stateParams.email.length > 0 && !($stateParams.guest_email_blacklisted === 'true') && zsUtilitySrv.isValidEmail($stateParams.email));
+			return (!_.isNull($stateParams.email) && $stateParams.email.length > 0 && !($stateParams.guest_email_blacklisted === 'true') && zsUtilitySrv.isValidEmail($stateParams.email));
 		};
 
 		/**

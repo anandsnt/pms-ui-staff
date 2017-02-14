@@ -1,4 +1,4 @@
-<div class="entry radio-check {{divClass}}" ng-hide="ngHide">
+<div class="entry radio-check {{divClass}}" ng-hide="shouldHide()">
 	<label ng-hide="topLabel.length ==0">{{topLabel}}</label>
 	<label class="checkbox {{parentLabelClass}}" ng-class="{'checked': isChecked}" >
 		<span ng-if="spanClass == 'checkbox-background'" class="icon-form icon-checkbox" ng-class="{'checked': isChecked, 'checkbox-background': !isChecked}"></span>

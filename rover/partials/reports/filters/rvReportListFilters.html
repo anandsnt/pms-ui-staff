@@ -320,6 +320,12 @@
     data="uiChosenReport.hasAccountSearch.data"
     options="uiChosenReport.hasAccountSearch.options"></multi-option-selection>
 
+<multi-option-selection ng-show="uiChosenReport.hasTravelAgentsSearch && uiChosenReport.hasTravelAgentsSearch.data.length"
+    label="Travel Agents"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasTravelAgentsSearch.data"
+    options="uiChosenReport.hasTravelAgentsSearch.options"></multi-option-selection>
+
 
 <multi-option-selection ng-show="uiChosenReport.hasReservationStatus && uiChosenReport.hasReservationStatus.data.length"
     label="Reservation Status"
@@ -426,7 +432,7 @@
     data="uiChosenReport.hasChargeTypes.data"
     options="uiChosenReport.hasChargeTypes.options"></multi-option-selection>
 
-<div class="entry" ng-show="uiChosenReport.sortByOptions">
+<div class="entry" ng-show="uiChosenReport.sortByOptions.length">
     <label>Sort By</label>
     <div class="select">
         <select ng-model="uiChosenReport.chosenSortBy" ng-options="sortBy.value as sortBy.description for sortBy in uiChosenReport.sortByOptions | filter:showValidSortBy" ng-change="sortByChanged(uiChosenReport)" iscroll-stop-propagation>
