@@ -2184,7 +2184,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						id: item.travel_agent_id,
 	                    api: [fetchTravelAgents, item.travel_agent_id],
 	                    perPage: reportParams['TRAVEL_AGENTS_PER_PAGE_COUNT']
-					};
+					};					
 					$timeout(function() {
                         $scope.$broadcast('updatePagination', item.travel_agent_id);
                     }, 1000);
