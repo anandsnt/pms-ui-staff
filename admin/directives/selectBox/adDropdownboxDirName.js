@@ -23,8 +23,7 @@ admin.directive('adDropdownName', function($timeout) {
             prefixValue: '@',
             labelProperties: '=',
             isDisabled: '=',
-            changeHandler: '=',
-            bindNumber: '='
+            changeHandler: '='
         },
         link: function($scope) {
             if (typeof $scope.options !== 'undefined') {
@@ -61,5 +60,4 @@ admin.directive('adDropdownName', function($timeout) {
         },
         templateUrl: '/assets/directives/selectBox/adDropdownboxName.html'
     };
-
 });

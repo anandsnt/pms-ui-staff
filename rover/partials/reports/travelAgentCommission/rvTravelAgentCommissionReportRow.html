@@ -2,10 +2,10 @@
 <div  id="report-content" ng-iscroll="report-details-scroll" class="report-content grid scrollable with-pagination"> <!-- Add class "with-pagination" if pagination is shown -->
     <div class="wrapper" ng-controller="RVTravelAgentsCommissionReportCtrl">
         <div ng-repeat="travel_agents in results">
-            <h2>{{travel_agents.travel_agent_name}}, IATA: {{travel_agents.IATA_number}}</h2>
+            <h2 class="padding-top-ta">{{travel_agents.travel_agent_name}}, IATA: {{travel_agents.IATA_number}}</h2>
             <table class="commission-reports">
                 <thead>
-                    <tr>
+                    <tr> 
                         <th class="room" rowspan="2">Room</th>
                         <th class="guest" rowspan="2">Guest</th>
                         <th class="code" rowspan="2">Rate Code</th>
@@ -57,7 +57,7 @@
                                 <div class="date">
                                     <span class="guest-status check-in">check-in</span>
                                     <time datetime="">
-                                        <span>{{reservation.arrival_date}}</span>
+                                        <span>{{reservation.arrival_date | date:dateFormat}}</span>
                                         <span>{{reservation.arrival_time}}</span>
                                     </time>
                                 </div>
@@ -65,7 +65,7 @@
                                 <div class="date">
                                     <span class="guest-status check-out">check-out</span>
                                     <time datetime="{datetime | exp.: 2017-02-01T12:00:00}">
-                                        <span>{{reservation.dep_date}}</span>
+                                        <span>{{reservation.dep_date | date:dateFormat}}</span>
                                         <span>{{reservation.departure_time}}</span>
                                     </time>
                                 </div>
@@ -75,7 +75,7 @@
                             {{reservation.rate_details[0].rate_code}}
                         </td>
                         <td>
-                            {{currencySymbol}} {{reservation.rate_details[0].rate_amount}}
+                            {{currencySymbol}}{{reservation.rate_details[0].rate_amount}}
                         </td>
                         <td rowspan="{{reservation.rate_details.length}}">
                             {{currencySymbol}}{{reservation.commission_revenue}}
@@ -89,7 +89,7 @@
                     </tr>
                     <tr class="rate-row" ng-repeat="rate_details in reservation.rate_details"  ng-if="$index > 0" ng-repeat-end >
                         <td>{{rate_details.rate_code}}</td>
-                        <td>{{rate_details.rate_amount}}</td>
+                        <td>{{currencySymbol}}{{rate_details.rate_amount}}</td>
                     </tr>
 
                     <tr ng-if="travel_agents.reservation_details.reservations.length == 0">
