@@ -1,4 +1,5 @@
-<ol ui-sortable = "sortableOptions" ng-model="contentList" ng-controller="ADContentManagementChildViewCtrl">
+<section ng-controller="ADContentManagementChildViewCtrl">
+<ol ui-sortable = "sortableOptions" ng-model="contentList">
     <li class="branch" ng-class= "{'collapsed': !content.isExpanded, 'expanded': content.isExpanded, 'category': content.component_type == 'CATEGORY', 'item': content.component_type == 'PAGE' }" ng-repeat = "content in contentList">
                             <div class="sort">
                                 <span class="reorder" ng-show="content.children.length > 0" ng-click= "toggleExpansion($index)"></span>
@@ -24,3 +25,4 @@
                             </div>
     </li>
 </ol>
+</section>

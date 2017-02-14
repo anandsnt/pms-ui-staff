@@ -40,7 +40,9 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 			var deferred = $q.defer();
 			var url = '/house/room/' + id + '.json';
 
-			$http.get(url).success(function(response, status) {
+			$http.get(url).then(function(res) {
+				var response = res.data;
+
 				if (response.status === "success") {
 					this.roomDetails = response.data.room_details;
 					deferred.resolve(this.roomDetails);
@@ -48,7 +50,10 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 					deferred.reject(response);
 				}
 
-			}.bind(this)).error(function(response, status) {
+			}, function(res) {
+                var response = res.data,
+					status = res.status;
+
 				if (status === 401) { // 401- Unauthorized
 					// so lets redirect to login page
 					$window.location.href = '/house/logout';
@@ -67,13 +72,18 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 				url: url,
 				method: "POST",
 				data: data
-			}).success(function(response, status) {
+			}).then(function(res) {
+				var response = res.data;
+
 				if (response.status === "success") {
 					deferred.resolve(response.data);
 				} else {
 					deferred.reject(response);
 				}
-			}).error(function(response, status) {
+			}, function(res) {
+				var response = res.data,
+					status = res.status;
+
 				if (status === 401) { // 401- Unauthorized
 					// so lets redirect to login page
 					$window.location.href = '/house/logout';
@@ -81,6 +91,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 					deferred.reject(response);
 				}
 			});
+
 			return deferred.promise;
 		};
 
