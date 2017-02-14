@@ -3,17 +3,17 @@
 @import "../style.less";
 html,
 body {
-    height: auto !important;
-    min-height: 100% !important;
+    height: auto;
+    min-height: 100%;
 }
 
 body {
-    background-color: #231f20;
+    background-color: #FFF;
     font-family: 'Minion Regular';
 }
 
 .back-text {
-    color: #000 !important;
+    color: #000;
 }
 
 a,
@@ -23,15 +23,20 @@ a:hover,
 .footer-sub-text,
 .footer-sub-text:hover,
 .phone-label {
-    color: #EDE8D3;
+    color: #363d40;
 }
 
 .sub-main-text {
-    color: #EDE8D3;
+    color: #363d40;
 }
 
 .header-bar {
-    background-color: #EDE8D3;
+    background: #fff;
+}
+
+.logo-image {
+    max-width: 100%;
+    margin: 4% auto 2%;
 }
 
 .template-text,
@@ -41,11 +46,11 @@ a:hover,
 .phone-text:hover,
 .request-text,
 .error-text {
-    color: #EDE8D3 !important;
+    color: #363d40;
 }
 
 .view-bill {
-    color: #b87310;
+    color: #363d40;
 }
 
 .sub-text,
@@ -53,54 +58,66 @@ a:hover,
 .query-text,
 .query-text:hover,
 .light-text {
-    color: #EDE8D3 !important;
+    color: #363d40;
+}
+
+.sub-text {
+    font-size: 15px;
+}
+
+.main-text {
+    font-size: 39px;
+}
+
+.sub-main-text {
+    font-size: 22px;
 }
 
 .btn,
 .btn:hover {
-    background: #b87310;
-    color: @white;
+    background: #C2BFC1;
+    color: #000;
 }
 
 .dual-button {
-    font-size: 25px;
+    font-size: 35px;
     font-weight: 300;
 }
 
 .btn-template {
-    font-size: 33px;
+    font-size: 35px;
     font-weight: 300;
     padding: 4%;
 }
 
 .dark-button,
 .dark-button:hover {
-    background: #b87310 !important;
+    background: #C2BFC1;
 }
 
 .light-button,
 .light-button:hover {
-    background: #d39133 !important;
+    background: #dadada;
 }
 
 .checkouttime1,
 .checkouttime1:hover {
-    background: #d39133;
+    background: #dadada;
 }
 
 .checkouttime2,
 .checkouttime2:hover {
-    background: #b87310;
+    background: #C2BFC1;
 }
 
 .checkouttime3,
 .checkouttime3:hover {
-    background: #a05f01;
+    background: #adacad;
 }
 
 .no-thanks,
 .no-thanks:hover {
-    color: fff !important;
+    color: #000;
     text-decoration: underline;
     text-transform: none;
 }
@@ -115,6 +132,22 @@ a:hover,
     line-height: 1.2;
 }
 
+.checkout-icon {
+    background-image: url('/assets/guestweb/common_images/checkout-now-black.png');
+}
+
+.late-checkout-icon {
+    background-image: url('/assets/guestweb/common_images/late-checkout-black.png');
+}
+
+.circle-bg {
+    background: url('/assets/guestweb/common_images/black/circle-bg.png') center top no-repeat;
+}
+
+.accept-charge-icon {
+    background-image: url('/assets/guestweb/common_images/black/creditcard_icon.png');
+}
+
 .down-arrow-button {
     background-image: url('/assets/guestweb/common_images/black/down_arrow.png');
 }
@@ -124,49 +157,45 @@ a:hover,
 }
 
 .upgrade-details .upgrades-btn {
-    background: #b87310;
+    background: #C2BFC1;
 }
 
 .proceed-to-checkin {
-    background: #b87310;
+    background: #3D3D3B;
 }
 
 .upgrades-label {
     color: #BA7A55;
 }
 
-textarea.sub-text,
-textarea.sub-text:hover {
-    color: #000 !important;
-}
-
 
 /*----------------- date picker -------------------------*/
+
 .pickadate {
-  font-family: 'Minion Regular';
- }
- 
+    font-family: 'Minion Regular';
+}
+
 .pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
-    color: #363634;
+    color: #C2BFC1;
     color: transparent;
 }
 
-.pickadate-cell .pickadate-enabled {
-    color: #000 !important;
+.pickadate-cell .pickadate-enabled,
+.pickadate-centered-heading {
+    color: #000;
 }
 
 .pickadate-cell .pickadate-active {
-    background-color: #b87310 !important;
-    color: #fff !important;
+    background-color: #C2BFC1 !important;
+    color: #fff;
 }
 
-.pickadate-head,
-.pickadate-centered-heading {
-    color: #fff;
+.pickadate-head {
+    color: #000000;
 }
 
 .calendar-selection {
-    color: #fff;
+    color: #000;
 }
 
 .pickadate-cell li:nth-child(1),
@@ -181,7 +210,7 @@ textarea.sub-text:hover {
 .pickadate-cell .pickadate-disabled,
 .pickadate-cell .pickadate-enabled,
 .pickadate-cell .pickadate-outofrange-disabled {
-    background-color: #E5E5E5;
+    background-color: #EEEBE8;
 }
 
 .pickadate-cell .pickadate-disabled,
@@ -190,7 +219,7 @@ textarea.sub-text:hover {
 }
 
 .pickadate-cell li {
-    border: 1px solid #fff;
+    border: 1px solid #FFF;
 }
 
 .pickadate a:visited,
@@ -199,26 +228,26 @@ textarea.sub-text:hover {
 }
 
 .date-picker-header {
-    background-color: #b87310;
+    background-color: #C2BFC1;
 }
 
 .calendar-back {
-    background-image: url('/assets/guestweb/common_images/back_icon.png');
+    background-image: url('/assets/guestweb/common_images/black/back_icon.png');
 }
 
 .calendar-done {
-    background-image: url('/assets/guestweb/common_images/done_white.png');
+    background-image: url('/assets/guestweb/common_images/black/done_black.png');
 }
 
 .pickadate-prev,
 .pickadate-next,
 .pickadate-prev:hover,
 .pickadate-next:hover {
-    color: #b87310 !important;
+    color: #dadada;
 }
 
 .date-picker-wrap {
-    background-color: #231f20 !important;
+    background-color: #fff;
 }
 
 .date-picker-bg {
@@ -230,50 +259,56 @@ textarea.sub-text:hover {
 }
 
 .departure-date {
-    color: #fff;
+    color: #000;
 }
 
 .date-text {
-    color: #fff;
+    color: #000;
 }
 
 .logo-image {
-    margin: 3% 0px !important;
-    max-width: 300px;
+    margin: 1% auto;
+    max-width: unset;
 }
+
+.res-details-heading,
+.res-details-heading:hover {
+    color: #000;
+}
+
 .back-to-checkout {
-    background: url(/assets/guestweb/common_images/left_arrow.png) center top no-repeat;
-    height: 36px;
+    background: url(/assets/guestweb/common_images/black/left_arrow.png) center top no-repeat;
+    height: 40px;
+}
+
+@media (min-width: 990px) {
+    .sub-main-text {
+        font-size: 18px;
+    }
+    .sub-text {
+        font-size: 15px!important;
+    }
 }
 
 @media (max-width: 990px) {
     .logo-image {
         margin: 9% auto 7%;
-        max-width: 245px;
+        max-width: unset;
     }
     .back-to-checkout {
         display: none;
     }
-    .hide-in-desktop {
-        display: block;
+    .checkout-icon,
+    .late-checkout-icon {
+        margin-top: 43px;
     }
-}
-
-@media (min-width: 890px) {
-    .btn-template {
-        font-size: 26px;
+    .accept-charges,
+    {
+        width: 377px;
+        padding: 4% 0%;
     }
-}
-
-@media (min-width: 990px) {
     .dual-button {
-        font-size: 35px;
-    }
-    .main-text {
-        font-size: 39px;
-    }
-    .checkout-btn {
-        font-size: 37px;
+        font-size: 28px;
     }
 }
 
@@ -285,24 +320,22 @@ textarea.sub-text:hover {
         width: 100%;
     }
     .sub-main-text {
-        font-size: 5.4vw !important;
+        font-size: 5.4vw;
     }
     .footer-text {
         font-size: 5.3vw;
     }
     .logo-image {
-        max-width: 237px;
+        max-width: 181px;
     }
     .dual-button {
         font-size: 32px;
     }
+    .section-container {
+        padding-bottom: 0px;
+    }
 }
 
-.res-details-heading,
-.res-details-heading:hover {
-    color: #b87310;
-}
-
-.right-arrow-button {
-    background-image: url(/assets/guestweb/common_images/white_arrow.png);
+.btn-template {
+    font-size: 30px;
 }
