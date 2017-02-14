@@ -89,7 +89,7 @@
                     </tr>
                     <tr class="rate-row" ng-repeat="rate_details in reservation.rate_details"  ng-if="$index > 0" ng-repeat-end >
                         <td>{{rate_details.rate_code}}</td>
-                        <td>{{rate_details.rate_amount}}</td>
+                        <td>{{currencySymbol}}{{rate_details.rate_amount}}</td>
                     </tr>
 
                     <tr ng-if="travel_agents.reservation_details.reservations.length == 0">
