@@ -158,6 +158,14 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             return rvPermissionSrv.getPermissionValue('ADD_EDIT_DELETE_REPORT_SCHEDULE');
         };
 
+        /**
+         * function to check whether the user has permission
+         * to view export report menu
+         * @return {Boolean}
+         */
+        $scope.hasPermissionToViewExportReport = function() {
+            return rvPermissionSrv.getPermissionValue('EXPORT_REPORTS');
+        };
 
         $scope.reportMainMenuChange = function (nextMenu) {
             $scope.updateViewCol($scope.viewColsActions.ONE);
@@ -171,6 +179,14 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         */
         $scope.shouldShowScheduleReport = function() {
             return ($scope.hasPermissionToViewScheduleReport());
+        };
+
+        /**
+        * should show export report menu
+        * @return {Boolean}
+        */
+        $scope.shouldShowExportReport = function() {
+            return ($scope.hasPermissionToViewExportReport());
         };
 
         $scope.uiChosenReport = undefined;
