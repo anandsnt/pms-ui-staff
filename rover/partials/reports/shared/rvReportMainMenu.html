@@ -12,7 +12,7 @@
     </li>
     <li ng-class="{ 'active': reportViewStore.showingExportReports || reportViewStore.showingExportAReport }"
       ng-click="reportMainMenuChange(reportViewActions.SHOW_EXPORT_REPORTS)"
-      ng-show="shouldShowScheduleReport()">
+      ng-show="shouldShowExportReport()">
         <i class="icon-report icon-schedule"></i>
         <span class="title has-arrow next-view">Export Reports</span>
     </li>
