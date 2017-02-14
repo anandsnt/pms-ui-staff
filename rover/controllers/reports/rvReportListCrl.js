@@ -62,6 +62,7 @@ sntRover.controller('RVReportListCrl', [
                 // add users filter for needed reports
                 // unfortunately this is not sent from server
                 reportUtils.addIncludeUserFilter( report[i] );
+                reportUtils.addIncludeOtherFilter(report[i]);
 
 
                 setupDates.init( report[i] );
@@ -82,7 +83,8 @@ sntRover.controller('RVReportListCrl', [
                     'addons': $scope.$parent.addons,
                     'reservationStatus': $scope.$parent.reservationStatus,
                     'assigned_departments': $scope.$parent.assigned_departments,
-                    'activeUserList': $scope.$parent.activeUserList
+                    'activeUserList': $scope.$parent.activeUserList,
+                    'travel_agent_ids': $scope.$parent.travel_agents
                 });
 
                 // to reorder & map the sort_by to report details columns - for this report

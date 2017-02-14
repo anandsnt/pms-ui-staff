@@ -40,9 +40,18 @@ sntRover.config([
 	'$httpProvider',
 	'ngDialogProvider',
 	'$provide',
-	function($httpProvider, ngDialogProvider, $provide) {
+	'$provide',
+	'$locationProvider',
+	function($httpProvider, ngDialogProvider, $provide, $provide, $locationProvider) {
 
-		// adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
+        // $provide.decorator('$browser', ['$delegate', function ($delegate) {
+        //     $delegate.onUrlChange = function () {};
+        //     $delegate.url = function () { return ""};
+        //     return $delegate;
+        // }]);
+
+
+        // adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 		$httpProvider.interceptors.push('sharedHttpInterceptor');
 
 	    ngDialogProvider.setDefaults({
@@ -62,12 +71,19 @@ sntRover.config([
 	}
 ]);
 
+
+/**
+ * 	NOTE: Please don't remove $$animateJs dependency. This is done on purpose
+ *  This was done as a fix for a similar problem https://github.com/angular/angular.js/issues/14291
+ */
+
 sntRover.run([
 	'$rootScope',
 	'$state',
 	'$stateParams',
 	'RVHkRoomStatusSrv',
-	function ($rootScope, $state, $stateParams, RVHkRoomStatusSrv) {
+	'$$animateJs',
+	function ($rootScope, $state, $stateParams, RVHkRoomStatusSrv,$$animateJs) {
 		$rootScope.$state = $state;
 		$rootScope.$stateParams = $stateParams;
 

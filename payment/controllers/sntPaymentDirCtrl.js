@@ -309,13 +309,12 @@ angular.module('sntPay').controller('sntPaymentController',
             // toggle between manual card entry and six payment swipe (C&P option in UI) for sixpayments
             $scope.sixPayEntryOptionChanged = function() {
                 if ($scope.payment.isManualEntryInsideIFrame) {
-                    $scope.payment.isManualEntryInsideIFrame = false;
+                    changeToCardAddMode();
+                } else {
                     // Add to guestcard feature for C&P
                     $scope.payment.showAddToGuestCard = !!$scope.reservationId && !$scope.payment.isManualEntryInsideIFrame;
                     $scope.selectedCC = {};
-                } else {
-                    $scope.payment.isManualEntryInsideIFrame = true;
-                    changeToCardAddMode();
+
                 }
             };
 

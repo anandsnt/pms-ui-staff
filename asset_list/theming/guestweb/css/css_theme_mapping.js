@@ -94,7 +94,10 @@ module.exports = {
             'guestweb_silver_stone': [ themeCSSRoot + 'guestweb_silver_stone.css'],
             'guestweb_koa_kea': [ themeCSSRoot + 'guestweb_koa_kea.css'],
             'guestweb_hotel_chicago': [ themeCSSRoot + 'guestweb_hotel_chicago.css'],
-            'guestweb_public_ny': [ themeCSSRoot + 'guestweb_public_ny.css']
+            'guestweb_public_ny': [ themeCSSRoot + 'guestweb_public_ny.css'],
+            'guestweb_Nobu_Ryokan_Malibu': [ themeCSSRoot + 'guestweb_Nobu_Ryokan_Malibu.css'],
+            'guestweb_ambrose': [ themeCSSRoot + 'guestweb_ambrose.css'],
+            'guestweb_little_duke': [ themeCSSRoot + 'guestweb_little_duke.css']
         };     
     }
 };
