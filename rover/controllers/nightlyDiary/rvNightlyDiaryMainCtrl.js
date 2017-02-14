@@ -74,7 +74,9 @@ angular.module('sntRover')
                     hasOverlay: false,
                     isEditReservationMode: false,
                     showUnassignedPanel: false,
-                    showFilterPanel: false
+                    showFilterPanel: false,
+                    selectedRoomTypes: [],
+                    selectedFloors: []
                 };
                 $scope.currentSelectedReservation = {};
                 $scope.currentSelectedRoom = {};
@@ -119,9 +121,10 @@ angular.module('sntRover')
                     postData = {
                         ...getPaginationParams(),
                         'start_date': $scope.diaryData.fromDate,
-                        'no_of_days': $scope.diaryData.numberOfDays
+                        'no_of_days': $scope.diaryData.numberOfDays,
+                        'selected_room_type_ids': $scope.diaryData.selectedRoomTypes,
+                        'selected_floor_ids': $scope.diaryData.selectedFloors
                     };
-
                 if (roomId) {
                     postData.room_id = roomId;
                     $scope.diaryData.selectedRoomId = roomId;
@@ -295,6 +298,15 @@ angular.module('sntRover')
                 cancelReservationEditing();
                 fetchRoomListDataAndReservationListData(roomId);
             });
+
+            /*
+             * Handle event emitted from child controller.
+             * To refresh diary data - rooms and reservations after applying filter.
+             */
+            $scope.$on('REFRESH_DIARYDATA', function() {
+                fetchRoomListDataAndReservationListData();
+            });
+
             /**
              * utility method to pass callbacks from
              * @return {Object} with callbacks

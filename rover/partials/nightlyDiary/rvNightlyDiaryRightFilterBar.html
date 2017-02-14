@@ -3,7 +3,7 @@
         <h2>Filters</h2>
         <p>Select filters and press "apply"</p>
     </div>
-    <div class="filters-list scrollable">
+    <div class="filters-list scrollable scroll-vertical">
         <div class="wrapper">
             <!-- Room Type -->
             <div class="entry">
@@ -15,7 +15,7 @@
                     <label class="checkbox inline" ng-repeat="roomType in diaryData.filterList.room_type" ng-class="{'checked':roomType.is_selected}" ng-click="toggleRoomSelection($index)">
                         <span class="icon-form icon-checkbox" ng-class="{'checked':roomType.is_selected}"></span>
                         <input type="checkbox">
-                        <span class="text">{{roomType.room_type}}</span>
+                        <span class="text">{{roomType.name}}</span>
                     </label>
                 </div>
             </div>
@@ -30,13 +30,13 @@
                     <label class="checkbox inline" ng-repeat="floorList in diaryData.filterList.floor_list" ng-class="{'checked':floorList.is_selected}" ng-click="toggleFloorSelection($index)">
                         <span class="icon-form icon-checkbox" ng-class="{'checked':floorList.is_selected}"></span>
                         <input type="checkbox">
-                        <span class="text">{{floorList.floor_name}}</span>
+                        <span class="text">{{floorList.floor_number}}</span>
                     </label>
                 </div>
             </div>
         </div>
     </div>
     <div class="actions">
-        <button type="button" class="button green">Apply</button>
+        <button type="button" class="button green" ng-click="applyFilter()">Apply</button>
     </div>
 </div>
