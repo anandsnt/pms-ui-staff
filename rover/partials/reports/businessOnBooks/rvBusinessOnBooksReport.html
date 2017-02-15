@@ -23,9 +23,9 @@
                   </thead>
                   <tbody>
                       <tr ng-repeat="date in dates track by $index">
-                          <td>{{date}}</td>
+                          <td>{{date | date : dateFormat}}</td>
                       </tr>
-                      <tr class="totals" ng-show="resultsTotalRow">
+                      <tr class="totals" ng-if="resultsTotalRow">
                           <td>Totals</td>
                       </tr>
                   </tbody>
@@ -84,7 +84,7 @@
                         <td>{{roomDet.individuals_data.revenue | currency:currencySymbol:2}}</td>
                         <td>{{roomDet.individuals_data.adr | currency:currencySymbol:2}}</td>
                     </tr>
-                    <tr class="totals" ng-show="resultsTotalRow">
+                    <tr class="totals" ng-if="resultsTotalRow">
                         <td class="rooms">{{resultsTotalRow.total_rooms_count}}</td>
                         <td class="rooms">{{resultsTotalRow.total_rooms_occ_percentage | number:2}}</td>
                         <td class="rooms">{{resultsTotalRow.total_rooms_available_rooms}}</td>
