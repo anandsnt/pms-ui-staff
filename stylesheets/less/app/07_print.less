@@ -1699,6 +1699,18 @@
                         }
                     }
                 }
+
+                &.business-books {
+                    thead {
+                        tr {
+                            &.bottom-row {
+                                th {
+                                    font-size: 7pt;
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             &.transaction-reports {
@@ -2273,6 +2285,127 @@
                     }
                 }
             }
+
+            &.commission-reports {
+                table-layout: fixed;
+                border-collapse: collapse;
+                border-spacing: 0;
+
+                thead {
+                    tr {
+                        th {
+                            
+
+                            &.amount {
+                                width: 100pt;
+                            }
+
+                            &.code {
+                                width: 150pt;
+                            }
+
+                            &.room {
+                                width: 50pt;
+                            }
+
+                            &.guest {
+                                width: 175pt;
+                            }
+                        }
+
+                        &.bottom-row {
+                                
+                            th { 
+                                
+                                text-transform: none;
+                                font-style: italic;
+                                background: @grey1;
+                                border-bottom: 0;
+                                font-weight: 400; 
+
+                                &.break {
+                                    border-left: 1px solid rgba(0,0,0,.4); 
+                                }
+                                &:not(.break) {
+                                     border-left: 1px solid rgba(0,0,0,.1); 
+                                }
+                               
+                                .box-shadow(inset 0 1px 0 rgba(0,0,0,.1));
+
+                                 
+                                &:first-child { border-left: 0; }
+
+                                &:not(:first-child) {
+                                    padding-left:4pt;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                tbody {
+                    tr {
+                        td {
+                            border-bottom: 1px solid rgba(0,0,0,0.1);
+
+                            &.name {
+
+                                .title {
+                                    a {
+                                        color: inherit;
+                                    }
+                                }
+                                 
+                                .data {
+                                    display: block;
+                                }
+
+                                .guest-date {
+                                    clear: both;
+
+                                    .date {
+                                        margin-top: 5pt;
+                                        display: block;
+                                        line-height: 20px;
+                                    }
+ 
+                                    span {
+                                        margin:0 2pt;
+                                    } 
+                                }
+                            }
+
+                            &:nth-child(5),
+                            &:nth-child(6),
+                            &:nth-child(7) {
+                                padding-left: 4pt;
+                            }
+                        } 
+
+                        &.rate-row {
+                            td {
+                                 padding-left:0;
+                            }
+                        } 
+                    }
+                }
+
+                tfoot { 
+                    
+                    tr {
+                        &.totals {
+                            td {
+                                font-size: 14px;
+                            }
+                        }
+                        &.pagination {
+                            display: none; 
+                        }
+                    }
+                   
+                }
+            }
+
         }
 
         &.with-graphs {
@@ -2458,6 +2591,60 @@
                 .pull-left;
 
                 > .wrapper { width: 100% !important; }
+            }
+
+            &.books {
+                .statistics-headings { 
+                    width: 75px;
+
+                    th.action-row {
+                        height: 36px;
+                        border-bottom: 1px solid @grey2;
+                    }
+
+                    tr {
+                        td {
+                            line-height: 18px;
+                            height: 18px;
+                            padding:0 10px;
+                            background-color: @grey1;
+                            border-bottom: 1px solid @grey2;
+                        }
+
+                        &.totals {
+                            td {
+                                border-bottom:0;
+                            }
+                        }
+                    }
+
+                }
+                .statistics-content {
+                    .calc-width(100, 75);
+
+                    th[rowspan="2"] {
+                        border-bottom: 1px solid @grey2;
+                    }
+
+                    th[colspan] {
+                        border-left: 1px solid @grey2;
+                        border-right:0;
+                    }
+
+                    .bottom-row {
+                        th {
+                            border-bottom: 1px solid @grey2;
+                        }
+
+                        th {
+                            &:first-child,
+                            &.rooms,
+                            &.picked-up {
+                                border-left: 1px solid @grey2;
+                            }
+                        }
+                    }
+                }
             }
         }
 

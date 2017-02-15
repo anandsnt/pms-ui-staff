@@ -234,7 +234,7 @@
             .box-shadow(0 1px 0 rgba(0,0,0,.1));
         }
     }
-
+fre
     /* Date / Time ***/
     .has-datepicker {
         position: relative;
@@ -1127,7 +1127,7 @@
     .report-content {
         position: relative;
         padding: 0 20px;
-        .calc-height(100, 100);
+        .calc-height(100, 50);
 
         > .wrapper { padding: 20px 0; }
 
@@ -2016,6 +2016,32 @@
                         }
                     }
                 }
+
+                &.business-books {
+                    tr {
+                        th,
+                        td {
+                            &.rooms {
+                                width: 60px;
+                            }
+
+                            &.occupancy {
+                                min-width: 70px;
+                            } 
+                            &.avl {
+                                min-width: 90px;
+                            }
+
+                            &.picked-up {
+                                min-width: 80px;
+                            }
+
+                            &.not-picked-up {
+                                min-width: 100px;
+                            }
+                        }
+                    }
+                }
             }
 
             &.forecast-reports {
@@ -2609,6 +2635,193 @@
             }
 
             &.occupancy-footer { .hide; }
+
+            &.commission-reports {
+                table-layout: fixed;
+                border-collapse: collapse;
+                border-spacing: 0;
+
+                thead {
+                    tr {
+                        th {
+                            color: @white; 
+                            font-weight: 600;
+                            background-color: @gcard; 
+                            height: 30px;
+                            line-height: 30px;
+
+                            &[colspan] { 
+                                border-left: 1px solid rgba(0,0,0,.4); 
+                                text-align: center;
+                                &:last-child { border-right: 0; }
+                            }
+
+                            &[rowspan] { 
+                                border-left: 1px solid rgba(0,0,0,.4);
+                            }
+
+                            &[colspan="2"] { width: 160px; }
+                            &[colspan="3"] { width: 240px; }
+                            &[colspan="4"] { width: 320px; }
+                            &[colspan="5"] { width: 400px; }
+
+                            &.amount {
+                                width: 100px;
+                            }
+
+                            &.code {
+                                width: 150px;
+                            }
+
+                            &.room {
+                                width: 50px;
+                            }
+
+                            &.guest {
+                                width: 175px;
+                            }
+                        }
+
+                        &.bottom-row {
+                            th { 
+                                font-size: 13px;
+                                text-transform: none;
+                                font-style: italic;
+                                
+                                font-weight: 400; 
+
+                                &.break {
+                                    border-left: 1px solid rgba(0,0,0,.4); 
+                                }
+                                &:not(.break) {
+                                     border-left: 1px solid rgba(0,0,0,.1); 
+                                }
+                               
+                                .box-shadow(inset 0 1px 0 rgba(0,0,0,.1));
+
+                                 
+                                &:first-child { border-left: 0; }
+                            }
+                        }
+                    }
+                }
+
+                tbody {
+                    tr {
+                        td {
+                            border-bottom: 1px solid rgba(0,0,0,0.1);
+
+                            &.name {
+                                 
+
+                                .data {
+                                    display: block;
+                                }
+
+                                .guest-date {
+                                    clear: both;
+
+                                    .date {
+                                        margin-top: 5px;
+                                        display: block;
+                                        width: 150px;
+                                    }
+
+                                    time,
+                                    span {
+                                        
+                                    }
+
+                                    span {
+                                        margin:0 2px;
+                                    }
+
+                                    .guest-status {
+                                        .square(16px);
+                                        background-size: 80px;
+
+                                        &.check-in,
+                                        &.pre-check-in {
+                                            background-position: 4px -77px;
+                                        }
+
+                                        &.check-out {
+                                            background-position: 4px -104px;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        &.totals {
+                            td:first-child {
+                                text-align: right;
+                            }
+                        } 
+                    }
+                }
+
+                tfoot { 
+                    
+                    tr {
+                        &.totals {
+                            td {
+                                font-size: 14px;
+                            }
+                        }
+                        &.pagination {
+                            td {
+                                padding: 0;
+                                background-color: transparent;
+
+                                .numbers-pagination,
+                                .search-pagination {
+                                    position: static;
+                                    left: auto;
+                                    bottom: auto;
+                                    padding: 10px;
+                                    height: 40px;
+                                    background: @white;
+                                    .box-shadow(none);
+
+                                    .button { 
+                                        font-size: 12px;
+                                        line-height: 30px;
+                                        &.prev,
+                                        &.next {
+                                            &:before {
+                                                top: 10px;
+                                            }
+                                        }
+
+                                        &.prev {
+                                            &:before {
+                                                left: 12px;
+                                            }
+                                        }
+
+                                        &.next {
+                                            &:before {
+                                                right: 12px;
+                                            }
+                                        }
+                                    }
+
+                                    .delimiter,
+                                    .button {
+                                        .square(30px);
+                                    }
+
+                                    &:before,
+                                    &:after { .hide; }
+                                }
+                            }
+                        }
+                    }
+                   
+                }
+            }
+
         }
 
         &.card-authorization-check {
@@ -2617,7 +2830,7 @@
             }
         }
 
-        &.with-pagination { .calc-height(100, 160); }
+        &.with-pagination { .calc-height(100, 110); }
 
         &.with-graphs {
 
@@ -2888,6 +3101,66 @@
                     bottom: 5px;
                     left: 10px;
                     right: 10px;
+                }
+            }
+
+            &.books {
+                .statistics-headings { 
+                    width: 150px;
+
+                    .scrollable {
+                        table {
+                            border-collapse: collapse;
+
+                            th.action-row {
+                                padding: 0 10px;
+                                height: 60px;
+                                font-size: 16px;
+                                font-weight: 600;
+                                color: @white;
+                                background-color: @gcard;
+                                border: 0;
+                                line-height: 30px;
+                            }
+
+                            td {
+                                height: 30px;
+                                padding: 0 10px;
+                                line-height: 30px;
+                                border-bottom: 1px solid rgba(0,0,0,.1);
+                                background-color: @grey1;
+                            }
+
+                            tr.totals {
+
+                                td {
+                                    font-weight: 600;
+                                    text-transform: uppercase;
+                                    border-bottom:0;
+                                }
+                                
+
+                            }
+                        }
+                        li {
+                            &.action-row {
+                                padding: 0 10px;
+                            }
+
+                            &.totals {
+                                font-weight: 600;
+                                text-transform: uppercase;
+                            }
+                        }
+                    }
+                }
+                .statistics-content {
+                    .calc-width(100, 125);
+                    left: 125px;
+
+                    .wrapper {
+                        width: 1600px;
+                    }
                 }
             }
         }

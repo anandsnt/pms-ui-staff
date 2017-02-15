@@ -374,6 +374,20 @@ angular.module('reportsModule')
                     break;
             }
         };
+        factory.addIncludeOtherFilter = function( report ) {
+            switch ( report['title'] ) {
+                case reportNames['TRAVEL_AGENT_COMMISSIONS']:
+                    report['filters'].push({
+                        'value': "INCLUDE_TRAVEL_AGENT",
+                        'description': "Include Travel Agent"
+                    });
+                    break;
+
+                default:
+                    // no op
+                    break;
+            }
+        };
 
 
         /**
@@ -529,6 +543,10 @@ angular.module('reportsModule')
 
                 if ( filter.value === 'ACCOUNT_SEARCH' ) {
                     report['hasAccountSearch'] = filter;
+                }
+
+                if ( filter.value === 'TRAVEL_AGENTS' ) {
+                    report['hasTravelAgentsSearch'] = filter;
                 }
 
                 // check for include company/ta filter and keep a ref to that item
@@ -803,6 +821,10 @@ angular.module('reportsModule')
                     requested++;
                     reportsSubSrv.fetchAccounts()
                         .then( fillAccounts );
+                } else if ( 'INCLUDE_TRAVEL_AGENT' === filter.value && ! filter.filled) {
+                    requested++;
+                    reportsSubSrv.fetchTravelAgents()
+                        .then( fillTravelAgents );
                 } else {
                     // no op
                 }
@@ -871,6 +893,30 @@ angular.module('reportsModule')
                 checkAllCompleted();
             }
 
+            function fillTravelAgents (data) {
+                var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'TRAVEL_AGENTS' });
+
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+
+                        report.hasTravelAgentsSearch = {
+                            data: angular.copy( data ),
+                            options: {
+                                selectAll: false,
+                                hasSearch: true,
+                                key: 'account_name',
+                                defaultValue: 'Select TA'
+                            }
+                        };
+                    }
+                });
+
+                completed++;
+                checkAllCompleted();
+            }
 
             function fillMarkets (data) {
                 var foundFilter;
@@ -1086,11 +1132,11 @@ angular.module('reportsModule')
 
             function fillAgingBalance() {
                 customData = [
-                                {id: "0_30", status: "0-30 DAYS", selected: true},
-                                {id: "31_60", status: "31-60 DAYS", selected: true},
-                                {id: "61_90",  status: "61-90 DAYS", selected: true},
-                                {id: "91_120",  status: "91-120 DAYS", selected: true},
-                                {id: "120_plus",  status: "120+ DAYS", selected: true}
+                                {id: "0to30", status: "0-30 DAYS", selected: true},
+                                {id: "31to60", status: "31-60 DAYS", selected: true},
+                                {id: "61to90",  status: "61-90 DAYS", selected: true},
+                                {id: "91to120",  status: "91-120 DAYS", selected: true},
+                                {id: "120plus",  status: "120+ DAYS", selected: true}
                             ];
 
 
@@ -2024,7 +2070,8 @@ angular.module('reportsModule')
                 'monthStart': new Date(_year, _month, 1),
                 'twentyEightDaysBefore': new Date(_year, _month, _date - 28),
                 'twentyEightDaysAfter': new Date(_year, _month, _date + 28),
-                'aYearAfter': new Date(_year + 1, _month, _date - 1)
+                'aYearAfter': new Date(_year + 1, _month, _date - 1),
+                'sixMonthsAfter': new Date(_year, _month + 6, _date)
             };
 
             if ( parseInt(xDays) !== NaN ) {

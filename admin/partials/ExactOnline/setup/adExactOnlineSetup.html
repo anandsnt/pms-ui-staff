@@ -14,15 +14,16 @@
             <ad-form-title full-width="true" form-title="{{'EXACT_ONLINE_SUB_TITLE'| translate}}"></ad-form-title>
 
             <fieldset class="holder left">
-                <ad-dropdown-name savemodel="exactOnlineSetup.endpoint"
-                                  valueproperty="endpoint"
-                                  property="description"
-                                  change-handler="onURLChange"
-                                  list="endPoints"
-                                  label="{{'ENDPOINT'| translate}}"
-                                  div-class="full-width"
-                                  prefix-value="true">
-                </ad-dropdown-name>
+                <div class='entry full-width'>
+                    <label>{{'ENDPOINT'| translate}}</label>
+                    <div class='select'>
+                        <select ng-model='exactOnlineSetup.endpoint' ng-change="onURLChange();">
+                            <option ng-repeat='endpoint in endPoints' value='{{endpoint.endpoint}}'>
+                                {{endpoint.endpoint}}&nbsp;{{code.description}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
 
                 <div class="entry full-width">
                     <label>
