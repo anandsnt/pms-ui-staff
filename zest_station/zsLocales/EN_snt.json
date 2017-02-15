@@ -209,7 +209,9 @@
    "EARLY_SUB_3":"Please see a staff member for help",
 
    "EARLY_AVAIL_PURCHASED":"But your Early Check-In is available.",
+   "EARLY_AVAIL_PURCHASED_REALLY_EARLY_HEADER":"",
    "EARLY_AVAIL_PURCHASED_REALLY_EARLY":"Sorry, Your Early Check-In is not available yet.",
+
    "EARLY_AVAIL_FREE":"But you are eligible for a FREE Early Check-in.",
 
 
@@ -461,5 +463,16 @@
   "ROOM_UPGRADE_ERROR_SUB" : "Speak to the staff or continue",
   "ROOM_UPGRADE_ERROR_CONTINUE": "Continue",
 
-  "GUESTS": "Guests"
+  "GUESTS": "Guests",
+
+  "PRINT": "Print",
+  "NEXT": "Next",
+  "EMAIL": "Email",
+  "CONTINUE": "Continue",
+  "PLEASE_WAIT_FOR_KEY_CARD_FOR_CHECKOUT": "Please Wait",
+  "PLEASE_WAIT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT": "",
+  "RETRY": "Retry",
+  "SEARCH": "Search",
+  "BY_NAME": "By Name"
+   
 }
