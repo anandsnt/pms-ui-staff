@@ -61,7 +61,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		$scope.parsedApiFor = undefined;
 		$scope.currencySymbol = $rootScope.currencySymbol;
-		
+
         var setTotalsForReport = function(totals) {
                 var totalsForReport = [], v;
 
@@ -1290,6 +1290,11 @@ sntRover.controller('RVReportDetailsCtrl', [
          */
         $scope.toggleBookings = function() {
             $scope.isBookingsSelected = !$scope.isBookingsSelected;
+        };
+
+        // Check whether we need to show or not the totals
+        $scope.showTotals = function() {
+            return _.isArray($scope.resultsTotalRow) ? $scope.resultsTotalRow.length : $scope.resultsTotalRow;
         };
     }
 

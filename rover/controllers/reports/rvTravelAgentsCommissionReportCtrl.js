@@ -10,8 +10,10 @@ angular.module('sntRover')
         var SCROLL_NAME  = 'report-details-scroll';
 
         var refreshScroll = function() {
-            $scope.refreshScroller(SCROLL_NAME);
-            $scope.myScroll[SCROLL_NAME].scrollTo(0, 0, 100);
+            $timeout(function() {
+                $scope.refreshScroller(SCROLL_NAME);
+                $scope.myScroll[SCROLL_NAME].scrollTo(0, 0, 100);
+            }, 1000);
         };       
         // Param added - only to refresh these TA agent's reservation
         // While click on the pagination
@@ -25,9 +27,7 @@ angular.module('sntRover')
                 return travelAgents;
             });
 
-            $timeout(function() {
-                refreshScroll();
-            }, 1000);
+            refreshScroll();
         };
 
         // Invoke API to fetch reservations of the selected TA
@@ -40,7 +40,8 @@ angular.module('sntRover')
         // After clicks on any inside reservations pagination
         $scope.$on("UPDATE_RESULTS", function(e, results) {
             $scope.results = results;
+            refreshScroll();
         });
-
+        refreshScroll();
 
     }]);
