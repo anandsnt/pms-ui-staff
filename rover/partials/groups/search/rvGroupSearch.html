@@ -114,9 +114,9 @@
             <li class="group" ng-show="!shouldShowNoResult()" ng-repeat="group in groupList" ngrepeatend ngrepeatstarted>
                 <a ng-click="gotoEditGroupConfiguration(group.id)">
                     <div class="data">
-                        <h2 ng-bind-html="{{escapeNull(stringify(group.group_name))}}|highlight:query:false">
+                        <h2 ng-bind-html="escapeNull(group.group_name)|highlight:query:false">
                         </h2>
-                        <span class="confirmation" ng-bind-html="{{stringify(escapeNull(group.group_code))}}|highlight:query:false"></span>
+                        <span class="confirmation" ng-bind-html="escapeNull(group.group_code)|highlight:query:false"></span>
                         <!-- If linked company exists: -->
                         <span class="icons icon-guest-company" ng-hide="isEmpty(group.company)">
                             {{group.company}}

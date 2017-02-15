@@ -559,7 +559,6 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		$scope.deviceNotConnected = false;
 		$scope.keysPrinted = false;
 		$scope.showPrintKeyOptions = true;
-		$scope.$apply();
 
 	};
 
