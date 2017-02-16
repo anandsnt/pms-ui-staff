@@ -67,6 +67,18 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                 fileref.setAttribute('href', url);
                 $('body').attr('id', theme);
                 $('body').append(fileref);
+
+                if (theme === 'public' && $scope.inProd) {
+                    url = 'https://cloud.typography.com/7902756/7320972/css/fonts.css';
+                    fileref = document.createElement('link');
+
+                    fileref.setAttribute('rel', 'stylesheet');
+                    fileref.setAttribute('type', 'text/css');
+                    fileref.setAttribute('href', url);
+                    $('head').attr('id', theme);
+                    $('head').append(fileref);
+                }
+
                 setThemeByName(theme);
             } else {
                 return;
