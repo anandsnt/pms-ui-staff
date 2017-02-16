@@ -36,7 +36,13 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
         };
 
         var checkIfEmailIsBlackListedOrValid = function() {
-            return ($stateParams.email.length > 0 && !($stateParams.guest_email_blacklisted === 'true') && zsUtilitySrv.isValidEmail($stateParams.email));
+            var email = $stateParams.guest_email ? $stateParams.guest_email : $stateParams.email;
+            
+            if (!email) {
+                email = '';
+            }
+
+            return email.length > 0 && !($stateParams.guest_email_blacklisted === 'true') && zsUtilitySrv.isValidEmail(email);
         };
 
         /**

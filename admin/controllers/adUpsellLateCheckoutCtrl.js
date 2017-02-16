@@ -186,7 +186,7 @@ $scope.saveClick = function() {
 	updateData.deleted_room_types = $scope.upsellData.deleted_room_types;
 	// Creating room type array with available max_late_checkouts data
 	angular.forEach($scope.upsellData.room_types, function(item, index) {
-		if (item.max_late_checkouts !== '') {
+		if (item.max_late_checkouts !== '' && item.max_late_checkouts !== null) {
 			 var obj = { "id": item.id.toString(), "max_late_checkouts": item.max_late_checkouts.toString() };
 
 			 updateData.room_types.push(obj);
