@@ -237,7 +237,13 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 $log.warn('reservation has balance due');
                 $state.go('zest_station.speakToStaff');
             } else {
-                $scope.checkOutGuest();
+                // TO DO : delete below commented code
+                // $scope.zestStationData.is_standalone = false;
+                if (!$scope.zestStationData.is_standalone) {
+                    $state.go('zest_station.emailBill', $scope.stateParamsForNextState);
+                } else {
+                    $scope.checkOutGuest();
+                }
             }
         };
 
@@ -255,6 +261,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 $scope.last_name = $stateParams.last_name;
                 $scope.days_of_stay = $stateParams.days_of_stay;
                 $scope.hours_of_stay = $stateParams.hours_of_stay;
+                $stateParams.email = !_.isNull($stateParams.email) ? $stateParams.email : '';
                 $scope.setupBillData();
                 // storing state varibales to be used in print view also
                 $scope.stateParamsForNextState = {
