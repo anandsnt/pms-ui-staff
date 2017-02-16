@@ -64,9 +64,16 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                     return themeMapping.toLowerCase() === theme;
                 });
 
+                if (!_.isUndefined(theme)) {
+                    if (theme.indexOf('public') !== -1) {
+                        theme = 'public';
+                    }
+                }
+
                 if (!that.isThemeConfigured(theme)) {
                     theme = 'snt';
                 }
+
                 that.hotelTheme = theme;
                 // resolves this.fetchSetting()
                 deferred.resolve(resolveData);
