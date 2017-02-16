@@ -83,6 +83,7 @@
                         jqyoui-draggable ="{index: {{$index}}, animate:false, onStart:'dragStart()', onStop:'dragDrop()', onDrag:'userDragging()'}"
                         data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content .for-lone-task'}">
                         <div class="info">
+                            <span class="only-print" ng-bind="getRoomType(room.room_type)"></span>
                             <span ng-class="getReservationStatusClass(multiSheetState.allRooms[room.room_index])"
                                 ng-bind="getReservationStatusValue(multiSheetState.allRooms[room.room_index])"></span>
                             <span ng-class="getCurrentStatusClass(multiSheetState.allRooms[room.room_index])">
@@ -167,6 +168,7 @@
                                 data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content .for-lone-task', cancel: '.completed-task'}"
                                 emit-when="{event: 'ALL_RENDER_COMPLETE', condition: ($parent.$parent.$last && $parent.$last && $last)}">
                                 <div class="info">
+                                    <span class="only-print" ng-bind="getRoomType(room.room_type)"></span>
                                     <span ng-class="getReservationStatusClass(multiSheetState.allRooms[room.room_index])"
                                         ng-bind="getReservationStatusValue(multiSheetState.allRooms[room.room_index])"></span>
                                     <span ng-class="getCurrentStatusClass(multiSheetState.allRooms[room.room_index])">{{ multiSheetState.allRooms[room.room_index].current_status }}</span>

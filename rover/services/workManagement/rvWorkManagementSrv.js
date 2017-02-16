@@ -463,6 +463,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 					copyRoom = $.extend(
 							{},
 							{ 'room_id': rooms[i].id },
+							{ 'room_type': rooms[i].room_type },
 							{ 'room_index': roomIndex },
 							{ 'room_tasks': [] }
 						);
@@ -544,6 +545,11 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 
 			var roomIndex, copyEmployee, roomTasksInit, copyRoom, tasksInIt, thatAllTask, copyTask, thatRoomTypeId, thatRoomNo;
 
+			var getRoomType = function(roomId) {
+				var match = _.find(rooms, { id: roomId });
+				return match ? match.room_type : '';
+			}
+
 			for (i = 0, j = employees.length; i < j; i++) {
 				var displayName = employees[i].name.split(" "),
 					firstname   = displayName.shift();
@@ -580,6 +586,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 					copyRoom = $.extend(
 							{},
 							{ 'room_id': roomTasksInit[k].room_id },
+							{ 'room_type': getRoomType(roomTasksInit[k].room_id) },						
 							{ 'room_index': roomIndex },
 							{ 'room_tasks': [] }
 						);

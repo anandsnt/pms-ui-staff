@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', 'ngDialog', 'RVWorkManagementSrv', '$state', '$stateParams', '$timeout', 'allUnassigned', 'fetchHKStaffs', 'payload', '$window',
-	function($rootScope, $scope, ngDialog, RVWorkManagementSrv, $state, $stateParams, $timeout, allUnassigned, fetchHKStaffs, payload, $window) {
+angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', 'ngDialog', 'RVWorkManagementSrv', '$state', '$stateParams', '$timeout', 'allUnassigned', 'fetchHKStaffs', 'roomTypes', 'payload', '$window',
+	function($rootScope, $scope, ngDialog, RVWorkManagementSrv, $state, $stateParams, $timeout, allUnassigned, fetchHKStaffs, roomTypes, payload, $window) {
 		BaseCtrl.call(this, $scope);
 
 		// saving in local variable, since it will be updated when user changes the date
@@ -1253,7 +1253,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
             };
 
             dimOnResize();
-            console.log( dim );
             window.addEventListener( 'resize', dimOnResize, false );
             $scope.$on('$destroy', function() {
                 window.removeEventListener( 'resize', dimOnResize );
@@ -1419,5 +1418,27 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		};
 
 		init();
+
+		var quickMatchCache = {};
+		$scope.getRoomType = function (id) {
+			var quick = quickMatchCache[id],
+				match,
+				found;
+
+			if ( angular.isDefined(quick) ) {
+				found = quick;
+			} else {
+				match = _.find(roomTypes, {id: id});
+
+				if ( angular.isDefined(match) ) {
+					quickMatchCache[id] = match.name;
+					found = match.name;
+				} else {
+					found = '';
+				}
+			}
+
+			return found;
+		};
 	}
 ]);
