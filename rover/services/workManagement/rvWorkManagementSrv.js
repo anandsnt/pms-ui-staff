@@ -547,8 +547,9 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 
 			var getRoomType = function(roomId) {
 				var match = _.find(rooms, { id: roomId });
+
 				return match ? match.room_type : '';
-			}
+			};
 
 			for (i = 0, j = employees.length; i < j; i++) {
 				var displayName = employees[i].name.split(" "),

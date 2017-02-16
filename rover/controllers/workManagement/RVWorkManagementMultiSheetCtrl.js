@@ -13,6 +13,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		var selectionHistory = [],
 			employeeIndexHash = {};
 
+		var quickMatchCache;
+
 		// auto save the sheet when moving away
 		$rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
 			if ('rover.workManagement.multiSheet' === fromState.name && $scope.workSheetChanged) {
@@ -1419,11 +1421,10 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 		init();
 
-		var quickMatchCache = {};
+		quickMatchCache = {};
 		$scope.getRoomType = function (id) {
-			var quick = quickMatchCache[id],
-				match,
-				found;
+			var quick = quickMatchCache[id];
+			var match, found;
 
 			if ( angular.isDefined(quick) ) {
 				found = quick;
