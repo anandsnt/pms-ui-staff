@@ -3,18 +3,26 @@ angular.module('sntRover').service('RVNightlyDiaryRightFilterBarSrv',
 	'BaseWebSrvV2',
 	function($q, BaseWebSrvV2){
 		var that = this;
+		
+		that.fetchRoomType = function(params) {
+			var deferred = $q.defer(), 
+				url = '/api/room_types.json?exclude_pseudo=true&exclude_suite=true';
+			BaseWebSrvV2.getJSON(url, params).then(function(response) {
+				deferred.resolve(response);
+			}, function(error) {
+				deferred.reject(error);
+			});
+			return deferred.promise;
+		};
 
-		/*
-         * To fetch the filter list
-         */
-		that.fetchFilterList = function(params) {
-			var deferred = $q.defer(),
-	            url = '/api/nightly_diary/filter_list';
-			BaseWebSrvV2.getJSON(url, data).then(function(response) {
-                deferred.resolve(response);
-            }, function(error) {
-                deferred.reject(error);
-            });
-            return deferred.promise;
+		that.fetchFloorList = function(params) {
+			var deferred = $q.defer(), 
+				url = '/api/floors.json';
+			BaseWebSrvV2.getJSON(url, params).then(function(response) {
+				deferred.resolve(response);
+			}, function(error) {
+				deferred.reject(error);
+			});
+			return deferred.promise;
 		};
 }]);
