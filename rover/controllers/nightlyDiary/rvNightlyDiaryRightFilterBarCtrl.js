@@ -68,7 +68,6 @@ angular.module('sntRover')
 					return selectedRoomTypes;
 				};
 
-
 				/*
 				 * Creating an array of selected floors to apply filter.
 				 */
@@ -83,7 +82,7 @@ angular.module('sntRover')
 
 				$scope.diaryData.selectedRoomTypes = getSelectedRoomTypes($scope.diaryData.filterList.room_type);
 				$scope.diaryData.selectedFloors = getSelectedFloors($scope.diaryData.filterList.floor_list);
-				$scope.$emit('REFRESH_DIARYDATA');
+				$scope.$emit('REFRESH_DIARY_SCREEN');
 			};
 
 			initiate();

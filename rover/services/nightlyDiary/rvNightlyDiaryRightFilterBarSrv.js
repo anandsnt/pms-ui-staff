@@ -4,6 +4,11 @@ angular.module('sntRover').service('RVNightlyDiaryRightFilterBarSrv',
 	function($q, BaseWebSrvV2){
 		var that = this;
 		
+		/*
+         * Fetch room type list
+         * @param {data} object
+         * return object
+         */
 		that.fetchRoomType = function(params) {
 			var deferred = $q.defer(), 
 				url = '/api/room_types.json?exclude_pseudo=true&exclude_suite=true';
@@ -14,7 +19,12 @@ angular.module('sntRover').service('RVNightlyDiaryRightFilterBarSrv',
 			});
 			return deferred.promise;
 		};
-
+		
+		/*
+         * Fetch Floor list
+         * @param {data} object
+         * return object
+         */
 		that.fetchFloorList = function(params) {
 			var deferred = $q.defer(), 
 				url = '/api/floors.json';

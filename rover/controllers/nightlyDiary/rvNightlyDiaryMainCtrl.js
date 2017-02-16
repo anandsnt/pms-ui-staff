@@ -303,7 +303,7 @@ angular.module('sntRover')
              * Handle event emitted from child controller.
              * To refresh diary data - rooms and reservations after applying filter.
              */
-            $scope.$on('REFRESH_DIARYDATA', function() {
+            $scope.$on('REFRESH_DIARY_SCREEN', function() {
                 fetchRoomListDataAndReservationListData();
             });
 
