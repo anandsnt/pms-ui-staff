@@ -14,7 +14,6 @@ sntRover.controller('reservationActionsController', [
 	'RVReservationSummarySrv',
         'RVPaymentSrv',
     'RVContactInfoSrv',
-	'$stateParams',
 	function($rootScope,
 		$scope,
 		ngDialog,
@@ -29,8 +28,7 @@ sntRover.controller('reservationActionsController', [
 		$window,
 		RVReservationSummarySrv,
                 RVPaymentSrv,
-        RVContactInfoSrv,
-		$stateParams) {
+        RVContactInfoSrv) {
 
 		BaseCtrl.call(this, $scope);
 		var TZIDate = tzIndependentDate,
