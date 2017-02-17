@@ -2,6 +2,7 @@
 
     "NAME":"Name",
     "DESCRIPTION":"Description",
+    "ALTERNATE_DESCRIPTION":"Alternate Description",
     "ACTIVE":"Active",
     "DELETE":"Delete",
     "ADD_ONS":"Add-Ons",
@@ -50,6 +51,8 @@
     "SYSTEM_DEFINED_LABEL": " (System defined)",
     "ENTER_ADDON_NAME":"Enter Add-On Name",
     "ENTER_ADDON_DESCRIPTION":"Enter Add-On Description",
+    "ENTER_ADDON_ALTERNATE_DESCRIPTION":"Enter Alternate Description",
+    "ALTERNATE_DESCRIPTION_SWITCH_LABEL": "Enable Alternate Description",
     "RESERVATION_SETTINGS":"Reservation Settings",
     "DEFAULT_RATE_DISPLAY":"Default Rate Display",
     "MAX_ADULTS":"Max Adults",

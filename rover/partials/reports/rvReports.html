@@ -56,7 +56,7 @@
                     </div>
                     <button class="button with-icon only-icon blue" button="button" ng-click="emailReport()" ng-if="HIDE_THIS_FEATURE"><span class="icons icon-email"></span>
                     </button>
-                    <button class="button with-icon only-icon blue" button="button" ng-click="fetchFullReport()"><span class="icons icon-print"></span>
+                    <button class="button with-icon only-icon blue" button="button" ng-if="showPrintOption" ng-click="fetchFullReport()"><span class="icons icon-print"></span>
                     </button>
                     <button ng-click="exportCSV()" class="button with-icon only-icon purple" button="button" ng-show="shouldShowExportButton(chosenReport) && !hideExportOption"><span class="icons icon-save"></span>
                     </button>
