@@ -294,6 +294,7 @@ angular.module('sntRover')
                 cancelReservationEditing();
                 fetchRoomListDataAndReservationListData(roomId);
                 $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
+                $scope.diaryData.showFilterPanel = false;
             });
 
             /*

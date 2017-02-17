@@ -7,13 +7,13 @@
         <div class="wrapper">
             <!-- Room Type -->
             <div class="entry">
-                <div class="multi-select with-label" ng-click="hideRoomType=!hideRoomType">
+                <div class="multi-select with-label" ng-click="diaryData.hideRoomType =! diaryData.hideRoomType">
                     <label for="room-type">Room Type</label>
-                    <span class="value">{{selectedRoomCount}} selected ...</span>
+                    <span class="value">{{diaryData.selectedRoomCount}} selected ...</span>
                 </div>
-                <div class="multi-select-options" ng-class="{'hidden': hideRoomType}">
-                    <label class="checkbox inline" ng-repeat="roomType in diaryData.filterList.room_type" ng-class="{'checked':roomType.is_selected}" ng-click="toggleRoomSelection($index)">
-                        <span class="icon-form icon-checkbox" ng-class="{'checked':roomType.is_selected}"></span>
+                <div class="multi-select-options" ng-class="{'hidden': diaryData.hideRoomType}">
+                    <label class="checkbox inline" ng-repeat="roomType in diaryData.filterList.roomType" ng-class="{'checked':roomType.isSelected}" ng-click="toggleRoomSelection($index)">
+                        <span class="icon-form icon-checkbox" ng-class="{'checked':roomType.isSelected}"></span>
                         <input type="checkbox">
                         <span class="text">{{roomType.name}}</span>
                     </label>
@@ -22,13 +22,13 @@
 
             <!-- Floor -->
             <div class="entry">
-                <div class="multi-select with-label" ng-click="hideFloorList=!hideFloorList">
+                <div class="multi-select with-label" ng-click="diaryData.hideFloorList =! diaryData.hideFloorList">
                     <label for="room-type">Floor</label>
-                    <span class="value">{{selectedFloorCount}} selected ...</span>
+                    <span class="value">{{diaryData.selectedFloorCount}} selected ...</span>
                 </div>
-                <div class="multi-select-options halfs" ng-class="{'hidden': hideFloorList}">
-                    <label class="checkbox inline" ng-repeat="floorList in diaryData.filterList.floor_list" ng-class="{'checked':floorList.is_selected}" ng-click="toggleFloorSelection($index)">
-                        <span class="icon-form icon-checkbox" ng-class="{'checked':floorList.is_selected}"></span>
+                <div class="multi-select-options halfs" ng-class="{'hidden': diaryData.hideFloorList}">
+                    <label class="checkbox inline" ng-repeat="floorList in diaryData.filterList.floorList" ng-class="{'checked':floorList.isSelected}" ng-click="toggleFloorSelection($index)">
+                        <span class="icon-form icon-checkbox" ng-class="{'checked':floorList.isSelected}"></span>
                         <input type="checkbox">
                         <span class="text">{{floorList.floor_number}}</span>
                     </label>

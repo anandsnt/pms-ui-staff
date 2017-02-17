@@ -13,22 +13,22 @@ angular.module('sntRover')
 			 * Initiate controller
 			 */
 			var initiate = function() {
-				$scope.hideRoomType = true;
-				$scope.hideFloorList = true;
+				$scope.diaryData.hideRoomType = true;
+				$scope.diaryData.hideFloorList = true;
 				$scope.diaryData.filterList = {};
 				var postData = {};
 				
 				var successCallBackFetchRoomType = function(data) {
 					$scope.$emit('hideLoader');
-					$scope.selectedRoomCount = 0;
-					$scope.diaryData.filterList.room_type = data.results;
+					$scope.diaryData.selectedRoomCount = 0;
+					$scope.diaryData.filterList.roomType = data.results;
 				}
 				$scope.invokeApi(RVNightlyDiaryRightFilterBarSrv.fetchRoomType, postData, successCallBackFetchRoomType);
 
 				var successCallBackFetchFloorList = function(data) {
 					$scope.$emit('hideLoader');
-					$scope.selectedFloorCount = 0;
-					$scope.diaryData.filterList.floor_list = data.floors;
+					$scope.diaryData.selectedFloorCount = 0;
+					$scope.diaryData.filterList.floorList = data.floors;
 				}
 				$scope.invokeApi(RVNightlyDiaryRightFilterBarSrv.fetchFloorList, postData, successCallBackFetchFloorList);
 			};
@@ -37,16 +37,16 @@ angular.module('sntRover')
 			 * To toggle room selection
 			 */
 			$scope.toggleRoomSelection = function(index) {
-				$scope.diaryData.filterList.room_type[index].is_selected = !$scope.diaryData.filterList.room_type[index].is_selected;
-				$scope.diaryData.filterList.room_type[index].is_selected === true ? $scope.selectedRoomCount++ : $scope.selectedRoomCount--;
+				$scope.diaryData.filterList.roomType[index].isSelected = !$scope.diaryData.filterList.roomType[index].isSelected;
+				$scope.diaryData.filterList.roomType[index].isSelected === true ? $scope.diaryData.selectedRoomCount++ : $scope.diaryData.selectedRoomCount--;
 			};
 
 			/*
 			 * To toggle floor selection
 			 */
 			$scope.toggleFloorSelection = function(index) {
-				$scope.diaryData.filterList.floor_list[index].is_selected = !$scope.diaryData.filterList.floor_list[index].is_selected;
-				$scope.diaryData.filterList.floor_list[index].is_selected === true ? $scope.selectedFloorCount++ : $scope.selectedFloorCount--;
+				$scope.diaryData.filterList.floorList[index].isSelected = !$scope.diaryData.filterList.floorList[index].isSelected;
+				$scope.diaryData.filterList.floorList[index].isSelected === true ? $scope.diaryData.diaryData.selectedFloorCount++ : $scope.diaryData.selectedFloorCount--;
 			};
 
 			/*
@@ -61,7 +61,7 @@ angular.module('sntRover')
 				 */
 				var getSelectedRoomTypes = function(roomTypes) {
 					roomTypes.forEach(function(roomtype) {
-						if(roomtype.is_selected) {
+						if(roomtype.isSelected) {
 							selectedRoomTypes.push(roomtype.id);
 						}
 					});
@@ -73,15 +73,15 @@ angular.module('sntRover')
 				 */
 				var getSelectedFloors = function(floorList) {
 					floorList.forEach(function(floor) {
-						if(floor.is_selected) {
+						if(floor.isSelected) {
 							selectedFloors.push(floor.id);
 						}
 					});
 					return selectedFloors;
 				};
 
-				$scope.diaryData.selectedRoomTypes = getSelectedRoomTypes($scope.diaryData.filterList.room_type);
-				$scope.diaryData.selectedFloors = getSelectedFloors($scope.diaryData.filterList.floor_list);
+				$scope.diaryData.selectedRoomTypes = getSelectedRoomTypes($scope.diaryData.filterList.roomType);
+				$scope.diaryData.selectedFloors = getSelectedFloors($scope.diaryData.filterList.floorList);
 				$scope.$emit('REFRESH_DIARY_SCREEN');
 			};
 
@@ -89,23 +89,25 @@ angular.module('sntRover')
 			 *	Method to reset room type, floor filters
 			 */
 			var resetFilters = function() {
-				var roomTypes = $scope.diaryData.filterList.room_type,
-					floorList = $scope.diaryData.filterList.floor_list;
+				var roomTypes = $scope.diaryData.filterList.roomType,
+					floorList = $scope.diaryData.filterList.floorList;
 
 				if(roomTypes && roomTypes.length > 0) {
 					roomTypes.forEach(function(roomtype) { 
-						roomtype.is_selected = false;
+						roomtype.isSelected = false;
 					});
 				}
 
 				if(floorList && floorList.length >0) {
 					floorList.forEach(function(floor) {
-						floor.is_selected = false;
+						floor.isSelected = false;
 					});
 				}
 
 				$scope.diaryData.selectedRoomTypes = [];
 				$scope.diaryData.selectedFloors = [];
+				$scope.diaryData.selectedFloorCount = 0;
+				$scope.diaryData.selectedRoomCount = 0;
 			};
 
 			$scope.$on('RESET_RIGHT_FILTER_BAR', function() {
