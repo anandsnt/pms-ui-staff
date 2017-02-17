@@ -46,7 +46,7 @@ angular.module('sntRover')
 			 */
 			$scope.toggleFloorSelection = function(index) {
 				$scope.diaryData.filterList.floorList[index].isSelected = !$scope.diaryData.filterList.floorList[index].isSelected;
-				$scope.diaryData.filterList.floorList[index].isSelected === true ? $scope.diaryData.diaryData.selectedFloorCount++ : $scope.diaryData.selectedFloorCount--;
+				$scope.diaryData.filterList.floorList[index].isSelected === true ? $scope.diaryData.selectedFloorCount++ : $scope.diaryData.selectedFloorCount--;
 			};
 
 			/*
