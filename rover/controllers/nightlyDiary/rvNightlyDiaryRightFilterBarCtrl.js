@@ -85,5 +85,32 @@ angular.module('sntRover')
 				$scope.$emit('REFRESH_DIARY_SCREEN');
 			};
 
+			/*
+			 *	Method to reset room type, floor filters
+			 */
+			var resetFilters = function() {
+				var roomTypes = $scope.diaryData.filterList.room_type,
+					floorList = $scope.diaryData.filterList.floor_list;
+
+				if(roomTypes && roomTypes.length > 0) {
+					roomTypes.forEach(function(roomtype) { 
+						roomtype.is_selected = false;
+					});
+				}
+
+				if(floorList && floorList.length >0) {
+					floorList.forEach(function(floor) {
+						floor.is_selected = false;
+					});
+				}
+
+				$scope.diaryData.selectedRoomTypes = [];
+				$scope.diaryData.selectedFloors = [];
+			};
+
+			$scope.$on('RESET_RIGHT_FILTER_BAR', function() {
+				resetFilters();
+			});
+
 			initiate();
 }]);

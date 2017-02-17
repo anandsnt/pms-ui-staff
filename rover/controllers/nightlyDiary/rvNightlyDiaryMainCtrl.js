@@ -170,7 +170,6 @@ angular.module('sntRover')
                         $stateParams.isFromStayCard = false;
                     }
                 }
-
             };
 
             /*
@@ -258,7 +257,6 @@ angular.module('sntRover')
                 });
             };
 
-
             /*
              * Function to cancel editing of a reservation
              */
@@ -275,7 +273,6 @@ angular.module('sntRover')
 
                     store.dispatch(dispatchData);
                 }
-
             };             
 
             /*
@@ -297,6 +294,7 @@ angular.module('sntRover')
             $scope.$on('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function( event, roomId ) {
                 cancelReservationEditing();
                 fetchRoomListDataAndReservationListData(roomId);
+                $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
             });
 
             /*
