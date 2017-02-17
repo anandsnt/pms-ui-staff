@@ -12,9 +12,7 @@
                     <button type="button" class="button option" touch-press='editEmailAddress()'>
                         <div ng-include="icons.url.pen"></div>
                     </button>
-                    <span>
-                        <text editable-text="EDIT_EMAIL"> {{'EDIT_EMAIL' |translate}}</text>
-                    </span>
+                    <text editable-text="EDIT_EMAIL"> {{'EDIT_EMAIL' |translate}}</text>
                 </li>
                 <li class="break">
                     <span>
@@ -25,17 +23,13 @@
                     <button type="button" class="button option" touch-press='sendEmail()'>
                         <div ng-include="icons.url.email"></div>
                     </button>
-                    <span>
-                        <text editable-text="SEND_EMAIL"> {{'SEND_EMAIL' |translate}}</text>
-                    </span>
+                    <text editable-text="SEND_EMAIL"> {{'SEND_EMAIL' |translate}}</text>
                 </li>
                 <li ng-show="!zestStationData.is_standalone">
                     <button type="button" class="button option" touch-press='checkOutGuest()'>
-                        <div ng-include="icons.url.keyboard"></div>
+                        <div ng-include="icons.url.email"></div>
                     </button>
-                    <span>
-                        <text editable-text="CONTINUE"> {{'CONTINUE' |translate}}</text>
-                    </span>
+                    <text editable-text="CONTINUE"> {{'SEND_EMAIL' |translate}}</text>
                 </li>
             </ul>
         </nav>
@@ -104,8 +98,8 @@
         </nav>
     </div>
 </section>
-<!-- print option -->
-<div ng-controller="zsPrintBillCtrl">
+<!-- print option for overlay -->
+<div ng-controller="zsPrintBillCtrl" ng-if="!zestStationData.is_standalone">
     <section id="main" role="main" class="centered" ng-show="printMode">
         <div id="content">
             <h1>
@@ -139,8 +133,8 @@
         </div>
     </section>
     <!-- print starts here -->
-    <div ng-include="'/assets/partials_v2/checkout/zsGenericBillPrint.html'" ng-if="zestStationData.theme !== 'yotel'">
+    <div ng-include="'/assets/partials_v2/checkout/zsGenericBillPrint.html'" ng-if="zestStationData.theme === 'yotel'">
     </div>
-    <div ng-include="'/assets/partials_v2/checkout/zsYotelBillPrint.html'" ng-if="zestStationData.theme === 'yotel'">
+    <div ng-include="'/assets/partials_v2/checkout/zsYotelBillPrint.html'" ng-if="zestStationData.theme !== 'yotel'">
     </div>
 </div>
