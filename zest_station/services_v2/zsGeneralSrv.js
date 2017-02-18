@@ -16,6 +16,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'yotel': 'yotel',
             'avenue': 'avenue',
             'public': 'public',
+            'public ny': 'public ny',
             'sohotel': 'sohotel',
             'epik': 'Hotel epik',
             'conscious': 'Conscious vondelpark',
@@ -63,6 +64,12 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 theme = _.findKey(themeMappings, function(themeMapping) {
                     return themeMapping.toLowerCase() === theme;
                 });
+                
+                if (!_.isUndefined(theme)) {
+                    if (theme.indexOf('public') !== -1) {
+                        theme = 'public';
+                    }
+                }
 
                 if (!that.isThemeConfigured(theme)) {
                     theme = 'snt';
