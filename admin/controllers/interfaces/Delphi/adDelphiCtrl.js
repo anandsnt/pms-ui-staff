@@ -20,16 +20,6 @@ admin.controller('adDelphiCtrl', ['$scope', 'config', 'adInterfacesCommonConfigS
         };
 
         (function() {
-            //    init
-            var onFetchMetaSuccess = function(response) {
-                $scope.rates = response.rates;
-            };
-
-            $scope.callAPI(adInterfacesCommonConfigSrv.fetchOptionsList, {
-                onSuccess: onFetchMetaSuccess,
-                params: ['RATES']
-            });
-
             $scope.config = config;
             $scope.interface = interfaceIdentifier.toUpperCase();
         })();

@@ -10,6 +10,11 @@
         </div>
     </div>
 
+    <ad-sync-block ng-if="config.enabled"
+                   interface="{{interface}}"
+                   config="config">
+    </ad-sync-block>
+
     <div class="form-title full-width">
         <h3><span translate>DELPHI_SUB_TITLE</span></h3>
     </div>
