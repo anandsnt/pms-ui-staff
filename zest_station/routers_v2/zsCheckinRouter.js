@@ -236,6 +236,17 @@ sntZestStation.config(['$stateProvider',
             description: '',
             label: 'Room Upsell'
         });
+
+         // addon upsells
+        $stateProvider.state('zest_station.addOnUpsell', {
+            url: '/checkinAddon',
+            templateUrl: '/assets/partials_v2/checkin/zsCheckinAddon.html',
+            controller: 'zsCheckinAddonCtrl',
+            jumper: false,
+            section: 'Checkin',
+            description: '',
+            label: 'Addon'
+        });
       	
     }
 ]);
