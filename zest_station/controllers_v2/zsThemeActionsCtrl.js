@@ -69,7 +69,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                 $('body').append(fileref);
 
                 if (theme === 'public' && $scope.inProd()) {
-                    url = 'https://cloud.typography.com/7902756/7320972/css/fonts.csstest';
+                    url = 'https://cloud.typography.com/7902756/7320972/css/fonts.css';
                     fileref = document.createElement('link');
 
                     fileref.setAttribute('rel', 'stylesheet');
