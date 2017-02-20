@@ -23,6 +23,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			$scope.isAddMode = false;
 
 			// api load count
+			$scope.fileName = "Choose file...";
 			$scope.apiLoadCount = 0;
 			$scope.chargeCodesForChargeGrp = [];
 			$scope.singleAddon.charge_group_id = "";
@@ -221,6 +222,7 @@ admin.controller('ADRatesAddonsCtrl', [
 
 			// initate to include all rates here
 			$scope.filterRates($scope.singleAddon);
+			$scope.singleAddon.addon_image = "";
 		};
 
 		// listen for datepicker update from ngDialog
@@ -357,7 +359,8 @@ admin.controller('ADRatesAddonsCtrl', [
 				forecast_for_next_day: $scope.singleAddon.forecast_for_next_day,
 				charge_full_weeks_only: (($scope.singleAddon.post_type_id === 3) && $scope.singleAddon.is_reservation_only && $scope.singleAddon.charge_full_weeks_only) ? true : false,
 				allow_rate_exclusions: $scope.singleAddon.allow_rate_exclusions,
-				excluded_rate_ids: _.pluck($scope.singleAddon.excludedRates, 'id')
+				excluded_rate_ids: _.pluck($scope.singleAddon.excludedRates, 'id'),
+				addon_image: $scope.singleAddon.addon_image
 			};
 
 			// convert dates to system format yyyy-MM-dd
@@ -563,6 +566,11 @@ admin.controller('ADRatesAddonsCtrl', [
 				$scope.state.selectedAssignedRate = -1;
 			}
 		};
+
+		$scope.deleteIcon = function() {
+		$scope.fileName = "Choose file...";
+		$scope.singleAddon.addon_image = "";
+	};
 
 	}
 ]);

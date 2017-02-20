@@ -39,6 +39,21 @@
                 <div ng-hide="isConnectedToPMS" class="entry full-width radio-check">
                     <ad-textbox styleclass="full-width" value="singleAddon.inventory_count" name="inventory" id="inventory" label="{{'Inventory' | translate}}" placeholder="Enter the count"></ad-textbox>
                 </div>
+
+                <div class="entry full-width" >
+                    <label for="item-image"><span translate>ADDON_IMAGE_LABEL</span><span translate>ADDON_IMAGE_SPEC</span></label>
+                    <div class="file-upload with-preview large-preview cms-item-image-picker">
+                        <span class="input">{{fileName}}</span>
+                        <input type="file" name="item-image" ng-model="singleAddon.addon_image" app-filereader id="item-image" />
+                        <a id="deleteLogo" class="icons icon-delete large-icon delete_item ng-scope" ng-if="singleAddon.addon_image != null && singleAddon.addon_image != ''" ng-click="deleteIcon()"></a>
+                        <button type="button" ng-if="singleAddon.addon_image != null && singleAddon.addon_image != ''" class="button brand-colors" translate>REPLACE_IMAGE_LABEL</button>
+                        <button type="button" ng-if="singleAddon.addon_image == null || singleAddon.addon_image == ''" class="button brand-colors" translate>ADD_IMAGE_LABEL</button>
+                    </div>
+                    <span class="file-preview large-preview addon-image-preview">
+                        <img src="{{singleAddon.addon_image}}" alt="" />
+                    </span>
+                </div>
+
             </fieldset>
             <fieldset class="holder right float">
                 <div ng-hide="isConnectedToPMS" class="entry has-datepicker margin">
