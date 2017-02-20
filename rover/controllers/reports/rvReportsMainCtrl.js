@@ -106,6 +106,24 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			$scope.setViewCol( $scope.viewCols[0] );
 		};
 
+    /**
+     * function to check whether the user has permission
+     * to view export report menu
+     * @return {Boolean}
+     */
+    $scope.hasPermissionToViewExportReport = function() {
+      return rvPermissionSrv.getPermissionValue('EXPORT_REPORTS');
+    };
+
+    /**
+    * should show export report menu
+    * @return {Boolean}
+    */
+    $scope.shouldShowExportReport = function() {
+      return ($scope.hasPermissionToViewExportReport());
+    };
+
+
 		/**
 		 * function to check whether the user has permission
 		 * to view schedule report menu
