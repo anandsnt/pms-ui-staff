@@ -10,7 +10,7 @@ login.service('resetSrv', ['$http', '$q', '$window',
             var deferred = $q.defer();
 
             $http.put("/api/password_resets/" + data.token + "/update.json", data).then(function(response) {
-                if (response.status === "success") {
+                if (response.data.status === "success") {
                     successCallback(response.data.data);
                 } else {
                     // please note the type of error expecting is array
