@@ -165,6 +165,8 @@ angular.module('sntRover')
         $scope.togglePaymentGroup = function(index, pageNo) {
             var success = function(data) {
                 $scope.$emit('hideLoader');
+                $scope.pgEntries[index].paymentGroupEntries = data;
+                console.log($scope.pgEntries);
             };
             var failed = function() {
                 $scope.$emit('hideLoader');
@@ -451,9 +453,7 @@ angular.module('sntRover')
         function paymentGroupInit (results) {
             $scope.pgEntries = [];
             $scope.pgEntries = _.where(results, { is_payment_group: true });
-            _.each($scope.pgEntries, function(paymentGroupEntries) {
-                paymentGroupEntries.payments = {};
-            });
+
         }
         /**
          * init - bootstrap initial execution

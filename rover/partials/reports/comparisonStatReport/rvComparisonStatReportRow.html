@@ -133,7 +133,7 @@ is_ledger
     <td>Variance</td>
 </tr>
 
-<tr ng-repeat="item in pgEntries track by $index" class="charge-group toggle">
+<tr ng-repeat-start="item in pgEntries track by $index" class="charge-group toggle">
   <td class="code long-code break" ng-click="togglePaymentGroup($index)">{{item.section}}
     <span class="icons icon-double-arrow"></span>
   </td>
@@ -145,16 +145,16 @@ is_ledger
   <td>{{item.last_year_ytd | currency:currencySymbol:2}}</td>
   <td ng-class="{ 'red': item.ytd_variance   < 0 }">{{item.ytd_variance | currency:currencySymbol:2}}</td>
 </tr>
-<!-- <tr ng-repeat="item in pgEntries track by $index" class="charge-code toggle">
-  <td class="code long-code break" ng-click="togglePaymentGroup($index)">{{item.section}}
+<tr ng-repeat="paymentGroupItem in item.paymentGroupEntries.charge_codes track by $index" class="charge-code toggle" ng-repeat-end>
+  <td class="code long-code break">{{paymentGroupItem.name}}
 
   </td>
-  <td class="break">{{item.today | currency:currencySymbol:2}}</td>
-  <td>{{item.mtd | currency:currencySymbol:2}}</td>
-  <td>{{item.last_year_mtd | currency:currencySymbol:2}}</td>
-  <td class="break" ng-class="{ 'red': item.mtd_variance < 0 }">{{item.mtd_variance | currency:currencySymbol:2}}</td>
-  <td>{{item.ytd | currency:currencySymbol:2}}</td>
-  <td>{{item.last_year_ytd | currency:currencySymbol:2}}</td>
-  <td ng-class="{ 'red': item.ytd_variance   < 0 }">{{item.ytd_variance | currency:currencySymbol:2}}</td>
-</tr> -->
+  <td class="break">{{paymentGroupItem.today | currency:currencySymbol:2}}</td>
+  <td>{{paymentGroupItem.mtd | currency:currencySymbol:2}}</td>
+  <td>{{paymentGroupItem.last_year_mtd | currency:currencySymbol:2}}</td>
+  <td class="break" ng-class="{ 'red': item.mtd_variance < 0 }">{{paymentGroupItem.mtd_variance | currency:currencySymbol:2}}</td>
+  <td>{{paymentGroupItem.ytd | currency:currencySymbol:2}}</td>
+  <td>{{paymentGroupItem.last_year_ytd | currency:currencySymbol:2}}</td>
+  <td ng-class="{ 'red': item.ytd_variance   < 0 }">{{paymentGroupItem.ytd_variance | currency:currencySymbol:2}}</td>
+</tr>
 
