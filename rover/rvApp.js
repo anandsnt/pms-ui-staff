@@ -58,7 +58,7 @@ sntRover.config([
 	        appendTo: '.root-view'
 	    });
 
-	    // making sure that angular currency filter will not 
+	    // making sure that angular currency filter will not
 	    // transform -13 -> ($13), and keep it like -> -$13
 	    // SF: http://stackoverflow.com/questions/17441254/why-angularjs-currency-filter-formats-negative-numbers-with-parenthesis/30122327#30122327
 	    $provide.decorator('$locale', ['$delegate', function($delegate) {
@@ -321,7 +321,7 @@ sntRover.run([
 	        		resetHkFilter();
 	        	}
 	        }
-			
+
 
 			// FOR DEV WORK
 			// PLEASE DO NO REMOVE THIS LINE, U CAN COMMENT IT OUT

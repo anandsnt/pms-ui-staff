@@ -1,4 +1,4 @@
-angular.module('sntRover').controller('RVScheduleReportsCtrl', [
+angular.module('sntRover').controller('RVExportReportsCtrl', [
     '$rootScope',
     '$scope',
     'RVreportsSrv',
@@ -808,7 +808,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             $scope.selectedSchedule.active = false;
 
-            $scope.updateView($scope.reportViewActions.SHOW_SCHEDULE_A_REPORT);
+            $scope.updateView($scope.reportViewActions.SHOW_EXPORT_A_REPORT);
             $scope.updateViewCol($scope.viewColsActions.ONE);
 
             var reset = true;
@@ -835,7 +835,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             $scope.selectedReport.active = false;
 
-            $scope.updateView($scope.reportViewActions.SHOW_SCHEDULED_REPORTS);
+            $scope.updateView($scope.reportViewActions.SHOW_EXPORT_REPORTS);
             $scope.updateViewCol($scope.viewColsActions.ONE);
 
             $scope.refreshReportSchedulesScroll(reset);
@@ -907,6 +907,21 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.scheduleFrequency = [];
             $scope.scheduleFreqType = [];
             $scope.emailList = [];
+
+            $scope.distributionList = [{
+                id: 'EMAIL',
+                description: 'Email'
+            }, {
+                id: 'FTP',
+                description: 'FTP'
+            }];
+            $scope.ftpList = [{
+                id: 1,
+                description: 'ftp.server.com'
+            }, {
+                id: 2,
+                description: 'ftp.client.com'
+            }]
 
             $scope.scheduleParams = {};
 
