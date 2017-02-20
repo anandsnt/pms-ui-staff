@@ -178,9 +178,17 @@ sntZestStation.controller('zsRootCtrl', [
 		 *  checking that to distinguish if app was launched using chrome app or not 
 		 * */
          // CheckIfItsChromeApp
-        (function() {
-            $scope.inChromeApp = $('#hideFromChromeApp').css('visibility') === 'hidden';
 
+        (function() {
+            // $scope.inChromeApp = $('#hideFromChromeApp').css('visibility') === 'hidden';
+
+            try {   
+                $scope.inChromeApp = localStorage['roverInApp'] === 'true';
+            } catch (err) {
+                $log.warn(err);
+                $scope.inChromeApp = false;
+            }
+                
             $log.info(':: is in chrome app ->' + $scope.inChromeApp);
         }());
 		/**

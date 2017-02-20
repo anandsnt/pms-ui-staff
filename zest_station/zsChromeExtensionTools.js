@@ -59,7 +59,6 @@ this.chromeExtensionListener = function() {
             // this would listen for the alt key + some other key to fire an event, in this case to tell our chrome extension
             // to run one of its methods
             // 
-            console.log('e.keyCode: ',e.keyCode);
 
             if (e.altKey && e.keyCode === 69) {// E - Editor Mode
                 zestSntApp.toggleEditorMode();
