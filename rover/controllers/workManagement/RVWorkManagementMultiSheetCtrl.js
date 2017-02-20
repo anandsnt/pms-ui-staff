@@ -174,8 +174,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				draggedTask = draggedRoom['room_tasks'][fromTaskIndex];
 			}
 
-			dropped  = $(event.target).attr('id'),
-			toEmpIndex = parseInt( dropped.split('-')[0] ),
+			dropped  = $(event.target).attr('id');
+			toEmpIndex = parseInt( dropped.split('-')[0] );
 			toEmp = $scope.multiSheetState.selectedEmployees[toEmpIndex];
 
 			hasRoom = _.find(toEmp.rooms, { 'room_id': draggedRoom.room_id });
