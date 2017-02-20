@@ -108,7 +108,7 @@ angular.module('sntRover')
 					});
 				}
 
-				if (floorList && floorList.length >0) {
+				if (floorList && floorList.length > 0) {
 					floorList.forEach(function(floor) {
 						floor.isSelected = false;
 					});
