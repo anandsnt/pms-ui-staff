@@ -155,12 +155,18 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 			$scope.clearArrivalAndDepartureTime();
                         // set flag to show reservation is being refreshed
                         $scope.$parent.refreshingReservation = true;
-			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
-					"id": currentId,
-					"confirmationId": currentConfirmationNumber,
-					"isrefresh": true,
-					"isOnlineRoomMove": ""
-			});
+
+            if (currentId !== $scope.reservationData.reservationId) {
+                $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+                    "id": currentId,
+                    "confirmationId": currentConfirmationNumber,
+                    "isrefresh": true,
+                    "isOnlineRoomMove": ""
+                });
+            } else {
+                $state.reload($state.$current.name);
+			}
+			
 		};
 		/*
 		 * To show the payment data list
