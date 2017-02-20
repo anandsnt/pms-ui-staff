@@ -1,0 +1,31 @@
+<td class="name">
+    <strong>{{transaction.name}}</strong>
+</td>
+<td class="room">
+    {{transaction.room_no}}
+</td>
+<td class="guests">
+    {{transaction.guest_no}}
+</td>
+<td>
+    {{transaction.confirmation_no}}
+</td>
+<td>
+    <div class="date">
+        <span class="icons time check-in"></span>
+        <span>{{transaction.start_date | date : dateFormat}}</span>
+    </div>
+    <div class="date">
+        <span class="icons time check-out"></span>
+        <span>{{transaction.end_date | date : dateFormat}}</span>
+    </div>
+</td>
+<td class="rate">
+    {{transaction.rate | currency:currencySymbol:2 }}
+</td>
+<td>
+    {{transaction.nights}}
+</td>
+<td>
+    {{transaction.comp_nights}}
+</td>
