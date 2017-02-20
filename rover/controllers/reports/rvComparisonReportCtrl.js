@@ -162,6 +162,27 @@ angular.module('sntRover')
             $scope.invokeApi(RVreportsSubSrv.getChargeCodes, params, success, failed);
         };
 
+        $scope.togglePaymentGroup = function(index, pageNo) {
+            var success = function(data) {
+                $scope.$emit('hideLoader');
+            };
+            var failed = function() {
+                $scope.$emit('hideLoader');
+            };
+            var item = $scope.pgEntries[index];
+
+            pageNo = pageNo || 1;
+            var params = {
+                date: $filter('date')($scope.chosenReport.singleValueDate, 'yyyy-MM-dd'),
+                report_id: $scope.chosenReport.id,
+                charge_group_id: item.charge_group_id,
+                page: pageNo,
+                per_page: 50
+            };
+
+            $scope.invokeApi(RVreportsSubSrv.getPaymentValues, params, success, failed);
+
+        };
         $scope.isHidden = function (item) {
             var hidden = false;
 
@@ -430,6 +451,9 @@ angular.module('sntRover')
         function paymentGroupInit (results) {
             $scope.pgEntries = [];
             $scope.pgEntries = _.where(results, { is_payment_group: true });
+            _.each($scope.pgEntries, function(paymentGroupEntries) {
+                paymentGroupEntries.payments = {};
+            });
         }
         /**
          * init - bootstrap initial execution
