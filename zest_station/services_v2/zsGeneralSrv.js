@@ -10,13 +10,16 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         /*
         * The configuredHotels list are the hotels which zest station has added stylesheets / images / icons, and we 'officially' support
         * all other hotels should default to the SNT theme until which time we add the styling into our product or until a CMS is integrated
+        *
+        * themeMappings:: when mapping, on Left (key) is used for the PATH zest_station/css/themes/{theme},
+        *                  --on the right, (value) is what is coming from the hotel config in SNT Admin > Templates Config, ie. in dropdown (Public ny), 
+        *                  but we want to map to a path of just css/theme/public
         */
         var themeMappings = {
             'zoku': 'zoku',
             'yotel': 'yotel',
             'avenue': 'avenue',
-            'public': 'public',
-            'public ny': 'public ny',
+            'public': 'public ny',
             'sohotel': 'sohotel',
             'epik': 'Hotel epik',
             'conscious': 'Conscious vondelpark',
@@ -64,12 +67,6 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 theme = _.findKey(themeMappings, function(themeMapping) {
                     return themeMapping.toLowerCase() === theme;
                 });
-                
-                if (!_.isUndefined(theme)) {
-                    if (theme.indexOf('public') !== -1) {
-                        theme = 'public';
-                    }
-                }
 
                 if (!that.isThemeConfigured(theme)) {
                     theme = 'snt';
