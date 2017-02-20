@@ -51,12 +51,17 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			// yes, we are setting the headting and title
 			$scope.setHeadingTitle(title);
 		};
-        
+
 		$scope.updateAndBackFlag = false;
 		$scope.updateAndBack = function() {
-			$scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');
-			$scope.updateAccountSummary();
-			$scope.updateAndBackFlag = true;
+			if ($scope.isInAddMode) {
+				$state.go('rover.accounts.search');
+			} else {
+				$scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');
+				$scope.updateAccountSummary();
+				$scope.updateAndBackFlag = true;
+			}
+
 		};
 
 
@@ -315,17 +320,17 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 						// client controllers should get an infromation whether updation was success
 						$scope.$broadcast("UPDATED_ACCOUNT_INFO");
 						if($scope.updateAndBackFlag) {
-							$state.go('rover.accounts.search');					
+							$state.go('rover.accounts.search');
 						}
 						else {
-							$scope.$emit('hideloader');
+							$scope.$emit('hideLoader');
 						}
 					},
 					onAccountUpdateFailure = function(errorMessage) {
 						// client controllers should get an infromation whether updation was a failure
 						$scope.$broadcast("FAILED_TO_UPDATE_ACCOUNT_INFO");
 						$scope.$emit('showErrorMessage', errorMessage);
-						$scope.$emit('hideloader');
+						$scope.$emit('hideLoader');
 					};
 
 				$scope.callAPI(rvAccountsConfigurationSrv.updateAccountSummary, {
