@@ -623,7 +623,190 @@
             width:100%;
         }
     }
-    
+ 
+
+ /* Add Ons **/
+
+    .add-on {
+        .add-on-picture {
+            width: 40%;
+            overflow: hidden;
+            position: relative;
+            img {
+                .size(auto, 100%);
+            }
+        }
+
+        .add-on-content {
+            width: 60%;
+            background-color: @white;
+            color: @black;
+            text-align: left;
+            padding: 25px; 
+            #flexbox > .flex();
+            #flexbox > .parent(column wrap, '', '', '');
+
+            h1,h2,h3 {
+                text-align: left;
+                text-transform: none;
+            }
+
+            .price {
+                width: 100%;
+                align-self: flex-end;
+                margin-top: auto;
+                #flexbox > .flex();
+                #flexbox > .parent(row wrap, '', center, '');
+                
+                strong {
+                    font-size: 36px;
+                    display: block;
+                    line-height: 1;
+                    color: @brandColor;
+                }
+
+                small {
+                    font-size: 14px;
+                    text-transform: uppercase;
+                    .nowrap();
+                }
+
+                .action {
+                    margin-left: auto; 
+
+                    .button {
+                        font-size: 20px;
+                        text-align: center; 
+
+                        &.transparent {
+                            background-color: fade(@black, 10);
+                            &:not(.text-red) {
+                                color: @black;
+                            }
+                        }
+                    }
+
+                    :not(.input-group) {
+                        .button {
+                            .size(50px, 120px);
+                        }
+                    }
+
+                    .input-group {
+                        max-width: 160px;
+                        .button {
+                            padding: 0;
+                        }
+                    }
+
+                    input,
+                    .button {
+                        height: 50px;
+                        line-height: 50px;
+                    }
+                }
+            }
+        }
+
+        &.selected {
+            border-color: @actionBackground;
+            .add-on-content {
+                background-color: @actionBackground;
+                color: @actionColor;
+            }
+        }
+    }
+
+    .add-on-list {
+        margin: 0;
+        max-height: 400px;
+        .square(100%);
+        #flexbox > .flex();
+        #flexbox > .parent(row wrap, center, center, '');
+        
+        &:not(.add-on-list-columns) {
+            .add-on {
+
+                .add-on-picture {
+                    img {
+                        min-width: 100%;
+                        height: 100%;
+                        width: auto;
+                    }
+                }
+            }
+        }
+
+        &.add-on-list-columns {
+
+            li {  
+                .size(50%, 32%);
+
+                &:not(:nth-child(3n+1)) {
+                    margin-left: 2%;
+                }
+                
+                #flexbox > .parent(column, initial, '', '');
+
+                .add-on-picture,
+                .add-on-content {
+                    width: 100%;
+                }
+
+                .add-on-picture {
+                    position: relative;
+                    #calc > #height > .remove(100%, 50px);
+                }
+
+                .add-on-content {
+                    height: 50px;
+                    padding: 0 10px;
+                    line-height: 50px;
+                    #flexbox > .parent(row, initial, center, '');
+
+                    h2 {
+                        line-height: 50px;
+                        margin:0;
+                        font-size: 20px;
+                        .nowrap();
+                        padding-right: 20px; 
+                    }
+
+                    .price {
+                        width: auto;
+                        margin-left: auto;
+                        font-size: 20px;
+                    }
+                }
+            }
+        }
+
+        // Add Ons in Rows 
+        &.add-on-list-rows {
+            justify-content: flex-start;
+
+            li {
+                height: 46%;
+                &:nth-child(4),
+                &:nth-child(5),
+                &:nth-child(6) {
+                    align-self: flex-end;
+                }
+            } 
+
+        }
+
+        li {
+            .size(100%, 100%);
+            #flexbox > .flex();
+            #flexbox > .parent(row wrap, center, '', '');
+            #rounded > .round();
+            border:3px solid @white;
+            overflow: hidden;
+        }
+    }
+
+   
 /* Actions ***/
     #actions {
         position: absolute; 

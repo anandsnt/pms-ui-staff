@@ -1,0 +1,71 @@
+ <!-- Content -->
+        <section id="main" class="admin-screen" role="main">
+            <div id="content">
+                <h1>Enhance your stay?</h1>
+                <h3>Add Ons Total: $23</h3>
+                <div id="upgrades">
+                    <!-- Replace 'classes' with one or more:
+                        - 'add-on-list-columns' - 2 or more add-ons
+                        - 'add-on-list-rows' - 4 or more add-ons -->
+                    <ul class="add-on-list {classes}">
+
+                        <!-- add .selected when there are 2 or more addons and if the add-on has been selected (added to total) -->
+                        <li class="add-on">
+                            <div class="add-on-picture">
+                                 <img src="{addon-image}">
+                            </div>
+                            <div class="add-on-content">
+                                <h2>title</h2>
+                                
+                                <!-- Show this only when showing one item --
+                                    <p>{addon-text}</p>
+                                -->
+
+                                <div class="price">
+                                    <!-- Remove this when showing one item -->
+                                    $23
+                                    <!-- Show this when showing one item --
+                                        <div class="amount">
+                                            <strong>+${addon-price}</strong>
+                                            <small>{addon-price-desc}</small>
+                                        </div>
+                                        <div class="action">
+                                            <!-- show this instead of 'add/remove' button if quantity needed --
+                                            <div class="input-group">
+                                                <button type="button" class="button">-</button>
+                                                <input type="text" value="{quantity}">
+                                                <button type="button" class="button">+</button>
+                                            </div>
+                                            --
+
+                                          <!-- Replace 'btn-class' with 'transparent text-red' if 'Remove' --
+                                          <button type="button" class="button {btn-class}">{Add/Remove}</button>
+                                                       
+                                        </div>
+                                    -->
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div id="actions">
+                    
+                    <!-- If there is no navigation, remove the text and leave '<p class="text"></p>-->
+                    <p class="text">Showing 1-2 of 4 addons</p>
+                    <!-- Remove this .button-group element when there is no navigation -->
+                    <div class="button-group">
+                        <!-- add 'disabled="disabled"' if there is no previous page -->
+                        <button type="button" class="button only-icon">
+                             <img src="{{icons.url.left_arrow_icon}}">
+                        </button>
+                        <!-- add 'disabled="disabled"' if there is no next page -->
+                        <button type="button" class="button only-icon">
+                           <img src="{{icons.url.right_arrow_icon}}">
+                        </button>
+                    </div>
+
+                    <button type="button" class="button">Continue</button>
+
+                </div>
+            </div>        
+        </section>

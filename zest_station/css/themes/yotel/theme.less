@@ -47,6 +47,12 @@
 			fill: @white;
 			stroke: @white;
 		}
+        
+        &.icon-arrow-left,
+        &.icon-arrow-right {
+            fill: none;
+            stroke: @actionColor;
+        }
 	}
     .logo-svg{
         background-image: url("../css/themes/yotel/logo.svg");
@@ -172,7 +178,7 @@
 
 		.popup {
 	        .popup-content {
-	            .button {
+	             .button:not(.transparent) { {
 	            	color: @white;
 	                background: @brandColor;
 	            }
