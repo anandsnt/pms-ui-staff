@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', 'ngDialog', 'RVWorkManagementSrv', '$state', '$stateParams', '$timeout', 'allUnassigned', 'fetchHKStaffs', 'roomTypes', 'payload', '$window',
-	function($rootScope, $scope, ngDialog, RVWorkManagementSrv, $state, $stateParams, $timeout, allUnassigned, fetchHKStaffs, roomTypes, payload, $window) {
+angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', 'ngDialog', 'RVWorkManagementSrv', '$state', '$stateParams', '$timeout', 'allUnassigned', 'fetchHKStaffs', 'allRoomTypes', 'payload', '$window',
+	function($rootScope, $scope, ngDialog, RVWorkManagementSrv, $state, $stateParams, $timeout, allUnassigned, fetchHKStaffs, allRoomTypes, payload, $window) {
 		BaseCtrl.call(this, $scope);
 
 		// saving in local variable, since it will be updated when user changes the date
@@ -157,6 +157,12 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 			var draggedRoom, draggedTask;
 
+			var dropped, toEmpIndex, toEmp;
+
+			var hasRoom, hasRoomIndex, roomCopy, roomInfoToCopy = {};
+
+			var inOnlyTask, hasOtherTaskWithSameWtid;
+
 			if ( 'UA' === fromEmpIndex ) {
 				source = $scope.multiSheetState.unassignedFiltered;
 				draggedRoom = source[fromRoomIndex];
@@ -168,24 +174,27 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				draggedTask = draggedRoom['room_tasks'][fromTaskIndex];
 			}
 
-			var dropped  = $(event.target).attr('id'),
-				toEmpIndex = parseInt( dropped.split('-')[0] ),
-				toEmp = $scope.multiSheetState.selectedEmployees[toEmpIndex];
+			dropped  = $(event.target).attr('id'),
+			toEmpIndex = parseInt( dropped.split('-')[0] ),
+			toEmp = $scope.multiSheetState.selectedEmployees[toEmpIndex];
 
-			var hasRoom = _.find(toEmp.rooms, { 'room_id': draggedRoom.room_id });
-			var hasRoomIndex = _.findIndex(toEmp.rooms, { 'room_id': draggedRoom.room_id });
-			var roomCopy = [];
+			hasRoom = _.find(toEmp.rooms, { 'room_id': draggedRoom.room_id });
+			hasRoomIndex = _.findIndex(toEmp.rooms, { 'room_id': draggedRoom.room_id });
+			roomCopy = [];
+			roomInfoToCopy = {};
 
 			function move(array, from, to) {
-				if ( to === from ) return;
-
 				var target = array[from];                         
 				var increment = to < from ? -1 : 1;
+				var k = 0;
 
-				for (var k = from; k != to; k += increment) {
-				array[k] = array[k + increment];
+				if ( to === from ) return;
+
+				for (k = from; k != to; k += increment) {
+					array[k] = array[k + increment];
 				}
 				array[to] = target;
+
 				return array;
 			}
 
@@ -211,26 +220,22 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 				toEmp.rooms = roomCopy;
 			} else {
+				roomInfoToCopy = {
+					'room_id': draggedRoom.room_id,
+					'room_type': draggedRoom.room_type,
+					'is_vip': draggedRoom.is_vip,
+					'room_index': draggedRoom.room_index,
+					'room_tasks': [draggedTask]
+				};
+
 				if ( $scope.dropIndex === undefined || $scope.dropIndex === toEmp.rooms - 1 ) {
-					toEmp.rooms.push({
-						'room_id': draggedRoom.room_id,
-						'room_index': draggedRoom.room_index,
-						'room_tasks': [draggedTask]
-					});
+					toEmp.rooms.push(roomInfoToCopy);
 				} else if ( $scope.dropIndex === 0 ) {
-					toEmp.rooms.unshift({
-						'room_id': draggedRoom.room_id,
-						'room_index': draggedRoom.room_index,
-						'room_tasks': [draggedTask]
-					});
+					toEmp.rooms.unshift(roomInfoToCopy);
 				} else {
 					toEmp.rooms = [].concat(
 							toEmp.rooms.slice( 0, $scope.dropIndex ),
-							{
-								'room_id': draggedRoom.room_id,
-								'room_index': draggedRoom.room_index,
-								'room_tasks': [draggedTask]
-							},
+							roomInfoToCopy,
 							toEmp.rooms.slice( $scope.dropIndex )
 						);
 				}
@@ -246,7 +251,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				// remove the task from "only_tasks"
 				// and if the "work_type_id" in the removed task is not avail
 				// on toEmp's "room_tasks" anymore then remove it from "touched_work_types"
-				var inOnlyTask, hasOtherTaskWithSameWtid;
 
 				if ( 'UA' !== fromEmpIndex ) {
 					// that task with matches the id and room id of dragged task
@@ -1425,11 +1429,11 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		$scope.getRoomType = function (id) {
 			var quick = quickMatchCache[id];
 			var match, found;
-
+			
 			if ( angular.isDefined(quick) ) {
 				found = quick;
 			} else {
-				match = _.find(roomTypes, {id: id});
+				match = _.find(allRoomTypes, {id: id});
 
 				if ( angular.isDefined(match) ) {
 					quickMatchCache[id] = match.name;
