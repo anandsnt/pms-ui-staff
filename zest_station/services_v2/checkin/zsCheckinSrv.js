@@ -367,6 +367,19 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 return deferred.promise;
         };
 
+        this.fetchAddons = function(param) {
+            var deferred = $q.defer(),
+                url =  '/zest_station/upgrade_options.json';
+                url =  url = '/sample_json/zest_station/addons_list.json';
+
+            zsBaseWebSrv.getJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
 
     }
 ]);

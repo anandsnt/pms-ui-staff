@@ -1,71 +1,99 @@
- <!-- Content -->
-        <section id="main" class="admin-screen" role="main">
-            <div id="content">
-                <h1>Enhance your stay?</h1>
-                <h3>Add Ons Total: $23</h3>
-                <div id="upgrades">
-                    <!-- Replace 'classes' with one or more:
-                        - 'add-on-list-columns' - 2 or more add-ons
-                        - 'add-on-list-rows' - 4 or more add-ons -->
-                    <ul class="add-on-list {classes}">
-
-                        <!-- add .selected when there are 2 or more addons and if the add-on has been selected (added to total) -->
-                        <li class="add-on">
-                            <div class="add-on-picture">
-                                 <img src="{addon-image}">
-                            </div>
-                            <div class="add-on-content">
-                                <h2>title</h2>
-                                
-                                <!-- Show this only when showing one item --
-                                    <p>{addon-text}</p>
-                                -->
-
-                                <div class="price">
-                                    <!-- Remove this when showing one item -->
-                                    $23
-                                    <!-- Show this when showing one item --
-                                        <div class="amount">
-                                            <strong>+${addon-price}</strong>
-                                            <small>{addon-price-desc}</small>
-                                        </div>
-                                        <div class="action">
-                                            <!-- show this instead of 'add/remove' button if quantity needed --
-                                            <div class="input-group">
-                                                <button type="button" class="button">-</button>
-                                                <input type="text" value="{quantity}">
-                                                <button type="button" class="button">+</button>
-                                            </div>
-                                            --
-
-                                          <!-- Replace 'btn-class' with 'transparent text-red' if 'Remove' --
-                                          <button type="button" class="button {btn-class}">{Add/Remove}</button>
-                                                       
-                                        </div>
-                                    -->
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+<!-- Add .open to show the popup -->
+<div class="popup" ng-class="{'open':showPopup}">
+    <div class="popup-content add-on">
+        <div class="add-on-picture">
+            <img src="{{selectedAddon.image}}" />
+        </div>
+        <div class="add-on-content">
+            <h2>{{selectedAddon.title}}</h2>
+            <p>{{selectedAddon.description}}</p>
+            <div class="price">
+                <div class="amount">
+                    <strong>+${{selectedAddon.price}}</strong>
+                    <small>{{selectedAddon.price_desc}}</small>
                 </div>
-                <div id="actions">
-                    
-                    <!-- If there is no navigation, remove the text and leave '<p class="text"></p>-->
-                    <p class="text">Showing 1-2 of 4 addons</p>
-                    <!-- Remove this .button-group element when there is no navigation -->
-                    <div class="button-group">
-                        <!-- add 'disabled="disabled"' if there is no previous page -->
-                        <button type="button" class="button only-icon">
-                             <img src="{{icons.url.left_arrow_icon}}">
-                        </button>
-                        <!-- add 'disabled="disabled"' if there is no next page -->
-                        <button type="button" class="button only-icon">
-                           <img src="{{icons.url.right_arrow_icon}}">
-                        </button>
+                <div class="action">
+                    <div class="input-group" ng-show="selectedAddon.type === 'quantity'">
+                        <button type="button" class="button" click-touch="selectedAddon.quantity = selectedAddon.quantity >0 ? selectedAddon.quantity -1 :0">-</button>
+                        <input type="text" value="{{selectedAddon.quantity}}">
+                        <button type="button" class="button" click-touch="selectedAddon.quantity =  selectedAddon.quantity+1">+</button>
                     </div>
-
-                    <button type="button" class="button">Continue</button>
-
+                    <button type="button" class="button" ng-hide="selectedAddon.type === 'quantity'" ng-class="{'transparent text-red':selectedAddon.is_selected}" click-touch="selectedAddon.is_selected = !selectedAddon.is_selected">
+                        <span ng-hide="selectedAddon.is_selected">Add</span>
+                        <span ng-show="selectedAddon.is_selected">Remove</span>
+                    </button>
+                        <button type="button" data-action="popup" class="button transparent" click-touch="closePopup()">Done</button>
                 </div>
-            </div>        
-        </section>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- add .open when showing popuo -->
+<div id="popup-overlay" ng-class="{'open':showPopup}"></div>
+<!-- Content -->
+<section id="main" class="admin-screen" role="main">
+    <div id="content">
+        <h1>Enhance your stay?</h1>
+        <h3>Add Ons Total: ${{getAmountTotal()}}</h3>
+        <div id="upgrades">
+            <ul class="add-on-list add-on-list-columns" ng-if="addonsList.length > 1" ng-class="{'add-on-list-rows':viewableAddons.length >= 4}">
+                <li class="add-on" ng-repeat="addon in viewableAddons" click-touch="addonSelected(addon)" ng-class="{'selected':addon.is_selected || addon.quantity >0}">
+                    <div class="add-on-picture">
+                        <img src="{{addon.image}}">
+                    </div>
+                    <div class="add-on-content">
+                        <h2>{{addon.title}}</h2>
+                        <div class="price">
+                            ${{addon.price}}
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <ul class="add-on-list" ng-if="addonsList.length === 1">
+                <li class="add-on" ng-repeat="addon in viewableAddons">
+                    <div class="add-on-picture">
+                        <img src="{{addon.image}}">
+                    </div>
+                    <div class="add-on-content">
+                        <h2>{{addon.title}}</h2>
+                        <p>{{addon.description}}</p>
+                        <div class="price">
+                            <div class="amount">
+                                <strong>+${{addon.price}}</strong>
+                                <small>{{addon.price_desc}}</small>
+                            </div>
+                            <div class="action">
+                                <!-- show this instead of 'add/remove' button if quantity needed -->
+                                <div class="input-group" ng-show="addon.type === 'quantity'">
+                                    <button type="button" class="button" click-touch="addon.quantity = addon.quantity >0 ? addon.quantity -1 :0">-</button>
+                                    <input type="text" value="{{addon.quantity}}">
+                                    <button type="button" class="button" click-touch="addon.quantity =  addon.quantity+1">+</button>
+                                </div>
+                                <!-- Replace 'btn-class' with 'transparent text-red' if 'Remove' -->
+                                <button type="button" class="button {btn-class}" ng-hide="addon.type === 'quantity'" ng-class="{'transparent text-red':addon.is_selected}" click-touch="addon.is_selected = !addon.is_selected">
+                                    <span ng-hide="addon.is_selected">Add</span>
+                                    <span ng-show="addon.is_selected">Remove</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div id="actions">
+            <!-- If there is no navigation, remove the text and leave '<p class="text"></p>-->
+            <p class="text">Showing {{pageStartingIndex}}-{{pageEndingIndex}} of {{addonsList.length}} addons</p>
+            <!-- Remove this .button-group element when there is no navigation -->
+            <div class="button-group" ng-if="addonsList.length > 1">
+                <!-- add 'disabled="disabled"' if there is no previous page -->
+                <button type="button" class="button only-icon" click-touch="viewPreviousPage()" ng-disabled="disablePreviousButton">
+                     <div ng-include="icons.url.left_arrow_icon"></div>
+                </button>
+                <!-- add 'disabled="disabled"' if there is no next page -->
+                <button type="button" class="button only-icon" click-touch="viewNextPage()" ng-disabled="disableNextButton">
+                    <div ng-include="icons.url.right_arrow_icon"></div>
+                </button>
+            </div>
+            <button type="button" class="button">Continue</button>
+        </div>
+    </div>
+</section>

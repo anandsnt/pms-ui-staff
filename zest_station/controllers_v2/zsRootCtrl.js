@@ -550,7 +550,6 @@ sntZestStation.controller('zsRootCtrl', [
 
         $scope.setSvgsToBeLoaded = function(iconsPath, commonIconsPath, useCommonIcons, diffHomeIconsOnly) {
             var iconBasePath = !useCommonIcons ? iconsPath : commonIconsPath;
-            var defaultIconsPath ="/assets/zest_station/css/icons/default/";
             $scope.activeScreenIcon = 'bed';
             if ($scope.zestStationData.key_create_file_uploaded.indexOf('/logo.png') !== -1) {
                 $scope.zestStationData.key_create_file_uploaded = '';
@@ -586,8 +585,8 @@ sntZestStation.controller('zsRootCtrl', [
                     watch: iconBasePath + '/watch.svg',
                     qr_arrow: iconBasePath + '/qr-arrow.svg',
                     clear_icon: iconBasePath + '/x.svg',
-                    left_arrow_icon: defaultIconsPath + 'arrow-left.svg',
-                    right_arrow_icon: defaultIconsPath + 'arrow-right.svg'
+                    left_arrow_icon: commonIconsPath + '/arrow-left.svg',
+                    right_arrow_icon: commonIconsPath + '/arrow-right.svg'
                 }
             };
             if (useCommonIcons) {
