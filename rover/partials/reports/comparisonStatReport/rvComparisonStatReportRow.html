@@ -122,3 +122,39 @@ is_ledger
   </td>
 </tr>
 
+<tr class="grouped" ng-show="pgEntries.length > 0">
+  <td class="code long-code break"><strong>Payments by Charge Group</strong></td>
+    <td class="break">Today</td>
+    <td>MTD</td>
+    <td>Last Year MTD</td>
+    <td class="break">Variance</td>
+    <td>YTD</td>
+    <td>Last Year YTD</td>
+    <td>Variance</td>
+</tr>
+
+<tr ng-repeat="item in pgEntries track by $index" class="charge-group toggle">
+  <td class="code long-code break" ng-click="togglePaymentGroup($index)">{{item.section}}
+    <span class="icons icon-double-arrow"></span>
+  </td>
+  <td class="break">{{item.today | currency:currencySymbol:2}}</td>
+  <td>{{item.mtd | currency:currencySymbol:2}}</td>
+  <td>{{item.last_year_mtd | currency:currencySymbol:2}}</td>
+  <td class="break" ng-class="{ 'red': item.mtd_variance < 0 }">{{item.mtd_variance | currency:currencySymbol:2}}</td>
+  <td>{{item.ytd | currency:currencySymbol:2}}</td>
+  <td>{{item.last_year_ytd | currency:currencySymbol:2}}</td>
+  <td ng-class="{ 'red': item.ytd_variance   < 0 }">{{item.ytd_variance | currency:currencySymbol:2}}</td>
+</tr>
+<!-- <tr ng-repeat="item in pgEntries track by $index" class="charge-code toggle">
+  <td class="code long-code break" ng-click="togglePaymentGroup($index)">{{item.section}}
+
+  </td>
+  <td class="break">{{item.today | currency:currencySymbol:2}}</td>
+  <td>{{item.mtd | currency:currencySymbol:2}}</td>
+  <td>{{item.last_year_mtd | currency:currencySymbol:2}}</td>
+  <td class="break" ng-class="{ 'red': item.mtd_variance < 0 }">{{item.mtd_variance | currency:currencySymbol:2}}</td>
+  <td>{{item.ytd | currency:currencySymbol:2}}</td>
+  <td>{{item.last_year_ytd | currency:currencySymbol:2}}</td>
+  <td ng-class="{ 'red': item.ytd_variance   < 0 }">{{item.ytd_variance | currency:currencySymbol:2}}</td>
+</tr> -->
+

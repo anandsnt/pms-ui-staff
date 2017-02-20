@@ -424,6 +424,9 @@ angular.module('sntRover')
             $scope.cgEntries = prepareChargeGroupsCodes(results);
             fillAllChargeCodes($scope.cgEntries);
         }
+        /*
+         *
+         */
         function paymentGroupInit (results) {
             $scope.pgEntries = [];
             $scope.pgEntries = _.where(results, { is_payment_group: true });
