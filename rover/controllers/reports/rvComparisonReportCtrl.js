@@ -116,7 +116,7 @@ angular.module('sntRover')
         };
 
         $scope.fetchChargeCodes = function (index, pageNo) {
-            
+
             var item = $scope.cgEntries[index];
             var pageNo = pageNo || 1;
 
@@ -129,7 +129,7 @@ angular.module('sntRover')
 
                 ccStore.set(item.charge_group_id, data.charge_codes);
                 fillChargeCodes(ccStore.get(item.charge_group_id), sourceIndex, data.total_count);
-                
+
                 $timeout(function () {
                     toggleChargeCodes($scope.cgEntries, sourceIndex, true)
                         .then(function () {
@@ -424,7 +424,10 @@ angular.module('sntRover')
             $scope.cgEntries = prepareChargeGroupsCodes(results);
             fillAllChargeCodes($scope.cgEntries);
         }
-
+        function paymentGroupInit (results) {
+            $scope.pgEntries = [];
+            $scope.pgEntries = _.where(results, { is_payment_group: true });
+        }
         /**
          * init - bootstrap initial execution
          * @returns {object} undefined
@@ -436,9 +439,10 @@ angular.module('sntRover')
             totalRevenueInit(results);
             staticInit(results);
             chargeGroupInit(results);
+            paymentGroupInit(results);
         }
 
         init();
-        
+
     }
 ]);

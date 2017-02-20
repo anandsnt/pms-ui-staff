@@ -42,7 +42,7 @@ is_ledger
 
 
 
-<tr class="grouped">
+<tr class="grouped" ng-show="cgEntries.length > 0">
 	<td class="code long-code break"><strong>Revenue by Charge Group</strong></td>
     <td class="break">Today</td>
     <td>MTD</td>
@@ -52,6 +52,7 @@ is_ledger
     <td>Last Year YTD</td>
     <td>Variance</td>
 </tr>
+
 <tr ng-repeat="item in cgEntries track by $index"
   ng-class="{
     'charge-group': item.isChargeGroup,
@@ -120,3 +121,4 @@ is_ledger
     {{ item.ytd_variance | currency:currencySymbol:2 }}
   </td>
 </tr>
+
