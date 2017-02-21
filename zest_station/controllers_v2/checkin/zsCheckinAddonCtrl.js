@@ -4,7 +4,8 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 	'$state',
 	'zsCheckinSrv',
 	'zsEventConstants',
-	function($scope, $stateParams, $state, zsCheckinSrv, zsEventConstants) {
+	'$timeout',
+	function($scope, $stateParams, $state, zsCheckinSrv, zsEventConstants, $timeout) {
 
 		var navigateToTermsPage = function() {
 
@@ -34,7 +35,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		};
 
 		var setPageNumberDetails = function() {
-
+			$scope.$emit('hideLoader');
 			if ($scope.addonsList.length <= 6) {
 				// if 6 or less upgrades are available
 				$scope.pageStartingIndex = 1;
@@ -70,13 +71,21 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		};
 
 		$scope.viewNextPage = function() {
-			$scope.pageNumber++;
-			setPageNumberDetails();
+			//$scope.$emit('showLoader');
+			$scope.disableNextButton = true;
+			$timeout(function(argument) {
+				$scope.pageNumber++;
+				setPageNumberDetails();
+			}, 200);
 		};
 
 		$scope.viewPreviousPage = function() {
-			$scope.pageNumber--;
-			setPageNumberDetails();
+			//$scope.$emit('showLoader');
+			$scope.disablePreviousButton = true;
+			$timeout(function(argument) {
+				$scope.pageNumber--;
+				setPageNumberDetails();
+			}, 200);
 		};
 
 
