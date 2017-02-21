@@ -61,12 +61,19 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                         deferred.reject();
                     }
                 }
-
-                // the hotel theme name has to be mapped to the zeststation resource files 
-                // corresponding to those themes.
-                theme = _.findKey(themeMappings, function(themeMapping) {
-                    return themeMapping.toLowerCase() === theme;
-                });
+                // currently hotel is using fontainebleau, hotel will switch that to fontainebleau v2
+                // ( this cant be added to themeMappings,as it will add duplicate key, we can remove old
+                // fontainebleau, once we have upgraded)
+                if (theme === 'fontainebleau v2') {
+                    theme = 'fontainebleau';
+                } else {
+                    // the hotel theme name has to be mapped to the zeststation resource files 
+                    // corresponding to those themes.
+                    theme = _.findKey(themeMappings, function(themeMapping) {
+                        return themeMapping.toLowerCase() === theme;
+                    });
+                }
+                
 
                 if (!that.isThemeConfigured(theme)) {
                     theme = 'snt';
