@@ -79,7 +79,7 @@ sntZestStation.config(['$stateProvider',
         });
 		// terms and conditions                
       	$stateProvider.state('zest_station.checkInTerms', {
-          url: '/checkInTermsAndConditions/:guest_id/:reservation_id/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:first_name/:balance_amount/:pre_auth_amount_for_zest_station/:authorize_cc_at_checkin/:confirmation_number/:pickup_key_mode/:is_from_room_upsell',
+          url: '/checkInTermsAndConditions/:guest_id/:reservation_id/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:first_name/:balance_amount/:pre_auth_amount_for_zest_station/:authorize_cc_at_checkin/:confirmation_number/:pickup_key_mode/:is_from_room_upsell/:is_from_addons',
           templateUrl: '/assets/partials_v2/checkin/zsCheckinTermsConditions.html',
           controller: 'zsCheckInTermsConditionsCtrl',
           jumper: true,
@@ -239,7 +239,7 @@ sntZestStation.config(['$stateProvider',
 
          // addon upsells
         $stateProvider.state('zest_station.addOnUpsell', {
-            url: '/checkinAddon',
+            url: '/checkinAddon/:is_from_room_upsell',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinAddon.html',
             controller: 'zsCheckinAddonCtrl',
             jumper: false,
