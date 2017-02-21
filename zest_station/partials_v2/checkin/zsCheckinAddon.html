@@ -6,7 +6,7 @@
         </div>
         <div class="add-on-content">
             <h2>{{selectedAddon.title}}</h2>
-            <p>{{selectedAddon.description}}</p>
+            <p ng-bind-html="selectedAddon.description"></p>
             <div class="price">
                 <div class="amount">
                     <strong>+${{selectedAddon.price}}</strong>
@@ -56,7 +56,7 @@
                     </div>
                     <div class="add-on-content">
                         <h2>{{addon.title}}</h2>
-                        <p>{{addon.description}}</p>
+                        <p ng-bind-html="addon.description"></p>
                         <div class="price">
                             <div class="amount">
                                 <strong>+${{addon.price}}</strong>
