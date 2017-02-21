@@ -99,12 +99,12 @@ sntZestStation.controller('zsEmailBillCtrl', [
 
         $scope.goToNextScreen = function() {
             $scope.callBlurEventForIpad();
-            if (!$scope.zestStationData.is_standalone) { 
-               $scope.checkOutGuest();
-            }else{
-                  $scope.emailSendingFailed = true;
-                  $scope.mode = 'GUEST_BILL_EMAIL_SENT';
-            } 
+            if (!$scope.zestStationData.is_standalone) {
+                $scope.checkOutGuest();
+            } else {
+                $scope.emailSendingFailed = true;
+                $scope.mode = 'GUEST_BILL_EMAIL_SENT';
+            }
         };
 
         $scope.sendEmail = function() {
