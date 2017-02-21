@@ -238,6 +238,31 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			closeDialog();
 		};
 
+        // Checks whether there is any rate change due to adults/children count change
+        var checkForRateChangeForOccupancyChange = function(params) {
+            var reqParams = {};
+
+            reqParams.reservation_id = $scope.reservationData.reservation_card.reservation_id;
+            reqParams.adults = $scope.guestData.adult_count;
+            reqParams.children = $scope.guestData.children_count;
+
+            var successCallback = function(response) {
+                    $scope.$emit('hideLoader');
+                    if (response.is_rate_changed) {
+                        calculateRateForCurrentGuest();
+
+                        $scope.customRate = response.calculated_rate_amount;
+                        $scope.rateForCurrentGuest = response.rate_amount;
+
+                        confirmForRateChange();
+                    } else {
+                        saveChanges('', '', params);
+                    }
+                };
+
+            $scope.invokeApi(RVReservationGuestSrv.verifyRateChange, reqParams, successCallback);
+        };
+
 		/* To save guest details */
 		$scope.saveGuestDetails = function(params) {
 			var data = JSON.parse(JSON.stringify($scope.guestData));
@@ -246,14 +271,23 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				$scope.$emit('showLoader');
 
 				if (isOccupancyRateConfigured()) {
+                    var isRateChanged = isRateChangeOcuured();
+
+
 					// CICO-13491
 					// If the occupancy Rate is configured and a rate change occured
 					// We have to show the popup for 'Keep Current Rate' & 'Change to new Rate'
                     // As per CICO-34496 - hide this pop up in hourly mode. Custom rate should never get updated as a result.
-					if (isRateChangeOcuured() && !$scope.reservationData.reservation_card.is_hourly_reservation) {
+					if (isRateChanged && !$scope.reservationData.reservation_card.is_hourly_reservation) {
 						calculateRateForCurrentGuest();
 						confirmForRateChange();
-					} else {
+					}
+                    // CICO-37895 - Added this to show the popup which allows 'Keep Current Rate' and 'Change to new Rate'
+                    // while changing the guest count
+                    else if (!isRateChanged && !$scope.reservationData.reservation_card.is_hourly_reservation) {
+                        checkForRateChangeForOccupancyChange(params);
+                    }
+                    else {
 						saveChanges('', '', params);
 					}
 					$scope.$emit('hideLoader');
