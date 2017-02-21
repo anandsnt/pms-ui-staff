@@ -384,13 +384,12 @@ login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state',
         // also, we will set a localStorage flag to relay to zest station, we are inside an app
         // only chrome-apps + electron app should be using " /stationlogin#/stationlogin " to enter rover/zest station
         var setInAppFlag = function() {
-			localStorage.setItem('roverInApp', 'true');
-        }; 
+        	localStorage.setItem('roverInApp', 'true');
+        };
 
         $scope.data = {};
 
         $scope.modalClosing = false;
-
 
 
 	    $scope.closeDialog = function() {

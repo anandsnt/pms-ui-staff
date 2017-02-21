@@ -8,7 +8,6 @@ this.chromeExtensionListener = function() {
 
             if (passedDataObject.switchToTheme) {
                     // switch theme requested from our SNT chrome extension for debugging/testing
-                console.info('theme switch requested from extension, switching to [', passedDataObject.switchToTheme, ']');
                 zestSntApp.debugTheme(passedDataObject.switchToTheme);
             } else if (passedDataObject.toggleDebuggerOnOff) {
                     // pass toggle argument to station app, not direct on/off
