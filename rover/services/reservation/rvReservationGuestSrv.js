@@ -37,5 +37,18 @@ angular.module('sntRover').service('RVReservationGuestSrv', ['$q', 'rvBaseWebSrv
             return deferred.promise;
         };
 
+        this.verifyRateChange = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/reservations/' + params.reservation_id + '/verify_rate_change';
+            delete params.reservation_id;
+
+            RVBaseWebSrvV2.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
     }
 ]);
