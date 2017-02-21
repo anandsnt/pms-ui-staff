@@ -48,7 +48,7 @@
                         translate>
                     CANCEL
                 </button>
-                <button type="button" ng-click="onSave()"
+                <button type="button" ng-click="createRestaurant()"
                         class="button green edit-data-inline"
                         ng-class="{'grey' : state.new.name == '' || state.new.username == '' || state.new.password == ''}"
                         ng-disabled="state.new.name == '' || state.new.username == '' || state.new.password == ''"
@@ -60,26 +60,26 @@
     </div>
 </div>
 <table class="grid datatable dataTable"
-       ng-show="lightspeed.restaurants.length > 0"
+       ng-show="restaurants.length > 0"
        ng-table="itemList" template-pagination="nil">
     <tbody>
-    <tr ng-repeat="restaurant in lightspeed.restaurants track by $index" ng-hide="restaurant.isDeleted">
-        <td data-item="1" data-title="'Restaurant Name'" ng-click="onSelect($index, mapping)"
+    <tr ng-repeat="restaurant in restaurants track by $index" ng-hide="restaurant.isDeleted">
+        <td data-item="1" data-title="'Restaurant Name'" ng-click="onSelect($index, restaurant)"
             header-class="width-20" ng-hide="state.selected === $index">
             <a class="edit-data-inline">{{restaurant.name}}</a>
         </td>
-        <td data-item="2" data-title="'User Name'" ng-click="onSelect($index, mapping)"
+        <td data-item="2" data-title="'User Name'" ng-click="onSelect($index, restaurant)"
             header-class="width-40" ng-hide="state.selected === $index">
             <a class="edit-data-inline">{{restaurant.username}}</a>
         </td>
-        <td data-item=3" data-title="'Company'" ng-click="onSelect($index, mapping)"
+        <td data-item=3" data-title="'Company'" ng-click="onSelect($index, restaurant)"
             header-class="width-40" ng-hide="state.selected === $index">
             <a class="edit-data-inline">{{getCompanyName(restaurant.company_id)}}</a>
         </td>
 
         <td header-class="width-10" data-title="'Delete'" class="delete"
             ng-hide="state.selected === $index">
-            <a class="icons icon-delete large-icon" ng-click="onClickDelete(restaurant)"></a>
+            <a class="icons icon-delete large-icon" ng-click="deleteRestaurant(restaurant)"></a>
         </td>
 
         <td colspan="4" ng-show="state.selected === $index">
@@ -123,7 +123,7 @@
                                     translate>
                                 CANCEL
                             </button>
-                            <button type="button" ng-click="onUpdate()"
+                            <button type="button" ng-click="updateRestaurant(restaurant)"
                                     class="button green edit-data-inline"
                                     ng-class="{'grey' : restaurant.name == '' || restaurant.username == ''}"
                                     ng-disabled="restaurant.name == '' || restaurant.username == ''"

@@ -120,10 +120,12 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				if (!that.checkIfStaydatesCanBeExtended()) {
 					$scope.rightSideReservationUpdates = 'NO_HOUSE_AVAILABLE';
 					$scope.refreshMyScroller();
-				} else if (that.hasMultipleRates()) {
-					$scope.rightSideReservationUpdates = 'HAS_MULTIPLE_RATES';
-					$scope.refreshMyScroller();
 				}
+				// CICO-37843 no longer restricating 
+				// else if (that.hasMultipleRates()) {
+				// 	$scope.rightSideReservationUpdates = 'HAS_MULTIPLE_RATES';
+				// 	$scope.refreshMyScroller();
+				// }
 
 			}
 			that.renderFullCalendar();

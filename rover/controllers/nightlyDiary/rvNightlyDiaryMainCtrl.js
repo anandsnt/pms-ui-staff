@@ -72,7 +72,11 @@ angular.module('sntRover')
                     secondMonthDateList: [],
                     reservationsList: reservationsList,
                     hasOverlay: false,
-                    isEditReservationMode: false
+                    isEditReservationMode: false,
+                    showUnassignedPanel: false,
+                    showFilterPanel: false,
+                    selectedRoomTypes: [],
+                    selectedFloors: []
                 };
                 $scope.currentSelectedReservation = {};
                 $scope.currentSelectedRoom = {};
@@ -117,9 +121,10 @@ angular.module('sntRover')
                     postData = {
                         ...getPaginationParams(),
                         'start_date': $scope.diaryData.fromDate,
-                        'no_of_days': $scope.diaryData.numberOfDays
+                        'no_of_days': $scope.diaryData.numberOfDays,
+                        'selected_room_type_ids': $scope.diaryData.selectedRoomTypes,
+                        'selected_floor_ids': $scope.diaryData.selectedFloors
                     };
-
                 if (roomId) {
                     postData.room_id = roomId;
                     $scope.diaryData.selectedRoomId = roomId;
@@ -165,7 +170,6 @@ angular.module('sntRover')
                         $stateParams.isFromStayCard = false;
                     }
                 }
-
             };
 
             /*
@@ -252,7 +256,6 @@ angular.module('sntRover')
                 });
             };
 
-
             /*
              * Function to cancel editing of a reservation
              */
@@ -269,7 +272,6 @@ angular.module('sntRover')
 
                     store.dispatch(dispatchData);
                 }
-
             };             
 
             /*
@@ -289,9 +291,23 @@ angular.module('sntRover')
              * @param {Number} RoomId - selected room id from search filters.
             */
             $scope.$on('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function( event, roomId ) {
+                $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
+                $scope.diaryData.showFilterPanel = false;
                 cancelReservationEditing();
                 fetchRoomListDataAndReservationListData(roomId);
+
             });
+
+            /*
+             * Handle event emitted from child controller.
+             * To refresh diary data - rooms and reservations after applying filter.
+             */
+            $scope.$on('REFRESH_DIARY_SCREEN', function() {
+                $scope.diaryData.paginationData.page = 1;
+                fetchRoomListDataAndReservationListData();
+                cancelReservationEditing();
+            });
+
             /**
              * utility method to pass callbacks from
              * @return {Object} with callbacks
