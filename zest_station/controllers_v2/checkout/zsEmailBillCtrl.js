@@ -99,6 +99,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 
         $scope.goToNextScreen = function() {
             $scope.callBlurEventForIpad();
+            // for overlay we will be checking out at this point
             if (!$scope.zestStationData.is_standalone) {
                 $scope.checkOutGuest();
             } else {

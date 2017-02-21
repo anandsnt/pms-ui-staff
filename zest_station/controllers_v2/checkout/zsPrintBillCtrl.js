@@ -24,6 +24,8 @@ sntZestStation.controller('zsPrintBillCtrl', [
         var nextPageActions = function(printopted) {
             $scope.$emit('hideLoader');
             $scope.runDigestCycle();
+            // for overlay the email collection is before print and for 
+            // stand alone its after print bil
             if ($scope.zestStationData.guest_bill.email && $scope.zestStationData.is_standalone) {
                 $scope.stateParamsForNextState.printopted = printopted;
                 $state.go('zest_station.emailBill', $scope.stateParamsForNextState);
