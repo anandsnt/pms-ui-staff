@@ -237,8 +237,6 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 $log.warn('reservation has balance due');
                 $state.go('zest_station.speakToStaff');
             } else {
-                // TO DO : delete below commented code
-                // $scope.zestStationData.is_standalone = false;
                 if (!$scope.zestStationData.is_standalone) {
                     $state.go('zest_station.emailBill', $scope.stateParamsForNextState);
                 } else {

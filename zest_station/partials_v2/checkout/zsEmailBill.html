@@ -133,8 +133,8 @@
         </div>
     </section>
     <!-- print starts here -->
-    <div ng-include="'/assets/partials_v2/checkout/zsGenericBillPrint.html'" ng-if="zestStationData.theme === 'yotel'">
+    <div ng-include="'/assets/partials_v2/checkout/zsGenericBillPrint.html'" ng-if="zestStationData.theme !== 'yotel'">
     </div>
-    <div ng-include="'/assets/partials_v2/checkout/zsYotelBillPrint.html'" ng-if="zestStationData.theme !== 'yotel'">
+    <div ng-include="'/assets/partials_v2/checkout/zsYotelBillPrint.html'" ng-if="zestStationData.theme === 'yotel'">
     </div>
 </div>
