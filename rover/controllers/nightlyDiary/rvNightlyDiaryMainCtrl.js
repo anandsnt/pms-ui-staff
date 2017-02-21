@@ -305,6 +305,7 @@ angular.module('sntRover')
             $scope.$on('REFRESH_DIARY_SCREEN', function() {
                 $scope.diaryData.paginationData.page = 1;
                 fetchRoomListDataAndReservationListData();
+                cancelReservationEditing();
             });
 
             /**
