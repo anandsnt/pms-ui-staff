@@ -133,7 +133,7 @@ is_ledger
     <td>Variance</td>
 </tr>
 
-<tr ng-repeat-start="item in pgEntries track by $index" class="charge-group toggle">
+<tr ng-repeat-start="item in pgEntries track by $index" class="charge-group toggle" ng-class="{'active': item.isPaymentGroupActive}">
   <td class="code long-code break" ng-click="togglePaymentGroup($index)">{{item.section}}
     <span class="icons icon-double-arrow"></span>
   </td>
@@ -145,7 +145,7 @@ is_ledger
   <td>{{item.last_year_ytd | currency:currencySymbol:2}}</td>
   <td ng-class="{ 'red': item.ytd_variance   < 0 }">{{item.ytd_variance | currency:currencySymbol:2}}</td>
 </tr>
-<tr ng-repeat="paymentGroupItem in item.paymentGroupEntries.charge_codes track by $index" class="charge-code toggle" ng-repeat-end>
+<tr ng-repeat="paymentGroupItem in item.paymentGroupEntries.charge_codes track by $index" class="charge-code toggle" >
   <td class="code long-code break">{{paymentGroupItem.name}}
 
   </td>
@@ -156,5 +156,10 @@ is_ledger
   <td>{{paymentGroupItem.ytd | currency:currencySymbol:2}}</td>
   <td>{{paymentGroupItem.last_year_ytd | currency:currencySymbol:2}}</td>
   <td ng-class="{ 'red': item.ytd_variance   < 0 }">{{paymentGroupItem.ytd_variance | currency:currencySymbol:2}}</td>
+</tr>
+<tr ng-repeat-end  class="charge-code">
+  <td colspan="8" >
+    <rv-pagination page-options="item.insidePaginationData" page-data="item.totalInsidePagination"></rv-pagination>
+  </td>
 </tr>
 

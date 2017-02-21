@@ -163,26 +163,46 @@ angular.module('sntRover')
         };
 
         $scope.togglePaymentGroup = function(index, pageNo) {
-            var success = function(data) {
-                $scope.$emit('hideLoader');
-                $scope.pgEntries[index].paymentGroupEntries = data;
-                console.log($scope.pgEntries);
-            };
-            var failed = function() {
-                $scope.$emit('hideLoader');
-            };
-            var item = $scope.pgEntries[index];
+            $scope.pgEntries[index].isPaymentGroupActive = !$scope.pgEntries[index].isPaymentGroupActive;
 
-            pageNo = pageNo || 1;
-            var params = {
-                date: $filter('date')($scope.chosenReport.singleValueDate, 'yyyy-MM-dd'),
-                report_id: $scope.chosenReport.id,
-                charge_group_id: item.charge_group_id,
-                page: pageNo,
-                per_page: 50
-            };
+            if ($scope.pgEntries[index].isPaymentGroupActive) {
+                var refreshDelay = 1000;
+                var success = function(data) {
+                    $scope.$emit('hideLoader');
+                    $scope.pgEntries[index].paymentGroupEntries = data;
+                    $scope.pgEntries[index].insidePaginationData = {
+                        id: $scope.pgEntries[index].charge_group_id,
+                        api: [$scope.togglePaymentGroup, index],
+                        perPage: 50
+                    };
+                    $scope.pgEntries[index].totalInsidePagination = data.total_count;
+                    $timeout(function () {
+                         var paginationID = $scope.pgEntries[index].charge_group_id;
 
-            $scope.invokeApi(RVreportsSubSrv.getPaymentValues, params, success, failed);
+                         $scope.$broadcast('updatePagination', paginationID );
+
+                        $scope.refreshScroll(true);
+
+                    }, refreshDelay);
+                };
+                var failed = function() {
+                    $scope.$emit('hideLoader');
+                };
+                var item = $scope.pgEntries[index];
+
+                pageNo = pageNo || 1;
+                var params = {
+                    date: $filter('date')($scope.chosenReport.singleValueDate, 'yyyy-MM-dd'),
+                    report_id: $scope.chosenReport.id,
+                    charge_group_id: item.charge_group_id,
+                    page: pageNo,
+                    per_page: 50
+                };
+
+                $scope.invokeApi(RVreportsSubSrv.getPaymentValues, params, success, failed);
+            } else {
+                $scope.pgEntries[index].paymentGroupEntries = {};
+            }
 
         };
         $scope.isHidden = function (item) {
@@ -453,7 +473,9 @@ angular.module('sntRover')
         function paymentGroupInit (results) {
             $scope.pgEntries = [];
             $scope.pgEntries = _.where(results, { is_payment_group: true });
-
+            _.each($scope.pgEntries, function(paymentGroupItem) {
+                paymentGroupItem.isPaymentGroupActive = false;
+            });
         }
         /**
          * init - bootstrap initial execution
