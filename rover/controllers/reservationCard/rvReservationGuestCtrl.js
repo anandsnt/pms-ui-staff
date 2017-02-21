@@ -251,8 +251,8 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
                     if (response.is_rate_changed) {
                         calculateRateForCurrentGuest();
 
-                        $scope.customRate = response.calculated_rate_amount;
-                        $scope.rateForCurrentGuest = response.rate_amount;
+                        $scope.customRate = response.rate_amount;
+                        $scope.rateForCurrentGuest = response.calculated_rate_amount;
 
                         confirmForRateChange();
                     } else {
