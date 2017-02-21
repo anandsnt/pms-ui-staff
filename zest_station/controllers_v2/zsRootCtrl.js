@@ -39,7 +39,7 @@ sntZestStation.controller('zsRootCtrl', [
         BaseCtrl.call(this, $scope);
 
         $scope.cssMappings = cssMappings;
-		
+		$scope.inElectron = false;
 
         $rootScope.$on('$locationChangeStart', routeChange);
 		// we are forcefully setting top url, please refer routerFile
@@ -1407,9 +1407,17 @@ sntZestStation.controller('zsRootCtrl', [
             getAdminWorkStations();
             $scope.zestStationData.bussinessDate = hotelTimeData.business_date;
             zestSntApp.setBrowser();
-            if ($scope.inChromeApp) {
 
-                $scope.inChromeApp ? maximizeScreen() : '';
+            $scope.inElectron = $scope.inChromeApp && (typeof chrome === 'undefined' || typeof chrome.runtime === 'undefined');
+
+            if ($scope.inChromeApp) {
+                
+                if (!$scope.inElectron) {
+                    maximizeScreen();
+                } else {
+                    $log.info(':: Running in Electron ::');
+                }
+
                 optimizeTouchEventsForChromeApp();
                 // disable right click options for chromeapp to restrict user from escaping the app
                 document.addEventListener('contextmenu', function(e) {
