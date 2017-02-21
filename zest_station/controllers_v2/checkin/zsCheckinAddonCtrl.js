@@ -63,7 +63,8 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				$scope.disableNextButton = ($scope.pageEndingIndex === $scope.addonsList.length);
 				$scope.disablePreviousButton = $scope.pageStartingIndex === 1;
 			}
-
+			// set the height for container
+			$('#upgrades').css({"height":"calc(100% - 230px)"} );
 
 			console.log($scope.viewableAddons);
 		};

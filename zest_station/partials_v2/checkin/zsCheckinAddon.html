@@ -42,7 +42,7 @@
                         <img src="{{addon.image}}">
                     </div>
                     <div class="add-on-content">
-                        <h2>{{addon.title}}</h2>
+                        <h2>{{addon.title}}<span ng-show="addon.quantity>0">({{addon.quantity}})</span></h2>
                         <div class="price">
                             ${{addon.price}}
                         </div>
