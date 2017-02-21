@@ -208,7 +208,6 @@ sntZestStation.controller('zsAdminCtrl', [
                 console.info('login out');
             }
             $window.location.href = '/station_logout';
-            window.unmaximize();
         };
 
         var setStationVariables = function() {
