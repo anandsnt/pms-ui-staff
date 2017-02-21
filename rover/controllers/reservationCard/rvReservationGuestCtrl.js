@@ -241,6 +241,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
         // Checks whether there is any rate change due to adults/children count change
         var checkForRateChangeForOccupancyChange = function(params) {
             var reqParams = {};
+
             reqParams.reservation_id = $scope.reservationData.reservation_card.reservation_id;
             reqParams.adults = $scope.guestData.adult_count;
             reqParams.children = $scope.guestData.children_count;
@@ -281,7 +282,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 						calculateRateForCurrentGuest();
 						confirmForRateChange();
 					}
-                    //CICO-37895 - Added this to show the popup which allows 'Keep Current Rate' and 'Change to new Rate'
+                    // CICO-37895 - Added this to show the popup which allows 'Keep Current Rate' and 'Change to new Rate'
                     // while changing the guest count
                     else if (!isRateChanged && !$scope.reservationData.reservation_card.is_hourly_reservation) {
                         checkForRateChangeForOccupancyChange(params);

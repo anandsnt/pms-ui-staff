@@ -40,6 +40,7 @@ angular.module('sntRover').service('RVReservationGuestSrv', ['$q', 'rvBaseWebSrv
         this.verifyRateChange = function(params) {
             var deferred = $q.defer();
             var url = '/api/reservations/' + params.reservation_id + '/verify_rate_change';
+
             delete params.reservation_id;
 
             RVBaseWebSrvV2.getJSON(url, params).then(function(data) {
