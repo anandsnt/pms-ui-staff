@@ -339,6 +339,31 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 
 			return this.roomTypes;
 		};
+		
+		this.allRoomTypes = [];
+		this.fetchAllRoomTypes = function() {
+			var url = 'api/room_types';
+			var deferred = $q.defer();
+
+			if ( that.allRoomTypes.length ) {
+				deferred.resolve(that.allRoomTypes);
+			} else {
+				BaseWebSrvV2.getJSON(url)
+					.then(function(data) {
+						this.allRoomTypes = data.results;
+
+						angular.forEach(this.allRoomTypes, function(type, i) {
+							type.isSelected = false;
+						});
+
+						deferred.resolve(this.allRoomTypes);
+					}.bind(this), function(data) {
+						deferred.reject(data);
+					});
+			}
+
+			return deferred.promise;
+		};
 
 
 		// fetch all HK cleaning staffs
