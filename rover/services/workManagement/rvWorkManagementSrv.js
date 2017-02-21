@@ -376,10 +376,19 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		 * @return {Object} sorted list of employees
 		 **/
 		this.sortAssigned = function(assigned, allRooms, allTasks, options) {
-			var length = assigned.length,
-				employee;
+			var length = assigned.length;
+			var employee, i, pluckedTasks, roomsSorted, roomIndex, copyRoom, roomInfo;
 
-			for (var i = 0; i < length; i++) {
+			var getRoomInfo = function(rooms, id) {
+				var match = _.find(rooms, { room_id: id });
+
+				return angular.isDefined(match) ? match : {
+					room_type: '',
+					is_vip: null
+				};
+			};
+
+			for (i = 0; i < length; i++) {
 				employee = assigned[i];
 
 				// Case 1: group by rooms. rooms will not repeat.
@@ -393,31 +402,33 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 				}
 				// Case 2: group by tasks. in this case rooms will repeat.
 				else {
-					var allTasks 	= _.flatten(_.pluck(employee.rooms, 'room_tasks')),
-						roomsSorted = [];
+					pluckedTasks 	= _.flatten(_.pluck(employee.rooms, 'room_tasks'));
+					roomsSorted = [];
 
-					allTasks = _.sortBy(allTasks,
+					pluckedTasks = _.sortBy(pluckedTasks,
 						function(x) { return x['task_name'].toLowerCase();
 					});
+
 					if (options.sort === 'desc') {
-						allTasks.reverse();
+						pluckedTasks.reverse();
 					}
 
-					var roomIndex, copyRoom;
-
 					// map tasks to rooms
-					_.each(allTasks, function(task) {
-						roomIndex = _.findIndex(allRooms, { room_id: task.room_id }),
+					_.each(pluckedTasks, function(task) {
+						roomIndex = _.findIndex(allRooms, { room_id: task.room_id });
+						roomInfo = getRoomInfo(employee.rooms, task.room_id);
 						copyRoom  = $.extend(
 											{},
 											{ 'room_id': task.room_id },
+											{ 'room_type': roomInfo.room_type },
+											{ 'is_vip': roomInfo.is_vip },
 											{ 'room_index': roomIndex },
 											{ 'room_tasks': [task] }
 										);
 
 						roomsSorted.push(copyRoom);
 					});
-
+					
 					employee.rooms = roomsSorted;
 				}
 			}
