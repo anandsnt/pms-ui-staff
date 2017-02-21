@@ -24,7 +24,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
         var nextPageActions = function(printopted) {
             $scope.$emit('hideLoader');
             $scope.runDigestCycle();
-            if ($scope.zestStationData.guest_bill.email) {
+            if ($scope.zestStationData.guest_bill.email && $scope.zestStationData.is_standalone) {
                 $scope.stateParamsForNextState.printopted = printopted;
                 $state.go('zest_station.emailBill', $scope.stateParamsForNextState);
             } else {

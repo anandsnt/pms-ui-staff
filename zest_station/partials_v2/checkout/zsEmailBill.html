@@ -12,22 +12,24 @@
                     <button type="button" class="button option" touch-press='editEmailAddress()'>
                         <div ng-include="icons.url.pen"></div>
                     </button>
-                    <span>
-                        <text editable-text="EDIT_EMAIL"> {{'EDIT_EMAIL' |translate}}</text>
-                    </span>
+                    <text editable-text="EDIT_EMAIL"> {{'EDIT_EMAIL' |translate}}</text>
                 </li>
                 <li class="break">
                     <span>
                         <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
                     </span>
                 </li>
-                <li>
+                <li ng-hide="!zestStationData.is_standalone">
                     <button type="button" class="button option" touch-press='sendEmail()'>
                         <div ng-include="icons.url.email"></div>
                     </button>
-                    <span>
-                        <text editable-text="SEND_EMAIL"> {{'SEND_EMAIL' |translate}}</text>
-                    </span>
+                    <text editable-text="SEND_EMAIL"> {{'SEND_EMAIL' |translate}}</text>
+                </li>
+                <li ng-show="!zestStationData.is_standalone">
+                    <button type="button" class="button option" touch-press='checkOutGuest()'>
+                        <div ng-include="icons.url.email"></div>
+                    </button>
+                    <text editable-text="CONTINUE"> {{'SEND_EMAIL' |translate}}</text>
                 </li>
             </ul>
         </nav>
@@ -96,3 +98,43 @@
         </nav>
     </div>
 </section>
+<!-- print option for overlay -->
+<div ng-controller="zsPrintBillCtrl" ng-if="!zestStationData.is_standalone">
+    <section id="main" role="main" class="centered" ng-show="printMode">
+        <div id="content">
+            <h1>
+                <text editable-text="END_THANKS"> {{'END_THANKS' |translate}}</text>
+            </h1>
+            <!--h3 ng-show="email.length>0">{{'EMAILED_BILL' |translate}}
+        </h3-->
+            <nav id="options" role="nav">
+                <ul role="menu">
+                    <li>
+                        <button type="button" class="button option" touch-press='printBill()'>
+                            <!--div ng-include="'/assets/zest_station/css/icons/print.svg'"></div-->
+                            <div ng-include="icons.url.print"></div>
+                        </button>
+                        <text editable-text="PRINT_BILL"> {{'PRINT_BILL' |translate}}</text>
+                    </li>
+                    <li class="break">
+                        <span>
+                            <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                        </span>
+                    </li>
+                    <li>
+                        <button type="button" class="button option" touch-press='clickedNoThanks()'>
+                            <!--div ng-include="'/assets/zest_station/css/icons/no-print.svg'"></div-->
+                            <div ng-include="icons.url.noprint"></div>
+                        </button>
+                        <text editable-text="NO_THX"> {{'NO_THX' |translate}}</text>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </section>
+    <!-- print starts here -->
+    <div ng-include="'/assets/partials_v2/checkout/zsGenericBillPrint.html'" ng-if="zestStationData.theme === 'yotel'">
+    </div>
+    <div ng-include="'/assets/partials_v2/checkout/zsYotelBillPrint.html'" ng-if="zestStationData.theme !== 'yotel'">
+    </div>
+</div>
