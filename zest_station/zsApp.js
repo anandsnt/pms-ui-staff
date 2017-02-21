@@ -99,6 +99,12 @@ var GlobalZestStationApp = function() {
 
     }; 
 
+    this.logout = function() {
+        // just log out
+        window.location.href = '/station_logout';
+    };
+
+
     // success function of coddova plugin's appending
     this.fetchCompletedOfCordovaPlugins = function() {
         that.cordovaLoaded = true;

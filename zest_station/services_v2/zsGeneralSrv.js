@@ -78,6 +78,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 if (!that.isThemeConfigured(theme)) {
                     theme = 'snt';
                 }
+
                 that.hotelTheme = theme;
                 // resolves this.fetchSetting()
                 deferred.resolve(resolveData);

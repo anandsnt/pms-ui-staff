@@ -178,8 +178,17 @@ sntZestStation.controller('zsRootCtrl', [
 		 *  checking that to distinguish if app was launched using chrome app or not 
 		 * */
          // CheckIfItsChromeApp
+
         (function() {
-            $scope.inChromeApp = $('#hideFromChromeApp').css('visibility') === 'hidden';
+            // $scope.inChromeApp = $('#hideFromChromeApp').css('visibility') === 'hidden';
+
+            try {   
+                $scope.inChromeApp = localStorage['roverInApp'] === 'true';
+            } catch (err) {
+                $log.warn(err);
+                $scope.inChromeApp = false;
+            }
+                
             $log.info(':: is in chrome app ->' + $scope.inChromeApp);
         }());
 		/**
@@ -198,7 +207,7 @@ sntZestStation.controller('zsRootCtrl', [
                 configureSwipeSettings();
             };
             var onFailure = function() {
-                $log('unable to fetch hotel settings');
+                $log.log('unable to fetch hotel settings');
                 $scope.$emit(zsEventConstants.PUT_OOS);
             };
             var options = {
@@ -1392,7 +1401,6 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.workstationStatus = '';
             $scope.zestStationData.wsIsOos = false;
             $scope.showLanguagePopup = false;
-            $scope.inChromeApp ? maximizeScreen() : '';
 			// create a websocket obj
             $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
             fetchHotelSettings();
@@ -1400,6 +1408,8 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.bussinessDate = hotelTimeData.business_date;
             zestSntApp.setBrowser();
             if ($scope.inChromeApp) {
+
+                $scope.inChromeApp ? maximizeScreen() : '';
                 optimizeTouchEventsForChromeApp();
                 // disable right click options for chromeapp to restrict user from escaping the app
                 document.addEventListener('contextmenu', function(e) {
@@ -1423,6 +1433,8 @@ sntZestStation.controller('zsRootCtrl', [
             // CICO-36953 - moves nationality collection to after res. details, using this flag to make optional
             // and may move to an admin in a future story 
             $scope.zestStationData.consecutiveKeyFailure = 0;
+
+
         }());
     }
 ]);
