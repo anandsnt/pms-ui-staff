@@ -139,9 +139,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             // fill emails
             if ( $scope.emailList.length ) {
-                params.emails = $scope.emailList.join(', ');
+                params.recipients = $scope.emailList.join(', ');
             } else {
-                params.emails = '';
+                params.recipients = '';
             }
 
             // fill sort_field and filters
