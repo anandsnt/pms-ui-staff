@@ -377,7 +377,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		 **/
 		this.sortAssigned = function(assigned, allRooms, allTasks, options) {
 			var length = assigned.length;
-			var employee, i, pluckedTasks, roomsSorted, roomIndex, copyRoom;
+			var employee, i, pluckedTasks, roomsSorted, roomIndex, copyRoom, roomInfo;
 
 			var getRoomInfo = function(rooms, id) {
 				var match = _.find(rooms, { room_id: id });
@@ -399,7 +399,6 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 					if (options.sort === 'desc') {
 						employee.rooms.reverse();
 					}
-					console.log(employee.rooms);
 				}
 				// Case 2: group by tasks. in this case rooms will repeat.
 				else {
