@@ -143,7 +143,7 @@
                     </select>
                 </div>
             </div>
-            <div class="entry">
+            <div class="entry" ng-show="notRunOnce()">
                 <label for="schedule-repeats-every">Repeats Every</label>
                 <div class="entry-data entry-first">
                     <input id="schedule-repeats-every" type="number" placeholder="No." ng-model="scheduleParams.repeats_every">
@@ -174,15 +174,7 @@
                 </div>
             </div>
 
-            <div class="entry">
-                <label for="schedule-run-once" class="checkbox inline">
-                    <span class="icon-form icon-radio" ng-class="{ 'checked': scheduleParams.runOnce }"></span>
-                    <input id="schedule-run-once" type="checkbox" name="ends-on" checked="" ng-model="scheduleParams.runOnce" value="NUMBER">
-                    Run Once
-                </label>
-            </div>
-
-            <div class="entry" ng-if="!scheduleParams.runOnce">
+            <div class="entry" ng-show="notRunOnce()">
                 <label>Ends On</label>
                 <div class="entry-data entry-first">
                     <label for="schedule-ends-on-number" class="radio inline">
@@ -247,13 +239,13 @@
             <div class="entry">
                 <label for="delivery_method">Delivery method</label>
                 <div class="select">
-                    <select id="delivery_method" ng-model="scheduleParams.delivery_id" ng-options="dist.id as dist.description for dist in distributionList" iscroll-stop-propagation>
+                    <select id="delivery_method" ng-model="scheduleParams.delivery_id" ng-options="dist.id as dist.description for dist in scheduleDeliveryTypes" iscroll-stop-propagation>
                         <option value="">Delivery method</option>
                     </select>
                 </div>
             </div>
 
-            <div class="entry search" ng-show="scheduleParams.delivery_id === 'EMAIL'">
+            <div class="entry search" ng-show="checkDeliveryType('EMAIL')">
                 <label for="distribution-list-add-user">Add Recipient</label>
                 <button class="clear-query">
                     <span class="icons icon-clear-search">Clear query</span>
@@ -261,7 +253,7 @@
                 <input class="icons icon-search" auto-complete auto-options="userAutoCompleteSimple" type="search" placeholder="Search by User Name" value="" autocomplete="off" insert-email="true">
             </div>
             <!-- Display search results like this -->
-            <ul class="col-list" ng-show="scheduleParams.delivery_id === 'EMAIL'">
+            <ul class="col-list" ng-show="checkDeliveryType('EMAIL')">
                 <li ng-repeat="email in emailList track by $index">
                     {{ email }}
                     <button type="button" class="button only-icon icons icon-remove-10" ng-click="removeEmail($index)">
@@ -270,7 +262,7 @@
                 </li>
             </ul>
 
-            <div class="entry search" ng-show="scheduleParams.delivery_id === 'FTP'">
+            <div class="entry search" ng-show="checkDeliveryType('FTP')">
                 <label for="ftp-recipient">Recipient</label>
                 <div class="select">
                     <select id="ftp-recipient" ng-model="scheduleParams.selectedFTPRecipient" ng-options="ftp.id as ftp.description for ftp in ftpList" iscroll-stop-propagation>

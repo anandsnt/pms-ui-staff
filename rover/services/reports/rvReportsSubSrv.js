@@ -339,11 +339,12 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
-        service.fetchScheduleFrequency = function() {
+        service.fetchScheduleFrequency = function(exportOnly) {
+            var url = exportOnly ? 'admin/export_frequencies.json?export_only=true' : 'admin/export_frequencies.json'
+
             return callApi({
-                name: 'scheduleFrequency',
                 method: 'getJSON',
-                url: 'admin/export_frequencies.json',
+                url: url,
                 resKey: 'results'
             });
         };
@@ -355,10 +356,12 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 resKey: 'results'
             });
         };
-        service.fetchSchedules = function() {
+        service.fetchSchedules = function(exportOnly) {
+            var url = exportOnly ? 'admin/export_schedules.json?export_only=true' : 'admin/export_schedules.json';
+
             return callApi({
                 method: 'getJSON',
-                url: 'admin/export_schedules.json',
+                url: url,
                 resKey: 'results'
             });
         };
@@ -366,6 +369,14 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             return callApi({
                 method: 'getJSON',
                 url: 'admin/export_schedules/' + params.id
+            });
+        };
+        service.fetchDeliveryTypes = function(params) {
+            return callApi({
+                name: 'scheduleDeliveryTypes',
+                method: 'getJSON',
+                url: 'admin/export_delivery_types.json',
+                resKey: 'results'
             });
         };
 

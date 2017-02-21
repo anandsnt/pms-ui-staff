@@ -162,12 +162,13 @@ angular.module('sntRover').service('RVreportsSrv', [
 
 		service.reportSchedulesPayload = function() {
 			var deferred = $q.defer(),
-				payload = {};
+				payload = {},
+				apiCount = 4;
 
 			var shallWeResolve = function() {
 				var payloadCount = _.keys( payload ).length;
 
-				if ( payloadCount === 4 ) {
+				if ( payloadCount === apiCount ) {
 					deferred.resolve( payload );
 				}
 			};
@@ -193,6 +194,49 @@ angular.module('sntRover').service('RVreportsSrv', [
 
 			subSrv.fetchSchedulableReports()
 				.then( success.bind(null, 'schedulableReports'), failed.bind(null, 'schedulableReports', []) );
+
+			return deferred.promise;
+		};
+
+		service.reportExportPayload = function() {
+			var deferred = $q.defer(),
+				payload = {},
+				apiCount = 5;
+
+			var shallWeResolve = function() {
+				var payloadCount = _.keys( payload ).length;
+
+				if ( payloadCount === apiCount ) {
+					deferred.resolve( payload );
+				}
+			};
+
+			var success = function(key, data) {
+				payload[key] = angular.copy( data );
+				shallWeResolve();
+			};
+
+			var failed = function(key, emptyData, data) {
+				payload[key] = emptyData;
+				shallWeResolve();
+			};
+
+			var exportOnly = true;
+
+			subSrv.fetchSchedules(exportOnly)
+				.then( success.bind(null, 'schedulesList'), failed.bind(null, 'schedulesList', []) );
+
+			subSrv.fetchScheduleFrequency(exportOnly)
+				.then( success.bind(null, 'scheduleFrequency'), failed.bind(null, 'scheduleFrequency', []) );
+
+			subSrv.fetchTimePeriods()
+				.then( success.bind(null, 'scheduleTimePeriods'), failed.bind(null, 'scheduleTimePeriods', []) );
+
+			subSrv.fetchSchedulableReports()
+				.then( success.bind(null, 'schedulableReports'), failed.bind(null, 'schedulableReports', []) );
+
+			subSrv.fetchDeliveryTypes()
+				.then( success.bind(null, 'scheduleDeliveryTypes'), failed.bind(null, 'scheduleDeliveryTypes', []) );
 
 			return deferred.promise;
 		};
