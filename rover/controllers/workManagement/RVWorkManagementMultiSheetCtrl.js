@@ -953,6 +953,10 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		$scope.$on( '$destroy', handler );
 
 		$scope.getReservationStatusClass = function(room) {
+			if ( angular.isUndefined(room) ) {
+				return 'guest';
+			} 
+
 			switch (room.reservation_status) {
 				case 'Due out':
 				case 'Arrived / Day use / Due out':
@@ -980,6 +984,10 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		};
 
 		$scope.getReservationStatusValue = function(room) {
+			if ( angular.isUndefined(room) ) {
+				return 'default';
+			} 
+
 			switch (room.reservation_status) {
 				case 'Due out / Departed':
 				case 'Arrived / Day use / Due out / Departed':
@@ -1011,6 +1019,10 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		};
 
 		$scope.getCurrentStatusClass = function(room) {
+			if ( angular.isUndefined(room) ) {
+			return 'room';
+			} 
+
 			switch (room.current_status) {
 				case 'DIRTY':
 					return 'room red';
