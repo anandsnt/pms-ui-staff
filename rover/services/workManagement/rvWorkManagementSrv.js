@@ -415,7 +415,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 
 					// map tasks to rooms
 					_.each(pluckedTasks, function(task) {
-						roomIndex = _.findIndex(allRooms, { room_id: task.room_id });
+						roomIndex = _.findIndex(allRooms, { id: task.room_id });
 						roomInfo = getRoomInfo(employee.rooms, task.room_id);
 						copyRoom  = $.extend(
 											{},
