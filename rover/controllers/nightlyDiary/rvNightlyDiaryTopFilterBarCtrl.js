@@ -168,6 +168,16 @@ angular.module('sntRover')
             $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
         };
 
+        // To toggle filter panel view.
+        $scope.togglePanelView = function() {
+            if($scope.diaryData.showFilterPanel) {
+                $scope.diaryData.showFilterPanel = false;
+                $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
+            } else {
+                $scope.diaryData.showFilterPanel = true;
+            }
+        };
+
         init();
 
 }]);
