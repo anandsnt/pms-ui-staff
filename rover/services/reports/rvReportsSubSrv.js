@@ -379,6 +379,13 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 resKey: 'results'
             });
         };
+        service.fetchFtpServers = function() {
+            return callApi({
+                name: 'ftpServerList',
+                method: 'getJSON',
+                url: '/api/ftp_servers'
+            });
+        };
 
         service.fetchCampaignTypes = function() {
             return callApi({
@@ -389,11 +396,12 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
-        service.fetchSchedulableReports = function() {
+        service.fetchSchedulableReports = function(exportOnly) {
+            var url = exportOnly ? 'admin/export_reports.json?export_only=true' : 'admin/export_reports.json';
+
             return callApi({
-                name: 'schedulableReports',
                 method: 'getJSON',
-                url: 'admin/export_reports.json',
+                url: url,
                 resKey: 'results'
             });
         };

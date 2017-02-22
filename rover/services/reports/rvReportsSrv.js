@@ -8,6 +8,11 @@ angular.module('sntRover').service('RVreportsSrv', [
 		var service       = {},
 			choosenReport = {};
 
+		var SCHEDULE_TYPES = {
+			SCHEDULE_REPORT: 'SCHEDULE_REPORT',
+			EXPORT_SCHEDULE: 'EXPORT_SCHEDULE'
+		}
+
 		var cacheKey = 'REPORT_PAYLOAD_CACHE';
 
 		/** @type {Sting} since $value only allow to keep type Numbers and Strings */
@@ -160,10 +165,11 @@ angular.module('sntRover').service('RVreportsSrv', [
 			return hasFilter;
 		}
 
-		service.reportSchedulesPayload = function() {
+		function schedulePayloadGenerator (type) {
 			var deferred = $q.defer(),
 				payload = {},
-				apiCount = 4;
+				apiCount = type === SCHEDULE_TYPES.SCHEDULE_REPORT ? 4 : 6,
+				exportOnly = type === SCHEDULE_TYPES.EXPORT_SCHEDULE ? true : false;
 
 			var shallWeResolve = function() {
 				var payloadCount = _.keys( payload ).length;
@@ -182,46 +188,6 @@ angular.module('sntRover').service('RVreportsSrv', [
 				payload[key] = emptyData;
 				shallWeResolve();
 			};
-
-			subSrv.fetchSchedules()
-				.then( success.bind(null, 'schedulesList'), failed.bind(null, 'schedulesList', []) );
-
-			subSrv.fetchScheduleFrequency()
-				.then( success.bind(null, 'scheduleFrequency'), failed.bind(null, 'scheduleFrequency', []) );
-
-			subSrv.fetchTimePeriods()
-				.then( success.bind(null, 'scheduleTimePeriods'), failed.bind(null, 'scheduleTimePeriods', []) );
-
-			subSrv.fetchSchedulableReports()
-				.then( success.bind(null, 'schedulableReports'), failed.bind(null, 'schedulableReports', []) );
-
-			return deferred.promise;
-		};
-
-		service.reportExportPayload = function() {
-			var deferred = $q.defer(),
-				payload = {},
-				apiCount = 5;
-
-			var shallWeResolve = function() {
-				var payloadCount = _.keys( payload ).length;
-
-				if ( payloadCount === apiCount ) {
-					deferred.resolve( payload );
-				}
-			};
-
-			var success = function(key, data) {
-				payload[key] = angular.copy( data );
-				shallWeResolve();
-			};
-
-			var failed = function(key, emptyData, data) {
-				payload[key] = emptyData;
-				shallWeResolve();
-			};
-
-			var exportOnly = true;
 
 			subSrv.fetchSchedules(exportOnly)
 				.then( success.bind(null, 'schedulesList'), failed.bind(null, 'schedulesList', []) );
@@ -232,13 +198,26 @@ angular.module('sntRover').service('RVreportsSrv', [
 			subSrv.fetchTimePeriods()
 				.then( success.bind(null, 'scheduleTimePeriods'), failed.bind(null, 'scheduleTimePeriods', []) );
 
-			subSrv.fetchSchedulableReports()
+			subSrv.fetchSchedulableReports(exportOnly)
 				.then( success.bind(null, 'schedulableReports'), failed.bind(null, 'schedulableReports', []) );
 
-			subSrv.fetchDeliveryTypes()
-				.then( success.bind(null, 'scheduleDeliveryTypes'), failed.bind(null, 'scheduleDeliveryTypes', []) );
+			if ( type === SCHEDULE_TYPES.EXPORT_SCHEDULE ) {
+				subSrv.fetchDeliveryTypes()
+					.then( success.bind(null, 'scheduleDeliveryTypes'), failed.bind(null, 'scheduleDeliveryTypes', []) );
+
+				subSrv.fetchFtpServers()
+					.then( success.bind(null, 'ftpServerList'), failed.bind(null, 'ftpServerList', []) );
+			} 
 
 			return deferred.promise;
+		};
+
+		service.reportSchedulesPayload = function() {
+			return schedulePayloadGenerator( SCHEDULE_TYPES.SCHEDULE_REPORT );
+		};
+
+		service.reportExportPayload = function() {
+			return schedulePayloadGenerator( SCHEDULE_TYPES.EXPORT_SCHEDULE );
 		};
 
 		service.fetchOneSchedule = function(params) {
