@@ -101,7 +101,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.updateViewCol($scope.viewColsActions.ONE);
                 $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
 
-                fetch_reportSchedules_frequency_timePeriod_scheduableReports();
+                fetch_reportSchedules_frequency_timePeriod_scheduableReports_deliveryTypes();
             };
 
             var failed = function(errors) {
@@ -139,9 +139,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             // fill emails
             if ( $scope.emailList.length ) {
-                params.emails = $scope.emailList.join(', ');
+                params.recipients = $scope.emailList.join(', ');
             } else {
-                params.emails = '';
+                params.recipients = '';
             }
 
             // fill sort_field and filters
@@ -414,7 +414,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.updateViewCol($scope.viewColsActions.ONE);
                 $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
 
-                fetch_reportSchedules_frequency_timePeriod_scheduableReports();
+                fetch_reportSchedules_frequency_timePeriod_scheduableReports_deliveryTypes();
             };
 
             var failed = function(errors) {
@@ -696,13 +696,14 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             $scope.timeSlots = reportUtils.createTimeSlots(30);
         };
 
-        var fetch_reportSchedules_frequency_timePeriod_scheduableReports = function() {
+        var fetch_reportSchedules_frequency_timePeriod_scheduableReports_deliveryTypes = function() {
             var success = function(payload) {
                 $scope.scheduleFrequency = payload.scheduleFrequency;
                 $scope.scheduleTimePeriods = payload.scheduleTimePeriods;
                 scheduleTimePeriods = payload.scheduleTimePeriods;
                 $scope.$parent.$parent.schedulesList = [];
                 $scope.$parent.$parent.schedulableReports = [];
+                $scope.scheduleDeliveryTypes = payload.scheduleDeliveryTypes;
 
 
                 // sort schedule list by report name
@@ -762,6 +763,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                             return 'Week';
                         case 'MONTHLY':
                             return 'Month';
+                        case 'RUN_ONCE':
+                            return 'Once';
                         default:
                             return 'Per';
                     }
@@ -792,7 +795,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.$emit( 'hideLoader' );
             };
 
-            $scope.invokeApi( reportsSrv.reportSchedulesPayload, {}, success, failed );
+            $scope.invokeApi( reportsSrv.reportExportPayload, {}, success, failed );
         };
 
         var runDigestCycle = function() {
@@ -892,6 +895,26 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             }
         };
 
+        $scope.notRunOnce = function () {
+            var match = _.find($scope.scheduleFrequency, { id: $scope.scheduleParams.frequency_id }) || {};
+
+            if ( match.value === 'RUN_ONCE' ) {
+                return false
+            } else {
+                return true;
+            }
+        }
+
+        $scope.checkDeliveryType = function (checkFor) {
+            var match = _.find($scope.scheduleDeliveryTypes, { id: $scope.scheduleParams.delivery_id }) || {};
+
+            if ( match.value === checkFor ) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
 
         var init = function() {
             $scope.isAddingNew = false;
@@ -908,13 +931,6 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             $scope.scheduleFreqType = [];
             $scope.emailList = [];
 
-            $scope.distributionList = [{
-                id: 'EMAIL',
-                description: 'Email'
-            }, {
-                id: 'FTP',
-                description: 'FTP'
-            }];
             $scope.ftpList = [{
                 id: 1,
                 description: 'ftp.server.com'
@@ -927,7 +943,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             setupScrolls();
 
-            fetch_reportSchedules_frequency_timePeriod_scheduableReports();
+            fetch_reportSchedules_frequency_timePeriod_scheduableReports_deliveryTypes();
         };
 
         init();
