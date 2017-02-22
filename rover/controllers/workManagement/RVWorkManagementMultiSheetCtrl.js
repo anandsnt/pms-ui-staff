@@ -1020,7 +1020,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 		$scope.getCurrentStatusClass = function(room) {
 			if ( angular.isUndefined(room) ) {
-			return 'room';
+				return 'room';
 			} 
 
 			switch (room.current_status) {
@@ -1108,13 +1108,22 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                     var currX = clientx - (LEFT_OFFSET + scrollInstX);
                     var colIndex;
 
+					var maxColCount = $scope.multiSheetState.selectedEmployees.length;
+
                     if ( currX < 0 ) {
                         colIndex = -1;
                     } else {
                         colIndex = Math.floor(currX / COL_WIDTH);
-                        colIndex = colIndex !== 0 ? colIndex - 1 : colIndex;
+
+						if ( maxColCount === 0 ) {
+							colIndex = 0;
+						} else if ( colIndex >= maxColCount ) {
+							colIndex = maxColCount - 1;
+						} else if ( colIndex > 0 ) {
+							colIndex = colIndex - 1;
+						}
                     }
-                    
+
                     return colIndex;
                 };
 

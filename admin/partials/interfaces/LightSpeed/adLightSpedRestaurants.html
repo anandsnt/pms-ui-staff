@@ -106,7 +106,7 @@
                             <ad-textbox styleclass="full-width" value="restaurant.password"
                                         inputtype="password"
                                         label="{{'PASSWORD' | translate}}"
-                                        required="yes"
+                                        required="{{hasCompanyChanged()}}"
                                         placeholder="{{'PASSWORD_PLACEHOLDER' | translate}}"></ad-textbox>
                             <ad-dropdown-name savemodel="restaurant.company_id"
                                               valueproperty="id"
