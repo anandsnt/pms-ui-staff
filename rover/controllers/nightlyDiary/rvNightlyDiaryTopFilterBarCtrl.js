@@ -170,7 +170,7 @@ angular.module('sntRover')
 
         // To toggle filter panel view.
         $scope.togglePanelView = function() {
-            if($scope.diaryData.showFilterPanel) {
+            if ($scope.diaryData.showFilterPanel) {
                 $scope.diaryData.showFilterPanel = false;
                 $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
             } else {
