@@ -165,7 +165,7 @@ admin.controller('ADRatesAddonsCtrl', [
 				else {
 					$scope.postTypes = data;
 				}
-				
+
 				$scope.$emit('hideLoader');
 			};
 
@@ -212,7 +212,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			if ($rootScope.isHourlyRatesEnabled) {
 				$scope.singleAddon.post_type_id = 2;
 			}
-				
+
 			// today should be business date, currently not avaliable
 			var today = tzIndependentDate();
             var weekAfter = today.setDate(today.getDate() + 7);
@@ -371,11 +371,11 @@ admin.controller('ADRatesAddonsCtrl', [
 			singleAddonData.end_date = $scope.singleAddon.end_date ? $filter('date')(tzIndependentDate($scope.singleAddon.end_date), 'yyyy-MM-dd') : null;
 
 		var unwantedKeys = [];
-		
+
 		if ($scope.initialImage === singleAddonData.addon_image) {
 			unwantedKeys.push('addon_image');
 		}
-		/*global dclone:true*/
+		/* global dclone:true */
 		var addon_data = dclone(singleAddonData, unwantedKeys);
 
 			// if we are adding new addon
