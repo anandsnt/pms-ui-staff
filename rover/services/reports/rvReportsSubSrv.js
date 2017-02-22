@@ -387,6 +387,47 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
+        service.runNowExport = function(param) {
+            var url = 'admin/export_schedules/' + param.id + '.json';
+
+            // start_on: now.date
+            // time: now.time;
+
+            return callApi({
+                method: 'putJSON',
+                url: url,
+                resKey: 'results'
+            });
+        };
+
+        service.createExport = function() {
+            var url = 'admin/export_schedules.json';
+
+            return callApi({
+                method: 'postJSON',
+                url: url,
+                resKey: 'results'
+            });
+        };
+        service.updateAnExport = function(param) {
+            var url = 'admin/export_schedules/' + param.id + '.json';
+
+            return callApi({
+                method: 'putJSON',
+                url: url,
+                resKey: 'results'
+            });
+        };
+        service.fetchAnExport = function(param) {
+            var url = 'admin/export_schedules/' + param.id + '.json';
+
+            return callApi({
+                method: 'getJSON',
+                url: url,
+                resKey: 'results'
+            });
+        };
+
         service.fetchCampaignTypes = function() {
             return callApi({
                 name: 'campaign_types',

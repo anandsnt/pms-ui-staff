@@ -81,15 +81,11 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
         var createSchedule = function() {
             var params = {
-                report_id: $scope.selectedEntityDetails.report.id,
+                report_id: $scope.selectedEntityDetails.id,
                 hotel_id: $rootScope.hotelDetails.userHotelsData.current_hotel_id,
                 /**/
-                format_id: 1
-            };
-
-            var filter_values = {
-                page: 1,
-                per_page: 99999
+                format_id: 1,
+                delivery_method_id: $scope.selectedEntityDetails.delivery_method.id
             };
 
             var success = function() {
@@ -101,7 +97,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.updateViewCol($scope.viewColsActions.ONE);
                 $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
 
-                fetch_reportSchedules_frequency_timePeriod_scheduableReports_deliveryTypes();
+                fetchReqDatas();
             };
 
             var failed = function(errors) {
@@ -137,25 +133,14 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 params.ends_on_date = null;
             }
 
-            // fill emails
-            if ( $scope.emailList.length ) {
+            // fill emails/FTP
+            if ( $scope.checkDeliveryType('EMAIL') && $scope.emailList.length ) {
                 params.recipients = $scope.emailList.join(', ');
+            } else if ( $scope.checkDeliveryType('FTP') && !! $scope.scheduleParams.selectedFtpRecipient ) {
+                params.recipients = $scope.scheduleParams.selectedFtpRecipient
             } else {
                 params.recipients = '';
             }
-
-            // fill sort_field and filters
-            if ( $scope.scheduleParams.sort_field ) {
-                filter_values.sort_field = $scope.scheduleParams.sort_field;
-            }
-            _.each($scope.filters, function(filter) {
-                _.each(filter.data, function(each) {
-                    if ( each.selected ) {
-                        filter_values[each.paramKey] = true;
-                    }
-                });
-            });
-            params.filter_values = filter_values;
 
             $scope.invokeApi( reportsSrv.createSchedule, params, success, failed );
         };
@@ -168,11 +153,6 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 /**/
                 format_id: 1,
                 delivery_method_id: $scope.selectedEntityDetails.delivery_method.id
-            };
-
-            var filter_values = {
-                page: 1,
-                per_page: 99999
             };
 
             var success = function() {
@@ -226,28 +206,21 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 params.ends_on_date = null;
             }
 
-            // fill emails
-            if ( $scope.emailList.length ) {
-                params.emails = $scope.emailList.join(', ');
+            // fill emails/FTP
+            if ( $scope.checkDeliveryType('EMAIL') && $scope.emailList.length ) {
+                params.recipients = $scope.emailList.join(', ');
+            } else if ( $scope.checkDeliveryType('FTP') && !! $scope.scheduleParams.selectedFtpRecipient ) {
+                params.recipients = $scope.scheduleParams.selectedFtpRecipient
             } else {
-                params.emails = '';
+                params.recipients = '';
             }
-
-            // fill sort_field and filters
-            if ( $scope.scheduleParams.sort_field ) {
-                filter_values.sort_field = $scope.scheduleParams.sort_field;
-            }
-            _.each($scope.filters, function(filter) {
-                _.each(filter.data, function(each) {
-                    if ( each.selected ) {
-                        filter_values[each.paramKey] = true;
-                    }
-                });
-            });
-            params.filter_values = filter_values;
 
             $scope.invokeApi( reportsSrv.updateSchedule, params, success, failed );
         };
+
+        $scope.runScheduleNow = function () {
+            // UNSURE: as ROR mentioned to save it with today and time
+        }
 
         BaseCtrl.call(this, $scope);
 
@@ -414,7 +387,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.updateViewCol($scope.viewColsActions.ONE);
                 $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
 
-                fetch_reportSchedules_frequency_timePeriod_scheduableReports_deliveryTypes();
+                fetchReqDatas();
             };
 
             var failed = function(errors) {
@@ -686,17 +659,25 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             }, datePickerCommon);
             $scope.scheduleParams.ends_on_date = reportUtils.processDate(endsOnDate).today;
 
-            // save emails
-            if ( !! $scope.selectedEntityDetails.emails ) {
-                $scope.emailList = $scope.selectedEntityDetails.emails.split(', ');
+            // saved emails/FTP
+            var delieveryType = $scope.selectedEntityDetails.delivery_method.delivery_type.value;
+            if ( !! $scope.selectedEntityDetails.recipients ) {
+                if ( delieveryType === 'EMAIL' ) {
+                    $scope.scheduleParams.delivery_id = $scope.getDeliveryId('EMAIL');
+                    $scope.emailList = $scope.selectedEntityDetails.recipients.split(', ');
+                } else if ( delieveryType === 'FTP' ) {
+                    $scope.scheduleParams.delivery_id = $scope.getDeliveryId('FTP');
+                    $scope.scheduleParams.selectedFtpRecipient = $scope.selectedEntityDetails.recipients;
+                }
             } else {
                 $scope.emailList = [];
+                $scope.scheduleParams.selectedFtpRecipient = '';
             }
 
             $scope.timeSlots = reportUtils.createTimeSlots(30);
         };
 
-        var fetch_reportSchedules_frequency_timePeriod_scheduableReports_deliveryTypes = function() {
+        var fetchReqDatas = function() {
             var success = function(payload) {
                 $scope.scheduleFrequency = payload.scheduleFrequency;
                 $scope.scheduleTimePeriods = payload.scheduleTimePeriods;
@@ -914,6 +895,11 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 return false;
             }
         }
+        $scope.getDeliveryId = function (checkFor) {
+            var match = _.find($scope.scheduleDeliveryTypes, { value: checkFor }) || {};
+
+            return match.id;
+        }
 
 
         var init = function() {
@@ -943,7 +929,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             setupScrolls();
 
-            fetch_reportSchedules_frequency_timePeriod_scheduableReports_deliveryTypes();
+            fetchReqDatas();
         };
 
         init();

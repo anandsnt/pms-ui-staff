@@ -296,6 +296,25 @@ angular.module('sntRover').service('RVreportsSrv', [
 			return deferred.promise;
 		};
 
+		service.runScheduleNow = function(params) {
+			var deferred = $q.defer(),
+				url = 'admin/export_schedules/' + params.id;
+
+			var success = function(data) {
+				deferred.resolve(data);
+			};
+
+			var failed = function(error) {
+				deferred.reject( error );
+			};
+
+			rvBaseWebSrvV2
+				.putJSON( url, params )
+				.then( success, failed );
+
+			return deferred.promise;
+		};
+
         service.setReportRequestParam = function(name, value) {
             choosenReport[name] = value;
         };

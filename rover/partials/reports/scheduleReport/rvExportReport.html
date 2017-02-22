@@ -108,7 +108,7 @@
         <button class="button green"
             ng-click="checkCanSaveSchedule()">Save Schedule</button>
         <button class="button blue"
-            ng-click="">Run Now</button>
+            ng-click="runScheduleNow()">Run Now</button>
     </div>
 
     <div ng-show="isAddingNew"
@@ -262,13 +262,16 @@
                 </li>
             </ul>
 
-            <div class="entry search" ng-show="checkDeliveryType('FTP')">
-                <label for="ftp-recipient">Recipient</label>
+            <div class="entry search" ng-show="checkDeliveryType('FTP') && ftpServerList.length">
+                <label for="ftp-recipient">FTP Recipient</label>
                 <div class="select">
-                    <select id="ftp-recipient" ng-model="scheduleParams.selectedFTPRecipient" ng-options="ftp.id as ftp.description for ftp in ftpList" iscroll-stop-propagation>
+                    <select id="ftp-recipient" ng-model="scheduleParams.selectedFtpRecipient" ng-options="ftp.id as ftp.description for ftp in ftpServerList" iscroll-stop-propagation>
                         <option value="">FTP Recipient</option>
                     </select>
                 </div>
+            </div>
+            <div class="entry search" ng-show="checkDeliveryType('FTP') && !ftpServerList.length">
+                <label for="ftp-recipient">No FTP configured</label>
             </div>
         </div>
     </div>
