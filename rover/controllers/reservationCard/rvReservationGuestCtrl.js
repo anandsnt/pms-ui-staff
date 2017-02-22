@@ -6,6 +6,8 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		var presentGuestInfo = {};
 		var initialGuestInfo = {};
 
+        $scope.isSRRate = $scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates === 'true';
+
 		$scope.errorMessage = '';
 
 		/**
@@ -253,6 +255,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
                         $scope.customRate = response.rate_amount;
                         $scope.rateForCurrentGuest = response.calculated_rate_amount;
+                        $scope.isSRRate = response.is_sr;
 
                         confirmForRateChange();
                     } else {
