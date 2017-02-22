@@ -1115,7 +1115,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                     } else {
                         colIndex = Math.floor(currX / COL_WIDTH);
 
-						if ( maxColCount === 0 ){
+						if ( maxColCount === 0 ) {
 							colIndex = 0;
 						} else if ( colIndex >= maxColCount ) {
 							colIndex = maxColCount - 1;
