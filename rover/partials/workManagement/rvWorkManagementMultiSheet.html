@@ -34,7 +34,7 @@
             </div>
         </div>
         <div class="entry actions">
-            <div class="action">
+            <div class="action" ng-hide="workSheetChanged">
                 <label translate>PRINT</label>
                 <button type="button" class="button blue with-icon only-icon"
                     ng-click="openPrintWorkSheetPopup()">
@@ -83,7 +83,6 @@
                         jqyoui-draggable ="{index: {{$index}}, animate:false, onStart:'dragStart()', onStop:'dragDrop()', onDrag:'userDragging()'}"
                         data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content .for-lone-task'}">
                         <div class="info">
-                            <span class="only-print" ng-bind="getRoomType(room.room_type)"></span>
                             <span ng-class="getReservationStatusClass(multiSheetState.allRooms[room.room_index])"
                                 ng-bind="getReservationStatusValue(multiSheetState.allRooms[room.room_index])"></span>
                             <span ng-class="getCurrentStatusClass(multiSheetState.allRooms[room.room_index])">
@@ -99,7 +98,7 @@
                             </span>
                         </h3>
                         <span class="task">{{task.task_name}}</span>
-                        <span ng-show="task.is_vip" class="vip" translate>VIP</span>
+                        <span ng-show="room.is_vip" class="vip" translate>VIP</span>
                     </li>
                 </ul>
             </div>
@@ -182,9 +181,11 @@
                                     </span>
                                 </h3>
                                 <span class="task">{{task.task_name}}</span>
-                                <span ng-show="task.is_vip" class="vip" translate>VIP</span>
+                                <span ng-show="room.is_vip" class="vip" translate>VIP</span>
                                 <!-- If task is completed, IT SHOULD BE LOCKED AND USER SHOULD NOT BE ABLE TO MOVE IT. Also, add:-->
                                 <span class="icons icon-ok-10" ng-show="task.is_completed"></span>
+                                <!--This is a dummy to be shown when the the task is not completed. This placeholder will keep the print position of the VIP icon-->
+                                <span class="icons icon-ok-10 no-icon" ng-show="!task.is_completed"></span>
                             </li>
                         </ul>
                     </div>

@@ -99,8 +99,13 @@ sntZestStation.controller('zsEmailBillCtrl', [
 
         $scope.goToNextScreen = function() {
             $scope.callBlurEventForIpad();
-            $scope.emailSendingFailed = true;
-            $scope.mode = 'GUEST_BILL_EMAIL_SENT';
+            // for overlay we will be checking out at this point
+            if (!$scope.zestStationData.is_standalone) {
+                $scope.checkOutGuest();
+            } else {
+                $scope.emailSendingFailed = true;
+                $scope.mode = 'GUEST_BILL_EMAIL_SENT';
+            }
         };
 
         $scope.sendEmail = function() {
@@ -127,6 +132,42 @@ sntZestStation.controller('zsEmailBillCtrl', [
             $scope.callBlurEventForIpad();
 
             $scope.callAPI(zsCheckoutSrv.sendBill, options);
+        };
+
+        /**
+         *  Checkout the Guest
+         */
+        $scope.checkOutGuest = function() {
+            var params = {
+                'reservation_id': $stateParams.reservation_id,
+                'is_kiosk': true
+            };
+            var checkOutSuccess = function() {
+                if ($scope.zestStationData.keyCardInserted) {
+                    $scope.zestStationData.keyCaptureDone = true;
+                    $scope.socketOperator.CaptureKeyCard();
+                };
+                if ($scope.zestStationData.guest_bill.print) { // go to print nav
+                    $scope.stateParamsForNextState = {
+                        email_sent: 'true'
+                    };
+                    $scope.reservation_id = $stateParams.reservation_id;
+                    $scope.printMode = true;
+                } else {
+                    var stateParams = {
+                        'printopted': 'false',
+                        'email_sent': 'true',
+                    };
+                    $state.go('zest_station.reservationCheckedOut', stateParams);
+                }
+            };
+            var options = {
+                params: params,
+                successCallBack: checkOutSuccess,
+                failureCallBack: failureCallBack
+            };
+
+            $scope.callAPI(zsCheckoutSrv.checkoutGuest, options);
         };
 
 		/**
@@ -169,6 +210,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
             if ($scope.mode === 'EMAIL_BILL_EDIT_MODE') {
                 $scope.focusInputField('email_text');
             }
+            $scope.printMode = false;// this is for non-standalone
 
         }());
 

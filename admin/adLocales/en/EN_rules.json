@@ -3,6 +3,8 @@
     "NAME":"Name",
     "DESCRIPTION":"Description",
     "ALTERNATE_DESCRIPTION":"Alternate Description",
+    "ADDON_IMAGE_LABEL": "ADDON IMAGE",
+    "ADDON_IMAGE_SPEC": "(960x600px in size)",
     "ACTIVE":"Active",
     "DELETE":"Delete",
     "ADD_ONS":"Add-Ons",
