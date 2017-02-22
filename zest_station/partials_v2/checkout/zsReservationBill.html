@@ -62,8 +62,8 @@
         </div>
     </div>
 </section>
-<!-- print option -->
-<div ng-controller="zsPrintBillCtrl">
+<!-- print option for stand alone-->
+<div ng-controller="zsPrintBillCtrl" ng-if="zestStationData.is_standalone">
     <section id="main" role="main" class="centered" ng-show="printOpted">
         <div id="content">
             <h1>
