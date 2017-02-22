@@ -370,18 +370,13 @@ admin.controller('ADRatesAddonsCtrl', [
 			singleAddonData.begin_date = $scope.singleAddon.begin_date ? $filter('date')(tzIndependentDate($scope.singleAddon.begin_date), 'yyyy-MM-dd') : null;
 			singleAddonData.end_date = $scope.singleAddon.end_date ? $filter('date')(tzIndependentDate($scope.singleAddon.end_date), 'yyyy-MM-dd') : null;
 
-			
-
-
-
-
-			var unwantedKeys = [];
+		var unwantedKeys = [];
 		
 		if ($scope.initialImage === singleAddonData.addon_image) {
 			unwantedKeys.push('addon_image');
 		}
+		/*global dclone:true*/
 		var addon_data = dclone(singleAddonData, unwantedKeys);
-
 
 			// if we are adding new addon
 			if ( $scope.isAddMode ) {
@@ -391,7 +386,6 @@ admin.controller('ADRatesAddonsCtrl', [
 
 					$scope.tableParams.reload();
 				};
-
 
 				$scope.invokeApi(ADRatesAddonsSrv.addNewAddon, addon_data, callback);
 			}
