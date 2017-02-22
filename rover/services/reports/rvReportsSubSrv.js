@@ -433,6 +433,15 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
+        service.getPaymentValues = function(params) {
+            return callApi({
+                method: 'getJSON',
+                url: 'api/reports/' + params.report_id + '/payment_by_charge_codes',
+                params: _.omit(params, 'report_id')
+            });
+        };
+
+
         service.fetchAccounts = function() {
             return callApi({
                 name: 'accounts',
