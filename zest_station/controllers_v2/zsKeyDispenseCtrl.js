@@ -31,6 +31,23 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 
 
 		}());
+
+		$scope.showDispenserGateIsBlockedPopup = false;
+		// Before creating second key need to check if first key is removed
+		// Else alert the user
+		$scope.dispenseKeyIfGateIsClear = function(argument) {
+			var gateisClear = true;
+			if (gateisClear) {
+				$scope.dispenseKey();
+			} else {
+				$scope.showDispenserGateIsBlockedPopup = true;
+			}
+		};
+		$scope.closeGateErrorWarning = function(argument) {
+			$scope.showDispenserGateIsBlockedPopup = false;
+		};
+
+		
 		/**
 		 * [set data from stateParams description]
 		 * @type {[type]}

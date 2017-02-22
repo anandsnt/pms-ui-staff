@@ -1,3 +1,15 @@
+<!-- Popup -->
+<div class="popup" ng-class="{'open':showDispenserGateIsBlockedPopup}">
+    <!-- Remove class "open" to hide popup content -->
+    <div class="popup-content">
+        <h2 class="nocaps">
+            <text editable-text="GATE_ERROR_MESSAGE"> {{'GATE_ERROR_MESSAGE' |translate}}</text>
+        </h2>
+        <button type="button" class="button" click-touch='closeGateErrorWarning();'>
+            <text editable-text="GATE_ERROR_CLOSE"> {{'GATE_ERROR_CLOSE' |translate}}</text>
+        </button>
+    </div>
+</div>
 <!--------------------- select no of keys mode ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'DISPENSE_KEY_MODE'">
    <div id="content">
@@ -111,7 +123,7 @@
         <button ng-show="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(2)">
             <text editable-text="MAKE_KEY_TEXT_TWO"> {{'MAKE_KEY_TEXT_TWO' |translate}}</text>
         </button>
-        <button ng-hide="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="dispenseKey()">
+        <button ng-hide="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="dispenseKeyIfGateIsClear()">
             <text editable-text="MAKE_KEY_TEXT_TWO"> {{'MAKE_KEY_TEXT_TWO' |translate}}</text>
         </button>
     </div>
