@@ -101,7 +101,7 @@ angular.module('sntRover')
             else {
                 $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift, true);
             }
-            $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
+            $scope.$emit('UPDATE_RESERVATIONLIST');
         });
         // Catching event from main controller, when API is completed.
         $scope.$on('FETCH_COMPLETED_DATE_LIST_DATA', function() {
@@ -120,7 +120,7 @@ angular.module('sntRover')
                 $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift, true);
                 $scope.diaryData.numberOfDays = 21;
             }
-            $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
+            $scope.$emit('UPDATE_RESERVATIONLIST');
         };
 
         /*
@@ -151,7 +151,7 @@ angular.module('sntRover')
             var isRightShift = false;
 
             calculateFromDateAndToDate(isRightShift);
-            $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
+            $scope.$emit('UPDATE_RESERVATIONLIST');
         };
 
         // To handle click on right date shift.
@@ -159,7 +159,7 @@ angular.module('sntRover')
             var isRightShift = true;
 
             calculateFromDateAndToDate(isRightShift);
-            $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
+            $scope.$emit('UPDATE_RESERVATIONLIST');
         };
 
         // To handle click on reset button.
