@@ -65,5 +65,5 @@
     <p>Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong id="total-count">{{ netTotalCount }}</strong> items</p>
 </div>
 
-<rv-pagination  page-options="paginationConfig" page-data="totalCount" ng-if="shouldShowNewPagination() && totalCount > 0">
+<rv-pagination  page-options="paginationConfig" page-data="totalCount" ng-if="shouldShowNewPagination() && totalCount > 0 && showReportDetails">
 </rv-pagination>

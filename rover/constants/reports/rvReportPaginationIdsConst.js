@@ -15,7 +15,9 @@ angular.module('reportsModule').constant('RVReportPaginationIdsConst', {
     'Reservations By User': 'RESERVATIONS_BY_USER',
     'Upsell': 'UPSELL',
     'Room Upsell': 'ROOM_UPSELL',
-    'Rooms OOO/OOS': 'ROOMS_OOO_OOS'
-
+    'Rooms OOO/OOS': 'ROOMS_OOO_OOS',
+    'Company/TA Top Producers': 'COMPANY_TA_TOP_PRODUCERS',
+    'Credit Check Report': 'CREDIT_CHECK_REPORT',
+    'Deposit Balance Summary': 'DEPOSIT_SUMMARY'
 
 });
