@@ -292,6 +292,10 @@ angular.module('sntRover')
              * @param {Number} RoomId - selected room id from search filters.
             */
             $scope.$on('UPDATE_RESERVATIONLIST', function( event, roomId ) {
+                if (!!roomId) {
+                    $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
+                    $scope.diaryData.showFilterPanel = false;                        
+                }
                 cancelReservationEditing();
                 fetchRoomListDataAndReservationListData(roomId);
             });
