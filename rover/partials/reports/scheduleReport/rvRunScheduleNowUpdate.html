@@ -1,0 +1,14 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
+  <div ng-cloak class="modal-content">
+	    <button id="modal-close" class="modal-close" ng-click="closeDialog()">
+	    	<span class="icons icon-close invert">
+	    </button>
+		<span class="message">
+			<span class="red" ng-show="runScheduleNowSuccess">Export has been put in queue. Will dispatch once completed.</span>
+			<span class="red" ng-hide="runScheduleNowSuccess">Unable to put export in queue. Please try again.</span>
+		</span>
+		<div class="actions">        	
+        	<button class="button blue" ng-click="closeDialog()">Ok</button>
+    	</div>
+   </div>
+</div>
