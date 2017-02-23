@@ -16,7 +16,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
         // helper function
         var findOccurance = function(item) {
             var occurance = 'Runs ',
-                frequency = _.find($scope.scheduleFrequency, { id: item.frequency_id }).description;
+                frequency = _.find($scope.originalScheduleFrequency, { id: item.frequency_id }).description;
 
             var FRQ_1 = 1,
                 FRQ_2 = 2,
@@ -58,11 +58,14 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 return !! $scope.scheduleParams.frequency_id;
             };
 
-            var hasEmailList = function() {
-                return $scope.emailList.length;
+            var hasEmailFtpList = function() {
+                var hasEmail = $scope.checkDeliveryType('EMAIL') && $scope.emailList.length;
+                var hasFTP = $scope.checkDeliveryType('FTP') && !! $scope.scheduleParams.selectedFtpRecipient;
+
+                return hasEmail || hasFTP;
             };
 
-            return hasTimePeriod() && hasFrequency() && hasEmailList();
+            return hasTimePeriod() && hasFrequency() && hasEmailFtpList();
         };
 
         var fillValidationErrors = function() {
@@ -306,6 +309,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.addingStage = STAGES.SHOW_DISTRIBUTION;
                 $scope.updateViewCol($scope.viewColsActions.FOUR);
 
+                filterScheduleTimePeriod($scope.selectedEntityDetails);
+                filterScheduleFrequency($scope.selectedEntityDetails);
                 processScheduleDetails(item);
                 setupFilters();
                 applySavedFilters();
@@ -334,10 +339,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             });
         };
 
-        $scope.pickReport = function(item, index) {
+        $scope.pickReport = function(item, index) {            
             $scope.selectedEntityDetails = $scope.$parent.$parent.schedulableReports[index];
             $scope.isGuestBalanceReport = false;
-
+            
             if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
                 $scope.selectedReport.active = false;
             }
@@ -349,6 +354,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             $scope.addingStage = STAGES.SHOW_PARAMETERS;
             $scope.updateViewCol($scope.viewColsActions.TWO);
 
+            filterScheduleTimePeriod($scope.selectedEntityDetails);
+            filterScheduleFrequency($scope.selectedEntityDetails);;
             processScheduleDetails(item);
             setupFilters();
             applySavedFilters();
@@ -593,6 +600,46 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             runDigestCycle();
         };
 
+        filterScheduleFrequency = function (item) {;
+            var dailyOnly = _.find($scope.originalScheduleFrequency, { value: 'DAILY' });
+            var runOnceOnly = _.find($scope.originalScheduleFrequency, { value: 'RUN_ONCE' });
+
+            var dailyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'DAILY' });
+
+            var forDaily = {
+                'Financial Transactions': true,
+                'Membership Details': true,
+                'Reservations': true,
+                'Rooms': true
+            }
+
+            if ( forDaily[item.report.title] ) {
+                $scope.scheduleFrequency = [dailyOnly, runOnceOnly];
+                $scope.scheduleFreqType = [dailyTypeOnly];
+            }
+        }
+
+        var filterScheduleTimePeriod = function(item) {
+            var yesterdayOnly = _.find($scope.originalScheduleTimePeriods, { value: 'YESTERDAY' });
+            var todayOnly = _.find($scope.originalScheduleTimePeriods, { value: 'TODAY' });
+
+            var forYesterday = {
+                'Financial Transactions': true,
+                'Membership Details': true,
+                'Reservations': true
+            }
+
+            var forToday = {
+                'Rooms': true
+            }
+
+            if ( forYesterday[item.report.title] ) {
+                $scope.scheduleTimePeriods = [yesterdayOnly];
+            } else if ( forToday[item.report.title] ) {
+                $scope.scheduleTimePeriods = [todayOnly];
+            }
+        }
+
         var processScheduleDetails = function(report) {
             $scope.scheduleParams = {};
 
@@ -677,14 +724,16 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             $scope.scheduleParams.ends_on_date = reportUtils.processDate(endsOnDate).today;
 
             // saved emails/FTP
-            var delieveryType = $scope.selectedEntityDetails.delivery_method.delivery_type.value;
+            var delieveryMethod = $scope.selectedEntityDetails.delivery_method;
+            var delieveryType = delieveryMethod ? $scope.selectedEntityDetails.delivery_method.delivery_type.value : '';
+
             if ( !! $scope.selectedEntityDetails.recipients ) {
                 if ( delieveryType === 'EMAIL' ) {
                     $scope.scheduleParams.delivery_id = $scope.getDeliveryId('EMAIL');
                     $scope.emailList = $scope.selectedEntityDetails.recipients.split(', ');
                 } else if ( delieveryType === 'FTP' ) {
                     $scope.scheduleParams.delivery_id = $scope.getDeliveryId('FTP');
-                    $scope.scheduleParams.selectedFtpRecipient = $scope.selectedEntityDetails.recipients;
+                    $scope.scheduleParams.selectedFtpRecipient = parseInt( $scope.selectedEntityDetails.recipients );
                 }
             } else {
                 $scope.emailList = [];
@@ -696,9 +745,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
         var fetchReqDatas = function() {
             var success = function(payload) {
-                $scope.scheduleFrequency = payload.scheduleFrequency;
-                $scope.scheduleTimePeriods = payload.scheduleTimePeriods;
-                scheduleTimePeriods = payload.scheduleTimePeriods;
+                $scope.originalScheduleFrequency = payload.scheduleFrequency;
+                $scope.originalScheduleTimePeriods = payload.scheduleTimePeriods;
                 $scope.$parent.$parent.schedulesList = [];
                 $scope.$parent.$parent.schedulableReports = [];
                 $scope.scheduleDeliveryTypes = payload.scheduleDeliveryTypes;
@@ -759,10 +807,11 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                     }
                 };
 
-                $scope.scheduleFreqType = _.map($scope.scheduleFrequency, function(freq) {
+                $scope.originalScheduleFreqType = _.map($scope.originalScheduleFrequency, function(freq) {
                     return {
                         id: freq.id,
-                        value: getValue(freq.value)
+                        value: getValue(freq.value),
+                        originalValue: freq.value
                     };
                 });
 
