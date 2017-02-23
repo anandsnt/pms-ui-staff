@@ -68,9 +68,9 @@
                     </div>
                     <!-- <label for="price-suffix">{{'PRICE_SUFFIX_TITLE' | translate}}</label> -->
 
-                    <ad-toggle-button div-class="full-width" label="{{'PRICE_SUFFIX_SWITCH_LABEL' | translate}}" is-checked="singleAddon.enable_suffix_label"></ad-toggle-button>
+                    <ad-toggle-button div-class="full-width" label="{{'PRICE_SUFFIX_SWITCH_LABEL' | translate}}" is-checked="singleAddon.is_display_suffix"></ad-toggle-button>
 
-                    <ad-textbox ng-show="singleAddon.enable_suffix_label"  styleclass="full-width" value="singleAddon.price_suffix" name="name" id="name" label="{{'PRICE_SUFFIX_LABEL' | translate}}" placeholder="{{'PRICE_SUFFIX_PLACEHOLDER' | translate}}"></ad-textbox>
+                    <ad-textbox ng-show="singleAddon.is_display_suffix"  styleclass="full-width" value="singleAddon.suffix_label" name="name" id="name" label="{{'PRICE_SUFFIX_LABEL' | translate}}" placeholder="{{'PRICE_SUFFIX_PLACEHOLDER' | translate}}"></ad-textbox>
 
                 </div>
 
@@ -151,7 +151,7 @@
                     </div>
                 </div>
 
-                <ad-toggle-button is-hide="!isConnectedToPMS" div-class="full-width" label="{{'SELL_SEPARATE' | translate}}" is-checked="singleAddon.sell_separate"></ad-toggle-button>
+                <ad-toggle-button is-hide="!isConnectedToPMS" div-class="full-width" label="{{'SELL_SEPARATE' | translate}}" is-checked="singleAddon.is_sell_separate"></ad-toggle-button>
 
                 <div ng-hide="isConnectedToPMS" class="entry radio-check">
                     <label class="checkbox">
