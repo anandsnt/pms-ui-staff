@@ -9,8 +9,9 @@
 
 <div id="report-content" class="report-content scrollable" ng-hide="hasNoResults" ng-class="{ 'no-totals': hasNoTotals, 'no-sorting': hasNoSorting, 'with-pagination': (!disablePrevBtn || !disableNextBtn) }" ng-iscroll="report-details-scroll">
     <div class="wrapper">
-
+    Results
         <span ng-repeat="resultItem in results">
+
             <ul class="card-meta">
                 <li class="name">5 Comps Rooms on {{ resultItem.transaction_date | date : dateFormat }}</li>
             </ul>
@@ -31,6 +32,7 @@
                 <tfoot ng-if="$last" ng-include="'/assets/partials/reports/shared/rvReportDetailsFooter.html'"></tfoot>
 
                 <!-- Reports table content -->
+                Length{{resultItem.transactions.length}}
                 <tbody>
                     <tr ng-repeat="transaction in resultItem.complimentary_details track by $index" class="row-break" ng-include="'/assets/partials/reports/complimentaryRoomReport/rvComplimentaryRoomReportRow.html'" ngrepeatend></tr>
                 </tbody>
