@@ -18,10 +18,13 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             var occurance = 'Runs ',
                 frequency = _.find($scope.originalScheduleFrequency, { id: item.frequency_id }).description;
 
+                console.log(item);
+
             var FRQ_1 = 1,
                 FRQ_2 = 2,
                 FRQ_3 = 3,
-                FRQ_4 = 4;
+                FRQ_4 = 4,
+                FRQ_5 = 5;
 
             if ( ! item.repeats_every ) {
                 occurance += frequency.toLowerCase();
@@ -40,6 +43,23 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 if ( FRQ_4 === item.frequency_id ) {
                     occurance += item.repeats_every === 1 ? 'month' : 'months';
                 }
+                if ( item.repeats_every === 0 ) {
+                    occurance += 'once';
+                }
+            }
+
+            if ( item.time ) {
+                occurance += ' at ' + item.time;
+            }
+
+            if ( item.starts_on ) {
+                occurance += '. Started on ' + $filter('date')(item.starts_on, $rootScope.dateFormat);
+            }
+
+            if ( FRQ_5 != item.frequency_id && item.ends_on_after ) {
+                occurance += '. Ends after ' + item.ends_on_after + ' times.';
+            } else if ( FRQ_5 != item.frequency_id && item.ends_on_date ) {
+                occurance += '. Ends on ' + $filter('date')(item.ends_on_date, $rootScope.dateFormat) + '.';
             }
 
             return occurance;
@@ -78,7 +98,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.createErrors.push('Repeat frequency in details');
             }
             if ( ! $scope.emailList.length ) {
-                $scope.createErrors.push('Emails in distribution list');
+                $scope.createErrors.push('Emails/FTP in distribution list');
             }
         };
 
@@ -122,7 +142,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             if ( $scope.scheduleParams.starts_on ) {
                 params.starts_on = $filter('date')($scope.scheduleParams.starts_on, 'yyyy/MM/dd');
             }
-            if ( $scope.scheduleParams.repeats_every ) {
+            if ( $scope.scheduleParams.repeats_every && $scope.scheduleParams.frequency_id !== 5 ) {
                 params.repeats_every = $scope.scheduleParams.repeats_every;
             } else {
                 params.repeats_every = 0;
@@ -171,6 +191,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 if ( updatedIndex >= 0 ) {
                     $scope.$parent.$parent.schedulesList[updatedIndex].frequency_id = params.frequency_id;
                     $scope.$parent.$parent.schedulesList[updatedIndex].repeats_every = params.repeats_every;
+                    $scope.$parent.$parent.schedulesList[updatedIndex].time = params.time;
+                    $scope.$parent.$parent.schedulesList[updatedIndex].starts_on = params.starts_on;
+                    $scope.$parent.$parent.schedulesList[updatedIndex].ends_on_after = params.ends_on_after;
+                    $scope.$parent.$parent.schedulesList[updatedIndex].ends_on_date = params.ends_on_date;
 
                     $scope.$parent.$parent.schedulesList[updatedIndex].occurance = findOccurance($scope.$parent.$parent.schedulesList[updatedIndex]);
                 }
@@ -195,7 +219,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             if ( $scope.scheduleParams.starts_on ) {
                 params.starts_on = $filter('date')($scope.scheduleParams.starts_on, 'yyyy/MM/dd');
             }
-            if ( $scope.scheduleParams.repeats_every ) {
+            if ( $scope.scheduleParams.repeats_every && $scope.scheduleParams.frequency_id !== 5 ) {
                 params.repeats_every = $scope.scheduleParams.repeats_every;
             } else {
                 params.repeats_every = 0;
@@ -226,17 +250,31 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 id: $scope.selectedEntityDetails.id,
             };
 
+            var showResponse = function () {
+                ngDialog.open({
+                    template: '/assets/partials/reports/scheduleReport/rvRunScheduleNowUpdate.html',
+                    scope: $scope
+                });
+            }
+
             var success = function() {
                 $scope.errorMessage = '';
                 $scope.$emit( 'hideLoader' );
-                if ( !! $scope.selectedSchedule && $scope.selectedSchedule.active ) {
-                    $scope.selectedSchedule.active = false;
-                }
+                // if ( !! $scope.selectedSchedule && $scope.selectedSchedule.active ) {
+                //     $scope.selectedSchedule.active = false;
+                // }
+                // $scope.updateViewCol($scope.viewColsActions.ONE);
+
+                $scope.runScheduleNowSuccess = true;
+                showResponse();
             };
 
             var failed = function(errors) {
                 $scope.errorMessage = errors;
                 $scope.$emit( 'hideLoader' );
+
+                $scope.runScheduleNowSuccess = false;
+                showResponse();
             };
 
             $scope.invokeApi( reportsSrv.runScheduleNow, params, success, failed );
