@@ -1,114 +1,116 @@
 /* 1. ROOT
 ==========================================================*/
-* {
-    text-shadow: none !important;
-    filter:none !important;
-    -ms-filter: none !important;
-    -webkit-print-color-adjust:exact;
-}
+    * {
+        text-shadow: none !important;
+        filter:none !important;
+        -ms-filter: none !important;
+        -webkit-print-color-adjust:exact;
+    }
 
-@page { margin: 1cm; }
+    @page { margin: 1cm; }
 
-html {
-    #font > .sans-serif(8pt, 400, 1.3);
-    color: @textColor;
-    background: transparent;
-}
+    html {
+        #font > .sans-serif(8pt, 400, 1.3);
+        color: @textColor;
+        background: transparent;
+    }
 
-body { overflow: visible; height:auto; }
+    body { overflow: visible; height:auto; }
 
-#main-menu,
-#availability,
-.logo-hide,
-.text-hide,
-.no-print,
-.search-pagination,
-.reservation-tabs-nav,
-.reservation-list,
-.search-form { display: none !important; }
+    #main-menu,
+    #availability,
+    .logo-hide,
+    .text-hide,
+    .no-print,
+    .numbers-pagination,
+    .search-pagination,
+    .reservation-tabs-nav,
+    .reservation-list,
+    .search-form,
+    .release-notes { display: none !important; }
 
 /* 2. TYPOGRAPHY
 ==========================================================*/
-p,
-h1, .h1,
-h2, .h2,
-h3, .h3,
-h4, .h4 { orphans: 3; widows: 3; }
+    p,
+    h1, .h1,
+    h2, .h2,
+    h3, .h3,
+    h4, .h4 { orphans: 3; widows: 3; }
 
-h1, .h1,
-h2, .h2,
-h3, .h3,
-h4, .h4 { page-break-after: avoid; }
+    h1, .h1,
+    h2, .h2,
+    h3, .h3,
+    h4, .h4 { page-break-after: avoid; }
 
-q {quotes: none}
-q:before, q:after {content: ""}
+    q {quotes: none}
+    q:before, q:after {content: ""}
 
-a { .no-transition(); }
+    a { .no-transition(); }
 
-table {
-    margin: 0;
-    width: 100%;
-    text-transform: uppercase;
-    table-layout: auto;
-    border-collapse: collapse;
-    border-spacing: 0;
+    table {
+        margin: 0;
+        width: 100%;
+        text-transform: uppercase;
+        table-layout: auto;
+        border-collapse: collapse;
+        border-spacing: 0;
 
-    tr {
-        page-break-inside: avoid;
-        page-break-after: auto;
-
-        th { white-space: normal; }
-
-        th,
-        td {
-            font-size: 8pt;
-            line-height: 1;
-            vertical-align: top;
-            text-align: left;
-            white-space: normal;
-            page-break-after: auto;
+        tr {
             page-break-inside: avoid;
-        }
+            page-break-after: auto;
 
-        th {
-            padding: 4pt 4pt 4pt 0;
+            th { white-space: normal; }
 
-            &:first-child { padding-left: 4pt; }
-            &:last-child { padding-right: 0; }
-        }
-
-        td {
-            padding: 4pt 8pt 4pt 0;
-            border-bottom: 1px solid @grey2;
-
-            /* Fix for line break as first child ***/
-            br {
-                content: "" !important;
-                display: block !important;
+            th,
+            td {
+                font-size: 8pt;
+                line-height: 1;
+                vertical-align: top;
+                text-align: left;
+                white-space: normal;
+                page-break-after: auto;
+                page-break-inside: avoid;
             }
 
-            &:first-child { padding-left: 4pt; }
-            &:last-child { padding-right: 0; }
+            th {
+                padding: 4pt 4pt 4pt 0;
+
+                &:first-child { padding-left: 4pt; }
+                &:last-child { padding-right: 0; }
+            }
+
+            td {
+                padding: 4pt 8pt 4pt 0;
+                border-bottom: 1px solid @grey2;
+
+                /* Fix for line break as first child ***/
+                br {
+                    content: "" !important;
+                    display: block !important;
+                }
+
+                &:first-child { padding-left: 4pt; }
+                &:last-child { padding-right: 0; }
+            }
+
+            &:last-child {
+                td { border-bottom: 0; }
+            }
         }
 
-        &:last-child {
+        thead {
+            tr {
+               th {
+                    font-weight: 600;
+                    background: @grey1;
+                }
+            }
+        }
+
+        tfoot {
             td { border-bottom: 0; }
         }
     }
-
-    thead {
-        tr {
-           th {
-                font-weight: 600;
-                background: @grey1;
-            }
-        }
-    }
-
-    tfoot {
-        td { border-bottom: 0; }
-    }
-}
 
 /* 3. GRAPHICAL ELEMENTS
 ==========================================================*/
@@ -287,6 +289,104 @@ table {
 
 /* 5. COMPONENTS
 ==========================================================*/
+
+/* Action Manager ========================================*/
+    
+    /* Hide Content */
+    .actions-content {
+        .content-left,
+        .content-right {
+            .hide();
+        }
+    }
+
+    .post-form {
+        .hide();
+    }
+
+/* Availability             ==============================*/
+    
+    /* Hide everything except availability ***/
+    .availability-print {
+        .container,
+        .availability-header,
+        .availability-toggle {
+            display: none !important;
+        }
+
+        #availability {
+            display: block !important;
+        }
+    }
+
+    #availability {
+
+        .dates-grid {
+
+            col {
+                width: 16%;
+                
+                &.grid-col { width: 6%; }
+            }
+
+            th,
+            td {
+                text-align: right;
+                padding: 4pt;
+            }
+
+            thead {
+                th {
+
+                    span {
+                        font-weight: 400;
+                        .show();
+                    }
+
+                    &.heading {
+                        background: transparent;
+                    }
+                }
+            }
+
+            tbody {
+                tr {
+                    th,
+                    td {
+                        border-bottom: 1px solid @grey2;
+                    }
+
+                    &.main {
+                        th,
+                        td {
+                            font-size: 10pt;
+                            font-weight: 600;
+                        }
+                    }
+
+                    &:last-child {
+                        th,
+                        td {
+                            border-bottom: 2px solid @grey2;
+                        }
+                    }
+                }                
+            }
+        }
+
+        /* Reset hidden rows icon and visibility ***/
+        .rows-toggle {
+            background-image: none !important;
+        }
+
+        tr.hidden {
+            display: table-row !important;
+        }
+
+        tr.hide-row {
+            display: none;
+        }
+    }
 
 /* Search                   ==============================*/
     .search-results {
@@ -1352,6 +1452,10 @@ table {
                             }
                         }
 
+                        a {
+                            color: @textColor;
+                        }
+
                         .data {
                             margin: 0 2pt;
 
@@ -1473,17 +1577,38 @@ table {
                             padding-left: 0;
                             border-top: 1px solid @grey1;
 
-                            span { .show; }
+                            span { 
+                                .show(); 
+                            }
 
-                            &.notes {
-                                strong {
-                                    color: @grey4;
-                                    text-transform: uppercase;
-                                    font-weight: 600;
-                                    .show;
+                            strong { 
+                                color: @grey4;
+                                text-transform: uppercase;
+                                font-weight: 600;
+                                margin-bottom: 0;
+                                .show();
+                            }
+
+                            p { 
+                                line-height: 1;
+                            }
+
+                            &.actions {
+                                p {
+                                    position: relative;
+                                    padding-left: 15px;
+
+                                    .icons {
+                                        position: absolute;
+                                        top: 0;
+                                        left: 0;
+                                        .square(10px);
+
+                                        &.icon-unassigned { background-position: 0 -220px; }
+                                        &.icon-assigned { background-position: 0 -240px; }
+                                        &.icon-completed { background-position: 0 -260px; }
+                                    }                                    
                                 }
-
-                                p { line-height: 1em; }
                             }
                         }
                     }
@@ -1494,6 +1619,13 @@ table {
                             border-bottom: 2px solid @grey2;
                         }
                     }
+                }
+            }
+
+            &.cancellation-report {
+                tr td:last-child .data.room,
+                tr td:last-child .data.rate {
+                    text-align: left;
                 }
             }
 
@@ -1564,6 +1696,18 @@ table {
 
                         &:last-child {
                             td { border-bottom: 0; }
+                        }
+                    }
+                }
+
+                &.business-books {
+                    thead {
+                        tr {
+                            &.bottom-row {
+                                th {
+                                    font-size: 7pt;
+                                }
+                            }
                         }
                     }
                 }
@@ -1770,31 +1914,6 @@ table {
                         }
                     }
                 }
-
-                &.complimentary-report {
-                    table-layout: fixed;
-                    margin-bottom: 16pt;
-
-                    thead {
-                        th {
-                            &:nth-child(1) { width:150px; }
-                            &.confirmation {
-                                width: 100px;
-                            }
-
-                            &.room,
-                            &.guests,
-                            &.total-nights,
-                            &.comp-nights {
-                                width:80px;
-                            }
-
-                            &.arrival {
-                                width: 200px;
-                            }
-                        }
-                    }
-                }
             }
 
             &.financial-adjustment-reports {
@@ -1949,11 +2068,73 @@ table {
                                     }
                                 }
                             }
+
+                            // Used in Comparison Report
+
+                            &.charge-group {
+                                &.toggle {
+
+                                    .icon-double-arrow {
+                                        .hide();
+                                    }
+
+                                    &.active {
+                                        td {
+                                            border-bottom-color: rgba(0,0,0,0.04);  
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                            // Used in Comparison Report
+                            &.charge-code {
+                                td {
+                                    &.code {
+                                        padding-left: 20px;
+                                    }
+                                    border-bottom-color: rgba(0,0,0,0.03);  
+                                } 
+
+                                &.last {
+                                    td {
+                                        border-bottom-color: @grey2;
+                                    }
+                                }
+
+                                &.charge-pagination {
+                                    .hide();
+                                }
+                            }
                         }
                     }
                 }
 
                 &.medium-grid {
+                    thead {
+                        tr {
+                            th {
+                                .switch-button {
+                                     
+                                    .value,
+                                    input {
+                                        .hide();
+                                    }
+                                    
+                                    &:not(.on) {
+                                        .data-on {
+                                            .hide();
+                                        }
+                                    }
+
+                                    &.on {
+                                        .data-off {
+                                            .hide();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                     tbody {
                         tr {
                             &.grouped {
@@ -2016,10 +2197,215 @@ table {
                                     }
                                 }
                             }
+
+                            &.before-total {
+                                td {
+                                    border-bottom: 0;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                &.forecast-group {
+                    thead {
+                        tr {
+                            &.top-row {
+                                th {
+
+                                    font-size: 13px;
+                                }
+                            }
+
+                            &.bottom-row {
+                                th {
+                                    font-size: 12px;
+                                }
+                            }
+                        }
+                    }
+
+                    tbody {
+                        tr {
+                            &.total {
+                             
+                                td {
+                                    border-top: 1px solid @black;
+                                    border-bottom: 1px solid @black;
+
+                                    &.vertical {
+                                        .row {
+                                            strong {
+                                                font-weight: 600;
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                            }
                         }
                     }
                 }
             }
+
+            &.card-authorization-check-reports {
+                tbody {
+                    tr {
+                        td {
+                            width: 3.4cm; 
+
+                            &.entity-name {
+                                width: -webkit-calc(~'100% - 19cm');
+                                width: -moz-calc(~'100% - 19cm');
+                                width: calc(~'100% - 19cm');
+                            }
+                            
+                            &.red,
+                            &.penalty { color: @grey3; position:relative }
+
+                            &.red:before {
+                                content: '!';
+                                position: absolute;
+                                right: 0;
+                                top: 2px;
+                                border-radius: 10px;
+                                background-color: @grey3;
+                                color: white;
+                                width: 15px;
+                                text-align: center;
+                                height: 15px; 
+                                line-height: 15px;
+                                font-weight: 600;
+                            } 
+
+                            &:first-child {
+                                width: 2cm;
+                            }
+                        }
+                    }
+                }
+            }
+
+            &.commission-reports {
+                table-layout: fixed;
+                border-collapse: collapse;
+                border-spacing: 0;
+
+                thead {
+                    tr {
+                        th {
+                            
+
+                            &.amount {
+                                width: 100pt;
+                            }
+
+                            &.code {
+                                width: 150pt;
+                            }
+
+                            &.room {
+                                width: 50pt;
+                            }
+
+                            &.guest {
+                                width: 175pt;
+                            }
+                        }
+
+                        &.bottom-row {
+                                
+                            th { 
+                                
+                                text-transform: none;
+                                font-style: italic;
+                                background: @grey1;
+                                border-bottom: 0;
+                                font-weight: 400; 
+
+                                &.break {
+                                    border-left: 1px solid rgba(0,0,0,.4); 
+                                }
+                                &:not(.break) {
+                                     border-left: 1px solid rgba(0,0,0,.1); 
+                                }
+                               
+                                .box-shadow(inset 0 1px 0 rgba(0,0,0,.1));
+
+                                 
+                                &:first-child { border-left: 0; }
+
+                                &:not(:first-child) {
+                                    padding-left:4pt;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                tbody {
+                    tr {
+                        td {
+                            border-bottom: 1px solid rgba(0,0,0,0.1);
+
+                            &.name {
+
+                                .title {
+                                    a {
+                                        color: inherit;
+                                    }
+                                }
+                                 
+                                .data {
+                                    display: block;
+                                }
+
+                                .guest-date {
+                                    clear: both;
+
+                                    .date {
+                                        margin-top: 5pt;
+                                        display: block;
+                                        line-height: 20px;
+                                    }
+ 
+                                    span {
+                                        margin:0 2pt;
+                                    } 
+                                }
+                            }
+
+                            &:nth-child(5),
+                            &:nth-child(6),
+                            &:nth-child(7) {
+                                padding-left: 4pt;
+                            }
+                        } 
+
+                        &.rate-row {
+                            td {
+                                 padding-left:0;
+                            }
+                        } 
+                    }
+                }
+
+                tfoot { 
+                    
+                    tr {
+                        &.totals {
+                            td {
+                                font-size: 14px;
+                            }
+                        }
+                        &.pagination {
+                            display: none; 
+                        }
+                    }
+                   
+                }
+            }
+
         }
 
         &.with-graphs {
@@ -2027,6 +2413,10 @@ table {
             .report-block {
 
                 .totals {
+                    &.for-print {
+                        .show;
+                    }
+
                     font-size: 8pt;
                     line-height: 10pt;
                     text-transform: uppercase;
@@ -2202,6 +2592,60 @@ table {
 
                 > .wrapper { width: 100% !important; }
             }
+
+            &.books {
+                .statistics-headings { 
+                    width: 75px;
+
+                    th.action-row {
+                        height: 36px;
+                        border-bottom: 1px solid @grey2;
+                    }
+
+                    tr {
+                        td {
+                            line-height: 18px;
+                            height: 18px;
+                            padding:0 10px;
+                            background-color: @grey1;
+                            border-bottom: 1px solid @grey2;
+                        }
+
+                        &.totals {
+                            td {
+                                border-bottom:0;
+                            }
+                        }
+                    }
+
+                }
+                .statistics-content {
+                    .calc-width(100, 75);
+
+                    th[rowspan="2"] {
+                        border-bottom: 1px solid @grey2;
+                    }
+
+                    th[colspan] {
+                        border-left: 1px solid @grey2;
+                        border-right:0;
+                    }
+
+                    .bottom-row {
+                        th {
+                            border-bottom: 1px solid @grey2;
+                        }
+
+                        th {
+                            &:first-child,
+                            &.rooms,
+                            &.picked-up {
+                                border-left: 1px solid @grey2;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         &.grid {
@@ -2363,7 +2807,7 @@ table {
 
             &:not(:last-child) { margin-right: 20pt; }
         }
-    }
+    } 
 
 /* Work Management          ==============================*/
     #worksheet-content {
@@ -2478,7 +2922,7 @@ table {
             }
 
             .icon-ok-10 {
-                order: 4;
+                order: 5;
                 margin-left: auto;
                 background: #fff;
                 .square(18pt);
@@ -2501,6 +2945,24 @@ table {
                     .square(16pt);
                     .show;
                 }
+
+                &.no-icon:before {
+                    content: none;
+                    border: none;
+                }
+            }
+
+            .vip {
+                order: 4;
+                font-size: 7pt;
+                line-height: 18pt;
+                .square(16pt);
+                .show;
+                margin-left: auto;
+            }
+
+            .only-print {
+                display: inline-block;
             }
 
             .room {
@@ -2970,24 +3432,39 @@ table {
             height: 2cm;
             position: relative;
 
-            &.envelope {
-                height: 3cm;
-            }
-
-            h1 {
+            &:not(.envelope) {
+              h1 {
                 position: absolute;
-                top: 0;
-                left: 0;
-                font-size: 18pt;
+                top:0;
+                left:0;
+                font-size:18pt;
                 font-weight: 600;
                 line-height: 40px;
+                }  
             }
+            
 
             img {
-                position: absolute;
-                top: 0;
-                right: 0;
                 .size(40px, auto);
+                -webkit-filter: grayscale(100%);
+                filter: grayscale(100%);
+            }
+
+            &.envelope {
+                height: 4.8cm;
+                h1 {
+                    font-size: 10pt;
+                    font-weight: 600; 
+                }
+
+                .type {
+                    position: absolute;
+                    top:0;
+                    right:0;
+                    font-size:18pt;
+                    font-weight: 600;
+                    line-height: 40px;
+                }
             }
         }
 
@@ -3111,6 +3588,12 @@ table {
 
                         &.description,
                         &.charge-description {
+
+                            strong {
+                                font-weight: 600;
+                                .show();
+                            }
+
                             span {
                                 .show;
 
@@ -3119,6 +3602,10 @@ table {
                                     margin-bottom: 2pt;
                                 }
                             }
+                        }
+
+                        &.description {
+                            font-size: 8pt;
                         }
                     }
 
@@ -3412,116 +3899,119 @@ table {
         }
     }
 
-/* Commisions        =============================*/
-.commisions-content {
-    margin: 0 2cm;
-    .commisions-totals {
-        margin-bottom: .5cm;
-        li {
-            margin:0 10pt;
+/* Commisions               ==============================*/
+    .commisions-content {
+        margin: 0 2cm;
+        .commisions-totals {
+            margin-bottom: .5cm;
+            li {
+                margin:0 10pt;
 
-            span {
-                &.amount {
-                    &.red {
-                        color:@grey3;
+                span {
+                    &.amount {
+                        &.red {
+                            color:@grey3;
+                        }
                     }
                 }
             }
+            .check {
+                display: none;
+            }
         }
-        .check {
-            display: none;
-        }
+
+         /* Commision Item***/
+        .commision-item {
+                    position: relative;
+                    .float;
+                    .data {
+                         
+                        width: 40%;
+                        .pull-left();
+                        .meta-data {
+                            display: block;
+                            width: 100%;
+                            clear: both;
+                        }
+
+                        h2 {
+                            line-height: 1;
+                            white-space: normal;
+                            margin-bottom: 6px;
+                            padding-right: 5px;
+                            display: block;
+                            vertical-align: top;
+                        }
+       
+                        .icons {
+                            display: inline;
+                            line-height: 20px;
+                            height: 20px;
+                            overflow: hidden; 
+                        }
+
+                        .icon-hold {
+                            position: absolute;
+                            left: -40px;
+                            top: 0;
+                            bottom: 0;
+                            margin: auto;
+                        }
+
+                        .icons {
+                            color: @grey3;
+                            padding-left: 20px;
+                        }
+
+                        .icon-location,
+                        .icon-guest-travelagent {
+                            background: none;
+                            padding: 0;
+                            display: block;
+                            .pull-left();
+                        }
+
+                        .icon-location {
+                                width: 70%;
+                        }
+                         .icon-guest-travelagent { 
+                                width: 30%;
+                         }
+                    }
+
+                    .info-holder {
+                        float: right;
+                        width: 60%;
+                    }
+
+                    .info {
+                        margin-top: 5px;
+                        text-align: center;
+                        width: 25%;
+                        color: @grey3;
+                        .pull-left;
+
+                        strong {
+                            font-size: 20px;
+                            line-height: 1.25em;
+                            font-weight: 600;
+                            text-transform: uppercase;
+                            color: @textColor;
+                            .show;
+                            &.red { color: @grey3; }
+                        }
+
+                        span {
+                            font-size: 14px;
+                            text-transform: uppercase;
+                        }
+                    }
+                }
     }
 
-     /* Commision Item***/
-    .commision-item {
-                position: relative;
-                .float;
-                .data {
-                     
-                    width: 40%;
-                    .pull-left();
-                    .meta-data {
-                        display: block;
-                        width: 100%;
-                        clear: both;
-                    }
-
-                    h2 {
-                        line-height: 1;
-                        white-space: normal;
-                        margin-bottom: 6px;
-                        padding-right: 5px;
-                        display: block;
-                        vertical-align: top;
-                    }
-   
-                    .icons {
-                        display: inline;
-                        line-height: 20px;
-                        height: 20px;
-                        overflow: hidden; 
-                    }
-
-                    .icon-hold {
-                        position: absolute;
-                        left: -40px;
-                        top: 0;
-                        bottom: 0;
-                        margin: auto;
-                    }
-
-                    .icons {
-                        color: @grey3;
-                        padding-left: 20px;
-                    }
-
-                    .icon-location,
-                    .icon-guest-travelagent {
-                        background: none;
-                        padding: 0;
-                        display: block;
-                        .pull-left();
-                    }
-
-                    .icon-location {
-                            width: 70%;
-                    }
-                     .icon-guest-travelagent { 
-                            width: 30%;
-                     }
-                }
-
-                .info-holder {
-                    float: right;
-                    width: 60%;
-                }
-
-                .info {
-                    margin-top: 5px;
-                    text-align: center;
-                    width: 25%;
-                    color: @grey3;
-                    .pull-left;
-
-                    strong {
-                        font-size: 20px;
-                        line-height: 1.25em;
-                        font-weight: 600;
-                        text-transform: uppercase;
-                        color: @textColor;
-                        .show;
-                        &.red { color: @grey3; }
-                    }
-
-                    span {
-                        font-size: 14px;
-                        text-transform: uppercase;
-                    }
-                }
-            }
-}
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE
 ==========================================================*/
+
+

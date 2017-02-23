@@ -22,7 +22,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             var deferred = $q.defer(),
                 url = '/api/nightly_diary/room_list';
 
-            BaseWebSrvV2.getJSON(url, data).then(function(response) {
+            BaseWebSrvV2.postJSON(url, data).then(function(response) {
                 deferred.resolve(response);
             }, function(error) {
                 deferred.reject(error);
@@ -67,7 +67,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             var deferred = $q.defer();
             var url = '/api/nightly_diary/reservation_list';
 
-            BaseWebSrvV2.getJSON(url, data).then(function(response) {
+            BaseWebSrvV2.postJSON(url, data).then(function(response) {
                 deferred.resolve(response);
             }, function(error) {
                 deferred.reject(error);
