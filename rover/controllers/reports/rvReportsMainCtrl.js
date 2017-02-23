@@ -12,7 +12,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
     '$timeout',
     'rvUtilSrv',
     'rvPermissionSrv',
-    function($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, util, rvPermissionSrv) {
+    'RVReportPaginationIdsConst',
+    function($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, util, rvPermissionSrv, reportPaginationIds) {
         var isNotTimeOut = false;
         var timeOut;
         var listTitle = $filter('translate')('STATS_&_REPORTS_TITLE');
@@ -496,7 +497,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             maxDate: reportUtils.processDate(($rootScope.businessDate)).aMonthAfter
         }, datePickerCommon);
 
-		// for some of the reports we need to restrict max date selection to 6 months (eg:- Business on Books report)
+        // for some of the reports we need to restrict max date selection to 6 months (eg:- Business on Books report)
         $scope.fromDateOptionsSixMonthsLimit = angular.extend({
             onSelect: function(value, datePickerObj) {
                 var selectedDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
@@ -2187,10 +2188,11 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                         $scope.$broadcast('updatePagination', "COMPARISION_BY_DATE");
                     }, 50);
                 }
-				if(chosenReport.title === reportNames["BUSINESS_ON_BOOKS"]) {
-                    $timeout(function() {
-                        $scope.$broadcast('updatePagination', "BUSINESS_ON_BOOKS");
-                    }, 50);
+                
+                if (reportPaginationIds[chosenReport.title]) {
+                  $timeout(function() {                      
+                    $scope.$broadcast('updatePagination', reportPaginationIds[chosenReport.title]);
+                  }, 50);
                 }
             };
 
@@ -2243,7 +2245,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
             params.reportTitle = chosenReport.title;
 
-			// Load API data for the pagination directive
+            // Load API data for the pagination directive
             var loadAPIData = function(pageNo) {
                 $scope.genReport(false, pageNo);
             };
@@ -2261,11 +2263,12 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 };
             }
 
-			if(chosenReport.title === reportNames["BUSINESS_ON_BOOKS"]) {
-                $scope.businessOnBooksPagination = {
-                    id: 'BUSINESS_ON_BOOKS',
-                    api: loadAPIData,
-                    perPage: 25
+            // CICO-35669 - Add new pagination controls for selected reports
+            if (reportPaginationIds[chosenReport.title]) {
+              $scope.paginationConfig = {
+                  id: reportPaginationIds[chosenReport.title],
+                  api: loadAPIData,
+                  perPage: 25
                 };
             }
 
