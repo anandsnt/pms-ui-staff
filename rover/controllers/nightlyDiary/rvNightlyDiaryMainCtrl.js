@@ -286,6 +286,16 @@ angular.module('sntRover')
             $scope.$on("SAVE_RESERVATION_EDITING", function() {
                 saveReservationEditing();
             });
+
+            /* Handle event emitted from child controllers.
+             * To update diary data - rooms & reservations according to changed date constraints.
+             * @param {Number} RoomId - selected room id from search filters.
+            */
+            $scope.$on('UPDATE_RESERVATIONLIST', function( event, roomId ) {
+                cancelReservationEditing();
+                fetchRoomListDataAndReservationListData(roomId);
+            });
+
             /* Handle event emitted from child controllers.
              * To refresh diary data - rooms & reservations.
              * @param {Number} RoomId - selected room id from search filters.
@@ -295,7 +305,6 @@ angular.module('sntRover')
                 $scope.diaryData.showFilterPanel = false;
                 cancelReservationEditing();
                 fetchRoomListDataAndReservationListData(roomId);
-
             });
 
             /*
@@ -392,4 +401,3 @@ angular.module('sntRover')
                 renderDiaryView();
             })();
         }]);
-
