@@ -2225,12 +2225,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     }, 50);
                 }
 
-                if(chosenReport.title === reportNames["BUSINESS_ON_BOOKS"]) {
-                    $timeout(function() {
-                        $scope.$broadcast('updatePagination', "BUSINESS_ON_BOOKS");
-                    }, 50);
-                }
-
                 // CICO-35669 - Update pagination controls for selected reports
                 if (reportPaginationIds[chosenReport.title]) {
                     $timeout(function() {
@@ -2318,15 +2312,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     perPage: reportParams["TRAVEL_AGENTS_PER_PAGE_COUNT"]
                 };
 
-            }
-
-            if(chosenReport.title === reportNames["BUSINESS_ON_BOOKS"]) {
-
-                $scope.businessOnBooksPagination = {
-                    id: 'BUSINESS_ON_BOOKS',
-                    api: loadAPIData,
-                    perPage: 25
-                };
             }
 
             // CICO-35669 - Add new pagination controls for selected reports
