@@ -14,7 +14,11 @@
             </div>
             <fieldset class="holder left float">
                 <ad-textbox styleclass="full-width" value="singleAddon.name" name="name" id="name" label="{{'NAME' | translate}}" placeholder="{{'ENTER_ADDON_NAME' | translate}}" required="yes"></ad-textbox>
+
+                <ad-textbox ng-show="isConnectedToPMS" styleclass="full-width" value="singleAddon.package_code" name="name" disabled="true" id="name" label="{{'CODE' | translate}}" ></ad-textbox>
+
                 <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="singleAddon.description" name="desc" id="desc" label="{{'DESCRIPTION' | translate}}" placeholder="{{'ENTER_ADDON_DESCRIPTION' | translate}}" required="yes"></ad-textarea>
+
                 <div ng-hide="isConnectedToPMS" class="entry full-width radio-check">
                     <label class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.bestseller }"></span>
@@ -53,6 +57,24 @@
                         <img src="{{singleAddon.addon_image}}" alt="" />
                     </span>
                 </div>
+
+                <div ng-show="isConnectedToPMS" class="entry full-width price-suffix-container">
+
+
+                    <div class="form-title">
+                        <h3>
+                            <span translate>PRICE_SUFFIX_TITLE</span>
+                        </h3>
+                    </div>
+                    <!-- <label for="price-suffix">{{'PRICE_SUFFIX_TITLE' | translate}}</label> -->
+
+                    <ad-toggle-button div-class="full-width" label="{{'PRICE_SUFFIX_SWITCH_LABEL' | translate}}" is-checked="singleAddon.is_display_suffix"></ad-toggle-button>
+
+                    <ad-textbox ng-show="singleAddon.is_display_suffix"  styleclass="full-width" value="singleAddon.suffix_label" name="name" id="name" label="{{'PRICE_SUFFIX_LABEL' | translate}}" placeholder="{{'PRICE_SUFFIX_PLACEHOLDER' | translate}}"></ad-textbox>
+
+                </div>
+
+                
 
             </fieldset>
             <fieldset class="holder right float">
@@ -108,26 +130,29 @@
 
                 <ad-textarea rows="4" hide="!(isConnectedToPMS && singleAddon.is_alternate_description_active)" div-class="full-width" text-area-class="full-width" value="singleAddon.alternate_description" name="desc" id="desc" label="{{'ALTERNATE_DESCRIPTION' | translate}}" placeholder="{{'ENTER_ADDON_ALTERNATE_DESCRIPTION' | translate}}" required="yes"></ad-textarea>
 
-                <div ng-hide="isConnectedToPMS" class="entry">
+                <div class="entry">
                     <div class="entry full-width">
                         <label for="amount-type-id">
                             {{'AMOUNT_TYPE' | translate}}
                             <strong>*</strong>
                         </label>
                         <div class="select">
-                            <select name="amount-type-id" id="amount-type-id" ng-model="singleAddon.amount_type_id" ng-options="type.id as type.description for type in amountTypes"></select>
+                            <select ng-disabled="isConnectedToPMS" name="amount-type-id" id="amount-type-id" ng-model="singleAddon.amount_type_id" ng-options="type.id as type.description for type in amountTypes"></select>
                         </div>
                     </div>
                 </div>
-                <div ng-hide="isConnectedToPMS" class="entry full-width">
+                <div class="entry full-width">
                     <label for="amount-type-id">
                         {{'POST_TYPE' | translate}}
                         <strong>*</strong>
                     </label>
                     <div class="select">
-                        <select name="post-type-id" id="post-type-id" ng-model="singleAddon.post_type_id" ng-options="type.id as type.description for type in postTypes"></select>
+                        <select ng-disabled="isConnectedToPMS" name="post-type-id" id="post-type-id" ng-model="singleAddon.post_type_id" ng-options="type.id as type.description for type in postTypes"></select>
                     </div>
                 </div>
+
+                <ad-toggle-button is-disabled="true" is-hide="!isConnectedToPMS" div-class="full-width" label="{{'SELL_SEPARATE' | translate}}" is-checked="singleAddon.is_sell_separate"></ad-toggle-button>
+
                 <div ng-hide="isConnectedToPMS" class="entry radio-check">
                     <label class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.manual_posting }"></span>
@@ -188,7 +213,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="entry has-sortable no-margin-right">
+                    <div ng-show="false" class="entry has-sortable no-margin-right">
                         <label class="center_align">
                             <span class="assigned_room_text">Excluded from Rates</span></label>
                         <ul class="boxes sortable ui-sortable short-list" data-type="target" data-drop="true" ng-model="singleAddon.excludedRates" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:'.non-assigned-room-types'}">
