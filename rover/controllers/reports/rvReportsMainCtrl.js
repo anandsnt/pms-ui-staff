@@ -1142,6 +1142,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 selected    = [];
 
             var changeAppliedFilter = 'boolean' === typeof changeAppliedFilter ? changeAppliedFilter : true;
+            var chosenReport = reportsSrv.getChoosenReport();
 
             perPage = (chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) ? reportParams["TRAVEL_AGENTS_PER_PAGE_COUNT"] : perPage;
 
