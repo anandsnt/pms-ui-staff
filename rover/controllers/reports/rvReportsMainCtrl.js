@@ -12,7 +12,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 	'$timeout',
 	'rvUtilSrv',
 	'rvPermissionSrv',
-	function($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, util, rvPermissionSrv) {
+    'RVReportPaginationIdsConst',
+	function($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, util, rvPermissionSrv, reportPaginationIds) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -2184,7 +2185,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						id: item.travel_agent_id,
 	                    api: [fetchTravelAgents, item.travel_agent_id],
 	                    perPage: reportParams['TRAVEL_AGENTS_PER_PAGE_COUNT']
-					};					
+					};
 					$timeout(function() {
                         $scope.$broadcast('updatePagination', item.travel_agent_id);
                     }, 1000);
@@ -2224,9 +2225,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     }, 50);
                 }
 
-                if(chosenReport.title === reportNames["BUSINESS_ON_BOOKS"]) {
+                // CICO-35669 - Update pagination controls for selected reports
+                if (reportPaginationIds[chosenReport.title]) {
                     $timeout(function() {
-                        $scope.$broadcast('updatePagination', "BUSINESS_ON_BOOKS");
+                        $scope.$broadcast('updatePagination', reportPaginationIds[chosenReport.title]);
                     }, 50);
                 }
 			};
@@ -2312,10 +2314,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
             }
 
-            if(chosenReport.title === reportNames["BUSINESS_ON_BOOKS"]) {
-
-                $scope.businessOnBooksPagination = {
-                    id: 'BUSINESS_ON_BOOKS',
+            // CICO-35669 - Add new pagination controls for selected reports
+            if (reportPaginationIds[chosenReport.title]) {
+                $scope.paginationConfig = {
+                    id: reportPaginationIds[chosenReport.title],
                     api: loadAPIData,
                     perPage: 25
                 };
