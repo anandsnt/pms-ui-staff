@@ -2,12 +2,12 @@
     <strong>{{transaction.name}}</strong>
 </td>
 <td class="room">
-    {{transaction.room_no}}
+    {{transaction.room}}
 </td>
 <td class="guests">
-    {{transaction.guest_no}}
+    {{transaction.guests}}
 </td>
-<td>
+<td class="confirmation">
     {{transaction.confirmation_no}}
 </td>
 <td>
@@ -21,11 +21,11 @@
     </div>
 </td>
 <td class="rate">
-    {{transaction.rate | currency:currencySymbol:2 }}
+    {{transaction.rate }}
 </td>
-<td>
+<td class="total-nights">
     {{transaction.nights}}
 </td>
-<td>
-    {{transaction.comp_nights}}
+<td class="comp-nights">
+    {{transaction.complimentary_nights }}
 </td>

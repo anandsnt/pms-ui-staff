@@ -32,7 +32,7 @@
 
                 <!-- Reports table content -->
                 <tbody>
-                    <tr ng-repeat="transaction in resultItem.transactions track by $index" class="row-break" ng-include="'/assets/partials/reports/complimentaryRoomReport/rvComplimentaryRoomReportRow.html'" ngrepeatend></tr>
+                    <tr ng-repeat="transaction in resultItem.complimentary_details track by $index" class="row-break" ng-include="'/assets/partials/reports/complimentaryRoomReport/rvComplimentaryRoomReportRow.html'" ngrepeatend></tr>
                 </tbody>
             </table>
         </span>

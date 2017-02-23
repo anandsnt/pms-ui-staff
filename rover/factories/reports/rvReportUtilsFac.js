@@ -1892,20 +1892,6 @@ angular.module('reportsModule')
                 report['sort_fields'][3] = lastCheckoutDate;
             }
 
-            // need to reorder the sort_by options
-            // for complimentary room report in the following order
-            if ( report['title'] === reportNames['COMPLIMENTARY_ROOM_REPORT'] ) {
-                var name = angular.copy( _.find(report['sort_fields'], { 'value': 'NAME' }) );
-
-                report['sort_fields'][0] = name;
-                report['sort_fields'][1] = null;
-                report['sort_fields'][2] = null;
-                report['sort_fields'][3] = null;
-                report['sort_fields'][4] = null;
-                report['sort_fields'][5] = null;
-                report['sort_fields'][6] = null;
-                report['sort_fields'][7] = null;
-            }
         };
 
 
