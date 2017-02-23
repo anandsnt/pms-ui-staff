@@ -19,8 +19,6 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
         that.ws.send('{"Command" : "cmd_device_uid"}');
     };
     this.DispenseKey = function(keyDispenseUID,is_first_key) { // write to key after successful encodeKey call
-        console.info('dispense called : [', keyDispenseUID, ']');
-        console.info('dispense called key number: [', is_first_key, ']');
         console.log('{"Command" : "cmd_dispense_key_card", "Data" : "' + keyDispenseUID + '","is_first_key":"'+is_first_key+'"}');
         that.ws.send('{"Command" : "cmd_dispense_key_card", "Data" : "' + keyDispenseUID + '","is_first_key":"'+is_first_key+'"}');
     };
