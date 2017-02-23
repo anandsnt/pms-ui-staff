@@ -85,7 +85,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 hotel_id: $rootScope.hotelDetails.userHotelsData.current_hotel_id,
                 /**/
                 format_id: 1,
-                delivery_method_id: $scope.selectedEntityDetails.delivery_method.id
+                delivery_type_id: $scope.scheduleParams.delivery_id
             };
 
             var success = function() {
@@ -152,7 +152,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 hotel_id: $rootScope.hotelDetails.userHotelsData.current_hotel_id,
                 /**/
                 format_id: 1,
-                delivery_method_id: $scope.selectedEntityDetails.delivery_method.id
+                delivery_type_id: $scope.scheduleParams.delivery_id
             };
 
             var success = function() {
@@ -219,7 +219,24 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
         };
 
         $scope.runScheduleNow = function () {
-            // UNSURE: as ROR mentioned to save it with today and time
+            var params = {
+                id: $scope.selectedEntityDetails.id,
+            };
+
+            var success = function() {
+                $scope.errorMessage = '';
+                $scope.$emit( 'hideLoader' );
+                if ( !! $scope.selectedSchedule && $scope.selectedSchedule.active ) {
+                    $scope.selectedSchedule.active = false;
+                }
+            };
+
+            var failed = function(errors) {
+                $scope.errorMessage = errors;
+                $scope.$emit( 'hideLoader' );
+            };
+
+            $scope.invokeApi( reportsSrv.runScheduleNow, params, success, failed );
         }
 
         BaseCtrl.call(this, $scope);
@@ -685,7 +702,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.$parent.$parent.schedulesList = [];
                 $scope.$parent.$parent.schedulableReports = [];
                 $scope.scheduleDeliveryTypes = payload.scheduleDeliveryTypes;
-
+                $scope.ftpServerList = payload.ftpServerList;
 
                 // sort schedule list by report name
                 $scope.$parent.$parent.schedulesList = _.sortBy(
@@ -703,35 +720,26 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
                 // structure the schedulable reports exactly like the
                 // schedules list, then we can re-use the support functions
-                var found;
-
-                _.each(payload.schedulableReports, function(id) {
-                    found = _.find($scope.$parent.$parent.reportList, { 'id': id });
-
-                    if ( !! found ) {
-                        $scope.$parent.$parent.schedulableReports.push({
-                            id: found.id,
-                            filters: found.filters,
-                            sort_fields: found.sort_fields,
-                            report: {
-                                id: found.id,
-                                description: found.description,
-                                title: found.title
-                            },
-                            reportIconCls: found.reportIconCls,
-                            active: false,
-                            filteredOut: false
-                        });
-                    }
-                });
+                 _.each(payload.schedulableReports, function(each) {
+                    $scope.$parent.$parent.schedulableReports.push({
+                        id: each.id,
+                        report: {
+                            id: each.id,
+                            description: each.description,
+                            title: each.title
+                        },
+                        active: false,
+                        filteredOut: false
+                    });
+                 });
 
                 // sort schedulable reports by report name
                 $scope.$parent.$parent.schedulableReports = _.sortBy(
-                        $scope.$parent.$parent.schedulableReports,
-                        function(item) {
-                            return item.report.title;
-                        }
-                    );
+                    $scope.$parent.$parent.schedulableReports,
+                    function(item) {
+                        return item.report.title;
+                    }
+                );
 
 
                 var getValue = function(value) {

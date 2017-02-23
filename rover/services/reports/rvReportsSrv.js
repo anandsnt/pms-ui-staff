@@ -298,7 +298,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 
 		service.runScheduleNow = function(params) {
 			var deferred = $q.defer(),
-				url = 'admin/export_schedules/' + params.id;
+				url = '/admin/export_schedules/' + params.id + '/run_now'
 
 			var success = function(data) {
 				deferred.resolve(data);
@@ -309,7 +309,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 			};
 
 			rvBaseWebSrvV2
-				.putJSON( url, params )
+				.getJSON( url )
 				.then( success, failed );
 
 			return deferred.promise;

@@ -8,7 +8,7 @@
                 ng-click="pickSchedule(item, $index)"
                 class="report-item"
             >
-                <span ng-class="item.reportIconCls"></span>
+                <span class="icon-report"></span>
                 <div class="data">
                     <h2 ng-bind-html="escapeNull(item.report.title)|highlight:query:false"></h2>
                     <em>{{ item.occurance }}</em>
@@ -23,7 +23,7 @@
                 ng-click="pickReport(item, $index)"
                 class="report-item"
             >
-                <span ng-class="item.reportIconCls"></span>
+                <span class="icon-report"></span>
                 <div class="data">
                     <h2 ng-bind-html="escapeNull(item.report.title)|highlight:query:false"></h2>
                     <em>{{ item.report.description }}</em>
