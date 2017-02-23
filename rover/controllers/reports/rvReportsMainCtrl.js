@@ -2317,7 +2317,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             // CICO-35669 - Add new pagination controls for selected reports
             if (reportPaginationIds[chosenReport.title]) {
                 $scope.paginationConfig = {
-                    id:reportPaginationIds[chosenReport.title],
+                    id: reportPaginationIds[chosenReport.title],
                     api: loadAPIData,
                     perPage: 25
                 };
