@@ -721,8 +721,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 
                 case reportNames['COMPLIMENTARY_ROOM_REPORT']:
                     $scope.hasReportTotals    = true;
-                    $scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
-                    $scope.detailsTemplateUrl = '/assets/partials/reports/complimentaryRoomReport/rvComplimentaryRoomReportRow.html';
+                    $scope.showReportHeader   = true;
+                    $scope.detailsTemplateUrl = '/assets/partials/reports/complimentaryRoomReport/rvComplimentaryRoomReport.html';
 
                 break;
 
