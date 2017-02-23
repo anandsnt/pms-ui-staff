@@ -963,6 +963,8 @@ sntZestStation.controller('zsRootCtrl', [
                     });
                 } else if (response.ResponseCode === 14) {
                     $scope.$broadcast('DISPENSE_CARD_EMPTY');
+                } else if (response.ResponseCode === 22) {
+                    $scope.$broadcast('DISPENSE_FAILED_AS_GATE_IS_NOT_FREE');
                 } else {
                     $scope.$broadcast('DISPENSE_FAILED');
                 }
