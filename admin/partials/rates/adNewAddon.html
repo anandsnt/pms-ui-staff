@@ -15,7 +15,7 @@
             <fieldset class="holder left float">
                 <ad-textbox styleclass="full-width" value="singleAddon.name" name="name" id="name" label="{{'NAME' | translate}}" placeholder="{{'ENTER_ADDON_NAME' | translate}}" required="yes"></ad-textbox>
 
-                <ad-textbox ng-show="isConnectedToPMS" styleclass="full-width" value="singleAddon.code" name="name" disabled="true" id="name" label="{{'CODE' | translate}}" ></ad-textbox>
+                <ad-textbox ng-show="isConnectedToPMS" styleclass="full-width" value="singleAddon.package_code" name="name" disabled="true" id="name" label="{{'CODE' | translate}}" ></ad-textbox>
 
                 <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="singleAddon.description" name="desc" id="desc" label="{{'DESCRIPTION' | translate}}" placeholder="{{'ENTER_ADDON_DESCRIPTION' | translate}}" required="yes"></ad-textarea>
 
@@ -151,7 +151,7 @@
                     </div>
                 </div>
 
-                <ad-toggle-button is-hide="!isConnectedToPMS" div-class="full-width" label="{{'SELL_SEPARATE' | translate}}" is-checked="singleAddon.is_sell_separate"></ad-toggle-button>
+                <ad-toggle-button is-disabled="true" is-hide="!isConnectedToPMS" div-class="full-width" label="{{'SELL_SEPARATE' | translate}}" is-checked="singleAddon.is_sell_separate"></ad-toggle-button>
 
                 <div ng-hide="isConnectedToPMS" class="entry radio-check">
                     <label class="checkbox">
