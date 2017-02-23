@@ -649,6 +649,9 @@
         .pinnedLeft-actions {
             padding: 8px 10px 0 10px;
             overflow: hidden;
+            background: @background;
+            position: relative;
+            z-index: 3;
             .size(55px, 100%);
             .float;
             .box-shadow(0 5px 0 @cellShadowColor);
@@ -720,8 +723,9 @@
 
         .pinnedLeft-list { 
             margin-top: 5px;
-            overflow: hidden;
+            //overflow: hidden; RateType
             position:relative;
+            z-index: 1;
             width: 100%;
             .calc-height(100, 105);
 
@@ -743,7 +747,9 @@
 
         .rate-calendar { 
             width: 100%; 
-
+            background: @background;
+            position: relative;
+            z-index: 2;
             tr {
                 
 
@@ -752,6 +758,12 @@
 
                     &.rate-type {
                         height: 50px;
+
+                        td {
+                            &:before {
+                                height: 100%;
+                            }
+                        }
                     }
                 }
 
@@ -771,7 +783,7 @@
                             z-index: 2;
                         }
 
-                        //&:before,
+                        &:before,
                         &:after {
                             position: absolute;
                             content: '';
@@ -779,13 +791,13 @@
                             z-index:1;
                         }
 
-                       /* &:before {
+                       &:before {
                             width: 5px;
                             background: @white;
                             .calc-height(100,5);
                             bottom:0;
-                            right:0;
-                        }*/
+                            right:-3px;
+                        }
 
                         &:after {
                             width: 100%;
@@ -1208,7 +1220,19 @@
         /* First Row - Days ***/
         &.calendar-rate-table-days { 
             top: 0;
-            height: 105px; 
+            height: 105px;
+            z-index: 999;
+
+            &:before {
+                content: '';
+                position: absolute;
+                left: 0;
+                width: 5px;
+                height: 120px;
+                box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
+                left: -5px;
+                z-index: 999;
+            } 
 
             td {
                 vertical-align: top;
