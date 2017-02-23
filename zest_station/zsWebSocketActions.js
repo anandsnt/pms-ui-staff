@@ -18,9 +18,9 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
     this.UUIDforDevice = function() {
         that.ws.send('{"Command" : "cmd_device_uid"}');
     };
-    this.DispenseKey = function(keyDispenseUID,is_first_key) { // write to key after successful encodeKey call
-        console.log('{"Command" : "cmd_dispense_key_card", "Data" : "' + keyDispenseUID + '","is_first_key":"'+is_first_key+'"}');
-        that.ws.send('{"Command" : "cmd_dispense_key_card", "Data" : "' + keyDispenseUID + '","is_first_key":"'+is_first_key+'"}');
+    this.DispenseKey = function(keyDispenseUID, is_first_key) { // write to key after successful encodeKey call
+        console.log('{"Command" : "cmd_dispense_key_card", "Data" : "' + keyDispenseUID + '","is_first_key":"' + is_first_key + '"}');
+        that.ws.send('{"Command" : "cmd_dispense_key_card", "Data" : "' + keyDispenseUID + '","is_first_key":"' + is_first_key + '"}');
     };
     this.EjectKeyCard = function() { // reject key on failure
         that.ws.send('{"Command" : "cmd_eject_key_card"}');
@@ -35,7 +35,10 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
         that.ws.send('{"Command" : "cmd_insert_key_card"}');
     };
     this.startPrint = function(data) {
-        var printBillJson = { 'Command': 'cmd_print_bill', 'Data': data};
+        var printBillJson = {
+            'Command': 'cmd_print_bill',
+            'Data': data
+        };
         var jsonstring = JSON.stringify(printBillJson);
 
         that.ws.send(jsonstring);
@@ -83,8 +86,8 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
 
     console.info('--> Connecting WebSocket...');
     setTimeout(function() {
-        console.info('[:: Connecting ... .. .  ::]');
-        that.connect();
-    },
+            console.info('[:: Connecting ... .. .  ::]');
+            that.connect();
+        },
         wsConfig['connect_delay']);
 };

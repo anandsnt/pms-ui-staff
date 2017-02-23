@@ -466,7 +466,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		$scope.closeGateErrorWarning = function() {
 			$scope.showDispenserGateIsBlockedPopup = false;
 		};
-		$scope.$on('DISPENSE_FAILED_AS_GATE_IS_NOT_FREE', function(event, data) {
+		$scope.$on('DISPENSE_FAILED_AS_GATE_IS_NOT_FREE', function() {
 			$scope.showDispenserGateIsBlockedPopup = true;
 			$timeout(function() {
 				$scope.readyForUserToPressMakeKey = true;
