@@ -1,13 +1,13 @@
 /* StayNTouch | Login Screen */
 
 @import "common/01-B_variables.less";
-@import "common/01-C_mixins.less"; 
-@import "common/01-D_mixins-animations.less"; 
+@import "common/01-C_mixins.less";
+@import "common/01-D_mixins-animations.less";
 @import "app/01-B_variables.less";
 @import "app/03_graphics.less";
 
 /* Reset				==================================*/
-	* { 
+	* {
 		margin: 0;
 		padding: 0;
 		outline: none;
@@ -19,14 +19,14 @@
 	    -moz-appearance: none;
 	    appearance: none;
 	   	-webkit-tap-highlight-color: rgba(0,0,0,0);
-	   	-webkit-tap-highlight-color: transparent; 
+	   	-webkit-tap-highlight-color: transparent;
 	}
 
-	*, 
-	*:after, 
-	*:before { 
+	*,
+	*:after,
+	*:before {
 		-webkit-box-sizing: border-box;
-		-moz-box-sizing: border-box; 
+		-moz-box-sizing: border-box;
 		box-sizing: border-box;
 	}
 
@@ -71,7 +71,7 @@
 	         url('@{type}/sourcesanspro-regular-webfont.ttf') format('truetype');
 	    font-weight: 400;
 	    font-style: normal;
-	} 
+	}
 
 	/* 600 ***/
 	@font-face {
@@ -82,7 +82,7 @@
 	         url('@{type}/sourcesanspro-semibold-webfont.ttf') format('truetype');
 	    font-weight: 600;
 	    font-style: normal;
-	} 
+	}
 
 /* Variables			==================================*/
 	@highdpi: ~"(-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), (min-resolution: 1.5dppx)";
@@ -123,7 +123,7 @@
 		width: @width;
 		height: @height;
 	}
-	
+
 	.square(@size: 5px) {
 		.size(@size, @size);
 	}
@@ -162,9 +162,9 @@
 
 /* Globals 				==================================*/
 	html,
-	body { 
+	body {
 		font-size: 100%;
-		height: 100%; 
+		height: 100%;
 		line-height: 1;
 	}
 
@@ -181,11 +181,11 @@
 		}
 	}
 
-	input, 
-	button { 
+	input,
+	button {
 		font-family: "source_sans_pro", Helvetica, Arial, sans-serif;
 		font-size: 18px;
-		line-height: 50px;	
+		line-height: 50px;
 		border: 0;
 		padding: 0 10px;
 		border-radius: 3px;
@@ -210,7 +210,7 @@
 		   	font-size: 16px;
 		}
 
-		&:input-placeholder {  
+		&:input-placeholder {
 			font-style: italic;
 		   	color: @grey3;
 		   	font-weight: 300;
@@ -271,7 +271,7 @@
 
 		&:hover,
 		&:active { background-image: linear-gradient(to top, @greenStart 0%, @greenEnd 100%); }
-		
+
 		&:active { box-shadow: inset 1px 1px 1px rgba(0,0,0,.3); }
 	}
 
@@ -323,8 +323,8 @@
 		margin-bottom: 10px;
 		border-radius: 3px;
 		box-shadow: inset 0 0 0 1px rgba(0,0,0,.1);
-		
-		&.error { 
+
+		&.error {
 			color: @red;
 			background: lighten(@softRed, 20);
 		}
@@ -341,10 +341,10 @@
 		box-shadow: inset 0 -1px 0 rgba(0,0,0,.1);
 	}
 
-	.entry { margin-bottom: 20px; } 
-		
+	.entry { margin-bottom: 20px; }
+
 	.action {
-		text-align: center; 
+		text-align: center;
 
 		.button {
 			display: block;
@@ -414,14 +414,14 @@
 		}
 	}
 
-.search-form { 
+.search-form {
     .float;
     margin-top:35px;
     .entry {
-        position: relative; 
+        position: relative;
         margin-bottom: 10px;
         width: 100%;
-         
+
         .transition();
 
         input { width: 100%; }
@@ -439,7 +439,7 @@
     	float:none;
     	display: inline-block;
 		.gradient(@grey2, @grey3);
-	    
+
 	    &.blue {
 	    	.gradient(@blueStart, @blueEnd);
 	    }
@@ -451,7 +451,7 @@
         right: 0;
         z-index: 99;
         visibility: hidden;
-        .square(40px);
+        .square(0px);
 
         .icons {
             position: absolute;
@@ -466,27 +466,27 @@
             #border-radius > .rounded(15px);
         }
 
-        &.visible { 
+        &.visible {
             visibility: visible;
 
-            .icons {    
-                .opacity(100); 
-                #fade > .in(); 
+            .icons {
+                .opacity(100);
+                #fade > .in();
             }
         }
 
         &:hover,
-        &.active { 
+        &.active {
             .icons { background-color: @logoPrimary; }
         }
     }
 
     .query {
         width: 100%;
-        font-size: 18px; 
+        font-size: 18px;
         font-weight: 700;
         padding-left: 30px;
-        color: @logoPrimary; 
+        color: @logoPrimary;
         z-index: 9;
         .box-shadow(inset 1px 1px 0 rgba(0,0,0,.15));
         #border-radius > .rounded(25px);
@@ -512,7 +512,7 @@
     	z-index: 14;
 		border-radius: 3px;
     	.box-shadow(0px 0px 2px rgba(0,0,0,.3));
-    	.hide(); 
+    	.hide();
 
     	.iScrollVerticalScrollbar {
 			top: 10px;
@@ -558,19 +558,19 @@
     			border-bottom:1px solid rgba(0, 0, 0, 0.1);
     		}
 
-    		 
+
     	}
     }
 
-} 
+}
 
 /* Modal window				==============================*/
-	 
+
     #modal,
     .inline-modal {
         width: 100%;
-        
-        .modal-content { 
+
+        .modal-content {
             /* Release Notes Full Screen ***/
             &.release-notes-popup {
                 .square(100%);
@@ -661,7 +661,7 @@
 	                	text-transform: uppercase;
 	                	height: 30px;
 
-	                	&.data-off { 
+	                	&.data-off {
 	                		.switch-icon { .gradient(@redStart, @redEnd); }
 	                	}
 
@@ -678,8 +678,8 @@
 				.show;
 			}
 
-			.message { 
-				margin: 10px 0 20px 0; 
+			.message {
+				margin: 10px 0 20px 0;
 				text-align: center;
 				font-weight: 600;
 
@@ -709,8 +709,8 @@
 				padding-bottom: 20px;
 				text-align: center;
 
-				&.red { 
-					color: @red; 
+				&.red {
+					color: @red;
 					text-decoration: line-through;
 				}
 			}
@@ -732,7 +732,7 @@
 				display: table;
 				.float;
 
-				li { 
+				li {
                 	display: inline-block;
                     cursor: pointer;
                     margin: 0 0 0 1px;
@@ -749,8 +749,8 @@
 
                     a { color: @textColor; }
 
-                    &:hover { 
-                        color: @logoPrimary; 
+                    &:hover {
+                        color: @logoPrimary;
                         .box-shadow();
 
                         a { color: @logoPrimary; }
@@ -771,11 +771,11 @@
                 }
 			}
 
-			.button { 
+			.button {
 				font-size: 18px;
 				line-height: 50px;
-				width: 100%; 
-				.show; 
+				width: 100%;
+				.show;
 
 				&.blank {
 					color: @textColor;
@@ -802,8 +802,8 @@
 			text-align: center;
 		}
 
-		&.modal-show { 
-			visibility: visible; 
+		&.modal-show {
+			visibility: visible;
 
 			.modal-content {
 				.scale3d(1, 1, 1);

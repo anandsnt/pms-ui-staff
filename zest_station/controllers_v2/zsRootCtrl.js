@@ -180,13 +180,13 @@ sntZestStation.controller('zsRootCtrl', [
          // CheckIfItsChromeApp
 
         (function() {
-            // $scope.inChromeApp = $('#hideFromChromeApp').css('visibility') === 'hidden';
-
-            try {   
-                $scope.inChromeApp = localStorage['roverInApp'] === 'true';
-            } catch (err) {
-                $log.warn(err);
-                $scope.inChromeApp = false;
+            $scope.inChromeApp = $('#hideFromChromeApp').css('visibility') === 'hidden';
+            if (!$scope.inChromeApp) {
+                try {   
+                    $scope.inChromeApp = localStorage['roverInApp'] === 'true';
+                } catch (err) {
+                    $log.warn(err);
+                }   
             }
                 
             $log.info(':: is in chrome app ->' + $scope.inChromeApp);
@@ -365,16 +365,10 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.lastKeyboardId = id;
 				// pull up the virtual keyboard (snt) theme... if chrome & fullscreen
                 var isTouchDevice = 'ontouchstart' in window,
-                    agentString = window.navigator.userAgent;
-                var themeUsesKeyboard = false;
+                    onWindowsDevice = window.navigator.userAgent.toLowerCase().indexOf('window') !== -1,
+                    themeUsesKeyboard = $scope.theme === 'yotel' || !$scope.theme;
 
-                if ($scope.theme === 'yotel' || !$scope.theme) {
-                    themeUsesKeyboard = true;
-                }
-                var shouldShowKeyboard = typeof chrome &&
-					agentString.toLowerCase().indexOf('window') !== -1 &&
-					isTouchDevice &&
-					$scope.inChromeApp && themeUsesKeyboard;
+                var shouldShowKeyboard = ($scope.inChromeApp || $scope.inElectron) && onWindowsDevice && isTouchDevice && themeUsesKeyboard;
 
                 if (shouldShowKeyboard) {
                     if (id) {

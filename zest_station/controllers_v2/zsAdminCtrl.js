@@ -202,7 +202,7 @@ sntZestStation.controller('zsAdminCtrl', [
 
                 console.info('' + chromeAppId);
                 // minimize the chrome app on loging out
-                if (!$scope.inElectron) {
+                if ($scope.inChromeApp && !$scope.inElectron) {
                     (chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId, 'zest-station-logout') : '';
                 }
                 console.info('login out from chrome');
