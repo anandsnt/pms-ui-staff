@@ -823,6 +823,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['VACANT_ROOMS_REPORT']:
 					template = '/assets/partials/reports/vacantRoomsReport/rvVacantRoomsReportRow.html';
 					break;
+					
+				case reportNames['COMPLIMENTARY_ROOM_REPORT']:
+					template = '/assets/partials/reports/complimentaryRoomReport/rvComplimentaryRoomReport.html';
+					break;
 
 
 				// Default report row

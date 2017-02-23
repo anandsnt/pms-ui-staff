@@ -5,7 +5,7 @@
     {{transaction.room_no}}
 </td>
 <td class="guests">
-    {{transaction.guest_no}}
+    {{transaction.guest_nos}}
 </td>
 <td>
     {{transaction.confirmation_no}}
@@ -13,15 +13,15 @@
 <td>
     <div class="date">
         <span class="icons time check-in"></span>
-        <span>{{transaction.start_date | date : dateFormat}}</span>
+        <span>{{transaction.arrival_date | date : dateFormat}}</span>
     </div>
     <div class="date">
         <span class="icons time check-out"></span>
-        <span>{{transaction.end_date | date : dateFormat}}</span>
+        <span>{{transaction.dep_date | date : dateFormat}}</span>
     </div>
 </td>
 <td class="rate">
-    {{transaction.rate | currency:currencySymbol:2 }}
+    {{transaction.rate_name }}
 </td>
 <td>
     {{transaction.nights}}
