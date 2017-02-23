@@ -1261,7 +1261,7 @@ sntZestStation.controller('zsRootCtrl', [
                 $log.info('set oos status :--->' + workstationStatus);
                 storage.setItem(oosStorageKey, workstationStatus);
 				// set workstation oos reason in localstorage
-                $log.log('set works station :--->' + oosReason);
+                $log.log('set workstation oos reason :--->' + oosReason);
                 oosReason ? storage.setItem(oosReasonKey, oosReason) : '';
             } catch (err) {
                 $log.warn(err);

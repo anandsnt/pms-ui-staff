@@ -391,6 +391,11 @@ login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state',
 
         $scope.modalClosing = false;
 
+        $scope.showExitButton = !(typeof chrome !== 'undefined' && typeof chrome.runtime !== 'undefined');
+
+        $scope.exitApp = function() {
+        	window.close();
+        };
 
 	    $scope.closeDialog = function() {
 	      $scope.modalClosing = true;
