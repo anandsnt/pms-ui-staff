@@ -19,7 +19,7 @@
 		</ul>	
 	</span>
 
-	<form accept-charset="UTF-8" ng-submit="submit()" autocomplete="off" class="form" id="login-form" method="post" name="login-form" novalidate>
+	<form style='margin-top:-35px;' accept-charset="UTF-8" ng-submit="submit()" autocomplete="off" class="form" id="login-form" method="post" name="login-form" novalidate>
 		<input name="utf8" type="hidden" value="" />
 		<input name="authenticity_token" type="hidden" value="" />
 
@@ -31,6 +31,9 @@
 			<label for="password">Password </label>
 			<input ng-focus="showOnScreenKeyboard('password')"  ng-click="showOnScreenKeyboard('password')"  autocomplete="off" id="password" ng-model="data.password" name="password" placeholder="Enter your password" type="password" value="{{data.password}}" />
 		</div>
+		<div ng-show='showExitButton' class="action station_exit_button">
+            <button class="button" ng-click='exitApp()'>Exit</button>
+        </div>
 		<div class="action">
             <button type="submit" class="button green">Login</button>
         </div>

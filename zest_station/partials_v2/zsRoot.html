@@ -2,6 +2,9 @@
     <div id="loading-spinner"></div>
 </div>
 
+<div class='oos_reason' ng-show='zestStationData.workstationStatus === "out-of-order" && zestStationData.timeDebugger !== "true" && zestStationData.theme === "yotel"'>
+    {{zestStationData.workstationOooReason}}
+</div>
 
 <div ng-include="'/assets/partials_v2/zsDiagnostics.html'"></div>
 
