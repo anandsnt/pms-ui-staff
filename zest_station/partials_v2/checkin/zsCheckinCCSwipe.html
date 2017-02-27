@@ -86,6 +86,12 @@
 
             </ul>
         </nav>
+        <h4 editable-text="CC_PLEASE_NOTE" ng-show="theme === 'yotel'">{{'CC_PLEASE_NOTE' |translate}}</h4>
+        <ul ng-show="theme === 'yotel'">
+            <li editable-text="CC_INSTRUCTION_1">{{'CC_INSTRUCTION_1' |translate}}</li>
+            <li editable-text="CC_INSTRUCTION_2">{{'CC_INSTRUCTION_2' |translate}}</li>
+            <li editable-text="CC_INSTRUCTION_3">{{'CC_INSTRUCTION_3' |translate}}</li>
+        </ul>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>
