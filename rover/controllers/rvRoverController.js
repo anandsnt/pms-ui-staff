@@ -417,7 +417,7 @@ sntRover.controller('roverController',
             return false;
         };
 
-        $rootScope.$on('$locationChangeStart', routeChange);
+        // $rootScope.$on('$locationChangeStart', routeChange);
 
         // window.history.pushState("initial", "Showing Dashboard", "#/"); // we are forcefully setting top url, please refer routerFile
 
@@ -430,7 +430,7 @@ sntRover.controller('roverController',
      */
     $scope.$on("updateRoverLeftMenu", function(e, value) {
       $scope.selectedMenuIndex = value;
-      window.history.pushState("initial", "Showing Dashboard", "#!/");
+      // window.history.pushState("initial", "Showing Dashboard", "#!/");
     });
 
 
