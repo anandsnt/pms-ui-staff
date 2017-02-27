@@ -39,7 +39,7 @@ sntZestStation.controller('zsRootCtrl', [
         BaseCtrl.call(this, $scope);
 
         $scope.cssMappings = cssMappings;
-		$scope.inElectron = false;
+        $scope.inElectron = false;
 
         $rootScope.$on('$locationChangeStart', routeChange);
 		// we are forcefully setting top url, please refer routerFile
@@ -141,9 +141,9 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.returnDateObjBasedOnDateFormat = function(dateString) {
             if (typeof dateString !== 'undefined') {
                 return returnUnformatedDateObj(dateString, $scope.zestStationData.hotelDateFormat);
-            } else {
-                return dateString;
-            }
+            } 
+            return dateString;
+            
         };
 
 		/**
@@ -615,12 +615,12 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.setScreenIcon = function(name) {
             if ($scope.zestStationData.theme !== 'yotel') {
                 return;
-            } else {
-                $scope.activeScreenIcon = name;
-                if ($scope.icons && $scope.icons.url) {
-                    $scope.icons.url.active_screen_icon = $scope.iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg';
-                }
+            } 
+            $scope.activeScreenIcon = name;
+            if ($scope.icons && $scope.icons.url) {
+                $scope.icons.url.active_screen_icon = $scope.iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg';
             }
+            
         };
 		/**
 		 * get paths for theme based Icon files
@@ -628,9 +628,8 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.$on('updateIconPath', function(evt, theme) {
             var commonIconsPath = '/assets/zest_station/css/icons/default';
 
-            var basicHomeIcons = ['zoku'],
-                niceHomeIcons = ['avenue','sohotel','epik','public','duke'];
-
+            // var basicHomeIcons = ['zoku'],
+            var niceHomeIcons = ['avenue', 'sohotel', 'epik', 'public', 'duke'];
 
 
             if (theme === 'yotel') {
