@@ -11,7 +11,7 @@
     <div class="wrapper">
         <span ng-repeat="resultItem in results">
             <ul class="card-meta">
-                <li class="name">5 Comps Rooms on {{ resultItem.date | date : dateFormat }}</li>
+                <li class="name">{{resultItem.total_complimentay_nights_count}} Comps Rooms on {{ resultItem.date | date : dateFormat }}</li>
             </ul>
             <table class="balance-reports complimentary-report">
 
