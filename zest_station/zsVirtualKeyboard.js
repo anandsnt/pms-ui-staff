@@ -255,7 +255,8 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
 
         useWheel: true,
 
-        useCombos: true,
+        useCombos: false,
+        /*
         combos: {
             '<': {
                 3: '\u2665'
@@ -272,7 +273,7 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
             'O': {
                 E: '\u0152'
             }
-        },
+        },*/
 
 
         initialized: function() {}, // e, keyboard, el

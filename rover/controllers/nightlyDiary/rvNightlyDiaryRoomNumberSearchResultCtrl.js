@@ -11,7 +11,7 @@ angular.module('sntRover')
              * @param {Number} RoomId - selected room id from search filters.
             */
             $scope.gotoSelectedRoom = function(room) {
-                $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', room.id);
+                $scope.$emit('UPDATE_RESERVATIONLIST', room.id);
                 $scope.diaryData.reservationSearchResults = [];
             };
 

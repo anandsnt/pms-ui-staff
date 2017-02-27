@@ -1,0 +1,45 @@
+<!-- DEMO MODE -->
+
+<span ng-show="zestStationData.demoModeEnabled == 'true'" class="demo-text dev-cls top-left-demo">demo</span>
+
+<!-- NO-CHECK-IN -->
+<span ng-show="zestStationData.noCheckInsDebugger == 'true'" class="demo-text dev-cls top-left-demo" ng-class="{'demo-second-cls':zestStationData.demoModeEnabled == 'true'}">NCI</span>
+
+<!-- EDITOR MODE -->
+<span ng-show="zestStationData.editorModeEnabled == 'true'" class="demo-text editor dev-cls" >Editor Mode Enabled</span>
+
+
+<!-- TIMERS -->
+<span ng-show="zestStationData.timeDebugger == 'true'" class="timer-debugger-left dev-cls non-center">
+     <br> 
+     <span ng-show="zestStationData.editorModeEnabled == 'true'">
+        In Editor-Mode - <span class='key-in-progress'>(Timers Paused)</span><br> 
+    </span>
+     <span> [ {{zestStationData.workstationTimer}}/{{zestStationData.getWorkstationsAtTime}} ] Fetch Workstation Data & Refresh Station Check <br> </span>
+    <span> [ {{zestStationData.userInActivityTimeInHomeScreenInSeconds}}/{{zestStationData.timeUntilLanguageResetCheck}} ] Language Reset  <br> </span>
+
+    <span> [ {{zestStationData.refreshStationTimer}} >= {{zestStationData.timeUntilRefreshCheck}} ] Refresh Station Check Home Idle  <br> </span>
+    <span> [ {{zestStationData.userInActivityTimeInSeconds}}/{{zestStationData.idlePopupTime}} ] Idle Time, Alert <span ng-show='zestStationData.idle_timer.enabled === "false"'>*disabled</span> <br> </span>
+    <span> [ {{zestStationData.userInActivityTimeInSeconds}}/{{zestStationData.idleToHomeTime}} ]Idle Time, Back to Home <span ng-show='zestStationData.idle_timer.enabled === "false"'>*disabled</span></span>
+   
+</span>
+
+
+
+<!-- WORKSTATION + Encoding Info -->
+<span ng-show="zestStationData.timeDebugger == 'true'" class="timer-debugger-right dev-cls non-center">
+     <br> <span>Assigned Workstation ({{zestStationData.workstationName}}) <br> </span>
+
+    <span ng-show='zestStationData.workstationStatus === "out-of-order"'> Out of Order Reason: 
+        <span ng-show='zestStationData.workstationOooReason.length > 0'>[ {{zestStationData.workstationOooReason}} ] </span>
+        <span ng-show='zestStationData.workstationOooReason.length == 0'>[ None ] </span>
+        <br>
+    </span>
+
+     <span>Encoding Keys - <span ng-class='{"key-in-progress":zestStationData.makingKeyInProgress}'>({{zestStationData.makingKeyInProgress}})</span><br> </span>
+     
+     <span ng-show='inChromeApp'>
+        Zest Station Handler - <span ng-class='{"key-in-progress":zestStationData.stationHandlerConnectedStatus == "Not-Connected"}'>({{zestStationData.stationHandlerConnectedStatus}})</span><br> 
+    </span>
+    
+</span>
