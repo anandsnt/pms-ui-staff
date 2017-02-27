@@ -2,7 +2,7 @@
  * Number pagination directive - controller.
  */
 sntRover.controller('rvPaginationCtrl', ['$scope', '$attrs', function($scope, $attrs) {
-    
+
     // Initializing variables
     $scope.showCount    = 5;
     $scope.pageChange   = false;    // Variable for detecting external changes
@@ -25,7 +25,7 @@ sntRover.controller('rvPaginationCtrl', ['$scope', '$attrs', function($scope, $a
         if (page !== $scope.pageOptions.currentPage) {
 
             $scope.pageChange = true;
-            $scope.pageOptions.currentPage = page;  
+            $scope.pageOptions.currentPage = page;
 
             // When the API doesn't need any additional params.
             if (typeof($scope.pageOptions.api) === "function") {
@@ -90,7 +90,7 @@ sntRover.controller('rvPaginationCtrl', ['$scope', '$attrs', function($scope, $a
      *   Event to handle API callback
      *   @param  {string} [paginationId(optional)]
      */
-    $scope.$on('updatePagination', function( event, paginationId ) {
+    var updatePaginationationHandler = $scope.$on('updatePagination', function( event, paginationId ) {
 
         if (!($scope.pageOptions.id) || ($scope.pageOptions.id === paginationId)) {
 
@@ -113,9 +113,13 @@ sntRover.controller('rvPaginationCtrl', ['$scope', '$attrs', function($scope, $a
             else {
                 console.error("rvPagination error : undefined pageData");
             }
-            
+
             $scope.pageOptions.totalPages = Math.ceil($scope.totalCount / $scope.pageOptions.perPage);
             $scope.setScroll($scope.pageOptions.currentPage);
         }
     });
+
+    $scope.$on( '$destroy', updatePaginationationHandler );
+
+
 }]);

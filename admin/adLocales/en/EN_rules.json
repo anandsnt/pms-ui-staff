@@ -2,6 +2,12 @@
 
     "NAME":"Name",
     "DESCRIPTION":"Description",
+    "CODE": "Code",
+    "SELL_SEPARATE": "Sell separate",
+    "PRICE_SUFFIX_TITLE": "Price suffix",
+    "PRICE_SUFFIX_LABEL": "Suffix label",
+    "PRICE_SUFFIX_PLACEHOLDER": "Enter suffix label",
+    "PRICE_SUFFIX_SWITCH_LABEL": "Display suffix label after price",
     "ALTERNATE_DESCRIPTION":"Alternate Description",
     "ADDON_IMAGE_LABEL": "ADDON IMAGE",
     "ADDON_IMAGE_SPEC": "(960x600px in size)",

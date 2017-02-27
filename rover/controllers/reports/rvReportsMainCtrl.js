@@ -12,7 +12,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
     '$timeout',
     'rvUtilSrv',
     'rvPermissionSrv',
-    function($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, util, rvPermissionSrv) {
+    'RVReportPaginationIdsConst',
+    function($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, util, rvPermissionSrv, reportPaginationIds) {
         var isNotTimeOut = false;
         var timeOut;
         var listTitle = $filter('translate')('STATS_&_REPORTS_TITLE');
@@ -351,7 +352,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             item_44: false,
             item_45: false,
             item_46: false,
-            item_47: false
+            item_47: false,
+            item_48: false,
+            item_49: false
         };
         $scope.toggleFilterItems = function(item) {
             if ( ! $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -496,7 +499,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             maxDate: reportUtils.processDate(($rootScope.businessDate)).aMonthAfter
         }, datePickerCommon);
 
-		// for some of the reports we need to restrict max date selection to 6 months (eg:- Business on Books report)
+        // for some of the reports we need to restrict max date selection to 6 months (eg:- Business on Books report)
         $scope.fromDateOptionsSixMonthsLimit = angular.extend({
             onSelect: function(value, datePickerObj) {
                 var selectedDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
@@ -1139,6 +1142,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 selected    = [];
 
             var changeAppliedFilter = 'boolean' === typeof changeAppliedFilter ? changeAppliedFilter : true;
+            var chosenReport = reportsSrv.getChoosenReport();
+
+            perPage = (chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) ? reportParams["TRAVEL_AGENTS_PER_PAGE_COUNT"] : perPage;
 
             // capturing the filters applied to be
             // shown on the report details footer
@@ -1167,7 +1173,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     'assigned_departments': [],
                     'completion_status': [],
                     'age_buckets': [],
-                    'account_ids': []
+                    'account_ids': [],
+                    'travel_agent_ids': []
                 };
             }
 
@@ -1862,6 +1869,29 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 }
             }
 
+            // include travel agents
+            if ( report.hasOwnProperty('hasTravelAgentsSearch') ) {
+                selected = _.where(report['hasTravelAgentsSearch']['data'], { selected: true });
+
+                if ( selected.length > 0 ) {
+                    key         = reportParams['TRAVEL_AGENTS'];
+                    params[key] = [];
+                    /**/
+                    _.each(selected, function(each) {
+                        params[key].push( each.id.toString() );
+                        /**/
+                        if ( changeAppliedFilter ) {
+                            $scope.appliedFilter.travel_agent_ids.push( each.name );
+                        }
+                    });
+
+                    // in case if all reservation status are selected
+                    if ( changeAppliedFilter && report['hasTravelAgentsSearch']['data'].length === selected.length ) {
+                        $scope.appliedFilter.travel_agent_ids = ['All Travel Agents'];
+                    }
+                }
+            }
+
             // include Aging days
             if ( report.hasOwnProperty('hasIncludeAgingBalance') ) {
                 selected = _.where(report['hasIncludeAgingBalance']['data'], { selected: true });
@@ -2167,8 +2197,37 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
             var params = genParams(chosenReport, page, resultPerPageOverride || $scope.resultsPerPage);
 
+            var fetchTravelAgents = function (travel_agent_id, pageNo) {
+                var paramsToApi = {};
+
+                paramsToApi.travel_agent_id = travel_agent_id;
+                paramsToApi.page = pageNo;
+                paramsToApi.per_page = reportParams['TRAVEL_AGENTS_PER_PAGE_COUNT'];
+                $scope.$broadcast('updateReservations', paramsToApi);
+            };
+            var responseWithInsidePagination = function (response) {
+                _.each(response.results, function (item) {
+                    // Pagination data added for each TA
+                    item.insidePaginationData = {
+                        id: item.travel_agent_id,
+                        api: [fetchTravelAgents, item.travel_agent_id],
+                        perPage: reportParams['TRAVEL_AGENTS_PER_PAGE_COUNT']
+                    };
+                    $timeout(function() {
+                        $scope.$broadcast('updatePagination', item.travel_agent_id);
+                    }, 1000);
+                });
+                return response;
+            };
+
             // fill in data into seperate props
             var updateDS = function (response) {
+                if (chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) {
+                    // Response modified to accomodate inside pagination
+                    // For TA reservations
+                    response = responseWithInsidePagination(response);
+                }
+
                 $scope.totals          = response.totals || [];
                 $scope.headers         = response.headers || [];
                 $scope.subHeaders      = response.sub_headers || [];
@@ -2187,10 +2246,19 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                         $scope.$broadcast('updatePagination', "COMPARISION_BY_DATE");
                     }, 50);
                 }
-				if(chosenReport.title === reportNames["BUSINESS_ON_BOOKS"]) {
+
+                 //CICO-36269
+                if(chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) {
+                    $scope.$broadcast("UPDATE_RESULTS", $scope.results);
                     $timeout(function() {
-                        $scope.$broadcast('updatePagination', "BUSINESS_ON_BOOKS");
+                        $scope.$broadcast('updatePagination', "TA_COMMISSION_REPORT_MAIN");
                     }, 50);
+                }
+                
+                if (reportPaginationIds[chosenReport.title]) {
+                  $timeout(function() {                      
+                    $scope.$broadcast('updatePagination', reportPaginationIds[chosenReport.title]);
+                  }, 50);
                 }
             };
 
@@ -2243,7 +2311,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
             params.reportTitle = chosenReport.title;
 
-			// Load API data for the pagination directive
+            // Load API data for the pagination directive
             var loadAPIData = function(pageNo) {
                 $scope.genReport(false, pageNo);
             };
@@ -2261,11 +2329,27 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 };
             }
 
-			if(chosenReport.title === reportNames["BUSINESS_ON_BOOKS"]) {
-                $scope.businessOnBooksPagination = {
-                    id: 'BUSINESS_ON_BOOKS',
+            if (chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) {
+
+                var loadAPIData = function(pageNo) {
+                    $scope.genReport(false, pageNo);
+                    $scope.$broadcast("TRAVEL_AGENT_COMMISSIONS_SCROLL");
+                };
+
+                $scope.commisionReportTAPagination = {
+                    id: 'TA_COMMISSION_REPORT_MAIN',
                     api: loadAPIData,
-                    perPage: 25
+                    perPage: reportParams["TRAVEL_AGENTS_PER_PAGE_COUNT"]
+                };
+
+            }
+
+            // CICO-35669 - Add new pagination controls for selected reports
+            if (reportPaginationIds[chosenReport.title]) {
+              $scope.paginationConfig = {
+                  id: reportPaginationIds[chosenReport.title],
+                  api: loadAPIData,
+                  perPage: 25
                 };
             }
 

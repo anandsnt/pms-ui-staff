@@ -119,7 +119,7 @@ angular.module('sntRover')
 
         // To handle click on each search item.
         $scope.clickedOnResultItem = function( roomId ) {
-            $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', roomId);
+            $scope.$emit('UPDATE_RESERVATIONLIST', roomId);
         };
 
         // To handle close search results after rendering new data set.
