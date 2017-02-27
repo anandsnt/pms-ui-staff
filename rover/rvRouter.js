@@ -18,13 +18,13 @@ angular.module('sntRover').config([
          * state added to show single url throughout the app
          */
         $stateProvider.state('top', {
-            url: '/',
+            url: '/staff/h/:uuid',
             controller: 'topController'
         });
 
         $stateProvider.state('rover', {
             abstract: true,
-            url: '/staff/h/:uuid',
+            url: '/',
             templateUrl: '/assets/partials/rvRover.html',
             controller: 'roverController',
             onEnter: ['$stateParams', 'rvAuthorizationSrv', function($stateParams, rvAuthorizationSrv) {
