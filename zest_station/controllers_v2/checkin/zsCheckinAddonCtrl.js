@@ -160,7 +160,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			if ($stateParams.is_from_room_upsell === 'true') {
 				$state.go('zest_station.roomUpsell');
 			} else {
-				$state.go('zest_station.checkIneservationDetails')
+				$state.go('zest_station.checkInReservationDetails')
 			}
 		};
 		/**
