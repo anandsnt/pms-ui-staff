@@ -16,13 +16,13 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 		 ********************************************************************************/
 
         /*
-            :: themeSpecificFonts ::
+            :: themesWithLicensedFonts ::
             key = hotel theme, 
             value = specific URL to the licensed font (should only request in production)
             --***-- for testing, please use placeholder URLs
          */
-        var themeSpecificFonts = {
-           'public': 'https://cloud.typography.com/7902756/7320972/css/fonts.css',
+        var themesWithLicensedFonts = {
+            'public': 'https://cloud.typography.com/7902756/7320972/css/fonts.css',
            // 'littleduke': 'placeholder'
            // 'public': 'public.font.placeholder.css',
             'duke': 'duke.font.placeholder.css'
@@ -81,7 +81,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                 fileref.setAttribute('href', url);
                 $('body').attr('id', theme);
                 $('body').append(fileref);
-                //debugging - inProd() needs to be TRUE for loading licensed font
+                // debugging - inProd() needs to be TRUE for loading licensed font
                 if (hotelHasLicensedFont(theme) && $scope.inProd()) {
                     $log.log('[ ' + theme + ' ] theme using licensed font**');
                     url = getHotelLicensedFont(theme);
@@ -101,12 +101,12 @@ sntZestStation.controller('zsThemeActionsCtrl', [
         };
 
         var hotelHasLicensedFont = function(theme) {
-            return !_.isUndefined(themeSpecificFonts[theme]);
+            return !_.isUndefined(themesWithLicensedFonts[theme]);
         };
 
         var getHotelLicensedFont = function(theme) {
             // public | duke
-            return themeSpecificFonts[theme];
+            return themesWithLicensedFonts[theme];
         };
 
 		/** ******************************************************************************
@@ -114,7 +114,6 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 		 ********************************************************************************/
 
         $scope.$on('QUICK_SET_HOTEL_THEME', function(evt, theme) {
-            $log.log('QUICK_SET_HOTEL_THEME:--> ',theme)
             var oldLink = $('link');
 
             for (var i in oldLink) {
