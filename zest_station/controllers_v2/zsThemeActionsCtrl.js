@@ -5,7 +5,8 @@ sntZestStation.controller('zsThemeActionsCtrl', [
     '$timeout',
     'zsHotelDetailsSrv',
     'zsGeneralSrv',
-    function($scope, $state, zsGeneralSrv, $timeout, zsHotelDetailsSrv, zsGeneralSrv) {
+    '$log',
+    function($scope, $state, zsGeneralSrv, $timeout, zsHotelDetailsSrv, zsGeneralSrv, $log) {
 
         BaseCtrl.call(this, $scope);
 		
@@ -13,6 +14,19 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 		/** ******************************************************************************
 		 *  Theme based actions starts here
 		 ********************************************************************************/
+
+        /*
+            :: themeSpecificFonts ::
+            key = hotel theme, 
+            value = specific URL to the licensed font (should only request in production)
+            --***-- for testing, please use placeholder URLs
+         */
+        var themeSpecificFonts = {
+           'public': 'https://cloud.typography.com/7902756/7320972/css/fonts.css',
+           // 'littleduke': 'placeholder'
+           // 'public': 'public.font.placeholder.css',
+            'duke': 'duke.font.placeholder.css'
+        };
 
         var iconsPath = '/assets/zest_station/css/icons/default';
 		/**
@@ -67,9 +81,10 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                 fileref.setAttribute('href', url);
                 $('body').attr('id', theme);
                 $('body').append(fileref);
-
-                if (theme === 'public' && $scope.inProd()) {
-                    url = 'https://cloud.typography.com/7902756/7320972/css/fonts.css';
+                //debugging - inProd() needs to be TRUE for loading licensed font
+                if (hotelHasLicensedFont(theme) && $scope.inProd()) {
+                    $log.log('[ ' + theme + ' ] theme using licensed font**');
+                    url = getHotelLicensedFont(theme);
                     fileref = document.createElement('link');
 
                     fileref.setAttribute('rel', 'stylesheet');
@@ -85,11 +100,21 @@ sntZestStation.controller('zsThemeActionsCtrl', [
             }
         };
 
+        var hotelHasLicensedFont = function(theme) {
+            return !_.isUndefined(themeSpecificFonts[theme]);
+        };
+
+        var getHotelLicensedFont = function(theme) {
+            // public | duke
+            return themeSpecificFonts[theme];
+        };
+
 		/** ******************************************************************************
 		 *  Theme based actions ends here
 		 ********************************************************************************/
 
         $scope.$on('QUICK_SET_HOTEL_THEME', function(evt, theme) {
+            $log.log('QUICK_SET_HOTEL_THEME:--> ',theme)
             var oldLink = $('link');
 
             for (var i in oldLink) {

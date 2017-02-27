@@ -626,6 +626,11 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.$on('updateIconPath', function(evt, theme) {
             var commonIconsPath = '/assets/zest_station/css/icons/default';
 
+            var basicHomeIcons = ['zoku'],
+                niceHomeIcons = ['avenue','sohotel','epik','public','duke'];
+
+
+
             if (theme === 'yotel') {
                 $scope.$emit('DONT_USE_NAV_ICONS');
                 $scope.theme = theme;
@@ -640,7 +645,7 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.iconsPath = '/assets/zest_station/css/icons/conscious';
                 $scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true);
 
-            } else if (theme === 'avenue' || theme === 'sohotel' || theme === 'epik' || theme === 'public') {
+            } else if (_.contains(niceHomeIcons, theme)) {
                 $scope.useNavIcons = true;
                 $scope.theme = theme;
                 $scope.iconsPath = '/assets/zest_station/css/icons/' + theme;
