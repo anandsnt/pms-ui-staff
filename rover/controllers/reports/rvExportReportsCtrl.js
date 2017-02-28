@@ -93,20 +93,22 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             }
 
             if ( item.time ) {
-                occurance += ' at ' + item.time;
+                occurance += ' at ' + item.time + '. ';
+            } else {
+                occurance += '. ';
             }
 
             if ( item.starts_on ) {
-                occurance += '. Started on ' + $filter('date')(item.starts_on, $rootScope.dateFormat);
+                occurance += 'Started on ' + $filter('date')(item.starts_on, $rootScope.dateFormat) + '. ';
             }
 
             if ( value !== FREQ_VALUES.RUN_ONCE ) {
                 if ( item.ends_on_after ) {
-                    occurance += '. Ends after ' + item.ends_on_after + ' times.';
+                    occurance += 'Ends after ' + item.ends_on_after + ' times.';
                 } else if ( item.ends_on_date ) {
-                    occurance += '. Ends on ' + $filter('date')(item.ends_on_date, $rootScope.dateFormat) + '.';
+                    occurance += 'Ends on ' + $filter('date')(item.ends_on_date, $rootScope.dateFormat) + '.';
                 } else {
-                    occurance += '. Runs forever.';
+                    occurance += 'Runs forever.';
                 }
             }
 
