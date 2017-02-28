@@ -10,7 +10,6 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
     '$timeout',
     'rvUtilSrv',
     'ngDialog',
-    '$log',
     function(
         $rootScope,
         $scope,
