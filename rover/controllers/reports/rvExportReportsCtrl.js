@@ -689,7 +689,32 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 id: $scope.selectedEntityDetails.id
             };
 
+            var getFtpAddress = function (id) {
+                var has;
+                var ret = {
+                    description: '',
+                    url: ''
+                };
+
+                if ( $scope.ftpServerList.length ) {
+                    has = _.find($scope.ftpServerList, { id: id }) || ret;
+                    ret = {
+                        description: has.description,
+                        url: has.url
+                    };
+                }
+
+                return ret;
+            };
+
             var showResponse = function () {
+                $scope.runNowData = {
+                    isEmail: $scope.checkDeliveryType('EMAIL'),
+                    isFtp: $scope.checkDeliveryType('FTP'),
+                    isSingleEmail: $scope.emailList.length === 1,
+                    ftpAddress: getFtpAddress($scope.scheduleParams.selectedFtpRecipient)
+                };
+
                 ngDialog.open({
                     template: '/assets/partials/reports/scheduleReport/rvRunScheduleNowUpdate.html',
                     scope: $scope
