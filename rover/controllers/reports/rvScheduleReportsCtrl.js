@@ -63,21 +63,20 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 value = frequency.value;
             }
 
-            if ( ! item.repeats_every ) {
+            if ( item.repeats_every === 0 ) {
                 occurance += description.toLowerCase();
             } else {
                 occurance += 'after every ' + item.repeats_every + ' ';
 
                 if ( value === FREQ_VALUES.DAILY ) {
                     occurance += item.repeats_every === 1 ? 'day' : 'days';
-                }
-                if ( value === FREQ_VALUES.HOURLY ) {
+                } else if ( value === FREQ_VALUES.HOURLY ) {
                     occurance += item.repeats_every === 1 ? 'hour' : 'hours';
-                }
-                if ( value === FREQ_VALUES.WEEKLY ) {
+                } else if ( value === FREQ_VALUES.WEEKLY ) {
                     occurance += item.repeats_every === 1 ? 'week' : 'weeks';
-                }
-                if ( value === FREQ_VALUES.MONTHLY ) {
+                } else if ( value === FREQ_VALUES.MONTHLY ) {
+                    occurance += item.repeats_every === 1 ? 'month' : 'months';
+                } else if ( value === FREQ_VALUES.MONTHLY ) {
                     occurance += item.repeats_every === 1 ? 'month' : 'months';
                 }
             }
@@ -96,7 +95,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 occurance += '. Ends on ' + $filter('date')(item.ends_on_date, $rootScope.dateFormat) + '.';
             } else {
                 occurance += '. Runs forever.';
-            }
+            } 
 
             return occurance;
         };
