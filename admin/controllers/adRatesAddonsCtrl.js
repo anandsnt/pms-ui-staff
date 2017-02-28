@@ -362,7 +362,11 @@ admin.controller('ADRatesAddonsCtrl', [
 				charge_full_weeks_only: (($scope.singleAddon.post_type_id === 3) && $scope.singleAddon.is_reservation_only && $scope.singleAddon.charge_full_weeks_only) ? true : false,
 				allow_rate_exclusions: $scope.singleAddon.allow_rate_exclusions,
 				excluded_rate_ids: _.pluck($scope.singleAddon.excludedRates, 'id'),
-				addon_image: $scope.singleAddon.addon_image
+				addon_image: $scope.singleAddon.addon_image,
+				is_sell_separate: $scope.singleAddon.is_sell_separate,
+				is_display_suffix: $scope.singleAddon.is_display_suffix,
+				suffix_label: $scope.singleAddon.suffix_label
+
 			};
 
 			// convert dates to system format yyyy-MM-dd

@@ -570,6 +570,18 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         url: '/languages'
     });
 
+    $stateProvider.state('admin.ftpservers', {
+        templateUrl: '/assets/partials/ftpServers/adFTPServerList.html',
+        controller: 'ADFTPServersCtrl',
+        url: '/ftpservers'
+    });
+
+    $stateProvider.state('admin.ftpserverdetails', {
+        templateUrl: '/assets/partials/ftpServers/adFTPServerAdd.html',
+        controller: 'ADFTPServersDetailsCtrl',
+        url: '/ftpserverdetails/:id'
+    });
+
     $stateProvider.state('admin.analyticsSetup', {
         templateUrl: '/assets/partials/AnalyticSetup/adAnalyticSetup.html',
         controller: 'adAnalyticSetupCtrl',
