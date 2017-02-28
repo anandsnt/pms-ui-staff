@@ -4,7 +4,18 @@
 	    	<span class="icons icon-close invert">
 	    </button>
 		<span class="message">
-			<span class="red" ng-show="runScheduleNowSuccess">Export has been put in queue. Will dispatch once completed.</span>
+			<span class="read"
+				ng-show="runScheduleNowSuccess"
+			>
+				<span>Export has been put in queue.&nbsp;</span>
+				<span ng-show="runNowData.isEmail && runNowData.isSingleEmail">It will be delivered to <em>{{ emailList[0] }}</em> once completed.</span>
+				<span ng-show="runNowData.isEmail && ! runNowData.isSingleEmail">It will be delivered to the following email addresses once completed:</span>
+				<hr ng-show="runNowData.isEmail && ! runNowData.isSingleEmail" style="margin: 20px 0" />
+				<ul ng-show="runNowData.isEmail && ! runNowData.isSingleEmail">
+					<li style="margin: 0" ng-repeat="email in emailList">{{ email }}</li>
+				</ul>
+				<span ng-show="runNowData.isFtp">It will be delivered to <em>{{ runNowData.ftpAddress.description }} ({{ runNowData.ftpAddress.url }})</em> once completed.</span>
+			</span>
 			<span class="red" ng-hide="runScheduleNowSuccess">Unable to put export in queue. Please try again.</span>
 		</span>
 		<div class="actions">        	
