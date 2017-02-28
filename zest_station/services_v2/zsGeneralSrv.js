@@ -20,6 +20,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'yotel': 'yotel',
             'avenue': 'avenue',
             'public': 'public ny',
+            'duke': 'Little duke',
             'sohotel': 'sohotel',
             'epik': 'Hotel epik',
             'conscious': 'Conscious vondelpark',
