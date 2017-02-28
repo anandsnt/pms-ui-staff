@@ -13,16 +13,16 @@
                     <small>{{selectedAddon.price_desc}}</small>
                 </div>
                 <div class="action">
-                    <div class="input-group" ng-show="selectedAddon.type === 'quantity'">
+                    <div class="input-group" ng-show="selectedAddon.type === 'per room' || selectedAddon.type === 'flat rate'">
                         <button type="button" class="button" click-touch="selectedAddon.quantity = selectedAddon.quantity >0 ? selectedAddon.quantity -1 :0">-</button>
                         <input type="text" value="{{selectedAddon.quantity}}">
                         <button type="button" class="button" click-touch="selectedAddon.quantity =  selectedAddon.quantity+1">+</button>
                     </div>
-                    <button type="button" class="button" ng-hide="selectedAddon.type === 'quantity'" ng-class="{'transparent text-red':selectedAddon.is_selected}" click-touch="selectedAddon.is_selected = !selectedAddon.is_selected">
+                    <button type="button" class="button" ng-hide="selectedAddon.type === 'per room' || selectedAddon.type === 'flat rate'" ng-class="{'transparent text-red':selectedAddon.is_selected}" click-touch="selectedAddon.is_selected = !selectedAddon.is_selected">
                         <span ng-hide="selectedAddon.is_selected">Add</span>
                         <span ng-show="selectedAddon.is_selected">Remove</span>
                     </button>
-                        <button type="button" data-action="popup" class="button transparent" click-touch="closePopup()">Done</button>
+                    <button type="button" data-action="popup" class="button transparent" click-touch="closePopup()">Done</button>
                 </div>
             </div>
         </div>
@@ -64,13 +64,13 @@
                             </div>
                             <div class="action">
                                 <!-- show this instead of 'add/remove' button if quantity needed -->
-                                <div class="input-group" ng-show="addon.type === 'quantity'">
+                                <div class="input-group" ng-show="selectedAddon.type === 'per room' || selectedAddon.type === 'flat rate'">
                                     <button type="button" class="button" click-touch="addon.quantity = addon.quantity >0 ? addon.quantity -1 :0">-</button>
                                     <input type="text" value="{{addon.quantity}}">
                                     <button type="button" class="button" click-touch="addon.quantity =  addon.quantity+1">+</button>
                                 </div>
                                 <!-- Replace 'btn-class' with 'transparent text-red' if 'Remove' -->
-                                <button type="button" class="button {btn-class}" ng-hide="addon.type === 'quantity'" ng-class="{'transparent text-red':addon.is_selected}" click-touch="addon.is_selected = !addon.is_selected">
+                                <button type="button" class="button {btn-class}" ng-hide="selectedAddon.type === 'per room' || selectedAddon.type === 'flat rate'" ng-class="{'transparent text-red':addon.is_selected}" click-touch="addon.is_selected = !addon.is_selected">
                                     <span ng-hide="addon.is_selected">Add</span>
                                     <span ng-show="addon.is_selected">Remove</span>
                             </div>
@@ -86,11 +86,11 @@
             <div class="button-group" ng-if="addonsList.length > 1">
                 <!-- add 'disabled="disabled"' if there is no previous page -->
                 <button type="button" class="button only-icon" click-touch="viewPreviousPage()" ng-hide="disablePreviousButton">
-                     <div ng-include="icons.url.left_arrow_icon"></div>
+                    <div ng-include="icons.url.left_arrow_icon"></div>
                 </button>
                 <!-- touchstart is not following ng-disable, so for now keeping two versions -->
                 <button type="button" class="button only-icon" ng-show="disablePreviousButton" disabled="disabled">
-                     <div ng-include="icons.url.left_arrow_icon"></div>
+                    <div ng-include="icons.url.left_arrow_icon"></div>
                 </button>
                 <!-- add 'disabled="disabled"' if there is no next page -->
                 <button type="button" class="button only-icon" click-touch="viewNextPage()" ng-hide="disableNextButton">
