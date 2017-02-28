@@ -176,10 +176,10 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
 
             if (!$scope.selectedReservation.isRoomUpraded && $scope.selectedReservation.reservation_details.is_upsell_available === 'true' && zestStationRoomUpsellOn) {
                 $state.go('zest_station.roomUpsell');
-            } else if($scope.selectedReservation.hasAddon && !$scope.selectedReservation.skipAddon){
+            } else if ($scope.selectedReservation.hasAddon && !$scope.selectedReservation.skipAddon) {
                 $state.go('zest_station.addOnUpsell');
             } else {
-                $scope.initTermsPage();    
+                $scope.initTermsPage();
             }
         };
 

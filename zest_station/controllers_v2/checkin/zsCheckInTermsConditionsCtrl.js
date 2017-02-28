@@ -30,10 +30,11 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			// back button action
             $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-                if($stateParams.is_from_addons === 'true'){
-                    $state.go('zest_station.addOnUpsell',{'is_from_room_upsell':$stateParams.is_from_room_upsell});
-                }
-                else if ($stateParams.is_from_room_upsell === 'true') {
+                if ($stateParams.is_from_addons === 'true') {
+                    $state.go('zest_station.addOnUpsell', {
+                        'is_from_room_upsell': $stateParams.is_from_room_upsell
+                    });
+                } else if ($stateParams.is_from_room_upsell === 'true') {
                     $state.go('zest_station.roomUpsell');
                 } else {
                     $state.go('zest_station.checkInReservationDetails', $stateParams);

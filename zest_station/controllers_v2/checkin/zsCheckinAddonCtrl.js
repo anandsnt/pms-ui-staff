@@ -55,7 +55,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				// set viewable room list - 6 items at a time
 				$scope.viewableAddons = [];
 
-				for (index = -1; index < 5; index++) {
+				for (var index = -1; index < 5; index++) {
 					if (!_.isUndefined($scope.addonsList[$scope.pageStartingIndex + index])) {
 						$scope.viewableAddons.push($scope.addonsList[$scope.pageStartingIndex + index]);
 					}
@@ -65,24 +65,26 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				$scope.disablePreviousButton = $scope.pageStartingIndex === 1;
 			}
 			// set the height for container
-			$('#upgrades').css({"height":"calc(100% - 230px)"} );
+			$('#upgrades').css({
+				"height": "calc(100% - 230px)"
+			});
 
 			console.log($scope.viewableAddons);
 		};
 
 		$scope.viewNextPage = function() {
-			//$scope.$emit('showLoader');
+			// $scope.$emit('showLoader');
 			$scope.disableNextButton = true;
-			$timeout(function(argument) {
+			$timeout(function() {
 				$scope.pageNumber++;
 				setPageNumberDetails();
 			}, 200);
 		};
 
 		$scope.viewPreviousPage = function() {
-			//$scope.$emit('showLoader');
+			// $scope.$emit('showLoader');
 			$scope.disablePreviousButton = true;
-			$timeout(function(argument) {
+			$timeout(function() {
 				$scope.pageNumber--;
 				setPageNumberDetails();
 			}, 200);
@@ -94,7 +96,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			$scope.showPopup = true;
 		};
 
-		$scope.closePopup = function(argument) {
+		$scope.closePopup = function() {
 			$scope.showPopup = false;
 		};
 
@@ -124,6 +126,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 					$scope.mode = 'ROOM_UPSELL_LIST';
 				}
 			};
+
 			$scope.callAPI(zsCheckinSrv.fetchAddons, {
 				params: {
 					//reservation_id: $scope.selectedReservation.reservation_details.reservation_id
@@ -132,14 +135,15 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				'failureCallBack': generalError
 			});
 		};
+
 		$scope.addonsList = [];
 		$scope.getAmountTotal = function() {
 			var totalAmount = 0;
 			_.each($scope.addonsList, function(addon) {
 				if (addon.is_selected) {
-					totalAmount = totalAmount + addon.price
+					totalAmount = totalAmount + addon.price;
 				} else if (addon.quantity > 0) {
-					totalAmount = totalAmount + addon.price * addon.quantity
+					totalAmount = totalAmount + addon.price * addon.quantity;
 				}
 			});
 			return totalAmount;
@@ -160,7 +164,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			if ($stateParams.is_from_room_upsell === 'true') {
 				$state.go('zest_station.roomUpsell');
 			} else {
-				$state.go('zest_station.checkInReservationDetails')
+				$state.go('zest_station.checkInReservationDetails');
 			}
 		};
 		/**
