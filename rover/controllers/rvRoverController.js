@@ -409,18 +409,6 @@ sntRover.controller('roverController',
 
         $scope.menuOpen = false;        
         $rootScope.showNotificationForCurrentUser = true;
-
-        var routeChange = function(event) {
-            event.preventDefault();
-            $location.path('#!/');
-            $location.replace();
-            return false;
-        };
-
-        $rootScope.$on('$locationChangeStart', routeChange);
-
-        // window.history.pushState("initial", "Showing Dashboard", "#/"); // we are forcefully setting top url, please refer routerFile
-
     };
 
     $scope.init();
@@ -430,7 +418,6 @@ sntRover.controller('roverController',
      */
     $scope.$on("updateRoverLeftMenu", function(e, value) {
       $scope.selectedMenuIndex = value;
-      window.history.pushState("initial", "Showing Dashboard", "#!/");
     });
 
 

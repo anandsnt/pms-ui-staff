@@ -1,4 +1,4 @@
-sntRover.config([
+angular.module('sntRover').config([
     '$stateProvider',
     '$urlRouterProvider',
     '$translateProvider',
@@ -6,8 +6,8 @@ sntRover.config([
         var currentTime = new Date();
 
         $translateProvider.useStaticFilesLoader({
-          prefix: '/assets/rvLocales/',
-          suffix: '.json?time=' + currentTime
+            prefix: '/assets/rvLocales/',
+            suffix: '.json?time=' + currentTime
         });
         $translateProvider.fallbackLanguage('EN');
 
@@ -18,15 +18,18 @@ sntRover.config([
          * state added to show single url throughout the app
          */
         $stateProvider.state('top', {
-            url: '/',
+            url: '/staff/h/:uuid',
             controller: 'topController'
         });
 
         $stateProvider.state('rover', {
             abstract: true,
-            url: '/staff',
+            url: '/',
             templateUrl: '/assets/partials/rvRover.html',
             controller: 'roverController',
+            onEnter: ['$stateParams', 'rvAuthorizationSrv', function($stateParams, rvAuthorizationSrv) {
+                rvAuthorizationSrv.status();
+            }],
             resolve: {
                 mappingList: function(jsMappings) {
                     return jsMappings.fetchMappingList();
@@ -37,12 +40,10 @@ sntRover.config([
                 userInfoDetails: function(RVDashboardSrv) {
                     return RVDashboardSrv.fetchUserInfo();
                 },
-                permissions: function (rvPermissionSrv) {
+                permissions: function(rvPermissionSrv) {
                     return rvPermissionSrv.fetchRoverPermissions();
                 }
             }
-
-
         });
 
     }
