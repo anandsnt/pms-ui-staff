@@ -136,7 +136,7 @@
                             {{'AMOUNT_TYPE' | translate}}
                             <strong>*</strong>
                         </label>
-                        <div class="select">
+                        <div ng-class="{ select : !isConnectedToPMS }">
                             <select ng-disabled="isConnectedToPMS" name="amount-type-id" id="amount-type-id" ng-model="singleAddon.amount_type_id" ng-options="type.id as type.description for type in amountTypes"></select>
                         </div>
                     </div>
@@ -146,7 +146,7 @@
                         {{'POST_TYPE' | translate}}
                         <strong>*</strong>
                     </label>
-                    <div class="select">
+                    <div ng-class="{ select : !isConnectedToPMS }">
                         <select ng-disabled="isConnectedToPMS" name="post-type-id" id="post-type-id" ng-model="singleAddon.post_type_id" ng-options="type.id as type.description for type in postTypes"></select>
                     </div>
                 </div>
