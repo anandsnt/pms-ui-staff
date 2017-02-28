@@ -129,7 +129,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 
 			$scope.callAPI(zsCheckinSrv.fetchAddons, {
 				params: {
-					//reservation_id: $scope.selectedReservation.reservation_details.reservation_id
+					// reservation_id: $scope.selectedReservation.reservation_details.reservation_id
 				},
 				'successCallBack': fetchAddonsSuccess,
 				'failureCallBack': generalError
@@ -139,6 +139,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		$scope.addonsList = [];
 		$scope.getAmountTotal = function() {
 			var totalAmount = 0;
+			
 			_.each($scope.addonsList, function(addon) {
 				if (addon.is_selected) {
 					totalAmount = totalAmount + addon.price;
@@ -149,7 +150,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			return totalAmount;
 		};
 
-		$scope.addonPurchaseCompleted = function(argument) {
+		$scope.addonPurchaseCompleted = function() {
 
 			if ($scope.getAmountTotal() > 0) {
 				$scope.selectedReservation.skipAddon = true;
