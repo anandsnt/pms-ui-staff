@@ -203,6 +203,7 @@ angular.module('sntRover')
                 $scope.invokeApi(RVreportsSubSrv.getPaymentValues, params, success, failed);
             } else {
                 $scope.pgEntries[index].paymentGroupEntries = {};
+                ccStore.set($scope.pgEntries[index].charge_group_id, {});
             }
 
         };
@@ -477,6 +478,7 @@ angular.module('sntRover')
             $scope.pgEntries = _.where(results, { is_payment_group: true });
             _.each($scope.pgEntries, function(paymentGroupItem) {
                 paymentGroupItem.isPaymentGroupActive = false;
+
                 paymentGroupItem.paymentGroupEntries = ccStore.get(paymentGroupItem.charge_group_id);
             });
         }
