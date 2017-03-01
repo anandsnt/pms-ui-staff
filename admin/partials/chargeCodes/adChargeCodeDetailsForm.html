@@ -23,15 +23,18 @@
 
 				<!-- show For charge codes of the code type Payment -->
 				<div class="entry full-width" required="required" ng-show="prefetchData.selected_charge_code_type == '2'" >
-					<label class="ng-binding" ng-hide="label.length==0" for="" >
+					<label class="ng-binding" ng-hide="label.length==0">
 						{{'PAYMENT_TYPE'| translate}}
 						<strong class="" ng-show="isStandAlone"> * </strong>
 					</label>
 					<div class="select">
-						<select name="payment-type" ng-model = "selected_payment_type.id"   ng-change="changeSelectedPaymentType()" >
-							<option value="" ng-class="{'placeholder': selected_payment_type.id == ''}" translate>PAYMENT_TYPE</option>
-							<option ng-hide="paymentType.name == 'CC'" value="{{paymentType.id}}" ng-selected="(paymentType.value==prefetchData.selected_payment_type && (paymentType.is_cc_type == prefetchData.is_cc_type))" ng-repeat="paymentType in prefetchData.payment_types">
-							{{paymentType.description}} 
+						<select convert-to-number
+								ng-class="{'placeholder': !prefetchData.selected_payment_type }"
+								ng-model="prefetchData.selected_payment_type"
+								ng-change="changeSelectedPaymentType()" >
+							<option value="" translate>PAYMENT_TYPE</option>
+							<option ng-hide="paymentType.name == 'CC'" value="{{paymentType.value}}" ng-repeat="paymentType in prefetchData.payment_types">
+								{{paymentType.description}}
 							</option>
 						</select>
 					</div>
@@ -41,8 +44,8 @@
 						{{'FEES'| translate}}
 					</label>
 					<div class="select">
-						<select name="payment-type" ng-model="prefetchData.selected_fees_code">
-							<option value="">Select Fees</option>
+						<select convert-to-number name="payment-type" ng-model="prefetchData.selected_fees_code">
+							<option value="null">Select Fees</option>
 							<option value="{{feesCode.value}}" ng-selected="feesCode.value == prefetchData.selected_fees_code" ng-repeat="feesCode in prefetchData.fees_codes">
 							{{feesCode.name}} {{feesCode.description}}
 							</option>

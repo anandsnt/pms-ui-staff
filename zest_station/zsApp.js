@@ -99,6 +99,12 @@ var GlobalZestStationApp = function() {
 
     }; 
 
+    this.logout = function() {
+        // just log out
+        window.location.href = '/station_logout';
+    };
+
+
     // success function of coddova plugin's appending
     this.fetchCompletedOfCordovaPlugins = function() {
         that.cordovaLoaded = true;
@@ -137,19 +143,18 @@ var GlobalZestStationApp = function() {
 
         }
     };
+    this.runDigest = function() {
+        try {
+            setTimeout(function() {
+                angular.element('#header').scope().$parent.$digest();
+                angular.element('#header').scope().$parent.$digest();
+            }, 800);
+
+        } catch (err) {
+            console.warn('unable to run digest ', err);
+        }
+    };
     this.debugTimers = function(workstationFetchTimer, languageResetTimer, refreshTimer, idlePopupTimer, backToHomeTimer) {
-        var runDigest = function() {
-            try {
-                setTimeout(function() {
-                    angular.element('#header').scope().$parent.$digest();
-                    angular.element('#header').scope().$parent.$digest();
-                }, 800);
-
-            } catch (err) {
-                console.warn('unable to run digest ', err);
-            }
-        };
-
         if (arguments.length === 0 || workstationFetchTimer === false) {// ie. debugTimers(false) or debugTimers() will turn off timer debugging
             console.info('Please pass the timer values as an argument, ie. debugTimers(', 'workstationFetchTimer,', 
                 'languageResetTimer,', 
@@ -159,7 +164,9 @@ var GlobalZestStationApp = function() {
             console.info('Passing null, or empty string will assume default setting');
             console.info(':: turning off timer debugger ::');
             that.timeDebugger = false;
-            runDigest();
+            setTimeout(function(){
+                that.runDigest();
+            },200);
                 
         } else {    
             var isValidArg = function(a) {
@@ -172,10 +179,10 @@ var GlobalZestStationApp = function() {
                     // all other args will be ignored
                     if (typeof that.timeDebugger !== typeof undefined) {
                         that.timeDebugger = !that.timeDebugger;
-                        runDigest();
+                        that.runDigest();
                     } else {
                         that.timeDebugger = true;
-                        runDigest();
+                        that.runDigest();
                     }
                     
                 }
@@ -204,6 +211,10 @@ var GlobalZestStationApp = function() {
                         '] [ refreshTimer: ', that.refreshTimer,
                         '] [ idlePopupTimer: ', that.idlePopupTimer,
                         '] [ backToHomeTimer: ', that.backToHomeTimer, '] )');
+                setTimeout(function(){
+                    that.runDigest();
+                },200);
+                
             } else {
                 console.warn(':: debugger out of date ::');
             }
@@ -217,7 +228,40 @@ var GlobalZestStationApp = function() {
     this.debugTheme = function(theme) {
         // thats right, quick-switching of themes...
         that.callRootMethod('quickSetHotelTheme', theme);
+        that.runDigest();
     };
+
+    this.getStateList = function() {
+        // will fetch and pass back a list of all $states that can be 'jumped to'
+        // for use with octopus | testing | development of certain areas
+        // without having to go through normal check-in methods
+        
+        var viewList = angular.element('#header').scope().$parent.$state.get(),
+            jumperStates = [], 
+            jumperStateLabels = [];
+
+        for (var state in viewList) {
+
+            if (viewList[state].jumper) {
+                // push label with state name
+                jumperStates.push({
+                    'label': viewList[state].label,
+                    'name': viewList[state].name,
+                    'modes': viewList[state].modes,
+                    'tags': viewList[state].tags,
+                    'description': viewList[state].description,
+                    'icon': viewList[state].icon,
+                    'placeholderData': viewList[state].placeholderData
+                });
+                // create list of just labels for UI to show
+                jumperStateLabels.push(viewList[state].label);
+            }
+        }
+
+        that.callRootMethod('toggleJumpList', jumperStates);
+        that.runDigest();
+    };  
+
     this.virtualKeyBoardEnabled = false;
 
     this.enableCardSwipeDebug = function(toggle) {
@@ -244,16 +288,19 @@ var GlobalZestStationApp = function() {
     this.toggleLanguageTags = function() {
         that.showingTags = !that.showingTags;
         that.callRootMethod('toggleLanguageTags');
+        that.runDigest();
     };
 
     this.setLanguage = function(langCode) {
         console.log('select language requested: ', langCode);
         that.callRootMethod('switchLanguage', langCode);
+        that.runDigest();
     };
 
 
     this.toggleNoCheckIns = function() {
         that.toggleFun('noCheckInsDebugger');
+        that.runDigest();
     };
 
     this.toggleFun = function(prop, editor) {
@@ -277,6 +324,7 @@ var GlobalZestStationApp = function() {
                                       .$apply();
 
         }
+        that.runDigest();
     };
 
 

@@ -6,7 +6,8 @@ module.exports = {
 			servicesRoot 	= 'rover/services/',
 			assetsForScreen = {
 				minifiedFiles: [
-                         jsLibRoot + 'angular-multi-select.js'
+                         jsLibRoot + 'angular-multi-select.js',
+                         'shared/directives/ng-augment-native-scroll/ng-augment-native-scroll.min.js',
 				],
 				nonMinifiedFiles: [
 
@@ -36,6 +37,8 @@ module.exports = {
                     'shared/directives/prettyTimeAgo/prettyTimeAgo.js',
                     jsLibRoot + 'fullcalender/**/*.js',
                     'rover/directives/includeReplaceDir.js',
+
+                    'rover/directives/convertToNumber/*js'
 				]
 			};
 		return assetsForScreen;

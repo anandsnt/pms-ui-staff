@@ -2,28 +2,18 @@
     <div id="loading-spinner"></div>
 </div>
 
-<span ng-show="zestStationData.demoModeEnabled == 'true'" class="demo-text dev-cls top-left-demo">demo</span>
-<span ng-show="zestStationData.noCheckInsDebugger == 'true'" class="demo-text dev-cls top-left-demo" ng-class="{'demo-second-cls':zestStationData.demoModeEnabled == 'true'}">NCI</span>
+<div class='oos_reason' ng-show='zestStationData.workstationStatus === "out-of-order" && zestStationData.timeDebugger !== "true" && zestStationData.theme === "yotel"'>
+    {{zestStationData.workstationOooReason}}
+</div>
 
-<span ng-show="zestStationData.editorModeEnabled == 'true'" class="demo-text editor dev-cls" >Editor Mode Enabled</span>
-
-<span ng-show="zestStationData.timeDebugger == 'true'" class="timer-debugger-left dev-cls non-center">
-     <br> <span> [ {{zestStationData.workstationTimer}}/{{zestStationData.getWorkstationsAtTime}} ] Fetch Workstation Data & Refresh Station Check <br> </span>
-    <span> [ {{zestStationData.userInActivityTimeInHomeScreenInSeconds}}/{{zestStationData.timeUntilLanguageResetCheck}} ] Language Reset  <br> </span>
-
-    <span> [ {{zestStationData.refreshStationTimer}} >= {{zestStationData.timeUntilRefreshCheck}} ] Refresh Station Check Home Idle  <br> </span>
-    <span> [ {{zestStationData.userInActivityTimeInSeconds}}/{{zestStationData.idlePopupTime}} ] Idle Time, Alert <br> </span>
-    <span> [ {{zestStationData.userInActivityTimeInSeconds}}/{{zestStationData.idleToHomeTime}} ]Idle Time, Back to Home </span>
-</span>
-<span ng-show="zestStationData.timeDebugger == 'true'" class="timer-debugger-right dev-cls non-center">
-     <br> <span>Assigned Workstation ({{zestStationData.workstationName}}) <br> </span>
-     <span>Encoding Keys - <span ng-class='{"key-in-progress":zestStationData.makingKeyInProgress}'>({{zestStationData.makingKeyInProgress}})</span><br> </span>
-     <span ng-show='inChromeApp'>
-        Zest Station Handler - <span ng-class='{"key-in-progress":zestStationData.stationHandlerConnectedStatus == "Not-Connected"}'>({{zestStationData.stationHandlerConnectedStatus}})</span><br> 
-    </span>
+<div ng-include="'/assets/partials_v2/zsDiagnostics.html'"></div>
 
 
-</span>
+<div class='jumper' ng-show='showJumpList'>
+    <div ng-include="'/assets/partials_v2/zsJumpList.html'"></div>
+</div>
+
+
 <div ng-include="'/assets/partials_v2/zsTabletHeader.html'"></div>
 <!--PopUp For External webPage-->
 <div class="popup iframe-popup open" ng-if="showExternalWebPage">
@@ -32,6 +22,8 @@
         <iframe click-touch="showKeyboardOnInput()" id="booking_iframe" src="{{zestStationData.home_screen.booking_pop_up.booking_engine_url| trustAsResourceUrl}}" seamless sandbox="allow-same-origin allow-scripts allow-forms allow-pointer-lock"></iframe>
     </div>
 </div>
+
+
 <!-- Popup -->
 <div class="popup" ng-class="{'open':zestStationData.timeOut && !showLanguagePopup}">
     <!-- Remove class "open" to hide popup content -->
@@ -44,21 +36,7 @@
         </button>
     </div>
 </div>
-<div class="popup" ng-class="{'open':showLanguagePopup}">
-    <div class="popup-content">
-        <i class="close-popup" data-action="popup" touch-press="closeLangPopUp()"></i>
-        <h2 class="nocaps">Select Language</h2>
-        <div id="languages">
-            <button ng-repeat="language in langInfo" ng-hide="!isSupported(language.info.name)" touch-press="selectLanguage(language)" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='{{language.language}}' }">
-                <i class="icons icon-flag {{language.info.flag}}"></i> {{language.language}}
-            </button>
-            <!--button ng-hide="!isSupported('nl')" touch-press="selectLanguage('nl')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='nl' }">
-                <i class="icons icon-flag flag-nl"></i>
-                Nederlands
-            </button-->
-        </div>
-    </div>
-</div>
+
 <div id="popup-overlay" ng-class="{'open':zestStationData.timeOut}"></div>
 <!-- Remove class "open" to hide popup overlay -->
 <div ng-controller="zsThemeActionsCtrl">

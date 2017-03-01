@@ -38,7 +38,8 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 
 			// selected room types & its rates
 			$scope.selectedRoomTypeAndRates = util.deepCopy($scope.allotmentConfigData.roomblock.selected_room_types_and_rates);
-			angular.forEach ($scope.selectedRoomTypeAndRates, function (row) {
+
+            angular.forEach ($scope.selectedRoomTypeAndRates, function (row) {
 				if (row.is_configured_in_allotment) {
 					row.update_existing_reservations_rate = false;
 					row.old_single_rate = row.single_rate;
@@ -69,6 +70,10 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 				$scope.selectedRoomTypeAndRates.push(util.deepCopy($scope.allotmentConfigData.roomblock.selected_room_types_and_rates[0]));
 			}
 
+            _.each($scope.selectedRoomTypeAndRates, function(selectedRoomTypeAndRate) {
+                selectedRoomTypeAndRate.room_type_id = selectedRoomTypeAndRate.room_type_id.toString();
+            });
+
 			// adding currency symbol to best available rate
 			$scope.selectedRoomTypeAndRates = _.map($scope.selectedRoomTypeAndRates, function(row) {
 				row.best_available_rate_amount = ($rootScope.currencySymbol +
@@ -84,7 +89,7 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 		 */
 		$scope.changeBestAvailableRate = function(row) {
 			var roomType = _.findWhere($scope.roomTypes, {
-				"room_type_id": parseInt(row.room_type_id)
+				"room_type_id": row.room_type_id
 			});
 
 			if (roomType) {
@@ -93,7 +98,7 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 				row.rate_id = roomType.rate_id;
 				if ($scope.allotmentConfigData.summary.rate !== -1) {
 					var selectedRateDetails = _.findWhere($scope.allotmentConfigData.roomblock.selected_room_types_and_rates, {
-						room_type_id: roomType.room_type_id
+						room_type_id: parseInt(roomType.room_type_id, 10)
 					});
 
 					row.single_rate = selectedRateDetails.single_rate;
@@ -249,11 +254,6 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 			// we are removing other selected
 			// list of selecetd room types' ids
 			var selectedIdList = _.pluck($scope.selectedRoomTypeAndRates, "room_type_id");
-			// Converting to integer
-
-			selectedIdList = _.map(selectedIdList, function(element) {
-				return parseInt(element);
-			});
 
 			// yes final Boolean is on the way
 			return (_.indexOf(selectedIdList, roomType.room_type_id) >= 0);

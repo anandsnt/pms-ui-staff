@@ -34,22 +34,33 @@ var sntRover = angular.module('sntRover', [
 		'oc.lazyLoad',
 		'limitInputRange',
 		'iscrollStopPropagation',
-		'emitWhen']);
+		'emitWhen',
+		'ng-augment-native-scroll'
+	]);
 
 sntRover.config([
 	'$httpProvider',
 	'ngDialogProvider',
 	'$provide',
-	function($httpProvider, ngDialogProvider, $provide) {
+	'$provide',
+	'$locationProvider',
+	function($httpProvider, ngDialogProvider, $provide, $provide, $locationProvider) {
 
-		// adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
+        // $provide.decorator('$browser', ['$delegate', function ($delegate) {
+        //     $delegate.onUrlChange = function () {};
+        //     $delegate.url = function () { return ""};
+        //     return $delegate;
+        // }]);
+
+
+        // adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 		$httpProvider.interceptors.push('sharedHttpInterceptor');
 
 	    ngDialogProvider.setDefaults({
 	        appendTo: '.root-view'
 	    });
 
-	    // making sure that angular currency filter will not 
+	    // making sure that angular currency filter will not
 	    // transform -13 -> ($13), and keep it like -> -$13
 	    // SF: http://stackoverflow.com/questions/17441254/why-angularjs-currency-filter-formats-negative-numbers-with-parenthesis/30122327#30122327
 	    $provide.decorator('$locale', ['$delegate', function($delegate) {
@@ -62,12 +73,19 @@ sntRover.config([
 	}
 ]);
 
+
+/**
+ * 	NOTE: Please don't remove $$animateJs dependency. This is done on purpose
+ *  This was done as a fix for a similar problem https://github.com/angular/angular.js/issues/14291
+ */
+
 sntRover.run([
 	'$rootScope',
 	'$state',
 	'$stateParams',
 	'RVHkRoomStatusSrv',
-	function ($rootScope, $state, $stateParams, RVHkRoomStatusSrv) {
+	'$$animateJs',
+	function ($rootScope, $state, $stateParams, RVHkRoomStatusSrv,$$animateJs) {
 		$rootScope.$state = $state;
 		$rootScope.$stateParams = $stateParams;
 
@@ -305,7 +323,7 @@ sntRover.run([
 	        		resetHkFilter();
 	        	}
 	        }
-			
+
 
 			// FOR DEV WORK
 			// PLEASE DO NO REMOVE THIS LINE, U CAN COMMENT IT OUT

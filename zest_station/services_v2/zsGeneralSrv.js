@@ -10,11 +10,17 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         /*
         * The configuredHotels list are the hotels which zest station has added stylesheets / images / icons, and we 'officially' support
         * all other hotels should default to the SNT theme until which time we add the styling into our product or until a CMS is integrated
+        *
+        * themeMappings:: when mapping, on Left (key) is used for the PATH zest_station/css/themes/{theme},
+        *                  --on the right, (value) is what is coming from the hotel config in SNT Admin > Templates Config, ie. in dropdown (Public ny), 
+        *                  but we want to map to a path of just css/theme/public
         */
         var themeMappings = {
             'zoku': 'zoku',
             'yotel': 'yotel',
             'avenue': 'avenue',
+            'public': 'public ny',
+            'duke': 'Little duke',
             'sohotel': 'sohotel',
             'epik': 'Hotel epik',
             'conscious': 'Conscious vondelpark',
@@ -56,16 +62,24 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                         deferred.reject();
                     }
                 }
-
-                // the hotel theme name has to be mapped to the zeststation resource files 
-                // corresponding to those themes.
-                theme = _.findKey(themeMappings, function(themeMapping) {
-                    return themeMapping.toLowerCase() === theme;
-                });
+                // currently hotel is using fontainebleau, hotel will switch that to fontainebleau v2
+                // ( this cant be added to themeMappings,as it will add duplicate key, we can remove old
+                // fontainebleau, once we have upgraded)
+                if (theme === 'fontainebleau v2') {
+                    theme = 'fontainebleau';
+                } else {
+                    // the hotel theme name has to be mapped to the zeststation resource files 
+                    // corresponding to those themes.
+                    theme = _.findKey(themeMappings, function(themeMapping) {
+                        return themeMapping.toLowerCase() === theme;
+                    });
+                }
+                
 
                 if (!that.isThemeConfigured(theme)) {
                     theme = 'snt';
                 }
+
                 that.hotelTheme = theme;
                 // resolves this.fetchSetting()
                 deferred.resolve(resolveData);
@@ -179,6 +193,10 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.encodeKey = function(params) {
             var deferred = $q.defer(),
                 url = '/staff/reservation/print_key';
+
+            // sample response for testing
+            // var response = {"key_info":[{"base64":"F85022BCD036D503D1151C246EC1CE9473"}]};
+            // deferred.resolve(response);
 
             zsBaseWebSrv2.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);

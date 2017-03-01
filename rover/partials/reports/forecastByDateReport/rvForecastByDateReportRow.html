@@ -15,7 +15,7 @@
     <td>{{ each.last_year_occupancy }}</td>
     <td ng-class="{ 'red': (each.variance * 1) < 0 }">{{ each.variance }}</td>
 </tr>
-<tr class="total" ng-if="resultsTotalRow">
+<tr class="total" ng-if="showTotals()">
 	<td class="date">Totals</td>
 	<td>{{ resultsTotalRow.total_arrival_rooms }}</td>
 	<td>{{ resultsTotalRow.total_departure_rooms }}</td>

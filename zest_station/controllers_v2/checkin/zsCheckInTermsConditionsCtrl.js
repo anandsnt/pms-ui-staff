@@ -46,7 +46,13 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 		 * @return {[type]} [description]
 		 */
         var checkIfEmailIsBlackListedOrValid = function() {
-            return $stateParams.guest_email.length > 0 && !($stateParams.guest_email_blacklisted === 'true') && zsUtilitySrv.isValidEmail($stateParams.guest_email);
+            var email = $stateParams.guest_email ? $stateParams.guest_email : $stateParams.email;
+            
+            if (!email) {
+                email = '';
+            }
+
+            return email.length > 0 && !($stateParams.guest_email_blacklisted === 'true') && zsUtilitySrv.isValidEmail(email);
         };
 		/**
 		 * [afterGuestCheckinCallback description]
@@ -63,22 +69,21 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
                 'guest_id': $stateParams.guest_id,
                 'reservation_id': $stateParams.reservation_id,
                 'room_no': $stateParams.room_no,
-                'first_name': $stateParams.first_name
+                'first_name': $stateParams.first_name,
+                'email': $stateParams.guest_email
             };
 
             console.info('haveValidGuestEmail: ', haveValidGuestEmail);
 
+            if ($scope.theme === 'yotel') {
+                $scope.setScreenIcon('checkin');
+                $state.go('zest_station.checkinSuccess', stateParams);
+            }
             // if collectiing nationality after email, but email is already valid
-            if (collectNationalityEnabled && haveValidGuestEmail) {
-                var collectNationalityParams = {
-                    'guest_id': $stateParams.guest_id,
-                    'first_name': $stateParams.first_name
-                };
-
-                $state.go('zest_station.collectNationality', collectNationalityParams);
+            else if (collectNationalityEnabled && haveValidGuestEmail) {
+                $state.go('zest_station.collectNationality', stateParams);
 
             } else if (haveValidGuestEmail) {
-                stateParams.email = $stateParams.email;
                 $state.go('zest_station.checkinKeyDispense', stateParams);
 
             } else {

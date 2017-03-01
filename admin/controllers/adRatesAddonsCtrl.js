@@ -23,6 +23,8 @@ admin.controller('ADRatesAddonsCtrl', [
 			$scope.isAddMode = false;
 
 			// api load count
+			$scope.fileName = "Choose file...";
+			$scope.initialImage = '';
 			$scope.apiLoadCount = 0;
 			$scope.chargeCodesForChargeGrp = [];
 			$scope.singleAddon.charge_group_id = "";
@@ -163,7 +165,7 @@ admin.controller('ADRatesAddonsCtrl', [
 				else {
 					$scope.postTypes = data;
 				}
-				
+
 				$scope.$emit('hideLoader');
 			};
 
@@ -210,7 +212,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			if ($rootScope.isHourlyRatesEnabled) {
 				$scope.singleAddon.post_type_id = 2;
 			}
-				
+
 			// today should be business date, currently not avaliable
 			var today = tzIndependentDate();
             var weekAfter = today.setDate(today.getDate() + 7);
@@ -221,6 +223,7 @@ admin.controller('ADRatesAddonsCtrl', [
 
 			// initate to include all rates here
 			$scope.filterRates($scope.singleAddon);
+			$scope.singleAddon.addon_image = "";
 		};
 
 		// listen for datepicker update from ngDialog
@@ -284,6 +287,7 @@ admin.controller('ADRatesAddonsCtrl', [
 				$scope.$emit('hideLoader');
 
 				$scope.singleAddon = data;
+				$scope.initialImage = data.addon_image;
 				// CICO-23575 - Disable all posting types apart from First Night for Hourly.
 				if ($rootScope.isHourlyRatesEnabled) {
 					$scope.singleAddon.post_type_id = 2;
@@ -346,6 +350,8 @@ admin.controller('ADRatesAddonsCtrl', [
 				charge_code_id: $scope.singleAddon.charge_code_id,
 				charge_group_id: $scope.singleAddon.charge_group_id,
 				description: $scope.singleAddon.description,
+				is_alternate_description_active: $scope.singleAddon.is_alternate_description_active,
+				alternate_description: $scope.singleAddon.alternate_description,
 				is_reservation_only: $scope.singleAddon.is_reservation_only,
 				inventory_count: parseInt($scope.singleAddon.inventory_count),
 				name: $scope.singleAddon.name,
@@ -355,13 +361,26 @@ admin.controller('ADRatesAddonsCtrl', [
 				forecast_for_next_day: $scope.singleAddon.forecast_for_next_day,
 				charge_full_weeks_only: (($scope.singleAddon.post_type_id === 3) && $scope.singleAddon.is_reservation_only && $scope.singleAddon.charge_full_weeks_only) ? true : false,
 				allow_rate_exclusions: $scope.singleAddon.allow_rate_exclusions,
-				excluded_rate_ids: _.pluck($scope.singleAddon.excludedRates, 'id')
+				excluded_rate_ids: _.pluck($scope.singleAddon.excludedRates, 'id'),
+				addon_image: $scope.singleAddon.addon_image,
+				is_sell_separate: $scope.singleAddon.is_sell_separate,
+				is_display_suffix: $scope.singleAddon.is_display_suffix,
+				suffix_label: $scope.singleAddon.suffix_label
+
 			};
 
 			// convert dates to system format yyyy-MM-dd
 			// if not date null should be passed - read story CICO-7287
 			singleAddonData.begin_date = $scope.singleAddon.begin_date ? $filter('date')(tzIndependentDate($scope.singleAddon.begin_date), 'yyyy-MM-dd') : null;
 			singleAddonData.end_date = $scope.singleAddon.end_date ? $filter('date')(tzIndependentDate($scope.singleAddon.end_date), 'yyyy-MM-dd') : null;
+
+		var unwantedKeys = [];
+
+		if ($scope.initialImage === singleAddonData.addon_image) {
+			unwantedKeys.push('addon_image');
+		}
+		/* global dclone:true */
+		var addon_data = dclone(singleAddonData, unwantedKeys);
 
 			// if we are adding new addon
 			if ( $scope.isAddMode ) {
@@ -372,8 +391,7 @@ admin.controller('ADRatesAddonsCtrl', [
 					$scope.tableParams.reload();
 				};
 
-
-				$scope.invokeApi(ADRatesAddonsSrv.addNewAddon, singleAddonData, callback);
+				$scope.invokeApi(ADRatesAddonsSrv.addNewAddon, addon_data, callback);
 			}
 
 			// if we are editing an addon
@@ -388,9 +406,9 @@ admin.controller('ADRatesAddonsCtrl', [
 				};
 
 				// include current addon id also
-				singleAddonData.id = $scope.currentAddonId;
+				addon_data.id = $scope.currentAddonId;
 
-				$scope.invokeApi(ADRatesAddonsSrv.updateSingle, singleAddonData, callback);
+				$scope.invokeApi(ADRatesAddonsSrv.updateSingle, addon_data, callback);
 			}
 		};
 
@@ -561,6 +579,11 @@ admin.controller('ADRatesAddonsCtrl', [
 				$scope.state.selectedAssignedRate = -1;
 			}
 		};
+
+		$scope.deleteIcon = function() {
+		$scope.fileName = "Choose file...";
+		$scope.singleAddon.addon_image = "";
+	};
 
 	}
 ]);

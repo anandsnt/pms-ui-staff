@@ -145,7 +145,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 		};
 
 		var initChromeAppQRCodeScanner = function() {
-			if ($scope.inChromeApp) {
+			if ($scope.inChromeApp && !$scope.inElectron) {
 				$scope.chromeApp.fetchQRCode();
 				console.info("::Starting QR Code Scanner::");
 			} else {
@@ -173,6 +173,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 				$state.go('zest_station.home');
 			});
 			$scope.qrCodeScanFailed = false;
+			$scope.setScreenIcon('key');
 
 		}());
 

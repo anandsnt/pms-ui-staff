@@ -10,7 +10,8 @@ module.exports = {
                     paymentRoot + "constants/paymentEventConstants.js",
                     paymentRoot + "controllers/**/*.js",
                     paymentRoot + "directives/**/*.js",
-                    paymentRoot + "services/**/*.js"
+                    paymentRoot + "services/**/*.js",
+                    paymentRoot + "payAppInit.js"
                 ],
                 mli: [paymentRoot + 'payApp.js',
                     paymentRoot + "controllers/**/*.js"]

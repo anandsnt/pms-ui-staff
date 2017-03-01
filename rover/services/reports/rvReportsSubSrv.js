@@ -140,6 +140,16 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
+        service.getReservationsOfTravelAgents = function(params) {
+            return callApi({
+                // no name here since we dont want to cache it in the store ever
+                method: 'getJSON',
+                url: 'api/reports/list_travel_agent_reservations',
+                params: params
+            });
+        };
+
+
         service.fetchActiveUsers = function() {
             return callApi({
                 name: 'activeUsers',
@@ -329,11 +339,12 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
-        service.fetchScheduleFrequency = function() {
+        service.fetchScheduleFrequency = function(exportOnly) {
+            var url = exportOnly ? 'admin/export_frequencies.json?export_only=true' : 'admin/export_frequencies.json'
+
             return callApi({
-                name: 'scheduleFrequency',
                 method: 'getJSON',
-                url: 'admin/export_frequencies.json',
+                url: url,
                 resKey: 'results'
             });
         };
@@ -345,10 +356,12 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 resKey: 'results'
             });
         };
-        service.fetchSchedules = function() {
+        service.fetchSchedules = function(exportOnly) {
+            var url = exportOnly ? 'admin/export_schedules.json?export_only=true' : 'admin/export_schedules.json';
+
             return callApi({
                 method: 'getJSON',
-                url: 'admin/export_schedules.json',
+                url: url,
                 resKey: 'results'
             });
         };
@@ -356,6 +369,63 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             return callApi({
                 method: 'getJSON',
                 url: 'admin/export_schedules/' + params.id
+            });
+        };
+        service.fetchDeliveryTypes = function(params) {
+            return callApi({
+                name: 'scheduleDeliveryTypes',
+                method: 'getJSON',
+                url: 'admin/export_delivery_types.json',
+                resKey: 'results'
+            });
+        };
+        service.fetchFtpServers = function() {
+            return callApi({
+                name: 'ftpServerList',
+                method: 'getJSON',
+                url: '/api/ftp_servers',
+                resKey: 'results'
+            });
+        };
+
+        service.runNowExport = function(param) {
+            var url = 'admin/export_schedules/' + param.id + '.json';
+
+            // start_on: now.date
+            // time: now.time;
+
+            return callApi({
+                method: 'putJSON',
+                url: url,
+                resKey: 'results'
+            });
+        };
+
+        service.createExport = function() {
+            var url = 'admin/export_schedules.json';
+
+            return callApi({
+                method: 'postJSON',
+                url: url,
+                resKey: 'results'
+            });
+        };
+        service.updateAnExport = function(param) {
+            var url = 'admin/export_schedules/' + param.id + '.json';
+
+            return callApi({
+                method: 'putJSON',
+                url: url,
+                resKey: 'results'
+            });
+        };
+        service.fetchAnExport = function(param) {
+            var url = 'admin/export_schedules/' + param.id + '.json';
+
+            return callApi({
+                method: 'getJSON',
+                url: url,
+                resKey: 'results'
             });
         };
 
@@ -368,11 +438,12 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
-        service.fetchSchedulableReports = function() {
+        service.fetchSchedulableReports = function(exportOnly) {
+            var url = exportOnly ? 'admin/export_reports.json?export_only=true' : 'admin/export_reports.json';
+
             return callApi({
-                name: 'schedulableReports',
                 method: 'getJSON',
-                url: 'admin/export_reports.json',
+                url: url,
                 resKey: 'results'
             });
         };
@@ -404,12 +475,30 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
+        service.getPaymentValues = function(params) {
+            return callApi({
+                method: 'getJSON',
+                url: 'api/reports/' + params.report_id + '/payment_by_charge_codes',
+                params: _.omit(params, 'report_id')
+            });
+        };
+
+
         service.fetchAccounts = function() {
             return callApi({
                 name: 'accounts',
                 method: 'getJSON',
                 url: '/api/accounts/list',
                 resKey: 'accounts'
+            });
+        };
+
+        service.fetchTravelAgents = function() {
+            return callApi({
+                name: 'accounts',
+                method: 'getJSON',
+                url: ' /api/reports/list_travel_agents',
+                resKey: 'travel_agents'
             });
         };
 

@@ -30,6 +30,15 @@
                 </div>
             </li>
         </ul>
+
+        <div class="no-content"
+          ng-show="!schedulesList.length && !isAddingNew">
+            <div class="info">
+                <span class="icon-no-content icon-reports"></span>
+                <strong class="h1">Schedules unavailable</strong>
+                <span class="h2">You have no schedules configured</span>
+            </div>
+        </div>
     </div>
 
     <div class="main-column-actions">
@@ -65,7 +74,7 @@
                     </select>
                 </div>
             </div>
-           
+
             <multi-option-selection ng-show="isGuestBalanceReport"
                 label="Guest/Account"
                 on-update="refreshSecondColumnScroll"
@@ -87,7 +96,7 @@
                         <option value="">Sort By</option>
                     </select>
                 </div>
-            </div>     
+            </div>
         </div>
     </div>
 
@@ -103,8 +112,8 @@
     <div ng-show="isAddingNew"
         class="column-actions"
     >
-        <button class="button blue next"
-            ng-click="goToNext()">Next</button>
+        <button class="button white blue-text next-view has-arrow"
+            ng-click="goToNext()">Schedule Details</button>
     </div>
 </div>
 
@@ -215,9 +224,9 @@
         class="column-actions"
     >
         <button ng-click="goToNext()"
-            class="button blue next">Next</button>
+            class="button white blue-text next-view has-arrow">Distribution List</button>
     </div>
-</div>      
+</div>
 
 <!-- Fourth column - distribution list -->
 <div  ng-hide="shouldHideDistributionCol()"

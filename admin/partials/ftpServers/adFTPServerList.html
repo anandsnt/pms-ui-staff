@@ -1,0 +1,31 @@
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()'>
+    <div class="inline-edit">
+        <header class="content-title float">
+            <h2 translate>FTP Servers</h2>
+            <span class="count"> ({{ftpServersData.length}})</span>
+            <a id="add-new-button" ui-sref="admin.ftpserverdetails({id:''})" class="action add" translate>ADD_NEW</a>
+        </header>
+        <section class="content-scroll">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <table id="items" class="grid datatable dataTable" ng-table="serverList" template-pagination="nil">
+                <tr role="row" ng-repeat="ftpDetails in ftpServersData">
+                    <td width="25%" class="sorting" data-title="'Description'" sortable="'ftp_description'">
+                        <a ui-sref="admin.ftpserverdetails({id: ftpDetails.id})">{{ftpDetails.description}}</a>
+                    </td>
+                    <td width="25%" class="sorting" data-title="'FTP Address URL'">
+                        {{ftpDetails.url}}
+                    </td>
+                    <td width="30%" class="" data-title="'Username'">
+                        {{ftpDetails.username}}
+                    </td>
+<!--                     <td width="14%" class="" data-title="'Password'">
+                        {{ftpDetails.password}}
+                    </td> -->
+                    <td width="14%" class="delete" data-title="'Delete'">
+                        <a class="icons icon-delete large-icon" ng-click="deleteItem(ftpDetails.id)"></a>  
+                    </td>
+                </tr>
+        </table>
+        </section>
+    </div>
+</section>

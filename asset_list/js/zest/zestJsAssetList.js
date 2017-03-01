@@ -1,7 +1,7 @@
 module.exports = {
 	getList: function() {
 		var sharedRoot = 'shared/',
-			jsLibRoot = sharedRoot + 'lib/js/',
+			jsLibRoot = sharedRoot + 'lib-legacy/js/',
 			zestRoot = 'zest_station/',
 
 			adminJsAssets = {
@@ -57,6 +57,7 @@ module.exports = {
 					zestRoot + 'zsUtils.js',
 					zestRoot + 'zsWebSocketActions.js',
 					zestRoot + 'zsChromeAppActions.js',
+					zestRoot + 'zsChromeExtensionTools.js',
 					zestRoot + 'zsVirtualKeyboard.js',
 					zestRoot + 'controllers_v2/**/*.js',
 					zestRoot + 'directives/**/*.js',
@@ -66,7 +67,7 @@ module.exports = {
 					zestRoot + 'constants/**/*.js',
 					zestRoot + 'zsCardOperations.js',
 					zestRoot + 'zsSwipeOperations.js',
-					zestRoot + 'zsMLIOperations.js',
+					zestRoot + 'zsMLIOperations.js'
 				]
 			};
 
