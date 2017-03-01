@@ -526,6 +526,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         url: '/backOfficeInterfaces'
     });
 
+    $stateProvider.state('admin.scInterfaces', {
+        templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+        controller: 'ADInterfaceSubMenuCtrl',
+        url: '/backOfficeInterfaces'
+    });
+
     $stateProvider.state('admin.revenueManagementSystemGroup', {
         templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
         controller: 'ADInterfaceSubMenuCtrl',
@@ -562,6 +568,18 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         templateUrl: '/assets/partials/languages/adLanguages.html',
         controller: 'ADLanguagesCtrl',
         url: '/languages'
+    });
+
+    $stateProvider.state('admin.ftpservers', {
+        templateUrl: '/assets/partials/ftpServers/adFTPServerList.html',
+        controller: 'ADFTPServersCtrl',
+        url: '/ftpservers'
+    });
+
+    $stateProvider.state('admin.ftpserverdetails', {
+        templateUrl: '/assets/partials/ftpServers/adFTPServerAdd.html',
+        controller: 'ADFTPServersDetailsCtrl',
+        url: '/ftpserverdetails/:id'
     });
 
     $stateProvider.state('admin.analyticsSetup', {

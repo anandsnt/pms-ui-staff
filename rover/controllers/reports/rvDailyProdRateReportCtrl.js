@@ -4,7 +4,7 @@
  * CSC is a composer function. It takes the API data and chunks it into months
  * The chunks itself is private protected within the closure generated when CSC is invoked
  * CSC returns a pure object (no inheritance) with three methods to interact with the protected chunks:
- * 
+ *
  * getChunkNames
  * getCurChunk
  * jumpToChunk
@@ -24,7 +24,7 @@
  * 1. Generate "refDat" once. Recalculating can be tedious.
  * 2. Invote "init". Which creates the "chunkStore" an invoke "startProcessChunk"
  * 3. "startProcessChunk" calculates data for pagination and invokes "processChunk"
- * 3. "processChunk" invokes a set of functions to generate the yAxis rates, xAxis headers, xAxis data matrix 
+ * 3. "processChunk" invokes a set of functions to generate the yAxis rates, xAxis headers, xAxis data matrix
  * .. these datas are then loaded onto $scope. Finally it invokes "renderReact"
  * 4. "renderReact" takes the data from scope and renders the react component on screen
  *
@@ -504,7 +504,7 @@ angular.module('sntRover')
                 }
 
                 return eachDateVal;
-            }         
+            }
 
             /**
              * Take each chunk passed onto and generate the data (yaxis, headers, xaxis) etc
@@ -559,7 +559,7 @@ angular.module('sntRover')
                     if ( currentMonthIndex > 0 ) {
                         $scope.reportMonthTrack.prev = $scope.reportMonths[ currentMonthIndex - 1 ];
                     } else {
-                        $scope.reportMonthTrack.prev = false; 
+                        $scope.reportMonthTrack.prev = false;
                     }
 
                     if ( currentMonthIndex < $scope.reportMonths.length ) {
@@ -597,7 +597,7 @@ angular.module('sntRover')
              * Utility helper functions used by the above code
              * keeping this section seperated from above
              */
-            
+
             /**
              * preform these just once
              * @param  {array} allRates     all rates
@@ -693,7 +693,7 @@ angular.module('sntRover')
              * takes in the full api data and chunks it out into smaller pieces for each month
              * the chunks is private to the closure created when this funtion is invokes
              * the returned pure object provides method to interact with the private chunks
-             * 
+             *
              * @param  {object} data the full api response recieved
              * @return {object}      the composed object that can access the private data
              */
@@ -798,7 +798,7 @@ angular.module('sntRover')
 
                         if ( index >= 0 && index < meta.length ) {
                             meta.index = index;
-                            chunk = chunks[ meta.keys[index] ]; 
+                            chunk = chunks[ meta.keys[index] ];
                         } else {
                             chunk = {};
                         }

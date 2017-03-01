@@ -88,10 +88,11 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
             goToRetryPage();
         };
 
-        var findReservation = function(uid) {
+        var findReservation = function(data) {
             var options = {
                 params: {
-                    'uid': uid
+                    'uid': data.uid,
+                    'keydata_ilco_34': data.KeyCardData
                 },
                 successCallBack: findReservationSuccess,
                 failureCallBack: findReservationFailed
@@ -105,7 +106,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		 ********************************************************************************/
 
         $scope.$on('UID_FETCH_SUCCESS', function(event, data) {
-            findReservation(data.uid);
+            findReservation(data);
         });
         $scope.$on('UID_FETCH_FAILED', function() {
             findReservationFailed();

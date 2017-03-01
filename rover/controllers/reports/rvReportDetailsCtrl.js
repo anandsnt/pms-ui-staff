@@ -10,7 +10,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 	'RVReportNamesConst',
 	'ngDialog',
 	'$state',
-	function($scope, $rootScope, $filter, $timeout, $window, reportsSrv, reportParser, reportMsgs, reportNames, ngDialog, $state) {
+    'RVReportPaginationIdsConst',
+	function($scope, $rootScope, $filter, $timeout, $window, reportsSrv, reportParser, reportMsgs, reportNames, ngDialog, $state, reportPaginationIds) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -1295,6 +1296,11 @@ sntRover.controller('RVReportDetailsCtrl', [
         // Check whether we need to show or not the totals
         $scope.showTotals = function() {
             return _.isArray($scope.resultsTotalRow) ? $scope.resultsTotalRow.length : $scope.resultsTotalRow;
+        };
+
+        // Checks whether new pagination should be used for the report
+        $scope.shouldShowNewPagination = function() {
+            return !!reportPaginationIds[$scope.chosenReport.title];
         };
     }
 

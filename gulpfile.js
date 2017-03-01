@@ -1,33 +1,33 @@
 /**
  * @author Shahul Hameed
  */
-var gulp 	  = require('gulp'),
-	rename    = {
-					'gulp-ng-annotate': 'ngAnnotate', 'gulp-angular-templatecache': 'templateCache', 
-					'gulp-minify-html': 'minifyHTML', 'gulp-minify-css': 'minifyCSS',
-					'gulp-concat-util': 'translationConcat'
-				},
-	$         = require('gulp-load-plugins')({rename: rename }),
+var gulp       = require('gulp'),
+    rename    = {
+                    'gulp-ng-annotate': 'ngAnnotate', 'gulp-angular-templatecache': 'templateCache', 
+                    'gulp-minify-html': 'minifyHTML', 'gulp-minify-css': 'minifyCSS',
+                    'gulp-concat-util': 'translationConcat'
+                },
+    $         = require('gulp-load-plugins')({rename: rename }),
     options   = {
-			        DEST_ROOT_PATH: '../../public/assets/',
-			        URL_APPENDER: '/assets',
-				    onError: function (error) {
-				    	console.log ('--------GULP TASK FAILED---\n\n');
-				    	
-				    	console.trace(error);
-				    	console.log('\n\n---END OF GULP ERROR MESSAGE--');
-				    	require('exit')(1);
-				    },
-				    silentErrorShowing: function(error) {
-				    	// If you want details of the error in the console
-					  	console.log ('--------GULP TASK SILENT ERROR---\n\n');
-				    	
-				    	console.trace(error);
-				    	console.log('\n\n---END OF GULP ERROR MESSAGE--');
+                    DEST_ROOT_PATH: '../../public/assets/',
+                    URL_APPENDER: '/assets',
+                    onError: function (error) {
+                        console.log ('--------GULP TASK FAILED---\n\n');
+                        
+                        console.trace(error);
+                        console.log('\n\n---END OF GULP ERROR MESSAGE--');
+                        require('exit')(1);
+                    },
+                    silentErrorShowing: function(error) {
+                        // If you want details of the error in the console
+                          console.log ('--------GULP TASK SILENT ERROR---\n\n');
+                        
+                        console.trace(error);
+                        console.log('\n\n---END OF GULP ERROR MESSAGE--');
 
-					  	this.emit('end');
-				    }
-    			};
+                          this.emit('end');
+                    }
+                };
 
 require('./gulp/gulp_default')(gulp, $, options);
 require('./gulp/gulp_dev_server')(gulp, $, options); 
