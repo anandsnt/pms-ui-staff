@@ -34,7 +34,9 @@ var sntRover = angular.module('sntRover', [
 		'oc.lazyLoad',
 		'limitInputRange',
 		'iscrollStopPropagation',
-		'emitWhen']);
+		'emitWhen',
+		'ng-augment-native-scroll'
+	]);
 
 sntRover.config([
 	'$httpProvider',
