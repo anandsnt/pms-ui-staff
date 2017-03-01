@@ -676,12 +676,16 @@ angular.module('sntPay').controller('sntPaymentController',
             $scope.$on('CONFIRMED_DB_PAYMENT', ( event, params ) => {
                 $scope.payment.isConfirmedDBpayment = true;
                 $scope.submitPayment(params);
-                ngDialog.close(paymentDialogId);
             });
-            // CICO-33971 : Close confirmation popup.
-            $scope.$on('CANCELLED_CONFIRM_DB_PAYMENT', () => {
+
+            var cancelConfirmDBPaymentPopup = function() {
                 $scope.$emit('SHOW_BILL_PAYMENT_POPUP');
                 ngDialog.close(paymentDialogId);
+            };
+
+            // CICO-33971 : Close confirmation popup.
+            $scope.$on('CANCELLED_CONFIRM_DB_PAYMENT', () => {
+                cancelConfirmDBPaymentPopup();
             });
 
             $scope.submitPayment = function(payLoad) {
@@ -748,8 +752,15 @@ angular.module('sntPay').controller('sntPaymentController',
                     response => {
                         $scope.onPaymentSuccess(response);
                         $scope.$emit('hideLoader');
+                        if ($scope.payment.isConfirmedDBpayment) {
+                            ngDialog.close();
+                        }
                     },
                     errorMessage => {
+                        if ($scope.payment.isConfirmedDBpayment) {
+                            cancelConfirmDBPaymentPopup();
+                            $scope.payment.isConfirmedDBpayment = false;
+                        }
                         handlePaymentError(errorMessage);
                     }
                 );
