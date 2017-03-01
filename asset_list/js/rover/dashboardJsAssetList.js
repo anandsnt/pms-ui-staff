@@ -58,7 +58,6 @@ module.exports = {
 				serviceRoot + 'baseWebSrvV2.js',
 				serviceRoot + 'rvBaseWebSrv.js',
 				serviceRoot + 'rvBaseWebSrvV2.js',
-                serviceRoot + 'rvAuthorizationSrv.js',
 				serviceRoot + 'rvDashboardSrv.js',
 				serviceRoot + 'menu/rvMenuSrv.js',
 				serviceRoot + 'rvHKOWSTestSrv.js',

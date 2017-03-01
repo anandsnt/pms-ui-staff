@@ -1,16 +1,14 @@
 angular.module('sntRover').controller('topController',
-    ['$state', 'rvAuthorizationSrv', '$rootScope', '$location', '$stateParams', '$scope', '$window', '$log',
-        function($state, rvAuthorizationSrv, $rootScope, $location, $stateParams, $scope, $window, $log) {
+    ['$state', 'sntAuthorizationSrv', '$rootScope', '$location', '$stateParams', '$scope', '$window', '$log',
+        function($state, sntAuthorizationSrv, $rootScope, $location, $stateParams, $scope, $window, $log) {
 
             var routeChange = function(event) {
                 event.preventDefault();
-                $location.path('staff/h/HELLO');
-                $location.replace();
                 return false;
             };
 
             (function() {
-                rvAuthorizationSrv.setProperty($stateParams.uuid);
+                sntAuthorizationSrv.setProperty($stateParams.uuid);
                 // NOTE: This listener is not removed on $destroy on purpose!
                 $rootScope.$on('$locationChangeStart', routeChange);
 

@@ -451,6 +451,14 @@ sntRover.controller('roverController',
       $scope.menuOpen = false;
     };
 
+      $scope.logout = function() {
+          var redirUrl = '/logout/';
+
+          $timeout(function() {
+              $window.location.href = redirUrl;
+          }, 300);
+      };
+
     var openEndOfDayPopup = function() {
         // Show a loading message until promises are not resolved
         $scope.$emit('showLoader');
