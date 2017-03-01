@@ -2117,7 +2117,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     }
                 }
             }
-            //
+            // CICO-34650
             if (report.hasShowActionables) {
                 if ( report.showActionables ) {
                     key         = reportParams['SHOW_ACTIONABLES'];
@@ -2138,7 +2138,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 }
             }
 
-            //CICO-35959 - show room revenue by default
+            // CICO-35959 - show room revenue by default
             if(report.title === reportNames['MARKET_SEGMENT_STAT_REPORT']) {
                 params['show_room_revenue'] = _.isUndefined(report.showRoomRevenue) ? true : report.showRoomRevenue;
             }
