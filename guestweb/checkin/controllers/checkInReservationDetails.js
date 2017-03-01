@@ -52,10 +52,10 @@
 
 	$scope.checkInButtonClicked = function() {
 		if ($scope.checked) {
-			if ($rootScope.guestBirthdateOn && !$rootScope.isBirthdayVerified) {
+			if ($state.href('birthDateDetails') !== null && $rootScope.guestBirthdateOn && !$rootScope.isBirthdayVerified) {
 				$state.go('birthDateDetails');
 			}
-			else if ($rootScope.guestPromptAddressOn && !$rootScope.isGuestAddressVerified) {
+			else if ($state.href('promptGuestDetails') !== null &&  $rootScope.guestPromptAddressOn && !$rootScope.isGuestAddressVerified) {
 				$state.go('promptGuestDetails');
 			}
 			else if (!$rootScope.guestAddressOn || $rootScope.isGuestAddressVerified) {
