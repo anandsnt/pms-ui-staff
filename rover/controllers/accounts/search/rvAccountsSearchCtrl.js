@@ -63,9 +63,11 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* Function to clear to search query
 		* @return {None}
 		*/
-		$scope.clearSearchQuery = function() {
+		$scope.clearSearchQuery = function(event) {
+			event.preventDefault();
+			event.stopPropagation()
+
 			$scope.query = '';
-			runDigestCycle();
 
 			// we have to search on changing the from date
 			$scope.search();
@@ -79,17 +81,6 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* @return {String}
 		*/
 		$scope.stringify = util.stringify;
-
-		/**
-		* to run angular digest loop,
-		* will check if it is not running
-		* return - None
-		*/
-		var runDigestCycle = function() {
-			if (!$scope.$$phase) {
-				$scope.$digest();
-			}
-		};
 
 		/**
 		 * Event propogated by ngrepeatstart directive
