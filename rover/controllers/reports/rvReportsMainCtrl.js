@@ -2117,6 +2117,26 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     }
                 }
             }
+            //
+            if (report.hasShowActionables) {
+                if ( report.showActionables ) {
+                    key         = reportParams['SHOW_ACTIONABLES'];
+                    if (report.showActionables === 'BOTH') {
+                       params[key] = ['GUEST', 'GROUP'];
+                    } else {
+                        params[key] = [report.showActionables];
+                    }
+
+                    if ( changeAppliedFilter ) {
+                        if (report.showActionables === 'BOTH') {
+                            $scope.appliedFilter.show.push("GUESTS");
+                            $scope.appliedFilter.show.push("GROUPS");
+                        } else {
+                            $scope.appliedFilter.show.push(report.showActionables);
+                        }
+                    }
+                }
+            }
 
             //CICO-35959 - show room revenue by default
             if(report.title === reportNames['MARKET_SEGMENT_STAT_REPORT']) {
@@ -2254,9 +2274,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                         $scope.$broadcast('updatePagination', "TA_COMMISSION_REPORT_MAIN");
                     }, 50);
                 }
-                
+
                 if (reportPaginationIds[chosenReport.title]) {
-                  $timeout(function() {                      
+                  $timeout(function() {
                     $scope.$broadcast('updatePagination', reportPaginationIds[chosenReport.title]);
                   }, 50);
                 }
