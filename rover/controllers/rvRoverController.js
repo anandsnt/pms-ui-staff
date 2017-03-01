@@ -855,12 +855,12 @@ sntRover.controller('roverController',
       });
     };
 
-    $scope.redirectToHotel = function(hotel_id) {
-          RVHotelDetailsSrv.redirectToHotel(hotel_id).then(function(data) {
-            $('body').addClass('no-animation');
-             $window.location.reload();
-          }, function() {
-          });
+    $scope.redirectToHotel = function(hotel) {
+        var redirUrl = '/staff/h/' + hotel.hotel_uuid;
+
+        setTimeout(function() {
+            $window.location.href = redirUrl;
+        }, 300);
     };
 
     /* 
