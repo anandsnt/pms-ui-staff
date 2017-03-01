@@ -205,6 +205,24 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+        this.fetchDetailsPlaceholderData = function(params) {
+            var deferred = $q.defer(),
+                url = '/sample_json/zest_station/checkin_details.json';
+
+            zsBaseWebSrv.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+
+
+
+
+
 
         this.sendOWSMsgAsMail = function(params) {
             var deferred = $q.defer(),
