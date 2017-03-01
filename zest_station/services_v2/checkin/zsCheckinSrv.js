@@ -218,12 +218,6 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
-
-
-
-
-
-
         this.sendOWSMsgAsMail = function(params) {
             var deferred = $q.defer(),
                 url = 'api/reservation_guest_messages/email_message.json';

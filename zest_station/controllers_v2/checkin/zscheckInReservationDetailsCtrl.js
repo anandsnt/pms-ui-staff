@@ -91,7 +91,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         };
 
         $scope.isRateSuppressed = function() {
-            if (typeof $scope.selectedReservation == 'undefined') {
+            if (typeof $scope.selectedReservation === 'undefined') {
                 return false;
             }
             // need to wait for api to update
