@@ -15,6 +15,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 	'RVWorkManagementSrv',
 	'RVHkRoomDetailsSrv',
 	'rvUtilSrv',
+    'rvPermissionSrv',
 	function(
 		$scope,
 		$rootScope,
@@ -31,7 +32,8 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		ngDialog,
 		RVWorkManagementSrv,
 		RVHkRoomDetailsSrv,
-		util
+		util,
+        rvPermissionSrv
 	) {
 		// hook it up with base ctrl
 		BaseCtrl.call( this, $scope );
@@ -131,6 +133,10 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		} else {
 			$scope.currentView = $scope.isMaintenanceStaff ? 'TASKS' : 'ROOMS';
 		}
+
+        var HK_STATUS = {
+            INSPECTED : 'INSPECTED'
+        };
 
 		$scope.changeView = function(view) {
 			$scope.currentView = view;
@@ -801,11 +807,36 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			$scope.refreshData();
 		};
 
+
+
 		$scope.submitHkStatusChange = function() {
 			var _payload,
 				_resetParams,
 				_callback,
 				_onError;
+
+
+            // CICO-28117 - Restrict the change of room status to inspected based on permission
+            var hkStatusTo = _.find($scope.hkStatusList, function(hkStatus) {
+                                    return hkStatus.id == $scope.multiRoomAction.hkStatusId;
+                                });
+
+            if (hkStatusTo.value === HK_STATUS.INSPECTED) {
+                var changeRoomStatusToInspectedPermission = rvPermissionSrv.getPermissionValue ('CHANGE_ROOM_STATUS_TO_INSPECTED');
+
+                if (!changeRoomStatusToInspectedPermission) {
+                    ngDialog.close();
+                    ngDialog.open({
+                        template: '/assets/partials/housekeeping/popups/rvRoomStatusChangeRestrictAlert.html',
+                        className: '',
+                        closeByDocument: true,
+                        scope: $scope
+                    });
+
+                   return;
+                }
+            }
+
 
 			// no need to send anything
 			if ( ! $scope.multiRoomAction.rooms.length ) {
@@ -894,7 +925,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			/*
 			*	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
 			*/
-		
+
 			// remove the orientation after similar delay
 			$timeout(function() {
 				// remove the orientation
