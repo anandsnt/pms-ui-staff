@@ -51,7 +51,6 @@ var getRoomIndex = function (selectedRoomId, roomsList) {
 * @return {Number}
 */
 var calculateScrollIndex = function(state) {
-    console.log(state.selectedRoomId +"######"+ state.roomsList)
     var roomindex = getRoomIndex(state.selectedRoomId, state.roomsList);
 
     // There is no room selected, so move to top

@@ -6,8 +6,6 @@ const NightlyDiaryStayRangeComponent = createClass ({
             minAllowedPositionForDeparture = (this.props.numberOfDays === NIGHTLY_DIARY_CONST.DAYS_21) ? NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_21 : NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_7,
             daysMode = this.props.numberOfDays,
             oneDayWidth = NIGHTLY_DIARY_CONST.RESERVATION_ROW_WIDTH / daysMode;
-            console.log("------+++++-----------")
-            console.log(this.props.currentSelectedReservation)
         /*
          *  Set up initial state in component
          */

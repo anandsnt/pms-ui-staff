@@ -401,10 +401,6 @@ angular.module('sntRover')
                 store.dispatch(dispatchData);
             };
             var showReservationSelected = function() {
-                // if ($stateParams.isFromStayCard) {
-                //     console.log("======"+$stateParams.room_id)
-                //     $scope.diaryData.selectedRoomId = $stateParams.room_id;
-                // }
                 var dispatchData = {
                     type: 'RESERVATION_SELECTED',
                     selectedReservationId: $scope.currentSelectedReservation.id,
