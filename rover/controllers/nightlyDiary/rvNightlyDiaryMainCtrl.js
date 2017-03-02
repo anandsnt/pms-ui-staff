@@ -10,6 +10,7 @@ angular.module('sntRover')
         'ngDialog',
         'reservationsList',
         'RVNightlyDiarySrv',
+        '$timeout',
         function(
             $scope,
             $rootScope,
@@ -20,11 +21,12 @@ angular.module('sntRover')
             datesList,
             ngDialog,
             reservationsList,
-            RVNightlyDiarySrv
+            RVNightlyDiarySrv,
+            $timeout
         ) {
 
-
             BaseCtrl.call(this, $scope);
+
             // CICO-36654 fix for touch events not getting detected iPad.
             document.removeEventListener('touchmove', window.touchmovepreventdefault, false);
             document.removeEventListener('touchmove', window.touchmovestoppropogate, false);
@@ -43,13 +45,13 @@ angular.module('sntRover')
 
                 var srvParams = {};
 
-                if ($stateParams.isFromStayCard) {
+                if ($stateParams.isBackToDiary) {
                     srvParams = RVNightlyDiarySrv.getCache();
                 }
                 else {
-                    srvParams.start_date = $rootScope.businessDate;
+                    srvParams.start_date = ($stateParams.isFromStayCard) ? $stateParams.start_date : $rootScope.businessDate;
                     srvParams.no_of_days = 7;
-                    srvParams.page = 1;
+                    srvParams.page = roomsList.page_number;
                     srvParams.per_page = 50;
                 }
 
@@ -160,15 +162,30 @@ angular.module('sntRover')
             var selectReservation = (e, reservation, room) => {
                 if (!$scope.diaryData.isEditReservationMode) {
                     $scope.diaryData.isEditReservationMode = true;
+
                     $scope.currentSelectedReservation = reservation;
                     $scope.currentSelectedRoom = room;
-                    showReservationSelected();
-                    if (!$stateParams.isFromStayCard) {
+                    $timeout(function() {
+                        showReservationSelected();
+                    }, 200);
+                    if (!$stateParams.isBackToDiary && !$stateParams.isFromStayCard) {
                         $scope.$apply();
                     } else {
                         // To fix issue point 3 - QA failed comment - CICO-34410
-                        $stateParams.isFromStayCard = false;
+                        $stateParams.isBackToDiary = false;
                     }
+                    if ($stateParams.isFromStayCard) {
+                        $rootScope.setPrevState = {
+                            title: 'STAY CARD',
+                            name: 'rover.reservation.staycard.reservationcard.reservationdetails',
+                            param: {
+                                id: $stateParams.reservation_id,
+                                confirmationId: $scope.currentSelectedReservation.confirm_no,
+                                isrefresh: true
+                            }
+                        };
+                    }
+
                 }
             };
 
@@ -188,8 +205,8 @@ angular.module('sntRover')
                         if (response.status === 'failure') {
                             $scope.messages = response.errors;
                             openMessagePopup();
-                        } else {                      
-                            if (response.data.availability_status === 'room_available') {                            
+                        } else {
+                            if (response.data.availability_status === 'room_available') {
                                 $scope.extendShortenReservationDetails = params;
                             } else {
                                 switch (response.data.availability_status) {
@@ -202,13 +219,13 @@ angular.module('sntRover')
                                 case 'room_ooo' : $scope.messages = ['ROOM_OOO'];
                                     break;
                                 default : $scope.messages = ["Room Can't Move"];
-                                }                    
+                                }
                                 openMessagePopup();
                             }
-                        }                                                
+                        }
                     };
 
-                $scope.invokeApi(RVNightlyDiarySrv.checkUpdateAvaibale, 
+                $scope.invokeApi(RVNightlyDiarySrv.checkUpdateAvaibale,
                     params,
                     successCallBack);
             };
@@ -228,9 +245,9 @@ angular.module('sntRover')
                     cancelReservationEditing();
                 };
 
-                $scope.invokeApi(RVNightlyDiarySrv.confirmUpdates, 
+                $scope.invokeApi(RVNightlyDiarySrv.confirmUpdates,
                     $scope.extendShortenReservationDetails,
-                    successCallBack);                
+                    successCallBack);
             };
             /*
              * Show selected reservation highlighted and enable edit bar
@@ -251,7 +268,7 @@ angular.module('sntRover')
             */
             var openMessagePopup = function() {
                 ngDialog.open({
-                    template: '/assets/partials/nightlyDiary/rvNightlyDiaryMessages.html',                   
+                    template: '/assets/partials/nightlyDiary/rvNightlyDiaryMessages.html',
                     scope: $scope
                 });
             };
@@ -272,7 +289,7 @@ angular.module('sntRover')
 
                     store.dispatch(dispatchData);
                 }
-            };             
+            };
 
             /*
              * Cancel button click edit bar
@@ -294,7 +311,7 @@ angular.module('sntRover')
             $scope.$on('UPDATE_RESERVATIONLIST', function( event, roomId ) {
                 if (!!roomId) {
                     $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
-                    $scope.diaryData.showFilterPanel = false;                        
+                    $scope.diaryData.showFilterPanel = false;
                 }
                 cancelReservationEditing();
                 fetchRoomListDataAndReservationListData(roomId);
@@ -335,11 +352,16 @@ angular.module('sntRover')
                 };
             };
 
-            if ($stateParams.isFromStayCard) {
+            if ($stateParams.isBackToDiary) {
                 var params = RVNightlyDiarySrv.getCache();
                 $scope.currentSelectedReservationId = params.currentSelectedReservationId;
                 $scope.diaryData.selectedRoomId = params.currentSelectedRoomId;
                 $scope.currentSelectedReservation = params.currentSelectedReservation;
+            } else if ($stateParams.isFromStayCard) {
+                $scope.currentSelectedReservationId = parseInt($stateParams.reservation_id);
+                $scope.diaryData.selectedRoomId = parseInt($stateParams.room_id);
+                $scope.currentSelectedReservation = {};
+
             }
 
             // Initial State
@@ -353,6 +375,7 @@ angular.module('sntRover')
                 paginationData: $scope.diaryData.paginationData,
                 selectedReservationId: $scope.currentSelectedReservationId,
                 selectedRoomId: $scope.diaryData.selectedRoomId,
+                isBackToDiary: $stateParams.isBackToDiary,
                 isFromStayCard: $stateParams.isFromStayCard,
                 currentSelectedReservation: $scope.currentSelectedReservation,
                 dateFormat: $rootScope.dateFormat
@@ -383,7 +406,8 @@ angular.module('sntRover')
                     selectedReservationId: $scope.currentSelectedReservation.id,
                     reservationsList: $scope.diaryData.reservationsList.rooms,
                     selectedRoomId: $scope.diaryData.selectedRoomId,
-                    currentSelectedReservation: $scope.currentSelectedReservation
+                    currentSelectedReservation: $scope.currentSelectedReservation,
+                    showStayRange: true
                 };
 
                 store.dispatch(dispatchData);

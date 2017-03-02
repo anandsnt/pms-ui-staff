@@ -15,10 +15,11 @@ sntZestStation.config(['$stateProvider',
                 
         // checkin reservation details 
         $stateProvider.state('zest_station.checkInReservationDetails', {
-            url: '/checkInReservationDetails/:pickup_key_mode',
+            url: '/checkInReservationDetails/:pickup_key_mode/:isQuickJump',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinReservationDetails.html',
             controller: 'zsCheckInReservationDetailsCtrl',
-            jumper: false,
+            jumper: true,
+            placeholderData: true,
             section: 'Checkin',
             description: 'Cost Details, Link to add/remove guests',
             icon: 'checkin_res_details.png',
@@ -68,13 +69,14 @@ sntZestStation.config(['$stateProvider',
                 
 		// checking credit card swipe                 
         $stateProvider.state('zest_station.checkInCardSwipe', {
-            url: '/checkInReservationCard/:mode/:first_name/:reservation_id/:guest_id/:swipe/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:payment_type_id/:deposit_amount/:balance_amount/:pre_auth_amount_for_zest_station/:authorize_cc_at_checkin/:confirmation_number/:pickup_key_mode/:email',
+            url: '/checkInReservationCard/:isQuickJump/:mode/:first_name/:reservation_id/:guest_id/:swipe/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:payment_type_id/:deposit_amount/:balance_amount/:pre_auth_amount_for_zest_station/:authorize_cc_at_checkin/:confirmation_number/:pickup_key_mode/:email',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinCCSwipe.html',
             controller: 'zsCheckinCCSwipeCtrl',
-            jumper: false,
+            jumper: true,
+            placeholderData: true,
             section: 'Checkin',
             icon: 'checkin_card_swipe.png',
-            description: '',
+            description: 'Credit Card Swipe',
             label: 'Card Swipe'
         });
 		// terms and conditions                
@@ -110,6 +112,67 @@ sntZestStation.config(['$stateProvider',
             description: 'Select how many keys the guest would like, starts key dispense',
             label: 'Key Dispense'
         });
+
+
+      // pickup key dispense
+      $stateProvider.state('zest_station.checkinKeySelection', {
+        url: '/checkinKeyDispense/:reservation_id/:room_no/:first_name/:guest_id/:email/:for_demo/:isQuickJump/:quickJumpMode',
+        templateUrl: '/assets/partials_v2/checkin/zscheckinKeyDispense.html',
+        controller: 'zsCheckinKeyDispenseCtrl',
+        jumper: true,
+        section: 'Checkin',
+        icon: 'checkin_key_select.png',
+        description: 'Select what type of key to use',
+        label: 'Check-In Key Types (Mobile Key)',
+        modes: [
+              {
+                  'name': 'MOBILE_OR_PHYSICAL_KEY_START',
+                  'label': 'Checked-In Success (Mobile or Physical Key)',
+                  'description': 'After Check-In, before Mobile Key selection screen',
+                  'icon': 'placeholder.png'
+              }, {
+                  'name': 'MOBILE_KEY_SETUP_ACCOUNT',
+                  'label': 'Default: Mobile Key Setup Instructions',
+                  'description': 'Show user instructions on how to install the mobile app',
+                  'icon': 'placeholder.png'
+              }, {
+                  'name': 'MOBILE_KEY_SENT_SUCCESS',
+                  'label': 'Default: Mobile Key Successfuly Sent',
+                  'description': 'Key was sent to the guest\'s phone',
+                  'icon': 'placeholder.png'
+              }, {
+                  'name': 'MOBILE_KEY_ACCOUNT_NOT_CONNECTED',
+                  'label': 'Default: Mobile Key Not Connected',
+                  'description': 'Guest has a free early check-in',
+                  'icon': 'placeholder.png'
+              }, {
+                  'name': 'THIRD_PARTY_SELECTION',
+                  'label': 'Third-Party: Mobile Key Selection',
+                  'description': 'Options to Get key, get instructions, or no thanks',
+                  'icon': 'placeholder.png'
+              }, {
+                  'name': 'THIRD_PARTY_HAVE_IT_INFO',
+                  'label': 'Third-Party: Have it, What to do',
+                  'description': 'Instruct user on how to get or use the mobile key',
+                  'icon': 'placeholder.png'
+              }, {
+                  'name': 'THIRD_PARTY_GET_IT_INFO',
+                  'label': 'Third-Party: Help get it, What to do',
+                  'description': 'Instruct user on how download and use the mobile key',
+                  'icon': 'placeholder.png'
+              }, {
+                  'name': 'THIRD_PARTY_GET_IT_INFO_EMAIL_SENT',
+                  'label': 'Third-Party: Email Sent ',
+                  'description': 'Instructions in email for guest to get Mobile Key App',
+                  'icon': 'placeholder.png'
+              }]
+
+
+
+
+      });
+
+
 		// signature screen
         $stateProvider.state('zest_station.checkInSignature', {
             url: '/checkInReservationDeposit/:reservation_id/:email/:first_name/:room_no/:guest_id/:guest_email_blacklisted',

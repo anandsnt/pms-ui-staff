@@ -1,5 +1,6 @@
 const NightlyDiaryStayRangeComponent = createClass ({
     getInitialState: function() {
+
         let currentSelectedReservation = this.props.currentSelectedReservation,
             departurePosition = parseInt(currentSelectedReservation.arrivalPosition) + currentSelectedReservation.duration,
             arrivalPositionInt = parseInt(currentSelectedReservation.arrivalPosition),
@@ -114,7 +115,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
             this.calculateDepartureDate();
         }
         flagarea.removeEventListener(this.mouseMovingEvent, () =>{});
-        flagarea.removeEventListener(this.mouseLeavingEvent, () =>{});        
+        flagarea.removeEventListener(this.mouseLeavingEvent, () =>{});
         this.updateFlagRanges();
 
     },
