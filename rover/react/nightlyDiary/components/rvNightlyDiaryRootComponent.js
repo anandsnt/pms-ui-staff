@@ -18,7 +18,7 @@ const NightlyDiaryRootComponent = createClass ({
     render() {
         return (
         <div className="grid-inner">
-            {this.props.selectedReservationId !== undefined ? <NightlyDiaryStayRangeContainer/> : ''}
+            {(this.props.selectedReservationId !== undefined && this.props.showStayRange) ? <NightlyDiaryStayRangeContainer/> : ''}
             <div id="diary-nightly-grid" className={this.props.ClassForRootDiv}>
                 <div className="wrapper">
                     {this.props.showPrevPageButton ? <GoToPreviousPageButtonContainer/> : ''}
