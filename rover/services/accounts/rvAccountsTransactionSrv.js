@@ -32,12 +32,7 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
-
-					// Hard coded to set the first item as light group data.
-					data.transactions[0].is_group_by_ref = true;
-					
 					deferred.resolve(data);
-
 				}, function(data) {
 					deferred.reject(data);
 				});
@@ -323,30 +318,15 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 
 		// Service that fetches the charge details of a grouped charge - CICO-34039.
 		this.groupChargeDetailsFetch = function(params) {
-			// var deferred = $q.defer(),
-			// 	url = '';
+			var deferred = $q.defer(),
+				url = '/api/posting_accounts/transaction_details';
 
-			// BaseWebSrvV2.getJSON(url, params).then(function(response) {
-			// 	deferred.resolve(response.data);
-			// }, function (data) {
-			// 	deferred.reject(data);
-			// });
+			BaseWebSrvV2.getJSON(url, params).then(function(response) {
+				deferred.resolve(response.data);
+			}, function (data) {
+				deferred.reject(data);
+			});
 
-			/*
-			 * To be removed after original api fetch.
-			 */
-			var deferred = $q.defer();
-			var data = [{
-				"description": "LK food",
-				"amount": 49.53
-			}, {
-				"description": "VAT on Food",
-				"amount": 2.97
-			}];
-
-			setTimeout(function() {
-				deferred.resolve(data);
-			}, 1000)
 			return deferred.promise;
 		};
 
