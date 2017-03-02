@@ -724,7 +724,8 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 			if (!item.isExpanded) {
 				var params = {
 					'reference_number': item.reference_number,
-					'date': item.date
+					'date': item.date,
+					'bill_id': item.bill_id
 				};
 				
 				$scope.invokeApi(RVCompanyCardSrv.groupChargeDetailsFetch, params, fetchChargeDataSuccessCallback, fetchChargeDataFailureCallback);
