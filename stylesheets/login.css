@@ -1,5 +1,5 @@
 /* StayNTouch | Login Screen */
-/* Reset				==================================*/
+/* Reset                ==================================*/
 * {
   margin: 0;
   padding: 0;
@@ -26,9 +26,9 @@ ol,
 li {
   list-style: none;
 }
-/* Colors				==================================*/
-/* Images				==================================*/
-/* Type 				==================================*/
+/* Colors                ==================================*/
+/* Images                ==================================*/
+/* Type                 ==================================*/
 /* 400 ***/
 @font-face {
   font-family: 'source_sans_pro';
@@ -45,9 +45,9 @@ li {
   font-weight: 600;
   font-style: normal;
 }
-/* Variables			==================================*/
-/* Mixins 				==================================*/
-/* Icons				==================================*/
+/* Variables            ==================================*/
+/* Mixins                 ==================================*/
+/* Icons                ==================================*/
 .icons {
   display: block;
   text-indent: -9999px;
@@ -72,7 +72,7 @@ li {
     background-size: 120px;
   }
 }
-/* Buttons				==================================*/
+/* Buttons                ==================================*/
 .button {
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.15);
   box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.2);
@@ -100,7 +100,7 @@ li {
 .button:active {
   box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.3);
 }
-/* Keyframes			==================================*/
+/* Keyframes            ==================================*/
 @-webkit-keyframes rotation {
   0% {
     -webkit-transform: rotate(0deg);
@@ -133,7 +133,7 @@ li {
     transform: translate3d(0, 100%, 0);
   }
 }
-/* Globals 				==================================*/
+/* Globals                 ==================================*/
 html,
 body {
   font-size: 100%;
@@ -296,7 +296,7 @@ a:active {
   text-transform: uppercase;
   border-radius: 3px;
 }
-/* Mobile 				==================================*/
+/* Mobile                 ==================================*/
 .container {
   position: relative;
   padding: 20px;
@@ -335,7 +335,7 @@ a:active {
   font-style: italic;
   color: #f3624b;
 }
-/* Tablet / Desktop 	==================================*/
+/* Tablet / Desktop     ==================================*/
 @media only screen and (min-width: 768px) {
   input {
     font-size: 16px;
@@ -389,7 +389,7 @@ a:active {
     background-size: 40px;
   }
 }
-/* Property Search   	==================================*/
+/* Property Search       ==================================*/
 .search-form {
   *zoom: 1;
 }
