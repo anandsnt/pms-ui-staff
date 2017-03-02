@@ -451,6 +451,14 @@ sntRover.controller('roverController',
       $scope.menuOpen = false;
     };
 
+      $scope.logout = function() {
+          var redirUrl = '/logout/';
+
+          $timeout(function() {
+              $window.location.href = redirUrl;
+          }, 300);
+      };
+
     var openEndOfDayPopup = function() {
         // Show a loading message until promises are not resolved
         $scope.$emit('showLoader');
@@ -847,12 +855,12 @@ sntRover.controller('roverController',
       });
     };
 
-    $scope.redirectToHotel = function(hotel_id) {
-          RVHotelDetailsSrv.redirectToHotel(hotel_id).then(function(data) {
-            $('body').addClass('no-animation');
-             $window.location.reload();
-          }, function() {
-          });
+    $scope.redirectToHotel = function(hotel) {
+        var redirUrl = '/staff/h/' + hotel.hotel_uuid;
+
+        setTimeout(function() {
+            $window.location.href = redirUrl;
+        }, 300);
     };
 
     /* 

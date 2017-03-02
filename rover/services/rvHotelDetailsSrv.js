@@ -67,18 +67,4 @@ angular.module('sntRover').service('RVHotelDetailsSrv', ['$q', 'rvBaseWebSrvV2',
 		return deferred.promise;
 	};
 
-
-	this.redirectToHotel = function(hotel_id) {
-		var deferred = $q.defer();
-		var url = '/admin/hotel_admin/update_current_hotel';
-		var data = {"hotel_id": hotel_id};
-
-		RVBaseWebSrvV2.postJSON(url, data).then(function(data) {
-			deferred.resolve(data);
-		}, function(errorMessage) {
-			deferred.reject(errorMessage);
-		});
-		return deferred.promise;
-	};
-
 }]);

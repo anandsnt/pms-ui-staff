@@ -27,9 +27,6 @@ angular.module('sntRover').config([
             url: '/',
             templateUrl: '/assets/partials/rvRover.html',
             controller: 'roverController',
-            onEnter: ['$stateParams', 'rvAuthorizationSrv', function($stateParams, rvAuthorizationSrv) {
-                rvAuthorizationSrv.status();
-            }],
             resolve: {
                 mappingList: function(jsMappings) {
                     return jsMappings.fetchMappingList();

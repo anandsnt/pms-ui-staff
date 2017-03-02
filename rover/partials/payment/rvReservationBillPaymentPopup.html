@@ -11,7 +11,7 @@
             {{'PAY_BILL' | translate}}
             <div class="select">
                 <!-- number of options should match the number of bills created -->
-                <select name="post-charge-to-bill" ng-model="renderData.billNumberSelected"
+                <select convert-to-number name="post-charge-to-bill" ng-model="renderData.billNumberSelected"
                         ng-change="billNumberChanged()" ng-disabled="checkPaymentTypeIsDirectBill()">
                     <option ng-repeat="bills in billsArray"
                             value="{{bills.bill_number}}"
