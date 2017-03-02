@@ -85,8 +85,8 @@
 
 					<!-- show For charge codes of the code type TAX only -->
 					<div ng-show="(prefetchData.selected_charge_code_type == '1') && !isPmsConfigured">
-						<ad-dropdown label="{{'AMOUNT_TYPE' | translate}}" div-class="full-width"  label-in-drop-down="{{'SELECT_AMOUNT_TYPE' | translate}}" list="prefetchData.amount_types" selected-Id="prefetchData.selected_amount_type" ></ad-dropdown>
-						<ad-dropdown label="{{'POST_TYPE' | translate}}" div-class="full-width"  label-in-drop-down="{{'Select Post Type' | translate}}" list="prefetchData.post_types" selected-Id="prefetchData.selected_post_type" ></ad-dropdown>
+						<ad-select-number label="{{'AMOUNT_TYPE' | translate}}" div-class="full-width"  label-in-drop-down="{{'SELECT_AMOUNT_TYPE' | translate}}" items="prefetchData.amount_types" selected-Id="prefetchData.selected_amount_type" ></ad-select-number>
+						<ad-select-number label="{{'POST_TYPE' | translate}}" div-class="full-width"  label-in-drop-down="{{'Select Post Type' | translate}}" items="prefetchData.post_types" selected-Id="prefetchData.selected_post_type" ></ad-select-number>
 					</div>
 				</div>
 				

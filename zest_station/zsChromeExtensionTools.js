@@ -58,6 +58,7 @@ this.chromeExtensionListener = function() {
             // this would listen for the alt key + some other key to fire an event, in this case to tell our chrome extension
             // to run one of its methods
             // 
+            // e.metaKey === (mac Command key)
 
             if (e.altKey && e.keyCode === 69) {// E - Editor Mode
                 zestSntApp.toggleEditorMode();
@@ -67,9 +68,9 @@ this.chromeExtensionListener = function() {
                 zestSntApp.toggleNoCheckIns();
             } else if (e.altKey && e.keyCode === 68) {// D - Demo mode
                 zestSntApp.toggleDemoModeOnOff();
-            } else if (e.altKey && e.keyCode === 73) {// I - info
+            } else if (e.altKey && e.keyCode === 73 && !e.metaKey) {// I - info (dont show if holding cmd key on mac- ie. when bringing up dev console)
                 zestSntApp.debugTimers(true);
-            } else if (e.altKey && e.keyCode === 74) {// I - info
+            } else if (e.altKey && e.keyCode === 74) {// J - Jumper (screen jumping)
                 zestSntApp.getStateList();
             } else if (e.ctrlKey && e.shiftKey && e.keyCode === 82) {// CTRL + SHIFT + R -> Refresh Station (for chromeapp/electron testing)
                 location.reload(true);

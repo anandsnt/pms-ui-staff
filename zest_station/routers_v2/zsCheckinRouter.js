@@ -15,10 +15,11 @@ sntZestStation.config(['$stateProvider',
                 
         // checkin reservation details 
         $stateProvider.state('zest_station.checkInReservationDetails', {
-            url: '/checkInReservationDetails/:pickup_key_mode',
+            url: '/checkInReservationDetails/:pickup_key_mode/:isQuickJump',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinReservationDetails.html',
             controller: 'zsCheckInReservationDetailsCtrl',
-            jumper: false,
+            jumper: true,
+            placeholderData: true,
             section: 'Checkin',
             description: 'Cost Details, Link to add/remove guests',
             icon: 'checkin_res_details.png',
@@ -68,13 +69,14 @@ sntZestStation.config(['$stateProvider',
                 
 		// checking credit card swipe                 
         $stateProvider.state('zest_station.checkInCardSwipe', {
-            url: '/checkInReservationCard/:mode/:first_name/:reservation_id/:guest_id/:swipe/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:payment_type_id/:deposit_amount/:balance_amount/:pre_auth_amount_for_zest_station/:authorize_cc_at_checkin/:confirmation_number/:pickup_key_mode/:email',
+            url: '/checkInReservationCard/:isQuickJump/:mode/:first_name/:reservation_id/:guest_id/:swipe/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:payment_type_id/:deposit_amount/:balance_amount/:pre_auth_amount_for_zest_station/:authorize_cc_at_checkin/:confirmation_number/:pickup_key_mode/:email',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinCCSwipe.html',
             controller: 'zsCheckinCCSwipeCtrl',
-            jumper: false,
+            jumper: true,
+            placeholderData: true,
             section: 'Checkin',
             icon: 'checkin_card_swipe.png',
-            description: '',
+            description: 'Credit Card Swipe',
             label: 'Card Swipe'
         });
 		// terms and conditions                

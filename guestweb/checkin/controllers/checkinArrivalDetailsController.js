@@ -164,7 +164,7 @@
 
 		};
 
-		if ($rootScope.is_checkin_now_on && !$rootScope.checkinOptionShown) {
+		if ($state.href('guestCheckinOptions') !== null && $rootScope.is_checkin_now_on && !$rootScope.checkinOptionShown) {
 			$state.go('guestCheckinOptions');
 		} else {
 			init();
