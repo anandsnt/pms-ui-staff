@@ -63,6 +63,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
          * return object
          */
         this.fetchReservationsList = function(data) {
+
             that.updateCache(data);
             var deferred = $q.defer();
             var url = '/api/nightly_diary/reservation_list';

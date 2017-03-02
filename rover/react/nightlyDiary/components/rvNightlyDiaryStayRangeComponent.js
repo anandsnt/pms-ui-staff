@@ -1,5 +1,6 @@
 const NightlyDiaryStayRangeComponent = createClass ({
     getInitialState: function() {
+
         let currentSelectedReservation = this.props.currentSelectedReservation,
             departurePosition = parseInt(currentSelectedReservation.arrivalPosition) + currentSelectedReservation.duration,
             arrivalPositionInt = parseInt(currentSelectedReservation.arrivalPosition),
