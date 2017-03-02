@@ -473,6 +473,14 @@
   "PLEASE_WAIT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT": "",
   "RETRY": "Retry",
   "SEARCH": "Search",
-  "BY_NAME": "By Name"
+  "BY_NAME": "By Name",
+
+  "GATE_ERROR_MESSAGE": "To create the second Key.Please take your first key.",
+  "GATE_CLOSE": "Close",
+
+  "CC_PLEASE_NOTE": "Please note:",
+  "CC_INSTRUCTION_1": "Your card will be authorized for an incidental amount of $25.00 per night",
+  "CC_INSTRUCTION_2": "Unused remaining balance will be released upon checkout",
+  "CC_INSTRUCTION_3": "If you choose to use a debit card then please note that some banks may take longer to release the funds back to your checking account"
    
 }

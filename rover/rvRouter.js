@@ -14,13 +14,13 @@ sntRover.config([
         // default state
         $urlRouterProvider.otherwise('/');
 
-		/*
-		 * state added to show single url throughout the app
-		 */
-		$stateProvider.state('top', {
+        /*
+         * state added to show single url throughout the app
+         */
+        $stateProvider.state('top', {
             url: '/',
             controller: 'topController'
-    	});
+        });
 
         $stateProvider.state('rover', {
             abstract: true,

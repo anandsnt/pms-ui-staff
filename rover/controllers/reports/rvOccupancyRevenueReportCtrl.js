@@ -212,7 +212,11 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 
 			$scope.marketExists = false;
 			// since we moved these from main controller
-			$scope.markets = chosenReport.hasMarketsList;
+            // CICO-38515 - Copied the market list which is already set
+			$scope.markets = angular.copy(chosenReport.hasMarketsList);
+            // CICO-38515 - Removed the last item in the list "UNDEFINED" which is "UNASSIGNED" here
+            // Here the api provides the data for the "UNASSIGNED" ones
+            $scope.markets.data.pop();
 
 			angular.forEach($scope.markets.data, function(marketValue, index) {
 				if (marketValue.hasOwnProperty("selected")) {
@@ -241,7 +245,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 		}
 
 		init();
-		
+
 
 		// re-render must be initiated before for taks like printing.
 		// thats why timeout time is set to min value 50ms

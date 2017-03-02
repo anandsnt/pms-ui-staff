@@ -16,7 +16,7 @@ login.config([
 			controller: 'loginCtrl',
 			title: 'Login'
 		});
-                
+
 		$stateProvider.state('stationlogin', {
 			url: '/stationlogin',
 			templateUrl: '/assets/partials/stationLogin.html',
