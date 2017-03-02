@@ -450,10 +450,6 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 				url = ' /api/bills/' + param.bill_id + '/transactions';
 
 			rvBaseWebSrvV2.getJSON(url).then(function(data) {
-
-				// Hard coded to set the first item as light group data.
-				data.transactions[0].is_group_by_ref = true;
-
 				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);
