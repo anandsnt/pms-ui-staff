@@ -66,6 +66,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             that.updateCache(data);
             var deferred = $q.defer();
             var url = '/api/nightly_diary/reservation_list';
+
             BaseWebSrvV2.postJSON(url, data).then(function(response) {
                 deferred.resolve(response);
             }, function(error) {
