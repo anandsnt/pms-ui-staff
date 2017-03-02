@@ -481,6 +481,15 @@
   "CC_PLEASE_NOTE": "Please note:",
   "CC_INSTRUCTION_1": "Your card will be authorized for an incidental amount of $25.00 per night",
   "CC_INSTRUCTION_2": "Unused remaining balance will be released upon checkout",
-  "CC_INSTRUCTION_3": "If you choose to use a debit card then please note that some banks may take longer to release the funds back to your checking account"
+  "CC_INSTRUCTION_3": "If you choose to use a debit card then please note that some banks may take longer to release the funds back to your checking account",
    
+   "ADD": "Add",
+   "REMOVE": "Remove",
+   "ADD_ON_HEADING": "Enhance your stay?",
+   "ADD_ON_TOTAL_TEXT": "Add Ons Total:",
+   "ADD_ON_FOOTER_1": "Showing",
+   "ADD_ON_FOOTER_2": "Of",
+   "ADD_ON_FOOTER_3" : "Addons"
+
+
 }

@@ -9,7 +9,7 @@
             <p ng-bind-html="selectedAddon.description"></p>
             <div class="price">
                 <div class="amount">
-                    <strong>+${{selectedAddon.price}}</strong>
+                    <strong>+{{zestStationData.currencySymbol}}{{selectedAddon.price}}</strong>
                     <small>{{selectedAddon.price_desc}}</small>
                 </div>
                 <div class="action">
@@ -19,10 +19,10 @@
                         <button type="button" class="button" click-touch="selectedAddon.quantity =  selectedAddon.quantity+1">+</button>
                     </div>
                     <button type="button" class="button" ng-hide="selectedAddon.type === 'per room' || selectedAddon.type === 'flat rate'" ng-class="{'transparent text-red':selectedAddon.is_selected}" click-touch="selectedAddon.is_selected = !selectedAddon.is_selected">
-                        <span ng-hide="selectedAddon.is_selected">Add</span>
-                        <span ng-show="selectedAddon.is_selected">Remove</span>
+                        <span ng-hide="selectedAddon.is_selected" editable-text="ADD">{{'ADD' |translate}}</span>
+                        <span ng-show="selectedAddon.is_selected" editable-text="REMOVE">{{'REMOVE' |translate}}</span>
                     </button>
-                    <button type="button" data-action="popup" class="button transparent" click-touch="closePopup()">Done</button>
+                    <button type="button" data-action="popup" class="button transparent" click-touch="closePopup()" editable-text="DONE">{{'DONE' |translate}}</button>
                 </div>
             </div>
         </div>
@@ -33,8 +33,8 @@
 <!-- Content -->
 <section id="main" class="addon-screen" role="main">
     <div id="content">
-        <h1>Enhance your stay?</h1>
-        <h3>Add Ons Total: ${{getAmountTotal()}}</h3>
+        <h1 editable-text="ADD_ON_HEADING">{{'ADD_ON_HEADING' | translate}}</h1>
+        <h3> <text editable-text="ADD_ON_TOTAL_TEXT">{{'ADD_ON_TOTAL_TEXT' | translate}}</text>&nbsp;{{zestStationData.currencySymbol}}{{getAmountTotal()}}</h3>
         <div id="upgrades">
             <ul class="add-on-list add-on-list-columns" ng-if="addonsList.length > 1" ng-class="{'add-on-list-rows':viewableAddons.length >= 4}">
                 <li class="add-on" ng-repeat="addon in viewableAddons" click-touch="addonSelected(addon)" ng-class="{'selected':addon.is_selected || addon.quantity >0}">
@@ -44,7 +44,7 @@
                     <div class="add-on-content">
                         <h2>{{addon.title}}<span ng-show="addon.quantity>0">&nbsp;({{addon.quantity}})</span></h2>
                         <div class="price">
-                            ${{addon.price}}
+                            {{zestStationData.currencySymbol}}{{addon.price}}
                         </div>
                     </div>
                 </li>
@@ -59,7 +59,7 @@
                         <p ng-bind-html="addon.description"></p>
                         <div class="price">
                             <div class="amount">
-                                <strong>+${{addon.price}}</strong>
+                                <strong>+{{zestStationData.currencySymbol}}{{addon.price}}</strong>
                                 <small>{{addon.price_desc}}</small>
                             </div>
                             <div class="action">
@@ -71,8 +71,8 @@
                                 </div>
                                 <!-- Replace 'btn-class' with 'transparent text-red' if 'Remove' -->
                                 <button type="button" class="button {btn-class}" ng-hide="selectedAddon.type === 'per room' || selectedAddon.type === 'flat rate'" ng-class="{'transparent text-red':addon.is_selected}" click-touch="addon.is_selected = !addon.is_selected">
-                                    <span ng-hide="addon.is_selected">Add</span>
-                                    <span ng-show="addon.is_selected">Remove</span>
+                                    <span ng-hide="addon.is_selected" editable-text="ADD">{{'ADD' |translate}}</span>
+                                    <span ng-show="addon.is_selected" editable-text="REMOVE">{{'REMOVE' |translate}}</span>
                             </div>
                         </div>
                     </div>
@@ -81,7 +81,11 @@
         </div>
         <div id="actions">
             <!-- If there is no navigation, remove the text and leave '<p class="text"></p>-->
-            <p class="text">Showing {{pageStartingIndex}}-{{pageEndingIndex}} of {{addonsList.length}} addons</p>
+            <p class="text">
+                <text editable-text="ADD_ON_FOOTER_1">{{'ADD_ON_FOOTER_1' |translate}}</text>&nbsp;{{pageStartingIndex}}-{{pageEndingIndex}}&nbsp;
+                <text editable-text="ADD_ON_FOOTER_2">{{'ADD_ON_FOOTER_2' |translate}}</text>&nbsp;{{addonsList.length}}&nbsp;
+                <text editable-text="ADD_ON_FOOTER_3">{{'ADD_ON_FOOTER_3' |translate}}</text>
+            </p>
             <!-- Remove this .button-group element when there is no navigation -->
             <div class="button-group" ng-if="addonsList.length > 1">
                 <!-- add 'disabled="disabled"' if there is no previous page -->
@@ -101,7 +105,7 @@
                     <div ng-include="icons.url.right_arrow_icon"></div>
                 </button>
             </div>
-            <button type="button" class="button" click-touch="addonPurchaseCompleted()">Continue</button>
+            <button type="button" class="button" click-touch="addonPurchaseCompleted()" edit-text="CONTINUE">{{'CONTINUE' | translate}}</button>
         </div>
     </div>
 </section>
