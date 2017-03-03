@@ -36,6 +36,15 @@
             <div ng-hide="showPurchaseStatus">
                 <p class="sub-main-text no-case thick-text margin-top-20">{{currencySymbol}}{{selectedAddon.price}} {{selectedAddon.type}}</p>
                 <p class="sub-main-text no-case italics-text margin-top-20">{{selectedAddon.description}}</p>
+                <div class="row" ng-show="selectedAddon.type === 'per room' || selectedAddon.type === 'flat rate'">
+                    Select Qunatity
+                    <div class="select-style eta-single">
+                        <select ng-model="selectedAddon.quantity">
+                            <option value="">select</option>
+                            <option value="{{i}}" ng-repeat="i in quantityList">{{i}}</option>
+                        </select>
+                    </div>
+                </div>
                 <!-- submit -->
                 <a class="btn btn-template margin-top-80" ng-click="purchaseAddon()">Purchase</a>
                 <div class="row no-thanks-wrap margin-top-20">
@@ -52,7 +61,7 @@
         <!-- List view -->
         <div class="col-md-8 top-spacing sm-no-top-spacing section-container float-none" ng-show="mode === 'LIST_VIEW'">
             <p class="main-text no-case margin-top-20">Enhance your stay</p>
-            <div ng-repeat="addon in addonList" class="addon-container" ng-click="addonSelected(addon.id)">
+            <div ng-repeat="addon in addonList" class="addon-container" ng-click="addonSelected(addon)" ng-class="{'selected':addon.isSelected}">
                 <div class="content-image">
                     <img ng-src="{{addon.image}}" alt="" width="150" height="100">
                 </div>

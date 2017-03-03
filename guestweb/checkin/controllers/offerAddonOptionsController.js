@@ -15,10 +15,8 @@
 		 * @param  {[type]} selectedAddonId [description]
 		 * @return {[type]}                 [description]
 		 */
-		$scope.addonSelected = function(selectedAddonId) {
-			selectedAddon = _.find($scope.addonList, function(addon) {
-				return addon.id === selectedAddonId;
-			});
+		$scope.addonSelected = function(selectedAddon) {
+			// $scope.selectedAddon = selectedAddon;
 			setSelectedAddon(selectedAddon, false);
 		};
 
@@ -36,7 +34,8 @@
 		$scope.purchaseAddon = function() {
 			$scope.purchaseStatusText = 'Thanks for the purchase. Your addon will be added to your account.';
 			$scope.showPurchaseStatus = true;
-			removeAddedAddons(selectedAddon);
+			$scope.selectedAddon.isSelected = true;
+			//removeAddedAddons(selectedAddon);
 		};
 
 		$scope.doneClicked = function() {
@@ -80,6 +79,7 @@
 		(function() {
 			$scope.addonList = [];
 			$scope.isLoading = true;
+			$scope.quantityList = _.range(1,21);
 			var params = {};
 			checkinAddonService.getAddonList(params).then(function(response) {
 				$scope.isLoading = false;
