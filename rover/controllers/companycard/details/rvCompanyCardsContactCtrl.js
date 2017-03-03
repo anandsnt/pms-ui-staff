@@ -12,7 +12,10 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 		$scope.isEmpty = function (obj) {
 			return _.isEmpty(obj);
 		};
-
+		/*
+		 * Toggle commission
+		 * Show popup when disabled
+		 */
 		$scope.toggleCommission = function() {
 			$scope.contactInformation.commission_details.is_on = !$scope.contactInformation.commission_details.is_on;
             if (!$scope.contactInformation.commission_details.is_on) {
