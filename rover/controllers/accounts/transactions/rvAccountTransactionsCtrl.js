@@ -140,7 +140,14 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				if (chargeCodes.length > 0) {
 					_.each(chargeCodes, function(chargeCode, index) {
 						if (chargeCode.isSelected) {
-							$scope.moveChargeData.selectedTransactionIds.push(chargeCode.id);
+							if (chargeCode.is_group_by_ref) {
+								var concatObject = $scope.moveChargeData.selectedTransactionIds.concat(chargeCode.item_ids);
+
+								$scope.moveChargeData.selectedTransactionIds = concatObject;
+							}
+							else {
+								$scope.moveChargeData.selectedTransactionIds.push(chargeCode.id);
+							}
 						}
 				    });
 				    ngDialog.open({
@@ -278,12 +285,16 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		$scope.moveToBillAction = function(oldBillValue, feesIndex) {
 
 			var parseOldBillValue = parseInt(oldBillValue) - 1;
-			var newBillValue = $scope.transactionsDetails.bills[parseOldBillValue].transactions[feesIndex].billValue;
-			var transactionId = $scope.transactionsDetails.bills[parseOldBillValue].transactions[feesIndex].id;
+			var transactionData = $scope.transactionsDetails.bills[parseOldBillValue].transactions[feesIndex];
+			var newBillValue = transactionData.billValue,
+				transactionId = transactionData.id ? transactionData.id : null,
+				itemIdList = transactionData.item_ids ? transactionData.item_ids : [];
+
 			var dataToMove = {
 				"to_bill": newBillValue,
 				"from_bill": oldBillValue,
 				"transaction_id": transactionId,
+				'item_ids': itemIdList,
 				"account_id": $scope.accountConfigData.summary.posting_account_id
 			};
 
