@@ -593,7 +593,6 @@ sntZestStation.controller('zsRootCtrl', [
                     clear_icon: iconBasePath + '/x.svg'
                 }
             };
-            $log.log('useCommonIcons: ',useCommonIcons, commonIconsPath);
             if (useCommonIcons) {
                 $scope.icons.url.qr_noarrow = iconsPath + '/key.svg';
             }
