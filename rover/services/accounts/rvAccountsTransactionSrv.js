@@ -321,10 +321,11 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			var deferred = $q.defer(),
 				url = '/api/posting_accounts/transaction_details';
 
-			BaseWebSrvV2.getJSON(url, params).then(function(response) {
-				deferred.resolve(response.data);
-			}, function (data) {
-				deferred.reject(data);
+			rvBaseWebSrvV2.getJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function (data) {
+					deferred.reject(data);
 			});
 
 			return deferred.promise;
