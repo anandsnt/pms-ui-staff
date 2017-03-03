@@ -15,7 +15,7 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 
 		$scope.toggleCommission = function() {
 			$scope.contactInformation.commission_details.is_on = !$scope.contactInformation.commission_details.is_on;
-            if(!$scope.contactInformation.commission_details.is_on) {
+            if (!$scope.contactInformation.commission_details.is_on) {
             	ngDialog.open({
 	    	        template: '/assets/partials/companyCard/rvCommissionMessage.html',
 	    	        className: '',
