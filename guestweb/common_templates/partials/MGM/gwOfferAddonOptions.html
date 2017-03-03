@@ -34,7 +34,7 @@
             <p class="main-text no-case bold-text">{{selectedAddon.title}}</p>
             <img ng-src="{{selectedAddon.image}}" class="content-image  margin-top-20" alt="">
             <div ng-hide="showPurchaseStatus">
-                <p class="sub-main-text no-case thick-text margin-top-20">{{currencySymbol}}{{selectedAddon.amount}} {{selectedAddon.post_type}}</p>
+                <p class="sub-main-text no-case thick-text margin-top-20">{{currencySymbol}}{{selectedAddon.price}} {{selectedAddon.type}}</p>
                 <p class="sub-main-text no-case italics-text margin-top-20">{{selectedAddon.description}}</p>
                 <!-- submit -->
                 <a class="btn btn-template margin-top-80" ng-click="purchaseAddon()">Purchase</a>
@@ -58,7 +58,7 @@
                 </div>
                 <div class="content-desc">
                     <p class="sub-text no-case margin-top-20">{{addon.title}}</p>
-                    <p class="sub-text no-case margin-top-20">{{currencySymbol}}{{addon.amount}} {{addon.post_type}}</p>
+                    <p class="sub-text no-case margin-top-20">{{currencySymbol}}{{addon.price}} {{addon.type}}</p>
                 </div>
             </div>
             <div class="row no-thanks-wrap margin-top-20">
