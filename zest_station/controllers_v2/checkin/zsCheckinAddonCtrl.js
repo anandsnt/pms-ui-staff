@@ -30,6 +30,10 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			$state.go('zest_station.checkInTerms', stateParams);
 		};
 
+		$scope.navigateToNextScreen = function() {
+			navigateToTermsPage();
+		};
+
 		var generalError = function() {
 			$scope.mode = 'ERROR_MODE';
 		};
@@ -71,7 +75,6 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 
 			console.log($scope.viewableAddons);
 		};
-
 		$scope.viewNextPage = function() {
 			// $scope.$emit('showLoader');
 			$scope.disableNextButton = true;
@@ -91,13 +94,37 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		};
 
 
+		$scope.addAddonQuantity = function(selectedAddon) {
+			$scope.selectedAddonCount = $scope.selectedAddonCount + 1;
+		};
+		$scope.decrementAddonQuantity = function(selectedAddon) {
+			$scope.selectedAddonCount = $scope.selectedAddonCount > 0 ? $scope.selectedAddonCount - 1 : 0;
+		};
+		$scope.addOnDoneButtonClicked = function(selectedAddon) {
+			if ($scope.selectedAddonCount === 3) {
+				$scope.showAddonPopup = false;
+				$scope.showErrorPopUp = true;
+				$scope.errorMessage = "Unable To add this to your reservation";
+			} else {
+				$scope.showAddonPopup = false;
+				if (selectedAddon.type === 'per room' || selectedAddon.type === 'flat rate') {
+					$scope.selectedAddon.quantity = angular.copy($scope.selectedAddonCount);
+				}
+				$scope.selectedAddonCount = 0;
+			}
+		};
+		$scope.addRemoveAddOn = function(selectedAddon) {
+			selectedAddon.is_selected = !selectedAddon.is_selected;
+		};
+
 		$scope.addonSelected = function(addon) {
 			$scope.selectedAddon = addon;
-			$scope.showPopup = true;
+			$scope.showAddonPopup = true;
+			$scope.selectedAddonCount = addon.quantity;
 		};
 
 		$scope.closePopup = function() {
-			$scope.showPopup = false;
+			$scope.showAddonPopup = false;
 		};
 
 		var fetchAddons = function() {
@@ -121,9 +148,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 
 				if ($scope.addonsList.length === 1) {
 					$scope.selectedRoom = $scope.addonsList[0];
-					$scope.mode = 'ROOM_DETAILS';
-				} else {
-					$scope.mode = 'ROOM_UPSELL_LIST';
+					$scope.selectedAddonCount = 0;
 				}
 			};
 
@@ -139,7 +164,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		$scope.addonsList = [];
 		$scope.getAmountTotal = function() {
 			var totalAmount = 0;
-			
+
 			_.each($scope.addonsList, function(addon) {
 				if (addon.is_selected) {
 					totalAmount = totalAmount + addon.price;
@@ -151,8 +176,11 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		};
 
 		$scope.addonPurchaseCompleted = function() {
-
-			if ($scope.getAmountTotal() > 0) {
+			$scope.addonsList[0].quantity = angular.copy($scope.selectedAddonCount);
+			if ($scope.addonsList.length === 1 && $scope.addonsList[0].quantity === 3) {
+				$scope.mode = 'SINGLE_ADDON_ERROR';
+				$scope.errorMessage = "Unable To add this to your reservation";
+			} else if ($scope.getAmountTotal() > 0) {
 				$scope.selectedReservation.skipAddon = true;
 				zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
 				$state.go('zest_station.checkInReservationDetails');

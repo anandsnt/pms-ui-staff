@@ -1,5 +1,5 @@
 <!-- Add .open to show the popup -->
-<div class="popup" ng-class="{'open':showPopup}">
+<div class="popup" ng-class="{'open':showAddonPopup}">
     <div class="popup-content add-on">
         <div class="add-on-picture">
             <img src="{{selectedAddon.image}}" />
@@ -14,24 +14,37 @@
                 </div>
                 <div class="action">
                     <div class="input-group" ng-show="selectedAddon.type === 'per room' || selectedAddon.type === 'flat rate'">
-                        <button type="button" class="button" click-touch="selectedAddon.quantity = selectedAddon.quantity >0 ? selectedAddon.quantity -1 :0">-</button>
-                        <input type="text" value="{{selectedAddon.quantity}}">
-                        <button type="button" class="button" click-touch="selectedAddon.quantity =  selectedAddon.quantity+1">+</button>
+                        <button type="button" class="button" click-touch="decrementAddonQuantity()">-</button>
+                        <input type="text" value="{{selectedAddonCount}}">
+                        <button type="button" class="button" click-touch="addAddonQuantity()">+</button>
                     </div>
-                    <button type="button" class="button" ng-hide="selectedAddon.type === 'per room' || selectedAddon.type === 'flat rate'" ng-class="{'transparent text-red':selectedAddon.is_selected}" click-touch="selectedAddon.is_selected = !selectedAddon.is_selected">
+                    <button type="button" class="button" ng-hide="selectedAddon.type === 'per room' || selectedAddon.type === 'flat rate'" ng-class="{'transparent text-red':selectedAddon.is_selected}" click-touch="addRemoveAddOn(selectedAddon)">
                         <span ng-hide="selectedAddon.is_selected" editable-text="ADD">{{'ADD' |translate}}</span>
                         <span ng-show="selectedAddon.is_selected" editable-text="REMOVE">{{'REMOVE' |translate}}</span>
                     </button>
-                    <button type="button" data-action="popup" class="button transparent" click-touch="closePopup()" editable-text="DONE">{{'DONE' |translate}}</button>
+                    <button type="button" data-action="popup" class="button transparent" click-touch="addOnDoneButtonClicked(selectedAddon)" editable-text="DONE">{{'DONE' |translate}}</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<!-- Add .open to show the popup -->
+<div class="popup" ng-class="{'open':showErrorPopUp}">
+    <!-- Remove class "open" to hide popup content -->
+    <div class="popup-content">
+        <h2 class="nocaps">
+            <text editable-text="ADDON_ERROR_HEADER"> {{'ADDON_ERROR_HEADER' |translate}}</text>
+        </h2>
+        <h3> {{errorMessage}}</h3>
+        <button type="button" class="button" click-touch='showErrorPopUp = false'>
+            <text editable-text="DONE"> {{'DONE' |translate}}</text>
+        </button>
+    </div>
+</div>
 <!-- add .open when showing popuo -->
-<div id="popup-overlay" ng-class="{'open':showPopup}"></div>
+<div id="popup-overlay" ng-class="{'open':showAddonPopup || showErrorPopUp}"></div>
 <!-- Content -->
-<section id="main" class="addon-screen" role="main">
+<section id="main" class="addon-screen" role="main" ng-hide="mode === 'SINGLE_ADDON_ERROR'">
     <div id="content">
         <h1 editable-text="ADD_ON_HEADING">{{'ADD_ON_HEADING' | translate}}</h1>
         <h3> <text editable-text="ADD_ON_TOTAL_TEXT">{{'ADD_ON_TOTAL_TEXT' | translate}}</text>&nbsp;{{zestStationData.currencySymbol}}{{getAmountTotal()}}</h3>
@@ -64,13 +77,13 @@
                             </div>
                             <div class="action">
                                 <!-- show this instead of 'add/remove' button if quantity needed -->
-                                <div class="input-group" ng-show="selectedAddon.type === 'per room' || selectedAddon.type === 'flat rate'">
-                                    <button type="button" class="button" click-touch="addon.quantity = addon.quantity >0 ? addon.quantity -1 :0">-</button>
-                                    <input type="text" value="{{addon.quantity}}">
-                                    <button type="button" class="button" click-touch="addon.quantity =  addon.quantity+1">+</button>
+                                <div class="input-group" ng-show="addon.type === 'per room' || addon.type === 'flat rate'">
+                                    <button type="button" class="button" click-touch="decrementAddonQuantity()">-</button>
+                                    <input type="text" value="{{selectedAddonCount}}">
+                                    <button type="button" class="button" click-touch="addAddonQuantity()">+</button>
                                 </div>
                                 <!-- Replace 'btn-class' with 'transparent text-red' if 'Remove' -->
-                                <button type="button" class="button {btn-class}" ng-hide="selectedAddon.type === 'per room' || selectedAddon.type === 'flat rate'" ng-class="{'transparent text-red':addon.is_selected}" click-touch="addon.is_selected = !addon.is_selected">
+                                <button type="button" class="button {btn-class}" ng-hide="addon.type === 'per room' || addon.type === 'flat rate'" ng-class="{'transparent text-red':addon.is_selected}" click-touch="addRemoveAddOn(addon)">
                                     <span ng-hide="addon.is_selected" editable-text="ADD">{{'ADD' |translate}}</span>
                                     <span ng-show="addon.is_selected" editable-text="REMOVE">{{'REMOVE' |translate}}</span>
                             </div>
@@ -107,5 +120,13 @@
             </div>
             <button type="button" class="button" click-touch="addonPurchaseCompleted()" edit-text="CONTINUE">{{'CONTINUE' | translate}}</button>
         </div>
+    </div>
+</section>
+<section id="main" class="addon-screen centered" role="main" ng-show="mode === 'SINGLE_ADDON_ERROR'">
+    <div id="content">
+        <h1 editable-text="ADDON_ERROR_HEADER">{{'ADDON_ERROR_HEADER' | translate}}</h1>
+        <h3>{{errorMessage}}</h3>
+        <br/>
+        <button type="button" class="button" click-touch="navigateToNextScreen()" edit-text="CONTINUE">{{'CONTINUE' | translate}}</button>
     </div>
 </section>

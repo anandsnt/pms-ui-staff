@@ -489,7 +489,8 @@
    "ADD_ON_TOTAL_TEXT": "Add Ons Total:",
    "ADD_ON_FOOTER_1": "Showing",
    "ADD_ON_FOOTER_2": "Of",
-   "ADD_ON_FOOTER_3" : "Addons"
+   "ADD_ON_FOOTER_3" : "Addons",
+   "ADDON_ERROR_HEADER": "Problem"
 
 
 }
