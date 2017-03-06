@@ -49,7 +49,7 @@
 		};
 
 		$scope.doneClicked = function() {
-			if ($scope.addonList.length > 0) {
+			if ($scope.addonList.length > 1) {
 				$scope.mode = 'LIST_VIEW';
 				$(document.body).scrollTop(0);
 			} else {
