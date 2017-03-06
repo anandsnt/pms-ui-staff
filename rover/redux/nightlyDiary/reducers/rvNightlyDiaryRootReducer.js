@@ -14,12 +14,10 @@ const nightlyDiaryRootReducer = (state, action) => (
                             ? action.currentSelectedReservation
                             : state.currentSelectedReservation,
         selectedRoomId: (action.type === 'DIARY_VIEW_CHANGED') ? action.selectedRoomId : state.selectedRoomId,
-        isBackToDiary: state.isBackToDiary,
         isFromStayCard: state.isFromStayCard,
         dateFormat: state.dateFormat,
         newArrivalPosition: (action.type === 'EXTEND_SHORTEN_RESERVATION') ? action.newArrivalPosition : '',
-        newDeparturePosition: (action.type === 'EXTEND_SHORTEN_RESERVATION') ? action.newDeparturePosition : '',
-        showStayRange: (action.type === 'RESERVATION_SELECTED') ? action.showStayRange : state.showStayRange
+        newDeparturePosition: (action.type === 'EXTEND_SHORTEN_RESERVATION') ? action.newDeparturePosition : ''
     }
 );
 

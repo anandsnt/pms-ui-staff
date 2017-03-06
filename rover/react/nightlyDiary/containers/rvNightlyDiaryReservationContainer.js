@@ -241,7 +241,6 @@ const mapStateToNightlyDiaryReservationContainerProps = (state, ownProps) => ({
     selectReservation: state.callBackFromAngular.selectReservation,
     selectedReservationId: state.selectedReservationId,
     selectedRoom: ownProps.room,
-    isBackToDiary: state.isBackToDiary,
     isFromStayCard: state.isFromStayCard,
     gridDays: state.numberOfDays,
     newArrivalPosition: state.newArrivalPosition,
