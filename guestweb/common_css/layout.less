@@ -502,11 +502,14 @@
 }
 .addon-container{
     background:#eee;
-    border:1px #e5e5e5 solid;
+    border:1px #A9A9A9 solid;
     padding:10px;
-    min-height:120px;
+    min-height:124px;
     margin-bottom:10px;
     cursor:pointer;
+    .content-image{
+      border:1px #A9A9A9 solid;
+    }
     .content-image,.content-desc{
         float:left;
     }
@@ -522,7 +525,11 @@
     }
 }
 .addon-container.selected{
-  border:2px #FFD700 solid;
+  background:#C0C0C0;
+  border:2px #A9A9A9 solid;
+  .content-desc p{
+    color:#fff !important;
+  }
 }
 .select-style.addon-numbers{
   margin:0 auto;

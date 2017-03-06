@@ -49,7 +49,8 @@
                     </div>
                 </div>
                 <!-- submit -->
-                <a class="btn btn-template margin-top-80" ng-click="purchaseAddon()">Purchase</a>
+                <a class="btn btn-template margin-top-80" ng-click="purchaseAddon()" ng-hide="selectedAddon.is_selected">Purchase</a>
+                <a class="btn btn-template margin-top-80" ng-click="purchaseAddon()" ng-show="selectedAddon.is_selected">Remove Addon</a>
                 <div class="row no-thanks-wrap margin-top-20">
                     <p class="centeralign no-thanks">
                         <a ng-click="noThanksClicked()" class="sub-text no-case">No thanks</a>
@@ -64,12 +65,12 @@
         <!-- List view -->
         <div class="col-md-8 top-spacing sm-no-top-spacing section-container float-none" ng-show="mode === 'LIST_VIEW'">
             <p class="main-text no-case margin-top-20">Enhance your stay</p>
-            <div ng-repeat="addon in addonList" class="addon-container" ng-click="addonSelected(addon)" ng-class="{'selected':addon.isSelected}">
+            <div ng-repeat="addon in addonList" class="addon-container" ng-click="addonSelected(addon)" ng-class="{'selected':addon.is_selected || addon.quantity > 0}">
                 <div class="content-image">
                     <img ng-src="{{addon.image}}" alt="" width="150" height="100">
                 </div>
                 <div class="content-desc">
-                    <p class="sub-text no-case margin-top-20">{{addon.title}}</p>
+                    <p class="sub-text no-case margin-top-20">{{addon.title}}<span ng-show="(addon.type === 'per room' || addon.type === 'flat rate') && addon.quantity > 0">&nbsp;({{addon.quantity}})</span></p>
                     <p class="sub-text no-case margin-top-20">{{currencySymbol}}{{addon.price}} {{addon.type}}</p>
                 </div>
             </div>

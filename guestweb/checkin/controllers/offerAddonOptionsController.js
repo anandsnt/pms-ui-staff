@@ -33,10 +33,19 @@
 			});
 		};
 		$scope.purchaseAddon = function() {
-			$scope.purchaseStatusText = 'Thanks for the purchase. Your addon will be added to your account.';
-			$scope.showPurchaseStatus = true;
-			$scope.selectedAddon.isSelected = true;
-			//removeAddedAddons(selectedAddon);
+
+			if ($scope.selectedAddon.type === 'per room' || $scope.selectedAddon.type === 'flat rate') {
+				if ($scope.selectedAddon.quantity > 0) {
+					$scope.purchaseStatusText = 'Thanks for the purchase. Your addon will be added to your account.';
+					$scope.showPurchaseStatus = true;
+				} else {
+					$scope.doneClicked();
+				}
+			} else {
+				$scope.selectedAddon.is_selected = !$scope.selectedAddon.is_selected;
+				$scope.purchaseStatusText = 'Thanks for the purchase. Your addon will be added to your account.';
+				$scope.showPurchaseStatus = true;
+			}
 		};
 
 		$scope.doneClicked = function() {
@@ -65,6 +74,10 @@
 					return addon.id == selectedAddonId;
 				});
 			});
+			_.each(addons, function(addon) {
+				addon.is_selected = false;
+				addon.quantity = 0;
+			});
 			$scope.addonList = addons;
 			if (addons.length === 0) {
 				$rootScope.skipedAddons = true;
@@ -81,7 +94,7 @@
 		(function() {
 			$scope.addonList = [];
 			$scope.isLoading = true;
-			$scope.quantityList = _.range(1,21);
+			$scope.quantityList = _.range(21);
 			var params = {};
 			checkinAddonService.getAddonList(params).then(function(response) {
 				$scope.isLoading = false;
