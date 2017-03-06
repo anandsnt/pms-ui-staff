@@ -295,7 +295,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             return false;
         };
         var isCCAuthMode = function() {
-            if ($stateParams.mode === 'CREDIT_CARD_AUTH') {
+            if ($stateParams.mode === 'CREDIT_CARD_AUTH' || $stateParams.isQuickJump === 'true') {
                 return true;
             }
             return false;
@@ -351,6 +351,12 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 $timeout(function() {
                     goToCardSign();
                 }, 2000);
+                return;
+            }
+
+            if (typeof $scope.socketOperator.returnWebSocketObject() === 'undefined') {
+                // minor issue when jumping to cc swipe state (double-clicking on jumper to this state) 
+                // so the websocket doesnt respond < 100~200ms, it throws an error so just returning in that case
                 return;
             }
 
