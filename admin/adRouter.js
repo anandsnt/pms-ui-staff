@@ -9,11 +9,21 @@ admin.config([
         });
         $translateProvider.fallbackLanguage('EN');
         // dashboard state
-        $urlRouterProvider.otherwise('/admin/dashboard/0');
+        $urlRouterProvider.otherwise('/');
+
+        $stateProvider.state('top', {
+            url: '/admin/',
+            controller: 'adTopCtrl'
+        });
+
+        $stateProvider.state('snt', {
+            url: '/admin/snt',
+            controller: 'adTopCtrl'
+        });
 
         $stateProvider.state('admin', {
             abstract: true,
-            url: '/admin',
+            url: '/',
             templateUrl: '/assets/partials/adApp.html',
             controller: 'ADAppCtrl',
             resolve: {

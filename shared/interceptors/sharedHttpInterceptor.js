@@ -12,11 +12,15 @@ angular.module('sharedHttpInterceptor').service('sntAuthorizationSrv', [
             uuid = null;
 
         service.status = function(log) {
-            $log.info(log || 'available');
+            $log.info(log || 'property! ' + service.getProperty());
         };
 
         service.setProperty = function(currentUuid) {
             uuid = currentUuid;
+        };
+
+        service.unsetProperty = function() {
+            uuid = null;
         };
 
         service.getProperty = function() {

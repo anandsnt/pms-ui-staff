@@ -1,4 +1,4 @@
-admin.service('ADUserRolesSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
+admin.service('ADUserRolesSrv', ['$http', '$q', 'ADBaseWebSrvV2','ADHotelListSrv', function($http, $q, ADBaseWebSrvV2, ADHotelListSrv) {
 
 
 	this.userRolesData  = {};
@@ -8,32 +8,39 @@ admin.service('ADUserRolesSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http
     * To fetch the list of user roles
     * @return {object} users list json
     */
-	this.fetchUserRoles = function() {
+   this.fetchUserRoles = function(isSNTAdmin) {
+	   var deferred = $q.defer();
 
-		var deferred = $q.defer();
+       var fetchUserRolesData = function() {
+           var url = '/api/roles.json';
 
-		var fetchUserRolesData = function() {
-			var url = '/api/roles.json';
+           if (isSNTAdmin) {
+               url += '?hotel_uuid=' + ADHotelListSrv.getSelectedProperty();
+           }
 
-			ADBaseWebSrvV2.getJSON(url).then(function(data) {
-				that.userRolesData.userRoles = data.user_roles;
-			    deferred.resolve(that.userRolesData);
-			}, function(data) {
-			    deferred.reject(data);
-			});
-			return deferred.promise;
-		};
+           ADBaseWebSrvV2.getJSON(url).then(function(data) {
+               that.userRolesData.userRoles = data.user_roles;
+               deferred.resolve(that.userRolesData);
+           }, function(data) {
+               deferred.reject(data);
+           });
+           return deferred.promise;
+       };
 
-		var url = 'api/reference_values.json?type=dashboard';
+       var url = 'api/reference_values.json?type=dashboard';
 
-		ADBaseWebSrvV2.getJSON(url).then(function(data) {
-		   that.userRolesData.dashboards = data;
-		   fetchUserRolesData();
-		}, function(data) {
-		    deferred.reject(data);
-		});
-		return deferred.promise;
-	};
+       if (isSNTAdmin) {
+           url += '&hotel_uuid=' + ADHotelListSrv.getSelectedProperty();
+       }
+
+       ADBaseWebSrvV2.getJSON(url).then(function(data) {
+           that.userRolesData.dashboards = data;
+           fetchUserRolesData();
+       }, function(data) {
+           deferred.reject(data);
+       });
+       return deferred.promise;
+   };
    /*
     * To save new user Role
     * @param {array} new user role details

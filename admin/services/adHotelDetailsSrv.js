@@ -1,4 +1,10 @@
-admin.service('ADHotelDetailsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2) {
+admin.service('ADHotelDetailsSrv', [
+    '$http',
+    '$q',
+    'ADBaseWebSrv',
+    'ADBaseWebSrvV2',
+    'ADHotelListSrv',
+    function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2, ADHotelListSrv) {
 	/**
     *   An getter method to add deatils for a new hotel.
     */
@@ -21,7 +27,7 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrv
 
 	that.fetchLanguages = function(deferred) {
 
-			var url = '/api/reference_values.json?type=language';
+			var url = '/api/reference_values.json?type=language&hotel_uuid=' + ADHotelListSrv.getSelectedProperty();
 
 			ADBaseWebSrvV2.getJSON(url).then(function(data) {
 				hotelDetailsData.languages = data;
@@ -38,7 +44,7 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrv
 	that.fetchEditData = function(data) {
 		var deferred = $q.defer();
 
-		var url = '/admin/hotels/' + data.id + '/edit.json';
+		var url = '/admin/hotels/' + data.id + '/edit.json?hotel_uuid=' + ADHotelListSrv.getSelectedProperty();
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			hotelDetailsData.data = data;
@@ -87,7 +93,12 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrv
 		var deferred = $q.defer();
 		var url = '/admin/hotels/' + data.id;
 
-		ADBaseWebSrv.putJSON(url, data).then(function(data) {
+        if (data.isSNTAdmin) {
+            url += '?hotel_uuid=' + ADHotelListSrv.getSelectedProperty();
+        }
+
+
+        ADBaseWebSrv.putJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
 		    deferred.reject(data);

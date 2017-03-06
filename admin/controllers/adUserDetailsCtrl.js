@@ -56,42 +56,36 @@ admin.controller('ADUserDetailsCtrl',
 
 	};
 
-	$scope.getRolesData = function() {
-		var successCallbackRoles = function(data) {
-			$scope.$emit('hideLoader');
-			$scope.rolesWithDashboards = data.userRoles;
-			/**
-		    * To set mod of operation - add/edit
-		    */
-			var id = $stateParams.id;
+        $scope.getRolesData = function() {
+            var successCallbackRoles = function(data) {
+                $scope.$emit('hideLoader');
+                $scope.rolesWithDashboards = data.userRoles;
+                /**
+                 * To set mod of operation - add/edit
+                 */
+                var id = $stateParams.id;
 
-			if (id === "") {
-				$scope.mod = "add";
-				$scope.userDetailsAdd();
-			} else {
-				$scope.mod = "edit";
-				$scope.userDetailsEdit(id);
-			}
+                if (id === "") {
+                    $scope.mod = "add";
+                    $scope.userDetailsAdd();
+                } else {
+                    $scope.mod = "edit";
+                    $scope.userDetailsEdit(id);
+                }
 
-            refreshDashboardsList();
+                refreshDashboardsList();
 
-		};
+            };
 
-		$scope.invokeApi(ADUserRolesSrv.fetchUserRoles, {}, successCallbackRoles);
+            $scope.invokeApi(ADUserRolesSrv.fetchUserRoles, $scope.isAdminSnt, successCallbackRoles);
 
-	};
-	$scope.getRolesData();
+        };
 
-   /**
-    * To check whether logged in user is sntadmin or hoteladmin
-    */
+        /**
+         * To check whether logged in user is sntadmin or hoteladmin
+         */
 
-	if ($rootScope.adminRole === "snt-admin") {
-		$scope.isAdminSnt = true;
-		 $scope.BackAction = "admin.users({id:" + $scope.hotelId + "})";
-	} else {
-		 $scope.BackAction = "admin.users";
-	}
+
 
    /*
     * Handle action when clicked on assigned role
@@ -298,7 +292,7 @@ admin.controller('ADUserDetailsCtrl',
 			$scope.image = "/assets/images/preview_image.png";
 		};
 
-	 	$scope.invokeApi(ADUserSrv.getAddNewDetails, '', successCallbackRender);
+	 	$scope.invokeApi(ADUserSrv.getAddNewDetails, $scope.isAdminSnt, successCallbackRender);
 	};
 
 	/**
@@ -354,6 +348,17 @@ admin.controller('ADUserDetailsCtrl',
 	$scope.onRoleChange = function() {
 		// CICO-37238 Find and update the dashboards related to the roles
 		refreshDashboardsList();
-    }
+    };
+
+    (function() {
+        if ($rootScope.adminRole === "snt-admin") {
+            $scope.isAdminSnt = true;
+            $scope.BackAction = "admin.users({id:" + $scope.hotelId + "})";
+        } else {
+            $scope.BackAction = "admin.users";
+        }
+
+        $scope.getRolesData();
+    })();
 
 }]);

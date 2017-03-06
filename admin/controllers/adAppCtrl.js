@@ -70,14 +70,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 	    // flag to decide show neighbours screen
 	    var isNeighboursEnabled = false;
 
-	    var routeChange = function(event, newURL) {
-	      event.preventDefault();
-	      return;
-	    };
-
-	    $rootScope.$on('$locationChangeStart', routeChange);
-	    // window.history.pushState("initial", "Showing Admin Dashboard", "#/"); // we are forcefully setting top url, please refer routerFile
-
 		var setupLeftMenu = function() {
 			if ($scope.isStandAlone) {
 				$scope.menu = [{
@@ -675,5 +667,13 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
                 closeByDocument: false,
                 scope: $scope
             });
+        };
+
+        $scope.logout = function() {
+            var redirUrl = '/logout/';
+
+            $timeout(function() {
+                $window.location.href = redirUrl;
+            }, 300);
         };
 }]);
