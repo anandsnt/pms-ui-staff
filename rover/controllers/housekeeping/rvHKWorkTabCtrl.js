@@ -55,7 +55,7 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 		$scope.disableStart = false;
 
         var HK_STATUS = {
-            INSPECTED : 'INSPECTED'
+            INSPECTED: 'INSPECTED'
         };
 
 		var $_updateWorkStatusFlags = function() {
