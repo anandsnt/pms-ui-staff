@@ -27,8 +27,13 @@
 				}
 			} else {
 				$scope.selectedAddon.is_selected = !$scope.selectedAddon.is_selected;
-				$scope.purchaseStatusText = 'Thanks for the purchase. Your addon will be added to your account.';
-				$scope.showPurchaseStatus = true;
+				if($scope.selectedAddon.is_selected){
+					$scope.purchaseStatusText = 'Thanks for the purchase. Your addon will be added to your account.';
+					$scope.showPurchaseStatus = true;
+				}else{
+					$scope.doneClicked();
+				}
+				
 			}
 		};
 
