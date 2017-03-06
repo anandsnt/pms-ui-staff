@@ -26,7 +26,7 @@ angular
         }
     });
     $stateProvider.state('rover.nightlyDiary', {
-        url: '/nightlyDiary/?reservation_id&start_date&isBackToDiary&isFromStayCard&room_id',
+        url: '/nightlyDiary/?reservation_id&start_date&isFromStayCard',
         templateUrl: '/assets/partials/nightlyDiary/rvNightlyDiary.html',
         controller: 'rvNightlyDiaryMainController',
         resolve: {
@@ -42,22 +42,19 @@ angular
             roomsList: function(RVNightlyDiarySrv, $rootScope, diaryAssets, $stateParams) {
                 var params = {};
 
-                if ($stateParams.isBackToDiary) {
+                if ($stateParams.isFromStayCard) {
                     params = RVNightlyDiarySrv.getCache();
                 }
                 else {
                     params.page = 1;
                     params.per_page = 50;
-                    if ($stateParams.isFromStayCard) {
-                        params.room_id = $stateParams.room_id;
-                    }
                 }
                 return RVNightlyDiarySrv.fetchRoomsList(params);
             },
             datesList: function(RVNightlyDiarySrv, $rootScope, diaryAssets, $stateParams) {
                 var params = {};
 
-                if ($stateParams.isBackToDiary) {
+                if ($stateParams.isFromStayCard) {
                     params = RVNightlyDiarySrv.getCache();
                 }
                 else {
@@ -73,18 +70,12 @@ angular
             },
             reservationsList: function(RVNightlyDiarySrv, $rootScope, diaryAssets, $stateParams) {
                 var params = {};
-
-                if ($stateParams.isBackToDiary) {
+                
+                if ($stateParams.isFromStayCard) {
                     params = RVNightlyDiarySrv.getCache();
                 }
                 else {
-                    if ($stateParams.isFromStayCard) {
-                        params.start_date = $stateParams.start_date;
-                        params.room_id = $stateParams.room_id;
-                    } else {
-                        params.start_date = $rootScope.businessDate;
-                    }
-
+                    params.start_date = $rootScope.businessDate;
                     params.no_of_days = 7;
                     params.page = 1;
                     params.per_page = 50;
