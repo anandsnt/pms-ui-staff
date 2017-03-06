@@ -34,7 +34,7 @@
          <p class="main-text no-text-case bold-text">{{selectedAddon.title}}</p>
          <img ng-src="{{selectedAddon.image}}" class="content-image  margin-top-20" alt="">
          <div ng-hide="showPurchaseStatus" class="addon-details">
-            <p class="sub-main-text margin-top-20 no-text-case price-details">{{currencySymbol}}{{selectedAddon.price}} {{selectedAddon.price_label}}{{selectedAddon.suffix}}</p>
+            <p class="sub-main-text margin-top-20 no-text-case price-details">{{currencySymbol}}{{selectedAddon.price}} {{selectedAddon.price_label}}&nbsp;{{selectedAddon.suffix}}</p>
             <p class="sub-main-text margin-top-20" ng-bind-html="selectedAddonDescrition"></p>
             <br/>
             <div ng-show="selectedAddon.type === 'per room' || selectedAddon.type === 'flat rate'">
@@ -49,8 +49,8 @@
                </div>
             </div>
             <!-- submit -->
-            <a class="btn btn-template margin-top-80" ng-click="purchaseAddon()" ng-hide="selectedAddon.is_selected">Purchase</a>
-            <a class="btn btn-template margin-top-80" ng-click="purchaseAddon()" ng-show="selectedAddon.is_selected">Remove Addon</a>
+            <a class="btn btn-template margin-top-20" ng-click="purchaseAddon()" ng-hide="selectedAddon.is_selected">Purchase</a>
+            <a class="btn btn-template margin-top-20" ng-click="purchaseAddon()" ng-show="selectedAddon.is_selected">Remove Addon</a>
             <div class="row no-thanks-wrap margin-top-20">
                <p class="centeralign no-thanks">
                   <a ng-click="noThanksClicked()" class="sub-text no-text-case">No thanks</a>
@@ -72,7 +72,7 @@
             </div>
             <div class="content-desc">
                <p class="sub-text no-text-case margin-top-10">{{addon.title | limitTo: 25 }}{{addon.title.length > 25? '...' : ''}}<span ng-show="(addon.type === 'per room' || addon.type === 'flat rate') && addon.quantity > 0">&nbsp;({{addon.quantity}})</span></p>
-               <p class="sub-text  no-text-case margin-top-20">{{currencySymbol}}{{addon.price}} {{addon.price_label}}{{addon.suffix}}</p>
+               <p class="sub-text  no-text-case margin-top-20">{{currencySymbol}}{{addon.price}} {{addon.price_label}}&nbsp;{{addon.suffix}}</p>
             </div>
          </div>
          <a class="btn btn-template margin-top-80" ng-click="noThanksClicked()">Continue</a>
