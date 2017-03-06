@@ -826,13 +826,14 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
                 if (!changeRoomStatusToInspectedPermission) {
                     ngDialog.close();
-                    ngDialog.open({
+                    $timeout(function() {
+                        ngDialog.open({
                         template: '/assets/partials/housekeeping/popups/rvRoomStatusChangeRestrictAlert.html',
                         className: '',
                         closeByDocument: true,
                         scope: $scope
                     });
-
+                    }, 50);
                    return;
                 }
             }

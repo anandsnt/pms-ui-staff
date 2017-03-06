@@ -133,19 +133,18 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
                 var changeRoomStatusToInspectedPermission = rvPermissionSrv.getPermissionValue ('CHANGE_ROOM_STATUS_TO_INSPECTED');
 
                 if (!changeRoomStatusToInspectedPermission) {
-
-                    ngDialog.open({
-                        template: '/assets/partials/housekeeping/popups/rvRoomStatusChangeRestrictAlert.html',
-                        className: '',
-                        closeByDocument: true,
-                        scope: $scope
-                    });
-
+                    $timeout( function() {
+                        ngDialog.open({
+                            template: '/assets/partials/housekeeping/popups/rvRoomStatusChangeRestrictAlert.html',
+                            className: '',
+                            closeByDocument: true,
+                            scope: $scope
+                        });
+                    }, 50);
                     $scope.roomDetails.current_hk_status = currentHKStatus;
-
+                    return;
                 }
 
-                return;
             }
 
             currentHKStatus = $scope.roomDetails.current_hk_status;

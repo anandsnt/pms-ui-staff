@@ -86,12 +86,15 @@ angular.module('sntRover').controller('RVHKGuestTabCtrl', [
 
                 if (!changeRoomStatusToInspectedPermission) {
                     ngDialog.close();
-                    ngDialog.open({
-                        template: '/assets/partials/housekeeping/popups/rvRoomStatusChangeRestrictAlert.html',
-                        className: '',
-                        closeByDocument: true,
-                        scope: $scope
-                    });
+                    $timeout(function() {
+                        ngDialog.open({
+                            template: '/assets/partials/housekeeping/popups/rvRoomStatusChangeRestrictAlert.html',
+                            className: '',
+                            closeByDocument: true,
+                            scope: $scope
+                        });
+                    }, 50);
+
 
                    return;
                 }
