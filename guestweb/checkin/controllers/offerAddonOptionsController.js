@@ -1,5 +1,5 @@
 (function() {
-	var offerAddonOptionsController = function($scope, $rootScope, $state, checkinAddonService, $sce) {
+	var offerAddonOptionsController = function($scope, $rootScope, $state, checkinAddonService, $sce,sntGuestWebSrv) {
 
 		var selectedAddon = {},
 			setSelectedAddon = function(addon, isSingleAddonAvailable) {
@@ -20,7 +20,7 @@
 
 			if ($scope.selectedAddon.type === 'per room' || $scope.selectedAddon.type === 'flat rate') {
 				if ($scope.selectedAddon.quantity > 0) {
-					$scope.purchaseStatusText = 'Thanks for the purchase. Your addon will be added to your account.';
+					$scope.purchaseStatusText = angular.copy($scope.addonSuccesMessage);
 					$scope.showPurchaseStatus = true;
 				} else {
 					$scope.doneClicked();
@@ -28,7 +28,7 @@
 			} else {
 				$scope.selectedAddon.is_selected = !$scope.selectedAddon.is_selected;
 				if($scope.selectedAddon.is_selected){
-					$scope.purchaseStatusText = 'Thanks for the purchase. Your addon will be added to your account.';
+					$scope.purchaseStatusText = angular.copy($scope.addonSuccesMessage);
 					$scope.showPurchaseStatus = true;
 				}else{
 					$scope.doneClicked();
@@ -79,6 +79,34 @@
 				$scope.mode = 'LIST_VIEW';
 			}
 		};
+		var setText = function(cmsString, defaultString) {
+      		return cmsString.length > 0 ? cmsString : defaultString;
+    	};
+		(function () {
+			var screenCMSDetails1 = sntGuestWebSrv.extractAddonScreenDetails("ADDON-LIST");
+			$scope.addonListTitle = setText(screenCMSDetails1.screen_title, "Enhance Your Stay");
+
+			var screenCMSDetails2 = sntGuestWebSrv.extractAddonScreenDetails("ADDON-CONTINUE");
+			$scope.addonContinue = setText(screenCMSDetails2.screen_title, "Continue");
+
+			var screenCMSDetails3 = sntGuestWebSrv.extractAddonScreenDetails("ADDON-SKIP");
+			$scope.addonSkip = setText(screenCMSDetails3.screen_title, "No Thanks.");
+
+			var screenCMSDetails4 = sntGuestWebSrv.extractAddonScreenDetails("ADDON-PURCHASE");
+			$scope.addonPurchase = setText(screenCMSDetails4.screen_title, "Add");
+
+			var screenCMSDetails5 = sntGuestWebSrv.extractAddonScreenDetails("ADDON-REMOVE");
+			$scope.addonRemove = setText(screenCMSDetails5.screen_title, "Remove");
+
+			var screenCMSDetails6 = sntGuestWebSrv.extractAddonScreenDetails("ADDON-FAILURE");
+			$scope.addonFailureMessage = setText(screenCMSDetails6.screen_title, "Sorry, This addon can't be added to your reservation");
+
+			var screenCMSDetails7 = sntGuestWebSrv.extractAddonScreenDetails("ADDON-SUCCESS");
+			$scope.addonSuccesMessage = setText(screenCMSDetails7.screen_title, "Thanks for the purchase. Your addon will be added to your account.");
+			
+			var screenCMSDetails8 = sntGuestWebSrv.extractAddonScreenDetails("ADDON-SELECT-QTY");
+			$scope.addonSelectQty = setText(screenCMSDetails8.screen_title, "Select quantity");
+		})();
 
 		(function() {
 			$scope.addonList = [];
@@ -96,7 +124,7 @@
 	};
 
 	var dependencies = [
-		'$scope', '$rootScope', '$state', 'checkinAddonService', '$sce',
+		'$scope', '$rootScope', '$state', 'checkinAddonService', '$sce', 'sntGuestWebSrv',
 		offerAddonOptionsController
 	];
 

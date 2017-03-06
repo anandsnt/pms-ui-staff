@@ -4,13 +4,26 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 		cssMappingList = {},
 		templateMappingList = {},
 		cms_screen_details = [],
+		addon_screen_text_details = [],
 		that = this;
+
+	var extarctAddonScreenTextDetails = function  (response) {
+		that.addon_screen_text_details = _.find(response.screen_list, function(cms_item) {
+			return cms_item.screen_name === "ADDONS";
+		});
+		// console.log(that.addon_screen_text_details);
+	};
+
+	this.extractAddonScreenDetails = function(screen_identifier) {
+		return extractScreenDetails(screen_identifier, that.addon_screen_text_details);
+	};
 
 	this.fetchScreenWiseData = function(hotel_identifier) {
 		var deferred = $q.defer();
 		var url = '/api/hotels/custom_cms_messages.json?application=ZEST_WEB&hotel_identifier=' + hotel_identifier;
 
 		$http.get(url).success(function(response) {
+				extarctAddonScreenTextDetails(response);
 				that.cms_screen_details = _.find(response.screen_list, function(cms_item) {
 					return cms_item.screen_name === "ECI SCREENS";
 				});
