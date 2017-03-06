@@ -135,7 +135,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		}
 
         var HK_STATUS = {
-            INSPECTED : 'INSPECTED'
+            INSPECTED: 'INSPECTED'
         };
 
 		$scope.changeView = function(view) {
