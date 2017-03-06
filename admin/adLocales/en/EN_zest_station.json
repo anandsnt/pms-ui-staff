@@ -100,8 +100,12 @@
 "TIER_3" : "Tier 3 (%)",
 "MULTIPLE_ROOM_UPSELL_DISPLAY_STYLE" : "Multiple room upsell offer Display style:",
 "STYLE_A" : "Style A",
-"STYLE_B" : "Style B"
+"STYLE_B" : "Style B",
 
+
+"STATION_MOBILE_PHONE_KEY_EMAIL_HEADER":"Get Mobile Phone Key Email",
+
+"TEXT_1_MOBILE_PHONE_KEY_EMAIL": "Text"
 
 
 
