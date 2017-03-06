@@ -71,7 +71,7 @@
                <img ng-src="{{addon.image}}" alt="" width="100%" height="80">
             </div>
             <div class="content-desc">
-               <p class="sub-text no-case margin-top-20">{{addon.title | limitTo: 20 }}{{addon.title.length > 20? '...' : ''}}<span ng-show="(addon.type === 'per room' || addon.type === 'flat rate') && addon.quantity > 0">&nbsp;({{addon.quantity}})</span></p>
+               <p class="sub-text no-case">{{addon.title | limitTo: 17 }}{{addon.title.length > 17? '...' : ''}}<span ng-show="(addon.type === 'per room' || addon.type === 'flat rate') && addon.quantity > 0">&nbsp;({{addon.quantity}})</span></p>
                <p class="sub-text  no-case margin-top-20">{{currencySymbol}}{{addon.price}} {{addon.price_label}}{{addon.suffix}}</p>
             </div>
          </div>
