@@ -36,13 +36,16 @@
             <div ng-hide="showPurchaseStatus">
                 <p class="sub-main-text no-case thick-text margin-top-20">{{currencySymbol}}{{selectedAddon.price}} {{selectedAddon.type}}</p>
                 <p class="sub-main-text no-case italics-text margin-top-20">{{selectedAddon.description}}</p>
-                <div class="row" ng-show="selectedAddon.type === 'per room' || selectedAddon.type === 'flat rate'">
-                    Select Qunatity
-                    <div class="select-style eta-single">
-                        <select ng-model="selectedAddon.quantity">
-                            <option value="">select</option>
-                            <option value="{{i}}" ng-repeat="i in quantityList">{{i}}</option>
-                        </select>
+                <br/>
+                <div ng-show="selectedAddon.type === 'per room' || selectedAddon.type === 'flat rate'">
+                    <p class="sub-main-text"> Select Quantity</p>
+                    <div class="row">
+                        <div class="select-style addon-numbers">
+                            <select ng-model="selectedAddon.quantity">
+                                <option value="">select</option>
+                                <option value="{{i}}" ng-repeat="i in quantityList">{{i}}</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <!-- submit -->

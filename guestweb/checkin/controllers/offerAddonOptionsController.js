@@ -8,6 +8,7 @@
 				$scope.showPurchaseStatus = false;
 				$scope.purchaseStatusText = '';
 				$scope.mode = 'DETAILED_VIEW';
+				$(document.body).scrollTop(0);
 			};
 
 		/**
@@ -41,6 +42,7 @@
 		$scope.doneClicked = function() {
 			if ($scope.addonList.length > 0) {
 				$scope.mode = 'LIST_VIEW';
+				$(document.body).scrollTop(0);
 			} else {
 				$rootScope.skipedAddons = true;
 				$state.go('preCheckinStatus');
