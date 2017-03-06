@@ -112,7 +112,7 @@ sntRover.controller('reservationDetailsController',
 				param: {
 					id: $rootScope.stayCardStateBookMark.previousStateParams.id,
 					activeTab: "DIARY",
-					isBackToDiary: true
+					isFromStayCard: true
 				}
 			};
 		} else if ($stateParams.isFromDiary && !$rootScope.isReturning()) {
@@ -886,21 +886,10 @@ sntRover.controller('reservationDetailsController',
 
 		$scope.showDiaryScreen = function() {
 			RVReservationCardSrv.checkinDateForDiary = $scope.reservationData.reservation_card.arrival_date.replace(/-/g, '/');
-			if ($rootScope.isHourlyRateOn) {
-				$state.go('rover.diary', {
-					reservation_id: $scope.reservationData.reservation_card.reservation_id,
-					checkin_date: $scope.reservationData.reservation_card.arrival_date
-				});
-			} else {
-
-				$state.go('rover.nightlyDiary', {
-					reservation_id: $scope.reservationData.reservation_card.reservation_id,
-					start_date: $scope.reservationData.reservation_card.arrival_date,
-					isFromStayCard: true,
-					room_id: $scope.reservationData.reservation_card.room_id
-				});
-			}
-
+			$state.go('rover.diary', {
+				reservation_id: $scope.reservationData.reservation_card.reservation_id,
+				checkin_date: $scope.reservationData.reservation_card.arrival_date
+			});
 		};
 
 		$scope.handleAddonsOnReservation = function(isPackageExist) {
