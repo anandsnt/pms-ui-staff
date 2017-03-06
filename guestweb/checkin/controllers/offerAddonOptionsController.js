@@ -1,5 +1,5 @@
 (function() {
-	var offerAddonOptionsController = function($scope, $rootScope, $state, checkinAddonService) {
+	var offerAddonOptionsController = function($scope, $rootScope, $state, checkinAddonService, $sce) {
 
 		var selectedAddon = {},
 			setSelectedAddon = function(addon, isSingleAddonAvailable) {
@@ -8,30 +8,14 @@
 				$scope.showPurchaseStatus = false;
 				$scope.purchaseStatusText = '';
 				$scope.mode = 'DETAILED_VIEW';
+				$scope.selectedAddonDescrition = $sce.trustAsHtml($scope.selectedAddon.description);
 				$(document.body).scrollTop(0);
 			};
 
-		/**
-		 * [addonSelected user selected one of the addons]
-		 * @param  {[type]} selectedAddonId [description]
-		 * @return {[type]}                 [description]
-		 */
 		$scope.addonSelected = function(selectedAddon) {
-			// $scope.selectedAddon = selectedAddon;
 			setSelectedAddon(selectedAddon, false);
 		};
 
-		/**
-		 * [removeAddedAddons once you have purchased addon, remove it from list]
-		 * @param  {[type]} selectedAddon [description]
-		 * @return {[type]}               [description]
-		 */
-		var removeAddedAddons = function(selectedAddon) {
-			//remove the purchased addon from list
-			$scope.addonList = _.reject($scope.addonList, function(addon) {
-				return addon.id == selectedAddon.id;
-			});
-		};
 		$scope.purchaseAddon = function() {
 
 			if ($scope.selectedAddon.type === 'per room' || $scope.selectedAddon.type === 'flat rate') {
@@ -107,7 +91,7 @@
 	};
 
 	var dependencies = [
-		'$scope', '$rootScope', '$state', 'checkinAddonService',
+		'$scope', '$rootScope', '$state', 'checkinAddonService', '$sce',
 		offerAddonOptionsController
 	];
 
