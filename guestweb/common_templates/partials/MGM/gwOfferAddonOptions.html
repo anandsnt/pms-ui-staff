@@ -68,10 +68,10 @@
          <p class="sub-main-text no-case margin-top-20">showing {{addonList.length}} of {{addonList.length}}</p>
          <div ng-repeat="addon in addonList" class="addon-container" ng-click="addonSelected(addon)" ng-class="{'selected':addon.is_selected || addon.quantity > 0}">
             <div class="content-image">
-               <img ng-src="{{addon.image}}" alt="" width="110" height="80">
+               <img ng-src="{{addon.image}}" alt="" width="100%" height="80">
             </div>
             <div class="content-desc">
-               <p class="sub-text no-case margin-top-20">{{addon.title}}<span ng-show="(addon.type === 'per room' || addon.type === 'flat rate') && addon.quantity > 0">&nbsp;({{addon.quantity}})</span></p>
+               <p class="sub-text no-case margin-top-20">{{addon.title | limitTo: 20 }}{{addon.title.length > 20? '...' : ''}}<span ng-show="(addon.type === 'per room' || addon.type === 'flat rate') && addon.quantity > 0">&nbsp;({{addon.quantity}})</span></p>
                <p class="sub-text  no-case margin-top-20">{{currencySymbol}}{{addon.price}} {{addon.price_label}}{{addon.suffix}}</p>
             </div>
          </div>
