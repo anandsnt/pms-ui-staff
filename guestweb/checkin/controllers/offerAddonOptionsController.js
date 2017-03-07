@@ -1,14 +1,18 @@
 (function() {
-	var offerAddonOptionsController = function($scope, $rootScope, $state, checkinAddonService, $sce,sntGuestWebSrv) {
+	var offerAddonOptionsController = function($scope, $rootScope, $state, checkinAddonService, $sce, sntGuestWebSrv) {
 
 		var selectedAddon = {},
 			setSelectedAddon = function(addon, isSingleAddonAvailable) {
-				addon.title = isSingleAddonAvailable ? 'Would you like to add ' + addon.title + ' to your stay?' : addon.title;
 				$scope.selectedAddon = addon;
 				$scope.showPurchaseStatus = false;
 				$scope.purchaseStatusText = '';
 				$scope.mode = 'DETAILED_VIEW';
 				$scope.selectedAddonDescrition = $sce.trustAsHtml($scope.selectedAddon.description);
+				if ($scope.addonList.length > 1) {
+					$scope.addonPurchaseMsgForDisplay = $scope.addonPurchaseMsg.replace("@addon_name@", $scope.selectedAddon.title);
+				} else {
+					$scope.addonPurchaseMsgForDisplay = $scope.selectedAddon.title;
+				}
 				$(document.body).scrollTop(0);
 			};
 
@@ -27,14 +31,14 @@
 				}
 			} else {
 				$scope.selectedAddon.is_selected = !$scope.selectedAddon.is_selected;
-				if($scope.selectedAddon.is_selected){
+				if ($scope.selectedAddon.is_selected) {
 					$scope.purchaseStatusText = angular.copy($scope.addonSuccesMessage);
 					$scope.showPurchaseStatus = true;
-				}else{
+				} else {
 					$scope.doneClicked();
 				}
-				
 			}
+			$(document.body).scrollTop(0);
 		};
 
 		$scope.doneClicked = function() {
@@ -80,9 +84,9 @@
 			}
 		};
 		var setText = function(cmsString, defaultString) {
-      		return cmsString.length > 0 ? cmsString : defaultString;
-    	};
-		(function () {
+			return cmsString.length > 0 ? cmsString : defaultString;
+		};
+		(function() {
 			var screenCMSDetails1 = sntGuestWebSrv.extractAddonScreenDetails("ADDON-LIST");
 			$scope.addonListTitle = setText(screenCMSDetails1.screen_title, "Enhance Your Stay");
 
@@ -103,9 +107,12 @@
 
 			var screenCMSDetails7 = sntGuestWebSrv.extractAddonScreenDetails("ADDON-SUCCESS");
 			$scope.addonSuccesMessage = setText(screenCMSDetails7.screen_title, "Thanks for the purchase. Your addon will be added to your account.");
-			
+
 			var screenCMSDetails8 = sntGuestWebSrv.extractAddonScreenDetails("ADDON-SELECT-QTY");
 			$scope.addonSelectQty = setText(screenCMSDetails8.screen_title, "Select quantity");
+
+			var screenCMSDetails9 = sntGuestWebSrv.extractAddonScreenDetails("ADDON-PURCHASE-MSG");
+			$scope.addonPurchaseMsg = setText(screenCMSDetails9.screen_title, "Would you like to add @addon_name@ to your reservation?.");
 		})();
 
 		(function() {

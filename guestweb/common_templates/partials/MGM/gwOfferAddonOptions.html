@@ -31,7 +31,7 @@
    <div class="row" ng-hide="isLoading || netWorkError">
       <!-- detailed view -->
       <div class="col-md-8 top-spacing sm-no-top-spacing section-container float-none" ng-show="mode === 'DETAILED_VIEW'">
-         <p class="main-text no-text-case bold-text">{{selectedAddon.title}}</p>
+         <p class="sub-main-text no-text-case bold-text" ng-bind="addonPurchaseMsgForDisplay"></p>
          <img ng-src="{{selectedAddon.image}}" class="content-image  margin-top-20" alt="">
          <div ng-hide="showPurchaseStatus" class="addon-details">
             <p class="sub-main-text margin-top-20 no-text-case price-details">{{currencySymbol}}{{selectedAddon.price}} {{selectedAddon.price_label}}&nbsp;{{selectedAddon.suffix}}</p>
