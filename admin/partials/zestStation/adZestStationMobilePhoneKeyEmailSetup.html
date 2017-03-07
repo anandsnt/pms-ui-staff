@@ -1,19 +1,19 @@
-<ad-common-parts-in-form-dir on-save-button-click="saveZestMobileAppMarketingDetails" header-caption="STATION_MOBILE_PHONE_KEY_EMAIL_HEADER">
+<ad-common-parts-in-form-dir on-save-button-click="saveSettings" header-caption="STATION_MOBILE_PHONE_KEY_EMAIL_HEADER">
     <fieldset class="holder left">
         <ad-form-sub-title title="STATION_MOBILE_PHONE_KEY_EMAIL_SETUP"></ad-form-sub-title>
 
-        <ad-textbox value="data.room_ready_email_subject" name="app-name" id="app-name" label="SUBJECT" styleclass="full-width"></ad-textbox>
+        <ad-textbox value="data.mobile_phone_key_email.subject" name="app-name" id="app-name" label="SUBJECT" styleclass="full-width"></ad-textbox>
         
 
-        <ad-textarea id='app-body-text' rows="4" div-class="full-width" text-area-class="full-width" value="data.room_ready_email_greetings_text" label="{{ 'TEXT_1_MOBILE_PHONE_KEY_EMAIL' | translate}}" placeholder=""></ad-textarea>
+        <ad-textarea id='app-body-text' rows="4" div-class="full-width" text-area-class="full-width" value="data.mobile_phone_key_email.text" label="{{ 'TEXT_1_MOBILE_PHONE_KEY_EMAIL' | translate}}" placeholder=""></ad-textarea>
         
 
         <ad-form-sub-title title="INCLUDE_BANNERS"></ad-form-sub-title>
         
-        <ad-toggle-button id='ios-banner-include' ng-class="{'overlay':!data.ios_app_enabled}" is-checked="data.ios_app_show_banner" label="{{'APP_STORE'| translate}}" div-class="full-width" is-disabled="!data.ios_app_enabled"></ad-toggle-button>
+        <ad-toggle-button id='ios-banner-include' ng-class="{'overlay':!data.mobile_phone_key_email.ios_app_enabled}" is-checked="data.mobile_phone_key_email.include_ios_banner" label="{{'APP_STORE'| translate}}" div-class="full-width" is-disabled="!data.mobile_phone_key_email.ios_app_enabled"></ad-toggle-button>
         
 
-        <ad-toggle-button id='android-banner-include' ng-class="{'overlay':!data.android_app_enabled}" is-checked="data.android_app_show_banner" label="{{'GOOGLE_PLAY'| translate}}" div-class="full-width" is-disabled="!data.android_app_enabled"></ad-toggle-button>
+        <ad-toggle-button id='android-banner-include' ng-class="{'overlay':!data.mobile_phone_key_email.android_app_enabled}" is-checked="data.mobile_phone_key_email.include_android_banner" label="{{'GOOGLE_PLAY'| translate}}" div-class="full-width" is-disabled="!data.mobile_phone_key_email.android_app_enabled"></ad-toggle-button>
         
 
     </fieldset>
