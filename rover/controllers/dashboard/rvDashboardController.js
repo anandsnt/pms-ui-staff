@@ -1,7 +1,7 @@
 sntRover.controller('RVdashboardController',
     ['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata',
-        '$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes', 'jsMappings',
-        function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,
+        '$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes', 'jsMappings', '$log',
+        function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata, $log,
                  $rootScope, $filter, $state, RVWorkstationSrv, roomTypes, jsMappings) {
 
             // setting the heading of the screen
@@ -21,10 +21,19 @@ sntRover.controller('RVdashboardController',
              * @returns {undefined} undefined
              */
             function doCBAPowerFailureCheck() {
+
+                var checkPendingPayments = function() {
+                    $scope.$emit('CBA_PAYMENT_POWER_FAILURE_CHECK');
+                };
+
+                sntapp.cardReader.observeCBADeviceConnection({
+                    successCallBack: checkPendingPayments,
+                    failureCallBack: function(err) {
+                        $log.warn('failure callback from observeCBADeviceConnection method', err);
+                    }
+                });
                 jsMappings.loadPaymentMapping().then(function() {
-                    jsMappings.loadPaymentModule().then(function() {
-                        $scope.$emit('CBA_PAYMENT_POWER_FAILURE_CHECK');
-                    });
+                    jsMappings.loadPaymentModule().then(checkPendingPayments);
                 });
             }
 
