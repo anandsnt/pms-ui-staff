@@ -35,6 +35,12 @@ angular.module('sntPay').controller('payCBACtrl',
                     });
                 },
                 onSubmitFailure = function(err) {
+                    /**
+                     * -- err codes --
+                     * 143 - The transaction failed
+                     * 144 - Terminal disconnected during transaction
+                     * 145 - A transaction is pending with the terminal
+                     */
                     $log.warn('doPayment Failure response', err);
                     sntCBAGatewaySrv.updateTransactionFailure(
                         transaction.id,
@@ -45,7 +51,13 @@ angular.module('sntPay').controller('payCBACtrl',
                         $log.warn('doPayment Failure response', errorMessage);
                         sntCBAGatewaySrv.finishTransaction(transaction.id);
                         $scope.$emit('CBA_PAYMENT_FAILED', errorMessage);
-                        $scope.$emit('hideLoader');
+
+                        if (parseInt(err.RVErrorCode, 10) === 145) {
+                            // NOTE: Keep the user blocked while making a call to getLastTransaction
+                            sntCBAGatewaySrv.checkLastTransactionStatus();
+                        } else {
+                            $scope.$emit('hideLoader');
+                        }
                     }, errorMessage => {
                         $scope.$emit('hideLoader');
                         $scope.$emit('CBA_PAYMENT_FAILED', errorMessage.data);
