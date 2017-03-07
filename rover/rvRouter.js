@@ -18,7 +18,7 @@ angular.module('sntRover').config([
          * state added to show single url throughout the app
          */
         $stateProvider.state('top', {
-            url: '/staff/h/:uuid',
+            url: '/staff/h/:uuid?state&params',
             controller: 'topController'
         });
 

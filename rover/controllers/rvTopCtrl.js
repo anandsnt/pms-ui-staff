@@ -13,7 +13,14 @@ angular.module('sntRover').controller('topController',
                 $rootScope.$on('$locationChangeStart', routeChange);
 
                 $window.history.pushState("initial", "Showing Dashboard", "/staff/h/" + $stateParams.uuid);
-                $state.go('rover.dashboard');
+                if ($stateParams.state) {
+                    var params = ($stateParams.params && angular.fromJson(decodeURI($stateParams.params))) || {};
+
+                    $state.go($stateParams.state.replace(/-/g,'.'), params);
+                } else {
+                    $state.go('rover.dashboard');
+                }
+
             })();
         }
     ]
