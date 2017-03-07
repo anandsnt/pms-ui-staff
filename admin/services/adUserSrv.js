@@ -1,5 +1,5 @@
-admin.service('ADUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'ADBaseWebSrv','ADHotelListSrv',
-	function( $http, $q, ADBaseWebSrv, ADBaseWebSrvV2, ADBaseWebSrv, ADHotelListSrv) {
+admin.service('ADUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'ADHotelListSrv',
+	function( $http, $q, ADBaseWebSrv, ADBaseWebSrvV2, ADHotelListSrv) {
 
 
 	var that = this;
@@ -74,6 +74,10 @@ admin.service('ADUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'AD
 		var url = '/admin/users/' + data.user_id;
 		var updateData = data;
 
+        if (data.isSNTAdmin) {
+            url += '?hotel_uuid=' + ADHotelListSrv.getSelectedProperty();
+        }
+
 		ADBaseWebSrv.putJSON(url, data).then(function(data) {
 			that.updateUserDataOnUpdate(updateData.user_id, "full_name", updateData.first_name + " " + updateData.last_name);
 			that.updateUserDataOnUpdate(updateData.user_id, "email", updateData.email);
@@ -102,6 +106,10 @@ admin.service('ADUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'AD
 		};
 		var deferred = $q.defer();
 		var url = '/admin/users';
+
+        if (data.isSNTAdmin) {
+            url += '?hotel_uuid=' + ADHotelListSrv.getSelectedProperty();
+        }
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 			newDataToArray.id = data.user_id;

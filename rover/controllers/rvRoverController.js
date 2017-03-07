@@ -1,20 +1,27 @@
-sntRover.controller('roverController',
-
-  ['$rootScope', '$scope', '$state',
-  '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv',
-
-  'ngDialog', '$translate', 'hotelDetails',
-  'userInfoDetails', '$stateParams',
-
-  'rvMenuSrv', 'rvPermissionSrv', '$timeout', 'rvUtilSrv', 'jsMappings', '$q', '$sce', '$log', '$location',
-
-  function($rootScope, $scope, $state,
-    $window, RVDashboardSrv, RVHotelDetailsSrv,
-
-    ngDialog, $translate, hotelDetails,
-    userInfoDetails, $stateParams,
-
-    rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce, $log, $location) {
+sntRover.controller('roverController', [
+    '$rootScope',
+    '$scope',
+    '$state',
+    '$window',
+    'RVDashboardSrv',
+    'RVHotelDetailsSrv',
+    'ngDialog',
+    '$translate',
+    'hotelDetails',
+    'userInfoDetails',
+    '$stateParams',
+    'rvMenuSrv',
+    'rvPermissionSrv',
+    '$timeout',
+    'rvUtilSrv',
+    'jsMappings',
+    '$q',
+    '$sce',
+    '$log',
+    'sntAuthorizationSrv',
+    function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv,
+             ngDialog, $translate, hotelDetails, userInfoDetails, $stateParams,
+             rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce, $log, sntAuthorizationSrv) {
 
 
     $rootScope.isOWSErrorShowing = false;
@@ -506,7 +513,7 @@ sntRover.controller('roverController',
       else if (subMenu === "adminSettings") {
             // CICO-9816 bug fix - Akhila
             $('body').addClass('no-animation');
-            $window.location.href = "/admin";
+            $window.location.href = "/admin/h/" + sntAuthorizationSrv.getProperty();
       }
       else if (subMenu === "changePassword") {
          openUpdatePasswordPopup();

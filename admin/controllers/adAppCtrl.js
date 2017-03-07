@@ -74,13 +74,11 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			if ($scope.isStandAlone) {
 				$scope.menu = [{
 					title: "MENU_DASHBOARD",
-					action: "staff#!/staff/dashboard/",
+					action: "staff/",
 					menuIndex: "dashboard",
 					submenu: [],
 					iconClass: "icon-dashboard"
 				},
-
-
 				{
 					title: "MENU_FRONT_DESK",
 

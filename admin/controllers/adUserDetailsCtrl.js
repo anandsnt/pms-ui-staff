@@ -213,6 +213,10 @@ admin.controller('ADUserDetailsCtrl',
 			$state.go('admin.users', { id: $stateParams.hotelId });
 		};
 
+        if ($scope.isAdminSnt) {
+			data.isSNTAdmin = true;
+        }
+
 		if ($scope.mod === "add") {
 			$scope.invokeApi(ADUserSrv.saveUserDetails, data, successCallback);
 		} else {

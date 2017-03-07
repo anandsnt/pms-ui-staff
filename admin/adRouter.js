@@ -12,7 +12,7 @@ admin.config([
         $urlRouterProvider.otherwise('/');
 
         $stateProvider.state('top', {
-            url: '/admin/',
+            url: '/admin/h/:uuid',
             controller: 'adTopCtrl'
         });
 
