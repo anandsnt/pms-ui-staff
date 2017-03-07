@@ -83,39 +83,25 @@
 				$scope.mode = 'LIST_VIEW';
 			}
 		};
-		var setText = function(cmsString, defaultString) {
-			return cmsString.length > 0 ? cmsString : defaultString;
-		};
-		(function() {
-			var screenCMSDetails1 = sntGuestWebSrv.extractAddonScreenDetails("ADDON-LIST");
-			$scope.addonListTitle = setText(screenCMSDetails1.screen_title, "Enhance Your Stay");
-
-			var screenCMSDetails2 = sntGuestWebSrv.extractAddonScreenDetails("ADDON-CONTINUE");
-			$scope.addonContinue = setText(screenCMSDetails2.screen_title, "Continue");
-
-			var screenCMSDetails3 = sntGuestWebSrv.extractAddonScreenDetails("ADDON-SKIP");
-			$scope.addonSkip = setText(screenCMSDetails3.screen_title, "No Thanks.");
-
-			var screenCMSDetails4 = sntGuestWebSrv.extractAddonScreenDetails("ADDON-PURCHASE");
-			$scope.addonPurchase = setText(screenCMSDetails4.screen_title, "Add");
-
-			var screenCMSDetails5 = sntGuestWebSrv.extractAddonScreenDetails("ADDON-REMOVE");
-			$scope.addonRemove = setText(screenCMSDetails5.screen_title, "Remove");
-
-			var screenCMSDetails6 = sntGuestWebSrv.extractAddonScreenDetails("ADDON-FAILURE");
-			$scope.addonFailureMessage = setText(screenCMSDetails6.screen_title, "Sorry, This addon can't be added to your reservation");
-
-			var screenCMSDetails7 = sntGuestWebSrv.extractAddonScreenDetails("ADDON-SUCCESS");
-			$scope.addonSuccesMessage = setText(screenCMSDetails7.screen_title, "Thanks for the purchase. Your addon will be added to your account.");
-
-			var screenCMSDetails8 = sntGuestWebSrv.extractAddonScreenDetails("ADDON-SELECT-QTY");
-			$scope.addonSelectQty = setText(screenCMSDetails8.screen_title, "Select quantity");
-
-			var screenCMSDetails9 = sntGuestWebSrv.extractAddonScreenDetails("ADDON-PURCHASE-MSG");
-			$scope.addonPurchaseMsg = setText(screenCMSDetails9.screen_title, "Would you like to add @addon_name@ to your reservation?.");
-		})();
 
 		(function() {
+			var fetchScreenDetails = function(screenId) {
+				return sntGuestWebSrv.extractAddonScreenDetails(screenId);
+			};
+			var setText = function(cmsString, defaultString) {
+				return cmsString.length > 0 ? cmsString : defaultString;
+			};
+
+			$scope.addonListTitle = setText(fetchScreenDetails("ADDON-LIST").screen_title, "Enhance Your Stay");
+			$scope.addonContinue = setText(fetchScreenDetails("ADDON-CONTINUE").screen_title, "Continue");
+			$scope.addonSkip = setText(fetchScreenDetails("ADDON-SKIP").screen_title, "No Thanks.");
+			$scope.addonPurchase = setText(fetchScreenDetails("ADDON-PURCHASE").screen_title, "Add");
+			$scope.addonRemove = setText(fetchScreenDetails("ADDON-REMOVE").screen_title, "Remove");
+			$scope.addonFailureMessage = setText(fetchScreenDetails("ADDON-FAILURE").screen_title, "Sorry, This addon can't be added to your reservation");
+			$scope.addonSuccesMessage = setText(fetchScreenDetails("ADDON-SUCCESS").screen_title, "Thanks for the purchase. Your addon will be added to your account.");
+			$scope.addonSelectQty = setText(fetchScreenDetails("ADDON-SELECT-QTY").screen_title, "Select quantity");
+			$scope.addonPurchaseMsg = setText(fetchScreenDetails("ADDON-PURCHASE-MSG").screen_title, "Would you like to add @addon_name@ to your stay?.");
+
 			$scope.addonList = [];
 			$scope.isLoading = true;
 			$scope.quantityList = _.range(21);
