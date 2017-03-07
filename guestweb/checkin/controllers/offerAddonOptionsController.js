@@ -8,7 +8,7 @@
 				$scope.purchaseStatusText = '';
 				$scope.mode = 'DETAILED_VIEW';
 				$scope.selectedAddonDescrition = $sce.trustAsHtml($scope.selectedAddon.description);
-				if ($scope.addonList.length > 1) {
+				if ($scope.addonList.length === 1) {
 					$scope.addonPurchaseMsgForDisplay = $scope.addonPurchaseMsg.replace("@addon_name@", $scope.selectedAddon.title);
 				} else {
 					$scope.addonPurchaseMsgForDisplay = $scope.selectedAddon.title;

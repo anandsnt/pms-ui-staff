@@ -31,8 +31,8 @@
     <div class="row" ng-hide="isLoading || netWorkError">
         <!-- detailed view -->
         <div class="col-md-8 top-spacing sm-no-top-spacing section-container float-none" ng-show="mode === 'DETAILED_VIEW'">
-            <p class="sub-main-text no-text-case bold-text" ng-bind="addonPurchaseMsgForDisplay"></p>
             <img ng-src="{{selectedAddon.image}}" class="content-image  margin-top-20" alt="">
+            <p class="main-text no-text-case bold-text margin-top-20" ng-bind="addonPurchaseMsgForDisplay"></p>
             <div ng-hide="showPurchaseStatus" class="addon-details">
                 <p class="sub-main-text margin-top-20 no-text-case price-details">{{currencySymbol}}{{selectedAddon.price}} {{selectedAddon.price_label}}&nbsp;{{selectedAddon.suffix}}</p>
                 <p class="sub-main-text margin-top-20" ng-bind-html="selectedAddonDescrition"></p>
@@ -64,18 +64,18 @@
         </div>
         <!-- List view -->
         <div class="col-md-8 top-spacing sm-no-top-spacing section-container float-none" ng-show="mode === 'LIST_VIEW'">
-            <p class="main-text no-text-case margin-top-20">{{addonListTitle}}</p>
+            <p class="main-text no-text-case">{{addonListTitle}}</p>
             <p class="sub-main-text no-text-case margin-top-20">showing {{addonList.length}} of {{addonList.length}}</p>
             <div ng-repeat="addon in addonList" class="addon-container" ng-click="addonSelected(addon)" ng-class="{'selected':addon.is_selected || addon.quantity > 0}">
                 <div class="content-image">
                     <img ng-src="{{addon.image}}" alt="" width="100%" height="auto">
                 </div>
                 <div class="content-desc">
-                    <p class="sub-text no-text-case margin-top-10">{{addon.title | limitTo: 25 }}{{addon.title.length > 25? '...' : ''}}<span ng-show="(addon.type === 'per room' || addon.type === 'flat rate') && addon.quantity > 0">&nbsp;({{addon.quantity}})</span></p>
+                    <p class="sub-text no-text-case margin-top-10">{{addon.title | limitTo: 50 }}{{addon.title.length > 50? '...' : ''}}<span ng-show="(addon.type === 'per room' || addon.type === 'flat rate') && addon.quantity > 0">&nbsp;({{addon.quantity}})</span></p>
                     <p class="sub-text  no-text-case margin-top-20">{{currencySymbol}}{{addon.price}} {{addon.price_label}}&nbsp;{{addon.suffix}}</p>
                 </div>
             </div>
-            <a class="btn btn-template margin-top-80" ng-click="noThanksClicked()">{{addonContinue}}</a>
+            <a class="btn btn-template margin-top-20" ng-click="noThanksClicked()">{{addonContinue}}</a>
             <div class="row no-thanks-wrap margin-top-20">
                 <p class="centeralign no-thanks">
                     <a ng-click="noThanksClicked()" class="sub-text no-text-case">{{addonSkip}}</a>
