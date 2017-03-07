@@ -24,9 +24,11 @@
 
 			if ($scope.selectedAddon.type === 'per room' || $scope.selectedAddon.type === 'flat rate') {
 				if ($scope.selectedAddon.quantity > 0) {
+					$scope.selectedAddon.is_selected = true;
 					$scope.purchaseStatusText = angular.copy($scope.addonSuccesMessage);
 					$scope.showPurchaseStatus = true;
 				} else {
+					$scope.selectedAddon.is_selected = false;
 					$scope.doneClicked();
 				}
 			} else {
@@ -60,6 +62,16 @@
 			}
 		};
 
+		$scope.hideAddAddonButton = function() {
+			if (typeof $scope.selectedAddon === "undefined") {
+				return false;
+			} else if ($scope.selectedAddon.type === 'per room' || $scope.selectedAddon.type === 'flat rate') {
+				return $scope.selectedAddon.is_selected && parseInt($scope.selectedAddon.quantity) === 0;
+			} else {
+				return $scope.selectedAddon.is_selected
+			}
+		};
+
 		var addonFetchSuccess = function(addons) {
 			var selectedAddonIds = [5]; //already selected list for the reservation
 			_.each(selectedAddonIds, function(selectedAddonId) {
@@ -73,13 +85,16 @@
 			});
 			$scope.addonList = addons;
 			if (addons.length === 0) {
+				// no addons present
 				$rootScope.skipedAddons = true;
 				$state.go('preCheckinStatus');
 			} else if (addons.length === 1) {
+				// single addon
 				var isSingleAddonAvailable = true;
 				selectedAddon = addons[0];
 				setSelectedAddon(selectedAddon, isSingleAddonAvailable);
 			} else {
+				// Multi addons
 				$scope.mode = 'LIST_VIEW';
 			}
 		};
@@ -91,7 +106,7 @@
 			var setText = function(cmsString, defaultString) {
 				return cmsString.length > 0 ? cmsString : defaultString;
 			};
-
+			// set screen texts from CMS,  find using screen id
 			$scope.addonListTitle = setText(fetchScreenDetails("ADDON-LIST").screen_title, "Enhance Your Stay");
 			$scope.addonContinue = setText(fetchScreenDetails("ADDON-CONTINUE").screen_title, "Continue");
 			$scope.addonSkip = setText(fetchScreenDetails("ADDON-SKIP").screen_title, "No Thanks.");
@@ -104,6 +119,7 @@
 
 			$scope.addonList = [];
 			$scope.isLoading = true;
+			$scope.selectedAddon = {};
 			$scope.quantityList = _.range(21);
 			var params = {};
 			checkinAddonService.getAddonList(params).then(function(response) {
