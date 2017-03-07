@@ -84,7 +84,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 	    title: 'Upgrade - Check-in'
 	 }).state('checkinKeys', {
 	 	url: '/checkinKeys',
-	 	templateUrl: '/assets/common_templates/partials/checkin/gwCheckinFinal.html',
+	 	templateUrl: '/assets/common_templates/partials/checkin/gwNewCheckinFinal.html',
 	 	controller: 'checkInKeysController',
 	 	title: 'Keys - Check-in'
 	 }).state('checkinSuccess', {
@@ -108,7 +108,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 
     $stateProvider.state('preCheckinStatus', {
 		url: '/preCheckinStatus',
-		templateUrl: '/assets/common_templates/partials/checkin/gwPreCheckinFinal.html',
+		templateUrl: '/assets/common_templates/partials/checkin/gwNewPreCheckinFinal.html',
 		controller: 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
 	 }).state('checkinCcVerification', {
