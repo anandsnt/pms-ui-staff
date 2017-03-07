@@ -559,7 +559,10 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		$scope.deviceNotConnected = false;
 		$scope.keysPrinted = false;
 		$scope.showPrintKeyOptions = true;
-
+        // fixed as part of CICO-38352
+        if (!$scope.$$phase) {
+            $scope.$apply();
+        }
 	};
 
 	var showKeysPrinted = function() {
