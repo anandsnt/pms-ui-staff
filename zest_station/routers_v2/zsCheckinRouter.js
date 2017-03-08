@@ -103,7 +103,7 @@ sntZestStation.config(['$stateProvider',
       });
 		// pickup key dispense
         $stateProvider.state('zest_station.checkinKeyDispense', {
-            url: '/checkinKeyDispense/:reservation_id/:room_no/:first_name/:guest_id/:email',
+            url: '/checkinKeyDispense/:reservation_id/:room_no/:first_name/:guest_id/:email/:from_mobile_key_email_update/:physical_key_selected',
             templateUrl: '/assets/partials_v2/checkin/zscheckinKeyDispense.html',
             controller: 'zsCheckinKeyDispenseCtrl',
             jumper: true,
@@ -187,7 +187,7 @@ sntZestStation.config(['$stateProvider',
 
 		// email entry screen
         $stateProvider.state('zest_station.checkInEmailCollection', {
-            url: '/checkInEmailCollection/:reservation_id/:first_name/:room_no/:guest_id',
+            url: '/checkInEmailCollection/:reservation_id/:first_name/:room_no/:guest_id/:from_mobile/:physical_key_selected',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinEmailCollection.html',
             controller: 'zsCheckinEmailCollectionCtrl',
             jumper: true,

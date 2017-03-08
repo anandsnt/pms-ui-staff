@@ -5,7 +5,8 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
     'zsEventConstants',
     '$controller',
     '$timeout',
-    function($scope, $stateParams, $state, zsEventConstants, $controller, $timeout) {
+    'zsCheckinSrv',
+    function($scope, $stateParams, $state, zsEventConstants, $controller, $timeout, zsCheckinSrv) {
 
         /** ********************************************************************************************
          **     Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -28,14 +29,18 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
          */
         // Mobile Key is enabled for the Hotel and ZestStation->(room key delivery) + reservation (room) supports mobile key + 
         // offer_mobilekey_from_station
-        var mobileKeyOptionAvailable = true;
+        var mobileKeyOptionAvailable = $scope.zestStationData.selectedReservation.reservation_details.station_offer_mobilekey;
+        console.info('mobileKeyOptionAvailable: ',mobileKeyOptionAvailable);
+
+        if (mobileKeyOptionAvailable === 'third_party'){
+            $scope.zestStationData.thirdPartyMobileKey = 'true';
+        }
 
         var setInitialScreenMode = function() {
             // if not using Mobile Key, and other settings are on/enabled for the reservation,
             //  go straight to Dispense key (regular flow)
             // otherwise, ask user if they want a mobile key, physical key, or both
             console.warn(':: mobileKeyOptionAvailable :: ', mobileKeyOptionAvailable);
-
 
             if ($stateParams.isQuickJump === 'true') {
                 $stateParams.for_demo = 'true';
@@ -48,9 +53,8 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 
                 $scope.first_name = $stateParams.first_name;
                 $scope.room = $stateParams.room_no;
-                console.info('room number is: ', $scope.room);
 
-                if (mobileKeyOptionAvailable) {
+                if (mobileKeyOptionAvailable !== 'disabled') {
                     console.info('$stateParams: ', $stateParams);
                     if ($stateParams.for_demo === 'true') {
                         // flag (for_demo) only here when continuing from email collection after selecting mobile key
@@ -59,12 +63,24 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
                         return;
                     }
 
-                    console.info('zestStationData.show_room_number: ', $scope.zestStationData.show_room_number);
                     
-                    $scope.mode = 'MOBILE_OR_PHYSICAL_KEY_START';
+                    if ($stateParams.from_mobile_key_email_update === 'true'){
+                        $scope.mode = 'THIRD_PARTY_GET_IT_INFO';  
+                    } else {
+                        // TODO: fix if overlay and have shown checked-in success, need to skip the SUCCESS screen
+                        // and go select mobile/physical key + N keys
+                        if (!$scope.zestStationData.showedFirstCheckedInSuccess){
+                            $scope.mode = 'MOBILE_OR_PHYSICAL_KEY_START';    
+                        } else {
+                            $scope.mode = 'MOBILE_OR_PHYSICAL_KEY';
+                        }
+
+                    }
 
                 } else {
+                
                     $scope.mode = 'DISPENSE_KEY_MODE';
+                
                 }
                 console.info('MODE: -> ', $scope.mode);
                 
@@ -152,13 +168,27 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
         };
 
         $scope.editEmailAddress = function() {
+                $stateParams.from_mobile = 'true';
+                $stateParams.physical_key_selected = $scope.physicalKeySelected+'';
                 $state.go('zest_station.checkInEmailCollection',$stateParams);
         };
 
+        var generalError = function(response) {
+            $scope.$emit('GENERAL_ERROR');
+        };
+
         $scope.sendEmail = function() {
-            // TODO link with api call, onSuccess go to next screen (email sent)
-            // for now, just show sent*
-            $scope.mode = 'THIRD_PARTY_GET_IT_INFO_EMAIL_SENT';
+            var onSuccess = function(){
+                $scope.mode = 'THIRD_PARTY_GET_IT_INFO_EMAIL_SENT';
+            }
+
+            $scope.callAPI(zsCheckinSrv.sendThirdPartyEmail, {
+                params: {
+                    'id': $stateParams.reservation_id
+                },
+                'successCallBack': onSuccess,
+                'failureCallBack': onSuccess
+            });
         };
         
 
@@ -166,15 +196,15 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
             if ($scope.mode === 'MOBILE_OR_PHYSICAL_KEY_START') {
                 $scope.mode = 'MOBILE_OR_PHYSICAL_KEY';
             }
-
-            if ($scope.mode === 'MOBILE_KEY_SENT_SUCCESS' && $scope.physicalKeySelected) {
+            
+            if (($scope.mode === 'MOBILE_KEY_SENT_SUCCESS' || $scope.mode === 'THIRD_PARTY_HAVE_IT_INFO') && $scope.physicalKeySelected) {
                 $scope.getPhysicalKey();
                 return;
             }
 
             if ($scope.mode === 'MOBILE_OR_PHYSICAL_KEY') {
 
-                var mobileKeyRequested = $scope.mobileKeySelected;// TODO, link w/ checkboxes
+                var mobileKeyRequested = $scope.mobileKeySelected;
 
                 if (mobileKeyRequested) {
                     // MOBILE KEY FROM 1st (SNT) or 3rd party (..those guys -_-")
@@ -190,6 +220,8 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
                     $scope.getPhysicalKey();
                 }
 
+            } else if ($scope.mode === 'THIRD_PARTY_GET_IT_INFO_EMAIL_SENT' && $scope.physicalKeySelected) {
+                $scope.getPhysicalKey();
             } else {
 
                 stateParams.key_success = status === 'success';
@@ -216,7 +248,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
             $scope.mobileKeySelected = !$scope.mobileKeySelected;
 
         };
-        $scope.physicalKeySelected = false;
+        $scope.physicalKeySelected = $stateParams.physical_key_selected === 'true';
         $scope.selectPhysicalKey = function() {
             // selects mobile key for encoding
             $scope.physicalKeySelected = !$scope.physicalKeySelected;
