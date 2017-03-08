@@ -65,7 +65,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		*/
 		$scope.clearSearchQuery = function(event) {
 			event.preventDefault();
-			event.stopPropagation()
+			event.stopPropagation();
 
 			$scope.query = '';
 
