@@ -1168,7 +1168,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		$scope.expandGroupedCharge = function(feesData) {
 			// Success callback for the charge detail fetch for grouped charges.
 			var fetchChargeDataSuccessCallback = function(data) {
-				feesData.light_speed_data = data;
+				feesData.light_speed_data = data.data;
 				feesData.isExpanded = true;
 				$scope.$emit('hideLoader');
 				refreshRegContentScroller();
