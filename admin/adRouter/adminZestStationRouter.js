@@ -40,11 +40,6 @@ angular.module('adminZestStationRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.stationGetMobilePhoneKeyEmail', {
         templateUrl: '/assets/partials/zestStation/adZestStationMobilePhoneKeyEmailSetup.html',
         controller: 'ADZestStationMobilePhoneKeyEmailSetupCtrl',
-        url: '/zestStationMobilePhoneKeyEmailSetup',
-        resolve: {
-            mobileAppDetails: function(adZestMobileAppMarketingSrv) {
-                return adZestMobileAppMarketingSrv.getZestMobileAppMarketingData();
-            }
-        }
+        url: '/zestStationMobilePhoneKeyEmailSetup'
     });
 });

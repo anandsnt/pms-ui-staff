@@ -1,4 +1,4 @@
-admin.controller('ADZestStationMobilePhoneKeyEmailSetupCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', 'mobileAppDetails', '$filter', function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, mobileAppDetails, $filter) {
+admin.controller('ADZestStationMobilePhoneKeyEmailSetupCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter) {
     BaseCtrl.call(this, $scope);
     $scope.$emit('changedSelectedMenu', 10);
 
@@ -7,14 +7,10 @@ admin.controller('ADZestStationMobilePhoneKeyEmailSetupCtrl', ['$scope', '$rootS
     $scope.fetchSettings = function() {
         var fetchSuccess = function(data) {
             $scope.data = data;
-
-            $scope.data.mobile_phone_key_email.ios_app_enabled = mobileAppDetails.ios.enabled;
-            $scope.data.mobile_phone_key_email.android_app_enabled = mobileAppDetails.android.enabled;
-
-            if (!mobileAppDetails.ios.enabled) {
+            if (!$scope.data.mobile_phone_key_email.ios_app_enabled) {
                 $scope.data.mobile_phone_key_email.include_ios_banner = false;
             }
-            if (!mobileAppDetails.android.enabled) {
+            if (!$scope.data.mobile_phone_key_email.android_app_enabled) {
                 $scope.data.mobile_phone_key_email.include_android_banner = false;
             }
 
