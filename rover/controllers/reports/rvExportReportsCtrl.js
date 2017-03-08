@@ -485,15 +485,15 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.scheduleFreqType = [dailyTypeOnly];
             }
 
-            if( forRunOnceOnly[item.report.title] ) {
+            if ( forRunOnceOnly[item.report.title] ) {
                 $scope.scheduleFrequency.push(runOnceOnly);
             }
 
-            if( forWeekly[item.report.title] ) {
+            if ( forWeekly[item.report.title] ) {
                 $scope.scheduleFrequency.push(weeklyOnly);
             }
 
-            if( forMonthly[item.report.title] ) {
+            if ( forMonthly[item.report.title] ) {
                 $scope.scheduleFrequency.push(monthlyOnly);
             }
         };
