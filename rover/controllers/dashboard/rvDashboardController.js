@@ -19,41 +19,6 @@ sntRover.controller('RVdashboardController',
             $scope.shouldShowQueuedRooms = true;
             BaseCtrl.call(this, $scope);
 
-            /**
-             * @returns {undefined} undefined
-             */
-            function doCBAPowerFailureCheck() {
-                var maxTrials = 60,
-                    trialInterval = 1000,
-                    checkPendingPayments = function() {
-                        $scope.$emit('CBA_PAYMENT_POWER_FAILURE_CHECK');
-                    },
-                    observeDevice = function() {
-                        sntapp.cardReader.observeCBADeviceConnection({
-                            successCallBack: checkPendingPayments,
-                            failureCallBack: function(err) {
-                                $log.warn('failure callback from observeCBADeviceConnection method', err);
-                            }
-                        });
-                    };
-
-                // try to make this cordova call providing 1 min for cordova loading
-                if (sntapp.browser === 'rv_native' && sntapp.cordovaLoaded) {
-                    observeDevice();
-                } else {
-                    observeDeviceInterval = $interval(function() {
-                        if (sntapp.browser === 'rv_native' && sntapp.cordovaLoaded) {
-                            $interval.cancel(observeDeviceInterval);
-                            observeDevice();
-                        }
-                    }, trialInterval, maxTrials);
-                }
-
-                jsMappings.loadPaymentMapping().then(function() {
-                    jsMappings.loadPaymentModule().then(checkPendingPayments);
-                });
-            }
-
             var init = function() {
                 // setting the heading of the screen
                 $scope.heading = "DASHBOARD_HEADING";
@@ -98,10 +63,6 @@ sntRover.controller('RVdashboardController',
 
                 if (!$rootScope.isWorkstationSet) {
                     setWorkStation();
-                }
-
-                if ($rootScope.paymentGateway === "CBA") {
-                    doCBAPowerFailureCheck();
                 }
 
                 // TODO: Add conditionally redirecting from API results
