@@ -10,14 +10,14 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					angular.forEach(data.bills, function(bill, index2) {
-		            	bill.page_no = 1;
-		            	bill.start = 1;
-		            	bill.end = 1;
-		            	bill.nextAction = false;
-		        		bill.prevAction = false;
-		        		bill.transactions = [];
-		        		bill.activeDate = null;
-		            });
+						bill.page_no = 1;
+						bill.start = 1;
+						bill.end = 1;
+						bill.nextAction = false;
+						bill.prevAction = false;
+						bill.transactions = [];
+						bill.activeDate = null;
+					});
 					deferred.resolve(data);
 				}, function(data) {
 					deferred.reject(data);
@@ -83,9 +83,9 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			var url = 'api/financial_transactions/' + trasactionId;
 
 			rvBaseWebSrvV2.putJSON(url, updatedDate).then(function(data) {
-			   	 deferred.resolve(data);
+				 deferred.resolve(data);
 			}, function(data) {
-			    deferred.reject(data);
+				deferred.reject(data);
 			});
 
 			return deferred.promise;
@@ -104,9 +104,9 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			var url = 'api/financial_transactions/' + params.id + '/save_custom_description';
 
 			rvBaseWebSrvV2.postJSON(url, params.postData ).then(function(data) {
-			   	 deferred.resolve(data);
+				 deferred.resolve(data);
 			}, function(data) {
-			    deferred.reject(data);
+				deferred.reject(data);
 			});
 			return deferred.promise;
 		};
@@ -126,9 +126,9 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			var url = 'api/financial_transactions/' + trasactionId;
 
 			rvBaseWebSrvV2.putJSON(url, deleteData.data).then(function(data) {
-			   	 deferred.resolve(data);
+				 deferred.resolve(data);
 			}, function(data) {
-			    deferred.reject(data);
+				deferred.reject(data);
 			});
 
 			return deferred.promise;
@@ -146,9 +146,9 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			var url = 'api/financial_transactions/' + trasactionId;
 
 			rvBaseWebSrvV2.putJSON(url, splitData.data).then(function(data) {
-			   	 deferred.resolve(data);
+				 deferred.resolve(data);
 			}, function(data) {
-			    deferred.reject(data);
+				deferred.reject(data);
 			});
 			return deferred.promise;
 		};
@@ -165,9 +165,9 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			var url = '/api/bills/' + data.bill_id + '/add_payment_method';
 
 			rvBaseWebSrvV2.postJSON(url, data.data_to_pass).then(function(data) {
-				    deferred.resolve(data);
+					deferred.resolve(data);
 				}, function(data) {
-				    deferred.reject(data);
+					deferred.reject(data);
 				});
 			return deferred.promise;
 		};
@@ -312,6 +312,21 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 				}, function(data) {
 					deferred.reject(data);
 				});
+
+			return deferred.promise;
+		};
+
+		// Service that fetches the charge details of a grouped charge - CICO-34039.
+		this.groupChargeDetailsFetch = function(params) {
+			var deferred = $q.defer(),
+				url = '/api/posting_accounts/transaction_details';
+
+			rvBaseWebSrvV2.getJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function (data) {
+					deferred.reject(data);
+			});
 
 			return deferred.promise;
 		};
