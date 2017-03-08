@@ -528,6 +528,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 			 */
 			var dataToUpdate = JSON.parse(JSON.stringify($scope.contractData));
 			var dataUpdated = false;
+
 			if (typeof contractInfo.rate_value === 'number') {
 				contractInfo.rate_value = String(contractInfo.rate_value.toFixed(2));
 			}
