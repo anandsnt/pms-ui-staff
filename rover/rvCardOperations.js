@@ -40,14 +40,6 @@ var CardOperation = function() {
 
     };
 
-    this.observeCBADeviceConnection = function(options) {
-        options = options || {};
-        options['shouldCallRecursively'] = true;
-        options['service'] = "RVCardPlugin";
-        options['action'] = "observeCBADeviceConnection";
-        that.callCordovaService(options);
-    };
-
 
     this.startReader = function(options) {
         options['shouldCallRecursively'] = true;
