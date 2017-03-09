@@ -1,18 +1,20 @@
 angular.module('admin').controller('adTopCtrl',
-    ['$state', '$rootScope', '$scope', '$window', '$stateParams', 'sntAuthorizationSrv',
-        function($state, $rootScope, $scope, $window, $stateParams, sntAuthorizationSrv) {
+    ['$state', '$rootScope', '$scope', '$window', '$stateParams', 'sntAuthorizationSrv', 'ADAppSrv', '$log', '$timeout',
+        function($state, $rootScope, $scope, $window, $stateParams, sntAuthorizationSrv, ADAppSrv, $log, $timeout) {
+
+            BaseCtrl.call(this, $scope);
 
             var routeChange = function(event) {
                 event.preventDefault();
                 return false;
             };
 
-            (function() {
+            var setPropertyAndNavigate = function(uuid) {
                 if ('snt' === $state.current.name) {
                     $window.history.pushState("initial", "Showing Dashboard", "/admin/snt");
                 } else {
-                    $window.history.pushState("initial", "Showing Dashboard", "/admin/h/" + $stateParams.uuid);
-                    sntAuthorizationSrv.setProperty($stateParams.uuid);
+                    $window.history.pushState("initial", "Showing Dashboard", "/admin/h/" + uuid);
+                    sntAuthorizationSrv.setProperty(uuid);
                 }
 
                 // NOTE: This listener is not removed on $destroy on purpose!
@@ -21,6 +23,31 @@ angular.module('admin').controller('adTopCtrl',
                 $state.go('admin.dashboard', {
                     menu: 0
                 });
+            };
+
+            (function() {
+                if ($stateParams.uuid) {
+                    setPropertyAndNavigate($stateParams.uuid);
+                } else {
+                    $log.info('setPropertyAndNavigate');
+                    $scope.callAPI(ADAppSrv.getDefaultUUID, {
+                        successCallBack: function(uuid) {
+                            if (uuid) {
+                                setPropertyAndNavigate(uuid);
+                            } else {
+                                var redirUrl = '/logout/';
+
+                                $timeout(function() {
+                                    $window.location.href = redirUrl;
+                                }, 300);
+                            }
+                        },
+                        failureCallBack: function(err) {
+                            $log.info(err);
+                        }
+                    });
+                }
+
             })();
         }
     ]

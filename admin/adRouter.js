@@ -9,7 +9,7 @@ admin.config([
         });
         $translateProvider.fallbackLanguage('EN');
         // dashboard state
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/admin/h/');
 
         $stateProvider.state('top', {
             url: '/admin/h/:uuid',

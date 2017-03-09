@@ -12,7 +12,7 @@ angular.module('sntRover').config([
         $translateProvider.fallbackLanguage('EN');
 
         // default state
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/staff/h/');
 
         /*
          * state added to show single url throughout the app

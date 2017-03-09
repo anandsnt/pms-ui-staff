@@ -1,4 +1,5 @@
-admin.service('ADAppSrv', ['ADBaseWebSrv', 'ADBaseWebSrvV2', function(ADBaseWebSrv, ADBaseWebSrvV2) {
+admin.service('ADAppSrv', ['ADBaseWebSrv', 'ADBaseWebSrvV2', '$q',
+	function(ADBaseWebSrv, ADBaseWebSrvV2, $q) {
 
 	this.fetch = function() {
 		var url = '/admin/settings/menu_items.json';
@@ -54,5 +55,24 @@ admin.service('ADAppSrv', ['ADBaseWebSrv', 'ADBaseWebSrvV2', function(ADBaseWebS
 			return (errorMessage);
 		});
 	};
+
+    this.getDefaultUUID = function() {
+        var deferred = $q.defer();
+        var url = '/api/current_user_hotels';
+
+        ADBaseWebSrvV2.getJSON(url).then(function(data) {
+            var hotels = data['hotel_list'];
+
+            if (hotels.length > 0) {
+                deferred.resolve(hotels[0].hotel_uuid);
+            } else {
+                deferred.resolve(null);
+            }
+        }, function(errorMessage) {
+            deferred.reject(errorMessage);
+        });
+
+        return deferred.promise;
+    };
 
 }]);
