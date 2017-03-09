@@ -358,6 +358,9 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         resolve: {
             activeRates: function(ADPromotionsSrv) {
                 return ADPromotionsSrv.getActiveRates();
+            },
+            availableLanguages: function(ADTranslationSrv) {
+                return ADTranslationSrv.getGuestLanguages();
             }
         }
     });
@@ -672,12 +675,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         }
     });
    
-   $stateProvider.state('admin.ZestStationRoomUpsells', {
+    $stateProvider.state('admin.ZestStationRoomUpsells', {
         templateUrl: '/assets/partials/zestStation/adZestStationRoomUpsell.html',
-       controller: 'ADZestStationRoomUpsellCtrl',
+        controller: 'ADZestStationRoomUpsellCtrl',
         url: '/zestStationRoomUpsell',
         resolve: {
-            roomUpsellData : function(ADZestStationSrv){
+            roomUpsellData: function(ADZestStationSrv) {
                 return ADZestStationSrv.fetch();
             }
         }
