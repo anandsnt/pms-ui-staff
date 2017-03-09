@@ -1891,6 +1891,7 @@ angular.module('reportsModule')
                 report['sort_fields'][2] = daysVacant;
                 report['sort_fields'][3] = lastCheckoutDate;
             }
+
         };
 
 
@@ -1898,7 +1899,8 @@ angular.module('reportsModule')
         factory.processSortBy = function ( report ) {
             // adding custom name copy for easy access
             report['sortByOptions'] = angular.copy( report['sort_fields'] );
-
+            // show sortBy in filters - default
+            report['showSort'] = true;
             // sort by options - include sort direction
             if ( report['sortByOptions'] && report['sortByOptions'].length ) {
                 _.each(report['sortByOptions'], function(item, index, list) {
@@ -1937,6 +1939,11 @@ angular.module('reportsModule')
                         roomNo['sortDir'] = true;
                         report['chosenSortBy'] = roomNo['value'];
                     }
+                }
+
+                // hide sort by from filter CICO-29257
+                if ( report['title'] === reportNames['COMPLIMENTARY_ROOM_REPORT'] ) {
+                    report['showSort'] = false;
                 }
             }
         };

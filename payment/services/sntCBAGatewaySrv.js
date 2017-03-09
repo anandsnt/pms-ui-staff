@@ -1,6 +1,7 @@
-angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$log', '$timeout',
-    function($q, $http, $log, $timeout) {
+angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$log', '$timeout', '$rootScope',
+    function($q, $http, $log, $timeout, $rootScope) {
         var service = this,
+            isCheckLastTransactionInProgress = false,
             cordovaAPI = new CardOperation(),
             // This has to be consistent with Setting.cba_payment_card_types in  lib/seeds/production/product_config.rb
             cardMap = {
@@ -150,13 +151,23 @@ angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$log', '$t
         /**
          * @returns {undefined} undefined
          */
-        service.checkLastTransactionStatus = function() {
+        service.checkLastTransactionStatus = function(showNotifications) {
             $log.info('checkLastTransactionStatus');
+            if (isCheckLastTransactionInProgress) {
+                return;
+            }
+            isCheckLastTransactionInProgress = true;
             cordovaAPI.callCordovaService({
                 service: "RVCardPlugin",
                 action: "getLastTransaction",
                 successCallBack: (data) => {
+                    isCheckLastTransactionInProgress = false;
                     $log.info('checkLastTransactionStatus', data);
+
+                    if (showNotifications) {
+                        $rootScope.$emit('UPDATE_NOTIFICATION', 'PLEASE TRY AGAIN!');
+                    }
+
                     // In case last transaction was a success
                     if (parseInt('data.last_txn_success', 10) > 0) {
                         service.updateTransactionSuccess(data.txn_id, data).then(response => {
@@ -175,6 +186,12 @@ angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$log', '$t
                     }
                 },
                 failureCallBack: (error) => {
+                    isCheckLastTransactionInProgress = false;
+
+                    if (showNotifications) {
+                        $rootScope.$emit('UPDATE_NOTIFICATION', error.RVErrorCode + ' ' + error.RVErrorDesc);
+                    }
+
                     $log.info('checkLastTransactionStatus', error);
                     /**
                      * Code : 104 Desc : Device not connected.
@@ -182,9 +199,9 @@ angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$log', '$t
                      * Code : 147 Desc : No transaction pending.
                      * Code : 146 Desc : Failed to get the transaction details.
                      */
-                    if (parseInt(error.RVRVErrorCode, 10) === 104) {
-                        $log.info('device not ready---- repeat cordova API call to check for pending transactions');
-                        $timeout(service.checkLastTransactionStatus, 2000);
+                    if (parseInt(error.RVErrorCode, 10) === 146) {
+                        $log.info('Failed to get transaction details... repeat cordova API call to check for pending transactions');
+                        $timeout(service.checkLastTransactionStatus, 1000);
                     }
                     $log.warn(error);
                 }

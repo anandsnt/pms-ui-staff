@@ -720,6 +720,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.detailsTemplateUrl  = '/assets/partials/reports/travelAgentCommission/rvTravelAgentCommissionReportRow.html';
 					break;
 
+                case reportNames['COMPLIMENTARY_ROOM_REPORT']:
+                    $scope.hasReportTotals    = true;
+                    $scope.showReportHeader   = true;
+                    $scope.detailsTemplateUrl = '/assets/partials/reports/complimentaryRoomReport/rvComplimentaryRoomReport.html';
+
+                break;
+
 				default:
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
@@ -816,6 +823,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportNames['VACANT_ROOMS_REPORT']:
 					template = '/assets/partials/reports/vacantRoomsReport/rvVacantRoomsReportRow.html';
+					break;
+					
+				case reportNames['COMPLIMENTARY_ROOM_REPORT']:
+					template = '/assets/partials/reports/complimentaryRoomReport/rvComplimentaryRoomReport.html';
 					break;
 
 
@@ -1048,6 +1059,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
 				case reportNames['A/R_AGING']:
                 case reportNames['BUSINESS_ON_BOOKS']:
+                case reportNames['COMPLIMENTARY_ROOM_REPORT']:
 					orientation = 'landscape';
 					break;
 
