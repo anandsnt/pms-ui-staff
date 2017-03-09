@@ -8,7 +8,8 @@ admin.controller('ADRatesAddonsCtrl', [
 	'ngDialog',
 	'$timeout',
 	'activeRates',
-	function($scope, $rootScope, ADRatesAddonsSrv, ADHotelSettingsSrv, $filter, ngTableParams, ngDialog, $timeout, activeRates) {
+	'availableLanguages',
+	function($scope, $rootScope, ADRatesAddonsSrv, ADHotelSettingsSrv, $filter, ngTableParams, ngDialog, $timeout, activeRates, availableLanguages) {
 
 
 		// extend base controller
@@ -265,6 +266,14 @@ admin.controller('ADRatesAddonsCtrl', [
 
 		// the listner must be destroyed when no needed anymore
 		$scope.$on( '$destroy', updateBind );
+		$scope.languages = availableLanguages;
+		$scope.filter = {
+			locale: availableLanguages.default_locale
+		};
+
+	    $scope.onLocaleChange = function() {
+	        getLabelTranslations();
+	    };
 
 		$scope.editSingle = function() {
 			$scope.isAddMode   = false;

@@ -6,12 +6,18 @@
 					<span>{{ addonTitle }}</span>
 					{{ addonSubtitle }}
 				</h3>
-                <em class="status">
+                <em class="status addon-status">
 					{{'MANDATORY_FIELDS_MESSAGE1'| translate}}
 					<strong>*</strong>
 					{{'MANDATORY_FIELDS_MESSAGE2'| translate}}
 				</em>
+                <div class="filters addon-lang-dropdown">
+                    <select ng-model="filter.locale" name="locale" ng-change="onLocaleChange()">
+                        <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==filter.locale"> {{locale.description}} </option>
+                    </select>
+                </div>
             </div>
+
             <fieldset class="holder left float">
                 <ad-textbox styleclass="full-width" value="singleAddon.name" name="name" id="name" label="{{'NAME' | translate}}" placeholder="{{'ENTER_ADDON_NAME' | translate}}" required="yes"></ad-textbox>
 
