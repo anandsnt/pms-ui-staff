@@ -162,6 +162,7 @@ angular.module('sntRover')
                     $scope.diaryData.isEditReservationMode = true;
                     $scope.currentSelectedReservation = reservation;
                     $scope.currentSelectedRoom = room;
+                    $scope.diaryData.selectedRoomId = room.id;
                     showReservationSelected();
                     if (!$stateParams.isFromStayCard) {
                         $scope.$apply();
@@ -188,8 +189,8 @@ angular.module('sntRover')
                         if (response.status === 'failure') {
                             $scope.messages = response.errors;
                             openMessagePopup();
-                        } else {                      
-                            if (response.data.availability_status === 'room_available') {                            
+                        } else {
+                            if (response.data.availability_status === 'room_available') {
                                 $scope.extendShortenReservationDetails = params;
                             } else {
                                 switch (response.data.availability_status) {
@@ -202,13 +203,13 @@ angular.module('sntRover')
                                 case 'room_ooo' : $scope.messages = ['ROOM_OOO'];
                                     break;
                                 default : $scope.messages = ["Room Can't Move"];
-                                }                    
+                                }
                                 openMessagePopup();
                             }
-                        }                                                
+                        }
                     };
 
-                $scope.invokeApi(RVNightlyDiarySrv.checkUpdateAvaibale, 
+                $scope.invokeApi(RVNightlyDiarySrv.checkUpdateAvaibale,
                     params,
                     successCallBack);
             };
@@ -228,9 +229,9 @@ angular.module('sntRover')
                     cancelReservationEditing();
                 };
 
-                $scope.invokeApi(RVNightlyDiarySrv.confirmUpdates, 
+                $scope.invokeApi(RVNightlyDiarySrv.confirmUpdates,
                     $scope.extendShortenReservationDetails,
-                    successCallBack);                
+                    successCallBack);
             };
             /*
              * Show selected reservation highlighted and enable edit bar
@@ -251,7 +252,7 @@ angular.module('sntRover')
             */
             var openMessagePopup = function() {
                 ngDialog.open({
-                    template: '/assets/partials/nightlyDiary/rvNightlyDiaryMessages.html',                   
+                    template: '/assets/partials/nightlyDiary/rvNightlyDiaryMessages.html',
                     scope: $scope
                 });
             };
@@ -272,7 +273,7 @@ angular.module('sntRover')
 
                     store.dispatch(dispatchData);
                 }
-            };             
+            };
 
             /*
              * Cancel button click edit bar
@@ -294,7 +295,7 @@ angular.module('sntRover')
             $scope.$on('UPDATE_RESERVATIONLIST', function( event, roomId ) {
                 if (!!roomId) {
                     $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
-                    $scope.diaryData.showFilterPanel = false;                        
+                    $scope.diaryData.showFilterPanel = false;
                 }
                 cancelReservationEditing();
                 fetchRoomListDataAndReservationListData(roomId);
