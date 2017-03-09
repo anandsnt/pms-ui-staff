@@ -37,7 +37,14 @@
 	</div>
 	
 	<!-- Show from TAX 2 onwards. -->
-	<ad-dropdown ng-if="!row.is_inclusive && $index!==0" label="{{'CALCULATION_RULE' |translate}}" selbox-class= "placeholder" label-in-drop-down="{{'SELECT_CALCULATION_RULE' |translate}}" list="row.calculation_rule_list" selected-Id="row.selected_calculation_rule" div-class="full-width"  ></ad-dropdown>
+	<ad-select-number
+			ng-if="!row.is_inclusive && $index!==0"
+			label="{{'CALCULATION_RULE' |translate}}"
+			label-in-drop-down="{{'SELECT_CALCULATION_RULE' |translate}}"
+			items="row.calculation_rule_list"
+			selected-Id="row.selected_calculation_rule"
+			div-class="full-width">
+	</ad-select-number>
 	
 	<div class="actions float" style=" padding-top: 0px; height: 73px;">
 		<button type="button" ng-click="clickedCancelEditTax($index)" class="button blank edit-data-inline" translate>
