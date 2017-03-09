@@ -150,6 +150,8 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 			}
 		};
 
+		$rootScope.isAddonUpsellActive = reservationAndhotelData.addon_upsell_availability;
+
 		if (!!$rootScope.footerSettings.display_footer) {
 			// active footer count
 			var footerCount = _.filter($rootScope.footerSettings.footers, function(footer) {

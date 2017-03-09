@@ -10,7 +10,7 @@
 		$rootScope.userMobile = ($rootScope.userMobile === null) ? "" : $rootScope.userMobile;
 
 		// Addons
-		if( $state.href("offerAddonOptions") !== null && !$rootScope.skipedAddons){
+		if( $state.href("offerAddonOptions") !== null && $rootScope.isAddonUpsellActive && !$rootScope.skipedAddons){
 			$state.go('offerAddonOptions');
 		}
 		// collect oustanding stay total
