@@ -19,10 +19,14 @@ sntRover.controller('roverController', [
     '$sce',
     '$log',
     'sntAuthorizationSrv',
+    '$location',
+    '$interval',
     function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv,
              ngDialog, $translate, hotelDetails, userInfoDetails, $stateParams,
-             rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce, $log, sntAuthorizationSrv) {
+             rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce, $log, sntAuthorizationSrv, $location, $interval) {
 
+
+    var observeDeviceInterval;
 
     $rootScope.isOWSErrorShowing = false;
     if (hotelDetails.language) {
@@ -416,10 +420,14 @@ sntRover.controller('roverController', [
 
         $scope.menuOpen = false;        
         $rootScope.showNotificationForCurrentUser = true;
+
+        if ($rootScope.paymentGateway === "CBA") {
+            doCBAPowerFailureCheck();
+        }
     };
 
     $scope.init();
-    
+
     /*
      * update selected menu class
      */
@@ -628,6 +636,41 @@ sntRover.controller('roverController', [
         }
       }
     };
+
+      /**
+       * @returns {undefined} undefined
+       */
+      function doCBAPowerFailureCheck() {
+          var maxTrials = 60,
+              trialInterval = 1000,
+              checkPendingPayments = function() {
+                  $scope.$emit('CBA_PAYMENT_POWER_FAILURE_CHECK');
+              },
+              observeDevice = function() {
+                  sntapp.cardReader.observeCBADeviceConnection({
+                      successCallBack: checkPendingPayments,
+                      failureCallBack: function(err) {
+                          $log.warn('failure callback from observeCBADeviceConnection method', err);
+                      }
+                  });
+              };
+
+          // try to make this cordova call providing 1 min for cordova loading
+          if (sntapp.browser === 'rv_native' && sntapp.cordovaLoaded) {
+              observeDevice();
+          } else {
+              observeDeviceInterval = $interval(function() {
+                  if (sntapp.browser === 'rv_native' && sntapp.cordovaLoaded) {
+                      $interval.cancel(observeDeviceInterval);
+                      observeDevice();
+                  }
+              }, trialInterval, maxTrials);
+          }
+
+          jsMappings.loadPaymentMapping().then(function() {
+              jsMappings.loadPaymentModule().then(checkPendingPayments);
+          });
+      }
 
 
     /*
