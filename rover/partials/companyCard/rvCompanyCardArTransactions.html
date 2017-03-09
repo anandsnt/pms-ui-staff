@@ -1,110 +1,110 @@
 <!-- Company Card Tab - AR Transactions -->
 <form method="post" id="cc-ar-transactions" name="cc-ar-transactions" class="form card-tab inner-header transactions" ng-click="clearErrorMessage()">
 
-    <div class="tab-header">
+	<div class="tab-header">
 
-        <div class="search-form has-dates" ng-class="{'open':filterData.filterActive}">
-            <div class="entry filter">
-                <button ng-click="clickedFilter()" type="button" class="filter button with-icon only-icon" ng-class="{'active':filterData.filterActive}">
-                    <span class="icons icon-filter" ng-class="{'active':filterData.filterActive}"></span>
-                </button>
-            </div>
-            <div class="entry showing">
-                <div class="select">
-                    <select id="showing-type" ng-model="filterData.transactionType" ng-change="onTransactionTypeChange()">
-                        <option value="PAYMENTS" ng-selected="filterData.transactionType=='PAYMENTS'" translate>SHOW_PAYMENTS</option>
-                        <option value="CHARGES" ng-selected="filterData.transactionType=='CHARGES'" translate>SHOW_CHARGES</option>
-                        <option value="ALL" ng-selected="filterData.transactionType=='ALL'" translate>SHOW_ALL</option>
-                    </select>
-                </div>
-            </div>
-            <div class="entry showing">
-                <div class="select">
-                    <select name="showing" id="showing" ng-model="filterData.showFilterFlag" ng-change="chagedShowFilter()">
-                        <option ng-selected="filterData.showFilterFlag=='ALL'" value="ALL" translate>SHOW_ALL_BILLS</option>
-                        <option ng-selected="filterData.showFilterFlag=='OPEN'" value="OPEN" translate>SHOW_OPEN_BALANCE</option>
-                    </select>
-                </div>
-            </div>
-            <div class="entry search">
-                <button ng-click="$event.preventDefault(); clearSearchField();"  ng-class="{'visible': escapeNull(filterData.textInQueryBox) !='' }" class="clear-query">
-                    <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
-                </button>
-                <button ng-click="queryEntered();$event.preventDefault();" name="submit" class="icons icon-search" translate>SEARCH</button>
-                <input ng-change="queryEntered()" ng-model="filterData.textInQueryBox" name="ar-transaction-query" id="ar--query" class="query" placeholder="{{ 'SEARCH_BY_NAME_ROOM_PLACEHOLDER' | translate }}" type="search" autocomplete="off" />
-            </div>
-            <div class="entry dates">
-                <div class="entry-data has-datepicker">
-                    <label for="ar-transaction-date-from" translate>FROM</label>
-                    <button  ng-click="$event.preventDefault(); clearFromDateField();" class="clear-query" ng-class="{'visible': escapeNull(filterData.fromDate) !=''}">
-                        <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
-                    </button>
-                    <input ng-click="clickedFromDate()" name="ar-transaction-date-from" id="ar-transaction-date-from" type="text" class="datepicker" value="{{ filterData.fromDate | date : dateFormat }}" readonly />
-                    <button ng-click="clickedFromDate()" type="button" class="ui-datepicker-trigger"></button>
-                </div>
-                <div class="entry-data has-datepicker">
-                    <label for="ar-transaction-date-to" translate>TO</label>
-                    <button  ng-click="$event.preventDefault(); clearToDateField();" class="clear-query" ng-class="{'visible': escapeNull(filterData.toDate) !=''}">
-                        <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
-                    </button>
-                    <input  name="ar-transaction-date-to" id="ar-transaction-date-to" type="text" class="datepicker" value="{{ filterData.toDate | date : dateFormat }}" readonly />
-                    <button ng-click="clickedToDate()" type="button" class="ui-datepicker-trigger"></button>
-                </div>
-            </div>
-        </div>
-        <ul class="totals">
-            <li>
-                <div class="data with-button">
-                    <span class="label" translate>OPEN_GUEST_BILLS</span>
-                    <span class="value">{{arTransactionDetails.open_guest_bills}}</span>
-                    <button ng-show="arTransactionDetails.open_guest_bills > 0" ng-click="clickedPayAll()" type="button" class="button green" translate>PAY_ALL</button>
-                </div>
-            </li>
-            <li>
-                <div class="data">
-                    <span class="label">Total Payments</span>
-                    <span class="value">{{currencySymbol}}{{arTransactionDetails.total_payments | number: precisonTwo}}</span>
-                </div>
-            </li>
-            <li>
-                <div class="data">
-                    <span class="label">Total Charges</span>
-                    <span class="value grey">{{currencySymbol}}{{arTransactionDetails.total_charges | number: precisonTwo }}</span>
-                </div>
-            </li>
-            <li>
-                <div class="data">
-                    <span class="label">Current Balance</span>
-                    <span class="value red">{{currencySymbol}}{{arTransactionDetails.current_balance | number: precisonTwo}}</span>
-                </div>
-            </li>
-            <li>
-                <div class="data">
-                    <span class="label">Unallocated Credit</span>
-                    <span class="value green">{{currencySymbol}}{{arTransactionDetails.unallocated_credit | number: precisonTwo}}</span>
-                </div>
-                <button type="button" class="button green with-icon only-icon" ng-click="payAmount()">
-                    <span class="icons icon-wallet"></span>
-                </button>
-            </li>
-            <li>
-                <button ng-show="arTransactionDetails.ar_transactions.length > 0" ng-click="clickedPrintButton()" type="button" class="button blue with-icon only-icon">
-                    <span class="icons icon-print"></span>
-                </button>
-                <button ng-show="arTransactionDetails.ar_transactions.length > 0" type="button" class="button orange with-icon only-icon" ng-click="clickedArStatementButton()">
-                    <span class="icons icon-invoice"></span>
-                </button>
-            </li>
-        </ul>
-    </div>
-    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-    <!-- If there are open bills: -->
-    <div class="tab-details scrollable" ng-class="{ 'with-pagination': ( arTransactionDetails.total_count > filterData.perPage && arTransactionDetails.ar_transactions.length > 0 )}" ng-show="arTransactionDetails.ar_transactions.length > 0" ng-iscroll="ar-transaction-list">
+		<div class="search-form has-dates" ng-class="{'open':filterData.filterActive}">
+			<div class="entry filter">
+				<button ng-click="clickedFilter()" type="button" class="filter button with-icon only-icon" ng-class="{'active':filterData.filterActive}">
+					<span class="icons icon-filter" ng-class="{'active':filterData.filterActive}"></span>
+				</button>
+			</div>
+			<div class="entry showing">
+				<div class="select">
+					<select id="showing-type" ng-model="filterData.transactionType" ng-change="onTransactionTypeChange()">
+						<option value="PAYMENTS" ng-selected="filterData.transactionType=='PAYMENTS'" translate>SHOW_PAYMENTS</option>
+						<option value="CHARGES" ng-selected="filterData.transactionType=='CHARGES'" translate>SHOW_CHARGES</option>
+						<option value="ALL" ng-selected="filterData.transactionType=='ALL'" translate>SHOW_ALL</option>
+					</select>
+				</div>
+			</div>
+			<div class="entry showing">
+				<div class="select">
+					<select name="showing" id="showing" ng-model="filterData.showFilterFlag" ng-change="chagedShowFilter()">
+						<option ng-selected="filterData.showFilterFlag=='ALL'" value="ALL" translate>SHOW_ALL_BILLS</option>
+						<option ng-selected="filterData.showFilterFlag=='OPEN'" value="OPEN" translate>SHOW_OPEN_BALANCE</option>
+					</select>
+				</div>
+			</div>
+			<div class="entry search">
+				<button ng-click="$event.preventDefault(); clearSearchField();"  ng-class="{'visible': escapeNull(filterData.textInQueryBox) !='' }" class="clear-query">
+					<span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
+				</button>
+				<button ng-click="queryEntered();$event.preventDefault();" name="submit" class="icons icon-search" translate>SEARCH</button>
+				<input ng-change="queryEntered()" ng-model="filterData.textInQueryBox" name="ar-transaction-query" id="ar--query" class="query" placeholder="{{ 'SEARCH_BY_NAME_ROOM_PLACEHOLDER' | translate }}" type="search" autocomplete="off" />
+			</div>
+			<div class="entry dates">
+				<div class="entry-data has-datepicker">
+					<label for="ar-transaction-date-from" translate>FROM</label>
+					<button  ng-click="$event.preventDefault(); clearFromDateField();" class="clear-query" ng-class="{'visible': escapeNull(filterData.fromDate) !=''}">
+						<span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
+					</button>
+					<input ng-click="clickedFromDate()" name="ar-transaction-date-from" id="ar-transaction-date-from" type="text" class="datepicker" value="{{ filterData.fromDate | date : dateFormat }}" readonly />
+					<button ng-click="clickedFromDate()" type="button" class="ui-datepicker-trigger"></button>
+				</div>
+				<div class="entry-data has-datepicker">
+					<label for="ar-transaction-date-to" translate>TO</label>
+					<button  ng-click="$event.preventDefault(); clearToDateField();" class="clear-query" ng-class="{'visible': escapeNull(filterData.toDate) !=''}">
+						<span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
+					</button>
+					<input  name="ar-transaction-date-to" id="ar-transaction-date-to" type="text" class="datepicker" value="{{ filterData.toDate | date : dateFormat }}" readonly />
+					<button ng-click="clickedToDate()" type="button" class="ui-datepicker-trigger"></button>
+				</div>
+			</div>
+		</div>
+		<ul class="totals">
+			<li>
+				<div class="data with-button">
+					<span class="label" translate>OPEN_GUEST_BILLS</span>
+					<span class="value">{{arTransactionDetails.open_guest_bills}}</span>
+					<button ng-show="arTransactionDetails.open_guest_bills > 0" ng-click="clickedPayAll()" type="button" class="button green" translate>PAY_ALL</button>
+				</div>
+			</li>
+			<li>
+				<div class="data">
+					<span class="label">Total Payments</span>
+					<span class="value">{{currencySymbol}}{{arTransactionDetails.total_payments | number: precisonTwo}}</span>
+				</div>
+			</li>
+			<li>
+				<div class="data">
+					<span class="label">Total Charges</span>
+					<span class="value grey">{{currencySymbol}}{{arTransactionDetails.total_charges | number: precisonTwo }}</span>
+				</div>
+			</li>
+			<li>
+				<div class="data">
+					<span class="label">Current Balance</span>
+					<span class="value red">{{currencySymbol}}{{arTransactionDetails.current_balance | number: precisonTwo}}</span>
+				</div>
+			</li>
+			<li>
+				<div class="data">
+					<span class="label">Unallocated Credit</span>
+					<span class="value green">{{currencySymbol}}{{arTransactionDetails.unallocated_credit | number: precisonTwo}}</span>
+				</div>
+				<button type="button" class="button green with-icon only-icon" ng-click="payAmount()">
+					<span class="icons icon-wallet"></span>
+				</button>
+			</li>
+			<li>
+				<button ng-show="arTransactionDetails.ar_transactions.length > 0" ng-click="clickedPrintButton()" type="button" class="button blue with-icon only-icon">
+					<span class="icons icon-print"></span>
+				</button>
+				<button ng-show="arTransactionDetails.ar_transactions.length > 0" type="button" class="button orange with-icon only-icon" ng-click="clickedArStatementButton()">
+					<span class="icons icon-invoice"></span>
+				</button>
+			</li>
+		</ul>
+	</div>
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	<!-- If there are open bills: -->
+	<div class="tab-details scrollable" ng-class="{ 'with-pagination': ( arTransactionDetails.total_count > filterData.perPage && arTransactionDetails.ar_transactions.length > 0 )}" ng-show="arTransactionDetails.ar_transactions.length > 0" ng-iscroll="ar-transaction-list">
 
-        <div class="wrapper">
+		<div class="wrapper">
 
-            <ul class="search-results">
-                <li class="reservation transaction" ng-repeat="transaction in arTransactionDetails.ar_transactions">
+			<ul class="search-results">
+				<li class="reservation transaction" ng-repeat="(indexValue ,transaction) in arTransactionDetails.ar_transactions">
 
                     <div class="faux-anchor has-arrow toggle" ng-click="clickedOnTransaction($index,$event)" ng-class="{'active':(transaction.active && transaction.transaction_type == 'DEBIT')}" ng-show="transaction.transaction_type == 'DEBIT'">
                         <figure class="guest-image" ng-if="transaction.associated_type == 'Reservation'">
@@ -166,92 +166,114 @@
                         </div>
                         <div class="amount">{{currencySymbol}}{{transaction.amount | number:precisonTwo }}</div>
 
-                        <div class="switch-button" ng-class="{'on': transaction.paid}">
-                            <input value="" type="checkbox" />
-                            <label class="data-off">
-                                <span class="value" translate>OPEN</span>
-                                <span class="switch-icon" translate>PAID</span>
-                            </label>
-                            <label class="data-on">
-                                <span class="switch-icon" translate>OPEN</span>
-                                <span class="value" translate>PAID</span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="faux-anchor" ng-show="transaction.transaction_type == 'CREDIT' && !transaction.is_cc_payment">
-                        <div class="data no-image">
-                            <h2><em>{{transaction.payment_type}}</em></h2>
-                            <span class="confirmation">{{transaction.reference_text}}</span>
-                            <div class="icons small-icon icon-time">
-                                {{transaction.transaction_date | date : dateFormat}}
-                                <span class="time">{{getTimeConverted(transaction.transaction_time)}}</span>
-                            </div>
-                        </div>
-                        <div class="amount" ng-class="{'credit' : transaction.amount >= 0, 'debit' : transaction.amount < 0}">{{currencySymbol}}{{transaction.amount | number:2 }}</div>
-                        <span class="employee">{{transaction.user_name}}</span>
-                    </div>
-                    <div class="faux-anchor" ng-show="transaction.transaction_type == 'CREDIT' && transaction.is_cc_payment">
-                        <div class="data no-image">
-                            <div class="card-data">
-                                <figure class="card-logo">
-                                    <img ng-src="/assets/images/{{transaction.card_details.card_code | lowercase }}.png" alt="">
-                                </figure>
-                                <span class="number">{{'ENDING_WITH' | translate }}<span class="value">{{transaction.card_details.last_digits}}</span></span>
-                                <span class="date">Date <span class="value">{{transaction.card_details.expire_date}}</span></span>
-                            </div>
-                            <div class="icons small-icon icon-time">
-                                {{transaction.transaction_date | date : dateFormat}}
-                                <span class="time">{{getTimeConverted(transaction.transaction_time)}}</span>
-                            </div>
-                        </div>
-                        <div class="amount" ng-class="{'credit' : transaction.amount >= 0, 'debit' : transaction.amount < 0}">{{currencySymbol}}{{transaction.amount | number:2 }}</div>
-                        <span class="employee">{{transaction.user_name}}</span>
-                    </div>
+						<div class="switch-button" ng-class="{'on': transaction.paid}">
+							<input value="" type="checkbox" />
+							<label class="data-off">
+								<span class="value" translate>OPEN</span>
+								<span class="switch-icon" translate>PAID</span>
+							</label>
+							<label class="data-on">
+								<span class="switch-icon" translate>OPEN</span>
+								<span class="value" translate>PAID</span>
+							</label>
+						</div>
+					</div>
+					<div class="faux-anchor" ng-show="transaction.transaction_type == 'CREDIT' && !transaction.is_cc_payment">
+						<div class="data no-image">
+							<h2><em>{{transaction.payment_type}}</em></h2>
+							<span class="confirmation">{{transaction.reference_text}}</span>
+							<div class="icons small-icon icon-time">
+								{{transaction.transaction_date | date : dateFormat}}
+								<span class="time">{{getTimeConverted(transaction.transaction_time)}}</span>
+							</div>
+						</div>
+						<div class="amount" ng-class="{'credit' : transaction.amount >= 0, 'debit' : transaction.amount < 0}">{{currencySymbol}}{{transaction.amount | number:2 }}</div>
+						<span class="employee">{{transaction.user_name}}</span>
+					</div>
+					<div class="faux-anchor" ng-show="transaction.transaction_type == 'CREDIT' && transaction.is_cc_payment">
+						<div class="data no-image">
+							<div class="card-data">
+								<figure class="card-logo">
+									<img ng-src="/assets/images/{{transaction.card_details.card_code | lowercase }}.png" alt="">
+								</figure>
+								<span class="number">{{'ENDING_WITH' | translate }}<span class="value">{{transaction.card_details.last_digits}}</span></span>
+								<span class="date">Date <span class="value">{{transaction.card_details.expire_date}}</span></span>
+							</div>
+							<div class="icons small-icon icon-time">
+								{{transaction.transaction_date | date : dateFormat}}
+								<span class="time">{{getTimeConverted(transaction.transaction_time)}}</span>
+							</div>
+						</div>
+						<div class="amount" ng-class="{'credit' : transaction.amount >= 0, 'debit' : transaction.amount < 0}">{{currencySymbol}}{{transaction.amount | number:2 }}</div>
+						<span class="employee">{{transaction.user_name}}</span>
+					</div>
 
-                    <div class="grid-items" ng-show="transaction.active">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th scope="col" translate>CHARGE_CODE</th>
-                                    <th scope="col" translate>DESCRIPTION</th>
-                                    <th scope="col" translate>FEES</th>
-                                    <th scope="col" translate>CREDITS</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="item in transaction.details">
-                                    <td>{{item.charge_code}}</td>
-                                    <td class="description">{{item.description}}</td>
-                                    <td ng-if="item.fees">{{currencySymbol}}{{item.fees | number:2 }}</td>
-                                    <td ng-if="!item.fees"></td>
-                                    <td ng-if="item.credits">{{currencySymbol}}{{item.credits | number:2 }}</td>
-                                    <td ng-if="!item.credits"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="actions" ng-show="filterData.viewFromOutside">
-                            <button type="button" class="button brand-colors" ng-click="goToReservationDetails($index)">StayCard</button>
-                        </div>
-                    </div>
+					<div class="grid-items" ng-show="transaction.active">
+						<table>
+							<thead>
+								<tr>
+									<th scope="col" translate>CHARGE_CODE</th>
+									<th scope="col" translate>DESCRIPTION</th>
+									<th scope="col" translate>FEES</th>
+									<th scope="col" translate>CREDITS</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="item in transaction.details" ng-class-even="'even'" ng-class-odd="'odd'">
+									<td>
+										<span ng-if="isStandAlone && !item.is_group_by_ref">
+											{{item.charge_code}}
+										</span>
+										<span ng-class = "{'toggle': isStandAlone && item.is_group_by_ref, 'active': item.isExpanded}" ng-click = "expandGroupedCharge(indexValue, item)" ng-if = "isStandAlone && item.is_group_by_ref">
+											<span class="icons icon-double-arrow"></span>
+										</span>
+									</td>
+									<td class="description">
+										{{item.description}}
+										<ul class = 'charge-items' ng-if = "isStandAlone && item.is_group_by_ref" ng-class = "{'hidden': !item.isExpanded}">
+											<li ng-repeat = "object in item.light_speed_data">
+												<span>{{object.description}}</span>
+											</li>
+										</ul>
+									</td>
+									<td ng-if="item.fees">
+										{{currencySymbol}}{{item.fees | number:2 }}
+										<ul class = 'charge-items' ng-if = "isStandAlone && item.is_group_by_ref" ng-class = "{'hidden': !item.isExpanded}">
+											<li ng-repeat = "object in item.light_speed_data">
+												<span class = "cost">{{currencySymbol}}{{object.amount}}</span>
+											</li>
+										</ul>
+									</td>
+									<td ng-if="!item.fees"></td>
+									<td ng-if="item.credits">{{currencySymbol}}{{item.credits | number:2 }}</td>
+									<td ng-if="!item.credits"></td>
+								</tr>
+							</tbody>
+							
+						</table>
+						<div class="actions" ng-show="filterData.viewFromOutside">
+							<button type="button" class="button brand-colors" ng-click="goToReservationDetails($index)">StayCard</button>
+						</div>
+					</div>
 
-                </li>
-            </ul>
-         </div>
-         <div ng-include="'/assets/partials/companyCard/rvArStatementPrintTemplate.html'"></div>
-    </div>
+				</li>
+			</ul>
+		 </div>
+		 <div ng-include="'/assets/partials/companyCard/rvArStatementPrintTemplate.html'"></div>
+	</div>
 
-    <!-- When no open bills / all bills paid -->
-    <div class="tab-details no-content" ng-show="arTransactionDetails.ar_transactions.length == 0 && arDetailsFetched">
-        <div class="info">
-            <span class="icon-no-content icon-ok"></span>
-            <strong class="h1" translate>NO_TRANSACTIONS</strong>
-            <span class="h2" translate>OUTSTANDING_GUEST_BILLS_PAID</span>
-        </div>
-    </div>
+	<!-- When no open bills / all bills paid -->
+	<div class="tab-details no-content" ng-show="arTransactionDetails.ar_transactions.length == 0 && arDetailsFetched">
+		<div class="info">
+			<span class="icon-no-content icon-ok"></span>
+			<strong class="h1" translate>NO_TRANSACTIONS</strong>
+			<span class="h2" translate>OUTSTANDING_GUEST_BILLS_PAID</span>
+		</div>
+	</div>
 
-    <div class="search-pagination" ng-show="arTransactionDetails.total_count > filterData.perPage && arTransactionDetails.ar_transactions.length > 0">
-        <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()" translate>NEXT</button>
-        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()" translate>PREVIOUS</button>
-        <p><span translate>SHOWING</span> <strong>{{filterData.start}}-{{filterData.end}}</strong> <span translate>OF</span> <strong id="total-count">{{arTransactionDetails.total_count}}</strong> <span translate>ITEMS</span></p>
-    </div>
+	<div class="search-pagination" ng-show="arTransactionDetails.total_count > filterData.perPage && arTransactionDetails.ar_transactions.length > 0">
+		<button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()" translate>NEXT</button>
+		<button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()" translate>PREVIOUS</button>
+		<p><span translate>SHOWING</span> <strong>{{filterData.start}}-{{filterData.end}}</strong> <span translate>OF</span> <strong id="total-count">{{arTransactionDetails.total_count}}</strong> <span translate>ITEMS</span></p>
+	</div>
 </form>
