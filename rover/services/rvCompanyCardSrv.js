@@ -495,5 +495,20 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 			});
 			return deferred.promise;
 		};
+
+		// Service that fetches the charge details of a grouped charge - CICO-34039.
+		this.groupChargeDetailsFetch = function(params) {
+			var deferred = $q.defer(),
+				url = '/staff/reservation/transaction_details';
+
+			rvBaseWebSrvV2.getJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function (data) {
+					deferred.reject(data);
+			});
+
+			return deferred.promise;
+		};
 	}
 ]);
