@@ -97,7 +97,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 occurance += 'Ends on ' + $filter('date')(item.ends_on_date, $rootScope.dateFormat) + '.';
             } else {
                 occurance += 'Runs forever.';
-            } 
+            }
 
             return occurance;
         };
@@ -404,7 +404,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     }
                     else {
                         filteredTimePeriods = _.filter( scheduleTimePeriods, function(item) {
-                            return item.value !== 'YESTERDAY';
+                            return item.value !== 'YESTERDAY' && item.value !== 'LAST_SEVEN_DAYS' && item.value !== 'LAST_MONTH';
                         });
 
                         $scope.scheduleTimePeriods = filteredTimePeriods;
