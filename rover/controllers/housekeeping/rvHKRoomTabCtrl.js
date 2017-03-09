@@ -281,7 +281,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 			onSelect: adjustDates,
 			beforeShowDay: $scope.setClass,
 			onChangeMonthYear: function(year, month, instance) {
-				$scope.updateCalendar(year, month);
+				$scope.updateCalendar(year, month, instance);
 			}
 		}, datePickerCommon);
 
@@ -290,7 +290,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 			onSelect: adjustDates,
 			beforeShowDay: $scope.setClass,
 			onChangeMonthYear: function(year, month, instance) {
-				$scope.updateCalendar(year, month);
+				$scope.updateCalendar(year, month, instance);
 			}
 		}, datePickerCommon);
 
@@ -305,7 +305,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 			},
 			beforeShowDay: $scope.setClass,
 			onChangeMonthYear: function(year, month, instance) {
-				$scope.updateCalendar(year, month);
+				$scope.updateCalendar(year, month, instance);
 			}
 		}, datePickerCommon);
 
@@ -525,7 +525,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 			$scope.invokeApi(RVHkRoomDetailsSrv.fetchRoomStatus, params, onFetchSuccess, onFetchFailure);
 		};
 
-		$scope.updateCalendar = function(year, month) {
+		$scope.updateCalendar = function(year, month, instance) {
 			function onFetchSuccess(data) {
 				angular.extend($scope.serviceStatus, data.service_status);
 
@@ -539,7 +539,13 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 					$scope.updateService.end_time 		= selectedServiceData.to_time;
 				}
 
-				$('.ngmodal-uidate-wrap').datepicker('refresh');
+                // CICO-38455 - Added the fix to refresh the specific datepicker after API call
+				if (!angular.isUndefined(instance) && instance.id) {
+                    $('#' + instance.id).datepicker('refresh');
+                } else {
+                    $('.ngmodal-uidate-wrap').datepicker('refresh');
+
+               }
 				$scope.$emit('hideLoader');
 			}
 
