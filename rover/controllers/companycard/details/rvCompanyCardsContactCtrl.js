@@ -12,6 +12,20 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 		$scope.isEmpty = function (obj) {
 			return _.isEmpty(obj);
 		};
+		/*
+		 * Toggle commission
+		 * Show popup when disabled
+		 */
+		$scope.toggleCommission = function() {
+			$scope.contactInformation.commission_details.is_on = !$scope.contactInformation.commission_details.is_on;
+            if (!$scope.contactInformation.commission_details.is_on) {
+            	ngDialog.open({
+	    	        template: '/assets/partials/companyCard/rvCommissionMessage.html',
+	    	        className: '',
+	    	        scope: $scope
+	    	    });
+			}
+		};
 
 
 		// trigger the billing information popup
@@ -42,7 +56,7 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 	    		return false;
 	    	}
 
-	    	$scope.$emit('showLoader'); 
+	    	$scope.$emit('showLoader');
            	jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function() {
             	$scope.$emit('hideLoader');

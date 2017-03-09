@@ -58,7 +58,7 @@
             <div class="entry commission margin" ng-show ="!isEmpty(contactInformation.commission_details)&& account_type == 'TRAVELAGENT'">
                 <label for="travel-agent-commission" translate>COMMISSION</label>
                 <div class="switch-button off" ng-class="{'on': contactInformation.commission_details.is_on}">
-                    <input id="travel-agent-commission" ng-click="contactInformation.commission_details.is_on = !contactInformation.commission_details.is_on" value="commission" type="checkbox" checked />
+                    <input id="travel-agent-commission" ng-click="toggleCommission()" value="commission" type="checkbox" checked />
                     <label class="data-off">
                         <span class="value" translate>OFF</span>
                         <span class="switch-icon" translate>ON</span>
