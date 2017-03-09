@@ -314,7 +314,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 
 
 		// Delete Contarct button action
-		// Shows conformation popup 
+		// Shows conformation popup
 		$scope.deleteContract = function() {
 			ngDialog.open({
 				template: '/assets/partials/companyCard/rvCompanyCardContractDeleteConfirmationPopup.html',
@@ -323,7 +323,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 			});
 		};
 
-		// To close popup 
+		// To close popup
 		$scope.closePopup = function () {
 			ngDialog.close();
 		};
@@ -529,6 +529,10 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 			var dataToUpdate = JSON.parse(JSON.stringify($scope.contractData));
 			var dataUpdated = false;
 
+			if (typeof contractInfo.rate_value === 'number') {
+				contractInfo.rate_value = String(contractInfo.rate_value.toFixed(2));
+			}
+
 			if (angular.equals(dataToUpdate, contractInfo)) {
 				dataUpdated = true;
 			} else {
@@ -638,7 +642,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 			}
 		};
 		/**
-		* To check if contract list is empty to 
+		* To check if contract list is empty to
 		* decide whether or not to show rename button
 		*/
 		$scope.isContractListEmpty = function() {
