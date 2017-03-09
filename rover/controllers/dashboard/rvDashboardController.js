@@ -1,10 +1,8 @@
 sntRover.controller('RVdashboardController',
     ['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata',
-        '$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes', 'jsMappings', '$log', '$interval',
+        '$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes',
         function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,
-                 $rootScope, $filter, $state, RVWorkstationSrv, roomTypes, jsMappings, $log, $interval) {
-
-            var observeDeviceInterval;
+                 $rootScope, $filter, $state, RVWorkstationSrv, roomTypes) {
 
             // setting the heading of the screen
             $scope.heading = 'DASHBOARD_HEADING';
