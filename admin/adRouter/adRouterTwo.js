@@ -685,10 +685,10 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
 
     $stateProvider.state('admin.upsellAddonSettings', {
         templateUrl: '/assets/partials/upsellAddons/adUpsellAddons.html',
-       controller: 'adUpsellAddonSettingsCtrl',
+        controller: 'adUpsellAddonSettingsCtrl',
         url: '/upsellAddons',
         resolve: {
-            data : function(ADUpsellAddonSrv){
+            data: function(ADUpsellAddonSrv) {
                 return ADUpsellAddonSrv.getSettings();
             }
         }
