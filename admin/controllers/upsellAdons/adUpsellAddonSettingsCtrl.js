@@ -1,4 +1,4 @@
-admin.controller('adUpsellAddonSettingsCtrl', function($scope, ADUpsellAddonSrv,data) {
+admin.controller('adUpsellAddonSettingsCtrl', function($scope, ADUpsellAddonSrv, data) {
 
 	BaseCtrl.call(this, $scope);
 	/**
@@ -6,11 +6,11 @@ admin.controller('adUpsellAddonSettingsCtrl', function($scope, ADUpsellAddonSrv,
 	 */
 	$scope.saveDetails = function() {
 		var options = {
-            params: $scope.data,
-            successCallBack: $scope.goBackToPreviousState
-        };
+			params: $scope.data,
+			successCallBack: $scope.goBackToPreviousState
+		};
 
-        $scope.callAPI(ADUpsellAddonSrv.saveDetails, options);
+		$scope.callAPI(ADUpsellAddonSrv.saveDetails, options);
 	};
 
 	(function() {
