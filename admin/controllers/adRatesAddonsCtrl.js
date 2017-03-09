@@ -272,7 +272,7 @@ admin.controller('ADRatesAddonsCtrl', [
 		};
 
 	    $scope.onLocaleChange = function() {
-	        getLabelTranslations();
+
 	    };
 
 		$scope.editSingle = function() {
