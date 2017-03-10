@@ -190,7 +190,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             if ( $scope.scheduleParams.starts_on ) {
                 params.starts_on = $filter('date')($scope.scheduleParams.starts_on, 'yyyy/MM/dd');
             }
-            
+
             if ( $scope.scheduleParams.frequency_id === runOnceId ) {
                 params.repeats_every = null;
             } else if ( $scope.scheduleParams.repeats_every ) {
@@ -300,7 +300,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 params.ends_on_after = null;
                 params.ends_on_date = null;
             }
-            
+
             // fill emails/FTP
             if ( $scope.checkDeliveryType('EMAIL') && $scope.emailList.length ) {
                 params.recipients = $scope.emailList.join(', ');
@@ -450,24 +450,68 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             var dailyOnly = _.find($scope.originalScheduleFrequency, { value: 'DAILY' });
             var runOnceOnly = _.find($scope.originalScheduleFrequency, { value: 'RUN_ONCE' });
 
-            var dailyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'DAILY' });
+            var dailyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'DAILY' }),
+                weeklyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'WEEKLY' }),
+                monthlyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'MONTHLY' });
+
+            var weeklyOnly = _.find($scope.originalScheduleFrequency, { value: 'WEEKLY' }),
+                monthlyOnly = _.find($scope.originalScheduleFrequency, { value: 'MONTHLY' });
+
+            $scope.scheduleFrequency = [];
+            $scope.scheduleFreqType = [];
 
             var forDaily = {
                 'Financial Transactions': true,
                 'Membership Details': true,
                 'Reservations': true,
-                'Rooms': true
+                'Rooms': true,
+                'Future Reservations': true
+            };
+
+            var forRunOnceOnly = {
+                'Financial Transactions': true,
+                'Membership Details': true,
+                'Reservations': true,
+                'Rooms': true,
+                'Future Reservations': true,
+                'Last Week Reservations': true,
+                'Last Month Reservations': true
+            };
+
+            var forWeekly = {
+                'Future Reservations': true,
+                'Last Week Reservations': true
+            };
+            var forMonthly = {
+                'Future Reservations': true,
+                'Last Month Reservations': true
             };
 
             if ( forDaily[item.report.title] ) {
-                $scope.scheduleFrequency = [dailyOnly, runOnceOnly];
-                $scope.scheduleFreqType = [dailyTypeOnly];
+                $scope.scheduleFrequency.push(dailyOnly);
+                $scope.scheduleFreqType.push(dailyTypeOnly);
+            }
+
+            if ( forWeekly[item.report.title] ) {
+                $scope.scheduleFrequency.push(weeklyOnly);
+                $scope.scheduleFreqType.push(weeklyTypeOnly);
+            }
+
+            if ( forMonthly[item.report.title] ) {
+                $scope.scheduleFrequency.push(monthlyOnly);
+                $scope.scheduleFreqType.push(monthlyTypeOnly);
+            }
+
+            if ( forRunOnceOnly[item.report.title] ) {
+                $scope.scheduleFrequency.push(runOnceOnly);
             }
         };
 
         var filterScheduleTimePeriod = function(item) {
             var yesterdayOnly = _.find($scope.originalScheduleTimePeriods, { value: 'YESTERDAY' });
             var todayOnly = _.find($scope.originalScheduleTimePeriods, { value: 'TODAY' });
+            var lastSevenDays = _.find($scope.originalScheduleTimePeriods, { value: 'LAST_SEVEN_DAYS' });
+            var lastMonth = _.find($scope.originalScheduleTimePeriods, { value: 'LAST_MONTH' });
 
             var forYesterday = {
                 'Financial Transactions': true,
@@ -476,13 +520,31 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             };
 
             var forToday = {
-                'Rooms': true
+                'Rooms': true,
+                'Future Reservations': true
             };
 
+            var forLastSevenDays = {
+                'Last Week Reservations': true
+            };
+
+            var forLastMonth = {
+                'Last Month Reservations': true
+            };
+
+            $scope.scheduleTimePeriods = [];
+
             if ( forYesterday[item.report.title] ) {
-                $scope.scheduleTimePeriods = [yesterdayOnly];
-            } else if ( forToday[item.report.title] ) {
-                $scope.scheduleTimePeriods = [todayOnly];
+                $scope.scheduleTimePeriods.push(yesterdayOnly);
+            }
+            if ( forToday[item.report.title] ) {
+                $scope.scheduleTimePeriods.push(todayOnly);
+            }
+            if ( forLastSevenDays[item.report.title] ) {
+                $scope.scheduleTimePeriods.push(lastSevenDays);
+            }
+            if ( forLastMonth[item.report.title] ) {
+                $scope.scheduleTimePeriods.push(lastMonth);
             }
         };
 
@@ -639,7 +701,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
                 /**
                  * Convert sys value to human
-                 * 
+                 *
                  * @param {String} value the sys value
                  * @returns {String} converted value
                  */
@@ -858,10 +920,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             });
         };
 
-        $scope.pickReport = function(item, index) {            
+        $scope.pickReport = function(item, index) {
             $scope.selectedEntityDetails = $scope.$parent.$parent.schedulableReports[index];
             $scope.isGuestBalanceReport = false;
-            
+
             if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
                 $scope.selectedReport.active = false;
             }
@@ -1056,7 +1118,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
         /**
          * Start everything
          * @return {Object} undefined
-         * 
+         *
          */
         function init () {
             $scope.isAddingNew = false;

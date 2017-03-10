@@ -172,6 +172,20 @@ angular.module('sntPay').controller('sntPaymentController',
 
             /**
              *
+             * @param {{String}} errorMessage errorMessage
+             * @returns {{undefined}} undefined
+             */
+            function updateErrorMessage(errorMessage) {
+                $scope.paymentErrorMessage = '';
+                $timeout(()=>{
+                    $scope.paymentErrorMessage = errorMessage;
+                    $scope.$emit('PAYMENT_FAILED', [errorMessage]);
+                    $scope.$emit('hideLoader');
+                }, 300);
+            }
+
+            /**
+             *
              * @returns {{undefined}} undefined
              */
             function initiateCBAlisteners() {
@@ -197,8 +211,13 @@ angular.module('sntPay').controller('sntPaymentController',
                     );
                 });
 
+                var listenerUpdateErrorMessage = $rootScope.$on('UPDATE_NOTIFICATION', (event, response)=> {
+                    updateErrorMessage(response);
+                });
+
                 $scope.$on('$destroy', listenerCBAPaymentFailure);
                 $scope.$on('$destroy', listenerCBAPaymentSuccess);
+                $scope.$on('$destroy', listenerUpdateErrorMessage);
             }
 
             /**
