@@ -5,7 +5,7 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 		templateMappingList = {},
 		cms_screen_details = [],
 		that = this;
-	this.addon_screen_text_details = [],
+	this.addon_screen_text_details = [];
 		
 
 	var extarctAddonScreenTextDetails = function  (response) {
