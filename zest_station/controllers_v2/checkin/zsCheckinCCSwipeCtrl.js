@@ -247,15 +247,9 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                     $scope.$emit('hideLoader');
                     goToCardSign();
                 } else {
-                    failSavePayment(response);
+                    goToSwipeError();
                 }
             }
-        };
-
-        var failSavePayment = function(response) {
-            $scope.$emit('hideLoader');
-            $log.warn(response);
-            $state.go('zest_station.error');
         };
 
         var saveSwipedCardMLI = function(response) {
