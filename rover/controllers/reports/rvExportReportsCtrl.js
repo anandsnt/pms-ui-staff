@@ -450,11 +450,15 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             var dailyOnly = _.find($scope.originalScheduleFrequency, { value: 'DAILY' });
             var runOnceOnly = _.find($scope.originalScheduleFrequency, { value: 'RUN_ONCE' });
 
-            var dailyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'DAILY' });
-            var weeklyOnly = _.find($scope.originalScheduleFrequency, { value: 'WEEKLY' });
-            var monthlyOnly = _.find($scope.originalScheduleFrequency, { value: 'MONTHLY' });
+            var dailyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'DAILY' }),
+                weeklyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'WEEKLY' }),
+                monthlyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'MONTHLY' });
+
+            var weeklyOnly = _.find($scope.originalScheduleFrequency, { value: 'WEEKLY' }),
+                monthlyOnly = _.find($scope.originalScheduleFrequency, { value: 'MONTHLY' });
 
             $scope.scheduleFrequency = [];
+            $scope.scheduleFreqType = [];
 
             var forDaily = {
                 'Financial Transactions': true,
@@ -468,7 +472,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Financial Transactions': true,
                 'Membership Details': true,
                 'Reservations': true,
-                'Rooms': true
+                'Rooms': true,
+                'Future Reservations': true,
+                'Last Week Reservations': true,
+                'Last Month Reservations': true
             };
 
             var forWeekly = {
@@ -482,19 +489,21 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             if ( forDaily[item.report.title] ) {
                 $scope.scheduleFrequency.push(dailyOnly);
-                $scope.scheduleFreqType = [dailyTypeOnly];
-            }
-
-            if ( forRunOnceOnly[item.report.title] ) {
-                $scope.scheduleFrequency.push(runOnceOnly);
+                $scope.scheduleFreqType.push(dailyTypeOnly);
             }
 
             if ( forWeekly[item.report.title] ) {
                 $scope.scheduleFrequency.push(weeklyOnly);
+                $scope.scheduleFreqType.push(weeklyTypeOnly);
             }
 
             if ( forMonthly[item.report.title] ) {
                 $scope.scheduleFrequency.push(monthlyOnly);
+                $scope.scheduleFreqType.push(monthlyTypeOnly);
+            }
+
+            if ( forRunOnceOnly[item.report.title] ) {
+                $scope.scheduleFrequency.push(runOnceOnly);
             }
         };
 
