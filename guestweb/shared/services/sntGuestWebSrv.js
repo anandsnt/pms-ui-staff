@@ -4,14 +4,15 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 		cssMappingList = {},
 		templateMappingList = {},
 		cms_screen_details = [],
-		addon_screen_text_details = [],
 		that = this;
+	this.addon_screen_text_details = [],
+		
 
 	var extarctAddonScreenTextDetails = function  (response) {
 		that.addon_screen_text_details = _.find(response.screen_list, function(cms_item) {
 			return cms_item.screen_name === "ADDONS";
 		});
-		// console.log(that.addon_screen_text_details);
+		that.addon_screen_text_details = _.isUndefined(that.addon_screen_text_details) ? [] : that.addon_screen_text_details;
 	};
 
 	this.extractAddonScreenDetails = function(screen_identifier) {
