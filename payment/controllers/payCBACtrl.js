@@ -61,7 +61,9 @@ angular.module('sntPay').controller('payCBACtrl',
 
                         if (errorCode === 145) {
                             // NOTE: Keep the user blocked while making a call to getLastTransaction
-                            sntCBAGatewaySrv.checkLastTransactionStatus();
+                            var showNotifications = true;
+
+                            sntCBAGatewaySrv.checkLastTransactionStatus(showNotifications);
                         } else {
                             $scope.$emit('hideLoader');
                         }

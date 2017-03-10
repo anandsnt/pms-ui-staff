@@ -650,5 +650,27 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
             }
         }
     });
-   
+
+   $stateProvider.state('admin.ZestStationRoomUpsells', {
+        templateUrl: '/assets/partials/zestStation/adZestStationRoomUpsell.html',
+       controller: 'ADZestStationRoomUpsellCtrl',
+        url: '/zestStationRoomUpsell',
+        resolve: {
+            roomUpsellData : function(ADZestStationSrv){
+                return ADZestStationSrv.fetch();
+            }
+        }
+    });
+
+    $stateProvider.state('admin.upsellAddonSettings', {
+        templateUrl: '/assets/partials/upsellAddons/adUpsellAddons.html',
+        controller: 'adUpsellAddonSettingsCtrl',
+        url: '/upsellAddons',
+        resolve: {
+            data: function(ADUpsellAddonSrv) {
+                return ADUpsellAddonSrv.getSettings();
+            }
+        }
+    });
+
 });

@@ -236,5 +236,14 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		controller: 'eciOffRoomNotReadyController',
 		title: 'Room unavailable'
 	});
+	
+	// comment out later
+
+	// $stateProvider.state('offerAddonOptions', {
+	// 	url: '/addonOptions',
+	// 	templateUrl: '/assets/common_templates/partials/MGM/gwOfferAddonOptions.html',
+	// 	controller: 'offerAddonOptionsController',
+	// 	title: 'Addons'
+	// });
 
 }]);

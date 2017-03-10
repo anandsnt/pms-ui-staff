@@ -91,6 +91,10 @@ angular.module('reportsModule')
                         'A/R_AGING': {
                             'untilDate': getDates.yesterday
                         },
+                        'COMPLIMENTARY_ROOM_REPORT': {
+                            'fromDate': getDates.businessDate,
+                            'untilDate': getDates.businessDate
+                        },
             			/**/
             			'DEFAULT': {
             				'fromDate': getDates.aWeekAgo,
