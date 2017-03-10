@@ -2,10 +2,10 @@ const NightlyDiaryStayRangeComponent = createClass ({
     getInitialState: function() {
         let currentSelectedReservation = this.props.currentSelectedReservation,
             departurePosition = parseInt(currentSelectedReservation.arrivalPosition) + currentSelectedReservation.duration,
-            arrivalPositionInt = parseInt(currentSelectedReservation.arrivalPosition),
             minAllowedPositionForDeparture = (this.props.numberOfDays === NIGHTLY_DIARY_CONST.DAYS_21) ? NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_21 : NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_7,
             daysMode = this.props.numberOfDays,
-            oneDayWidth = NIGHTLY_DIARY_CONST.RESERVATION_ROW_WIDTH / daysMode;
+            oneDayWidth = NIGHTLY_DIARY_CONST.RESERVATION_ROW_WIDTH / daysMode,
+            oneNightDeparturePosition = parseInt(currentSelectedReservation.arrivalPositionInt) + (NIGHTLY_DIARY_CONST.RESERVATION_ROW_WIDTH / daysMode) - minAllowedPositionForDeparture;
 
         /*
          *  Set up initial state in component
@@ -24,12 +24,14 @@ const NightlyDiaryStayRangeComponent = createClass ({
             maxArrivalFlagPos: Math.min(departurePosition, NIGHTLY_DIARY_CONST.RESERVATION_ROW_WIDTH) - oneDayWidth,
             minArrivalFlagPos: NIGHTLY_DIARY_CONST.DAYS_7_OFFSET,
             maxDepartureFlagPos: (daysMode - 1) * (NIGHTLY_DIARY_CONST.RESERVATION_ROW_WIDTH / daysMode),
-            minDepartureFlagPos: Math.max(arrivalPositionInt, minAllowedPositionForDeparture),
+            minDepartureFlagPos: Math.max(oneNightDeparturePosition, minAllowedPositionForDeparture),
             departurePosition: departurePosition,
             reservationDuration: currentSelectedReservation.duration,
             daysMode: daysMode,
             oneDayWidth: oneDayWidth,
-            dateFormat: currentSelectedReservation.dateFormat
+            dateFormat: currentSelectedReservation.dateFormat,
+            oneNightDeparturePosition : oneNightDeparturePosition,
+            isZeroNightReservation: (currentSelectedReservation.arrivalDate == currentSelectedReservation.deptDate) ? true : false
         };
     },
     /*
@@ -114,7 +116,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
             this.calculateDepartureDate();
         }
         flagarea.removeEventListener(this.mouseMovingEvent, () =>{});
-        flagarea.removeEventListener(this.mouseLeavingEvent, () =>{});        
+        flagarea.removeEventListener(this.mouseLeavingEvent, () =>{});
         this.updateFlagRanges();
 
     },
@@ -196,10 +198,18 @@ const NightlyDiaryStayRangeComponent = createClass ({
             differenceInPosition = state.departurePosition - initialDeparturePosition,
             differenceInDays = Math.round(differenceInPosition / state.oneDayWidth),
             curentPosition = initialDeparturePosition + (differenceInDays * state.oneDayWidth),
+            addDays = (state.isZeroNightReservation) ? differenceInDays+1: differenceInDays,
             currentDay = moment(props.currentSelectedReservation.deptDate, state.dateFormat.toUpperCase())
-                        .add(differenceInDays, 'days')
+                        .add(addDays, 'days')
                         .format(state.dateFormat.toUpperCase());
 
+        // If flag moved to set for 0 night stay
+        if (state.departurePosition === state.oneNightDeparturePosition) {
+            currentDay = state.arrivalDate;
+            curentPosition = state.oneNightDeparturePosition;
+        } else {
+            curentPosition = curentPosition + ((this.props.numberOfDays === NIGHTLY_DIARY_CONST.DAYS_21) ? NIGHTLY_DIARY_CONST.EXTEND_21_DAYS : NIGHTLY_DIARY_CONST.EXTEND_7_DAYS);
+        }
         props.extendShortenReservation(state.arrivalPosition, curentPosition);
         props.checkReservationAvailability(state.arrivalDate, currentDay);
         this.setState({
@@ -244,7 +254,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
      */
     updateFlagRanges() {
         this.state.maxArrivalFlagPos = this.state.departurePosition - this.state.oneDayWidth;
-        this.state.minDepartureFlagPos = this.state.arrivalPosition + this.state.oneDayWidth;
+        this.state.minDepartureFlagPos = this.state.arrivalPosition + this.state.oneDayWidth - ((this.props.numberOfDays === NIGHTLY_DIARY_CONST.DAYS_21) ? NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_21 : NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_7);
     },
 
     render() {
