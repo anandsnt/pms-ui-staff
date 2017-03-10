@@ -76,7 +76,7 @@ var SwipeOperation = function() {
 			"card_name": swipedCardData.RVCardReadCardName,
 			"payment_credit_type": swipedCardData.RVCardReadCardType,
 			"credit_card": swipedCardData.RVCardReadCardType, // VA / AX
-			"card_expiry": '20' + swipedCardData.RVCardReadExpDate.substring(0, 2) + swipedCardData.RVCardReadExpDate.slice(-2) + '-01', // YYYY-MM-DD 
+			"card_expiry": '20' + swipedCardData.RVCardReadExpDate.substring(0, 2) + '-' +swipedCardData.RVCardReadExpDate.slice(-2) + '-01', // YYYY-MM-DD 
 			"add_to_guest_card": false
 		};
 
