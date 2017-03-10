@@ -247,7 +247,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                     $scope.$emit('hideLoader');
                     goToCardSign();
                 } else {
-                    failSavePayment(response);
+                    goToSwipeError();
                 }
             }
         };
