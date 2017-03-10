@@ -26,7 +26,7 @@ angular.module('admin').controller('adTopCtrl',
             };
 
             (function() {
-                if ($stateParams.uuid) {
+                if ($stateParams.uuid || 'snt' === $state.current.name) {
                     setPropertyAndNavigate($stateParams.uuid);
                 } else {
                     $log.info('setPropertyAndNavigate');
