@@ -252,12 +252,6 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             }
         };
 
-        var failSavePayment = function(response) {
-            $scope.$emit('hideLoader');
-            $log.warn(response);
-            $state.go('zest_station.error');
-        };
-
         var saveSwipedCardMLI = function(response) {
             var data;
             // save the payment to guest card/reservation
