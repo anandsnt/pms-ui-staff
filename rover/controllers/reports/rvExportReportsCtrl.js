@@ -468,7 +468,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Financial Transactions': true,
                 'Membership Details': true,
                 'Reservations': true,
-                'Rooms': true
+                'Rooms': true,
+                'Future Reservations': true,
+                'Last Week Reservations': true,
+                'Last Month Reservations': true
             };
 
             var forWeekly = {
@@ -485,16 +488,16 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.scheduleFreqType = [dailyTypeOnly];
             }
 
-            if ( forRunOnceOnly[item.report.title] ) {
-                $scope.scheduleFrequency.push(runOnceOnly);
-            }
-
             if ( forWeekly[item.report.title] ) {
                 $scope.scheduleFrequency.push(weeklyOnly);
             }
 
             if ( forMonthly[item.report.title] ) {
                 $scope.scheduleFrequency.push(monthlyOnly);
+            }
+
+            if ( forRunOnceOnly[item.report.title] ) {
+                $scope.scheduleFrequency.push(runOnceOnly);
             }
         };
 
