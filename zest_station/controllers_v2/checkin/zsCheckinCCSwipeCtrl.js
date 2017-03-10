@@ -243,8 +243,8 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
         var successSavePayment = function(response) {
             if (atCardSwipeScreen()) {
+                $scope.$emit('hideLoader');
                 if (response.status === 'success') {
-                    $scope.$emit('hideLoader');
                     goToCardSign();
                 } else {
                     goToSwipeError();
@@ -276,6 +276,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                     });
                 }, 3500);
             } else {
+                // TODO: switch to CallAPi/change the pmtsrv to base2 and remove unneeded hideLoaders
                 $scope.invokeApi(zsPaymentSrv.savePayment, postData, successSavePayment, goToSwipeError);
             }
         };
