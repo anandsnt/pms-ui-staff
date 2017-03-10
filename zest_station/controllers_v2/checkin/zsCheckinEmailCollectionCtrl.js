@@ -78,7 +78,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
                 // to let checkin key dispense ctrl go back to edit / send email mode
                 stateParams.from_mobile_key_email_update = 'true';
                 
-                stateParams.physical_key_selected = $stateParams.physical_key_selected// mobile key logic reference
+                stateParams.physical_key_selected = $stateParams.physical_key_selected;// mobile key logic reference
                 $state.go('zest_station.checkinKeyDispense', stateParams);
 
             } else {

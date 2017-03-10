@@ -1,4 +1,4 @@
-admin.controller('ADZestStationMobilePhoneKeyEmailSetupCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter) {
+admin.controller('ADZestStationMobilePhoneKeyEmailSetupCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', function($scope, $state, $rootScope, $stateParams, ADZestStationSrv) {
     BaseCtrl.call(this, $scope);
     $scope.$emit('changedSelectedMenu', 10);
 
@@ -24,7 +24,7 @@ admin.controller('ADZestStationMobilePhoneKeyEmailSetupCtrl', ['$scope', '$rootS
             $scope.successMessage = 'Success';
             $scope.$emit('hideLoader');
         };
-        var saveFailed = function(response) {
+        var saveFailed = function() {
             $scope.errorMessage = 'Failed';
             $scope.$emit('hideLoader');
         };

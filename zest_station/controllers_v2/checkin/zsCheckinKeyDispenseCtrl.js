@@ -30,9 +30,10 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
         // Mobile Key is enabled for the Hotel and ZestStation->(room key delivery) + reservation (room) supports mobile key + 
         // offer_mobilekey_from_station
         var mobileKeyOptionAvailable = $scope.zestStationData.selectedReservation.reservation_details.station_offer_mobilekey;
-        console.info('mobileKeyOptionAvailable: ',mobileKeyOptionAvailable);
 
-        if (mobileKeyOptionAvailable === 'third_party'){
+        console.info('mobileKeyOptionAvailable: ', mobileKeyOptionAvailable);
+
+        if (mobileKeyOptionAvailable === 'third_party') {
             $scope.zestStationData.thirdPartyMobileKey = 'true';
         }
 
@@ -64,12 +65,12 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
                     }
 
                     
-                    if ($stateParams.from_mobile_key_email_update === 'true'){
+                    if ($stateParams.from_mobile_key_email_update === 'true') {
                         $scope.mode = 'THIRD_PARTY_GET_IT_INFO';  
                     } else {
                         // TODO: fix if overlay and have shown checked-in success, need to skip the SUCCESS screen
                         // and go select mobile/physical key + N keys
-                        if (!$scope.zestStationData.showedFirstCheckedInSuccess){
+                        if (!$scope.zestStationData.showedFirstCheckedInSuccess) {
                             $scope.mode = 'MOBILE_OR_PHYSICAL_KEY_START';    
                         } else {
                             $scope.mode = 'MOBILE_OR_PHYSICAL_KEY';
@@ -122,7 +123,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
             var userHasMobileAccountAlready = false;// debugging, check if user has email + if email is associated with the App
                 // TODO: remove this link once we add backend logic
 
-            userHasMobileAccountAlready = $scope.zestStationData.demoMobileKeyModeEmailLinked === 'true' ? true : false;
+            userHasMobileAccountAlready = $scope.zestStationData.demoMobileKeyModeEmailLinked === 'true';
 
             // TODO: check flag if user account is setup already, then wont need to add email,etc.
             console.info('userHasMobileAccountAlready: ', userHasMobileAccountAlready);
@@ -168,19 +169,15 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
         };
 
         $scope.editEmailAddress = function() {
-                $stateParams.from_mobile = 'true';
-                $stateParams.physical_key_selected = $scope.physicalKeySelected+'';
-                $state.go('zest_station.checkInEmailCollection',$stateParams);
-        };
-
-        var generalError = function(response) {
-            $scope.$emit('GENERAL_ERROR');
+            $stateParams.from_mobile = 'true';
+            $stateParams.physical_key_selected = $scope.physicalKeySelected + '';
+            $state.go('zest_station.checkInEmailCollection', $stateParams);
         };
 
         $scope.sendEmail = function() {
-            var onSuccess = function(){
+            var onSuccess = function() {
                 $scope.mode = 'THIRD_PARTY_GET_IT_INFO_EMAIL_SENT';
-            }
+            };
 
             $scope.callAPI(zsCheckinSrv.sendThirdPartyEmail, {
                 params: {
@@ -208,7 +205,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 
                 if (mobileKeyRequested) {
                     // MOBILE KEY FROM 1st (SNT) or 3rd party (..those guys -_-")
-                    console.log('type of mobile key requested [',($scope.zestStationData.thirdPartyMobileKey === 'true' ? 'Third-Party':'Default'),']');
+                    console.log('type of mobile key requested [', $scope.zestStationData.thirdPartyMobileKey === 'true' ? 'Third-Party' : 'Default', ']');
                     if ($scope.zestStationData.thirdPartyMobileKey === 'true') {
                         initThirdPartyMobileKeyFlow();
 
