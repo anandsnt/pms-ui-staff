@@ -530,7 +530,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 			var dataUpdated = false;
 
 			if (typeof contractInfo.rate_value === 'number') {
-				contractInfo.rate_value = contractInfo.rate_value.toFixed(2);
+				contractInfo.rate_value = String(contractInfo.rate_value.toFixed(2));
 			}
 
 			if (angular.equals(dataToUpdate, contractInfo)) {
