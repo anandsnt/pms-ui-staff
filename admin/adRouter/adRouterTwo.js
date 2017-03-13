@@ -693,4 +693,10 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
             }
         }
     });
+
+    $stateProvider.state('admin.zestWebAddons', {
+        templateUrl: '/assets/partials/checkin/adZestWebAddons.html',
+        controller: 'ADZestWebAddonCtrl',
+        url: '/zestWebAddons'
+    });
 });

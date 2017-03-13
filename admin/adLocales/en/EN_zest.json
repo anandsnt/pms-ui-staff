@@ -147,7 +147,10 @@
 "ALWAYS": "Always",
 "ONLY_WHEN_ROOM_SUPPORTS_MOBILE_KEY" : "Only when room supports mobile key",
 "MOBILE_APP_CALL_ACTION": "Mobile App call to action",
-"TEXT_2": "Text 2 (Ending)"
+"TEXT_2": "Text 2 (Ending)",
+
+"UPSELL_ADONS": "Upsell Add Ons",
+"ADDONS_INSTRUCTION": "Control the Add Ons offered during check in. Drag and drop to control display order"
 
 
 
