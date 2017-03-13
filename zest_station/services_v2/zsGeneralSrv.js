@@ -464,7 +464,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.updateWorkStationOos = function(params) {
             var deferred = $q.defer(),
-                url = 'api/workstations/' + params.id + '/set_out_or_order.json';
+                url = '/api/workstations/' + params.id + '/set_out_or_order.json';
 
             zsBaseWebSrv.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
@@ -490,7 +490,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.validate = function(params) {
             var deferred = $q.defer(),
-                url = 'api/users/check_if_admin';
+                url = '/api/users/check_if_admin';
 
             zsBaseWebSrv.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
