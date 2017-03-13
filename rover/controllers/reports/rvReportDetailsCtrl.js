@@ -987,8 +987,15 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// reset the page
 			$_pageNo = 1;
 
+            var pageNo  = 1;
+
+            // CICO-39128 - Added to preserve the page no while sorting
+            if ($scope.chosenReport.title === reportNames['COMPLIMENTARY_ROOM_REPORT']) {
+                pageNo = $scope.currentPage;
+            }
+
 			// should-we-change-view, specify-page, per-page-value
-			$scope.genReport( false, 1 );
+			$scope.genReport( false, pageNo );
 		};
 
 		// refetch the reports with new filter values
