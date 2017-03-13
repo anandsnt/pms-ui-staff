@@ -405,6 +405,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.rightColSpan = 4;
 					break;
 
+                case reportNames['COMPLIMENTARY_ROOM_REPORT']:
+                    $scope.leftColSpan = 5;
+                    $scope.rightColSpan = 3;
+                    break;
+
 				default:
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 2;
@@ -824,7 +829,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['VACANT_ROOMS_REPORT']:
 					template = '/assets/partials/reports/vacantRoomsReport/rvVacantRoomsReportRow.html';
 					break;
-					
+
 				case reportNames['COMPLIMENTARY_ROOM_REPORT']:
 					template = '/assets/partials/reports/complimentaryRoomReport/rvComplimentaryRoomReport.html';
 					break;
