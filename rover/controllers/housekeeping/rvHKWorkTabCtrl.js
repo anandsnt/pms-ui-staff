@@ -132,7 +132,7 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
             if ($scope.roomDetails.current_hk_status === HK_STATUS.INSPECTED) {
                 var changeRoomStatusToInspectedPermission = rvPermissionSrv.getPermissionValue ('CHANGE_ROOM_STATUS_TO_INSPECTED');
 
-                if (!changeRoomStatusToInspectedPermission) {
+                if (!changeRoomStatusToInspectedPermission && $rootScope.isStandAlone) {
                     $timeout( function() {
                         ngDialog.open({
                             template: '/assets/partials/housekeeping/popups/rvRoomStatusChangeRestrictAlert.html',
