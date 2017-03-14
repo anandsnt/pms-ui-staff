@@ -2280,6 +2280,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     $scope.$broadcast('updatePagination', reportPaginationIds[chosenReport.title]);
                   }, 50);
                 }
+
+                // CICO-39128 - Added to preserve the page no while sorting and update the page no in directive
+                if(chosenReport.title == reportNames['COMPLIMENTARY_ROOM_REPORT'] && page != 1) {
+                    $timeout(function() {
+                        $scope.$broadcast('updatePageNo', page);
+                  }, 50);
+                }
             };
 
             var sucssCallback = function(response) {
@@ -2333,6 +2340,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
             // Load API data for the pagination directive
             var loadAPIData = function(pageNo) {
+                $scope.currentPage = pageNo;
                 $scope.genReport(false, pageNo);
             };
 
