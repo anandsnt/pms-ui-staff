@@ -452,10 +452,12 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             var dailyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'DAILY' }),
                 weeklyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'WEEKLY' }),
-                monthlyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'MONTHLY' });
+                monthlyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'MONTHLY' }),
+                hourlyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'HOURLY' });
 
             var weeklyOnly = _.find($scope.originalScheduleFrequency, { value: 'WEEKLY' }),
-                monthlyOnly = _.find($scope.originalScheduleFrequency, { value: 'MONTHLY' });
+                monthlyOnly = _.find($scope.originalScheduleFrequency, { value: 'MONTHLY' }),
+                hourlyOnly = _.find($scope.originalScheduleFrequency, { value: 'HOURLY' });
 
             $scope.scheduleFrequency = [];
             $scope.scheduleFreqType = [];
@@ -486,6 +488,15 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Future Reservations': true,
                 'Last Month Reservations': true
             };
+
+            var forHourly = {
+                'Future Reservations': true
+            };
+
+            if ( forHourly[item.report.title] ) {
+                $scope.scheduleFrequency.push(hourlyOnly);
+                $scope.scheduleFreqType.push(hourlyTypeOnly);
+            }
 
             if ( forDaily[item.report.title] ) {
                 $scope.scheduleFrequency.push(dailyOnly);
