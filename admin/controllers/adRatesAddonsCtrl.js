@@ -271,16 +271,11 @@ admin.controller('ADRatesAddonsCtrl', [
         $scope.currentLocale = availableLanguages.default_locale;
 
         $scope.onLocaleChange = function() {
-            var id;
-
             for (var i in $scope.languages.locales) {
                 if ($scope.filter.locale === $scope.languages.locales[i].value) {
-                    id = $scope.languages.locales[i].id;
+                    $scope.filter.currentLocaleId = $scope.languages.locales[i].id;
                 }
             }
-
-            console.warn($scope.filter.locale, ' selected [', id, ']');
-            $scope.filter.currentLocaleId = id;
             setCurrentLanguageAddonText();
 
         };
@@ -290,7 +285,7 @@ admin.controller('ADRatesAddonsCtrl', [
 
             if (!$scope.languages.localeValues[filter]) {
                 $scope.languages.localeValues[filter] = {
-                    'id': $scope.filter.currentLocaleId
+                    'language_id': $scope.filter.currentLocaleId
                 };
             }
             $scope.languages.localeValues[filter][field] = $scope.singleAddon[field_id];
@@ -314,13 +309,13 @@ admin.controller('ADRatesAddonsCtrl', [
 
             var inputs = document.getElementsByTagName('input');
 
-            for (var i in inputs) {
-                if (inputs[i].placeholder === 'Enter suffix label') {
-                    inputs[i].addEventListener('change', function() {
+            for (var x in inputs) {
+                if (inputs[x].placeholder === 'Enter suffix label') {
+                    inputs[x].addEventListener('change', function() {
                         updateAddonLanguage('translated_suffix', 'suffix_label');
                     });
-                } else if (inputs[i].placeholder === 'Enter Add-On Name') {
-                    inputs[i].addEventListener('change', function() {
+                } else if (inputs[x].placeholder === 'Enter Add-On Name') {
+                    inputs[x].addEventListener('change', function() {
                         updateAddonLanguage('translated_name', 'name');
                     });
                 }
@@ -329,9 +324,28 @@ admin.controller('ADRatesAddonsCtrl', [
         };
 
         var getAddonLanguageFormatToSave = function() {
-            var addonTranslationsArray = [],
-                locale, localeObj;
+            // var addonTranslationsArray = [],
+            //    locale, localeObj,
+            var filter = $scope.filter.locale;
+            var lang = $scope.languages.localeValues[filter] ? $scope.languages.localeValues[filter] : {};
 
+            if (!lang.id && lang.language_id) {
+                lang.id = null;
+            }
+            if (lang.translated_name === null) {
+                lang.translated_name = '';
+            }
+            if (lang.translated_description === null) {
+                lang.translated_description = '';
+            }
+            if (lang.translated_alternate_description === null) {
+                lang.translated_alternate_description = '';
+            }
+            if (lang.translated_suffix === null) {
+                lang.translated_suffix = '';
+            }
+            return lang;
+            /*
             for (var x in $scope.languages.locales) {
                 locale = $scope.languages.locales[x].value;
 
@@ -340,10 +354,10 @@ admin.controller('ADRatesAddonsCtrl', [
 
                     addonTranslationsArray.push(localeObj);
                 }
-
             }
 
             return addonTranslationsArray;
+            */
         };
 
         $scope.editSingle = function() {
@@ -417,38 +431,45 @@ admin.controller('ADRatesAddonsCtrl', [
 
         var setCurrentLanguageAddonText = function() {
             var filter = $scope.filter.locale;
-            var lang = $scope.languages.localeValues[filter] ? $scope.languages.localeValues[filter] : {};
+            var selectedLocale = $scope.languages.localeValues[filter];
 
-            $scope.singleAddon.alternate_description = lang.alternate_description ? lang.alternate_description : '';
-            $scope.singleAddon.suffix_label = lang.suffix_label ? lang.suffix_label : '';
-            $scope.singleAddon.description = lang.description ? lang.description : '';
-            $scope.singleAddon.name = lang.name ? lang.name : '';
+            var lang = selectedLocale ? selectedLocale : {
+                'language_id': $scope.filter.currentLocaleId
+            };
+
+            $scope.singleAddon.alternate_description = lang.translated_alternate_description ? lang.translated_alternate_description : '';
+            $scope.singleAddon.suffix_label = lang.translated_suffix ? lang.translated_suffix : '';
+            $scope.singleAddon.description = lang.translated_description ? lang.translated_description : '';
+            $scope.singleAddon.name = lang.translated_name ? lang.translated_name : '';
         };
 
         var setAddonTranslations = function() {
-            $scope.languages.localeValues[availableLanguages.default_locale] = {};
-            $scope.languages.localeValues[availableLanguages.default_locale].translated_alternate_description = $scope.singleAddon.alternate_description;
-            $scope.languages.localeValues[availableLanguages.default_locale].translated_description = $scope.singleAddon.description;
-            $scope.languages.localeValues[availableLanguages.default_locale].translated_name = $scope.singleAddon.name;
-            $scope.languages.localeValues[availableLanguages.default_locale].translated_suffix = $scope.singleAddon.suffix_label;
+            var locale = availableLanguages.default_locale;
+
+            $scope.languages.localeValues[locale] = {};
+            $scope.languages.localeValues[locale].translated_alternate_description = $scope.singleAddon.alternate_description;
+            $scope.languages.localeValues[locale].translated_description = $scope.singleAddon.description;
+            $scope.languages.localeValues[locale].translated_name = $scope.singleAddon.name;
+            $scope.languages.localeValues[locale].translated_suffix = $scope.singleAddon.suffix_label;
 
 
             // need to find and set the language id / id for the default language
             // if no other languages have been configured for the addon, this will be needed
-            var localeTranslation;
+            var localeName, localeTranslationLang;
 
             for (var x in $scope.languages.locales) {
                 if ($scope.languages.locales[x].value === availableLanguages.default_locale) {
-                    $scope.languages.localeValues[availableLanguages.default_locale].id = $scope.languages.locales[x].id;
+                    $scope.languages.localeValues[availableLanguages.default_locale].language_id = $scope.languages.locales[x].id;
                 }
 
                 for (var y in $scope.singleAddon.translations) {
                     localeTranslationLang = $scope.singleAddon.translations[y];
-                    console.log('localeTranslationLang', localeTranslationLang);
 
-                    if (localeTranslationLang.id === $scope.languages.locales[x].id) {
-                        $scope.languages.localeValues[$scope.languages.locales[x].value] = localeTranslationLang;
-                        $scope.languages.localeValues[$scope.languages.locales[x].value].language_id = localeTranslationLang.language_id;
+                    if (localeTranslationLang.language_id === $scope.languages.locales[x].id + '') {
+                        localeName = $scope.languages.locales[x].value;
+                        $scope.languages.localeValues[localeName].language_id = localeTranslationLang.language_id;
+                        $scope.languages.localeValues[localeName] = localeTranslationLang;
+                        $scope.languages.localeValues[localeName].id = localeTranslationLang.id ? localeTranslationLang.id : null;
                     }
                 }
             }
