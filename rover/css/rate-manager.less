@@ -1,3 +1,5 @@
+@cellShadowColor: #e9e9e9;
+
 #rate-manager{
     .calc-height(100, 60);
     
@@ -326,7 +328,7 @@
                     font-weight: 400;
 
                 }
-                
+
                 .icons,
                 img {
                     position: absolute;
@@ -433,6 +435,12 @@
                 padding:10px 0;
                 text-align: center;
 
+                &.break {
+                        width: 90px;
+                        padding-left: 10px;
+                        border-left: 1px solid rgba(0,0,0,0.1);
+                    }
+                    
                 button {
                     font-size: 12px;
                     padding:0 10px;
@@ -443,6 +451,41 @@
                         background-color: @grey2;
                     }
                 }
+            }
+        }
+
+        &.rate-view {
+
+            .info {
+                .calc-width(100, 375);
+            }
+
+            .actions {
+                max-width: 365px;
+
+                li {
+                    &:first-child {
+                        width: 180px;
+                        margin-right: 15px;
+                    }
+
+                    
+
+                    .checkbox {
+                        background: @grey1;
+                        text-transform: uppercase;
+                        font-size: 14px;
+                        padding-right: 10px;
+                        
+
+                        .icon-form {
+                            &:not(.checked) {
+                                background: @white;
+                            }
+                        }
+                    }
+                }
+
             }
         }
 
@@ -487,7 +530,7 @@
     /* Grid Containers ***/
     .rate-manager-content {
         .calc-height(100, 50);
-     
+
         .calendar,
         .calendar-wraper,
         .graph {
@@ -524,118 +567,6 @@
             .calendar-rate-table {
                 .rate-calendar {
                     background:  @background;
-                }
-            }
-            
-            /* Horizontal Loading Classes*/
-            &.load-right,
-            &.load-left {
-                .loading-message {
-                    width: 100px;
-                    height: 100%;
-                    #loading-spinner {
-                        .show();
-                    }
-                }
-            }
-
-            &.load-right {
-                .loading-message {
-                    right: 0;
-                }
-                .calendar-rate-table {
-                    .wrapper {
-                        padding-right: 100px;
-                    }
-                }
-            }
-
-            &.load-left {
-                .loading-message {
-                    left: 180px;
-                }
-
-                 .calendar-rate-table {
-                    .wrapper {
-                        padding-left: 100px;
-                    }
-                }
-            }
-            /* Vertical Loading Classes*/
-            &.load-top,
-            &.load-bottom {
-                &.loading-bottom,
-                &.loading-top {
-                    #loading-spinner {
-                        .show();
-                    }
-                }
-                .loading-message {
-                    width: 100%;
-                    height: 100px;
-                }
-                 
-                .loading-message {
-                    left: 100px;
-                }
-
-                &.loading-bottom {
-                    .loading-message {
-                        bottom: 35px;
-                    }
-                }
-
-                &.loading-top {
-                    .loading-message {
-                        top: 100px;
-                    }
-                }
-              
-            }
-
-            &.load-bottom {
-                
-                .calendar-rate-table-grid {
-                    .wrapper {
-                        padding-bottom: 65px;
-                    }
-                }
-
-
-                .pinnedLeft-list {
-                     .wrapper {
-                        /*padding-bottom: 55px; vertical try*/
-                    }
-
-                    .rate-calendar {
-                        tr.loader:last-child {
-                            display: table-row;
-                        }
-                    }
-                }
-            }
-
-            &.load-top {
-                
-                .calendar-rate-table-grid {
-                    .wrapper {
-                        padding-top: 70px;
-                    }
- 
-                    tr:first-child {
-                        .cell-container { 
-                            padding-top: 5px;
-                        }
-                    }
-                    
-                }
-
-                .pinnedLeft-list {
-                    .rate-calendar {
-                        tr.loader:first-child {
-                            display: table-row;
-                        }
-                    }
                 }
             }
 
@@ -715,31 +646,27 @@
             }
         }
 
-        > .rate-calendar {
-             /* First row needs to be slightly smaller ***/
-            //.cell:first-child { height: 55px; }
-        }
-
         .pinnedLeft-actions {
-            padding: 10px 10px 0 10px;
+            padding: 8px 10px 0 10px;
             overflow: hidden;
+            background: @background;
+            position: relative;
+            z-index: 3;
             .size(55px, 100%);
             .float;
+            .box-shadow(0 5px 0 @cellShadowColor);
 
             .button {
-                font-size: 13px;
-                line-height: 40px;
+                font-size: 12px; 
                 padding: 0;
                 margin: 0;
+                height: 40px;
+                line-height: 1;
                 .calc-width(50, 2.5);
                 .pull-left;
 
                 &:first-child { margin-right: 5px; }
-
-                &:not(.red):not(.green):not(.orange) {
-                    color: @black;
-                    text-shadow: none;
-                }
+ 
             }
 
             .switch-button { 
@@ -796,47 +723,98 @@
 
         .pinnedLeft-list { 
             margin-top: 5px;
-            position: relative;
+            //overflow: hidden; RateType
+            position:relative;
+            z-index: 1;
             width: 100%;
-            .calc-height(100, 110);
-            overflow: hidden;
+            .calc-height(100, 105);
+
             .wrapper {
-                padding-bottom:5px;
+                padding-bottom: 5px;
             }
+
+             .rate-calendar { 
+                tr {
+                
+
+                    &:first-child {
+                        height: 60px;
+                    }
+
+                }
+             }
         }
 
         .rate-calendar { 
             width: 100%; 
-
+            background: @background;
+            position: relative;
+            z-index: 2;
             tr {
-                &.loader {
-                    display: none;
-                    height: 70px;
-                    td {
-                        height: 70px;
-                        text-align: center;
-                        padding: 10px;
-                        width: 175px;
-                    }
+                
 
-                    button {
-                        font-size: 12px;
+                &:first-child {
+                    height: 45px;
+
+                    &.rate-type {
+                        height: 50px;
+
+                        td {
+                            &:before {
+                                height: 100%;
+                            }
+                        }
                     }
                 }
 
-                &.loader:last-child {
+                &.rate-type {
+                    background: @white;
+                    height: 55px;
+
+                    .name {
+                        text-transform: none;
+                        font-weight: 600;
+                        padding-right: 15px;
+                    }
+
                     td {
-                        .box-shadow(none);
+                        a {
+                            position: relative;
+                            z-index: 2;
+                        }
+
+                        &:before,
+                        &:after {
+                            position: absolute;
+                            content: '';
+                            display: block; 
+                            z-index:1;
+                        }
+
+                       &:before {
+                            width: 5px;
+                            background: @white;
+                            .calc-height(100,5);
+                            bottom:0;
+                            right:-3px;
+                        }
+
+                        &:after {
+                            width: 100%;
+                            height: 10px;
+                            bottom:0;
+                            box-shadow: 0px 1px 0px rgba(0,0,0,0.1);
+                        }
                     }
                 }
- 
+
             }
 
             td { 
                 position: relative;
                 padding: 5px 0;
                 text-align: right;
-                .box-shadow(0 5px 0 rgba(0,0,0,.05));
+                .box-shadow(0 5px 0 @cellShadowColor);
             }
 
             a {
@@ -988,7 +966,6 @@
         }
     }
     
-
     /* Right Side - Calendar Grid ***/
     .calendar-rate-table {
         position: absolute;
@@ -1039,8 +1016,6 @@
             .cell-container { padding-left: 5px; }
         }
 
-        
-
         tr:last-child {
             .cell-container { 
                 padding-bottom: 5px;
@@ -1048,10 +1023,9 @@
                 &:not(.expanded-cell) {
                      height: 65px; 
                 }
-                
-            }
-
-            /* If a last child is also a first child, keep it the same*/
+               
+            } 
+             /* If a last child is also a first child, keep it the same as before*/
             &:first-child {
                 .cell-container {
                     &:not(.expanded-cell) {
@@ -1072,12 +1046,12 @@
                 background-color: @gcard;
                 .show();
 
-                &:not(.week-day) {
-                    font-size: 14px;
-                    font-weight: 600;
-                    padding-bottom: 10px;
+                &:not(.week-day) {       
+                    font-size: 14px;       
+                    font-weight: 600;     
+                    padding-bottom: 10px;     
                     #border-radius > .bottom(); 
-                }
+                  }
                 
                 &.week-day { 
                     font-size: 12px;
@@ -1103,7 +1077,7 @@
         /* Rate Table Grid - Column Content ***/
         .cell-content {
             position: relative;
-            padding: 10px;
+            padding: 10px 5px;
             background: @white;
             cursor: pointer;
             overflow: hidden;
@@ -1115,7 +1089,8 @@
             #border-radius > .rounded();
 
             /* Single Rate Value ***/
-            .rate-single {
+            .rate-single,
+            .occupancy {
                 font-size: 20px;
                 line-height: 1;
                 font-weight: 300;
@@ -1126,10 +1101,18 @@
                 top: 0;
                 left: 0;
                 line-height: 55px;
-                padding-left: 10px;
+                
                
                 .square(100%);
+            }
 
+            .occupancy {
+                text-align: center;
+            }
+
+            .rate-single {
+                padding-left: 10px;
+                
                 .rate-single-text {
                     font-size: 12px;
                     line-height: 10px;
@@ -1174,7 +1157,17 @@
             }
 
             /* Overrides ***/
-            .has-override { color: @logoPrimary; }
+            .has-override { 
+                color: @logoPrimary;
+
+                &.third-party {
+                    color: @purpleStart;
+
+                    .icon-report {
+                        background-position: 0 -336px;
+                    }
+                }
+            }
 
             .icon-report {
                 position: absolute;
@@ -1183,14 +1176,6 @@
                 .square(16px);
                 background-position: 0 -14px;
                 background-size: 16px;
-            }
-
-            /* Restrictions ***/
-            > .restriction-icon {
-                .square(20px);
-
-                &.icon-cross, { background-position: 5px -7835px; }
-                &.icon-block {  background-position: 5px -7895px; }
             }
 
             .restriction_holder {
@@ -1225,6 +1210,8 @@
             }
         }
 
+    
+     
         .iScrollHorizontalScrollbar {
             top: auto;
             bottom: 10px;
@@ -1233,11 +1220,27 @@
         /* First Row - Days ***/
         &.calendar-rate-table-days { 
             top: 0;
-            height: 120px; 
+            height: 105px;
+            z-index: 999;
+
+            &:before {
+                content: '';
+                position: absolute;
+                left: 0;
+                width: 5px;
+                height: 120px;
+                box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
+                left: -5px;
+                z-index: 999;
+            } 
+
+            td {
+                vertical-align: top;
+            }
+
             tr:first-child {
                 .cell-content {
-                    > .restriction-icon {
-                            margin-top: 5px;
+                    > .restriction-icon { 
                             position: static;
                             float: left;
                             margin-right: 0.5em;
@@ -1250,30 +1253,112 @@
             }
 
             tr:first-child {
+                .cell {
+                    height: 50px;
+                }
                 .cell-container { 
                     padding-top: 0;
-                    height: 55px;
+                    height: 45px;
+
+                    &:not(.expanded-cell) {
+                       height: 45px; 
+                    }
 
                     .cell-content {
                         background: @grey1;
                     }
                 }
-        }
+            }
         } 
 
         /* Other Rows - Data ***/
         &.calendar-rate-table-grid { 
-            top: 120px;
-            .calc-height(100, 160); 
+            top: 105px;
+            .calc-height(100, 155); 
 
-            tr:first-child {
-                .cell-container { 
-                    padding-top: 0;
+            
+
+            tr {
+                &:first-child {
+                    .cell-container { 
+                        padding-top: 0;
+                    }
+
+                    &.rate-type {
+                        .cell,
+                        .cell-container {
+                            height: 50px;
+                        }
+                    }
+                }
+
+                &.rate-type {
+
+                    td {
+                        &:first-child {
+                            .cell-container {
+                                .cell-content {
+                                    &:before {
+                                        .calc-width(100, 10);
+                                        left: 5px; 
+                                    }
+
+                                    .restriction-icon { 
+                                        margin-left: 10px;
+                                    }
+                                }
+                            }
+                        }
+
+                        .restriction-icon {
+                            position: relative;
+                            z-index: 2;
+                            margin-left: 5px;
+                        }
+                    }
+
+                    .cell {
+                        height: 55px;
+                    }
+
+                    .cell-container {
+                        height: 55px; 
+                        padding-left: 0;
+                        padding-right: 0;
+
+                        .cell-content {
+                            padding: 5px 5px 5px 0;
+                            position: relative;
+                            background: @white;
+                            #flexbox > .parent( row, flex-start, center, '');
+                            box-shadow: 0px 1px 0px rgba(0,0,0,0.1);
+
+                            &:before {
+                                content:'';
+                                z-index: 1;
+                                display: block;
+                                position: absolute;
+                                .calc-width(100, 5);
+                                .calc-height(100, 10);
+                                left: 0px;
+                                top: 5px;
+                                background: #f8f8f8;
+                                .box-shadow(inset 0px 0px 1px rgba(0,0,0,0.3));
+                            }
+                        }
+
+                        &.weekend_day {
+                            .cell-content {
+                                background: #eceff1;
+                            }
+                        }
+                    }
                 }
             }
         }
-    }  
-}
+    }
+    
+}    
 
 /* Bottom - Legend ***/
 .restriction-legends {
@@ -1310,4 +1395,4 @@
         line-height: 20px;
         .show();
     }
-}  
+}
