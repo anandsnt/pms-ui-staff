@@ -30,8 +30,8 @@ const NightlyDiaryStayRangeComponent = createClass ({
             daysMode: daysMode,
             oneDayWidth: oneDayWidth,
             dateFormat: currentSelectedReservation.dateFormat,
-            oneNightDeparturePosition : oneNightDeparturePosition,
-            isZeroNightReservation: (currentSelectedReservation.arrivalDate == currentSelectedReservation.deptDate) ? true : false
+            oneNightDeparturePosition: oneNightDeparturePosition,
+            isZeroNightReservation: (currentSelectedReservation.arrivalDate === currentSelectedReservation.deptDate) ? true : false
         };
     },
     /*
@@ -198,7 +198,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
             differenceInPosition = state.departurePosition - initialDeparturePosition,
             differenceInDays = Math.round(differenceInPosition / state.oneDayWidth),
             curentPosition = initialDeparturePosition + (differenceInDays * state.oneDayWidth),
-            addDays = (state.isZeroNightReservation) ? differenceInDays+1: differenceInDays,
+            addDays = (state.isZeroNightReservation) ? differenceInDays + 1 : differenceInDays,
             currentDay = moment(props.currentSelectedReservation.deptDate, state.dateFormat.toUpperCase())
                         .add(addDays, 'days')
                         .format(state.dateFormat.toUpperCase());
