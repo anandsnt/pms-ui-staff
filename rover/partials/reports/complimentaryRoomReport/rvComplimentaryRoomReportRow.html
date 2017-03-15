@@ -1,5 +1,6 @@
 <td class="name">
-    <strong>{{transaction.name}}</strong>
+    <strong ng-if="!!transaction.name">{{transaction.name}}</strong>
+    <strong ng-if="transaction.name == '' ">Pending</strong>
 </td>
 <td class="room">
     {{transaction.room_no}}
