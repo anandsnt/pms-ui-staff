@@ -289,6 +289,9 @@
                     .label {
                         width: 60px;
                         overflow: hidden;
+                        background: @white;
+                        .box-shadow();
+                        margin: 1px 0 0 0;
                     }
 
                     .guest-icon {
@@ -296,12 +299,20 @@
                         line-height: 30px;
                         text-transform: uppercase;
                         text-align: center;
-                        font-weight: 600;
-                        color: @white;
-                        background: @grey2;
-                        margin: 5px 10px 0 0;
-                        .square(30px);
+                        font-weight: 600; 
+                        background: @white;
+                        margin: 0;
+                        .square(40px);
                         .pull-left;
+                        background: @white;
+                        .box-shadow();
+                        margin-top: 1px;
+
+                        .icons {
+                            .size(25px, 20px);
+                            margin-top: 10px;
+                            margin-left: 10px;
+                        }
                     }
 
                     .select,
@@ -329,16 +340,31 @@
 
             .form {
                 margin-top: 10px;
-                max-width: 400px;
-                .calc-width(100, 360);
+                max-height: 400px;
                 .float;
+                position: relative;
+
+                .iScrollVerticalScrollbar {
+                    right: 0;
+                }
+
+                .wrapper {
+                    max-width: 430px;
+                    .calc-width(100, 360);
+                    padding-bottom: 20px;
+                }
 
                 label {
-                    display: inline-block;
+                    display: block;
                     font-size: 14px;
                     line-height: 20px;
                     text-transform: uppercase;
                     margin: 10px 0 0 0;
+                    .float;
+
+                    &:not(:first-child) {
+                        margin-top: 25px;
+                    }
                 }
 
                 .entry {
@@ -346,7 +372,20 @@
                     .guest-image {
                         margin-right: 10px;
                         .pull-left;
-                        .square(40px); 
+                        .square(40px);
+
+                        .icons {
+                            .square(40px);
+                            background-color: @grey2;
+
+                            &.icon-student {
+                                background-position: 10px -10530px
+                            }
+
+                            &.icon-infant {
+                                background-position: 10px -10590px;
+                            }
+                        } 
                     }
 
                     input {
