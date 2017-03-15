@@ -6,12 +6,12 @@
 					<span>{{ addonTitle }}</span>
 					{{ addonSubtitle }}
 				</h3>
-                <em class="status" ng-class='{"addon-status":isHourlyRatesEnabled}'>
+                <em class="status" ng-class='{"addon-status":isConnectedToPMS}'>
 					{{'MANDATORY_FIELDS_MESSAGE1'| translate}}
 					<strong>*</strong>
 					{{'MANDATORY_FIELDS_MESSAGE2'| translate}}
 				</em>
-                <div ng-show='isHourlyRatesEnabled' class="filters addon-lang-dropdown">
+                <div ng-show='isConnectedToPMS' class="filters addon-lang-dropdown">
                     <select ng-model="filter.locale" name="locale" ng-change="onLocaleChange()">
                         <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==filter.locale"> {{locale.description}} </option>
                     </select>
