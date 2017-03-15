@@ -346,7 +346,11 @@ admin.controller('ADRatesAddonsCtrl', [
             if (lang.translated_suffix === null) {
                 lang.translated_suffix = '';
             }
-
+            if (lang.id === null) {
+                // if the api changes the spec again this may need to go as null.
+                // CICO-38437
+                delete lang.id;
+            }
             return lang;
 
             /*
@@ -566,6 +570,7 @@ admin.controller('ADRatesAddonsCtrl', [
                     $scope.isAddMode = false;
 
                     $scope.tableParams.reload();
+                    $scope.filter.locale = availableLanguages.default_locale;
                 };
 
                 $scope.invokeApi(ADRatesAddonsSrv.addNewAddon, addon_data, callback);
@@ -580,6 +585,7 @@ admin.controller('ADRatesAddonsCtrl', [
                     $scope.currentClickedAddon = -1;
 
                     $scope.tableParams.reload();
+                    $scope.filter.locale = availableLanguages.default_locale;
                 };
 
                 // include current addon id also
