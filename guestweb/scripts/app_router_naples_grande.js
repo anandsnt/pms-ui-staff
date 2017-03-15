@@ -114,7 +114,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 
     $stateProvider.state('preCheckinStatus', {
         url: '/preCheckinStatus',
-        templateUrl: '/assets/common_templates/partials/checkin/gwNewPreCheckinFinal.html',
+        templateUrl: '/assets/common_templates/partials/checkin/gwNewPrecheckinFinal.html',
         controller: 'preCheckinStatusController',
         title: 'Status - Pre Check-In'
     }).state('checkinCcVerification', {
