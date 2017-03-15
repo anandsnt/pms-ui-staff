@@ -709,7 +709,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 		$scope.expandGroupedCharge = function(item) {
 			// Success callback for the charge detail fetch for grouped charges.
 			var fetchChargeDataSuccessCallback = function(data) {
-				item.light_speed_data = data;
+				item.light_speed_data = data.data;
 				item.isExpanded = true;
 				$scope.$emit('hideLoader');
 				refreshArTabScroller();
