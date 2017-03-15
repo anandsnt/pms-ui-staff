@@ -1,4 +1,4 @@
-admin.service('ADUserRolesSrv', ['$http', '$q', 'ADBaseWebSrvV2','ADHotelListSrv', function($http, $q, ADBaseWebSrvV2, ADHotelListSrv) {
+admin.service('ADUserRolesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADHotelListSrv', function($http, $q, ADBaseWebSrvV2, ADHotelListSrv) {
 
 
 	this.userRolesData  = {};

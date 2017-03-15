@@ -315,7 +315,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			var selectedAction = item[1].action,
                 selectedActionParams = item[1].actionParams,
 				staffURL = "/staff/h/";
-;
+
             // CICO-9816 Bug fix - When moving to /staff, the screen was showing blank content
 			if (selectedAction && selectedAction.startsWith('rover')) {
 				$('body').addClass('no-animation');
