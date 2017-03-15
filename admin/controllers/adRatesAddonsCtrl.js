@@ -323,12 +323,14 @@ admin.controller('ADRatesAddonsCtrl', [
 
         };
 
-        var getAddonLanguageFormatToSave = function() {
+        var getAddonLanguageFormatToSave = function(enRequested) {
             // var addonTranslationsArray = [],
             //    locale, localeObj,
             var filter = $scope.filter.locale;
+            if (enRequested) {
+                filter = availableLanguages.default_locale;
+            } 
             var lang = $scope.languages.localeValues[filter] ? $scope.languages.localeValues[filter] : {};
-
             if (!lang.id && lang.language_id) {
                 lang.id = null;
             }
@@ -344,7 +346,9 @@ admin.controller('ADRatesAddonsCtrl', [
             if (lang.translated_suffix === null) {
                 lang.translated_suffix = '';
             }
+
             return lang;
+
             /*
             for (var x in $scope.languages.locales) {
                 locale = $scope.languages.locales[x].value;
@@ -465,11 +469,11 @@ admin.controller('ADRatesAddonsCtrl', [
                 for (var y in $scope.singleAddon.translations) {
                     localeTranslationLang = $scope.singleAddon.translations[y];
 
-                    if (localeTranslationLang.language_id === $scope.languages.locales[x].id + '') {
+                    if (localeTranslationLang.language_id === parseInt($scope.languages.locales[x].id)) {
                         localeName = $scope.languages.locales[x].value;
                         $scope.languages.localeValues[localeName].language_id = localeTranslationLang.language_id;
                         $scope.languages.localeValues[localeName] = localeTranslationLang;
-                        $scope.languages.localeValues[localeName].id = localeTranslationLang.id ? localeTranslationLang.id : null;
+                        $scope.languages.localeValues[localeName].id = (typeof localeTranslationLang.id === 'number') ? localeTranslationLang.id : null;
                     }
                 }
             }
@@ -488,7 +492,20 @@ admin.controller('ADRatesAddonsCtrl', [
 
         // on save add/edit addon
         $scope.addUpdateAddon = function() {
-            var addonTranslations = getAddonLanguageFormatToSave();
+            var addonTranslations, addon_name, description, alternate_description, suffix_label;
+
+            if ($scope.filter.locale !== availableLanguages.default_locale) {
+                addonTranslations = getAddonLanguageFormatToSave(true);
+                addon_name = addonTranslations.translated_name;
+                description = addonTranslations.translated_description;
+                alternate_description = addonTranslations.translated_alternate_description;
+                suffix_label = addonTranslations.translated_suffix;
+            } else {
+                addon_name = $scope.singleAddon.name;
+                description = $scope.singleAddon.description;
+                alternate_description = $scope.singleAddon.alternate_description;
+                suffix_label = $scope.singleAddon.suffix_label;
+            }
 
             var singleAddonData = {
                 activated: $scope.singleAddon.activated,
@@ -497,12 +514,12 @@ admin.controller('ADRatesAddonsCtrl', [
                 bestseller: $scope.singleAddon.bestseller,
                 charge_code_id: $scope.singleAddon.charge_code_id,
                 charge_group_id: $scope.singleAddon.charge_group_id,
-                description: $scope.singleAddon.description,
+                description: description,
                 is_alternate_description_active: $scope.singleAddon.is_alternate_description_active,
-                alternate_description: $scope.singleAddon.alternate_description,
+                alternate_description: alternate_description,
                 is_reservation_only: $scope.singleAddon.is_reservation_only,
                 inventory_count: parseInt($scope.singleAddon.inventory_count),
-                name: $scope.singleAddon.name,
+                name: addon_name,
                 post_type_id: $scope.singleAddon.post_type_id,
                 rate_code_only: $scope.singleAddon.rate_code_only,
                 manual_posting: $scope.singleAddon.manual_posting,
@@ -513,8 +530,8 @@ admin.controller('ADRatesAddonsCtrl', [
                 addon_image: $scope.singleAddon.addon_image,
                 is_sell_separate: $scope.singleAddon.is_sell_separate,
                 is_display_suffix: $scope.singleAddon.is_display_suffix,
-                suffix_label: $scope.singleAddon.suffix_label,
-                translations: addonTranslations
+                suffix_label: suffix_label,
+                translations: getAddonLanguageFormatToSave()
 
             };
 
