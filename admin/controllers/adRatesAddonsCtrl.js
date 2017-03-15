@@ -397,8 +397,9 @@ admin.controller('ADRatesAddonsCtrl', [
 
                 // now remove commas created by number
                 // when the number is greater than 3 digits (without fractions)
-                $scope.singleAddon.amount = $scope.singleAddon.amount.split(',').join('');
-
+                if ($scope.singleAddon.amount) { // fixes error when no amount is returned from api
+                    $scope.singleAddon.amount = $scope.singleAddon.amount.split(',').join('');
+                }
 
                 // if the user is editing an old addon
                 // where the dates are not set
