@@ -44,7 +44,7 @@
             <span class="count">{{diaryData.roomFilterCount}}</span>
             <span class="icons icon-filter-room"></span>
         </button>
-        <button type="button" class="button white with-icon only-icon" ng-class="{'active': diaryData.showFilterPanel}" ng-click="diaryData.showFilterPanel=!diaryData.showFilterPanel">
+        <button type="button" class="button white with-icon only-icon" ng-class="{'active': diaryData.showFilterPanel}" ng-click="togglePanelView()">
             <span class="count hidden">{{diaryData.filterCount}}</span>
             <span class="icons icon-filter" ng-class="{'active': diaryData.showFilterPanel}"></span>
         </button>

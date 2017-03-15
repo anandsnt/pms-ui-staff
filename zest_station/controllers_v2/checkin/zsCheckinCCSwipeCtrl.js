@@ -243,19 +243,13 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
         var successSavePayment = function(response) {
             if (atCardSwipeScreen()) {
+                $scope.$emit('hideLoader');
                 if (response.status === 'success') {
-                    $scope.$emit('hideLoader');
                     goToCardSign();
                 } else {
-                    failSavePayment(response);
+                    goToSwipeError();
                 }
             }
-        };
-
-        var failSavePayment = function(response) {
-            $scope.$emit('hideLoader');
-            $log.warn(response);
-            $state.go('zest_station.error');
         };
 
         var saveSwipedCardMLI = function(response) {
@@ -282,6 +276,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                     });
                 }, 3500);
             } else {
+                // TODO: switch to CallAPi/change the pmtsrv to base2 and remove unneeded hideLoaders
                 $scope.invokeApi(zsPaymentSrv.savePayment, postData, successSavePayment, goToSwipeError);
             }
         };
@@ -295,7 +290,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             return false;
         };
         var isCCAuthMode = function() {
-            if ($stateParams.mode === 'CREDIT_CARD_AUTH') {
+            if ($stateParams.mode === 'CREDIT_CARD_AUTH' || $stateParams.isQuickJump === 'true') {
                 return true;
             }
             return false;
@@ -351,6 +346,12 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 $timeout(function() {
                     goToCardSign();
                 }, 2000);
+                return;
+            }
+
+            if (typeof $scope.socketOperator.returnWebSocketObject() === 'undefined') {
+                // minor issue when jumping to cc swipe state (double-clicking on jumper to this state) 
+                // so the websocket doesnt respond < 100~200ms, it throws an error so just returning in that case
                 return;
             }
 

@@ -34,7 +34,7 @@
             </div>
         </div>
         <div class="entry actions">
-            <div class="action">
+            <div class="action" ng-hide="workSheetChanged">
                 <label translate>PRINT</label>
                 <button type="button" class="button blue with-icon only-icon"
                     ng-click="openPrintWorkSheetPopup()">
@@ -98,7 +98,7 @@
                             </span>
                         </h3>
                         <span class="task">{{task.task_name}}</span>
-                        <span ng-show="room.is_vip" class="vip" translate>VIP</span>
+                        <!--<span ng-show="room.is_vip" class="vip" translate>VIP</span>-->
                     </li>
                 </ul>
             </div>
@@ -181,7 +181,7 @@
                                     </span>
                                 </h3>
                                 <span class="task">{{task.task_name}}</span>
-                                <span ng-show="room.is_vip" class="vip" translate>VIP</span>
+                                <!--<span ng-show="room.is_vip" class="vip" translate>VIP</span>-->
                                 <!-- If task is completed, IT SHOULD BE LOCKED AND USER SHOULD NOT BE ABLE TO MOVE IT. Also, add:-->
                                 <span class="icons icon-ok-10" ng-show="task.is_completed"></span>
                                 <!--This is a dummy to be shown when the the task is not completed. This placeholder will keep the print position of the VIP icon-->
@@ -194,5 +194,3 @@
         </div>
     </section>
 </section>
-
-<ul class=""

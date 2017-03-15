@@ -61,6 +61,15 @@ angular.module('admin').controller('adLightSpeedRestaurantsCtrl', ['$scope', 'ad
             });
         };
 
+        $scope.hasCompanyChanged = function() {
+            if ($scope.state.editRestaurant &&
+                $scope.state.editRestaurant.company_id !== $scope.restaurants[$scope.state.selected].company_id) {
+                return 'yes';
+            }
+            return 'no';
+
+        };
+
         $scope.updateRestaurant = function(restaurant) {
             $scope.callAPI(adLightSpeedPOSSetupSrv.updateRestaurant, {
                 params: restaurant,

@@ -351,31 +351,28 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         hour            = null,
                         min             = null;
 
+                        _.each(inactiveRooms, function(value, index) {
 
-                    _.each(inactiveRooms, function(value, key) {
-                        
-                        _.each(value, function(eachRoom) {
-                            if (eachRoom.room_id === room.id) {
-                                // start time                     
-                                hour = eachRoom.from_time.split(":")[0];
-                                min = eachRoom.from_time.split(":")[1];
-                                startTime = new tzIndependentDate(key);
+                           if (value.room_id === room.id) {
+                                hour = value.from_time.split(":")[0];
+                                min = value.from_time.split(":")[1];
+                                startTime = new tzIndependentDate(value.from_date);
                                 startTime.setHours (hour, min, 0);
-                                
+
                                 // end time
-                                hour = eachRoom.to_time.split(":")[0];
-                                min = eachRoom.to_time.split(":")[1];
-                                endTime = new tzIndependentDate(key);
+                                hour = value.to_time.split(":")[0];
+                                min = value.to_time.split(":")[1];
+                                endTime = new tzIndependentDate(value.to_date);
                                 endTime.setHours (hour, min, 0);
 
                                 room.room_inactive_slots.push({
                                     'startTime': startTime,
                                     'endTime': endTime,
-                                    'status': eachRoom.service_status
+                                    'status': value.service_status
                                 });
-                            }
+                           }
+
                         });
-                    });
 
                     room[meta.room.hk_status] = meta.room.hk_status_map[room.hk_status];
                     return room;

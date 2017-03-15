@@ -98,7 +98,8 @@ module.exports = {
             'guestweb_Nobu_Ryokan_Malibu': [ themeCSSRoot + 'guestweb_Nobu_Ryokan_Malibu.css'],
             'guestweb_ambrose': [ themeCSSRoot + 'guestweb_ambrose.css'],
             'guestweb_little_duke': [ themeCSSRoot + 'guestweb_little_duke.css'],
-            'guestweb_basecamp_boulder': [ themeCSSRoot + 'guestweb_basecamp_boulder.css']
+            'guestweb_basecamp_boulder': [ themeCSSRoot + 'guestweb_basecamp_boulder.css'],
+            'guestweb_distrikt_nyc': [ themeCSSRoot + 'guestweb_distrikt_nyc.css']
         };     
     }
 };

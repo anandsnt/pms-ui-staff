@@ -56,6 +56,7 @@ module.exports = {
 					zestRoot + 'zsUtils.js',
 					zestRoot + 'zsWebSocketActions.js',
 					zestRoot + 'zsChromeAppActions.js',
+					zestRoot + 'zsChromeExtensionTools.js',
 					zestRoot + 'zsVirtualKeyboard.js',
 					zestRoot + 'controllers_v2/**/*.js',
 					zestRoot + 'directives/**/*.js',
@@ -65,7 +66,7 @@ module.exports = {
 					zestRoot + 'constants/**/*.js',
 					zestRoot + 'zsCardOperations.js',
 					zestRoot + 'zsSwipeOperations.js',
-					zestRoot + 'zsMLIOperations.js',
+					zestRoot + 'zsMLIOperations.js'
 				]
 			};
 
