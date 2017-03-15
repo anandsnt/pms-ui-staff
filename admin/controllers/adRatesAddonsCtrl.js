@@ -449,35 +449,45 @@ admin.controller('ADRatesAddonsCtrl', [
         };
 
         var setAddonTranslations = function() {
+            var defaultLocale = availableLanguages.default_locale; // usually en for english
             var locale = availableLanguages.default_locale;
 
-            $scope.languages.localeValues[locale] = {};
-            $scope.languages.localeValues[locale].translated_alternate_description = $scope.singleAddon.alternate_description;
-            $scope.languages.localeValues[locale].translated_description = $scope.singleAddon.description;
-            $scope.languages.localeValues[locale].translated_name = $scope.singleAddon.name;
-            $scope.languages.localeValues[locale].translated_suffix = $scope.singleAddon.suffix_label;
+            $scope.languages.localeValues[defaultLocale] = {};
+            $scope.languages.localeValues[defaultLocale].translated_alternate_description = $scope.singleAddon.alternate_description;
+            $scope.languages.localeValues[defaultLocale].translated_description = $scope.singleAddon.description;
+            $scope.languages.localeValues[defaultLocale].translated_name = $scope.singleAddon.name;
+            $scope.languages.localeValues[defaultLocale].translated_suffix = $scope.singleAddon.suffix_label;
 
 
             // need to find and set the language id / id for the default language
             // if no other languages have been configured for the addon, this will be needed
-            var localeName, localeTranslationLang;
+            var localeTranslationLang, dropdownItem;
 
             for (var x in $scope.languages.locales) {
-                if ($scope.languages.locales[x].value === availableLanguages.default_locale) {
-                    $scope.languages.localeValues[availableLanguages.default_locale].language_id = $scope.languages.locales[x].id;
+                dropdownItem = $scope.languages.locales[x];
+                // if its english (usually default), then set the language id to english locale id
+                // otherwise find the proper language_id to match it with
+                if (dropdownItem.value === defaultLocale) {
+                    $scope.languages.localeValues[defaultLocale].language_id = dropdownItem.id;
                 }
+                if ($scope.singleAddon.translations.length > 0) {
+                    for (var y in $scope.singleAddon.translations) {
+                        localeTranslationLang = $scope.singleAddon.translations[y];
+                        // if an ID or language_id exists, set that 
+                        if (localeTranslationLang.language_id === parseInt(dropdownItem.id)) {
 
-                for (var y in $scope.singleAddon.translations) {
-                    localeTranslationLang = $scope.singleAddon.translations[y];
-
-                    if (localeTranslationLang.language_id === parseInt($scope.languages.locales[x].id)) {
-                        localeName = $scope.languages.locales[x].value;
-                        $scope.languages.localeValues[localeName].language_id = localeTranslationLang.language_id;
-                        $scope.languages.localeValues[localeName] = localeTranslationLang;
-                        $scope.languages.localeValues[localeName].id = (typeof localeTranslationLang.id === 'number') ? localeTranslationLang.id : null;
+                            if (!$scope.languages.localeValues[dropdownItem.value]) {
+                                $scope.languages.localeValues[dropdownItem.value] = {};
+                            }
+                            $scope.languages.localeValues[dropdownItem.value].language_id = localeTranslationLang.language_id;
+                            $scope.languages.localeValues[dropdownItem.value] = localeTranslationLang;
+                            $scope.languages.localeValues[dropdownItem.value].id = (typeof localeTranslationLang.id === 'number') ? localeTranslationLang.id : null;
+                        }
                     }
                 }
+
             }
+
             listenForAddonLanguageChanges();
         };
 
