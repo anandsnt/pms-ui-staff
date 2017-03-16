@@ -248,7 +248,7 @@ sntZestStation.controller('zsAdminCtrl', [
         /*
          *  save work station
          */
-        var saveStation = function() {
+        var saveStation = function(runDemoClicked) {
             // save workstation printer 
             // save workstation to browser
             var successCallBack = function() {
@@ -274,6 +274,10 @@ sntZestStation.controller('zsAdminCtrl', [
                 if ($scope.zestStationData.workstationStatus === 'out-of-order') {
                     $state.go('zest_station.outOfService');
                 } else {
+                    if (runDemoClicked) {
+                        $state.go('zest_station.checkinKeySelection');
+                        return;
+                    }
                     $scope.cancelAdminSettings(true);
                 }
             };
@@ -317,7 +321,7 @@ sntZestStation.controller('zsAdminCtrl', [
         /*
          * Save the admin settings
          **/
-        $scope.saveSettings = function() {
+        $scope.saveSettings = function(runDemoClicked) {
             var getParams = function() {
                 var params = {
                     'kiosk': {
@@ -335,7 +339,7 @@ sntZestStation.controller('zsAdminCtrl', [
             delete params.kiosk.workstation;
             delete params.printer;
             var successCallBack = function() {
-                saveStation();
+                saveStation(runDemoClicked);
             };
             var failureCallBack = function(response) {
                 console.warn('failed to save settings');
@@ -409,6 +413,14 @@ sntZestStation.controller('zsAdminCtrl', [
             }
         };
 
+        $scope.testRunMobileKeyCheckin = function() {
+            // save settings then go to the demo area
+            var demoRunStarted = true;
+
+            $scope.saveSettings(demoRunStarted);
+            
+        };
+
         $scope.showDebugModeOption = false;
         // initialize
         (function() {
@@ -443,6 +455,14 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.setScreenIcon('checkin');
             if ($scope.zestStationData.theme === 'snt') {
                 $scope.showDebugModeOption = true;
+            }
+
+            if (!$scope.zestStationData.demoMobileKeyModeEmailLinked) {
+                $scope.zestStationData.demoMobileKeyModeEmailLinked = 'true';
+                $scope.zestStationData.demoMobileKeyModeEnabled = 'true';
+                $scope.zestStationData.demoMobileKeyModeUserEmailOnFile = 'true';
+                $scope.zestStationData.thirdPartyMobileKey = 'false'; // TODO MOVE TO API SETTING
+                
             }
 
         }());
