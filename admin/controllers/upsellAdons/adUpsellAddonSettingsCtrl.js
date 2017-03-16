@@ -13,8 +13,8 @@ admin.controller('adUpsellAddonSettingsCtrl', function($scope, ADUpsellAddonSrv,
 		};
 
 		if (addonDefaultImage === $scope.data.addon_default_image) {
-			// set image as empty string, if image is not changed
-			options.params.addon_default_image = '';
+			// delete image, if image is not changed
+            delete options.params.addon_default_image;
 		}
 
 		$scope.callAPI(ADUpsellAddonSrv.saveDetails, options);
