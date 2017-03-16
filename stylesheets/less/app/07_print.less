@@ -285,6 +285,10 @@
                 background-position: 0 -180px;
                 }
         }
+
+        &.icon-blocked { background-position: 4px -275px; }
+        &.icon-picked-up { background-position: 4px -315px; }
+        &.icon-available { background-position: 4px -295px; }
     }
 
 /* 5. COMPONENTS
@@ -1291,6 +1295,17 @@
                     margin-right: 0;
                     padding-right: 0;
                     border-right: 0;
+                }
+            }
+
+            &.legend {
+                li {
+                    .float;
+                    .icons { 
+                        .square(20px);
+                        display: block;
+                        float: left;
+                    } 
                 }
             }
         }
@@ -2429,6 +2444,60 @@
                     }
                    
                 }
+            
+
+            &.group-rooms-reports {
+                thead {
+                    tr {
+                        th {
+                            text-align: center;
+                            font-weight: 600;
+
+                            &[colspan] { 
+                                border-right: 1px solid @grey2; 
+
+                                &:last-child { border-right: 0; }
+                            }
+                        }
+
+                        &.bottom-row {
+                            th {
+                                text-transform: none;
+                                font-style: italic;
+                                font-weight: 400; 
+                                background: @grey1;
+                                border-bottom: 0;
+                                border-right: 1px solid @grey2;
+                                 
+                                &:last-child { border-right: 0; }
+                            }
+                        }
+                    }
+                }
+
+
+                tbody {
+                    td {
+                        text-align: center;
+
+                        &.empty { 
+                            border-color: @grey1;
+
+                            // Shifting the border to left and bottom instead of right and bottom
+                            border-width: 0 0px 1px 1px;
+                            // Adding left border to the first filled day
+                            &+td:not(.empty) {
+                                border-width: 0 1px 1px 1px;
+                            } 
+                           
+                        }
+
+                        &.zero {
+                            font-style: italic;
+                            color: @grey3;
+                        }
+                    }
+                }
             }
 
         }
@@ -2792,6 +2861,136 @@
             .grid-footer {
                 li {
                     .pull-right;
+                }
+            }
+        }
+
+        &.group-rooms {
+
+            .group {
+                page-break-inside: avoid;
+
+                &:last-child {
+                    border-bottom: 1px solid @grey2;
+                }
+                
+            }
+            
+            .group-info {
+                padding:5pt 10pt;
+                border-top: 1px solid @grey2;
+                border-bottom: 1px solid @grey2;
+                height: 40px;
+                .float;
+
+                .title {
+                    display: block;
+                    font-weight: 600;
+                    font-size: 10pt;
+                    margin:0;
+                }
+
+                .data {
+                    display: block;
+                    font-size: 9pt;
+                    text-transform: uppercase;
+                    .float;
+
+                    li {
+                        float: left;
+                        margin-bottom:0;
+
+                        &:not(:last-child) {
+                            margin-right: 15pt;
+                        } 
+
+                        span {
+                            color: @grey3;
+                        }
+                    }
+                }
+                
+            }
+
+            .group-data {
+                display: flex;
+
+                ul {
+                    width: 75px; 
+
+                    .main-heading {
+                        height: 36px;
+                        line-height: 36px;
+                        font-size: 12px;
+                        text-align: center;
+                        background: @grey1; 
+                        text-transform: uppercase;
+                        font-weight: 600;
+                        border-right: 1px solid rgba(0, 0, 0, 0.1)
+                    }
+
+                    li {
+                        margin:0;
+                        .float;
+
+                        &:not(.main-heading) {
+                            border-bottom: 1px solid @grey2;
+                            border-right: 1px solid @grey2;
+                            padding: 0 10pt 0 5pt;
+                            text-align: right;
+                            font-weight: 600;
+                            line-height: 14pt;
+
+                        }
+
+                        .icons {
+                            margin-top: 1pt; 
+                            .pull-left;
+                            .square(12pt);
+                            
+                            &.icon-blocked { background-position: 2px -277px; }
+
+                            &.icon-picked-up { background-position: 2px -318px; }
+
+                            &.icon-available { background-position: 4px -297px; }
+                        }
+
+                        &:last-child {
+                            border-bottom:0;
+                        }
+                    }
+                }
+
+                table {
+                    .calc-width(100, 75);
+                }
+
+                &.totals {
+                     
+
+                    table {
+                        thead {
+
+                            tr:first-child {
+                                padding:0 10pt;
+
+                                th {
+                                    text-align: left;
+                                    &:first-child {
+                            
+                                        &:not(:last-child) {
+                                            text-align: right;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        tbody {
+                            td { 
+                                font-weight: 600;  
+                            }
+                        }
+                    }
                 }
             }
         }
