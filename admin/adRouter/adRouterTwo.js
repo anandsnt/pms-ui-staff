@@ -360,7 +360,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
                 return ADPromotionsSrv.getActiveRates();
             },
             availableLanguages: function(ADTranslationSrv) {
-                return ADTranslationSrv.getGuestLanguages();
+                return ADTranslationSrv.getActiveGuestLanguages();
             }
         }
     });

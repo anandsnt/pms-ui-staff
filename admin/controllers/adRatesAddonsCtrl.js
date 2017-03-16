@@ -262,13 +262,26 @@ admin.controller('ADRatesAddonsCtrl', [
 
         // the listner must be destroyed when no needed anymore
         $scope.$on('$destroy', updateBind);
+        // set the data for the language deropdown
+        availableLanguages.locales = availableLanguages.languages;
+        delete availableLanguages.languages;
+        // variable is different
+        _.each(availableLanguages.locales, function(locale) {
+            locale.value = locale.code;
+            delete locale.code;
+        });
+        // filter out disabled languages
+        availableLanguages.locales = _.reject(availableLanguages.locales, function(locale) {
+            return !locale.is_show_on_guest_card;
+        });
+
         $scope.languages = availableLanguages;
         $scope.languages.localeValues = [];
         $scope.filter = {
-            'locale': availableLanguages.default_locale,
+            'locale': availableLanguages.selected_language_code,
             'currentLocaleId': 0
         };
-        $scope.currentLocale = availableLanguages.default_locale;
+        $scope.currentLocale = availableLanguages.selected_language_code;
 
         $scope.onLocaleChange = function() {
             for (var i in $scope.languages.locales) {
@@ -328,7 +341,7 @@ admin.controller('ADRatesAddonsCtrl', [
             //    locale, localeObj,
             var filter = $scope.filter.locale;
             if (enRequested) {
-                filter = availableLanguages.default_locale;
+                filter = availableLanguages.selected_language_code;
             } 
             var lang = $scope.languages.localeValues[filter] ? $scope.languages.localeValues[filter] : {};
             if (!lang.id && lang.language_id) {
@@ -453,8 +466,8 @@ admin.controller('ADRatesAddonsCtrl', [
         };
 
         var setAddonTranslations = function() {
-            var defaultLocale = availableLanguages.default_locale; // usually en for english
-            var locale = availableLanguages.default_locale;
+            var defaultLocale = availableLanguages.selected_language_code; // usually en for english
+            var locale = availableLanguages.selected_language_code;
 
             $scope.languages.localeValues[defaultLocale] = {};
             $scope.languages.localeValues[defaultLocale].translated_alternate_description = $scope.singleAddon.alternate_description;
@@ -509,7 +522,7 @@ admin.controller('ADRatesAddonsCtrl', [
         $scope.addUpdateAddon = function() {
             var addonTranslations, addon_name, description, alternate_description, suffix_label;
 
-            if ($scope.filter.locale !== availableLanguages.default_locale) {
+            if ($scope.filter.locale !== availableLanguages.selected_language_code) {
                 addonTranslations = getAddonLanguageFormatToSave(true);
                 addon_name = addonTranslations.translated_name;
                 description = addonTranslations.translated_description;
@@ -570,7 +583,7 @@ admin.controller('ADRatesAddonsCtrl', [
                     $scope.isAddMode = false;
 
                     $scope.tableParams.reload();
-                    $scope.filter.locale = availableLanguages.default_locale;
+                    $scope.filter.locale = availableLanguages.selected_language_code;
                 };
 
                 $scope.invokeApi(ADRatesAddonsSrv.addNewAddon, addon_data, callback);
@@ -585,7 +598,7 @@ admin.controller('ADRatesAddonsCtrl', [
                     $scope.currentClickedAddon = -1;
 
                     $scope.tableParams.reload();
-                    $scope.filter.locale = availableLanguages.default_locale;
+                    $scope.filter.locale = availableLanguages.selected_language_code;
                 };
 
                 // include current addon id also
