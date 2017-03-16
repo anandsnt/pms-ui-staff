@@ -244,26 +244,27 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         $scope.selectedDateRange = formatDateForUI(data.fromDate) + ' to ' + formatDateForUI(data.toDate);
       });
 
-      /**
-       * to switch the tab from left side filter's show all/select rate
-       * @param  {[type]} tab [description]
-       * @return {[type]}     [description]
-       */
-      $scope.switchTabAndCorrespondingActions = (tab) => {
-        $scope.chosenTab = tab;
-        refreshScroller();
+	  /**
+	   * to switch the tab from left side filter's show all/select rate
+	   * @param  {[type]} tab [description]
+	   * @return {[type]}     [description]
+	   */
+	  $scope.switchTabAndCorrespondingActions = (tab) => {
+		$scope.chosenTab = tab;
+		refreshScroller();
+		scrollTo('.filters');
+	  };
 
-        if (tab === 'SHOW_ALL') {
-          let selectedRateTypes = $scope.selectedRateTypes,
-              selectedRates = $scope.selectedRates;
 
-          //if coming back to show all tab after clearing the all selection from other tab, we have to set default value
-          if (!selectedRateTypes.length && !selectedRates.length && !$scope.showAllRates && !$scope.showAllRoomTypes) {
-            $scope.showAllRates = true;
-          }
-        }
-        scrollTo('.tabs-nav');
-      };
+	  $scope.getButtonText = function() {
+		if ($scope.chosenTab === 'RATES') {
+			return('Show All Rates');
+		} else if ($scope.chosenTab === 'RATE_TYPES') {
+			return('Show All Rate Types');
+		} else {
+			return('Show All Room Types');
+		}
+	  };
 
       /**
        * inorder to show the two month calendar on tapping the date range button
