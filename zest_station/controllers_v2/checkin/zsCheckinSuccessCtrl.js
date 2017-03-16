@@ -72,6 +72,10 @@ sntZestStation.controller('zsCheckinSuccessCtrl', [
         // fetch OWS messages
         if (isOwsMsgEnabled()) {
             fetchOwsMessages();
+            $scope.zestStationData.showedFirstCheckedInSuccess = true;
+        } else {
+            $scope.zestStationData.showedFirstCheckedInSuccess = false;
+            nextPageActions();
         }
 
         $scope.checkinFinalDoneAction = function() {
