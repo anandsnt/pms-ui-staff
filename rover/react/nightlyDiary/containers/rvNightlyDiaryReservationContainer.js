@@ -194,6 +194,7 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
 
     reservation.numberOfNightsVisibleInGrid = positionAndDuration.numberOfNightsVisibleInGrid;
     reservation.duration = positionAndDuration.durationOfReservation;
+    reservation.arrivalPositionInt = positionAndDuration.reservationPosition;
     reservation.arrivalPosition = positionAndDuration.reservationPosition + "px";
     reservation.departurePosition = (positionAndDuration.durationOfReservation + positionAndDuration.reservationPosition) + "px";
     // used in stayrange container and component
