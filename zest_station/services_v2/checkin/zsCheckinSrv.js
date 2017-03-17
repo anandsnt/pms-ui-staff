@@ -149,6 +149,18 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         };
 
 
+        this.sendThirdPartyEmail = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/reservations/'+params.id+'/send_station_offer_mobilekey_mail';
+
+            zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
         this.checkInGuest = function(params) {
             var deferred = $q.defer(),
                 url = '/staff/checkin';
