@@ -340,10 +340,12 @@ admin.controller('ADRatesAddonsCtrl', [
             // var addonTranslationsArray = [],
             //    locale, localeObj,
             var filter = $scope.filter.locale;
+
             if (enRequested) {
                 filter = availableLanguages.selected_language_code;
             } 
             var lang = $scope.languages.localeValues[filter] ? $scope.languages.localeValues[filter] : {};
+
             if (!lang.id && lang.language_id) {
                 lang.id = null;
             }
@@ -467,7 +469,7 @@ admin.controller('ADRatesAddonsCtrl', [
 
         var setAddonTranslations = function() {
             var defaultLocale = availableLanguages.selected_language_code; // usually en for english
-            var locale = availableLanguages.selected_language_code;
+            // var locale = availableLanguages.selected_language_code;
 
             $scope.languages.localeValues[defaultLocale] = {};
             $scope.languages.localeValues[defaultLocale].translated_alternate_description = $scope.singleAddon.alternate_description;
@@ -487,22 +489,19 @@ admin.controller('ADRatesAddonsCtrl', [
                 if (dropdownItem.value === defaultLocale) {
                     $scope.languages.localeValues[defaultLocale].language_id = dropdownItem.id;
                 }
-                if ($scope.singleAddon.translations.length > 0) {
-                    for (var y in $scope.singleAddon.translations) {
-                        localeTranslationLang = $scope.singleAddon.translations[y];
-                        // if an ID or language_id exists, set that 
-                        if (localeTranslationLang.language_id === parseInt(dropdownItem.id)) {
 
+                if ($scope.singleAddon.translations.length > 0) {
+                    _.each($scope.singleAddon.translations, function(translation) {
+                        if (translation.language_id === parseInt(dropdownItem.id)) {
                             if (!$scope.languages.localeValues[dropdownItem.value]) {
                                 $scope.languages.localeValues[dropdownItem.value] = {};
                             }
-                            $scope.languages.localeValues[dropdownItem.value].language_id = localeTranslationLang.language_id;
-                            $scope.languages.localeValues[dropdownItem.value] = localeTranslationLang;
-                            $scope.languages.localeValues[dropdownItem.value].id = (typeof localeTranslationLang.id === 'number') ? localeTranslationLang.id : null;
+                            $scope.languages.localeValues[dropdownItem.value].language_id = translation.language_id;
+                            $scope.languages.localeValues[dropdownItem.value] = translation;
+                            $scope.languages.localeValues[dropdownItem.value].id = (typeof translation.id === 'number') ? translation.id : null;
                         }
-                    }
+                    });
                 }
-
             }
 
             listenForAddonLanguageChanges();
