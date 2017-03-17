@@ -50,7 +50,7 @@
 						<label for="rate">Filter Individual Rate(s)</label>
 						<div class="select-group">
 							<div class="select">
-								<select name="rate-type" class="placeholder">
+								<select name="rate-type" class="placeholder" ng-change="rateTypeSelected()" ng-model="selectedRateTypeID" iscroll-stop-propagation="">
 								<!-- add selected="selected" to a selected rate type
 								if no one is selected, add it to placeholder-->
 									<option class="placeholder" value="">
@@ -62,7 +62,7 @@
 								</select>
 							</div>
 							<div class="select">
-								<select id="rate" class="placeholder">
+								<select id="rate" class="placeholder" iscroll-stop-propagation="" ng-model="selectedRateID" id="rmRate" ng-change="rateSelected()">
 								<!-- add selected="selected" to a selected rate 
 								if no one is selected, add it to placeholder-->
 									<option class="placeholder" value="">
@@ -83,42 +83,43 @@
 						Filter Contracted Rates
 						</label>
 						<span type="submit" name="submit" class="icons icon-search1"></span>
-						<input type="text" id="company-card" placeholder="Enter search criteria" autocomplete="off">
+						<input type="text" id="company-card" placeholder="Enter search criteria" autocomplete="off" ng-model="cardSearchText"  rv-cc-ta-auto-complete select-handler="cardSelected">
 					</div>
 
 					<!-- Remove .hidden to when 'Rate Types' filter is active
 					Otherwise add .hidden
 					-->
+					<!-- // TODO
 					<div class="entry"  ng-class="{'hidden': chosenTab !== 'RATE_TYPES'}">
 						<label for="rate-type">Filter Individual Rate Type(s)</label>
 						<div class="select">
-							<select id="rate-type" name="rate-type">
-								<option class="placeholder" value="0">
-									Rate Type(s)
-								</option> 
-								<option value="{rate-type}">{rate-type name}</option>
-					... repeat for each rate type
+							<select id="rate-type" name="rate-type" ng-change="rateTypeSelected()" ng-model="selectedRateTypeID" iscroll-stop-propagation>
+								<option class="placeholder" value="">Rate Type(s)</option>
+								<option ng-repeat="rateType in rateTypes" value="{{rateType.id}}">
+									{{rateType.name}}
+								</option>
 							</select>
 						</div>
 					</div>
+					-->
 
 					<!-- Rates Selected
 					Show when a Rate is selected
 					Hide if a Contracted Rate is selected after this
 					Hide if filter 'Rates' is not active
 					-->
+
 					<div class="selected-data" ng-class="{'hidden': chosenTab !== 'RATES'}">
 						<strong>Rates Selected</strong>
 
-						<div class="rates-box">
-							<span class="rate-data">{Rate Name}</span>
-							<span class="icons delete_small"> &nbsp;</span>
+						<div class="rates-box" ng-repeat="rateType in selectedRateTypes">
+							<span class="rate-data">{{rateType.name}}</span>
+							<span ng-click="deleteSelectedRateType(rateType.id)" class="icons delete_small"> &nbsp;</span>
 							<br clear="all">
 						</div>
-					... Repeat for each Rate selected
 
-					<!-- Show if more than 1 -->
-						<button class="button blank deleteall">Clear Selection</button>
+						<!-- Show if more than 1 -->
+						<button ng-show="selectedRateTypes.length > 2" ng-click="deleteAllSelectedRateTypes()" class="button blank deleteall">Clear Selection</button>
 					</div>
 
 					<!-- Contracted Rates
@@ -129,24 +130,20 @@
 					<div class="selected-data" ng-class="{'hidden': chosenTab !== 'RATES'}">
 						<strong>Contracts Selected</strong>
 
-						<!-- 'background-class' : 'dark' or 'purple' 
-						'dark' - Company Card or something else
-						'purple' - travel agent
-						-->
-						<div class="rates-box {background-class}">
-							<span class="rate-data">{Account Card}</span>
-							<span class="rate-data location">{Account Address}</span>
-							<span class="icons delete_small"> &nbsp;</span>
+						<div class="rates-box" ng-class="{'dark': card.account_type === 'COMPANY', 'purple': card.account_type === 'TRAVELAGENT'}" ng-repeat="card in selectedCards">
+							<span class="rate-data">{{card.account_name}}</span>
+							<span class="rate-data location">{{card.account_address}}</span>
+							<span ng-click="deleteSelectedCard(card.id)" class="icons delete_small"> &nbsp;</span>
 							<br clear="all">
 						</div>
-					... repeat for each contracted rate
 
 						<!-- Show if more than 1 -->
-						<button class="button blank deleteall">Clear Selection</button>
+						<button ng-show="selectedCards.length > 2" ng-click="deleteAllSelectedCards()" class="button blank deleteall">Clear Selection</button>
 					</div>
 
 					<!-- Rate Types
 					Show when filter 'Rate Types' is active -->
+					<!-- // TODO
 					<div class="selected-data" ng-class="{'hidden': chosenTab !== 'RATE_TYPES'}">
 						<strong>Rate Types Selected</strong>
 
@@ -156,9 +153,9 @@
 							<br clear="all">
 						</div>
 
-						<!-- Show if more than 1 -->
 						<button class="button blank deleteall">Clear Selection</button>
 					</div>
+					-->
 
 				</div> 
 			</div>

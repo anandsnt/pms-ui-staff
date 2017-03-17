@@ -409,9 +409,9 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        * will check if it is not running
        */
       var runDigestCycle = () => {
-        /*if (!$scope.$$phase) {
+        if (!$scope.$$phase) {
           $scope.$digest();
-        }*/
+        }
         console.log("runDigestCycle");
       };
 
@@ -546,7 +546,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         $scope.groupByValues = rvRateManagerGroupByConstants;
 
         //tab selection
-        $scope.chosenTab = 'SHOW_ALL'; //list of values applicable: 'SHOW_ALL', 'SELECT_RATE'
+        $scope.chosenTab = 'RATES';
 
         $scope.showAllRates = true;
         $scope.showAllRateTypes = false;
