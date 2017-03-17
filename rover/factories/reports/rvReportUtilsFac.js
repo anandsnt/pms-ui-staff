@@ -2078,7 +2078,8 @@ angular.module('reportsModule')
                 'twentyEightDaysBefore': new Date(_year, _month, _date - 28),
                 'twentyEightDaysAfter': new Date(_year, _month, _date + 28),
                 'aYearAfter': new Date(_year + 1, _month, _date - 1),
-                'sixMonthsAfter': new Date(_year, _month + 6, _date)
+                'sixMonthsAfter': new Date(_year, _month + 6, _date),
+                'thirtyOneDaysAfter': new Date(_year, _month, _date + 31)
             };
 
             if ( parseInt(xDays) !== NaN ) {
