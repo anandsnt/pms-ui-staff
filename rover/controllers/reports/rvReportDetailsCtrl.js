@@ -405,6 +405,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.rightColSpan = 4;
 					break;
 
+                case reportNames['COMPLIMENTARY_ROOM_REPORT']:
+                    $scope.leftColSpan = 5;
+                    $scope.rightColSpan = 3;
+                    break;
+
 				default:
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 2;
@@ -824,7 +829,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['VACANT_ROOMS_REPORT']:
 					template = '/assets/partials/reports/vacantRoomsReport/rvVacantRoomsReportRow.html';
 					break;
-					
+
 				case reportNames['COMPLIMENTARY_ROOM_REPORT']:
 					template = '/assets/partials/reports/complimentaryRoomReport/rvComplimentaryRoomReport.html';
 					break;
@@ -982,8 +987,15 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// reset the page
 			$_pageNo = 1;
 
+            var pageNo  = 1;
+
+            // CICO-39128 - Added to preserve the page no while sorting
+            if ($scope.chosenReport.title === reportNames['COMPLIMENTARY_ROOM_REPORT']) {
+                pageNo = $scope.currentPage;
+            }
+
 			// should-we-change-view, specify-page, per-page-value
-			$scope.genReport( false, 1 );
+			$scope.genReport( false, pageNo );
 		};
 
 		// refetch the reports with new filter values

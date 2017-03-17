@@ -163,6 +163,12 @@ angular.module('sntRover')
                     $scope.currentSelectedReservation = reservation;
                     $scope.currentSelectedRoom = room;
                     $scope.diaryData.selectedRoomId = room.id;
+                    $scope.extendShortenReservationDetails = {
+                        'arrival_date': reservation.arrival_date,
+                        'dep_date': reservation.dept_date,
+                        'reservation_id': reservation.id
+                    };
+
                     showReservationSelected();
                     if (!$stateParams.isFromStayCard) {
                         $scope.$apply();
