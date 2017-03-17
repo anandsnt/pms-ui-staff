@@ -554,6 +554,10 @@ angular.module('reportsModule')
                     report['hasIncludeCompanyTa'] = filter;
                 }
 
+                if ( filter.value === 'INCLUDE_GROUP' ) {
+                    report['hasIncludeGroup'] = filter;
+                }
+
                 // check for include company/ta/group filter and keep a ref to that item
                 if ( filter.value === 'INCLUDE_COMPANYCARD_TA_GROUP' || filter.value === 'GROUP_COMPANY_TA_CARD' ) {
                     report['hasIncludeCompanyTaGroup'] = filter;

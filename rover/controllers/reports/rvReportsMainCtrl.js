@@ -354,7 +354,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             item_46: false,
             item_47: false,
             item_48: false,
-            item_49: false
+            item_49: false,
+            item_50: false
         };
         $scope.toggleFilterItems = function(item) {
             if ( ! $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -1627,6 +1628,16 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 /* Note: Using the ui value here */
                 if ( changeAppliedFilter ) {
                     $scope.appliedFilter['companyTaGroup'] = report.uiChosenIncludeCompanyTaGroup;
+                }
+            }
+
+            // include group
+            if ( report.hasOwnProperty('hasIncludeGroup') && !! report.chosenIncludeCompanyTaGroup ) {
+                key         = report.hasIncludeGroup.value.toLowerCase();
+                params[key] = report.chosenIncludeCompanyTaGroup;
+                /* Note: Using the ui value here */
+                if ( changeAppliedFilter ) {
+                    $scope.appliedFilter['group'] = report.uiChosenIncludeCompanyTaGroup;
                 }
             }
 

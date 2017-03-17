@@ -225,6 +225,12 @@
     <input type="text" class="hidden" ng-model="uiChosenReport.chosenIncludeCompanyTaGroup">
 </div>
 
+<div class="entry search" ng-show="uiChosenReport.hasIncludeGroup">
+    <label>Group</label>
+    <input class="icons icon-search" auto-complete auto-options="compTaGrpAutoCompleteOnList" data-card-type="" type="text" placeholder="Search by Group" value="" autocomplete="off" ng-model="uiChosenReport.uiChosenIncludeCompanyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnuiChosenReport(uiChosenReport)" ng-change="removeCompTaGrpId(uiChosenReport, 'uiChosenIncludeCompanyTaGroup', 'chosenIncludeCompanyTaGroup')">
+    <input type="text" class="hidden" ng-model="uiChosenReport.chosenIncludeCompanyTaGroup">
+</div>
+
 <multi-option-selection ng-show="uiChosenReport.hasByChargeGroup && uiChosenReport.hasByChargeGroup.data.length"
     label="Charge Group(s)"
     on-update="refreshFilterScroll"

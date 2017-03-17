@@ -112,7 +112,7 @@
                     <input ng-if="chosenReport.hasPrevDateLimit && !chosenReport.hasDateLimit && !chosenReport.hasSysDateLimit && !chosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsTillYesterday" ng-model="chosenReport.untilDate"  ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
                     <input ng-if="!chosenReport.hasPrevDateLimit && chosenReport.hasDateLimit && !chosenReport.hasSysDateLimit && !chosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilDate"  ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
                     <input ng-if="chosenReport.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsSysLimit" ng-model="chosenReport.untilDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
-                    <input ng-if="!chosenReport.hasPrevDateLimit && !chosenReport.hasDateLimit && !chosenReport.hasSysDateLimit && !chosenReport.hasOneYearLimit && !chosenReport.hasOneMonthLimit && !chosenReport.hasSixMonthsLimit && !chosenReport.toDateOptionsThirtyOneDaysLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.untilDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
+                    <input ng-if="!chosenReport.hasPrevDateLimit && !chosenReport.hasDateLimit && !chosenReport.hasSysDateLimit && !chosenReport.hasOneYearLimit && !chosenReport.hasOneMonthLimit && !chosenReport.hasSixMonthsLimit && !chosenReport.hasThirtyOneDaysLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.untilDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
                     <input ng-if="chosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="toDateOptionsOneYearLimit" ng-model="chosenReport.untilDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
                     <input ng-if="chosenReport.hasOneMonthLimit" type="text" class="range-datepicker" ui-date="toDateOptionsOneMonthLimit" ng-model="chosenReport.untilDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
                     <input ng-if="chosenReport.hasSixMonthsLimit" type="text" class="range-datepicker" ui-date="toDateOptionsSixMonthsLimit" ng-model="chosenReport.untilDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
@@ -339,6 +339,15 @@
         </a>
         <div class="settings-content" ng-show="chosenReport.hasIncludeCompanyTaGroup" ng-class="{'hidden': !filterItemsToggle.item_10}">
             <input class="icons icon-search" auto-complete auto-options="compTaGrpAutoCompleteOnDetails" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="chosenReport.uiChosenIncludeCompanyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnuiChosenReport(chosenReport)" ng-change="removeCompTaGrpId(chosenReport, 'uiChosenIncludeCompanyTaGroup', 'chosenIncludeCompanyTaGroup')">
+            <input type="text" class="hidden" ng-model="chosenReport.chosenIncludeCompanyTaGroup">
+        </div>
+
+        <!-- item_50: group -->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasIncludeGroup" ng-class="{'active': filterItemsToggle.item_50}" ng-click="toggleFilterItems('item_50')">
+            <span class="title">Group</span>
+        </a>
+        <div class="settings-content" ng-show="chosenReport.hasIncludeGroup" ng-class="{'hidden': !filterItemsToggle.item_50}">
+            <input class="icons icon-search" auto-complete auto-options="compTaGrpAutoCompleteOnDetails" data-card-type="" type="text" placeholder="Search by Group" value="" autocomplete="off" ng-model="chosenReport.uiChosenIncludeCompanyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnuiChosenReport(chosenReport)" ng-change="removeCompTaGrpId(chosenReport, 'uiChosenIncludeCompanyTaGroup', 'chosenIncludeCompanyTaGroup')">
             <input type="text" class="hidden" ng-model="chosenReport.chosenIncludeCompanyTaGroup">
         </div>
 
