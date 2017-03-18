@@ -199,186 +199,23 @@
 </section>
 <!-- select mobile key/ physical key -->
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'MOBILE_OR_PHYSICAL_KEY'">
-    <div id="content">
-        <h1>
-            <text editable-text="SELECT_KEY_TYPE_HEADER"> {{'SELECT_KEY_TYPE_HEADER' |translate}}</text>
-        </h1>
-        <h2>
-            <text editable-text="SELECT_KEY_TYPE_SUB"> {{'SELECT_KEY_TYPE_SUB' |translate}}</text>
-        </h2>
-        <nav id="options" role="nav">
-            <ul role="menu">
-                <li>
-                    <button type="button" class="button option" touch-press='selectMobileKey()'>
-                        <div ng-show="!mobileKeySelected" ng-include="icons.url.key"></div>
-                        <div ng-show="mobileKeySelected" class='select-icon-checked' ng-include="icons.url.checkmark"></div>
-                    </button>
-                    <h1>
-                        <text editable-text="SELECT_MOBILE_KEY"> {{'SELECT_MOBILE_KEY' |translate}}</text>
-                    </h1>
-                    <span class='select-sub-text'>
-                        <text editable-text="SELECT_MOBILE_KEY_SUB"> {{'SELECT_MOBILE_KEY_SUB' |translate}}</text>
-                    </span>
-                </li>
-                <li class="break">
-                    <span>
-                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
-                    </span>
-                </li>
-                <li>
-                    <button type="button" class="button option" touch-press='selectPhysicalKey()'>
-                        <div ng-show="!physicalKeySelected" ng-include="icons.url.creditcard"></div>
-                        <div ng-show="physicalKeySelected" class='select-icon-checked' ng-include="icons.url.checkmark"></div>
-                    </button>
-                    <h1>
-                        <text editable-text="SELECT_PHYSICAL_KEY"> {{'SELECT_PHYSICAL_KEY' |translate}}</text>
-                    </h1>
-                    <span class='select-sub-text'>
-                        <text editable-text="SELECT_PHYSICAL_KEY_SUB"> {{'SELECT_PHYSICAL_KEY_SUB' |translate}}</text>
-                    </span>
-                </li>
-            </ul>
-        </nav>
-    </div>
-    <div id="actions" class="add-guests-footer footer-centered mobile-key-next">
-        <button type="button" ng-disabled="!physicalKeySelected && !mobileKeySelected" ng-class="{'disabled-button':!physicalKeySelected && !mobileKeySelected}" class="button" click-touch="keyTypeselected()">
-            <text editable-text="NEXT"> {{'NEXT' |translate}}</text>
-        </button>
-    </div>
-    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
+ <span ng-include="'/assets/partials_v2/checkin/key_screen/zsCheckinKeyKeyTypeMode.html'"></span>
 </section>
 
 <!-- THIRD PARTY SELECTION-->
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'THIRD_PARTY_SELECTION'">
-    <div id="content">
-        <h1>
-            <text editable-text="THIRD_PARTY_MOBILE_SELECT_HEADER"> {{'THIRD_PARTY_MOBILE_SELECT_HEADER' |translate}}</text>
-        </h1>
-        <h2>
-            <text editable-text="THIRD_PARTY_MOBILE_SELECT_SUB_HEADER"> {{'THIRD_PARTY_MOBILE_SELECT_SUB_HEADER' |translate}}</text>
-        </h2>
-        <nav id="options" role="nav">
-            <ul role="menu">
-                <li>
-                    <button type="button" class="button option" touch-press='thirdPartyHaveIt()'>
-                        <div ng-include="icons.url.key"></div>
-                    </button>
-                    <h1>
-                        <text editable-text="THIRD_PARTY_HAVE_IT"> {{'THIRD_PARTY_HAVE_IT' |translate}}</text>
-                    </h1>
-                    <span class='select-sub-text'>
-                        <text editable-text="THIRD_PARTY_HAVE_IT_SUB"> {{'THIRD_PARTY_HAVE_IT_SUB' |translate}}</text>
-                    </span>
-                </li>
-                <li class="break">
-                    <span>
-                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
-                    </span>
-                </li>
-                <li>
-                    <button type="button" class="button option" touch-press='thirdPartyGetIt()'>
-                        <div ng-include="icons.url.staff"></div>
-                    </button>
-                    <h1>
-                        <text editable-text="THIRD_PARTY_GET_IT"> {{'THIRD_PARTY_GET_IT' |translate}}</text>
-                    </h1>
-                    <span class='select-sub-text'>
-                        <text editable-text="THIRD_PARTY_GET_IT_SUB"> {{'THIRD_PARTY_GET_IT_SUB' |translate}}</text>
-                    </span>
-                </li>
-                <li class="break">
-                    <span>
-                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
-                    </span>
-                </li>
-                <li>
-                    <button type="button" class="button option" touch-press='thirdPartyNoThanks()'>
-                        <div ng-include="icons.url.checkin"></div>
-                    </button>
-                    <h1>
-                        <text editable-text="THIRD_PARTY_NO_THX"> {{'THIRD_PARTY_NO_THX' |translate}}</text>
-                    </h1>
-                    <span class='select-sub-text'>
-                        <text editable-text="THIRD_PARTY_NO_THX_SUB"> {{'THIRD_PARTY_NO_THX_SUB' |translate}}</text>
-                    </span>
-                </li>
-            </ul>
-        </nav>
-        </nav>
-    </div>
-    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
+   <span ng-include="'/assets/partials_v2/checkin/key_screen/zsCheckinThirdPartyKeySelected.html'"></span>
 </section>
 <!--------------------- HAS THIRD PARTY APP ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'THIRD_PARTY_HAVE_IT_INFO'">
-    <div id="content">
-        <h1>
-            <text editable-text="THIRD_PARTY_MOBILE_HAVE_IT_INFO_HEADER"> {{'THIRD_PARTY_MOBILE_HAVE_IT_INFO_HEADER' |translate}}</text>
-        </h1>
-        <h2>
-            <text editable-text="THIRD_PARTY_MOBILE_HAVE_IT_INFO_SUB_HEADER"> {{'THIRD_PARTY_MOBILE_HAVE_IT_INFO_SUB_HEADER' |translate}}</text>
-        </h2>
-        <nav id="options" role="nav">
-            <h1 class='key-text-style'>
-                <text editable-text="THIRD_PARTY_MOBILE_HAVE_IT_INFO_BODY_LARGE_TEXT"> {{'THIRD_PARTY_MOBILE_HAVE_IT_INFO_BODY_LARGE_TEXT' |translate}}</text>
-            </h1>
-            <ul>
-                <h2>
-                    <text editable-text="THIRD_PARTY_MOBILE_HAVE_IT_INFO_BODY_TEXT"> {{'THIRD_PARTY_MOBILE_HAVE_IT_INFO_BODY_TEXT' |translate}}</text>
-                </h2>
-            </ul>
-        </nav>
-    </div>
-    <div id="actions" class="add-guests-footer footer-centered mobile-key-next">
-        <button type="button" ng-class='' class="button" click-touch="thirdPartyAppPresentNext()">
-            <text editable-text="NEXT"> {{'NEXT' |translate}}</text>
-        </button>
-    </div>
-    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
+   <span ng-include="'/assets/partials_v2/checkin/key_screen/zsCheckinThirdPartyAppPresent.html'"></span>
 </section>
-
-
 <!--------------------- mobile key :: Sent to user account :: ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'THIRD_PARTY_GET_IT_INFO'">
-    <div id="content">
-        <h1>
-            <text editable-text="THIRD_PARTY_MOBILE_GET_IT_INFO_HEADER"> {{'THIRD_PARTY_MOBILE_GET_IT_INFO_HEADER' |translate}}</text>
-        </h1>
-        <h2>
-            <text editable-text="THIRD_PARTY_MOBILE_GET_IT_INFO_SUB_HEADER"> {{'THIRD_PARTY_MOBILE_GET_IT_INFO_SUB_HEADER' |translate}}</text>
-            <span ng-show='downloadAppShowEmail'>{{email}}</span>
-            <text editable-text="THIRD_PARTY_MOBILE_GET_IT_INFO_SUB_HEADER_AFTER"> {{'THIRD_PARTY_MOBILE_GET_IT_INFO_SUB_HEADER_AFTER' |translate}}</text>
-        </h2>
-
-         <nav id="options" role="nav">
-            <ul role="menu">
-                <li>
-                    <button type="button" class="button option" touch-press='sendMobileKeyEmail()'>
-                        <div ng-include="icons.url.email"></div>
-                    </button>
-                    <span>
-                        <text editable-text="SEND_EMAIL"> {{'SEND_EMAIL' |translate}}</text>
-                    </span>
-                </li>
-                <li class="break">
-                    <span>
-                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
-                    </span>
-                </li>
-                <li>
-                    <button type="button" class="button option" touch-press='editEmailAddress()'>
-                        <div ng-include="icons.url.pen"></div>
-                    </button>
-                    <span>
-                        <text editable-text="EDIT_EMAIL"> {{'EDIT_EMAIL' |translate}}</text>
-                    </span>
-                </li>
-            </ul>
-        </nav>
-
-
-    </div>
-    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
+   <span ng-include="'/assets/partials_v2/checkin/key_screen/zsCheckinGetMobileApp.html'"></span>
 </section>
+
+
 <!--------------------- mobile key :: Sent to user account :: ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'MOBILE_KEY_SENT_SUCCESS'">
     <div id="content">
