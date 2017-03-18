@@ -140,7 +140,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
         };
         $scope.sendMobileKeyEmail = function() {
             var onSuccessResponse = function(response) {
-                $scope.goToNextScreen("success");
+                $scope.mode = 'THIRD_PARTY_GET_IT_INFO_EMAIL_SENT';
             };
 
             $scope.callAPI(zsGeneralSrv.sendThirdPartyEmail, {
@@ -149,6 +149,10 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
                 },
                 'successCallBack': onSuccessResponse
             });
+        };
+
+        $scope.thirdPartyMaileSent =  function(){
+            nextPageActionsForMobileKey();
         };
 
         /** COLLECT_EMAIL_MODE **/
