@@ -509,7 +509,16 @@
    "THIRD_PARTY_MOBILE_GET_IT_INFO_SUB_HEADER_AFTER": "It also includes our WiFi details so you can download it for free",
 
    "THIRD_PARTY_MOBILE_EMAIL_SENT_HEADER": "Email Sent",
-   "THIRD_PARTY_MOBILE_EMAIL_SENT_SUB_HEADER": "Check your inbox for the email to download the app, sign up and get your key."
+   "THIRD_PARTY_MOBILE_EMAIL_SENT_SUB_HEADER": "Check your inbox for the email to download the app, sign up and get your key.",
+   
+   "SELECT_KEY_TYPE_HEADER": "Select Key Type",
+   "SELECT_KEY_TYPE_SUB": "",
+   "SELECT_MOBILE_KEY": "Mobile key",
+   "SELECT_PHYSICAL_KEY": "Physical key",
+   "SELECT_PHYSICAL_KEY_SUB": "",
+   "SELECT_MOBILE_KEY_SUB": ""
+
+
 
    
 }
