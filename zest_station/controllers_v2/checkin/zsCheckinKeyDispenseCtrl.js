@@ -4,7 +4,8 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
     '$state',
     'zsEventConstants',
     '$controller',
-    function($scope, $stateParams, $state, zsEventConstants, $controller) {
+    'zsGeneralSrv',
+    function($scope, $stateParams, $state, zsEventConstants, $controller, zsGeneralSrv) {
 
         /** ********************************************************************************************
          **     Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -46,10 +47,13 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
             }
             $scope.setScreenIcon('key');
         }());
+        $scope.guestDetails = {
+            "guestEmail": $stateParams.email
+        };
 
         var stateParams = {
             'guest_id': $stateParams.guest_id,
-            'email': $stateParams.email,
+            'email': $scope.guestDetails.guestEmail,
             'reservation_id': $stateParams.reservation_id,
             'room_no': $stateParams.room_no,
             'first_name': $stateParams.first_name
@@ -103,8 +107,13 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
             $scope.mode = 'THIRD_PARTY_HAVE_IT_INFO';
         };
         $scope.thirdPartyGetIt = function() {
-            $scope.mode = 'THIRD_PARTY_GET_IT_INFO';
+            if ($scope.guestDetails.guestEmail.length > 0) {
+                $scope.mode = 'THIRD_PARTY_GET_IT_INFO';
+            } else {
+                $scope.editEmailAddress();
+            };
         };
+
         var nextPageActionsForMobileKey = function() {
             if ($scope.keyTypeselected === 'ONLY_MOBILE_KEY') {
                 $scope.goToNextScreen({
@@ -122,6 +131,32 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
         $scope.thirdPartyAppPresentNext = function() {
             nextPageActionsForMobileKey();
         };
+
+        /** THIRD_PARTY_GET_IT_INFO mode actions **/
+
+        $scope.editEmailAddress = function() {
+            $scope.mode = 'COLLECT_EMAIL';
+            $scope.emailMode = 'EMAIL_ENTRY_MODE';
+        };
+        $scope.sendMobileKeyEmail = function() {
+            var onSuccessResponse = function(response) {
+                $scope.goToNextScreen("success");
+            };
+
+            $scope.callAPI(zsGeneralSrv.sendThirdPartyEmail, {
+                params: {
+                    reservation_id: $stateParams.reservation_id
+                },
+                'successCallBack': onSuccessResponse
+            });
+        };
+
+        /** COLLECT_EMAIL_MODE **/
+
+        // actions cane be found in zsCheckinMobileKeyEmailCollectionCtrl
+        $scope.$on('MODE_CHANGED', function(e, data) {
+            $scope.mode = data.menu;
+        });
 
     }
 ]);
