@@ -308,7 +308,7 @@
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>
-<!--------------------- mobile key :: Sent to user account :: ------------------------>
+<!--------------------- HAS THIRD PARTY APP ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'THIRD_PARTY_HAVE_IT_INFO'">
     <div id="content">
         <h1>
@@ -329,7 +329,7 @@
         </nav>
     </div>
     <div id="actions" class="add-guests-footer footer-centered mobile-key-next">
-        <button type="button" ng-class='' class="button" click-touch="goToNextScreen('success')">
+        <button type="button" ng-class='' class="button" click-touch="thirdPartyAppPresentNext()">
             <text editable-text="NEXT"> {{'NEXT' |translate}}</text>
         </button>
     </div>

@@ -77,7 +77,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
         /** ***** Mobile key ***** **/
 
         /** MOBILE_OR_PHYSICAL_KEY mode actions **/
-        
+
         $scope.keyTypeselected = '';
         $scope.selectMobileKey = function() {
             $scope.mobileKeySelected = !$scope.mobileKeySelected;
@@ -105,8 +105,22 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
         $scope.thirdPartyGetIt = function() {
             $scope.mode = 'THIRD_PARTY_GET_IT_INFO';
         };
+        var nextPageActionsForMobileKey = function() {
+            if ($scope.keyTypeselected === 'ONLY_MOBILE_KEY') {
+                $scope.goToNextScreen({
+                    status: 'success'
+                });
+            } else {
+                $scope.mode = 'DISPENSE_KEY_MODE';
+            }
+        };
         $scope.thirdPartyNoThanks = function() {
+            nextPageActionsForMobileKey();
+        };
 
+        /** *** THIRD_PARTY_HAVE_IT_INFO * **/
+        $scope.thirdPartyAppPresentNext = function() {
+            nextPageActionsForMobileKey();
         };
 
     }
