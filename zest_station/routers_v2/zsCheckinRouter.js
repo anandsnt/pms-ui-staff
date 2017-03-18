@@ -103,7 +103,7 @@ sntZestStation.config(['$stateProvider',
       });
 		// pickup key dispense
         $stateProvider.state('zest_station.checkinKeyDispense', {
-            url: '/checkinKeyDispense/:reservation_id/:room_no/:first_name/:guest_id/:email/:from_mobile_key_email_update/:physical_key_selected',
+            url: '/checkinKeyDispense/:reservation_id/:room_no/:first_name/:guest_id/:email',
             templateUrl: '/assets/partials_v2/checkin/zscheckinKeyDispense.html',
             controller: 'zsCheckinKeyDispenseCtrl',
             jumper: true,
