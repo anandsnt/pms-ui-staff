@@ -200,7 +200,7 @@ sntZestStation.config(['$stateProvider',
 
       	// email /print entry screen
       	$stateProvider.state('zest_station.zsCheckinBillDeliveryOptions', {
-          url: '/checkinBillDeliveryOptions/:reservation_id/:email/:first_name/:room_no/:guest_id/:key_success',
+          url: '/checkinBillDeliveryOptions/:reservation_id/:email/:first_name/:room_no/:guest_id/:key_success/:key_type',
           templateUrl: '/assets/partials_v2/checkin/zsCheckinRegCardDeliveryOptions.html',
           controller: 'zsCheckinRegCardDeliveryOptionsCtrl',
           jumper: true,
@@ -212,7 +212,7 @@ sntZestStation.config(['$stateProvider',
 
 		// checkin final screen
       	$stateProvider.state('zest_station.zsCheckinFinal', {
-          url: '/zsCheckinFinal/:print_opted/:email_opted/:print_status/:email_status/:key_success',
+          url: '/zsCheckinFinal/:print_opted/:email_opted/:print_status/:email_status/:key_success/:key_type',
           templateUrl: '/assets/partials_v2/checkin/zsCheckinFinal.html',
           controller: 'zsCheckinFinalCtrl',
           jumper: true,

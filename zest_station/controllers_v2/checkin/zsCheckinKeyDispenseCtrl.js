@@ -51,19 +51,20 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
             "guestEmail": $stateParams.email
         };
 
-        var stateParams = {
-            'guest_id': $stateParams.guest_id,
-            'email': $scope.guestDetails.guestEmail,
-            'reservation_id': $stateParams.reservation_id,
-            'room_no': $stateParams.room_no,
-            'first_name': $stateParams.first_name
-        };
+        
 
         $scope.first_name = $stateParams.first_name;
         $scope.room = $stateParams.room_no;
 
         $scope.goToNextScreen = function(status) {
-
+            var stateParams = {
+                'guest_id': $stateParams.guest_id,
+                'email': $scope.guestDetails.guestEmail,
+                'reservation_id': $stateParams.reservation_id,
+                'room_no': $stateParams.room_no,
+                'first_name': $stateParams.first_name,
+                'key_type': $scope.keyTypeselected
+            };
             stateParams.key_success = status === 'success';
             // check if a registration card delivery option is present (from Admin>Station>Check-in), if none are checked, go directly to final screen
             var registration_card = $scope.zestStationData.registration_card;
