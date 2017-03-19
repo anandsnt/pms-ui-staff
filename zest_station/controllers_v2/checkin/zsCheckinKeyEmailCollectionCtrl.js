@@ -9,8 +9,9 @@ sntZestStation.controller('zsCheckinMobileKeyEmailCollectionCtrl', [
     'zsModeConstants',
     'zsGeneralSrv',
     'zsUtilitySrv',
-    function($scope, $stateParams, $state, zsEventConstants, $controller, $timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv, zsUtilitySrv) {
-        
+    '$log',
+    function($scope, $stateParams, $state, zsEventConstants, $controller, $timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv, zsUtilitySrv, $log) {
+
         $scope.reEnterText = function() {
             $scope.emailMode = 'EMAIL_ENTRY_MODE';
             $scope.focusInputField('email-entry');
@@ -27,7 +28,7 @@ sntZestStation.controller('zsCheckinMobileKeyEmailCollectionCtrl', [
                         afterBlackListValidation();
 
                     } else {
-                        console.warn('email is black listed, request different email address');
+                        $log.warn('email is black listed, request different email address');
                         onBlackListedEmailFound();
                     }
                 },
@@ -47,7 +48,9 @@ sntZestStation.controller('zsCheckinMobileKeyEmailCollectionCtrl', [
         };
 
         var goToNextScreenInFlow = function() {
-            $scope.$emit("MODE_CHANGED",{menu:'THIRD_PARTY_GET_IT_INFO'});
+            $scope.$emit("MODE_CHANGED", {
+                menu: 'THIRD_PARTY_GET_IT_INFO'
+            });
         };
 
         var updateGuestEmail = function() {
@@ -59,7 +62,7 @@ sntZestStation.controller('zsCheckinMobileKeyEmailCollectionCtrl', [
              * @return {[type]} [description]
              */
             var updateGuestEmailFailed = function(response) {
-                console.warn('updateGuestEmailFailed: ', response);
+                $log.warn('updateGuestEmailFailed: ', response);
                 $state.go('zest_station.speakToStaff');
             };
 

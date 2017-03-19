@@ -526,7 +526,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.sendThirdPartyEmail = function(params) {
             var deferred = $q.defer(),
-                url = '/api/reservations/'+params.reservation_id+'/send_station_offer_mobilekey_mail';
+                url = '/api/reservations/' + params.reservation_id + '/send_station_offer_mobilekey_mail';
 
             zsBaseWebSrv.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);

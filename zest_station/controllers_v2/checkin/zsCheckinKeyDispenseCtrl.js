@@ -51,7 +51,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
             "guestEmail": $stateParams.email
         };
 
-        
+
 
         $scope.first_name = $stateParams.first_name;
         $scope.room = $stateParams.room_no;
@@ -65,6 +65,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
                 'first_name': $stateParams.first_name,
                 'key_type': $scope.keyTypeselected
             };
+            
             stateParams.key_success = status === 'success';
             // check if a registration card delivery option is present (from Admin>Station>Check-in), if none are checked, go directly to final screen
             var registration_card = $scope.zestStationData.registration_card;
@@ -112,7 +113,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
                 $scope.mode = 'THIRD_PARTY_GET_IT_INFO';
             } else {
                 $scope.editEmailAddress();
-            };
+            }
         };
 
         var nextPageActionsForMobileKey = function() {
@@ -152,7 +153,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
             });
         };
 
-        $scope.thirdPartyMaileSent =  function(){
+        $scope.thirdPartyMaileSent = function() {
             nextPageActionsForMobileKey();
         };
 
