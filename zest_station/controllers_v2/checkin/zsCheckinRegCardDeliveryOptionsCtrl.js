@@ -177,7 +177,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 
                                 $window.print();
                                 setTimeout(function() {
-                                    printFailedActions();
+                                    printSuccessActions();
                                 }, 100);
                             }
                         }
