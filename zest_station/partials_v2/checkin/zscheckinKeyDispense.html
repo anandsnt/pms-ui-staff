@@ -218,52 +218,9 @@
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'COLLECT_EMAIL'" ng-controller="zsCheckinMobileKeyEmailCollectionCtrl">
    <span ng-include="'/assets/partials_v2/checkin/key_screen/zsCheckinKeyEmailCollection.html'"></span>
 </section>
-
-<!--------------------- mobile key :: Sent to user account :: ------------------------>
-<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'MOBILE_KEY_SENT_SUCCESS'">
-    <div id="content">
-        <h1>
-            <text editable-text="MOBILE_KEY_SENT_TO_ACCOUNT_SUCCESS"> {{'MOBILE_KEY_SENT_TO_ACCOUNT_SUCCESS' |translate}}</text>
-        </h1>
-        <h2>
-            <text editable-text="MOBILE_KEY_SENT_TO_ACCOUNT_SUCCESS_SUB"> {{'MOBILE_KEY_SENT_TO_ACCOUNT_SUCCESS_SUB' |translate}}</text>
-        </h2>
-        <nav id="options" role="nav">
-            <h1 class='key-text-style'>
-                <text editable-text="MOBILE_KEY_SENT_TO_ACCOUNT_SUCCESS_MAIN_MSG"> {{'MOBILE_KEY_SENT_TO_ACCOUNT_SUCCESS_MAIN_MSG' |translate}}</text>
-            </h1>
-            <ul>
-                <h2>
-                    <text editable-text="MOBILE_KEY_SENT_TO_ACCOUNT_SUCCESS_MSG_SUB"> {{'MOBILE_KEY_SENT_TO_ACCOUNT_SUCCESS_MSG_SUB' |translate}}</text>
-                </h2>
-            </ul>
-        </nav>
-    </div>
-    <div id="actions" class="add-guests-footer footer-centered mobile-key-next">
-        <button type="button" ng-class='' class="button" click-touch="goToNextScreen('success')">
-            <text editable-text="NEXT"> {{'NEXT' |translate}}</text>
-        </button>
-    </div>
-    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
-</section>
-
 <!--------------------- mobile key :: Sent to user account :: ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'THIRD_PARTY_GET_IT_INFO_EMAIL_SENT'">
-    <div id="content">
-        <h1>
-            <text editable-text="THIRD_PARTY_MOBILE_EMAIL_SENT_HEADER"> {{'THIRD_PARTY_MOBILE_EMAIL_SENT_HEADER' |translate}}</text>
-        </h1>
-        <h2>
-            <text editable-text="THIRD_PARTY_MOBILE_EMAIL_SENT_SUB_HEADER"> {{'THIRD_PARTY_MOBILE_EMAIL_SENT_SUB_HEADER' |translate}}</text>
-        </h2>
-    </div>
-    
-    <div id="actions" class="add-guests-footer footer-centered mobile-key-next">
-        <button type="button" ng-class='' class="button" click-touch="thirdPartyMaileSent()">
-            <text editable-text="NEXT"> {{'NEXT' |translate}}</text>
-        </button>
-    </div>
-    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
+    <span ng-include="'/assets/partials_v2/checkin/key_screen/zsThirdPartyMobileKeyDetailsEmailSent.html'"></span>
 </section>
 
 
