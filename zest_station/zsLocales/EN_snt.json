@@ -516,7 +516,11 @@
    "SELECT_MOBILE_KEY": "Mobile key",
    "SELECT_PHYSICAL_KEY": "Physical key",
    "SELECT_PHYSICAL_KEY_SUB": "",
-   "SELECT_MOBILE_KEY_SUB": ""
+   "SELECT_MOBILE_KEY_SUB": "",
+   "PRINT_SUCCESS": "Print was Success",
+   "PRINT_FAILED": "Print was Failed",
+   "EMAIL_SUCCESS": "Email was sent",
+   "EMAIL_FAILED": "Something went wrong on sending email"
 
 
 
