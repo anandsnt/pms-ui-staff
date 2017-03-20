@@ -21,7 +21,7 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
             $scope.inProd = true;
         }
 	};
-        
+
         var watchQuickListChange = function() {
             if ($scope.watchingList) {
                 return;
@@ -100,7 +100,7 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
                $scope.data.excluded_android_versions.push(version.name);
 		});
 	};
-        
+
         var inProd = function() {
             var notProd = false;
             var url = true ? document.location : window.location;
@@ -108,8 +108,8 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
             if (url.hostname) {
                 if (typeof url.hostname === typeof 'str') {
                     if (url.hostname.indexOf('pms-dev') !== -1 || // not listing release to verify this is not shown in near-production view
-                        url.hostname.indexOf('192.168.1.218') !== -1 || 
-                        url.hostname.indexOf('192.168.1.239') !== -1 || 
+                        url.hostname.indexOf('192.168.1.218') !== -1 ||
+                        url.hostname.indexOf('192.168.1.239') !== -1 ||
                         url.hostname.indexOf('localhost') !== -1) {
                         notProd = true;
                     }
@@ -125,9 +125,9 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
 			$scope.data = data;
                         if (!inProd()) {
                             $scope.data.quick_key_systems = [
-                                {value: 'Saflok - 6000', name: 'Saflok - 6000'}, 
-                                {value: 'Saflok - ATLAS', name: 'Saflok - ATLAS'}, 
-                                {value: 'Salto - HAMS', name: 'Salto - HAMS'}, 
+                                {value: 'Saflok - 6000', name: 'Saflok - 6000'},
+                                {value: 'Saflok - ATLAS', name: 'Saflok - ATLAS'},
+                                {value: 'Salto - HAMS', name: 'Salto - HAMS'},
                                 {value: 'Salto - Space', name: 'Salto - Space'}
                                // {value:'VingCard', name: 'VingCard'}
                             ];
