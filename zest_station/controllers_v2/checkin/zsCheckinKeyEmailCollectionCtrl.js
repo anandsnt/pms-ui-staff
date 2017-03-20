@@ -54,7 +54,7 @@ sntZestStation.controller('zsCheckinMobileKeyEmailCollectionCtrl', [
         };
 
         var updateGuestEmail = function() {
-            var updateComplete = function(response) {
+            var updateComplete = function() {
                 goToNextScreenInFlow();
             };
             /*

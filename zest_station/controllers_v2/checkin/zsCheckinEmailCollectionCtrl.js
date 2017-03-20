@@ -159,7 +159,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
                 'room': $stateParams.room,
                 'room_no': $stateParams.room_no,
                 'guest_id': $stateParams.guest_id,
-                'email': '',// email was'nt saved
+                'email': '', // email was'nt saved
                 'first_name': $stateParams.first_name
             };
 
