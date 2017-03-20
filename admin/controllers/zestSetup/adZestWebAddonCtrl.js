@@ -7,7 +7,6 @@ admin.controller('ADZestWebAddonCtrl', ['$scope', 'ADZestWebAddonSrv', 'ngTableP
 		});
 		// fetch addon list
 		var fetAddonsData = function($defer, params) {
-			//var getParams = $scope.calculateGetParams(params);
 			var onfetchCountriesSuccess = function(response) {
 				$scope.data = response.addons;
 				$defer.resolve($scope.data);
@@ -54,8 +53,6 @@ admin.controller('ADZestWebAddonCtrl', ['$scope', 'ADZestWebAddonSrv', 'ngTableP
 					addonIndex++;
 				}
 			});
-
-
 
 			var options = {
 				params: {
