@@ -162,4 +162,68 @@ is_ledger
     <rv-pagination page-options="item.insidePaginationData" page-data="item.totalInsidePagination"></rv-pagination>
   </td>
 </tr>
+<tr class="grouped" ng-show="ledgerDepositEntries.length > 0">
+  <td class="code long-code" colspan="8"></td>
+    <td class="break">LEDGER DATA</td>
+</tr>
+
+<tr ng-repeat="item in balanceEntries track by $index" class="charge-group" >
+  <td class="code long-code break" >{{item.section}}
+  </td>
+  <td class="break">{{item.today | currency:currencySymbol:2}}</td>
+  <td></td>
+  <td></td>
+  <td class="break"></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+
+<tr class="grouped" ng-show="ledgerDepositEntries.length > 0">
+  <td class="code long-code" colspan="8"><strong>DEPOSIT</strong></td>
+</tr>
+
+<tr ng-repeat="item in ledgerDepositEntries track by $index" class="charge-group" >
+  <td class="code long-code break" >{{item.section}}
+  </td>
+  <td class="break">{{item.today | currency:currencySymbol:2}}</td>
+  <td></td>
+  <td></td>
+  <td class="break"></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr class="grouped" ng-show="ledgerGuestEntries.length > 0">
+  <td class="code long-code" colspan="8"><strong>GUEST</strong></td>
+</tr>
+
+<tr ng-repeat="item in ledgerGuestEntries track by $index" class="charge-group" >
+  <td class="code long-code break" >{{item.section}}
+  </td>
+  <td class="break">{{item.today | currency:currencySymbol:2}}</td>
+  <td></td>
+  <td></td>
+  <td class="break"></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+
+<tr class="grouped" ng-show="ledgerAREntries.length > 0">
+  <td class="code long-code" colspan="8"><strong>AR</strong></td>
+</tr>
+
+<tr ng-repeat="item in ledgerAREntries track by $index" class="charge-group" >
+  <td class="code long-code break" >{{item.section}}
+  </td>
+  <td class="break">{{item.today | currency:currencySymbol:2}}</td>
+  <td></td>
+  <td></td>
+  <td class="break"></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+
 
