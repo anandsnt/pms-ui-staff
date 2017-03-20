@@ -77,8 +77,7 @@ let  calculateOutOfOrderOutOfServicePositionAndDuration = (diaryInitialDayOfDate
     //       7 Days:
     //         - Substract 15 from it
 
-    let durationOfOutOfOrderOutOfService = 0,
-        isDepartureFlagVisible = true;
+    let durationOfOutOfOrderOutOfService = 0;
     let numberOfNightsVisibleInGrid = Math.abs((outOfOrderOutOfServiceEndDate.getTime() - outOfOrderOutOfServiceStartDate.getTime()) / (oneDay));
 
     if ((outOfOrderOutOfServiceEndDate.getTime() >= diaryInitialDate.getTime())
@@ -108,7 +107,6 @@ let  calculateOutOfOrderOutOfServicePositionAndDuration = (diaryInitialDayOfDate
        // let reservationArrivalDay = noOfDaysBtwFinalAndDepartureDate + 1;
         let daysInsideTheGrid = 0;
 
-        isDepartureFlagVisible = false;
         if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_7) {
             daysInsideTheGrid = noOfDaysBtwFinalAndArrivalDate + 1;
             durationOfOutOfOrderOutOfService = (nightDuration * daysInsideTheGrid) - NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_7;
@@ -120,14 +118,10 @@ let  calculateOutOfOrderOutOfServicePositionAndDuration = (diaryInitialDayOfDate
     }
     var returnData = {};
 
-   // returnData.durationOfOutOfOrderOutOfService = durationOfOutOfOrderOutOfService;
-   // returnData.outOfOrderOutOfServicePosition   = outOfOrderOutOfServicePosition;
     returnData.numberOfNightsVisibleInGrid = numberOfNightsVisibleInGrid;
-    //returnData.isArrivalFlagVisible = (diffBtwInitialAndArrivalDate < 0) ? false : true;
-    //returnData.isDepartureFlagVisible = isDepartureFlagVisible;
     returnData.style = {};
     returnData.style.width = durationOfOutOfOrderOutOfService + "px";
-    returnData.style.transform = "translateX("+outOfOrderOutOfServicePosition+"px)";
+    returnData.style.transform = "translateX(" + outOfOrderOutOfServicePosition + "px)";
 
     return returnData;
 };
