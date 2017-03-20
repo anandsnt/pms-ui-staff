@@ -187,7 +187,7 @@ sntZestStation.config(['$stateProvider',
 
 		// email entry screen
         $stateProvider.state('zest_station.checkInEmailCollection', {
-            url: '/checkInEmailCollection/:reservation_id/:first_name/:room_no/:guest_id/:from_mobile/:physical_key_selected',
+            url: '/checkInEmailCollection/:reservation_id/:first_name/:room_no/:guest_id',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinEmailCollection.html',
             controller: 'zsCheckinEmailCollectionCtrl',
             jumper: true,
