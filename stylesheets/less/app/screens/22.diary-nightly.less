@@ -943,9 +943,15 @@
             }
         }
 
+        &.oos,
+        &.ooo {
+            z-index: 1;
+        } 
+
         /* Clickable reservations ***/
         &:not(.oos):not(.ooo):not(.blocked):not(.departed) {
             cursor: pointer;
+            z-index: 2;
         }
 
         /* Reservation Status ***/
