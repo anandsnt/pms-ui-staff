@@ -1,5 +1,5 @@
-admin.controller('ADZestWebAddonCtrl', ['$scope', 'ADZestStationSrv', 'ngTableParams', '$controller',
-	function($scope, ADZestStationSrv, ngTableParams, $controller) {
+admin.controller('ADZestWebAddonCtrl', ['$scope', 'ADZestWebAddonSrv', 'ngTableParams', '$controller',
+	function($scope, ADZestWebAddonSrv, ngTableParams, $controller) {
 
 		// inheriting from base table controller
 		$controller('ADSortableAddonListBaseCtrl', {
@@ -17,7 +17,7 @@ admin.controller('ADZestWebAddonCtrl', ['$scope', 'ADZestStationSrv', 'ngTablePa
 				successCallBack: onfetchCountriesSuccess
 			};
 
-			$scope.callAPI(ADZestStationSrv.fetchAddonSettings, options);
+			$scope.callAPI(ADZestWebAddonSrv.fetchAddonSettings, options);
 		};
 
 		$scope.loadTable = function() {
@@ -42,20 +42,28 @@ admin.controller('ADZestWebAddonCtrl', ['$scope', 'ADZestStationSrv', 'ngTablePa
 		});
 
 		$scope.saveSettings = function() {
+
+			var upsell_addons = [];
+			var addonIndex = 1;
+			// TODO: deleted below code
+			_.each($scope.data, function(addon) {
+				if (addon.zest_web_active) {
+					upsell_addons.push({
+						"addon_id": addon.addon_id,
+						"sequence_number": addonIndex
+					});
+					addonIndex++;
+				}
+			});
+
 			var options = {
-				params: $scope.data,
+				params: upsell_addons,
 				successCallBack: function() {
 					$scope.successMessage = "save success!";
 				}
 			};
-			// TODO: deleted below code
-			_.each($scope.data, function(addon) {
-				console.log(addon.id + "-----" + addon.zest_web_position + "----" + addon.zest_web_active);
-			});
 
-			options.successCallBack();
-
-			// $scope.callAPI(ADZestStationSrv.saveComponentOrder, options);
+			$scope.callAPI(ADZestWebAddonSrv.saveAddonSettings, options);
 		};
 	}
 ]);
