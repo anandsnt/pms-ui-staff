@@ -13,7 +13,7 @@ admin.controller('ADZestWebAddonCtrl', ['$scope', 'ADZestWebAddonSrv', 'ngTableP
 				$defer.resolve($scope.data);
 			};
 			var options = {
-				params: {},
+				params: {"for_zest_web": true},
 				successCallBack: onfetchCountriesSuccess
 			};
 
@@ -59,11 +59,12 @@ admin.controller('ADZestWebAddonCtrl', ['$scope', 'ADZestWebAddonSrv', 'ngTableP
 
 			var options = {
 				params: {
-					"upsell_addons": upsell_addons
+					"upsell_addons": upsell_addons,
+					"for_zest_web": true
 				},
 				successCallBack: function() {
 					$scope.successMessage = "save success!";
-					fetAddonsData();
+					$scope.reloadTable();
 				}
 			};
 
