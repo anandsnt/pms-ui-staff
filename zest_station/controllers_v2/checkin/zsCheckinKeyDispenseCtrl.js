@@ -127,7 +127,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
         };
         
         $scope.thirdPartyNoThanks = function() {
-            nextPageActionsForMobileKey();
+            $scope.mode = 'DISPENSE_KEY_MODE';
         };
 
         /** *** THIRD_PARTY_HAVE_IT_INFO * **/
