@@ -95,14 +95,17 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
                                 standAlone: true
                             }, {
                                 title: 'MENU_ROOM_DIARY',
-                                action: 'rover.nightlyDiary',
+                                action: 'rover.diary',
                                 standAlone: true,
                                 hidden: !$rootScope.isHourlyRatesEnabled
                             }, {
                                 title: 'MENU_ROOM_DIARY',
-                                action: 'rover.diary',
+                                action: 'rover.nightlyDiary',
                                 standAlone: true,
-                                hidden: ($rootScope.isHourlyRatesEnabled || !$rootScope.isPmsDevEnv)
+                                hidden: ($rootScope.isHourlyRatesEnabled || !$rootScope.isPmsDevEnv),
+                                actionParams: {
+                                    start_date: $rootScope.businessDate
+                                }
                             }, {
                                 title: 'MENU_POST_CHARGES',
                                 action: 'rover.dashboardFromAdmin',
