@@ -45,7 +45,6 @@ admin.controller('ADZestWebAddonCtrl', ['$scope', 'ADZestWebAddonSrv', 'ngTableP
 
 			var upsell_addons = [];
 			var addonIndex = 1;
-			// TODO: deleted below code
 			_.each($scope.data, function(addon) {
 				if (addon.zest_web_active) {
 					upsell_addons.push({
@@ -56,10 +55,15 @@ admin.controller('ADZestWebAddonCtrl', ['$scope', 'ADZestWebAddonSrv', 'ngTableP
 				}
 			});
 
+
+
 			var options = {
-				params: upsell_addons,
+				params: {
+					"upsell_addons": upsell_addons
+				},
 				successCallBack: function() {
 					$scope.successMessage = "save success!";
+					fetAddonsData();
 				}
 			};
 
