@@ -31,7 +31,7 @@
 <!-- Room block room types -->
 <div class="room-block-sidebar extended-timeline scrollable" ng-show="shouldShowRoomsRates()"
     ng-iscroll="room_block_scroller">
-    <div class="wrapper" bindonce>
+    <div class="wrapper">
         <!-- Toggle class "open" when .line-toggle is clicked/tapped -->
         <div ng-class="{'open' : roomtype_rate.isCollapsed}"
             class="row"
@@ -43,8 +43,8 @@
             <!-- Toggle class "active" when clicked/tapped -->
             <p class="line line-toggle"
                 ng-class="{'active' : roomtype_rate.isCollapsed}"
-                ng-click="roomtype_rate.isCollapsed = !roomtype_rate.isCollapsed"
-                bo-text="roomtype_rate.room_type_name">
+                ng-click="roomtype_rate.isCollapsed = !roomtype_rate.isCollapsed">
+                {{ ::roomtype_rate.room_type_name }}
             </p>
             <!-- Toggle class "hidden" when .line-toggle is clicked/tapped -->
             <ul ng-class="{'hidden' : !roomtype_rate.isCollapsed}">
@@ -87,15 +87,14 @@
 <!-- Room block days -->
 <div class="room-block-timeline extended-timeline paginated scrollable"
     ng-iscroll="room_rates_timeline_scroller"
-    ng-show="shouldShowRoomsRates()"
-    bindonce>
+    ng-show="shouldShowRoomsRates()">
 
-    <ul class="wrapper" bindonce style="width:{{getWidthForCurrentViewTimeLine()}};">
+    <ul class="wrapper" style="width:{{getWidthForCurrentViewTimeLine()}};">
         <li ng-repeat="occupancy in allotmentConfigData.roomblock.selected_room_types_and_occupanies">
             <div class="inner">
-                <span bo-text="formatDateForUI(occupancy.date, fulldayInWeek)"></span>
-                <strong bo-text="formatDateForUI(occupancy.date, monthAndDate)"></strong>
-                <em><i bo-text="occupancy.occupancy"></i><i>% Occupancy</i></em>
+                <span>{{ ::formatDateForUI(occupancy.date, fulldayInWeek) }}</span>
+                <strong>{{ ::formatDateForUI(occupancy.date, monthAndDate) }}</strong>
+                <em><i>{{ ::occupancy.occupancy }}</i><i>% Occupancy</i></em>
             </div>
             <div class="column">
                 <div class="line small">
@@ -105,7 +104,7 @@
                 <!-- Total for Day -->
                 <div class="line">
                     <input type="text" value="{{getTotalHeldOfDay($index)}}" class="cell" disabled />
-                    <input type="text" bo-value="getTotalPickedUpOfDay($index)" class="cell" disabled />
+                    <input type="text" value="{{ ::getTotalPickedUpOfDay($index) }}" class="cell" disabled />
                 </div>
             </div>
         </li>
@@ -115,7 +114,7 @@
 <!-- Room block grid -->
 <div class="room-block-grid extended-timeline paginated scrollable" ng-iscroll="room_rates_grid_scroller"
     ng-show="shouldShowRoomsRates()">
-    <div class="wrapper" bindonce style="width:{{getWidthForCurrentViewTimeLine()}};">
+    <div class="wrapper" style="width:{{getWidthForCurrentViewTimeLine()}};">
         <!-- REPEAT ROW FOR ALL ROOM TYPES SELECTED -->
         <div class="row" ng-repeat="roomType in allotmentConfigData.roomblock.selected_room_types_and_bookings" ngrepeatend>
             <!-- REPEAT COLUMN FOR ALL DAYS IN THE BLOCK -->
@@ -238,8 +237,8 @@
                 <div class="line small cellspan" ng-class="{'hidden' : !roomType.isCollapsed}">
                     <em class="cellspan">
                         {{'AVAILABILITY_GROUP'|translate}}
-                        <span bo-class="{'green': (dateData.availability>0), 'red': (dateData.availability==0) }"
-                            bo-text="dateData.availability">
+                        <span ng-class="::{'green': (dateData.availability>0), 'red': (dateData.availability==0) }">
+                            {{ ::dateData.availability }}
                         </span>
                     </em>
                 </div>
