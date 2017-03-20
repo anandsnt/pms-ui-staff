@@ -99,7 +99,8 @@ module.exports = {
             'guestweb_ambrose': [ themeCSSRoot + 'guestweb_ambrose.css'],
             'guestweb_little_duke': [ themeCSSRoot + 'guestweb_little_duke.css'],
             'guestweb_basecamp_boulder': [ themeCSSRoot + 'guestweb_basecamp_boulder.css'],
-            'guestweb_distrikt_nyc': [ themeCSSRoot + 'guestweb_distrikt_nyc.css']
+            'guestweb_distrikt_nyc': [ themeCSSRoot + 'guestweb_distrikt_nyc.css'],
+            'guestweb_stella_hotel': [ themeCSSRoot + 'guestweb_stella_hotel.css']
         };     
     }
 };
