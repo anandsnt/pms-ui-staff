@@ -358,6 +358,9 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         resolve: {
             activeRates: function(ADPromotionsSrv) {
                 return ADPromotionsSrv.getActiveRates();
+            },
+            availableLanguages: function(ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages();
             }
         }
     });
@@ -650,6 +653,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
             }
         }
     });
+
 
     $stateProvider.state('admin.upsellAddonSettings', {
         templateUrl: '/assets/partials/upsellAddons/adUpsellAddons.html',
