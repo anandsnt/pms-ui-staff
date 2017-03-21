@@ -204,7 +204,7 @@ angular.module('sntRover')
                                     break;
                                 case 'maintenance' : $scope.messages = ['MAINTENANCE'];
                                     break;
-                                case 'do_not_move' : $scope.messages = ['ROOM_CANNOT_UNASSIGN'];
+                                case 'do_not_move' : $scope.messages = ['ROOM_IS_SET_TO_DO_NOT_MOVE'];
                                     break;
                                 case 'room_ooo' : $scope.messages = ['ROOM_OOO'];
                                     break;

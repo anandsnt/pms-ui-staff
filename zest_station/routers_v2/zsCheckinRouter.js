@@ -103,7 +103,7 @@ sntZestStation.config(['$stateProvider',
       });
 		// pickup key dispense
         $stateProvider.state('zest_station.checkinKeyDispense', {
-            url: '/checkinKeyDispense/:reservation_id/:room_no/:first_name/:guest_id/:email/:from_mobile_key_email_update/:physical_key_selected',
+            url: '/checkinKeyDispense/:reservation_id/:room_no/:first_name/:guest_id/:email',
             templateUrl: '/assets/partials_v2/checkin/zscheckinKeyDispense.html',
             controller: 'zsCheckinKeyDispenseCtrl',
             jumper: true,
@@ -187,7 +187,7 @@ sntZestStation.config(['$stateProvider',
 
 		// email entry screen
         $stateProvider.state('zest_station.checkInEmailCollection', {
-            url: '/checkInEmailCollection/:reservation_id/:first_name/:room_no/:guest_id/:from_mobile/:physical_key_selected',
+            url: '/checkInEmailCollection/:reservation_id/:first_name/:room_no/:guest_id',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinEmailCollection.html',
             controller: 'zsCheckinEmailCollectionCtrl',
             jumper: true,
@@ -200,7 +200,7 @@ sntZestStation.config(['$stateProvider',
 
       	// email /print entry screen
       	$stateProvider.state('zest_station.zsCheckinBillDeliveryOptions', {
-          url: '/checkinBillDeliveryOptions/:reservation_id/:email/:first_name/:room_no/:guest_id/:key_success',
+          url: '/checkinBillDeliveryOptions/:reservation_id/:email/:first_name/:room_no/:guest_id/:key_success/:key_type',
           templateUrl: '/assets/partials_v2/checkin/zsCheckinRegCardDeliveryOptions.html',
           controller: 'zsCheckinRegCardDeliveryOptionsCtrl',
           jumper: true,
@@ -212,7 +212,7 @@ sntZestStation.config(['$stateProvider',
 
 		// checkin final screen
       	$stateProvider.state('zest_station.zsCheckinFinal', {
-          url: '/zsCheckinFinal/:print_opted/:email_opted/:print_status/:email_status/:key_success',
+          url: '/zsCheckinFinal/:print_opted/:email_opted/:print_status/:email_status/:key_success/:key_type',
           templateUrl: '/assets/partials_v2/checkin/zsCheckinFinal.html',
           controller: 'zsCheckinFinalCtrl',
           jumper: true,
