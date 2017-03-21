@@ -526,7 +526,7 @@ angular.module('sntRover')
             staticInit(results);
             chargeGroupInit(results);
             paymentGroupInit(results);
-          //  balanceBrought(results);
+            balanceBrought(results);
             ledgerDepositInit(results);
             ledgerGuestInit(results);
             ledgerARInit(results);
