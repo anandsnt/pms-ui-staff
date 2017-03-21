@@ -21,12 +21,12 @@
 		<!-- Right contents -->
 		<div id="key-status" class="print-key" ng-class="{'connecting': deviceConnecting, 'connected': showPrintKeyOptions || keysPrinted , 'not-connected' : deviceNotConnected || pressedCancelStatus, 'completed' : keysPrinted}">
 			
-			<span ng-show="deviceConnecting">
+			<span ng-show="deviceConnecting && !isRemoteEncodingEnabled">
 				<span class="h2 message" translate>PRINT_ROOM_KEY</span>
 				<em class="status icon-key pending" translate>CONNECTING_TO_KEY_CARD_READER</em>
 			</span>
 
-			<span ng-show="deviceNotConnected">
+			<span ng-show="deviceNotConnected && !isRemoteEncodingEnabled">
 				<span class="h2 message" translate>PRINT_ROOM_KEY</span>
 				<em class="status icon-key error" translate>ERROR_CONNECTING_TO_KEY_CARD_READER</em>
 				<div class="action">
@@ -43,12 +43,12 @@
                                 <span ng-if="keyType === 'New'" class="validate-keys-section"><span translate>THIS_KEYS_TEXT</span> <b><span class="keys-msg-bold" translate>WILL_VALIDATE_PREVIOUS</span></b> <span translate>INVALIDATE_KEYS_TEXT</span></span>
                                 <span ng-if="keyType === 'Duplicate'" class="validate-keys-section"><span translate>THIS_KEYS_TEXT</span> <b><span class="keys-msg-bold" translate>WILL_NOT_VALIDATE_PREVIOUS</span></b> <span translate>INVALIDATE_KEYS_TEXT</span></span>
                                 
-					<em class="status icon-key" ng-class="{'success': status=='success', 'pending': status=='pending', 'error': status=='error'}">{{statusMessage}}</em>
+					<em class="status icon-key {{status}}">{{statusMessage}}</em>
 					<div id="print-keys">
 						<div class="entry full-width" ng-show = "isRemoteEncodingEnabled">
-			                <label for="encoder-type">Key Encoder</label>
+			                <label>Key Encoder</label>
 			                <div class="select">
-			                	<select id="encoder-type" name="encoder-type" class="placeholder" ng-model="encoderSelected" ng-change="selectedEncoder()">
+			                	<select name="encoder-type" class="placeholder" ng-model="encoderSelected" ng-change="selectedEncoder()">
 			                		<option value="" class="placeholder">Select</option>
 			                		<option value="{{item.id}}" class="placeholder" ng-repeat="item in encoderTypes" ng-selected = "encoderSelected == item.id">{{item.description}}</option>
 			                	</select>
