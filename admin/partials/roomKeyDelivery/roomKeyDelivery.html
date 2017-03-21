@@ -36,7 +36,7 @@
 
 							<ad-textarea rows="2" ng-if="data.room_key_delivery_for_guestzest_check_in == 'front_desk'" div-class="full-width" text-area-class="full-width" value="data.key_delivery_message" label = "{{ 'ROOM_KEY_DELIVERY_MESSAGE_TITLE' | translate}}" placeholder = ""></ad-textarea>
 
-							<ad-checkbox is-checked="data.offer_mobilekey_from_zest" label="{{'OFFER_MOBILEKEY_LABEL' | translate }}" div-class="key-delivery-checkbox" span-class="checkbox-background"></ad-checkbox>
+							<ad-checkbox  is-checked="data.offer_mobilekey_from_zest" label="{{'OFFER_MOBILEKEY_LABEL' | translate }}" div-class="key-delivery-checkbox" span-class="checkbox-background"></ad-checkbox>
 
 							<ad-checkbox is-checked="data.show_oracode_in_room_ready_email" label="{{'SHOW_ORACODE_IN_ROOM_READY_EMAIL' | translate }}" div-class="key-delivery-checkbox" span-class="checkbox-background"></ad-checkbox>
 						</div>
@@ -91,10 +91,28 @@
 						<h3><span translate>STATION</span> {{'CHECKINS' | translate}} </h3>
 					</div>
                     <div class="entry full-width">
-						<div class="boxes">
-					        <ad-checkbox is-checked="data.offer_mobilekey_from_station" label="{{'OFFER_MOBILEKEY_LABEL' | translate }}" div-class="key-delivery-checkbox" span-class="checkbox-background"></ad-checkbox>
+						<div class="boxes" >
+
+							<label class="radio" ng-class="{checked: data.station_offer_mobilekey == 'disabled'}">
+								<span class="icon-form icon-radio" ng-class="{checked: data.station_offer_mobilekey == 'disabled'}"></span>
+								<input ng-model="data.station_offer_mobilekey" type="radio" value="disabled" name="guest-zest" id="type1" class="change-data">
+								{{'STATION_MOBILEKEY_DISABLED' | translate }}
+							</label>
+							<label class="radio" ng-class="{checked: data.station_offer_mobilekey == 'zest'}">
+								<span class="icon-form icon-radio" ng-class="{checked: data.station_offer_mobilekey == 'zest'}"></span>
+								<input ng-model="data.station_offer_mobilekey" type="radio" value="zest" name="guest-zest" id="type2" class="change-data">
+								{{'STATION_MOBILEKEY_SNT' | translate }}	
+							</label>
+							<label class="radio" ng-class="{checked: data.station_offer_mobilekey == 'third_party'}">
+								<span class="icon-form icon-radio" ng-class="{checked: data.station_offer_mobilekey == 'third_party'}"></span>
+								<input ng-model="data.station_offer_mobilekey" type="radio" value="third_party" name="guest-zest" id="type3" class="change-data">
+								{{'STATION_MOBILEKEY_THIRDPARTY' | translate }}
+							</label>
+
+
 
 					    </div>
+
 					</div>
 
 				</fieldset>
