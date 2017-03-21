@@ -184,9 +184,7 @@ angular.module('sntRover')
              * Function to check room availability.
              */
             var checkReservationAvailability = (arrivalDate, DepartureDate) => {
-                console.log("---------------")
-                console.log((_.findWhere(roomsList.rooms, {id: $scope.currentSelectedRoom.id})).room_no)
-                let params = {
+                 let params = {
                         'arrival_date': moment(arrivalDate, $rootScope.dateFormat.toUpperCase())
                                             .format('YYYY-MM-DD'),
                         'dep_date': moment(DepartureDate, $rootScope.dateFormat.toUpperCase())
