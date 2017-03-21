@@ -477,6 +477,101 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     };
 
     /*
+     * to fetch the rate type & it's restrcitions
+     * @param  {Object} filterValues
+     */
+    var fetchRateTypeAndRestrictions = (filterValues) => {
+        var params = {
+            from_date: formatDateForAPI(filterValues.fromDate),
+            to_date: formatDateForAPI(filterValues.toDate),
+            order_id: filterValues.orderBySelectedValue,
+            // 'name_card_ids[]': _.pluck(filterValues.selectedCards, 'id'),
+            // fetchRoomTypes: !cachedRoomTypeList.length,
+            fetchCommonRestrictions: true
+        };
+        var options = {
+            params: params,
+            onSuccess: onFetchRateTypeAndRestrictionsSuccess
+        };
+
+        $scope.callAPI(rvRateManagerCoreSrv.fetchRateTypes1, options);
+    };
+
+    /*
+     * when the rate type success
+     * @param  {Object}
+     */
+    var onFetchRateTypeAndRestrictionsSuccess = (response) => {
+        var numberOfRateTypes = response.rateTypeAndRestrictions[0].rate_types.length;
+
+        if (numberOfRateTypes === 0) {
+            hideAndClearDataForTopBar();
+            showNoResultsPage();            
+        }
+        else {
+            processRateTypesAndRestrictionForAllRateType(response);
+        }
+    };
+
+    /*
+     * method to process the response for 'All rate types'
+     * @param  {Object} response
+     */
+    var processRateTypesAndRestrictionForAllRateType = (response) => {
+        console.log(response);
+        var rateTypeRestrictions = response.rateTypeAndRestrictions;
+
+        // for topbar
+        var dates = _.pluck(rateTypeRestrictions, 'date');
+
+        showAndFormDataForTopBar(dates);
+
+        var renderableData = formRenderingDataModelForAllRateTypes(dates, rateTypeRestrictions);
+        console.log(renderableData);
+
+        // var rateTypeWithRestrictions = renderableData.rateTypeWithRestrictions;
+        
+        // // updating the view with results
+        // updateAllRateTypesView(rateTypeWithRestrictions, dates, renderableData.restrictionSummary);
+
+        // // closing the left side filter section
+        // $scope.$broadcast(rvRateManagerEventConstants.CLOSE_FILTER_SECTION);    
+    };
+
+    /*
+     * to form the rendering data model (for react) against all rates
+     * @param  {array} dates
+     * @param  {array} rateTypeRestrictions
+     * @return {array}
+     */
+    var formRenderingDataModelForAllRateTypes = (dates, rateTypeRestrictions) => {
+        var rateTypes = rateTypeRestrictions[0].rate_types;
+        var dateRateTypeSet = null,
+            rateTypeRestrictionWithDateAsKey = _.object(dates, rateTypeRestrictions),
+            rateTypeIDs = _.pluck(rateTypes, 'id'),
+            rateTypeObjectBasedOnID = _.object(rateTypeIDs, rateTypes);
+
+        // rate & restrictions -> 2nd row onwards
+        var rateTypeWithRestrictions = rateTypeRestrictions[0].rate_types.map((rateType) => {
+            rateType.restrictionList = [];
+            rateType.amountList = [];
+
+            rateType = {...rateType, ...rateTypeObjectBasedOnID[rateType.id]};
+
+            dates.map((date) => {
+                dateRateTypeSet = _.findWhere(rateTypeRestrictionWithDateAsKey[date].rate_types, {id: rateType.id});
+                rateType.restrictionList.push(dateRateTypeSet.restrictions);
+                rateType.amountList.push(dateRateTypeSet.amount);
+            });
+            return _.omit(rateType, 'restrictions');
+        });
+
+        return {
+            rateTypeWithRestrictions : rateTypeWithRestrictions
+        };
+    };
+
+    /*
      * to fetch the room type & it's restrcitions
      * @param  {Object} filterValues
      */
@@ -1000,6 +1095,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 dates,
                 restrictionTypes,
             };
+            console.log(reduxActionForAllRoomTypesView);
 
             //dispatching to redux
             store.dispatch(reduxActionForAllRoomTypesView);
@@ -1709,7 +1805,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 
                 // setting the current scroll position as STILL
                 newFilterValues.scrollDirection = rvRateManagerPaginationConstants.scroll.STILL;
-
                 lastSelectedFilterValues = [{...newFilterValues}]; // ES7
                 activeFilterIndex = 0;
                 $scope.showBackButton = false;
@@ -1737,6 +1832,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             else if (newFilterValues.showAllRoomTypes) {
                 fetchRoomTypeAndRestrictions(newFilterValues);
             } 
+            else if (newFilterValues.showAllRateTypes) {
+                fetchRateTypeAndRestrictions(newFilterValues);
+                console.log('show all ratetypes clicked');
+            }
             else {
                 /*
                 In this case we have two modes (single rate view & multiple rates view)
