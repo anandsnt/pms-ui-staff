@@ -10,7 +10,8 @@ admin.directive('adChargeCodeAutoComplete', ['ADChargeCodesSrv', function (ADCha
 			delay: '@delay',
 			minLengthToTrigger: '@minLengthToTrigger',
 			excludePayments: '@',
-			onlyPayments: '@'
+			onlyPayments: '@',
+			required:'='
 		},
 		controller: function($scope) {
 			BaseCtrl.call(this, $scope);
