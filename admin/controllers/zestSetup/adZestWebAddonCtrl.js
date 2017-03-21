@@ -6,16 +6,17 @@ admin.controller('ADZestWebAddonCtrl', ['$scope', 'ADZestWebAddonSrv', 'ngTableP
 			$scope: $scope
 		});
 		// fetch addon list
-		var fetAddonsData = function($defer, params) {
-			var onfetchCountriesSuccess = function(response) {
-				$scope.data = response.addons;
-				$defer.resolve($scope.data);
-			};
+		var fetAddonsData = function($defer) {
 			var options = {
-				params: {"for_zest_web": true},
-				successCallBack: onfetchCountriesSuccess
+				params: {
+					"for_zest_web": true
+				},
+				successCallBack: function(response) {
+					$scope.data = response.addons;
+					$defer.resolve($scope.data);
+				}
 			};
-
+			
 			$scope.callAPI(ADZestWebAddonSrv.fetchAddonSettings, options);
 		};
 
@@ -41,17 +42,18 @@ admin.controller('ADZestWebAddonCtrl', ['$scope', 'ADZestWebAddonSrv', 'ngTableP
 		});
 
 		$scope.saveSettings = function() {
-
 			var upsell_addons = [];
-			var addonIndex = 1;
-			_.each($scope.data, function(addon) {
-				if (addon.zest_web_active) {
-					upsell_addons.push({
-						"addon_id": addon.addon_id,
-						"sequence_number": addonIndex
-					});
-					addonIndex++;
-				}
+			// filter active addons
+			var activeAddons = _.filter($scope.data, function(addon) {
+				return addon.zest_web_active;
+			});
+
+			// generate params based on active addons only
+			_.each(activeAddons, function(addon, index) {
+				upsell_addons.push({
+					"addon_id": addon.addon_id,
+					"sequence_number": index + 1
+				});
 			});
 
 			var options = {
