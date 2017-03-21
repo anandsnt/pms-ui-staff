@@ -16,6 +16,7 @@ admin.controller('ADZestWebAddonCtrl', ['$scope', 'ADZestWebAddonSrv', 'ngTableP
 					$defer.resolve($scope.data);
 				}
 			};
+			
 			$scope.callAPI(ADZestWebAddonSrv.fetchAddonSettings, options);
 		};
 
