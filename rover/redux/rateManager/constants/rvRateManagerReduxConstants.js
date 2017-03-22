@@ -4,6 +4,7 @@ const RM_RX_CONST = {
 	RATE_VIEW_WITH_ADDRESS : "Rate_View_With_Address",
 	
 	RATE_VIEW_CHANGED                      : 'RM_Rate_View_Changed',
+	RATE_TYPE_VIEW_CHANGED                 : 'RM_Rate_Type_View_Changed',
 	ROOM_TYPE_VIEW_CHANGED                 : 'RM_Room_Type_View_Changed',
 	SINGLE_RATE_EXPANDABLE_VIEW_CHANGED    : 'RM_Single_Rate_Expandable_View_Changed',
 	SHOW_NO_RESULTS 					   : 'RM_Show_No_Results',

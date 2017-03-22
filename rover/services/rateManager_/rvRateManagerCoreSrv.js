@@ -44,34 +44,11 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             var deferred = $q.defer(),
                 url = '/api/daily_rates/rate_types?from_date=' + params.from_date + '&page=1&per_page=10&to_date=' + params.to_date;
 
-            var data = {
-                "results": [{
-                        "date": "2016-04-14",
-                        "rate_types": [{
-                            "id": 25,
-                            "restrictions": [],
-                            "amount": 20
-                        }, {
-                            "id": 26,
-                            "restrictions": [],
-                            "amount": 10
-                        }]
-                    }, {
-                        "date": "2016-04-15",
-                        "rate_types": [{
-                            "id": 25,
-                            "restrictions": [],
-                            "amount": 20
-                        }, {
-                            "id": 26,
-                            "restrictions": [],
-                            "amount": 15
-                        }]
-                    }]
-                };
-            setTimeout(function() {
-                deferred.resolve(data);
-            }, 1000);
+            BaseWebSrvV2.getJSON(url, params).then(function(response) {
+                deferred.resolve(response);
+            }, function(error) {
+                deferred.reject(error);
+            });
             return deferred.promise;
         };
 
@@ -196,14 +173,13 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                 }));
             }
             $q.all(promises).then((data) => {
-                console.log(data);
                 deferred.resolve(response);
             });
 
             return deferred.promise;
         };
 
-        service.fetchRateTypes1 = (params) => {
+        service.fetchRateTypes = (params) => {
             var promises = [],
                 roomTypes = [],
                 roomTypeAndRestrictions = [],
@@ -214,6 +190,16 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             promises.push(service.fetchAllRateTypesInfo(_.omit(params, 'fetchCommonRestrictions')).then((data) => {
                 response.rateTypeAndRestrictions = data.results;
             }));
+
+            if(params.fetchCommonRestrictions){
+                let paramsForCommonRestrictions = _.pick(params, 'from_date', 'to_date', 'varied_inclusive');
+
+                promises.push(service.fetchCommonRestrictions(paramsForCommonRestrictions)
+                    .then((data) => {
+                        response.commonRestrictions = data.results;
+                    })
+                );
+            }
 
             $q.all(promises).then((data) => {
                 deferred.resolve(response);
