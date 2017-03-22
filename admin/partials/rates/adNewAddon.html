@@ -11,7 +11,7 @@
                     <strong>*</strong>
                     {{'MANDATORY_FIELDS_MESSAGE2'| translate}}
                 </em>
-                <div class="select select-col addon-lang-dropdown" ng-show='isConnectedToPMS'>
+                <div class="select select-col addon-lang-dropdown" ng-show='isConnectedToPMS && languages.show_language_field'>
                      <select ng-model="languageFilter.locale" name="locale" ng-change="onLocaleChange()">
                         <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==languageFilter.locale"> {{locale.language}} </option>
                     </select>
