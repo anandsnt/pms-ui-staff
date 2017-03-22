@@ -482,7 +482,43 @@ angular.module('sntRover')
                 paymentGroupItem.paymentGroupEntries = ccStore.get(paymentGroupItem.charge_group_id);
             });
         }
-        /**
+        /*
+         * Seperating balance
+         * @param {array} results fetched data from API
+         */
+        function balanceBrought (results) {
+            $scope.balanceEntries = [];
+            $scope.balanceEntries = _.where(results, { is_balance_brought_forward: true });
+        }
+        /*
+         * Seperating ledger deposit values
+         * @param {array} results fetched data from API
+         */
+        function ledgerDepositInit (results) {
+            $scope.ledgerDepositEntries = [];
+            $scope.ledgerDepositEntries = _.where(results, { is_deposit_ledger: true });
+        }
+        /*
+         * Seperating ledger guest values
+         * @param {array} results fetched data from API
+         */
+        function ledgerGuestInit (results) {
+            $scope.ledgerGuestEntries = [];
+            $scope.ledgerGuestEntries = _.where(results, { is_guest_ledger: true });
+        }
+        /*
+         * Seperating ledger AR
+         * @param {array} results fetched data from API
+         */
+        function ledgerARInit (results) {
+            $scope.ledgerAREntries = [];
+            $scope.ledgerAREntries = _.where(results, { is_ar_ledger: true });
+        }
+       function ledgerTotalVarianceInit (results) {
+            $scope.ledgerTotalVariance = [];
+            $scope.ledgerTotalVariance = _.where(results, { is_total_variance: true });
+        }
+         /**
          * init - bootstrap initial execution
          * @returns {object} undefined
          */
@@ -494,6 +530,11 @@ angular.module('sntRover')
             staticInit(results);
             chargeGroupInit(results);
             paymentGroupInit(results);
+            balanceBrought(results);
+            ledgerDepositInit(results);
+            ledgerGuestInit(results);
+            ledgerARInit(results);
+            ledgerTotalVarianceInit(results);
         }
 
         init();
