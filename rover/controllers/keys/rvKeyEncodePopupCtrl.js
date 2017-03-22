@@ -104,9 +104,15 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
         }
         // as per CICO-31909 Initally we check if the device is connected
         // check if it is a desktop or iPad
-        $scope.isIpad = navigator.userAgent.match(/iPad/i) !== null && window.cordova;
-
-        if (!$scope.isIpad && $scope.isRemoteEncodingEnabled) {
+        $scope.isIpad = sntapp.browser === 'rv_native' && sntapp.cordovaLoaded;
+		
+        if ($scope.isIpad && $scope.isRemoteEncodingEnabled) {
+            $scope.deviceConnecting = true;
+            that.setStatusAndMessage($filter('translate')('CONNECTING_TO_KEY_CARD_READER'), 'pending');
+            $scope.showDeviceConnectingMessge();
+            $scope.showPrintKeyOptions = true;
+            $scope.encoderSelected = '';
+        } else if (!$scope.isIpad && $scope.isRemoteEncodingEnabled) {
             $scope.showTabletOption = false;
             showPrintKeyOptions(true);
         } else {
@@ -157,12 +163,15 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
             if ($scope.isRemoteEncodingEnabled) {
                 // hide tablet option if only remote encoders and no device connected
                 $scope.showTabletOption = false;
+                that.setStatusAndMessage($filter('translate')('ERROR_CONNECTING_TO_KEY_CARD_READER'), 'error');
                 showPrintKeyOptions(true);
             } else {
                 $scope.deviceConnecting = false;
                 $scope.keysPrinted = false;
                 $scope.showPrintKeyOptions = false;
                 $scope.deviceNotConnected = true;
+            }
+            if (!$scope.$$phase) {
                 $scope.$apply();
             }
 		}
@@ -181,9 +190,10 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		$scope.deviceConnecting = true;
 		$scope.deviceNotConnected = false;
 		$scope.keysPrinted = false;
-		$scope.showPrintKeyOptions = false;
+		$scope.showPrintKeyOptions = $scope.isIpad && $scope.isRemoteEncodingEnabled;
+
 		var callBack = {
-			'successCallBack': showPrintKeyOptions,
+			'successCallBack': onDeviceConnectionSuccess,
 			'failureCallBack': showDeviceNotConnected
 		};
 
@@ -553,7 +563,10 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
                 });
             }
             $scope.encoderSelected = '-1';
-        }
+        } else {
+            $scope.encoderSelected = '';
+		}
+
 		$scope.$emit('hideLoader');
 		$scope.deviceConnecting = false;
 		$scope.deviceNotConnected = false;
@@ -564,6 +577,13 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
             $scope.$apply();
         }
 	};
+
+    var onDeviceConnectionSuccess = function(status) {
+        if (status) {
+            that.setStatusAndMessage($filter('translate')('KEY_CONNECTED_STATUS'), 'success');
+        }
+        showPrintKeyOptions(status);
+    };
 
 	var showKeysPrinted = function() {
 		$scope.$emit('hideLoader');

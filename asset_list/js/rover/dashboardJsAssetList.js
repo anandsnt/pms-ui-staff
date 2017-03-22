@@ -27,7 +27,6 @@ module.exports = {
 				jsLibRoot + 'moment.min.js'
 			],
 			nonMinifiedFiles: [
-				jsLibRoot + 'bindonce.js',
 				jsLibRoot + 'iscroll.js',
 				jsLibRoot + 'ng-iscroll.js',
 				jsLibRoot + 'Utils.js',

@@ -72,26 +72,16 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
         };
 
         var goToNextScreenInFlow = function(stateParams) {
+            console.log('next screen in flow: ');
             // if nationality collection enabled then show here, otherwise straight to Dispense keys
-
-            if ($stateParams.from_mobile) {
-                // to let checkin key dispense ctrl go back to edit / send email mode
-                stateParams.from_mobile_key_email_update = 'true';
-                
-                stateParams.physical_key_selected = $stateParams.physical_key_selected;// mobile key logic reference
-                $state.go('zest_station.checkinKeyDispense', stateParams);
-
-            } else {
-                if ($scope.zestStationData.check_in_collect_nationality) {
-                    console.log('next screen in flow: nationality');
-                    $state.go('zest_station.collectNationality', stateParams);
-                }
-                else {
-                    console.log('next screen in flow: key dispense');
-                    $state.go('zest_station.checkinKeyDispense', stateParams);
-                }
+            if ($scope.zestStationData.check_in_collect_nationality) {
+                console.log('next screen in flow: nationality');
+                $state.go('zest_station.collectNationality', stateParams);
             }
-
+            else {
+                console.log('next screen in flow: key dispense');
+                $state.go('zest_station.checkinKeyDispense', stateParams);
+            }
         };
 
         var updateGuestEmail = function() {
@@ -169,7 +159,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
                 'room': $stateParams.room,
                 'room_no': $stateParams.room_no,
                 'guest_id': $stateParams.guest_id,
-                'email': $stateParams.email,
+                'email': '', // email was'nt saved
                 'first_name': $stateParams.first_name
             };
 

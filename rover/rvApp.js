@@ -24,7 +24,6 @@ var sntRover = angular.module('sntRover', [
 		'cacheVaultModule',
 		'documentTouchMovePrevent',
 		'divTouchMoveStopPropogate',
-		'pasvaz.bindonce',
 		'sharedHttpInterceptor',
 		'orientationInputBlurModule',
 		'ngDragDrop',

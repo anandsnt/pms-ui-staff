@@ -71,7 +71,21 @@
 
 "STATION_MOBILEKEY_DISABLED":"Do not offer Mobile Phone Key",
 "STATION_MOBILEKEY_THIRDPARTY":"Offer Mobile Phone Key - 3rd Party",
-"STATION_MOBILEKEY_SNT":"Offer Mobile Phone Key - Zest"
+"STATION_MOBILEKEY_SNT":"Offer Mobile Phone Key - Zest",
+
+"WALLET_URL_LABEL": "Legic Rest Web Service URL",
+"WALLET_URL_PLACEHOLDER": "Enter Legic Rest Web Service URL",
+"WALLET_ID_LABEL": "Legic Wallet ID",
+"WALLET_ID_PLACEHOLDER": "Enter Legic Wallet ID",
+"WALLET_USERNAME_LABEL": "Legic Wallet Tech Username",
+"WALLET_USERNAME_PLACEHOLDER": "Enter Legic Wallet Tech Username",
+"WALLET_PASSWORD_LABEL": "Legic Wallet Tech Password",
+"WALLET_PASSWORD_PLACEHOLDER": "Enter Legic Wallet Tech Password",
+"AUTH_USERNAME_LABEL": "Legic Preauth Username",
+"AUTH_USERNAME_PLACEHOLDER": "Enter Legic Preauth Username",
+"AUTH_PASSWORD_LABEL": "Legic Preauth Password",
+"AUTH_PASSWORD_PLACEHOLDER": "Enter Legic Preauth Password"
+
 
 
 
