@@ -1,6 +1,6 @@
 angular.module('admin').controller('adTopCtrl',
-    ['$state', '$rootScope', '$scope', '$window', '$stateParams', 'sntAuthorizationSrv', 'ADAppSrv', '$log', '$timeout',
-        function($state, $rootScope, $scope, $window, $stateParams, sntAuthorizationSrv, ADAppSrv, $log, $timeout) {
+    ['$state', '$rootScope', '$scope', '$window', '$stateParams', 'sntAuthorizationSrv', 'ADAppSrv', '$log', '$timeout', 'adminDashboardConfigData',
+        function($state, $rootScope, $scope, $window, $stateParams, sntAuthorizationSrv, ADAppSrv, $log, $timeout, adminDashboardConfigData) {
 
             BaseCtrl.call(this, $scope);
 
@@ -10,11 +10,15 @@ angular.module('admin').controller('adTopCtrl',
             };
 
             var setPropertyAndNavigate = function(uuid) {
-                if ('snt' === $state.current.name) {
+                if ('snt' === $state.current.name && $rootScope.isSntAdmin) {
                     $window.history.pushState("initial", "Showing Dashboard", "/admin/snt");
                 } else {
-                    $window.history.pushState("initial", "Showing Dashboard", "/admin/h/" + uuid);
-                    sntAuthorizationSrv.setProperty(uuid);
+                    if (uuid) {
+                        $window.history.pushState("initial", "Showing Dashboard", "/admin/h/" + uuid);
+                        sntAuthorizationSrv.setProperty(uuid);
+                    } else {
+                        //fetch uuid and then navigate
+                    }
                 }
 
                 // NOTE: This listener is not removed on $destroy on purpose!
@@ -26,7 +30,13 @@ angular.module('admin').controller('adTopCtrl',
             };
 
             (function() {
-                if ($stateParams.uuid || 'snt' === $state.current.name) {
+                $rootScope.adminRole = adminDashboardConfigData['admin_role'];
+                $rootScope.isServiceProvider = adminDashboardConfigData['is_service_provider'];
+                $rootScope.hotelId = adminDashboardConfigData['hotel_id'];
+                $rootScope.isPmsConfigured = adminDashboardConfigData['is_pms_configured'] === 'true';
+                $rootScope.isSntAdmin = $rootScope.adminRole === 'snt-admin';
+
+                if ($stateParams.uuid || ( $rootScope.isSntAdmin && 'snt' === $state.current.name)) {
                     setPropertyAndNavigate($stateParams.uuid);
                 } else {
                     $log.info('setPropertyAndNavigate');

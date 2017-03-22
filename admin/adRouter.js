@@ -4,8 +4,8 @@ admin.config([
     '$translateProvider',
     function($stateProvider, $urlRouterProvider, $translateProvider) {
         $translateProvider.useStaticFilesLoader({
-          prefix: '/assets/adLocales/',
-          suffix: '.json'
+            prefix: '/assets/adLocales/',
+            suffix: '.json'
         });
         $translateProvider.fallbackLanguage('EN');
         // dashboard state
@@ -13,12 +13,22 @@ admin.config([
 
         $stateProvider.state('top', {
             url: '/admin/h/:uuid',
-            controller: 'adTopCtrl'
+            controller: 'adTopCtrl',
+            resolve: {
+                adminDashboardConfigData: ['ADAppSrv', '$stateParams', function(ADAppSrv, $stateParams) {
+                    return ADAppSrv.fetchDashboardConfig($stateParams.uuid);
+                }]
+            }
         });
 
         $stateProvider.state('snt', {
             url: '/admin/snt',
-            controller: 'adTopCtrl'
+            controller: 'adTopCtrl',
+            resolve: {
+                adminDashboardConfigData: ['ADAppSrv', function(ADAppSrv) {
+                    return ADAppSrv.fetchDashboardConfig();
+                }]
+            }
         });
 
         $stateProvider.state('admin', {
@@ -32,9 +42,6 @@ admin.config([
                 },
                 businessDate: function(ADAppSrv) {
                     return ADAppSrv.fetchHotelBusinessDate();
-                },
-                adminDashboardConfigData: function(ADAppSrv) {
-                    return ADAppSrv.fetchDashboardConfig();
                 }
             }
         });

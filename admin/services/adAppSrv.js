@@ -8,8 +8,12 @@ admin.service('ADAppSrv', ['ADBaseWebSrv', 'ADBaseWebSrvV2', '$q',
 		return ADBaseWebSrv.getJSON(url);
 	};
 
-	this.fetchDashboardConfig = function() {
+	this.fetchDashboardConfig = function(uuid) {
 		var url = '/admin/dashboard.json';
+
+        if (uuid) {
+            url += "?hotel_uuid=" + uuid;
+        }
 
 		return ADBaseWebSrvV2.getJSON(url);
 	};

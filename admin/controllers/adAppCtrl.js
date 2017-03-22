@@ -1,16 +1,11 @@
-admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate', '$timeout', 'adminDashboardConfigData', 'ngDialog', 'sntAuthorizationSrv',
-	function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate, $timeout,  adminDashboardConfigData, ngDialog, sntAuthorizationSrv) {
+admin.controller('ADAppCtrl', [
+    '$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate',
+    '$timeout', 'ngDialog', 'sntAuthorizationSrv',
+    function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate,
+             $timeout, ngDialog, sntAuthorizationSrv) {
 
 		// hide the loading text that is been shown when entering Admin
 		$( ".loading-container" ).hide();
-
-		// store basic details as rootscope variables
-		$rootScope.adminRole = adminDashboardConfigData.admin_role;
-		$rootScope.isServiceProvider = adminDashboardConfigData.is_service_provider;
-		$rootScope.hotelId = adminDashboardConfigData.hotel_id;
-		$rootScope.isPmsConfigured = (adminDashboardConfigData.is_pms_configured === 'true') ? true : false;
-
-		$rootScope.isSntAdmin = $rootScope.adminRole === 'snt-admin' ? true : false;
 
 		// when there is an occured while trying to access any menu details, we need to show that errors
 		$scope.errorMessage = '';
