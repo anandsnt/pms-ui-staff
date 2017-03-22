@@ -22,5 +22,6 @@ sntRover.constant('RVReportOptionsConst', {
 	'EXCLUDE_NON_GTD': true,
 	'SHOW_RATE_ADJUSTMENTS_ONLY': true,
 	'INCLUDE_TAX': true,
-	'EXCLUDE_TAX': true
+	'EXCLUDE_TAX': true,
+	'INCLUDE_LEDGER_DATA': true
 });

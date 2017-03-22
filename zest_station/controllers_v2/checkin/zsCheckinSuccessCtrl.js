@@ -10,6 +10,7 @@ sntZestStation.controller('zsCheckinSuccessCtrl', [
         var stateParams = $stateParams;
 
         $scope.user_name = stateParams.first_name;
+        $scope.room = $stateParams.room_no;
         var checkIfEmailIsBlackListedOrValid = function() {
             return ($stateParams.email.length > 0 && !($stateParams.guest_email_blacklisted === 'true') && zsUtilitySrv.isValidEmail($stateParams.email));
         };
@@ -72,10 +73,6 @@ sntZestStation.controller('zsCheckinSuccessCtrl', [
         // fetch OWS messages
         if (isOwsMsgEnabled()) {
             fetchOwsMessages();
-            $scope.zestStationData.showedFirstCheckedInSuccess = true;
-        } else {
-            $scope.zestStationData.showedFirstCheckedInSuccess = false;
-            nextPageActions();
         }
 
         $scope.checkinFinalDoneAction = function() {

@@ -1,29 +1,39 @@
-<div bindonce="statisticsData" id="dashboard-occupancy" class="dashboard-block">
+<div id="dashboard-occupancy" class="dashboard-block">
     <h3>Occupancy</h3>
     <ul class="data">
         <li>
             Today
-        	<span class="value" bo-text="'{{statisticsData.occupancy.today | round}}' + '%'" ng-show="escapeNull(statisticsData.occupancy.today)!==''"></span>       	
+        	<span class="value" ng-show="escapeNull(statisticsData.occupancy.today)!==''">
+                {{ ::(statisticsData.occupancy.today | round) }}%
+            </span>
         </li>
 
         <li>
             {{tomorrow|date:monthAndDate}}
-        	<span class="value" bo-text="'{{statisticsData.occupancy.tomorrow | round}}' + '%'" ng-show="escapeNull(statisticsData.occupancy.tomorrow)!==''"></span>       	
+        	<span class="value" ng-show="escapeNull(statisticsData.occupancy.tomorrow)!==''">
+                {{ ::(statisticsData.occupancy.tomorrow | round) }}%
+            </span>
         </li>
 
         <li>
             {{dayAfterTomorrow|date:monthAndDate}}
-        	<span class="value" bo-text="'{{statisticsData.occupancy.day_after_tomorrow | round}}' + '%'" ng-show="escapeNull(statisticsData.occupancy.day_after_tomorrow)!==''"></span>       	
+        	<span class="value" ng-show="escapeNull(statisticsData.occupancy.day_after_tomorrow)!==''">
+                {{ ::(statisticsData.occupancy.day_after_tomorrow | round) }}%
+            </span>
         </li>
 
         <li>
             {{userInfo.business_date|date:fullMonth}}
-        	<span class="value" bo-text="'{{statisticsData.occupancy.current_month | round}}' + '%'" ng-show="escapeNull(statisticsData.occupancy.current_month)!==''"></span>
+        	<span class="value" ng-show="escapeNull(statisticsData.occupancy.current_month)!==''">
+                {{ ::(statisticsData.occupancy.current_month | round) }}%
+            </span>
         </li>
 
         <li>
-            {{userInfo.business_date|date:fullYear}}
-        	<span class="value" bo-text="'{{statisticsData.occupancy.current_year | round}}' + '%'" ng-show="escapeNull(statisticsData.occupancy.current_year)!==''"></span>
+            {{ ::(userInfo.business_date|date:fullYear) }}
+        	<span class="value" ng-show="escapeNull(statisticsData.occupancy.current_year)!==''">
+                {{ ::(statisticsData.occupancy.current_year | round) }}%
+            </span>
         </li>
     </ul>
 </div>
