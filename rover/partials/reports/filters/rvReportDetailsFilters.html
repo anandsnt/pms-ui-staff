@@ -347,8 +347,8 @@
             <span class="title">Group</span>
         </a>
         <div class="settings-content" ng-show="chosenReport.hasIncludeGroup" ng-class="{'hidden': !filterItemsToggle.item_50}">
-            <input class="icons icon-search" auto-complete auto-options="compTaGrpAutoCompleteOnDetails" data-card-type="" type="text" placeholder="Search by Group" value="" autocomplete="off" ng-model="chosenReport.uiChosenIncludeCompanyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnuiChosenReport(chosenReport)" ng-change="removeCompTaGrpId(chosenReport, 'uiChosenIncludeCompanyTaGroup', 'chosenIncludeCompanyTaGroup')">
-            <input type="text" class="hidden" ng-model="chosenReport.chosenIncludeCompanyTaGroup">
+            <input class="icons icon-search" auto-complete auto-options="grpAutoCompleteOnDetails" data-card-type="" type="text" placeholder="Search by Group" value="" autocomplete="off" ng-model="chosenReport.uiChosenIncludeGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnuiChosenReport(chosenReport)" ng-change="removeCompTaGrpId(chosenReport, 'uiChosenIncludeGroup', 'chosenIncludeGroup')">
+            <input type="text" class="hidden" ng-model="chosenReport.chosenIncludeGroup">
         </div>
 
 
