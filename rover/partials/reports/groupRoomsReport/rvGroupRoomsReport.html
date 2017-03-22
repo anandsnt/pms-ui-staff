@@ -20,13 +20,13 @@
                             <span>Group Code:</span> {{group.group_code}}
                         </li>
                         <li>
-                            <span>Arrival Date:</span> {{group.group_arrival_date}}
+                            <span>Arrival Date:</span> {{group.group_arrival_date | date : dateFormat}}
                         </li>
                         <li>
-                            <span>Release Date:</span> {{group.release_date}}
+                            <span>Release Date:</span> {{group.release_date | date : dateFormat}}
                         </li>
                         <li>
-                            <span>Lowest Rate:</span> ${{group.lowest_rate_amount}}
+                            <span>Lowest Rate:</span> {{group.lowest_rate_amount | currency:currencySymbol:2}}
                         </li>
                         <li>
                             <span>Rate Code:</span> {{group.rate_code}}

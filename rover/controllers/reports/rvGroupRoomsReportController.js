@@ -76,7 +76,7 @@ angular.module('sntRover')
         };
 
         // Calculate the dates and styles required for rendering in ui
-        var processDates = function() {
+        var processDates = function(fromDate, toDate, dateRange) {
             var fromMoment = moment(chosenReport.fromDate),
                 toMoment = moment(chosenReport.untilDate);
 
@@ -125,6 +125,8 @@ angular.module('sntRover')
                 toDate = new Date(chosenReport.untilDate);
 
             var dateRange = rvUtilSrv.getFormattedDatesBetweenTwoDates(fromDate, toDate);
+
+            processDates(fromDate, toDate, dateRange);
 
             processSummaryCounts($scope.summaryCounts, dateRange);
 
