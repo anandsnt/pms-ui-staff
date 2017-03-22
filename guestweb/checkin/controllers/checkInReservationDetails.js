@@ -45,7 +45,11 @@
 
 	/** TO DELETE **/
 
-	$scope.enhancements = [{'title':'Parking'},{'title':'Projector'}];
+			$scope.enhancements = [{
+				'title': 'Parking'
+			}, {
+				'title': 'Projector'
+			}];
 	
 	/*
 	*	if birthday selection is turened on in admin, show birthday page 

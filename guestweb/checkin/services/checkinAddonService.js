@@ -19,6 +19,7 @@
 
 			var deferred = $q.defer();
 			var url = 'api/reservations/update_package';
+
 			params.id = $rootScope.reservationID;
 			$http.post(url, params).success(function(response) {
 					deferred.resolve(response);
@@ -33,6 +34,7 @@
 
 			var deferred = $q.defer();
 			var url = 'api/reservations/delete_package';
+			
 			params.id = $rootScope.reservationID;
 			$http.post(url, params).success(function(response) {
 					deferred.resolve(response);

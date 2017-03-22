@@ -56,7 +56,7 @@
 			}
 			checkinAddonService.updateAddon(
 				params
-			).then(function(response) {
+			).then(function() {
 				$scope.isLoading = false;
 				addonAdditionSuccess();
 			}, function() {
@@ -86,7 +86,7 @@
 			}
 			checkinAddonService.deleteAddon(
 				params
-			).then(function(response) {
+			).then(function() {
 				$scope.isLoading = false;
 				addonRemovalSuccess();
 			}, function() {
