@@ -147,11 +147,17 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
                 $scope.mode = 'THIRD_PARTY_GET_IT_INFO_EMAIL_SENT';
             };
 
+            var onFailure = function(){
+                $log.warn('thirdPartyEmailFailure');
+                $state.go('zest_station.speakToStaff');
+            };
+
             $scope.callAPI(zsGeneralSrv.sendThirdPartyEmail, {
                 params: {
                     reservation_id: $stateParams.reservation_id
                 },
-                'successCallBack': onSuccessResponse
+                'successCallBack': onSuccessResponse,
+                'failureCallBack': onFailure
             });
         };
 
