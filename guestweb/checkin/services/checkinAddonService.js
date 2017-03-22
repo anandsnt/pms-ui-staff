@@ -15,8 +15,38 @@
 			return deferred.promise;
 		};
 
+		var updateAddon = function(params) {
+
+			var deferred = $q.defer();
+			var url = 'api/reservations/update_package';
+
+			$http.post(url, params).success(function(response) {
+					deferred.resolve(response);
+				})
+				.error(function() {
+					deferred.reject();
+				});
+			return deferred.promise;
+		};
+
+		var deleteAddon = function(params) {
+
+			var deferred = $q.defer();
+			var url = 'api/reservations/delete_package';
+
+			$http.post(url, params).success(function(response) {
+					deferred.resolve(response);
+				})
+				.error(function() {
+					deferred.reject();
+				});
+			return deferred.promise;
+		};
+
 		return {
-			getAddonList: getAddonList
+			getAddonList: getAddonList,
+			updateAddon: updateAddon,
+			deleteAddon: deleteAddon
 		};
 	};
 
