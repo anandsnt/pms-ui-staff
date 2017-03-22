@@ -1,0 +1,79 @@
+<div ng-show="hasNoResults" class="report-content no-content">
+    <div class="info">
+        <span class="icon-no-content icon-reports"></span>
+        <strong class="h1">No reports found</strong>
+        <span class="h2">Try changing search criteria or modify dates</span>
+    </div>
+</div>
+<!-- Report content -->
+<!-- add .with-pagination if has pagination -->
+<div id="report-content" class="report-content group-rooms" ng-controller="RVGroupRoomsReportController" ng-class="{'with-pagination' : totalCount > paginationConfig.perPage}">
+    <div ng-include="'/assets/partials/reports/groupRoomsReport/rvGroupRoomsReportSummarySection.html'" />
+    <!-- Vertical Slider -->
+    <div class="groups scrollable" ng-iscroll="group-rooms-scroll">
+        <div class="wrapper">
+            <div class="group" ng-repeat="group in results track by $index">
+                <div class="group-info">
+                    <h2 class="title">{{group.group_name}}</h2>
+                    <ul class="data">
+                        <li>
+                            <span>Group Code:</span> {{group.group_code}}
+                        </li>
+                        <li>
+                            <span>Arrival Date:</span> {{group.group_arrival_date}}
+                        </li>
+                        <li>
+                            <span>Release Date:</span> {{group.release_date}}
+                        </li>
+                        <li>
+                            <span>Lowest Rate:</span> ${{group.lowest_rate_amount}}
+                        </li>
+                        <li>
+                            <span>Rate Code:</span> {{group.rate_code}}
+                        </li>
+                        <li>
+                            <span>Status:</span> {{group.status}}
+                        </li>
+                    </ul>
+                </div>
+                <div class="group-data">
+                    <ul>
+                        <li class="blocked">
+                            <span class="icons icon-blocked"></span> {{group.total_blocked_count}}
+                        </li>
+                        <li class="pickedup">
+                            <span class="icons icon-picked-up"></span> {{group.total_picked_up_count}}
+                        </li>
+                        <li class="available">
+                            <span class="icons icon-available"></span> {{group.total_available_count}}
+                        </li>
+                    </ul>
+                    <table class="statistics-reports group-rooms-reports">
+                        <colgroup>
+                            <col style="width: {{columnWidth}}%" ng-repeat="day in days track by $index">
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <!-- Add .empty if its empty (The group was not there on that day)
+                                         Add .zero if its zero -->
+                                <td ng-repeat="blockedCount in group.blockedCounts track by $index" ng-class="{'zero': blockedCount == 0, 'empty': !blockedCount}">{{blockedCount}}</td>
+                            </tr>
+                            <tr>
+                                <!-- Add .empty if its empty (The group was not there on that day)
+                                         Add .zero if its zero -->
+                                <td ng-repeat="pickedUpCount in group.pickedUpCounts track by $index" ng-class="{'zero': pickedUpCount == 0, 'empty': !pickedUpCount}">{{pickedUpCount}}</td>
+                            </tr>
+                            <tr>
+                                <!-- Add .empty if its empty (The group was not there on that day)
+                                         Add .zero if its zero -->
+                                <td ng-repeat="availableCount in group.availableCounts track by $index" ng-class="{'zero': availableCount == 0, 'empty': !availableCount}">{{availableCount}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<rv-pagination page-options="paginationConfig" page-data="totalCount" ng-if="showReportDetails">
+</rv-pagination>
