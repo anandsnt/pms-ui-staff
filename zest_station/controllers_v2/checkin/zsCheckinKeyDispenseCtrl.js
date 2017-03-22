@@ -4,9 +4,8 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
     '$state',
     'zsEventConstants',
     '$controller',
-    '$timeout',
-    'zsCheckinSrv',
-    function($scope, $stateParams, $state, zsEventConstants, $controller, $timeout, zsCheckinSrv) {
+    'zsGeneralSrv',
+    function($scope, $stateParams, $state, zsEventConstants, $controller, zsGeneralSrv) {
 
         /** ********************************************************************************************
          **     Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -27,66 +26,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
          * 5. KEY_ONE_CREATION_SUCCESS_MODE -> 2 key selected, 1st completed
          * 6. KEY_CREATION_SUCCESS_MODE -> all requested keys were created
          */
-        // Mobile Key is enabled for the Hotel and ZestStation->(room key delivery) + reservation (room) supports mobile key + 
-        // offer_mobilekey_from_station
-        var mobileKeyOptionAvailable = $scope.zestStationData.selectedReservation.reservation_details.station_offer_mobilekey;
 
-        console.info('mobileKeyOptionAvailable: ', mobileKeyOptionAvailable);
-
-        if (mobileKeyOptionAvailable === 'third_party') {
-            $scope.zestStationData.thirdPartyMobileKey = 'true';
-        }
-
-        var setInitialScreenMode = function() {
-            // if not using Mobile Key, and other settings are on/enabled for the reservation,
-            //  go straight to Dispense key (regular flow)
-            // otherwise, ask user if they want a mobile key, physical key, or both
-            console.warn(':: mobileKeyOptionAvailable :: ', mobileKeyOptionAvailable);
-
-            if ($stateParams.isQuickJump === 'true') {
-                $stateParams.for_demo = 'true';
-                $stateParams.email = 'guest@' + $scope.zestStationData.theme + '.com';
-                $stateParams.room_no = 102;
-                $stateParams.first_name = 'james';
-
-                $scope.mode = $stateParams.quickJumpMode;
-            } else {
-
-                $scope.first_name = $stateParams.first_name;
-                $scope.room = $stateParams.room_no;
-
-                if (mobileKeyOptionAvailable !== 'disabled') {
-                    console.info('$stateParams: ', $stateParams);
-                    if ($stateParams.for_demo === 'true') {
-                        // flag (for_demo) only here when continuing from email collection after selecting mobile key
-                        $scope.app_email = $stateParams.email;
-                        $scope.mode = 'MOBILE_KEY_SETUP_ACCOUNT';    
-                        return;
-                    }
-
-                    
-                    if ($stateParams.from_mobile_key_email_update === 'true') {
-                        $scope.mode = 'THIRD_PARTY_GET_IT_INFO';  
-                    } else {
-                        // TODO: fix if overlay and have shown checked-in success, need to skip the SUCCESS screen
-                        // and go select mobile/physical key + N keys
-                        if (!$scope.zestStationData.showedFirstCheckedInSuccess) {
-                            $scope.mode = 'MOBILE_OR_PHYSICAL_KEY_START';    
-                        } else {
-                            $scope.mode = 'MOBILE_OR_PHYSICAL_KEY';
-                        }
-
-                    }
-
-                } else {
-                
-                    $scope.mode = 'DISPENSE_KEY_MODE';
-                
-                }
-                console.info('MODE: -> ', $scope.mode);
-                
-            }
-        };
         /**
          * [initializeMe description]
          */
@@ -100,184 +40,131 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
             // hide close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-                
-            setInitialScreenMode();
-
-            console.info('station settings;', $scope.zestStationData);
+            if ($scope.zestStationData.station_mobile_key_status === 'third_party') {
+                $scope.mode = 'MOBILE_OR_PHYSICAL_KEY';
+            } else {
+                $scope.mode = 'DISPENSE_KEY_MODE';
+            }
             $scope.setScreenIcon('key');
-
         }());
-
-        var stateParams = {
-            'guest_id': $stateParams.guest_id,
-            'email': $stateParams.email,
-            'reservation_id': $stateParams.reservation_id,
-            'room_no': $stateParams.room_no,
-            'first_name': $stateParams.first_name
+        $scope.guestDetails = {
+            "guestEmail": $stateParams.email
         };
 
-        var initSNTMobileKeyFlow = function() {
-            console.log('request from API user has APP user account and is setup/associated?');
+
+
+        $scope.first_name = $stateParams.first_name;
+        $scope.room = $stateParams.room_no;
+
+        $scope.goToNextScreen = function(status) {
+            var stateParams = {
+                'guest_id': $stateParams.guest_id,
+                'email': $scope.guestDetails.guestEmail,
+                'reservation_id': $stateParams.reservation_id,
+                'room_no': $stateParams.room_no,
+                'first_name': $stateParams.first_name,
+                'key_type': $scope.keyTypeselected
+            };
             
-            // test failure first
-            var userHasMobileAccountAlready = false;// debugging, check if user has email + if email is associated with the App
-                // TODO: remove this link once we add backend logic
+            stateParams.key_success = status === 'success';
+            // check if a registration card delivery option is present (from Admin>Station>Check-in), if none are checked, go directly to final screen
+            var registration_card = $scope.zestStationData.registration_card;
 
-            userHasMobileAccountAlready = $scope.zestStationData.demoMobileKeyModeEmailLinked === 'true';
+            $scope.setScreenIcon('bed');
 
-            // TODO: check flag if user account is setup already, then wont need to add email,etc.
-            console.info('userHasMobileAccountAlready: ', userHasMobileAccountAlready);
-            if (userHasMobileAccountAlready) {
-                //  -- go to confirmation screen if success
-                //  next button will continue with Key Flow 
-                //  TODO--continue key flow logic(if only doing mobile, go to final, 
-                //  --else need to continue w/ Physical key making)
-                //  
-                $timeout(function() {// demo timeout, remove once connected to api
-                    $scope.mode = 'MOBILE_KEY_SENT_SUCCESS';
-                }, 1000);
-                
-
+            if (!registration_card.email && !registration_card.print && !registration_card.auto_print) {
+                $state.go('zest_station.zsCheckinFinal');
             } else {
-                $scope.mode = 'MOBILE_KEY_ACCOUNT_NOT_CONNECTED';
-                // $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
-
+                $state.go('zest_station.zsCheckinBillDeliveryOptions', stateParams);
             }
         };
-        var initThirdPartyMobileKeyFlow = function() {
-            $scope.mode = 'THIRD_PARTY_SELECTION';
 
+
+        /** ***** Mobile key ***** **/
+
+        /** MOBILE_OR_PHYSICAL_KEY mode actions **/
+
+        $scope.keyTypeselected = '';
+        $scope.selectMobileKey = function() {
+            $scope.mobileKeySelected = !$scope.mobileKeySelected;
         };
+        $scope.selectPhysicalKey = function() {
+            $scope.physicalKeySelected = !$scope.physicalKeySelected;
+        };
+        $scope.keyTypeselected = function() {
+            if (!$scope.mobileKeySelected && $scope.physicalKeySelected) {
+                $scope.mode = 'DISPENSE_KEY_MODE';
+                $scope.keyTypeselected = 'ONLY_PHYSICAL_KEY';
+            } else if ($scope.mobileKeySelected && !$scope.physicalKeySelected) {
+                $scope.mode = 'THIRD_PARTY_SELECTION';
+                $scope.keyTypeselected = 'ONLY_MOBILE_KEY';
+            } else {
+                $scope.mode = 'THIRD_PARTY_SELECTION';
+                $scope.keyTypeselected = 'BOTH_KEY';
+            }
+        };
+        /** THIRD_PARTY_SELECTION mode actions **/
 
         $scope.thirdPartyHaveIt = function() {
             $scope.mode = 'THIRD_PARTY_HAVE_IT_INFO';
         };
-
         $scope.thirdPartyGetIt = function() {
-            $scope.mode = 'THIRD_PARTY_GET_IT_INFO';
-            $scope.downloadAppShowEmail = '';// TODO link to API setting
-            $scope.email = $stateParams.email;
-        };
-
-        $scope.thirdPartyNoThanks = function() {
-            if ($scope.physicalKeySelected) {// probably dont need this check
-                $scope.getPhysicalKey();
+            if ($scope.guestDetails.guestEmail.length > 0) {
+                $scope.mode = 'THIRD_PARTY_GET_IT_INFO';
             } else {
-                $scope.goToNextScreen();
+                $scope.editEmailAddress();
             }
-
         };
+
+        var nextPageActionsForMobileKey = function() {
+            if ($scope.keyTypeselected === 'ONLY_MOBILE_KEY') {
+                $scope.goToNextScreen({
+                    status: 'success'
+                });
+            } else {
+                $scope.mode = 'DISPENSE_KEY_MODE';
+            }
+        };
+        
+        $scope.thirdPartyNoThanks = function() {
+            $scope.mode = 'DISPENSE_KEY_MODE';
+        };
+
+        /** *** THIRD_PARTY_HAVE_IT_INFO * **/
+        $scope.thirdPartyAppPresentNext = function() {
+            nextPageActionsForMobileKey();
+        };
+
+        /** THIRD_PARTY_GET_IT_INFO mode actions **/
 
         $scope.editEmailAddress = function() {
-            $stateParams.from_mobile = 'true';
-            $stateParams.physical_key_selected = $scope.physicalKeySelected + '';
-            $state.go('zest_station.checkInEmailCollection', $stateParams);
+            $scope.mode = 'COLLECT_EMAIL';
+            $scope.emailMode = 'EMAIL_ENTRY_MODE';
         };
+        $scope.sendMobileKeyEmail = function() {
 
-        $scope.sendEmail = function() {
-            var onSuccess = function() {
+            var onSuccessResponse = function() {
                 $scope.mode = 'THIRD_PARTY_GET_IT_INFO_EMAIL_SENT';
             };
 
-            $scope.callAPI(zsCheckinSrv.sendThirdPartyEmail, {
+            $scope.callAPI(zsGeneralSrv.sendThirdPartyEmail, {
                 params: {
-                    'id': $stateParams.reservation_id
+                    reservation_id: $stateParams.reservation_id
                 },
-                'successCallBack': onSuccess,
-                'failureCallBack': onSuccess
+                'successCallBack': onSuccessResponse
             });
         };
-        
 
-        $scope.goToNextScreen = function(status) {
-            if ($scope.mode === 'MOBILE_OR_PHYSICAL_KEY_START') {
-                $scope.mode = 'MOBILE_OR_PHYSICAL_KEY';
-            }
-            
-            if (($scope.mode === 'MOBILE_KEY_SENT_SUCCESS' || $scope.mode === 'THIRD_PARTY_HAVE_IT_INFO') && $scope.physicalKeySelected) {
-                $scope.getPhysicalKey();
-                return;
-            }
-
-            if ($scope.mode === 'MOBILE_OR_PHYSICAL_KEY') {
-
-                var mobileKeyRequested = $scope.mobileKeySelected;
-
-                if (mobileKeyRequested) {
-                    // MOBILE KEY FROM 1st (SNT) or 3rd party (..those guys -_-")
-                    console.log('type of mobile key requested [', $scope.zestStationData.thirdPartyMobileKey === 'true' ? 'Third-Party' : 'Default', ']');
-                    if ($scope.zestStationData.thirdPartyMobileKey === 'true') {
-                        initThirdPartyMobileKeyFlow();
-
-                    } else {
-                        initSNTMobileKeyFlow();
-                    }
-
-                } else if ($scope.physicalKeySelected) {// probably dont need this check
-                    $scope.getPhysicalKey();
-                }
-
-            } else if ($scope.mode === 'THIRD_PARTY_GET_IT_INFO_EMAIL_SENT' && $scope.physicalKeySelected) {
-                $scope.getPhysicalKey();
-            } else {
-
-                stateParams.key_success = status === 'success';
-                console.warn('goToNextScreen: ', stateParams);
-                // check if a registration card delivery option is present (from Admin>Station>Check-in), if none are checked, go directly to final screen
-                var registration_card = $scope.zestStationData.registration_card;
-
-                $scope.setScreenIcon('bed');
-
-                if (!registration_card.email && !registration_card.print && !registration_card.auto_print) {
-                    $state.go('zest_station.zsCheckinFinal');
-                } else {
-                    $state.go('zest_station.zsCheckinBillDeliveryOptions', stateParams);
-                }
-            }
-
-
+        $scope.thirdPartyMaileSent = function() {
+            nextPageActionsForMobileKey();
         };
 
-        
-        $scope.mobileKeySelected = false;
-        $scope.selectMobileKey = function() {
-            // selects mobile key for encoding
-            $scope.mobileKeySelected = !$scope.mobileKeySelected;
+        /** COLLECT_EMAIL_MODE **/
 
-        };
-        $scope.physicalKeySelected = $stateParams.physical_key_selected === 'true';
-        $scope.selectPhysicalKey = function() {
-            // selects mobile key for encoding
-            $scope.physicalKeySelected = !$scope.physicalKeySelected;
-
-        };
-
-        $scope.getPhysicalKey = function() {
-            $timeout(function() {// time gap incase user double-clicks, avoid going too far in flow
-                $scope.mode = 'DISPENSE_KEY_MODE';
-            }, 500);
-            
-        };
-
-        $scope.sendAppLink = function() {
-            if ($scope.zestStationData.demoMobileKeyModeUserEmailOnFile === 'false') {
-                $timeout(function() {// time gap incase user double-clicks, avoid going too far in flow
-                    $scope.mode = 'MOBILE_KEY_SETUP_ENTER_EMAIL';  
-                    var params = {
-                        'route_back_to': 'zest_station.checkinKeySelection', // route back to the mobile key UI-flow after adding email
-                        'for_demo': true
-                    };
-
-                    $state.go('zest_station.checkInEmailCollection', params);
-  
-                }, 250);
-            } else {
-                $scope.app_email = 'you@stayntouch.com';
-                $timeout(function() {// time gap incase user double-clicks, avoid going too far in flow
-                    $scope.mode = 'MOBILE_KEY_SETUP_ACCOUNT';    
-                }, 250);
-            }
-        };
+        // actions cane be found in zsCheckinMobileKeyEmailCollectionCtrl
+        $scope.$on('MODE_CHANGED', function(e, data) {
+            $scope.mode = data.menu;
+        });
 
     }
 ]);

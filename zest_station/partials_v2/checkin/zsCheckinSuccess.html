@@ -7,6 +7,10 @@
         	<text editable-text="CHECKIN_SUCCESS_SUB_HEADER"> {{'CHECKIN_SUCCESS_SUB_HEADER' |translate}}</text>
         </h3>
 
+        <div id="room" class="room-num" ng-show="zestStationData.show_room_number && zestStationData.station_mobile_key_status === 'third_party'">
+            <span class="number">{{room}}</span>
+        </div>
+
         <button type="button" class="button" click-touch='checkinFinalDoneAction()'>
             <text editable-text="CHECKIN_SUCCESS_DONE_BTN">{{'CHECKIN_SUCCESS_DONE_BTN' | translate}}</text>
         </button>
