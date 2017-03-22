@@ -158,12 +158,19 @@ is_ledger
   <td ng-class="{ 'red': item.ytd_variance   < 0 }">{{paymentGroupItem.ytd_variance | currency:currencySymbol:2}}</td>
 </tr>
 <tr ng-repeat-end  class="charge-code">
-  <td colspan="8" >
+   <td class="code long-code break"></td>
+   <td class="break"></td>
+   <td></td>
+   <td></td>
+   <td class="break"></td>
+   <td></td>
+   <td></td>
+   <td>
     <rv-pagination page-options="item.insidePaginationData" page-data="item.totalInsidePagination"></rv-pagination>
   </td>
 </tr>
 <tr class="grouped" ng-show="ledgerDepositEntries.length > 0">
-  <td class="code long-code"></td>
+  <td class="code long-code break"></td>
   <td class="break">LEDGER DATA</td>
   <td></td>
   <td></td>
@@ -186,7 +193,14 @@ is_ledger
 </tr>
 
 <tr class="grouped" ng-show="ledgerDepositEntries.length > 0">
-  <td class="code long-code" colspan="8"><strong>DEPOSIT</strong></td>
+  <td class="code long-code break"><strong>DEPOSIT</strong></td>
+  <td class="break"></td>
+  <td></td>
+  <td></td>
+  <td class="break"></td>
+  <td></td>
+  <td></td>
+  <td></td>
 </tr>
 
 <tr ng-repeat="item in ledgerDepositEntries track by $index" class="charge-group" >
@@ -201,7 +215,14 @@ is_ledger
   <td></td>
 </tr>
 <tr class="grouped" ng-show="ledgerGuestEntries.length > 0">
-  <td class="code long-code" colspan="8"><strong>GUEST</strong></td>
+  <td class="code long-code break"><strong>GUEST</strong></td>
+  <td class="break"></td>
+  <td></td>
+  <td></td>
+  <td class="break"></td>
+  <td></td>
+  <td></td>
+  <td></td>
 </tr>
 
 <tr ng-repeat="item in ledgerGuestEntries track by $index" class="charge-group" >
@@ -217,7 +238,14 @@ is_ledger
 </tr>
 
 <tr class="grouped" ng-show="ledgerAREntries.length > 0">
-  <td class="code long-code" colspan="8"><strong>AR</strong></td>
+  <td class="code long-code break"><strong>AR</strong></td>
+  <td class="break"></td>
+  <td></td>
+  <td></td>
+  <td class="break"></td>
+  <td></td>
+  <td></td>
+  <td></td>
 </tr>
 
 <tr ng-repeat="item in ledgerAREntries track by $index" class="charge-group" >
