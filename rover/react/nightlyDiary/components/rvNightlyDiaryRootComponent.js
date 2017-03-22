@@ -7,7 +7,7 @@ const NightlyDiaryRootComponent = createClass ({
         node.scrollTop = pos;
     },
     scrollToNthelement(n) {
-        let width = document.getElementsByClassName("room")[1].clientHeight,
+        let width = 30,
             scrollTo = n * width ;
 
         this.scrollToPos(scrollTo);

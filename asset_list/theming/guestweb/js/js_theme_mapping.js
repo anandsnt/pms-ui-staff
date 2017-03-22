@@ -86,7 +86,7 @@ module.exports = {
             'guestweb_EdenRoc': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_national_harbor': [themeJsRoot + 'app_router_mgm_chain.js',
                 themeJsRoot + 'app_router_national_harbor.js'],
-            'guestweb_freehand': [ themeJsRoot + 'app_router_common.js'],
+            'guestweb_freehand': [ themeJsRoot + 'app_router_freehand.js'],
             'guestweb_dewberry': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_park_valkenburg': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_sohotel': [ themeJsRoot + 'app_router_common.js'],
@@ -101,7 +101,8 @@ module.exports = {
             'guestweb_ambrose': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_little_duke': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_basecamp_boulder': [ themeJsRoot + 'app_router_common.js'],
-            'guestweb_distrikt_nyc': [ themeJsRoot + 'app_router_common.js']
+            'guestweb_distrikt_nyc': [ themeJsRoot + 'app_router_common.js'],
+            'guestweb_stella_hotel': [ themeJsRoot + 'app_router_common.js']
         };
     }
 };

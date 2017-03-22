@@ -112,6 +112,67 @@ sntZestStation.config(['$stateProvider',
             description: 'Select how many keys the guest would like, starts key dispense',
             label: 'Key Dispense'
         });
+
+
+      // pickup key dispense
+      $stateProvider.state('zest_station.checkinKeySelection', {
+        url: '/checkinKeyDispense/:reservation_id/:room_no/:first_name/:guest_id/:email/:for_demo/:isQuickJump/:quickJumpMode',
+        templateUrl: '/assets/partials_v2/checkin/zscheckinKeyDispense.html',
+        controller: 'zsCheckinKeyDispenseCtrl',
+        jumper: true,
+        section: 'Checkin',
+        icon: 'checkin_key_select.png',
+        description: 'Select what type of key to use',
+        label: 'Check-In Key Types (Mobile Key)',
+        modes: [
+              {
+                  'name': 'MOBILE_OR_PHYSICAL_KEY_START',
+                  'label': 'Checked-In Success (Mobile or Physical Key)',
+                  'description': 'After Check-In, before Mobile Key selection screen',
+                  'icon': 'placeholder.png'
+              }, {
+                  'name': 'MOBILE_KEY_SETUP_ACCOUNT',
+                  'label': 'Default: Mobile Key Setup Instructions',
+                  'description': 'Show user instructions on how to install the mobile app',
+                  'icon': 'placeholder.png'
+              }, {
+                  'name': 'MOBILE_KEY_SENT_SUCCESS',
+                  'label': 'Default: Mobile Key Successfuly Sent',
+                  'description': 'Key was sent to the guest\'s phone',
+                  'icon': 'placeholder.png'
+              }, {
+                  'name': 'MOBILE_KEY_ACCOUNT_NOT_CONNECTED',
+                  'label': 'Default: Mobile Key Not Connected',
+                  'description': 'Guest has a free early check-in',
+                  'icon': 'placeholder.png'
+              }, {
+                  'name': 'THIRD_PARTY_SELECTION',
+                  'label': 'Third-Party: Mobile Key Selection',
+                  'description': 'Options to Get key, get instructions, or no thanks',
+                  'icon': 'placeholder.png'
+              }, {
+                  'name': 'THIRD_PARTY_HAVE_IT_INFO',
+                  'label': 'Third-Party: Have it, What to do',
+                  'description': 'Instruct user on how to get or use the mobile key',
+                  'icon': 'placeholder.png'
+              }, {
+                  'name': 'THIRD_PARTY_GET_IT_INFO',
+                  'label': 'Third-Party: Help get it, What to do',
+                  'description': 'Instruct user on how download and use the mobile key',
+                  'icon': 'placeholder.png'
+              }, {
+                  'name': 'THIRD_PARTY_GET_IT_INFO_EMAIL_SENT',
+                  'label': 'Third-Party: Email Sent ',
+                  'description': 'Instructions in email for guest to get Mobile Key App',
+                  'icon': 'placeholder.png'
+              }]
+
+
+
+
+      });
+
+
 		// signature screen
         $stateProvider.state('zest_station.checkInSignature', {
             url: '/checkInReservationDeposit/:reservation_id/:email/:first_name/:room_no/:guest_id/:guest_email_blacklisted',
@@ -139,7 +200,7 @@ sntZestStation.config(['$stateProvider',
 
       	// email /print entry screen
       	$stateProvider.state('zest_station.zsCheckinBillDeliveryOptions', {
-          url: '/checkinBillDeliveryOptions/:reservation_id/:email/:first_name/:room_no/:guest_id/:key_success',
+          url: '/checkinBillDeliveryOptions/:reservation_id/:email/:first_name/:room_no/:guest_id/:key_success/:key_type',
           templateUrl: '/assets/partials_v2/checkin/zsCheckinRegCardDeliveryOptions.html',
           controller: 'zsCheckinRegCardDeliveryOptionsCtrl',
           jumper: true,
@@ -151,7 +212,7 @@ sntZestStation.config(['$stateProvider',
 
 		// checkin final screen
       	$stateProvider.state('zest_station.zsCheckinFinal', {
-          url: '/zsCheckinFinal/:print_opted/:email_opted/:print_status/:email_status/:key_success',
+          url: '/zsCheckinFinal/:print_opted/:email_opted/:print_status/:email_status/:key_success/:key_type',
           templateUrl: '/assets/partials_v2/checkin/zsCheckinFinal.html',
           controller: 'zsCheckinFinalCtrl',
           jumper: true,
