@@ -17,7 +17,7 @@ admin.controller('ADRatesAddonsCtrl', [
             ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
             // various addon data holders
-            $scope.data   = [];
+            $scope.data = [];
             $scope.singleAddon = {};
 
             // for adding
@@ -72,8 +72,8 @@ admin.controller('ADRatesAddonsCtrl', [
 
                 // sort the results
                 $scope.data = params.sorting() ?
-                                    $filter('orderBy')(data.results, params.orderBy()) :
-                                    data.results;
+                    $filter('orderBy')(data.results, params.orderBy()) :
+                    data.results;
 
                 $defer.resolve($scope.data);
 
@@ -87,16 +87,15 @@ admin.controller('ADRatesAddonsCtrl', [
         $scope.loadTable = function() {
             $scope.currentClickedAddon = -1;
             $scope.tableParams = new ngTableParams({
-                    page: 1,  // show first page
-                    count: $scope.displyCount, // count per page
-                    sorting: {
-                        name: 'asc' // initial sorting
-                    }
-                }, {
-                    total: 0, // length of data
-                    getData: $scope.fetchTableData
+                page: 1, // show first page
+                count: $scope.displyCount, // count per page
+                sorting: {
+                    name: 'asc' // initial sorting
                 }
-            );
+            }, {
+                total: 0, // length of data
+                getData: $scope.fetchTableData
+            });
         };
 
         $scope.loadTable();
@@ -107,18 +106,17 @@ admin.controller('ADRatesAddonsCtrl', [
 
             if (!$scope.singleAddon.charge_group_id) {
                 $scope.chargeCodesForChargeGrp = $scope.chargeCodes;
-            }
-            else {
+            } else {
                 var selectedChargeGrpId = $scope.singleAddon.charge_group_id;
 
                 $scope.chargeCodesForChargeGrp = [];
                 angular.forEach($scope.chargeCodes, function(chargeCode, key) {
-                angular.forEach(chargeCode.associcated_charge_groups, function(associatedChargeGrp, key) {
-                    if (associatedChargeGrp.id === selectedChargeGrpId) {
-                        $scope.chargeCodesForChargeGrp.push(chargeCode);
-                    }
+                    angular.forEach(chargeCode.associcated_charge_groups, function(associatedChargeGrp, key) {
+                        if (associatedChargeGrp.id === selectedChargeGrpId) {
+                            $scope.chargeCodesForChargeGrp.push(chargeCode);
+                        }
+                    });
                 });
-             });
 
             }
         };
@@ -132,7 +130,7 @@ admin.controller('ADRatesAddonsCtrl', [
 
                 // when ever we are ready to emit 'hideLoader'
                 $scope.apiLoadCount++;
-                if ( $scope.apiLoadCount > 4 ) {
+                if ($scope.apiLoadCount > 4) {
                     $scope.$emit('hideLoader');
                 }
             };
@@ -155,22 +153,25 @@ admin.controller('ADRatesAddonsCtrl', [
                 $scope.$emit('hideLoader');
             };
 
-            $scope.invokeApi(ADRatesAddonsSrv.fetchReferenceValue, { 'type': 'amount_type' }, atCallback, '', 'NONE');
+            $scope.invokeApi(ADRatesAddonsSrv.fetchReferenceValue, {
+                'type': 'amount_type'
+            }, atCallback, '', 'NONE');
 
             // fetch post types
             var ptCallback = function(data) {
                 // CICO-23575 - Disable all posting types apart from First Night for Hourly.
                 if ($rootScope.isHourlyRatesEnabled) {
                     $scope.postTypes = [data[2]];
-                }
-                else {
+                } else {
                     $scope.postTypes = data;
                 }
 
                 $scope.$emit('hideLoader');
             };
 
-            $scope.invokeApi(ADRatesAddonsSrv.fetchReferenceValue, { 'type': 'post_type' }, ptCallback, '', 'NONE');
+            $scope.invokeApi(ADRatesAddonsSrv.fetchReferenceValue, {
+                'type': 'post_type'
+            }, ptCallback, '', 'NONE');
 
             // fetch the current business date
             var bdCallback = function(data) {
@@ -195,19 +196,19 @@ admin.controller('ADRatesAddonsCtrl', [
             $scope.singleAddon.charge_group_id = "";
             manipulateChargeCodeForChargeGroups();
 
-            $scope.isAddMode   = true;
-            $scope.isEditMode  = false;
+            $scope.isAddMode = true;
+            $scope.isEditMode = false;
 
             // reset any currently being edited
             $scope.currentClickedAddon = -1;
 
             // title for the sub template
-            $scope.addonTitle    = $filter('translate')('ADD_NEW_SMALL');
+            $scope.addonTitle = $filter('translate')('ADD_NEW_SMALL');
             $scope.addonSubtitle = $filter('translate')('ADD_ON');
 
             // params to be sent to server
-            $scope.singleAddon            = {};
-            $scope.singleAddon.activated  = true;
+            $scope.singleAddon = {};
+            $scope.singleAddon.activated = true;
 
             // CICO-23575 - Disable all posting types apart from First Night for Hourly.
             if ($rootScope.isHourlyRatesEnabled) {
@@ -220,7 +221,7 @@ admin.controller('ADRatesAddonsCtrl', [
 
             // the inital dates to business date // CICO-17736 Addons can have blank begin-end dates
             $scope.singleAddon.begin_date = null;
-            $scope.singleAddon.end_date   = null;
+            $scope.singleAddon.end_date = null;
 
             // initate to include all rates here
             $scope.filterRates($scope.singleAddon);
@@ -231,7 +232,7 @@ admin.controller('ADRatesAddonsCtrl', [
         var updateBind = $rootScope.$on('datepicker.update', function(event, chosenDate) {
 
             // covert the date back to 'MM-dd-yyyy' format
-            if ( $scope.dateNeeded === 'From' ) {
+            if ($scope.dateNeeded === 'From') {
                 $scope.singleAddon.begin_date = chosenDate;
                 // convert system date to MM-dd-yyyy format
                 $scope.singleAddon.begin_date_for_display = $filter('date')(tzIndependentDate(chosenDate), $rootScope.dateFormat);
@@ -241,42 +242,41 @@ admin.controller('ADRatesAddonsCtrl', [
                 // that the end_date is before begin_date
                 // we must set the end_date to begin_date
                 // so that user may not submit invalid dates
-                if ( tzIndependentDate($scope.singleAddon.begin_date) - tzIndependentDate($scope.singleAddon.end_date) > 0 ) {
+                if (tzIndependentDate($scope.singleAddon.begin_date) - tzIndependentDate($scope.singleAddon.end_date) > 0) {
                     $scope.singleAddon.end_date = chosenDate;
-                    $scope.singleAddon.end_date_for_display   = $filter('date')(tzIndependentDate(chosenDate), $rootScope.dateFormat);
+                    $scope.singleAddon.end_date_for_display = $filter('date')(tzIndependentDate(chosenDate), $rootScope.dateFormat);
                 }
             } else {
-                  $scope.singleAddon.end_date = chosenDate;
-                  $scope.singleAddon.end_date_for_display   = $filter('date')(tzIndependentDate(chosenDate), $rootScope.dateFormat);
+                $scope.singleAddon.end_date = chosenDate;
+                $scope.singleAddon.end_date_for_display = $filter('date')(tzIndependentDate(chosenDate), $rootScope.dateFormat);
             }
         });
 
         $scope.resetDate = function(pickerId) {
 
-            if ( pickerId === 'From' ) {
+            if (pickerId === 'From') {
                 $scope.singleAddon.begin_date_for_display = "";
                 $scope.singleAddon.begin_date = null;
-            }
-            else {
-                $scope.singleAddon.end_date_for_display   = "";
+            } else {
+                $scope.singleAddon.end_date_for_display = "";
                 $scope.singleAddon.end_date = null;
             }
 
         };
 
         // the listner must be destroyed when no needed anymore
-        $scope.$on( '$destroy', updateBind );
+        $scope.$on('$destroy', updateBind);
 
         $scope.editSingle = function() {
             $scope.setDefaultLanguageForTranslation();
-            $scope.isAddMode   = false;
-            $scope.isEditMode  = true;
+            $scope.isAddMode = false;
+            $scope.isEditMode = true;
 
             // set the current selected
             $scope.currentClickedAddon = this.$index;
 
             // title for the sub template
-            $scope.addonTitle    = $filter('translate')('EDIT');
+            $scope.addonTitle = $filter('translate')('EDIT');
             $scope.addonSubtitle = this.item.name;
 
             // empty singleAddon
@@ -309,24 +309,24 @@ admin.controller('ADRatesAddonsCtrl', [
                 // if the user is editing an old addon
                 // where the dates are not set
                 // set the date to current business date
-                if ( !$scope.singleAddon.begin_date ) {
+                if (!$scope.singleAddon.begin_date) {
                     $scope.singleAddon.begin_date = null; // CICO-17736 Addons can have blank begin-end dates
                     $scope.singleAddon.begin_date_for_display = "";
                 } else {
                     $scope.singleAddon.begin_date_for_display = $filter('date')(tzIndependentDate($scope.singleAddon.begin_date), $rootScope.dateFormat);
                 }
-                if ( !$scope.singleAddon.end_date ) {
+                if (!$scope.singleAddon.end_date) {
                     $scope.singleAddon.end_date = null; // CICO-17736 Addons can have blank begin-end dates
                     $scope.singleAddon.end_date_for_display = "";
                 } else {
-                    $scope.singleAddon.end_date_for_display   = $filter('date')(tzIndependentDate($scope.singleAddon.end_date), $rootScope.dateFormat);
+                    $scope.singleAddon.end_date_for_display = $filter('date')(tzIndependentDate($scope.singleAddon.end_date), $rootScope.dateFormat);
                 }
 
                 // convert system date to MM-dd-yyyy format
 
 
                 $scope.singleAddon.begin_date = $scope.singleAddon.begin_date;
-                $scope.singleAddon.end_date   = $scope.singleAddon.end_date;
+                $scope.singleAddon.end_date = $scope.singleAddon.end_date;
 
                 $scope.filterRates($scope.singleAddon);
             };
@@ -336,7 +336,7 @@ admin.controller('ADRatesAddonsCtrl', [
 
         // on close all add/edit modes
         $scope.cancelCliked = function() {
-            $scope.isAddMode  = false;
+            $scope.isAddMode = false;
             $scope.isEditMode = false;
 
             // remove the item being edited
@@ -372,45 +372,46 @@ admin.controller('ADRatesAddonsCtrl', [
 
             };
 
-            if($scope.isConnectedToPMS){
-                if($scope.isDefaulLanguageSelected()){
-                    var selectedLanguage = _.find($scope.languages.locales,function(language){
-                        return language.value === $scope.languageFilter.locale
+            if ($scope.isConnectedToPMS) {
+                if ($scope.isDefaulLanguageSelected()) {
+                    var selectedLanguage = _.find($scope.languages.locales, function(language) {
+                        return language.value === $scope.languageFilter.locale;
                     });
-                    var selectedLanguageTranslations = _.find($scope.singleAddon.translations,function(translation){
+                    var selectedLanguageTranslations = _.find($scope.singleAddon.translations, function(translation) {
                         return parseInt(selectedLanguage.id) === parseInt(translation.language_id);
                     });
                     var translations = {};
-                    //translations.translated_description = $scope.singleAddon.description;
+
+                    // translations.translated_description = $scope.singleAddon.description;
                     translations.translated_alternate_description = $scope.singleAddon.alternate_description;
                     translations.translated_suffix = $scope.singleAddon.suffix_label;
                     translations.translated_name = $scope.singleAddon.name;
                     translations.language_id = selectedLanguage.id;
-                    if(!_.isUndefined(selectedLanguageTranslations) && !_.isUndefined(selectedLanguageTranslations.id)){
+                    if (!_.isUndefined(selectedLanguageTranslations) && !_.isUndefined(selectedLanguageTranslations.id)) {
                         translations.id = selectedLanguageTranslations.id
-                    };
+                    }
                     singleAddonData.translations = translations;
-                }else{
-                    singleAddonData.translations =  JSON.parse(JSON.stringify($scope.translations));
+                } else {
+                    singleAddonData.translations = JSON.parse(JSON.stringify($scope.translations));
                 }
-                
-            };
+
+            }
 
             // convert dates to system format yyyy-MM-dd
             // if not date null should be passed - read story CICO-7287
             singleAddonData.begin_date = $scope.singleAddon.begin_date ? $filter('date')(tzIndependentDate($scope.singleAddon.begin_date), 'yyyy-MM-dd') : null;
             singleAddonData.end_date = $scope.singleAddon.end_date ? $filter('date')(tzIndependentDate($scope.singleAddon.end_date), 'yyyy-MM-dd') : null;
 
-        var unwantedKeys = [];
+            var unwantedKeys = [];
 
-        if ($scope.initialImage === singleAddonData.addon_image) {
-            unwantedKeys.push('addon_image');
-        }
-        /* global dclone:true */
-        var addon_data = dclone(singleAddonData, unwantedKeys);
+            if ($scope.initialImage === singleAddonData.addon_image) {
+                unwantedKeys.push('addon_image');
+            }
+            /* global dclone:true */
+            var addon_data = dclone(singleAddonData, unwantedKeys);
 
             // if we are adding new addon
-            if ( $scope.isAddMode ) {
+            if ($scope.isAddMode) {
                 var callback = function() {
                     $scope.$emit('hideLoader');
                     $scope.isAddMode = false;
@@ -421,7 +422,7 @@ admin.controller('ADRatesAddonsCtrl', [
             }
 
             // if we are editing an addon
-            if ( $scope.isEditMode ) {
+            if ($scope.isEditMode) {
                 var callback = function() {
                     $scope.$emit('hideLoader');
 
@@ -463,7 +464,7 @@ admin.controller('ADRatesAddonsCtrl', [
             $scope.currentClickedAddon = -1;
 
             var callback = function() {
-                var withoutThis = _.without( $scope.data, item );
+                var withoutThis = _.without($scope.data, item);
 
                 $scope.data = withoutThis;
 
@@ -483,11 +484,11 @@ admin.controller('ADRatesAddonsCtrl', [
             $scope.dateNeeded = dateNeeded;
 
             ngDialog.open({
-                 template: '/assets/partials/rates/addonsDateRangeCalenderPopup.html',
-                 controller: 'addonsDatesRangeCtrl',
-                 className: 'ngdialog-theme-default single-date-picker',
-                 closeByDocument: true,
-                 scope: $scope
+                template: '/assets/partials/rates/addonsDateRangeCalenderPopup.html',
+                controller: 'addonsDatesRangeCtrl',
+                className: 'ngdialog-theme-default single-date-picker',
+                closeByDocument: true,
+                scope: $scope
             });
         };
 
@@ -519,19 +520,23 @@ admin.controller('ADRatesAddonsCtrl', [
             updateBestSellerOption();
         };
         $scope.sortByName = function() {
-        if ($scope.currentClickedAddon === -1) {
-            $scope.tableParams.sorting({'name': $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'});
-        }
+            if ($scope.currentClickedAddon === -1) {
+                $scope.tableParams.sorting({
+                    'name': $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'
+                });
+            }
         };
         $scope.sortByDescription = function() {
-        if ($scope.currentClickedAddon === -1) {
-            $scope.tableParams.sorting({'description': $scope.tableParams.isSortBy('description', 'asc') ? 'desc' : 'asc'});
-        }
+            if ($scope.currentClickedAddon === -1) {
+                $scope.tableParams.sorting({
+                    'description': $scope.tableParams.isSortBy('description', 'asc') ? 'desc' : 'asc'
+                });
+            }
         };
 
         /**
-        * To import the package details from MICROS PMS.
-        */
+         * To import the package details from MICROS PMS.
+         */
         $scope.importFromPms = function(event) {
 
             event.stopPropagation();
@@ -607,56 +612,56 @@ admin.controller('ADRatesAddonsCtrl', [
         };
 
         $scope.deleteIcon = function() {
-        $scope.fileName = "Choose file...";
-        $scope.singleAddon.addon_image = "";
-    };
+            $scope.fileName = "Choose file...";
+            $scope.singleAddon.addon_image = "";
+        };
 
-    /** Addon translation **/
-    $scope.translations = {};
-    // set the data for the language deropdown
-    availableLanguages.locales = availableLanguages.languages;
-    delete availableLanguages.languages;
-    // variable is different
-    _.each(availableLanguages.locales, function(locale) {
-        locale.value = locale.code;
-        delete locale.code;
-    });
-    // filter out disabled languages
-    availableLanguages.locales = _.reject(availableLanguages.locales, function(locale) {
-        return !locale.is_show_on_guest_card;
-    });
-
-    $scope.languages = availableLanguages;
-    $scope.languageFilter = {
-        'locale': availableLanguages.selected_language_code,
-        'currentLocaleId': 0
-    };
-    $scope.onLocaleChange = function() {
-        var selectedLanguage = _.find($scope.languages.locales, function(language) {
-            return language.value === $scope.languageFilter.locale
-        });
-        var selectedLanguageTranslations = _.find($scope.singleAddon.translations, function(translation) {
-            return parseInt(selectedLanguage.id) === parseInt(translation.language_id);
-        });
+        /** Addon translation **/
         $scope.translations = {};
-        // $scope.translations.translated_description = _.isUndefined(selectedLanguageTranslations) ? '': selectedLanguageTranslations.translated_description;
-        $scope.translations.translated_alternate_description = _.isUndefined(selectedLanguageTranslations) ? '' : selectedLanguageTranslations.translated_alternate_description;
-        $scope.translations.translated_suffix = _.isUndefined(selectedLanguageTranslations) ? '' : selectedLanguageTranslations.translated_suffix;
-        $scope.translations.translated_name = _.isUndefined(selectedLanguageTranslations) ? '' : selectedLanguageTranslations.translated_name;
-        $scope.translations.language_id = selectedLanguage.id;
-        if (!_.isUndefined(selectedLanguageTranslations) && !_.isUndefined(selectedLanguageTranslations.id)) {
-            $scope.translations.id = selectedLanguageTranslations.id
-        };
-    };
-    $scope.onLocaleChange();
+        // set the data for the language deropdown
+        availableLanguages.locales = availableLanguages.languages;
+        delete availableLanguages.languages;
+        // variable is different
+        _.each(availableLanguages.locales, function(locale) {
+            locale.value = locale.code;
+            delete locale.code;
+        });
+        // filter out disabled languages
+        availableLanguages.locales = _.reject(availableLanguages.locales, function(locale) {
+            return !locale.is_show_on_guest_card;
+        });
 
-    $scope.isDefaulLanguageSelected = function() {
-        return $scope.languages.selected_language_code === $scope.languageFilter.locale;
-    };
-    $scope.setDefaultLanguageForTranslation = function() {
+        $scope.languages = availableLanguages;
         $scope.languageFilter = {
-            'locale': availableLanguages.selected_language_code
+            'locale': availableLanguages.selected_language_code,
+            'currentLocaleId': 0
         };
-    }
+        $scope.onLocaleChange = function() {
+            var selectedLanguage = _.find($scope.languages.locales, function(language) {
+                return language.value === $scope.languageFilter.locale
+            });
+            var selectedLanguageTranslations = _.find($scope.singleAddon.translations, function(translation) {
+                return parseInt(selectedLanguage.id) === parseInt(translation.language_id);
+            });
+            $scope.translations = {};
+            // $scope.translations.translated_description = _.isUndefined(selectedLanguageTranslations) ? '': selectedLanguageTranslations.translated_description;
+            $scope.translations.translated_alternate_description = _.isUndefined(selectedLanguageTranslations) ? '' : selectedLanguageTranslations.translated_alternate_description;
+            $scope.translations.translated_suffix = _.isUndefined(selectedLanguageTranslations) ? '' : selectedLanguageTranslations.translated_suffix;
+            $scope.translations.translated_name = _.isUndefined(selectedLanguageTranslations) ? '' : selectedLanguageTranslations.translated_name;
+            $scope.translations.language_id = selectedLanguage.id;
+            if (!_.isUndefined(selectedLanguageTranslations) && !_.isUndefined(selectedLanguageTranslations.id)) {
+                $scope.translations.id = selectedLanguageTranslations.id
+            }
+        };
+        $scope.onLocaleChange();
+
+        $scope.isDefaulLanguageSelected = function() {
+            return $scope.languages.selected_language_code === $scope.languageFilter.locale;
+        };
+        $scope.setDefaultLanguageForTranslation = function() {
+            $scope.languageFilter = {
+                'locale': availableLanguages.selected_language_code
+            };
+        }
     }
 ]);
