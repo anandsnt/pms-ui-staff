@@ -514,7 +514,11 @@ angular.module('sntRover')
             $scope.ledgerAREntries = [];
             $scope.ledgerAREntries = _.where(results, { is_ar_ledger: true });
         }
-        /**
+       function ledgerTotalVarianceInit (results) {
+            $scope.ledgerTotalVariance = [];
+            $scope.ledgerTotalVariance = _.where(results, { is_total_variance: true });
+        }
+         /**
          * init - bootstrap initial execution
          * @returns {object} undefined
          */
@@ -530,6 +534,7 @@ angular.module('sntRover')
             ledgerDepositInit(results);
             ledgerGuestInit(results);
             ledgerARInit(results);
+            ledgerTotalVarianceInit(results);
         }
 
         init();
