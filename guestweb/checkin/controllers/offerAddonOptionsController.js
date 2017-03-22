@@ -19,28 +19,80 @@
 		$scope.addonSelected = function(selectedAddon) {
 			setSelectedAddon(selectedAddon, false);
 		};
+		var isAddonFlatOrRoomType = function() {
+			return $scope.selectedAddon.type === 'per room' || $scope.selectedAddon.type === 'flat rate';
+		}
 
 		$scope.purchaseAddon = function() {
 
-			if ($scope.selectedAddon.type === 'per room' || $scope.selectedAddon.type === 'flat rate') {
-				if ($scope.selectedAddon.quantity > 0) {
-					$scope.selectedAddon.is_selected = true;
-					$scope.purchaseStatusText = angular.copy($scope.addonSuccesMessage);
-					$scope.showPurchaseStatus = true;
+			var addonAdditionSuccess = function() {
+				if (isAddonFlatOrRoomType()) {
+					if ($scope.selectedAddon.quantity > 0) {
+						$scope.selectedAddon.is_selected = true;
+						$scope.purchaseStatusText = angular.copy($scope.addonSuccesMessage);
+						$scope.showPurchaseStatus = true;
+					} else {
+						$scope.selectedAddon.is_selected = false;
+						$scope.doneClicked();
+					}
 				} else {
-					$scope.selectedAddon.is_selected = false;
-					$scope.doneClicked();
+					$scope.selectedAddon.is_selected = !$scope.selectedAddon.is_selected;
+					if ($scope.selectedAddon.is_selected) {
+						$scope.purchaseStatusText = angular.copy($scope.addonSuccesMessage);
+						$scope.showPurchaseStatus = true;
+					} else {
+						$scope.doneClicked();
+					}
 				}
-			} else {
-				$scope.selectedAddon.is_selected = !$scope.selectedAddon.is_selected;
-				if ($scope.selectedAddon.is_selected) {
-					$scope.purchaseStatusText = angular.copy($scope.addonSuccesMessage);
-					$scope.showPurchaseStatus = true;
-				} else {
-					$scope.doneClicked();
-				}
+				$(document.body).scrollTop(0);
 			}
-			$(document.body).scrollTop(0);
+
+
+			var params = {
+				'addon_id': $scope.selectedAddon.id
+			};
+			if (isAddonFlatOrRoomType()) {
+				params.quantity = $scope.selectedAddon.quantity
+			}
+			checkinAddonService.updateAddon(
+				params
+			).then(function(response) {
+				$scope.isLoading = false;
+				addonAdditionSuccess();
+			}, function() {
+				$rootScope.netWorkError = true;
+				$scope.isLoading = false;
+			});
+		};
+
+		$scope.removeAddon = function() {
+
+			var addonRemovalSuccess = function() {
+				if (isAddonFlatOrRoomType()) {
+					$scope.selectedAddon.is_selected = false;
+				} else {
+					$scope.selectedAddon.is_selected = !$scope.selectedAddon.is_selected;
+				}
+				$scope.doneClicked();
+				$(document.body).scrollTop(0);
+			}
+
+
+			var params = {
+				'addon_id': $scope.selectedAddon.id
+			};
+			if (isAddonFlatOrRoomType()) {
+				params.quantity = $scope.selectedAddon.quantity
+			}
+			checkinAddonService.deleteAddon(
+				params
+			).then(function(response) {
+				$scope.isLoading = false;
+				addonRemovalSuccess();
+			}, function() {
+				$rootScope.netWorkError = true;
+				$scope.isLoading = false;
+			});
 		};
 
 		$scope.doneClicked = function() {
@@ -65,7 +117,7 @@
 		$scope.hideAddAddonButton = function() {
 			if (typeof $scope.selectedAddon === "undefined") {
 				return false;
-			} else if ($scope.selectedAddon.type === 'per room' || $scope.selectedAddon.type === 'flat rate') {
+			} else if (isAddonFlatOrRoomType()) {
 				return $scope.selectedAddon.is_selected && parseInt($scope.selectedAddon.quantity) === 0;
 			} else {
 				return $scope.selectedAddon.is_selected
