@@ -11,7 +11,7 @@ admin.directive('adChargeCodeAutoComplete', ['ADChargeCodesSrv', function (ADCha
 			minLengthToTrigger: '@minLengthToTrigger',
 			excludePayments: '@',
 			onlyPayments: '@',
-			required:'='
+			required: '='
 		},
 		controller: function($scope) {
 			BaseCtrl.call(this, $scope);
@@ -66,7 +66,7 @@ admin.directive('adChargeCodeAutoComplete', ['ADChargeCodesSrv', function (ADCha
 		        if (request.term.length === 0) {
 		        	clearConfigValues();
 		        	runDigestCycle();
-		        } 
+		        }
 		        else if (request.term.length > minLengthToTrigger) {
 		            fetchChargeCodes(callBackToAutoComplete);
 		        }
@@ -93,7 +93,7 @@ admin.directive('adChargeCodeAutoComplete', ['ADChargeCodesSrv', function (ADCha
 		        $scope.charge_code_id 	= ui.item.id;
 		        $scope.charge_code_name = ui.item.name;
 		        runDigestCycle();
-		        return false;    
+		        return false;
 		    };
 
 			/**
@@ -116,7 +116,7 @@ admin.directive('adChargeCodeAutoComplete', ['ADChargeCodesSrv', function (ADCha
 				$scope.label 			= _.isUndefined($scope.label) ? 'Charge Code' : $scope.label;
 				$scope.entryDivClass 	= _.isUndefined($scope.entryDivClass) ? '' : $scope.entryDivClass;
 				minLengthToTrigger 		= _.isUndefined($scope.minLengthToTrigger) ? 1 : parseInt($scope.minLengthToTrigger);
-			}());	
+			}());
 		},
 		templateUrl: '/assets/directives/chargeCodeAutoComplete/adChargeCodeAutoCompleteDir.html'
 	};
