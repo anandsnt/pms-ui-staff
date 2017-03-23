@@ -10,7 +10,7 @@
 <div id="report-content" class="report-content group-rooms" ng-controller="RVGroupRoomsReportController" ng-class="{'with-pagination' : totalCount > paginationConfig.perPage}">
     <div ng-include="'/assets/partials/reports/groupRoomsReport/rvGroupRoomsReportSummarySection.html'" />
     <!-- Vertical Slider -->
-    <div class="groups scrollable" ng-iscroll="group-rooms-scroll">
+    <div class="groups scrollable">
         <div class="wrapper">
             <div class="group" ng-repeat="group in results track by $index">
                 <div class="group-info">
