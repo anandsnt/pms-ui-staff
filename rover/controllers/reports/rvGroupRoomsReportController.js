@@ -30,11 +30,10 @@ angular.module('sntRover')
         // Transform the summary count from the api to the format required for the ui
         var processSummaryCounts = function(summaryCount, dateRange) {
 
-                var blockedRooms = [],
-                    availableRooms = [],
-                    pickedUpRooms = [];
+                var blockedRooms = [dateRange.length],
+                    availableRooms = [dateRange.length],
+                    pickedUpRooms = [dateRange.length];
 
-                    blockedRooms.length = availableRooms.length = pickedUpRooms.length = dateRange.length;
 
                     _.each(summaryCount.rooms_count, function(roomCount) {
                         var index = dateRange.indexOf(roomCount.date);
@@ -53,13 +52,13 @@ angular.module('sntRover')
         // Transform the count from the api to the format required for the ui
         var processCounts = function(resultsFromApi, dateRange) {
 
-             var blockedRooms = [],
-                 availableRooms = [],
-                 pickedUpRooms = [];
-
+             var blockedRooms, availableRooms, pickedUpRooms;
 
             _.each(resultsFromApi, function(group, index) {
-                    blockedRooms.length = availableRooms.length = pickedUpRooms.length = dateRange.length;
+                    blockedRooms = [dateRange.length],
+                    availableRooms = [dateRange.length],
+                    pickedUpRooms = [dateRange.length];
+
 
                     _.each(group.rooms_count, function(roomCount) {
                         var index = dateRange.indexOf(roomCount.date);
@@ -105,7 +104,6 @@ angular.module('sntRover')
             } else {
                 var currentMonthDays = 0,
                     nextMonthDays = 0;
-
                 _.each(dateRange, function( dateObj ) {
                     if (rvUtilSrv.getMonthFromDateString(dateObj) === fromMonthNo ) {
                         currentMonthDays++;
