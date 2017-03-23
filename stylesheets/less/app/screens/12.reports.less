@@ -2898,6 +2898,11 @@
                         &:first-child {
                             th {
                                 font-weight: 600;
+                                .nowrap();
+
+                                &[colspan="1"] {
+                                    text-overflow: initial;
+                                }
                             }
                         }
 

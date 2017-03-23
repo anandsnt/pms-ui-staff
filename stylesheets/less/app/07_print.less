@@ -2448,6 +2448,8 @@
             
 
             &.group-rooms-reports {
+                table-layout: fixed;
+
                 thead {
                     tr {
                         th {
@@ -2458,6 +2460,17 @@
                                 border-right: 1px solid @grey2; 
 
                                 &:last-child { border-right: 0; }
+                            }
+                        }
+
+                        &:first-child {
+                            th {
+                                
+                                .nowrap();
+
+                                &[colspan="1"] {
+                                    text-overflow: initial;
+                                }
                             }
                         }
 
