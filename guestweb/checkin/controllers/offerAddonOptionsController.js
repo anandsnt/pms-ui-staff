@@ -19,14 +19,19 @@
 		$scope.addonSelected = function(selectedAddon) {
 			setSelectedAddon(selectedAddon, false);
 		};
-		var isAddonFlatOrRoomType = function() {
-			return $scope.selectedAddon.type === 'per room' || $scope.selectedAddon.type === 'flat rate';
-		}
+		$scope.isAddonFlatOrRoomType = function(addonToBe) {
+			var addon = angular.copy(addonToBe);
+			// To delete once the addon import API is fixed
+			addon.amount_type = (addon.amount_type === 'Room') ? 'Per Room' : addon.amount_type;
+			addon.amount_type = (addon.amount_type === 'Flat') ? 'Flat Rate' : addon.amount_type;
+			// To deleted above
+			return addon.amount_type === 'Per Room' || $scope.selectedAddon.amount_type === 'Flat Rate';
+		};
 
 		$scope.purchaseAddon = function() {
 
 			var addonAdditionSuccess = function() {
-				if (isAddonFlatOrRoomType()) {
+				if ($scope.isAddonFlatOrRoomType($scope.selectedAddon)) {
 					if ($scope.selectedAddon.quantity > 0) {
 						$scope.selectedAddon.is_selected = true;
 						$scope.purchaseStatusText = angular.copy($scope.addonSuccesMessage);
@@ -45,15 +50,17 @@
 					}
 				}
 				$(document.body).scrollTop(0);
-			}
+			};
 
 
 			var params = {
 				'addon_id': $scope.selectedAddon.addon_id
 			};
-			if (isAddonFlatOrRoomType()) {
-				params.quantity = $scope.selectedAddon.quantity
+
+			if ($scope.isAddonFlatOrRoomType($scope.selectedAddon)) {
+				params.quantity = parseInt($scope.selectedAddon.quantity);
 			}
+			$scope.isLoading = true;
 			checkinAddonService.updateAddon(
 				params
 			).then(function() {
@@ -68,7 +75,7 @@
 		$scope.removeAddon = function() {
 
 			var addonRemovalSuccess = function() {
-				if (isAddonFlatOrRoomType()) {
+				if ($scope.isAddonFlatOrRoomType($scope.selectedAddon)) {
 					$scope.selectedAddon.is_selected = false;
 				} else {
 					$scope.selectedAddon.is_selected = !$scope.selectedAddon.is_selected;
@@ -81,9 +88,10 @@
 			var params = {
 				'addon_id': $scope.selectedAddon.addon_id
 			};
-			if (isAddonFlatOrRoomType()) {
-				params.quantity = $scope.selectedAddon.quantity
+			if ($scope.isAddonFlatOrRoomType($scope.selectedAddon)) {
+				params.quantity = parseInt($scope.selectedAddon.quantity);
 			}
+			$scope.isLoading = true;
 			checkinAddonService.deleteAddon(
 				params
 			).then(function() {
@@ -117,7 +125,7 @@
 		$scope.hideAddAddonButton = function() {
 			if (typeof $scope.selectedAddon === "undefined") {
 				return false;
-			} else if (isAddonFlatOrRoomType()) {
+			} else if ($scope.isAddonFlatOrRoomType($scope.selectedAddon)) {
 				return $scope.selectedAddon.is_selected && parseInt($scope.selectedAddon.quantity) === 0;
 			} else {
 				return $scope.selectedAddon.is_selected
@@ -175,7 +183,7 @@
 			$scope.addonList = [];
 			$scope.isLoading = true;
 			$scope.selectedAddon = {};
-			$scope.quantityList = _.range(21);
+			$scope.quantityList = _.range(6);
 			var params = {};
 			checkinAddonService.getAddonList(params).then(function(response) {
 				$scope.isLoading = false;

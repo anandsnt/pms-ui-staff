@@ -37,7 +37,7 @@
                 <p class="sub-main-text margin-top-20 no-text-case price-details">{{currencySymbol}}{{selectedAddon.amount}} <span ng-show="upsellDisplayOrderAmountFirst">{{selectedAddon.amount_type}}&nbsp;{{selectedAddon.post_type}}&nbsp;</span><span ng-hide="upsellDisplayOrderAmountFirst">{{selectedAddon.post_type}}&nbsp;{{selectedAddon.amount_type}}&nbsp;</span>{{addonSuffix}}</p>
                 <p class="sub-main-text margin-top-20" ng-bind-html="selectedAddonDescrition"></p>
                 <br/>
-                <div ng-show="selectedAddon.type === 'per room' || selectedAddon.type === 'flat rate'">
+                <div ng-show="isAddonFlatOrRoomType(selectedAddon)">
                     <p class="sub-main-text">{{addonSelectQty}}</p>
                     <div class="row">
                         <div class="select-style addon-numbers">
@@ -72,7 +72,7 @@
                     <img ng-src="{{addon.image}}" alt="" width="100%" height="auto">
                 </div>
                 <div class="content-desc">
-                    <p class="sub-main-text no-text-case margin-top-10">{{addon.name | limitTo: 50 }}{{addon.name.length > 50? '...' : ''}}<span ng-show="(addon.type === 'per room' || addon.type === 'flat rate') && addon.quantity > 0">&nbsp;({{addon.quantity}})</span></p>
+                    <p class="sub-main-text no-text-case margin-top-10">{{addon.name | limitTo: 50 }}{{addon.name.length > 50? '...' : ''}}<span ng-show="isAddonFlatOrRoomType(addon) && addon.quantity > 0">&nbsp;({{addon.quantity}})</span></p>
                     <p class="sub-main-text  no-text-case margin-top-20">{{currencySymbol}}{{addon.amount}} <span ng-show="upsellDisplayOrderAmountFirst">{{addon.amount_type}}&nbsp;{{addon.post_type}}&nbsp;</span><span ng-hide="upsellDisplayOrderAmountFirst">{{addon.post_type}}&nbsp;{{addon.amount_type}}&nbsp;</span>&nbsp;{{addonSuffix}}</p>
                 </div>
             </div>
