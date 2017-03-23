@@ -11,7 +11,6 @@ sntRover.controller('RVbillCardController',
 	'$filter',
 	'$window',
 	'$timeout',
-	'chargeCodeData',
 	'$sce',
 	'RVKeyPopupSrv',
 	'RVPaymentSrv',
@@ -28,7 +27,7 @@ sntRover.controller('RVbillCardController',
 			ngDialog, $filter,
 
 			$window, $timeout,
-			chargeCodeData, $sce,
+			$sce,
 
 			RVKeyPopupSrv, RVPaymentSrv,
 			RVSearchSrv, rvPermissionSrv, jsMappings, $q, RVReservationStateService) {
@@ -2215,13 +2214,9 @@ sntRover.controller('RVbillCardController',
 	$scope.splitTypeisAmount = true;
 	$scope.chargeCodeActive = false;
 	$scope.selectedChargeCode = {};
-	$scope.chargeCodeData = chargeCodeData.results;
-	$scope.availableChargeCodes = chargeCodeData.results;
 
-	$scope.getAllchargeCodes = function (callback) {
-    	callback($scope.chargeCodeData);
-	};
-
+	$scope.availableChargeCodes = [];
+		
 	$scope.setchargeCodeActive = function(bool) {
 		$scope.chargeCodeActive = bool;
 	};
