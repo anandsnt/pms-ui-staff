@@ -102,7 +102,8 @@ module.exports = {
             'guestweb_little_duke': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_basecamp_boulder': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_distrikt_nyc': [ themeJsRoot + 'app_router_common.js'],
-            'guestweb_stella_hotel': [ themeJsRoot + 'app_router_common.js']
+            'guestweb_stella_hotel': [ themeJsRoot + 'app_router_common.js'],
+            'guestweb_beau_rivage': [ themeJsRoot + 'app_router_beau_rivage.js']
         };
     }
 };
