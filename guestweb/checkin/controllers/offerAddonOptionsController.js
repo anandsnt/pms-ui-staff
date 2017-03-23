@@ -9,9 +9,9 @@
 				$scope.mode = 'DETAILED_VIEW';
 				$scope.selectedAddonDescrition = $sce.trustAsHtml($scope.selectedAddon.description);
 				if ($scope.addonList.length === 1) {
-					$scope.addonPurchaseMsgForDisplay = $scope.addonPurchaseMsg.replace("@addon_name@", $scope.selectedAddon.title);
+					$scope.addonPurchaseMsgForDisplay = $scope.addonPurchaseMsg.replace("@addon_name@", $scope.selectedAddon.name);
 				} else {
-					$scope.addonPurchaseMsgForDisplay = $scope.selectedAddon.title;
+					$scope.addonPurchaseMsgForDisplay = $scope.selectedAddon.name;
 				}
 				$(document.body).scrollTop(0);
 			};
@@ -49,7 +49,7 @@
 
 
 			var params = {
-				'addon_id': $scope.selectedAddon.id
+				'addon_id': $scope.selectedAddon.addon_id
 			};
 			if (isAddonFlatOrRoomType()) {
 				params.quantity = $scope.selectedAddon.quantity
@@ -79,7 +79,7 @@
 
 
 			var params = {
-				'addon_id': $scope.selectedAddon.id
+				'addon_id': $scope.selectedAddon.addon_id
 			};
 			if (isAddonFlatOrRoomType()) {
 				params.quantity = $scope.selectedAddon.quantity

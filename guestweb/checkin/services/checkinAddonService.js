@@ -4,8 +4,8 @@
 		var getAddonList = function() {
 
 			var deferred = $q.defer();
-			var url = '/sample_json/zestweb_v2/addon_list.json';
-
+			//var url = '/sample_json/zestweb_v2/addon_list.json';
+			var url = '/api/upsell_addons?for_zest_web=true';
 			$http.get(url).success(function(response) {
 					deferred.resolve(response);
 				})
@@ -18,7 +18,7 @@
 		var updateAddon = function(params) {
 
 			var deferred = $q.defer();
-			var url = 'api/reservations/update_package';
+			var url = '/api/reservations/update_package';
 
 			params.id = $rootScope.reservationID;
 			$http.post(url, params).success(function(response) {
@@ -33,7 +33,7 @@
 		var deleteAddon = function(params) {
 
 			var deferred = $q.defer();
-			var url = 'api/reservations/delete_package';
+			var url = '/api/reservations/delete_package';
 			
 			params.id = $rootScope.reservationID;
 			$http.post(url, params).success(function(response) {
