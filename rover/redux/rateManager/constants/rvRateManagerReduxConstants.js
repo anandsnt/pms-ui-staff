@@ -4,8 +4,8 @@ const RM_RX_CONST = {
 	RATE_VIEW_WITH_ADDRESS : "Rate_View_With_Address",
 	
 	RATE_VIEW_CHANGED                      : 'RM_Rate_View_Changed',
-	RATE_TYPE_VIEW_CHANGED                 : 'RM_Rate_Type_View_Changed',
 	ROOM_TYPE_VIEW_CHANGED                 : 'RM_Room_Type_View_Changed',
+	RATE_TYPE_VIEW_CHANGED                 : 'RM_Rate_Type_View_Changed',
 	SINGLE_RATE_EXPANDABLE_VIEW_CHANGED    : 'RM_Single_Rate_Expandable_View_Changed',
 	SHOW_NO_RESULTS 					   : 'RM_Show_No_Results',
 	
@@ -13,6 +13,7 @@ const RM_RX_CONST = {
 	NOT_CONFIGURED_MODE                : 'RM_Not_Configured_Mode',
 	RATE_VIEW_MODE                     : 'RM_Rate_View', //pls change VIEW_MODE_TEXT_MAPPINGS: when changing this one
 	ROOM_TYPE_VIEW_MODE                : 'RM_Room_Type_View', //pls change VIEW_MODE_TEXT_MAPPINGS: when changing this one
+	RATE_TYPE_VIEW_MODE                : 'RM_Rate_Type_View', //pls change VIEW_MODE_TEXT_MAPPINGS: when changing this one
 	SINGLE_RATE_EXPANDABLE_VIEW_MODE   : 'RM_Single_Rate_Expandable_View', //pls change VIEW_MODE_TEXT_MAPPINGS: when changing this one
 
 	REFRESH_SCROLLERS          : 'RM_Refresh_Scrollers',

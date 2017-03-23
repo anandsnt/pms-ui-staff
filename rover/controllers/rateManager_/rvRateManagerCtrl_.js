@@ -35,6 +35,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      */
     var cachedRateList = [], 
         cachedRoomTypeList = [],
+        cachedRateTypeList = [],
         cachedRateAndRestrictionResponseData = [];
 
     /**
@@ -477,7 +478,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     };
 
     /*
-     * to fetch the rate type & it's restrcitions
+     * to fetch the rate type & it's restrictions
      * @param  {Object} filterValues
      */
     var fetchRateTypeAndRestrictions = (filterValues) => {
@@ -486,7 +487,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             to_date: formatDateForAPI(filterValues.toDate),
             order_id: filterValues.orderBySelectedValue,
             // 'name_card_ids[]': _.pluck(filterValues.selectedCards, 'id'),
-            // fetchRoomTypes: !cachedRoomTypeList.length,
+            fetchRateTypes: !cachedRateTypeList.length,
             fetchCommonRestrictions: true
         };
         var options = {
@@ -521,12 +522,15 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         var rateTypeRestrictions = response.rateTypeAndRestrictions,
                 commonRestrictions = response.commonRestrictions;
 
+        // rateTypeList is now cached, we will not fetch that again
+        cachedRateTypeList = !cachedRateTypeList.length ? response.rateTypes : cachedRateTypeList;
+
         // for topbar
         var dates = _.pluck(rateTypeRestrictions, 'date');
 
         showAndFormDataForTopBar(dates);
 
-        var renderableData = formRenderingDataModelForAllRateTypes(dates, rateTypeRestrictions, commonRestrictions);
+        var renderableData = formRenderingDataModelForAllRateTypes(dates, rateTypeRestrictions, commonRestrictions, cachedRateTypeList);
 
         var rateTypeWithRestrictions = renderableData.rateTypeWithRestrictions;
         
@@ -543,8 +547,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param  {array} rateTypeRestrictions
      * @return {array}
      */
-    var formRenderingDataModelForAllRateTypes = (dates, rateTypeRestrictions, commonRestrictions) => {
-        var rateTypes = rateTypeRestrictions[0].rate_types;
+    var formRenderingDataModelForAllRateTypes = (dates, rateTypeRestrictions, commonRestrictions, rateTypes) => {
         var dateRateTypeSet = null,
             rateTypeRestrictionWithDateAsKey = _.object(dates, rateTypeRestrictions),
             rateTypeIDs = _.pluck(rateTypes, 'id'),
@@ -562,9 +565,14 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 rateType.restrictionList.push(dateRateTypeSet.restrictions);
                 rateType.amountList.push(dateRateTypeSet.amount);
             });
+
             return _.omit(rateType, 'restrictions');
         });
 
+        /**
+         * Summary information holds the first row - this is rendered in the header of the grid
+         * @type {Array}
+         */
         var restrictionSummary = [{
             restrictionList: dates.map((date) => {
                 return _.findWhere(commonRestrictions, { date: date }).restrictions;
@@ -594,6 +602,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             restrictionTypes,
         };
 
+        console.log(reduxActionForAllRateTypesView);
         //dispatching to redux
         store.dispatch(reduxActionForAllRateTypesView);
     };
@@ -740,7 +749,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
          */
         const updateAllRatesView = (ratesWithRestrictions, dates, restrictionSummary) => {
             var reduxActionForAllRateView = {
-                type                : RM_RX_CONST.RATE_VIEW_CHANGED,
+                type                : RM_RX_CONST.ROOM_VIEW_CHANGED,
                 rateRestrictionData : [...ratesWithRestrictions],
                 restrictionSummaryData: [...restrictionSummary],
                 businessDate        : tzIndependentDate($rootScope.businessDate),
@@ -1105,7 +1114,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 restrictionSummary: restrictionSummary
             };
         };
-
+        
         /*
          * to update all room types view with latest data
          * updating the store by dispatching the action
