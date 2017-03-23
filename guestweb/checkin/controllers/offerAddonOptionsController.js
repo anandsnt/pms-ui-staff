@@ -67,7 +67,8 @@
 				$scope.isLoading = false;
 				addonAdditionSuccess();
 			}, function() {
-				$rootScope.netWorkError = true;
+				$scope.showPurchaseStatus = true;
+				$scope.purchaseStatusText = angular.copy($scope.addonFailureMessage);
 				$scope.isLoading = false;
 			});
 		};
@@ -98,7 +99,8 @@
 				$scope.isLoading = false;
 				addonRemovalSuccess();
 			}, function() {
-				$rootScope.netWorkError = true;
+				$scope.showPurchaseStatus = true;
+				$scope.purchaseStatusText = angular.copy($scope.addonRemovalFailureMessage);
 				$scope.isLoading = false;
 			});
 		};
@@ -175,6 +177,7 @@
 			$scope.addonSkip = setText(fetchScreenDetails("ADDON-SKIP").screen_title, "No Thanks.");
 			$scope.addonPurchase = setText(fetchScreenDetails("ADDON-PURCHASE").screen_title, "Add");
 			$scope.addonRemove = setText(fetchScreenDetails("ADDON-REMOVE").screen_title, "Remove");
+			$scope.addonRemovalFailureMessage = setText(fetchScreenDetails("ADDON-FAILURE").screen_title, "Sorry, Something went wrong.");
 			$scope.addonFailureMessage = setText(fetchScreenDetails("ADDON-FAILURE").screen_title, "Sorry, This addon can't be added to your reservation");
 			$scope.addonSuccesMessage = setText(fetchScreenDetails("ADDON-SUCCESS").screen_title, "Thanks for the purchase. Your addon will be added to your account.");
 			$scope.addonSelectQty = setText(fetchScreenDetails("ADDON-SELECT-QTY").screen_title, "Select quantity");
@@ -193,7 +196,7 @@
 				$scope.isLoading = false;
 			});
 			// TO DO
-			$scope.upsellDisplayOrderAmountFirst = true;// "amount_then_post_type";
+			$scope.upsellDisplayOrderAmountFirst = true; // "amount_then_post_type";
 		})();
 	};
 
