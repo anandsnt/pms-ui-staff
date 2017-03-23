@@ -125,11 +125,14 @@
 		};
 
 		var addonFetchSuccess = function(addons) {
-			var selectedAddonIds = [5]; //already selected list for the reservation
-			_.each(selectedAddonIds, function(selectedAddonId) {
-				addons = _.reject(addons, function(addon) {
-					return addon.id == selectedAddonId;
-				});
+			// var selectedAddonIds = [5]; //already selected list for the reservation
+			// _.each(selectedAddonIds, function(selectedAddonId) {
+			// 	addons = _.reject(addons, function(addon) {
+			// 		return addon.id == selectedAddonId;
+			// 	});
+			// });
+			addons = _.reject(addons, function(addon) {
+				return !addon.zest_web_active;
 			});
 			_.each(addons, function(addon) {
 				addon.is_selected = false;
