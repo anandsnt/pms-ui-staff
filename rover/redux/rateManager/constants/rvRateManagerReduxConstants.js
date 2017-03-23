@@ -36,6 +36,7 @@ const RM_RX_CONST = {
 	VIEW_MODE_TEXT_MAPPINGS: {
         RM_Rate_View                      : 'All Rates',
         RM_Room_Type_View                 : 'All Room Types',
+        RM_Rate_Type_View                 : 'All Rate Types',
         RM_Single_Rate_Expandable_View    : 'All Room Types'
 	}
 };

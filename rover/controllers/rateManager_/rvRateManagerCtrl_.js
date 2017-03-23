@@ -602,7 +602,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             restrictionTypes,
         };
 
-        console.log(reduxActionForAllRateTypesView);
         //dispatching to redux
         store.dispatch(reduxActionForAllRateTypesView);
     };
@@ -749,7 +748,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
          */
         const updateAllRatesView = (ratesWithRestrictions, dates, restrictionSummary) => {
             var reduxActionForAllRateView = {
-                type                : RM_RX_CONST.ROOM_VIEW_CHANGED,
+                type                : RM_RX_CONST.RATE_VIEW_CHANGED,
                 rateRestrictionData : [...ratesWithRestrictions],
                 restrictionSummaryData: [...restrictionSummary],
                 businessDate        : tzIndependentDate($rootScope.businessDate),
