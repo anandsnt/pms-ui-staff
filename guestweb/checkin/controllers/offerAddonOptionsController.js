@@ -194,7 +194,6 @@
 			});
 			// TO DO
 			$scope.upsellDisplayOrderAmountFirst = true;// "amount_then_post_type";
-			$scope.addonSuffix = "(+tax)";
 		})();
 	};
 
