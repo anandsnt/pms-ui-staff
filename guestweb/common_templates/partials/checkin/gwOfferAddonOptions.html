@@ -31,10 +31,10 @@
     <div class="row" ng-hide="isLoading || netWorkError">
         <!-- detailed view -->
         <div class="col-md-8 top-spacing sm-no-top-spacing section-container float-none addon-section-container" ng-show="mode === 'DETAILED_VIEW'">
-            <img ng-src="{{selectedAddon.image}}" class="content-image  margin-top-20" alt="">
+            <img ng-src="{{selectedAddon.image_original}}" class="content-image  margin-top-20" alt="">
             <p class="main-text no-text-case bold-text margin-top-20" ng-bind="addonPurchaseMsgForDisplay" ng-hide="showPurchaseStatus"></p>
             <div ng-hide="showPurchaseStatus" class="addon-details">
-                <p class="sub-main-text margin-top-20 no-text-case price-details">{{currencySymbol}}{{selectedAddon.amount}} {{selectedAddon.price_label}}&nbsp;{{selectedAddon.suffix}}</p>
+                <p class="sub-main-text margin-top-20 no-text-case price-details">{{currencySymbol}}{{selectedAddon.amount}} <span ng-show="upsellDisplayOrderAmountFirst">{{selectedAddon.amount_type}}&nbsp;{{selectedAddon.post_type}}&nbsp;</span><span ng-hide="upsellDisplayOrderAmountFirst">{{selectedAddon.post_type}}&nbsp;{{selectedAddon.amount_type}}&nbsp;</span>{{addonSuffix}}</p>
                 <p class="sub-main-text margin-top-20" ng-bind-html="selectedAddonDescrition"></p>
                 <br/>
                 <div ng-show="selectedAddon.type === 'per room' || selectedAddon.type === 'flat rate'">
@@ -73,7 +73,7 @@
                 </div>
                 <div class="content-desc">
                     <p class="sub-main-text no-text-case margin-top-10">{{addon.name | limitTo: 50 }}{{addon.name.length > 50? '...' : ''}}<span ng-show="(addon.type === 'per room' || addon.type === 'flat rate') && addon.quantity > 0">&nbsp;({{addon.quantity}})</span></p>
-                    <p class="sub-main-text  no-text-case margin-top-20">{{currencySymbol}}{{addon.amount}} {{addon.price_label}}&nbsp;{{addon.suffix}}</p>
+                    <p class="sub-main-text  no-text-case margin-top-20">{{currencySymbol}}{{addon.amount}} <span ng-show="upsellDisplayOrderAmountFirst">{{addon.amount_type}}&nbsp;{{addon.post_type}}&nbsp;</span><span ng-hide="upsellDisplayOrderAmountFirst">{{addon.post_type}}&nbsp;{{addon.amount_type}}&nbsp;</span>&nbsp;{{addonSuffix}}</p>
                 </div>
             </div>
             <a class="btn btn-template margin-top-20" ng-click="noThanksClicked()">{{addonContinue}}</a>
