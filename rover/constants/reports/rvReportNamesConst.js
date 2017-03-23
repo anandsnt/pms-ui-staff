@@ -48,6 +48,7 @@ angular.module('reportsModule')
     'A/R_AGING': 'A/R Aging',
     'TRAVEL_AGENT_COMMISSIONS': 'Travel Agent Commissions',
     'BUSINESS_ON_BOOKS': 'Business on the Books',
-    'COMPLIMENTARY_ROOM_REPORT': 'Complimentary Room Report'
+    'COMPLIMENTARY_ROOM_REPORT': 'Complimentary Room Report',
+    'GROUP_ROOMS_REPORT': 'Group Rooms'
 });
 
