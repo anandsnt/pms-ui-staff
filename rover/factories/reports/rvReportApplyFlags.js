@@ -23,7 +23,8 @@ angular.module('reportsModule')
                         'CANCELLATION_NO_SHOW': ['canRemoveDate'],
                         'COMPARISION_BY_DATE': ['hasSysDateLimit'],
                         'BUSINESS_ON_BOOKS': ['hasSixMonthsLimit'],
-                        'COMPANY_TA_TOP_PRODUCERS': ['hasPrevDateLimit']
+                        'COMPANY_TA_TOP_PRODUCERS': ['hasPrevDateLimit'],
+                        'GROUP_ROOMS_REPORT': ['hasThirtyOneDaysLimit']
                     };
 
                     var reportName = _.findKey(reportNames, function(value, key) { return value === report['title']; });

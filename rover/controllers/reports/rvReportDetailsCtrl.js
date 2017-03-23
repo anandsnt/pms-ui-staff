@@ -732,6 +732,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 
                 break;
 
+                case reportNames['GROUP_ROOMS_REPORT']:
+                    $scope.showReportHeader   = true;
+                    $scope.detailsTemplateUrl = '/assets/partials/reports/groupRoomsReport/rvGroupRoomsReport.html';
+
+                break;
+
 				default:
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;

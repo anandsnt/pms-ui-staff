@@ -20,6 +20,7 @@ angular.module('reportsModule').constant('RVReportPaginationIdsConst', {
     'Credit Check Report': 'CREDIT_CHECK_REPORT',
     'Deposit Balance Summary': 'DEPOSIT_SUMMARY',
     'Business on the Books': 'BUSINESS_ON_BOOKS',
-    'Complimentary Room Report': 'COMPLIMENTARY_ROOM_REPORT'
+    'Complimentary Room Report': 'COMPLIMENTARY_ROOM_REPORT',
+    'Group Rooms': 'GROUP_ROOMS_REPORT'
 
 });
