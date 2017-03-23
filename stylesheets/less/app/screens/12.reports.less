@@ -1095,6 +1095,25 @@
                     border-right: 0;
                 }
             }
+
+            &.legend {
+
+                li {
+                    .float;
+                    margin-top: 4px;
+
+                    .icons {
+                        .square(20px);
+                        margin-right: 10px;
+                        .pull-left;
+
+                        &.icon-available {
+                            margin-right: 0;
+                        }
+                    }
+                }
+                
+            }
         }
 
         .actions {
@@ -2849,6 +2868,57 @@
                 }
             }
 
+            &.group-rooms-reports {
+                table-layout: fixed;
+
+                td {
+                    &.zero {
+                        font-style: italic;
+                        color: @grey3;
+                    }
+
+                    &.empty {
+                        background: transparent;
+                        // Shifting the border to left and bottom instead of right and bottom
+                        border-width: 0 0px 1px 1px;
+                        // Adding left border to the first filled day
+                        &+td:not(.empty) {
+                            border-width: 0 1px 1px 1px;
+                        }
+                         
+                    }
+                }
+                thead {
+                    tr {
+                        th {
+                            line-height: 20px;
+                            font-size: 12px;
+                        }
+
+                        &:first-child {
+                            th {
+                                font-weight: 600;
+                            }
+                        }
+
+                        &.bottom-row {
+                            th {
+                                font-size: 12px;
+                                font-style: normal;
+                            }
+                        }
+                    }
+                }
+
+                tbody {
+                    td {
+                        line-height: 25px;
+                        text-align: center;
+                        font-size: 14px;
+                    }
+                }
+            }
+
         }
 
         &.card-authorization-check {
@@ -3379,6 +3449,161 @@
         }
 
         &.no-content { height: 100%; }
+
+        &.group-rooms {
+            padding:0 0 0 5px;
+
+            .groups {
+                .calc-height( 100, 118 );
+                position: relative;
+            }
+
+            .group-info {
+                background: @white;
+                padding:5px 10px;
+                border-top: 1px solid @grey2;
+                border-bottom: 1px solid @grey2;
+                height: 40px;
+                .float;
+
+                .title {
+                    display: block;
+                    font-weight: 600;
+                    font-size: 14px;
+                    margin:0;
+                }
+
+                .data {
+                    display: block;
+                    font-size: 12px;
+                    text-transform: uppercase;
+                    .float;
+
+                    li {
+                        float: left;
+                        margin-bottom:0;
+
+                        &:not(:last-child) {
+                            margin-right: 20px;
+                        } 
+
+                        span {
+                            color: @grey3;
+                        }
+                    }
+                }
+                
+            }
+
+            .group-data {
+                display: flex;
+
+                ul {
+                    width: 75px;
+                    background: @white;
+
+                    .main-heading {
+                        height: 40px;
+                        line-height: 40px;
+                        font-size: 12px;
+                        text-align: center;
+                        background: @gcard;
+                        color: @white;
+                        text-transform: uppercase;
+                        font-weight: 600;
+                        border-right: 1px solid rgba(0, 0, 0, 0.1)
+                    }
+
+                    li {
+                        margin:0;
+                        .float;
+
+                        &:not(.main-heading) {
+                            line-height: 26px;
+                            font-size: 14px;
+                            height: 26px;
+                            border-bottom: 1px solid @grey2;
+                            border-right: 1px solid @grey2;
+                            padding: 0 10px 0 5px;
+                            text-align: right;
+                            font-weight: 600;
+
+                        }
+
+                        &.available {
+                            color: @green;
+                        }
+
+                        &.blocked {
+                            color: @red;
+                        }
+
+                        &.pickedup {
+                            color: @orange;
+                        }
+
+                        .icons {
+                            margin-top: 5px;
+                            .square(14px);
+                            .pull-left;
+                            background-size: 84px;
+
+                            &.icon-blocked {
+                                background-position: 0px -7462px;
+                            } 
+
+                            &.icon-available {
+                                background-position: 4px -7504px;
+                            }
+
+                            &.icon-picked-up {
+                                background-position: 0 -7546px;
+                            }
+                        }
+
+                        &:last-child {
+                            border-bottom:0;
+                        }
+                    }
+                }
+
+                table {
+                    .calc-width(100, 75);
+                }
+
+                &.totals {
+                    .box-shadow();
+                    position: relative;
+                    z-index: 999;
+
+                    table {
+                        thead {
+
+                            tr:first-child {
+                                padding:0 20px;
+
+                                th {
+                                    text-align: left;
+                                    &:first-child {
+                            
+                                        &:not(:last-child) {
+                                            text-align: right;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        tbody {
+                            td {
+                                font-size: 12px;
+                                font-weight: 600;
+                                background: transparent;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
