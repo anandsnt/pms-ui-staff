@@ -8,7 +8,7 @@
 <!-- Report content -->
 <!-- add .with-pagination if has pagination -->
 <div id="report-content" class="report-content group-rooms" ng-controller="RVGroupRoomsReportController" ng-class="{'with-pagination' : totalCount > paginationConfig.perPage}">
-    <div ng-include="'/assets/partials/reports/groupRoomsReport/rvGroupRoomsReportSummarySection.html'" />
+    <div ng-include="'/assets/partials/reports/groupRoomsReport/rvGroupRoomsReportSummarySection.html'"></div>
     <!-- Vertical Slider -->
     <div class="groups scrollable" ng-iscroll="group-rooms-scroll">
         <div class="wrapper">
