@@ -57,9 +57,9 @@ angular.module('sntRover')
                  availableRooms = [],
                  pickedUpRooms = [];
 
-            blockedRooms.length = availableRooms.length = pickedUpRooms.length = dateRange.length;
 
             _.each(resultsFromApi, function(group, index) {
+                    blockedRooms.length = availableRooms.length = pickedUpRooms.length = dateRange.length;
 
                     _.each(group.rooms_count, function(roomCount) {
                         var index = dateRange.indexOf(roomCount.date);
