@@ -24,14 +24,14 @@ admin.controller('ADRatesAddonsCtrl', [
             $scope.isAddMode = false;
 
             // api load count
-            $scope.fileName = 'Choose file...';
+            $scope.fileName = "Choose file...";
             $scope.initialImage = '';
             $scope.apiLoadCount = 0;
             $scope.chargeCodesForChargeGrp = [];
-            $scope.singleAddon.charge_group_id = '';
+            $scope.singleAddon.charge_group_id = "";
             $scope.currentClickedAddon = -1;
-            $scope.errorMessage = '';
-            $scope.successMessage = '';
+            $scope.errorMessage = "";
+            $scope.successMessage = "";
             $scope.state = {
                 rates: activeRates.results
             };
@@ -51,11 +51,11 @@ admin.controller('ADRatesAddonsCtrl', [
 
         $scope.init();
         $scope.showChargeFullWeeksOnly = function() {
-            if (!$scope.isConnectedToPMS && $scope.singleAddon.post_type_id === 3 && $scope.singleAddon.is_reservation_only === true) {
+            if (!$scope.isConnectedToPMS && ($scope.singleAddon.post_type_id === 3) && ($scope.singleAddon.is_reservation_only === true)) {
                 return true;
+            } else {
+                return false;
             }
-            return false;
-
         };
 
         $scope.fetchTableData = function($defer, params) {
@@ -153,7 +153,9 @@ admin.controller('ADRatesAddonsCtrl', [
                 $scope.$emit('hideLoader');
             };
 
-            $scope.invokeApi(ADRatesAddonsSrv.fetchReferenceValue, { 'type': 'amount_type' }, atCallback, '', 'NONE');
+            $scope.invokeApi(ADRatesAddonsSrv.fetchReferenceValue, {
+                'type': 'amount_type'
+            }, atCallback, '', 'NONE');
 
             // fetch post types
             var ptCallback = function(data) {
@@ -167,7 +169,9 @@ admin.controller('ADRatesAddonsCtrl', [
                 $scope.$emit('hideLoader');
             };
 
-            $scope.invokeApi(ADRatesAddonsSrv.fetchReferenceValue, { 'type': 'post_type' }, ptCallback, '', 'NONE');
+            $scope.invokeApi(ADRatesAddonsSrv.fetchReferenceValue, {
+                'type': 'post_type'
+            }, ptCallback, '', 'NONE');
 
             // fetch the current business date
             var bdCallback = function(data) {
@@ -183,13 +187,13 @@ admin.controller('ADRatesAddonsCtrl', [
 
         // To fetch the template for chains details add/edit screens
         $scope.getTemplateUrl = function() {
-            return '/assets/partials/rates/adNewAddon.html';
+            return "/assets/partials/rates/adNewAddon.html";
         };
 
         // to add new addon
         $scope.addNew = function() {
-
-            $scope.singleAddon.charge_group_id = '';
+            $scope.setDefaultLanguageForTranslation();
+            $scope.singleAddon.charge_group_id = "";
             manipulateChargeCodeForChargeGroups();
 
             $scope.isAddMode = true;
@@ -221,7 +225,7 @@ admin.controller('ADRatesAddonsCtrl', [
 
             // initate to include all rates here
             $scope.filterRates($scope.singleAddon);
-            $scope.singleAddon.addon_image = '';
+            $scope.singleAddon.addon_image = "";
         };
 
         // listen for datepicker update from ngDialog
@@ -251,10 +255,10 @@ admin.controller('ADRatesAddonsCtrl', [
         $scope.resetDate = function(pickerId) {
 
             if (pickerId === 'From') {
-                $scope.singleAddon.begin_date_for_display = '';
+                $scope.singleAddon.begin_date_for_display = "";
                 $scope.singleAddon.begin_date = null;
             } else {
-                $scope.singleAddon.end_date_for_display = '';
+                $scope.singleAddon.end_date_for_display = "";
                 $scope.singleAddon.end_date = null;
             }
 
@@ -262,128 +266,9 @@ admin.controller('ADRatesAddonsCtrl', [
 
         // the listner must be destroyed when no needed anymore
         $scope.$on('$destroy', updateBind);
-        // set the data for the language deropdown
-        availableLanguages.locales = availableLanguages.languages;
-        delete availableLanguages.languages;
-        // variable is different
-        _.each(availableLanguages.locales, function(locale) {
-            locale.value = locale.code;
-            delete locale.code;
-        });
-        // filter out disabled languages
-        availableLanguages.locales = _.reject(availableLanguages.locales, function(locale) {
-            return !locale.is_show_on_guest_card;
-        });
-
-        $scope.languages = availableLanguages;
-        $scope.languages.localeValues = [];
-        $scope.filter = {
-            'locale': availableLanguages.selected_language_code,
-            'currentLocaleId': 0
-        };
-        $scope.currentLocale = availableLanguages.selected_language_code;
-
-        $scope.onLocaleChange = function() {
-            for (var i in $scope.languages.locales) {
-                if ($scope.filter.locale === $scope.languages.locales[i].value) {
-                    $scope.filter.currentLocaleId = $scope.languages.locales[i].id;
-                }
-            }
-            setCurrentLanguageAddonText();
-
-        };
-
-        var updateAddonLanguage = function(field, field_id) {
-            var filter = $scope.filter.locale;
-
-            if (!$scope.languages.localeValues[filter]) {
-                $scope.languages.localeValues[filter] = {
-                    'language_id': $scope.filter.currentLocaleId
-                };
-            }
-            $scope.languages.localeValues[filter][field] = $scope.singleAddon[field_id];
-        };
-
-        var listenForAddonLanguageChanges = function() {
-            // addon name input field
-            var textareas = document.getElementsByTagName('textarea');
-
-            for (var i in textareas) {
-                if (textareas[i].placeholder === 'Enter Add-On Description') {
-                    textareas[i].addEventListener('change', function() {
-                        updateAddonLanguage('translated_description', 'description');
-                    });
-                } else if (textareas[i].placeholder === 'Enter Alternate Description') {
-                    textareas[i].addEventListener('change', function() {
-                        updateAddonLanguage('translated_alternate_description', 'alternate_description');
-                    });
-                }
-            }
-
-            var inputs = document.getElementsByTagName('input');
-
-            for (var x in inputs) {
-                if (inputs[x].placeholder === 'Enter suffix label') {
-                    inputs[x].addEventListener('change', function() {
-                        updateAddonLanguage('translated_suffix', 'suffix_label');
-                    });
-                } else if (inputs[x].placeholder === 'Enter Add-On Name') {
-                    inputs[x].addEventListener('change', function() {
-                        updateAddonLanguage('translated_name', 'name');
-                    });
-                }
-            }
-
-        };
-
-        var getAddonLanguageFormatToSave = function(enRequested) {
-            // var addonTranslationsArray = [],
-            //    locale, localeObj,
-            var filter = $scope.filter.locale;
-
-            if (enRequested) {
-                filter = availableLanguages.selected_language_code;
-            } 
-            var lang = $scope.languages.localeValues[filter] ? $scope.languages.localeValues[filter] : {};
-
-            if (!lang.id && lang.language_id) {
-                lang.id = null;
-            }
-            if (lang.translated_name === null) {
-                lang.translated_name = '';
-            }
-            if (lang.translated_description === null) {
-                lang.translated_description = '';
-            }
-            if (lang.translated_alternate_description === null) {
-                lang.translated_alternate_description = '';
-            }
-            if (lang.translated_suffix === null) {
-                lang.translated_suffix = '';
-            }
-            if (lang.id === null) {
-                // if the api changes the spec again this may need to go as null.
-                // CICO-38437
-                delete lang.id;
-            }
-            return lang;
-
-            /*
-            for (var x in $scope.languages.locales) {
-                locale = $scope.languages.locales[x].value;
-
-                if ($scope.languages.localeValues[locale]) {
-                    localeObj = $scope.languages.localeValues[locale];
-
-                    addonTranslationsArray.push(localeObj);
-                }
-            }
-
-            return addonTranslationsArray;
-            */
-        };
 
         $scope.editSingle = function() {
+            $scope.setDefaultLanguageForTranslation();
             $scope.isAddMode = false;
             $scope.isEditMode = true;
 
@@ -416,22 +301,23 @@ admin.controller('ADRatesAddonsCtrl', [
 
                 // now remove commas created by number
                 // when the number is greater than 3 digits (without fractions)
-                if ($scope.singleAddon.amount) { // fixes error when no amount is returned from api
+                if ($scope.singleAddon.amount) {
                     $scope.singleAddon.amount = $scope.singleAddon.amount.split(',').join('');
                 }
+
 
                 // if the user is editing an old addon
                 // where the dates are not set
                 // set the date to current business date
                 if (!$scope.singleAddon.begin_date) {
                     $scope.singleAddon.begin_date = null; // CICO-17736 Addons can have blank begin-end dates
-                    $scope.singleAddon.begin_date_for_display = '';
+                    $scope.singleAddon.begin_date_for_display = "";
                 } else {
                     $scope.singleAddon.begin_date_for_display = $filter('date')(tzIndependentDate($scope.singleAddon.begin_date), $rootScope.dateFormat);
                 }
                 if (!$scope.singleAddon.end_date) {
                     $scope.singleAddon.end_date = null; // CICO-17736 Addons can have blank begin-end dates
-                    $scope.singleAddon.end_date_for_display = '';
+                    $scope.singleAddon.end_date_for_display = "";
                 } else {
                     $scope.singleAddon.end_date_for_display = $filter('date')(tzIndependentDate($scope.singleAddon.end_date), $rootScope.dateFormat);
                 }
@@ -443,70 +329,10 @@ admin.controller('ADRatesAddonsCtrl', [
                 $scope.singleAddon.end_date = $scope.singleAddon.end_date;
 
                 $scope.filterRates($scope.singleAddon);
-
-                if ($scope.singleAddon.translations) {
-                    setAddonTranslations();
-                }
-
             };
 
             $scope.invokeApi(ADRatesAddonsSrv.fetchSingle, $scope.currentAddonId, callback);
         };
-
-        var setCurrentLanguageAddonText = function() {
-            var filter = $scope.filter.locale;
-            var selectedLocale = $scope.languages.localeValues[filter];
-
-            var lang = selectedLocale ? selectedLocale : {
-                'language_id': $scope.filter.currentLocaleId
-            };
-
-            $scope.singleAddon.alternate_description = lang.translated_alternate_description ? lang.translated_alternate_description : '';
-            $scope.singleAddon.suffix_label = lang.translated_suffix ? lang.translated_suffix : '';
-            $scope.singleAddon.description = lang.translated_description ? lang.translated_description : '';
-            $scope.singleAddon.name = lang.translated_name ? lang.translated_name : '';
-        };
-
-        var setAddonTranslations = function() {
-            var defaultLocale = availableLanguages.selected_language_code; // usually en for english
-            // var locale = availableLanguages.selected_language_code;
-
-            $scope.languages.localeValues[defaultLocale] = {};
-            $scope.languages.localeValues[defaultLocale].translated_alternate_description = $scope.singleAddon.alternate_description;
-            $scope.languages.localeValues[defaultLocale].translated_description = $scope.singleAddon.description;
-            $scope.languages.localeValues[defaultLocale].translated_name = $scope.singleAddon.name;
-            $scope.languages.localeValues[defaultLocale].translated_suffix = $scope.singleAddon.suffix_label;
-
-
-            // need to find and set the language id / id for the default language
-            // if no other languages have been configured for the addon, this will be needed
-            var localeTranslationLang, dropdownItem;
-
-            for (var x in $scope.languages.locales) {
-                dropdownItem = $scope.languages.locales[x];
-                // if its english (usually default), then set the language id to english locale id
-                // otherwise find the proper language_id to match it with
-                if (dropdownItem.value === defaultLocale) {
-                    $scope.languages.localeValues[defaultLocale].language_id = dropdownItem.id;
-                }
-
-                if ($scope.singleAddon.translations.length > 0) {
-                    _.each($scope.singleAddon.translations, function(translation) {
-                        if (translation.language_id === parseInt(dropdownItem.id)) {
-                            if (!$scope.languages.localeValues[dropdownItem.value]) {
-                                $scope.languages.localeValues[dropdownItem.value] = {};
-                            }
-                            $scope.languages.localeValues[dropdownItem.value].language_id = translation.language_id;
-                            $scope.languages.localeValues[dropdownItem.value] = translation;
-                            $scope.languages.localeValues[dropdownItem.value].id = (typeof translation.id === 'number') ? translation.id : null;
-                        }
-                    });
-                }
-            }
-
-            listenForAddonLanguageChanges();
-        };
-
 
         // on close all add/edit modes
         $scope.cancelCliked = function() {
@@ -519,21 +345,6 @@ admin.controller('ADRatesAddonsCtrl', [
 
         // on save add/edit addon
         $scope.addUpdateAddon = function() {
-            var addonTranslations, addon_name, description, alternate_description, suffix_label;
-
-            if ($scope.filter.locale !== availableLanguages.selected_language_code) {
-                addonTranslations = getAddonLanguageFormatToSave(true);
-                addon_name = addonTranslations.translated_name;
-                description = addonTranslations.translated_description;
-                alternate_description = addonTranslations.translated_alternate_description;
-                suffix_label = addonTranslations.translated_suffix;
-            } else {
-                addon_name = $scope.singleAddon.name;
-                description = $scope.singleAddon.description;
-                alternate_description = $scope.singleAddon.alternate_description;
-                suffix_label = $scope.singleAddon.suffix_label;
-            }
-
             var singleAddonData = {
                 activated: $scope.singleAddon.activated,
                 amount: $scope.singleAddon.amount,
@@ -541,26 +352,50 @@ admin.controller('ADRatesAddonsCtrl', [
                 bestseller: $scope.singleAddon.bestseller,
                 charge_code_id: $scope.singleAddon.charge_code_id,
                 charge_group_id: $scope.singleAddon.charge_group_id,
-                description: description,
+                description: $scope.singleAddon.description,
                 is_alternate_description_active: $scope.singleAddon.is_alternate_description_active,
-                alternate_description: alternate_description,
+                alternate_description: $scope.singleAddon.alternate_description,
                 is_reservation_only: $scope.singleAddon.is_reservation_only,
                 inventory_count: parseInt($scope.singleAddon.inventory_count),
-                name: addon_name,
+                name: $scope.singleAddon.name,
                 post_type_id: $scope.singleAddon.post_type_id,
                 rate_code_only: $scope.singleAddon.rate_code_only,
                 manual_posting: $scope.singleAddon.manual_posting,
                 forecast_for_next_day: $scope.singleAddon.forecast_for_next_day,
-                charge_full_weeks_only: !!($scope.singleAddon.post_type_id === 3 && $scope.singleAddon.is_reservation_only && $scope.singleAddon.charge_full_weeks_only),
+                charge_full_weeks_only: (($scope.singleAddon.post_type_id === 3) && $scope.singleAddon.is_reservation_only && $scope.singleAddon.charge_full_weeks_only) ? true : false,
                 allow_rate_exclusions: $scope.singleAddon.allow_rate_exclusions,
                 excluded_rate_ids: _.pluck($scope.singleAddon.excludedRates, 'id'),
                 addon_image: $scope.singleAddon.addon_image,
                 is_sell_separate: $scope.singleAddon.is_sell_separate,
                 is_display_suffix: $scope.singleAddon.is_display_suffix,
-                suffix_label: suffix_label,
-                translations: getAddonLanguageFormatToSave()
+                suffix_label: $scope.singleAddon.suffix_label
 
             };
+
+            if ($scope.isConnectedToPMS) {
+                if ($scope.isDefaulLanguageSelected()) {
+                    var selectedLanguage = _.find($scope.languages.locales, function(language) {
+                        return language.value === $scope.languageFilter.locale;
+                    });
+                    var selectedLanguageTranslations = _.find($scope.singleAddon.translations, function(translation) {
+                        return parseInt(selectedLanguage.id) === parseInt(translation.language_id);
+                    });
+                    var translations = {};
+
+                    // translations.translated_description = $scope.singleAddon.description;
+                    translations.translated_alternate_description = $scope.singleAddon.alternate_description;
+                    translations.translated_suffix = $scope.singleAddon.suffix_label;
+                    translations.translated_name = $scope.singleAddon.name;
+                    translations.language_id = selectedLanguage.id;
+                    if (!_.isUndefined(selectedLanguageTranslations) && !_.isUndefined(selectedLanguageTranslations.id)) {
+                        translations.id = selectedLanguageTranslations.id
+                    }
+                    singleAddonData.translations = translations;
+                } else {
+                    singleAddonData.translations = JSON.parse(JSON.stringify($scope.translations));
+                }
+
+            }
 
             // convert dates to system format yyyy-MM-dd
             // if not date null should be passed - read story CICO-7287
@@ -580,9 +415,7 @@ admin.controller('ADRatesAddonsCtrl', [
                 var callback = function() {
                     $scope.$emit('hideLoader');
                     $scope.isAddMode = false;
-
                     $scope.tableParams.reload();
-                    $scope.filter.locale = availableLanguages.selected_language_code;
                 };
 
                 $scope.invokeApi(ADRatesAddonsSrv.addNewAddon, addon_data, callback);
@@ -597,7 +430,6 @@ admin.controller('ADRatesAddonsCtrl', [
                     $scope.currentClickedAddon = -1;
 
                     $scope.tableParams.reload();
-                    $scope.filter.locale = availableLanguages.selected_language_code;
                 };
 
                 // include current addon id also
@@ -612,14 +444,14 @@ admin.controller('ADRatesAddonsCtrl', [
             var item = this.item;
 
             var callback = function() {
-                item.activated = !item.activated;
+                item.activated = item.activated ? false : true;
 
                 $scope.$emit('hideLoader');
             };
 
             var data = {
                 id: item.id,
-                status: !item.activated
+                status: item.activated ? false : true
             };
 
             $scope.invokeApi(ADRatesAddonsSrv.switchActivation, data, callback);
@@ -661,12 +493,12 @@ admin.controller('ADRatesAddonsCtrl', [
         };
 
         $scope.chargeGroupChage = function() {
-            $scope.singleAddon.charge_code_id = '';
+            $scope.singleAddon.charge_code_id = "";
             manipulateChargeCodeForChargeGroups();
         };
 
         var updateBestSellerOption = function() {
-            if ($scope.singleAddon.rate_code_only) {
+            if (!!$scope.singleAddon.rate_code_only) {
                 $scope.singleAddon.bestseller = false;
             }
         };
@@ -689,12 +521,16 @@ admin.controller('ADRatesAddonsCtrl', [
         };
         $scope.sortByName = function() {
             if ($scope.currentClickedAddon === -1) {
-                $scope.tableParams.sorting({ 'name': $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc' });
+                $scope.tableParams.sorting({
+                    'name': $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'
+                });
             }
         };
         $scope.sortByDescription = function() {
             if ($scope.currentClickedAddon === -1) {
-                $scope.tableParams.sorting({ 'description': $scope.tableParams.isSortBy('description', 'asc') ? 'desc' : 'asc' });
+                $scope.tableParams.sorting({
+                    'description': $scope.tableParams.isSortBy('description', 'asc') ? 'desc' : 'asc'
+                });
             }
         };
 
@@ -705,13 +541,13 @@ admin.controller('ADRatesAddonsCtrl', [
 
             event.stopPropagation();
 
-            $scope.successMessage = 'Collecting package details from PMS and adding to Rover...';
+            $scope.successMessage = "Collecting package details from PMS and adding to Rover...";
 
             var fetchSuccessOfPackageList = function(data) {
                 $scope.$emit('hideLoader');
-                $scope.successMessage = 'Completed!';
+                $scope.successMessage = "Completed!";
                 $timeout(function() {
-                    $scope.successMessage = '';
+                    $scope.successMessage = "";
                 }, 1000);
             };
 
@@ -776,9 +612,56 @@ admin.controller('ADRatesAddonsCtrl', [
         };
 
         $scope.deleteIcon = function() {
-            $scope.fileName = 'Choose file...';
-            $scope.singleAddon.addon_image = '';
+            $scope.fileName = "Choose file...";
+            $scope.singleAddon.addon_image = "";
         };
 
+        /** Addon translation **/
+        $scope.translations = {};
+        // set the data for the language deropdown
+        availableLanguages.locales = availableLanguages.languages;
+        delete availableLanguages.languages;
+        // variable is different
+        _.each(availableLanguages.locales, function(locale) {
+            locale.value = locale.code;
+            delete locale.code;
+        });
+        // filter out disabled languages
+        availableLanguages.locales = _.reject(availableLanguages.locales, function(locale) {
+            return !locale.is_show_on_guest_card;
+        });
+
+        $scope.languages = availableLanguages;
+        $scope.languageFilter = {
+            'locale': availableLanguages.selected_language_code,
+            'currentLocaleId': 0
+        };
+        $scope.onLocaleChange = function() {
+            var selectedLanguage = _.find($scope.languages.locales, function(language) {
+                return language.value === $scope.languageFilter.locale
+            });
+            var selectedLanguageTranslations = _.find($scope.singleAddon.translations, function(translation) {
+                return parseInt(selectedLanguage.id) === parseInt(translation.language_id);
+            });
+            $scope.translations = {};
+            // $scope.translations.translated_description = _.isUndefined(selectedLanguageTranslations) ? '': selectedLanguageTranslations.translated_description;
+            $scope.translations.translated_alternate_description = _.isUndefined(selectedLanguageTranslations) ? '' : selectedLanguageTranslations.translated_alternate_description;
+            $scope.translations.translated_suffix = _.isUndefined(selectedLanguageTranslations) ? '' : selectedLanguageTranslations.translated_suffix;
+            $scope.translations.translated_name = _.isUndefined(selectedLanguageTranslations) ? '' : selectedLanguageTranslations.translated_name;
+            $scope.translations.language_id = selectedLanguage.id;
+            if (!_.isUndefined(selectedLanguageTranslations) && !_.isUndefined(selectedLanguageTranslations.id)) {
+                $scope.translations.id = selectedLanguageTranslations.id
+            }
+        };
+        $scope.onLocaleChange();
+
+        $scope.isDefaulLanguageSelected = function() {
+            return $scope.languages.selected_language_code === $scope.languageFilter.locale;
+        };
+        $scope.setDefaultLanguageForTranslation = function() {
+            $scope.languageFilter = {
+                'locale': availableLanguages.selected_language_code
+            };
+        }
     }
 ]);

@@ -354,7 +354,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             item_46: false,
             item_47: false,
             item_48: false,
-            item_49: false
+            item_49: false,
+            item_50: false
         };
         $scope.toggleFilterItems = function(item) {
             if ( ! $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -512,6 +513,22 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         $scope.toDateOptionsSixMonthsLimit = angular.extend({
             minDate: new tzIndependentDate($rootScope.businessDate),
             maxDate: reportUtils.processDate(($rootScope.businessDate)).sixMonthsAfter
+        }, datePickerCommon);
+
+        // CICO-34733 - Added for Group Rooms report
+        $scope.fromDateOptionsThirtyOneDaysLimit = angular.extend({
+            minDate: new tzIndependentDate($rootScope.businessDate),
+            onSelect: function(value, datePickerObj) {
+                var selectedDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+
+                $scope.toDateOptionsThirtyOneDaysLimit.minDate = selectedDate;
+                $scope.toDateOptionsThirtyOneDaysLimit.maxDate = reportUtils.processDate(selectedDate).thirtyOneDaysAfter;
+            }
+        }, datePickerCommon);
+
+        $scope.toDateOptionsThirtyOneDaysLimit = angular.extend({
+            minDate: new tzIndependentDate($rootScope.businessDate),
+            maxDate: reportUtils.processDate(($rootScope.businessDate)).thirtyOneDaysAfter
         }, datePickerCommon);
 
         // custom from and untill date picker options
@@ -1615,6 +1632,16 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 }
             }
 
+            // include group
+            if ( report.hasOwnProperty('hasIncludeGroup') && !! report.chosenIncludeGroup ) {
+                key         = report.hasIncludeGroup.value.toLowerCase();
+                params[key] = report.chosenIncludeGroup;
+                /* Note: Using the ui value here */
+                if ( changeAppliedFilter ) {
+                    $scope.appliedFilter['group'] = report.uiChosenIncludeGroup;
+                }
+            }
+
             // selected markets
             if ( report.hasOwnProperty('hasMarketsList') ) {
                 selected = _.where( report['hasMarketsList']['data'], { selected: true } );
@@ -2690,5 +2717,60 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 collision: 'flip'
             }
         }, autoCompleteForCompTaGrp);
+
+        // for Group
+        var autoCompleteForGrp = {
+            source: function(request, response) {
+                $scope.$emit( 'showLoader' );
+                reportsSubSrv.fetchGroups(request.term)
+                    .then(function(data) {
+                        var list = [];
+                        var entry = {};
+
+                        $.map(data, function(each) {
+                            entry = {
+                                label: each.group_name,
+                                value: each.id
+                            };
+                            list.push(entry);
+                        });
+
+                        response(list);
+                        $scope.$emit( 'hideLoader' );
+                    });
+            },
+            select: function(event, ui) {
+                this.value = ui.item.label;
+                setTimeout(function() {
+                    $scope.$apply(function() {
+                        touchedReport.uiChosenIncludeGroup = ui.item.label;
+                        touchedReport.chosenIncludeGroup = ui.item.value;
+                    });
+                }, 100);
+                return false;
+            },
+            focus: function(event, ui) {
+                return false;
+            }
+        };
+
+
+        $scope.grpAutoCompleteOnList = angular.extend({
+            position: {
+                my: 'left top',
+                at: 'left bottom',
+                collision: 'flip'
+            }
+        }, autoCompleteForGrp);
+
+        $scope.grpAutoCompleteOnDetails = angular.extend({
+            position: {
+                my: 'left bottom',
+                at: 'right+20 bottom',
+                collision: 'flip'
+            }
+        }, autoCompleteForGrp);
+
+
     }
 ]);

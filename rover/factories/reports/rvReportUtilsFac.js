@@ -555,6 +555,10 @@ angular.module('reportsModule')
                     report['hasIncludeCompanyTa'] = filter;
                 }
 
+                if ( filter.value === 'INCLUDE_GROUP' ) {
+                    report['hasIncludeGroup'] = filter;
+                }
+
                 // check for include company/ta/group filter and keep a ref to that item
                 if ( filter.value === 'INCLUDE_COMPANYCARD_TA_GROUP' || filter.value === 'GROUP_COMPANY_TA_CARD' ) {
                     report['hasIncludeCompanyTaGroup'] = filter;
@@ -2079,7 +2083,8 @@ angular.module('reportsModule')
                 'twentyEightDaysBefore': new Date(_year, _month, _date - 28),
                 'twentyEightDaysAfter': new Date(_year, _month, _date + 28),
                 'aYearAfter': new Date(_year + 1, _month, _date - 1),
-                'sixMonthsAfter': new Date(_year, _month + 6, _date)
+                'sixMonthsAfter': new Date(_year, _month + 6, _date),
+                'thirtyOneDaysAfter': new Date(_year, _month, _date + 30)
             };
 
             if ( parseInt(xDays) !== NaN ) {

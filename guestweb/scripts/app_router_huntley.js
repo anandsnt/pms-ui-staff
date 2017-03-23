@@ -123,7 +123,19 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		templateUrl: '/assets/preCheckin/partials/Huntley/preCheckinStatus.html',
 		controller: 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
-	 });
+	 }).state('checkinCcVerification', {
+		url: '/checkinCcVerification',
+		templateUrl: '/assets/checkin/partials/Huntley/gwCheckinCCAddition.html',
+		controller: 'checkinCcVerificationController',
+		title: 'CC verification'
+	});
+
+	// $stateProvider.state('externalCheckinVerification', {
+	// 	url: '/externalCheckinVerification',
+	// 	templateUrl: '/assets/checkin/partials/Huntley/gwExternalCheckin.html',
+	// 	controller: 'externalCheckinVerificationViewController',
+	// 	title: 'External Check in verification'
+	// });
 
 
 	$stateProvider.state('externalVerification', {

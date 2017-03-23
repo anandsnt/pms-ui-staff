@@ -183,7 +183,7 @@ is_ledger
 <tr ng-repeat="item in balanceEntries track by $index" class="charge-group" >
   <td class="code long-code break" >{{item.section}}
   </td>
-  <td class="break">{{item.today | currency:currencySymbol:2}}</td>
+  <td class="break" ng-class="{ 'red': item.today < 0 }">{{item.today | currency:currencySymbol:2}}</td>
   <td></td>
   <td></td>
   <td class="break"></td>
@@ -206,7 +206,7 @@ is_ledger
 <tr ng-repeat="item in ledgerDepositEntries track by $index" class="charge-group" >
   <td class="code long-code break" >{{item.section}}
   </td>
-  <td class="break">{{item.today | currency:currencySymbol:2}}</td>
+  <td class="break" ng-class="{ 'red': item.today < 0 }">{{item.today | currency:currencySymbol:2}}</td>
   <td></td>
   <td></td>
   <td class="break"></td>
@@ -228,7 +228,7 @@ is_ledger
 <tr ng-repeat="item in ledgerGuestEntries track by $index" class="charge-group" >
   <td class="code long-code break" >{{item.section}}
   </td>
-  <td class="break">{{item.today | currency:currencySymbol:2}}</td>
+  <td class="break" ng-class="{ 'red': item.today < 0 }">{{item.today | currency:currencySymbol:2}}</td>
   <td></td>
   <td></td>
   <td class="break"></td>
@@ -251,7 +251,7 @@ is_ledger
 <tr ng-repeat="item in ledgerAREntries track by $index" class="charge-group" >
   <td class="code long-code break" >{{item.section}}
   </td>
-  <td class="break">{{item.today | currency:currencySymbol:2}}</td>
+  <td class="break" ng-class="{ 'red': item.today < 0 }">{{item.today | currency:currencySymbol:2}}</td>
   <td></td>
   <td></td>
   <td class="break"></td>
@@ -259,5 +259,28 @@ is_ledger
   <td></td>
   <td></td>
 </tr>
+
+<tr class="grouped" ng-show="ledgerTotalVariance.length > 0">
+  <td class="code long-code break"></td>
+  <td class="break"></td>
+  <td></td>
+  <td></td>
+  <td class="break"></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+
+<tr class="charge-group" ng-repeat="item in ledgerTotalVariance track by $index"  ng-show="ledgerTotalVariance.length > 0">
+  <td class="code long-code break"><strong>{{item.section}}</strong></td>
+  <td class="break" > <strong ng-class="{ 'red': item.today < 0 }"> {{item.today | currency:currencySymbol:2}} </strong></td>
+  <td></td>
+  <td></td>
+  <td class="break"></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+
 
 
