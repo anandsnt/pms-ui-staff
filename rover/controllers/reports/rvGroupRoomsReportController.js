@@ -30,13 +30,15 @@ angular.module('sntRover')
         // Transform the summary count from the api to the format required for the ui
         var processSummaryCounts = function(summaryCount, dateRange) {
 
-                var blockedRooms = [dateRange.length],
-                    availableRooms = [dateRange.length],
-                    pickedUpRooms = [dateRange.length];
+                var blockedRooms = [],
+                    availableRooms = [],
+                    pickedUpRooms = [];
 
+                    blockedRooms.length = availableRooms.length = pickedUpRooms.length = dateRange.length;
 
                     _.each(summaryCount.rooms_count, function(roomCount) {
                         var index = dateRange.indexOf(roomCount.date);
+
                         availableRooms[index] = roomCount.available;
                         pickedUpRooms[index] = roomCount.picked_up;
                         blockedRooms[index] = roomCount.blocked;
@@ -51,16 +53,17 @@ angular.module('sntRover')
         // Transform the count from the api to the format required for the ui
         var processCounts = function(resultsFromApi, dateRange) {
 
-             var blockedRooms, availableRooms, pickedUpRooms;
+             var blockedRooms = [],
+                 availableRooms = [],
+                 pickedUpRooms = [];
+
+            blockedRooms.length = availableRooms.length = pickedUpRooms.length = dateRange.length;
 
             _.each(resultsFromApi, function(group, index) {
-                    blockedRooms = [dateRange.length],
-                    availableRooms = [dateRange.length],
-                    pickedUpRooms = [dateRange.length];
-
 
                     _.each(group.rooms_count, function(roomCount) {
                         var index = dateRange.indexOf(roomCount.date);
+
                         availableRooms[index] = roomCount.available;
                         pickedUpRooms[index] = roomCount.picked_up;
                         blockedRooms[index] = roomCount.blocked;
@@ -102,6 +105,7 @@ angular.module('sntRover')
             } else {
                 var currentMonthDays = 0,
                     nextMonthDays = 0;
+
                 _.each(dateRange, function( dateObj ) {
                     if (rvUtilSrv.getMonthFromDateString(dateObj) === fromMonthNo ) {
                         currentMonthDays++;
@@ -115,7 +119,7 @@ angular.module('sntRover')
 
             }
 
-            $scope.columnWidth = 100/$scope.days.length;
+            $scope.columnWidth = 100 / $scope.days.length;
         };
 
 
