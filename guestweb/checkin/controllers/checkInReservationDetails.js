@@ -42,14 +42,6 @@
 		$rootScope.checkedApplyCharges = $scope.checked = false;
 		$scope.showTermsPopup = false;
 	};
-
-	/** TO DELETE **/
-
-			$scope.enhancements = [{
-				'title': 'Parking'
-			}, {
-				'title': 'Projector'
-			}];
 	
 	/*
 	*	if birthday selection is turened on in admin, show birthday page 

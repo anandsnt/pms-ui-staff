@@ -5,7 +5,8 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
     'zsEventConstants',
     '$controller',
     'zsGeneralSrv',
-    function($scope, $stateParams, $state, zsEventConstants, $controller, zsGeneralSrv) {
+    '$log',
+    function($scope, $stateParams, $state, zsEventConstants, $controller, zsGeneralSrv, $log) {
 
         /** ********************************************************************************************
          **     Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -147,7 +148,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
                 $scope.mode = 'THIRD_PARTY_GET_IT_INFO_EMAIL_SENT';
             };
 
-            var onFailure = function(){
+            var onFailure = function() {
                 $log.warn('thirdPartyEmailFailure');
                 $state.go('zest_station.speakToStaff');
             };
