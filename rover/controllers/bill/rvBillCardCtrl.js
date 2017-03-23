@@ -2216,7 +2216,7 @@ sntRover.controller('RVbillCardController',
 	$scope.selectedChargeCode = {};
 
 	$scope.availableChargeCodes = [];
-		
+
 	$scope.setchargeCodeActive = function(bool) {
 		$scope.chargeCodeActive = bool;
 	};
@@ -2315,8 +2315,17 @@ sntRover.controller('RVbillCardController',
 		    $scope.openRemoveChargePopup();
 		} else if (action === "split") {
 		    $scope.openSplitChargePopup();
-		} else if (action === "edit") {
-		    $scope.openEditChargePopup();
+        } else if (action === "edit") {
+            if ($scope.availableChargeCodes.length) {
+                $scope.openEditChargePopup();
+            } else {
+                $scope.callAPI(RVBillCardSrv.fetchChargeCodes, {
+                    successCallBack: function(response) {
+                        $scope.availableChargeCodes = response.results;
+                        $scope.openEditChargePopup();
+                    }
+                });
+            }
 		}
 
 
