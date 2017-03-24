@@ -3461,6 +3461,12 @@
             .groups {
                 .calc-height( 100, 118 );
                 position: relative;
+
+                .group {
+                    &:last-child {
+                        border-bottom: 1px solid @grey2;
+                    }
+                }
             }
 
             .group-info {
