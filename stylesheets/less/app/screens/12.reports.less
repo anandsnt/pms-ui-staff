@@ -3461,6 +3461,12 @@
             .groups {
                 .calc-height( 100, 118 );
                 position: relative;
+
+                .group {
+                    &:last-child {
+                        border-bottom: 1px solid @grey2;
+                    }
+                }
             }
 
             .group-info {
@@ -3468,7 +3474,7 @@
                 padding:5px 10px;
                 border-top: 1px solid @grey2;
                 border-bottom: 1px solid @grey2;
-                height: 40px;
+                min-height: 40px;
                 .float;
 
                 .title {
@@ -3487,6 +3493,8 @@
                     li {
                         float: left;
                         margin-bottom:0;
+                        line-height:1;
+                        margin-top: 2px;
 
                         &:not(:last-child) {
                             margin-right: 20px;
