@@ -202,15 +202,15 @@ angular.module('sntRover')
                                 $scope.extendShortenReservationDetails = params;
                             } else {
                                 switch (response.data.availability_status) {
-                                case 'to_be_unassigned' : $scope.messages = ['PREASSIGNED'];
-                                    break;
-                                case 'maintenance' : $scope.messages = ['MAINTENANCE'];
-                                    break;
-                                case 'do_not_move' : $scope.messages = ['ROOM_IS_SET_TO_DO_NOT_MOVE'];
-                                    break;
-                                case 'room_ooo' : $scope.messages = ['ROOM_OOO'];
-                                    break;
-                                default : $scope.messages = ["Room Can't Move"];
+                                    case 'to_be_unassigned' : $scope.messages = ['PREASSIGNED'];
+                                        break;
+                                    case 'maintenance' : $scope.messages = ['MAINTENANCE'];
+                                        break;
+                                    case 'do_not_move' : $scope.messages = ['ROOM_IS_SET_TO_DO_NOT_MOVE'];
+                                        break;
+                                    case 'room_ooo' : $scope.messages = ['ROOM_OOO'];
+                                        break;
+                                    default : $scope.messages = ["ROOM_TYPE_NOT_AVAILABLE"];
                                 }
                                 openMessagePopup();
                             }
