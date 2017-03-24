@@ -89,7 +89,6 @@
 					<!-- Remove .hidden to when 'Rate Types' filter is active
 					Otherwise add .hidden
 					-->
-					<!-- // TODO
 					<div class="entry"  ng-class="{'hidden': chosenTab !== 'RATE_TYPES'}">
 						<label for="rate-type">Filter Individual Rate Type(s)</label>
 						<div class="select">
@@ -101,7 +100,6 @@
 							</select>
 						</div>
 					</div>
-					-->
 
 					<!-- Rates Selected
 					Show when a Rate is selected
@@ -110,16 +108,16 @@
 					-->
 
 					<div class="selected-data" ng-class="{'hidden': chosenTab !== 'RATES'}">
-						<strong>Rates Selected</strong>
+						<strong ng-show="selectedRates.length > 0">Rates Selected</strong>
 
-						<div class="rates-box" ng-repeat="rateType in selectedRateTypes">
-							<span class="rate-data">{{rateType.name}}</span>
-							<span ng-click="deleteSelectedRateType(rateType.id)" class="icons delete_small"> &nbsp;</span>
+						<div class="rates-box" ng-repeat="rate in selectedRates">
+							<span class="rate-data">{{rate.name}}</span>
+							<span ng-click="deleteSelectedRate(rate.id)" class="icons delete_small"> &nbsp;</span>
 							<br clear="all">
 						</div>
 
 						<!-- Show if more than 1 -->
-						<button ng-show="selectedRateTypes.length > 2" ng-click="deleteAllSelectedRateTypes()" class="button blank deleteall">Clear Selection</button>
+						<button ng-show="selectedRates.length > 2" ng-click="deleteAllSelectedRates()" class="button blank deleteall">Clear Selection</button>
 					</div>
 
 					<!-- Contracted Rates
@@ -128,7 +126,7 @@
 					Hide if filter 'Rates' is not active
 					-->
 					<div class="selected-data" ng-class="{'hidden': chosenTab !== 'RATES'}">
-						<strong>Contracts Selected</strong>
+						<strong ng-show="selectedCards.length > 0" >Contracts Selected</strong>
 
 						<div class="rates-box" ng-class="{'dark': card.account_type === 'COMPANY', 'purple': card.account_type === 'TRAVELAGENT'}" ng-repeat="card in selectedCards">
 							<span class="rate-data">{{card.account_name}}</span>
@@ -143,19 +141,17 @@
 
 					<!-- Rate Types
 					Show when filter 'Rate Types' is active -->
-					<!-- // TODO
 					<div class="selected-data" ng-class="{'hidden': chosenTab !== 'RATE_TYPES'}">
-						<strong>Rate Types Selected</strong>
+						<strong ng-show="selectedRateTypes.length > 0">Rate Types Selected</strong>
 
-						<div class="rates-box">
-							<span class="rate-data">{Rate Type}</span>
-							<span class="icons delete_small"> &nbsp;</span>
+						<div class="rates-box" ng-repeat="rateType in selectedRateTypes">
+							<span class="rate-data">{{rateType.name}}</span>
+							<span ng-click="deleteSelectedRateType(rateType.id)" class="icons delete_small"> &nbsp;</span>
 							<br clear="all">
 						</div>
 
-						<button class="button blank deleteall">Clear Selection</button>
+						<button ng-show="selectedRateTypes.length > 2" ng-click="deleteAllSelectedRateTypes()" class="button blank deleteall">Clear Selection</button>
 					</div>
-					-->
 
 				</div> 
 			</div>

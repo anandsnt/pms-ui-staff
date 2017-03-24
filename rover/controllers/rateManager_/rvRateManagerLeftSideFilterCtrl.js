@@ -362,7 +362,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         
         $scope.showAllRates = true;
         
-        $scope.chosenTab = 'SHOW_ALL';
+        $scope.chosenTab = 'RATES';
 
         runDigestCycle();
 
