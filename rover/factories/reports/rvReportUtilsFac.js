@@ -1950,6 +1950,16 @@ angular.module('reportsModule')
                 if ( report['title'] === reportNames['COMPLIMENTARY_ROOM_REPORT'] ) {
                     report['showSort'] = false;
                 }
+
+                // CICO-34733 Set default sort
+                if ( report['title'] === reportNames['GROUP_ROOMS_REPORT'] ) {
+                    var arrivalDate = _.find(report['sortByOptions'], { 'value': 'GROUP_ARRIVAL_DATE' });
+
+                    if ( !! arrivalDate ) {
+                        arrivalDate['sortDir'] = true;
+                        report['chosenSortBy'] = arrivalDate['value'];
+                    }
+                }
             }
         };
 
