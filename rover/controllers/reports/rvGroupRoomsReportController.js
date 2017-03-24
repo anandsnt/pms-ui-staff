@@ -30,11 +30,11 @@ angular.module('sntRover')
         // Transform the summary count from the api to the format required for the ui
         var processSummaryCounts = function(summaryCount, dateRange) {
 
-                var blockedRooms,
-                    availableRooms,
-                    pickedUpRooms;
+                var blockedRooms = Array.apply(null, Array(dateRange.length)).map(String.prototype.valueOf, ""),
+                    availableRooms = Array.apply(null, Array(dateRange.length)).map(String.prototype.valueOf, ""),
+                    pickedUpRooms = Array.apply(null, Array(dateRange.length)).map(String.prototype.valueOf, "");
 
-                    blockedRooms = availableRooms = pickedUpRooms = Array.apply(null, Array(dateRange.length)).map(String.prototype.valueOf,"");
+
 
 
                     _.each(summaryCount.rooms_count, function(roomCount) {
@@ -60,7 +60,9 @@ angular.module('sntRover')
                  dateRangeSize = dateRange.length;
 
             _.each(resultsFromApi, function(group, index) {
-                    blockedRooms = availableRooms = pickedUpRooms = Array.apply(null, Array(dateRange.length)).map(String.prototype.valueOf,"");
+                    blockedRooms = Array.apply(null, Array(dateRange.length)).map(String.prototype.valueOf, ""),
+                    availableRooms = Array.apply(null, Array(dateRange.length)).map(String.prototype.valueOf, ""),
+                    pickedUpRooms = Array.apply(null, Array(dateRange.length)).map(String.prototype.valueOf, "");
 
 
                     _.each(group.rooms_count, function(roomCount) {
