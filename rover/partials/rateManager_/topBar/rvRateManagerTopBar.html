@@ -1,4 +1,4 @@
-<div class="topbar float" ng-show="showTopBar" >
+<div class="topbar float" ng-class="{'rate-view': isRateView}" ng-show="showTopBar" >
     <ul class="info">
         <!-- show .back if we are looking at a single rate with room rates -->
         <li class="back" ng-show="showBackButton" ng-click='clickedOnBackButton()'>
@@ -35,6 +35,15 @@
          
     </ul>
     <ul class="actions">
+        <!-- show only when viewing rates-->
+        <li ng-show="isRateView">
+            <!-- Add .expanded on .pinnedLeft when checked-->
+            <label class="checkbox" for="rate-toggle">
+                <span class="icon-form icon-checkbox"></span>
+                <input type="checkbox" id="rate-toggle" value="1" ng-click="clickedOnShowContractDetails()">
+                Show Contract Details
+             </label>  
+        </li>
         <li>
             <button class="button rm-buttonOpenClose green" ng-click="openAll()">
                 Open All
