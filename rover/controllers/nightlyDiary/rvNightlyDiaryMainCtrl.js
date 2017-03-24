@@ -8,6 +8,7 @@ angular.module('sntRover')
         'roomsList',
         'datesList',
         'ngDialog',
+        '$timeout',
         'reservationsList',
         'RVNightlyDiarySrv',
         function(
@@ -19,6 +20,7 @@ angular.module('sntRover')
             roomsList,
             datesList,
             ngDialog,
+            $timeout,
             reservationsList,
             RVNightlyDiarySrv
         ) {
@@ -233,8 +235,11 @@ angular.module('sntRover')
              */
             var saveReservationEditing = function() {
                 let successCallBack = function() {
-                    fetchRoomListDataAndReservationListData();
                     cancelReservationEditing();
+                    $timeout(function() {
+                        fetchRoomListDataAndReservationListData();
+                    }, 700);
+
                 };
 
 
