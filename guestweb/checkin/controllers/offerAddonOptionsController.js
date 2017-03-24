@@ -134,14 +134,14 @@
 			}
 		};
 
-		var addonFetchSuccess = function(addons) {
+		var fetchExistingAddons = function(allAvailableAddons){
 			// var selectedAddonIds = [5]; //already selected list for the reservation
 			// _.each(selectedAddonIds, function(selectedAddonId) {
 			// 	addons = _.reject(addons, function(addon) {
 			// 		return addon.id == selectedAddonId;
 			// 	});
 			// });
-			addons = _.reject(addons, function(addon) {
+			addons = _.reject(allAvailableAddons, function(addon) {
 				return !addon.zest_web_active;
 			});
 			_.each(addons, function(addon) {
@@ -162,6 +162,18 @@
 				// Multi addons
 				$scope.mode = 'LIST_VIEW';
 			}
+		};
+
+		var availableAddonFetchSuccess = function(allAvailableAddons) {
+			
+			checkinAddonService.fetchAlreadyAddedAddons().then(function(response) {
+				$scope.isLoading = false;
+				console.log(response);
+				fetchExistingAddons(allAvailableAddons);
+			}, function() {
+				$rootScope.netWorkError = true;
+				$scope.isLoading = false;
+			});
 		};
 
 		(function() {
@@ -189,8 +201,7 @@
 			$scope.quantityList = _.range(6);
 			var params = {};
 			checkinAddonService.getAddonList(params).then(function(response) {
-				$scope.isLoading = false;
-				addonFetchSuccess(response.addons);
+				availableAddonFetchSuccess(response.addons);
 			}, function() {
 				$rootScope.netWorkError = true;
 				$scope.isLoading = false;
