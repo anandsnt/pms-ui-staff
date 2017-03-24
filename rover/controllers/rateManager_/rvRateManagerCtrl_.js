@@ -664,6 +664,13 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     };
 
     /*
+     * on clicking the checkbox for show contract details in topbar.
+     */
+    $scope.clickedOnShowContractDetails = function() {
+        console.log('show contract details checked.');
+    };
+
+    /*
      * [description]
      * @param  {[type]} options.roomTypeIDs [description]
      * @param  {[type]} options.date        [description]
@@ -1855,6 +1862,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             }
 
             if (newFilterValues.showAllRates) {
+                $scope.isRateView = true;
                 if (initiatedFromLeftFilter) {
                     let allRate = {
                         ...lastSelectedFilterValues[activeFilterIndex].allRate,
@@ -1871,9 +1879,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchDailyRates(newFilterValues);
             } 
             else if (newFilterValues.showAllRoomTypes) {
+                $scope.isRateView = false;
                 fetchRoomTypeAndRestrictions(newFilterValues);
             } 
             else if (newFilterValues.showAllRateTypes) {
+                $scope.isRateView = false;
                 fetchRateTypeAndRestrictions(newFilterValues);
             }
             else {
@@ -1924,6 +1934,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
          */
         var initializeDataModel = () => {
             // for top bar
+            $scope.contractDetailsChecked = false;
             $scope.showTopBar = false;
             $scope.showBackButton = false;
             $scope.selectedCardNames = [];
