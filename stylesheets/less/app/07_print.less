@@ -2891,10 +2891,10 @@
             }
             
             .group-info {
-                padding:5pt 10pt;
+                padding: 4pt 10pt;
                 border-top: 1px solid @grey2;
                 border-bottom: 1px solid @grey2;
-                height: 40px;
+                min-height: 30pt;
                 .float;
 
                 .title {
@@ -2913,6 +2913,8 @@
                     li {
                         float: left;
                         margin-bottom:0;
+                        line-height:1;
+                        margin-top: 2pt;
 
                         &:not(:last-child) {
                             margin-right: 15pt;
