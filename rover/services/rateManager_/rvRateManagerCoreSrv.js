@@ -192,7 +192,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                 deferred = $q.defer(),
                 response = {};
 
-            promises.push(service.fetchAllRateTypesInfo(_.omit(params, 'fetchCommonRestrictions')).then((data) => {
+            promises.push(service.fetchAllRateTypesInfo(_.omit(params, 'fetchCommonRestrictions', 'fetchRateTypes')).then((data) => {
                 response.rateTypeAndRestrictions = data.results;
             }));
 

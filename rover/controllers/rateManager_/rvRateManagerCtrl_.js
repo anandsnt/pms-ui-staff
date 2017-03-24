@@ -486,10 +486,17 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             from_date: formatDateForAPI(filterValues.fromDate),
             to_date: formatDateForAPI(filterValues.toDate),
             order_id: filterValues.orderBySelectedValue,
-            // 'name_card_ids[]': _.pluck(filterValues.selectedCards, 'id'),
             fetchRateTypes: !cachedRateTypeList.length,
             fetchCommonRestrictions: true
         };
+        
+        // if they selected rate type from left filter
+        var rateTypeIDs = _.pluck(filterValues.selectedRateTypes, 'id');
+
+        if (rateTypeIDs.length) {
+            params['rate_type_ids[]'] = rateTypeIDs;
+        }
+
         var options = {
             params: params,
             onSuccess: onFetchRateTypeAndRestrictionsSuccess
