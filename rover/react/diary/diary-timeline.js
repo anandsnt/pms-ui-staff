@@ -117,7 +117,7 @@ var Timeline = React.createClass({
             for (j = 0; j < display.intervals_per_hour; j++, interval_counter++) {
                 spanClass = 'interval-' + (j + 1);
 
-                if (interval_counter === current_time_plot_point ) {
+                if (interval_counter === parseInt(current_time_plot_point, 10) ) {
                     spanClass += ' active';
                 }
                 interval_spans.push(
