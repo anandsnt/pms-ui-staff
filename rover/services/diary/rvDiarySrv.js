@@ -1047,9 +1047,9 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     }
 
                     function getTotalHours(arrivalDate) {
-                        var isDSTArrival = moment(arrivalDate).isDST();
-                        var isDSTPrevious = moment(arrivalDate).add(-1, 'days').isDST();
-                        var isDSTNext = moment(arrivalDate).add(1, 'days').isDST();
+                        var isDSTArrival = moment(arrivalDate).isDST(),
+                            isDSTPrevious = moment(arrivalDate).add(-1, 'days').isDST(),
+                            isDSTNext = moment(arrivalDate).add(1, 'days').isDST();
 
                         return {
                             hasExtraHour: isDSTArrival && !isDSTNext,
