@@ -572,7 +572,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                             _data_Store.set({
                                 filter: {
-                                    arrival_time: (new Date(create_reservation_data.start_date)).toComponents().time.toString(),
+                                    arrival_time: arrival_ms.toComponents().time.toString(),
                                     min_hours: (create_reservation_data.end_date - create_reservation_data.start_date) / 3600000,
                                     room_type_id: create_reservation_data.room_type_id
                                 },
@@ -891,11 +891,15 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                 this.properDateTimeCreation = function(start_date) {
                     var data       = $vault.get('searchReservationData'),
-                        start_date = start_date ? new tzIndependentDate(start_date) : new tzIndependentDate($rootScope.businessDate);
+                        arrivalFormatted;
+
+                    start_date = start_date ? new tzIndependentDate(start_date) : new tzIndependentDate($rootScope.businessDate);
 
                     if (data) {
                         data = JSON.parse(data);
-                        start_date.setHours( parseInt(data.arrivalTime.hh), parseInt(data.arrivalTime.mm) );
+                        arrivalFormatted = getTimeFormated(data.arrivalTime.hh, data.arrivalTime.mm, data.arrivalTime.ampm);
+                        arrivalFormatted = arrivalFormatted.split(":");
+                        start_date.setHours(parseInt(arrivalFormatted[0]), parseInt(arrivalFormatted[1]));
                     } else {
                         correctTime();
                     }
@@ -1043,39 +1047,13 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     }
 
                     function getTotalHours(arrivalDate) {
-                        var startingTime = new Date(arrivalDate),
-                            timeBefore,
-                            timeChnangeDiff,
-                            i, len;
-
-                        var hasExtraHour, hasLessHour;
-
-                        startingTime.setHours(0, 0, 0);
-                        for (i = 0, len = 25; i < len; i++) {
-                            timeBefore = new Date( startingTime );
-                            timeBefore.setHours( timeBefore.getHours() - 1);
-
-                            timeChnangeDiff = startingTime.getTimezoneOffset() - timeBefore.getTimezoneOffset();
-                            if ( timeChnangeDiff < 0 ) {
-                                hasLessHour = true;
-                                hasExtraHour = false;
-                                break;
-                            }
-                            else if ( timeChnangeDiff > 0 ) {
-                                hasLessHour = false;
-                                hasExtraHour = true;
-                                break;
-                            } else {
-                                hasLessHour = false;
-                                hasExtraHour = false;
-                            }
-
-                            startingTime.setHours(startingTime.getHours() + 1);
-                        }
+                        var isDSTArrival = moment(arrivalDate).isDST();
+                        var isDSTPrevious = moment(arrivalDate).add(-1, 'days').isDST();
+                        var isDSTNext = moment(arrivalDate).add(1, 'days').isDST();
 
                         return {
-                            hasExtraHour: hasExtraHour,
-                            hasLessHour: hasLessHour
+                            hasExtraHour: isDSTArrival && !isDSTNext,
+                            hasLessHour: isDSTArrival && !isDSTPrevious
                         };
                     }
                 };

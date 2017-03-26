@@ -7,7 +7,7 @@ var Timeline = React.createClass({
             end_time = display.x_p instanceof Date ? display.x_p.getTime() : display.x_p,
             point_to_plot = -1 ; // -1 do not wanted to show red line
 
-        var diff_s_e, diff_p_s, ms_int;
+        var diff_s_e, diff_p_s, ms_int, timeStart, timeProp, timeDiffFromStart;
 
         if (start_time <= prop_time <= end_time) {
             // diff of prop time & start time
@@ -16,6 +16,11 @@ var Timeline = React.createClass({
             ms_int = diff_s_e / (display.hours * display.intervals_per_hour);
             point_to_plot = diff_p_s / ms_int;
             point_to_plot++; // since zeroth point is considered as
+            // Adjust for day light saving switches
+            timeStart = new Date(start_time);
+            timeProp = new Date(prop_time);
+            timeDiffFromStart = timeProp.getTimezoneOffset() - timeStart.getTimezoneOffset();
+            point_to_plot += timeDiffFromStart / (60 / display.intervals_per_hour);
         }
         return point_to_plot;
     },
