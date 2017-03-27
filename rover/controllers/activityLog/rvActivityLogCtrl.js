@@ -23,7 +23,7 @@ sntRover.controller('RVActivityLogCtrl', [
             {
                 id: $scope.$parent.reservation.reservation_card.reservation_id,
                 confirmationId: $scope.$parent.reservation.reservation_card.confirmation_num,
-                isRefresh: true
+                isrefresh: true
             });
 	};
 
