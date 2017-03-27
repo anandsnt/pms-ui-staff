@@ -1,5 +1,5 @@
-angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$log', '$timeout',
-    function($q, $http, $log, $timeout) {
+angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$log', '$timeout', '$rootScope',
+    function($q, $http, $log, $timeout, $rootScope) {
         var service = this,
             isCheckLastTransactionInProgress = false,
             cordovaAPI = new CardOperation(),
@@ -151,7 +151,7 @@ angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$log', '$t
         /**
          * @returns {undefined} undefined
          */
-        service.checkLastTransactionStatus = function() {
+        service.checkLastTransactionStatus = function(showNotifications) {
             $log.info('checkLastTransactionStatus');
             if (isCheckLastTransactionInProgress) {
                 return;
@@ -163,6 +163,11 @@ angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$log', '$t
                 successCallBack: (data) => {
                     isCheckLastTransactionInProgress = false;
                     $log.info('checkLastTransactionStatus', data);
+
+                    if (showNotifications) {
+                        $rootScope.$emit('UPDATE_NOTIFICATION', 'PLEASE TRY AGAIN!');
+                    }
+
                     // In case last transaction was a success
                     if (parseInt('data.last_txn_success', 10) > 0) {
                         service.updateTransactionSuccess(data.txn_id, data).then(response => {
@@ -182,6 +187,11 @@ angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$log', '$t
                 },
                 failureCallBack: (error) => {
                     isCheckLastTransactionInProgress = false;
+
+                    if (showNotifications) {
+                        $rootScope.$emit('UPDATE_NOTIFICATION', error.RVErrorCode + ' ' + error.RVErrorDesc);
+                    }
+
                     $log.info('checkLastTransactionStatus', error);
                     /**
                      * Code : 104 Desc : Device not connected.

@@ -575,6 +575,23 @@ module.exports = {
                 'guestweb/**/common_templates/partials/gwNoOption.html',
                 checkoutNowPartials + '*.html',
                 checkinPartials + '*.html',
+                precheckinPartials + '*.html'],
+            'guestweb_distrikt_nyc': [ 'guestweb/**/common_templates/partials/checkin/**.html',
+                'guestweb/**/common_templates/partials/checkout/**.html',
+                'guestweb/**/common_templates/partials/gwNoOption.html',
+                checkoutNowPartials + '*.html',
+                checkinPartials + '*.html',
+                precheckinPartials + '*.html'],
+            'guestweb_stella_hotel': [ 'guestweb/**/common_templates/partials/checkin/**.html',
+                'guestweb/**/common_templates/partials/checkout/**.html',
+                'guestweb/**/common_templates/partials/gwNoOption.html',
+                checkoutNowPartials + '*.html',
+                checkinPartials + '*.html',
+                precheckinPartials + '*.html'],
+            'guestweb_beau_rivage': [ 'guestweb/**/common_templates/partials/MGM/**/*.html',
+                'guestweb/**/common_templates/partials/gwNoOption.html',
+                checkoutNowPartials + '*.html',
+                checkinPartials + '*.html',
                 precheckinPartials + '*.html']
         };
     }

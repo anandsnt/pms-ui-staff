@@ -45,6 +45,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
                 if (data.data) {
                     $scope.selectedReservation.reservation_details = data.data.reservation_card;
+                    $scope.zestStationData.selectedReservation = $scope.selectedReservation;
                     if ($scope.isRateSuppressed()) {
                         $scope.selectedReservation.reservation_details.balance = 0;
                     }

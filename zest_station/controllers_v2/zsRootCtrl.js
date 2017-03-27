@@ -568,6 +568,8 @@ sntZestStation.controller('zsRootCtrl', [
                     checkout: iconBasePath + '/checkout.svg',
                     key: iconBasePath + '/key.svg',
 
+                    checkmark: commonIconsPath + '/checkmark.svg',
+
                     oos: iconBasePath + '/oos.svg',
                     back: iconBasePath + '/back.svg',
                     close: iconBasePath + '/close.svg',
@@ -607,6 +609,10 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.icons.url.logo = iconsPath + '/logo-print.svg';
                 }
                 $scope.icons.url.logo = iconsPath + '/logo-print.svg';
+            }
+
+            if ($scope.zestStationData.theme === 'yotel') {
+                $scope.icons.url.checkmark = iconsPath + '/checkmark.svg';
             }
         };
 

@@ -19,6 +19,8 @@ angular.module('reportsModule').constant('RVReportPaginationIdsConst', {
     'Company/TA Top Producers': 'COMPANY_TA_TOP_PRODUCERS',
     'Credit Check Report': 'CREDIT_CHECK_REPORT',
     'Deposit Balance Summary': 'DEPOSIT_SUMMARY',
-    'Business on the Books': 'BUSINESS_ON_BOOKS'
+    'Business on the Books': 'BUSINESS_ON_BOOKS',
+    'Complimentary Room Report': 'COMPLIMENTARY_ROOM_REPORT',
+    'Group Rooms Report': 'GROUP_ROOMS_REPORT'
 
 });

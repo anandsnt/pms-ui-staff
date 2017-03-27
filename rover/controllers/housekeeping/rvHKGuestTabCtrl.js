@@ -84,7 +84,7 @@ angular.module('sntRover').controller('RVHKGuestTabCtrl', [
                 // CICO-28117 - Allow only the user with permission to change the room status to inspected
                 var changeRoomStatusToInspectedPermission = rvPermissionSrv.getPermissionValue ('CHANGE_ROOM_STATUS_TO_INSPECTED');
 
-                if (!changeRoomStatusToInspectedPermission) {
+                if (!changeRoomStatusToInspectedPermission && $rootScope.isStandAlone) {
                     ngDialog.close();
                     $timeout(function() {
                         ngDialog.open({

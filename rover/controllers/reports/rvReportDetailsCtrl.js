@@ -405,6 +405,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.rightColSpan = 4;
 					break;
 
+                case reportNames['COMPLIMENTARY_ROOM_REPORT']:
+                    $scope.leftColSpan = 5;
+                    $scope.rightColSpan = 3;
+                    break;
+
 				default:
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 2;
@@ -720,6 +725,19 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.detailsTemplateUrl  = '/assets/partials/reports/travelAgentCommission/rvTravelAgentCommissionReportRow.html';
 					break;
 
+                case reportNames['COMPLIMENTARY_ROOM_REPORT']:
+                    $scope.hasReportTotals    = true;
+                    $scope.showReportHeader   = true;
+                    $scope.detailsTemplateUrl = '/assets/partials/reports/complimentaryRoomReport/rvComplimentaryRoomReport.html';
+
+                break;
+
+                case reportNames['GROUP_ROOMS_REPORT']:
+                    $scope.showReportHeader   = true;
+                    $scope.detailsTemplateUrl = '/assets/partials/reports/groupRoomsReport/rvGroupRoomsReport.html';
+
+                break;
+
 				default:
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
@@ -816,6 +834,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportNames['VACANT_ROOMS_REPORT']:
 					template = '/assets/partials/reports/vacantRoomsReport/rvVacantRoomsReportRow.html';
+					break;
+
+				case reportNames['COMPLIMENTARY_ROOM_REPORT']:
+					template = '/assets/partials/reports/complimentaryRoomReport/rvComplimentaryRoomReport.html';
 					break;
 
 
@@ -971,8 +993,15 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// reset the page
 			$_pageNo = 1;
 
+            var pageNo  = 1;
+
+            // CICO-39128 - Added to preserve the page no while sorting
+            if ($scope.chosenReport.title === reportNames['COMPLIMENTARY_ROOM_REPORT']) {
+                pageNo = $scope.currentPage;
+            }
+
 			// should-we-change-view, specify-page, per-page-value
-			$scope.genReport( false, 1 );
+			$scope.genReport( false, pageNo );
 		};
 
 		// refetch the reports with new filter values
@@ -1048,6 +1077,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
 				case reportNames['A/R_AGING']:
                 case reportNames['BUSINESS_ON_BOOKS']:
+                case reportNames['COMPLIMENTARY_ROOM_REPORT']:
+                case reportNames['GROUP_ROOMS_REPORT']:
+
 					orientation = 'landscape';
 					break;
 

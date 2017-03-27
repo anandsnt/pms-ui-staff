@@ -12,8 +12,8 @@
         </div>
         <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.room_ready_email_mobile_app_call_to_action" label="{{ 'MOBILE_APP_CALL_ACTION' | translate}}" placeholder=""></ad-textarea>
         <ad-form-sub-title title="INCLUDE_BANNERS"></ad-form-sub-title>
-        <ad-toggle-button is-checked="data.room_ready_email_ios_banner_include" label="{{'APP_STORE'| translate}}" div-class="full-width" is-disabled="!data.ios_app_enabled"></ad-toggle-button>
-        <ad-toggle-button is-checked="data.room_ready_email_android_banner_include" label="{{'GOOGLE_PLAY'| translate}}" div-class="full-width" is-disabled="!data.android_app_enabled"></ad-toggle-button>
+        <ad-toggle-button ng-class="{'overlay':!data.ios_app_enabled}" is-checked="data.room_ready_email_ios_banner_include" label="{{'APP_STORE'| translate}}" div-class="full-width" is-disabled="!data.ios_app_enabled"></ad-toggle-button>
+        <ad-toggle-button ng-class="{'overlay':!data.android_app_enabled}" is-checked="data.room_ready_email_android_banner_include" label="{{'GOOGLE_PLAY'| translate}}" div-class="full-width" is-disabled="!data.android_app_enabled"></ad-toggle-button>
         <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.room_ready_email_bottom_text" label="{{ 'TEXT_2' | translate}}" placeholder=""></ad-textarea>
     </fieldset>
 </ad-common-parts-in-form-dir>

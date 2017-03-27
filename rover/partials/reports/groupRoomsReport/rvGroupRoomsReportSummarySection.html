@@ -1,0 +1,54 @@
+<div class="group-data totals">
+            <ul>
+                <li class="main-heading">
+                  Total RMS
+                </li>
+                <li class="blocked">
+                  <span class="icons icon-blocked"></span>
+                  {{summaryCounts.total_blocked_count}}
+                </li>
+                <li class="pickedup">
+                  <span class="icons icon-picked-up"></span>
+                  {{summaryCounts.total_picked_up_count}}
+                </li>
+                <li class="available">
+                  <span class="icons icon-available"></span>
+                  {{summaryCounts.total_available_count}}
+                </li>
+            </ul>
+            <table class="statistics-reports group-rooms-reports">
+                <colgroup>
+                    <col style="width: {{columnWidth}}%" ng-repeat="day in days track by $index">
+                </colgroup>
+                <thead>
+                   <tr>
+                        <th colspan="{{noOfDaysFromMonth}}">{{fromMonth}} {{fromYear}}</th>
+                        <!--
+                        If we are going to present data from next month -->
+                        <th colspan="{{noOfDaysToMonth}}" ng-if="showNextMonth">{{toMonth}} {{toYear}}</th>
+                   </tr>
+
+                    <tr class="bottom-row">
+                        <th ng-repeat="day in days track by $index">{{day}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Blocked rooms Total -->
+                    <tr>
+                        <!-- add .zero if its 0 -->
+                        <td ng-repeat="blockedCount in summaryCounts.blockedCounts track by $index" ng-class="{'zero': blockedCount == 0}">{{blockedCount}}</td>
+                    </tr>
+                    <!-- Picked Up rooms Total -->
+                    <tr>
+                        <!-- add .zero if its 0 -->
+                        <td ng-repeat="pickedUpCount in summaryCounts.pickedUpCounts track by $index" ng-class="{'zero': pickedUpCount == 0}">{{pickedUpCount}}</td>
+                    </tr>
+                    <!-- Available rooms Total -->
+                    <tr>
+                        <!-- add .zero if its 0 -->
+                        <td ng-repeat="availableCount in summaryCounts.availableCounts track by $index" ng-class="{'zero': availableCount == 0}">{{availableCount}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
