@@ -18,7 +18,7 @@
             </ul>
             <table class="statistics-reports group-rooms-reports">
                 <colgroup>
-                    <col style="width: {{columnWidth}}%" ng-repeat="day in days">
+                    <col style="width: {{columnWidth}}%" ng-repeat="day in days track by $index">
                 </colgroup>
                 <thead>
                    <tr>
