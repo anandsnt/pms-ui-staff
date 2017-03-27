@@ -9,12 +9,20 @@ const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, ro
 
                                 item.reservations.length > 0 ?
                                     item.reservations.map((reservationItem) => (
-                                            <NightlyDiaryReservationContainer reservation={reservationItem} room={item} />
+                                            <NightlyDiaryReservationContainer reservation={reservationItem} room={item}  />
                                         )
                                     )
 
                                 : ''
+                            }
+                            {
+                                item.ooo_oos_details.length > 0 ?
+                                    item.ooo_oos_details.map((oooOosItem) => (
+                                            <NightlyDiaryOutOfOrderOutOfServiceContainer ooo_oos={oooOosItem} room={item}  />
+                                        )
+                                    )
 
+                                : ''
                             }
                         </div>
                     )

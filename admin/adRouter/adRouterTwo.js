@@ -360,7 +360,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
                 return ADPromotionsSrv.getActiveRates();
             },
             availableLanguages: function(ADTranslationSrv) {
-                return ADTranslationSrv.getGuestLanguages();
+                return ADTranslationSrv.getActiveGuestLanguages();
             }
         }
     });
@@ -597,26 +597,6 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         url: '/debuggingSetup'
     });
 
-    $stateProvider.state('admin.zestStationConfig', {
-        templateUrl: '/assets/partials/zestStation/adZestStationCfg.html',
-        controller: 'ADZestStationCtrl',
-        url: '/zestStationConfig'
-    });
-    $stateProvider.state('admin.ZestStationCheckin', {
-        templateUrl: '/assets/partials/zestStation/adZestStationCheckin.html',
-        controller: 'ADZestStationCheckInCtrl',
-        url: '/zestStationCheckin'
-    });
-    $stateProvider.state('admin.ZestStationCheckout', {
-        templateUrl: '/assets/partials/zestStation/adZestStationCheckout.html',
-        controller: 'ADZestStationCheckOutCtrl',
-        url: '/zestStationCheckout'
-    });
-    $stateProvider.state('admin.ZestStationPickUpKeys', {
-        templateUrl: '/assets/partials/zestStation/adZestStationPickUpKeys.html',
-        controller: 'ADZestStationPickUpKeysCtrl',
-        url: '/zestStationPickUpKeys'
-    });
 
     $stateProvider.state('admin.emailBlacklist', {
         templateUrl: '/assets/partials/EmailBlackList/adEmailBlackList.html',
@@ -649,7 +629,6 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         }
     });
 
-
     $stateProvider.state('admin.zestWebCommon', {
         templateUrl: '/assets/partials/zestwebCommonSettings/adZestwebCommonSettings.html',
         controller: 'ADZestwebCommonSettingsCtrl',
@@ -674,17 +653,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
             }
         }
     });
-   
-    $stateProvider.state('admin.ZestStationRoomUpsells', {
-        templateUrl: '/assets/partials/zestStation/adZestStationRoomUpsell.html',
-        controller: 'ADZestStationRoomUpsellCtrl',
-        url: '/zestStationRoomUpsell',
-        resolve: {
-            roomUpsellData: function(ADZestStationSrv) {
-                return ADZestStationSrv.fetch();
-            }
-        }
-    });
+
 
     $stateProvider.state('admin.upsellAddonSettings', {
         templateUrl: '/assets/partials/upsellAddons/adUpsellAddons.html',
@@ -696,4 +665,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
             }
         }
     });
+
+
+    $stateProvider.state('admin.zestWebAddons', {
+        templateUrl: '/assets/partials/checkin/adZestWebAddons.html',
+        controller: 'ADZestWebAddonCtrl',
+        url: '/zestWebAddons'
+    });
+
 });
