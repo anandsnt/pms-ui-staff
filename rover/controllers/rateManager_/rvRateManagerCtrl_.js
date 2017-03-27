@@ -486,10 +486,17 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             from_date: formatDateForAPI(filterValues.fromDate),
             to_date: formatDateForAPI(filterValues.toDate),
             order_id: filterValues.orderBySelectedValue,
-            // 'name_card_ids[]': _.pluck(filterValues.selectedCards, 'id'),
             fetchRateTypes: !cachedRateTypeList.length,
             fetchCommonRestrictions: true
         };
+        
+        // if they selected rate type from left filter
+        var rateTypeIDs = _.pluck(filterValues.selectedRateTypes, 'id');
+
+        if (rateTypeIDs.length) {
+            params['rate_type_ids[]'] = rateTypeIDs;
+        }
+
         var options = {
             params: params,
             onSuccess: onFetchRateTypeAndRestrictionsSuccess
@@ -654,6 +661,13 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
            lastSelectedFilterValues[activeFilterIndex].allRate = 
                _.omit(lastSelectedFilterValues[activeFilterIndex].allRate, 'scrollTo');
         }
+    };
+
+    /*
+     * on clicking the checkbox for show contract details in topbar.
+     */
+    $scope.clickedOnShowContractDetails = function() {
+        console.log('show contract details checked.');
     };
 
     /*
@@ -1848,6 +1862,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             }
 
             if (newFilterValues.showAllRates) {
+                $scope.isRateView = true;
                 if (initiatedFromLeftFilter) {
                     let allRate = {
                         ...lastSelectedFilterValues[activeFilterIndex].allRate,
@@ -1864,9 +1879,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchDailyRates(newFilterValues);
             } 
             else if (newFilterValues.showAllRoomTypes) {
+                $scope.isRateView = false;
                 fetchRoomTypeAndRestrictions(newFilterValues);
             } 
             else if (newFilterValues.showAllRateTypes) {
+                $scope.isRateView = false;
                 fetchRateTypeAndRestrictions(newFilterValues);
             }
             else {
@@ -1917,6 +1934,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
          */
         var initializeDataModel = () => {
             // for top bar
+            $scope.contractDetailsChecked = false;
             $scope.showTopBar = false;
             $scope.showBackButton = false;
             $scope.selectedCardNames = [];
