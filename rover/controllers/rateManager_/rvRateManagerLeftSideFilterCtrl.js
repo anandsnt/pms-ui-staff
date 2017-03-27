@@ -188,7 +188,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         $scope.selectedRates = [];
         $scope.selectedRateID = '';
         
-        //deleting the nodes will change the height
+        // deleting the nodes will change the height
         refreshScroller();
       };
 
@@ -198,37 +198,39 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        * @return {Boolean}
        */
       $scope.shouldShowRate = (rate) => {
-        //if "'Select Rate Type' choosed from Rate type down choosed"
+        // if "'Select Rate Type' choosed from Rate type down choosed"
         if ($scope.selectedRateTypeID === '' && !$scope.selectedRateTypes.length) {
           return true;
         }
 
         var selectedRateTypeIDs = _.pluck($scope.selectedRateTypes, 'id');
+
         return (selectedRateTypeIDs.indexOf(rate.rate_type.id) > -1);
       };
 
       /**
-       * on tapping the ALL RATES radio box
+       * on tapping the ALL RATES tab
        */
       $scope.changedAllRatesSelection = () => {
-        if ($scope.showAllRates) {
-          $scope.showAllRoomTypes = false;
-        }
-
-        //we will clear out all selected from other tab
+        // we will clear out all selected from other tab
         $scope.deleteAllSelectedRates();
         $scope.deleteAllSelectedRateTypes();
       };
 
       /**
-       * on tapping the ALL ROOM TYPES radio box
+       * on tapping the ALL RATE TYPES tab
+       */
+      $scope.changedAllRateTypes = () => {
+        // we will clear out all selected from other tab
+        $scope.deleteAllSelectedRates();
+        $scope.deleteAllSelectedRateTypes();
+      };
+
+      /**
+       * on tapping the ALL ROOM TYPES tab
        */
       $scope.changedAllRoomTypes = () => {
-        if ($scope.showAllRoomTypes) {
-          $scope.showAllRates = false;
-        }
-
-        //we will clear out all selected from other tab
+        // we will clear out all selected from other tab
         $scope.deleteAllSelectedRates();
         $scope.deleteAllSelectedRateTypes();
         $scope.deleteAllSelectedCards();
@@ -244,26 +246,65 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         $scope.selectedDateRange = formatDateForUI(data.fromDate) + ' to ' + formatDateForUI(data.toDate);
       });
 
-      /**
-       * to switch the tab from left side filter's show all/select rate
-       * @param  {[type]} tab [description]
-       * @return {[type]}     [description]
-       */
-      $scope.switchTabAndCorrespondingActions = (tab) => {
-        $scope.chosenTab = tab;
-        refreshScroller();
+	  /**
+	   * to switch the tab from left side filter's show all/select rate
+	   * @param  {[type]} tab [description]
+	   * @return {[type]}     [description]
+	   */
+	  $scope.switchTabAndCorrespondingActions = (tab) => {
 
-        if (tab === 'SHOW_ALL') {
-          let selectedRateTypes = $scope.selectedRateTypes,
-              selectedRates = $scope.selectedRates;
+  		$scope.chosenTab = tab;
+  		refreshScroller();
+  		scrollTo('.filters');
 
-          //if coming back to show all tab after clearing the all selection from other tab, we have to set default value
-          if (!selectedRateTypes.length && !selectedRates.length && !$scope.showAllRates && !$scope.showAllRoomTypes) {
-            $scope.showAllRates = true;
-          }
-        }
-        scrollTo('.tabs-nav');
-      };
+      switch(tab) {
+
+        case 'RATES' : 
+              $scope.showAllRates = true;
+              $scope.showAllRateTypes = false;
+              $scope.showAllRoomTypes = false;
+              $scope.changedAllRatesSelection();
+              break;
+
+        case 'RATE_TYPES' : 
+              $scope.showAllRates = false;
+              $scope.showAllRateTypes = true;
+              $scope.showAllRoomTypes = false;
+              $scope.changedAllRateTypes();
+              break;
+
+        case 'ROOM_TYPES' : 
+              $scope.showAllRates = false;
+              $scope.showAllRateTypes = false;
+              $scope.showAllRoomTypes = true;
+              $scope.changedAllRoomTypes();
+              break;
+      }
+
+	  };
+
+	  $scope.getButtonText = function() {
+      var buttonText = '';
+
+      switch($scope.chosenTab) {
+
+        case 'RATES' : 
+              buttonText = 'Show All Rates';
+              break;
+
+        case 'RATE_TYPES' : 
+              buttonText = 'Show All Rate Types';
+              break;
+
+        case 'ROOM_TYPES' : 
+              buttonText = 'Show All Room Types';
+              break;
+        default :
+              buttonText = 'Show All Rates';
+      }
+
+      return buttonText;
+	  };
 
       /**
        * inorder to show the two month calendar on tapping the date range button
@@ -321,7 +362,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         
         $scope.showAllRates = true;
         
-        $scope.chosenTab = 'SHOW_ALL';
+        $scope.chosenTab = 'RATES';
 
         runDigestCycle();
 
@@ -371,6 +412,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         if (!$scope.$$phase) {
           $scope.$digest();
         }
+        console.log("runDigestCycle");
       };
 
       /**
@@ -468,6 +510,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
           groupBy: $scope.groupBySelectedValue,
 
           showAllRates: $scope.showAllRates,
+          showAllRateTypes: $scope.showAllRateTypes,
           showAllRoomTypes: $scope.showAllRoomTypes,
 
           selectedRateTypes: $scope.selectedRateTypes,
@@ -503,9 +546,10 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         $scope.groupByValues = rvRateManagerGroupByConstants;
 
         //tab selection
-        $scope.chosenTab = 'SHOW_ALL'; //list of values applicable: 'SHOW_ALL', 'SELECT_RATE'
+        $scope.chosenTab = 'RATES';
 
         $scope.showAllRates = true;
+        $scope.showAllRateTypes = false;
         $scope.showAllRoomTypes = false;
 
         //rate type related

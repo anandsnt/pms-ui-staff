@@ -32,6 +32,34 @@ let convertRatesDataForLeftListing = (rates, mode) => {
 	return ratesToReturn;
 };
 
+let convertRateTypesDataForLeftListing = (rateTypes, mode) => {
+	var rateTypesToReturn = [];
+	var showIndicator = (mode == RM_RX_CONST.RATE_TYPE_VIEW_MODE);
+
+	rateTypes.map((rateType, index) => {
+		rateTypesToReturn.push({
+			id: rateType.id,
+			name: rateType.name,
+			trClassName: ('cell rate ' + (((index + 1) === rateTypes.length) ? 'last' : '')),
+			tdClassName: '',
+			leftSpanClassName: 'name ' + (rateType.based_on_rate_id && !rateType.is_copied ? 'gray' : 'base-rate')+((rateType.is_company_card||rateType.is_travel_agent)?' contracted-rate':' contracted-rate contracted-rate-missing-info'),
+			showIconBeforeText: !rateType.based_on_rate_id,
+			iconClassBeforeText: !rateType.based_on_rate_id ? 'base-rate-indicator': '',
+			textInIconArea: !rateType.based_on_rate_id ? 'B' : '',
+			leftSpanText: rateType.name,
+			// address: rate.address,
+			showRightSpan: true,
+			contractLabel: rateType.is_travel_agent?'ta':(rateType.is_company_card?'c':''),
+			contractClass: rateType.is_travel_agent?'travel-agent':'',
+			rightSpanClassName: 'icons icon-double-arrow rotate-right',
+			// accountName: rate.account_name,
+			showIndicator :showIndicator
+		})
+	});
+
+	return rateTypesToReturn;
+}
+
 let getPreviousPageButtonText = (mode, paginationStateData) => {
 	let previousPageButtonText = "PREVIOUS"
 	switch(mode) {
@@ -124,6 +152,14 @@ const mapStateToRateManagerGridLeftRowsContainerProps = (state) => {
 			goToPrevPage: state.callBacksFromAngular.goToPrevPage,
 			goToNextPage: state.callBacksFromAngular.goToNextPage,
 			paginationStateData: state.paginationState
+		};
+	}
+	else if(state.mode === RM_RX_CONST.RATE_TYPE_VIEW_MODE) {
+		return {
+			leftListingData: convertRateTypesDataForLeftListing(state.list),
+			mode: state.mode,
+			fromDate: state.dates[0],
+			toDate: state.dates[state.dates.length-1]
 		};
 	}
 	else if(state.mode === RM_RX_CONST.ROOM_TYPE_VIEW_MODE) {

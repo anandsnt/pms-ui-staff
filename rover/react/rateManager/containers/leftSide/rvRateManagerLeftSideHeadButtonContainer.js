@@ -51,6 +51,9 @@ const mapStateToRateManagerGridLeftSideHeadButtonContainerProps = (state) => {
         propsToReturn.openAllCallbackForRoomTypeView = state.callBacksFromAngular.openAllRestrictionsForRoomTypeView;
         propsToReturn.closeAllCallbackForRoomTypeView = state.callBacksFromAngular.closeAllRestrictionsForRoomTypeView;
     }
+    else if(state.mode ===  RM_RX_CONST.RATE_TYPE_VIEW_MODE) {
+        propsToReturn.shouldShowToggle = false;
+    }
 
     return propsToReturn;
 };
