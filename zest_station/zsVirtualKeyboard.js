@@ -15,15 +15,10 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
     this.bound = false;
   // open virtual keyboard
     $.keyboard.language.love = $.extend($.keyboard.language.en);
-    var focused, isCountrySelector = id === 'country-selector';
-
-    if (isCountrySelector) {
-        focused = $('input')[0];  
-        elementObj = $(focused)[0];
-    } else {
+    var focused, isCountrySelector = id === 'country-selector-input';
         focused = $('#' + id);  
         elementObj = $(focused);
-    }
+    
   
 
     var defaultLayout, shift, zestStationNonPasswordField, zestStationNumDaysField, zestStationNationalityField;
@@ -46,7 +41,7 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
     };
 
     isNationalityField = function(i) {
-        return i && i.indexOf('country-selector') !== -1;
+        return i && (i.indexOf('country-selector') !== -1 || i.indexOf('country-selector-input') !== -1);
     };
 
     if (from === 'login' || isPasswordField(id)) {
@@ -299,6 +294,18 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
                 setTimeout(function() {
                     $(elementObj).autocomplete('search', beforeCloseVal);
                 }, 0);
+
+                setTimeout(function() {
+                    if (elementObj.getkeyboard().isOpen || id === 'country-selector-input') {
+                        try {
+                            console.log('trying to close keyboard')
+                            elementObj.getkeyboard().accept(true);
+                        } catch (err) {
+                            console.log('trying to close keyboard, err')
+                            elementObj.getkeyboard().close();
+                        }
+                    }
+                }, 100);
             }
             applyKeyboardInput();
         },
@@ -337,15 +344,9 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
         keyboardOptions.customLayout.default = keyboardOptions.customLayout.station_keyboard_no_numbers;
         $('.ui-keyboard').addClass('bottom-align-keyboard');
     }
-    var focused, isCountrySelector = id === 'country-selector';
-
-    if (isCountrySelector) {
-        focused = $('input')[0];  
-        elementObj = $(focused);
-    } else {
+    var focused, isCountrySelector = id === 'country-selector-input';
         focused = $('#' + id);  
         elementObj = $(focused);
-    }
 
 
   /*
@@ -367,6 +368,11 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
     };
 
     this.blurHandler = function() {
+        if (isCountrySelector) {
+            focused = $('#' + id);  
+            elementObj = $(focused);
+        }
+
         if (elementObj.getkeyboard().isOpen) {
             try {
                 elementObj.getkeyboard().accept(true);

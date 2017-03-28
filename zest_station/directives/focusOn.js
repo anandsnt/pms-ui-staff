@@ -17,7 +17,6 @@ sntZestStation.directive('focusOn', ['$timeout', function($timeout) {
                 documentClick = true;
             });
             var elToFocus = '';
-
             if (attrs.focusOn) {
                 elToFocus = attrs.focusOn;
                 if ($(elToFocus) && $(elToFocus)[0]) {
@@ -25,7 +24,6 @@ sntZestStation.directive('focusOn', ['$timeout', function($timeout) {
                     $timeout(function() {
                         var el = $(elToFocus)[0],
                         scopeFn = angular.element(el).scope()[attrs.focusOnTrigger];
-
                         $(elToFocus).focus(scopeFn);
                         $(elToFocus).keydown(scopeFn);
                         $(elToFocus).change(scopeFn);
@@ -37,7 +35,28 @@ sntZestStation.directive('focusOn', ['$timeout', function($timeout) {
                             $(elToFocus).click();
                         }, 200);
 
-                        scopeFn();
+                        if (typeof scopeFn !== 'undefined') {
+                            scopeFn();
+                        } else {
+                            if (attrs.focusOn === 'input') {
+                                // rootCtrl
+                                scopeFn = angular.element(el).scope().$parent.showOnScreenKeyboard;
+                                // set listeners
+                                var showKeyboardOnFocus = function() {
+                                    angular.element(el).scope().$parent.showOnScreenKeyboard('country-selector-input');
+                                    collectNationalityCtrl = angular.element($('#country-select-div input:text').first()[0]).scope();
+                                };
+                                // since the Input field is dynamically generated with the autocomplete jquery plugin, we need
+                                // to assign an ID to support also using the soft-keyboard
+                                // 
+                                $($('#country-select-div input:text').first()[0]).attr('id', 'country-selector-input');
+
+                                $(elToFocus).focus(showKeyboardOnFocus);
+                                $(elToFocus).keydown(showKeyboardOnFocus);
+                                $(elToFocus).change(showKeyboardOnFocus);
+                                $(elToFocus).blur(showKeyboardOnFocus);
+                            }
+                        }
                     }, 0);
                 }
             }
