@@ -514,9 +514,21 @@ angular.module('sntRover')
             $scope.ledgerAREntries = [];
             $scope.ledgerAREntries = _.where(results, { is_ar_ledger: true });
         }
+        /*
+         * Total variance 
+         * @param {array} results fetched data from API
+         */
        function ledgerTotalVarianceInit (results) {
             $scope.ledgerTotalVariance = [];
             $scope.ledgerTotalVariance = _.where(results, { is_total_variance: true });
+        }
+        /*
+         * Total closingBalance 
+         * @param {array} results fetched data from API
+         */
+        function ledgerTotalClosingBalanceInit (results) {
+            $scope.ledgerTotalClosingBalance = [];
+            $scope.ledgerTotalClosingBalance = _.where(results, {  is_total_closing_balance: true });
         }
          /**
          * init - bootstrap initial execution
@@ -535,6 +547,7 @@ angular.module('sntRover')
             ledgerGuestInit(results);
             ledgerARInit(results);
             ledgerTotalVarianceInit(results);
+            ledgerTotalClosingBalanceInit(results);
         }
 
         init();
