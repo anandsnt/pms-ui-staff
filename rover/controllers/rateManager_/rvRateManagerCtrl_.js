@@ -650,6 +650,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         getSingleRateRowDetailsAndUpdateCachedDataModel(rateID);
         
         $scope.showBackButton = false;
+        $scope.showContractDetailsChecked = false;
         
         // scroll focus
         var allRatesShowingData = _.where(showingData, { actionType: RM_RX_CONST.RATE_VIEW_CHANGED});
@@ -664,10 +665,18 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     };
 
     /*
-     * on clicking the checkbox for show contract details in topbar.
+     * on clicking the checkbox for show-contract-details in topbar.
      */
-    $scope.clickedOnShowContractDetails = function() {
-        console.log('show contract details checked.');
+    $scope.clickedOnShowContractDetails = function(e) {
+        $scope.showContractDetailsChecked = !$scope.showContractDetailsChecked;
+        var dispatchData = {
+            type: RM_RX_CONST.RATE_VIEW_WITH_ADDRESS,
+            flags: {
+                showRateDetail: $scope.showContractDetailsChecked
+            }
+        };
+        e.preventDefault();
+        store.dispatch(dispatchData);
     };
 
     /*
@@ -1786,6 +1795,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             $scope.selectedAddress = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'address');
 
             $scope.showBackButton = true;
+            $scope.isRateView = false;
 
             fetchSingleRateDetailsAndRestrictions(lastSelectedFilterValues[activeFilterIndex]);
         };
@@ -1863,6 +1873,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
             if (newFilterValues.showAllRates) {
                 $scope.isRateView = true;
+                $scope.isRateTypeView = false;
+                $scope.isRoomTypeView = false;
                 if (initiatedFromLeftFilter) {
                     let allRate = {
                         ...lastSelectedFilterValues[activeFilterIndex].allRate,
@@ -1880,10 +1892,14 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             } 
             else if (newFilterValues.showAllRoomTypes) {
                 $scope.isRateView = false;
+                $scope.isRateTypeView = false;
+                $scope.isRoomTypeView = true;
                 fetchRoomTypeAndRestrictions(newFilterValues);
             } 
             else if (newFilterValues.showAllRateTypes) {
                 $scope.isRateView = false;
+                $scope.isRateTypeView = true;
+                $scope.isRoomTypeView = false;
                 fetchRateTypeAndRestrictions(newFilterValues);
             }
             else {
@@ -1934,7 +1950,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
          */
         var initializeDataModel = () => {
             // for top bar
-            $scope.contractDetailsChecked = false;
+            $scope.showContractDetailsChecked = false;
             $scope.showTopBar = false;
             $scope.showBackButton = false;
             $scope.selectedCardNames = [];
