@@ -4,7 +4,7 @@ sntZestStation.directive('zsEmailCollection', function() {
 		replace: 'true',
 		scope: {
 			mode: '=mode',
-			guestId: '@guestId',
+			guestId: '=guestId',
 			icon: '=icon',
 			email:"=email",
 			isSkipable:"=isSkipable"
