@@ -60,7 +60,7 @@
 			};
 
 			if ($scope.isAddonFlatOrRoomType($scope.selectedAddon)) {
-				params.quantity = parseInt($scope.selectedAddon.quantity);
+				params.quantity = parseInt($scope.selectedAddonQuantity);
 			}
 			$scope.isLoading = true;
 			checkinAddonService.updateAddon(
@@ -93,7 +93,7 @@
 				'addon_id': $scope.selectedAddon.addon_id
 			};
 			if ($scope.isAddonFlatOrRoomType($scope.selectedAddon)) {
-				params.quantity = parseInt($scope.selectedAddon.quantity);
+				params.quantity = parseInt($scope.selectedAddonQuantity);
 			}
 			$scope.isLoading = true;
 			checkinAddonService.deleteAddon(
