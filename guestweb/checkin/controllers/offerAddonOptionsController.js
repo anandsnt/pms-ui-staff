@@ -13,6 +13,7 @@
 				} else {
 					$scope.addonPurchaseMsgForDisplay = $scope.selectedAddon.name;
 				}
+				$scope.selectedAddonQuantity = angular.copy($scope.selectedAddon.quantity);
 				$(document.body).scrollTop(0);
 			};
 
@@ -32,6 +33,7 @@
 
 			var addonAdditionSuccess = function() {
 				if ($scope.isAddonFlatOrRoomType($scope.selectedAddon)) {
+					$scope.selectedAddon.quantity = angular.copy($scope.selectedAddonQuantity);
 					if ($scope.selectedAddon.quantity > 0) {
 						$scope.selectedAddon.is_selected = true;
 						$scope.purchaseStatusText = angular.copy($scope.addonSuccesMessage);
@@ -78,6 +80,7 @@
 			var addonRemovalSuccess = function() {
 				if ($scope.isAddonFlatOrRoomType($scope.selectedAddon)) {
 					$scope.selectedAddon.is_selected = false;
+					$scope.selectedAddon.quantity = 0;
 				} else {
 					$scope.selectedAddon.is_selected = !$scope.selectedAddon.is_selected;
 				}
@@ -128,7 +131,7 @@
 			if (typeof $scope.selectedAddon === "undefined") {
 				return false;
 			} else if ($scope.isAddonFlatOrRoomType($scope.selectedAddon)) {
-				return $scope.selectedAddon.is_selected && parseInt($scope.selectedAddon.quantity) === 0;
+				return $scope.selectedAddon.is_selected && parseInt($scope.selectedAddonQuantity) === 0;
 			} else {
 				return $scope.selectedAddon.is_selected
 			}
@@ -139,7 +142,7 @@
 			var addons = [];
 			_.each(selectedAddonIds, function(selectedAddonId) {
 				addons = _.reject(allAvailableAddons, function(addon) {
-					return((addon.addon_id == selectedAddonId) || !addon.zest_web_active);
+					return ((addon.addon_id == selectedAddonId) || !addon.zest_web_active);
 				});
 			});
 			// Mark all as unselected initially

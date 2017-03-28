@@ -68,7 +68,6 @@
 			var url = '/staff/staycards/reservation_addons?reservation_id='+ $rootScope.reservationID;
 			$http.get(url).success(function(response) {
 					if(response.status === 'success'){
-						response.existing_packages[0].id = 55;
 						deferred.resolve(response.existing_packages);
 					}else{
 						deferred.reject();
