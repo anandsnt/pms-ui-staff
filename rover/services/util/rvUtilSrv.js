@@ -1,4 +1,4 @@
-angular.module('sntRover').service('rvUtilSrv', [function() {
+angular.module('sntRover').service('rvUtilSrv', ['$filter', function($filter) {
 
 		var self = this;
 		/**
@@ -68,6 +68,49 @@ angular.module('sntRover').service('rvUtilSrv', [function() {
 
 		    return datesBetween;
 		};
+
+        /**
+        * Get an array of date string belonging to a date range
+        * sample use case:- group rooms report        *
+        * @param1 {Date Object}
+        * @param2 {Date Object}
+        * @return Array of Date strings
+        */
+        this.getFormattedDatesBetweenTwoDates = function(fromDate, toDate) {
+            var datesBetween = [],
+                dateFrom = new Date(fromDate);
+
+            while (dateFrom <= toDate) {
+                datesBetween.push($filter('date')(dateFrom, 'yyyy-MM-dd'));
+                dateFrom.setDate(dateFrom.getDate() + 1);
+            }
+
+            return datesBetween;
+        };
+
+        /**
+        * Get an array of days belonging to a date range
+        * sample use case:- group rooms report        *
+        * @param1 {Date Object}
+        * @param2 {Date Object}
+        * @return Array of days
+        */
+        this.getDayBetweenTwoDates = function(fromDate, toDate) {
+            var dayBetween = [],
+                dateFrom = new Date(fromDate);
+
+            while (dateFrom <= toDate) {
+                dayBetween.push(dateFrom.getDate());
+                dateFrom.setDate(dateFrom.getDate() + 1);
+            }
+
+            return dayBetween;
+        };
+
+        // Get month from a date string
+        this.getMonthFromDateString = function(dateString) {
+            return (new Date(dateString).getMonth());
+        };
 
 		/**
 		 * to get the millisecond value against a date/date string
@@ -212,9 +255,9 @@ angular.module('sntRover').service('rvUtilSrv', [function() {
 		        }
 
 		        ampm 	= hours % 24 < 12 ? 'AM' : 'PM';
-		        
+
 		        value 	= ((hours < 10) ? ("0" + hours) : hours) + ':' + minutes;
-				
+
 				hours 	= hours % mode;
 		        if ((hours === 0 && mode === 12) || (hours === 0 && mode === 24 && i <= 60)) {
 		            hours = 12;
@@ -244,7 +287,7 @@ angular.module('sntRover').service('rvUtilSrv', [function() {
 			},
 			iOS: function() {
 				return !!navigator.userAgent.match(/iPhone|iPad|iPod/i);
-			}, 
+			},
 			android: function() {
         		return navigator.userAgent.match(/Android/i);
     		}

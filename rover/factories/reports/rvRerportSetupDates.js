@@ -95,6 +95,10 @@ angular.module('reportsModule')
                             'fromDate': getDates.businessDate,
                             'untilDate': getDates.businessDate
                         },
+                        'GROUP_ROOMS_REPORT': {
+                            'fromDate': getDates.businessDate,
+                            'untilDate': getDates.thirtyOneDaysAfter
+                        },
             			/**/
             			'DEFAULT': {
             				'fromDate': getDates.aWeekAgo,
