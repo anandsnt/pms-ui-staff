@@ -4,7 +4,9 @@ sntZestStation.directive('zsEmailCollection', function() {
 		replace: 'true',
 		scope: {
 			mode: '=mode',
-			guestId: '=guestId'
+			guestId: '=guestId',
+			icon: '=icon',
+			email:"=email"
 		},
 		templateUrl: '/assets/directives/zsEmailCollection/zsEmailCollectionDir.html',
 		controller: 'zsEmailCollectionDirCtrl'
