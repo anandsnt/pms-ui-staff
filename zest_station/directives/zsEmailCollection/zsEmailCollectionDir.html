@@ -38,5 +38,10 @@
                 </li>
             </ul>
         </nav>
+        <div id="actions" class="align-right" ng-show="isSkipable">
+            <button type="button" class="button transparent" click-touch="skipEmail()">
+                <text editable-text="SKIP_BTN"> {{'SKIP_BTN' |translate}}</text>
+            </button>
+        </div>
     </div>
 </div>

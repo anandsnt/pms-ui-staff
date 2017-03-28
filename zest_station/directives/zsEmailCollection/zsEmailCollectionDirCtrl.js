@@ -33,22 +33,14 @@ sntZestStation.controller('zsEmailCollectionDirCtrl', ['$scope', 'zsUtilitySrv',
             $scope.mode = 'EMAIL_INVLAID_MODE';
         };
 
-        var goToNextScreenInFlow = function() {
-            $scope.$emit('GO_TO_NEXT_SCREEN');
-        };
-
         var updateGuestEmail = function() {
             var updateComplete = function() {
-                goToNextScreenInFlow();
+                $scope.$emit('EMAIL_UPDATION_SUCCESS');
             };
 
             var updateGuestEmailFailed = function(response) {
                 console.warn('updateGuestEmailFailed: ', response); // if this fails would help give clues as to why
-                var stateParams = {
-                    'message': 'Email Updation Failed.'
-                };
-
-                $state.go('zest_station.speakToStaff', stateParams);
+                $scope.$emit('EMAIL_UPDATION_FAILED');
             };
 
             var afterBlackListValidation = function() {
@@ -86,7 +78,7 @@ sntZestStation.controller('zsEmailCollectionDirCtrl', ['$scope', 'zsUtilitySrv',
         };
 
         $scope.skipEmail = function() {
-            goToNextScreenInFlow()
+           $scope.$emit('SKIP_EMAIL');
         };
 
         (function() {
