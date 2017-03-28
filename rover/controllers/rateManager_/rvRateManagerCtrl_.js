@@ -709,6 +709,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 clickedOnRateViewCell,
                 clickedOnRoomTypeViewCell,
                 clickedOnRoomTypeAndAmountCell,
+                clickedOnRateTypeViewCell,
                 goToPrevPage,
                 goToNextPage
             };
@@ -1385,6 +1386,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 }
             };
             $scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateDetailsAndCommonRestrictions, options);
+        };
+
+        var clickedOnRateTypeViewCell = ({rateTypeIDs, date} ) => {
+            alert("reached here")
         };
 
         /*
