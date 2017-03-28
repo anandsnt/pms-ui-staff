@@ -53,7 +53,7 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 		$scope.campaignData.delayAfterCheckin = data.delay_after_checkin < 10 ? "0" + data.delay_after_checkin : "" + data.delay_after_checkin;
 		$scope.campaignData.delivery_details = data.delivery_details;
 		$scope.campaignData.target_type = (data.screen_type_id !==  "" && data.screen_type_id !==  null) ? "SCREEN" : "URL";
-		$scope.campaignData.screen_type_id = (data.screen_type_id !==  "" && data.screen_type_id !==  null) ? data.screen_type_id : "";
+		
 		$scope.campaignData.specific_users = data.specific_users;
 
 		$scope.campaignData.subject = data.subject;
@@ -82,6 +82,11 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 		$scope.campaignData.recurrence_end_date = data.recurrence_end_date;
 		$scope.campaignData.alert_ios8 = data.alert_ios8;
 		$scope.campaignData.alert_ios7 = data.alert_ios7;
+
+		setTimeout(function() {
+			$scope.campaignData.screen_type_id = (data.screen_type_id !==  "" && data.screen_type_id !==  null) ? data.screen_type_id : "";
+			$scope.$apply();
+		}, 500);
 	};
 
 	var fetchCampaignDetails = function(id) {
