@@ -2,8 +2,8 @@
  * Service used for tablet-kiosk UI (Zest Station)
  */
 
-sntZestStation.service('zsUtilitySrv', ['$http', '$q', 'zsBaseWebSrv',
-    function($http, $q, zsBaseWebSrv) {
+sntZestStation.service('zsUtilitySrv', ['$http', '$q', 'zsBaseWebSrv', '$timeout',
+    function($http, $q, zsBaseWebSrv, $timeout) {
         // service provider for common utilities
         var that = this;
 
@@ -157,6 +157,39 @@ sntZestStation.service('zsUtilitySrv', ['$http', '$q', 'zsBaseWebSrv',
                     }
                 }
             ];
+        };
+
+        // check if navigator is iPad
+        var ipadOrIphone = function() {
+            if ((navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) !== true) {
+                return false;
+            } else if (navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPhone/i)) {
+                return true;
+            }
+        };
+
+        var iphoneOrIpad = ipadOrIphone();
+        var isIpad = zestSntApp.cordovaLoaded && iphoneOrIpad;
+
+        this.focusInputField = function(elementId) {
+            $timeout(function() {
+                if (!isIpad) {
+                    if (document.getElementById(elementId)) { // fixes an error that occurs from user clicking too early while screen initializing
+                        document.getElementById(elementId).click();
+                    }
+                } else {
+                    $scope.callBlurEventForIpad();
+                }
+            }, 300);
+
+        };
+        this.callBlurEventForIpad = function() {
+            // need to check if its ipad here too as it 
+            // will be called from multiple areas
+            if (isIpad) {
+                document.activeElement.blur();
+                $('input').blur();
+            }
         };
 
     }

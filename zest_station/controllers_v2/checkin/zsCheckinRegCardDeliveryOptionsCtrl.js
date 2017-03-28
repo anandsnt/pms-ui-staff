@@ -275,53 +275,20 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
             $scope.mode = 'EMAIL_ENTRY_MODE';
             $scope.focusInputField('input_text');
         };
-		/**
-		 * [updateGuestEmail description]
-		 * @return {[type]} [description]
-		 */
-        var updateGuestEmail = function() {
-            var updateComplete = function() {
-                $scope.mode = 'EMAIL_SEND_MODE';
-                $scope.callBlurEventForIpad();
-                $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
+
+
+        $scope.$on('EMAIL_UPDATION_SUCCESS', function() {
+            $scope.mode = 'EMAIL_SEND_MODE';
+            $scope.callBlurEventForIpad();
+        });
+
+
+        $scope.$on('EMAIL_UPDATION_FAILED', function() {
+            var  stateParams = {
+                'message': 'Email Updation Failed.'
             };
-			/**
-			 * [updateGuestEmailFailed description]
-			 * @return {[type]} [description]
-			 */
-            var updateGuestEmailFailed = function() {
-                var stateParams = {};
-
-                $state.go('zest_station.speakToStaff', stateParams);
-            };
-
-            var options = {
-                params: {
-                    'guest_id': $stateParams.guest_id,
-                    'email': $scope.email
-                },
-                successCallBack: updateComplete,
-                failureCallBack: updateGuestEmailFailed
-            };
-
-            $scope.callAPI(zsGeneralSrv.updateGuestEmail, options);
-        };
-		/**
-		 * [goToNext description]
-		 *  save email
-		 */
-
-        $scope.goToNext = function() {
-            var isValidEmail = $scope.email.length > 0 ? zsUtilitySrv.isValidEmail($scope.email) : false;
-
-            if (isValidEmail) {
-                updateGuestEmail();
-            } else {
-                $scope.mode = 'EMAIL_INVLAID_MODE';
-                $scope.callBlurEventForIpad();
-            }
-        };
-
+            $state.go('zest_station.speakToStaff', stateParams);
+        });
 		/**
 		 * [initializeMe description]
 		 */
@@ -336,6 +303,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
             } else {
                 $scope.email = '';
             }
+            $scope.guestId = $stateParams.guest_id;
 
             $scope.from = $stateParams.from;
             if ($scope.zestStationData.registration_card.auto_print) {
