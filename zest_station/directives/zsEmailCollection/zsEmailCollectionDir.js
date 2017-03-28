@@ -7,7 +7,8 @@ sntZestStation.directive('zsEmailCollection', function() {
 			guestId: '=guestId',
 			icon: '=icon',
 			email:"=email",
-			isSkipable:"=isSkipable"
+			isSkipable:"=isSkipable",
+			showKeyboard:'&'
 		},
 		templateUrl: '/assets/directives/zsEmailCollection/zsEmailCollectionDir.html',
 		controller: 'zsEmailCollectionDirCtrl'
