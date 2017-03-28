@@ -280,7 +280,6 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
         $scope.$on('EMAIL_UPDATION_SUCCESS', function() {
             $scope.mode = 'EMAIL_SEND_MODE';
             $scope.callBlurEventForIpad();
-            $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
         });
 
 
