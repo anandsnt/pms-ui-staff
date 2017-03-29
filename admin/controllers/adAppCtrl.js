@@ -97,7 +97,7 @@ admin.controller('ADAppCtrl', [
                                 title: 'MENU_ROOM_DIARY',
                                 action: 'rover.nightlyDiary',
                                 standAlone: true,
-                                hidden: ($rootScope.isHourlyRatesEnabled || !$rootScope.isPmsDevEnv),
+                                hidden: $rootScope.isHourlyRatesEnabled,
                                 actionParams: {
                                     start_date: $rootScope.businessDate
                                 }
@@ -554,7 +554,6 @@ admin.controller('ADAppCtrl', [
 			$rootScope.isSuiteRoomsAvailable = data.suite_enabled;
 			$rootScope.hotelTimeZoneFull = data.hotel_time_zone_full;
 			$rootScope.hotelTimeZoneAbbr = data.hotel_time_zone_abbr;
-			$rootScope.isPmsDevEnv = data.is_pms_dev;
 
 			// CICO-18040
 			$rootScope.isFFPActive = data.is_ffp_active;

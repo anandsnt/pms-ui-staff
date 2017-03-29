@@ -17,7 +17,8 @@ const nightlyDiaryRootReducer = (state, action) => (
         isFromStayCard: state.isFromStayCard,
         dateFormat: state.dateFormat,
         newArrivalPosition: (action.type === 'EXTEND_SHORTEN_RESERVATION') ? action.newArrivalPosition : '',
-        newDeparturePosition: (action.type === 'EXTEND_SHORTEN_RESERVATION') ? action.newDeparturePosition : ''
+        newDeparturePosition: (action.type === 'EXTEND_SHORTEN_RESERVATION') ? action.newDeparturePosition : '',
+        isPmsProductionEnvironment: state.isPmsProductionEnvironment
     }
 );
 
