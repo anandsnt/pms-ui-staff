@@ -44,6 +44,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @type {Integer}
      */
     var totalRatesCountForPagination = 0,
+        totalRateTypesCountForPagination = 0,
         paginationRatePerPage = 0,
         paginationRateMaxRowsDisplay = 0; //for pagination purpose
 
@@ -515,12 +516,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      */
     var onFetchRateTypeAndRestrictionsSuccess = (response) => {
         var numberOfRateTypes = response.rateTypeAndRestrictions[0].rate_types.length;
-
+        
+        totalRateTypesCountForPagination = response.totalCount;
         if (numberOfRateTypes === 0) {
             hideAndClearDataForTopBar();
             showNoResultsPage();            
-        }
-        else {
+        } else {
             processRateTypesAndRestrictionForAllRateType(response);
         }
     };
@@ -609,6 +610,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             rateTypeRestrictionData : [...rateTypeWithRestrictions],
             businessDate        : tzIndependentDate($rootScope.businessDate),
             callbacksFromAngular: getTheCallbacksFromAngularToReact(),
+            paginationStateData: {
+                totalRows: totalRateTypesCountForPagination,
+                perPage: paginationRatePerPage,
+                page: lastSelectedFilterValues[activeFilterIndex].allRateTypes.currentPage
+            },
             dates,
             restrictionTypes,
         };
@@ -1870,7 +1876,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 activeFilterIndex = 0;
                 $scope.showBackButton = false;
                 totalRatesCountForPagination = 0;
-
+                totalRateTypesCountForPagination = 0;
                 showingData = [];
             }
 

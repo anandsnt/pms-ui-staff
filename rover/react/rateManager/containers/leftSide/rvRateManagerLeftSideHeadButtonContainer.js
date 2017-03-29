@@ -32,6 +32,9 @@ const mapStateToRateManagerGridLeftSideHeadButtonContainerProps = (state) => {
     }
     else if(state.mode ===  RM_RX_CONST.RATE_TYPE_VIEW_MODE) {
         propsToReturn.shouldShowPagination = true;
+        propsToReturn.goToPrevPage = state.callBacksFromAngular.goToPrevPage;
+        propsToReturn.goToNextPage = state.callBacksFromAngular.goToNextPage;
+        propsToReturn.paginationStateData = state.paginationState;
     }
 
     return propsToReturn;
@@ -41,6 +44,7 @@ let getPreviousPageButtonText = (mode, paginationStateData) => {
     let previousPageButtonText = "PREVIOUS "
     switch(mode) {
         case RM_RX_CONST.RATE_VIEW_MODE:
+        case RM_RX_CONST.RATE_TYPE_VIEW_MODE:
                 previousPageButtonText += paginationStateData.perPage + " RATES";
             break;
         default:
@@ -53,6 +57,7 @@ let getNextPageButtonText = (mode, paginationStateData) => {
     let nextPageButtonText = "NEXT "
     switch(mode) {
         case RM_RX_CONST.RATE_VIEW_MODE:
+        case RM_RX_CONST.RATE_TYPE_VIEW_MODE:
             if (Math.ceil(paginationStateData.totalRows / paginationStateData.perPage) === paginationStateData.page + 1) {
                 // In case of navigation to last page; show remaining
                 nextPageButtonText += paginationStateData.totalRows - (paginationStateData.perPage * paginationStateData.page) + " RATES";
@@ -67,14 +72,24 @@ let getNextPageButtonText = (mode, paginationStateData) => {
 };
 
 
-const mapActionToRateManagerGridLeftSideHeadButtonContainerProps =(stateProps, dispatchProps, ownProps)=>{
+const mapActionToRateManagerGridLeftSideHeadButtonContainerProps = (stateProps, dispatchProps, ownProps) => {
+    var isFirstPage = false, isLastPage = false;
+    
+    if (stateProps.mode ===  RM_RX_CONST.RATE_VIEW_MODE || stateProps.mode ===  RM_RX_CONST.RATE_TYPE_VIEW_MODE) {
+        if (stateProps.paginationStateData.page === 1) {
+            isFirstPage = true;
+        }
+        if (Math.ceil(stateProps.paginationStateData.totalRows / stateProps.paginationStateData.perPage) ===  stateProps.paginationStateData.page) {
+            isLastPage = true;
+        }
+    }
+
     return {
         ...stateProps,
         goToPrevPage: stateProps.goToPrevPage,
         goToNextPage: stateProps.goToNextPage,
-        isFirstPage: stateProps.mode != RM_RX_CONST.RATE_VIEW_MODE || stateProps.paginationStateData.page === 1,
-        isLastPage: stateProps.mode != RM_RX_CONST.RATE_VIEW_MODE ||
-            Math.ceil(stateProps.paginationStateData.totalRows / stateProps.paginationStateData.perPage) ===  stateProps.paginationStateData.page,
+        isFirstPage: isFirstPage,
+        isLastPage: isLastPage,
         prevPageButtonText: getPreviousPageButtonText(stateProps.mode, stateProps.paginationStateData),
         nextPageButtonText: getNextPageButtonText(stateProps.mode, stateProps.paginationStateData)
     }
