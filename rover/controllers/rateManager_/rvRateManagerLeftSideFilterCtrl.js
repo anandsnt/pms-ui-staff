@@ -509,6 +509,8 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
 
           groupBy: $scope.groupBySelectedValue,
 
+          chosenTab: $scope.chosenTab,
+
           showAllRates: $scope.showAllRates,
           showAllRateTypes: $scope.showAllRateTypes,
           showAllRoomTypes: $scope.showAllRoomTypes,

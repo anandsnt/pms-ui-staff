@@ -36,7 +36,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     var cachedRateList = [], 
         cachedRoomTypeList = [],
         cachedRateTypeList = [],
-        cachedRateAndRestrictionResponseData = [];
+        cachedRateAndRestrictionResponseData = [],
+        chosenTab = '';
 
     /**
      * for pagination purpose
@@ -489,6 +490,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             fetchRateTypes: !cachedRateTypeList.length,
             fetchCommonRestrictions: true
         };
+
+        params['page'] = filterValues.allRateTypes.currentPage;
+        params['per_page'] = paginationRatePerPage;
         
         // if they selected rate type from left filter
         var rateTypeIDs = _.pluck(filterValues.selectedRateTypes, 'id');
@@ -1494,13 +1498,21 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         };
 
         var goToPrevPage = ()=>{
-            lastSelectedFilterValues[activeFilterIndex].allRate.currentPage--;
+            if (chosenTab === 'RATES') {
+                lastSelectedFilterValues[activeFilterIndex].allRate.currentPage--;                
+            } else if (chosenTab === 'RATE_TYPES') {
+                lastSelectedFilterValues[activeFilterIndex].allRateTypes.currentPage--;                
+            }
             lastSelectedFilterValues[activeFilterIndex].fromLeftFilter = false;
             $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
         };
 
         var goToNextPage = ()=>{
-            lastSelectedFilterValues[activeFilterIndex].allRate.currentPage++;
+            if (chosenTab === 'RATES') {
+                lastSelectedFilterValues[activeFilterIndex].allRate.currentPage++;                
+            } else if (chosenTab === 'RATE_TYPES') {
+                lastSelectedFilterValues[activeFilterIndex].allRateTypes.currentPage++;                
+            }
             lastSelectedFilterValues[activeFilterIndex].fromLeftFilter = false;
             $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
         };
@@ -1846,6 +1858,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
          * @param  {Object} newFilterValues)
          */
         $scope.$on(rvRateManagerEventConstants.UPDATE_RESULTS, (event, newFilterValues) => {
+            chosenTab = newFilterValues.chosenTab;
             var initiatedFromLeftFilter = (_.has(newFilterValues, 'fromLeftFilter') && newFilterValues.fromLeftFilter) 
 
             // Storing for further reference
@@ -1884,6 +1897,19 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             } 
             else if (newFilterValues.showAllRateTypes) {
                 $scope.isRateView = false;
+                if (initiatedFromLeftFilter) {
+                    let allRateTypes = {
+                        ...lastSelectedFilterValues[activeFilterIndex].allRateTypes,
+                        currentPage: 1
+                    };
+
+                    lastSelectedFilterValues[activeFilterIndex].allRateTypes = allRateTypes;
+                    newFilterValues.allRateTypes = allRateTypes;
+
+                    // cachedRateTypesAndRestrictionResponseData = [];
+                }
+
+                // calling the api
                 fetchRateTypeAndRestrictions(newFilterValues);
             }
             else {
