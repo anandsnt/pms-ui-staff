@@ -1,6 +1,6 @@
 angular.module('sntRover').service('rvMenuSrv',
-	['rvPermissionSrv', 'RVDashboardSrv', 'RVHotelDetailsSrv', '$rootScope',
-	function(rvPermissionSrv, RVDashboardSrv, RVHotelDetailsSrv, $rootScope ) {
+	['rvPermissionSrv', 'RVDashboardSrv', 'RVHotelDetailsSrv',
+	function(rvPermissionSrv, RVDashboardSrv, RVHotelDetailsSrv ) {
 
 
 	// we have to keep reference
