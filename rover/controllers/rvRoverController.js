@@ -115,6 +115,7 @@ sntRover.controller('roverController',
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
     $rootScope.advanced_queue_flow_enabled = hotelDetails.advanced_queue_flow_enabled;
     $rootScope.isPmsDevEnv = hotelDetails.is_pms_dev;
+    $rootScope.isPmsProductionEnv = false;
 
     $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
       /**
@@ -386,7 +387,7 @@ sntRover.controller('roverController',
     $scope.$on('refreshLeftMenu', function(event) {
         setupLeftMenu();
     });
-    
+
 
     $scope.init = function() {
         BaseCtrl.call(this, $scope);
@@ -408,7 +409,7 @@ sntRover.controller('roverController',
             isManualCCEntryEnabled: $rootScope.isManualCCEntryEnabled
         };
 
-        $scope.menuOpen = false;        
+        $scope.menuOpen = false;
         $rootScope.showNotificationForCurrentUser = true;
 
         var routeChange = function(event) {
@@ -905,7 +906,7 @@ sntRover.controller('roverController',
           });
     };
 
-    /* 
+    /*
      *  CICO-27519 - Handle inline styles inside ng-bind-html directive.
      *  Let   =>  $scope.htmlData = "<p style='font-size:8pt;''>Sample Text</p>";
      *  Usage =>  <td data-ng-bind-html="trustAsHtml(htmlData)"></td>
@@ -950,7 +951,7 @@ sntRover.controller('roverController',
       text = text.split(query).map(toHTMLSpecials);
       query = toHTMLSpecials(query);
       text = text.join('<span class="highlight">' + query + '</span>');
-      
+
       return $rootScope.trustAsHtml(text);
     };
 

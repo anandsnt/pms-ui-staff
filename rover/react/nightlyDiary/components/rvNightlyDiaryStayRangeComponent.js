@@ -44,12 +44,14 @@ const NightlyDiaryStayRangeComponent = createClass ({
         this.mouseMovingEvent   = this.isTouchEnabled ? 'touchmove' : 'mousemove';
         this.mouseLeavingEvent  = this.isTouchEnabled ? 'touchend'  : 'mouseup';
         let flagarea = this.flagarea;
+        if (!this.props.isPmsProductionEnvironment) {
+            this.arrivalFlag.addEventListener (this.mouseStartingEvent, e => this.arrivalFlagMouseDown (e));
+            this.departureFlag.addEventListener (this.mouseStartingEvent, e => this.departureFlagMouseDown (e));
+            flagarea.addEventListener (this.mouseMovingEvent, e => this.mouseMove (e));
+            flagarea.addEventListener (this.mouseLeavingEvent, e => this.mouseLeave (e));
+            flagarea.addEventListener ('mouseleave', e => this.mouseLeave (e));
+        }
 
-        this.arrivalFlag.addEventListener (this.mouseStartingEvent, e => this.arrivalFlagMouseDown (e));
-        this.departureFlag.addEventListener (this.mouseStartingEvent, e => this.departureFlagMouseDown (e));
-        flagarea.addEventListener (this.mouseMovingEvent, e => this.mouseMove (e));
-        flagarea.addEventListener (this.mouseLeavingEvent, e => this.mouseLeave (e));
-        flagarea.addEventListener ('mouseleave', e => this.mouseLeave (e));
     },
     /*
      * Mouse down event handling
