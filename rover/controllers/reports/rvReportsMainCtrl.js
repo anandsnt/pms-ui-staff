@@ -2730,7 +2730,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                         $.map(data, function(each) {
                             entry = {
                                 label: each.group_name,
-                                value: each.id
+                                value: each.id,
+                                type: 'GROUP'
                             };
                             list.push(entry);
                         });

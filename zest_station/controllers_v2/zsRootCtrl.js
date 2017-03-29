@@ -31,19 +31,10 @@ sntZestStation.controller('zsRootCtrl', [
 
 
         // in order to prevent url change or fresh url entering with states
-        var routeChange = function(event) {
-            event.preventDefault();
-            return;
-        };
-
         BaseCtrl.call(this, $scope);
 
         $scope.cssMappings = cssMappings;
         $scope.inElectron = false;
-
-        $rootScope.$on('$locationChangeStart', routeChange);
-		// we are forcefully setting top url, please refer routerFile
-        window.history.pushState('initial', 'Showing Landing Page', '#/home');
 
         $scope.$on('GENERAL_ERROR', function() {
             // resolve an issue where (if no workstation assigned, or the workstation was deleted, 

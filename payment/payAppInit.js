@@ -8,3 +8,10 @@ angular.module('sntPay').run(['$rootScope', 'sntCBAGatewaySrv', function($rootSc
 
     $rootScope.$on('$destroy', listenCBAFailCheck);
 }]);
+
+angular.module('sntPay').config([
+    '$httpProvider',
+    function($httpProvider) {
+        $httpProvider.interceptors.push('sharedHttpInterceptor');
+    }
+]);
