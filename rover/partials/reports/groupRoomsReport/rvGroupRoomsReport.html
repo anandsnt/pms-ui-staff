@@ -7,7 +7,7 @@
 </div>
 <!-- Report content -->
 <!-- add .with-pagination if has pagination -->
-<div id="report-content" class="report-content group-rooms" ng-controller="RVGroupRoomsReportController" ng-class="{'with-pagination' : totalCount > paginationConfig.perPage}">
+<div id="report-content" class="report-content group-rooms" ng-controller="RVGroupRoomsReportController" ng-class="{'with-pagination' : totalCount > paginationConfig.perPage}" ng-hide="hasNoResults">
     <div ng-include="'/assets/partials/reports/groupRoomsReport/rvGroupRoomsReportSummarySection.html'"></div>
     <!-- Vertical Slider -->
     <div class="groups scrollable" ng-iscroll="group-rooms-scroll">
@@ -56,17 +56,17 @@
                             <tr>
                                 <!-- Add .empty if its empty (The group was not there on that day)
                                          Add .zero if its zero -->
-                                <td ng-repeat="blockedCount in group.blockedCounts track by $index" ng-class="{'zero': blockedCount == 0, 'empty': !blockedCount}">{{blockedCount}}</td>
+                                <td ng-repeat="blockedCount in group.blockedCounts track by $index" ng-class="{'zero': blockedCount == 0, 'empty': isEmpty(blockedCount)}">{{blockedCount}}</td>
                             </tr>
                             <tr>
                                 <!-- Add .empty if its empty (The group was not there on that day)
                                          Add .zero if its zero -->
-                                <td ng-repeat="pickedUpCount in group.pickedUpCounts track by $index" ng-class="{'zero': pickedUpCount == 0, 'empty': !pickedUpCount}">{{pickedUpCount}}</td>
+                                <td ng-repeat="pickedUpCount in group.pickedUpCounts track by $index" ng-class="{'zero': pickedUpCount == 0, 'empty': isEmpty(pickedUpCount)}">{{pickedUpCount}}</td>
                             </tr>
                             <tr>
                                 <!-- Add .empty if its empty (The group was not there on that day)
                                          Add .zero if its zero -->
-                                <td ng-repeat="availableCount in group.availableCounts track by $index" ng-class="{'zero': availableCount == 0, 'empty': !availableCount}">{{availableCount}}</td>
+                                <td ng-repeat="availableCount in group.availableCounts track by $index" ng-class="{'zero': availableCount == 0, 'empty': isEmpty(availableCount)}">{{availableCount}}</td>
                             </tr>
                         </tbody>
                     </table>

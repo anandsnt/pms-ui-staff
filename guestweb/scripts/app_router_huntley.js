@@ -130,12 +130,12 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		title: 'CC verification'
 	});
 
-	// $stateProvider.state('externalCheckinVerification', {
-	// 	url: '/externalCheckinVerification',
-	// 	templateUrl: '/assets/checkin/partials/Huntley/gwExternalCheckin.html',
-	// 	controller: 'externalCheckinVerificationViewController',
-	// 	title: 'External Check in verification'
-	// });
+	$stateProvider.state('externalCheckinVerification', {
+		url: '/externalCheckinVerification',
+		templateUrl: '/assets/checkin/partials/Huntley/gwExternalCheckin.html',
+		controller: 'externalCheckinVerificationViewController',
+		title: 'External Check in verification'
+	});
 
 
 	$stateProvider.state('externalVerification', {

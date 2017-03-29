@@ -21,7 +21,9 @@
         "admin": true,
         "ADBaseTableCtrl": true,
         "tzIndependentDate": true,
-        "getJqDateFormat": false
+        "getJqDateFormat": false,
+        "moment": false,
+        "getTimeFormated": true
     },
     "installedESLint": true,
     "parserOptions": {
