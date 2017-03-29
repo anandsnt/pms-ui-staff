@@ -673,4 +673,10 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         url: '/zestWebAddons'
     });
 
+    $stateProvider.state('admin.zestStationAddons', {
+        templateUrl: '/assets/partials/zestStation/adZestStationAddons.html',
+        controller: 'ADZestWebAddonCtrl',
+        url: '/zestWebAddons'
+    });
+
 });
