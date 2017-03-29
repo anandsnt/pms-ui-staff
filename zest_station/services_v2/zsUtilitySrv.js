@@ -2,8 +2,8 @@
  * Service used for tablet-kiosk UI (Zest Station)
  */
 
-sntZestStation.service('zsUtilitySrv', ['$http', '$q', 'zsBaseWebSrv', '$timeout',
-    function($http, $q, zsBaseWebSrv, $timeout) {
+sntZestStation.service('zsUtilitySrv', ['$http', '$q', 'zsBaseWebSrv',
+    function($http, $q, zsBaseWebSrv) {
         // service provider for common utilities
         var that = this;
 
