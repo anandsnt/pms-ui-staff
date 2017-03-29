@@ -20,7 +20,7 @@
                 Search
             </button>
             <input id="property-query" class="query" ng-model="searchData" placeholder="Search by Name" type="text" ng-change="filterByQuery()" autocomplete="off" />
-            <div class="property-autocomplete scrollable" ng-show="selectedPropertyId === ''" ng-class="{'open': propertyResults.length > 0 }" ng-iscroll="property-results" ng-iscroll-delay="300">
+            <div class="property-autocomplete scrollable" ng-show="!selectedProperty" ng-class="{'open': propertyResults.length > 0 }" ng-iscroll="property-results" ng-iscroll-delay="300">
                 <div class="wrapper" >
                     <ul class="ui-autocomplete">
                         <li ng-click="onSelect(property)" ng-repeat="property in propertyResults track by $index">
@@ -31,7 +31,7 @@
             </div>
         </div>
         <div class="action">
-            <button type="submit" name="property" class="button" ng-click="submitProperty()" ng-disabled="(selectedPropertyId === '')" ng-class="{'blue': selectedPropertyId !== '' }">Continue</button>
+            <button type="submit" name="property" class="button" ng-click="submitProperty()" ng-disabled="!selectedProperty" ng-class="{'blue': !!selectedProperty }">Continue</button>
         </div>
     </form>
     <div class="support">
