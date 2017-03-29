@@ -28,7 +28,7 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
             }
             $scope.watchingList = true;
             $scope.$watch('data.selected_quick_key_system', function(to, from) {
-                console.log('selected_quick_key_system: ', arguments);
+                console.log('selected_quick_key_system from ' + from + ' to ' + to);
                 if ($scope.dirtyQuickList) {
                     if (to === 'Saflok - ATLAS') {
                         setToSaflokAtlas();
@@ -85,10 +85,11 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
 	};
 
 	var setFinalExcludedList = function() {
-		$scope.data.excluded_ios_versions = [], $scope.data.excluded_android_versions = [];
+		$scope.data.excluded_ios_versions = new Array(), $scope.data.excluded_android_versions = new Array();
 		angular.forEach($scope.data.ios_versions, function(version) {
-			if (version.isExcluded)
-               $scope.data.excluded_ios_versions.push(version.name);
+			if (version.isExcluded) {
+                $scope.data.excluded_ios_versions.push(version.name);
+            }               
 		});
 
 		angular.forEach($scope.data.android_versions, function(version) {
@@ -99,7 +100,7 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
 
         var inProd = function() {
             var notProd = false;
-            var url = true ? document.location : window.location;
+            var url = document.location ;
 
             if (url.hostname) {
                 if (typeof url.hostname === typeof 'str') {
@@ -113,7 +114,9 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
             }
             if (!notProd) {// in production, dont allow this function
                 return true;
-            } else return false;
+            } else {
+                return false;
+            }
         };
 	var fetchInterfaceDetails = function() {
 		var fetchSuccessCallback = function(data) {
@@ -154,7 +157,7 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
 		saveData.hotel_supported_card_types = hotelSupportedCardTypes;
 
 
-		var saveSuccessCallback = function(data) {
+		var saveSuccessCallback = function() {
 			$scope.$emit('hideLoader');
 			$scope.goBackToPreviousState();
 		};
@@ -168,7 +171,7 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
 	$scope.needToShowAuthKeys = function() {
 		var needToShowAuthKeys = false;
 
-		angular.forEach($scope.data.available_card_types, function(item, index) {
+		angular.forEach($scope.data.available_card_types, function(item) {
 			if (item.require_authentication && item.is_selected_for_hotel) {
 				needToShowAuthKeys = true;
 				return false;
