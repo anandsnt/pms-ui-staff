@@ -2,7 +2,8 @@
 "PLACEHOLDER_NIGHTLY_DIARY_SEARCH_SHORT" : "Search by Name / Conf./Ext. ref no.",
 "7_DAYS" : "7 Days",
 "21_DAYS" : "21 Days",
-"PREASSIGNED": "Room not available",
+"PREASSIGNED": "Room is assigned by another reservation",
 "MAINTENANCE": "Room is under maintenance",
 "ROOM_IS_SET_TO_DO_NOT_MOVE": "Room cannot be changed",
-"ROOM_OOO": "Room is out of order"
+"ROOM_OOO": "Room is out of order",
+"ROOM_TYPE_NOT_AVAILABLE": "Room Type Not Available"

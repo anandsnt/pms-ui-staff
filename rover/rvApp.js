@@ -45,6 +45,8 @@ sntRover.config([
 	'$locationProvider',
 	function($httpProvider, ngDialogProvider, $provide, $provide, $locationProvider) {
 
+        $locationProvider.html5Mode(true);
+
         // $provide.decorator('$browser', ['$delegate', function ($delegate) {
         //     $delegate.onUrlChange = function () {};
         //     $delegate.url = function () { return ""};
