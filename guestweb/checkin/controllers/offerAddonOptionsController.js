@@ -140,10 +140,16 @@
 		var fetchExistingAddonsSucess = function(allAvailableAddons, existingAddons) {
 			var selectedAddonIds = _.pluck(existingAddons, 'id');
 			var addons = [];
-			_.each(selectedAddonIds, function(selectedAddonId) {
-				addons = _.reject(allAvailableAddons, function(addon) {
-					return ((addon.addon_id == selectedAddonId) || !addon.zest_web_active);
+
+			// no need to show already added addons
+			addons = _.filter(allAvailableAddons, function(availableAddon) {
+				_.each(selectedAddonIds, function(selectedAddonId) {
+					return (availableAddon.addon_id == selectedAddonId);
 				});
+			});
+			// show only active addons for zestweb
+			addons = _.reject(allAvailableAddons, function(addon) {
+				return  !addon.zest_web_active;
 			});
 			// Mark all as unselected initially
 			_.each(addons, function(addon) {
@@ -164,22 +170,13 @@
 				// Multi addons
 				$scope.mode = 'LIST_VIEW';
 			}
+			$scope.isLoading = false;
 		};
-		var fetchExistingAddons = function(allAvailableAddons) {
-
-			checkinAddonService.getExistingAddonsList().then(function(existingAddons) {
-				$scope.isLoading = false;
-				fetchExistingAddonsSucess(allAvailableAddons, existingAddons)
-			}, function() {
-				$rootScope.netWorkError = true;
-				$scope.isLoading = false;
-			});
-		};
-
+	
 		var availableAddonFetchSuccess = function(allAvailableAddons) {
 
-			checkinAddonService.fetchAlreadyAddedAddons().then(function(response) {
-				fetchExistingAddons(allAvailableAddons);
+			checkinAddonService.getExistingAddonsList().then(function(existingAddons) {
+				fetchExistingAddonsSucess(allAvailableAddons, existingAddons)
 			}, function() {
 				$rootScope.netWorkError = true;
 				$scope.isLoading = false;
