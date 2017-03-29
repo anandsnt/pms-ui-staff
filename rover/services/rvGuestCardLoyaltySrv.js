@@ -1,82 +1,67 @@
-angular.module('sntRover').service('RVGuestCardLoyaltySrv', ['$q', 'RVBaseWebSrv', function($q, RVBaseWebSrv) {
+angular.module('sntRover').service('RVGuestCardLoyaltySrv', ['$q', 'RVBaseWebSrv', 'RVCompanyCardSrv',
+    function($q, RVBaseWebSrv, RVCompanyCardSrv) {
 
-	this.loyalties = {};
-	var that = this;
-	var hlps = {};
-    var ffps = {};
+        var service = this,
+            loyalties = {};
 
-	this.fetchLoyalties = function(param) {
-		var deferred = $q.defer();
- 		var user_id = param.userID;
- 		
-		this.fetchUserMemberships = function() {
-			var url =  	'/staff/user_memberships.json?user_id=' + user_id;
+        service.fetchUserMemberships = function(userId) {
+            var deferred = $q.defer(),
+                url = '/staff/user_memberships.json?user_id=' + userId;
 
-			RVBaseWebSrv.getJSON(url).then(function(data) {
-				that.loyalties.userMemberships =  data;
-				deferred.resolve(that.loyalties);
-			}, function(data) {
-				deferred.reject(data);
-			});
+            RVBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
 
-		};
+            return deferred.promise;
+        };
 
+        service.fetchLoyalties = function(param) {
+            var deferred = $q.defer(),
+                promises = [];
 
-		this.fetchHotelLoyalties = function(param) {
-			var url =  '/staff/user_memberships/get_available_hlps.json';
+            promises.push(RVCompanyCardSrv.fetchHotelLoyaltiesHlps().then(function(response) {
+                loyalties.hotelLoyaltyData = response.data;
+            }));
+            promises.push(RVCompanyCardSrv.fetchHotelLoyaltiesFfp().then(function(response) {
+                loyalties.freaquentLoyaltyData = response.data;
+            }));
+            promises.push(service.fetchUserMemberships(param.userID).then(function(response) {
+                loyalties.userMemberships = response;
+            }));
 
-			RVBaseWebSrv.getJSON(url).then(function(data) {
-				hlps                            =  data;
-				that.loyalties.hotelLoyaltyData =  data;
-				this.fetchUserMemberships();
-			}, function(data) {
-				deferred.reject(data);
-			});
-			return deferred.promise;
-	    };
+            $q.all(promises).then(function() {
+                deferred.resolve(loyalties);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
 
-	    if (isEmpty(hlps) || isEmpty(ffps)) {
-	    	var url =  '/staff/user_memberships/get_available_ffps.json';
+            return deferred.promise;
+        };
 
-			RVBaseWebSrv.getJSON(url).then(function(data) {
-				ffps                                =  data;
-				that.loyalties.freaquentLoyaltyData =  data;
-				this.fetchHotelLoyalties();
-			}, function(data) {
-				deferred.reject(data);
-			});
-	    } else {
-	    	that.loyalties.freaquentLoyaltyData = ffps;
-	    	that.loyalties.hotelLoyaltyData     = hlps;
-	    	this.fetchUserMemberships();
-	    }			
-		return deferred.promise;
+        service.createLoyalties = function(params) {
+            var deferred = $q.defer();
+            var url = '/staff/user_memberships';
 
-	};
+            RVBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
-	this.createLoyalties = function(params) {
-		var deferred = $q.defer();
-		var url =  '/staff/user_memberships';
+        service.deleteLoyalty = function(id) {
+            var deferred = $q.defer();
+            var url = '/staff/user_memberships/' + id + '.json';
 
-		RVBaseWebSrv.postJSON(url, params).then(function(data) {
-			deferred.resolve(data);
-		}, function(data) {
-			deferred.reject(data);
-		});
-		return deferred.promise;
-
-	};
-	this.deleteLoyalty = function(id) {
-		var deferred = $q.defer();
-		var url =  '/staff/user_memberships/' + id + '.json';
-
-		RVBaseWebSrv.deleteJSON(url, "").then(function(data) {
-			deferred.resolve(data);
-		}, function(data) {
-			deferred.reject(data);
-		});
-		return deferred.promise;
-	};
-
-
-}]);
+            RVBaseWebSrv.deleteJSON(url, '').then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+    }
+]);
