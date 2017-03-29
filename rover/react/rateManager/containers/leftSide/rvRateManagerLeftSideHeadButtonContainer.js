@@ -23,7 +23,6 @@ const mapStateToRateManagerGridLeftSideHeadButtonContainerProps = (state) => {
         openAllClass: openAllEnabled ? 'green': '',
         showOpenAll,
         closeAllClass: closeAllEnabled ? 'red': '',
-        toggleClass: !flags.showRateDetail ? 'switch-button on':'switch-button',
         showCloseAll,
         openAllEnabled,
         closeAllEnabled,
