@@ -27,8 +27,8 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
                 return;
             }
             $scope.watchingList = true;
-            $scope.$watch('data.selected_quick_key_system', function(to, from) {
-                console.log('selected_quick_key_system from ' + from + ' to ' + to);
+            $scope.$watch('data.selected_quick_key_system', function(to) {
+                
                 if ($scope.dirtyQuickList) {
                     if (to === 'Saflok - ATLAS') {
                         setToSaflokAtlas();
@@ -85,7 +85,8 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
 	};
 
 	var setFinalExcludedList = function() {
-		$scope.data.excluded_ios_versions = new Array(), $scope.data.excluded_android_versions = new Array();
+		$scope.data.excluded_ios_versions = [];
+        $scope.data.excluded_android_versions = [];
 		angular.forEach($scope.data.ios_versions, function(version) {
 			if (version.isExcluded) {
                 $scope.data.excluded_ios_versions.push(version.name);
@@ -93,8 +94,9 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
 		});
 
 		angular.forEach($scope.data.android_versions, function(version) {
-			if (version.isExcluded)
-               $scope.data.excluded_android_versions.push(version.name);
+			if (version.isExcluded) {
+                $scope.data.excluded_android_versions.push(version.name);
+            }               
 		});
 	};
 
@@ -114,9 +116,8 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
             }
             if (!notProd) {// in production, dont allow this function
                 return true;
-            } else {
-                return false;
-            }
+            } 
+            return false;
         };
 	var fetchInterfaceDetails = function() {
 		var fetchSuccessCallback = function(data) {
