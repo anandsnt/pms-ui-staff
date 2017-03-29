@@ -1,4 +1,4 @@
-const RateManagerGridLeftSideHeadButtonComponent = ({ 
+const RateManagerGridLeftSideHeadButtonComponent = ({
 	shouldShowPagination,
     goToPrevPage,
     goToNextPage,
