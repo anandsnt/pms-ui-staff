@@ -1,11 +1,11 @@
-sntZestStation.controller('zsEmailCollectionDirCtrl', ['$scope', 'zsUtilitySrv', 'zsGeneralSrv', '$timeout',
-    function($scope, zsUtilitySrv, zsGeneralSrv, $timeout) {
+sntZestStation.controller('zsEmailCollectionDirCtrl', ['$scope', 'zsUtilitySrv', 'zsGeneralSrv', '$log',
+    function($scope, zsUtilitySrv, zsGeneralSrv, $log) {
 
         BaseCtrl.call(this, $scope);
 
         $scope.reEnterText = function() {
             $scope.mode = 'EMAIL_ENTRY_MODE';
-            zsUtilitySrv.focusInputField('email-entry');
+            $scope.onFocus('email-entry');
         };
 
         var checkIfEmailIsBlacklisted = function(afterBlackListValidation, onBlackListedEmailFound, onValidationAPIFailure) {
@@ -19,7 +19,7 @@ sntZestStation.controller('zsEmailCollectionDirCtrl', ['$scope', 'zsUtilitySrv',
                         afterBlackListValidation();
 
                     } else {
-                        console.warn('email is black listed, request different email address');
+                        $log.warn('email is black listed, request different email address');
                         onBlackListedEmailFound();
                     }
                 },
@@ -39,7 +39,7 @@ sntZestStation.controller('zsEmailCollectionDirCtrl', ['$scope', 'zsUtilitySrv',
             };
 
             var updateGuestEmailFailed = function(response) {
-                console.warn('updateGuestEmailFailed: ', response); // if this fails would help give clues as to why
+                $log.warn('updateGuestEmailFailed: ', response); // if this fails would help give clues as to why
                 $scope.$emit('EMAIL_UPDATION_FAILED');
             };
 
@@ -73,7 +73,7 @@ sntZestStation.controller('zsEmailCollectionDirCtrl', ['$scope', 'zsUtilitySrv',
                 updateGuestEmail();
             } else {
                 setInvalidEmailMode();
-                zsUtilitySrv.focusInputField();
+                $scope.onFocus();
             }
         };
 
@@ -83,7 +83,7 @@ sntZestStation.controller('zsEmailCollectionDirCtrl', ['$scope', 'zsUtilitySrv',
 
         (function() {
             $scope.email = $scope.email || '';
-            zsUtilitySrv.focusInputField('email-entry');
+            $scope.onFocus('email-entry');
         }());
 
     }

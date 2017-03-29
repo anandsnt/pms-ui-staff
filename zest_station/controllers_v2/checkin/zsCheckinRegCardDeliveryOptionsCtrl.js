@@ -287,6 +287,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
             var  stateParams = {
                 'message': 'Email Updation Failed.'
             };
+            
             $state.go('zest_station.speakToStaff', stateParams);
         });
 		/**
