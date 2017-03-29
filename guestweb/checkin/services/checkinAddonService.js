@@ -4,8 +4,8 @@
 		var getAddonList = function() {
 
 			var deferred = $q.defer();
-			//var url = '/sample_json/zestweb_v2/addon_list.json';
 			var url = '/api/upsell_addons?for_zest_web=true';
+
 			$http.get(url).success(function(response) {
 					deferred.resolve(response);
 				})
@@ -48,6 +48,7 @@
 		var fetchAlreadyAddedAddons = function() {
 			var deferred = $q.defer();
 			var url = "/api/reservations/" + $rootScope.reservationID + "/addons_list";
+
 			$http.get(url).success(function(response) {
 					if (response.status === "success") {
 						deferred.resolve(response.data);
@@ -60,19 +61,20 @@
 					deferred.reject();
 				});
 			return deferred.promise;
-		}
+		};
 
 		var getExistingAddonsList = function() {
 
 			var deferred = $q.defer();
-			var url = '/staff/staycards/reservation_addons?reservation_id='+ $rootScope.reservationID;
+			var url = '/staff/staycards/reservation_addons?reservation_id=' + $rootScope.reservationID;
+
 			$http.get(url).success(function(response) {
-					if(response.status === 'success'){
+					if (response.status === 'success') {
 						deferred.resolve(response.existing_packages);
-					}else{
+					} else {
 						deferred.reject();
 					}
-					
+
 				})
 				.error(function() {
 					deferred.reject();
