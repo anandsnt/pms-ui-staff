@@ -114,7 +114,6 @@ sntRover.controller('roverController',
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
     $rootScope.advanced_queue_flow_enabled = hotelDetails.advanced_queue_flow_enabled;
-    $rootScope.isPmsDevEnv = hotelDetails.is_pms_dev;
     $rootScope.isPmsProductionEnv = hotelDetails.is_pms_prod;
     // Remove below code after  QA acceptance in dev - CICO-39760
     $rootScope.isPmsProductionEnv = true;
