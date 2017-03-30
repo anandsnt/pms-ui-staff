@@ -55,24 +55,6 @@
 			return deferred.promise;
 		};
 
-		var fetchAlreadyAddedAddons = function() {
-			var deferred = $q.defer();
-			var url = "/api/reservations/" + $rootScope.reservationID + "/addons_list";
-
-			$http.get(url).success(function(response) {
-					if (response.status === "success") {
-						deferred.resolve(response.data);
-					} else {
-						deferred.reject();
-					}
-
-				})
-				.error(function() {
-					deferred.reject();
-				});
-			return deferred.promise;
-		};
-
 		var getExistingAddonsList = function() {
 
 			var deferred = $q.defer();
@@ -101,7 +83,6 @@
 			getAddonList: getAddonList,
 			updateAddon: updateAddon,
 			deleteAddon: deleteAddon,
-			fetchAlreadyAddedAddons: fetchAlreadyAddedAddons,
 			getExistingAddonsList: getExistingAddonsList
 		};
 	};
