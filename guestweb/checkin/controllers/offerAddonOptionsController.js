@@ -144,7 +144,7 @@
 			// no need to show already added addons
 			addons = _.filter(allAvailableAddons, function(availableAddon) {
 				_.each(selectedAddonIds, function(selectedAddonId) {
-					return (availableAddon.addon_id == selectedAddonId);
+					return (parseInt(availableAddon.addon_id) == parseInt(selectedAddonId));
 				});
 			});
 			// show only active addons for zestweb
