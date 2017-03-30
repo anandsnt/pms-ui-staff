@@ -4,11 +4,11 @@
 		var getAddonList = function() {
 
 			var deferred = $q.defer();
-			var url = '/api/upsell_addons?for_zest_web=true';
-			var params = {};
+			var url = '/api/upsell_addons';
+			var params = {'for_zest_web':true};
 			params.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "WEB";
 			params.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "";
-			$http.get(url).success(function(response) {
+			$http.get(url,{params:params}).success(function(response) {
 					deferred.resolve(response);
 				})
 				.error(function() {
@@ -72,9 +72,12 @@
 		var getExistingAddonsList = function() {
 
 			var deferred = $q.defer();
-			var url = '/staff/staycards/reservation_addons?reservation_id=' + $rootScope.reservationID;
-
-			$http.get(url).success(function(response) {
+			var url = '/staff/staycards/reservation_addons';
+			var params = {
+				'reservation_id': $rootScope.reservationID,
+				'is_zest_product': true
+			};
+			$http.get(url, {params: params}).success(function(response) {
 					if (response.status === 'success') {
 						deferred.resolve(response.existing_packages);
 					} else {
