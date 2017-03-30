@@ -142,14 +142,18 @@
 			var addons = [];
 
 			// no need to show already added addons
-			addons = _.filter(allAvailableAddons, function(availableAddon) {
-				_.each(selectedAddonIds, function(selectedAddonId) {
-					return (parseInt(availableAddon.addon_id) == parseInt(selectedAddonId));
+			if (selectedAddonIds.length > 0) {
+				_.each(selectedAddonIds, function(selectedId) {
+					allAvailableAddons = _.filter(allAvailableAddons, function(addon, index) {
+						return addon.addon_id !== selectedId;
+					});
 				});
-			});
+			};
+
+			addons = allAvailableAddons;
 			// show only active addons for zestweb
-			addons = _.reject(allAvailableAddons, function(addon) {
-				return  !addon.zest_web_active;
+			addons = _.reject(addons, function(addon) {
+				return !addon.zest_web_active;
 			});
 			// Mark all as unselected initially
 			_.each(addons, function(addon) {
@@ -172,7 +176,7 @@
 			}
 			$scope.isLoading = false;
 		};
-	
+
 		var availableAddonFetchSuccess = function(allAvailableAddons) {
 
 			checkinAddonService.getExistingAddonsList().then(function(existingAddons) {
