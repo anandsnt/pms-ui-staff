@@ -61,7 +61,7 @@
 			var url = '/staff/staycards/reservation_addons';
 			var params = {
 				'reservation_id': $rootScope.reservationID,
-				'is_zest_product': true
+				'sync_with_pms': true
 			};
 			$http.get(url, {
 					params: params
