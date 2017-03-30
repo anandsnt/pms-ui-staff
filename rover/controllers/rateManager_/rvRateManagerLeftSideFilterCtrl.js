@@ -289,16 +289,30 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       switch($scope.chosenTab) {
 
         case 'RATES' : 
-              buttonText = 'Show All Rates';
+              if ($scope.selectedRates.length === 0 && $scope.selectedCards.length === 0) {
+                buttonText = 'Show All Rates';
+              }
+              else if ($scope.selectedCards.length > 0 ) {
+                buttonText = 'Show Contract Rates';
+              }
+              else {
+                buttonText = 'Show Selected Rates';
+              }
               break;
 
         case 'RATE_TYPES' : 
-              buttonText = 'Show All Rate Types';
+              if ($scope.selectedRateTypes.length === 0 ) {
+                buttonText = 'Show All Rate Types';
+              }
+              else {
+                buttonText = 'Show Selected Rate Types';
+              }
               break;
 
         case 'ROOM_TYPES' : 
               buttonText = 'Show All Room Types';
               break;
+
         default :
               buttonText = 'Show All Rates';
       }
