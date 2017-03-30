@@ -17,13 +17,15 @@ sntZestStation.directive('focusOn', ['$timeout', function($timeout) {
                 documentClick = true;
             });
             var elToFocus = '';
+
             if (attrs.focusOn) {
                 elToFocus = attrs.focusOn;
                 if ($(elToFocus) && $(elToFocus)[0]) {
                     // bind events to retrigger for Virtual keyboard plugin to behave properly
                     $timeout(function() {
                         var el = $(elToFocus)[0],
-                        scopeFn = angular.element(el).scope()[attrs.focusOnTrigger];
+                            scopeFn = angular.element(el).scope()[attrs.focusOnTrigger];
+
                         $(elToFocus).focus(scopeFn);
                         $(elToFocus).keydown(scopeFn);
                         $(elToFocus).change(scopeFn);
@@ -44,11 +46,11 @@ sntZestStation.directive('focusOn', ['$timeout', function($timeout) {
                                 // set listeners
                                 var showKeyboardOnFocus = function() {
                                     angular.element(el).scope().$parent.showOnScreenKeyboard('country-selector-input');
-                                    collectNationalityCtrl = angular.element($('#country-select-div input:text').first()[0]).scope();
                                 };
                                 // since the Input field is dynamically generated with the autocomplete jquery plugin, we need
                                 // to assign an ID to support also using the soft-keyboard
                                 // 
+
                                 $($('#country-select-div input:text').first()[0]).attr('id', 'country-selector-input');
 
                                 $(elToFocus).focus(showKeyboardOnFocus);
@@ -61,7 +63,7 @@ sntZestStation.directive('focusOn', ['$timeout', function($timeout) {
                 }
             }
             // we are setting delay to 2sec. if it is undefined
-            if (typeof scope.delay === "undefined") {
+            if (typeof scope.delay === 'undefined') {
                 scope.delay = 2000;
             }
         }
