@@ -127,7 +127,8 @@ const mapStateToRateManagerGridLeftRowsContainerProps = (state) => {
 			leftListingData: convertRateTypesDataForLeftListing(state.list),
 			mode: state.mode,
 			fromDate: state.dates[0],
-			toDate: state.dates[state.dates.length-1]
+			toDate: state.dates[state.dates.length-1],
+			callBackForSingleRateTypeFetch: state.callBacksFromAngular.singleRateTypeViewCallback
 		};
 	}
 	else if(state.mode === RM_RX_CONST.ROOM_TYPE_VIEW_MODE) {
@@ -161,6 +162,14 @@ const mapDispatchToRateManagerGridLeftRowsContainerProps = (stateProps, dispatch
 					fromDate: stateProps.fromDate,
 					toDate: stateProps.toDate,
 					selectedRates: [{id: clickedRate.id, name: clickedRate.name, accountName: clickedRate.accountName, address: clickedRate.address}]
+				})
+			}
+			else if(stateProps.mode === RM_RX_CONST.RATE_TYPE_VIEW_MODE) {
+				let clickedRateType = stateProps.leftListingData[index];
+				stateProps.callBackForSingleRateTypeFetch({
+					fromDate: stateProps.fromDate,
+					toDate: stateProps.toDate,
+					selectedRateTypes: [{id: clickedRateType.id}]
 				})
 			}
 		},
