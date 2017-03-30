@@ -23,7 +23,6 @@ const mapStateToRateManagerGridLeftSideHeadButtonContainerProps = (state) => {
         openAllClass: openAllEnabled ? 'green': '',
         showOpenAll,
         closeAllClass: closeAllEnabled ? 'red': '',
-        toggleClass: !flags.showRateDetail ? 'switch-button on':'switch-button',
         showCloseAll,
         openAllEnabled,
         closeAllEnabled,
@@ -50,6 +49,9 @@ const mapStateToRateManagerGridLeftSideHeadButtonContainerProps = (state) => {
         propsToReturn.shouldShowToggle = false;
         propsToReturn.openAllCallbackForRoomTypeView = state.callBacksFromAngular.openAllRestrictionsForRoomTypeView;
         propsToReturn.closeAllCallbackForRoomTypeView = state.callBacksFromAngular.closeAllRestrictionsForRoomTypeView;
+    }
+    else if(state.mode ===  RM_RX_CONST.RATE_TYPE_VIEW_MODE) {
+        propsToReturn.shouldShowToggle = false;
     }
 
     return propsToReturn;

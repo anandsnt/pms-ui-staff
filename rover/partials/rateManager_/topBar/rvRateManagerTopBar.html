@@ -1,4 +1,4 @@
-<div class="topbar float" ng-show="showTopBar" >
+<div class="topbar float" ng-class="{'rate-view': isRateView}" ng-show="showTopBar" >
     <ul class="info">
         <!-- show .back if we are looking at a single rate with room rates -->
         <li class="back" ng-show="showBackButton" ng-click='clickedOnBackButton()'>
@@ -10,15 +10,37 @@
             <strong>Date Range</strong>
             <span>{{fromDate}} to {{toDate}}</span>
         </li>
+
+        <li class="rates" ng-show="isRateTypeView">
+            <strong>Rate Type</strong>
+            
+            <!-- If 2 or more add 'X Rate Types' where X is the number of rates, 
+                 If Filter 'Rates' is active and nothing is selected add 'All Rate Types'
+                 otherwise show rate type name
+            -->
+            <span>All Rate Types</span> 
+            <span ng-show="{{selectedRateTypes.length > 1}}">{Rate Type Name}</span>
+        </li>
         
-        <!-- show .rates if there are any rates selected -->
-        <li class="rates" ng-show="selectedRateNames.length">
+        <!-- show  if there are any rates selected -->
+        <li class="rates" ng-show="isRateView">
             <strong>Rate</strong>
             
-            <!-- add ',' for each rate except the last one-->
-            <span>{{selectedRateNames.join()}}</span>
-            
-        </li>        
+            <!-- If 2 or more add 'X Rates' where X is the number of rates, 
+                 If Filter 'Rates' is active and nothing is selected add 'All Rates'
+                 otherwise show rate name
+            -->
+            <span>All Rates</span> 
+            <span ng-show="{{selectedRates.length > 1}}">{{selectedRates.length}} Rates</span>
+        </li>
+
+        <!-- show when all room types are selected -->
+        <li class="rates" ng-show="isRoomTypeView">
+            <strong>Room Type</strong>
+        
+            <span>All Room Types</span> 
+        </li>
+
         <li class="card" ng-show="selectedAccountName.length">
            <strong ng-show="selectedAccountName[0] == null">{{selectedCardNames.join()}}</strong>
            <strong>{{selectedAccountName.join()}}</strong>
@@ -35,6 +57,15 @@
          
     </ul>
     <ul class="actions">
+        <!-- show only when viewing rates-->
+        <li ng-show="isRateView">
+            <!-- Add .expanded on .pinnedLeft when checked-->
+            <label class="checkbox" for="rate-toggle">
+                <span class="icon-form icon-checkbox" ng-class="{checked : showContractDetailsChecked}"></span>
+                <input type="checkbox" id="rate-toggle" value="1" ng-click="clickedOnShowContractDetails($event)">
+                Show Contract Details
+             </label>  
+        </li>
         <li>
             <button class="button rm-buttonOpenClose green" ng-click="openAll()">
                 Open All

@@ -40,6 +40,23 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             return this.getJSON(url, params);
         };
 
+        service.fetchAllRateTypesInfo = function (params) {
+            var deferred = $q.defer(),
+                url = '/api/daily_rates/rate_types?from_date=' + params.from_date + '&page=1&per_page=10&to_date=' + params.to_date;
+
+            BaseWebSrvV2.getJSON(url, params).then(function(response) {
+                deferred.resolve(response);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
+
+        service.fetchRateTypeList = function() {
+            var url =  '/api/rate_types/active';
+            return this.getJSON(url);
+        };
+
         service.fetchSingleRateInfo = function (params) {
             var url = '/api/daily_rates/' + params.rate_id;
             return this.getJSON(url, _.omit(params, 'rate_id'));
@@ -164,6 +181,40 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                 deferred.resolve(response);
             });
 
+            return deferred.promise;
+        };
+
+        service.fetchRateTypes = (params) => {
+            var promises = [],
+                roomTypes = [],
+                roomTypeAndRestrictions = [],
+                commonRestrictions = [],
+                deferred = $q.defer(),
+                response = {};
+
+            promises.push(service.fetchAllRateTypesInfo(_.omit(params, 'fetchCommonRestrictions', 'fetchRateTypes')).then((data) => {
+                response.rateTypeAndRestrictions = data.results;
+            }));
+
+            if(params.fetchCommonRestrictions){
+                let paramsForCommonRestrictions = _.pick(params, 'from_date', 'to_date', 'varied_inclusive');
+
+                promises.push(service.fetchCommonRestrictions(paramsForCommonRestrictions)
+                    .then((data) => {
+                        response.commonRestrictions = data.results;
+                    })
+                );
+            }
+
+            if(params.fetchRateTypes) {
+                promises.push(service.fetchRateTypeList().then((data) => {
+                    response.rateTypes = data;
+                }));
+            }
+ 
+            $q.all(promises).then((data) => {
+                deferred.resolve(response);
+            });
             return deferred.promise;
         };
 
