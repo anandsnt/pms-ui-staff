@@ -25,18 +25,22 @@ admin.service('ADHotelDetailsSrv', [
 		return deferred.promise;
 	};
 
-	that.fetchLanguages = function(deferred) {
+        that.fetchLanguages = function(deferred) {
+            var url = '/api/reference_values.json?type=language',
+                UUID = ADHotelListSrv.getSelectedProperty();
 
-			var url = '/api/reference_values.json?type=language&hotel_uuid=' + ADHotelListSrv.getSelectedProperty();
+            if (UUID) {
+                url += '&hotel_uuid=' + UUID;
+            }
 
-			ADBaseWebSrvV2.getJSON(url).then(function(data) {
-				hotelDetailsData.languages = data;
-			    deferred.resolve(hotelDetailsData);
-			}, function(data) {
-			    deferred.reject(data);
-			});
-			return deferred.promise;
-		};
+            ADBaseWebSrvV2.getJSON(url).then(function(data) {
+                hotelDetailsData.languages = data;
+                deferred.resolve(hotelDetailsData);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 	/**
     *   An getter method to edit deatils for an existing hotel for SNT Admin
     *   @param {Object} data - deatils of the hotel with hotel id.
