@@ -7,7 +7,7 @@
 			var url = '/api/upsell_addons?for_zest_web=true';
 			var params = {};
 			params.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "WEB";
-			params.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "WEB";
+			params.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "";
 			$http.get(url).success(function(response) {
 					deferred.resolve(response);
 				})
@@ -23,7 +23,7 @@
 			var url = '/api/reservations/update_package';
 
 			params.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "WEB";
-			params.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "WEB";
+			params.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "";
 			params.id = $rootScope.reservationID;
 			$http.post(url, params).success(function(response) {
 					deferred.resolve(response);
@@ -41,8 +41,8 @@
 
 			params.id = $rootScope.reservationID;
 			params.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "WEB";
-			params.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "WEB";
-			$http.delete(url, params).success(function(response) {
+			params.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "";
+			$http.delete(url, {data:params}).success(function(response) {
 					deferred.resolve(response);
 				})
 				.error(function() {
