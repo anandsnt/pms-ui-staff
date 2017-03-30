@@ -187,6 +187,8 @@ admin.controller('ADHotelDetailsCtrl', [
 				$state.go("admin.hotels");
 			};
 
+			data.isSNTAdmin = true;
+
 			if ($scope.isEdit) {
 				$scope.invokeApi(ADHotelDetailsSrv.updateHotelDeatils, data, postSuccess);
 			}

@@ -11,7 +11,6 @@ sntRover.controller('RVbillCardController',
 	'$filter',
 	'$window',
 	'$timeout',
-	'chargeCodeData',
 	'$sce',
 	'RVKeyPopupSrv',
 	'RVPaymentSrv',
@@ -28,7 +27,7 @@ sntRover.controller('RVbillCardController',
 			ngDialog, $filter,
 
 			$window, $timeout,
-			chargeCodeData, $sce,
+			$sce,
 
 			RVKeyPopupSrv, RVPaymentSrv,
 			RVSearchSrv, rvPermissionSrv, jsMappings, $q, RVReservationStateService) {
@@ -2215,12 +2214,8 @@ sntRover.controller('RVbillCardController',
 	$scope.splitTypeisAmount = true;
 	$scope.chargeCodeActive = false;
 	$scope.selectedChargeCode = {};
-	$scope.chargeCodeData = chargeCodeData.results;
-	$scope.availableChargeCodes = chargeCodeData.results;
 
-	$scope.getAllchargeCodes = function (callback) {
-    	callback($scope.chargeCodeData);
-	};
+	$scope.availableChargeCodes = [];
 
 	$scope.setchargeCodeActive = function(bool) {
 		$scope.chargeCodeActive = bool;
@@ -2320,8 +2315,17 @@ sntRover.controller('RVbillCardController',
 		    $scope.openRemoveChargePopup();
 		} else if (action === "split") {
 		    $scope.openSplitChargePopup();
-		} else if (action === "edit") {
-		    $scope.openEditChargePopup();
+        } else if (action === "edit") {
+            if ($scope.availableChargeCodes.length) {
+                $scope.openEditChargePopup();
+            } else {
+                $scope.callAPI(RVBillCardSrv.fetchChargeCodes, {
+                    successCallBack: function(response) {
+                        $scope.availableChargeCodes = response.results;
+                        $scope.openEditChargePopup();
+                    }
+                });
+            }
 		}
 
 

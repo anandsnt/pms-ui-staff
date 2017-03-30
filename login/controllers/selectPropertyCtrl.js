@@ -6,7 +6,7 @@ login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window'
             $scope.errorMessage = "";
             $scope.propertyResults = [];
             $scope.searchData = "";
-            $scope.selectedPropertyId = "";
+            $scope.selectedProperty = null;
             $scope.$emit('hideloader');
             $scope.setScroller('property-results', {click: true});
             $scope.modalClosing = false;
@@ -50,7 +50,7 @@ login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window'
             } else {
                 $scope.propertyResults = [];
                 // CICO-33518 fix
-                $scope.selectedPropertyId = "";
+                $scope.selectedProperty = null;
             }
         };
 
@@ -60,15 +60,15 @@ login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window'
         $scope.clearQuery = function() {
             $scope.searchData = "";
             $scope.propertyResults = [];
-            $scope.selectedPropertyId = "";
+            $scope.selectedProperty = null;
         };
 
         /*
          * successCallback of select property
          * @param {object} status of select property
          */
-        var successCallback = function(data) {
-            var redirUrl = '/staff';
+        var successCallback = function() {
+            var redirUrl = '/staff/h/' + $scope.selectedProperty.uuid;
 
             setTimeout(function() {
                 $window.location.href = redirUrl;
@@ -86,7 +86,7 @@ login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window'
          * on property select
          */
         $scope.onSelect = function(property) {
-            $scope.selectedPropertyId = property.id;
+            $scope.selectedProperty = property;
             $scope.searchData = property.name;
         };
 
@@ -97,7 +97,7 @@ login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window'
             $scope.hasLoader = true;
             $scope.propertyResults = [];
             var data = {
-                hotel_id: $scope.selectedPropertyId
+                hotel_id: $scope.selectedProperty.id
             };
 
             $scope.invokeApi(selectPropertySrv.setProperty, data, successCallback, failureCallBack);
