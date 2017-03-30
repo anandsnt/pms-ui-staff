@@ -367,7 +367,8 @@ angular.module('sntRover')
                 selectedRoomId: $scope.diaryData.selectedRoomId,
                 isFromStayCard: $stateParams.isFromStayCard,
                 currentSelectedReservation: $scope.currentSelectedReservation,
-                dateFormat: $rootScope.dateFormat
+                dateFormat: $rootScope.dateFormat,
+                isPmsProductionEnvironment: $rootScope.isPmsProductionEnv
             };
             const store = configureStore(initialState);
             const {render} = ReactDOM;
