@@ -433,34 +433,35 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		var performCCAuthAndconfirmUpdatesProcess = function(postParams) {
 			var params = RVNightlyDiarySrv.getCache();
 			var reservationInDiary = params.currentSelectedReservation;
+			var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+			var differenceToBeAddedOrRemoved = 0;
 
 			if (reservationInDiary.isDepartureFlagVisible) {
-				var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-	    	    // Get the number of days between initial day of diary grid and arrival date
-	    	    var diffBtwOldAndNewDepartureDate = tzIndependentDate(reservationInDiary.dept_date).getTime() - tzIndependentDate(postParams.dep_date).getTime();
-			    var noOfDaysBtwOldAndNewDepartureDate  = 0;
-			    var noOfDaysBtwOldAndNewDepartureDate = Math.abs((diffBtwOldAndNewDepartureDate) / (oneDay));
-			    var differenceToBeAddedOrRemoved =  ((840 / params.no_of_days) * noOfDaysBtwOldAndNewDepartureDate);
 
-			    if (diffBtwOldAndNewDepartureDate > 0)
-			    {
-			    	reservationInDiary.departurePositionInt = reservationInDiary.departurePositionInt - differenceToBeAddedOrRemoved;
-			    } else if (diffBtwOldAndNewDepartureDate < 0) {
+	    	    // Get the number of days between initial day of diary grid and arrival date
+   	            var diffBtwOldAndNewDepartureDate = tzIndependentDate(reservationInDiary.dept_date).getTime() - tzIndependentDate(postParams.dep_date).getTime();
+        	    var noOfDaysBtwOldAndNewDepartureDate = Math.abs((diffBtwOldAndNewDepartureDate) / (oneDay));
+
+	    	    differenceToBeAddedOrRemoved =  ((840 / params.no_of_days) * noOfDaysBtwOldAndNewDepartureDate);
+
+        	    if (diffBtwOldAndNewDepartureDate > 0)
+        	    {
+        	    	reservationInDiary.departurePositionInt = reservationInDiary.departurePositionInt - differenceToBeAddedOrRemoved;
+	    	    } else if (diffBtwOldAndNewDepartureDate < 0) {
 					reservationInDiary.departurePositionInt = reservationInDiary.departurePositionInt + differenceToBeAddedOrRemoved;
 				}
 			}
 			if (reservationInDiary.isArrivalFlagVisible) {
-				var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
 	    	    // Get the number of days between initial day of diary grid and arrival date
-	    	    var diffBtwOldAndNewArrivalDate = tzIndependentDate(reservationInDiary.arrival_date).getTime() - tzIndependentDate(postParams.arrival_date).getTime();
-			    var noOfDaysBtwOldAndNewArrivalDate  = 0;
-			    var noOfDaysBtwOldAndNewArrivalDate = Math.abs((diffBtwOldAndNewArrivalDate) / (oneDay));
-			    var differenceToBeAddedOrRemoved =  ((840 / params.no_of_days) * noOfDaysBtwOldAndNewArrivalDate);
+    	   	    var diffBtwOldAndNewArrivalDate = tzIndependentDate(reservationInDiary.arrival_date).getTime() - tzIndependentDate(postParams.arrival_date).getTime();
+	    	    var noOfDaysBtwOldAndNewArrivalDate = Math.abs((diffBtwOldAndNewArrivalDate) / (oneDay));
 
-			    if (diffBtwOldAndNewArrivalDate > 0)
-			    {
-			    	reservationInDiary.arrivalPositionInt = reservationInDiary.arrivalPositionInt - differenceToBeAddedOrRemoved;
-			    } else if (diffBtwOldAndNewArrivalDate < 0) {
+        	    differenceToBeAddedOrRemoved =  ((840 / params.no_of_days) * noOfDaysBtwOldAndNewArrivalDate);
+
+	    	    if (diffBtwOldAndNewArrivalDate > 0)
+	    	    {
+	    	    	reservationInDiary.arrivalPositionInt = reservationInDiary.arrivalPositionInt - differenceToBeAddedOrRemoved;
+	    	    } else if (diffBtwOldAndNewArrivalDate < 0) {
 					reservationInDiary.arrivalPositionInt = reservationInDiary.arrivalPositionInt + differenceToBeAddedOrRemoved;
 				}
 			}
@@ -477,7 +478,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 				params.currentSelectedReservation = reservationInDiary;
 				RVNightlyDiarySrv.updateCache(params);
-			}, 1000)
+			}, 1000);
 
 			// CICO-7306 authorization for CC.
 			if ($scope.requireAuthorization && $scope.isStandAlone) {
