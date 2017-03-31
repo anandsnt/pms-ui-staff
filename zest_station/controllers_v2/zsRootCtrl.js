@@ -147,6 +147,7 @@ sntZestStation.controller('zsRootCtrl', [
             }
         });
         $scope.goToAdmin = function() {
+            $scope.zestStationData.fromAdminButton = true;
             $state.go('zest_station.admin');
         };
 
@@ -1186,7 +1187,7 @@ sntZestStation.controller('zsRootCtrl', [
                 
                 $scope.zestStationData.workstationStatus = station.is_out_of_order ? 'out-of-order' : 'in-order';
                 var newWorkStationStatus = angular.copy($scope.zestStationData.workstationStatus);
-
+                $scope.setEncoderDiagnosticInfo();
                 try {
                     $scope.zestStationData.workstationOooReason = storage.getItem(oosReasonKey);
                 } catch (err) {
@@ -1250,6 +1251,49 @@ sntZestStation.controller('zsRootCtrl', [
 
             $scope.callAPI(zsGeneralSrv.fetchWorkStations, options);
         };
+
+        $scope.keyEncoderInfo = [];
+        var getKeyEncoderInfo = function() {
+            var onSuccess = function(response) {
+                if (response) {
+                    $scope.keyEncoderInfo = response.results;
+                    $scope.setEncoderDiagnosticInfo();
+                }
+            };
+            var onFail = function(response) {
+                $log.warn('failed to get key encoder info:', response);
+                // dont go oos, the response data is currently used for info/debugging/testing purposes
+            };
+
+            var options = {
+                params: {},
+                successCallBack: onSuccess,
+                failureCallBack: onFail,
+                'loader': 'none'
+            };
+
+            $scope.callAPI(zsGeneralSrv.getKeyEncoderInfo, options);
+        };
+
+        $scope.setEncoderDiagnosticInfo = function(workstationName, key_encoder_id) {
+            // when this method is called from adminctrl, it will pass the name + encoder id
+            // when called without arguments, assume the zestStationData is set (ie. info is pulled from localstorage)
+            if ($scope.zestStationData.workstationName || workstationName) {
+                $scope.zestStationData.key_encoder_name = '';
+                $scope.zestStationData.encoder_id = '';
+                $scope.zestStationData.encoder_location = '';
+
+                for (var i in $scope.keyEncoderInfo) {
+                    // key_encoder_id passed from adminctrl when user is changing workstations and wants to see which encoder
+                    // is being selected
+                    if (($scope.keyEncoderInfo[i].id === $scope.zestStationData.key_encoder_id && typeof key_encoder_id === 'undefined') || key_encoder_id === $scope.keyEncoderInfo[i].id) {
+                        $scope.zestStationData.key_encoder_name = $scope.keyEncoderInfo[i].description;
+                        $scope.zestStationData.encoder_location = $scope.keyEncoderInfo[i].location;
+                        $scope.zestStationData.encoder_id       = $scope.keyEncoderInfo[i].encoder_id;
+                    }
+                }
+            }
+        }
 
 
 		// store workstation status in localstorage
@@ -1403,6 +1447,7 @@ sntZestStation.controller('zsRootCtrl', [
 			// create a websocket obj
             $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
             fetchHotelSettings();
+            getKeyEncoderInfo();
             getAdminWorkStations();
             $scope.zestStationData.bussinessDate = hotelTimeData.business_date;
             zestSntApp.setBrowser();
