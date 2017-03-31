@@ -6,7 +6,8 @@
 			var deferred = $q.defer();
 			var url = '/api/upsell_addons';
 			var params = {
-				'for_zest_web': true
+				'for_zest_web': true,
+				'reservation_id': $rootScope.reservationID
 			};
 
 			params.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "WEB";
