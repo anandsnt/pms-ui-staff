@@ -225,7 +225,7 @@
 											<ul class='charge-items' ng-if="isStandAlone && feesData.is_group_by_ref" ng-class = "{'hidden': !feesData.isExpanded}">
 												<li ng-repeat = "item in feesData.light_speed_data">
 													<strong>{{item.description}}</strong>
-													<span class="cost">{{item.amount}}</span>
+													<span class="cost">{{item.amount | number: precisonTwo}}</span>
 												</li>
 											</ul>
 

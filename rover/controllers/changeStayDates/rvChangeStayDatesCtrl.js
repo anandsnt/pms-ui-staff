@@ -1,5 +1,5 @@
-sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv', '$filter', 'ngDialog', 'rvPermissionSrv', 'RVReservationBaseSearchSrv', '$timeout',
-	function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter, ngDialog, rvPermissionSrv, RVReservationBaseSearchSrv, $timeout) {
+sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv', '$filter', 'ngDialog', 'rvPermissionSrv', 'RVReservationBaseSearchSrv', '$timeout', 'RVNightlyDiarySrv',
+	function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter, ngDialog, rvPermissionSrv, RVReservationBaseSearchSrv, $timeout, RVNightlyDiarySrv) {
 		// inheriting some useful things
 		BaseCtrl.call(this, $scope);
 
@@ -121,7 +121,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 					$scope.rightSideReservationUpdates = 'NO_HOUSE_AVAILABLE';
 					$scope.refreshMyScroller();
 				}
-				// CICO-37843 no longer restricating 
+				// CICO-37843 no longer restricating
 				// else if (that.hasMultipleRates()) {
 				// 	$scope.rightSideReservationUpdates = 'HAS_MULTIPLE_RATES';
 				// 	$scope.refreshMyScroller();
@@ -431,6 +431,55 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 		// Handle confirmUpdates process with Autherization..
 		var performCCAuthAndconfirmUpdatesProcess = function(postParams) {
+			var params = RVNightlyDiarySrv.getCache();
+			var reservationInDiary = params.currentSelectedReservation;
+			var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+			var differenceToBeAddedOrRemoved = 0;
+
+			if (reservationInDiary.isDepartureFlagVisible) {
+
+	    	    // Get the number of days between initial day of diary grid and arrival date
+   	            var diffBtwOldAndNewDepartureDate = tzIndependentDate(reservationInDiary.dept_date).getTime() - tzIndependentDate(postParams.dep_date).getTime();
+        	    var noOfDaysBtwOldAndNewDepartureDate = Math.abs((diffBtwOldAndNewDepartureDate) / (oneDay));
+
+	    	    differenceToBeAddedOrRemoved =  ((840 / params.no_of_days) * noOfDaysBtwOldAndNewDepartureDate);
+
+        	    if (diffBtwOldAndNewDepartureDate > 0)
+        	    {
+        	    	reservationInDiary.departurePositionInt = reservationInDiary.departurePositionInt - differenceToBeAddedOrRemoved;
+	    	    } else if (diffBtwOldAndNewDepartureDate < 0) {
+					reservationInDiary.departurePositionInt = reservationInDiary.departurePositionInt + differenceToBeAddedOrRemoved;
+				}
+			}
+			if (reservationInDiary.isArrivalFlagVisible) {
+	    	    // Get the number of days between initial day of diary grid and arrival date
+    	   	    var diffBtwOldAndNewArrivalDate = tzIndependentDate(reservationInDiary.arrival_date).getTime() - tzIndependentDate(postParams.arrival_date).getTime();
+	    	    var noOfDaysBtwOldAndNewArrivalDate = Math.abs((diffBtwOldAndNewArrivalDate) / (oneDay));
+
+        	    differenceToBeAddedOrRemoved =  ((840 / params.no_of_days) * noOfDaysBtwOldAndNewArrivalDate);
+
+	    	    if (diffBtwOldAndNewArrivalDate > 0)
+	    	    {
+	    	    	reservationInDiary.arrivalPositionInt = reservationInDiary.arrivalPositionInt - differenceToBeAddedOrRemoved;
+	    	    } else if (diffBtwOldAndNewArrivalDate < 0) {
+					reservationInDiary.arrivalPositionInt = reservationInDiary.arrivalPositionInt + differenceToBeAddedOrRemoved;
+				}
+			}
+
+			setTimeout(function() {
+				reservationInDiary.departurePosition = reservationInDiary.departurePositionInt + "px";
+				reservationInDiary.departureStyle.transform = "translateX(" + reservationInDiary.departurePositionInt + "px)";
+				reservationInDiary.dept_date = postParams.dep_date;
+				reservationInDiary.deptDate = moment(postParams.dep_date, "YYYY-MM-DD").format($rootScope.dateFormat.toUpperCase());
+				reservationInDiary.arrivalPosition = reservationInDiary.arrivalPositionInt + "px";
+				reservationInDiary.arrivalStyle.transform = "translateX(" + reservationInDiary.arrivalPositionInt + "px)";
+				reservationInDiary.arrival_date = postParams.arrival_date;
+				reservationInDiary.arrivalDate = moment(postParams.arrival_date, "YYYY-MM-DD").format($rootScope.dateFormat.toUpperCase());
+
+				params.currentSelectedReservation = reservationInDiary;
+				RVNightlyDiarySrv.updateCache(params);
+			}, 1000);
+
 			// CICO-7306 authorization for CC.
 			if ($scope.requireAuthorization && $scope.isStandAlone) {
 				// Start authorization process...
