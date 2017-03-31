@@ -62,6 +62,12 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             return this.getJSON(url, _.omit(params, 'rate_id'));
         };
 
+        service.fetchSingleRateTypeInfo = function (params) {
+           // var url = '/api/daily_rates/rate_type_restrictions';
+            var url = '/api/daily_rates/room_restrictions';
+            return this.getJSON(url, params );
+        };
+
         service.fetchRates = function () {
             var url = '/api/rates/minimal';
             return this.getJSON(url);
@@ -211,7 +217,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                     response.rateTypes = data;
                 }));
             }
- 
+
             $q.all(promises).then((data) => {
                 deferred.resolve(response);
             });
@@ -314,6 +320,65 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
          * @param  {Object} params [api params]
          * @return {Object}        [promise]
          */
+        this.fetchSingleRateTypeDetailsAndCommonRestrictions = (params) => {
+            var promises = [],
+                deferred = $q.defer(),
+                response = {};
+
+            //single rate info.
+            var paramsForSingleRateType = _.omit(params, 'fetchRoomTypes', 'fetchRates');
+            // var data = {"results":[{"date":"2016-11-08","room_types":[{"id":66,"single":"300.00","double":"320.00","extra_adult":"10.00","child":null,"single_overridden":false,"double_overridden":false,"extra_adult_overridden":false,"child_overridden":false,"nightly_rate":"300.00","restrictions":[{"restriction_type_id":3,"days":null,"is_on_rate":false}]},{"id":92,"single":"400.00","double":"420.00","extra_adult":"10.00","child":null,"single_overridden":false,"double_overridden":false,"extra_adult_overridden":false,"child_overridden":false,"nightly_rate":"400.00","restrictions":[{"restriction_type_id":3,"days":null,"is_on_rate":false}]},{"id":232,"single":"430.00","double":"450.00","extra_adult":"10.00","child":null,"single_overridden":false,"double_overridden":false,"extra_adult_overridden":false,"child_overridden":false,"nightly_rate":"430.00","restrictions":[{"restriction_type_id":3,"days":null,"is_on_rate":false}]},{"id":383,"single":"320.00","double":"350.00","extra_adult":"10.00","child":null,"single_overridden":false,"double_overridden":false,"extra_adult_overridden":false,"child_overridden":false,"nightly_rate":"320.00","restrictions":[{"restriction_type_id":3,"days":null,"is_on_rate":false}]},{"id":502,"single":"1.00","double":"1.00","extra_adult":"1.00","child":null,"single_overridden":false,"double_overridden":false,"extra_adult_overridden":false,"child_overridden":false,"nightly_rate":"1.00","restrictions":[{"restriction_type_id":3,"days":null,"is_on_rate":false}]},{"id":611,"single":null,"double":null,"extra_adult":null,"child":null,"single_overridden":false,"double_overridden":false,"extra_adult_overridden":false,"child_overridden":false,"nightly_rate":null,"restrictions":[]}]}],"is_eod_in_progress":false,"is_eod_manual_started":false,"is_eod_failed":true,"is_eod_process_running":false}
+            // response.roomTypeAndRestrictions = data.results;
+            promises.push(
+                this.fetchSingleRateTypeInfo( paramsForSingleRateType )
+                .then( data => {
+                    response.roomTypeAndRestrictions = data.results;
+                })
+            );
+
+            //common restriction params
+            var commonRestrictionsParams = {
+                ..._.pick(params, 'from_date', 'to_date'),
+                'rate_ids[]': [params.rate_id]
+            };
+            promises.push(
+                this.fetchAllRestrictionsWithStatus( commonRestrictionsParams )
+                .then( data => {
+                    response.restrictionsWithStatus = data.results;
+                })
+            );
+
+
+            if (params.fetchRoomTypes) {
+                promises.push(
+                    this.fetchRoomTypes()
+                    .then((data) => {
+                        response.roomTypes = data;
+                    })
+                );
+            }
+            if (params.fetchRates) {
+                promises.push(
+                    this.fetchRates()
+                    .then((data) => {
+                        response.rates = data.results;
+                    })
+                );
+            }
+
+            $q.all(promises).then((data) => {
+                deferred.resolve(response);
+            });
+
+            return deferred.promise;
+        };
+
+
+        /**
+         * to fetch the common restriction and single rate details
+         * @param  {Object} params [api params]
+         * @return {Object}        [promise]
+         */
         this.fetchSingleRateDetailsAndCommonRestrictions = (params) => {
             var promises = [],
                 deferred = $q.defer(),
@@ -364,6 +429,11 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
             return deferred.promise;
         };
+
+
+
+
+
 
         /**
          * to fetch single rate's restriction and amount details

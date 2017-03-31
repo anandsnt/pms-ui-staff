@@ -994,6 +994,10 @@ angular.module('sntRover')
                     initializeMultipleRateRestrictionMode();
                     break;
 
+                case $scope.modeConstants.RM_SINGLE_RATE_TYPE_RESTRICTION_MODE:
+                    initializeSingleRoomTypeRestrictionMode();
+                    break;
+
                 //when we click a restriciton cell on room type view mode
                 case $scope.modeConstants.RM_SINGLE_ROOMTYPE_RESTRICTION_MODE:
                     initializeSingleRoomTypeRestrictionMode();
