@@ -1,5 +1,5 @@
 (function() {
-	var offerAddonOptionsController = function($scope, $rootScope, $state, checkinAddonService, $sce, sntGuestWebSrv) {
+	var offerAddonOptionsController = function($scope, $rootScope, $state, checkinAddonService, $sce, sntGuestWebSrv, checkinDetailsService) {
 
 		var selectedAddon = {},
 			setSelectedAddon = function(addon, isSingleAddonAvailable) {
@@ -9,38 +9,103 @@
 				$scope.mode = 'DETAILED_VIEW';
 				$scope.selectedAddonDescrition = $sce.trustAsHtml($scope.selectedAddon.description);
 				if ($scope.addonList.length === 1) {
-					$scope.addonPurchaseMsgForDisplay = $scope.addonPurchaseMsg.replace("@addon_name@", $scope.selectedAddon.title);
+					$scope.addonPurchaseMsgForDisplay = $scope.addonPurchaseMsg.replace("@addon_name@", $scope.selectedAddon.name);
 				} else {
-					$scope.addonPurchaseMsgForDisplay = $scope.selectedAddon.title;
+					$scope.addonPurchaseMsgForDisplay = $scope.selectedAddon.name;
 				}
+				$scope.selectedAddonQuantity = angular.copy($scope.selectedAddon.quantity);
 				$(document.body).scrollTop(0);
 			};
 
 		$scope.addonSelected = function(selectedAddon) {
 			setSelectedAddon(selectedAddon, false);
 		};
+		$scope.isAddonFlatOrRoomType = function(addonToBe) {
+			var addon = angular.copy(addonToBe);
+			// To delete once the addon import API is fixed
+			addon.amount_type = (addon.amount_type === 'Room') ? 'Per Room' : addon.amount_type;
+			addon.amount_type = (addon.amount_type === 'Flat') ? 'Flat Rate' : addon.amount_type;
+			// To deleted above
+			return addon.amount_type === 'Per Room' || $scope.selectedAddon.amount_type === 'Flat Rate';
+		};
 
 		$scope.purchaseAddon = function() {
 
-			if ($scope.selectedAddon.type === 'per room' || $scope.selectedAddon.type === 'flat rate') {
-				if ($scope.selectedAddon.quantity > 0) {
-					$scope.selectedAddon.is_selected = true;
-					$scope.purchaseStatusText = angular.copy($scope.addonSuccesMessage);
-					$scope.showPurchaseStatus = true;
+			var addonAdditionSuccess = function() {
+				if ($scope.isAddonFlatOrRoomType($scope.selectedAddon)) {
+					$scope.selectedAddon.quantity = angular.copy($scope.selectedAddonQuantity);
+					if ($scope.selectedAddon.quantity > 0) {
+						$scope.selectedAddon.is_selected = true;
+						$scope.purchaseStatusText = angular.copy($scope.addonSuccesMessage);
+						$scope.showPurchaseStatus = true;
+					} else {
+						$scope.selectedAddon.is_selected = false;
+						$scope.doneClicked();
+					}
 				} else {
-					$scope.selectedAddon.is_selected = false;
-					$scope.doneClicked();
+					$scope.selectedAddon.is_selected = !$scope.selectedAddon.is_selected;
+					if ($scope.selectedAddon.is_selected) {
+						$scope.purchaseStatusText = angular.copy($scope.addonSuccesMessage);
+						$scope.showPurchaseStatus = true;
+					} else {
+						$scope.doneClicked();
+					}
 				}
-			} else {
-				$scope.selectedAddon.is_selected = !$scope.selectedAddon.is_selected;
-				if ($scope.selectedAddon.is_selected) {
-					$scope.purchaseStatusText = angular.copy($scope.addonSuccesMessage);
-					$scope.showPurchaseStatus = true;
-				} else {
-					$scope.doneClicked();
-				}
+				$(document.body).scrollTop(0);
+			};
+
+
+			var params = {
+				'addon_id': $scope.selectedAddon.addon_id
+			};
+
+			if ($scope.isAddonFlatOrRoomType($scope.selectedAddon)) {
+				params.quantity = parseInt($scope.selectedAddonQuantity);
 			}
-			$(document.body).scrollTop(0);
+			$scope.isLoading = true;
+			checkinAddonService.updateAddon(
+				params
+			).then(function() {
+				$scope.isLoading = false;
+				addonAdditionSuccess();
+			}, function() {
+				$scope.showPurchaseStatus = true;
+				$scope.purchaseStatusText = angular.copy($scope.addonFailureMessage);
+				$scope.isLoading = false;
+			});
+		};
+
+		$scope.removeAddon = function() {
+
+			var addonRemovalSuccess = function() {
+				if ($scope.isAddonFlatOrRoomType($scope.selectedAddon)) {
+					$scope.selectedAddon.is_selected = false;
+					$scope.selectedAddon.quantity = 0;
+				} else {
+					$scope.selectedAddon.is_selected = !$scope.selectedAddon.is_selected;
+				}
+				$scope.doneClicked();
+				$(document.body).scrollTop(0);
+			}
+
+
+			var params = {
+				'addon_id': $scope.selectedAddon.addon_id
+			};
+			if ($scope.isAddonFlatOrRoomType($scope.selectedAddon)) {
+				params.quantity = parseInt($scope.selectedAddonQuantity);
+			}
+			$scope.isLoading = true;
+			checkinAddonService.deleteAddon(
+				params
+			).then(function() {
+				$scope.isLoading = false;
+				addonRemovalSuccess();
+			}, function() {
+				$scope.showPurchaseStatus = true;
+				$scope.purchaseStatusText = angular.copy($scope.addonRemovalFailureMessage);
+				$scope.isLoading = false;
+			});
 		};
 
 		$scope.doneClicked = function() {
@@ -65,20 +130,32 @@
 		$scope.hideAddAddonButton = function() {
 			if (typeof $scope.selectedAddon === "undefined") {
 				return false;
-			} else if ($scope.selectedAddon.type === 'per room' || $scope.selectedAddon.type === 'flat rate') {
-				return $scope.selectedAddon.is_selected && parseInt($scope.selectedAddon.quantity) === 0;
+			} else if ($scope.isAddonFlatOrRoomType($scope.selectedAddon)) {
+				return $scope.selectedAddon.is_selected && parseInt($scope.selectedAddonQuantity) === 0;
 			} else {
 				return $scope.selectedAddon.is_selected
 			}
 		};
 
-		var addonFetchSuccess = function(addons) {
-			var selectedAddonIds = [5]; //already selected list for the reservation
-			_.each(selectedAddonIds, function(selectedAddonId) {
-				addons = _.reject(addons, function(addon) {
-					return addon.id == selectedAddonId;
+		var fetchExistingAddonsSucess = function(allAvailableAddons, existingAddons) {
+			var selectedAddonIds = _.pluck(existingAddons, 'id');
+			var addons = [];
+
+			// no need to show already added addons
+			if (selectedAddonIds.length > 0) {
+				_.each(selectedAddonIds, function(selectedId) {
+					allAvailableAddons = _.filter(allAvailableAddons, function(addon, index) {
+						return addon.addon_id !== selectedId;
+					});
 				});
+			}
+
+			addons = allAvailableAddons;
+			// show only active addons for zestweb
+			addons = _.reject(addons, function(addon) {
+				return !addon.zest_web_active;
 			});
+			// Mark all as unselected initially
 			_.each(addons, function(addon) {
 				addon.is_selected = false;
 				addon.quantity = 0;
@@ -97,6 +174,7 @@
 				// Multi addons
 				$scope.mode = 'LIST_VIEW';
 			}
+			$scope.isLoading = false;
 		};
 
 		(function() {
@@ -112,6 +190,7 @@
 			$scope.addonSkip = setText(fetchScreenDetails("ADDON-SKIP").screen_title, "No Thanks.");
 			$scope.addonPurchase = setText(fetchScreenDetails("ADDON-PURCHASE").screen_title, "Add");
 			$scope.addonRemove = setText(fetchScreenDetails("ADDON-REMOVE").screen_title, "Remove");
+			$scope.addonRemovalFailureMessage = setText(fetchScreenDetails("ADDON-REMOVAL-FAILURE").screen_title, "Sorry, Something went wrong.");
 			$scope.addonFailureMessage = setText(fetchScreenDetails("ADDON-FAILURE").screen_title, "Sorry, This addon can't be added to your reservation");
 			$scope.addonSuccesMessage = setText(fetchScreenDetails("ADDON-SUCCESS").screen_title, "Thanks for the purchase. Your addon will be added to your account.");
 			$scope.addonSelectQty = setText(fetchScreenDetails("ADDON-SELECT-QTY").screen_title, "Select quantity");
@@ -120,11 +199,11 @@
 			$scope.addonList = [];
 			$scope.isLoading = true;
 			$scope.selectedAddon = {};
-			$scope.quantityList = _.range(21);
+			$scope.quantityList = _.range(6);
 			var params = {};
 			checkinAddonService.getAddonList(params).then(function(response) {
-				$scope.isLoading = false;
-				addonFetchSuccess(response.addons);
+				var existingAddons = checkinDetailsService.getResponseData().addons_data;
+				fetchExistingAddonsSucess(response.addons, existingAddons);
 			}, function() {
 				$rootScope.netWorkError = true;
 				$scope.isLoading = false;
@@ -133,7 +212,7 @@
 	};
 
 	var dependencies = [
-		'$scope', '$rootScope', '$state', 'checkinAddonService', '$sce', 'sntGuestWebSrv',
+		'$scope', '$rootScope', '$state', 'checkinAddonService', '$sce', 'sntGuestWebSrv', 'checkinDetailsService',
 		offerAddonOptionsController
 	];
 
