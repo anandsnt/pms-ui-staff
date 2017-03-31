@@ -85,12 +85,6 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
 
         if (!!selectedRateType && !alreadyExistInSelectedRateTypeList) {
           $scope.selectedRateTypes.push(selectedRateType);
-
-          //adding the elements will change the height
-          refreshScroller();
-
-          //setting the focus to newly added rate type
-          scrollTo('#selected-rate-type-list span:last-child');
         }
 
         clearAllRatesAndAllRoomTypes();
@@ -119,7 +113,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
           refreshScroller();
 
           //setting the focus to newly added rate type
-          scrollTo('#selected-rate-type-list span:last-child');
+          scrollTo('#selected-rate-type-list br');
         }
 
         clearAllRatesAndAllRoomTypes();
@@ -212,7 +206,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
             refreshScroller();
 
             //setting the focus to newly added rate
-            scrollTo('#selected-rate-list span:last-child');
+            scrollTo('#selected-rate-list br');
           }
 
           clearAllRatesAndAllRoomTypes();

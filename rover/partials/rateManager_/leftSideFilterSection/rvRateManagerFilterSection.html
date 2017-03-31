@@ -110,7 +110,7 @@
 					<div class="selected-data" ng-class="{'hidden': chosenTab !== 'RATES'}">
 						<strong ng-show="selectedRates.length > 0">Rates Selected</strong>
 
-						<div class="rates-box" ng-repeat="rate in selectedRates">
+						<div id="selected-rate-list" class="rates-box" ng-repeat="rate in selectedRates">
 							<span class="rate-data">{{rate.name}}</span>
 							<span ng-click="deleteSelectedRate(rate.id)" class="icons delete_small"> &nbsp;</span>
 							<br clear="all">
@@ -144,7 +144,7 @@
 					<div class="selected-data" ng-class="{'hidden': chosenTab !== 'RATE_TYPES'}">
 						<strong ng-show="selectedRateTypesFromRTT.length > 0">Rate Types Selected</strong>
 
-						<div class="rates-box" ng-repeat="rateType in selectedRateTypesFromRTT">
+						<div id="selected-rate-type-list" class="rates-box" ng-repeat="rateType in selectedRateTypesFromRTT">
 							<span class="rate-data">{{rateType.name}}</span>
 							<span ng-click="deleteSelectedRateTypeFromRTT(rateType.id)" class="icons delete_small"> &nbsp;</span>
 							<br clear="all">
