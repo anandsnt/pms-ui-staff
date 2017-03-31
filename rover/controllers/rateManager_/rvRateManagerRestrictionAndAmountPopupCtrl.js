@@ -779,7 +779,7 @@ angular.module('sntRover')
                     dialogData.restrictionTypes,
                     dialogData.variedAndCommonRestrictions);
 
-            $scope.roomTypeAndPrices = dialogData.roomTypesAndPrices;
+            $scope.rateAndRestrictions = dialogData.rateAndRestrictions;
 
             $scope.contentMiddleMode = 'RATE_PRICE_LISTING';
         };

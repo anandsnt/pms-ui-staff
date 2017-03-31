@@ -1452,7 +1452,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
          */
         var onFetchSingleRateTypeRestrictionModeDetailsForPopup = (response, successCallBackParameters) => {
             var restrictionData = response.roomTypeAndRestrictions,
-                roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
+                //roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
+                rates = !cachedRateList.length ? response.rates : cachedRateList,
                 variedAndCommonRestrictions = response.restrictionsWithStatus[0].restrictions,
                 rateAndRestrictions = response.rateAndRestrictions[0]
                     .rates.map(rate =>
@@ -1462,7 +1463,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                         }));
 
             // roomTypeList is now cached, we will not fetch that again
-            cachedRoomTypeList = roomTypes;
+            //cachedRoomTypeList = roomTypes;
 
             var data = {
                 mode: rvRateManagerPopUpConstants.RM_SINGLE_RATE_TYPE_RESTRICTION_MODE,
