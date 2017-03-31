@@ -78,7 +78,8 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
         templateUrl: '/assets/common_templates/partials/MGM/gwRoomUpgrades.html',
         controller: 'checkinUpgradeRoomController',
         title: 'Upgrade - Check-in'
-    }).state('checkinKeys', {
+    })
+    .state('checkinKeys', {
         url: '/checkinKeys',
         templateUrl: '/assets/common_templates/partials/MGM/gwCheckinFinal.html',
         controller: 'checkInKeysController',
@@ -88,7 +89,8 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
         url: '/checkinSuccess',
         templateUrl: '/assets/common_templates/partials/MGM/gwAlreadyCheckedIn.html',
         title: 'Status - Check-in'
-    }).state('checkinArrival', {
+    })
+    .state('checkinArrival', {
         url: '/checkinArrival',
         controller: 'checkinArrivalDetailsController',
         templateUrl: '/assets/common_templates/partials/MGM/gwArrivalTime.html',
@@ -165,7 +167,8 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
         templateUrl: '/assets/common_templates/partials/MGM/gwEarlyToCheckin.html',
         controller: 'earlyToCheckinCtrl',
         title: 'Check-in'
-    }).state('guestCheckinLate', {
+    })
+    .state('guestCheckinLate', {
         url: '/guestCheckinLate',
         templateUrl: '/assets/common_templates/partials/MGM/gwLateToCheckin.html',
         title: 'Check-in'
@@ -175,7 +178,8 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
         templateUrl: '/assets/common_templates/partials/MGM/gwBirthDataDetails.html',
         controller: 'birthDateDetailsController',
         title: 'Birthdate'
-    }).state('promptGuestDetails', {
+    })
+    .state('promptGuestDetails', {
         url: '/promptGuestDetails',
         templateUrl: '/assets/common_templates/partials/MGM/gwPromptGuestDetails.html',
         controller: 'guestDetailsController',
@@ -204,7 +208,8 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
         templateUrl: '/assets/common_templates/partials/MGM/gwPhoneNumberUpdate.html',
         controller: 'mobileEntryController',
         title: 'Phone number entry'
-    }).state('mobileNumberOptions', {
+    })
+    .state('mobileNumberOptions', {
         url: '/mobileNumberOptions',
         templateUrl: '/assets/common_templates/partials/MGM/gwMobielNUmberOptions.html',
         controller: 'mobileOptionsController',
@@ -229,7 +234,8 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
         templateUrl: '/assets/common_templates/partials/MGM/gwCheckinNowCommon.html',
         controller: 'roomNotReadyController',
         title: 'Room unavailable'
-    }).state('roomAssignFailed', {
+    })
+    .state('roomAssignFailed', {
         url: '/roomAssignFailed',
         templateUrl: '/assets/common_templates/partials/MGM/gwCheckinNowCommon.html',
         controller: 'roomAssignFailedController',
@@ -240,7 +246,8 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
         templateUrl: '/assets/common_templates/partials/MGM/gwCheckinNowCommon.html',
         controller: 'eciOffRoomAssignmentFailedController',
         title: 'Room Assign Failed'
-    }).state('eciOffRoomNotReady', {
+    })
+    .state('eciOffRoomNotReady', {
         url: '/eciOffRoomNotReady',
         templateUrl: '/assets/common_templates/partials/MGM/gwCheckinNowCommon.html',
         controller: 'eciOffRoomNotReadyController',
