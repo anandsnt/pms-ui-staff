@@ -55,17 +55,14 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
                 $timeout(function() {
                     // initializes autocomplete, changes the <select> into an <input> field with autocomplete features
                     $('select').selectToAutocomplete();
-
-                    $timeout(function() {
-                        $scope.showOnScreenKeyboard('country-selector');
-                        $scope.focusInputField('country-selector');
-                    }, 0);
-                }, 0);
+                }, 0); // waits until initialize is complete to re-render as an <input> field
                 $scope.setScreenIcon('checkin');
                 
                 // CICO-39887 - fixes issue with keyboard + selector (jquery plugins were not playing well together)
                 // 
                 $timeout(function() {
+                    // $('select').selectToAutocomplete(); - creates the input field we will need to append an ID to it 
+                    // and listen for focus and text change to show/hide the keyboard and init the auto-select dropdown
                     $($('#country-select-div input:text').first()[0]).attr('id', 'country-selector-input');
                     var countryTextInput = $('#country-selector-input');
                     var showKeyboardOnFocus = function() {
