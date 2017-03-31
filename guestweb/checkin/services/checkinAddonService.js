@@ -8,6 +8,7 @@
 			var params = {
 				'for_zest_web': true
 			};
+
 			params.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "WEB";
 			params.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "";
 			$http.get(url, {
@@ -63,6 +64,7 @@
 				'reservation_id': $rootScope.reservationID,
 				'sync_with_pms': true
 			};
+			
 			$http.get(url, {
 					params: params
 				}).success(function(response) {

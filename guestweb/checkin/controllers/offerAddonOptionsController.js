@@ -148,7 +148,7 @@
 						return addon.addon_id !== selectedId;
 					});
 				});
-			};
+			}
 
 			addons = allAvailableAddons;
 			// show only active addons for zestweb
