@@ -98,6 +98,35 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       };
 
       /**
+       * Rate type selected from rate types tab.
+       * on choosing the rate type from list, we will be adding to selected list
+       */
+      $scope.rateTypeSelectedFromRTT = () => {
+        if ($scope.selectedRateTypeIDFromRTT.trim === '') {
+          return;
+        }
+
+        var conditionToTest = {id: parseInt($scope.selectedRateTypeIDFromRTT)},
+
+          selectedRateTypeFromRTT = _.findWhere($scope.rateTypes , conditionToTest),
+
+          alreadyExistInSelectedRateTypeListFromRTT = (_.findIndex($scope.selectedRateTypesFromRTT, conditionToTest) > -1);
+
+        if (!!selectedRateTypeFromRTT && !alreadyExistInSelectedRateTypeListFromRTT) {
+          $scope.selectedRateTypesFromRTT.push(selectedRateTypeFromRTT);
+
+          //adding the elements will change the height
+          refreshScroller();
+
+          //setting the focus to newly added rate type
+          scrollTo('#selected-rate-type-list span:last-child');
+        }
+
+        clearAllRatesAndAllRoomTypes();
+        $scope.deleteAllSelectedCards();
+      };
+
+      /**
        * to delete
        * @param  {LongInteger} rateTypeID [selected rate type's id to delete]
        */
@@ -112,11 +141,35 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       };
 
       /**
+       * to delete a rate type selected, from Rate Type Tab
+       * @param  {LongInteger} rateTypeID [selected rate type's id to delete]
+       */
+      $scope.deleteSelectedRateTypeFromRTT = (rateTypeID) => {
+        var indexToDelete = _.findIndex($scope.selectedRateTypesFromRTT , {id: parseInt(rateTypeID)});
+        $scope.selectedRateTypesFromRTT.splice(indexToDelete, 1);
+
+        $scope.selectedRateTypeIDFromRTT = '';
+        
+        //deleting the node will change the height
+        refreshScroller();
+      };
+
+      /**
        * to remove all selected rate type in one take
        */
       $scope.deleteAllSelectedRateTypes = () => {
         $scope.selectedRateTypes = [];
         $scope.selectedRateTypeID = '';
+        //deleting the nodes will change the height
+        refreshScroller();
+      };
+
+      /**
+       * to remove all selected rate type in one take from Rate Type Tab
+       */
+      $scope.deleteAllSelectedRateTypesFromRTT = () => {
+        $scope.selectedRateTypesFromRTT = [];
+        $scope.selectedRateTypeIDFromRTT = '';
         //deleting the nodes will change the height
         refreshScroller();
       };
@@ -301,7 +354,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
               break;
 
         case 'RATE_TYPES' : 
-              if ($scope.selectedRateTypes.length === 0 ) {
+              if ($scope.selectedRateTypesFromRTT.length === 0 ) {
                 buttonText = 'Show All Rate Types';
               }
               else {
@@ -514,7 +567,14 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        * This method handles on-click of the SHOW RATES BUTTON
        */
       $scope.clickedOnShowRates = () => {
+        var selectedRateTypeList;
         //PAGINATION stuff will be handled from RateManagerCtrl
+        if ($scope.chosenTab === 'RATES') {
+          selectedRateTypeList = $scope.selectedRateTypes;
+        }
+        if ($scope.chosenTab === 'RATE_TYPES') {
+          selectedRateTypeList = $scope.selectedRateTypesFromRTT;
+        }
         var valuesChoosed = {
           fromDate: $scope.fromDate,
           toDate: $scope.toDate,
@@ -529,7 +589,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
           showAllRateTypes: $scope.showAllRateTypes,
           showAllRoomTypes: $scope.showAllRoomTypes,
 
-          selectedRateTypes: $scope.selectedRateTypes,
+          selectedRateTypes: selectedRateTypeList,
           selectedRates: $scope.selectedRates,
 
           selectedCards: $scope.selectedCards,
@@ -572,6 +632,10 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         $scope.rateTypes = []; //will be filled from API once we get to th = view
         $scope.selectedRateTypes = [];
         $scope.selectedRateTypeID = ''; //ng-model for rate type selection
+
+        //rate type from Rate Type Tab
+        $scope.selectedRateTypeIDFromRTT = ''; //ng-model for rate type selection
+        $scope.selectedRateTypesFromRTT = [];
 
         //rate related
         $scope.rates = []; //will be filled from API once we get to th = view
