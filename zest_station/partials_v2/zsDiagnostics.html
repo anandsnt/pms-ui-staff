@@ -29,8 +29,8 @@
 <!-- WORKSTATION + Encoding Info -->
 <span ng-show="zestStationData.timeDebugger == 'true'" class="timer-debugger-right dev-cls non-center">
      <br> <span>Assigned Workstation ({{zestStationData.workstationName}}) <br> </span>
-     <span ng-show='zestStationData.encoder_id'> Encoder <span>[{{zestStationData.key_encoder_name}}, {{zestStationData.encoder_id}}]<span> <br> </span>
-     <span ng-show='zestStationData.encoder_id == ""'> Encoder <span class='key-in-progress'>[Not Set in Workstation]<span> <br> </span>
+     <span ng-show='zestStationData.encoder_id'> Encoder <span>[ {{zestStationData.key_encoder_name}}, {{zestStationData.encoder_id}} ]</span> <br> </span>
+     <span ng-show='zestStationData.encoder_id == ""'> Encoder [ <span class='key-in-progress'>Not Set in Workstation</span> ] <br> </span>
     <span ng-show='zestStationData.workstationStatus === "out-of-order"'> Out of Order Reason: 
         <span ng-show='zestStationData.workstationOooReason.length > 0'>[ {{zestStationData.workstationOooReason}} ] </span>
         <span ng-show='zestStationData.workstationOooReason.length == 0'>[ None ] </span>

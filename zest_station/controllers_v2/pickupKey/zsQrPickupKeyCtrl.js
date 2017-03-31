@@ -127,7 +127,13 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 		var listenForWebsocketActivity = function() {
 			$scope.$on('SOCKET_CONNECTED', function() {
 				console.info('socket connected, start capture');
-				$scope.socketOperator.CaptureQRViaPassportScanner();
+				if ($scope.zestStationData.qr_scanner_samsotech) {
+					$scope.socketOperator.CaptureQRViaPassportScanner();	
+					
+				} else if ($scope.zestStationData.qr_scanner_datalogic) {
+					$scope.socketOperator.CaptureQRViaDatalogic();
+				}
+				
 			});
 			$scope.$on('SOCKET_FAILED', function() {
 				console.info('socket failed...');
@@ -145,15 +151,16 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 		};
 
 		var initChromeAppQRCodeScanner = function() {
-			if ($scope.inChromeApp && !$scope.inElectron) {
-				$scope.chromeApp.fetchQRCode();
-				console.info("::Starting QR Code Scanner::");
+			console.info("::Starting QR Code Scanner via Handler::");
+			if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
+				console.info('websocket :: Ready');
+				$scope.socketOperator.CaptureQRViaDatalogic();
 			} else {
-				$scope.$emit('showLoader');
-				$timeout(function() {
-					onQRScanFail();
-				}, 1000);
+				console.warn('websocket :: Not Ready');
+				listenForWebsocketActivity();
+				$scope.$emit('CONNECT_WEBSOCKET'); // connect socket
 			}
+
 		};
 
 		/** ***************** /SAMSOTECH ********************/
