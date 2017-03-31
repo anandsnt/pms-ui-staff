@@ -36,13 +36,16 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     var cachedRateList = [],
         cachedRoomTypeList = [],
         cachedRateTypeList = [],
-        cachedRateAndRestrictionResponseData = [];
+        cachedRateAndRestrictionResponseData = [],
+        cachedRateTypeAndRestrictionResponseData = [],
+        chosenTab = '';
 
     /**
      * for pagination purpose
      * @type {Integer}
      */
     var totalRatesCountForPagination = 0,
+        totalRateTypesCountForPagination = 0,
         paginationRatePerPage = 0,
         paginationRateMaxRowsDisplay = 0; //for pagination purpose
 
@@ -490,6 +493,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             fetchCommonRestrictions: true
         };
 
+        params['page'] = filterValues.allRateTypes.currentPage;
+        params['per_page'] = paginationRatePerPage;
+
         // if they selected rate type from left filter
         var rateTypeIDs = _.pluck(filterValues.selectedRateTypes, 'id');
 
@@ -512,6 +518,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     var onFetchRateTypeAndRestrictionsSuccess = (response) => {
         var numberOfRateTypes = response.rateTypeAndRestrictions[0].rate_types.length;
 
+        totalRateTypesCountForPagination = response.totalCount;
         if (numberOfRateTypes === 0) {
             hideAndClearDataForTopBar();
             showNoResultsPage();
@@ -543,6 +550,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         // // updating the view with results
         updateAllRateTypesView(rateTypeWithRestrictions, dates, renderableData.restrictionSummary);
+
+        // we need to keep track what we're showing the react part for determining the scrolling position & other things later. so,
+        addToShowingDataArray(dates, rateTypeWithRestrictions, RM_RX_CONST.RATE_TYPE_VIEW_CHANGED);
 
         // // closing the left side filter section
         $scope.$broadcast(rvRateManagerEventConstants.CLOSE_FILTER_SECTION);
@@ -605,6 +615,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             rateTypeRestrictionData : [...rateTypeWithRestrictions],
             businessDate        : tzIndependentDate($rootScope.businessDate),
             callbacksFromAngular: getTheCallbacksFromAngularToReact(),
+            paginationStateData: {
+                totalRows: totalRateTypesCountForPagination,
+                perPage: paginationRatePerPage,
+                page: lastSelectedFilterValues[activeFilterIndex].allRateTypes.currentPage
+            },
             dates,
             restrictionTypes,
         };
@@ -638,29 +653,85 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * on taping the back button from the top bar (NOT from the HEADER)
      */
     $scope.clickedOnBackButton = () => {
-        // right nw the navigation is only from All Rates' single rate to it's details
-        var rateID = lastSelectedFilterValues[activeFilterIndex].selectedRates[0].id;
-
-        lastSelectedFilterValues.splice(activeFilterIndex, 1);
-        activeFilterIndex = activeFilterIndex - 1;
         lastSelectedFilterValues[activeFilterIndex].fromLeftFilter = false;
-
-        showingData.splice(showingData.length - 1, 1);
-
-        getSingleRateRowDetailsAndUpdateCachedDataModel(rateID);
-
-        $scope.showBackButton = false;
         $scope.showContractDetailsChecked = false;
+        if (chosenTab === 'RATES') {
+            // right nw the navigation is only from All Rates' single rate to it's details
+            var rateID = lastSelectedFilterValues[activeFilterIndex].selectedRates[0].id;
 
-        // scroll focus
-        var allRatesShowingData = _.where(showingData, { actionType: RM_RX_CONST.RATE_VIEW_CHANGED});
-        // we will attach scrollTo if attached filter from somewhere
-        if(_.has(lastSelectedFilterValues[activeFilterIndex].allRate, 'scrollTo')) {
-           reduxActionForAllRateView.scrollTo = lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo;
+            lastSelectedFilterValues.splice(activeFilterIndex, 1);
+            activeFilterIndex = activeFilterIndex - 1;
 
-           // dropping scrollTo from
-           lastSelectedFilterValues[activeFilterIndex].allRate =
-               _.omit(lastSelectedFilterValues[activeFilterIndex].allRate, 'scrollTo');
+            showingData.splice(showingData.length - 1, 1);
+
+            getSingleRateRowDetailsAndUpdateCachedDataModel(rateID);
+
+            $scope.showBackButton = false;
+
+            // scroll focus
+            var allRatesShowingData = _.where(showingData, { actionType: RM_RX_CONST.RATE_VIEW_CHANGED});
+            // we will attach scrollTo if attached filter from somewhere
+            if(_.has(lastSelectedFilterValues[activeFilterIndex].allRate, 'scrollTo')) {
+               reduxActionForAllRateView.scrollTo = lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo;
+
+               // dropping scrollTo from
+               lastSelectedFilterValues[activeFilterIndex].allRate =
+                   _.omit(lastSelectedFilterValues[activeFilterIndex].allRate, 'scrollTo');
+            }
+        }
+        else if (chosenTab === 'RATE_TYPES' && $scope.isRateView) {
+            $scope.isRateView = false;
+            $scope.isRateTypeView = true;
+            $scope.isRoomTypeView = false;
+            var rateTypeID = lastSelectedFilterValues[activeFilterIndex].selectedRateTypes[0].id;
+
+            lastSelectedFilterValues.splice(activeFilterIndex, 1);
+            activeFilterIndex = activeFilterIndex - 1;
+
+            showingData.splice(showingData.length - 1, 1);
+
+            $timeout(() => $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]), 1);
+
+            $scope.showBackButton = true;
+
+            // scroll focus
+            var allRatesShowingData = _.where(showingData, { actionType: RM_RX_CONST.RATE_VIEW_CHANGED});
+            // we will attach scrollTo if attached filter from somewhere
+            if(_.has(lastSelectedFilterValues[activeFilterIndex].allRate, 'scrollTo')) {
+               reduxActionForAllRateView.scrollTo = lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo;
+
+               // dropping scrollTo from
+               lastSelectedFilterValues[activeFilterIndex].allRate =
+                   _.omit(lastSelectedFilterValues[activeFilterIndex].allRate, 'scrollTo');
+            }
+        }
+        else if (chosenTab === 'RATE_TYPES' && $scope.isRoomTypeView) {
+            $scope.isRateView = true;
+            $scope.isRateTypeView = false;
+            $scope.isRoomTypeView = false;
+            $scope.backButtonText = 'RATE TYPES';
+
+            var rateID = lastSelectedFilterValues[activeFilterIndex].selectedRates[0].id;
+
+            lastSelectedFilterValues.splice(activeFilterIndex, 1);
+            activeFilterIndex = activeFilterIndex - 1;
+
+            showingData.splice(showingData.length - 1, 1);
+
+            getSingleRateRowDetailsAndUpdateCachedDataModel(rateID);
+
+            $scope.showBackButton = true;
+
+            // scroll focus
+            var allRatesShowingData = _.where(showingData, { actionType: RM_RX_CONST.RATE_VIEW_CHANGED});
+            // we will attach scrollTo if attached filter from somewhere
+            if(_.has(lastSelectedFilterValues[activeFilterIndex].allRate, 'scrollTo')) {
+               reduxActionForAllRateView.scrollTo = lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo;
+
+               // dropping scrollTo from
+               lastSelectedFilterValues[activeFilterIndex].allRate =
+                   _.omit(lastSelectedFilterValues[activeFilterIndex].allRate, 'scrollTo');
+            }
         }
     };
 
@@ -700,6 +771,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         const getTheCallbacksFromAngularToReact = () => {
             return {
                 singleRateViewCallback: fetchSingleRateDetailsFromReact,
+                singleRateTypeViewCallback: fetchSingleRateTypeDetailsFromReact,
                 openAllCallbackForSingleRateView: openAllRestrictionsForSingleRateView,
                 closeAllCallbackForSingleRateView: closeAllRestrictionsForSingleRateView,
                 closeAllRestrictionsForRateView,
@@ -1207,13 +1279,21 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
          * @param  {Object} filter values
          */
         var fetchDailyRates = (filterValues) => {
-            var dataFoundInCachedResponse = _.findWhere(cachedRateAndRestrictionResponseData,
-                {
-                    fromDate: formatDateForAPI(filterValues.fromDate),
-                    toDate: formatDateForAPI(filterValues.toDate),
-                    page: lastSelectedFilterValues[activeFilterIndex].allRate.currentPage
-                });
-
+            if (filterValues.chosenTab === 'RATES') {
+                var dataFoundInCachedResponse = _.findWhere(cachedRateAndRestrictionResponseData,
+                    {
+                        fromDate: formatDateForAPI(filterValues.fromDate),
+                        toDate: formatDateForAPI(filterValues.toDate),
+                        page: lastSelectedFilterValues[activeFilterIndex].allRate.currentPage
+                    });
+            } else if (filterValues.chosenTab === 'RATE_TYPES') {
+                var dataFoundInCachedResponse = _.findWhere(cachedRateAndRestrictionResponseData,
+                    {
+                        fromDate: formatDateForAPI(filterValues.fromDate),
+                        toDate: formatDateForAPI(filterValues.toDate),
+                        page: lastSelectedFilterValues[activeFilterIndex].allRateTypes.currentPage
+                    });
+            }
             // if data already in cache
             if (dataFoundInCachedResponse) {
                 return processForAllRates(dataFoundInCachedResponse.response)
@@ -1386,7 +1466,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
             var data = {
                 mode: rvRateManagerPopUpConstants.RM_SINGLE_RATE_RESTRICTION_MODE,
-                rate: _.findWhere(cachedRateList, { id: successCallBackParameters.rateID }),
+                rate: _.findWhere(cachedRateTypeList, { id: successCallBackParameters.rateTypeID }),
                 date: successCallBackParameters.date,
                 roomTypesAndPrices,
                 restrictionData,
@@ -1581,13 +1661,21 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         };
 
         var goToPrevPage = ()=>{
-            lastSelectedFilterValues[activeFilterIndex].allRate.currentPage--;
+            if (chosenTab === 'RATES') {
+                lastSelectedFilterValues[activeFilterIndex].allRate.currentPage--;
+            } else if (chosenTab === 'RATE_TYPES') {
+                lastSelectedFilterValues[activeFilterIndex].allRateTypes.currentPage--;
+            }
             lastSelectedFilterValues[activeFilterIndex].fromLeftFilter = false;
             $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
         };
 
         var goToNextPage = ()=>{
-            lastSelectedFilterValues[activeFilterIndex].allRate.currentPage++;
+            if (chosenTab === 'RATES') {
+                lastSelectedFilterValues[activeFilterIndex].allRate.currentPage++;
+            } else if (chosenTab === 'RATE_TYPES') {
+                lastSelectedFilterValues[activeFilterIndex].allRateTypes.currentPage++;
+            }
             lastSelectedFilterValues[activeFilterIndex].fromLeftFilter = false;
             $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
         };
@@ -1854,6 +1942,45 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         };
 
         /*
+         * callback from react, when clicked on rate type
+         * @param  {Object} filterValues
+         */
+        var fetchSingleRateTypeDetailsFromReact = (filterValues) => {
+            lastSelectedFilterValues.push({
+                ...lastSelectedFilterValues[activeFilterIndex],
+                ...filterValues,
+                showAllRates: false,
+                showAllRoomTypes: false,
+                showAllRateTypes: false,
+                fromLeftFilter: false
+            });
+
+            activeFilterIndex = activeFilterIndex + 1;
+            let allRate = {
+                ...lastSelectedFilterValues[activeFilterIndex].allRate,
+                currentPage: 1
+            };
+
+            lastSelectedFilterValues[activeFilterIndex].allRate = allRate;
+
+            $scope.showBackButton = true;
+            $scope.isRateView = true;
+            $scope.isRateTypeView = false;
+            $scope.isRoomTypeView = false;
+
+            var filterValuesForShowRates = {
+                allRate: allRate,
+                chosenTab: 'RATE_TYPES',
+                fromDate: filterValues.fromDate,
+                toDate: filterValues.toDate,
+                fromLeftFilter: false,
+                selectedRateTypes: filterValues.selectedRateTypes,
+                selectedRates: []
+            };
+            fetchDailyRates(filterValuesForShowRates);
+        };
+
+        /*
          * callback from react, when clicked on rate
          * @param  {Object} filterValues
          */
@@ -1874,6 +2001,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
             $scope.showBackButton = true;
             $scope.isRateView = false;
+            $scope.isRateTypeView = false;
+            $scope.isRoomTypeView = true;
+
+            if (chosenTab === 'RATE_TYPES') {
+                $scope.backButtonText = 'RATES';
+            }
 
             fetchSingleRateDetailsAndRestrictions(lastSelectedFilterValues[activeFilterIndex]);
         };
@@ -1938,6 +2071,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
             // Storing for further reference
             if (initiatedFromLeftFilter) {
+                cachedRoomTypeList = [];
+                cachedRateTypeList = [];
+                cachedRateAndRestrictionResponseData = [];
+                cachedRateTypeAndRestrictionResponseData = [];
+                chosenTab = newFilterValues.chosenTab;
 
                 // setting the current scroll position as STILL
                 newFilterValues.scrollDirection = rvRateManagerPaginationConstants.scroll.STILL;
@@ -1945,11 +2083,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 activeFilterIndex = 0;
                 $scope.showBackButton = false;
                 totalRatesCountForPagination = 0;
-
+                totalRateTypesCountForPagination = 0;
                 showingData = [];
             }
 
             if (newFilterValues.showAllRates) {
+                $scope.backButtonText = 'RATE';
                 $scope.isRateView = true;
                 $scope.isRateTypeView = false;
                 $scope.isRoomTypeView = false;
@@ -1975,9 +2114,23 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchRoomTypeAndRestrictions(newFilterValues);
             }
             else if (newFilterValues.showAllRateTypes) {
+                $scope.backButtonText = 'RATE TYPES';
                 $scope.isRateView = false;
                 $scope.isRateTypeView = true;
                 $scope.isRoomTypeView = false;
+                if (initiatedFromLeftFilter) {
+                    let allRateTypes = {
+                        ...lastSelectedFilterValues[activeFilterIndex].allRateTypes,
+                        currentPage: 1
+                    };
+
+                    lastSelectedFilterValues[activeFilterIndex].allRateTypes = allRateTypes;
+                    newFilterValues.allRateTypes = allRateTypes;
+
+                    cachedRateTypeAndRestrictionResponseData = [];
+                }
+
+                // calling the api
                 fetchRateTypeAndRestrictions(newFilterValues);
             }
             else {
