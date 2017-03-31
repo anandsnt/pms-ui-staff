@@ -148,7 +148,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
             };
 
             if ($stateParams.mode === 'PICKUP_KEY') {
-                params.is_checked_in = true;
+                params.checked_in = true;
             }
 
             var options = {
