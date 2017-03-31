@@ -1454,21 +1454,21 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             var restrictionData = response.roomTypeAndRestrictions,
                 roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
                 variedAndCommonRestrictions = response.restrictionsWithStatus[0].restrictions,
-                roomTypesAndPrices = response.roomTypeAndRestrictions[0]
-                    .room_types.map(roomType =>
+                rateAndRestrictions = response.rateAndRestrictions[0]
+                    .rates.map(rate =>
                         ({
-                            ...roomType,
-                            ..._.findWhere(roomTypes, {id: roomType.id})
+                            ...rate,
+                            ..._.findWhere(rates, {id: rate.id})
                         }));
 
             // roomTypeList is now cached, we will not fetch that again
             cachedRoomTypeList = roomTypes;
 
             var data = {
-                mode: rvRateManagerPopUpConstants.RM_SINGLE_RATE_RESTRICTION_MODE,
-                rate: _.findWhere(cachedRateTypeList, { id: successCallBackParameters.rateTypeID }),
+                mode: rvRateManagerPopUpConstants.RM_SINGLE_RATE_TYPE_RESTRICTION_MODE,
+                rateType: _.findWhere(cachedRateTypeList, { id: successCallBackParameters.rateTypeID }),
                 date: successCallBackParameters.date,
-                roomTypesAndPrices,
+                rateAndRestrictions,
                 restrictionData,
                 restrictionTypes,
                 variedAndCommonRestrictions
@@ -1524,7 +1524,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                     date
                 }
             };
-            console.log("inside")
 
              $scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateTypeDetailsAndCommonRestrictions, options);
             //$scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateDetailsAndCommonRestrictions, options);

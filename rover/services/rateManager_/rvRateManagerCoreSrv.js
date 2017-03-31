@@ -64,7 +64,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
         service.fetchSingleRateTypeInfo = function (params) {
            // var url = '/api/daily_rates/rate_type_restrictions';
-            var url = '/api/daily_rates/room_restrictions';
+            var url = '/api/daily_rates/rate_restrictions';
             return this.getJSON(url, params );
         };
 
@@ -328,12 +328,11 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
             //single rate info.
             var paramsForSingleRateType = _.omit(params, 'fetchRoomTypes', 'fetchRates');
-            // var data = {"results":[{"date":"2016-11-08","room_types":[{"id":66,"single":"300.00","double":"320.00","extra_adult":"10.00","child":null,"single_overridden":false,"double_overridden":false,"extra_adult_overridden":false,"child_overridden":false,"nightly_rate":"300.00","restrictions":[{"restriction_type_id":3,"days":null,"is_on_rate":false}]},{"id":92,"single":"400.00","double":"420.00","extra_adult":"10.00","child":null,"single_overridden":false,"double_overridden":false,"extra_adult_overridden":false,"child_overridden":false,"nightly_rate":"400.00","restrictions":[{"restriction_type_id":3,"days":null,"is_on_rate":false}]},{"id":232,"single":"430.00","double":"450.00","extra_adult":"10.00","child":null,"single_overridden":false,"double_overridden":false,"extra_adult_overridden":false,"child_overridden":false,"nightly_rate":"430.00","restrictions":[{"restriction_type_id":3,"days":null,"is_on_rate":false}]},{"id":383,"single":"320.00","double":"350.00","extra_adult":"10.00","child":null,"single_overridden":false,"double_overridden":false,"extra_adult_overridden":false,"child_overridden":false,"nightly_rate":"320.00","restrictions":[{"restriction_type_id":3,"days":null,"is_on_rate":false}]},{"id":502,"single":"1.00","double":"1.00","extra_adult":"1.00","child":null,"single_overridden":false,"double_overridden":false,"extra_adult_overridden":false,"child_overridden":false,"nightly_rate":"1.00","restrictions":[{"restriction_type_id":3,"days":null,"is_on_rate":false}]},{"id":611,"single":null,"double":null,"extra_adult":null,"child":null,"single_overridden":false,"double_overridden":false,"extra_adult_overridden":false,"child_overridden":false,"nightly_rate":null,"restrictions":[]}]}],"is_eod_in_progress":false,"is_eod_manual_started":false,"is_eod_failed":true,"is_eod_process_running":false}
-            // response.roomTypeAndRestrictions = data.results;
+
             promises.push(
                 this.fetchSingleRateTypeInfo( paramsForSingleRateType )
                 .then( data => {
-                    response.roomTypeAndRestrictions = data.results;
+                    response.rateAndRestrictions = data.results;
                 })
             );
 
