@@ -1,5 +1,5 @@
 (function() {
-	var offerAddonOptionsController = function($scope, $rootScope, $state, checkinAddonService, $sce, sntGuestWebSrv) {
+	var offerAddonOptionsController = function($scope, $rootScope, $state, checkinAddonService, $sce, sntGuestWebSrv, checkinDetailsService) {
 
 		var selectedAddon = {},
 			setSelectedAddon = function(addon, isSingleAddonAvailable) {
@@ -177,16 +177,6 @@
 			$scope.isLoading = false;
 		};
 
-		var availableAddonFetchSuccess = function(allAvailableAddons) {
-
-			checkinAddonService.getExistingAddonsList().then(function(existingAddons) {
-				fetchExistingAddonsSucess(allAvailableAddons, existingAddons)
-			}, function() {
-				$rootScope.netWorkError = true;
-				$scope.isLoading = false;
-			});
-		};
-
 		(function() {
 			var fetchScreenDetails = function(screenId) {
 				return sntGuestWebSrv.extractAddonScreenDetails(screenId);
@@ -212,7 +202,8 @@
 			$scope.quantityList = _.range(6);
 			var params = {};
 			checkinAddonService.getAddonList(params).then(function(response) {
-				availableAddonFetchSuccess(response.addons);
+				var existingAddons = checkinDetailsService.getResponseData().addons_data;
+				fetchExistingAddonsSucess(response.addons, existingAddons);
 			}, function() {
 				$rootScope.netWorkError = true;
 				$scope.isLoading = false;
@@ -221,7 +212,7 @@
 	};
 
 	var dependencies = [
-		'$scope', '$rootScope', '$state', 'checkinAddonService', '$sce', 'sntGuestWebSrv',
+		'$scope', '$rootScope', '$state', 'checkinAddonService', '$sce', 'sntGuestWebSrv', 'checkinDetailsService',
 		offerAddonOptionsController
 	];
 
