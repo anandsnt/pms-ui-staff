@@ -240,7 +240,7 @@
 										{{currencySymbol}}{{item.fees | number:2 }}
 										<ul class = 'charge-items' ng-if = "isStandAlone && item.is_group_by_ref" ng-class = "{'hidden': !item.isExpanded}">
 											<li ng-repeat = "object in item.light_speed_data">
-												<span class = "cost">{{currencySymbol}}{{object.amount}}</span>
+												<span class = "cost">{{currencySymbol}}{{object.amount | number:precisonTwo }}</span>
 											</li>
 										</ul>
 									</td>
