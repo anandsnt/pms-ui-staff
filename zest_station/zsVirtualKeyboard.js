@@ -13,13 +13,13 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
     var that = this;
 
     this.bound = false;
-  // open virtual keyboard
+    // open virtual keyboard
     $.keyboard.language.love = $.extend($.keyboard.language.en);
-    var focused, isCountrySelector = id === 'country-selector-input';
-        focused = $('#' + id);  
-        elementObj = $(focused);
-    
-  
+    var focused = $('#' + id),
+        isCountrySelector = id === 'country-selector-input';
+
+    elementObj = $(focused);
+
 
     var defaultLayout, shift, zestStationNonPasswordField, zestStationNumDaysField, zestStationNationalityField;
 
@@ -28,13 +28,13 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
     };
 
     isNumOfDaysField = function(i) {
-    // show number keyboard on these fields: prompt_text, timeout_text, no-of-nights
+        // show number keyboard on these fields: prompt_text, timeout_text, no-of-nights
         var fields = ['prompt_text', 'timeout_text', 'no-of-nights'];
 
         return i && fields.indexOf(i) !== -1;
     };
     isAdminNumberField = function(i) {
-    // show number keyboard on these fields: prompt_text, timeout_text, no-of-nights
+        // show number keyboard on these fields: prompt_text, timeout_text, no-of-nights
         var adminNumberFields = ['prompt_text', 'timeout_text'];
 
         return i && adminNumberFields.indexOf(i) !== -1;
@@ -50,7 +50,7 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
         zestStationNonPasswordField = false;
         zestStationNumDaysField = false;
         zestStationNationalityField = false;
-    
+
     } else if (isNumOfDaysField(id)) {
         zestStationNonPasswordField = true;
         zestStationNumDaysField = true;
@@ -77,7 +77,7 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
         if (from === 'login') { // fixes an issue where data values are not set from virtual keyboard
             var el = $(elementObj[0]);
 
-            if ( angular.element(el).scope() ) {
+            if (angular.element(el).scope()) {
                 angular.element(el).scope().data[id] = $(elementObj[0]).val();
             }
         }
@@ -87,7 +87,7 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
     var keyboardOptions = {
         language: ['love'],
         rtl: false,
-    // layout: 'qwerty',
+        // layout: 'qwerty',
         layout: defaultLayout,
         customLayout: {
             'default': [
@@ -153,53 +153,53 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
 
             'numpad': '\u2665',
 
-      // check mark (accept)
+            // check mark (accept)
             'a': '\u2714:Accept (Shift-Enter)',
             'accept': 'Accept:Accept (Shift-Enter)',
             'alt': 'AltGr:Alternate Graphemes',
-      // Left arrow (same as &larr;)
+            // Left arrow (same as &larr;)
             'b': '\u2190:Backspace',
             'bksp': ' ',
-      // 'bksp': '\u2421:Backspace',
-      // 'bksp': '\u2421:Backspace',
-      // big X, close/cancel
+            // 'bksp': '\u2421:Backspace',
+            // 'bksp': '\u2421:Backspace',
+            // big X, close/cancel
             'c': '\u2716:Cancel (Esc)',
             'cancel': 'Cancel:Cancel (Esc)',
-      // clear num pad
+            // clear num pad
             'clear': 'C:Clear',
             'combo': '\u00f6:Toggle Combo Keys',
-      // num pad decimal '.' (US) & ',' (EU)
+            // num pad decimal '.' (US) & ',' (EU)
             'dec': '.:Decimal',
-      // down, then left arrow - enter symbol
+            // down, then left arrow - enter symbol
             'e': '\u21b5:Enter',
             'empty': '\u00a0', // &nbsp;
             'enter': 'Enter:Enter',
-      // left arrow (move caret)
+            // left arrow (move caret)
             'left': '\u2190',
-      // caps lock
+            // caps lock
             'lock': '\u21ea Lock:Caps Lock',
             'next': 'Next \u21e8',
             'prev': '\u21e6 Prev',
-      // right arrow (move caret)
+            // right arrow (move caret)
             'right': '\u2192',
-      // thick hollow up arrow
+            // thick hollow up arrow
             's': '\u21e7:Shift',
 
-      // +/- sign for num pad
+            // +/- sign for num pad
             'sign': '\u00b1:Change Sign',
             'space': '\u00a0:Space',
-      // right arrow to bar
-      // \u21b9 is the true tab symbol
-      // 't': '\u21e5:Tab',
-      //  'tab': '\u21e5 Tab:Tab',
-      // replaced by an image
+            // right arrow to bar
+            // \u21b9 is the true tab symbol
+            // 't': '\u21e5:Tab',
+            //  'tab': '\u21e5 Tab:Tab',
+            // replaced by an image
             'toggle': ' ',
 
-      // added to titles of keys
-      // accept key status when acceptValid:true
+            // added to titles of keys
+            // accept key status when acceptValid:true
             'valid': 'valid',
             'invalid': 'invalid',
-      // combo key states
+            // combo key states
             'active': 'active',
             'disabled': 'disabled'
 
@@ -245,7 +245,7 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
         repeatRate: 20,
         resetDefault: false,
         openOn: 'focus',
-    //  closeOn: 'blur',
+        //  closeOn: 'blur',
         keyBinding: 'mousedown touchstart',
 
         useWheel: true,
@@ -276,19 +276,19 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
         visible: function() {}, // e, keyboard, el
         change: function() { // e, keyboard, el
             if (onChangeEvent) {
-                onChangeEvent();  
+                onChangeEvent();
             }
-      // country selector uses another jquery plugin, which does not recognize the input event from virtual keyboard,
-      // we just need to trigger the search method from autocomplete to trigger filtering
+            // country selector uses another jquery plugin, which does not recognize the input event from virtual keyboard,
+            // we just need to trigger the search method from autocomplete to trigger filtering
             if (isCountrySelector) {
                 $(elementObj).autocomplete('search', $(elementObj).val());
-        // workaround to fix css updating for nationality in yotel..need to fire the scope.showingAutoComplete
+                // workaround to fix css updating for nationality in yotel..need to fire the scope.showingAutoComplete
                 angular.element(elementObj).scope().showingAutoComplete();
             }
 
         },
         beforeClose: function(e, keyboard, el, accepted) {
-            if (isCountrySelector && 'ontouchstart' in window) {// only for touchscreen devices
+            if (isCountrySelector && 'ontouchstart' in window) { // only for touchscreen devices
                 var beforeCloseVal = $(elementObj).val();
 
                 setTimeout(function() {
@@ -298,10 +298,8 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
                 setTimeout(function() {
                     if (elementObj.getkeyboard().isOpen || id === 'country-selector-input') {
                         try {
-                            console.log('trying to close keyboard')
                             elementObj.getkeyboard().accept(true);
                         } catch (err) {
-                            console.log('trying to close keyboard, err')
                             elementObj.getkeyboard().close();
                         }
                     }
@@ -326,12 +324,12 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
     };
 
     if (zestStationNonPasswordField && !zestStationNumDaysField && !zestStationNationalityField) {
-    // custom keyboard for zest station
+        // custom keyboard for zest station
         keyboardOptions.customLayout.default = keyboardOptions.customLayout.station_keyboard;
         $('.ui-keyboard').removeClass('top-align-keyboard');
         $('.ui-keyboard').removeClass('station-admin-align-keyboard');
     } else if (zestStationNumDaysField) {
-    // number of days keyboard, only number input with backspace button
+        // number of days keyboard, only number input with backspace button
         keyboardOptions.customLayout.default = keyboardOptions.customLayout.station_num_keyboard;
         $('.ui-keyboard').addClass('top-align-keyboard');
         if (isAdminNumberField(id)) {
@@ -340,19 +338,20 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
         }
 
     } else if (zestStationNationalityField) {
-    // number of days keyboard, only number input with backspace button
+        // number of days keyboard, only number input with backspace button
         keyboardOptions.customLayout.default = keyboardOptions.customLayout.station_keyboard_no_numbers;
         $('.ui-keyboard').addClass('bottom-align-keyboard');
     }
-    var focused, isCountrySelector = id === 'country-selector-input';
-        focused = $('#' + id);  
-        elementObj = $(focused);
+    var focused = $('#' + id),
+        isCountrySelector = id === 'country-selector-input';
+
+    elementObj = $(focused);
 
 
-  /*
-  * if the keyboard is used in conjunction with the autocomplete jquery plugin, then
-  * it should be configured slightly differently...
-  */
+    /*
+     * if the keyboard is used in conjunction with the autocomplete jquery plugin, then
+     * it should be configured slightly differently...
+     */
     if (isCountrySelector) {
         keyboardOptions.ignoreEsc = true;
     }
@@ -369,7 +368,7 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
 
     this.blurHandler = function() {
         if (isCountrySelector) {
-            focused = $('#' + id);  
+            focused = $('#' + id);
             elementObj = $(focused);
         }
 

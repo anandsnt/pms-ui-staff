@@ -101,7 +101,6 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 
         var searchReservation = function() {
             var checkoutVerificationSuccess = function(data) {
-                console.log('search reservation: ',data);
                 if (data.is_checked_out) {
                     $scope.alreadyCheckedOut = true;
                 } else if (!!$stateParams.mode && $stateParams.mode === 'PICKUP_KEY' && data.is_checked_in) {
