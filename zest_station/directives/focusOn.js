@@ -39,25 +39,6 @@ sntZestStation.directive('focusOn', ['$timeout', function($timeout) {
 
                         if (typeof scopeFn !== 'undefined') {
                             scopeFn();
-                        } else {
-                            if (attrs.focusOn === 'input') {
-                                // rootCtrl
-                                scopeFn = angular.element(el).scope().$parent.showOnScreenKeyboard;
-                                // set listeners
-                                var showKeyboardOnFocus = function() {
-                                    angular.element(el).scope().$parent.showOnScreenKeyboard('country-selector-input');
-                                };
-                                // since the Input field is dynamically generated with the autocomplete jquery plugin, we need
-                                // to assign an ID to support also using the soft-keyboard
-                                // 
-
-                                $($('#country-select-div input:text').first()[0]).attr('id', 'country-selector-input');
-
-                                $(elToFocus).focus(showKeyboardOnFocus);
-                                $(elToFocus).keydown(showKeyboardOnFocus);
-                                $(elToFocus).change(showKeyboardOnFocus);
-                                $(elToFocus).blur(showKeyboardOnFocus);
-                            }
                         }
                     }, 0);
                 }
