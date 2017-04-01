@@ -51,6 +51,15 @@
 						$scope.doneClicked();
 					}
 				}
+				// update the data in srv with newly added addon
+				var checkinDetails = checkinDetailsService.getResponseData();
+				var newAddon = {
+					'id': $scope.selectedAddon.addon_id,
+					'name': $scope.selectedAddon.name
+				};
+				
+				checkinDetails.addons_data.push(newAddon);
+				checkinDetailsService.setResponseData(checkinDetails);
 				$(document.body).scrollTop(0);
 			};
 
@@ -84,6 +93,13 @@
 				} else {
 					$scope.selectedAddon.is_selected = !$scope.selectedAddon.is_selected;
 				}
+				// update the data in srv by removing deleted addon
+				var checkinDetails = checkinDetailsService.getResponseData();
+				
+				checkinDetails.addons_data = _.filter(checkinDetails.addons_data, function(addon) {
+					return addon.id !== $scope.selectedAddon.addon_id;
+				});
+				checkinDetailsService.setResponseData(checkinDetails);
 				$scope.doneClicked();
 				$(document.body).scrollTop(0);
 			}
