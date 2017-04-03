@@ -360,6 +360,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
             if (!$scope.updateGroupSummary || // This is used in the res-cards and this method is not available there
                 $scope.isInAddMode() || targetElement.id === 'summary' ||
                 targetElement.id === 'cancel-action' || // TODO: Need to check with Dilip/Shiju PC for more about this
+                !!$scope.focusedCompanyCard || !!$scope.focusedTravelAgent || // CICO-39934 Don't update the group, since its already updated while selecting the group
                 whetherSummaryDataChanged() ||
                 $scope.groupSummaryData.isDemographicsPopupOpen ||
                 $scope.isUpdateInProgress ||
