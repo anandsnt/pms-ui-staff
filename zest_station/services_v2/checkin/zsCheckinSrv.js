@@ -392,11 +392,14 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         };
 
         this.fetchAddons = function(param) {
-            var deferred = $q.defer(),
-                url =  '/zest_station/upgrade_options.json';
-                url =  url = '/sample_json/zest_station/addons_list.json';
+            var deferred = $q.defer();
+            var url = '/api/upsell_addons';
+            var params = {
+                'for_zest_station': true,
+                'reservation_id': param.reservationID
+            };
 
-            zsBaseWebSrv.getJSON(url, param).then(function(data) {
+            zsBaseWebSrv.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);

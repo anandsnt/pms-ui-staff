@@ -38,6 +38,20 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			$scope.mode = 'ERROR_MODE';
 		};
 
+		$scope.isAddonFlatOrRoomType = function(addonToBe) {
+			if (_.isUndefined(addonToBe)) {
+				return false
+			} else {
+				var addon = angular.copy(addonToBe);
+				// To delete once the addon import API is fixed
+				addon.amount_type = (addon.amount_type === 'Room') ? 'Per Room' : addon.amount_type;
+				addon.amount_type = (addon.amount_type === 'Flat') ? 'Flat Rate' : addon.amount_type;
+				// To deleted above
+				return addon.amount_type === 'Per Room' || $scope.selectedAddon.amount_type === 'Flat Rate';
+			}
+
+		};
+
 		var setPageNumberDetails = function() {
 			$scope.$emit('hideLoader');
 			if ($scope.addonsList.length <= 6) {
@@ -64,10 +78,10 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 						$scope.viewableAddons.push($scope.addonsList[$scope.pageStartingIndex + index]);
 					}
 				}
-				// enable/disable next previous
-				$scope.disableNextButton = ($scope.pageEndingIndex === $scope.addonsList.length);
-				$scope.disablePreviousButton = $scope.pageStartingIndex === 1;
 			}
+			// enable/disable next previous
+			$scope.disableNextButton = ($scope.pageEndingIndex === $scope.addonsList.length);
+			$scope.disablePreviousButton = $scope.pageStartingIndex === 1;
 			// set the height for container
 			$('#upgrades').css({
 				"height": "calc(100% - 230px)"
@@ -107,7 +121,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				$scope.errorMessage = "Unable To add this to your reservation";
 			} else {
 				$scope.showAddonPopup = false;
-				if (selectedAddon.type === 'per room' || selectedAddon.type === 'flat rate') {
+				if ($scope.isAddonFlatOrRoomType(selectedAddon)) {
 					$scope.selectedAddon.quantity = angular.copy($scope.selectedAddonCount);
 				}
 				$scope.selectedAddonCount = 0;
@@ -130,7 +144,10 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		var fetchAddons = function() {
 
 			var fetchAddonsSuccess = function(response) {
-				$scope.addonsList = response.addons;
+				// show only active addons for zest station
+				$scope.addonsList = _.reject(response.addons, function(addon) {
+					return !addon.zest_station_active;
+				});
 
 				_.each($scope.addonsList, function(addon) {
 					addon.is_selected = false;
@@ -154,7 +171,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 
 			$scope.callAPI(zsCheckinSrv.fetchAddons, {
 				params: {
-					// reservation_id: $scope.selectedReservation.reservation_details.reservation_id
+					reservation_id: $scope.selectedReservation.reservation_details.reservation_id
 				},
 				'successCallBack': fetchAddonsSuccess,
 				'failureCallBack': generalError
@@ -167,9 +184,9 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 
 			_.each($scope.addonsList, function(addon) {
 				if (addon.is_selected) {
-					totalAmount = totalAmount + addon.price;
+					totalAmount = totalAmount + addon.amount;
 				} else if (addon.quantity > 0) {
-					totalAmount = totalAmount + addon.price * addon.quantity;
+					totalAmount = totalAmount + addon.amount * addon.quantity;
 				}
 			});
 			return totalAmount;
