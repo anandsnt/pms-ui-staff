@@ -432,6 +432,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		// Handle confirmUpdates process with Autherization..
 		var performCCAuthAndconfirmUpdatesProcess = function(postParams) {
 			var params = RVNightlyDiarySrv.getCache();
+
 			if (params) {
 				var reservationInDiary = params.currentSelectedReservation;
 				var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
