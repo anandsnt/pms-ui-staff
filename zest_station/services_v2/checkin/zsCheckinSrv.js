@@ -397,7 +397,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var params = {
                 'for_zest_station': true,
                 'reservation_id': param.reservation_id,
-                'is_kiosk': true
+                'application': 'KIOSK'
             };
 
             zsBaseWebSrv.getJSON(url, params).then(function(data) {
@@ -414,8 +414,8 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var url = '/api/reservations/update_package';
 
             var data = {
-                'reservation_id': params.reservation_id,
-                'is_kiosk': true,
+                'id': params.reservation_id,
+                'application': 'KIOSK',
                 'addon_id': params.addon_id
             };
             zsBaseWebSrv.postJSON(url, data).then(function(data) {
@@ -426,22 +426,21 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
-        // var deleteAddon = function(params) {
-
-        //     var deferred = $q.defer();
-        //     var url = '/api/reservations/delete_package';
-
-        //     params.id = $rootScope.reservationID;
-        //     params.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "WEB";
-        //     params.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "";
-        //     $http.post(url, params).success(function(response) {
-        //             deferred.resolve(response);
-        //         })
-        //         .error(function() {
-        //             deferred.reject();
-        //         });
-        //     return deferred.promise;
-        // };
+        this.deleteAddon = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/reservations/delete_package';
+            var data = {
+                'id': params.reservation_id,
+                'application': 'KIOSK',
+                'addon_id': params.addon_id
+            };
+            zsBaseWebSrv.postJSON(url, data).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
 
     }

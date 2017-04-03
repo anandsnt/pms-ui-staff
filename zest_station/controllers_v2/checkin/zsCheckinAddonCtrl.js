@@ -115,10 +115,15 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			$scope.selectedAddonCount = $scope.selectedAddonCount > 0 ? $scope.selectedAddonCount - 1 : 0;
 		};
 
-		var addonGeneralFailure = function(){
+		var addonGeneralFailure = function() {
 			$scope.showAddonPopup = false;
 			$scope.showErrorPopUp = true;
 			$scope.errorMessage = "Unable To add this to your reservation";
+		};
+		var addonRemoveGeneralFailure = function() {
+			$scope.showAddonPopup = false;
+			$scope.showErrorPopUp = true;
+			$scope.errorMessage = "Unable To remove this from your reservation";
 		};
 		$scope.addOnDoneButtonClicked = function(selectedAddon) {
 			if ($scope.selectedAddonCount === 3) {
@@ -132,28 +137,37 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			}
 		};
 
-		var addRemoveAddonSucess = function(selectedAddon){
+		var addRemoveAddonSucess = function(selectedAddon) {
 			selectedAddon.is_selected = !selectedAddon.is_selected;
 		};
-		var addAddon = function(selectedAddon){
+		var addAddon = function(selectedAddon) {
 			$scope.callAPI(zsCheckinSrv.updateAddon, {
-					params: {
-						reservation_id: $scope.selectedReservation.id,
-						addon_id: selectedAddon.addon_id
-					},
-					'successCallBack': function(){
-						addRemoveAddonSucess(selectedAddon);
-					},
-					'failureCallBack': addonGeneralFailure
-				});
+				params: {
+					reservation_id: $scope.selectedReservation.id,
+					addon_id: selectedAddon.addon_id
+				},
+				'successCallBack': function() {
+					addRemoveAddonSucess(selectedAddon);
+				},
+				'failureCallBack': addonGeneralFailure
+			});
 		};
-		var removeAddon = function(){
-
+		var removeAddon = function(selectedAddon) {
+			$scope.callAPI(zsCheckinSrv.deleteAddon, {
+				params: {
+					reservation_id: $scope.selectedReservation.id,
+					addon_id: selectedAddon.addon_id
+				},
+				'successCallBack': function() {
+					addRemoveAddonSucess(selectedAddon);
+				},
+				'failureCallBack': addonRemoveGeneralFailure
+			});
 		};
 		$scope.addRemoveAddOn = function(selectedAddon) {
 			if (!selectedAddon.is_selected) {
 				addAddon(selectedAddon);
-			}else{
+			} else {
 				removeAddon(selectedAddon);
 			}
 		};
