@@ -32,12 +32,12 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
          */
         $scope.clearSignature = function() {
             $scope.signatureData = '';
-            $("#signature").jSignature("clear");
+            $('#signature').jSignature('clear');
         };
 
         var checkIfEmailIsBlackListedOrValid = function() {
             var email = $stateParams.guest_email ? $stateParams.guest_email : $stateParams.email;
-            
+
             if (!email) {
                 email = '';
             }
@@ -89,11 +89,11 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
             var checkinParams = {
                 'reservation_id': $stateParams.reservation_id,
                 'workstation_id': $scope.zestStationData.set_workstation_id,
-                "authorize_credit_card": false,
-                "do_not_cc_auth": false,
-                "is_promotions_and_email_set": false,
-//                "no_post": "",//handled by the API CICO-35315
-                "is_kiosk": true,
+                'authorize_credit_card': false,
+                'do_not_cc_auth': false,
+                'is_promotions_and_email_set': false,
+                //                "no_post": "",//handled by the API CICO-35315
+                'is_kiosk': true,
                 'signature': signature
             };
             var options = {
@@ -103,11 +103,11 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
 
             if ($scope.zestStationData.noCheckInsDebugger === 'true') {
                 console.log('skipping checkin guest, no-check-ins debugging is ON');
-                afterGuestCheckinCallback({'status': 'success'});
+                afterGuestCheckinCallback({ 'status': 'success' });
             } else {
-                $scope.callAPI(zsCheckinSrv.checkInGuest, options);    
+                $scope.callAPI(zsCheckinSrv.checkInGuest, options);
             }
-            
+
         };
         /**
          * [submitSignature description]
@@ -118,7 +118,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
             /*
              * this method will check the guest in after swiping a card
              */
-            $scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
+            $scope.signatureData = JSON.stringify($('#signature').jSignature('getData', 'native'));
             if ($scope.signatureData !== [] && $scope.signatureData !== null && $scope.signatureData !== '' && $scope.signatureData !== '[]') {
                 checkInGuest();
             } else {
@@ -128,7 +128,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
 
         $scope.reSignCC = function() {
             $scope.resetTime();
-            $scope.mode = "SIGNATURE_MODE";
+            $scope.mode = 'SIGNATURE_MODE';
         };
 
 
@@ -141,7 +141,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
             // show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-            $scope.mode = "SIGNATURE_MODE";
+            $scope.mode = 'SIGNATURE_MODE';
             $scope.signaturePluginOptions = {
                 height: 230,
                 width: $(window).width() - 120,
