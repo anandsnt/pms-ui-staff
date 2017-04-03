@@ -420,6 +420,9 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.saveSettings(demoRunStarted);
             
         };
+        $scope.reload = function() {
+            location.reload(true);
+        };
 
         $scope.showDebugModeOption = false;
         // initialize
