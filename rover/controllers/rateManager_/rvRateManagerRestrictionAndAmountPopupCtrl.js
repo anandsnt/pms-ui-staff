@@ -526,6 +526,42 @@ angular.module('sntRover')
         };
 
         /**
+         * to update restriction rate
+         */
+        const callRateTypeRestrictionAndAmountUpdateAPI = () => {
+            var params = {},
+                dialogData = $scope.ngDialogData,
+                mode = dialogData.mode;
+
+            if(mode === $scope.modeConstants.RM_SINGLE_RATE_TYPE_RESTRICTION_MODE) {
+                params.rate_type_id = dialogData.rateType.id;
+            }
+            else if(mode === $scope.modeConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE) {
+                // let rate_ids = _.pluck(dialogData.rates, 'id');
+
+                // //if there is no rate_ids passed, checking for rate_type is being passed
+                // if(!rate_ids.length && _.has(dialogData, 'rateTypes') && dialogData.rateTypes.length) {
+                //     params.rate_type_ids = _.pluck(dialogData.rateTypes, 'id');
+                // }
+                // else {
+                //     params.rate_ids = rate_ids;
+                // }
+            }
+
+            params.details = [];
+
+            formDayRestrictionParamsForAPI(params);
+
+            formRestrictionParamDetailForWeekDaysForAPI(params);
+
+            const options = {
+                params,
+                onSuccess: onUpdateRateRestrictionData
+            };
+            $scope.callAPI(rvRateManagerCoreSrv.updateSingleRateRestrictionData, options);
+        };
+
+        /**
          * [description]
          * @return {[type]} [description]
          */
@@ -621,6 +657,9 @@ angular.module('sntRover')
                 case $scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE:
                 case $scope.modeConstants.RM_SINGLE_RATE_MULTIPLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE:
                     return callRateRoomTypeRestrictionAndAmountUpdateAPI();
+
+                case $scope.modeConstants.RM_SINGLE_RATE_TYPE_RESTRICTION_MODE:
+                    return callRateTypeRestrictionAndAmountUpdateAPI();
 
                 default:
                     break;
