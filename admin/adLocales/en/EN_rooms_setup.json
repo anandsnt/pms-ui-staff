@@ -67,7 +67,25 @@
 "MIN_VERSION_LABEL" : "minimum version",
 "EXCLUDED_VERSION_LABEL" : "EXCLUDED OS VERSIONS",
 "MAINTENANCE_REASON_CODE_PLACEHOLDER" : "Maintenance Reason",
-"SHOW_ORACODE_IN_ROOM_READY_EMAIL" : "Show Oracode PIN in room ready email"
+"SHOW_ORACODE_IN_ROOM_READY_EMAIL" : "Show Oracode PIN in room ready email",
+
+"STATION_MOBILEKEY_DISABLED":"Do not offer Mobile Phone Key",
+"STATION_MOBILEKEY_THIRDPARTY":"Offer Mobile Phone Key - 3rd Party",
+"STATION_MOBILEKEY_SNT":"Offer Mobile Phone Key - Zest",
+
+"WALLET_URL_LABEL": "Legic Rest Web Service URL",
+"WALLET_URL_PLACEHOLDER": "Enter Legic Rest Web Service URL",
+"WALLET_ID_LABEL": "Legic Wallet ID",
+"WALLET_ID_PLACEHOLDER": "Enter Legic Wallet ID",
+"WALLET_USERNAME_LABEL": "Legic Wallet Tech Username",
+"WALLET_USERNAME_PLACEHOLDER": "Enter Legic Wallet Tech Username",
+"WALLET_PASSWORD_LABEL": "Legic Wallet Tech Password",
+"WALLET_PASSWORD_PLACEHOLDER": "Enter Legic Wallet Tech Password",
+"AUTH_USERNAME_LABEL": "Legic Preauth Username",
+"AUTH_USERNAME_PLACEHOLDER": "Enter Legic Preauth Username",
+"AUTH_PASSWORD_LABEL": "Legic Preauth Password",
+"AUTH_PASSWORD_PLACEHOLDER": "Enter Legic Preauth Password"
+
 
 
 

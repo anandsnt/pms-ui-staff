@@ -166,7 +166,8 @@ angular.module('reportsModule')
             'INCLUDE_ADDON_RATE': true,
             'INCLUDE_ADDONS': true,
             'INCLUDE_ADDON_REVENUE': true,
-            'INCLUDE_ACTIONS': true
+            'INCLUDE_ACTIONS': true,
+            'INCLUDE_LEDGER_DATA': true
         };
 
         var __excludeFilterNames = {
@@ -552,6 +553,10 @@ angular.module('reportsModule')
                 // check for include company/ta filter and keep a ref to that item
                 if ( filter.value === 'INCLUDE_COMPANYCARD_TA' ) {
                     report['hasIncludeCompanyTa'] = filter;
+                }
+
+                if ( filter.value === 'INCLUDE_GROUP' ) {
+                    report['hasIncludeGroup'] = filter;
                 }
 
                 // check for include company/ta/group filter and keep a ref to that item
@@ -1891,6 +1896,7 @@ angular.module('reportsModule')
                 report['sort_fields'][2] = daysVacant;
                 report['sort_fields'][3] = lastCheckoutDate;
             }
+
         };
 
 
@@ -1898,7 +1904,8 @@ angular.module('reportsModule')
         factory.processSortBy = function ( report ) {
             // adding custom name copy for easy access
             report['sortByOptions'] = angular.copy( report['sort_fields'] );
-
+            // show sortBy in filters - default
+            report['showSort'] = true;
             // sort by options - include sort direction
             if ( report['sortByOptions'] && report['sortByOptions'].length ) {
                 _.each(report['sortByOptions'], function(item, index, list) {
@@ -1936,6 +1943,21 @@ angular.module('reportsModule')
                     if ( !! roomNo ) {
                         roomNo['sortDir'] = true;
                         report['chosenSortBy'] = roomNo['value'];
+                    }
+                }
+
+                // hide sort by from filter CICO-29257
+                if ( report['title'] === reportNames['COMPLIMENTARY_ROOM_REPORT'] ) {
+                    report['showSort'] = false;
+                }
+
+                // CICO-34733 Set default sort
+                if ( report['title'] === reportNames['GROUP_ROOMS_REPORT'] ) {
+                    var arrivalDate = _.find(report['sortByOptions'], { 'value': 'GROUP_ARRIVAL_DATE' });
+
+                    if ( !! arrivalDate ) {
+                        arrivalDate['sortDir'] = true;
+                        report['chosenSortBy'] = arrivalDate['value'];
                     }
                 }
             }
@@ -2071,7 +2093,8 @@ angular.module('reportsModule')
                 'twentyEightDaysBefore': new Date(_year, _month, _date - 28),
                 'twentyEightDaysAfter': new Date(_year, _month, _date + 28),
                 'aYearAfter': new Date(_year + 1, _month, _date - 1),
-                'sixMonthsAfter': new Date(_year, _month + 6, _date)
+                'sixMonthsAfter': new Date(_year, _month + 6, _date),
+                'thirtyOneDaysAfter': new Date(_year, _month, _date + 30)
             };
 
             if ( parseInt(xDays) !== NaN ) {

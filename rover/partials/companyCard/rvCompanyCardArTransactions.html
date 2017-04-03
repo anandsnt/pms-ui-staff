@@ -104,7 +104,7 @@
 		<div class="wrapper">
 
 			<ul class="search-results">
-				<li class="reservation transaction" ng-repeat="(indexValue ,transaction) in arTransactionDetails.ar_transactions">
+				<li class="reservation transaction" ng-repeat="transaction in arTransactionDetails.ar_transactions">
 
                     <div class="faux-anchor has-arrow toggle" ng-click="clickedOnTransaction($index,$event)" ng-class="{'active':(transaction.active && transaction.transaction_type == 'DEBIT')}" ng-show="transaction.transaction_type == 'DEBIT'">
                         <figure class="guest-image" ng-if="transaction.associated_type == 'Reservation'">
@@ -224,7 +224,7 @@
 										<span ng-if="isStandAlone && !item.is_group_by_ref">
 											{{item.charge_code}}
 										</span>
-										<span ng-class = "{'toggle': isStandAlone && item.is_group_by_ref, 'active': item.isExpanded}" ng-click = "expandGroupedCharge(indexValue, item)" ng-if = "isStandAlone && item.is_group_by_ref">
+										<span ng-class = "{'toggle': isStandAlone && item.is_group_by_ref, 'active': item.isExpanded}" ng-click = "expandGroupedCharge(item)" ng-if = "isStandAlone && item.is_group_by_ref">
 											<span class="icons icon-double-arrow"></span>
 										</span>
 									</td>
@@ -240,7 +240,7 @@
 										{{currencySymbol}}{{item.fees | number:2 }}
 										<ul class = 'charge-items' ng-if = "isStandAlone && item.is_group_by_ref" ng-class = "{'hidden': !item.isExpanded}">
 											<li ng-repeat = "object in item.light_speed_data">
-												<span class = "cost">{{currencySymbol}}{{object.amount}}</span>
+												<span class = "cost">{{currencySymbol}}{{object.amount | number:precisonTwo }}</span>
 											</li>
 										</ul>
 									</td>

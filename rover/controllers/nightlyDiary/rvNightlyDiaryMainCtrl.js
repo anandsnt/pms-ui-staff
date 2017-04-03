@@ -8,6 +8,7 @@ angular.module('sntRover')
         'roomsList',
         'datesList',
         'ngDialog',
+        '$timeout',
         'reservationsList',
         'RVNightlyDiarySrv',
         function(
@@ -19,6 +20,7 @@ angular.module('sntRover')
             roomsList,
             datesList,
             ngDialog,
+            $timeout,
             reservationsList,
             RVNightlyDiarySrv
         ) {
@@ -163,6 +165,12 @@ angular.module('sntRover')
                     $scope.currentSelectedReservation = reservation;
                     $scope.currentSelectedRoom = room;
                     $scope.diaryData.selectedRoomId = room.id;
+                    $scope.extendShortenReservationDetails = {
+                        'arrival_date': reservation.arrival_date,
+                        'dep_date': reservation.dept_date,
+                        'reservation_id': reservation.id
+                    };
+
                     showReservationSelected();
                     if (!$stateParams.isFromStayCard) {
                         $scope.$apply();
@@ -194,15 +202,15 @@ angular.module('sntRover')
                                 $scope.extendShortenReservationDetails = params;
                             } else {
                                 switch (response.data.availability_status) {
-                                case 'to_be_unassigned' : $scope.messages = ['PREASSIGNED'];
-                                    break;
-                                case 'maintenance' : $scope.messages = ['MAINTENANCE'];
-                                    break;
-                                case 'do_not_move' : $scope.messages = ['ROOM_CANNOT_UNASSIGN'];
-                                    break;
-                                case 'room_ooo' : $scope.messages = ['ROOM_OOO'];
-                                    break;
-                                default : $scope.messages = ["Room Can't Move"];
+                                    case 'to_be_unassigned' : $scope.messages = ['PREASSIGNED'];
+                                        break;
+                                    case 'maintenance' : $scope.messages = ['MAINTENANCE'];
+                                        break;
+                                    case 'do_not_move' : $scope.messages = ['ROOM_IS_SET_TO_DO_NOT_MOVE'];
+                                        break;
+                                    case 'room_ooo' : $scope.messages = ['ROOM_OOO'];
+                                        break;
+                                    default : $scope.messages = ["ROOM_TYPE_NOT_AVAILABLE"];
                                 }
                                 openMessagePopup();
                             }
@@ -225,8 +233,11 @@ angular.module('sntRover')
              */
             var saveReservationEditing = function() {
                 let successCallBack = function() {
-                    fetchRoomListDataAndReservationListData();
                     cancelReservationEditing();
+                    $timeout(function() {
+                        fetchRoomListDataAndReservationListData();
+                    }, 700);
+
                 };
 
                 $scope.invokeApi(RVNightlyDiarySrv.confirmUpdates,
@@ -356,7 +367,8 @@ angular.module('sntRover')
                 selectedRoomId: $scope.diaryData.selectedRoomId,
                 isFromStayCard: $stateParams.isFromStayCard,
                 currentSelectedReservation: $scope.currentSelectedReservation,
-                dateFormat: $rootScope.dateFormat
+                dateFormat: $rootScope.dateFormat,
+                isPmsProductionEnvironment: $rootScope.isPmsProductionEnv
             };
             const store = configureStore(initialState);
             const {render} = ReactDOM;

@@ -24,7 +24,6 @@ var sntRover = angular.module('sntRover', [
 		'cacheVaultModule',
 		'documentTouchMovePrevent',
 		'divTouchMoveStopPropogate',
-		'pasvaz.bindonce',
 		'sharedHttpInterceptor',
 		'orientationInputBlurModule',
 		'ngDragDrop',
@@ -45,6 +44,8 @@ sntRover.config([
 	'$provide',
 	'$locationProvider',
 	function($httpProvider, ngDialogProvider, $provide, $provide, $locationProvider) {
+
+        $locationProvider.html5Mode(true);
 
         // $provide.decorator('$browser', ['$delegate', function ($delegate) {
         //     $delegate.onUrlChange = function () {};

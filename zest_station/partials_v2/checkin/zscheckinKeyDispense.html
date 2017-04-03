@@ -12,14 +12,14 @@
 </div>
 <!--------------------- select no of keys mode ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'DISPENSE_KEY_MODE'">
-   <div id="content">
+    <div id="content">
         <h1 class="no-margin">
             <text editable-text="CHKED_IN_SUCCESS_HEADER"> {{'CHKED_IN_SUCCESS_HEADER' |translate}}</text> &nbsp;{{first_name}}.
         </h1>
         <h1>
             <text editable-text="CHKED_IN_SUCCESS_MSG"> {{'CHKED_IN_SUCCESS_MSG' |translate}}</text>
         </h1>
-        <div id="room" ng-show="zestStationData.show_room_number">
+        <div id="room" ng-show="zestStationData.show_room_number && zestStationData.station_mobile_key_status !== 'third_party'">
             <span class="number">{{room}}</span>
         </div>
         <div id="keys">
@@ -38,7 +38,6 @@
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>
-
 <!---------------------solo key one in progres ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'SOLO_KEY_CREATION_IN_PROGRESS_MODE'">
     <div id="content">
@@ -59,7 +58,6 @@
         </button>
     </div>
 </section>
-
 <!--------------------- key one in progres ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'KEY_ONE_CREATION_IN_PROGRESS_MODE'">
     <div id="content">
@@ -75,12 +73,11 @@
         <div id="keys" ng-show="icmp">
             <div ng-include="icons.url.createkey_icmp"></div>
         </div>
-        <button  ng-show="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(1)">
+        <button ng-show="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(1)">
             <text editable-text="MAKE_KEY_TEXT_ONE"> {{'MAKE_KEY_TEXT_ONE' |translate}}</text>
         </button>
     </div>
 </section>
-
 <!--------------------- key one success, key two failed------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'KEY_ONE_SUCCESS_KEY_TWO_FAILED'">
     <div id="content">
@@ -104,7 +101,6 @@
         </button>
     </div>
 </section>
-
 <!--------------------- key one in success ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'KEY_ONE_CREATION_SUCCESS_MODE'">
     <div id="content">
@@ -128,7 +124,6 @@
         </button>
     </div>
 </section>
-
 <!--------------------- key creation over ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'KEY_CREATION_SUCCESS_MODE'">
     <div id="content">
@@ -139,14 +134,15 @@
             <text editable-text="GRAB_KEYS"> {{'GRAB_KEYS' |translate}}</text>
         </h2>
         <div id="room" ng-show="zestStationData.show_room_number">
-            <span class="number">{{room}}</span><br><br>
+            <span class="number">{{room}}</span>
+            <br>
+            <br>
         </div>
         <button type="button" class="button" click-touch="goToNextScreen('success')">
             <text editable-text="DONE"> {{'DONE' |translate}}</text>
         </button>
     </div>
-</section>   
-
+</section>
 <!--------------------- failure ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'DISPENSE_KEY_FAILURE_MODE'">
     <div id="content">
@@ -159,7 +155,7 @@
         <nav id="options" role="nav">
             <ul role="menu">
                 <!-- retry-key -->
-                <li> 
+                <li>
                     <button type="button" class="button option" touch-press='reEncodeKey()'>
                         <div ng-include="icons.url.key"></div>
                     </button>
@@ -172,7 +168,7 @@
                         <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
                     </span>
                 </li>
-                <li> 
+                <li>
                     <button type="button" class="button option" click-touch="goToNextScreen('failed')">
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
@@ -185,7 +181,7 @@
                         <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
                     </span>
                 </li>
-                <li> 
+                <li>
                     <button type="button" class="button option" touch-press='talkToStaff()'>
                         <div ng-include="icons.url.staff"></div>
                     </button>
@@ -201,3 +197,30 @@
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>
+<!-- select mobile key/ physical key -->
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'MOBILE_OR_PHYSICAL_KEY'">
+ <span ng-include="'/assets/partials_v2/checkin/key_screen/zsCheckinKeyKeyTypeMode.html'"></span>
+</section>
+
+<!-- THIRD PARTY SELECTION-->
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'THIRD_PARTY_SELECTION'">
+   <span ng-include="'/assets/partials_v2/checkin/key_screen/zsCheckinThirdPartyKeySelected.html'"></span>
+</section>
+<!--------------------- HAS THIRD PARTY APP ------------------------>
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'THIRD_PARTY_HAVE_IT_INFO'">
+   <span ng-include="'/assets/partials_v2/checkin/key_screen/zsCheckinThirdPartyAppPresent.html'"></span>
+</section>
+<!--------------------- Doesn't have mobile app ------------------------>
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'THIRD_PARTY_GET_IT_INFO'">
+   <span ng-include="'/assets/partials_v2/checkin/key_screen/zsCheckinGetMobileApp.html'"></span>
+</section>
+<!--------------------- collect email ------------------------>
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'COLLECT_EMAIL'">
+   <span ng-include="'/assets/partials_v2/checkin/key_screen/zsCheckinKeyEmailCollection.html'"></span>
+</section>
+<!--------------------- mobile key :: Sent to user account :: ------------------------>
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'THIRD_PARTY_GET_IT_INFO_EMAIL_SENT'">
+    <span ng-include="'/assets/partials_v2/checkin/key_screen/zsThirdPartyMobileKeyDetailsEmailSent.html'"></span>
+</section>
+
+

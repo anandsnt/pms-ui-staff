@@ -124,6 +124,61 @@
                         </select>
                     </div>
                 </div>
+                <!-- MOBILE KEY DEMO OPTIONS -->
+
+                <div class="entry with-label" ng-show="showDebugModeOption">
+                    <label>Mobile Key Demo Mode</label>
+                    <label class='admin-label-description'>Try out the new Mobile Key screens</label>
+                    <div class="entry select">
+                        <select ng-change='runRefreshScroller()' ng-model="zestStationData.demoMobileKeyModeEnabled">
+                            <option value="true">Enabled</option>
+                            <option value="false">Disabled</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="entry with-label" ng-show="showDebugModeOption && zestStationData.demoMobileKeyModeEnabled === 'true' ">
+                    <label>Mobile Key Demo-Flow (User with App or not)</label>
+                    <label class='admin-label-description'>Select (With-App) if you want to test the with-app flow</label>
+                    <div class="entry select">
+                        <select ng-model="zestStationData.demoMobileKeyModeEmailLinked">
+                            <option value="true">Email Linked with App</option>
+                            <option value="false">No App/Email Found</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="entry with-label" ng-show="showDebugModeOption && zestStationData.demoMobileKeyModeEnabled === 'true' ">
+                    <label>Mobile Key Demo-Flow (User with App or not)</label>
+                    <label class='admin-label-description'>If user has an email on-file, we'll send the app link there, otherwise we should collect email</label>
+                    <div class="entry select">
+                        <select ng-model="zestStationData.demoMobileKeyModeUserEmailOnFile">
+                            <option value="true">User with Email on File</option>
+                            <option value="false">No Email</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="entry with-label" ng-show="showDebugModeOption && zestStationData.demoMobileKeyModeEnabled === 'true' ">
+                    <label>Mobile Key Demo-Flow (Third Party App)</label>
+                    <label class='admin-label-description'>If the Hotel has a Non-SNT Mobile Key, select Third Party</label>
+                    <div class="entry select">
+                        <select ng-model="zestStationData.thirdPartyMobileKey">
+                            <option value="true">Third Party</option>
+                            <option value="false">Default</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="entry with-label" ng-show="showDebugModeOption && zestStationData.demoMobileKeyModeEnabled === 'true' ">
+                    <label>Try Mobile Key Flow</label>
+                    <label class='admin-label-description'>Clicking this button will take you directly to the mobile key flow for Testing Only</label>
+                    <div class="select button" type="button" touch-press="testRunMobileKeyCheckin()">
+                        Run Test
+                    </div>
+                </div>
+                <!--END MOBILE KEY DEMO OPTIONS -->
+
 
                 <div class="entry with-label" ng-show="showDebugModeOption">
                     <label>Skip Check-In</label>
@@ -155,6 +210,7 @@
             <button type="button" class="button button-left-margin" touch-press='logOutApplication()'>Logout</button>
 
             <button ng-show="showDebugModeOption" type="button" class="button button-left-margin" touch-press='toggleDiagnostics()'>Diagnostics</button>
+            <button ng-show="showDebugModeOption" type="button" class="button button-left-margin" click-touch='reload()'>Refresh</button>
 
         </div>
     </div>

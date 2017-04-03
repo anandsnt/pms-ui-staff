@@ -9,8 +9,14 @@
 		$rootScope.userEmail = ($rootScope.userEmail === null) ? "" : $rootScope.userEmail;
 		$rootScope.userMobile = ($rootScope.userMobile === null) ? "" : $rootScope.userMobile;
 
+		// Addons
+		if ($state.href("offerAddonOptions") !== null && $rootScope.isAddonUpsellActive && !$rootScope.skipedAddons) {
+			$state.go('offerAddonOptions', {
+				'isFrom': 'checkinLater'
+			});
+		}
 		// collect oustanding stay total
-		if ($state.href('balancePaymentCCCollection') !== null && parseFloat($rootScope.outStandingBalance) > 0 && $rootScope.isMLI && $rootScope.collectOutStandingBalance && !$rootScope.skipBalanceCollection) {
+		else if ($state.href('balancePaymentCCCollection') !== null && parseFloat($rootScope.outStandingBalance) > 0 && $rootScope.isMLI && $rootScope.collectOutStandingBalance && !$rootScope.skipBalanceCollection) {
 			$state.go('balancePaymentCCCollection');
 		}
 		// collect number of keys

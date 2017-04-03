@@ -218,3 +218,9 @@
     <li>Guest ledger Summary<span>{{summaryCounts.total_ytd_revenue}}</span></li>
     <li>AR ledger Summary<span>{{summaryCounts.total_ytd_revenue}}</span></li>
 </ul>
+
+<!--Complementary room report -->
+<ul ng-if="isThisReport('COMPLIMENTARY_ROOM_REPORT')" class="totals">
+    <li>Total Comp nights per day <span>{{summaryCounts.complimentary_nights_by_date}}</span></li>
+    <li>Total Comp nights per date range <span>{{summaryCounts.complimentary_nights_by_date_range}}</span></li>
+</ul>
