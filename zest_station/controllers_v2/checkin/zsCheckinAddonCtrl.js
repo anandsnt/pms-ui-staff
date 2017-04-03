@@ -11,7 +11,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 
 			var stateParams = {
 				'guest_id': $scope.selectedReservation.guest_details[0].id,
-				'reservation_id': $scope.selectedReservation.reservation_details.reservation_id,
+				'reservation_id': $scope.selectedReservation.id,
 				'deposit_amount': $scope.selectedReservation.reservation_details.deposit_amount,
 				'room_no': $scope.selectedReservation.reservation_details.room_number, // this changed from room_no, to room_number
 				'room_status': $scope.selectedReservation.reservation_details.room_status,
@@ -114,11 +114,15 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		$scope.decrementAddonQuantity = function(selectedAddon) {
 			$scope.selectedAddonCount = $scope.selectedAddonCount > 0 ? $scope.selectedAddonCount - 1 : 0;
 		};
+
+		var addonGeneralFailure = function(){
+			$scope.showAddonPopup = false;
+			$scope.showErrorPopUp = true;
+			$scope.errorMessage = "Unable To add this to your reservation";
+		};
 		$scope.addOnDoneButtonClicked = function(selectedAddon) {
 			if ($scope.selectedAddonCount === 3) {
-				$scope.showAddonPopup = false;
-				$scope.showErrorPopUp = true;
-				$scope.errorMessage = "Unable To add this to your reservation";
+				addonGeneralFailure();
 			} else {
 				$scope.showAddonPopup = false;
 				if ($scope.isAddonFlatOrRoomType(selectedAddon)) {
@@ -127,10 +131,32 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				$scope.selectedAddonCount = 0;
 			}
 		};
-		$scope.addRemoveAddOn = function(selectedAddon) {
+
+		var addRemoveAddonSucess = function(selectedAddon){
 			selectedAddon.is_selected = !selectedAddon.is_selected;
 		};
+		var addAddon = function(selectedAddon){
+			$scope.callAPI(zsCheckinSrv.updateAddon, {
+					params: {
+						reservation_id: $scope.selectedReservation.id,
+						addon_id: selectedAddon.addon_id
+					},
+					'successCallBack': function(){
+						addRemoveAddonSucess(selectedAddon);
+					},
+					'failureCallBack': addonGeneralFailure
+				});
+		};
+		var removeAddon = function(){
 
+		};
+		$scope.addRemoveAddOn = function(selectedAddon) {
+			if (!selectedAddon.is_selected) {
+				addAddon(selectedAddon);
+			}else{
+				removeAddon(selectedAddon);
+			}
+		};
 		$scope.addonSelected = function(addon) {
 			$scope.selectedAddon = addon;
 			$scope.showAddonPopup = true;
@@ -171,7 +197,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 
 			$scope.callAPI(zsCheckinSrv.fetchAddons, {
 				params: {
-					reservation_id: $scope.selectedReservation.reservation_details.reservation_id
+					reservation_id: $scope.selectedReservation.id
 				},
 				'successCallBack': fetchAddonsSuccess,
 				'failureCallBack': generalError
