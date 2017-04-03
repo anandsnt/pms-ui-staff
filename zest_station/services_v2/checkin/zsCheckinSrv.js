@@ -413,11 +413,9 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var deferred = $q.defer();
             var url = '/api/reservations/update_package';
 
-            var data = {
-                'id': params.reservation_id,
-                'application': 'KIOSK',
-                'addon_id': params.addon_id
-            };
+            var data = params;
+            data.application =  'KIOSK';
+
             zsBaseWebSrv.postJSON(url, data).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -429,11 +427,9 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.deleteAddon = function(params) {
             var deferred = $q.defer();
             var url = '/api/reservations/delete_package';
-            var data = {
-                'id': params.reservation_id,
-                'application': 'KIOSK',
-                'addon_id': params.addon_id
-            };
+            var data = params;
+            data.application =  'KIOSK';
+            
             zsBaseWebSrv.postJSON(url, data).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {

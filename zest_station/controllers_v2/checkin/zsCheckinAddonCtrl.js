@@ -125,27 +125,28 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			$scope.showErrorPopUp = true;
 			$scope.errorMessage = "Unable To remove this from your reservation";
 		};
-		$scope.addOnDoneButtonClicked = function(selectedAddon) {
-			if ($scope.selectedAddonCount === 3) {
-				addonGeneralFailure();
-			} else {
-				$scope.showAddonPopup = false;
-				if ($scope.isAddonFlatOrRoomType(selectedAddon)) {
-					$scope.selectedAddon.quantity = angular.copy($scope.selectedAddonCount);
-				}
-				$scope.selectedAddonCount = 0;
-			}
-		};
+
 
 		var addRemoveAddonSucess = function(selectedAddon) {
-			selectedAddon.is_selected = !selectedAddon.is_selected;
+			if ($scope.isAddonFlatOrRoomType(selectedAddon)) {
+				$scope.showAddonPopup = false;
+				$scope.selectedAddon.quantity = angular.copy($scope.selectedAddonCount);
+				$scope.selectedAddonCount = 0;
+			} else {
+				selectedAddon.is_selected = !selectedAddon.is_selected;
+
+			}
 		};
 		var addAddon = function(selectedAddon) {
+			var params = {
+				id: $scope.selectedReservation.id,
+				addon_id: selectedAddon.addon_id
+			};
+			if ($scope.isAddonFlatOrRoomType(selectedAddon)) {
+				params.quantity = angular.copy($scope.selectedAddonCount);
+			}
 			$scope.callAPI(zsCheckinSrv.updateAddon, {
-				params: {
-					reservation_id: $scope.selectedReservation.id,
-					addon_id: selectedAddon.addon_id
-				},
+				params: params,
 				'successCallBack': function() {
 					addRemoveAddonSucess(selectedAddon);
 				},
@@ -155,7 +156,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		var removeAddon = function(selectedAddon) {
 			$scope.callAPI(zsCheckinSrv.deleteAddon, {
 				params: {
-					reservation_id: $scope.selectedReservation.id,
+					id: $scope.selectedReservation.id,
 					addon_id: selectedAddon.addon_id
 				},
 				'successCallBack': function() {
@@ -163,6 +164,19 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				},
 				'failureCallBack': addonRemoveGeneralFailure
 			});
+		};
+
+		$scope.addOnDoneButtonClicked = function(selectedAddon) {
+			if ($scope.isAddonFlatOrRoomType(selectedAddon)) {
+				if ($scope.selectedAddonCount === 0) {
+					removeAddon(selectedAddon);
+				} else {
+					addAddon(selectedAddon);
+				}
+			} else {
+				$scope.showAddonPopup = false;
+			}
+
 		};
 		$scope.addRemoveAddOn = function(selectedAddon) {
 			if (!selectedAddon.is_selected) {
