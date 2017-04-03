@@ -41,102 +41,96 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					id: ""
 				};
 			}
-			// passReservationParams
-			// TODO : Once this works pull it to a separate method
-			var fetchGuestcardDataSuccessCallback = function(data) {
-				$scope.idTypeList = data.id_type_list;
-				$scope.$emit('hideLoader');
-				// No more future reservations returned with this API call
-
-
-				/**
-				 *	CICO-9169
-				 * 	Guest email id is not checked when user adds Guest details in the Payment page of Create reservation
-				 *  -- To have the primary email id in app/assets/rover/partials/reservation/rvSummaryAndConfirm.html checked if the user attached has one!
-				 */
-
-				if (data.email && data.email.length > 0) {
-					$scope.otherData.isGuestPrimaryEmailChecked = true;
-				} else {
-					// Handles cases where Guest with email is replaced with a Guest w/o an email address!
-					$scope.otherData.isGuestPrimaryEmailChecked = false;
-				}
-
-				//	CICO-9169
-
-				var contactInfoData = {
-					'contactInfo': data,
-					'countries': $scope.countries,
-					// While coming in the guest Id might be retained in reservationData.guest.id in case another reservation is created for the same guest
-					'userId': $scope.reservationDetails.guestCard.id || $scope.reservationData.guest.id,
-					'avatar': $scope.guestCardData.cardHeaderImage,
-					'guestId': null,
-					'vip': data.vip
-				};
-
-				$scope.guestCardData.contactInfo = contactInfoData.contactInfo;
-				$scope.guestCardData.contactInfo.avatar = contactInfoData.avatar;
-				$scope.guestCardData.contactInfo.vip = contactInfoData.vip;
-				$scope.countriesList = $scope.countries;
-				$scope.guestCardData.userId = contactInfoData.userId;
-				$scope.guestCardData.guestId = contactInfoData.guestId;
-				$scope.guestCardData.contactInfo.birthday = data.birthday;
-				var guestInfo = {
-					"user_id": contactInfoData.userId,
-					"guest_id": null
-				};
-
-				$scope.searchData.guestCard.guestFirstName = "";
-				$scope.searchData.guestCard.guestLastName = "";
-				$scope.searchData.guestCard.guestCity = "";
-				$scope.searchData.guestCard.guestLoyaltyNumber = "";
-				$scope.searchData.guestCard.email = "";
-
-				$scope.guestCardData.contactInfo.user_id = contactInfoData.userId;
-				$scope.reservationData.guest.email = data.email;
-				$scope.$broadcast('guestSearchStopped');
-				$scope.$broadcast('guestCardAvailable');
-				$scope.showGuestPaymentList(guestInfo);
-				RVContactInfoSrv.completeContactInfoClone = JSON.parse(JSON.stringify($scope.guestCardData.contactInfo));
-				$scope.decloneUnwantedKeysFromContactInfo = function() {
-					var unwantedKeys = ["address", "birthday", "country",
-						"is_opted_promotion_email", "job_title",
-						"mobile", "passport_expiry",
-						"passport_number", "postal_code",
-						"reservation_id", "title", "user_id",
-						"works_at", "birthday"
-					];
-					var declonedData = dclone($scope.guestCardData.contactInfo, unwantedKeys);
-
-					return declonedData;
-				};
-
-				/**
-				 *  init guestcard header data
-				 */
-				var declonedData = $scope.decloneUnwantedKeysFromContactInfo();
-				var currentGuestCardHeaderData = declonedData;
-
-				$scope.$broadcast("resetGuestTab");
-				// CICO-16013 - fixing multiple API calls on staycard loading
-
-			};
-
-			var fetchGuestcardDataFailureCallback = function(data) {
-				$scope.$emit('hideLoader');
-			};
-
 
 			if (!!guestData.id || !!$scope.reservationDetails.guestCard.id || !!$scope.reservationData.guest.id) {
 				var param = {
 					'id': guestData.id || $scope.reservationDetails.guestCard.id || $scope.reservationData.guest.id
 				};
 
-				$scope.invokeApi(RVReservationCardSrv.getGuestDetails, param, fetchGuestcardDataSuccessCallback, fetchGuestcardDataFailureCallback, 'NONE');
-			}
+                angular.merge($scope.guestCardData.contactInfo, {
+                    first_name: $scope.reservationData.guest.firstName,
+                    last_name: $scope.reservationData.guest.lastName,
+                    phone: $scope.reservationData.guest.phone,
+                    vip: $scope.reservationData.guest.is_vip,
+                    email: $scope.reservationData.guest.email,
+                    avatar: $scope.reservationData.guest.image,
+                    address: $scope.reservationData.guest.address,
+                    user_id: param.id
+                });
+
+                RVContactInfoSrv.setGuest(param.id);
+            }
 		};
 
-		/**
+        /**
+         * Method to handle the succesful response of guest details fetching
+         * @param {Object} data API response
+         * @return {undefined}
+         */
+        function fetchGuestCardDataSuccessCallback(data) {
+            var contactInfoData,
+                guestInfo;
+
+            $scope.idTypeList = data.id_type_list;
+            // No more future reservations returned with this API call
+            /**
+             *    CICO-9169
+             *    Guest email id is not checked when user adds Guest details in the Payment page of Create reservation
+             *  -- To have the primary email id in
+             *  app/assets/rover/partials/reservation/rvSummaryAndConfirm.html checked if the user attached has one!
+             */
+
+            // Handles cases where Guest with email is replaced with a Guest w/o an email address!
+            $scope.otherData.isGuestPrimaryEmailChecked = !!(data.email && data.email.length > 0);
+
+            //	CICO-9169
+            contactInfoData = {
+                'contactInfo': data,
+                'countries': $scope.countries,
+                // While coming in the guest Id might be retained in reservationData.guest.id
+                // in case another reservation is created for the same guest
+                'userId': $scope.reservationDetails.guestCard.id || $scope.reservationData.guest.id,
+                'avatar': $scope.guestCardData.cardHeaderImage,
+                'guestId': null,
+                'vip': data.vip
+            };
+
+            $scope.guestCardData.contactInfo = contactInfoData.contactInfo;
+            $scope.guestCardData.contactInfo.avatar = contactInfoData.avatar;
+            $scope.guestCardData.contactInfo.vip = contactInfoData.vip;
+            $scope.countriesList = $scope.countries;
+            $scope.guestCardData.userId = contactInfoData.userId;
+            $scope.guestCardData.guestId = contactInfoData.guestId;
+            $scope.guestCardData.contactInfo.birthday = data.birthday;
+
+            guestInfo = {
+                'user_id': contactInfoData.userId,
+                'guest_id': null
+            };
+
+            $scope.searchData.guestCard.guestFirstName = '';
+            $scope.searchData.guestCard.guestLastName = '';
+            $scope.searchData.guestCard.guestCity = '';
+            $scope.searchData.guestCard.guestLoyaltyNumber = '';
+            $scope.searchData.guestCard.email = '';
+
+            $scope.guestCardData.contactInfo.user_id = contactInfoData.userId;
+            $scope.reservationData.guest.email = data.email;
+            $scope.showGuestPaymentList(guestInfo);
+            RVContactInfoSrv.completeContactInfoClone = JSON.parse(JSON.stringify($scope.guestCardData.contactInfo));
+
+            // CICO-16013 - fixing multiple API calls on staycard loading
+            $scope.$broadcast('guestSearchStopped');
+            $scope.$broadcast('guestCardAvailable');
+            $scope.$broadcast('resetGuestTab');
+            $scope.$emit('hideLoader');
+        }
+
+        $scope.$on('UPDATE_GUEST_CARD_DETAILS', function(event, data) {
+            fetchGuestCardDataSuccessCallback(data);
+        });
+
+        /**
 		 * [successCallbackOfGroupDetailsFetch description]
 		 * @return {[type]} [description]
 		 */

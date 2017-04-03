@@ -441,6 +441,19 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 			reservationData.company.id = cards.company_id;
 			reservationData.travelAgent.id = cards.travel_agent_id;
 			reservationData.guest.id = cards.guest_details.user_id;
+			// Other guest details
+            reservationData.guest.firstName = cards.guest_details.first_name;
+            reservationData.guest.lastName = cards.guest_details.last_name;
+            reservationData.guest.email = cards.guest_details.email;
+            reservationData.guest.is_vip = cards.guest_details.vip;
+            reservationData.guest.image = cards.guest_details.avatar;
+            reservationData.guest.phone = cards.guest_details.phone;
+            reservationData.guest.address = {
+            	city: cards.guest_details.city,
+            	state: cards.guest_details.state,
+                phone:cards.guest_details.phone
+			}
+
 			// Demographics
 			reservationData.demographics = {
 				reservationType: stayCard.reservation_type_id || "",
