@@ -83,7 +83,7 @@
                                     <button type="button" class="button" click-touch="addAddonQuantity()">+</button>
                                 </div>
                                 <!-- Replace 'btn-class' with 'transparent text-red' if 'Remove' -->
-                                <button type="button" class="button {btn-class}" ng-hide="isAddonFlatOrRoomType(addon)" ng-class="{'transparent text-red':addon.is_selected}" click-touch="addRemoveAddOn(addon)">
+                                <button type="button" class="button" ng-hide="isAddonFlatOrRoomType(addon)" ng-class="{'transparent text-red':addon.is_selected}" click-touch="addRemoveAddOn(addon)">
                                     <span ng-hide="addon.is_selected" editable-text="ADD">{{'ADD' |translate}}</span>
                                     <span ng-show="addon.is_selected" editable-text="REMOVE">{{'REMOVE' |translate}}</span>
                             </div>

@@ -59,6 +59,9 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				$scope.pageStartingIndex = 1;
 				$scope.pageEndingIndex = $scope.addonsList.length;
 				$scope.viewableAddons = angular.copy($scope.addonsList);
+				if ($scope.addonsList.length === 1) {
+					$scope.addonSelected = $scope.addonsList[0];
+				}
 			} else {
 				// if multiple pages (each containing 6 items) are present and user navigates
 				// using next and previous buttons
@@ -108,12 +111,6 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		};
 
 
-		$scope.addAddonQuantity = function(selectedAddon) {
-			$scope.selectedAddonCount = $scope.selectedAddonCount + 1;
-		};
-		$scope.decrementAddonQuantity = function(selectedAddon) {
-			$scope.selectedAddonCount = $scope.selectedAddonCount > 0 ? $scope.selectedAddonCount - 1 : 0;
-		};
 
 		var addonGeneralFailure = function() {
 			$scope.showAddonPopup = false;
@@ -164,6 +161,25 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				},
 				'failureCallBack': addonRemoveGeneralFailure
 			});
+		};
+
+		$scope.addAddonQuantity = function(selectedAddon) {
+			$scope.selectedAddonCount = $scope.selectedAddonCount + 1;
+			if ($scope.addonsList.length === 1) {
+				$scope.selectedAddon = $scope.addonsList[0];
+				addAddon($scope.selectedAddon);
+			} else {
+				return;
+			}
+		};
+		$scope.decrementAddonQuantity = function(selectedAddon) {
+			$scope.selectedAddonCount = $scope.selectedAddonCount > 0 ? $scope.selectedAddonCount - 1 : 0;
+			if ($scope.addonsList.length === 1) {
+				$scope.selectedAddon = $scope.addonsList[0];
+				($scope.selectedAddonCount === 0) ? removeAddon($scope.selectedAddon): addAddon($scope.selectedAddon);
+			} else {
+				return;
+			}
 		};
 
 		$scope.addOnDoneButtonClicked = function(selectedAddon) {
