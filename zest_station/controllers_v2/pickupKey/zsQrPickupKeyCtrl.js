@@ -97,7 +97,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 			} else {
 				console.info('scan datalogic');
 				// $scope.zestStationData.qr_scanner_datalogic
-				initChromeAppQRCodeScanner();
+				initScanQRWithDatalogic();
 			}
 		};
 
@@ -149,16 +149,31 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 				$scope.$emit('CONNECT_WEBSOCKET'); // connect socket
 			}
 		};
+		var qrWithHandler = true; // TODO: change to switch with admin at some point
 
-		var initChromeAppQRCodeScanner = function() {
+		var initScanQRWithDatalogic = function() {
 			console.info("::Starting QR Code Scanner via Handler::");
-			if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
-				console.info('websocket :: Ready');
-				$scope.socketOperator.CaptureQRViaDatalogic();
+			if (qrWithHandler) {
+				// use datalogic with the handler / websocket (*new for yotel CICO-39515)
+				if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
+					console.info('websocket :: Ready');
+					$scope.socketOperator.CaptureQRViaDatalogic();
+				} else {
+					console.warn('websocket :: Not Ready');
+					listenForWebsocketActivity();
+					$scope.$emit('CONNECT_WEBSOCKET'); // connect socket
+				}
 			} else {
-				console.warn('websocket :: Not Ready');
-				listenForWebsocketActivity();
-				$scope.$emit('CONNECT_WEBSOCKET'); // connect socket
+				// will use the old method (chrome app/usb direct)
+				if ($scope.inChromeApp && !$scope.inElectron) {
+					$scope.chromeApp.fetchQRCode();
+					console.info("::Starting QR Code Scanner::");
+				} else {
+					$scope.$emit('showLoader');
+					$timeout(function() {
+						onQRScanFail();
+					}, 1000);
+				}
 			}
 
 		};
@@ -203,7 +218,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 
 		$scope.retryQRScan = function() {
 			$scope.qrCodeScanFailed = false;
-			// initChromeAppQRCodeScanner();
+			// initScanQRWithDatalogic();
 		};
 
 
