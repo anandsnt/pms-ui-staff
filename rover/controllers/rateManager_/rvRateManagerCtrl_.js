@@ -389,6 +389,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         var rateTypeID = dialogData.rateType.id;
 
         // we may changed a rate detail against particular column or rate columns across a particular row
+        //getSingleRateTypeRowDetailsAndUpdateCachedDataModel(rateTypeID);
         getSingleRateTypeRowDetailsAndUpdateCachedDataModel(rateTypeID);
     };
 
