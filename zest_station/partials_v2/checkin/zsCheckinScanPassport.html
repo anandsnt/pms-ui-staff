@@ -1,0 +1,88 @@
+<!-- Passport scan start | scan primary guest  -->
+<section id="main" class="centered" role="main" ng-hide="mode !== 'SCAN_PRIMARY'" click-touch='resetTime()'>
+    <div id="content">
+        <h1>
+            <text editable-text="SCAN_PASSPORT_HEADER"> {{'SCAN_PASSPORT_HEADER' |translate}}</text>
+        </h1>
+        <h2>
+            <text editable-text="SCAN_PASSPORT_SUB_HEADER"> {{'SCAN_PASSPORT_SUB_HEADER' |translate}}</text>
+        </h2>
+
+        <div class='uploaded-key-image' id="keys" ng-show="scanpassport_image_uploaded">
+            <img src="{{icons.url.scanpassport}}">
+        </div>
+
+    </div>
+
+    <div>
+        <div id="actions" class="footer-centered">
+            
+            <button type="button" class="button next" touch-press="scan()">
+                <text editable-text="SCAN_PASSPORT_BUTTON"> {{'SCAN_PASSPORT_BUTTON' |translate}}</text>
+            </button>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- Passport scanning in progress screen  -->
+<section id="main" class="centered" role="main" ng-hide="mode !== 'SCANNING_IN_PROGRESS'" click-touch='resetTime()'>
+    <div id="content">
+        <h1>
+            <text editable-text="SCANNING_IN_PROGRESS"> {{'SCANNING_IN_PROGRESS' |translate}}</text>
+        </h1>
+
+    </div>
+</section>
+
+<!-- Passport scanning in progress screen  -->
+<section id="main" class="centered" role="main" ng-hide="mode !== 'SCAN_FAILURE'" click-touch='resetTime()'>
+    <div id="content">
+        <h1>
+            <text editable-text="SCAN_FAILURE_HEADER"> {{'SCAN_FAILURE_HEADER' |translate}}</text>
+        </h1>
+        <h2>
+            <text editable-text="SCAN_FAILURE_SUB_HEADER"> {{'SCAN_FAILURE_SUB_HEADER' |translate}}</text>
+        </h2>
+
+        <nav id="options" role="nav">
+            <!-- Early Checkin Purchase Nav -->
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" click-touch="reScanPassport()">
+                        <div ng-include="icons.url.creditcard"></div>
+                    </button>
+
+                    <text editable-text="TRY_AGAIN"> {{'TRY_AGAIN' |translate}}</text>
+                </li>
+                <li class="break">
+                    <span>
+                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                    </span>
+                </li>
+                <li>
+                    <button type="button" class="button option" click-touch='talkToStaff()'>
+                        <div ng-include="icons.url.staff"></div>
+                    </button>
+                    <h1>
+                        <text editable-text="SPEAK"> {{'SPEAK' |translate}}</text>
+                    </h1>
+                    <h4>
+                        <text editable-text="SPEAK_SUB"> {{'SPEAK_SUB' |translate}}</text>
+                    </h4>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
+
+</section>
+
+
+
+
+
+
+
+

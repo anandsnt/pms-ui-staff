@@ -549,6 +549,9 @@ sntZestStation.controller('zsRootCtrl', [
             if ($scope.zestStationData.key_create_file_uploaded.indexOf('/logo.png') !== -1) {
                 $scope.zestStationData.key_create_file_uploaded = '';
             }
+            if (typeof $scope.zestStationData.scan_passport_file_uploaded === 'undefined') {
+                $scope.zestStationData.scan_passport_file_uploaded = '';
+            }
 
             $scope.icons = {
                 url: {
@@ -581,9 +584,18 @@ sntZestStation.controller('zsRootCtrl', [
                     logo: iconBasePath + '/print_logo.svg',
                     watch: iconBasePath + '/watch.svg',
                     qr_arrow: iconBasePath + '/qr-arrow.svg',
-                    clear_icon: iconBasePath + '/x.svg'
+                    clear_icon: iconBasePath + '/x.svg',
+                    scanpassport: iconBasePath + ($scope.zestStationData.scan_passport_file_uploaded.length > 0) ? $scope.zestStationData.scan_passport_file_uploaded : ''
+
                 }
             };
+
+            if ($scope.icons.url.scanpassport.length > 0) {
+                $scope.scanpassport_image_uploaded = true;
+            } else {
+                $scope.scanpassport_image_uploaded = false;
+            }
+
             if (useCommonIcons) {
                 $scope.icons.url.qr_noarrow = iconsPath + '/key.svg';
             }
@@ -1390,6 +1402,7 @@ sntZestStation.controller('zsRootCtrl', [
             $('body').css('display', 'none'); // this will hide contents until svg logos are loaded
 			// call Zest station settings API
             $scope.zestStationData = zestStationSettings;
+            $scope.zestStationData.check_in_collect_passport = true;// debugging, link with setting before merging to develop
             $scope.zestStationData.makingKeyInProgress = false;
             $scope.zestStationData.demoModeEnabled = 'false'; // demo mode for hitech, only used in snt-theme
             $scope.zestStationData.noCheckInsDebugger = 'false';

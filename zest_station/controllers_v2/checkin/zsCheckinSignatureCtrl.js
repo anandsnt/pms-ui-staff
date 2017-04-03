@@ -84,6 +84,8 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
 
         };
 
+        var collectPassportEnabled = $scope.zestStationData.check_in_collect_passport;
+
         var checkInGuest = function() {
             var signature = $scope.signatureData;
             var checkinParams = {
@@ -101,14 +103,33 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 successCallBack: afterGuestCheckinCallback
             };
 
+
+            console.log('collectPassportEnabled: ', collectPassportEnabled);
+            // when collectPassportEnabled (check_in_collect_passport) is enabled,
+            // we should Not check in a guest until After the passports have been validated properly
+            // if any passports are invalid during check-in, the user will need to see a staff member
+
             if ($scope.zestStationData.noCheckInsDebugger === 'true') {
                 console.log('skipping checkin guest, no-check-ins debugging is ON');
-                afterGuestCheckinCallback({ 'status': 'success' });
+                if (collectPassportEnabled && !$stateParams.passports_scanned) {
+                    $state.go('zest_station.checkInScanPassport');
+                } else {
+                    afterGuestCheckinCallback({ 'status': 'success' });
+                }
+                
             } else {
-                $scope.callAPI(zsCheckinSrv.checkInGuest, options);
+
+                if (collectPassportEnabled && !$stateParams.passports_scanned) {
+                    $state.go('zest_station.checkInScanPassport');
+                } else {
+                    $scope.callAPI(zsCheckinSrv.checkInGuest, options);
+                }
+
             }
 
         };
+
+
         /**
          * [submitSignature description]
          * @return {[type]} [description]

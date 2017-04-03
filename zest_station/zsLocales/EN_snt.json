@@ -520,9 +520,17 @@
    "PRINT_SUCCESS": "Print was Success",
    "PRINT_FAILED": "Print was Failed",
    "EMAIL_SUCCESS": "Email was sent",
-   "EMAIL_FAILED": "Something went wrong on sending email"
+   "EMAIL_FAILED": "Something went wrong on sending email",
 
 
+
+   "SCAN_PASSPORT_HEADER": "Scan Passport",
+   "SCAN_PASSPORT_SUB_HEADER": "Place your passport on the scanner and select 'Scan'",
+   "SCAN_PASSPORT_BUTTON": "Scan",
+
+
+   "SCAN_FAILURE_HEADER": "Passport Scan Unsuccessful",
+   "SCAN_FAILURE_SUB_HEADER": "Scan passports for all guests to continue"
 
    
 }

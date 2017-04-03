@@ -175,7 +175,7 @@ sntZestStation.config(['$stateProvider',
 
 		// signature screen
         $stateProvider.state('zest_station.checkInSignature', {
-            url: '/checkInReservationDeposit/:reservation_id/:email/:first_name/:room_no/:guest_id/:guest_email_blacklisted',
+            url: '/checkInReservationDeposit/:reservation_id/:email/:first_name/:room_no/:guest_id/:guest_email_blacklisted/:passports_scanned',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinSignature.html',
             controller: 'zsCheckinSignatureCtrl',
             jumper: true,
@@ -183,6 +183,18 @@ sntZestStation.config(['$stateProvider',
             icon: 'checkin_signature.png',
             description: 'Reservation Signature to Check-In the guest',
             label: 'Signature'
+        });
+
+    // passport scanning flow
+        $stateProvider.state('zest_station.checkInScanPassport', {
+            url: '/checkInScanPassport/:reservation_id/:email/:first_name/:room_no/:guest_id/:guest_email_blacklisted/:signature/:passports_scanned',
+            templateUrl: '/assets/partials_v2/checkin/zsCheckinScanPassport.html',
+            controller: 'zsCheckinScanPassportCtrl',
+            jumper: true,
+            section: 'Checkin',
+            icon: 'checkin_scan_passport.png',
+            description: 'To Continue Checking-In, Guests Will Scan Passports',
+            label: 'Scan Passport'
         });
 
 		// email entry screen
