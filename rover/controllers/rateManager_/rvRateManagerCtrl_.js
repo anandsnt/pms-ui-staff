@@ -324,6 +324,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             handleTheReloadRequestFromPopupForMultipleRateRestrictionMode(dialogData);
             break;
 
+        case rvRateManagerPopUpConstants.RM_SINGLE_RATE_TYPE_RESTRICTION_MODE:
+            handleTheReloadRequestFromPopupForSingleRateTypeRestrictionMode(dialogData);
+            break;
+
         case rvRateManagerPopUpConstants.RM_SINGLE_ROOMTYPE_RESTRICTION_MODE:
             $timeout(() => $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]), 0);
             break;
@@ -375,6 +379,17 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         // we may changed a rate detail against particular column or rate columns across a particular row
         getSingleRateRowDetailsAndUpdateCachedDataModel(rateID);
+    };
+
+     /*
+     * to handle the reload request from popup against mode 'rvRateManagerPopUpConstants.RM_SINGLE_RATE_RESTRICTION_MODE'
+     * @param  {Object} dialogData [popup data]
+     */
+    var handleTheReloadRequestFromPopupForSingleRateTypeRestrictionMode = (dialogData) => {
+        var rateTypeID = dialogData.rateType.id;
+
+        // we may changed a rate detail against particular column or rate columns across a particular row
+        getSingleRateTypeRowDetailsAndUpdateCachedDataModel(rateTypeID);
     };
 
     /*
@@ -478,6 +493,39 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         };
 
         $scope.callAPI(rvRateManagerCoreSrv.fetchRatesAndDailyRates, options);
+    };
+
+    var getSingleRateTypeRowDetailsAndUpdateCachedDataModel = (rateTypeID) => {
+        var fromDates = _.pluck(cachedRateTypeAndRestrictionResponseData, 'fromDate').map(fromDate => tzIndependentDate(fromDate)),
+            toDates = _.pluck(cachedRateTypeAndRestrictionResponseData, 'toDate').map(toDate => tzIndependentDate(toDate)),
+            fromDate = formatDateForAPI(_.min(fromDates)), // date in cache data store is in api format
+            toDate = formatDateForAPI(_.max(toDates));  // date in cache data store is in api format
+
+        var params = {
+            from_date: fromDate,
+            to_date: toDate,
+            fetchRateTypes: !cachedRateTypeList.length,
+            fetchCommonRestrictions: true,
+            'rate_type_ids[]': [rateTypeID]
+        };
+
+        // if they selected rate type from left filter
+        //var rateTypeIDs = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRateTypes, "id");
+
+        // if (rateTypeIDs.length) {
+        //     params['rate_type_ids[]'] = rateTypeIDs;
+        // }
+
+        var options = {
+            params: params,
+            //onSuccess: onFetchGetSingleRateRowDetailsAndUpdateCachedDataModel,
+            successCallBackParameters: {
+                fromDate,
+                toDate
+            }
+        };
+
+        $scope.callAPI(rvRateManagerCoreSrv.fetchRateTypes, options);
     };
 
     /*
@@ -1055,6 +1103,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                         cachedData.response.commonRestrictions = response.commonRestrictions;
                     });
                 }
+                console.log("reached hherrre")
                 cachedRateAndRestrictionResponseData.push({
                     ...dateParams,
                     page: lastSelectedFilterValues[activeFilterIndex].allRate.currentPage,
