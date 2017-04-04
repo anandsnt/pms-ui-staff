@@ -117,6 +117,23 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			$scope.showErrorPopUp = true;
 			$scope.errorMessage = "Unable To remove this from your reservation";
 		};
+		var updateCheckinSrvWithNewAddonData = function() {
+			if ($scope.selectedAddon.is_selected) {
+				// add the newly added addon
+				var newAddon = {
+					'id': $scope.selectedAddon.addon_id,
+					'name': $scope.selectedAddon.name
+				};
+				
+				$scope.selectedReservation.addons.push(newAddon);
+			} else {
+				// remove the delted addon
+				$scope.selectedReservation.addons = _.filter($scope.selectedReservation.addons, function(addon) {
+					return addon.id !== $scope.selectedAddon.addon_id;
+				});
+			}
+			zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
+		};
 		var addRemoveAddonSucess = function(selectedAddon) {
 			if ($scope.isAddonFlatOrRoomType(selectedAddon)) {
 				$scope.showAddonPopup = false;
@@ -125,6 +142,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			} else {
 				$scope.selectedAddon.is_selected = !$scope.selectedAddon.is_selected;
 			}
+			updateCheckinSrvWithNewAddonData();
 		};
 		var addAddonToReservation = function(selectedAddon) {
 			var params = {
@@ -210,6 +228,17 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		var fetchAddons = function() {
 
 			var fetchAddonsSuccess = function(response) {
+
+				var selectedAddonIds = _.pluck($scope.selectedReservation.addons, 'id');
+
+				// no need to show already added addons
+				if (selectedAddonIds.length > 0) {
+					_.each(selectedAddonIds, function(selectedId) {
+						response.addons = _.filter(response.addons, function(addon, index) {
+							return addon.addon_id !== selectedId;
+						});
+					});
+				}
 				// show only active addons for zest station
 				$scope.addonsList = _.reject(response.addons, function(addon) {
 					return !addon.zest_station_active;
@@ -288,6 +317,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			// back button action
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
 			$scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
+			console.log($scope.selectedReservation);
 			fetchAddons();
 
 		}());
