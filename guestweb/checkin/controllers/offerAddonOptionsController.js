@@ -1,5 +1,5 @@
 (function() {
-	var offerAddonOptionsController = function($scope, $rootScope, $state, checkinAddonService, $sce, sntGuestWebSrv, checkinDetailsService) {
+	var offerAddonOptionsController = function($scope, $rootScope, $state, $stateParams, checkinAddonService, $sce, sntGuestWebSrv, checkinDetailsService) {
 
 		var selectedAddon = {},
 			setSelectedAddon = function(addon, isSingleAddonAvailable) {
@@ -57,7 +57,7 @@
 					'id': $scope.selectedAddon.addon_id,
 					'name': $scope.selectedAddon.name
 				};
-				
+
 				checkinDetails.addons_data.push(newAddon);
 				checkinDetailsService.setResponseData(checkinDetails);
 				$(document.body).scrollTop(0);
@@ -95,7 +95,7 @@
 				}
 				// update the data in srv by removing deleted addon
 				var checkinDetails = checkinDetailsService.getResponseData();
-				
+
 				checkinDetails.addons_data = _.filter(checkinDetails.addons_data, function(addon) {
 					return addon.id !== $scope.selectedAddon.addon_id;
 				});
@@ -123,21 +123,28 @@
 				$scope.isLoading = false;
 			});
 		};
+		var goToNextScreen = function() {
+			$rootScope.skipedAddons = true;
+			if ($stateParams.isFrom === "checkinLater") {
+				$state.go('preCheckinStatus')
+			} else {
+				$state.go('checkinKeys')
+			}
+
+		};
 
 		$scope.doneClicked = function() {
 			if ($scope.addonList.length > 1) {
 				$scope.mode = 'LIST_VIEW';
 				$(document.body).scrollTop(0);
 			} else {
-				$rootScope.skipedAddons = true;
-				$state.go('preCheckinStatus');
+				goToNextScreen();
 			}
 		};
 
 		$scope.noThanksClicked = function() {
 			if ($scope.addonList.length === 1 || $scope.mode === 'LIST_VIEW') {
-				$rootScope.skipedAddons = true;
-				$state.go('preCheckinStatus');
+				goToNextScreen();
 			} else {
 				$scope.mode = 'LIST_VIEW';
 			}
@@ -179,8 +186,7 @@
 			$scope.addonList = addons;
 			if (addons.length === 0) {
 				// no addons present
-				$rootScope.skipedAddons = true;
-				$state.go('preCheckinStatus');
+				goToNextScreen();
 			} else if (addons.length === 1) {
 				// single addon
 				var isSingleAddonAvailable = true;
@@ -228,7 +234,7 @@
 	};
 
 	var dependencies = [
-		'$scope', '$rootScope', '$state', 'checkinAddonService', '$sce', 'sntGuestWebSrv', 'checkinDetailsService',
+		'$scope', '$rootScope', '$state', '$stateParams', 'checkinAddonService', '$sce', 'sntGuestWebSrv', 'checkinDetailsService',
 		offerAddonOptionsController
 	];
 
