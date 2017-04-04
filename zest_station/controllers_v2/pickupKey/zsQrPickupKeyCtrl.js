@@ -151,7 +151,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 				$scope.$emit('CONNECT_WEBSOCKET'); // connect socket
 			}
 		};
-		var qrWithHandler = true; // TODO: change to switch with admin at some point
+		var qrWithHandler = true; // if needed, switch to false to use old 'direct via usb' method with ChromeApp
 
 		var initScanQRWithDatalogic = function() {
 			console.info("::Starting QR Code Scanner via Handler::");
