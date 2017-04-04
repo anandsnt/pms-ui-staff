@@ -1620,7 +1620,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             var params = {
                 from_date: date,
                 to_date: date,
-                //rate_type_id: rateTypeID,
                 fetchRoomTypes: !cachedRoomTypeList.length,
                 fetchRates: !cachedRateList.length
             };
@@ -1628,13 +1627,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 params,
                 onSuccess: onFetchMultipleRateTypeRestrictionModeDetailsForPopup,
                 successCallBackParameters: {
-                 //   rateTypeID,
                     date
                 }
             };
 
-             $scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateTypeDetailsAndCommonRestrictions, options);
-            //$scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateDetailsAndCommonRestrictions, options);
+            $scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateTypeDetailsAndCommonRestrictions, options);
+
         };
 
         var clickedOnRateTypeViewCell = ({rateTypeIDs, date} ) => {
