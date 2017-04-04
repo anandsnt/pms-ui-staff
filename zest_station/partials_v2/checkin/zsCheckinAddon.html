@@ -16,7 +16,7 @@
                     <div class="input-group" ng-show="isAddonFlatOrRoomType(selectedAddon)">
                         <button type="button" class="button" click-touch="decrementAddonQuantity()">-</button>
                         <input type="text" value="{{selectedAddonCount}}">
-                        <button type="button" class="button" click-touch="addAddonQuantity()">+</button>
+                        <button type="button" class="button" click-touch="incrementAddonQty()">+</button>
                     </div>
                     <button type="button" class="button" ng-hide="isAddonFlatOrRoomType(selectedAddon)" ng-class="{'transparent text-red':selectedAddon.is_selected}" click-touch="addRemoveAddOn(selectedAddon)">
                         <span ng-hide="selectedAddon.is_selected" editable-text="ADD">{{'ADD' |translate}}</span>
@@ -80,7 +80,11 @@
                                 <div class="input-group" ng-show="isAddonFlatOrRoomType(addon)">
                                     <button type="button" class="button" click-touch="decrementAddonQuantity()">-</button>
                                     <input type="text" value="{{selectedAddonCount}}">
-                                    <button type="button" class="button" click-touch="addAddonQuantity()">+</button>
+                                    <button type="button" class="button" click-touch="incrementAddonQty()">+</button>
+                                </div>
+                                <div ng-show="isAddonFlatOrRoomType(addon)"> 
+                                <br>
+                                <button type="button" data-action="popup" class="button transparent" click-touch="singleAddonPurchase()" editable-text="DONE" style="margin:0 auto;">{{'DONE' |translate}}</button>
                                 </div>
                                 <!-- Replace 'btn-class' with 'transparent text-red' if 'Remove' -->
                                 <button type="button" class="button" ng-hide="isAddonFlatOrRoomType(addon)" ng-class="{'transparent text-red':addon.is_selected}" click-touch="addRemoveAddOn(addon)">
