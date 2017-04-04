@@ -39,9 +39,9 @@
 						<label for="show">Show</label>
 						<ul class="filters">
 						<!-- Add .active on a selected filter -->
-							<li ng-click="switchTabAndCorrespondingActions('RATES')" ng-class="{'active': (chosenTab ==='RATES' || showAllRates) }">Rates</li>
-							<li ng-click="switchTabAndCorrespondingActions('RATE_TYPES')" ng-class="{'active': (chosenTab ==='RATE_TYPES' || showAllRateTypes) }">Rate Types</li>
-							<li ng-click="switchTabAndCorrespondingActions('ROOM_TYPES')" ng-class="{'active': (chosenTab ==='ROOM_TYPES' || showAllRoomTypes) }">Room Types</li> 
+							<li ng-click="switchTabAndCorrespondingActions('RATES')" ng-class="{'active': chosenTab ==='RATES'}">Rates</li>
+							<li ng-click="switchTabAndCorrespondingActions('RATE_TYPES')" ng-class="{'active': chosenTab ==='RATE_TYPES'}">Rate Types</li>
+							<li ng-click="switchTabAndCorrespondingActions('ROOM_TYPES')" ng-class="{'active': chosenTab ==='ROOM_TYPES'}">Room Types</li> 
 						</ul>
 					</div>
 

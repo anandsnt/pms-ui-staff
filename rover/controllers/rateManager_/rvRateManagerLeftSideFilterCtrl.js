@@ -152,6 +152,9 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       $scope.deleteAllSelectedRateTypes = () => {
         $scope.selectedRateTypes = [];
         $scope.selectedRateTypeID = '';
+
+        //deleting the node will change the height
+        refreshScroller();
       };
 
       /**
@@ -160,6 +163,9 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       $scope.deleteAllSelectedRateTypesFromRTT = () => {
         $scope.selectedRateTypesFromRTT = [];
         $scope.selectedRateTypeIDFromRTT = '';
+
+        //deleting the node will change the height
+        refreshScroller();
       };
 
       /**
@@ -219,6 +225,9 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       $scope.deleteAllSelectedRates = () => {
         $scope.selectedRates = [];
         $scope.selectedRateID = '';
+
+        //deleting the node will change the height
+        refreshScroller();
       };
 
       /**
@@ -273,14 +282,15 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
               $scope.showAllRates = true;
               $scope.showAllRateTypes = false;
               $scope.showAllRoomTypes = false;
-              $scope.deleteAllSelectedValues();
+              $scope.deleteAllSelectedRateTypesFromRTT();
               break;
 
         case 'RATE_TYPES' : 
               $scope.showAllRates = false;
               $scope.showAllRateTypes = true;
               $scope.showAllRoomTypes = false;
-              $scope.deleteAllSelectedValues();
+              $scope.deleteAllSelectedRates()
+              $scope.deleteAllSelectedRateTypes();
               break;
 
         case 'ROOM_TYPES' : 
@@ -365,10 +375,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       const clearAllRatesAllRoomTypesAllRateTypes = () => {
         $scope.deleteAllSelectedRates();
         $scope.deleteAllSelectedRateTypes();
-        $scope.deleteAllSelectedRateTypesFromRTT();
-
-        //deleting the node will change the height
-        refreshScroller();        
+        $scope.deleteAllSelectedRateTypesFromRTT();     
       }
 
       /**
