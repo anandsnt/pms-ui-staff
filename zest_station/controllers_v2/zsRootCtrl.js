@@ -983,6 +983,36 @@ sntZestStation.controller('zsRootCtrl', [
 
                     $scope.$broadcast('WS_PRINT_FAILED', errorData);
                 }
+            } else if (response.Command === 'cmd_scan_qr_datalogic') {
+                $scope.zestStationData.qrCodeScanning = false;
+                // Ren-US$1349209--Websocket: Command ->cmd_scan_qr_datalogic
+                $log.warn('got response');
+                var str = msg;
+
+                if (str.length > 0 && str.indexOf('$') !== -1) {
+                    var res_id_arr = str.split('$');
+                    console.log(res_id_arr);
+                    var reservation_id = res_id_arr[1];
+                    console.info('');
+                    console.warn('[ '+reservation_id+' ]');
+                    console.info('');
+
+                    $scope.$broadcast('QR_SCAN_SUCCESS', {
+                        'reservation_id': reservation_id
+                    });
+                } else {
+                    if (response.ResponseCode === 30) {
+                        console.log('code 30 - timeout, retry scan');
+                        // ignore timeout, continue trying to scan
+                        $scope.$broadcast('QR_SCAN_REATTEMPT');  
+                    } else {
+                        $log.warn('QR Code Invalid');
+                        $scope.$broadcast('QR_SCAN_FAILED');   
+                    }
+
+                }
+
+
             }
         };
 
@@ -1435,6 +1465,7 @@ sntZestStation.controller('zsRootCtrl', [
 			// call Zest station settings API
             $scope.zestStationData = zestStationSettings;
             $scope.zestStationData.makingKeyInProgress = false;
+            $scope.zestStationData.qrCodeScanning = false;
             $scope.zestStationData.demoModeEnabled = 'false'; // demo mode for hitech, only used in snt-theme
             $scope.zestStationData.noCheckInsDebugger = 'false';
             $scope.zestStationData.isAdminFirstLogin = true;

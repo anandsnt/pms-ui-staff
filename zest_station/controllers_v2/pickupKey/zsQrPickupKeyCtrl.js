@@ -99,10 +99,12 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 				// $scope.zestStationData.qr_scanner_datalogic
 				initScanQRWithDatalogic();
 			}
+			$scope.zestStationData.qrCodeScanning = true;
 		};
 
 		/** ***************** SAMSOTECH ********************/
 		var receiveSamsoTechMsg = function(evt, info) {
+            $scope.zestStationData.qrCodeScanning = false;
 			console.log(arguments);
 			if (typeof info.msg === typeof 'str') {
 				if (info.msg.indexOf('Invalid') !== -1) {
@@ -197,11 +199,25 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 			$scope.qrCodeScanFailed = false;
 			$scope.setScreenIcon('key');
 
+			// 
+			// we'll start the scanner up initially, and if it times-out, ignore the failure,
+			// 
+			$scope.scanQRCode();
+
 		}());
 
 		/** ****************** LISTENERS ***********************/
 
 		$scope.$on('QR_SCAN_SUCCESS', onDatalogicQRScanSuccess);
+		$scope.$on('QR_SCAN_FAILED', onQRScanFail);
+		$scope.$on('QR_SCAN_REATTEMPT', function() {
+			// need to wait at least a second to re-start the scan with datalogic device
+			$timeout(function() {
+				$scope.scanQRCode();
+				$scope.$digest();
+			},1000);
+		});
+		
 		$scope.$on('QR_PASSPORT_SCAN_MSG', receiveSamsoTechMsg);
 
 		/** ****************** /LISTENERS ***********************/
@@ -218,6 +234,10 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 
 		$scope.retryQRScan = function() {
 			$scope.qrCodeScanFailed = false;
+			if (qrWithHandler && $scope.zestStationData.qr_scanner_datalogic) {
+				//auto-starts qr code scanning with datalogic
+				$scope.scanQRCode();
+			}
 			// initScanQRWithDatalogic();
 		};
 
