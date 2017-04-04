@@ -991,18 +991,20 @@ sntZestStation.controller('zsRootCtrl', [
 
                 if (str.length > 0 && str.indexOf('$') !== -1) {
                     var res_id_arr = str.split('$');
-                    console.log(res_id_arr);
+
+                    $log.info(res_id_arr);
                     var reservation_id = res_id_arr[1];
-                    console.info('');
-                    console.warn('[ '+reservation_id+' ]');
-                    console.info('');
+
+                    $log.info('');
+                    $log.info('[ ' + reservation_id + ' ]');
+                    $log.info('');
 
                     $scope.$broadcast('QR_SCAN_SUCCESS', {
                         'reservation_id': reservation_id
                     });
                 } else {
                     if (response.ResponseCode === 30) {
-                        console.log('code 30 - timeout, retry scan');
+                        $log.info('code 30 - timeout, retry scan');
                         // ignore timeout, continue trying to scan
                         $scope.$broadcast('QR_SCAN_REATTEMPT');  
                     } else {
@@ -1217,6 +1219,7 @@ sntZestStation.controller('zsRootCtrl', [
                 
                 $scope.zestStationData.workstationStatus = station.is_out_of_order ? 'out-of-order' : 'in-order';
                 var newWorkStationStatus = angular.copy($scope.zestStationData.workstationStatus);
+
                 $scope.setEncoderDiagnosticInfo();
                 try {
                     $scope.zestStationData.workstationOooReason = storage.getItem(oosReasonKey);
@@ -1316,14 +1319,14 @@ sntZestStation.controller('zsRootCtrl', [
                 for (var i in $scope.keyEncoderInfo) {
                     // key_encoder_id passed from adminctrl when user is changing workstations and wants to see which encoder
                     // is being selected
-                    if (($scope.keyEncoderInfo[i].id === $scope.zestStationData.key_encoder_id && typeof key_encoder_id === 'undefined') || key_encoder_id === $scope.keyEncoderInfo[i].id) {
+                    if ($scope.keyEncoderInfo[i].id === $scope.zestStationData.key_encoder_id && typeof key_encoder_id === 'undefined' || key_encoder_id === $scope.keyEncoderInfo[i].id) {
                         $scope.zestStationData.key_encoder_name = $scope.keyEncoderInfo[i].description;
                         $scope.zestStationData.encoder_location = $scope.keyEncoderInfo[i].location;
-                        $scope.zestStationData.encoder_id       = $scope.keyEncoderInfo[i].encoder_id;
+                        $scope.zestStationData.encoder_id = $scope.keyEncoderInfo[i].encoder_id;
                     }
                 }
             }
-        }
+        };
 
 
 		// store workstation status in localstorage
