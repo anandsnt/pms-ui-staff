@@ -1,10 +1,23 @@
+<!-- Popup -->
+<div class="popup" ng-class="{'open':showDispenserGateIsBlockedPopup}">
+    <!-- Remove class "open" to hide popup content -->
+    <div class="popup-content">
+        <h2 class="nocaps">
+            <text editable-text="GATE_ERROR_MESSAGE"> {{'GATE_ERROR_MESSAGE' |translate}}</text>
+        </h2>
+        <button type="button" class="button" click-touch='closeGateErrorWarning();'>
+            <text editable-text="GATE_ERROR_CLOSE"> {{'GATE_ERROR_CLOSE' |translate}}</text>
+        </button>
+    </div>
+</div>
+
 <!--------------------- select no of keys mode ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'DISPENSE_KEY_MODE'">
     <div id="content">
-        <h1 class="no-margin">{{selectedReservation.first_name}}</h2>
-            <h1>
-                <text editable-text="PUK_CHKED_IN_MSG"> {{'PUK_CHKED_IN_MSG' |translate}}</text>
-            </h1>
+        <h1 class="no-margin">{{selectedReservation.first_name}}</h1>
+        <h1>
+            <text editable-text="PUK_CHKED_IN_MSG"> {{'PUK_CHKED_IN_MSG' |translate}}</text>
+        </h1>
         <div id="room" ng-show="zestStationData.show_room_number">
             <span class="number">{{selectedReservation.room}}</span>
         </div>
@@ -24,7 +37,6 @@
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>
-
 <!---------------------solo key one in progres ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'SOLO_KEY_CREATION_IN_PROGRESS_MODE'">
     <div id="content">
@@ -44,9 +56,8 @@
             <text editable-text="MAKE_KEY_TEXT_ONE"> {{'MAKE_KEY_TEXT_ONE' |translate}}</text>
         </button>
     </div>
-    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
 </section>
-
 <!--------------------- key one in progres ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'KEY_ONE_CREATION_IN_PROGRESS_MODE'">
     <div id="content">
@@ -62,14 +73,12 @@
         <div id="keys" ng-show="icmp">
             <div ng-include="icons.url.createkey_icmp"></div>
         </div>
-          <button ng-show="remoteEncoding  || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(1)">
+        <button ng-show="remoteEncoding  || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(1)">
             <text editable-text="MAKE_KEY_TEXT_ONE"> {{'MAKE_KEY_TEXT_ONE' |translate}}</text>
         </button>
     </div>
-    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
 </section>
-
-
 <!--------------------- key one success, key two failed------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'KEY_ONE_SUCCESS_KEY_TWO_FAILED'">
     <div id="content">
@@ -93,7 +102,6 @@
         </button>
     </div>
 </section>
-
 <!--------------------- key one in success ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'KEY_ONE_CREATION_SUCCESS_MODE'">
     <div id="content">
@@ -116,9 +124,8 @@
             <text editable-text="MAKE_KEY_TEXT_TWO"> {{'MAKE_KEY_TEXT_TWO' |translate}}</text>
         </button>
     </div>
-    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
 </section>
-
 <!--------------------- key creation over ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'KEY_CREATION_SUCCESS_MODE'">
     <div id="content">
@@ -135,9 +142,8 @@
             <text editable-text="DONE"> {{'DONE' |translate}}</text>
         </button>
     </div>
-    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
-</section>   
-
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
+</section>
 <!--------------------- failure ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'DISPENSE_KEY_FAILURE_MODE'">
     <div id="content">
@@ -150,7 +156,7 @@
         <nav id="options" role="nav">
             <ul role="menu">
                 <!-- retry-key -->
-                <li> 
+                <li>
                     <button type="button" class="button option" touch-press='reEncodeKey()'>
                         <div ng-include="icons.url.key"></div>
                     </button>
@@ -163,7 +169,7 @@
                         <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
                     </span>
                 </li>
-                <li ng-if="zestStationData.pickup_key_reg_print === 'auto_print'"> 
+                <li ng-if="zestStationData.pickup_key_reg_print === 'auto_print'">
                     <button type="button" class="button option" click-touch="onKeyFailureGoToPrintPage()">
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
@@ -176,7 +182,7 @@
                         <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
                     </span>
                 </li>
-                <li> 
+                <li>
                     <button type="button" class="button option" touch-press='talkToStaff()'>
                         <div ng-include="icons.url.staff"></div>
                     </button>
@@ -190,5 +196,5 @@
             </ul>
         </nav>
     </div>
-    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
 </section>

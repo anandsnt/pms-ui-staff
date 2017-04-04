@@ -8,7 +8,7 @@ var GlobalApp = function() {
     this.enableURLChange = true;
     this.uuidService = null;
     try {
-    	this.desktopCardReader = new DesktopCardOperations();
+        this.desktopCardReader = new DesktopCardOperations();
         this.MLIOperator = new MLIOperation();
         this.desktopUUIDService = new DesktopUUIDService();
     }
@@ -24,33 +24,33 @@ var GlobalApp = function() {
 
 
     this.setBrowser = function(browser) {
-    	if (typeof browser === 'undefined' || browser === '') {
-    		that.browser = "other";
-    	}
-    	else {
-    		that.browser = browser;
-    	}
-    	if (browser === 'rv_native' && !that.cordovaLoaded) {
-    	   // TODO: check URL
-    		var url = "/assets/shared/cordova.js";
+        if (typeof browser === 'undefined' || browser === '') {
+            that.browser = "other";
+        }
+        else {
+            that.browser = browser;
+        }
+        if (browser === 'rv_native' && !that.cordovaLoaded) {
+           // TODO: check URL
+            var url = "/assets/shared/cordova.js";
 
-    		/* Using XHR instead of $HTTP service, to avoid angular dependency, as this will be invoked from
-    		 * webview of iOS / Android.
-    		 */
-    		var xhr = new XMLHttpRequest(); // TODO: IE support?
+            /* Using XHR instead of $HTTP service, to avoid angular dependency, as this will be invoked from
+             * webview of iOS / Android.
+             */
+            var xhr = new XMLHttpRequest(); // TODO: IE support?
 
-    		xhr.onreadystatechange = function() {
-  				if (xhr.readyState === 4 && xhr.status === 200) {
+            xhr.onreadystatechange = function() {
+                  if (xhr.readyState === 4 && xhr.status === 200) {
                       that.fetchCompletedOfCordovaPlugins(xhr.responseText);
-  				} else {
-  					that.fetchFailedOfCordovaPlugins();
-  				}
-  			};
-  			xhr.open("GET", url, true);
+                  } else {
+                      that.fetchFailedOfCordovaPlugins();
+                  }
+              };
+              xhr.open("GET", url, true);
 
-			xhr.send(); // TODO: Loading indicator
+            xhr.send(); // TODO: Loading indicator
 
-    	}
+        }
 
     };
 
@@ -61,7 +61,7 @@ var GlobalApp = function() {
         that.cordovaLoaded = true;
         try {
 
-    	   that.cardReader = new CardOperation();
+           that.cardReader = new CardOperation();
 
         }
         catch (er) {
@@ -87,7 +87,7 @@ var GlobalApp = function() {
 
     // success function of coddova plugin's appending
     this.fetchFailedOfCordovaPlugins = function(errorMessage) {
-    	that.cordovaLoaded = false;
+        that.cordovaLoaded = false;
     };
 
 

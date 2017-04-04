@@ -10,8 +10,15 @@ const nightlyDiaryRootReducer = (state, action) => (
         selectedReservationId: (action.type === 'RESERVATION_SELECTED' || action.type === 'CANCEL_RESERVATION_EDITING')
                             ? action.selectedReservationId
                             : state.selectedReservationId,
-        selectedRoomId: (action.type === 'DIARY_VIEW_CHANGED') ? action.selectedRoomId : state.selectedRoomId,
-        isFromStayCard: state.isFromStayCard
+        currentSelectedReservation: (action.type === 'RESERVATION_SELECTED' || action.type === 'CANCEL_RESERVATION_EDITING')
+                            ? action.currentSelectedReservation
+                            : state.currentSelectedReservation,
+        selectedRoomId: (action.type === 'DIARY_VIEW_CHANGED' || action.type === 'RESERVATION_SELECTED') ? action.selectedRoomId : state.selectedRoomId,
+        isFromStayCard: state.isFromStayCard,
+        dateFormat: state.dateFormat,
+        newArrivalPosition: (action.type === 'EXTEND_SHORTEN_RESERVATION') ? action.newArrivalPosition : '',
+        newDeparturePosition: (action.type === 'EXTEND_SHORTEN_RESERVATION') ? action.newDeparturePosition : '',
+        isPmsProductionEnvironment: state.isPmsProductionEnvironment
     }
 );
 

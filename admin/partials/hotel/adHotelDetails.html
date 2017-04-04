@@ -24,7 +24,7 @@
 			<div class="entry">
 				<label for="hotel-country"> Country <strong>*</strong> </label>
 				<div class="select">
-					<select ng-model="data.country" name="hotel-country" id="hotel-country" class="placeholder">
+					<select convert-to-number ng-model="data.country" name="hotel-country" id="hotel-country" class="placeholder">
 						<option value=""> Country </option>
 						<option ng-model="country.id" ng-repeat="country in data.countries" value="{{country.id}}" ng-selected="country.id==data.country"> {{country.name}} </option>
 
@@ -43,7 +43,7 @@
 			<div class="entry">
 				<label for="hotel-service-provider"> Service Provider <strong>*</strong> </label>
 				<div class="select" ng-class="{'overlay' : isFieldsReadOnly === 'yes'}">
-					<select ng-model="data.service_provider_id" name="hotel-service-provider" id="hotel-service-provider" class="placeholder">
+					<select convert-to-number ng-model="data.service_provider_id" name="hotel-service-provider" id="hotel-service-provider" class="placeholder">
 						<option value=""> Select Service Provider </option>
 						<option ng-model="serviceprovider.id" ng-repeat="serviceprovider in data.service_providers" value="{{serviceprovider.id}}" ng-selected="serviceprovider.id==data.service_provider_id"> {{serviceprovider.name}}</option>
 
@@ -96,14 +96,6 @@
 				<div class="entry">
 					<label for="hotel-zipcode"> ZipCode</label>
 					<input type="text" ng-model="data.zipcode" value="{{data.zipcode}}" required="" placeholder="Enter zip code" name="hotel-zipcode" id="hotel-zipcode">
-				</div>
-				<div class="entry">
-					<label for="hotel-longitude"> Longitude </label>
-					<input type="text" ng-model="data.longitude" value="{{data.longitude}}" required="" readonly="readonly" placeholder="Enter hotel longitude" name="hotel-longitude">
-				</div>
-				<div class="entry">
-					<label for="hotel-latitude"> Latitude </label>
-					<input type="text" ng-model="data.latitude" value="{{data.latitude}}" required="" readonly="readonly" placeholder="Enter hotel latitude" name="hotel-latitude" >
 				</div>
 				<div class="entry full-width registration-for-rover" ng-if="!isAdminSnt">
 					<label for="rover"> Rover Registration </label>
@@ -198,7 +190,7 @@
 				<div class="entry">
 					<label for="hotel-chain"> Hotel chain <strong>*</strong> </label>
 					<div class="select" >
-						<select ng-disabled="isHotelChainReadonly" ng-model="data.hotel_chain" name="hotel-chain" id="hotel-chain" class="placeholder">
+						<select convert-to-number ng-disabled="isHotelChainReadonly" ng-model="data.hotel_chain" name="hotel-chain" id="hotel-chain" class="placeholder">
 							<option value=""> Hotel chain </option>
 							<option ng-repeat="chain in data.chains" value="{{chain.id}}" ng-selected="chain.id==data.hotel_chain" >{{chain.name}}</option>
 						</select>
@@ -208,7 +200,7 @@
 				<div class="entry">
 					<label for="hotel-brand"> Hotel brand </label>
 					<div class="select">
-						<select ng-model="data.hotel_brand" name="hotel-brand" id="hotel-brand" class="placeholder">
+						<select convert-to-number ng-model="data.hotel_brand" name="hotel-brand" id="hotel-brand" class="placeholder">
 							<option value=""> Hotel brand </option>
 							<option ng-repeat="brand in data.brands" value="{{brand.id}}" ng-selected="brand.id==data.hotel_brand">{{brand.name}}</option>
 						</select>
@@ -220,7 +212,7 @@
 					<div class="select">
 						<select ng-model="data.hotel_time_zone" name="hotel-time-zone" id="hotel-time-zone" class="placeholder" >
 							<option value=""> Hotel Time Zone </option>
-							<option ng-repeat="timezone in data.time_zones"  ng-selected="timezone.value==data.hotel_time_zone">{{timezone.value}}</option>
+							<option ng-repeat="timezone in data.time_zones"  value="{{timezone.value}}">{{timezone.value}}</option>
 						</select>
 					</div>
 				</div>
@@ -228,7 +220,7 @@
 				<div class="entry">
 					<label for="hotel-time-zone"> Hotel Date Format <strong>*</strong> </label>
 					<div class="select">
-						<select ng-model="data.hotel_date_format" name="hotel-time-zone" id="hotel-time-zone" class="placeholder" >
+						<select convert-to-number ng-model="data.hotel_date_format" name="hotel-time-zone" id="hotel-time-zone" class="placeholder" >
 							<option value=""> Hotel Date Format </option>
 							<option ng-repeat="formats in data.date_formats"  value="{{formats.id}}" ng-selected="formats.id==data.hotel_date_format">{{formats.value}}</option>
 						</select>
@@ -238,7 +230,7 @@
 				<div class="entry">
 					<label for="hotel-currency"> Hotel Currency <strong>*</strong> </label>
 					<div class="select">
-						<select ng-model="data.default_currency" name="hotel-currency" id="hotel-currency" class="placeholder">
+						<select convert-to-number ng-model="data.default_currency" name="hotel-currency" id="hotel-currency" class="placeholder">
 							<option value=""> Hotel Currency </option>
 							<option ng-model="currency.id" ng-repeat="currency in data.currency_list" ng-selected="currency.id==data.default_currency" value="{{currency.id}}">{{currency.code}}</option>
 						</select>
@@ -278,7 +270,7 @@
 				<div class="entry" ng-if="isAdminSnt">
 					<label for="hotel-pms-type"> Language </label>
 					<div class="select">
-						<select ng-model="data.selected_language" name="hotel-pms-type" id="hotel-pms-type" class="placeholder">
+						<select convert-to-number ng-model="data.selected_language" name="hotel-pms-type" id="hotel-pms-type" class="placeholder">
 							<option value=""> Language </option>
 							<option ng-repeat="language in languages" value="{{language.id}}" ng-selected="language.id==data.selected_language">
 								{{language.description}}

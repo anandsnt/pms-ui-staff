@@ -55,7 +55,7 @@ sntGuestWeb.run(function($rootScope, $location, $http, $window) {
 	$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       // Hide loading message
       
-      console.error(error);
+      console.log(error);
       // TODO: Log the error in proper way
     });
         // track pageview on state change

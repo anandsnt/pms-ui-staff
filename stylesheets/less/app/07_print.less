@@ -285,10 +285,28 @@
                 background-position: 0 -180px;
                 }
         }
+
+        &.icon-blocked { background-position: 4px -275px; }
+        &.icon-picked-up { background-position: 4px -315px; }
+        &.icon-available { background-position: 4px -295px; }
     }
 
 /* 5. COMPONENTS
 ==========================================================*/
+
+/* Action Manager ========================================*/
+    
+    /* Hide Content */
+    .actions-content {
+        .content-left,
+        .content-right {
+            .hide();
+        }
+    }
+
+    .post-form {
+        .hide();
+    }
 
 /* Availability             ==============================*/
     
@@ -1279,6 +1297,17 @@
                     border-right: 0;
                 }
             }
+
+            &.legend {
+                li {
+                    .float;
+                    .icons { 
+                        .square(20px);
+                        display: block;
+                        float: left;
+                    } 
+                }
+            }
         }
 
         .actions { .hide; }
@@ -1685,6 +1714,18 @@
                         }
                     }
                 }
+
+                &.business-books {
+                    thead {
+                        tr {
+                            &.bottom-row {
+                                th {
+                                    font-size: 7pt;
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             &.transaction-reports {
@@ -1885,6 +1926,31 @@
                             &:nth-child(4) { .calc-width(25, 255); }
                             &:nth-child(5),
                             &:nth-child(6) { width: 120px; }
+                        }
+                    }
+                }
+
+                &.complimentary-report {
+                    table-layout: fixed;
+                    margin-bottom: 16pt;
+
+                    thead {
+                        th {
+                            &:nth-child(1) { width:150px; }
+                            &.confirmation {
+                                width: 100px;
+                            }
+
+                            &.room,
+                            &.guests,
+                            &.total-nights,
+                            &.comp-nights {
+                                width:80px;
+                            }
+
+                            &.arrival {
+                                width: 200px;
+                            }
                         }
                     }
                 }
@@ -2259,6 +2325,195 @@
                     }
                 }
             }
+
+            &.commission-reports {
+                table-layout: fixed;
+                border-collapse: collapse;
+                border-spacing: 0;
+
+                thead {
+                    tr {
+                        th {
+                            
+
+                            &.amount {
+                                width: 100pt;
+                            }
+
+                            &.code {
+                                width: 150pt;
+                            }
+
+                            &.room {
+                                width: 50pt;
+                            }
+
+                            &.guest {
+                                width: 175pt;
+                            }
+                        }
+
+                        &.bottom-row {
+                                
+                            th { 
+                                
+                                text-transform: none;
+                                font-style: italic;
+                                background: @grey1;
+                                border-bottom: 0;
+                                font-weight: 400; 
+
+                                &.break {
+                                    border-left: 1px solid rgba(0,0,0,.4); 
+                                }
+                                &:not(.break) {
+                                     border-left: 1px solid rgba(0,0,0,.1); 
+                                }
+                               
+                                .box-shadow(inset 0 1px 0 rgba(0,0,0,.1));
+
+                                 
+                                &:first-child { border-left: 0; }
+
+                                &:not(:first-child) {
+                                    padding-left:4pt;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                tbody {
+                    tr {
+                        td {
+                            border-bottom: 1px solid rgba(0,0,0,0.1);
+
+                            &.name {
+
+                                .title {
+                                    a {
+                                        color: inherit;
+                                    }
+                                }
+                                 
+                                .data {
+                                    display: block;
+                                }
+
+                                .guest-date {
+                                    clear: both;
+
+                                    .date {
+                                        margin-top: 5pt;
+                                        display: block;
+                                        line-height: 20px;
+                                    }
+ 
+                                    span {
+                                        margin:0 2pt;
+                                    } 
+                                }
+                            }
+
+                            &:nth-child(5),
+                            &:nth-child(6),
+                            &:nth-child(7) {
+                                padding-left: 4pt;
+                            }
+                        } 
+
+                        &.rate-row {
+                            td {
+                                 padding-left:0;
+                            }
+                        } 
+                    }
+                }
+
+                tfoot { 
+                    
+                    tr {
+                        &.totals {
+                            td {
+                                font-size: 14px;
+                            }
+                        }
+                        &.pagination {
+                            display: none; 
+                        }
+                    }
+                   
+                }
+            }
+            
+
+            &.group-rooms-reports {
+                table-layout: fixed;
+
+                thead {
+                    tr {
+                        th {
+                            text-align: center;
+                            font-weight: 600;
+
+                            &[colspan] { 
+                                border-right: 1px solid @grey2; 
+
+                                &:last-child { border-right: 0; }
+                            }
+                        }
+
+                        &:first-child {
+                            th {
+                                
+                                .nowrap();
+
+                                &[colspan="1"] {
+                                    text-overflow: initial;
+                                }
+                            }
+                        }
+
+                        &.bottom-row {
+                            th {
+                                text-transform: none;
+                                font-style: italic;
+                                font-weight: 400; 
+                                background: @grey1;
+                                border-bottom: 0;
+                                border-right: 1px solid @grey2;
+                                 
+                                &:last-child { border-right: 0; }
+                            }
+                        }
+                    }
+                }
+
+
+                tbody {
+                    td {
+                        text-align: center;
+
+                        &.empty { 
+                            border-color: @grey1;
+
+                            // Shifting the border to left and bottom instead of right and bottom
+                            border-width: 0 0px 1px 1px;
+                            // Adding left border to the first filled day
+                            &+td:not(.empty) {
+                                border-width: 0 1px 1px 1px;
+                            } 
+                           
+                        }
+
+                        &.zero {
+                            font-style: italic;
+                            color: @grey3;
+                        }
+                    }
+                }
+            }
+
         }
 
         &.with-graphs {
@@ -2445,6 +2700,60 @@
 
                 > .wrapper { width: 100% !important; }
             }
+
+            &.books {
+                .statistics-headings { 
+                    width: 75px;
+
+                    th.action-row {
+                        height: 36px;
+                        border-bottom: 1px solid @grey2;
+                    }
+
+                    tr {
+                        td {
+                            line-height: 18px;
+                            height: 18px;
+                            padding:0 10px;
+                            background-color: @grey1;
+                            border-bottom: 1px solid @grey2;
+                        }
+
+                        &.totals {
+                            td {
+                                border-bottom:0;
+                            }
+                        }
+                    }
+
+                }
+                .statistics-content {
+                    .calc-width(100, 75);
+
+                    th[rowspan="2"] {
+                        border-bottom: 1px solid @grey2;
+                    }
+
+                    th[colspan] {
+                        border-left: 1px solid @grey2;
+                        border-right:0;
+                    }
+
+                    .bottom-row {
+                        th {
+                            border-bottom: 1px solid @grey2;
+                        }
+
+                        th {
+                            &:first-child,
+                            &.rooms,
+                            &.picked-up {
+                                border-left: 1px solid @grey2;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         &.grid {
@@ -2569,6 +2878,138 @@
                 }
             }
         }
+
+        &.group-rooms {
+
+            .group {
+                page-break-inside: avoid;
+
+                &:last-child {
+                    border-bottom: 1px solid @grey2;
+                }
+                
+            }
+            
+            .group-info {
+                padding: 4pt 10pt;
+                border-top: 1px solid @grey2;
+                border-bottom: 1px solid @grey2;
+                min-height: 30pt;
+                .float;
+
+                .title {
+                    display: block;
+                    font-weight: 600;
+                    font-size: 10pt;
+                    margin:0;
+                }
+
+                .data {
+                    display: block;
+                    font-size: 9pt;
+                    text-transform: uppercase;
+                    .float;
+
+                    li {
+                        float: left;
+                        margin-bottom:0;
+                        line-height:1;
+                        margin-top: 2pt;
+
+                        &:not(:last-child) {
+                            margin-right: 15pt;
+                        } 
+
+                        span {
+                            color: @grey3;
+                        }
+                    }
+                }
+                
+            }
+
+            .group-data {
+                display: flex;
+
+                ul {
+                    width: 75px; 
+
+                    .main-heading {
+                        height: 36px;
+                        line-height: 36px;
+                        font-size: 12px;
+                        text-align: center;
+                        background: @grey1; 
+                        text-transform: uppercase;
+                        font-weight: 600;
+                        border-right: 1px solid rgba(0, 0, 0, 0.1)
+                    }
+
+                    li {
+                        margin:0;
+                        .float;
+
+                        &:not(.main-heading) {
+                            border-bottom: 1px solid @grey2;
+                            border-right: 1px solid @grey2;
+                            padding: 0 10pt 0 5pt;
+                            text-align: right;
+                            font-weight: 600;
+                            line-height: 14pt;
+
+                        }
+
+                        .icons {
+                            margin-top: 1pt; 
+                            .pull-left;
+                            .square(12pt);
+                            
+                            &.icon-blocked { background-position: 2px -277px; }
+
+                            &.icon-picked-up { background-position: 2px -318px; }
+
+                            &.icon-available { background-position: 4px -297px; }
+                        }
+
+                        &:last-child {
+                            border-bottom:0;
+                        }
+                    }
+                }
+
+                table {
+                    .calc-width(100, 75);
+                }
+
+                &.totals {
+                     
+
+                    table {
+                        thead {
+
+                            tr:first-child {
+                                padding:0 10pt;
+
+                                th {
+                                    text-align: left;
+                                    &:first-child {
+                            
+                                        &:not(:last-child) {
+                                            text-align: right;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        tbody {
+                            td { 
+                                font-weight: 600;  
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
 /* Housekeeping             ==============================*/
@@ -2606,7 +3047,7 @@
 
             &:not(:last-child) { margin-right: 20pt; }
         }
-    }
+    } 
 
 /* Work Management          ==============================*/
     #worksheet-content {
@@ -2721,7 +3162,7 @@
             }
 
             .icon-ok-10 {
-                order: 4;
+                order: 5;
                 margin-left: auto;
                 background: #fff;
                 .square(18pt);
@@ -2744,6 +3185,24 @@
                     .square(16pt);
                     .show;
                 }
+
+                &.no-icon:before {
+                    content: none;
+                    border: none;
+                }
+            }
+
+            .vip {
+                order: 4;
+                font-size: 7pt;
+                line-height: 18pt;
+                .square(16pt);
+                .show;
+                margin-left: auto;
+            }
+
+            .only-print {
+                display: inline-block;
             }
 
             .room {

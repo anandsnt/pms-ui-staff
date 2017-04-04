@@ -19,18 +19,23 @@
 	var originsNeedEmailEntering = ["SMS", "EMAIL", "URL"];
 
     // collect oustanding stay total
-    if (parseFloat($rootScope.outStandingBalance) > 0 &&
+    if ($state.href('balancePaymentCCCollection') !== null && parseFloat($rootScope.outStandingBalance) > 0 &&
         $rootScope.isMLI && $rootScope.collectOutStandingBalance && !$rootScope.skipBalanceCollection) {
         $state.go('balancePaymentCCCollection');
     }
-
+	// sell addons
+	else if ($state.href("offerAddonOptions") !== null && $rootScope.isAddonUpsellActive && !$rootScope.skipedAddons) {
+		$state.go('offerAddonOptions', {
+			'isFrom': 'checkinNow'
+		});
+	}
 	// if prompt for cc is turned on
 	// we will always ask for CC addition in case of MLI
-	else if ($rootScope.collectCCOnCheckin && $rootScope.isMLI && !$rootScope.isCcAttachedFromGuestWeb ) {
+	else if ($state.href('checkinCcVerification') !== null && $rootScope.collectCCOnCheckin && $rootScope.isMLI && !$rootScope.isCcAttachedFromGuestWeb ) {
 		$state.go('checkinCcVerification');
 	}
 	// CICO-34045 we should allow the user to enter their email address if it is not on the database
-	else if ($rootScope.offerRoomDeliveryOptions && !$rootScope.userEmailEntered && originsNeedEmailEntering.indexOf($rootScope.application) > -1) {
+	else if ($state.href('emailAddition') !== null && $rootScope.offerRoomDeliveryOptions && !$rootScope.userEmailEntered && originsNeedEmailEntering.indexOf($rootScope.application) > -1) {
 		$state.go('emailAddition', {'isFrom': 'checkinNow'});// if user has not attached an email
 	}
 	else if ($rootScope.isCheckedin) {

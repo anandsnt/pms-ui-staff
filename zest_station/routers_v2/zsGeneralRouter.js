@@ -2,11 +2,16 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 	function($stateProvider, $urlRouterProvider, $translateProvider) {
 
 
-		$urlRouterProvider.otherwise('/zest_station/home');
+		$urlRouterProvider.otherwise('/zest_station/h/');
+
+        $stateProvider.state('top', {
+            url: '/zest_station/h/:uuid?state',
+            controller: 'zsTopCtrl'
+        });
 
 		$stateProvider.state('zest_station', {
 			abstract: true,
-			url: '/zest_station',
+			url: '/',
 			templateUrl: '/assets/partials_v2/zsRoot.html',
 			controller: 'zsRootCtrl',
 			resolve: {
@@ -49,21 +54,40 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 		$stateProvider.state('zest_station.home', {
 			url: '/home',
 			templateUrl: '/assets/partials_v2/zsHomePage.html',
-			controller: 'zsHomeCtrl'
-		}).state('zest_station.speakToStaff', {
+			controller: 'zsHomeCtrl',
+         	jumper: true,
+	        section: 'General',
+	        label: 'Home',
+	        icon: 'home.png',
+	        tags: []
+		});
+
+        $stateProvider.state('zest_station.speakToStaff', {
             url: '/speakToStaff/:message',
             templateUrl: '/assets/partials_v2/zsSpeakToStaff.html',
-            controller: 'zsSpeakToStaffCtrl'
+            controller: 'zsSpeakToStaffCtrl',
+         	jumper: true,
+	        section: 'General',
+	        label: 'Speak to Staff',
+	        icon: 'speak_to_staff.png',
+	        tags: ['talk']
         });
 
         $stateProvider.state('zest_station.admin', {
-             url: '/find_reservation', 
+             url: '/find_reservation',
              controller: 'zsAdminCtrl',
              templateUrl: '/assets/partials_v2/zsAdminSettings.html'
-        }).state('zest_station.outOfService', {
-             url: '/outOfService', 
-             controller: 'zsOutOfServiceCtrl',
-             templateUrl: '/assets/partials_v2/zsOutOfService.html'
+        });
+
+        $stateProvider.state('zest_station.outOfService', {
+            url: '/outOfService',
+            controller: 'zsOutOfServiceCtrl',
+            templateUrl: '/assets/partials_v2/zsOutOfService.html',
+         	jumper: true,
+	        section: 'General',
+	        label: 'Out of Service',
+	        icon: 'out_of_service.png',
+	        tags: ['sleepy']
         });
 
 	}

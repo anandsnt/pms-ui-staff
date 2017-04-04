@@ -1,0 +1,140 @@
+/* StayNTouch Zest Station Styles | Public NY Theme */
+
+/* 1. COLORS
+==========================================================*/
+	@brandColor:			#000;
+	
+	@textColor: 			@brandColor;
+	@backgroundColor: 		@white;
+	
+	@actionColor: 			@white;
+	@actionBackground: 		@brandColor;
+	
+	@inputBackground: 		#f4f4f4;
+	@transparentColor: 		rgba(128,128,128,.5);
+
+
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+@fontFamily: "Gotham A", "Gotham B", Helvetica, Arial, sans-serif;
+
+
+/* 3. IMAGES
+==========================================================*/
+	@background: @white;
+	@backgroundSize: '';
+	
+	@headerIconsColor: 		@brandColor;
+	@headerIconsActive:		@brandColor;
+
+	.icons { 
+		&.icon-create-key {
+			fill: @brandColor;
+			stroke: @brandColor;
+		}
+
+		&.icon-no-print { stroke: @white; }
+
+		&.icon-oos {
+			fill: @brandColor;
+		}
+	}
+
+
+    .logo-svg{
+        background-image: url("../css/themes/public/logo.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 100%;
+	    height: 100%;
+	    background-position: center;
+	    margin-top: 5%;
+    }
+
+/* 4. LAYOUT
+==========================================================*/
+	
+	#public {
+
+		h1,
+		.button {
+			font-weight: 900;
+		}
+
+		input,
+		textarea {
+			box-shadow: inset 1px 1px 0 rgba(0,0,0,.1);
+			#rounded > .round(2px);
+		}
+
+		select {
+			box-shadow: 1px 1px 0 rgba(0,0,0,.1);
+			#rounded > .round(2px);
+		}
+
+		.entry.input {
+			.icons {
+				fill: @brandColor;
+			}
+		}
+		
+		#logo {
+		
+			.logo {
+				width: 335px;
+				height: auto;
+			}
+		}
+
+		#options {
+			
+			li {
+				font-weight: 900;
+
+				span {
+					font-weight: 400;
+				}
+			}
+
+			.icon-text {
+				color: @white;
+			}
+
+			.icons {
+				fill: @white;
+			}
+
+			li.break {
+				padding-top: 60px;
+
+				&:after,
+				&:before {
+					display: none;
+				}
+			}
+		}
+
+		#selection {
+			li {
+				.details {
+					background-color: fade(@brandColor, 5);
+				}
+			}
+		}
+
+		#guests {
+			.button {
+				color: @white;
+				background-color: @brandColor;
+			}
+		} 
+
+		#textual,
+		.popup {
+			.icons {
+				fill: @white;
+			}
+		}
+	}

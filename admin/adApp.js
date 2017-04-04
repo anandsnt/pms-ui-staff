@@ -1,36 +1,42 @@
 var admin = angular.module('admin',
-	['ui.sortable',
-	'ui.router',
-	'ng-iscroll',
-	'ngDragDrop',
-	'ngTable',
-	'ngDialog',
-	'ngSanitize',
-	'pascalprecht.translate',
-	'adminModuleOne',
-	'adminModuleTwo',
-	'adminInterfacesRouter',
+    ['ui.sortable',
+    'ui.router',
+    'ng-iscroll',
+    'ngDragDrop',
+    'ngTable',
+    'ngDialog',
+    'ngSanitize',
+    'pascalprecht.translate',
+    'adminModuleOne',
+    'adminModuleTwo',
+    'adminInterfacesRouter',
     'adminToolsRouter',
     'adminZestStationRouter',
-	'ui.date',
-	'qtip2',
-	'sharedHttpInterceptor',
-	'orientationInputBlurModule',
-	'multi-select',
-	'fauxMultiSelectModule',
-	'eventReachedRootModule',
-	'ngClassWithoutAnimation',
-	'documentTouchMovePrevent',
-	'divTouchMoveStopPropogate',
-	'ui.utils',
+    'ui.date',
+    'qtip2',
+    'sharedHttpInterceptor',
+    'orientationInputBlurModule',
+    'multi-select',
+    'fauxMultiSelectModule',
+    'eventReachedRootModule',
+    'ngClassWithoutAnimation',
+    'documentTouchMovePrevent',
+    'divTouchMoveStopPropogate',
+    'ui.utils',
     'uiColorpicker',
     'onScroll',
-    'limitInputRange']);
+    'limitInputRange',
+    'convertToNumber']);
 
 // adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
-admin.config(function($httpProvider) {
-    $httpProvider.interceptors.push('sharedHttpInterceptor');
-});
+admin.config([
+    '$httpProvider',
+    '$locationProvider',
+    function($httpProvider, $locationProvider) {
+        $httpProvider.interceptors.push('sharedHttpInterceptor');
+        $locationProvider.html5Mode(true);
+    }
+]);
 
 admin.run(['$rootScope', '$state', '$stateParams', '$location', function($rootScope, $state, $stateParams, $location) {
     $rootScope.$state = $state;

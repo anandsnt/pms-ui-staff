@@ -47,10 +47,15 @@ sntZestStation.directive('editableText', [function() {
             var textEditor = function() {
                 // handle double-click
                 // 
-                var rootScope = element.scope().$parent.zestStationData,
-                    scope = element.scope().$parent,
+                var rootScope,
+                    scope,
                     elType = element[0].parentElement.nodeName,
                     isNavButton = element[0].parentElement.parentElement.nodeName === 'BUTTON';
+
+                if (!_.isUndefined(element.scope())) {
+                    rootScope = element.scope().$parent.zestStationData;
+                    scope = element.scope().$parent;
+                }
 
                 if (_.isUndefined(rootScope)) {
                     // then request came from popup or element from zsRoot.html, which is outside parent scope

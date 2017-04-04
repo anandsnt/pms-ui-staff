@@ -31,6 +31,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 
 
 		}());
+		
 		/**
 		 * [set data from stateParams description]
 		 * @type {[type]}
@@ -214,6 +215,10 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		/* ******************************************************************************************************* */
 
 		var updateLogForKeyActions = function(keyNo, keyStatus) {
+			if ($scope.inDemoMode()) {
+				return;
+			}
+
 			$scope.resetTime();
 			var params = {
 				"reservation_id": $stateParams.reservation_id,
@@ -410,7 +415,9 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 				$scope.readyForUserToPressMakeKey = false;
 				// check if socket is open
 				if (!_.isUndefined($scope.socketOperator.returnWebSocketObject()) && $scope.socketOperator.returnWebSocketObject().readyState === 1) {
-					$scope.socketOperator.DispenseKey($scope.dispenseKeyData);
+				// this param has to be set corresponding to key created
+				var is_first_key = $scope.noOfKeysCreated === 0 ? 1 : 0;
+				$scope.socketOperator.DispenseKey($scope.dispenseKeyData, is_first_key);
 				} else {
 					$scope.$emit('CONNECT_WEBSOCKET'); // connect socket
 				}
@@ -454,6 +461,19 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 				'failureCallBack': $scope.onGeneralFailureCase
 			});
 		};
+
+		$scope.showDispenserGateIsBlockedPopup = false;
+		$scope.closeGateErrorWarning = function() {
+			$scope.showDispenserGateIsBlockedPopup = false;
+		};
+		$scope.$on('DISPENSE_FAILED_AS_GATE_IS_NOT_FREE', function() {
+			$scope.showDispenserGateIsBlockedPopup = true;
+			$timeout(function() {
+				$scope.readyForUserToPressMakeKey = true;
+				$scope.zestStationData.makingKeyInProgress = false;
+
+			}, 1000);
+		});
 
 		$scope.$on('DISPENSE_SUCCESS', function(event, data) {
 			$scope.zestStationData.workstationStatus = 'in-order';
@@ -541,6 +561,8 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
             $scope.noOfKeysSelected = no_of_keys;
             $scope.initMakeKey();
         };
+        
+        
 
 
 	}

@@ -360,6 +360,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
             if (!$scope.updateGroupSummary || // This is used in the res-cards and this method is not available there
                 $scope.isInAddMode() || targetElement.id === 'summary' ||
                 targetElement.id === 'cancel-action' || // TODO: Need to check with Dilip/Shiju PC for more about this
+                !!$scope.focusedCompanyCard || !!$scope.focusedTravelAgent || // CICO-39934 Don't update the group, since its already updated while selecting the group
                 whetherSummaryDataChanged() ||
                 $scope.groupSummaryData.isDemographicsPopupOpen ||
                 $scope.isUpdateInProgress ||
@@ -646,10 +647,10 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
             }, commonDateOptions);
 
             if ($scope.groupConfigData.summary.block_from !== '') {
-                // Fix for CICO-35722. 
+                // Fix for CICO-35722.
                 var blockFromDate = tzIndependentDate($scope.groupConfigData.summary.block_from),
                     todaysBusinessDate = tzIndependentDate($rootScope.businessDate);
-                    
+
                 $scope.toDateOptions = _.extend({
                     minDate: todaysBusinessDate > blockFromDate ? todaysBusinessDate : blockFromDate
                 }, $scope.toDateOptions);
@@ -1236,7 +1237,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                         'group_id': $scope.groupConfigData.summary.group_id
                     }
                 });
-            } 
+            }
         };
 
         $scope.removeGroupNote = function(event, noteId) {

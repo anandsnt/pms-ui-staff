@@ -1873,7 +1873,6 @@ angular.module('sntRover').controller('guestCardController', [
 
 		// CICO-6049 Toggle VIP button
 		$scope.vipToggleClicked = function() {
-			$scope.guestCardData.contactInfo.vip = !$scope.guestCardData.contactInfo.vip;
 			$scope.updateContactInfo();
 		};
 

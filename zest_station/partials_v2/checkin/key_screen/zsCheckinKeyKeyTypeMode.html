@@ -1,0 +1,43 @@
+   <div id="content">
+        <h1>
+            <text editable-text="SELECT_KEY_TYPE_HEADER"> {{'SELECT_KEY_TYPE_HEADER' |translate}}</text>
+        </h1>
+        <h2>
+            <text editable-text="SELECT_KEY_TYPE_SUB"> {{'SELECT_KEY_TYPE_SUB' |translate}}</text>
+        </h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='selectMobileKey()'>
+                        <div ng-show="!mobileKeySelected" ng-include="icons.url.key"></div>
+                        <div ng-show="mobileKeySelected" class='select-icon-checked' ng-include="icons.url.checkmark"></div>
+                    </button>
+                    <h1>
+                        <text editable-text="SELECT_MOBILE_KEY"> {{'SELECT_MOBILE_KEY' |translate}}</text>
+                    </h1>
+                    <span class='select-sub-text'>
+                        <text editable-text="SELECT_MOBILE_KEY_SUB"> {{'SELECT_MOBILE_KEY_SUB' |translate}}</text>
+                    </span>
+                </li>
+                <li class="break single-line"></li>
+                <li>
+                    <button type="button" class="button option" touch-press='selectPhysicalKey()'>
+                        <div ng-show="!physicalKeySelected" ng-include="icons.url.creditcard"></div>
+                        <div ng-show="physicalKeySelected" class='select-icon-checked' ng-include="icons.url.checkmark"></div>
+                    </button>
+                    <h1>
+                        <text editable-text="SELECT_PHYSICAL_KEY"> {{'SELECT_PHYSICAL_KEY' |translate}}</text>
+                    </h1>
+                    <span class='select-sub-text'>
+                        <text editable-text="SELECT_PHYSICAL_KEY_SUB"> {{'SELECT_PHYSICAL_KEY_SUB' |translate}}</text>
+                    </span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div id="actions" class="add-guests-footer footer-centered">
+        <button type="button" ng-disabled="!physicalKeySelected && !mobileKeySelected" ng-class="{'disabled-button':!physicalKeySelected && !mobileKeySelected}" class="button" click-touch="keyTypeselected()">
+            <text editable-text="NEXT"> {{'NEXT' |translate}}</text>
+        </button>
+    </div>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>

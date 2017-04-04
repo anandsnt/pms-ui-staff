@@ -62,11 +62,13 @@
 		    checkinConfirmationService.getToken(data).then(function(res_data) {
 	    		// set guestweb token
 	    		$rootScope.accessToken 				= res_data.guest_web_token;
+	    		$rootScope.isUpgradeAvailableNow = res_data.is_upsell_available_now;
 				// display options for room upgrade screen
 				$rootScope.ShowupgradedLabel = false;
 				$rootScope.roomUpgradeheading = "Your trip details";
 				$scope.isResponseSuccess = true;
 				response.results[0].terms_and_conditions = (typeof $rootScope.termsAndConditions !== "undefined") ? $rootScope.termsAndConditions : "" ;
+				response.results[0].addons_data = res_data.addons_data;
 				checkinDetailsService.setResponseData(response.results[0]);
 				$rootScope.upgradesAvailable = (response.results[0].is_upgrades_available === "true") ? true :  false;
 				$rootScope.isCCOnFile = (response.results[0].is_cc_attached === "true") ? true : false;

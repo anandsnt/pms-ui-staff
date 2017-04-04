@@ -21,7 +21,7 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
 
         this.fetchBillPrintData = function(params) {
             var deferred = $q.defer();
-            var url = 'staff/bills/print_guest_bill';
+            var url = '/staff/bills/print_guest_bill';
 
             zsBaseWebSrv.postJSON(url, params).then(function(prindata) {
                 var response = prindata.data;
@@ -50,7 +50,7 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
         // fetch reservations
         this.fetchBillDetails = function(params) {
             var deferred = $q.defer(),
-                url = 'guest_web/home/bill_details.json?reservation_id=' + params.reservation_id;
+                url = '/guest_web/home/bill_details.json?reservation_id=' + params.reservation_id;
 
             zsBaseWebSrv2.getJSON(url).then(function(data) {
                 deferred.resolve(data);
@@ -63,7 +63,7 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
         // save email to the reservation
         this.saveEmail = function(params) {
             var deferred = $q.defer(),
-                url = 'staff/guest_cards/' + params.guest_detail_id;
+                url = '/staff/guest_cards/' + params.guest_detail_id;
             var param = {
                 "email": params.email
             };
@@ -121,7 +121,7 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
 
         this.fetchStarTacPrinterData = function(params) {
             var deferred = $q.defer();
-            var url = 'api/reservations/' + params.reservation_id + '/bill_print_data?is_checkout=true';
+            var url = '/api/reservations/' + params.reservation_id + '/bill_print_data?is_checkout=true';
 
             zsBaseWebSrv.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);
@@ -130,6 +130,20 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
             });
             return deferred.promise;
         };
+
+        this.fetchBillPlaceholderData = function(params) {
+            var deferred = $q.defer(),
+                url = '/sample_json/zest_station/checkout_bill.json';
+
+            zsBaseWebSrv.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
 
     }
 ]);

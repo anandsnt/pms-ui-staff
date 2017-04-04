@@ -29,14 +29,19 @@ sntGuestWeb.service('GWBaseWebSrv', ['$http', '$q', '$window', function($http, $
  			httpDict.data = params;
   		}
 
-		$http(httpDict).success(function(response, status) {
+		$http(httpDict).then(function(res) {
+			var response = res.data;
+
 	    	if (response.status === "success") {
 		    	deferred.resolve(response.data);
 			} else {
 				// please note the type of error expecting is array
 		    	deferred.reject(response.errors);
 			}
-		}).error(function(errors, status) {
+		}, function(response) {
+			var errors = response.data,
+				status = response.status;
+
 			// please note the type of error expecting is array
 			// so form error as array if you modifying it
 			if (status === 406) { // 406- Network error

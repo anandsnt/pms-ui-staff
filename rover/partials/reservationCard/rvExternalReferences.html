@@ -8,7 +8,7 @@
             <div class="entry" ng-repeat="reference in stateExternalRef.references">
                 <!--CICO-32546, hide the select for external interface type in case of Overlay hotels.-->
                 <div class="select" ng-if="isStandAlone && reference.is_from_rover">
-                    <select ng-class="{'placeholder' : !reference.external_interface_type_id}"
+                    <select convert-to-number ng-class="{'placeholder' : !reference.external_interface_type_id}"
                             ng-model="reference.external_interface_type_id"
                             ng-change="onEditReference(reference)">
                         <!-- Add attr 'disabled' if value is inserted by external system itself.

@@ -10,7 +10,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 	'RVReportNamesConst',
 	'ngDialog',
 	'$state',
-	function($scope, $rootScope, $filter, $timeout, $window, reportsSrv, reportParser, reportMsgs, reportNames, ngDialog, $state) {
+    'RVReportPaginationIdsConst',
+	function($scope, $rootScope, $filter, $timeout, $window, reportsSrv, reportParser, reportMsgs, reportNames, ngDialog, $state, reportPaginationIds) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -61,6 +62,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		$scope.parsedApiFor = undefined;
 		$scope.currencySymbol = $rootScope.currencySymbol;
+
         var setTotalsForReport = function(totals) {
                 var totalsForReport = [], v;
 
@@ -403,6 +405,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.rightColSpan = 4;
 					break;
 
+                case reportNames['COMPLIMENTARY_ROOM_REPORT']:
+                    $scope.leftColSpan = 5;
+                    $scope.rightColSpan = 3;
+                    break;
+
 				default:
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 2;
@@ -543,7 +550,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 			var checkGeneralOptions = (function() {
 				var retObj = {
 					include_actions: false,
-					include_notes: false,
+					include_guest_notes: false,
+					include_reservation_notes: false,
 					show_guests: false,
 					include_cancelled: false,
 					show_rate_adjustments_only: false
@@ -553,8 +561,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					if ( each.paramKey === 'include_actions' && each.selected ) {
 						retObj.include_actions = true;
 					}
-					if ( each.paramKey === 'include_notes' && each.selected ) {
-						retObj.include_notes = true;
+					if ( each.paramKey === 'include_guest_notes' && each.selected ) {
+						retObj.include_guest_notes = true;
+					}
+					if ( each.paramKey === 'include_reservation_notes' && each.selected ) {
+						retObj.include_reservation_notes = true;
 					}
 					if ( each.paramKey === 'show_guests' && each.selected ) {
 						retObj.show_guests = true;
@@ -572,6 +583,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 			var parseAPIoptions = {
 				'groupedByKey': $scope.$parent.reportGroupedBy,
 				'checkAction': checkGeneralOptions.include_actions,
+				'checkGuestNote': checkGeneralOptions.include_guest_notes,
+				'checkReservationNote': checkGeneralOptions.include_reservation_notes,
 				'checkNote': checkGeneralOptions.include_notes,
 				'checkGuest': checkGeneralOptions.show_guests,
 				'checkCancel': checkGeneralOptions.include_cancelled,
@@ -582,6 +595,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, parseAPIoptions, $scope.$parent.resultsTotalRow) );
 			// if there are any results
 			$scope.hasNoResults = _.isEmpty( $scope.$parent.results );
+			$scope.showPrintOption = true;
 
 
 			// a very different parent template / row template / content template for certain reports
@@ -698,12 +712,31 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.showReportHeader   = true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/roomOooOosReport/rvRoomOooOosReport.html';
 					break;
+                case reportNames['BUSINESS_ON_BOOKS']:
+                    $scope.showReportHeader   = true;
+                    $scope.detailsTemplateUrl = '/assets/partials/reports/businessOnBooks/rvBusinessOnBooksReport.html';
+                    break;
 
-				// case reportNames['A/R_AGING']:
-				// 	$scope.hasReportTotals    = true;
-				// 	$scope.showReportHeader   = true;
-				// 	$scope.detailsTemplateUrl = '/assets/partials/reports/roomOooOosReport/rvRoomOooOosReport.html';
-				// 	break;
+
+				case reportNames['TRAVEL_AGENT_COMMISSIONS']:
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = true;
+					$scope.showPrintOption = false;
+					$scope.detailsTemplateUrl  = '/assets/partials/reports/travelAgentCommission/rvTravelAgentCommissionReportRow.html';
+					break;
+
+                case reportNames['COMPLIMENTARY_ROOM_REPORT']:
+                    $scope.hasReportTotals    = true;
+                    $scope.showReportHeader   = true;
+                    $scope.detailsTemplateUrl = '/assets/partials/reports/complimentaryRoomReport/rvComplimentaryRoomReport.html';
+
+                break;
+
+                case reportNames['GROUP_ROOMS_REPORT']:
+                    $scope.showReportHeader   = true;
+                    $scope.detailsTemplateUrl = '/assets/partials/reports/groupRoomsReport/rvGroupRoomsReport.html';
+
+                break;
 
 				default:
 					$scope.hasReportTotals    = true;
@@ -802,6 +835,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['VACANT_ROOMS_REPORT']:
 					template = '/assets/partials/reports/vacantRoomsReport/rvVacantRoomsReportRow.html';
 					break;
+
+				case reportNames['COMPLIMENTARY_ROOM_REPORT']:
+					template = '/assets/partials/reports/complimentaryRoomReport/rvComplimentaryRoomReport.html';
+					break;
+
 
 				// Default report row
 				default:
@@ -955,8 +993,15 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// reset the page
 			$_pageNo = 1;
 
+            var pageNo  = 1;
+
+            // CICO-39128 - Added to preserve the page no while sorting
+            if ($scope.chosenReport.title === reportNames['COMPLIMENTARY_ROOM_REPORT']) {
+                pageNo = $scope.currentPage;
+            }
+
 			// should-we-change-view, specify-page, per-page-value
-			$scope.genReport( false, 1 );
+			$scope.genReport( false, pageNo );
 		};
 
 		// refetch the reports with new filter values
@@ -1031,6 +1076,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['DEPOSIT_SUMMARY']:
 				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
 				case reportNames['A/R_AGING']:
+                case reportNames['BUSINESS_ON_BOOKS']:
+                case reportNames['COMPLIMENTARY_ROOM_REPORT']:
+                case reportNames['GROUP_ROOMS_REPORT']:
+
 					orientation = 'landscape';
 					break;
 
@@ -1274,6 +1323,16 @@ sntRover.controller('RVReportDetailsCtrl', [
          */
         $scope.toggleBookings = function() {
             $scope.isBookingsSelected = !$scope.isBookingsSelected;
+        };
+
+        // Check whether we need to show or not the totals
+        $scope.showTotals = function() {
+            return _.isArray($scope.resultsTotalRow) ? $scope.resultsTotalRow.length : $scope.resultsTotalRow;
+        };
+
+        // Checks whether new pagination should be used for the report
+        $scope.shouldShowNewPagination = function() {
+            return !!reportPaginationIds[$scope.chosenReport.title];
         };
     }
 

@@ -2,12 +2,21 @@
     <header class="content-title float">
         <h2 translate>LIGHT_SPEED_POS_SETUP_HEADER</h2>
         <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
-
+        <div class="actions float pull-right">
+            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleForm('SETUP')"
+                    ng-class="{'orange' : state.activeTab === 'SETUP', 'white' : state.activeTab !== 'SETUP'}">
+                ACCESS CONFIGURATION
+            </button>
+            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleForm('RESTAURANT')"
+                    ng-class="{'orange' : state.activeTab === 'RESTAURANT', 'white' : state.activeTab !== 'RESTAURANT'}">
+                RESTAURANTS
+            </button>
+        </div>
     </header>
     <section class="content-scroll">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-        <div class="form float">
+        <div class="form float" ng-if="state.activeTab === 'SETUP'">
             <fieldset class="holder full-width">
                 <div class="entry full-width">
                     <label><span translate>LIGHT_SPEED_POS_ACTIVATE_INACTIVATE</span></label>
@@ -59,13 +68,15 @@
                                 label="{{'LIGHT_SPEED_COUNTERPART_PAYMENT_CODE'| translate}}" styleclass="full-width"
                                 ng-if="lightspeed.enabled"></ad-textbox>
                 </fieldset>
+                <fieldset class="holder left">
+                    <ad-charge-code-auto-complete exclude-payments="true" required="true" ng-model="lightspeed.tips_charge_code_name"
+                                                  selected-charge-code-id="lightspeed.tips_charge_code_id"
+                                                  ng-if="lightspeed.enabled" label="Charge code for Tips"
+                                                  entry-div-class="full-width"></ad-charge-code-auto-complete>
+                </fieldset>
             </fieldset>
 
-            <section ng-if="lightspeed.enabled">
-                <ng-include src="'/assets/partials/interfaces/LightSpeed/adLightSpedRestaurants.html'"></ng-include>
-            </section>
-
-            <div class="actions float" ng-hide="state.mode == 'ADD' || state.selected != null">
+            <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline"
                         ng-click="goBackToPreviousState()" translate>
                     CANCEL
@@ -75,7 +86,13 @@
                     SAVE_CHANGES
                 </button>
             </div>
-
+        </div>
+        <div class="form float" ng-if="state.activeTab === 'RESTAURANT'">
+            <section ng-controller="adLightSpeedRestaurantsCtrl">
+                <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+                <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+                <ng-include src="'/assets/partials/interfaces/LightSpeed/adLightSpedRestaurants.html'"></ng-include>
+            </section>
         </div>
     </section>
 </div>

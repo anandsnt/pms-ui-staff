@@ -1,21 +1,32 @@
-sntRover.controller('roverController',
+sntRover.controller('roverController', [
+    '$rootScope',
+    '$scope',
+    '$state',
+    '$window',
+    'RVDashboardSrv',
+    'RVHotelDetailsSrv',
+    'ngDialog',
+    '$translate',
+    'hotelDetails',
+    'userInfoDetails',
+    '$stateParams',
+    'rvMenuSrv',
+    'rvPermissionSrv',
+    '$timeout',
+    'rvUtilSrv',
+    'jsMappings',
+    '$q',
+    '$sce',
+    '$log',
+    'sntAuthorizationSrv',
+    '$location',
+    '$interval',
+    function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv,
+             ngDialog, $translate, hotelDetails, userInfoDetails, $stateParams,
+             rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce, $log, sntAuthorizationSrv, $location, $interval) {
 
-  ['$rootScope', '$scope', '$state',
-  '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv',
 
-  'ngDialog', '$translate', 'hotelDetails',
-  'userInfoDetails', '$stateParams',
-
-  'rvMenuSrv', 'rvPermissionSrv', '$timeout', 'rvUtilSrv', 'jsMappings', '$q', '$sce', '$log',
-
-  function($rootScope, $scope, $state,
-    $window, RVDashboardSrv, RVHotelDetailsSrv,
-
-    ngDialog, $translate, hotelDetails,
-    userInfoDetails, $stateParams,
-
-    rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce, $log) {
-
+    var observeDeviceInterval;
 
     $rootScope.isOWSErrorShowing = false;
     if (hotelDetails.language) {
@@ -113,7 +124,9 @@ sntRover.controller('roverController',
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
     $rootScope.advanced_queue_flow_enabled = hotelDetails.advanced_queue_flow_enabled;
-    $rootScope.isPmsDevEnv = hotelDetails.is_pms_dev;
+    $rootScope.isPmsProductionEnv = hotelDetails.is_pms_prod;
+    // Remove below code after  QA acceptance in dev - CICO-39760
+    $rootScope.isPmsProductionEnv = true;
 
     $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
       /**
@@ -385,7 +398,7 @@ sntRover.controller('roverController',
     $scope.$on('refreshLeftMenu', function(event) {
         setupLeftMenu();
     });
-    
+
 
     $scope.init = function() {
         BaseCtrl.call(this, $scope);
@@ -407,13 +420,16 @@ sntRover.controller('roverController',
             isManualCCEntryEnabled: $rootScope.isManualCCEntryEnabled
         };
 
-        $scope.menuOpen = false;        
-        $rootScope.showNotificationForCurrentUser = true;           
+        $scope.menuOpen = false;
+        $rootScope.showNotificationForCurrentUser = true;
 
+        if ($rootScope.paymentGateway === "CBA") {
+            doCBAPowerFailureCheck();
+        }
     };
 
     $scope.init();
-    
+
     /*
      * update selected menu class
      */
@@ -451,6 +467,14 @@ sntRover.controller('roverController',
     $scope.closeDrawerMenu = function() {
       $scope.menuOpen = false;
     };
+
+      $scope.logout = function() {
+          var redirUrl = '/logout/';
+
+          $timeout(function() {
+              $window.location.href = redirUrl;
+          }, 300);
+      };
 
     var openEndOfDayPopup = function() {
         // Show a loading message until promises are not resolved
@@ -499,7 +523,7 @@ sntRover.controller('roverController',
       else if (subMenu === "adminSettings") {
             // CICO-9816 bug fix - Akhila
             $('body').addClass('no-animation');
-            $window.location.href = "/admin";
+            $window.location.href = "/admin/h/" + sntAuthorizationSrv.getProperty();
       }
       else if (subMenu === "changePassword") {
          openUpdatePasswordPopup();
@@ -508,14 +532,6 @@ sntRover.controller('roverController',
 
     // in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
     // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
-
-    var routeChange = function(event, newURL) {
-      event.preventDefault();
-      return;
-    };
-
-    $rootScope.$on('$locationChangeStart', routeChange);
-    window.history.pushState("initial", "Showing Dashboard", "#/"); // we are forcefully setting top url, please refer routerFile
 
     //
     // DEPRICATED!
@@ -622,6 +638,41 @@ sntRover.controller('roverController',
         }
       }
     };
+
+      /**
+       * @returns {undefined} undefined
+       */
+      function doCBAPowerFailureCheck() {
+          var maxTrials = 60,
+              trialInterval = 1000,
+              checkPendingPayments = function() {
+                  $scope.$emit('CBA_PAYMENT_POWER_FAILURE_CHECK');
+              },
+              observeDevice = function() {
+                  sntapp.cardReader.observeCBADeviceConnection({
+                      successCallBack: checkPendingPayments,
+                      failureCallBack: function(err) {
+                          $log.warn('failure callback from observeCBADeviceConnection method', err);
+                      }
+                  });
+              };
+
+          // try to make this cordova call providing 1 min for cordova loading
+          if (sntapp.browser === 'rv_native' && sntapp.cordovaLoaded) {
+              observeDevice();
+          } else {
+              observeDeviceInterval = $interval(function() {
+                  if (sntapp.browser === 'rv_native' && sntapp.cordovaLoaded) {
+                      $interval.cancel(observeDeviceInterval);
+                      observeDevice();
+                  }
+              }, trialInterval, maxTrials);
+          }
+
+          jsMappings.loadPaymentMapping().then(function() {
+              jsMappings.loadPaymentModule().then(checkPendingPayments);
+          });
+      }
 
 
     /*
@@ -774,7 +825,6 @@ sntRover.controller('roverController',
         var $dialog = ngDialog.open({
           template: '/assets/partials/common/bussinessDateChangingPopup.html',
           className: 'ngdialog-theme-default1 modal-theme1',
-          controller: 'bussinessDateChangingCtrl',
           closeByDocument: false,
           scope: $scope
         });
@@ -857,15 +907,15 @@ sntRover.controller('roverController',
       });
     };
 
-    $scope.redirectToHotel = function(hotel_id) {
-          RVHotelDetailsSrv.redirectToHotel(hotel_id).then(function(data) {
-            $('body').addClass('no-animation');
-             $window.location.reload();
-          }, function() {
-          });
+    $scope.redirectToHotel = function(hotel) {
+        var redirUrl = '/staff/h/' + hotel.hotel_uuid;
+
+        setTimeout(function() {
+            $window.location.href = redirUrl;
+        }, 300);
     };
 
-    /* 
+    /*
      *  CICO-27519 - Handle inline styles inside ng-bind-html directive.
      *  Let   =>  $scope.htmlData = "<p style='font-size:8pt;''>Sample Text</p>";
      *  Usage =>  <td data-ng-bind-html="trustAsHtml(htmlData)"></td>
@@ -910,7 +960,7 @@ sntRover.controller('roverController',
       text = text.split(query).map(toHTMLSpecials);
       query = toHTMLSpecials(query);
       text = text.join('<span class="highlight">' + query + '</span>');
-      
+
       return $rootScope.trustAsHtml(text);
     };
 

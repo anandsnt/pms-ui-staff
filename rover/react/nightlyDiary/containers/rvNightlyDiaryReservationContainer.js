@@ -77,14 +77,15 @@ let  calculateReservationDurationAndPosition = (diaryInitialDayOfDateGrid, reser
     //       7 Days:
     //         - Substract 15 from it
 
-    let durationOfReservation = 0;
+    let durationOfReservation = 0,
+        isDepartureFlagVisible = true;
     let numberOfNightsVisibleInGrid = Math.abs((reservationDepartureDate.getTime() - reservationArrivalDate.getTime()) / (oneDay));
 
     if ((reservationDepartureDate.getTime() >= diaryInitialDate.getTime())
         && (reservationDepartureDate.getTime() <= finalDayOfDiaryGrid)
         && (reservationArrivalDate.getTime() !== reservationDepartureDate.getTime()))
     {
-        
+
 
         if (reservationArrivalDate.getTime() < diaryInitialDate.getTime()) {
             numberOfNightsVisibleInGrid = Math.abs((reservationDepartureDate.getTime() - diaryInitialDate.getTime()) / (oneDay));
@@ -107,6 +108,7 @@ let  calculateReservationDurationAndPosition = (diaryInitialDayOfDateGrid, reser
        // let reservationArrivalDay = noOfDaysBtwFinalAndDepartureDate + 1;
         let daysInsideTheGrid = 0;
 
+        isDepartureFlagVisible = false;
         if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_7) {
             daysInsideTheGrid = noOfDaysBtwFinalAndArrivalDate + 1;
             durationOfReservation = (nightDuration * daysInsideTheGrid) - NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_7;
@@ -117,10 +119,12 @@ let  calculateReservationDurationAndPosition = (diaryInitialDayOfDateGrid, reser
 
     }
     var returnData = {};
-   
+
     returnData.durationOfReservation = durationOfReservation;
     returnData.reservationPosition   = reservationPosition;
     returnData.numberOfNightsVisibleInGrid = numberOfNightsVisibleInGrid;
+    returnData.isArrivalFlagVisible = (diffBtwInitialAndArrivalDate < 0) ? false : true;
+    returnData.isDepartureFlagVisible = isDepartureFlagVisible;
     return returnData;
 };
 /*
@@ -180,21 +184,24 @@ let findIsReservationFuture = (reservation, currentBusinessDate) => {
  * Adding different logics to the reservations to pass to component
  */
 
-let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDateGrid, numberOfDays, currentBusinessDate, selectedReservationId) => {
+let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDateGrid, numberOfDays, currentBusinessDate, selectedReservationId, newArrivalPosition, newDeparturePosition) => {
 
     let positionAndDuration = calculateReservationDurationAndPosition(diaryInitialDayOfDateGrid, reservation, numberOfDays);
     let duration = positionAndDuration.durationOfReservation + "px";
 
-    reservation.style = {};
-    reservation.style.width = duration;
-    reservation.style.transform = "translateX(" + positionAndDuration.reservationPosition + "px)";
     // Added these params to reservation to avoid the calculation repetion
     // Same values needed in rvNightlyDiaryStayRange.html
 
     reservation.numberOfNightsVisibleInGrid = positionAndDuration.numberOfNightsVisibleInGrid;
     reservation.duration = positionAndDuration.durationOfReservation;
+    reservation.arrivalPositionInt = positionAndDuration.reservationPosition;
+
     reservation.arrivalPosition = positionAndDuration.reservationPosition + "px";
     reservation.departurePosition = (positionAndDuration.durationOfReservation + positionAndDuration.reservationPosition) + "px";
+    reservation.departurePositionInt = (positionAndDuration.durationOfReservation + positionAndDuration.reservationPosition);
+    // used in stayrange container and component
+    reservation.isArrivalFlagVisible = positionAndDuration.isArrivalFlagVisible;
+    reservation.isDepartureFlagVisible = positionAndDuration.isDepartureFlagVisible;
 
     let isReservationFuture = findIsReservationFuture(reservation, currentBusinessDate);
     let isReservationDayStay = findIsReservationDayStay(reservation);
@@ -212,23 +219,35 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
 
     let reservationEditClass = '';
 
+    reservation.style = {};
+    reservation.style.width = duration;
+    reservation.style.transform = "translateX(" + positionAndDuration.reservationPosition + "px)";
     if (reservation.id === selectedReservationId) {
         reservationEditClass = "editing";
-    }
-    reservation.reservationClass = "reservation " + reservationStatusClass + " " + reservationClass + " " + reservationEditClass;
+        if (newArrivalPosition !== '' || newDeparturePosition !== '') {
+            let newDuration = newDeparturePosition - newArrivalPosition;
 
+            reservation.style.width = newDuration;
+            reservation.style.transform = "translateX(" + newArrivalPosition + "px)";
+        }
+
+    }
+
+    reservation.reservationClass = "reservation " + reservationStatusClass + " " + reservationClass + " " + reservationEditClass;
     return reservation;
 };
 
 const mapStateToNightlyDiaryReservationContainerProps = (state, ownProps) => ({
     reservation: convertReservationsListReadyToComponent(
         ownProps.reservation, state.diaryInitialDayOfDateGrid,
-        state.numberOfDays, state.currentBusinessDate, state.selectedReservationId),
+        state.numberOfDays, state.currentBusinessDate, state.selectedReservationId, state.newArrivalPosition, state.newDeparturePosition),
     selectReservation: state.callBackFromAngular.selectReservation,
     selectedReservationId: state.selectedReservationId,
     selectedRoom: ownProps.room,
     isFromStayCard: state.isFromStayCard,
-    gridDays: state.numberOfDays
+    gridDays: state.numberOfDays,
+    newArrivalPosition: state.newArrivalPosition,
+    newDeparturePosition: state.newDeparturePosition
 });
 
 const mapDispatchToNightlyDiaryReservationContainerProps = (stateProps) => {

@@ -159,6 +159,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.delphi', {
+        templateUrl: '/assets/partials/interfaces/Delphi/adDelphiSetup.html',
+        controller: 'adDelphiCtrl',
+        url: '/delphi/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('delphi');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.revinateSetup', {
         templateUrl: '/assets/partials/interfaces/Revinate/adRevinateSetup.html',
         controller: 'adRevinateSetupCtrl',
@@ -389,12 +400,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.synxisSetup', {
-        templateUrl: '/assets/partials/SynxisSetup/adSynxisSetup.html',
-        controller: 'adExternalInterfaceCtrl',
-        // interface_id: 3,
-        interface_id: 'SYNXIS',
-        simple_name: 'Synxis',
-        url: '/synxisSetup'
+        templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
+        controller: 'adCRSCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'synxis';
+        }],
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('synxis');
+            }]
+        }
     });
 
     $stateProvider.state('admin.zDirectSetup', {

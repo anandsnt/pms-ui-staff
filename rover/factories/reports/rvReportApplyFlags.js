@@ -21,7 +21,10 @@ angular.module('reportsModule')
                         'RATE_RESTRICTION_REPORT': ['hasOneMonthLimit'],
                         'FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT': ['hasUserFilter'],
                         'CANCELLATION_NO_SHOW': ['canRemoveDate'],
-                        'COMPARISION_BY_DATE': ['hasSysDateLimit']
+                        'COMPARISION_BY_DATE': ['hasSysDateLimit'],
+                        'BUSINESS_ON_BOOKS': ['hasSixMonthsLimit'],
+                        'COMPANY_TA_TOP_PRODUCERS': ['hasPrevDateLimit'],
+                        'GROUP_ROOMS_REPORT': ['hasThirtyOneDaysLimit']
                     };
 
                     var reportName = _.findKey(reportNames, function(value, key) { return value === report['title']; });

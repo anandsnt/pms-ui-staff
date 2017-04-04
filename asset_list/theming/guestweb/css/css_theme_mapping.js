@@ -78,7 +78,7 @@ module.exports = {
             'guestweb_estencia_la_jolla': [ themeCSSRoot + 'guestweb_estencia_la_jolla.css'],
             'guestweb_el_castell': [ themeCSSRoot + 'guestweb_el_castell.css'],
             'guestweb_hotel_epik': [ themeCSSRoot + 'guestweb_hotel_epik.css'],
-            'guestweb_avenue_hotel': [ themeCSSRoot + 'guestweb_avenue_hotel.css'],
+            'guestweb_avenue': [ themeCSSRoot + 'guestweb_avenue.css'],
             'guestweb_fontainebleau_v2': [ themeCSSRoot + 'guestweb_fontainebleau_v2.css'],
             'guestweb_sandman_inn': [ themeCSSRoot + 'guestweb_sandman_inn.css'],
             'guestweb_nobu_miami': [ themeCSSRoot + 'guestweb_nobu_miami.css'],
@@ -92,7 +92,18 @@ module.exports = {
             'guestweb_pod_dc': [ themeCSSRoot + 'guestweb_pod_dc.css'],
             'guestweb_snt': [ themeCSSRoot + 'guestweb_snt.css'],
             'guestweb_silver_stone': [ themeCSSRoot + 'guestweb_silver_stone.css'],
-            'guestweb_koa_kea': [ themeCSSRoot + 'guestweb_koa_kea.css']
+            'guestweb_koa_kea': [ themeCSSRoot + 'guestweb_koa_kea.css'],
+            'guestweb_hotel_chicago': [ themeCSSRoot + 'guestweb_hotel_chicago.css'],
+            'guestweb_public_ny': [ themeCSSRoot + 'guestweb_public_ny.css'],
+            'guestweb_Nobu_Ryokan_Malibu': [ themeCSSRoot + 'guestweb_Nobu_Ryokan_Malibu.css'],
+            'guestweb_ambrose': [ themeCSSRoot + 'guestweb_ambrose.css'],
+            'guestweb_little_duke': [ themeCSSRoot + 'guestweb_little_duke.css'],
+            'guestweb_basecamp_boulder': [ themeCSSRoot + 'guestweb_basecamp_boulder.css'],
+            'guestweb_distrikt_nyc': [ themeCSSRoot + 'guestweb_distrikt_nyc.css'],
+            'guestweb_stella_hotel': [ themeCSSRoot + 'guestweb_stella_hotel.css'],
+            'guestweb_beau_rivage': [ themeCSSRoot + 'guestweb_beau_rivage.css'],
+            'guestweb_gold_strike': [ themeCSSRoot + 'guestweb_gold_strike.css'],
+            'guestweb_historic_taos_inn': [ themeCSSRoot + 'guestweb_historic_taos_inn.css']
         };     
     }
 };

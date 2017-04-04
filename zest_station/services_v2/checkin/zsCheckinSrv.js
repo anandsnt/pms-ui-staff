@@ -57,7 +57,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var deferred = $q.defer();
             var url = '/api/cc/authorize';
             var pollToTerminal = function(async_callback_url) {
-                // we will continously communicate with the terminal till 
+                // we will continously communicate with the terminal till
                 // the timeout set for the hotel
                 if (timeStampInSeconds >= $rootScope.emvTimeout) {
                     var errors = ['Request timed out. Unable to process the transaction'];
@@ -87,7 +87,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                     });
                 }
             };
-           
+
 
             zsBaseWebSrv.postJSONWithSpecialStatusHandling(url, postData).then(function(data) {
                 // if connect to emv terminal is neeeded
@@ -124,10 +124,11 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.fetchReservationDetails = function(param) {
             var url;
 
+            param.is_kiosk = true;
             url = '/staff/staycards/reservation_details.json?reservation=' + param.id;
             var deferred = $q.defer();
 
-            zsBaseWebSrv.getJSON(url).then(function(data) {
+            zsBaseWebSrv.getJSON(url,param).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -148,6 +149,18 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         };
 
 
+        this.sendThirdPartyEmail = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/reservations/'+params.id+'/send_station_offer_mobilekey_mail';
+
+            zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
         this.checkInGuest = function(params) {
             var deferred = $q.defer(),
                 url = '/staff/checkin';
@@ -161,12 +174,11 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         };
 
         this.saveNationality = function(params) {
-            var deferred = $q.defer();
-
-            url = '/api/guest_details/' + params.guest_id;
-            var param = {
-                'nationality_id': params.nationality_id
-            };
+            var deferred = $q.defer(),
+                url = '/api/guest_details/' + params.guest_id;
+                param = {
+                    'nationality_id': params.nationality_id
+                };
 
             zsBaseWebSrv.putJSON(url, param).then(function(data) {
                 deferred.resolve(data);
@@ -179,8 +191,8 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.fetchOwsMessage = function(params) {
 
-            var deferred = $q.defer();
-            var url = '/api/reservation_guest_messages/' + params.reservation_id + '.json';
+            var deferred = $q.defer(),
+                url = '/api/reservation_guest_messages/' + params.reservation_id + '.json';
             // var url = '/sample_json/zest_station/ows_msgs.json';
 
             zsBaseWebSrv.getJSON(url, params).then(function(data) {
@@ -191,10 +203,36 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
-        this.sendOWSMsgAsMail = function(params) {
-            var deferred = $q.defer();
 
-            url = 'api/reservation_guest_messages/email_message.json';
+        this.fetchECIPlaceholderData = function(params) {
+            var deferred = $q.defer(),
+                url = '/sample_json/zest_station/early_checkin.json';
+
+            zsBaseWebSrv.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchDetailsPlaceholderData = function(params) {
+            var deferred = $q.defer(),
+                url = '/sample_json/zest_station/checkin_details.json';
+
+            zsBaseWebSrv.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.sendOWSMsgAsMail = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/reservation_guest_messages/email_message.json';
 
             zsBaseWebSrv.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
@@ -244,7 +282,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
             return deferred.promise;
         };
-        
+
         this.assignGuestRoom = function(params) {
             // params['reservation_id'] = some id...
             var deferred = $q.defer(),
@@ -261,7 +299,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.fetchReservationBalanceDetails = function(params) {
 
             var deferred = $q.defer(),
-                url = 'zest_station/reservations/' + params.reservation_id,
+                url = '/zest_station/reservations/' + params.reservation_id,
                 param = {
                     'nationality_id': params.nationality_id
                 };
@@ -273,13 +311,13 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
-        
+
         this.fetchUpsellDetails = function(reservation) {
-             var params = {
-                set_arrival_time_to_current_time: true
-            };
-            var deferred = $q.defer(),
-                url = 'guest_web/reservations/' + reservation.id + '.json';
+            var params = {
+                    set_arrival_time_to_current_time: true
+                },
+                deferred = $q.defer(),
+                url = '/guest_web/reservations/' + reservation.id + '.json';
 
             zsBaseWebSrv.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);
@@ -291,8 +329,8 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
 
         this.fetchStarTacPrinterData = function(params) {
-            var deferred = $q.defer();
-            var url = 'api/reservations/' + params.reservation_id + '/bill_print_data?is_checkout=false';
+            var deferred = $q.defer(),
+                url = '/api/reservations/' + params.reservation_id + '/bill_print_data?is_checkout=false';
 
             zsBaseWebSrv.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);
@@ -304,8 +342,8 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.fetchHotelTime = function(params) {
 
-            var deferred = $q.defer();
-            var url = 'guest_web/home/fetch_hotel_time.json?reservation_id=' + params.reservation_id;
+            var deferred = $q.defer(),
+                url = '/guest_web/home/fetch_hotel_time.json?reservation_id=' + params.reservation_id;
 
             zsBaseWebSrv.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);
@@ -314,6 +352,45 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
+
+
+        this.fetchRoomUpsellDetails = function(param) {
+            var deferred = $q.defer(),
+                url =  '/zest_station/upgrade_options.json';
+
+            zsBaseWebSrv2.getJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fethHotelRooms = function(params) {
+            var deferred = $q.defer();
+            var url =  '/staff/rooms/get_rooms';
+
+            zsBaseWebSrv2.postJSON(url,params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.selectRoomUpgrade = function(param) {
+            var deferred = $q.defer();
+            var url =  '/staff/reservations/upgrade_room.json';
+
+            param.is_kiosk = true;
+            zsBaseWebSrv2.postJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+                return deferred.promise;
+        };
+
 
     }
 ]);

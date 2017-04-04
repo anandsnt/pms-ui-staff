@@ -14,9 +14,9 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 
 		/** ********************************************************************************************
 		 **		Expected state params -----> reservation_id, room_no,  first_name, guest_id, key_success
-		 *       and email			  
-		 **		Exit function ->nextPageActions								
-		 **																		 
+		 *       and email
+		 **		Exit function ->nextPageActions
+		 **
 		 ***********************************************************************************************/
 
         BaseCtrl.call(this, $scope);
@@ -32,7 +32,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 		/**
 		 * when the back button clicked
 		 * @param  {[type]} event
-		 * @return {[type]} 
+		 * @return {[type]}
 		 */
         $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function() {
 			// back button action from email send mode page will
@@ -47,7 +47,8 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 
         var nextPageActions = function(printopted, emailopted, actionStatus) {
             var stateParams = {
-                key_success: $stateParams.key_success
+                key_success: $stateParams.key_success,
+                key_type: $stateParams.key_type
             };
 
             if (printopted) {
@@ -74,7 +75,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
             };
 
             var printFailedActions = function(errorMessage) {
-                
+
                 $scope.$emit('hideLoader');
                 $scope.runDigestCycle();
                 var printopted = true;
@@ -88,7 +89,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                     $scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_KEY_FAIL_PRINT_FAIL');
                 }
                 $scope.zestStationData.workstationStatus = 'out-of-order';
-                
+
 
                 nextPageActions(printopted, emailopted, actionStatus);
             };
@@ -182,7 +183,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                                 }, 100);
                             }
                         }
-					// provide a delay for preview to appear 
+					// provide a delay for preview to appear
 
                     }, 100);
 
@@ -219,7 +220,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
             var options = {
                 params: {
                     'id': $stateParams.reservation_id,
-                    'application': 'ZEST_STATION'
+                    'application': 'KIOSK'
                 },
                 successCallBack: fetchPrintViewCompleted,
                 failureCallBack: printFailedActions
@@ -259,7 +260,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
             var options = {
                 params: {
                     'id': $stateParams.reservation_id,
-                    'application': 'ZEST_STATION'
+                    'application': 'KIOSK'
                 },
                 successCallBack: registrationCardSent,
                 failureCallBack: registrationCardSendingFailed
@@ -276,53 +277,21 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
             $scope.mode = 'EMAIL_ENTRY_MODE';
             $scope.focusInputField('input_text');
         };
-		/**
-		 * [updateGuestEmail description]
-		 * @return {[type]} [description]
-		 */
-        var updateGuestEmail = function() {
-            var updateComplete = function() {
-                $scope.mode = 'EMAIL_SEND_MODE';
-                $scope.callBlurEventForIpad();
-                $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
+
+
+        $scope.$on('EMAIL_UPDATION_SUCCESS', function() {
+            $scope.mode = 'EMAIL_SEND_MODE';
+            $scope.callBlurEventForIpad();
+        });
+
+
+        $scope.$on('EMAIL_UPDATION_FAILED', function() {
+            var  stateParams = {
+                'message': 'Email Updation Failed.'
             };
-			/**
-			 * [updateGuestEmailFailed description]
-			 * @return {[type]} [description]
-			 */
-            var updateGuestEmailFailed = function() {
-                var stateParams = {};
-
-                $state.go('zest_station.speakToStaff', stateParams);
-            };
-
-            var options = {
-                params: {
-                    'guest_id': $stateParams.guest_id,
-                    'email': $scope.email
-                },
-                successCallBack: updateComplete,
-                failureCallBack: updateGuestEmailFailed
-            };
-
-            $scope.callAPI(zsGeneralSrv.updateGuestEmail, options);
-        };
-		/**
-		 * [goToNext description]
-		 *  save email
-		 */
-
-        $scope.goToNext = function() {
-            var isValidEmail = $scope.email.length > 0 ? zsUtilitySrv.isValidEmail($scope.email) : false;
-
-            if (isValidEmail) {
-                updateGuestEmail();
-            } else {
-                $scope.mode = 'EMAIL_INVLAID_MODE';
-                $scope.callBlurEventForIpad();
-            }
-        };
-
+            
+            $state.go('zest_station.speakToStaff', stateParams);
+        });
 		/**
 		 * [initializeMe description]
 		 */
@@ -337,6 +306,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
             } else {
                 $scope.email = '';
             }
+            $scope.guestId = $stateParams.guest_id;
 
             $scope.from = $stateParams.from;
             if ($scope.zestStationData.registration_card.auto_print) {

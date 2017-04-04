@@ -18,16 +18,11 @@
 
         </div>
 
-        <!-- Stay Range | Remove .hidden to show-->
-        <div class="grid-stay-range" ng-if="diaryData.isEditReservationMode" ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryStayRange.html'"></div>
-
         <!-- Room Search Results -->
         <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRoomNumberSearchResult.html'" include-replace>
         </div>
 
         <!-- REACT APP :: Rooms list + Reservations list + Un-assigned Reservations list -->
         <div id="nightlyDiaryMain" class="grid-wrapper"></div>
-
         <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRightFilterBar.html'" include-replace></div>
-
 </section>

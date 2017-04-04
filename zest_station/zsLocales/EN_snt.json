@@ -84,6 +84,8 @@
 
    "ENTER_LAST": "Enter the Guest’s Last Name",
    "ENTER_FIRST": "Enter the Guest’s First Name",
+   "ENTER_FIRST_SUB": "",
+   "ENTER_LAST_SUB": "",
 
 
    "DEPOSIT_REMAIN": "Your remaining deposit is due",
@@ -207,7 +209,9 @@
    "EARLY_SUB_3":"Please see a staff member for help",
 
    "EARLY_AVAIL_PURCHASED":"But your Early Check-In is available.",
+   "EARLY_AVAIL_PURCHASED_REALLY_EARLY_HEADER":"",
    "EARLY_AVAIL_PURCHASED_REALLY_EARLY":"Sorry, Your Early Check-In is not available yet.",
+
    "EARLY_AVAIL_FREE":"But you are eligible for a FREE Early Check-in.",
 
 
@@ -409,6 +413,8 @@
    "MAKE_KEY_TEXT_TWO": "Make Key 2",
    "MAKE_KEY_TEXT_ONE": "Make Key",
 
+   "KEY_TWO_FAILED": "Key creation failed",
+   "RETRY_CREATING_KEY_TWO": "Re-try",
 
    "CHECKIN_TOO_EARLY": "Sorry, You're too early to check-in",
    "CHECKIN_TOO_EARLY_SUB": "Please try again at your arrival time",
@@ -429,6 +435,94 @@
 
   "WORK_STATION_NOT_SELECTED":"Workstation not selected",
   "KEY_CREATION_FAILED" : "Key creation failed",
-  "DISPENSE_KEY_COMPLETED_HEADER" : "Your Keys are dispensed"
+  "DISPENSE_KEY_COMPLETED_HEADER" : "Your Keys are dispensed",
+
+  "OWS_MESSAGE_HEADER": "Message",
+  "OWS_MSG_PRESENT_HEADER": "OWS messages",
+  "SINGLE_MESSAGE_SUB_HEADER": "You have a message",
+  "MULTIPLE_MESSAGE_SUB_HEADER_PART_1": "You have",
+  "MULTIPLE_MESSAGE_SUB_HEADER_PART_2": "messages",
+  "VIEW_OWS_MSG": "View Message(s)",
+  "ALL_MESSAGES_READ_HEADER": "You have read all message(s)",
+  "ALL_MESSAGES_READ_SUB_HEADER": "Please click any of the below",
+  "VIEW_OWS_MSG_AGAIN": "View messages again",
+  "OWS_MSG_DONE": "DONE",
+  "CHECKIN_SUCCESS_HEADER": "Congratulations",
+  "CHECKIN_SUCCESS_HEADER_ENDING": ",",
+  "CHECKIN_SUCCESS_SUB_HEADER": "Welcome to the hotel",
+  "CHECKIN_SUCCESS_DONE_BTN": "NEXT",
+
+  "ROOM_UPGRADE_HEADER" : "Upgrade your Room?",
+  "BUY_UPGRADE" : "Upgrade",
+  "ROOM_UPGRADE_SKIP" : "No Thanks",
+  "ROOM_UPGRADE_LIST_SUB_HEADER": "Select a card to see room details before you upgrade",
+  "ROOM_DETAILS": "Room Details",
+  "ROOM_UPGRADE_NEXT": "NEXT",
+  "ROOM_UPGRADE_PREV": "PREV",
+  "ROOM_UPGRADE_ERROR": "Room Upsell failed",
+  "ROOM_UPGRADE_ERROR_SUB" : "Speak to the staff or continue",
+  "ROOM_UPGRADE_ERROR_CONTINUE": "Continue",
+
+  "GUESTS": "Guests",
+
+  "PRINT": "Print",
+  "NEXT": "Next",
+  "EMAIL": "Email",
+  "CONTINUE": "Continue",
+  "PLEASE_WAIT_FOR_KEY_CARD_FOR_CHECKOUT": "Please Wait",
+  "PLEASE_WAIT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT": "",
+  "RETRY": "Retry",
+  "SEARCH": "Search",
+  "BY_NAME": "By Name",
+
+  "GATE_ERROR_MESSAGE": "To create the second Key.Please take your first key.",
+  "GATE_CLOSE": "Close",
+
+  "CC_PLEASE_NOTE": "Please note:",
+  "CC_INSTRUCTION_1": "Your card will be authorized for an incidental amount of $25.00 per night",
+  "CC_INSTRUCTION_2": "Unused remaining balance will be released upon checkout",
+  "CC_INSTRUCTION_3": "If you choose to use a debit card then please note that some banks may take longer to release the funds back to your checking account",
+   "GET_KEYS_HEADER": "GET YOUR KEYS",
+   "GET_KEYS_SUB": "",
+   "GET_KEYS_HOW_MANY": "How many keys do you need?",
+
+
+
+
+   "THIRD_PARTY_MOBILE_SELECT_HEADER": "Get the app",
+   "THIRD_PARTY_MOBILE_SELECT_SUB_HEADER": "You need the [App Name] to use a mobile key. It supports both iPhone and Android devices",
+
+   "THIRD_PARTY_HAVE_IT": "Already Have it",
+   "THIRD_PARTY_HAVE_IT_SUB": "",
+   "THIRD_PARTY_GET_IT": "Help me get it",
+   "THIRD_PARTY_GET_IT_SUB": "",
+   "THIRD_PARTY_NO_THX": "No Thanks",
+   "THIRD_PARTY_NO_THX_SUB": "",
+
+   "THIRD_PARTY_MOBILE_HAVE_IT_INFO_HEADER": "Get the key from the app",
+   "THIRD_PARTY_MOBILE_HAVE_IT_INFO_SUB_HEADER": "To get your mobile key, sign in to the [Name of app] and do x",
+   "THIRD_PARTY_MOBILE_HAVE_IT_INFO_BODY_LARGE_TEXT": "",
+   "THIRD_PARTY_MOBILE_HAVE_IT_INFO_BODY_TEXT": "You're all done here, so select Next",
+
+   "THIRD_PARTY_MOBILE_GET_IT_INFO_HEADER": "Download the app",
+   "THIRD_PARTY_MOBILE_GET_IT_INFO_SUB_HEADER": "We will email you at",
+   "THIRD_PARTY_MOBILE_GET_IT_INFO_SUB_HEADER_AFTER": "It also includes our WiFi details so you can download it for free",
+
+   "THIRD_PARTY_MOBILE_EMAIL_SENT_HEADER": "Email Sent",
+   "THIRD_PARTY_MOBILE_EMAIL_SENT_SUB_HEADER": "Check your inbox for the email to download the app, sign up and get your key.",
+   
+   "SELECT_KEY_TYPE_HEADER": "Select Key Type",
+   "SELECT_KEY_TYPE_SUB": "",
+   "SELECT_MOBILE_KEY": "Mobile key",
+   "SELECT_PHYSICAL_KEY": "Physical key",
+   "SELECT_PHYSICAL_KEY_SUB": "",
+   "SELECT_MOBILE_KEY_SUB": "",
+   "PRINT_SUCCESS": "Print was Success",
+   "PRINT_FAILED": "Print was Failed",
+   "EMAIL_SUCCESS": "Email was sent",
+   "EMAIL_FAILED": "Something went wrong on sending email"
+
+
+
    
 }

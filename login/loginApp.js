@@ -1,4 +1,4 @@
-var login = angular.module('login', ['ui.router', 'documentTouchMovePrevent', 'ngSanitize', 'ng-iscroll']);
+var login = angular.module('login', ['ui.router', 'documentTouchMovePrevent', 'ngSanitize', 'ng-iscroll', 'ngDialog', 'clickTouch']);
 
 /*
  * Set page Titles
@@ -23,7 +23,7 @@ login.controller('loginRootCtrl', ['$scope', function($scope) {
  * Login Controller - Handles login and local storage on succesfull login
  * Redirects to specific ur on succesfull login
  */
-login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', function($scope, loginSrv, $window, $state, resetSrv) {
+login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', function($scope, loginSrv, $window, $state, resetSrv, ngDialog) {
 	 $scope.data = {};
 
 	 if (localStorage.email) {
@@ -37,6 +37,17 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
 	 $scope.successMessage = "";
 	 $scope.errorMessage = resetSrv.getErrorMessage();
 
+	  // :: setInAppFlag :: used to reset a localStorage flag (for Zest Station), since we use a different log-in page
+	  // this helps us detect if zest station was initiated from our [stationlogin#/stationlogin] URL ( CICO-38189 )
+
+	  var setInAppFlag = function() {
+		  	try {
+		  		localStorage.setItem('roverInApp', 'false');
+		  	} catch (err) {
+		  		console.log('could not set station flag [roverInApp] to [false]');
+		  	}
+        };
+        setInAppFlag();
 	 /*
 	  * successCallback of login action
 	  * @param {object} status of login and data
@@ -80,7 +91,7 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
 	            }
 		 	}
         };
-	 	
+
         if (sntapp.loginUpdate != null) {
 	        /**
 	        * Passing user Login ID to native, for debugging on ipads
@@ -109,7 +120,7 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
         setTimeout(function() {
    		        navigateToRover();
     	}, 100);
-        
+
 	 };
 	 /*
 	  * Failure call back of login
@@ -161,12 +172,36 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
  			loginSrv.forgotPassword(dataToPost, $scope.successCallbackForgotPassword, $scope.failureCallBackForgotPassword);
 	 	}
 	 };
-         
+
+	$scope.modalClosing = false;
+
+    $scope.closeDialog = function() {
+      $scope.modalClosing = true;
+		setTimeout(function () {
+			ngDialog.close();
+			$scope.modalClosing = false;
+			$scope.$apply();
+		}, 700);
+    };
+
+    $scope.onClickSupportLink = function () {
+        if (sntapp.cordovaLoaded) {
+            ngDialog.open({
+                template: '/assets/partials/freshdesk.html',
+                className: '',
+                controller: '',
+                scope: $scope
+            });
+        } else {
+            $window.open('https://stayntouch.freshdesk.com/support/home', '_blank');
+        }
+    };
+
 }]);
 /*
  * Reset Password Controller - First time login of snt admin
  */
-login.controller('resetCtrl', ['$scope', 'resetSrv', '$window', '$state', '$stateParams', function($scope, resetSrv, $window, $state, $stateParams) {
+login.controller('resetCtrl', ['$scope', 'resetSrv', '$window', '$state', '$stateParams', 'ngDialog', function($scope, resetSrv, $window, $state, $stateParams, ngDialog) {
 	 $scope.data = {};
 	 $scope.data.token = $stateParams.token;
 
@@ -187,7 +222,7 @@ login.controller('resetCtrl', ['$scope', 'resetSrv', '$window', '$state', '$stat
             setTimeout(function() {
                 $state.go('selectProperty');
             }, 300);
-        } 
+        }
         else {
             $scope.$emit("signingIn");
             // we need to show the animation before redirecting to the url, so introducing a timeout there
@@ -196,7 +231,7 @@ login.controller('resetCtrl', ['$scope', 'resetSrv', '$window', '$state', '$stat
             }, 300);
         }
 	 };
-	 
+
 	 $scope.failureCallBack = function(errorMessage) {
 	 	$scope.hasLoader = false;
 	 	$scope.errorMessage = errorMessage;
@@ -209,11 +244,35 @@ login.controller('resetCtrl', ['$scope', 'resetSrv', '$window', '$state', '$stat
 		resetSrv.resetPassword($scope.data, $scope.successCallback, $scope.failureCallBack);
 	};
 
+	$scope.modalClosing = false;
+
+    $scope.closeDialog = function() {
+      $scope.modalClosing = true;
+		setTimeout(function () {
+			ngDialog.close();
+			$scope.modalClosing = false;
+			$scope.$apply();
+		}, 700);
+    };
+
+    $scope.onClickSupportLink = function () {
+        if (sntapp.cordovaLoaded) {
+            ngDialog.open({
+                template: '/assets/partials/freshdesk.html',
+                className: '',
+                controller: '',
+                scope: $scope
+            });
+        } else {
+            $window.open('https://stayntouch.freshdesk.com/support/home', '_blank');
+        }
+    };
+
 }]);
 /*
  * Activate User Controller - Activate user when clicks on activation link in mail
  */
-login.controller('activateCtrl', ['$scope', 'resetSrv', '$window', '$state', '$stateParams', function($scope, resetSrv, $window, $state, $stateParams) {
+login.controller('activateCtrl', ['$scope', 'resetSrv', '$window', '$state', '$stateParams', 'ngDialog', function($scope, resetSrv, $window, $state, $stateParams, ngDialog) {
 	 $scope.data = {};
 	 $scope.data.token = $stateParams.token;
 	 $scope.data.user  = $stateParams.user;
@@ -239,7 +298,7 @@ login.controller('activateCtrl', ['$scope', 'resetSrv', '$window', '$state', '$s
             setTimeout(function() {
                 $state.go('selectProperty');
             }, 300);
-        } 
+        }
         else {
             $scope.$emit("signingIn");
             // we need to show the animation before redirecting to the url, so introducing a timeout there
@@ -294,10 +353,71 @@ login.controller('activateCtrl', ['$scope', 'resetSrv', '$window', '$state', '$s
 		 resetSrv.activateUser($scope.data, $scope.successCallback, $scope.failureCallBack);
 	};
 
+	$scope.modalClosing = false;
+
+    $scope.closeDialog = function() {
+      $scope.modalClosing = true;
+		setTimeout(function () {
+			ngDialog.close();
+			$scope.modalClosing = false;
+			$scope.$apply();
+		}, 700);
+    };
+
+    $scope.onClickSupportLink = function () {
+        if (sntapp.cordovaLoaded) {
+            ngDialog.open({
+                template: '/assets/partials/freshdesk.html',
+                className: '',
+                controller: '',
+                scope: $scope
+            });
+        } else {
+            $window.open('https://stayntouch.freshdesk.com/support/home', '_blank');
+        }
+    };
+
 }]);
 
-login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', function($scope, loginSrv, $window, $state, resetSrv) {
+login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', function($scope, loginSrv, $window, $state, resetSrv, ngDialog) {
+        // when using stationlogin on touch-screen, a keyboard should prompt
+        // also, we will set a localStorage flag to relay to zest station, we are inside an app
+        // only chrome-apps + electron app should be using " /stationlogin#/stationlogin " to enter rover/zest station
+        var setInAppFlag = function() {
+        	localStorage.setItem('roverInApp', 'true');
+        };
+
         $scope.data = {};
+
+        $scope.modalClosing = false;
+
+        $scope.showExitButton = !(typeof chrome !== 'undefined' && typeof chrome.runtime !== 'undefined');
+
+        $scope.exitApp = function() {
+        	window.close();
+        };
+
+	    $scope.closeDialog = function() {
+	      $scope.modalClosing = true;
+			setTimeout(function () {
+				ngDialog.close();
+				$scope.modalClosing = false;
+				$scope.$apply();
+			}, 700);
+	    };
+
+	    $scope.onClickSupportLink = function () {
+	        if (sntapp.cordovaLoaded) {
+	            ngDialog.open({
+	                template: '/assets/partials/freshdesk.html',
+	                className: '',
+	                controller: '',
+	                scope: $scope
+	            });
+	        } else {
+	            $window.open('https://stayntouch.freshdesk.com/support/home', '_blank');
+	        }
+	    };
 
         if (localStorage.email) {
                $scope.data.email = localStorage.email;
@@ -349,7 +469,7 @@ login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state',
 	 	$scope.successMessage = "";
  		loginSrv.login($scope.data, $scope.successLoginCallback, $scope.failureCallBack);
 	};
-         
+
         $scope.showOnScreenKeyboard = function(id) {
            // pull up the virtual keyboard (snt) theme... if chrome & fullscreen
             var isTouchDevice = 'ontouchstart' in document,
@@ -361,6 +481,6 @@ login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state',
              }
         };
         $scope.showOnScreenKeyboard();
-         
-}]);
+        setInAppFlag();
 
+}]);

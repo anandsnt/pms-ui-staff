@@ -7,6 +7,8 @@ angular.module('sntRover')
         '$filter',
         'roomsList',
         'datesList',
+        'ngDialog',
+        '$timeout',
         'reservationsList',
         'RVNightlyDiarySrv',
         function(
@@ -17,6 +19,8 @@ angular.module('sntRover')
             $filter,
             roomsList,
             datesList,
+            ngDialog,
+            $timeout,
             reservationsList,
             RVNightlyDiarySrv
         ) {
@@ -70,7 +74,11 @@ angular.module('sntRover')
                     secondMonthDateList: [],
                     reservationsList: reservationsList,
                     hasOverlay: false,
-                    isEditReservationMode: false
+                    isEditReservationMode: false,
+                    showUnassignedPanel: false,
+                    showFilterPanel: false,
+                    selectedRoomTypes: [],
+                    selectedFloors: []
                 };
                 $scope.currentSelectedReservation = {};
                 $scope.currentSelectedRoom = {};
@@ -88,6 +96,7 @@ angular.module('sntRover')
                     total_count: $scope.diaryData.paginationData.totalCount
                 };
             };
+
             /**
              * method to update Pagination parametrs
              */
@@ -114,9 +123,10 @@ angular.module('sntRover')
                     postData = {
                         ...getPaginationParams(),
                         'start_date': $scope.diaryData.fromDate,
-                        'no_of_days': $scope.diaryData.numberOfDays
+                        'no_of_days': $scope.diaryData.numberOfDays,
+                        'selected_room_type_ids': $scope.diaryData.selectedRoomTypes,
+                        'selected_floor_ids': $scope.diaryData.selectedFloors
                     };
-
                 if (roomId) {
                     postData.room_id = roomId;
                     $scope.diaryData.selectedRoomId = roomId;
@@ -150,16 +160,112 @@ angular.module('sntRover')
              * @param reservation - Current selected reservation
              */
             var selectReservation = (e, reservation, room) => {
-                $scope.diaryData.isEditReservationMode = true;
-                $scope.currentSelectedReservation = reservation;
-                $scope.currentSelectedRoom = room;
-                if (!$stateParams.isFromStayCard) {
-                    $scope.$apply();
+                if (!$scope.diaryData.isEditReservationMode) {
+                    $scope.diaryData.isEditReservationMode = true;
+                    $scope.currentSelectedReservation = reservation;
+                    $scope.currentSelectedRoom = room;
+                    $scope.diaryData.selectedRoomId = room.id;
+                    $scope.extendShortenReservationDetails = {
+                        'arrival_date': reservation.arrival_date,
+                        'dep_date': reservation.dept_date,
+                        'reservation_id': reservation.id
+                    };
+
                     showReservationSelected();
-                } else {
-                    // To fix issue point 3 - QA failed comment - CICO-34410
-                    $stateParams.isFromStayCard = false;
+                    if (!$stateParams.isFromStayCard) {
+                        $scope.$apply();
+                    } else {
+                        // To fix issue point 3 - QA failed comment - CICO-34410
+                        $stateParams.isFromStayCard = false;
+                    }
                 }
+            };
+
+            /*
+             * Function to check room availability.
+             */
+            var checkReservationAvailability = (arrivalDate, DepartureDate) => {
+                let params = {
+                        'arrival_date': moment(arrivalDate, $rootScope.dateFormat.toUpperCase())
+                                            .format('YYYY-MM-DD'),
+                        'dep_date': moment(DepartureDate, $rootScope.dateFormat.toUpperCase())
+                                            .format('YYYY-MM-DD'),
+                        'reservation_id': $scope.currentSelectedReservation.id
+                    },
+                    successCallBack = function(response) {
+                        $scope.$emit('hideLoader');
+                        if (response.status === 'failure') {
+                            $scope.messages = response.errors;
+                            openMessagePopup();
+                        } else {
+                            if (response.data.availability_status === 'room_available') {
+                                $scope.extendShortenReservationDetails = params;
+                            } else {
+                                switch (response.data.availability_status) {
+                                    case 'to_be_unassigned' : $scope.messages = ['PREASSIGNED'];
+                                        break;
+                                    case 'maintenance' : $scope.messages = ['MAINTENANCE'];
+                                        break;
+                                    case 'do_not_move' : $scope.messages = ['ROOM_IS_SET_TO_DO_NOT_MOVE'];
+                                        break;
+                                    case 'room_ooo' : $scope.messages = ['ROOM_OOO'];
+                                        break;
+                                    default : $scope.messages = ["ROOM_TYPE_NOT_AVAILABLE"];
+                                }
+                                openMessagePopup();
+                            }
+                        }
+                    };
+
+                $scope.invokeApi(RVNightlyDiarySrv.checkUpdateAvaibale,
+                    params,
+                    successCallBack);
+            };
+            /*
+             * Function to cancel message popup.
+             */
+            $scope.closeDialog = function() {
+                cancelReservationEditing();
+                ngDialog.close();
+            };
+            /*
+             * Function to save editing of a reservation
+             */
+            var saveReservationEditing = function() {
+                let successCallBack = function() {
+                    cancelReservationEditing();
+                    $timeout(function() {
+                        fetchRoomListDataAndReservationListData();
+                    }, 700);
+
+                };
+
+                $scope.invokeApi(RVNightlyDiarySrv.confirmUpdates,
+                    $scope.extendShortenReservationDetails,
+                    successCallBack);
+            };
+            /*
+             * Show selected reservation highlighted and enable edit bar
+             * @param reservation - Current selected reservation
+             */
+            var extendShortenReservation = (newArrivalPosition, newDeparturePosition) => {
+
+                var dispatchData = {
+                    type: 'EXTEND_SHORTEN_RESERVATION',
+                    newArrivalPosition: newArrivalPosition,
+                    newDeparturePosition: newDeparturePosition
+                };
+
+                store.dispatch(dispatchData);
+            };
+            /*
+            * Show messages
+            */
+            var openMessagePopup = function() {
+                ngDialog.open({
+                    template: '/assets/partials/nightlyDiary/rvNightlyDiaryMessages.html',
+                    scope: $scope
+                });
             };
 
             /*
@@ -172,20 +278,61 @@ angular.module('sntRover')
                     var dispatchData = {
                         type: 'CANCEL_RESERVATION_EDITING',
                         reservationsList: $scope.diaryData.reservationsList.rooms,
-                        paginationData: angular.copy($scope.diaryData.paginationData)
+                        paginationData: angular.copy($scope.diaryData.paginationData),
+                        currentSelectedReservation: $scope.currentSelectedReservation
                     };
 
                     store.dispatch(dispatchData);
                 }
-                
             };
+
             /*
              * Cancel button click edit bar
-             *
              */
             $scope.$on("CANCEL_RESERVATION_EDITING", function() {
                 cancelReservationEditing();
             });
+            /*
+             * Save button click edit bar
+             */
+            $scope.$on("SAVE_RESERVATION_EDITING", function() {
+                saveReservationEditing();
+            });
+
+            /* Handle event emitted from child controllers.
+             * To update diary data - rooms & reservations according to changed date constraints.
+             * @param {Number} RoomId - selected room id from search filters.
+            */
+            $scope.$on('UPDATE_RESERVATIONLIST', function( event, roomId ) {
+                if (!!roomId) {
+                    $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
+                    $scope.diaryData.showFilterPanel = false;
+                }
+                cancelReservationEditing();
+                fetchRoomListDataAndReservationListData(roomId);
+            });
+
+            /* Handle event emitted from child controllers.
+             * To refresh diary data - rooms & reservations.
+             * @param {Number} RoomId - selected room id from search filters.
+            */
+            $scope.$on('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function( event, roomId ) {
+                $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
+                $scope.diaryData.showFilterPanel = false;
+                cancelReservationEditing();
+                fetchRoomListDataAndReservationListData(roomId);
+            });
+
+            /*
+             * Handle event emitted from child controller.
+             * To refresh diary data - rooms and reservations after applying filter.
+             */
+            $scope.$on('REFRESH_DIARY_SCREEN', function() {
+                $scope.diaryData.paginationData.page = 1;
+                fetchRoomListDataAndReservationListData();
+                cancelReservationEditing();
+            });
+
             /**
              * utility method to pass callbacks from
              * @return {Object} with callbacks
@@ -194,7 +341,9 @@ angular.module('sntRover')
                 return {
                     goToPrevPage,
                     goToNextPage,
-                    selectReservation
+                    selectReservation,
+                    extendShortenReservation,
+                    checkReservationAvailability
                 };
             };
 
@@ -202,6 +351,7 @@ angular.module('sntRover')
                 var params = RVNightlyDiarySrv.getCache();
                 $scope.currentSelectedReservationId = params.currentSelectedReservationId;
                 $scope.diaryData.selectedRoomId = params.currentSelectedRoomId;
+                $scope.currentSelectedReservation = params.currentSelectedReservation;
             }
 
             // Initial State
@@ -215,7 +365,10 @@ angular.module('sntRover')
                 paginationData: $scope.diaryData.paginationData,
                 selectedReservationId: $scope.currentSelectedReservationId,
                 selectedRoomId: $scope.diaryData.selectedRoomId,
-                isFromStayCard: $stateParams.isFromStayCard
+                isFromStayCard: $stateParams.isFromStayCard,
+                currentSelectedReservation: $scope.currentSelectedReservation,
+                dateFormat: $rootScope.dateFormat,
+                isPmsProductionEnvironment: $rootScope.isPmsProductionEnv
             };
             const store = configureStore(initialState);
             const {render} = ReactDOM;
@@ -242,21 +395,12 @@ angular.module('sntRover')
                     type: 'RESERVATION_SELECTED',
                     selectedReservationId: $scope.currentSelectedReservation.id,
                     reservationsList: $scope.diaryData.reservationsList.rooms,
-                    selectedRoomId: $scope.diaryData.selectedRoomId
+                    selectedRoomId: $scope.diaryData.selectedRoomId,
+                    currentSelectedReservation: $scope.currentSelectedReservation
                 };
 
                 store.dispatch(dispatchData);
             };
-
-            /* Handle event emitted from child controllers.
-             * To refresh diary data - rooms & reservations.
-             * @param {Number} RoomId - selected room id from search filters.
-            */
-            $scope.$on('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function( event, roomId ) {
-                cancelReservationEditing();
-                fetchRoomListDataAndReservationListData(roomId);
-            });
-
             /*
              * to render the grid view
              */
@@ -273,5 +417,4 @@ angular.module('sntRover')
             (() => {
                 renderDiaryView();
             })();
-}]);
-
+        }]);
