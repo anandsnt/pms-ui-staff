@@ -364,9 +364,6 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
         var continueRouting = function(settings) {
             var goToEarlyCheckin = shouldGoToEarlyCheckInFlow(settings);
-
-            // TO DO : 
-            $scope.selectedReservation.hasAddon = true;
             
             $log.info(': continueRouting :', settings);
             $log.info('*goToEarlyCheckin: ', goToEarlyCheckin);
@@ -377,7 +374,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 beginEarlyCheckin(settings);
             } else if (!$scope.selectedReservation.isRoomUpraded && $scope.selectedReservation.reservation_details.is_upsell_available === 'true' && zestStationRoomUpsellOn) {
                 $state.go('zest_station.roomUpsell');
-            } else if ($scope.selectedReservation.hasAddon && !$scope.selectedReservation.skipAddon) {
+            } else if ($scope.zestStationData.station_addon_upsell_active && !$scope.selectedReservation.skipAddon) {
                 $state.go('zest_station.addOnUpsell');
             } else {
                 // terms and condition skip is done in terms and conditions page
