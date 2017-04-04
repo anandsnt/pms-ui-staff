@@ -529,7 +529,16 @@
    "SCAN_PASSPORT_BUTTON": "Scan",
 
    "SCAN_FAILURE_HEADER": "Passport Scan Unsuccessful",
-   "SCAN_FAILURE_SUB_HEADER": "Scan passports for all guests to continue"
+   "SCAN_FAILURE_SUB_HEADER": "Scan passports for all guests to continue",
+
+   "SCAN_RESULTS_HEADER": "Passport Scan Results",
+   "SCAN_RESULTS_SUB_HEADER": "SCAN PASSPORTS FOR ALL GUESTS TO CONTINUE",
+   "PASSPORT_DONE_BTN": "Done",
+
+   "SCAN_PASSPORT_SUB_HEADER_FIRST": "Place",
+   "SCAN_PASSPORT_SUB_HEADER_SECOND": "'s Passport on the scanner and press 'Scan'"
+
+
 
    
 }

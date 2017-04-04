@@ -1,11 +1,19 @@
 <!-- Passport scan start | scan primary guest  -->
-<section id="main" class="centered" role="main" ng-hide="mode !== 'SCAN_PRIMARY'" click-touch='resetTime()'>
+<section id="main" class="centered" role="main" ng-hide="mode !== 'SCAN_PASSPORT'" click-touch='resetTime()'>
     <div id="content">
+        
+
+
         <h1>
             <text editable-text="SCAN_PASSPORT_HEADER"> {{'SCAN_PASSPORT_HEADER' |translate}}</text>
         </h1>
-        <h2>
+        <h2 ng-hide='selectedPassport'>
             <text editable-text="SCAN_PASSPORT_SUB_HEADER"> {{'SCAN_PASSPORT_SUB_HEADER' |translate}}</text>
+        </h2>
+
+        <h2 ng-show='selectedPassport'>
+            <text editable-text="SCAN_PASSPORT_SUB_HEADER_FIRST"> {{'SCAN_PASSPORT_SUB_HEADER_FIRST' |translate}}</text>
+            {{selectedPassportInfo.first_name}}<text editable-text="SCAN_PASSPORT_SUB_HEADER_SECOND">{{'SCAN_PASSPORT_SUB_HEADER_SECOND' |translate}}</text>
         </h2>
 
         <div class='uploaded-key-image' id="keys" ng-show="scanpassport_image_uploaded">
@@ -23,7 +31,11 @@
 
         </div>
     </div>
+
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
 </section>
+
+
 
 
 <!-- Passport scanning in progress screen  -->
@@ -34,9 +46,11 @@
         </h1>
 
     </div>
+
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
 </section>
 
-<!-- Passport scanning in progress screen  -->
+<!-- Passport scanning failed, re-scan or speak to staff  -->
 <section id="main" class="centered" role="main" ng-hide="mode !== 'SCAN_FAILURE'" click-touch='resetTime()'>
     <div id="content">
         <h1>
@@ -77,7 +91,94 @@
 
     </div>
 
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
 </section>
+
+
+
+
+
+<!-- Scan Results | Add Guest screen  -->
+<section id="main" class="centered test" role="main" click-touch='resetTime()' ng-hide="mode !== 'SCAN_RESULTS'">
+    <div id="content" class='add-guest-mode-content' ng-show="!AddGuestMode">
+
+        <h1>
+            <text editable-text="SCAN_RESULTS_HEADER"> {{'SCAN_RESULTS_HEADER' |translate}}</text>
+        </h1>
+        <h2>
+            <text editable-text="SCAN_RESULTS_SUB_HEADER"> {{'SCAN_RESULTS_SUB_HEADER' |translate}}</text>
+        </h2>
+
+        <ul id="selection" class="editable">
+            <li ng-repeat='guest in selectedReservation.guest_details track by $index' click-touch='scanPassport(guest)'>
+                
+                <span class="details" ng-class='{"passport-details":!showRemoveButton}'>
+                    <span class="passport-scan-status" ng-class='{"button-margin":showRemoveButton}'>{{guest.passport_scan_status}}</span>
+                    {{guest.last_name}}, {{guest.first_name}} 
+                </span>
+                
+
+                <button type="button" class="button" ng-show='showRemoveButton' click-touch='removeGuest(guest.id)' ng-class='{"overlay grey": selectedReservation.guest_details.length <= 1}'>{{'REMOVE_BTN' |translate}}</button>
+            </li>
+
+        </ul>
+    </div>
+
+
+
+    <div id="content" class="input-field-contents" ng-show="AddGuestMode">
+
+        <h1 ng-show='mode === "ENTER_FIRST"'>
+            <text editable-text="ENTER_FIRST"> {{'ENTER_FIRST' |translate}}</text>
+        </h1>
+        <h3 ng-show='mode === "ENTER_FIRST"'>
+            <text editable-text="ENTER_FIRST_SUB"> {{'ENTER_FIRST_SUB' |translate}}</text>
+        </h3>
+
+        <h1 ng-show='mode === "ENTER_LAST"'>
+            <text editable-text="ENTER_LAST"> {{'ENTER_LAST' |translate}}</text>
+        </h1>
+        <h3 ng-show='mode === "ENTER_LAST"'>
+            <text editable-text="ENTER_LAST_SUB"> {{'ENTER_LAST_SUB' |translate}}</text>
+        </h3>
+
+        <form class="form" click-touch='resetTime()'>
+            <div class="entry input">
+                <input type="{{inputType}}" ng-focus="showOnScreenKeyboard('add-guest-name')" click-touch="showOnScreenKeyboard('add-guest-name')"
+                       class="start-focused" ng-keydown="resetTime()" ng-model='guest.Name' placeholder="{{inputTextPlaceholder}}"
+                       enter-press="firstNameEntered()" value="" id="add-guest-name" touch-press />
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" touch-press='NameEntered()' ng-class="{'overlay': input.inputTextValue.length < 1}">
+                    <text editable-text="NEXT_BTN"> {{'NEXT_BTN' |translate}}</text>
+                </button>
+            </div>
+        </form>
+    </div>
+
+
+
+
+    <div>
+        <div id="actions" class="add-guests-footer" >
+            <button type="button" class="button prev" click-touch="addAGuest(); resetTime();">
+                <text editable-text="ADD_BTN"> {{'ADD_BTN' |translate}}</text>
+            </button>
+
+            <button ng-show="allPassportReady" type="button" class="button next" click-touch="goToNext(); resetTime();">
+                <text editable-text="PASSPORT_DONE_BTN"> {{'PASSPORT_DONE_BTN' |translate}}</text>
+            </button>
+        </div>
+    </div>
+
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
+</section>
+
+
+
+
+
+
 
 
 
