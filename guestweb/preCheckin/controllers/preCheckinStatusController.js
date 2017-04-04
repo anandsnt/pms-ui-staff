@@ -10,8 +10,10 @@
 		$rootScope.userMobile = ($rootScope.userMobile === null) ? "" : $rootScope.userMobile;
 
 		// Addons
-		if( $state.href("offerAddonOptions") !== null && $rootScope.isAddonUpsellActive && !$rootScope.skipedAddons){
-			$state.go('offerAddonOptions');
+		if ($state.href("offerAddonOptions") !== null && $rootScope.isAddonUpsellActive && !$rootScope.skipedAddons) {
+			$state.go('offerAddonOptions', {
+				'isFrom': 'checkinLater'
+			});
 		}
 		// collect oustanding stay total
 		else if ($state.href('balancePaymentCCCollection') !== null && parseFloat($rootScope.outStandingBalance) > 0 && $rootScope.isMLI && $rootScope.collectOutStandingBalance && !$rootScope.skipBalanceCollection) {
