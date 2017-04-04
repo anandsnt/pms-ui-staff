@@ -44,7 +44,7 @@
 <!-- add .open when showing popuo -->
 <div id="popup-overlay" ng-class="{'open':showAddonPopup || showErrorPopUp}"></div>
 <!-- Content -->
-<section id="main" class="addon-screen" role="main" ng-hide="mode === 'SINGLE_ADDON_ERROR'">
+<section id="main" class="addon-screen" role="main" ng-show="mode !== 'SINGLE_ADDON_ERROR' && loadingCompleted">
     <div id="content">
         <h1 editable-text="ADD_ON_HEADING">{{'ADD_ON_HEADING' | translate}}</h1>
        <!--  <h3> <text editable-text="ADD_ON_TOTAL_TEXT">{{'ADD_ON_TOTAL_TEXT' | translate}}</text>&nbsp;{{zestStationData.currencySymbol}}{{getAmountTotal()}}</h3> -->

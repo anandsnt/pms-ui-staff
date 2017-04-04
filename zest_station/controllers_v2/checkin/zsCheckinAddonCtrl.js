@@ -229,6 +229,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				} else {
 					navigateToTermsPage();
 				}
+				$scope.loadingCompleted = true;
 				$scope.showPageNumberDetails = true;
 			};
 
@@ -280,6 +281,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		 */
 		var initializeMe = (function() {
 			$scope.addonsList = [];
+			$scope.loadingCompleted = false;
 			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 			// hide close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
