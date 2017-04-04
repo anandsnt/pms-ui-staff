@@ -337,10 +337,18 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             );
 
             //common restriction params
-            var commonRestrictionsParams = {
-                ..._.pick(params, 'from_date', 'to_date'),
-                'rate_type_ids[]': [params.rate_type_id]
-            };
+            var commonRestrictionsParams = {};
+            if (params.rate_type_id) {
+                commonRestrictionsParams = {
+                    ..._.pick(params, 'from_date', 'to_date'),
+                    'rate_type_ids[]': [params.rate_type_id]
+                };
+            } else {
+                commonRestrictionsParams = {
+                    ..._.pick(params, 'from_date', 'to_date')
+                };
+            }
+
             promises.push(
                 this.fetchAllRestrictionsWithStatus( commonRestrictionsParams )
                 .then( data => {
