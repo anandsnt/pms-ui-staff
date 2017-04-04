@@ -529,12 +529,12 @@ angular.module('sntRover')
         /**
          * to update restriction rate
          */
-        const callRateTypeRestrictionAndAmountUpdateAPI = () => {
+        const callRateTypeRestrictionUpdateAPI = () => {
             var params = {},
                 dialogData = $scope.ngDialogData,
                 mode = dialogData.mode;
 
-            if(mode === $scope.modeConstants.RM_SINGLE_RATE_TYPE_RESTRICTION_MODE) {
+            if (mode === $scope.modeConstants.RM_SINGLE_RATE_TYPE_RESTRICTION_MODE) {
                 params.rate_type_id = dialogData.rateType.id;
             }
             //else if(mode === $scope.modeConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE) {
@@ -661,7 +661,7 @@ angular.module('sntRover')
 
                 case $scope.modeConstants.RM_SINGLE_RATE_TYPE_RESTRICTION_MODE:
                 case $scope.modeConstants.RM_MULTIPLE_RATE_TYPE_RESTRICTION_MODE:
-                    return callRateTypeRestrictionAndAmountUpdateAPI();
+                    return callRateTypeRestrictionUpdateAPI();
 
                 default:
                     break;
