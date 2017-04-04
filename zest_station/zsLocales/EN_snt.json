@@ -528,7 +528,6 @@
    "SCAN_PASSPORT_SUB_HEADER": "Place your passport on the scanner and select 'Scan'",
    "SCAN_PASSPORT_BUTTON": "Scan",
 
-
    "SCAN_FAILURE_HEADER": "Passport Scan Unsuccessful",
    "SCAN_FAILURE_SUB_HEADER": "Scan passports for all guests to continue"
 
