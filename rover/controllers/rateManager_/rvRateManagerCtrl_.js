@@ -542,7 +542,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             toDates = _.pluck(lastSelectedFilterValues, 'toDate').map(toDate => tzIndependentDate(toDate)),
             fromDate = formatDateForAPI(_.min(fromDates)), // date in cache data store is in api format
             toDate = formatDateForAPI(_.max(toDates));  // date in cache data store is in api format
-//lastSelectedFilterValues
+
         var params = {
             from_date: fromDate,
             to_date: toDate,
@@ -550,13 +550,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             fetchCommonRestrictions: true,
             'rate_type_ids[]': [rateTypeID]
         };
-
-        // if they selected rate type from left filter
-        //var rateTypeIDs = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRateTypes, "id");
-
-        // if (rateTypeIDs.length) {
-        //     params['rate_type_ids[]'] = rateTypeIDs;
-        // }
 
         var options = {
             params: params,
@@ -609,12 +602,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     var onFetchRateTypeAndRestrictionsSuccess = (response) => {
         var numberOfRateTypes = response.rateTypeAndRestrictions[0].rate_types.length;
 
-
-// cachedRateAndRestrictionResponseData.push({
-//                     ...dateParams,
-//                     page: lastSelectedFilterValues[activeFilterIndex].allRate.currentPage,
-//                     response: response
-//                 });
         totalRateTypesCountForPagination = response.totalCount;
         if (numberOfRateTypes === 0) {
             hideAndClearDataForTopBar();
