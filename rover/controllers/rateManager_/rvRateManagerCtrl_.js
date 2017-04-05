@@ -328,6 +328,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             handleTheReloadRequestFromPopupForSingleRateTypeRestrictionMode(dialogData);
             break;
 
+        case rvRateManagerPopUpConstants.RM_MULTIPLE_RATE_TYPE_RESTRICTION_MODE:
+            handleTheReloadRequestFromPopupForMultipleRateTypeRestrictionMode();
+            break;
+
         case rvRateManagerPopUpConstants.RM_SINGLE_ROOMTYPE_RESTRICTION_MODE:
             $timeout(() => $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]), 0);
             break;
@@ -382,7 +386,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     };
 
      /*
-     * to handle the reload request from popup against mode 'rvRateManagerPopUpConstants.RM_SINGLE_RATE_RESTRICTION_MODE'
+     * to handle the reload request from popup against mode 'rvRateManagerPopUpConstants.RM_SINGLE_RATE_TYPE_RESTRICTION_MODE'
      * @param  {Object} dialogData [popup data]
      */
     var handleTheReloadRequestFromPopupForSingleRateTypeRestrictionMode = (dialogData) => {
@@ -391,6 +395,13 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         // we may changed a rate detail against particular column or rate columns across a particular row
         //getSingleRateTypeRowDetailsAndUpdateCachedDataModel(rateTypeID);
         getSingleRateTypeRowDetailsAndUpdateCachedDataModel(rateTypeID);
+    };
+
+    /*
+     * to handle the reload request from popup against mode 'rvRateManagerPopUpConstants.RM_MULTIPLE_RATE_TYPE_RESTRICTION_MODE'
+     */
+    var handleTheReloadRequestFromPopupForMultipleRateTypeRestrictionMode = () => {
+        $timeout(() => $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]), 0);
     };
 
     /*
