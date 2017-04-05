@@ -462,6 +462,47 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $timeout(() => $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]), 0);
     };
 
+    var onFetchGetSingleRateTypeRowDetailsAndUpdateCachedDataModel = (response, successCallBackParameters) => {
+        var dailyRateAndRestrictions = response.dailyRateAndRestrictions,
+            commonRestrictions = response.commonRestrictions,
+            fromDate = tzIndependentDate(successCallBackParameters.fromDate),
+            toDate = tzIndependentDate(successCallBackParameters.toDate);
+            //rateTypeID = successCallBackParameters.rateTypeID;
+
+        var dateBasedRateDetailsReponse = _.indexBy(dailyRateAndRestrictions, 'date'),
+            dateBasedCommonRestrictions = _.indexBy(commonRestrictions, 'date');
+
+        // looping through cached response to find the page
+        // checking for the rate Id existance
+        cachedRateAndRestrictionResponseData.map(cachedRateAndRestriction => {
+            // date wise rate restrictions & amount
+            cachedRateAndRestriction.response.dailyRateAndRestrictions.map(dailyRateAndRestriction => {
+                let rateFoundIndex = _.findIndex(dailyRateAndRestriction.rates, { id: rateID });
+
+                let date = tzIndependentDate(dailyRateAndRestriction.date);
+                let isDateBetweenMinAndMax = (fromDate <= date && date <= toDate);
+
+                if (rateFoundIndex !== -1 && isDateBetweenMinAndMax) {
+                    dailyRateAndRestriction.rates[rateFoundIndex] = dateBasedRateDetailsReponse[dailyRateAndRestriction.date].rates[0];
+                }
+            });
+
+            // common restricitons
+            cachedRateAndRestriction.response.commonRestrictions.map(commonRestriction => {
+                let date = tzIndependentDate(commonRestriction.date);
+                let isDateBetweenMinAndMax = (fromDate <= date && date <= toDate);
+
+                if (isDateBetweenMinAndMax) {
+                   commonRestriction.restrictions = dateBasedCommonRestrictions[commonRestriction.date].restrictions
+                }
+            });
+
+        });
+
+        // everything set, update the view
+        $timeout(() => $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]), 0);
+    };
+
     var getSingleRateRowDetailsAndUpdateCachedDataModel = (rateID) => {
         var fromDates = _.pluck(cachedRateAndRestrictionResponseData, 'fromDate').map(fromDate => tzIndependentDate(fromDate)),
             toDates = _.pluck(cachedRateAndRestrictionResponseData, 'toDate').map(toDate => tzIndependentDate(toDate)),
@@ -497,11 +538,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     };
 
     var getSingleRateTypeRowDetailsAndUpdateCachedDataModel = (rateTypeID) => {
-        var fromDates = _.pluck(cachedRateTypeAndRestrictionResponseData, 'fromDate').map(fromDate => tzIndependentDate(fromDate)),
-            toDates = _.pluck(cachedRateTypeAndRestrictionResponseData, 'toDate').map(toDate => tzIndependentDate(toDate)),
+        var fromDates = _.pluck(lastSelectedFilterValues, 'fromDate').map(fromDate => tzIndependentDate(fromDate)),
+            toDates = _.pluck(lastSelectedFilterValues, 'toDate').map(toDate => tzIndependentDate(toDate)),
             fromDate = formatDateForAPI(_.min(fromDates)), // date in cache data store is in api format
             toDate = formatDateForAPI(_.max(toDates));  // date in cache data store is in api format
-
+//lastSelectedFilterValues
         var params = {
             from_date: fromDate,
             to_date: toDate,
@@ -519,8 +560,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         var options = {
             params: params,
-            //onSuccess: onFetchGetSingleRateRowDetailsAndUpdateCachedDataModel,
+            onSuccess: onFetchGetSingleRateTypeRowDetailsAndUpdateCachedDataModel,
             successCallBackParameters: {
+                rateTypeID,
                 fromDate,
                 toDate
             }
@@ -567,6 +609,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     var onFetchRateTypeAndRestrictionsSuccess = (response) => {
         var numberOfRateTypes = response.rateTypeAndRestrictions[0].rate_types.length;
 
+
+// cachedRateAndRestrictionResponseData.push({
+//                     ...dateParams,
+//                     page: lastSelectedFilterValues[activeFilterIndex].allRate.currentPage,
+//                     response: response
+//                 });
         totalRateTypesCountForPagination = response.totalCount;
         if (numberOfRateTypes === 0) {
             hideAndClearDataForTopBar();
