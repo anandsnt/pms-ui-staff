@@ -19,6 +19,7 @@ angular.module('sntRover')
             });
         };
 
+
         var refreshScroll = function() {
             if ( $scope.myScroll.hasOwnProperty(SCROLL_NAME) ) {
                 $scope.refreshScroller( SCROLL_NAME );
@@ -152,9 +153,19 @@ angular.module('sntRover')
         // Initialize the controller and set up the listeners
         var init =  function() {
 
-            processData();
-
             setScroller();
+
+            var isIpad = navigator.userAgent.match(/iPad/i) !== null;
+
+            // CICO-39812 Added timeout for iPad as scroll is not coming initally
+            if (isIpad) {
+                $timeout(function() {
+                    processData();
+                }, 100);
+            } else {
+                processData();
+            }
+
 
             var reportSubmited = $scope.$on( reportMsgs['REPORT_SUBMITED'], processData );
             var reportPrinting = $scope.$on( reportMsgs['REPORT_PRINTING'], processData );
