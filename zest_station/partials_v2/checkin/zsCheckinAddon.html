@@ -1,6 +1,7 @@
 <!-- Add .open to show the popup -->
 <div class="popup" ng-class="{'open':showAddonPopup}">
     <div class="popup-content add-on">
+        <i class="close-popup" touch-press="closePopup()"></i>
         <div class="add-on-picture">
             <img src="{{selectedAddon.image}}" />
         </div>
