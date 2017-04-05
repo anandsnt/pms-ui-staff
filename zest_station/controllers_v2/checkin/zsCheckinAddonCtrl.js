@@ -5,7 +5,8 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 	'zsCheckinSrv',
 	'zsEventConstants',
 	'$timeout',
-	function($scope, $stateParams, $state, zsCheckinSrv, zsEventConstants, $timeout) {
+	'$translate',
+	function($scope, $stateParams, $state, zsCheckinSrv, zsEventConstants, $timeout, $translate) {
 
 		var navigateToTermsPage = function() {
 
@@ -248,6 +249,16 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				_.each($scope.addonsList, function(addon) {
 					addon.is_selected = false;
 					addon.quantity = 0;
+					var usedLanguageCode = $translate.use();
+					if (usedLanguageCode !== 'en') {
+						_.each(addon.translations, function(translation) {
+							if (parseInt(translation.language_id) === parseInt($scope.languageId)) {
+								addon.name = translation.translated_name;
+								addon.suffix_label = translation.translated_suffix;
+								addon.description = translation.translated_alternate_description;
+							}
+						});
+					}
 				});
 				// set page number details
 				$scope.pageNumber = 1;
@@ -307,11 +318,20 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				$state.go('zest_station.checkInReservationDetails');
 			}
 		};
+		var findSelectedLanguageId = function(){
+			var usedLanguageCode = $translate.use();
+			$scope.languageId  = _.find($scope.zestStationData.hotelLanguages, function(language){
+				return language.code === usedLanguageCode;
+			}).id;
+			fetchAddons();
+		};
 		/**
 		 * [initializeMe description]
 		 */
 		var initializeMe = (function() {
 			$scope.addonsList = [];
+			$scope.languageId = '';
+			$scope.languageCode = 'en'; // let default be english
 			$scope.upsellDisplayOrderAmountFirst = $scope.zestStationData.addon_upsell_display_order === 'amount_then_post_type';
 			$scope.errorHeader = '';
 			$scope.errorMessage = '';
@@ -323,7 +343,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
 			$scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
 			console.log($scope.selectedReservation);
-			fetchAddons();
+			findSelectedLanguageId();
 
 		}());
 	}
