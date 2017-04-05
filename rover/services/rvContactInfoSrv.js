@@ -1,6 +1,6 @@
 angular.module('sntRover').service('RVContactInfoSrv', [
-    '$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', '$log',
-    function($q, RVBaseWebSrv, rvBaseWebSrvV2, $log) {
+    '$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', '$log', '$rootScope',
+    function($q, RVBaseWebSrv, rvBaseWebSrvV2, $log, $rootScope) {
 
         var service = this,
             _guest = {
@@ -81,6 +81,10 @@ angular.module('sntRover').service('RVContactInfoSrv', [
         service.getGuestDetails = function() {
             var deferred = $q.defer();
             var url = '/api/guest_details/' + _guest.id;
+
+            if (!$rootScope.isStandAlone) {
+                url += "?sync_with_external_pms=true";
+            }
 
             if (!_guest.id) {
                 $log.debug('Guest not set!');
