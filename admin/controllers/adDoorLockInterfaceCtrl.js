@@ -1,4 +1,4 @@
-admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlockInterfaceSrv', function($scope, $rootScope, ADDoorlockInterfaceSrv) {
+admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlockInterfaceSrv', 'ADKeyEncoderSrv', function($scope, $rootScope, ADDoorlockInterfaceSrv, ADKeyEncoderSrv) {
 
 	BaseCtrl.call(this, $scope);
 
@@ -20,7 +20,25 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
         } else {
             $scope.inProd = true;
         }
+        fetchKeyEncoderList();
 	};
+
+
+    var fetchKeyEncoderList = function() {
+
+        // var getParams = $scope.calculateGetParams(params);
+        var onSuccessFetch = function(data) {
+            $scope.$emit('hideLoader');
+            $scope.encoders = data.results;
+            for (var i in $scope.encoders) {
+                $scope.encoders[i].name = $scope.encoders[i].description;
+                $scope.encoders[i].value = $scope.encoders[i].id;
+
+            }
+        };
+
+        $scope.invokeApi(ADKeyEncoderSrv.fetchEncoders, {}, onSuccessFetch);
+    };
 
         var watchQuickListChange = function() {
             if ($scope.watchingList) {
@@ -28,7 +46,7 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
             }
             $scope.watchingList = true;
             $scope.$watch('data.selected_quick_key_system', function(to) {
-                
+
                 if ($scope.dirtyQuickList) {
                     if (to === 'Saflok - ATLAS') {
                         setToSaflokAtlas();
@@ -90,13 +108,13 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
 		angular.forEach($scope.data.ios_versions, function(version) {
 			if (version.isExcluded) {
                 $scope.data.excluded_ios_versions.push(version.name);
-            }               
+            }
 		});
 
 		angular.forEach($scope.data.android_versions, function(version) {
 			if (version.isExcluded) {
                 $scope.data.excluded_android_versions.push(version.name);
-            }               
+            }
 		});
 	};
 
@@ -116,7 +134,7 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
             }
             if (!notProd) {// in production, dont allow this function
                 return true;
-            } 
+            }
             return false;
         };
 	var fetchInterfaceDetails = function() {
