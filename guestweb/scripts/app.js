@@ -151,6 +151,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		};
 
 		$rootScope.isAddonUpsellActive = reservationAndhotelData.addon_upsell_availability;
+		$rootScope.upsellDisplayOrderAmountFirst =  (reservationAndhotelData.addon_upsell_display_order === 'amount_then_post_type'); 
 
 		if (!!$rootScope.footerSettings.display_footer) {
 			// active footer count

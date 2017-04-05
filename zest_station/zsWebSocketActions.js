@@ -2,7 +2,7 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
     var that = this;
     var wsConfig = {
         'swipeService': 'wss://localhost:4649/CCSwipeService',
-        'connected_alert': '[ WebSocket Connected ]. Warning : Clicking on Connect multipple times will create multipple connections to the server',
+        'connected_alert': '[ WebSocket Connected ]. Warning : Clicking on Connect multiple times will create multiple connections to the server',
         'close_alert': 'Socket Server is no longer connected.',
         'swipe_alert': 'Please swipe.',
         'connect_delay': 1000 // ms after opening the app, which will then attempt to connect to the service, should only be a second or two
@@ -30,6 +30,9 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
     };
     this.CaptureQRViaPassportScanner = function() { // captures QR code data from the ARH/Samsotech Passport scanner
         that.ws.send('{"Command" : "cmd_scan_qr_passport_scanner"}');
+    };
+    this.CaptureQRViaDatalogic = function() { // captures QR code data (reservation id) from the Datalogic scanner
+        that.ws.send('{"Command" : "cmd_scan_qr_datalogic"}');
     };
     this.InsertKeyCard = function() { // use key for checkout takes key in
         that.ws.send('{"Command" : "cmd_insert_key_card"}');
