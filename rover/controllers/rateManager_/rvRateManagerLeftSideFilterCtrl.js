@@ -152,9 +152,6 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       $scope.deleteAllSelectedRateTypes = () => {
         $scope.selectedRateTypes = [];
         $scope.selectedRateTypeID = '';
-
-        //deleting the node will change the height
-        refreshScroller();
       };
 
       /**
@@ -163,9 +160,6 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       $scope.deleteAllSelectedRateTypesFromRTT = () => {
         $scope.selectedRateTypesFromRTT = [];
         $scope.selectedRateTypeIDFromRTT = '';
-
-        //deleting the node will change the height
-        refreshScroller();
       };
 
       /**
@@ -375,7 +369,10 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       const clearAllRatesAllRoomTypesAllRateTypes = () => {
         $scope.deleteAllSelectedRates();
         $scope.deleteAllSelectedRateTypes();
-        $scope.deleteAllSelectedRateTypesFromRTT();     
+        $scope.deleteAllSelectedRateTypesFromRTT();
+
+        //deleting the node will change the height
+        refreshScroller();        
       }
 
       /**
