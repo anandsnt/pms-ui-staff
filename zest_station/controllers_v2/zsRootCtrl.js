@@ -387,6 +387,10 @@ sntZestStation.controller('zsRootCtrl', [
                 description = view.description ? view.description.toLowerCase() : '',
                 label = view.label ? view.label.toLowerCase() : '';
 
+            // to restrict some jumper views until functionality is completed
+            if (view.sntOnly && $scope.zestStationData.theme !== 'snt') {
+                return false;
+            }
 
             if (viewJumpFilter === '' || label.indexOf(viewJumpFilter) !== -1 || description.indexOf(viewJumpFilter) !== -1) {
                 return true;
@@ -1402,7 +1406,7 @@ sntZestStation.controller('zsRootCtrl', [
             $('body').css('display', 'none'); // this will hide contents until svg logos are loaded
 			// call Zest station settings API
             $scope.zestStationData = zestStationSettings;
-            $scope.zestStationData.check_in_collect_passport = true;// debugging, link with setting before merging to develop
+            $scope.zestStationData.check_in_collect_passport = false;// TODO: link with admin setting 
             $scope.zestStationData.makingKeyInProgress = false;
             $scope.zestStationData.demoModeEnabled = 'false'; // demo mode for hitech, only used in snt-theme
             $scope.zestStationData.noCheckInsDebugger = 'false';
