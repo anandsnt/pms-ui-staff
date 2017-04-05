@@ -261,7 +261,8 @@ angular.module('sntRover').controller('guestCardController', [
 			stop: function(event, ui) {
 				preventClicking = true;
 				$scope.eventTimestamp = event.timeStamp;
-			}
+			},
+            start: getGuestDetails
 		};
 
 		/**
@@ -513,7 +514,25 @@ angular.module('sntRover').controller('guestCardController', [
 			}
 		};
 
-		/**
+        /**
+         * @return {undefined}
+         */
+        function getGuestDetails() {
+            if ($scope.reservationData.guest.id && $scope.UICards[0] === 'guest-card'
+                && !RVContactInfoSrv.isGuestFetchComplete($scope.reservationData.guest.id)) {
+                $scope.callAPI(RVContactInfoSrv.getGuestDetails, {
+                    successCallBack: function(data) {
+                        $scope.$emit("UPDATE_GUEST_CARD_DETAILS", data);
+                    },
+                    failureCallBack: function(errorMessage) {
+                        $scope.errorMessage = errorMessage;
+                        $scope.$emit('hideLoader');
+                    }
+                });
+            }
+        }
+
+        /**
 		 * function to open guest card
 		 */
 		$scope.openGuestCard = function() {
@@ -524,6 +543,7 @@ angular.module('sntRover').controller('guestCardController', [
 			$scope.$broadcast("contactTabActive");
 			// //refreshing the scroller in guestcard's tab
 
+            getGuestDetails();
 		};
 
 		/**

@@ -1,6 +1,6 @@
 
-sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', '$stateParams',
-	function($scope, RVLikesSrv, dateFilter, $stateParams) {
+sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', '$stateParams', 'RVContactInfoSrv',
+	function($scope, RVLikesSrv, dateFilter, $stateParams, RVContactInfoSrv) {
 
 
 		$scope.errorMessage = "";
@@ -208,9 +208,10 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 				data: updateData
 			};
 
-			if (typeof $scope.guestCardData.contactInfo.user_id !== "undefined" && $scope.guestCardData.contactInfo.user_id !== null && $scope.guestCardData.contactInfo.user_id !== "" && !dataUpdated) {
-				$scope.invokeApi(RVLikesSrv.saveLikes, saveData, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
-			}
+            if ($scope.reservationData.guest.id &&
+                RVContactInfoSrv.isGuestFetchComplete($scope.reservationData.guest.id) && !dataUpdated) {
+                $scope.invokeApi(RVLikesSrv.saveLikes, saveData, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
+            }
 		};
 
 

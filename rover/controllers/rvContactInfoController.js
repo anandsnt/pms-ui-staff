@@ -235,7 +235,9 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
     var init = function() {
       // Fetch languages
       fetchGuestLanguages();
-      initialGuestCardData = angular.copy($scope.guestCardData.contactInfo);
+      var unwantedKeys = ["avatar", "confirmation_num"]; // remove unwanted keys for API
+
+      initialGuestCardData = dclone($scope.guestCardData.contactInfo, unwantedKeys);
 
       this.timeoutForSaveInfo = null;
     };
