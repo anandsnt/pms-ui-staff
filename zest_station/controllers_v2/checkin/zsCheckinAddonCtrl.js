@@ -127,7 +127,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 					'id': $scope.selectedAddon.addon_id,
 					'name': $scope.selectedAddon.name
 				};
-				
+
 				$scope.selectedReservation.addons.push(newAddon);
 			} else {
 				// remove the delted addon
@@ -138,13 +138,10 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
 		};
 		var addRemoveAddonSucess = function(selectedAddon) {
-			if ($scope.isAddonFlatOrRoomType(selectedAddon)) {
-				$scope.selectedAddon.quantity = angular.copy($scope.selectedAddonCount);
-				$scope.selectedAddon.is_selected = $scope.selectedAddon.quantity > 0;
-			} else {
-				$scope.selectedAddon.is_selected = !$scope.selectedAddon.is_selected;
-			}
+			$scope.selectedAddon.is_selected = $scope.selectedAddonCount > 0;
+			$scope.selectedAddon.quantity = angular.copy($scope.selectedAddonCount);
 			$scope.showAddonPopup = false;
+			$scope.selectedAddonQtyBeforeActions = angular.copy($scope.selectedAddon.quantity);
 			updateCheckinSrvWithNewAddonData();
 		};
 		var addAddonToReservation = function(selectedAddon) {
@@ -183,19 +180,23 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		$scope.decrementAddonQuantity = function() {
 			$scope.selectedAddonCount = $scope.selectedAddonCount > 0 ? $scope.selectedAddonCount - 1 : 0;
 		};
-		// only one addon is present and that is with Qty
-		$scope.singleAddonPurchase = function() {
-			if ($scope.selectedAddonCount > 0) {
-				addAddonToReservation($scope.addonsList[0]); // add/ change qty of addon
-			} else if ($scope.addonsList[0].is_selected) {
-				removeAddonFromReservation($scope.addonsList[0]); // if addon was added from ZS,remove addon
-			} else {
+		$scope.decrementAddonQtyForNonRoomFlatType = function() {
+			$scope.selectedAddonCount = $scope.selectedAddonCount > 0 ? $scope.selectedAddonCount - 1 : 0;
+		};
+		$scope.incrementAddonQtyForNonRoomFlatType = function() {
+			if ($scope.selectedAddonCount === 1) {
 				return;
+			} else {
+				$scope.selectedAddonCount = $scope.selectedAddonCount + 1;
 			}
 		};
+
 		// DONE button action in addon list screen
 		$scope.addOnDoneButtonClicked = function(selectedAddon) {
-			if ($scope.isAddonFlatOrRoomType(selectedAddon)) {
+			if ($scope.selectedAddonQtyBeforeActions === $scope.selectedAddonCount) {
+				$scope.showAddonPopup = false;
+				return;
+			} else {
 				if ($scope.selectedAddonCount === 0) {
 					// if addon was added from ZS,remove addon
 					if (selectedAddon.is_selected) {
@@ -206,20 +207,21 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				} else {
 					addAddonToReservation(selectedAddon);
 				}
-			} else {
-				$scope.showAddonPopup = false;
-			}
+			};
+			// 	$scope.showAddonPopup = false;
+			// }
 		};
-		// ADD/REMOVE in single addon and multi addon list
-		$scope.addRemoveAddOn = function(selectedAddon) {
-			if (!selectedAddon.is_selected) {
-				addAddonToReservation(selectedAddon);
-			} else {
-				removeAddonFromReservation(selectedAddon);
-			}
-		};
+		// // ADD/REMOVE in single addon and multi addon list
+		// $scope.addRemoveAddOn = function(selectedAddon) {
+		// 	if (!selectedAddon.is_selected) {
+		// 		addAddonToReservation(selectedAddon);
+		// 	} else {
+		// 		removeAddonFromReservation(selectedAddon);
+		// 	}
+		// };
 		// one addon Selected from the list
 		$scope.addonSelected = function(addon) {
+			$scope.selectedAddonQtyBeforeActions = angular.copy(addon.quantity);
 			$scope.selectedAddon = addon;
 			$scope.showAddonPopup = true;
 			$scope.selectedAddonCount = addon.quantity;
@@ -266,6 +268,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 					if ($scope.addonsList.length === 1) {
 						$scope.selectedAddon = $scope.addonsList[0];
 						$scope.selectedAddonCount = 0;
+						$scope.selectedAddonQtyBeforeActions = 0;
 					}
 					setPageNumberDetails();
 				} else {
@@ -318,9 +321,9 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				$state.go('zest_station.checkInReservationDetails');
 			}
 		};
-		var findSelectedLanguageId = function(){
+		var findSelectedLanguageId = function() {
 			var usedLanguageCode = $translate.use();
-			$scope.languageId  = _.find($scope.zestStationData.hotelLanguages, function(language){
+			$scope.languageId = _.find($scope.zestStationData.hotelLanguages, function(language) {
 				return language.code === usedLanguageCode;
 			}).id;
 			fetchAddons();
