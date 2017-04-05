@@ -63,33 +63,33 @@
                 </li>
             </ul>
             <ul class="add-on-list" ng-if="addonsList.length === 1">
-                <li class="add-on" ng-repeat="addon in viewableAddons">
+                <li class="add-on">
                     <div class="add-on-picture">
-                        <img src="{{addon.image}}">
+                        <img src="{{selectedAddon.image}}">
                     </div>
                     <div class="add-on-content">
-                        <h2>{{addon.name}}</h2>
-                        <p ng-bind-html="addon.description"></p>
+                        <h2>{{selectedAddon.name}}</h2>
+                        <p ng-bind-html="selectedAddon.description"></p>
                         <div class="price">
                             <div class="amount">
-                                <strong>+{{zestStationData.currencySymbol}}{{addon.amount}}</strong>
-                                <small>{{addon.amount_desc}}</small>
+                                <strong>+{{zestStationData.currencySymbol}}{{selectedAddon.amount}}</strong>
+                                <small><span ng-show="upsellDisplayOrderAmountFirst">{{selectedAddon.amount_type}}&nbsp;{{selectedAddon.post_type}}&nbsp;</span><span ng-hide="upsellDisplayOrderAmountFirst">{{selectedAddon.post_type}}&nbsp;{{selectedAddon.amount_type}}&nbsp;</span><span ng-show="selectedAddon.display_suffix">{{selectedAddon.suffix_label}}</span></small>
                             </div>
                             <div class="action">
                                 <!-- show this instead of 'add/remove' button if quantity needed -->
-                                <div class="input-group" ng-show="isAddonFlatOrRoomType(addon)">
+                                <div class="input-group" ng-show="isAddonFlatOrRoomType(selectedAddon)">
                                     <button type="button" class="button" click-touch="decrementAddonQuantity()">-</button>
                                     <input type="text" value="{{selectedAddonCount}}">
                                     <button type="button" class="button" click-touch="incrementAddonQty()">+</button>
                                 </div>
-                                <div ng-show="isAddonFlatOrRoomType(addon)"> 
+                                <div ng-show="isAddonFlatOrRoomType(selectedAddon)"> 
                                 <br>
                                 <button type="button" data-action="popup" class="button transparent" click-touch="singleAddonPurchase()" editable-text="DONE" style="margin:0 auto;">{{'DONE' |translate}}</button>
                                 </div>
                                 <!-- Replace 'btn-class' with 'transparent text-red' if 'Remove' -->
-                                <button type="button" class="button" ng-hide="isAddonFlatOrRoomType(addon)" ng-class="{'transparent text-red':addon.is_selected}" click-touch="addRemoveAddOn(addon)">
-                                    <span ng-hide="addon.is_selected" editable-text="ADD">{{'ADD' |translate}}</span>
-                                    <span ng-show="addon.is_selected" editable-text="REMOVE">{{'REMOVE' |translate}}</span>
+                                <button type="button" class="button" ng-hide="isAddonFlatOrRoomType(selectedAddon)" ng-class="{'transparent text-red':selectedAddon.is_selected}" click-touch="addRemoveAddOn(selectedAddon)">
+                                    <span ng-hide="selectedAddon.is_selected" editable-text="ADD">{{'ADD' |translate}}</span>
+                                    <span ng-show="selectedAddon.is_selected" editable-text="REMOVE">{{'REMOVE' |translate}}</span>
                             </div>
                         </div>
                     </div>
