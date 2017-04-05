@@ -4,7 +4,7 @@
    </h1>
    <h2>
       <text editable-text="THIRD_PARTY_MOBILE_GET_IT_INFO_SUB_HEADER"> {{'THIRD_PARTY_MOBILE_GET_IT_INFO_SUB_HEADER' |translate}}</text>
-      <span>{{guestDetails.guestEmail}}.&nbsp;</span>
+      <span>&nbsp;{{guestDetails.guestEmail}}.&nbsp;</span>
       <text editable-text="THIRD_PARTY_MOBILE_GET_IT_INFO_SUB_HEADER_AFTER"> {{'THIRD_PARTY_MOBILE_GET_IT_INFO_SUB_HEADER_AFTER' |translate}}</text>
    </h2>
    <nav id="options" role="nav">
@@ -13,9 +13,7 @@
             <button type="button" class="button option" touch-press='sendMobileKeyEmail()'>
                <div ng-include="icons.url.email"></div>
             </button>
-            <span>
                <text editable-text="SEND_EMAIL"> {{'SEND_EMAIL' |translate}}</text>
-            </span>
          </li>
          <li class="break">
             <span>
@@ -26,9 +24,7 @@
             <button type="button" class="button option" touch-press='editEmailAddress()'>
                <div ng-include="icons.url.pen"></div>
             </button>
-            <span>
                <text editable-text="EDIT_EMAIL"> {{'EDIT_EMAIL' |translate}}</text>
-            </span>
          </li>
       </ul>
    </nav>

@@ -30,9 +30,11 @@ angular.module('sntRover')
         // Transform the summary count from the api to the format required for the ui
         var processSummaryCounts = function(summaryCount, dateRange) {
 
-                var blockedRooms = [dateRange.length],
-                    availableRooms = [dateRange.length],
-                    pickedUpRooms = [dateRange.length];
+                var blockedRooms = Array.apply(null, Array(dateRange.length)).map(String.prototype.valueOf, ""),
+                    availableRooms = Array.apply(null, Array(dateRange.length)).map(String.prototype.valueOf, ""),
+                    pickedUpRooms = Array.apply(null, Array(dateRange.length)).map(String.prototype.valueOf, "");
+
+
 
 
                     _.each(summaryCount.rooms_count, function(roomCount) {
@@ -52,12 +54,15 @@ angular.module('sntRover')
         // Transform the count from the api to the format required for the ui
         var processCounts = function(resultsFromApi, dateRange) {
 
-             var blockedRooms, availableRooms, pickedUpRooms;
+             var blockedRooms,
+                 availableRooms,
+                 pickedUpRooms,
+                 dateRangeSize = dateRange.length;
 
             _.each(resultsFromApi, function(group, index) {
-                    blockedRooms = [dateRange.length],
-                    availableRooms = [dateRange.length],
-                    pickedUpRooms = [dateRange.length];
+                    blockedRooms = Array.apply(null, Array(dateRange.length)).map(String.prototype.valueOf, ""),
+                    availableRooms = Array.apply(null, Array(dateRange.length)).map(String.prototype.valueOf, ""),
+                    pickedUpRooms = Array.apply(null, Array(dateRange.length)).map(String.prototype.valueOf, "");
 
 
                     _.each(group.rooms_count, function(roomCount) {
@@ -137,6 +142,11 @@ angular.module('sntRover')
             $timeout(function() {
                 refreshScroll();
             }, 1000);
+        };
+
+        // Checks an empty string
+        $scope.isEmpty = function (obj) {
+            return obj === '';
         };
 
         // Initialize the controller and set up the listeners

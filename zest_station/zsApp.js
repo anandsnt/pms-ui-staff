@@ -20,13 +20,15 @@ var sntZestStation = angular.module('sntZestStation', [
 
 
 // adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
-sntZestStation.config(function($httpProvider, $translateProvider) {
+sntZestStation.config(function($httpProvider, $translateProvider, $locationProvider) {
     $httpProvider.interceptors.push('sharedHttpInterceptor');
     $translateProvider.useStaticFilesLoader({
         prefix: '/assets/zest_station/zsLocales/',
         suffix: '.json'
     });
     // $translateProvider.fallbackLanguage('EN_snt');
+
+    $locationProvider.html5Mode(true);
 });
 
 sntZestStation.run(['$rootScope', '$state', '$stateParams', function($rootScope, $state, $stateParams) {

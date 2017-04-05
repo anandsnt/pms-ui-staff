@@ -100,7 +100,10 @@ module.exports = {
             'guestweb_little_duke': [ themeCSSRoot + 'guestweb_little_duke.css'],
             'guestweb_basecamp_boulder': [ themeCSSRoot + 'guestweb_basecamp_boulder.css'],
             'guestweb_distrikt_nyc': [ themeCSSRoot + 'guestweb_distrikt_nyc.css'],
-            'guestweb_stella_hotel': [ themeCSSRoot + 'guestweb_stella_hotel.css']
+            'guestweb_stella_hotel': [ themeCSSRoot + 'guestweb_stella_hotel.css'],
+            'guestweb_beau_rivage': [ themeCSSRoot + 'guestweb_beau_rivage.css'],
+            'guestweb_gold_strike': [ themeCSSRoot + 'guestweb_gold_strike.css'],
+            'guestweb_historic_taos_inn': [ themeCSSRoot + 'guestweb_historic_taos_inn.css']
         };     
     }
 };
