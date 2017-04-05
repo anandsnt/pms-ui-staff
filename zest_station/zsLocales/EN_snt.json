@@ -523,14 +523,17 @@
    "EMAIL_SUCCESS": "Email was sent",
    "EMAIL_FAILED": "Something went wrong on sending email",
    
-   "ADD": "Add",
-   "REMOVE": "Remove",
+   "ADD_ADDON": "Add",
+   "REMOVE_ADDON": "Remove",
    "ADD_ON_HEADING": "Enhance your stay?",
    "ADD_ON_TOTAL_TEXT": "Add Ons Total:",
    "ADD_ON_FOOTER_1": "Showing",
    "ADD_ON_FOOTER_2": "Of",
    "ADD_ON_FOOTER_3" : "Addons",
-   "ADDON_ERROR_HEADER": "Problem"
+   "ADDON_ADD_ERROR_HEADER": "Something went wrong!",
+   "ADDON_REMOVAL_ERROR_HEADER": "Something went wrong!",
+   "ADDON_ADD_ERROR_MESSAGE": "Unable To add this to your reservation",
+   "ADDON_REMOVAL_ERROR_MESSAGE": "Unable To remove this from your reservation"
 
 
 }

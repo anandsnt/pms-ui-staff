@@ -110,12 +110,14 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		var addonGeneralFailure = function() {
 			$scope.showAddonPopup = false;
 			$scope.showErrorPopUp = true;
-			$scope.errorMessage = "Unable To add this to your reservation";
+			$scope.errorHeader = 'ADDON_ADD_ERROR_HEADER';
+			$scope.errorMessage = 'ADDON_ADD_ERROR_MESSAGE';
 		};
 		var addonRemoveGeneralFailure = function() {
 			$scope.showAddonPopup = false;
 			$scope.showErrorPopUp = true;
-			$scope.errorMessage = "Unable To remove this from your reservation";
+			$scope.errorHeader = 'ADDON_REMOVAL_ERROR_HEADER';
+			$scope.errorMessage = 'ADDON_REMOVAL_ERROR_MESSAGE';
 		};
 		var updateCheckinSrvWithNewAddonData = function() {
 			if ($scope.selectedAddon.is_selected) {
@@ -311,6 +313,8 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		var initializeMe = (function() {
 			$scope.addonsList = [];
 			$scope.upsellDisplayOrderAmountFirst = $scope.zestStationData.addon_upsell_display_order === 'amount_then_post_type';
+			$scope.errorHeader = '';
+			$scope.errorMessage = '';
 			$scope.loadingCompleted = false;
 			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 			// hide close button
