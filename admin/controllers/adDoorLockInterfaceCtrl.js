@@ -28,7 +28,6 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
 
         // var getParams = $scope.calculateGetParams(params);
         var onSuccessFetch = function(data) {
-            console.log(data);
             $scope.$emit('hideLoader');
             $scope.encoders = data.results;
             for (var i in $scope.encoders) {
