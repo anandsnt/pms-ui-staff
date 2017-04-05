@@ -26,7 +26,7 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
 
     var fetchKeyEncoderList = function() {
 
-        //var getParams = $scope.calculateGetParams(params);
+        // var getParams = $scope.calculateGetParams(params);
         var onSuccessFetch = function(data) {
             console.log(data);
             $scope.$emit('hideLoader');
@@ -47,7 +47,7 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
             }
             $scope.watchingList = true;
             $scope.$watch('data.selected_quick_key_system', function(to) {
-                
+
                 if ($scope.dirtyQuickList) {
                     if (to === 'Saflok - ATLAS') {
                         setToSaflokAtlas();
@@ -109,13 +109,13 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
 		angular.forEach($scope.data.ios_versions, function(version) {
 			if (version.isExcluded) {
                 $scope.data.excluded_ios_versions.push(version.name);
-            }               
+            }
 		});
 
 		angular.forEach($scope.data.android_versions, function(version) {
 			if (version.isExcluded) {
                 $scope.data.excluded_android_versions.push(version.name);
-            }               
+            }
 		});
 	};
 
@@ -135,7 +135,7 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
             }
             if (!notProd) {// in production, dont allow this function
                 return true;
-            } 
+            }
             return false;
         };
 	var fetchInterfaceDetails = function() {
