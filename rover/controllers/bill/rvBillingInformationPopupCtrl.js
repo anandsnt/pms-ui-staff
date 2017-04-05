@@ -495,6 +495,11 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
         $scope.deleteDefaultRouting();
     };
 
+    // CICO-36509 - Checks whether we need to show or not the delete btn in group bill info screen
+    $scope.isDeleteBtnShownForGroupBillingInfo = function() {
+        return ( $scope.selectedEntity.isBillingGroupsPresent || $scope.selectedEntity.isChargeCodesPresent ) && $scope.billingEntity === 'GROUP_DEFAULT_BILLING';
+    };
+
     var init = function() {
         if ($scope.attachedEntities === undefined) {
             $scope.isInitialPage = true;
