@@ -10,8 +10,9 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
     'zsGeneralSrv',
     'zsUtilitySrv',
     '$filter',
+    '$log',
     function($scope, $stateParams, $state, zsEventConstants, 
-        $controller, $timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv, zsUtilitySrv, $filter) {
+        $controller, $timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv, zsUtilitySrv, $filter, $log) {
 
         /** ********************************************************************************************
          **      Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -51,13 +52,13 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             }
             $scope.allPassportReady = readyToContinue;
             $scope.mode = 'SCAN_RESULTS';
-            console.log('mode: ', $scope.mode);
+            $log.log('mode: ', $scope.mode);
         };
 
 
         var onPassportScanfailure = function() {
             $scope.mode = 'SCAN_FAILURE';
-            console.log('mode: ', $scope.mode);
+            $log.log('mode: ', $scope.mode);
 
             var readyToContinue = true;
 
@@ -74,20 +75,20 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 }
             }
             $scope.allPassportReady = readyToContinue;
-            console.log('mode: ', $scope.mode);
+            $log.log('mode: ', $scope.mode);
 
         };
 
         $scope.addAGuest = function() {
             $scope.AddGuestMode = true;
-            console.log('mode: ', $scope.mode, ' - add guest mode: ', $scope.AddGuestMode);
+            $log.log('mode: ', $scope.mode, ' - add guest mode: ', $scope.AddGuestMode);
         };
 
 
         $scope.selectGuest = function(guestInfo) {
             $scope.selectedPassport = true;
             $scope.selectedPassportInfo = guestInfo;
-            console.log('guest', guestInfo);
+            $log.log('guest', guestInfo);
 
             if ($scope.mode !== 'ADMIN_VERIFY_PASSPORTS') {
                 $scope.reScanPassport();
@@ -103,7 +104,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         $scope.scan = function() {
             $scope.mode = 'SCANNING_IN_PROGRESS';
 
-            console.log('mode: ', $scope.mode);
+            $log.log('mode: ', $scope.mode);
             $scope.resetTime();
 
 
@@ -113,7 +114,6 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 if ($scope.inDemoMode()) {
                     $scope.$emit('PASSPORT_SCAN_SUCCESS');
                 } else {
-
 
 
                     $scope.$emit('PASSPORT_SCAN_FAILURE');    
@@ -190,7 +190,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 $scope.mode = 'WAIT_FOR_STAFF';
 
             } else if ($scope.mode === 'ADMIN_VERIFY_PASSPORTS') {
-                console.log('continue or unable to complete check-in');
+                $log.log('continue or unable to complete check-in');
                 
             } else {
                 if ($scope.mode === 'ADMIN_LOGIN_ID') {
@@ -213,7 +213,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         };
 
         $scope.exitAdminLogin = function() {
-            $scope.mode="WAIT_FOR_STAFF";
+            $scope.mode = 'WAIT_FOR_STAFF';
             $scope.input.inputTextValue = '';
         };
 
@@ -223,13 +223,13 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 'last_name': 'fuller',
                 'first_name': 'mike',
                 'id': 1232,
-                'passport_reviewed_status':$filter('translate')('GID_STAFF_REVIEW_SUCCESS'),
+                'passport_reviewed_status': $filter('translate')('GID_STAFF_REVIEW_SUCCESS'),
                 'passport_scan_status': $filter('translate')('SCAN_PASSPORT_SUCCESS')
             }, {
                 'last_name': 'walberg',
                 'id': 1231,
                 'first_name': 'mark',
-                'passport_reviewed_status':$filter('translate')('GID_STAFF_REVIEW_NOT_STARTED'),
+                'passport_reviewed_status': $filter('translate')('GID_STAFF_REVIEW_NOT_STARTED'),
                 'passport_scan_status': $filter('translate')('SCAN_PASSPORT_NOT_STARTED')
             }
         ];
@@ -239,15 +239,14 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         /**
          * [initializeMe description]
          */
-        var gotoSuccess = false; // debugging, remove when done
         var initializeMe = (function() {
             // show back button
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
             // show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 
-            console.log('collectPassportEnabled: ', collectPassportEnabled);
-            console.log('show mode: ', $scope.mode);
+            $log.log('collectPassportEnabled: ', collectPassportEnabled);
+            $log.log('show mode: ', $scope.mode);
 
             $scope.results;// scan results is the array of guests + status of passport (scanned/verified, etc)
             $scope.allPassportsScanned = false;
