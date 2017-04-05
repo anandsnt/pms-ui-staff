@@ -89,8 +89,8 @@ sntZestStation.controller('zsAdminCtrl', [
             var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
                 return workstation.id == $scope.workstation.selected;
             });
-
             setPrinterLabel(selectedWorkStation.printer);
+            $scope.setEncoderDiagnosticInfo(selectedWorkStation.name, selectedWorkStation.key_encoder_id); // in diagnostic info display the encoder name + id
         };
 
         /*
@@ -157,6 +157,8 @@ sntZestStation.controller('zsAdminCtrl', [
                     'restart': true,
                     'from_cancel': true
                 });
+                
+                $scope.setEncoderDiagnosticInfo(); // in diagnostic info display the encoder name + id
             }, 500);
         };
         /*
@@ -222,6 +224,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.zestStationData.encoder = '';
             }
             $scope.zestStationData.emv_terminal_id = $scope.savedSettings.kiosk.workstation.emv_terminal_id;
+            $scope.setEncoderDiagnosticInfo(); // in diagnostic info display the encoder name + id
         };
         var getTheSelectedWorkStation = function() {
             var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
@@ -420,6 +423,9 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.saveSettings(demoRunStarted);
             
         };
+        $scope.reload = function() {
+            location.reload(true);
+        };
 
         $scope.showDebugModeOption = false;
         // initialize
@@ -443,12 +449,13 @@ sntZestStation.controller('zsAdminCtrl', [
 
             // if invoked from chrome app or ipad
             // show direct admin without login
-            if ($scope.zestStationData.isAdminFirstLogin) {
+            if ($scope.zestStationData.isAdminFirstLogin && !$scope.zestStationData.fromAdminButton) {
                 $scope.mode = 'admin-screen-active';
                 $scope.zestStationData.isAdminFirstLogin = false;
             } else {
                 $scope.mode = 'login-mode';
             }
+            $scope.zestStationData.fromAdminButton = false;
             setTimeout(function() {
                 refreshScroller(); // maybe need to update layout, but this works to fix scroll issue on admin after page load
             }, scrollerRefreshTime);

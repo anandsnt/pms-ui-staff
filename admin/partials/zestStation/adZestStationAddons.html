@@ -1,0 +1,39 @@
+<section id="replacing-div-second" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+    <header class="content-title float">
+        <h2 translate>UPSELL_ADONS</h2>
+        <a ng-click="goBackToPreviousState()" data-type="load-details" class="action back" translate>BACK</a>
+    </header>
+    <!-- list mode -->
+    <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+        <table id="addons-list" class="grid datatable" ng-table="tableParams">
+            <tbody ui-sortable="sortableOptions" ng-model="data" id="sortable">
+                <tr ng-repeat="addon in $data" id="{{addon.id}}">
+                    <td data-title="'Name'" header-class="width-50">
+                        {{addon.name}}
+                    </td>
+                    <td data-title="'Image'" header-class="width-40">
+                        <img src="{{addon.image}}" width="80" height="80" class="addon-image" />
+                    </td>
+                    <td data-title="'Amount'" header-class="width-20">
+                        {{currencySymbol}}{{addon.amount}}
+                    </td>
+                    <td data-title="'Amount Type'" header-class="width-30">
+                        {{addon.amount_type}}
+                    </td>
+                    <td data-title="'Post Type'" header-class="width-30">
+                        {{addon.post_type}}
+                    </td>
+                    <td data-title="'Offer'" header-class="width-20">
+                        <ad-toggle-button is-checked="addon.zest_station_active" label=""></ad-toggle-button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="actions bottom-save-section">
+            <button type="button" id="cancel" class="button blank add-data-inline ng-scope" ng-click="goBackToPreviousState()" translate="">Cancel</button>
+            <button type="button" like-type="common" id="update" class="button ng-binding green ng-scope" ng-click="saveSettings()" translate="">Save Changes</button>
+        </div>
+    </section>
+</section>
