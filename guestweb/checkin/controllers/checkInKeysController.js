@@ -23,7 +23,12 @@
         $rootScope.isMLI && $rootScope.collectOutStandingBalance && !$rootScope.skipBalanceCollection) {
         $state.go('balancePaymentCCCollection');
     }
-
+	// sell addons
+	else if ($state.href("offerAddonOptions") !== null && $rootScope.isAddonUpsellActive && !$rootScope.skipedAddons) {
+		$state.go('offerAddonOptions', {
+			'isFrom': 'checkinNow'
+		});
+	}
 	// if prompt for cc is turned on
 	// we will always ask for CC addition in case of MLI
 	else if ($state.href('checkinCcVerification') !== null && $rootScope.collectCCOnCheckin && $rootScope.isMLI && !$rootScope.isCcAttachedFromGuestWeb ) {

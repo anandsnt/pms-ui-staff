@@ -185,7 +185,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 
 
 	$stateProvider.state('offerAddonOptions', {
-		url: '/addonOptions',
+		url: '/addonOptions/:isFrom',
 		templateUrl: '/assets/common_templates/partials/checkin/gwOfferAddonOptions.html',
 		controller: 'offerAddonOptionsController',
 		title: 'Addons'
