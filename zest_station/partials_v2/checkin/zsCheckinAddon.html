@@ -10,7 +10,7 @@
             <div class="price">
                 <div class="amount">
                     <strong>+{{zestStationData.currencySymbol}}{{selectedAddon.amount}}</strong>
-                    <small>{{selectedAddon.amount_desc}}</small>
+                    <small><span ng-show="upsellDisplayOrderAmountFirst">{{selectedAddon.amount_type}}&nbsp;{{selectedAddon.post_type}}&nbsp;</span><span ng-hide="upsellDisplayOrderAmountFirst">{{selectedAddon.post_type}}&nbsp;{{selectedAddon.amount_type}}&nbsp;</span><span ng-show="selectedAddon.display_suffix">{{selectedAddon.suffix_label}}</span></small>
                 </div>
                 <div class="action">
                     <div class="input-group" ng-show="isAddonFlatOrRoomType(selectedAddon)">
@@ -18,11 +18,11 @@
                         <input type="text" value="{{selectedAddonCount}}">
                         <button type="button" class="button" click-touch="incrementAddonQty()">+</button>
                     </div>
+                    <button type="button" data-action="popup" class="button transparent" click-touch="addOnDoneButtonClicked(selectedAddon)" editable-text="DONE" ng-style="{'visibility': isAddonFlatOrRoomType(selectedAddon) ? 'visible': 'hidden'}">{{'DONE' |translate}}</button>
                     <button type="button" class="button" ng-hide="isAddonFlatOrRoomType(selectedAddon)" ng-class="{'transparent text-red':selectedAddon.is_selected}" click-touch="addRemoveAddOn(selectedAddon)">
                         <span ng-hide="selectedAddon.is_selected" editable-text="ADD">{{'ADD' |translate}}</span>
                         <span ng-show="selectedAddon.is_selected" editable-text="REMOVE">{{'REMOVE' |translate}}</span>
                     </button>
-                    <button type="button" data-action="popup" class="button transparent" click-touch="addOnDoneButtonClicked(selectedAddon)" editable-text="DONE">{{'DONE' |translate}}</button>
                 </div>
             </div>
         </div>

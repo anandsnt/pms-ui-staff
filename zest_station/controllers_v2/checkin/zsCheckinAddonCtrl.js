@@ -136,12 +136,12 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		};
 		var addRemoveAddonSucess = function(selectedAddon) {
 			if ($scope.isAddonFlatOrRoomType(selectedAddon)) {
-				$scope.showAddonPopup = false;
 				$scope.selectedAddon.quantity = angular.copy($scope.selectedAddonCount);
 				$scope.selectedAddon.is_selected = $scope.selectedAddon.quantity > 0;
 			} else {
 				$scope.selectedAddon.is_selected = !$scope.selectedAddon.is_selected;
 			}
+			$scope.showAddonPopup = false;
 			updateCheckinSrvWithNewAddonData();
 		};
 		var addAddonToReservation = function(selectedAddon) {
@@ -310,6 +310,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		 */
 		var initializeMe = (function() {
 			$scope.addonsList = [];
+			$scope.upsellDisplayOrderAmountFirst = $scope.zestStationData.addon_upsell_display_order === 'amount_then_post_type';
 			$scope.loadingCompleted = false;
 			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 			// hide close button
