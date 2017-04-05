@@ -15,16 +15,16 @@
             </div>
             <div class="action">
                <div class="input-group" ng-show="isAddonFlatOrRoomType(selectedAddon)">
-                  <button type="button" class="button" click-touch="decrementAddonQuantity()" ng-class="{'disabled':selectedAddonCount ===0}">-</button>
+                  <button type="button" class="button" click-touch="decrementAddonQuantity()" ng-class="{'disabled':selectedAddonCount ===0}" ng-disabled="selectedAddonCount === 0">-</button>
                   <input type="text" value="{{selectedAddonCount}}">
                   <button type="button" class="button" click-touch="incrementAddonQty()">+</button>
                </div>
                <div class="input-group" ng-hide="isAddonFlatOrRoomType(selectedAddon)">
                   <!--  <span ng-hide="selectedAddon.is_selected" editable-text="ADD">{{'ADD_ADDON' |translate}}</span>
                      <span ng-show="selectedAddon.is_selected" editable-text="REMOVE">{{'REMOVE_ADDON' |translate}}</span> -->
-                  <button type="button" class="button" click-touch="decrementAddonQtyForNonRoomFlatType()" ng-class="{'disabled':selectedAddonCount ===0}">-</button>
+                  <button type="button" class="button" click-touch="decrementAddonQtyForNonRoomFlatType()" ng-class="{'disabled':selectedAddonCount ===0}" ng-disabled="selectedAddonCount === 0">-</button>
                   <input type="text" value="{{selectedAddonCount}}" disabled>
-                  <button type="button" class="button" click-touch="incrementAddonQtyForNonRoomFlatType()" ng-class="{'disabled':selectedAddonCount ===1}">+</button>
+                  <button type="button" class="button" click-touch="incrementAddonQtyForNonRoomFlatType()" ng-class="{'disabled':selectedAddonCount ===1}" ng-disabled="selectedAddonCount === 1">+</button>
                </div>
                <button type="button" data-action="popup" class="button transparent" click-touch="addOnDoneButtonClicked(selectedAddon)" editable-text="DONE">{{'DONE' |translate}}</button>
             </div>
@@ -82,7 +82,7 @@
                      <div class="action">
                         <!-- show this instead of 'add/remove' button if quantity needed -->
                         <div class="input-group" ng-show="isAddonFlatOrRoomType(selectedAddon)">
-                           <button type="button" class="button" click-touch="decrementAddonQuantity()"  ng-class="{'disabled':selectedAddonCount ===0}">-</button>
+                           <button type="button" class="button" click-touch="decrementAddonQuantity()"  ng-class="{'disabled':selectedAddonCount ===0}" ng-disabled="selectedAddonCount === 0">-</button>
                            <input type="text" value="{{selectedAddonCount}}">
                            <button type="button" class="button" click-touch="incrementAddonQty()">+</button>
                         </div>
@@ -91,9 +91,9 @@
                            <span ng-hide="selectedAddon.is_selected" editable-text="ADD">{{'ADD_ADDON' |translate}}</span>
                            <span ng-show="selectedAddon.is_selected" editable-text="REMOVE">{{'REMOVE_ADDON' |translate}}</span> -->
                         <div class="input-group" ng-hide="isAddonFlatOrRoomType(selectedAddon)">
-                           <button type="button" class="button" click-touch="decrementAddonQtyForNonRoomFlatType()"  ng-class="{'disabled':selectedAddonCount ===0}">-</button>
+                           <button type="button" class="button" click-touch="decrementAddonQtyForNonRoomFlatType()"  ng-class="{'disabled':selectedAddonCount ===0}" ng-disabled="selectedAddonCount === 0">-</button>
                            <input type="text" value="{{selectedAddonCount}}" disabled>
-                           <button type="button" class="button" click-touch="incrementAddonQtyForNonRoomFlatType()" ng-class="{'disabled':selectedAddonCount ===1}">+</button>
+                           <button type="button" class="button" click-touch="incrementAddonQtyForNonRoomFlatType()" ng-class="{'disabled':selectedAddonCount ===1}" ng-disabled="selectedAddonCount === 1">+</button>
                         </div>
                         <div> 
                            <br>
