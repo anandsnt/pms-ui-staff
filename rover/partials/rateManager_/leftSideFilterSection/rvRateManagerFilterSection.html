@@ -46,7 +46,7 @@
 					</div>
 
 					<!-- Filter Rates, add .hidden if filter 'Rates' is not active -->
-					<div class="entry" ng-class="{'hidden': chosenTab !== 'RATES'}">
+					<div ng-hide='true' class="entry" ng-class="{'hidden': chosenTab !== 'RATES'}">
 						<label for="rate">Filter Individual Rate(s)</label>
 						<div class="select-group">
 							<div class="select">
@@ -78,7 +78,7 @@
 					</div>
 
 					<!-- Filter Contracted Rates, add .hidden if filter 'Rates' is not active -->
-					<div class="entry entry-company-card" ng-class="{'hidden': chosenTab !== 'RATES'}">
+					<div ng-hide='true' class="entry entry-company-card" ng-class="{'hidden': chosenTab !== 'RATES'}">
 						<label for="company-card" class="search-text">
 						Filter Contracted Rates
 						</label>
@@ -89,7 +89,7 @@
 					<!-- Remove .hidden to when 'Rate Types' filter is active
 					Otherwise add .hidden
 					-->
-					<div class="entry"  ng-class="{'hidden': chosenTab !== 'RATE_TYPES'}">
+					<div ng-hide='true' class="entry"  ng-class="{'hidden': chosenTab !== 'RATE_TYPES'}">
 						<label for="rate-type">Filter Individual Rate Type(s)</label>
 						<div class="select">
 							<select id="rate-type" name="rate-type" ng-change="rateTypeSelected()" ng-model="selectedRateTypeID" iscroll-stop-propagation>
