@@ -62,6 +62,12 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             return this.getJSON(url, _.omit(params, 'rate_id'));
         };
 
+        service.fetchSingleRateTypeInfo = function (params) {
+           // var url = '/api/daily_rates/rate_type_restrictions';
+            var url = '/api/daily_rates/rate_restrictions';
+            return this.getJSON(url, params );
+        };
+
         service.fetchRates = function () {
             var url = '/api/rates/minimal';
             return this.getJSON(url);
@@ -212,7 +218,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                     response.rateTypes = data;
                 }));
             }
- 
+
             $q.all(promises).then((data) => {
                 deferred.resolve(response);
             });
@@ -310,6 +316,71 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             return deferred.promise;
         };
 
+        /**
+         * to fetch the common restriction and single rate details
+         * @param  {Object} params [api params]
+         * @return {Object}        [promise]
+         */
+        this.fetchSingleRateTypeDetailsAndCommonRestrictions = (params) => {
+            var promises = [],
+                deferred = $q.defer(),
+                response = {};
+
+            //single rate info.
+            var paramsForSingleRateType = _.omit(params, 'fetchRoomTypes', 'fetchRates');
+
+            promises.push(
+                this.fetchSingleRateTypeInfo( paramsForSingleRateType )
+                .then( data => {
+                    response.rateAndRestrictions = data.results;
+                })
+            );
+
+            //common restriction params
+            var commonRestrictionsParams = {};
+            if (params.rate_type_id) {
+                commonRestrictionsParams = {
+                    ..._.pick(params, 'from_date', 'to_date'),
+                    'rate_type_ids[]': [params.rate_type_id]
+                };
+            } else {
+                commonRestrictionsParams = {
+                    ..._.pick(params, 'from_date', 'to_date')
+                };
+            }
+
+            promises.push(
+                this.fetchAllRestrictionsWithStatus( commonRestrictionsParams )
+                .then( data => {
+                    response.restrictionsWithStatus = data.results;
+                })
+            );
+
+
+            if (params.fetchRoomTypes) {
+                promises.push(
+                    this.fetchRoomTypes()
+                    .then((data) => {
+                        response.roomTypes = data;
+                    })
+                );
+            }
+            if (params.fetchRates) {
+                promises.push(
+                    this.fetchRates()
+                    .then((data) => {
+                        response.rates = data.results;
+                    })
+                );
+            }
+
+            $q.all(promises).then((data) => {
+                deferred.resolve(response);
+            });
+
+            return deferred.promise;
+        };
+        
         /**
          * to fetch the common restriction and single rate details
          * @param  {Object} params [api params]
