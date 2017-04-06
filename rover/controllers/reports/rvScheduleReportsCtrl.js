@@ -326,7 +326,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             // under SHOW and not OPTIONS
             INCLUDE_DUE_OUT: 'INCLUDE_DUE_OUT',
             RESTRICTED_POST_ONLY: 'RESTRICTED_POST_ONLY',
-            INCLUDE_TAX: 'INCLUDE_TAX'
+            INCLUDE_TAX: 'INCLUDE_TAX',
+            INCLUDE_LEDGER_DATA: 'INCLUDE_LEDGER_DATA'
         };
 
         var matchSortFields = {
@@ -534,6 +535,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.emailList = $scope.selectedEntityDetails.recipients.split(', ');
             } else {
                 $scope.emailList = [];
+            }
+
+            if (angular.isDefined($scope.selectedEntityDetails.schedule_formats)) {
+                $scope.schedule_formats = $scope.selectedEntityDetails.schedule_formats;
             }
 
             $scope.timeSlots = reportUtils.createTimeSlots(TIME_SLOT);
