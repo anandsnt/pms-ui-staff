@@ -2,8 +2,8 @@
  * Service used for tablet-kiosk UI (Zest Station)
  */
 
-sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWebSrv2', '$translate',
-    function($http, $q, zsBaseWebSrv, zsBaseWebSrv2, $translate) {
+sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWebSrv2', '$translate', '$rootScope',
+    function($http, $q, zsBaseWebSrv, zsBaseWebSrv2, $translate, $rootScope) {
         var that = this;
 
         // this.refToLatestPulledTranslations; // used by generalRouter to fetch and store Language Locale files
@@ -235,6 +235,11 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.fetchReservationDetails = function(param) {
             var url = '/staff/staycards/reservation_details.json?reservation_id=' + param.reservation_id;
             var deferred = $q.defer();
+
+            // To fetch the latest guest details, the following parameter has to be sent to trigger a fetchProfile OWS request
+            if (!$rootScope.isStandAlone) {
+                url += "&sync_guest_with_external_pms=true";
+            }
 
             zsBaseWebSrv2.getJSON(url).then(function(data) {
                 deferred.resolve(data);
