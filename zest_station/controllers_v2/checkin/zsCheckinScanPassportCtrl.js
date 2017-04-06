@@ -160,15 +160,15 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     }
                 } else {
                     $scope.adminLoginError = true;
-                    console.warn('invalid admin login');
+                    $log.warn('invalid admin login');
                     // prompt screen keyboard depending on the device, ios should call blur first for smooth transition
                     $scope.focusInputField('password_text');
                 }
             };
             var onFail = function(response) {
-                console.warn(response);
+                $log.warn(response);
                 $scope.adminLoginError = true;
-                console.warn('failed admin login attempt');
+                $log.warn('failed admin login attempt');
                 // prompt screen keyboard depending on the device, ios should call blur first for smooth transition
                 $scope.focusInputField('password_text');
             };
@@ -248,7 +248,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             $log.log('collectPassportEnabled: ', collectPassportEnabled);
             $log.log('show mode: ', $scope.mode);
 
-            $scope.results;// scan results is the array of guests + status of passport (scanned/verified, etc)
+            $scope.results = [];// scan results is the array of guests + status of passport (scanned/verified, etc)
             $scope.allPassportsScanned = false;
             $scope.allPassportReviewed = false;
 
