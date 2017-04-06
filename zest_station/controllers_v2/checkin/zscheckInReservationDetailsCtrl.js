@@ -372,7 +372,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
             if (goToEarlyCheckin) {
                 beginEarlyCheckin(settings);
-            } else if (!$scope.selectedReservation.isRoomUpraded && $scope.selectedReservation.reservation_details.is_upsell_available === 'true' && zestStationRoomUpsellOn) {
+            } else if (!$scope.selectedReservation.isRoomUpraded && $scope.selectedReservation.reservation_details.is_upsell_available === 'true' && !$scope.selectedReservation.reservation_details.cannot_move_room && zestStationRoomUpsellOn) {
                 $state.go('zest_station.roomUpsell');
             } else {
                 // terms and condition skip is done in terms and conditions page
