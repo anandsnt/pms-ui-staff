@@ -101,7 +101,7 @@
                 <label for="time-period">FILE FORMAT</label>
                 <div class="select">
                     <select ng-model="scheduleParams.schedule_format"
-                        ng-options="format.id as format.description for format in schedule_formats"
+                        ng-options="format.id as format.value for format in schedule_formats"
                         iscroll-stop-propagation>
                         <option value="">File Format</option>
                     </select>
