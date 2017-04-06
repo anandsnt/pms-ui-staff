@@ -380,8 +380,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
             return deferred.promise;
         };
-
-
+        
         /**
          * to fetch the common restriction and single rate details
          * @param  {Object} params [api params]
@@ -437,11 +436,6 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
             return deferred.promise;
         };
-
-
-
-
-
 
         /**
          * to fetch single rate's restriction and amount details

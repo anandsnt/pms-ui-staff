@@ -832,12 +832,6 @@ angular.module('sntRover')
             $scope.contentMiddleMode = 'RATE_PRICE_LISTING';
         };
 
-
-
-
-
-
-
         /**
          * to initialize the multiple rate restriction mode
          */
