@@ -477,7 +477,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Rooms': true,
                 'Future Reservations': true,
                 'Last Week Reservations': true,
-                'Last Month Reservations': true
+                'Last Month Reservations': true,
+                'Nationality Statistics': true
             };
 
             var forWeekly = {
@@ -486,7 +487,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             };
             var forMonthly = {
                 'Future Reservations': true,
-                'Last Month Reservations': true
+                'Last Month Reservations': true,
+                'Nationality Statistics': true
             };
 
             var forHourly = {
@@ -518,45 +520,17 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             }
         };
 
+        // Configure the time periods for the given report
         var filterScheduleTimePeriod = function(item) {
-            var yesterdayOnly = _.find($scope.originalScheduleTimePeriods, { value: 'YESTERDAY' });
-            var todayOnly = _.find($scope.originalScheduleTimePeriods, { value: 'TODAY' });
-            var lastSevenDays = _.find($scope.originalScheduleTimePeriods, { value: 'LAST_SEVEN_DAYS' });
-            var lastMonth = _.find($scope.originalScheduleTimePeriods, { value: 'LAST_MONTH' });
-
-            var forYesterday = {
-                'Financial Transactions': true,
-                'Membership Details': true,
-                'Reservations': true
-            };
-
-            var forToday = {
-                'Rooms': true,
-                'Future Reservations': true
-            };
-
-            var forLastSevenDays = {
-                'Last Week Reservations': true
-            };
-
-            var forLastMonth = {
-                'Last Month Reservations': true
-            };
 
             $scope.scheduleTimePeriods = [];
 
-            if ( forYesterday[item.report.title] ) {
-                $scope.scheduleTimePeriods.push(yesterdayOnly);
-            }
-            if ( forToday[item.report.title] ) {
-                $scope.scheduleTimePeriods.push(todayOnly);
-            }
-            if ( forLastSevenDays[item.report.title] ) {
-                $scope.scheduleTimePeriods.push(lastSevenDays);
-            }
-            if ( forLastMonth[item.report.title] ) {
-                $scope.scheduleTimePeriods.push(lastMonth);
-            }
+            var reportTimePeriods = reportsSrv.getReportScheduleTimePeriods (item.report.title);
+
+            _.each(reportTimePeriods, function (timePeriod) {
+                $scope.scheduleTimePeriods.push(_.find($scope.originalScheduleTimePeriods, { value: timePeriod }));
+            });
+
         };
 
         var processScheduleDetails = function(report) {
