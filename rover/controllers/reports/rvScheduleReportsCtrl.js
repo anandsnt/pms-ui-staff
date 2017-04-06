@@ -472,6 +472,11 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             $scope.scheduleParams = {};
 
+             if (angular.isDefined($scope.selectedEntityDetails.schedule_formats)) {
+                $scope.schedule_formats = $scope.selectedEntityDetails.schedule_formats;
+                $scope.scheduleParams.format_id = $scope.selectedEntityDetails.format.id;
+            }
+
             hasAccOrGuest = _.find(report.filters, function(filter) {
                 return filter.value === 'ACCOUNT' || filter.value === 'GUEST';
             });
@@ -538,14 +543,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.emailList = [];
             }
 
-            if (angular.isDefined($scope.selectedEntityDetails.schedule_formats)) {
-                $scope.schedule_formats = $scope.selectedEntityDetails.schedule_formats;
-                setTimeout(function() {
-                    $scope.scheduleParams.format_id = $scope.selectedEntityDetails.format.id;
-                    $scope.$apply();
-                }, 5000);
 
-            }
 
             $scope.timeSlots = reportUtils.createTimeSlots(TIME_SLOT);
         };
