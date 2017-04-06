@@ -83,7 +83,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
             };
             var data = {
                 "reservation_id": $scope.reservation_id,
-                'language_code' : $translate.use()
+                'language_code': $translate.use()
             };
             var startTacDataFailedActions = function() {
                 printFailedActions();

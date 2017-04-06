@@ -100,7 +100,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
 
                 var data = {
                     'reservation_id': $stateParams.reservation_id,
-                    'language_code' : $translate.use()
+                    'language_code': $translate.use()
                 };
 
                 var startTacDataFailedActions = function() {
