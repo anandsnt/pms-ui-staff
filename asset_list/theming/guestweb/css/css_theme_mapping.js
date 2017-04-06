@@ -103,7 +103,8 @@ module.exports = {
             'guestweb_stella_hotel': [ themeCSSRoot + 'guestweb_stella_hotel.css'],
             'guestweb_beau_rivage': [ themeCSSRoot + 'guestweb_beau_rivage.css'],
             'guestweb_gold_strike': [ themeCSSRoot + 'guestweb_gold_strike.css'],
-            'guestweb_historic_taos_inn': [ themeCSSRoot + 'guestweb_historic_taos_inn.css']
+            'guestweb_historic_taos_inn': [ themeCSSRoot + 'guestweb_historic_taos_inn.css'],
+            'guestweb_public_ny_v2': [ themeCSSRoot + 'guestweb_public_ny_v2.css']
         };     
     }
 };

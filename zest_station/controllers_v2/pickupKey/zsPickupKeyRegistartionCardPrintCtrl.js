@@ -7,7 +7,8 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
     '$filter',
     '$timeout',
     '$window',
-    function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, $filter, $timeout, $window) {
+    '$translate',
+    function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, $filter, $timeout, $window, $translate) {
 
         /** ********************************************************************************************
          **     Expected state params -----> reservation_id
@@ -56,6 +57,9 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
                 $scope.zestStationData.workstationStatus = 'out-of-order';
                 $scope.runDigestCycle();
 
+                $scope.trackEvent('PUK - Error', 'Print-Status');
+                $scope.trackEvent('PUK', 'Flow-End-Success');
+
             };
             var printSuccessActions = function() {
 
@@ -64,6 +68,9 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
                 var printSuccess = true;
                 setMessage(printSuccess);
                 $scope.runDigestCycle();
+
+                $scope.trackEvent('PUK - Success', 'Print-Status');
+                $scope.trackEvent('PUK', 'Flow-End-Success');
 
             };
 
@@ -98,7 +105,8 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
                 };
 
                 var data = {
-                    'reservation_id': $stateParams.reservation_id
+                    'reservation_id': $stateParams.reservation_id,
+                    'language_code': $translate.use()
                 };
 
                 var startTacDataFailedActions = function() {
