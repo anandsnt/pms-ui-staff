@@ -540,7 +540,11 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             if (angular.isDefined($scope.selectedEntityDetails.schedule_formats)) {
                 $scope.schedule_formats = $scope.selectedEntityDetails.schedule_formats;
-                // $scope.scheduleParams.format_id = $scope.selectedEntityDetails.format.id;
+                setTimeout(function() {
+                    $scope.scheduleParams.format_id = $scope.selectedEntityDetails.format.id;
+                    $scope.$apply();
+                }, 5000);
+
             }
 
             $scope.timeSlots = reportUtils.createTimeSlots(TIME_SLOT);
@@ -919,6 +923,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.addingStage === STAGES.SHOW_PARAMETERS ||
                 $scope.addingStage === STAGES.SHOW_DETAILS;
         };
+
 
 
         /**
