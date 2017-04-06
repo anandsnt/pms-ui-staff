@@ -172,10 +172,12 @@ sntZestStation.controller('zsPrintBillCtrl', [
         };
 
         $scope.printBill = function() {
+            $scope.trackEvent('CO - Print Bill', 'user_selected');
             fetchBillData();
         };
 
         $scope.clickedNoThanks = function() {
+            $scope.trackEvent('CO - No Thanks, Dont Print', 'user_selected');
             var printopted = 'false';
 
             nextPageActions(printopted);

@@ -115,12 +115,21 @@ sntZestStation.controller('zsRootCtrl', [
 		 * @return {[type]} [description]
 		 */
         $scope.clickedOnBackButton = function() {
+            var currentState = $state.current.name;
+            
+            $scope.trackEvent(currentState, 'clicked_back_button');
             $scope.$broadcast(zsEventConstants.CLICKED_ON_BACK_BUTTON);
         };
         $scope.clickedOnCloseButton = function() {
+            var currentState = $state.current.name;
+
+            $scope.trackEvent(currentState, 'clicked_close_button');
             $state.go('zest_station.home');
         };
         $scope.talkToStaff = function() {
+            var currentState = $state.current.name;
+
+            $scope.trackEvent(currentState, 'clicked_talk_to_staff');
             $state.go('zest_station.speakToStaff');
         };
 
@@ -820,6 +829,8 @@ sntZestStation.controller('zsRootCtrl', [
                     if (userInActivityTimeInSeconds >= idleToHomeTime && currentState !== 'zest_station.checkInSignature' && currentState !== 'zest_station.checkInCardSwipe') {
                         $scope.hideKeyboardIfUp();
 
+                        $scope.trackEvent(currentState, 'timeout_to_home');
+
                         $state.go('zest_station.home');
                         $scope.runDigestCycle();
                     }
@@ -914,6 +925,12 @@ sntZestStation.controller('zsRootCtrl', [
             $log.info('\ngoing to----->' + from.name);
             $log.info('to stateparams' + toParams);
             $log.info(toParams);
+            if (to.name === 'zest_station.home' || to.name === 'zest_station.outOfService') {
+                if ($scope.trackEvent) {
+                    $scope.trackEvent('health_check', 'status_update', from.name, to.name);
+                }
+                
+            }
             $log.info('going to----->' + to.name);
             $scope.resetTime();
         });

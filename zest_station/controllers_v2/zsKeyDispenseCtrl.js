@@ -274,6 +274,11 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			if ($scope.noOfKeysSelected === $scope.noOfKeysCreated) {
 				// all keys are made
 				$scope.mode = 'KEY_CREATION_SUCCESS_MODE';
+				if (!$scope.inDemoMode()) {
+					$scope.trackEvent('all keys encoded', 'key_encode');	
+				}
+				
+
 			} else if ($scope.noOfKeysSelected > $scope.noOfKeysCreated) {
 				// one key has been made out of total 2
 				$scope.mode = 'KEY_ONE_CREATION_SUCCESS_MODE';
@@ -370,6 +375,8 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			if ($scope.readyForUserToPressMakeKey) {
 				$scope.readyForUserToPressMakeKey = false;
 				startMakingKey(keyNo);
+
+            	$scope.trackEvent('MakeKey', 'user_selected');
 			}
 		};
 
@@ -381,6 +388,10 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			if ($scope.zestStationData.consecutiveKeyFailure >= $scope.zestStationData.kioskOutOfOrderTreshold) {
 				$scope.zestStationData.workstationOooReason = $filter('translate')('KEY_CREATION_FAILED');
 				$scope.zestStationData.workstationStatus = 'out-of-order'; // go out of order when (printing or key encoding fails)
+
+				$scope.trackEvent('failure - go out of service', 'key_encode');
+			} else {
+				$scope.trackEvent('key-failure-mode', 'key_encode');
 			}
 			var keyNo = ($scope.noOfKeysCreated === 0) ? 1 : 2;
 
@@ -437,6 +448,9 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			if ($scope.noOfKeysSelected === $scope.noOfKeysCreated) {
 				// all keys are made
 				$scope.mode = 'KEY_CREATION_SUCCESS_MODE';
+				if (!$scope.inDemoMode()) {
+					$scope.trackEvent('all keys encoded', 'key_encode');
+				}
 			} else if ($scope.noOfKeysSelected > $scope.noOfKeysCreated) {
 				// if more key is needed
 				$scope.mode = 'KEY_ONE_CREATION_SUCCESS_MODE';
@@ -521,6 +535,8 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		 * @return {[type]} [description]
 		 */
 		$scope.reEncodeKey = function() {
+            $scope.trackEvent('retry key encode', 'user_selected');
+
             $scope.resetTime();
 			var executeKeyOperations = function() {
 				if ($scope.zestStationData.keyWriter === 'websocket') {

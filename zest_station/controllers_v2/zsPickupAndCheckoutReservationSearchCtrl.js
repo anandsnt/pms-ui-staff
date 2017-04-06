@@ -197,9 +197,6 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
             }
         };
 
-        $scope.talkToStaff = function() {
-            $state.go('zest_station.speakToStaff');
-        };
 		/** *********** Fontainbleu specific ******************/
 
         $scope.tower = {
