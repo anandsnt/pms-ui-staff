@@ -1,8 +1,8 @@
 sntZestStation.controller('zsPrintBillCtrl', [
     '$scope',
     '$state',
-    'zsCheckoutSrv', '$stateParams', '$window', '$timeout', '$filter',
-    function($scope, $state, zsCheckoutSrv, $stateParams, $window, $timeout, $filter) {
+    'zsCheckoutSrv', '$stateParams', '$window', '$timeout', '$filter', '$translate',
+    function($scope, $state, zsCheckoutSrv, $stateParams, $window, $timeout, $filter, $translate) {
 
         /** ******************************************************************************
          **      This is not a sperate state. It's an ng-included ctrl inside 
@@ -82,7 +82,8 @@ sntZestStation.controller('zsPrintBillCtrl', [
                 }
             };
             var data = {
-                "reservation_id": $scope.reservation_id
+                "reservation_id": $scope.reservation_id,
+                'language_code': $translate.use()
             };
             var startTacDataFailedActions = function() {
                 printFailedActions();
