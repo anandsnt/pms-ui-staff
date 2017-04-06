@@ -51,12 +51,19 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
                     first_name: $scope.reservationData.guest.firstName,
                     last_name: $scope.reservationData.guest.lastName,
                     phone: $scope.reservationData.guest.phone,
+                    mobile: $scope.reservationData.guest.mobile,
                     vip: $scope.reservationData.guest.is_vip,
                     email: $scope.reservationData.guest.email,
                     avatar: $scope.reservationData.guest.image,
                     address: $scope.reservationData.guest.address,
+                    notes_count: $scope.reservationData.guest.notes_count,
                     user_id: param.id
                 });
+
+                // Timeout to allow the RVGuestCardCtrl(app/assets/rover/controllers/cards/guestCardControl.js) to initiate
+                $timeout(function() {
+                    $scope.$broadcast('loyaltyLevelAvailable', $scope.reservationData.guest.membership_type);
+                }, 1000);
 
                 RVContactInfoSrv.setGuest(param.id);
             }

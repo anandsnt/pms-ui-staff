@@ -448,6 +448,9 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
         reservationData.guest.is_vip = cards.guest_details.vip;
         reservationData.guest.image = cards.guest_details.avatar;
         reservationData.guest.phone = cards.guest_details.phone;
+        reservationData.guest.mobile = cards.guest_details.mobile;
+        reservationData.guest.notes_count = cards.guest_details.notes_count;
+        reservationData.guest.membership_type = cards.guest_details.membership_type;
         reservationData.guest.address = {
             city: cards.guest_details.city,
             state: cards.guest_details.state,
