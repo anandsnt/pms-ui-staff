@@ -10,25 +10,15 @@ const mapStateToRateManagerGridLeftSideHeadButtonContainerProps = (state) => {
 
     if(state.mode === RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
         propsToReturn.shouldShowPagination = false;
-        // propsToReturn.openAllCallbackForSingleRateView = state.callBacksFromAngular.openAllCallbackForSingleRateView;
-        // propsToReturn.closeAllCallbackForSingleRateView = state.callBacksFromAngular.openAllCallbackForSingleRateView;
     }
     else if(state.mode === RM_RX_CONST.RATE_VIEW_MODE) {
         propsToReturn.shouldShowPagination = true;
         propsToReturn.goToPrevPage = state.callBacksFromAngular.goToPrevPage;
         propsToReturn.goToNextPage = state.callBacksFromAngular.goToNextPage;
         propsToReturn.paginationStateData = state.paginationState;
-        // propsToReturn.openAllCallbackForRateView = state.callBacksFromAngular.openAllRestrictionsForRateView;
-        // propsToReturn.closeAllCallbackForRateView = state.callBacksFromAngular.closeAllRestrictionsForRateView;
-        // propsToReturn.rate_ids = _.pluck(state.list.slice(0), 'id'); //first row will be having any id, just for all restrictions
-        // propsToReturn.mode = state.mode;
-        // propsToReturn.fromDate = state.dates[0];
-        // propsToReturn.toDate = state.dates[state.dates.length-1];
     }
     else if(state.mode ===  RM_RX_CONST.ROOM_TYPE_VIEW_MODE) {
         propsToReturn.shouldShowPagination = false;
-        // propsToReturn.openAllCallbackForRoomTypeView = state.callBacksFromAngular.openAllRestrictionsForRoomTypeView;
-        // propsToReturn.closeAllCallbackForRoomTypeView = state.callBacksFromAngular.closeAllRestrictionsForRoomTypeView;
     }
     else if(state.mode ===  RM_RX_CONST.RATE_TYPE_VIEW_MODE) {
         propsToReturn.shouldShowPagination = true;

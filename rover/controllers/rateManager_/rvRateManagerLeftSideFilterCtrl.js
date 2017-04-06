@@ -87,7 +87,6 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
           $scope.selectedRateTypes.push(selectedRateType);
         }
 
-        clearAllRatesAndAllRoomTypes();
         $scope.deleteAllSelectedCards();
       };
 
@@ -116,7 +115,6 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
           scrollTo('#selected-rate-type-list br');
         }
 
-        clearAllRatesAndAllRoomTypes();
         $scope.deleteAllSelectedCards();
       };
 
@@ -154,8 +152,6 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       $scope.deleteAllSelectedRateTypes = () => {
         $scope.selectedRateTypes = [];
         $scope.selectedRateTypeID = '';
-        //deleting the nodes will change the height
-        refreshScroller();
       };
 
       /**
@@ -164,16 +160,6 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       $scope.deleteAllSelectedRateTypesFromRTT = () => {
         $scope.selectedRateTypesFromRTT = [];
         $scope.selectedRateTypeIDFromRTT = '';
-        //deleting the nodes will change the height
-        refreshScroller();
-      };
-
-      /**
-       * utility function to clean the ALL RATES/ALL ROOM TYPE radio box
-       */
-      var clearAllRatesAndAllRoomTypes = () => {
-        $scope.showAllRates = false;
-        $scope.showAllRoomTypes = false;
       };
 
       /**
@@ -209,7 +195,6 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
             scrollTo('#selected-rate-list br');
           }
 
-          clearAllRatesAndAllRoomTypes();
           $scope.deleteAllSelectedCards();
         }
       };
@@ -234,8 +219,8 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       $scope.deleteAllSelectedRates = () => {
         $scope.selectedRates = [];
         $scope.selectedRateID = '';
-        
-        // deleting the nodes will change the height
+
+        //deleting the node will change the height
         refreshScroller();
       };
 
@@ -250,36 +235,17 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
           return true;
         }
 
-        var selectedRateTypeIDs = _.pluck($scope.selectedRateTypes, 'id');
-
-        return (selectedRateTypeIDs.indexOf(rate.rate_type.id) > -1);
+        return (parseInt($scope.selectedRateTypeID) === rate.rate_type.id);
       };
 
       /**
-       * on tapping the ALL RATES tab
+       * clear all selected values on changing tab
        */
-      $scope.changedAllRatesSelection = () => {
-        // we will clear out all selected from other tab
-        $scope.deleteAllSelectedRates();
-        $scope.deleteAllSelectedRateTypes();
-      };
 
-      /**
-       * on tapping the ALL RATE TYPES tab
-       */
-      $scope.changedAllRateTypes = () => {
-        // we will clear out all selected from other tab
+      $scope.deleteAllSelectedValues = () => {
         $scope.deleteAllSelectedRates();
         $scope.deleteAllSelectedRateTypes();
-      };
-
-      /**
-       * on tapping the ALL ROOM TYPES tab
-       */
-      $scope.changedAllRoomTypes = () => {
-        // we will clear out all selected from other tab
-        $scope.deleteAllSelectedRates();
-        $scope.deleteAllSelectedRateTypes();
+        $scope.deleteAllSelectedRateTypesFromRTT();
         $scope.deleteAllSelectedCards();
       };
 
@@ -310,21 +276,22 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
               $scope.showAllRates = true;
               $scope.showAllRateTypes = false;
               $scope.showAllRoomTypes = false;
-              $scope.changedAllRatesSelection();
+              $scope.deleteAllSelectedRateTypesFromRTT();
               break;
 
         case 'RATE_TYPES' : 
               $scope.showAllRates = false;
               $scope.showAllRateTypes = true;
               $scope.showAllRoomTypes = false;
-              $scope.changedAllRateTypes();
+              $scope.deleteAllSelectedRates()
+              $scope.deleteAllSelectedRateTypes();
               break;
 
         case 'ROOM_TYPES' : 
               $scope.showAllRates = false;
               $scope.showAllRateTypes = false;
               $scope.showAllRoomTypes = true;
-              $scope.changedAllRoomTypes();
+              $scope.deleteAllSelectedValues();
               break;
       }
 
@@ -399,10 +366,13 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       /**
        * utility method to clear all selection from tabs
        */
-      const clearAllRatesAllRoomTypesAllRateTypesAllRates = () => {
-        clearAllRatesAndAllRoomTypes();
-        $scope.deleteAllSelectedRateTypes();
+      const clearAllRatesAllRoomTypesAllRateTypes = () => {
         $scope.deleteAllSelectedRates();
+        $scope.deleteAllSelectedRateTypes();
+        $scope.deleteAllSelectedRateTypesFromRTT();
+
+        //deleting the node will change the height
+        refreshScroller();        
       }
 
       /**
@@ -419,7 +389,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
           }
         }
 
-        clearAllRatesAllRoomTypesAllRateTypesAllRates();
+        clearAllRatesAllRoomTypesAllRateTypes();
         
         $scope.showAllRates = true;
         

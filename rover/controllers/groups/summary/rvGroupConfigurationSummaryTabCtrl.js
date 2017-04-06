@@ -821,6 +821,38 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
             });
         };
 
+        // Show the confirm popup before deleting the group billing information
+        $scope.showGroupBillingInfoDeleteConfirmPopup = function() {
+            ngDialog.close();
+            $timeout(function() {
+                ngDialog.open({
+                    template: '/assets/partials/groups/rvGroupBillingInfoDeleteConfirmPopup.html',
+                    className: '',
+                    scope: $scope
+                });
+
+            }, 100);
+
+        };
+
+        // Delete group billing information
+        $scope.deleteGroupBillingInfo = function() {
+
+            var successCallback = function() {
+                    $scope.$emit('hideLoader');
+                    ngDialog.close();
+                },
+                errorCallback = function() {
+                    $scope.$emit('hideLoader');
+                    ngDialog.close();
+                };
+            var params = {};
+
+            params.group_id = $scope.groupConfigData.summary.group_id;
+
+            $scope.invokeApi(rvGroupConfigurationSrv.deleteBillingInfo, params, successCallback, errorCallback);
+        };
+
         /*
          * Send Confirmation popup handler
          * @return undefined
