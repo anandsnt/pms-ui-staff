@@ -472,7 +472,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             $scope.scheduleParams = {};
 
-             if (angular.isDefined($scope.selectedEntityDetails.schedule_formats)) {
+            if (angular.isDefined($scope.selectedEntityDetails.schedule_formats)) {
                 $scope.schedule_formats = $scope.selectedEntityDetails.schedule_formats;
                 $scope.scheduleParams.format_id = $scope.selectedEntityDetails.format.id;
             }
@@ -569,7 +569,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.$parent.$parent.schedulesList = [];
                 $scope.$parent.$parent.schedulableReports = [];
 
-
                 // sort schedule list by report name
                 $scope.$parent.$parent.schedulesList = _.sortBy(
                         payload.schedulesList,
@@ -646,7 +645,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             SHOW_DETAILS: 'SHOW_DETAILS',
             SHOW_DISTRIBUTION: 'SHOW_DISTRIBUTION'
         };
-
 
         BaseCtrl.call(this, $scope);
 
@@ -795,7 +793,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             }
         };
 
-
         $scope.confirmDelete = function() {
             ngDialog.open({
                 template: '/assets/partials/reports/scheduleReport/rvConfirmDeleteSchedule.html',
@@ -844,7 +841,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.refreshThirdColumnScroll(reset);
             $scope.refreshFourthColumnScroll(reset);
         };
-
 
         $scope.scheduleReport = function() {
             var reset = true;
@@ -904,7 +900,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.scrollToLast();
         };
 
-
         $scope.shouldHideParametersCol = function() {
             return $scope.addingStage === STAGES.SHOW_SCHEDULE_LIST;
         };
@@ -918,8 +913,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.addingStage === STAGES.SHOW_PARAMETERS ||
                 $scope.addingStage === STAGES.SHOW_DETAILS;
         };
-
-
 
         /**
          * Startup
