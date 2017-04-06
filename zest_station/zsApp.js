@@ -253,6 +253,7 @@ var GlobalZestStationApp = function() {
                     'tags': viewList[state].tags,
                     'description': viewList[state].description,
                     'icon': viewList[state].icon,
+                    'sntOnly': viewList[state].sntOnly,
                     'placeholderData': viewList[state].placeholderData
                 });
                 // create list of just labels for UI to show

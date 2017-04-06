@@ -520,7 +520,72 @@
    "PRINT_SUCCESS": "Print was Success",
    "PRINT_FAILED": "Print was Failed",
    "EMAIL_SUCCESS": "Email was sent",
-   "EMAIL_FAILED": "Something went wrong on sending email"
+   "EMAIL_FAILED": "Something went wrong on sending email",
+
+
+
+
+
+
+
+
+
+
+   "GID_SCAN_HEADER": "Scan Passport",
+   "GID_SCAN_SUB_HEADER": "Place your passport on the scanner and select 'Scan'",
+   "GID_SCAN_BUTTON": "Scan",
+
+    "GID_SCANNING_IN_PROGRESS": "Scanning in progress",
+
+
+   "GID_SCAN_SUB_HEADER_FIRST": "Place",
+   "GID_SCAN_SUB_HEADER_SECOND": "'s Passport on the scanner and press 'Scan'",
+
+   "GID_SCAN_FAILURE_HEADER": "Passport Scan Unsuccessful",
+   "GID_SCAN_FAILURE_SUB_HEADER": "Scan passports for all guests to continue",
+
+   "GID_SCAN_RESULTS_HEADER": "Passport Scan Results",
+   "GID_SCAN_RESULTS_SUB_HEADER": "SCAN PASSPORTS FOR ALL GUESTS TO CONTINUE",
+
+   "GID_SCAN_SUCCESS": "Success",
+   "GID_SCAN_NOT_STARTED": "Not Started",
+
+   "GID_SCAN_FAILURE_VIEW_RESULTS": "View Results",
+
+
+
+   "GID_STAFF_REVIEW_SUCCESS": "Accepted",
+   "GID_STAFF_REVIEW_NOT_STARTED": "Not Reviewed",
+
+
+   "GID_VERIFY_PASSPORT_SUB": "Reservation Details",
+   "GID_VERIFY_PASSPORT": "Verify Passport",
+
+   "GID_ADMIN_PWD_SUB": "Enter your password",
+   "GID_ADMIN_ID_SUB": "Enter your login ID",
+   "GID_ADMIN_LOGIN_HEADER": "Staff Login",
+
+   "GID_WAIT_HEADER": "Please Wait",
+   "GID_WAIT_SUB": "A staff member will be with you soon to verify your passport information."
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

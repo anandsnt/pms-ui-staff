@@ -20,6 +20,7 @@ sntZestStation.controller('zsCheckinFinalCtrl', [
          * [initializeMe description]
          */
         var initializeMe = (function() {
+            $scope.trackEvent('CI', 'Flow-End-Success');
             // hide back button
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
             // hide close button
