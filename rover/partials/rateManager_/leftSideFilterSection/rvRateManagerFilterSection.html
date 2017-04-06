@@ -18,7 +18,7 @@
 						<button ng-click="showCalendar()" type="button" class="ui-datepicker-trigger">...</button>
 					</div>
 
-					<div class="entry">
+					<div class="entry" ng-hide="(chosenTab !== 'RATES')">
 						<label>ORDER BY</label>
 						<div class="select">
 							<select iscroll-stop-propagation=""
@@ -39,14 +39,14 @@
 						<label for="show">Show</label>
 						<ul class="filters">
 						<!-- Add .active on a selected filter -->
-							<li ng-click="switchTabAndCorrespondingActions('RATES')" ng-class="{'active': (chosenTab ==='RATES' || showAllRates) }">Rates</li>
-							<li ng-click="switchTabAndCorrespondingActions('RATE_TYPES')" ng-class="{'active': (chosenTab ==='RATE_TYPES' || showAllRateTypes) }">Rate Types</li>
-							<li ng-click="switchTabAndCorrespondingActions('ROOM_TYPES')" ng-class="{'active': (chosenTab ==='ROOM_TYPES' || showAllRoomTypes) }">Room Types</li> 
+							<li ng-click="switchTabAndCorrespondingActions('RATES')" ng-class="{'active': chosenTab ==='RATES'}">Rates</li>
+							<li ng-click="switchTabAndCorrespondingActions('RATE_TYPES')" ng-class="{'active': chosenTab ==='RATE_TYPES'}">Rate Types</li>
+							<li ng-click="switchTabAndCorrespondingActions('ROOM_TYPES')" ng-class="{'active': chosenTab ==='ROOM_TYPES'}">Room Types</li> 
 						</ul>
 					</div>
 
 					<!-- Filter Rates, add .hidden if filter 'Rates' is not active -->
-					<div ng-hide='true' class="entry" ng-class="{'hidden': chosenTab !== 'RATES'}">
+					<div class="entry" ng-class="{'hidden': chosenTab !== 'RATES'}">
 						<label for="rate">Filter Individual Rate(s)</label>
 						<div class="select-group">
 							<div class="select">
@@ -78,7 +78,7 @@
 					</div>
 
 					<!-- Filter Contracted Rates, add .hidden if filter 'Rates' is not active -->
-					<div ng-hide='true' class="entry entry-company-card" ng-class="{'hidden': chosenTab !== 'RATES'}">
+					<div class="entry entry-company-card" ng-class="{'hidden': chosenTab !== 'RATES'}">
 						<label for="company-card" class="search-text">
 						Filter Contracted Rates
 						</label>
@@ -89,10 +89,10 @@
 					<!-- Remove .hidden to when 'Rate Types' filter is active
 					Otherwise add .hidden
 					-->
-					<div ng-hide='true' class="entry"  ng-class="{'hidden': chosenTab !== 'RATE_TYPES'}">
+					<div class="entry"  ng-class="{'hidden': chosenTab !== 'RATE_TYPES'}">
 						<label for="rate-type">Filter Individual Rate Type(s)</label>
 						<div class="select">
-							<select id="rate-type" name="rate-type" ng-change="rateTypeSelected()" ng-model="selectedRateTypeID" iscroll-stop-propagation>
+							<select id="rate-type" name="rate-type" ng-change="rateTypeSelectedFromRTT()" ng-model="selectedRateTypeIDFromRTT" iscroll-stop-propagation>
 								<option class="placeholder" value="">Rate Type(s)</option>
 								<option ng-repeat="rateType in rateTypes" value="{{rateType.id}}">
 									{{rateType.name}}
@@ -110,7 +110,7 @@
 					<div class="selected-data" ng-class="{'hidden': chosenTab !== 'RATES'}">
 						<strong ng-show="selectedRates.length > 0">Rates Selected</strong>
 
-						<div class="rates-box" ng-repeat="rate in selectedRates">
+						<div id="selected-rate-list" class="rates-box" ng-repeat="rate in selectedRates">
 							<span class="rate-data">{{rate.name}}</span>
 							<span ng-click="deleteSelectedRate(rate.id)" class="icons delete_small"> &nbsp;</span>
 							<br clear="all">
@@ -142,15 +142,15 @@
 					<!-- Rate Types
 					Show when filter 'Rate Types' is active -->
 					<div class="selected-data" ng-class="{'hidden': chosenTab !== 'RATE_TYPES'}">
-						<strong ng-show="selectedRateTypes.length > 0">Rate Types Selected</strong>
+						<strong ng-show="selectedRateTypesFromRTT.length > 0">Rate Types Selected</strong>
 
-						<div class="rates-box" ng-repeat="rateType in selectedRateTypes">
+						<div id="selected-rate-type-list" class="rates-box" ng-repeat="rateType in selectedRateTypesFromRTT">
 							<span class="rate-data">{{rateType.name}}</span>
-							<span ng-click="deleteSelectedRateType(rateType.id)" class="icons delete_small"> &nbsp;</span>
+							<span ng-click="deleteSelectedRateTypeFromRTT(rateType.id)" class="icons delete_small"> &nbsp;</span>
 							<br clear="all">
 						</div>
 
-						<button ng-show="selectedRateTypes.length > 2" ng-click="deleteAllSelectedRateTypes()" class="button blank deleteall">Clear Selection</button>
+						<button ng-show="selectedRateTypesFromRTT.length > 2" ng-click="deleteAllSelectedRateTypesFromRTT()" class="button blank deleteall">Clear Selection</button>
 					</div>
 
 				</div> 
