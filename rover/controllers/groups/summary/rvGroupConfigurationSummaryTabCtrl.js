@@ -840,6 +840,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
             var successCallback = function() {
                     $scope.$emit('hideLoader');
+                    $scope.groupConfigData.summary.posting_account_billing_info = false;
                     ngDialog.close();
                 },
                 errorCallback = function() {
