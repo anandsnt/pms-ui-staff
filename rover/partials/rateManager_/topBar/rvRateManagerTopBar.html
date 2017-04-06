@@ -18,8 +18,8 @@
                  If Filter 'Rates' is active and nothing is selected add 'All Rate Types'
                  otherwise show rate type name
             -->
-            <span>All Rate Types</span> 
-            <span ng-show="{{selectedRateTypes.length > 1}}">{Rate Type Name}</span>
+            <span ng-show="selectedRateTypesFromRTT.length === 0">All Rate Types</span> 
+            <span ng-show="selectedRateTypesFromRTT.length > 1">{{selectedRateTypesFromRTT.length}} Rate Types</span>
         </li>
         
         <!-- show  if there are any rates selected -->
@@ -48,7 +48,7 @@
        </li>
          
         <!-- show .card if there are any cards selected -->
-        <li class="card" ng-hide="selectedAccountName.length">
+        <li class="card" ng-hide="selectedAccountName.length || !isRateView">
            <strong>Name Card</strong>
 
            <!-- add ',' for each company card,IATA etc except the last one-->
