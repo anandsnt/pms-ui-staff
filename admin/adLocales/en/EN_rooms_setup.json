@@ -84,7 +84,9 @@
 "AUTH_USERNAME_LABEL": "Legic Preauth Username",
 "AUTH_USERNAME_PLACEHOLDER": "Enter Legic Preauth Username",
 "AUTH_PASSWORD_LABEL": "Legic Preauth Password",
-"AUTH_PASSWORD_PLACEHOLDER": "Enter Legic Preauth Password"
+"AUTH_PASSWORD_PLACEHOLDER": "Enter Legic Preauth Password",
+
+"SAFLOK_ENCODER": "Select Encoder"
 
 
 
