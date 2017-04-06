@@ -104,12 +104,21 @@
 							<ad-textbox value="data.wallet_server_url" inputtype="text" label = "{{'WALLET_URL_LABEL' | translate }}" placeholder = "{{'WALLET_URL_PLACEHOLDER' | translate }}" styleclass="full-width" required = "" ></ad-textbox>
 							<ad-textbox value="data.wallet_auth_user_name" inputtype="text" label = "{{'WALLET_USERNAME_LABEL' | translate }}" styleclass="full-width" placeholder = "{{'WALLET_USERNAME_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
 							<ad-textbox value="data.pre_auth_user_name" inputtype="text" label = "{{'AUTH_USERNAME_LABEL' | translate }}" styleclass="full-width" placeholder = "{{'AUTH_USERNAME_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
+
+						    <ad-dropdown label="{{'SAFLOK_ENCODER' | translate }}" 
+					    				 list="encoders" 
+					    				 ng-model='data.selected_encoder'
+						    			 selected-Id='data.selected_encoder' 
+						    			 label-in-drop-down="{{'SAFLOK_ENCODER' | translate }}" 
+						    			 required = "yes"></ad-dropdown>
 						</div>
+						
 						<div class = "holder right" ng-show="data.selected_key_system == 2">
 							<ad-textbox value="data.wallet_id" inputtype="text" label = "{{'WALLET_ID_LABEL' | translate }}" styleclass="full-width" placeholder = "{{'WALLET_ID_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
 							<ad-textbox value="data.wallet_auth_password" inputtype="text" label = "{{'WALLET_PASSWORD_LABEL' | translate }}" styleclass="full-width" placeholder = "{{'WALLET_PASSWORD_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
 							<ad-textbox value="data.pre_auth_user_password" inputtype="text" label = "{{'AUTH_PASSWORD_LABEL' | translate }}" styleclass="full-width" placeholder = "{{'AUTH_PASSWORD_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
 						</div>
+
 						<div class = "holder left">
 						     <div class="form-title">
 							<h3><span translate>IOS_LABEL</span></h3>
