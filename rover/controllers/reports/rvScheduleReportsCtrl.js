@@ -494,7 +494,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.scheduleParams.time_period_id = undefined;
             }
 
-
             if ( angular.isDefined($scope.selectedEntityDetails.time) ) {
                 $scope.scheduleParams.time = $scope.selectedEntityDetails.time;
             } else {
@@ -542,8 +541,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             } else {
                 $scope.emailList = [];
             }
-
-
 
             $scope.timeSlots = reportUtils.createTimeSlots(TIME_SLOT);
         };
