@@ -537,6 +537,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.emailList = [];
             }
 
+            if (angular.isDefined($scope.selectedEntityDetails.schedule_formats)) {
+                $scope.schedule_formats = $scope.selectedEntityDetails.schedule_formats;
+            }
+
             $scope.timeSlots = reportUtils.createTimeSlots(TIME_SLOT);
         };
 
