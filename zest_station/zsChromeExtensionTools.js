@@ -55,7 +55,8 @@ this.chromeExtensionListener = function() {
         //  refreshing with just that will result in a blank page, a way around this is to just remove the /h/
         //  but to persist the hotel session, include the hotel session key (end of location string reference)
         var initRefreshStation = function() {
-            var refs, UrlWithSessionId;
+            var refs, UrlWithSessionId, ref;
+
             if (location.href.indexOf('zest_station') !== -1 && location.href.indexOf('/h/') !== -1) {
                 refs = location.href.split('/h/');
 
@@ -66,7 +67,7 @@ this.chromeExtensionListener = function() {
                     location.href = UrlWithSessionId;
                 } else if (refs.length > 1 && refs[1] === '') {
                     console.log('reload /h ref no session: ', refs);
-                    var ref = location.href.split('/h/');
+                    ref = location.href.split('/h/');
 
                     location.href = ref[0];
                 } else {
@@ -75,7 +76,7 @@ this.chromeExtensionListener = function() {
                 }
             } else if (location.href.indexOf('zest_station') !== -1 && location.href.indexOf('/h') !== -1) {
                 console.log('reload station without /h ref');
-                var ref = location.href.split('/h/');
+                ref = location.href.split('/h/');
 
                 location.href = ref[0];
             } else if (location.href.indexOf('zest_station') !== -1 && location.href.indexOf('/h') === -1) {
