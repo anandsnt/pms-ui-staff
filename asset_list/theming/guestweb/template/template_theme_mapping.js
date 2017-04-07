@@ -601,6 +601,7 @@ module.exports = {
             'guestweb_historic_taos_inn': [ 'guestweb/**/common_templates/partials/checkin/**.html',
                 'guestweb/**/common_templates/partials/checkout/**.html',
                 'guestweb/**/common_templates/partials/gwNoOption.html',
+                'guestweb/**/common_templates/partials/historic_taos_inn/**.html',
                 checkoutNowPartials + '*.html',
                 checkinPartials + '*.html',
                 precheckinPartials + '*.html'],
