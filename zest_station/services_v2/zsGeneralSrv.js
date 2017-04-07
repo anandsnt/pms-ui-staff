@@ -180,7 +180,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.getDoorLockSettings = function() {
             var deferred = $q.defer(),
-                url = 'api/door_lock_interfaces.json';
+                url = '/api/door_lock_interfaces.json';
 
             zsBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
@@ -536,6 +536,17 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+        this.getKeyEncoderInfo = function() {
+            var deferred = $q.defer();
+            var url = '/api/key_encoders';
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
     }
 ]);
