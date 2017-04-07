@@ -26,7 +26,7 @@
 
 <!-- View-Only -->
 <div ng-repeat='view in jumpList' class='jumper-box-li'>
-    <ul ng-show='showJumperItem(view)'>
+    <ul ng-hide='!showJumperItem(view)'>
         <li click-touch='jumpTo(view, false)'>
             <img ng-show='jumpGalleryOn && view.icon' 
                 class='jump-icon' 

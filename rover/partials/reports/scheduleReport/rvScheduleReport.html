@@ -91,9 +91,17 @@
                 <label>Sort By</label>
                 <div class="select">
                     <select ng-model="scheduleParams.sort_field"
-                        ng-options="sortBy.value as sortBy.description for sortBy in selectedEntityDetails.sort_fields | filter:showValidSortBy" iscroll-stop-propagation
+                        ng-options="sortBy.value as sortBy.description for sortBy in selectedEntityDetails.sort_fields | filter:showValidSortBy"
                     >
                         <option value="">Sort By</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry">
+                <label for="time-period">FILE FORMAT</label>
+                <div class="select">
+                    <select iscroll-stop-propagation  ng-model="scheduleParams.format_id" ng-options="format.id as format.value for format in schedule_formats">
+                       <option value="" >File Format</option>
                     </select>
                 </div>
             </div>
