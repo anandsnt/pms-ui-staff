@@ -21,7 +21,7 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'LAST_MARCH',
                 'LAST_APRIL',
                 'LAST_MAY',
-                'LAST_JUN',
+                'LAST_JUNE',
                 'LAST_JULY',
                 'LAST_AUGUST',
                 'LAST_SEPTEMBER',
