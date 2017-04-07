@@ -1,5 +1,5 @@
 <div id="rateManagerLeftPanel" ng-controller="rvRateManagerLeftSideFilterCtrl" class="filter-options"
-	 ng-click="hideCompanyCardSearchResults()" 
+	 ng-click="hideCompanyCardSearchResults()"
 	 ng-class="{'slide_right': isFilterVisible, 'slide_left': !isFilterVisible}" >
 
 	<a class="leftMenuHandle" ng-click="toggleFilterVisibility()"></a>
@@ -29,7 +29,7 @@
 										class="placeholder" value="{{orderBy.id}}">
 										{{orderByValueMappings[orderBy.value]}}
 								</option>
-								
+
 							</select>
 						</div>
 					</div>
@@ -41,7 +41,7 @@
 						<!-- Add .active on a selected filter -->
 							<li ng-click="switchTabAndCorrespondingActions('RATES')" ng-class="{'active': chosenTab ==='RATES'}">Rates</li>
 							<li ng-click="switchTabAndCorrespondingActions('RATE_TYPES')" ng-class="{'active': chosenTab ==='RATE_TYPES'}">Rate Types</li>
-							<li ng-click="switchTabAndCorrespondingActions('ROOM_TYPES')" ng-class="{'active': chosenTab ==='ROOM_TYPES'}">Room Types</li> 
+							<li ng-click="switchTabAndCorrespondingActions('ROOM_TYPES')" ng-class="{'active': chosenTab ==='ROOM_TYPES'}">Room Types</li>
 						</ul>
 					</div>
 
@@ -63,7 +63,7 @@
 							</div>
 							<div class="select">
 								<select id="rate" class="placeholder" iscroll-stop-propagation="" ng-model="selectedRateID" id="rmRate" ng-change="rateSelected()">
-								<!-- add selected="selected" to a selected rate 
+								<!-- add selected="selected" to a selected rate
 								if no one is selected, add it to placeholder-->
 									<option class="placeholder" value="">
 										Rates
@@ -153,7 +153,7 @@
 						<button ng-show="selectedRateTypesFromRTT.length > 2" ng-click="deleteAllSelectedRateTypesFromRTT()" class="button blank deleteall">Clear Selection</button>
 					</div>
 
-				</div> 
+				</div>
 			</div>
 		</div>
 	</div>
@@ -167,7 +167,7 @@
 
 			{LI Structure: ../_shared/autocomplete.html}
 			... repeat for each account
-			</ul> 
+			</ul>
 		</div>
 		<span class="arrow-left"></span>
 	</div>
@@ -188,7 +188,6 @@
 			<button class="button" type="button" ng-disabled="shouldDisableShowRateButton()" ng-click="clickedOnShowRates()" ng-class="{ 'grey': shouldDisableShowRateButton(), 'green': !shouldDisableShowRateButton() }">
                 {{getButtonText()}}
             </button>
-
 		</div>
 	</div>
 </div>
