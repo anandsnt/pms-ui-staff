@@ -19,6 +19,7 @@
                  otherwise show rate type name
             -->
             <span ng-show="selectedRateTypesFromRTT.length === 0">All Rate Types</span> 
+            <span ng-show="selectedRateTypesFromRTT.length > 1">1 Rate Type</span>
             <span ng-show="selectedRateTypesFromRTT.length > 1">{{selectedRateTypesFromRTT.length}} Rate Types</span>
         </li>
         
@@ -30,8 +31,9 @@
                  If Filter 'Rates' is active and nothing is selected add 'All Rates'
                  otherwise show rate name
             -->
-            <span>All Rates</span> 
-            <span ng-show="{{selectedRates.length > 1}}">{{selectedRates.length}} Rates</span>
+            <span ng-show="selectedRates.length === 0">All Rates</span> 
+            <span ng-show="selectedRates.length === 1">1 Rate</span>
+            <span ng-show="selectedRates.length > 1">{{selectedRates.length}} Rates</span>
         </li>
 
         <!-- show when all room types are selected -->

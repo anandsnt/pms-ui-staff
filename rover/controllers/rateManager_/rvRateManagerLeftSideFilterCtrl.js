@@ -265,36 +265,25 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
 	   * @return {[type]}     [description]
 	   */
 	  $scope.switchTabAndCorrespondingActions = (tab) => {
-
-  		$scope.chosenTab = tab;
+      $scope.chosenTab = tab;
   		refreshScroller();
   		scrollTo('.filters');
 
       switch(tab) {
 
         case 'RATES' : 
-              $scope.showAllRates = true;
-              $scope.showAllRateTypes = false;
-              $scope.showAllRoomTypes = false;
               $scope.deleteAllSelectedRateTypesFromRTT();
               break;
 
         case 'RATE_TYPES' : 
-              $scope.showAllRates = false;
-              $scope.showAllRateTypes = true;
-              $scope.showAllRoomTypes = false;
               $scope.deleteAllSelectedRates()
               $scope.deleteAllSelectedRateTypes();
               break;
 
         case 'ROOM_TYPES' : 
-              $scope.showAllRates = false;
-              $scope.showAllRateTypes = false;
-              $scope.showAllRoomTypes = true;
               $scope.deleteAllSelectedValues();
               break;
       }
-
 	  };
 
 	  $scope.getButtonText = function() {
@@ -390,8 +379,6 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         }
 
         clearAllRatesAllRoomTypesAllRateTypes();
-        
-        $scope.showAllRates = true;
         
         $scope.chosenTab = 'RATES';
 
@@ -549,10 +536,6 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
 
           chosenTab: $scope.chosenTab,
 
-          showAllRates: $scope.showAllRates,
-          showAllRateTypes: $scope.showAllRateTypes,
-          showAllRoomTypes: $scope.showAllRoomTypes,
-
           selectedRateTypes: selectedRateTypeList,
           selectedRates: $scope.selectedRates,
 
@@ -587,10 +570,6 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
 
         //tab selection
         $scope.chosenTab = 'RATES';
-
-        $scope.showAllRates = true;
-        $scope.showAllRateTypes = false;
-        $scope.showAllRoomTypes = false;
 
         //rate type related
         $scope.rateTypes = []; //will be filled from API once we get to th = view

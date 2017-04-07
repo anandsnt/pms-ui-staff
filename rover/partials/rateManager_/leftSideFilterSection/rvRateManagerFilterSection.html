@@ -185,8 +185,9 @@
 		- 'Show Selected Rate Types' - Filter 'Rate Types' is active & rate types are selected
 		- 'Show All Room Types' - Filter 'Room Types' is active
 		-->
-			<button class="button" type="button" ng-click="clickedOnShowRates()" ng-class="{ 'grey': shouldDisableShowRateButton(), 'green': !shouldDisableShowRateButton() }">{{getButtonText()}}</button>
-
+			<button class="button" type="button" ng-disabled="shouldDisableShowRateButton()" ng-click="clickedOnShowRates()" ng-class="{ 'grey': shouldDisableShowRateButton(), 'green': !shouldDisableShowRateButton() }">
+				{{getButtonText()}}
+			</button>
 		</div>
 	</div>
 </div>
