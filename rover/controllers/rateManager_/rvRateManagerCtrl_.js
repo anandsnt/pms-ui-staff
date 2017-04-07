@@ -2248,7 +2248,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 }
             }
 
-            if (chosenTab === 'RATES') {
+            if ($scope.isRateView) {
                 if (initiatedFromLeftFilter) {
                     let allRate = {
                         ...lastSelectedFilterValues[activeFilterIndex].allRate,
@@ -2302,13 +2302,13 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                     fetchDailyRates(newFilterValues);
                 }
             }
-            else if (chosenTab === 'ROOM_TYPES') {
+            else if ($scope.isRoomTypeView) {
                 $scope.isRateView = false;
                 $scope.isRateTypeView = false;
                 $scope.isRoomTypeView = true;
                 fetchRoomTypeAndRestrictions(newFilterValues);
             }
-            else if (chosenTab === 'RATE_TYPES') {
+            else if ($scope.isRateTypeView) {
 
                 if (initiatedFromLeftFilter) {
                     let allRateTypes = {
