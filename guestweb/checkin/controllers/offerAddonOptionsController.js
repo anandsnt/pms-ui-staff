@@ -184,7 +184,7 @@
 			$scope.isLoading = false;
 		};
 
-		var getAddonAdminSettings =  function(){
+		var getAddonAdminSettings = function() {
 			checkinAddonService.getAddonAdminSettings().then(function(response) {
 				amountTypesLabels = response.amount_types;
 				postTypeLabels = response.post_types;

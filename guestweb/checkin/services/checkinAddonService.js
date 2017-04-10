@@ -88,6 +88,7 @@
 			var params = {
 				'reservation_id': $rootScope.reservationID
 			};
+			
 			$http.get(url, {
 					params: params
 				}).success(function(response) {
