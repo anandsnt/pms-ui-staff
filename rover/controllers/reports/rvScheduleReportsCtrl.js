@@ -566,6 +566,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
                 scheduleTimePeriods = payload.scheduleTimePeriods;
                 $scope.scheduleFrequency = payload.scheduleFrequency;
+                $scope.scheduleFormat = payload.scheduleFormat;
                 $scope.$parent.$parent.schedulesList = [];
                 $scope.$parent.$parent.schedulableReports = [];
 
@@ -930,6 +931,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.$parent.$parent.scheduleReport = [];
             $scope.scheduleTimePeriods = [];
             $scope.scheduleFrequency = [];
+            $scope.scheduleFormat = [];
             $scope.scheduleFreqType = [];
             $scope.emailList = [];
 

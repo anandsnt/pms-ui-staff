@@ -235,6 +235,9 @@ angular.module('sntRover').service('RVreportsSrv', [
 			subSrv.fetchScheduleFrequency(exportOnly)
 				.then( success.bind(null, 'scheduleFrequency'), failed.bind(null, 'scheduleFrequency', []) );
 
+			subSrv.fetchScheduleFormat(exportOnly)
+				.then( success.bind(null, 'scheduleFormat'), failed.bind(null, 'scheduleFormat', []) );
+
 			subSrv.fetchTimePeriods()
 				.then( success.bind(null, 'scheduleTimePeriods'), failed.bind(null, 'scheduleTimePeriods', []) );
 
