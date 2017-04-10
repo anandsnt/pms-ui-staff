@@ -208,7 +208,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 		function schedulePayloadGenerator (type) {
 			var deferred = $q.defer(),
 				payload = {},
-				apiCount = type === SCHEDULE_TYPES.SCHEDULE_REPORT ? 4 : 6,
+				apiCount = type === SCHEDULE_TYPES.SCHEDULE_REPORT ? 5 : 6,
 				exportOnly = type === SCHEDULE_TYPES.EXPORT_SCHEDULE ? true : false;
 
 			var shallWeResolve = function() {
@@ -235,7 +235,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 			subSrv.fetchScheduleFrequency(exportOnly)
 				.then( success.bind(null, 'scheduleFrequency'), failed.bind(null, 'scheduleFrequency', []) );
 
-			subSrv.fetchScheduleFormat(exportOnly)
+			subSrv.fetchScheduleFormat()
 				.then( success.bind(null, 'scheduleFormat'), failed.bind(null, 'scheduleFormat', []) );
 
 			subSrv.fetchTimePeriods()
