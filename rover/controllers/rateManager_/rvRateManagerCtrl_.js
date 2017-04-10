@@ -783,6 +783,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             $scope.isRateTypeView = true;
             $scope.isRoomTypeView = false;
 
+            cachedRateList = [];
+            cachedRateAndRestrictionResponseData = [];
+
             lastSelectedFilterValues.splice(activeFilterIndex, 1);
             activeFilterIndex = activeFilterIndex - 1;
 
