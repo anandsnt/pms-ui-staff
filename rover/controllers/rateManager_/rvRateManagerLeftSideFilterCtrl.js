@@ -66,7 +66,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        * to close filter section from somewhere
        */
       $scope.$on(rvRateManagerEventConstants.CLOSE_FILTER_SECTION, function(event) {
-        $scope.isFilterVisible = false; 
+        $scope.isFilterVisible = false;
       });
 
       /**
@@ -127,7 +127,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         $scope.selectedRateTypes.splice(indexToDelete, 1);
 
         $scope.selectedRateTypeID = '';
-        
+
         //deleting the node will change the height
         refreshScroller();
       };
@@ -141,7 +141,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         $scope.selectedRateTypesFromRTT.splice(indexToDelete, 1);
 
         $scope.selectedRateTypeIDFromRTT = '';
-        
+
         //deleting the node will change the height
         refreshScroller();
       };
@@ -270,17 +270,16 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
   		scrollTo('.filters');
 
       switch(tab) {
-
-        case 'RATES' : 
+        case 'RATES' :
               $scope.deleteAllSelectedRateTypesFromRTT();
               break;
 
-        case 'RATE_TYPES' : 
+        case 'RATE_TYPES' :
               $scope.deleteAllSelectedRates()
               $scope.deleteAllSelectedRateTypes();
               break;
 
-        case 'ROOM_TYPES' : 
+        case 'ROOM_TYPES' :
               $scope.deleteAllSelectedValues();
               break;
       }
@@ -291,7 +290,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
 
       switch($scope.chosenTab) {
 
-        case 'RATES' : 
+        case 'RATES' :
               if ($scope.selectedRates.length === 0 && $scope.selectedCards.length === 0) {
                 buttonText = 'Show All Rates';
               }
@@ -303,7 +302,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
               }
               break;
 
-        case 'RATE_TYPES' : 
+        case 'RATE_TYPES' :
               if ($scope.selectedRateTypesFromRTT.length === 0 ) {
                 buttonText = 'Show All Rate Types';
               }
@@ -312,7 +311,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
               }
               break;
 
-        case 'ROOM_TYPES' : 
+        case 'ROOM_TYPES' :
               buttonText = 'Show All Room Types';
               break;
 
@@ -340,7 +339,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         //if there is already two date choosed
         if ($scope.selectedDateRange !== '') {
           dataForCalendar.fromDate = new tzIndependentDate($scope.fromDate);
-          dataForCalendar.toDate = new tzIndependentDate($scope.toDate);         
+          dataForCalendar.toDate = new tzIndependentDate($scope.toDate);
         }
 
         ngDialog.open({
@@ -361,7 +360,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         $scope.deleteAllSelectedRateTypesFromRTT();
 
         //deleting the node will change the height
-        refreshScroller();        
+        refreshScroller();
       }
 
       /**
@@ -370,7 +369,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       $scope.cardSelected = (event, ui) => {
         if (!$scope.selectedCards.length) {
           $scope.selectedCards.push(ui.item);
-        } 
+        }
         else {
           let selectedCardIDs = _.pluck($scope.selectedCards, 'id');
           if (selectedCardIDs.indexOf(ui.item.id) < 0) {
@@ -379,7 +378,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         }
 
         clearAllRatesAllRoomTypesAllRateTypes();
-        
+
         $scope.chosenTab = 'RATES';
 
         runDigestCycle();
@@ -430,7 +429,6 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         if (!$scope.$$phase) {
           $scope.$digest();
         }
-        console.log("runDigestCycle");
       };
 
       /**
@@ -558,7 +556,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         $scope.fromDate = null;
         $scope.toDate = null;
         $scope.selectedDateRange = '';
- 
+
         //order by values
         $scope.orderBySelectedValue = null; //will be assigning to the preferred from the admin
         $scope.orderByValues = []; //will be filled from API
@@ -601,7 +599,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         initializeDataModelForMe();
 
         fillAndSetRateRateTypesAndSortOptions();
-        
+
         refreshScroller();
 
       })();

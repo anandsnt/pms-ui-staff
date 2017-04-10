@@ -1154,7 +1154,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                         cachedData.response.commonRestrictions = response.commonRestrictions;
                     });
                 }
-                console.log("reached hherrre")
+
                 cachedRateAndRestrictionResponseData.push({
                     ...dateParams,
                     page: lastSelectedFilterValues[activeFilterIndex].allRate.currentPage,
@@ -1592,7 +1592,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
             var data = {
                 mode: rvRateManagerPopUpConstants.RM_MULTIPLE_RATE_TYPE_RESTRICTION_MODE,
-                // rateType: _.findWhere(cachedRateTypeList, { id: successCallBackParameters.rateTypeID }),
+                rateType: lastSelectedFilterValues[activeFilterIndex].selectedRateTypes,
                 date: successCallBackParameters.date,
                 rateAndRestrictions,
                 restrictionData,
@@ -2251,7 +2251,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 }
             }
 
-            if (chosenTab === 'RATES') {
+            if ($scope.isRateView) {
                 if (initiatedFromLeftFilter) {
                     let allRate = {
                         ...lastSelectedFilterValues[activeFilterIndex].allRate,
@@ -2305,13 +2305,13 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                     fetchDailyRates(newFilterValues);
                 }
             }
-            else if (chosenTab === 'ROOM_TYPES') {
+            else if ($scope.isRoomTypeView) {
                 $scope.isRateView = false;
                 $scope.isRateTypeView = false;
                 $scope.isRoomTypeView = true;
                 fetchRoomTypeAndRestrictions(newFilterValues);
             }
-            else if (chosenTab === 'RATE_TYPES') {
+            else if ($scope.isRateTypeView) {
 
                 if (initiatedFromLeftFilter) {
                     let allRateTypes = {
