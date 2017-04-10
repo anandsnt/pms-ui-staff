@@ -26,7 +26,7 @@
                   <input type="text" value="{{selectedAddonCount}}" disabled>
                   <button type="button" class="button" click-touch="incrementAddonQtyForNonRoomFlatType()" ng-class="{'disabled':selectedAddonCount ===1}" ng-disabled="selectedAddonCount === 1">+</button>
                </div>
-               <button type="button" data-action="popup" class="button transparent" click-touch="addOnDoneButtonClicked(selectedAddon)" editable-text="DONE">{{'DONE' |translate}}</button>
+               <button type="button" data-action="popup" class="button transparent" click-touch="addOnDoneButtonClicked(selectedAddon)" ng-class="{'transparent text-red':selectedAddonCount === 0 && selectedAddon.is_selected}" editable-text="DONE">{{'DONE' |translate}}</button>
             </div>
          </div>
       </div>
@@ -97,7 +97,7 @@
                         </div>
                         <div> 
                            <br>
-                           <button type="button" data-action="popup" class="button transparent" click-touch="addOnDoneButtonClicked(selectedAddon)" editable-text="DONE" style="margin:0 auto;">{{'DONE' |translate}}</button>
+                           <button type="button" data-action="popup" class="button transparent" click-touch="addOnDoneButtonClicked(selectedAddon)" editable-text="DONE" style="margin:0 auto;" ng-class="{'transparent text-red':selectedAddonCount === 0 && selectedAddon.is_selected}">{{'DONE' |translate}}</button>
                         </div>
                      </div>
                   </div>

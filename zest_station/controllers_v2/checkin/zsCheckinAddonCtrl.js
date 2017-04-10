@@ -313,18 +313,20 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		};
 
 		$scope.addonPurchaseCompleted = function() {
-			// check if any one of the addons were purchased
-			var purchasedAddons = _.filter($scope.addonsList, function(addon) {
-				return addon.is_selected;
-			});
+			// for now we will not go back to reservation details page.
 
-			if (purchasedAddons.length > 0) {
-				$scope.selectedReservation.skipAddon = true;
-				zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
-				$state.go('zest_station.checkInReservationDetails');
-			} else {
+			// check if any one of the addons were purchased
+			// var purchasedAddons = _.filter($scope.addonsList, function(addon) {
+			// 	return addon.is_selected;
+			// });
+
+			// if (purchasedAddons.length > 0) {
+			// 	$scope.selectedReservation.skipAddon = true;
+			// 	zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
+			// 	$state.go('zest_station.checkInReservationDetails');
+			// } else {
 				navigateToTermsPage();
-			}
+			// }
 		};
 
 		var onBackButtonClicked = function() {
