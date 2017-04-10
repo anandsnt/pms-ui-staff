@@ -1,5 +1,5 @@
-admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnlineSetupValues', 'adExactOnlineSetupSrv', 'dateFilter', 'journalsList', 'balancingAccounts', 'endPoints',
-    function($scope, $rootScope, exactOnlineSetupValues, adExactOnlineSetupSrv, dateFilter, journalsList, balancingAccounts, endPoints) {
+admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnlineSetupValues', 'adExactOnlineSetupSrv', 'dateFilter', 'endPoints',
+    function($scope, $rootScope, exactOnlineSetupValues, adExactOnlineSetupSrv, dateFilter, endPoints) {
 
         BaseCtrl.call(this, $scope);
 
@@ -74,6 +74,7 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
             var options = {
                 params: {
                     enabled: $scope.exactOnlineSetup.enabled,
+                    authorized: false,
                     journal_code: $scope.exactOnlineSetup.journal_code,
                     balancing_account_code: $scope.exactOnlineSetup.balancing_account_code,
                     endpoint: $scope.exactOnlineSetup.endpoint
@@ -108,8 +109,18 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
             }
 
             $scope.exactOnlineSetup = exactOnlineSetupValues;
-            $scope.journals = journalsList;
-            $scope.balancingAccounts = balancingAccounts;
+
+            $scope.callAPI(adExactOnlineSetupSrv.fetchJournalsList,{
+                successCallBack: function(journalsList) {
+                    $scope.journals = journalsList;
+                }
+            });
+             $scope.callAPI(adExactOnlineSetupSrv.fetchBalancingAccounts,{
+                successCallBack: function(balancingAccounts) {
+                    $scope.balancingAccounts = balancingAccounts;
+                }
+            });
+
             $scope.endPoints = endPoints;
         }());
     }]);
