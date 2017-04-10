@@ -51,15 +51,16 @@
                             styleclass="full-width"></ad-textbox>
             </fieldset>
             <fieldset class="holder right">
-                <ad-dropdown-name savemodel="mapping.ext_value"
-                                  ng-if="extValues.length > 0"
-                                  valueproperty="name"
-                                  property="description"
-                                  label-in-drop-down="Select Value"
-                                  list="extValues"
-                                  label="{{'EXTERNAL_VALUE'| translate}}"
-                                  div-class="full-width">
-                </ad-dropdown-name>
+                <div class='entry full-width' ng-if="extValues.length > 0">
+                    <label>{{'EXTERNAL_VALUE'| translate}}</label>
+                    <div class='select'>
+                        <select ng-model='mapping.ext_value'>
+                            <option ng-repeat='extValue in extValues' value='{{extValue.name}}'>
+                                {{extValue.description}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
                 <ad-textbox inputtype="text"
                             ng-if="extValues.length === 0"
                             value="mapping.ext_value"
