@@ -89,7 +89,6 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			$('#upgrades').css({
 				"height": "calc(100% - 230px)"
 			});
-			console.log($scope.viewableAddons);
 		};
 
 		$scope.viewNextPage = function() {
@@ -208,18 +207,9 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 					addAddonToReservation(selectedAddon);
 				}
 			};
-			// 	$scope.showAddonPopup = false;
-			// }
 		};
-		// // ADD/REMOVE in single addon and multi addon list
-		// $scope.addRemoveAddOn = function(selectedAddon) {
-		// 	if (!selectedAddon.is_selected) {
-		// 		addAddonToReservation(selectedAddon);
-		// 	} else {
-		// 		removeAddonFromReservation(selectedAddon);
-		// 	}
-		// };
-		// one addon Selected from the list
+
+		// On addon Selected from the list
 		$scope.addonSelected = function(addon) {
 			$scope.selectedAddonQtyBeforeActions = angular.copy(addon.quantity);
 			$scope.selectedAddon = addon;
@@ -228,6 +218,43 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		};
 		$scope.closePopup = function() {
 			$scope.showAddonPopup = false;
+		};
+
+		var fetchHotelAddonLabels = function() {
+			var fetchAddonLabelSuccess = function(response) {
+				var amountTypesLabels = response.amount_types;
+				var postTypeLabels = response.post_types;
+				_.each($scope.addonsList, function(addon) {
+					addon.amount_type_label = '';
+					_.each(amountTypesLabels, function(amountTypeLabel) {
+						if (addon.amount_type === amountTypeLabel.description && amountTypeLabel.label !== '') {
+							addon.amount_type_label = amountTypeLabel.label;
+						}
+					});
+					// if no custom label is present, set to amount type
+					addon.amount_type_label = (addon.amount_type_label === '') ? addon.amount_type : addon.amount_type_label;
+
+					addon.post_type_label = '';
+					_.each(postTypeLabels, function(postTypeLabel) {
+						if (addon.post_type === postTypeLabel.description && postTypeLabel.label !== '') {
+							addon.post_type_label = postTypeLabel.label;
+						}
+					});
+					// if no custom label is present, set to post type
+					addon.post_type_label = (addon.post_type_label === '') ? addon.post_type : addon.post_type_label;
+				});
+				setPageNumberDetails();
+				$scope.loadingCompleted = true;
+				$scope.showPageNumberDetails = true;
+			};
+
+			$scope.callAPI(zsCheckinSrv.fetchHotelAddonLabels, {
+				params: {
+					reservation_id: $scope.selectedReservation.id
+				},
+				'successCallBack': fetchAddonLabelSuccess,
+				'failureCallBack': generalError
+			});
 		};
 
 		var fetchAddons = function() {
@@ -270,12 +297,10 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 						$scope.selectedAddonCount = 0;
 						$scope.selectedAddonQtyBeforeActions = 0;
 					}
-					setPageNumberDetails();
+					fetchHotelAddonLabels();
 				} else {
 					navigateToTermsPage();
 				}
-				$scope.loadingCompleted = true;
-				$scope.showPageNumberDetails = true;
 			};
 
 			$scope.callAPI(zsCheckinSrv.fetchAddons, {
@@ -286,18 +311,6 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				'failureCallBack': generalError
 			});
 		};
-		// $scope.getAmountTotal = function() {
-		// 	var totalAmount = 0;
-
-		// 	_.each($scope.addonsList, function(addon) {
-		// 		if (addon.is_selected) {
-		// 			totalAmount = totalAmount + addon.amount;
-		// 		} else if (addon.quantity > 0) {
-		// 			totalAmount = totalAmount + addon.amount * addon.quantity;
-		// 		}
-		// 	});
-		// 	return totalAmount;
-		// };
 
 		$scope.addonPurchaseCompleted = function() {
 			// check if any one of the addons were purchased
@@ -345,7 +358,6 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			// back button action
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
 			$scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
-			console.log($scope.selectedReservation);
 			findSelectedLanguageId();
 
 		}());

@@ -11,7 +11,7 @@
          <div class="price">
             <div class="amount">
                <strong>+{{zestStationData.currencySymbol}}{{selectedAddon.amount}}</strong>
-               <small><span ng-show="upsellDisplayOrderAmountFirst">{{selectedAddon.amount_type}}&nbsp;{{selectedAddon.post_type}}&nbsp;</span><span ng-hide="upsellDisplayOrderAmountFirst">{{selectedAddon.post_type}}&nbsp;{{selectedAddon.amount_type}}&nbsp;</span><span ng-show="selectedAddon.display_suffix">{{selectedAddon.suffix_label}}</span></small>
+               <small><span ng-show="upsellDisplayOrderAmountFirst">{{selectedAddon.amount_type_label}}&nbsp;{{selectedAddon.post_type_label}}&nbsp;</span><span ng-hide="upsellDisplayOrderAmountFirst">{{selectedAddon.post_type_label}}&nbsp;{{selectedAddon.amount_type_label}}&nbsp;</span><span ng-show="selectedAddon.display_suffix">{{selectedAddon.suffix_label}}</span></small>
             </div>
             <div class="action">
                <div class="input-group" ng-show="isAddonFlatOrRoomType(selectedAddon)">
@@ -77,7 +77,7 @@
                   <div class="price">
                      <div class="amount">
                         <strong>+{{zestStationData.currencySymbol}}{{selectedAddon.amount}}</strong>
-                        <small><span ng-show="upsellDisplayOrderAmountFirst">{{selectedAddon.amount_type}}&nbsp;{{selectedAddon.post_type}}&nbsp;</span><span ng-hide="upsellDisplayOrderAmountFirst">{{selectedAddon.post_type}}&nbsp;{{selectedAddon.amount_type}}&nbsp;</span><span ng-show="selectedAddon.display_suffix">{{selectedAddon.suffix_label}}</span></small>
+                        <small><span ng-show="upsellDisplayOrderAmountFirst">{{selectedAddon.amount_type_label}}&nbsp;{{selectedAddon.post_type_label}}&nbsp;</span><span ng-hide="upsellDisplayOrderAmountFirst">{{selectedAddon.post_type_label}}&nbsp;{{selectedAddon.amount_type_label}}&nbsp;</span><span ng-show="selectedAddon.display_suffix">{{selectedAddon.suffix_label}}</span></small>
                      </div>
                      <div class="action">
                         <!-- show this instead of 'add/remove' button if quantity needed -->

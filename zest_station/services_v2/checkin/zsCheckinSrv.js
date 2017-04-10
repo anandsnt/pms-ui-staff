@@ -438,6 +438,18 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+        this.fetchHotelAddonLabels = function(param) {
+            var deferred = $q.defer();
+            var url = '/api/upsell_addons_setups';
+
+            zsBaseWebSrv.getJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
 
     }
 ]);

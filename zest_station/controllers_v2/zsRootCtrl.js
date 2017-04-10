@@ -601,7 +601,7 @@ sntZestStation.controller('zsRootCtrl', [
                     qr_arrow: iconBasePath + '/qr-arrow.svg',
                     clear_icon: iconBasePath + '/x.svg',
                     left_arrow_icon: commonIconsPath + '/arrow-left.svg',
-                    right_arrow_icon: commonIconsPath + '/arrow-right.svg'
+                    right_arrow_icon: commonIconsPath + '/arrow-right.svg',
                     scanpassport: iconBasePath + ($scope.zestStationData.scan_passport_file_uploaded.length > 0) ? $scope.zestStationData.scan_passport_file_uploaded : ''
                 }
             };
