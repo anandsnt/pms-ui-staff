@@ -440,9 +440,11 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             $log.log(':: onSuccessFetchRemainingAuth :: ', response);
             // we get a 200 - status with failed if unsuccessful...
             if (response.status !== 'success') {
+                $scope.trackEvent('Error', 'cc_swipe');
                 onSwipeError(response);
 
             } else {
+                $scope.trackEvent('Success', 'cc_swipe');
 
                 var amount, needToAuthorizeAtCheckin;
 

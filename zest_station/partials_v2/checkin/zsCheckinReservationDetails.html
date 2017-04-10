@@ -39,8 +39,10 @@
                             {{zestStationData.isHourlyRateOn ? 'HOURLY_RATE' : 'AVG_DAILY' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.avg_daily_rate | number :2}}</span>
                         </li>
                         <li ng-hide="isRateSuppressed()" ng-repeat="addon in selectedReservation.addons">
-                            {{addon.name}} ({{addon.addon_count}})
-                            <span ng-show='{{!addon.is_inclusive}}'>{{zestStationData.currencySymbol}}{{addon.amount | number :2}}</span>
+                            {{addon.name}} 
+                            <!-- hide the addon qty and addon amount till the calculations are done in API -->
+                           <!--  ({{addon.addon_count}}) -->
+                            <span ng-show='{{!addon.is_inclusive}} && false'>{{zestStationData.currencySymbol}}{{addon.amount | number :2}}</span>
                             <span ng-show='{{addon.is_inclusive}}'>
                                 <text editable-text="INCLUDED"> {{'INCLUDED' |translate}}</text>
                             </span>

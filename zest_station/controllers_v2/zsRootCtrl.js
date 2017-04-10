@@ -115,12 +115,21 @@ sntZestStation.controller('zsRootCtrl', [
 		 * @return {[type]} [description]
 		 */
         $scope.clickedOnBackButton = function() {
+            var currentState = $state.current.name;
+            
+            $scope.trackEvent(currentState, 'clicked_back_button');
             $scope.$broadcast(zsEventConstants.CLICKED_ON_BACK_BUTTON);
         };
         $scope.clickedOnCloseButton = function() {
+            var currentState = $state.current.name;
+
+            $scope.trackEvent(currentState, 'clicked_close_button');
             $state.go('zest_station.home');
         };
         $scope.talkToStaff = function() {
+            var currentState = $state.current.name;
+
+            $scope.trackEvent(currentState, 'clicked_talk_to_staff');
             $state.go('zest_station.speakToStaff');
         };
 
@@ -388,6 +397,10 @@ sntZestStation.controller('zsRootCtrl', [
                 description = view.description ? view.description.toLowerCase() : '',
                 label = view.label ? view.label.toLowerCase() : '';
 
+            // to restrict some jumper views until functionality is completed
+            if (view.sntOnly && $scope.zestStationData.theme !== 'snt') {
+                return false;
+            }
 
             if (viewJumpFilter === '' || label.indexOf(viewJumpFilter) !== -1 || description.indexOf(viewJumpFilter) !== -1) {
                 return true;
@@ -550,6 +563,9 @@ sntZestStation.controller('zsRootCtrl', [
             if ($scope.zestStationData.key_create_file_uploaded.indexOf('/logo.png') !== -1) {
                 $scope.zestStationData.key_create_file_uploaded = '';
             }
+            if (typeof $scope.zestStationData.scan_passport_file_uploaded === 'undefined') {
+                $scope.zestStationData.scan_passport_file_uploaded = '';
+            }
 
             $scope.icons = {
                 url: {
@@ -582,9 +598,18 @@ sntZestStation.controller('zsRootCtrl', [
                     logo: iconBasePath + '/print_logo.svg',
                     watch: iconBasePath + '/watch.svg',
                     qr_arrow: iconBasePath + '/qr-arrow.svg',
-                    clear_icon: iconBasePath + '/x.svg'
+                    clear_icon: iconBasePath + '/x.svg',
+                    scanpassport: iconBasePath + ($scope.zestStationData.scan_passport_file_uploaded.length > 0) ? $scope.zestStationData.scan_passport_file_uploaded : ''
+
                 }
             };
+
+            if ($scope.icons.url.scanpassport.length > 0) {
+                $scope.scanpassport_image_uploaded = true;
+            } else {
+                $scope.scanpassport_image_uploaded = false;
+            }
+
             if (useCommonIcons) {
                 $scope.icons.url.qr_noarrow = iconsPath + '/key.svg';
             }
@@ -805,6 +830,8 @@ sntZestStation.controller('zsRootCtrl', [
                     if (userInActivityTimeInSeconds >= idleToHomeTime && currentState !== 'zest_station.checkInSignature' && currentState !== 'zest_station.checkInCardSwipe') {
                         $scope.hideKeyboardIfUp();
 
+                        $scope.trackEvent(currentState, 'timeout_to_home');
+
                         $state.go('zest_station.home');
                         $scope.runDigestCycle();
                     }
@@ -899,6 +926,12 @@ sntZestStation.controller('zsRootCtrl', [
             $log.info('\ngoing to----->' + from.name);
             $log.info('to stateparams' + toParams);
             $log.info(toParams);
+            if (to.name === 'zest_station.home' || to.name === 'zest_station.outOfService') {
+                if ($scope.trackEvent) {
+                    $scope.trackEvent('health_check', 'status_update', from.name, to.name);
+                }
+                
+            }
             $log.info('going to----->' + to.name);
             $scope.resetTime();
         });
@@ -1467,6 +1500,7 @@ sntZestStation.controller('zsRootCtrl', [
             $('body').css('display', 'none'); // this will hide contents until svg logos are loaded
 			// call Zest station settings API
             $scope.zestStationData = zestStationSettings;
+            $scope.zestStationData.check_in_collect_passport = false;// TODO: link with admin setting 
             $scope.zestStationData.makingKeyInProgress = false;
             $scope.zestStationData.qrCodeScanning = false;
             $scope.zestStationData.demoModeEnabled = 'false'; // demo mode for hitech, only used in snt-theme
