@@ -21,13 +21,13 @@
         <div class="col-md-2">
         </div>
     </div>
-    <div class="row" ng-hide="isLoading || netWorkError || !searchMode">
+    <div class="row" ng-hide="isLoading || netWorkError || !searchMode || isCalender">
         <div class="col-md-3"></div>
         <div class="col-md-6 top-spacing sm-no-top-spacing">
             <!-- default main text -->
-            <p class="main-text" ng-if="!screenCMSDetails.title">Find Your Reservation</p>
+            <p class="main-text text-left" ng-if="!screenCMSDetails.title">Find Your Reservation</p>
             <!-- default sub  text -->
-            <p class="sub-main-text" ng-if="!screenCMSDetails.description">Please enter your last name and either your confirmation number OR departure date:</p>
+            <p class="sub-main-text text-left" ng-if="!screenCMSDetails.description">Please enter your last name and either your confirmation number OR departure date:</p>
             <!-- fields -->
             <div class="section-container">
                 <form>
@@ -43,7 +43,7 @@
                     <p class="pull-left sub-text margin-top-10">DEPARTURE DATE</p>
                     <input class="input-field padding-2 calendar-button" ng-click="showCalender()" ng-model="departureDate" placeholder="{{dateFormatPlaceholder}}" readonly></input>
                     <!-- Submit button -->
-                    <input type="submit" class="btn btn-template margin-top-20 padding-3" ng-click="nextButtonClicked()" value="Continue" />
+                    <input type="submit" class="btn btn-template margin-top-20 padding-3" ng-click="nextButtonClicked()" value="NEXT" />
                 </form>
             </div>
         </div>
@@ -91,7 +91,7 @@
                     <p class="sub-text margin-top-10">CONFIRMATION NUMBER</p>
                     <input type="text" class="input-field padding-2" ng-model="confirmationNumber"></input>
                     <br/>
-                    <input type="submit" class="btn btn-template margin-top-20 padding-3" ng-click="nextButtonClicked()" value="Continue" />
+                    <input type="submit" class="btn btn-template margin-top-20 padding-3" ng-click="nextButtonClicked()" value="NEXT" />
                 </form>
             </div>
         </div>
