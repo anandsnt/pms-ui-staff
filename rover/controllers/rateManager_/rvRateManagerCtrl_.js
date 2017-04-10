@@ -1592,7 +1592,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
             var data = {
                 mode: rvRateManagerPopUpConstants.RM_MULTIPLE_RATE_TYPE_RESTRICTION_MODE,
-                // rateType: _.findWhere(cachedRateTypeList, { id: successCallBackParameters.rateTypeID }),
+                rateType: lastSelectedFilterValues[activeFilterIndex].selectedRateTypes,
                 date: successCallBackParameters.date,
                 rateAndRestrictions,
                 restrictionData,
