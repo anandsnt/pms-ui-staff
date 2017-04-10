@@ -1154,7 +1154,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                         cachedData.response.commonRestrictions = response.commonRestrictions;
                     });
                 }
-                console.log("reached hherrre")
+
                 cachedRateAndRestrictionResponseData.push({
                     ...dateParams,
                     page: lastSelectedFilterValues[activeFilterIndex].allRate.currentPage,
