@@ -570,6 +570,13 @@
    "GID_ADMIN_LOGIN_HEADER": "Staff Login",
 
    "GID_WAIT_HEADER": "Please Wait",
-   "GID_WAIT_SUB": "A staff member will be with you soon to verify your passport information."
+   "GID_WAIT_SUB": "A staff member will be with you soon to verify your passport information.",
+
+
+   "GID_ADMIN_VERIFY_HEADER": "Verify Passport",
+   "GID_ADMIN_VERIFY_SUB_HEADER": "Reservation Details",
+
+
+   "GATE_ERROR_CLOSE": "Ok"
 
 }

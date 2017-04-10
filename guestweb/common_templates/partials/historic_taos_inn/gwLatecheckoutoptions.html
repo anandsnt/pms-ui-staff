@@ -40,7 +40,7 @@
         <div class="col-md-2"></div>
         <!-- left side -->
         <div class="col-md-4 top-spacing">
-            <p class="main-text text-left">Please choose your new<br>check out time:</p>
+            <p class="main-text">Select your new<br>check out time:</p>
         </div>
        <!-- right side -->
         <div class="col-md-5 top-spacing mob-no-padding">
@@ -50,22 +50,22 @@
                         <div class="circle-bg">
                             <text x="40%" y="65%" fill="white">
                                 <tspan class="time">
-                                    {{ charge.time | number }} {{ charge.ap }}
+                                    {{ charge.time | number }}
                                 </tspan>
-                                <!-- <tspan class="ap">
+                                <tspan class="ap">
                                      {{ charge.ap }}
-                                </tspan> -->
+                                </tspan>
                             </text>
                         </div>
                     </div>
                     <div class="row late-charge">
-                    <span class="for">for</span><br/>
+                    <span class="for">for  </span>
                     <span class="amount">{{currencySymbol}}{{charge.amount| number:0}}</span>
                 </div>
              </a>
             </div>
             <div class=" row margin-top-10">
-             <a class="no-thanks" ui-sref="checkOutOptions">No, thank you.</a>
+             <a class="no-thanks" ui-sref="checkOutOptions">NO, THANKS</a>
             </div>
         </div>  
         <div class="col-md-1"></div>               
