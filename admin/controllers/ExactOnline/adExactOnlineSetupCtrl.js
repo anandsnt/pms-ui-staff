@@ -110,12 +110,12 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
 
             $scope.exactOnlineSetup = exactOnlineSetupValues;
 
-            $scope.callAPI(adExactOnlineSetupSrv.fetchJournalsList,{
+            $scope.callAPI(adExactOnlineSetupSrv.fetchJournalsList, {
                 successCallBack: function(journalsList) {
                     $scope.journals = journalsList;
                 }
             });
-             $scope.callAPI(adExactOnlineSetupSrv.fetchBalancingAccounts,{
+            $scope.callAPI(adExactOnlineSetupSrv.fetchBalancingAccounts, {
                 successCallBack: function(balancingAccounts) {
                     $scope.balancingAccounts = balancingAccounts;
                 }
