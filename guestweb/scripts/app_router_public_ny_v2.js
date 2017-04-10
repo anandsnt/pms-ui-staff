@@ -20,7 +20,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
         title: 'Room verification'
     }).state('ccVerification', {
         url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
-        templateUrl: '/assets/common_templates/partials/checkout/gwCcEntry.html',
+        templateUrl: '/assets/common_templates/partials/public_ny_v2/gwCcEntry.html',
         controller: 'ccVerificationViewController',
         title: 'CC verification'
     });
@@ -85,7 +85,7 @@ state('checkinUpgrade', {
 }).
 state('checkinKeys', {
     url: '/checkinKeys',
-    templateUrl: '/assets/common_templates/partials/checkin/gwNewCheckinFinal.html',
+    templateUrl: '/assets/common_templates/partials/public_ny_v2/gwNewCheckinFinal.html',
     controller: 'checkInKeysController',
     title: 'Keys - Check-in'
 })
@@ -116,7 +116,7 @@ state('checkinKeys', {
         title: 'Status - Pre Check-In'
     }).state('checkinCcVerification', {
         url: '/checkinCcVerification',
-        templateUrl: '/assets/common_templates/partials/checkin/gwCheckinCCAddition.html',
+        templateUrl: '/assets/common_templates/partials/public_ny_v2/gwCheckinCCAddition.html',
         controller: 'checkinCcVerificationController',
         title: 'CC verification'
     });
@@ -140,7 +140,7 @@ state('checkinKeys', {
 })
 .state('depositPayment', {
     url: '/depositPayment',
-    templateUrl: '/assets/common_templates/partials/checkin/gwDepositPayment.html',
+    templateUrl: '/assets/common_templates/partials/public_ny_v2/gwDepositPayment.html',
     controller: 'checkinDepositPaymentController',
     title: 'Pay Deposit'
 });

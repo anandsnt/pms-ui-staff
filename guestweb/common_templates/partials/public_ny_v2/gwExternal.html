@@ -28,11 +28,11 @@
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6 top-spacing sm-no-top-spacing">
-             <p class="main-text">Ready to Check-out?</p>
+             <p class="main-text text-left">Ready to Check-out?</p>
              <!--  -->
             <div class="section-container">
                 <!-- room number -->
-                <p class="pull-left sub-text margin-top-10">Your Room Number</p>
+                <p class="pull-left sub-text margin-top-10 text-left">Your Room Number</p>
                 <input type="text" class="input-field padding-2" ng-model="stayDetails.room_number"></input>
                 <!-- Lat name -->
                 <p class="pull-left sub-text margin-top-10">Last Name</p>
@@ -41,13 +41,12 @@
                 <p class="pull-left sub-text margin-top-10">Arrival date</p>
                 <input class="input-field padding-2 calendar-button" ng-click="showCalender()" ng-model="stayDetails.arrival_date" placeholder="{{dateFormatPlaceholder}}" readonly></input>
                 <!-- email -->
-                <p class="sub-text margin-top-10">For a copy of your bill,<br/>
-                    please enter your e-mail address
+                <p class="sub-text margin-top-20 text-left">For a copy of your bill, please enter your e-mail address
                 </p>
                 <p class="pull-left sub-text margin-top-10">Your e-mail address (optional)</p>
                 <input type="text" class="input-field padding-2" ng-model="stayDetails.email"></input>
                 <!-- Submit button -->
-                <a class="btn btn-template margin-top-20 padding-3" ng-click="submit()"> Continue</a>    
+                <a class="btn btn-template margin-top-20 padding-3" ng-click="submit()"> NEXT</a>    
             </div>
         </div>
         <div class="col-md-3">

@@ -39,6 +39,7 @@ a:hover,
 
 .sub-main-text {
     color: #363d40;
+    text-transform: uppercase !important;
 }
 
 .header-bar {
@@ -81,13 +82,24 @@ a:hover,
     background: #fff;
     color: #000;
     border: 1px solid black !important;
+    box-shadow: none !important;
+    max-width: 100% !important;
+}
+
+.calendar-button {
+    background-position: 96% 13px !important;
 }
 
 .input-field {
     border: 1px solid black !important;
     background-color: #fff !important;
     box-shadow: none !important;
+    max-width: 100% !important;
 }
+
+.section-container {
+        max-width: 100% !important;
+    }
 
 .select-style, text-comment {
     border: 1px solid black !important;
@@ -100,7 +112,7 @@ a:hover,
 
 .btn-template {
     font-size: 22px;
-    padding: 7% !important;
+    min-height: initial !important;
 }
 
 .dark-button,
@@ -164,7 +176,11 @@ a:hover,
 }
 
 .proceed-to-checkin {
-    background: #3D3D3B;
+    background: #fff !important;
+    color: #000 !important;
+    border-radius: 0px !important;
+    border: 1px solid black !important;
+    text-align: center !important;
 }
 
 .upgrades-label {
@@ -400,6 +416,9 @@ a:hover,
     }
     .checkout-alone-button {
         margin-left: 126px;
+    }
+    .checkout-btn {
+        padding: 25% 2% !important;
     }
 }
 
