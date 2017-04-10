@@ -82,11 +82,29 @@
 			return deferred.promise;
 		};
 
+		var getAddonAdminSettings = function() {
+			var deferred = $q.defer();
+			var url = '/api/upsell_addons_setups';
+			var params = {
+				'reservation_id': $rootScope.reservationID
+			};
+			$http.get(url, {
+					params: params
+				}).success(function(response) {
+					deferred.resolve(response);
+				})
+				.error(function() {
+					deferred.reject();
+				});
+			return deferred.promise;
+		};
+
 		return {
 			getAddonList: getAddonList,
 			updateAddon: updateAddon,
 			deleteAddon: deleteAddon,
-			getExistingAddonsList: getExistingAddonsList
+			getExistingAddonsList: getExistingAddonsList,
+			getAddonAdminSettings: getAddonAdminSettings
 		};
 	};
 
