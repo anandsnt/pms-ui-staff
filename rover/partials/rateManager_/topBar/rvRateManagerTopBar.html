@@ -43,7 +43,7 @@
             <span>All Room Types</span> 
         </li>
 
-        <li class="card" ng-show="selectedAccountName.length">
+        <li class="card" ng-show="selectedAccountName.length && isRateView">
            <strong ng-show="selectedAccountName[0] == null">{{selectedCardNames.join()}}</strong>
            <strong>{{selectedAccountName.join()}}</strong>
            <span>{{selectedAddress.join()}}</span>
