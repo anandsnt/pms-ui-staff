@@ -66,6 +66,11 @@ admin.controller('ADAppCtrl', [
 	    var isNeighboursEnabled = false;
 
         var setupLeftMenu = function() {
+            var shouldShowNightlyDiaryMenu = false;
+
+            if (!$rootScope.isHourlyRatesEnabled) {
+                shouldShowNightlyDiaryMenu  = !$rootScope.isRoomDiaryEnabled;
+            }
             if ($scope.isStandAlone) {
                 $scope.menu = [
                     {
@@ -97,7 +102,7 @@ admin.controller('ADAppCtrl', [
                                 title: 'MENU_ROOM_DIARY',
                                 action: 'rover.nightlyDiary',
                                 standAlone: true,
-                                hidden: $rootScope.isHourlyRatesEnabled,
+                                hidden: shouldShowNightlyDiaryMenu,
                                 actionParams: {
                                     start_date: $rootScope.businessDate
                                 }
@@ -554,7 +559,7 @@ admin.controller('ADAppCtrl', [
 			$rootScope.isSuiteRoomsAvailable = data.suite_enabled;
 			$rootScope.hotelTimeZoneFull = data.hotel_time_zone_full;
 			$rootScope.hotelTimeZoneAbbr = data.hotel_time_zone_abbr;
-
+            $rootScope.isRoomDiaryEnabled = data.is_room_diary_enabled;
 			// CICO-18040
 			$rootScope.isFFPActive = data.is_ffp_active;
 			$rootScope.isHLPActive = data.is_hlp_active;
