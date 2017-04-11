@@ -418,11 +418,13 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
 
     $stateProvider.state('admin.zDirectSetup', {
         templateUrl: '/assets/partials/ZDirectSetup/adZDirectSetup.html',
-        controller: 'adExternalInterfaceCtrl',
-        // interface_id: 4,
-        interface_id: 'ZDIRECT',
-        simple_name: 'ZDirect',
-        url: '/zDirectSetup'
+        controller: 'adZDirectSetupCtrl',
+        url: '/zdirect/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('zdirect');
+            }]
+        }
     });
 
     $stateProvider.state('admin.travelTripperSetup', {
