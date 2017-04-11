@@ -1,7 +1,8 @@
 (function() {
 	var offerAddonOptionsController = function($scope, $rootScope, $state, $stateParams, checkinAddonService, $sce, sntGuestWebSrv, checkinDetailsService) {
-
-		var selectedAddon = {},
+		var amountTypesLabels = [],
+			postTypeLabels = [],
+			selectedAddon = {},
 			setSelectedAddon = function(addon, isSingleAddonAvailable) {
 				$scope.selectedAddon = addon;
 				$scope.showPurchaseStatus = false;
@@ -160,6 +161,40 @@
 			}
 		};
 
+		var handleLabelMappings = function() {
+			_.each($scope.addonList, function(addon) {
+				addon.amount_type_label = '';
+				_.each(amountTypesLabels, function(amountTypeLabel) {
+					if (addon.amount_type === amountTypeLabel.description && amountTypeLabel.label !== '') {
+						addon.amount_type_label = amountTypeLabel.label;
+					}
+				});
+				// if no custom label is present, set to amount type
+				addon.amount_type_label = (addon.amount_type_label === '') ? addon.amount_type : addon.amount_type_label;
+
+				addon.post_type_label = '';
+				_.each(postTypeLabels, function(postTypeLabel) {
+					if (addon.post_type === postTypeLabel.description && postTypeLabel.label !== '') {
+						addon.post_type_label = postTypeLabel.label;
+					}
+				});
+				// if no custom label is present, set to post type
+				addon.post_type_label = (addon.post_type_label === '') ? addon.post_type : addon.post_type_label;
+			});
+			$scope.isLoading = false;
+		};
+
+		var getAddonAdminSettings = function() {
+			checkinAddonService.getAddonAdminSettings().then(function(response) {
+				amountTypesLabels = response.amount_types;
+				postTypeLabels = response.post_types;
+				handleLabelMappings();
+			}, function() {
+				$rootScope.netWorkError = true;
+				$scope.isLoading = false;
+			});
+		};
+
 		var fetchExistingAddonsSucess = function(allAvailableAddons, existingAddons) {
 			var selectedAddonIds = _.pluck(existingAddons, 'id');
 			var addons = [];
@@ -196,7 +231,8 @@
 				// Multi addons
 				$scope.mode = 'LIST_VIEW';
 			}
-			$scope.isLoading = false;
+
+			getAddonAdminSettings();
 		};
 
 		(function() {

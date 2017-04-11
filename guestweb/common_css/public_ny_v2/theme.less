@@ -26,6 +26,17 @@ body {
 .strong-font {
     font-family: "Gotham Book";
 }
+.main-text{
+    font-weight: 500;
+    line-height: 1em;
+}
+.main-text,
+.sub-main-text,
+.sub-text,
+.res-details-heading,
+.res-date{
+    text-align:left;
+}
 
 a,
 a:hover,
@@ -35,10 +46,12 @@ a:hover,
 .footer-sub-text:hover,
 .phone-label {
     color: #363d40;
+    text-decoration:none;
 }
 
 .sub-main-text {
     color: #363d40;
+    text-transform: uppercase !important;
 }
 
 .header-bar {
@@ -48,6 +61,7 @@ a:hover,
 .logo-image {
     max-width: 100%;
     margin: 0%;
+    margin-bottom:15px;
 }
 
 .template-text,
@@ -81,13 +95,24 @@ a:hover,
     background: #fff;
     color: #000;
     border: 1px solid black !important;
+    box-shadow: none !important;
+    max-width: 100% !important;
+}
+
+.calendar-button {
+    background-position: 96% 13px !important;
 }
 
 .input-field {
     border: 1px solid black !important;
     background-color: #fff !important;
     box-shadow: none !important;
+    max-width: 100% !important;
 }
+
+.section-container {
+        max-width: 100% !important;
+    }
 
 .select-style, text-comment {
     border: 1px solid black !important;
@@ -100,7 +125,7 @@ a:hover,
 
 .btn-template {
     font-size: 22px;
-    padding: 7% !important;
+    min-height: initial !important;
 }
 
 .dark-button,
@@ -164,7 +189,11 @@ a:hover,
 }
 
 .proceed-to-checkin {
-    background: #3D3D3B;
+    background: #fff !important;
+    color: #000 !important;
+    border-radius: 0px !important;
+    border: 1px solid black !important;
+    text-align: center !important;
 }
 
 .upgrades-label {
@@ -387,10 +416,10 @@ a:hover,
 
 @media (min-width: 990px) {
     .main-text {
-        font-size: 41px;
+        font-size: 30px;
     }
     .sub-main-text {
-        font-size: 21px;
+        font-size:16px !important;
     }
     .sub-text {
         font-size: 15px !important;
@@ -401,11 +430,18 @@ a:hover,
     .checkout-alone-button {
         margin-left: 126px;
     }
+    .checkout-btn {
+        padding: 25% 2% !important;
+    }
+    .logo-image {
+        margin-bottom:20px;
+    }
 }
 
 @media (max-width: 990px) {
     .logo-image {
         margin: 0px;
+        margin-bottom:15px;
         // max-width: 295px;
     }
     .back-to-checkout {
@@ -416,7 +452,7 @@ a:hover,
         font-size: 20px;
     }
     .main-text {
-        font-size: 41px;
+        font-size: 28px;
     }
     .checkout-alone-button {
         float: left;
