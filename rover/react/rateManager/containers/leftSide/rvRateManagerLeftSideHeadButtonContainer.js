@@ -34,8 +34,10 @@ let getPreviousPageButtonText = (mode, paginationStateData) => {
     let previousPageButtonText = "PREVIOUS "
     switch(mode) {
         case RM_RX_CONST.RATE_VIEW_MODE:
+            previousPageButtonText += paginationStateData.perPage + " RATES";
+            break;
         case RM_RX_CONST.RATE_TYPE_VIEW_MODE:
-                previousPageButtonText += paginationStateData.perPage + " RATES";
+            previousPageButtonText += paginationStateData.perPage + " RATE TYPES";
             break;
         default:
             break;
@@ -47,12 +49,19 @@ let getNextPageButtonText = (mode, paginationStateData) => {
     let nextPageButtonText = "NEXT "
     switch(mode) {
         case RM_RX_CONST.RATE_VIEW_MODE:
-        case RM_RX_CONST.RATE_TYPE_VIEW_MODE:
             if (Math.ceil(paginationStateData.totalRows / paginationStateData.perPage) === paginationStateData.page + 1) {
                 // In case of navigation to last page; show remaining
                 nextPageButtonText += paginationStateData.totalRows - (paginationStateData.perPage * paginationStateData.page) + " RATES";
             } else {
                 nextPageButtonText += paginationStateData.perPage + " RATES";
+            }
+            break;
+        case RM_RX_CONST.RATE_TYPE_VIEW_MODE:
+            if (Math.ceil(paginationStateData.totalRows / paginationStateData.perPage) === paginationStateData.page + 1) {
+                // In case of navigation to last page; show remaining
+                nextPageButtonText += paginationStateData.totalRows - (paginationStateData.perPage * paginationStateData.page) + " RATE TYPES";
+            } else {
+                nextPageButtonText += paginationStateData.perPage + " RATE TYPES";
             }
             break;
         default:
