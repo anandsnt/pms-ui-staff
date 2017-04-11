@@ -341,16 +341,30 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             break;
 
         case rvRateManagerPopUpConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE:
-            $timeout(() => $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]), 0);
+            handleTheReloadRequestFromPopupForSingleRateSingleRoomTypeRestrictionMode();
             break;
 
         case rvRateManagerPopUpConstants.RM_SINGLE_RATE_MULTIPLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE:
-            $timeout(() => $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]), 0);
+            handleTheReloadRequestFromPopupForSingleRateMultipleRoomTypeRestrictionMode();
             break;
 
         default:
             break;
         }
+    };
+
+    /*
+     * to handle the reload request from popup against mode 'rvRateManagerPopUpConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE'
+     */
+    var handleTheReloadRequestFromPopupForSingleRateSingleRoomTypeRestrictionMode = () => {
+        fetchSingleRateDetailsAndRestrictions(lastSelectedFilterValues[activeFilterIndex]);
+    };
+
+    /*
+     * to handle the reload request from popup against mode 'rvRateManagerPopUpConstants.RM_SINGLE_RATE_MULTIPLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE'
+     */
+    var handleTheReloadRequestFromPopupForSingleRateMultipleRoomTypeRestrictionMode = () => {
+        fetchSingleRateDetailsAndRestrictions(lastSelectedFilterValues[activeFilterIndex]);
     };
 
     /*
