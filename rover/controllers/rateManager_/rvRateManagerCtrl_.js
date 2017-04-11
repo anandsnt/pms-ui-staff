@@ -793,6 +793,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
             fetchRateTypeAndRestrictions(lastSelectedFilterValues[activeFilterIndex]);
 
+            $scope.showContractDetailsChecked = false;
+
             $scope.showBackButton = false;
 
             // scroll focus
