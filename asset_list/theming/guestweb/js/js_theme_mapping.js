@@ -104,7 +104,9 @@ module.exports = {
             'guestweb_distrikt_nyc': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_stella_hotel': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_beau_rivage': [ themeJsRoot + 'app_router_beau_rivage.js'],
-            'guestweb_gold_strike': [ themeJsRoot + 'app_router_gold_strike.js']
+            'guestweb_gold_strike': [ themeJsRoot + 'app_router_gold_strike.js'],
+            'guestweb_historic_taos_inn': [ themeJsRoot + 'app_router_common.js'],
+            'guestweb_public_ny_v2': [ themeJsRoot + 'app_router_public_ny_v2.js']
         };
     }
 };

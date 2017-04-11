@@ -84,12 +84,15 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.windsurferCRSSetup', {
-        templateUrl: '/assets/partials/WindsurferCRS/setup/adWindsurferCRSSetup.html',
-        controller: 'adWindsurferCRSSetupCtrl',
-        url: '/windsurfercrs/setup',
+        templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
+        controller: 'adCRSCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'windsurfer';
+        }],
         resolve: {
-            windsurferCRSSetupValues: ['adWindsurferCRSSetupSrv', function(adWindsurferCRSSetupSrv) {
-                return adWindsurferCRSSetupSrv.fetchWindsurferCRSConfiguration();
+           config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('windsurfer');
             }]
         }
     });

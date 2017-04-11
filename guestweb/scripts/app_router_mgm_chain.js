@@ -239,11 +239,11 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 	
 	// comment out later
 
-	// $stateProvider.state('offerAddonOptions', {
-	// 	url: '/addonOptions',
-	// 	templateUrl: '/assets/common_templates/partials/MGM/gwOfferAddonOptions.html',
-	// 	controller: 'offerAddonOptionsController',
-	// 	title: 'Addons'
-	// });
+	$stateProvider.state('offerAddonOptions', {
+		url: '/addonOptions/:isFrom',
+		templateUrl: '/assets/common_templates/partials/MGM/gwOfferAddonOptions.html',
+		controller: 'offerAddonOptionsController',
+		title: 'Addons'
+	});
 
 }]);

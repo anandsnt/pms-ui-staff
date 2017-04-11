@@ -9,7 +9,8 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
     '$filter',
     '$timeout',
     '$window',
-    function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, zsUtilitySrv, zsGeneralSrv, $filter, $timeout, $window) {
+    '$translate',
+    function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, zsUtilitySrv, zsGeneralSrv, $filter, $timeout, $window, $translate) {
 
 		/** ********************************************************************************************
 		 **		Expected state params -----> reservation_id, room_no,  first_name, guest_id, key_success
@@ -134,7 +135,8 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                 };
 
                 var data = {
-                    'reservation_id': $stateParams.reservation_id
+                    'reservation_id': $stateParams.reservation_id,
+                    'language_code': $translate.use()
                 };
 
                 var startTacDataFailedActions = function() {
@@ -240,7 +242,10 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 		 * @return {[type]} [description]
 		 */
         $scope.sendEmail = function() {
+            $scope.trackEvent('CI - Email Registration', 'user_selected');
+
             var registrationCardSendingFailed = function() {
+                $scope.trackEvent('CI - RegCardEmail - Failed', 'email_status');
                 var printopted = false;
                 var emailopted = true;
                 var actionStatus = 'failed';
@@ -248,6 +253,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                 nextPageActions(printopted, emailopted, actionStatus);
             };
             var registrationCardSent = function() {
+                $scope.trackEvent('CI - RegCardEmail - Success', 'email_status');
                 var printopted = false;
                 var emailopted = true;
                 var actionStatus = 'success';
@@ -272,18 +278,21 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 		 * @return {[type]} [description]
 		 */
         $scope.editEmailAddress = function() {
+            $scope.trackEvent('CI - Edit Email', 'user_selected');
             $scope.mode = 'EMAIL_ENTRY_MODE';
             $scope.focusInputField('input_text');
         };
 
 
         $scope.$on('EMAIL_UPDATION_SUCCESS', function() {
+            $scope.trackEvent('CI - Success', 'update_email');
             $scope.mode = 'EMAIL_SEND_MODE';
             $scope.callBlurEventForIpad();
         });
 
 
         $scope.$on('EMAIL_UPDATION_FAILED', function() {
+            $scope.trackEvent('CI - Failed', 'update_email');
             var  stateParams = {
                 'message': 'Email Updation Failed.'
             };
