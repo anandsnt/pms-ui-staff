@@ -2123,7 +2123,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fromDate: filterValues.fromDate,
                 toDate: filterValues.toDate,
                 fromLeftFilter: false,
-                selectedRateTypes: filterValues.selectedRateTypes[0].id,
+                selectedRateTypes: [{'id': filterValues.selectedRateTypes[0].id}],
                 selectedRates: []
             };
             fetchDailyRates(filterValuesForShowRates);
