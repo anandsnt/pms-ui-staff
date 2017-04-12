@@ -41,7 +41,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 
 		$scope.isAddonFlatOrRoomType = function(addonToBe) {
 			var isAddonFlatOrRoomType = false;
-			
+
 			if (_.isUndefined(addonToBe)) {
 				isAddonFlatOrRoomType = false;
 			} else {
@@ -231,6 +231,9 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				var amountTypesLabels = response.amount_types;
 				var postTypeLabels = response.post_types;
 
+				// Loop through the addons list and assign the labels set in admin --> upsells --> adodn upsell
+				// amount type labels and post type labels are arrays
+				 
 				_.each($scope.addonsList, function(addon) {
 					addon.amount_type_label = '';
 					_.each(amountTypesLabels, function(amountTypeLabel) {
