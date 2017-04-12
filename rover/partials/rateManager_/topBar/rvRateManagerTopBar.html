@@ -11,7 +11,7 @@
             <span>{{fromDate}} to {{toDate}}</span>
         </li>
 
-        <li class="rates" ng-show="isRateTypeView">
+        <li class="rates" ng-show="chosenTab === 'RATE_TYPES' && isRateTypeView">
             <strong>Rate Type</strong>
             
             <!-- If 2 or more add 'X Rate Types' where X is the number of rates, 
@@ -22,9 +22,19 @@
             <span ng-show="selectedRateTypesFromRTT.length === 1">1 Rate Type</span>
             <span ng-show="selectedRateTypesFromRTT.length > 1">{{selectedRateTypesFromRTT.length}} Rate Types</span>
         </li>
+
+        <li class="rates" ng-show="chosenTab === 'RATE_TYPES' && isRateView">
+            <strong>Rate Type</strong>
+            <span>{{selectedRateTypeNames.join()}}</span>
+        </li>
+
+        <li class="rates" ng-show="chosenTab === 'RATE_TYPES' && isRoomTypeView">
+            <strong>Rate</strong>
+            <span>{{selectedRateNames.join()}}</span>
+        </li>
         
         <!-- show  if there are any rates selected -->
-        <li class="rates" ng-show="isRateView">
+        <li class="rates" ng-show="chosenTab === 'RATES' && isRateView">
             <strong>Rate</strong>
             
             <!-- If 2 or more add 'X Rates' where X is the number of rates, 
@@ -36,21 +46,27 @@
             <span ng-show="selectedRates.length > 1">{{selectedRates.length}} Rates</span>
         </li>
 
+        <!-- show  if there are any rates selected -->
+        <li class="rates" ng-show="chosenTab === 'RATES' && isRoomTypeView">
+            <strong>Rate</strong>
+            <span>{{selectedRateNames.join()}}</span>
+        </li>
+
         <!-- show when all room types are selected -->
-        <li class="rates" ng-show="isRoomTypeView">
+        <li class="rates" ng-show="chosenTab === 'ROOM_TYPES'">
             <strong>Room Type</strong>
         
             <span>All Room Types</span> 
         </li>
 
-        <li class="card" ng-show="selectedAccountName.length && isRateView">
+        <li class="card" ng-show="selectedAccountName.length && isRoomTypeView">
            <strong ng-show="selectedAccountName[0] == null">{{selectedCardNames.join()}}</strong>
            <strong>{{selectedAccountName.join()}}</strong>
            <span>{{selectedAddress.join()}}</span>
        </li>
          
         <!-- show .card if there are any cards selected -->
-        <li class="card" ng-hide="selectedAccountName.length || !isRateView">
+        <li class="card" ng-hide="selectedAccountName.length">
            <strong>Name Card</strong>
 
            <!-- add ',' for each company card,IATA etc except the last one-->
