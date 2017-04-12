@@ -133,7 +133,19 @@ sntRover.controller('reservationDetailsController',
 					activeTab: "REPORTS"
 				}
 			};
-		} else {
+		} else if ($scope.previousState.name === "rover.companycarddetails") {
+			//rover.companycarddetails({id:row.id, type: row.account_type, query :textInQueryBox})
+            setNavigationBookMark();
+            $rootScope.setPrevState = {
+                title: 'TRAVEL Agent',
+                name: 'rover.companycarddetails',
+                param: {
+					id: $vault.get('travelAgentId'),
+					type: $vault.get('travelAgentType'),
+					query: $vault.get('travelAgentQuery')
+				}
+            };
+        } else {
 			setNavigationBookMark();
 			// if we just created a reservation and came straight to staycard
 			// we should show the back button with the default text "Find Reservations"
