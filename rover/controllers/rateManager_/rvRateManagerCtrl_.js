@@ -107,6 +107,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.showTopBar = false;
         $scope.selectedCardNames = [];
         $scope.selectedRateNames = [];
+        $scope.selectedRateTypeNames = [];
         $scope.selectedAccountName = [];
         $scope.selectedAddress = [];
     };
@@ -1086,6 +1087,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             $scope.showTopBar = true;
             $scope.selectedCardNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedCards, 'account_name');
             $scope.selectedRateNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'name');
+            $scope.selectedRateTypeNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRateTypes, 'name');
             $scope.selectedAccountName = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'accountName');
             $scope.selectedAddress = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'address');
 
@@ -2108,6 +2110,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             lastSelectedFilterValues[activeFilterIndex].allRate = allRate;
             delete lastSelectedFilterValues[activeFilterIndex].allRateTypes;
 
+            $scope.selectedRateTypeNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRateTypes, 'name');
+
             $scope.showBackButton = true;
             $scope.isRateView = true;
             $scope.isRateTypeView = false;
@@ -2119,7 +2123,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fromDate: filterValues.fromDate,
                 toDate: filterValues.toDate,
                 fromLeftFilter: false,
-                selectedRateTypes: filterValues.selectedRateTypes,
+                selectedRateTypes: filterValues.selectedRateTypes[0].id,
                 selectedRates: []
             };
             fetchDailyRates(filterValuesForShowRates);
@@ -2343,6 +2347,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             $scope.showBackButton = false;
             $scope.selectedCardNames = [];
             $scope.selectedRateNames = [];
+            $scope.selectedRateTypeNames = [];
             $scope.selectedAccountName = [];
             $scope.selectedAddress = [];
             $scope.fromDate = null;
