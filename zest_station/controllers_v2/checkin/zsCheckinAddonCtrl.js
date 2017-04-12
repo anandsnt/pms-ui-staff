@@ -136,12 +136,15 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			}
 			zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
 		};
-		var addRemoveAddonSucess = function(selectedAddon) {
+		var addRemoveAddonSucess = function() {
 			$scope.selectedAddon.is_selected = $scope.selectedAddonCount > 0;
 			$scope.selectedAddon.quantity = angular.copy($scope.selectedAddonCount);
 			$scope.showAddonPopup = false;
 			$scope.selectedAddonQtyBeforeActions = angular.copy($scope.selectedAddon.quantity);
 			updateCheckinSrvWithNewAddonData();
+			if ($scope.addonsList.length === 1) {
+				navigateToTermsPage();
+			}
 		};
 		var addAddonToReservation = function(selectedAddon) {
 			var params = {
@@ -183,10 +186,10 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			$scope.selectedAddonCount = $scope.selectedAddonCount > 0 ? $scope.selectedAddonCount - 1 : 0;
 		};
 		$scope.incrementAddonQtyForNonRoomFlatType = function() {
-			if ($scope.selectedAddonCount === 1) {
-				return;
-			} else {
+			if ($scope.selectedAddonCount !== 1) {
 				$scope.selectedAddonCount = $scope.selectedAddonCount + 1;
+			} else {
+				return;
 			}
 		};
 
@@ -199,14 +202,14 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				if ($scope.selectedAddonCount === 0) {
 					// if addon was added from ZS,remove addon
 					if (selectedAddon.is_selected) {
-						removeAddonFromReservation(selectedAddon)
+						removeAddonFromReservation(selectedAddon);
 					} else {
 						$scope.showAddonPopup = false;
 					}
 				} else {
 					addAddonToReservation(selectedAddon);
 				}
-			};
+			}
 		};
 
 		// On addon Selected from the list
@@ -266,7 +269,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				// no need to show already added addons
 				if (selectedAddonIds.length > 0) {
 					_.each(selectedAddonIds, function(selectedId) {
-						response.addons = _.filter(response.addons, function(addon, index) {
+						response.addons = _.filter(response.addons, function(addon) {
 							return addon.addon_id !== selectedId;
 						});
 					});
@@ -279,6 +282,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 					addon.is_selected = false;
 					addon.quantity = 0;
 					var usedLanguageCode = $translate.use();
+					
 					if (usedLanguageCode !== 'en') {
 						_.each(addon.translations, function(translation) {
 							if (parseInt(translation.language_id) === parseInt($scope.languageId)) {
@@ -346,7 +350,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		/**
 		 * [initializeMe description]
 		 */
-		var initializeMe = (function() {
+		(function() {
 			$scope.addonsList = [];
 			$scope.languageId = '';
 			$scope.languageCode = 'en'; // let default be english
