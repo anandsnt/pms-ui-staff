@@ -125,7 +125,7 @@ sntRover.controller('roverController', [
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
     $rootScope.advanced_queue_flow_enabled = hotelDetails.advanced_queue_flow_enabled;
     $rootScope.isPmsProductionEnv = hotelDetails.is_pms_prod;
-
+    $rootScope.isRoomDiaryEnabled = hotelDetails.is_room_diary_enabled;
     $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
       /**
        * CICO-34068

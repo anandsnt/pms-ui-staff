@@ -128,6 +128,11 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             url = '/staff/staycards/reservation_details.json?reservation=' + param.id;
             var deferred = $q.defer();
 
+            // To fetch the latest guest details, the following parameter has to be sent to trigger a fetchProfile OWS request
+            if (!$rootScope.isStandAlone) {
+                url += "&sync_guest_with_external_pms=true";
+            }
+
             zsBaseWebSrv.getJSON(url,param).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {

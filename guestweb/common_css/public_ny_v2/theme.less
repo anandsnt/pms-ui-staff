@@ -26,6 +26,17 @@ body {
 .strong-font {
     font-family: "Gotham Book";
 }
+.main-text{
+    font-weight: 500;
+    line-height: 1em;
+}
+.main-text,
+.sub-main-text,
+.sub-text,
+.res-details-heading,
+.res-date{
+    text-align:left;
+}
 
 a,
 a:hover,
@@ -35,6 +46,7 @@ a:hover,
 .footer-sub-text:hover,
 .phone-label {
     color: #363d40;
+    text-decoration:none;
 }
 
 .sub-main-text {
@@ -49,6 +61,7 @@ a:hover,
 .logo-image {
     max-width: 100%;
     margin: 0%;
+    margin-bottom:15px;
 }
 
 .template-text,
@@ -191,6 +204,15 @@ a:hover,
     line-height: 1;
 }
 
+.accept-checkbox{
+    -ms-transform: scale(1.5);
+    -webkit-transform: scale(1.5);
+    transform: scale(1.5);
+}
+
+.early-checkin-button{
+    font-size: 16px !important;
+}
 
 /*----------------- date picker -------------------------*/
 
@@ -276,7 +298,7 @@ a:hover,
 }
 
 .date-picker-bg {
-    background: unset;
+    background: rgba(238, 238, 238, 0.58);
 }
 
 .horizontal-line-sep-mobile {
@@ -403,10 +425,10 @@ a:hover,
 
 @media (min-width: 990px) {
     .main-text {
-        font-size: 41px;
+        font-size: 30px;
     }
     .sub-main-text {
-        font-size: 21px;
+        font-size:16px !important;
     }
     .sub-text {
         font-size: 15px !important;
@@ -420,11 +442,15 @@ a:hover,
     .checkout-btn {
         padding: 25% 2% !important;
     }
+    .logo-image {
+        margin-bottom:20px;
+    }
 }
 
 @media (max-width: 990px) {
     .logo-image {
         margin: 0px;
+        margin-bottom:15px;
         // max-width: 295px;
     }
     .back-to-checkout {
@@ -435,7 +461,7 @@ a:hover,
         font-size: 20px;
     }
     .main-text {
-        font-size: 41px;
+        font-size: 28px;
     }
     .checkout-alone-button {
         float: left;
