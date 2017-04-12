@@ -37,8 +37,6 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 			$state.go('zest_station.checkInTerms', stateParams);
 		};
 
-		
-
 		$scope.skipRoomUpsell = function() {
 			if ($scope.zestStationData.station_addon_upsell_active) {
 				$state.go('zest_station.addOnUpsell', {
