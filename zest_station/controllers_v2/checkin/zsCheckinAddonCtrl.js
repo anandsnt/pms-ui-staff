@@ -40,8 +40,10 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		};
 
 		$scope.isAddonFlatOrRoomType = function(addonToBe) {
+			var isAddonFlatOrRoomType = false;
+			
 			if (_.isUndefined(addonToBe)) {
-				return false;
+				isAddonFlatOrRoomType = false;
 			} else {
 				var addon = angular.copy(addonToBe);
 
@@ -49,8 +51,10 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				addon.amount_type = (addon.amount_type === 'Room') ? 'Per Room' : addon.amount_type;
 				addon.amount_type = (addon.amount_type === 'Flat') ? 'Flat Rate' : addon.amount_type;
 				// To deleted above
-				return addon.amount_type === 'Per Room' || addon.amount_type === 'Flat Rate';
+				isAddonFlatOrRoomType =  addon.amount_type === 'Per Room' || addon.amount_type === 'Flat Rate';
 			}
+
+			return isAddonFlatOrRoomType;
 		};
 
 		var setPageNumberDetails = function() {
@@ -197,7 +201,6 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		$scope.addOnDoneButtonClicked = function(selectedAddon) {
 			if ($scope.selectedAddonQtyBeforeActions === $scope.selectedAddonCount) {
 				$scope.showAddonPopup = false;
-				return;
 			} else {
 				if ($scope.selectedAddonCount === 0) {
 					// if addon was added from ZS,remove addon
@@ -227,6 +230,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			var fetchAddonLabelSuccess = function(response) {
 				var amountTypesLabels = response.amount_types;
 				var postTypeLabels = response.post_types;
+
 				_.each($scope.addonsList, function(addon) {
 					addon.amount_type_label = '';
 					_.each(amountTypesLabels, function(amountTypeLabel) {
@@ -342,11 +346,13 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		};
 		var findSelectedLanguageId = function() {
 			var usedLanguageCode = $translate.use();
+
 			$scope.languageId = _.find($scope.zestStationData.hotelLanguages, function(language) {
 				return language.code === usedLanguageCode;
 			}).id;
 			fetchAddons();
 		};
+
 		/**
 		 * [initializeMe description]
 		 */
