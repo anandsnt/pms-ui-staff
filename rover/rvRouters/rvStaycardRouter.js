@@ -266,9 +266,6 @@ angular.module('stayCardModule', [])
                 },
                 reservationBillData: function(RVBillCardSrv, $stateParams, billstaycardJsAssets) {
                     return RVBillCardSrv.fetch($stateParams.reservationId);
-                },
-                chargeCodeData: function(RVBillCardSrv, billstaycardJsAssets) {
-                    return RVBillCardSrv.fetchChargeCodes();
                 }
             }
         });

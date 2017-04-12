@@ -56,21 +56,25 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 
 
         $scope.findByDate = function() {
+            $scope.trackEvent('FIND_BY_DATE', 'user_selected');
             $scope.mode = 'FIND_BY_DATE';
             $scope.focusInputField('departure-date');
             $scope.resetTime();
         };
         $scope.findByNoOfNights = function() {
+            $scope.trackEvent('NO_OF_NIGHTS', 'user_selected');
             $scope.mode = 'NO_OF_NIGHTS_MODE';
             $scope.focusInputField('no-of-nights');
             $scope.resetTime();
         };
         $scope.findByEmail = function() {
+            $scope.trackEvent('EMAIL_ENTRY', 'user_selected');
             $scope.mode = 'EMAIL_ENTRY_MODE';
             $scope.focusInputField('guest-email');
             $scope.resetTime();
         };
         $scope.findByConfirmation = function() {
+            $scope.trackEvent('CONFIRM_NO', 'user_selected');
             $scope.mode = 'CONFIRM_NO_MODE';
             $scope.focusInputField('conf-number');
             $scope.resetTime();
@@ -280,10 +284,6 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
             } else {
                 return;
             }
-        };
-
-        $scope.talkToStaff = function() {
-            $state.go('zest_station.speakToStaff');
         };
 
         var setHotelDateTime = function(response) {

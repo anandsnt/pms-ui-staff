@@ -191,23 +191,22 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
 	};
 
 	/*
-		* Get the list of charge codes
-		* @method GET
-		* @return {object} defer promise
-		*/
-	this.fetchChargeCodes = function() {
+	 * Get the list of charge codes
+	 * @method GET
+	 * @return {object} defer promise
+	 */
+    this.fetchChargeCodes = function() {
+        var deferred = $q.defer(),
+            url = '/api/charge_codes?exclude_payments=true&per_page=1000';
 
-		var deferred = $q.defer();
-		var url = '/api/charge_codes';
+        BaseWebSrvV2.getJSON(url).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
 
-			BaseWebSrvV2.getJSON(url).then(function(data) {
-			   	 deferred.resolve(data);
-			}, function(data) {
-			    deferred.reject(data);
-			});
-
-		return deferred.promise;
-	};
+        return deferred.promise;
+    };
 
 	this.sendEmail = function(data) {
 		var deferred = $q.defer();

@@ -75,7 +75,7 @@ angular
                     params = RVNightlyDiarySrv.getCache();
                 }
                 else {
-                    params.start_date = $rootScope.businessDate;
+                    params.start_date = $stateParams.start_date || $rootScope.businessDate;
                     params.no_of_days = 7;
                     params.page = 1;
                     params.per_page = 50;

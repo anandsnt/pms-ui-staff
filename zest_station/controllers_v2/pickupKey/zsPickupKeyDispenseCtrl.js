@@ -83,6 +83,8 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
                 };
                 $state.go('zest_station.pickUpKeyDispenseRegistrationCardPrint', stateParams);
             } else {
+
+                $scope.trackEvent('PUK', 'Flow-End-Success');
                 $state.go('zest_station.home');
             }
         };

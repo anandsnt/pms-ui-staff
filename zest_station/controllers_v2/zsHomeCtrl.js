@@ -13,6 +13,7 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * when we clicked on pickup key from home screen
 		 */
         $scope.clickedOnPickUpKey = function() {
+            $scope.trackEvent('PUK', 'user_selected');
             clearInterval($scope.activityTimer);
             if ($scope.zestStationData.pickup_qr_scan) {
                 $scope.setScreenIcon('key');
@@ -28,6 +29,8 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * when we clicked on checkin from home screen
 		 */
         $scope.clickedOnCheckinButton = function() {
+            $scope.trackEvent('CI', 'user_selected');
+
             clearInterval($scope.activityTimer);
             $state.go('zest_station.checkInReservationSearch');
         };
@@ -36,6 +39,7 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * when we clicked on checkout from home screen
 		 */
         $scope.clickedOnCheckoutButton = function() {
+            $scope.trackEvent('CO', 'user_selected');
             clearInterval($scope.activityTimer);
             if (!$scope.zestStationData.checkout_keycard_lookup) {
                 $state.go('zest_station.checkOutReservationSearch');

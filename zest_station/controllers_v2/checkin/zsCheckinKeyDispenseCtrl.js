@@ -5,7 +5,8 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
     'zsEventConstants',
     '$controller',
     'zsGeneralSrv',
-    function($scope, $stateParams, $state, zsEventConstants, $controller, zsGeneralSrv) {
+    '$log',
+    function($scope, $stateParams, $state, zsEventConstants, $controller, zsGeneralSrv, $log) {
 
         /** ********************************************************************************************
          **     Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -50,6 +51,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
         $scope.guestDetails = {
             "guestEmail": $stateParams.email
         };
+        $scope.guestId = $stateParams.guest_id;
 
 
 
@@ -147,11 +149,17 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
                 $scope.mode = 'THIRD_PARTY_GET_IT_INFO_EMAIL_SENT';
             };
 
+            var onFailure = function() {
+                $log.warn('thirdPartyEmailFailure');
+                $state.go('zest_station.speakToStaff');
+            };
+
             $scope.callAPI(zsGeneralSrv.sendThirdPartyEmail, {
                 params: {
                     reservation_id: $stateParams.reservation_id
                 },
-                'successCallBack': onSuccessResponse
+                'successCallBack': onSuccessResponse,
+                'failureCallBack': onFailure
             });
         };
 
@@ -159,11 +167,21 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
             nextPageActionsForMobileKey();
         };
 
+       
+
         /** COLLECT_EMAIL_MODE **/
 
-        // actions cane be found in zsCheckinMobileKeyEmailCollectionCtrl
-        $scope.$on('MODE_CHANGED', function(e, data) {
-            $scope.mode = data.menu;
+         $scope.$on('EMAIL_UPDATION_SUCCESS', function() {
+            $scope.mode = 'THIRD_PARTY_GET_IT_INFO';
+            $scope.callBlurEventForIpad();
+        });
+
+
+        $scope.$on('EMAIL_UPDATION_FAILED', function() {
+            var  stateParams = {
+                'message': 'Email Updation Failed.'
+            };
+            $state.go('zest_station.speakToStaff', stateParams);
         });
 
     }

@@ -1,0 +1,304 @@
+<!-- Passport scan start | scan primary guest  -->
+<section id="main" class="centered" role="main" ng-hide="mode !== 'SCAN_PASSPORT'" click-touch='resetTime()'>
+    <div id="content">
+        
+
+
+        <h1>
+            <text editable-text="GID_SCAN_HEADER"> {{'GID_SCAN_HEADER' |translate}}</text>
+        </h1>
+        <h2 ng-hide='selectedPassport'>
+            <text editable-text="GID_SCAN_SUB_HEADER"> {{'GID_SCAN_SUB_HEADER' |translate}}</text>
+        </h2>
+
+        <h2 ng-show='selectedPassport'>
+            <text editable-text="GID_SCAN_SUB_HEADER_FIRST"> {{'GID_SCAN_SUB_HEADER_FIRST' |translate}}</text>
+            {{selectedPassportInfo.first_name}}<text editable-text="GID_SCAN_SUB_HEADER_SECOND">{{'GID_SCAN_SUB_HEADER_SECOND' |translate}}</text>
+        </h2>
+
+        <div class='uploaded-key-image' id="keys" ng-show="scanpassport_image_uploaded">
+            <img src="{{icons.url.scanpassport}}">
+        </div>
+
+    </div>
+
+    <div>
+        <div id="actions" class="footer-centered">
+            
+            <button type="button" class="button next" touch-press="scan()">
+                <text editable-text="GID_SCAN_BUTTON"> {{'GID_SCAN_BUTTON' |translate}}</text>
+            </button>
+
+        </div>
+    </div>
+
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
+</section>
+
+
+
+
+<!-- Passport scanning in progress screen  -->
+<section id="main" class="centered" role="main" ng-hide="mode !== 'SCANNING_IN_PROGRESS'" click-touch='resetTime()'>
+    <div id="content">
+        <h1>
+            <text editable-text="GID_SCANNING_IN_PROGRESS"> {{'GID_SCANNING_IN_PROGRESS' |translate}}</text>
+        </h1>
+
+    </div>
+
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
+</section>
+
+<!-- Passport scanning failed, re-scan or speak to staff  -->
+<section id="main" class="centered" role="main" ng-hide="mode !== 'SCAN_FAILURE'" click-touch='resetTime()'>
+    <div id="content">
+        <h1>
+            <text editable-text="GID_SCAN_FAILURE_HEADER"> {{'GID_SCAN_FAILURE_HEADER' |translate}}</text>
+        </h1>
+        <h2>
+            <text editable-text="GID_SCAN_FAILURE_SUB_HEADER"> {{'GID_SCAN_FAILURE_SUB_HEADER' |translate}}</text>
+        </h2>
+
+        <nav id="options" role="nav">
+            <!-- Early Checkin Purchase Nav -->
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" click-touch="reScanPassport()">
+                        <div ng-include="icons.url.creditcard"></div>
+                    </button>
+
+                    <text editable-text="TRY_AGAIN"> {{'TRY_AGAIN' |translate}}</text>
+                </li>
+                <li class="break">
+                    <span>
+                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                    </span>
+                </li>
+                <li ng-show='selectedPassport'>
+                    <button type="button" class="button option" click-touch="viewResults()">
+                        <div ng-include="icons.url.keyboard"></div>
+                    </button>
+
+                    <text editable-text="GID_SCAN_FAILURE_VIEW_RESULTS"> {{'GID_SCAN_FAILURE_VIEW_RESULTS' |translate}}</text>
+                </li>
+                <li ng-show='selectedPassport' class="break">
+                    <span>
+                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                    </span>
+                </li>
+                <li>
+                    <button type="button" class="button option" click-touch='talkToStaff()'>
+                        <div ng-include="icons.url.staff"></div>
+                    </button>
+                    <h1>
+                        <text editable-text="SPEAK"> {{'SPEAK' |translate}}</text>
+                    </h1>
+                    <h4>
+                        <text editable-text="SPEAK_SUB"> {{'SPEAK_SUB' |translate}}</text>
+                    </h4>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
+
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
+</section>
+
+
+
+
+
+<!-- Scan Results | Add Guest screen  -->
+<section id="main" class="centered test" role="main" click-touch='resetTime()' ng-show="mode == 'SCAN_RESULTS' || mode == 'ADMIN_VERIFY_PASSPORTS'">
+    <div id="content" class='add-guest-mode-content' ng-show="!AddGuestMode">
+
+        <h1 ng-hide="mode !== 'SCAN_RESULTS'">
+            <text editable-text="GID_SCAN_RESULTS_HEADER"> {{'GID_SCAN_RESULTS_HEADER' |translate}}</text>
+        </h1>
+
+        <h2 ng-hide="mode !== 'SCAN_RESULTS'">
+            <text editable-text="GID_SCAN_RESULTS_SUB_HEADER"> {{'GID_SCAN_RESULTS_SUB_HEADER' |translate}}</text>
+        </h2>
+
+
+        <h1 ng-hide="mode !== 'ADMIN_VERIFY_PASSPORTS'">
+            <text editable-text="GID_ADMIN_VERIFY_HEADER"> {{'GID_ADMIN_VERIFY_HEADER' |translate}}</text>
+        </h1>
+
+        <h2 ng-hide="mode !== 'ADMIN_VERIFY_PASSPORTS'">
+            <text editable-text="GID_ADMIN_VERIFY_SUB_HEADER"> {{'GID_ADMIN_VERIFY_SUB_HEADER' |translate}}</text>
+        </h2>
+
+        <ul id="selection" class="editable">
+            <li ng-repeat='guest in selectedReservation.guest_details track by $index' click-touch='selectGuest(guest)'>
+                
+                <span class="details" ng-class='{"passport-details":!showRemoveButton}'>
+
+                    <span ng-hide="mode !== 'SCAN_RESULTS'" class="passport-scan-status" 
+                          ng-class='{"button-margin":showRemoveButton}'>{{guest.passport_scan_status}}
+                    </span>
+
+                     <span ng-hide="mode !== 'ADMIN_VERIFY_PASSPORTS'" class="passport-scan-status" 
+                          ng-class='{"button-margin":showRemoveButton}'>{{guest.passport_reviewed_status}}
+                    </span>
+
+
+                    {{guest.last_name}}, {{guest.first_name}} 
+                </span>
+                
+
+                <button type="button" class="button" ng-show='showRemoveButton' click-touch='removeGuest(guest.id)' ng-class='{"overlay grey": selectedReservation.guest_details.length <= 1}'>{{'REMOVE_BTN' |translate}}</button>
+            </li>
+
+        </ul>
+    </div>
+
+
+    <!-- TODO: support Adding guest to reservation, then refresh guest list -->
+    <div id="content" class="input-field-contents" ng-show="AddGuestMode">
+
+        <h1 ng-show='mode === "ENTER_FIRST"'>
+            <text editable-text="ENTER_FIRST"> {{'ENTER_FIRST' |translate}}</text>
+        </h1>
+        <h3 ng-show='mode === "ENTER_FIRST"'>
+            <text editable-text="ENTER_FIRST_SUB"> {{'ENTER_FIRST_SUB' |translate}}</text>
+        </h3>
+
+        <h1 ng-show='mode === "ENTER_LAST"'>
+            <text editable-text="ENTER_LAST"> {{'ENTER_LAST' |translate}}</text>
+        </h1>
+        <h3 ng-show='mode === "ENTER_LAST"'>
+            <text editable-text="ENTER_LAST_SUB"> {{'ENTER_LAST_SUB' |translate}}</text>
+        </h3>
+
+        <form class="form" click-touch='resetTime()'>
+            <div class="entry input">
+                <input type="{{inputType}}" ng-focus="showOnScreenKeyboard('add-guest-name')" click-touch="showOnScreenKeyboard('add-guest-name')"
+                       class="start-focused" ng-keydown="resetTime()" ng-model='guest.Name' placeholder="{{inputTextPlaceholder}}"
+                       enter-press="firstNameEntered()" value="" id="add-guest-name" touch-press />
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" touch-press='NameEntered()' ng-class="{'overlay': input.inputTextValue.length < 1}">
+                    <text editable-text="NEXT_BTN"> {{'NEXT_BTN' |translate}}</text>
+                </button>
+            </div>
+        </form>
+    </div>
+
+
+
+
+    <div>
+        <div id="actions" class="add-guests-footer" >
+            <button type="button" class="button prev" click-touch="addAGuest(); resetTime();">
+                <text editable-text="ADD_BTN"> {{'ADD_BTN' |translate}}</text>
+            </button>
+
+            <button ng-show="(allPassportReady && mode == 'SCAN_RESULTS') || (allPassportReviewed && mode == 'ADMIN_VERIFY_PASSPORTS')" type="button" class="button next" click-touch="goToNext(); resetTime();">
+                <text editable-text="DONE_BTN"> {{'DONE_BTN' |translate}}</text>
+            </button>
+        </div>
+    </div>
+
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
+</section>
+
+
+<!-- Wait for staff assistance to Verify IDs  -->
+<section id="main" class="centered" role="main" ng-hide="mode !== 'WAIT_FOR_STAFF'" click-touch='resetTime()'>
+    <div id="content">
+        <h1>
+            <text editable-text="GID_WAIT_HEADER"> {{'GID_WAIT_HEADER' |translate}}</text>
+        </h1>
+         <h2>
+            <text editable-text="GID_WAIT_SUB"> {{'GID_WAIT_SUB' |translate}}</text>
+        </h2>
+    </div>
+
+    <div>
+        <button class='button blue invis bottom-left' click-touch="adminVerify()">
+                Admin
+        </button>
+    </div>
+</section>
+
+
+
+<section id="main" class="centered test" role="main" 
+         ng-show=" mode ===  'ADMIN_LOGIN_ID' || mode === 'ADMIN_LOGIN_PWD'">
+
+    <div id="content" class="input-field-contents">
+        <h1>
+            <text editable-text="GID_ADMIN_LOGIN_HEADER"> {{'GID_ADMIN_LOGIN_HEADER' |translate}}</text>
+        </h1>
+
+        <h2 ng-hide="adminLoginError || mode ===  'ADMIN_LOGIN_PWD'">
+            <text editable-text="GID_ADMIN_ID_SUB"> {{'GID_ADMIN_ID_SUB' |translate}}</text>
+        </h2>
+        <h2 ng-hide="adminLoginError || mode ===  'ADMIN_LOGIN_ID'">
+            <text editable-text="GID_ADMIN_PWD_SUB"> {{'GID_ADMIN_PWD_SUB' |translate}}</text>
+        </h2>
+
+        <h2 ng-show='adminLoginError'>
+            <text editable-text="ADMIN_LOGIN_ERROR"> {{'ADMIN_LOGIN_ERROR' |translate}}</text>
+        </h2>
+        <!-- user name -->
+        <form method="post" class="form" ng-show="mode=='ADMIN_LOGIN_ID'">
+            <div class="entry input">
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="input.inputTextValue" enter-press="goToNext()" id="input_text" touch-press/>
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': input.inputTextValue.length < 1}">{{'NEXT_BTN' |translate}}</button>
+            </div>
+        </form>
+        <!-- password -->
+        <form method="post" class="form" ng-show="mode=='ADMIN_LOGIN_PWD'">
+            <div class="entry input">
+                <input type="password" placeholder="" ng-focus="showOnScreenKeyboard('password_text')" click-touch="showOnScreenKeyboard('password_text')" ng-model="input.inputTextValue" enter-press="goToNext()" id="password_text" touch-press/>
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': input.inputTextValue.length < 1}">{{'NEXT_BTN' |translate}}</button>
+            </div>
+        </form>
+        <div class="entry action" ng-show='adminLoginError'>
+            <button type="button" class="button centered-exit" touch-press='exitAdminLogin(); resetTime()'>{{'EXIT_BTN' |translate}}</button>
+        </div>
+    </div>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
+</section>
+
+
+
+
+
+<!-- Wait for staff assistance to Verify IDs  -->
+<section id="main" class="centered" role="main" ng-hide="mode !== 'ADMIN_VERIFY_PASSPORT_VIEW'" click-touch='resetTime()'>
+    <div id="content">
+        <h1>
+            <text editable-text="GID_VERIFY_PASSPORT"> {{'GID_VERIFY_PASSPORT' |translate}}</text>
+        </h1>
+         <h2>
+            <text editable-text="GID_VERIFY_PASSPORT_SUB"> {{'GID_VERIFY_PASSPORT_SUB' |translate}}</text>
+        </h2>
+    </div>
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

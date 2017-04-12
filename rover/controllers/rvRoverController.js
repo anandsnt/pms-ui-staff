@@ -1,20 +1,30 @@
-sntRover.controller('roverController',
+sntRover.controller('roverController', [
+    '$rootScope',
+    '$scope',
+    '$state',
+    '$window',
+    'RVDashboardSrv',
+    'RVHotelDetailsSrv',
+    'ngDialog',
+    '$translate',
+    'hotelDetails',
+    'userInfoDetails',
+    '$stateParams',
+    'rvMenuSrv',
+    'rvPermissionSrv',
+    '$timeout',
+    'rvUtilSrv',
+    'jsMappings',
+    '$q',
+    '$sce',
+    '$log',
+    'sntAuthorizationSrv',
+    '$location',
+    '$interval',
+    function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv,
+             ngDialog, $translate, hotelDetails, userInfoDetails, $stateParams,
+             rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce, $log, sntAuthorizationSrv, $location, $interval) {
 
-  ['$rootScope', '$scope', '$state',
-  '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv',
-
-  'ngDialog', '$translate', 'hotelDetails',
-  'userInfoDetails', '$stateParams',
-
-  'rvMenuSrv', 'rvPermissionSrv', '$timeout', 'rvUtilSrv', 'jsMappings', '$q', '$sce', '$log', '$location', '$interval',
-
-  function($rootScope, $scope, $state,
-    $window, RVDashboardSrv, RVHotelDetailsSrv,
-
-    ngDialog, $translate, hotelDetails,
-    userInfoDetails, $stateParams,
-
-    rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce, $log, $location, $interval) {
 
     var observeDeviceInterval;
 
@@ -114,8 +124,8 @@ sntRover.controller('roverController',
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
     $rootScope.advanced_queue_flow_enabled = hotelDetails.advanced_queue_flow_enabled;
-    $rootScope.isPmsDevEnv = hotelDetails.is_pms_dev;
-
+    $rootScope.isPmsProductionEnv = hotelDetails.is_pms_prod;
+    $rootScope.isRoomDiaryEnabled = hotelDetails.is_room_diary_enabled;
     $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
       /**
        * CICO-34068
@@ -386,7 +396,7 @@ sntRover.controller('roverController',
     $scope.$on('refreshLeftMenu', function(event) {
         setupLeftMenu();
     });
-    
+
 
     $scope.init = function() {
         BaseCtrl.call(this, $scope);
@@ -408,17 +418,8 @@ sntRover.controller('roverController',
             isManualCCEntryEnabled: $rootScope.isManualCCEntryEnabled
         };
 
-        $scope.menuOpen = false;        
+        $scope.menuOpen = false;
         $rootScope.showNotificationForCurrentUser = true;
-
-        var routeChange = function(event) {
-            event.preventDefault();
-            $location.path('#!/');
-            $location.replace();
-            return false;
-        };
-
-        $rootScope.$on('$locationChangeStart', routeChange);
 
         if ($rootScope.paymentGateway === "CBA") {
             doCBAPowerFailureCheck();
@@ -432,7 +433,6 @@ sntRover.controller('roverController',
      */
     $scope.$on("updateRoverLeftMenu", function(e, value) {
       $scope.selectedMenuIndex = value;
-      window.history.pushState("initial", "Showing Dashboard", "#!/");
     });
 
 
@@ -465,6 +465,14 @@ sntRover.controller('roverController',
     $scope.closeDrawerMenu = function() {
       $scope.menuOpen = false;
     };
+
+      $scope.logout = function() {
+          var redirUrl = '/logout/';
+
+          $timeout(function() {
+              $window.location.href = redirUrl;
+          }, 300);
+      };
 
     var openEndOfDayPopup = function() {
         // Show a loading message until promises are not resolved
@@ -513,7 +521,7 @@ sntRover.controller('roverController',
       else if (subMenu === "adminSettings") {
             // CICO-9816 bug fix - Akhila
             $('body').addClass('no-animation');
-            $window.location.href = "/admin";
+            $window.location.href = "/admin/h/" + sntAuthorizationSrv.getProperty();
       }
       else if (subMenu === "changePassword") {
          openUpdatePasswordPopup();
@@ -897,15 +905,15 @@ sntRover.controller('roverController',
       });
     };
 
-    $scope.redirectToHotel = function(hotel_id) {
-          RVHotelDetailsSrv.redirectToHotel(hotel_id).then(function(data) {
-            $('body').addClass('no-animation');
-             $window.location.reload();
-          }, function() {
-          });
+    $scope.redirectToHotel = function(hotel) {
+        var redirUrl = '/staff/h/' + hotel.hotel_uuid;
+
+        setTimeout(function() {
+            $window.location.href = redirUrl;
+        }, 300);
     };
 
-    /* 
+    /*
      *  CICO-27519 - Handle inline styles inside ng-bind-html directive.
      *  Let   =>  $scope.htmlData = "<p style='font-size:8pt;''>Sample Text</p>";
      *  Usage =>  <td data-ng-bind-html="trustAsHtml(htmlData)"></td>
@@ -950,7 +958,7 @@ sntRover.controller('roverController',
       text = text.split(query).map(toHTMLSpecials);
       query = toHTMLSpecials(query);
       text = text.join('<span class="highlight">' + query + '</span>');
-      
+
       return $rootScope.trustAsHtml(text);
     };
 
