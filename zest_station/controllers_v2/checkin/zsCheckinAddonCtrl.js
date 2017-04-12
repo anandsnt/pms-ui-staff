@@ -39,6 +39,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			$scope.mode = 'ERROR_MODE';
 		};
 
+		// check if addon type is room or flat, based on this the qunatity limit need to be set
 		$scope.isAddonFlatOrRoomType = function(addonToBe) {
 			var isAddonFlatOrRoomType = false;
 
@@ -233,7 +234,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 
 				// Loop through the addons list and assign the labels set in admin --> upsells --> adodn upsell
 				// amount type labels and post type labels are arrays
-				 
+
 				_.each($scope.addonsList, function(addon) {
 					addon.amount_type_label = '';
 					_.each(amountTypesLabels, function(amountTypeLabel) {
