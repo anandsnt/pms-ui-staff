@@ -529,6 +529,7 @@ angular.module('sntRover').service('rvMenuSrv',
 
 			case 'nightlyDiaryReservation':
 				var isRoomDiaryEnabled = ($rootScope.isPmsProductionEnv) ? $rootScope.isRoomDiaryEnabled : true;
+
 				returnValue = !isHourlyRateOn() && isRoomDiaryEnabled;
 				break;
 
