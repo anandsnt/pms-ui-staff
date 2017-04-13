@@ -34,7 +34,7 @@
         </li>
         
         <!-- show  if there are any rates selected -->
-        <li class="rates" ng-show="chosenTab === 'RATES' && isRateView">
+        <li class="rates" ng-show="chosenTab === 'RATES' && isRateView && selectedCards.length === 0">
             <strong>Rate</strong>
             
             <!-- If 2 or more add 'X Rates' where X is the number of rates, 
@@ -44,6 +44,14 @@
             <span ng-show="selectedRates.length === 0">All Rates</span> 
             <span ng-show="selectedRates.length === 1">1 Rate</span>
             <span ng-show="selectedRates.length > 1">{{selectedRates.length}} Rates</span>
+        </li>
+        
+        <!-- show .card if there are any cards selected -->
+        <li class="card" ng-show="chosenTab === 'RATES' && isRateView && selectedCards.length > 0">
+           <strong>Name Card</strong>
+
+           <!-- add ',' for each company card,IATA etc except the last one-->
+           <span>{{selectedCardNames.join()}}</span>           
         </li>
 
         <!-- show  if there are any rates selected -->
@@ -66,12 +74,12 @@
        </li>
          
         <!-- show .card if there are any cards selected -->
-        <li class="card" ng-hide="selectedAccountName.length">
+        <!-- <li class="card" ng-hide="selectedAccountName.length">
            <strong>Name Card</strong>
 
-           <!-- add ',' for each company card,IATA etc except the last one-->
+            add ',' for each company card,IATA etc except the last one
            <span>{{selectedCardNames.join()}}</span>           
-        </li>
+        </li> -->
          
     </ul>
     <ul class="actions">
