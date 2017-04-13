@@ -91,6 +91,11 @@
 		}
 
 		&.icon-oos { fill: @brandColor; }
+		&.icon-arrow-left,
+        &.icon-arrow-right {
+            fill: none;
+            stroke: @white;
+        }
 	}
 
     .logo-svg{
@@ -110,6 +115,14 @@
             .logo { .size(100%, auto) !important;}
         }
 	#content {
+
+		.button {
+			&[disabled],
+			&.disabled {
+				background: rgba(0,0,0,0.5);
+			}
+		}
+		
 		
 		#textual,
 		#signature { background-color: #ebebeb; }
@@ -123,6 +136,26 @@
 	        li {
 	            .details { background-color: #ebebeb; }
 	        }
+	    }
+	       #upgrade {
+	    	.upgrade-price {
+	    		background-color: @actionBackground;
+	    		color: @actionColor;
+	    	}
+	    }
+
+	    .add-on-list {
+	    	li {
+
+	    		&:not(.selected){
+	    			border-color: #ebebeb;
+
+		    		.add-on-content {
+		    			background: #ebebeb;
+		    		}
+	    		}
+	    		
+	    	}
 	    }
 	}
 

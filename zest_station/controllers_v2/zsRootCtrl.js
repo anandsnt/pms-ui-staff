@@ -10,7 +10,7 @@ sntZestStation.controller('zsRootCtrl', [
     'zsEventConstants',
     '$state', 'zsGeneralSrv', '$rootScope', 'ngDialog', '$sce',
     'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 
-    'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', '$filter', '$log',
+    'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', 'hotelLanguages', '$filter', '$log',
     function($scope,
 		zsEventConstants,
 		$state,
@@ -26,6 +26,7 @@ sntZestStation.controller('zsRootCtrl', [
 		$timeout,
 		zsModeConstants,
 		hotelTimeData,
+        hotelLanguages,
 		$filter,
         $log) {
 
@@ -558,7 +559,7 @@ sntZestStation.controller('zsRootCtrl', [
 
         $scope.setSvgsToBeLoaded = function(iconsPath, commonIconsPath, useCommonIcons, diffHomeIconsOnly) {
             var iconBasePath = !useCommonIcons ? iconsPath : commonIconsPath;
-
+            
             $scope.activeScreenIcon = 'bed';
             if ($scope.zestStationData.key_create_file_uploaded.indexOf('/logo.png') !== -1) {
                 $scope.zestStationData.key_create_file_uploaded = '';
@@ -599,8 +600,9 @@ sntZestStation.controller('zsRootCtrl', [
                     watch: iconBasePath + '/watch.svg',
                     qr_arrow: iconBasePath + '/qr-arrow.svg',
                     clear_icon: iconBasePath + '/x.svg',
+                    left_arrow_icon: commonIconsPath + '/arrow-left.svg',
+                    right_arrow_icon: commonIconsPath + '/arrow-right.svg',
                     scanpassport: iconBasePath + ($scope.zestStationData.scan_passport_file_uploaded.length > 0) ? $scope.zestStationData.scan_passport_file_uploaded : ''
-
                 }
             };
 
@@ -1500,7 +1502,10 @@ sntZestStation.controller('zsRootCtrl', [
             $('body').css('display', 'none'); // this will hide contents until svg logos are loaded
 			// call Zest station settings API
             $scope.zestStationData = zestStationSettings;
-            $scope.zestStationData.check_in_collect_passport = false;// TODO: link with admin setting 
+            $scope.zestStationData.hotelLanguages = hotelLanguages.languages;
+            $rootScope.isStandAlone = zestStationSettings.is_standalone;
+            $scope.zestStationData.check_in_collect_passport = false;// TODO: link with admin setting
+
             $scope.zestStationData.makingKeyInProgress = false;
             $scope.zestStationData.qrCodeScanning = false;
             $scope.zestStationData.demoModeEnabled = 'false'; // demo mode for hitech, only used in snt-theme

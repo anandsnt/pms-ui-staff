@@ -69,7 +69,7 @@ admin.controller('ADAppCtrl', [
             var shouldHideNightlyDiaryMenu = true;
 
             if (!$rootScope.isHourlyRatesEnabled) {
-                shouldHideNightlyDiaryMenu  = !$rootScope.isRoomDiaryEnabled;
+                shouldHideNightlyDiaryMenu  = !$rootScope.isRoomDiaryEnabled && $rootScope.isPmsProductionEnv;
             }
             if ($scope.isStandAlone) {
                 $scope.menu = [
@@ -560,6 +560,7 @@ admin.controller('ADAppCtrl', [
 			$rootScope.hotelTimeZoneFull = data.hotel_time_zone_full;
 			$rootScope.hotelTimeZoneAbbr = data.hotel_time_zone_abbr;
             $rootScope.isRoomDiaryEnabled = data.is_room_diary_enabled;
+            $rootScope.isPmsProductionEnv = data.is_pms_prod;
 
 			// CICO-18040
 			$rootScope.isFFPActive = data.is_ffp_active;
