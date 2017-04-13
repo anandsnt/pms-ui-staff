@@ -42,23 +42,27 @@
             </fieldset>
 
             <fieldset class="holder right">
-                <ad-dropdown-name savemodel="exactOnlineSetup.journal_code"
-                                  valueproperty="code"
-                                  property="description"
-                                  list="journals"
-                                  label="{{'JOURNAL_CODE'| translate}}"
-                                  div-class="full-width"
-                                  prefix-value="true">
-                </ad-dropdown-name>
+                <div class='entry full-width'>
+                    <label>{{'JOURNAL_CODE'| translate}}</label>
+                    <div class='select'>
+                        <select ng-model='exactOnlineSetup.journal_code'>
+                            <option ng-repeat='journal in journals' value='{{journal.code}}'>
+                                {{journal.code}}&nbsp;{{journal.description}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
 
-                <ad-dropdown-name savemodel="exactOnlineSetup.balancing_account_code"
-                                  valueproperty="code"
-                                  property="description"
-                                  list="balancingAccounts"
-                                  label="{{'BALANCING_ACCOUNT'| translate}}"
-                                  div-class="full-width"
-                                  prefix-value="true">
-                </ad-dropdown-name>
+                <div class='entry full-width'>
+                    <label>{{'BALANCING_ACCOUNT'| translate}}</label>
+                    <div class='select'>
+                        <select ng-model='exactOnlineSetup.balancing_account_code'>
+                            <option ng-repeat='balancingAccount in balancingAccounts' value='{{balancingAccount.code}}'>
+                                {{balancingAccount.code}}&nbsp;{{balancingAccount.description}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
             </fieldset>
 
             <fieldset class="holder left">
