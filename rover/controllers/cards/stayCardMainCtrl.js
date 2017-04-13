@@ -887,12 +887,21 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				$scope.$broadcast('travelAgentSearchStopped');
 			} else if (card === 'guest') {
 				$scope.reservationDetails.guestCard.id = cardData.id;
-				$scope.initGuestCard(cardData);
 				$scope.searchData.guestCard.guestFirstName = "";
 				$scope.searchData.guestCard.guestLastName = "";
 				$scope.searchData.guestCard.guestCity = "";
 				$scope.searchData.guestCard.guestLoyaltyNumber = "";
 				$scope.searchData.guestCard.email = "";
+				$scope.initGuestCard(cardData);
+                $scope.callAPI(RVContactInfoSrv.getGuestDetails, {
+                    successCallBack: function(data) {
+                        fetchGuestCardDataSuccessCallback(data);
+                    },
+                    failureCallBack: function(errorMessage) {
+                        $scope.errorMessage = errorMessage;
+                        $scope.$emit('hideLoader');
+                    }
+                });
 
 				$scope.$broadcast('guestSearchStopped');
 			}
