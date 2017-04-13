@@ -1762,7 +1762,7 @@ angular.module('sntRover').controller('guestCardController', [
 				}
 			}
 		};
-
+		
 		$scope.selectGuest = function(guest, $event) {
 			$event.stopPropagation();
 			if ($scope.viewState.identifier === "CREATION") {
@@ -1780,7 +1780,16 @@ angular.module('sntRover').controller('guestCardController', [
 				$scope.viewState.isAddNewCard = false;
 				$scope.reservationDetails.guestCard.id = guest.id;
 				$scope.initGuestCard(guest);
-				$scope.closeGuestCard();
+                $scope.callAPI(RVContactInfoSrv.getGuestDetails, {
+                    successCallBack: function(data) {
+                        $scope.$emit("UPDATE_GUEST_CARD_DETAILS", data);
+                        $scope.closeGuestCard();
+                    },
+                    failureCallBack: function(errorMessage) {
+                        $scope.errorMessage = errorMessage;
+                        $scope.$emit('hideLoader');
+                    }
+                });
 			} else {
 				if (!$scope.reservationDetails.guestCard.futureReservations || $scope.reservationDetails.guestCard.futureReservations <= 0) {
 					$scope.replaceCardCaller('guest', guest, false);
