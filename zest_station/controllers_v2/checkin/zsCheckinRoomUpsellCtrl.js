@@ -38,7 +38,13 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 		};
 
 		$scope.skipRoomUpsell = function() {
-			navigateToTermsPage();
+			if ($scope.zestStationData.station_addon_upsell_active) {
+				$state.go('zest_station.addOnUpsell', {
+					'is_from_room_upsell': 'true'
+				});
+			} else {
+				navigateToTermsPage();
+			}
 		};
 
 		$scope.viewSelectedRoomDetails = function(selectedRoom) {
@@ -56,7 +62,13 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 				// skipECI used to track going back to reservation details from upsell, avoid re-routing to ECI if purchased or upsold a room
 				$scope.selectedReservation.skipECI = true;
 				zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
-				$state.go('zest_station.checkInReservationDetails');
+				if ($scope.zestStationData.station_addon_upsell_active) {
+					$state.go('zest_station.addOnUpsell', {
+						'is_from_room_upsell': 'true'
+					});
+				} else {
+					$state.go('zest_station.checkInReservationDetails');
+				}
 			};
 
 			var params = {
