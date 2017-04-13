@@ -453,18 +453,26 @@ sntZestStation.controller('zsRootCtrl', [
         };
         $scope.showJumpList = false;
         $scope.jumpList = [];
+
         $scope.toggleJumpList = function(list) {
             $scope.jumperData.viewJumpFilter = '';
             $scope.showJumpList = !$scope.showJumpList;
             $scope.jumpList = list;
-            $scope.runDigestCycle();
-
             if ($scope.showJumpList) {
+                // on-showing of the jump list, focus for key input and listen for ESC key to close the window
                 $timeout(function() {
                     $('#jumperFilter').focus();
+                    $('#jumperFilter').on('keydown', function(event) {
+                        if (event.keyCode === 27) { // escape key
+                            $scope.showJumpList = false;
+                            $scope.runDigestCycle();
+                            $( '#jumperFilter').unbind( 'keydown' );
+                        } 
+                    });
                 }, 500);
                 
             }
+            $scope.runDigestCycle();
         };
         $scope.jumpGalleryOn = false;
         $scope.jumpGalleryIconPath = '';
