@@ -43,7 +43,6 @@ sntZestStation.directive('editableText', [function() {
                     });
 
             };
-            var evtFired = false;
             var textEditor = function() {
                 // handle double-click
                 // 
