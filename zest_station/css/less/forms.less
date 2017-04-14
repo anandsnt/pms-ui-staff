@@ -64,6 +64,30 @@ select {
             margin-top: -12px;
         }
     }
+    &.only-icon {
+        .square(64px);
+        position: relative;
+
+        .icons {
+            .square(30px);
+            position: absolute;
+            top:0;
+            left:0;
+            right:0;
+            bottom:0;
+            margin: auto;
+        }
+    }
+
+    &.text-red {
+        color: @red;
+    }
+
+    &.disabled,
+    &[disabled] {
+        opacity: 0.3;
+        background: rgba(255,255,255,0.5);
+    }
 }
 
 .form {
@@ -230,6 +254,53 @@ select {
     top: 20px !important;
 }
 
+.input-group {
+    #flexbox > .flex();
+    #flexbox > .parent(row wrap, '', center, '');
+    border: 1px solid fade(@black, 20%);
+    border-radius: 50px;
+
+    .button {
+        width: 30%;
+        font-weight: 600;
+        color: fade(@black, 30%) !important;
+        font-size: 32px !important;
+        
+
+        &:hover,
+        &:active {
+            color: @brandColor;
+        }
+    }
+
+    input {
+        width: 40%;
+        text-align: center;
+        color: @black;
+    }
+
+    input,
+    .button {
+        border-radius: 0;
+        background: transparent !important;
+        border-right: 1px solid fade(@black, 20%) !important;
+        box-shadow: none !important;
+         
+
+        &:first-child {
+            border-top-left-radius: 50px;
+            border-bottom-left-radius: 50px; 
+        }
+
+        &:last-child {
+            border-top-right-radius: 50px;
+            border-bottom-right-radius: 50px;
+            border-right: 0 !important;
+        }
+    }
+
+} 
+
 .key-text-style{
     margin-bottom:2px;
     &.more{
@@ -262,3 +333,4 @@ select {
 .checkmark-fill {
     fill: @brandColor;
 }
+

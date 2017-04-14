@@ -128,6 +128,11 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             url = '/staff/staycards/reservation_details.json?reservation=' + param.id;
             var deferred = $q.defer();
 
+            // To fetch the latest guest details, the following parameter has to be sent to trigger a fetchProfile OWS request
+            if (!$rootScope.isStandAlone) {
+                url += "&sync_guest_with_external_pms=true";
+            }
+
             zsBaseWebSrv.getJSON(url,param).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -389,6 +394,65 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 deferred.reject(data);
             });
                 return deferred.promise;
+        };
+
+        this.fetchAddons = function(param) {
+            var deferred = $q.defer();
+            var url = '/api/upsell_addons';
+            var params = {
+                'for_zest_station': true,
+                'reservation_id': param.reservation_id,
+                'application': 'KIOSK'
+            };
+
+            zsBaseWebSrv.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.updateAddon = function(params) {
+
+            var deferred = $q.defer();
+            var url = '/api/reservations/update_package';
+
+            var data = params;
+            data.application =  'KIOSK';
+
+            zsBaseWebSrv.postJSON(url, data).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.deleteAddon = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/reservations/delete_package';
+            var data = params;
+            data.application =  'KIOSK';
+            
+            zsBaseWebSrv.postJSON(url, data).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchHotelAddonLabels = function(param) {
+            var deferred = $q.defer();
+            var url = '/api/upsell_addons_setups';
+
+            zsBaseWebSrv.getJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
         };
 
 
