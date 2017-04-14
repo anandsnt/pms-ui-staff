@@ -28,15 +28,15 @@
 						<strong class="" ng-show="isStandAlone"> * </strong>
 					</label>
 					<div class="select">
-						<select convert-to-number
-								ng-class="{'placeholder': !prefetchData.selected_payment_type }"
-								ng-model="prefetchData.selected_payment_type"
-								ng-change="changeSelectedPaymentType()" >
-							<option value="" translate>PAYMENT_TYPE</option>
-							<option ng-hide="paymentType.name == 'CC'" value="{{paymentType.value}}" ng-repeat="paymentType in prefetchData.payment_types">
-								{{paymentType.description}}
-							</option>
-						</select>
+                        <select ng-class="{'placeholder': !stateAttributes.selectedPaymentType }"
+                                ng-model="stateAttributes.selectedPaymentType"
+                                ng-change="changeSelectedPaymentType()">
+                            <option value="" translate>SELECT_PAYMENT_TYPE</option>
+                            <option ng-repeat="paymentType in prefetchData.payment_types track by paymentType.composite_id"
+                                    ng-hide="paymentType.name == 'CC'" value="{{paymentType.composite_id}}">
+                                {{paymentType.description}}
+                            </option>
+                        </select>
 					</div>
 				</div>
 				<div class="entry full-width" required="required">
