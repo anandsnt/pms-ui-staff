@@ -8,12 +8,6 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             exactOnlineSetupValues: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
                 return adExactOnlineSetupSrv.fetchExactOnLineConfiguration();
             }],
-            journalsList: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
-                return adExactOnlineSetupSrv.fetchJournalsList();
-            }],
-            balancingAccounts: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
-                return adExactOnlineSetupSrv.fetchBalancingAccounts();
-            }],
             endPoints: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
                 return adExactOnlineSetupSrv.fetchEndpointsList();
             }]
@@ -436,7 +430,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         url: '/travelTripperSetup'
     });
 
-    
+
     $stateProvider.state('admin.snapshotSetup', {
         templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
         controller: 'ADInterfaceSubMenuCtrl',

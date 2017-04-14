@@ -100,7 +100,7 @@
 </section>
 <!-- print option for overlay , for stand alone the print happens from bill screen -->
 <div ng-controller="zsPrintBillCtrl" ng-if="!zestStationData.is_standalone">
-    <section id="main" role="main" class="centered" ng-show="printMode">
+    <section id="main" role="main" class="centered" ng-show="mode === 'PRINT_MODE'">
         <div id="content">
             <h1>
                 <text editable-text="END_THANKS"> {{'END_THANKS' |translate}}</text>

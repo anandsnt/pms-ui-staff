@@ -47,6 +47,12 @@
 			fill: @white;
 			stroke: @white;
 		}
+        
+        &.icon-arrow-left,
+        &.icon-arrow-right {
+            fill: none;
+            stroke: @actionColor;
+        }
 	}
     .logo-svg{
         background-image: url("../css/themes/yotel/logo.svg");
@@ -172,7 +178,7 @@
 
 		.popup {
 	        .popup-content {
-	            .button {
+	             .button:not(.transparent) { 
 	            	color: @white;
 	                background: @brandColor;
 	            }
@@ -542,9 +548,23 @@
 .jumper{
     background-color: @backgroundColor !important; 
 }
+
+
+/* ADDON
+ ==========================================================*/
+#yotel {
+    .add-on.selected {
+        .add-on-content{
+            color: #fff;
+            background-color: #53246d;
+        }
+    }
+ }
+
 .oos_reason{
     color: @grey1;
     position:absolute;
     padding-left:15px;
     padding-top:15px;
 }
+
