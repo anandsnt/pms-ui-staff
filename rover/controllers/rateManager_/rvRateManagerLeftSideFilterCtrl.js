@@ -542,8 +542,6 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
           fromLeftFilter: true
         };
 
-        console.log('chosenValues from left side filter: ', valuesChoosed);
-
         $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, valuesChoosed);
       };
 
