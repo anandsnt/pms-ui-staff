@@ -78,7 +78,7 @@
             <ul class="search-results wrapper">
                 <li class="reservation commision in-card" ng-repeat="commissionDetail in commissionDetails" ng-class="{'selected' : (filterData.selectAll || commissionDetail.is_checked)}">
                     <!-- Clicking L32 block should open Stay Card for this reservation -->
-                    <div class="faux-anchor has-arrow next-view" >
+                    <div class="faux-anchor has-arrow next-view" ng-click="goToStayCard(commissionDetail.reservation_id, commissionDetail.reservation_no)">
                         <!-- Add class "selected" when selecting all/individual commisions. -->
                         <div class="data">
                             <h2>{{commissionDetail.guest_name}}</h2>
