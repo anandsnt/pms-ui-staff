@@ -16,6 +16,7 @@ angular.module('sntRover')
         ) {
 
         BaseCtrl.call(this, $scope);
+
         /*
          * Utility method to shift date.
          * @param {String}  - startDate : base date to be shifted.
