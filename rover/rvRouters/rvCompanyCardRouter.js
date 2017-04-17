@@ -15,7 +15,7 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
 
         // company card details
         $stateProvider.state('rover.companycarddetails', {
-            url: '/companycard/:type/:id/:query/:isBackFromStaycard/:origin',
+            url: '/companycard/:type/:id/:query/:isBackFromStaycard/:origin/:isBackToTACommission',
             templateUrl: '/assets/partials/companyCard/rvCompanyCardDetails.html',
             controller: 'companyCardDetailsController',
             resolve: {

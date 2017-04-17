@@ -667,64 +667,151 @@
 
             /* Rooms ***/
             &.room {
-                .check { .hide; }
+                position: relative;
+
+                a,
+                .faux-anchor { 
+                    .show();
+                }
+
+                .check { .hide(); }
 
                 .room-info {
-                    width: 20%;
+                    .size(20px, 30%);
                     .pull-left;
+                    position: relative;
+                    padding-right: 10%;
 
-                    h2 {
+                    h2 { 
                         margin: 0;
+                        line-height: 10px;
+                        .nowrap();
+
                         &.out { color: @grey3; }
+
+                        .icons {
+                            display: inline-block;
+                            vertical-align: middle;
+                            .size(8pt, 15pt); 
+                            margin-left: 2pt;
+
+                            &.icon-suite {
+                                background-position: 0px -339px;
+                            }
+                        }
                     }
 
-                    .room-status { line-height: 10px; }
+                    .room-type,
+                    .room-status { 
+                        line-height: 10px;
+                        .nowrap(); 
+                        display: block;
+                    }
+
+                    .room-status {
+                        position: absolute;
+                        width: 30%;
+                        left: 70%;
+                        top:0;
+                        bottom: 0;
+                        line-height: 20px;
+                    }
+                }
+
+                .room-status {
+                    font-size: 8pt;
                 }
 
                 .reservation-status {
-                    width: 40%;
-                    .pull-left;
-
-                    .guest-status { margin-right: 4pt; }
-
-                    .current,
-                    .next {
-                        line-height: 20px;
-                        .pull-left;
-                        .size(20px, 50%);
-                    }
-                }
-
-                .additional-info {
-                    line-height: 20px;
                     width: 30%;
                     .pull-left;
 
-                    .assigned,
-                    .unassigned,
-                    .service-status {
-                        width: 50%;
-                        .nowrap();
-                        .pull-left;
+                    .guest-status { 
+                        background-image: none;
+                        margin-right: 4pt; 
                     }
 
-                    .unassigned { color: @grey2; }
-                    .service-status {  color: @grey3; }
+                    .current,
+                    .next {
+                        font-size: 8pt;
+                        line-height: 20px;
+                        .pull-left;
+                        .size(20px, 50%);
+                    } 
+                }
+
+                .assigned,
+                .unassigned {
+                    font-size: 8pt;
+                    line-height: 20px;
+                    width: 20%;
+                    .pull-left;
+                }
+
+                .unassigned { color: @grey2; }
+
+                .service-status {
+                    line-height: 10px;
+                    width: 20%;
+                    color: @grey3;
+                    .pull-left;
+
+                    strong {
+                        .show();
+                    }
                 }
 
                 .guest-image,
                 .icon-queued,
-                .show-vacant { .pull-right; }
+                .show-vacant { 
+                    position: absolute;
+                    top: 5px;
+                    right: 0;
+                }
 
                 .guest-image {
                     .show;
                     .square(20px);
                 }
 
-                .show-vacant {
+                .show-vacant { 
                     text-align: right;
-                    line-height: 20px;
+                    line-height: 20px; 
                     width: 10%;
+                }
+
+                .vip {
+                    font-size: 4pt;
+                    line-height: 12px;
+                    background: @grey1;
+                    color: @grey3;
+                    bottom: -2px;
+                    .square(12px);
+                }
+
+                .tasks {
+                    margin-left: 60%;
+                    width: 18%;
+                    padding: 2pt;
+                    background-color: @grey1;
+                    .pull-left;
+                    
+                    li {
+                        font-style: italic;
+                        line-height: 10pt;
+                        padding: 2pt 0;
+                        display: block;
+
+                        &:last-child {
+                            border: none;
+                        }
+
+                        &.completed {
+                            color: @grey3;
+                            text-decoration: line-through;
+                            background: transparent;
+                        }
+                    }
                 }
             }
 

@@ -587,11 +587,6 @@
 
 			// -- CICO-17706 --//
 
-			// CICO-29711 resend cancellation. reusing same popup
-			if ($scope.DailogeState.isCancelled && $scope.isEmailAttached()) {
-				$scope.sendReservationCancellation();
-			}
-
 			$scope.$on('PAYMENT_FAILED', function(e, errorMessage) {
 				$scope.errorMessage = errorMessage;
 			});

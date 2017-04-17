@@ -45,7 +45,7 @@
 					</label>
 					<div class="select">
 						<select convert-to-number name="payment-type" ng-model="prefetchData.selected_fees_code">
-							<option value="null">Select Fees</option>
+							<option value="">Select Fees</option>
 							<option value="{{feesCode.value}}" ng-selected="feesCode.value == prefetchData.selected_fees_code" ng-repeat="feesCode in prefetchData.fees_codes">
 							{{feesCode.name}} {{feesCode.description}}
 							</option>

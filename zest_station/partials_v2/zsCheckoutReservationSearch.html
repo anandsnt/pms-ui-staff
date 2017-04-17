@@ -27,7 +27,7 @@
         </form>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('room-number')" click-touch="showOnScreenKeyboard('room-number')" ng-model="reservationParams.room_no" enter-press="roomNumberEntered()" id="room-number" touch-press/>
+                <input type="tel" placeholder="" ng-focus="showOnScreenKeyboard('room-number')" click-touch="showOnScreenKeyboard('room-number')" ng-model="reservationParams.room_no" enter-press="roomNumberEntered()" id="room-number" touch-press/>
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="roomNumberEntered()">
