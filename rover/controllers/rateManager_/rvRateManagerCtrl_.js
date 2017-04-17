@@ -1093,8 +1093,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
          * @param  {array} dates [description]
          */
         const showAndFormDataForTopBar = (dates) => {
-
-            console.log('entered into function showAndFormDataForTopBar()');
             var cards = [],
                 index = 0;
 
@@ -1107,8 +1105,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             $scope.selectedAccountName = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'accountName');
             $scope.selectedAddress = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'address');
 
-            console.log('Data formed for top bar: ', '$scope.selectedCardNames: ' + $scope.selectedCardNames, '$scope.selectedRateNames: ' + $scope.selectedRateNames, '$scope.selectedRateTypeNames: ' + $scope.selectedRateTypeNames, '$scope.selectedAccountName: ' + $scope.selectedAccountName);
-
             if ($scope.selectedAccountName[0] === undefined) {
                 cards = lastSelectedFilterValues[activeFilterIndex].selectedCards;
                 $scope.selectedCardNames = [];
@@ -1118,6 +1114,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                     }
                 }
             }
+
+            runDigestCycle();
 
         };
 
@@ -2326,7 +2324,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 }
                 else {
                     fetchDailyRates(newFilterValues);
-                    console.log('filterValues obtained at update results: ', newFilterValues);
                 }
             }
             else if ($scope.isRoomTypeView) {
