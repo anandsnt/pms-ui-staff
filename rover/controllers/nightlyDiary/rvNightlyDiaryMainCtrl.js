@@ -76,7 +76,7 @@ angular.module('sntRover')
                     hasOverlay: false,
                     isEditReservationMode: false,
                     showUnassignedPanel: false,
-                    showFilterPanel: false,
+                    showFilterPanel: true,
                     selectedRoomTypes: [],
                     selectedFloors: []
                 };
@@ -306,7 +306,7 @@ angular.module('sntRover')
             $scope.$on('UPDATE_RESERVATIONLIST', function( event, roomId ) {
                 if (!!roomId) {
                     $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
-                    $scope.diaryData.showFilterPanel = false;
+                    $scope.diaryData.showFilterPanel = true;
                 }
                 cancelReservationEditing();
                 fetchRoomListDataAndReservationListData(roomId);
@@ -318,7 +318,7 @@ angular.module('sntRover')
             */
             $scope.$on('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function( event, roomId ) {
                 $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
-                $scope.diaryData.showFilterPanel = false;
+                $scope.diaryData.showFilterPanel = true;
                 cancelReservationEditing();
                 fetchRoomListDataAndReservationListData(roomId);
             });
