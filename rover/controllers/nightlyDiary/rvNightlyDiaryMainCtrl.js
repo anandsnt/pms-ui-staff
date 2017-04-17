@@ -77,7 +77,7 @@ angular.module('sntRover')
                     isEditReservationMode: false,
                     showUnassignedPanel: false,
                     showUnassignedReservations: false,
-                    showFilterPanel: (screen.width < 1344) ? false : true,
+                    showFilterPanel: (screen.width < 1279) ? false : true,
                     selectedRoomTypes: [],
                     selectedFloors: []
                 };
