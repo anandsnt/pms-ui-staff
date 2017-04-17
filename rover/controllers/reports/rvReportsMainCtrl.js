@@ -216,6 +216,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 for (i = 0, j = source.length; i < j; i++) {
                     source[i].filteredOut = false;
                 }
+
+                refreshScroller();
                 return;
             }
 
