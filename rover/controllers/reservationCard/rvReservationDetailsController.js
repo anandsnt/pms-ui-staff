@@ -142,7 +142,8 @@ sntRover.controller('reservationDetailsController',
                 param: {
 					id: $vault.get('travelAgentId'),
 					type: $vault.get('travelAgentType'),
-					query: $vault.get('travelAgentQuery')
+					query: $vault.get('travelAgentQuery'),
+					isBackToTACommission: $stateParams.isFromTACommission
 				}
             };
         } else {

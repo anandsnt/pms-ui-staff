@@ -107,7 +107,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
     };
 
     $scope.goToStayCard = function(reservation_id, confirmation_no) {
-        $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {"id": reservation_id, "confirmationId": confirmation_no, "isrefresh": true});
+        $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {"id": reservation_id, "confirmationId": confirmation_no, "isrefresh": true, "isFromTACommission": true});
     };
 
     $scope.isNextButtonDisabled = function() {
