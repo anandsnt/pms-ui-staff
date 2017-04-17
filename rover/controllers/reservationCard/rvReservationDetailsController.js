@@ -134,7 +134,7 @@ sntRover.controller('reservationDetailsController',
 				}
 			};
 		} else if ($scope.previousState.name === "rover.companycarddetails") {
-			//rover.companycarddetails({id:row.id, type: row.account_type, query :textInQueryBox})
+
             setNavigationBookMark();
             $rootScope.setPrevState = {
                 title: 'TRAVEL Agent',

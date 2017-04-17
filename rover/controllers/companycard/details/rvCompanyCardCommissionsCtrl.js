@@ -105,7 +105,11 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
         clearCurrentSelection();
         fetchCommissionDetails(true);
     };
-
+    /*
+     * Navigate to staycard from commissions tab reservations
+     * @param reservation_id reservation id
+     * @param confirmation_no confirmation no
+     */
     $scope.goToStayCard = function(reservation_id, confirmation_no) {
         $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {"id": reservation_id, "confirmationId": confirmation_no, "isrefresh": true, "isFromTACommission": true});
     };
