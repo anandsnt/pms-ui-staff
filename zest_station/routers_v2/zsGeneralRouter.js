@@ -47,6 +47,9 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 				},
 				cssMappings: function(zsCSSMappings) {
 					return zsCSSMappings.fetchCSSMappingList();
+				},
+				hotelLanguages: function(zsGeneralSrv) {
+					return zsGeneralSrv.fetchHotelLanguageList();
 				}
 			}
 		});

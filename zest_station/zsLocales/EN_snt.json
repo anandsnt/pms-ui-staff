@@ -482,6 +482,7 @@
   "CC_INSTRUCTION_1": "Your card will be authorized for an incidental amount of $25.00 per night",
   "CC_INSTRUCTION_2": "Unused remaining balance will be released upon checkout",
   "CC_INSTRUCTION_3": "If you choose to use a debit card then please note that some banks may take longer to release the funds back to your checking account",
+
    "GET_KEYS_HEADER": "GET YOUR KEYS",
    "GET_KEYS_SUB": "",
    "GET_KEYS_HOW_MANY": "How many keys do you need?",
@@ -521,15 +522,18 @@
    "PRINT_FAILED": "Print was Failed",
    "EMAIL_SUCCESS": "Email was sent",
    "EMAIL_FAILED": "Something went wrong on sending email",
-
-
-
-
-
-
-
-
-
+   
+   "ADD_ADDON": "Add",
+   "REMOVE_ADDON": "Remove",
+   "ADD_ON_HEADING": "Enhance your stay?",
+   "ADD_ON_TOTAL_TEXT": "Add Ons Total:",
+   "ADD_ON_FOOTER_1": "Showing",
+   "ADD_ON_FOOTER_2": "Of",
+   "ADD_ON_FOOTER_3" : "Addons",
+   "ADDON_ADD_ERROR_HEADER": "Something went wrong!",
+   "ADDON_REMOVAL_ERROR_HEADER": "Something went wrong!",
+   "ADDON_ADD_ERROR_MESSAGE": "Unable To add this to your reservation",
+   "ADDON_REMOVAL_ERROR_MESSAGE": "Unable To remove this from your reservation",
 
    "GID_SCAN_HEADER": "Scan Passport",
    "GID_SCAN_SUB_HEADER": "Place your passport on the scanner and select 'Scan'",
@@ -569,30 +573,10 @@
    "GID_WAIT_SUB": "A staff member will be with you soon to verify your passport information.",
 
 
-
    "GID_ADMIN_VERIFY_HEADER": "Verify Passport",
    "GID_ADMIN_VERIFY_SUB_HEADER": "Reservation Details",
 
 
    "GATE_ERROR_CLOSE": "Ok"
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   
 }
