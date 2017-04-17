@@ -76,6 +76,7 @@ angular.module('sntRover')
                     hasOverlay: false,
                     isEditReservationMode: false,
                     showUnassignedPanel: false,
+                    showUnassignedReservations: false,
                     showFilterPanel: (screen.width < 1344) ? false : true,
                     selectedRoomTypes: [],
                     selectedFloors: []
@@ -306,7 +307,6 @@ angular.module('sntRover')
             $scope.$on('UPDATE_RESERVATIONLIST', function( event, roomId ) {
                 if (!!roomId) {
                     $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
-                    $scope.diaryData.showFilterPanel = true;
                 }
                 cancelReservationEditing();
                 fetchRoomListDataAndReservationListData(roomId);

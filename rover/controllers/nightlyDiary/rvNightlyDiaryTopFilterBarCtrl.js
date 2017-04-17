@@ -178,10 +178,12 @@ angular.module('sntRover')
             //     $scope.diaryData.showFilterPanel = true;
             // }
             $scope.diaryData.showFilterPanel = !$scope.diaryData.showFilterPanel;
+            $scope.diaryData.showUnassignedReservations = false;
         };
 
         // Handle click on unassigned filter button
-        $scope.clickedOnUnassigned = function() {
+        $scope.toggleUnassignedReservations = function() {
+            $scope.diaryData.showUnassignedReservations = !$scope.diaryData.showUnassignedReservations;
             $scope.diaryData.showFilterPanel = false;
         };
 
