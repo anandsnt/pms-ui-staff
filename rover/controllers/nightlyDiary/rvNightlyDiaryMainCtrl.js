@@ -49,7 +49,7 @@ angular.module('sntRover')
                     srvParams = RVNightlyDiarySrv.getCache();
                 }
                 else {
-                    srvParams.start_date = $rootScope.businessDate;
+                    srvParams.start_date = addDaysToDay($rootScope.businessDate, -1);
                     srvParams.no_of_days = 7;
                     srvParams.page = 1;
                     srvParams.per_page = 50;
