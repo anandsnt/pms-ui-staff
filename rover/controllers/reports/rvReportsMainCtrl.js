@@ -245,6 +245,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             for (i = 0, j = $scope.reportList.length; i < j; i++) {
                 $scope.reportList[i].filteredOut = false;
             }
+
+            refreshScroller();
         };
 
 
