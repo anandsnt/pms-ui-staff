@@ -535,7 +535,8 @@ angular.module('sntRover')
                 mode = dialogData.mode;
 
             if (mode === $scope.modeConstants.RM_SINGLE_RATE_TYPE_RESTRICTION_MODE) {
-                params.rate_type_id = dialogData.rateType.id;
+                params.rate_type_ids = [];
+                params.rate_type_ids.push(dialogData.rateType.id);
             } else {
                 params.rate_type_ids = _.pluck(dialogData.rateType, 'id');
             }
