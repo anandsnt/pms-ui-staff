@@ -358,6 +358,63 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
 
     };
 
+    $scope.toggleCommission = function() {
+        $scope.filterData.toggleCommission =  !$scope.filterData.toggleCommission;
+    };
+
+    var getSelectedReservationsHavingCommission = function() {
+
+        var commissionListToUpdate = [];
+
+        if ($scope.filterData.selectAll) {
+           $scope.commissionDetails.forEach(function(commission) {
+                if (commission.commission_data.paid_status != 'Prepaid') {
+                    commissionListToUpdate.push({ reservation_id: commission.reservation_id });
+                }
+           });
+        } else {
+            $scope.selectedCommissions.forEach(function(commission) {
+                if (commission.commission_data.paid_status != 'Prepaid') {
+                    commissionListToUpdate.push({ reservation_id: commission.reservation_id });
+                }
+            });
+        }
+
+        return commissionListToUpdate;
+    };
+
+    var getCommissionRecalculateType = function() {
+        var type = 'percent';
+
+        if($scope.filterData.toggleCommission) {
+            type = 'amount';
+        }
+
+        return type;
+    };
+
+    $scope.clickedRecalculate = function() {
+
+        var recalculateCommissionSuccess = function(data) {
+            clearCurrentSelection();
+            fetchCommissionDetails(false);
+            $scope.$emit('hideLoader');
+        },
+        recalculateCommissionFailure = function(error) {
+            clearCurrentSelection();
+            fetchCommissionDetails(false);
+            $scope.$emit('hideLoader');
+        };
+
+        var postData = {
+            'type' : getCommissionRecalculateType(),
+            'value' : $scope.filterData.commssionRecalculationValue,
+            'reservation_ids' : getSelectedReservationsHavingCommission()
+        }
+
+        $scope.invokeApi(RVCompanyCardSrv.recalculateCommission, postData, recalculateCommissionSuccess, recalculateCommissionFailure);
+    };
+
     // Initailizes the controller
     var init = function() {
         $scope.commissionDetails = [];
@@ -370,7 +427,9 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
             perPage: RVCompanyCardSrv.DEFAULT_PER_PAGE,
             page: 1,
             start: 1,
-            selectAll: false
+            selectAll: false,
+            toggleCommission: false,
+            commssionRecalculationValue: ''
         };
         $scope.accountId = $stateParams.id;
         $scope.isEmpty = util.isEmpty;
