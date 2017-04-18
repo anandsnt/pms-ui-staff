@@ -182,6 +182,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.cendynSetup', {
+        templateUrl: '/assets/partials/interfaces/Cendyn/adCendynSetup.html',
+        controller: 'adCendynSetupCtrl',
+        url: '/cendyn/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('cendyn');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.accountViewSetup', {
         templateUrl: '/assets/partials/interfaces/AccountView/adAccountViewSetup.html',
         controller: 'adAccountViewSetupCtrl',
