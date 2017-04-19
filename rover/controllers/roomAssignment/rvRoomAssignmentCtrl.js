@@ -14,7 +14,8 @@ sntRover.controller('RVroomAssignmentController', [
 	'ngDialog',
 	'RVSearchSrv',
 	'rvPermissionSrv',
-	function($scope, $rootScope, $state, $stateParams, RVRoomAssignmentSrv, $filter, RVReservationCardSrv, roomsList, roomPreferences, roomUpgrades, $timeout, ngDialog, RVSearchSrv, rvPermissionSrv) {
+	'RVNightlyDiarySrv',
+	function($scope, $rootScope, $state, $stateParams, RVRoomAssignmentSrv, $filter, RVReservationCardSrv, roomsList, roomPreferences, roomUpgrades, $timeout, ngDialog, RVSearchSrv, rvPermissionSrv, RVNightlyDiarySrv) {
 
 	// set a back button on header
 	$rootScope.setPrevState = {
@@ -363,6 +364,11 @@ sntRover.controller('RVroomAssignmentController', [
 				$scope.reservationData.reservation_card.room_ready_status = '';
 				RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
 				updateSearchCache();
+				var params = RVNightlyDiarySrv.getCache();
+
+                params.currentSelectedReservationId = "";
+                params.currentSelectedReservation = "";
+                RVNightlyDiarySrv.updateCache(params);
 				$scope.backToStayCard();
 
 			};
@@ -373,6 +379,7 @@ sntRover.controller('RVroomAssignmentController', [
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorMessage;
 			};
+
 
 			$scope.invokeApi(RVRoomAssignmentSrv.UnAssignRoom, params, successCallbackOfUnAssignRoom, failureCallBackOfUnAssignRoom);
 
