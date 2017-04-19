@@ -66,7 +66,7 @@
                         </label> 
                     </div> 
                 </div>
-                <button type="button" class="button green" ng-click="clickedRecalculate()">Recalculate</button>
+                <button type="button" class="button green" ng-click="clickedRecalculate()" ng-disabled="filterData.commssionRecalculationValue == '' " ng-class="{'grey' : filterData.commssionRecalculationValue == ''}">Recalculate</button>
             </div>
         </div>
         <!-- upto here --> 

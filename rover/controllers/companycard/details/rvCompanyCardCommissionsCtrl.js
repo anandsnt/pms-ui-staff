@@ -206,8 +206,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
 
     // Selecting individual record checkbox
     $scope.onCheckBoxSelection = function(commission) {
-        commission.is_checked = !commission.is_checked;
-        // && commission.commission_data.paid_status != 'Prepaid'
+
         if (commission.is_checked) {
             if (commission.commission_data.paid_status == 'Prepaid') {
                 $scope.prePaidCommissions.push(commission);
