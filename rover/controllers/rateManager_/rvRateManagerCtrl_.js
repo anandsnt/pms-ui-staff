@@ -46,8 +46,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     var totalRatesCountForPagination = 0,
         totalRateTypesCountForPagination = 0,
         paginationRatePerPage = 0,
-        paginationRateMaxRowsDisplay = 0; //for pagination purpose
-
+        paginationRateMaxRowsDisplay = 0; // for pagination purpose
 
     /**
      * data passed to react, will be used in scrolling related area to find positions
@@ -71,7 +70,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.setTitle(title);
         $scope.heading = title;
 
-        //updating the left side menu
+        // updating the left side menu
         $scope.$emit("updateRoverLeftMenu", "rateManager");
     };
 
@@ -492,7 +491,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             commonRestrictions = response.commonRestrictions,
             fromDate = tzIndependentDate(successCallBackParameters.fromDate),
             toDate = tzIndependentDate(successCallBackParameters.toDate);
-            //rateTypeID = successCallBackParameters.rateTypeID;
+            // rateTypeID = successCallBackParameters.rateTypeID;
 
         var dateBasedRateDetailsReponse = _.indexBy(dailyRateAndRestrictions, 'date'),
             dateBasedCommonRestrictions = _.indexBy(commonRestrictions, 'date');
@@ -733,7 +732,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             restrictionTypes,
         };
 
-        //dispatching to redux
+        // dispatching to redux
         store.dispatch(reduxActionForAllRateTypesView);
     };
 
@@ -1347,7 +1346,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 restrictionTypes,
             };
 
-            //dispatching to redux
+            // dispatching to redux
             store.dispatch(reduxActionForAllRoomTypesView);
         };
 
@@ -1554,7 +1553,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             showRateRestrictionPopup(data);
         };
 
-
         /**
          * [description]
          * @param  {[type]} response                  [description]
@@ -1574,7 +1572,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                         }));
 
             // roomTypeList is now cached, we will not fetch that again
-            //cachedRoomTypeList = roomTypes;
+            // cachedRoomTypeList = roomTypes;
 
             var data = {
                 mode: rvRateManagerPopUpConstants.RM_SINGLE_RATE_TYPE_RESTRICTION_MODE,
@@ -1597,7 +1595,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
          */
         var onFetchMultipleRateTypeRestrictionModeDetailsForPopup = (response, successCallBackParameters) => {
             var restrictionData = response.roomTypeAndRestrictions,
-                //roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
+                // roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
                 rates = !cachedRateList.length ? response.rates : cachedRateList,
                 variedAndCommonRestrictions = response.restrictionsWithStatus[0].restrictions,
                 rateAndRestrictions = response.rateAndRestrictions[0]
@@ -1608,7 +1606,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                         }));
 
             // roomTypeList is now cached, we will not fetch that again
-            //cachedRoomTypeList = roomTypes;
+            // cachedRoomTypeList = roomTypes;
 
             var data = {
                 mode: rvRateManagerPopUpConstants.RM_MULTIPLE_RATE_TYPE_RESTRICTION_MODE,
@@ -1622,8 +1620,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
             showRateRestrictionPopup(data);
         };
-
-
 
         /*
         * [description]
@@ -1647,6 +1643,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                     date
                 }
             };
+
             $scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateDetailsAndCommonRestrictions, options);
         };
 
@@ -1664,6 +1661,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchRoomTypes: !cachedRoomTypeList.length,
                 fetchRates: !cachedRateList.length
             };
+
             var options = {
                 params,
                 onSuccess: onFetchSingleRateTypeRestrictionModeDetailsForPopup,
@@ -1674,7 +1672,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             };
 
              $scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateTypeDetailsAndCommonRestrictions, options);
-            //$scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateDetailsAndCommonRestrictions, options);
         };
 
         var fetchMultipleRateTypeRestrictionModeDetailsForPopup = (rateTypeID, date) => {
@@ -1684,6 +1681,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchRoomTypes: !cachedRoomTypeList.length,
                 fetchRates: !cachedRateList.length
             };
+
             var options = {
                 params,
                 onSuccess: onFetchMultipleRateTypeRestrictionModeDetailsForPopup,
@@ -2348,7 +2346,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchRateTypeAndRestrictions(newFilterValues);
             }
         });
-
 
         /*
          * to initialize data model for rate manager

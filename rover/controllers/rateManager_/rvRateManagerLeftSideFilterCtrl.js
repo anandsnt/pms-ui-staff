@@ -283,7 +283,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
               $scope.deleteAllSelectedValues();
               break;
       }
-	  };
+    };
 
     $scope.getButtonText = function() {
       var buttonText = '';
