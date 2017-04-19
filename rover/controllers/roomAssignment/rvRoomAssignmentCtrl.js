@@ -363,12 +363,15 @@ sntRover.controller('RVroomAssignmentController', [
 				$scope.reservationData.reservation_card.fo_status = '';
 				$scope.reservationData.reservation_card.room_ready_status = '';
 				RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
+
 				updateSearchCache();
+
 				var params = RVNightlyDiarySrv.getCache();
 
                 params.currentSelectedReservationId = "";
                 params.currentSelectedReservation = "";
                 RVNightlyDiarySrv.updateCache(params);
+
 				$scope.backToStayCard();
 
 			};
@@ -379,14 +382,8 @@ sntRover.controller('RVroomAssignmentController', [
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorMessage;
 			};
-var params = RVNightlyDiarySrv.getCache();
 
-                params.currentSelectedReservationId = "";
-                params.currentSelectedReservation = "";
-                RVNightlyDiarySrv.updateCache(params);
-
-			//$scope.invokeApi(RVRoomAssignmentSrv.UnAssignRoom, params, successCallbackOfUnAssignRoom, failureCallBackOfUnAssignRoom);
-
+			$scope.invokeApi(RVRoomAssignmentSrv.UnAssignRoom, params, successCallbackOfUnAssignRoom, failureCallBackOfUnAssignRoom);
 
 		}
 	};
