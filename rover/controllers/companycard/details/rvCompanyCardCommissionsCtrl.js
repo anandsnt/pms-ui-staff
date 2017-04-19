@@ -401,8 +401,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
             $scope.$emit('hideLoader');
         },
         recalculateCommissionFailure = function(error) {
-            clearCurrentSelection();
-            fetchCommissionDetails(false);
+            $scope.errorMessage = error;
             $scope.$emit('hideLoader');
         };
 

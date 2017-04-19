@@ -1,7 +1,7 @@
 <!-- Travel Agent Card Tab - Commisions -->
 <form method="post" action="{action}" id="ta-commisions" name="ta-commisions" class="form card-tab inner-header commisions" ng-show="currentSelectedTab == 'cc-commissions'">
     <div class="tab-header with-filters">
-
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div class="search-form" ng-class="{'hidden' : filterData.selectAll || selectedCommissions.length > 0 || prePaidCommissions.length > 0}">
             <!-- Add class "hidden" when selecting all/individual commisions -->
             <div class="entry date-range">
