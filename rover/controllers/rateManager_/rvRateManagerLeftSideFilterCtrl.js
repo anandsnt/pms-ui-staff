@@ -259,17 +259,17 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         $scope.selectedDateRange = formatDateForUI(data.fromDate) + ' to ' + formatDateForUI(data.toDate);
       });
 
-	  /**
+    /**
 	   * to switch the tab from left side filter's show all/select rate
 	   * @param  {[type]} tab [description]
 	   * @return {[type]}     [description]
 	   */
-	  $scope.switchTabAndCorrespondingActions = (tab) => {
+    $scope.switchTabAndCorrespondingActions = (tab) => {
       $scope.chosenTab = tab;
-  		refreshScroller();
-  		scrollTo('.filters');
+      refreshScroller();
+      scrollTo('.filters');
 
-      switch(tab) {
+      switch (tab) {
         case 'RATES' :
               $scope.deleteAllSelectedRateTypesFromRTT();
               break;
@@ -285,10 +285,10 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       }
 	  };
 
-	  $scope.getButtonText = function() {
+    $scope.getButtonText = function() {
       var buttonText = '';
 
-      switch($scope.chosenTab) {
+      switch ($scope.chosenTab) {
 
         case 'RATES' :
               if ($scope.selectedRates.length === 0 && $scope.selectedCards.length === 0) {
@@ -320,7 +320,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       }
 
       return buttonText;
-	  };
+    };
 
       /**
        * inorder to show the two month calendar on tapping the date range button

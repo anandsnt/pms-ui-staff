@@ -37,7 +37,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         cachedRoomTypeList = [],
         cachedRateTypeList = [],
         cachedRateAndRestrictionResponseData = [],
-        cachedRateTypeAndRestrictionResponseData = [],
         chosenTab = '';
 
     /**
@@ -763,6 +762,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * on taping the back button from the top bar (NOT from the HEADER)
      */
     $scope.clickedOnBackButton = () => {
+        var allRatesShowingData;
+
         lastSelectedFilterValues[activeFilterIndex].fromLeftFilter = false;
         $scope.showContractDetailsChecked = false;
         if (chosenTab === 'RATES') {
@@ -783,7 +784,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             $scope.showBackButton = false;
 
             // scroll focus
-            var allRatesShowingData = _.where(showingData, { actionType: RM_RX_CONST.RATE_VIEW_CHANGED});
+            allRatesShowingData = _.where(showingData, { actionType: RM_RX_CONST.RATE_VIEW_CHANGED});
             // we will attach scrollTo if attached filter from somewhere
             if(_.has(lastSelectedFilterValues[activeFilterIndex].allRate, 'scrollTo')) {
                reduxActionForAllRateView.scrollTo = lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo;
@@ -839,7 +840,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             $scope.showBackButton = true;
 
             // scroll focus
-            var allRatesShowingData = _.where(showingData, { actionType: RM_RX_CONST.RATE_VIEW_CHANGED});
+            allRatesShowingData = _.where(showingData, { actionType: RM_RX_CONST.RATE_VIEW_CHANGED});
             // we will attach scrollTo if attached filter from somewhere
             if(_.has(lastSelectedFilterValues[activeFilterIndex].allRate, 'scrollTo')) {
                reduxActionForAllRateView.scrollTo = lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo;
@@ -2237,7 +2238,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 cachedRoomTypeList = [];
                 cachedRateTypeList = [];
                 cachedRateAndRestrictionResponseData = [];
-                cachedRateTypeAndRestrictionResponseData = [];
                 chosenTab = newFilterValues.chosenTab;
                 // setting the current scroll position as STILL
                 newFilterValues.scrollDirection = rvRateManagerPaginationConstants.scroll.STILL;
@@ -2248,7 +2248,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 totalRateTypesCountForPagination = 0;
                 showingData = [];
 
-                switch(chosenTab) {
+                switch (chosenTab) {
 
                     case 'RATES' :
                         $scope.backButtonText = 'RATE';
@@ -2342,8 +2342,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
                     lastSelectedFilterValues[activeFilterIndex].allRateTypes = allRateTypes;
                     newFilterValues.allRateTypes = allRateTypes;
-
-                    cachedRateTypeAndRestrictionResponseData = [];
                 }
 
                 // calling the api

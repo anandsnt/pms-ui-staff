@@ -12,13 +12,15 @@ const RateManagerGridLeftSideHeadButtonComponent = ({
             <div>
                 {isFirstPage ? '' : 
                     (<button className="button blue"
-                        onTouchEnd={(e) => {e.stopPropagation(); goToPrevPage(e); }} onClick={(e) => {e.stopPropagation(); goToPrevPage(e); }}>
+                        onTouchEnd={(e) => {e.stopPropagation(); goToPrevPage(e); }}
+                        onClick={(e) => {e.stopPropagation(); goToPrevPage(e); }}>
                         {prevPageButtonText}
                     </button>)
                 }
                 {isLastPage ? '' :
                     (<button className="button blue"
-                        onTouchEnd={(e) => {e.stopPropagation(); goToNextPage(e); }} onClick={(e) => {e.stopPropagation(); goToNextPage(e); }}>
+                        onTouchEnd={(e) => {e.stopPropagation(); goToNextPage(e); }}
+                        onClick={(e) => {e.stopPropagation(); goToNextPage(e); }}>
                         {nextPageButtonText}
                     </button>)
                 } 
