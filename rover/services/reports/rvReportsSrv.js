@@ -32,7 +32,7 @@ angular.module('sntRover').service('RVreportsSrv', [
              'Financial Transactions': [
                 'YESTERDAY'
              ],
-             'Membership Details': [
+             'Stash Rewards Membership Export': [
                 'YESTERDAY'
              ],
              'Reservations': [
