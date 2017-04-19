@@ -79,11 +79,7 @@ angular.module('sntRover')
                     showUnassignedReservations: false,
                     showFilterPanel: screen.width > 1279,
                     selectedRoomTypes: [],
-                    selectedFloors: [],
-                    isFromStayCard: false,
-                    filterList: {},
-                    hideRoomType: true,
-                    hideFloorList: true
+                    selectedFloors: []
                 };
                 $scope.currentSelectedReservation = {};
                 $scope.currentSelectedRoom = {};
@@ -364,15 +360,6 @@ angular.module('sntRover')
                 $scope.currentSelectedReservationId = params.currentSelectedReservationId;
                 $scope.diaryData.selectedRoomId = params.currentSelectedRoomId;
                 $scope.currentSelectedReservation = params.currentSelectedReservation;
-                if (params.selected_floor_ids.length > 0 || params.selected_room_type_ids.length > 0) {
-                    $scope.diaryData.isFromStayCard = true;
-                    $scope.diaryData.showFilterPanel = true;
-                    $scope.diaryData.filterList = params.filterList;
-                    $scope.diaryData.selectedRoomCount = params.selectedRoomCount;
-                    $scope.diaryData.selectedFloorCount = params.selectedFloorCount;
-                    $scope.diaryData.hideRoomType = params.hideRoomType;
-                    $scope.diaryData.hideFloorList = params.hideFloorList;
-                }
             }
 
             // Initial State
