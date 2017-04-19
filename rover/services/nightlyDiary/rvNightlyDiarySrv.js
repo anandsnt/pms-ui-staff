@@ -11,9 +11,6 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
         this.getCache = function() {
             return that.searchParamsCached;
         };
-        this.clearCache = function() {
-            that.searchParamsCached = {};
-        };
 
         /*
          * To fetch the rooms list
