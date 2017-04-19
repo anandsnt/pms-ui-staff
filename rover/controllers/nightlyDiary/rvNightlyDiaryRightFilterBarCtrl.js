@@ -15,6 +15,7 @@ angular.module('sntRover')
 			var initiate = function() {
 				if (_.isEmpty($scope.diaryData.filterList)) {
 					var successCallBackFetchRoomTypeAndFloorList = function(data) {
+
 						$scope.$emit('hideLoader');
 						$scope.diaryData.selectedRoomCount = 0;
 						$scope.diaryData.selectedFloorCount = 0;

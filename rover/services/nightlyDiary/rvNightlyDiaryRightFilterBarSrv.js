@@ -51,7 +51,7 @@ angular.module('sntRover').service('RVNightlyDiaryRightFilterBarSrv',
                 response.rooms = data.results;
             }));
 
-            $q.all(promises).then((data) => {
+            $q.all(promises).then(() => {
                 deferred.resolve(response);
             });
             return deferred.promise;
