@@ -13,18 +13,26 @@ angular.module('sntRover')
 			 * Initiate controller
 			 */
 			var initiate = function() {
-				if (_.isEmpty($scope.diaryData.filterList)) {
-					var successCallBackFetchRoomTypeAndFloorList = function(data) {
+				$scope.diaryData.hideRoomType = true;
+				$scope.diaryData.hideFloorList = true;
+				$scope.diaryData.filterList = {};
+				var postData = {};
+				
+				var successCallBackFetchRoomType = function(data) {
+					$scope.$emit('hideLoader');
+					$scope.diaryData.selectedRoomCount = 0;
+					$scope.diaryData.filterList.roomType = data.results;
+				};
 
-						$scope.$emit('hideLoader');
-						$scope.diaryData.selectedRoomCount = 0;
-						$scope.diaryData.selectedFloorCount = 0;
-						$scope.diaryData.filterList.roomType = data.rooms;
-						$scope.diaryData.filterList.floorList = data.floors;
-					};
+				$scope.invokeApi(RVNightlyDiaryRightFilterBarSrv.fetchRoomType, postData, successCallBackFetchRoomType);
 
-					$scope.invokeApi(RVNightlyDiaryRightFilterBarSrv.fetchRoomTypeAndFloorList, {}, successCallBackFetchRoomTypeAndFloorList);
-				}
+				var successCallBackFetchFloorList = function(data) {
+					$scope.$emit('hideLoader');
+					$scope.diaryData.selectedFloorCount = 0;
+					$scope.diaryData.filterList.floorList = data.floors;
+				};
+
+				$scope.invokeApi(RVNightlyDiaryRightFilterBarSrv.fetchFloorList, postData, successCallBackFetchFloorList);
 			};
 
 			/*
@@ -95,7 +103,7 @@ angular.module('sntRover')
 					floorList = $scope.diaryData.filterList.floorList;
 
 				if (roomTypes && roomTypes.length > 0) {
-					roomTypes.forEach(function(roomtype) {
+					roomTypes.forEach(function(roomtype) { 
 						roomtype.isSelected = false;
 					});
 				}

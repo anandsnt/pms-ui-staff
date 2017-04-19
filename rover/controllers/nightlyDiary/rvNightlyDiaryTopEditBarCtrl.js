@@ -24,14 +24,7 @@ angular.module('sntRover')
                 params.currentSelectedReservationId = currentSelectedReservation.id;
                 params.currentSelectedRoomId = currentSelectedRoom.id;
                 params.currentSelectedReservation = currentSelectedReservation;
-                params.filterList = $scope.diaryData.filterList;
-                params.selectedRoomCount = $scope.diaryData.selectedRoomCount;
-                params.selectedFloorCount = $scope.diaryData.selectedFloorCount;
-                params.hideRoomType = $scope.diaryData.hideRoomType;
-                params.hideFloorList = $scope.diaryData.hideFloorList;
-
                 RVNightlyDiarySrv.updateCache(params);
-
                 $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
                     id: currentSelectedReservation.id,
                     confirmationId: currentSelectedReservation.confirm_no,
