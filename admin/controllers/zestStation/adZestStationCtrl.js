@@ -36,7 +36,6 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
     };
 
     $scope.updateDefaultLanguageDropdown = function() {
-        $log.info('update lang dropdown');
         $scope.enabledLangs = getEnabledLanguages();
         validateDefaultLang();
     };
@@ -100,6 +99,11 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
                         value: langs[i]
                     });
                 }
+                // dont allow user to check a language unless it has a file associated attached
+                if (isCapitalizedProperty && !hasFileUpdatedOrUploading) {
+                    $scope.zestSettings.zest_lang[langs[i]] = false;
+                }
+                
             }
             languages = setLanguageDisplayNames(languages);
             
