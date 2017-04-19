@@ -37,11 +37,11 @@
                     <ad-checkbox ng-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.English" label="{{ 'STATION_LANGUAGE_ENGLISH' | translate}}"></ad-checkbox>
                     <div class="entry">
                         <div class="file-upload">
-                            <span class="input" ng-show="hasFileUpdatedOrUploading('english')">File Attached</span>
-                            <span class="input" ng-show="!hasFileUpdatedOrUploading('english')">Choose file..</span>
+                            <span class="input" ng-show="hasFileUpdatedOrUploading('english')">{{'STATION_LANGUAGE_FILE_ATTACHED' | translate}}</span>
+                            <span class="input" ng-show="!hasFileUpdatedOrUploading('english')">{{'STATION_LANGUAGE_CHOOSE_FILE' | translate}}</span>
                             <input type="file" ng-model="zestSettings.zest_lang.english_translations_file" accept="*" app-filereader emit-data="english_translations_file" />
                             
-                            <button type="button" class="button brand-colors">Attach file</button>
+                            <button type="button" class="button brand-colors">{{'STATION_LANGUAGE_ATTACH_FILE' | translate}}</button>
                             <button type="button" ng-show="hasFileUpdatedOrUploading('english')" class="button download-arrow icons " ng-click="downloadLang('en')"></button>
 
                             <button type="button" ng-show="hasFileUpdatedOrUploading('english')" class="button download-arrow icons right editor" ng-click="editLang('en')">
@@ -56,11 +56,11 @@
                     <ad-checkbox ng-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.French" label="{{ 'STATION_LANGUAGE_FRENCH' | translate}}"></ad-checkbox>
                     <div class="entry">
                         <div class="file-upload">
-                            <span class="input" ng-show="hasFileUpdatedOrUploading('french')">File Attached</span>
-                            <span class="input" ng-show="!hasFileUpdatedOrUploading('french')">Choose file..</span>
+                            <span class="input" ng-show="hasFileUpdatedOrUploading('french')">{{'STATION_LANGUAGE_FILE_ATTACHED' | translate}}</span>
+                            <span class="input" ng-show="!hasFileUpdatedOrUploading('french')">{{'STATION_LANGUAGE_CHOOSE_FILE' | translate}}</span>
                             <input type="file" ng-model="zestSettings.zest_lang.french_translations_file" accept="*" app-filereader emit-data="french_translations_file" />
                             
-                            <button type="button" class="button brand-colors">Attach file</button>
+                            <button type="button" class="button brand-colors">{{'STATION_LANGUAGE_ATTACH_FILE' | translate}}</button>
                             <button type="button" class="button download-arrow icons " ng-click="downloadLang('fr')" ng-show="hasFileUpdatedOrUploading('french')"></button>
 
                             <button type="button" ng-show="hasFileUpdatedOrUploading('french')" class="button download-arrow icons right " ng-click="editLang('fr')">
@@ -74,11 +74,11 @@
                     <ad-checkbox ng-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.Spanish" label="{{ 'STATION_LANGUAGE_SPANISH' | translate}}"></ad-checkbox>
                     <div class="entry">
                         <div class="file-upload">
-                            <span class="input" ng-show="hasFileUpdatedOrUploading('spanish')">File Attached</span>
-                            <span class="input" ng-show="!hasFileUpdatedOrUploading('spanish')">Choose file..</span>
+                            <span class="input" ng-show="hasFileUpdatedOrUploading('spanish')">{{'STATION_LANGUAGE_FILE_ATTACHED' | translate}}</span>
+                            <span class="input" ng-show="!hasFileUpdatedOrUploading('spanish')">{{'STATION_LANGUAGE_CHOOSE_FILE' | translate}}</span>
                             <input type="file" ng-model="zestSettings.zest_lang.spanish_translations_file" accept="*" app-filereader emit-data="spanish_translations_file" />
                             
-                            <button type="button" class="button brand-colors">Attach file</button>
+                            <button type="button" class="button brand-colors">{{'STATION_LANGUAGE_ATTACH_FILE' | translate}}</button>
                             <button type="button" class="button download-arrow icons " ng-click="downloadLang('es')" ng-show="hasFileUpdatedOrUploading('spanish')"></button>
 
                             <button type="button" ng-show="hasFileUpdatedOrUploading('spanish')" class="button download-arrow icons right " ng-click="editLang('es')">
@@ -92,11 +92,11 @@
                     <ad-checkbox ng-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.German" label="{{ 'STATION_LANGUAGE_GERMAN' | translate}}"></ad-checkbox>
                     <div class="entry">
                         <div class="file-upload">
-                            <span class="input" ng-show="hasFileUpdatedOrUploading('german')">File Attached</span>
-                            <span class="input" ng-show="!hasFileUpdatedOrUploading('german')">Choose file..</span>
+                            <span class="input" ng-show="hasFileUpdatedOrUploading('german')">{{'STATION_LANGUAGE_FILE_ATTACHED' | translate}}</span>
+                            <span class="input" ng-show="!hasFileUpdatedOrUploading('german')">{{'STATION_LANGUAGE_CHOOSE_FILE' | translate}}</span>
                             <input type="file" ng-model="zestSettings.zest_lang.german_translations_file" accept="*" app-filereader emit-data="german_translations_file" />
                             
-                            <button type="button" class="button brand-colors">Attach file</button>
+                            <button type="button" class="button brand-colors">{{'STATION_LANGUAGE_ATTACH_FILE' | translate}}</button>
                             <button type="button" class="button download-arrow icons " ng-click="downloadLang('de')" ng-show="hasFileUpdatedOrUploading('german')"></button>
 
                             <button type="button" ng-show="hasFileUpdatedOrUploading('german')" class="button download-arrow icons right " ng-click="editLang('de')">
@@ -110,11 +110,11 @@
                     <ad-checkbox ng-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.Italian" label="{{ 'STATION_LANGUAGE_ITALIAN' | translate}}"></ad-checkbox>
                     <div class="entry">
                         <div class="file-upload">
-                            <span class="input" ng-show="hasFileUpdatedOrUploading('italian')">File Attached</span>
-                            <span class="input" ng-show="!hasFileUpdatedOrUploading('italian')">Choose file..</span>
+                            <span class="input" ng-show="hasFileUpdatedOrUploading('italian')">{{'STATION_LANGUAGE_FILE_ATTACHED' | translate}}</span>
+                            <span class="input" ng-show="!hasFileUpdatedOrUploading('italian')">{{'STATION_LANGUAGE_CHOOSE_FILE' | translate}}</span>
                             <input type="file" ng-model="zestSettings.zest_lang.italian_translations_file" accept="*" app-filereader emit-data="italian_translations_file" />
                             
-                            <button type="button" class="button brand-colors">Attach file</button>
+                            <button type="button" class="button brand-colors">{{'STATION_LANGUAGE_ATTACH_FILE' | translate}}</button>
                             <button  type="button" class="button download-arrow icons " ng-click="downloadLang('it')" ng-show="hasFileUpdatedOrUploading('italian')"></button>
 
                             <button type="button" ng-show="hasFileUpdatedOrUploading('italian')" class="button download-arrow icons right " ng-click="editLang('it')">
@@ -128,11 +128,11 @@
                     <ad-checkbox ng-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.Castellano" label="{{ 'STATION_LANGUAGE_CASTELLANO' | translate}}"></ad-checkbox>
                     <div class="entry">
                         <div class="file-upload">
-                            <span class="input" ng-show="hasFileUpdatedOrUploading('castellano')">File Attached</span>
-                            <span class="input" ng-show="!hasFileUpdatedOrUploading('castellano')">Choose file..</span>
+                            <span class="input" ng-show="hasFileUpdatedOrUploading('castellano')">{{'STATION_LANGUAGE_FILE_ATTACHED' | translate}}</span>
+                            <span class="input" ng-show="!hasFileUpdatedOrUploading('castellano')">{{'STATION_LANGUAGE_CHOOSE_FILE' | translate}}</span>
                             <input type="file" ng-model="zestSettings.zest_lang.castellano_translations_file" accept="*" app-filereader emit-data="italian_translations_file" />
                             
-                            <button type="button" class="button brand-colors">Attach file</button>
+                            <button type="button" class="button brand-colors">{{'STATION_LANGUAGE_ATTACH_FILE' | translate}}</button>
                             <button type="button" class="button download-arrow icons " ng-click="downloadLang('cl')" ng-show="hasFileUpdatedOrUploading('castellano')"></button>
 
                             <button type="button" ng-show="hasFileUpdatedOrUploading('castellano')" class="button download-arrow icons right " ng-click="editLang('cs')">
@@ -209,11 +209,11 @@
                 <label translate>KEY_CREATION_IMAGE </label>
                         <div class="entry">
                     <div class="file-upload" ng-class="{'with-remove-file-area':hasKeyImageFileUpdatedOrUploading('keyCreate')}">
-                        <span class="input" ng-show="hasKeyImageFileUpdatedOrUploading('keyCreate')">File Attached</span>
-                        <span class="input" ng-show="!hasKeyImageFileUpdatedOrUploading('keyCreate')">Choose file..</span>
+                        <span class="input" ng-show="hasKeyImageFileUpdatedOrUploading('keyCreate')">{{'STATION_LANGUAGE_FILE_ATTACHED' | translate}}</span>
+                        <span class="input" ng-show="!hasKeyImageFileUpdatedOrUploading('keyCreate')">{{'STATION_LANGUAGE_CHOOSE_FILE' | translate}}</span>
                         <input type="file" ng-model="zestSettings.key_create_file_uploaded" accept="*" app-filereader emit-data="key_create_file_uploaded" />
                         <button type="button" class="button brand-colors">
-                            Attach file
+                            {{'STATION_LANGUAGE_ATTACH_FILE' | translate}}
                         </button>
                     </div>
                     <button ng-show="hasKeyImageFileUpdatedOrUploading('keyCreate')" type="button" class="button brand-colors with-remove-file" ng-click="zestSettings.key_create_file_uploaded = 'false'">
