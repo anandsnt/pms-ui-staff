@@ -261,7 +261,8 @@ angular.module('sntRover').controller('guestCardController', [
 			stop: function(event, ui) {
 				preventClicking = true;
 				$scope.eventTimestamp = event.timeStamp;
-			}
+			},
+            start: getGuestDetails
 		};
 
 		/**
@@ -513,7 +514,25 @@ angular.module('sntRover').controller('guestCardController', [
 			}
 		};
 
-		/**
+        /**
+         * @return {undefined}
+         */
+        function getGuestDetails() {
+            if ($scope.reservationData.guest.id && $scope.UICards[0] === 'guest-card'
+                && !RVContactInfoSrv.isGuestFetchComplete($scope.reservationData.guest.id)) {
+                $scope.callAPI(RVContactInfoSrv.getGuestDetails, {
+                    successCallBack: function(data) {
+                        $scope.$emit("UPDATE_GUEST_CARD_DETAILS", data);
+                    },
+                    failureCallBack: function(errorMessage) {
+                        $scope.errorMessage = errorMessage;
+                        $scope.$emit('hideLoader');
+                    }
+                });
+            }
+        }
+
+        /**
 		 * function to open guest card
 		 */
 		$scope.openGuestCard = function() {
@@ -524,6 +543,7 @@ angular.module('sntRover').controller('guestCardController', [
 			$scope.$broadcast("contactTabActive");
 			// //refreshing the scroller in guestcard's tab
 
+            getGuestDetails();
 		};
 
 		/**
@@ -1742,7 +1762,7 @@ angular.module('sntRover').controller('guestCardController', [
 				}
 			}
 		};
-
+		
 		$scope.selectGuest = function(guest, $event) {
 			$event.stopPropagation();
 			if ($scope.viewState.identifier === "CREATION") {
@@ -1760,7 +1780,16 @@ angular.module('sntRover').controller('guestCardController', [
 				$scope.viewState.isAddNewCard = false;
 				$scope.reservationDetails.guestCard.id = guest.id;
 				$scope.initGuestCard(guest);
-				$scope.closeGuestCard();
+                $scope.callAPI(RVContactInfoSrv.getGuestDetails, {
+                    successCallBack: function(data) {
+                        $scope.$emit("UPDATE_GUEST_CARD_DETAILS", data);
+                        $scope.closeGuestCard();
+                    },
+                    failureCallBack: function(errorMessage) {
+                        $scope.errorMessage = errorMessage;
+                        $scope.$emit('hideLoader');
+                    }
+                });
 			} else {
 				if (!$scope.reservationDetails.guestCard.futureReservations || $scope.reservationDetails.guestCard.futureReservations <= 0) {
 					$scope.replaceCardCaller('guest', guest, false);

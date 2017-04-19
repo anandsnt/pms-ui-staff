@@ -146,8 +146,10 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
                 $scope.$emit('hideLoader');
                 if (!$scope.selectedReservation.isRoomUpraded && $scope.selectedReservation.reservation_details.is_upsell_available === 'true' && !$scope.selectedReservation.reservation_details.cannot_move_room && zestStationRoomUpsellOn) {
                     $state.go('zest_station.roomUpsell');
+                } else if ($scope.zestStationData.station_addon_upsell_active && !$scope.selectedReservation.skipAddon) {
+                    $state.go('zest_station.addOnUpsell');
                 } else {
-                    $scope.initTermsPage();    
+                    $scope.initTermsPage();
                 }
                 
             };
@@ -174,8 +176,10 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
 
             if (!$scope.selectedReservation.isRoomUpraded && $scope.selectedReservation.reservation_details.is_upsell_available === 'true' && !$scope.selectedReservation.reservation_details.cannot_move_room && zestStationRoomUpsellOn) {
                 $state.go('zest_station.roomUpsell');
+            } else if ($scope.zestStationData.station_addon_upsell_active && !$scope.selectedReservation.skipAddon) {
+                $state.go('zest_station.addOnUpsell');
             } else {
-                $scope.initTermsPage();    
+                $scope.initTermsPage();
             }
         };
 

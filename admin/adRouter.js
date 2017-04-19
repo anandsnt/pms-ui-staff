@@ -12,7 +12,7 @@ admin.config([
         $urlRouterProvider.otherwise('/admin/h/');
 
         $stateProvider.state('top', {
-            url: '/admin/h/:uuid',
+            url: '/admin/h/:uuid?state&params',
             controller: 'adTopCtrl',
             resolve: {
                 adminDashboardConfigData: ['ADAppSrv', '$stateParams', function(ADAppSrv, $stateParams) {
