@@ -49,7 +49,7 @@ angular.module('sntRover')
                     srvParams = RVNightlyDiarySrv.getCache();
                 }
                 else {
-                    srvParams.start_date = $rootScope.businessDate;
+                    srvParams.start_date = addDaysToDay($rootScope.businessDate, -1);
                     srvParams.no_of_days = 7;
                     srvParams.page = 1;
                     srvParams.per_page = 50;
@@ -79,7 +79,12 @@ angular.module('sntRover')
                     showUnassignedReservations: false,
                     showFilterPanel: screen.width > 1279,
                     selectedRoomTypes: [],
-                    selectedFloors: []
+                    selectedFloors: [],
+                    isFromStayCard: false,
+                    filterList: {},
+                    hideRoomType: true,
+                    hideFloorList: true
+
                 };
                 $scope.currentSelectedReservation = {};
                 $scope.currentSelectedRoom = {};
@@ -352,6 +357,15 @@ angular.module('sntRover')
                 $scope.currentSelectedReservationId = params.currentSelectedReservationId;
                 $scope.diaryData.selectedRoomId = params.currentSelectedRoomId;
                 $scope.currentSelectedReservation = params.currentSelectedReservation;
+                if (params.selected_floor_ids.length > 0 || params.selected_room_type_ids.length > 0) {
+                    $scope.diaryData.isFromStayCard = true;
+                    $scope.diaryData.showFilterPanel = true;
+                    $scope.diaryData.filterList = params.filterList;
+                    $scope.diaryData.selectedRoomCount = params.selectedRoomCount;
+                    $scope.diaryData.selectedFloorCount = params.selectedFloorCount;
+                    $scope.diaryData.hideRoomType = params.hideRoomType;
+                    $scope.diaryData.hideFloorList = params.hideFloorList;
+                }
             }
 
             // Initial State
