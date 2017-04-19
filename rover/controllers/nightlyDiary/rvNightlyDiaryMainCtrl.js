@@ -161,6 +161,8 @@ angular.module('sntRover')
              * @param reservation - Current selected reservation
              */
             var selectReservation = (e, reservation, room) => {
+                var srvParams = {};
+
                 if (!$scope.diaryData.isEditReservationMode) {
                     $scope.diaryData.isEditReservationMode = true;
                     $scope.currentSelectedReservation = reservation;
@@ -178,6 +180,11 @@ angular.module('sntRover')
                     } else {
                         // To fix issue point 3 - QA failed comment - CICO-34410
                         $stateParams.isFromStayCard = false;
+                        srvParams = RVNightlyDiarySrv.getCache();
+                        // Selection not showing top bar after unassigning reservation from room assignment
+                        if (srvParams.currentSelectedReservationId === '') {
+                            $scope.$apply();
+                        }
                     }
                 }
             };
@@ -349,6 +356,7 @@ angular.module('sntRover')
 
             if ($stateParams.isFromStayCard) {
                 var params = RVNightlyDiarySrv.getCache();
+
                 $scope.currentSelectedReservationId = params.currentSelectedReservationId;
                 $scope.diaryData.selectedRoomId = params.currentSelectedRoomId;
                 $scope.currentSelectedReservation = params.currentSelectedReservation;
