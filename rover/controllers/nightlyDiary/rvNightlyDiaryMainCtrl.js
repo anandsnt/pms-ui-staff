@@ -354,6 +354,10 @@ angular.module('sntRover')
 
             if ($stateParams.isFromStayCard) {
                 var params = RVNightlyDiarySrv.getCache();
+
+                if (params.currentSelectedReservationId === "") {
+
+                }
                 $scope.currentSelectedReservationId = params.currentSelectedReservationId;
                 $scope.diaryData.selectedRoomId = params.currentSelectedRoomId;
                 $scope.currentSelectedReservation = params.currentSelectedReservation;
