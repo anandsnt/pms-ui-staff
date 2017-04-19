@@ -368,13 +368,13 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         if ($scope.filterData.selectAll) {
            $scope.commissionDetails.forEach(function(commission) {
                 if (commission.commission_data.paid_status != 'Prepaid') {
-                    commissionListToUpdate.push({ reservation_id: commission.reservation_id });
+                    commissionListToUpdate.push(commission.reservation_id);
                 }
            });
         } else {
             $scope.selectedCommissions.forEach(function(commission) {
                 if (commission.commission_data.paid_status != 'Prepaid') {
-                    commissionListToUpdate.push({ reservation_id: commission.reservation_id });
+                    commissionListToUpdate.push(commission.reservation_id);
                 }
             });
         }
