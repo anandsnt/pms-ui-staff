@@ -478,7 +478,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Future Reservations': true,
                 'Last Week Reservations': true,
                 'Last Month Reservations': true,
-                'Nationality Statistics': true
+                'Nationality Statistics': true,
+                'Commissions': true
             };
 
             var forWeekly = {
@@ -488,7 +489,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             var forMonthly = {
                 'Future Reservations': true,
                 'Last Month Reservations': true,
-                'Nationality Statistics': true
+                'Nationality Statistics': true,
+                'Commissions': true
             };
 
             var forHourly = {

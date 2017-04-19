@@ -49,6 +49,22 @@ angular.module('sntRover').service('RVreportsSrv', [
              ],
              'Last Month Reservations': [
                 'LAST_MONTH'
+             ],
+             'Commissions': [
+             	'ALL',
+             	'LAST_MONTH',
+                'LAST_JANUARY',
+                'LAST_FEBRUARY',
+                'LAST_MARCH',
+                'LAST_APRIL',
+                'LAST_MAY',
+                'LAST_JUNE',
+                'LAST_JULY',
+                'LAST_AUGUST',
+                'LAST_SEPTEMBER',
+                'LAST_OCTOBER',
+                'LAST_NOVEMBER',
+                'LAST_DECEMBER'
              ]
 
         };
