@@ -22,6 +22,7 @@ angular.module('sntRover')
 						$scope.diaryData.filterList.roomType = data.rooms;
 						$scope.diaryData.filterList.floorList = data.floors;
 					};
+
 					$scope.invokeApi(RVNightlyDiaryRightFilterBarSrv.fetchRoomTypeAndFloorList, {}, successCallBackFetchRoomTypeAndFloorList);
 				}
 			};
