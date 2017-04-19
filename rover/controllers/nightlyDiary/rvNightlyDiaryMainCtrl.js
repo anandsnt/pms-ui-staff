@@ -79,12 +79,7 @@ angular.module('sntRover')
                     showUnassignedReservations: false,
                     showFilterPanel: screen.width > 1279,
                     selectedRoomTypes: [],
-                    selectedFloors: [],
-                    isFromStayCard: false,
-                    filterList: {},
-                    hideRoomType: true,
-                    hideFloorList: true
-
+                    selectedFloors: []
                 };
                 $scope.currentSelectedReservation = {};
                 $scope.currentSelectedRoom = {};
@@ -166,6 +161,8 @@ angular.module('sntRover')
              * @param reservation - Current selected reservation
              */
             var selectReservation = (e, reservation, room) => {
+                var srvParams = {};
+
                 if (!$scope.diaryData.isEditReservationMode) {
                     $scope.diaryData.isEditReservationMode = true;
                     $scope.currentSelectedReservation = reservation;
@@ -183,6 +180,11 @@ angular.module('sntRover')
                     } else {
                         // To fix issue point 3 - QA failed comment - CICO-34410
                         $stateParams.isFromStayCard = false;
+                        srvParams = RVNightlyDiarySrv.getCache();
+                        // Selection not showing top bar after unassigning reservation from room assignment
+                        if (srvParams.currentSelectedReservationId === '') {
+                            $scope.$apply();
+                        }
                     }
                 }
             };
@@ -354,18 +356,10 @@ angular.module('sntRover')
 
             if ($stateParams.isFromStayCard) {
                 var params = RVNightlyDiarySrv.getCache();
+
                 $scope.currentSelectedReservationId = params.currentSelectedReservationId;
                 $scope.diaryData.selectedRoomId = params.currentSelectedRoomId;
                 $scope.currentSelectedReservation = params.currentSelectedReservation;
-                if (params.selected_floor_ids.length > 0 || params.selected_room_type_ids.length > 0) {
-                    $scope.diaryData.isFromStayCard = true;
-                    $scope.diaryData.showFilterPanel = true;
-                    $scope.diaryData.filterList = params.filterList;
-                    $scope.diaryData.selectedRoomCount = params.selectedRoomCount;
-                    $scope.diaryData.selectedFloorCount = params.selectedFloorCount;
-                    $scope.diaryData.hideRoomType = params.hideRoomType;
-                    $scope.diaryData.hideFloorList = params.hideFloorList;
-                }
             }
 
             // Initial State
