@@ -112,7 +112,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         var onBackButtonClicked = function() {
 
             var reservations = zsCheckinSrv.getCheckInReservations();
-            if($scope.mode !== 'RESERVATION_DETAILS'){ // if screen is in T&C mode
+
+            if ($scope.mode !== 'RESERVATION_DETAILS') { // if screen is in T&C mode
                 $scope.mode = 'RESERVATION_DETAILS';
                 setDisplayContentHeight(); // utils function
                 refreshScroller();
@@ -470,14 +471,15 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         };
 
 
-        var showTermsAndCondition = function(){
+        var showTermsAndCondition = function() {
             $scope.mode = 'TERMS_CONDITIONS';
             setDisplayContentHeight();
             $timeout(function() {
                 $scope.refreshScroller('terms-container');
             }, 600);
         };
-        $scope.agreeTerms = function(){
+        
+        $scope.agreeTerms = function() {
             routeToNext();
         };
             
@@ -510,7 +512,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                         $log.info('room is assigned and ready, continuing');
                         if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
                             routeToNext();
-                        }   else{
+                        } else {
                             showTermsAndCondition();
                         }
 
