@@ -174,6 +174,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.$emit( 'hideLoader' );
             };
 
+            var filter_values = {};
+
             var runOnceId = _.find($scope.originalScheduleFrequency, { value: 'RUN_ONCE' }).id;
 
             // fill 'time' and 'time_period_id'
@@ -220,6 +222,12 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 params.recipients = $scope.scheduleParams.selectedFtpRecipient;
             } else {
                 params.recipients = '';
+            }
+
+            // fill sort_field and filters
+            if ( $scope.scheduleParams.sort_field ) {
+                filter_values.sort_field = $scope.scheduleParams.sort_field;
+                params.filter_values = filter_values;
             }
 
             $scope.invokeApi( reportsSrv.createSchedule, params, success, failed );
@@ -262,6 +270,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.$emit( 'hideLoader' );
             };
 
+            var filter_values = {};
+
             var runOnceId = _.find($scope.originalScheduleFrequency, { value: 'RUN_ONCE' }).id;
 
             // fill 'time' and 'time_period_id'
@@ -310,6 +320,12 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 params.recipients = '';
             }
 
+            // fill sort_field and filters
+            if ( $scope.scheduleParams.sort_field ) {
+                filter_values.sort_field = $scope.scheduleParams.sort_field;
+                params.filter_values = filter_values;
+            }
+
             $scope.invokeApi( reportsSrv.updateSchedule, params, success, failed );
         };
 
@@ -335,7 +351,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             NAME: 'NAME',
             ROOM: 'ROOM',
             BALANCE: 'BALANCE',
-            ROOM_NO: 'ROOM_NO'
+            ROOM_NO: 'ROOM_NO',
+            CONFIRMATION_NUMBER: 'CONFIRMATION_NUMBER',
+            CHECKOUT_DATE: 'CHECKOUT_DATE',
+            TRAVEL_AGENT: 'TRAVEL_AGENT'
         };
 
         var reportIconCls = {
@@ -478,7 +497,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Future Reservations': true,
                 'Last Week Reservations': true,
                 'Last Month Reservations': true,
-                'Nationality Statistics': true
+                'Nationality Statistics': true,
+                'Commissions': true
             };
 
             var forWeekly = {
@@ -488,7 +508,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             var forMonthly = {
                 'Future Reservations': true,
                 'Last Month Reservations': true,
-                'Nationality Statistics': true
+                'Nationality Statistics': true,
+                'Commissions': true
             };
 
             var forHourly = {
@@ -671,6 +692,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                             description: each.description,
                             title: each.title
                         },
+                        sort_fields: each.sort_fields,
                         active: false,
                         filteredOut: false
                     });
