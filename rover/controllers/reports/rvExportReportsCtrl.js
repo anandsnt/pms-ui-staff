@@ -475,7 +475,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             var forDaily = {
                 'Financial Transactions': true,
-                'Membership Details': true,
+                'Stash Rewards Membership Export': true,
                 'Reservations': true,
                 'Rooms': true,
                 'Future Reservations': true
@@ -483,7 +483,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             var forRunOnceOnly = {
                 'Financial Transactions': true,
-                'Membership Details': true,
+                'Stash Rewards Membership Export': true,
                 'Reservations': true,
                 'Rooms': true,
                 'Future Reservations': true,

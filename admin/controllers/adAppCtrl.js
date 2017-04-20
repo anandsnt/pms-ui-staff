@@ -306,6 +306,24 @@ admin.controller('ADAppCtrl', [
             }
         };
 
+        /**
+		 * While navigating to a state from the bookmarks, this method ensures that the $scope.selectedMenu variable
+		 * holds the correct parent state
+         * @param {string} stateName name of the selected state
+		 * @returns {undefined}
+         */
+        function updateSelectedMenu(stateName) {
+            // Ensure that the selectedMenu is updated before navigating to the new state
+            _.each($scope.data.menus, function(menu, stateIdx) {
+                _.each(menu.components, function(component) {
+                    if (component.state === stateName) {
+                        $scope.selectedIndex = stateIdx;
+                        $scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
+                    }
+                });
+            });
+        }
+
 		/**
 		* in case of we want to reinitialize left menu based on new $rootScope values or something
 		* which set during it's creation, we can use
@@ -504,10 +522,12 @@ admin.controller('ADAppCtrl', [
 					return false;
 				} else {
 					lastDropedTime = '';
+                    updateSelectedMenu(stateToGo);
 					$state.go(stateToGo);
 				}
 			} else {
 				lastDropedTime = '';
+                updateSelectedMenu(stateToGo);
 				$state.go(stateToGo);
 			}
 			if ($scope.menuOpen) {

@@ -26,7 +26,7 @@ const RateManagerGridRightSideRowsComponent = createClass({
 	},
 	render() {
 		var mode = this.props.mode;
-		if(mode === RM_RX_CONST.RATE_VIEW_MODE || mode === RM_RX_CONST.ROOM_TYPE_VIEW_MODE) {
+		if(mode === RM_RX_CONST.RATE_VIEW_MODE || mode === RM_RX_CONST.ROOM_TYPE_VIEW_MODE || mode === RM_RX_CONST.RATE_TYPE_VIEW_MODE) {
 			return <RateManagerGridRightSideRowsRestrictionContainer/>
 		}
 		if(mode === RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {

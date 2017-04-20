@@ -1,73 +1,96 @@
 const {connect} = ReactRedux;
 
 const mapStateToRateManagerGridLeftSideHeadButtonContainerProps = (state) => {
-    const closedRestriction = _.findWhere(state.restrictionTypes, { value: RM_RX_CONST.CLOSED_RESTRICTION_VALUE });
 
-    var closedRestrictionsCount = 0,
-        openAllEnabled = true,
-        closeAllEnabled = true,
-        showOpenAll = false,
-        showCloseAll = false;
-        let flags ={};
-
-    if(closedRestriction) {
-        showOpenAll = true;
-        showCloseAll = true;
-    }
-    if(!!state.flags){
-        flags = state.flags; 
-    }else{
-        flags.showRateDetail = false;
-    }
     var propsToReturn = {
-        openAllClass: openAllEnabled ? 'green': '',
-        showOpenAll,
-        closeAllClass: closeAllEnabled ? 'red': '',
-        toggleClass: !flags.showRateDetail ? 'switch-button on':'switch-button',
-        showCloseAll,
-        openAllEnabled,
-        closeAllEnabled,
         mode: state.mode,
         fromDate: state.dates[0],
-        toDate: state.dates[state.dates.length - 1],
-        closedRestriction,
-        flags: flags
-
+        toDate: state.dates[state.dates.length - 1]
     };
 
     if(state.mode === RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
-        propsToReturn.shouldShowToggle = false;
-        propsToReturn.openAllCallbackForSingleRateView = state.callBacksFromAngular.openAllCallbackForSingleRateView;
-        propsToReturn.closeAllCallbackForSingleRateView = state.callBacksFromAngular.openAllCallbackForSingleRateView;
+        propsToReturn.shouldShowPagination = false;
     }
     else if(state.mode === RM_RX_CONST.RATE_VIEW_MODE) {
-        propsToReturn.shouldShowToggle = true;
-        propsToReturn.openAllCallbackForRateView = state.callBacksFromAngular.openAllRestrictionsForRateView;
-        propsToReturn.closeAllCallbackForRateView = state.callBacksFromAngular.closeAllRestrictionsForRateView;
-        propsToReturn.rate_ids = _.pluck(state.list.slice(0), 'id'); //first row will be having any id, just for all restrictions
+        propsToReturn.shouldShowPagination = true;
+        propsToReturn.goToPrevPage = state.callBacksFromAngular.goToPrevPage;
+        propsToReturn.goToNextPage = state.callBacksFromAngular.goToNextPage;
+        propsToReturn.paginationStateData = state.paginationState;
     }
     else if(state.mode ===  RM_RX_CONST.ROOM_TYPE_VIEW_MODE) {
-        propsToReturn.shouldShowToggle = false;
-        propsToReturn.openAllCallbackForRoomTypeView = state.callBacksFromAngular.openAllRestrictionsForRoomTypeView;
-        propsToReturn.closeAllCallbackForRoomTypeView = state.callBacksFromAngular.closeAllRestrictionsForRoomTypeView;
+        propsToReturn.shouldShowPagination = false;
+    }
+    else if(state.mode ===  RM_RX_CONST.RATE_TYPE_VIEW_MODE) {
+        propsToReturn.shouldShowPagination = true;
+        propsToReturn.goToPrevPage = state.callBacksFromAngular.goToPrevPage;
+        propsToReturn.goToNextPage = state.callBacksFromAngular.goToNextPage;
+        propsToReturn.paginationStateData = state.paginationState;
     }
 
     return propsToReturn;
 };
 
-const mapActionToRateManagerGridLeftSideHeadButtonContainerProps =(stateProps, dispatchProps, ownProps)=>{
+let getPreviousPageButtonText = (mode, paginationStateData) => {
+    let previousPageButtonText = "PREVIOUS ";
+    switch (mode) {
+        case RM_RX_CONST.RATE_VIEW_MODE:
+            previousPageButtonText += paginationStateData.perPage + " RATES";
+            break;
+        case RM_RX_CONST.RATE_TYPE_VIEW_MODE:
+            previousPageButtonText += paginationStateData.perPage + " RATE TYPES";
+            break;
+        default:
+            break;
+    }
+    return previousPageButtonText;
+};
+
+let getNextPageButtonText = (mode, paginationStateData) => {
+    let nextPageButtonText = "NEXT ";
+    switch (mode) {
+        case RM_RX_CONST.RATE_VIEW_MODE:
+            if (Math.ceil(paginationStateData.totalRows / paginationStateData.perPage) === paginationStateData.page + 1) {
+                // In case of navigation to last page; show remaining
+                nextPageButtonText += paginationStateData.totalRows - (paginationStateData.perPage * paginationStateData.page) + " RATES";
+            } else {
+                nextPageButtonText += paginationStateData.perPage + " RATES";
+            }
+            break;
+        case RM_RX_CONST.RATE_TYPE_VIEW_MODE:
+            if (Math.ceil(paginationStateData.totalRows / paginationStateData.perPage) === paginationStateData.page + 1) {
+                // In case of navigation to last page; show remaining
+                nextPageButtonText += paginationStateData.totalRows - (paginationStateData.perPage * paginationStateData.page) + " RATE TYPES";
+            } else {
+                nextPageButtonText += paginationStateData.perPage + " RATE TYPES";
+            }
+            break;
+        default:
+            break;
+    }
+    return nextPageButtonText;
+};
+
+
+const mapActionToRateManagerGridLeftSideHeadButtonContainerProps = (stateProps, dispatchProps, ownProps) => {
+    var isFirstPage = false, isLastPage = false;
+    
+    if (stateProps.mode ===  RM_RX_CONST.RATE_VIEW_MODE || stateProps.mode ===  RM_RX_CONST.RATE_TYPE_VIEW_MODE) {
+        if (stateProps.paginationStateData.page === 1) {
+            isFirstPage = true;
+        }
+        if (Math.ceil(stateProps.paginationStateData.totalRows / stateProps.paginationStateData.perPage) ===  stateProps.paginationStateData.page) {
+            isLastPage = true;
+        }
+    }
+
     return {
-    toggleClicked : (e)=>{
-        e.preventDefault();
-        let { dispatch } = dispatchProps;       
-        dispatch({
-                    type: RM_RX_CONST.RATE_VIEW_WITH_ADDRESS,
-                    flags: {
-                        showRateDetail: !stateProps.flags.showRateDetail
-                    }
-                });
-        },
-        ...stateProps
+        ...stateProps,
+        goToPrevPage: stateProps.goToPrevPage,
+        goToNextPage: stateProps.goToNextPage,
+        isFirstPage: isFirstPage,
+        isLastPage: isLastPage,
+        prevPageButtonText: getPreviousPageButtonText(stateProps.mode, stateProps.paginationStateData),
+        nextPageButtonText: getNextPageButtonText(stateProps.mode, stateProps.paginationStateData)
     }
 };
 
