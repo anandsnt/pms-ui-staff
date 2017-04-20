@@ -224,7 +224,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 		function schedulePayloadGenerator (type) {
 			var deferred = $q.defer(),
 				payload = {},
-				apiCount = type === SCHEDULE_TYPES.SCHEDULE_REPORT ? 5 : 6,
+				apiCount = type === SCHEDULE_TYPES.SCHEDULE_REPORT ? 5 : 7,
 				exportOnly = type === SCHEDULE_TYPES.EXPORT_SCHEDULE ? true : false;
 
 			var shallWeResolve = function() {
