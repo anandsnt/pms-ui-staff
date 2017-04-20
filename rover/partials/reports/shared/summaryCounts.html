@@ -224,3 +224,8 @@
     <li>Total Comp nights per day <span>{{summaryCounts.complimentary_nights_by_date}}</span></li>
     <li>Total Comp nights per date range <span>{{summaryCounts.complimentary_nights_by_date_range}}</span></li>
 </ul>
+
+<!-- Departure report -->
+<ul ng-if="isThisReport( 'DEPARTURE' )" class="totals">
+    <li>Total Departure Rooms<span>{{ summaryCounts.total_rooms_count }}</span></li>    
+</ul>

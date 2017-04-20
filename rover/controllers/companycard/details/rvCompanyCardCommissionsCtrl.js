@@ -1,5 +1,6 @@
 sntRover.controller('companyCardCommissionsCtrl', [
     '$scope',
+    '$state',
     '$rootScope',
     '$stateParams',
     'RVCompanyCardSrv',
@@ -8,7 +9,8 @@ sntRover.controller('companyCardCommissionsCtrl', [
     'rvPermissionSrv',
     'rvUtilSrv',
     '$window',
-function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout, rvPermissionSrv, util, $window ) {
+    '$vault',
+function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout, rvPermissionSrv, util, $window, $vault ) {
     BaseCtrl.call(this, $scope);
 
     // Get the request parameters for the commission filtering
@@ -102,6 +104,14 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         $scope.prevAction = true;
         clearCurrentSelection();
         fetchCommissionDetails(true);
+    };
+    /*
+     * Navigate to staycard from commissions tab reservations
+     * @param reservation_id reservation id
+     * @param confirmation_no confirmation no
+     */
+    $scope.goToStayCard = function(reservation_id, confirmation_no) {
+        $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {"id": reservation_id, "confirmationId": confirmation_no, "isrefresh": true, "isFromTACommission": true});
     };
 
     $scope.isNextButtonDisabled = function() {
@@ -206,8 +216,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
 
     // Selecting individual record checkbox
     $scope.onCheckBoxSelection = function(commission) {
-        commission.is_checked = !commission.is_checked;
-        // && commission.commission_data.paid_status != 'Prepaid'
+
         if (commission.is_checked) {
             if (commission.commission_data.paid_status == 'Prepaid') {
                 $scope.prePaidCommissions.push(commission);
@@ -357,6 +366,64 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
          */
 
     };
+    // Handle toggle commssion action
+    $scope.toggleCommission = function() {
+        $scope.filterData.toggleCommission =  !$scope.filterData.toggleCommission;
+    };
+    // Method to fetch selected reservatio ids list
+    var getSelectedReservationsHavingCommission = function() {
+
+        var commissionListToUpdate = [];
+
+        if ($scope.filterData.selectAll) {
+           $scope.commissionDetails.forEach(function(commission) {
+                if (commission.commission_data.paid_status != 'Prepaid') {
+                    commissionListToUpdate.push(commission.reservation_id);
+                }
+           });
+        } else {
+            $scope.selectedCommissions.forEach(function(commission) {
+                if (commission.commission_data.paid_status != 'Prepaid') {
+                    commissionListToUpdate.push(commission.reservation_id);
+                }
+            });
+        }
+
+        return commissionListToUpdate;
+    };
+
+    // Method to select toggle mode
+    var getCommissionRecalculateType = function() {
+        var type = 'percent';
+
+        if ($scope.filterData.toggleCommission) {
+            type = 'amount';
+        }
+
+        return type;
+    };
+
+    // Handle recalculate button click
+    $scope.clickedRecalculate = function() {
+
+        var recalculateCommissionSuccess = function(data) {
+            clearCurrentSelection();
+            fetchCommissionDetails(false);
+            $scope.$emit('hideLoader');
+        },
+        recalculateCommissionFailure = function(error) {
+            $scope.errorMessage = error;
+            $scope.$emit('hideLoader');
+        };
+
+        var postData = {
+            'type': getCommissionRecalculateType(),
+            'value': $scope.filterData.commssionRecalculationValue,
+            'reservation_ids': getSelectedReservationsHavingCommission()
+        };
+
+        $scope.invokeApi(RVCompanyCardSrv.recalculateCommission, postData, recalculateCommissionSuccess, recalculateCommissionFailure);
+    };
 
     // Initailizes the controller
     var init = function() {
@@ -370,7 +437,9 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
             perPage: RVCompanyCardSrv.DEFAULT_PER_PAGE,
             page: 1,
             start: 1,
-            selectAll: false
+            selectAll: false,
+            toggleCommission: false,
+            commssionRecalculationValue: ''
         };
         $scope.accountId = $stateParams.id;
         $scope.isEmpty = util.isEmpty;
@@ -388,6 +457,9 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         };
         $scope.businessDate = $rootScope.businessDate;
         fetchCommissionDetails(true);
+        $vault.set('travelAgentId', $stateParams.id);
+        $vault.set('travelAgentType', $stateParams.type);
+        $vault.set('travelAgentQuery', $stateParams.query);
     };
 
     init();

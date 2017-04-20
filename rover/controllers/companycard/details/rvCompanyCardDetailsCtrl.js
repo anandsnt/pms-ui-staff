@@ -35,6 +35,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.cardTypeText = $filter('translate')('TRAVELAGENT');
 			$scope.dataIdHeader = "travel-agent-card-header";
 		}
+		$scope.setHeadingTitle($scope.heading);
 
 		$scope.$on('ARTransactionSearchFilter', function(e, data) {
 			$scope.isWithFilters = data;
@@ -108,7 +109,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		};
 
 		/* -------AR account starts here-----------*/
-		
+
 		$scope.$on('ERRORONARTAB', function(e) {
 			$scope.switchTabTo('', 'cc-ar-accounts');
 		});
@@ -193,6 +194,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.currentSelectedTab = 'cc-ar-transactions';
 			$scope.$broadcast('setgenerateNewAutoAr', true);
 			$scope.switchTabTo('', 'cc-ar-transactions');
+		}
+		// CICO-36080 - Back from staycard - Commissions tab as selected
+		if ($stateParams.isBackToTACommission) {
+			$scope.currentSelectedTab = 'cc-commissions';
 		}
 
 		$scope.$on('ARNumberChanged', function(e, data) {
@@ -282,7 +287,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			// taking a deep copy of copy of contact info. for handling save operation
 			// we are not associating with scope in order to avoid watch
 			presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
-			
+
 			// CICO-20567-Select default to AR Transactions Tab
 			if ($stateParams.origin === 'AR_OVERVIEW') {
 				$scope.switchTabTo('', 'cc-ar-transactions');
@@ -520,7 +525,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		};
 
 		$scope.isEmptyObject = isEmptyObject;
-		
+
 		// CICO-27364 - add class 'print-statement' if printing AR Transactions Statement.
 		$scope.$on("PRINT_AR_STATEMENT", function(event, isPrintArStatement ) {
 			$scope.isPrintArStatement = isPrintArStatement;
