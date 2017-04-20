@@ -21,6 +21,8 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 		 **                                                                       
 		 ***********************************************************************************************/
 
+        // we will have to rename this state.
+
         BaseCtrl.call(this, $scope);
 
         var init = function() {
@@ -262,11 +264,14 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 
 		// Based Upon Admin Setting need to skip displaying
 		// terms and conditions
-        if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
+
+
+        // Always bypass this T&C, as we already binded T&C with reservation details page
+        // if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
             $scope.agreeTerms();
-        } else {
-            init();
-            initiateTermsAndConditions();
-        }
+        // } else {
+        //     init();
+        //     initiateTermsAndConditions();
+        // }
     }
 ]);

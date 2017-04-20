@@ -6,7 +6,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
     'zsCheckinSrv',
     '$stateParams',
     '$log',
-    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $stateParams, $log) {
+    '$timeout',
+    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $stateParams, $log, $timeout) {
 
 
         // This controller is used for viewing reservation details 
@@ -29,6 +30,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
          **/
 
         BaseCtrl.call(this, $scope);
+        $scope.mode = 'RESERVATION_DETAILS';
 
         $scope.setScroller('res-details');
 
@@ -461,6 +463,17 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             }
             return false;
         };
+
+
+        var showTermsAndCondition = function(){
+            $scope.mode = 'TERMS_CONDITIONS'
+            $scope.setScroller('terms');
+            setDisplayContentHeight();
+            $scope.refreshScroller('terms');
+        };
+        $scope.agreeTerms = function(){
+            routeToNext();
+        };
             
 
         $scope.onNextFromDetails = function() {
@@ -489,7 +502,11 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
                     } else if (roomIsAssigned() && roomIsReady()) {
                         $log.info('room is assigned and ready, continuing');
-                        routeToNext();
+                        if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
+                            routeToNext();
+                        }   else{
+                            showTermsAndCondition();
+                        }
 
                     } else if (roomIsAssigned() && !roomIsReady()) {
                         $log.info('room assigned but not ready, show room error');

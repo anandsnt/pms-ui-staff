@@ -67,7 +67,8 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 						'is_from_room_upsell': 'true'
 					});
 				} else {
-					$state.go('zest_station.checkInReservationDetails');
+					// go to old T&C page which redirects to other pages
+					$state.go('zest_station.checkInTerms');
 				}
 			};
 
