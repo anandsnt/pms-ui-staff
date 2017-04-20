@@ -138,8 +138,8 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
          * @return {[type]} [description]
          */
         var initializeMe = (function() {
-            // hide back button
-            $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
+            // hide back button, fixes mis-navigating after we changed the location of nationality collection
+            $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
             // show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 
