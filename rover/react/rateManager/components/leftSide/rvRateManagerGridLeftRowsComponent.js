@@ -1,17 +1,6 @@
-const RateManagerGridLeftRowsComponent = ({ leftListingData, onItemClick, onItemClickActionType, goToPrevPage, goToNextPage, isFirstPage, isLastPage, topPageButtonText, bottomPageButtonText }) => (
+const RateManagerGridLeftRowsComponent = ({ leftListingData, onItemClick, onItemClickActionType }) => (
 	
 	<tbody>
-		{isFirstPage ? null :
-			(<tr className="cell rate loader">
-		        <td>        
-		           <button type="button" 
-		           		className="button blue"
-		           		onTouchEnd={(e) => {e.stopPropagation(); goToPrevPage(e); }} onClick={(e) => {e.stopPropagation(); goToPrevPage(e); }}>
-		               	{topPageButtonText}
-		           </button>
-		        </td>
-			</tr>)
-		}
 		{
 			leftListingData.map((item, index) => 
 				<RateManagerGridLeftRowComponent
@@ -34,18 +23,6 @@ const RateManagerGridLeftRowsComponent = ({ leftListingData, onItemClick, onItem
 					accountName={item.accountName}
 					showIndicator={item.showIndicator}/>
 			)			
-		}	
-		{isLastPage ? null :
-			(<tr className="cell rate loader">
-		        <td>
-		           <button type="button" 
-		           		className="button blue"
-		           		onTouchEnd={(e) => {e.stopPropagation(); goToNextPage(e); }}
-		           		onClick={(e) => { e.stopPropagation(); goToNextPage(e); }}>
-		               	{bottomPageButtonText}
-		           </button>
-		        </td>
-		    </tr>)	
 		}
 	</tbody>
 )
