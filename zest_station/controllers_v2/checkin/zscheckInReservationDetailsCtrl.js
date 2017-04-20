@@ -111,8 +111,10 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         var onBackButtonClicked = function() {
 
             var reservations = zsCheckinSrv.getCheckInReservations();
-            
-            if ($stateParams.pickup_key_mode) {
+            if($scope.mode !== 'RESERVATION_DETAILS'){
+                $scope.mode = 'RESERVATION_DETAILS';
+            }
+            else if ($stateParams.pickup_key_mode) {
                 $state.go('zest_station.checkOutReservationSearch', {
                     'mode': 'PICKUP_KEY'
                 });
@@ -466,10 +468,12 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
 
         var showTermsAndCondition = function(){
-            $scope.mode = 'TERMS_CONDITIONS'
-            $scope.setScroller('terms');
-            setDisplayContentHeight();
-            $scope.refreshScroller('terms');
+            $scope.mode = 'TERMS_CONDITIONS';
+            $timeout(function() {
+                $scope.setScroller('terms');
+                setDisplayContentHeight();
+                $scope.refreshScroller('terms');
+            }, 1200);
         };
         $scope.agreeTerms = function(){
             routeToNext();
