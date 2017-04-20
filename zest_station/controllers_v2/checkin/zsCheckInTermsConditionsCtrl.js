@@ -125,7 +125,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
                 console.log('skipping checkin guest, no-check-ins debugging is ON');
                 afterGuestCheckinCallback({'status': 'success'});
             } else {
-                 afterGuestCheckinCallback({'status': 'success'});
+                $scope.callAPI(zsCheckinSrv.checkInGuest, options);;
             }
         };
 
