@@ -734,6 +734,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         // dispatching to redux
         store.dispatch(reduxActionForAllRateTypesView);
+        document.getElementById("rate-manager").scrollTop = 0;
     };
 
     /*
