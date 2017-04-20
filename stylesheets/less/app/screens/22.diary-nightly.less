@@ -1526,6 +1526,30 @@
         }
     }
 
+    /* Overlay when searching rooms */
+    &.with-reservation-overlay {
+        overflow: visible;
+
+        &:after {
+            content:'';
+            position: absolute;
+            top: 0px;
+            left: ~'calc(100% - @{gridWidth}px)';
+            background: fade(@black, 50);
+            z-index: 120;
+            width: 100%;
+            .extend-height(100, 60);
+            .show();
+
+             /* Fixed Width from this point ***/
+            @media screen and (min-width: ~'@{containerWidth}px') {
+                left: ~'@{roomsWidth}px';
+                .calc-width(100, @roomsWidth);
+            }
+        }
+
+    }
+
     /* 7 Days ***/
     &.diary-days-7 {
         
