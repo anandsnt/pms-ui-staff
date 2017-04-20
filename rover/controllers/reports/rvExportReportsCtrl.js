@@ -343,7 +343,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             NAME: 'NAME',
             ROOM: 'ROOM',
             BALANCE: 'BALANCE',
-            ROOM_NO: 'ROOM_NO'
+            ROOM_NO: 'ROOM_NO',
+            CONFIRMATION_NUMBER: 'CONFIRMATION_NUMBER',
+            CHECKOUT_DATE: 'CHECKOUT_DATE',
+            TRAVEL_AGENT: 'TRAVEL_AGENT'
         };
 
         var reportIconCls = {
