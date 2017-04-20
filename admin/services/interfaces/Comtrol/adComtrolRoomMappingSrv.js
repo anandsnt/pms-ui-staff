@@ -6,10 +6,10 @@ admin.service('adComtrolRoomMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2',
 
         var fetchRoomsList = function() {
             var deferred = $q.defer();
-            var url = '/api/rooms';
+            var url = '/admin/hotel_rooms.json?page=1&per_page=1000';
 
-            ADBaseWebSrvV2.getJSON(url).then(function(data) {
-                deferred.resolve(data.rooms);
+            ADBaseWebSrvV2.getJSON(url).then(function(response) {
+                deferred.resolve(response.data.rooms);
             }, function(data) {
                 deferred.reject(data);
             });
