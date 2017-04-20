@@ -381,16 +381,18 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
 
         return commissionListToUpdate;
     };
+
     // Method to select toggle mode
     var getCommissionRecalculateType = function() {
         var type = 'percent';
 
-        if($scope.filterData.toggleCommission) {
+        if ($scope.filterData.toggleCommission) {
             type = 'amount';
         }
 
         return type;
     };
+
     // Handle recalculate button click
     $scope.clickedRecalculate = function() {
 
@@ -405,10 +407,10 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         };
 
         var postData = {
-            'type' : getCommissionRecalculateType(),
-            'value' : $scope.filterData.commssionRecalculationValue,
-            'reservation_ids' : getSelectedReservationsHavingCommission()
-        }
+            'type': getCommissionRecalculateType(),
+            'value': $scope.filterData.commssionRecalculationValue,
+            'reservation_ids': getSelectedReservationsHavingCommission()
+        };
 
         $scope.invokeApi(RVCompanyCardSrv.recalculateCommission, postData, recalculateCommissionSuccess, recalculateCommissionFailure);
     };
