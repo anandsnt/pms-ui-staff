@@ -1,4 +1,4 @@
-const NightlyDiaryRoomsListComponent = ({ roomListToComponent, selectedRoomId }) =>
+const NightlyDiaryRoomsListComponent = ({ roomListToComponent }) =>
 
      (
             <div className="grid-rooms">
