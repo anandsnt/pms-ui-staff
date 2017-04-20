@@ -21,7 +21,10 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 		 **                                                                       
 		 ***********************************************************************************************/
 
-        // we will have to rename this state.
+        // TODO: will have to rename this state. 
+        // This is the junction from which the navigations to different screens happens. checkinSuccess,collectNationality,checkinKeyDispense,checkInEmailCollection etc.
+        // For now, this page will just redirect to next pages.
+        // We will use the logic we added for bypass T&C to handle for now.
 
         BaseCtrl.call(this, $scope);
 

@@ -33,6 +33,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         $scope.mode = 'RESERVATION_DETAILS';
 
         $scope.setScroller('res-details');
+        $scope.setScroller('terms-container');
 
         var refreshScroller = function() {
             $scope.refreshScroller('res-details');
@@ -111,8 +112,10 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         var onBackButtonClicked = function() {
 
             var reservations = zsCheckinSrv.getCheckInReservations();
-            if($scope.mode !== 'RESERVATION_DETAILS'){
+            if($scope.mode !== 'RESERVATION_DETAILS'){ // if screen is in T&C mode
                 $scope.mode = 'RESERVATION_DETAILS';
+                setDisplayContentHeight(); // utils function
+                refreshScroller();
             }
             else if ($stateParams.pickup_key_mode) {
                 $state.go('zest_station.checkOutReservationSearch', {
@@ -469,11 +472,10 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
         var showTermsAndCondition = function(){
             $scope.mode = 'TERMS_CONDITIONS';
+            setDisplayContentHeight();
             $timeout(function() {
-                $scope.setScroller('terms');
-                setDisplayContentHeight();
-                $scope.refreshScroller('terms');
-            }, 1200);
+                $scope.refreshScroller('terms-container');
+            }, 600);
         };
         $scope.agreeTerms = function(){
             routeToNext();
