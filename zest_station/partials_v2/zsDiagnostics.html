@@ -15,7 +15,7 @@
      <span ng-show="zestStationData.editorModeEnabled == 'true'">
         In Editor-Mode - <span class='key-in-progress'>(Timers Paused)</span><br> 
     </span>
-     <span> [ {{zestStationData.workstationTimer}}/{{zestStationData.getWorkstationsAtTime}} ] Fetch Workstation Data & Refresh Station Check <br> </span>
+     <span> [ {{zestStationData.workstationTimer}}/{{zestStationData.getWorkstationsAtTime}} ] Fetch Workstation Data & <span click-touch="zestStationData.workstationTimer=zestStationData.getWorkstationsAtTime; zestStationData.workstationTimerManualTrigger=true;">Refresh Station Check</span> <br> </span>
     <span> [ {{zestStationData.userInActivityTimeInHomeScreenInSeconds}}/{{zestStationData.timeUntilLanguageResetCheck}} ] Language Reset  <br> </span>
 
     <span> [ {{zestStationData.refreshStationTimer}} >= {{zestStationData.timeUntilRefreshCheck}} ] Refresh Station Check Home Idle  <br> </span>

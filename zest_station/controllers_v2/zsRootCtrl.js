@@ -790,7 +790,13 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.zestStationData.userInActivityTimeInSeconds = userInActivityTimeInSeconds;
                     $scope.zestStationData.getWorkstationsAtTime = getWorkstationsAtTime;
                     if (zestSntApp.timeDebugger) {
-                        $scope.zestStationData.workstationTimer = workstationTimer;
+                        // workstation fetch triggered from the user (via console or diagnostics menu) reset time
+                        if ($scope.zestStationData.workstationTimerManualTrigger){
+                            workstationTimer = $scope.zestStationData.getWorkstationsAtTime;
+                            $scope.zestStationData.workstationTimerManualTrigger = false;
+                        } 
+                        $scope.zestStationData.workstationTimer = workstationTimer;    
+                        
                     }
                     $scope.runDigestCycle();
                 } else {
