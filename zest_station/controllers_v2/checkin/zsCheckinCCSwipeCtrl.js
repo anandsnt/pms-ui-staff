@@ -83,31 +83,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         };
 
         var onClickBack = function() {
-            // if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
-                $state.go('zest_station.checkInReservationDetails', $stateParams);
-            // } else {
-            //     var stateParams = {
-            //         'guest_id': $stateParams.guest_id,
-            //         'reservation_id': $stateParams.reservation_id,
-            //         'deposit_amount': $stateParams.deposit_amount,
-            //         'room_no': $stateParams.room_no,
-            //         'room_status': $stateParams.room_status,
-            //         'payment_type_id': $stateParams.payment_type_id,
-            //         'guest_email': $stateParams.guest_email,
-            //         'guest_email_blacklisted': $stateParams.guest_email_blacklisted,
-            //         'first_name': $stateParams.first_name,
-            //         'balance_amount': $stateParams.balance_amount,
-            //         'pre_auth_amount_for_zest_station': $stateParams.pre_auth_amount_for_zest_station,
-            //         'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin
-            //     };
-            //     // check if this page was invoked through pickupkey flow
-
-            //     if ($stateParams.pickup_key_mode) {
-            //         stateParams.pickup_key_mode = 'manual';
-            //     }
-            //     // need to go to [ last viewed ] screen, terms&conditions may be turned off...
-            //     $state.go('zest_station.checkInTerms', stateParams);
-            // }
+            $state.go('zest_station.checkInReservationDetails', $stateParams);
         };
 
         $scope.swipeData;

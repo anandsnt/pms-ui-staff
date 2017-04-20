@@ -68,7 +68,7 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 					});
 				} else {
 					// go to old T&C page which redirects to other pages
-					$state.go('zest_station.checkInTerms');
+					navigateToTermsPage();
 				}
 			};
 
