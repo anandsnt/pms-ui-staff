@@ -270,6 +270,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.$emit( 'hideLoader' );
             };
 
+            var filter_values = {};
+
             var runOnceId = _.find($scope.originalScheduleFrequency, { value: 'RUN_ONCE' }).id;
 
             // fill 'time' and 'time_period_id'
@@ -316,6 +318,12 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 params.recipients = $scope.scheduleParams.selectedFtpRecipient;
             } else {
                 params.recipients = '';
+            }
+
+            // fill sort_field and filters
+            if ( $scope.scheduleParams.sort_field ) {
+                filter_values.sort_field = $scope.scheduleParams.sort_field;
+                params.filter_values = filter_values;
             }
 
             $scope.invokeApi( reportsSrv.updateSchedule, params, success, failed );
