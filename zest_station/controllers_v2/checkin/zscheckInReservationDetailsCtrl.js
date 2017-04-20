@@ -113,12 +113,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
             var reservations = zsCheckinSrv.getCheckInReservations();
 
-            if ($scope.mode !== 'RESERVATION_DETAILS') { // if screen is in T&C mode
-                $scope.mode = 'RESERVATION_DETAILS';
-                setDisplayContentHeight(); // utils function
-                refreshScroller();
-            }
-            else if ($stateParams.pickup_key_mode) {
+            // can't handle back from T&C for auto assign room, as the rooom status is not returned from API now.
+            if ($stateParams.pickup_key_mode) {
                 $state.go('zest_station.checkOutReservationSearch', {
                     'mode': 'PICKUP_KEY'
                 });
@@ -344,6 +340,14 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             $state.go('zest_station.checkinRoomError');
         };
 
+        var showTermsAndCondition = function() {
+            $scope.mode = 'TERMS_CONDITIONS';
+            setDisplayContentHeight();
+            $timeout(function() {
+                $scope.refreshScroller('terms-container');
+            }, 600);
+        };
+
 
         var assignRoomToReseravtion = function() {
             var reservation_id = $scope.selectedReservation.id;
@@ -365,7 +369,12 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 // will need to check and combine one later
                 // fixing for hotfix
                 $scope.selectedReservation.reservation_details.room_number = response.data.room_number;
-                routeToNext();
+                if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
+                    routeToNext();
+                }
+                else{
+                    showTermsAndCondition();
+                }
             } else {
                 initRoomError();
             }
@@ -470,15 +479,6 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             return false;
         };
 
-
-        var showTermsAndCondition = function() {
-            $scope.mode = 'TERMS_CONDITIONS';
-            setDisplayContentHeight();
-            $timeout(function() {
-                $scope.refreshScroller('terms-container');
-            }, 600);
-        };
-        
         $scope.agreeTerms = function() {
             routeToNext();
         };
