@@ -216,7 +216,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
     // Selecting individual record checkbox
     $scope.onCheckBoxSelection = function(commission) {
-
+        $scope.filterData.commssionRecalculationValue = '';
         if (commission.is_checked) {
             if (commission.commission_data.paid_status == 'Prepaid') {
                 $scope.prePaidCommissions.push(commission);
@@ -251,6 +251,9 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
     // Select all checkbox action
     $scope.toggleSelection = function() {
+
+        $scope.filterData.commssionRecalculationValue = '';
+        
         if ($scope.filterData.selectAll) {
             updateCheckedStatus(true);
             $scope.selectedCommissions = [];
@@ -263,9 +266,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
            $scope.prePaidCommissions = [];
            fetchCommissionDetails(false);
            $scope.status.groupPaidStatus = "";
-
         }
-
     };
 
     // Updates the paid status to the server
@@ -305,6 +306,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
     // Updates the paid status of all the selected records
     $scope.onGroupPaidStatusChange = function() {
+
         var commissionListToUpdate = [];
 
         if ($scope.filterData.selectAll) {
