@@ -1,30 +1,43 @@
-const RateManagerGridLeftSideHeadButtonComponent = ({ 
-	openAllClass, 
-	closeAllClass, 
-	openAllEnabled,
-	closeAllEnabled,
-	onOpenAllClick,
-	onCloseAllClick,
-	showOpenAll,
-	showCloseAll,
-    shouldShowToggle,
-    toggleClicked,
-    flags,
-    toggleClass
+const RateManagerGridLeftSideHeadButtonComponent = ({
+	shouldShowPagination,
+    goToPrevPage,
+    goToNextPage,
+    isFirstPage,
+    isLastPage,
+    prevPageButtonText,
+    nextPageButtonText
 	}) => (
-	<div className='pinnedLeft-actions'> 
-         {shouldShowToggle?(<div className={toggleClass}>
-            <input id="rate-toggle" value="" type="checkbox" checked="checked" onClick = {(e) => toggleClicked(e)} ></input>
-            { flags.showRateDetail?(<label className="data-off">
-                <span className="value">Rate</span>
-                <span className="switch-icon">Contract Details</span>
-            </label>):''
-            }
-            {!flags.showRateDetail?(<label className="data-on">
-                <span className="switch-icon">Rate</span>
-                <span className="value">Contract Details</span>
-            </label>):''
-            }            
-        </div>):''}
+	<div className='pinnedLeft-actions'>
+        {shouldShowPagination ? 
+            <div>
+                {isFirstPage ? '' : 
+                    (<button className="button blue"
+                        onTouchEnd={(e) => {
+                            e.stopPropagation();
+                            goToPrevPage(e);
+                        }}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            goToPrevPage(e);
+                        }}>
+                        {prevPageButtonText}
+                    </button>)
+                }
+                {isLastPage ? '' :
+                    (<button className="button blue"
+                        onTouchEnd={(e) => {
+                            e.stopPropagation();
+                            goToNextPage(e);
+                        }}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            goToNextPage(e);
+                        }}>
+                        {nextPageButtonText}
+                    </button>)
+                } 
+            </div>
+            : ''
+        }
 	</div>
 )

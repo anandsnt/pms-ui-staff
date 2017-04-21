@@ -391,10 +391,19 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		 */
 		$scope.clickedNewReservation = function() {
 			$scope.reservationData.roomCount = 1;
-			$scope.reservationData.rooms[0].rateId = '';
-			$scope.reservationData.rooms[0].rateName = '';
-			$scope.reservationData.rooms[0].rateAvg = '';
-			$scope.reservationData.rooms[0].rateTotal = '';
+
+            /**
+			 * CICO-40041
+			 * CICO-39612
+			 * CICO-39590
+			 * Reset the rate related details of all rooms, in case of the previous one being a multi-room booking
+             */
+            _.each($scope.reservationData.rooms, function(room) {
+                room.rateId = '';
+                room.rateName = '';
+                room.rateAvg = '';
+                room.rateTotal = '';
+            });
 
 			$scope.reservationData.totalTaxAmount = '';
 			$scope.reservationData.totalTax = '';

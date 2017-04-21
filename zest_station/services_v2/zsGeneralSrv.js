@@ -67,6 +67,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 // fontainebleau, once we have upgraded)
                 if (theme === 'fontainebleau v2') {
                     theme = 'fontainebleau';
+                } else if (theme === 'public ny v2') {
+                    theme = 'public';
                 } else {
                     // the hotel theme name has to be mapped to the zeststation resource files 
                     // corresponding to those themes.
