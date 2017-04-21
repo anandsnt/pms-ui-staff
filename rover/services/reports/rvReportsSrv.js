@@ -70,7 +70,7 @@ angular.module('sntRover').service('RVreportsSrv', [
         };
 
         var SCHEDULE_REPORT_TIMEPERIODS = {
-        	'Arrival' : [
+        	'Arrival': [
         		'TODAY',
         		'TOMORROW'
         	 ],        	 
@@ -82,7 +82,7 @@ angular.module('sntRover').service('RVreportsSrv', [
         		'TODAY',
         		'TOMORROW'
         	 ],
-        	 'Comparison' : ['YESTERDAY'],
+        	 'Comparison': ['YESTERDAY'],
         	 'Guest Balance Report': []
         };
 
