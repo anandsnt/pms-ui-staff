@@ -48,7 +48,7 @@
                     </select>
                 </div>
             </div>
-            <div class="entry commission">
+            <div class="entry commission" ng-show="filterData.commissionStatus == 'Commissionable'">
                 <label for="commision-paid" >Recalculate Commission</label>
                 <div class="entry">
                     <input type="text" placeholder="Enter Number" ng-model="filterData.commssionRecalculationValue">
