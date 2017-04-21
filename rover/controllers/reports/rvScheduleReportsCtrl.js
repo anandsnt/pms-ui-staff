@@ -395,22 +395,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
                     if ( $scope.selectedEntityDetails.report.description === 'Restricted Post only' && filter.value === 'RESTRICTED_POST_ONLY' ) {
                         selected = false;
-                    }
-
-                    if ( $scope.selectedEntityDetails.report.description === 'Statistics Report by Comparison' ) {
-                        filteredTimePeriods = _.filter( scheduleTimePeriods, function(item) {
-                            return item.value === 'YESTERDAY';
-                        });
-
-                        $scope.scheduleTimePeriods = filteredTimePeriods;
-                    }
-                    else {
-                        filteredTimePeriods = _.filter( scheduleTimePeriods, function(item) {
-                            return item.value !== 'YESTERDAY' && item.value !== 'LAST_SEVEN_DAYS' && item.value !== 'LAST_MONTH';
-                        });
-
-                        $scope.scheduleTimePeriods = filteredTimePeriods;
-                    }
+                    }                    
 
                     $scope.filters.hasGeneralOptions.data.push({
                         paramKey: filter.value.toLowerCase(),
@@ -423,6 +408,13 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                         $scope.filters.hasGeneralOptions.options.noSelectAll = true;
                     }
                 }
+            });
+
+            var reportTimePeriods = reportsSrv.getScheduleReportTimePeriods($scope.selectedEntityDetails.report.title);
+
+            $scope.scheduleTimePeriods = [];
+            _.each(reportTimePeriods, function (timePeriod) {
+                $scope.scheduleTimePeriods.push(_.find($scope.originalScheduleTimePeriods, { value: timePeriod }));
             });
 
             runDigestCycle();
@@ -565,6 +557,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 };
 
                 scheduleTimePeriods = payload.scheduleTimePeriods;
+                $scope.originalScheduleTimePeriods = payload.scheduleTimePeriods;
                 $scope.scheduleFrequency = payload.scheduleFrequency;
                 $scope.scheduleFormat = payload.scheduleFormat;
                 $scope.$parent.$parent.schedulesList = [];
