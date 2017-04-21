@@ -658,12 +658,20 @@ sntZestStation.controller('zsRootCtrl', [
 		/**
 		 * get paths for theme based Icon files
 		 **/
+        $scope.nonCircleNavIcons = false;
         $scope.$on('updateIconPath', function(evt, theme) {
             var commonIconsPath = '/assets/zest_station/css/icons/default';
 
             // var basicHomeIcons = ['zoku'],
-            var niceHomeIcons = ['avenue', 'sohotel', 'epik', 'public', 'duke'];
+            var niceHomeIcons = ['avenue', 'sohotel', 'epik', 'public','public_v2', 'duke'],
+                nonCircleNavIcons = ['public_v2'];// minor adjustment to the back/close icons for some themes (only show the inner x or <)
 
+
+            if (_.contains(nonCircleNavIcons, theme)){
+                $scope.nonCircleNavIcons = true;
+            } else {
+                $scope.nonCircleNavIcons = false;
+            }
 
             if (theme === 'yotel') {
                 $scope.$emit('DONT_USE_NAV_ICONS');
