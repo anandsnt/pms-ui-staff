@@ -334,7 +334,7 @@ angular.module('sntRover')
             }
             var options = {
                 params,
-                onSuccess: onSuccessOfClickedOnClearOverrideButtonAPICall
+                onSuccess: onUpdateRateRestrictionData
             }
             $scope.callAPI(rvRateManagerCoreSrv.removeCustomRate, options);
         };
