@@ -41,7 +41,6 @@ sntRover.controller('RVPaymentGuestCtrl', ['$rootScope', '$scope', '$state', 'RV
 	 * To open set as as primary or delete payment
 	 */
   	 $scope.openDeleteSetAsPrimaryModal = function(id, index) {
-  	 	console.log('openDeleteSetAsPrimaryModal:',id);
   	 	  $scope.paymentData.payment_id = id;
   	 	  $scope.paymentData.index = index;
 
@@ -63,7 +62,6 @@ sntRover.controller('RVPaymentGuestCtrl', ['$rootScope', '$scope', '$state', 'RV
 
 
 	 $scope.$on('ADDEDNEWPAYMENTTOGUEST', function(event, data) {
-	 	console.log(data);
 	 	if (typeof $scope.paymentData.data === "undefined") {
 	 			$scope.paymentData.data = [];
 	 	}
