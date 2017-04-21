@@ -707,7 +707,7 @@ sntRover.controller('roverController', [
      * Call payment after CONTACT INFO
      */
     $scope.$on('GUESTPAYMENTDATA', function(event, paymentData) {
-
+console.log(paymentData);
       $scope.$broadcast('GUESTPAYMENT', paymentData);
     });
 
