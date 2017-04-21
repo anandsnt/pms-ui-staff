@@ -48,23 +48,21 @@
                     </select>
                 </div>
             </div>
-            <div class="entry commission">
+            <div class="entry commission" ng-show="filterData.commissionStatus == 'Commissionable'">
                 <label for="commision-paid" >Recalculate Commission</label>
                 <div class="entry">
                     <input type="text" placeholder="Enter Number" ng-model="filterData.commssionRecalculationValue">
                     <div class="switch-button" ng-class="{'on': filterData.toggleCommission}">
-                        <input id="recalculate-commission" value="" type="checkbox" ng-click="toggleCommission()">
-                        <label class="data-off">
-
+                        <input id="recalculate-commission" value="" type="checkbox" ng-click="toggleCommission()"> 
+                        <label class="data-off"> 
                             <span class="switch-icon">%</span>
-                            <span class="value">$</span>
-                        </label>
-                        <label class="data-on">
-
-                            <span class="value">%</span>
-                            <span class="switch-icon">$</span>
-                        </label>
-                    </div>
+                            <span class="value">{{ currencySymbol }}</span>  
+                        </label> 
+                        <label class="data-on"> 
+                            <span class="value">%</span> 
+                            <span class="switch-icon">{{ currencySymbol }}</span> 
+                        </label> 
+                    </div> 
                 </div>
                 <button type="button" class="button green" ng-click="clickedRecalculate()" ng-disabled="filterData.commssionRecalculationValue == '' " ng-class="{'grey' : filterData.commssionRecalculationValue == ''}">Recalculate</button>
             </div>
