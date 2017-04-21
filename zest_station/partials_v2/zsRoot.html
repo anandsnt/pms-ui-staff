@@ -1,3 +1,48 @@
+<script>
+    var url = document.location,
+      inDevEnvironment = false,
+      analyticTrackingID;
+
+    if (url.hostname) { // if btn === true, then the user is clicking continue to bypass cc screen in dev environment
+      if (typeof url.hostname === typeof 'str') {
+        if (url.hostname.indexOf('pms-dev') !== -1 ||
+          url.hostname.indexOf('pms-release') !== -1 ||
+          url.hostname.indexOf('192.168.1.218') !== -1 ||
+          url.hostname.indexOf('192.168.1.239') !== -1 ||
+          url.hostname.indexOf('localhost') !== -1) {
+
+          inDevEnvironment = true;
+        }
+      }
+    }
+    if (inDevEnvironment) {
+        // dev/rel/local tracking id
+        analyticTrackingID = 'UA-96932423-2';
+    } else {
+        // production tracking id
+        analyticTrackingID = 'UA-96932423-1';
+    }
+    // <!-- // actual analytic code \\ -->
+    var _gaq = _gaq || [];
+    // registeres the tracking ID as Active for this page, in prep for async / event calls
+    _gaq.push(['_setAccount', analyticTrackingID]);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https://ssl') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+
+    var trackAnalyticEvent = function(event_name, event_type){
+        _gaq.push(['_trackEvent', event_name, event_type]);
+    }
+    // end of analytic code
+</script>
+
 <div ng-show="hasLoader" id="loading">
     <div id="loading-spinner"></div>
 </div>

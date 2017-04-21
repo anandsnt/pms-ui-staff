@@ -152,7 +152,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
                         email_sent: 'true'
                     };
                     $scope.reservation_id = $stateParams.reservation_id;
-                    $scope.printMode = true;
+                    $scope.mode = 'PRINT_MODE';
                 } else {
                     var stateParams = {
                         'printopted': 'false',

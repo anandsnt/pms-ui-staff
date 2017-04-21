@@ -23,10 +23,15 @@ angular.module('admin').controller('adTopCtrl',
 
                 // NOTE: This listener is not removed on $destroy on purpose!
                 $rootScope.$on('$locationChangeStart', routeChange);
+                if ($stateParams.state) {
+                    var params = ($stateParams.params && angular.fromJson(decodeURI($stateParams.params))) || {};
 
-                $state.go('admin.dashboard', {
-                    menu: 0
-                });
+                    $state.go($stateParams.state.replace(/-/g, '.'), params);
+                } else {
+                    $state.go('admin.dashboard', {
+                        menu: 0
+                    });
+                }
             };
 
             (function() {

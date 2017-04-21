@@ -119,6 +119,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
             };
             var onFailureResponse = function(response) {
                 // do nothing for now..i don't know what to be done in that case
+                // TODO: if this means the API failed, then user needs to be directed to the general Error screen
             };
 
             $scope.callAPI(zsCheckinSrv.updateGuestTabDetails, {

@@ -174,6 +174,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.$emit( 'hideLoader' );
             };
 
+            var filter_values = {};
+
             var runOnceId = _.find($scope.originalScheduleFrequency, { value: 'RUN_ONCE' }).id;
 
             // fill 'time' and 'time_period_id'
@@ -220,6 +222,12 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 params.recipients = $scope.scheduleParams.selectedFtpRecipient;
             } else {
                 params.recipients = '';
+            }
+
+            // fill sort_field and filters
+            if ( $scope.scheduleParams.sort_field ) {
+                filter_values.sort_field = $scope.scheduleParams.sort_field;
+                params.filter_values = filter_values;
             }
 
             $scope.invokeApi( reportsSrv.createSchedule, params, success, failed );
@@ -262,6 +270,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.$emit( 'hideLoader' );
             };
 
+            var filter_values = {};
+
             var runOnceId = _.find($scope.originalScheduleFrequency, { value: 'RUN_ONCE' }).id;
 
             // fill 'time' and 'time_period_id'
@@ -310,6 +320,12 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 params.recipients = '';
             }
 
+            // fill sort_field and filters
+            if ( $scope.scheduleParams.sort_field ) {
+                filter_values.sort_field = $scope.scheduleParams.sort_field;
+                params.filter_values = filter_values;
+            }
+
             $scope.invokeApi( reportsSrv.updateSchedule, params, success, failed );
         };
 
@@ -335,7 +351,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             NAME: 'NAME',
             ROOM: 'ROOM',
             BALANCE: 'BALANCE',
-            ROOM_NO: 'ROOM_NO'
+            ROOM_NO: 'ROOM_NO',
+            CONFIRMATION_NUMBER: 'CONFIRMATION_NUMBER',
+            CHECKOUT_DATE: 'CHECKOUT_DATE',
+            TRAVEL_AGENT: 'TRAVEL_AGENT'
         };
 
         var reportIconCls = {
@@ -464,7 +483,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             var forDaily = {
                 'Financial Transactions': true,
-                'Membership Details': true,
+                'Stash Rewards Membership Export': true,
                 'Reservations': true,
                 'Rooms': true,
                 'Future Reservations': true
@@ -472,12 +491,14 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             var forRunOnceOnly = {
                 'Financial Transactions': true,
-                'Membership Details': true,
+                'Stash Rewards Membership Export': true,
                 'Reservations': true,
                 'Rooms': true,
                 'Future Reservations': true,
                 'Last Week Reservations': true,
-                'Last Month Reservations': true
+                'Last Month Reservations': true,
+                'Nationality Statistics': true,
+                'Commissions': true
             };
 
             var forWeekly = {
@@ -486,7 +507,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             };
             var forMonthly = {
                 'Future Reservations': true,
-                'Last Month Reservations': true
+                'Last Month Reservations': true,
+                'Nationality Statistics': true,
+                'Commissions': true
             };
 
             var forHourly = {
@@ -518,45 +541,17 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             }
         };
 
+        // Configure the time periods for the given report
         var filterScheduleTimePeriod = function(item) {
-            var yesterdayOnly = _.find($scope.originalScheduleTimePeriods, { value: 'YESTERDAY' });
-            var todayOnly = _.find($scope.originalScheduleTimePeriods, { value: 'TODAY' });
-            var lastSevenDays = _.find($scope.originalScheduleTimePeriods, { value: 'LAST_SEVEN_DAYS' });
-            var lastMonth = _.find($scope.originalScheduleTimePeriods, { value: 'LAST_MONTH' });
-
-            var forYesterday = {
-                'Financial Transactions': true,
-                'Membership Details': true,
-                'Reservations': true
-            };
-
-            var forToday = {
-                'Rooms': true,
-                'Future Reservations': true
-            };
-
-            var forLastSevenDays = {
-                'Last Week Reservations': true
-            };
-
-            var forLastMonth = {
-                'Last Month Reservations': true
-            };
 
             $scope.scheduleTimePeriods = [];
 
-            if ( forYesterday[item.report.title] ) {
-                $scope.scheduleTimePeriods.push(yesterdayOnly);
-            }
-            if ( forToday[item.report.title] ) {
-                $scope.scheduleTimePeriods.push(todayOnly);
-            }
-            if ( forLastSevenDays[item.report.title] ) {
-                $scope.scheduleTimePeriods.push(lastSevenDays);
-            }
-            if ( forLastMonth[item.report.title] ) {
-                $scope.scheduleTimePeriods.push(lastMonth);
-            }
+            var reportTimePeriods = reportsSrv.getReportScheduleTimePeriods (item.report.title);
+
+            _.each(reportTimePeriods, function (timePeriod) {
+                $scope.scheduleTimePeriods.push(_.find($scope.originalScheduleTimePeriods, { value: timePeriod }));
+            });
+
         };
 
         var processScheduleDetails = function(report) {
@@ -697,6 +692,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                             description: each.description,
                             title: each.title
                         },
+                        sort_fields: each.sort_fields,
                         active: false,
                         filteredOut: false
                     });

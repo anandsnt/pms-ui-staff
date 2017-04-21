@@ -348,6 +348,17 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 resKey: 'results'
             });
         };
+
+        service.fetchScheduleFormat = function() {
+            var url = 'admin/export_formats.json';
+
+            return callApi({
+                method: 'getJSON',
+                url: url,
+                resKey: 'results'
+            });
+        };
+
         service.fetchTimePeriods = function() {
             return callApi({
                 name: 'scheduleTimePeriods',

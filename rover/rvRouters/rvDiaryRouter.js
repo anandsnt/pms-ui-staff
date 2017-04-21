@@ -62,7 +62,7 @@ angular
                         params.start_date = $stateParams.start_date;
                     }
                     else {
-                        params.start_date = $rootScope.businessDate;
+                        params.start_date = addDaysToDay($rootScope.businessDate, -1);
                     }
                     params.no_of_days = 7;
                 }
@@ -70,12 +70,12 @@ angular
             },
             reservationsList: function(RVNightlyDiarySrv, $rootScope, diaryAssets, $stateParams) {
                 var params = {};
-                
+
                 if ($stateParams.isFromStayCard) {
                     params = RVNightlyDiarySrv.getCache();
                 }
                 else {
-                    params.start_date = $stateParams.start_date || $rootScope.businessDate;
+                    params.start_date = $stateParams.start_date || addDaysToDay($rootScope.businessDate, -1);
                     params.no_of_days = 7;
                     params.page = 1;
                     params.per_page = 50;

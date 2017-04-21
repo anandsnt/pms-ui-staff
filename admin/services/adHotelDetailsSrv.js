@@ -117,6 +117,8 @@ admin.service('ADHotelDetailsSrv', [
 		var deferred = $q.defer();
 		var url = '/admin/hotels/test_mli_settings';
 
+		url += '?hotel_uuid=' + ADHotelListSrv.getSelectedProperty();
+
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
@@ -128,6 +130,8 @@ admin.service('ADHotelDetailsSrv', [
 	this.testMLIPaymentGateway = function(data) {
 		var deferred = $q.defer();
 		var url = 'api/test_mli_payment_gate_way';
+
+		url += '?hotel_uuid=' + ADHotelListSrv.getSelectedProperty();
 
 		ADBaseWebSrvV2.getJSON(url, data).then(function(data) {
 		    deferred.resolve(data);

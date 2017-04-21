@@ -1,5 +1,5 @@
-angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG', '$log', '$timeout',
-    function($q, $http, $location, PAYMENT_CONFIG, $log, $timeout) {
+angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG', '$log', '$timeout', 'sntAuthorizationSrv',
+    function($q, $http, $location, PAYMENT_CONFIG, $log, $timeout, sntAuthorizationSrv) {
         var service = this,
             state = {};
 
@@ -374,7 +374,8 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
                         "card_holder_first_name=" + params.card_holder_first_name +
                         "&card_holder_last_name=" + params.card_holder_last_name +
                         "&service_action=" + service_action +
-                        "&time=" + time;
+                        "&time=" + time +
+                        "&hotel_uuid=" + sntAuthorizationSrv.getProperty() ;
                     break;
                 default:
                     throw new Error("Payment Gateway not configured");
