@@ -59,7 +59,28 @@
 	    position: absolute !important;
 	    top: 75px !important;
 	}
+	.action{
+		button{
+		    background: white !important;
+		    color: black !important;
+		    border-style: solid !important;
+		    border-width: 1px !important;
+		    border-radius: 0em !important;
+		}
+	}
 
+	#actions{
+		button{
+		    background: @white !important;
+		    color: black !important;
+		    border-style: solid !important;
+		    border-width: 1px !important;
+		    border-radius: 0em !important;
+		    &.selected {
+		    	border-color:@white;
+		    }
+		}
+	}
 
 	.icons { 
 		&.icon-create-key {
