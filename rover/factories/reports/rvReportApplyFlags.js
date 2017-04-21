@@ -24,7 +24,8 @@ angular.module('reportsModule')
                         'COMPARISION_BY_DATE': ['hasSysDateLimit'],
                         'BUSINESS_ON_BOOKS': ['hasSixMonthsLimit'],
                         'COMPANY_TA_TOP_PRODUCERS': ['hasPrevDateLimit'],
-                        'GROUP_ROOMS_REPORT': ['hasThirtyOneDaysLimit']
+                        'GROUP_ROOMS_REPORT': ['hasThirtyOneDaysLimit'],
+                        'ADDON_UPSELLS': ['hasSixMonthsLimit']
                     };
 
                     var reportName = _.findKey(reportNames, function(value, key) { return value === report['title']; });

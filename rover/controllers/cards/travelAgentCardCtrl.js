@@ -301,8 +301,6 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 				$scope.invokeApi(RVCompanyCardSrv.saveContactInformation, dataToSend, successCallbackOfContactSaveData, failureCallbackOfContactSaveData);
 			}
 		};
-
-
 	}
 ]);
 

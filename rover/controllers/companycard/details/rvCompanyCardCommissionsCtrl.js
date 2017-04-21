@@ -1,5 +1,6 @@
 sntRover.controller('companyCardCommissionsCtrl', [
     '$scope',
+    '$state',
     '$rootScope',
     '$stateParams',
     'RVCompanyCardSrv',
@@ -8,7 +9,8 @@ sntRover.controller('companyCardCommissionsCtrl', [
     'rvPermissionSrv',
     'rvUtilSrv',
     '$window',
-function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout, rvPermissionSrv, util, $window ) {
+    '$vault',
+function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout, rvPermissionSrv, util, $window, $vault ) {
     BaseCtrl.call(this, $scope);
 
     // Get the request parameters for the commission filtering
@@ -102,6 +104,14 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         $scope.prevAction = true;
         clearCurrentSelection();
         fetchCommissionDetails(true);
+    };
+    /*
+     * Navigate to staycard from commissions tab reservations
+     * @param reservation_id reservation id
+     * @param confirmation_no confirmation no
+     */
+    $scope.goToStayCard = function(reservation_id, confirmation_no) {
+        $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {"id": reservation_id, "confirmationId": confirmation_no, "isrefresh": true, "isFromTACommission": true});
     };
 
     $scope.isNextButtonDisabled = function() {
@@ -447,6 +457,9 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         };
         $scope.businessDate = $rootScope.businessDate;
         fetchCommissionDetails(true);
+        $vault.set('travelAgentId', $stateParams.id);
+        $vault.set('travelAgentType', $stateParams.type);
+        $vault.set('travelAgentQuery', $stateParams.query);
     };
 
     init();
