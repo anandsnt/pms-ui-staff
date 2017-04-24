@@ -148,9 +148,12 @@ sntZestStation.directive('editableText', [function() {
 
                 }
             };
-
-            // handle if a button is pressed which does not have text (or empty string fields)
-            addListeners($(element).parent(), textEditor);
+            if ($(element).parent()[0]) {
+                if ($(element).parent()[0].nodeName !== 'SPAN' && $(element).parent()[0].nodeName !== 'LI'){
+                    // handle if a button is pressed which does not have text (or empty string fields)
+                    addListeners($(element).parent(), textEditor);   
+                }
+            }
 
             // handles typical replace text in label or button
             addListeners(element, textEditor);
