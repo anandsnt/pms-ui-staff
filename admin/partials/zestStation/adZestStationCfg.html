@@ -16,16 +16,13 @@
                 <ad-checkbox is-checked="zestSettings.home_screen.check_out" label="{{ 'CHECKOUT' | translate}}"></ad-checkbox>
                 <ad-checkbox is-checked="zestSettings.home_screen.check_in" label="{{ 'CHECKIN' | translate}}"></ad-checkbox>
             </fieldset>
-
             <fieldset class="holder right">
                 <div class="form-title full-width">
                     <h3><span translate>ACTIVATE_BOOKING_ENGINE_POPUP</span> </h3>
                 </div>
                 <ad-toggle-button is-checked="zestSettings.home_screen.booking_pop_up.enable_pop_up" label="{{'ACTIVATE_BOOKING_ENGINE_POPUP'| translate}}" div-class="full-width"></ad-toggle-button>
-                
                 <ad-textbox value="zestSettings.home_screen.booking_pop_up.booking_engine_url" name="zest-web" id="zest-web" label="{{'BOOKING_URL'| translate}}" placeholder="" styleclass="full-width" ng-hide="!zestSettings.home_screen.booking_pop_up.enable_pop_up"></ad-textbox>
             </fieldset>
-
             <fieldset class="holder left">
                 <div class="form-title full-width">
                     <h3><span translate> STATION_LANGUAGE_SUPPORT</span> </h3>
@@ -40,14 +37,11 @@
                             <span class="input" ng-show="hasFileUpdatedOrUploading('english')">File Attached</span>
                             <span class="input" ng-show="!hasFileUpdatedOrUploading('english')">Choose file..</span>
                             <input type="file" ng-model="zestSettings.zest_lang.english_translations_file" accept="*" app-filereader emit-data="english_translations_file" />
-                            
                             <button type="button" class="button brand-colors">Attach file</button>
                             <button type="button" ng-show="hasFileUpdatedOrUploading('english')" class="button download-arrow icons " ng-click="downloadLang('en')"></button>
-
                             <button type="button" ng-show="hasFileUpdatedOrUploading('english')" class="button download-arrow icons right editor" ng-click="editLang('en')">
                                 <text ng-include="'/assets/cssimg/admin/adEditorIconSvg.svg'"></text>
                             </button>
-
                         </div>
                     </div>
                 </div>
@@ -59,10 +53,8 @@
                             <span class="input" ng-show="hasFileUpdatedOrUploading('french')">File Attached</span>
                             <span class="input" ng-show="!hasFileUpdatedOrUploading('french')">Choose file..</span>
                             <input type="file" ng-model="zestSettings.zest_lang.french_translations_file" accept="*" app-filereader emit-data="french_translations_file" />
-                            
                             <button type="button" class="button brand-colors">Attach file</button>
                             <button type="button" class="button download-arrow icons " ng-click="downloadLang('fr')" ng-show="hasFileUpdatedOrUploading('french')"></button>
-
                             <button type="button" ng-show="hasFileUpdatedOrUploading('french')" class="button download-arrow icons right " ng-click="editLang('fr')">
                                 <text ng-include="'/assets/cssimg/admin/adEditorIconSvg.svg'"></text>
                             </button>
@@ -77,10 +69,8 @@
                             <span class="input" ng-show="hasFileUpdatedOrUploading('spanish')">File Attached</span>
                             <span class="input" ng-show="!hasFileUpdatedOrUploading('spanish')">Choose file..</span>
                             <input type="file" ng-model="zestSettings.zest_lang.spanish_translations_file" accept="*" app-filereader emit-data="spanish_translations_file" />
-                            
                             <button type="button" class="button brand-colors">Attach file</button>
                             <button type="button" class="button download-arrow icons " ng-click="downloadLang('es')" ng-show="hasFileUpdatedOrUploading('spanish')"></button>
-
                             <button type="button" ng-show="hasFileUpdatedOrUploading('spanish')" class="button download-arrow icons right " ng-click="editLang('es')">
                                 <text ng-include="'/assets/cssimg/admin/adEditorIconSvg.svg'"></text>
                             </button>
@@ -95,10 +85,8 @@
                             <span class="input" ng-show="hasFileUpdatedOrUploading('german')">File Attached</span>
                             <span class="input" ng-show="!hasFileUpdatedOrUploading('german')">Choose file..</span>
                             <input type="file" ng-model="zestSettings.zest_lang.german_translations_file" accept="*" app-filereader emit-data="german_translations_file" />
-                            
                             <button type="button" class="button brand-colors">Attach file</button>
                             <button type="button" class="button download-arrow icons " ng-click="downloadLang('de')" ng-show="hasFileUpdatedOrUploading('german')"></button>
-
                             <button type="button" ng-show="hasFileUpdatedOrUploading('german')" class="button download-arrow icons right " ng-click="editLang('de')">
                                 <text ng-include="'/assets/cssimg/admin/adEditorIconSvg.svg'"></text>
                             </button>
@@ -113,10 +101,8 @@
                             <span class="input" ng-show="hasFileUpdatedOrUploading('italian')">File Attached</span>
                             <span class="input" ng-show="!hasFileUpdatedOrUploading('italian')">Choose file..</span>
                             <input type="file" ng-model="zestSettings.zest_lang.italian_translations_file" accept="*" app-filereader emit-data="italian_translations_file" />
-                            
                             <button type="button" class="button brand-colors">Attach file</button>
-                            <button  type="button" class="button download-arrow icons " ng-click="downloadLang('it')" ng-show="hasFileUpdatedOrUploading('italian')"></button>
-
+                            <button type="button" class="button download-arrow icons " ng-click="downloadLang('it')" ng-show="hasFileUpdatedOrUploading('italian')"></button>
                             <button type="button" ng-show="hasFileUpdatedOrUploading('italian')" class="button download-arrow icons right " ng-click="editLang('it')">
                                 <text ng-include="'/assets/cssimg/admin/adEditorIconSvg.svg'"></text>
                             </button>
@@ -131,10 +117,8 @@
                             <span class="input" ng-show="hasFileUpdatedOrUploading('castellano')">File Attached</span>
                             <span class="input" ng-show="!hasFileUpdatedOrUploading('castellano')">Choose file..</span>
                             <input type="file" ng-model="zestSettings.zest_lang.castellano_translations_file" accept="*" app-filereader emit-data="italian_translations_file" />
-                            
                             <button type="button" class="button brand-colors">Attach file</button>
                             <button type="button" class="button download-arrow icons " ng-click="downloadLang('cl')" ng-show="hasFileUpdatedOrUploading('castellano')"></button>
-
                             <button type="button" ng-show="hasFileUpdatedOrUploading('castellano')" class="button download-arrow icons right " ng-click="editLang('cs')">
                                 <text ng-include="'/assets/cssimg/admin/adEditorIconSvg.svg'"></text>
                             </button>
@@ -142,15 +126,12 @@
                     </div>
                 </div>
             </fieldset>
-
-
             <fieldset class="holder right">
                 <div class="form-title full-width">
                     <h3><span translate>CHROME_APP_ID</span> </h3>
                 </div>
                 <ad-textbox value="zestSettings.chrome_app_id" name="zest-web" id="zest-web" label="{{'CHROME_APP_ID'| translate}}" placeholder="" styleclass="full-width"></ad-textbox>
             </fieldset>
-
             <!-- printer options -->
             <fieldset class="holder left holder_margin">
                 <div class="form-title full-width">
@@ -207,8 +188,8 @@
                 </div>
                 <!-- Upload image for Key Creation In Progress Screen -->
                 <label translate>KEY_CREATION_IMAGE </label>
-                        <div class="entry">
-                    <div class="file-upload" ng-class="{'with-remove-file-area':hasKeyImageFileUpdatedOrUploading('keyCreate')}">
+                <div class="entry">
+                    <div class="file-upload" ng-class="{'with-remove-file-area':hasKeyImageFileUpdatedOrUploading('keyCreate')}" ng-mouseenter="uploadedIcon.preview_createkey = true" ng-mouseleave="uploadedIcon.preview_createkey = false">
                         <span class="input" ng-show="hasKeyImageFileUpdatedOrUploading('keyCreate')">File Attached</span>
                         <span class="input" ng-show="!hasKeyImageFileUpdatedOrUploading('keyCreate')">Choose file..</span>
                         <input type="file" ng-model="zestSettings.key_create_file_uploaded" accept="*" app-filereader emit-data="key_create_file_uploaded" />
@@ -216,14 +197,17 @@
                             Attach file
                         </button>
                     </div>
-                    <button ng-show="hasKeyImageFileUpdatedOrUploading('keyCreate')" type="button" class="button brand-colors with-remove-file" ng-click="zestSettings.key_create_file_uploaded = 'false'">
-                            Remove file
-                        </button>
-                        
-                </div>
+                    
+                    <div>
+                        <img class='station-image-preview' ng-show="uploadedIcon.preview_createkey && hasKeyImageFileUpdatedOrUploading('keyCreate')" src="{{uploadedIcon.createkey}}">
+                    </div>
 
+                    <button ng-show="hasKeyImageFileUpdatedOrUploading('keyCreate')" type="button" class="button brand-colors with-remove-file" ng-click="zestSettings.key_create_file_uploaded = 'false'">
+                        Remove file
+                    </button>
+                </div>
             </fieldset>
-               <fieldset class="holder left">
+            <fieldset class="holder left">
                 <div class="form-title full-width">
                     <h3><span translate>ZEST_STATION_OUT_OF_ORDER_TRESHOLD</span> </h3>
                 </div>
