@@ -23,9 +23,17 @@ sntZestStation.controller('zsThemeActionsCtrl', [
          */
         var themesWithLicensedFonts = {
             'public': 'https://cloud.typography.com/7902756/7320972/css/fonts.css',
-           // 'littleduke': 'placeholder'
-           // 'public': 'public.font.placeholder.css',
-            'duke': 'duke.font.placeholder.css'
+            // PLACEHOLDER (for duke) UNTIL STAYNTOUCH IS READY TO RELEASE Typekit Update
+            'duke': 'duke.font.placeholder.css',
+            // 'duke': 'https://use.typekit.net/wyk4xkn.js' // SNT typekit account
+            // 'duke': 'https://use.typekit.net/hay8wrs.js' // Mike's typekit account (for dev/testing)
+            // 
+            // TODO: PASS the typekit URL from Hotel/SNT Admin and use here as currentHotelTypekitURL
+            /* typekit example implement via html/script
+
+                <script src="https://use.typekit.net/wyk4xkn.js"></script>
+                <script>try{Typekit.load({ async: true });}catch(e){}</script>
+             */
         };
 
         var iconsPath = '/assets/zest_station/css/icons/default';
@@ -74,24 +82,46 @@ sntZestStation.controller('zsThemeActionsCtrl', [
             setPrinterOptions(theme);
             if (theme !== null) {
                 var url = $scope.cssMappings[theme.toLowerCase()];
-                var fileref = document.createElement('link');
 
+                // Set the Theme css reference to file
+                var fileref = document.createElement('link');
                 fileref.setAttribute('rel', 'stylesheet');
                 fileref.setAttribute('type', 'text/css');
                 fileref.setAttribute('href', url);
                 $('body').attr('id', theme);
                 $('body').append(fileref);
+
+
                 // debugging - inProd() needs to be TRUE for loading licensed font
                 if (hotelHasLicensedFont(theme) && $scope.inProd()) {
+                    // we load fonts using two different services
+                    // one provides the css as a .css and the other as a .js 
+
                     $log.log('[ ' + theme + ' ] theme using licensed font**');
                     url = getHotelLicensedFont(theme);
-                    fileref = document.createElement('link');
+                    if (themesWithLicensedFonts[theme].indexOf('.js') !== -1){
+                        fileref = document.createElement('script');
 
-                    fileref.setAttribute('rel', 'stylesheet');
-                    fileref.setAttribute('type', 'text/css');
-                    fileref.setAttribute('href', url);
-                    $('head').attr('id', theme);
-                    $('head').append(fileref);
+                        fileref.setAttribute('type', 'text/javascript');
+                        fileref.setAttribute('src', url);
+                        $('head').attr('id', theme);
+                        $('head').append(fileref);
+                        // Typekit needs to send a sync request to fetch and update the request count
+                        setTimeout(function(){
+                            try{Typekit.load({ async: true });}catch(e){console.log(arguments);};
+                            // TODO:
+                            // document.getElementById("body").style.fontFamily = fontFamilyFromHotelDetails;
+
+                        },3000)
+                    } else {
+                        fileref = document.createElement('link');
+
+                        fileref.setAttribute('rel', 'stylesheet');
+                        fileref.setAttribute('type', 'text/css');
+                        fileref.setAttribute('href', url);
+                        $('head').attr('id', theme);
+                        $('head').append(fileref);
+                    }
                 }
 
                 setThemeByName(theme);
