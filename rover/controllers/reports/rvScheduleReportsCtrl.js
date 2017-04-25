@@ -143,7 +143,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 report_id: $scope.selectedEntityDetails.report.id,
                 hotel_id: $rootScope.hotelDetails.userHotelsData.current_hotel_id,
                 /**/
-                format_id: 1
+                format_id: $scope.scheduleParams.format_id
             };
 
             var filter_values = {
@@ -225,7 +225,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 report_id: $scope.selectedEntityDetails.report.id,
                 hotel_id: $rootScope.hotelDetails.userHotelsData.current_hotel_id,
                 /**/
-                format_id: 1,
+                format_id: $scope.scheduleParams.format_id,
                 delivery_method_id: $scope.selectedEntityDetails.delivery_method.delivery_type.id
             };
 

@@ -35,6 +35,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.cardTypeText = $filter('translate')('TRAVELAGENT');
 			$scope.dataIdHeader = "travel-agent-card-header";
 		}
+		$scope.setTitle ($scope.heading);
 
 		$scope.$on('ARTransactionSearchFilter', function(e, data) {
 			$scope.isWithFilters = data;

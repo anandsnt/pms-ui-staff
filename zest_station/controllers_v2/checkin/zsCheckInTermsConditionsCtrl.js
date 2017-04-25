@@ -21,29 +21,34 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 		 **                                                                       
 		 ***********************************************************************************************/
 
+        // TODO: will have to rename this state. 
+        // This is the junction from which the navigations to different screens happens. checkinSuccess,collectNationality,checkinKeyDispense,checkInEmailCollection etc.
+        // For now, this page will just redirect to next pages.
+        // We will use the logic we added for bypass T&C to handle for now.
+
         BaseCtrl.call(this, $scope);
 
-        var init = function() {
-			// hide back button
-            $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
-			// show close button
-            $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-			// back button action
-            $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-                if ($stateParams.is_from_addons === 'true') {
-                    $state.go('zest_station.addOnUpsell', {
-                        'is_from_room_upsell': $stateParams.is_from_room_upsell
-                    });
-                } else if ($stateParams.is_from_room_upsell === 'true') {
-                    $state.go('zest_station.roomUpsell');
-                } else {
-                    $state.go('zest_station.checkInReservationDetails', $stateParams);
-                }
-            });
-			// starting mode
-            $scope.mode = 'TERMS_CONDITIONS';
-            $scope.setScreenIcon('bed');
-        };
+   //      var init = function() {
+			// // hide back button
+   //          $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
+			// // show close button
+   //          $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
+			// // back button action
+   //          $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
+   //              if ($stateParams.is_from_addons === 'true') {
+   //                  $state.go('zest_station.addOnUpsell', {
+   //                      'is_from_room_upsell': $stateParams.is_from_room_upsell
+   //                  });
+   //              } else if ($stateParams.is_from_room_upsell === 'true') {
+   //                  $state.go('zest_station.roomUpsell');
+   //              } else {
+   //                  $state.go('zest_station.checkInReservationDetails', $stateParams);
+   //              }
+   //          });
+			// // starting mode
+   //          $scope.mode = 'TERMS_CONDITIONS';
+   //          $scope.setScreenIcon('bed');
+   //      };
 
 		/**
 		 * [checkIfEmailIsBlackListedOrValid description]
@@ -120,7 +125,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
                 console.log('skipping checkin guest, no-check-ins debugging is ON');
                 afterGuestCheckinCallback({'status': 'success'});
             } else {
-                $scope.callAPI(zsCheckinSrv.checkInGuest, options); 
+                $scope.callAPI(zsCheckinSrv.checkInGuest, options);;
             }
         };
 
@@ -248,25 +253,28 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 		 * [initiateTermsAndConditions description]
 		 * @return {[type]} [description]
 		 */
-        var initiateTermsAndConditions = function() {
-            $scope.setScroller('terms');
-            setDisplayContentHeight(); // utils function
-            var refreshScroller = function() {
-                $scope.refreshScroller('terms');
-            };
+        // var initiateTermsAndConditions = function() {
+        //     $scope.setScroller('terms');
+        //     setDisplayContentHeight(); // utils function
+        //     var refreshScroller = function() {
+        //         $scope.refreshScroller('terms');
+        //     };
 
-            $timeout(function() {
-                refreshScroller();
-            }, 600);
-        };
+        //     $timeout(function() {
+        //         refreshScroller();
+        //     }, 600);
+        // };
 
 		// Based Upon Admin Setting need to skip displaying
 		// terms and conditions
-        if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
+
+
+        // Always bypass this T&C, as we already binded T&C with reservation details page
+        // if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
             $scope.agreeTerms();
-        } else {
-            init();
-            initiateTermsAndConditions();
-        }
+        // } else {
+        //     init();
+        //     initiateTermsAndConditions();
+        // }
     }
 ]);

@@ -47,6 +47,9 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					'id': guestData.id || $scope.reservationDetails.guestCard.id || $scope.reservationData.guest.id
 				};
 
+                $scope.guestCardData.userId = param.id;
+                $scope.guestCardData.guestId = param.id;
+
                 angular.merge($scope.guestCardData.contactInfo, {
                     first_name: $scope.reservationData.guest.firstName,
                     last_name: $scope.reservationData.guest.lastName,

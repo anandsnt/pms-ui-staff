@@ -49,6 +49,22 @@ angular.module('sntRover').service('RVreportsSrv', [
              ],
              'Last Month Reservations': [
                 'LAST_MONTH'
+             ],
+             'Commissions': [
+             	'ALL',
+             	'LAST_MONTH',
+                'LAST_JANUARY',
+                'LAST_FEBRUARY',
+                'LAST_MARCH',
+                'LAST_APRIL',
+                'LAST_MAY',
+                'LAST_JUNE',
+                'LAST_JULY',
+                'LAST_AUGUST',
+                'LAST_SEPTEMBER',
+                'LAST_OCTOBER',
+                'LAST_NOVEMBER',
+                'LAST_DECEMBER'
              ]
 
         };
@@ -208,7 +224,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 		function schedulePayloadGenerator (type) {
 			var deferred = $q.defer(),
 				payload = {},
-				apiCount = type === SCHEDULE_TYPES.SCHEDULE_REPORT ? 5 : 6,
+				apiCount = type === SCHEDULE_TYPES.SCHEDULE_REPORT ? 5 : 7,
 				exportOnly = type === SCHEDULE_TYPES.EXPORT_SCHEDULE ? true : false;
 
 			var shallWeResolve = function() {

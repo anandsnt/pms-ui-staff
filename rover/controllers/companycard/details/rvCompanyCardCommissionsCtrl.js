@@ -216,8 +216,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
     // Selecting individual record checkbox
     $scope.onCheckBoxSelection = function(commission) {
-        commission.is_checked = !commission.is_checked;
-        // && commission.commission_data.paid_status != 'Prepaid'
+        $scope.filterData.commssionRecalculationValue = '';
         if (commission.is_checked) {
             if (commission.commission_data.paid_status == 'Prepaid') {
                 $scope.prePaidCommissions.push(commission);
@@ -252,6 +251,9 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
     // Select all checkbox action
     $scope.toggleSelection = function() {
+
+        $scope.filterData.commssionRecalculationValue = '';
+        
         if ($scope.filterData.selectAll) {
             updateCheckedStatus(true);
             $scope.selectedCommissions = [];
@@ -264,9 +266,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
            $scope.prePaidCommissions = [];
            fetchCommissionDetails(false);
            $scope.status.groupPaidStatus = "";
-
         }
-
     };
 
     // Updates the paid status to the server
@@ -306,6 +306,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
     // Updates the paid status of all the selected records
     $scope.onGroupPaidStatusChange = function() {
+
         var commissionListToUpdate = [];
 
         if ($scope.filterData.selectAll) {
@@ -367,6 +368,64 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
          */
 
     };
+    // Handle toggle commssion action
+    $scope.toggleCommission = function() {
+        $scope.filterData.toggleCommission =  !$scope.filterData.toggleCommission;
+    };
+    // Method to fetch selected reservatio ids list
+    var getSelectedReservationsHavingCommission = function() {
+
+        var commissionListToUpdate = [];
+
+        if ($scope.filterData.selectAll) {
+           $scope.commissionDetails.forEach(function(commission) {
+                if (commission.commission_data.paid_status != 'Prepaid') {
+                    commissionListToUpdate.push(commission.reservation_id);
+                }
+           });
+        } else {
+            $scope.selectedCommissions.forEach(function(commission) {
+                if (commission.commission_data.paid_status != 'Prepaid') {
+                    commissionListToUpdate.push(commission.reservation_id);
+                }
+            });
+        }
+
+        return commissionListToUpdate;
+    };
+
+    // Method to select toggle mode
+    var getCommissionRecalculateType = function() {
+        var type = 'percent';
+
+        if ($scope.filterData.toggleCommission) {
+            type = 'amount';
+        }
+
+        return type;
+    };
+
+    // Handle recalculate button click
+    $scope.clickedRecalculate = function() {
+
+        var recalculateCommissionSuccess = function(data) {
+            clearCurrentSelection();
+            fetchCommissionDetails(false);
+            $scope.$emit('hideLoader');
+        },
+        recalculateCommissionFailure = function(error) {
+            $scope.errorMessage = error;
+            $scope.$emit('hideLoader');
+        };
+
+        var postData = {
+            'type': getCommissionRecalculateType(),
+            'value': $scope.filterData.commssionRecalculationValue,
+            'reservation_ids': getSelectedReservationsHavingCommission()
+        };
+
+        $scope.invokeApi(RVCompanyCardSrv.recalculateCommission, postData, recalculateCommissionSuccess, recalculateCommissionFailure);
+    };
 
     // Initailizes the controller
     var init = function() {
@@ -380,7 +439,9 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
             perPage: RVCompanyCardSrv.DEFAULT_PER_PAGE,
             page: 1,
             start: 1,
-            selectAll: false
+            selectAll: false,
+            toggleCommission: false,
+            commssionRecalculationValue: ''
         };
         $scope.accountId = $stateParams.id;
         $scope.isEmpty = util.isEmpty;
