@@ -351,6 +351,7 @@ angular.module('sntRover')
             ngDialog.close();
             $rootScope.modalClosing = false;
             window.scrollTo(0, 0);
+            document.getElementById("rate-manager").scrollTop = 0;
             document.getElementsByClassName("pinnedLeft-list")[0].scrollTop = 0;
             $scope.$apply();
           }, 700);
