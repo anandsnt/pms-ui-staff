@@ -23,6 +23,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
          */
         var themesWithLicensedFonts = {
             'public': 'https://cloud.typography.com/7902756/7320972/css/fonts.css',
+            'public_v2': 'https://cloud.typography.com/7902756/7320972/css/fonts.css',
             // PLACEHOLDER (for duke) UNTIL STAYNTOUCH IS READY TO RELEASE Typekit Update
             'duke': 'duke.font.placeholder.css',
             // 'duke': 'https://use.typekit.net/wyk4xkn.js' // SNT typekit account

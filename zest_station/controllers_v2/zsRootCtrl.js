@@ -694,6 +694,7 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.iconsPath = '/assets/zest_station/css/icons/' + theme;
                 if (theme === 'public_v2'){
                     $scope.iconsPath = commonIconsPath;
+                    $scope.zestStationData.themeUsesLighterSubHeader = true;
                 }
                 $scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true, true); // last arg, is to only show different icons on Home, other icons use default
 
@@ -1538,6 +1539,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.noCheckInsDebugger = 'false';
             $scope.zestStationData.isAdminFirstLogin = true;
             $scope.zestStationData.showMoreDebugInfo = false;
+            $scope.zestStationData.themeUsesLighterSubHeader = false;
 			// $scope.zestStationData.checkin_screen.authentication_settings.departure_date = true;//left from debuggin?
             setAUpIdleTimer();
             $scope.zestStationData.workstationOooReason = '';
