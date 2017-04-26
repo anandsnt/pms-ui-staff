@@ -10,7 +10,7 @@
         <div class="col-md-3"></div>
         <div class="col-md-6 top-spacing margin-top-40">
             <!--  -->
-            <p class="sub-text light-text mob-margin-bottom-3">RESERVATION #{{confirmationNumber}}</p>
+            <p class="res-date">RESERVATION #{{confirmationNumber}}</p>
             <p class="main-text mob-margin-bottom-3" ng-hide="ShowupgradedLabel">
                 YOUR STAY
             </p>
@@ -100,7 +100,7 @@
     <div class="modal-content full-screen">
         <div class="terms-alert">
             <div>
-                <div class="left-align green-text">
+                <div class="left-align">
                     <p class="terms-main">To complete Check-in,</p>
                     <p class="terms-sub"> Please read and agree to the following:</p>
                 </div>
@@ -108,8 +108,8 @@
                 </description>
             </div>
             <div class="button-actions center-align">
-                <button type="button" ng-click="agreeClicked()" class="btn green-button">I AGREE</button>
-                <button type="button" ng-click="cancel()" class="btn grey-terms-button">CANCEL</button>
+                <button type="button" ng-click="agreeClicked()" class="btn green-button black-button">I AGREE</button>
+                <button type="button" ng-click="cancel()" class="btn grey-terms-button white-button">CANCEL</button>
             </div>
         </div>
     </div>
