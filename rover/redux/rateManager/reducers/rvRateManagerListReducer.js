@@ -4,6 +4,8 @@ const rateManagerListReducer = (state = [], action) => {
     	return action.rateRestrictionData;
     case RM_RX_CONST.ROOM_TYPE_VIEW_CHANGED:
     	return action.roomTypeRestrictionData;
+    case RM_RX_CONST.RATE_TYPE_VIEW_CHANGED:
+      return action.rateTypeRestrictionData;
     case RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_CHANGED:
     	return action.singleRateRestrictionData;     	      	
   	default:
