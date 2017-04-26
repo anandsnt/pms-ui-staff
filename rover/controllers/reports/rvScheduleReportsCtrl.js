@@ -536,7 +536,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.scheduleParams.ends_on_date = reportUtils.processDate(endsOnDate).today;
 
             // save emails
-            if ( angular.isDefined($scope.selectedEntityDetails.recipients) ) {
+            if ( $scope.selectedEntityDetails.recipients ) {
                 $scope.emailList = $scope.selectedEntityDetails.recipients.split(', ');
             } else {
                 $scope.emailList = [];
