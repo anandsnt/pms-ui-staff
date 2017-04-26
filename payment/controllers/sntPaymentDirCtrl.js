@@ -775,7 +775,10 @@ angular.module('sntPay').controller('sntPaymentController',
                         $scope.$emit('hideLoader');
                     },
                     errorMessage => {
-                        cancellConfirmDBpopup();
+                        // CICO-40539 - Handle error for DB payment fron bill screen/confirm popup.
+                        if ($scope.selectedPaymentType === 'DB' && $scope.payment.isConfirmedDBpayment) {
+                            cancellConfirmDBpopup();
+                        }
                         handlePaymentError(errorMessage);
                     }
                 );
