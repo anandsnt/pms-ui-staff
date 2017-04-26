@@ -1468,5 +1468,5 @@ sntRover.controller('reservationDetailsController',
        $scope.showChangeDatesPopup = !$scope.showChangeDatesPopup;
      }
 
-
+     $scope.$emit("OBSERVE_FOR_SWIPE");
 }]);
