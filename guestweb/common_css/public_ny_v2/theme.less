@@ -34,8 +34,10 @@ body {
 .sub-main-text,
 .sub-text,
 .res-details-heading,
-.res-date{
+.res-date,
+.footer-sub-text{
     text-align:left;
+    text-transform: uppercase;
 }
 
 a,
@@ -59,7 +61,8 @@ a:hover,
 }
 
 .logo-image {
-    max-width: 100%;
+    width:100%;
+    max-width: 98%;
     margin: 0%;
     margin-bottom:15px;
 }
@@ -108,11 +111,13 @@ a:hover,
     background-color: #fff !important;
     box-shadow: none !important;
     max-width: 100% !important;
+    min-height:50px;
 }
 
 .section-container {
-        max-width: 100% !important;
-    }
+    max-width: 100% !important;
+    margin-top: calc(4.5%) !important;
+}
 
 .select-style, text-comment {
     border: 1px solid black !important;
@@ -124,7 +129,7 @@ a:hover,
 }
 
 .btn-template {
-    font-size: 22px;
+    font-size: 20px;
     min-height: initial !important;
 }
 
@@ -313,13 +318,10 @@ a:hover,
     color: #fff;
 }
 
-.logo-image {
-    max-width: unset;
-}
-
 .res-details-heading,
 .res-details-heading:hover {
     color: #000;
+    text-transform: uppercase;
 }
 
 .back-to-checkout {
@@ -370,9 +372,6 @@ a:hover,
 }
 
 @media (max-width: 480px) {
-    .logo-image {
-        max-width: 285px !important;
-    }
     .main-text {
         font-size: 34px;
     }
@@ -386,7 +385,7 @@ a:hover,
         font-size: 5.3vw;
     }
     .logo-image {
-        max-width: 200px;
+        max-width:98%;
         margin: 0% auto;
     }
     .dual-button {

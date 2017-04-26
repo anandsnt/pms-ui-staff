@@ -28,13 +28,9 @@
     </div>
     <!-- main content -->
     <div class="row" ng-hide="isLoading || netWorkError">
-        <div class="col-md-1"></div>
-        <div class="col-md-4 top-spacing section-container mob-padding-bottom-10">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 top-spacing section-container mob-padding-bottom-10">
             <p class="main-text text-left">Your Arrival</p>
-        </div>
-        <div class="col-md-2"><div class="vertical-line vertical-line-long">&nbsp;</div></div>
-        <div class="col-md-4 top-spacing sm-no-top-spacing section-container mob-padding-bottom-10">
-             <!--  -->
             <div class="section-container mob-padding-bottom-10 text-left">
                 <p class="sub-text text-left">ESTIMATED ARRIVAL TIME</p>
                 <span ng-show="showHotelTime" class="sub-main-text">(Please select an arrival time. Your arrival time options are displayed in the hotel’s local time. It is currently  {{hotelTime}} in the hotel’s local time.)</span></p>
@@ -82,7 +78,7 @@
              <!--  submit button-->
             <a class="btn btn-template margin-top-10" ng-click="postStayDetails()">NEXT</a>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-3">
         </div>                   
     </div>
 </div>
