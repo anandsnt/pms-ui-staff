@@ -2742,4 +2742,6 @@ sntRover.controller('RVbillCardController',
         }
     };
 
+    $scope.$emit("OBSERVE_FOR_SWIPE");
+
 }]);

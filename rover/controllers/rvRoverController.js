@@ -640,6 +640,10 @@ sntRover.controller('roverController', [
       }
     };
 
+    $scope.$on("OBSERVE_FOR_SWIPE", function() {
+       $scope.initiateCardReader();
+    });
+
       /**
        * @returns {undefined} undefined
        */
