@@ -11,7 +11,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
     'rvUtilSrv',
     'ngDialog',
     function($rootScope, $scope, reportsSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, util, ngDialog) {
-        var scheduleTimePeriods = [];
+        
 
         var REPORT_SCHEDULES_SCROLL = 'REPORT_SCHEDULES_SCROLL';
         var SECOND_COLUMN_SCROLL = 'SECOND_COLUMN_SCROLL';
@@ -365,8 +365,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             _.each($scope.selectedEntityDetails.filters, function(filter) {
                 var selected = false,
                     mustSend = false;
-
-                var filteredTimePeriods;
+                
 
                 if (filter.value === 'ACCOUNT' || filter.value === 'GUEST') {
                     selected = true;
@@ -395,22 +394,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
                     if ( $scope.selectedEntityDetails.report.description === 'Restricted Post only' && filter.value === 'RESTRICTED_POST_ONLY' ) {
                         selected = false;
-                    }
-
-                    if ( $scope.selectedEntityDetails.report.description === 'Statistics Report by Comparison' ) {
-                        filteredTimePeriods = _.filter( scheduleTimePeriods, function(item) {
-                            return item.value === 'YESTERDAY';
-                        });
-
-                        $scope.scheduleTimePeriods = filteredTimePeriods;
-                    }
-                    else {
-                        filteredTimePeriods = _.filter( scheduleTimePeriods, function(item) {
-                            return item.value !== 'YESTERDAY' && item.value !== 'LAST_SEVEN_DAYS' && item.value !== 'LAST_MONTH';
-                        });
-
-                        $scope.scheduleTimePeriods = filteredTimePeriods;
-                    }
+                    }                    
 
                     $scope.filters.hasGeneralOptions.data.push({
                         paramKey: filter.value.toLowerCase(),
@@ -423,6 +407,13 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                         $scope.filters.hasGeneralOptions.options.noSelectAll = true;
                     }
                 }
+            });
+
+            var reportTimePeriods = reportsSrv.getScheduleReportTimePeriods($scope.selectedEntityDetails.report.title);
+
+            $scope.scheduleTimePeriods = [];
+            _.each(reportTimePeriods, function (timePeriod) {
+                $scope.scheduleTimePeriods.push(_.find($scope.originalScheduleTimePeriods, { value: timePeriod }));
             });
 
             runDigestCycle();
@@ -563,8 +554,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                         return 'Per';
                     }
                 };
-
-                scheduleTimePeriods = payload.scheduleTimePeriods;
+                
+                $scope.originalScheduleTimePeriods = payload.scheduleTimePeriods;
                 $scope.scheduleFrequency = payload.scheduleFrequency;
                 $scope.scheduleFormat = payload.scheduleFormat;
                 $scope.$parent.$parent.schedulesList = [];
