@@ -14,7 +14,7 @@
             This may take a few seconds..... please wait!</p>
         </div>
         <div class="col-md-2">
-        </div>                   
+        </div>
     </div>
     <!-- error message -->
     <div class="row" ng-show="netWorkError">
@@ -23,27 +23,23 @@
             <p class="error-text">Our apologies, something went wrong, please complete your check-out at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
         </div>
         <div class="col-md-2">
-        </div>                   
+        </div>
     </div>
     <!-- late checkout success -->
     <div class="row" ng-show="success">
-        <div class="col-md-2"></div>
+        <div class="col-md-3"></div>
         <!-- left side -->
-        <div class="col-md-4 top-spacing">
+        <div class="col-md-6 top-spacing">
             
             <p class="sub-main-text text-left">Thank you for purchasing Late Check-out.
-	        </p>
-	       
-           <p class="sub-main-text text-left">
-            <em>Your room keys are set to expire at {{oldCheckoutTime}}. Please see a Public Advisor to re-activate your keys for the late checkout time selected. </em>
-           </p>
-        </div>
-        <div class="col-md-1"></div>
-        <!-- right side -->
-        <div class="col-md-3 top-spacing sm-no-top-spacing ">
+            </p>
+            
+            <p class="sub-main-text text-left">
+                <em>Your room keys are set to expire at {{oldCheckoutTime}}. Please see a Public Advisor to re-activate your keys for the late checkout time selected. </em>
+            </p>
             <a class="btn btn-template margin-top-10 back_check" ui-sref="checkOutConfirmation"> Back to Check-out</a>
         </div>
-        <div class="col-md-1">
-        </div>                   
+        <div class="col-md-3">
+        </div>
     </div>
 </div>

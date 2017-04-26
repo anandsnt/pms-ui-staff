@@ -27,9 +27,9 @@
     </div>
     <!-- main content -->
     <div class="row" ng-hide="isFetching || netWorkError">
-        <div class="col-md-2"></div>
+        <div class="col-md-3"></div>
         <!-- left side -->
-        <div class="col-md-4 top-spacing">
+        <div class="col-md-6 top-spacing">
             <div class="section-container">
                 
                 <p class="sub-main-text">Please enter your room number:</p>
@@ -37,17 +37,13 @@
                     ({{roomVerificationInstruction}})
                 </p>
             </div>
-        </div>
-        <div class="col-md-1"></div>
-        <!-- right side -->
-        <div class="col-md-3 top-spacing">
             <div class="section-container">
                 <p class="sub-text pull-left">Room Number</p>
                 <input class="input-field padding-3" ng-model="roomNumber"></input>
                 <a class="btn btn-template margin-top-20"  ng-click="continueButtonClicked()"> NEXT</a>    
             </div>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-3">
         </div>                   
     </div>
 </div>

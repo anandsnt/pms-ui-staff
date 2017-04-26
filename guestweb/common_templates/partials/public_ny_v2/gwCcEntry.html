@@ -27,22 +27,19 @@
     </div>
     <!-- cc entry -->
     <div class="row" ng-hide="isFetching || netWorkError">
-        <div class="col-md-1"></div>
-        <div class="col-md-4 top-spacing">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 top-spacing">
             <p class="main-text">Payment</p>
             <p class="sub-main-text" ng-hide="isFromCheckoutNow">Late check-out fee</p>
             <p class="sub-main-text" ng-show="isFromCheckoutNow">You balance is</p>
             <p class="balance-amount">{{currencySymbol}}{{fee}}</p>
-        </div>
-        <div class="col-md-2"></div>
-        <div class="col-md-4 top-spacing">
             <div class="section-container">
                 <div class="row">
                     <!-- card number -->
                     <div class="cc-input-field pull-left">
                         <span class="sub-text upper-case pull-left">card number</span>
                         <br>
-                        <input class="input-field" ng-model="cardNumber"></input>
+                        <input class="input-field" ng-model="cardNumber" maxlength="16"></input>
                     </div>
                     <!-- cvv -->
                     <div class="cvv-input-field pull-right">
@@ -80,7 +77,7 @@
                 <a class="btn btn-template margin-top-20" ng-click="savePaymentDetails()"> NEXT</a>    
             </div>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-3">
         </div>                   
     </div>
 </div>

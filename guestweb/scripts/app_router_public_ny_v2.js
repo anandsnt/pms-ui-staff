@@ -30,7 +30,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
     $stateProvider.state('checkoutBalance', {
         url: '/checkoutBalance',
         controller: 'checkOutBalanceController',
-        templateUrl: '/assets/common_templates/partials/checkout/gwBill.html',
+        templateUrl: '/assets/common_templates/partials/public_ny_v2/gwBill.html',
         title: 'Balance - Check-out Now'
     }).state('checkOutStatus', {
         url: '/checkOutStatus',
@@ -102,7 +102,7 @@ state('checkinKeys', {
 })
 .state('guestDetails', {
     url: '/guestDetails',
-    templateUrl: '/assets/common_templates/partials/checkin/gwGuestDetail.html',
+    templateUrl: '/assets/common_templates/partials/public_ny_v2/gwGuestDetail.html',
     controller: 'guestDetailsController',
     title: 'Guest Details'
 });
@@ -173,19 +173,19 @@ state('checkinKeys', {
 
     $stateProvider.state('emailAddition', {
         url: '/emailAddition/:isFrom',
-        templateUrl: '/assets/common_templates/partials/checkin/gwEmailEntry.html',
+        templateUrl: '/assets/common_templates/partials/public_ny_v2/gwEmailEntry.html',
         controller: 'emailEntryController',
         title: 'E-mail entry'
     })
 .state('mobileNumberAddition', {
     url: '/mobileNumberAddition',
-    templateUrl: '/assets/common_templates/partials/checkin/gwPhoneNumberUpdate.html',
+    templateUrl: '/assets/common_templates/partials/public_ny_v2/gwPhoneNumberUpdate.html',
     controller: 'mobileEntryController',
     title: 'Phone number entry'
 })
 .state('mobileNumberOptions', {
     url: '/mobileNumberOptions',
-    templateUrl: '/assets/common_templates/partials/checkin/gwMobielNUmberOptions.html',
+    templateUrl: '/assets/common_templates/partials/public_ny_v2/gwMobielNUmberOptions.html',
     controller: 'mobileOptionsController',
     title: 'Phone number entry'
 });

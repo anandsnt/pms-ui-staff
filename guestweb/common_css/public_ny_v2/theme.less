@@ -15,7 +15,9 @@ body {
 .back-text {
     display:none;
 }
-
+.description-details{
+    float:left;
+}
 .main-text,
 .btn {
     font-family: "Gotham Book";
@@ -35,11 +37,14 @@ body {
 .sub-text,
 .res-details-heading,
 .res-date,
+.balance-amount,
 .footer-sub-text{
     text-align:left;
     text-transform: uppercase;
 }
-
+.footer-text{
+    text-transform: uppercase;
+}
 a,
 a:hover,
 .main-text,
@@ -55,7 +60,16 @@ a:hover,
     color: #363d40;
     text-transform: uppercase !important;
 }
+.bottom-border{
+    border-bottom: 1px solid #000;
+}
 
+.main-text {
+    font-size: 30px;
+}
+.sub-main-text, .sub-text, .footer-text {
+    font-size:16px !important;
+}
 .header-bar {
     background: #fff;
 }
@@ -218,6 +232,9 @@ a:hover,
 .early-checkin-button{
     font-size: 16px !important;
 }
+.options-container{
+    width:500px;
+}
 
 /*----------------- date picker -------------------------*/
 
@@ -328,7 +345,10 @@ a:hover,
     background: url(/assets/guestweb/common_images/black/left_arrow.png) center top no-repeat;
     height: 40px;
 }
-
+.accept-charge-icon{
+    background: url(/assets/guestweb/common_images/black/creditcard_icon.png) center top no-repeat;
+    background-size:48px;
+}
 .row {
     margin-bottom: 21px;
 }
@@ -336,6 +356,7 @@ a:hover,
 .circle-bg {
     background: none;
     background: url("/assets/guestweb/common_images/black/circle-bg.png") no-repeat scroll center top transparent !important;
+    height: 80px;
 }
 
 .time {
@@ -367,7 +388,6 @@ a:hover,
 }
 
 .circle-bg {
-    height: 124px;
     padding-top: 0px;
 }
 
@@ -375,14 +395,14 @@ a:hover,
     .main-text {
         font-size: 34px;
     }
+    .res-date{
+        font-size:16px;
+    }
     .container {
         width: 100%;
     }
-    .sub-main-text {
+    .sub-main-text, .footer-text{
         font-size: 17px;
-    }
-    .footer-text {
-        font-size: 5.3vw;
     }
     .logo-image {
         max-width:98%;
@@ -394,9 +414,6 @@ a:hover,
     .section-container {
         padding-bottom: 0px;
     }
-    .checkout-alone-button {
-        margin-left: 95px !important;
-    }
     .amount {
         font-size: 21px;
     }
@@ -404,14 +421,21 @@ a:hover,
         padding: 5% 10%;
         width: 100%;
     }
+    .options-container{
+         width:400px;
+    }
+    .proceed-to-checkin{
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
+    .sub-text{
+        font-size: 15px;
+    }
 }
 
 @media (max-width: 890px) {
     .btn-template {
         padding: 4%;
-    }
-    .checkout-alone-button {
-        margin-left: 95px !important;
     }
 }
 
@@ -423,23 +447,12 @@ a:hover,
 }
 
 @media (min-width: 990px) {
-    .main-text {
-        font-size: 30px;
-    }
-    .sub-main-text {
-        font-size:16px !important;
-    }
-    .sub-text {
-        font-size: 15px !important;
-    }
+
     .query-text {
         font-size: 11px;
     }
-    .checkout-alone-button {
-        margin-left: 126px;
-    }
     .checkout-btn {
-        padding: 25% 2% !important;
+        padding: 15% 2% !important;
     }
     .logo-image {
         margin-bottom:20px;
@@ -457,19 +470,15 @@ a:hover,
     }
     .btn-template,
     .dual-button {
-        font-size: 20px;
+        font-size: 16px;
     }
     .main-text {
         font-size: 28px;
-    }
-    .checkout-alone-button {
-        float: left;
-        margin-left: 19px;
     }
     .sub-main-text {
         font-size: 19px;
     }
     .checkout-btn {
-        padding: 10% 8%;
+        padding: 10% 18%;
     }
 }
