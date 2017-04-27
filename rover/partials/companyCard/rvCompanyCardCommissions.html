@@ -1,7 +1,7 @@
 <!-- Travel Agent Card Tab - Commisions -->
 <form method="post" action="{action}" id="ta-commisions" name="ta-commisions" class="form card-tab inner-header commisions" ng-show="currentSelectedTab == 'cc-commissions'">
     <div class="tab-header with-filters">
-        
+
         <div class="search-form" ng-class="{'hidden' : filterData.selectAll || selectedCommissions.length > 0 || prePaidCommissions.length > 0}">
             <!-- Add class "hidden" when selecting all/individual commisions -->
             <div class="entry date-range">
@@ -31,12 +31,25 @@
                     </select>
                 </div>
             </div>
+            <div class="entry" >
+                <label for="commision-paid" translate>COMMISSION_PAID_STATUS</label>
+                <div class="select">
+                    <select id="commision-paid" ng-model="filterData.paidStatus" ng-change="onFilterChange()">
+                        <option value="" translate>COMMISSION_SET_STATUS</option>
+                        <option value="All" translate>COMMISSION_ALL</option>
+                        <option value="Unpaid" selected translate>COMMISSION_UNPAID</option>
+                        <option value="Paid" translate>COMMISSION_PAID</option>
+                        <option value="Prepaid" translate>COMMISSION_PREPAID</option>
+                    </select>
+                </div>
+            </div>
+
 
         </div>
 
         <!-- Remove class "hidden" when selecting all/individual commisions -->
         <div class="search-form" ng-show="(filterData.selectAll || selectedCommissions.length > 0)">
-            <div class="entry" ng-show="filterData.commissionStatus == 'Commissionable'">
+            <div class="entry" >
                 <label for="commision-paid" translate>COMMISSION_PAID_STATUS</label>
                 <div class="select">
                     <select id="commision-paid" ng-model="filterData.paidStatus" ng-change="onFilterChange()">
@@ -53,16 +66,16 @@
                 <div class="entry">
                     <input type="text" placeholder="Enter Number" ng-model="filterData.commssionRecalculationValue">
                     <div class="switch-button" ng-class="{'on': filterData.toggleCommission}">
-                        <input id="recalculate-commission" value="" type="checkbox" ng-click="toggleCommission()"> 
-                        <label class="data-off"> 
+                        <input id="recalculate-commission" value="" type="checkbox" ng-click="toggleCommission()">
+                        <label class="data-off">
                             <span class="switch-icon">%</span>
-                            <span class="value">{{ currencySymbol }}</span>  
-                        </label> 
-                        <label class="data-on"> 
-                            <span class="value">%</span> 
-                            <span class="switch-icon">{{ currencySymbol }}</span> 
-                        </label> 
-                    </div> 
+                            <span class="value">{{ currencySymbol }}</span>
+                        </label>
+                        <label class="data-on">
+                            <span class="value">%</span>
+                            <span class="switch-icon">{{ currencySymbol }}</span>
+                        </label>
+                    </div>
                 </div>
                 <button type="button" class="button green" ng-click="clickedRecalculate()" ng-disabled="filterData.commssionRecalculationValue == '' " ng-class="{'grey' : filterData.commssionRecalculationValue == ''}">Recalculate</button>
             </div>
@@ -72,7 +85,7 @@
     </div>
 
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-    
+
     <div class="tab-details" ng-class="{'with-pagination' : shouldShowPagination()}" ng-show="commissionDetails.length > 0">
         <!-- Add class "with-pagination" when pagination is shown -->
         <ul class="totals" ng-class="{'selected' : filterData.selectAll || selectedCommissions.length > 0 || prePaidCommissions.length > 0}">
