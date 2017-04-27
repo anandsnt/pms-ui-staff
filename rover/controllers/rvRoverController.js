@@ -584,6 +584,10 @@ sntRover.controller('roverController', [
       }
     });
 
+    $rootScope.$on('BROADCAST_SWIPE_ACTION', function(event, data) {
+        $scope.$broadcast('SWIPE_ACTION', data);
+    });
+
     $scope.successCallBackSwipe = function(data) {
       $scope.$broadcast('SWIPE_ACTION', data);
     };
@@ -617,29 +621,7 @@ sntRover.controller('roverController', [
       sntapp.desktopCardReader.setDesktopUUIDServiceStatus(true);
     	sntapp.desktopCardReader.startDesktopReader($rootScope.ccSwipeListeningPort, options);
     };
-
-    $scope.initiateCardReader = function() {
-      if (sntapp.cardSwipeDebug === true) {
-        sntapp.cardReader.startReaderDebug(options);
-        return;
-      }
-
-      if ((sntapp.browser === 'rv_native') && sntapp.cordovaLoaded) {
-        setTimeout(function() {
-          sntapp.cardReader.startReader(options);
-        }, 2000);
-      } else {
-        // If cordova not loaded in server, or page is not yet loaded completely
-        // One second delay is set so that call will repeat in 1 sec delay
-        if ($scope.numberOfCordovaCalls < 50) {
-          setTimeout(function() {
-            $scope.numberOfCordovaCalls = parseInt($scope.numberOfCordovaCalls) + parseInt(1);
-            $scope.initiateCardReader();
-          }, 2000);
-        }
-      }
-    };
-
+        
       /**
        * @returns {undefined} undefined
        */
@@ -687,12 +669,7 @@ sntRover.controller('roverController', [
         $rootScope.isDesktopUUIDServiceInvoked = true;
   			initiateDesktopCardReader();
   		}
-      else {
-       	// Time out is to call set Browser
-  			setTimeout(function() {
-  			  $scope.initiateCardReader();
-  			}, 2000);
-  		}
+
     }
 
     // If desktopSwipe is not enabled, we have to invoke the desktopUUID service like below
