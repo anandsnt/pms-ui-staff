@@ -313,15 +313,6 @@ angular.module('sntRover')
         };
 
         /**
-         * the successcall back of clea ovveriding api
-         * @param  {Object} response
-         */
-        const onSuccessOfClickedOnClearOverrideButtonAPICall = (response) => {
-            $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
-            $scope.closeDialog();
-        };
-
-        /**
          * when clciked on remove overriding icon
          */
         $scope.clickedOnClearOverrideButton = () => {
