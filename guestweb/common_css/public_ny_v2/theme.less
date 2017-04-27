@@ -321,8 +321,24 @@ textarea{
 .pickadate-next,
 .pickadate-prev:hover,
 .pickadate-next:hover {
-    color: #000;
+    color: transparent !important;
 }
+
+.pickadate-next,.pickadate-prev{
+    background-image: url(/assets/guestweb/common_images/black/arrow-cal-right.png);
+    width: 50px;
+    height: 50px;
+    display:inline-block;
+    background-size: 35px;
+    background-repeat: no-repeat;
+}
+.pickadate-next{
+    background-image: url(/assets/guestweb/common_images/black/arrow-cal-right.png);
+}
+.pickadate-prev{
+    background-image: url(/assets/guestweb/common_images/black/arrow-cal-left.png);
+}
+
 .pickadate-cell li:nth-child(7n+0),
 .pickadate-cell li:nth-child(1), 
 .pickadate-cell li:nth-child(15), 
@@ -361,6 +377,9 @@ textarea{
 .res-details-heading:hover {
     color: #000;
     text-transform: uppercase;
+}
+.pickadate-body{
+    margin-top:20px;
 }
 
 .back-to-checkout {
