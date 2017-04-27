@@ -25,7 +25,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
             'public': 'https://cloud.typography.com/7902756/7320972/css/fonts.css',
             'public_v2': 'https://cloud.typography.com/7902756/7320972/css/fonts.css',
             // PLACEHOLDER (for duke) UNTIL STAYNTOUCH IS READY TO RELEASE Typekit Update
-            'duke': 'duke.font.placeholder.css',
+            'duke': 'duke.font.placeholder.css'
             // 'duke': 'https://use.typekit.net/wyk4xkn.js' // SNT typekit account
             // 'duke': 'https://use.typekit.net/hay8wrs.js' // Mike's typekit account (for dev/testing)
             // 
@@ -86,6 +86,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 
                 // Set the Theme css reference to file
                 var fileref = document.createElement('link');
+
                 fileref.setAttribute('rel', 'stylesheet');
                 fileref.setAttribute('type', 'text/css');
                 fileref.setAttribute('href', url);
@@ -100,7 +101,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 
                     $log.log('[ ' + theme + ' ] theme using licensed font**');
                     url = getHotelLicensedFont(theme);
-                    if (themesWithLicensedFonts[theme].indexOf('.js') !== -1){
+                    if (themesWithLicensedFonts[theme].indexOf('.js') !== -1) {
                         fileref = document.createElement('script');
 
                         fileref.setAttribute('type', 'text/javascript');
@@ -108,12 +109,16 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                         $('head').attr('id', theme);
                         $('head').append(fileref);
                         // Typekit needs to send a sync request to fetch and update the request count
-                        setTimeout(function(){
-                            try{Typekit.load({ async: true });}catch(e){console.log(arguments);};
+                        setTimeout(function() {
+                            try {
+                                Typekit.load({ async: true });
+                            } catch (e) {
+                                console.log(arguments);
+                            }
                             // TODO:
                             // document.getElementById("body").style.fontFamily = fontFamilyFromHotelDetails;
 
-                        },3000)
+                        }, 3000);
                     } else {
                         fileref = document.createElement('link');
 
@@ -167,7 +172,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
              // enables user (via conosle or developer tools) to show tags on-screen instead of the 
              // translated text
             var tags = $('text'), // grab all <text> selectors, which should only be used for locales
-                el, tag, currentText, old;
+                el, tag, currentText, old, elInnerHtml;
 
             // for each field with tag, on current screen, replace
             // the current text with the tag text, keep ref to the current text
@@ -180,12 +185,12 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                 old = el.attr('old-text'),
                 elInnerHtml = '';
 
-                if (el[0].old_innerHTML){ // this property is generated from the editibleText directive if breaks are detected
+                if (el[0].old_innerHTML) { // this property is generated from the editibleText directive if breaks are detected
 
-                    if (el && el[0]){
+                    if (el && el[0]) {
                         elInnerHtml = el[0].innerHTML;
-                        if (elInnerHtml){
-                            if (elInnerHtml.indexOf('&lt;') !== -1 || elInnerHtml.indexOf('<br>') !== -1){
+                        if (elInnerHtml) {
+                            if (elInnerHtml.indexOf('&lt;') !== -1 || elInnerHtml.indexOf('<br>') !== -1) {
                                 currentText = elInnerHtml;
                             }   
                         }
@@ -195,8 +200,8 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                 if (currentText === tag || onOff === 'off') {
                     // if showing the tag, switch back to text, 
                     // just swap the old-text with current value in json file
-                    if (old || currentText === tag){
-                        el[0].innerHTML = old
+                    if (old || currentText === tag) {
+                        el[0].innerHTML = old;
                         $scope.saveLanguageEditorChanges(tag, old, true);    
                     }
 

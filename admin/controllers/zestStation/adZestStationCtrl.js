@@ -71,7 +71,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
     $scope.hasKeyImageFileUpdatedOrUploading = function() {
         if ($scope.zestSettings && $scope.zestSettings.key_create_file_uploaded) {
             if ($scope.zestSettings.key_create_file_uploaded !== '' && $scope.zestSettings.key_create_file_uploaded !== 'false' && $scope.zestSettings.key_create_file_uploaded.indexOf('/logo.png') === -1) {
-                $scope.uploadedIcon.createkey = $scope.zestSettings.key_create_file_uploaded
+                $scope.uploadedIcon.createkey = $scope.zestSettings.key_create_file_uploaded;
                 return true; 
             }
             return false;
@@ -87,33 +87,33 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
 
         if (!langs) {
             return null;
-        } else {
+        } 
             /*
             * For a language to be set as Default,
             * it should be Enabled and have an uploaded file,
             * otherwise the user shouldnt be allowed to set it to default
             */
-            var isCapitalizedProperty, isEnabled, hasFileUpdatedOrUploading, langName;
+        var isCapitalizedProperty, isEnabled, hasFileUpdatedOrUploading, langName;
 
-            for (var i in langs) {
+        for (var i in langs) {
                 
-                isCapitalizedProperty = langs[i].charAt(0).toUpperCase() === langs[i].charAt(0);
-                isEnabled = $scope.zestSettings.zest_lang[langs[i]];
-                langName = langs[i].toLowerCase();
+            isCapitalizedProperty = langs[i].charAt(0).toUpperCase() === langs[i].charAt(0);
+            isEnabled = $scope.zestSettings.zest_lang[langs[i]];
+            langName = langs[i].toLowerCase();
                 
-                hasFileUpdatedOrUploading = $scope.hasFileUpdatedOrUploading(langName);
-                if (isCapitalizedProperty && isEnabled && hasFileUpdatedOrUploading) {// is a language if [is capitalized] and enabled
-                    languages.push({
-                        value: langs[i]
-                    });
-                }
-                // dont allow user to check a language unless it has a file associated attached
-                if (isCapitalizedProperty && !hasFileUpdatedOrUploading) {
-                    $scope.zestSettings.zest_lang[langs[i]] = false;
-                }
-                
+            hasFileUpdatedOrUploading = $scope.hasFileUpdatedOrUploading(langName);
+            if (isCapitalizedProperty && isEnabled && hasFileUpdatedOrUploading) {// is a language if [is capitalized] and enabled
+                languages.push({
+                    value: langs[i]
+                });
             }
+                // dont allow user to check a language unless it has a file associated attached
+            if (isCapitalizedProperty && !hasFileUpdatedOrUploading) {
+                $scope.zestSettings.zest_lang[langs[i]] = false;
+            }
+                
         }
+        
         languages = setLanguageDisplayNames(languages);
 
         return languages;
