@@ -163,8 +163,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
          *  
          ********************************************************************************/
 
-        $scope.$on('TOGGLE_LANGUAGE_TAGS', function() {
-
+        $scope.$on('TOGGLE_LANGUAGE_TAGS', function(evtObj, onOff) {
              // enables user (via conosle or developer tools) to show tags on-screen instead of the 
              // translated text
             var tags = $('text'), // grab all <text> selectors, which should only be used for locales
@@ -178,14 +177,31 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                 el = $(tags[i]);
                 tag = $.trim(el.attr('editable-text'));
                 currentText = $.trim(el.text());
-                old = el.attr('old-text');
+                old = el.attr('old-text'),
+                elInnerHtml = '';
 
-                if ( currentText === tag ) {
+                if (el[0].old_innerHTML){ // this property is generated from the editibleText directive if breaks are detected
+
+                    if (el && el[0]){
+                        elInnerHtml = el[0].innerHTML;
+                        if (elInnerHtml){
+                            if (elInnerHtml.indexOf('&lt;') !== -1 || elInnerHtml.indexOf('<br>') !== -1){
+                                currentText = elInnerHtml;
+                            }   
+                        }
+                    }
+                }
+
+                if (currentText === tag || onOff === 'off') {
                     // if showing the tag, switch back to text, 
                     // just swap the old-text with current value in json file
-                    $scope.saveLanguageEditorChanges(tag, old, true);
+                    if (old || currentText === tag){
+                        el[0].innerHTML = old
+                        $scope.saveLanguageEditorChanges(tag, old, true);    
+                    }
 
                 } else {
+                    el[0].innerHTML = tag;
                     // to show the TAG instead of translated text, swap out with the
                     // tag, which is also in the attribute 'editable-text'
                     el.attr('old-text', currentText);

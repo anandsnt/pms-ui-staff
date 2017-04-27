@@ -75,85 +75,127 @@ sntZestStation.directive('editableText', [function() {
                     scope = element.scope();
                 }
 
+
+
                 if (rootScope.editorModeEnabled === 'true') {
+                    scope.$parent.$broadcast('TOGGLE_LANGUAGE_TAGS', 'off');
+                     //toggle OFF tags if shown
                     var tag = $.trim(attrs.editableText),
-                        keepShowingTag,
                         el = $(element);
 
                     var oldText = $.trim(el.text());
 
-                    var $inputField = $('<input class="editor-mode-cls"/>').val(oldText);
+                    setTimeout(function(){
 
+                        var keepShowingTag,
+                            textForInput = '';
 
-                    el.replaceWith($inputField);
-                    if (elType === 'BUTTON' || isNavButton) {
-                        $($inputField).on('keydown', function(event) {
-                            if (event.keyCode === 32) { // Spacebar
-                                // when editing a button and user hits space key
-                                // the onclick/enter event gets fired
-                                // need to prevent that event but inject the value
-                                event.preventDefault();
-                                event.stopPropagation();
+                         if (el[0].old_innerHTML && el[0].old_innerHTML){
+                            textForInput = el[0].old_innerHTML.replace(/&lt;br&gt;/g,'<br>');
+                         } else {
+                            textForInput = oldText;
+                         }
 
-                                $($inputField).val($($inputField).val() + ' ');
-                            } else if (event.keyCode === 13) {// press enter, saves content
-                                save();
-                            }
-                        });
-                    } else {
-                        $($inputField).on('keydown', function(event) {
-                            if (event.keyCode === 13) {// press enter, saves content
-                                save();
-                            }
-                        });
-                    }
+                        var $inputField = $('<input class="editor-mode-cls"/>').val(textForInput);
 
-                    var save = function() {
-                        var newValueForText = $inputField.val();
+                        el.replaceWith($inputField);
 
-                        //  translation updated in locale, pushed
-                        // el.text( newValueForText ); // show immediate change in text, save happens afterwards
+                        if (elType === 'BUTTON' || isNavButton) {
+                            $($inputField).on('keydown', function(event) {
+                                if (event.keyCode === 32) { // Spacebar
+                                    // when editing a button and user hits space key
+                                    // the onclick/enter event gets fired
+                                    // need to prevent that event but inject the value
+                                    event.preventDefault();
+                                    event.stopPropagation();
 
-                        if (oldText !== tag || oldText !== newValueForText) {
-                            el.attr('old-text', newValueForText);
+                                    $($inputField).val($($inputField).val() + ' ');
+                                } else if (event.keyCode === 13) {// press enter, saves content
+                                    save();
+                                }
+                            });
+                        } else {
+                            $($inputField).on('keydown', function(event) {
+                                if (event.keyCode === 13) {// press enter, saves content
+                                    save();
+                                }
+                            });
                         }
 
-                        addListeners(el, textEditor);
+                        var save = function() {
+                            var newValueForText = $inputField.val();
 
-                        $inputField.replaceWith(element);
+                            //  translation updated in locale, pushed
+                            // el.text( newValueForText ); // show immediate change in text, save happens afterwards
 
-                        if (oldText !== newValueForText) {
-                            // show saving-indicator for slow networks need to show that save in-progress
-                            scope.$emit('showLoader');
-
-                            // If editing a Tag WHILE the tag was toggled ON, 
-                            // need to still show that tag value until user toggles Tags back OFF
-                            // 
-                            keepShowingTag = false;
-                            if (oldText === tag) {
-                                keepShowingTag = true;
+                            if (oldText !== tag || oldText !== newValueForText) {
+                                el.attr('old-text', newValueForText);
                             }
-                            scope.saveLanguageEditorChanges(tag, newValueForText, false, keepShowingTag);
 
+                            addListeners(el, textEditor);
+
+                            $inputField.replaceWith(element);
+                            
+                            var includesHtml = false;
+                            if ($(element)[0].innerHTML.indexOf('<br>') !== -1) {
+                                includesHtml = true;
+                            }
+
+                            if ((oldText !== newValueForText && !includesHtml) || (includesHtml && $(element)[0].innerHTML !== newValueForText)) {
+                                // show saving-indicator for slow networks need to show that save in-progress
+                                scope.$emit('showLoader');
+
+                                // If editing a Tag WHILE the tag was toggled ON, 
+                                // need to still show that tag value until user toggles Tags back OFF
+                                // 
+                                keepShowingTag = false;
+                                if (oldText === tag) {
+                                    keepShowingTag = true;
+                                }
+                                scope.saveLanguageEditorChanges(tag, newValueForText, false, keepShowingTag);
+
+                                $(element)[0].innerHTML = newValueForText;
+
+                                $(element)[0].old_innerHTML = $(element)[0].innerHTML;
+                                if ($(element)[0].innerHTML.indexOf('lt;br&gt;') !== -1){
+                                    var newTextHtml = $(element)[0].innerHTML.replace(/&lt;br&gt;/g,'<br>');
+                                    $(element)[0].innerHTML = newTextHtml;  
+                                    $(element)[0].old_innerHTML = newTextHtml;
+                                }
+                            }
+
+                        };
+
+                        var isTouchDevice = 'ontouchstart' in window,
+                        onWindowsDevice = window.navigator.userAgent.toLowerCase().indexOf('window') !== -1;
+                        if (!isTouchDevice || !onWindowsDevice) {
+                            $inputField.one('blur', save).focus(); 
                         }
 
-                    };
 
-                    var isTouchDevice = 'ontouchstart' in window,
-                    onWindowsDevice = window.navigator.userAgent.toLowerCase().indexOf('window') !== -1;
-                    if (!isTouchDevice || !onWindowsDevice) {
-                        $inputField.one('blur', save).focus(); 
-                    }
-
-
+                    },0);
                 }
             };
+
+
+
             if ($(element).parent()[0]) {
                 if ($(element).parent()[0].nodeName !== 'SPAN' && $(element).parent()[0].nodeName !== 'LI'){
                     // handle if a button is pressed which does not have text (or empty string fields)
                     addListeners($(element).parent(), textEditor);   
                 }
             }
+
+
+            // anywhere we have editible text, we should support html breaks so the user can place text as needed
+            // to do this we need to swap out any <br> values for <span>{value after <br>}</span>
+            setTimeout(function() {
+                if ($(element)[0].innerHTML.indexOf('lt;br&gt;') !== -1){
+                    $(element)[0].old_innerHTML = $(element)[0].innerHTML;
+                    var newTextHtml = $(element)[0].innerHTML.replace(/&lt;br&gt;/g,'<br>');
+                    $(element)[0].innerHTML = newTextHtml;
+                }
+            },0);
 
             // handles typical replace text in label or button
             addListeners(element, textEditor);
