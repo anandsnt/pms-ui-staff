@@ -49,7 +49,7 @@
 
         <!-- Remove class "hidden" when selecting all/individual commisions -->
         <div class="search-form" ng-show="(filterData.selectAll || selectedCommissions.length > 0)">
-            <div class="entry" >
+            <div class="entry" ng-show="filterData.commissionStatus == 'Commissionable'">
                 <label for="commision-paid" translate>COMMISSION_PAID_STATUS</label>
                 <div class="select">
                     <select id="commision-paid" ng-model="filterData.paidStatus" ng-change="onFilterChange()">
