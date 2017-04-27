@@ -2,7 +2,10 @@ sntRover.controller('rvAccountsRootCtrl',	[
 	'$scope',
 	'$rootScope',
 	'$filter',
-	function($scope, $rootScope, $filter) {
+    '$timeout',
+	'$interval',
+	'$log',
+	function($scope, $rootScope, $filter, $timeout, $interval, $log) {
 
 		/**
 		* function to set Headinng
@@ -12,4 +15,7 @@ sntRover.controller('rvAccountsRootCtrl',	[
 			$scope.heading = heading;
 			$scope.setTitle ($filter('translate')(heading));
 		};
+
+        CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
+        $scope.observeForSwipe();
 	}]);

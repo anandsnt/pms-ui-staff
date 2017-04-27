@@ -23,7 +23,8 @@
         "tzIndependentDate": true,
         "getJqDateFormat": false,
         "moment": false,
-        "getTimeFormated": true
+        "getTimeFormated": true,
+        "CardReaderCtrl": false
     },
     "installedESLint": true,
     "parserOptions": {
