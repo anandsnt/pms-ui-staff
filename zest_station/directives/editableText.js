@@ -75,26 +75,24 @@ sntZestStation.directive('editableText', [function() {
                     scope = element.scope();
                 }
 
-
-
                 if (rootScope.editorModeEnabled === 'true') {
                     scope.$parent.$broadcast('TOGGLE_LANGUAGE_TAGS', 'off');
-                     //toggle OFF tags if shown
+                     // toggle OFF tags if shown
                     var tag = $.trim(attrs.editableText),
                         el = $(element);
 
                     var oldText = $.trim(el.text());
 
-                    setTimeout(function(){
+                    setTimeout(function() {
 
                         var keepShowingTag,
                             textForInput = '';
 
-                         if (el[0].old_innerHTML && el[0].old_innerHTML){
-                            textForInput = el[0].old_innerHTML.replace(/&lt;br&gt;/g,'<br>');
-                         } else {
+                        if (el[0].old_innerHTML && el[0].old_innerHTML) {
+                            textForInput = el[0].old_innerHTML.replace(/&lt;br&gt;/g, '<br>');
+                        } else {
                             textForInput = oldText;
-                         }
+                        }
 
                         var $inputField = $('<input class="editor-mode-cls"/>').val(textForInput);
 
@@ -143,11 +141,12 @@ sntZestStation.directive('editableText', [function() {
                             $inputField.replaceWith(element);
                             
                             var includesHtml = false;
+
                             if ($(element)[0].innerHTML.indexOf('<br>') !== -1) {
                                 includesHtml = true;
                             }
 
-                            if ((oldText !== newValueForText && !includesHtml) || (includesHtml && $(element)[0].innerHTML !== newValueForText)) {
+                            if (oldText !== newValueForText && !includesHtml || includesHtml && $(element)[0].innerHTML !== newValueForText) {
                                 // show saving-indicator for slow networks need to show that save in-progress
                                 scope.$emit('showLoader');
 
@@ -163,8 +162,9 @@ sntZestStation.directive('editableText', [function() {
                                 $(element)[0].innerHTML = newValueForText;
 
                                 $(element)[0].old_innerHTML = $(element)[0].innerHTML;
-                                if ($(element)[0].innerHTML.indexOf('lt;br&gt;') !== -1){
-                                    var newTextHtml = $(element)[0].innerHTML.replace(/&lt;br&gt;/g,'<br>');
+                                if ($(element)[0].innerHTML.indexOf('lt;br&gt;') !== -1) {
+                                    var newTextHtml = $(element)[0].innerHTML.replace(/&lt;br&gt;/g, '<br>');
+
                                     $(element)[0].innerHTML = newTextHtml;  
                                     $(element)[0].old_innerHTML = newTextHtml;
                                 }
@@ -173,20 +173,20 @@ sntZestStation.directive('editableText', [function() {
                         };
 
                         var isTouchDevice = 'ontouchstart' in window,
-                        onWindowsDevice = window.navigator.userAgent.toLowerCase().indexOf('window') !== -1;
+                            onWindowsDevice = window.navigator.userAgent.toLowerCase().indexOf('window') !== -1;
+
                         if (!isTouchDevice || !onWindowsDevice) {
                             $inputField.one('blur', save).focus(); 
                         }
 
 
-                    },0);
+                    }, 0);
                 }
             };
 
 
-
             if ($(element).parent()[0]) {
-                if ($(element).parent()[0].nodeName !== 'SPAN' && $(element).parent()[0].nodeName !== 'LI'){
+                if ($(element).parent()[0].nodeName !== 'SPAN' && $(element).parent()[0].nodeName !== 'LI') {
                     // handle if a button is pressed which does not have text (or empty string fields)
                     addListeners($(element).parent(), textEditor);   
                 }
@@ -196,12 +196,13 @@ sntZestStation.directive('editableText', [function() {
             // anywhere we have editible text, we should support html breaks so the user can place text as needed
             // to do this we need to swap out any <br> values for <span>{value after <br>}</span>
             setTimeout(function() {
-                if ($(element)[0].innerHTML.indexOf('lt;br&gt;') !== -1){
+                if ($(element)[0].innerHTML.indexOf('lt;br&gt;') !== -1) {
                     $(element)[0].old_innerHTML = $(element)[0].innerHTML;
-                    var newTextHtml = $(element)[0].innerHTML.replace(/&lt;br&gt;/g,'<br>');
+                    var newTextHtml = $(element)[0].innerHTML.replace(/&lt;br&gt;/g, '<br>');
+
                     $(element)[0].innerHTML = newTextHtml;
                 }
-            },0);
+            }, 0);
 
             // handles typical replace text in label or button
             addListeners(element, textEditor);
