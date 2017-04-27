@@ -11,10 +11,8 @@
 
                         <text editable-text="PICKUP_KEY">{{'PICKUP_KEY' |translate}}</text>
                         
-                        <span>
-
+                        <span ng-class='{"lighter-text":zestStationData.themeUsesLighterSubHeader}'>
                             <text editable-text="HOME_PUK_SUB">{{'HOME_PUK_SUB' |translate}}</text>
-
                         </span>
                     </li>
                     <li ng-if="zestStationData.home_screen.check_in">

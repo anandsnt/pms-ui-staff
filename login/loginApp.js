@@ -483,4 +483,19 @@ login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state',
         $scope.showOnScreenKeyboard();
         setInAppFlag();
 
+
+    	 function doc_keyDown(e) {
+    	 	// Shift Alt + R = refresh
+            if (e.metaKey && e.shiftKey && e.keyCode === 82) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            if (e.keyCode === 13) { // Enter key, submit, fixes issue where hitting enter closes electron
+                $scope.submit();
+                e.preventDefault();
+                e.stopPropagation();
+            } 
+
+        }
+        document.addEventListener('keydown', doc_keyDown, false); // listen for hotkeys to work with chrome extension
 }]);

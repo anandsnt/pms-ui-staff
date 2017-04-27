@@ -1,0 +1,273 @@
+/* StayNTouch Zest Station Styles | Public NY Theme */
+
+/* 1. COLORS
+==========================================================*/
+	@brandColor:			#000;
+	
+	@textColor: 			@brandColor;
+	@backgroundColor: 		@white;
+	
+	@actionColor: 			@white;
+	@actionBackground: 		@brandColor;
+	
+	@inputBackground: 		#f4f4f4;
+	@transparentColor: 		rgba(128,128,128,.5);
+
+
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+@fontFamily: "Gotham A", "Gotham B", Helvetica, Arial, sans-serif;
+
+
+/* 3. IMAGES
+==========================================================*/
+	@background: @white;
+	@backgroundSize: '';
+	
+	@headerIconsColor: 		@brandColor;
+	@headerIconsActive:		@brandColor;
+
+
+	#close-button {
+		right: 3%;
+		top:3em !important;
+
+        @media only screen and (min-width: 1024px) and (max-width: 1024px) { top: 95% !important;	 }
+        @media only screen and (min-width: 1366px) and (max-width: 1366px) { top: 120% !important;	 }
+	}
+	#back-button {
+		left: 3%;
+		top:3em !important;
+        @media only screen and (min-width: 1024px) and (max-width: 1024px) { top: 95% !important;	 }
+        @media only screen and (min-width: 1366px) and (max-width: 1366px) { top: 120% !important;	 }
+	}
+
+	#content{
+		top: 5% !important;
+	}
+	.add-guest-mode-content{
+		top: 12% !important;
+	}
+	.admin-screen#main {
+		margin-top: 7.5%;
+    	height: 78%;
+	}
+	.admin-screen-title {
+		font-size: 1.7em !important;
+	    position: absolute !important;
+	    top: 75px !important;
+	}
+	.terms-content {
+		padding-top: 12%;
+	}
+	.action{
+		button{
+		    background: white !important;
+		    color: black !important;
+		    border-style: solid !important;
+		    border-width: 1px !important;
+		    border-radius: 0em !important;
+		}
+	}
+	.room-upsell-content {
+		height: 95%;
+    	padding-top: 7.5%;
+	}
+	.add_remove, .make-key-now{
+	    background: white !important;
+	    color: black !important;
+	    border-style: solid !important;
+	    border-width: 1px !important;
+	    border-radius: 0em !important;
+	}
+	.add_remove_main {
+		padding-top:8% !important;
+	}
+
+	#actions{
+		button{
+		    background: @white !important;
+		    color: black !important;
+		    border-style: solid !important;
+		    border-width: 1px !important;
+		    border-radius: 0em !important;
+		    &.selected {
+		    	border-color:@white;
+		    }
+		}
+	}
+
+	.icons { 
+		&.icon-create-key {
+			fill: @brandColor;
+			stroke: @brandColor;
+		}
+
+		&.icon-no-print { stroke: @white; }
+
+		&.icon-oos {
+			fill: @brandColor;
+		}
+		&.icon-arrow-left,
+        &.icon-arrow-right {
+            fill: none;
+            stroke: @white;
+        }
+	}
+	.icon-fill {
+		fill: @backgroundColor;
+	}
+
+    .logo-svg{
+        background-image: url("../css/themes/public_v2/logo.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 100%;
+	    background-position: center;
+
+	    height: 300%;
+	    margin-top: 13.25%;
+
+    }
+
+/* 4. LAYOUT
+==========================================================*/
+	svg.icons {
+		fill: @white;
+	}
+	.svgIconFill{
+        @media only screen and (min-width: 1024px) and (max-width: 1024px) { fill: @white;	 }
+        @media only screen and (min-width: 1366px) and (max-width: 1366px) { fill: @white;	 }
+	}
+	.hideSvg{
+		display:none;
+	}
+	span,text,button,header{
+		font-weight:lighter;
+	}
+	.option {    
+		border-radius: 0px !important;
+	    width: 125px !important;
+	    height: 125px !important;
+	}
+	.lighter-text {
+		opacity: .4;
+	}
+
+	.done-btn, .add-remove-btn, .idle-timeout-btn, .make-key-btn {
+		background: @white !important;
+	    color: black !important;
+	    border-style: solid !important;
+	    border-width: 1px !important;
+	    border-radius: 0em !important;
+	    &.selected {
+	    	border-color:@white;
+	    }
+	}
+	#public {
+
+		h1,
+		.button {
+			font-weight: 900;
+		}
+
+		input,
+		textarea {
+			box-shadow: inset 1px 1px 0 rgba(0,0,0,.1);
+			#rounded > .round(2px);
+		}
+
+		select {
+			box-shadow: 1px 1px 0 rgba(0,0,0,.1);
+			#rounded > .round(2px);
+		}
+
+
+
+		.button {
+			&.disabled,
+			&[disabled] {
+				background: rgba(0,0,0,0.2);
+			}
+		}
+
+		.entry.input {
+			.icons {
+				fill: @brandColor;
+			}
+		}
+		
+		#logo {
+		
+			.logo {
+				width: 335px;
+				height: auto;
+			}
+		}
+
+		#options {
+			
+			li {
+				font-weight: 900;
+
+				span {
+					font-weight: 400;
+				}
+			}
+
+			.icon-text {
+				color: @white;
+			}
+
+			.icons {
+				fill: @white;
+			}
+
+			li.break {
+				padding-top: 60px;
+
+				&:after,
+				&:before {
+					display: none;
+				}
+			}
+		}
+
+		#selection {
+			li {
+				.details {
+					background-color: fade(@brandColor, 5);
+				}
+			}
+		}
+
+		#guests {
+			.button {
+				color: @white;
+				background-color: @brandColor;
+			}
+		} 
+
+		.add-on-list {
+	    	li {
+
+	    		&:not(.selected){
+	    			border-color: rgba(0,0,0,0.05);
+
+		    		.add-on-content {
+		    			background: rgba(0,0,0,0.05);
+		    		}
+	    		}
+	    		
+	    	}
+	    }
+
+		#textual,
+		.popup {
+			.icons {
+				fill: @white;
+			}
+		}
+	}

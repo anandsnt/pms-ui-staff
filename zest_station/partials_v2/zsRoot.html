@@ -11,7 +11,11 @@
           url.hostname.indexOf('192.168.1.239') !== -1 ||
           url.hostname.indexOf('localhost') !== -1) {
 
-          inDevEnvironment = true;
+          inDevEnvironment = true, inLocalEnv = false;
+            if (url.hostname.indexOf('localhost') !== -1) {
+                // dont track in local environment
+                inLocalEnv = true;
+            }
         }
       }
     }
@@ -22,6 +26,7 @@
         // production tracking id
         analyticTrackingID = 'UA-96932423-1';
     }
+    
     // <!-- // actual analytic code \\ -->
     var _gaq = _gaq || [];
     // registeres the tracking ID as Active for this page, in prep for async / event calls
@@ -37,9 +42,13 @@
         s.parentNode.insertBefore(ga, s);
     })();
 
-    var trackAnalyticEvent = function(event_name, event_type){
-        _gaq.push(['_trackEvent', event_name, event_type]);
+    var trackAnalyticEvent = function(event_name, event_type) {
+        if (!inLocalEnv) {
+            _gaq.push(['_trackEvent', event_name, event_type]);
+        }
     }
+    
+
     // end of analytic code
 </script>
 
@@ -76,7 +85,7 @@
         <h2 class="nocaps">
             <text editable-text="IDLE_TIMEOUT_MSG"> {{'IDLE_TIMEOUT_MSG' |translate}}</text>
         </h2>
-        <button type="button" class="button" click-touch='resetTime();'>
+        <button type="button" class="button idle-timeout-btn" click-touch='resetTime();'>
             <text editable-text="IDLE_TIMEOUT_YES"> {{'IDLE_TIMEOUT_YES' |translate}}</text>
         </button>
     </div>

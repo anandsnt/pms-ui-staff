@@ -172,6 +172,28 @@ sntZestStation.controller('zsRootCtrl', [
 
         var iphoneOrIpad = ipadOrIphone();
 
+        var listenForOptionSelectionByKeyboard = function() {
+
+            $('body').on('keydown', function(event) {
+                if ($scope.zestStationData.editorModeEnabled === 'false'){
+                    if (event.keyCode === 49 || event.keyCode === 50 || event.keyCode === 51) {// press enter while holding shift, adds a line break
+                        var option;
+
+                        if (event.keyCode === 49) {
+                            option = 1;
+                        }
+                        if (event.keyCode === 50) {
+                            option = 2;
+                        }
+                        if (event.keyCode === 51) {
+                            option = 3;
+                        }
+                        $scope.$broadcast('KEY_INPUT_OPTION', option);
+                    }
+                }
+            });
+        };
+
 		// $scope.isIpad = (navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) && window.cordova;
         $scope.isIpad = zestSntApp.cordovaLoaded && iphoneOrIpad;
 		/**
@@ -658,12 +680,21 @@ sntZestStation.controller('zsRootCtrl', [
 		/**
 		 * get paths for theme based Icon files
 		 **/
+        $scope.nonCircleNavIcons = false;
         $scope.$on('updateIconPath', function(evt, theme) {
             var commonIconsPath = '/assets/zest_station/css/icons/default';
 
             // var basicHomeIcons = ['zoku'],
-            var niceHomeIcons = ['avenue', 'sohotel', 'epik', 'public', 'duke'];
+            var niceHomeIcons = ['avenue', 'sohotel', 'epik', 'public', 'public_v2', 'duke'],
+                nonCircleNavIcons = ['public_v2'];// minor adjustment to the back/close icons for some themes (only show the inner x or <)
 
+
+            if (_.contains(nonCircleNavIcons, theme)) {
+                $scope.nonCircleNavIcons = true;
+                commonIconsPath = '/assets/zest_station/css/icons/default/square_icons';
+            } else {
+                $scope.nonCircleNavIcons = false;
+            }
 
             if (theme === 'yotel') {
                 $scope.$emit('DONT_USE_NAV_ICONS');
@@ -683,6 +714,10 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.useNavIcons = true;
                 $scope.theme = theme;
                 $scope.iconsPath = '/assets/zest_station/css/icons/' + theme;
+                if (theme === 'public_v2') {
+                    $scope.iconsPath = commonIconsPath;
+                    $scope.zestStationData.themeUsesLighterSubHeader = true;
+                }
                 $scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true, true); // last arg, is to only show different icons on Home, other icons use default
 
             } else { // zoku and snt use default path
@@ -790,7 +825,13 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.zestStationData.userInActivityTimeInSeconds = userInActivityTimeInSeconds;
                     $scope.zestStationData.getWorkstationsAtTime = getWorkstationsAtTime;
                     if (zestSntApp.timeDebugger) {
-                        $scope.zestStationData.workstationTimer = workstationTimer;
+                        // workstation fetch triggered from the user (via console or diagnostics menu) reset time
+                        if ($scope.zestStationData.workstationTimerManualTrigger) {
+                            workstationTimer = $scope.zestStationData.getWorkstationsAtTime;
+                            $scope.zestStationData.workstationTimerManualTrigger = false;
+                        } 
+                        $scope.zestStationData.workstationTimer = workstationTimer;    
+                        
                     }
                     $scope.runDigestCycle();
                 } else {
@@ -932,6 +973,7 @@ sntZestStation.controller('zsRootCtrl', [
 
 
         $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from) {// event, to, toParams, from, fromParams
+            $scope.$broadcast('TOGGLE_LANGUAGE_TAGS', 'off');// fixes an issue where tags cannot be changed back after changing screens
             $scope.hideKeyboardIfUp();
             $log.info('\ngoing to----->' + from.name);
             $log.info('to stateparams' + toParams);
@@ -1500,7 +1542,6 @@ sntZestStation.controller('zsRootCtrl', [
             el.addEventListener('touchmove', optimizeTouch, false);
         };
 
-
 		/** *
 		 * [initializeMe description]
 		 * @return {[type]} [description]
@@ -1519,6 +1560,8 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.demoModeEnabled = 'false'; // demo mode for hitech, only used in snt-theme
             $scope.zestStationData.noCheckInsDebugger = 'false';
             $scope.zestStationData.isAdminFirstLogin = true;
+            $scope.zestStationData.showMoreDebugInfo = false;
+            $scope.zestStationData.themeUsesLighterSubHeader = false;
 			// $scope.zestStationData.checkin_screen.authentication_settings.departure_date = true;//left from debuggin?
             setAUpIdleTimer();
             $scope.zestStationData.workstationOooReason = '';
@@ -1566,6 +1609,7 @@ sntZestStation.controller('zsRootCtrl', [
             // CICO-36953 - moves nationality collection to after res. details, using this flag to make optional
             // and may move to an admin in a future story 
             $scope.zestStationData.consecutiveKeyFailure = 0;
+            listenForOptionSelectionByKeyboard();
 
 
         }());

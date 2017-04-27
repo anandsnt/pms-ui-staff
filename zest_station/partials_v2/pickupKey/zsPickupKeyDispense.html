@@ -26,10 +26,10 @@
                 <text editable-text="HOW_MANY_KEYS"> {{'HOW_MANY_KEYS' |translate}}</text>
             </h2>
             <div id="key-options">
-                <button ng-hide="isEmpty('UNO_KEY')" type="button" class="button" touch-press="makeKeys(1)">
+                <button ng-hide="isEmpty('UNO_KEY')" type="button make-key-btn" class="button" touch-press="makeKeys(1)">
                     <text editable-text="UNO_KEY"> {{'UNO_KEY' |translate}}</text>
                 </button>
-                <button ng-hide="isEmpty('DOS_KEY')" type="button" class="button" touch-press="makeKeys(2)">
+                <button ng-hide="isEmpty('DOS_KEY')" type="button make-key-btn" class="button" touch-press="makeKeys(2)">
                     <text editable-text="DOS_KEY"> {{'DOS_KEY' |translate}}</text>
                 </button>
             </div>
@@ -138,7 +138,7 @@
         <div id="room" ng-show="zestStationData.show_room_number">
             <span class="number">{{selectedReservation.room}}</span>
         </div>
-        <button type="button" class="button" click-touch="pickupKeyNextPageAction()" ng-style="doneButtonStyle">
+        <button type="button" class="button done-btn" click-touch="pickupKeyNextPageAction()" ng-style="doneButtonStyle">
             <text editable-text="DONE"> {{'DONE' |translate}}</text>
         </button>
     </div>

@@ -26,7 +26,7 @@
                             <text editable-text="ADDTL_RESIDENTS"> {{'ADDTL_RESIDENTS' |translate}}</text>
                              ({{selectedReservation.guest_details.length-1}})
                          </p>
-                        <button ng-if='zestStationData.kiosk_add_remove_guests' type="button" class="button" touch-press="addRemove()" >
+                        <button ng-if='zestStationData.kiosk_add_remove_guests' type="button" class="button add-remove-btn" touch-press="addRemove()" >
                             <text editable-text="ADD_REMOVE_GUESTS"> {{'ADD_REMOVE_GUESTS' |translate}}</text>
                         </button>
                     </div>
@@ -88,7 +88,7 @@
 </section>
 
 <section id="main" class="centered kiosk" role="main" click-touch='resetTime()' ng-show="mode === 'TERMS_CONDITIONS'">
-    <div id="content">
+    <div id="content" class='terms-content'>
         <h1>
             <text editable-text="TERMS_CONDITIONS_VIEW_HEADER"> {{'TERMS_CONDITIONS_VIEW_HEADER' |translate}}</text>
         </h1>
