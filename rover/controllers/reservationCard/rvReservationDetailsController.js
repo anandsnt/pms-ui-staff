@@ -1467,6 +1467,4 @@ sntRover.controller('reservationDetailsController',
      $scope.toggleOverBookingAlert = function() {
        $scope.showChangeDatesPopup = !$scope.showChangeDatesPopup;
      }
-
-     $scope.$emit("OBSERVE_FOR_SWIPE");
 }]);

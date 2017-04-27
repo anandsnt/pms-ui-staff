@@ -35,6 +35,7 @@ module.exports = {
 				sharedRoot + 'interceptors/**/*.js',
 				sharedRoot + 'directives/**/*.js',
 				sharedRoot + 'baseCtrl.js',
+                sharedRoot + 'CardReaderCtrl.js',
 
 				roverRoot + 'rvRouters/**/*.js',
 				roverRoot + 'rvApp.js',
