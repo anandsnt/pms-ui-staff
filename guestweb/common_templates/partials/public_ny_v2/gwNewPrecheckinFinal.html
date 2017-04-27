@@ -26,28 +26,30 @@
     </div>
     <!-- main content -->
     <div class="row" ng-hide="isLoading || netWorkError">
-        <div class="col-md-4"></div>
+        <div class="col-md-3"></div>
         <!-- left side -->
-        <div class="col-md-4 top-spacing">
+        <div class="col-md-6 top-spacing">
             <p class="main-text final-text">CHECK-IN COMPLETE</p>
             <p class="sub-text">Reservation #:{{confirmationNumber}}</p>
-            <br/><br/>
+            <br/>
+            <br/>
             <p class="sub-main-text top-spacing">{{responseData.confirmation_message}}
             </p>
-            <br/><br/>
+            <br/>
+            <br/>
             <p class="sub-main-text top-spacing" ng-if="mobileMarketingOn">
-                 <description template="{{mobileAppText}}">
-                 </description>
+                <description template="{{mobileAppText}}">
+                </description>
             </p>
             <br>
             <div ng-class="{'dual-app-icons-container': apps.app_store.available && apps.play_store.available, 'single-app-icon-container': ((apps.app_store.available && !apps.play_store.available) || (!apps.app_store.available && apps.play_store.available))}" ng-if="mobileMarketingOn">
-                <a ng-if="apps.app_store.available" href="{{apps.app_store.url}}" target='_blank'><img src="{{apps.app_store.img}}"</a>
-                <a ng-if="apps.play_store.available" href="{{apps.play_store.url}}" target='_blank'><img src="{{apps.play_store.img}}"</a>
+                <a ng-if="apps.app_store.available" href="{{apps.app_store.url}}" target='_blank'><img src="{{apps.app_store.img}}" </a>
+                    <a ng-if="apps.play_store.available" href="{{apps.play_store.url}}" target='_blank'><img src="{{apps.play_store.img}}" </a>
             </div>
             <br>
             <br>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
         </div>
     </div>
 </div>
