@@ -1,3 +1,13 @@
+/**
+ * Function that can be used to extend controllers to observeForSwipe
+ * @param {object} $scope
+ * @param {object} $rootScope
+ * @param {object} $timeout
+ * @param {object} $interval
+ * @param {object} $log
+ * @returns {undefined}
+ * @constructor
+ */
 function CardReaderCtrl($scope, $rootScope, $timeout, $interval, $log) {
 
     var self = this;

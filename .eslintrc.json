@@ -23,7 +23,7 @@
         "ADBaseTableCtrl": true,
         "tzIndependentDate": true,
         "getJqDateFormat": false,
-        "cardReaderCtrl": false
+        "CardReaderCtrl": false
     },
     "installedESLint":true,
     "parserOptions":{

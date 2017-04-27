@@ -24,7 +24,7 @@
         "getJqDateFormat": false,
         "moment": false,
         "getTimeFormated": true,
-        "cardReaderCtrl": false
+        "CardReaderCtrl": false
     },
     "installedESLint": true,
     "parserOptions": {
