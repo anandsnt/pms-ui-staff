@@ -27,14 +27,13 @@
     <div class="row" ng-hide="isFetching || netWorkError">
         <div class="col-md-4"></div>
         <div class="col-md-4 top-spacing mob-margin-top-1">
-            <p class="main-text mob-margin-bottom-3">UPGRADE YOUR ROOM</p>
-            <p class="sub-main-text mob-margin-bottom-3">BROWSE UPGRADES OR CONTINUE BELOW</p>
+            <p class="main-text mob-margin-bottom-3">WANT TO UPGRADE?</p>
             <div class="section-container">
                 <div class="carousel-view">
                     <carousel>
                         <slide ng-repeat="slide in slides" active="slide.active">
                             <div class="centeralign">
-                                <img ng-src="{{(slide.room_type_image.length > 0) ? slide.room_type_image : 'room-image.png'}}" err-Src="/assets/guestweb/img/image_not_available.png" style="height:200px;width:100%;" />
+                                <img ng-src="{{(slide.room_type_image.length > 0) ? slide.room_type_image : 'room-image.png'}}" err-Src="/assets/guestweb/img/image_not_available.png" style="width:100%;" />
                             </div>
                             <div class="upgrade-details" style="overflow: hidden">
                                 <div class="col-xs-9 room-info mob-paddding-top-5">
