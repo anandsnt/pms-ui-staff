@@ -110,13 +110,19 @@ sntZestStation.directive('editableText', [function() {
                                     event.stopPropagation();
 
                                     $($inputField).val($($inputField).val() + ' ');
+                                } else if (event.shiftKey && event.keyCode === 13) {// press enter while holding shift, adds a line break
+                                    $($inputField).val($($inputField).val() + '<br>');
+
                                 } else if (event.keyCode === 13) {// press enter, saves content
                                     save();
                                 }
                             });
                         } else {
                             $($inputField).on('keydown', function(event) {
-                                if (event.keyCode === 13) {// press enter, saves content
+                                if (event.shiftKey && event.keyCode === 13) {// press enter while holding shift, adds a line break
+                                    $($inputField).val($($inputField).val() + '<br>');
+
+                                } else if (event.keyCode === 13) {// press enter, saves content
                                     save();
                                 }
                             });
