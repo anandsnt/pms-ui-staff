@@ -5,6 +5,7 @@ function CardReaderCtrl($scope, $rootScope, $timeout, $interval, $log) {
     self.cardReaderInitiationAttempts = 0;
     self.cardReaderInitiationMaxAttempts = 2;
     self.cardReaderInitiationAttemptInterval = 2000;
+    self.refreshIntervalInMilliSeconds = 10000;
 
     self.initiateIntervalObserveResets = function() {
         $interval.cancel(self.intervalHandle);
@@ -15,7 +16,7 @@ function CardReaderCtrl($scope, $rootScope, $timeout, $interval, $log) {
             } catch (e) {
                 $log.warn(e);
             }
-        }, 20000);
+        }, self.refreshIntervalInMilliSeconds);
     };
 
     self.initiateCardReader = function() {
