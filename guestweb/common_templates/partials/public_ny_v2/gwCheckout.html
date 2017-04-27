@@ -1,7 +1,7 @@
 <!-- navbar -->
 <div class="container-fluid padding-0">
     <div class="row header-bar">
-        <img alt="" class="logo-image" src="{{hotelLogo}}"/>
+        <img alt="" class="logo-image" src="{{hotelLogo}}" />
     </div>
 </div>
 <!-- main section starts here -->
@@ -10,20 +10,19 @@
         <div class="col-md-3"></div>
         <!-- left side -->
         <div class="col-md-6 top-spacing">
-            
             <p class="sub-main-text">{{checkoutTimessage}} {{checkoutTime}}.</p>
             <a class="btn checkout-btn" ui-sref="checkoutBalance">
                 <div>Check out now</div>
-                <br class="hide-in-desktop"/>
+                <br class="hide-in-desktop" />
                 <div class="checkout-icon">
                 </div>
             </a>
         </div>
         <div class="col-md-3">
-        </div>                   
+        </div>
     </div>
     <div class="row footer-text">
-            <em class = "base-text" ng-show="!isLateCheckoutAvailable">Unfortunately, late check-out is not available.</em><br>
-            Please return to this page to check out at any time before {{checkoutTime}}.
+        <em class="base-text" ng-show="!isLateCheckoutAvailable">Unfortunately, late check-out is not available.</em>
+        <br> Please return to this page to check out at any time before {{checkoutTime}}.
     </div>
 </div>

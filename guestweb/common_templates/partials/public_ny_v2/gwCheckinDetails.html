@@ -1,7 +1,7 @@
 <!-- navbar -->
 <div class="container-fluid padding-0">
     <div class="row header-bar mob-margin-bottom-3">
-        <img alt="" class="logo-image" src="{{hotelLogo}}"/>
+        <img alt="" class="logo-image" src="{{hotelLogo}}" />
     </div>
 </div>
 <!-- main section starts here -->
@@ -63,7 +63,7 @@
                         AVERAGE RATE PER NIGHT
                     </div>
                     <div class="res-date">
-                        {{currencySymbol}} {{ (reservationData.is_rate_suppressed === 'false')? reservationData.avg_rate : '0.00' | number:2  }}
+                        {{currencySymbol}} {{ (reservationData.is_rate_suppressed === 'false')? reservationData.avg_rate : '0.00' | number:2 }}
                     </div>
                 </div>
             </div>
@@ -82,7 +82,7 @@
             <br>
             <div class="margin-top-10 mob-margin-top-3">
                 <div class="col-xs-12 left-align">
-                    <input type="checkbox" ng-click="termsClicked()" ng-model="checked"  class="accept-checkbox" ng-checked="checkedApplyCharges">
+                    <input type="checkbox" ng-click="termsClicked()" ng-model="checked" class="accept-checkbox" ng-checked="checkedApplyCharges">
                     <span class="footer-sub-text left-margin-10">I ACCEPT ALL TERMS AND CONDITIONS</span>
                 </div>
                 <a class="btn btn-template margin-top-10" ng-click="checkInButtonClicked()">NEXT</a>
@@ -108,7 +108,7 @@
                 </description>
             </div>
             <div class="button-actions center-align">
-                <button type="button" ng-click="agreeClicked()" class="btn green-button black-button">I AGREE</button>
+                <button type="button" ng-click="agreeClicked()" class="btn green-button white-button">I AGREE</button>
                 <button type="button" ng-click="cancel()" class="btn grey-terms-button white-button">CANCEL</button>
             </div>
         </div>
