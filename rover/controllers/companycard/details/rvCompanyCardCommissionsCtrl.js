@@ -83,7 +83,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
         requestData.accountId = $scope.accountId;
         $timeout(function() {
             $scope.invokeApi(RVCompanyCardSrv.fetchTACommissionDetails, requestData, onCommissionFetchSuccess, onCommissionFetchFailure);
-        }, 1500);
+        }, 1000);
 
     };
 
