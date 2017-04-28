@@ -621,12 +621,7 @@ sntRover.controller('roverController', [
       sntapp.desktopCardReader.setDesktopUUIDServiceStatus(true);
     	sntapp.desktopCardReader.startDesktopReader($rootScope.ccSwipeListeningPort, options);
     };
-
-
-    // $scope.$on("OBSERVE_FOR_SWIPE", function() {
-    //    $scope.initiateCardReader();
-    // });
-
+        
       /**
        * @returns {undefined} undefined
        */
