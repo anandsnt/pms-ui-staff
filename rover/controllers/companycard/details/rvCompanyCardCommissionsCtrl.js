@@ -414,7 +414,6 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
         var recalculateCommissionSuccess = function(data) {
             clearCurrentSelection();
             fetchCommissionDetails(false);
-            $scope.$emit('hideLoader');
         },
         recalculateCommissionFailure = function(error) {
             $scope.errorMessage = error;
