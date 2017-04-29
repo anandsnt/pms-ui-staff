@@ -11,6 +11,9 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
             $scope.keyType = data.type;
         });
 	$scope.init = function() {
+
+		$scope.$emit('HOLD_OBSERVE_FOR_SWIPE_RESETS');
+
 		// CICO-11444 to fix the issue of poping up select box in ipad
 		$('#encoder-type').blur();
 
@@ -642,6 +645,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 
 	// Close popup
 	$scope.closeDialog = function() {
+        $scope.$emit('RESUME_OBSERVE_FOR_SWIPE_RESETS');
 		ngDialog.close();
 	};
 	// To handle close button click
