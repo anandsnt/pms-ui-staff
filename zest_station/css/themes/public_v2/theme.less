@@ -10,7 +10,7 @@
 	@actionColor: 			@white;
 	@actionBackground: 		@brandColor;
 	
-	@inputBackground: 		#f4f4f4;
+	@inputBackground: 		@white;
 	@transparentColor: 		rgba(128,128,128,.5);
 
 
@@ -271,10 +271,22 @@
 			}
 		}
 	}
+	input:not(.editor-mode-cls) {
+		border-bottom-color: black !important; 
+		border-bottom-style: solid !important; 
+		border-bottom-width: 1px !important;
+		border-bottom-right-radius: 0px !important; 
+		border-bottom-left-radius: 0px !important;
+	}
 	
 	.icon-watch {
 		margin: 40px;
 	    width: 450% !important;
 	    height: 450% !important;
 	    margin-top: 27px !important;
+	}
+
+	#main {
+        @media only screen and (min-width: 1024px) and (max-width: 1024px) { top: 5% !important; height: 95% !important;}
+        @media only screen and (min-width: 1366px) and (max-width: 1366px) { top: 5% !important; height: 95% !important;}
 	}
