@@ -7,9 +7,9 @@ module.exports = {
         return {
             'guestweb_row': [ themeJsRoot + 'app_router_row_nyc.js'],
             'guestweb_atura': [ themeJsRoot + 'app_router_atura.js'],
-            'guestweb_bellagio': [ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_bellagio.js'], // ------------------------------------ MGM CHAIN #- 1
-            'guestweb_delano': [ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_delano.js'], // ---------------------------------------- MGM CHAIN #- 2
-            'guestweb_vdara': [ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_vdara.js'], // ------------------------------------------ MGM CHAIN #- 3
+            'guestweb_bellagio': [ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_bellagio.js'], // ---------------------- MGM CHAIN #- 1
+            'guestweb_delano': [ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_delano.js'], // -------------------------- MGM CHAIN #- 2
+            'guestweb_vdara': [ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_vdara.js'], // ---------------------------- MGM CHAIN #- 3
             'guestweb_mandalay_bay': [ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_mandalay_bay.js'],
             'guestweb_camby': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_carillon': [ themeJsRoot + 'app_router_carillon.js'],
@@ -18,7 +18,7 @@ module.exports = {
             'guestweb_fulton': [ themeJsRoot + 'app_router_fulton.js'],
             'guestweb_galleria': [ themeJsRoot + 'app_router_galleria.js'],
             'guestweb_huntley': [ themeJsRoot + 'app_router_huntley.js'],
-            'guestweb_mgm': [ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_aria.js'], // --------------------------------------------- MGM CHAIN #- 4
+            'guestweb_mgm': [ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_aria.js'], // ------------------------------- MGM CHAIN #- 4
             'guestweb_montauk': [ themeJsRoot + 'app_router_montauk.js'],
             'guestweb_nikko': [ themeJsRoot + 'app_router_niko.js'],
             'guestweb_palms': [ themeJsRoot + 'app_router_palm_spa.js'],
@@ -33,10 +33,10 @@ module.exports = {
             'guestweb_claridge': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_demo': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_balboa': [ themeJsRoot + 'app_router_common.js'],
-            'guestweb_excalibur': [themeJsRoot + 'app_router_excalibur.js'], // ---------------------------------------------------------------------------- MGM CHAIN #- 5
+            'guestweb_excalibur': [themeJsRoot + 'app_router_excalibur.js'], // -------------------------------------------------------------- MGM CHAIN #- 5
             'guestweb_luxor': [themeJsRoot + 'app_router_luxor.js'],
             'guestweb_mgm_grand': [ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_mgm_grand.js'],
-            'guestweb_signature_at_mgm': [ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_signature_at_mgm.js'], // -------------------- MGM CHAIN #- 6
+            'guestweb_signature_at_mgm': [ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_signature_at_mgm.js'], // ------ MGM CHAIN #- 6
             'guestweb_11Howard': [ themeJsRoot + 'app_router_11howard.js'],
             'guestweb_naples_grande': [ themeJsRoot + 'app_router_naples_grande.js'],
             'guestweb_terranea': [ themeJsRoot + 'app_router_common.js'],
@@ -53,14 +53,14 @@ module.exports = {
             'guestweb_knickerbocker_yacht_club': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_kingsley': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_avery': [ themeJsRoot + 'app_router_common.js'],
-            'guestweb_newyork': [themeJsRoot + 'app_router_newyork.js'], // -------------------------------------------------------------------------------- MGM CHAIN #- 7
-            'guestweb_mirage': [themeJsRoot + 'app_router_mirage.js'], // ---------------------------------------------------------------------------------- MGM CHAIN #- 8
+            'guestweb_newyork': [themeJsRoot + 'app_router_newyork.js'], // ------------------------------------------------------------------ MGM CHAIN #- 7
+            'guestweb_mirage': [themeJsRoot + 'app_router_mirage.js'], // -------------------------------------------------------------------- MGM CHAIN #- 8
             'guestweb_valencia_san_antonio': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_lonestar_court_austin': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_ponchartrain': [themeJsRoot + 'app_router_ponchartrain.js'],
             'guestweb_valencia_santana_row': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_sorella_houston': [ themeJsRoot + 'app_router_common.js'],
-            'guestweb_monte_carlo': [ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_monte_carlo.js'], // ------------------------------ MGM CHAIN #- 9
+            'guestweb_monte_carlo': [ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_monte_carlo.js'], // ---------------- MGM CHAIN #- 9
             'guestweb_sorella_kansas_city': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_Pasea': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_sobro': [ themeJsRoot + 'app_router_common.js'],
@@ -103,11 +103,11 @@ module.exports = {
             'guestweb_basecamp_boulder': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_distrikt_nyc': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_stella_hotel': [ themeJsRoot + 'app_router_common.js'],
-            'guestweb_beau_rivage': [ themeJsRoot + 'app_router_beau_rivage.js'], // ----------------------------------------------------------------------- MGM CHAIN #- 10
-            'guestweb_gold_strike': [ themeJsRoot + 'app_router_gold_strike.js'], // ----------------------------------------------------------------------- MGM CHAIN #- 11
+            'guestweb_beau_rivage': [ themeJsRoot + 'app_router_beau_rivage.js'], // --------------------------------------------------------- MGM CHAIN #- 10
+            'guestweb_gold_strike': [ themeJsRoot + 'app_router_gold_strike.js'], // --------------------------------------------------------- MGM CHAIN #- 11
             'guestweb_historic_taos_inn': [ themeJsRoot + 'app_router_historic_taos_inn.js'],
             'guestweb_public_ny_v2': [ themeJsRoot + 'app_router_public_ny_v2.js'],
-            'guestweb_mgm_grand_detroit': [ themeJsRoot + 'app_router_mgm_grand_detroit.js'] // ------------------------------------------------------------ MGM CHAIN #- 12
+            'guestweb_mgm_grand_detroit': [ themeJsRoot + 'app_router_mgm_grand_detroit.js'] // ---------------------------------------------- MGM CHAIN #- 12
         };
     }
 };
