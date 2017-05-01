@@ -95,7 +95,7 @@
                 <div class="entry with-label">
                     <label>Idle Screen Prompt After (seconds)</label>
                     <label class='admin-label-description'>Prompt user to see if they are still using the Station after {{zestStationData.idle_timer.prompt}} seconds of no activity</label>
-                    <input touch-press id="prompt_text" ng-focus="showOnScreenKeyboard('prompt_text')" click-touch="showOnScreenKeyboard('prompt_text')" type="number" min='1' max='{{zestStationData.idle_timer.max}}' ng-model='zestStationData.idle_timer.prompt' />
+                    <input touch-press id="prompt_text" ng-focus="showOnScreenKeyboard('prompt_text')" click-touch="showOnScreenKeyboard('prompt_text')" type="number" min='1' max='{{zestStationData.idle_timer.max}}' ng-model='zestStationData.idle_timer.prompt' class='admin-input admin-input'  />
                 </div>
 
                 <div class="entry with-label">
