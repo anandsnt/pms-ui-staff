@@ -51,13 +51,8 @@
 		top: 12% !important;
 	}
 	.admin-screen#main {
-		margin-top: 7.5%;
-    	height: 78%;
-	}
-	.admin-screen-title {
-		font-size: 1.7em !important;
-	    position: absolute !important;
-	    top: 75px !important;
+		margin-top: 7.5% !important;
+	    height: 80% !important;
 	}
 	.terms-content {
 		padding-top: 12%;
@@ -271,12 +266,14 @@
 			}
 		}
 	}
-	input:not(.editor-mode-cls) {
+	input:not(.editor-mode-cls,.admin-input) {
 		border-bottom-color: black !important; 
 		border-bottom-style: solid !important; 
 		border-bottom-width: 1px !important;
 		border-bottom-right-radius: 0px !important; 
 		border-bottom-left-radius: 0px !important;
+		bottom: 5%;
+    	position: absolute;
 	}
 	
 	.icon-watch {
@@ -289,4 +286,14 @@
 	#main {
         @media only screen and (min-width: 1024px) and (max-width: 1024px) { top: 5% !important; height: 95% !important;}
         @media only screen and (min-width: 1366px) and (max-width: 1366px) { top: 5% !important; height: 95% !important;}
+	}
+
+	form {
+		height:7%;
+	}
+	
+	.admin-screen-title {
+		font-size: 1.7em !important;
+	    position: absolute !important;
+    	top: 115px !important;
 	}

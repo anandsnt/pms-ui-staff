@@ -22,6 +22,19 @@ sntZestStation.directive('editableText', [function() {
             ngModel: '=ngModel'
         },
         link: function(scope, element, attrs) {
+            var editorUpdateString = function($inputField, withText) {
+                var stringToAdd = withText;
+
+                var a = $($inputField).val(),
+                    position = $($inputField).getCursorPosition();
+
+                var output = [a.slice(0, position), stringToAdd, a.slice(position)].join('');
+
+                $($inputField).val(output);
+                var afterAddedStr = position+stringToAdd.length;
+                $($inputField)[0].setSelectionRange(afterAddedStr, afterAddedStr);
+            }
+
 
             var addListeners = function(el, fnToFire) {
                 // double-click listener
@@ -107,9 +120,10 @@ sntZestStation.directive('editableText', [function() {
                                     event.preventDefault();
                                     event.stopPropagation();
 
-                                    $($inputField).val($($inputField).val() + ' ');
+                                    editorUpdateString($inputField, ' ');
+
                                 } else if (event.shiftKey && event.keyCode === 13) {// press enter while holding shift, adds a line break
-                                    $($inputField).val($($inputField).val() + '<br>');
+                                    editorUpdateString($inputField, '<br>');
 
                                 } else if (event.keyCode === 13) {// press enter, saves content
                                     save();
@@ -118,7 +132,8 @@ sntZestStation.directive('editableText', [function() {
                         } else {
                             $($inputField).on('keydown', function(event) {
                                 if (event.shiftKey && event.keyCode === 13) {// press enter while holding shift, adds a line break
-                                    $($inputField).val($($inputField).val() + '<br>');
+
+                                    editorUpdateString($inputField, '<br>');
 
                                 } else if (event.keyCode === 13) {// press enter, saves content
                                     save();
