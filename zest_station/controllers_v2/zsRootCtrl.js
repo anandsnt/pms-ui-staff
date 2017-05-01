@@ -175,7 +175,7 @@ sntZestStation.controller('zsRootCtrl', [
         var listenForOptionSelectionByKeyboard = function() {
 
             $('body').on('keydown', function(event) {
-                if ($scope.zestStationData.editorModeEnabled === 'false'){
+                if ($scope.zestStationData.editorModeEnabled === 'false') {
                     if (event.keyCode === 49 || event.keyCode === 50 || event.keyCode === 51) {// press enter while holding shift, adds a line break
                         var option;
 
@@ -474,6 +474,11 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.$broadcast('TOGGLE_LANGUAGE_TAGS');
         };
         $scope.showJumpList = false;
+        $scope.toggleJumperMin = function() {
+            // minimize / maximize the jumper using an on-screen handle
+            $scope.zestStationData.jumperMinimized = !$scope.zestStationData.jumperMinimized;
+        };
+        
         $scope.jumpList = [];
 
         $scope.toggleJumpList = function(list) {
@@ -481,6 +486,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.showJumpList = !$scope.showJumpList;
             $scope.jumpList = list;
             if ($scope.showJumpList) {
+                $scope.zestStationData.jumperMinimized = false;
                 // on-showing of the jump list, focus for key input and listen for ESC key to close the window
                 $timeout(function() {
                     $('#jumperFilter').focus();
@@ -1562,6 +1568,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.isAdminFirstLogin = true;
             $scope.zestStationData.showMoreDebugInfo = false;
             $scope.zestStationData.themeUsesLighterSubHeader = false;
+            $scope.zestStationData.jumperMinimized = false;
 			// $scope.zestStationData.checkin_screen.authentication_settings.departure_date = true;//left from debuggin?
             setAUpIdleTimer();
             $scope.zestStationData.workstationOooReason = '';

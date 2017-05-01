@@ -63,7 +63,7 @@
 <div ng-include="'/assets/partials_v2/zsDiagnostics.html'"></div>
 
 
-<div class='jumper' ng-show='showJumpList'>
+<div class='jumper' ng-show='showJumpList' ng-class="{'minimized':zestStationData.jumperMinimized}">
     <div ng-include="'/assets/partials_v2/zsJumpList.html'"></div>
 </div>
 
