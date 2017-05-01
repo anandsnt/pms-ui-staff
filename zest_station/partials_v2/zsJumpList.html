@@ -1,4 +1,19 @@
-<div class='jumper-box-li'>
+<div ng-hide='!zestStationData.jumperMinimized' class='jumper-handle min' ng-click='toggleJumperMin()'>
+     <svg transform="rotate(-180 0 0)" class="icon-fill jumper-min-handle" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+        <path d="M0 0h24v24H0z" fill="none"/>
+    </svg>
+</div>
+
+<div ng-hide='zestStationData.jumperMinimized' class='jumper-handle max' ng-click='toggleJumperMin()'>
+     <svg class="icon-fill jumper-maxed-handle" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+        <path d="M0 0h24v24H0z" fill="none"/>
+    </svg>
+</div>
+
+
+<div class='jumper-box-li' ng-hide='zestStationData.jumperMinimized'>
       <ul>
         <li>
             <!-- img src="" -->
@@ -25,7 +40,7 @@
 </div>
 
 <!-- View-Only -->
-<div ng-repeat='view in jumpList' class='jumper-box-li'>
+<div ng-repeat='view in jumpList' class='jumper-box-li' ng-hide='zestStationData.jumperMinimized'>
     <ul ng-hide='!showJumperItem(view)'>
         <li click-touch='jumpTo(view, false)'>
             <img ng-show='jumpGalleryOn && view.icon' 
@@ -48,7 +63,7 @@
         </li>
     </ul>
 <!-- View-MODE-Only -->
-    <ul ng-show='view.modes' ng-repeat='mode in view.modes'>
+    <ul ng-show='view.modes' ng-repeat='mode in view.modes' ng-hide='zestStationData.jumperMinimized'>
         <li ng-show='showJumperItem(mode)' class='view-mode' click-touch='jumpTo(view, true, mode.name)'>
             
             <img ng-show='jumpGalleryOn && mode.icon' 

@@ -474,6 +474,11 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.$broadcast('TOGGLE_LANGUAGE_TAGS');
         };
         $scope.showJumpList = false;
+        $scope.toggleJumperMin = function() {
+            // minimize / maximize the jumper using an on-screen handle
+            $scope.zestStationData.jumperMinimized=!$scope.zestStationData.jumperMinimized;
+        }
+        
         $scope.jumpList = [];
 
         $scope.toggleJumpList = function(list) {
@@ -1562,6 +1567,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.isAdminFirstLogin = true;
             $scope.zestStationData.showMoreDebugInfo = false;
             $scope.zestStationData.themeUsesLighterSubHeader = false;
+            $scope.zestStationData.jumperMinimized = false;
 			// $scope.zestStationData.checkin_screen.authentication_settings.departure_date = true;//left from debuggin?
             setAUpIdleTimer();
             $scope.zestStationData.workstationOooReason = '';
