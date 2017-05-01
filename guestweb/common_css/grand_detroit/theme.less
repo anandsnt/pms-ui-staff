@@ -64,7 +64,9 @@ a,a:hover{
     background-image:url('/assets/guestweb/common_images/gold/right_arrow.png'); 
 }
 .back-to-checkout{
-  background: url(/assets/guestweb/common_images/black/back_icon.png) center top no-repeat;
+  background: url(/assets/guestweb/common_images/black/left_arrow.png) center top no-repeat;
+  background-size: 18px;
+
 }
 
 .upgrade-details .upgrades-btn {
@@ -150,4 +152,11 @@ a,a:hover{
 }
 .date-picker-bg {
   background: rgba(0,0,0,0.5);
+}
+
+@media (max-width: 480px) {
+    .back-to-checkout{ 
+      background-position: 0px 26px;
+      height: 53px;
+    }
 }

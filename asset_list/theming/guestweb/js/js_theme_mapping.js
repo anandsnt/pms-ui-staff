@@ -107,7 +107,7 @@ module.exports = {
             'guestweb_gold_strike': [ themeJsRoot + 'app_router_gold_strike.js'],
             'guestweb_historic_taos_inn': [ themeJsRoot + 'app_router_historic_taos_inn.js'],
             'guestweb_public_ny_v2': [ themeJsRoot + 'app_router_public_ny_v2.js'],
-            'guestweb_mgm_grand_detroit': [ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_mgm_grand_detroit.js']
+            'guestweb_mgm_grand_detroit': [ themeJsRoot + 'app_router_mgm_grand_detroit.js']
         };
     }
 };
