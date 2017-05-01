@@ -211,7 +211,11 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 failureCallBack: failureCallBack
             };
 
-            $scope.callAPI(zsCheckoutSrv.checkoutGuest, options);
+            if ($scope.inDemoMode()) {
+                checkOutSuccess();
+            } else {
+                $scope.callAPI(zsCheckoutSrv.checkoutGuest, options);
+            }
         };
         /**
          *  We check if the balance is greater than 0 and has no CC.
@@ -219,16 +223,16 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
          */
 
         var checkIfDueBalancePresent = function() {
-            if ($scope.balance === 0) {
+            if ($scope.balance === 0 || $scope.inDemoMode()) {
                 // if balance is 0, allow checkout
                 return false;
             } else if ($scope.balance < 0) {
                 // if refund if present, don't allow checkout
                 return true;
-            } else {
+            } 
                 // if balance >0, allow checkout if CC is present
-                return !$scope.has_cc;
-            }
+            return !$scope.has_cc;
+            
         };
 
         $scope.nextClicked = function() {
