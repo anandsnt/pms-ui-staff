@@ -2183,6 +2183,7 @@
         height:100%;   
         overflow-x: hidden;
         margin-right:10px;
+        margin-left: -5px;
     }
     opacity: .9; 
     background-color: @inputBackground;
@@ -2242,7 +2243,11 @@
         color: @inputBackground;
         fill: @inputBackground;
         cursor: pointer;
+        box-shadow: inset 0 0 10px @inputBackground;
     }
+}
+div.jumper-box-li {
+    margin: -1;
 }
 .view-mode{
     padding-left: 25px !important;
@@ -2251,12 +2256,12 @@
 .closeJumpListDiv{
     position: absolute;
     top: -15px;
-    right: -15px;
+    right: -10px;
     width: 40px;
     height: 40px;
 
     &.gallery{
-        right: 3% !important;
+        right: 5% !important;
     }
 }
 
@@ -2297,23 +2302,27 @@
     height: 100%;
     right: -15px;
     position: absolute;
+    cursor:pointer;
     &.min {
         right: 0px !important;
+        margin: 0px !important;
     }
 }
 
 
 .minimized {
-    width: 2.5%;
     margin-left: -5px;
-    height: 7%;
+    width: 2.5%;
+    height: 15%;
+    min-width: 30px;
+    left: 0;
 }
 
 .jumper-min-handle{
     position: absolute;
     top: 0;
     height: 100%;
-    left: 0px;
+    left: 5px;
     width: 30px;
     cursor:pointer;
 }
