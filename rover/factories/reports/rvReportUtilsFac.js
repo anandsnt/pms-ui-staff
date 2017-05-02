@@ -1199,6 +1199,16 @@ angular.module('reportsModule')
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
 
+                        // CICO-37341 - Added new entry UNDEFINED for custom rate
+                        if (report['title'] === reportNames['RESERVATIONS_BY_USER']) {
+                            var customRate = {
+                                id: -1,
+                                description: "UNDEFINED"
+                            };
+
+                            data.push(customRate);
+                        }
+
                         report.hasRateCodeFilter = {
                             data: angular.copy( data ),
                             options: {
