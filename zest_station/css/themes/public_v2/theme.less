@@ -36,12 +36,15 @@
 
         @media only screen and (min-width: 1024px) and (max-width: 1024px) { top: 95% !important;	 }
         @media only screen and (min-width: 1366px) and (max-width: 1366px) { top: 120% !important;	 }
+		@media only screen and (min-width: 1367px) {top: 4.75em!important;}
 	}
 	#back-button {
 		left: 3%;
 		top:3em !important;
+
         @media only screen and (min-width: 1024px) and (max-width: 1024px) { top: 95% !important;	 }
         @media only screen and (min-width: 1366px) and (max-width: 1366px) { top: 120% !important;	 }
+		@media only screen and (min-width: 1367px) {top: 4.75em!important;}
 	}
 
 	#content{
@@ -67,8 +70,8 @@
 		}
 	}
 	.room-upsell-content {
-		height: 95%;
-    	padding-top: 7.5%;
+    	padding-top: 0;
+    	height: 90% !important;
 	}
 	.add_remove, .make-key-now{
 	    background: white !important;
@@ -133,8 +136,7 @@
 		fill: @white;
 	}
 	.svgIconFill{
-        @media only screen and (min-width: 1024px) and (max-width: 1024px) { fill: @white;	 }
-        @media only screen and (min-width: 1366px) and (max-width: 1366px) { fill: @white;	 }
+        @media only screen and (min-width: 400px) and (max-width: 1409px) { fill: @white;	 }
 	}
 	.hideSvg{
 		display:none;
@@ -151,7 +153,7 @@
 		opacity: .4;
 	}
 
-	.done-btn, .add-remove-btn, .idle-timeout-btn, .make-key-btn {
+	.done-btn, .add-remove-btn, .idle-timeout-btn, .make-key-btn, .remove-btn, select, .price>button {
 		background: @white !important;
 	    color: black !important;
 	    border-style: solid !important;
@@ -161,6 +163,9 @@
 	    	border-color:@white;
 	    }
 	}
+	select{
+    	display: -webkit-inline-box;
+    }
 	#public {
 
 		h1,
@@ -266,7 +271,16 @@
 			}
 		}
 	}
-	input:not(.editor-mode-cls,.admin-input) {
+	input:not(.editor-mode-cls) {
+		border-bottom-color: black !important; 
+		border-bottom-style: solid !important; 
+		border-bottom-width: 1px !important;
+		border-bottom-right-radius: 0px !important; 
+		border-bottom-left-radius: 0px !important;
+		bottom: 5%;
+    	position: absolute;
+	}
+	input:not(.admin-input) {
 		border-bottom-color: black !important; 
 		border-bottom-style: solid !important; 
 		border-bottom-width: 1px !important;
@@ -284,8 +298,7 @@
 	}
 
 	#main {
-        @media only screen and (min-width: 1024px) and (max-width: 1024px) { top: 5% !important; height: 95% !important;}
-        @media only screen and (min-width: 1366px) and (max-width: 1366px) { top: 5% !important; height: 95% !important;}
+        @media only screen and (min-width: 1024px) { top: 5% !important; height: 95% !important;}
 	}
 
 	form {
@@ -296,4 +309,24 @@
 		font-size: 1.7em !important;
 	    position: absolute !important;
     	top: 115px !important;
+	}
+	#jumperFilter,.admin-input {
+		position: relative !important;
+	}
+	#country-selector{
+		display: -webkit-inline-box !important;
+	}
+	.upgrades-section {
+		padding-top: 15% !important;
+		height: 90% !important;
+
+        @media only screen and (min-width: 1024px) { top: 0% !important; height: 90% !important;}
+	}
+	#upgrade{
+	    height: 75%;
+	}
+
+	.room-details {
+		top: 10% !important;
+		height: 90% !important;
 	}
