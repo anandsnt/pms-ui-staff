@@ -70,6 +70,9 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 
                 RVContactInfoSrv.setGuest(param.id);
 
+                // CICO-40614 In case of soft reload of stay card (eg. shared room other staycard navigation) the guestCard should be inititated
+                $scope.$broadcast('guestCardAvailable');
+
                 /**
 				 * CICO-40606
 				 * In case of editing a hourly reservation, the guest details aren't transferred from the diary to the confirmation screen (as the diary comes under a different state)
