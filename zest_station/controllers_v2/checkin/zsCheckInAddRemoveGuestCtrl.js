@@ -24,7 +24,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
             var stateParams = {};
             // check if this page was invoked through pickupkey flow
 
-            if (!!$stateParams.pickup_key_mode) {
+            if ($stateParams.pickup_key_mode) {
                 stateParams.pickup_key_mode = 'manual';
             }
             $state.go('zest_station.checkInReservationDetails', stateParams);
@@ -55,12 +55,12 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
         $scope.NameEntered = function() {
             document.getElementById('add-guest-name').blur();
 
-            if ($scope.guest.Name === "") {
+            if ($scope.guest.Name === '') {
                 return;
             } else if (!$scope.guest.firstNameEntered) {
                 $scope.guest.firstNameEntered = true;
                 $scope.guest.firstName = $scope.guest.Name;
-                $scope.guest.Name = "";
+                $scope.guest.Name = '';
                 
                 $scope.mode = 'ENTER_LAST';
                 // $scope.headingText = 'ENTER_LAST';
@@ -74,7 +74,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 }
             } else {
                 $scope.guest.lastName = $scope.guest.Name;
-                $scope.guest.Name = "";
+                $scope.guest.Name = '';
                 updateGuestDetails();
                 $scope.AddGuestMode = false;
                 // this needs to reset..the above code needs to be changed in future
@@ -131,7 +131,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
         var updateGuestDetails = function() {
 
             if ($scope.inDemoMode()) {
-                $scope.selectedReservation = {'guest_details':[]};
+                $scope.selectedReservation = {'guest_details': []};
                 $scope.selectedReservation.guest_details.push({
                     last_name: $scope.guest.lastName,
                     first_name: $scope.guest.firstName,
