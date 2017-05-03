@@ -11,7 +11,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
     'rvUtilSrv',
     'ngDialog',
     function($rootScope, $scope, reportsSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, util, ngDialog) {
-        
+
 
         var REPORT_SCHEDULES_SCROLL = 'REPORT_SCHEDULES_SCROLL';
         var SECOND_COLUMN_SCROLL = 'SECOND_COLUMN_SCROLL';
@@ -365,7 +365,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             _.each($scope.selectedEntityDetails.filters, function(filter) {
                 var selected = false,
                     mustSend = false;
-                
+
 
                 if (filter.value === 'ACCOUNT' || filter.value === 'GUEST') {
                     selected = true;
@@ -394,7 +394,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
                     if ( $scope.selectedEntityDetails.report.description === 'Restricted Post only' && filter.value === 'RESTRICTED_POST_ONLY' ) {
                         selected = false;
-                    }                    
+                    }
 
                     $scope.filters.hasGeneralOptions.data.push({
                         paramKey: filter.value.toLowerCase(),
@@ -473,11 +473,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             });
 
             if ( angular.isDefined(hasAccOrGuest) ) {
-                todayTimePeriod = _.find($scope.scheduleTimePeriods, function(each) {
-                    return each.value === 'TODAY';
-                });
-
-                $scope.scheduleParams.time_period_id = todayTimePeriod.id;
+                $scope.scheduleParams.time_period_id = _.find($scope.originalScheduleTimePeriods, { value: "ALL" }).id;
                 $scope.isGuestBalanceReport = true;
             } else if ( angular.isDefined($scope.selectedEntityDetails.time_period_id) ) {
                 $scope.scheduleParams.time_period_id = $scope.selectedEntityDetails.time_period_id;
@@ -554,7 +550,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                         return 'Per';
                     }
                 };
-                
+
                 $scope.originalScheduleTimePeriods = payload.scheduleTimePeriods;
                 $scope.scheduleFrequency = payload.scheduleFrequency;
                 $scope.scheduleFormat = payload.scheduleFormat;
