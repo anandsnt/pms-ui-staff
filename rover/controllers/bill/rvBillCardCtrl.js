@@ -840,11 +840,13 @@ sntRover.controller('RVbillCardController',
 		return rvPermissionSrv.getPermissionValue ('DIRECT_BILL_PAYMENT');
 	};
 
-	// Method to check whether the current active bill is having payment type = DB.
+	// Method to check whether the current active bill is having payment type = DB and,
+	// attached with a company/ta card , which is having a AR Account.
 	$scope.checkPaymentTypeIsDirectBill = function() {
-		var isPaymentTypeDirectBill = false;
+		var isPaymentTypeDirectBill = false,
+			currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill];
 
-		if ($scope.reservationBillData.bills[$scope.currentActiveBill].is_account_attached && $scope.hasPermissionToDirectBillPayment()) {
+		if (currentActiveBill.is_account_attached && currentActiveBill.has_ar_account && $scope.hasPermissionToDirectBillPayment()) {
 			isPaymentTypeDirectBill = true;
 		}
 		

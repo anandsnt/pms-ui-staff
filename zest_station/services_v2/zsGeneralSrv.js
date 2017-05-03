@@ -14,12 +14,18 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         * themeMappings:: when mapping, on Left (key) is used for the PATH zest_station/css/themes/{theme},
         *                  --on the right, (value) is what is coming from the hotel config in SNT Admin > Templates Config, ie. in dropdown (Public ny), 
         *                  but we want to map to a path of just css/theme/public
+        *
+        *WHEN ADDING or Changing a Theme Name and path - will also need to update the Gulp Asset-list
+        * at >> asset_list > theming > zeststation > css > css_theme_mapping.js
+        * 
         */
+
         var themeMappings = {
             'zoku': 'zoku',
             'yotel': 'yotel',
             'avenue': 'avenue',
             'public': 'public ny',
+            'public_v2': 'public ny v2',
             'duke': 'Little duke',
             'sohotel': 'sohotel',
             'epik': 'Hotel epik',
@@ -67,8 +73,6 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 // fontainebleau, once we have upgraded)
                 if (theme === 'fontainebleau v2') {
                     theme = 'fontainebleau';
-                } else if (theme === 'public ny v2') {
-                    theme = 'public';
                 } else {
                     // the hotel theme name has to be mapped to the zeststation resource files 
                     // corresponding to those themes.

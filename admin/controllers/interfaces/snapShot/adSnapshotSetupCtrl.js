@@ -14,7 +14,7 @@ admin.controller('adsnapshotSetupCtrl', ['$scope', 'adSnapShotSetupSrv', 'ngTabl
 					params: {},
 					successCallBack: onpublishFullExportSucces
 				};
-				
+
 			$scope.callAPI(adSnapShotSetupSrv.publishFullExport, options);
 		};
 
@@ -35,12 +35,12 @@ admin.controller('adsnapshotSetupCtrl', ['$scope', 'adSnapShotSetupSrv', 'ngTabl
 					$scope.snapshotData = data;
 					// $scope.fetchExportData();
 				},
-				options = {					
+				options = {
 					successCallBack: onFetchSettingsSucces
 				};
 
 			$scope.callAPI(adSnapShotSetupSrv.getSettings, options);
-		};	
+		};
 
 		/**
     * initialize table in view
@@ -48,7 +48,8 @@ admin.controller('adsnapshotSetupCtrl', ['$scope', 'adSnapShotSetupSrv', 'ngTabl
     var setUpIncrementalExportTable = function() {
         $scope.incrementalTableParams = new ngTableParams({
            page: 1,            // show first page
-            count: $scope.incrementalExportData.length + 1   // count per page - Need to change when on pagination implemntation
+            count: $scope.incrementalExportData.length + 1   // had to add 1, guess 1 row is being used by the table header
+            // count per page - Need to change when on pagination implemntation
             // sorting: { floor_number: 'asc'     // initial sorting
             // }
         }, {
@@ -71,7 +72,8 @@ admin.controller('adsnapshotSetupCtrl', ['$scope', 'adSnapShotSetupSrv', 'ngTabl
     var setUpFullExportTable = function() {
         $scope.fullTableParams = new ngTableParams({
            page: 1,            // show first page
-            count: $scope.fullExportData.length + 1   // count per page - Need to change when on pagination implemntation
+            count: $scope.fullExportData.length + 1   // had to add 1, guess 1 row is being used by the table header
+            // count per page - Need to change when on pagination implemntation
             // sorting: { floor_number: 'asc'     // initial sorting
             // }
         }, {
@@ -98,12 +100,12 @@ admin.controller('adsnapshotSetupCtrl', ['$scope', 'adSnapShotSetupSrv', 'ngTabl
 					setUpFullExportTable();
 					setUpIncrementalExportTable();
 				},
-				options = {					
+				options = {
 					successCallBack: onFetchExportDataSucces
 				};
 
 			$scope.callAPI(adSnapShotSetupSrv.fetchExportData, options);
-		};	
+		};
 
 		(function init() {
 			$scope.errorMessage = '';

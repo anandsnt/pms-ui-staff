@@ -24,7 +24,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
             var stateParams = {};
             // check if this page was invoked through pickupkey flow
 
-            if (!!$stateParams.pickup_key_mode) {
+            if ($stateParams.pickup_key_mode) {
                 stateParams.pickup_key_mode = 'manual';
             }
             $state.go('zest_station.checkInReservationDetails', stateParams);
@@ -55,12 +55,12 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
         $scope.NameEntered = function() {
             document.getElementById('add-guest-name').blur();
 
-            if ($scope.guest.Name === "") {
+            if ($scope.guest.Name === '') {
                 return;
             } else if (!$scope.guest.firstNameEntered) {
                 $scope.guest.firstNameEntered = true;
                 $scope.guest.firstName = $scope.guest.Name;
-                $scope.guest.Name = "";
+                $scope.guest.Name = '';
                 
                 $scope.mode = 'ENTER_LAST';
                 // $scope.headingText = 'ENTER_LAST';
@@ -74,7 +74,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 }
             } else {
                 $scope.guest.lastName = $scope.guest.Name;
-                $scope.guest.Name = "";
+                $scope.guest.Name = '';
                 updateGuestDetails();
                 $scope.AddGuestMode = false;
                 // this needs to reset..the above code needs to be changed in future
@@ -130,37 +130,48 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
         };
         var updateGuestDetails = function() {
 
-            var accompanyingGuestData = angular.copy($scope.selectedReservation.guest_details);
-
-            accompanyingGuestData = _.without($scope.selectedReservation.guest_details, _.findWhere($scope.selectedReservation.guest_details, _.find($scope.selectedReservation.guest_details, function(guest) {
-                return guest.is_primary === true;
-            })));
-            accompanyingGuestData.push({
-                last_name: $scope.guest.lastName,
-                first_name: $scope.guest.firstName
-            });
-            var guestDetails = {
-                'accompanying_guests_details': accompanyingGuestData,
-                'reservation_id': $scope.selectedReservation.id,
-                'is_added_from_kiosk': true
-            };
-            var onSuccessResponse = function(response) {
-                // push changes up to the reservation immediately
+            if ($scope.inDemoMode()) {
+                $scope.selectedReservation = {'guest_details': []};
                 $scope.selectedReservation.guest_details.push({
                     last_name: $scope.guest.lastName,
                     first_name: $scope.guest.firstName,
-                    id: response[response.length - 1]
+                    id: $scope.selectedReservation.guest_details.length
                 });
-            };
-            var onFailureResponse = function(response) {
-                // do nothing for now..i don't know what to be done in that case
-            };
+            } else {
 
-            $scope.callAPI(zsCheckinSrv.updateGuestTabDetails, {
-                params: guestDetails,
-                'successCallBack': onSuccessResponse,
-                'failureCallBack': onFailureResponse
-            });
+                var accompanyingGuestData = angular.copy($scope.selectedReservation.guest_details);
+
+                accompanyingGuestData = _.without($scope.selectedReservation.guest_details, _.findWhere($scope.selectedReservation.guest_details, _.find($scope.selectedReservation.guest_details, function(guest) {
+                    return guest.is_primary === true;
+                })));
+                accompanyingGuestData.push({
+                    last_name: $scope.guest.lastName,
+                    first_name: $scope.guest.firstName
+                });
+                var guestDetails = {
+                    'accompanying_guests_details': accompanyingGuestData,
+                    'reservation_id': $scope.selectedReservation.id,
+                    'is_added_from_kiosk': true
+                };
+                var onSuccessResponse = function(response) {
+                    // push changes up to the reservation immediately
+                    $scope.selectedReservation.guest_details.push({
+                        last_name: $scope.guest.lastName,
+                        first_name: $scope.guest.firstName,
+                        id: response[response.length - 1]
+                    });
+                };
+                var onFailureResponse = function(response) {
+                    // do nothing for now..i don't know what to be done in that case
+                };
+
+                $scope.callAPI(zsCheckinSrv.updateGuestTabDetails, {
+                    params: guestDetails,
+                    'successCallBack': onSuccessResponse,
+                    'failureCallBack': onFailureResponse
+                });
+
+            }
         };
 
         $scope.goToNext = function() {

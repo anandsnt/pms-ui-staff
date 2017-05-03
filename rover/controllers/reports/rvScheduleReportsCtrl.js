@@ -11,7 +11,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
     'rvUtilSrv',
     'ngDialog',
     function($rootScope, $scope, reportsSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, util, ngDialog) {
-        var scheduleTimePeriods = [];
+
 
         var REPORT_SCHEDULES_SCROLL = 'REPORT_SCHEDULES_SCROLL';
         var SECOND_COLUMN_SCROLL = 'SECOND_COLUMN_SCROLL';
@@ -366,7 +366,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 var selected = false,
                     mustSend = false;
 
-                var filteredTimePeriods;
 
                 if (filter.value === 'ACCOUNT' || filter.value === 'GUEST') {
                     selected = true;
@@ -397,21 +396,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                         selected = false;
                     }
 
-                    if ( $scope.selectedEntityDetails.report.description === 'Statistics Report by Comparison' ) {
-                        filteredTimePeriods = _.filter( scheduleTimePeriods, function(item) {
-                            return item.value === 'YESTERDAY';
-                        });
-
-                        $scope.scheduleTimePeriods = filteredTimePeriods;
-                    }
-                    else {
-                        filteredTimePeriods = _.filter( scheduleTimePeriods, function(item) {
-                            return item.value !== 'YESTERDAY' && item.value !== 'LAST_SEVEN_DAYS' && item.value !== 'LAST_MONTH';
-                        });
-
-                        $scope.scheduleTimePeriods = filteredTimePeriods;
-                    }
-
                     $scope.filters.hasGeneralOptions.data.push({
                         paramKey: filter.value.toLowerCase(),
                         description: filter.description,
@@ -423,6 +407,13 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                         $scope.filters.hasGeneralOptions.options.noSelectAll = true;
                     }
                 }
+            });
+
+            var reportTimePeriods = reportsSrv.getScheduleReportTimePeriods($scope.selectedEntityDetails.report.title);
+
+            $scope.scheduleTimePeriods = [];
+            _.each(reportTimePeriods, function (timePeriod) {
+                $scope.scheduleTimePeriods.push(_.find($scope.originalScheduleTimePeriods, { value: timePeriod }));
             });
 
             runDigestCycle();
@@ -450,7 +441,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
         var processScheduleDetails = function(report) {
             var TIME_SLOT = 30;
-            var hasAccOrGuest, todayTimePeriod;
+            var hasAccOrGuest;
 
             var datePickerCommon = {
                 dateFormat: $rootScope.jqDateFormat,
@@ -482,11 +473,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             });
 
             if ( angular.isDefined(hasAccOrGuest) ) {
-                todayTimePeriod = _.find($scope.scheduleTimePeriods, function(each) {
-                    return each.value === 'TODAY';
-                });
-
-                $scope.scheduleParams.time_period_id = todayTimePeriod.id;
+                $scope.scheduleParams.time_period_id = _.find($scope.originalScheduleTimePeriods, { value: "ALL" }).id;
                 $scope.isGuestBalanceReport = true;
             } else if ( angular.isDefined($scope.selectedEntityDetails.time_period_id) ) {
                 $scope.scheduleParams.time_period_id = $scope.selectedEntityDetails.time_period_id;
@@ -536,7 +523,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.scheduleParams.ends_on_date = reportUtils.processDate(endsOnDate).today;
 
             // save emails
-            if ( angular.isDefined($scope.selectedEntityDetails.recipients) ) {
+            if ( $scope.selectedEntityDetails.recipients ) {
                 $scope.emailList = $scope.selectedEntityDetails.recipients.split(', ');
             } else {
                 $scope.emailList = [];
@@ -564,7 +551,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     }
                 };
 
-                scheduleTimePeriods = payload.scheduleTimePeriods;
+                $scope.originalScheduleTimePeriods = payload.scheduleTimePeriods;
                 $scope.scheduleFrequency = payload.scheduleFrequency;
                 $scope.scheduleFormat = payload.scheduleFormat;
                 $scope.$parent.$parent.schedulesList = [];

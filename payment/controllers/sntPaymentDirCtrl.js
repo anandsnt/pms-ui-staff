@@ -697,10 +697,16 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.submitPayment(params);
                 ngDialog.close(paymentDialogId);
             });
-            // CICO-33971 : Close confirmation popup.
-            $scope.$on('CANCELLED_CONFIRM_DB_PAYMENT', () => {
+
+            // To close the confirm DB popup.
+            var cancellConfirmDBpopup = function() {
                 $scope.$emit('SHOW_BILL_PAYMENT_POPUP');
                 ngDialog.close(paymentDialogId);
+            };
+
+            // CICO-33971 : Close confirmation popup.
+            $scope.$on('CANCELLED_CONFIRM_DB_PAYMENT', () => {
+                cancellConfirmDBpopup();
             });
 
             $scope.submitPayment = function(payLoad) {
@@ -769,6 +775,10 @@ angular.module('sntPay').controller('sntPaymentController',
                         $scope.$emit('hideLoader');
                     },
                     errorMessage => {
+                        // CICO-40539 - Handle error for DB payment fron bill screen/confirm popup.
+                        if ($scope.selectedPaymentType === 'DB' && $scope.payment.isConfirmedDBpayment) {
+                            cancellConfirmDBpopup();
+                        }
                         handlePaymentError(errorMessage);
                     }
                 );
