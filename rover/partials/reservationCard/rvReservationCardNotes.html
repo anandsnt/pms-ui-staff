@@ -1,4 +1,5 @@
 <div class="block-wrapper">
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <div class="block-item item-actions" ng-controller="rvReservationCardActionsController">
         <h3 class="block-title">Actions</h3>
         <button type="button" class="staycard-button next-view " ng-class="{
@@ -26,7 +27,10 @@
         <button type="button" class="staycard-button next-view" 
             ng-class="{'icon-notes': !!reservationData.reservation_card.notes.reservation_notes.length, 'icon-no-notes': !reservationData.reservation_card.notes.reservation_notes.length}" 
             ng-click="openNotesPopup();">
-            {{reservationData.reservation_card.notes.reservation_notes.length}}
+            <div id="loading" style="position: relative" class="overlay" ng-if="!isCountUpdated">
+                <div id="loading-spinner" style="position: absolute"></div>
+            </div>
+            {{notesCount}}
         </button>
     </div>
     <!--<div class="block-item item-group">
