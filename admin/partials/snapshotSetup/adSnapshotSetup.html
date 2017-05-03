@@ -32,7 +32,7 @@
                 <ad-form-title full-width="true" form-title="{{'FULL_EXPORT_RESULTS_LABEL' | translate}}" ng-show="fullExportData.length > 0"></ad-form-title>
 
                 <table class="grid datatable" ng-table="fullTableParams" template-pagination="" 
-        ng-show="showTableDetails && fullExportData.length > 0">
+        ng-show="showFullExportTableDetails && fullExportData.length > 0">
 
                     <tbody> 
                         <tr ng-repeat="exportData in $data"> 
@@ -152,7 +152,7 @@
                 <ad-form-title full-width="true" form-title="{{'INCREMENTAL_EXPORT_RESULTS_LABEL' | translate}}" ng-show="incrementalExportData.length > 0"></ad-form-title>
 
                 <table class="grid datatable" ng-table="incrementalTableParams" template-pagination="" 
-        ng-show="showTableDetails && incrementalExportData.length > 0">
+        ng-show="showIncrementalTableDetails && incrementalExportData.length > 0">
 
                     <tbody> 
                         <tr ng-repeat="exportData in $data"> 
