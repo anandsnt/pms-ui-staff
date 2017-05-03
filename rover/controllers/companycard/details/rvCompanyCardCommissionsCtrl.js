@@ -81,9 +81,8 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
         requestData.params = getRequestParams();
         requestData.accountId = $scope.accountId;
-        $timeout(function() {
-            $scope.invokeApi(RVCompanyCardSrv.fetchTACommissionDetails, requestData, onCommissionFetchSuccess, onCommissionFetchFailure);
-        }, 1000);
+        
+        $scope.invokeApi(RVCompanyCardSrv.fetchTACommissionDetails, requestData, onCommissionFetchSuccess, onCommissionFetchFailure);
 
     };
 
@@ -413,7 +412,10 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
         var recalculateCommissionSuccess = function(data) {
             clearCurrentSelection();
-            fetchCommissionDetails(false);
+
+            $timeout(function() {
+                fetchCommissionDetails(false);
+            }, 2000);
         },
         recalculateCommissionFailure = function(error) {
             $scope.errorMessage = error;
