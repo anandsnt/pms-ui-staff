@@ -14,7 +14,7 @@ admin.controller('adsnapshotSetupCtrl', ['$scope', 'adSnapShotSetupSrv', 'ngTabl
 					params: {},
 					successCallBack: onpublishFullExportSucces
 				};
-				
+
 			$scope.callAPI(adSnapShotSetupSrv.publishFullExport, options);
 		};
 
@@ -35,12 +35,12 @@ admin.controller('adsnapshotSetupCtrl', ['$scope', 'adSnapShotSetupSrv', 'ngTabl
 					$scope.snapshotData = data;
 					// $scope.fetchExportData();
 				},
-				options = {					
+				options = {
 					successCallBack: onFetchSettingsSucces
 				};
 
 			$scope.callAPI(adSnapShotSetupSrv.getSettings, options);
-		};	
+		};
 
 		/**
     * initialize table in view
@@ -100,12 +100,12 @@ admin.controller('adsnapshotSetupCtrl', ['$scope', 'adSnapShotSetupSrv', 'ngTabl
 					setUpFullExportTable();
 					setUpIncrementalExportTable();
 				},
-				options = {					
+				options = {
 					successCallBack: onFetchExportDataSucces
 				};
 
 			$scope.callAPI(adSnapShotSetupSrv.fetchExportData, options);
-		};	
+		};
 
 		(function init() {
 			$scope.errorMessage = '';
