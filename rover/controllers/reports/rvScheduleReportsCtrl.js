@@ -441,7 +441,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
         var processScheduleDetails = function(report) {
             var TIME_SLOT = 30;
-            var hasAccOrGuest, todayTimePeriod;
+            var hasAccOrGuest;
 
             var datePickerCommon = {
                 dateFormat: $rootScope.jqDateFormat,
