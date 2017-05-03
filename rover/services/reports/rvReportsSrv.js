@@ -73,17 +73,17 @@ angular.module('sntRover').service('RVreportsSrv', [
         	'Arrival': [
         		'TODAY',
         		'TOMORROW'
-        	 ],        	 
+        	 ],
         	 'Departure': [
         		'TODAY',
         		'TOMORROW'
-        	 ],        	 
+        	 ],
         	 'In-House Guests': [
         		'TODAY',
         		'TOMORROW'
         	 ],
         	 'Comparison': ['YESTERDAY'],
-        	 'Guest Balance Report': []
+        	 'Guest Balance Report': ['ALL']
         };
 
 		var cacheKey = 'REPORT_PAYLOAD_CACHE';
