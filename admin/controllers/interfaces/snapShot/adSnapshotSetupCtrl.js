@@ -63,7 +63,7 @@ admin.controller('adsnapshotSetupCtrl', ['$scope', 'adSnapShotSetupSrv', 'ngTabl
                 $scope.orderedData =  $scope.incrementalExportData;
 
                 $defer.resolve(orderedData);
-                $scope.showTableDetails = true;
+                $scope.showIncrementalTableDetails = true;
             }
         });
     };
@@ -86,7 +86,7 @@ admin.controller('adsnapshotSetupCtrl', ['$scope', 'adSnapShotSetupSrv', 'ngTabl
                 $scope.orderedData =  $scope.fullExportData;
 
                 $defer.resolve(orderedData);
-                // $scope.showTableDetails = true;
+                $scope.showFullExportTableDetails = true;
             }
         });
     };
