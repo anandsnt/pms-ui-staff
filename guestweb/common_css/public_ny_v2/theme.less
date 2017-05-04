@@ -24,6 +24,9 @@ body {
     text-transform: uppercase;
     font-weight: bolder;
 }
+.terms-main, .terms-sub, .request-text,.error-text{
+    text-transform: uppercase;
+}
 
 .strong-font {
     font-family: "Gotham Book";
@@ -247,11 +250,24 @@ textarea{
     transform: scale(1.5);
 }
 
-.early-checkin-button{
+.early-checkin-button,.early-checkin-button:hover{
     font-size: 16px !important;
 }
 .options-container{
     width:500px;
+}
+
+.button-actions{
+    .terms-button{
+        padding:12px 6%;
+    }
+    .terms-button:first-child{
+        margin-right:20px;
+    }
+}
+.eta-container {
+    width: 32%;
+    margin-left: 5px;
 }
 
 /*----------------- date picker -------------------------*/
@@ -505,6 +521,9 @@ textarea{
     }
     .logo-image {
         margin-bottom:20px;
+    }
+    .btn-template{
+        padding: 12px 6%;
     }
 }
 
