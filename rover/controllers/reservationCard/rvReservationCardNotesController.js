@@ -17,6 +17,7 @@ sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$
             // CICO-22355 Initiate a sync in case of overlays!
             if (!$rootScope.isStandAlone) {
                 $scope.callAPI(RVReservationNotesService.sync, {
+                    loader: 'NONE',
                     params: $scope.reservationData.reservation_card.reservation_id,
                     successCallBack: function(notesCount) {
                         $scope.notesCount = notesCount;
@@ -32,7 +33,6 @@ sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$
 
         $scope.openNotesPopup = function() {
             $scope.callAPI(RVReservationNotesService.fetch, {
-                loader: 'NONE',
                 params: $scope.reservationData.reservation_card.reservation_id,
                 successCallBack: function(notes) {
                     // The following step is reqd as the reservation details response no longer holds notes information
