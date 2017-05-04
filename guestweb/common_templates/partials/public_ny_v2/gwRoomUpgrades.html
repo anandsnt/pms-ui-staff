@@ -36,7 +36,11 @@
                                 <img ng-src="{{(slide.room_type_image.length > 0) ? slide.room_type_image : 'room-image.png'}}" err-Src="/assets/guestweb/img/image_not_available.png" style="width:100%;" />
                             </div>
                             <div class="upgrade-details" style="overflow: hidden">
-                                <div class="col-xs-9 room-info mob-paddding-top-5">
+                                <div class="col-xs-12 upgrades-btn" ng-click="upgradeClicked(slide.upgrade_room_type_id,slide.upgrade_room_number)">
+                                    <!-- <div class="upgrade-icon"></div> -->
+                                    <p class="center-align mob-margin-top-3">SELECT THIS UPGRADE</p>
+                                </div>
+                                <div class="col-xs-12 room-info mob-paddding-top-5">
                                     <p class="room-name mob-margin-bottom-3">
                                         {{slide.upgrade_room_type_name}}
                                     </p>
@@ -49,11 +53,6 @@
                                             <br>PER NIGHT
                                         </p>
                                     </div>
-                                </div>
-                                <div class="col-xs-3 upgrades-btn mob-paddding-top-5" ng-click="upgradeClicked(slide.upgrade_room_type_id,slide.upgrade_room_number)">
-                                    <div class="upgrade-icon"></div>
-                                    <p class="center-align mob-margin-top-3">SELECT THIS
-                                        <br /> UPGRADE</p>
                                 </div>
                                 <div class="col-xs-12 room-info">
                                     <description template="{{slide.upgrade_room_description}}" class="description-details left-align">
