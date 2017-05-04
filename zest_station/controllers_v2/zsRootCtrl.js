@@ -156,6 +156,36 @@ sntZestStation.controller('zsRootCtrl', [
                 $state.go('zest_station.outOfService');
             }
         });
+
+        $scope.softResetCount = 0;
+        $scope.manual_refresh_requested = false;
+        $scope.softReset = function() {
+            // when user is at the admin screen, if they tap the Logo 5x times quickly, it 
+            // initiates a soft-reset, this will be helpful in quickly testing or getting new settings to the device(s)
+            var currentState = $state.current.name;
+            if (currentState === 'zest_station.admin') {
+                 
+                $scope.softResetCount++;
+                if ($scope.softResetCount >= 5) {
+                    if (!$scope.manual_refresh_requested){
+                        // get a more accurate count of refresh requests
+                        $scope.trackEvent(currentState, 'manual_refresh_requested');    
+                        $scope.manual_refresh_requested = true;
+
+                        $scope.hasLoader = true;
+                        // quick loading animation so user can see request to refresh was made
+                        $timeout(function(){
+                            location.reload(true);
+                        },500)
+                        
+                    }
+                }
+                $timeout(function(){
+                    $scope.softResetCount = 0;
+                },2200);
+            }
+        };
+
         $scope.goToAdmin = function() {
             $scope.zestStationData.fromAdminButton = true;
             $state.go('zest_station.admin');
