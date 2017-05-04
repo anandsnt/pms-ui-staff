@@ -258,7 +258,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
         if ($scope.filterData.selectAll) {
             updateCheckedStatus(true);
-            $scope.selectedCommissions = [];
+            $scope.selectedCommissions = [].concat($scope.commissionDetails);
             $scope.prePaidCommissions = [];
             updateCommissionSummary($scope.commissionDetails);
             $scope.status.groupPaidStatus = "";
