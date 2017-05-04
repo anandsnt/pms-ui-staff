@@ -34,6 +34,8 @@ sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$
             $scope.callAPI(RVReservationNotesService.fetch, {
                 params: $scope.reservationData.reservation_card.reservation_id,
                 successCallBack: function(notes) {
+                    // The following step is reqd as the reservation details response no longer holds notes information
+                    $scope.reservationData.reservation_card.notes = $scope.reservationData.reservation_card.notes || {};
                     $scope.reservationData.reservation_card.notes.reservation_notes = notes;
                     ngDialog.open({
                         template: '/assets/partials/reservationCard/rvReservationCardNotesPopup.html',
