@@ -697,6 +697,9 @@ sntZestStation.controller('zsRootCtrl', [
             if ($scope.zestStationData.theme === 'yotel') {
                 $scope.icons.url.checkmark = iconsPath + '/checkmark.svg';
             }
+            if ($scope.zestStationData.theme === 'public_v2') {
+                $scope.icons.url.pen = $scope.icons.url.keyboard;
+            }
         };
 
 		/** ******************************************************************************
