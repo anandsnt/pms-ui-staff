@@ -393,5 +393,10 @@ sntRover.run([
 
 			$rootScope.diaryState.update(toState.name, fromState.name, fromParams);
 		});
+
+        document.addEventListener('cordovaLoaded', function() {
+            $rootScope.$broadcast('RESUME_OBSERVE_FOR_SWIPE_RESETS');
+        });
+
 	}
 ]);
