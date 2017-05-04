@@ -1694,7 +1694,7 @@ sntRover.controller('RVbillCardController',
 	$scope.clickedCompleteCheckin = function(isCheckinWithoutPreAuthPopup, checkInQueuedRoom) {
 
         // CICO-36122 - Set this to keep the promos and news opt in check-in screen in sync with guest card
-        if ( !$scope.guestCardData && !!$scope.guestCardData.contactInfo) {
+        if ( !!$scope.guestCardData && !!$scope.guestCardData.contactInfo) {
            $scope.guestCardData.contactInfo.is_opted_promotion_email = $scope.saveData.promotions;
         }
 
