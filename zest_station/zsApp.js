@@ -332,6 +332,30 @@ var GlobalZestStationApp = function() {
 
 
 };
+if (jQuery && $){
+    // for zest station text editor and jquery keyboard plugin, we'll need to get the cursor position
+    // to replace spacing (spacebar) requests from the jquery keyboard to insert where the user cursor current is at. 
+    // this is a good cross browser solution as of may/2017, verified in firefox, chrome, and chromium
+    (function($) {
+        $.fn.getCursorPosition = function() {
+            var input = this.get(0);
+            if (!input) return; // No (input) element found
+            if ('selectionStart' in input) {
+                // Standard-compliant browsers
+                return input.selectionStart;
+            } else if (document.selection) {
+                // IE
+                input.focus();
+                var sel = document.selection.createRange();
+                var selLen = document.selection.createRange().text.length;
+                sel.moveStart('character', -input.value.length);
+                return sel.text.length - selLen;
+            }
+        }
+    })(jQuery);
+}
+
+
 
 zestSntApp = new GlobalZestStationApp();
 

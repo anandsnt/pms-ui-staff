@@ -2182,7 +2182,7 @@
         overflow-y: auto;
         height:100%;   
         overflow-x: hidden;
-        margin-right:-8px;
+        margin-right:10px;
     }
     opacity: .9; 
     background-color: @inputBackground;
@@ -2289,3 +2289,39 @@
         right: 165px;    
     }
 }
+
+
+.jumper-handle {
+    border-right-style: solid;
+    border-right-width: 31px;
+    height: 100%;
+    right: -15px;
+    position: absolute;
+    &.min {
+        right: 0px !important;
+    }
+}
+
+
+.minimized {
+    width: 2.5%;
+    margin-left: -5px;
+    height: 7%;
+}
+
+.jumper-min-handle{
+    position: absolute;
+    top: 0;
+    height: 100%;
+    left: 0px;
+    width: 30px;
+    cursor:pointer;
+}
+.jumper-maxed-handle{
+    position: absolute;
+    top: 45%;
+    right: -20px;
+    cursor:pointer;
+}
+
+

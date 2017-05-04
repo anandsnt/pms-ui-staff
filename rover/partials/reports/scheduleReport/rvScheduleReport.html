@@ -63,7 +63,7 @@
         <div class="wrapper">
             <h3>Schedule Parameters<span>{{ selectedEntityDetails.report.title }}</span></h3>
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-            <div class="entry">
+            <div class="entry" ng-show="!isGuestBalanceReport">
                 <label for="time-period">Time Period</label>
                 <div class="select">
                     <select ng-model="scheduleParams.time_period_id"
