@@ -1014,9 +1014,10 @@ sntZestStation.controller('zsRootCtrl', [
         $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from) {// event, to, toParams, from, fromParams
             $scope.$broadcast('TOGGLE_LANGUAGE_TAGS', 'off');// fixes an issue where tags cannot be changed back after changing screens
             $scope.hideKeyboardIfUp();
-            $log.info('\ngoing to----->' + from.name);
-            $log.info('to stateparams' + toParams);
+            $log.info('\ngoing from----->' + from.name);
+            $log.info('--with stateparams--');
             $log.info(toParams);
+            $log.info('---');
             if (to.name === 'zest_station.home' || to.name === 'zest_station.outOfService') {
                 if ($scope.trackEvent) {
                     $scope.trackEvent('health_check', 'status_update', from.name, to.name);

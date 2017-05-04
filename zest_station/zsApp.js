@@ -99,7 +99,7 @@ var GlobalZestStationApp = function() {
 
         }
 
-    }; 
+    };
 
     this.logout = function() {
         // just log out
@@ -141,7 +141,7 @@ var GlobalZestStationApp = function() {
                 angular.element('#header').scope().$parent.zestStationData.demoModeEnabled = 'true';
             }
             angular.element('#header').scope()
-                                      .$apply();
+                .$apply();
 
         }
     };
@@ -157,20 +157,20 @@ var GlobalZestStationApp = function() {
         }
     };
     this.debugTimers = function(workstationFetchTimer, languageResetTimer, refreshTimer, idlePopupTimer, backToHomeTimer) {
-        if (arguments.length === 0 || workstationFetchTimer === false) {// ie. debugTimers(false) or debugTimers() will turn off timer debugging
-            console.info('Please pass the timer values as an argument, ie. debugTimers(', 'workstationFetchTimer,', 
-                'languageResetTimer,', 
-                'refreshTimer,', 
-                'idlePopupTimer,', 
-                'backToHomeTimer )');  
+        if (arguments.length === 0 || workstationFetchTimer === false) { // ie. debugTimers(false) or debugTimers() will turn off timer debugging
+            console.info('Please pass the timer values as an argument, ie. debugTimers(', 'workstationFetchTimer,',
+                'languageResetTimer,',
+                'refreshTimer,',
+                'idlePopupTimer,',
+                'backToHomeTimer )');
             console.info('Passing null, or empty string will assume default setting');
             console.info(':: turning off timer debugger ::');
             that.timeDebugger = false;
-            setTimeout(function(){
+            setTimeout(function() {
                 that.runDigest();
-            },200);
-                
-        } else {    
+            }, 200);
+
+        } else {
             var isValidArg = function(a) {
                 return typeof a === typeof 123 && a > 0;
             };
@@ -186,7 +186,7 @@ var GlobalZestStationApp = function() {
                         that.timeDebugger = true;
                         that.runDigest();
                     }
-                    
+
                 }
                 if (isValidArg(workstationFetchTimer)) {
                     that.workstationFetchTimer = workstationFetchTimer;
@@ -209,21 +209,21 @@ var GlobalZestStationApp = function() {
                     that.timeDebugger = true;
                 }
                 console.info('Timers Set: (', ' [ workstationFetchTimer:', that.workstationFetchTimer,
-                        '] [ languageResetTimer,', that.languageResetTimer,
-                        '] [ refreshTimer: ', that.refreshTimer,
-                        '] [ idlePopupTimer: ', that.idlePopupTimer,
-                        '] [ backToHomeTimer: ', that.backToHomeTimer, '] )');
-                setTimeout(function(){
+                    '] [ languageResetTimer,', that.languageResetTimer,
+                    '] [ refreshTimer: ', that.refreshTimer,
+                    '] [ idlePopupTimer: ', that.idlePopupTimer,
+                    '] [ backToHomeTimer: ', that.backToHomeTimer, '] )');
+                setTimeout(function() {
                     that.runDigest();
-                },200);
-                
+                }, 200);
+
             } else {
                 console.warn(':: debugger out of date ::');
             }
         }
         return;
     };
-    this.callRootMethod = function(m, args) {// m == method to call
+    this.callRootMethod = function(m, args) { // m == method to call
         angular.element('#header').scope().$parent[m](args);
 
     };
@@ -237,9 +237,9 @@ var GlobalZestStationApp = function() {
         // will fetch and pass back a list of all $states that can be 'jumped to'
         // for use with octopus | testing | development of certain areas
         // without having to go through normal check-in methods
-        
+
         var viewList = angular.element('#header').scope().$parent.$state.get(),
-            jumperStates = [], 
+            jumperStates = [],
             jumperStateLabels = [];
 
         for (var state in viewList) {
@@ -263,7 +263,7 @@ var GlobalZestStationApp = function() {
 
         that.callRootMethod('toggleJumpList', jumperStates);
         that.runDigest();
-    };  
+    };
 
     this.virtualKeyBoardEnabled = false;
 
@@ -315,16 +315,16 @@ var GlobalZestStationApp = function() {
             if (enabled === 'true') {
                 angular.element('#header').scope().$parent.zestStationData[prop] = 'false';
                 if (editor) {
-                    angular.element('body').scope().cls = {editor: 'false'};
+                    angular.element('body').scope().cls = { editor: 'false' };
                 }
             } else {
                 angular.element('#header').scope().$parent.zestStationData[prop] = 'true';
                 if (editor) {
-                    angular.element('body').scope().cls = {editor: 'true'};
+                    angular.element('body').scope().cls = { editor: 'true' };
                 }
             }
             angular.element('#header').scope()
-                                      .$apply();
+                .$apply();
 
         }
         that.runDigest();
@@ -332,14 +332,16 @@ var GlobalZestStationApp = function() {
 
 
 };
-if (jQuery && $){
+
+if (jQuery && $) {
     // for zest station text editor and jquery keyboard plugin, we'll need to get the cursor position
     // to replace spacing (spacebar) requests from the jquery keyboard to insert where the user cursor current is at. 
     // this is a good cross browser solution as of may/2017, verified in firefox, chrome, and chromium
     (function($) {
         $.fn.getCursorPosition = function() {
             var input = this.get(0);
-            if (!input) return; // No (input) element found
+
+            if (!input) {return;} // No (input) element found
             if ('selectionStart' in input) {
                 // Standard-compliant browsers
                 return input.selectionStart;
@@ -348,13 +350,13 @@ if (jQuery && $){
                 input.focus();
                 var sel = document.selection.createRange();
                 var selLen = document.selection.createRange().text.length;
+
                 sel.moveStart('character', -input.value.length);
                 return sel.text.length - selLen;
             }
-        }
+        };
     })(jQuery);
 }
-
 
 
 zestSntApp = new GlobalZestStationApp();
