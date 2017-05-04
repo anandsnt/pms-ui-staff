@@ -359,7 +359,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
                     routeToNext();
                 }
-                else{
+                else {
                     showTermsAndCondition();
                 }
             } else {
@@ -511,8 +511,6 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             }
 
         };
-
-
         
 
         (function() {

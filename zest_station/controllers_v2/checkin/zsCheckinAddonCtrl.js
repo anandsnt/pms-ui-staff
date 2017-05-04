@@ -373,9 +373,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			// back button action
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
-			if ($stateParams.isQuickJump === 'true') {
-
-			} else {
+			if ($stateParams.isQuickJump !== 'true') {
 				$scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
 				findSelectedLanguageId();
 			}
