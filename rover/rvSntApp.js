@@ -59,6 +59,7 @@ var GlobalApp = function() {
     this.fetchCompletedOfCordovaPlugins = function(script) {
         $("head").append('<script type="text/javascript">' + script + '</script>');
         that.cordovaLoaded = true;
+        document.dispatchEvent(new Event('cordovaLoaded'));
         try {
 
            that.cardReader = new CardOperation();
