@@ -1201,7 +1201,7 @@ angular.module('reportsModule')
 
                         // CICO-37341 - Added new entry UNDEFINED for custom rate
                         if (report['title'] === reportNames['RESERVATIONS_BY_USER']) {
-                            var hasCustomRateItemPresent = _.find(data, {id : -1});
+                            var hasCustomRateItemPresent = _.find(data, {id: -1});
 
                             if (!hasCustomRateItemPresent) {
                                 var customRate = {
