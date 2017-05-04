@@ -242,6 +242,11 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
            updateCommissionSummary(commissionList);
        }
+
+       if ($scope.selectedCommissions.length === 0) {
+            $scope.filterData.selectAll = false;
+            $scope.toggleSelection();
+       }
     };
 
     // Updates the checked status of the current  page records while making the whole selection
