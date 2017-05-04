@@ -81,7 +81,9 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
         requestData.params = getRequestParams();
         requestData.accountId = $scope.accountId;
+        
         $scope.invokeApi(RVCompanyCardSrv.fetchTACommissionDetails, requestData, onCommissionFetchSuccess, onCommissionFetchFailure);
+
     };
 
     /* Checking permission for edit PAID & UNPAID   */
@@ -410,8 +412,10 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
         var recalculateCommissionSuccess = function(data) {
             clearCurrentSelection();
-            fetchCommissionDetails(false);
-            $scope.$emit('hideLoader');
+
+            $timeout(function() {
+                fetchCommissionDetails(false);
+            }, 2000);
         },
         recalculateCommissionFailure = function(error) {
             $scope.errorMessage = error;
