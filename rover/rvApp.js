@@ -393,5 +393,6 @@ sntRover.run([
 
 			$rootScope.diaryState.update(toState.name, fromState.name, fromParams);
 		});
+
 	}
 ]);
