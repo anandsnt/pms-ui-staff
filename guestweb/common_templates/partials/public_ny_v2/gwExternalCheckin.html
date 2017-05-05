@@ -33,17 +33,17 @@
                 <form>
                     <!-- Lat name -->
                     <p class="pull-left sub-text margin-top-40">LAST NAME ON RESERVATION</p>
-                    <input type="text" class="input-field padding-2" ng-model="lastname"></input>
+                    <input type="text" class="input-field" ng-model="lastname"></input>
                     <!-- Confirmation number -->
                     <p class="pull-left sub-text margin-top-10">CONFIRMATION NUMBER</p>
-                    <input type="text" class="input-field padding-2" ng-model="confirmationNumber"></input>
+                    <input type="text" class="input-field" ng-model="confirmationNumber"></input>
                     <br/>
                     <p class="sub-text margin-top-10 text-left">OR</p>
                     <!-- Departure date -->
                     <p class="pull-left sub-text margin-top-10">DEPARTURE DATE</p>
-                    <input class="input-field padding-2 calendar-button" ng-click="showCalender()" ng-model="departureDate" placeholder="{{dateFormatPlaceholder}}" readonly></input>
+                    <input class="input-field calendar-button" ng-click="showCalender()" ng-model="departureDate" placeholder="{{dateFormatPlaceholder}}" readonly></input>
                     <!-- Submit button -->
-                    <input type="submit" class="btn btn-template margin-top-40 padding-3" ng-click="nextButtonClicked()" value="NEXT" />
+                    <input type="submit" class="btn btn-template margin-top-40" ng-click="nextButtonClicked()" value="NEXT" />
                 </form>
             </div>
         </div>

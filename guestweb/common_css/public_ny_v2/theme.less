@@ -9,7 +9,7 @@ body {
 
 body {
     background-color: #FFF;
-    font-family: "Gotham Book";
+    font-family: "Gotham A","Gotham B",Helvetica,Arial,sans-serif;
 }
 
 .back-text {
@@ -20,9 +20,9 @@ body {
 }
 .main-text,
 .btn {
-    font-family: "Gotham Book";
+    font-family: "Gotham A","Gotham B",Helvetica,Arial,sans-serif;
     text-transform: uppercase;
-    font-weight: normal;
+    font-weight: 300 !important;
 }
 .terms-main, .terms-sub,
 .request-text,.error-text,
@@ -32,7 +32,7 @@ body {
 }
 
 .strong-font {
-    font-family: "Gotham Book";
+    font-family: "Gotham A","Gotham B",Helvetica,Arial,sans-serif;
 }
 .main-text{
     font-weight: 500;
@@ -71,19 +71,23 @@ a:hover,
 }
 
 .main-text {
-    font-size: 30px;
+    font-size: 25px;
 }
-.sub-main-text, .sub-text, .footer-text ,.select-style select,.input-field{
-    font-size:16px !important;
+.sub-main-text, .sub-text, 
+.footer-text ,.select-style select,
+.input-field,.res-date,
+.footer-sub-text,.footer-sub-text:hover,
+.request-text
+{
+    font-size:14px !important;
 }
 .header-bar {
     background: #fff;
 }
-
 .logo-image {
     width:100%;
     max-width: 98%;
-    margin: 3px 0% 0%;
+    margin: 10px 0% 0%;
     margin-bottom:15px;
 }
 
@@ -105,7 +109,8 @@ a:hover,
     background:#fff !important;   
 }
 
-.room-error-green-button, .room-error-green-button:hover, .btn-close, .btn-close :hover{
+.room-error-green-button, .room-error-green-button:hover,
+.btn-close, .btn-close :hover{
     color:#000 !important;
     background:#fff !important;  
 }
@@ -117,7 +122,7 @@ textarea{
 }
 
 .sub-text {
-    font-family: "Gotham Book"
+    font-family: "Gotham A","Gotham B",Helvetica,Arial,sans-serif
 }
 
 .sub-text,
@@ -148,6 +153,9 @@ textarea{
     max-width: 100% !important;
     min-height:45px;
 }
+.margin-bottom-5{
+    margin-bottom: 5px !important;
+}
 
 .section-container {
     max-width: 100% !important;
@@ -170,7 +178,7 @@ textarea{
 }
 
 .btn-template {
-    font-size: 20px;
+    font-size: 16px;
     color:#363d40;
     min-height: initial !important;
 }
@@ -218,6 +226,11 @@ textarea{
     font-weight: 500;
 }
 
+.select-style {
+    height: 45px;
+    display: flex;
+}
+
 // .amount,
 // .time {
 //     font-size: 30px;
@@ -241,7 +254,8 @@ textarea{
     border-radius: 0px !important;
     border: 1px solid black !important;
     text-align: center !important;
-    font-size:16px;
+    font-size:14px;
+    padding: 14px 20px;
 }
 
 .upgrades-label {
@@ -306,7 +320,7 @@ textarea{
 .pickadate-cell,
 .for,
 .amount {
-    font-family: "Gotham Book"
+    font-family: "Gotham A","Gotham B",Helvetica,Arial,sans-serif
 }
 .pickadate-main ul:first-child{
     border-bottom: 1px solid black;
@@ -449,15 +463,16 @@ textarea{
 .row {
     margin-bottom: 21px;
 }
-
+.footer-text{
+    font-style: normal;
+}
 .circle-bg {
-    background: none;
-    background: url("/assets/guestweb/common_images/black/circle-bg.png") no-repeat scroll center top transparent !important;
+    background: none !important;
     height: 80px;
 }
 
 .time {
-    font-size: 20px;
+    font-size: 30px;
     padding-top: 25px;
     display: block;
 }
@@ -541,7 +556,7 @@ textarea{
 
 @media (max-width: 890px) {
     .btn-template {
-        padding: 4%;
+        padding: 11px 4%;
     }
 }
 
@@ -554,7 +569,7 @@ textarea{
 
 @media (min-width: 990px) {
 
-    .query-text {
+    .query-text,.query-text:hover {
         font-size: 11px;
     }
     .checkout-btn {
@@ -564,16 +579,19 @@ textarea{
         margin-bottom:20px;
     }
     .btn-template{
-        padding: 16px 6%;
+        padding: 10px 6%;
     }
     .modal .modal-dialog .alert-link, .modal .modal-dialog p{
         font-size:16px;
+    }
+    .show-bill-wrap{
+        background: rgba(220, 220, 220, 0.58);
     }
 }
 
 @media (max-width: 990px) {
     .logo-image {
-        margin: 3px 0px 15px;
+        margin: 6px 0px 15px;
         margin-bottom:15px;
     }
     .back-to-checkout {
