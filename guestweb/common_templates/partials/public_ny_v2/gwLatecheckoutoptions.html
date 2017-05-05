@@ -29,7 +29,7 @@
         <div class="col-md-3"></div>
         <!-- left side -->
         <div class="col-md-6 top-spacing">
-            <p class="main-text text-left">Please choose your new
+            <p class="sub-main-text text-left">Please choose your new
                 <br>check out time:</p>
             <div class="row options-container margin-top-40" ng-class="{'two-options': charges.length === 2,'three-options': charges.length === 3}">
                 <a class="btn triple-button one-third-width {{ charge.class }}" ng-repeat="charge in charges" ng-click="gotToNextStep(charge.amount,charge.id)">
