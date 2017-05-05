@@ -18,17 +18,6 @@ function CardReaderCtrl($scope, $rootScope, $timeout, $interval, $log) {
     self.refreshIntervalInMilliSeconds = 10000;
     self.isObserveResetOnHold = false;
 
-    self.initiateIntervalObserveResets = function() {
-        $interval.cancel(self.intervalHandle);
-        self.intervalHandle = $interval(function() {
-            try {
-                $log.info('reset the observeForSwipe request with a fresh callback!');
-                sntapp.cardReader.startReader(self.options);
-            } catch (e) {
-                $log.warn(e);
-            }
-        }, self.refreshIntervalInMilliSeconds);
-    };
 
     self.initiateCardReader = function() {
         $log.info('trying to initiate an observeForSwipe request...');
@@ -36,7 +25,6 @@ function CardReaderCtrl($scope, $rootScope, $timeout, $interval, $log) {
         if (sntapp.cordovaLoaded && 'rv_native' === sntapp.browser) {
             sntapp.cardReader.startReader(self.options);
             $log.info('request made to observe for swipe!');
-            self.initiateIntervalObserveResets();
         } else {
             // If cordova not loaded in server, or page is not yet loaded completely
             // One second delay is set so that call will repeat in 1 sec delay
@@ -54,7 +42,6 @@ function CardReaderCtrl($scope, $rootScope, $timeout, $interval, $log) {
     };
 
     self.clear = function() {
-        $log.warn("interval cleared? " + $interval.cancel(self.intervalHandle));
         $log.warn("timeout cleared? " + $timeout.cancel(self.timeoutHandle));
     };
 
