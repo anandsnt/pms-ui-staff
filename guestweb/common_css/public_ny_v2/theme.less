@@ -150,6 +150,9 @@ textarea{
     max-width: 100% !important;
     margin-top: calc(4.5%) !important;
 }
+.section-container.margin-top-40{
+    margin-top: 40px !important;
+}
 
 .select-style, text-comment {
     border: 1px solid black !important;
@@ -470,9 +473,12 @@ textarea{
     font-size: 28px;
 }
 
-.triple-button,
-.dual-button {
-    border-right: 1px inset #6A6A6A;
+
+.dual-button:first-child,
+.two-options .triple-button:first-child,
+.three-options .triple-button:first-child,
+.three-options .triple-button:nth-child(2){
+    border-right: none !important;
 }
 
 .circle-bg {
