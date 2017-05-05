@@ -1614,7 +1614,7 @@ sntRover.controller('RVbillCardController',
         };
 
         // CICO-36696 : Method to get canvas data in Base64 Format, includes the line inside canvas.
-        var getSignatureWithLine = function () {
+        var getSignatureBase64Data = function () {
  	      	var canvasElement 	= angular.element( document.querySelector('canvas.jSignature'))[0],
 				signatureURL 	= (canvasElement) ? canvasElement.toDataURL() : '';
 
@@ -1721,7 +1721,7 @@ sntRover.controller('RVbillCardController',
 			return false;
 		}
 
-		var errorMsg = "", signatureData = $scope.getSignature(), signatureWithLine = getSignatureWithLine();
+		var errorMsg = "", signatureData = $scope.getSignature(), signatureWithLine = getSignatureBase64Data();
 
 		if ($scope.signatureNeeded(signatureData) && !$scope.reservation.reservation_card.is_pre_checkin) {
 			errorMsg = "Signature is missing";
@@ -1744,7 +1744,7 @@ sntRover.controller('RVbillCardController',
 			// Do nothing , Keep going checkin process , it is a sharer reservation..
 		}
 
-		var errorMsg = "", signatureData = $scope.getSignature(), signatureWithLine = getSignatureWithLine();
+		var errorMsg = "", signatureData = $scope.getSignature(), signatureWithLine = getSignatureBase64Data();
 
 		if ($scope.signatureNeeded(signatureData)) {
 			errorMsg = "Signature is missing";
@@ -1881,6 +1881,7 @@ sntRover.controller('RVbillCardController',
 
 		// To check for ar account details in case of direct bills
 		var index = $scope.reservationBillData.bills.length - 1;
+		var signatureBase64Data = getSignatureBase64Data();
 
 		if ($scope.isArAccountNeeded(index)) {
 			return;
@@ -1914,7 +1915,7 @@ sntRover.controller('RVbillCardController',
 			var data = {
 				"reservation_id": $scope.reservationBillData.reservation_id,
 				"email": $scope.guestCardData.contactInfo.email,
-				"signature": signatureData,
+				"signature": signatureBase64Data,
 				"allow_checkout_without_settlement": true
 			};
 
@@ -1964,7 +1965,7 @@ sntRover.controller('RVbillCardController',
 			var data = {
 				"reservation_id": $scope.reservationBillData.reservation_id,
 				"email": $scope.guestCardData.contactInfo.email,
-				"signature": signatureData
+				"signature": signatureBase64Data
 			};
 
 			$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
