@@ -15,6 +15,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 
         var onQRScanFail = function() {
             $scope.$emit('hideLoader');
+            $scope.zestStationData.qrCodeScanning = false;
             if ($scope.zestStationData.pickup_qr_scan_fail_over) {
 				// provide small time out, so as to let user know what is happening
                 $scope.qrCodeScanFailed = true;
@@ -27,6 +28,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
         $scope.arrowDirection = $scope.zestStationData.qr_scanner_arrow_direction ? $scope.zestStationData.qr_scanner_arrow_direction : 'right';
 
         var fetchReservationDetails = function(reservation_id) {
+            $scope.zestStationData.qrCodeScanning = false;
 			/*
 			 * The Scanned QR-code returns the Reservation_id
 			 *  to lookup the reservation, we need to get the Room No. + Last name
@@ -104,7 +106,6 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 
 		/** ***************** SAMSOTECH ********************/
         var receiveSamsoTechMsg = function(evt, info) {
-            $scope.zestStationData.qrCodeScanning = false;
             console.log(arguments);
             if (typeof info.msg === typeof 'str') {
                 if (info.msg.indexOf('Invalid') !== -1) {

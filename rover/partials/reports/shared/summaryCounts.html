@@ -111,6 +111,7 @@
     <li>Overrides<span>{{ summaryCounts.total_rate_overrides }}</span></li>
     <li>Variance<span>{{ summaryCounts.total_rate_variance | currency:currencySymbol:2 }}</span></li>
     <li>Total Revenue<span class="green">{{ summaryCounts.total_revenue | currency:currencySymbol:2 }}</span></li>
+    <li>Room Nights<span>{{ summaryCounts.total_nights }}</span></li>
 </ul>
 
 <!-- Daily Transactions -->
@@ -227,5 +228,5 @@
 
 <!-- Departure report -->
 <ul ng-if="isThisReport( 'DEPARTURE' )" class="totals">
-    <li>Total Departure Rooms<span>{{ summaryCounts.total_rooms_count }}</span></li>    
+    <li>Total Departure Rooms<span>{{ summaryCounts.total_rooms_count }}</span></li>
 </ul>

@@ -546,7 +546,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             $scope.scheduleTimePeriods = [];
 
-            var reportTimePeriods = reportsSrv.getReportScheduleTimePeriods (item.report.title);
+            var reportTimePeriods = reportsSrv.getReportExportTimePeriods (item.report.title);
 
             _.each(reportTimePeriods, function (timePeriod) {
                 $scope.scheduleTimePeriods.push(_.find($scope.originalScheduleTimePeriods, { value: timePeriod }));
