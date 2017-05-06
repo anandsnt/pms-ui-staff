@@ -24,7 +24,9 @@
         "getJqDateFormat": false,
         "moment": false,
         "getTimeFormated": true,
-        "CardReaderCtrl": false
+        "CardReaderCtrl": false,
+        "sntCordovaInit": false,
+        "CardOperation": false
     },
     "installedESLint": true,
     "parserOptions": {

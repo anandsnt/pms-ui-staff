@@ -1,11 +1,11 @@
-sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 'ngDialog', 'RVKeyPopupSrv', '$filter', '$timeout',
-		function($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter, $timeout) {
+sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 'ngDialog', 'RVKeyPopupSrv', '$filter', '$timeout', '$log',
+		function($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter, $timeout, $log) {
 	BaseCtrl.call(this, $scope);
 	var that = this;
 
 	var scopeState = {
 		isCheckingDeviceConnection: false
-	}
+	};
 
 	this.setStatusAndMessage = function(message, status) {
 		$scope.statusMessage = message;
@@ -161,7 +161,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		setTimeout(function() {
 			if (secondsAfterCalled <= that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK) { // 10seconds
                 var checkDeviceConnection = function() {
-                    console.log('deviceready listener...');
+					$log.info('deviceready listener...');
                     $timeout(function() {
                         $scope.showDeviceConnectingMessge();
                     }, 300);
