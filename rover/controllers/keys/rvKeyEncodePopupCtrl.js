@@ -1,7 +1,11 @@
-sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 'ngDialog', 'RVKeyPopupSrv', '$filter',
-		function($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter) {
+sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 'ngDialog', 'RVKeyPopupSrv', '$filter', '$timeout',
+		function($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter, $timeout) {
 	BaseCtrl.call(this, $scope);
 	var that = this;
+
+	var scopeState = {
+		isCheckingDeviceConnection: false
+	}
 
 	this.setStatusAndMessage = function(message, status) {
 		$scope.statusMessage = message;
@@ -150,11 +154,27 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		$scope.$emit('hideLoader');
 		var secondsAfterCalled = 0;
 
+        scopeState.isCheckingDeviceConnection = false;
+
 		that.noOfErrorMethodCalled++;
 		secondsAfterCalled = that.noOfErrorMethodCalled * 1000;
 		setTimeout(function() {
 			if (secondsAfterCalled <= that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK) { // 10seconds
-				$scope.showDeviceConnectingMessge();
+                var checkDeviceConnection = function() {
+                    console.log('deviceready listener...');
+                    $timeout(function() {
+                        $scope.showDeviceConnectingMessge();
+                    }, 300);
+                    document.removeEventListener("deviceready", checkDeviceConnection, false);
+                };
+
+                if (that.noOfErrorMethodCalled > 1) {
+                    sntCordovaInit();
+                    sntapp.cardReader = new CardOperation();
+                    document.addEventListener("deviceready", checkDeviceConnection, false);
+                } else {
+                    $scope.showDeviceConnectingMessge();
+                }
 			}
 		}, 1000);
 		if (secondsAfterCalled > that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK) {
@@ -194,6 +214,14 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		$scope.deviceNotConnected = false;
 		$scope.keysPrinted = false;
 		$scope.showPrintKeyOptions = $scope.isIpad && $scope.isRemoteEncodingEnabled;
+
+		scopeState.isCheckingDeviceConnection = true;
+
+        $timeout(function() {
+            if (scopeState.isCheckingDeviceConnection) {
+                showDeviceNotConnected();
+            }
+        }, 2000);
 
 		var callBack = {
 			'successCallBack': onDeviceConnectionSuccess,
@@ -582,6 +610,8 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 	};
 
     var onDeviceConnectionSuccess = function(status) {
+    	scopeState.isCheckingDeviceConnection = false;
+
         if (status) {
             that.setStatusAndMessage($filter('translate')('KEY_CONNECTED_STATUS'), 'success');
         }
