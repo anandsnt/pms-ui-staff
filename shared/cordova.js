@@ -18,7 +18,7 @@
  specific language governing permissions and limitations
  under the License.
 */
-(function() {
+sntCordovaInit = function() {
 var PLATFORM_VERSION_BUILD_LABEL = '3.8.0';
 // file: src/scripts/require.js
 
@@ -185,6 +185,7 @@ var cordova = {
     version: PLATFORM_VERSION_BUILD_LABEL,
     platformVersion: PLATFORM_VERSION_BUILD_LABEL,
     platformId: platform.id,
+    instanceId: Math.floor(Math.random() * 2000000000),
     /**
      * Methods to add/remove your own addEventListener hijacking on document + window.
      */
@@ -1859,7 +1860,8 @@ function UUIDcreatePart(length) {
 
 window.cordova = require('cordova');
 // file: src/scripts/bootstrap.js
-
 require('cordova/init');
 
-})();
+};
+
+sntCordovaInit();

@@ -23,7 +23,9 @@
         "ADBaseTableCtrl": true,
         "tzIndependentDate": true,
         "getJqDateFormat": false,
-        "CardReaderCtrl": false
+        "CardReaderCtrl": false,
+        "sntCordovaInit": false,
+        "CardOperation": false
     },
     "installedESLint":true,
     "parserOptions":{
