@@ -15,7 +15,7 @@ sntZestStation.config(['$stateProvider',
 
         // checkin reservation details 
         $stateProvider.state('zest_station.checkInReservationDetails', {
-            url: '/checkInReservationDetails/:pickup_key_mode/:isQuickJump',
+            url: '/checkInReservationDetails/:pickup_key_mode/:isQuickJump/:quickJumpMode',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinReservationDetails.html',
             controller: 'zsCheckInReservationDetailsCtrl',
             jumper: true,
@@ -23,7 +23,14 @@ sntZestStation.config(['$stateProvider',
             section: 'Checkin',
             description: 'Cost Details, Link to add/remove guests',
             icon: 'checkin_res_details.png',
-            label: 'Reservation Details'
+            label: 'Reservation Details',
+            modes: [
+            {
+                'name': 'TERMS_CONDITIONS',
+                'label': 'Terms and Conditions',
+                'description': 'After Reservation Details, Show Hotel Terms and Conditions',
+                'icon': 'checkin_terms.png'
+            }]
         });
         // select checkin reservation from array of reservations.
         $stateProvider.state('zest_station.selectReservationForCheckIn', {
@@ -85,7 +92,7 @@ sntZestStation.config(['$stateProvider',
             url: '/checkInTermsAndConditions/:guest_id/:reservation_id/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:first_name/:balance_amount/:pre_auth_amount_for_zest_station/:authorize_cc_at_checkin/:confirmation_number/:pickup_key_mode/:is_from_room_upsell/:is_from_addons',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinTermsConditions.html',
             controller: 'zsCheckInTermsConditionsCtrl',
-            jumper: true,
+            jumper: false,
             section: 'Checkin',
             icon: 'checkin_terms.png',
             description: 'Terms and Conditions',
@@ -361,10 +368,11 @@ sntZestStation.config(['$stateProvider',
 
         // room upsells
         $stateProvider.state('zest_station.roomUpsell', {
-            url: '/checkinRoomUpsell',
+            url: '/checkinRoomUpsell/:isQuickJump/:quickJumpMode',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinRoomUpsell.html',
             controller: 'zsCheckinRoomUpsellCtrl',
             jumper: false,
+            placeholderData: true,
             section: 'Checkin',
             description: '',
             label: 'Room Upsell'
@@ -372,12 +380,13 @@ sntZestStation.config(['$stateProvider',
 
          // addon upsells
         $stateProvider.state('zest_station.addOnUpsell', {
-            url: '/checkinAddon/:is_from_room_upsell',
+            url: '/checkinAddon/:is_from_room_upsell/:isQuickJump/:quickJumpMode',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinAddon.html',
             controller: 'zsCheckinAddonCtrl',
             jumper: false,
             section: 'Checkin',
-            description: '',
+            description: 'Check-In Add-on Upsell',
+            placeholderData: true,
             label: 'Addon'
         });
 
